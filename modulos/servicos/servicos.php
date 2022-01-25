@@ -30,8 +30,6 @@ function carrinho_operacoes($params = false){
 		
 	// ===== 
 	
-	echo 'Sim'; exit;
-	
 	if(isset($ajax)){
 		$ajax = true;
 	} else {
@@ -283,6 +281,9 @@ function carrinho_operacoes($params = false){
 
 function servicos_padrao(){
 	global $_GESTOR;
+	
+	echo 'Sim'; exit;
+	
 	
 	// ===== Identificador do serviço.
 	
