@@ -13,5 +13,7 @@ $(document).ready(function(){
 		
 	});
 	
+	console.log('Vai sim');
+	
 	
 });
