@@ -1,0 +1,162 @@
+[15:17:39] - https://server.b2make.com:2087/json-api/modifyacct?api.version=1&user=s0ub12&DNS=teste.com.br
+stdClass Object
+(
+    [metadata] => stdClass Object
+        (
+            [result] => 1
+            [reason] => Account Modified
+            [command] => modifyacct
+            [output] => stdClass Object
+                (
+                    [warnings] => Array
+                        (
+                        )
+
+                    [messages] => Array
+                        (
+                            [0] => s0ub12.s0.entrey.com.br => deleted from mail0. 
+
+                            [1] => LOCAL MAIL EXCHANGER: This server will serve as a primary mail exchanger for teste.com.br's mail.: This configuration has been manually selected.
+
+                            [2] => Horde user data updated.
+                            [3] => Domain name changed
+                            [4] => Updating /etc/domainips, /etc/pure-ftpd
+                            [5] => Restarting apache
+                        )
+
+                )
+
+            [version] => 1
+        )
+
+    [data] => stdClass Object
+        (
+            [user] => s0ub12
+            [domain] => teste.com.br
+            [cpuser] => stdClass Object
+                (
+                    [SUSPENDTIME] => 1642085721
+                    [MAXADDON] => 0
+                    [USER] => s0ub12
+                    [STARTDATE] => 1634667983
+                    [MAX_EMAIL_PER_HOUR] => 0
+                    [MAXLST] => 0
+                    [DOMAINS] => Array
+                        (
+                        )
+
+                    [MAXPARK] => 0
+                    [notify_contact_address_change_notification_disabled] => 1
+                    [PLAN] => TRIAL
+                    [notify_account_login_notification_disabled] => 1
+                    [CONTACTEMAIL] => otavioserra@gmail.com
+                    [DEADDOMAINS] => Array
+                        (
+                        )
+
+                    [DOMAIN] => teste.com.br
+                    [HOMEDIRLINKS] => Array
+                        (
+                        )
+
+                    [MXCHECK-teste.com.br] => 0
+                    [notify_autossl_expiry] => 1
+                    [notify_password_change] => 1
+                    [__CACHE_DATA_VERSION] => 0.82
+                    [SSL_DEFAULT_KEY_TYPE] => system
+                    [MAXSUB] => unlimited
+                    [MAX_DEFER_FAIL_PERCENTAGE] => unlimited
+                    [notify_disk_limit] => 1
+                    [BWLIMIT] => 1048576000
+                    [DEMO] => 0
+                    [_PACKAGE_EXTENSIONS] => 
+                    [RS] => paper_lantern
+                    [MAXFTP] => 2
+                    [MAX_EMAILACCT_QUOTA] => unlimited
+                    [notify_autossl_expiry_coverage] => 1
+                    [CONTACTEMAIL2] => 
+                    [PUSHBULLET_ACCESS_TOKEN] => 
+                    [FEATURELIST] => default
+                    [DBOWNER] => s0ub12
+                    [MAXPOP] => 0
+                    [CREATED_IN_VERSION] => 11.98.0.9
+                    [IP] => 172.30.0.143
+                    [notify_ssl_expiry] => 1
+                    [MAILBOX_FORMAT] => maildir
+                    [LEGACY_BACKUP] => 0
+                    [MAXPASSENGERAPPS] => 4
+                    [HASCGI] => 0
+                    [notify_bandwidth_limit] => 1
+                    [notify_autossl_renewal_coverage] => 1
+                    [MTIME] => 1642184259
+                    [OWNER] => gestor
+                    [BACKUP] => 1
+                    [notify_contact_address_change] => 1
+                    [DISK_BLOCK_LIMIT] => 51200
+                    [notify_password_change_notification_disabled] => 1
+                    [HASDKIM] => 1
+                    [HASSPF] => 1
+                    [notify_account_authn_link_notification_disabled] => 1
+                    [MAXSQL] => 1
+                    [CHILD_WORKLOADS] => 
+                    [notify_autossl_renewal_uncovered_domains] => 1
+                    [notify_account_login_for_known_netblock] => 0
+                    [notify_account_authn_link] => 1
+                    [notify_account_login] => 0
+                    [notify_autossl_renewal_coverage_reduced] => 1
+                    [UTF8MAILBOX] => 1
+                    [LOCALE] => pt_br
+                )
+
+            [setshell] => unmodified
+        )
+
+)
+
+[15:17:39] - stdClass Object
+(
+    [cpanelresult] => stdClass Object
+        (
+            [module] => Park
+            [data] => Array
+                (
+                )
+
+            [event] => stdClass Object
+                (
+                    [result] => 1
+                )
+
+            [apiversion] => 2
+            [func] => listparkeddomains
+        )
+
+)
+
+[15:17:39] - stdClass Object
+(
+    [cpanelresult] => stdClass Object
+        (
+            [module] => Park
+            [event] => stdClass Object
+                (
+                    [result] => 1
+                )
+
+            [func] => park
+            [data] => Array
+                (
+                    [0] => stdClass Object
+                        (
+                            [result] => 0
+                            [reason] => (XID c9aj54) Convém não ter mais de 0 do recurso “parked domains”.
+                        )
+
+                )
+
+            [error] => (XID c9aj54) Convém não ter mais de 0 do recurso “parked domains”.
+            [apiversion] => 2
+        )
+
+)
+
