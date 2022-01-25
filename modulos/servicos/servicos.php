@@ -30,6 +30,8 @@ function carrinho_operacoes($params = false){
 		
 	// ===== 
 	
+	echo 'Sim'; exit;
+	
 	if(isset($ajax)){
 		$ajax = true;
 	} else {
