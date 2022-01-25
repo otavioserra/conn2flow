@@ -6,7 +6,7 @@ $_INDEX											=	Array();
 
 $_INDEX['sistemas-dir']							=	'../b2make-gestor-cliente/';
 
-// ===== Configuração Inicial do Gestor do Cliente
+// ===== Configuração Inicial do Gestor do Cliente.
 
 $_GESTOR										=	Array();
 
