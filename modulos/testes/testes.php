@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'testes';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.1',
+	'versao' => '1.0.2',
 	'bibliotecas' => Array('interface','html','pagina'),
 	'tabela' => Array(
 		'nome' => 'template',
@@ -20,7 +20,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 function testes_testes(){
 	global $_GESTOR;
 	
-	$_GESTOR['pagina'] = 'Será que vai';
+	$_GESTOR['pagina'] = '';
 	
 	// ===== Área de testes.
 	
