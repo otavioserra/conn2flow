@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'servicos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.33',
+	'versao' => '1.0.34',
 );
 
 // ===== Funções Auxiliares
@@ -281,9 +281,6 @@ function carrinho_operacoes($params = false){
 
 function servicos_padrao(){
 	global $_GESTOR;
-	
-	echo 'Sim'; exit;
-	
 	
 	// ===== Identificador do serviço.
 	
