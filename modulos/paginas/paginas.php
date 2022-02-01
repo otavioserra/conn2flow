@@ -544,15 +544,9 @@ function hosts_paginas_editar(){
 			"WHERE id_hosts='".$host_verificacao['id_hosts']."'"
 		);
 		
-		// ===== Filtrar caminho.
-		
-		if($caminho == '/'){
-			$caminho = '';
-		}
-		
 		// ===== Alterar demais variáveis.
 		
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#url#','http'.(isset($_SERVER['HTTPS']) ? 's':'').'://'.$hosts[0]['dominio'].$_GESTOR['url-raiz'].$caminho);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#url#','http'.(isset($_SERVER['HTTPS']) ? 's':'').'://'.$hosts[0]['dominio'].$_GESTOR['url-raiz'].($caminho == '/' ? '' : $caminho));
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-nome#',$nome);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#caminho#',$caminho);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id#',$id);
