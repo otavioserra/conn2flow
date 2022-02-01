@@ -501,17 +501,12 @@ function banco_insert($campos,$tabela){
 function banco_insert_name($dados,$tabela){
 	$nomes = '';
 	$campos = '';
-	$count = 0;
+
 	foreach($dados as $dado){
 		if(isset($dado[1])){
 			$count++;
-			$nomes .= $dado[0];
-			
-			$campos .= ( $dado[2] ? $dado[1] : "'" . $dado[1] . "'" );
-			if($count < count($dados)){
-				$nomes .= ',';
-				$campos .= ',';
-			}
+			$nomes .= (strlen($nomes) > 0 ? ',' : '') . $dado[0];
+			$campos .= (strlen($campos) > 0 ? ',' : '') . ( $dado[2] ? $dado[1] : "'" . $dado[1] . "'" );
 		}
 	}
 	
