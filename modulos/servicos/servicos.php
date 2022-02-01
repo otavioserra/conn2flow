@@ -362,7 +362,7 @@ function servicos_adicionar(){
 		
 		if($dadosServidor['simples']){
 			if(isset($_REQUEST['preco'])){ banco_insert_name_campo('preco',formato_dado(Array('valor' => $_REQUEST['preco'],'tipo' => 'texto-para-float'))); }
-			if(isset($_REQUEST['quantidade'])){ banco_insert_name_campo('quantidade',formato_dado(Array('valor' => $_REQUEST['quantidade'],'quantidade' => 'texto-para-int'))); }
+			if(isset($_REQUEST['quantidade'])){ banco_insert_name_campo('quantidade',formato_dado(Array('valor' => $_REQUEST['quantidade'],'tipo' => 'texto-para-int'))); }
 			
 			if(isset($_REQUEST['gratuito'])){ banco_insert_name_campo('gratuito','1',true); }
 		} else {
