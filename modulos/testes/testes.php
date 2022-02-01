@@ -20,14 +20,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 function testes_testes(){
 	global $_GESTOR;
 	
-	gestor_incluir_biblioteca('usuario');
-	
-	$chaves = usuario_openssl_gerar_chaves(Array(
-		'tipo' => 'RSA',
-		'senha' => 'entrey-rsLoj@Gvdd!a&O5ogpAXmR',
-	));
-	
-	$_GESTOR['pagina'] = print_r($chaves,true);
+	$_GESTOR['pagina'] = '';
 	
 	// ===== Área de testes.
 	
