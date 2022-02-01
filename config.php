@@ -60,6 +60,14 @@ $_GESTOR['bancoDef']['beta.entrey.com.br'] = Array(
 	'host'				=>	'localhost',
 );
 
+$_GESTOR['bancoDef']['entrey.com.br'] = Array(
+	'tipo'				=>	'mysqli',
+	'usuario'			=>	'entreyco_gestor',
+	'senha'				=>	'%rM0ZAx+@;DQ',
+	'nome'				=>	'entreyco_gestor',
+	'host'				=>	'localhost',
+);
+
 // ===== Definições de variáveis padrões do sistema em hosts diferentes
 
 if($_SERVER['SERVER_NAME'] == "localhost"){
@@ -158,7 +166,7 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 } else {
 	// ===== Banco e caminhos em disco das opções
 	
-	$_GESTOR['banco'] = $_GESTOR['bancoDef']['beta.entrey.com.br'];
+	$_GESTOR['banco'] = $_GESTOR['bancoDef']['entrey.com.br'];
 	
 	$_GESTOR['url-raiz']							=	'/';
 	$_GESTOR['bibliotecas-path']					=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/bibliotecas/';
@@ -174,17 +182,17 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	$_GESTOR['email'] = Array(
 		'ativo'				=>	true,
 		'server'			=>	Array(
-			'host'				=>	'beta.entrey.com.br',
-			'user'				=>	'noreply@beta.entrey.com.br',
-			'pass'				=>	'~mrBH^J-_HxO',
+			'host'				=>	'entrey.com.br',
+			'user'				=>	'noreply@entrey.com.br',
+			'pass'				=>	'&WE]Abh(ei2(',
 			'secure'			=>	true,
 			'port'				=>	465,
 		),
 		'sender'			=>	Array(
-			'from'				=>	'noreply@beta.entrey.com.br',
-			'fromName'			=>	'Entrey Beta',
-			'replyTo'			=>	'noreply@beta.entrey.com.br',
-			'replyToName'		=>	'Entrey Beta',
+			'from'				=>	'noreply@entrey.com.br',
+			'fromName'			=>	'Entrey',
+			'replyTo'			=>	'noreply@entrey.com.br',
+			'replyToName'		=>	'Entrey',
 		),
 	);
 	
