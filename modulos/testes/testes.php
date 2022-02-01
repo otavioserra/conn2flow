@@ -20,7 +20,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 function testes_testes(){
 	global $_GESTOR;
 	
-	$_GESTOR['pagina'] = '';
+	$_GESTOR['pagina'] = 'Oi';
 	
 	// ===== Área de testes.
 	
