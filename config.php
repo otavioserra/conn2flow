@@ -177,6 +177,13 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	$_GESTOR['configuracoes-path']					=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/configuracoes/';
 	$_GESTOR['logs-path']							=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/logs/';
 	
+	// ===== Chaves e senhas do ambiente live.
+	
+	$_GESTOR['openssl-password']					=	'entrey-rsLoj@Gvdd!a&O5ogpAXmR'; // Senha da chave RSA atual
+	$_GESTOR['usuario-hash-password']				=	'entrey-0NapBuN2vq$#2oeVq9@G9e'; // Senha de gerador de hash
+	
+	$_GESTOR['openssl-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/chaves/gestor/live/';
+	
 	// ===== Configuração do serviço de emails
 	
 	$_GESTOR['email'] = Array(
