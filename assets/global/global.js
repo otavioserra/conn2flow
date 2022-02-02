@@ -2,7 +2,7 @@ $(document).ready(function(){
 	$('#entrey-menu-principal')
 		.sidebar({
 			dimPage          : false,
-			transition       : 'overlay',
+			transition       : 'push',
 			mobileTransition : 'uncover'
 		})
 	;
