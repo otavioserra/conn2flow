@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	$('#entrey-menu-principal')
 		.sidebar({
-			dimPage          : true,
+			dimPage          : false,
 			transition       : 'overlay',
 			mobileTransition : 'uncover'
 		})
