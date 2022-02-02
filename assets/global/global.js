@@ -16,19 +16,4 @@ $(document).ready(function(){
 		});
 	}
 	
-	if($(window).width() >= 770){
-		$('#entrey-menu-principal').sidebar('show');
-	} else {
-		$('#entrey-menu-principal').sidebar('hide');
-	}
-	
-	$(window).on('resize', function(){
-		var win = $(this);
-		if(win.width() >= 770){
-			$('#entrey-menu-principal').sidebar('show');
-		} else {
-			$('#entrey-menu-principal').sidebar('hide');
-		}
-	});
-	
 });
