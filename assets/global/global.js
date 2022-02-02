@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$('.ui.main.sidebar')
+	$('.ui.menu.sidebar')
 		.sidebar({
 			dimPage          : true,
 			transition       : 'overlay',
