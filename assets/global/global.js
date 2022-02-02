@@ -9,7 +9,11 @@ $(document).ready(function(){
 	
 	if($('._gestor-menuPrincipalMobile').length > 0){
 		$('._gestor-menuPrincipalMobile').css('cursor','pointer');
-		$('._gestor-menuPrincipalMobile').sidebar('toggle');
+		$('._gestor-menuPrincipalMobile').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			$('._gestor-menuPrincipalMobile').sidebar('toggle');
+		});
 	}
 	
 });
