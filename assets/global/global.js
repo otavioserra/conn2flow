@@ -16,9 +16,11 @@ $(document).ready(function(){
 			
 			if(sidebarShow){
 				$('#entrey-menu-principal').sidebar('hide');
+				sidebarShow = false;
 			} else {
 				$('#entrey-menu-principal').show();
 				$('#entrey-menu-principal').sidebar('show');
+				sidebarShow = true;
 			}
 		});
 	}
