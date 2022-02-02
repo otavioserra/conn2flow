@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$('.ui.menu.sidebar')
+	$('#entrey-menu-principal')
 		.sidebar({
 			dimPage          : true,
 			transition       : 'overlay',
@@ -12,8 +12,17 @@ $(document).ready(function(){
 		$('._gestor-menuPrincipalMobile').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
-			$('.ui.menu.sidebar').sidebar('toggle');
+			$('#entrey-menu-principal').sidebar('toggle');
 		});
 	}
+	
+	$(window).on('resize', function(){
+		var win = $(this);
+		if(win.width() >= 770){
+			$('#entrey-menu-principal').sidebar('show');
+		} else {
+			$('#entrey-menu-principal').sidebar('hide');
+		}
+	});
 	
 });
