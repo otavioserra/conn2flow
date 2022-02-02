@@ -892,7 +892,7 @@ function gestor_pagina_variaveis($params = false){
 	
 	// ===== Página variáveis trocar
 	
-	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],$open.'pagina#menu'.$close,gestor_pagina_menu());
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#menu'.$close,gestor_pagina_menu());
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#url-raiz'.$close,$_GESTOR['url-raiz']);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#url-full-http'.$close,$_GESTOR['url-full-http']);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#url-caminho'.$close,$caminho);
