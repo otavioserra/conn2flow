@@ -8,20 +8,12 @@ $(document).ready(function(){
 	;
 	
 	if($('._gestor-menuPrincipalMobile').length > 0){
-		var sidebarShow = false;
-		
 		$('._gestor-menuPrincipalMobile').css('cursor','pointer');
+		
 		$('._gestor-menuPrincipalMobile').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
-			if(sidebarShow){
-				$('#entrey-menu-principal').sidebar('hide');
-				sidebarShow = false;
-			} else {
-				$('#entrey-menu-principal').show();
-				$('#entrey-menu-principal').sidebar('show');
-				sidebarShow = true;
-			}
+			$('#entrey-menu-principal').sidebar('toggle');
 		});
 	}
 	
