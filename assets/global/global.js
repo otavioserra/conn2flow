@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	$('#entrey-menu-principal')
 		.sidebar({
-			dimPage          : false,
+			dimPage          : true,
 			transition       : 'push',
 			mobileTransition : 'uncover'
 		})
@@ -14,11 +14,10 @@ $(document).ready(function(){
 		$('._gestor-menuPrincipalMobile').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
-			$('#entrey-menu-principal').show();
-			
 			if(sidebarShow){
 				$('#entrey-menu-principal').sidebar('hide');
 			} else {
+				$('#entrey-menu-principal').show();
 				$('#entrey-menu-principal').sidebar('show');
 			}
 		});
