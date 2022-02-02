@@ -2,7 +2,7 @@
 
 // ===== Definições de variáveis gerais do gestor
 
-$_GESTOR['versao']								=	'1.0.5'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'1.0.6'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'entrey-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
 $_GESTOR['modulos-bibliotecas']					=	'bibliotecas/'; // Caminho relativo a raiz dos módulos bibliotecas do gestor

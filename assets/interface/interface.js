@@ -336,21 +336,6 @@ $(document).ready(function() {
 	}
 	
 	function interface_start(){
-		if($('._gestor-menuPrincipalMobile').length > 0){
-			$('._gestor-menuPrincipalMobile').css('cursor','pointer');
-			$('._gestor-menuPrincipalMobile').on('mouseup tap',function(e){
-				if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
-				
-				$('#entrey-menu-principal').fadeIn(100);
-			});
-			
-			$('#entrey-menu-principal-close').on('mouseup tap',function(e){
-				if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
-				
-				$('#entrey-menu-principal').fadeOut(100);
-			});
-		}
-		
 		// ===== Widget ImagePick
 		
 		if($('._gestor-widgetImage-cont').length > 0){
