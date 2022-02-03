@@ -48,7 +48,7 @@ $_GESTOR['bancoDef']['localhost'] = Array(
 	'tipo'				=>	'mysqli',
 	'usuario'			=>	'root',
 	'senha'				=>	'serra123',
-	'nome'				=>	'gestor',
+	'nome'				=>	'betaentr_gestor',
 	'host'				=>	'127.0.0.1',
 );
 

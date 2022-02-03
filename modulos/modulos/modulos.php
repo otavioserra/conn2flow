@@ -145,8 +145,8 @@ function modulos_sincronizar_bancos(){
 	// ===== Definir origem 1 / destino 2
 	
 	$servers = Array(
-		1 => 'localhost',
-		2 => 'beta.entrey.com.br',
+		1 => 'beta.entrey.com.br',
+		2 => 'entrey.com.br',
 	);
 	
 	$serverOrigem = $servers[1];
@@ -155,6 +155,7 @@ function modulos_sincronizar_bancos(){
 	// ===== Mudar host caso necessário
 	
 	$_GESTOR['bancoDef']['beta.entrey.com.br']['host'] = 'beta.entrey.com.br';
+	$_GESTOR['bancoDef']['entrey.com.br']['host'] = 'entrey.com.br';
 	
 	// ===== Head inicial
 	

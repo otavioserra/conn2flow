@@ -504,7 +504,6 @@ function banco_insert_name($dados,$tabela){
 
 	foreach($dados as $dado){
 		if(isset($dado[1])){
-			$count++;
 			$nomes .= (strlen($nomes) > 0 ? ',' : '') . $dado[0];
 			$campos .= (strlen($campos) > 0 ? ',' : '') . ( $dado[2] ? $dado[1] : "'" . $dado[1] . "'" );
 		}
