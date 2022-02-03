@@ -854,7 +854,7 @@ function gestor_pagina_menu($params = false){
 	// ===== Incluir dashboard no conteiner
 	
 	$cel_simples = $cel['simples'];
-	$cel_simples = modelo_var_troca($cel_simples,"#itemMenu#",$dashboard);
+	$cel_simples = modelo_var_troca($cel_simples,"<!-- itemMenu -->",$dashboard);
 	
 	$cel_conteiner = $cel['itemContCel'];
 	$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$cel_simples);
@@ -893,7 +893,7 @@ function gestor_pagina_menu($params = false){
 	// ===== Incluir sair no conteiner
 	
 	$cel_simples = $cel['simples'];
-	$cel_simples = modelo_var_troca($cel_simples,"#itemMenu#",$cel_aux);
+	$cel_simples = modelo_var_troca($cel_simples,"<!-- itemMenu -->",$cel_aux);
 	
 	$cel_conteiner = $cel['itemContCel'];
 	$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$cel_simples);
