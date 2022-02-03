@@ -676,6 +676,10 @@ function gestor_pagina_menu($params = false){
 	$cel_nome = 'icon'; $cel[$cel_nome] = modelo_tag_val($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $menu = modelo_tag_in($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 	$cel_nome = 'icon-2'; $cel[$cel_nome] = modelo_tag_val($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $menu = modelo_tag_in($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 	$cel_nome = 'item'; $cel[$cel_nome] = modelo_tag_val($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $menu = modelo_tag_in($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+	$cel_nome = 'categoria'; $cel[$cel_nome] = modelo_tag_val($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $menu = modelo_tag_in($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+	$cel_nome = 'simples'; $cel[$cel_nome] = modelo_tag_val($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $menu = modelo_tag_in($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+	$cel_nome = 'itemContCel'; $cel[$cel_nome] = modelo_tag_val($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $menu = modelo_tag_in($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+	$cel_nome = 'conteiner'; $cel[$cel_nome] = modelo_tag_val($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $menu = modelo_tag_in($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 	
 	// ===== Verificar quais módulos o usuário pode acessar
 	
@@ -708,6 +712,7 @@ function gestor_pagina_menu($params = false){
 	(
 		banco_campos_virgulas(Array(
 			'id_modulos',
+			'id_modulos_grupos',
 			'id',
 			'nome',
 			'icone',
@@ -720,6 +725,16 @@ function gestor_pagina_menu($params = false){
 		." ORDER BY nome ASC"
 	);
 	
+	$modulos_grupos = banco_select(Array(
+		'tabela' => 'modulos_grupos',
+		'campos' => Array(
+			'id_modulos_grupos',
+			'nome',
+		),
+		'extra' => 
+			" ORDER BY nome ASC"
+	));
+	
 	// ===== Verifica se o usuário é admin do host para mostrar no menu o Host Configurações ou não.
 	
 	$host_verificacao = gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id']);
@@ -731,8 +746,8 @@ function gestor_pagina_menu($params = false){
 	
 	// ===== Montar o menu conforme permissão
 	
-	$dashboard_posicao = false;
 	$dashboard = '';
+	$grupos = Array();
 	
 	if($modulos)
 	foreach($modulos as $modulo){
@@ -805,20 +820,60 @@ function gestor_pagina_menu($params = false){
 		if($modulo['id'] == 'dashboard'){
 			$dashboard = $cel_aux;
 		} else {
-			if(!$dashboard_posicao){
-				$menu = modelo_var_in($menu,'<!-- '.$cel_nome.' -->','<!-- dashboard -->');
-				$dashboard_posicao = true;
+			// ===== Incluir o item no módulo grupo.
+			
+			if(!isset($grupos[$modulo['id_modulos_grupos']])){
+				$achouGrupo = false;
+				$nomeGrupo = '';
+				if($modulos_grupos)
+				foreach($modulos_grupos as $modulo_grupo){
+					if($modulo_grupo['id_modulos_grupos'] == $modulo['id_modulos_grupos']){
+						$achouGrupo = true;
+						$nomeGrupo = $modulo_grupo['nome'];
+						break;
+					}
+				}
+				
+				if($achouGrupo){
+					$grupos[$modulo['id_modulos_grupos']] = $cel['categoria'];
+					
+					$grupos[$modulo['id_modulos_grupos']] = modelo_var_troca($grupos[$modulo['id_modulos_grupos']],'#categoria-nome#',$nomeGrupo);
+				} else {
+					continue;
+				}
 			}
 			
-			$menu = modelo_var_in($menu,'<!-- '.$cel_nome.' -->',$cel_aux);
+			$grupos[$modulo['id_modulos_grupos']] = modelo_var_in($grupos[$modulo['id_modulos_grupos']],'<!-- itemMenu -->',$cel_aux);
 		}
 	}
 	
-	// ===== Incluir dashboard no menu
+	// ===== Montar o conteiner do menu.
 	
-	$menu = modelo_var_troca($menu,'<!-- dashboard -->',$dashboard);
+	$menuConteiner = $cel['conteiner'];
 	
-	// ===== Incluir sair no menu
+	// ===== Incluir dashboard no conteiner
+	
+	$cel_simples = $cel['simples'];
+	$cel_simples = modelo_var_troca($cel_simples,"#itemMenu#",$dashboard);
+	
+	$cel_conteiner = $cel['itemContCel'];
+	$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$cel_simples);
+	
+	$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
+	
+	// ===== Incluir grupos no conteiner.
+	
+	if($modulos_grupos)
+	foreach($modulos_grupos as $modulo_grupo){
+		if(isset($grupos[$modulo_grupo['id_modulos_grupos']])){
+			$cel_conteiner = $cel['itemContCel'];
+			$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$grupos[$modulo_grupo['id_modulos_grupos']]);
+
+			$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
+		}
+	}
+	
+	// ===== Incluir sair no conteiner
 	
 	$cel_nome = 'item';
 	$cel_aux = $cel[$cel_nome];
@@ -835,13 +890,24 @@ function gestor_pagina_menu($params = false){
 	
 	$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].'signout/');
 	
-	$menu = modelo_var_in($menu,'<!-- '.$cel_nome.' -->',$cel_aux);
+	// ===== Incluir sair no conteiner
 	
-	// ===== Remover cel
+	$cel_simples = $cel['simples'];
+	$cel_simples = modelo_var_troca($cel_simples,"#itemMenu#",$cel_aux);
 	
-	$menu = modelo_var_troca($menu,'<!-- '.$cel_nome.' -->','');
+	$cel_conteiner = $cel['itemContCel'];
+	$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$cel_simples);
 	
-	return $menu;
+	$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
+	
+	// ===== Remover celulas inúteis
+	
+	$menuConteiner = modelo_var_troca($menuConteiner,'<!-- itemContCel -->','');
+	$menuConteiner = modelo_var_troca($menuConteiner,'<!-- itemMenu -->','');
+	
+	// ===== Retornar o conteiner.
+	
+	return $menuConteiner;
 }
 
 function gestor_pagina_variaveis_modulos($params = false){

@@ -1,13 +1,15 @@
 $(document).ready(function(){
-	$('#entrey-menu-principal')
-		.sidebar({
-			dimPage          : true,
-			transition       : 'overlay',
-			mobileTransition : 'uncover'
-		})
-	;
+	// ===== Menu Principal do gestor.
 	
 	if($('._gestor-menuPrincipalMobile').length > 0){
+		$('#entrey-menu-principal')
+			.sidebar({
+				dimPage          : true,
+				transition       : 'overlay',
+				mobileTransition : 'uncover'
+			})
+		;
+	
 		$('._gestor-menuPrincipalMobile').css('cursor','pointer');
 		
 		$('._gestor-menuPrincipalMobile').on('mouseup tap',function(e){
