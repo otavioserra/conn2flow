@@ -730,9 +730,10 @@ function gestor_pagina_menu($params = false){
 		'campos' => Array(
 			'id_modulos_grupos',
 			'nome',
+			'ordemMenu',
 		),
 		'extra' => 
-			" ORDER BY nome ASC"
+			" ORDER BY ordemMenu ASC, nome ASC"
 	));
 	
 	// ===== Verifica se o usuário é admin do host para mostrar no menu o Host Configurações ou não.
@@ -863,14 +864,24 @@ function gestor_pagina_menu($params = false){
 	
 	// ===== Incluir grupos no conteiner.
 	
+	$menuConteinerSemPrioridade = '';
+	
 	if($modulos_grupos)
 	foreach($modulos_grupos as $modulo_grupo){
 		if(isset($grupos[$modulo_grupo['id_modulos_grupos']])){
 			$cel_conteiner = $cel['itemContCel'];
 			$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$grupos[$modulo_grupo['id_modulos_grupos']]);
-
-			$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
+			
+			if($modulo_grupo['ordemMenu']){
+				$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
+			} else {
+				$menuConteinerSemPrioridade .= $cel_conteiner;
+			}
 		}
+	}
+	
+	if(existe($menuConteinerSemPrioridade)){
+		$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$menuConteinerSemPrioridade);
 	}
 	
 	// ===== Incluir sair no conteiner
