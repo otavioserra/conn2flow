@@ -137,10 +137,9 @@ function modulos_sincronizar_bancos(){
 	
 	$ativar = false;
 	
-	if(!$ativar){
-		$_GESTOR['pagina'] .= '<h2>SINCRONIZAR BANCOS - <span class="ui error text">DESATIVADO</span></h2>';
-		return;
-	}
+	// ===== Forçar atualização dos campos de data modificada.
+	
+	$forcarAtualizacao = true;
 	
 	// ===== Definir origem 1 / destino 2
 	
@@ -151,6 +150,13 @@ function modulos_sincronizar_bancos(){
 	
 	$serverOrigem = $servers[1];
 	$serverDestino = $servers[2];
+	
+	// ===== Mostrar mensagem de desativado.
+	
+	if(!$ativar){
+		$_GESTOR['pagina'] .= '<h2>SINCRONIZAR BANCOS - <span class="ui error text">DESATIVADO</span></h2>';
+		return;
+	}
 	
 	// ===== Mudar host caso necessário
 	
@@ -178,7 +184,9 @@ function modulos_sincronizar_bancos(){
 	$dados['variaveis'] = Array(
 		'tabela' => Array(
 			'nome' => 'variaveis',
+			'id_referencia' => 'id_variaveis',
 			'campos' => Array(
+				'id_variaveis',
 				'id',
 				'modulo',
 				'linguagem_codigo',
@@ -190,14 +198,16 @@ function modulos_sincronizar_bancos(){
 				'modulo',
 			),
 		),
-		'print1' => 'Atualizar Variáveis Destino',
-		'print2' => 'Atualizar Variáveis Destino',
+		'print1' => '<span class="ui text info">Variáveis</span>: Atualizar Variáveis Destino',
+		'print2' => '<span class="ui text info">Variáveis</span>: Atualizar Variáveis Destino',
 	);
 	
 	$dados['paginas'] = Array(
 		'tabela' => Array(
 			'nome' => 'paginas',
+			'id_referencia' => 'id_paginas',
 			'campos' => Array(
+				'id_paginas',
 				'id_usuarios',
 				'id_layouts',
 				'nome',
@@ -218,17 +228,20 @@ function modulos_sincronizar_bancos(){
 				'id',
 				'modulo',
 				'data_modificacao',
+				'status',
 			),
 		),
-		'print1' => 'Atualizar Páginas Destino',
-		'print2' => 'Atualizar Páginas Destino',
-		'print3' => 'Data Modificação Páginas Maior Origem',
+		'print1' => '<span class="ui text info">Páginas</span>: Atualizar Páginas Destino',
+		'print2' => '<span class="ui text info">Páginas</span>: Atualizar Páginas Destino',
+		'print3' => '<span class="ui text info">Páginas</span>: Data Modificação Páginas Maior Origem',
 	);
 	
 	$dados['layouts'] = Array(
 		'tabela' => Array(
 			'nome' => 'layouts',
+			'id_referencia' => 'id_layouts',
 			'campos' => Array(
+				'id_layouts',
 				'id_usuarios',
 				'nome',
 				'id',
@@ -242,17 +255,48 @@ function modulos_sincronizar_bancos(){
 			'camposComparacao' => Array(
 				'id',
 				'data_modificacao',
+				'status',
 			),
 		),
-		'print1' => 'Atualizar Layouts Destino',
-		'print2' => 'Atualizar Layouts Destino',
-		'print3' => 'Data Modificação Layouts Maior Origem',
+		'print1' => '<span class="ui text info">Layouts</span>: Atualizar Layouts Destino',
+		'print2' => '<span class="ui text info">Layouts</span>: Atualizar Layouts Destino',
+		'print3' => '<span class="ui text info">Layouts</span>: Data Modificação Layouts Maior Origem',
+	);
+	
+	$dados['componentes'] = Array(
+		'tabela' => Array(
+			'nome' => 'componentes',
+			'id_referencia' => 'id_componentes',
+			'campos' => Array(
+				'id_componentes',
+				'id_usuarios',
+				'nome',
+				'modulo',
+				'id',
+				'html',
+				'css',
+				'status',
+				'versao',
+				'data_criacao',
+				'data_modificacao',
+			),
+			'camposComparacao' => Array(
+				'id',
+				'data_modificacao',
+				'status',
+			),
+		),
+		'print1' => '<span class="ui text info">Componentes</span>: Atualizar Componentes Destino',
+		'print2' => '<span class="ui text info">Componentes</span>: Atualizar Componentes Destino',
+		'print3' => '<span class="ui text info">Componentes</span>: Data Modificação Componentes Maior Origem',
 	);
 	
 	$dados['modulos_grupos'] = Array(
 		'tabela' => Array(
 			'nome' => 'modulos_grupos',
+			'id_referencia' => 'id_modulos_grupos',
 			'campos' => Array(
+				'id_modulos_grupos',
 				'id_usuarios',
 				'nome',
 				'id',
@@ -264,20 +308,24 @@ function modulos_sincronizar_bancos(){
 			'camposComparacao' => Array(
 				'id',
 				'data_modificacao',
+				'status',
 			),
 		),
-		'print1' => 'Atualizar Módulos Grupos Destino',
-		'print2' => 'Atualizar Módulos Grupos Destino',
-		'print3' => 'Data Modificação Módulos Grupos Maior Origem',
+		'print1' => '<span class="ui text info">Módulos Grupos</span>: Atualizar Módulos Grupos Destino',
+		'print2' => '<span class="ui text info">Módulos Grupos</span>: Atualizar Módulos Grupos Destino',
+		'print3' => '<span class="ui text info">Módulos Grupos</span>: Data Modificação Módulos Grupos Maior Origem',
 	);
 	
 	$dados['modulos'] = Array(
 		'tabela' => Array(
 			'nome' => 'modulos',
+			'id_referencia' => 'id_modulos',
 			'campos' => Array(
+				'id_modulos',
 				'id_usuarios',
 				'id_modulos_grupos',
 				'nome',
+				'titulo',
 				'id',
 				'icone',
 				'icone2',
@@ -290,11 +338,12 @@ function modulos_sincronizar_bancos(){
 			'camposComparacao' => Array(
 				'id',
 				'data_modificacao',
+				'status',
 			),
 		),
-		'print1' => 'Atualizar Módulos Destino',
-		'print2' => 'Atualizar Módulos Destino',
-		'print3' => 'Data Modificação Módulos Maior Origem',
+		'print1' => '<span class="ui text info">Módulos</span>: Atualizar Módulos Destino',
+		'print2' => '<span class="ui text info">Módulos</span>: Atualizar Módulos Destino',
+		'print3' => '<span class="ui text info">Módulos</span>: Data Modificação Módulos Maior Origem',
 	);
 	
 	// ===== Atualizar Tabela
@@ -341,6 +390,7 @@ function modulos_sincronizar_bancos(){
 						if(
 							$idAtual == 'modulos_grupos' ||
 							$idAtual == 'modulos' ||
+							$idAtual == 'componentes' ||
 							$idAtual == 'layouts'
 						){
 							if(
@@ -449,9 +499,15 @@ function modulos_sincronizar_bancos(){
 				
 				if($tabelaDestino){
 					foreach($tabelaDestino as $td){
+						if(isset($td['status']))
+						if($td['status'] == 'D'){
+							continue;
+						}
+						
 						if(
 							$idAtual == 'modulos_grupos' ||
 							$idAtual == 'modulos' ||
+							$idAtual == 'componentes' ||
 							$idAtual == 'layouts'
 						){
 							if(
@@ -479,10 +535,38 @@ function modulos_sincronizar_bancos(){
 						$_GESTOR['pagina'] .= '<br><p><b>'.$dadosDef['print3'].':</b></p>';
 					}
 					
+					// ===== Mostrar qual atualizar.
+					
 					$atualizaSinal[$idAtual] = true;
 					//$_GESTOR['pagina'] .= print_r($to,true).'<br>';
-					$_GESTOR['pagina'] .= $to['data_modificacao']. ' > ' . $td['data_modificacao'] . ' - ' . $to['status'] . ' - ' . $to['id'] . '<br>';
+					$_GESTOR['pagina'] .= $to['data_modificacao']. ' > ' . $td['data_modificacao'] . ' - ' . $to['status'] . ' - ' . $to['id'] . ' - '.( $forcarAtualizacao ? '<span class="ui text green">ATUALIZADO</span>' : '').'<br>';
 					$camposAtualizar[] = $to;
+				}
+			}
+		}
+		
+		// ===== Atualizar dados destino se definida opção.
+		
+		if($forcarAtualizacao){
+			if(isset($camposAtualizar)){
+				foreach($camposAtualizar as $ca){
+					$campos = null; $campo_sem_aspas_simples = null;
+					$id_referencia = '';
+					
+					foreach($ca as $key => $val){
+						if('id' == $key){
+							$id_referencia = $val;
+							continue;
+						}
+						
+						if(existe($val)){
+							banco_update_campo($key,$val);
+						} else {
+							banco_update_campo($key,'NULL',true);
+						}
+					}
+					
+					banco_update_executar($dadosDef['tabela']['nome'],"WHERE id='".$id_referencia."' AND status!='D'");
 				}
 			}
 		}
