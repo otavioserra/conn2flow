@@ -49,30 +49,30 @@ function postagens_padrao(){
 			
 			// ===== Montar a página do postagem.
 			
-			$caminho_mini = '';
+			$caminho = '';
 			
 			$id_hosts_arquivos = $postagens['id_hosts_arquivos_Imagem'];
 			
 			if(isset($id_hosts_arquivos)){
 				$resultado = banco_select_name(
 					banco_campos_virgulas(Array(
-						'caminho_mini',
+						'caminho',
 					)),
 					"arquivos",
 					"WHERE id_hosts_arquivos='".$id_hosts_arquivos."'"
 				);
 				
 				if($resultado){
-					if(existe($resultado[0]['caminho_mini'])){
-						$caminho_mini = $resultado[0]['caminho_mini'];
+					if(existe($resultado[0]['caminho'])){
+						$caminho = $resultado[0]['caminho'];
 					}
 				}
 			}
 			
 			// ===== Imagem Mini ou Imagem Referência do postagem.
 			
-			if(existe($caminho_mini)){
-				$imgSrc = $caminho_mini;
+			if(existe($caminho)){
+				$imgSrc = $caminho;
 			} else {
 				$imgSrc = 'images/imagem-padrao.png';
 			}
