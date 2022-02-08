@@ -1392,8 +1392,9 @@ function host_configuracao_configuracoes(){
 	
 	if($hosts['dominio_proprio']){
 		$dominioProprio = true;
-		$dominio_proprio_url = ($hosts['dominio_proprio_url'] ? $hosts['dominio_proprio_url'] : '');
 	}
+	
+	$dominio_proprio_url = ($hosts['dominio_proprio_url'] ? $hosts['dominio_proprio_url'] : '');
 	
 	// ===== Botão de selecionar o tipo próprio ou sistema.
 	
