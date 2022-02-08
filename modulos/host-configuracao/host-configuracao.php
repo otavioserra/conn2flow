@@ -1359,7 +1359,7 @@ function host_configuracao_configuracoes(){
 				));
 				
 				banco_update_campo('dominio',$hosts['user_cpanel'].'.'.$_GESTOR['hosts-server']['dominio']);
-				banco_update_campo('user_ftp',$hosts['user_cpanel'].$_GESTOR['hosts-server']['ftp-user-sufix'].'@'.$_GESTOR['hosts-server']['dominio']);
+				banco_update_campo('user_ftp',$hosts['user_cpanel'].$_GESTOR['hosts-server']['ftp-user-sufix'].'@'.$hosts['user_cpanel'].'.'.$_GESTOR['hosts-server']['dominio']);
 			}
 			
 			banco_update_executar($modulo['tabela']['nome'],"WHERE id_hosts='".$id_hosts."'");
