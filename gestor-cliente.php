@@ -677,6 +677,17 @@ function gestor_pagina_variaveis($params = false){
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#url-caminho'.$close,$caminho);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#titulo'.$close,$_GESTOR['pagina#titulo']);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#contato-url'.$close,$_GESTOR['pagina#contato-url']);
+	
+	// ===== Incluir o módulo layout caso haja identificação da variável global layout.
+	
+	if(preg_match('/'.preg_quote($open.'layout#').'/i', $_GESTOR['pagina']) > 0){
+		gestor_incluir_biblioteca('layout');
+		
+		layout_trocar_variavel_valor('layout#step','');
+		layout_trocar_variavel_valor('layout#step-mobile','');
+		
+		layout_loja();
+	}
 }
 
 function gestor_pagina_variaveis_globais($params = false){
