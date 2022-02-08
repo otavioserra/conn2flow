@@ -575,6 +575,7 @@ function api_cliente_templates_atualizar($params = false){
 						"hosts_paginas",
 						"WHERE template_padrao IS NOT NULL"
 						." AND id_hosts='".$host_verificacao['id_hosts']."'"
+						." AND status!='D'"
 					);
 					
 					$hosts_layouts = banco_select_name
@@ -584,6 +585,7 @@ function api_cliente_templates_atualizar($params = false){
 						"hosts_layouts",
 						"WHERE template_padrao IS NOT NULL"
 						." AND id_hosts='".$host_verificacao['id_hosts']."'"
+						." AND status!='D'"
 					);
 					
 					$hosts_componentes = banco_select_name
@@ -593,6 +595,7 @@ function api_cliente_templates_atualizar($params = false){
 						"hosts_componentes",
 						"WHERE template_padrao IS NOT NULL"
 						." AND id_hosts='".$host_verificacao['id_hosts']."'"
+						." AND status!='D'"
 					);
 					
 					// ===== Dados do usuário.
