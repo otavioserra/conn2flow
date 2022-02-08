@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'host-configuracao';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.26',
+	'versao' => '1.0.27',
 	'bibliotecas' => Array('interface','html','pagina'),
 	'tabela' => Array(
 		'nome' => 'hosts',
@@ -1351,6 +1351,7 @@ function host_configuracao_configuracoes(){
 				));
 				
 				banco_update_campo('dominio',$hosts['dominio_proprio_url']);
+				banco_update_campo('user_ftp',$hosts['user_cpanel'].$_GESTOR['hosts-server']['ftp-user-sufix'].'@'.$hosts['dominio_proprio_url']);
 			} else {
 				cpanel_domain_owner_del(Array(
 					'user' => $hosts['user_cpanel'],
@@ -1358,6 +1359,7 @@ function host_configuracao_configuracoes(){
 				));
 				
 				banco_update_campo('dominio',$hosts['user_cpanel'].'.'.$_GESTOR['hosts-server']['dominio']);
+				banco_update_campo('user_ftp',$hosts['user_cpanel'].$_GESTOR['hosts-server']['ftp-user-sufix'].'@'.$_GESTOR['hosts-server']['dominio']);
 			}
 			
 			banco_update_executar($modulo['tabela']['nome'],"WHERE id_hosts='".$id_hosts."'");
@@ -1400,16 +1402,14 @@ function host_configuracao_configuracoes(){
 		pagina_trocar_variavel_valor('#tipo-sistema#','',true);
 		
 		pagina_trocar_variavel_valor('#cont-proprio#','',true);
-		
-		pagina_trocar_variavel_valor('#dominio_proprio_url#',$dominio_proprio_url,true);
 	} else {
 		pagina_trocar_variavel_valor('#tipo-proprio#','',true);
 		pagina_trocar_variavel_valor('#tipo-sistema#','blue active',true);
 		
 		pagina_trocar_variavel_valor('#cont-proprio#','escondido',true);
-		
-		pagina_trocar_variavel_valor('#dominio_proprio_url#','',true);
 	}
+	
+	pagina_trocar_variavel_valor('#dominio_proprio_url#',$dominio_proprio_url,true);
 	
 	// ===== Servidores de DNS disponíveis para o host.
 	
