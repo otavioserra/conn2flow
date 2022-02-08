@@ -15,6 +15,11 @@ $configuracao = Array(
 			'caminho' => '404/',
 			'tipo' => 'pagina',
 		),
+		'pagina-inicial' => Array(
+			'layout-id' => 'layout-loja',
+			'caminho' => '',
+			'tipo' => 'pagina',
+		),
 		'carrinho' => Array(
 			'layout-id' => 'layout-loja',
 			'caminho' => 'carrinho/',
