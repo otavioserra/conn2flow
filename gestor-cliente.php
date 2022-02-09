@@ -819,6 +819,7 @@ function gestor_pagina_javascript(){
 	$js_padrao[] = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>'; // jQuery
 	//$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].'semantic-UI/semantic.min.js"></script>'; // Semantic-UI
 	$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].'fomantic-UI@2.8.8/dist/semantic.min.js"></script>'; // Semantic-UI
+	$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].'global/global.js?v='.$_GESTOR['versao'].'"></script>'; // Global JS
 	
 	if(!isset($_GESTOR['javascript'])) $_GESTOR['javascript'] = Array();
 	if(!isset($_GESTOR['javascript-fim'])) $_GESTOR['javascript-fim'] = Array();
