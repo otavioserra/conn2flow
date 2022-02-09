@@ -11,7 +11,7 @@ $configuracao = Array(
 		'layout-principal' => Array(),
 		'layout-simples' => Array(),
 		'pagina-nao-encontrada' => Array(
-			'layout-id' => 'layout-principal',
+			'layout-id' => 'layout-principal', 
 			'caminho' => '404/',
 			'tipo' => 'pagina',
 		),
