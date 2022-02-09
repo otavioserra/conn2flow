@@ -657,6 +657,21 @@ function gestor_pagina_variaveis($params = false){
 	$open = $_GESTOR['variavel-global']['open'];
 	$close = $_GESTOR['variavel-global']['close'];
 	
+	// ===== Incluir o módulo layout caso haja identificação da variável global layout.
+	
+	if(preg_match('/'.preg_quote($open.'layout#').'/i', $layout) > 0){
+		echo 'Teste<br>';exit;
+		gestor_incluir_biblioteca('pagina');
+		gestor_incluir_biblioteca('layout');
+		
+		layout_trocar_variavel_valor('layout#step','');
+		layout_trocar_variavel_valor('layout#step-mobile','');
+		
+		layout_loja();
+		
+		$layout = $_GESTOR['layout'];
+	}
+	
 	// ===== Variáveis do layout
 	
 	$layout = modelo_var_troca($layout,'<!-- pagina#titulo -->',($_GESTOR['pagina#titulo'] ? '<title>'.$_GESTOR['pagina#titulo'].(isset($_GESTOR['pagina#titulo-extra']) ? $_GESTOR['pagina#titulo-extra'] : '').'</title>' : ''));
@@ -677,8 +692,6 @@ function gestor_pagina_variaveis($params = false){
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#url-caminho'.$close,$caminho);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#titulo'.$close,$_GESTOR['pagina#titulo']);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#contato-url'.$close,$_GESTOR['pagina#contato-url']);
-	
-	
 }
 
 function gestor_pagina_variaveis_globais($params = false){
@@ -1697,18 +1710,6 @@ function gestor_roteador(){
 			
 			if(existe($modulo)){
 				require_once($_INDEX['sistemas-dir'].'modulos/'.$modulo.'/'.$modulo.'.php');
-			}
-			
-			// ===== Incluir o módulo layout caso haja identificação da variável global layout.
-			
-			if(preg_match('/'.preg_quote($open.'layout#').'/i', $_GESTOR['pagina']) > 0){
-				gestor_incluir_biblioteca('pagina');
-				gestor_incluir_biblioteca('layout');
-				
-				layout_trocar_variavel_valor('layout#step','');
-				layout_trocar_variavel_valor('layout#step-mobile','');
-				
-				layout_loja();
 			}
 			
 			// ===== Montar página html final depois das mudanças pelo módulo.
