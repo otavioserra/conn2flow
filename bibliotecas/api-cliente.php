@@ -565,7 +565,7 @@ function api_cliente_templates_atualizar($params = false){
 					}
 					
 					$registros = array_merge($registros_templates_layouts,$registros_templates_paginas,$registros_templates_componentes);
-					echo 'registros>> '.print_r($registros,true)."<br>";exit;
+					
 					// ===== Criar ou atualizar as páginas, layouts e componentes mestres no host do cliente.
 					
 					$hosts_paginas = banco_select_name
@@ -620,6 +620,7 @@ function api_cliente_templates_atualizar($params = false){
 													!existe($hosts_layout['template_modificado'])
 												){
 													$update = true;
+													echo 'Var>> '.$var.'<br>';exit;
 												}
 											} else {
 												$update = true;
