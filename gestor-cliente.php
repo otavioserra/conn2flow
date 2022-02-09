@@ -673,7 +673,7 @@ function gestor_pagina_variaveis($params = false){
 		
 		$layout = $_GESTOR['layout'];
 		
-		echo 'Depois>> '.$layout.'<br>';exit;
+		echo 'Depois>> '.$layout.'<br>';
 	}
 	
 	// ===== Variáveis do layout
@@ -696,6 +696,8 @@ function gestor_pagina_variaveis($params = false){
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#url-caminho'.$close,$caminho);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#titulo'.$close,$_GESTOR['pagina#titulo']);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#contato-url'.$close,$_GESTOR['pagina#contato-url']);
+	
+	echo 'Página Final>> '.$_GESTOR['pagina'].'<br>';exit;
 }
 
 function gestor_pagina_variaveis_globais($params = false){
