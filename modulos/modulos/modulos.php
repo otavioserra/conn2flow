@@ -135,7 +135,7 @@ function modulos_sincronizar_bancos(){
 	
 	// ===== Ativar / Desativar
 	
-	$ativar = false;
+	$ativar = true;
 	
 	// ===== Forçar atualização dos campos de data modificada.
 	
@@ -145,7 +145,8 @@ function modulos_sincronizar_bancos(){
 	
 	$servers = Array(
 		1 => 'beta.entrey.com.br',
-		2 => 'entrey.com.br',
+		2 => 'localhost',
+		//2 => 'entrey.com.br',
 	);
 	
 	$serverOrigem = $servers[1];
@@ -173,13 +174,14 @@ function modulos_sincronizar_bancos(){
 		'layouts',
 		'modulos_grupos',
 		'modulos',
+		'categorias',
+		'templates',
 	);
 	
-	$atualizaSinal['variaveis'] = false;
-	$atualizaSinal['paginas'] = false;
-	$atualizaSinal['layouts'] = false;
-	$atualizaSinal['modulos_grupos'] = false;
-	$atualizaSinal['modulos'] = false;
+	if($tabelas)
+	foreach($tabelas as $tabela){
+		$atualizaSinal[$tabela] = false;
+	}
 	
 	$dados['variaveis'] = Array(
 		'tabela' => Array(
@@ -346,6 +348,64 @@ function modulos_sincronizar_bancos(){
 		'print3' => '<span class="ui text info">Módulos</span>: Data Modificação Módulos Maior Origem',
 	);
 	
+	$dados['categorias'] = Array(
+		'tabela' => Array(
+			'nome' => 'categorias',
+			'id_referencia' => 'id_categorias',
+			'campos' => Array(
+				'id_categorias',
+				'id_usuarios',
+				'id_modulos',
+				'id_categorias_pai',
+				'nome',
+				'id',
+				'status',
+				'versao',
+				'data_criacao',
+				'data_modificacao',
+			),
+			'camposComparacao' => Array(
+				'id',
+				'data_modificacao',
+				'status',
+			),
+		),
+		'print1' => '<span class="ui text info">Categorias</span>: Atualizar Categorias Destino',
+		'print2' => '<span class="ui text info">Categorias</span>: Atualizar Categorias Destino',
+		'print3' => '<span class="ui text info">Categorias</span>: Data Modificação Categorias Maior Origem',
+	);
+	
+	$dados['templates'] = Array(
+		'tabela' => Array(
+			'nome' => 'templates',
+			'id_referencia' => 'id_templates',
+			'campos' => Array(
+				'id_templates',
+				'id_usuarios',
+				'id_categorias_pai',
+				'id_categorias',
+				'id_arquivos_Imagem',
+				'nome',
+				'id',
+				'html',
+				'css',
+				'status',
+				'versao',
+				'data_criacao',
+				'data_modificacao',
+				'padrao',
+			),
+			'camposComparacao' => Array(
+				'id',
+				'data_modificacao',
+				'status',
+			),
+		),
+		'print1' => '<span class="ui text info">Categorias</span>: Atualizar Categorias Destino',
+		'print2' => '<span class="ui text info">Categorias</span>: Atualizar Categorias Destino',
+		'print3' => '<span class="ui text info">Categorias</span>: Data Modificação Categorias Maior Origem',
+	);
+	
 	// ===== Atualizar Tabela
 	
 	foreach($tabelas as $tabela){
@@ -388,6 +448,8 @@ function modulos_sincronizar_bancos(){
 				if($tabelaDestino){
 					foreach($tabelaDestino as $td){
 						if(
+							$idAtual == 'categorias' ||
+							$idAtual == 'templates' ||
 							$idAtual == 'modulos_grupos' ||
 							$idAtual == 'modulos' ||
 							$idAtual == 'componentes' ||
@@ -505,6 +567,8 @@ function modulos_sincronizar_bancos(){
 						}
 						
 						if(
+							$idAtual == 'categorias' ||
+							$idAtual == 'templates' ||
 							$idAtual == 'modulos_grupos' ||
 							$idAtual == 'modulos' ||
 							$idAtual == 'componentes' ||
