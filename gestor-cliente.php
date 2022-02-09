@@ -667,11 +667,13 @@ function gestor_pagina_variaveis($params = false){
 		layout_trocar_variavel_valor('layout#step-mobile','');
 		
 		echo 'Var>> '.$open.'<br>';
-		echo 'Var>> '.$layout.'<br>';exit;
+		echo 'Antes>> '.$layout.'<br>';
 		
 		layout_loja();
 		
 		$layout = $_GESTOR['layout'];
+		
+		echo 'Depois>> '.$layout.'<br>';exit;
 	}
 	
 	// ===== Variáveis do layout
