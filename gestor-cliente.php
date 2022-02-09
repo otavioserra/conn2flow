@@ -660,12 +660,14 @@ function gestor_pagina_variaveis($params = false){
 	// ===== Incluir o módulo layout caso haja identificação da variável global layout.
 	
 	if(preg_match('/'.preg_quote($open.'layout#').'/i', $layout) > 0){
-		echo 'Teste<br>';exit;
 		gestor_incluir_biblioteca('pagina');
 		gestor_incluir_biblioteca('layout');
 		
 		layout_trocar_variavel_valor('layout#step','');
 		layout_trocar_variavel_valor('layout#step-mobile','');
+		
+		echo 'Var>> '.$open.'<br>';
+		echo 'Var>> '.$layout.'<br>';exit;
 		
 		layout_loja();
 		
