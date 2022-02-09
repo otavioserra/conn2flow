@@ -620,7 +620,6 @@ function api_cliente_templates_atualizar($params = false){
 													!existe($hosts_layout['template_modificado'])
 												){
 													$update = true;
-													echo 'Var>> '.$var.'<br>';exit;
 												}
 											} else {
 												$update = true;
