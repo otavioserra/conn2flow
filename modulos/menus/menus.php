@@ -39,6 +39,15 @@ function menus_config(){
 	// ===== Gravar Atualizações no Banco
 	
 	if(isset($_GESTOR['atualizar-banco'])){
+		// ===== Decodificar o 'dadosServidor'.
+		
+		$dadosServidor = Array();
+		
+		if(isset($_REQUEST['dadosServidor'])){
+			$dadosServidor = json_decode($_REQUEST['dadosServidor'],true);
+		}
+		
+		
 		// ===== Recuperar o estado dos dados do banco de dados antes de editar.
 		
 		/* $resultado = banco_select(Array(
@@ -112,7 +121,15 @@ function menus_config(){
 	
 	// ===== Montar os valores do que é permitido via config alterar.
 	
+	// ===== Criar o 'dadosServidor'.
 	
+	$dadosServidor = Array(
+		'variavel' => 'teste',
+	);
+	
+	$dadosServidor = htmlentities(json_encode($dadosServidor));
+	
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],"#dadosServidor#",$dadosServidor);
 	
 	// ===== Interface config finalizar opções
 	
