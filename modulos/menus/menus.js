@@ -29,7 +29,10 @@ $(document).ready(function(){
 			for(var i=0;i<menus.length;i++){
 				var itens = dadosServidor[menus[i]].itens;
 				
-				if(itens.length){
+				console.log('for menus');
+				if(itens.length > 0){
+					console.log(itens);
+					
 					for(var key in itens){
 						var obj = data[key];
 						
