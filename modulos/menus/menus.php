@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'menus';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.1',
+	'versao' => '1.0.2',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
 		'nome' => 'modelo',
@@ -124,7 +124,7 @@ function menus_config(){
 	// ===== Criar o 'dadosServidor'.
 	
 	$dadosServidor = Array(
-		'variavel' => 'teste',
+		'menuPaginaInicial' => $config['menus-padroes']['menu-pagina-inicial'],
 	);
 	
 	$dadosServidor = htmlentities(json_encode($dadosServidor));
