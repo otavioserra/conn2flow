@@ -18,10 +18,6 @@ $(document).ready(function(){
 		function menus_iniciar(){
 			iniciarDadosServidor();
 			
-			$('.ui.accordion')
-				.accordion()
-			;
-			
 			// ===== Iniciar menus.
 			
 			var menus = new Array('menuPaginaInicial');
@@ -41,6 +37,10 @@ $(document).ready(function(){
 					menuItem.appendTo($('#menu-pagina-inicial'));
 				}
 			}
+			
+			$('.ui.accordion')
+				.accordion()
+			;
 		}
 		
 		menus_iniciar();
