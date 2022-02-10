@@ -30,13 +30,13 @@ $(document).ready(function(){
 				var itens = dadosServidor[menus[i]].itens;
 				
 				for(var key in itens){
-					var obj = data[key];
+					var item = itens[key];
 					
 					var menuItem = $($('.menu-item-template').html());
 					
-					menuItem.find('.itemNome').html(obj.label);
-					menuItem.find('.itemUrl').html(obj.url);
-					menuItem.find('.itemTipo').html(obj.tipo);
+					menuItem.find('.itemNome').html(item.label);
+					menuItem.find('.itemUrl').html(item.url);
+					menuItem.find('.itemTipo').html(item.tipo);
 					
 					menuItem.appendTo($('#menu-pagina-inicial'));
 				}
