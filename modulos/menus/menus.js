@@ -29,22 +29,16 @@ $(document).ready(function(){
 			for(var i=0;i<menus.length;i++){
 				var itens = dadosServidor[menus[i]].itens;
 				
-				console.log('for menus');
-				console.log(itens);
-				if(itens.length > 0){
-					console.log(itens);
+				for(var key in itens){
+					var obj = data[key];
 					
-					for(var key in itens){
-						var obj = data[key];
-						
-						var menuItem = $($('.menu-item-template').html());
-						
-						menuItem.find('.itemNome').html(obj.label);
-						menuItem.find('.itemUrl').html(obj.url);
-						menuItem.find('.itemTipo').html(obj.tipo);
-						
-						menuItem.appendTo($('#menu-pagina-inicial'));
-					}
+					var menuItem = $($('.menu-item-template').html());
+					
+					menuItem.find('.itemNome').html(obj.label);
+					menuItem.find('.itemUrl').html(obj.url);
+					menuItem.find('.itemTipo').html(obj.tipo);
+					
+					menuItem.appendTo($('#menu-pagina-inicial'));
 				}
 			}
 		}
