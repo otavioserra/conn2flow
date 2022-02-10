@@ -30,6 +30,7 @@ $(document).ready(function(){
 				var itens = dadosServidor[menus[i]].itens;
 				
 				console.log('for menus');
+				console.log(itens);
 				if(itens.length > 0){
 					console.log(itens);
 					
