@@ -176,6 +176,15 @@ $(document).ready(function(){
 			
 			dominioTipo(id);
 		});
+		
+		// ===== Google reCAPTCHA.
+		
+		if('googleRecaptchaAtivo' in gestor.host){
+			$('.google-recaptcha-ativo').removeClass('escondido');
+		} else {
+			$('.google-recaptcha-instalacao').removeClass('escondido');
+		}
+		
 	}
 	
 });

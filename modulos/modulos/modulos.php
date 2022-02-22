@@ -135,7 +135,7 @@ function modulos_sincronizar_bancos(){
 	
 	// ===== Ativar / Desativar
 	
-	$ativar = true;
+	$ativar = false;
 	
 	// ===== Forçar atualização dos campos de data modificada.
 	
@@ -145,8 +145,8 @@ function modulos_sincronizar_bancos(){
 	
 	$servers = Array(
 		1 => 'beta.entrey.com.br',
-		2 => 'localhost',
-		//2 => 'entrey.com.br',
+		//2 => 'localhost',
+		2 => 'entrey.com.br',
 	);
 	
 	$serverOrigem = $servers[1];
