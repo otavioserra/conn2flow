@@ -200,7 +200,7 @@ $(document).ready(function(){
 						if(excluirChecked){
 							$(this).removeClass('active');
 							$(this).removeClass('orange');
-							$(this).addClass('red');
+							$(this).addClass('negative');
 							$(this).find('.icon').removeClass('check');
 							$(this).find('.icon').addClass('times');
 							excluirChecked = false;
@@ -208,7 +208,7 @@ $(document).ready(function(){
 						} else {
 							$(this).addClass('active');
 							$(this).addClass('orange');
-							$(this).removeClass('red');
+							$(this).removeClass('negative');
 							$(this).find('.icon').removeClass('times');
 							$(this).find('.icon').addClass('check');
 							excluirChecked = true;
