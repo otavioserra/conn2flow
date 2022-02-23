@@ -1315,6 +1315,10 @@ function host_configuracao_configuracoes(){
 					banco_update_campo('google_recaptcha_site','NULL',true);
 					banco_update_campo('google_recaptcha_secret','NULL',true);
 					banco_update_campo('google_recaptcha_ativo','NULL',true);
+					
+					$editar = true;
+					$alteracoes[] = Array('campo' => 'google-recaptcha');
+					$alterarRecaptcha = true;
 				break;
 			}
 		}
