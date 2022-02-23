@@ -2097,10 +2097,24 @@ function plataforma_servidor_variaveis(){
 						
 						banco_update_executar('variaveis',"WHERE modulo='google-recaptcha' AND id='".$id."'");
 					} else {
-						banco_insert_name_campo('modulo','paypal');
+						banco_insert_name_campo('modulo','google-recaptcha');
 						banco_insert_name_campo('id',$id);
-						banco_insert_name_campo('valor',($valor == '1' ? '1' : 'NULL'),true);
-						banco_insert_name_campo('tipo','bool');
+						
+						switch($id){
+							case 'ativo':								
+								banco_insert_name_campo('valor',($valor == '1' ? '1' : 'NULL'),true);
+								banco_insert_name_campo('tipo','bool');
+							break;
+							default:
+								if(existe($valor)){
+									banco_insert_name_campo('valor',$valor);
+								} else {
+									banco_update_campo('valor','NULL',true);
+								}
+								
+								banco_insert_name_campo('tipo','string');
+								
+						}
 						
 						banco_insert_name
 						(
