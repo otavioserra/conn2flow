@@ -180,6 +180,8 @@ $(document).ready(function(){
 		// ===== Google reCAPTCHA inicialização.
 		
 		if('googleRecaptchaInstalado' in gestor.host){
+			var excluirChecked = false;
+			
 			$('.google-recaptcha-ativo').removeClass('escondido');
 			
 			$('.gr-controle').on('mouseup tap',function(e){
@@ -195,7 +197,19 @@ $(document).ready(function(){
 						$('input[name="google-recaptcha-comando"]').val('reinstalar');
 					break;
 					case 'excluir':
-						$('.gr-controle').addClass('active');
+						if(excluirChecked){
+							$(this).removeClass('active');
+							$(this).find('.icon').removeClass('check');
+							$(this).find('.icon').addClass('times');
+							excluirChecked = false;
+						} else {
+							$(this).addClass('active');
+							$(this).find('.icon').removeClass('times');
+							$(this).find('.icon').addClass('check');
+							excluirChecked = true;
+						}
+						
+						
 						$('input[name="google-recaptcha-comando"]').val('excluir');
 					break;
 					default:
