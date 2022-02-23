@@ -199,12 +199,16 @@ $(document).ready(function(){
 					case 'excluir':
 						if(excluirChecked){
 							$(this).removeClass('active');
+							$(this).removeClass('orange');
+							$(this).addClass('red');
 							$(this).find('.icon').removeClass('check');
 							$(this).find('.icon').addClass('times');
 							excluirChecked = false;
 							$('input[name="google-recaptcha-comando"]').val('');
 						} else {
 							$(this).addClass('active');
+							$(this).addClass('orange');
+							$(this).removeClass('red');
 							$(this).find('.icon').removeClass('times');
 							$(this).find('.icon').addClass('check');
 							excluirChecked = true;
