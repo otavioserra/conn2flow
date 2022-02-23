@@ -1500,7 +1500,6 @@ function api_cliente_variaveis($params = false){
 			break;
 			case 'google-recaptcha':
 				$hosts = banco_select(Array(
-					'unico' => true,
 					'tabela' => 'hosts',
 					'campos' => Array(
 						'google_recaptcha_ativo',

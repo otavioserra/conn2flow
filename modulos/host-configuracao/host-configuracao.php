@@ -1416,13 +1416,6 @@ function host_configuracao_configuracoes(){
 						'redirect' => true,
 						'msg' => $alerta
 					));
-				} else {
-					// ===== Alerta instalado com sucesso.
-					
-					interface_alerta(Array(
-						'redirect' => true,
-						'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'app-install-success'))
-					));
 				}
 			}
 		}
