@@ -499,4 +499,44 @@ function formulario_validacao_campos_obrigatorios($params = false){
 	}
 }
 
+function formulario_google_recaptcha(){
+	/**********
+		Descrição: Verifica se existe google recaptcha definido para essa conta e devolve a chave do site.
+	**********/
+	
+	global $_GESTOR;
+	
+	$variaveis = banco_select(Array(
+		'tabela' => 'variaveis',
+		'campos' => Array(
+			'id',
+			'valor',
+		),
+		'extra' => 
+			"WHERE modulo='google-recaptcha'"
+	));
+	
+	if($variaveis){
+		foreach($variaveis as $variavel){
+			if($variavel['id'] == 'chave-site'){
+				if($variavel['valor']){
+					$chave = $variavel['valor'];
+				}
+			}
+			
+			if($variavel['id'] == 'ativo'){
+				if($variavel['valor']){
+					$ativo = true;
+				}
+			}
+		}
+	}
+	
+	if(isset($ativo) && isset($chave)){
+		return $chave;
+	} else {
+		return null;
+	}
+}
+
 ?>

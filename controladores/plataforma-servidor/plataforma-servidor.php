@@ -2045,6 +2045,88 @@ function plataforma_servidor_variaveis(){
 				);
 			}
 		break;
+		case 'google-recaptcha':
+			// ===== Decodificar os dados em formato Array
+			
+			$dados = Array();
+			if(isset($_REQUEST['dados'])){
+				$dados = json_decode($_REQUEST['dados'],true);
+			}
+			
+			// ===== Verifica o ID referencial do registro.
+			
+			$registros = $dados['registros'];
+			
+			if(isset($registros)){
+				// ===== Controle dos registros.
+				
+				$todos_ok = true;
+				
+				// ===== Varrer todos os registros.
+				
+				foreach($registros as $id => $valor){
+					// ===== Busca no banco de dados o ID referido.
+					
+					$resultado = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'variaveis',
+						'campos' => Array(
+							'id_variaveis',
+						),
+						'extra' => 
+							"WHERE modulo='google-recaptcha'"
+							." AND id='".$id."'"
+					));
+					
+					// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
+					
+					if($resultado){
+						switch($id){
+							case 'ativo':								
+								banco_update_campo('valor',($valor == '1' ? '1' : 'NULL'),true);
+							break;
+							default:
+								if(existe($valor)){
+									banco_update_campo('valor',$valor);
+								} else {
+									banco_update_campo('valor','NULL',true);
+								}
+								
+						}
+						
+						
+						banco_update_executar('variaveis',"WHERE modulo='google-recaptcha' AND id='".$id."'");
+					} else {
+						banco_insert_name_campo('modulo','paypal');
+						banco_insert_name_campo('id',$id);
+						banco_insert_name_campo('valor',($valor == '1' ? '1' : 'NULL'),true);
+						banco_insert_name_campo('tipo','bool');
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"variaveis"
+						);
+					}
+				}
+				
+				// ===== Caso algum tenha dado erro, retornar o erro.
+				
+				if($todos_ok){
+					$retorno = Array(
+						'status' => 'OK',
+					);
+				} else {
+					$retorno = Array(
+						'status' => 'ID_NOT_DEFINED',
+					);
+				}
+			} else {
+				$retorno = Array(
+					'status' => 'EMPTY_RECORDS',
+				);
+			}
+		break;
 		default:
 			$retorno = Array(
 				'status' => 'OPTION_NOT_DEFINED',
