@@ -1519,6 +1519,8 @@ function api_cliente_variaveis($params = false){
 				// ===== Enviar os registros.
 			
 				$dados['registros'] = $hosts_proc;
+				
+				echo 'Var>> '.print_r($dados,true)."<br>";exit;
 			break;
 		}
 		
