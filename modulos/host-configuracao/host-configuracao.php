@@ -1306,10 +1306,13 @@ function host_configuracao_configuracoes(){
 						$alteracoes[] = Array('campo' => 'google-recaptcha');
 						$alterarRecaptcha = true;
 					} else {
+						echo 'Alertou<br>';
 						interface_alerta(Array(
 							'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-google-recaptcha-mandatory-fields'))
 						));
 					}
+					
+					echo 'Entrou<br>';
 				break;
 				case 'excluir':
 					banco_update_campo('google_recaptcha_site','NULL',true);
@@ -1317,6 +1320,8 @@ function host_configuracao_configuracoes(){
 					banco_update_campo('google_recaptcha_ativo','NULL',true);
 				break;
 			}
+			
+			echo 'isset<br>';exit;
 		}
 		
 		// ===== Caso tenha sido alterado o domío próprio.
