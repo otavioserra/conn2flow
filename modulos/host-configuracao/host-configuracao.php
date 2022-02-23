@@ -1297,7 +1297,7 @@ function host_configuracao_configuracoes(){
 			switch($_REQUEST['google-recaptcha-comando']){
 				case 'instalar':
 				case 'reinstalar':
-					if(isset($_REQUEST['google_recaptcha_site']) && isset($_REQUEST['google_recaptcha_secret'])){
+					if(existe($_REQUEST['google_recaptcha_site']) && existe($_REQUEST['google_recaptcha_secret'])){
 						$campo = 'google_recaptcha_site'; $campo_valor = $_REQUEST[$campo]; banco_update_campo($campo,$campo_valor);
 						$campo = 'google_recaptcha_secret'; $campo_valor = $_REQUEST[$campo]; banco_update_campo($campo,$campo_valor);
 						banco_update_campo('google_recaptcha_ativo','1',true);
@@ -1306,13 +1306,10 @@ function host_configuracao_configuracoes(){
 						$alteracoes[] = Array('campo' => 'google-recaptcha');
 						$alterarRecaptcha = true;
 					} else {
-						echo 'Alertou<br>';
 						interface_alerta(Array(
 							'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-google-recaptcha-mandatory-fields'))
 						));
 					}
-					
-					echo 'Entrou<br>';
 				break;
 				case 'excluir':
 					banco_update_campo('google_recaptcha_site','NULL',true);
@@ -1320,8 +1317,6 @@ function host_configuracao_configuracoes(){
 					banco_update_campo('google_recaptcha_ativo','NULL',true);
 				break;
 			}
-			
-			echo 'isset<br>';exit;
 		}
 		
 		// ===== Caso tenha sido alterado o domío próprio.
