@@ -177,13 +177,36 @@ $(document).ready(function(){
 			dominioTipo(id);
 		});
 		
-		// ===== Google reCAPTCHA.
+		// ===== Google reCAPTCHA inicialização.
 		
-		if('googleRecaptchaAtivo' in gestor.host){
+		if('googleRecaptchaInstalado' in gestor.host){
 			$('.google-recaptcha-ativo').removeClass('escondido');
+			
+			$('.gr-controle').on('mouseup tap',function(e){
+				if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+				
+				$('.gr-controle').removeClass('active');
+				
+				const action = $(this).attr('data-action');
+				switch(action){
+					case 'reinstalar':
+						$('.google-recaptcha-ativo').addClass('escondido');
+						$('.google-recaptcha-instalacao').removeClass('escondido');
+						$('input[name="google-recaptcha-comando"]').val('reinstalar');
+					break;
+					case 'excluir':
+						$('.gr-controle').addClass('active');
+						$('input[name="google-recaptcha-comando"]').val('excluir');
+					break;
+					default:
+						
+				}
+			});
 		} else {
 			$('.google-recaptcha-instalacao').removeClass('escondido');
+			$('input[name="google-recaptcha-comando"]').val('instalar');
 		}
+		
 		
 	}
 	

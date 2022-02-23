@@ -1498,6 +1498,29 @@ function api_cliente_variaveis($params = false){
 			
 				$dados['registros'] = $hosts_paypal;
 			break;
+			case 'google-recaptcha':
+				$hosts = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts',
+					'campos' => Array(
+						'google_recaptcha_ativo',
+						'google_recaptcha_site',
+					),
+					'extra' => 
+						"WHERE id_hosts='".$host_verificacao['id_hosts']."'"
+				));
+				
+				// ===== Processamento dos valores locai para id remoto.
+				
+				$hosts_proc = Array(
+					'ativo' => ($hosts['google_recaptcha_ativo'] ? $hosts['google_recaptcha_ativo'] : '0'),
+					'chave-site' => ($hosts['google_recaptcha_site'] ? $hosts['google_recaptcha_site'] : ''),
+				);
+				
+				// ===== Enviar os registros.
+			
+				$dados['registros'] = $hosts_proc;
+			break;
 		}
 		
 		// ===== Acessar a interface no cliente e retornar objeto do retorno.

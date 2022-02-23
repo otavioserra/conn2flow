@@ -1291,6 +1291,34 @@ function host_configuracao_configuracoes(){
 			break;
 		}
 		
+		// ===== Controle do Google reCAPTCHA.
+		
+		if(isset($_REQUEST['google-recaptcha-comando'])){
+			switch($_REQUEST['google-recaptcha-comando']){
+				case 'instalar':
+				case 'reinstalar':
+					if(isset($_REQUEST['google_recaptcha_site']) && isset($_REQUEST['google_recaptcha_secret'])){
+						$campo = 'google_recaptcha_site'; $campo_valor = $_REQUEST[$campo]; banco_update_campo($campo,$campo_valor);
+						$campo = 'google_recaptcha_secret'; $campo_valor = $_REQUEST[$campo]; banco_update_campo($campo,$campo_valor);
+						banco_update_campo('google_recaptcha_ativo','1',true);
+						
+						$editar = true;
+						$alteracoes[] = Array('campo' => 'google-recaptcha');
+						$alterarRecaptcha = true;
+					} else {
+						interface_alerta(Array(
+							'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-google-recaptcha-mandatory-fields'))
+						));
+					}
+				break;
+				case 'excluir':
+					banco_update_campo('google_recaptcha_site','NULL',true);
+					banco_update_campo('google_recaptcha_secret','NULL',true);
+					banco_update_campo('google_recaptcha_ativo','NULL',true);
+				break;
+			}
+		}
+		
 		// ===== Caso tenha sido alterado o domío próprio.
 		
 		$campo = 'dominio_proprio'; $alteracoes_name = 'type-domain'; if(isset($alterou_dominio_proprio)){
@@ -1363,6 +1391,36 @@ function host_configuracao_configuracoes(){
 			}
 			
 			banco_update_executar($modulo['tabela']['nome'],"WHERE id_hosts='".$id_hosts."'");
+			
+			// ===== Modificar no host o Google reCAPTCHA.
+			
+			if(isset($alterarRecaptcha)){
+				// ===== Chamada da API-Cliente para atualizar dados no host do usuário.
+				
+				gestor_incluir_biblioteca('api-cliente');
+				
+				$retorno = api_cliente_variaveis(Array(
+					'opcao' => 'google-recaptcha',
+				));
+				
+				if(!$retorno['completed']){
+					$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
+					
+					$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
+					
+					interface_alerta(Array(
+						'redirect' => true,
+						'msg' => $alerta
+					));
+				} else {
+					// ===== Alerta instalado com sucesso.
+					
+					interface_alerta(Array(
+						'redirect' => true,
+						'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'app-install-success'))
+					));
+				}
+			}
 		}
 		
 		// ===== Reler URL.

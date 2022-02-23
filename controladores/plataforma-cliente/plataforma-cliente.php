@@ -24,6 +24,30 @@ function plataforma_cliente_recaptcha($token,$action){
 			
 			$recaptchaSecretKey = $_GESTOR['platform-recaptcha-server'];
 			
+			// ===== Identificador do Host.
+			
+			$id_hosts = $_GESTOR['host-id'];
+			
+			// ===== Verificar se o host tem reCAPTCHA está ativado.
+			
+			$hosts = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'hosts',
+				'campos' => Array(
+					'google_recaptcha_ativo',
+					'google_recaptcha_secret',
+				),
+				'extra' => 
+					"WHERE id_hosts='".$id_hosts."'"
+			));
+			
+			if($hosts['google_recaptcha_ativo']){
+				if($hosts['google_recaptcha_secret']){
+					$recaptchaSecretKey = $hosts['google_recaptcha_secret'];
+				}
+			}
+			
+			
 			// ===== Chamada ao servidor do Google reCAPTCHA para conferência se o token enviado no formulário é válido.
 			
 			$ch = curl_init();
