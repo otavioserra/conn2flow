@@ -1399,6 +1399,7 @@ function host_configuracao_configuracoes(){
 			// ===== Modificar no host o Google reCAPTCHA.
 			
 			if(isset($alterarRecaptcha)){
+				echo 'alterarRecaptcha<br>';exit;
 				// ===== Chamada da API-Cliente para atualizar dados no host do usuário.
 				
 				gestor_incluir_biblioteca('api-cliente');
