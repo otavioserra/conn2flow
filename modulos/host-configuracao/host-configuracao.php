@@ -1441,6 +1441,7 @@ function host_configuracao_configuracoes(){
 			'dominio_proprio_url',
 			'gestor_cliente_versao',
 			'gestor_cliente_versao_num',
+			'google_recaptcha_ativo',
 		),
 		'extra' => 
 			"WHERE id_hosts='".$id_hosts."'"
@@ -1453,6 +1454,7 @@ function host_configuracao_configuracoes(){
 	}
 	
 	$dominio_proprio_url = ($hosts['dominio_proprio_url'] ? $hosts['dominio_proprio_url'] : '');
+	$google_recaptcha_ativo = ($hosts['google_recaptcha_ativo'] ? true : null);
 	
 	// ===== Botão de selecionar o tipo próprio ou sistema.
 	
@@ -1517,6 +1519,10 @@ function host_configuracao_configuracoes(){
 	// ===== Se é domínio próprio ou sistema, informar JS.
 	
 	$JShost['dominioProprio'] = (isset($dominioProprio) ? true : false);
+	
+	if(isset($google_recaptcha_ativo)){
+		$JShost['googleRecaptchaInstalado'] = true;
+	}
 	
 	// ===== Variáveis JS.
 	
