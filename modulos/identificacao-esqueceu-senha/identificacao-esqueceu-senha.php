@@ -136,10 +136,12 @@ function identificacao_esqueceu_senha_padrao(){
 				
 				// ===== configurar o Google reCAPTCHA.
 				
+				$googleRecaptchaSite = (isset($chaveSite) ? $chaveSite : $_GESTOR['plataforma-cliente']['plataforma-recaptcha-site']);
+			
 				$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
-				$_GESTOR['javascript-vars']['googleRecaptchaSite'] = (isset($chaveSite) ? $chaveSite : $_GESTOR['plataforma-cliente']['plataforma-recaptcha-site']);
+				$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $googleRecaptchaSite;
 				
-				gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_GESTOR['plataforma-cliente']['plataforma-recaptcha-site'].'"></script>');
+				gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$googleRecaptchaSite.'"></script>');
 			}
 		}
 		

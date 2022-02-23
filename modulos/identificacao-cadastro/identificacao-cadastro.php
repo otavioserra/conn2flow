@@ -207,10 +207,12 @@ function identificacao_cadastro_padrao(){
 			
 			// ===== configurar o Google reCAPTCHA.
 			
-			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
-			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = (isset($chaveSite) ? $chaveSite : $_GESTOR['plataforma-cliente']['plataforma-recaptcha-site']);
+			$googleRecaptchaSite = (isset($chaveSite) ? $chaveSite : $_GESTOR['plataforma-cliente']['plataforma-recaptcha-site']);
 			
-			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_GESTOR['plataforma-cliente']['plataforma-recaptcha-site'].'"></script>');
+			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
+			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $googleRecaptchaSite;
+			
+			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$googleRecaptchaSite.'"></script>');
 		}
 	}
 	
