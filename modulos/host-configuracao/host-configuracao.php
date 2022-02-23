@@ -1304,7 +1304,7 @@ function host_configuracao_configuracoes(){
 						
 						$editar = true;
 						$alteracoes[] = Array('campo' => 'google-recaptcha');
-						$alterarRecaptcha = true;
+						$recaptchaAlterado = true;
 					} else {
 						interface_alerta(Array(
 							'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-google-recaptcha-mandatory-fields'))
@@ -1318,7 +1318,7 @@ function host_configuracao_configuracoes(){
 					
 					$editar = true;
 					$alteracoes[] = Array('campo' => 'google-recaptcha');
-					$alterarRecaptcha = true;
+					$recaptchaAlterado = true;
 				break;
 			}
 		}
@@ -1396,28 +1396,28 @@ function host_configuracao_configuracoes(){
 			
 			banco_update_executar($modulo['tabela']['nome'],"WHERE id_hosts='".$id_hosts."'");
 			
-			// ===== Modificar no host o Google reCAPTCHA.
+		}
+		
+		// ===== Modificar no host o Google reCAPTCHA.
+		
+		if(isset($recaptchaAlterado)){
+			// ===== Chamada da API-Cliente para atualizar dados no host do usuário.
 			
-			if(isset($alterarRecaptcha)){
-				echo 'alterarRecaptcha<br>';exit;
-				// ===== Chamada da API-Cliente para atualizar dados no host do usuário.
+			gestor_incluir_biblioteca('api-cliente');
+			
+			$retorno = api_cliente_variaveis(Array(
+				'opcao' => 'google-recaptcha',
+			));
+			
+			if(!$retorno['completed']){
+				$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
 				
-				gestor_incluir_biblioteca('api-cliente');
+				$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
 				
-				$retorno = api_cliente_variaveis(Array(
-					'opcao' => 'google-recaptcha',
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $alerta
 				));
-				
-				if(!$retorno['completed']){
-					$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
-					
-					$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
-					
-					interface_alerta(Array(
-						'redirect' => true,
-						'msg' => $alerta
-					));
-				}
 			}
 		}
 		
