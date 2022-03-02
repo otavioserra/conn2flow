@@ -940,7 +940,7 @@ function paypal_criar_pagamento($params = false){
 					'app_expires_in',
 				),
 				'extra' => 
-					"WHERE id_dados='".$id_hosts."'"
+					"WHERE id_hosts='".$id_hosts."'"
 			));
 			
 			// ===== Verificar se o token está expirado.

@@ -144,13 +144,13 @@ function modulos_sincronizar_bancos(){
 	// ===== Definir origem 1 / destino 2
 	
 	$servers = Array(
-		1 => 'beta.entrey.com.br',
-		//2 => 'localhost',
-		2 => 'entrey.com.br',
+		'origem' => 'beta.entrey.com.br',
+		'destino' => 'localhost',
+		//'destino' => 'entrey.com.br',
 	);
 	
-	$serverOrigem = $servers[1];
-	$serverDestino = $servers[2];
+	$serverOrigem = $servers['origem'];
+	$serverDestino = $servers['destino'];
 	
 	// ===== Mostrar mensagem de desativado.
 	
