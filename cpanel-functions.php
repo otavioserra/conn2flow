@@ -10,7 +10,7 @@ function cpanel_log($txt){
 		$path = $_CPANEL_LOG_PATH;
 		$sep = DIRECTORY_SEPARATOR;
 		$path_logs = $path.$sep.'logs';
-		$log_file = $path_logs.$sep.'cpanel-'.date('d-m-Y').'.txt';
+		$log_file = $path_logs.$sep.'cpanel-'.date('d-m-Y').'.log';
 		
 		if(!is_dir($path_logs)){
 			mkdir($path_logs);
