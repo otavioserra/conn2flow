@@ -1832,7 +1832,11 @@ function api_cliente_postagens($params = false){
 						"WHERE id_hosts_paginas='".$hosts_postagens['id_hosts_paginas']."'"
 				));
 				
-				unset($hosts_postagens['id_hosts_paginas']);
+				unset($hosts_postagens['id_hosts']);
+				unset($hosts_postagens['id_usuarios']);
+				
+				unset($hosts_paginas['id_hosts']);
+				unset($hosts_paginas['id_usuarios']);
 				
 				$dados['postagens'] = $hosts_postagens;
 				$dados['paginas'] = $hosts_paginas;
@@ -1865,7 +1869,11 @@ function api_cliente_postagens($params = false){
 						"WHERE id_hosts_paginas='".$hosts_postagens['id_hosts_paginas']."'"
 				));
 				
-				unset($hosts_postagens['id_hosts_paginas']);
+				unset($hosts_postagens['id_hosts']);
+				unset($hosts_postagens['id_usuarios']);
+				
+				unset($hosts_paginas['id_hosts']);
+				unset($hosts_paginas['id_usuarios']);
 				
 				$dados['postagens'] = $hosts_postagens;
 				$dados['paginas'] = $hosts_paginas;
