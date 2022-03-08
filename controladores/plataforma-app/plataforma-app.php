@@ -27,6 +27,8 @@ function plataforma_app_login(){
 	
 	// ===== Validador provisório!!!
 	
+	plataforma_app_200();
+	
 	if(sha1($_REQUEST['appID']) !== 'a45aa0844e67182bf608916891e6080a7d436dc8'){
 		plataforma_app_401();
 	}
