@@ -13,7 +13,19 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 
 function stream_php(){
 	$json = file_get_contents('php://input');
-	$_REQUEST = json_decode($json, TRUE);
+	$arrAux = json_decode($json, true);
+	
+	if($arrAux){
+		if(gettype($arrAux[0]) == "array"){
+			foreach($arrAux[0] as $key => $valor){
+				$_REQUEST[$key] = $valor;
+			}
+		} else {
+			foreach($arrAux as $key => $valor){
+				$_REQUEST[$key] = $valor;
+			}
+		}
+	}
 }
 
 // =========================== Funções da Plataforma
@@ -28,7 +40,7 @@ function plataforma_app_login(){
 	// ===== Validador provisório!!!
 	
 	
-	if(sha1($_REQUEST['appID']) !== 'da39a3ee5e6b4b0d3255bfef95601890afd80709'){
+	if(sha1($_REQUEST['appID']) !== 'a45aa0844e67182bf608916891e6080a7d436dc8'){
 		plataforma_app_401();
 	}
 	
@@ -98,6 +110,8 @@ function plataforma_app_login(){
 			'usuario' => $usuario,
 			'senha' => $senha,
 			'request' => print_r($_REQUEST,true),
+			'user' => $_REQUEST['user'],
+			'user' => $_REQUEST['pass'],
 		));
 		
 		if($usuarios){
