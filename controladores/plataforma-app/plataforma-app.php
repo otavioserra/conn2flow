@@ -29,9 +29,6 @@ function plataforma_app_login(){
 	
 	
 	if(sha1($_REQUEST['appID']) !== 'da39a3ee5e6b4b0d3255bfef95601890afd80709'){
-		plataforma_app_200(Array(
-			'comparacao' => sha1($_REQUEST['appID']).' !== da39a3ee5e6b4b0d3255bfef95601890afd80709'
-		));
 		plataforma_app_401();
 	}
 	
@@ -77,7 +74,8 @@ function plataforma_app_login(){
 		// ===== Verificar se os dados enviados batem com algum usuário dentro do sistema
 		
 		$usuario = banco_escape_field($_REQUEST['user']);
-		$senha = banco_escape_field($_REQUEST['pass']);
+		$senha = $_REQUEST['pass'];
+		
 		$user_inactive = false;
 		
 		$usuarios = banco_select_name
