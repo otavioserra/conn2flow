@@ -97,6 +97,7 @@ function plataforma_app_login(){
 			'usuarios' => ($usuarios ? 'Sim' : 'Nao'),
 			'usuario' => $usuario,
 			'senha' => $senha,
+			'request' => print_r($_REQUEST,true),
 		));
 		
 		if($usuarios){
