@@ -31,7 +31,9 @@ function stream_php(){
 // =========================== Funções da Plataforma
 
 function plataforma_app_baixar_voucher(){
-	
+	plataforma_app_200(Array(
+		'baixar_voucher' => true
+	));
 }
 
 function plataforma_app_login(){
@@ -300,7 +302,7 @@ function plataforma_app_permissao_token($token = ''){
 			,
 			"usuarios_tokens",
 			"WHERE pubID='".$tokenPubId."'"
-			." AND origem='".$_GESTOR['app-user-agent']."'"
+			." AND origem='".$_GESTOR['app-origem']."'"
 		);
 		
 		if($usuarios_tokens){
