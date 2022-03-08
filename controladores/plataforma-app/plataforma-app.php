@@ -366,10 +366,6 @@ function plataforma_app_start(){
 	header("Access-Control-Allow-Origin: *");
 	stream_php();
 	
-	plataforma_app_200(Array(
-		'request' => print_r($_REQUEST,true),
-	));
-	
 	// ===== Acessos públicos a plataforma.
 	
 	switch($_GESTOR['caminho'][1]){
