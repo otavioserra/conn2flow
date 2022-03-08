@@ -105,15 +105,6 @@ function plataforma_app_login(){
 		
 		// ===== Rotinas de validação de usuário
 		
-		plataforma_app_200(Array(
-			'usuarios' => ($usuarios ? 'Sim' : 'Nao'),
-			'usuario' => $usuario,
-			'senha' => $senha,
-			'request' => print_r($_REQUEST,true),
-			'user' => $_REQUEST['user'],
-			'user' => $_REQUEST['pass'],
-		));
-		
 		if($usuarios){
 			$senha_hash = $usuarios[0]['senha'];
 			
