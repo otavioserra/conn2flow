@@ -47,6 +47,9 @@ switch($_GESTOR['caminho'][0]){
 	case '_gateways':
 		require_once($_INDEX['sistemas-dir'].'b2make-gestor/controladores/plataforma-gateways/plataforma-gateways.php'); exit;
 	break;
+	case '_app':
+		require_once($_INDEX['sistemas-dir'].'b2make-gestor/controladores/plataforma-app/plataforma-app.php'); exit;
+	break;
 }
 
 // =========================== Funções Auxiliares
@@ -1641,7 +1644,7 @@ function gestor_permissao_token(){
 						);
 					}
 				} else {
-					// ===== Se o tempo de expiração do token for maior que o tempo agora, é porque este token está vencido e deve ser deletado.
+					// ===== Se o tempo de expiração do token for maior que o tempo agora, é porque este token está ativo. Senão está vencido e deve ser deletado.
 					
 					if((int)$expiration > time()){
 						$expiracao_ok = true;

@@ -32,6 +32,10 @@ $_GESTOR['platform-hash-algo']					=	'sha512'; // Algorítmo usado para criar ha
 $_GESTOR['platform-recaptcha-active']			=	true; // Ativar Recaptcha v3 nos hosts
 $_GESTOR['platform-recaptcha-site']				=	'6LewE8QcAAAAAOyOzcZufW9dkK7yRxMSQaUyBr1M'; // Recaptcha site nos hosts
 $_GESTOR['platform-recaptcha-server']			=	'6LewE8QcAAAAAKZq0JboJ7QL_m2aAYleKuYAAxYN'; // Recaptcha server nos hosts
+$_GESTOR['app-recaptcha-active']				=	false; // Ativar Recaptcha v3 no APP
+$_GESTOR['app-token-lifetime']					=	60*60*24*30; // 30 dias para os token de acesso serem deletados.
+$_GESTOR['app-token-renewtime']					=	60*60*24; // 24 horas para renovar automaticamente o token de acesso
+$_GESTOR['app-user-agent']						=	'app-entrey'; // Identificador do APP 
 
 // ===== Definição dos marcadores de abertura e fechamento de varíaveis globais.
 

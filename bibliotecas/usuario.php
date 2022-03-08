@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-usuario']							=	Array(
-	'versao' => '1.0.0',
+	'versao' => '1.1.0',
 );
 
 // ===== Funções auxiliares
@@ -196,6 +196,70 @@ function usuario_gerar_token_autorizacao($params = false){
 		);
 		
 		return true;
+	} else {
+		return false;
+	}
+}
+
+function usuario_app_gerar_token_autorizacao($params = false){
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// id_usuarios - Int - Obrigatório - Identificador do usuário dentro do sistema.
+	
+	// ===== 
+	
+	if(isset($id_usuarios)){
+		// ===== Definir variáveis para gerar o JWT
+		
+		$expiration = time() + $_GESTOR['app-token-lifetime'];
+		
+		$keyPublicPath = $_GESTOR['openssl-path'] . 'publica.key';
+		
+		$fp = fopen($keyPublicPath,"r");
+		$chavePublica = fread($fp,8192);
+		fclose($fp);
+		
+		// ===== Gerar ID do Token
+		
+		$tokenPubId = md5(uniqid(rand(), true));
+		
+		$pubIDValidation = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+		
+		// ===== Gerar o token JWT
+		
+		$token = usuario_gerar_jwt(Array(
+			'host' => $_SERVER['SERVER_NAME'],
+			'expiration' => $expiration,
+			'chavePublica' => $chavePublica,
+			'pubID' => $tokenPubId,
+		));
+		
+		// ====== Salvar token no banco
+		
+		$campos = null; $campo_sem_aspas_simples = null;
+		
+		$campo_nome = "id_usuarios"; $campo_valor = $id_usuarios; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "pubID"; $campo_valor = $tokenPubId; 							$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "pubIDValidation"; $campo_valor = $pubIDValidation; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "expiration"; $campo_valor = $expiration; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "ip"; $campo_valor = $_SERVER['REMOTE_ADDR']; 				$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "user_agent"; $campo_valor = $_GESTOR['app-user-agent']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "data_criacao"; $campo_valor = 'NOW()'; 						$campos[] = Array($campo_nome,$campo_valor,true);
+		
+		banco_insert_name
+		(
+			$campos,
+			"usuarios_tokens"
+		);
+		
+		return Array(
+			'token' => $token,
+			'expiration' => $expiration,
+		);
 	} else {
 		return false;
 	}
