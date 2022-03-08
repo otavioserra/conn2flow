@@ -300,7 +300,7 @@ function plataforma_app_permissao_token($token = ''){
 			,
 			"usuarios_tokens",
 			"WHERE pubID='".$tokenPubId."'"
-			." AND user_agent='".$_GESTOR['app-user-agent']."'"
+			." AND origem='".$_GESTOR['app-user-agent']."'"
 		);
 		
 		if($usuarios_tokens){
