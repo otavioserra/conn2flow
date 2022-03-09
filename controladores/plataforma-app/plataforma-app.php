@@ -176,6 +176,8 @@ function plataforma_app_baixar_voucher(){
 								case 'baixar':
 									
 								break;
+								default:
+									$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-codigo-opcao-mandatory'));
 							}
 						} else {
 							$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-voucher-used'));
