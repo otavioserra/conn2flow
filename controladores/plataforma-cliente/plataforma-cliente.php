@@ -3662,14 +3662,14 @@ function plataforma_cliente_voucher(){
 							$jwt = autenticacao_gerar_jwt_chave_privada(Array(
 								'host' => 'Entrey',
 								'expiration' => $expiration,
-								'pubID' => $codigo.'#'.$voucher['codigo'],
+								'pubID' => $voucher['codigo'],
 								'chavePrivada' => $chavePrivada,
 								'chavePrivadaSenha' => $chavePrivadaSenha,
 							));
 							
 							// ===== Guardar provisoriamente o JWT no banco de dados.
 							
-							banco_update_campo('jwt_bd',$jwt);
+							banco_update_campo('jwt_bd',$codigo.'#'.$jwt);
 							banco_update_campo('status','jwt-gerado');
 							
 							banco_update_executar('hosts_vouchers',"WHERE id_hosts_vouchers='".$voucher['id_hosts_vouchers']."'");
