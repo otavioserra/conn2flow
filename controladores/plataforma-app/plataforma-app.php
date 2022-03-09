@@ -90,8 +90,6 @@ function plataforma_app_login(){
 		$usuario = banco_escape_field($_REQUEST['user']);
 		$senha = $_REQUEST['pass'];
 		
-		$user_inactive = false;
-		
 		$usuarios = banco_select_name
 		(
 			banco_campos_virgulas(Array(
@@ -117,49 +115,65 @@ function plataforma_app_login(){
 				$id_usuarios = $usuarios[0]['id_usuarios'];
 				
 				if($status == 'A'){
-					$user_invalid = false;
+					// ===== Verificar o host do usuário.
 					
-					// ===== Gerar token do usuário.
-					
-					gestor_incluir_biblioteca('usuario');
-					
-					$tokenObj = usuario_app_gerar_token_autorizacao(Array(
-						'id_usuarios' => $id_usuarios,
-					));
-					
-					// ===== Pegar demais dados do usuário do banco de dados.
-					
-					$usuarios = banco_select(Array(
+					$hosts_usuarios_admins = banco_select(Array(
 						'unico' => true,
-						'tabela' => 'usuarios',
+						'tabela' => 'hosts_usuarios_admins',
 						'campos' => Array(
-							'nome',
+							'id_hosts',
 						),
 						'extra' => 
 							"WHERE id_usuarios='".$id_usuarios."'"
 					));
 					
-					$hosts = banco_select(Array(
-						'unico' => true,
-						'tabela' => 'hosts',
-						'campos' => Array(
-							'user_cpanel',
-						),
-						'extra' => 
-							"WHERE id_usuarios='".$id_usuarios."'"
-					));
-					
-					// ===== Retornar os dados do usuário e o token.
-					
-					plataforma_app_200(Array(
-						'token' => $tokenObj['token'],
-						'expiration' => $tokenObj['expiration'],
-						'userData' => Array(
-							'nome' => $usuarios['nome'],
-							'codigo' => ($hosts['user_cpanel'] ? $hosts['user_cpanel'] : $id_usuarios),
-							'avatar' => false,
-						),
-					));
+					if($hosts_usuarios_admins){
+						$user_invalid = false;
+						
+						// ===== Gerar token do usuário.
+						
+						gestor_incluir_biblioteca('usuario');
+						
+						$tokenObj = usuario_app_gerar_token_autorizacao(Array(
+							'id_usuarios' => $id_usuarios,
+						));
+						
+						// ===== Pegar demais dados do usuário do banco de dados.
+						
+						$usuarios = banco_select(Array(
+							'unico' => true,
+							'tabela' => 'usuarios',
+							'campos' => Array(
+								'nome',
+							),
+							'extra' => 
+								"WHERE id_usuarios='".$id_usuarios."'"
+						));
+						
+						$hosts = banco_select(Array(
+							'unico' => true,
+							'tabela' => 'hosts',
+							'campos' => Array(
+								'user_cpanel',
+							),
+							'extra' => 
+								"WHERE id_usuarios='".$id_usuarios."'"
+						));
+						
+						// ===== Retornar os dados do usuário e o token.
+						
+						plataforma_app_200(Array(
+							'token' => $tokenObj['token'],
+							'expiration' => $tokenObj['expiration'],
+							'userData' => Array(
+								'nome' => $usuarios['nome'],
+								'codigo' => ($hosts['user_cpanel'] ? $hosts['user_cpanel'] : $id_usuarios),
+								'avatar' => false,
+							),
+						));
+					} else {
+						$user_without_host = true;
+					}
 				} else {
 					$user_inactive = true;
 				}
@@ -170,7 +184,7 @@ function plataforma_app_login(){
 		
 		sleep(3);
 		
-		$alerta = gestor_variaveis(Array('modulo' => 'perfil-usuario','id' => 'app-recaptcha-invalid'));
+		$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'recaptcha-invalid'));
 		
 		$message = modelo_var_troca_tudo($alerta,"#url#",$_GESTOR['url-raiz'] . $_GESTOR['pagina#contato-url']);
 		
@@ -184,10 +198,12 @@ function plataforma_app_login(){
 	if($user_invalid){
 		sleep(3);
 		
-		if($user_inactive){
-			$message = gestor_variaveis(Array('modulo' => 'perfil-usuario','id' => 'alert-user-inactive'));
+		if(isset($user_without_host)){
+			$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-user-without-host'));
+		} else if(isset($user_inactive)){
+			$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-user-inactive'));
 		} else {
-			$message = gestor_variaveis(Array('modulo' => 'perfil-usuario','id' => 'alert-user-or-password-invalid'));
+			$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-user-or-password-invalid'));
 		}
 		
 		plataforma_app_200(Array(
@@ -335,38 +351,61 @@ function plataforma_app_permissao_token($token = ''){
 					$data_criacao = $usuarios_tokens[0]['data_criacao'];
 					$id_usuarios = $usuarios_tokens[0]['id_usuarios'];
 					
-					// ===== Verificar se precisa renovar JWTToken, se sim, apagar token anterior e criar um novo no lugar.
+					// ===== Verificar o host do usuário.
 					
-					$time_criacao = strtotime($data_criacao);
+					$hosts_usuarios_admins = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'hosts_usuarios_admins',
+						'campos' => Array(
+							'id_hosts',
+						),
+						'extra' => 
+							"WHERE id_usuarios='".$id_usuarios."'"
+					));
 					
-					if($time_criacao + $_GESTOR['app-token-renewtime'] < time()){
-						gestor_incluir_biblioteca('usuario');
+					if($hosts_usuarios_admins){
+						// ===== Verificar se precisa renovar JWTToken, se sim, apagar token anterior e criar um novo no lugar.
 						
-						$tokenObj = usuario_app_gerar_token_autorizacao(Array(
-							'id_usuarios' => $id_usuarios,
-						));
+						$time_criacao = strtotime($data_criacao);
 						
-						$id_usuarios_tokens = $usuarios_tokens[0]['id_usuarios_tokens'];
+						if($time_criacao + $_GESTOR['app-token-renewtime'] < time()){
+							gestor_incluir_biblioteca('usuario');
+							
+							$tokenObj = usuario_app_gerar_token_autorizacao(Array(
+								'id_usuarios' => $id_usuarios,
+							));
+							
+							$id_usuarios_tokens = $usuarios_tokens[0]['id_usuarios_tokens'];
+							
+							banco_delete
+							(
+								"usuarios_tokens",
+								"WHERE id_usuarios_tokens='".$id_usuarios_tokens."'"
+							);
+							
+							// ===== Renovar o token no cliente.
+							
+							$_GESTOR['usuario-token-renew'] = true;
+							$_GESTOR['usuario-token-new-token'] = $tokenObj['token'];
+							$_GESTOR['usuario-token-new-expiration'] = $tokenObj['expiration'];
+						}
 						
-						banco_delete
-						(
-							"usuarios_tokens",
-							"WHERE id_usuarios_tokens='".$id_usuarios_tokens."'"
-						);
+						$_GESTOR['usuario-id'] = $id_usuarios;
+						$_GESTOR['usuario-token-id'] = $tokenPubId;
+						$_GESTOR['usuario-host-id'] = $hosts_usuarios_admins['id_hosts'];
 						
-						// ===== Renovar o token no cliente.
-						
-						$_GESTOR['usuario-token-renew'] = true;
-						$_GESTOR['usuario-token-new-token'] = $tokenObj['token'];
-						$_GESTOR['usuario-token-new-expiration'] = $tokenObj['expiration'];
+						return true;
 					}
-					
-					$_GESTOR['usuario-id'] = $id_usuarios;
-					$_GESTOR['usuario-token-id'] = $tokenPubId;
-					
-					return true;
 				}
+			} else {
+				plataforma_app_200(Array(
+					'status' => 'tokenExpired',
+				));
 			}
+		} else {
+			plataforma_app_200(Array(
+				'status' => 'tokenExpired',
+			));
 		}
 	}
 	
