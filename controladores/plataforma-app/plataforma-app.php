@@ -138,7 +138,9 @@ function plataforma_app_baixar_voucher(){
 											'unico' => true,
 											'tabela' => 'hosts_pedidos_servico_variacoes',
 											'campos' => Array(
-												'nome',
+												'nome_servico',
+												'nome_lote',
+												'nome_variacao',
 											),
 											'extra' => 
 												"WHERE id_hosts_servicos='".$hosts_vouchers['id_hosts_servicos']."'"
