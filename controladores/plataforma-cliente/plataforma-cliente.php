@@ -3662,7 +3662,7 @@ function plataforma_cliente_voucher(){
 							$jwt = autenticacao_gerar_jwt_chave_privada(Array(
 								'host' => 'Entrey',
 								'expiration' => $expiration,
-								'pubID' => $voucher['codigo'],
+								'pubID' => $codigo.'#'.$voucher['codigo'],
 								'chavePrivada' => $chavePrivada,
 								'chavePrivadaSenha' => $chavePrivadaSenha,
 							));

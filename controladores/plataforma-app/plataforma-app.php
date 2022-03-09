@@ -31,9 +31,32 @@ function stream_php(){
 // =========================== Funções da Plataforma
 
 function plataforma_app_baixar_voucher(){
-	plataforma_app_200(Array(
-		'baixar_voucher' => true
-	));
+	global $_GESTOR;
+	
+	if(isset($_REQUEST['opcao']) && isset($_REQUEST['codigo'])){
+		$opcao = $_REQUEST['opcao'];
+		$codigo = $_REQUEST['codigo'];
+		
+		// ===== Tratar cada opção enviada.
+		
+		switch($opcao){
+			// ===== Verifica se o voucher enviado é válido.
+			
+			case 'verificar':
+				
+			break;
+			case 'baixar':
+				
+			break;
+		}
+	} else {
+		$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-codigo-opcao-mandatory'));
+		
+		plataforma_app_200(Array(
+			'message' => $message,
+		));
+	}
+	
 }
 
 function plataforma_app_login(){
