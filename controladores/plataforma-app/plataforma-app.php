@@ -174,7 +174,7 @@ function plataforma_app_baixar_voucher(){
 									plataforma_app_200($dadosRetorno);
 								break;
 								case 'baixar':
-									
+									plataforma_app_200();
 								break;
 								default:
 									$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-codigo-opcao-mandatory'));
