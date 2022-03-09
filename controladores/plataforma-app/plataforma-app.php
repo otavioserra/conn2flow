@@ -69,6 +69,8 @@ function plataforma_app_baixar_voucher(){
 			if($status == 'pago'){
 				// ===== Validar o código do voucher enviado.
 				
+				gestor_incluir_biblioteca('autenticacao');
+				
 				$voucherCodigo = autenticacao_validar_jwt_chave_publica(Array(
 					'token' => $JWT,
 					'chavePublica' => $voucher_chave,
