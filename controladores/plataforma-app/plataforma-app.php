@@ -55,7 +55,7 @@ function plataforma_app_baixar_voucher(){
 				'id_hosts_pedidos',
 			),
 			'extra' => 
-				"WHERE codigo='".$pedido."'"
+				"WHERE codigo='".banco_escape_field($pedido)."'"
 				." AND id_hosts='".$_GESTOR['usuario-host-id']."'"
 		));
 		
