@@ -179,16 +179,16 @@ function plataforma_app_baixar_voucher(){
 							}
 						} else {
 							$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-voucher-used'));
-							$message = modelo_var_troca_tudo($alerta,"#pedido#",$pedido);
-							$message = modelo_var_troca_tudo($alerta,"#voucher#",$voucherCodigo);
+							$message = modelo_var_troca_tudo($message,"#pedido#",$pedido);
+							$message = modelo_var_troca_tudo($message,"#voucher#",$voucherCodigo);
 						}
 					} else {
 						$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-voucher-not-found'));
-						$message = modelo_var_troca_tudo($alerta,"#pedido#",$pedido);
+						$message = modelo_var_troca_tudo($message,"#pedido#",$pedido);
 					}
 				} else {
 					$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-voucher-not-valid'));
-					$message = modelo_var_troca_tudo($alerta,"#pedido#",$pedido);
+					$message = modelo_var_troca_tudo($message,"#pedido#",$pedido);
 				}
 			} else {
 				$variaveis = banco_select(Array(
@@ -204,11 +204,11 @@ function plataforma_app_baixar_voucher(){
 				));
 				
 				$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-order-not-paied'));
-				$message = modelo_var_troca_tudo($alerta,"#status#",strip_tags($variaveis['valor']));
+				$message = modelo_var_troca_tudo($message,"#status#",strip_tags($variaveis['valor']));
 			}
 		} else {
 			$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-order-not-found'));
-			$message = modelo_var_troca_tudo($alerta,"#pedido#",$pedido);
+			$message = modelo_var_troca_tudo($message,"#pedido#",$pedido);
 		}
 	} else {
 		$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-codigo-opcao-mandatory'));
