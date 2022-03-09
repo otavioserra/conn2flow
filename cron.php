@@ -789,6 +789,7 @@ function cron_vouchers_expirados(){
 				'tabela' => 'hosts_vouchers',
 				'campos' => Array(
 					'id_hosts_vouchers',
+					'status',
 				),
 				'extra' => 
 					"WHERE id_hosts_pedidos='".$id_hosts_pedidos."'"
@@ -797,10 +798,15 @@ function cron_vouchers_expirados(){
 			
 			if($hosts_vouchers)
 			foreach($hosts_vouchers as $voucher){
-				// ===== Guardar provisoriamente o JWT no banco de dados.
+				// ===== Deletar o JWT do banco de dados.
 				
 				banco_update_campo('jwt_bd','NULL',true);
-				banco_update_campo('status','jwt-bd-expirado');
+				
+				// ===== Verificar o status do voucher e só mudar status de vouchers não utilizados.
+			
+				if($voucher['status'] == 'jwt-gerado'){
+					banco_update_campo('status','jwt-bd-expirado');
+				}
 				
 				banco_update_executar('hosts_vouchers',"WHERE id_hosts_vouchers='".$voucher['id_hosts_vouchers']."'");
 			}

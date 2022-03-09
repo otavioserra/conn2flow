@@ -37,26 +37,185 @@ function plataforma_app_baixar_voucher(){
 		$opcao = $_REQUEST['opcao'];
 		$codigo = $_REQUEST['codigo'];
 		
-		// ===== Tratar cada opção enviada.
+		// ===== Separar o pedido do JWT.
 		
-		switch($opcao){
-			// ===== Verifica se o voucher enviado é válido.
+		$pedido_e_JWT = explode(".=",$codigo);
+		
+		$pedido = base64_decode($pedido_e_JWT[0]);
+		$JWT = $pedido_e_JWT[1];
+		
+		// ===== Verificar se o pedido faz parte do host do usuário logado.
+		
+		$hosts_pedidos = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'hosts_pedidos',
+			'campos' => Array(
+				'voucher_chave',
+				'status',
+				'id_hosts_pedidos',
+			),
+			'extra' => 
+				"WHERE codigo='".$pedido."'"
+				." AND id_hosts='".$_GESTOR['usuario-host-id']."'"
+		));
+		
+		if($hosts_pedidos){
+			$voucher_chave = $hosts_pedidos['voucher_chave'];
+			$status = $hosts_pedidos['status'];
+			$id_hosts_pedidos = $hosts_pedidos['id_hosts_pedidos'];
 			
-			case 'verificar':
+			// ===== Verificar se o status é 'pago'.
+			
+			if($status == 'pago'){
+				// ===== Validar o código do voucher enviado.
 				
-			break;
-			case 'baixar':
+				$voucherCodigo = autenticacao_validar_jwt_chave_publica(Array(
+					'token' => $JWT,
+					'chavePublica' => $voucher_chave,
+				));
 				
-			break;
+				if($voucherCodigo){
+					// ===== Verificar o status do voucher.
+					
+					$hosts_vouchers = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'hosts_vouchers',
+						'campos' => Array(
+							'status',
+						),
+						'extra' => 
+							"WHERE codigo='".$voucherCodigo."'"
+							." AND id_hosts_pedidos='".$id_hosts_pedidos."'"
+							." AND id_hosts='".$_GESTOR['usuario-host-id']."'"
+					));
+					
+					if($hosts_vouchers){
+						$voucherStatus = $hosts_vouchers['status'];
+						
+						// ===== Verificar se o status do voucher é válido.
+						
+						if($voucherStatus == 'jwt-bd-expirado' || $voucherStatus == 'jwt-gerado'){
+							// ===== Tratar cada opção enviada.
+							
+							switch($opcao){
+								// ===== Verifica se o voucher enviado é válido.
+								
+								case 'verificar':
+									// ===== Pegar dados do voucher.
+								
+									$hosts_vouchers = banco_select(Array(
+										'unico' => true,
+										'tabela' => 'hosts_vouchers',
+										'campos' => Array(
+											'id_hosts_servicos',
+											'id_hosts_servicos_variacoes',
+											'nome',
+											'documento',
+											'telefone',
+											'loteVariacao',
+										),
+										'extra' => 
+											"WHERE codigo='".$voucherCodigo."'"
+											." AND id_hosts_pedidos='".$id_hosts_pedidos."'"
+											." AND id_hosts='".$_GESTOR['usuario-host-id']."'"
+									));
+									
+									$dadosRetorno = Array(
+										'voucherCodigo' => $voucherCodigo,
+										'nome' => $hosts_vouchers['nome'],
+										'documento' => $hosts_vouchers['documento'],
+										'telefone' => $hosts_vouchers['telefone'],
+									);
+									
+									// ===== Pegar os dados do lote e variação caso necessário.
+									
+									if($hosts_vouchers['loteVariacao']){
+										// ===== Pegar os dados do pedido serviço variação.
+										
+										$hosts_pedidos_servico_variacoes = banco_select(Array(
+											'unico' => true,
+											'tabela' => 'hosts_pedidos_servico_variacoes',
+											'campos' => Array(
+												'nome',
+											),
+											'extra' => 
+												"WHERE id_hosts_servicos='".$hosts_vouchers['id_hosts_servicos']."'"
+												." AND id_hosts_servicos_variacoes='".$hosts_vouchers['id_hosts_servicos_variacoes']."'"
+												." AND id_hosts_pedidos='".$id_hosts_pedidos."'"
+												." AND id_hosts='".$_GESTOR['usuario-host-id']."'"
+										));
+										
+										$dadosRetorno['servicoNome'] = $hosts_pedidos_servico_variacoes['nome_servico'];
+										$dadosRetorno['servicoLoteEVariacao'] = $hosts_pedidos_servico_variacoes['nome_lote'].' - '.$hosts_pedidos_servico_variacoes['nome_variacao'];
+									} else {
+										// ===== Pegar dados do pedido serviço.
+									
+										$hosts_pedidos_servicos = banco_select(Array(
+											'unico' => true,
+											'tabela' => 'hosts_pedidos_servicos',
+											'campos' => Array(
+												'nome',
+											),
+											'extra' => 
+												"WHERE id_hosts_servicos='".$hosts_vouchers['id_hosts_servicos']."'"
+												." AND id_hosts_pedidos='".$id_hosts_pedidos."'"
+												." AND id_hosts='".$_GESTOR['usuario-host-id']."'"
+										));
+										
+										$dadosRetorno['servicoNome'] = $hosts_pedidos_servicos['nome'];
+									}
+									
+									// ===== Retornar os dados.
+									
+									plataforma_app_200($dadosRetorno);
+								break;
+								case 'baixar':
+									
+								break;
+							}
+						} else {
+							$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-voucher-used'));
+							$message = modelo_var_troca_tudo($alerta,"#pedido#",$pedido);
+							$message = modelo_var_troca_tudo($alerta,"#voucher#",$voucherCodigo);
+						}
+					} else {
+						$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-voucher-not-found'));
+						$message = modelo_var_troca_tudo($alerta,"#pedido#",$pedido);
+					}
+				} else {
+					$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-voucher-not-valid'));
+					$message = modelo_var_troca_tudo($alerta,"#pedido#",$pedido);
+				}
+			} else {
+				$variaveis = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'variaveis',
+					'campos' => Array(
+						'valor',
+					),
+					'extra' => 
+						"WHERE modulo='_sistema'"
+						." AND grupo='pedidos-status'"
+						." AND id='".$status."'"
+				));
+				
+				$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-order-not-paied'));
+				$message = modelo_var_troca_tudo($alerta,"#status#",strip_tags($variaveis['valor']));
+			}
+		} else {
+			$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-order-not-found'));
+			$message = modelo_var_troca_tudo($alerta,"#pedido#",$pedido);
 		}
 	} else {
 		$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-codigo-opcao-mandatory'));
-		
-		plataforma_app_200(Array(
-			'message' => $message,
-		));
 	}
 	
+	// ===== Retorno de mensagem de erro caso não consiga validar as opções.
+	
+	plataforma_app_200(Array(
+		'message' => $message,
+		'status' => 'NOT-OK',
+	));
 }
 
 function plataforma_app_login(){
