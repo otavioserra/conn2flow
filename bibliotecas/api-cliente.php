@@ -8,6 +8,63 @@ $_GESTOR['biblioteca-api-cliente']							=	Array(
 	'versao' => '1.0.2',
 );
 
+// ===== Funções de chamadas do app.
+
+function api_cliente_app_vouchers($params = false){
+	/**********
+		Descrição: api responsável pela manipulação dos dados dos vouchers com a plataforma servidor.
+	**********/
+	
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// opcao - String - Obrigatório - Opção almejada.
+	// id_hosts - Int - Obrigatório - Identificador do host.
+	
+	// Se opcao == 'atualizar-status':
+	
+	// id_hosts_vouchers - Int - Obrigatório - Identificador do registro no banco de dados.
+	
+	// ===== 
+	
+	if(isset($opcao) && isset($id_hosts)){
+		$dados = Array();
+		
+		switch($opcao){
+			case 'atualizar-status':
+				$hosts_vouchers = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_vouchers',
+					'campos' => Array(
+						'id_hosts_vouchers',
+						'status',
+						'data_uso',
+					),
+					'extra' => 
+						"WHERE id_hosts_vouchers='".$id_hosts_vouchers."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				$dados['vouchers'] = $hosts_vouchers;
+			break;
+		}
+		
+		// ===== Acessar a interface no cliente e retornar objeto do retorno.
+		
+		$retorno = api_cliente_interface(Array(
+			'interface' => 'vouchers',
+			'id_hosts' => $id_hosts,
+			'opcao' => $opcao,
+			'dados' => $dados,
+		));
+		
+		return $retorno;
+	}
+}
+
 // ===== Funções de chamadas do cron.
 
 function api_cliente_cron_servicos($params = false){

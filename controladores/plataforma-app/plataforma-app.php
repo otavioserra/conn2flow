@@ -84,6 +84,7 @@ function plataforma_app_baixar_voucher(){
 						'tabela' => 'hosts_vouchers',
 						'campos' => Array(
 							'status',
+							'id_hosts_vouchers',
 						),
 						'extra' => 
 							"WHERE codigo='".$voucherCodigo."'"
@@ -93,6 +94,7 @@ function plataforma_app_baixar_voucher(){
 					
 					if($hosts_vouchers){
 						$voucherStatus = $hosts_vouchers['status'];
+						$id_hosts_vouchers = $hosts_vouchers['id_hosts_vouchers'];
 						
 						// ===== Verificar se o status do voucher é válido.
 						
@@ -174,7 +176,68 @@ function plataforma_app_baixar_voucher(){
 									plataforma_app_200($dadosRetorno);
 								break;
 								case 'baixar':
-									plataforma_app_200();
+									// ===== Atualizar o status do voucher no banco de dados.
+									
+									banco_update_campo('status','usado');
+									banco_update_campo('data_uso','NOW()',true);
+									
+									banco_update_executar('hosts_vouchers',"WHERE id_hosts_vouchers='".$id_hosts_vouchers."'");
+									
+									// ===== Atualizar pedido no banco.
+									
+									banco_update_campo('data_modificacao','NOW()',true);
+									banco_update_campo('versao','versao+1',true);
+									
+									banco_update_executar('hosts_pedidos',"WHERE id_hosts_pedidos='".$id_hosts_pedidos."'");
+									
+									// ===== Gravar histórico no pedido.
+									
+									gestor_incluir_biblioteca('log');
+									
+									log_usuarios(Array(
+										'id_hosts' => $_GESTOR['usuario-host-id'],
+										'id_usuarios' => $_GESTOR['usuario-id'],
+										'id' => $id_hosts_pedidos,
+										'tabela' => Array(
+											'nome' => 'hosts_pedidos',
+											'versao' => 'versao',
+											'id_numerico' => 'id_hosts_pedidos',
+										),
+										'alteracoes' => Array(
+											Array(
+												'modulo' => 'pedidos',
+												'alteracao' => 'orders-finish',
+												'alteracao_txt' => 'Voucher #'.$voucherCodigo.' baixado com sucesso!',
+											)
+										),
+									));
+									
+									// ===== Chamada da API-Cliente para atualizar dados no host do usuário.
+		
+									gestor_incluir_biblioteca('api-cliente');
+									
+									$retorno = api_cliente_app_vouchers(Array(
+										'opcao' => 'atualizar-status',
+										'id_hosts' => $_GESTOR['usuario-host-id'],
+										'id_hosts_vouchers' => $id_hosts_vouchers,
+									));
+									
+									if(!$retorno['completed']){
+										$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-orders-finished-api-client-error'));
+										
+										$message = modelo_var_troca($message,"#error-msg#",$retorno['error-msg']);
+										
+									} else {
+										$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-orders-finished'));
+									}
+									
+									$message = modelo_var_troca($message,"#codigo#",$voucherCodigo);
+									
+									// ===== Retornar OK.
+								
+									plataforma_app_200(Array(
+										'message' => $message,
+									));
 								break;
 								default:
 									$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-codigo-opcao-mandatory'));
