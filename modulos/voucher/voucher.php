@@ -112,6 +112,7 @@ function voucher_padrao(){
 			// ===== Dados do voucher retornado.
 			
 			$dataVouchers = $retorno['data']['vouchers'];
+			$reemitiuPeloMenosUm = ($retorno['data']['reemitiuPeloMenosUm'] == 'sim' ? true : false);
 			
 			// ===== Atualizar os dados localmente dos vouchers.
 			
@@ -572,6 +573,10 @@ function voucher_padrao(){
 			}
 			
 			// ===== Remover marcadores.
+			
+			if(!$reemitiuPeloMenosUm){
+				pagina_trocar_variavel_valor('<!-- cel-voucher -->','',true);
+			}
 			
 			pagina_trocar_variavel_valor('<!-- cel-voucher-static -->','',true);
 			
