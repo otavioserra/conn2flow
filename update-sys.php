@@ -363,6 +363,7 @@ function atualizar_banco_de_dados(){
 					`telefone` VARCHAR(255) NULL DEFAULT NULL,
 					`status` VARCHAR(255) NULL DEFAULT NULL,
 					`loteVariacao` TINYINT NULL DEFAULT NULL,
+					`data_uso` DATETIME NULL DEFAULT NULL,
 					PRIMARY KEY (`id_vouchers`))
 				ENGINE = InnoDB'
 			,
