@@ -3650,6 +3650,7 @@ function plataforma_cliente_voucher(){
 							'campos' => Array(
 								'id_hosts_vouchers',
 								'codigo',
+								'status',
 							),
 							'extra' => 
 								"WHERE id_hosts_pedidos='".$id_hosts_pedidos."'"
@@ -3657,22 +3658,26 @@ function plataforma_cliente_voucher(){
 						
 						if($hosts_vouchers)
 						foreach($hosts_vouchers as $voucher){
-							// ===== Gerar o JWT de cada voucher.
+							// ===== Se o voucher já foi baixado, não permitir reemitir o voucher.
 							
-							$jwt = autenticacao_gerar_jwt_chave_privada(Array(
-								'host' => 'Entrey',
-								'expiration' => $expiration,
-								'pubID' => $voucher['codigo'],
-								'chavePrivada' => $chavePrivada,
-								'chavePrivadaSenha' => $chavePrivadaSenha,
-							));
-							
-							// ===== Guardar provisoriamente o JWT no banco de dados.
-							
-							banco_update_campo('jwt_bd',base64_encode($codigo).'.='.$jwt);
-							banco_update_campo('status','jwt-gerado');
-							
-							banco_update_executar('hosts_vouchers',"WHERE id_hosts_vouchers='".$voucher['id_hosts_vouchers']."'");
+							if($voucher['status'] != 'usado'){
+								// ===== Gerar o JWT de cada voucher.
+								
+								$jwt = autenticacao_gerar_jwt_chave_privada(Array(
+									'host' => 'Entrey',
+									'expiration' => $expiration,
+									'pubID' => $voucher['codigo'],
+									'chavePrivada' => $chavePrivada,
+									'chavePrivadaSenha' => $chavePrivadaSenha,
+								));
+								
+								// ===== Guardar provisoriamente o JWT no banco de dados.
+								
+								banco_update_campo('jwt_bd',base64_encode($codigo).'.='.$jwt);
+								banco_update_campo('status','jwt-gerado');
+								
+								banco_update_executar('hosts_vouchers',"WHERE id_hosts_vouchers='".$voucher['id_hosts_vouchers']."'");
+							}
 						}
 						
 						// ===== Atualizar pedido no banco.
