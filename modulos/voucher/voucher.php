@@ -575,7 +575,7 @@ function voucher_padrao(){
 			// ===== Remover marcadores.
 			
 			if(!$reemitiuPeloMenosUm){
-				pagina_trocar_variavel_valor('<!-- cel-voucher -->','',true);
+				pagina_trocar_variavel_valor('<!-- cont-vouchers -->','',true);
 			}
 			
 			pagina_trocar_variavel_valor('<!-- cel-voucher-static -->','',true);
