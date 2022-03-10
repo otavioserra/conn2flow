@@ -312,7 +312,20 @@ function pedidos_visualizar(){
 					
 					if($hosts_vouchers_status)
 					foreach($hosts_vouchers_status as $status){
-						if($status['id'] == $voucher['status']){
+						$found = false;
+						switch($status['id']){
+							case 'disponivel':
+								if($voucher['status'] == 'jwt-bd-expirado' || $voucher['status'] == 'jwt-gerado'){
+									$found = true;
+								}
+							break;
+							default:
+								if($voucher['status'] == $status['id']){
+									$found = true;
+								}
+						}
+						
+						if($found){
 							$voucherStatus = $status['valor'];
 							break;
 						}
