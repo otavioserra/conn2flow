@@ -4,7 +4,7 @@ $(document).ready(function(){
 	function start(){
 		// ===== Aplicar a classe large para os labels.
 		
-		$('.voucherStatus > .label').addClass('large');
+		$('.voucherStatus').find('.label').addClass('large');
 		
 		// ===== Iniciação dos dados dos vouchers.
 		
