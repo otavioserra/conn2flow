@@ -1856,6 +1856,84 @@ function plataforma_servidor_servicos(){
 	return $retorno;
 }
 
+function plataforma_servidor_vouchers(){
+	
+	// ===== Verificar qual opção desta interface está sendo disparada e tratar cada caso separadamente.
+	
+	$opcao = $_REQUEST['opcao'];
+	
+	switch($opcao){
+		case 'atualizar-status':
+			// ===== Decodificar os dados em formato Array
+			
+			$dados = Array();
+			if(isset($_REQUEST['dados'])){
+				$dados = json_decode($_REQUEST['dados'],true);
+			}
+			
+			// ===== Verifica o ID referencial do registro.
+			
+			if(isset($dados['vouchers']['id_hosts_vouchers'])){
+				// ===== Busca no banco de dados o ID referido.
+				
+				$id_hosts_vouchers = banco_escape_field($dados['vouchers']['id_hosts_vouchers']);
+				
+				$resultado = banco_select_name
+				(
+					banco_campos_virgulas(Array(
+						'id_vouchers',
+					))
+					,
+					"vouchers",
+					"WHERE id_hosts_vouchers='".$id_hosts_vouchers."'"
+				);
+				
+				// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
+				
+				if($resultado){
+					unset($dados['vouchers']['id_hosts_vouchers']);
+					
+					$campo_tabela = "vouchers";
+					$campo_tabela_extra = "WHERE id_hosts_vouchers='".$id_hosts_vouchers."'";
+					
+					foreach($dados['vouchers'] as $chave => $dado){
+						switch($chave){
+							default:
+								$campo_nome = $chave; $editar[$campo_tabela][] = $campo_nome."='" . banco_escape_field($dado) . "'";
+						}
+					}
+					
+					$editar_sql[$campo_tabela] = banco_campos_virgulas($editar[$campo_tabela]);
+					
+					if($editar_sql[$campo_tabela]){
+						banco_update
+						(
+							$editar_sql[$campo_tabela],
+							$campo_tabela,
+							$campo_tabela_extra
+						);
+					}
+					$editar = false;$editar_sql = false;
+				}
+				
+				$retorno = Array(
+					'status' => 'OK',
+				);
+			} else {
+				$retorno = Array(
+					'status' => 'ID_NOT_DEFINED',
+				);
+			}
+		break;
+		default:
+			$retorno = Array(
+				'status' => 'OPTION_NOT_DEFINED',
+			);
+	}
+
+	return $retorno;
+}
+
 function plataforma_servidor_variaveis(){
 	
 	// ===== Verificar qual opção desta interface está sendo disparada e tratar cada caso separadamente.
@@ -3010,6 +3088,7 @@ function plataforma_servidor_start(){
 		case 'cron-servicos':				 $dados = plataforma_servidor_cron_servicos(); break;
 		case 'cron-pedidos':				 $dados = plataforma_servidor_cron_pedidos(); break;
 		case 'postagens':					 $dados = plataforma_servidor_postagens(); break;
+		case 'vouchers':					 $dados = plataforma_servidor_vouchers(); break;
 	}
 	
 	// ===== Caso haja dados criados por alguma opção, retornar JSON e finalizar. Senão retornar JSON 404.
