@@ -1667,7 +1667,7 @@ function api_cliente_variaveis_padroes($params = false){
 					),
 					'extra' => 
 						"WHERE modulo='_sistema'"
-						." AND (grupo='pedidos-status' OR grupo='pedidos-voucher-status'"
+						." AND (grupo='pedidos-status' OR grupo='pedidos-voucher-status')"
 				));
 				
 				// ===== Trocar módulo local por módulo remoto.
