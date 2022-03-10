@@ -114,6 +114,7 @@ function pedidos_visualizar(){
 			'telefone',
 			'loteVariacao',
 			'status',
+			'data_uso',
 		),
 		'extra' => 
 			"WHERE id_hosts_pedidos='".$hosts_pedidos['id_hosts_pedidos']."'"
@@ -216,8 +217,35 @@ function pedidos_visualizar(){
 					
 					if($hosts_vouchers_status)
 					foreach($hosts_vouchers_status as $status){
-						if($status['id'] == $voucher['status']){
+						$found = false;
+						switch($status['id']){
+							case 'disponivel':
+								if($voucher['status'] == 'jwt-bd-expirado' || $voucher['status'] == 'jwt-gerado'){
+									$found = true;
+								}
+							break;
+							default:
+								if($voucher['status'] == $status['id']){
+									$found = true;
+								}
+						}
+						
+						if($found){
 							$voucherStatus = $status['valor'];
+							
+							if($voucher['status'] == 'usado'){
+								gestor_incluir_biblioteca('formato');
+								
+								$data_uso = formato_dado(Array(
+									'valor' => $voucher['data_uso'],
+									'tipo' => 'dataHora',
+								));
+								
+								$dataDaBaixa = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'orders-finish-date'));
+								$dataDaBaixa = modelo_var_troca_tudo($dataDaBaixa,"#data#",$data_uso);
+								
+								$voucherStatus .= $dataDaBaixa;
+							}
 							break;
 						}
 					}
@@ -327,6 +355,20 @@ function pedidos_visualizar(){
 						
 						if($found){
 							$voucherStatus = $status['valor'];
+							
+							if($voucher['status'] == 'usado'){
+								gestor_incluir_biblioteca('formato');
+								
+								$data_uso = formato_dado(Array(
+									'valor' => $voucher['data_uso'],
+									'tipo' => 'dataHora',
+								));
+								
+								$dataDaBaixa = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'orders-finish-date'));
+								$dataDaBaixa = modelo_var_troca_tudo($dataDaBaixa,"#data#",$data_uso);
+								
+								$voucherStatus .= $dataDaBaixa;
+							}
 							break;
 						}
 					}
