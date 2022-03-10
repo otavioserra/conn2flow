@@ -207,7 +207,7 @@ function plataforma_app_baixar_voucher(){
 											Array(
 												'modulo' => 'pedidos',
 												'alteracao' => 'orders-finish',
-												'alteracao_txt' => 'Voucher #'.$voucherCodigo.' baixado com sucesso!',
+												'alteracao_txt' => 'Voucher <b>#'.$voucherCodigo.'</b> baixado com sucesso!',
 											)
 										),
 									));
