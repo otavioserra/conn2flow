@@ -3661,6 +3661,10 @@ function plataforma_cliente_voucher(){
 							// ===== Se o voucher já foi baixado, não permitir reemitir o voucher.
 							
 							if($voucher['status'] != 'usado'){
+								// ===== Marcar que reemitiu pelo menos um para atualizar o pedido.
+								
+								$reemitiuPeloMenosUm = true;
+								
 								// ===== Gerar o JWT de cada voucher.
 								
 								$jwt = autenticacao_gerar_jwt_chave_privada(Array(
@@ -3680,38 +3684,42 @@ function plataforma_cliente_voucher(){
 							}
 						}
 						
-						// ===== Atualizar pedido no banco.
+						// ===== Verifica se precisa atualizar o pedido.
 						
-						banco_update_campo('voucher_chave',$voucher_chave);
-						banco_update_campo('jwt_emitidos','1',true);
-						banco_update_campo('jwt_bd_expiracao',"ADDTIME(NOW(),'".$config['qrCodeGuardarBancoTempoLimiteHoras'].":00:00')",true,false);
-						banco_update_campo('jwt_bd_expirado','NULL',true);
-						banco_update_campo('data_modificacao','NOW()',true);
-						banco_update_campo('versao','versao+1',true);
-						
-						banco_update_executar('hosts_pedidos',"WHERE id_hosts_pedidos='".$id_hosts_pedidos."'");
-						
-						// ===== Gravar histórico no pedido.
-						
-						gestor_incluir_biblioteca('log');
-						
-						log_hosts_usuarios(Array(
-							'id_hosts' => $id_hosts,
-							'id_hosts_usuarios' => $id_hosts_usuarios,
-							'id' => $id_hosts_pedidos,
-							'tabela' => Array(
-								'nome' => 'hosts_pedidos',
-								'versao' => 'versao',
-								'id_numerico' => 'id_hosts_pedidos',
-							),
-							'alteracoes' => Array(
-								Array(
-									'modulo' => 'pedidos',
-									'alteracao' => 'vouchers-issued',
-									'alteracao_txt' => 'Vouchers emitidos com sucesso',
-								)
-							),
-						));
+						if(isset($reemitiuPeloMenosUm)){
+							// ===== Atualizar pedido no banco.
+							
+							banco_update_campo('voucher_chave',$voucher_chave);
+							banco_update_campo('jwt_emitidos','1',true);
+							banco_update_campo('jwt_bd_expiracao',"ADDTIME(NOW(),'".$config['qrCodeGuardarBancoTempoLimiteHoras'].":00:00')",true,false);
+							banco_update_campo('jwt_bd_expirado','NULL',true);
+							banco_update_campo('data_modificacao','NOW()',true);
+							banco_update_campo('versao','versao+1',true);
+							
+							banco_update_executar('hosts_pedidos',"WHERE id_hosts_pedidos='".$id_hosts_pedidos."'");
+							
+							// ===== Gravar histórico no pedido.
+							
+							gestor_incluir_biblioteca('log');
+							
+							log_hosts_usuarios(Array(
+								'id_hosts' => $id_hosts,
+								'id_hosts_usuarios' => $id_hosts_usuarios,
+								'id' => $id_hosts_pedidos,
+								'tabela' => Array(
+									'nome' => 'hosts_pedidos',
+									'versao' => 'versao',
+									'id_numerico' => 'id_hosts_pedidos',
+								),
+								'alteracoes' => Array(
+									Array(
+										'modulo' => 'pedidos',
+										'alteracao' => 'vouchers-issued',
+										'alteracao_txt' => 'Vouchers emitidos com sucesso',
+									)
+								),
+							));
+						}
 					}
 					
 					// ===== Valores dos vouchers a serem devolvidos.
@@ -3762,15 +3770,22 @@ function plataforma_cliente_voucher(){
 						
 						if($hosts_vouchers)
 						foreach($hosts_vouchers as $voucher){
-							$qrCodeImagem = autenticacao_qr_code(Array(
-								'conteudo' => $voucher['jwt_bd'],
-							));
-							
-							$vouchers[$voucher['id_hosts_vouchers']] = Array(
-								'qrCodeImagem' => $qrCodeImagem,
-								'status' => $voucher['status'],
-								'data_uso' => $voucher['data_uso'],
-							);
+							if($voucher['status'] != 'usado'){
+								$qrCodeImagem = autenticacao_qr_code(Array(
+									'conteudo' => $voucher['jwt_bd'],
+								));
+								
+								$vouchers[$voucher['id_hosts_vouchers']] = Array(
+									'qrCodeImagem' => $qrCodeImagem,
+									'status' => $voucher['status'],
+									'data_uso' => $voucher['data_uso'],
+								);
+							} else {
+								$vouchers[$voucher['id_hosts_vouchers']] = Array(
+									'status' => $voucher['status'],
+									'data_uso' => $voucher['data_uso'],
+								);
+							}
 						}
 						
 						// ===== Retornar dados.
@@ -3779,6 +3794,7 @@ function plataforma_cliente_voucher(){
 							'status' => 'OK',
 							'data' => Array(
 								'vouchers' => $vouchers,
+								'reemitiuPeloMenosUm' => (isset($reemitiuPeloMenosUm) ? 'sim' : 'nao'),
 							),
 						);
 					}
