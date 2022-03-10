@@ -218,6 +218,7 @@ function pedidos_visualizar(){
 					foreach($hosts_vouchers_status as $status){
 						if($status['id'] == $voucher['status']){
 							$voucherStatus = $status['valor'];
+							break;
 						}
 					}
 					
@@ -313,6 +314,7 @@ function pedidos_visualizar(){
 					foreach($hosts_vouchers_status as $status){
 						if($status['id'] == $voucher['status']){
 							$voucherStatus = $status['valor'];
+							break;
 						}
 					}
 					
