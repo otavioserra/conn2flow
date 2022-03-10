@@ -575,7 +575,7 @@ function voucher_padrao(){
 			// ===== Remover marcadores.
 			
 			if(!$reemitiuPeloMenosUm){
-				pagina_trocar_variavel_valor('<!-- cont-vouchers -->','',true);
+				$cel_nome = 'vouchers-emitidos-info'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 			}
 			
 			pagina_trocar_variavel_valor('<!-- cel-voucher-static -->','',true);
