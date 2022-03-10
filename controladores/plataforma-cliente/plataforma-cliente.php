@@ -3709,34 +3709,49 @@ function plataforma_cliente_voucher(){
 						));
 					}
 					
+					// ===== Valores dos vouchers a serem devolvidos.
+					
+					$vouchers = Array();
+					
+					// ===== Pegar os dados dos vouchers para atualizar os dados do host.
+					
+					$hosts_vouchers = banco_select(Array(
+						'tabela' => 'hosts_vouchers',
+						'campos' => Array(
+							'id_hosts_vouchers',
+							'jwt_bd',
+							'status',
+							'data_uso',
+						),
+						'extra' => 
+							"WHERE id_hosts_pedidos='".$id_hosts_pedidos."'"
+							." AND id_hosts='".$id_hosts."'"
+					));
+					
 					// ===== Verificar se está expirado e não foi enviado o pedido de reemissão.
 					
 					if($reemitir == 'nao' && $expirados){
+						// ===== Formatar os dados de retorno.
+						
+						if($hosts_vouchers)
+						foreach($hosts_vouchers as $voucher){
+							$vouchers[$voucher['id_hosts_vouchers']] = Array(
+								'status' => $voucher['status'],
+								'data_uso' => $voucher['data_uso'],
+							);
+						}
+						
 						// ===== Retornar dados.
 						
 						return Array(
 							'status' => 'OK',
 							'data' => Array(
 								'expirados' => 'sim',
+								'vouchers' => $vouchers,
 							),
 						);
 					} else {
-						// ===== Devolver os QR Codes.
-						
-						$hosts_vouchers = banco_select(Array(
-							'tabela' => 'hosts_vouchers',
-							'campos' => Array(
-								'id_hosts_vouchers',
-								'jwt_bd',
-							),
-							'extra' => 
-								"WHERE id_hosts_pedidos='".$id_hosts_pedidos."'"
-								." AND id_hosts='".$id_hosts."'"
-						));
-						
-						// ===== Gerar imagens do QRCode.
-						
-						$vouchers = Array();
+						// ===== Gerar imagens do QRCode e formatar os dados de retorno.
 						
 						gestor_incluir_biblioteca('autenticacao');
 						
@@ -3748,6 +3763,8 @@ function plataforma_cliente_voucher(){
 							
 							$vouchers[$voucher['id_hosts_vouchers']] = Array(
 								'qrCodeImagem' => $qrCodeImagem,
+								'status' => $voucher['status'],
+								'data_uso' => $voucher['data_uso'],
 							);
 						}
 						
