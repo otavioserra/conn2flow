@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'voucher';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.1.3',
+	'versao' => '1.1.4',
 );
 
 // ===== Funções Auxiliares
