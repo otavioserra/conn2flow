@@ -194,7 +194,18 @@ function voucher_padrao(){
 			if($retorno['data']['expirados']){
 				$cel_nome = 'cont-vouchers'; $cel[$cel_nome] = pagina_celula($cel_nome);
 				
-				pagina_trocar_variavel_valor('<!-- cont-vouchers -->',$cel['expirado'],true);
+				// ===== Verificar se há necessidade de mostrar o botão de reemissão de voucher.
+				
+				$botaoReemitirVouchers = false;
+				
+				if($vouchers)
+				foreach($vouchers as $voucher){
+					if($voucher['status'] != 'usado'){
+						$botaoReemitirVouchers = true;
+					}
+				}
+				
+				pagina_trocar_variavel_valor('<!-- cont-vouchers -->',($botaoReemitirVouchers ? $cel['expirado'] : ''),true);
 				pagina_trocar_variavel_valor('pedido',$codigo);
 			} else {
 				if($pedidos_servicos || $pedidos_servico_variacoes){
