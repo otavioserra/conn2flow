@@ -563,6 +563,7 @@ function plataforma_app_login(){
 		
 		plataforma_app_200(Array(
 			'message' => $message,
+			'status' => 'recaptchaInvalid',
 		));
 	}
 
@@ -581,6 +582,7 @@ function plataforma_app_login(){
 		
 		plataforma_app_200(Array(
 			'message' => $message,
+			'status' => 'userInvalid',
 		));
 	}
 	
