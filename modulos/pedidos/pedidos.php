@@ -113,11 +113,23 @@ function pedidos_visualizar(){
 			'documento',
 			'telefone',
 			'loteVariacao',
+			'status',
 		),
 		'extra' => 
 			"WHERE id_hosts_pedidos='".$hosts_pedidos['id_hosts_pedidos']."'"
 			." AND id_hosts='".$id_hosts."'"
 			." ORDER BY codigo ASC"
+	));
+	
+	$hosts_vouchers_status = banco_select(Array(
+		'tabela' => 'variaveis',
+		'campos' => Array(
+			'valor',
+			'id',
+		),
+		'extra' => 
+			"WHERE modulo='_sistema'"
+			." AND grupo='pedidos-voucher-status'"
 	));
 	
 	// ===== Montar células de resumo e dos vouchers.
@@ -198,6 +210,21 @@ function pedidos_visualizar(){
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-documento",(existe($voucher['documento']) ? $voucher['documento'] : $usuario['documento']));
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-telefone",(existe($voucher['telefone']) ? $voucher['telefone'] : $usuario['telefone']));
 					
+					// ===== Estado do voucher.
+					
+					$voucherStatus = '';
+					
+					if($hosts_vouchers_status)
+					foreach($hosts_vouchers_status as $status){
+						if($status['id'] == $voucher['status']){
+							$voucherStatus = $status['valor'];
+						}
+					}
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-status",$voucherStatus);
+					
+					// ===== Incluir na célula.
+					
 					pagina_celula_incluir($cel_nome,$cel_aux);
 				}
 			}
@@ -277,6 +304,21 @@ function pedidos_visualizar(){
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-nome",(existe($voucher['nome']) ? $voucher['nome'] : $usuario['nome']));
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-documento",(existe($voucher['documento']) ? $voucher['documento'] : $usuario['documento']));
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-telefone",(existe($voucher['telefone']) ? $voucher['telefone'] : $usuario['telefone']));
+					
+					// ===== Estado do voucher.
+					
+					$voucherStatus = '';
+					
+					if($hosts_vouchers_status)
+					foreach($hosts_vouchers_status as $status){
+						if($status['id'] == $voucher['status']){
+							$voucherStatus = $status['valor'];
+						}
+					}
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-status",$voucherStatus);
+					
+					// ===== Incluir na célula.
 					
 					pagina_celula_incluir($cel_nome,$cel_aux);
 				}

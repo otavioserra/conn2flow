@@ -180,7 +180,13 @@ function plataforma_app_baixar_voucher(){
 									$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-codigo-opcao-mandatory'));
 							}
 						} else {
-							$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-voucher-used'));
+							if($voucherStatus == 'usado'){
+								$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-voucher-used'));
+							} else {
+								$message = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-voucher-status-error'));
+								$message = modelo_var_troca_tudo($message,"#estado#",$voucherStatus);
+							}
+							
 							$message = modelo_var_troca_tudo($message,"#pedido#",$pedido);
 							$message = modelo_var_troca_tudo($message,"#voucher#",$voucherCodigo);
 						}
