@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'voucher';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.95',
+	'versao' => '1.1.0',
 );
 
 // ===== Funções Auxiliares
@@ -120,6 +120,71 @@ function voucher_padrao(){
 			
 			$cel_nome = 'cel-voucher'; $cel[$cel_nome] = pagina_celula($cel_nome);
 			
+			// ===== Pedido serviços.
+			
+			$pedidos_servicos = banco_select(Array(
+				'tabela' => 'pedidos_servicos',
+				'campos' => Array(
+					'id_hosts_servicos',
+					'id_hosts_arquivos_Imagem',
+					'nome',
+					'preco',
+					'quantidade',
+				),
+				'extra' => 
+					"WHERE id_hosts_pedidos='".$pedidos['id_hosts_pedidos']."'"
+			));
+			
+			// ===== Pedido serviços variações.
+			
+			$pedidos_servico_variacoes = banco_select(Array(
+				'tabela' => 'pedidos_servico_variacoes',
+				'campos' => Array(
+					'id_hosts_servicos',
+					'id_hosts_servicos_variacoes',
+					'id_hosts_arquivos_Imagem',
+					'nome_servico',
+					'nome_lote',
+					'nome_variacao',
+					'preco',
+					'quantidade',
+				),
+				'extra' => 
+					"WHERE id_hosts_pedidos='".$pedidos['id_hosts_pedidos']."'"
+			));
+			
+			// ===== Pedido vouchers.
+			
+			$vouchers = banco_select(Array(
+				'tabela' => 'vouchers',
+				'campos' => Array(
+					'id_hosts_vouchers',
+					'id_hosts_servicos',
+					'id_hosts_servicos_variacoes',
+					'codigo',
+					'nome',
+					'documento',
+					'telefone',
+					'loteVariacao',
+				),
+				'extra' => 
+					"WHERE id_hosts_pedidos='".$pedidos['id_hosts_pedidos']."'"
+			));
+			
+			// ===== Dados do voucher retornado.
+			
+			$dataVouchers = $retorno['data']['vouchers'];
+			
+			// ===== Atualizar os dados localmente dos vouchers.
+			
+			if($dataVouchers)
+			foreach($dataVouchers as $id_hosts_vouchers => $voucher){
+				banco_update_campo('status',$voucher['status']);
+				banco_update_campo('data_uso',$voucher['data_uso']);
+				
+				banco_update_executar('vouchers',"WHERE id_hosts_pedidos='".$pedidos['id_hosts_pedidos']."' AND id_hosts_vouchers='".$id_hosts_vouchers."'");
+			}
+			
 			// ===== Verificar se está expirado.
 			
 			if($retorno['data']['expirados']){
@@ -128,61 +193,6 @@ function voucher_padrao(){
 				pagina_trocar_variavel_valor('<!-- cont-vouchers -->',$cel['expirado'],true);
 				pagina_trocar_variavel_valor('pedido',$codigo);
 			} else {
-				// ===== Dados do voucher retornado.
-				
-				$dataVouchers = $retorno['data']['vouchers'];
-				
-				// ===== Pedido serviços.
-				
-				$pedidos_servicos = banco_select(Array(
-					'tabela' => 'pedidos_servicos',
-					'campos' => Array(
-						'id_hosts_servicos',
-						'id_hosts_arquivos_Imagem',
-						'nome',
-						'preco',
-						'quantidade',
-					),
-					'extra' => 
-						"WHERE id_hosts_pedidos='".$pedidos['id_hosts_pedidos']."'"
-				));
-				
-				// ===== Pedido serviços variações.
-				
-				$pedidos_servico_variacoes = banco_select(Array(
-					'tabela' => 'pedidos_servico_variacoes',
-					'campos' => Array(
-						'id_hosts_servicos',
-						'id_hosts_servicos_variacoes',
-						'id_hosts_arquivos_Imagem',
-						'nome_servico',
-						'nome_lote',
-						'nome_variacao',
-						'preco',
-						'quantidade',
-					),
-					'extra' => 
-						"WHERE id_hosts_pedidos='".$pedidos['id_hosts_pedidos']."'"
-				));
-				
-				// ===== Pedido vouchers.
-				
-				$vouchers = banco_select(Array(
-					'tabela' => 'vouchers',
-					'campos' => Array(
-						'id_hosts_vouchers',
-						'id_hosts_servicos',
-						'id_hosts_servicos_variacoes',
-						'codigo',
-						'nome',
-						'documento',
-						'telefone',
-						'loteVariacao',
-					),
-					'extra' => 
-						"WHERE id_hosts_pedidos='".$pedidos['id_hosts_pedidos']."'"
-				));
-				
 				if($pedidos_servicos || $pedidos_servico_variacoes){
 					// ===== Varrer todos os serviços.
 					
