@@ -33,6 +33,8 @@ function stream_php(){
 function plataforma_app_baixar_voucher(){
 	global $_GESTOR;
 	
+	$id_hosts = $_GESTOR['usuario-host-id'];
+	
 	if(isset($_REQUEST['opcao']) && isset($_REQUEST['codigo'])){
 		$opcao = $_REQUEST['opcao'];
 		$codigo = $_REQUEST['codigo'];
@@ -53,16 +55,18 @@ function plataforma_app_baixar_voucher(){
 				'voucher_chave',
 				'status',
 				'id_hosts_pedidos',
+				'id_hosts_usuarios',
 			),
 			'extra' => 
 				"WHERE codigo='".banco_escape_field($pedido)."'"
-				." AND id_hosts='".$_GESTOR['usuario-host-id']."'"
+				." AND id_hosts='".$id_hosts."'"
 		));
 		
 		if($hosts_pedidos){
 			$voucher_chave = $hosts_pedidos['voucher_chave'];
 			$status = $hosts_pedidos['status'];
 			$id_hosts_pedidos = $hosts_pedidos['id_hosts_pedidos'];
+			$id_hosts_usuarios = $hosts_pedidos['id_hosts_usuarios'];
 			
 			// ===== Verificar se o status é 'pago'.
 			
@@ -89,7 +93,7 @@ function plataforma_app_baixar_voucher(){
 						'extra' => 
 							"WHERE codigo='".$voucherCodigo."'"
 							." AND id_hosts_pedidos='".$id_hosts_pedidos."'"
-							." AND id_hosts='".$_GESTOR['usuario-host-id']."'"
+							." AND id_hosts='".$id_hosts."'"
 					));
 					
 					if($hosts_vouchers){
@@ -121,7 +125,7 @@ function plataforma_app_baixar_voucher(){
 										'extra' => 
 											"WHERE codigo='".$voucherCodigo."'"
 											." AND id_hosts_pedidos='".$id_hosts_pedidos."'"
-											." AND id_hosts='".$_GESTOR['usuario-host-id']."'"
+											." AND id_hosts='".$id_hosts."'"
 									));
 									
 									$dadosRetorno = Array(
@@ -148,7 +152,7 @@ function plataforma_app_baixar_voucher(){
 												"WHERE id_hosts_servicos='".$hosts_vouchers['id_hosts_servicos']."'"
 												." AND id_hosts_servicos_variacoes='".$hosts_vouchers['id_hosts_servicos_variacoes']."'"
 												." AND id_hosts_pedidos='".$id_hosts_pedidos."'"
-												." AND id_hosts='".$_GESTOR['usuario-host-id']."'"
+												." AND id_hosts='".$id_hosts."'"
 										));
 										
 										$dadosRetorno['servicoNome'] = $hosts_pedidos_servico_variacoes['nome_servico'];
@@ -165,7 +169,7 @@ function plataforma_app_baixar_voucher(){
 											'extra' => 
 												"WHERE id_hosts_servicos='".$hosts_vouchers['id_hosts_servicos']."'"
 												." AND id_hosts_pedidos='".$id_hosts_pedidos."'"
-												." AND id_hosts='".$_GESTOR['usuario-host-id']."'"
+												." AND id_hosts='".$id_hosts."'"
 										));
 										
 										$dadosRetorno['servicoNome'] = $hosts_pedidos_servicos['nome'];
@@ -195,7 +199,7 @@ function plataforma_app_baixar_voucher(){
 									gestor_incluir_biblioteca('log');
 									
 									log_usuarios(Array(
-										'id_hosts' => $_GESTOR['usuario-host-id'],
+										'id_hosts' => $id_hosts,
 										'id_usuarios' => $_GESTOR['usuario-id'],
 										'id' => $id_hosts_pedidos,
 										'tabela' => Array(
@@ -212,13 +216,125 @@ function plataforma_app_baixar_voucher(){
 										),
 									));
 									
+									// ===== Pegar dados do voucher.
+								
+									$hosts_vouchers = banco_select(Array(
+										'unico' => true,
+										'tabela' => 'hosts_vouchers',
+										'campos' => Array(
+											'id_hosts_servicos',
+											'id_hosts_servicos_variacoes',
+											'loteVariacao',
+										),
+										'extra' => 
+											"WHERE codigo='".$voucherCodigo."'"
+											." AND id_hosts_pedidos='".$id_hosts_pedidos."'"
+											." AND id_hosts='".$id_hosts."'"
+									));
+									
+									// ===== Pegar os dados do lote e variação caso necessário.
+									
+									if($hosts_vouchers['loteVariacao']){
+										// ===== Pegar os dados do pedido serviço variação.
+										
+										$hosts_pedidos_servico_variacoes = banco_select(Array(
+											'unico' => true,
+											'tabela' => 'hosts_pedidos_servico_variacoes',
+											'campos' => Array(
+												'nome_servico',
+												'nome_lote',
+												'nome_variacao',
+											),
+											'extra' => 
+												"WHERE id_hosts_servicos='".$hosts_vouchers['id_hosts_servicos']."'"
+												." AND id_hosts_servicos_variacoes='".$hosts_vouchers['id_hosts_servicos_variacoes']."'"
+												." AND id_hosts_pedidos='".$id_hosts_pedidos."'"
+												." AND id_hosts='".$id_hosts."'"
+										));
+										
+										$servicoNome = $hosts_pedidos_servico_variacoes['nome_servico'];
+										$voucherSubtitulo = $hosts_pedidos_servico_variacoes['nome_lote'].' - '.$hosts_pedidos_servico_variacoes['nome_variacao'];
+									} else {
+										// ===== Pegar dados do pedido serviço.
+									
+										$hosts_pedidos_servicos = banco_select(Array(
+											'unico' => true,
+											'tabela' => 'hosts_pedidos_servicos',
+											'campos' => Array(
+												'nome',
+											),
+											'extra' => 
+												"WHERE id_hosts_servicos='".$hosts_vouchers['id_hosts_servicos']."'"
+												." AND id_hosts_pedidos='".$id_hosts_pedidos."'"
+												." AND id_hosts='".$id_hosts."'"
+										));
+										
+										$servicoNome = $hosts_pedidos_servicos['nome'];
+									}
+									
+									// ===== Buscar no banco de dados o email do usuário dono do pedido.
+									
+									$hosts_usuarios = banco_select(Array(
+										'unico' => true,
+										'tabela' => 'hosts_usuarios',
+										'campos' => Array(
+											'nome',
+											'email',
+										),
+										'extra' => 
+											"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+											." AND id_hosts='".$id_hosts."'"
+									));
+									
+									$nome = $hosts_usuarios['nome'];
+									$email = $hosts_usuarios['email'];
+									
+									// ===== Dados do email a ser enviado com a confirmação da baixa.
+									
+									$voucherTitulo = 'Voucher #'.$voucherCodigo.' utilizado no estabelecimento';
+									
+									// ===== Enviar email da baixa do voucher.
+									
+									gestor_incluir_biblioteca('host');
+									gestor_incluir_biblioteca('comunicacao');
+									
+									if(comunicacao_email(Array(
+										'destinatarios' => Array(
+											Array(
+												'email' => $email,
+											),
+										),
+										'mensagem' => Array(
+											'assunto' => $voucherTitulo,
+											'htmlLayoutID' => 'layout-email-baixa-voucher',
+											'htmlVariaveis' => Array(
+												Array(
+													'variavel' => '#voucherID#',
+													'valor' => '#'.$voucherCodigo.': '.$servicoNome . (isset($voucherSubtitulo) ? ' - '.$voucherSubtitulo : ''),
+												),
+												Array(
+													'variavel' => '#nome#',
+													'valor' => $nome,
+												),
+												Array(
+													'variavel' => '#assinatura#',
+													'valor' => modelo_var_troca_tudo(gestor_componente(Array('id' => 'hosts-layout-emails-assinatura')),'@[[url]]@',host_url(Array('opcao'=>'full','id_hosts' => $id_hosts)).'identificacao/')
+												),
+											),
+										),
+									))){
+										$emailSucesso = true;
+									} else {
+										$emailSucesso = false;
+									}
+									
 									// ===== Chamada da API-Cliente para atualizar dados no host do usuário.
 		
 									gestor_incluir_biblioteca('api-cliente');
 									
 									$retorno = api_cliente_app_vouchers(Array(
 										'opcao' => 'atualizar-status',
-										'id_hosts' => $_GESTOR['usuario-host-id'],
+										'id_hosts' => $id_hosts,
 										'id_hosts_vouchers' => $id_hosts_vouchers,
 									));
 									
