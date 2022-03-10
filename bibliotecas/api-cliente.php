@@ -5,7 +5,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-api-cliente']							=	Array(
-	'versao' => '1.0.2',
+	'versao' => '1.1.0',
 );
 
 // ===== Funções de chamadas do app.
@@ -1667,7 +1667,7 @@ function api_cliente_variaveis_padroes($params = false){
 					),
 					'extra' => 
 						"WHERE modulo='_sistema'"
-						." AND grupo='pedidos-status'"
+						." AND (grupo='pedidos-status' OR grupo='pedidos-voucher-status'"
 				));
 				
 				// ===== Trocar módulo local por módulo remoto.
@@ -1678,6 +1678,10 @@ function api_cliente_variaveis_padroes($params = false){
 						case 'pedidos-status':
 							unset($res['grupo']);
 							$res['modulo'] = 'pedidos-status';
+						break;
+						case 'pedidos-voucher-status':
+							unset($res['grupo']);
+							$res['modulo'] = 'pedidos-voucher-status';
 						break;
 						default:
 							
