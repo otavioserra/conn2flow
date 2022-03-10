@@ -133,6 +133,7 @@ function voucher_padrao(){
 			$cel_nome = 'expirado'; $cel[$cel_nome] = pagina_celula($cel_nome,true,true);
 			
 			$cel_nome = 'cel-voucher'; $cel[$cel_nome] = pagina_celula($cel_nome);
+			$cel_nome = 'cel-voucher-static'; $cel[$cel_nome] = pagina_celula($cel_nome);
 			
 			// ===== Pedido serviços.
 			
@@ -390,6 +391,189 @@ function voucher_padrao(){
 					)
 				));
 			}
+			
+			// ===== Montar os vouchers sem ações.
+			// ===== Varrer todos os serviços.
+			
+			foreach($pedidos_servicos as $pedServ){
+				// ===== Buscar a imagem mini.
+				
+				$caminho_mini = '';
+				
+				$id_hosts_arquivos = $pedServ['id_hosts_arquivos_Imagem'];
+				
+				if(isset($id_hosts_arquivos)){
+					$resultado = banco_select_name(
+						banco_campos_virgulas(Array(
+							'caminho_mini',
+						)),
+						"arquivos",
+						"WHERE id_hosts_arquivos='".$id_hosts_arquivos."'"
+					);
+					
+					if($resultado){
+						if(existe($resultado[0]['caminho_mini'])){
+							$caminho_mini = $resultado[0]['caminho_mini'];
+						}
+					}
+				}
+				
+				// ===== Imagem Mini ou Imagem Referência do serviço.
+				
+				if(existe($caminho_mini)){
+					$imgSrc = $caminho_mini;
+				} else {
+					$imgSrc = 'images/imagem-padrao.png';
+				}
+				
+				$pedServ['imagem'] = '/' . $imgSrc;
+				
+				// ===== Montar todos os vouchers deste serviço.
+				
+				if($vouchers)
+				foreach($vouchers as $voucher){
+					if($voucher['id_hosts_servicos'] == $pedServ['id_hosts_servicos'] && !$voucher['loteVariacao']){
+						if($voucher['status'] != 'jwt-gerado'){
+							// ===== Montar a célula do voucher.
+							
+							$cel_nome = 'cel-voucher-static';
+							
+							$cel_aux = $cel[$cel_nome];
+							
+							// ===== Modificar o status do voucher.
+							
+							switch($voucher['status']){
+								case 'jwt-bd-expirado':
+									$voucherStatus = gestor_variaveis(Array('modulo' => 'pedidos-voucher-status','id' => 'disponivel'));
+								break;
+								case 'usado':
+									$voucherStatus = gestor_variaveis(Array('modulo' => 'pedidos-voucher-status','id' => $voucher['status']));
+									
+									gestor_incluir_biblioteca('formato');
+									
+									$data_uso = formato_dado(Array(
+										'valor' => $voucher['data_uso'],
+										'tipo' => 'dataHora',
+									));
+									
+									$voucherStatus .= '<span class="ui grey label">Data da baixa: '.$data_uso.'</span>';
+								break;
+								default:
+									$voucherStatus = gestor_variaveis(Array('modulo' => 'pedidos-voucher-status','id' => $voucher['status']));
+							}
+							
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"voucher-status",$voucherStatus);
+							
+							// ===== Dados do voucher.
+							
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"voucher-id",$voucher['codigo']);
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"servico-imagem",$pedServ['imagem']);
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"servico-nome",'Voucher #'.$voucher['codigo'].': '.$pedServ['nome']);
+							
+							// ===== Dados de identidade.
+							
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-nome",(existe($voucher['nome']) ? $voucher['nome'] : $usuario['nome']));
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-documento",(existe($voucher['documento']) ? $voucher['documento'] : $usuario['documento']));
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-telefone",(existe($voucher['telefone']) ? $voucher['telefone'] : $usuario['telefone']));
+							
+							pagina_celula_incluir($cel_nome,$cel_aux);
+						}
+					}
+				}
+			}
+			
+			// ===== Varrer todas as variações dos serviços.
+			
+			foreach($pedidos_servico_variacoes as $pedServ){
+				// ===== Buscar a imagem mini.
+				
+				$caminho_mini = '';
+				
+				$id_hosts_arquivos = $pedServ['id_hosts_arquivos_Imagem'];
+				
+				if(isset($id_hosts_arquivos)){
+					$resultado = banco_select_name(
+						banco_campos_virgulas(Array(
+							'caminho_mini',
+						)),
+						"arquivos",
+						"WHERE id_hosts_arquivos='".$id_hosts_arquivos."'"
+					);
+					
+					if($resultado){
+						if(existe($resultado[0]['caminho_mini'])){
+							$caminho_mini = $resultado[0]['caminho_mini'];
+						}
+					}
+				}
+				
+				// ===== Imagem Mini ou Imagem Referência do serviço.
+				
+				if(existe($caminho_mini)){
+					$imgSrc = $caminho_mini;
+				} else {
+					$imgSrc = 'images/imagem-padrao.png';
+				}
+				
+				$pedServ['imagem'] = '/' . $imgSrc;
+				
+				// ===== Montar todos os vouchers deste serviço.
+				
+				if($vouchers)
+				foreach($vouchers as $voucher){
+					if($voucher['id_hosts_servicos_variacoes'] == $pedServ['id_hosts_servicos_variacoes'] && $voucher['loteVariacao']){
+						if($voucher['status'] != 'jwt-gerado'){
+							// ===== Montar a célula do voucher.
+							
+							$cel_nome = 'cel-voucher-static';
+							
+							$cel_aux = $cel[$cel_nome];
+							
+							// ===== Modificar o status do voucher.
+							
+							switch($voucher['status']){
+								case 'jwt-bd-expirado':
+									$voucherStatus = gestor_variaveis(Array('modulo' => 'pedidos-voucher-status','id' => 'disponivel'));
+								break;
+								case 'usado':
+									$voucherStatus = gestor_variaveis(Array('modulo' => 'pedidos-voucher-status','id' => $voucher['status']));
+									
+									gestor_incluir_biblioteca('formato');
+									
+									$data_uso = formato_dado(Array(
+										'valor' => $voucher['data_uso'],
+										'tipo' => 'dataHora',
+									));
+									
+									$voucherStatus .= '<span class="ui grey label">Data da baixa: '.$data_uso.'</span>';
+								break;
+								default:
+									$voucherStatus = gestor_variaveis(Array('modulo' => 'pedidos-voucher-status','id' => $voucher['status']));
+							}
+							
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"voucher-status",$voucherStatus);
+							
+							// ===== Dados do voucher.
+							
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"voucher-id",$voucher['codigo']);
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"servico-imagem",$pedServ['imagem']);
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"servico-nome",'Voucher #'.$voucher['codigo'].': '.$pedServ['nome_servico'].'<div class="sub header">'.$pedServ['nome_lote'].' - '.$pedServ['nome_variacao'].'</div>');
+							
+							// ===== Dados de identidade.
+							
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-nome",(existe($voucher['nome']) ? $voucher['nome'] : $usuario['nome']));
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-documento",(existe($voucher['documento']) ? $voucher['documento'] : $usuario['documento']));
+							$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-telefone",(existe($voucher['telefone']) ? $voucher['telefone'] : $usuario['telefone']));
+							
+							pagina_celula_incluir($cel_nome,$cel_aux);
+						}
+					}
+				}
+			}
+			
+			// ===== Remover marcadores.
+			
+			pagina_trocar_variavel_valor('<!-- cel-voucher-static -->','',true);
 			
 			// ===== Identificador do pedido.
 			
