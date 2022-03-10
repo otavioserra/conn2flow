@@ -180,7 +180,7 @@ function voucher_padrao(){
 			if($dataVouchers)
 			foreach($dataVouchers as $id_hosts_vouchers => $voucher){
 				banco_update_campo('status',$voucher['status']);
-				banco_update_campo('data_uso',$voucher['data_uso']);
+				if(existe($voucher['data_uso']))banco_update_campo('data_uso',$voucher['data_uso']);
 				
 				banco_update_executar('vouchers',"WHERE id_hosts_pedidos='".$pedidos['id_hosts_pedidos']."' AND id_hosts_vouchers='".$id_hosts_vouchers."'");
 			}
