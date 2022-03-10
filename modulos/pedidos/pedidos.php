@@ -213,6 +213,10 @@ function pedidos_visualizar(){
 					
 					// ===== Estado do voucher.
 					
+					if($hosts_pedidos['status'] == 'expirado'){
+						$voucher['status'] = 'expirado';
+					}
+					
 					$voucherStatus = '';
 					
 					if($hosts_vouchers_status)
@@ -335,6 +339,10 @@ function pedidos_visualizar(){
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-telefone",(existe($voucher['telefone']) ? $voucher['telefone'] : $usuario['telefone']));
 					
 					// ===== Estado do voucher.
+					
+					if($hosts_pedidos['status'] == 'expirado'){
+						$voucher['status'] = 'expirado';
+					}
 					
 					$voucherStatus = '';
 					
