@@ -594,7 +594,6 @@ function plataforma_app_login(){
 function plataforma_app_401(){
 	http_response_code(401);
 	
-	header("Content-Type: application/json; charset: UTF-8");
 	echo json_encode(Array(
 		'status' => 'ERROR',
 		'statusCode' => '401',
@@ -606,7 +605,6 @@ function plataforma_app_401(){
 function plataforma_app_404(){
 	http_response_code(404);
 	
-	header("Content-Type: application/json; charset: UTF-8");
 	echo json_encode(Array(
 		'status' => 'ERROR',
 		'statusCode' => '404',
@@ -644,7 +642,6 @@ function plataforma_app_200($data = null){
 	
 	http_response_code(200);
 	
-	header("Content-Type: application/json; charset: UTF-8");
 	echo json_encode($saida);
 	exit;
 }
@@ -792,6 +789,8 @@ function plataforma_app_start(){
 	global $_INDEX;
 	
 	header("Access-Control-Allow-Origin: *");
+	header("Content-Type: application/json; charset: UTF-8");
+	
 	stream_php();
 	
 	// ===== Acessos públicos a plataforma.
@@ -817,7 +816,6 @@ function plataforma_app_start(){
 	// ===== Caso haja dados criados por alguma opção, retornar JSON e finalizar. Senão retornar JSON 404.
 	
 	if(isset($dados)){
-		header("Content-Type: application/json; charset: UTF-8");
 		echo json_encode($dados);
 		exit;
 	}
