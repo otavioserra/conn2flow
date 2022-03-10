@@ -109,6 +109,20 @@ function voucher_padrao(){
 			
 			gestor_redirecionar('minha-conta/');
 		} else {
+			// ===== Dados do voucher retornado.
+			
+			$dataVouchers = $retorno['data']['vouchers'];
+			
+			// ===== Atualizar os dados localmente dos vouchers.
+			
+			if($dataVouchers)
+			foreach($dataVouchers as $id_hosts_vouchers => $voucher){
+				banco_update_campo('status',$voucher['status']);
+				if(existe($voucher['data_uso']))banco_update_campo('data_uso',$voucher['data_uso']);
+				
+				banco_update_executar('vouchers',"WHERE id_hosts_pedidos='".$pedidos['id_hosts_pedidos']."' AND id_hosts_vouchers='".$id_hosts_vouchers."'");
+			}
+			
 			// ===== Variável dos vouchers JS.
 			
 			$vouchersDados = Array();
@@ -166,24 +180,12 @@ function voucher_padrao(){
 					'documento',
 					'telefone',
 					'loteVariacao',
+					'status',
+					'data_uso',
 				),
 				'extra' => 
 					"WHERE id_hosts_pedidos='".$pedidos['id_hosts_pedidos']."'"
 			));
-			
-			// ===== Dados do voucher retornado.
-			
-			$dataVouchers = $retorno['data']['vouchers'];
-			
-			// ===== Atualizar os dados localmente dos vouchers.
-			
-			if($dataVouchers)
-			foreach($dataVouchers as $id_hosts_vouchers => $voucher){
-				banco_update_campo('status',$voucher['status']);
-				if(existe($voucher['data_uso']))banco_update_campo('data_uso',$voucher['data_uso']);
-				
-				banco_update_executar('vouchers',"WHERE id_hosts_pedidos='".$pedidos['id_hosts_pedidos']."' AND id_hosts_vouchers='".$id_hosts_vouchers."'");
-			}
 			
 			// ===== Verificar se está expirado.
 			
@@ -234,33 +236,35 @@ function voucher_padrao(){
 						if($vouchers)
 						foreach($vouchers as $voucher){
 							if($voucher['id_hosts_servicos'] == $pedServ['id_hosts_servicos'] && !$voucher['loteVariacao']){
-								// ===== Montar a célula do voucher.
-								
-								$cel_nome = 'cel-voucher';
-								
-								$cel_aux = $cel[$cel_nome];
-								
-								// ===== Dados do voucher.
-								
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"voucher-id",$voucher['codigo']);
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"servico-imagem",$pedServ['imagem']);
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"servico-nome",'Voucher #'.$voucher['codigo'].': '.$pedServ['nome']);
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"voucher-qr-code",$dataVouchers[$voucher['id_hosts_vouchers']]['qrCodeImagem']);
-								
-								// ===== Dados de identidade.
-								
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-nome",(existe($voucher['nome']) ? $voucher['nome'] : $usuario['nome']));
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-documento",(existe($voucher['documento']) ? $voucher['documento'] : $usuario['documento']));
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-telefone",(existe($voucher['telefone']) ? $voucher['telefone'] : $usuario['telefone']));
-								
-								pagina_celula_incluir($cel_nome,$cel_aux);
-								
-								// ===== Valores passados ao JS.
-								
-								$vouchersDados[$voucher['codigo']] = Array(
-									'titulo' => 'Voucher #'.$voucher['codigo'].': '.$pedServ['nome'],
-									'loteVariacao' => false,
-								);
+								if($voucher['status'] == 'jwt-gerado'){
+									// ===== Montar a célula do voucher.
+									
+									$cel_nome = 'cel-voucher';
+									
+									$cel_aux = $cel[$cel_nome];
+									
+									// ===== Dados do voucher.
+									
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"voucher-id",$voucher['codigo']);
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"servico-imagem",$pedServ['imagem']);
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"servico-nome",'Voucher #'.$voucher['codigo'].': '.$pedServ['nome']);
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"voucher-qr-code",$dataVouchers[$voucher['id_hosts_vouchers']]['qrCodeImagem']);
+									
+									// ===== Dados de identidade.
+									
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-nome",(existe($voucher['nome']) ? $voucher['nome'] : $usuario['nome']));
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-documento",(existe($voucher['documento']) ? $voucher['documento'] : $usuario['documento']));
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-telefone",(existe($voucher['telefone']) ? $voucher['telefone'] : $usuario['telefone']));
+									
+									pagina_celula_incluir($cel_nome,$cel_aux);
+									
+									// ===== Valores passados ao JS.
+									
+									$vouchersDados[$voucher['codigo']] = Array(
+										'titulo' => 'Voucher #'.$voucher['codigo'].': '.$pedServ['nome'],
+										'loteVariacao' => false,
+									);
+								}
 							}
 						}
 					}
@@ -305,34 +309,36 @@ function voucher_padrao(){
 						if($vouchers)
 						foreach($vouchers as $voucher){
 							if($voucher['id_hosts_servicos_variacoes'] == $pedServ['id_hosts_servicos_variacoes'] && $voucher['loteVariacao']){
-								// ===== Montar a célula do voucher.
-								
-								$cel_nome = 'cel-voucher';
-								
-								$cel_aux = $cel[$cel_nome];
-								
-								// ===== Dados do voucher.
-								
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"voucher-id",$voucher['codigo']);
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"servico-imagem",$pedServ['imagem']);
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"servico-nome",'Voucher #'.$voucher['codigo'].': '.$pedServ['nome_servico'].'<div class="sub header">'.$pedServ['nome_lote'].' - '.$pedServ['nome_variacao'].'</div>');
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"voucher-qr-code",$dataVouchers[$voucher['id_hosts_vouchers']]['qrCodeImagem']);
-								
-								// ===== Dados de identidade.
-								
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-nome",(existe($voucher['nome']) ? $voucher['nome'] : $usuario['nome']));
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-documento",(existe($voucher['documento']) ? $voucher['documento'] : $usuario['documento']));
-								$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-telefone",(existe($voucher['telefone']) ? $voucher['telefone'] : $usuario['telefone']));
-								
-								pagina_celula_incluir($cel_nome,$cel_aux);
-								
-								// ===== Valores passados ao JS.
-								
-								$vouchersDados[$voucher['codigo']] = Array(
-									'titulo' => 'Voucher #'.$voucher['codigo'].': '.$pedServ['nome_servico'],
-									'subtitulo' => $pedServ['nome_lote'].' - '.$pedServ['nome_variacao'],
-									'loteVariacao' => true,
-								);
+								if($voucher['status'] == 'jwt-gerado'){
+									// ===== Montar a célula do voucher.
+									
+									$cel_nome = 'cel-voucher';
+									
+									$cel_aux = $cel[$cel_nome];
+									
+									// ===== Dados do voucher.
+									
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"voucher-id",$voucher['codigo']);
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"servico-imagem",$pedServ['imagem']);
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"servico-nome",'Voucher #'.$voucher['codigo'].': '.$pedServ['nome_servico'].'<div class="sub header">'.$pedServ['nome_lote'].' - '.$pedServ['nome_variacao'].'</div>');
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"voucher-qr-code",$dataVouchers[$voucher['id_hosts_vouchers']]['qrCodeImagem']);
+									
+									// ===== Dados de identidade.
+									
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-nome",(existe($voucher['nome']) ? $voucher['nome'] : $usuario['nome']));
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-documento",(existe($voucher['documento']) ? $voucher['documento'] : $usuario['documento']));
+									$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"identificacao-telefone",(existe($voucher['telefone']) ? $voucher['telefone'] : $usuario['telefone']));
+									
+									pagina_celula_incluir($cel_nome,$cel_aux);
+									
+									// ===== Valores passados ao JS.
+									
+									$vouchersDados[$voucher['codigo']] = Array(
+										'titulo' => 'Voucher #'.$voucher['codigo'].': '.$pedServ['nome_servico'],
+										'subtitulo' => $pedServ['nome_lote'].' - '.$pedServ['nome_variacao'],
+										'loteVariacao' => true,
+									);
+								}
 							}
 						}
 					}
