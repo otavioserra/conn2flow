@@ -34,11 +34,6 @@ function plataforma_app_baixar_voucher(){
 	global $_GESTOR;
 	
 	$id_hosts = $_GESTOR['usuario-host-id'];
-
-	plataforma_app_200(Array(
-		'local' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-codigo-opcao-mandatory')),
-		'request' => print_r($_REQUEST,true)
-	));
 	
 	if(isset($_REQUEST['opcao']) && isset($_REQUEST['codigo'])){
 		$opcao = $_REQUEST['opcao'];
