@@ -806,10 +806,6 @@ function plataforma_app_start(){
 
 		if(plataforma_app_permissao_token($token)){
 
-			plataforma_app_200(Array(
-				'local' => 'plataforma_app_permissao_token'
-			));
-
 			switch($_GESTOR['caminho'][1]){
 				case 'baixar-voucher': $dados = plataforma_app_baixar_voucher(); break;
 			}
