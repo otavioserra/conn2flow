@@ -34,6 +34,10 @@ function plataforma_app_baixar_voucher(){
 	global $_GESTOR;
 	
 	$id_hosts = $_GESTOR['usuario-host-id'];
+
+	plataforma_app_200(Array(
+		'local' => 'plataforma_app_baixar_voucher'
+	));
 	
 	if(isset($_REQUEST['opcao']) && isset($_REQUEST['codigo'])){
 		$opcao = $_REQUEST['opcao'];
@@ -60,10 +64,6 @@ function plataforma_app_baixar_voucher(){
 			'extra' => 
 				"WHERE codigo='".banco_escape_field($pedido)."'"
 				." AND id_hosts='".$id_hosts."'"
-		));
-
-		plataforma_app_200(Array(
-			'local' => 'Verificar se o pedido faz parte do host do usuario logado'
 		));
 		
 		if($hosts_pedidos){
