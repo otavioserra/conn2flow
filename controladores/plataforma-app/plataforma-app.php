@@ -61,6 +61,10 @@ function plataforma_app_baixar_voucher(){
 				"WHERE codigo='".banco_escape_field($pedido)."'"
 				." AND id_hosts='".$id_hosts."'"
 		));
+
+		plataforma_app_200(Array(
+			'local' => 'Verificar se o pedido faz parte do host do usuario logado'
+		));
 		
 		if($hosts_pedidos){
 			$voucher_chave = $hosts_pedidos['voucher_chave'];
@@ -80,10 +84,6 @@ function plataforma_app_baixar_voucher(){
 					'chavePublica' => $voucher_chave,
 				));
 
-				plataforma_app_200(Array(
-					'local' => 'autenticacao_validar_jwt_chave_publica'
-				));
-				
 				if($voucherCodigo){
 					// ===== Verificar o status do voucher.
 					
