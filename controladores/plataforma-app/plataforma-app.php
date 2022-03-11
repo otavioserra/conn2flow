@@ -806,7 +806,7 @@ function plataforma_app_start(){
 
 		plataforma_app_200(Array(
 			'local' => 'acessoPublico'
-		))
+		));
 		
 		if(plataforma_app_permissao_token($token)){
 			switch($_GESTOR['caminho'][1]){
