@@ -79,6 +79,10 @@ function plataforma_app_baixar_voucher(){
 					'token' => $JWT,
 					'chavePublica' => $voucher_chave,
 				));
+
+				plataforma_app_200(Array(
+					'local' => 'autenticacao_validar_jwt_chave_publica'
+				));
 				
 				if($voucherCodigo){
 					// ===== Verificar o status do voucher.
