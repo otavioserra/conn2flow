@@ -2,6 +2,11 @@ apply plugin: "com.android.application"
 
 apply plugin: "kotlin-android"
 apply plugin: "kotlin-android-extensions"
+
+project.ext.vectoricons = [
+    iconFontNames: [ 'FontAwesome.ttf' ]
+]
+
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 import com.android.build.OutputFile

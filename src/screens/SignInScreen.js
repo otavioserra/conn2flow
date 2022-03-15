@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         alignItems:'flex-start',
         width:'100%',
-        height:40,
+        height: Platform.OS === 'ios' ? 35 : 40,
         marginBottom:10,
         borderBottomColor: '#FFF',
         borderBottomWidth: 1,
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
         width:'100%'
     },
     icon:{
-        marginTop:8,
+        marginTop: Platform.OS === 'ios' ? 0 : 8,
         marginRight:10
     },
     linearGradient:{
