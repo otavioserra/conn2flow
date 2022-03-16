@@ -79,7 +79,7 @@ function plataforma_app_baixar_voucher(){
 					'token' => $JWT,
 					'chavePublica' => $voucher_chave,
 				));
-				
+
 				if($voucherCodigo){
 					// ===== Verificar o status do voucher.
 					
@@ -803,8 +803,9 @@ function plataforma_app_start(){
 	
 	if(!isset($acessoPublico)){
 		$token = (isset($_REQUEST['token']) ? $_REQUEST['token'] : '');
-		
+
 		if(plataforma_app_permissao_token($token)){
+
 			switch($_GESTOR['caminho'][1]){
 				case 'baixar-voucher': $dados = plataforma_app_baixar_voucher(); break;
 			}
