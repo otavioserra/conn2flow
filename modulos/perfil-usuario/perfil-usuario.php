@@ -1639,10 +1639,27 @@ function perfil_usuario_redefine_password(){
 			
 			banco_update
 			(
-				"senha='".$senhaHash."'",
+				"senha='".$senhaHash."',".
+				"data_modificacao=NOW(),".
+				"versao=versao+1",
 				"usuarios",
 				"WHERE id_usuarios='".$id_usuarios."'"
 			);
+			
+			// ===== Criar histórico de alterações.
+			
+			$resetPasswordTXT = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'reset-password'));
+			
+			$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#ip#",$_SERVER['REMOTE_ADDR']);
+			$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#user-agent#",$_SERVER['HTTP_USER_AGENT']);
+			
+			$alteracoes[] = Array('alteracao' => 'reset-password','alteracao_txt' => $resetPasswordTXT);
+			
+			interface_historico_incluir(Array(
+				'id_numerico_manual' => $id_usuarios,
+				'id_usuarios_manual' => $id_usuarios,
+				'alteracoes' => $alteracoes,
+			));
 			
 			// ===== Remover todos os acessos logados no sistema.
 			

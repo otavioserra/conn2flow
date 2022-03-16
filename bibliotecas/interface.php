@@ -269,6 +269,7 @@ function interface_historico_incluir($params = false){
 			// id_numerico - String - Obrigatório - identificador numérico dos dados da tabela.
 	// deletar - Bool - Opcional - Caso definido, incrementar em 1 a versão, pois deletar a inclusão de histórico é anterior a atualização final do registro para status='D'.
 	// id_numerico_manual - Int - Opcional - Caso definido, o id_numerico do registro será manualmente definido.
+	// id_usuarios_manual - Int - Opcional - Caso definido, o id_usuarios do registro será manualmente definido.
 	// modulo_id - String - Opcional - Caso definido, vinculará o registro manualmente neste módulo.
 	// sem_id - Bool - Opcional - Caso definido, não vinculará nenhum ID ao histórico.
 		// versao - Int - Opcional - Definir manualmente a versão do registro.
@@ -289,7 +290,11 @@ function interface_historico_incluir($params = false){
 	// ===== 
 	
 	if(isset($alteracoes)){
-		$usuario = gestor_usuario();
+		if(isset($id_usuarios_manual)){
+			$usuario['id_usuarios'] = $id_usuarios_manual;
+		} else {	
+			$usuario = gestor_usuario();
+		}
 		
 		if(!isset($tabela)){
 			$tabela = $_GESTOR['modulo#'.$_GESTOR['modulo-id']]['tabela'];
