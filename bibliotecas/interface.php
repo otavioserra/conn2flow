@@ -270,6 +270,7 @@ function interface_historico_incluir($params = false){
 	// deletar - Bool - Opcional - Caso definido, incrementar em 1 a versão, pois deletar a inclusão de histórico é anterior a atualização final do registro para status='D'.
 	// id_numerico_manual - Int - Opcional - Caso definido, o id_numerico do registro será manualmente definido.
 	// id_usuarios_manual - Int - Opcional - Caso definido, o id_usuarios do registro será manualmente definido.
+	// id_hosts_manual - Int - Opcional - Caso definido, o id_hosts do registro será manualmente definido.
 	// modulo_id - String - Opcional - Caso definido, vinculará o registro manualmente neste módulo.
 	// sem_id - Bool - Opcional - Caso definido, não vinculará nenhum ID ao histórico.
 		// versao - Int - Opcional - Definir manualmente a versão do registro.
@@ -324,7 +325,11 @@ function interface_historico_incluir($params = false){
 		
 		
 		foreach($alteracoes as $alteracao){
-			if(isset($_GESTOR['host-id'])){ banco_insert_name_campo('id_hosts',$_GESTOR['host-id']); }
+			if(isset($id_hosts_manual)){ 
+				banco_insert_name_campo('id_hosts',$id_hosts_manual);
+			} else {
+				if(isset($_GESTOR['host-id'])){ banco_insert_name_campo('id_hosts',$_GESTOR['host-id']); }
+			}
 			
 			banco_insert_name_campo('id_usuarios',$usuario['id_usuarios']);
 			banco_insert_name_campo('modulo',(isset($modulo_id) ? $modulo_id : $_GESTOR['modulo-id']));

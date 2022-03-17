@@ -1621,6 +1621,7 @@ function perfil_usuario_redefine_password(){
 			if($sessaoRedefinePassword['pubID'] == $pubID){
 				$autorizacaoRedefinicao = true;
 				$id_usuarios = $sessaoRedefinePassword['id'];
+				$tokens_id = $sessaoRedefinePassword['tokenID'];
 			} else {
 				gestor_sessao_variavel_del($_GESTOR['modulo'].'-'.$_GESTOR['opcao']);
 			}
@@ -1646,6 +1647,22 @@ function perfil_usuario_redefine_password(){
 				"WHERE id_usuarios='".$id_usuarios."'"
 			);
 			
+			// ===== Pegar a referência do host do usuário para incluir no histórico caso seja um usuário de um host.
+			
+			$hosts_usuarios_admins = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'hosts_usuarios_admins',
+				'campos' => Array(
+					'id_hosts',
+				),
+				'extra' => 
+					"WHERE id_usuarios='".$id_usuarios."'"
+			));
+			
+			if($hosts_usuarios_admins){
+				$id_hosts = $hosts_usuarios_admins['id_hosts'];
+			}
+			
 			// ===== Criar histórico de alterações.
 			
 			$resetPasswordTXT = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'reset-password'));
@@ -1658,8 +1675,62 @@ function perfil_usuario_redefine_password(){
 			interface_historico_incluir(Array(
 				'id_numerico_manual' => $id_usuarios,
 				'id_usuarios_manual' => $id_usuarios,
+				'id_hosts_manual' => (isset($id_hosts) ? $id_hosts : null ),
 				'alteracoes' => $alteracoes,
 			));
+			
+			// ===== Pegar os dados do usuário que serão usados para informar o mesmo.
+			
+			$usuarios = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios',
+				'campos' => Array(
+					'nome',
+					'email',
+				),
+				'extra' => 
+					"WHERE id_usuarios='".$id_usuarios."'"
+			));
+			
+			$nome = $usuarios['nome'];
+			$email = $usuarios['email'];
+			
+			// ===== Enviar o email informando da alteração da senha com sucesso.
+			
+			$numero = date('Ymd') . $tokens_id;
+			
+			$assunto = modelo_var_troca(gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'password-redefined-mail-subject')),"#numero#",$numero);
+			
+			gestor_incluir_biblioteca('comunicacao');
+			
+			if(comunicacao_email(Array(
+				'destinatarios' => Array(
+					Array(
+						'email' => $email,
+						'nome' => $nome,
+					),
+				),
+				'mensagem' => Array(
+					'assunto' => $assunto,
+					'htmlLayoutID' => 'layout-email-senha-redefinida',
+					'htmlVariaveis' => Array(
+						Array(
+							'variavel' => '#nome#',
+							'valor' => $nome,
+						),
+						Array(
+							'variavel' => '#assinatura#',
+							'valor' => gestor_componente(Array(
+								'id' => 'layout-emails-assinatura',
+							)),
+						),
+					),
+				),
+			))){
+				$email_not_sent = false;
+			} else {
+				$email_not_sent = true;
+			}
 			
 			// ===== Remover todos os acessos logados no sistema.
 			
@@ -1738,6 +1809,7 @@ function perfil_usuario_redefine_password(){
 				
 				gestor_sessao_variavel($_GESTOR['modulo'].'-'.$_GESTOR['opcao'],Array(
 					'id' => $tokens[0]['id_usuarios'],
+					'tokenID' => $tokens[0]['id_tokens'],
 					'pubID' => $pubID,
 				));
 				
