@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'host-configuracao';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.33',
+	'versao' => '1.1.0',
 	'bibliotecas' => Array('interface','html','pagina'),
 	'tabela' => Array(
 		'nome' => 'hosts',
@@ -1715,6 +1715,7 @@ function host_configuracao_redefine_password(){
 			
 			if($sessaoRedefinePassword['pubID'] == $pubID){
 				$autorizacaoRedefinicao = true;
+				$tokens_id = $sessaoRedefinePassword['tokenID'];
 				$urlCallBack = $sessaoRedefinePassword['redirect'];
 			} else {
 				gestor_sessao_variavel_del($_GESTOR['modulo'].'-'.$_GESTOR['opcao']);
@@ -1732,6 +1733,7 @@ function host_configuracao_redefine_password(){
 			
 			$host_verificacao = gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id']);
 			$id_hosts = $host_verificacao['id_hosts'];
+			$id_usuarios = $_GESTOR['usuario-id'];
 			
 			$hosts = banco_select_name
 			(
@@ -1739,6 +1741,7 @@ function host_configuracao_redefine_password(){
 					'user_cpanel',
 					'user_ftp',
 					'user_db',
+					'versao',
 				))
 				,
 				"hosts",
@@ -1769,6 +1772,85 @@ function host_configuracao_redefine_password(){
 			);
 			
 			require($_GESTOR['hosts-server']['cpanel-root-path'].'cpanel-changedbuserpassword.php');
+			
+			// ===== Atualizar versão do host no banco.
+			
+			$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+			
+			banco_update_campo($modulo['tabela']['versao'],$modulo['tabela']['versao']." + 1",true);
+			banco_update_campo($modulo['tabela']['data_modificacao'],'NOW()',true);
+			
+			banco_update_executar($modulo['tabela']['nome'],"WHERE id_hosts='".$id_hosts."'");
+			
+			// ===== Criar histórico de alterações.
+			
+			$resetPasswordTXT = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'reset-password'));
+			
+			$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#ip#",$_SERVER['REMOTE_ADDR']);
+			$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#user-agent#",$_SERVER['HTTP_USER_AGENT']);
+			
+			$alteracoes[] = Array('alteracao' => 'reset-password','alteracao_txt' => $resetPasswordTXT);
+			
+			// ===== Incluir no histórico as alterações.
+			
+			interface_historico_incluir(Array(
+				'alteracoes' => $alteracoes,
+				'sem_id' => true,
+				'versao' => (int)$hosts[0]['versao'] + 1,
+			));
+			
+			// ===== Pegar os dados do usuário que serão usados para informar o mesmo.
+			
+			$usuarios = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios',
+				'campos' => Array(
+					'nome',
+					'email',
+				),
+				'extra' => 
+					"WHERE id_usuarios='".$id_usuarios."'"
+			));
+			
+			$nome = $usuarios['nome'];
+			$email = $usuarios['email'];
+			
+			// ===== Enviar o email informando da alteração da senha com sucesso.
+			
+			$numero = date('Ymd') . $tokens_id;
+			
+			$assunto = modelo_var_troca(gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'password-redefined-mail-subject')),"#numero#",$numero);
+			
+			gestor_incluir_biblioteca('comunicacao');
+			
+			if(comunicacao_email(Array(
+				'destinatarios' => Array(
+					Array(
+						'email' => $email,
+						'nome' => $nome,
+					),
+				),
+				'mensagem' => Array(
+					'assunto' => $assunto,
+					'htmlLayoutID' => 'layout-email-conta-ftp-senha-redefinida',
+					'htmlVariaveis' => Array(
+						Array(
+							'variavel' => '#nome#',
+							'valor' => $nome,
+						),
+						Array(
+							'variavel' => '#assinatura#',
+							'valor' => gestor_componente(Array(
+								'id' => 'layout-emails-assinatura',
+							)),
+						),
+					),
+				),
+			))){
+				$email_not_sent = false;
+			} else {
+				$email_not_sent = true;
+			}
 			
 			// ===== Forçar status 'atualizar' caso já esteja configurado afim de disparar atualização.
 			
@@ -1856,6 +1938,7 @@ function host_configuracao_redefine_password(){
 				
 				gestor_sessao_variavel($_GESTOR['modulo'].'-'.$_GESTOR['opcao'],Array(
 					'pubID' => $pubID,
+					'tokenID' => $tokens[0]['id_tokens'],
 					'redirect' => (isset($_REQUEST['redirect']) ? urldecode(banco_escape_field($_REQUEST['redirect'])) : '' ),
 				));
 				
