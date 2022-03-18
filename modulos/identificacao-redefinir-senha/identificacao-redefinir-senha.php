@@ -118,6 +118,29 @@ function identificacao_redefinir_senha_padrao(){
 					$dados = $retorno['data'];
 				}
 				
+				// ===== Incluir o histórico da alteração no usuarios.
+				
+				if($retorno['data']['alteracaoTxt']){
+					gestor_incluir_biblioteca('log');
+					
+					log_usuarios(Array(
+						'id_hosts_usuarios' => $_GESTOR['usuario-id'],
+						'id' => $_GESTOR['usuario-id'],
+						'tabela' => Array(
+							'nome' => 'usuarios',
+							'versao' => 'versao',
+							'id_numerico' => 'id_hosts_usuarios',
+						),
+						'alteracoes' => Array(
+							Array(
+								'modulo' => 'usuarios',
+								'alteracao' => 'reset-password',
+								'alteracao_txt' => $retorno['data']['alteracaoTxt'],
+							)
+						),
+					));
+				}
+				
 				// ===== Remover todos os acessos logados no sistema.
 				
 				banco_delete
