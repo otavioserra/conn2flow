@@ -1726,6 +1726,9 @@ function plataforma_cliente_identificacao(){
 				
 				$senha = banco_escape_field($dados['senha']);
 				$tokenPubId = banco_escape_field($dados['tokenPubId']);
+				$tokenID = banco_escape_field($dados['tokenID']);
+				$userIP = banco_escape_field($dados['userIP']);
+				$userUserAgent = banco_escape_field($dados['userUserAgent']);
 				
 				// ===== Hash do token enviado e comparar com os tokens do banco de dados para ver se existem.
 				
@@ -1788,6 +1791,86 @@ function plataforma_cliente_identificacao(){
 						"hosts_tokens",
 						"WHERE id_hosts_tokens='".$id_hosts_tokens."'"
 					);
+					
+					// ===== Criar histórico de alterações.
+					
+					$resetPasswordTXT = gestor_variaveis(Array('modulo' => 'perfil-usuario','id' => 'reset-password'));
+					
+					$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#ip#",$userIP);
+					$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#user-agent#",$userUserAgent);
+					
+					gestor_incluir_biblioteca('log');
+					
+					log_hosts_usuarios(Array(
+						'id_hosts' => $id_hosts,
+						'id_hosts_usuarios' => $id_hosts_usuarios,
+						'id' => $id_hosts_usuarios,
+						'tabela' => Array(
+							'nome' => 'hosts_usuarios',
+							'versao' => 'versao',
+							'id_numerico' => 'id_hosts_usuarios',
+						),
+						'alteracoes' => Array(
+							Array(
+								'modulo' => 'hosts-usuarios',
+								'alteracao' => 'reset-password',
+								'alteracao_txt' => $resetPasswordTXT,
+							)
+						),
+					));
+					
+					// ===== Pegar os dados do usuário que serão usados para informar o mesmo.
+					
+					$hosts_usuarios = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'hosts_usuarios',
+						'campos' => Array(
+							'nome',
+							'email',
+						),
+						'extra' => 
+							"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+					));
+					
+					$nome = $hosts_usuarios['nome'];
+					$email = $hosts_usuarios['email'];
+					
+					// ===== Enviar o email informando da alteração da senha com sucesso.
+					
+					$numero = date('Ymd') . $tokenID;
+					
+					$assunto = modelo_var_troca(gestor_variaveis(Array('modulo' => 'perfil-usuario','id' => 'password-redefined-mail-subject')),"#numero#",$numero);
+					
+					gestor_incluir_biblioteca('comunicacao');
+					
+					if(comunicacao_email(Array(
+						'destinatarios' => Array(
+							Array(
+								'email' => $email,
+								'nome' => $nome,
+							),
+						),
+						'mensagem' => Array(
+							'assunto' => $assunto,
+							'htmlLayoutID' => 'layout-email-senha-redefinida',
+							'htmlVariaveis' => Array(
+								Array(
+									'variavel' => '#nome#',
+									'valor' => $nome,
+								),
+								Array(
+									'variavel' => '#assinatura#',
+									'valor' => gestor_componente(Array(
+										'id' => 'layout-emails-assinatura',
+									)),
+								),
+							),
+						),
+					))){
+						$email_not_sent = false;
+					} else {
+						$email_not_sent = true;
+					}
 					
 					// ===== Mensagem de retorno com as instruções.
 					
