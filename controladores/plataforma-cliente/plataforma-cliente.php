@@ -1726,9 +1726,9 @@ function plataforma_cliente_identificacao(){
 				
 				$senha = banco_escape_field($dados['senha']);
 				$tokenPubId = banco_escape_field($dados['tokenPubId']);
-				$tokenID = banco_escape_field($dados['tokenID']);
-				$userIP = banco_escape_field($dados['userIP']);
-				$userUserAgent = banco_escape_field($dados['userUserAgent']);
+				$tokenID = $dados['tokenID'];
+				$userIP = $dados['userIP'];
+				$userUserAgent = $dados['userUserAgent'];
 				
 				// ===== Hash do token enviado e comparar com os tokens do banco de dados para ver se existem.
 				
@@ -1790,6 +1790,16 @@ function plataforma_cliente_identificacao(){
 					(
 						"hosts_tokens",
 						"WHERE id_hosts_tokens='".$id_hosts_tokens."'"
+					);
+					
+					// ===== Atualizar hosts_usuarios no banco.
+					
+					banco_update
+					(
+						"data_modificacao=NOW(),".
+						"versao=versao+1",
+						"hosts_usuarios",
+						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
 					);
 					
 					// ===== Criar histórico de alterações.
@@ -1877,12 +1887,28 @@ function plataforma_cliente_identificacao(){
 					$message = gestor_variaveis(Array('modulo' => 'perfil-usuario','id' => 'redefine-password-confirmation-message-content'));
 					$message = modelo_var_troca_tudo($message,"#url#",'<a href="/identificacao/">'.gestor_variaveis(Array('modulo' => 'perfil-usuario','id' => 'forgot-password-login-button')).'</a>');
 					
+					// ===== Incluir os campos padrões também.
+					
+					$alteracaoCampos[] = 'versao';
+					$alteracaoCampos[] = 'data_modificacao';
+					
+					// ===== Retornar o hosts_usuarios atualizado.
+					
+					$hosts_usuarios = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'hosts_usuarios',
+						'campos' => $alteracaoCampos,
+						'extra' => 
+							"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+					));
+					
 					// ===== Retornar OK.
 					
 					$retorno = Array(
 						'status' => 'OK',
 						'data' => Array(
 							'message' => $message,
+							'usuario' => $hosts_usuarios,
 							'alteracaoTxt' => $alteracaoTxt,
 						)
 					);
