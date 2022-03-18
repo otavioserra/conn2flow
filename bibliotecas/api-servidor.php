@@ -5,7 +5,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-api-servidor']							=	Array(
-	'versao' => '1.0.1',
+	'versao' => '1.0.2',
 );
 
 // ===== Funções de chamadas do cliente.
@@ -190,6 +190,9 @@ function api_servidor_identificacao($params = false){
 				$dados = Array(
 					'senha' => $senha,
 					'tokenPubId' => $tokenPubId,
+					'tokenID' => $tokenID,
+					'userIP' => $userIP,
+					'userUserAgent' => $userUserAgent,
 				);
 			break;
 		}
