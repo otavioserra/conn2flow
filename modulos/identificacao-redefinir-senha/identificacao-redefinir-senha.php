@@ -130,15 +130,15 @@ function identificacao_redefinir_senha_padrao(){
 					}
 				}
 				
-				banco_update_executar('usuarios',"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'");
+				banco_update_executar('usuarios',"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'");
 				
 				// ===== Incluir o histórico da alteração no usuarios.
 				
 				gestor_incluir_biblioteca('log');
 				
 				log_usuarios(Array(
-					'id_hosts_usuarios' => $_GESTOR['usuario-id'],
-					'id' => $_GESTOR['usuario-id'],
+					'id_hosts_usuarios' => $id_hosts_usuarios,
+					'id' => $id_hosts_usuarios,
 					'tabela' => Array(
 						'nome' => 'usuarios',
 						'versao' => 'versao',
@@ -163,7 +163,7 @@ function identificacao_redefinir_senha_padrao(){
 				
 				// ===== Colocar mensagem na página.
 				
-				pagina_trocar_variavel_valor('message',$dados['message'].print_r($dados,true));
+				pagina_trocar_variavel_valor('message',$dados['message']);
 				
 				// ===== Remover a sessão.
 				
