@@ -61,7 +61,6 @@ function identificacao_redefinir_senha_padrao(){
 			
 			if($sessaoRedefinePassword['pubID'] == $pubID){
 				$autorizacaoRedefinicao = true;
-				$tokens_id = $sessaoRedefinePassword['tokenID'];
 				$id_hosts_usuarios = $sessaoRedefinePassword['id'];
 			} else {
 				gestor_sessao_variavel_del('redefinir-senha');
@@ -79,7 +78,6 @@ function identificacao_redefinir_senha_padrao(){
 				'opcao' => 'redefinirSenha',
 				'senha' => banco_escape_field($_REQUEST['senha']),
 				'tokenPubId' => $tokenPubId,
-				'tokenID' => $tokens_id,
 				'userIP' => $_SERVER['REMOTE_ADDR'],
 				'userUserAgent' => $_SERVER['HTTP_USER_AGENT'],
 			));
@@ -165,7 +163,7 @@ function identificacao_redefinir_senha_padrao(){
 				
 				// ===== Colocar mensagem na página.
 				
-				pagina_trocar_variavel_valor('message',$dados['message']);
+				pagina_trocar_variavel_valor('message',$dados['message'].print_r($dados,true));
 				
 				// ===== Remover a sessão.
 				
@@ -236,7 +234,6 @@ function identificacao_redefinir_senha_padrao(){
 				
 				gestor_sessao_variavel('redefinir-senha',Array(
 					'id' => $tokens[0]['id_hosts_usuarios'],
-					'tokenID' => $tokens[0]['id_tokens'],
 					'pubID' => $pubID,
 				));
 				
