@@ -118,28 +118,42 @@ function identificacao_redefinir_senha_padrao(){
 					$dados = $retorno['data'];
 				}
 				
+				// ===== Atualizar o usuário localmente.
+				
+				$usuario = $dados['usuario'];
+				
+				foreach($usuario as $campo => $valor){
+					switch($campo){
+						case 'cnpj_ativo':
+							banco_update_campo($campo,(existe($valor) ? $valor : 'NULL'),true);
+						break;
+						default:
+							banco_update_campo($campo,$valor);
+					}
+				}
+				
+				banco_update_executar('usuarios',"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'");
+				
 				// ===== Incluir o histórico da alteração no usuarios.
 				
-				if($dados['alteracaoTxt']){
-					gestor_incluir_biblioteca('log');
-					
-					log_usuarios(Array(
-						'id_hosts_usuarios' => $_GESTOR['usuario-id'],
-						'id' => $_GESTOR['usuario-id'],
-						'tabela' => Array(
-							'nome' => 'usuarios',
-							'versao' => 'versao',
-							'id_numerico' => 'id_hosts_usuarios',
-						),
-						'alteracoes' => Array(
-							Array(
-								'modulo' => 'usuarios',
-								'alteracao' => 'reset-password',
-								'alteracao_txt' => $dados['alteracaoTxt'],
-							)
-						),
-					));
-				}
+				gestor_incluir_biblioteca('log');
+				
+				log_usuarios(Array(
+					'id_hosts_usuarios' => $_GESTOR['usuario-id'],
+					'id' => $_GESTOR['usuario-id'],
+					'tabela' => Array(
+						'nome' => 'usuarios',
+						'versao' => 'versao',
+						'id_numerico' => 'id_hosts_usuarios',
+					),
+					'alteracoes' => Array(
+						Array(
+							'modulo' => 'usuarios',
+							'alteracao' => 'reset-password',
+							'alteracao_txt' => $dados['alteracaoTxt'],
+						)
+					),
+				));
 				
 				// ===== Remover todos os acessos logados no sistema.
 				
