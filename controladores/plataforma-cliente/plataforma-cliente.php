@@ -1726,7 +1726,6 @@ function plataforma_cliente_identificacao(){
 				
 				$senha = banco_escape_field($dados['senha']);
 				$tokenPubId = banco_escape_field($dados['tokenPubId']);
-				$tokenID = $dados['tokenID'];
 				$userIP = $dados['userIP'];
 				$userUserAgent = $dados['userUserAgent'];
 				
@@ -1847,7 +1846,7 @@ function plataforma_cliente_identificacao(){
 					
 					// ===== Enviar o email informando da alteração da senha com sucesso.
 					
-					$numero = date('Ymd') . $tokenID;
+					$numero = date('Ymd') . $id_hosts_tokens;
 					
 					$assunto = modelo_var_troca(gestor_variaveis(Array('modulo' => 'perfil-usuario','id' => 'password-redefined-mail-subject')),"#numero#",$numero);
 					
