@@ -120,7 +120,7 @@ function identificacao_redefinir_senha_padrao(){
 				
 				// ===== Incluir o histórico da alteração no usuarios.
 				
-				if($retorno['data']['alteracaoTxt']){
+				if($dados['alteracaoTxt']){
 					gestor_incluir_biblioteca('log');
 					
 					log_usuarios(Array(
@@ -135,7 +135,7 @@ function identificacao_redefinir_senha_padrao(){
 							Array(
 								'modulo' => 'usuarios',
 								'alteracao' => 'reset-password',
-								'alteracao_txt' => $retorno['data']['alteracaoTxt'],
+								'alteracao_txt' => $dados['alteracaoTxt'],
 							)
 						),
 					));
