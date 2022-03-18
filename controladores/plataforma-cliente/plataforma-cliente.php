@@ -1794,10 +1794,10 @@ function plataforma_cliente_identificacao(){
 					
 					// ===== Criar histórico de alterações.
 					
-					$resetPasswordTXT = gestor_variaveis(Array('modulo' => 'perfil-usuario','id' => 'reset-password'));
+					$alteracaoTxt = gestor_variaveis(Array('modulo' => 'perfil-usuario','id' => 'reset-password'));
 					
-					$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#ip#",$userIP);
-					$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#user-agent#",$userUserAgent);
+					$alteracaoTxt = modelo_var_troca($alteracaoTxt,"#ip#",$userIP);
+					$alteracaoTxt = modelo_var_troca($alteracaoTxt,"#user-agent#",$userUserAgent);
 					
 					gestor_incluir_biblioteca('log');
 					
@@ -1814,7 +1814,7 @@ function plataforma_cliente_identificacao(){
 							Array(
 								'modulo' => 'hosts-usuarios',
 								'alteracao' => 'reset-password',
-								'alteracao_txt' => $resetPasswordTXT,
+								'alteracao_txt' => $alteracaoTxt,
 							)
 						),
 					));
@@ -1883,6 +1883,7 @@ function plataforma_cliente_identificacao(){
 						'status' => 'OK',
 						'data' => Array(
 							'message' => $message,
+							'alteracaoTxt' => $alteracaoTxt,
 						)
 					);
 				} else {
