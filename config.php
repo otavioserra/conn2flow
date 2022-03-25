@@ -250,8 +250,8 @@ $_GESTOR['plataforma'] = Array(
 // ===== Definições do gestor cliente.
 
 $_GESTOR['gestor-cliente'] = Array(
-	'versao' => '1.2.0',
-	'versao_num' => 16,
+	'versao' => '1.3.0',
+	'versao_num' => 17,
 );
 
 // ===== Definição e inclusão de todas as bibliotecas necessárias para o funcionamento do gestor

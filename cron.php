@@ -356,7 +356,12 @@ function cron_carrinhos_abandonados(){
 				// ===== Caso haja algum erro, incluir no log do cron.
 				
 				if(!$retorno['completed']){
-					cron_log($retorno['error-msg']);
+					cron_log(
+						'FUNCAO: cron_carrinhos_abandonados[servicos]'."\n".
+						'ID-HOST: '.$id_hosts."\n".
+						'ERROR-MSG: '."\n".
+						$retorno['error-msg']
+					);
 				}
 			}
 		}
@@ -440,7 +445,12 @@ function cron_carrinhos_abandonados(){
 				// ===== Caso haja algum erro, incluir no log do cron.
 				
 				if(!$retorno['completed']){
-					cron_log($retorno['error-msg']);
+					cron_log(
+						'FUNCAO: cron_carrinhos_abandonados[servicos-variacoes]'."\n".
+						'ID-HOST: '.$id_hosts."\n".
+						'ERROR-MSG: '."\n".
+						$retorno['error-msg']
+					);
 				}
 			}
 		}
@@ -641,7 +651,12 @@ function cron_pedidos_abandonados(){
 				// ===== Caso haja algum erro, incluir no log do cron.
 				
 				if(!$retorno['completed']){
-					cron_log($retorno['error-msg']);
+					cron_log(
+						'FUNCAO: cron_pedidos_abandonados[servicos-pedidos]'."\n".
+						'ID-HOST: '.$id_hosts."\n".
+						'ERROR-MSG: '."\n".
+						$retorno['error-msg']
+					);
 				}
 			}
 		}
@@ -725,7 +740,12 @@ function cron_pedidos_abandonados(){
 				// ===== Caso haja algum erro, incluir no log do cron.
 				
 				if(!$retorno['completed']){
-					cron_log($retorno['error-msg']);
+					cron_log(
+						'FUNCAO: cron_pedidos_abandonados[servicos-pedidos-variacoes]'."\n".
+						'ID-HOST: '.$id_hosts."\n".
+						'ERROR-MSG: '."\n".
+						$retorno['error-msg']
+					);
 				}
 			}
 		}
@@ -753,7 +773,12 @@ function cron_pedidos_abandonados(){
 			// ===== Caso haja algum erro, incluir no log do cron.
 			
 			if(!$retorno['completed']){
-				cron_log($retorno['error-msg']);
+				cron_log(
+					'FUNCAO: cron_pedidos_abandonados[atualizar-pedidos]'."\n".
+					'ID-HOST: '.$id_hosts."\n".
+					'ERROR-MSG: '."\n".
+					$retorno['error-msg']
+				);
 			}
 		}
 	}
