@@ -1142,7 +1142,16 @@ function usuarios_perfis_editar(){
 						if($modulos_operacoes)
 						foreach($modulos_operacoes as $modOp){
 							if($upmoa['id_modulos_operacoes'] == $modOp['id_modulos_operacoes']){
+								if($modulos)
+								foreach($modulos as $mod){
+									if($upmoa['id_modulos'] == $mod['id_modulos']){
+										$modulo_id = $mod['id'];
+										break;
+									}
+								}
+								
 								banco_update_campo('perfil',$upa['id']);
+								banco_update_campo('modulo',$modulo_id);
 								banco_update_campo('operacao',$modOp['id']);
 								banco_update_executar('usuarios_perfis_modulos_operacoes',"WHERE id_usuarios_perfis_modulos_operacoes='".$upmoa['id_usuarios_perfis_modulos_operacoes']."'");
 								break;
