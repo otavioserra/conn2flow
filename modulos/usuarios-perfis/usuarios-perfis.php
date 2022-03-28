@@ -942,6 +942,7 @@ function usuarios_perfis_editar(){
 				'id_modulos',
 				'id_modulos_grupos',
 				'nome',
+				'id',
 			))
 			,
 			"modulos",
@@ -956,6 +957,7 @@ function usuarios_perfis_editar(){
 				'id_modulos_operacoes',
 				'id_modulos',
 				'nome',
+				'id',
 			))
 			,
 			"modulos_operacoes",
@@ -966,21 +968,21 @@ function usuarios_perfis_editar(){
 		$usuarios_perfis_modulos = banco_select_name
 		(
 			banco_campos_virgulas(Array(
-				'id_modulos',
+				'modulo',
 			))
 			,
 			"usuarios_perfis_modulos",
-			"WHERE ".$modulo['tabela']['id_numerico']."='".$id_numerico."'"
+			"WHERE perfil='".$id."'"
 		);
 		
 		$usuarios_perfis_modulos_operacoes = banco_select_name
 		(
 			banco_campos_virgulas(Array(
-				'id_modulos_operacoes',
+				'operacao',
 			))
 			,
 			"usuarios_perfis_modulos_operacoes",
-			"WHERE ".$modulo['tabela']['id_numerico']."='".$id_numerico."'"
+			"WHERE perfil='".$id."'"
 		);
 		
 		// ===== Caso encontre, monte o html com todos os módulos em seus grupos
@@ -1026,7 +1028,7 @@ function usuarios_perfis_editar(){
 										
 										if($usuarios_perfis_modulos_operacoes)
 										foreach($usuarios_perfis_modulos_operacoes as $upmo){
-											if($upmo['id_modulos_operacoes'] == $mo['id_modulos_operacoes']){
+											if($upmo['operacao'] == $mo['id']){
 												$operacaoChecked = 'checked';
 												break;
 											}
@@ -1056,7 +1058,7 @@ function usuarios_perfis_editar(){
 							
 							if($usuarios_perfis_modulos)
 							foreach($usuarios_perfis_modulos as $upm){
-								if($upm['id_modulos'] == $m['id_modulos']){
+								if($upm['modulo'] == $m['id']){
 									$checked = 'checked';
 									break;
 								}
