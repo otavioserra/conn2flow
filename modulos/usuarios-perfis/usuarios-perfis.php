@@ -1144,7 +1144,7 @@ function usuarios_perfis_editar(){
 							if($upmoa['id_modulos_operacoes'] == $modOp['id_modulos_operacoes']){
 								if($modulos)
 								foreach($modulos as $mod){
-									if($upmoa['id_modulos'] == $mod['id_modulos']){
+									if($modOp['id_modulos'] == $mod['id_modulos']){
 										$modulo_id = $mod['id'];
 										break;
 									}
