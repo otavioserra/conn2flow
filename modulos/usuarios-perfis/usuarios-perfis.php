@@ -526,7 +526,7 @@ function usuarios_perfis_editar(){
 				
 				// ===== Caso tenha encontrado, inserir o mesmo como referência.
 				
-				if(!$encontrou){
+				if($encontrou){
 					banco_insert_name_campo('perfil',$id);
 					banco_insert_name_campo('modulo',$modulo_id);
 					
@@ -592,7 +592,7 @@ function usuarios_perfis_editar(){
 				
 				// ===== Caso tenha encontrado, inserir o mesmo como referência.
 				
-				if(!$encontrou){
+				if($encontrou){
 					banco_insert_name_campo('perfil',$id);
 					banco_insert_name_campo('operacao',$operacao_id);
 					
