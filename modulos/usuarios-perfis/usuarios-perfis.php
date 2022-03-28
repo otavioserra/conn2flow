@@ -508,7 +508,7 @@ function usuarios_perfis_editar(){
 		
 		for($i=1;$i<$numModulos;$i++){
 			if($_REQUEST['modulo-'.$i]){
-				// ===== Procurar o módulo referido.
+				// ===== Procurar o módulo referido e marcar como ativo.
 				
 				$encontrou = false;
 				$modulo_id = '';
@@ -524,20 +524,34 @@ function usuarios_perfis_editar(){
 					}
 				}
 				
-				// ===== Caso tenha encontrado, inserir o mesmo como referência.
-				
 				if($encontrou){
-					banco_insert_name_campo('perfil',$id);
-					banco_insert_name_campo('modulo',$modulo_id);
+					// ===== Verificar se o módulo já estava ativo.
 					
-					banco_insert_name
-					(
-						banco_insert_name_campos(),
-						"usuarios_perfis_modulos"
-					);
+					$jaEstavaAtivo = false;
 					
-					$modulosIncluidos[$modulo_id] = true;
-					$alterouModulos = true;
+					if($usuarios_perfis_modulos)
+					foreach($usuarios_perfis_modulos as $upm){
+						if($upm['modulo'] == $modulo_id){
+							$jaEstavaAtivo = true;
+							break;
+						}
+					}
+					
+					if(!$jaEstavaAtivo){
+						// ===== Caso tenha encontrado e não estiver ativo, inserir o mesmo como referência.
+						
+						banco_insert_name_campo('perfil',$id);
+						banco_insert_name_campo('modulo',$modulo_id);
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"usuarios_perfis_modulos"
+						);
+						
+						$modulosIncluidos[$modulo_id] = true;
+						$alterouModulos = true;
+					}
 				}
 			}
 		}
@@ -574,7 +588,7 @@ function usuarios_perfis_editar(){
 		
 		for($i=1;$i<$numModulosOperacoes;$i++){
 			if($_REQUEST['operacao-'.$i]){
-				// ===== Procurar a operação referida.
+				// ===== Procurar a operação referida e marcar como ativo.
 				
 				$encontrou = false;
 				$operacao_id = '';
@@ -590,20 +604,34 @@ function usuarios_perfis_editar(){
 					}
 				}
 				
-				// ===== Caso tenha encontrado, inserir o mesmo como referência.
-				
 				if($encontrou){
-					banco_insert_name_campo('perfil',$id);
-					banco_insert_name_campo('operacao',$operacao_id);
+					// ===== Verificar se a operação já estava ativa.
 					
-					banco_insert_name
-					(
-						banco_insert_name_campos(),
-						"usuarios_perfis_modulos_operacoes"
-					);
+					$jaEstavaAtivo = false;
 					
-					$modulosOperacoesIncluidos[$modulo_id] = true;
-					$alterouModulosOperacoes = true;
+					if($usuarios_perfis_modulos_operacoes)
+					foreach($usuarios_perfis_modulos_operacoes as $upmo){
+						if($upmo['operacao'] == $operacao_id){
+							$jaEstavaAtivo = true;
+							break;
+						}
+					}
+					
+					if(!$jaEstavaAtivo){
+						// ===== Caso tenha encontrado, inserir o mesmo como referência.
+						
+						banco_insert_name_campo('perfil',$id);
+						banco_insert_name_campo('operacao',$operacao_id);
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"usuarios_perfis_modulos_operacoes"
+						);
+						
+						$modulosOperacoesIncluidos[$modulo_id] = true;
+						$alterouModulosOperacoes = true;
+					}
 				}
 			}
 		}
