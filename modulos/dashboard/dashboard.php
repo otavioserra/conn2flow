@@ -149,6 +149,18 @@ function dashboard_menu(){
 	
 	$usuario = gestor_usuario();
 	
+	$usuarios_perfis = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios_perfis',
+		'campos' => Array(
+			'id',
+		),
+		'extra' => 
+			"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
+	));
+	
+	$perfil = $usuarios_perfis['id'];
+	
 	$usuarios_perfis_modulos = banco_select_name
 	(
 		banco_campos_virgulas(Array(
@@ -156,7 +168,7 @@ function dashboard_menu(){
 		))
 		,
 		"usuarios_perfis_modulos",
-		"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
+		"WHERE perfil='".$perfil."'"
 	);
 	
 	$paginas = banco_select_name
