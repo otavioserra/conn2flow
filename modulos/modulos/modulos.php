@@ -135,7 +135,7 @@ function modulos_sincronizar_bancos(){
 	
 	// ===== Ativar / Desativar
 	
-	$ativar = true;
+	$ativar = false;
 	
 	// ===== Opções.
 	
@@ -203,9 +203,11 @@ function modulos_sincronizar_bancos(){
 			'camposComparacao' => Array(
 				'id',
 				'modulo',
+				'grupo',
 			),
-			'comparacaoIDEModulo' => true,
+			'comparacaoIDEModuloGrupo' => true,
 			'ignorarAtualizacoes' => true,
+			'ignorarAddSlashes' => true,
 		),
 	);
 	
@@ -439,6 +441,15 @@ function modulos_sincronizar_bancos(){
 								$found = true;
 								break;
 							}
+						} else if(isset($dadosDef['tabela']['comparacaoIDEModuloGrupo'])){
+							if(
+								$to['id'] == $td['id'] &&
+								$to['grupo'] == $td['grupo'] &&
+								$to['modulo'] == $td['modulo']
+							){
+								$found = true;
+								break;
+							}
 						} else {
 							$camposComparacao = $dadosDef['tabela']['camposComparacao'];
 							
@@ -486,7 +497,7 @@ function modulos_sincronizar_bancos(){
 					
 					foreach($to as $key => $val){
 						if(existe($val)){
-							banco_insert_name_campo($key,addslashes($val));
+							banco_insert_name_campo($key,(isset($dadosDef['tabela']['ignorarAddSlashes']) ? $val : addslashes($val)));
 						} else {
 							banco_insert_name_campo($key,'NULL',true);
 						}

@@ -74,6 +74,31 @@ function usuarios_perfis_adicionar(){
 		
 		$id_usuarios_perfis = banco_last_id();
 		
+		// ===== IDs dos módulos e módulos operações.
+		
+		$modulos = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'id_modulos',
+				'id',
+			))
+			,
+			"modulos",
+			"WHERE status='A'"
+			." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+		);
+		
+		$modulos_operacoes = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'id_modulos_operacoes',
+				'id',
+			))
+			,
+			"modulos_operacoes",
+			"WHERE status='A'"
+		);
+		
 		// ===== Módulos
 		
 		$totalModulos = (int)gestor_sessao_variavel($_GESTOR['modulo'].'-'.$_GESTOR['opcao'].'-'.'total-modulos');
@@ -81,16 +106,33 @@ function usuarios_perfis_adicionar(){
 		
 		for($i=1;$i<$totalModulos;$i++){
 			if($_REQUEST['modulo-'.$count]){
-				$campos = null; $campo_sem_aspas_simples = null;
+				// ===== Procurar o módulo referido.
 				
-				$campo_nome = "id_usuarios_perfis"; $campo_valor = $id_usuarios_perfis; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "id_modulos"; $campo_valor = banco_escape_field($_REQUEST['modulo-'.$count]); 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+				$encontrou = false;
+				$modulo_id = '';
 				
-				banco_insert_name
-				(
-					$campos,
-					"usuarios_perfis_modulos"
-				);
+				if($modulos){
+					foreach($modulos as $modulo){
+						if($modulo['id_modulos'] == $_REQUEST['modulo-'.$count]){
+							$encontrou = true;
+							$modulo_id = $modulo['id'];
+							break;
+						}
+					}
+				}
+				
+				// ===== Caso tenha encontrado, inserir o mesmo como referência.
+				
+				if($encontrou){
+					banco_insert_name_campo('perfil',$id);
+					banco_insert_name_campo('modulo',$modulo_id);
+					
+					banco_insert_name
+					(
+						banco_insert_name_campos(),
+						"usuarios_perfis_modulos"
+					);
+				}
 			}
 			
 			$count++;
@@ -103,16 +145,33 @@ function usuarios_perfis_adicionar(){
 		
 		for($i=1;$i<$totalModulosOperacoes;$i++){
 			if($_REQUEST['operacao-'.$count]){
-				$campos = null; $campo_sem_aspas_simples = null;
+				// ===== Procurar a operação referido.
 				
-				$campo_nome = "id_usuarios_perfis"; $campo_valor = $id_usuarios_perfis; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "id_modulos_operacoes"; $campo_valor = banco_escape_field($_REQUEST['operacao-'.$count]); 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+				$encontrou = false;
+				$operacao_id = '';
 				
-				banco_insert_name
-				(
-					$campos,
-					"usuarios_perfis_modulos_operacoes"
-				);
+				if($modulos_operacoes){
+					foreach($modulos_operacoes as $operacao){
+						if($operacao['id_modulos_operacoes'] == $_REQUEST['operacao-'.$count]){
+							$encontrou = true;
+							$operacao_id = $operacao['id'];
+							break;
+						}
+					}
+				}
+				
+				// ===== Caso tenha encontrado, inserir o mesmo como referência.
+				
+				if($encontrou){
+					banco_insert_name_campo('perfil',$id);
+					banco_insert_name_campo('operacao',$operacao_id);
+					
+					banco_insert_name
+					(
+						banco_insert_name_campos(),
+						"usuarios_perfis_modulos_operacoes"
+					);
+				}
 			}
 			
 			$count++;
