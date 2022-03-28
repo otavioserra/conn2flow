@@ -688,14 +688,26 @@ function gestor_pagina_menu($params = false){
 	
 	$usuario = gestor_usuario();
 	
+	$usuarios_perfis = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios_perfis',
+		'campos' => Array(
+			'id',
+		),
+		'extra' => 
+			"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
+	));
+	
+	$perfil = $usuarios_perfis['id'];
+	
 	$usuarios_perfis_modulos = banco_select_name
 	(
 		banco_campos_virgulas(Array(
-			'id_modulos',
+			'modulo',
 		))
 		,
 		"usuarios_perfis_modulos",
-		"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
+		"WHERE perfil='".$perfil."'"
 	);
 	
 	// ===== Pegar dados de páginas e módulos
@@ -725,6 +737,7 @@ function gestor_pagina_menu($params = false){
 		,
 		"modulos",
 		"WHERE nao_menu_principal IS NULL"
+		." AND status='A'"
 		." ORDER BY nome ASC"
 	);
 	
@@ -763,7 +776,7 @@ function gestor_pagina_menu($params = false){
 		} else {
 			if($usuarios_perfis_modulos)
 			foreach($usuarios_perfis_modulos as $upm){
-				if($upm['id_modulos'] == $modulo['id_modulos']){
+				if($upm['modulo'] == $modulo['id']){
 					$modulo_perfil = true;
 					break;
 				}
