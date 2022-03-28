@@ -1088,8 +1088,6 @@ function usuarios_perfis_editar(){
 							break;
 						}
 					}
-					
-					break;
 				}
 			}
 			
@@ -1105,8 +1103,6 @@ function usuarios_perfis_editar(){
 							break;
 						}
 					}
-					
-					break;
 				}
 			}
 		}
