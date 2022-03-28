@@ -514,10 +514,10 @@ function usuarios_perfis_editar(){
 				$modulo_id = '';
 				
 				if($modulos){
-					foreach($modulos as $modulo){
-						if($modulo['id_modulos'] == $_REQUEST['modulo-'.$i]){
+					foreach($modulos as $mod){
+						if($mod['id_modulos'] == $_REQUEST['modulo-'.$i]){
 							$encontrou = true;
-							$modulo_id = $modulo['id'];
+							$modulo_id = $mod['id'];
 							$modulosAtivos[$modulo_id] = true;
 							break;
 						}
@@ -878,6 +878,16 @@ function usuarios_perfis_editar(){
 			interface_historico_incluir(Array(
 				'alteracoes' => $alteracoes,
 			));
+			
+			// ===== Se alterou o id, atualizar as referências dos mesmos nas tabelas.
+			
+			if(isset($id_novo)){
+				banco_update_campo('perfil',$id_novo);
+				banco_update_executar('usuarios_perfis_modulos',"WHERE perfil='".$id."'");
+				
+				banco_update_campo('perfil',$id_novo);
+				banco_update_executar('usuarios_perfis_modulos_operacoes',"WHERE perfil='".$id."'");
+			}
 		}
 		
 		// ===== Reler URL.
