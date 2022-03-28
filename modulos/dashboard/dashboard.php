@@ -164,7 +164,7 @@ function dashboard_menu(){
 	$usuarios_perfis_modulos = banco_select_name
 	(
 		banco_campos_virgulas(Array(
-			'id_modulos',
+			'modulo',
 		))
 		,
 		"usuarios_perfis_modulos",
@@ -235,7 +235,7 @@ function dashboard_menu(){
 				
 				if($usuarios_perfis_modulos)
 				foreach($usuarios_perfis_modulos as $upm){
-					if($upm['id_modulos'] == $modulo['id_modulos']){
+					if($upm['modulo'] == $modulo['id']){
 						$modulo_perfil = true;
 						break;
 					}
