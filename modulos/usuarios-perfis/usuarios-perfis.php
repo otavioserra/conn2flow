@@ -92,6 +92,7 @@ function usuarios_perfis_adicionar(){
 		(
 			banco_campos_virgulas(Array(
 				'id_modulos_operacoes',
+				'id_modulos',
 				'id',
 			))
 			,
@@ -112,10 +113,10 @@ function usuarios_perfis_adicionar(){
 				$modulo_id = '';
 				
 				if($modulos){
-					foreach($modulos as $modulo){
-						if($modulo['id_modulos'] == $_REQUEST['modulo-'.$count]){
+					foreach($modulos as $mod){
+						if($mod['id_modulos'] == $_REQUEST['modulo-'.$count]){
 							$encontrou = true;
-							$modulo_id = $modulo['id'];
+							$modulo_id = $mod['id'];
 							break;
 						}
 					}
@@ -155,6 +156,7 @@ function usuarios_perfis_adicionar(){
 						if($operacao['id_modulos_operacoes'] == $_REQUEST['operacao-'.$count]){
 							$encontrou = true;
 							$operacao_id = $operacao['id'];
+							$operacao_id_modulos = $operacao['id_modulos'];
 							break;
 						}
 					}
@@ -163,7 +165,19 @@ function usuarios_perfis_adicionar(){
 				// ===== Caso tenha encontrado, inserir o mesmo como referência.
 				
 				if($encontrou){
+					$modulo_id = '';
+					
+					if($modulos){
+						foreach($modulos as $mod){
+							if($mod['id_modulos'] == $operacao_id_modulos){
+								$modulo_id = $mod['id'];
+								break;
+							}
+						}
+					}
+					
 					banco_insert_name_campo('perfil',$id);
+					banco_insert_name_campo('modulo',$modulo_id);
 					banco_insert_name_campo('operacao',$operacao_id);
 					
 					banco_insert_name

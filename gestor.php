@@ -1764,17 +1764,27 @@ function gestor_permissao_modulo(){
 	);
 	
 	if($modulos){
-		$id_modulos = $modulos[0]['id_modulos'];
+		$usuarios_perfis = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_perfis',
+			'campos' => Array(
+				'id',
+			),
+			'extra' => 
+				"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
+		));
+		
+		$perfil = $usuarios_perfis['id'];
 		
 		$usuarios_perfis_modulos = banco_select_name
 		(
 			banco_campos_virgulas(Array(
-				'id_modulos',
+				'id_usuarios_perfis_modulos',
 			))
 			,
 			"usuarios_perfis_modulos",
-			"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
-			." AND id_modulos='".$id_modulos."'"
+			"WHERE perfil='".$perfil."'"
+			." AND modulo='".$modulo."'"
 		);
 		
 		if($usuarios_perfis_modulos){
