@@ -1081,7 +1081,7 @@ function usuarios_perfis_editar(){
 		
 		// ===== Atualizar os dados atuais.
 		
-		$atualizarDados = true; // ATUALIZAR NA VERSÃO LIVE E DEPOIS EXCLUIR!!!!!!!!!!!
+		$atualizarDados = false; // ATUALIZAR NA VERSÃO LIVE E DEPOIS EXCLUIR!!!!!!!!!!!
 		
 		if($atualizarDados){
 			$usuarios_perfis_aux = banco_select_name

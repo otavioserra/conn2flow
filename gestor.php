@@ -1937,9 +1937,22 @@ function gestor_acesso($operacao = false,$modulo = false){
 			"modulos_operacoes",
 			"WHERE operacao='".$operacao."'"
 			." AND id_modulos='".$id_modulos."'"
+			." AND status='A'"
 		);
 		
 		if($modulos_operacoes){
+			$usuarios_perfis = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios_perfis',
+				'campos' => Array(
+					'id',
+				),
+				'extra' => 
+					"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
+			));
+			
+			$perfil = $usuarios_perfis['id'];
+			
 			$usuarios_perfis_modulos_operacoes = banco_select_name
 			(
 				banco_campos_virgulas(Array(
@@ -1947,8 +1960,9 @@ function gestor_acesso($operacao = false,$modulo = false){
 				))
 				,
 				"usuarios_perfis_modulos_operacoes",
-				"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
-				." AND id_modulos_operacoes='".$modulos_operacoes[0]['id_modulos_operacoes']."'"
+				"WHERE operacao='".$operacao."'"
+				." AND modulo='".$modulo."'"
+				." AND perfil='".$perfil."'"
 			);
 			
 			if($usuarios_perfis_modulos_operacoes){
