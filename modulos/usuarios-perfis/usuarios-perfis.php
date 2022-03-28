@@ -683,11 +683,12 @@ function usuarios_perfis_editar(){
 				(
 					"usuarios_perfis_modulos_operacoes",
 					"WHERE perfil='".$id."'"
+					." AND modulo='".$upmo['modulo']."'"
 					." AND operacao='".$upmo['operacao']."'"
 				);
 				
 				$alterouModulosOperacoes = true;
-				$modulosOperacoesRemovidos[$modOpIDs] = true;
+				$modulosOperacoesRemovidos[$upmo['modulo'].'#'.$upmo['operacao']] = true;
 			}
 		}
 		
