@@ -1328,6 +1328,15 @@ function gestor_sessao_del(){
 		"sessoes",
 		"WHERE id_sessoes='".$id_sessoes."'"
 	);
+	
+	setcookie($_GESTOR['session-authname'], "", [
+		'expires' => time() - 3600,
+		'path' => '/',
+		'domain' => $_SERVER['SERVER_NAME'],
+		'secure' => true,
+		'httponly' => true,
+		'samesite' => 'Lax',
+	]);
 }
 
 function gestor_sessao_variavel($variavel,$valor = NULL){
