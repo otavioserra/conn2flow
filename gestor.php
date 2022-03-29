@@ -1545,7 +1545,6 @@ function gestor_permissao_token(){
 	
 	// ===== Verifica se existe o cookie de autenticação gerado no login com sucesso.
 	
-	
 	if(!isset($_COOKIE[$_GESTOR['cookie-authname']])){
 		return false;
 	}
@@ -2039,6 +2038,16 @@ function gestor_host_configuracao(){
 				);
 				
 				if($hosts){
+					// ===== Buscar o ID do perfil do usuário.
+					
+					$usuarios_perfis = banco_select_name(
+						banco_campos_virgulas(Array(
+							'id',
+						)),
+						"usuarios_perfis",
+						"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
+					);
+					
 					// ===== Verificar se o módulo de configuração do host faz parte do usuário
 					
 					$usuarios_perfis_modulos = banco_select_name
@@ -2048,8 +2057,8 @@ function gestor_host_configuracao(){
 						))
 						,
 						"usuarios_perfis_modulos",
-						"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
-						." AND id_modulos='".$_GESTOR['host-configuracao-id-modulo']."'"
+						"WHERE perfil='".$usuarios_perfis['id']."'"
+						." AND modulo='".$_GESTOR['host-configuracao-id-modulo']."'"
 					);
 					
 					if($usuarios_perfis_modulos){
