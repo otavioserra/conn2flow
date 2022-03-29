@@ -1538,7 +1538,7 @@ function host_configuracao_configuracoes(){
 		
 		$mensagemPlugins = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'host-plugins-msg-content'));
 		
-		$cel_nome = 'cel_nome';
+		$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($mensagemPlugins,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $mensagemPlugins = modelo_tag_in($mensagemPlugins,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 	
 		if($plugins){
 			foreach($plugins as $plugin){
