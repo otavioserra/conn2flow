@@ -1238,6 +1238,170 @@ function host_configuracao_atualizar(){
 	}
 }
 
+function host_configuracao_plugins(){
+	global $_GESTOR;
+	
+	$host_verificacao = gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id']);
+	
+	if(!isset($host_verificacao['iniciar-atualizacao-plugins']) && !isset($_REQUEST['atualizar'])){ 
+		// ===== 1º Etapa: mostrar os plugins habilitados e dar opção de habilitar/desabilitar plugin.
+		
+		// ===== Inclusão Módulo JS
+
+		gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+		gestor_pagina_javascript_incluir();
+		
+		// ===== Remover célula 'conta-ftp'.
+		
+		$cel_nome = 'conta-ftp'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+		
+		// ===== Verificar os plugins padrões e os habilitados no banco de dados.
+		
+		$id_hosts = $host_verificacao['id_hosts'];
+		
+		$hosts_plugins = banco_select(Array(
+			'tabela' => 'hosts_plugins',
+			'campos' => Array(
+				'plugin',
+			),
+			'extra' => 
+				"WHERE id_hosts='".$id_hosts."'"
+		));
+		
+		// ===== Caso exista plugins, listar os mesmos. Senão, mostrar mensagem de não haver plugins habilitados.
+		
+		$plugins = banco_select(Array(
+			'tabela' => 'plugins',
+			'campos' => Array(
+				'nome',
+				'id',
+			),
+			'extra' => 
+				"WHERE status!='D'"
+				." ORDER BY nome ASC"
+		));
+		
+		// ===== Montar os plugins na tela para a escolha dos mesmos.
+		
+		$cel_nome = 'plugins'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+		
+		if($plugins){
+			foreach($plugins as $plugin){
+				$habilitado = false;
+				
+				if($hosts_plugins){
+					foreach($hosts_plugins as $hosts_plugin){
+						if($plugin['id'] == $hosts_plugin['plugin']){
+							$habilitado = true;
+							break;
+						}
+					}
+				}
+				
+				$cel_aux = $cel[$cel_nome];
+				
+				$cel_aux = modelo_var_troca($cel_aux,"#titulo#",$plugin['nome']);
+				$cel_aux = modelo_var_troca($cel_aux,"#name#",$plugin['id']);
+				$cel_aux = modelo_var_troca($cel_aux,"#checked#",($habilitado ? 'checked' : ''));
+				
+				$_GESTOR['pagina'] = modelo_var_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->',$cel_aux);				
+			}
+		}
+		
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->','');
+	} else if(isset($_REQUEST['atualizar'])){
+		// ===== 2º Etapa: criar status 'iniciar-atualizacao' e redirecionar. 
+		
+		$host_verificacao['iniciar-atualizacao-plugins'] = true;
+		
+		// ===== Guardar sessão.
+		
+		gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
+		
+		// ===== Reload para iniciar o carregando
+		
+		gestor_redirecionar('host-update/');
+	} else if(!isset($host_verificacao['dados-instalacao']) && !isset($_REQUEST['senha-ftp'])){ 
+		// ===== 3º Etapa: se não existe dados da instalação, executar form para pegar as senhas da conta FTP.
+		
+		// ===== Inclusão Módulo JS
+
+		gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+		gestor_pagina_javascript_incluir();
+		
+		// ===== Remover célula 'atualizacao'
+		
+		$cel_nome = 'atualizacao'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+		
+		// ===== Interface finalizar opções
+		
+		$formulario['validacao'] = Array(
+			Array(
+				'regra' => 'texto-obrigatorio',
+				'campo' => 'senha-ftp',
+				'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'host-install-ftp-pass-label')),
+			),
+		);
+		
+		interface_formulario_validacao($formulario);
+		
+		// ===== Guardar sessão para criar redirect caso esqueça senha.
+		
+		gestor_sessao_variavel('host-configuracao-forgot-password-redirect','host-update');
+	} else if(isset($_REQUEST['senha-ftp'])){
+		// ===== 4º Etapa: Armazenar provisoriamente as senhas do FTP e do Banco de Dados - Redirecionar para criar tela "carregando". 
+		
+		// ===== Dados Configuração
+		
+		$senhaFtp = banco_escape_field($_REQUEST['senha-ftp']);
+		
+		$host_verificacao['dados-instalacao'] = Array(
+			'senha-ftp' => host_configuracao_encriptar($senhaFtp),
+			'senha-db' => host_configuracao_encriptar(hash("sha256",$senhaFtp)),
+		);
+		
+		// ===== Guardar a sessão.
+		
+		gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
+		
+		// ===== Reload para iniciar o carregando
+		
+		gestor_redirecionar('host-update/');
+	} else if(!isset($host_verificacao['carregando'])){
+		// ===== 5º Etapa: Iniciar tela carregando e disparo da próxima etapa via JavaScript afim da tela carregando ficar visivel ao usuário. 
+		
+		// ===== Atualizar sessão e incluir o status 'carregando'.
+		
+		$host_verificacao['carregando'] = true;
+		gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
+		
+		// ===== Informar o JS para mostrar 'carregando'. Recarregar a mesma página e iniciar o processo de configuração.
+		
+		$_GESTOR['javascript-vars']['hostUpdateCarregando'] = true;
+		
+		// ===== Inclusão Módulo JS
+		
+		gestor_pagina_javascript_incluir();
+		
+		// ===== Layout de carregamento da instalação
+		
+		$_GESTOR['pagina'] = gestor_componente(Array(
+			'id' => 'host-update-carregando',
+		));
+	} else if(isset($host_verificacao['dados-instalacao'])){
+		// ===== 6º Etapa: Atualizar o host do cliente.
+		
+		host_configuracao_pipeline_atualizacao(Array(
+			'opcao' => 'atualizar',
+		));
+		
+	} else {
+		// ===== Se houver algum erro inesperado no pipeline de configuração, mostrar a tela com o seguinte erro a mostra:
+		
+		$_GESTOR['pagina'] = '[host-configuracao][update] Error not expected: data config not defined!';
+	}
+}
+
 function host_configuracao_configuracoes(){
 	global $_GESTOR;
 	
@@ -2264,6 +2428,7 @@ function host_configuracao_start(){
 			case 'redefinir-senha': host_configuracao_redefine_password(); break;
 			case 'redefinir-senha-confirmacao': host_configuracao_redefine_password_confirmation(); break;
 			case 'plataforma-testes': host_configuracao_plataforma_testes(); break;
+			case 'plugins': host_configuracao_plugins(); break;
 		}
 		
 		interface_finalizar();
