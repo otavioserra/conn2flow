@@ -992,7 +992,7 @@ function modulos_adicionar(){
 							'valor' => 'nao',
 						),
 					),
-				)
+				),
 				Array(
 					'tipo' => 'select',
 					'id' => 'plugin',
