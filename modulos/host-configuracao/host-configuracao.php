@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'host-configuracao';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.2.0',
+	'versao' => '1.2.1',
 	'bibliotecas' => Array('interface','html','pagina'),
 	'tabela' => Array(
 		'nome' => 'hosts',
@@ -1320,7 +1320,7 @@ function host_configuracao_plugins(){
 		
 		// ===== Reload para iniciar o carregando
 		
-		gestor_redirecionar('host-update/');
+		gestor_redirecionar('host-plugins/');
 	} else if(!isset($host_verificacao['dados-instalacao']) && !isset($_REQUEST['senha-ftp'])){ 
 		// ===== 3º Etapa: se não existe dados da instalação, executar form para pegar as senhas da conta FTP.
 		
@@ -1347,7 +1347,7 @@ function host_configuracao_plugins(){
 		
 		// ===== Guardar sessão para criar redirect caso esqueça senha.
 		
-		gestor_sessao_variavel('host-configuracao-forgot-password-redirect','host-update');
+		gestor_sessao_variavel('host-configuracao-forgot-password-redirect','host-plugins');
 	} else if(isset($_REQUEST['senha-ftp'])){
 		// ===== 4º Etapa: Armazenar provisoriamente as senhas do FTP e do Banco de Dados - Redirecionar para criar tela "carregando". 
 		
@@ -1366,7 +1366,7 @@ function host_configuracao_plugins(){
 		
 		// ===== Reload para iniciar o carregando
 		
-		gestor_redirecionar('host-update/');
+		gestor_redirecionar('host-plugins/');
 	} else if(!isset($host_verificacao['carregando'])){
 		// ===== 5º Etapa: Iniciar tela carregando e disparo da próxima etapa via JavaScript afim da tela carregando ficar visivel ao usuário. 
 		

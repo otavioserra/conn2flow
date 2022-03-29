@@ -69,6 +69,8 @@ $(document).ready(function(){
 
 	if($('#_gestor-host-plugins').length > 0){
 		$('.ui.checkbox').checkbox();
+		
+		$.formReiniciar();
 	}
 	
 	// ===== Host Forgot Password
