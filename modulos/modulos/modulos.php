@@ -1109,7 +1109,7 @@ function modulos_editar(){
 				'id_numerico' => 'id_modulos_grupos',
 			));}
 		
-		$campo_nome = "plugin"; $request_name = 'plugin'; $alteracoes_name = 'plugin'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = (isset($_REQUEST[$request_name]) ? $campo_nome."=NULL" : $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'";) $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
+		$campo_nome = "plugin"; $request_name = 'plugin'; $alteracoes_name = 'plugin'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = (isset($_REQUEST[$request_name]) ? $campo_nome."=NULL" : $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"); $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
 				'nome' => 'plugins',
 				'campo' => 'nome',
 				'id' => 'id',
