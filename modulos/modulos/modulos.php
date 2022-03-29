@@ -1357,7 +1357,7 @@ function modulos_interfaces_padroes(){
 								'tabela' => Array(
 									'nome' => 'plugins',
 									'campo_trocar' => 'nome',
-									'campo_referencia' => 'plugin',
+									'campo_referencia' => 'id',
 								),
 							)
 						),
