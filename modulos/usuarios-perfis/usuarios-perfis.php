@@ -458,7 +458,6 @@ function usuarios_perfis_editar(){
 		$usuarios_perfis_modulos_operacoes = banco_select_name
 		(
 			banco_campos_virgulas(Array(
-				'modulo',
 				'operacao',
 			))
 			,
