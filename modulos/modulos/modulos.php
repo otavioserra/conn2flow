@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'modulos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.1.0',
+	'versao' => '1.2.0',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
 		'nome' => 'modulos',
@@ -921,6 +921,7 @@ function modulos_adicionar(){
 		$campo_nome = "id_modulos_grupos"; $post_nome = "grupo"; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "icone"; $post_nome = "icone"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "icone2"; $post_nome = "icone2"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "plugin"; $post_nome = "plugin"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "nao_menu_principal"; $post_nome = "menu"; 						if($_REQUEST[$post_nome] == 'nao')		$campos[] = Array($campo_nome,'1',true);
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		
@@ -992,6 +993,19 @@ function modulos_adicionar(){
 						),
 					),
 				)
+				Array(
+					'tipo' => 'select',
+					'id' => 'plugin',
+					'nome' => 'plugin',
+					'procurar' => true,
+					'limpar' => true,
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-plugin-placeholder')),
+					'tabela' => Array(
+						'nome' => 'plugins',
+						'campo' => 'nome',
+						'id' => true,
+					),
+				),
 			)
 		)
 	);
@@ -1015,6 +1029,7 @@ function modulos_editar(){
 		'icone2',
 		'nao_menu_principal',
 		'titulo',
+		'plugin',
 	);
 	
 	$camposBancoPadrao = Array(
@@ -1094,6 +1109,12 @@ function modulos_editar(){
 				'id_numerico' => 'id_modulos_grupos',
 			));}
 		
+		$campo_nome = "plugin"; $request_name = 'plugin'; $alteracoes_name = 'plugin'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
+				'nome' => 'plugins',
+				'campo' => 'nome',
+				'id' => 'id',
+			));}
+		
 		$campo_nome = "titulo"; $request_name = $campo_nome; $alteracoes_name = 'title'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "icone"; $request_name = $campo_nome; $alteracoes_name = 'icon'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "icone2"; $request_name = $campo_nome; $alteracoes_name = 'icon-2'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
@@ -1153,6 +1174,7 @@ function modulos_editar(){
 		$menu_principal = (isset($retorno_bd['nao_menu_principal']) ? 'nao' : 'sim');
 		$id_modulos_grupos = (isset($retorno_bd['id_modulos_grupos']) ? $retorno_bd['id_modulos_grupos'] : '');
 		$titulo = (isset($retorno_bd['titulo']) ? $retorno_bd['titulo'] : '');
+		$plugin_id = (isset($retorno_bd['plugin']) ? $retorno_bd['plugin'] : '');
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#icone#',$icone);
@@ -1237,6 +1259,20 @@ function modulos_editar(){
 						'campo' => 'nome',
 						'id_numerico' => 'id_modulos_grupos',
 						'id_selecionado' => $id_modulos_grupos,
+					),
+				),
+				Array(
+					'tipo' => 'select',
+					'id' => 'plugin',
+					'nome' => 'plugin',
+					'procurar' => true,
+					'limpar' => true,
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-plugin-placeholder')),
+					'tabela' => Array(
+						'nome' => 'plugins',
+						'campo' => 'nome',
+						'id_selecionado' => $plugin_id,
+						'id' => true,
 					),
 				),
 				Array(
