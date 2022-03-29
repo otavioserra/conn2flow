@@ -756,6 +756,7 @@ function usuarios_interfaces_padroes(){
 					'campos' => Array(
 						'nome',
 						'nome_conta',
+						'id_usuarios_perfis',
 						$modulo['tabela']['data_criacao'],
 						$modulo['tabela']['data_modificacao'],
 					),
@@ -773,6 +774,18 @@ function usuarios_interfaces_padroes(){
 						Array(
 							'id' => 'nome_conta',
 							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-account-label')),
+						),
+						Array(
+							'id' => 'id_usuarios_perfis',
+							'nome' => gestor_variaveis(Array('modulo' => 'modulos','id' => 'form-user-profile-label')),
+							'formatar' => Array(
+								'id' => 'outraTabela',
+								'tabela' => Array(
+									'nome' => 'usuarios_perfis',
+									'campo_trocar' => 'nome',
+									'campo_referencia' => 'id_usuarios_perfis',
+								),
+							)
 						),
 						Array(
 							'id' => $modulo['tabela']['data_criacao'],
