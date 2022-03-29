@@ -1310,13 +1310,75 @@ function host_configuracao_plugins(){
 		
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->','');
 	} else if(isset($_REQUEST['atualizar'])){
-		// ===== 2º Etapa: criar status 'iniciar-atualizacao' e redirecionar. 
+		// ===== 2º Etapa: criar status 'iniciar-atualizacao-plugins', habilitar os mesmos no banco e redirecionar.
+		// ===== Guardar no banco de dados os plugins escolhidos.
 		
-		$host_verificacao['iniciar-atualizacao-plugins'] = true;
+		$id_hosts = $host_verificacao['id_hosts'];
+		
+		$hosts_plugins = banco_select(Array(
+			'tabela' => 'hosts_plugins',
+			'campos' => Array(
+				'plugin',
+			),
+			'extra' => 
+				"WHERE id_hosts='".$id_hosts."'"
+		));
+		
+		$plugins = banco_select(Array(
+			'tabela' => 'plugins',
+			'campos' => Array(
+				'nome',
+				'id',
+			),
+			'extra' => 
+				"WHERE status!='D'"
+				." ORDER BY nome ASC"
+		));
+		
+		if($plugins){
+			foreach($plugins as $plugin){
+				$naoEstavaHabilitado = true;
+				
+				if($hosts_plugins){
+					foreach($hosts_plugins as $hosts_plugin){
+						if($plugin['id'] == $hosts_plugin['plugin']){
+							$naoEstavaHabilitado = false;
+							break;
+						}
+					}
+				}
+				
+				if($naoEstavaHabilitado){
+					if(existe($_REQUEST[$plugin['id']])){
+						banco_insert_name_campo('plugin',$plugin['id']);
+						banco_insert_name_campo('id_hosts',$id_hosts);
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"hosts_plugins"
+						);
+					}
+				} else {
+					if(!existe($_REQUEST[$plugin['id']])){
+						banco_delete
+						(
+							"hosts_plugins",
+							"WHERE id_hosts='".$id_hosts."'"
+							." AND plugin='".$plugin['id']."'"
+						);
+					}
+				}
+			}
+		}
+		
+		// ===== Atualizar a opção da sessão.
+		
+		//$host_verificacao['iniciar-atualizacao-plugins'] = true;
 		
 		// ===== Guardar sessão.
 		
-		gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
+		//gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
 		
 		// ===== Reload para iniciar o carregando
 		
