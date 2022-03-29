@@ -92,7 +92,6 @@ function usuarios_perfis_adicionar(){
 		(
 			banco_campos_virgulas(Array(
 				'id_modulos_operacoes',
-				'id_modulos',
 				'id',
 			))
 			,
@@ -156,7 +155,6 @@ function usuarios_perfis_adicionar(){
 						if($operacao['id_modulos_operacoes'] == $_REQUEST['operacao-'.$count]){
 							$encontrou = true;
 							$operacao_id = $operacao['id'];
-							$operacao_id_modulos = $operacao['id_modulos'];
 							break;
 						}
 					}
@@ -165,19 +163,7 @@ function usuarios_perfis_adicionar(){
 				// ===== Caso tenha encontrado, inserir o mesmo como referência.
 				
 				if($encontrou){
-					$modulo_id = '';
-					
-					if($modulos){
-						foreach($modulos as $mod){
-							if($mod['id_modulos'] == $operacao_id_modulos){
-								$modulo_id = $mod['id'];
-								break;
-							}
-						}
-					}
-					
 					banco_insert_name_campo('perfil',$id);
-					banco_insert_name_campo('modulo',$modulo_id);
 					banco_insert_name_campo('operacao',$operacao_id);
 					
 					banco_insert_name
@@ -607,23 +593,13 @@ function usuarios_perfis_editar(){
 				
 				$encontrou = false;
 				$operacao_id = '';
-				$modulo_id = '';
 				
 				if($modulos_operacoes){
 					foreach($modulos_operacoes as $modulo_operacao){
 						if($modulo_operacao['id_modulos_operacoes'] == $_REQUEST['operacao-'.$i]){
-							if($modulos){
-								foreach($modulos as $mod){
-									if($mod['id_modulos'] == $modulo_operacao['id_modulos']){
-										$modulo_id = $mod['id'];
-										break;
-									}
-								}
-							}
-							
 							$encontrou = true;
 							$operacao_id = $modulo_operacao['id'];
-							$modulosOperacoesAtivos[$modulo_id.'#'.$operacao_id] = true;
+							$modulosOperacoesAtivos[$operacao_id] = true;
 							break;
 						}
 					}
@@ -646,7 +622,6 @@ function usuarios_perfis_editar(){
 						// ===== Caso tenha encontrado, inserir o mesmo como referência.
 						
 						banco_insert_name_campo('perfil',$id);
-						banco_insert_name_campo('modulo',$modulo_id);
 						banco_insert_name_campo('operacao',$operacao_id);
 						
 						banco_insert_name
@@ -655,7 +630,7 @@ function usuarios_perfis_editar(){
 							"usuarios_perfis_modulos_operacoes"
 						);
 						
-						$modulosOperacoesIncluidos[$modulo_id.'#'.$operacao_id] = true;
+						$modulosOperacoesIncluidos[$operacao_id] = true;
 						$alterouModulosOperacoes = true;
 					}
 				}
@@ -666,13 +641,8 @@ function usuarios_perfis_editar(){
 		foreach($usuarios_perfis_modulos_operacoes as $upmo){
 			$encontrou = false;
 			
-			foreach($modulosOperacoesAtivos as $modOpIDs => $val){
-				list($modulo_id,$operacao_id) = explode('#',$modOpIDs);
-				
-				if(
-					$upmo['operacao'] == $operacao_id && 
-					$upmo['modulo'] == $modulo_id
-				){
+			foreach($modulosOperacoesAtivos as $operacao_id => $val){
+				if($upmo['operacao'] == $operacao_id){
 					$encontrou = true;
 					break;
 				}
@@ -683,12 +653,11 @@ function usuarios_perfis_editar(){
 				(
 					"usuarios_perfis_modulos_operacoes",
 					"WHERE perfil='".$id."'"
-					." AND modulo='".$upmo['modulo']."'"
 					." AND operacao='".$upmo['operacao']."'"
 				);
 				
 				$alterouModulosOperacoes = true;
-				$modulosOperacoesRemovidos[$upmo['modulo'].'#'.$upmo['operacao']] = true;
+				$modulosOperacoesRemovidos[$upmo['operacao']] = true;
 			}
 		}
 		
@@ -723,9 +692,7 @@ function usuarios_perfis_editar(){
 				// ====== Histórico dos módulos operações incluídos.
 				
 				if(count($modulosOperacoesIncluidos) > 0){
-					foreach($modulosOperacoesIncluidos as $modOpIDs => $val){
-						list($modulo_id,$operacao_id) = explode('#',$modOpIDs);
-						
+					foreach($modulosOperacoesIncluidos as $operacao_id => $val){
 						if($modulos_operacoes)
 						foreach($modulos_operacoes as $mo){
 							if($operacao_id == $mo['id']){
@@ -733,10 +700,7 @@ function usuarios_perfis_editar(){
 								
 								if($modulos)
 								foreach($modulos as $m){
-									if(
-										$m['id_modulos'] == $mo['id_modulos'] &&
-										$modulo_id == $m['id']
-									){
+									if($m['id_modulos'] == $mo['id_modulos']){
 										$found = true;
 										break;
 									}
@@ -776,9 +740,7 @@ function usuarios_perfis_editar(){
 				// ====== Histórico dos módulos operações removidos.
 				
 				if(count($modulosOperacoesRemovidos) > 0){
-					foreach($modulosOperacoesRemovidos as $modOpIDs => $val){
-						list($modulo_id,$operacao_id) = explode('#',$modOpIDs);
-						
+					foreach($modulosOperacoesRemovidos as $operacao_id => $val){
 						if($modulos_operacoes)
 						foreach($modulos_operacoes as $mo){
 							if($operacao_id == $mo['id']){
@@ -786,10 +748,7 @@ function usuarios_perfis_editar(){
 								
 								if($modulos)
 								foreach($modulos as $m){
-									if(
-										$m['id_modulos'] == $mo['id_modulos'] &&
-										$modulo_id == $m['id']
-									){
+									if($m['id_modulos'] == $mo['id_modulos']){
 										$found = true;
 										break;
 									}
