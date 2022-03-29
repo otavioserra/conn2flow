@@ -70,6 +70,14 @@ $(document).ready(function(){
 	if($('#_gestor-host-plugins').length > 0){
 		$('.ui.checkbox').checkbox();
 		
+		$('input[type="checkbox"]').each(function(){
+			if(typeof $(this).attr('data-checked') !== typeof undefined && $(this).attr('data-checked') !== false){
+				if($(this).attr('data-checked') == 'checked'){
+					$(this).prop( "checked", true );
+				}
+			}
+		});
+		
 		$.formReiniciar();
 	}
 	
