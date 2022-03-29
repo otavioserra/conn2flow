@@ -2400,6 +2400,8 @@ function gestor_roteador(){
 	global $_GESTOR;
 	global $_INDEX;
 	
+	$modulos = Array();
+	
 	// ===== Condições iniciais para definir o módulo e a página
 	
 	$caminho = (isset($_GESTOR['caminho-total']) ? $_GESTOR['caminho-total'] : '');
@@ -2477,6 +2479,19 @@ function gestor_roteador(){
 				gestor_permissao();
 				gestor_host_configuracao();
 			}
+			
+			// ===== Verificar se o módulo faz parte de um plugin ou não. Caso faça parte, acessar o local do módulo dentro da pasta do plugin específico, senão no diretório padrão de módulos.
+			
+			$modulos = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'modulos',
+				'campos' => Array(
+					'plugin',
+				),
+				'extra' => 
+					"WHERE id='".$_GESTOR['modulo']."'"
+					." AND status='A'"
+			));
 		}
 	}
 	
@@ -2490,7 +2505,11 @@ function gestor_roteador(){
 			// ===== Módulo alvo quando houver executar
 			
 			if(existe($modulo)){
-				require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
+				if($modulos['plugin']){
+					require_once($_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
+				} else {
+					require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
+				}
 			}
 			
 			// ===== Retornar a página formatada para o cliente
@@ -2519,7 +2538,11 @@ function gestor_roteador(){
 			
 			if($_GESTOR['opcao']){
 				if(existe($modulo)){
-					require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
+					if($modulos['plugin']){
+						require_once($_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
+					} else {
+						require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
+					}
 				}
 				
 				gestor_redirecionar_raiz();
@@ -2540,7 +2563,11 @@ function gestor_roteador(){
 			// ===== Módulo alvo quando houver executar
 			
 			if(existe($modulo)){
-				require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
+				if($modulos['plugin']){
+					require_once($_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
+				} else {
+					require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
+				}
 			}
 			
 			// ===== Incluir um layout específico, ou padrão ou nenhum.
