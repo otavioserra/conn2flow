@@ -1961,7 +1961,6 @@ function gestor_acesso($operacao = false,$modulo = false){
 				,
 				"usuarios_perfis_modulos_operacoes",
 				"WHERE operacao='".$operacao."'"
-				." AND modulo='".$modulo."'"
 				." AND perfil='".$perfil."'"
 			);
 			
