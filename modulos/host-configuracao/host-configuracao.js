@@ -59,8 +59,16 @@ $(document).ready(function(){
 			.checkbox();
 	}
 	
+	// ===== Host Update.
+
 	if($('#_gestor-host-update').length > 0){
 		$.formReiniciar();
+	}
+	
+	// ===== Host Plugins.
+
+	if($('#_gestor-host-plugins').length > 0){
+		$('.ui.checkbox').checkbox();
 	}
 	
 	// ===== Host Forgot Password
