@@ -1321,6 +1321,7 @@ function modulos_interfaces_padroes(){
 					'campos' => Array(
 						'nome',
 						'id_modulos_grupos',
+						'plugin',
 						$modulo['tabela']['data_criacao'],
 						$modulo['tabela']['data_modificacao'],
 					),
@@ -1344,6 +1345,19 @@ function modulos_interfaces_padroes(){
 									'nome' => 'modulos_grupos',
 									'campo_trocar' => 'nome',
 									'campo_referencia' => 'id_modulos_grupos',
+								),
+							)
+						),
+						Array(
+							'id' => 'plugin',
+							'nome' => gestor_variaveis(Array('modulo' => 'modulos','id' => 'form-plugin-label')),
+							'formatar' => Array(
+								'id' => 'outraTabela',
+								'valor_senao_existe' => '<span class="ui info text">'.gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-plugin-empty')).'</span>',
+								'tabela' => Array(
+									'nome' => 'plugins',
+									'campo_trocar' => 'nome',
+									'campo_referencia' => 'plugin',
 								),
 							)
 						),
