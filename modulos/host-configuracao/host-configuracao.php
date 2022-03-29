@@ -1523,8 +1523,7 @@ function host_configuracao_configuracoes(){
 	
 	// ===== Caso exista plugins, listar os mesmos. Senão, mostrar mensagem de não haver plugins habilitados.
 	
-	//if($hosts_plugins){
-	if(true){
+	if($hosts_plugins){
 		$plugins = banco_select(Array(
 			'tabela' => 'plugins',
 			'campos' => Array(
@@ -1545,16 +1544,15 @@ function host_configuracao_configuracoes(){
 				if($hosts_plugins){
 					foreach($hosts_plugins as $hosts_plugin){
 						if($plugin['id'] == $hosts_plugin['plugin']){
-							continue;
+							$cel_aux = $cel[$cel_nome];
+							
+							$cel_aux = modelo_var_troca($cel_aux,"#plugin#",$plugin['nome']);
+							
+							$mensagemPlugins = modelo_var_in($mensagemPlugins,'<!-- '.$cel_nome.' -->',$cel_aux);
 						}
 					}
 				}
 				
-				$cel_aux = $cel[$cel_nome];
-				
-				$cel_aux = modelo_var_troca($cel_aux,"#plugin#",$plugin['nome']);
-				
-				$mensagemPlugins = modelo_var_in($mensagemPlugins,'<!-- '.$cel_nome.' -->',$cel_aux);
 			}
 		}
 		
