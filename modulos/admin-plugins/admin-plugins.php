@@ -56,7 +56,7 @@ function admin_plugins_adicionar(){
 		// ===== Campos gerais
 		
 		banco_insert_name_campo('id',$id);
-		if(isset($_REQUEST['nome'])){ banco_insert_name_campo('nome',$_REQUEST['nome'],true); }
+		if(isset($_REQUEST['nome'])){ banco_insert_name_campo('nome',$_REQUEST['nome']); }
 		
 		// ===== Campos comuns
 		
