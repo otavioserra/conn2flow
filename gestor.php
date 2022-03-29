@@ -2040,13 +2040,15 @@ function gestor_host_configuracao(){
 				if($hosts){
 					// ===== Buscar o ID do perfil do usuário.
 					
-					$usuarios_perfis = banco_select_name(
-						banco_campos_virgulas(Array(
+					$usuarios_perfis = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'usuarios_perfis',
+						'campos' => Array(
 							'id',
-						)),
-						"usuarios_perfis",
-						"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
-					);
+						),
+						'extra' => 
+							"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
+					));
 					
 					// ===== Verificar se o módulo de configuração do host faz parte do usuário
 					
