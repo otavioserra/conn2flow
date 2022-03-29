@@ -777,7 +777,7 @@ function usuarios_interfaces_padroes(){
 						),
 						Array(
 							'id' => 'id_usuarios_perfis',
-							'nome' => gestor_variaveis(Array('modulo' => 'modulos','id' => 'form-user-profile-label')),
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-profile-label')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
 								'tabela' => Array(
