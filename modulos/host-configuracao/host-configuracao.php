@@ -2774,6 +2774,8 @@ function host_configuracao_start(){
 	
 	gestor_incluir_bibliotecas();
 	
+	echo 'Var>> '.print_r($_REQUEST,true)."<br>";exit;
+	
 	if($_GESTOR['ajax']){
 		interface_ajax_iniciar();
 		
