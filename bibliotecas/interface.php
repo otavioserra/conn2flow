@@ -4310,6 +4310,8 @@ function interface_ajax_finalizar($params = false){
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
+	echo 'Var>> '.print_r($_REQUEST,true)."<br>";exit;
+	
 	if($_GESTOR['ajax']){
 		switch($_GESTOR['ajax-opcao']){
 			case 'backup-campos-mudou': interface_ajax_backup_campo(); break;
