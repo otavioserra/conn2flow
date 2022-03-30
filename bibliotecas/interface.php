@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-interface']							=	Array(
-	'versao' => '1.0.32',
+	'versao' => '1.0.33',
 );
 
 // ===== Funções formatação
@@ -2456,6 +2456,7 @@ function interface_ajax_historico_mais_resultados(){
 	$_GESTOR['ajax-json'] = Array(
 		'status' => 'Ok',
 		'pagina' => interface_historico(Array(
+			'sem_id' => (isset($_REQUEST['sem_id']) ? true : null ),
 			'id' => (isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ),
 			'modulo' => $_GESTOR['modulo-id'],
 			'pagina' => '#historico#',

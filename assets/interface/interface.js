@@ -640,6 +640,7 @@ $(document).ready(function() {
 							ajaxOpcao : ajaxOpcao,
 							ajaxRegistroId : gestor.moduloRegistroId,
 							pagina : pagina,
+							sem_id : 'sim',
 							id : id
 						},
 						dataType: 'json',
