@@ -203,6 +203,7 @@ function host_configuracao_pipeline_atualizacao($params = false){
 	// ===== Parâmetros
 	
 	// opcao - String - Obrigatório - Opção possíveis: instalar ou atualizar.
+	// atualizarConfig - Bool - Opcional - Recriar o config do host.
 	
 	// ===== 
 	
@@ -267,9 +268,8 @@ function host_configuracao_pipeline_atualizacao($params = false){
 				case 'instalar': $configAtualizar = true; break;
 			}
 			
-			
 			if($configAtualizar){
-				// ===== Criar pubID para identificador do host e funções de hash para criptografia.
+				// ===== Criar pubID para identificador o host e funções de hash para criptografia.
 				
 				$pubId = md5(uniqid(rand(), true));
 				
@@ -663,6 +663,328 @@ function host_configuracao_pipeline_atualizacao($params = false){
 			
 			gestor_reload_url();
 		}
+	}
+}
+
+function host_configuracao_pipeline_atualizacao_plugins($params = false){
+	global $_GESTOR;
+	global $_INDEX;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// ===== 
+	
+	$host_verificacao = gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id']);
+	
+	// ===== Bloqueia que o cliente pare a execução do script caso feche a janela ou execute o reload da página.
+	
+	ignore_user_abort(1);
+	
+	// ===== Atualizar sessão e remover o status 'carregando'.
+	
+	unset($host_verificacao['carregando']);
+	gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
+	
+	$dadosInstalacao = $host_verificacao['dados-instalacao-plugins'];
+	
+	$id_hosts = $host_verificacao['id_hosts'];
+	
+	// ===== Carregar dados do host
+	
+	$hosts = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'user_ftp',
+			'user_db',
+			'dominio',
+		))
+		,
+		"hosts",
+		"WHERE id_hosts='".$id_hosts."'"
+	);
+	
+	// ===== Variáveis do host
+	
+	$user_ftp = $hosts[0]['user_ftp'];
+	$user_db = $hosts[0]['user_db'];
+	$dominio = $hosts[0]['dominio'];
+	
+	$senhaFtp = host_configuracao_decriptar($dadosInstalacao['senha-ftp']);
+	$senhaDb = host_configuracao_decriptar($dadosInstalacao['senha-db']);
+	
+	// ===== Conectar FTP do cliente
+	
+	gestor_incluir_biblioteca('ftp');
+	
+	if(ftp_conectar(Array(
+		'host' => $dominio,
+		'usuario' => $user_ftp,
+		'senha' => $senhaFtp,
+	))){
+		// ===== Definição dos caminhos do Gestor Cliente e Gestor Cliente Update
+		
+		$path_cliente = $_INDEX['sistemas-dir'].'b2make-gestor-cliente/';
+		$path_cliente_update = $_INDEX['sistemas-dir'].'b2make-gestor-cliente-update/';
+		$path_temp = sys_get_temp_dir().'/';
+		$temp_id = '-'.md5(uniqid(rand(), true));
+		
+		// ===== Criar pasta do 'gestor do cliente' caso o mesmo não exista no host do cliente e entrar dentro da pasta.
+		
+		$gestor_cliente_path = 'b2make-gestor-cliente';
+		ftp_chdir($_GESTOR['ftp-conexao'],'/');
+		
+		if(!@ftp_chdir($_GESTOR['ftp-conexao'], $gestor_cliente_path)){
+			ftp_mkdir($_GESTOR['ftp-conexao'], $gestor_cliente_path);
+			ftp_chdir($_GESTOR['ftp-conexao'], $gestor_cliente_path);
+		}
+		
+		// ===== Criar pasta do 'plugins' caso o mesmo não exista no host do cliente e entrar dentro da pasta.
+		
+		$gestor_cliente_path = 'plugins';
+		
+		if(!@ftp_chdir($_GESTOR['ftp-conexao'], $gestor_cliente_path)){
+			ftp_mkdir($_GESTOR['ftp-conexao'], $gestor_cliente_path);
+			ftp_chdir($_GESTOR['ftp-conexao'], $gestor_cliente_path);
+		}
+		
+		// ===== Enviar todos os arquivos do gestor do cliente local para 'gestor do cliente' do host do cliente
+		
+		$caminho_atual = false;
+		$di = new RecursiveDirectoryIterator($path_cliente);
+		foreach(new RecursiveIteratorIterator($di) as $filename => $file){
+			if($file->getFilename() != '.' && $file->getFilename() != '..'){
+				$caminho =  ltrim(str_replace($path_cliente,'',$file->getPath()),'/');
+				$diretorios = explode('/',$caminho);
+				
+				if($caminho != $caminho_atual){
+					$caminho_atual = $caminho;
+					
+					ftp_chdir($_GESTOR['ftp-conexao'],'/'.$gestor_cliente_path);
+					
+					if($diretorios[0]){
+						if(count($diretorios) == 1){
+							if(!@ftp_chdir($_GESTOR['ftp-conexao'], $caminho)){
+								ftp_mkdir($_GESTOR['ftp-conexao'], $caminho);
+								ftp_chdir($_GESTOR['ftp-conexao'], $caminho);
+							}
+						} else {
+							foreach($diretorios as $diretorio){
+								if(!@ftp_chdir($_GESTOR['ftp-conexao'], $diretorio)){
+									ftp_mkdir($_GESTOR['ftp-conexao'], $diretorio);
+									ftp_chdir($_GESTOR['ftp-conexao'], $diretorio);
+								}
+							}
+						}
+					}
+				}
+				
+				ftp_colocar_arquivo(Array('remoto' => $file->getFilename(),'local' => $filename));
+			}
+		}
+		
+		// ===== Copiar script de atualização para o '/public_html' do host do cliente
+		
+		$update_sys = file_get_contents($path_cliente_update.'update-sys.php');
+		
+		ftp_chdir($_GESTOR['ftp-conexao'],'/public_html');
+		
+		$nome_file = 'update-sys.php';
+		$tmp_file = $path_temp.'update-sys.php-tmp'.$temp_id;
+		file_put_contents($tmp_file, $update_sys);
+		ftp_colocar_arquivo(Array('remoto' => $nome_file,'local' => $tmp_file));
+		unlink($tmp_file);
+		
+		// ===== Executar no cliente script de atualização
+		
+		$url = $dominio . '/update-sys.php';
+		
+		$data = false;
+		
+		$data['plataforma-id'] = $_GESTOR['plataforma-id'];
+		
+		$data = http_build_query($data);
+		$curl = curl_init($url);
+
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($curl, CURLOPT_POSTREDIR, CURL_REDIR_POST_ALL);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+		$json = curl_exec($curl);
+		
+		curl_close($curl);
+		
+		$updateReturn = json_decode($json,true);
+		
+		$install_error_msg = '';$install_error = false;
+		
+		if(!$updateReturn){
+			$install_error_msg = '[no-json] '.$json; $install_error = true;
+		} else if($updateReturn['error']){
+			$install_error_msg = '[error] '.$updateReturn['error'].' '.$updateReturn['error_msg']; $install_error = true;
+		} else if($updateReturn['status'] != 'OK'){
+			$install_error_msg = '[not-OK] '.$updateReturn['status']; $install_error = true;
+		}
+		
+		if($install_error){
+			$alert_id = '';
+			switch($opcao){
+				case 'atualizar': $alert_id = 'host-update-install-fatal-error'; break;
+				case 'instalar': $alert_id = 'host-config-install-fatal-error'; break;
+			}
+			
+			$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => $alert_id));
+			
+			$alerta = modelo_var_troca($alerta,"#error#",$install_error_msg);
+			
+			interface_alerta(Array(
+				'redirect' => true,
+				'msg' => $alerta
+			));
+		}
+		
+		ftp_delete($_GESTOR['ftp-conexao'], 'update-sys.php');
+		
+		ftp_fechar_conexao();
+		
+		// ===== 5 segundos de pausa afim de evitar abusos.
+		
+		sleep(5);
+		
+		// ===== Atualizar sessão e remover o status 'atualizar' e atualizar o estado do host no banco de dados.
+		
+		unset($host_verificacao['iniciar-atualizacao-plugins']);
+
+		banco_update
+		(
+			"gestor_cliente_versao='".$_GESTOR['gestor-cliente']['versao']."',".
+			"gestor_cliente_versao_num=".$_GESTOR['gestor-cliente']['versao_num'].",".
+			"atualizar=".$atualizar_valor,
+			"hosts",
+			"WHERE id_hosts='".$id_hosts."'"
+		);
+		
+		// ===== Caso haja algum erro, é necessário tentar novamente a atualização. Para isso, mande o usuário para a página de atualização. Senão para dashboard.
+		
+		if($install_error){
+			// ===== Modificar o status 'atualizar' para forçar o usuário ir para a página 'host-plugins'.
+			
+			$host_verificacao['atualizar'] = true;
+			
+			gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
+			
+			// ===== Atualizar no banco de dados o estado 'atualizar' do host. 
+			
+			banco_update
+			(
+				"atualizar=1",
+				"hosts",
+				"WHERE id_hosts='".$id_hosts."'"
+			);
+			
+			// ===== Redirecionar o usuário para 'host-plugins/'.
+			
+			gestor_redirecionar('host-plugins/');
+		} else {
+			// ===== Se for instalação e tudo deu certo, marcar o host como 'configurado'.
+			
+			$instalarCamposUltimosDados = '';
+			switch($opcao){
+				case 'instalar':
+					$instalarCamposUltimosDados = 
+						"versao=1,".
+						"status='A',".
+						"configurado=1,";
+				break;
+			}
+			
+			// ===== ALterar os dados depois.
+			
+			banco_update
+			(
+				$instalarCamposUltimosDados.
+				"data_modificacao=NOW()",
+				"hosts",
+				"WHERE id_hosts='".$id_hosts."'"
+			);
+			
+			// ===== Atualizar sessão e remover o 'dados-instalacao-plugins' para remover a senha.
+			
+			unset($host_verificacao['dados-instalacao-plugins']);
+			
+			gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
+			
+			// ===== Alertar o usuário sobre sucesso na atualização após redirecionar o usuário para 'dashboard/'.
+			
+			$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-update-success'));
+			
+			$alerta = modelo_var_troca($alerta,"#versao#",$_GESTOR['gestor-cliente']['versao']);
+			
+			interface_alerta(Array(
+				'redirect' => true,
+				'msg' => $alerta
+			));
+			
+			// ===== Atualizar templates no host do cliente.
+	
+			gestor_incluir_biblioteca('api-cliente');
+			
+			$retorno = api_cliente_templates_atualizar(Array(
+				'opcao' => 'update',
+			));
+			
+			if(!$retorno['completed']){
+				$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
+				
+				$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
+				
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $alerta
+				));
+			}
+			
+			// ===== Atualizar variáveis no host do cliente.
+			
+			$retorno = api_cliente_variaveis_padroes(Array(
+				'opcao' => 'editar',
+			));
+			
+			if(!$retorno['completed']){
+				$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
+				
+				$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
+				
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $alerta
+				));
+			}
+			
+			// ===== Redirecionar o usuário para 'dashboard/'.
+			
+			gestor_redirecionar('dashboard/');
+		}
+	} else {
+		// ===== Senão conectar no FTP, remover os dados de instalação
+		
+		unset($host_verificacao['dados-instalacao-plugins']);
+		gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
+		
+		// ===== Alertar o cliente sobre erro e recarregar a página
+		
+		$alerta = gestor_variaveis(Array('modulo' => 'ftp','id' => 'user-or-pass-invalid'));
+		
+		interface_alerta(Array(
+			'redirect' => true,
+			'msg' => $alerta
+		));
+		
+		gestor_reload_url();
 	}
 }
 
@@ -1374,16 +1696,16 @@ function host_configuracao_plugins(){
 		
 		// ===== Atualizar a opção da sessão.
 		
-		//$host_verificacao['iniciar-atualizacao-plugins'] = true;
+		$host_verificacao['iniciar-atualizacao-plugins'] = true;
 		
 		// ===== Guardar sessão.
 		
-		//gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
+		gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
 		
 		// ===== Reload para iniciar o carregando
 		
 		gestor_redirecionar('host-plugins/');
-	} else if(!isset($host_verificacao['dados-instalacao']) && !isset($_REQUEST['senha-ftp'])){ 
+	} else if(!isset($host_verificacao['dados-instalacao-plugins']) && !isset($_REQUEST['senha-ftp'])){ 
 		// ===== 3º Etapa: se não existe dados da instalação, executar form para pegar as senhas da conta FTP.
 		
 		// ===== Inclusão Módulo JS
@@ -1417,7 +1739,7 @@ function host_configuracao_plugins(){
 		
 		$senhaFtp = banco_escape_field($_REQUEST['senha-ftp']);
 		
-		$host_verificacao['dados-instalacao'] = Array(
+		$host_verificacao['dados-instalacao-plugins'] = Array(
 			'senha-ftp' => host_configuracao_encriptar($senhaFtp),
 			'senha-db' => host_configuracao_encriptar(hash("sha256",$senhaFtp)),
 		);
@@ -1450,11 +1772,11 @@ function host_configuracao_plugins(){
 		$_GESTOR['pagina'] = gestor_componente(Array(
 			'id' => 'host-update-carregando',
 		));
-	} else if(isset($host_verificacao['dados-instalacao'])){
+	} else if(isset($host_verificacao['dados-instalacao-plugins'])){
 		// ===== 6º Etapa: Atualizar o host do cliente.
 		
-		host_configuracao_pipeline_atualizacao(Array(
-			'opcao' => 'atualizar',
+		host_configuracao_pipeline_atualizacao_plugins(Array(
+			//'opcao' => 'atualizar',
 		));
 		
 	} else {

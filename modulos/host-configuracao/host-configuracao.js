@@ -58,8 +58,6 @@ $(document).ready(function(){
 		$('.ui.checkbox')
 			.checkbox();
 	}
-	
-	// ===== Host Update.
 
 	if($('#_gestor-host-update').length > 0){
 		$.formReiniciar();

@@ -536,7 +536,7 @@ $(document).ready(function() {
 			adicionar();
 		}
 		
-		if($('#_gestor-interface-visualizar-dados').length > 0){
+		if($('#_gestor-interface-visualizar-dados').length > 0 || $('#_gestor-interface-config-dados').length > 0){
 			function visualizar(){
 				// ===== Regras para ler mais entradas do histórico.
 				
