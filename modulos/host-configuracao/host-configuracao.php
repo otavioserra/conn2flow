@@ -569,6 +569,10 @@ function host_configuracao_pipeline_atualizacao($params = false){
 							"status='A',".
 							"configurado=1,";
 					break;
+					case 'atualizar':
+						$instalarCamposUltimosDados = 
+							"versao=versao+1,".
+					break;
 				}
 				
 				// ===== ALterar os dados depois.
@@ -588,26 +592,12 @@ function host_configuracao_pipeline_atualizacao($params = false){
 				
 				gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
 				
-				// ===== Alertar o usuário sobre sucesso na atualização após redirecionar o usuário para 'dashboard/'.
+				// ===== Variável de estado de finalização.
 				
-				switch($opcao){
-					case 'atualizar': 
-						$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-update-success'));
-					break;
-					case 'instalar': 
-						$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-install-success'));
-					break;
-				}
-				
-				$alerta = modelo_var_troca($alerta,"#versao#",$_GESTOR['gestor-cliente']['versao']);
-				
-				interface_alerta(Array(
-					'redirect' => true,
-					'msg' => $alerta
-				));
+				$finalizacaoOK = true;
 				
 				// ===== Atualizar templates no host do cliente.
-		
+				
 				gestor_incluir_biblioteca('api-cliente');
 				
 				$retorno = api_cliente_templates_atualizar(Array(
@@ -623,6 +613,8 @@ function host_configuracao_pipeline_atualizacao($params = false){
 						'redirect' => true,
 						'msg' => $alerta
 					));
+					
+					$finalizacaoOK = false;
 				}
 				
 				// ===== Atualizar variáveis no host do cliente.
@@ -639,6 +631,56 @@ function host_configuracao_pipeline_atualizacao($params = false){
 					interface_alerta(Array(
 						'redirect' => true,
 						'msg' => $alerta
+					));
+					
+					$finalizacaoOK = false;
+				}
+				
+				// ===== Caso esteja tudo ok, guardar no histórico e redirecionar. Senão, redirecionar e alertar o usuário.
+				
+				if($finalizacaoOK){
+					// ===== Alertar o usuário sobre sucesso na atualização após redirecionar o usuário para 'dashboard/'.
+					
+					switch($opcao){
+						case 'atualizar': 
+							$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-update-success'));
+							$historicoTXT = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'history-update-success'));
+							$historicoID = 'update-success';
+						break;
+						case 'instalar': 
+							$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-install-success'));
+							$historicoTXT = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'history-install-success'));
+							$historicoID = 'install-success';
+						break;
+					}
+					
+					$alerta = modelo_var_troca($alerta,"#versao#",$_GESTOR['gestor-cliente']['versao']);
+					
+					interface_alerta(Array(
+						'redirect' => true,
+						'msg' => $alerta
+					));
+					
+					// ===== Incluir no histórico ocorrência de sucesso.
+					
+					$hosts = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'hosts',
+						'campos' => Array(
+							'versao',
+						),
+						'extra' => 
+							"WHERE id_hosts='".$id_hosts."'"
+					));
+					
+					$historicoTXT = modelo_var_troca($historicoTXT,"#versao#",$_GESTOR['gestor-cliente']['versao']);
+					
+					$alteracoes[] = Array('alteracao' => $historicoID,'alteracao_txt' => $historicoTXT);
+					
+					interface_historico_incluir(Array(
+						'alteracoes' => $alteracoes,
+						'sem_id' => true,
+						'versao' => (int)$hosts['versao'],
 					));
 				}
 				
