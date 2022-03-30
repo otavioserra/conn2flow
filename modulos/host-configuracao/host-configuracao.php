@@ -1959,10 +1959,10 @@ function host_configuracao_plugins(){
 		
 		gestor_pagina_javascript_incluir();
 		
-		// ===== Layout de carregamento da instalação
+		// ===== Layout de carregamento da atualização dos plugins
 		
 		$_GESTOR['pagina'] = gestor_componente(Array(
-			'id' => 'host-update-carregando',
+			'id' => 'host-plugins-update-carregando',
 		));
 	} else if(isset($host_verificacao['dados-instalacao-plugins'])){
 		// ===== 6º Etapa: Atualizar o host do cliente.
