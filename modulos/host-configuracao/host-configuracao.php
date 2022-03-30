@@ -1000,7 +1000,7 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 		foreach($plugins as $plugin){
 			if($hosts_plugins){
 				foreach($hosts_plugins as $hosts_plugin){
-					if($plugin['id'] == $hosts_plugin['id']){
+					if($plugin['id'] == $hosts_plugin['plugin']){
 						// ===== Sinalizador para mudança de pasta. Caso seja a segunda iteração, voltar a pasta para o plugins.
 						
 						if(!isset($pastaInicial)){
