@@ -2781,11 +2781,7 @@ function host_configuracao_start(){
 			case 'plataforma-testes': host_configuracao_ajax_plataforma_testes(); break;
 		}
 		
-		echo 'finalizar>> '.print_r($_REQUEST,true)."\n";
-		
 		interface_ajax_finalizar();
-		
-		echo '_REQUEST>> '.print_r($_REQUEST,true)."<br>";exit;
 	} else {
 		host_configuracao_interfaces_padroes();
 		
