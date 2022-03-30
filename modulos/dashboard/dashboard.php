@@ -263,20 +263,22 @@ function dashboard_menu(){
 				// ===== Verificar se o usuário faz parte de um host. Se sim, verificar os plugins do usuario e ver se esse faz parte de um plugin habilitado.
 				
 				if(isset($_GESTOR['host-id'])){
-					$habilitado = false;
-					
-					if($hosts_plugins)
-					foreach($hosts_plugins as $hosts_plugin){
-						if(
-							$hosts_plugin['plugin'] == $modulo['plugin'] &&
-							$hosts_plugin['habilitado']
-						){
-							$habilitado = true;
+					if($modulo['plugin']){
+						$habilitado = false;
+						
+						if($hosts_plugins)
+						foreach($hosts_plugins as $hosts_plugin){
+							if(
+								$hosts_plugin['plugin'] == $modulo['plugin'] &&
+								$hosts_plugin['habilitado']
+							){
+								$habilitado = true;
+							}
 						}
-					}
-					
-					if(!$habilitado){
-						continue;
+						
+						if(!$habilitado){
+							continue;
+						}
 					}
 				}
 				
