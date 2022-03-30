@@ -191,6 +191,7 @@ function dashboard_menu(){
 			'nome',
 			'icone',
 			'icone2',
+			'plugin',
 		))
 		,
 		"modulos",
@@ -224,6 +225,20 @@ function dashboard_menu(){
 		$privilegios_admin = true;
 	}
 	
+	// ===== Verificar se o usuário faz parte de um host. Se sim, baixar os plugins do host.
+	
+	if(isset($_GESTOR['host-id'])){
+		$hosts_plugins = banco_select(Array(
+			'tabela' => 'hosts_plugins',
+			'campos' => Array(
+				'plugin',
+				'habilitado',
+			),
+			'extra' => 
+				"WHERE id_dados='".$_GESTOR['host-id']."'"
+		));
+	}
+	
 	if($modulos_grupos)
 	foreach($modulos_grupos as $mg){
 		$found_grup = false;
@@ -245,9 +260,29 @@ function dashboard_menu(){
 					continue;
 				}
 				
+				// ===== Verificar se o usuário faz parte de um host. Se sim, verificar os plugins do usuario e ver se esse faz parte de um plugin habilitado.
+				
+				if(isset($_GESTOR['host-id'])){
+					$habilitado = false;
+					
+					if($hosts_plugins)
+					foreach($hosts_plugins as $hosts_plugin){
+						if(
+							$hosts_plugin['plugin'] == $modulo['plugin'] &&
+							$hosts_plugin['habilitado']
+						){
+							$habilitado = true;
+						}
+					}
+					
+					if(!$habilitado){
+						continue;
+					}
+				}
+				
 				// ===== Se for o host configurações e não tiver privilégio, não mostrar no menu.
 				
-				if($modulo['id'] == 'host-configuracao' && !$privilegios_admin){
+				if($modulo['id'] == 'host-configuracao' && !$privilegios_admin && isset($_GESTOR['host-id'])){
 					continue;
 				}
 				
