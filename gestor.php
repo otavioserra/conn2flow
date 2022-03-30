@@ -2524,6 +2524,10 @@ function gestor_roteador(){
 			
 			// ===== Módulo alvo quando houver executar
 			
+			echo 'Var>> '.print_r($_REQUEST,true)."<br>";exit;
+	
+	
+			
 			if(existe($modulo)){
 				if($modulos['plugin']){
 					require_once($_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
