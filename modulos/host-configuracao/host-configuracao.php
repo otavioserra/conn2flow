@@ -571,7 +571,7 @@ function host_configuracao_pipeline_atualizacao($params = false){
 					break;
 					case 'atualizar':
 						$instalarCamposUltimosDados = 
-							"versao=versao+1,".
+							"versao=versao+1,";
 					break;
 				}
 				
