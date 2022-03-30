@@ -796,7 +796,7 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 		} else {
 			// ===== Plugins atualizados.
 			
-			if(isset($retorno['plugins'])){
+			if(count($retorno['plugins']) > 0){
 				$pluginsAtualizados = '';
 				foreach($retorno['plugins'] as $plugin){
 					$pluginsAtualizados .= (existe($pluginsAtualizados) ? ', ':'').$plugin['nome'].' - '.$plugin['versao'];
