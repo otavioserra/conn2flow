@@ -733,6 +733,7 @@ function gestor_pagina_menu($params = false){
 			'icone',
 			'icone2',
 			'titulo',
+			'plugin',
 		))
 		,
 		"modulos",
@@ -761,6 +762,20 @@ function gestor_pagina_menu($params = false){
 		$privilegios_admin = true;
 	}
 	
+	// ===== Verificar se o usuário faz parte de um host. Se sim, baixar os plugins do host.
+	
+	if(isset($_GESTOR['host-id'])){
+		$hosts_plugins = banco_select(Array(
+			'tabela' => 'hosts_plugins',
+			'campos' => Array(
+				'plugin',
+				'habilitado',
+			),
+			'extra' => 
+				"WHERE id_hosts='".$_GESTOR['host-id']."'"
+		));
+	}
+	
 	// ===== Montar o menu conforme permissão
 	
 	$dashboard = '';
@@ -787,9 +802,31 @@ function gestor_pagina_menu($params = false){
 			continue;
 		}
 		
+		// ===== Verificar se o usuário faz parte de um host. Se sim, verificar os plugins do usuario e ver se esse faz parte de um plugin habilitado.
+		
+		if(isset($_GESTOR['host-id'])){
+			if($modulo['plugin']){
+				$habilitado = false;
+				
+				if($hosts_plugins)
+				foreach($hosts_plugins as $hosts_plugin){
+					if(
+						$hosts_plugin['plugin'] == $modulo['plugin'] &&
+						$hosts_plugin['habilitado']
+					){
+						$habilitado = true;
+					}
+				}
+				
+				if(!$habilitado){
+					continue;
+				}
+			}
+		}
+		
 		// ===== Se for o host configurações e não tiver privilégio, não mostrar no menu.
 		
-		if($modulo['id'] == 'host-configuracao' && !$privilegios_admin){
+		if($modulo['id'] == 'host-configuracao' && !$privilegios_admin && isset($_GESTOR['host-id'])){
 			continue;
 		}
 		
