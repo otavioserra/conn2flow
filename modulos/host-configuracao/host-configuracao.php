@@ -504,6 +504,13 @@ function host_configuracao_pipeline_atualizacao($params = false){
 			
 			ftp_delete($_GESTOR['ftp-conexao'], 'update-sys.php');
 			
+			// ===== Atualizar os plugins do host.
+			
+			$retorno = host_configuracao_pipeline_atualizar_plugins(Array(
+				'id_hosts' => $id_hosts,
+				'somenteUpdates' => true,
+			));
+			
 			ftp_fechar_conexao();
 			
 			// ===== 5 segundos de pausa afim de evitar abusos.
@@ -764,6 +771,8 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 		'usuario' => $user_ftp,
 		'senha' => $senhaFtp,
 	))){
+		// ===== Atualizar os plugins.
+		
 		$retorno = host_configuracao_pipeline_atualizar_plugins(Array(
 			'id_hosts' => $id_hosts,
 		));
@@ -785,6 +794,17 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 			
 			gestor_redirecionar('host-plugins/');
 		} else {
+			// ===== Plugins atualizados.
+			
+			if(isset($retorno['plugins'])){
+				$pluginsAtualizados = '';
+				foreach($retorno['plugins'] as $plugin){
+					$pluginsAtualizados .= (existe($pluginsAtualizados) ? ', ':'').$plugin['nome'].' - '.$plugin['versao'];
+				}
+			} else {
+				$pluginsAtualizados = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'history-update-plugins-success-none'));
+			}
+			
 			// ===== Atualizar versão do host.
 			
 			banco_update
@@ -916,8 +936,11 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 	// ===== Parâmetros
 	
 	// id_hosts - Int - Obrigatório - Identificador do host.
+	// somenteUpdates - Bool - Opcional - Se definido somente atualizar caso não esteja habilçi.
 	
 	// ===== 
+	
+	$pluginsRetorno = Array();
 	
 	// ===== Verificar se os campos obrigatórios foram informados.
 	
@@ -932,6 +955,7 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 	$hosts_plugins = banco_select(Array(
 		'tabela' => 'hosts_plugins',
 		'campos' => Array(
+			'id_hosts_plugins',
 			'plugin',
 			'habilitado',
 			'versao_num',
@@ -977,9 +1001,36 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 			if($hosts_plugins){
 				foreach($hosts_plugins as $hosts_plugin){
 					if($plugin['id'] == $hosts_plugin['id']){
+						// ===== Sinalizador para mudança de pasta. Caso seja a segunda iteração, voltar a pasta para o plugins.
+						
+						if(!isset($pastaInicial)){
+							$pastaInicial = true;
+						} else {
+							ftp_chdir($_GESTOR['ftp-conexao'],'/b2make-gestor-cliente/plugins');
+						}
+						
 						// ===== Dados do plugin.
 						
 						$pluginID = $plugin['id'];
+						$pluginNome = $plugin['nome'];
+						$habilitado = ($hosts_plugin['habilitado'] ? true : false);
+						$versao_num = $hosts_plugin['versao_num'];
+						
+						// ===== Pegar os dados de configuração do plugin.
+						
+						$pluginConfig = require_once($_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$pluginID.'/'.$pluginID.'.config.php');
+						
+						// ===== Caso tenha sido definido o somenteUpdates, apenas atualizar caso os plugins não tenham sido instalados e/ou a versão é mais nova.
+						
+						if(isset($somenteUpdates)){
+							if(
+								$habilitado &&
+								(int)$versao_num == (int)$pluginConfig['versao_num']
+							){
+								continue;
+							}
+						}
+						
 						
 						// ===== Definição dos caminhos do Plugin localmente
 						
@@ -997,7 +1048,7 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 							ftp_chdir($_GESTOR['ftp-conexao'], $gestor_cliente_path);
 						}
 						
-						// ===== Enviar todos os arquivos do gestor do cliente local para 'gestor do cliente' do host do cliente
+						// ===== Enviar todos os arquivos do plugin para o host do cliente
 						
 						$caminho_atual = false;
 						$di = new RecursiveDirectoryIterator($path_plugin);
@@ -1032,21 +1083,21 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 							}
 						}
 						
-						// ===== Copiar script de atualização para o '/public_html' do host do cliente
+						// ===== Copiar script de atualização do plugin para o '/public_html' do host do cliente
 						
-						$update_sys = file_get_contents($path_plugin_update.'update-sys.php');
+						$update_sys = file_get_contents($path_plugin_update.'update-plugin.php');
 						
 						ftp_chdir($_GESTOR['ftp-conexao'],'/public_html');
 						
-						$nome_file = 'update-sys.php';
-						$tmp_file = $path_temp.'update-sys.php-tmp'.$temp_id;
+						$nome_file = 'update-plugin.php';
+						$tmp_file = $path_temp.'update-plugin.php-tmp'.$temp_id;
 						file_put_contents($tmp_file, $update_sys);
 						ftp_colocar_arquivo(Array('remoto' => $nome_file,'local' => $tmp_file));
 						unlink($tmp_file);
 						
-						// ===== Executar no cliente script de atualização
+						// ===== Executar no cliente script de atualização do plugin
 						
-						$url = $dominio . '/update-sys.php';
+						$url = $dominio . '/update-plugin.php';
 						
 						$data = false;
 						
@@ -1078,15 +1129,12 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 							$install_error_msg = '[not-OK] '.$updateReturn['status']; $install_error = true;
 						}
 						
+						ftp_delete($_GESTOR['ftp-conexao'], 'update-plugin.php');
+						
 						if($install_error){
-							$alert_id = '';
-							switch($opcao){
-								case 'atualizar': $alert_id = 'host-update-install-fatal-error'; break;
-								case 'instalar': $alert_id = 'host-config-install-fatal-error'; break;
-							}
+							$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'host-update-plugin-fatal-error'));
 							
-							$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => $alert_id));
-							
+							$alerta = modelo_var_troca($alerta,"#plugin#",$pluginNome);
 							$alerta = modelo_var_troca($alerta,"#error#",$install_error_msg);
 							
 							interface_alerta(Array(
@@ -1099,7 +1147,20 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 							);
 						}
 						
-						ftp_delete($_GESTOR['ftp-conexao'], 'update-sys.php');
+						// ===== Marcar o plugin como habilitado no banco de dados. E atualizar a versão
+						
+						banco_update_campo('versao',$pluginConfig['versao']);
+						banco_update_campo('versao_num',$pluginConfig['versao_num']);
+						banco_update_campo('habilitado','1',true);
+						
+						banco_update_executar('hosts_plugins',"WHERE id_hosts_plugins='".$id_hosts_plugins."'");
+						
+						// ===== Adicionar plugin ao retorno.
+						
+						$pluginsRetorno[$pluginID] = Array(
+							'nome' => $pluginNome,
+							'versao' => $pluginConfig['versao'],
+						);
 					}
 				}
 			}
