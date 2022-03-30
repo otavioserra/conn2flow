@@ -874,7 +874,7 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 				$historicoTXT = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'history-update-plugins-success'));
 				$historicoID = 'update-plugins-success';
 				
-				$alerta = modelo_var_troca($alerta,"#versao#",$_GESTOR['gestor-cliente']['versao']);
+				$alerta = modelo_var_troca($alerta,"#plugins#",$pluginsAtualizados);
 				
 				interface_alerta(Array(
 					'redirect' => true,
@@ -893,7 +893,7 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 						"WHERE id_hosts='".$id_hosts."'"
 				));
 				
-				$historicoTXT = modelo_var_troca($historicoTXT,"#versao#",$_GESTOR['gestor-cliente']['versao']);
+				$historicoTXT = modelo_var_troca($historicoTXT,"#plugins#",$pluginsAtualizados);
 				
 				$alteracoes[] = Array('alteracao' => $historicoID,'alteracao_txt' => $historicoTXT);
 				
