@@ -235,7 +235,7 @@ function dashboard_menu(){
 				'habilitado',
 			),
 			'extra' => 
-				"WHERE id_dados='".$_GESTOR['host-id']."'"
+				"WHERE id_hosts='".$_GESTOR['host-id']."'"
 		));
 	}
 	
