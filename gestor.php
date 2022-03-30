@@ -2659,7 +2659,6 @@ function gestor_roteador(){
 }
 
 function gestor_start(){
-	echo 'AJAX>> '.print_r($_REQUEST,true)."<br>";exit;
 	gestor_sessao_iniciar();
 	gestor_roteador();
 }

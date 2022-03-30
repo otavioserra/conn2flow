@@ -536,7 +536,7 @@ $(document).ready(function() {
 			adicionar();
 		}
 		
-		if($('#_gestor-interface-visualizar-dados').length > 0 || $('#_gestor-interface-config-dados').length > 0){
+		if($('#_gestor-interface-visualizar-dados').length > 0){
 			function visualizar(){
 				// ===== Regras para ler mais entradas do histórico.
 				
@@ -606,6 +606,78 @@ $(document).ready(function() {
 			}
 			
 			visualizar();
+		}
+		
+		if($('#_gestor-interface-config-dados').length > 0){
+			function config(){
+				// ===== Regras para ler mais entradas do histórico.
+				
+				var historicoPaginaAtual = 0;
+				var button_id = '_gestor-interface-edit-historico-mais';
+				
+				$('#'+button_id).on('mouseup tap',function(e){
+					if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+					
+					var ajaxOpcao = 'historico-mais-resultados';
+					
+					if(typeof gestor.interface.id !== typeof undefined && gestor.interface.id !== false){
+						var id = gestor.interface.id;
+					} else {
+						var id = '';
+					}
+					
+					historicoPaginaAtual++;
+					
+					var pagina = historicoPaginaAtual;
+					var opcao = gestor.moduloOpcao;
+					
+					$.ajax({
+						type: 'POST',
+						url: gestor.raiz + gestor.moduloCaminho,
+						data: { 
+							opcao : gestor.moduloOpcao,
+							ajax : 'sim',
+							ajaxOpcao : ajaxOpcao,
+							ajaxRegistroId : gestor.moduloRegistroId,
+							pagina : pagina,
+							id : id
+						},
+						dataType: 'json',
+						beforeSend: function(){
+							carregar_abrir();
+						},
+						success: function(dados){
+							switch(dados.status){
+								case 'Ok':
+									$('#'+button_id).parent().parent().before(dados.pagina);
+									
+									var totalPaginas = gestor.interface.totalPaginas;
+									if(historicoPaginaAtual >= parseInt(totalPaginas) - 1){
+										$('#'+button_id).hide();
+									}
+									
+								break;
+								default:
+									console.log('ERROR - '+opcao+' - '+dados.status);
+								
+							}
+							
+							carregar_fechar();
+						},
+						error: function(txt){
+							switch(txt.status){
+								case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"),"_self"); break;
+								default:
+									console.log('ERROR AJAX - '+opcao+' - Dados:');
+									console.log(txt);
+									carregar_fechar();
+							}
+						}
+					});
+				});
+			}
+			
+			config();
 		}
 		
 		if($('#_gestor-interface-edit-dados').length > 0){
