@@ -790,6 +790,12 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 		// ===== Caso haja algum erro, é necessário tentar novamente a atualização. Para isso, mande o usuário para a página de atualização. Senão para dashboard.
 		
 		if(isset($retorno['install_error'])){
+			// ===== Atualizar sessão e remover o 'dados-instalacao-plugins' para remover a senha.
+			
+			unset($host_verificacao['dados-instalacao-plugins']);
+			
+			gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
+			
 			// ===== Redirecionar o usuário para 'host-plugins/'.
 			
 			gestor_redirecionar('host-plugins/');
@@ -911,7 +917,9 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 	} else {
 		// ===== Senão conectar no FTP, remover os dados de instalação
 		
+		unset($host_verificacao['iniciar-atualizacao-plugins']);
 		unset($host_verificacao['dados-instalacao-plugins']);
+		
 		gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id'],$host_verificacao);
 		
 		// ===== Alertar o cliente sobre erro e recarregar a página
