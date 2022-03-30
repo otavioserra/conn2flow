@@ -1031,13 +1031,18 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 							}
 						}
 						
-						
 						// ===== Definição dos caminhos do Plugin localmente
 						
 						$path_plugin = $_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$pluginID.'/remoto/';
 						$path_plugin_update = $_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$pluginID.'/update/';
 						$path_temp = sys_get_temp_dir().'/';
 						$temp_id = '-'.md5(uniqid(rand(), true));
+						
+						// ===== Se não existir o diretório remoto, não continuar.
+						
+						if(!is_dir($path_plugin)){
+							continue;
+						}
 						
 						// ===== Criar a pasta do 'plugin' caso o mesmo não exista no host do cliente e entrar dentro da pasta.
 						
