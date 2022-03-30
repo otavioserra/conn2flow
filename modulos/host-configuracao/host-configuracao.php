@@ -2251,12 +2251,16 @@ function host_configuracao_configuracoes(){
 		'tabela' => 'hosts_plugins',
 		'campos' => Array(
 			'plugin',
+			'habilitado',
+			'versao',
 		),
 		'extra' => 
 			"WHERE id_hosts='".$id_hosts."'"
 	));
 	
 	// ===== Caso exista plugins, listar os mesmos. Senão, mostrar mensagem de não haver plugins habilitados.
+	
+	$pluginsHabilitados = false;
 	
 	if($hosts_plugins){
 		$plugins = banco_select(Array(
@@ -2278,12 +2282,17 @@ function host_configuracao_configuracoes(){
 			foreach($plugins as $plugin){
 				if($hosts_plugins){
 					foreach($hosts_plugins as $hosts_plugin){
-						if($plugin['id'] == $hosts_plugin['plugin']){
+						if(
+							$plugin['id'] == $hosts_plugin['plugin'] &&
+							$hosts_plugin['habilitado']
+						){
 							$cel_aux = $cel[$cel_nome];
 							
-							$cel_aux = modelo_var_troca($cel_aux,"#plugin#",$plugin['nome']);
+							$cel_aux = modelo_var_troca($cel_aux,"#plugin#",$plugin['nome'].' - Versão: '.$hosts_plugin['versao']);
 							
 							$mensagemPlugins = modelo_var_in($mensagemPlugins,'<!-- '.$cel_nome.' -->',$cel_aux);
+							
+							$pluginsHabilitados = true;
 						}
 					}
 				}
@@ -2292,13 +2301,13 @@ function host_configuracao_configuracoes(){
 		}
 		
 		$mensagemPlugins = modelo_var_troca($mensagemPlugins,'<!-- '.$cel_nome.' -->','');
-		
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],"#mensagem-plugins#",$mensagemPlugins);
-	} else {
-		$mensagemPlugins = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'host-plugins-msg-not-enabled'));
-		
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],"#mensagem-plugins#",$mensagemPlugins);
 	}
+	
+	if(!$pluginsHabilitados){
+		$mensagemPlugins = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'host-plugins-msg-not-enabled'));
+	}
+	
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],"#mensagem-plugins#",$mensagemPlugins);
 	
 	// ===== Inclusão Módulo JS
 	
