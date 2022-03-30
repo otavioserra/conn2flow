@@ -557,6 +557,7 @@ $(document).ready(function() {
 					historicoPaginaAtual++;
 					
 					var pagina = historicoPaginaAtual;
+					var opcao = gestor.moduloOpcao;
 					
 					$.ajax({
 						type: 'POST',
@@ -638,6 +639,7 @@ $(document).ready(function() {
 							var campo_form = $(this).attr('data-campo-form');
 							var callback = $(this).attr('data-callback');
 							var id_numerico = $(this).attr('data-id');
+							var opcao = 'editar';
 							
 							$.ajax({
 								type: 'POST',
@@ -742,6 +744,7 @@ $(document).ready(function() {
 					historicoPaginaAtual++;
 					
 					var pagina = historicoPaginaAtual;
+					var opcao = gestor.moduloOpcao;
 					
 					$.ajax({
 						type: 'POST',
