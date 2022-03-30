@@ -2517,16 +2517,14 @@ function gestor_roteador(){
 	
 	// ===== Disparar o módulo caso houver e devolver a página ou dados ajax ou alterar opções e redirecionar para a raiz do módulo.
 	
+	echo 'AJAX>> '.print_r($_REQUEST,true)."<br>";exit;
+	
 	if($_GESTOR['ajax']){
 		if(isset($paginas)){
 			$modulo = $_GESTOR['modulo'];
 			if(!$_GESTOR['opcao']) $_GESTOR['opcao'] = $paginas[0]['opcao'];
 			
 			// ===== Módulo alvo quando houver executar
-			
-			echo 'Var>> '.print_r($_REQUEST,true)."<br>";exit;
-	
-	
 			
 			if(existe($modulo)){
 				if($modulos['plugin']){
