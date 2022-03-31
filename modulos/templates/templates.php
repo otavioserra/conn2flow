@@ -1213,6 +1213,55 @@ function templates_seletores_listar(){
 	
 	$_GESTOR['javascript-vars']['templates'] = $JSVars;
 	
+	// ===== Filtrar plugins inativos da conta.
+	
+	$pluginsInvativosSQL = '';
+	
+	$hosts_plugins = banco_select(Array(
+		'tabela' => 'hosts_plugins',
+		'campos' => Array(
+			'id_hosts_plugins',
+			'plugin',
+			'habilitado',
+			'versao_num',
+		),
+		'extra' => 
+			"WHERE id_hosts='".$_GESTOR['host-id']."'"
+	));
+	
+	$plugins = banco_select(Array(
+		'tabela' => 'plugins',
+		'campos' => Array(
+			'nome',
+			'id',
+		),
+		'extra' => 
+			"WHERE status='A'"
+			." ORDER BY nome ASC"
+	));
+	
+	if($plugins){
+		foreach($plugins as $plugin){
+			$naoHabilitado = true;
+			
+			if($hosts_plugins){
+				foreach($hosts_plugins as $hosts_plugin){
+					if(
+						$plugin['id'] == $hosts_plugin['plugin'] &&
+						$hosts_plugin['habilitado']
+					){
+						$naoHabilitado = false;
+						break;
+					}
+				}
+			}
+			
+			if($naoHabilitado){
+				$pluginsInvativosSQL .= ' AND plugin!="'.$plugin['id'].'"';
+			}
+		}
+	}
+	
 	// ===== Interface finalizar opções
 	
 	interface_formulario_campos(Array(
@@ -1229,7 +1278,7 @@ function templates_seletores_listar(){
 					'id' => true,
 					'nome' => 'categorias',
 					'campo' => 'nome',
-					'where' => "id_modulos='".$modulo['modelos'][$modelo]['id_modulos']."' AND id_categorias_pai='".$modulo['modelos'][$modelo]['id_categorias_pai']."'",
+					'where' => "id_modulos='".$modulo['modelos'][$modelo]['id_modulos']."' AND id_categorias_pai='".$modulo['modelos'][$modelo]['id_categorias_pai']."'".$pluginsInvativosSQL,
 					'id_selecionado' => (isset($categoria_id) ? $categoria_id : null),
 				),
 			),
