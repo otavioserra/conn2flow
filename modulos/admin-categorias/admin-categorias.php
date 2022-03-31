@@ -299,7 +299,22 @@ function admin_categorias_adicionar_filho(){
 					'campo' => 'nome',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
 				)
-			)
+			),
+			'campos' => Array(
+				Array(
+					'tipo' => 'select',
+					'id' => 'plugin',
+					'nome' => 'plugin',
+					'procurar' => true,
+					'limpar' => true,
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-plugin-placeholder')),
+					'tabela' => Array(
+						'nome' => 'plugins',
+						'campo' => 'nome',
+						'id' => true,
+					),
+				),
+			),
 		)
 	);
 }
@@ -392,7 +407,20 @@ function admin_categorias_adicionar(){
 						'campo' => 'nome',
 						'id_numerico' => 'id_modulos',
 					),
-				)
+				),
+				Array(
+					'tipo' => 'select',
+					'id' => 'plugin',
+					'nome' => 'plugin',
+					'procurar' => true,
+					'limpar' => true,
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-plugin-placeholder')),
+					'tabela' => Array(
+						'nome' => 'plugins',
+						'campo' => 'nome',
+						'id' => true,
+					),
+				),
 			)
 		)
 	);
