@@ -238,6 +238,7 @@ function admin_categorias_adicionar_filho(){
 		
 		$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "plugin"; $post_nome = "plugin"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "id_modulos"; $campo_valor = $id_modulos; 						$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "id_categorias_pai"; $campo_valor = $id_categorias_pai; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
@@ -359,6 +360,7 @@ function admin_categorias_adicionar(){
 		
 		$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "plugin"; $post_nome = "plugin"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		
 		$campo_nome = "id_modulos"; $post_nome = 'modulo'; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
@@ -441,6 +443,7 @@ function admin_categorias_editar(){
 		'nome',
 		'id_modulos',
 		'id_categorias_pai',
+		'plugin',
 		$modulo['tabela']['id_numerico'],
 	);
 	
@@ -522,6 +525,13 @@ function admin_categorias_editar(){
 			));}
 		
 		
+		$campo_nome = "plugin"; $request_name = 'plugin'; $alteracoes_name = 'plugin'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = (existe($_REQUEST[$request_name]) ? $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'" : $campo_nome."=NULL"); $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
+				'nome' => 'plugins',
+				'campo' => 'nome',
+				'id' => 'id',
+			));}
+		
+		
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
 		if(isset($editar['dados'])){
@@ -570,6 +580,7 @@ function admin_categorias_editar(){
 	if($_GESTOR['banco-resultado']){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
 		$id_modulos = (isset($retorno_bd['id_modulos']) ? $retorno_bd['id_modulos'] : '');
+		$plugin = (isset($retorno_bd['plugin']) ? $retorno_bd['plugin'] : '');
 		$id_numerico = (isset($retorno_bd[$modulo['tabela']['id_numerico']]) ? $retorno_bd[$modulo['tabela']['id_numerico']] : '');
 		$id_categorias_pai = (isset($retorno_bd[$modulo['tabela']['id_numerico_ref']]) ? $retorno_bd[$modulo['tabela']['id_numerico_ref']] : '');
 		
@@ -700,7 +711,21 @@ function admin_categorias_editar(){
 						'id_numerico' => 'id_modulos',
 						'id_selecionado' => $id_modulos,
 					),
-				)
+				),
+				Array(
+					'tipo' => 'select',
+					'id' => 'plugin',
+					'nome' => 'plugin',
+					'procurar' => true,
+					'limpar' => true,
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-plugin-placeholder')),
+					'tabela' => Array(
+						'nome' => 'plugins',
+						'campo' => 'nome',
+						'id' => true,
+						'id_selecionado' => $plugin,
+					),
+				),
 			)
 		)
 	);
