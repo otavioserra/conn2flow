@@ -1026,6 +1026,7 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 						$pluginNome = $plugin['nome'];
 						$habilitado = ($hosts_plugin['habilitado'] ? true : false);
 						$versao_num = $hosts_plugin['versao_num'];
+						$id_hosts_plugins = $hosts_plugin['id_hosts_plugins'];
 						
 						// ===== Pegar os dados de configuração do plugin.
 						
