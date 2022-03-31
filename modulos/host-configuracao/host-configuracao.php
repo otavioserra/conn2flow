@@ -508,6 +508,7 @@ function host_configuracao_pipeline_atualizacao($params = false){
 			
 			$retorno = host_configuracao_pipeline_atualizar_plugins(Array(
 				'id_hosts' => $id_hosts,
+				'dominio' => $dominio,
 				'somenteUpdates' => true,
 			));
 			
@@ -775,6 +776,7 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 		
 		$retorno = host_configuracao_pipeline_atualizar_plugins(Array(
 			'id_hosts' => $id_hosts,
+			'dominio' => $dominio,
 		));
 		
 		ftp_fechar_conexao();
@@ -944,6 +946,7 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 	// ===== Parâmetros
 	
 	// id_hosts - Int - Obrigatório - Identificador do host.
+	// dominio - String - Obrigatório - Domínio do host.
 	// somenteUpdates - Bool - Opcional - Se definido somente atualizar caso não esteja habilçi.
 	
 	// ===== 
@@ -952,7 +955,7 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 	
 	// ===== Verificar se os campos obrigatórios foram informados.
 	
-	if(!isset($id_hosts)){
+	if(!isset($id_hosts) || !isset($dominio)){
 		return Array(
 			'install_error' => true,
 		);
