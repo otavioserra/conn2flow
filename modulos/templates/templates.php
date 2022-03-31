@@ -1257,7 +1257,7 @@ function templates_seletores_listar(){
 			}
 			
 			if($naoHabilitado){
-				$pluginsInvativosSQL .= '- AND plugin!="'.$plugin['id'].'"';
+				//$pluginsInvativosSQL .= " AND NOT (plugin <=> '".$plugin['id']."')";
 			}
 		}
 	}
