@@ -98,6 +98,22 @@ $configuracao = Array(
 		'postagens' => Array(
 			'multiplo' => true,
 		),
+		// Plugin: Agendamentos
+		'agendamentos' => Array(
+			'layout-id' => 'layout-principal',
+			'caminho' => 'agendamentos/',
+			'tipo' => 'pagina',
+			'modulo' => 'agendamentos',
+			'plugin' => 'agendamentos',
+		),
+		// Plugin: Escalas
+		'escalas' => Array(
+			'layout-id' => 'layout-principal',
+			'caminho' => 'escalas/',
+			'tipo' => 'pagina',
+			'modulo' => 'escalas',
+			'plugin' => 'escalas',
+		),
 	),
 	'layouts' => Array( // Identificadores dos layouts de cada página template.
 		'servicos' => 'layout-principal',

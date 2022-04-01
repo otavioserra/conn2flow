@@ -488,6 +488,7 @@ function api_cliente_templates_atualizar($params = false){
 						't1.versao',
 						't2.id',
 						't2.id_categorias',
+						't2.plugin',
 					))
 					,
 					"templates AS t1,categorias AS t2",
@@ -501,6 +502,18 @@ function api_cliente_templates_atualizar($params = false){
 					
 					.(isset($categoriaAtualizarID) ? " AND t2.id='".$categoriaAtualizarID."'" : '') 
 				);
+				
+				// ===== Plugins do host.
+				
+				$hosts_plugins = banco_select(Array(
+					'tabela' => 'hosts_plugins',
+					'campos' => Array(
+						'plugin',
+					),
+					'extra' => 
+						"WHERE habilitado IS NOT NULL"
+						." AND id_hosts='".$host_verificacao['id_hosts']."'"
+				));
 				
 				// ===== Relacionar todos os resultados com as categorias ativas
 				
@@ -530,7 +543,20 @@ function api_cliente_templates_atualizar($params = false){
 					if($categoriasIds && !$componenteTemplate)
 					foreach($categoriasIds as $categoriasId => $catDados){
 						if($template['t2.id'] == $categoriasId){
-							$atualizarTemplate = true;
+							// ===== Verificar se o plugin está ativo ou não. Senão atualizar o template.
+							
+							if($template['t2.plugin']){
+								if($hosts_plugins)
+								foreach($hosts_plugins as $hosts_plugin){
+									if($template['t2.plugin'] == $hosts_plugin['plugin']){
+										$atualizarTemplate = true;
+										break;
+									}
+								}
+							} else {
+								$atualizarTemplate = true;
+							}
+							
 							break;
 						}
 					}
