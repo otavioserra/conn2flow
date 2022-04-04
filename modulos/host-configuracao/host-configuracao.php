@@ -854,25 +854,6 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 				$finalizacaoOK = false;
 			}
 			
-			// ===== Atualizar variáveis no host do cliente.
-			
-			$retorno = api_cliente_variaveis_padroes(Array(
-				'opcao' => 'editar',
-			));
-			
-			if(!$retorno['completed']){
-				$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
-				
-				$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
-				
-				interface_alerta(Array(
-					'redirect' => true,
-					'msg' => $alerta
-				));
-				
-				$finalizacaoOK = false;
-			}
-			
 			// ===== Caso esteja tudo ok, guardar no histórico e redirecionar. Senão, redirecionar e alertar o usuário.
 			
 			if($finalizacaoOK){

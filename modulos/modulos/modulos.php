@@ -672,7 +672,7 @@ function modulos_variaveis(){
 		// ===== Atualização dos demais campos.
 		
 		if(isset($alterouLinguagem)){
-			$campo_nome = "language"; $alteracoes_name = $campo_nome; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');
+			$alteracoes[] = Array('campo' => 'module-variables');
 			
 			// ===== Alterar versão e data.
 			
