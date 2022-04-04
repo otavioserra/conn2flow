@@ -20,13 +20,18 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 function testes_testes(){
 	global $_GESTOR;
 	
-	$_GESTOR['pagina'] = '';
+	$pagina = '';
 	
 	// ===== Área de testes.
 	
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
+	
+	// ===== Alteração da página.
+	
+	$_GESTOR['pagina'] .= $pagina;
+	
 }
 
 function testes_interfaces_padroes(){
