@@ -163,6 +163,8 @@ $(document).ready(function(){
 		// ===== Format opcao e caminho
 		
 		$(document.body).on('keyup','input[name="pagina-opcao"]',function(e){
+			if(e.which == 9) return false;
+			
 			var value = $(this).val();
 			
 			$.input_delay_to_change({
@@ -190,6 +192,8 @@ $(document).ready(function(){
 		});
 		
 		$(document.body).on('keyup','input[name="paginaCaminho"]',function(e){
+			if(e.which == 9) return false;
+			
 			var value = $(this).val();
 			
 			$.input_delay_to_change({

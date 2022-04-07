@@ -29,6 +29,8 @@ $(document).ready(function(){
 		// ===== Format caminho
 		
 		$(document.body).on('keyup blur','input[name="nome"]',function(e){
+			if(e.which == 9) return false;
+			
 			var value = $(this).val();
 			
 			$.input_delay_to_change({

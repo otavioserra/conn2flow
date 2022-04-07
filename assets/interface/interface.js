@@ -35,19 +35,19 @@ $(document).ready(function() {
 		
 		setTimeout(function(){
 			if(gestor.input_delay[gestor.input_delay.length - 1] == valor){
-				input_change_after_delay({value:gestor.input_value,trigger_selector:p.trigger_selector,trigger_event:p.trigger_event});
+				input_change_after_delay({value:gestor.input_value,trigger_selector:p.trigger_selector,trigger_event:p.trigger_event,obj_ref : ('obj_ref' in p ? p.obj_ref : undefined)});
 			}
 		},gestor.input_delay_timeout);
 	}
 	
 	function input_change_after_delay(p){
-		$(p.trigger_selector).trigger(p.trigger_event,[p.value,gestor.input_delay_params]);
+		$(p.trigger_selector).trigger(p.trigger_event,[p.value,(p.obj_ref !== undefined ? {obj : p.obj_ref} : gestor.input_delay_params)]);
 		
 		gestor.input_delay = false;
 	}
 	
 	function input_delay(){
-		if(!gestor.input_delay_timeout) gestor.input_delay_timeout = 400;
+		if(!gestor.input_delay_timeout) gestor.input_delay_timeout = 600;
 		
 	}
 	

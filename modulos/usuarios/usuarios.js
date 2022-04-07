@@ -24,6 +24,8 @@ $(document).ready(function(){
 		});
 		
 		$(document.body).on('keyup','input[name="nome"]',function(e){
+			if(e.which == 9) return false;
+			
 			var value = $(this).val();
 			
 			gestor.input_delay_params = {

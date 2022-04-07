@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'modulos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.2.0',
+	'versao' => '1.2.1',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
 		'nome' => 'modulos',
@@ -587,121 +587,15 @@ function modulos_variaveis(){
 	// ===== Gravar Atualizações no Banco
 	
 	if(isset($_GESTOR['atualizar-banco'])){
-		// ===== Banco antes de atualizar.
+		// ===== Interface de administração da configuração salvar.
 		
-		$banco_antes = Array();
+		gestor_incluir_biblioteca('configuracao');
 		
-		$variaveis = banco_select_name
-		(
-			banco_campos_virgulas(Array(
-				'id_variaveis',
-				'id',
-				'valor',
-			))
-			,
-			"variaveis",
-			"WHERE linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
-			." AND modulo='".$id."'"
-			." AND tipo='string'"
-			." ORDER BY id ASC"
-		);
-		
-		if($variaveis){
-			foreach($variaveis as $ling){
-				$banco_antes[$ling['id_variaveis']] = Array(
-					'id' => $ling['id'],
-					'valor' => $ling['valor'],
-				);
-			}
-		}
-		
-		// ===== Varrer todos os inputs enviados
-		
-		$numCampos = (int)banco_escape_field($_REQUEST['num-campos']);
-		$linguagemCodigo = banco_escape_field($_REQUEST['linguagem']);
-		
-		for($i=1;$i<$numCampos;$i++){
-			$campo_id = banco_escape_field($_REQUEST['id-'.$i]);
-			$valor = banco_escape_field($_REQUEST['valor-'.$i]);
-			$ref = banco_escape_field($_REQUEST['ref-'.$i]);
-			
-			if(isset($banco_antes[$ref])){
-				$banco_antes[$ref]['verificado'] = true;
-				if($banco_antes[$ref]['id'] != $campo_id || $banco_antes[$ref]['valor'] != $valor){
-					banco_update
-					(
-						"id='".$campo_id."',".
-						"valor='".$valor."'",
-						"variaveis",
-						"WHERE id_variaveis='".$ref."'"
-					);
-					
-					$alterouLinguagem = true;
-				}
-			} else if(existe($campo_id) && existe($valor)){
-				$campos = null; $campo_sem_aspas_simples = null;
-				
-				$campo_nome = "linguagem_codigo"; $campo_valor = $linguagemCodigo; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "modulo"; $campo_valor = $id; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "id"; $campo_valor = $campo_id; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "valor"; $campo_valor = $valor; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "tipo"; $campo_valor = 'string'; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				
-				banco_insert_name
-				(
-					$campos,
-					"variaveis"
-				);
-				
-				$alterouLinguagem = true;
-			}
-		}
-		
-		foreach($banco_antes as $ref => $campo){
-			if(!isset($campo['verificado'])){
-				banco_delete
-				(
-					"variaveis",
-					"WHERE id_variaveis='".$ref."'"
-				);
-				
-				$alterouLinguagem = true;
-			}
-		}
-		
-		// ===== Atualização dos demais campos.
-		
-		if(isset($alterouLinguagem)){
-			$alteracoes[] = Array('campo' => 'module-variables');
-			
-			// ===== Alterar versão e data.
-			
-			$editar = Array(
-				'tabela' => $modulo['tabela']['nome'],
-				'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D'",
-			);
-			
-			$campo_nome = $modulo['tabela']['versao']; $editar['dados'][] = $campo_nome." = ".$campo_nome." + 1";
-			$campo_nome = $modulo['tabela']['data_modificacao']; $editar['dados'][] = $campo_nome."=NOW()";
-			
-			$editar['sql'] = banco_campos_virgulas($editar['dados']);
-			
-			if($editar['sql']){
-				banco_update
-				(
-					$editar['sql'],
-					$editar['tabela'],
-					$editar['extra']
-				);
-			}
-			$editar = false;
-			
-			// ===== Incluir no histórico as alterações.
-			
-			interface_historico_incluir(Array(
-				'alteracoes' => $alteracoes,
-			));
-		}
+		configuracao_administracao_salvar(Array(
+			'modulo' => $id,
+			'linguagemCodigo' => $_GESTOR['linguagem-codigo'],
+			'tabela' => $modulo['tabela'],
+		));
 		
 		// ===== Reler URL.
 		
@@ -743,62 +637,15 @@ function modulos_variaveis(){
 		if(isset($retorno_bd[$modulo['tabela']['versao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-version')),'dado' => $retorno_bd[$modulo['tabela']['versao']]); }
 		if(isset($retorno_bd[$modulo['tabela']['status']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status')),'dado' => ($retorno_bd[$modulo['tabela']['status']] == 'A' ? '<div class="ui center aligned green message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-active')).'</b></div>' : '').($retorno_bd[$modulo['tabela']['status']] == 'I' ? '<div class="ui center aligned brown message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-inactive')).'</b></div>' : '')); }
 		
-		// ===== Variáveis
+		// ===== Interface de administração da configuração.
 		
-		$variaveis = banco_select_name
-		(
-			banco_campos_virgulas(Array(
-				'id_variaveis',
-				'id',
-				'valor',
-			))
-			,
-			"variaveis",
-			"WHERE linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
-			." AND modulo='".$id."'"
-			." AND tipo='string'"
-			." ORDER BY id ASC"
-		);
+		gestor_incluir_biblioteca('configuracao');
 		
-		$pagina = $_GESTOR['pagina'];
-		
-		$cel_nome = 'items'; $cel[$cel_nome] = modelo_tag_val($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
-		
-		$pagina = modelo_var_troca($pagina,"#fields-name#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'fields-name')));
-		
-		$id_label = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-id-label'));
-		$id_placeholder = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-id-placeholder'));
-		$value_label = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-value-label'));
-		$value_placeholder = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-value-placeholder'));
-		
-		$cel[$cel_nome] = modelo_var_troca($cel[$cel_nome],"#form-id-label#",$id_label);
-		$cel[$cel_nome] = modelo_var_troca($cel[$cel_nome],"#form-id-placeholder#",$id_placeholder);
-		$cel[$cel_nome] = modelo_var_troca($cel[$cel_nome],"#form-value-label#",$value_label);
-		$cel[$cel_nome] = modelo_var_troca($cel[$cel_nome],"#form-value-placeholder#",$value_placeholder);
-		
-		$count = 1;
-		
-		if($variaveis){
-			foreach($variaveis as $ling){
-				$cel_aux = $cel[$cel_nome];
-		
-				$cel_aux = modelo_var_troca($cel_aux,"#campo#",gestor_variaveis(Array('restart' => $_GESTOR['modulo-id'],'modulo' => $_GESTOR['modulo-id'],'id' => 'field-name')).' '.$count);
-				$cel_aux = modelo_var_troca($cel_aux,"#id-num#",$count);
-				$cel_aux = modelo_var_troca($cel_aux,"#value-num#",$count);
-				$cel_aux = modelo_var_troca($cel_aux,"#ref-num#",$count);
-				$cel_aux = modelo_var_troca($cel_aux,"#id-valor#",$ling['id']);
-				$cel_aux = modelo_var_troca($cel_aux,"#value-valor#",htmlspecialchars($ling['valor']));
-				$cel_aux = modelo_var_troca($cel_aux,"#ref-valor#",$ling['id_variaveis']);
-				
-				$pagina = modelo_var_in($pagina,'<!-- '.$cel_nome.' -->',$cel_aux);
-				$count++;
-			}
-		}
-		
-		$pagina = modelo_var_troca($pagina,"#num-campos#",$count);
-		$pagina = modelo_var_troca($pagina,"#campo-modelo#",$cel[$cel_nome]);
-		
-		$_GESTOR['pagina'] = modelo_var_troca($pagina,'<!-- '.$cel_nome.' -->','');
+		configuracao_administracao(Array(
+			'modulo' => $id,
+			'linguagemCodigo' => $_GESTOR['linguagem-codigo'],
+			'marcador' => '<!-- configuracao-administracao -->',
+		));
 	} else {
 		gestor_redirecionar_raiz();
 	}
