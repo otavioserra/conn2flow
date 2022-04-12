@@ -1,5 +1,190 @@
 $(document).ready(function(){
 	
+	function configuracao_administracao_tipos_plugins(obj = null){
+		// ===== TinyMCE opções.
+		
+		var tinySettings = {
+			menubar: false,
+			selector: 'textarea.tinymce',
+			toolbar: 'undo redo | styleselect | bold italic underline | link image | alignleft aligncenter alignright alignjustify | fontselect fontsizeselect',
+			plugins: "image link",
+			directionality: 'pt_BR',
+			min_height: 450,
+			language: 'pt_BR',
+			language_url: gestor.raiz+'tinymce/langs/pt_BR.js',
+			font_formats: 'Verdana=Verdana;Arial=arial,helvetica,sans-serif;',
+			branding: false,
+			valid_elements: '*[*]',
+			init_instance_callback: tinyMCEReady
+		};
+		
+		function tinyMCEReady(){
+			
+		}
+		
+		if(!gestor.configuracao.tinySettings){
+			gestor.configuracao.tinySettings = {
+				totalEditors : 0,
+			};
+		}
+		
+		// ===== Codemirror.
+		
+		var codeMirrorSettings = {
+			lineNumbers: true,
+			lineWrapping: true,
+			styleActiveLine: true,
+			matchBrackets: true,
+			mode: "css",
+			htmlMode: true,
+			indentUnit: 4,
+			theme: "tomorrow-night-bright",
+			extraKeys: {
+				"F11": function(cm) {
+					cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+				},
+				"Esc": function(cm) {
+					if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+				}
+			}
+		};
+		
+		// ===== Tratar diferença entre objeto e leitura inicial.
+		
+		if(obj !== null){
+			if(obj.find('.dinheiro').length > 0){ obj.find('.dinheiro').mask("#.##0,00", {reverse: true}); }
+			if(obj.find('.quantidade').length > 0){ obj.find('.quantidade').mask("#.##0", {reverse: true}); }
+			if(obj.find('.ui.checkbox').length > 0){ obj.find('.ui.checkbox').checkbox(); }
+			
+			if(obj.find('.tinymce').length > 0){
+				gestor.configuracao.tinySettings.totalEditors++;
+				
+				var id = gestor.configuracao.tinySettings.totalEditors;
+				obj.find('.tinymce').attr('id','tinymce-'+id);
+				
+				var ed = new tinymce.Editor('tinymce-'+id, tinySettings, tinymce.EditorManager);
+
+				ed.render();
+			}
+			
+			if(obj.find('.js').length > 0 || obj.find('.html').length > 0 || obj.find('.css').length > 0){
+				obj.find('.js,.html,.css').each(function(){
+					if($(this).hasClass('js')) codeMirrorSettings.mode = 'javascript';
+					if($(this).hasClass('html')) codeMirrorSettings.mode = 'htmlmixed';
+					if($(this).hasClass('css')) codeMirrorSettings.mode = 'css';
+					
+					var codemirrorEle = $(this).get(0);
+					
+					var CodeMirrorInstance = CodeMirror.fromTextArea(codemirrorEle,codeMirrorSettings);
+					
+					CodeMirrorInstance.setSize('100%', 500);
+					
+					$(this).data('CodeMirrorInstance', CodeMirrorInstance);
+				});
+			}
+		} else {
+			$('.variavelCont').find('.dinheiro').mask("#.##0,00", {reverse: true});
+			$('.variavelCont').find('.quantidade').mask("#.##0", {reverse: true});
+			$('.variavelCont').find('.ui.checkbox').checkbox();
+			
+			$('.variavelCont').find('.tinymce').each(function(){
+				gestor.configuracao.tinySettings.totalEditors++;
+				
+				var id = gestor.configuracao.tinySettings.totalEditors;
+				$(this).attr('id','tinymce-'+id);
+				
+				var ed = new tinymce.Editor('tinymce-'+id, tinySettings, tinymce.EditorManager);
+
+				ed.render();
+			});
+			
+			$('.variavelCont').find('.js,.html,.css').each(function(){
+				if($(this).hasClass('js')) codeMirrorSettings.mode = 'javascript';
+				if($(this).hasClass('html')) codeMirrorSettings.mode = 'htmlmixed';
+				if($(this).hasClass('css')) codeMirrorSettings.mode = 'css';
+				
+				var codemirrorEle = $(this).get(0);
+				
+				var CodeMirrorInstance = CodeMirror.fromTextArea(codemirrorEle,codeMirrorSettings);
+				
+				CodeMirrorInstance.setSize('100%', 500);
+				
+				$(this).data('CodeMirrorInstance', CodeMirrorInstance);
+			});
+		}
+	}
+	
+	function configuracao_administracao_alterar_tipo(obj,campo){
+		// ===== Pegar o número do campo.
+		
+		var num = obj.attr('data-num');
+		
+		// ===== Pegar campo atual.
+		
+		var campoAtual = obj.find('.variavelValor').find('.campo');
+		
+		// ===== Pegar o valor do campo.
+		
+		var campoValor = '';
+		
+		var classList = campoAtual.attr('class').split(/\s+/);
+		$.each(classList, function(index, item) {
+			switch(item){
+				case 'bool':
+					campoValor = campoAtual.find('input').prop('checked');
+					return false;
+				break;
+				case 'string':
+				case 'text':
+				case 'number':
+				case 'quantidade':
+				case 'dinheiro':
+				case 'js':
+				case 'css':
+				case 'html':
+					campoValor = campoAtual.val();
+					return false;
+				break;
+				case 'tinymce':
+					campoValor = tinymce.get(campoAtual.attr('id')).getContent();
+					return false;
+				break;
+			}
+		});
+		
+		// ===== Pegar o campo do modelo.
+		
+		var campoObj = $('.camposModelos').find('.campo.'+campo).clone();
+		
+		// ===== Alterar informações do campo.
+		
+		switch(campo){
+			case 'bool':
+				campoObj.find('input').attr('name','valor-'+num);
+				if(!campoValor) campoObj.find('input').prop('checked',false);
+			break;
+			case 'text':
+			case 'tinymce':
+			case 'js':
+			case 'css':
+			case 'html':
+				campoObj.attr('name','valor-'+num);
+				campoObj.html(campoValor);
+			break;
+			default:
+				campoObj.attr('name','valor-'+num);
+				campoObj.attr('value',campoValor);
+		}
+		
+		// ===== Incluir o campo no componete adicionar.
+		
+		obj.find('.variavelValor').html(campoObj);
+		
+		// ===== Listeners do campo.
+		
+		configuracao_administracao_tipos_plugins(obj);
+	}
+	
 	function configuracao_administracao_variavel_remover(){
 		// ===== Atualizar o total de itens.
 		
@@ -25,6 +210,10 @@ $(document).ready(function(){
 		// ===== Pegar o modelo do formulário.
 		
 		var adicionar = gestor.configuracao.modelos['adicionar'].clone();
+		
+		// ===== Definir o num do objeto.
+		
+		adicionar.attr('data-num',num);
 		
 		// ===== Alterar informações do componente.
 		
@@ -78,7 +267,13 @@ $(document).ready(function(){
 			configuracao_administracao_variavel_remover();
 		});
 		
-		adicionar.find('.ui.dropdown').dropdown();
+		adicionar.find('.ui.dropdown').dropdown({
+			onChange : function(value, text){
+				configuracao_administracao_alterar_tipo(adicionar,value);
+			}
+		});
+		
+		configuracao_administracao_tipos_plugins(adicionar);
 		
 		// ===== Reiniciar o formulário.
 		
@@ -104,6 +299,19 @@ $(document).ready(function(){
 		var valor = '';
 		
 		switch(variavelTipo){
+			case 'bool':
+				valor = valorObj.find('input').prop('checked');
+			break;
+			case 'tinymce':
+				valor = tinymce.get(valorObj.attr('id')).getContent();
+			break;
+			case 'js':
+			case 'css':
+			case 'html':
+				var myInstance = valorObj.data('CodeMirrorInstance');
+				
+				valor = myInstance.getValue();
+			break;
 			default:
 				valor = valorObj.val();
 		}
@@ -115,6 +323,10 @@ $(document).ready(function(){
 		// ===== Pegar o modelo do formulário.
 		
 		var editar = gestor.configuracao.modelos['editar'].clone();
+		
+		// ===== Definir o num do objeto.
+		
+		editar.attr('data-num',num);
 		
 		// ===== Alterar informações do componente.
 		
@@ -135,8 +347,23 @@ $(document).ready(function(){
 		
 		// ===== Alterar informações do campo.
 		
-		campo.attr('name','valor-'+num);
-		campo.attr('value',valor);
+		switch(variavelTipo){
+			case 'bool':
+				campo.find('input').attr('name','valor-'+num);
+				campo.find('input').prop('checked',valor);
+			break;
+			case 'text':
+			case 'tinymce':
+			case 'css':
+			case 'js':
+			case 'html':
+				campo.attr('name','valor-'+num);
+				campo.html(valor);
+			break;
+			default:
+				campo.attr('name','valor-'+num);
+				campo.attr('value',valor);
+		}
 		
 		// ===== Alterar a referência da variável.
 		
@@ -151,9 +378,8 @@ $(document).ready(function(){
 		
 		variavelCont.after(editar);
 		
-		// ===== Remover o componente atual e guardar uma cópia para caso haja cancelamento da edição.
+		// ===== Remover o componente atual.
 		
-		var variavelContClone = variavelCont.clone();
 		variavelCont.remove();
 		
 		// ===== Listeners deste componente.
@@ -163,12 +389,42 @@ $(document).ready(function(){
 			
 			var obj2 = $(this);
 			
-			obj2.parents('.editar').after(variavelContClone);
+			obj2.parents('.editar').after(variavelCont);
 			obj2.parents('.editar').remove();
+			
+			switch(variavelTipo){
+				case 'tinymce':
+					var campo2 = $('.camposModelos').find('.campo.tinymce').clone();
+					
+					campo2.attr('name','valor-'+num);
+					campo2.html(valor);
+					
+					variavelCont.find('.variavelValor').html(campo2);
+				break;
+				case 'js':
+				case 'css':
+				case 'html':
+					var campo2 = $('.camposModelos').find('.campo.'+variavelTipo).clone();
+					
+					campo2.attr('name','valor-'+num);
+					campo2.html(valor);
+					
+					variavelCont.find('.variavelValor').html(campo2);
+				break;
+			}
+			
+			configuracao_administracao_tipos_plugins(variavelCont);
 		});
 		
 		editar.find('.ui.dropdown').dropdown();
 		editar.find('.ui.dropdown').dropdown('set selected',variavelTipo);
+		editar.find('.ui.dropdown').dropdown({
+			onChange : function(value, text){
+				configuracao_administracao_alterar_tipo(editar,value);
+			}
+		});
+		
+		configuracao_administracao_tipos_plugins(editar);
 		
 		// ===== Reiniciar o formulário.
 		
@@ -238,6 +494,8 @@ $(document).ready(function(){
 			
 			configuracao_administracao_variavel_editar(obj);
 		});
+		
+		configuracao_administracao_tipos_plugins();
 		
 		// ===== Campo Identificador e Grupo
 		

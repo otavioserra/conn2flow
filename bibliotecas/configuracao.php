@@ -3,16 +3,18 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-configuracao']							=	Array(
-	'versao' => '1.0.46',
+	'versao' => '1.0.58',
 	'camposTipos' => Array(
-		Array(	'texto' => 'String',				'valor' => 'string',	),
-		Array(	'texto' => 'Inteiro',				'valor' => 'int',		),
-		Array(	'texto' => 'Texto',					'valor' => 'text',		),
-		Array(	'texto' => 'Booleano',				'valor' => 'bool',		),
-		Array(	'texto' => 'CSS',					'valor' => 'css',		),
-		Array(	'texto' => 'JS',					'valor' => 'js',		),
-		Array(	'texto' => 'HTML',					'valor' => 'html',		),
-		Array(	'texto' => 'TinyMCE',				'valor' => 'tinymce',	),
+		Array(	'texto' => 'String',				'valor' => 'string',			),
+		Array(	'texto' => 'Texto',					'valor' => 'text',				),
+		Array(	'texto' => 'Booleano',				'valor' => 'bool',				),
+		Array(	'texto' => 'Número',				'valor' => 'number',			),
+		Array(	'texto' => 'Quantidade',			'valor' => 'quantidade',		),
+		Array(	'texto' => 'Dinheiro',				'valor' => 'dinheiro',			),
+		Array(	'texto' => 'CSS',					'valor' => 'css',				),
+		Array(	'texto' => 'JS',					'valor' => 'js',				),
+		Array(	'texto' => 'HTML',					'valor' => 'html',				),
+		Array(	'texto' => 'TinyMCE',				'valor' => 'tinymce',			),
 	),
 );
 
@@ -263,18 +265,6 @@ function configuracao_administracao($params = false){
 				$cel_aux = modelo_var_troca($cel_aux,"#variavelTipo#",$variavel['tipo']);
 				$cel_aux = modelo_var_troca($cel_aux,"#variavelNome#",$variavel['id']);
 				
-				// ===== Incluir o campo específico da variável.
-				
-				$campo_aux = $campo[$variavel['tipo']];
-				
-				// ===== Popular os dados específicos do campo.
-				
-				$campo_aux = modelo_var_troca($campo_aux,"#value-valor#",($variavel['valor'] ? $variavel['valor'] : ''));
-				
-				// ===== Incluir o campo na célula auxiliar.
-				
-				$cel_aux = modelo_var_troca($cel_aux,"#variavelValor#",$campo_aux);
-				
 				// ===== Mostrar ou esconder descricao.
 				
 				if($variavel['descricao']){
@@ -309,11 +299,31 @@ function configuracao_administracao($params = false){
 					$cel_aux = modelo_var_troca($cel_aux,"#variavelGrupo#",'');
 				}
 				
+				// ===== Incluir o campo específico da variável.
+				
+				$campo_aux = $campo[$variavel['tipo']];
+				
+				// ===== Popular os dados específicos do campo.
+				
+				switch($variavel['tipo']){
+					case 'bool':
+						if(!$variavel['valor']){
+							$campo_aux = modelo_var_troca($campo_aux," checked",'');
+						}
+					break;
+					default:
+						$campo_aux = modelo_var_troca($campo_aux,"#value-valor#",($variavel['valor'] ? $variavel['valor'] : ''));
+				}
+				
+				// ===== Incluir o campo na célula auxiliar.
+				
+				$cel_aux = modelo_var_troca($cel_aux,"#variavelValor#",$campo_aux);
+				
 				// ===== Popular referência dos inputs.
 				
 				$cel_aux = modelo_var_troca($cel_aux,"#value-num#",$count);
 				$cel_aux = modelo_var_troca($cel_aux,"#ref-num#",$count);
-				$cel_aux = modelo_var_troca($cel_aux,"#value-valor#",htmlspecialchars($variavel['valor']));
+				//$cel_aux = modelo_var_troca($cel_aux,"#value-valor#",htmlspecialchars($variavel['valor']));
 				$cel_aux = modelo_var_troca($cel_aux,"#ref-valor#",$variavel['id_variaveis']);
 				
 				// ===== Incrementar o contador.
@@ -390,6 +400,36 @@ function configuracao_administracao($params = false){
 		// ===== Incluir variáveis globais do módulo configuracao.
 		
 		$_GESTOR['paginas-variaveis']['configuracao'] = true;
+		
+		// ===== Inclusão do jQuery-Mask-Plugin
+		
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'jQuery-Mask-Plugin-v1.14.16/jquery.mask.min.js"></script>';
+		
+		// ===== Inclusão do TinyMCE
+		
+		$_GESTOR['javascript'][] = '<script src="https://cdn.tiny.cloud/1/puqfgloszrueuf7nkzrlzxqbc0qihojtiq46oikukhty0jw9/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>';
+		
+		// ===== Inclusão do CodeMirror
+		
+		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/lib/codemirror.css" />';
+		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/theme/tomorrow-night-bright.css" />';
+		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/dialog/dialog.css" />';
+		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/display/fullscreen.css" />';
+		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/search/matchesonscrollbar.css" />';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/lib/codemirror.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/selection/active-line.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/dialog/dialog.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/search/searchcursor.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/search/search.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/scroll/annotatescrollbar.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/search/matchesonscrollbar.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/search/jump-to-line.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/edit/matchbrackets.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/display/fullscreen.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/mode/xml/xml.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/mode/css/css.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/mode/javascript/javascript.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/mode/htmlmixed/htmlmixed.js"></script>';
 		
 		// ===== Inclusão configuracao javascript
 		
