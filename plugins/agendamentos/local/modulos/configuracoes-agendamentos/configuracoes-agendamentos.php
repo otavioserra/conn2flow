@@ -5,6 +5,7 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'configuracoes-agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.0.0',
+	'plugin' => 'agendamentos',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
 		'nome' => 'hosts_variaveis',
@@ -36,7 +37,7 @@ function configuracoes_config(){
 	
 	$config = gestor_incluir_configuracao(Array(
 		'id' => $_GESTOR['modulo-id'].'.config',
-		'plugin' => 'agendamentos',
+		'plugin' => $modulo['plugin'],
 	));
 	
 	// ===== Gravar Atualizações no Banco

@@ -28,6 +28,7 @@ $_GESTOR['arquivo-estatico'] = false;
 if((isset($_GESTOR['caminho-extensao']) ? $_GESTOR['caminho-extensao'] : null)){
 	$_GESTOR['arquivo-estatico'] = Array(
 		'alvo' => (isset($_GESTOR['caminho'][0]) ? $_GESTOR['caminho'][0] : null),
+		'alvo2' => (isset($_GESTOR['caminho'][1]) ? $_GESTOR['caminho'][1] : null),
 		'ext' => $_GESTOR['caminho-extensao'],
 	);
 }
@@ -1253,7 +1254,11 @@ function gestor_pagina_javascript_incluir($js = false){
 	global $_GESTOR;
 	
 	if(!$js){
-		$_GESTOR['javascript-fim'][] = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
+		if(isset($_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'])){
+			$_GESTOR['javascript-fim'][] = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'].'/'.$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
+		} else {
+			$_GESTOR['javascript-fim'][] = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
+		}
 	} else {
 		$_GESTOR['javascript-fim'][] = $js;
 	}
