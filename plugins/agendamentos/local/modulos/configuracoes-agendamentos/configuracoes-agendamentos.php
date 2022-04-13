@@ -35,7 +35,7 @@ function configuracoes_config(){
 	// ===== Configurações das variáveis.
 	
 	$config = gestor_incluir_configuracao(Array(
-		'id' => $_GESTOR['modulo-id'],
+		'id' => $_GESTOR['modulo-id'].'.config',
 		'plugin' => 'agendamentos',
 	));
 	
@@ -245,6 +245,17 @@ function configuracoes_config(){
 			}
 		}
 		
+		// ===== Interface de administração da configuração salvar.
+		
+		gestor_incluir_biblioteca('configuracao');
+		
+		configuracao_hosts_salvar(Array(
+			'modulo' => $id,
+			'grupo' => 'padrao-host',
+			'linguagemCodigo' => $_GESTOR['linguagem-codigo'],
+			'tabela' => $modulo['tabela'],
+		));
+		
 		// ===== Reler URL.
 		
 		gestor_redirecionar_raiz();
@@ -343,17 +354,23 @@ function configuracoes_config(){
 		}
 	}
 	
+	// ===== Interface de configurações do host.
+	
+	gestor_incluir_biblioteca('configuracao');
+	
+	configuracao_hosts(Array(
+		'modulo' => $id,
+		'grupo' => 'padrao-host',
+		'linguagemCodigo' => $_GESTOR['linguagem-codigo'],
+		'marcador' => '<!-- configuracao-hosts -->',
+	));
+	
 	// ===== Interface config finalizar opções
 	
 	$_GESTOR['interface']['config']['finalizar'] = Array(
 		'formulario' => Array(
 			'campos' => Array(
-				Array(
-					'tipo' => 'imagepick-hosts',
-					'id' => 'logomarca',
-					'nome' => 'logomarca',
-					'id_hosts_arquivos' => (isset($id_hosts_arquivos) ? $id_hosts_arquivos : null),
-				),
+				
 			),
 		)
 	);
