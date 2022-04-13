@@ -362,6 +362,7 @@ function configuracoes_config(){
 	configuracao_hosts(Array(
 		'modulo' => $_GESTOR['modulo-id'],
 		'grupo' => 'padrao-host',
+		'mostrarGrupo' => true,
 		'linguagemCodigo' => $_GESTOR['linguagem-codigo'],
 		'marcador' => '<!-- configuracao-hosts -->',
 	));

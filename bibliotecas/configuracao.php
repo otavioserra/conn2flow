@@ -628,6 +628,7 @@ function configuracao_hosts($params = false){
 	// modulo - String - Obrigatório - Módulo alvo para filtrar as variáveis.
 	// linguagemCodigo - String - Obrigatório - Linguagem das variáveis.
 	// grupo - String - Opcional - Grupo alvo para filtrar as variáveis de um módulo.
+	// mostrarGrupo - Bool - Opcional - Mostrar o grupo no widget caso necessário.
 	
 	// ===== 
 	
@@ -668,6 +669,7 @@ function configuracao_hosts($params = false){
 			'extra' => 
 				"WHERE linguagem_codigo='".$linguagemCodigo."'"
 				." AND modulo='".$modulo."'"
+				.(isset($grupo) ? " AND grupo='".$grupo."'" : '')
 				." ORDER BY id ASC"
 		));
 		
@@ -714,7 +716,7 @@ function configuracao_hosts($params = false){
 				
 				// ===== Mostrar ou esconder grupo.
 				
-				if($variavel['grupo']){
+				if($variavel['grupo'] && isset($mostrarGrupo)){
 					$cel_aux = modelo_var_troca($cel_aux,"#variavelGrupo#",$variavel['grupo']);
 				} else {
 					html_iniciar(Array('valor' => $cel_aux));
