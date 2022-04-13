@@ -538,6 +538,10 @@ function configuracao_hosts_salvar($params = false){
 			}
 		}
 		
+		// ===== Alteração TXT definição.
+		
+		$alteracao_txt = '';
+		
 		// ===== Varrer todos os inputs enviados
 		
 		$variaveisTotal = (int)banco_escape_field($_REQUEST['variaveis-total']);
@@ -571,6 +575,8 @@ function configuracao_hosts_salvar($params = false){
 						);
 						
 						$alterouVariavel = true;
+						
+						$alteracao_txt .= (existe($alteracao_txt) ? ', ':'') . $id;
 					}
 				} else {
 					banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
@@ -589,6 +595,8 @@ function configuracao_hosts_salvar($params = false){
 					);
 					
 					$alterouVariavel = true;
+					
+					$alteracao_txt .= (existe($alteracao_txt) ? ', ':'') . $id;
 				}
 			}
 		}
@@ -597,7 +605,10 @@ function configuracao_hosts_salvar($params = false){
 		
 		if(isset($alterouVariavel)){
 			if(isset($plugin)){
-				$alteracoes[] = Array('campo' => 'module-variables');
+				$alteracoes[] = Array(
+					'alteracao' => 'change-variable',
+					'alteracao_txt' => $alteracao_txt,
+				);
 				
 				// ===== Alteração de versão e data do plugin.
 				
@@ -629,7 +640,10 @@ function configuracao_hosts_salvar($params = false){
 					'versao' => $versao_config,
 				));
 			} else {
-				$alteracoes[] = Array('campo' => 'module-variables');
+				$alteracoes[] = Array(
+					'alteracao' => 'change-variable',
+					'alteracao_txt' => $alteracao_txt,
+				);
 				
 				// ===== Alterar versão e data.
 				
