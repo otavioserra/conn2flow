@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-configuracao']							=	Array(
-	'versao' => '1.0.59',
+	'versao' => '1.0.60',
 	'camposTipos' => Array(
 		Array(	'texto' => 'String',				'valor' => 'string',			),
 		Array(	'texto' => 'Texto',					'valor' => 'text',				),
@@ -604,6 +604,12 @@ function configuracao_hosts_salvar($params = false){
 		// ===== Atualização dos demais campos.
 		
 		if(isset($alterouVariavel)){
+			// ===== Padrão de alteração txt.
+			
+			$historicChange = gestor_variaveis(Array('modulo' => 'configuracao','id' => 'historic-change'));
+			
+			$alteracao_txt = $historicChange . ' ' . $alteracao_txt;
+			
 			if(isset($plugin)){
 				$alteracoes[] = Array(
 					'alteracao' => 'change-variable',

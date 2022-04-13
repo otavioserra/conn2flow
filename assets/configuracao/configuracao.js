@@ -495,6 +495,12 @@ $(document).ready(function(){
 			configuracao_administracao_variavel_editar(obj);
 		});
 		
+		$(document.body).on('mouseup tap','.variavelNome',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			navigator.clipboard.writeText($(this).html());
+		});
+		
 		configuracao_tipos_plugins();
 		
 		// ===== Campo Identificador e Grupo
@@ -555,6 +561,12 @@ $(document).ready(function(){
 	
 	function configuracao_hosts_iniciar(){
 		// ===== Listeners principais.
+		
+		$(document.body).on('mouseup tap','.variavelNome',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			navigator.clipboard.writeText($(this).html());
+		});
 		
 		configuracao_tipos_plugins();
 	}
