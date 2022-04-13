@@ -250,7 +250,7 @@ function configuracoes_config(){
 		gestor_incluir_biblioteca('configuracao');
 		
 		configuracao_hosts_salvar(Array(
-			'modulo' => $id,
+			'modulo' => $_GESTOR['modulo-id'],
 			'grupo' => 'padrao-host',
 			'linguagemCodigo' => $_GESTOR['linguagem-codigo'],
 			'tabela' => $modulo['tabela'],
@@ -359,7 +359,7 @@ function configuracoes_config(){
 	gestor_incluir_biblioteca('configuracao');
 	
 	configuracao_hosts(Array(
-		'modulo' => $id,
+		'modulo' => $_GESTOR['modulo-id'],
 		'grupo' => 'padrao-host',
 		'linguagemCodigo' => $_GESTOR['linguagem-codigo'],
 		'marcador' => '<!-- configuracao-hosts -->',
