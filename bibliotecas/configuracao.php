@@ -466,8 +466,11 @@ function configuracao_hosts_salvar($params = false){
 	// linguagemCodigo - String - Obrigatório - Linguagem das variáveis.
 	// tabela - Array - Obrigatório - Definições da tabela onde será atualizado o histórico.
 	// grupos - Array - Opcional - Grupos alvos para filtrar as variáveis de um módulo.
+	// plugin - String - Opcional - Identificador do plugin relacionado.
 	
 	// ===== 
+	
+	$retorno = Array();
 	
 	if(isset($modulo) && isset($linguagemCodigo) && isset($tabela)){
 		// ===== Montar SQL de filtragem de grupos.
@@ -483,16 +486,15 @@ function configuracao_hosts_salvar($params = false){
 		// ===== Banco antes de atualizar.
 		
 		$banco_antes = Array();
+		$banco_antes_hosts = Array();
 		
 		$variaveis = banco_select_name
 		(
 			banco_campos_virgulas(Array(
 				'id_variaveis',
 				'id',
-				'valor',
 				'tipo',
 				'grupo',
-				'descricao',
 			))
 			,
 			"variaveis",
@@ -506,10 +508,32 @@ function configuracao_hosts_salvar($params = false){
 			foreach($variaveis as $variavel){
 				$banco_antes[$variavel['id_variaveis']] = Array(
 					'id' => $variavel['id'],
-					'valor' => $variavel['valor'],
-					'grupo' => $variavel['grupo'],
 					'tipo' => $variavel['tipo'],
-					'descricao' => $variavel['descricao'],
+					'grupo' => $variavel['grupo'],
+				);
+			}
+		}
+		
+		$hosts_variaveis = banco_select(Array(
+			'tabela' => 'hosts_variaveis',
+			'campos' => Array(
+				'id_hosts_variaveis',
+				'id',
+				'valor',
+			),
+			'extra' => 
+				"WHERE linguagem_codigo='".$linguagemCodigo."'"
+				." AND modulo='".$modulo."'"
+				. $gruposSQL
+				." AND id_hosts='".$_GESTOR['host-id']."'"
+				." ORDER BY id ASC"
+		));
+		
+		if($hosts_variaveis){
+			foreach($hosts_variaveis as $hosts_variavel){
+				$banco_antes_hosts[$hosts_variavel['id_hosts_variaveis']] = Array(
+					'id' => $hosts_variavel['id'],
+					'valor' => $hosts_variavel['valor'],
 				);
 			}
 		}
@@ -521,104 +545,128 @@ function configuracao_hosts_salvar($params = false){
 		for($i=0;$i<$variaveisTotal;$i++){
 			$valor = $_REQUEST['valor-'.$i];
 			$ref = $_REQUEST['ref-'.$i];
+			$refHost = $_REQUEST['ref-host-'.$i];
 			
 			if(isset($banco_antes[$ref])){
-				$banco_antes[$ref]['verificado'] = true;
-				if(existe($id)){
+				// ===== Pegar referência da variável padrão.
+				
+				$id = $banco_antes[$ref]['id'];
+				$tipo = $banco_antes[$ref]['tipo'];
+				$grupo = $banco_antes[$ref]['grupo'];
+				
+				// ===== Verificar se a variável host existe. Se sim, ver se o valor foi alterado. Senão, criar nova variável host.
+				
+				if(isset($banco_antes_hosts[$refHost])){
 					if(
-						$banco_antes[$ref]['id'] != $id || 
-						$banco_antes[$ref]['grupo'] != $grupo || 
-						$banco_antes[$ref]['descricao'] != $descricao || 
-						$banco_antes[$ref]['tipo'] != $tipo || 
-						$banco_antes[$ref]['valor'] != $valor
+						$banco_antes_hosts[$refHost]['valor'] != $valor
 					){
-						banco_update_campo('id',$id);
-						banco_update_campo('grupo',$grupo);
-						banco_update_campo('descricao',$descricao);
-						banco_update_campo('tipo',$tipo);
 						banco_update_campo('valor',$valor);
 						
-						banco_update_executar('variaveis',"WHERE id_variaveis='".$ref."'");
+						banco_update_executar(
+							'hosts_variaveis',
+							"WHERE linguagem_codigo='".$linguagemCodigo."'"
+							." AND modulo='".$modulo."'"
+							." AND id_hosts_variaveis='".$refHost."'"
+							." AND id_hosts='".$_GESTOR['host-id']."'"
+						);
 						
 						$alterouVariavel = true;
 					}
 				} else {
-					if(
-						$banco_antes[$ref]['valor'] != $valor
-					){
-						banco_update_campo('valor',$valor);
-						
-						banco_update_executar('variaveis',"WHERE id_variaveis='".$ref."'");
-						
-						$alterouVariavel = true;
-					}
+					banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
+					banco_insert_name_campo('linguagem_codigo',$linguagemCodigo);
+					banco_insert_name_campo('modulo',$modulo);
+					banco_insert_name_campo('id',$id);
+					banco_insert_name_campo('tipo',$tipo);
+					
+					if(existe($grupo))banco_insert_name_campo('grupo',$grupo);
+					if(existe($valor))banco_insert_name_campo('valor',$valor);
+					
+					banco_insert_name
+					(
+						banco_insert_name_campos(),
+						"hosts_variaveis"
+					);
+					
+					$alterouVariavel = true;
 				}
-			} else if(existe($id)){
-				banco_insert_name_campo('linguagem_codigo',$linguagemCodigo);
-				banco_insert_name_campo('modulo',$modulo);
-				banco_insert_name_campo('id',$id);
-				banco_insert_name_campo('tipo',$tipo);
-				
-				if(existe($grupo))banco_insert_name_campo('grupo',$grupo);
-				if(existe($descricao))banco_insert_name_campo('descricao',$descricao);
-				if(existe($valor))banco_insert_name_campo('valor',$valor);
-				
-				banco_insert_name
-				(
-					banco_insert_name_campos(),
-					"variaveis"
-				);
-				
-				$alterouVariavel = true;
-			}
-		}
-		
-		foreach($banco_antes as $ref => $campo){
-			if(!isset($campo['verificado'])){
-				banco_delete
-				(
-					"variaveis",
-					"WHERE id_variaveis='".$ref."'"
-				);
-				
-				$alterouVariavel = true;
 			}
 		}
 		
 		// ===== Atualização dos demais campos.
 		
 		if(isset($alterouVariavel)){
-			$alteracoes[] = Array('campo' => 'module-variables');
-			
-			// ===== Alterar versão e data.
-			
-			$editar = Array(
-				'tabela' => $tabela['nome'],
-				'extra' => "WHERE ".$tabela['id']."='".$modulo."' AND ".$tabela['status']."!='D'",
-			);
-			
-			$campo_nome = $tabela['versao']; $editar['dados'][] = $campo_nome." = ".$campo_nome." + 1";
-			$campo_nome = $tabela['data_modificacao']; $editar['dados'][] = $campo_nome."=NOW()";
-			
-			$editar['sql'] = banco_campos_virgulas($editar['dados']);
-			
-			if($editar['sql']){
-				banco_update
-				(
-					$editar['sql'],
-					$editar['tabela'],
-					$editar['extra']
+			if(isset($plugin)){
+				$alteracoes[] = Array('campo' => 'module-variables');
+				
+				// ===== Alteração de versão e data do plugin.
+				
+				banco_update_campo('versao_config','versao_config+1',true);
+				banco_update_campo('data_modificacao','NOW()',true);
+				
+				banco_update_executar('hosts_plugins',"WHERE id_hosts='".$_GESTOR['host-id']."' AND plugin='".$plugin."'");
+				
+				// ===== Pegar a versão do host plugin.
+				
+				$hosts_plugins = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_plugins',
+					'campos' => Array(
+						'versao_config',
+					),
+					'extra' => 
+						"WHERE id_hosts='".$_GESTOR['host-id']."'"
+						." AND plugin='".$plugin."'"
+				));
+				
+				$versao_config = $hosts_plugins['versao_config'];
+				
+				// ===== Incluir no histórico as alterações.
+				
+				interface_historico_incluir(Array(
+					'alteracoes' => $alteracoes,
+					'sem_id' => true,
+					'versao' => $versao_config,
+				));
+			} else {
+				$alteracoes[] = Array('campo' => 'module-variables');
+				
+				// ===== Alterar versão e data.
+				
+				$editar = Array(
+					'tabela' => $tabela['nome'],
+					'extra' => "WHERE ".$tabela['id']."='".$modulo."' AND ".$tabela['status']."!='D'",
 				);
+				
+				$campo_nome = $tabela['versao']; $editar['dados'][] = $campo_nome." = ".$campo_nome." + 1";
+				$campo_nome = $tabela['data_modificacao']; $editar['dados'][] = $campo_nome."=NOW()";
+				
+				$editar['sql'] = banco_campos_virgulas($editar['dados']);
+				
+				if($editar['sql']){
+					banco_update
+					(
+						$editar['sql'],
+						$editar['tabela'],
+						$editar['extra']
+					);
+				}
+				$editar = false;
+				
+				// ===== Incluir no histórico as alterações.
+				
+				interface_historico_incluir(Array(
+					'alteracoes' => $alteracoes,
+				));
 			}
-			$editar = false;
 			
-			// ===== Incluir no histórico as alterações.
+			// ===== Marcar que alterou a variável.
 			
-			interface_historico_incluir(Array(
-				'alteracoes' => $alteracoes,
-			));
+			$retorno['alterouVariavel'] = true;
 		}
 	}
+	
+	return $retorno;
 }
 
 function configuracao_hosts($params = false){

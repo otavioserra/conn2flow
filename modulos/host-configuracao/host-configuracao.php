@@ -1150,6 +1150,7 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 						banco_update_campo('versao',$pluginConfig['versao']);
 						banco_update_campo('versao_num',$pluginConfig['versao_num']);
 						banco_update_campo('habilitado','1',true);
+						banco_update_campo('data_modificacao','NOW()',true);
 						
 						banco_update_executar('hosts_plugins',"WHERE id_hosts_plugins='".$id_hosts_plugins."'");
 						
@@ -1859,6 +1860,9 @@ function host_configuracao_plugins(){
 					if(existe($_REQUEST[$plugin['id']])){
 						banco_insert_name_campo('plugin',$plugin['id']);
 						banco_insert_name_campo('id_hosts',$id_hosts);
+						banco_insert_name_campo('versao_config','1');
+						banco_insert_name_campo('data_criacao','NOW()',true);
+						banco_insert_name_campo('data_modificacao','NOW()',true);
 						
 						banco_insert_name
 						(
