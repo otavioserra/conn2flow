@@ -465,10 +465,21 @@ function configuracao_hosts_salvar($params = false){
 	// modulo - String - Obrigatório - Módulo alvo para filtrar as variáveis.
 	// linguagemCodigo - String - Obrigatório - Linguagem das variáveis.
 	// tabela - Array - Obrigatório - Definições da tabela onde será atualizado o histórico.
+	// grupos - Array - Opcional - Grupos alvos para filtrar as variáveis de um módulo.
 	
 	// ===== 
 	
 	if(isset($modulo) && isset($linguagemCodigo) && isset($tabela)){
+		// ===== Montar SQL de filtragem de grupos.
+		
+		$gruposSQL = '';
+		
+		if(isset($grupos)){
+			foreach($grupos as $grupo){
+				$gruposSQL .= " AND grupo='".$grupo."'";
+			}
+		}
+		
 		// ===== Banco antes de atualizar.
 		
 		$banco_antes = Array();
@@ -487,6 +498,7 @@ function configuracao_hosts_salvar($params = false){
 			"variaveis",
 			"WHERE linguagem_codigo='".$linguagemCodigo."'"
 			." AND modulo='".$modulo."'"
+			. $gruposSQL
 			." ORDER BY id ASC"
 		);
 		
@@ -507,10 +519,6 @@ function configuracao_hosts_salvar($params = false){
 		$variaveisTotal = (int)banco_escape_field($_REQUEST['variaveis-total']);
 		
 		for($i=0;$i<$variaveisTotal;$i++){
-			$id = (isset($_REQUEST['id-'.$i]) ? $_REQUEST['id-'.$i] : '');
-			$grupo = (isset($_REQUEST['grupo-'.$i]) ? $_REQUEST['grupo-'.$i] : '');
-			$descricao = (isset($_REQUEST['descricao-'.$i]) ? $_REQUEST['descricao-'.$i] : '');
-			$tipo = (isset($_REQUEST['tipo-'.$i]) ? $_REQUEST['tipo-'.$i] : '');
 			$valor = $_REQUEST['valor-'.$i];
 			$ref = $_REQUEST['ref-'.$i];
 			
@@ -627,7 +635,7 @@ function configuracao_hosts($params = false){
 	// marcador - String - Obrigatório - Marcador textual onde será incluído o widget de configurações de hosts.
 	// modulo - String - Obrigatório - Módulo alvo para filtrar as variáveis.
 	// linguagemCodigo - String - Obrigatório - Linguagem das variáveis.
-	// grupo - String - Opcional - Grupo alvo para filtrar as variáveis de um módulo.
+	// grupos - Array - Opcional - Grupos alvos para filtrar as variáveis de um módulo.
 	// mostrarGrupo - Bool - Opcional - Mostrar o grupo no widget caso necessário.
 	
 	// ===== 
@@ -654,7 +662,17 @@ function configuracao_hosts($params = false){
 			'id' => 'configuracao-campos',
 		));
 		
-		// ===== Pegar os dados no banco.
+		// ===== Montar SQL de filtragem de grupos.
+		
+		$gruposSQL = '';
+		
+		if(isset($grupos)){
+			foreach($grupos as $grupo){
+				$gruposSQL .= " AND grupo='".$grupo."'";
+			}
+		}
+		
+		// ===== Pegar os dados do banco.
 		
 		$variaveis = banco_select(Array(
 			'tabela' => 'variaveis',
@@ -669,7 +687,22 @@ function configuracao_hosts($params = false){
 			'extra' => 
 				"WHERE linguagem_codigo='".$linguagemCodigo."'"
 				." AND modulo='".$modulo."'"
-				.(isset($grupo) ? " AND grupo='".$grupo."'" : '')
+				. $gruposSQL
+				." ORDER BY id ASC"
+		));
+		
+		$hosts_variaveis = banco_select(Array(
+			'tabela' => 'hosts_variaveis',
+			'campos' => Array(
+				'id_hosts_variaveis',
+				'id',
+				'valor',
+			),
+			'extra' => 
+				"WHERE linguagem_codigo='".$linguagemCodigo."'"
+				." AND modulo='".$modulo."'"
+				. $gruposSQL
+				." AND id_hosts='".$_GESTOR['host-id']."'"
 				." ORDER BY id ASC"
 		));
 		
@@ -696,6 +729,22 @@ function configuracao_hosts($params = false){
 				$cel_aux = modelo_var_troca($cel_aux,"#variavelNum#",(string)$count);
 				$cel_aux = modelo_var_troca($cel_aux,"#variavelTipo#",$variavel['tipo']);
 				$cel_aux = modelo_var_troca($cel_aux,"#variavelNome#",$variavel['id']);
+				
+				// ===== Padrão de id_hosts_variaveis não existente.
+				
+				$id_hosts_variaveis = '-1';
+				
+				// ===== Verificar se o valor padrão foi modificado por um valor específico do host e subistiuir o mesmo pelo valor específico.
+				
+				foreach($hosts_variaveis as $hosts_variavel){
+					if(
+						$variavel['id'] == $hosts_variavel['id']
+					){
+						$variavel['valor'] = $hosts_variavel['valor'];
+						$id_hosts_variaveis = $hosts_variavel['id_hosts_variaveis'];
+						break;
+					}
+				}
 				
 				// ===== Mostrar ou esconder descricao.
 				
@@ -754,9 +803,9 @@ function configuracao_hosts($params = false){
 				// ===== Popular referência dos inputs.
 				
 				$cel_aux = modelo_var_troca($cel_aux,"#value-num#",$count);
-				$cel_aux = modelo_var_troca($cel_aux,"#ref-num#",$count);
-				//$cel_aux = modelo_var_troca($cel_aux,"#value-valor#",htmlspecialchars($variavel['valor']));
+				$cel_aux = modelo_var_troca_tudo($cel_aux,"#ref-num#",$count);
 				$cel_aux = modelo_var_troca($cel_aux,"#ref-valor#",$variavel['id_variaveis']);
+				$cel_aux = modelo_var_troca($cel_aux,"#ref-host-valor#",$id_hosts_variaveis);
 				
 				// ===== Incrementar o contador.
 				
@@ -776,58 +825,11 @@ function configuracao_hosts($params = false){
 			// ===== Incluir quantidade zerada na variável de referência.
 			
 			$widget = modelo_var_troca($widget,"#variaveis-total#",'0');
-			
-			// ===== Esconder botão Adicionar na parte de baixo quando não houver nenhum por uma questão estética.
-			
-			html_iniciar(Array('valor' => $widget));
-			
-			html_adicionar_classe(Array(
-				'consulta' => 'componenteAdicionarBaixo',
-				'classe' => 'escondido',
-			));
-			
-			$widget = html_finalizar();
 		}
-		
-		// ===== Incluir campos no conteiner dos modelos.
-		
-		$widget = modelo_var_troca($widget,"#campos-modelos#",$campos);
 		
 		// ===== Inserir no marcador o widget.
 		
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],$marcador,$widget);
-		
-		// ===== Incluir o campo selecionador de tipos para a opção Adicionar e Editar.
-		
-		$formulario['campos'] = Array(
-			Array(
-				'tipo' => 'select',
-				'id' => 'tipo',
-				'nome' => 'tipo',
-				'selectClass' => 'tipo',
-				'procurar' => true,
-				'valor_selecionado' => 'string',
-				'placeholder' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variavel-tipo-placeholder')),
-				'dados' => $biblioteca['camposTipos'],
-			)
-		);
-		
-		interface_formulario_campos($formulario);
-		
-		$formulario['campos'] = Array(
-			Array(
-				'tipo' => 'select',
-				'id' => 'tipo',
-				'nome' => 'tipo',
-				'selectClass' => 'tipo',
-				'procurar' => true,
-				'valor_selecionado' => 'string',
-				'placeholder' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variavel-tipo-placeholder')),
-				'dados' => $biblioteca['camposTipos'],
-			)
-		);
-		
-		interface_formulario_campos($formulario);
 		
 		// ===== Incluir variáveis globais do módulo configuracao.
 		
@@ -872,14 +874,6 @@ function configuracao_hosts($params = false){
 		if(!isset($_GESTOR['javascript-vars']['configuracao'])){
 			$_GESTOR['javascript-vars']['configuracao'] = Array();
 		}
-		
-		// ===== Incluir modal de confirmação.
-		
-		interface_componentes_incluir(Array(
-			'componente' => Array(
-				'modal-delecao',
-			)
-		));
 	}
 }
 

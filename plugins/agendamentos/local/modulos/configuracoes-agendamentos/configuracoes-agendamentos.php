@@ -252,7 +252,9 @@ function configuracoes_config(){
 		
 		configuracao_hosts_salvar(Array(
 			'modulo' => $_GESTOR['modulo-id'],
-			'grupo' => 'padrao-host',
+			'grupos' => Array(
+				'padrao-host',
+			),
 			'linguagemCodigo' => $_GESTOR['linguagem-codigo'],
 			'tabela' => $modulo['tabela'],
 		));
@@ -361,7 +363,9 @@ function configuracoes_config(){
 	
 	configuracao_hosts(Array(
 		'modulo' => $_GESTOR['modulo-id'],
-		'grupo' => 'padrao-host',
+		'grupos' => Array(
+			'padrao-host',
+		),
 		'linguagemCodigo' => $_GESTOR['linguagem-codigo'],
 		'marcador' => '<!-- configuracao-hosts -->',
 	));
