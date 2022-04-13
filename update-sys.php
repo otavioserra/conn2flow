@@ -105,6 +105,7 @@ function atualizar_banco_de_dados(){
 					`id` VARCHAR(255) NULL,
 					`valor` TEXT NULL,
 					`tipo` VARCHAR(100) NULL,
+					`grupo` VARCHAR(255) NULL,
 					PRIMARY KEY (`id_variaveis`))
 				ENGINE = InnoDB'
 			,
