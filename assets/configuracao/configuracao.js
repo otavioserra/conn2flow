@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	
-	function configuracao_administracao_tipos_plugins(obj = null){
+	function configuracao_tipos_plugins(obj = null){
 		// ===== TinyMCE opções.
 		
 		var tinySettings = {
@@ -182,7 +182,7 @@ $(document).ready(function(){
 		
 		// ===== Listeners do campo.
 		
-		configuracao_administracao_tipos_plugins(obj);
+		configuracao_tipos_plugins(obj);
 	}
 	
 	function configuracao_administracao_variavel_remover(){
@@ -273,7 +273,7 @@ $(document).ready(function(){
 			}
 		});
 		
-		configuracao_administracao_tipos_plugins(adicionar);
+		configuracao_tipos_plugins(adicionar);
 		
 		// ===== Reiniciar o formulário.
 		
@@ -413,7 +413,7 @@ $(document).ready(function(){
 				break;
 			}
 			
-			configuracao_administracao_tipos_plugins(variavelCont);
+			configuracao_tipos_plugins(variavelCont);
 		});
 		
 		editar.find('.ui.dropdown').dropdown();
@@ -424,7 +424,7 @@ $(document).ready(function(){
 			}
 		});
 		
-		configuracao_administracao_tipos_plugins(editar);
+		configuracao_tipos_plugins(editar);
 		
 		// ===== Reiniciar o formulário.
 		
@@ -495,7 +495,7 @@ $(document).ready(function(){
 			configuracao_administracao_variavel_editar(obj);
 		});
 		
-		configuracao_administracao_tipos_plugins();
+		configuracao_tipos_plugins();
 		
 		// ===== Campo Identificador e Grupo
 		
@@ -553,11 +553,22 @@ $(document).ready(function(){
 		}
 	}
 	
+	function configuracao_hosts_iniciar(){
+		// ===== Listeners principais.
+		
+		configuracao_tipos_plugins();
+	}
+	
 	function configuracao(){
 		// ===== Identificador da opção de administracao.
 		
 		if($('#_gestor-configuracao-administracao').length > 0){
 			configuracao_administracao_iniciar();
+		}
+		// ===== Identificador da opção de administracao.
+		
+		if($('#_gestor-configuracao-hosts').length > 0){
+			configuracao_hosts_iniciar();
 		}
 	}
 	
