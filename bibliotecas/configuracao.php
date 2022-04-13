@@ -608,7 +608,7 @@ function configuracao_hosts_salvar($params = false){
 			
 			$historicChange = gestor_variaveis(Array('modulo' => 'configuracao','id' => 'historic-change'));
 			
-			$alteracao_txt = $historicChange . ' ' . $alteracao_txt;
+			$alteracao_txt = $historicChange . ' <b>' . $alteracao_txt . '</b>';
 			
 			if(isset($plugin)){
 				$alteracoes[] = Array(
