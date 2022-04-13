@@ -251,6 +251,7 @@ function modulos_sincronizar_bancos(){
 				'status',
 			),
 			'comparacaoID' => true,
+			'ignorarAddSlashes' => true,
 		),
 	);
 	

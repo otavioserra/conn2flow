@@ -87,6 +87,7 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	$_GESTOR['contents-path']						=	$_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/contents/';
 	$_GESTOR['configuracoes-path']					=	$_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/configuracoes/';
 	$_GESTOR['logs-path']							=	$_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/logs/';
+	$_GESTOR['plugins-path']						=	$_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/plugins/';
 	
 	// ===== Configuração do serviço de emails
 	
@@ -127,6 +128,7 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	$_GESTOR['contents-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/contents/';
 	$_GESTOR['configuracoes-path']					=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/configuracoes/';
 	$_GESTOR['logs-path']							=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/logs/';
+	$_GESTOR['plugins-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/plugins/';
 	
 	// ===== Configuração do serviço de emails
 	
@@ -180,6 +182,7 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	$_GESTOR['contents-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/contents/';
 	$_GESTOR['configuracoes-path']					=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/configuracoes/';
 	$_GESTOR['logs-path']							=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/logs/';
+	$_GESTOR['plugins-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/plugins/';
 	
 	// ===== Chaves e senhas do ambiente live.
 	

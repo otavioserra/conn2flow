@@ -425,17 +425,32 @@ function gestor_incluir_configuracao($params = false){
 	// ===== Parâmetros
 	
 	// id - String - Obrigatório - Identificador da configuração que será incluída.
+	// plugin - String - Opcional - Identificador do plugin da configuração.
 	
 	// ===== 
 	
 	if(isset($id)){
-		if(isset($_GESTOR['configuracaoes-inseridas'][$id])){
-			return $_GESTOR['configuracaoes-inseridas'][$id];
+		// ===== Caso seja informado o plugin, usar o path do plugin. Senão, usar o path do sistema.
+		
+		if(isset($plugin)){
+			if(isset($_GESTOR['configuracaoes-plugins-inseridos'][$plugin])){
+				if(isset($_GESTOR['configuracaoes-plugins-inseridos'][$plugin][$id])){
+					return $_GESTOR['configuracaoes-plugins-inseridos'][$plugin][$id];
+				}
+			}
+			
+			$_GESTOR['configuracaoes-plugins-inseridos'][$plugin][$id] = require_once($_GESTOR['plugins-path'].$plugin.'/local/configuracoes/'.$id.'.php');
+			
+			return $_GESTOR['configuracaoes-plugins-inseridos'][$plugin][$id];
+		} else {
+			if(isset($_GESTOR['configuracaoes-inseridos'][$id])){
+				return $_GESTOR['configuracaoes-inseridos'][$id];
+			}
+			
+			$_GESTOR['configuracaoes-inseridos'][$id] = require_once($_GESTOR['configuracoes-path'].$id.'.php');
+			
+			return $_GESTOR['configuracaoes-inseridos'][$id];
 		}
-		
-		$_GESTOR['configuracaoes-inseridas'][$id] = require_once($_GESTOR['configuracoes-path'].$id.'.php');
-		
-		return $_GESTOR['configuracaoes-inseridas'][$id];
 	}
 	
 	return null;

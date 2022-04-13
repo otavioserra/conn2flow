@@ -35,7 +35,8 @@ function configuracoes_config(){
 	// ===== Configurações das variáveis.
 	
 	$config = gestor_incluir_configuracao(Array(
-		'id' => $_GESTOR['modulo-id'].'.config',
+		'id' => $_GESTOR['modulo-id'],
+		'plugin' => 'agendamentos',
 	));
 	
 	// ===== Gravar Atualizações no Banco
