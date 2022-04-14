@@ -1621,7 +1621,6 @@ function api_cliente_variaveis($params = false){
 
 function api_cliente_variaveis_padroes($params = false){
 	global $_GESTOR;
-	global $_INDEX;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -1736,12 +1735,12 @@ function api_cliente_variaveis_padroes($params = false){
 				if(isset($plugin)){
 					// ===== Pegar os dados de configuração do plugin.
 					
-					$pluginConfig = require_once($_INDEX['sistemas-dir'] . 'b2make-gestor/plugins/'.$plugin.'/'.$plugin.'.config.php');
-					//$pluginConfig = require_once($_GESTOR['plugins-path'].$plugin.'/'.$plugin.'.config.php');
+					$pluginConfig['valor'] = require_once($_GESTOR['plugins-path'].$plugin.'/'.$plugin.'.config.php');
+					$teste = $pluginConfig['valor'];
 					
 					// ===== Pegar o módulo padrão de configurações.
 					
-					echo 'pluginConfig>> '.print_r($pluginConfig,true)."<br>";exit;
+					echo 'pluginConfig>> '.print_r($teste,true)."<br>";exit;
 					
 					$modulo = $pluginConfig['moduloConfig'];
 					
