@@ -876,6 +876,8 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 				}
 			}
 			
+			echo 'Retorno["plugins"]>> '.print_r($retorno['plugins'],true)."<br>";exit;
+			
 			// ===== Caso esteja tudo ok, guardar no histórico e redirecionar. Senão, redirecionar e alertar o usuário.
 			
 			if($finalizacaoOK){
