@@ -1740,6 +1740,7 @@ function api_cliente_variaveis_padroes($params = false){
 					// ===== Pegar o módulo padrão de configurações.
 					
 					echo $_GESTOR['plugins-path'].$plugin.'/'.$plugin.'.config.php'.'<br>';
+					echo 'pluginConfig>> '.print_r($pluginConfig,true)."<br>";
 					echo $pluginConfig['moduloConfig'].'<br>';
 					
 					$modulo = $pluginConfig['moduloConfig'];
