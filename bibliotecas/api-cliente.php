@@ -1735,12 +1735,11 @@ function api_cliente_variaveis_padroes($params = false){
 				if(isset($plugin)){
 					// ===== Pegar os dados de configuração do plugin.
 					
-					$pluginConfig['valor'] = require_once($_GESTOR['plugins-path'].$plugin.'/'.$plugin.'.config.php');
-					$teste = $pluginConfig['valor'];
+					$pluginConfig = require($_GESTOR['plugins-path'].$plugin.'/'.$plugin.'.config.php');
 					
 					// ===== Pegar o módulo padrão de configurações.
 					
-					echo 'pluginConfig>> '.print_r($teste,true)."<br>";exit;
+					echo 'pluginConfig>> '.print_r($pluginConfig,true)."<br>";exit;
 					
 					$modulo = $pluginConfig['moduloConfig'];
 					
