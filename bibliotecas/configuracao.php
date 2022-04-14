@@ -495,6 +495,7 @@ function configuracao_hosts_salvar($params = false){
 				'id',
 				'tipo',
 				'grupo',
+				'valor',
 			))
 			,
 			"variaveis",
@@ -510,6 +511,7 @@ function configuracao_hosts_salvar($params = false){
 					'id' => $variavel['id'],
 					'tipo' => $variavel['tipo'],
 					'grupo' => $variavel['grupo'],
+					'valor' => $variavel['valor'],
 				);
 			}
 		}
@@ -579,24 +581,28 @@ function configuracao_hosts_salvar($params = false){
 						$alteracao_txt .= (existe($alteracao_txt) ? ', ':'') . $id;
 					}
 				} else {
-					banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
-					banco_insert_name_campo('linguagem_codigo',$linguagemCodigo);
-					banco_insert_name_campo('modulo',$modulo);
-					banco_insert_name_campo('id',$id);
-					banco_insert_name_campo('tipo',$tipo);
-					
-					if(existe($grupo))banco_insert_name_campo('grupo',$grupo);
-					if(existe($valor))banco_insert_name_campo('valor',$valor);
-					
-					banco_insert_name
-					(
-						banco_insert_name_campos(),
-						"hosts_variaveis"
-					);
-					
-					$alterouVariavel = true;
-					
-					$alteracao_txt .= (existe($alteracao_txt) ? ', ':'') . $id;
+					if(
+						$banco_antes[$ref]['valor'] != $valor
+					){
+						banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
+						banco_insert_name_campo('linguagem_codigo',$linguagemCodigo);
+						banco_insert_name_campo('modulo',$modulo);
+						banco_insert_name_campo('id',$id);
+						banco_insert_name_campo('tipo',$tipo);
+						
+						if(existe($grupo))banco_insert_name_campo('grupo',$grupo);
+						if(existe($valor))banco_insert_name_campo('valor',$valor);
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"hosts_variaveis"
+						);
+						
+						$alterouVariavel = true;
+						
+						$alteracao_txt .= (existe($alteracao_txt) ? ', ':'') . $id;
+					}
 				}
 			}
 		}
