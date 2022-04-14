@@ -1814,6 +1814,8 @@ function api_cliente_variaveis_padroes($params = false){
 						}
 					}
 					
+					echo 'Var>> '.print_r($resultados,true)."<br>";exit;
+					
 					// ===== Enviar os registros.
 				
 					$dados['registros'] = $resultados;
