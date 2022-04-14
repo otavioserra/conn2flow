@@ -581,6 +581,8 @@ $(document).ready(function(){
 			
 			var variavelTipo = variavelCont.attr('data-tipo');
 			
+			console.log(valorPadrao);
+			
 			switch(variavelTipo){
 				case 'bool':
 					campo.find('input').prop('checked',valorPadrao);
