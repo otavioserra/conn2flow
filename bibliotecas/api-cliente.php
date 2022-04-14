@@ -1739,8 +1739,6 @@ function api_cliente_variaveis_padroes($params = false){
 					
 					// ===== Pegar o módulo padrão de configurações.
 					
-					echo 'pluginConfig>> '.print_r($pluginConfig,true)."<br>";exit;
-					
 					$modulo = $pluginConfig['moduloConfig'];
 					
 					// ===== Pegar variáveis do plugin no banco.
