@@ -1814,7 +1814,9 @@ function api_cliente_variaveis_padroes($params = false){
 						}
 					}
 					
-					echo 'resultados>> '.print_r($resultados,true)."<br>";exit;
+					if($plugin == 'agendamentos'){
+						echo 'resultados>> '.print_r($resultados,true)."<br>";exit;
+					}
 					
 					// ===== Enviar os registros.
 				
