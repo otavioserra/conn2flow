@@ -568,6 +568,35 @@ $(document).ready(function(){
 			navigator.clipboard.writeText($(this).html());
 		});
 		
+		$('.variavelValorBTN')
+			.popup()
+		;
+		
+		$(document.body).on('mouseup tap','.variavelValorBTN',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			var variavelCont = $(this).parents('.variavelCont');
+			var valorPadrao = variavelCont.find('.valorPadrao').html();
+			var campo = variavelCont.find('.variavelValor')
+			
+			var variavelTipo = variavelCont.attr('data-tipo');
+			
+			switch(variavelTipo){
+				case 'bool':
+					campo.find('input').prop('checked',valorPadrao);
+				break;
+				case 'text':
+				case 'tinymce':
+				case 'css':
+				case 'js':
+				case 'html':
+					campo.html(valorPadrao);
+				break;
+				default:
+					campo.attr('value',valorPadrao);
+			}
+		});
+		
 		configuracao_tipos_plugins();
 	}
 	

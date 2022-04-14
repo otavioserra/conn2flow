@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-configuracao']							=	Array(
-	'versao' => '1.0.60',
+	'versao' => '1.0.61',
 	'camposTipos' => Array(
 		Array(	'texto' => 'String',				'valor' => 'string',			),
 		Array(	'texto' => 'Texto',					'valor' => 'text',				),
@@ -797,6 +797,7 @@ function configuracao_hosts($params = false){
 				$cel_aux = modelo_var_troca($cel_aux,"#variavelNum#",(string)$count);
 				$cel_aux = modelo_var_troca($cel_aux,"#variavelTipo#",$variavel['tipo']);
 				$cel_aux = modelo_var_troca($cel_aux,"#variavelNome#",$variavel['id']);
+				$cel_aux = modelo_var_troca($cel_aux,"#valorPadrao#",$variavel['valor']);
 				
 				// ===== Padrão de id_hosts_variaveis não existente.
 				
@@ -812,6 +813,19 @@ function configuracao_hosts($params = false){
 						$id_hosts_variaveis = $hosts_variavel['id_hosts_variaveis'];
 						break;
 					}
+				}
+				
+				// ===== Mostrar ou esconder botão valor padrão.
+				
+				if($id_hosts_variaveis == '-1'){
+					html_iniciar(Array('valor' => $cel_aux));
+					
+					html_adicionar_classe(Array(
+						'consulta' => 'variavelValorBTN',
+						'classe' => 'escondido',
+					));
+					
+					$cel_aux = html_finalizar();
 				}
 				
 				// ===== Mostrar ou esconder descricao.
