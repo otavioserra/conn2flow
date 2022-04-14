@@ -572,6 +572,8 @@ $(document).ready(function(){
 			.popup()
 		;
 		
+		$('.escondido').hide();
+		
 		$(document.body).on('mouseup tap','.variavelValorBTN',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
