@@ -1,7 +1,7 @@
 <?php
 
 /**********
-	Descrição: Configuração do plugin: agendamentos .
+	Descrição: Configuração do plugin: agendamentos.
 **********/
 
 // ===== Definições da variável configuração.

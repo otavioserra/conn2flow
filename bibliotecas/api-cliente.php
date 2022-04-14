@@ -1621,6 +1621,7 @@ function api_cliente_variaveis($params = false){
 
 function api_cliente_variaveis_padroes($params = false){
 	global $_GESTOR;
+	global $_INDEX;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -1735,13 +1736,12 @@ function api_cliente_variaveis_padroes($params = false){
 				if(isset($plugin)){
 					// ===== Pegar os dados de configuração do plugin.
 					
-					$pluginConfig = require_once($_GESTOR['plugins-path'].$plugin.'/'.$plugin.'.config.php');
+					$pluginConfig = require_once($_INDEX['sistemas-dir'] . 'b2make-gestor/plugins/'.$plugin.'/'.$plugin.'.config.php');
+					//$pluginConfig = require_once($_GESTOR['plugins-path'].$plugin.'/'.$plugin.'.config.php');
 					
 					// ===== Pegar o módulo padrão de configurações.
 					
-					echo $_GESTOR['plugins-path'].$plugin.'/'.$plugin.'.config.php'.'<br>';
-					echo 'pluginConfig>> '.print_r($pluginConfig,true)."<br>";
-					echo $pluginConfig['moduloConfig'].'<br>';
+					echo 'pluginConfig>> '.print_r($pluginConfig,true)."<br>";exit;
 					
 					$modulo = $pluginConfig['moduloConfig'];
 					
@@ -1816,10 +1816,6 @@ function api_cliente_variaveis_padroes($params = false){
 							
 							$resultados[] = $res;
 						}
-					}
-					
-					if($plugin == 'agendamentos'){
-						echo 'Modulo: '.$modulo.' - resultados>> '.print_r($resultados,true)."<br>";exit;
 					}
 					
 					// ===== Enviar os registros.
