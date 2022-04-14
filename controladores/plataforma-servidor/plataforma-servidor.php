@@ -1942,6 +1942,8 @@ function plataforma_servidor_variaveis(){
 	
 	switch($opcao){
 		case 'editar':
+		case 'gestor':
+		case 'plugin':
 			// ===== Decodificar os dados em formato Array
 			
 			$dados = Array();
