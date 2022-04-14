@@ -581,6 +581,7 @@ $(document).ready(function(){
 			
 			var variavelTipo = variavelCont.attr('data-tipo');
 			
+			console.log(variavelTipo);
 			console.log(valorPadrao);
 			
 			switch(variavelTipo){
