@@ -52,9 +52,9 @@ function configuracoes_config(){
 			
 			gestor_incluir_biblioteca('api-cliente');
 			
-			$retorno = api_cliente_variaveis(Array(
-				'opcao' => 'editar',
-				'modulo' => $_GESTOR['modulo-id'],
+			$retorno = api_cliente_variaveis_padroes(Array(
+				'opcao' => 'plugin',
+				'plugin' => $modulo['plugin'],
 			));
 			
 			if(!$retorno['completed']){

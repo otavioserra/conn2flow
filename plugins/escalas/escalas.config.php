@@ -10,6 +10,7 @@ $configuracao = Array(
 	'id' => 'escalas',
 	'versao_num' => 1,
 	'versao' => '1.0.0',
+	'moduloConfig' => 'configuracoes-escalas',
 );
 
 // ===== Retorno da variável.

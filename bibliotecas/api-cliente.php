@@ -1628,6 +1628,10 @@ function api_cliente_variaveis_padroes($params = false){
 	
 	// opcao - String - Obrigatório - Opção almejada.
 	
+	// Se opcao == 'plugin'
+	
+	// plugin - String - Obrigatório - Plugin alvo.
+	
 	// ===== 
 	
 	if(isset($opcao)){
@@ -1636,7 +1640,7 @@ function api_cliente_variaveis_padroes($params = false){
 		$dados = Array();
 		
 		switch($opcao){
-			case 'editar':
+			case 'gestor':
 				// ===== Baixar variáveis da loja.
 			
 				$resultados = banco_select(Array(
@@ -1726,6 +1730,98 @@ function api_cliente_variaveis_padroes($params = false){
 			
 				$dados['registros'] = $resultados;
 				$dados['padroes'] = true;
+			break;
+			case 'plugin':
+				if(isset($plugin)){
+					// ===== Pegar os dados de configuração do plugin.
+					
+					$pluginConfig = require_once($_GESTOR['plugins-path'].$plugin.'/'.$plugin.'.config.php');
+					
+					// ===== Pegar o módulo padrão de configurações.
+					
+					$modulo = $pluginConfig['moduloConfig'];
+					
+					// ===== Pegar variáveis do plugin no banco.
+				
+					$variaveis = banco_select(Array(
+						'tabela' => 'variaveis',
+						'campos' => Array(
+							'id_variaveis',
+							'id',
+							'valor',
+							'tipo',
+							'grupo',
+						),
+						'extra' => 
+							"WHERE linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
+							." AND modulo='".$modulo."'"
+							." AND grupo='padrao-host'"
+							." ORDER BY id ASC"
+					));
+					
+					$hosts_variaveis = banco_select(Array(
+						'tabela' => 'hosts_variaveis',
+						'campos' => Array(
+							'id_hosts_variaveis',
+							'id',
+							'valor',
+						),
+						'extra' => 
+							"WHERE linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
+							." AND modulo='".$modulo."'"
+							." AND grupo='padrao-host'"
+							." AND id_hosts='".$_GESTOR['host-id']."'"
+							." ORDER BY id ASC"
+					));
+					
+					// ===== Varrer variáveis.
+					
+					$resultados = Array();
+					
+					if($variaveis){
+						foreach($variaveis as $variavel){
+							// ===== Padrão de id_hosts_variaveis não existente.
+							
+							$id_hosts_variaveis = null;
+							
+							// ===== Verificar se o valor padrão foi modificado por um valor específico do host e subistiuir o mesmo pelo valor específico.
+							
+							foreach($hosts_variaveis as $hosts_variavel){
+								if(
+									$variavel['id'] == $hosts_variavel['id']
+								){
+									$variavel['valor'] = $hosts_variavel['valor'];
+									$id_hosts_variaveis = $hosts_variavel['id_hosts_variaveis'];
+									break;
+								}
+							}
+							
+							// ===== Montar o array dos registros.
+							
+							$res = Array(
+								'modulo' => $modulo,
+								'id' => $variavel['id'],
+								'valor' => $variavel['valor'],
+								'tipo' => $variavel['tipo'],
+								'grupo' => $variavel['grupo'],
+							);
+							
+							if(isset($id_hosts_variaveis)){
+								$res['id_hosts_variaveis'] = $id_hosts_variaveis;
+							}
+							
+							$resultados[] = $res;
+						}
+					}
+					
+					// ===== Enviar os registros.
+				
+					$dados['registros'] = $resultados;
+				} else {
+					return api_cliente_retornar_erro(Array(
+						'msg' => 'Params-mandatory: plugin',
+					));
+				}
 			break;
 		}
 		

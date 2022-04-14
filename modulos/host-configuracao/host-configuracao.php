@@ -627,7 +627,7 @@ function host_configuracao_pipeline_atualizacao($params = false){
 				// ===== Atualizar variáveis no host do cliente.
 				
 				$retorno = api_cliente_variaveis_padroes(Array(
-					'opcao' => 'editar',
+					'opcao' => 'gestor',
 				));
 				
 				if(!$retorno['completed']){
@@ -854,6 +854,28 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 				$finalizacaoOK = false;
 			}
 			
+			// ===== Atualizar variáveis no host do cliente.
+			
+			foreach($retorno['plugins'] as $pluginID => $plugin){
+				$retorno = api_cliente_variaveis_padroes(Array(
+					'opcao' => 'plugin',
+					'plugin' => $pluginID,
+				));
+				
+				if(!$retorno['completed']){
+					$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
+					
+					$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
+					
+					interface_alerta(Array(
+						'redirect' => true,
+						'msg' => $alerta
+					));
+					
+					$finalizacaoOK = false;
+				}
+			}
+			
 			// ===== Caso esteja tudo ok, guardar no histórico e redirecionar. Senão, redirecionar e alertar o usuário.
 			
 			if($finalizacaoOK){
@@ -1011,7 +1033,7 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 						
 						// ===== Pegar os dados de configuração do plugin.
 						
-						$pluginConfig = require_once($_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$pluginID.'/'.$pluginID.'.config.php');
+						$pluginConfig = require_once($_GESTOR['plugins-path'].$pluginID.'/'.$pluginID.'.config.php');
 						
 						// ===== Caso tenha sido definido o somenteUpdates, apenas atualizar caso os plugins não tenham sido instalados e/ou a versão é mais nova.
 						
