@@ -806,7 +806,8 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 			
 			if(count($retorno['plugins']) > 0){
 				$pluginsAtualizados = '';
-				foreach($retorno['plugins'] as $plugin){
+				foreach($retorno['plugins'] as $pluginID => $plugin){
+					$pluginsAtualizarVariaveis[] = $pluginID;
 					$pluginsAtualizados .= (existe($pluginsAtualizados) ? ', ':'').$plugin['nome'].' - '.$plugin['versao'];
 				}
 			} else {
@@ -856,7 +857,8 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 			
 			// ===== Atualizar variáveis no host do cliente.
 			
-			foreach($retorno['plugins'] as $pluginID => $plugin){
+			if(isset($pluginsAtualizarVariaveis))
+			foreach($pluginsAtualizarVariaveis as $pluginID){
 				$retorno = api_cliente_variaveis_padroes(Array(
 					'opcao' => 'plugin',
 					'plugin' => $pluginID,
@@ -875,8 +877,6 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 					$finalizacaoOK = false;
 				}
 			}
-			
-			echo 'Retorno["plugins"]>> '.print_r($retorno['plugins'],true)."<br>";exit;
 			
 			// ===== Caso esteja tudo ok, guardar no histórico e redirecionar. Senão, redirecionar e alertar o usuário.
 			
