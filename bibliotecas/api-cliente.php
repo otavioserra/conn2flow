@@ -1634,8 +1634,6 @@ function api_cliente_variaveis_padroes($params = false){
 	
 	// ===== 
 	
-	echo 'params>> '.print_r($params,true)."<br>";exit;
-	
 	if(isset($opcao)){
 		$host_verificacao = gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id']);
 		
@@ -1815,6 +1813,8 @@ function api_cliente_variaveis_padroes($params = false){
 							$resultados[] = $res;
 						}
 					}
+					
+					echo 'resultados>> '.print_r($resultados,true)."<br>";exit;
 					
 					// ===== Enviar os registros.
 				
