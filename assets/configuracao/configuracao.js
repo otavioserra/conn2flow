@@ -577,26 +577,25 @@ $(document).ready(function(){
 			
 			var variavelCont = $(this).parents('.variavelCont');
 			var valorPadrao = variavelCont.find('.valorPadrao').html();
-			var campo = variavelCont.find('.variavelValor')
-			
 			var variavelTipo = variavelCont.attr('data-tipo');
-			
-			console.log(variavelTipo);
-			console.log(valorPadrao);
+			var valorObj = variavelCont.find('.variavelValor').find('.campo');
 			
 			switch(variavelTipo){
 				case 'bool':
-					campo.find('input').prop('checked',valorPadrao);
+					valorObj.find('input').prop('checked',valorPadrao);
 				break;
-				case 'text':
 				case 'tinymce':
-				case 'css':
+					tinymce.get(valorObj.attr('id')).setContent(valorPadrao);
+				break;
 				case 'js':
+				case 'css':
 				case 'html':
-					campo.html(valorPadrao);
+					var myInstance = valorObj.data('CodeMirrorInstance');
+					
+					myInstance.getDoc().setValue(valorPadrao);
 				break;
 				default:
-					campo.attr('value',valorPadrao);
+					valorObj.val(valorPadrao);
 			}
 		});
 		
