@@ -155,6 +155,10 @@ $(document).ready(function(){
 					campoValor = campoAtual.val();
 					return false;
 				break;
+				case 'datas-multiplas':
+					campoValor = campoAtual.find('input.calendar-dates-input').val();
+					return false;
+				break;
 				case 'tinymce':
 					campoValor = tinymce.get(campoAtual.attr('id')).getContent();
 					return false;
@@ -180,6 +184,10 @@ $(document).ready(function(){
 			case 'html':
 				campoObj.attr('name','valor-'+num);
 				campoObj.html(campoValor);
+			break;
+			case 'datas-multiplas':
+				campoObj.find('input.calendar-dates-input').attr('name','valor-'+num);
+				campoObj.find('input.calendar-dates-input').attr('value',campoValor);
 			break;
 			default:
 				campoObj.attr('name','valor-'+num);
@@ -322,6 +330,9 @@ $(document).ready(function(){
 				
 				valor = myInstance.getValue();
 			break;
+			case 'datas-multiplas':
+				valor = valorObj.find('input.calendar-dates-input').val();
+			break;
 			default:
 				valor = valorObj.val();
 		}
@@ -369,6 +380,10 @@ $(document).ready(function(){
 			case 'html':
 				campo.attr('name','valor-'+num);
 				campo.html(valor);
+			break;
+			case 'datas-multiplas':
+				campo.find('input.calendar-dates-input').attr('name','valor-'+num);
+				campo.find('input.calendar-dates-input').attr('value',valor);
 			break;
 			default:
 				campo.attr('name','valor-'+num);
@@ -605,6 +620,9 @@ $(document).ready(function(){
 					var myInstance = valorObj.data('CodeMirrorInstance');
 					
 					myInstance.getDoc().setValue(valorPadrao);
+				break;
+				case 'datas-multiplas':
+					valorObj.find('input.calendar-dates-input').val(valorPadrao);
 				break;
 				default:
 					valorObj.val(valorPadrao);
