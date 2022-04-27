@@ -15,6 +15,7 @@ $_GESTOR['biblioteca-configuracao']							=	Array(
 		Array(	'texto' => 'JS',					'valor' => 'js',				),
 		Array(	'texto' => 'HTML',					'valor' => 'html',				),
 		Array(	'texto' => 'TinyMCE',				'valor' => 'tinymce',			),
+		Array(	'texto' => 'Datas Multiplas',		'valor' => 'datas-multiplas',	),
 	),
 );
 

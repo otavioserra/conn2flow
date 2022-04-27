@@ -49,12 +49,21 @@ $(document).ready(function(){
 			}
 		};
 		
+		// ===== Variáveis do componente 'calendar'.
+		
+		var calendarOpt = {
+			type: 'date'
+		}
+		
 		// ===== Tratar diferença entre objeto e leitura inicial.
 		
 		if(obj !== null){
 			if(obj.find('.dinheiro').length > 0){ obj.find('.dinheiro').mask("#.##0,00", {reverse: true}); }
 			if(obj.find('.quantidade').length > 0){ obj.find('.quantidade').mask("#.##0", {reverse: true}); }
 			if(obj.find('.ui.checkbox').length > 0){ obj.find('.ui.checkbox').checkbox(); }
+			if(obj.find('.ui.calendar').length > 0){ 
+				obj.find('.ui.calendar').calendar(calendarOpt);
+			}
 			
 			if(obj.find('.tinymce').length > 0){
 				gestor.configuracao.tinySettings.totalEditors++;
@@ -86,6 +95,7 @@ $(document).ready(function(){
 			$('.variavelCont').find('.dinheiro').mask("#.##0,00", {reverse: true});
 			$('.variavelCont').find('.quantidade').mask("#.##0", {reverse: true});
 			$('.variavelCont').find('.ui.checkbox').checkbox();
+			$('.variavelCont').find('.ui.calendar').calendar(calendarOpt);
 			
 			$('.variavelCont').find('.tinymce').each(function(){
 				gestor.configuracao.tinySettings.totalEditors++;
