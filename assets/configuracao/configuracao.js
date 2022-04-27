@@ -52,7 +52,12 @@ $(document).ready(function(){
 		// ===== Variáveis do componente 'calendar'.
 		
 		var calendarOpt = {
-			type: 'date'
+			type: 'date',
+			onChange: function(a,b,c){
+				console.log(a);
+				console.log(b);
+				console.log(c);
+			}
 		}
 		
 		// ===== Tratar diferença entre objeto e leitura inicial.
