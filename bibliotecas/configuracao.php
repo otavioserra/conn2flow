@@ -617,9 +617,13 @@ function configuracao_hosts_salvar($params = false){
 			
 			$historicChange = gestor_variaveis(Array('modulo' => 'configuracao','id' => 'historic-change'));
 			
-			$alteracao_txt = $historicChange . '[' . $_GESTOR['modulo-id'] . ']' . ' <b>' . $alteracao_txt . '</b>';
-			
 			if(isset($plugin)){
+				// ===== Alterações txt.
+				
+				$alteracao_txt = $historicChange . ' <b>' . $alteracao_txt . '</b>';
+				
+				// ===== Alteções vetor.
+				
 				$alteracoes[] = Array(
 					'alteracao' => 'change-variable',
 					'alteracao_txt' => $alteracao_txt,
@@ -655,6 +659,12 @@ function configuracao_hosts_salvar($params = false){
 					'versao' => $versao_config,
 				));
 			} else {
+				// ===== Alterações txt.
+				
+				$alteracao_txt = $historicChange . ' <b>' . $alteracao_txt . '</b>';
+				
+				// ===== Alteções vetor.
+				
 				$alteracoes[] = Array(
 					'alteracao' => 'change-variable',
 					'alteracao_txt' => $alteracao_txt,
@@ -662,15 +672,45 @@ function configuracao_hosts_salvar($params = false){
 				
 				// ===== Alterar versão e data.
 				
-				banco_update_campo($tabela['versao'],$tabela['versao'].'+1',true);
-				banco_update_campo($tabela['data_modificacao'],'NOW()',true);
+				$hosts_configuracoes = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_configuracoes',
+					'campos' => Array(
+						'versao',
+					),
+					'extra' => 
+						"WHERE id_hosts='".$_GESTOR['host-id']."'"
+						." AND modulo='".$modulo."'"
+				));
 				
-				banco_update_executar($tabela['nome'],"WHERE id_hosts='".$_GESTOR['host-id']."' AND ".$tabela['status']."!='D'");
+				if($hosts_configuracoes){
+					banco_update_campo('versao','versao+1',true);
+					banco_update_campo('data_modificacao','NOW()',true);
+					
+					banco_update_executar($tabela['nome'],"WHERE id_hosts='".$_GESTOR['host-id']."' AND ".$tabela['status']."!='D'");
+					
+					$versao_config = (int)$hosts_configuracoes['versao'] + 1;
+				} else {
+					banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
+					banco_insert_name_campo('modulo',$modulo);
+					banco_insert_name_campo('versao','1',true);
+					banco_insert_name_campo('data_modificacao','NOW()',true);
+					
+					banco_insert_name
+					(
+						banco_insert_name_campos(),
+						"hosts_configuracoes"
+					);
+					
+					$versao_config = '1';
+				}
 				
 				// ===== Incluir no histórico as alterações.
 				
 				interface_historico_incluir(Array(
 					'alteracoes' => $alteracoes,
+					'sem_id' => true,
+					'versao' => $versao_config,
 				));
 			}
 			
