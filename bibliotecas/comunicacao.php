@@ -27,6 +27,7 @@ function comunicacao_email($params = false){
 	
 	// ===== Parâmetros
 	
+	// hostPersonalizacao - Bool - Opcional - Permitir que a comunicação de email seja configurável pelo módulo Comunicação Configurações.
 	// servidor - Array - Opcional - Conjunto com todas as variáveis do servidor de emails. Caso não definido, irá usar o padrão do sistema.
 		// debug - Bool - Opcional - Debugar para encontrar erros.
 		// hospedeiro - String - Opcional - Host do servidor de emails SMTP.
@@ -49,6 +50,7 @@ function comunicacao_email($params = false){
 	// mensagem - Array - Opcional - Conjunto com todas as variáveis da mensagem enviada.
 		// assunto - String - Opcional - Assunto da mensagem.
 		// html - String - Opcional - Código HTML da mensagem.
+		// htmlAssinaturaAutomatica - Bool - Opcional - Inclusão automatiza de HTML da assinatura no final da mensagem.
 		// htmlLayoutID - String - Opcional - ID do layout do código HTML que será usado ao invés do código HTML diretamente.
 		// htmlTitulo - String - Opcional - Título do HTML da mensagem, senão informado coolocar o assunto.
 		// htmlVariaveis - Array de Arrays - Opcional - Conjunto com todas as variáveis com seus valores que serão embutidas no código HTML.
@@ -119,20 +121,41 @@ function comunicacao_email($params = false){
 				}
 			}
 			
-			// ===== Variáveis definidas pelo usuário em comunicação configurações.
+			// ===== Variáveis definidas pelo usuário em comunicação configurações em um host específico.
 			
-			$comunicacaoConfiguracoes = gestor_host_variaveis(Array(
-				'modulo' => 'comunicacao-configuracoes',
-				'conjunto' => true,
-				'global' => true,
-			));
-			
-			if($comunicacaoConfiguracoes)
-			foreach($comunicacaoConfiguracoes as $id => $config){
-				switch($var){
-					case 'valor':
-						
-					break;
+			if(isset($_GESTOR['host-id']) && isset($hostPersonalizacao)){
+				$comunicacaoConfiguracoes = gestor_host_variaveis(Array(
+					'modulo' => 'comunicacao-configuracoes',
+					'conjunto' => true,
+					'global' => true,
+				));
+				
+				if($comunicacaoConfiguracoes)
+				foreach($comunicacaoConfiguracoes as $id => $config){
+					switch($id){
+						case 'email-personalizado-ativo':
+							$emailPersonalizadoAtivo = true;
+						break;
+					}
+				}
+				
+				if(isset($emailPersonalizadoAtivo)){
+					foreach($comunicacaoConfiguracoes as $id => $config){
+						if(existe($config)){
+							switch($id){
+								case 'email-assinatura': $htmlAssinatura = $config; break;
+								case 'servidor-host': $server['host'] = $config; break;
+								case 'servidor-usuario': $server['user'] = $config; break;
+								case 'servidor-senha': $server['pass'] = $config; break;
+								case 'servidor-porta': $server['port'] = $config; break;
+								case 'servidor-certificado-seguranca': $server['secure'] = PHPMailer::ENCRYPTION_SMTPS; break;
+								case 'remetente-de': $sender['from'] = $config; break;
+								case 'remetente-de-nome': $sender['fromName'] = $config; break;
+								case 'remetente-responder-para': $sender['replyTo'] = $config; break;
+								case 'remetente-responder-para-nome': $sender['replyToName'] = $config; break;
+							}
+						}
+					}
 				}
 			}
 			
@@ -145,7 +168,7 @@ function comunicacao_email($params = false){
 				if(isset($servidor['senha'])){ $server['pass'] = $servidor['senha']; }
 				if(isset($servidor['porta'])){ $server['port'] = $servidor['porta']; }
 				
-				if(isset($servidor['seguro'])){ $server['secure'] = PHPMailer::ENCRYPTION_SMTPS; }
+				if(isset($servidor['seguro'])){ if($servidor['seguro']){$server['secure'] = PHPMailer::ENCRYPTION_SMTPS; }
 			}
 			
 			if(isset($remetente)){
@@ -236,6 +259,28 @@ function comunicacao_email($params = false){
 						}
 					}
 				}
+				
+				// ===== Incluir automaticamente assinatura caso a opção esteja ativada.
+				
+				if(isset($htmlAssinaturaAutomatica)){
+					if(!isset($htmlAssinatura)){
+						if(isset($_GESTOR['host-id'])){
+							$htmlAssinatura = gestor_componente(Array(
+								'id' => 'hosts-layout-emails-assinatura',
+							));
+						} else {
+							$htmlAssinatura = gestor_componente(Array(
+								'id' => 'layout-emails-assinatura',
+							));
+						}
+					}
+					
+					// ===== Incluir assinatura no final do corpo da mensagem.
+					
+					$layoutHTML .= $htmlAssinatura;
+				}
+				
+				// ===== Substituir variáveis globais no HTML e incluir no corpo da mensagem.
 				
 				$layoutHTML = gestor_pagina_variaveis_globais(Array('html' => $layoutHTML));
 				
