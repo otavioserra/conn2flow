@@ -617,7 +617,7 @@ function configuracao_hosts_salvar($params = false){
 			
 			$historicChange = gestor_variaveis(Array('modulo' => 'configuracao','id' => 'historic-change'));
 			
-			$alteracao_txt = $historicChange . ' <b>' . $alteracao_txt . '</b>';
+			$alteracao_txt = $historicChange . '[' . $_GESTOR['modulo-id'] . ']' . ' <b>' . $alteracao_txt . '</b>';
 			
 			if(isset($plugin)){
 				$alteracoes[] = Array(
@@ -662,25 +662,10 @@ function configuracao_hosts_salvar($params = false){
 				
 				// ===== Alterar versão e data.
 				
-				$editar = Array(
-					'tabela' => $tabela['nome'],
-					'extra' => "WHERE ".$tabela['id']."='".$modulo."' AND ".$tabela['status']."!='D'",
-				);
+				banco_update_campo($tabela['versao'],$tabela['versao'].'+1',true);
+				banco_update_campo($tabela['data_modificacao'],'NOW()',true);
 				
-				$campo_nome = $tabela['versao']; $editar['dados'][] = $campo_nome." = ".$campo_nome." + 1";
-				$campo_nome = $tabela['data_modificacao']; $editar['dados'][] = $campo_nome."=NOW()";
-				
-				$editar['sql'] = banco_campos_virgulas($editar['dados']);
-				
-				if($editar['sql']){
-					banco_update
-					(
-						$editar['sql'],
-						$editar['tabela'],
-						$editar['extra']
-					);
-				}
-				$editar = false;
+				banco_update_executar($tabela['nome'],"WHERE id_hosts='".$_GESTOR['host-id']."' AND ".$tabela['status']."!='D'");
 				
 				// ===== Incluir no histórico as alterações.
 				
