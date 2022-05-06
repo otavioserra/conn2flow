@@ -704,8 +704,6 @@ $(document).ready(function(){
 				var datesArr = datesStr.split('|');
 				var datesUpdated = '';
 				
-				console.log(inputRemoveDates);
-				
 				$.each(datesArr, function(index, currentDate) {
 					var found = false;
 					$.each(inputRemoveDates, function(index2, removeDate) {
@@ -893,8 +891,6 @@ $(document).ready(function(){
 			if(datesStr !== undefined){
 				var datesArr = datesStr.split('|');
 				var datesUpdated = '';
-				
-				console.log(inputRemoveDates);
 				
 				$.each(datesArr, function(index, currentDate) {
 					var found = false;
