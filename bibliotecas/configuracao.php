@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-configuracao']							=	Array(
-	'versao' => '1.0.66',
+	'versao' => '1.1.19',
 	'camposTipos' => Array(
 		Array(	'texto' => 'String',				'valor' => 'string',			),
 		Array(	'texto' => 'Texto',					'valor' => 'text',				),
@@ -16,6 +16,8 @@ $_GESTOR['biblioteca-configuracao']							=	Array(
 		Array(	'texto' => 'HTML',					'valor' => 'html',				),
 		Array(	'texto' => 'TinyMCE',				'valor' => 'tinymce',			),
 		Array(	'texto' => 'Datas Multiplas',		'valor' => 'datas-multiplas',	),
+		Array(	'texto' => 'Data',					'valor' => 'data',				),
+		Array(	'texto' => 'Data e Hora',			'valor' => 'data-hora',			),
 	),
 );
 

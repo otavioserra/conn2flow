@@ -49,20 +49,65 @@ $(document).ready(function(){
 			}
 		};
 		
-		// ===== Variáveis do componente 'calendar'.
+		// ===== Calendário ptBR.
 		
-		var calendarOpt = {
+		var calendarPtBR = {
+			days: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+			months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Júlio', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+			monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+			today: 'Hoje',
+			now: 'Agora',
+			am: 'AM',
+			pm: 'PM'
+		};
+		
+		// ===== Variáveis do componente 'calendar' datas-multiplas.
+		
+		var calendarDatasMultiplasOpt = {
+			text: calendarPtBR,
 			type: 'date',
-			onChange: function(a,b,c,d,e,f,g){
-				console.log(this);
-				console.log(a);
-				console.log(b);
-				console.log(c);
-				console.log(d);
-				console.log(e);
-				console.log(f);
-				console.log(g);
+			closable: false,
+			inline: true,
+			onChange: function(date,dateFormated,mode){
+				var parentCont = $(this).parents('.datas-multiplas');
+				var datesStr = parentCont.find('.calendar-dates-input').val();
+				var dateFound = false;
+				
+				if(datesStr !== undefined){
+					var datesArr = datesStr.split('|');
+					
+					$.each(datesArr, function(index, date) {
+						if(date == dateFormated){
+							dateFound = true;
+							return false;
+						}
+					});
+				} else {
+					datesStr = '';
+				}
+				
+				if(!dateFound){
+					var dateBtn = $('<a class="ui label transition noselect date-value" data-value="'+dateFormated+'">'+dateFormated+'<i class="delete icon date-delete"></i></a>');
+					
+					parentCont.find('.calendar-dates').append(dateBtn);
+					
+					parentCont.find('.calendar-dates-input').val(datesStr + (datesStr.length > 0 ? '|' : '') + dateFormated);
+				}
 			}
+		}
+		
+		// ===== Variáveis do componente 'calendar' data-hora.
+		
+		var calendarDataHoraOpt = {
+			text: calendarPtBR,
+			type: 'datetime',
+		}
+		
+		// ===== Variáveis do componente 'calendar' data.
+		
+		var calendarDataOpt = {
+			text: calendarPtBR,
+			type: 'date',
 		}
 		
 		// ===== Tratar diferença entre objeto e leitura inicial.
@@ -71,8 +116,33 @@ $(document).ready(function(){
 			if(obj.find('.dinheiro').length > 0){ obj.find('.dinheiro').mask("#.##0,00", {reverse: true}); }
 			if(obj.find('.quantidade').length > 0){ obj.find('.quantidade').mask("#.##0", {reverse: true}); }
 			if(obj.find('.ui.checkbox').length > 0){ obj.find('.ui.checkbox').checkbox(); }
-			if(obj.find('.ui.calendar').length > 0){ 
-				obj.find('.ui.calendar').calendar(calendarOpt);
+			if(obj.find('.ui.calendar.multiplo').length > 0){ 
+				obj.find('.ui.calendar.multiplo').calendar(calendarDatasMultiplasOpt);
+				obj.find('.ui.datas-multiplas').each(function(){
+					var parentCont = $(this);
+					var datesStr = parentCont.find('.calendar-dates-input').val();
+					
+					if(datesStr !== undefined){
+						var datesArr = datesStr.split('|');
+						
+						$.each(datesArr, function(index, dateFormated) {
+							var dateBtn = $('<a class="ui label transition noselect date-value" data-value="'+dateFormated+'">'+dateFormated+'<i class="delete icon date-delete"></i></a>');
+							
+							parentCont.find('.calendar-dates').append(dateBtn);
+						});
+					}
+				});
+			}
+			
+			if(obj.find('.ui.calendar.data-hora').length > 0){
+				obj.find('.ui.calendar.data-hora').calendar(calendarDataHoraOpt);
+				var dataHora = obj.find('.ui.calendar.data-hora').find('input.calendarInput').attr('value');
+				obj.find('.ui.calendar.data-hora').calendar('set date',dataHora);
+			}
+			if(obj.find('.ui.calendar.data').length > 0){ 
+				obj.find('.ui.calendar.data').calendar(calendarDataOpt);
+				var dataHora = obj.find('.ui.calendar.data').find('input.calendarInput').attr('value');
+				obj.find('.ui.calendar.data').calendar('set date',dataHora);
 			}
 			
 			if(obj.find('.tinymce').length > 0){
@@ -105,7 +175,23 @@ $(document).ready(function(){
 			$('.variavelCont').find('.dinheiro').mask("#.##0,00", {reverse: true});
 			$('.variavelCont').find('.quantidade').mask("#.##0", {reverse: true});
 			$('.variavelCont').find('.ui.checkbox').checkbox();
-			$('.variavelCont').find('.ui.calendar').calendar(calendarOpt);
+			$('.variavelCont').find('.ui.calendar.multiplo').calendar(calendarDatasMultiplasOpt);
+			$('.variavelCont').find('.ui.calendar.data-hora').calendar(calendarDataHoraOpt);
+			$('.variavelCont').find('.ui.calendar.data').calendar(calendarDataOpt);
+			$('.variavelCont').find('.ui.datas-multiplas').each(function(){
+				var parentCont = $(this);
+				var datesStr = parentCont.find('.calendar-dates-input').val();
+				
+				if(datesStr !== undefined){
+					var datesArr = datesStr.split('|');
+					
+					$.each(datesArr, function(index, dateFormated) {
+						var dateBtn = $('<a class="ui label transition noselect date-value" data-value="'+dateFormated+'">'+dateFormated+'<i class="delete icon date-delete"></i></a>');
+						
+						parentCont.find('.calendar-dates').append(dateBtn);
+					});
+				}
+			});
 			
 			$('.variavelCont').find('.tinymce').each(function(){
 				gestor.configuracao.tinySettings.totalEditors++;
@@ -169,6 +255,11 @@ $(document).ready(function(){
 					campoValor = campoAtual.find('input.calendar-dates-input').val();
 					return false;
 				break;
+				case 'data-hora':
+				case 'data':
+					campoValor = campoAtual.find('input.calendarInput').val();
+					return false;
+				break;
 				case 'tinymce':
 					campoValor = tinymce.get(campoAtual.attr('id')).getContent();
 					return false;
@@ -198,6 +289,11 @@ $(document).ready(function(){
 			case 'datas-multiplas':
 				campoObj.find('input.calendar-dates-input').attr('name','valor-'+num);
 				campoObj.find('input.calendar-dates-input').attr('value',campoValor);
+			break;
+			case 'data-hora':
+			case 'data':
+				campoObj.find('input.calendarInput').attr('name','valor-'+num);
+				campoObj.find('input.calendarInput').attr('value',campoValor);
 			break;
 			default:
 				campoObj.attr('name','valor-'+num);
@@ -343,6 +439,10 @@ $(document).ready(function(){
 			case 'datas-multiplas':
 				valor = valorObj.find('input.calendar-dates-input').val();
 			break;
+			case 'data-hora':
+			case 'data':
+				valor = valorObj.find('input.calendarInput').val();
+			break;
 			default:
 				valor = valorObj.val();
 		}
@@ -394,6 +494,11 @@ $(document).ready(function(){
 			case 'datas-multiplas':
 				campo.find('input.calendar-dates-input').attr('name','valor-'+num);
 				campo.find('input.calendar-dates-input').attr('value',valor);
+			break;
+			case 'data-hora':
+			case 'data':
+				campo.find('input.calendarInput').attr('name','valor-'+num);
+				campo.find('input.calendarInput').attr('value',valor);
 			break;
 			default:
 				campo.attr('name','valor-'+num);
@@ -536,6 +641,87 @@ $(document).ready(function(){
 			navigator.clipboard.writeText($(this).html());
 		});
 		
+		$(document.body).on('mouseup tap','.date-value',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			var parentCont = $(this).parents('.calendar-dates');
+			var thisDate = this;
+			
+			if(e.ctrlKey || e.shiftKey){
+				if(e.shiftKey){
+					var makeActive = false;
+					parentCont.find('.date-value').each(function(){
+						if(thisDate === this || $(this).hasClass('last-active')){
+							if(!makeActive){
+								makeActive = true;
+							} else {
+								return false;
+							}
+						} else {
+							if(makeActive){
+								$(this).addClass('active');
+							}
+						}
+					});
+				}
+			} else {
+				parentCont.find('.date-value').each(function(){
+					$(this).removeClass('active');
+				});
+			}
+			
+			parentCont.find('.date-value').removeClass('last-active');
+			
+			$(thisDate).addClass('active');
+			$(thisDate).addClass('last-active');
+		});
+		
+		$(document.body).on('mouseup tap','.date-delete',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			var parentCont = $(this).parents('.calendar-dates');
+			var datesInput = $(this).parents('.datas-multiplas').find('.calendar-dates-input');
+			var datesStr = datesInput.val();
+			var inputRemoveDates = [];
+			
+			var dateObj = $(this).parents('.date-value');
+			inputRemoveDates.push(dateObj.attr('data-value'));
+			
+			dateObj.remove();
+			
+			parentCont.find('.date-value').each(function(){
+				if($(this).hasClass('active')){
+					inputRemoveDates.push($(this).attr('data-value'));
+					$(this).remove();
+				}
+			});
+			
+			if(datesStr !== undefined){
+				var datesArr = datesStr.split('|');
+				var datesUpdated = '';
+				
+				console.log(inputRemoveDates);
+				
+				$.each(datesArr, function(index, currentDate) {
+					var found = false;
+					$.each(inputRemoveDates, function(index2, removeDate) {
+						if(currentDate == removeDate){
+							found = true;
+							return false;
+						}
+					});
+					
+					if(!found){
+						datesUpdated = datesUpdated + (datesUpdated.length > 0 ? '|' : '') + currentDate;
+					}
+				});
+				
+				datesInput.val(datesUpdated);
+			}
+			
+			e.stopPropagation();
+		});
+		
 		configuracao_tipos_plugins();
 		
 		// ===== Campo Identificador e Grupo
@@ -633,6 +819,10 @@ $(document).ready(function(){
 				break;
 				case 'datas-multiplas':
 					valorObj.find('input.calendar-dates-input').val(valorPadrao);
+				break;
+				case 'data-hora':
+				case 'data':
+					valorObj.find('input.calendarInput').val(valorPadrao);
 				break;
 				default:
 					valorObj.val(valorPadrao);
