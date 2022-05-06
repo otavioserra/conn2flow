@@ -119,6 +119,23 @@ function comunicacao_email($params = false){
 				}
 			}
 			
+			// ===== Variáveis definidas pelo usuário em comunicação configurações.
+			
+			$comunicacaoConfiguracoes = gestor_host_variaveis(Array(
+				'modulo' => 'comunicacao-configuracoes',
+				'conjunto' => true,
+				'global' => true,
+			));
+			
+			if($comunicacaoConfiguracoes)
+			foreach($comunicacaoConfiguracoes as $id => $config){
+				switch($var){
+					case 'valor':
+						
+					break;
+				}
+			}
+			
 			// ===== Variáveis recebidas pela interface
 			
 			if(isset($servidor)){

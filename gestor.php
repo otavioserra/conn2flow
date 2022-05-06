@@ -2217,7 +2217,7 @@ function gestor_host_variaveis($params = false){
 	// ===== Parâmetros
 	
 	// modulo - String - Obrigatório - Módulo do sistema do valor.
-	// id - String - Obrigatório - Identificador único do valor.
+	// id - String - Opcional - Identificador único do valor.
 	// global - Bool - Opcional - Se definido a variável será de todo o host, senão será variável do usuário.
 	// conjunto - Bool - Opcional - Se definido retornar todos os valores do módulo.
 	// padrao - String - Opcional - Só funciona se conjunto for definido. Se informado filtrar com esse valor que contêm nos ids das variáveis.
@@ -2235,7 +2235,7 @@ function gestor_host_variaveis($params = false){
 	
 	// ===== Caso queira alterar o valor, senão devolver o valor
 	
-	if(isset($modulo) && isset($id)){
+	if(isset($modulo)){
 		$usuario = gestor_usuario();
 		
 		if(isset($alterar)){
