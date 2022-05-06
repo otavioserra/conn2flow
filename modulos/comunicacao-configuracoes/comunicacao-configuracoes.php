@@ -10,7 +10,10 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'nome' => 'hosts_variaveis',
 		'id' => 'id',
 		'id_numerico' => 'id_'.'hosts_variaveis',
+		'status' => 'status',
 		'versao' => 'versao',
+		'data_criacao' => 'data_criacao',
+		'data_modificacao' => 'data_modificacao',
 	),
 );
 
