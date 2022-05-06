@@ -123,13 +123,15 @@ $(document).ready(function(){
 					var datesStr = parentCont.find('.calendar-dates-input').val();
 					
 					if(datesStr !== undefined){
-						var datesArr = datesStr.split('|');
-						
-						$.each(datesArr, function(index, dateFormated) {
-							var dateBtn = $('<a class="ui label transition noselect date-value" data-value="'+dateFormated+'">'+dateFormated+'<i class="delete icon date-delete"></i></a>');
+						if(datesStr.length > 0){
+							var datesArr = datesStr.split('|');
 							
-							parentCont.find('.calendar-dates').append(dateBtn);
-						});
+							$.each(datesArr, function(index, dateFormated) {
+								var dateBtn = $('<a class="ui label transition noselect date-value" data-value="'+dateFormated+'">'+dateFormated+'<i class="delete icon date-delete"></i></a>');
+								
+								parentCont.find('.calendar-dates').append(dateBtn);
+							});
+						}
 					}
 				});
 			}
@@ -183,13 +185,15 @@ $(document).ready(function(){
 				var datesStr = parentCont.find('.calendar-dates-input').val();
 				
 				if(datesStr !== undefined){
-					var datesArr = datesStr.split('|');
-					
-					$.each(datesArr, function(index, dateFormated) {
-						var dateBtn = $('<a class="ui label transition noselect date-value" data-value="'+dateFormated+'">'+dateFormated+'<i class="delete icon date-delete"></i></a>');
+					if(datesStr.length > 0){
+						var datesArr = datesStr.split('|');
 						
-						parentCont.find('.calendar-dates').append(dateBtn);
-					});
+						$.each(datesArr, function(index, dateFormated) {
+							var dateBtn = $('<a class="ui label transition noselect date-value" data-value="'+dateFormated+'">'+dateFormated+'<i class="delete icon date-delete"></i></a>');
+							
+							parentCont.find('.calendar-dates').append(dateBtn);
+						});
+					}
 				}
 			});
 			

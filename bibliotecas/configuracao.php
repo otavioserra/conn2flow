@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-configuracao']							=	Array(
-	'versao' => '1.1.19',
+	'versao' => '1.1.21',
 	'camposTipos' => Array(
 		Array(	'texto' => 'String',				'valor' => 'string',			),
 		Array(	'texto' => 'Texto',					'valor' => 'text',				),
