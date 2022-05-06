@@ -687,7 +687,7 @@ function configuracao_hosts_salvar($params = false){
 					banco_update_campo('versao','versao+1',true);
 					banco_update_campo('data_modificacao','NOW()',true);
 					
-					banco_update_executar($tabela['nome'],"WHERE id_hosts='".$_GESTOR['host-id']."' AND ".$tabela['status']."!='D'");
+					banco_update_executar('hosts_configuracoes',"WHERE id_hosts='".$_GESTOR['host-id']."' AND modulo='".$modulo."'");
 					
 					$versao_config = (int)$hosts_configuracoes['versao'] + 1;
 				} else {
