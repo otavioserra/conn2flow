@@ -6,8 +6,8 @@ $(document).ready(function(){
 		var tinySettings = {
 			menubar: false,
 			selector: 'textarea.tinymce',
-			toolbar: 'undo redo | styleselect | bold italic underline | link image | alignleft aligncenter alignright alignjustify | fontselect fontsizeselect',
-			plugins: "image link",
+			toolbar: 'code | bold italic underline | link image | alignleft aligncenter alignright alignjustify | styleselect fontselect fontsizeselect',
+			plugins: "image link code",
 			directionality: 'pt_BR',
 			min_height: 450,
 			language: 'pt_BR',
