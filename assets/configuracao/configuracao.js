@@ -833,6 +833,89 @@ $(document).ready(function(){
 			}
 		});
 		
+		// ===== Listeners principais.
+		
+		$(document.body).on('mouseup tap','.date-value',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			var parentCont = $(this).parents('.calendar-dates');
+			var thisDate = this;
+			
+			if(e.ctrlKey || e.shiftKey){
+				if(e.shiftKey){
+					var makeActive = false;
+					parentCont.find('.date-value').each(function(){
+						if(thisDate === this || $(this).hasClass('last-active')){
+							if(!makeActive){
+								makeActive = true;
+							} else {
+								return false;
+							}
+						} else {
+							if(makeActive){
+								$(this).addClass('active');
+							}
+						}
+					});
+				}
+			} else {
+				parentCont.find('.date-value').each(function(){
+					$(this).removeClass('active');
+				});
+			}
+			
+			parentCont.find('.date-value').removeClass('last-active');
+			
+			$(thisDate).addClass('active');
+			$(thisDate).addClass('last-active');
+		});
+		
+		$(document.body).on('mouseup tap','.date-delete',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			var parentCont = $(this).parents('.calendar-dates');
+			var datesInput = $(this).parents('.datas-multiplas').find('.calendar-dates-input');
+			var datesStr = datesInput.val();
+			var inputRemoveDates = [];
+			
+			var dateObj = $(this).parents('.date-value');
+			inputRemoveDates.push(dateObj.attr('data-value'));
+			
+			dateObj.remove();
+			
+			parentCont.find('.date-value').each(function(){
+				if($(this).hasClass('active')){
+					inputRemoveDates.push($(this).attr('data-value'));
+					$(this).remove();
+				}
+			});
+			
+			if(datesStr !== undefined){
+				var datesArr = datesStr.split('|');
+				var datesUpdated = '';
+				
+				console.log(inputRemoveDates);
+				
+				$.each(datesArr, function(index, currentDate) {
+					var found = false;
+					$.each(inputRemoveDates, function(index2, removeDate) {
+						if(currentDate == removeDate){
+							found = true;
+							return false;
+						}
+					});
+					
+					if(!found){
+						datesUpdated = datesUpdated + (datesUpdated.length > 0 ? '|' : '') + currentDate;
+					}
+				});
+				
+				datesInput.val(datesUpdated);
+			}
+			
+			e.stopPropagation();
+		});
+		
 		configuracao_tipos_plugins();
 	}
 	
