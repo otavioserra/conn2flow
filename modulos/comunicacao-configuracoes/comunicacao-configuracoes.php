@@ -70,6 +70,14 @@ function configuracoes_config(){
 		'marcador' => '<!-- comunicacao-configuracoes -->',
 	));
 	
+	$variavel = gestor_host_variaveis(Array(
+		'modulo' => 'comunicacao-configuracoes',
+		'id' => 'email-personalizado-ativo',
+		'global' => true,
+	));
+	
+	echo 'Var>> '.$variavel.'<br>';exit;
+	
 	// ===== Interface config finalizar opções
 	
 	$_GESTOR['interface']['config']['finalizar'] = Array(
