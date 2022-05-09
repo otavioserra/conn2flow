@@ -34,7 +34,7 @@ function configuracoes_disparador_emails(){
 		$usuario = gestor_usuario();
 		$assunto = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'email-tests-subject'));
 		
-		$assunto = modelo_var_troca($assunto,"#cod#",$cod);
+		$assunto = modelo_var_troca($assunto,"#cod#",time());
 		
 		gestor_incluir_biblioteca('comunicacao');
 		
