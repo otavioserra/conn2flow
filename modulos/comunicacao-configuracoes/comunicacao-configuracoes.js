@@ -21,6 +21,7 @@ $(document).ready(function(){
 			},
 			onHidden: function() {
 				if(aprovado){
+					console.log('aprovado');
 					$('#gestor-listener').trigger('carregar_abrir');
 					//window.open(gestor.interface.emailTesteURL,"_self");
 				}

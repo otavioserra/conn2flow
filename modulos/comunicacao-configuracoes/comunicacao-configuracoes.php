@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'comunicacao-configuracoes';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.8',
+	'versao' => '1.0.9',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
 		'nome' => 'hosts_variaveis',
