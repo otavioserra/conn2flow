@@ -24,6 +24,8 @@ $(document).ready(function(){
 					console.log('aprovado');
 					$('#gestor-listener').trigger('carregar_abrir');
 					//window.open(gestor.interface.emailTesteURL,"_self");
+				} else {
+					console.log('nao aprovado');
 				}
 			}
 		});
