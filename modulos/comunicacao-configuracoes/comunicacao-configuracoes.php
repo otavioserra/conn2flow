@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'comunicacao-configuracoes';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.1',
+	'versao' => '1.0.2',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
 		'nome' => 'hosts_variaveis',
@@ -48,6 +48,10 @@ function configuracoes_disparador_emails(){
 	$modal = modelo_var_troca($modal,"#botao-confirmar#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'uninstall-confirm-button-confirm')));
 	
 	$_GESTOR['pagina'] .= $modal;
+	
+	// ===== Inclusão Módulo JS
+	
+	gestor_pagina_javascript_incluir();
 	
 	// ===== Interface simples finalizar opções
 	

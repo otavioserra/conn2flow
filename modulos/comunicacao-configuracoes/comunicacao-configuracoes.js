@@ -5,6 +5,8 @@ $(document).ready(function(){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
 			gestor.interface.emailTesteURL = './?_gestor-atualizar=sim';
+			
+			$('.ui.modal.confirm').modal('show');
 		});
 		
 		$('.ui.modal.confirm').modal({
@@ -15,8 +17,6 @@ $(document).ready(function(){
 				return false;
 			}
 		});
-		
-		$('.ui.modal.confirm').modal('show');
 	}
 	
 });
