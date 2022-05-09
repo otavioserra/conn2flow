@@ -53,7 +53,63 @@ function configuracoes_disparador_emails(){
 				'htmlVariaveis' => Array(),
 			),
 		))){
-			// Email enviado com sucesso!
+			// ===== Alterações txt.
+			
+			$emailSent = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'historic-email-sent'));
+			
+			$alteracao_txt = $emailSent;
+			
+			// ===== Alteções vetor.
+			
+			$alteracoes[] = Array(
+				'alteracao' => 'email-sent',
+				'alteracao_txt' => $alteracao_txt,
+			);
+			
+			// ===== Alterar versão e data.
+			
+			$hosts_configuracoes = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'hosts_configuracoes',
+				'campos' => Array(
+					'versao',
+				),
+				'extra' => 
+					"WHERE id_hosts='".$_GESTOR['host-id']."'"
+					." AND modulo='".$_GESTOR['modulo-id']."'"
+			));
+			
+			if($hosts_configuracoes){
+				banco_update_campo('versao','versao+1',true);
+				banco_update_campo('data_modificacao','NOW()',true);
+				
+				banco_update_executar('hosts_configuracoes',"WHERE id_hosts='".$_GESTOR['host-id']."' AND modulo='".$_GESTOR['modulo-id']."'");
+				
+				$versao_config = (int)$hosts_configuracoes['versao'] + 1;
+			} else {
+				banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
+				banco_insert_name_campo('modulo',$_GESTOR['modulo-id']);
+				banco_insert_name_campo('versao','1',true);
+				banco_insert_name_campo('data_modificacao','NOW()',true);
+				
+				banco_insert_name
+				(
+					banco_insert_name_campos(),
+					"hosts_configuracoes"
+				);
+				
+				$versao_config = '1';
+			}
+			
+			// ===== Incluir no histórico as alterações.
+			
+			interface_historico_incluir(Array(
+				'alteracoes' => $alteracoes,
+				'sem_id' => true,
+				'versao' => $versao_config,
+			));
+			
+			// Alerta do Email enviado com sucesso!
 			
 			interface_alerta(Array(
 				'redirect' => true,
