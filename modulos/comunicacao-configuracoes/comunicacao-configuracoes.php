@@ -28,8 +28,8 @@ function configuracoes_disparador_emails(){
 		'botoes' => Array(
 			'configuracoes' => Array(
 				'url' => 'comunicacao-configuracoes/',
-				'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-config')),
-				'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-config')),
+				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-button-config')),
+				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-config')),
 				'icon' => 'grip vertical',
 				'cor' => 'blue',
 			),
@@ -96,8 +96,8 @@ function configuracoes_config(){
 		'botoes' => Array(
 			'disparador' => Array(
 				'url' => 'comunicacao-configuracoes/disparador-emails/',
-				'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-email')),
-				'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-email')),
+				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-button-email')),
+				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-email')),
 				'icon' => 'paper plane outline',
 				'cor' => 'green',
 			),
