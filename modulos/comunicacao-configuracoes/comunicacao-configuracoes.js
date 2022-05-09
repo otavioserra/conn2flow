@@ -9,6 +9,9 @@ $(document).ready(function(){
 			$('.ui.modal.confirm').modal('show');
 		});
 		
+		$('.paginaCarregando').dimmer({
+			closable: false
+		});
 		
 		var aprovado = false;
 		
@@ -21,7 +24,7 @@ $(document).ready(function(){
 			},
 			onHidden: function() {
 				if(aprovado){
-					$('.ui.paginaCarregando').dimmer('show');
+					$('.paginaCarregando').dimmer('show');
 					//window.open(gestor.interface.emailTesteURL,"_self");
 				}
 			}
