@@ -29,7 +29,33 @@ function configuracoes_disparador_emails(){
 		
 		sleep('5');
 		
+		// ===== Envio do email teste com as novas configurações.
 		
+		$usuario = gestor_usuario();
+		$assunto = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'email-tests-subject'));
+		
+		$assunto = modelo_var_troca($assunto,"#cod#",$cod);
+		
+		if(comunicacao_email(Array(
+			'destinatarios' => Array(
+				Array(
+					'email' => $usuario['email'],
+					'nome' => $usuario['nome'],
+				),
+			),
+			'mensagem' => Array(
+				'assunto' => $assunto,
+				'htmlLayoutID' => 'comunicacao-email-teste',
+				'htmlVariaveis' => Array(),
+			),
+		))){
+			// Email enviado com sucesso!
+			
+			interface_alerta(Array(
+				'redirect' => true,
+				'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'email-sent-alert'))
+			));
+		}
 		
 		// ===== Reler URL.
 		
