@@ -13,7 +13,6 @@ $(document).ready(function(){
 		var aprovado = false;
 		
 		$('.ui.modal.confirm').modal({
-			detachable: false,
 			onShow: function() {
 				aprovado = false;
 			},
