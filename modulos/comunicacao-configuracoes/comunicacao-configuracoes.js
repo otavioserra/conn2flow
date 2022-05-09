@@ -21,11 +21,8 @@ $(document).ready(function(){
 			},
 			onHidden: function() {
 				if(aprovado){
-					console.log('aprovado');
-					$('.ui.modal.carregando').modal('show');
+					$('.ui.paginaCarregando').dimmer('show');
 					//window.open(gestor.interface.emailTesteURL,"_self");
-				} else {
-					console.log('nao aprovado');
 				}
 			}
 		});
