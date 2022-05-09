@@ -415,6 +415,8 @@ function comunicacao_email($params = false){
 				} else {
 					// ===== Se der algum problema, criar log no disco.
 					
+					gestor_incluir_biblioteca('log');
+					
 					log_disco('Error retorno: '.$mail->ErrorInfo.' - '.$e->getMessage(),'email');
 				}
 			}
