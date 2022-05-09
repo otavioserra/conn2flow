@@ -730,7 +730,7 @@ function interface_historico($params = false){
 				$botao_carregar_mais = '<div class="ui grid"><div class="column center aligned"><button class="ui button blue" id="_gestor-interface-edit-historico-mais">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'historic-button-load-more')).'</button></div></div>';
 			}
 			
-			$historico_linha .= '.</div></div></div>'.$botao_carregar_mais;
+			$historico_linha .= '.</div></div></div>'.$botao_carregar_mais.'</div>';
 			$pagina = modelo_var_troca($pagina,"<td>#historico#</td>","<td>".$historico_linha."</td>");
 		} else {
 			$historico_linha .= '.</div></div></div>';
