@@ -22,7 +22,7 @@ $(document).ready(function(){
 			onHidden: function() {
 				if(aprovado){
 					console.log('aprovado');
-					$('#gestor-listener').trigger('carregar_abrir');
+					$('.ui.modal.carregando').modal('show');
 					//window.open(gestor.interface.emailTesteURL,"_self");
 				} else {
 					console.log('nao aprovado');
