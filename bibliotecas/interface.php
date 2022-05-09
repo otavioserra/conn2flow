@@ -3755,6 +3755,119 @@ function interface_alteracoes_finalizar($params = false){
 	$_GESTOR['javascript-vars']['moduloRegistroId'] = $_GESTOR['modulo-registro-id'];
 }
 
+function interface_simples_iniciar($params = false){
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// ===== 
+	
+	if(isset($_REQUEST['_gestor-atualizar'])){
+		$_GESTOR['atualizar-banco'] = true;
+	}
+}
+
+function interface_simples_finalizar($params = false){
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// variaveisTrocarDepois - Array - Opcional - Conjunto variáveis que serão trocadas depois de todas as alterações.
+	
+	// botoes - Array - Opcional - Conjunto de botões principais de acesso a funcionalidades.
+		// url - String - Obrigatório - URL de acesso para disparar com o botão.
+		// rotulo - String - Obrigatório - Pequeno texto rótulo do botão.
+		// tooltip - String - Obrigatório - Pequeno texto descritivo da ação do botão.
+		// icon - String - Obrigatório - Ícone do botão.
+		// cor - String - Obrigatório - Cor do botão.
+	
+	// removerBotaoEditar - Bool - Opcional - Remover o botão editar quando não convir usar o mesmo.
+	
+	// ===== 
+	
+	// ===== Incluir componentes
+	
+	interface_componentes_incluir(Array(
+		'componente' => Array(
+			'modal-carregamento',
+			'modal-delecao',
+			'modal-alerta',
+		)
+	));
+	
+	// ===== Formulário de edição
+	
+	$pagina = gestor_componente(Array(
+		'id' => 'interface-simples',
+	));
+	
+	// ===== Popular toda as variáveis do layout.
+	
+	$pagina = modelo_var_troca($pagina,"#titulo#",$_GESTOR['pagina#titulo']);
+	
+	// ===== Botões principais
+	
+	if(isset($botoes)){
+		$botoes_html = interface_listar_botoes($params);
+		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
+	} else {
+		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+	}
+	
+	$pagina = modelo_var_troca($pagina,"#form-page#",$_GESTOR['pagina']);
+	
+	// ===== Mostrar histórico na página caso houver.
+	
+	$pagina = interface_historico(Array(
+		'id' => $_GESTOR['modulo-id'],
+		'modulo' => $_GESTOR['modulo-id'],
+		'pagina' => $pagina,
+		'sem_id' => true,
+	));
+	
+	// ===== Variáveis trocar depois
+	
+	if(isset($variaveisTrocarDepois)){
+		foreach($variaveisTrocarDepois as $variavel => $valor){
+			$pagina = modelo_var_troca($pagina,"#".$variavel."#",$valor);
+		}
+	}
+	
+	// ===== Incluir Página no gestor
+	
+	$_GESTOR['pagina'] = $pagina;
+	
+	// ===== Formulários
+	
+	if(isset($formulario)){
+		// ===== Formulário Validações
+		
+		if(isset($formulario['validacao'])){
+			interface_formulario_validacao($formulario);
+		}
+		// ===== Formulário Campos
+		
+		if(isset($formulario['campos'])){
+			interface_formulario_campos($formulario);
+		}
+	}
+	
+	// ===== Inclusão Interface
+	
+	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$_GESTOR['biblioteca-interface']['versao'].'" />';
+	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>';
+	
+	// ===== Interface Javascript Vars
+	
+	if(!isset($_GESTOR['javascript-vars']['interface'])){
+		$_GESTOR['javascript-vars']['interface'] = Array();
+	}
+}
+
 function interface_listar_botoes($params = false){
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -4370,6 +4483,7 @@ function interface_iniciar($params = false){
 			case 'alteracoes': interface_alteracoes_iniciar($parametros); break;
 			case 'adicionar-incomum': interface_adicionar_incomum_iniciar($parametros); break;
 			case 'editar-incomum': interface_editar_incomum_iniciar($parametros); break;
+			case 'simples': interface_simples_iniciar($parametros); break;
 		}
 	}
 }
@@ -4418,6 +4532,7 @@ function interface_finalizar($params = false){
 			case 'alteracoes': interface_alteracoes_finalizar($parametros); break;
 			case 'adicionar-incomum': interface_adicionar_incomum_finalizar($parametros); break;
 			case 'editar-incomum': interface_editar_incomum_finalizar($parametros); break;
+			case 'simples': interface_simples_finalizar($parametros); break;
 		}
 	}
 	

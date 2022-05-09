@@ -22,9 +22,9 @@ function configuracoes_disparador_emails(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
-	// ===== Interface visualizar finalizar opções
+	// ===== Interface simples finalizar opções
 	
-	$_GESTOR['interface']['visualizar']['finalizar'] = Array(
+	$_GESTOR['interface']['simples']['finalizar'] = Array(
 		'forcarSemID' => true,
 		'botoes' => Array(
 			'configuracoes' => Array(
@@ -112,10 +112,8 @@ function configuracoes_interfaces_padroes(){
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
 	switch($_GESTOR['opcao']){
-		case 'visualizar':
-			$_GESTOR['interface']['visualizar']['iniciar'] = Array(
-				'forcarId' => 'sem-id',
-			);
+		case 'disparador-emails':
+			$_GESTOR['interface-opcao'] = 'simples';
 		break;
 		case 'listar':
 			
@@ -155,7 +153,7 @@ function configuracoes_start(){
 		
 		switch($_GESTOR['opcao']){
 			case 'config': configuracoes_config(); break;
-			case 'visualizar': configuracoes_disparador_emails(); break;
+			case 'disparador-emails': configuracoes_disparador_emails(); break;
 		}
 		
 		interface_finalizar();
