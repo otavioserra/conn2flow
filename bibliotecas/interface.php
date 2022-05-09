@@ -3426,11 +3426,13 @@ function interface_visualizar_finalizar($params = false){
 	
 	// ===== Mostrar histórico na página caso houver.
 	
-	$pagina = interface_historico(Array(
-		'id' => $id,
-		'modulo' => $_GESTOR['modulo-id'],
-		'pagina' => $pagina,
-	));
+	if(!isset($forcarSemID)){
+		$pagina = interface_historico(Array(
+			'id' => $id,
+			'modulo' => $_GESTOR['modulo-id'],
+			'pagina' => $pagina,
+		));
+	}
 	
 	// ===== Variáveis trocar depois
 	
