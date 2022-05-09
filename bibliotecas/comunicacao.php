@@ -263,7 +263,17 @@ function comunicacao_email($params = false){
 				// ===== Incluir automaticamente assinatura caso a opção esteja ativada.
 				
 				if(isset($htmlAssinaturaAutomatica)){
+					$assinaturaPadrao = false;
+					
 					if(!isset($htmlAssinatura)){
+						$assinaturaPadrao = true;
+					} else {
+						if(!existe($htmlAssinatura)){
+							$assinaturaPadrao = true;
+						}
+					}
+					
+					if($assinaturaPadrao){
 						if(isset($_GESTOR['host-id'])){
 							$htmlAssinatura = gestor_componente(Array(
 								'id' => 'hosts-layout-emails-assinatura',
