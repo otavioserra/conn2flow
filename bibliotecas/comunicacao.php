@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-comunicacao']							=	Array(
-	'versao' => '1.0.0',
+	'versao' => '1.1.0',
 );
 
 // ===== Inclusão do PHPMailer
@@ -168,7 +168,7 @@ function comunicacao_email($params = false){
 				if(isset($servidor['senha'])){ $server['pass'] = $servidor['senha']; }
 				if(isset($servidor['porta'])){ $server['port'] = $servidor['porta']; }
 				
-				if(isset($servidor['seguro'])){ if($servidor['seguro']){$server['secure'] = PHPMailer::ENCRYPTION_SMTPS; }
+				if(isset($servidor['seguro'])){ if($servidor['seguro']){$server['secure'] = PHPMailer::ENCRYPTION_SMTPS; }}
 			}
 			
 			if(isset($remetente)){

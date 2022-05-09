@@ -39,6 +39,7 @@ function configuracoes_disparador_emails(){
 		gestor_incluir_biblioteca('comunicacao');
 		
 		if(comunicacao_email(Array(
+			'hostPersonalizacao' => true,
 			'destinatarios' => Array(
 				Array(
 					'email' => $usuario['email'],
@@ -46,6 +47,7 @@ function configuracoes_disparador_emails(){
 				),
 			),
 			'mensagem' => Array(
+				'htmlAssinaturaAutomatica' => true,
 				'assunto' => $assunto,
 				'htmlLayoutID' => 'comunicacao-email-teste',
 				'htmlVariaveis' => Array(),
