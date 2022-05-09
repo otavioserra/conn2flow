@@ -9,10 +9,21 @@ $(document).ready(function(){
 			$('.ui.modal.confirm').modal('show');
 		});
 		
+		
+		var aprovado = false;
+		
 		$('.ui.modal.confirm').modal({
+			onShow: function() {
+				aprovado = false;
+			},
 			onApprove: function() {
-				$('#gestor-listener').trigger('carregar_abrir');
-				window.open(gestor.interface.emailTesteURL,"_self");
+				aprovado = true;
+			},
+			onHidden: function() {
+				if(aprovado){
+					$('#gestor-listener').trigger('carregar_abrir');
+					window.open(gestor.interface.emailTesteURL,"_self");
+				}
 			}
 		});
 	}
