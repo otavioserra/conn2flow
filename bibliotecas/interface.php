@@ -3785,19 +3785,7 @@ function interface_simples_finalizar($params = false){
 		// icon - String - Obrigatório - Ícone do botão.
 		// cor - String - Obrigatório - Cor do botão.
 	
-	// removerBotaoEditar - Bool - Opcional - Remover o botão editar quando não convir usar o mesmo.
-	
 	// ===== 
-	
-	// ===== Incluir componentes
-	
-	interface_componentes_incluir(Array(
-		'componente' => Array(
-			'modal-carregamento',
-			'modal-delecao',
-			'modal-alerta',
-		)
-	));
 	
 	// ===== Formulário de edição
 	

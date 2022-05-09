@@ -22,6 +22,33 @@ function configuracoes_disparador_emails(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
+	// ===== Gravar Atualizações no Banco
+	
+	if(isset($_GESTOR['atualizar-banco'])){
+		// ===== Atraso de 5 segundos para evitar abusos.
+		
+		sleep('5');
+		
+		
+		
+		// ===== Reler URL.
+		
+		gestor_redirecionar($_GESTOR['modulo-id'].'/disparador-emails/');
+	}
+	
+	// ===== Incluir modal para confirmação de desinstalação.
+	
+	$modal = gestor_componente(Array(
+		'id' => 'interface-modal-generico',
+	));
+	
+	$modal = modelo_var_troca($modal,"#titulo#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'uninstall-confirm-title')));
+	$modal = modelo_var_troca($modal,"#mensagem#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'uninstall-confirm-menssage')));
+	$modal = modelo_var_troca($modal,"#botao-cancelar#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'uninstall-confirm-button-cancel')));
+	$modal = modelo_var_troca($modal,"#botao-confirmar#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'uninstall-confirm-button-confirm')));
+	
+	$_GESTOR['pagina'] .= $modal;
+	
 	// ===== Interface simples finalizar opções
 	
 	$_GESTOR['interface']['simples']['finalizar'] = Array(
