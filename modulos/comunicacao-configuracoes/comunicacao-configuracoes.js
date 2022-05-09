@@ -13,8 +13,6 @@ $(document).ready(function(){
 			onApprove: function() {
 				$('#gestor-listener').trigger('carregar_abrir');
 				window.open(gestor.interface.emailTesteURL,"_self");
-				
-				return false;
 			}
 		});
 	}

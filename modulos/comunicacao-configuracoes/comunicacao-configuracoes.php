@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'comunicacao-configuracoes';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.4',
+	'versao' => '1.0.5',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
 		'nome' => 'hosts_variaveis',
@@ -42,10 +42,10 @@ function configuracoes_disparador_emails(){
 		'id' => 'interface-modal-generico',
 	));
 	
-	$modal = modelo_var_troca($modal,"#titulo#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'uninstall-confirm-title')));
-	$modal = modelo_var_troca($modal,"#mensagem#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'uninstall-confirm-menssage')));
-	$modal = modelo_var_troca($modal,"#botao-cancelar#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'uninstall-confirm-button-cancel')));
-	$modal = modelo_var_troca($modal,"#botao-confirmar#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'uninstall-confirm-button-confirm')));
+	$modal = modelo_var_troca($modal,"#titulo#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'email-confirm-title')));
+	$modal = modelo_var_troca($modal,"#mensagem#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'email-confirm-menssage')));
+	$modal = modelo_var_troca($modal,"#botao-cancelar#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'email-confirm-button-cancel')));
+	$modal = modelo_var_troca($modal,"#botao-confirmar#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'email-confirm-button-confirm')));
 	
 	$_GESTOR['pagina'] .= $modal;
 	
