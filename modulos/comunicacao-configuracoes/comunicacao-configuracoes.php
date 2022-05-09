@@ -17,6 +17,26 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 
 // ===== Funções Principais
 
+function configuracoes_disparador_emails(){
+	global $_GESTOR;
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
+	// ===== Interface config finalizar opções
+	
+	$_GESTOR['interface']['config']['finalizar'] = Array(
+		'botoes' => Array(
+			'configuracoes' => Array(
+				'url' => 'comunicacao-configuracoes/',
+				'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-config')),
+				'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-config')),
+				'icon' => 'grip vertical',
+				'cor' => 'blue',
+			),
+		),
+	);
+}
+
 function configuracoes_config(){
 	global $_GESTOR;
 	
@@ -73,11 +93,15 @@ function configuracoes_config(){
 	// ===== Interface config finalizar opções
 	
 	$_GESTOR['interface']['config']['finalizar'] = Array(
-		'formulario' => Array(
-			'campos' => Array(
-				
+		'botoes' => Array(
+			'disparador' => Array(
+				'url' => 'comunicacao-configuracoes/disparador-emails/',
+				'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-email')),
+				'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-email')),
+				'icon' => 'paper plane outline',
+				'cor' => 'green',
 			),
-		)
+		),
 	);
 }
 
@@ -125,6 +149,7 @@ function configuracoes_start(){
 		
 		switch($_GESTOR['opcao']){
 			case 'config': configuracoes_config(); break;
+			case 'visualizar': configuracoes_disparador_emails(); break;
 		}
 		
 		interface_finalizar();
