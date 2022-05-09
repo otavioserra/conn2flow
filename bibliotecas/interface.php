@@ -3344,6 +3344,7 @@ function interface_visualizar_finalizar($params = false){
 	
 	// ===== Parâmetros
 	
+	// forcarSemID - Bool - Opcional - Caso definido, não utilizar ID do dado.
 	// variaveisTrocarDepois - Array - Opcional - Conjunto variáveis que serão trocadas depois de todas as alterações.
 	// metaDados - Array - Opcional - Conjunto de meta dados de um registro.
 		// titulo - String - Obrigatório - Título informativo do meta dado.
@@ -3378,11 +3379,13 @@ function interface_visualizar_finalizar($params = false){
 	
 	$pagina = modelo_var_troca($pagina,"#titulo#",$_GESTOR['pagina#titulo']);
 	
-	if(!isset($campoTitulo)){
-		$campoTitulo = 'nome';
+	if(!isset($forcarSemID)){
+		if(!isset($campoTitulo)){
+			$campoTitulo = 'nome';
+		}
+		
+		$_GESTOR['pagina#titulo-extra'] = interface_modulo_variavel_valor(Array('variavel' => $campoTitulo)).' - ';
 	}
-	
-	$_GESTOR['pagina#titulo-extra'] = interface_modulo_variavel_valor(Array('variavel' => $campoTitulo)).' - ';
 	
 	// ===== Botões principais
 	

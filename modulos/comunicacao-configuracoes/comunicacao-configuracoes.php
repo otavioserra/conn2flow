@@ -25,6 +25,7 @@ function configuracoes_disparador_emails(){
 	// ===== Interface visualizar finalizar opções
 	
 	$_GESTOR['interface']['visualizar']['finalizar'] = Array(
+		'forcarSemID' => true,
 		'botoes' => Array(
 			'configuracoes' => Array(
 				'url' => '../',
