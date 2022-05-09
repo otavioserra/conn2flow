@@ -239,38 +239,38 @@ function comunicacao_email($params = false){
 							$mailCSS .= "    ".'</style>';
 						}
 						
-						// ===== Incluir automaticamente assinatura caso a opção esteja ativada.
-						
-						if(isset($htmlAssinaturaAutomatica)){
-							$assinaturaPadrao = false;
-							
-							if(!isset($htmlAssinatura)){
-								$assinaturaPadrao = true;
-							} else {
-								if(!existe($htmlAssinatura)){
-									$assinaturaPadrao = true;
-								}
-							}
-							
-							if($assinaturaPadrao){
-								if(isset($_GESTOR['host-id'])){
-									$htmlAssinatura = gestor_componente(Array(
-										'id' => 'hosts-layout-emails-assinatura',
-									));
-								} else {
-									$htmlAssinatura = gestor_componente(Array(
-										'id' => 'layout-emails-assinatura',
-									));
-								}
-							}
-							
-							// ===== Incluir assinatura no final do corpo da mensagem.
-							
-							$layoutBodyHTML .= $htmlAssinatura;
-						}
-						
 						$mailCorpo = $layoutBodyHTML;
 					}
+				}
+				
+				// ===== Incluir automaticamente assinatura caso a opção esteja ativada.
+				
+				if(isset($htmlAssinaturaAutomatica)){
+					$assinaturaPadrao = false;
+					
+					if(!isset($htmlAssinatura)){
+						$assinaturaPadrao = true;
+					} else {
+						if(!existe($htmlAssinatura)){
+							$assinaturaPadrao = true;
+						}
+					}
+					
+					if($assinaturaPadrao){
+						if(isset($_GESTOR['host-id'])){
+							$htmlAssinatura = gestor_componente(Array(
+								'id' => 'hosts-layout-emails-assinatura',
+							));
+						} else {
+							$htmlAssinatura = gestor_componente(Array(
+								'id' => 'layout-emails-assinatura',
+							));
+						}
+					}
+					
+					// ===== Incluir assinatura no final do corpo da mensagem.
+					
+					$mailCorpo .= $htmlAssinatura;
 				}
 				
 				// ===== Modificar as variáveis padrão do layout principal.
