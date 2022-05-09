@@ -13,6 +13,7 @@ $(document).ready(function(){
 		var aprovado = false;
 		
 		$('.ui.modal.confirm').modal({
+			detachable: false,
 			onShow: function() {
 				aprovado = false;
 			},
@@ -22,7 +23,7 @@ $(document).ready(function(){
 			onHidden: function() {
 				if(aprovado){
 					$('#gestor-listener').trigger('carregar_abrir');
-					window.open(gestor.interface.emailTesteURL,"_self");
+					//window.open(gestor.interface.emailTesteURL,"_self");
 				}
 			}
 		});
