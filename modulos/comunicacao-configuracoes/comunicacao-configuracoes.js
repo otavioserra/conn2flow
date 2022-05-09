@@ -25,7 +25,7 @@ $(document).ready(function(){
 			onHidden: function() {
 				if(aprovado){
 					$('.paginaCarregando').dimmer('show');
-					//window.open(gestor.interface.emailTesteURL,"_self");
+					window.open(gestor.interface.emailTesteURL,"_self");
 				}
 			}
 		});
