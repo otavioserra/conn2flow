@@ -22,9 +22,15 @@ function configuracoes_disparador_emails(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
-	// ===== Interface config finalizar opções
+	// ===== Interface visualizar iniciar opções
 	
-	$_GESTOR['interface']['config']['finalizar'] = Array(
+	$_GESTOR['interface']['visualizar']['iniciar'] = Array(
+		'forcarId' => 'sem-id',
+	);
+	
+	// ===== Interface visualizar finalizar opções
+	
+	$_GESTOR['interface']['visualizar']['finalizar'] = Array(
 		'botoes' => Array(
 			'configuracoes' => Array(
 				'url' => '../',
