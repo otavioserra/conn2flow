@@ -36,6 +36,8 @@ function configuracoes_disparador_emails(){
 		
 		$assunto = modelo_var_troca($assunto,"#cod#",$cod);
 		
+		gestor_incluir_biblioteca('comunicacao');
+		
 		if(comunicacao_email(Array(
 			'destinatarios' => Array(
 				Array(
