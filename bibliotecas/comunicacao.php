@@ -245,7 +245,7 @@ function comunicacao_email($params = false){
 				
 				// ===== Incluir automaticamente assinatura caso a opção esteja ativada.
 				
-				if(isset($htmlAssinaturaAutomatica)){
+				if(isset($mensagem['htmlAssinaturaAutomatica'])){
 					$assinaturaPadrao = false;
 					
 					if(!isset($htmlAssinatura)){
