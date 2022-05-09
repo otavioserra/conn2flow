@@ -417,7 +417,7 @@ function comunicacao_email($params = false){
 					
 					gestor_incluir_biblioteca('log');
 					
-					log_disco('Error retorno: '.$mail->ErrorInfo.' - '.$e->getMessage(),'email');
+					log_disco('Error retorno: '.$mail->ErrorInfo.' - '.$e->getMessage() . ' - Server: ' . print_r($server,true),'email');
 				}
 			}
 		}
