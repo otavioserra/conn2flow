@@ -22,12 +22,6 @@ function configuracoes_disparador_emails(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
-	// ===== Interface visualizar iniciar opções
-	
-	$_GESTOR['interface']['visualizar']['iniciar'] = Array(
-		'forcarId' => 'sem-id',
-	);
-	
 	// ===== Interface visualizar finalizar opções
 	
 	$_GESTOR['interface']['visualizar']['finalizar'] = Array(
@@ -117,6 +111,11 @@ function configuracoes_interfaces_padroes(){
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
 	switch($_GESTOR['opcao']){
+		case 'visualizar':
+			$_GESTOR['interface']['visualizar']['iniciar'] = Array(
+				'forcarId' => 'sem-id',
+			);
+		break;
 		case 'listar':
 			
 		break;
