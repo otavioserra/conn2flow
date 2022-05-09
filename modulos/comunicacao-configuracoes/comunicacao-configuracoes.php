@@ -115,6 +115,13 @@ function configuracoes_disparador_emails(){
 				'redirect' => true,
 				'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'email-sent-alert'))
 			));
+		} else {
+			// Alerta do Email NÃO enviado!
+			
+			interface_alerta(Array(
+				'redirect' => true,
+				'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'email-not-sent-alert'))
+			));
 		}
 		
 		// ===== Reler URL.
