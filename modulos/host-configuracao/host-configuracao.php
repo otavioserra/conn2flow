@@ -2335,6 +2335,15 @@ function host_configuracao_configuracoes(){
 	
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],"#mensagem-plugins#",$mensagemPlugins);
 	
+	// ===== URL completa do site.
+	
+	gestor_incluir_biblioteca('host');
+	$urlFull = host_url(Array(
+		'opcao' => 'full',
+	));
+	
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#url-site#",$urlFull);
+	
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
