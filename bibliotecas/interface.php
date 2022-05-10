@@ -3787,6 +3787,15 @@ function interface_simples_finalizar($params = false){
 	
 	// ===== 
 	
+	// ===== Incluir componentes
+	
+	interface_componentes_incluir(Array(
+		'componente' => Array(
+			'modal-carregamento',
+			'modal-alerta',
+		)
+	));
+	
 	// ===== Formulário de edição
 	
 	$pagina = gestor_componente(Array(
