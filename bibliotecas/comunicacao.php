@@ -256,10 +256,6 @@ function comunicacao_email($params = false){
 						}
 					}
 					
-					gestor_incluir_biblioteca('log');
-					
-					log_disco('Assinatura: ' . $htmlAssinatura,'email');
-					
 					if($assinaturaPadrao){
 						if(isset($_GESTOR['host-id'])){
 							$htmlAssinatura = gestor_componente(Array(

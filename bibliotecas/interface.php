@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-interface']							=	Array(
-	'versao' => '1.0.33',
+	'versao' => '1.0.34',
 );
 
 // ===== Funções formatação

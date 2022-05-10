@@ -608,7 +608,7 @@ $(document).ready(function() {
 			visualizar();
 		}
 		
-		if($('#_gestor-interface-config-dados').length > 0){
+		if($('#_gestor-interface-config-dados').length > 0 || $('#_gestor-interface-simples').length > 0){
 			function config(){
 				// ===== Regras para ler mais entradas do histórico.
 				
