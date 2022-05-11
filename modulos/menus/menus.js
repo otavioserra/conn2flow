@@ -27,8 +27,8 @@ $(document).ready(function(){
 				
 				var itens = dadosServidor[key].itens;
 				
-				for(var key in itens){
-					var item = itens[key];
+				for(var key2 in itens){
+					var item = itens[key2];
 					
 					var menuItem = $($('.menu-item-template').html());
 					
