@@ -20,8 +20,6 @@ $(document).ready(function(){
 			
 			// ===== Iniciar menus.
 			
-			console.log(dadosServidor);
-			
 			for(var key in dadosServidor){
 				// ===== Varrer itens do menu.
 				
@@ -32,7 +30,7 @@ $(document).ready(function(){
 					
 					var menuItem = $($('.menu-item-template').html());
 					
-					menuItem.find('.itemNome').html(item.label);
+					menuItem.find('.itemNome').html((('titulo' in item) ? item.titulo : item.label));
 					menuItem.find('.itemUrl').html(item.url);
 					menuItem.find('.itemTipo').html(item.tipo);
 					
