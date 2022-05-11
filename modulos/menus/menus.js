@@ -20,6 +20,8 @@ $(document).ready(function(){
 			
 			// ===== Iniciar menus.
 			
+			console.log(dadosServidor);
+			
 			for(var key in dadosServidor){
 				// ===== Varrer itens do menu.
 				
