@@ -125,8 +125,8 @@ function menus_config(){
 	
 	if($config['menusPadroes'])
 	foreach($config['menusPadroes'] as $id => $menusPadroes){
-		if(!isset($menusPadroes[$id]['inativo'])){
-			$dadosServidor[$id] = $menusPadroes[$id];
+		if(!isset($menusPadroes['inativo'])){
+			$dadosServidor[$id] = $menusPadroes;
 		}
 	}
 	
