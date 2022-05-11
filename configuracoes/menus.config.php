@@ -7,34 +7,49 @@
 // ===== Definições da variável.
 
 $configuracao = Array(
-	'menus-padroes' => Array(
-		'menu-pagina-inicial' => Array(
+	'menusPadroes' => Array(
+		'menuPaginaInicial' => Array(
 			'versao' => '1',
-			'label' => 'tit-menu-pagina-inicial',
 			'itens' => Array(
 				'sobre' => Array(
 					'label' => 'label-sobre',
 					'tipo' => 'menu-ancora',
 					'url' => '#sobre',
-					'ordem' => '1',
 				),
 				'local-e-data' => Array(
 					'label' => 'label-local-e-data',
 					'tipo' => 'menu-ancora',
 					'url' => '#local-e-data',
-					'ordem' => '2',
 				),
 				'ingressos' => Array(
 					'label' => 'label-ingressos',
 					'tipo' => 'menu-ancora',
 					'url' => '#ingressos',
-					'ordem' => '3',
 				),
 				'mapa' => Array(
 					'label' => 'label-mapa',
 					'tipo' => 'menu-ancora',
 					'url' => '#mapa',
-					'ordem' => '4',
+				),
+			),
+		),
+		'menuMinhaConta' => Array(
+			'versao' => '1',
+			'itens' => Array(
+				'meus-pedidos' => Array(
+					'label' => 'label-meus-pedidos',
+					'tipo' => 'url-interna',
+					'url' => '/meus-pedidos/',
+				),
+				'meus-dados' => Array(
+					'label' => 'label-meus-dados',
+					'tipo' => 'url-interna',
+					'url' => '/meus-dados/',
+				),
+				'sair' => Array(
+					'label' => 'label-sair',
+					'tipo' => 'url-interna',
+					'url' => '/identificacao/?sair=sim',
 				),
 			),
 		),
