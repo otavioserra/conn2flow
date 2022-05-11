@@ -128,15 +128,21 @@ function menus_config(){
 	if($config['menusPadroes'])
 	foreach($config['menusPadroes'] as $id => $menusPadroes){
 		if(!isset($menusPadroes['inativo'])){
-			if($variaveisMenu)
-			foreach($variaveisMenu as $key => $variavelMenu){
-				if($key == $variavelMenu['label']){
-					$menusPadroes['titulo'] = $variavelMenu;
-					break;
+			$menusPadroesAux = Array();
+			
+			foreach($menusPadroes as $key => $item){
+				if($variaveisMenu)
+				foreach($variaveisMenu as $key2 => $variavel){
+					if($item['label'] == $key2){
+						$item['titulo'] = $variavel;
+						break;
+					}
 				}
+				
+				$menusPadroesAux[$key] = $item;
 			}
 			
-			$dadosServidor[$id] = $menusPadroes;
+			$dadosServidor[$id] = $menusPadroesAux;
 		}
 	}
 	
