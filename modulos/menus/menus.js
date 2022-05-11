@@ -20,18 +20,10 @@ $(document).ready(function(){
 			
 			// ===== Iniciar menus.
 			
-			var menus = new Array('menuPaginaInicial','menuMinhaConta');
-			
-			for(var i=0;i<menus.length;i++){
-				// ===== Adicionar o conteiner do menu.
-				
-				var menuCont = $('<div class="menu-itens-cont" id="'+menus[i]+'"></div>');
-				
-				menuCont.appendTo($('#menu-itens-cont'));
-				
+			for(var key in dadosServidor){
 				// ===== Varrer itens do menu.
 				
-				var itens = dadosServidor[menus[i]].itens;
+				var itens = dadosServidor[key].itens;
 				
 				for(var key in itens){
 					var item = itens[key];
@@ -42,7 +34,7 @@ $(document).ready(function(){
 					menuItem.find('.itemUrl').html(item.url);
 					menuItem.find('.itemTipo').html(item.tipo);
 					
-					menuItem.appendTo($('#'+menus[i]));
+					menuItem.appendTo($('div[data-tab="'+key+'"]').find('.menu-itens-cont'));
 				}
 			}
 			
