@@ -407,6 +407,19 @@ function atualizar_banco_de_dados(){
 					PRIMARY KEY (`id_postagens`))
 				ENGINE = InnoDB'
 			,
+			'menus_itens' => 
+				'CREATE TABLE IF NOT EXISTS `menus_itens` (
+					`id_menus_itens` INT NOT NULL AUTO_INCREMENT,
+					`id_hosts_menus_itens` INT NULL DEFAULT NULL,
+					`menu_id` VARCHAR(255) NULL DEFAULT NULL,
+					`id` VARCHAR(255) NULL DEFAULT NULL,
+					`label` VARCHAR(255) NULL DEFAULT NULL,
+					`tipo` VARCHAR(255) NULL DEFAULT NULL,
+					`url` VARCHAR(255) NULL DEFAULT NULL,
+					`inativo` TINYINT NULL DEFAULT NULL,
+					PRIMARY KEY (`id_menus_itens`))
+				ENGINE = InnoDB'
+			,
 		)
 	);
 	
