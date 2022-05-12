@@ -39,10 +39,23 @@ function minha_conta_padrao(){
 	
 	if($menus_itens)
 	foreach($menus_itens as $item){
+		if($item['id'] != 'sair'){
+			$cel_aux = $cel[$cel_nome];
+			
+			$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"url",$item['url']);
+			$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"label",$item['label']);
+			
+			pagina_celula_incluir($cel_nome,$cel_aux);
+		} else {
+			$sair = $item;
+		}
+	}
+	
+	if(isset($sair)){
 		$cel_aux = $cel[$cel_nome];
 		
-		$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"url",$item['url']);
-		$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"label",$item['label']);
+		$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"url",$sair['url']);
+		$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"label",$sair['label']);
 		
 		pagina_celula_incluir($cel_nome,$cel_aux);
 	}
