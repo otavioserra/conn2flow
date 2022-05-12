@@ -2203,7 +2203,7 @@ function api_cliente_menus($params = false){
 							banco_insert_name_campo('label',$item['label']);
 							banco_insert_name_campo('tipo',$item['tipo']);
 							banco_insert_name_campo('url',$item['url']);
-							banco_insert_name_campo('versao',$menusVersao[$menu_id]));
+							banco_insert_name_campo('versao',$menusVersao[$menu_id]);
 							
 							if(isset($item['inativo'])){ banco_insert_name_campo('inativo','1',true); }
 							
