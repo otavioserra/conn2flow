@@ -468,6 +468,7 @@ function gestor_variaveis($params = false){
 	// id - String - Obrigatório - Identificador único do valor.
 	// conjunto - Bool - Opcional - Se definido retornar todos os valores do módulo.
 	// padrao - String - Opcional - Só funciona se conjunto for definido. Se informado filtrar com esse valor que contêm nos ids das linguagens.
+	// reset - Bool - Opcional - Reler banco de dados.
 	
 	// ===== 
 	
@@ -479,8 +480,8 @@ function gestor_variaveis($params = false){
 	
 	// ===== Buscar no banco de dados caso não tenha sido ainda lido na sessão.
 	
-	if(!isset($_GESTOR['variaveis'][$modulo])){
-		$linguagem = banco_select_name
+	if(!isset($_GESTOR['variaveis'][$modulo]) || isset($reset)){
+		$variaveis = banco_select_name
 		(
 			banco_campos_virgulas(Array(
 				'id',
@@ -492,8 +493,8 @@ function gestor_variaveis($params = false){
 			." AND linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
 		);
 		
-		if($linguagem){
-			foreach($linguagem as $li){
+		if($variaveis){
+			foreach($variaveis as $li){
 				$_GESTOR['variaveis'][$modulo][$li['id']] = $li['valor'];
 			}
 		}
