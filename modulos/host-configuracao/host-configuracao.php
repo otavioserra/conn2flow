@@ -1073,7 +1073,7 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 						
 						// ===== Pegar os dados de configuração do plugin.
 						
-						$pluginConfig = require_once($_GESTOR['plugins-path'].$pluginID.'/'.$pluginID.'.config.php');
+						$pluginConfig = require($_GESTOR['plugins-path'].$pluginID.'/'.$pluginID.'.config.php');
 						
 						// ===== Caso tenha sido definido o somenteUpdates, apenas atualizar caso os plugins não tenham sido instalados e/ou a versão é mais nova.
 						

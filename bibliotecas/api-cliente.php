@@ -2129,8 +2129,6 @@ function api_cliente_menus($params = false){
 			
 				// ===== Pegar os menusPadroes de cada plugin.
 				
-				$debugArr = Array();
-				
 				if($hosts_plugins)
 				foreach($hosts_plugins as $hosts_plugin){
 					if($hosts_plugin['habilitado']){
@@ -2144,15 +2142,11 @@ function api_cliente_menus($params = false){
 						
 						// ===== Incluir os itens nos seus menus.
 						
-						$debugArr[] = $pluginConfig;
-						
 						if($pluginConfig['menusPadroes'])
 						foreach($pluginConfig['menusPadroes'] as $menu_id => $menu){
 							$itens = $menu['itens'];
 							$versao = (int)$menu['versao'];
 							$menusItens[$menu_id] = $itens + $menusItens[$menu_id];
-							
-							$debugArr[] = 'Entrou';
 							
 							if($menusVersao[$menu_id] < $versao){
 								$menusVersao[$menu_id] = $versao;
@@ -2160,10 +2154,6 @@ function api_cliente_menus($params = false){
 						}
 					}
 				}
-				
-				return api_cliente_retornar_erro(Array(
-					'msg' => print_r($debugArr,true),
-				));
 				
 				// ===== Verificar os menus itens no banco.
 			
