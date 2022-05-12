@@ -417,6 +417,7 @@ function atualizar_banco_de_dados(){
 					`tipo` VARCHAR(255) NULL DEFAULT NULL,
 					`url` VARCHAR(255) NULL DEFAULT NULL,
 					`inativo` TINYINT NULL DEFAULT NULL,
+					`versao` INT NULL,
 					PRIMARY KEY (`id_menus_itens`))
 				ENGINE = InnoDB'
 			,
