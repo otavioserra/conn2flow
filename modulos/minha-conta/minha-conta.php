@@ -41,8 +41,8 @@ function minha_conta_padrao(){
 	foreach($menus_itens as $item){
 		$cel_aux = $cel[$cel_nome];
 		
-		$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"#url#",$item['url']);
-		$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"#label#",$item['label']);
+		$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"url",$item['url']);
+		$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"label",$item['label']);
 		
 		pagina_celula_incluir($cel_nome,$cel_aux);
 	}
