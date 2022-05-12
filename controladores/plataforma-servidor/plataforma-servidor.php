@@ -2891,19 +2891,19 @@ function plataforma_servidor_menus(){
 							"menus_itens"
 						);
 					}
-					
-					// ===== Excluir do banco de dados itens removidos.
-					
-					if($menus_itens)
-					foreach($menus_itens as $menu_item){
-						if(!isset($menu_item['verificado'])){
-							banco_delete
-							(
-								"menus_itens",
-								"WHERE menu_id='".$menu_item['menu_id']."'"
-								." AND id='".$menu_item['id']."'"
-							);
-						}
+				}
+				
+				// ===== Excluir do banco de dados itens removidos.
+				
+				if($menus_itens)
+				foreach($menus_itens as $menu_item){
+					if(!isset($menu_item['verificado'])){
+						banco_delete
+						(
+							"menus_itens",
+							"WHERE menu_id='".$menu_item['menu_id']."'"
+							." AND id='".$menu_item['id']."'"
+						);
 					}
 				}
 				
