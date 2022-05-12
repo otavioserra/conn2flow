@@ -623,6 +623,7 @@ function api_cliente_templates_atualizar($params = false){
 							if(isset($catDados['modulo'])) $registro['modulo'] = $catDados['modulo'];
 							if(isset($catDados['nao-adicionar'])) $registro['nao-adicionar'] = $catDados['nao-adicionar'];
 							if(isset($catDados['multiplo'])) $registro['multiplo'] = $catDados['multiplo'];
+							if(isset($catDados['plugin'])) $registro['plugin'] = $catDados['plugin'];
 							
 							$registros[] = $registro;
 						}
@@ -1014,6 +1015,12 @@ function api_cliente_templates_atualizar($params = false){
 										
 										unset($hosts_paginas_processado[0]['id_hosts']);
 										unset($hosts_paginas_processado[0]['id_usuarios']);
+										
+										// ===== Incluir o plugin caso exista na página destino.
+										
+										if($registro['plugin']){
+											$hosts_paginas_processado[0]['plugin'] = $registro['plugin'];
+										}
 										
 										// ===== Incluir no registro processado os dados atualizados.
 										
