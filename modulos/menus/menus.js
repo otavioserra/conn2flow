@@ -30,6 +30,12 @@ $(document).ready(function(){
 					
 					var menuItem = $($('.menu-item-template').html());
 					
+					menuItem.attr('data-id',key2);
+					
+					if('inativo' in item){
+						menuItem.find('.itemInativo').find('input').prop('checked',true);
+					}
+					
 					menuItem.find('.itemNome').html((('titulo' in item) ? item.titulo : item.label));
 					menuItem.find('.itemUrl').html(item.url);
 					menuItem.find('.itemTipo').html(item.tipo);
@@ -38,9 +44,28 @@ $(document).ready(function(){
 				}
 			}
 			
+			$('.ui.checkbox')
+				.checkbox({
+					onChange: function(){
+						var obj = $(this).parents('.menu-item');
+						var objPai = $(this).parents('.menuCont');
+						var checked = $(this).prop('checked');
+						
+						var idPai = objPai.attr('data-tab');
+						var id = obj.attr('data-id');
+						
+						if(checked){
+							dadosServidor[idPai].itens[id].inativo = true;
+						} else {
+							delete dadosServidor[idPai].itens[id].inativo;
+						}
+						
+						salvarDadosServidor();
+					}
+				});
+				
 			$('.ui.accordion')
-				.accordion()
-			;
+				.accordion();
 			
 			var itens = {};
 			var currentMousePos = { x: -1, y: -1, mX: 20, mY: 30 };

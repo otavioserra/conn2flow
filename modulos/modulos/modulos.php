@@ -533,6 +533,10 @@ function modulos_sincronizar_bancos(){
 					}
 					
 					if($atualizar){
+						// ===== Remover o id_referencia dos dados afim de não gerar conflito.
+						
+						unset($to[$dadosDef['tabela']['id_referencia']]);
+						
 						// ===== Colocar o título no início das impressões dos dados que serão atualizados.
 						
 						if(!isset($atualizaSinal[$idAtual])){

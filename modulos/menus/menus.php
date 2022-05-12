@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'menus';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.13',
+	'versao' => '1.0.25',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
 		'nome' => 'modelo',
@@ -128,9 +128,9 @@ function menus_config(){
 	if($config['menusPadroes'])
 	foreach($config['menusPadroes'] as $id => $menusPadroes){
 		if(!isset($menusPadroes['inativo'])){
-			$menusPadroesAux = Array();
+			$itens = Array();
 			
-			foreach($menusPadroes as $key => $item){
+			foreach($menusPadroes['itens'] as $key => $item){
 				if($variaveisMenu)
 				foreach($variaveisMenu as $key2 => $variavel){
 					if($item['label'] == $key2){
@@ -139,10 +139,11 @@ function menus_config(){
 					}
 				}
 				
-				$menusPadroesAux[$key] = $item;
+				$itens[$key] = $item;
 			}
 			
-			$dadosServidor[$id] = $menusPadroesAux;
+			$menusPadroes['itens'] = $itens;
+			$dadosServidor[$id] = $menusPadroes;
 		}
 	}
 	

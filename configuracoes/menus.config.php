@@ -9,7 +9,8 @@
 $configuracao = Array(
 	'menusPadroes' => Array(
 		'menuPaginaInicial' => Array(
-			'versao' => '1',
+			'inativo' => true,
+			'versao' => 1,
 			'itens' => Array(
 				'sobre' => Array(
 					'label' => 'label-sobre',
@@ -34,7 +35,7 @@ $configuracao = Array(
 			),
 		),
 		'menuMinhaConta' => Array(
-			'versao' => '1',
+			'versao' => 1,
 			'itens' => Array(
 				'meus-pedidos' => Array(
 					'label' => 'label-meus-pedidos',

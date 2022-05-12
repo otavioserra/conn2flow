@@ -2076,6 +2076,198 @@ function api_cliente_postagens($params = false){
 	}
 }
 
+function api_cliente_menus($params = false){
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// opcao - String - Obrigatório - Opção almejada.
+	
+	// ===== 
+	
+	if(isset($opcao)){
+		$host_verificacao = gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id']);
+		
+		$dados = Array();
+		
+		switch($opcao){
+			case 'atualizar':
+				$id_hosts = $host_verificacao['id_hosts'];
+				
+				// ===== Verificar se o host tem plugins habilitados.
+				
+				$hosts_plugins = banco_select(Array(
+					'tabela' => 'hosts_plugins',
+					'campos' => Array(
+						'plugin',
+						'habilitado',
+						'versao',
+					),
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+				));
+				
+				// ===== Pegar os menusPadroes das configurações dos menus.
+				
+				$config = gestor_incluir_configuracao(Array(
+					'id' => 'menus.config',
+				));
+				
+				$menusPadroes = $config['menusPadroes'];
+				
+				// ===== Menus itens de cada menu padrão.
+				
+				$menusItens = Array();
+				$menusVersao = Array();
+				
+				if($menusPadroes)
+				foreach($menusPadroes as $menu_id => $menu){
+					$menusItens[$menu_id] = $menu['itens'];
+					$menusVersao[$menu_id] = (int)$menu['versao'];
+				}
+			
+				// ===== Pegar os menusPadroes de cada plugin.
+				
+				if($hosts_plugins)
+				foreach($hosts_plugins as $hosts_plugin){
+					if($hosts_plugin['habilitado']){
+						// ===== ID do plugin.
+						
+						$pluginID = $hosts_plugin['plugin'];
+						
+						// ===== Pegar os dados de configuração do plugin.
+						
+						$pluginConfig = require_once($_GESTOR['plugins-path'].$pluginID.'/'.$pluginID.'.config.php');
+						
+						// ===== Incluir os itens nos seus menus.
+						
+						if($pluginConfig['menusPadroes'])
+						foreach($pluginConfig['menusPadroes'] as $menu_id => $menu){
+							$itens = $menu['itens'];
+							$versao = (int)$menu['versao'];
+							array_unshift($menusItens[$menu_id],$itens);
+							
+							if($menusVersao[$menu_id] < $versao){
+								$menusVersao[$menu_id] = $versao;
+							}
+						}
+					}
+				}
+				
+				// ===== Verificar os menus itens no banco.
+			
+				$hosts_menus_itens = banco_select(Array(
+					'tabela' => 'hosts_menus_itens',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+				));
+				
+				// ===== Varrer todos os menus itens e alterar o banco caso necessário.
+				
+				if($menusItens)
+				foreach($menusItens as $menu_id => $itens){
+					if($itens)
+					foreach($itens as $id => $item){
+						$found = false;
+						
+						if($hosts_menus_itens)
+						foreach($hosts_menus_itens as $key => $host_menu_item){
+							if(
+								$host_menu_item['menu_id'] == $menu_id &&
+								$host_menu_item['id'] == $id
+							){
+								$hosts_menus_itens[$key]['verificado'] = true;
+								$found = true;
+								break;
+							}
+						}
+						
+						// ===== Incluir ou atualizar o banco de dados.
+						
+						if($found){
+							if($menusVersao[$menu_id] > (int)$host_menu_item['versao']){
+								banco_update_campo('label',$item['label']);
+								banco_update_campo('tipo',$item['tipo']);
+								banco_update_campo('url',$item['url']);
+								banco_update_campo('versao',$menusVersao[$menu_id]);
+								
+								banco_update_executar('hosts_menus_itens',"WHERE id_hosts='".$id_hosts."' AND menu_id='".$menu_id."' AND id='".$id."'");
+							}
+						} else {
+							banco_insert_name_campo('id_hosts',$id_hosts);
+							banco_insert_name_campo('menu_id',$menu_id);
+							banco_insert_name_campo('id',$id);
+							banco_insert_name_campo('label',$item['label']);
+							banco_insert_name_campo('tipo',$item['tipo']);
+							banco_insert_name_campo('url',$item['url']);
+							
+							if(isset($item['inativo'])){ banco_insert_name_campo('inativo','1',true); }
+							
+							banco_insert_name
+							(
+								banco_insert_name_campos(),
+								"hosts_menus_itens"
+							);
+						}
+					}
+				}
+				
+				// ===== Excluir do banco itens removidos do padrão.
+				
+				if($hosts_menus_itens)
+				foreach($hosts_menus_itens as $host_menu_item){
+					if(!isset($host_menu_item['verificado'])){
+						banco_delete
+						(
+							"hosts_menus_itens",
+							"WHERE menu_id='".$host_menu_item['menu_id']."'"
+							." AND id='".$host_menu_item['id']."'"
+							." AND id_hosts='".$id_hosts."'"
+						);
+					}
+				}
+				
+				// ===== Pegar os menus itens no banco.
+			
+				$hosts_menus_itens = banco_select(Array(
+					'tabela' => 'hosts_menus_itens',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+				));
+				
+				// ===== Trocar o label pelo valor textual.
+				
+				$variaveisMenu = gestor_variaveis(Array('modulo' => 'menus','id' => 'identificador','conjunto' => true));
+				
+				if($hosts_menus_itens)
+				foreach($hosts_menus_itens as $key => $host_menu_item){
+					unset($hosts_menus_itens[$key]['id_hosts']);
+					$hosts_menus_itens[$key]['label'] = $variaveisMenu[$host_menu_item['label']];
+				}
+				
+				// ===== Enviar os registros.
+			
+				$dados['registros'] = $hosts_menus_itens;
+			break;
+		}
+		
+		// ===== Acessar a interface no cliente e retornar objeto do retorno.
+		
+		$retorno = api_cliente_interface(Array(
+			'interface' => 'menus',
+			'id_hosts' => $host_verificacao['id_hosts'],
+			'opcao' => $opcao,
+			'dados' => $dados,
+		));
+		
+		return $retorno;
+	}
+}
+
 // ===== Funções auxiliares.
 
 function api_cliente_retornar_erro($params = false){
