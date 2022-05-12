@@ -2123,8 +2123,10 @@ function api_cliente_menus($params = false){
 				
 				if($menusPadroes)
 				foreach($menusPadroes as $menu_id => $menu){
-					$menusItens[$menu_id] = $menu['itens'];
-					$menusVersao[$menu_id] = (int)$menu['versao'];
+					if(!isset($menu['inativo'])){
+						$menusItens[$menu_id] = $menu['itens'];
+						$menusVersao[$menu_id] = (int)$menu['versao'];
+					}
 				}
 			
 				// ===== Pegar os menusPadroes de cada plugin.
