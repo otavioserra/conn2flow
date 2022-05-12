@@ -51,6 +51,7 @@ function atualizar_banco_de_dados(){
 					`template_id` VARCHAR(255) NULL,
 					`template_modificado` TINYINT NULL,
 					`template_versao` INT NULL,
+					`plugin` VARCHAR(255) NULL,
 					PRIMARY KEY (`id_paginas`))
 				ENGINE = InnoDB'
 			,
