@@ -25,6 +25,7 @@ function minha_conta_padrao(){
 	$menus_itens = banco_select(Array(
 		'tabela' => 'menus_itens',
 		'campos' => Array(
+			'id',
 			'url',
 			'label',
 		),
