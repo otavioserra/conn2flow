@@ -2794,6 +2794,145 @@ function plataforma_servidor_postagens(){
 	return $retorno;
 }
 
+function plataforma_servidor_menus(){
+	
+	// ===== Verificar qual opção desta interface está sendo disparada e tratar cada caso separadamente.
+	
+	$opcao = $_REQUEST['opcao'];
+	
+	switch($opcao){
+		case 'atualizar':
+			// ===== Decodificar os dados em formato Array
+			
+			$dados = Array();
+			if(isset($_REQUEST['dados'])){
+				$dados = json_decode($_REQUEST['dados'],true);
+			}
+			
+			// ===== Verifica o ID referencial do registro.
+			
+			$registros = $dados['registros'];
+			
+			if(isset($registros)){
+				// ===== Controle dos registros.
+				
+				$todos_ok = true;
+				
+				// ===== Pegar os dados atuais do banco de dados.
+				
+				$menus_itens = banco_select(Array(
+					'tabela' => 'menus_itens',
+					'campos' => '*',
+					'extra' => 
+						""
+				));
+				
+				// ===== Varrer todos os registros.
+				
+				foreach($registros as $item){
+					$menu_id = $item['menu_id'];
+					$id = $item['id'];
+					
+					$found = false;
+					
+					if($menus_itens)
+					foreach($menus_itens as $key => $menu_item){
+						if(
+							$menu_item['menu_id'] == $menu_id &&
+							$menu_item['id'] == $id
+						){
+							$menus_itens[$key]['verificado'] = true;
+							$found = true;
+							break;
+						}
+					}
+					
+					// ===== Incluir ou atualizar o banco de dados.
+					
+					if($found){
+						if($item)
+						foreach($item as $key => $valor){
+							switch($key){
+								case 'inativo':								
+									banco_update_campo($key,($valor == '1' ? '1' : 'NULL'),true);
+								break;
+								case 'versao':								
+									banco_update_campo($key,(existe($valor) ? $valor : 'NULL'),true);
+								break;
+								default:
+									if(existe($valor)){
+										banco_update_campo($key,$valor);
+									} else {
+										banco_update_campo($key,'NULL',true);
+									}
+									
+							}
+						}
+						
+						banco_update_executar('menus_itens',"WHERE menu_id='".$menu_id."' AND id='".$id."'");
+					} else {
+						if($item)
+						foreach($item as $key => $valor){
+							if(existe($valor)){
+								switch($key){
+									case 'inativo':	
+									case 'versao':							
+										banco_insert_name_campo($key,$valor,true);
+									break;
+									default:
+										banco_insert_name_campo($key,$valor);
+								}
+							}
+						}
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"menus_itens"
+						);
+					}
+					
+					// ===== Excluir do banco de dados itens removidos.
+					
+					if($menus_itens)
+					foreach($menus_itens as $menu_item){
+						if(!isset($menu_item['verificado'])){
+							banco_delete
+							(
+								"menus_itens",
+								"WHERE menu_id='".$menu_item['menu_id']."'"
+								." AND id='".$menu_item['id']."'"
+							);
+						}
+					}
+				}
+				
+				// ===== Caso algum tenha dado erro, retornar o erro.
+				
+				if($todos_ok){
+					$retorno = Array(
+						'status' => 'OK',
+					);
+				} else {
+					$retorno = Array(
+						'status' => 'ID_NOT_DEFINED',
+					);
+				}
+			} else {
+				$retorno = Array(
+					'status' => 'EMPTY_RECORDS',
+				);
+			}
+		break;
+		default:
+			$retorno = Array(
+				'status' => 'OPTION_NOT_DEFINED',
+			);
+	}
+
+	return $retorno;
+}
+
 // =========================== Funções de Acesso
 
 function plataforma_servidor_autenticar_cliente(){
@@ -3091,6 +3230,7 @@ function plataforma_servidor_start(){
 		case 'cron-pedidos':				 $dados = plataforma_servidor_cron_pedidos(); break;
 		case 'postagens':					 $dados = plataforma_servidor_postagens(); break;
 		case 'vouchers':					 $dados = plataforma_servidor_vouchers(); break;
+		case 'menus':						 $dados = plataforma_servidor_menus(); break;
 	}
 	
 	// ===== Caso haja dados criados por alguma opção, retornar JSON e finalizar. Senão retornar JSON 404.
