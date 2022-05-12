@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'minha-conta';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
+	'versao' => '1.0.1',
 );
 
 // ===== Funções Auxiliares
@@ -19,6 +19,35 @@ function minha_conta_padrao(){
 	gestor_incluir_biblioteca('pagina');
 	gestor_incluir_biblioteca('formato');
 	gestor_incluir_biblioteca('interface');
+	
+	// ===== Pegar os dados do menu do banco de dados.
+	
+	$menus_itens = banco_select(Array(
+		'tabela' => 'menus_itens',
+		'campos' => Array(
+			'url',
+			'label',
+		),
+		'extra' => 
+			"WHERE menu_id='menuMinhaConta'"
+			." AND inativo IS NULL"
+	));
+	
+	// ===== Montar o menu.
+	
+	$cel_nome = 'menu-item'; $cel[$cel_nome] = pagina_celula($cel_nome);
+	
+	if($menus_itens)
+	foreach($menus_itens as $item){
+		$cel_aux = $cel[$cel_nome];
+		
+		$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"url",$item['url']);
+		$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"label",$item['label']);
+		
+		pagina_celula_incluir($cel_nome,$cel_aux);
+	}
+	
+	pagina_celula_incluir($cel_nome,'');
 	
 	// ===== Alterações no layout da página.
 	
