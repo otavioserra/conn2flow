@@ -2140,7 +2140,7 @@ function api_cliente_menus($params = false){
 						
 						// ===== Pegar os dados de configuração do plugin.
 						
-						$pluginConfig = require_once($_GESTOR['plugins-path'].$pluginID.'/'.$pluginID.'.config.php');
+						$pluginConfig = require($_GESTOR['plugins-path'].$pluginID.'/'.$pluginID.'.config.php');
 						
 						// ===== Incluir os itens nos seus menus.
 						
