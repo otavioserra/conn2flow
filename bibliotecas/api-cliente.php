@@ -2144,7 +2144,7 @@ function api_cliente_menus($params = false){
 						
 						// ===== Incluir os itens nos seus menus.
 						
-						$debugArr[] = $pluginConfig['menusPadroes'];
+						$debugArr[] = $pluginConfig;
 						
 						if($pluginConfig['menusPadroes'])
 						foreach($pluginConfig['menusPadroes'] as $menu_id => $menu){
@@ -2158,8 +2158,6 @@ function api_cliente_menus($params = false){
 								$menusVersao[$menu_id] = $versao;
 							}
 						}
-						
-						$debugArr[] = $menusItens;
 					}
 				}
 				
