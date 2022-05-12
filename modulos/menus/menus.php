@@ -161,7 +161,7 @@ function menus_config(){
 			));
 		}
 		
-		/* if($alterouDados || $criouDados){
+		if($alterouDados || $criouDados){
 			// ===== Chamada da API-Cliente para atualizar dados no host do usuário.
 			
 			gestor_incluir_biblioteca('api-cliente');
@@ -180,7 +180,7 @@ function menus_config(){
 					'msg' => $alerta
 				));
 			}
-		} */
+		}
 		
 		// ===== Reler URL.
 		
