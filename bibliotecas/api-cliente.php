@@ -2103,7 +2103,6 @@ function api_cliente_menus($params = false){
 					'campos' => Array(
 						'plugin',
 						'habilitado',
-						'versao',
 					),
 					'extra' => 
 						"WHERE id_hosts='".$id_hosts."'"
@@ -2147,7 +2146,7 @@ function api_cliente_menus($params = false){
 						foreach($pluginConfig['menusPadroes'] as $menu_id => $menu){
 							$itens = $menu['itens'];
 							$versao = (int)$menu['versao'];
-							array_unshift($menusItens[$menu_id],$itens);
+							$menusItens[$menu_id] = $itens + $menusItens[$menu_id];
 							
 							if($menusVersao[$menu_id] < $versao){
 								$menusVersao[$menu_id] = $versao;

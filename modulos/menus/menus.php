@@ -47,7 +47,6 @@ function menus_config(){
 			$dadosServidor = json_decode($_REQUEST['dadosServidor'],true);
 		}
 		
-		
 		// ===== Recuperar o estado dos dados do banco de dados antes de editar.
 		
 		/* $resultado = banco_select(Array(
@@ -83,9 +82,8 @@ function menus_config(){
 			
 			gestor_incluir_biblioteca('api-cliente');
 			
-			$retorno = api_cliente_variaveis(Array(
-				'opcao' => 'editar',
-				'modulo' => $_GESTOR['modulo-id'],
+			$retorno = api_cliente_menus(Array(
+				'opcao' => 'atualizar',
 			));
 			
 			if(!$retorno['completed']){
@@ -108,18 +106,6 @@ function menus_config(){
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
-	
-	// ===== Selecionar dados do banco de dados
-	
-	/* $resultado = banco_select(Array(
-		'tabela' => $modulo['tabela']['nome'],
-		'campos' => $camposBanco,
-		'extra' => 
-			"WHERE modulo='".$_GESTOR['modulo-id']."'"
-			." AND id_hosts='".$_GESTOR['host-id']."'"
-	)); */
-	
-	// ===== Montar os valores do que é permitido via config alterar.
 	
 	// ===== Criar o 'dadosServidor'.
 	
