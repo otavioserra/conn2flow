@@ -1020,10 +1020,6 @@ function api_cliente_templates_atualizar($params = false){
 										
 										if($registro['plugin']){
 											$hosts_paginas_processado[0]['plugin'] = $registro['plugin'];
-											
-											return api_cliente_retornar_erro(Array(
-												'msg' => 'Dados: '.print_r($hosts_paginas_processado,true),
-											));
 										}
 										
 										// ===== Incluir no registro processado os dados atualizados.
