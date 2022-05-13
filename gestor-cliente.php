@@ -1598,6 +1598,7 @@ function gestor_roteador(){
 			'modulo_id_registro',
 			'opcao',
 			'nome',
+			'plugin',
 		);
 	}
 	
@@ -1617,6 +1618,7 @@ function gestor_roteador(){
 	
 	if(isset($paginas)){
 		$_GESTOR['modulo'] = $paginas[0]['modulo'];
+		$_GESTOR['plugin'] = ($paginas[0]['plugin'] ? $paginas[0]['plugin'] : false);
 		$_GESTOR['modulo_id_registro'] = (existe($paginas[0]['modulo_id_registro']) ? $paginas[0]['modulo_id_registro'] : null);
 	}
 	
@@ -1637,7 +1639,11 @@ function gestor_roteador(){
 			// ===== Módulo alvo quando houver executar
 			
 			if(existe($modulo)){
-				require_once($_INDEX['sistemas-dir'].'modulos/'.$modulo.'/'.$modulo.'.php');
+				if($_GESTOR['plugin']){
+					require_once($_INDEX['sistemas-dir'].'plugins/'.$_GESTOR['plugin'].'/modulos/'.$modulo.'/'.$modulo.'.php');
+				} else {
+					require_once($_INDEX['sistemas-dir'].'modulos/'.$modulo.'/'.$modulo.'.php');
+				}
 			}
 			
 			// ===== Retornar a página formatada para o cliente
@@ -1667,7 +1673,11 @@ function gestor_roteador(){
 			if(!isset($modulo)){
 				if($_GESTOR['opcao']){
 					if(existe($modulo)){
-						require_once($_INDEX['sistemas-dir'].'modulos/'.$modulo.'/'.$modulo.'.php');
+						if($_GESTOR['plugin']){
+							require_once($_INDEX['sistemas-dir'].'plugins/'.$_GESTOR['plugin'].'/modulos/'.$modulo.'/'.$modulo.'.php');
+						} else {
+							require_once($_INDEX['sistemas-dir'].'modulos/'.$modulo.'/'.$modulo.'.php');
+						}
 					}
 					
 					gestor_redirecionar_raiz();
@@ -1709,7 +1719,11 @@ function gestor_roteador(){
 			// ===== Módulo alvo quando houver executar
 			
 			if(existe($modulo)){
-				require_once($_INDEX['sistemas-dir'].'modulos/'.$modulo.'/'.$modulo.'.php');
+				if($_GESTOR['plugin']){
+					require_once($_INDEX['sistemas-dir'].'plugins/'.$_GESTOR['plugin'].'/modulos/'.$modulo.'/'.$modulo.'.php');
+				} else {
+					require_once($_INDEX['sistemas-dir'].'modulos/'.$modulo.'/'.$modulo.'.php');
+				}
 			}
 			
 			// ===== Montar página html final depois das mudanças pelo módulo.
