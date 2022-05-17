@@ -44,7 +44,7 @@ function agendamentos_padrao(){
 	
 	// ===== Incluir o JS.
 	
-	gestor_pagina_javascript_incluir('modulos');
+	gestor_pagina_javascript_incluir('plugin');
 }
 
 // ==== Ajax
