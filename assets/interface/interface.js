@@ -610,6 +610,20 @@ $(document).ready(function() {
 		
 		if($('#_gestor-interface-config-dados').length > 0 || $('#_gestor-interface-simples').length > 0){
 			function config(){
+				// ===== Shortcuts teclado
+				
+				$(document).keydown(function(event) {
+						if((event.ctrlKey || event.metaKey)){
+							if(event.which == 83){ // CTRL + S - Enviar formulário
+								$('.interfaceFormPadrao').form('submit');
+								
+								event.preventDefault();
+								return false;
+							}
+						}
+					}
+				);
+				
 				// ===== Regras para ler mais entradas do histórico.
 				
 				var historicoPaginaAtual = 0;
