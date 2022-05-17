@@ -68,6 +68,17 @@ $(document).ready(function(){
 			type: 'date',
 			closable: false,
 			inline: true,
+			formatter: {
+				date: function (date, settings) {
+					if (!date) return '';
+					
+					var day = (date.getDate() < 10 ? '0' : '') + date.getDate();
+					var month = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
+					var year = date.getFullYear();
+					
+					return day + '/' + month + '/' + year;
+				}
+			},
 			onChange: function(date,dateFormated,mode){
 				var parentCont = $(this).parents('.datas-multiplas');
 				var datesStr = parentCont.find('.calendar-dates-input').val();
@@ -101,6 +112,19 @@ $(document).ready(function(){
 		var calendarDataHoraOpt = {
 			text: calendarPtBR,
 			type: 'datetime',
+			formatter: {
+				datetime: function (date, settings) {
+					if (!date) return '';
+					
+					var day = (date.getDate() < 10 ? '0' : '') + date.getDate();
+					var month = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
+					var year = date.getFullYear();
+					var hour = (date.getHours() < 10 ? '0' : '') + date.getHours();
+					var minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+					
+					return day + '/' + month + '/' + year + ' ' + hour + ':' + minutes;
+				}
+			},
 		}
 		
 		// ===== Variáveis do componente 'calendar' data.
@@ -108,6 +132,17 @@ $(document).ready(function(){
 		var calendarDataOpt = {
 			text: calendarPtBR,
 			type: 'date',
+			formatter: {
+				date: function (date, settings) {
+					if (!date) return '';
+					
+					var day = (date.getDate() < 10 ? '0' : '') + date.getDate();
+					var month = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
+					var year = date.getFullYear();
+					
+					return day + '/' + month + '/' + year;
+				}
+			},
 		}
 		
 		// ===== Tratar diferença entre objeto e leitura inicial.
