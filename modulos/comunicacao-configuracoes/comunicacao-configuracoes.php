@@ -183,7 +183,7 @@ function configuracoes_config(){
 		$retorno = configuracao_hosts_salvar(Array(
 			'modulo' => $_GESTOR['modulo-id'],
 			'grupos' => Array(
-				'padrao-host',
+				'host-admin',
 			),
 			'linguagemCodigo' => $_GESTOR['linguagem-codigo'],
 			'tabela' => $modulo['tabela'],
@@ -209,7 +209,7 @@ function configuracoes_config(){
 	configuracao_hosts(Array(
 		'modulo' => $_GESTOR['modulo-id'],
 		'grupos' => Array(
-			'padrao-host',
+			'host-admin',
 		),
 		'linguagemCodigo' => $_GESTOR['linguagem-codigo'],
 		'marcador' => '<!-- comunicacao-configuracoes -->',

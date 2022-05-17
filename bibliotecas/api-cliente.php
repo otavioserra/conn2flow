@@ -1762,7 +1762,7 @@ function api_cliente_variaveis_padroes($params = false){
 						'extra' => 
 							"WHERE linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
 							." AND modulo='".$modulo."'"
-							." AND grupo='padrao-host'"
+							." AND (grupo='host-app' OR grupo='host-system' OR grupo='host-both')"
 							." ORDER BY id ASC"
 					));
 					
@@ -1776,7 +1776,7 @@ function api_cliente_variaveis_padroes($params = false){
 						'extra' => 
 							"WHERE linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
 							." AND modulo='".$modulo."'"
-							." AND grupo='padrao-host'"
+							." AND (grupo='host-app' OR grupo='host-system' OR grupo='host-both')"
 							." AND id_hosts='".$_GESTOR['host-id']."'"
 							." ORDER BY id ASC"
 					));
