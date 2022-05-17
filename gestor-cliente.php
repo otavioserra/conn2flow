@@ -32,6 +32,7 @@ $_GESTOR['arquivo-estatico'] = false;
 if((isset($_GESTOR['caminho-extensao']) ? $_GESTOR['caminho-extensao'] : null)){
 	$_GESTOR['arquivo-estatico'] = Array(
 		'alvo' => (isset($_GESTOR['caminho'][0]) ? $_GESTOR['caminho'][0] : null),
+		'alvo2' => (isset($_GESTOR['caminho'][1]) ? $_GESTOR['caminho'][1] : null),
 		'ext' => $_GESTOR['caminho-extensao'],
 	);
 }
@@ -865,7 +866,7 @@ function gestor_pagina_javascript_incluir($js = false,$id = false){
 				$js = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/'.'js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
 			break;
 			case 'plugin':
-				$js = '<script src="'.$_GESTOR['url-raiz'].'plugins/' . $_GESTOR['plugin'] . '/modulos/' . $_GESTOR['modulo-id'] . '/' . $_GESTOR['modulo-id'] .'.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
+				$js = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['plugin'].$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
 			break;
 			case 'biblioteca':
 				$js = '<script src="'.$_GESTOR['url-raiz'].'interface/'.$id.'.js?v='.$_GESTOR['biblioteca-'.$id]['versao'].'"></script>';

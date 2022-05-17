@@ -30,6 +30,7 @@ function arquivo_estatico_start(){
 	if(isset($_GESTOR['arquivo-estatico'])){
 		$ext = ($_GESTOR['arquivo-estatico']['ext'] ? $_GESTOR['arquivo-estatico']['ext'] : null);
 		$alvo = ($_GESTOR['arquivo-estatico']['alvo'] ? $_GESTOR['arquivo-estatico']['alvo'] : null);
+		$alvo2 = ($_GESTOR['arquivo-estatico']['alvo2'] ? $_GESTOR['arquivo-estatico']['alvo2'] : null);
 		$file = '';
 		
 		// ===== Arquivos do gestor e módulos
@@ -49,8 +50,11 @@ function arquivo_estatico_start(){
 								$file = $_INDEX['sistemas-dir'].'assets/'.$_GESTOR['caminho-total'];
 						}
 					} else {
-						
-						$file = $_INDEX['sistemas-dir'].'modulos/'.$alvo.'/'.$alvo.'.'.$ext;
+						if(count($_GESTOR['caminho']) > 2){
+							$file = $_INDEX['sistemas-dir'].'plugins/'.$alvo.'/modulos/'.$alvo2.'/'.$alvo2.'.'.$ext;
+						} else {
+							$file = $_INDEX['sistemas-dir'].'modulos/'.$alvo.'/'.$alvo.'.'.$ext;
+						}
 					}
 				}
 			break;
