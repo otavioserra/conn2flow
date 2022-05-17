@@ -769,9 +769,14 @@ function configuracao_hosts($params = false){
 		$gruposSQL = '';
 		
 		if(isset($grupos)){
+			$gruposSQL = ' AND (';
+			
 			foreach($grupos as $grupo){
-				$gruposSQL .= " AND grupo='".$grupo."'";
+				$gruposSQL .= (!isset($primeiro) ? '':' OR ') . "grupo='".$grupo."'";
+				$primeiro = true;
 			}
+			
+			$gruposSQL .= ')';
 		}
 		
 		// ===== Pegar os dados do banco.
