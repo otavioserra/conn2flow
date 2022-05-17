@@ -1,6 +1,19 @@
 $(document).ready(function(){
 	
 	function start(){
+		// ===== Configurações do calendário.
+		
+		var calendario = gestor.calendario;
+		
+		// ===== Datas disponíveis para agendamento.
+		
+		var datasDisponiveis = [];
+		
+		for(var data in calendario.datas_disponiveis){
+			var dateObj = new Date(data.replace(/-/g, '\/')); // Bug no objeto Date() do javascript. Basta trocar o '-' por '/' que a data funciona corretamente. Senão fica um dia a mais do dia correto.
+			
+			datasDisponiveis.push(dateObj);
+		}
 		
 		// ===== Calendário ptBR.
 		
@@ -19,8 +32,13 @@ $(document).ready(function(){
 		var calendarDatasOpt = {
 			text: calendarPtBR,
 			type: 'date',
-			closable: false,
 			inline: true,
+			initialDate: new Date(),
+			minDate: new Date(calendario.ano_inicio+'/01/01'),
+			maxDate: new Date(calendario.ano_fim+'/12/31'),
+			eventClass: 'inverted blue',
+			enabledDates: datasDisponiveis,
+			eventDates: datasDisponiveis,
 			formatter: {
 				date: function (date, settings) {
 					if (!date) return '';

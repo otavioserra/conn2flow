@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.2',
+	'versao' => '1.0.11',
 );
 
 // ===== Funções Auxiliares
