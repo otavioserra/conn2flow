@@ -25,15 +25,20 @@ $_GESTOR['modulo-id']							=	'update-sys';
 function atualizar_banco_de_dados(){
 	// ===== Tabelas do banco de dados com seus SQLs.
 	
-	/*
 	$bancoDeDados = Array(
 		'tabelas' => Array(
 			'tabela' => 
-				'SQL'
+				'CREATE TABLE IF NOT EXISTS `agendamentos_datas` (
+					`id_agendamentos_datas` INT NOT NULL AUTO_INCREMENT,
+					`id_hosts_agendamentos_datas` INT NULL,
+					`data` DATE NULL,
+					`total` INT NULL,
+					`status` VARCHAR(255) NULL,
+					PRIMARY KEY (`id_agendamentos_datas`))
+				ENGINE = InnoDB'
 			,
 		)
 	);
-	*/
 	
 	/*
 			
