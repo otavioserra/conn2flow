@@ -866,7 +866,7 @@ function gestor_pagina_javascript_incluir($js = false,$id = false){
 				$js = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/'.'js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
 			break;
 			case 'plugin':
-				$js = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['plugin'].$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
+				$js = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['plugin'].'/'.$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
 			break;
 			case 'biblioteca':
 				$js = '<script src="'.$_GESTOR['url-raiz'].'interface/'.$id.'.js?v='.$_GESTOR['biblioteca-'.$id]['versao'].'"></script>';
