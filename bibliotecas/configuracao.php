@@ -481,9 +481,14 @@ function configuracao_hosts_salvar($params = false){
 		$gruposSQL = '';
 		
 		if(isset($grupos)){
+			$gruposSQL = ' AND (';
+			
 			foreach($grupos as $grupo){
-				$gruposSQL .= " AND grupo='".$grupo."'";
+				$gruposSQL .= (!isset($primeiro) ? '':' OR ') . "grupo='".$grupo."'";
+				$primeiro = true;
 			}
+			
+			$gruposSQL .= ')';
 		}
 		
 		// ===== Banco antes de atualizar.
