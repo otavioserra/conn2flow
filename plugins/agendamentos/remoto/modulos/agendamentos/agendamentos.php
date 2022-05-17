@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.1',
+	'versao' => '1.0.2',
 );
 
 // ===== Funções Auxiliares
@@ -12,9 +12,9 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 function agendamentos_calendario($params = false){
 	global $_GESTOR;
 	
-	$var_padrao = 'valor padrao';
-
 	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	gestor_incluir_biblioteca('formato');
 	
 	$ano_inicio = date('Y');
 	$hoje = date('Y-m-d');
@@ -24,7 +24,7 @@ function agendamentos_calendario($params = false){
 	$dias_semana = (existe($config['dias-semana']) ? explode(',',$config['dias-semana']) : Array());
 	$anos = (existe($config['calendario-anos']) ? (int)$config['calendario-anos'] : 2);
 	$dias_semana_maximo_vagas_arr = (existe($config['dias-semana-maximo-vagas']) ? explode(',',$config['dias-semana-maximo-vagas']) : Array());
-	if(existe($config['datas-indisponiveis'])) $datas_indisponiveis = (existe($config['datas-indisponiveis-valores']) ? explode(',',$config['datas-indisponiveis-valores']) : Array());
+	if(existe($config['datas-indisponiveis'])) $datas_indisponiveis = (existe($config['datas-indisponiveis-valores']) ? explode('|',$config['datas-indisponiveis-valores']) : Array());
 	$fase_escolha_livre = (existe($config['fase-escolha-livre']) ? (int)$config['fase-escolha-livre'] : 7);
 	$calendario_limite_mes_a_frente = (existe($config['calendario-limite-mes-a-frente']) ? (int)$config['calendario-limite-mes-a-frente'] : false);
 	$fase_sorteio = (existe($config['fase-sorteio']) ? explode(',',$config['fase-sorteio']) : Array(7,5));
@@ -89,8 +89,8 @@ function agendamentos_calendario($params = false){
 			if($datas_indisponiveis){
 				foreach($datas_indisponiveis as $di){
 					if(
-						$dia > strtotime(data_padrao_date($di).' 00:00:00') &&
-						$dia < strtotime(data_padrao_date($di).' 23:59:59')
+						$dia > strtotime(formato_dado_para('date',$di).' 00:00:00') &&
+						$dia < strtotime(formato_dado_para('date',$di).' 23:59:59')
 					){
 						$flag = true;
 						break;
@@ -160,9 +160,13 @@ function agendamentos_calendario($params = false){
 
 	} while ($dia < $ultimo_dia);
 	
-	$_VARIAVEIS_JS['datas_disponiveis'] = $datas;
-	$_VARIAVEIS_JS['ano_inicio'] = $ano_inicio;
-	$_VARIAVEIS_JS['ano_fim'] = $ano_fim;
+	$JScalendario['datas_disponiveis'] = $datas;
+	$JScalendario['ano_inicio'] = $ano_inicio;
+	$JScalendario['ano_fim'] = $ano_fim;
+	
+	// ===== Variáveis JS.
+	
+	$_GESTOR['javascript-vars']['calendario'] = $JScalendario;
 }
 
 // ===== Funções Principais

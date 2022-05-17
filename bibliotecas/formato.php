@@ -3,15 +3,15 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-formato']							=	Array(
-	'versao' => '1.0.0',
+	'versao' => '1.1.0',
 );
 
 // ===== Funções auxiliares
 
-function formato_data_hora_padrao_datetime($dataHora){
+function formato_data_hora_padrao_datetime($dataHora, $semHora = false){
 	$dataHoraArray = explode(" ",$dataHora);
 	$dataArray = explode("/",$dataHoraArray[0]);
-	$datetime = $dataArray[2]."-".$dataArray[1]."-".$dataArray[0]." ".$dataHoraArray[1].":00";
+	$datetime = $dataArray[2]."-".$dataArray[1]."-".$dataArray[0].($semHora ? '' : " ".$dataHoraArray[1].":00");
 	
 	return $datetime;
 }
@@ -151,6 +151,7 @@ function formato_dado($params = false){
 			case 'data': $valor = formato_data_from_datetime_to_text($valor); break;
 			case 'dataHora': $valor = formato_data_hora_from_datetime_to_text($valor); break;
 			case 'datetime': $valor = formato_data_hora_padrao_datetime($valor); break;
+			case 'date': $valor = formato_data_hora_padrao_datetime($valor,true); break;
 		}
 		
 		return $valor;
