@@ -67,7 +67,7 @@ function formulario_validacao($params = false){
 			switch($regra['regra']){
 				case 'manual':
 					$regras_validacao[$regra['campo']] = Array(
-						'rules' => $regrasManuais,
+						'rules' => $regra['regrasManuais'],
 					);
 				break;
 				case 'texto-obrigatorio':
