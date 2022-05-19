@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.11',
+	'versao' => '1.0.33',
 );
 
 // ===== Funções Auxiliares
@@ -180,11 +180,34 @@ function agendamentos_padrao(){
 		'pagina',
 		'formato',
 		'interface',
+		'formulario',
 	));
 	
-	// ===== Codificação do plugin.
+	// ===== Montagem do calendário.
 	
 	agendamentos_calendario();
+	
+	// ===== Formulário validação.
+	
+	formulario_validacao(Array(
+		'formId' => 'formAgendamentos',
+		'validacao' => Array(
+			Array(
+				'regra' => 'manual',
+				'regrasManuais' => Array(
+					Array(
+						'type' => 'empty',
+						'prompt' => gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','id' => 'form-msg-data')),
+					),
+				),
+			),
+			Array(
+				'regra' => 'texto-obrigatorio',
+				'campo' => 'acompanhante',
+				'label' => '#acompanhante#',
+			),
+		)
+	));
 	
 	// ===== Alterações no layout da página.
 	

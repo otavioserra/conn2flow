@@ -15,6 +15,19 @@ $(document).ready(function(){
 			datasDisponiveis.push(dateObj);
 		}
 		
+		// ===== Form Agendamentos.
+		
+		var formId = 'formAgendamentos';
+		var formSelector = '#formAgendamentos';
+		
+		$(formSelector)
+			.form({
+				fields : (gestor.formulario[formId].regrasValidacao ? gestor.formulario[formId].regrasValidacao : {}),
+				onSuccess(event, fields){
+					
+				}
+			});
+		
 		// ===== Calendário ptBR.
 		
 		var calendarPtBR = {
@@ -52,6 +65,10 @@ $(document).ready(function(){
 			},
 			onChange: function(date,dateFormated,mode){
 				$(this).parent().find('.agendamentoData').val(dateFormated);
+				$(this).parent().find('.dataSelecionada').show();
+				$(this).parent().find('.dataSelecionada').find('.dataSelecionadaValor').html(dateFormated);
+				
+				$(formSelector).form('validate form');
 			}
 		}
 		
@@ -59,9 +76,49 @@ $(document).ready(function(){
 		
 		$('.ui.calendar').calendar(calendarDatasOpt);
 		
-		// ===== Iniciar dropdown.
+		// ===== Acompanhantes dropdown.
 		
-		$('.ui.dropdown').dropdown();
+		$('.ui.dropdown').dropdown({
+			onChange: function(value){
+				var objPai = $(this).parents('.field');
+				var acompanhantesCont = objPai.find('.acompanhantesCont');
+				var acompanhantesTemplateCont = objPai.find('.acompanhantesTemplateCont');
+				var numAcom = acompanhantesCont.find('.field').length;
+				
+				value = parseInt(value);
+				
+				if(value > numAcom){
+					for(var i=numAcom;i<value;i++){
+						var field = acompanhantesTemplateCont.find('.field').clone();
+						var num = (i+1);
+						
+						field.attr('data-num',num);
+						field.find('label').html('Acompanhante '+num);
+						field.find('input').prop('name','acompanhante-'+num);
+						field.find('input').attr('data-validate','acompanhante'+num);
+						
+						acompanhantesCont.append(field);
+						
+						$(formSelector).form('add rule', 'acompanhante'+num,{ rules : gestor.formulario[formId].regrasValidacao.acompanhante.rules });
+					}
+				} else {
+					var num = 0;
+					
+					acompanhantesCont.find('.field').each(function(){
+						num++;
+						
+						$(formSelector).form('remove fields', ['acompanhante'+num]);
+						
+						if(num > value){
+							$(this).hide();
+						} else {
+							$(this).show();
+							$(formSelector).form('add rule', 'acompanhante'+num,{ rules : gestor.formulario[formId].regrasValidacao.acompanhante.rules });
+						}
+					});
+				}
+			}
+		});
 		
 		// ===== Listeners principais.
 		
