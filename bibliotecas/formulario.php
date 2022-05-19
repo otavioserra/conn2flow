@@ -51,16 +51,25 @@ function formulario_validacao($params = false){
 		// regex - String - Obrigatório - Regex que será usado pelo validador de formulário.
 		// regexPermitedChars - String - Obrigatório - Caracteres permitidos que será mostrado junto com a mensagem de erro.
 	
-	// Se regra = 'regexNecessary'	
+	// Se regra = 'regexNecessary'
 		
 		// regex - String - Obrigatório - Regex que será usado pelo validador de formulário.
 		// regexNecessaryChars - String - Obrigatório - Caracteres necessários que será mostrado junto com a mensagem de erro.
+	
+	// Se regra = 'manual'
+		
+		// regrasManuais - Array - Opcional - Conjunto regras definidas manualmente.
 	
 	// ===== 
 	
 	if(isset($validacao) && isset($formId)){
 		foreach($validacao as $regra){
 			switch($regra['regra']){
+				case 'manual':
+					$regras_validacao[$regra['campo']] = Array(
+						'rules' => $regrasManuais,
+					);
+				break;
 				case 'texto-obrigatorio':
 					$prompt[1] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-empty'));
 					$prompt[1] = modelo_var_troca($prompt[1],"#label#",$regra['label']);
