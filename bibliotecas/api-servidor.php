@@ -810,6 +810,7 @@ function api_servidor_interface($params = false){
 	
 	// interface - String - Obrigatório - Identificador da interface que se deseja acessar no servidor.
 	// opcao - String - Opcional - Opção para acessar na interface do servidor.
+	// plugin - String - Opcional - Identificador do plugin para acessar na interface do servidor.
 	// dados - Array - Opcional - Dados necessários para enviar para o servidor.
 	
 	// ===== 
@@ -856,6 +857,7 @@ function api_servidor_interface($params = false){
 		$data['hostId'] = $hostId;
 		
 		if(isset($opcao)) $data['opcao'] = $opcao;
+		if(isset($plugin)) $data['plugin'] = $plugin;
 		if(isset($dados)) $data['dados'] = json_encode($dados);
 		
 		// ===== Montar o cURL da conexão com todas as opções
