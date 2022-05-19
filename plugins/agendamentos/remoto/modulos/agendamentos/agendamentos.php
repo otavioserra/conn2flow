@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.33',
+	'versao' => '1.0.58',
 );
 
 // ===== Funções Auxiliares
@@ -183,30 +183,103 @@ function agendamentos_padrao(){
 		'formulario',
 	));
 	
+	// ===== Solicitação de criar agendamento.
+	
+	if(isset($_REQUEST['agendar'])){
+		// ===== API-Servidor para agendar.
+		
+		gestor_incluir_biblioteca('api-servidor');
+		
+		$retorno = api_servidor_interface(Array(
+			'interface' => 'agendamentos',
+			'plugin' => 'agendamentos',
+			'opcao' => 'agendar',
+			'dados' => Array(
+				//'dado' => true,
+			),
+		));
+		
+		if(!$retorno['completed']){
+			$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-servidor-error'));
+			
+			$alerta = modelo_var_troca($alerta,"#error-msg#",(existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status'] ));
+			
+			if($ajax){
+				return Array(
+					'status' => 'API_ERROR',
+					'msg' => $alerta,
+				);
+			} else {
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $alerta
+				));
+			}
+		} else {
+			// ===== Dados de retorno.
+			
+			$dados = Array();
+			if(isset($retorno['data'])){
+				$dados = $retorno['data'];
+			}
+			
+			// ===== Tratar retorno.
+			
+			
+		}
+		
+		// ===== Reler a página.
+		
+		gestor_reload_url();
+	}
+	
 	// ===== Montagem do calendário.
 	
 	agendamentos_calendario();
 	
-	// ===== Formulário validação.
+	// ===== Formulário validação definição padrão.
+	
+	$validacao = Array(
+		Array(
+			'regra' => 'manual',
+			'campo' => 'data',
+			'regrasManuais' => Array(
+				Array(
+					'type' => 'empty',
+					'prompt' => gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','id' => 'form-msg-data')),
+				),
+			),
+		)
+	);
+	
+	// ===== Acompanhantes montar.
+	
+	$maxAcompanhantes = gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','id' => 'max-acompanhantes'));
+	$cel_nome = 'acompanhantes'; $cel[$cel_nome] = pagina_celula($cel_nome);
+	
+	for($i=0;$i<=(int)$maxAcompanhantes;$i++){
+		if($i>0){
+			$validacao[] = Array(
+				'regra' => 'texto-obrigatorio',
+				'campo' => 'acompanhante'.$i,
+				'label' => 'Acompanhante '.$i,
+			);
+		}
+		
+		$cel_aux = $cel[$cel_nome];
+		
+		$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"#num#",$i,true);
+		
+		pagina_celula_incluir($cel_nome,$cel_aux);
+	}
+	
+	pagina_celula_incluir($cel_nome,'');
+	
+	// ===== Formulário validação montar.
 	
 	formulario_validacao(Array(
 		'formId' => 'formAgendamentos',
-		'validacao' => Array(
-			Array(
-				'regra' => 'manual',
-				'regrasManuais' => Array(
-					Array(
-						'type' => 'empty',
-						'prompt' => gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','id' => 'form-msg-data')),
-					),
-				),
-			),
-			Array(
-				'regra' => 'texto-obrigatorio',
-				'campo' => 'acompanhante',
-				'label' => '#acompanhante#',
-			),
-		)
+		'validacao' => $validacao
 	));
 	
 	// ===== Alterações no layout da página.

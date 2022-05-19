@@ -27,7 +27,7 @@ $(document).ready(function(){
 					
 				}
 			});
-		
+			
 		// ===== Calendário ptBR.
 		
 		var calendarPtBR = {
@@ -99,7 +99,7 @@ $(document).ready(function(){
 						
 						acompanhantesCont.append(field);
 						
-						$(formSelector).form('add rule', 'acompanhante'+num,{ rules : gestor.formulario[formId].regrasValidacao.acompanhante.rules });
+						$(formSelector).form('add rule', ('acompanhante'+num),{ rules : gestor.formulario[formId].regrasValidacao[('acompanhante'+num)].rules });
 					}
 				} else {
 					var num = 0;
@@ -113,7 +113,7 @@ $(document).ready(function(){
 							$(this).hide();
 						} else {
 							$(this).show();
-							$(formSelector).form('add rule', 'acompanhante'+num,{ rules : gestor.formulario[formId].regrasValidacao.acompanhante.rules });
+							$(formSelector).form('add rule', ('acompanhante'+num),{ rules : gestor.formulario[formId].regrasValidacao[('acompanhante'+num)].rules });
 						}
 					});
 				}

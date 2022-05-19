@@ -5105,15 +5105,22 @@ function plataforma_cliente_start(){
 		plataforma_cliente_401();
 	}
 	
-	// ===== Verifica a opção, executa interface caso encontrado e retorna os dados
+	// ===== Verifica se é uma interface de plugin. Caso positivo, disparar a plataforma-cliente do plugin, senão a local.
 	
-	switch($_GESTOR['caminho'][1]){
-		case 'carrinho': $dados = plataforma_cliente_carrinho(); break;
-		case 'identificacao': $dados = plataforma_cliente_identificacao(); break;
-		case 'emissao': $dados = plataforma_cliente_emissao(); break;
-		case 'pagamento': $dados = plataforma_cliente_pagamento(); break;
-		case 'voucher': $dados = plataforma_cliente_voucher(); break;
-		case 'usuario': $dados = plataforma_cliente_usuario(); break;
+	if(isset($_REQUEST['plugin'])){
+		$plugin = preg_replace('/[^A-Za-z0-9\-]/', '', $_REQUEST['plugin']);
+		$dados = require_once($_GESTOR['plugins-path'].$plugin.'/local/controladores/plataforma-cliente/plataforma-cliente.php');
+	} else {
+		// ===== Verifica a opção, executa interface caso encontrado e retorna os dados
+		
+		switch($_GESTOR['caminho'][1]){
+			case 'carrinho': $dados = plataforma_cliente_carrinho(); break;
+			case 'identificacao': $dados = plataforma_cliente_identificacao(); break;
+			case 'emissao': $dados = plataforma_cliente_emissao(); break;
+			case 'pagamento': $dados = plataforma_cliente_pagamento(); break;
+			case 'voucher': $dados = plataforma_cliente_voucher(); break;
+			case 'usuario': $dados = plataforma_cliente_usuario(); break;
+		}
 	}
 	
 	// ===== Caso haja dados criados por alguma opção, retornar JSON e finalizar. Senão retornar JSON 404.
