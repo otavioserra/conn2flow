@@ -1003,4 +1003,104 @@ function configuracao_hosts($params = false){
 	}
 }
 
+function configuracao_hosts_variaveis($params = false){
+	/**********
+		Descrição: função principal de configurações de hosts de um conjunto de configurações de um módulo.
+	**********/
+	
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// modulo - String - Obrigatório - Módulo alvo para filtrar as variáveis.
+	// linguagemCodigo - String - Opcional - Linguagem das variáveis.
+	// grupos - Array - Opcional - Grupos alvos para filtrar as variáveis de um módulo.
+	
+	// ===== 
+	
+	if(isset($modulo)){
+		// ===== Definir linguagem padrão caso não tenha sido enviada.
+		
+		if(!isset($linguagemCodigo)){
+			$linguagemCodigo = $_GESTOR['linguagem-codigo'];
+		}
+		
+		// ===== Montar SQL de filtragem de grupos.
+		
+		$gruposSQL = '';
+		
+		if(isset($grupos)){
+			$gruposSQL = ' AND (';
+			
+			foreach($grupos as $grupo){
+				$gruposSQL .= (!isset($primeiro) ? '':' OR ') . "grupo='".$grupo."'";
+				$primeiro = true;
+			}
+			
+			$gruposSQL .= ')';
+		}
+		
+		// ===== Pegar os dados do banco.
+		
+		$variaveis = banco_select(Array(
+			'tabela' => 'variaveis',
+			'campos' => Array(
+				'id_variaveis',
+				'id',
+				'valor',
+				'tipo',
+				'grupo',
+				'descricao',
+			),
+			'extra' => 
+				"WHERE linguagem_codigo='".$linguagemCodigo."'"
+				." AND modulo='".$modulo."'"
+				. $gruposSQL
+				." ORDER BY id ASC"
+		));
+		
+		$hosts_variaveis = banco_select(Array(
+			'tabela' => 'hosts_variaveis',
+			'campos' => Array(
+				'id_hosts_variaveis',
+				'id',
+				'valor',
+			),
+			'extra' => 
+				"WHERE linguagem_codigo='".$linguagemCodigo."'"
+				." AND modulo='".$modulo."'"
+				. $gruposSQL
+				." AND id_hosts='".$_GESTOR['host-id']."'"
+				." ORDER BY id ASC"
+		));
+		
+		// ===== Montar todas as variáveis.
+		
+		if($variaveis){
+			$count = 0;
+			
+			foreach($variaveis as $variavel){
+				// ===== Verificar se o valor padrão foi modificado por um valor específico do host e subistiuir o mesmo pelo valor específico.
+				
+				foreach($hosts_variaveis as $hosts_variavel){
+					if(
+						$variavel['id'] == $hosts_variavel['id']
+					){
+						$variavel['valor'] = $hosts_variavel['valor'];
+						break;
+					}
+				}
+				
+				$variaveisProcessadas[$variavel['id']] = $variavel['valor'];
+			}
+			
+			return $variaveisProcessadas;
+		}
+	}
+	
+	return Array();
+}
+
 ?>

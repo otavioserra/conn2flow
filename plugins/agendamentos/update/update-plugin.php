@@ -27,7 +27,7 @@ function atualizar_banco_de_dados(){
 	
 	$bancoDeDados = Array(
 		'tabelas' => Array(
-			'tabela' => 
+			'agendamentos_datas' => 
 				'CREATE TABLE IF NOT EXISTS `agendamentos_datas` (
 					`id_agendamentos_datas` INT NOT NULL AUTO_INCREMENT,
 					`id_hosts_agendamentos_datas` INT NULL,
@@ -35,6 +35,27 @@ function atualizar_banco_de_dados(){
 					`total` INT NULL,
 					`status` VARCHAR(255) NULL,
 					PRIMARY KEY (`id_agendamentos_datas`))
+				ENGINE = InnoDB'
+			,
+			'agendamentos' => 
+				'CREATE TABLE IF NOT EXISTS `agendamentos` (
+					`id_agendamentos` INT NOT NULL AUTO_INCREMENT,
+					`id_hosts_agendamentos` INT NULL,
+					`id_hosts_usuarios` INT NULL,
+					`data` DATE NULL,
+					`acompanhantes` INT NULL,
+					`senha` VARCHAR(100) NULL,
+					`status` VARCHAR(100) NULL,
+					PRIMARY KEY (`id_agendamentos`))
+				ENGINE = InnoDB'
+			,
+			'agendamentos_acompanhantes' => 
+				'CREATE TABLE IF NOT EXISTS `agendamentos_acompanhantes` (
+					`id_agendamentos_acompanhantes` INT NOT NULL AUTO_INCREMENT,
+					`id_hosts_agendamentos_acompanhantes` INT NULL,
+					`id_hosts_agendamentos` INT NULL,
+					`nome` VARCHAR(255) NULL,
+					PRIMARY KEY (`id_agendamentos_acompanhantes`))
 				ENGINE = InnoDB'
 			,
 		)

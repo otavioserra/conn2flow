@@ -186,6 +186,15 @@ function agendamentos_padrao(){
 	// ===== Solicitação de criar agendamento.
 	
 	if(isset($_REQUEST['agendar'])){
+		// ===== Tratar dados enviados.
+		
+		$agendamentoData = banco_escape_field($_REQUEST['agendamentoData']);
+		$acompanhantes = banco_escape_field($_REQUEST['acompanhantes']);
+		
+		for($i=1;$i<=(int)$acompanhantes;$i++){
+			$acompanhantesNomes[] = banco_escape_field($_REQUEST['acompanhante'.$i]);
+		}
+		
 		// ===== API-Servidor para agendar.
 		
 		gestor_incluir_biblioteca('api-servidor');
@@ -195,7 +204,10 @@ function agendamentos_padrao(){
 			'plugin' => 'agendamentos',
 			'opcao' => 'agendar',
 			'dados' => Array(
-				//'dado' => true,
+				'usuarioID' => $_GESTOR['usuario-id'],
+				'agendamentoData' => $agendamentoData,
+				'acompanhantes' => $acompanhantes,
+				'acompanhantesNomes' => $acompanhantesNomes,
 			),
 		));
 		
@@ -204,17 +216,10 @@ function agendamentos_padrao(){
 			
 			$alerta = modelo_var_troca($alerta,"#error-msg#",(existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status'] ));
 			
-			if($ajax){
-				return Array(
-					'status' => 'API_ERROR',
-					'msg' => $alerta,
-				);
-			} else {
-				interface_alerta(Array(
-					'redirect' => true,
-					'msg' => $alerta
-				));
-			}
+			interface_alerta(Array(
+				'redirect' => true,
+				'msg' => $alerta
+			));
 		} else {
 			// ===== Dados de retorno.
 			
@@ -233,54 +238,73 @@ function agendamentos_padrao(){
 		gestor_reload_url();
 	}
 	
-	// ===== Montagem do calendário.
+	// ===== Tratar o estado do agendamento.
 	
-	agendamentos_calendario();
+	$config = gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','conjunto' => true));
 	
-	// ===== Formulário validação definição padrão.
+	$agendamento_ativacao = (existe($config['agendamento-ativacao']) ? true : false);
+	$msgAgendamentoSuspenso = (existe($config['msg-agendamento-suspenso']) ? $config['msg-agendamento-suspenso'] : '');
 	
-	$validacao = Array(
-		Array(
-			'regra' => 'manual',
-			'campo' => 'data',
-			'regrasManuais' => Array(
-				Array(
-					'type' => 'empty',
-					'prompt' => gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','id' => 'form-msg-data')),
+	if($agendamento_ativacao){
+		// ===== Remover a célula inativo.
+		
+		$cel_nome = 'inativo'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+		
+		// ===== Montagem do calendário.
+		
+		agendamentos_calendario();
+		
+		// ===== Formulário validação definição padrão.
+		
+		$validacao = Array(
+			Array(
+				'regra' => 'manual',
+				'campo' => 'data',
+				'regrasManuais' => Array(
+					Array(
+						'type' => 'empty',
+						'prompt' => gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','id' => 'form-msg-data')),
+					),
 				),
-			),
-		)
-	);
-	
-	// ===== Acompanhantes montar.
-	
-	$maxAcompanhantes = gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','id' => 'max-acompanhantes'));
-	$cel_nome = 'acompanhantes'; $cel[$cel_nome] = pagina_celula($cel_nome);
-	
-	for($i=0;$i<=(int)$maxAcompanhantes;$i++){
-		if($i>0){
-			$validacao[] = Array(
-				'regra' => 'texto-obrigatorio',
-				'campo' => 'acompanhante'.$i,
-				'label' => 'Acompanhante '.$i,
-			);
+			)
+		);
+		
+		// ===== Acompanhantes montar.
+		
+		$maxAcompanhantes = gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','id' => 'max-acompanhantes'));
+		$cel_nome = 'acompanhantes'; $cel[$cel_nome] = pagina_celula($cel_nome);
+		
+		for($i=0;$i<=(int)$maxAcompanhantes;$i++){
+			if($i>0){
+				$validacao[] = Array(
+					'regra' => 'texto-obrigatorio',
+					'campo' => 'acompanhante'.$i,
+					'label' => 'Acompanhante '.$i,
+				);
+			}
+			
+			$cel_aux = $cel[$cel_nome];
+			
+			$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"#num#",$i,true);
+			
+			pagina_celula_incluir($cel_nome,$cel_aux);
 		}
 		
-		$cel_aux = $cel[$cel_nome];
+		pagina_celula_incluir($cel_nome,'');
 		
-		$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"#num#",$i,true);
+		// ===== Formulário validação montar.
 		
-		pagina_celula_incluir($cel_nome,$cel_aux);
+		formulario_validacao(Array(
+			'formId' => 'formAgendamentos',
+			'validacao' => $validacao
+		));
+	} else {
+		// ===== Remover a célula ativo.
+		
+		$cel_nome = 'ativo'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+		
+		pagina_trocar_variavel_valor('msg-agendamento-suspenso',$msgAgendamentoSuspenso);
 	}
-	
-	pagina_celula_incluir($cel_nome,'');
-	
-	// ===== Formulário validação montar.
-	
-	formulario_validacao(Array(
-		'formId' => 'formAgendamentos',
-		'validacao' => $validacao
-	));
 	
 	// ===== Alterações no layout da página.
 	

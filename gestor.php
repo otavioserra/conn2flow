@@ -2236,123 +2236,121 @@ function gestor_host_variaveis($params = false){
 	
 	// ===== Caso queira alterar o valor, senão devolver o valor
 	
-	if(isset($modulo)){
-		$usuario = gestor_usuario();
+	$usuario = gestor_usuario();
+	
+	if(isset($alterar)){
+		if(!isset($tipo)){ $tipo = 'string'; }
+		if(!isset($valor)){ $valor = ''; }
 		
-		if(isset($alterar)){
-			if(!isset($tipo)){ $tipo = 'string'; }
-			if(!isset($valor)){ $valor = ''; }
+		$hosts_variaveis = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'id',
+			))
+			,
+			"hosts_variaveis",
+			"WHERE modulo='".$modulo."'"
+			." AND id='".$id."'"
+			." AND id_hosts='".$_GESTOR['host-id']."'"
+			.(isset($global) ? '' : " AND id_usuarios='".$usuario['id_usuarios']."'")
+		);
+		
+		if($hosts_variaveis){
+			switch($tipo){
+				case 'bool':
+					banco_update
+					(
+						"valor=".($valor ? '1' : 'NULL'),
+						"hosts_variaveis",
+						"WHERE modulo='".$modulo."'"
+						." AND id='".$id."'"
+						." AND id_hosts='".$_GESTOR['host-id']."'"
+						.(isset($global) ? '' : " AND id_usuarios='".$usuario['id_usuarios']."'")
+					);
+				break;
+				default:
+					banco_update
+					(
+						"valor='".$valor."'",
+						"hosts_variaveis",
+						"WHERE modulo='".$modulo."'"
+						." AND id='".$id."'"
+						." AND id_hosts='".$_GESTOR['host-id']."'"
+						.(isset($global) ? '' : " AND id_usuarios='".$usuario['id_usuarios']."'")
+					);
+			}
+		} else {
+			switch($tipo){
+				case 'bool':
+					$valor_sem_aspas_simples = true;
+				break;
+				default:
+					$valor_sem_aspas_simples = false;
+			}
 			
+			$campos = null; $campo_sem_aspas_simples = null;
+			
+			$campo_nome = "id_hosts"; $campo_valor = $_GESTOR['host-id']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			$campo_nome = "modulo"; $campo_valor = $modulo; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			$campo_nome = "id"; $campo_valor = $id; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			$campo_nome = "valor"; $campo_valor = $valor; 		$campos[] = Array($campo_nome,$campo_valor,$valor_sem_aspas_simples);
+			$campo_nome = "tipo"; $campo_valor = $tipo; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			
+			if(!isset($global)){$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);}
+			
+			banco_insert_name
+			(
+				$campos,
+				"hosts_variaveis"
+			);
+		}
+	} else {
+		// ===== Buscar no banco de dados caso não tenha sido ainda lido na sessão.
+		
+		if(!isset($_GESTOR['host-variaveis'][$modulo])){
 			$hosts_variaveis = banco_select_name
 			(
 				banco_campos_virgulas(Array(
 					'id',
+					'valor',
 				))
 				,
 				"hosts_variaveis",
 				"WHERE modulo='".$modulo."'"
-				." AND id='".$id."'"
 				." AND id_hosts='".$_GESTOR['host-id']."'"
 				.(isset($global) ? '' : " AND id_usuarios='".$usuario['id_usuarios']."'")
 			);
 			
 			if($hosts_variaveis){
-				switch($tipo){
-					case 'bool':
-						banco_update
-						(
-							"valor=".($valor ? '1' : 'NULL'),
-							"hosts_variaveis",
-							"WHERE modulo='".$modulo."'"
-							." AND id='".$id."'"
-							." AND id_hosts='".$_GESTOR['host-id']."'"
-							.(isset($global) ? '' : " AND id_usuarios='".$usuario['id_usuarios']."'")
-						);
-					break;
-					default:
-						banco_update
-						(
-							"valor='".$valor."'",
-							"hosts_variaveis",
-							"WHERE modulo='".$modulo."'"
-							." AND id='".$id."'"
-							." AND id_hosts='".$_GESTOR['host-id']."'"
-							.(isset($global) ? '' : " AND id_usuarios='".$usuario['id_usuarios']."'")
-						);
+				foreach($hosts_variaveis as $hv){
+					$_GESTOR['host-variaveis'][$modulo][$hv['id']] = $hv['valor'];
+				}
+			}
+		}
+		
+		// ===== Se conjunto definido filtrar se existir padrao e retornar o conjunto, senão retornar valor pontual.
+		
+		if(isset($conjunto)){
+			if(isset($_GESTOR['host-variaveis'][$modulo])){
+				if(isset($padrao)){
+					$hosts_variaveis_aux = $_GESTOR['host-variaveis'][$modulo];
+					$hosts_variaveis = Array();
+					
+					foreach($hosts_variaveis_aux as $id_aux => $hv_aux){
+						if(preg_match('/'.preg_quote($padrao).'/i', $id_aux) > 0){
+							$hosts_variaveis[$id_aux] = $hv_aux;
+						}
+					}
+					
+					return $hosts_variaveis;
+				} else {
+					return $_GESTOR['host-variaveis'][$modulo];
 				}
 			} else {
-				switch($tipo){
-					case 'bool':
-						$valor_sem_aspas_simples = true;
-					break;
-					default:
-						$valor_sem_aspas_simples = false;
-				}
-				
-				$campos = null; $campo_sem_aspas_simples = null;
-				
-				$campo_nome = "id_hosts"; $campo_valor = $_GESTOR['host-id']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "modulo"; $campo_valor = $modulo; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "id"; $campo_valor = $id; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "valor"; $campo_valor = $valor; 		$campos[] = Array($campo_nome,$campo_valor,$valor_sem_aspas_simples);
-				$campo_nome = "tipo"; $campo_valor = $tipo; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				
-				if(!isset($global)){$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);}
-				
-				banco_insert_name
-				(
-					$campos,
-					"hosts_variaveis"
-				);
+				return Array();
 			}
 		} else {
-			// ===== Buscar no banco de dados caso não tenha sido ainda lido na sessão.
-			
-			if(!isset($_GESTOR['host-variaveis'][$modulo])){
-				$hosts_variaveis = banco_select_name
-				(
-					banco_campos_virgulas(Array(
-						'id',
-						'valor',
-					))
-					,
-					"hosts_variaveis",
-					"WHERE modulo='".$modulo."'"
-					." AND id_hosts='".$_GESTOR['host-id']."'"
-					.(isset($global) ? '' : " AND id_usuarios='".$usuario['id_usuarios']."'")
-				);
-				
-				if($hosts_variaveis){
-					foreach($hosts_variaveis as $hv){
-						$_GESTOR['host-variaveis'][$modulo][$hv['id']] = $hv['valor'];
-					}
-				}
-			}
-			
-			// ===== Se conjunto definido filtrar se existir padrao e retornar o conjunto, senão retornar valor pontual.
-			
-			if(isset($conjunto)){
-				if(isset($_GESTOR['host-variaveis'][$modulo])){
-					if(isset($padrao)){
-						$hosts_variaveis_aux = $_GESTOR['host-variaveis'][$modulo];
-						$hosts_variaveis = Array();
-						
-						foreach($hosts_variaveis_aux as $id_aux => $hv_aux){
-							if(preg_match('/'.preg_quote($padrao).'/i', $id_aux) > 0){
-								$hosts_variaveis[$id_aux] = $hv_aux;
-							}
-						}
-						
-						return $hosts_variaveis;
-					} else {
-						return $_GESTOR['host-variaveis'][$modulo];
-					}
-				} else {
-					return Array();
-				}
-			} else {
-				return (isset($_GESTOR['host-variaveis'][$modulo][$id]) ? $_GESTOR['host-variaveis'][$modulo][$id] : '' );
-			}
+			return (isset($_GESTOR['host-variaveis'][$modulo][$id]) ? $_GESTOR['host-variaveis'][$modulo][$id] : '' );
 		}
 	}
 }
