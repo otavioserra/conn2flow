@@ -187,11 +187,6 @@ function plataforma_cliente_plugin_agendamentos(){
 					);
 				}
 				
-				return Array(
-					'status' => 'TESTES',
-					'error-msg' => print_r($dados,true).' ### '. print_r($acompanhantesNomes,true) . ' ### '.$acompanhantes,
-				);
-				
 				// ===== Criar data no agendamento_datas caso não exista.
 				
 				$hosts_agendamentos_datas = banco_select(Array(
