@@ -183,7 +183,7 @@ function plataforma_cliente_plugin_agendamentos(){
 					
 					return Array(
 						'status' => 'AGENDAMENTO_DATA_NAO_PERMITIDA',
-						'error-msg' => $msgAgendamentoDataNaoPermitida.print_r($dados,true),
+						'error-msg' => $msgAgendamentoDataNaoPermitida,
 					);
 				}
 				

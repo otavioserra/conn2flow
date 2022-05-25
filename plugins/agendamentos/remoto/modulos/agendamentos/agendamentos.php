@@ -188,7 +188,7 @@ function agendamentos_padrao(){
 	if(isset($_REQUEST['agendar'])){
 		// ===== Tratar dados enviados.
 		
-		$agendamentoData = banco_escape_field($_REQUEST['agendamentoData']);
+		$agendamentoData = banco_escape_field($_REQUEST['data']);
 		$acompanhantes = banco_escape_field($_REQUEST['acompanhantes']);
 		
 		for($i=1;$i<=(int)$acompanhantes;$i++){
