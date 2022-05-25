@@ -139,10 +139,13 @@ $(document).ready(function(){
 		if('tela' in gestor){
 			switch(gestor.tela){
 				case 'agendamentos-anteriores':
-					$('.agendamentosTela').hide();
 					$('.agendamentos').show();
 				break;
+				default:
+					$('.agendar').show();
 			}
+		} else {
+			$('.agendar').show();
 		}
 	}
 	
