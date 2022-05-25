@@ -356,6 +356,8 @@ function plataforma_cliente_plugin_agendamentos(){
 						banco_update_campo('senha',$senha);
 						banco_update_campo('status','confirmado');
 						banco_update_campo('pub_hash',$pub_hash);
+						banco_update_campo('versao','versao+1',true);
+						banco_update_campo('data_modificacao','NOW()',true);
 						
 						banco_update_executar('hosts_agendamentos',"WHERE id_hosts='".$id_hosts."' AND id_hosts_agendamentos='".$id_hosts_agendamentos."' AND id_hosts_usuarios='".$id_hosts_usuarios."'");
 					} else {
@@ -368,6 +370,9 @@ function plataforma_cliente_plugin_agendamentos(){
 						banco_insert_name_campo('senha',$senha);
 						banco_insert_name_campo('status','confirmado');
 						banco_insert_name_campo('pub_hash',$pub_hash);
+						banco_insert_name_campo('versao','1',true);
+						banco_insert_name_campo('data_criacao','NOW()',true);
+						banco_insert_name_campo('data_modificacao','NOW()',true);
 						
 						banco_insert_name
 						(
@@ -486,6 +491,9 @@ function plataforma_cliente_plugin_agendamentos(){
 					banco_insert_name_campo('data',$agendamentoData);
 					banco_insert_name_campo('acompanhantes',$acompanhantes);
 					banco_insert_name_campo('status','novo');
+					banco_insert_name_campo('versao','1',true);
+					banco_insert_name_campo('data_criacao','NOW()',true);
+					banco_insert_name_campo('data_modificacao','NOW()',true);
 					
 					banco_insert_name
 					(

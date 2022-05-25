@@ -295,6 +295,7 @@ function agendamentos_padrao(){
 					foreach($agendamentos as $key => $valor){
 						switch($key){
 							case 'acompanhantes':
+							case 'versao':
 								banco_update_campo($key,($valor ? $valor : '0'),true);
 							break;
 							default:
@@ -337,6 +338,7 @@ function agendamentos_padrao(){
 					foreach($agendamentos as $key => $valor){
 						switch($key){
 							case 'acompanhantes':
+							case 'versao':
 								banco_insert_name_campo($key,($valor ? $valor : '0'),true);
 							break;
 							default:
