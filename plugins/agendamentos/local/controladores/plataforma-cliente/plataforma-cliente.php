@@ -305,7 +305,7 @@ function plataforma_cliente_plugin_agendamentos(){
 					
 					gestor_incluir_biblioteca('formato');
 					
-					$senha = formato_colocar_char_meio_numero(formato_zero_a_esquerda(rand(1,99999),5));
+					$senha = formato_colocar_char_meio_numero(formato_zero_a_esquerda(rand(1,99999),6));
 					
 					// ===== Pegar dados do usuário e gerar o pub_hash.
 					

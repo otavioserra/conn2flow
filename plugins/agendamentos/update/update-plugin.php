@@ -46,6 +46,7 @@ function atualizar_banco_de_dados(){
 					`acompanhantes` INT NULL,
 					`senha` VARCHAR(100) NULL,
 					`status` VARCHAR(100) NULL,
+					`pub_hash` VARCHAR(255) NULL,
 					PRIMARY KEY (`id_agendamentos`))
 				ENGINE = InnoDB'
 			,
