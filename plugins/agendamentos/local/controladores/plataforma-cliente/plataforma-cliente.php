@@ -426,6 +426,12 @@ function plataforma_cliente_plugin_agendamentos(){
 					
 					$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($agendamentoMensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $agendamentoMensagem = modelo_tag_in($agendamentoMensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 					
+					$cel_aux = $cel[$cel_nome];
+					
+					$cel_aux = modelo_var_troca($cel_aux,"#nome#",$nome);
+					
+					$agendamentoMensagem = modelo_var_in($agendamentoMensagem,'<!-- '.$cel_nome.' -->',$cel_aux);
+					
 					for($i=0;$i<(int)$acompanhantes;$i++){
 						$cel_aux = $cel[$cel_nome];
 						
@@ -441,6 +447,12 @@ function plataforma_cliente_plugin_agendamentos(){
 					$msgConclusaoAgendamento = modelo_var_troca_tudo($msgConclusaoAgendamento,"#senha#",$senha);
 					
 					$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($msgConclusaoAgendamento,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $msgConclusaoAgendamento = modelo_tag_in($msgConclusaoAgendamento,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					
+					$cel_aux = $cel[$cel_nome];
+					
+					$cel_aux = modelo_var_troca($cel_aux,"#nome#",$nome);
+					
+					$msgConclusaoAgendamento = modelo_var_in($msgConclusaoAgendamento,'<!-- '.$cel_nome.' -->',$cel_aux);
 					
 					for($i=0;$i<(int)$acompanhantes;$i++){
 						$cel_aux = $cel[$cel_nome];
