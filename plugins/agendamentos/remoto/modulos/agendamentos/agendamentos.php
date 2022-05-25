@@ -192,7 +192,7 @@ function agendamentos_padrao(){
 		$acompanhantes = banco_escape_field($_REQUEST['acompanhantes']);
 		
 		for($i=1;$i<=(int)$acompanhantes;$i++){
-			$acompanhantesNomes[] = banco_escape_field($_REQUEST['acompanhante'.$i]);
+			$acompanhantesNomes[] = banco_escape_field($_REQUEST['acompanhante-'.$i]);
 		}
 		
 		// ===== API-Servidor para agendar.
