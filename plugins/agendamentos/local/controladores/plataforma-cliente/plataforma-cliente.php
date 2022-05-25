@@ -409,6 +409,8 @@ function plataforma_cliente_plugin_agendamentos(){
 					
 					// ===== Formatar mensagem do email.
 					
+					gestor_incluir_biblioteca('host');
+					
 					$agendamentoAssunto = modelo_var_troca_tudo($agendamentoAssunto,"#codigo#",$codigo);
 					
 					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#codigo#",$codigo);
