@@ -104,6 +104,36 @@ function formato_texto_para_int($texto){
 	return str_replace(".", "", $texto);
 }
 
+function formato_zero_a_esquerda($num,$dig){
+	$len = strlen((string)$num);
+	
+	if($len < $dig){
+		$num2 = $num;
+		
+		for($i=0;$i<$dig - $len;$i++){
+			$num2 = '0'.$num2;
+		}
+		
+		return $num2;
+	} else {
+		return $num;
+	}
+}
+
+function formato_colocar_char_meio_numero($num,$char = '-'){
+	$len = strlen((string)$num);
+	
+	$numArr = str_split($num, floor($len/2));
+	$numFinal = '';
+	
+	foreach($numArr as $n){
+		$numFinal .= $n . (!isset($charColocado) ? $char : '');
+		$charColocado = true;
+	}
+	
+	return $numFinal;
+}
+
 // ===== Funções principais
 
 function formato_dado_para($tipo,$valor){

@@ -228,9 +228,145 @@ function agendamentos_padrao(){
 				$dados = $retorno['data'];
 			}
 			
-			// ===== Tratar retorno.
+			// ===== Caso houve atualização do agendamentos datas, alterar os dados localmente.
 			
+			if(isset($dados['agendamentos_datas'])){
+				$id_hosts_agendamentos_datas = $dados['agendamentos_datas']['id_hosts_agendamentos_datas'];
+				$total = $dados['agendamentos_datas']['total'];
+				
+				$agendamentos_datas = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'agendamentos_datas',
+					'campos' => Array(
+						'id_hosts_agendamentos_datas',
+					),
+					'extra' => 
+						"WHERE id_hosts_agendamentos_datas='".$id_hosts_agendamentos_datas."'"
+				));
+				
+				if($agendamentos_datas){
+					banco_update_campo('total',$total);
+					
+					banco_update_executar('agendamentos_datas',"WHERE id_hosts_agendamentos_datas='".$id_hosts_agendamentos_datas."'");
+				} else {
+					banco_insert_name_campo('id_hosts_agendamentos_datas',$id_hosts_agendamentos_datas);
+					banco_insert_name_campo('data',$agendamentoData);
+					banco_insert_name_campo('total',$total);
+					banco_insert_name_campo('status','novo');
+					
+					banco_insert_name
+					(
+						banco_insert_name_campos(),
+						"agendamentos_datas"
+					);
+				}
+			}
 			
+			// ===== Gerar o agendamento ou atualizar um já existente.
+			
+			$id_hosts_usuarios = $_GESTOR['usuario-id'];
+			$id_hosts_agendamentos = $dados['agendamentos']['id_hosts_agendamentos'];
+			
+			$agendamentos = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'agendamentos',
+				'campos' => Array(
+					'id_hosts_agendamentos',
+				),
+				'extra' => 
+					"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+			));
+			
+			if($agendamentos){
+				// ===== Atualizar agendamento.
+				
+				if(isset($dados['agendamentos'])){
+					$agendamentos = $dados['agendamentos'];
+					
+					foreach($agendamentos as $key => $valor){
+						switch($key){
+							case 'acompanhantes':
+								banco_update_campo($key,($valor ? $valor : '0'),true);
+							break;
+							default:
+								banco_update_campo($key,$valor);
+						}
+					}
+					
+					banco_update_executar('agendamentos',"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."' AND id_hosts_usuarios='".$id_hosts_usuarios."'");
+				}
+				
+				// ===== Substituir acompanhantes.
+				
+				banco_delete
+				(
+					"agendamentos_acompanhantes",
+					"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+				);
+				
+				if(isset($dados['agendamentos_acompanhantes']))
+				foreach($dados['agendamentos_acompanhantes'] as $agendamentos_acompanhantes){
+					foreach($agendamentos_acompanhantes as $key => $valor){
+						switch($key){
+							default:
+								banco_insert_name_campo($key,$valor);
+						}
+					}
+					
+					banco_insert_name
+					(
+						banco_insert_name_campos(),
+						"agendamentos_acompanhantes"
+					);
+				}
+			} else {
+				// ===== Criar novo agendamento.
+				
+				if(isset($dados['agendamentos'])){
+					$agendamentos = $dados['agendamentos'];
+					
+					foreach($agendamentos as $key => $valor){
+						switch($key){
+							case 'acompanhantes':
+								banco_insert_name_campo($key,($valor ? $valor : '0'),true);
+							break;
+							default:
+								banco_insert_name_campo($key,$valor);
+						}
+					}
+					
+					banco_insert_name
+					(
+						banco_insert_name_campos(),
+						"agendamentos"
+					);
+				}
+				
+				// ===== Criar acompanhantes do agendamento caso houver.
+				
+				if(isset($dados['agendamentos_acompanhantes']))
+				foreach($dados['agendamentos_acompanhantes'] as $agendamentos_acompanhantes){
+					foreach($agendamentos_acompanhantes as $key => $valor){
+						switch($key){
+							default:
+								banco_insert_name_campo($key,$valor);
+						}
+					}
+					
+					banco_insert_name
+					(
+						banco_insert_name_campos(),
+						"agendamentos_acompanhantes"
+					);
+				}
+			}
+			
+			// ===== Alertar o usuário.
+			
+			interface_alerta(Array(
+				'redirect' => true,
+				'msg' => $dados['alerta']
+			));
 		}
 		
 		// ===== Reler a página.

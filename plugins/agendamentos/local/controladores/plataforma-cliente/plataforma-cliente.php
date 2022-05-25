@@ -170,7 +170,8 @@ function plataforma_cliente_plugin_agendamentos(){
 				
 				// ===== Tratar os dados enviados.
 				
-				$usuarioID = $dados['usuarioID'];
+				$id_hosts_usuarios = banco_escape_field($dados['usuarioID']);
+				
 				$agendamentoData = $dados['agendamentoData'];
 				$acompanhantes = (int)$dados['acompanhantes'];
 				$acompanhantesNomes = $dados['acompanhantesNomes'];
@@ -186,25 +187,460 @@ function plataforma_cliente_plugin_agendamentos(){
 					);
 				}
 				
-				// ===== Verificar se está na fase residual ou antes do sorteio (fase de sorteio é tratada na função anterior de 'data_permitida'). Tratar cada caso de forma diferente.
+				// ===== Criar data no agendamento_datas caso não exista.
+				
+				$hosts_agendamentos_datas = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_agendamentos_datas',
+					'campos' => Array(
+						'id_hosts_agendamentos_datas',
+					),
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+						." AND data='".$agendamentoData."'"
+				));
+				
+				if(!$hosts_agendamentos_datas){
+					banco_insert_name_campo('id_hosts',$id_hosts);
+					banco_insert_name_campo('data',$agendamentoData);
+					banco_insert_name_campo('total','0',true);
+					banco_insert_name_campo('status','novo');
+					
+					banco_insert_name
+					(
+						banco_insert_name_campos(),
+						"hosts_agendamentos_datas"
+					);
+				}
+				
+				// ===== Verificar agendamento do usuário para a data enviada.
+				
+				$hosts_agendamentos = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_agendamentos',
+					'campos' => Array(
+						'id_hosts_agendamentos',
+						'status',
+					),
+					'extra' => 
+						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$id_hosts."'"
+						." AND data='".$agendamentoData."'"
+				));
+				
+				// ===== Verificar se está na fase residual ou em pré-agendamento (fase de sorteio é tratada na função anterior 'data_permitida'). Tratar cada caso de forma diferente.
 				
 				$fase_residual = (existe($config['fase-residual']) ? (int)$config['fase-residual'] : 5);
 				
 				$hoje = date('Y-m-d');
 				
 				if(strtotime($agendamentoData) <= strtotime($hoje.' + '.$fase_residual.' day')){
+					// ===== Verificar se já tem agendamento confirmado para esta data. Caso tenha, retornar erro e mensagem de permissão apenas de um agendamento por data.
 					
+					if($hosts_agendamentos){
+						if($hosts_agendamentos['status'] == 'confirmado'){
+							$msgAgendamentoJaExiste = (existe($config['msg-agendamento-ja-existe']) ? $config['msg-agendamento-ja-existe'] : '');
+							
+							return Array(
+								'status' => 'AGENDAMENTO_MULTIPLO_NAO_PERMITIDO',
+								'error-msg' => $msgAgendamentoJaExiste,
+							);
+						} else {
+							$atualizarAgendamento = true;
+						}
+					}
+					
+					// ===== Pegar a quantidade de vagas máxima.
+					
+					$dias_semana_maximo_vagas_arr = (existe($config['dias-semana-maximo-vagas']) ? explode(',',$config['dias-semana-maximo-vagas']) : Array());
+					
+					$count_dias = 0;
+					if($dias_semana)
+					foreach($dias_semana as $dia_semana){
+						if($dia_semana == strtolower(date('D',strtotime($agendamentoData)))){
+							break;
+						}
+						$count_dias++;
+					}
+					
+					if(count($dias_semana_maximo_vagas_arr) > 1){
+						$dias_semana_maximo_vagas = $dias_semana_maximo_vagas_arr[$count_dias];
+					} else {
+						$dias_semana_maximo_vagas = $dias_semana_maximo_vagas_arr[0];
+					}
+					
+					// ===== Verificar se há vagas suficientes para a data requerida. Caso não tenha, retornar mensagem de erro.
+					
+					$hosts_agendamentos_datas = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'hosts_agendamentos_datas',
+						'campos' => Array(
+							'id_hosts_agendamentos_datas',
+							'total',
+						),
+						'extra' => 
+							"WHERE id_hosts='".$id_hosts."'"
+							." AND data='".$agendamentoData."'"
+							." AND total + ".($acompanhantes+1)." <= ".$dias_semana_maximo_vagas
+					));
+					
+					if(!$hosts_agendamentos_datas){
+						$msgAgendamentoSemVagas = (existe($config['msg-agendamento-sem-vagas']) ? $config['msg-agendamento-sem-vagas'] : '');
+						
+						return Array(
+							'status' => 'AGENDAMENTO_SEM_VAGAS',
+							'error-msg' => $msgAgendamentoSemVagas,
+						);
+					}
+					
+					// ===== Atualizar a quantidade total de vagas utilizadas em agendamentos para a data em questão.
+					
+					banco_update_campo('total','total+'.($acompanhantes+1),true);
+					
+					banco_update_executar('hosts_agendamentos_datas',"WHERE id_hosts_agendamentos_datas='".$hosts_agendamentos_datas['id_hosts_agendamentos_datas']."'");
+					
+					$atualizarAgendamentosDatas = true;
+					
+					// ===== Gerar senha do agendamento.
+					
+					gestor_incluir_biblioteca('formato');
+					
+					$senha = formato_colocar_char_meio_numero(formato_zero_a_esquerda(rand(1,99999),5));
+					
+					// ===== Pegar dados do usuário e gerar o pub_hash.
+					
+					$hosts_usuarios = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'hosts_usuarios',
+						'campos' => Array(
+							'senha'
+							'nome'
+							'email'
+						),
+						'extra' => 
+							"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+							." AND id_hosts='".$id_hosts."'"
+					));
+					
+					$pub_hash = hash('sha256',$hosts_usuarios['senha'].$agendamentoData.$senha);
+					
+					// ===== Gerar o agendamento ou atualizar um já existente.
+					
+					if(isset($atualizarAgendamento)){
+						$id_hosts_agendamentos = $hosts_agendamentos['id_hosts_agendamentos'];
+						
+						// ===== Substituir acompanhantes.
+						
+						banco_delete
+						(
+							"hosts_agendamentos_acompanhantes",
+							"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+							." AND id_hosts='".$id_hosts."'"
+						);
+						
+						for($i=0;$i<(int)$acompanhantes;$i++){
+							banco_insert_name_campo('id_hosts',$id_hosts);
+							banco_insert_name_campo('id_hosts_agendamentos',$id_hosts_agendamentos);
+							banco_insert_name_campo('nome',$acompanhantesNomes[$i]);
+							
+							banco_insert_name
+							(
+								banco_insert_name_campos(),
+								"hosts_agendamentos_acompanhantes"
+							);
+						}
+						
+						// ===== Atualizar agendamento.
+						
+						banco_update_campo('acompanhantes',$acompanhantes);
+						banco_update_campo('senha',$senha);
+						banco_update_campo('status','confirmado');
+						banco_update_campo('pub_hash',$pub_hash);
+						
+						banco_update_executar('hosts_agendamentos',"WHERE id_hosts='".$id_hosts."' AND id_hosts_agendamentos='".$id_hosts_agendamentos."' AND id_hosts_usuarios='".$id_hosts_usuarios."'");
+					} else {
+						// ===== Criar novo agendamento.
+						
+						banco_insert_name_campo('id_hosts',$id_hosts);
+						banco_insert_name_campo('id_hosts_usuarios',$id_hosts_usuarios);
+						banco_insert_name_campo('data',$agendamentoData);
+						banco_insert_name_campo('acompanhantes',$acompanhantes);
+						banco_insert_name_campo('senha',$senha);
+						banco_insert_name_campo('status','confirmado');
+						banco_insert_name_campo('pub_hash',$pub_hash);
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"hosts_agendamentos"
+						);
+						
+						$id_hosts_agendamentos = banco_last_id();
+						
+						// ===== Criar acompanhantes do agendamento caso houver.
+						
+						if((int)$acompanhantes > 0){
+							for($i=0;$i<(int)$acompanhantes;$i++){
+								banco_insert_name_campo('id_hosts',$id_hosts);
+								banco_insert_name_campo('id_hosts_agendamentos',$id_hosts_agendamentos);
+								banco_insert_name_campo('nome',$acompanhantesNomes[$i]);
+								
+								banco_insert_name
+								(
+									banco_insert_name_campos(),
+									"hosts_agendamentos_acompanhantes"
+								);
+							}
+						}
+					}
+					
+					// ===== Formatar dados do email.
+					
+					$agendamentoAssunto = (existe($config['agendamento-assunto']) ? $config['agendamento-assunto'] : '');
+					$agendamentoMensagem = (existe($config['agendamento-mensagem']) ? $config['agendamento-mensagem'] : '');
+					$msgConclusaoAgendamento = (existe($config['msg-conclusao-agendamento']) ? $config['msg-conclusao-agendamento'] : '');
+					
+					$tituloEstabelecimento = (existe($config['titulo-estabelecimento']) ? $config['titulo-estabelecimento'] : '');
+					
+					$email = $hosts_usuarios['email'];
+					$nome = $hosts_usuarios['nome'];
+					
+					$codigo = date('dmY').formato_zero_a_esquerda($id_hosts_agendamentos,6);
+					
+					// ===== Formatar mensagem do email.
+					
+					$agendamentoAssunto = modelo_var_troca_tudo($agendamentoAssunto,"#codigo#",$codigo);
+					
+					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#codigo#",$codigo);
+					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#titulo#",$tituloEstabelecimento);
+					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#data#",formato_dado_para('data',$agendamentoData));
+					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#senha#",$senha);
+					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#url-cancelamento#",'<a target="agendamento" href="'.host_url(Array('opcao'=>'full')).'agendamentos/?opcao=cancelar&pub_hash='.$pub_hash.'">'.host_url(Array('opcao'=>'full')).'agendamentos/?opcao=cancelar&pub_hash='.$pub_hash.'</a>');
+					
+					$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($agendamentoMensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $agendamentoMensagem = modelo_tag_in($agendamentoMensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					
+					for($i=0;$i<(int)$acompanhantes;$i++){
+						$cel_aux = $cel[$cel_nome];
+						
+						$cel_aux = modelo_var_troca($cel_aux,"#nome#",$acompanhantesNomes[$i]);
+						
+						$agendamentoMensagem = modelo_var_in($agendamentoMensagem,'<!-- '.$cel_nome.' -->',$cel_aux);
+					}
+					$agendamentoMensagem = modelo_var_troca($agendamentoMensagem,'<!-- '.$cel_nome.' -->','');
+					
+					// ===== Formatar mensagem do alerta.
+					
+					$msgConclusaoAgendamento = modelo_var_troca_tudo($msgConclusaoAgendamento,"#data#",formato_dado_para('data',$agendamentoData));
+					$msgConclusaoAgendamento = modelo_var_troca_tudo($msgConclusaoAgendamento,"#senha#",$senha);
+					
+					$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($msgConclusaoAgendamento,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $msgConclusaoAgendamento = modelo_tag_in($msgConclusaoAgendamento,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					
+					for($i=0;$i<(int)$acompanhantes;$i++){
+						$cel_aux = $cel[$cel_nome];
+						
+						$cel_aux = modelo_var_troca($cel_aux,"#nome#",$acompanhantesNomes[$i]);
+						
+						$msgConclusaoAgendamento = modelo_var_in($msgConclusaoAgendamento,'<!-- '.$cel_nome.' -->',$cel_aux);
+					}
+					$msgConclusaoAgendamento = modelo_var_troca($msgConclusaoAgendamento,'<!-- '.$cel_nome.' -->','');
+					
+					$msgAlerta = $msgConclusaoAgendamento;
+					
+					// ===== Enviar email com informações do agendamento.
+					
+					gestor_incluir_biblioteca(Array('comunicacao','host'));
+					
+					if(comunicacao_email(Array(
+						'destinatarios' => Array(
+							Array(
+								'email' => $email,
+								'nome' => $nome,
+							),
+						),
+						'mensagem' => Array(
+							'assunto' => $agendamentoAssunto,
+							'html' => $agendamentoMensagem,
+							'htmlAssinaturaAutomatica' => true,
+						),
+					))){
+						
+					}
 				} else {
+					// ===== Verificar se já tem agendamento para esta data. Caso tenha, retornar erro e mensagem de permissão apenas de um agendamento por data.
 					
+					if($hosts_agendamentos){
+						$msgAgendamentoJaExiste = (existe($config['msg-agendamento-ja-existe']) ? $config['msg-agendamento-ja-existe'] : '');
+						
+						return Array(
+							'status' => 'AGENDAMENTO_MULTIPLO_NAO_PERMITIDO',
+							'error-msg' => $msgAgendamentoJaExiste,
+						);
+					}
+					
+					// ===== Criar novo agendamento.
+					
+					banco_insert_name_campo('id_hosts',$id_hosts);
+					banco_insert_name_campo('id_hosts_usuarios',$id_hosts_usuarios);
+					banco_insert_name_campo('data',$agendamentoData);
+					banco_insert_name_campo('acompanhantes',$acompanhantes);
+					banco_insert_name_campo('status','novo');
+					
+					banco_insert_name
+					(
+						banco_insert_name_campos(),
+						"hosts_agendamentos"
+					);
+					
+					$id_hosts_agendamentos = banco_last_id();
+					
+					// ===== Criar acompanhantes do agendamento caso houver.
+					
+					if((int)$acompanhantes > 0){
+						for($i=0;$i<(int)$acompanhantes;$i++){
+							banco_insert_name_campo('id_hosts',$id_hosts);
+							banco_insert_name_campo('id_hosts_agendamentos',$id_hosts_agendamentos);
+							banco_insert_name_campo('nome',$acompanhantesNomes[$i]);
+							
+							banco_insert_name
+							(
+								banco_insert_name_campos(),
+								"hosts_agendamentos_acompanhantes"
+							);
+						}
+					}
+					
+					// ===== Pegar dados do usuário.
+					
+					$hosts_usuarios = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'hosts_usuarios',
+						'campos' => Array(
+							'nome'
+							'email'
+						),
+						'extra' => 
+							"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+							." AND id_hosts='".$id_hosts."'"
+					));
+					
+					// ===== Formatar datas.
+					
+					$fase_escolha_livre = (existe($config['fase-escolha-livre']) ? (int)$config['fase-escolha-livre'] : 7);
+					$fase_sorteio = (existe($config['fase-sorteio']) ? explode(',',$config['fase-sorteio']) : Array(7,5));
+					
+					$data_sorteio = formato_dado_para('data',date('Y-m-d',strtotime($agendamentoData.' - '.$fase_escolha_livre.' day')));
+					$data_confirmacao_1 = formato_dado_para('data',date('Y-m-d',strtotime($agendamentoData.' - '.$fase_sorteio[0].' day')));
+					$data_confirmacao_2 = formato_dado_para('data',date('Y-m-d',strtotime($agendamentoData.' - '.$fase_sorteio[1].' day') - 1));
+					
+					// ===== Formatar dados do email.
+					
+					$preAgendamentoAssunto = (existe($config['pre-agendamento-assunto']) ? $config['pre-agendamento-assunto'] : '');
+					$preAgendamentoMensagem = (existe($config['pre-agendamento-mensagem']) ? $config['pre-agendamento-mensagem'] : '');
+					$msgConclusaoPreAgendamento = (existe($config['msg-conclusao-pre-agendamento']) ? $config['msg-conclusao-pre-agendamento'] : '');
+					
+					$tituloEstabelecimento = (existe($config['titulo-estabelecimento']) ? $config['titulo-estabelecimento'] : '');
+					
+					$email = $hosts_usuarios['email'];
+					$nome = $hosts_usuarios['nome'];
+					
+					$codigo = date('dmY').formato_zero_a_esquerda($id_hosts_agendamentos,6);
+					
+					// ===== Formatar mensagem do email.
+					
+					$preAgendamentoAssunto = modelo_var_troca_tudo($preAgendamentoAssunto,"#codigo#",$codigo);
+					
+					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#codigo#",$codigo);
+					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#titulo#",$tituloEstabelecimento);
+					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#data#",formato_dado_para('data',$agendamentoData));
+					
+					// ===== Formatar mensagem do alerta.
+					
+					$msgConclusaoPreAgendamento = modelo_var_troca_tudo($msgConclusaoPreAgendamento,"#data_sorteio#",$data_sorteio);
+					$msgConclusaoPreAgendamento = modelo_var_troca_tudo($msgConclusaoPreAgendamento,"#data_confirmacao_1#",$data_confirmacao_1);
+					$msgConclusaoPreAgendamento = modelo_var_troca_tudo($msgConclusaoPreAgendamento,"#data_confirmacao_2#",$data_confirmacao_2);
+					
+					$msgAlerta = $msgConclusaoPreAgendamento;
+					
+					// ===== Enviar email com informações do pré-agendamento.
+					
+					gestor_incluir_biblioteca(Array('comunicacao','host'));
+					
+					if(comunicacao_email(Array(
+						'destinatarios' => Array(
+							Array(
+								'email' => $email,
+								'nome' => $nome,
+							),
+						),
+						'mensagem' => Array(
+							'assunto' => $preAgendamentoAssunto,
+							'html' => $preAgendamentoMensagem,
+							'htmlAssinaturaAutomatica' => true,
+						),
+					))){
+						
+					}
+				}
+				
+				// ===== Tratar dados de retorno.
+				
+				$hosts_agendamentos = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_agendamentos',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+						." AND id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+				));
+				
+				unset($hosts_agendamentos['id_hosts']);
+				
+				$hosts_agendamentos_acompanhantes = banco_select(Array(
+					'tabela' => 'hosts_agendamentos_acompanhantes',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+						." AND id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+				));
+				
+				$hosts_agendamentos_acompanhantes_proc = Array();
+				
+				if($hosts_agendamentos_acompanhantes)
+				foreach($hosts_agendamentos_acompanhantes as $hosts_agendamentos_acompanhante){
+					unset($hosts_agendamentos_acompanhante['id_hosts']);
+					
+					$hosts_agendamentos_acompanhantes_proc[] = $hosts_agendamentos_acompanhante;
+				}
+				
+				$retornoDados = Array(
+					'agendamentos' => $hosts_agendamentos,
+					'agendamentos_acompanhantes' => $hosts_agendamentos_acompanhantes_proc,
+					'alerta' => $msgAlerta,
+				);
+				
+				// ===== Caso seja necessário atualizar agendamentos datas, incluir o mesmo nos dados de retorno.
+				
+				if(isset($atualizarAgendamentosDatas)){
+					$hosts_agendamentos_datas = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'hosts_agendamentos_datas',
+						'campos' => Array(
+							'id_hosts_agendamentos_datas',
+							'total',
+						),
+						'extra' => 
+							"WHERE id_hosts='".$id_hosts."'"
+							." AND data='".$agendamentoData."'"
+					));
+					
+					$retornoDados['agendamentos_datas'] = $hosts_agendamentos_datas;
 				}
 				
 				// ===== Retornar dados.
 				
 				return Array(
 					'status' => 'OK',
-					'data' => Array(
-						//'dado' => $dado,
-					),
+					'data' => $retornoDados,
 				);
 			} else {
 				return Array(
