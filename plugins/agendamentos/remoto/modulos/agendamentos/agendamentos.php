@@ -212,9 +212,18 @@ function agendamentos_padrao(){
 		));
 		
 		if(!$retorno['completed']){
-			$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-servidor-error'));
-			
-			$alerta = modelo_var_troca($alerta,"#error-msg#",(existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status'] ));
+			switch($retorno['status']){
+				case 'AGENDAMENTO_INATIVO':
+				case 'AGENDAMENTO_DATA_NAO_PERMITIDA':
+				case 'AGENDAMENTO_MULTIPLO_NAO_PERMITIDO':
+				case 'AGENDAMENTO_SEM_VAGAS':
+					$alerta = (existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status']);
+				break;
+				default:
+					$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-servidor-error'));
+					
+					$alerta = modelo_var_troca($alerta,"#error-msg#",(existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status'] ));
+			}
 			
 			interface_alerta(Array(
 				'redirect' => true,
