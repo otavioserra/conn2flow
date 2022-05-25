@@ -37,6 +37,7 @@ function configuracoes_disparador_emails(){
 		$assunto = modelo_var_troca($assunto,"#cod#",time());
 		
 		gestor_incluir_biblioteca('comunicacao');
+		gestor_incluir_biblioteca('host');
 		
 		if(comunicacao_email(Array(
 			'hostPersonalizacao' => true,
@@ -50,7 +51,12 @@ function configuracoes_disparador_emails(){
 				'htmlAssinaturaAutomatica' => true,
 				'assunto' => $assunto,
 				'htmlLayoutID' => 'comunicacao-email-teste',
-				'htmlVariaveis' => Array(),
+				'htmlVariaveis' => Array(
+					Array(
+						'variavel' => '[[url]]',
+						'valor' => host_url(Array('opcao'=>'full')),
+					),
+				),
 			),
 		))){
 			// ===== Alterações txt.

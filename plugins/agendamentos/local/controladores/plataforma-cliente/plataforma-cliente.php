@@ -470,6 +470,7 @@ function plataforma_cliente_plugin_agendamentos(){
 					gestor_incluir_biblioteca(Array('comunicacao','host'));
 					
 					if(comunicacao_email(Array(
+						'hostPersonalizacao' => true,
 						'destinatarios' => Array(
 							Array(
 								'email' => $email,
@@ -480,6 +481,12 @@ function plataforma_cliente_plugin_agendamentos(){
 							'assunto' => $agendamentoAssunto,
 							'html' => $agendamentoMensagem,
 							'htmlAssinaturaAutomatica' => true,
+							'htmlVariaveis' => Array(
+								Array(
+									'variavel' => '[[url]]',
+									'valor' => host_url(Array('opcao'=>'full')),
+								),
+							),
 						),
 					))){
 						
@@ -588,6 +595,7 @@ function plataforma_cliente_plugin_agendamentos(){
 					gestor_incluir_biblioteca(Array('comunicacao','host'));
 					
 					if(comunicacao_email(Array(
+						'hostPersonalizacao' => true,
 						'destinatarios' => Array(
 							Array(
 								'email' => $email,
@@ -598,6 +606,12 @@ function plataforma_cliente_plugin_agendamentos(){
 							'assunto' => $preAgendamentoAssunto,
 							'html' => $preAgendamentoMensagem,
 							'htmlAssinaturaAutomatica' => true,
+							'htmlVariaveis' => Array(
+								Array(
+									'variavel' => '[[url]]',
+									'valor' => host_url(Array('opcao'=>'full')),
+								),
+							),
 						),
 					))){
 						

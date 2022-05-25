@@ -124,10 +124,13 @@ function comunicacao_email($params = false){
 			// ===== Variáveis definidas pelo usuário em comunicação configurações em um host específico.
 			
 			if(isset($_GESTOR['host-id']) && isset($hostPersonalizacao)){
-				$comunicacaoConfiguracoes = gestor_host_variaveis(Array(
+				gestor_incluir_biblioteca('configuracao');
+				
+				$comunicacaoConfiguracoes = configuracao_hosts_variaveis(Array(
 					'modulo' => 'comunicacao-configuracoes',
-					'conjunto' => true,
-					'global' => true,
+					'grupos' => Array(
+						'host-admin',
+					),
 				));
 				
 				if($comunicacaoConfiguracoes)
