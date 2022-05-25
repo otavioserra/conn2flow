@@ -120,7 +120,7 @@ $(document).ready(function(){
 			}
 		});
 		
-		// ===== Listeners principais.
+		// ===== Tratamento de telas.
 		
 		$('.agendarBtn').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
@@ -135,6 +135,15 @@ $(document).ready(function(){
 			$('.agendamentosTela').hide();
 			$('.agendamentos').show();
 		});
+		
+		if('tela' in gestor){
+			switch(gestor.tela){
+				case 'agendamentos-anteriores':
+					$('.agendamentosTela').hide();
+					$('.agendamentos').show();
+				break;
+			}
+		}
 	}
 	
 	start();

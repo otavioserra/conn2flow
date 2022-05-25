@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.58',
+	'versao' => '1.0.59',
 );
 
 // ===== Funções Auxiliares
@@ -378,6 +378,8 @@ function agendamentos_padrao(){
 				'redirect' => true,
 				'msg' => $dados['alerta']
 			));
+			
+			gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
 		}
 		
 		// ===== Reler a página.
@@ -451,6 +453,12 @@ function agendamentos_padrao(){
 		$cel_nome = 'ativo'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 		
 		pagina_trocar_variavel_valor('msg-agendamento-suspenso',$msgAgendamentoSuspenso);
+	}
+	
+	// ===== Tratamento de telas.
+	
+	if(isset($_REQUEST['tela'])){
+		$_GESTOR['javascript-vars']['tela'] = $_REQUEST['tela'];
 	}
 	
 	// ===== Alterações no layout da página.
