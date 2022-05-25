@@ -313,9 +313,9 @@ function plataforma_cliente_plugin_agendamentos(){
 						'unico' => true,
 						'tabela' => 'hosts_usuarios',
 						'campos' => Array(
-							'senha'
-							'nome'
-							'email'
+							'senha',
+							'nome',
+							'email',
 						),
 						'extra' => 
 							"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
@@ -515,8 +515,8 @@ function plataforma_cliente_plugin_agendamentos(){
 						'unico' => true,
 						'tabela' => 'hosts_usuarios',
 						'campos' => Array(
-							'nome'
-							'email'
+							'nome',
+							'email',
 						),
 						'extra' => 
 							"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
