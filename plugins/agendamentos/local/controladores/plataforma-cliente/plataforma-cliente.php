@@ -581,9 +581,13 @@ function plataforma_cliente_plugin_agendamentos(){
 					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#codigo#",$codigo);
 					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#titulo#",$tituloEstabelecimento);
 					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#data#",formato_dado_para('data',$agendamentoData));
+					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#data_sorteio#",$data_sorteio);
+					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#data_confirmacao_1#",$data_confirmacao_1);
+					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#data_confirmacao_2#",$data_confirmacao_2);
 					
 					// ===== Formatar mensagem do alerta.
 					
+					$msgConclusaoPreAgendamento = modelo_var_troca_tudo($msgConclusaoPreAgendamento,"#data#",formato_dado_para('data',$agendamentoData));
 					$msgConclusaoPreAgendamento = modelo_var_troca_tudo($msgConclusaoPreAgendamento,"#data_sorteio#",$data_sorteio);
 					$msgConclusaoPreAgendamento = modelo_var_troca_tudo($msgConclusaoPreAgendamento,"#data_confirmacao_1#",$data_confirmacao_1);
 					$msgConclusaoPreAgendamento = modelo_var_troca_tudo($msgConclusaoPreAgendamento,"#data_confirmacao_2#",$data_confirmacao_2);
