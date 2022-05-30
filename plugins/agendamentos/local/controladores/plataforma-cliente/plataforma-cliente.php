@@ -341,6 +341,7 @@ function plataforma_cliente_plugin_agendamentos(){
 						for($i=0;$i<(int)$acompanhantes;$i++){
 							banco_insert_name_campo('id_hosts',$id_hosts);
 							banco_insert_name_campo('id_hosts_agendamentos',$id_hosts_agendamentos);
+							banco_insert_name_campo('id_hosts_usuarios',$id_hosts_usuarios);
 							banco_insert_name_campo('nome',$acompanhantesNomes[$i]);
 							
 							banco_insert_name
@@ -388,6 +389,7 @@ function plataforma_cliente_plugin_agendamentos(){
 							for($i=0;$i<(int)$acompanhantes;$i++){
 								banco_insert_name_campo('id_hosts',$id_hosts);
 								banco_insert_name_campo('id_hosts_agendamentos',$id_hosts_agendamentos);
+								banco_insert_name_campo('id_hosts_usuarios',$id_hosts_usuarios);
 								banco_insert_name_campo('nome',$acompanhantesNomes[$i]);
 								
 								banco_insert_name
@@ -528,6 +530,7 @@ function plataforma_cliente_plugin_agendamentos(){
 						for($i=0;$i<(int)$acompanhantes;$i++){
 							banco_insert_name_campo('id_hosts',$id_hosts);
 							banco_insert_name_campo('id_hosts_agendamentos',$id_hosts_agendamentos);
+							banco_insert_name_campo('id_hosts_usuarios',$id_hosts_usuarios);
 							banco_insert_name_campo('nome',$acompanhantesNomes[$i]);
 							
 							banco_insert_name

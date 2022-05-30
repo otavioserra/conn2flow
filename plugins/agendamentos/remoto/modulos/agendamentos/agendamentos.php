@@ -416,8 +416,18 @@ function agendamentos_padrao(){
 			),
 			'extra' => 
 				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
-				." AND id_dados='".$id."'"
-				." ORDER BY dados DESC"
+				." ORDER BY data ASC"
+		));
+		
+		$agendamentos_acompanhantes = banco_select(Array(
+			'tabela' => 'agendamentos_acompanhantes',
+			'campos' => Array(
+				'id_hosts_agendamentos',
+				'nome',
+			),
+			'extra' => 
+				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+				." ORDER BY nome ASC"
 		));
 		
 		// ===== Varrer agendamentos.
