@@ -147,6 +147,10 @@ $(document).ready(function(){
 		} else {
 			$('.agendar').show();
 		}
+		
+		// ===== Tab de informações dos agendamentos.
+		
+		$('.tabular.menu .item').tab();
 	}
 	
 	start();

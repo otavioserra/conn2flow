@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.60',
+	'versao' => '1.0.62',
 );
 
 // ===== Funções Auxiliares
@@ -402,6 +402,43 @@ function agendamentos_padrao(){
 		// ===== Montagem do calendário.
 		
 		agendamentos_calendario();
+		
+		// ===== Pegar agendamento do usuário no banco de dados.
+		
+		$agendamentos = banco_select(Array(
+			'tabela' => 'agendamentos',
+			'campos' => Array(
+				'id_hosts_agendamentos',
+				'data',
+				'acompanhantes',
+				'senha',
+				'status',
+			),
+			'extra' => 
+				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+				." AND id_dados='".$id."'"
+				." ORDER BY dados DESC"
+		));
+		
+		// ===== Varrer agendamentos.
+		
+		if($agendamentos){
+			foreach($agendamentos as $agendamento){
+				switch($agendamento['status']){
+					case 'confirmado':
+						
+					break;
+				}
+			}
+		}
+		
+		// ===== Montar agendamentos na página.
+		
+		$cel_nome = 'sem-registro'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+		
+		pagina_trocar_variavel_valor('#agendamentos_confirmados#',(isset($agendamentos_confirmados_flag) ? $agendamentos_confirmados : $cel['sem-registro'] ),true);
+		pagina_trocar_variavel_valor('#pre_agendamentos#',(isset($pre_agendamentos_flag) ? $pre_agendamentos : $cel['sem-registro'] ),true);
+		pagina_trocar_variavel_valor('#agendamentos-antigos#',(isset($agendamentos_antigos_flag) ? $agendamentos_antigos : $cel['sem-registro'] ),true);
 		
 		// ===== Formulário validação definição padrão.
 		

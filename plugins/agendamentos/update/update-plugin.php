@@ -58,6 +58,7 @@ function atualizar_banco_de_dados(){
 					`id_agendamentos_acompanhantes` INT NOT NULL AUTO_INCREMENT,
 					`id_hosts_agendamentos_acompanhantes` INT NULL,
 					`id_hosts_agendamentos` INT NULL,
+					`id_hosts_usuarios` INT NULL,
 					`nome` VARCHAR(255) NULL,
 					PRIMARY KEY (`id_agendamentos_acompanhantes`))
 				ENGINE = InnoDB'
