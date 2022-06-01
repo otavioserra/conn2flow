@@ -4,7 +4,8 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.62',
+	'versao' => '1.0.72',
+	'numRegistrosPorPagina' => 1,
 );
 
 // ===== Funções Auxiliares
@@ -62,90 +63,88 @@ function agendamentos_calendario($params = false){
 		);
 	}
 	
-	$primeiro_dia = strtotime("first ".$primeiro_dia_semana." of this month");
+	$primeiro_dia = strtotime(date("Y-m-d", mktime()) . " + 1 day");
 	$ultimo_dia = strtotime(date("Y-m-d", mktime()) . " + ".$anos." year");
 	
 	if($calendario_limite_mes_a_frente){
 		$limitar_calendario = strtotime(date("Y-m",strtotime($hoje . " + ".$calendario_limite_mes_a_frente." month")).'-01');
 	}
 	
-	$dia = $primeiro_dia - 14400;
+	$dia = $primeiro_dia;
 	do {
-		if($dia > mktime() + 72000){
-			$flag = false;
-			
-			if($periodo_ferias){
-				foreach($periodo_ferias as $periodo){
-					if(
-						$dia > $periodo['inicio'] &&
-						$dia < $periodo['fim']
-					){
-						$flag = true;
-						break;
-					}
-				}
-			}
-			
-			if($datas_indisponiveis){
-				foreach($datas_indisponiveis as $di){
-					if(
-						$dia > strtotime(formato_dado_para('date',$di).' 00:00:00') &&
-						$dia < strtotime(formato_dado_para('date',$di).' 23:59:59')
-					){
-						$flag = true;
-						break;
-					}
-				}
-			}
-			
-			if($fase_sorteio){
+		$flag = false;
+		
+		if($periodo_ferias){
+			foreach($periodo_ferias as $periodo){
 				if(
-					$dia > strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
-					$dia < strtotime($hoje.' + '.($fase_sorteio[0]+1).' day')
+					$dia > $periodo['inicio'] &&
+					$dia < $periodo['fim']
 				){
 					$flag = true;
+					break;
 				}
 			}
-			
-			if(!$flag){
-				$flag2 = false;
-				$count_dias = 0;
-				if($dias_semana)
-				foreach($dias_semana as $dia_semana){
-					if($dia_semana == strtolower(date('D',$dia))){
-						$flag2 = true;
-						break;
-					}
-					$count_dias++;
+		}
+		
+		if($datas_indisponiveis){
+			foreach($datas_indisponiveis as $di){
+				if(
+					$dia > strtotime(formato_dado_para('date',$di).' 00:00:00') &&
+					$dia < strtotime(formato_dado_para('date',$di).' 23:59:59')
+				){
+					$flag = true;
+					break;
 				}
+			}
+		}
+		
+		if($fase_sorteio){
+			if(
+				$dia > strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
+				$dia < strtotime($hoje.' + '.($fase_sorteio[0]+1).' day')
+			){
+				$flag = true;
+			}
+		}
+		
+		if(!$flag){
+			$flag2 = false;
+			$count_dias = 0;
+			if($dias_semana)
+			foreach($dias_semana as $dia_semana){
+				if($dia_semana == strtolower(date('D',$dia))){
+					$flag2 = true;
+					break;
+				}
+				$count_dias++;
+			}
+			
+			if($flag2){
+				$data = date('Y-m-d', $dia);
+				$flag3 = false;
 				
-				if($flag2){
-					$data = date('Y-m-d', $dia);
-					$flag3 = false;
-					
-					if($dia < strtotime($hoje.' + '.$fase_residual.' day')){
-						if($agendamentos_datas){
-							foreach($agendamentos_datas as $agendamentos_data){
-								if($data == $agendamentos_data['data']){
-									if(count($dias_semana_maximo_vagas_arr) > 1){
-										$dias_semana_maximo_vagas = $dias_semana_maximo_vagas_arr[$count_dias];
-									} else {
-										$dias_semana_maximo_vagas = $dias_semana_maximo_vagas_arr[0];
-									}
-									
-									if((int)$dias_semana_maximo_vagas <= (int)$agendamentos_data['total']){
-										$flag3 = true;
-									}
-									
-									break;
+				if($dia < strtotime($hoje.' + '.$fase_residual.' day')){
+					if($agendamentos_datas){
+						foreach($agendamentos_datas as $agendamentos_data){
+							if($data == $agendamentos_data['data']){
+								if(count($dias_semana_maximo_vagas_arr) > 1){
+									$dias_semana_maximo_vagas = $dias_semana_maximo_vagas_arr[$count_dias];
+								} else {
+									$dias_semana_maximo_vagas = $dias_semana_maximo_vagas_arr[0];
 								}
+								
+								if((int)$dias_semana_maximo_vagas <= (int)$agendamentos_data['total']){
+									$flag3 = true;
+								}
+								
+								break;
 							}
 						}
 					}
-					
-					if(!$flag3){
-						$datas[$data] = 1;
-					}
+				}
+				
+				if(!$flag3){
+					$datas[$data] = 1;
 				}
 			}
 		}
@@ -157,7 +156,6 @@ function agendamentos_calendario($params = false){
 				break;
 			}
 		}
-
 	} while ($dia < $ultimo_dia);
 	
 	$JScalendario['datas_disponiveis'] = $datas;
@@ -395,17 +393,58 @@ function agendamentos_padrao(){
 	$msgAgendamentoSuspenso = (existe($config['msg-agendamento-suspenso']) ? $config['msg-agendamento-suspenso'] : '');
 	
 	if($agendamento_ativacao){
+		// ===== Dados de configuração.
+		
+		$fase_escolha_livre = (existe($config['fase-escolha-livre']) ? (int)$config['fase-escolha-livre'] : 7);
+		$calendario_limite_mes_a_frente = (existe($config['calendario-limite-mes-a-frente']) ? (int)$config['calendario-limite-mes-a-frente'] : false);
+		$fase_sorteio = (existe($config['fase-sorteio']) ? explode(',',$config['fase-sorteio']) : Array(7,5));
+		$fase_residual = (existe($config['fase-residual']) ? (int)$config['fase-residual'] : 5);
+		
 		// ===== Remover a célula inativo.
 		
 		$cel_nome = 'inativo'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+		
+		// ===== Pegar células dos agendamentos.
+		
+		$cel_nome = 'cel-pre'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+		$cel_nome = 'cel-agendamentos'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+		$cel_nome = 'cel-antigos'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+		
+		$cel_nome = 'carregar-mais-pre'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+		$cel_nome = 'carregar-mais-agendamentos'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+		$cel_nome = 'carregar-mais-antigos'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+		
+		$cel_nome = 'pre-agendamentos'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+		$cel_nome = 'agendamentos'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+		$cel_nome = 'agendamentos-antigos'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 		
 		// ===== Montagem do calendário.
 		
 		agendamentos_calendario();
 		
+		// ===== Valor time do dia de amanhã.
+		
+		$amanha = date('Y-m-d', strtotime(' -1 day'));
+		
 		// ===== Pegar agendamento do usuário no banco de dados.
 		
-		$agendamentos = banco_select(Array(
+		$BDPreAgendamentos = banco_select(Array(
+			'tabela' => 'agendamentos',
+			'campos' => Array(
+				'id_hosts_agendamentos',
+				'data',
+				'acompanhantes',
+				'status',
+				'data_modificacao',
+			),
+			'extra' => 
+				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+				." AND status!='confirmado'"
+				." AND data >='".$amanha."'"
+				." ORDER BY data ASC"
+		));
+		
+		$BDAgendamentos = banco_select(Array(
 			'tabela' => 'agendamentos',
 			'campos' => Array(
 				'id_hosts_agendamentos',
@@ -413,34 +452,226 @@ function agendamentos_padrao(){
 				'acompanhantes',
 				'senha',
 				'status',
+				'data_modificacao',
 			),
 			'extra' => 
 				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+				." AND status='confirmado'"
+				." AND data >='".$amanha."'"
 				." ORDER BY data ASC"
 		));
 		
-		$agendamentos_acompanhantes = banco_select(Array(
-			'tabela' => 'agendamentos_acompanhantes',
+		$BDAntigos = banco_select(Array(
+			'tabela' => 'agendamentos',
 			'campos' => Array(
 				'id_hosts_agendamentos',
-				'nome',
+				'data',
+				'acompanhantes',
+				'status',
+				'data_modificacao',
 			),
 			'extra' => 
 				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
-				." ORDER BY nome ASC"
+				." AND data <'".$amanha."'"
+				." ORDER BY data ASC"
 		));
 		
-		// ===== Varrer agendamentos.
+		// ===== Quantidade de registros por página.
 		
-		if($agendamentos){
-			foreach($agendamentos as $agendamento){
-				switch($agendamento['status']){
-					case 'confirmado':
-						
-					break;
+		$numRegistrosPorPagina = $_GESTOR['modulo#'.$_GESTOR['modulo-id']]['numRegistrosPorPagina'];
+		
+		// ===== Verificar se o usuário tem agendamentos.
+		
+		if($BDPreAgendamentos || $BDAgendamentos || $BDAntigos){
+			// ===== Verificar os pré-agendamentos.
+			
+			if($BDPreAgendamentos){
+				// ===== Quantidade máxima de registros, contador de registros.
+				
+				$numRegistros = count($BDPreAgendamentos);
+				$contador = 0;
+				
+				// ===== Varrer todos os pré-agendamentos.
+				
+				foreach($BDPreAgendamentos as $agendamento){
+					// ===== Inicialização de variáveis.
+					
+					$opcao = '';
+					$atualizacao = '';
+					
+					// ===== Pegar a célula do tipo do agendamento.
+					
+					$cel_nome = 'cel-pre';
+					
+					if(!isset($pre_agendamentos_flag)){
+						$pre_agendamentos = $cel['pre-agendamentos'];
+						$pre_agendamentos_flag = true;
+					}
+					
+					// ===== Montar a célula do agendamento.
+					
+					$cel_aux = $cel[$cel_nome];
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"agendamento_id",$agendamento['id_hosts_agendamentos']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data",formato_dado_para('data',$agendamento['data']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"pessoas",(1 + (int)$agendamento['acompanhantes']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"status",$agendamento['status']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data_modificacao",formato_dado_para('dataHora',$agendamento['data_modificacao']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"opcao",$opcao);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"atualizacao",$atualizacao);
+					
+					// ===== Incluir a célula no seu tipo.
+					
+					$pre_agendamentos = modelo_var_in($pre_agendamentos,'<!-- cel-pre -->',$cel_aux);
+					
+					// ===== Quebrar o looping quando alcançar o limite da página.
+					
+					$contador++;
+					if($contador >= $numRegistrosPorPagina){
+						break;
+					}
+				}
+				
+				// ===== Criar o botão 'Carregar Mais' caso haja mais registros do que o máximo por página.
+				
+				if($numRegistros / $numRegistrosPorPagina > 1){
+					$cel_aux = $cel['carregar-mais-pre'];
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"numPaginas",ceil(($numRegistros / $numRegistrosPorPagina)));
+					
+					$pre_agendamentos = modelo_var_in($pre_agendamentos,'<!-- carregar-mais-pre -->',$cel_aux);
+				}
+			}
+			
+			// ===== Verificar os agendamentos.
+			
+			if($BDAgendamentos){
+				// ===== Quantidade máxima de registros.
+				
+				$numRegistros = count($BDAgendamentos);
+				$contador = 0;
+				
+				// ===== Varrer todos os agendamentos.
+				
+				foreach($BDAgendamentos as $agendamento){
+					// ===== Inicialização de variáveis.
+					
+					$opcao = '';
+					
+					// ===== Pegar a célula do tipo do agendamento.
+					
+					$cel_nome = 'cel-agendamentos';
+					
+					if(!isset($agendamentos_confirmados_flag)){
+						$agendamentos_confirmados = $cel['agendamentos'];
+						$agendamentos_confirmados_flag = true;
+					}
+					
+					// ===== Montar a célula do agendamento.
+					
+					$cel_aux = $cel[$cel_nome];
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"agendamento_id",$agendamento['id_hosts_agendamentos']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data",formato_dado_para('data',$agendamento['data']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"senha",$agendamento['senha']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"pessoas",(1 + (int)$agendamento['acompanhantes']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"status",$agendamento['status']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data_modificacao",formato_dado_para('dataHora',$agendamento['data_modificacao']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"opcao",$opcao);
+					
+					// ===== Incluir a célula no seu tipo.
+					
+					$agendamentos_confirmados = modelo_var_in($agendamentos_confirmados,'<!-- cel-agendamentos -->',$cel_aux);
+					
+					// ===== Quebrar o looping quando alcançar o limite da página.
+					
+					$contador++;
+					if($contador >= $numRegistrosPorPagina){
+						break;
+					}
+				}
+				
+				// ===== Criar o botão 'Carregar Mais' caso haja mais registros do que o máximo por página.
+				
+				if($numRegistros / $numRegistrosPorPagina > 1){
+					$cel_aux = $cel['carregar-mais-agendamentos'];
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"numPaginas",ceil(($numRegistros / $numRegistrosPorPagina)));
+					
+					$agendamentos_confirmados = modelo_var_in($agendamentos_confirmados,'<!-- carregar-mais-agendamentos -->',$cel_aux);
+				}
+			}
+			
+			// ===== Verificar os agendamentos antigos.
+			
+			if($BDAntigos){
+				// ===== Quantidade máxima de registros.
+				
+				$numRegistros = count($BDAntigos);
+				$contador = 0;
+				
+				// ===== Varrer todos os agendamentos antigos.
+				
+				foreach($BDAntigos as $agendamento){
+					// ===== Inicialização de variáveis.
+					
+					$opcao = '';
+					
+					// ===== Pegar a célula do tipo do agendamento.
+					
+					$cel_nome = 'cel-antigos';
+					
+					if(!isset($agendamentos_antigos_flag)){
+						$agendamentos_antigos = $cel['agendamentos-antigos'];
+						$agendamentos_antigos_flag = true;
+					}
+					
+					$agendamento['status'] = 'finalizado';
+					
+					// ===== Montar a célula do agendamento.
+					
+					$cel_aux = $cel[$cel_nome];
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"agendamento_id",$agendamento['id_hosts_agendamentos']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data",formato_dado_para('data',$agendamento['data']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"pessoas",(1 + (int)$agendamento['acompanhantes']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"status",$agendamento['status']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data_modificacao",formato_dado_para('dataHora',$agendamento['data_modificacao']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"opcao",$opcao);
+					
+					// ===== Incluir a célula no seu tipo.
+					
+					$agendamentos_antigos = modelo_var_in($agendamentos_antigos,'<!-- cel-antigos -->',$cel_aux);
+					
+					// ===== Quebrar o looping quando alcançar o limite da página.
+					
+					$contador++;
+					if($contador >= $numRegistrosPorPagina){
+						break;
+					}
+				}
+				
+				// ===== Criar o botão 'Carregar Mais' caso haja mais registros do que o máximo por página.
+				
+				if($numRegistros / $numRegistrosPorPagina > 1){
+					$cel_aux = $cel['carregar-mais-antigos'];
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"numPaginas",ceil(($numRegistros / $numRegistrosPorPagina)));
+					
+					$agendamentos_confirmados = modelo_var_in($agendamentos_confirmados,'<!-- carregar-mais-antigos -->',$cel_aux);
 				}
 			}
 		}
+		
+		// ===== Modal para mostrar pagador.
+		
+		$modal = gestor_componente(Array(
+			'id' => 'hosts-interface-modal-informativo',
+		));
+		
+		$modal = modelo_var_troca($modal,"#titulo#",'Agendamento Dados');
+		
+		$_GESTOR['pagina'] .= $modal;
 		
 		// ===== Montar agendamentos na página.
 		
@@ -449,6 +680,10 @@ function agendamentos_padrao(){
 		pagina_trocar_variavel_valor('#agendamentos_confirmados#',(isset($agendamentos_confirmados_flag) ? $agendamentos_confirmados : $cel['sem-registro'] ),true);
 		pagina_trocar_variavel_valor('#pre_agendamentos#',(isset($pre_agendamentos_flag) ? $pre_agendamentos : $cel['sem-registro'] ),true);
 		pagina_trocar_variavel_valor('#agendamentos-antigos#',(isset($agendamentos_antigos_flag) ? $agendamentos_antigos : $cel['sem-registro'] ),true);
+		
+		pagina_trocar_variavel_valor('#data_sorteio#',$fase_escolha_livre,true);
+		pagina_trocar_variavel_valor('#data_confirmacao_1#',$fase_sorteio[0],true);
+		pagina_trocar_variavel_valor('#data_confirmacao_2#',$fase_sorteio[1],true);
 		
 		// ===== Formulário validação definição padrão.
 		
@@ -488,6 +723,10 @@ function agendamentos_padrao(){
 		
 		pagina_celula_incluir($cel_nome,'');
 		
+		// ===== Remover célula 'dados-agendamento'.
+
+		$cel_nome = 'dados-agendamento'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+
 		// ===== Formulário validação montar.
 		
 		formulario_validacao(Array(
@@ -537,6 +776,266 @@ function agendamentos_padrao(){
 
 // ==== Ajax
 
+function agendamentos_ajax_dados_do_agendamento(){
+	global $_GESTOR;
+	
+	// ===== Iniciar as bibliotecas necessárias.
+	
+	gestor_incluir_biblioteca(Array(
+		'pagina',
+	));
+	
+	// ===== Identificador do usuário e dados enviados na requisição.
+	
+	$id_hosts_usuarios = $_GESTOR['usuario-id'];
+	
+	$tipo = $_REQUEST['tipo'];
+	$agendamento_id = $_REQUEST['agendamento_id'];
+	
+	// ===== Pegar células dos dados.
+	
+	$cel_nome = 'cel-dados'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+	$cel_nome = 'dados-agendamento'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+	
+	$dadosAgendamentos = $cel['dados-agendamento'];
+	
+	// ===== Pegar o nome completo do usuário.
+	
+	$usuarios = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios',
+		'campos' => Array(
+			'nome',
+		),
+		'extra' => 
+			"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+	));
+	
+	$dadosAgendamentos = pagina_celula_trocar_variavel_valor($dadosAgendamentos,"seu-nome",$usuarios['nome']);
+	
+	// ===== Dados dos acompanhantes.
+	
+	$agendamentos_acompanhantes = banco_select(Array(
+		'tabela' => 'agendamentos_acompanhantes',
+		'campos' => Array(
+			'nome',
+		),
+		'extra' => 
+			"WHERE id_hosts_agendamentos='".$agendamento_id."'"
+			." AND id_hosts_usuarios='".$id_hosts_usuarios."'"
+	));
+	
+	// ===== Montar a célula dos acompanhantes.
+	
+	$num = 0;
+	
+	if($agendamentos_acompanhantes){
+		foreach($agendamentos_acompanhantes as $acompanhante){
+			$num++;
+
+			$cel_aux = $cel['cel-dados'];
+			
+			$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"num",$num);
+			$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"acompanhante",$acompanhante['nome']);
+			
+			$dadosAgendamentos = modelo_var_in($dadosAgendamentos,'<!-- cel-dados -->',$cel_aux);
+		}
+	}
+	
+	$_GESTOR['ajax-json'] = Array(
+		'dadosAgendamentos' => $dadosAgendamentos,
+		'status' => 'OK',
+	);
+}
+
+function agendamentos_ajax_mais_resultados(){
+	global $_GESTOR;
+	
+	// ===== Iniciar as bibliotecas necessárias.
+	
+	gestor_incluir_biblioteca(Array(
+		'pagina',
+		'formato',
+	));
+	
+	// ===== Identificador do usuário e dados enviados na requisição.
+	
+	$id_hosts_usuarios = $_GESTOR['usuario-id'];
+	
+	$tipo = $_REQUEST['tipo'];
+	$paginaAtual = banco_escape_field($_REQUEST['paginaAtual']);
+	
+	// ===== Quantidade de registros por página.
+	
+	$numRegistrosPorPagina = $_GESTOR['modulo#'.$_GESTOR['modulo-id']]['numRegistrosPorPagina'];
+	
+	// ===== Valor time do dia de amanhã.
+	
+	$amanha = date('Y-m-d', strtotime(' -1 day'));
+	
+	// ===== Verificar o tipo de agendamento.
+	
+	switch($tipo){
+		case 'carregarMaisPre':
+			$cel_nome = 'cel-pre'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+			
+			$BDPreAgendamentos = banco_select(Array(
+				'tabela' => 'agendamentos',
+				'campos' => Array(
+					'id_hosts_agendamentos',
+					'data',
+					'acompanhantes',
+					'status',
+					'data_modificacao',
+				),
+				'extra' => 
+					"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+					." AND status!='confirmado'"
+					." AND data >='".$amanha."'"
+					." ORDER BY data ASC"
+					." LIMIT ".((int)$paginaAtual * $numRegistrosPorPagina).','.$numRegistrosPorPagina
+			));
+			
+			if($BDPreAgendamentos){
+				// ===== Registros formatação.
+				
+				$registros = '<!-- cel -->';
+				
+				// ===== Varrer todos os pré-agendamentos.
+				
+				foreach($BDPreAgendamentos as $agendamento){
+					// ===== Inicialização de variáveis.
+					
+					$opcao = '';
+					$atualizacao = '';
+					
+					// ===== Montar a célula do agendamento.
+					
+					$cel_aux = $cel['cel-pre'];
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"agendamento_id",$agendamento['id_hosts_agendamentos']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data",formato_dado_para('data',$agendamento['data']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"pessoas",(1 + (int)$agendamento['acompanhantes']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"status",$agendamento['status']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data_modificacao",formato_dado_para('dataHora',$agendamento['data_modificacao']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"opcao",$opcao);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"atualizacao",$atualizacao);
+					
+					// ===== Incluir a célula no seu tipo.
+					
+					$registros = modelo_var_in($registros,'<!-- cel -->',$cel_aux);
+				}
+			}
+		break;
+		case 'carregarMaisAgendamentos':
+			$cel_nome = 'cel-agendamentos'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+			
+			$BDAgendamentos = banco_select(Array(
+				'tabela' => 'agendamentos',
+				'campos' => Array(
+					'id_hosts_agendamentos',
+					'data',
+					'acompanhantes',
+					'senha',
+					'status',
+					'data_modificacao',
+				),
+				'extra' => 
+					"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+					." AND status='confirmado'"
+					." AND data >='".$amanha."'"
+					." ORDER BY data ASC"
+					." LIMIT ".((int)$paginaAtual * $numRegistrosPorPagina).','.$numRegistrosPorPagina
+			));
+			
+			if($BDAgendamentos){
+				// ===== Registros formatação.
+				
+				$registros = '<!-- cel -->';
+				
+				// ===== Varrer todos os agendamentos.
+				
+				foreach($BDAgendamentos as $agendamento){
+					// ===== Inicialização de variáveis.
+					
+					$opcao = '';
+					
+					// ===== Montar a célula do agendamento.
+					
+					$cel_aux = $cel['cel-agendamentos'];
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"agendamento_id",$agendamento['id_hosts_agendamentos']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data",formato_dado_para('data',$agendamento['data']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"senha",$agendamento['senha']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"pessoas",(1 + (int)$agendamento['acompanhantes']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"status",$agendamento['status']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data_modificacao",formato_dado_para('dataHora',$agendamento['data_modificacao']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"opcao",$opcao);
+					
+					// ===== Incluir a célula no seu tipo.
+					
+					$registros = modelo_var_in($registros,'<!-- cel -->',$cel_aux);
+				}
+			}
+		break;
+		case 'carregarMaisAntigos':
+			$cel_nome = 'cel-antigos'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+			
+			$BDAntigos = banco_select(Array(
+				'tabela' => 'agendamentos',
+				'campos' => Array(
+					'id_hosts_agendamentos',
+					'data',
+					'acompanhantes',
+					'status',
+					'data_modificacao',
+				),
+				'extra' => 
+					"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+					." AND data <'".$amanha."'"
+					." ORDER BY data ASC"
+					." LIMIT ".((int)$paginaAtual * $numRegistrosPorPagina).','.$numRegistrosPorPagina
+			));
+			
+			if($BDAntigos){
+				// ===== Registros formatação.
+				
+				$registros = '<!-- cel -->';
+				
+				// ===== Varrer todos os agendamentos antigos.
+				
+				foreach($BDAntigos as $agendamento){
+					// ===== Inicialização de variáveis.
+					
+					$opcao = '';
+					
+					// ===== Montar a célula do agendamento.
+					
+					$cel_aux = $cel['cel-antigos'];
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"agendamento_id",$agendamento['id_hosts_agendamentos']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data",formato_dado_para('data',$agendamento['data']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"pessoas",(1 + (int)$agendamento['acompanhantes']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"status",$agendamento['status']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data_modificacao",formato_dado_para('dataHora',$agendamento['data_modificacao']));
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"opcao",$opcao);
+					
+					// ===== Incluir a célula no seu tipo.
+					
+					$registros = modelo_var_in($registros,'<!-- cel -->',$cel_aux);
+				}
+			}
+		break;
+	}
+	
+	// ===== Retornar registros.
+	
+	$_GESTOR['ajax-json'] = Array(
+		'registros' => (isset($registros) ? $registros : ''),
+		'status' => 'OK',
+	);
+}
+
 function agendamentos_ajax_padrao(){
 	global $_GESTOR;
 	
@@ -561,6 +1060,8 @@ function agendamentos_start(){
 	if($_GESTOR['ajax']){
 		switch($_GESTOR['ajax-opcao']){
 			//case 'opcao': agendamentos_ajax_opcao(); break;
+			case 'dados-do-agendamento': agendamentos_ajax_dados_do_agendamento(); break;
+			case 'mais-resultados': agendamentos_ajax_mais_resultados(); break;
 			default: agendamentos_ajax_padrao();
 		}
 	} else {

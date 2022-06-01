@@ -49,65 +49,63 @@ function plataforma_cliente_plugin_data_permitida($data){
 		);
 	}
 	
-	$primeiro_dia = strtotime("first ".$primeiro_dia_semana." of this month");
+	$primeiro_dia = strtotime(date("Y-m-d", mktime()) . " + 1 day");
 	$ultimo_dia = strtotime(date("Y-m-d", mktime()) . " + ".$anos." year");
 	
 	if($calendario_limite_mes_a_frente){
 		$limitar_calendario = strtotime(date("Y-m",strtotime($hoje . " + ".$calendario_limite_mes_a_frente." month")).'-01');
 	}
 	
-	$dia = $primeiro_dia - 14400;
+	$dia = $primeiro_dia;
 	do {
-		if($dia > mktime() + 72000){
-			$flag = false;
-			
-			if($periodo_ferias){
-				foreach($periodo_ferias as $periodo){
-					if(
-						$dia > $periodo['inicio'] &&
-						$dia < $periodo['fim']
-					){
-						$flag = true;
-						break;
-					}
-				}
-			}
-			
-			if($datas_indisponiveis){
-				foreach($datas_indisponiveis as $di){
-					if(
-						$dia > strtotime(formato_dado_para('date',$di).' 00:00:00') &&
-						$dia < strtotime(formato_dado_para('date',$di).' 23:59:59')
-					){
-						$flag = true;
-						break;
-					}
-				}
-			}
-			
-			if($fase_sorteio){
+		$flag = false;
+		
+		if($periodo_ferias){
+			foreach($periodo_ferias as $periodo){
 				if(
-					$dia > strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
-					$dia < strtotime($hoje.' + '.($fase_sorteio[0]+1).' day')
+					$dia > $periodo['inicio'] &&
+					$dia < $periodo['fim']
 				){
 					$flag = true;
+					break;
+				}
+			}
+		}
+		
+		if($datas_indisponiveis){
+			foreach($datas_indisponiveis as $di){
+				if(
+					$dia > strtotime(formato_dado_para('date',$di).' 00:00:00') &&
+					$dia < strtotime(formato_dado_para('date',$di).' 23:59:59')
+				){
+					$flag = true;
+					break;
+				}
+			}
+		}
+		
+		if($fase_sorteio){
+			if(
+				$dia > strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
+				$dia < strtotime($hoje.' + '.($fase_sorteio[0]+1).' day')
+			){
+				$flag = true;
+			}
+		}
+		
+		if(!$flag){
+			$flag2 = false;
+			if($dias_semana)
+			foreach($dias_semana as $dia_semana){
+				if($dia_semana == strtolower(date('D',$dia))){
+					$flag2 = true;
+					break;
 				}
 			}
 			
-			if(!$flag){
-				$flag2 = false;
-				if($dias_semana)
-				foreach($dias_semana as $dia_semana){
-					if($dia_semana == strtolower(date('D',$dia))){
-						$flag2 = true;
-						break;
-					}
-				}
-				
-				if($flag2){
-					if($data == date('Y-m-d', $dia)){
-						return true;
-					}
+			if($flag2){
+				if($data == date('Y-m-d', $dia)){
+					return true;
 				}
 			}
 		}
@@ -119,7 +117,6 @@ function plataforma_cliente_plugin_data_permitida($data){
 				break;
 			}
 		}
-
 	} while ($dia < $ultimo_dia);
 	
 	return false;
