@@ -8,6 +8,34 @@ $_GESTOR['biblioteca-formato']							=	Array(
 
 // ===== Funções auxiliares
 
+function formato_data_hora_array($data_hora_padrao_datetime_ou_padrao_date){
+	$data_hora = explode(" ",$data_hora_padrao_datetime_ou_padrao_date);
+	
+	if(count($data_hora) > 1){
+		$data_aux = explode("-",$data_hora[0]);
+		$hora_aux = explode(":",$data_hora[1]);
+		
+		$data_hora_array = Array(
+			'dia' => $data_aux[2],
+			'mes' => $data_aux[1],
+			'ano' => $data_aux[0],
+			'hora' => $hora_aux[0],
+			'min' => $hora_aux[1],
+			'seg' => $hora_aux[2],
+		);
+	} else {
+		$data_aux = explode("-",$data_hora[0]);
+		
+		$data_hora_array = Array(
+			'dia' => $data_aux[2],
+			'mes' => $data_aux[1],
+			'ano' => $data_aux[0],
+		);
+	}
+	
+	return $data_hora_array;
+}
+
 function formato_data_hora_padrao_datetime($dataHora, $semHora = false){
 	$dataHoraArray = explode(" ",$dataHora);
 	$dataArray = explode("/",$dataHoraArray[0]);
