@@ -8,6 +8,34 @@ $_GESTOR['biblioteca-formato']							=	Array(
 
 // ===== Funções auxiliares
 
+function formato_data_hora_array($data_hora_padrao_datetime_ou_padrao_date){
+	$data_hora = explode(" ",$data_hora_padrao_datetime_ou_padrao_date);
+	
+	if(count($data_hora) > 1){
+		$data_aux = explode("-",$data_hora[0]);
+		$hora_aux = explode(":",$data_hora[1]);
+		
+		$data_hora_array = Array(
+			'dia' => $data_aux[2],
+			'mes' => $data_aux[1],
+			'ano' => $data_aux[0],
+			'hora' => $hora_aux[0],
+			'min' => $hora_aux[1],
+			'seg' => $hora_aux[2],
+		);
+	} else {
+		$data_aux = explode("-",$data_hora[0]);
+		
+		$data_hora_array = Array(
+			'dia' => $data_aux[2],
+			'mes' => $data_aux[1],
+			'ano' => $data_aux[0],
+		);
+	}
+	
+	return $data_hora_array;
+}
+
 function formato_data_hora_padrao_datetime($dataHora, $semHora = false){
 	$dataHoraArray = explode(" ",$dataHora);
 	$dataArray = explode("/",$dataHoraArray[0]);
@@ -102,6 +130,36 @@ function formato_texto_para_int($texto){
 	// Formato 00.000.000
 	
 	return str_replace(".", "", $texto);
+}
+
+function formato_zero_a_esquerda($num,$dig){
+	$len = strlen((string)$num);
+	
+	if($len < $dig){
+		$num2 = $num;
+		
+		for($i=0;$i<$dig - $len;$i++){
+			$num2 = '0'.$num2;
+		}
+		
+		return $num2;
+	} else {
+		return $num;
+	}
+}
+
+function formato_colocar_char_meio_numero($num,$char = '-'){
+	$len = strlen((string)$num);
+	
+	$numArr = str_split($num, floor($len/2));
+	$numFinal = '';
+	
+	foreach($numArr as $n){
+		$numFinal .= $n . (!isset($charColocado) ? $char : '');
+		$charColocado = true;
+	}
+	
+	return $numFinal;
 }
 
 // ===== Funções principais
