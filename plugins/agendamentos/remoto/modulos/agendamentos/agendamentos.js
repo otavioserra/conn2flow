@@ -78,7 +78,7 @@ $(document).ready(function(){
 		
 		// ===== Iniciar popup.
 		
-		$('.button').popup();
+		$('.button').popup({addTouchEvents:false});
 		
 		// ===== Acompanhantes dropdown.
 		
@@ -283,7 +283,7 @@ $(document).ready(function(){
 							
 							// ===== Iniciar popup.
 							
-							$('.button').popup();
+							$('.button').popup({addTouchEvents:false});
 						break;
 						default:
 							console.log('ERROR - '+opcao+' - '+dados.status);

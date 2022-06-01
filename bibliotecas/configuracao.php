@@ -918,6 +918,9 @@ function configuracao_hosts($params = false){
 							$campo_aux = modelo_var_troca($campo_aux," checked",'');
 						}
 					break;
+					case 'string':
+						$campo_aux = modelo_var_troca($campo_aux,"#value-valor#",($variavel['valor'] ? htmlspecialchars($variavel['valor']) : ''));
+					break;
 					default:
 						$campo_aux = modelo_var_troca($campo_aux,"#value-valor#",($variavel['valor'] ? $variavel['valor'] : ''));
 				}
