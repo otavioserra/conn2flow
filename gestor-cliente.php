@@ -1581,6 +1581,7 @@ function gestor_roteador(){
 			'modulo',
 			'modulo_id_registro',
 			'opcao',
+			'plugin',
 		);
 		
 		// ===== Se válido pegar o html também.
@@ -1592,6 +1593,7 @@ function gestor_roteador(){
 		$campos = Array(
 			'modulo',
 			'modulo_id_registro',
+			'plugin',
 		);
 	} else {
 		$campos = Array(
