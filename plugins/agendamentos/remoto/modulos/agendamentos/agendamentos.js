@@ -270,9 +270,9 @@ $(document).ready(function(){
 							// ===== Incluir os registros nas tabelas correspondentes aos tipos de agendamento.
 							
 							switch(tipo){
-								case 'carregarMaisPre': $('.tabelaPreAgendamentos tbody').append(dados.registros); break;
-								case 'carregarMaisAgendamentos': $('.tabelaAgendamentos tbody').append(dados.registros); break;
-								case 'carregarMaisAntigos': $('.tabelaAgendamentosAntigos tbody').append(dados.registros); break;
+								case 'carregarMaisPre': $('.tabelaPreAgendamentos').append(dados.registros); break;
+								case 'carregarMaisAgendamentos': $('.tabelaAgendamentos').append(dados.registros); break;
+								case 'carregarMaisAntigos': $('.tabelaAgendamentosAntigos').append(dados.registros); break;
 							}
 							
 							// ===== Esconder o botão quando chegar na última página.

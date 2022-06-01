@@ -4,8 +4,8 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.73',
-	'numRegistrosPorPagina' => 1,
+	'versao' => '1.0.74',
+	'numRegistrosPorPagina' => 20,
 );
 
 // ===== Funções Auxiliares
@@ -531,7 +531,7 @@ function agendamentos_padrao(){
 					// ===== Definir o status.
 					
 					if(strtotime($agendamento['data']) > strtotime($agora.' + '.$fase_escolha_livre.' day')){
-						$agendamento['status'] = $statusAgendamento['status-confirmado'];
+						$agendamento['status'] = $statusAgendamento['status-novo'];
 						$atualizacao = formato_dado_para('data',date('Y-m-d',strtotime($agendamento['data'].' - '.($fase_sorteio[0]).' day')));
 					} else if(strtotime($agendamento['data']) > strtotime($agora.' + '.$fase_sorteio[1].' day')){
 						if($agendamento['status'] == 'qualificado' || $agendamento['status'] == 'email-enviado' || $agendamento['status'] == 'email-nao-enviado'){
@@ -721,8 +721,6 @@ function agendamentos_padrao(){
 						$agendamentos_antigos = $cel['agendamentos-antigos'];
 						$agendamentos_antigos_flag = true;
 					}
-					
-					$agendamento['status'] = 'finalizado';
 					
 					// ===== Montar a célula do agendamento.
 					
@@ -968,8 +966,17 @@ function agendamentos_ajax_mais_resultados(){
 	// ===== Valor time do dia de amanhã.
 	
 	$amanha = date('Y-m-d', strtotime(' -1 day'));
+	$agora = date('Y-m-d');
 	
 	// ===== Status de agendamento.
+	
+	$config = gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','conjunto' => true));
+	
+	$dias_semana = (existe($config['dias-semana']) ? explode(',',$config['dias-semana']) : Array());
+	$dias_semana_maximo_vagas_arr = (existe($config['dias-semana-maximo-vagas']) ? explode(',',$config['dias-semana-maximo-vagas']) : Array());
+	$fase_escolha_livre = (existe($config['fase-escolha-livre']) ? (int)$config['fase-escolha-livre'] : 7);
+	$fase_sorteio = (existe($config['fase-sorteio']) ? explode(',',$config['fase-sorteio']) : Array(7,5));
+	$fase_residual = (existe($config['fase-residual']) ? (int)$config['fase-residual'] : 5);
 	
 	$statusAgendamentoIDs = Array(
 		'status-confirmado',
@@ -1017,10 +1024,78 @@ function agendamentos_ajax_mais_resultados(){
 				// ===== Varrer todos os pré-agendamentos.
 				
 				foreach($BDPreAgendamentos as $agendamento){
+					// ===== Verificar se a data é o dia de hoje.
+					
+					$hoje = false;
+					
+					$data_arr = formato_data_hora_array($agendamento['data']);
+					
+					if($data_arr['ano'] == date('Y')){
+						if($data_arr['mes'] == date('m')){
+							if($data_arr['dia'] == date('d')){
+								$hoje = true;
+							}
+						}
+					}
+					
+					// ===== Definir o status.
+					
+					if(strtotime($agendamento['data']) > strtotime($agora.' + '.$fase_escolha_livre.' day')){
+						$agendamento['status'] = $statusAgendamento['status-novo'];
+						$atualizacao = formato_dado_para('data',date('Y-m-d',strtotime($agendamento['data'].' - '.($fase_sorteio[0]).' day')));
+					} else if(strtotime($agendamento['data']) > strtotime($agora.' + '.$fase_sorteio[1].' day')){
+						if($agendamento['status'] == 'qualificado' || $agendamento['status'] == 'email-enviado' || $agendamento['status'] == 'email-nao-enviado'){
+							$confirmar = '<img src="!#caminho_raiz#!images/icons/ativo.png" id="agendamento_confirmar_'.$agenda['id_agendamentos'].'" class="confirmar_agendamento" title="Confirmar esse pré-agendamento."> ';
+							$agendamento['status'] = $statusAgendamento['status-qualificado'];
+						} else {
+							$agendamento['status'] = $statusAgendamento['status-nao-qualificado'];
+						}
+						
+						$atualizacao = formato_dado_para('data',date('Y-m-d',strtotime($agendamento['data'].' - '.($fase_residual).' day')));
+					} else {
+						if($hoje){
+							$agendamento['status'] = $statusAgendamento['status-finalizado'];
+						} else {
+							$count_dias = 0;
+							if($dias_semana)
+							foreach($dias_semana as $dia_semana){
+								if($dia_semana == strtolower(date('D',strtotime($agendamento['data'])))){
+									break;
+								}
+								$count_dias++;
+							}
+							
+							if(count($dias_semana_maximo_vagas_arr) > 1){
+								$dias_semana_maximo_vagas = $dias_semana_maximo_vagas_arr[$count_dias];
+							} else {
+								$dias_semana_maximo_vagas = $dias_semana_maximo_vagas_arr[0];
+							}
+							
+							$agendamentos_datas = banco_select_name
+							(
+								banco_campos_virgulas(Array(
+									'id_agendamentos_datas',
+								))
+								,
+								"agendamentos_datas",
+								"WHERE data='".$agendamento['data']."'"
+								." AND total + ".((int)$agendamento['acompanhantes']+1)." <= ".$dias_semana_maximo_vagas
+							);
+							
+							if($agendamentos_datas){
+								$confirmar = '<img src="!#caminho_raiz#!images/icons/ativo.png" id="agendamento_confirmar_'.$agenda['id_agendamentos'].'" class="confirmar_agendamento_vagas_residuais" title="Confirmar vaga residual desse pré-agendamento."> ';
+								$agendamento['status'] = $statusAgendamento['status-vagas-residuais'];
+							} else {
+								$agendamento['status'] = $statusAgendamento['status-sem-vagas-residuais'];
+							}
+						}
+						
+						$atualizacao = formato_dado_para('data',date('Y-m-d',strtotime($agendamento['data'].' -1 day')));
+					}
+					
 					// ===== Inicialização de variáveis.
 					
 					$opcao = '';
-					$atualizacao = '';
 					
 					// ===== Montar a célula do agendamento.
 					
