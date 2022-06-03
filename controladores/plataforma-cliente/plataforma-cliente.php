@@ -336,6 +336,7 @@ function plataforma_cliente_gerar_token_validacao($params = false){
 	// ===== Parâmetros
 	
 	// id_hosts - String - Obrigatório - ID do host do cliente.
+	// pubID - String - Opcional - Pub ID do dado.
 	
 	// ===== 
 	
@@ -362,7 +363,11 @@ function plataforma_cliente_gerar_token_validacao($params = false){
 			
 			// ===== Gerar ID do Token
 			
-			$tokenPubId = md5(uniqid(rand(), true));
+			if(isset($pubID)){
+				$tokenPubId = $pubID;
+			} else {
+				$tokenPubId = md5(uniqid(rand(), true));
+			}
 			
 			// ===== Gerar o token JWT
 			

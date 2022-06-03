@@ -68,7 +68,11 @@ $(document).ready(function(){
 					
 				}
 			});
-			
+		
+		// ===== Cupom de prioridade mask.
+		
+		$('.cupom').mask('AAAA-AAAA', {clearIfNotMatch: true});
+		
 		// ===== Calendário ptBR.
 		
 		var calendarPtBR = {

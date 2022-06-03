@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.78',
+	'versao' => '1.0.79',
 	'numRegistrosPorPagina' => 20,
 );
 
@@ -186,11 +186,11 @@ function agendamentos_confirmacao_publico(){
 	
 	$token = $_REQUEST['token'];
 	
-	$tokenPubId = api_servidor_validar_token_validacao(Array(
+	$pubId = api_servidor_validar_token_validacao(Array(
 		'token' => $token,
 	));
 	
-	if(!$tokenPubId){
+	if(!$pubId){
 		// ===== Ativação da expiradoOuNaoEncontrado.
 		
 		$_GESTOR['javascript-vars']['expiradoOuNaoEncontrado'] = true;
@@ -199,21 +199,27 @@ function agendamentos_confirmacao_publico(){
 		// ===== Solicitação de confirmação do agendamento.
 		
 		if(isset($_REQUEST['efetuar_confirmacao_publico'])){
+			// ===== Pegar a escolha de alteração.
+			
+			$escolha = $_REQUEST['escolha'];
+			
 			// ===== API-Servidor para efetuar confirmação.
 			
 			$retorno = api_servidor_interface(Array(
-				'interface' => 'confirmar',
+				'interface' => 'alteracao',
 				'plugin' => 'agendamentos',
 				'opcao' => 'confirmarPublico',
 				'dados' => Array(
-					'pub_hash' => banco_escape_field($_REQUEST['pub_hash']),
-					'token' => (isset($_REQUEST['token']) ? banco_escape_field($_REQUEST['token']) : null),
+					'escolha' => ($escolha == 'confirmar' ? 'confirmar':'cancelar'),
+					'pubId' => $pubId,
 				),
 			));
 			
 			if(!$retorno['completed']){
 				switch($retorno['status']){
-					case 'RECAPTCHA_INVALID':
+					case 'AGENDAMENTO_NAO_ENCONTRADO':
+					case 'AGENDAMENTO_CONFIRMACAO_EXPIRADO':
+					case 'AGENDAMENTO_SEM_VAGAS':
 						$alerta = (existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status']);
 					break;
 					default:
@@ -259,9 +265,9 @@ function agendamentos_confirmacao_publico(){
 	$cel_nome = 'ativo'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	$cel_nome = 'inativo'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	
-	// ===== Incluir o pub_hash no formulário.
+	// ===== Incluir o token no formulário.
 	
-	pagina_trocar_variavel_valor('pub-hash',$_REQUEST['pub_hash']);
+	pagina_trocar_variavel_valor('token',$_REQUEST['token']);
 	
 	// ===== Alterações no layout da página.
 	
@@ -548,8 +554,7 @@ function agendamentos_padrao(){
 		
 		// ===== Valor time do dia de amanhã.
 		
-		$agora = date('Y-m-d');
-		$amanha = date('Y-m-d', strtotime(' -1 day'));
+		$hoje = date('Y-m-d');
 		
 		// ===== Pegar agendamento do usuário no banco de dados.
 		
@@ -565,7 +570,7 @@ function agendamentos_padrao(){
 			'extra' => 
 				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
 				." AND status!='confirmado'"
-				." AND data >='".$amanha."'"
+				." AND data >='".$hoje."'"
 				." ORDER BY data ASC"
 		));
 		
@@ -582,7 +587,7 @@ function agendamentos_padrao(){
 			'extra' => 
 				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
 				." AND status='confirmado'"
-				." AND data >='".$amanha."'"
+				." AND data >='".$hoje."'"
 				." ORDER BY data ASC"
 		));
 		
@@ -597,7 +602,7 @@ function agendamentos_padrao(){
 			),
 			'extra' => 
 				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
-				." AND data <'".$amanha."'"
+				." AND data <'".$hoje."'"
 				." ORDER BY data ASC"
 		));
 		
@@ -636,28 +641,14 @@ function agendamentos_padrao(){
 				// ===== Varrer todos os pré-agendamentos.
 				
 				foreach($BDPreAgendamentos as $agendamento){
-					// ===== Verificar se a data é o dia de hoje.
-					
-					$hoje = false;
-					
-					$data_arr = formato_data_hora_array($agendamento['data']);
-					
-					if($data_arr['ano'] == date('Y')){
-						if($data_arr['mes'] == date('m')){
-							if($data_arr['dia'] == date('d')){
-								$hoje = true;
-							}
-						}
-					}
-					
 					// ===== Definir o status.
 					
 					$confirmar = false;
 					
-					if(strtotime($agendamento['data']) > strtotime($agora.' + '.$fase_escolha_livre.' day')){
+					if(strtotime($agendamento['data']) > strtotime($hoje.' + '.$fase_escolha_livre.' day')){
 						$agendamento['status'] = $statusAgendamento['status-novo'];
 						$atualizacao = formato_dado_para('data',date('Y-m-d',strtotime($agendamento['data'].' - '.($fase_sorteio[0]).' day')));
-					} else if(strtotime($agendamento['data']) > strtotime($agora.' + '.$fase_sorteio[1].' day')){
+					} else if(strtotime($agendamento['data']) > strtotime($hoje.' + '.$fase_sorteio[1].' day')){
 						if($agendamento['status'] == 'qualificado' || $agendamento['status'] == 'email-enviado' || $agendamento['status'] == 'email-nao-enviado'){
 							$confirmar = true;
 							$agendamento['status'] = $statusAgendamento['status-qualificado'];
@@ -667,7 +658,7 @@ function agendamentos_padrao(){
 						
 						$atualizacao = formato_dado_para('data',date('Y-m-d',strtotime($agendamento['data'].' - '.($fase_residual).' day')));
 					} else {
-						if($hoje){
+						if($hoje == $agendamento['data']){
 							$agendamento['status'] = $statusAgendamento['status-finalizado'];
 						} else {
 							$count_dias = 0;
@@ -704,7 +695,7 @@ function agendamentos_padrao(){
 							}
 						}
 						
-						$atualizacao = formato_dado_para('data',date('Y-m-d',strtotime($agendamento['data'].' -1 day')));
+						$atualizacao = formato_dado_para('data',$agendamento['data']);
 					}
 					
 					// ===== Pegar a célula do tipo do agendamento.
@@ -730,6 +721,13 @@ function agendamentos_padrao(){
 					// ===== Manter ou remover o botão de confirmação para cada caso.
 					
 					if(!$confirmar){
+						$cel_nome = 'confirmar-btn'; $cel_aux = modelo_tag_in($cel_aux,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+					}
+					
+					// ===== Remover botões de alteração caso a data do agendamento seja hoje.
+					
+					if($hoje == $agendamento['data']){
+						$cel_nome = 'cancelar-btn'; $cel_aux = modelo_tag_in($cel_aux,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 						$cel_nome = 'confirmar-btn'; $cel_aux = modelo_tag_in($cel_aux,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 					}
 					
@@ -790,6 +788,12 @@ function agendamentos_padrao(){
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"pessoas",(1 + (int)$agendamento['acompanhantes']));
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"status",$agendamento['status']);
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data_modificacao",formato_dado_para('dataHora',$agendamento['data_modificacao']));
+					
+					// ===== Remover botões de alteração caso a data do agendamento seja hoje.
+					
+					if($hoje == $agendamento['data']){
+						$cel_nome = 'cancelar-btn'; $cel_aux = modelo_tag_in($cel_aux,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+					}
 					
 					// ===== Incluir a célula no seu tipo.
 					
@@ -979,6 +983,10 @@ function agendamentos_padrao(){
 	
 	interface_finalizar();
 	
+	// ===== Inclusão do jQuery-Mask-Plugin
+	
+	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'jQuery-Mask-Plugin-v1.14.16/jquery.mask.min.js"></script>';
+	
 	// ===== Incluir o JS.
 	
 	gestor_pagina_javascript_incluir('plugin');
@@ -1081,8 +1089,7 @@ function agendamentos_ajax_mais_resultados(){
 	
 	// ===== Valor time do dia de amanhã.
 	
-	$amanha = date('Y-m-d', strtotime(' -1 day'));
-	$agora = date('Y-m-d');
+	$hoje = date('Y-m-d');
 	
 	// ===== Status de agendamento.
 	
@@ -1127,7 +1134,7 @@ function agendamentos_ajax_mais_resultados(){
 				'extra' => 
 					"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
 					." AND status!='confirmado'"
-					." AND data >='".$amanha."'"
+					." AND data >='".$hoje."'"
 					." ORDER BY data ASC"
 					." LIMIT ".((int)$paginaAtual * $numRegistrosPorPagina).','.$numRegistrosPorPagina
 			));
@@ -1140,28 +1147,14 @@ function agendamentos_ajax_mais_resultados(){
 				// ===== Varrer todos os pré-agendamentos.
 				
 				foreach($BDPreAgendamentos as $agendamento){
-					// ===== Verificar se a data é o dia de hoje.
-					
-					$hoje = false;
-					
-					$data_arr = formato_data_hora_array($agendamento['data']);
-					
-					if($data_arr['ano'] == date('Y')){
-						if($data_arr['mes'] == date('m')){
-							if($data_arr['dia'] == date('d')){
-								$hoje = true;
-							}
-						}
-					}
-					
 					// ===== Definir o status.
 					
 					$confirmar = false;
 					
-					if(strtotime($agendamento['data']) > strtotime($agora.' + '.$fase_escolha_livre.' day')){
+					if(strtotime($agendamento['data']) > strtotime($hoje.' + '.$fase_escolha_livre.' day')){
 						$agendamento['status'] = $statusAgendamento['status-novo'];
 						$atualizacao = formato_dado_para('data',date('Y-m-d',strtotime($agendamento['data'].' - '.($fase_sorteio[0]).' day')));
-					} else if(strtotime($agendamento['data']) > strtotime($agora.' + '.$fase_sorteio[1].' day')){
+					} else if(strtotime($agendamento['data']) > strtotime($hoje.' + '.$fase_sorteio[1].' day')){
 						if($agendamento['status'] == 'qualificado' || $agendamento['status'] == 'email-enviado' || $agendamento['status'] == 'email-nao-enviado'){
 							$confirmar = true;
 							$agendamento['status'] = $statusAgendamento['status-qualificado'];
@@ -1171,7 +1164,7 @@ function agendamentos_ajax_mais_resultados(){
 						
 						$atualizacao = formato_dado_para('data',date('Y-m-d',strtotime($agendamento['data'].' - '.($fase_residual).' day')));
 					} else {
-						if($hoje){
+						if($hoje == $agendamento['data']){
 							$agendamento['status'] = $statusAgendamento['status-finalizado'];
 						} else {
 							$count_dias = 0;
@@ -1208,7 +1201,7 @@ function agendamentos_ajax_mais_resultados(){
 							}
 						}
 						
-						$atualizacao = formato_dado_para('data',date('Y-m-d',strtotime($agendamento['data'].' -1 day')));
+						$atualizacao = formato_dado_para('data',$agendamento['data']);
 					}
 					
 					// ===== Montar a célula do agendamento.
@@ -1225,6 +1218,13 @@ function agendamentos_ajax_mais_resultados(){
 					// ===== Manter ou remover o botão de confirmação para cada caso.
 					
 					if(!$confirmar){
+						$cel_nome = 'confirmar-btn'; $cel_aux = modelo_tag_in($cel_aux,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+					}
+					
+					// ===== Remover botões de alteração caso a data do agendamento seja hoje.
+					
+					if($hoje == $agendamento['data']){
+						$cel_nome = 'cancelar-btn'; $cel_aux = modelo_tag_in($cel_aux,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 						$cel_nome = 'confirmar-btn'; $cel_aux = modelo_tag_in($cel_aux,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 					}
 					
@@ -1250,7 +1250,7 @@ function agendamentos_ajax_mais_resultados(){
 				'extra' => 
 					"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
 					." AND status='confirmado'"
-					." AND data >='".$amanha."'"
+					." AND data >='".$hoje."'"
 					." ORDER BY data ASC"
 					." LIMIT ".((int)$paginaAtual * $numRegistrosPorPagina).','.$numRegistrosPorPagina
 			));
@@ -1278,6 +1278,12 @@ function agendamentos_ajax_mais_resultados(){
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"status",$agendamento['status']);
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"data_modificacao",formato_dado_para('dataHora',$agendamento['data_modificacao']));
 					
+					// ===== Remover botões de alteração caso a data do agendamento seja hoje.
+					
+					if($hoje == $agendamento['data']){
+						$cel_nome = 'cancelar-btn'; $cel_aux = modelo_tag_in($cel_aux,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+					}
+					
 					// ===== Incluir a célula no seu tipo.
 					
 					$registros = modelo_var_in($registros,'<!-- cel -->',$cel_aux);
@@ -1298,7 +1304,7 @@ function agendamentos_ajax_mais_resultados(){
 				),
 				'extra' => 
 					"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
-					." AND data <'".$amanha."'"
+					." AND data <'".$hoje."'"
 					." ORDER BY data ASC"
 					." LIMIT ".((int)$paginaAtual * $numRegistrosPorPagina).','.$numRegistrosPorPagina
 			));
