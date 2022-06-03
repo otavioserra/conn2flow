@@ -328,6 +328,61 @@ function plataforma_cliente_gerar_token_autorizacao($params = false){
 	return false;
 }
 
+function plataforma_cliente_gerar_token_validacao($params = false){
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// id_hosts - String - Obrigatório - ID do host do cliente.
+	
+	// ===== 
+	
+	if(isset($id_hosts)){
+	
+		// ===== Definir variáveis para gerar o JWT
+		
+		$expiration = time() + $_GESTOR['platform-lifetime'];
+		
+		// ===== Pegar a chave pública do host
+		
+		$hosts = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'chave_publica',
+			))
+			,
+			"hosts",
+			"WHERE id_hosts='".$id_hosts."'"
+		);
+		
+		if($hosts){
+			$chavePublica = $hosts[0]['chave_publica'];
+			
+			// ===== Gerar ID do Token
+			
+			$tokenPubId = md5(uniqid(rand(), true));
+			
+			// ===== Gerar o token JWT
+			
+			$token = plataforma_cliente_gerar_jwt(Array(
+				'host' => $_SERVER['SERVER_NAME'],
+				'expiration' => $expiration,
+				'pubID' => $tokenPubId,
+				'chavePublica' => $chavePublica,
+			));
+			
+			return Array(
+				'token' => $token,
+				'pubHash' => $tokenPubId,
+			);
+		}
+	}
+	
+	return Array();
+}
+
 // =========================== Funções da Plataforma
 
 function plataforma_cliente_carrinho(){

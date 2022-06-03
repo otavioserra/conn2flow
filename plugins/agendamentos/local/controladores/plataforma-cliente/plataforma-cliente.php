@@ -319,7 +319,14 @@ function plataforma_cliente_plugin_agendamentos(){
 							." AND id_hosts='".$id_hosts."'"
 					));
 					
-					$pub_hash = hash('sha256',$hosts_usuarios['senha'].$agendamentoData.$senha);
+					// ===== Gerar o token de validação.
+					
+					$validacao = plataforma_cliente_gerar_token_validacao(Array(
+						'id_hosts' => $id_hosts,
+					));
+					
+					$token = $validacao['token'];
+					$pubHash = $validacao['pubHash'];
 					
 					// ===== Gerar o agendamento ou atualizar um já existente.
 					
@@ -353,7 +360,7 @@ function plataforma_cliente_plugin_agendamentos(){
 						banco_update_campo('acompanhantes',$acompanhantes);
 						banco_update_campo('senha',$senha);
 						banco_update_campo('status','confirmado');
-						banco_update_campo('pub_hash',$pub_hash);
+						banco_update_campo('pub_hash',$pubHash);
 						banco_update_campo('versao','versao+1',true);
 						banco_update_campo('data_modificacao','NOW()',true);
 						
@@ -367,7 +374,7 @@ function plataforma_cliente_plugin_agendamentos(){
 						banco_insert_name_campo('acompanhantes',$acompanhantes);
 						banco_insert_name_campo('senha',$senha);
 						banco_insert_name_campo('status','confirmado');
-						banco_insert_name_campo('pub_hash',$pub_hash);
+						banco_insert_name_campo('pub_hash',$pubHash);
 						banco_insert_name_campo('versao','1',true);
 						banco_insert_name_campo('data_criacao','NOW()',true);
 						banco_insert_name_campo('data_modificacao','NOW()',true);
@@ -421,7 +428,7 @@ function plataforma_cliente_plugin_agendamentos(){
 					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#titulo#",$tituloEstabelecimento);
 					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#data#",formato_dado_para('data',$agendamentoData));
 					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#senha#",$senha);
-					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#url-cancelamento#",'<a target="agendamento" href="'.host_url(Array('opcao'=>'full')).'agendamentos/?opcao=cancelar&pub_hash='.$pub_hash.'">'.host_url(Array('opcao'=>'full')).'agendamentos/?opcao=cancelar&pub_hash='.$pub_hash.'</a>');
+					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#url-cancelamento#",'<a target="agendamento" href="'.host_url(Array('opcao'=>'full')).'agendamentos/?acao=cancelar&token='.$token.'">'.host_url(Array('opcao'=>'full')).'agendamentos/?acao=cancelar&token='.$token.'</a>');
 					
 					$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($agendamentoMensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $agendamentoMensagem = modelo_tag_in($agendamentoMensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 					
@@ -695,6 +702,56 @@ function plataforma_cliente_plugin_agendamentos(){
 	}
 }
 
+function plataforma_cliente_plugin_confirmar(){
+	global $_GESTOR;
+	
+	// ===== Identificador do Host.
+	
+	$id_hosts = $_GESTOR['host-id'];
+	
+	// ===== Verificar qual opção desta interface está sendo disparada e tratar cada caso separadamente.
+	
+	$opcao = $_REQUEST['opcao'];
+	
+	switch($opcao){
+		case 'confirmarPublico':
+			// ===== Decodificar os dados em formato Array
+			
+			$dados = Array();
+			if(isset($_REQUEST['dados'])){
+				$dados = json_decode($_REQUEST['dados'],true);
+			}
+			
+			// ===== Verificar se o recaptcha é válido.
+			
+			if(plataforma_cliente_recaptcha($dados['token'],$opcao)){
+				// ===== Verificar a validade do pub_hash.
+				
+				
+			} else {
+				// ===== Se o recaptcha for inválido, alertar o usuário.
+				
+				sleep(3);
+				
+				$botaoTxt = gestor_variaveis(Array('modulo' => 'perfil-usuario','id' => 'alert-recaptcha-invalid-btn'));
+				
+				$alerta = gestor_variaveis(Array('modulo' => 'perfil-usuario','id' => 'alert-recaptcha-invalid'));
+				
+				$alerta = modelo_var_troca_tudo($alerta,"#url#",'<a href="'.$_GESTOR['url-raiz'] . $_GESTOR['pagina#contato-url'].'">'.$botaoTxt.'</a>');
+				
+				$retorno = Array(
+					'status' => 'RECAPTCHA_INVALID',
+					'error-msg' => $alerta,
+				);
+			}
+		break;
+		default:
+			return Array(
+				'status' => 'OPTION_NOT_DEFINED',
+			);
+	}
+}
+
 // =========================== Funções de Acesso
 
 function plataforma_cliente_plugin_start(){
@@ -704,6 +761,7 @@ function plataforma_cliente_plugin_start(){
 	
 	switch($_GESTOR['caminho'][1]){
 		case 'agendamentos': $dados = plataforma_cliente_plugin_agendamentos(); break;
+		case 'confirmar': $dados = plataforma_cliente_plugin_confirmar(); break;
 	}
 
 	// ===== Caso haja dados criados por alguma opção, retornar os dados. Senão retornar NULL.

@@ -1,6 +1,56 @@
 $(document).ready(function(){
+	function confirmarPublico(){
+		// ===== Mostrar a tela de confirmação pública.
+		
+		$('.confirmarPublico').show();
+		
+		// ===== Iniciar popup.
+		
+		$('.button').popup({addTouchEvents:false});
+		
+		// ===== Form da confirmacao.
+		
+		var formSelector = '.confirmacaoPublicaForm';
+		
+		$(formSelector)
+			.form({
+				onSuccess(event, fields){
+					if(typeof gestor.googleRecaptchaActive !== typeof undefined && gestor.googleRecaptchaActive !== false){
+						var action = 'confirmarPublico'; // Action 
+						var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
+						
+						grecaptcha.ready(function() {
+							grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
+								$(formSelector).append('<input type="hidden" name="token" value="'+token+'">');
+								$(formSelector).append('<input type="hidden" name="action" value="'+action+'">');
+								$(formSelector).unbind('submit').submit();
+							});
+						});
+						
+						return false;
+					}
+				}
+			});
+		
+		// ===== Botão de confirmação.
+		
+		$('.confirmarPublicoAgendamentoBtn').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			$(formSelector).find('input[name="escolha"]').val('confirmar');
+			$(formSelector).form('submit');
+		});
+		
+		// ===== Botão de cancelamento.
+		
+		$('.cancelarPublicoAgendamentoBtn').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			$(formSelector).form('submit');
+		});
+	}
 	
-	function start(){
+	function agendamentoAtivo(){
 		// ===== Configurações do calendário.
 		
 		var calendario = gestor.calendario;
@@ -334,6 +384,18 @@ $(document).ready(function(){
 				}
 			}).modal('show');
 		}
+		
+		
+	}
+	
+	function start(){
+		// ===== Agendamento ativo.
+		
+		if($('.agendamento-ativo').length > 0){ agendamentoAtivo(); }
+		
+		// ===== Tratar alterações do agendamento.
+		
+		if('confirmarPublico' in gestor){ confirmarPublico(); }
 	}
 	
 	start();
