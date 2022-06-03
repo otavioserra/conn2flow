@@ -375,7 +375,7 @@ function plataforma_cliente_gerar_token_validacao($params = false){
 			
 			return Array(
 				'token' => $token,
-				'pubHash' => $tokenPubId,
+				'pubID' => $tokenPubId,
 			);
 		}
 	}

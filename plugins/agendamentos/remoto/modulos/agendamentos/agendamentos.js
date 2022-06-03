@@ -14,22 +14,7 @@ $(document).ready(function(){
 		
 		$(formSelector)
 			.form({
-				onSuccess(event, fields){
-					if(typeof gestor.googleRecaptchaActive !== typeof undefined && gestor.googleRecaptchaActive !== false){
-						var action = 'confirmarPublico'; // Action 
-						var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
-						
-						grecaptcha.ready(function() {
-							grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
-								$(formSelector).append('<input type="hidden" name="token" value="'+token+'">');
-								$(formSelector).append('<input type="hidden" name="action" value="'+action+'">');
-								$(formSelector).unbind('submit').submit();
-							});
-						});
-						
-						return false;
-					}
-				}
+				
 			});
 		
 		// ===== Botão de confirmação.
@@ -48,6 +33,12 @@ $(document).ready(function(){
 			
 			$(formSelector).form('submit');
 		});
+	}
+	
+	function expiradoOuNaoEncontrado(){
+		// ===== Mostrar a tela de confirmação pública.
+		
+		$('.expiradoOuNaoEncontrado').show();
 	}
 	
 	function agendamentoAtivo(){
@@ -396,6 +387,7 @@ $(document).ready(function(){
 		// ===== Tratar alterações do agendamento.
 		
 		if('confirmarPublico' in gestor){ confirmarPublico(); }
+		if('expiradoOuNaoEncontrado' in gestor){ expiradoOuNaoEncontrado(); }
 	}
 	
 	start();

@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.77',
+	'versao' => '1.0.78',
 	'numRegistrosPorPagina' => 20,
 );
 
@@ -179,85 +179,80 @@ function agendamentos_confirmacao_publico(){
 		'formato',
 		'interface',
 		'formulario',
+		'api-servidor',
 	));
 	
-	// ===== Solicitação de confirmação do agendamento.
+	// ===== Validar o token enviado.
 	
-	if(isset($_REQUEST['efetuar_confirmacao_publico'])){
-		// ===== API-Servidor para efetuar confirmação.
+	$token = $_REQUEST['token'];
+	
+	$tokenPubId = api_servidor_validar_token_validacao(Array(
+		'token' => $token,
+	));
+	
+	if(!$tokenPubId){
+		// ===== Ativação da expiradoOuNaoEncontrado.
 		
-		gestor_incluir_biblioteca('api-servidor');
+		$_GESTOR['javascript-vars']['expiradoOuNaoEncontrado'] = true;
+	} else {
 		
-		$retorno = api_servidor_interface(Array(
-			'interface' => 'confirmar',
-			'plugin' => 'agendamentos',
-			'opcao' => 'confirmarPublico',
-			'dados' => Array(
-				'pub_hash' => banco_escape_field($_REQUEST['pub_hash']),
-				'token' => (isset($_REQUEST['token']) ? banco_escape_field($_REQUEST['token']) : null),
-			),
-		));
+		// ===== Solicitação de confirmação do agendamento.
 		
-		if(!$retorno['completed']){
-			switch($retorno['status']){
-				case 'RECAPTCHA_INVALID':
-					$alerta = (existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status']);
-				break;
-				default:
-					$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-servidor-error'));
-					
-					$alerta = modelo_var_troca($alerta,"#error-msg#",(existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status'] ));
-			}
+		if(isset($_REQUEST['efetuar_confirmacao_publico'])){
+			// ===== API-Servidor para efetuar confirmação.
 			
-			interface_alerta(Array(
-				'redirect' => true,
-				'msg' => $alerta
-			));
-		} else {
-			// ===== Dados de retorno.
-			
-			$dados = Array();
-			if(isset($retorno['data'])){
-				$dados = $retorno['data'];
-			}
-			
-			// ===== Alertar o usuário.
-			
-			interface_alerta(Array(
-				'redirect' => true,
-				'msg' => $dados['alerta']
+			$retorno = api_servidor_interface(Array(
+				'interface' => 'confirmar',
+				'plugin' => 'agendamentos',
+				'opcao' => 'confirmarPublico',
+				'dados' => Array(
+					'pub_hash' => banco_escape_field($_REQUEST['pub_hash']),
+					'token' => (isset($_REQUEST['token']) ? banco_escape_field($_REQUEST['token']) : null),
+				),
 			));
 			
-			gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
+			if(!$retorno['completed']){
+				switch($retorno['status']){
+					case 'RECAPTCHA_INVALID':
+						$alerta = (existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status']);
+					break;
+					default:
+						$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-servidor-error'));
+						
+						$alerta = modelo_var_troca($alerta,"#error-msg#",(existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status'] ));
+				}
+				
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $alerta
+				));
+			} else {
+				// ===== Dados de retorno.
+				
+				$dados = Array();
+				if(isset($retorno['data'])){
+					$dados = $retorno['data'];
+				}
+				
+				// ===== Alertar o usuário.
+				
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $dados['alerta']
+				));
+				
+				gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
+			}
+			
+			// ===== Reler a página.
+			
+			gestor_reload_url();
 		}
 		
-		// ===== Reler a página.
+		// ===== Ativação da confirmação.
 		
-		gestor_reload_url();
+		$_GESTOR['javascript-vars']['confirmarPublico'] = true;
 	}
-	
-	// ===== Incluir google reCAPTCHA caso ativo
-	
-	if(isset($_GESTOR['plataforma-cliente']['plataforma-recaptcha-active'])){
-		if($_GESTOR['plataforma-cliente']['plataforma-recaptcha-active']){
-			// ===== Verificar se o host tem reCAPTCHA próprio.
-			
-			$chaveSite = formulario_google_recaptcha();
-			
-			// ===== configurar o Google reCAPTCHA.
-			
-			$googleRecaptchaSite = (isset($chaveSite) ? $chaveSite : $_GESTOR['plataforma-cliente']['plataforma-recaptcha-site']);
-			
-			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
-			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $googleRecaptchaSite;
-			
-			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$googleRecaptchaSite.'"></script>');
-		}
-	}
-	
-	// ===== Ativação da confirmação.
-	
-	$_GESTOR['javascript-vars']['confirmarPublico'] = true;
 	
 	// ===== Remover a célula ativo e inativo.
 	
@@ -1363,7 +1358,7 @@ function agendamentos_start(){
 	
 	// ===== Acesso público.
 	
-	if(isset($_REQUEST['pub_hash'])){
+	if(isset($_REQUEST['token'])){
 		$acao = (isset($_GESTOR['acao']) ? $_GESTOR['acao'] : '');
 		
 		switch($acao){

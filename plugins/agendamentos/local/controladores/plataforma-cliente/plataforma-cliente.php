@@ -310,7 +310,6 @@ function plataforma_cliente_plugin_agendamentos(){
 						'unico' => true,
 						'tabela' => 'hosts_usuarios',
 						'campos' => Array(
-							'senha',
 							'nome',
 							'email',
 						),
@@ -326,7 +325,7 @@ function plataforma_cliente_plugin_agendamentos(){
 					));
 					
 					$token = $validacao['token'];
-					$pubHash = $validacao['pubHash'];
+					$pubID = $validacao['pubID'];
 					
 					// ===== Gerar o agendamento ou atualizar um já existente.
 					
@@ -360,7 +359,7 @@ function plataforma_cliente_plugin_agendamentos(){
 						banco_update_campo('acompanhantes',$acompanhantes);
 						banco_update_campo('senha',$senha);
 						banco_update_campo('status','confirmado');
-						banco_update_campo('pub_hash',$pubHash);
+						banco_update_campo('pubID',$pubID);
 						banco_update_campo('versao','versao+1',true);
 						banco_update_campo('data_modificacao','NOW()',true);
 						
@@ -374,7 +373,7 @@ function plataforma_cliente_plugin_agendamentos(){
 						banco_insert_name_campo('acompanhantes',$acompanhantes);
 						banco_insert_name_campo('senha',$senha);
 						banco_insert_name_campo('status','confirmado');
-						banco_insert_name_campo('pub_hash',$pubHash);
+						banco_insert_name_campo('pubID',$pubID);
 						banco_insert_name_campo('versao','1',true);
 						banco_insert_name_campo('data_criacao','NOW()',true);
 						banco_insert_name_campo('data_modificacao','NOW()',true);
