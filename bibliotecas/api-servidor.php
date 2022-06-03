@@ -717,6 +717,47 @@ function api_servidor_validar_jwt($params = false){
 	}
 }
 
+function api_servidor_validar_token_validacao($params = false){
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// token - String - Obrigatório - JWT gerado pelo servidor.
+	
+	// ===== 
+	
+	if(isset($token)){
+		// ===== Verifica se existe o token.
+		
+		$JWTToken = $token;
+		
+		if(!existe($JWTToken)){
+			return false;
+		}
+		
+		// ===== Abrir chave privada e a senha da chave
+		
+		$chavePrivada = $_GESTOR['plataforma-cliente']['chave-seguranca']['chave'];
+		$chavePrivadaSenha = $_GESTOR['plataforma-cliente']['chave-seguranca']['senha'];
+		$hashAlgo = $_GESTOR['plataforma-cliente']['chave-seguranca']['hash-algo'];
+		$hashSenha = $_GESTOR['plataforma-cliente']['chave-seguranca']['hash-senha'];
+		
+		// ===== Verificar se o JWT é válido.
+		
+		$tokenPubId = api_servidor_validar_jwt(Array(
+			'token' => $JWTToken,
+			'chavePrivada' => $chavePrivada,
+			'chavePrivadaSenha' => $chavePrivadaSenha,
+		));
+		
+		return $tokenPubId;
+	}
+	
+	return false;
+}
+
 // ===== Funções principais.
 
 function api_servidor_gerar_token_autorizacao($params = false){
