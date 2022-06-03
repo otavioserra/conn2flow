@@ -427,7 +427,7 @@ function plataforma_cliente_plugin_agendamentos(){
 					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#titulo#",$tituloEstabelecimento);
 					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#data#",formato_dado_para('data',$agendamentoData));
 					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#senha#",$senha);
-					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#url-cancelamento#",'<a target="agendamento" href="'.host_url(Array('opcao'=>'full')).'agendamentos/?acao=cancelar&token='.$token.'">'.host_url(Array('opcao'=>'full')).'agendamentos/?acao=cancelar&token='.$token.'</a>');
+					$agendamentoMensagem = modelo_var_troca_tudo($agendamentoMensagem,"#url-cancelamento#",'<a target="agendamento" href="'.host_url(Array('opcao'=>'full')).'agendamentos/?acao=cancelar&token='.$token.'" style="overflow-wrap: break-word;">'.host_url(Array('opcao'=>'full')).'agendamentos/?acao=cancelar&token='.$token.'</a>');
 					
 					$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($agendamentoMensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $agendamentoMensagem = modelo_tag_in($agendamentoMensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 					
