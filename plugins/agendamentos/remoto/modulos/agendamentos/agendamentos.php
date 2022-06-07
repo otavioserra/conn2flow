@@ -629,6 +629,7 @@ function agendamentos_padrao(){
 			'extra' => 
 				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
 				." AND status!='confirmado'"
+				." AND status!='finalizado'"
 				." AND data >='".$hoje."'"
 				." ORDER BY data ASC"
 		));
@@ -661,7 +662,10 @@ function agendamentos_padrao(){
 			),
 			'extra' => 
 				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
-				." AND data <'".$hoje."'"
+				." AND (
+					data <'".$hoje."' OR
+					status='finalizado'
+				)"
 				." ORDER BY data ASC"
 		));
 		
@@ -1193,6 +1197,7 @@ function agendamentos_ajax_mais_resultados(){
 				'extra' => 
 					"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
 					." AND status!='confirmado'"
+					." AND status!='finalizado'"
 					." AND data >='".$hoje."'"
 					." ORDER BY data ASC"
 					." LIMIT ".((int)$paginaAtual * $numRegistrosPorPagina).','.$numRegistrosPorPagina
@@ -1363,7 +1368,10 @@ function agendamentos_ajax_mais_resultados(){
 				),
 				'extra' => 
 					"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
-					." AND data <'".$hoje."'"
+					." AND (
+						data <'".$hoje."' OR
+						status='finalizado'
+					)"
 					." ORDER BY data ASC"
 					." LIMIT ".((int)$paginaAtual * $numRegistrosPorPagina).','.$numRegistrosPorPagina
 			));
