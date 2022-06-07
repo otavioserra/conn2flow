@@ -518,6 +518,8 @@ function plataforma_cliente_plugin_data_agendamento_cancelar($params = false){
 	$email = $hosts_usuarios['email'];
 	$nome = $hosts_usuarios['nome'];
 	
+	gestor_incluir_biblioteca('formato');
+	
 	$codigo = date('dmY').formato_zero_a_esquerda($id_hosts_agendamentos,6);
 	
 	// ===== Formatar mensagem do email.
