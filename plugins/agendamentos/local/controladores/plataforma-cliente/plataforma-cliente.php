@@ -903,7 +903,7 @@ function plataforma_cliente_plugin_agendamentos(){
 					for($i=0;$i<(int)$acompanhantes;$i++){
 						$cel_aux = $cel[$cel_nome];
 						
-						$cel_aux = modelo_var_troca($cel_aux,"#nome#",($i+1));
+						$cel_aux = modelo_var_troca($cel_aux,"#num#",($i+1));
 						$cel_aux = modelo_var_troca($cel_aux,"#acompanhante#",$acompanhantesNomes[$i]);
 						
 						$msgConclusaoAgendamento = modelo_var_in($msgConclusaoAgendamento,'<!-- '.$cel_nome.' -->',$cel_aux);
