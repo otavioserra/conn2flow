@@ -1320,7 +1320,7 @@ function plataforma_cliente_plugin_alteracao(){
 						." AND data='".$data."'"
 				));
 				
-				unlink($hosts_agendamentos_datas['id_hosts']);
+				unset($hosts_agendamentos_datas['id_hosts']);
 				
 				$retornoDados['agendamentos_datas'] = $hosts_agendamentos_datas;
 				
@@ -1334,7 +1334,7 @@ function plataforma_cliente_plugin_alteracao(){
 						." AND id_hosts_usuarios='".$id_hosts_usuarios."'"
 				));
 				
-				unlink($hosts_agendamentos['id_hosts']);
+				unset($hosts_agendamentos['id_hosts']);
 				
 				$retornoDados['agendamentos'] = $hosts_agendamentos;
 				
