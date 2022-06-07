@@ -1609,7 +1609,7 @@ function agendamentos_start(){
 	// ===== Acesso público.
 	
 	if(isset($_REQUEST['token'])){
-		$acao = (isset($_GESTOR['acao']) ? $_GESTOR['acao'] : '');
+		$acao = (isset($_REQUEST['acao']) ? $_REQUEST['acao'] : '');
 		
 		switch($acao){
 			case 'cancelar': agendamentos_cancelamento_publico(); break;

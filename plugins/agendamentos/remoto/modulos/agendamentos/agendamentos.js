@@ -36,7 +36,7 @@ $(document).ready(function(){
 	}
 	
 	function cancelarPublico(){
-		// ===== Mostrar a tela de cancelamento pública.
+		// ===== Mostrar a tela de confirmação pública.
 		
 		$('.cancelarPublico').show();
 		
@@ -44,14 +44,23 @@ $(document).ready(function(){
 		
 		$('.button').popup({addTouchEvents:false});
 		
-		// ===== Form de cancelamento.
+		// ===== Form da confirmacao.
 		
-		var formSelector = '.cancelamentoPublicoForm';
+		var formSelector = '.confirmacaoPublicaForm';
 		
 		$(formSelector)
 			.form({
 				
 			});
+		
+		// ===== Botão de confirmação.
+		
+		$('.confirmarPublicoAgendamentoBtn').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			$(formSelector).find('input[name="escolha"]').val('confirmar');
+			$(formSelector).form('submit');
+		});
 		
 		// ===== Botão de cancelamento.
 		
