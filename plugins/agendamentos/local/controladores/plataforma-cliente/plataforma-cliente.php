@@ -1346,6 +1346,121 @@ function plataforma_cliente_plugin_alteracao(){
 				);
 			}
 		break;
+		case 'cancelarPublico':
+			// ===== Decodificar os dados em formato Array
+			
+			$dados = Array();
+			if(isset($_REQUEST['dados'])){
+				$dados = json_decode($_REQUEST['dados'],true);
+			}
+			
+			// ===== Verificar se os campos obrigatórios foram enviados: pubId.
+			
+			if(isset($dados['pubId'])){
+				// ===== Pegar os dados de configuração.
+				
+				gestor_incluir_biblioteca('configuracao');
+				
+				$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-agendamentos'));
+				
+				$msgAgendamentoNaoEncontrado = (existe($config['msg-agendamento-nao-encontrado']) ? $config['msg-agendamento-nao-encontrado'] : '');
+				
+				// ===== Tratar os dados enviados.
+				
+				$pubId = banco_escape_field($dados['pubId']);
+				
+				// ===== Pegar o agendamento no banco de dados.
+				
+				$hosts_agendamentos = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_agendamentos',
+					'campos' => Array(
+						'id_hosts_agendamentos',
+						'id_hosts_usuarios',
+						'status',
+						'data',
+					),
+					'extra' => 
+						"WHERE pubId='".$pubId."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				$id_hosts_agendamentos = $hosts_agendamentos['id_hosts_agendamentos'];
+				$id_hosts_usuarios = $hosts_agendamentos['id_hosts_usuarios'];
+				$data = $hosts_agendamentos['data'];
+				
+				// ===== Caso não exista, retorar erro.
+				
+				if(!$hosts_agendamentos){
+					return Array(
+						'status' => 'AGENDAMENTO_NAO_ENCONTRADO',
+						'error-msg' => $msgAgendamentoNaoEncontrado,
+					);
+				}
+				
+				// ===== Efetuar o cancelamento.
+				
+				$retorno = plataforma_cliente_plugin_data_agendamento_cancelar(Array(
+					'id_hosts' => $id_hosts,
+					'id_hosts_agendamentos' => $id_hosts_agendamentos,
+					'id_hosts_usuarios' => $id_hosts_usuarios,
+					'data' => $data,
+				));
+				
+				// ===== Verificar se o cancelamento ocorreu corretamente.
+				
+				if(!$retorno['cancelado']){
+					return Array(
+						'status' => $retorno['status'],
+						'error-msg' => $retorno['alerta'],
+					);
+				} else {
+					// ===== Alerta do cancelamento do agendamento.
+					
+					$retornoDados['alerta'] = $retorno['alerta'];
+				}
+				
+				// ===== Formatar dados de retorno.
+				
+				$hosts_agendamentos_datas = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_agendamentos_datas',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+						." AND data='".$data."'"
+				));
+				
+				unset($hosts_agendamentos_datas['id_hosts']);
+				
+				$retornoDados['agendamentos_datas'] = $hosts_agendamentos_datas;
+				
+				$hosts_agendamentos = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_agendamentos',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+						." AND id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+						." AND id_hosts_usuarios='".$id_hosts_usuarios."'"
+				));
+				
+				unset($hosts_agendamentos['id_hosts']);
+				
+				$retornoDados['agendamentos'] = $hosts_agendamentos;
+				
+				// ===== Retornar dados.
+				
+				return Array(
+					'status' => 'OK',
+					'data' => $retornoDados,
+				);
+			} else {
+				return Array(
+					'status' => 'MANDATORY_FIELDS_NOT_INFORMED',
+				);
+			}
+		break;
 		default:
 			return Array(
 				'status' => 'OPTION_NOT_DEFINED',
