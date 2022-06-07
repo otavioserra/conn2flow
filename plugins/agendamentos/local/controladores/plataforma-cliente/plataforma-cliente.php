@@ -1199,6 +1199,10 @@ function plataforma_cliente_plugin_alteracao(){
 						." AND id_hosts='".$id_hosts."'"
 				));
 				
+				$id_hosts_agendamentos = $hosts_agendamentos['id_hosts_agendamentos'];
+				$id_hosts_usuarios = $hosts_agendamentos['id_hosts_usuarios'];
+				$data = $hosts_agendamentos['data'];
+				
 				// ===== Caso não exista, retorar erro.
 				
 				if(!$hosts_agendamentos){
@@ -1231,16 +1235,16 @@ function plataforma_cliente_plugin_alteracao(){
 							// ===== Verificar se está na fase de confirmação.
 							
 							if(
-								strtotime($hosts_agendamentos['data']) >= strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
-								strtotime($hosts_agendamentos['data']) < strtotime($hoje.' + '.($fase_sorteio[0]+1).' day')
+								strtotime($data) >= strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
+								strtotime($data) < strtotime($hoje.' + '.($fase_sorteio[0]+1).' day')
 							){
 								// ===== Caso não tenha sido confirmado anteriormente, confirmar o agendamento.
 								
 								$retorno = plataforma_cliente_plugin_data_agendamento_confirmar(Array(
-									'id_hosts' => $hosts_agendamentos['id_hosts'],
-									'id_hosts_agendamentos' => $hosts_agendamentos['id_hosts_agendamentos'],
-									'id_hosts_usuarios' => $hosts_agendamentos['id_hosts_usuarios'],
-									'data' => $hosts_agendamentos['data'],
+									'id_hosts' => $id_hosts,
+									'id_hosts_agendamentos' => $id_hosts_agendamentos,
+									'id_hosts_usuarios' => $id_hosts_usuarios,
+									'data' => $data,
 								));
 								
 								// ===== Verificar se a confirmação ocorreu corretamente.
@@ -1279,10 +1283,10 @@ function plataforma_cliente_plugin_alteracao(){
 						// ===== Efetuar o cancelamento.
 						
 						$retorno = plataforma_cliente_plugin_data_agendamento_cancelar(Array(
-							'id_hosts' => $hosts_agendamentos['id_hosts'],
-							'id_hosts_agendamentos' => $hosts_agendamentos['id_hosts_agendamentos'],
-							'id_hosts_usuarios' => $hosts_agendamentos['id_hosts_usuarios'],
-							'data' => $hosts_agendamentos['data'],
+							'id_hosts' => $id_hosts,
+							'id_hosts_agendamentos' => $id_hosts_agendamentos,
+							'id_hosts_usuarios' => $id_hosts_usuarios,
+							'data' => $data,
 						));
 						
 						// ===== Verificar se o cancelamento ocorreu corretamente.
@@ -1297,7 +1301,32 @@ function plataforma_cliente_plugin_alteracao(){
 				
 				// ===== Formatar dados de retorno.
 				
+				$hosts_agendamentos_datas = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_agendamentos_datas',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+						." AND data='".$data."'"
+				));
 				
+				unlink($hosts_agendamentos_datas['id_hosts']);
+				
+				$retornoDados['agendamentos_datas'] = $hosts_agendamentos_datas;
+				
+				$hosts_agendamentos = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_agendamentos',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+						." AND id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+						." AND id_hosts_usuarios='".$id_hosts_usuarios."'"
+				));
+				
+				unlink($hosts_agendamentos['id_hosts']);
+				
+				$retornoDados['agendamentos'] = $hosts_agendamentos;
 				
 				// ===== Retornar dados.
 				
