@@ -265,7 +265,7 @@ function agendamentos_confirmacao_publico(){
 				
 				// ===== Gerar o agendamento ou atualizar um já existente.
 				
-				$id_hosts_usuarios = $_GESTOR['usuario-id'];
+				$id_hosts_usuarios = $dados['agendamentos']['id_hosts_usuarios'];
 				$id_hosts_agendamentos = $dados['agendamentos']['id_hosts_agendamentos'];
 				
 				$agendamentos = banco_select(Array(
