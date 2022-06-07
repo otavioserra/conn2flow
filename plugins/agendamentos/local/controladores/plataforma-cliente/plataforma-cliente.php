@@ -1264,6 +1264,8 @@ function plataforma_cliente_plugin_alteracao(){
 							} else {
 								// ===== Datas do período de confirmação.
 								
+								gestor_incluir_biblioteca('formato');
+								
 								$data_confirmacao_1 = data_from_date_to_text(date('Y-m-d',strtotime($hosts_agendamentos['data'].' - '.($fase_sorteio[0]).' day')));
 								$data_confirmacao_2 = data_from_date_to_text(date('Y-m-d',strtotime($hosts_agendamentos['data'].' - '.($fase_sorteio[1]).' day') - 1));
 								
