@@ -1256,6 +1256,10 @@ function plataforma_cliente_plugin_alteracao(){
 										'status' => $retorno['status'],
 										'error-msg' => $retorno['alerta'],
 									);
+								} else {
+									// ===== Alerta de confirmação do agendamento.
+									
+									$retornoDados['alerta'] = $retorno['alerta'];
 								}
 							} else {
 								// ===== Datas do período de confirmação.
@@ -1298,6 +1302,10 @@ function plataforma_cliente_plugin_alteracao(){
 								'status' => $retorno['status'],
 								'error-msg' => $retorno['alerta'],
 							);
+						} else {
+							// ===== Alerta do cancelamento do agendamento.
+							
+							$retornoDados['alerta'] = $retorno['alerta'];
 						}
 				}
 				
