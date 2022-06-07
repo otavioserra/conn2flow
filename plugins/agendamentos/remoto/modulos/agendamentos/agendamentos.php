@@ -305,13 +305,11 @@ function agendamentos_confirmacao_publico(){
 					'redirect' => true,
 					'msg' => $dados['alerta']
 				));
-				
-				gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
 			}
 			
-			// ===== Reler a página.
+			// ===== Ler a listagem dos agendamentos.
 			
-			gestor_reload_url();
+			gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
 		}
 		
 		// ===== Ativação da confirmação.
