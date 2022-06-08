@@ -203,8 +203,8 @@ function plataforma_cliente_plugin_data_agendamento_confirmar($params = false){
 	));
 	
 	if($hosts_agendamentos_acompanhantes)
-	foreach($hosts_agendamentos_acompanhantes as $acompanhanteNome){
-		$acompanhantesNomes[] = $acompanhanteNome;
+	foreach($hosts_agendamentos_acompanhantes as $acompanhante){
+		$acompanhantesNomes[] = $acompanhante['nome'];
 	}
 	
 	// ===== Gerar o token de validação.
