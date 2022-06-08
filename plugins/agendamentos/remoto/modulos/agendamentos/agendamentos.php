@@ -330,6 +330,20 @@ function agendamentos_confirmacao_publico(){
 						banco_update_campo('total',$total);
 						
 						banco_update_executar('agendamentos_datas',"WHERE id_hosts_agendamentos_datas='".$id_hosts_agendamentos_datas."'");
+					} else {
+						$data = $dados['agendamentos_datas']['data'];
+						$status = $dados['agendamentos_datas']['status'];
+						
+						banco_insert_name_campo('id_hosts_agendamentos_datas',$id_hosts_agendamentos_datas);
+						banco_insert_name_campo('data',$data);
+						banco_insert_name_campo('total',$total);
+						banco_insert_name_campo('status',$status);
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"agendamentos_datas"
+						);
 					}
 				}
 				
@@ -761,6 +775,20 @@ function agendamentos_confirmacao(){
 						banco_update_campo('total',$total);
 						
 						banco_update_executar('agendamentos_datas',"WHERE id_hosts_agendamentos_datas='".$id_hosts_agendamentos_datas."'");
+					} else {
+						$data = $dados['agendamentos_datas']['data'];
+						$status = $dados['agendamentos_datas']['status'];
+						
+						banco_insert_name_campo('id_hosts_agendamentos_datas',$id_hosts_agendamentos_datas);
+						banco_insert_name_campo('data',$data);
+						banco_insert_name_campo('total',$total);
+						banco_insert_name_campo('status',$status);
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"agendamentos_datas"
+						);
 					}
 				}
 				
