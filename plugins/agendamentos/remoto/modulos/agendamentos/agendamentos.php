@@ -868,8 +868,6 @@ function agendamentos_cancelamento(){
 		'api-servidor',
 	));
 	
-	// ===== Validar o token enviado.
-	
 	// ===== Validar o agendamento_id enviado.
 	
 	$id_hosts_agendamentos = (isset($_REQUEST['agendamento_id']) ? banco_escape_field($_REQUEST['agendamento_id']) : '');

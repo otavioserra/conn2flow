@@ -1539,6 +1539,11 @@ function plataforma_cliente_plugin_alteracao(){
 				$dados = json_decode($_REQUEST['dados'],true);
 			}
 			
+			return Array(
+				'status' => 'AGENDAMENTO_TESTES',
+				'error-msg' => print_r($dados,true),
+			);
+			
 			// ===== Verificar se os campos obrigatórios foram enviados: id_hosts_agendamentos e id_hosts_usuarios.
 			
 			if(isset($dados['id_hosts_agendamentos']) && isset($dados['id_hosts_usuarios'])){
