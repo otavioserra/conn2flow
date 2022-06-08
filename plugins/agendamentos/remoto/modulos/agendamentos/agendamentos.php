@@ -100,7 +100,7 @@ function agendamentos_calendario($params = false){
 		
 		if($fase_sorteio){
 			if(
-				$dia > strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
+				$dia >= strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
 				$dia < strtotime($hoje.' + '.($fase_sorteio[0]+1).' day')
 			){
 				$flag = true;

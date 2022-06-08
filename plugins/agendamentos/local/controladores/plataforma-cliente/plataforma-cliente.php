@@ -86,7 +86,7 @@ function plataforma_cliente_plugin_data_permitida($data){
 		
 		if($fase_sorteio){
 			if(
-				$dia > strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
+				$dia >= strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
 				$dia < strtotime($hoje.' + '.($fase_sorteio[0]+1).' day')
 			){
 				$flag = true;
@@ -730,7 +730,28 @@ function plataforma_cliente_plugin_agendamentos(){
 					));
 					
 					if(!$hosts_agendamentos_datas){
+						// ===== Vagas disponíveis.
+						
+						$hosts_agendamentos_datas = banco_select(Array(
+							'unico' => true,
+							'tabela' => 'hosts_agendamentos_datas',
+							'campos' => Array(
+								'total',
+							),
+							'extra' => 
+								"WHERE id_hosts='".$id_hosts."'"
+								." AND data='".$agendamentoData."'"
+						));
+						
+						$vagas = (int)$dias_semana_maximo_vagas - (int)$hosts_agendamentos_datas['total'];
+						if($vagas < 0) $vagas = 0;
+						
+						// ===== Alerta.
+						
 						$msgAgendamentoSemVagas = (existe($config['msg-agendamento-sem-vagas']) ? $config['msg-agendamento-sem-vagas'] : '');
+						
+						$msgAgendamentoSemVagas = modelo_var_troca_tudo($msgAgendamentoSemVagas,"#data#",$agendamentoData);
+						$msgAgendamentoSemVagas = modelo_var_troca_tudo($msgAgendamentoSemVagas,"#vagas#",$vagas);
 						
 						return Array(
 							'status' => 'AGENDAMENTO_SEM_VAGAS',
