@@ -965,37 +965,32 @@ function plataforma_cliente_plugin_agendamentos(){
 					// ===== Verificar se já tem agendamento para esta data. Caso tenha, retornar erro e mensagem de permissão apenas de um agendamento por data.
 					
 					if($hosts_agendamentos){
-						$msgAgendamentoJaExiste = (existe($config['msg-agendamento-ja-existe']) ? $config['msg-agendamento-ja-existe'] : '');
-						
-						return Array(
-							'status' => 'AGENDAMENTO_MULTIPLO_NAO_PERMITIDO',
-							'error-msg' => $msgAgendamentoJaExiste,
-						);
+						if($hosts_agendamentos['status'] != 'finalizado'){
+							$msgAgendamentoJaExiste = (existe($config['msg-agendamento-ja-existe']) ? $config['msg-agendamento-ja-existe'] : '');
+							
+							return Array(
+								'status' => 'AGENDAMENTO_MULTIPLO_NAO_PERMITIDO',
+								'error-msg' => $msgAgendamentoJaExiste,
+							);
+						} else {
+							$atualizarAgendamento = true;
+						}
 					}
 					
-					// ===== Criar novo agendamento.
+					// ===== Gerar o agendamento ou atualizar um já existente.
 					
-					banco_insert_name_campo('id_hosts',$id_hosts);
-					banco_insert_name_campo('id_hosts_usuarios',$id_hosts_usuarios);
-					banco_insert_name_campo('data',$agendamentoData);
-					banco_insert_name_campo('acompanhantes',$acompanhantes);
-					banco_insert_name_campo('status','novo');
-					banco_insert_name_campo('pubID',$pubID);
-					banco_insert_name_campo('versao','1',true);
-					banco_insert_name_campo('data_criacao','NOW()',true);
-					banco_insert_name_campo('data_modificacao','NOW()',true);
-					
-					banco_insert_name
-					(
-						banco_insert_name_campos(),
-						"hosts_agendamentos"
-					);
-					
-					$id_hosts_agendamentos = banco_last_id();
-					
-					// ===== Criar acompanhantes do agendamento caso houver.
-					
-					if((int)$acompanhantes > 0){
+					if(isset($atualizarAgendamento)){
+						$id_hosts_agendamentos = $hosts_agendamentos['id_hosts_agendamentos'];
+						
+						// ===== Substituir acompanhantes.
+						
+						banco_delete
+						(
+							"hosts_agendamentos_acompanhantes",
+							"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+							." AND id_hosts='".$id_hosts."'"
+						);
+						
 						for($i=0;$i<(int)$acompanhantes;$i++){
 							banco_insert_name_campo('id_hosts',$id_hosts);
 							banco_insert_name_campo('id_hosts_agendamentos',$id_hosts_agendamentos);
@@ -1007,6 +1002,54 @@ function plataforma_cliente_plugin_agendamentos(){
 								banco_insert_name_campos(),
 								"hosts_agendamentos_acompanhantes"
 							);
+						}
+						
+						// ===== Atualizar agendamento.
+						
+						banco_update_campo('acompanhantes',$acompanhantes);
+						banco_update_campo('senha',$senha);
+						banco_update_campo('status','novo');
+						banco_update_campo('pubID',$pubID);
+						banco_update_campo('versao','versao+1',true);
+						banco_update_campo('data_modificacao','NOW()',true);
+						
+						banco_update_executar('hosts_agendamentos',"WHERE id_hosts='".$id_hosts."' AND id_hosts_agendamentos='".$id_hosts_agendamentos."' AND id_hosts_usuarios='".$id_hosts_usuarios."'");
+					} else {
+						// ===== Criar novo agendamento.
+						
+						banco_insert_name_campo('id_hosts',$id_hosts);
+						banco_insert_name_campo('id_hosts_usuarios',$id_hosts_usuarios);
+						banco_insert_name_campo('data',$agendamentoData);
+						banco_insert_name_campo('acompanhantes',$acompanhantes);
+						banco_insert_name_campo('status','novo');
+						banco_insert_name_campo('pubID',$pubID);
+						banco_insert_name_campo('versao','1',true);
+						banco_insert_name_campo('data_criacao','NOW()',true);
+						banco_insert_name_campo('data_modificacao','NOW()',true);
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"hosts_agendamentos"
+						);
+						
+						$id_hosts_agendamentos = banco_last_id();
+						
+						// ===== Criar acompanhantes do agendamento caso houver.
+						
+						if((int)$acompanhantes > 0){
+							for($i=0;$i<(int)$acompanhantes;$i++){
+								banco_insert_name_campo('id_hosts',$id_hosts);
+								banco_insert_name_campo('id_hosts_agendamentos',$id_hosts_agendamentos);
+								banco_insert_name_campo('id_hosts_usuarios',$id_hosts_usuarios);
+								banco_insert_name_campo('nome',$acompanhantesNomes[$i]);
+								
+								banco_insert_name
+								(
+									banco_insert_name_campos(),
+									"hosts_agendamentos_acompanhantes"
+								);
+							}
 						}
 					}
 					
