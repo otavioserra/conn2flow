@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.80',
+	'versao' => '1.0.88',
 	'numRegistrosPorPagina' => 20,
 );
 
@@ -602,8 +602,465 @@ function agendamentos_cancelamento_publico(){
 	gestor_pagina_javascript_incluir('plugin');
 }
 
+function agendamentos_confirmacao(){
+	global $_GESTOR;
+	
+	// ===== Iniciar as bibliotecas necessárias.
+	
+	gestor_incluir_biblioteca(Array(
+		'pagina',
+		'formato',
+		'interface',
+		'formulario',
+		'api-servidor',
+	));
+	
+	// ===== Validar o agendamento_id enviado.
+	
+	$id_hosts_agendamentos = (isset($_REQUEST['agendamento_id']) ? banco_escape_field($_REQUEST['agendamento_id']) : '');
+	
+	$agendamentos = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'agendamentos',
+		'campos' => Array(
+			'data',
+			'status',
+		),
+		'extra' => 
+			"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+			." AND id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+	));
+	
+	if(!$agendamentos){
+		// ===== Ativação da expiradoOuNaoEncontrado.
+		
+		$_GESTOR['javascript-vars']['expiradoOuNaoEncontrado'] = true;
+	} else {
+		// ===== Verificar se a confirmação está no período válido.
+		
+		// ===== Dados do agendamento.
+		
+		$hoje = date('Y-m-d');
+		$data = $agendamentos['data'];
+		$status = $agendamentos['status'];
+		
+		// ===== Configuração de fase de sorteio.
+		
+		$config = gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','conjunto' => true));
+		
+		$fase_sorteio = (existe($config['fase-sorteio']) ? explode(',',$config['fase-sorteio']) : Array(7,5));
+		
+		// ===== Verificar se o status atual do agendamento permite confirmação.
+		
+		if(
+			$status == 'confirmado' ||
+			$status == 'qualificado' ||
+			$status == 'email-enviado' ||
+			$status == 'email-nao-enviado'
+		){
+			// ===== Verificar se está na fase de confirmação.
+			
+			if(
+				strtotime($data) >= strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
+				strtotime($data) < strtotime($hoje.' + '.($fase_sorteio[0]+1).' day')
+			){
+				
+			} else {
+				// ===== Datas do período de confirmação.
+				
+				gestor_incluir_biblioteca('formato');
+				
+				$data_confirmacao_1 = formato_dado_para('data',date('Y-m-d',strtotime($data.' - '.($fase_sorteio[0]).' day')));
+				$data_confirmacao_2 = formato_dado_para('data',date('Y-m-d',strtotime($data.' - '.($fase_sorteio[1]).' day') - 1));
+				
+				// ===== Retornar a mensagem de agendamento expirado.
+				
+				$msgAgendamentoExpirado = (existe($config['msg-agendamento-expirado']) ? $config['msg-agendamento-expirado'] : '');
+				
+				$msgAgendamentoExpirado = modelo_var_troca_tudo($msgAgendamentoExpirado,"#data_confirmacao_1#",$data_confirmacao_1);
+				$msgAgendamentoExpirado = modelo_var_troca_tudo($msgAgendamentoExpirado,"#data_confirmacao_2#",$data_confirmacao_2);
+				
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $msgAgendamentoExpirado
+				));
+				
+				gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
+			}
+		} else {
+			interface_alerta(Array(
+				'redirect' => true,
+				'msg' => 'AGENDAMENTO_STATUS_NAO_PERMITIDO_CONFIRMACAO'
+			));
+			
+			gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
+		}
+		
+		// ===== Solicitação de confirmação do agendamento.
+		
+		if(isset($_REQUEST['efetuar_confirmacao'])){
+			// ===== Pegar a escolha de alteração.
+			
+			$escolha = $_REQUEST['escolha'];
+			
+			// ===== API-Servidor para efetuar confirmação.
+			
+			$retorno = api_servidor_interface(Array(
+				'interface' => 'alteracao',
+				'plugin' => 'agendamentos',
+				'opcao' => 'confirmar',
+				'dados' => Array(
+					'escolha' => ($escolha == 'confirmar' ? 'confirmar':'cancelar'),
+					'id_hosts_agendamentos' => $id_hosts_agendamentos,
+					'id_hosts_usuarios' => $_GESTOR['usuario-id'],
+				),
+			));
+			
+			if(!$retorno['completed']){
+				switch($retorno['status']){
+					case 'AGENDAMENTO_NAO_ENCONTRADO':
+					case 'AGENDAMENTO_CONFIRMACAO_EXPIRADO':
+					case 'AGENDAMENTO_SEM_VAGAS':
+						$alerta = (existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status']);
+					break;
+					default:
+						$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-servidor-error'));
+						
+						$alerta = modelo_var_troca($alerta,"#error-msg#",(existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status'] ));
+				}
+				
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $alerta
+				));
+			} else {
+				// ===== Dados de retorno.
+				
+				$dados = Array();
+				if(isset($retorno['data'])){
+					$dados = $retorno['data'];
+				}
+				
+				// ===== Caso houve atualização do agendamentos datas, alterar os dados localmente.
+			
+				if(isset($dados['agendamentos_datas'])){
+					$id_hosts_agendamentos_datas = $dados['agendamentos_datas']['id_hosts_agendamentos_datas'];
+					$total = $dados['agendamentos_datas']['total'];
+					
+					$agendamentos_datas = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'agendamentos_datas',
+						'campos' => Array(
+							'id_hosts_agendamentos_datas',
+						),
+						'extra' => 
+							"WHERE id_hosts_agendamentos_datas='".$id_hosts_agendamentos_datas."'"
+					));
+					
+					if($agendamentos_datas){
+						banco_update_campo('total',$total);
+						
+						banco_update_executar('agendamentos_datas',"WHERE id_hosts_agendamentos_datas='".$id_hosts_agendamentos_datas."'");
+					}
+				}
+				
+				// ===== Gerar o agendamento ou atualizar um já existente.
+				
+				$id_hosts_usuarios = $dados['agendamentos']['id_hosts_usuarios'];
+				$id_hosts_agendamentos = $dados['agendamentos']['id_hosts_agendamentos'];
+				
+				$agendamentos = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'agendamentos',
+					'campos' => Array(
+						'id_hosts_agendamentos',
+					),
+					'extra' => 
+						"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+				));
+				
+				if($agendamentos){
+					// ===== Atualizar agendamento.
+					
+					if(isset($dados['agendamentos'])){
+						$agendamentos = $dados['agendamentos'];
+						
+						foreach($agendamentos as $key => $valor){
+							switch($key){
+								case 'acompanhantes':
+								case 'versao':
+									banco_update_campo($key,($valor ? $valor : '0'),true);
+								break;
+								default:
+									banco_update_campo($key,$valor);
+							}
+						}
+						
+						banco_update_executar('agendamentos',"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."' AND id_hosts_usuarios='".$id_hosts_usuarios."'");
+					}
+				}
+				
+				// ===== Alertar o usuário.
+				
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $dados['alerta']
+				));
+			}
+			
+			// ===== Ler a listagem dos agendamentos.
+			
+			gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
+		}
+		
+		// ===== Ativação da confirmação.
+		
+		$_GESTOR['javascript-vars']['confirmar'] = true;
+	}
+	
+	// ===== Remover a célula ativo e inativo.
+	
+	$cel_nome = 'ativo'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	$cel_nome = 'inativo'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	
+	// ===== Incluir o token no formulário.
+	
+	pagina_trocar_variavel_valor('confirmacao-data',($agendamentos ? formato_dado_para('data',$agendamentos['data']) : ''));
+	pagina_trocar_variavel_valor('confirmacao-agendamento-id',$id_hosts_agendamentos);
+	
+	// ===== Alterações no layout da página.
+	
+	gestor_incluir_biblioteca('layout');
+	
+	layout_trocar_variavel_valor('layout#step','');
+	layout_trocar_variavel_valor('layout#step-mobile','');
+	
+	// ===== Finalizar o layout com as variáveis padrões.
+	
+	layout_loja();
+	
+	// ===== Finalizar interface.
+	
+	interface_componentes_incluir(Array(
+		'componente' => Array(
+			'modal-carregamento',
+			'modal-alerta',
+		)
+	));
+	
+	interface_finalizar();
+	
+	// ===== Incluir o JS.
+	
+	gestor_pagina_javascript_incluir('plugin');
+}
+
+function agendamentos_cancelamento(){
+	global $_GESTOR;
+	
+	// ===== Iniciar as bibliotecas necessárias.
+	
+	gestor_incluir_biblioteca(Array(
+		'pagina',
+		'formato',
+		'interface',
+		'formulario',
+		'api-servidor',
+	));
+	
+	// ===== Validar o token enviado.
+	
+	// ===== Validar o agendamento_id enviado.
+	
+	$id_hosts_agendamentos = (isset($_REQUEST['agendamento_id']) ? banco_escape_field($_REQUEST['agendamento_id']) : '');
+	
+	$agendamentos = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'agendamentos',
+		'campos' => Array(
+			'data',
+			'status',
+		),
+		'extra' => 
+			"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+			." AND id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+	));
+	
+	if(!$agendamentos){
+		// ===== Ativação da expiradoOuNaoEncontrado.
+		
+		$_GESTOR['javascript-vars']['expiradoOuNaoEncontrado'] = true;
+	} else {
+		
+		// ===== Solicitação de confirmação do cancelamento.
+		
+		if(isset($_REQUEST['efetuar_cancelamento'])){
+			// ===== API-Servidor para efetuar confirmação.
+			
+			$retorno = api_servidor_interface(Array(
+				'interface' => 'alteracao',
+				'plugin' => 'agendamentos',
+				'opcao' => 'cancelar',
+				'dados' => Array(
+					'id_hosts_agendamentos' => $id_hosts_agendamentos,
+					'id_hosts_usuarios' => $_GESTOR['usuario-id'],
+				),
+			));
+			
+			if(!$retorno['completed']){
+				switch($retorno['status']){
+					case 'AGENDAMENTO_NAO_ENCONTRADO':
+					case 'AGENDAMENTO_CONFIRMACAO_EXPIRADO':
+					case 'AGENDAMENTO_SEM_VAGAS':
+						$alerta = (existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status']);
+					break;
+					default:
+						$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-servidor-error'));
+						
+						$alerta = modelo_var_troca($alerta,"#error-msg#",(existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status'] ));
+				}
+				
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $alerta
+				));
+			} else {
+				// ===== Dados de retorno.
+				
+				$dados = Array();
+				if(isset($retorno['data'])){
+					$dados = $retorno['data'];
+				}
+				
+				// ===== Caso houve atualização do agendamentos datas, alterar os dados localmente.
+			
+				if(isset($dados['agendamentos_datas'])){
+					$id_hosts_agendamentos_datas = $dados['agendamentos_datas']['id_hosts_agendamentos_datas'];
+					$total = $dados['agendamentos_datas']['total'];
+					
+					$agendamentos_datas = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'agendamentos_datas',
+						'campos' => Array(
+							'id_hosts_agendamentos_datas',
+						),
+						'extra' => 
+							"WHERE id_hosts_agendamentos_datas='".$id_hosts_agendamentos_datas."'"
+					));
+					
+					if($agendamentos_datas){
+						banco_update_campo('total',$total);
+						
+						banco_update_executar('agendamentos_datas',"WHERE id_hosts_agendamentos_datas='".$id_hosts_agendamentos_datas."'");
+					}
+				}
+				
+				// ===== Gerar o agendamento ou atualizar um já existente.
+				
+				$id_hosts_usuarios = $dados['agendamentos']['id_hosts_usuarios'];
+				$id_hosts_agendamentos = $dados['agendamentos']['id_hosts_agendamentos'];
+				
+				$agendamentos = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'agendamentos',
+					'campos' => Array(
+						'id_hosts_agendamentos',
+					),
+					'extra' => 
+						"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+				));
+				
+				if($agendamentos){
+					// ===== Atualizar agendamento.
+					
+					if(isset($dados['agendamentos'])){
+						$agendamentos = $dados['agendamentos'];
+						
+						foreach($agendamentos as $key => $valor){
+							switch($key){
+								case 'acompanhantes':
+								case 'versao':
+									banco_update_campo($key,($valor ? $valor : '0'),true);
+								break;
+								default:
+									banco_update_campo($key,$valor);
+							}
+						}
+						
+						banco_update_executar('agendamentos',"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."' AND id_hosts_usuarios='".$id_hosts_usuarios."'");
+					}
+				}
+				
+				// ===== Alertar o usuário.
+				
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $dados['alerta']
+				));
+			}
+			
+			// ===== Ler a listagem dos agendamentos.
+			
+			gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
+		}
+		
+		// ===== Ativação do cancelamento.
+		
+		$_GESTOR['javascript-vars']['cancelar'] = true;
+	}
+	
+	// ===== Remover a célula ativo e inativo.
+	
+	$cel_nome = 'ativo'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	$cel_nome = 'inativo'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	
+	// ===== Incluir o token no formulário.
+	
+	pagina_trocar_variavel_valor('cancelamento-data',($agendamentos ? formato_dado_para('data',$agendamentos['data']) : ''));
+	pagina_trocar_variavel_valor('cancelamento-agendamento-id',$id_hosts_agendamentos);
+	
+	// ===== Alterações no layout da página.
+	
+	gestor_incluir_biblioteca('layout');
+	
+	layout_trocar_variavel_valor('layout#step','');
+	layout_trocar_variavel_valor('layout#step-mobile','');
+	
+	// ===== Finalizar o layout com as variáveis padrões.
+	
+	layout_loja();
+	
+	// ===== Finalizar interface.
+	
+	interface_componentes_incluir(Array(
+		'componente' => Array(
+			'modal-carregamento',
+			'modal-alerta',
+		)
+	));
+	
+	interface_finalizar();
+	
+	// ===== Incluir o JS.
+	
+	gestor_pagina_javascript_incluir('plugin');
+}
+
 function agendamentos_padrao(){
 	global $_GESTOR;
+	
+	// ===== Ação disparada.
+	
+	switch($_REQUEST['acao']){
+		case 'confirmar':
+			agendamentos_confirmacao();
+			return;
+		break;
+		case 'cancelar':
+			agendamentos_cancelamento();
+			return;
+		break;
+	}
 	
 	// ===== Iniciar as bibliotecas necessárias.
 	

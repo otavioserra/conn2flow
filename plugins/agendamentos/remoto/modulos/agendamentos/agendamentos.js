@@ -46,7 +46,34 @@ $(document).ready(function(){
 		
 		// ===== Form da confirmacao.
 		
-		var formSelector = '.confirmacaoPublicaForm';
+		var formSelector = '.cancelamentoPublicoForm';
+		
+		$(formSelector)
+			.form({
+				
+			});
+		
+		// ===== Botão de cancelamento.
+		
+		$('.cancelarPublicoAgendamentoBtn').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			$(formSelector).form('submit');
+		});
+	}
+	
+	function confirmar(){
+		// ===== Mostrar a tela de confirmação.
+		
+		$('.confirmar').show();
+		
+		// ===== Iniciar popup.
+		
+		$('.button').popup({addTouchEvents:false});
+		
+		// ===== Form da confirmacao.
+		
+		var formSelector = '.confirmacaoForm';
 		
 		$(formSelector)
 			.form({
@@ -55,7 +82,7 @@ $(document).ready(function(){
 		
 		// ===== Botão de confirmação.
 		
-		$('.confirmarPublicoAgendamentoBtn').on('mouseup tap',function(e){
+		$('.confirmarAgendamentoBtn').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
 			$(formSelector).find('input[name="escolha"]').val('confirmar');
@@ -64,7 +91,34 @@ $(document).ready(function(){
 		
 		// ===== Botão de cancelamento.
 		
-		$('.cancelarPublicoAgendamentoBtn').on('mouseup tap',function(e){
+		$('.cancelarAgendamentoBtn').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			$(formSelector).form('submit');
+		});
+	}
+	
+	function cancelar(){
+		// ===== Mostrar a tela de confirmação pública.
+		
+		$('.cancelar').show();
+		
+		// ===== Iniciar popup.
+		
+		$('.button').popup({addTouchEvents:false});
+		
+		// ===== Form da confirmacao.
+		
+		var formSelector = '.cancelamentoForm';
+		
+		$(formSelector)
+			.form({
+				
+			});
+		
+		// ===== Botão de cancelamento.
+		
+		$('.cancelarAgendamentoBtn').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
 			$(formSelector).form('submit');
@@ -236,6 +290,26 @@ $(document).ready(function(){
 		// ===== Tab de informações dos agendamentos.
 		
 		$('.tabular.menu .item').tab();
+		
+		// ===== Botão confirmar.
+		
+		$(document.body).on('mouseup tap','.confirmarAgendamentoBtn',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			var agendamento_id = $(this).attr('data-id');
+			
+			window.open("/agendamentos/?acao=confirmar&agendamento_id="+agendamento_id,"_self");
+		});
+		
+		// ===== Botão cancelar.
+		
+		$(document.body).on('mouseup tap','.cancelarAgendamentoBtn',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			var agendamento_id = $(this).attr('data-id');
+			
+			window.open("/agendamentos/?acao=cancelar&agendamento_id="+agendamento_id,"_self");
+		});
 		
 		// ===== Informações de um agendamento.
 		
@@ -428,6 +502,8 @@ $(document).ready(function(){
 		
 		if('confirmarPublico' in gestor){ confirmarPublico(); }
 		if('cancelarPublico' in gestor){ cancelarPublico(); }
+		if('confirmar' in gestor){ confirmar(); }
+		if('cancelar' in gestor){ cancelar(); }
 		if('expiradoOuNaoEncontrado' in gestor){ expiradoOuNaoEncontrado(); }
 	}
 	
