@@ -195,6 +195,76 @@ function agendamentos_confirmacao_publico(){
 		
 		$_GESTOR['javascript-vars']['expiradoOuNaoEncontrado'] = true;
 	} else {
+		// ===== Verificar se a confirmação está no período válido.
+		
+		$agendamentos = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'agendamentos',
+			'campos' => Array(
+				'data',
+				'status',
+			),
+			'extra' => 
+				"WHERE pubId='".$pubId."'"
+		));
+		
+		// ===== Dados do agendamento.
+		
+		$hoje = date('Y-m-d');
+		$data = $agendamentos['data'];
+		$status = $agendamentos['status'];
+		
+		// ===== Configuração de fase de sorteio.
+		
+		$config = gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','conjunto' => true));
+		
+		$fase_sorteio = (existe($config['fase-sorteio']) ? explode(',',$config['fase-sorteio']) : Array(7,5));
+		
+		// ===== Verificar se o status atual do agendamento permite confirmação.
+		
+		if(
+			$status == 'confirmado' ||
+			$status == 'qualificado' ||
+			$status == 'email-enviado' ||
+			$status == 'email-nao-enviado'
+		){
+			// ===== Verificar se está na fase de confirmação.
+			
+			if(
+				strtotime($data) >= strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
+				strtotime($data) < strtotime($hoje.' + '.($fase_sorteio[0]+1).' day')
+			){
+				
+			} else {
+				// ===== Datas do período de confirmação.
+				
+				gestor_incluir_biblioteca('formato');
+				
+				$data_confirmacao_1 = formato_dado_para('data',date('Y-m-d',strtotime($data.' - '.($fase_sorteio[0]).' day')));
+				$data_confirmacao_2 = formato_dado_para('data',date('Y-m-d',strtotime($data.' - '.($fase_sorteio[1]).' day') - 1));
+				
+				// ===== Retornar a mensagem de agendamento expirado.
+				
+				$msgAgendamentoExpirado = (existe($config['msg-agendamento-expirado']) ? $config['msg-agendamento-expirado'] : '');
+				
+				$msgAgendamentoExpirado = modelo_var_troca_tudo($msgAgendamentoExpirado,"#data_confirmacao_1#",$data_confirmacao_1);
+				$msgAgendamentoExpirado = modelo_var_troca_tudo($msgAgendamentoExpirado,"#data_confirmacao_2#",$data_confirmacao_2);
+				
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $msgAgendamentoExpirado
+				));
+				
+				gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
+			}
+		} else {
+			interface_alerta(Array(
+				'redirect' => true,
+				'msg' => 'AGENDAMENTO_STATUS_NAO_PERMITIDO_CONFIRMACAO'
+			));
+			
+			gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
+		}
 		
 		// ===== Solicitação de confirmação do agendamento.
 		
