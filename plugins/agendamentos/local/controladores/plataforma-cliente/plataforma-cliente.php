@@ -202,6 +202,8 @@ function plataforma_cliente_plugin_data_agendamento_confirmar($params = false){
 			." ORDER BY nome ASC"
 	));
 	
+	echo 'Var>> '.print_r($hosts_agendamentos_acompanhantes,true)."<br>";exit;
+	
 	if($hosts_agendamentos_acompanhantes)
 	foreach($hosts_agendamentos_acompanhantes as $acompanhanteNome){
 		$acompanhantesNomes[] = $acompanhanteNome;
@@ -1265,10 +1267,6 @@ function plataforma_cliente_plugin_alteracao(){
 						." AND id_hosts='".$id_hosts."'"
 				));
 				
-				$id_hosts_agendamentos = $hosts_agendamentos['id_hosts_agendamentos'];
-				$id_hosts_usuarios = $hosts_agendamentos['id_hosts_usuarios'];
-				$data = $hosts_agendamentos['data'];
-				
 				// ===== Caso não exista, retorar erro.
 				
 				if(!$hosts_agendamentos){
@@ -1277,6 +1275,10 @@ function plataforma_cliente_plugin_alteracao(){
 						'error-msg' => $msgAgendamentoNaoEncontrado,
 					);
 				}
+				
+				$id_hosts_agendamentos = $hosts_agendamentos['id_hosts_agendamentos'];
+				$id_hosts_usuarios = $hosts_agendamentos['id_hosts_usuarios'];
+				$data = $hosts_agendamentos['data'];
 				
 				// ===== Tratar cada escolha: 'confirmar' ou 'cancelar'.
 				
@@ -1455,10 +1457,6 @@ function plataforma_cliente_plugin_alteracao(){
 						." AND id_hosts='".$id_hosts."'"
 				));
 				
-				$id_hosts_agendamentos = $hosts_agendamentos['id_hosts_agendamentos'];
-				$id_hosts_usuarios = $hosts_agendamentos['id_hosts_usuarios'];
-				$data = $hosts_agendamentos['data'];
-				
 				// ===== Caso não exista, retorar erro.
 				
 				if(!$hosts_agendamentos){
@@ -1467,6 +1465,10 @@ function plataforma_cliente_plugin_alteracao(){
 						'error-msg' => $msgAgendamentoNaoEncontrado,
 					);
 				}
+				
+				$id_hosts_agendamentos = $hosts_agendamentos['id_hosts_agendamentos'];
+				$id_hosts_usuarios = $hosts_agendamentos['id_hosts_usuarios'];
+				$data = $hosts_agendamentos['data'];
 				
 				// ===== Efetuar o cancelamento.
 				
@@ -1556,11 +1558,6 @@ function plataforma_cliente_plugin_alteracao(){
 				$id_hosts_usuarios = banco_escape_field($dados['id_hosts_usuarios']);
 				$escolha = $dados['escolha'];
 				
-				return Array(
-					'status' => 'AGENDAMENTO_TESTES',
-					'error-msg' => $id_hosts_agendamentos.' '.$id_hosts_usuarios.' '.$escolha,
-				);
-			
 				// ===== Pegar o agendamento no banco de dados.
 				
 				$hosts_agendamentos = banco_select(Array(
@@ -1576,8 +1573,6 @@ function plataforma_cliente_plugin_alteracao(){
 						." AND id_hosts='".$id_hosts."'"
 				));
 				
-				$data = $hosts_agendamentos['data'];
-				
 				// ===== Caso não exista, retorar erro.
 				
 				if(!$hosts_agendamentos){
@@ -1586,6 +1581,8 @@ function plataforma_cliente_plugin_alteracao(){
 						'error-msg' => $msgAgendamentoNaoEncontrado,
 					);
 				}
+				
+				$data = $hosts_agendamentos['data'];
 				
 				// ===== Tratar cada escolha: 'confirmar' ou 'cancelar'.
 				
@@ -1764,8 +1761,6 @@ function plataforma_cliente_plugin_alteracao(){
 						." AND id_hosts='".$id_hosts."'"
 				));
 				
-				$data = $hosts_agendamentos['data'];
-				
 				// ===== Caso não exista, retorar erro.
 				
 				if(!$hosts_agendamentos){
@@ -1774,6 +1769,8 @@ function plataforma_cliente_plugin_alteracao(){
 						'error-msg' => $msgAgendamentoNaoEncontrado,
 					);
 				}
+				
+				$data = $hosts_agendamentos['data'];
 				
 				// ===== Efetuar o cancelamento.
 				
