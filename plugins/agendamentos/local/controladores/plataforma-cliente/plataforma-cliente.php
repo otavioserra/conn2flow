@@ -657,6 +657,15 @@ function plataforma_cliente_plugin_agendamentos(){
 					);
 				}
 				
+				// ===== Gerar o token de validação.
+				
+				$validacao = plataforma_cliente_gerar_token_validacao(Array(
+					'id_hosts' => $id_hosts,
+				));
+				
+				$token = $validacao['token'];
+				$pubID = $validacao['pubID'];
+				
 				// ===== Verificar agendamento do usuário para a data enviada.
 				
 				$hosts_agendamentos = banco_select(Array(
@@ -788,15 +797,6 @@ function plataforma_cliente_plugin_agendamentos(){
 							"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
 							." AND id_hosts='".$id_hosts."'"
 					));
-					
-					// ===== Gerar o token de validação.
-					
-					$validacao = plataforma_cliente_gerar_token_validacao(Array(
-						'id_hosts' => $id_hosts,
-					));
-					
-					$token = $validacao['token'];
-					$pubID = $validacao['pubID'];
 					
 					// ===== Gerar o agendamento ou atualizar um já existente.
 					
@@ -980,6 +980,7 @@ function plataforma_cliente_plugin_agendamentos(){
 					banco_insert_name_campo('data',$agendamentoData);
 					banco_insert_name_campo('acompanhantes',$acompanhantes);
 					banco_insert_name_campo('status','novo');
+					banco_insert_name_campo('pubID',$pubID);
 					banco_insert_name_campo('versao','1',true);
 					banco_insert_name_campo('data_criacao','NOW()',true);
 					banco_insert_name_campo('data_modificacao','NOW()',true);
@@ -1055,6 +1056,7 @@ function plataforma_cliente_plugin_agendamentos(){
 					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#data_sorteio#",$data_sorteio);
 					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#data_confirmacao_1#",$data_confirmacao_1);
 					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#data_confirmacao_2#",$data_confirmacao_2);
+					$preAgendamentoMensagem = modelo_var_troca_tudo($preAgendamentoMensagem,"#url-cancelamento#",'<a target="agendamento" href="'.host_url(Array('opcao'=>'full')).'agendamentos/?acao=cancelar&token='.$token.'" style="overflow-wrap: break-word;">'.host_url(Array('opcao'=>'full')).'agendamentos/?acao=cancelar&token='.$token.'</a>');
 					
 					// ===== Formatar mensagem do alerta.
 					
