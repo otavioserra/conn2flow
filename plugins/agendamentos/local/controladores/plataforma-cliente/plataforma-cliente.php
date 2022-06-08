@@ -1539,11 +1539,6 @@ function plataforma_cliente_plugin_alteracao(){
 				$dados = json_decode($_REQUEST['dados'],true);
 			}
 			
-			return Array(
-				'status' => 'AGENDAMENTO_TESTES',
-				'error-msg' => print_r($dados,true),
-			);
-			
 			// ===== Verificar se os campos obrigatórios foram enviados: id_hosts_agendamentos e id_hosts_usuarios.
 			
 			if(isset($dados['id_hosts_agendamentos']) && isset($dados['id_hosts_usuarios'])){
@@ -1561,6 +1556,11 @@ function plataforma_cliente_plugin_alteracao(){
 				$id_hosts_usuarios = banco_escape_field($dados['id_hosts_usuarios']);
 				$escolha = $dados['escolha'];
 				
+				return Array(
+					'status' => 'AGENDAMENTO_TESTES',
+					'error-msg' => $id_hosts_agendamentos.' '.$id_hosts_usuarios.' '.$escolha,
+				);
+			
 				// ===== Pegar o agendamento no banco de dados.
 				
 				$hosts_agendamentos = banco_select(Array(
