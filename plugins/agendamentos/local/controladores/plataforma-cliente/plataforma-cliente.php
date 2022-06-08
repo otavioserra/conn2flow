@@ -750,7 +750,9 @@ function plataforma_cliente_plugin_agendamentos(){
 						
 						$msgAgendamentoSemVagas = (existe($config['msg-agendamento-sem-vagas']) ? $config['msg-agendamento-sem-vagas'] : '');
 						
-						$msgAgendamentoSemVagas = modelo_var_troca_tudo($msgAgendamentoSemVagas,"#data#",$agendamentoData);
+						gestor_incluir_biblioteca('formato');
+						
+						$msgAgendamentoSemVagas = modelo_var_troca_tudo($msgAgendamentoSemVagas,"#data#",formato_dado_para('data',$agendamentoData));
 						$msgAgendamentoSemVagas = modelo_var_troca_tudo($msgAgendamentoSemVagas,"#vagas#",$vagas);
 						
 						return Array(
