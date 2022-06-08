@@ -202,8 +202,6 @@ function plataforma_cliente_plugin_data_agendamento_confirmar($params = false){
 			." ORDER BY nome ASC"
 	));
 	
-	echo 'Var>> '.print_r($hosts_agendamentos_acompanhantes,true)."<br>";exit;
-	
 	if($hosts_agendamentos_acompanhantes)
 	foreach($hosts_agendamentos_acompanhantes as $acompanhanteNome){
 		$acompanhantesNomes[] = $acompanhanteNome;
@@ -329,16 +327,13 @@ function plataforma_cliente_plugin_data_agendamento_confirmar($params = false){
 	
 	$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($agendamentoMensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $agendamentoMensagem = modelo_tag_in($agendamentoMensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 	
-	$cel_aux = $cel[$cel_nome];
-	
-	$cel_aux = modelo_var_troca($cel_aux,"#nome#",$nome);
-	
-	$agendamentoMensagem = modelo_var_in($agendamentoMensagem,'<!-- '.$cel_nome.' -->',$cel_aux);
+	$agendamentoMensagem = modelo_var_troca($agendamentoMensagem,"#seu-nome#",$nome);
 	
 	for($i=0;$i<(int)$acompanhantes;$i++){
 		$cel_aux = $cel[$cel_nome];
 		
-		$cel_aux = modelo_var_troca($cel_aux,"#nome#",$acompanhantesNomes[$i]);
+		$cel_aux = modelo_var_troca($cel_aux,"#num#",($i+1));
+		$cel_aux = modelo_var_troca($cel_aux,"#acompanhante#",$acompanhantesNomes[$i]);
 		
 		$agendamentoMensagem = modelo_var_in($agendamentoMensagem,'<!-- '.$cel_nome.' -->',$cel_aux);
 	}
@@ -351,16 +346,13 @@ function plataforma_cliente_plugin_data_agendamento_confirmar($params = false){
 	
 	$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($msgConclusaoAgendamento,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $msgConclusaoAgendamento = modelo_tag_in($msgConclusaoAgendamento,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 	
-	$cel_aux = $cel[$cel_nome];
-	
-	$cel_aux = modelo_var_troca($cel_aux,"#nome#",$nome);
-	
-	$msgConclusaoAgendamento = modelo_var_in($msgConclusaoAgendamento,'<!-- '.$cel_nome.' -->',$cel_aux);
+	$msgConclusaoAgendamento = modelo_var_troca($msgConclusaoAgendamento,"#seu-nome#",$nome);
 	
 	for($i=0;$i<(int)$acompanhantes;$i++){
 		$cel_aux = $cel[$cel_nome];
 		
-		$cel_aux = modelo_var_troca($cel_aux,"#nome#",$acompanhantesNomes[$i]);
+		$cel_aux = modelo_var_troca($cel_aux,"#num#",($i+1));
+		$cel_aux = modelo_var_troca($cel_aux,"#acompanhante#",$acompanhantesNomes[$i]);
 		
 		$msgConclusaoAgendamento = modelo_var_in($msgConclusaoAgendamento,'<!-- '.$cel_nome.' -->',$cel_aux);
 	}
