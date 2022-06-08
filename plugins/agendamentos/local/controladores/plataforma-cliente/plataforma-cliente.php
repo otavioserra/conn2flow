@@ -483,15 +483,15 @@ function plataforma_cliente_plugin_data_agendamento_cancelar($params = false){
 		banco_update_campo('total','total-'.($acompanhantes+1),true);
 		
 		banco_update_executar('hosts_agendamentos_datas',"WHERE id_hosts_agendamentos_datas='".$hosts_agendamentos_datas['id_hosts_agendamentos_datas']."'");
-		
-		// ===== Atualizar agendamento.
-		
-		banco_update_campo('status','finalizado');
-		banco_update_campo('versao','versao+1',true);
-		banco_update_campo('data_modificacao','NOW()',true);
-		
-		banco_update_executar('hosts_agendamentos',"WHERE id_hosts='".$id_hosts."' AND id_hosts_agendamentos='".$id_hosts_agendamentos."' AND id_hosts_usuarios='".$id_hosts_usuarios."'");
 	}
+	
+	// ===== Atualizar agendamento.
+	
+	banco_update_campo('status','finalizado');
+	banco_update_campo('versao','versao+1',true);
+	banco_update_campo('data_modificacao','NOW()',true);
+	
+	banco_update_executar('hosts_agendamentos',"WHERE id_hosts='".$id_hosts."' AND id_hosts_agendamentos='".$id_hosts_agendamentos."' AND id_hosts_usuarios='".$id_hosts_usuarios."'");
 	
 	// ===== Pegar dados do usuário.
 	
