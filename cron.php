@@ -63,7 +63,7 @@ function cron_incluir_biblioteca($biblioteca){
 		$_GESTOR['bibliotecas-inseridas'][$biblioteca] = true;
 		
 		foreach($caminhos as $caminho){
-			require_once($_CRON['ROOT_PATH'] . $_GESTOR['modulos-path'].$caminho);
+			require_once($_GESTOR['modulos-path'].$caminho);
 		}
 	}
 }
