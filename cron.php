@@ -29,6 +29,14 @@ for($i=1;$i<$argc;$i++){
 	}
 }
 
+// ===== Ativar debug por request.
+
+if($debug){
+	$_CRON['DEBUG'] = true;
+} else {
+	$_CRON['DEBUG'] = false;
+}
+
 // ===== Forçar variáveis globais SERVER.
 
 $_CRON['SERVER_NAME'] = $server;
@@ -968,14 +976,6 @@ function cron_start(){
 	global $argv;
 	global $argc;
 	global $_CRON;
-	
-	// ===== Ativar debug por request.
-	
-	if($debug){
-		$_CRON['DEBUG'] = true;
-	} else {
-		$_CRON['DEBUG'] = false;
-	}
 	
 	// ===== Buffer para log ao invés de direto no console.
 	
