@@ -967,7 +967,7 @@ function cron_start(){
 		}
 	}
 	
-	cron_log($_SERVER['DOCUMENT_ROOT']);
+	cron_log('DOCUMENT_ROOT: '.$_SERVER['DOCUMENT_ROOT']);
 	
 	// ===== Forçar variáveis globais SERVER.
 	
