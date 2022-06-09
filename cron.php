@@ -89,7 +89,7 @@ function cron_incluir_configuracao($params = false){
 			return $_GESTOR['configuracaoes-inseridas'][$id];
 		}
 		
-		$_GESTOR['configuracaoes-inseridas'][$id] = require_once($_CRON['ROOT_PATH'] . $_GESTOR['configuracoes-path'].$id.'.php');
+		$_GESTOR['configuracaoes-inseridas'][$id] = require_once($_GESTOR['configuracoes-path'].$id.'.php');
 		
 		return $_GESTOR['configuracaoes-inseridas'][$id];
 	}
