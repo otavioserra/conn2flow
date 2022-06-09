@@ -72,22 +72,40 @@ $_GESTOR['bancoDef']['entrey.com.br'] = Array(
 	'host'				=>	'localhost',
 );
 
+// ===== Detecção de execução do cron.
+
+if(isset($_CRON)){
+	$_SERVER['SERVER_NAME'] = $_CRON['SERVER_NAME'];
+	$_GESTOR['ROOT_PATH'] = $_CRON['ROOT_PATH'];
+} else {
+	if($_SERVER['SERVER_NAME'] == "localhost"){
+		$_GESTOR['ROOT_PATH'] = $_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/';
+	} else if($_SERVER['SERVER_NAME'] == "beta.entrey.com.br"){
+		$_GESTOR['ROOT_PATH'] = $_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/';
+	} else {
+		$_GESTOR['ROOT_PATH'] = $_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/';
+	}
+}
+
+// ===== Definição dos caminhos em disco padrões.
+
+$_GESTOR['bibliotecas-path']					=	$_GESTOR['ROOT_PATH'].'bibliotecas/';
+$_GESTOR['modulos-path']						=	$_GESTOR['ROOT_PATH'].'bibliotecas/';
+$_GESTOR['openssl-path']						=	$_GESTOR['ROOT_PATH'].'chaves/gestor/';
+$_GESTOR['assets-path']							=	$_GESTOR['ROOT_PATH'].'assets/';
+$_GESTOR['contents-path']						=	$_GESTOR['ROOT_PATH'].'contents/';
+$_GESTOR['configuracoes-path']					=	$_GESTOR['ROOT_PATH'].'configuracoes/';
+$_GESTOR['logs-path']							=	$_GESTOR['ROOT_PATH'].'logs/';
+$_GESTOR['plugins-path']						=	$_GESTOR['ROOT_PATH'].'plugins/';
+
 // ===== Definições de variáveis padrões do sistema em hosts diferentes
 
 if($_SERVER['SERVER_NAME'] == "localhost"){
-	// ===== Banco e caminhos em disco das opções
+	// ===== Banco e url raiz.
 	
 	$_GESTOR['banco'] = $_GESTOR['bancoDef']['localhost'];
 	
 	$_GESTOR['url-raiz']							=	'/entrey/';
-	$_GESTOR['bibliotecas-path']					=	$_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/bibliotecas/';
-	$_GESTOR['modulos-path']						=	$_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/bibliotecas/';
-	$_GESTOR['openssl-path']						=	$_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/chaves/gestor/';
-	$_GESTOR['assets-path']							=	$_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/assets/';
-	$_GESTOR['contents-path']						=	$_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/contents/';
-	$_GESTOR['configuracoes-path']					=	$_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/configuracoes/';
-	$_GESTOR['logs-path']							=	$_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/logs/';
-	$_GESTOR['plugins-path']						=	$_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/plugins/';
 	
 	// ===== Configuração do serviço de emails
 	
@@ -116,19 +134,11 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	
 	$_GESTOR['plataforma-id'] = 'local';
 } else if($_SERVER['SERVER_NAME'] == "beta.entrey.com.br"){
-	// ===== Banco e caminhos em disco das opções
+	// ===== Banco e url raiz.
 	
 	$_GESTOR['banco'] = $_GESTOR['bancoDef']['beta.entrey.com.br'];
 	
 	$_GESTOR['url-raiz']							=	'/';
-	$_GESTOR['bibliotecas-path']					=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/bibliotecas/';
-	$_GESTOR['modulos-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/bibliotecas/';
-	$_GESTOR['openssl-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/chaves/gestor/';
-	$_GESTOR['assets-path']							=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/assets/';
-	$_GESTOR['contents-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/contents/';
-	$_GESTOR['configuracoes-path']					=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/configuracoes/';
-	$_GESTOR['logs-path']							=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/logs/';
-	$_GESTOR['plugins-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/plugins/';
 	
 	// ===== Configuração do serviço de emails
 	
@@ -170,19 +180,11 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	
 	$_GESTOR['plataforma-id'] = 'beta';
 } else {
-	// ===== Banco e caminhos em disco das opções
+	// ===== Banco e url raiz.
 	
 	$_GESTOR['banco'] = $_GESTOR['bancoDef']['entrey.com.br'];
 	
 	$_GESTOR['url-raiz']							=	'/';
-	$_GESTOR['bibliotecas-path']					=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/bibliotecas/';
-	$_GESTOR['modulos-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/bibliotecas/';
-	$_GESTOR['openssl-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/chaves/gestor/';
-	$_GESTOR['assets-path']							=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/assets/';
-	$_GESTOR['contents-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/contents/';
-	$_GESTOR['configuracoes-path']					=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/configuracoes/';
-	$_GESTOR['logs-path']							=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/logs/';
-	$_GESTOR['plugins-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/plugins/';
 	
 	// ===== Chaves e senhas do ambiente live.
 	

@@ -3,8 +3,39 @@
 // =========================== Configuração Inicial
 
 $_GESTOR										=	Array();
+$_CRON											=	Array();
 
 $_GESTOR['bibliotecas']							=	Array('banco');
+
+// ===== Configurações pré-inclusão do config.
+
+$debug = false;
+$server = 'beta.entrey.com.br';
+$plataforma_id = 'beta';
+
+// ===== Parâmetros passados no command line.
+
+for($i=1;$i<$argc;$i++){
+	switch($argv[$i]){
+		case 'debug': $debug = true; break;
+	}
+	
+	if(preg_match('/'.preg_quote('server=').'/i', $argv[$i]) > 0){
+		$server = preg_replace('/'.preg_quote('server=').'/i', '', $argv[$i]);
+	}
+	
+	if(preg_match('/'.preg_quote('plataforma=').'/i', $argv[$i]) > 0){
+		$plataforma_id = preg_replace('/'.preg_quote('plataforma=').'/i', '', $argv[$i]);
+	}
+}
+
+// ===== Forçar variáveis globais SERVER.
+
+$_CRON['SERVER_NAME'] = $server;
+$_CRON['PLATAFORMA_ID'] = $plataforma_id;
+$_CRON['ROOT_PATH'] = preg_replace('/'.preg_quote('cron.php').'/i', '', $_SERVER['SCRIPT_FILENAME']);
+
+// ===== Inclusão da configuração principal.
 
 require_once('config.php');
 
@@ -12,6 +43,7 @@ require_once('config.php');
 
 function cron_incluir_biblioteca($biblioteca){
 	global $_GESTOR;
+	global $_CRON;
 	
 	if(isset($_GESTOR['bibliotecas-inseridas'][$biblioteca])){
 		return;
@@ -22,10 +54,8 @@ function cron_incluir_biblioteca($biblioteca){
 	if($caminhos){
 		$_GESTOR['bibliotecas-inseridas'][$biblioteca] = true;
 		
-		$path = preg_replace('/'.preg_quote('cron.php').'/i', '', $_SERVER['SCRIPT_FILENAME']);
-		
 		foreach($caminhos as $caminho){
-			require_once($path . $_GESTOR['modulos-path'].$caminho);
+			require_once($_CRON['ROOT_PATH'] . $_GESTOR['modulos-path'].$caminho);
 		}
 	}
 }
@@ -36,6 +66,7 @@ function cron_incluir_configuracao($params = false){
 	**********/
 	
 	global $_GESTOR;
+	global $_CRON;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -50,9 +81,7 @@ function cron_incluir_configuracao($params = false){
 			return $_GESTOR['configuracaoes-inseridas'][$id];
 		}
 		
-		$path = preg_replace('/'.preg_quote('cron.php').'/i', '', $_SERVER['SCRIPT_FILENAME']);
-		
-		$_GESTOR['configuracaoes-inseridas'][$id] = require_once($path . $_GESTOR['configuracoes-path'].$id.'.php');
+		$_GESTOR['configuracaoes-inseridas'][$id] = require_once($_CRON['ROOT_PATH'] . $_GESTOR['configuracoes-path'].$id.'.php');
 		
 		return $_GESTOR['configuracaoes-inseridas'][$id];
 	}
@@ -204,9 +233,7 @@ function cron_log($msg){
 	if($_CRON['DEBUG']){
 		echo $msg . "\n";
 	} else {
-		$path = preg_replace('/'.preg_quote('cron.php').'/i', '', $_SERVER['SCRIPT_FILENAME']);
-		
-		$myFile = $path . "logs/cron-".date('d-m-Y').".log";
+		$myFile = $_CRON['ROOT_PATH'] . "logs/cron-".date('d-m-Y').".log";
 		
 		if(file_exists($myFile) && filesize($myFile) > 0){
 			$file = file_get_contents($myFile);
@@ -872,6 +899,7 @@ function cron_vouchers_expirados(){
 
 function cron_plugins(){
 	global $_GESTOR;
+	global $_CRON;
 	
 	// ===== Verificar quais hosts têm plugin habilitado.
 	
@@ -886,10 +914,6 @@ function cron_plugins(){
 	));
 	
 	if($hosts_plugins){
-		// ===== Caminho da raiz do gestor.
-		
-		$path = preg_replace('/'.preg_quote('cron.php').'/i', '', $_SERVER['SCRIPT_FILENAME']);
-		
 		// ===== Varrer todos os plugins e ver se o cron está habilitado em cada plugin.
 		
 		foreach($hosts_plugins as $host_plugin){
@@ -900,7 +924,7 @@ function cron_plugins(){
 				
 				$pluginID = $host_plugin['plugin'];
 				
-				$pluginConfig = require($path . 'plugins/' .$pluginID.'/'.$pluginID.'.config.php');
+				$pluginConfig = require($_CRON['ROOT_PATH'] . 'plugins/' .$pluginID.'/'.$pluginID.'.config.php');
 				
 				// ===== Verificar se o cron está ativo no plugin.
 				
@@ -924,7 +948,7 @@ function cron_plugins(){
 			foreach($pluginCron as $pluginID => $plugin){
 				if(isset($plugin['cronAtivo'])){
 					$_GESTOR['pluginHostsIDs'] = $plugin['hostsIDs'];
-					$cronPlugin = require_once($path . 'plugins/'.$pluginID.'/local/cron.php');
+					$cronPlugin = require_once($_CRON['ROOT_PATH'] . 'plugins/'.$pluginID.'/local/cron.php');
 				}
 			}
 		}
@@ -945,35 +969,6 @@ function cron_start(){
 	global $argc;
 	global $_CRON;
 	
-	// ===== Configurações iniciais.
-	
-	$debug = false;
-	$server = 'beta.entrey.com.br';
-	$plataforma_id = 'beta';
-	
-	// ===== Parâmetros passados no command line.
-	
-	for($i=1;$i<$argc;$i++){
-		switch($argv[$i]){
-			case 'debug': $debug = true; break;
-		}
-		
-		if(preg_match('/'.preg_quote('server=').'/i', $argv[$i]) > 0){
-			$server = preg_replace('/'.preg_quote('server=').'/i', '', $argv[$i]);
-		}
-		
-		if(preg_match('/'.preg_quote('plataforma=').'/i', $argv[$i]) > 0){
-			$plataforma_id = preg_replace('/'.preg_quote('plataforma=').'/i', '', $argv[$i]);
-		}
-	}
-	
-	cron_log('DOCUMENT_ROOT: '.$_SERVER['DOCUMENT_ROOT']);
-	
-	// ===== Forçar variáveis globais SERVER.
-	
-	$_CRON['SERVER_NAME'] = $server;
-	$_CRON['PLATAFORMA_ID'] = $plataforma_id;
-	
 	// ===== Ativar debug por request.
 	
 	if($debug){
@@ -989,6 +984,8 @@ function cron_start(){
 	} else {
 		$bufferLog = true;
 	}
+	
+	cron_log('DOCUMENT_ROOT: '.$_SERVER['DOCUMENT_ROOT']);
 	
 	// ===== Iniciar o buffer de saída.
 	
