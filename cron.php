@@ -967,6 +967,8 @@ function cron_start(){
 		}
 	}
 	
+	cron_log($_SERVER['DOCUMENT_ROOT']);
+	
 	// ===== Forçar variáveis globais SERVER.
 	
 	$_CRON['SERVER_NAME'] = $server;
