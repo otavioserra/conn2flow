@@ -85,11 +85,16 @@ function cron_agendamentos_sorteio(){
 		
 		// ===== Verificar o status do processo do sorteio. Caso o status seja diferente de 'sem-agendamentos' ou 'confirmacoes-enviadas', senão continuar loop e ir para outro host.
 		
+		$outroHost = false;
 		switch($statusProcessoSorteio){
 			case 'confirmacoes-enviadas':
 			case 'sem-agendamentos':
-				continue;
+				$outroHost = true;
 			break;
+		}
+		
+		if($outroHost){
+			continue;
 		}
 		
 		// ===== Pegar os agendamentos no banco de dados para a data específica.
@@ -110,6 +115,8 @@ function cron_agendamentos_sorteio(){
 		// ===== Definir ações no processo do sorteio e pegar o total de agendamentos.
 		
 		$total_agendamentos = 0;
+		$nova_qualificacao = false;
+		$enviar_emails = false;
 		
 		if($hosts_agendamentos){
 			if(isset($statusProcessoSorteio))
@@ -126,7 +133,7 @@ function cron_agendamentos_sorteio(){
 		
 						banco_update_executar('hosts_agendamentos_datas',"WHERE data='".$data."' AND id_hosts='".$id_hosts."'");
 						
-						continue;
+						$outroHost = true;
 					}
 					
 					// ===== Ativar nova qualificação e envio de emails de confirmação.
@@ -142,9 +149,13 @@ function cron_agendamentos_sorteio(){
 			}
 		}
 		
+		if($outroHost){
+			continue;
+		}
+		
 		// ===== Sortear ou qualificar agendamentos para confirmação.
 		
-		if(isset($nova_qualificacao)){
+		if($nova_qualificacao){
 			// ===== Definir o máximo de vagas para o dia da semana em questão.
 			
 			$max_vagas = 0;
@@ -364,7 +375,7 @@ function cron_agendamentos_sorteio(){
 		
 		// ===== Enviar email de confirmação de agendamento para cada usuário em cada agendamento.
 		
-		if(isset($enviar_emails)){
+		if($enviar_emails){
 			// ===== Pegar os dados dos agendamentos qualificados no banco de dados.
 			
 			$hosts_agendamentos = banco_select(Array(
