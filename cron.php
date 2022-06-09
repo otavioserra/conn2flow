@@ -128,6 +128,31 @@ function cron_variaveis($params = false){
 	}
 }
 
+function existe($dado = false){
+	switch(gettype($dado)){
+		case 'array':
+			if(count($dado) > 0){
+				return true;
+			} else {
+				return false;
+			}
+		break;
+		case 'string':
+			if(strlen($dado) > 0){
+				return true;
+			} else {
+				return false;
+			}
+		break;
+		default:
+			if($dado){
+				return true;
+			} else {
+				return false;
+			}
+	}
+}
+
 // ===== Erros e log.
 
 function cron_error_handler($errno, $errstr, $errfile, $errline){
@@ -845,12 +870,74 @@ function cron_vouchers_expirados(){
 	}
 }
 
+function cron_plugins(){
+	global $_GESTOR;
+	
+	// ===== Verificar quais hosts têm plugin habilitado.
+	
+	$hosts_plugins = banco_select(Array(
+		'tabela' => 'hosts_plugins',
+		'campos' => Array(
+			'id_hosts',
+			'plugin',
+		),
+		'extra' => 
+			"WHERE habilitado IS NOT NULL"
+	));
+	
+	if($hosts_plugins){
+		// ===== Caminho da raiz do gestor.
+		
+		$path = preg_replace('/'.preg_quote('cron.php').'/i', '', $_SERVER['SCRIPT_FILENAME']);
+		
+		// ===== Varrer todos os plugins e ver se o cron está habilitado em cada plugin.
+		
+		foreach($hosts_plugins as $host_plugin){
+			if(!isset($pluginCron[$host_plugin['plugin']])){
+				$pluginCron[$host_plugin['plugin']] = Array();
+				
+				// ===== Pegar os dados de configuração do plugin.
+				
+				$pluginID = $host_plugin['plugin'];
+				
+				$pluginConfig = require($path . 'plugins/' .$pluginID.'/'.$pluginID.'.config.php');
+				
+				// ===== Verificar se o cron está ativo no plugin.
+				
+				if(isset($pluginConfig['cronAtivo'])){
+					if($pluginConfig['cronAtivo']){
+						$pluginCron[$host_plugin['plugin']]['cronAtivo'] = true;
+					}
+				}
+			}
+			
+			// ===== Caso o cron esteja ativo, incluir cada host habilitado.
+			
+			if(isset($pluginCron[$host_plugin['plugin']]['cronAtivo'])){
+				$pluginCron[$host_plugin['plugin']]['hostsIDs'][] = $host_plugin['id_hosts'];
+			}
+		}
+		
+		// ===== Executar o cron de cada plugin.
+		
+		if(isset($pluginCron)){
+			foreach($pluginCron as $pluginID => $plugin){
+				if(isset($plugin['cronAtivo'])){
+					$_GESTOR['pluginHostsIDs'] = $plugin['hostsIDs'];
+					$cronPlugin = require_once($path . 'plugins/'.$pluginID.'/local/cron.php');
+				}
+			}
+		}
+	}
+}
+
 // ===== Principal.
 
 function cron_pipeline(){
 	cron_carrinhos_abandonados();
 	cron_pedidos_abandonados();
 	cron_vouchers_expirados();
+	cron_plugins();
 }
 
 function cron_start(){

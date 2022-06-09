@@ -209,7 +209,9 @@ function plataforma_cliente_plugin_data_agendamento_confirmar($params = false){
 	
 	// ===== Gerar o token de validação.
 	
-	$validacao = plataforma_cliente_gerar_token_validacao(Array(
+	gestor_incluir_biblioteca('autenticacao');
+	
+	$validacao = autenticacao_cliente_gerar_token_validacao(Array(
 		'id_hosts' => $id_hosts,
 		'pubID' => ($hosts_agendamentos['pubID'] ? $hosts_agendamentos['pubID'] : null),
 	));
@@ -653,7 +655,9 @@ function plataforma_cliente_plugin_agendamentos(){
 				
 				// ===== Gerar o token de validação.
 				
-				$validacao = plataforma_cliente_gerar_token_validacao(Array(
+				gestor_incluir_biblioteca('autenticacao');
+				
+				$validacao = autenticacao_cliente_gerar_token_validacao(Array(
 					'id_hosts' => $id_hosts,
 				));
 				
@@ -778,7 +782,7 @@ function plataforma_cliente_plugin_agendamentos(){
 					
 					$senha = formato_colocar_char_meio_numero(formato_zero_a_esquerda(rand(1,99999),6));
 					
-					// ===== Pegar dados do usuário e gerar o pub_hash.
+					// ===== Pegar dados do usuário.
 					
 					$hosts_usuarios = banco_select(Array(
 						'unico' => true,

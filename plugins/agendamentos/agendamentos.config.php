@@ -10,6 +10,7 @@ $configuracao = Array(
 	'id' => 'agendamentos',
 	'versao_num' => 1,
 	'versao' => '1.0.0',
+	'cronAtivo' => true,
 	'moduloConfig' => 'configuracoes-agendamentos',
 	'menusPadroes' => Array(
 		'menuMinhaConta' => Array(

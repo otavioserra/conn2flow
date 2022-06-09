@@ -1023,10 +1023,18 @@ function configuracao_hosts_variaveis($params = false){
 	// modulo - String - Obrigatório - Módulo alvo para filtrar as variáveis.
 	// linguagemCodigo - String - Opcional - Linguagem das variáveis.
 	// grupos - Array - Opcional - Grupos alvos para filtrar as variáveis de um módulo.
+	// grupos - Array - Opcional - Grupos alvos para filtrar as variáveis de um módulo.
+	// id_hosts - Int - Opcional - Identificador do host alvo.
 	
 	// ===== 
 	
 	if(isset($modulo)){
+		// ===== Identificador do host.
+		
+		if(!isset($id_hosts)){
+			$id_hosts = $_GESTOR['host-id'];
+		}
+		
 		// ===== Definir linguagem padrão caso não tenha sido enviada.
 		
 		if(!isset($linguagemCodigo)){
@@ -1078,7 +1086,7 @@ function configuracao_hosts_variaveis($params = false){
 				"WHERE linguagem_codigo='".$linguagemCodigo."'"
 				." AND modulo='".$modulo."'"
 				. $gruposSQL
-				." AND id_hosts='".$_GESTOR['host-id']."'"
+				." AND id_hosts='".$id_hosts."'"
 				." ORDER BY id ASC"
 		));
 		

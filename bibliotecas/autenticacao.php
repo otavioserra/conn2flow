@@ -26,6 +26,72 @@ function autenticacao_crypto_rand_secure($min, $max) {
 	return $min + $rnd;
 }
 
+function autenticacao_cliente_gerar_jwt($params = false){
+	$cryptMaxCharsValue = 245; // There are char limitations on openssl_private_encrypt() and in the url below are explained how define this value based on openssl key format: https://www.php.net/manual/en/function.openssl-private-encrypt.php#119810
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// host - String - Obrigatório - Host de acesso do JWT.
+	// expiration - Int - Obrigatório - Expiração do JWT.
+	// pubID - String - Obrigatório - ID público do token para referência.
+	// chavePublica - String - Obrigatório - Chave pública para assinar o JWT.
+	
+	// ===== 
+	
+	if(isset($host) && isset($expiration) && isset($pubID) && isset($chavePublica)){
+		// ===== Header
+
+		$header = [
+		   'alg' => 'RSA',
+		   'typ' => 'JWT'
+		];
+
+		$header = json_encode($header);
+		$header = base64_encode($header);
+
+		// ===== Payload
+
+		$payload = [
+			'iss' => $host, // The issuer of the token
+			'exp' => $expiration, // This will define the expiration in NumericDate value. The expiration MUST be after the current date/time.
+			'sub' => $pubID, // ID público do totken
+		];
+
+		$payload = json_encode($payload);
+		$payload = base64_encode($payload);
+
+		// ===== Unir header com payload para gerar assinatura
+
+		$rawDataSource = $header.".".$payload;
+		
+		// ===== Assinar usando RSA SSL
+		
+		$resPublicKey = openssl_get_publickey($chavePublica);
+
+		$partialData = '';
+		$encodedData = '';
+		$split = str_split($rawDataSource , $cryptMaxCharsValue);
+		foreach($split as $part){
+			openssl_public_encrypt($part, $partialData, $resPublicKey);
+			$encodedData .= (strlen($encodedData) > 0 ? '.':'') . base64_encode($partialData);
+		}
+		
+		$encodedData = base64_encode($encodedData);
+		
+		$signature = $encodedData;
+		
+		// ===== Finalizar e devolver o JWT token
+
+		$JWTToken = $header.".".$payload.".".$signature;
+		
+		return $JWTToken;
+	} else {
+		return false;
+	}
+}
+
 // ===== Funções principais
 
 function autenticacao_openssl_gerar_chaves($params = false){
@@ -480,6 +546,67 @@ function autenticacao_qr_code($params = false){
 	} else {
 		return '';
 	}
+}
+
+function autenticacao_cliente_gerar_token_validacao($params = false){
+	global $_GESTOR;
+	global $_CRON;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// id_hosts - String - Obrigatório - ID do host do cliente.
+	// pubID - String - Opcional - Pub ID do dado.
+	
+	// ===== 
+	
+	if(isset($id_hosts)){
+	
+		// ===== Definir variáveis para gerar o JWT
+		
+		$expiration = time() + $_GESTOR['platform-lifetime'];
+		
+		// ===== Pegar a chave pública do host
+		
+		$hosts = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'chave_publica',
+			))
+			,
+			"hosts",
+			"WHERE id_hosts='".$id_hosts."'"
+		);
+		
+		if($hosts){
+			$chavePublica = $hosts[0]['chave_publica'];
+			
+			// ===== Gerar ID do Token
+			
+			if(isset($pubID)){
+				$tokenPubId = $pubID;
+			} else {
+				$tokenPubId = md5(uniqid(rand(), true));
+			}
+			
+			// ===== Gerar o token JWT
+			
+			$token = autenticacao_cliente_gerar_jwt(Array(
+				'host' => (isset($_CRON['SERVER_NAME']) ? $_CRON['SERVER_NAME'] : $_SERVER['SERVER_NAME']),
+				'expiration' => $expiration,
+				'pubID' => $tokenPubId,
+				'chavePublica' => $chavePublica,
+			));
+			
+			return Array(
+				'token' => $token,
+				'pubID' => $tokenPubId,
+			);
+		}
+	}
+	
+	return Array();
 }
 
 ?>
