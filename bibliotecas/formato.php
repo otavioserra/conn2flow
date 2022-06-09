@@ -167,8 +167,6 @@ function formato_colocar_char_meio_numero($num,$char = '-'){
 function formato_dado_para($tipo,$valor){
 	global $_GESTOR;
 	
-	if($params)foreach($params as $var => $val)$$var = $val;
-	
 	// ===== Parâmetros
 	
 	// valor - String - Obrigatório - Valor do dado a ser formatado.

@@ -383,6 +383,7 @@ function cron_agendamentos_sorteio(){
 				'campos' => Array(
 					'id_hosts_usuarios',
 					'id_hosts_agendamentos',
+					'pubID',
 				),
 				'extra' => 
 					"WHERE data='".$data."'"
