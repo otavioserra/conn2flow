@@ -985,8 +985,6 @@ function cron_start(){
 		$bufferLog = true;
 	}
 	
-	cron_log('DOCUMENT_ROOT: '.$_SERVER['DOCUMENT_ROOT']);
-	
 	// ===== Iniciar o buffer de saída.
 	
 	if($bufferLog){
