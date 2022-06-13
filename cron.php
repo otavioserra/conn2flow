@@ -49,168 +49,6 @@ require_once('config.php');
 
 // ===== Funções auxiliares.
 
-function cron_incluir_biblioteca($biblioteca){
-	global $_GESTOR;
-	
-	if(isset($biblioteca)){
-		switch(gettype($biblioteca)){
-			case 'array':
-				foreach($biblioteca as $bi){
-					if(isset($_GESTOR['bibliotecas-inseridas'][$bi])){
-						continue;
-					}
-					
-					$caminhos = $_GESTOR['bibliotecas-dados'][$bi];
-					
-					if($caminhos){
-						$_GESTOR['bibliotecas-inseridas'][$bi] = true;
-						
-						foreach($caminhos as $caminho){
-							require_once($_GESTOR['modulos-path'].$caminho);
-						}
-					}
-				}
-			break;
-			default:
-				if(isset($_GESTOR['bibliotecas-inseridas'][$biblioteca])){
-					return;
-				}
-				
-				$caminhos = $_GESTOR['bibliotecas-dados'][$biblioteca];
-				
-				if($caminhos){
-					$_GESTOR['bibliotecas-inseridas'][$biblioteca] = true;
-					
-					foreach($caminhos as $caminho){
-						require_once($_GESTOR['modulos-path'].$caminho);
-					}
-				}
-		}
-	}
-}
-
-function cron_incluir_configuracao($params = false){
-	/**********
-		Descrição: incluir uma configuração.
-	**********/
-	
-	global $_GESTOR;
-	global $_CRON;
-	
-	if($params)foreach($params as $var => $val)$$var = $val;
-	
-	// ===== Parâmetros
-	
-	// id - String - Obrigatório - Identificador da configuração que será incluída.
-	
-	// ===== 
-	
-	if(isset($id)){
-		if(isset($_GESTOR['configuracaoes-inseridas'][$id])){
-			return $_GESTOR['configuracaoes-inseridas'][$id];
-		}
-		
-		$_GESTOR['configuracaoes-inseridas'][$id] = require_once($_GESTOR['configuracoes-path'].$id.'.php');
-		
-		return $_GESTOR['configuracaoes-inseridas'][$id];
-	}
-	
-	return null;
-}
-
-function cron_variaveis($params = false){
-	global $_GESTOR;
-
-	if($params)foreach($params as $var => $val)$$var = $val;
-	
-	// ===== Parâmetros
-	
-	// modulo - String - Obrigatório - Módulo do sistema do valor.
-	// id - String - Obrigatório - Identificador único do valor.
-	// conjunto - Bool - Opcional - Se definido retornar todos os valores do módulo.
-	// padrao - String - Opcional - Só funciona se conjunto for definido. Se informado filtrar com esse valor que contêm nos ids das linguagens.
-	
-	// ===== 
-	
-	// ===== Procedimentos de inicialização
-	
-	if(!isset($_GESTOR['variaveis'])){
-		$_GESTOR['variaveis'] = Array();
-	}
-	
-	// ===== Buscar no banco de dados caso não tenha sido ainda lido na sessão.
-	
-	if(!isset($_GESTOR['variaveis'][$modulo])){
-		$linguagem = banco_select_name
-		(
-			banco_campos_virgulas(Array(
-				'id',
-				'valor',
-			))
-			,
-			"variaveis",
-			"WHERE modulo='".$modulo."'"
-			." AND linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
-		);
-		
-		if($linguagem){
-			foreach($linguagem as $li){
-				$_GESTOR['variaveis'][$modulo][$li['id']] = $li['valor'];
-			}
-		}
-	}
-	
-	// ===== Se conjunto definido filtrar se existir padrao e retornar o conjunto, senão retornar valor pontual.
-	
-	if(isset($conjunto)){
-		if(isset($_GESTOR['variaveis'][$modulo])){
-			if(isset($padrao)){
-				$linguagens_aux = $_GESTOR['variaveis'][$modulo];
-				$linguagens = Array();
-				
-				foreach($linguagens_aux as $id_aux => $linguagem_aux){
-					if(preg_match('/'.preg_quote($padrao).'/i', $id_aux) > 0){
-						$linguagens[$id_aux] = $linguagem_aux;
-					}
-				}
-				
-				return $linguagens;
-			} else {
-				return $_GESTOR['variaveis'][$modulo];
-			}
-		} else {
-			return Array();
-		}
-	} else {
-		return (isset($_GESTOR['variaveis'][$modulo][$id]) ? $_GESTOR['variaveis'][$modulo][$id] : '' );
-	}
-}
-
-function existe($dado = false){
-	switch(gettype($dado)){
-		case 'array':
-			if(count($dado) > 0){
-				return true;
-			} else {
-				return false;
-			}
-		break;
-		case 'string':
-			if(strlen($dado) > 0){
-				return true;
-			} else {
-				return false;
-			}
-		break;
-		default:
-			if($dado){
-				return true;
-			} else {
-				return false;
-			}
-	}
-}
-
 // ===== Erros e log.
 
 function cron_error_handler($errno, $errstr, $errfile, $errline){
@@ -423,7 +261,7 @@ function cron_carrinhos_abandonados(){
 		if(count($hostServicos) > 0){
 			// ===== Incluir os dados no host de cada cliente.
 			
-			cron_incluir_biblioteca('api-cliente');
+			gestor_incluir_biblioteca('api-cliente');
 			
 			foreach($hostServicos as $id_hosts => $servicos){
 				// ===== Conectar via API-Cliente em cada host e atualizar os estoques de todos os serviços.
@@ -512,7 +350,7 @@ function cron_carrinhos_abandonados(){
 		if(count($hostVariacoesServicos) > 0){
 			// ===== Incluir os dados no host de cada cliente.
 			
-			cron_incluir_biblioteca('api-cliente');
+			gestor_incluir_biblioteca('api-cliente');
 			
 			foreach($hostVariacoesServicos as $id_hosts => $variacaoServicos){
 				// ===== Conectar via API-Cliente em cada host e atualizar os estoques de todos os serviços.
@@ -549,7 +387,7 @@ function cron_pedidos_abandonados(){
 	
 	// ===== Pegar configurações do PayPal.
 	
-	$config = cron_incluir_configuracao(Array(
+	$config = gestor_incluir_configuracao(Array(
 		'id' => 'paypal.config',
 	));
 	
@@ -652,9 +490,9 @@ function cron_pedidos_abandonados(){
 			
 			// ===== Incluir o histórico da alteração no pedido.
 			
-			$statusTitulo = cron_variaveis(Array('modulo' => 'gateways-de-pagamentos','id' => 'status-expired'));
+			$statusTitulo = gestor_variaveis(Array('modulo' => 'gateways-de-pagamentos','id' => 'status-expired'));
 			
-			cron_incluir_biblioteca('log');
+			gestor_incluir_biblioteca('log');
 			
 			log_controladores(Array(
 				'id_hosts' => $id_hosts,
@@ -718,7 +556,7 @@ function cron_pedidos_abandonados(){
 		if(count($hostServicos) > 0){
 			// ===== Incluir os dados no host de cada cliente.
 			
-			cron_incluir_biblioteca('api-cliente');
+			gestor_incluir_biblioteca('api-cliente');
 			
 			foreach($hostServicos as $id_hosts => $servicos){
 				// ===== Conectar via API-Cliente em cada host e atualizar os estoques de todos os serviços.
@@ -807,7 +645,7 @@ function cron_pedidos_abandonados(){
 		if(count($hostVariacoesServicos) > 0){
 			// ===== Incluir os dados no host de cada cliente.
 			
-			cron_incluir_biblioteca('api-cliente');
+			gestor_incluir_biblioteca('api-cliente');
 			
 			foreach($hostVariacoesServicos as $id_hosts => $variacaoServicos){
 				// ===== Conectar via API-Cliente em cada host e atualizar os estoques de todos os serviços.
@@ -837,7 +675,7 @@ function cron_pedidos_abandonados(){
 	if(count($atualizarPedidos) > 0){
 		// ===== Incluir os dados no host de cada cliente.
 		
-		cron_incluir_biblioteca('api-cliente');
+		gestor_incluir_biblioteca('api-cliente');
 		
 		foreach($atualizarPedidos as $id_hosts => $pedidos){
 			// ===== Conectar via API-Cliente em cada host e atualizar os pedidos.
@@ -846,7 +684,7 @@ function cron_pedidos_abandonados(){
 				'opcao' => 'atualizar',
 				'id_hosts' => $id_hosts,
 				'pedidos' => $pedidos,
-				'config' => cron_incluir_configuracao(Array(
+				'config' => gestor_incluir_configuracao(Array(
 					'id' => 'pedidos.config',
 				)),
 			));

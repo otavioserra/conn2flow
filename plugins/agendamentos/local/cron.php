@@ -36,7 +36,7 @@ function cron_agendamentos_sorteio(){
 	foreach($hostsIDs as $id_hosts){
 		// ===== Pegar os dados de configuração do host atual.
 		
-		cron_incluir_biblioteca('configuracao');
+		gestor_incluir_biblioteca('configuracao');
 		
 		$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-agendamentos', 'id_hosts' => $id_hosts));
 		
@@ -397,11 +397,11 @@ function cron_agendamentos_sorteio(){
 				
 				// ===== Formatar a data em questão para o formado brasileiro e pegar url completa do host, bem como incluir as bibliotecas necessárias.
 				
-				cron_incluir_biblioteca('formato');
-				cron_incluir_biblioteca('host');
-				cron_incluir_biblioteca('comunicacao');
-				cron_incluir_biblioteca('autenticacao');
-				cron_incluir_biblioteca('modelo');
+				gestor_incluir_biblioteca('formato');
+				gestor_incluir_biblioteca('host');
+				gestor_incluir_biblioteca('comunicacao');
+				gestor_incluir_biblioteca('autenticacao');
+				gestor_incluir_biblioteca('modelo');
 				
 				$data_str = formato_dado_para('data',$data);
 				$hostUrl = host_url(Array('opcao'=>'full','id_hosts' => $id_hosts));
@@ -542,7 +542,7 @@ function cron_agendamentos_sorteio(){
 		
 		// ===== Incluir os dados no host de cada cliente.
 		
-		cron_incluir_biblioteca('api-cliente');
+		gestor_incluir_biblioteca('api-cliente');
 		
 		$retorno = api_cliente_interface(Array(
 			'interface' => 'cron-agendamentos',
