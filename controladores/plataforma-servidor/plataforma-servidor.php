@@ -3216,11 +3216,6 @@ function plataforma_servidor_start(){
 	
 	// ===== Verifica se é uma interface de plugin. Caso positivo, disparar a plataforma-servidor do plugin, senão a local.
 	
-	$dados = Array(
-		'status' => 'ERRO_FORÇADO',
-		'error-msg' => print_r($_REQUEST,true),
-	);
-	
 	if(isset($_REQUEST['plugin'])){
 		$plugin = preg_replace('/[^A-Za-z0-9\-]/', '', $_REQUEST['plugin']);
 		$dados = require_once($_GESTOR['plugins-path'].$plugin.'/controladores/plataforma-servidor/plataforma-servidor.php');
