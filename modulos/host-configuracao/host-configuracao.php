@@ -1051,12 +1051,16 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 	
 	// ===== Criar pasta dos 'plugins' caso o mesmo não exista no host do cliente e entrar dentro da pasta.
 	
-	$gestor_cliente_path = 'plugins';
+	$gestor_plugins_path = 'plugins';
 	
-	if(!@ftp_chdir($_GESTOR['ftp-conexao'], $gestor_cliente_path)){
-		ftp_mkdir($_GESTOR['ftp-conexao'], $gestor_cliente_path);
-		ftp_chdir($_GESTOR['ftp-conexao'], $gestor_cliente_path);
+	if(!@ftp_chdir($_GESTOR['ftp-conexao'], $gestor_plugins_path)){
+		ftp_mkdir($_GESTOR['ftp-conexao'], $gestor_plugins_path);
+		ftp_chdir($_GESTOR['ftp-conexao'], $gestor_plugins_path);
 	}
+	
+	// ===== Caminho padrão de qualquer plugin.
+	
+	$gestor_plugin_path_default = '/' . $gestor_cliente_path . '/' . $gestor_plugins_path;
 	
 	// ===== Varrer todos os plugins e atualizar cada caso.
 	
@@ -1065,14 +1069,6 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 			if($hosts_plugins){
 				foreach($hosts_plugins as $hosts_plugin){
 					if($plugin['id'] == $hosts_plugin['plugin']){
-						// ===== Sinalizador para mudança de pasta. Caso seja a segunda iteração, voltar a pasta para o plugins.
-						
-						if(!isset($pastaInicial)){
-							$pastaInicial = true;
-						} else {
-							ftp_chdir($_GESTOR['ftp-conexao'],'/b2make-gestor-cliente/plugins');
-						}
-						
 						// ===== Dados do plugin.
 						
 						$pluginID = $plugin['id'];
@@ -1080,6 +1076,14 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 						$habilitado = ($hosts_plugin['habilitado'] ? true : false);
 						$versao_num = $hosts_plugin['versao_num'];
 						$id_hosts_plugins = $hosts_plugin['id_hosts_plugins'];
+						
+						// ===== Sinalizador para mudança de pasta. Caso seja a segunda iteração, voltar a pasta para o plugins.
+						
+						if(!isset($pastaInicial)){
+							$pastaInicial = true;
+						} else {
+							ftp_chdir($_GESTOR['ftp-conexao'],$gestor_plugin_path_default);
+						}
 						
 						// ===== Pegar os dados de configuração do plugin.
 						
@@ -1111,11 +1115,11 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 						
 						// ===== Criar a pasta do 'plugin' caso o mesmo não exista no host do cliente e entrar dentro da pasta.
 						
-						$gestor_cliente_path = $pluginID;
+						$gestor_plugin_path = $gestor_plugin_path_default . '/' . $pluginID;
 						
-						if(!@ftp_chdir($_GESTOR['ftp-conexao'], $gestor_cliente_path)){
-							ftp_mkdir($_GESTOR['ftp-conexao'], $gestor_cliente_path);
-							ftp_chdir($_GESTOR['ftp-conexao'], $gestor_cliente_path);
+						if(!@ftp_chdir($_GESTOR['ftp-conexao'], $gestor_plugin_path)){
+							ftp_mkdir($_GESTOR['ftp-conexao'], $gestor_plugin_path);
+							ftp_chdir($_GESTOR['ftp-conexao'], $gestor_plugin_path);
 						}
 						
 						// ===== Enviar todos os arquivos do plugin para o host do cliente
@@ -1130,7 +1134,7 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 								if($caminho != $caminho_atual){
 									$caminho_atual = $caminho;
 									
-									ftp_chdir($_GESTOR['ftp-conexao'],'/'.$gestor_cliente_path);
+									ftp_chdir($_GESTOR['ftp-conexao'],$gestor_plugin_path);
 									
 									if($diretorios[0]){
 										if(count($diretorios) == 1){
@@ -1149,13 +1153,9 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 									}
 								}
 								
-								$array[] = $caminho.' != '.$caminho_atual;
-								
 								ftp_colocar_arquivo(Array('remoto' => $file->getFilename(),'local' => $filename));
 							}
 						}
-						
-						echo 'Var>> '.print_r($array,true)."<br>";exit;
 						
 						// ===== Copiar script de atualização do plugin para o '/public_html' do host do cliente
 						
