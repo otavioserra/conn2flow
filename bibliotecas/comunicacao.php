@@ -74,7 +74,7 @@ function comunicacao_email($params = false){
 		if($_GESTOR['email']['ativo']){
 			// ===== Definição se é ou não uma comunicação para um host.
 			
-			if(isset($_GESTOR['host-id'])){
+			if(isset($_GESTOR['host-id']) && !isset($id_hosts)){
 				$id_hosts = $_GESTOR['host-id'];
 			}
 			
@@ -135,6 +135,7 @@ function comunicacao_email($params = false){
 				gestor_incluir_biblioteca('configuracao');
 				
 				$comunicacaoConfiguracoes = configuracao_hosts_variaveis(Array(
+					'id_hosts' => $id_hosts,
 					'modulo' => 'comunicacao-configuracoes',
 					'grupos' => Array(
 						'host-admin',
