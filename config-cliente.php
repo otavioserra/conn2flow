@@ -34,9 +34,12 @@ $_GESTOR['url-full-http']						=	'https://'.$_SERVER['SERVER_NAME'].$_GESTOR['ur
 
 // ===== Arquivos caminhos
 
-$_GESTOR['contents-path']						=	$_SERVER['DOCUMENT_ROOT'].'/'.$_INDEX['sistemas-dir'].'contents';
+$_GESTOR['ROOT_PATH']							=	$_SERVER['DOCUMENT_ROOT'].'/'.$_INDEX['sistemas-dir'];
+
+$_GESTOR['contents-path']						=	$_GESTOR['ROOT_PATH'].'contents';
 $_GESTOR['contents-basedir']					=	'files';
 $_GESTOR['contents-thumbnail']					=	'mini';
+$_GESTOR['plugins-path']						=	$_GESTOR['ROOT_PATH'].'plugins/';
 
 // ===== Definição e inclusão de todas as bibliotecas necessárias para o funcionamento do gestor
 

@@ -3214,23 +3214,35 @@ function plataforma_servidor_start(){
 		plataforma_servidor_401();
 	}
 	
-	// ===== Verifica a opção, executa interface caso encontrado e retorna os dados
+	// ===== Verifica se é uma interface de plugin. Caso positivo, disparar a plataforma-servidor do plugin, senão a local.
 	
-	switch($_GESTOR['caminho'][1]){
-		case 'api-testes':					 $dados = plataforma_servidor_api_testes(); break;
-		case 'paginas':						 $dados = plataforma_servidor_paginas(); break;
-		case 'layouts':						 $dados = plataforma_servidor_layouts(); break;
-		case 'componentes':					 $dados = plataforma_servidor_componentes(); break;
-		case 'templates-atualizar':			 $dados = plataforma_servidor_templates_atualizar(); break;
-		case 'arquivos':					 $dados = plataforma_servidor_arquivos(); break;
-		case 'servicos':					 $dados = plataforma_servidor_servicos(); break;
-		case 'variaveis':					 $dados = plataforma_servidor_variaveis(); break;
-		case 'pedidos':						 $dados = plataforma_servidor_pedidos(); break;
-		case 'cron-servicos':				 $dados = plataforma_servidor_cron_servicos(); break;
-		case 'cron-pedidos':				 $dados = plataforma_servidor_cron_pedidos(); break;
-		case 'postagens':					 $dados = plataforma_servidor_postagens(); break;
-		case 'vouchers':					 $dados = plataforma_servidor_vouchers(); break;
-		case 'menus':						 $dados = plataforma_servidor_menus(); break;
+	$dados = Array(
+		'status' => 'ERRO_FORÇADO',
+		'error-msg' => print_r($_REQUEST,true),
+	);
+	
+	if(isset($_REQUEST['plugin'])){
+		$plugin = preg_replace('/[^A-Za-z0-9\-]/', '', $_REQUEST['plugin']);
+		$dados = require_once($_GESTOR['plugins-path'].$plugin.'/controladores/plataforma-servidor/plataforma-servidor.php');
+	} else {
+		// ===== Verifica a opção, executa interface caso encontrado e retorna os dados
+		
+		switch($_GESTOR['caminho'][1]){
+			case 'api-testes':					 $dados = plataforma_servidor_api_testes(); break;
+			case 'paginas':						 $dados = plataforma_servidor_paginas(); break;
+			case 'layouts':						 $dados = plataforma_servidor_layouts(); break;
+			case 'componentes':					 $dados = plataforma_servidor_componentes(); break;
+			case 'templates-atualizar':			 $dados = plataforma_servidor_templates_atualizar(); break;
+			case 'arquivos':					 $dados = plataforma_servidor_arquivos(); break;
+			case 'servicos':					 $dados = plataforma_servidor_servicos(); break;
+			case 'variaveis':					 $dados = plataforma_servidor_variaveis(); break;
+			case 'pedidos':						 $dados = plataforma_servidor_pedidos(); break;
+			case 'cron-servicos':				 $dados = plataforma_servidor_cron_servicos(); break;
+			case 'cron-pedidos':				 $dados = plataforma_servidor_cron_pedidos(); break;
+			case 'postagens':					 $dados = plataforma_servidor_postagens(); break;
+			case 'vouchers':					 $dados = plataforma_servidor_vouchers(); break;
+			case 'menus':						 $dados = plataforma_servidor_menus(); break;
+		}
 	}
 	
 	// ===== Caso haja dados criados por alguma opção, retornar JSON e finalizar. Senão retornar JSON 404.
