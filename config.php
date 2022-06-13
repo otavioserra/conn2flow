@@ -263,6 +263,7 @@ $_GESTOR['gestor-cliente'] = Array(
 
 $_GESTOR['bibliotecas-dados'] = Array(
 	'banco' => Array('banco.php'),
+	'gestor' => Array('gestor.php'),
 	'modelo' => Array('modelo.php'),
 	'interface' => Array('interface.php'),
 	'html' => Array('html.php'),
