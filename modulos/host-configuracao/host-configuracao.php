@@ -710,9 +710,19 @@ function host_configuracao_pipeline_atualizacao($params = false){
 					));
 				}
 				
-				// ===== Redirecionar o usuário para 'host-configuracao/configuracoes/'.
+				// ===== Redirecionar o usuário para 'dashboard/' caso tenha sido instalação senão 'host-configuracao/configuracoes/'.
 				
-				gestor_redirecionar('host-configuracao/configuracoes/');
+				switch($opcao){
+					case 'atualizar': 
+						gestor_redirecionar('host-configuracao/configuracoes/');
+					break;
+					case 'instalar': 
+						gestor_redirecionar('dashboard/');
+					break;
+					default:
+						gestor_redirecionar('host-configuracao/configuracoes/');
+				}
+				
 			}
 		} else {
 			// ===== Senão conectar no FTP, remover os dados de instalação
