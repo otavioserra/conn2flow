@@ -48,55 +48,6 @@ function cron_agendamentos_sorteio(){
 		
 		$data = date('Y-m-d',strtotime($hoje.' + '.($fase_sorteio[0]).' day'));
 		
-		// ===== Verificar os agendamentos datas no banco de dados.
-		
-		$hosts_agendamentos_datas = banco_select(Array(
-			'unico' => true,
-			'tabela' => 'hosts_agendamentos_datas',
-			'campos' => Array(
-				'total',
-				'status',
-			),
-			'extra' => 
-				"WHERE data='".$data."'"
-				." AND id_hosts='".$id_hosts."'"
-		));
-		
-		// ===== Definir o status atual do processo de sorteio.
-		
-		if(!$hosts_agendamentos_datas){
-			// ===== Criar data no agendamento_datas caso não exista.
-			
-			banco_insert_name_campo('id_hosts',$id_hosts);
-			banco_insert_name_campo('data',$data);
-			banco_insert_name_campo('total','0',true);
-			banco_insert_name_campo('status','novo');
-			
-			banco_insert_name
-			(
-				banco_insert_name_campos(),
-				"hosts_agendamentos_datas"
-			);
-			
-			$statusProcessoSorteio = 'novo';
-		} else {
-			$statusProcessoSorteio = ($hosts_agendamentos_datas['status'] ? $hosts_agendamentos_datas['status'] : 'novo');
-		}
-		
-		// ===== Verificar o status do processo do sorteio. Caso o status seja diferente de 'sem-agendamentos' ou 'confirmacoes-enviadas', senão continuar loop e ir para outro host.
-		
-		$outroHost = false;
-		switch($statusProcessoSorteio){
-			case 'confirmacoes-enviadas':
-			case 'sem-agendamentos':
-				$outroHost = true;
-			break;
-		}
-		
-		if($outroHost){
-			continue;
-		}
-		
 		// ===== Pegar os agendamentos no banco de dados para a data específica.
 		
 		$hosts_agendamentos = banco_select(Array(
@@ -117,8 +68,59 @@ function cron_agendamentos_sorteio(){
 		$total_agendamentos = 0;
 		$nova_qualificacao = false;
 		$enviar_emails = false;
+		$outroHost = false;
 		
 		if($hosts_agendamentos){
+			// ===== Verificar os agendamentos datas no banco de dados.
+			
+			$hosts_agendamentos_datas = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'hosts_agendamentos_datas',
+				'campos' => Array(
+					'total',
+					'status',
+				),
+				'extra' => 
+					"WHERE data='".$data."'"
+					." AND id_hosts='".$id_hosts."'"
+			));
+			
+			// ===== Definir o status atual do processo de sorteio.
+			
+			if(!$hosts_agendamentos_datas){
+				// ===== Criar data no agendamento_datas caso não exista.
+				
+				banco_insert_name_campo('id_hosts',$id_hosts);
+				banco_insert_name_campo('data',$data);
+				banco_insert_name_campo('total','0',true);
+				banco_insert_name_campo('status','novo');
+				
+				banco_insert_name
+				(
+					banco_insert_name_campos(),
+					"hosts_agendamentos_datas"
+				);
+				
+				$statusProcessoSorteio = 'novo';
+			} else {
+				$statusProcessoSorteio = ($hosts_agendamentos_datas['status'] ? $hosts_agendamentos_datas['status'] : 'novo');
+			}
+			
+			// ===== Verificar o status do processo do sorteio. Caso o status seja diferente de 'sem-agendamentos' ou 'confirmacoes-enviadas', senão continuar loop e ir para outro host.
+			
+			switch($statusProcessoSorteio){
+				case 'confirmacoes-enviadas':
+				case 'sem-agendamentos':
+					$outroHost = true;
+				break;
+			}
+			
+			if($outroHost){
+				continue;
+			}
+			
+			// ===== Trabalhar cada status.
+			
 			if(isset($statusProcessoSorteio))
 			switch($statusProcessoSorteio){
 				case 'novo':
@@ -147,6 +149,8 @@ function cron_agendamentos_sorteio(){
 					$enviar_emails = true;
 				break;
 			}
+		} else {
+			$outroHost = true;
 		}
 		
 		if($outroHost){
