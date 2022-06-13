@@ -1149,9 +1149,13 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 									}
 								}
 								
+								$array[] = $caminho.' != '.$caminho_atual;
+								
 								ftp_colocar_arquivo(Array('remoto' => $file->getFilename(),'local' => $filename));
 							}
 						}
+						
+						echo 'Var>> '.print_r($array,true)."<br>";exit;
 						
 						// ===== Copiar script de atualização do plugin para o '/public_html' do host do cliente
 						
