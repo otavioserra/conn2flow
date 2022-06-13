@@ -710,9 +710,9 @@ function host_configuracao_pipeline_atualizacao($params = false){
 					));
 				}
 				
-				// ===== Redirecionar o usuário para 'dashboard/'.
+				// ===== Redirecionar o usuário para 'host-configuracao/configuracoes/'.
 				
-				gestor_redirecionar('dashboard/');
+				gestor_redirecionar('host-configuracao/configuracoes/');
 			}
 		} else {
 			// ===== Senão conectar no FTP, remover os dados de instalação
@@ -955,9 +955,9 @@ function host_configuracao_pipeline_atualizacao_plugins($params = false){
 				));
 			}
 			
-			// ===== Redirecionar o usuário para 'dashboard/'.
+			// ===== Redirecionar o usuário para 'host-configuracao/configuracoes/'.
 			
-			gestor_redirecionar('dashboard/');
+			gestor_redirecionar('host-configuracao/configuracoes/');
 		}
 	} else {
 		// ===== Senão conectar no FTP, remover os dados de instalação
