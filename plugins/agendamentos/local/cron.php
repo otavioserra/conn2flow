@@ -48,69 +48,6 @@ function cron_agendamentos_sorteio(){
 		
 		$data = date('Y-m-d',strtotime($hoje.' + '.($fase_sorteio[0]).' day'));
 		
-		//########################################## REMOVER ########################################### <<<<<
-		
-		// ===== Pegar os dados atualizados dos agendamentos.
-		
-		$hosts_agendamentos_datas = banco_select(Array(
-			'unico' => true,
-			'tabela' => 'hosts_agendamentos_datas',
-			'campos' => '*',
-			'extra' => 
-				"WHERE data='".$data."'"
-				." AND id_hosts='".$id_hosts."'"
-		));
-		
-		unset($hosts_agendamentos_datas['id_hosts']);
-		
-		$hosts_agendamentos = banco_select(Array(
-			'tabela' => 'hosts_agendamentos',
-			'campos' => '*',
-			'extra' => 
-				"WHERE data='".$data."'"
-				." AND id_hosts='".$id_hosts."'"
-				." AND (
-					status='qualificado' OR 
-					status='email-enviado' OR 
-					status='email-nao-enviado'
-				)"
-		));
-		
-		if($hosts_agendamentos)
-		foreach($hosts_agendamentos as $agendamento){
-			unset($agendamento['id_hosts']);
-			
-			$hosts_agendamentos_proc[] = $agendamento;
-		}
-		
-		// ===== Incluir os dados no host de cada cliente.
-		
-		gestor_incluir_biblioteca('api-cliente');
-		
-		$retorno = api_cliente_interface(Array(
-			'interface' => 'cron-agendamentos',
-			'plugin' => 'agendamentos',
-			'id_hosts' => $id_hosts,
-			'opcao' => 'atualizar',
-			'dados' => Array(
-				'agendamentos' => (isset($hosts_agendamentos_proc) ? $hosts_agendamentos_proc : Array()),
-				'agendamentos_datas' => $hosts_agendamentos_datas,
-			),
-		));
-		
-		// ===== Caso haja algum erro, incluir no log do cron.
-		
-		if(!$retorno['completed']){
-			cron_log(
-				'FUNCAO: cron-agendamentos[atualizar]'."\n".
-				'ID-HOST: '.$id_hosts."\n".
-				'ERROR-MSG: '."\n".
-				$retorno['error-msg']
-			);
-		}
-		
-		//########################################## REMOVER ########################################### >>>>>
-		
 		// ===== Verificar os agendamentos datas no banco de dados.
 		
 		$hosts_agendamentos_datas = banco_select(Array(
@@ -522,6 +459,7 @@ function cron_agendamentos_sorteio(){
 					
 					if(comunicacao_email(Array(
 						'hostPersonalizacao' => true,
+						'id_hosts' => $id_hosts,
 						'destinatarios' => Array(
 							Array(
 								'email' => $email,

@@ -29,6 +29,7 @@ function comunicacao_email($params = false){
 	// ===== Parâmetros
 	
 	// hostPersonalizacao - Bool - Opcional - Permitir que a comunicação de email seja configurável pelo módulo Comunicação Configurações.
+	// id_hosts - Int - Opcional - Caso definido, obriga o uso do host na comunicação.
 	// servidor - Array - Opcional - Conjunto com todas as variáveis do servidor de emails. Caso não definido, irá usar o padrão do sistema.
 		// debug - Bool - Opcional - Debugar para encontrar erros.
 		// hospedeiro - String - Opcional - Host do servidor de emails SMTP.
@@ -71,6 +72,12 @@ function comunicacao_email($params = false){
 	
 	if(isset($_GESTOR['email'])){
 		if($_GESTOR['email']['ativo']){
+			// ===== Definição se é ou não uma comunicação para um host.
+			
+			if(isset($_GESTOR['host-id'])){
+				$id_hosts = $_GESTOR['host-id'];
+			}
+			
 			// ===== Variáveis padrões
 			
 			$server = Array(
@@ -124,7 +131,7 @@ function comunicacao_email($params = false){
 			
 			// ===== Variáveis definidas pelo usuário em comunicação configurações em um host específico.
 			
-			if(isset($_GESTOR['host-id']) && isset($hostPersonalizacao)){
+			if(isset($id_hosts) && isset($hostPersonalizacao)){
 				gestor_incluir_biblioteca('configuracao');
 				
 				$comunicacaoConfiguracoes = configuracao_hosts_variaveis(Array(
@@ -261,7 +268,7 @@ function comunicacao_email($params = false){
 					}
 					
 					if($assinaturaPadrao){
-						if(isset($_GESTOR['host-id'])){
+						if(isset($id_hosts)){
 							$htmlAssinatura = gestor_componente(Array(
 								'id' => 'hosts-layout-emails-assinatura',
 							));
