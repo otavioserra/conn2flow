@@ -1032,7 +1032,7 @@ function configuracao_hosts_variaveis($params = false){
 		// ===== Identificador do host.
 		
 		if(!isset($id_hosts)){
-			$id_hosts = $_GESTOR['host-id'];
+			$id_hosts = (isset($_GESTOR['host-id']) ? $_GESTOR['host-id'] : '');
 		}
 		
 		// ===== Definir linguagem padrão caso não tenha sido enviada.
@@ -1098,6 +1098,7 @@ function configuracao_hosts_variaveis($params = false){
 			foreach($variaveis as $variavel){
 				// ===== Verificar se o valor padrão foi modificado por um valor específico do host e subistiuir o mesmo pelo valor específico.
 				
+				if($hosts_variaveis)
 				foreach($hosts_variaveis as $hosts_variavel){
 					if(
 						$variavel['id'] == $hosts_variavel['id']
