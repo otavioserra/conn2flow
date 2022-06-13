@@ -91,7 +91,7 @@ function cron_agendamentos_sorteio(){
 			'interface' => 'cron-agendamentos',
 			'plugin' => 'agendamentos',
 			'id_hosts' => $id_hosts,
-			'opcao' => 'atualizar-2',
+			'opcao' => 'atualizar',
 			'dados' => Array(
 				'agendamentos' => (isset($hosts_agendamentos_proc) ? $hosts_agendamentos_proc : Array()),
 				'agendamentos_datas' => $hosts_agendamentos_datas,
