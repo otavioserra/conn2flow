@@ -106,6 +106,8 @@ function cron_agendamentos_sorteio(){
 				$statusProcessoSorteio = ($hosts_agendamentos_datas['status'] ? $hosts_agendamentos_datas['status'] : 'novo');
 			}
 			
+			echo $statusProcessoSorteio;
+			
 			// ===== Verificar o status do processo do sorteio. Caso o status seja diferente de 'sem-agendamentos' ou 'confirmacoes-enviadas', senão continuar loop e ir para outro host.
 			
 			switch($statusProcessoSorteio){
@@ -144,7 +146,6 @@ function cron_agendamentos_sorteio(){
 					$enviar_emails = true;
 				break;
 				case 'enviar-emails':
-					echo 'sim';exit;
 					// ===== Ativar envio de emails de confirmação.
 					
 					$enviar_emails = true;
