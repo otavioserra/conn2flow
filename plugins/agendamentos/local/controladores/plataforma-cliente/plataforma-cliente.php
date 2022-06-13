@@ -142,32 +142,6 @@ function plataforma_cliente_plugin_data_agendamento_confirmar($params = false){
 	
 	$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-agendamentos'));
 	
-	// ===== Criar data no agendamento_datas caso não exista.
-	
-	$hosts_agendamentos_datas = banco_select(Array(
-		'unico' => true,
-		'tabela' => 'hosts_agendamentos_datas',
-		'campos' => Array(
-			'id_hosts_agendamentos_datas',
-		),
-		'extra' => 
-			"WHERE id_hosts='".$id_hosts."'"
-			." AND data='".$data."'"
-	));
-	
-	if(!$hosts_agendamentos_datas){
-		banco_insert_name_campo('id_hosts',$id_hosts);
-		banco_insert_name_campo('data',$data);
-		banco_insert_name_campo('total','0',true);
-		banco_insert_name_campo('status','novo');
-		
-		banco_insert_name
-		(
-			banco_insert_name_campos(),
-			"hosts_agendamentos_datas"
-		);
-	}
-	
 	// ===== Pegar dados do agendamento.
 	
 	$hosts_agendamentos = banco_select(Array(
@@ -415,32 +389,6 @@ function plataforma_cliente_plugin_data_agendamento_cancelar($params = false){
 	
 	$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-agendamentos'));
 	
-	// ===== Criar data no agendamento_datas caso não exista.
-	
-	$hosts_agendamentos_datas = banco_select(Array(
-		'unico' => true,
-		'tabela' => 'hosts_agendamentos_datas',
-		'campos' => Array(
-			'id_hosts_agendamentos_datas',
-		),
-		'extra' => 
-			"WHERE id_hosts='".$id_hosts."'"
-			." AND data='".$data."'"
-	));
-	
-	if(!$hosts_agendamentos_datas){
-		banco_insert_name_campo('id_hosts',$id_hosts);
-		banco_insert_name_campo('data',$data);
-		banco_insert_name_campo('total','0',true);
-		banco_insert_name_campo('status','novo');
-		
-		banco_insert_name
-		(
-			banco_insert_name_campos(),
-			"hosts_agendamentos_datas"
-		);
-	}
-	
 	// ===== Pegar dados do agendamento.
 	
 	$hosts_agendamentos = banco_select(Array(
@@ -476,9 +424,12 @@ function plataforma_cliente_plugin_data_agendamento_cancelar($params = false){
 		
 		// ===== Atualizar a quantidade total de vagas utilizadas em agendamentos para a data em questão.
 		
-		banco_update_campo('total','total-'.($acompanhantes+1),true);
-		
-		banco_update_executar('hosts_agendamentos_datas',"WHERE id_hosts_agendamentos_datas='".$hosts_agendamentos_datas['id_hosts_agendamentos_datas']."'");
+		if($hosts_agendamentos_datas){
+			
+			banco_update_campo('total','total-'.($acompanhantes+1),true);
+			
+			banco_update_executar('hosts_agendamentos_datas',"WHERE id_hosts_agendamentos_datas='".$hosts_agendamentos_datas['id_hosts_agendamentos_datas']."'");
+		}
 	}
 	
 	// ===== Atualizar agendamento.
@@ -1384,9 +1335,11 @@ function plataforma_cliente_plugin_alteracao(){
 						." AND data='".$data."'"
 				));
 				
-				unset($hosts_agendamentos_datas['id_hosts']);
-				
-				$retornoDados['agendamentos_datas'] = $hosts_agendamentos_datas;
+				if($hosts_agendamentos_datas){
+					unset($hosts_agendamentos_datas['id_hosts']);
+					
+					$retornoDados['agendamentos_datas'] = $hosts_agendamentos_datas;
+				}
 				
 				$hosts_agendamentos = banco_select(Array(
 					'unico' => true,
@@ -1499,9 +1452,11 @@ function plataforma_cliente_plugin_alteracao(){
 						." AND data='".$data."'"
 				));
 				
-				unset($hosts_agendamentos_datas['id_hosts']);
-				
-				$retornoDados['agendamentos_datas'] = $hosts_agendamentos_datas;
+				if($hosts_agendamentos_datas){
+					unset($hosts_agendamentos_datas['id_hosts']);
+					
+					$retornoDados['agendamentos_datas'] = $hosts_agendamentos_datas;
+				}
 				
 				$hosts_agendamentos = banco_select(Array(
 					'unico' => true,
@@ -1688,9 +1643,11 @@ function plataforma_cliente_plugin_alteracao(){
 						." AND data='".$data."'"
 				));
 				
-				unset($hosts_agendamentos_datas['id_hosts']);
-				
-				$retornoDados['agendamentos_datas'] = $hosts_agendamentos_datas;
+				if($hosts_agendamentos_datas){
+					unset($hosts_agendamentos_datas['id_hosts']);
+					
+					$retornoDados['agendamentos_datas'] = $hosts_agendamentos_datas;
+				}
 				
 				$hosts_agendamentos = banco_select(Array(
 					'unico' => true,
@@ -1801,9 +1758,11 @@ function plataforma_cliente_plugin_alteracao(){
 						." AND data='".$data."'"
 				));
 				
-				unset($hosts_agendamentos_datas['id_hosts']);
-				
-				$retornoDados['agendamentos_datas'] = $hosts_agendamentos_datas;
+				if($hosts_agendamentos_datas){
+					unset($hosts_agendamentos_datas['id_hosts']);
+					
+					$retornoDados['agendamentos_datas'] = $hosts_agendamentos_datas;
+				}
 				
 				$hosts_agendamentos = banco_select(Array(
 					'unico' => true,

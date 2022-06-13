@@ -48,112 +48,100 @@ function cron_agendamentos_sorteio(){
 		
 		$data = date('Y-m-d',strtotime($hoje.' + '.($fase_sorteio[0]).' day'));
 		
-		// ===== Pegar os agendamentos no banco de dados para a data específica.
+		// ===== Verificar os agendamentos datas no banco de dados.
 		
-		$hosts_agendamentos = banco_select(Array(
-			'tabela' => 'hosts_agendamentos',
+		$hosts_agendamentos_datas = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'hosts_agendamentos_datas',
 			'campos' => Array(
-				'id_hosts_usuarios',
-				'id_hosts_agendamentos',
-				'acompanhantes',
+				'total',
+				'status',
 			),
 			'extra' => 
 				"WHERE data='".$data."'"
 				." AND id_hosts='".$id_hosts."'"
-				." AND status='novo'"
 		));
 		
-		// ===== Definir ações no processo do sorteio e pegar o total de agendamentos.
+		// ===== Criar data no agendamento_datas caso não exista.
 		
-		$total_agendamentos = 0;
-		$nova_qualificacao = false;
-		$enviar_emails = false;
+		if(!$hosts_agendamentos_datas){
+			
+			banco_insert_name_campo('id_hosts',$id_hosts);
+			banco_insert_name_campo('data',$data);
+			banco_insert_name_campo('total','0',true);
+			banco_insert_name_campo('status','novo');
+			
+			banco_insert_name
+			(
+				banco_insert_name_campos(),
+				"hosts_agendamentos_datas"
+			);
+			$statusProcessoSorteio = 'novo';
+		} else {
+			$statusProcessoSorteio = ($hosts_agendamentos_datas['status'] ? $hosts_agendamentos_datas['status'] : 'novo');
+		}
+		
+		// ===== Variáveis de contagem e controle.
+		
+		$totalAgendamentos = 0;
+		$novaQualificacao = false;
+		$enviarEmails = false;
 		$outroHost = false;
 		
-		if($hosts_agendamentos){
-			// ===== Verificar os agendamentos datas no banco de dados.
-			
-			$hosts_agendamentos_datas = banco_select(Array(
-				'unico' => true,
-				'tabela' => 'hosts_agendamentos_datas',
-				'campos' => Array(
-					'total',
-					'status',
-				),
-				'extra' => 
-					"WHERE data='".$data."'"
-					." AND id_hosts='".$id_hosts."'"
-			));
-			
-			// ===== Definir o status atual do processo de sorteio.
-			
-			if(!$hosts_agendamentos_datas){
-				// ===== Criar data no agendamento_datas caso não exista.
-				
-				banco_insert_name_campo('id_hosts',$id_hosts);
-				banco_insert_name_campo('data',$data);
-				banco_insert_name_campo('total','0',true);
-				banco_insert_name_campo('status','novo');
-				
-				banco_insert_name
-				(
-					banco_insert_name_campos(),
-					"hosts_agendamentos_datas"
-				);
-				
-				$statusProcessoSorteio = 'novo';
-			} else {
-				$statusProcessoSorteio = ($hosts_agendamentos_datas['status'] ? $hosts_agendamentos_datas['status'] : 'novo');
-			}
-			
-			cron_log('statusProcessoSorteio: '.$statusProcessoSorteio);
-			
-			// ===== Verificar o status do processo do sorteio. Caso o status seja diferente de 'sem-agendamentos' ou 'confirmacoes-enviadas', senão continuar loop e ir para outro host.
-			
-			switch($statusProcessoSorteio){
-				case 'confirmacoes-enviadas':
-				case 'sem-agendamentos':
-					$outroHost = true;
-				break;
-			}
-			
-			if($outroHost){
-				continue;
-			}
-			
-			// ===== Trabalhar cada status.
-			
-			if(isset($statusProcessoSorteio))
-			switch($statusProcessoSorteio){
-				case 'novo':
-					// ===== Pegar o total de agendamentos, senão atualizar status do processo para 'sem-agendamentos' e continuar loop indo para outro host.
-				
-					if($hosts_agendamentos){
-						foreach($hosts_agendamentos as $agendamento){
-							$total_agendamentos += 1 + (int)$agendamento['acompanhantes'];
-						}
-					} else {
-						banco_update_campo('status','sem-agendamentos');
+		// ===== Verificar o status do processo do sorteio. Se for 'novo', fazer uma nova tentativa de qualificação, senão continuar loop e ir para outro host.
 		
-						banco_update_executar('hosts_agendamentos_datas',"WHERE data='".$data."' AND id_hosts='".$id_hosts."'");
-						
-						$outroHost = true;
+		switch($statusProcessoSorteio){
+			case 'novo':
+				// ===== Pegar os agendamentos no banco de dados para a data específica caso houver.
+				
+				$hosts_agendamentos = banco_select(Array(
+					'tabela' => 'hosts_agendamentos',
+					'campos' => Array(
+						'id_hosts_usuarios',
+						'id_hosts_agendamentos',
+						'acompanhantes',
+					),
+					'extra' => 
+						"WHERE data='".$data."'"
+						." AND id_hosts='".$id_hosts."'"
+						." AND status='novo'"
+				));
+				
+				// ===== Definir o status atual do processo de sorteio caso exista agendamento 'novo' não processado.
+				
+				if($hosts_agendamentos){
+					foreach($hosts_agendamentos as $agendamento){
+						$totalAgendamentos += 1 + (int)$agendamento['acompanhantes'];
 					}
 					
-					// ===== Ativar nova qualificação e envio de emails de confirmação.
-					
-					$nova_qualificacao = true;
-					$enviar_emails = true;
-				break;
-				case 'enviar-emails':
-					// ===== Ativar envio de emails de confirmação.
-					
-					$enviar_emails = true;
-				break;
-			}
-		} else {
-			$outroHost = true;
+					$statusProcessoSorteio = 'qualificar';
+					$novaQualificacao = true;
+					$enviarEmails = true;
+				} else {
+					$statusProcessoSorteio = 'sem-agendamentos';
+					$outroHost = true;
+				}
+				
+				// ===== Atualizar processo de sorteio.
+				
+				banco_update
+				(
+					"status='".$statusProcessoSorteio."'",
+					"hosts_agendamentos_datas",
+					"WHERE data='".$data."'"
+					." AND id_hosts='".$id_hosts."'"
+				);
+			break;
+			case 'enviar-emails':
+				$enviarEmails = true;
+			break;
+			case 'confirmacoes-enviadas':
+			case 'sem-agendamentos':
+				$outroHost = true;
+			break;
 		}
+		
+		// ===== Continuar loop em outro host.
 		
 		if($outroHost){
 			continue;
@@ -161,7 +149,7 @@ function cron_agendamentos_sorteio(){
 		
 		// ===== Sortear ou qualificar agendamentos para confirmação.
 		
-		if($nova_qualificacao){
+		if($novaQualificacao){
 			// ===== Definir o máximo de vagas para o dia da semana em questão.
 			
 			$max_vagas = 0;
@@ -184,7 +172,7 @@ function cron_agendamentos_sorteio(){
 			
 			// ===== Verificar se precisa ou não de sorteio baseado no máximo de vagas de atendimento.
 			
-			if($total_agendamentos > $max_vagas){
+			if($totalAgendamentos > $max_vagas){
 				$sortear = true;
 			}
 			
@@ -381,7 +369,7 @@ function cron_agendamentos_sorteio(){
 		
 		// ===== Enviar email de confirmação de agendamento para cada usuário em cada agendamento.
 		
-		if($enviar_emails){
+		if($enviarEmails){
 			// ===== Pegar os dados dos agendamentos qualificados no banco de dados.
 			
 			$hosts_agendamentos = banco_select(Array(
