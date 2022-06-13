@@ -38,6 +38,8 @@ function plataforma_servidor_cron_agendamentos(){
 			if(isset($dados['agendamentos_datas'])){
 				$id_hosts_agendamentos_datas = $dados['agendamentos_datas']['id_hosts_agendamentos_datas'];
 				$total = $dados['agendamentos_datas']['total'];
+				$data = $dados['agendamentos_datas']['data'];
+				$status = $dados['agendamentos_datas']['status'];
 				
 				$agendamentos_datas = banco_select(Array(
 					'unico' => true,
@@ -55,9 +57,9 @@ function plataforma_servidor_cron_agendamentos(){
 					banco_update_executar('agendamentos_datas',"WHERE id_hosts_agendamentos_datas='".$id_hosts_agendamentos_datas."'");
 				} else {
 					banco_insert_name_campo('id_hosts_agendamentos_datas',$id_hosts_agendamentos_datas);
-					banco_insert_name_campo('data',$agendamentoData);
+					banco_insert_name_campo('data',$data);
 					banco_insert_name_campo('total',$total);
-					banco_insert_name_campo('status','novo');
+					banco_insert_name_campo('status',$status);
 					
 					banco_insert_name
 					(
