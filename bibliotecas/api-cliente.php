@@ -2559,6 +2559,7 @@ function api_cliente_interface($params = false){
 	// interface - String - Obrigatório - Identificador da interface que se deseja acessar no cliente.
 	// id_hosts - Int - Obrigatório - Identificador do host dentro do sistema.
 	// opcao - String - Opcional - Opção para acessar na interface do cliente.
+	// plugin - String - Opcional - Identificador do plugin para acessar no cliente.
 	// dados - Array - Opcional - Dados necessários para enviar para o cliente.
 	// arquivos - Array - Opcional - Arquivos necessários para enviar para o cliente.
 		// caminho - String - Obrigatório - Caminho do arquivo que será enviado para o cliente.
@@ -2608,6 +2609,7 @@ function api_cliente_interface($params = false){
 			$data['plataforma-id'] = (isset($_CRON['PLATAFORMA_ID']) ? $_CRON['PLATAFORMA_ID'] : $_GESTOR['plataforma-id']);
 			
 			if(isset($opcao)) $data['opcao'] = $opcao;
+			if(isset($plugin)) $data['plugin'] = $plugin;
 			if(isset($dados)) $data['dados'] = json_encode($dados);
 			
 			// ===== Caso exista arquivos, montar o campo upload com os mesmos

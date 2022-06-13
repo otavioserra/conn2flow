@@ -517,6 +517,65 @@ function cron_agendamentos_sorteio(){
 		banco_update_campo('status','confirmacoes-enviadas');
 		
 		banco_update_executar('hosts_agendamentos_datas',"WHERE data='".$data."' AND id_hosts='".$id_hosts."'");
+		
+		// ===== Pegar os dados atualizados dos agendamentos.
+		
+		$hosts_agendamentos_datas = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'hosts_agendamentos_datas',
+			'campos' => '*',
+			'extra' => 
+				"WHERE data='".$data."'"
+				." AND id_hosts='".$id_hosts."'"
+		));
+		
+		unset($hosts_agendamentos_datas['id_hosts']);
+		
+		$hosts_agendamentos = banco_select(Array(
+			'tabela' => 'hosts_agendamentos',
+			'campos' => '*',
+			'extra' => 
+				"WHERE data='".$data."'"
+				." AND id_hosts='".$id_hosts."'"
+				." AND (
+					status='qualificado' OR 
+					status='email-enviado' OR 
+					status='email-nao-enviado'
+				)"
+		));
+		
+		if($hosts_agendamentos)
+		foreach($hosts_agendamentos as $agendamento){
+			unset($agendamento['id_hosts']);
+			
+			$hosts_agendamentos_proc[] = $agendamento;
+		}
+		
+		// ===== Incluir os dados no host de cada cliente.
+		
+		cron_incluir_biblioteca('api-cliente');
+		
+		$retorno = api_cliente_interface(Array(
+			'interface' => 'cron-agendamentos',
+			'plugin' => 'agendamentos',
+			'id_hosts' => $id_hosts,
+			'opcao' => 'atualizar',
+			'dados' => Array(
+				'agendamentos' => (isset($hosts_agendamentos_proc) ? $hosts_agendamentos_proc : Array()),
+				'agendamentos_datas' => $hosts_agendamentos_datas,
+			),
+		));
+		
+		// ===== Caso haja algum erro, incluir no log do cron.
+		
+		if(!$retorno['completed']){
+			cron_log(
+				'FUNCAO: cron-agendamentos[atualizar]'."\n".
+				'ID-HOST: '.$id_hosts."\n".
+				'ERROR-MSG: '."\n".
+				$retorno['error-msg']
+			);
+		}
 	}
 }
 
