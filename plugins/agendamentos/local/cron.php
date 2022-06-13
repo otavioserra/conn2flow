@@ -395,8 +395,6 @@ function cron_agendamentos_sorteio(){
 					." AND status='qualificado'"
 			));
 			
-			cron_log('hosts_agendamentos: '.print_r($hosts_agendamentos,true));
-			
 			// ===== Caso exista, enviar emails para cada usuário com a opção de confirmar ou cancelar.
 			
 			if($hosts_agendamentos){
