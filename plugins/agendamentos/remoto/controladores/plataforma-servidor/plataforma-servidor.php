@@ -89,22 +89,18 @@ function plataforma_servidor_cron_agendamentos(){
 					if($agendamentos){
 						// ===== Atualizar agendamento.
 						
-						if(isset($dados['agendamentos'])){
-							$agendamentos = $dados['agendamentos'];
-							
-							foreach($agendamentos as $key => $valor){
-								switch($key){
-									case 'acompanhantes':
-									case 'versao':
-										banco_update_campo($key,($valor ? $valor : '0'),true);
-									break;
-									default:
-										banco_update_campo($key,$valor);
-								}
+						foreach($agendamento as $key => $valor){
+							switch($key){
+								case 'acompanhantes':
+								case 'versao':
+									banco_update_campo($key,($valor ? $valor : '0'),true);
+								break;
+								default:
+									banco_update_campo($key,$valor);
 							}
-							
-							banco_update_executar('agendamentos',"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."' AND id_hosts_usuarios='".$id_hosts_usuarios."'");
 						}
+						
+						banco_update_executar('agendamentos',"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."' AND id_hosts_usuarios='".$id_hosts_usuarios."'");
 					}
 				}
 			}
