@@ -22,6 +22,7 @@ require_once $_GESTOR['bibliotecas-path'].'PHPMailer/src/SMTP.php';
 
 function comunicacao_email($params = false){
 	global $_GESTOR;
+	global $_CRON;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	

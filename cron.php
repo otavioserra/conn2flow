@@ -5,7 +5,7 @@
 $_GESTOR										=	Array();
 $_CRON											=	Array();
 
-$_GESTOR['bibliotecas']							=	Array('banco');
+$_GESTOR['bibliotecas']							=	Array('banco','gestor');
 
 // ===== Configurações pré-inclusão do config.
 
@@ -51,19 +51,40 @@ require_once('config.php');
 
 function cron_incluir_biblioteca($biblioteca){
 	global $_GESTOR;
-	global $_CRON;
 	
-	if(isset($_GESTOR['bibliotecas-inseridas'][$biblioteca])){
-		return;
-	}
-	
-	$caminhos = $_GESTOR['bibliotecas-dados'][$biblioteca];
-	
-	if($caminhos){
-		$_GESTOR['bibliotecas-inseridas'][$biblioteca] = true;
-		
-		foreach($caminhos as $caminho){
-			require_once($_GESTOR['modulos-path'].$caminho);
+	if(isset($biblioteca)){
+		switch(gettype($biblioteca)){
+			case 'array':
+				foreach($biblioteca as $bi){
+					if(isset($_GESTOR['bibliotecas-inseridas'][$bi])){
+						continue;
+					}
+					
+					$caminhos = $_GESTOR['bibliotecas-dados'][$bi];
+					
+					if($caminhos){
+						$_GESTOR['bibliotecas-inseridas'][$bi] = true;
+						
+						foreach($caminhos as $caminho){
+							require_once($_GESTOR['modulos-path'].$caminho);
+						}
+					}
+				}
+			break;
+			default:
+				if(isset($_GESTOR['bibliotecas-inseridas'][$biblioteca])){
+					return;
+				}
+				
+				$caminhos = $_GESTOR['bibliotecas-dados'][$biblioteca];
+				
+				if($caminhos){
+					$_GESTOR['bibliotecas-inseridas'][$biblioteca] = true;
+					
+					foreach($caminhos as $caminho){
+						require_once($_GESTOR['modulos-path'].$caminho);
+					}
+				}
 		}
 	}
 }
