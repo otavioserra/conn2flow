@@ -144,6 +144,7 @@ function cron_agendamentos_sorteio(){
 					$enviar_emails = true;
 				break;
 				case 'enviar-emails':
+					echo 'sim';exit;
 					// ===== Ativar envio de emails de confirmação.
 					
 					$enviar_emails = true;
