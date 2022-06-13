@@ -411,6 +411,7 @@ function cron_agendamentos_sorteio(){
 				cron_incluir_biblioteca('host');
 				cron_incluir_biblioteca('comunicacao');
 				cron_incluir_biblioteca('autenticacao');
+				cron_incluir_biblioteca('modelo');
 				
 				$data_str = formato_dado_para('data',$data);
 				$hostUrl = host_url(Array('opcao'=>'full','id_hosts' => $id_hosts));
