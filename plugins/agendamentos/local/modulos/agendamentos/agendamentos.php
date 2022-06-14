@@ -52,8 +52,18 @@ function agendamentos_interfaces_padroes(){
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
 	switch($_GESTOR['opcao']){
-		case 'listar':
-			
+		case 'config':
+			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
+				'botoes' => Array(
+					'adicionar' => Array(
+						'url' => 'adicionar/',
+						'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-insert')),
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-insert')),
+						'icon' => 'plus circle',
+						'cor' => 'blue',
+					),
+				),
+			);
 		break;
 	}
 }
