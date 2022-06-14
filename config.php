@@ -22,7 +22,7 @@ $_GESTOR['usuario-recaptcha-site']				=	'6Lcur6gaAAAAANPAHPglZ1NLdlsB9IIFOINzaYB
 $_GESTOR['usuario-recaptcha-server']			=	'6Lcur6gaAAAAAJoaQiE-4GKuhK8Vt5I0IfP1d967'; // Recaptcha server
 $_GESTOR['usuario-maximo-senhas-invalidas']		=	3; // Máximo de vezes que pode errar a senha em autorização provisória, antes de ser deconectado automaticamente
 $_GESTOR['usuario-autorizacao-lifetime']		=	60*5; // 5 minutos definido / Tempo máximo em segundos que uma autorização provisória é válida.
-$_GESTOR['token-lifetime']						=	60*60*1; // 1 hora para os tokens provisórios serem deletadas.
+$_GESTOR['token-lifetime']						=	3600*1; // 1 hora para os tokens provisórios serem deletadas.
 $_GESTOR['pagina#contato-url']					=	'contato/'; // Página de contatos relativo a raiz do sistema.
 $_GESTOR['plano-teste-id-usuario-perfil']		=	'2'; // Identificador do perfil do usuário para planos testes (TRIAL).
 $_GESTOR['host-configuracao-id-modulo']			=	'host-configuracao'; // Identificador módulo de configuração do host.
@@ -33,10 +33,10 @@ $_GESTOR['platform-recaptcha-active']			=	true; // Ativar Recaptcha v3 nos hosts
 $_GESTOR['platform-recaptcha-site']				=	'6LewE8QcAAAAAOyOzcZufW9dkK7yRxMSQaUyBr1M'; // Recaptcha site nos hosts
 $_GESTOR['platform-recaptcha-server']			=	'6LewE8QcAAAAAKZq0JboJ7QL_m2aAYleKuYAAxYN'; // Recaptcha server nos hosts
 $_GESTOR['app-recaptcha-active']				=	false; // Ativar Recaptcha v3 no APP
-$_GESTOR['app-token-lifetime']					=	60*60*24*30; // 30 dias para os token de acesso serem deletados.
-$_GESTOR['app-token-renewtime']					=	60*60*24; // 24 horas para renovar automaticamente o token de acesso
+$_GESTOR['app-token-lifetime']					=	86400*30; // 30 dias para os token de acesso serem deletados.
+$_GESTOR['app-token-renewtime']					=	3600*24; // 24 horas para renovar automaticamente o token de acesso
 $_GESTOR['app-origem']							=	'app'; // Identificador do APP 
-$_GESTOR['autenticacao-token-lifetime']			=	60*60*24*180; // 30 dias para os token de acesso serem deletados.
+$_GESTOR['autenticacao-token-lifetime']			=	86400*180; // 180 dias para os token de autenticacao serem expirados.
 
 // ===== Definição dos marcadores de abertura e fechamento de varíaveis globais.
 
