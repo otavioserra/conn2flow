@@ -565,7 +565,7 @@ function autenticacao_cliente_gerar_token_validacao($params = false){
 	
 		// ===== Definir variáveis para gerar o JWT
 		
-		$expiration = time() + $_GESTOR['platform-lifetime'];
+		$expiration = time() + $_GESTOR['autenticacao-token-lifetime'];
 		
 		// ===== Pegar a chave pública do host
 		

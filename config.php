@@ -7,13 +7,13 @@ $_GESTOR['id']									=	'entrey-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
 $_GESTOR['modulos-bibliotecas']					=	'bibliotecas/'; // Caminho relativo a raiz dos módulos bibliotecas do gestor
 $_GESTOR['session-authname']					=	'_ESID'; // Nome do cookie de sessão de usuário
-$_GESTOR['session-lifetime']					=	60*60*3; // 3 horas para as sessões serem deletadas
-$_GESTOR['session-garbagetime']					=	60*60*24; // 24 horas para tokens de sessões serem deletados
-$_GESTOR['session-garbage-colector-time']		=	60*60; // 1 hora para sessões antigas serem deletados.
+$_GESTOR['session-lifetime']					=	3600*3; // 3 horas para as sessões serem deletadas
+$_GESTOR['session-garbagetime']					=	3600*24; // 24 horas para tokens de sessões serem deletados
+$_GESTOR['session-garbage-colector-time']		=	3600; // 1 hora para sessões antigas serem deletados.
 $_GESTOR['cookie-authname']						=	'_EUSID'; // Nome do cookie de sessão de autenticação de usuário
 $_GESTOR['cookie-verify']						=	'_ECVID'; // Nome do cookie de sessão de autenticação de usuário
-$_GESTOR['cookie-lifetime']						=	60*60*24*15; // 15 dias para os cookie do token de acesso serem deletados
-$_GESTOR['cookie-renewtime']					=	60*60*24; // 24 horas para renovar automaticamente cookie do token de acesso
+$_GESTOR['cookie-lifetime']						=	86400*15; // 15 dias para os cookie do token de acesso serem deletados
+$_GESTOR['cookie-renewtime']					=	3600*24; // 24 horas para renovar automaticamente cookie do token de acesso
 $_GESTOR['openssl-password']					=	'entrey-dgCJ-vL\ymYB53L,'; // Senha da chave RSA atual
 $_GESTOR['usuario-hash-password']				=	'entrey-h"hC,r^pmUj7kSs{'; // Senha de gerador de hash
 $_GESTOR['usuario-hash-algo']					=	'sha512'; // Algorítmo usado para criar hash
@@ -36,6 +36,7 @@ $_GESTOR['app-recaptcha-active']				=	false; // Ativar Recaptcha v3 no APP
 $_GESTOR['app-token-lifetime']					=	60*60*24*30; // 30 dias para os token de acesso serem deletados.
 $_GESTOR['app-token-renewtime']					=	60*60*24; // 24 horas para renovar automaticamente o token de acesso
 $_GESTOR['app-origem']							=	'app'; // Identificador do APP 
+$_GESTOR['autenticacao-token-lifetime']			=	60*60*24*180; // 30 dias para os token de acesso serem deletados.
 
 // ===== Definição dos marcadores de abertura e fechamento de varíaveis globais.
 
