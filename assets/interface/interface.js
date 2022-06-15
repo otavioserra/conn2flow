@@ -690,6 +690,17 @@ $(document).ready(function() {
 						}
 					});
 				});
+				
+				// ===== Tooltip
+
+				$('.segment .button').popup({
+					delay: {
+						show: 150,
+						hide: 0
+					},
+					position:'top right',
+					variation:'inverted'
+				});
 			}
 			
 			config();

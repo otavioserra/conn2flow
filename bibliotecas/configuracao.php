@@ -852,6 +852,7 @@ function configuracao_hosts($params = false){
 				
 				// ===== Verificar se o valor padrão foi modificado por um valor específico do host e subistiuir o mesmo pelo valor específico.
 				
+				if($hosts_variaveis)
 				foreach($hosts_variaveis as $hosts_variavel){
 					if(
 						$variavel['id'] == $hosts_variavel['id']

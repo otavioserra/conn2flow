@@ -223,6 +223,7 @@ function modulos_sincronizar_bancos(){
 				'status',
 			),
 			'comparacaoIDEModulo' => true,
+			'ignorarAddSlashes' => true,
 		),
 	);
 	
@@ -237,6 +238,7 @@ function modulos_sincronizar_bancos(){
 				'status',
 			),
 			'comparacaoID' => true,
+			'ignorarAddSlashes' => true,
 		),
 	);
 	

@@ -25,7 +25,7 @@ function agendamentos_calendario($params = false){
 	$dias_semana = (existe($config['dias-semana']) ? explode(',',$config['dias-semana']) : Array());
 	$anos = (existe($config['calendario-anos']) ? (int)$config['calendario-anos'] : 2);
 	$dias_semana_maximo_vagas_arr = (existe($config['dias-semana-maximo-vagas']) ? explode(',',$config['dias-semana-maximo-vagas']) : Array());
-	if(existe($config['datas-indisponiveis'])) $datas_indisponiveis = (existe($config['datas-indisponiveis-valores']) ? explode('|',$config['datas-indisponiveis-valores']) : Array());
+	if(existe($config['datas-indisponiveis'])) $datas_indisponiveis = (existe($config['datas-indisponiveis-valores']) ? explode('|',$config['datas-indisponiveis-valores']) : Array()); else $datas_indisponiveis = Array();
 	$fase_escolha_livre = (existe($config['fase-escolha-livre']) ? (int)$config['fase-escolha-livre'] : 7);
 	$calendario_limite_mes_a_frente = (existe($config['calendario-limite-mes-a-frente']) ? (int)$config['calendario-limite-mes-a-frente'] : false);
 	$fase_sorteio = (existe($config['fase-sorteio']) ? explode(',',$config['fase-sorteio']) : Array(7,5));
@@ -46,16 +46,6 @@ function agendamentos_calendario($params = false){
 		"WHERE data >= ".$hoje
 	);
 	
-	if($dias_semana)
-	foreach($dias_semana as $dia_semana){
-		if(!$flag){
-			$primeiro_dia_semana = $dia_semana;
-			$flag = true;
-		}
-	}
-	
-	$ultimo_dia_semana = $dia_semana;
-	
 	for($i=-1;$i<$anos+1;$i++){
 		$periodo_ferias[] = Array(
 			'inicio' => strtotime($calendario_ferias_de." ".($ano_inicio+$i)),
@@ -63,8 +53,8 @@ function agendamentos_calendario($params = false){
 		);
 	}
 	
-	$primeiro_dia = strtotime(date("Y-m-d", mktime()) . " + 1 day");
-	$ultimo_dia = strtotime(date("Y-m-d", mktime()) . " + ".$anos." year");
+	$primeiro_dia = strtotime(date("Y-m-d", time()) . " + 1 day");
+	$ultimo_dia = strtotime(date("Y-m-d", time()) . " + ".$anos." year");
 	
 	if($calendario_limite_mes_a_frente){
 		$limitar_calendario = strtotime(date("Y-m",strtotime($hoje . " + ".$calendario_limite_mes_a_frente." month")).'-01');

@@ -1782,6 +1782,7 @@ function gestor_roteador(){
 	$caminho = rtrim($caminho,'/').'/';
 	
 	$_GESTOR['ajax'] = (isset($_REQUEST['ajax']) ? true : false);
+	$_GESTOR['ajaxPagina'] = (isset($_REQUEST['ajaxPagina']) ? true : false);
 	$_GESTOR['ajax-opcao'] = (isset($_REQUEST['ajaxOpcao']) ? banco_escape_field($_REQUEST['ajaxOpcao']) : false);
 	$_GESTOR['opcao'] = (isset($_REQUEST['opcao']) ? banco_escape_field($_REQUEST['opcao']) : false);
 	$_GESTOR['paginaIframe'] = (isset($_REQUEST['paginaIframe']) ? true : false);
@@ -1814,6 +1815,12 @@ function gestor_roteador(){
 			'sem_permissao',
 			'opcao',
 		);
+		
+		// ===== Se válido pegar o html também.
+		
+		if($_GESTOR['ajaxPagina']){
+			$campos[] = 'html';
+		}
 	} else if($_GESTOR['opcao']){
 		$campos = Array(
 			'modulo',
@@ -1875,6 +1882,13 @@ function gestor_roteador(){
 		if(isset($paginas)){
 			$modulo = $_GESTOR['modulo'];
 			if(!$_GESTOR['opcao']) $_GESTOR['opcao'] = $paginas[0]['opcao'];
+			
+			// ===== Incluir html da página.
+			
+			if($_GESTOR['ajaxPagina']){
+				$html = $paginas[0]['html'];
+				$_GESTOR['pagina'] = $html;
+			}
 			
 			// ===== Módulo alvo quando houver executar
 			
