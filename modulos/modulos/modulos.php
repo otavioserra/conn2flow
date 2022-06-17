@@ -130,8 +130,171 @@ function modulos_copiar_variaveis(){
 	$_GESTOR['pagina'] .= '<p>Finalizado!</p>';
 }
 
+function modulos_buscar_ids_duplicados(){
+	global $_GESTOR;
+	
+	$ativar = false;
+	
+	// ===== Definir origem 1 / destino 2
+	
+	$servers = Array(
+		'destino' => 'beta.entrey.com.br',
+		'origem' => 'localhost',
+		//'destino' => 'entrey.com.br',
+	);
+	
+	$serverOrigem = $servers['origem'];
+	$serverDestino = $servers['destino'];
+	
+	// ===== Mostrar mensagem de desativado.
+	
+	if(!$ativar){
+		$_GESTOR['pagina'] .= '<h2>SINCRONIZAR BANCOS - <span class="ui error text">DESATIVADO</span></h2>';
+		return;
+	}
+	
+	// ===== Mudar host caso necessário
+	
+	$_GESTOR['bancoDef']['beta.entrey.com.br']['host'] = 'beta.entrey.com.br';
+	$_GESTOR['bancoDef']['entrey.com.br']['host'] = 'entrey.com.br';
+	
+	// ===== Head inicial
+	
+	$_GESTOR['pagina'] .= '<h2>SINCRONIZAR BANCOS</h2>';
+	
+	// ===== Parâmetros padrões.
+	
+	$parametrosPadroes = Array(
+		'print1' => 'Módulo - <span class="ui text info">#titulo#</span>: <span class="ui success text">Inserir</span> no Destino',
+		'print2' => 'Módulo - <span class="ui text info">#titulo#</span>: <span class="ui warning text">Atualizar</span> no Destino',
+	);
+	
+	// ===== Tabelas que serão sincronizadas.
+	
+	$tabelas = Array(
+		'variaveis',
+	);
+	
+	// ===== Dados das tabelas.
+	
+	$dados['variaveis'] = Array(
+		'titulo' => 'Variáveis',
+		'tabela' => Array(
+			'nome' => 'variaveis',
+			'id_referencia' => 'id_variaveis',
+			'camposComparacao' => Array(
+				'id_variaveis',
+				'id',
+				'modulo',
+				'grupo',
+			),
+			'comparacaoIDEModuloGrupo' => true,
+			'ignorarAtualizacoes' => true,
+			'ignorarAddSlashes' => true,
+		),
+	);
+	
+	foreach($tabelas as $tabela){
+		
+		$idAtual = $tabela;
+		$dadosDef = $dados[$idAtual];
+		
+		// ===== Título da tabela.
+		
+		$titulo = $dadosDef['titulo'];
+		
+		// ===== Tabela Origem
+		
+		unset($camposAtualizar);
+		
+		$_GESTOR['banco'] = $_GESTOR['bancoDef'][$serverOrigem];
+		
+		$tabelaOrigem = banco_select_name
+		(
+			'*'
+			,
+			$dadosDef['tabela']['nome'],
+			""
+		);
+		
+		banco_fechar_conexao();
+		
+		// ===== Tabela Destino
+		
+		$_GESTOR['banco'] = $_GESTOR['bancoDef'][$serverDestino];
+		
+		$tabelaDestino = banco_select_name
+		(
+			banco_campos_virgulas($dadosDef['tabela']['camposComparacao'])
+			,
+			$dadosDef['tabela']['nome'],
+			""
+		);
+		
+		$SQL = '';
+		
+		if($tabelaOrigem){
+			foreach($tabelaOrigem as $to){
+				if($to['modulo'] == '_sistema'){
+					continue;
+				}
+				
+				// ===== Procurar se o dado existe no destino.
+				
+				$found = false;
+				$found2 = false;
+				$idUm = '';
+				$idDois = '';
+				
+				if($tabelaDestino){
+					foreach($tabelaDestino as $td){
+						if(
+							$to['id'] == $td['id'] &&
+							//$to['grupo'] == $td['grupo'] &&
+							$to['modulo'] == $td['modulo']
+						){
+							if(!existe($idUm)){
+								$idUm = $td['id_variaveis'].' <=> '.$td['id'].' - '.$td['modulo'].' - '.$td['grupo'];
+							}
+							
+							if($found2){
+								$idDois .= (existe($idDois) ? ', ':'') . $td['id_variaveis'].' <=> '.$td['id'].' - '.$td['modulo'].' - '.$td['grupo'];
+								$SQL .= "DELETE FROM variaveis WHERE id_variaveis='".$td['id_variaveis']."';<br>";
+								$found = true;
+							}
+							
+							$found2 = true;
+						}
+					}
+				}
+				
+				if($found){
+					// ===== Colocar o título no início das impressões dos dados que serão inseridos.
+					
+					if(!isset($inserirSinal[$idAtual])){
+						$print1 = modelo_var_troca_tudo($parametrosPadroes['print1'],"#titulo#",$titulo);
+						
+						$_GESTOR['pagina'] .= '<b>'.$print1.':</b><br><br><!-- inserir-'.$idAtual.' -->';
+					}
+					
+					$inserirSinal[$idAtual] = true;
+					
+					// ===== Incluir na impressão o dado a ser incluído para conferência visual.
+					
+					$_GESTOR['pagina'] = modelo_var_in($_GESTOR['pagina'],'<!-- inserir-'.$idAtual.' -->',$to['id'].'<br>'.$to['id'].' - '.$to['modulo'].' - '.$to['grupo'].'<br>'.$idUm.'<br>'.$idDois.'<div class="ui divider"></div>');
+					
+				}
+			}
+		}
+		
+		$_GESTOR['pagina'] .= '<div class="ui divider"></div>'.$SQL;
+	}
+}
+
 function modulos_sincronizar_bancos(){
 	global $_GESTOR;
+	
+	//return modulos_buscar_ids_duplicados();
 	
 	// ===== Ativar / Desativar
 	

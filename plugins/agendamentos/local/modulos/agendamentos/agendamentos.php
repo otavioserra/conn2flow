@@ -228,6 +228,7 @@ function agendamentos_ajax_atualizar(){
 	$cel_nome = 'th-email'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	
 	$cel_nome = 'cel-acompanhante'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	$cel_nome = 'td-acompanhantes'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	$cel_nome = 'td-senha'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	
 	$cel_nome = 'td-visto'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
@@ -326,11 +327,33 @@ function agendamentos_ajax_atualizar(){
 			
 			if($agendamentos){
 				$cel_nome = 'th-senha'; $tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->',$cel[$cel_nome]);
+				$cel_nome = 'th-visto'; $tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->',$cel[$cel_nome]);
 				
 				foreach($agendamentos as $agendamento){
-					$cel_nome = 'cel_nome'; $cel_aux = $cel[$cel_nome];
+					$cel_nome = 'cel-agendamento'; $cel_aux = $cel[$cel_nome];
 					
-					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"campo",$valor['id']);
+					// ===== Incluir a senha.
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"<!-- td-senha -->",$cel['td-senha']);
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"senha",$agendamento['senha']);
+					
+					// ===== Popular os acompanhantes.
+					
+					$acompanhanteNum = 0;
+					if(isset($agendamento['acompanhantesDados'])){
+						$acompanhanteNum++;
+						$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"<!-- td-acompanhantes -->",$cel['td-acompanhantes']);
+						
+						foreach($agendamento['acompanhantesDados'] as $acompanhantesDados){
+							$cel_acomp = 'cel-acompanhante'; $cel_aux_2 = $cel[$cel_acomp];
+							
+							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"num",$acompanhanteNum);
+							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"acompanhante",$acompanhantesDados['nome']);
+							
+							$cel_aux = modelo_var_in($cel_aux,'<!-- '.$cel_acomp.' -->',$cel_aux_2);
+						}
+					}
 					
 					$tabela = modelo_var_in($tabela,'<!-- '.$cel_nome.' -->',$cel_aux);
 				}
