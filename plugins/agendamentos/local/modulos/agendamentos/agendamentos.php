@@ -623,7 +623,7 @@ function agendamentos_ajax_atualizar(){
 				
 				// ===== Formatar data.
 				
-				$dataStr = formato_dado_para('data',$data)
+				$dataStr = formato_dado_para('data',$data);
 				
 				// ===== Pegar o componente 'impressao-cabecalho'.
 				
