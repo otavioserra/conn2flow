@@ -606,7 +606,9 @@ function agendamentos_ajax_atualizar(){
 
 			// ===== Impressão opções.
 			
-			$imprimir = true;
+			if($total > 0){
+				$imprimir = true;
+			}
 		break;
 		case 'finalizados':
 			// ===== Pegar os dados do banco.
