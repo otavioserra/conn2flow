@@ -15,11 +15,8 @@ function global_impressao(){
 	
 	$found = false;
 	
-	$impressao = gestor_sessao_variavel('impressao');
-	
-	echo 'Var>> '.print_r($impressao,true)."<br>";exit;
-	
-	if(gettype($impressao) == "array"){
+	if(existe(gestor_sessao_variavel('impressao'))){
+		$impressao = gestor_sessao_variavel('impressao');
 		gestor_sessao_variavel_del('impressao');
 		
 		$found = true;
