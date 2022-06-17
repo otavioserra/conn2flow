@@ -621,7 +621,7 @@ function agendamentos_ajax_atualizar(){
 				'extra' => 
 					"WHERE id_hosts='".$id_hosts."'"
 					." AND data='".$data."'"
-					." AND status='finalizados'"
+					." AND status='finalizado'"
 			));
 			
 			// ===== Varrer todos os agendamentos.
