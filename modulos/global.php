@@ -17,6 +17,8 @@ function global_impressao(){
 	
 	$impressao = gestor_sessao_variavel('impressao');
 	
+	echo 'Var>> '.print_r($impressao,true)."<br>";exit;
+	
 	if(gettype($impressao) == "array"){
 		gestor_sessao_variavel_del('impressao');
 		
