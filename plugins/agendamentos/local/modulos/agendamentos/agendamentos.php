@@ -247,6 +247,241 @@ function agendamentos_ajax_atualizar(){
 	// ===== Tratar cada status enviado.
 	
 	switch($status){
+		case 'pre':
+			// ===== Pegar os dados do banco.
+			
+			$hosts_agendamentos = banco_select(Array(
+				'tabela' => 'hosts_agendamentos',
+				'campos' => Array(
+					'id_hosts_agendamentos',
+					'id_hosts_usuarios',
+					'acompanhantes',
+				),
+				'extra' => 
+					"WHERE id_hosts='".$id_hosts."'"
+					." AND data='".$data."'"
+					." AND status='novo'"
+			));
+			
+			// ===== Varrer todos os agendamentos.
+			
+			if($hosts_agendamentos)
+			foreach($hosts_agendamentos as $agendamento){
+				// ===== Pegar os dados do agendamento.
+				
+				$id_hosts_agendamentos = $agendamento['id_hosts_agendamentos'];
+				$id_hosts_usuarios = $agendamento['id_hosts_usuarios'];
+				$acompanhantes = (int)$agendamento['acompanhantes'];
+				
+				// ===== Pegar os dados do usuário do agendamento.
+				
+				$hosts_usuarios = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_usuarios',
+					'campos' => Array(
+						'nome',
+					),
+					'extra' => 
+						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				$agendamentosAux = Array(
+					'nome' => $hosts_usuarios['nome'],
+					'acompanhantes' => $acompanhantes,
+				);
+				
+				// ===== Pegar os dados dos acompanhantes.
+				
+				$hosts_agendamentos_acompanhantes = banco_select(Array(
+					'tabela' => 'hosts_agendamentos_acompanhantes',
+					'campos' => Array(
+						'nome',
+					),
+					'extra' => 
+						"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+						." AND id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				$agendamentosAux['acompanhantesDados'] = $hosts_agendamentos_acompanhantes;
+				
+				// ===== Atualizar o total de pessoas agendadas.
+				
+				$total += 1+$acompanhantes;
+				
+				// ===== Incluir os dados do agendamento no array agendamentos.
+				
+				$agendamentos[] = $agendamentosAux;
+			}
+			
+			// ===== Ordenar por nome os dados para montagem da tabela.
+			
+			usort($agendamentos, function($a, $b){
+				return $a['nome'] <=> $b['nome'];
+			});
+			
+			// ===== Montar tabela.
+			
+			if($agendamentos){
+				$cel_nome = 'cel-agendamento';
+				
+				foreach($agendamentos as $agendamento){
+					$cel_aux = $cel[$cel_nome];
+					
+					// ===== Incluir o nome.
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"nome",$agendamento['nome']);
+					
+					// ===== Popular os acompanhantes.
+					
+					$acompanhanteNum = 0;
+					if(isset($agendamento['acompanhantesDados'])){
+						$acompanhanteNum++;
+						$cel_aux = modelo_var_troca($cel_aux,"<!-- td-acompanhantes -->",$cel['td-acompanhantes']);
+						
+						foreach($agendamento['acompanhantesDados'] as $acompanhantesDados){
+							$cel_acomp = 'cel-acompanhante'; $cel_aux_2 = $cel[$cel_acomp];
+							
+							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"num",$acompanhanteNum);
+							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"acompanhante",$acompanhantesDados['nome']);
+							
+							$cel_aux = modelo_var_in($cel_aux,'<!-- '.$cel_acomp.' -->',$cel_aux_2);
+						}
+					}
+					
+					$tabela = modelo_var_in($tabela,'<!-- '.$cel_nome.' -->',$cel_aux);
+				}
+				
+				$tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->','');
+			} else {
+				$tabela = '';
+			}
+		break;
+		case 'aguardando':
+			// ===== Pegar os dados do banco.
+			
+			$hosts_agendamentos = banco_select(Array(
+				'tabela' => 'hosts_agendamentos',
+				'campos' => Array(
+					'id_hosts_agendamentos',
+					'id_hosts_usuarios',
+					'acompanhantes',
+					'status',
+				),
+				'extra' => 
+					"WHERE id_hosts='".$id_hosts."'"
+					." AND data='".$data."'"
+					." AND (status='email-enviado OR status='email-nao-enviado')"
+			));
+			
+			// ===== Varrer todos os agendamentos.
+			
+			if($hosts_agendamentos)
+			foreach($hosts_agendamentos as $agendamento){
+				// ===== Pegar os dados do agendamento.
+				
+				$id_hosts_agendamentos = $agendamento['id_hosts_agendamentos'];
+				$id_hosts_usuarios = $agendamento['id_hosts_usuarios'];
+				$acompanhantes = (int)$agendamento['acompanhantes'];
+				
+				// ===== Pegar os dados do usuário do agendamento.
+				
+				$hosts_usuarios = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_usuarios',
+					'campos' => Array(
+						'nome',
+					),
+					'extra' => 
+						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				$agendamentosAux = Array(
+					'nome' => $hosts_usuarios['nome'],
+					'acompanhantes' => $acompanhantes,
+				);
+				
+				// ===== Pegar os dados dos acompanhantes.
+				
+				$hosts_agendamentos_acompanhantes = banco_select(Array(
+					'tabela' => 'hosts_agendamentos_acompanhantes',
+					'campos' => Array(
+						'nome',
+					),
+					'extra' => 
+						"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+						." AND id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				$agendamentosAux['acompanhantesDados'] = $hosts_agendamentos_acompanhantes;
+				
+				// ===== Atualizar o total de pessoas agendadas.
+				
+				$total += 1+$acompanhantes;
+				
+				// ===== Incluir os dados do agendamento no array agendamentos.
+				
+				$agendamentos[] = $agendamentosAux;
+			}
+			
+			// ===== Ordenar por nome os dados para montagem da tabela.
+			
+			usort($agendamentos, function($a, $b){
+				return $a['nome'] <=> $b['nome'];
+			});
+			
+			// ===== Montar tabela.
+			
+			if($agendamentos){
+				$cel_nome = 'th-email'; $tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->',$cel[$cel_nome]);
+				
+				$cel_nome = 'cel-agendamento';
+				
+				foreach($agendamentos as $agendamento){
+					$cel_aux = $cel[$cel_nome];
+					
+					// ===== Incluir o status de enviado ou não enviado.
+					
+					$cel_aux = modelo_var_troca($cel_aux,"<!-- td-email -->",$cel['td-email']);
+					
+					if($agendamento['status'] == 'email-enviado'){
+						$cel_aux = modelo_var_troca($cel_aux,"<!-- enviado -->",$cel['enviado']);
+					} else {
+						$cel_aux = modelo_var_troca($cel_aux,"<!-- nao-enviado -->",$cel['nao-enviado']);
+					}
+					
+					// ===== Incluir o nome.
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"nome",$agendamento['nome']);
+					
+					// ===== Popular os acompanhantes.
+					
+					$acompanhanteNum = 0;
+					if(isset($agendamento['acompanhantesDados'])){
+						$acompanhanteNum++;
+						$cel_aux = modelo_var_troca($cel_aux,"<!-- td-acompanhantes -->",$cel['td-acompanhantes']);
+						
+						foreach($agendamento['acompanhantesDados'] as $acompanhantesDados){
+							$cel_acomp = 'cel-acompanhante'; $cel_aux_2 = $cel[$cel_acomp];
+							
+							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"num",$acompanhanteNum);
+							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"acompanhante",$acompanhantesDados['nome']);
+							
+							$cel_aux = modelo_var_in($cel_aux,'<!-- '.$cel_acomp.' -->',$cel_aux_2);
+						}
+					}
+					
+					$tabela = modelo_var_in($tabela,'<!-- '.$cel_nome.' -->',$cel_aux);
+				}
+				
+				$tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->','');
+			} else {
+				$tabela = '';
+			}
+		break;
 		case 'confirmados':
 			// ===== Pegar os dados do banco.
 			
@@ -372,6 +607,117 @@ function agendamentos_ajax_atualizar(){
 			// ===== Impressão opções.
 			
 			$imprimir = true;
+		break;
+		case 'finalizados':
+			// ===== Pegar os dados do banco.
+			
+			$hosts_agendamentos = banco_select(Array(
+				'tabela' => 'hosts_agendamentos',
+				'campos' => Array(
+					'id_hosts_agendamentos',
+					'id_hosts_usuarios',
+					'acompanhantes',
+				),
+				'extra' => 
+					"WHERE id_hosts='".$id_hosts."'"
+					." AND data='".$data."'"
+					." AND status='finalizados'"
+			));
+			
+			// ===== Varrer todos os agendamentos.
+			
+			if($hosts_agendamentos)
+			foreach($hosts_agendamentos as $agendamento){
+				// ===== Pegar os dados do agendamento.
+				
+				$id_hosts_agendamentos = $agendamento['id_hosts_agendamentos'];
+				$id_hosts_usuarios = $agendamento['id_hosts_usuarios'];
+				$acompanhantes = (int)$agendamento['acompanhantes'];
+				
+				// ===== Pegar os dados do usuário do agendamento.
+				
+				$hosts_usuarios = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_usuarios',
+					'campos' => Array(
+						'nome',
+					),
+					'extra' => 
+						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				$agendamentosAux = Array(
+					'nome' => $hosts_usuarios['nome'],
+					'acompanhantes' => $acompanhantes,
+				);
+				
+				// ===== Pegar os dados dos acompanhantes.
+				
+				$hosts_agendamentos_acompanhantes = banco_select(Array(
+					'tabela' => 'hosts_agendamentos_acompanhantes',
+					'campos' => Array(
+						'nome',
+					),
+					'extra' => 
+						"WHERE id_hosts_agendamentos='".$id_hosts_agendamentos."'"
+						." AND id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				$agendamentosAux['acompanhantesDados'] = $hosts_agendamentos_acompanhantes;
+				
+				// ===== Atualizar o total de pessoas agendadas.
+				
+				$total += 1+$acompanhantes;
+				
+				// ===== Incluir os dados do agendamento no array agendamentos.
+				
+				$agendamentos[] = $agendamentosAux;
+			}
+			
+			// ===== Ordenar por nome os dados para montagem da tabela.
+			
+			usort($agendamentos, function($a, $b){
+				return $a['nome'] <=> $b['nome'];
+			});
+			
+			// ===== Montar tabela.
+			
+			if($agendamentos){
+				$cel_nome = 'cel-agendamento';
+				
+				foreach($agendamentos as $agendamento){
+					$cel_aux = $cel[$cel_nome];
+					
+					// ===== Incluir o nome.
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"nome",$agendamento['nome']);
+					
+					// ===== Popular os acompanhantes.
+					
+					$acompanhanteNum = 0;
+					if(isset($agendamento['acompanhantesDados'])){
+						$acompanhanteNum++;
+						$cel_aux = modelo_var_troca($cel_aux,"<!-- td-acompanhantes -->",$cel['td-acompanhantes']);
+						
+						foreach($agendamento['acompanhantesDados'] as $acompanhantesDados){
+							$cel_acomp = 'cel-acompanhante'; $cel_aux_2 = $cel[$cel_acomp];
+							
+							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"num",$acompanhanteNum);
+							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"acompanhante",$acompanhantesDados['nome']);
+							
+							$cel_aux = modelo_var_in($cel_aux,'<!-- '.$cel_acomp.' -->',$cel_aux_2);
+						}
+					}
+					
+					$tabela = modelo_var_in($tabela,'<!-- '.$cel_nome.' -->',$cel_aux);
+				}
+				
+				$tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->','');
+			} else {
+				$tabela = '';
+			}
 		break;
 		default:
 			$tabela = '';
