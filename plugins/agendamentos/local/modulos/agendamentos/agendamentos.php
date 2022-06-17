@@ -337,7 +337,7 @@ function agendamentos_ajax_atualizar(){
 					
 					// ===== Incluir a senha.
 					
-					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"<!--td-senha-->",$cel['td-senha']);
+					$cel_aux = modelo_var_troca($cel_aux,"<!-- td-senha -->",$cel['td-senha']);
 					
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"senha",$agendamento['senha']);
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"nome",$agendamento['nome']);
@@ -347,7 +347,7 @@ function agendamentos_ajax_atualizar(){
 					$acompanhanteNum = 0;
 					if(isset($agendamento['acompanhantesDados'])){
 						$acompanhanteNum++;
-						$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"<!-- td-acompanhantes -->",$cel['td-acompanhantes']);
+						$cel_aux = modelo_var_troca($cel_aux,"<!-- td-acompanhantes -->",$cel['td-acompanhantes']);
 						
 						foreach($agendamento['acompanhantesDados'] as $acompanhantesDados){
 							$cel_acomp = 'cel-acompanhante'; $cel_aux_2 = $cel[$cel_acomp];
