@@ -20,11 +20,12 @@ function agendamentos_calendario(){
 	global $_GESTOR;
 	
 	gestor_incluir_biblioteca('formato');
+	gestor_incluir_biblioteca('configuracao');
 	
 	$ano_inicio = date('Y');
 	$hoje = date('Y-m-d');
 	
-	$config = gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','conjunto' => true));
+	$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-agendamentos'));
 	
 	$dias_semana = (existe($config['dias-semana']) ? explode(',',$config['dias-semana']) : Array());
 	$anos = (existe($config['calendario-anos']) ? (int)$config['calendario-anos'] : 2);
