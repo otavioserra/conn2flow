@@ -1898,6 +1898,8 @@ function gestor_roteador(){
 				} else {
 					require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
 				}
+			} else if($_GESTOR['opcao']){
+				require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/global.php');
 			}
 			
 			// ===== Retornar a página formatada para o cliente
@@ -1956,6 +1958,8 @@ function gestor_roteador(){
 				} else {
 					require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
 				}
+			} else if($_GESTOR['opcao']){
+				require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/global.php');
 			}
 			
 			// ===== Incluir um layout específico, ou padrão ou nenhum.
