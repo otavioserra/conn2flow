@@ -342,6 +342,7 @@ function agendamentos_ajax_atualizar(){
 					
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"senha",$agendamento['senha']);
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"nome",$agendamento['nome']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"visto",'');
 					
 					// ===== Popular os acompanhantes.
 					
