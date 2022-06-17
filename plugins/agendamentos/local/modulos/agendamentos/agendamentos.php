@@ -224,25 +224,25 @@ function agendamentos_ajax_atualizar(){
 	
 	// ===== Pegar células da tabela.
 	
-	$cel_nome = 'th-senha'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
-	$cel_nome = 'th-visto'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
-	$cel_nome = 'th-email'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	$cel_nome = 'th-senha'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+	$cel_nome = 'th-visto'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+	$cel_nome = 'th-email'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	
-	$cel_nome = 'cel-acompanhante'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
-	$cel_nome = 'td-acompanhantes'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
-	$cel_nome = 'td-senha'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	$cel_nome = 'cel-acompanhante'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+	$cel_nome = 'td-acompanhantes'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+	$cel_nome = 'td-senha'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	
-	$cel_nome = 'td-visto'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	$cel_nome = 'td-visto'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	
-	$cel_nome = 'enviado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
-	$cel_nome = 'nao-enviado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
-	$cel_nome = 'td-email'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	$cel_nome = 'enviado'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+	$cel_nome = 'nao-enviado'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
+	$cel_nome = 'td-email'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	
-	$cel_nome = 'cel-agendamento'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	$cel_nome = 'cel-agendamento'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	
 	// ===== Pegar a tabela da página.
 	
-	$cel_nome = 'tabela-pessoas'; $tabela = pagina_celula($cel_nome,false,true);
+	$cel_nome = 'tabela-pessoas'; $tabela = pagina_celula($cel_nome,false);
 	
 	// ===== Tratar cada status enviado.
 	
@@ -330,8 +330,10 @@ function agendamentos_ajax_atualizar(){
 				$cel_nome = 'th-senha'; $tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->',$cel[$cel_nome]);
 				$cel_nome = 'th-visto'; $tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->',$cel[$cel_nome]);
 				
+				$cel_nome = 'cel-agendamento';
+				
 				foreach($agendamentos as $agendamento){
-					$cel_nome = 'cel-agendamento'; $cel_aux = $cel[$cel_nome];
+					$cel_aux = $cel[$cel_nome];
 					
 					// ===== Incluir a senha.
 					
@@ -358,6 +360,7 @@ function agendamentos_ajax_atualizar(){
 					
 					$tabela = modelo_var_in($tabela,'<!-- '.$cel_nome.' -->',$cel_aux);
 				}
+				
 				$tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->','');
 			} else {
 				$tabela = '';
