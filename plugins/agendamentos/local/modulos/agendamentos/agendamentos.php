@@ -337,10 +337,11 @@ function agendamentos_ajax_atualizar(){
 					
 					$acompanhanteNum = 0;
 					if(isset($agendamento['acompanhantesDados'])){
-						$acompanhanteNum++;
 						$cel_aux = modelo_var_troca($cel_aux,"<!-- td-acompanhantes -->",$cel['td-acompanhantes']);
 						
 						foreach($agendamento['acompanhantesDados'] as $acompanhantesDados){
+							$acompanhanteNum++;
+
 							$cel_acomp = 'cel-acompanhante'; $cel_aux_2 = $cel[$cel_acomp];
 							
 							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"num",$acompanhanteNum);
@@ -461,10 +462,11 @@ function agendamentos_ajax_atualizar(){
 					
 					$acompanhanteNum = 0;
 					if(isset($agendamento['acompanhantesDados'])){
-						$acompanhanteNum++;
 						$cel_aux = modelo_var_troca($cel_aux,"<!-- td-acompanhantes -->",$cel['td-acompanhantes']);
 						
 						foreach($agendamento['acompanhantesDados'] as $acompanhantesDados){
+							$acompanhanteNum++;
+
 							$cel_acomp = 'cel-acompanhante'; $cel_aux_2 = $cel[$cel_acomp];
 							
 							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"num",$acompanhanteNum);
@@ -583,10 +585,11 @@ function agendamentos_ajax_atualizar(){
 					
 					$acompanhanteNum = 0;
 					if(isset($agendamento['acompanhantesDados'])){
-						$acompanhanteNum++;
 						$cel_aux = modelo_var_troca($cel_aux,"<!-- td-acompanhantes -->",$cel['td-acompanhantes']);
 						
 						foreach($agendamento['acompanhantesDados'] as $acompanhantesDados){
+							$acompanhanteNum++;
+							
 							$cel_acomp = 'cel-acompanhante'; $cel_aux_2 = $cel[$cel_acomp];
 							
 							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"num",$acompanhanteNum);
@@ -712,10 +715,11 @@ function agendamentos_ajax_atualizar(){
 					
 					$acompanhanteNum = 0;
 					if(isset($agendamento['acompanhantesDados'])){
-						$acompanhanteNum++;
 						$cel_aux = modelo_var_troca($cel_aux,"<!-- td-acompanhantes -->",$cel['td-acompanhantes']);
 						
 						foreach($agendamento['acompanhantesDados'] as $acompanhantesDados){
+							$acompanhanteNum++;
+							
 							$cel_acomp = 'cel-acompanhante'; $cel_aux_2 = $cel[$cel_acomp];
 							
 							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"num",$acompanhanteNum);
