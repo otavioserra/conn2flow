@@ -372,7 +372,7 @@ function agendamentos_ajax_atualizar(){
 				'extra' => 
 					"WHERE id_hosts='".$id_hosts."'"
 					." AND data='".$data."'"
-					." AND (status='email-enviado OR status='email-nao-enviado')"
+					." AND (status='email-enviado' OR status='email-nao-enviado')"
 			));
 			
 			// ===== Varrer todos os agendamentos.
