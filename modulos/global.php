@@ -17,7 +17,6 @@ function global_impressao(){
 	
 	if(existe(gestor_sessao_variavel('impressao'))){
 		$impressao = gestor_sessao_variavel('impressao');
-		gestor_sessao_variavel_del('impressao');
 		
 		$found = true;
 		
