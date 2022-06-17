@@ -298,7 +298,7 @@ function modulos_sincronizar_bancos(){
 	
 	// ===== Ativar / Desativar
 	
-	$ativar = false;
+	$ativar = true;
 	
 	// ===== Opções.
 	
@@ -307,8 +307,8 @@ function modulos_sincronizar_bancos(){
 	// ===== Definir origem 1 / destino 2
 	
 	$servers = Array(
-		'origem' => 'beta.entrey.com.br',
-		'destino' => 'localhost',
+		'destino' => 'beta.entrey.com.br',
+		'origem' => 'localhost',
 		//'destino' => 'entrey.com.br',
 	);
 	

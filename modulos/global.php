@@ -13,7 +13,28 @@ function global_impressao(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
-	$_GESTOR['pagina'] = 'Impresso';
+	$found = false;
+	
+	if(existe(gestor_sessao_variavel('impressao'))){
+		$impressao = gestor_sessao_variavel('impressao');
+		gestor_sessao_variavel_del('impressao');
+		
+		$found = true;
+		
+		$_GESTOR['pagina'] = $impressao['pagina'];
+		
+		if(isset($impressao['titulo'])){
+			$_GESTOR['pagina#titulo-extra'] = $impressao['titulo'];
+		}
+	}
+	
+	if(!$found){
+		$impressaoSemDados = gestor_componente(Array(
+			'id' => 'impressao-sem-dados',
+		));
+		
+		$_GESTOR['pagina'] = $impressaoSemDados;
+	}
 }
 
 // ==== Ajax
