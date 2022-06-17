@@ -608,6 +608,18 @@ function agendamentos_ajax_atualizar(){
 			
 			if($total > 0){
 				$imprimir = true;
+				
+				// ===== Incluir a tabela no buffer de impressão.
+				
+				gestor_incluir_biblioteca(Array(
+					'formato',
+					'comunicacao',
+				));
+				
+				comunicacao_impressao(Array(
+					'titulo' => 'Agendamentos Confirmados - '.formato_dado_para('data',$data),
+					'pagina' => $tabela,
+				));
 			}
 		break;
 		case 'finalizados':

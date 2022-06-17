@@ -20,6 +20,34 @@ require_once $_GESTOR['bibliotecas-path'].'PHPMailer/src/SMTP.php';
 
 // ===== Funções principais
 
+function comunicacao_impressao($params = false){
+	global $_GESTOR;
+	global $_CRON;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// pagina - String - Obrigatório - Página que será impressa.
+	// titulo - String - Opcional - Título da página que será impressa.
+	
+	// ===== 
+	
+	if(isset($pagina)){
+		$impressao = Array(
+			'pagina' => $pagina,
+		);
+		
+		if(isset($titulo)){
+			$impressao['titulo'] = $titulo;
+		}
+		
+		// ===== Guardar na sessão os dados da impressão.
+		
+		gestor_sessao_variavel('impressao',$impressao);
+	}
+}
+
 function comunicacao_email($params = false){
 	global $_GESTOR;
 	global $_CRON;
