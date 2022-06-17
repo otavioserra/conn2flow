@@ -24,7 +24,7 @@ function global_impressao(){
 		$_GESTOR['pagina'] = $impressao['pagina'];
 		
 		if(isset($impressao['titulo'])){
-			$_GESTOR['pagina#titulo-extra'] = $impressao['titulo'];
+			$_GESTOR['pagina#titulo-extra'] = $impressao['titulo'].' - ';
 		}
 	}
 	
