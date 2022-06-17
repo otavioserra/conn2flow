@@ -178,6 +178,14 @@ $(document).ready(function(){
 				agendamentos_atualizar({status:value});
 			}
 		});
+		
+		// ===== Imprimir.
+		
+		$('.imprimirBtn').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			window.open(gestor.raiz+"pagina-de-impressao/","Imprimir","menubar=0,location=0,height=700,width=700");
+		});
 	}
 	
 	function start(){
