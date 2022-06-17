@@ -612,6 +612,8 @@ function agendamentos_ajax_atualizar(){
 			if($total > 0){
 				$imprimir = true;
 				
+				$tabelaAux = $tabela;
+				
 				// ===== Incluir a tabela no buffer de impressão.
 				
 				gestor_incluir_biblioteca(Array(
@@ -619,9 +621,26 @@ function agendamentos_ajax_atualizar(){
 					'comunicacao',
 				));
 				
+				// ===== Formatar data.
+				
+				$dataStr = formato_dado_para('data',$data)
+				
+				// ===== Pegar o componente 'impressao-cabecalho'.
+				
+				$impressaoCabecalho = gestor_componente(Array(
+					'id' => 'impressao-cabecalho',
+				));
+				
+				$impressaoCabecalho = modelo_var_troca($impressaoCabecalho,"#data#",$dataStr);
+				$impressaoCabecalho = modelo_var_troca($impressaoCabecalho,"#total#",$total);
+				
+				$tabelaAux = $impressaoCabecalho . $tabelaAux;
+				
+				// ===== Incluir a tabela no buffer de impressão.
+				
 				comunicacao_impressao(Array(
-					'titulo' => 'Agendamentos Confirmados - '.formato_dado_para('data',$data),
-					'pagina' => $tabela,
+					'titulo' => 'Agendamentos Confirmados - '.$dataStr,
+					'pagina' => $tabelaAux,
 				));
 			}
 		break;
