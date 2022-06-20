@@ -419,7 +419,7 @@ function agendamentos_cupons_editar(){
 		
 		// ===== Formatar a data.
 		
-		gestor_incluir_biblioteca('biblioteca');
+		gestor_incluir_biblioteca('formato');
 		
 		$valido_de = formato_data_from_datetime_to_text($valido_de);
 		$valido_ate = formato_data_from_datetime_to_text($valido_ate);
