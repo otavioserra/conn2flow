@@ -235,12 +235,12 @@ function agendamentos_cupons_adicionar(){
 				Array(
 					'regra' => 'nao-vazio',
 					'campo' => 'valido_de',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-quantity-label')),
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-valid-from-label')),
 				),
 				Array(
 					'regra' => 'nao-vazio',
 					'campo' => 'valido_ate',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-quantity-label')),
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-valid-until-label')),
 				),
 			)
 		),
