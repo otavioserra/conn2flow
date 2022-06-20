@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	function cupoms_de_prioridade(){
-		
+		$('.quantidade').mask("000", {reverse: true});
 	}
 	
 	function agendamentos_atualizar(p={}){
@@ -191,6 +191,10 @@ $(document).ready(function(){
 	function start(){
 		if($('#formAgendamentos').length > 0){
 			agendamentos();
+		}
+		
+		if($('#_gestor-interface-edit-dados').length > 0 || $('#_gestor-interface-insert-dados').length > 0){
+			cupoms_de_prioridade();
 		}
 	}
 	

@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.18',
+	'versao' => '1.0.19',
 	'plugin' => 'agendamentos',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
@@ -208,6 +208,10 @@ function agendamentos_cupons_adicionar(){
 		
 		gestor_redirecionar($_GESTOR['modulo-id'].'/cupons-de-prioridade/editar/?'.$modulo['tabela']['id'].'='.$id);
 	}
+	
+	// ===== Inclusão do jQuery-Mask-Plugin
+	
+	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'jQuery-Mask-Plugin-v1.14.16/jquery.mask.min.js"></script>';
 	
 	// ===== Inclusão Módulo JS
 	
@@ -443,6 +447,45 @@ function agendamentos_cupons_editar(){
 				)
 			)
 		)
+	);
+}
+
+function agendamentos_cupons_de_prioridade(){
+	global $_GESTOR;
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
+	// ===== Gravar Atualizações no Banco
+	
+	if(isset($_GESTOR['atualizar-banco'])){
+		// ===== Reler URL.
+		
+		gestor_redirecionar_raiz();
+	}
+	
+	// ===== Inclusão Módulo JS
+	
+	gestor_pagina_javascript_incluir();
+	
+	// ===== Interface config finalizar opções
+	
+	$_GESTOR['interface']['simples']['finalizar'] = Array(
+		'botoes' => Array(
+			'administrar' => Array(
+				'url' => '../',
+				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-button-admin')),
+				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-admin')),
+				'icon' => 'calendar alternate',
+				'cor' => 'orange',
+			),
+			'cupons' => Array(
+				'url' => '',
+				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-button-coupon')),
+				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-coupon')),
+				'icon' => 'certificate',
+				'cor' => 'green',
+			),
+		),
 	);
 }
 
