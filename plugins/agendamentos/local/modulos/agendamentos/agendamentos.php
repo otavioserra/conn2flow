@@ -464,8 +464,8 @@ function agendamentos_cupons_editar(){
 				'callback' => 'classCallBack',
 				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-print')),
 				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-print')),
-				'icon' => 'calendar alternate',
-				'cor' => 'orange',
+				'icon' => 'print',
+				'cor' => 'brown',
 			),
 		),
 		'formulario' => Array(
