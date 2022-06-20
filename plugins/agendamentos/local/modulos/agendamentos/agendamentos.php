@@ -413,8 +413,23 @@ function agendamentos_cupons_editar(){
 	
 	if($_GESTOR['banco-resultado']){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
+		$quantidade = (isset($retorno_bd['quantidade']) ? $retorno_bd['quantidade'] : '');
+		$valido_de = (isset($retorno_bd['valido_de']) ? $retorno_bd['valido_de'] : '');
+		$valido_ate = (isset($retorno_bd['valido_ate']) ? $retorno_bd['valido_ate'] : '');
+		
+		// ===== Formatar a data.
+		
+		gestor_incluir_biblioteca('biblioteca');
+		
+		$valido_de = formato_data_from_datetime_to_text($valido_de);
+		$valido_ate = formato_data_from_datetime_to_text($valido_ate);
+		
+		// ===== Popular formulario.
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#quantidade#',$quantidade);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#valido_de#',$valido_de);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#valido_ate#',$valido_ate);
 		
 		// ===== Popular os metaDados
 		
