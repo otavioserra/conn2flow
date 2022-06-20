@@ -396,6 +396,10 @@ function agendamentos_cupons_editar(){
 		gestor_redirecionar($_GESTOR['modulo-id'].'/cupons-de-prioridade/editar/?'.$modulo['tabela']['id'].'='.(isset($id_novo) ? $id_novo : $id));
 	}
 	
+	// ===== Inclusão do jQuery-Mask-Plugin
+	
+	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'jQuery-Mask-Plugin-v1.14.16/jquery.mask.min.js"></script>';
+	
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
