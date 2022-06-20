@@ -8,9 +8,13 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'plugin' => 'agendamentos',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
-		'nome' => 'hosts_agendamentos',
+		'nome' => 'hosts_conjunto_cupons_prioridade',
 		'id' => 'id',
-		'id_numerico' => 'id_'.'hosts_agendamentos',
+		'id_numerico' => 'id_'.'hosts_conjunto_cupons_prioridade',
+		'status' => 'status',
+		'versao' => 'versao',
+		'data_criacao' => 'data_criacao',
+		'data_modificacao' => 'data_modificacao',
 	),
 );
 
@@ -196,6 +200,81 @@ function agendamentos_interfaces_padroes(){
 		case 'administrar':
 		case 'cupons':
 			$_GESTOR['interface-opcao'] = 'simples';
+		break;
+		case 'listar':
+			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
+				'banco' => Array(
+					'nome' => $modulo['tabela']['nome'],
+					'campos' => Array(
+						'nome',
+						$modulo['tabela']['data_criacao'],
+						$modulo['tabela']['data_modificacao'],
+					),
+					'id' => $modulo['tabela']['id'],
+					'status' => $modulo['tabela']['status'],
+				),
+				'tabela' => Array(
+					'rodape' => true,
+					'colunas' => Array(
+						Array(
+							'id' => 'nome',
+							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-name')),
+							'ordenar' => 'asc',
+						),
+						Array(
+							'id' => $modulo['tabela']['data_criacao'],
+							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),
+							'formatar' => 'dataHora',
+							'nao_procurar' => true,
+						),
+						Array(
+							'id' => $modulo['tabela']['data_modificacao'],
+							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),
+							'formatar' => 'dataHora',
+							'nao_procurar' => true,
+						),
+					),
+				),
+				'opcoes' => Array(
+					'editar' => Array(
+						'url' => 'editar/',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-edit')),
+						'icon' => 'edit',
+						'cor' => 'basic blue',
+					),
+					'ativar' => Array(
+						'opcao' => 'status',
+						'status_atual' => 'I',
+						'status_mudar' => 'A',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-active')),
+						'icon' => 'eye slash',
+						'cor' => 'basic brown',
+					),
+					'desativar' => Array(
+						'opcao' => 'status',
+						'status_atual' => 'A',
+						'status_mudar' => 'I',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-desactive')),
+						'icon' => 'eye',
+						'cor' => 'basic green',
+					),
+					'excluir' => Array(
+						'opcao' => 'excluir',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-delete')),
+						'icon' => 'trash alternate',
+						'cor' => 'basic red',
+					),
+				),
+				'botoes' => Array(
+					'adicionar' => Array(
+						'url' => 'adicionar/',
+						'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-insert')),
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-insert')),
+						'icon' => 'plus circle',
+						'cor' => 'blue',
+					),
+				),
+			);
 		break;
 	}
 }
