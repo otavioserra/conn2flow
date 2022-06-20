@@ -3859,13 +3859,6 @@ function interface_listar_botoes($params = false){
 	
 	foreach($botoes as $id => $botao){
 		switch($id){
-			case 'callback':
-				$botoes_html .= '
-		<div class="ui button '.$botao['callback'].' '.$botao['cor'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
-			<i class="'.$botao['icon'].' icon"></i>
-			'.$botao['rotulo'].'
-		</div>';
-			break;
 			case 'excluir':
 				$botoes_html .= '
 		<div class="ui button excluir '.$botao['cor'].'" data-href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
@@ -3874,11 +3867,19 @@ function interface_listar_botoes($params = false){
 		</div>';
 			break;
 			default:
-				$botoes_html .= '
-		<a class="ui button '.$botao['cor'].'" href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'"'.(isset($botao['target']) ? ' target="'.$botao['target'].'"':'').'>
-			'.(isset($botao['icon2']) ? '<i class="icons"><i class="'.$botao['icon'].' icon"></i><i class="'.$botao['icon2'].' icon"></i></i>' : '<i class="'.$botao['icon'].' icon"></i>').'
-			'.$botao['rotulo'].'
-		</a>';
+				if(isset($callback)){
+					$botoes_html .= '
+			<div class="ui button '.$botao['callback'].' '.$botao['cor'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
+				<i class="'.$botao['icon'].' icon"></i>
+				'.$botao['rotulo'].'
+			</div>';
+				} else {
+					$botoes_html .= '
+			<a class="ui button '.$botao['cor'].'" href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'"'.(isset($botao['target']) ? ' target="'.$botao['target'].'"':'').'>
+				'.(isset($botao['icon2']) ? '<i class="icons"><i class="'.$botao['icon'].' icon"></i><i class="'.$botao['icon2'].' icon"></i></i>' : '<i class="'.$botao['icon'].' icon"></i>').'
+				'.$botao['rotulo'].'
+			</a>';
+			}
 		}
 	}
 	

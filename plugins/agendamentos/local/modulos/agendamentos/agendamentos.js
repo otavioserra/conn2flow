@@ -1,6 +1,10 @@
 $(document).ready(function(){
 	function cupoms_de_prioridade(){
+		// ===== Maks do quantidade.
+		
 		$('.quantidade').mask("000", {reverse: true});
+		
+		// ===== Widget calendário opções.
 		
 		$('#rangestart').calendar({
 			type: 'date',
@@ -31,6 +35,52 @@ $(document).ready(function(){
 					return day + '/' + month + '/' + year;
 				}
 			}
+		});
+		
+		// ===== Requisição para imprimir os cupons.
+		
+		$('#opcao').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			var opcao = 'agendamentos';
+			var ajaxOpcao = 'imprimirCupons';
+			
+			$.ajax({
+				type: 'POST',
+				url: gestor.raiz + gestor.moduloId + '/',
+				data: {
+					opcao : opcao,
+					ajax : 'sim',
+					ajaxOpcao : ajaxOpcao,
+					ajaxPagina : 'sim',
+					id : gestor.interface.id
+				},
+				dataType: 'json',
+				beforeSend: function(){
+					carregando('abrir');
+				},
+				success: function(dados){
+					switch(dados.status){
+						case 'OK':
+							
+						break;
+						default:
+							console.log('ERROR - '+opcao+' - '+dados.status);
+						
+					}
+					
+					carregando('fechar');
+				},
+				error: function(txt){
+					switch(txt.status){
+						case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"),"_self"); break;
+						default:
+							console.log('ERROR AJAX - '+opcao+' - Dados:');
+							console.log(txt);
+							carregando('fechar');
+					}
+				}
+			});
 		});
 	}
 	
