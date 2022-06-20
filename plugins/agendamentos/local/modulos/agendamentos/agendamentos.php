@@ -559,8 +559,8 @@ function agendamentos_interfaces_padroes(){
 					'campos' => Array(
 						'nome',
 						'quantidade',
-						'validade_de',
-						'validade_ate',
+						'valido_de',
+						'valido_ate',
 						$modulo['tabela']['data_modificacao'],
 					),
 					'id' => $modulo['tabela']['id'],
@@ -580,13 +580,13 @@ function agendamentos_interfaces_padroes(){
 							'nao_procurar' => true,
 						),
 						Array(
-							'id' => 'validade_de',
+							'id' => 'valido_de',
 							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-valid-from-label')),
 							'formatar' => 'data',
 							'nao_procurar' => true,
 						),
 						Array(
-							'id' => 'validade_ate',
+							'id' => 'valido_ate',
 							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-valid-until-label')),
 							'formatar' => 'data',
 							'nao_procurar' => true,
