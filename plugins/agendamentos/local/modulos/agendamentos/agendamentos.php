@@ -282,22 +282,6 @@ function agendamentos_cupons_adicionar(){
 				),
 			)
 		),
-		'botoes' => Array(
-			'administrar' => Array(
-				'url' => '../../',
-				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-button-admin')),
-				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-admin')),
-				'icon' => 'calendar alternate',
-				'cor' => 'orange',
-			),
-			'cupons' => Array(
-				'url' => '../',
-				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-button-coupon')),
-				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-coupon')),
-				'icon' => 'certificate',
-				'cor' => 'green',
-			),
-		),
 	);
 }
 
@@ -476,19 +460,12 @@ function agendamentos_cupons_editar(){
 				'icon' => 'trash alternate',
 				'cor' => 'red',
 			),
-			'administrar' => Array(
-				'url' => '../../',
-				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-button-admin')),
-				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-admin')),
+			'callback' => Array(
+				'callback' => 'classCallBack',
+				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-print')),
+				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-print')),
 				'icon' => 'calendar alternate',
 				'cor' => 'orange',
-			),
-			'cupons' => Array(
-				'url' => '../',
-				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-button-coupon')),
-				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-coupon')),
-				'icon' => 'certificate',
-				'cor' => 'green',
 			),
 		),
 		'formulario' => Array(

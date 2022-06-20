@@ -3859,6 +3859,13 @@ function interface_listar_botoes($params = false){
 	
 	foreach($botoes as $id => $botao){
 		switch($id){
+			case 'callback':
+				$botoes_html .= '
+		<div class="ui button '.$botao['callback'].' '.$botao['cor'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
+			<i class="'.$botao['icon'].' icon"></i>
+			'.$botao['rotulo'].'
+		</div>';
+			break;
 			case 'excluir':
 				$botoes_html .= '
 		<div class="ui button excluir '.$botao['cor'].'" data-href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
