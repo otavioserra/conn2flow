@@ -188,10 +188,23 @@ function agendamentos_cupons_adicionar(){
 			),
 		));
 		
+		// ===== Tratar data padrão date.
+		
+		gestor_incluir_biblioteca('formato');
+		
+		$valido_de = formato_data_hora_padrao_datetime($_REQUEST['valido_de'],true);
+		$valido_ate = formato_data_hora_padrao_datetime($_REQUEST['valido_ate'],true);
+		
+		$quantidade = (isset($_REQUEST['quantidade']) ? (int)$_REQUEST['quantidade'] : 0);
+		
 		// ===== Campos gerais
 		
+		banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
 		banco_insert_name_campo('id',$id);
 		if(isset($_REQUEST['nome'])){ banco_insert_name_campo('nome',$_REQUEST['nome']); }
+		banco_insert_name_campo('quantidade',$quantidade);
+		banco_insert_name_campo('valido_de',$valido_de);
+		banco_insert_name_campo('valido_ate',$valido_ate);
 		
 		// ===== Campos comuns
 		
@@ -205,6 +218,31 @@ function agendamentos_cupons_adicionar(){
 			banco_insert_name_campos(),
 			$modulo['tabela']['nome']
 		);
+		
+		$id_hosts_conjunto_cupons_prioridade = banco_last_id();
+		
+		// ===== Criar os cupons baseado na quantidade.
+		
+		for($i=0;$i<$quantidade;$i++){
+			// ===== Gerar o código único para o cupom.
+			
+			$better_token = strtoupper(substr(md5(uniqid(rand(), true)),0,8));
+			$codigo = formato_colocar_char_meio_numero($better_token);
+			
+			// ===== Criar o cupom no banco de dados.
+			
+			banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
+			banco_insert_name_campo('id_hosts_conjunto_cupons_prioridade',$id_hosts_conjunto_cupons_prioridade);
+			banco_insert_name_campo('codigo',$codigo);
+			
+			banco_insert_name
+			(
+				banco_insert_name_campos(),
+				"hosts_cupons_prioridade"
+			);
+		}
+		
+		// ===== Redirecionar o gestor.
 		
 		gestor_redirecionar($_GESTOR['modulo-id'].'/cupons-de-prioridade/editar/?'.$modulo['tabela']['id'].'='.$id);
 	}
