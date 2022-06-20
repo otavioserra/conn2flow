@@ -558,7 +558,9 @@ function agendamentos_interfaces_padroes(){
 					'nome' => $modulo['tabela']['nome'],
 					'campos' => Array(
 						'nome',
-						$modulo['tabela']['data_criacao'],
+						'quantidade',
+						'validade_de',
+						'validade_ate',
 						$modulo['tabela']['data_modificacao'],
 					),
 					'id' => $modulo['tabela']['id'],
@@ -573,9 +575,20 @@ function agendamentos_interfaces_padroes(){
 							'ordenar' => 'asc',
 						),
 						Array(
-							'id' => $modulo['tabela']['data_criacao'],
-							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),
-							'formatar' => 'dataHora',
+							'id' => 'quantidade',
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-quantity-label')),
+							'nao_procurar' => true,
+						),
+						Array(
+							'id' => 'validade_de',
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-valid-from-label')),
+							'formatar' => 'data',
+							'nao_procurar' => true,
+						),
+						Array(
+							'id' => 'validade_ate',
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-valid-until-label')),
+							'formatar' => 'data',
 							'nao_procurar' => true,
 						),
 						Array(
