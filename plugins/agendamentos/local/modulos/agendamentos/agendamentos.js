@@ -4,11 +4,33 @@ $(document).ready(function(){
 		
 		$('#rangestart').calendar({
 			type: 'date',
-			endCalendar: $('#rangeend')
+			endCalendar: $('#rangeend'),
+			formatter: {
+				date: function (date, settings) {
+					if (!date) return '';
+					
+					var day = (date.getDate() < 10 ? '0' : '') + date.getDate();
+					var month = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
+					var year = date.getFullYear();
+					
+					return day + '/' + month + '/' + year;
+				}
+			}
 		});
 		$('#rangeend').calendar({
 			type: 'date',
-			startCalendar: $('#rangestart')
+			startCalendar: $('#rangestart'),
+			formatter: {
+				date: function (date, settings) {
+					if (!date) return '';
+					
+					var day = (date.getDate() < 10 ? '0' : '') + date.getDate();
+					var month = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
+					var year = date.getFullYear();
+					
+					return day + '/' + month + '/' + year;
+				}
+			}
 		});
 	}
 	
