@@ -178,7 +178,7 @@ function agendamentos_cupons_de_prioridade(){
 				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-button-admin')),
 				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-admin')),
 				'icon' => 'calendar alternate',
-				'cor' => 'blue',
+				'cor' => 'orange',
 			),
 			'cupons' => Array(
 				'url' => '',
@@ -272,6 +272,20 @@ function agendamentos_interfaces_padroes(){
 						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-insert')),
 						'icon' => 'plus circle',
 						'cor' => 'blue',
+					),
+					'administrar' => Array(
+						'url' => '../',
+						'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-button-admin')),
+						'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-admin')),
+						'icon' => 'calendar alternate',
+						'cor' => 'orange',
+					),
+					'cupons' => Array(
+						'url' => '',
+						'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'label-button-coupon')),
+						'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-coupon')),
+						'icon' => 'certificate',
+						'cor' => 'green',
 					),
 				),
 			);
