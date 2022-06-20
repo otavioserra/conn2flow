@@ -1684,19 +1684,6 @@ function interface_formulario_validacao($params = false){
 						)
 					);
 				break;
-				case 'nao-vazio':
-					$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-empty'));
-					$prompt[1] = modelo_var_troca($prompt[1],"#label#",$regra['label']);
-					
-					$regras_validacao[$regra['campo']] = Array(
-						'rules' => Array(
-							Array(
-								'type' => 'empty',
-								'prompt' => $prompt[1],
-							),
-						)
-					);
-				break;
 				case 'email':
 					$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-empty'));
 					$prompt[1] = modelo_var_troca($prompt[1],"#label#",$regra['label']);

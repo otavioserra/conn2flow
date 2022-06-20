@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.19',
+	'versao' => '1.0.20',
 	'plugin' => 'agendamentos',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
@@ -226,7 +226,12 @@ function agendamentos_cupons_adicionar(){
 					'regra' => 'texto-obrigatorio',
 					'campo' => 'nome',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
-				)
+				),
+				Array(
+					'regra' => 'nao-vazio',
+					'campo' => 'quantidade',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-quantity-label')),
+				),
 			)
 		),
 		'botoes' => Array(

@@ -1,6 +1,15 @@
 $(document).ready(function(){
 	function cupoms_de_prioridade(){
 		$('.quantidade').mask("000", {reverse: true});
+		
+		$('#rangestart').calendar({
+			type: 'date',
+			endCalendar: $('#rangeend')
+		});
+		$('#rangeend').calendar({
+			type: 'date',
+			startCalendar: $('#rangestart')
+		});
 	}
 	
 	function agendamentos_atualizar(p={}){
