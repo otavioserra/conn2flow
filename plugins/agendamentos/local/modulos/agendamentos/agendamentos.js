@@ -61,17 +61,16 @@ $(document).ready(function(){
 				success: function(dados){
 					switch(dados.status){
 						case 'OK':
-							
+							carregando('fechar');
 						break;
 						case 'ERRO':
 							modal({mensagem:dados.msg});
 						break;
 						default:
 							console.log('ERROR - '+opcao+' - '+dados.status);
+							carregando('fechar');
 						
 					}
-					
-					carregando('fechar');
 				},
 				error: function(txt){
 					switch(txt.status){
