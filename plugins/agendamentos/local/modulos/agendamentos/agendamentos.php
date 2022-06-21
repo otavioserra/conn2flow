@@ -216,8 +216,16 @@ function agendamentos_impressao_cupons(){
 	
 	// ===== Montar a tabela com todos os códigos.
 	
+	$impressao = '';
+	$cont = 0;
+	
 	if($hosts_cupons_prioridade)
 	foreach($hosts_cupons_prioridade as $cupom){
+		if($cont % 9 == 0){
+			$impressao = modelo_var_troca($impressao,'<!-- '.$cel_nome.' -->','');
+			$impressao .= (existe($impressao) ? '<div class="pagebreak"></div>' : '').$tabela;
+		}
+		
 		$cel_aux = $cel[$cel_nome];
 		
 		$cel_aux = modelo_var_troca($cel_aux,"#titulo#",$titulo);
@@ -225,15 +233,17 @@ function agendamentos_impressao_cupons(){
 		$cel_aux = modelo_var_troca($cel_aux,"#validade#",$validade);
 		$cel_aux = modelo_var_troca($cel_aux,"#codigo#",$cupom['codigo']);
 		
-		$tabela = modelo_var_in($tabela,'<!-- '.$cel_nome.' -->',$cel_aux);
+		$impressao = modelo_var_in($impressao,'<!-- '.$cel_nome.' -->',$cel_aux);
+		
+		$cont++;
 	}
-	$tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->','');
+	$impressao = modelo_var_troca($impressao,'<!-- '.$cel_nome.' -->','');
 	
 	// ===== Incluir a tabela no buffer de impressão.
 	
 	comunicacao_impressao(Array(
 		'titulo' => 'Cupons de Prioridade: '.$nome.' - Qtd: '.$quantidade.' - Válido de '.$validade_de.' até '.$validade,
-		'pagina' => $tabela,
+		'pagina' => $impressao,
 	));
 }
 
