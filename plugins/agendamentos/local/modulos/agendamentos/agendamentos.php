@@ -1271,6 +1271,26 @@ function agendamentos_ajax_imprimir_cupons(){
 		return;
 	}
 	
+	// ===== Verificar se os cupons estão dentro do prazo de validade.
+	
+	$hoje = date('Y-m-d');
+	
+	$valido_de = $hosts_conjunto_cupons_prioridade['valido_de'];
+	$valido_ate = $hosts_conjunto_cupons_prioridade['valido_ate'];
+	
+	$valido_ate = '2022-06-10';
+	
+	if(strtotime($hoje) > strtotime($valido_ate)){
+		$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-cupons-expired'));
+		
+		$_GESTOR['ajax-json'] = Array(
+			'msg' => $alerta,
+			'status' => 'ERRO',
+		);
+		
+		return;
+	}
+	
 	// ===== Pegar o componente de impressão da tabela de cupons.
 	
 	$tabela = gestor_componente(Array(
