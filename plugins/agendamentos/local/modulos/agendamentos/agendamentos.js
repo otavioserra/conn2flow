@@ -71,6 +71,8 @@ $(document).ready(function(){
 							$('#gestor-listener').trigger('carregar_fechar');
 						
 					}
+					
+					$('#gestor-listener').trigger('carregar_fechar');
 				},
 				error: function(txt){
 					switch(txt.status){
