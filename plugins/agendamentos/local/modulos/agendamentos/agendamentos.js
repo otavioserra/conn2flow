@@ -64,8 +64,7 @@ $(document).ready(function(){
 							carregando('fechar');
 						break;
 						case 'ERRO':
-							console.error('ERRO');
-							modal({mensagem:dados.msg});
+							$('#gestor-listener').trigger('alerta',{msg:dados.msg});
 						break;
 						default:
 							console.log('ERROR - '+opcao+' - '+dados.status);
@@ -300,18 +299,6 @@ $(document).ready(function(){
 				$('.paginaCarregando').dimmer('hide');
 			break;
 		}
-	}
-	
-	function modal(p={}){
-		if(p.mensagem){
-			$('.ui.modal.informativo .content').html(p.mensagem);
-		}
-		
-		$('.ui.modal.informativo').modal({
-			dimmerSettings:{
-				dimmerName:'paginaCarregando' //className, NOT id (!)
-			}
-		}).modal('show');
 	}
 	
 });

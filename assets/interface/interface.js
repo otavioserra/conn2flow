@@ -1092,6 +1092,10 @@ $(document).ready(function() {
 		$('#gestor-listener').on('carregar_fechar',function(e){
 			carregar_fechar();
 		});
+		
+		$('#gestor-listener').on('alerta',function(e,p){
+			alerta(p);
+		});
 	}
 	
 	interface_start();
