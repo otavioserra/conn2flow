@@ -1247,6 +1247,7 @@ function agendamentos_ajax_imprimir_cupons(){
 		'unico' => true,
 		'tabela' => 'hosts_conjunto_cupons_prioridade',
 		'campos' => Array(
+			'id_hosts_conjunto_cupons_prioridade',
 			'nome',
 			'quantidade',
 			'valido_de',
@@ -1271,14 +1272,17 @@ function agendamentos_ajax_imprimir_cupons(){
 		return;
 	}
 	
-	// ===== Verificar se os cupons estão dentro do prazo de validade.
+	// ===== Iniciar variáveis.
 	
 	$hoje = date('Y-m-d');
 	
+	$id_hosts_conjunto_cupons_prioridade = $hosts_conjunto_cupons_prioridade['id_hosts_conjunto_cupons_prioridade'];
 	$valido_de = $hosts_conjunto_cupons_prioridade['valido_de'];
 	$valido_ate = $hosts_conjunto_cupons_prioridade['valido_ate'];
+	$nome = $hosts_conjunto_cupons_prioridade['nome'];
+	$quantidade = $hosts_conjunto_cupons_prioridade['quantidade'];
 	
-	$valido_ate = '2022-06-10';
+	// ===== Verificar se os cupons estão dentro do prazo de validade.
 	
 	if(strtotime($hoje) > strtotime($valido_ate)){
 		$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-cupons-expired'));
@@ -1291,31 +1295,65 @@ function agendamentos_ajax_imprimir_cupons(){
 		return;
 	}
 	
+	// ===== Pegar os códigos dos cupons no banco de dados.
+	
+	$hosts_cupons_prioridade = banco_select(Array(
+		'tabela' => 'hosts_cupons_prioridade',
+		'campos' => Array(
+			'codigo',
+		),
+		'extra' => 
+			"WHERE id_hosts_conjunto_cupons_prioridade='".$id_hosts_conjunto_cupons_prioridade."'"
+			." AND id_hosts='".$id_hosts."'"
+	));
+	
 	// ===== Pegar o componente de impressão da tabela de cupons.
 	
 	$tabela = gestor_componente(Array(
 		'id' => 'tabela-cupons-prioridade',
 	));
 	
-	$tabelaAux = $tabela;
-	
 	// ===== Pegar células da tabela.
 	
-	$cel_nome = 'cel_nome'; $cel[$cel_nome] = modelo_tag_val($tabela,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $tabela = modelo_tag_in($tabela,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+	$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($tabela,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $tabela = modelo_tag_in($tabela,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+	
+	// ===== Pegar configurações do host.
+	
+	$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-agendamentos'));
+	
+	$titulo = $config['titulo-estabelecimento'];
+	$descricao = $config['cupom-prioridade-descricao'];
+	
+	// ===== Formatar a validade.
+	
+	$validade_de = formato_dado_para('data',$valido_de);
+	$validade = formato_dado_para('data',$valido_ate);
+	
+	// ===== Montar a tabela com todos os códigos.
+	
+	if($hosts_cupons_prioridade)
+	foreach($hosts_cupons_prioridade as $cupom){
+		$cel_aux = $cel[$cel_nome];
+		
+		$cel_aux = modelo_var_troca($cel_aux,"#titulo#",$titulo);
+		$cel_aux = modelo_var_troca($cel_aux,"#descricao#",$descricao);
+		$cel_aux = modelo_var_troca($cel_aux,"#validade#",$validade);
+		$cel_aux = modelo_var_troca($cel_aux,"#codigo#",$cupom['codigo']);
+		
+		$tabela = modelo_var_in($tabela,'<!-- '.$cel_nome.' -->',$cel_aux);
+	}
+	$tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->','');
 	
 	// ===== Incluir a tabela no buffer de impressão.
 	
 	comunicacao_impressao(Array(
-		'titulo' => 'Agendamentos Confirmados - '.$dataStr,
-		'pagina' => $tabelaAux,
+		'titulo' => 'Cupons de Prioridade: '.$nome.' - Qtd: '.$quantidade.' - Válido de '.$validade_de.' até '.$validade,
+		'pagina' => $tabela,
 	));
 	
 	// ===== Retornar os dados para atualização no cliente.
 	
 	$_GESTOR['ajax-json'] = Array(
-		'tabela' => $tabela,
-		'total' => $total,
-		'imprimir' => $imprimir,
 		'status' => 'OK',
 	);
 }
