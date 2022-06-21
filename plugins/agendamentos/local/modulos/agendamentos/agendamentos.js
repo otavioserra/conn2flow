@@ -64,6 +64,7 @@ $(document).ready(function(){
 							carregando('fechar');
 						break;
 						case 'ERRO':
+							console.error('ERRO');
 							modal({mensagem:dados.msg});
 						break;
 						default:
