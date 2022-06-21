@@ -56,7 +56,7 @@ $(document).ready(function(){
 				},
 				dataType: 'json',
 				beforeSend: function(){
-					carregando('abrir');
+					//carregando('abrir');
 				},
 				success: function(dados){
 					switch(dados.status){
