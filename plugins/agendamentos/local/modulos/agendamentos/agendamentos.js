@@ -61,7 +61,7 @@ $(document).ready(function(){
 				success: function(dados){
 					switch(dados.status){
 						case 'OK':
-							
+							window.open(gestor.raiz+"pagina-de-impressao/","Imprimir","menubar=0,location=0,height=700,width=1024");
 						break;
 						case 'ERRO':
 							$('#gestor-listener').trigger('alerta',{msg:dados.msg});
