@@ -107,6 +107,142 @@ function agendamentos_calendario(){
 	$_GESTOR['javascript-vars']['calendario'] = $JScalendario;
 }
 
+function agendamentos_impressao_cupons(){
+	global $_GESTOR;
+	
+	// ===== Incluir bibliotecas.
+	
+	gestor_incluir_biblioteca(Array(
+		'formato',
+		'comunicacao',
+		'configuracao',
+	));
+	
+	// ===== Identificador do host.
+	
+	$id_hosts = $_GESTOR['host-id'];
+	
+	// ===== Pegar dados de requisição.
+	
+	$id = banco_escape_field($_REQUEST['id']);
+	
+	// ===== Pegar os cupons do banco de dados.
+	
+	$hosts_conjunto_cupons_prioridade = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'hosts_conjunto_cupons_prioridade',
+		'campos' => Array(
+			'id_hosts_conjunto_cupons_prioridade',
+			'nome',
+			'quantidade',
+			'valido_de',
+			'valido_ate',
+		),
+		'extra' => 
+			"WHERE id='".$id."'"
+			." AND id_hosts='".$id_hosts."'"
+			." AND status='A'"
+	));
+	
+	// ===== Caso não exista o registro, retornar erro com a mensagem.
+	
+	if(!$hosts_conjunto_cupons_prioridade){
+		$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-cupons-not-found'));
+		
+		$_GESTOR['ajax-json'] = Array(
+			'msg' => $alerta,
+			'status' => 'ERRO',
+		);
+		
+		return;
+	}
+	
+	// ===== Iniciar variáveis.
+	
+	$hoje = date('Y-m-d');
+	
+	$id_hosts_conjunto_cupons_prioridade = $hosts_conjunto_cupons_prioridade['id_hosts_conjunto_cupons_prioridade'];
+	$valido_de = $hosts_conjunto_cupons_prioridade['valido_de'];
+	$valido_ate = $hosts_conjunto_cupons_prioridade['valido_ate'];
+	$nome = $hosts_conjunto_cupons_prioridade['nome'];
+	$quantidade = $hosts_conjunto_cupons_prioridade['quantidade'];
+	
+	// ===== Verificar se os cupons estão dentro do prazo de validade.
+	
+	if(strtotime($hoje) > strtotime($valido_ate)){
+		$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-cupons-expired'));
+		
+		$_GESTOR['ajax-json'] = Array(
+			'msg' => $alerta,
+			'status' => 'ERRO',
+		);
+		
+		return;
+	}
+	
+	// ===== Pegar os códigos dos cupons no banco de dados.
+	
+	$hosts_cupons_prioridade = banco_select(Array(
+		'tabela' => 'hosts_cupons_prioridade',
+		'campos' => Array(
+			'codigo',
+		),
+		'extra' => 
+			"WHERE id_hosts_conjunto_cupons_prioridade='".$id_hosts_conjunto_cupons_prioridade."'"
+			." AND id_hosts='".$id_hosts."'"
+	));
+	
+	// ===== Pegar o componente de impressão da tabela de cupons.
+	
+	$tabela = gestor_componente(Array(
+		'id' => 'tabela-cupons-prioridade',
+	));
+	
+	// ===== Pegar células da tabela.
+	
+	$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($tabela,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $tabela = modelo_tag_in($tabela,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+	
+	// ===== Pegar configurações do host.
+	
+	$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-agendamentos'));
+	
+	$titulo = $config['titulo-estabelecimento'];
+	$descricao = $config['cupom-prioridade-descricao'];
+	
+	// ===== Formatar a validade.
+	
+	$validade_de = formato_dado_para('data',$valido_de);
+	$validade = formato_dado_para('data',$valido_ate);
+	
+	// ===== Montar a tabela com todos os códigos.
+	
+	if($hosts_cupons_prioridade)
+	foreach($hosts_cupons_prioridade as $cupom){
+		$cel_aux = $cel[$cel_nome];
+		
+		$cel_aux = modelo_var_troca($cel_aux,"#titulo#",$titulo);
+		$cel_aux = modelo_var_troca($cel_aux,"#descricao#",$descricao);
+		$cel_aux = modelo_var_troca($cel_aux,"#validade#",$validade);
+		$cel_aux = modelo_var_troca($cel_aux,"#codigo#",$cupom['codigo']);
+		
+		$tabela = modelo_var_in($tabela,'<!-- '.$cel_nome.' -->',$cel_aux);
+	}
+	$tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->','');
+	
+	// ===== Incluir a tabela no buffer de impressão.
+	
+	comunicacao_impressao(Array(
+		'titulo' => 'Cupons de Prioridade: '.$nome.' - Qtd: '.$quantidade.' - Válido de '.$validade_de.' até '.$validade,
+		'pagina' => $tabela,
+	));
+	
+	// ===== Retornar os dados para atualização no cliente.
+	
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'OK',
+	);
+}
+
 // ===== Funções Principais
 
 function agendamentos_administrar(){
@@ -446,6 +582,10 @@ function agendamentos_cupons_editar(){
 	} else {
 		gestor_redirecionar_raiz();
 	}
+	
+	// ===== Montar impressão dos cupons.
+	
+	agendamentos_impressao_cupons();
 	
 	// ===== Interface editar finalizar opções
 	
@@ -1371,7 +1511,6 @@ function agendamentos_start(){
 		
 		switch($_GESTOR['ajax-opcao']){
 			case 'atualizar': agendamentos_ajax_atualizar(); break;
-			case 'imprimirCupons': agendamentos_ajax_imprimir_cupons(); break;
 		}
 		
 		interface_ajax_finalizar();
