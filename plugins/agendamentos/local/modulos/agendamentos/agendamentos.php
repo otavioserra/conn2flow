@@ -1264,7 +1264,7 @@ function agendamentos_ajax_imprimir_cupons(){
 		$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-cupons-not-found'));
 		
 		$_GESTOR['ajax-json'] = Array(
-			'imprimir' => $alerta,
+			'msg' => $alerta,
 			'status' => 'ERRO',
 		);
 		
