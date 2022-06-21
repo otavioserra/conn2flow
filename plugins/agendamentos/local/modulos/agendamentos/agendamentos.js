@@ -56,19 +56,19 @@ $(document).ready(function(){
 				},
 				dataType: 'json',
 				beforeSend: function(){
-					//carregando('abrir');
+					$('#gestor-listener').trigger('carregar_abrir');
 				},
 				success: function(dados){
 					switch(dados.status){
 						case 'OK':
-							carregando('fechar');
+							$('#gestor-listener').trigger('carregar_fechar');
 						break;
 						case 'ERRO':
 							$('#gestor-listener').trigger('alerta',{msg:dados.msg});
 						break;
 						default:
 							console.log('ERROR - '+opcao+' - '+dados.status);
-							carregando('fechar');
+							$('#gestor-listener').trigger('carregar_fechar');
 						
 					}
 				},
@@ -78,7 +78,7 @@ $(document).ready(function(){
 						default:
 							console.log('ERROR AJAX - '+opcao+' - Dados:');
 							console.log(txt);
-							carregando('fechar');
+							$('#gestor-listener').trigger('carregar_fechar');
 					}
 				}
 			});
