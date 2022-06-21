@@ -61,14 +61,13 @@ $(document).ready(function(){
 				success: function(dados){
 					switch(dados.status){
 						case 'OK':
-							$('#gestor-listener').trigger('carregar_fechar');
+							
 						break;
 						case 'ERRO':
 							$('#gestor-listener').trigger('alerta',{msg:dados.msg});
 						break;
 						default:
 							console.log('ERROR - '+opcao+' - '+dados.status);
-							$('#gestor-listener').trigger('carregar_fechar');
 						
 					}
 					

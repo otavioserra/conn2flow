@@ -1255,7 +1255,7 @@ function agendamentos_ajax_imprimir_cupons(){
 		'extra' => 
 			"WHERE id='".$id."'"
 			." AND id_hosts='".$id_hosts."'"
-			." AND status='A'"
+			." AND -status='A'"
 	));
 	
 	// ===== Caso não exista o registro, retornar erro com a mensagem.
