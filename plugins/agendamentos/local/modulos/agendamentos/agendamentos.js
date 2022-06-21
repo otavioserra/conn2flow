@@ -39,7 +39,7 @@ $(document).ready(function(){
 		
 		// ===== Requisição para imprimir os cupons.
 		
-		$('#opcao').on('mouseup tap',function(e){
+		$('.imprimirCupons').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
 			var opcao = 'agendamentos';
@@ -52,7 +52,6 @@ $(document).ready(function(){
 					opcao : opcao,
 					ajax : 'sim',
 					ajaxOpcao : ajaxOpcao,
-					ajaxPagina : 'sim',
 					id : gestor.interface.id
 				},
 				dataType: 'json',
@@ -63,6 +62,9 @@ $(document).ready(function(){
 					switch(dados.status){
 						case 'OK':
 							
+						break;
+						case 'ERRO':
+							modal({mensagem:dados.msg});
 						break;
 						default:
 							console.log('ERROR - '+opcao+' - '+dados.status);
@@ -298,6 +300,18 @@ $(document).ready(function(){
 				$('.paginaCarregando').dimmer('hide');
 			break;
 		}
+	}
+	
+	function modal(p={}){
+		if(p.mensagem){
+			$('.ui.modal.informativo .content').html(p.mensagem);
+		}
+		
+		$('.ui.modal.informativo').modal({
+			dimmerSettings:{
+				dimmerName:'paginaCarregando' //className, NOT id (!)
+			}
+		}).modal('show');
 	}
 	
 });
