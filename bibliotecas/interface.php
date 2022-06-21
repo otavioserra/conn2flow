@@ -2347,6 +2347,40 @@ function interface_verificar_campos($params = false){
 	return false;
 }
 
+function interface_botoes_cabecalho($params = false){
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	$botoes_html = '';
+	
+	foreach($botoes as $id => $botao){
+		switch($id){
+			case 'excluir':
+				$botoes_html .= '
+		<div class="ui button excluir '.$botao['cor'].'" data-href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
+			<i class="'.$botao['icon'].' icon"></i>
+			'.$botao['rotulo'].'
+		</div>';
+			break;
+			default:
+				if(isset($botao['callback'])){
+					$botoes_html .= '
+			<div class="ui button '.$botao['callback'].' '.$botao['cor'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
+				<i class="'.$botao['icon'].' icon"></i>
+				'.$botao['rotulo'].'
+			</div>';
+				} else {
+					$botoes_html .= '
+			<a class="ui button '.$botao['cor'].'" href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'"'.(isset($botao['target']) ? ' target="'.$botao['target'].'"':'').'>
+				'.(isset($botao['icon2']) ? '<i class="icons"><i class="'.$botao['icon'].' icon"></i><i class="'.$botao['icon2'].' icon"></i></i>' : '<i class="'.$botao['icon'].' icon"></i>').'
+				'.$botao['rotulo'].'
+			</a>';
+			}
+		}
+	}
+	
+	return $botoes_html;
+}
+
 // ===== Interfaces ajax
 
 function interface_ajax_backup_campo($params = false){
@@ -2735,7 +2769,7 @@ function interface_adicionar_finalizar($params = false){
 	$pagina = modelo_var_troca($pagina,"#form-button-value#",gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-value')));
 	
 	if(isset($botoes)){
-		$botoes_html = interface_listar_botoes($params);
+		$botoes_html = interface_botoes_cabecalho($params);
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
@@ -2835,7 +2869,7 @@ function interface_adicionar_incomum_finalizar($params = false){
 	$pagina = modelo_var_troca($pagina,"#form-button-value#",gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-value')));
 	
 	if(isset($botoes)){
-		$botoes_html = interface_listar_botoes($params);
+		$botoes_html = interface_botoes_cabecalho($params);
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
@@ -2999,7 +3033,7 @@ function interface_editar_incomum_finalizar($params = false){
 	// ===== Botões principais
 	
 	if(isset($botoes)){
-		$botoes_html = interface_listar_botoes($params);
+		$botoes_html = interface_botoes_cabecalho($params);
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
@@ -3199,7 +3233,7 @@ function interface_editar_finalizar($params = false){
 	// ===== Botões principais
 	
 	if(isset($botoes)){
-		$botoes_html = interface_listar_botoes($params);
+		$botoes_html = interface_botoes_cabecalho($params);
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
@@ -3377,7 +3411,7 @@ function interface_visualizar_finalizar($params = false){
 	// ===== Botões principais
 	
 	if(isset($botoes)){
-		$botoes_html = interface_listar_botoes($params);
+		$botoes_html = interface_botoes_cabecalho($params);
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
@@ -3516,7 +3550,7 @@ function interface_config_finalizar($params = false){
 	// ===== Botões principais
 	
 	if(isset($botoes)){
-		$botoes_html = interface_listar_botoes($params);
+		$botoes_html = interface_botoes_cabecalho($params);
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
@@ -3645,7 +3679,7 @@ function interface_alteracoes_finalizar($params = false){
 	$cel_nome = 'nao-alterar-id'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 	
 	if(isset($botoes)){
-		$botoes_html = interface_listar_botoes($params);
+		$botoes_html = interface_botoes_cabecalho($params);
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
@@ -3796,7 +3830,7 @@ function interface_simples_finalizar($params = false){
 	// ===== Botões principais
 	
 	if(isset($botoes)){
-		$botoes_html = interface_listar_botoes($params);
+		$botoes_html = interface_botoes_cabecalho($params);
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
@@ -3850,40 +3884,6 @@ function interface_simples_finalizar($params = false){
 	if(!isset($_GESTOR['javascript-vars']['interface'])){
 		$_GESTOR['javascript-vars']['interface'] = Array();
 	}
-}
-
-function interface_listar_botoes($params = false){
-	if($params)foreach($params as $var => $val)$$var = $val;
-	
-	$botoes_html = '';
-	
-	foreach($botoes as $id => $botao){
-		switch($id){
-			case 'excluir':
-				$botoes_html .= '
-		<div class="ui button excluir '.$botao['cor'].'" data-href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
-			<i class="'.$botao['icon'].' icon"></i>
-			'.$botao['rotulo'].'
-		</div>';
-			break;
-			default:
-				if(isset($callback)){
-					$botoes_html .= '
-			<div class="ui button '.$botao['callback'].' '.$botao['cor'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
-				<i class="'.$botao['icon'].' icon"></i>
-				'.$botao['rotulo'].'
-			</div>';
-				} else {
-					$botoes_html .= '
-			<a class="ui button '.$botao['cor'].'" href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'"'.(isset($botao['target']) ? ' target="'.$botao['target'].'"':'').'>
-				'.(isset($botao['icon2']) ? '<i class="icons"><i class="'.$botao['icon'].' icon"></i><i class="'.$botao['icon2'].' icon"></i></i>' : '<i class="'.$botao['icon'].' icon"></i>').'
-				'.$botao['rotulo'].'
-			</a>';
-			}
-		}
-	}
-	
-	return $botoes_html;
 }
 
 function interface_listar_ajax($params = false){
@@ -4385,7 +4385,7 @@ function interface_listar_finalizar($params = false){
 	$pagina = modelo_var_troca($pagina,"#lista#",$lista_tabela.$modal_delecao);
 	
 	if(isset($botoes)){
-		$botoes_html = interface_listar_botoes($params);
+		$botoes_html = interface_botoes_cabecalho($params);
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
@@ -4406,7 +4406,7 @@ function interface_listar_finalizar($params = false){
 	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>';
 }
 
-// ===== Interfaces padrões
+// ===== Interfaces conectoras dos módulos.
 
 function interface_ajax_iniciar($params = false){
 	global $_GESTOR;
