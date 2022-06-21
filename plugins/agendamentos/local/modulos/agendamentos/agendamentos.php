@@ -1231,6 +1231,7 @@ function agendamentos_ajax_imprimir_cupons(){
 	gestor_incluir_biblioteca(Array(
 		'formato',
 		'comunicacao',
+		'configuracao',
 	));
 	
 	// ===== Identificador do host.
