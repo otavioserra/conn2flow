@@ -149,10 +149,10 @@ function agendamentos_impressao_cupons(){
 	if(!$hosts_conjunto_cupons_prioridade){
 		$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-cupons-not-found'));
 		
-		$_GESTOR['ajax-json'] = Array(
-			'msg' => $alerta,
-			'status' => 'ERRO',
-		);
+		comunicacao_impressao(Array(
+			'titulo' => 'Cupons de Prioridade - Problema',
+			'pagina' => $alerta,
+		));
 		
 		return;
 	}
@@ -172,10 +172,10 @@ function agendamentos_impressao_cupons(){
 	if(strtotime($hoje) > strtotime($valido_ate)){
 		$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-cupons-expired'));
 		
-		$_GESTOR['ajax-json'] = Array(
-			'msg' => $alerta,
-			'status' => 'ERRO',
-		);
+		comunicacao_impressao(Array(
+			'titulo' => 'Cupons de Prioridade - Problema',
+			'pagina' => $alerta,
+		));
 		
 		return;
 	}
@@ -235,12 +235,6 @@ function agendamentos_impressao_cupons(){
 		'titulo' => 'Cupons de Prioridade: '.$nome.' - Qtd: '.$quantidade.' - Válido de '.$validade_de.' até '.$validade,
 		'pagina' => $tabela,
 	));
-	
-	// ===== Retornar os dados para atualização no cliente.
-	
-	$_GESTOR['ajax-json'] = Array(
-		'status' => 'OK',
-	);
 }
 
 // ===== Funções Principais
