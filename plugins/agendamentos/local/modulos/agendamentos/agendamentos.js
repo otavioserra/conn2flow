@@ -42,47 +42,7 @@ $(document).ready(function(){
 		$('.imprimirCupons').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
-			var opcao = 'agendamentos';
-			var ajaxOpcao = 'imprimirCupons';
-			
-			$.ajax({
-				type: 'POST',
-				url: gestor.raiz + gestor.moduloId + '/',
-				data: {
-					opcao : opcao,
-					ajax : 'sim',
-					ajaxOpcao : ajaxOpcao,
-					id : gestor.interface.id
-				},
-				dataType: 'json',
-				beforeSend: function(){
-					$('#gestor-listener').trigger('carregar_abrir');
-				},
-				success: function(dados){
-					switch(dados.status){
-						case 'OK':
-							window.open(gestor.raiz+"pagina-de-impressao/","Imprimir","menubar=0,location=0,height=700,width=1024");
-						break;
-						case 'ERRO':
-							$('#gestor-listener').trigger('alerta',{msg:dados.msg});
-						break;
-						default:
-							console.log('ERROR - '+opcao+' - '+dados.status);
-						
-					}
-					
-					$('#gestor-listener').trigger('carregar_fechar');
-				},
-				error: function(txt){
-					switch(txt.status){
-						case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"),"_self"); break;
-						default:
-							console.log('ERROR AJAX - '+opcao+' - Dados:');
-							console.log(txt);
-							$('#gestor-listener').trigger('carregar_fechar');
-					}
-				}
-			});
+			window.open(gestor.raiz+"pagina-de-impressao/","Imprimir","menubar=0,location=0,height=700,width=1024");
 		});
 	}
 	
