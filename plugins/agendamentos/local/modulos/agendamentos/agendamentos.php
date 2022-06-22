@@ -532,6 +532,8 @@ function agendamentos_cupons_editar(){
 		
 		// ===== Tratar data padrão date e editar os campos de data.
 		
+		echo $_REQUEST['valido_de'].'<br>';
+		
 		$_REQUEST['valido_de'] = formato_data_hora_padrao_datetime($_REQUEST['valido_de'],true);
 		$_REQUEST['valido_ate'] = formato_data_hora_padrao_datetime($_REQUEST['valido_ate'],true);
 		
