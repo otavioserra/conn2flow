@@ -535,6 +535,7 @@ function agendamentos_cupons_editar(){
 		$_REQUEST['valido_de'] = formato_data_hora_padrao_datetime($_REQUEST['valido_de'],true);
 		$_REQUEST['valido_ate'] = formato_data_hora_padrao_datetime($_REQUEST['valido_ate'],true);
 		
+		$campo = 'valido_de'; $request = $campo; $alteracoes_name = 'valid-from'; echo '('.banco_select_campos_antes($campo).' != '.(isset($_REQUEST[$request]) ? $_REQUEST[$request] : NULL).')';exit;
 		$campo = 'valido_de'; $request = $campo; $alteracoes_name = 'valid-from'; if(banco_select_campos_antes($campo) != (isset($_REQUEST[$request]) ? $_REQUEST[$request] : NULL)){
 			$editar = true;
 			banco_update_campo($campo,$_REQUEST[$request],false,true);
