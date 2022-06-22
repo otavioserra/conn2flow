@@ -30,7 +30,7 @@ function cron_agendamentos_limpeza(){
 		),
 		'extra' => 
 			"WHERE data < '".$hoje."'"
-			." AND status='sem-agendamentos'-"
+			." AND status='sem-agendamentos'"
 	));
 	
 	// ===== Excluir o agendamento data.
