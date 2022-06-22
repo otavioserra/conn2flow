@@ -523,16 +523,28 @@ function agendamentos_cupons_editar(){
 		
 		// ===== Atualização dos demais campos.
 		
-		$campo_nome = "quantidade"; $request_name = $campo_nome; $alteracoes_name = 'quantity'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name])); $alterouQuantidade = true;}
+		$campo = 'quantidade'; $request = $campo; $alteracoes_name = 'quantity'; if(banco_select_campos_antes($campo) != (isset($_REQUEST[$request]) ? $_REQUEST[$request] : NULL)){
+			$editar = true;
+			banco_update_campo($campo,$_REQUEST[$request],false,true);
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo),'valor_depois' => banco_escape_field($_REQUEST[$request]));
+		}
 		
 		// ===== Tratar data padrão date e editar os campos de data.
 		
 		$_REQUEST['valido_de'] = formato_data_hora_padrao_datetime($_REQUEST['valido_de'],true);
 		$_REQUEST['valido_ate'] = formato_data_hora_padrao_datetime($_REQUEST['valido_ate'],true);
 		
-		$campo_nome = "valido_de"; $request_name = $campo_nome; $alteracoes_name = 'valid-from'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
+		$campo = 'valido_de'; $request = $campo; $alteracoes_name = 'valid-from'; if(banco_select_campos_antes($campo) != (isset($_REQUEST[$request]) ? $_REQUEST[$request] : NULL)){
+			$editar = true;
+			banco_update_campo($campo,$_REQUEST[$request],false,true);
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => formato_data_from_datetime_to_text(banco_select_campos_antes($campo)),'valor_depois' => banco_escape_field(formato_data_from_datetime_to_text($_REQUEST[$request])));
+		}
 		
-		$campo_nome = "valido_ate"; $request_name = $campo_nome; $alteracoes_name = 'valid-until'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
+		$campo = 'valido_ate'; $request = $campo; $alteracoes_name = 'valid-until'; if(banco_select_campos_antes($campo) != (isset($_REQUEST[$request]) ? $_REQUEST[$request] : NULL)){
+			$editar = true;
+			banco_update_campo($campo,$_REQUEST[$request],false,true);
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => formato_data_from_datetime_to_text(banco_select_campos_antes($campo)),'valor_depois' => banco_escape_field(formato_data_from_datetime_to_text($_REQUEST[$request])));
+		}
 		
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
@@ -570,7 +582,7 @@ function agendamentos_cupons_editar(){
 			
 			$id_hosts_conjunto_cupons_prioridade = $hosts_conjunto_cupons_prioridade['id_hosts_conjunto_cupons_prioridade'];
 			
-			// ===== Caso a quantidade depois seja maior que antes, criar novos cupons. Senão, remover cupons.
+			// ===== Caso a quantidade depois seja maior que antes, criar novos cupons. Senão, remover cupons excedentes.
 			
 			if($quantidadeDepois > $quantidadeAntes){
 				for($i=0;$i<($quantidadeDepois - $quantidadeAntes);$i++){
@@ -606,7 +618,7 @@ function agendamentos_cupons_editar(){
 				$cont = 0;
 				if($hosts_cupons_prioridade)
 				foreach($hosts_cupons_prioridade as $cupom){
-					if($cont > ($quantidadeAntes - $quantidadeDepois)){
+					if($cont >= ($quantidadeAntes - $quantidadeDepois)){
 						break;
 					}
 					
