@@ -14,6 +14,37 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 
 // =========================== Funções do Cron
 
+function cron_agendamentos_limpeza(){
+	global $_GESTOR;
+	
+	// ===== Variáveis de controle valores iniciais.
+	
+	$hoje = date('Y-m-d');
+	
+	// ===== Verificar os agendamentos datas no banco de dados.
+	
+	$hosts_agendamentos_datas = banco_select(Array(
+		'tabela' => 'hosts_agendamentos_datas',
+		'campos' => Array(
+			'id_hosts_agendamentos_datas',
+		),
+		'extra' => 
+			"WHERE data < '".$hoje."'"
+			." AND status='sem-agendamentos'"
+	));
+	
+	// ===== Excluir o agendamento data.
+	
+	if($hosts_agendamentos_datas)
+	foreach($hosts_agendamentos_datas as $agendamento_data){
+		banco_delete
+		(
+			"hosts_agendamentos_datas",
+			"WHERE id_hosts_agendamentos_datas='".$agendamento_data['id_hosts_agendamentos_datas']."'"
+		);
+	}
+}
+
 function cron_agendamentos_sorteio(){
 	global $_GESTOR;
 	
@@ -582,6 +613,7 @@ function cron_agendamentos_start(){
 	
 	// ===== Pipeline de execução do cron.
 	
+	cron_agendamentos_limpeza();
 	cron_agendamentos_sorteio();
 
 	// ===== Retorno padrão.
