@@ -634,7 +634,8 @@ function plataforma_cliente_plugin_agendamentos(){
 				
 				$hoje = date('Y-m-d');
 				
-				if(isset($dados['cupom'])){
+				if(isset($dados['cupom']))
+				if(existe($dados['cupom'])){
 					$cupom = banco_escape_field($dados['cupom']);
 					
 					$hosts_cupons_prioridade = banco_select(Array(
