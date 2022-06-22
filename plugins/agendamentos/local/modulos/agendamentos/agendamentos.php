@@ -525,6 +525,7 @@ function agendamentos_cupons_editar(){
 		
 		$campo = 'quantidade'; $request = $campo; $alteracoes_name = 'quantity'; if(banco_select_campos_antes($campo) != (isset($_REQUEST[$request]) ? $_REQUEST[$request] : NULL)){
 			$editar = true;
+			$alterouQuantidade = true;
 			banco_update_campo($campo,$_REQUEST[$request],false,true);
 			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo),'valor_depois' => banco_escape_field($_REQUEST[$request]));
 		}
