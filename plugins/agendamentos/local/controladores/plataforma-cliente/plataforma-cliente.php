@@ -630,13 +630,132 @@ function plataforma_cliente_plugin_agendamentos(){
 						." AND data='".$agendamentoData."'"
 				));
 				
-				// ===== Verificar se está na fase residual ou em pré-agendamento (fase de sorteio é tratada na função anterior 'data_permitida'). Tratar cada caso de forma diferente.
-				
-				$fase_residual = (existe($config['fase-residual']) ? (int)$config['fase-residual'] : 5);
+				// ===== Verificar o cupom de prioridade.
 				
 				$hoje = date('Y-m-d');
 				
+				if(isset($dados['cupom'])){
+					$cupom = banco_escape_field($dados['cupom']);
+					
+					$hosts_cupons_prioridade = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'hosts_cupons_prioridade',
+						'campos' => Array(
+							'id_hosts_cupons_prioridade',
+							'id_hosts_conjunto_cupons_prioridade',
+							'id_hosts_agendamentos',
+						),
+						'extra' => 
+							"WHERE id_hosts='".$id_hosts."'"
+							." AND codigo='".$cupom."'"
+					));
+					
+					// ===== Verificar se o cupom foi encontrado. Senão retornar erro de não encontrado.
+					
+					if($hosts_cupons_prioridade){
+						$id_hosts_conjunto_cupons_prioridade = $hosts_cupons_prioridade['id_hosts_conjunto_cupons_prioridade'];
+						$id_hosts_cupons_prioridade = $hosts_cupons_prioridade['id_hosts_cupons_prioridade'];
+						$id_hosts_agendamentos_cupom_utilizado = $hosts_cupons_prioridade['id_hosts_agendamentos'];
+						
+						$hosts_conjunto_cupons_prioridade = banco_select(Array(
+							'unico' => true,
+							'tabela' => 'hosts_conjunto_cupons_prioridade',
+							'campos' => Array(
+								'valido_de',
+								'valido_ate',
+								'status',
+							),
+							'extra' => 
+								"WHERE id_hosts='".$id_hosts."'"
+								." AND id_hosts_conjunto_cupons_prioridade='".$id_hosts_conjunto_cupons_prioridade."'"
+						));
+						
+						if($hosts_conjunto_cupons_prioridade){
+							// ===== Verificar se o cupom está ativo. Senão retornar erro cupom inativo.
+							
+							if($hosts_conjunto_cupons_prioridade['status'] != 'A'){
+								$msgCupomPrioridadeInativo = (existe($config['msg-cupom-prioridade-inativo']) ? $config['msg-cupom-prioridade-inativo'] : '');
+								
+								$msgCupomPrioridadeInativo = modelo_var_troca_tudo($msgCupomPrioridadeInativo,"#cupom#",$cupom);
+
+								return Array(
+									'status' => 'CUPOM_PRIORIDADE_INATIVO',
+									'error-msg' => $msgCupomPrioridadeInativo,
+								);
+							}
+							
+							// ===== Verificar se o cupom está dentro do prazo de validade. Senão retornar erro de vecimento.
+							
+							if(
+								strtotime($hosts_conjunto_cupons_prioridade['valido_de']) <= strtotime($hoje) && 
+								strtotime($hosts_conjunto_cupons_prioridade['valido_ate']) >= strtotime($hoje)
+							){
+								
+							} else {
+								gestor_incluir_biblioteca('formato');
+								
+								$valido_de = formato_data_from_datetime_to_text($hosts_conjunto_cupons_prioridade['valido_de']);
+								$valido_ate = formato_data_from_datetime_to_text($hosts_conjunto_cupons_prioridade['valido_ate']);
+								
+								$msgCupomPrioridadeVencido = (existe($config['msg-cupom-prioridade-vencido']) ? $config['msg-cupom-prioridade-vencido'] : '');
+								
+								$msgCupomPrioridadeVencido = modelo_var_troca_tudo($msgCupomPrioridadeVencido,"#cupom#",$cupom);
+								$msgCupomPrioridadeVencido = modelo_var_troca_tudo($msgCupomPrioridadeVencido,"#valido_de#",$valido_de);
+								$msgCupomPrioridadeVencido = modelo_var_troca_tudo($msgCupomPrioridadeVencido,"#valido_ate#",$valido_ate);
+								
+								return Array(
+									'status' => 'CUPOM_PRIORIDADE_VENCIDO',
+									'error-msg' => $msgCupomPrioridadeVencido,
+								);
+							}
+							
+							// ===== Verificar se o cupom já foi usado em outro agendamento. Se for, retornar erro de cupom já utilizado.
+							
+							if($id_hosts_agendamentos_cupom_utilizado){
+								$msgCupomPrioridadeJaUtilizado = (existe($config['msg-cupom-prioridade-ja-utilizado']) ? $config['msg-cupom-prioridade-ja-utilizado'] : '');
+								
+								$msgCupomPrioridadeJaUtilizado = modelo_var_troca_tudo($msgCupomPrioridadeJaUtilizado,"#cupom#",$cupom);
+								
+								return Array(
+									'status' => 'CUPOM_PRIORIDADE_JA_UTILIZADO',
+									'error-msg' => $msgCupomPrioridadeJaUtilizado,
+								);
+							}
+							
+							// ===== Cupom válido, marcar para incluir o cupom.
+							
+							$cupomValido = $id_hosts_cupons_prioridade;
+							$agendamentoConfirmar = true;
+						} else {
+							$cupomNaoEncontrado = true;
+						}
+					} else {
+						$cupomNaoEncontrado = true;
+					}
+				}
+				
+				if(isset($cupomNaoEncontrado)){
+					$msgCupomPrioridadeNaoEncontrado = (existe($config['msg-cupom-prioridade-nao-encontrado']) ? $config['msg-cupom-prioridade-nao-encontrado'] : '');
+					
+					$msgCupomPrioridadeNaoEncontrado = modelo_var_troca_tudo($msgCupomPrioridadeNaoEncontrado,"#cupom#",$cupom);
+					
+					return Array(
+						'status' => 'CUPOM_PRIORIDADE_NAO_ENCONTRADO',
+						'error-msg' => $msgCupomPrioridadeNaoEncontrado,
+					);
+				}
+				
+				// ===== Verificar se está na fase residual ou pré-agendamento (fase de sorteio é tratada na função anterior 'data_permitida'). Tratar cada caso de forma diferente.
+				
+				$fase_residual = (existe($config['fase-residual']) ? (int)$config['fase-residual'] : 5);
+				
 				if(strtotime($agendamentoData) <= strtotime($hoje.' + '.$fase_residual.' day')){
+					$agendamentoConfirmar = true;
+				}
+				
+				// ===== Confirmar agendamento ou criar pré-agendamento.
+				
+				if(isset($agendamentoConfirmar)){
 					// ===== Verificar se já tem agendamento confirmado para esta data. Caso tenha, retornar erro e mensagem de permissão apenas de um agendamento por data.
 					
 					if($hosts_agendamentos){
@@ -822,6 +941,16 @@ function plataforma_cliente_plugin_agendamentos(){
 								);
 							}
 						}
+					}
+					
+					// ===== Verificar se houve uso de cupom. Se sim, marcar o cupom com o identificador do agendamento.
+					
+					if(isset($cupomValido)){
+						$id_hosts_cupons_prioridade = $cupomValido;
+						
+						banco_update_campo('id_hosts_agendamentos',$id_hosts_agendamentos);
+						
+						banco_update_executar('hosts_cupons_prioridade',"WHERE id_hosts_cupons_prioridade='".$id_hosts_cupons_prioridade."' AND id_hosts='".$id_hosts."'");
 					}
 					
 					// ===== Formatar dados do email.

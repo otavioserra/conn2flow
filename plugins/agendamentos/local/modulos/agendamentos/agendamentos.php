@@ -665,13 +665,6 @@ function agendamentos_cupons_editar(){
 		$valido_de = (isset($retorno_bd['valido_de']) ? $retorno_bd['valido_de'] : '');
 		$valido_ate = (isset($retorno_bd['valido_ate']) ? $retorno_bd['valido_ate'] : '');
 		
-		// ===== Formatar a data.
-		
-		gestor_incluir_biblioteca('formato');
-		
-		//$valido_de = formato_data_from_datetime_to_text($valido_de);
-		//$valido_ate = formato_data_from_datetime_to_text($valido_ate);
-		
 		// ===== Popular formulario.
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);

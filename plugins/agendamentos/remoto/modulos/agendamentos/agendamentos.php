@@ -1094,6 +1094,7 @@ function agendamentos_padrao(){
 		
 		$agendamentoData = banco_escape_field(formato_dado_para('date',$_REQUEST['data']));
 		$acompanhantes = banco_escape_field($_REQUEST['acompanhantes']);
+		$cupom = (isset($_REQUEST['cupom']) ? banco_escape_field($_REQUEST['cupom']) : NULL);
 		
 		for($i=1;$i<=(int)$acompanhantes;$i++){
 			$acompanhantesNomes[] = banco_escape_field($_REQUEST['acompanhante-'.$i]);
@@ -1112,6 +1113,7 @@ function agendamentos_padrao(){
 				'agendamentoData' => $agendamentoData,
 				'acompanhantes' => $acompanhantes,
 				'acompanhantesNomes' => $acompanhantesNomes,
+				'cupom' => $cupom,
 			),
 		));
 		
@@ -1121,6 +1123,10 @@ function agendamentos_padrao(){
 				case 'AGENDAMENTO_DATA_NAO_PERMITIDA':
 				case 'AGENDAMENTO_MULTIPLO_NAO_PERMITIDO':
 				case 'AGENDAMENTO_SEM_VAGAS':
+				case 'CUPOM_PRIORIDADE_INATIVO':
+				case 'CUPOM_PRIORIDADE_VENCIDO':
+				case 'CUPOM_PRIORIDADE_JA_UTILIZADO':
+				case 'CUPOM_PRIORIDADE_NAO_ENCONTRADO':
 					$alerta = (existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status']);
 				break;
 				default:
