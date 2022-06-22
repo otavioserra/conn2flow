@@ -532,12 +532,9 @@ function agendamentos_cupons_editar(){
 		
 		// ===== Tratar data padrão date e editar os campos de data.
 		
-		echo $_REQUEST['valido_de'].'<br>';
-		
 		$_REQUEST['valido_de'] = formato_data_hora_padrao_datetime($_REQUEST['valido_de'],true);
 		$_REQUEST['valido_ate'] = formato_data_hora_padrao_datetime($_REQUEST['valido_ate'],true);
 		
-		$campo = 'valido_de'; $request = $campo; $alteracoes_name = 'valid-from'; echo '('.banco_select_campos_antes($campo).' != '.(isset($_REQUEST[$request]) ? $_REQUEST[$request] : NULL).')';exit;
 		$campo = 'valido_de'; $request = $campo; $alteracoes_name = 'valid-from'; if(banco_select_campos_antes($campo) != (isset($_REQUEST[$request]) ? $_REQUEST[$request] : NULL)){
 			$editar = true;
 			banco_update_campo($campo,$_REQUEST[$request],false,true);
@@ -672,8 +669,8 @@ function agendamentos_cupons_editar(){
 		
 		gestor_incluir_biblioteca('formato');
 		
-		$valido_de = formato_data_from_datetime_to_text($valido_de);
-		$valido_ate = formato_data_from_datetime_to_text($valido_ate);
+		//$valido_de = formato_data_from_datetime_to_text($valido_de);
+		//$valido_ate = formato_data_from_datetime_to_text($valido_ate);
 		
 		// ===== Popular formulario.
 		
