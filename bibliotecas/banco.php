@@ -69,7 +69,7 @@ function banco_fechar_conexao(){
 	if($_BANCO['tipo'] == "mysqli")
  		$_BANCO['conexao'] = mysqli_close($_BANCO['conexao']) or die("<p><b>ERRO BANCO:</b> Impossível fechar conexão com o banco de dados!</p><p><b>Erro MySQL:</b> ".mysqli_error($_BANCO['conexao']).'</p>'.banco_erro_debug());
 	
-	$_BANCO['conexao'] = false;
+	unset($_BANCO['conexao']);
 }
 
 function banco_query($query){

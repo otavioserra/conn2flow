@@ -792,7 +792,7 @@ function cron_plugins(){
 				
 				$pluginID = $host_plugin['plugin'];
 				
-				$pluginConfig = require($_GESTOR['plugins-path'].$pluginID.'/'.$pluginID.'.config.php');
+				$pluginConfig = require($_GESTOR['plugins-path'].$pluginID.'/config.php');
 				
 				// ===== Verificar se o cron está ativo no plugin.
 				

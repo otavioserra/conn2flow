@@ -133,14 +133,15 @@ function modulos_copiar_variaveis(){
 function modulos_buscar_ids_duplicados(){
 	global $_GESTOR;
 	global $_BANCOS;
+	global $_BANCO;
 	
-	$ativar = false;
+	$ativar = true;
 	
 	// ===== Definir origem 1 / destino 2
 	
 	$servers = Array(
-		'destino' => 'beta.entrey.com.br',
-		'origem' => 'localhost',
+		'origem' => 'beta.entrey.com.br',
+		'destino' => 'localhost',
 		//'destino' => 'entrey.com.br',
 	);
 	
@@ -294,6 +295,7 @@ function modulos_buscar_ids_duplicados(){
 function modulos_sincronizar_bancos(){
 	global $_GESTOR;
 	global $_BANCOS;
+	global $_BANCO;
 	
 	//return modulos_buscar_ids_duplicados();
 	
@@ -308,8 +310,8 @@ function modulos_sincronizar_bancos(){
 	// ===== Definir origem 1 / destino 2
 	
 	$servers = Array(
-		'destino' => 'beta.entrey.com.br',
-		'origem' => 'localhost',
+		'origem' => 'beta.entrey.com.br',
+		'destino' => 'localhost',
 		//'destino' => 'entrey.com.br',
 	);
 	
