@@ -550,6 +550,7 @@ function autenticacao_qr_code($params = false){
 
 function autenticacao_cliente_gerar_token_validacao($params = false){
 	global $_GESTOR;
+	global $_CONFIG;
 	global $_CRON;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
@@ -565,7 +566,7 @@ function autenticacao_cliente_gerar_token_validacao($params = false){
 	
 		// ===== Definir variáveis para gerar o JWT
 		
-		$expiration = time() + $_GESTOR['autenticacao-token-lifetime'];
+		$expiration = time() + $_CONFIG['autenticacao-token-lifetime'];
 		
 		// ===== Pegar a chave pública do host
 		

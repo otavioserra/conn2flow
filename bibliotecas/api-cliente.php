@@ -2457,6 +2457,7 @@ function api_cliente_validar_jwt($params = false){
 
 function api_cliente_gerar_token_autorizacao($params = false){
 	global $_GESTOR;
+	global $_CONFIG;
 	global $_CRON;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
@@ -2470,7 +2471,7 @@ function api_cliente_gerar_token_autorizacao($params = false){
 	if(isset($id_hosts)){
 		// ===== Definir variáveis para gerar o JWT
 		
-		$expiration = time() + $_GESTOR['platform-lifetime'];
+		$expiration = time() + $_CONFIG['platform-lifetime'];
 		
 		// ===== Pegar a chave pública do host
 		
@@ -2513,7 +2514,7 @@ function api_cliente_gerar_token_autorizacao($params = false){
 			} else {
 				$tokenPubId = md5(uniqid(rand(), true));
 				
-				$pubIDValidation = hash_hmac($_GESTOR['platform-hash-algo'], $tokenPubId, $_GESTOR['platform-hash-password']);
+				$pubIDValidation = hash_hmac($_CONFIG['platform-hash-algo'], $tokenPubId, $_CONFIG['platform-hash-password']);
 				
 				// ====== Salvar token no banco
 				

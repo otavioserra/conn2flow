@@ -411,6 +411,7 @@ function plataforma_app_baixar_voucher(){
 
 function plataforma_app_login(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	// ===== Validador provisório!!!
 	
@@ -423,11 +424,11 @@ function plataforma_app_login(){
 	
 	$recaptchaValido = false;
 	
-	if(isset($_GESTOR['usuario-recaptcha-active'])){
-		if($_GESTOR['usuario-recaptcha-active'] && $_GESTOR['app-recaptcha-active']){
+	if(isset($_CONFIG['usuario-recaptcha-active'])){
+		if($_CONFIG['usuario-recaptcha-active'] && $_CONFIG['app-recaptcha-active']){
 			// ===== Variáveis de comparação do reCAPTCHA
 			
-			$recaptchaSecretKey = $_GESTOR['usuario-recaptcha-server'];
+			$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
 			
 			$token = $_POST['token'];
 			$action = $_POST['action'];
@@ -648,6 +649,7 @@ function plataforma_app_200($data = null){
 
 function plataforma_app_permissao_token($token = ''){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	// ===== Verifica se existe o cookie de autenticação enviado pelo app.
 	
@@ -665,7 +667,7 @@ function plataforma_app_permissao_token($token = ''){
 	$keyPrivateString = fread($fp,8192);
 	fclose($fp);
 	
-	$chavePrivadaSenha = $_GESTOR['openssl-password'];
+	$chavePrivadaSenha = $_CONFIG['openssl-password'];
 	
 	// ===== Verificar se o JWT é válido.
 	
@@ -690,7 +692,7 @@ function plataforma_app_permissao_token($token = ''){
 			,
 			"usuarios_tokens",
 			"WHERE pubID='".$tokenPubId."'"
-			." AND origem='".$_GESTOR['app-origem']."'"
+			." AND origem='".$_CONFIG['app-origem']."'"
 		);
 		
 		if($usuarios_tokens){
@@ -717,7 +719,7 @@ function plataforma_app_permissao_token($token = ''){
 				// ===== Validar o token com o hash de validação para evitar geração de token por hacker caso ocorra roubo da tabela 'usuarios_tokens'.
 				
 				$bd_hash = $usuarios_tokens[0]['pubIDValidation'];
-				$token_hash = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+				$token_hash = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 				
 				if($bd_hash === $token_hash){
 					$data_criacao = $usuarios_tokens[0]['data_criacao'];
@@ -740,7 +742,7 @@ function plataforma_app_permissao_token($token = ''){
 						
 						$time_criacao = strtotime($data_criacao);
 						
-						if($time_criacao + $_GESTOR['app-token-renewtime'] < time()){
+						if($time_criacao + $_CONFIG['app-token-renewtime'] < time()){
 							gestor_incluir_biblioteca('usuario');
 							
 							$tokenObj = usuario_app_gerar_token_autorizacao(Array(

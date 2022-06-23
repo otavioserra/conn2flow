@@ -1,42 +1,15 @@
 <?php
 
-// ===== Definições de variáveis gerais do gestor
+/**********
+	Descrição: configurações gerais para o funcionamento do gestor.
+**********/
+
+// ===== Definições de variáveis gerais do gestor.
 
 $_GESTOR['versao']								=	'1.3.0'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'entrey-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
-$_GESTOR['modulos-bibliotecas']					=	'bibliotecas/'; // Caminho relativo a raiz dos módulos bibliotecas do gestor
-$_GESTOR['session-authname']					=	'_ESID'; // Nome do cookie de sessão de usuário
-$_GESTOR['session-lifetime']					=	3600*3; // 3 horas para as sessões serem deletadas
-$_GESTOR['session-garbagetime']					=	3600*24; // 24 horas para tokens de sessões serem deletados
-$_GESTOR['session-garbage-colector-time']		=	3600; // 1 hora para sessões antigas serem deletados.
-$_GESTOR['cookie-authname']						=	'_EUSID'; // Nome do cookie de sessão de autenticação de usuário
-$_GESTOR['cookie-verify']						=	'_ECVID'; // Nome do cookie de sessão de autenticação de usuário
-$_GESTOR['cookie-lifetime']						=	86400*15; // 15 dias para os cookie do token de acesso serem deletados
-$_GESTOR['cookie-renewtime']					=	3600*24; // 24 horas para renovar automaticamente cookie do token de acesso
-$_GESTOR['openssl-password']					=	'entrey-dgCJ-vL\ymYB53L,'; // Senha da chave RSA atual
-$_GESTOR['usuario-hash-password']				=	'entrey-h"hC,r^pmUj7kSs{'; // Senha de gerador de hash
-$_GESTOR['usuario-hash-algo']					=	'sha512'; // Algorítmo usado para criar hash
-$_GESTOR['usuario-recaptcha-active']			=	true; // Ativar Recaptcha v3 
-$_GESTOR['usuario-recaptcha-site']				=	'6Lcur6gaAAAAANPAHPglZ1NLdlsB9IIFOINzaYBC'; // Recaptcha site
-$_GESTOR['usuario-recaptcha-server']			=	'6Lcur6gaAAAAAJoaQiE-4GKuhK8Vt5I0IfP1d967'; // Recaptcha server
-$_GESTOR['usuario-maximo-senhas-invalidas']		=	3; // Máximo de vezes que pode errar a senha em autorização provisória, antes de ser deconectado automaticamente
-$_GESTOR['usuario-autorizacao-lifetime']		=	60*5; // 5 minutos definido / Tempo máximo em segundos que uma autorização provisória é válida.
-$_GESTOR['token-lifetime']						=	3600*1; // 1 hora para os tokens provisórios serem deletadas.
-$_GESTOR['pagina#contato-url']					=	'contato/'; // Página de contatos relativo a raiz do sistema.
-$_GESTOR['plano-teste-id-usuario-perfil']		=	'2'; // Identificador do perfil do usuário para planos testes (TRIAL).
 $_GESTOR['host-configuracao-id-modulo']			=	'host-configuracao'; // Identificador módulo de configuração do host.
-$_GESTOR['platform-lifetime']					=	60*15; // 15 minutos para os tokens de acesso a plataforma serem deletados.
-$_GESTOR['platform-hash-password']				=	'OBWeggLLoDm!NMOO7@JXDfpe233Zb1^C'; // Senha de gerador de hash
-$_GESTOR['platform-hash-algo']					=	'sha512'; // Algorítmo usado para criar hash
-$_GESTOR['platform-recaptcha-active']			=	true; // Ativar Recaptcha v3 nos hosts
-$_GESTOR['platform-recaptcha-site']				=	'6LewE8QcAAAAAOyOzcZufW9dkK7yRxMSQaUyBr1M'; // Recaptcha site nos hosts
-$_GESTOR['platform-recaptcha-server']			=	'6LewE8QcAAAAAKZq0JboJ7QL_m2aAYleKuYAAxYN'; // Recaptcha server nos hosts
-$_GESTOR['app-recaptcha-active']				=	false; // Ativar Recaptcha v3 no APP
-$_GESTOR['app-token-lifetime']					=	86400*30; // 30 dias para os token de acesso serem deletados.
-$_GESTOR['app-token-renewtime']					=	3600*24; // 24 horas para renovar automaticamente o token de acesso
-$_GESTOR['app-origem']							=	'app'; // Identificador do APP 
-$_GESTOR['autenticacao-token-lifetime']			=	86400*180; // 180 dias para os token de autenticacao serem expirados.
 
 // ===== Definição dos marcadores de abertura e fechamento de varíaveis globais.
 
@@ -47,33 +20,7 @@ $_GESTOR['variavel-global']						=	Array(
 	'closeText' => ']]', // Fechamento de uma variável na definição da mesma
 );
 
-// ===== Definições do banco de dados de cada host
-
-$_GESTOR['bancoDef']['localhost'] = Array(
-	'tipo'				=>	'mysqli',
-	'usuario'			=>	'root',
-	'senha'				=>	'serra123',
-	'nome'				=>	'betaentr_gestor',
-	'host'				=>	'127.0.0.1',
-);
-
-$_GESTOR['bancoDef']['beta.entrey.com.br'] = Array(
-	'tipo'				=>	'mysqli',
-	'usuario'			=>	'betaentr_gestor',
-	'senha'				=>	'~qtAS6mD_aVF+NV.',
-	'nome'				=>	'betaentr_gestor',
-	'host'				=>	'localhost',
-);
-
-$_GESTOR['bancoDef']['entrey.com.br'] = Array(
-	'tipo'				=>	'mysqli',
-	'usuario'			=>	'entreyco_gestor',
-	'senha'				=>	'%rM0ZAx+@;DQ',
-	'nome'				=>	'entreyco_gestor',
-	'host'				=>	'localhost',
-);
-
-// ===== Detecção de execução do cron.
+// ===== Detecção de execução do cron e definições de ambiente.
 
 if(isset($_CRON)){
 	$_SERVER['SERVER_NAME'] = $_CRON['SERVER_NAME'];
@@ -88,79 +35,51 @@ if(isset($_CRON)){
 	}
 }
 
+// ===== Incluir arquivos de autenticação do banco, de configurações e caminho para as chaves de segurança principais.
+
+$_GESTOR['AUTH_PATH']							=	$_GESTOR['ROOT_PATH'] . 'autenticacoes/';
+$_GESTOR['AUTH_PATH_SERVER']					=	$_GESTOR['AUTH_PATH'] . $_SERVER['SERVER_NAME'] . '/';
+
+require_once($_GESTOR['AUTH_PATH_SERVER'] . 'banco.php');
+require_once($_GESTOR['AUTH_PATH_SERVER'] . 'config.php');
+
+$_GESTOR['openssl-path']						=	$_GESTOR['AUTH_PATH_SERVER'].'chaves/gestor/';
+
+// ===== Definição do caminho em disco dos plugins.
+
+$_GESTOR['plugins-path']						=	$_GESTOR['ROOT_PATH'].'../b2make-gestor-plugins/';
+
 // ===== Definição dos caminhos em disco padrões.
 
 $_GESTOR['bibliotecas-path']					=	$_GESTOR['ROOT_PATH'].'bibliotecas/';
 $_GESTOR['modulos-path']						=	$_GESTOR['ROOT_PATH'].'bibliotecas/';
-$_GESTOR['openssl-path']						=	$_GESTOR['ROOT_PATH'].'chaves/gestor/';
 $_GESTOR['assets-path']							=	$_GESTOR['ROOT_PATH'].'assets/';
 $_GESTOR['contents-path']						=	$_GESTOR['ROOT_PATH'].'contents/';
 $_GESTOR['configuracoes-path']					=	$_GESTOR['ROOT_PATH'].'configuracoes/';
 $_GESTOR['logs-path']							=	$_GESTOR['ROOT_PATH'].'logs/';
-$_GESTOR['plugins-path']						=	$_GESTOR['ROOT_PATH'].'plugins/';
 
 // ===== Definições de variáveis padrões do sistema em hosts diferentes
 
 if($_SERVER['SERVER_NAME'] == "localhost"){
-	// ===== Banco e url raiz.
-	
-	$_GESTOR['banco'] = $_GESTOR['bancoDef']['localhost'];
+	// ===== Url raiz.
 	
 	$_GESTOR['url-raiz']							=	'/entrey/';
 	
-	// ===== Configuração do serviço de emails
-	
-	$_GESTOR['email'] = Array(
-		'ativo'				=>	true,
-		'server'			=>	Array(
-			'host'				=>	'beta.entrey.com.br',
-			'user'				=>	'noreply@beta.entrey.com.br',
-			'pass'				=>	'~mrBH^J-_HxO',
-			'secure'			=>	true,
-			'port'				=>	465,
-		),
-		'sender'			=>	Array(
-			'from'				=>	'noreply@beta.entrey.com.br',
-			'fromName'			=>	'Entrey Beta',
-			'replyTo'			=>	'noreply@beta.entrey.com.br',
-			'replyToName'		=>	'Entrey Beta',
-		),
-	);
-	
-	// ===== Configuração do server de cada host de usuário
+	// ===== Configuração do server de cada host de usuário.
 	
 	$_GESTOR['hosts-server'] = Array(
 		'ativo'						=>	false,
 	);
 	
+	// ===== Identificador do ambiente da plataforma.
+	
 	$_GESTOR['plataforma-id'] = 'local';
 } else if($_SERVER['SERVER_NAME'] == "beta.entrey.com.br"){
-	// ===== Banco e url raiz.
-	
-	$_GESTOR['banco'] = $_GESTOR['bancoDef']['beta.entrey.com.br'];
+	// ===== Url raiz.
 	
 	$_GESTOR['url-raiz']							=	'/';
 	
-	// ===== Configuração do serviço de emails
-	
-	$_GESTOR['email'] = Array(
-		'ativo'				=>	true,
-		'server'			=>	Array(
-			'host'				=>	'beta.entrey.com.br',
-			'user'				=>	'noreply@beta.entrey.com.br',
-			'pass'				=>	'~mrBH^J-_HxO',
-			'secure'			=>	true,
-			'port'				=>	465,
-		),
-		'sender'			=>	Array(
-			'from'				=>	'noreply@beta.entrey.com.br',
-			'fromName'			=>	'Entrey Beta',
-			'replyTo'			=>	'noreply@beta.entrey.com.br',
-			'replyToName'		=>	'Entrey Beta',
-		),
-	);
-	
-	// ===== Configuração do server de cada host de usuário
+	// ===== Configuração do server de cada host de usuário.
 	
 	$_GESTOR['hosts-server'] = Array(
 		'ativo'						=>	true,
@@ -179,41 +98,15 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 		'ftp-gestor-root'			=>	'/entrey/',
 	);
 	
+	// ===== Identificador do ambiente da plataforma.
+	
 	$_GESTOR['plataforma-id'] = 'beta';
 } else {
 	// ===== Banco e url raiz.
 	
-	$_GESTOR['banco'] = $_GESTOR['bancoDef']['entrey.com.br'];
-	
 	$_GESTOR['url-raiz']							=	'/';
 	
-	// ===== Chaves e senhas do ambiente live.
-	
-	$_GESTOR['openssl-password']					=	'entrey-rsLoj@Gvdd!a&O5ogpAXmR'; // Senha da chave RSA atual
-	$_GESTOR['usuario-hash-password']				=	'entrey-0NapBuN2vq$#2oeVq9@G9e'; // Senha de gerador de hash
-	
-	$_GESTOR['openssl-path']						=	$_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/chaves/gestor/live/';
-	
-	// ===== Configuração do serviço de emails
-	
-	$_GESTOR['email'] = Array(
-		'ativo'				=>	true,
-		'server'			=>	Array(
-			'host'				=>	'entrey.com.br',
-			'user'				=>	'noreply@entrey.com.br',
-			'pass'				=>	'&WE]Abh(ei2(',
-			'secure'			=>	true,
-			'port'				=>	465,
-		),
-		'sender'			=>	Array(
-			'from'				=>	'noreply@entrey.com.br',
-			'fromName'			=>	'Entrey',
-			'replyTo'			=>	'noreply@entrey.com.br',
-			'replyToName'		=>	'Entrey',
-		),
-	);
-	
-	// ===== Configuração do server de cada host de usuário
+	// ===== Configuração do server de cada host de usuário.
 	
 	$_GESTOR['hosts-server'] = Array(
 		'ativo'						=>	true,
@@ -232,6 +125,8 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 		'ftp-gestor-root'			=>	'/entrey/',
 	);
 	
+	// ===== Identificador do ambiente da plataforma.
+	
 	$_GESTOR['plataforma-id'] 		= 'producao'; 
 }
 
@@ -239,6 +134,11 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 
 $_GESTOR['url-full']							=	'//'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'];
 $_GESTOR['url-full-http']						=	'https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'];
+
+// ===== Definições dos caminhos relativos.
+
+$_GESTOR['modulos-bibliotecas']					=	'bibliotecas/'; // Caminho relativo a raiz dos módulos bibliotecas do gestor
+$_GESTOR['pagina#contato-url']					=	'contato/'; // Página de contatos relativo a raiz do sistema.
 
 // ===== Definições da plataforma de comunicação entre clientes e servidor.
 

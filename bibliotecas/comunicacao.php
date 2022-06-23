@@ -50,6 +50,7 @@ function comunicacao_impressao($params = false){
 
 function comunicacao_email($params = false){
 	global $_GESTOR;
+	global $_CONFIG;
 	global $_CRON;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
@@ -98,8 +99,8 @@ function comunicacao_email($params = false){
 	
 	// ===== 
 	
-	if(isset($_GESTOR['email'])){
-		if($_GESTOR['email']['ativo']){
+	if(isset($_CONFIG['email'])){
+		if($_CONFIG['email']['ativo']){
 			// ===== Definição se é ou não uma comunicação para um host.
 			
 			if(isset($_GESTOR['host-id']) && !isset($id_hosts)){
@@ -136,24 +137,24 @@ function comunicacao_email($params = false){
 			
 			// ===== Variáveis de configuração padrões
 			
-			if(isset($_GESTOR['email'])){
-				if(isset($_GESTOR['email']['server'])){
-					if(isset($_GESTOR['email']['server']['debug'])){ $server['debug'] = $_GESTOR['email']['server']['debug']; }
-					if(isset($_GESTOR['email']['server']['host'])){ $server['host'] = $_GESTOR['email']['server']['host']; }
-					if(isset($_GESTOR['email']['server']['user'])){ $server['user'] = $_GESTOR['email']['server']['user']; }
-					if(isset($_GESTOR['email']['server']['pass'])){ $server['pass'] = $_GESTOR['email']['server']['pass']; }
-					if(isset($_GESTOR['email']['server']['port'])){ $server['port'] = $_GESTOR['email']['server']['port']; }
+			if(isset($_CONFIG['email'])){
+				if(isset($_CONFIG['email']['server'])){
+					if(isset($_CONFIG['email']['server']['debug'])){ $server['debug'] = $_CONFIG['email']['server']['debug']; }
+					if(isset($_CONFIG['email']['server']['host'])){ $server['host'] = $_CONFIG['email']['server']['host']; }
+					if(isset($_CONFIG['email']['server']['user'])){ $server['user'] = $_CONFIG['email']['server']['user']; }
+					if(isset($_CONFIG['email']['server']['pass'])){ $server['pass'] = $_CONFIG['email']['server']['pass']; }
+					if(isset($_CONFIG['email']['server']['port'])){ $server['port'] = $_CONFIG['email']['server']['port']; }
 					
-					if(isset($_GESTOR['email']['server']['secure'])){ $server['secure'] = PHPMailer::ENCRYPTION_SMTPS; }
+					if(isset($_CONFIG['email']['server']['secure'])){ $server['secure'] = PHPMailer::ENCRYPTION_SMTPS; }
 				}
 			}
 			
-			if(isset($_GESTOR['email'])){
-				if(isset($_GESTOR['email']['sender'])){
-					if(isset($_GESTOR['email']['sender']['from'])){ $sender['from'] = $_GESTOR['email']['sender']['from']; }
-					if(isset($_GESTOR['email']['sender']['fromName'])){ $sender['fromName'] = $_GESTOR['email']['sender']['fromName']; }
-					if(isset($_GESTOR['email']['sender']['replyTo'])){ $sender['replyTo'] = $_GESTOR['email']['sender']['replyTo']; }
-					if(isset($_GESTOR['email']['sender']['replyToName'])){ $sender['replyToName'] = $_GESTOR['email']['sender']['replyToName']; }
+			if(isset($_CONFIG['email'])){
+				if(isset($_CONFIG['email']['sender'])){
+					if(isset($_CONFIG['email']['sender']['from'])){ $sender['from'] = $_CONFIG['email']['sender']['from']; }
+					if(isset($_CONFIG['email']['sender']['fromName'])){ $sender['fromName'] = $_CONFIG['email']['sender']['fromName']; }
+					if(isset($_CONFIG['email']['sender']['replyTo'])){ $sender['replyTo'] = $_CONFIG['email']['sender']['replyTo']; }
+					if(isset($_CONFIG['email']['sender']['replyToName'])){ $sender['replyToName'] = $_CONFIG['email']['sender']['replyToName']; }
 				}
 			}
 			

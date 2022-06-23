@@ -116,6 +116,7 @@ set_error_handler("cron_error_handler");
 
 function cron_carrinhos_abandonados(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	// ===== Serviços dos carrinhos.
 	
@@ -131,7 +132,7 @@ function cron_carrinhos_abandonados(){
 			'id_hosts',
 		),
 		'extra' => 
-			"WHERE UNIX_TIMESTAMP(`data_modificacao`) + ".$_GESTOR['session-lifetime']." < ".time()
+			"WHERE UNIX_TIMESTAMP(`data_modificacao`) + ".$_CONFIG['session-lifetime']." < ".time()
 	));
 	
 	if($hosts_carrinho)
@@ -791,7 +792,7 @@ function cron_plugins(){
 				
 				$pluginID = $host_plugin['plugin'];
 				
-				$pluginConfig = require($_CRON['ROOT_PATH'] . 'plugins/' .$pluginID.'/'.$pluginID.'.config.php');
+				$pluginConfig = require($_GESTOR['plugins-path'].$pluginID.'/'.$pluginID.'.config.php');
 				
 				// ===== Verificar se o cron está ativo no plugin.
 				
@@ -815,7 +816,7 @@ function cron_plugins(){
 			foreach($pluginCron as $pluginID => $plugin){
 				if(isset($plugin['cronAtivo'])){
 					$_GESTOR['pluginHostsIDs'] = $plugin['hostsIDs'];
-					$cronPlugin = require_once($_CRON['ROOT_PATH'] . 'plugins/'.$pluginID.'/local/cron.php');
+					$cronPlugin = require_once($_GESTOR['plugins-path'].$pluginID.'/local/cron.php');
 				}
 			}
 		}

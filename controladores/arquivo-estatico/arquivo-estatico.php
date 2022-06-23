@@ -43,7 +43,7 @@ function arquivo_estatico_start(){
 						$file = $_INDEX['sistemas-dir'].'b2make-gestor/assets/'.$_GESTOR['caminho-total'];
 					} else {
 						if(count($_GESTOR['caminho']) > 2){
-							$file = $_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$alvo.'/local/modulos/'.$alvo2.'/'.$alvo2.'.'.$ext;
+							$file = $_GESTOR['plugins-path'].$alvo.'/local/modulos/'.$alvo2.'/'.$alvo2.'.'.$ext;
 						} else {
 							$file = $_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$alvo.'/'.$alvo.'.'.$ext;
 						}

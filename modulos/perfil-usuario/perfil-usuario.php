@@ -23,6 +23,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 
 function perfil_usuario_area_restrita(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if(isset($_REQUEST['_gestor-restrict-area-atualizar'])){
 		$usuario = gestor_usuario();
@@ -87,7 +88,7 @@ function perfil_usuario_area_restrita(){
 				$tentativas = (int)$usuarios_tokens[0]['senha_incorreta_tentativas'] + 1;
 			}
 			
-			$maximoSenhasInvalidas = $_GESTOR['usuario-maximo-senhas-invalidas'];
+			$maximoSenhasInvalidas = $_CONFIG['usuario-maximo-senhas-invalidas'];
 			
 			sleep(3);
 			
@@ -664,6 +665,7 @@ function perfil_usuario_interfaces_padroes(){
 
 function perfil_usuario_signout(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if(isset($_GESTOR['usuario-token-id'])){
 		gestor_sessao_del();
@@ -674,7 +676,7 @@ function perfil_usuario_signout(){
 			"WHERE pubID='".$_GESTOR['usuario-token-id']."'"
 		);
 		
-		setcookie($_GESTOR['cookie-authname'], "", [
+		setcookie($_CONFIG['cookie-authname'], "", [
 			'expires' => time() - 3600,
 			'path' => '/',
 			'domain' => $_SERVER['SERVER_NAME'],
@@ -683,7 +685,7 @@ function perfil_usuario_signout(){
 			'samesite' => 'Lax',
 		]);
 		
-		unset($_COOKIE[$_GESTOR['cookie-authname']]);
+		unset($_COOKIE[$_CONFIG['cookie-authname']]);
 	}
 	
 	gestor_redirecionar('signin/');
@@ -693,6 +695,7 @@ function perfil_usuario_signout(){
 
 function perfil_usuario_signin(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if(isset($_REQUEST['_gestor-logar'])){
 		// ===== Validação de campos obrigatórios
@@ -716,11 +719,11 @@ function perfil_usuario_signin(){
 		
 		$recaptchaValido = false;
 		
-		if(isset($_GESTOR['usuario-recaptcha-active'])){
-			if($_GESTOR['usuario-recaptcha-active']){
+		if(isset($_CONFIG['usuario-recaptcha-active'])){
+			if($_CONFIG['usuario-recaptcha-active']){
 				// ===== Variáveis de comparação do reCAPTCHA
 				
-				$recaptchaSecretKey = $_GESTOR['usuario-recaptcha-server'];
+				$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
 				
 				$token = $_POST['token'];
 				$action = $_POST['action'];
@@ -864,12 +867,12 @@ function perfil_usuario_signin(){
 	
 	// ===== Incluir google reCAPTCHA caso ativo
 	
-	if(isset($_GESTOR['usuario-recaptcha-active'])){
-		if($_GESTOR['usuario-recaptcha-active']){
+	if(isset($_CONFIG['usuario-recaptcha-active'])){
+		if($_CONFIG['usuario-recaptcha-active']){
 			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
-			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_GESTOR['usuario-recaptcha-site'];
+			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
 			
-			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_GESTOR['usuario-recaptcha-site'].'"></script>');
+			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_CONFIG['usuario-recaptcha-site'].'"></script>');
 		}
 	}
 	
@@ -899,6 +902,7 @@ function perfil_usuario_signin(){
 
 function perfil_usuario_signup(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if(isset($_REQUEST['_gestor-signup'])){
 		$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
@@ -930,11 +934,11 @@ function perfil_usuario_signup(){
 		
 		$recaptchaValido = false;
 		
-		if(isset($_GESTOR['usuario-recaptcha-active'])){
-			if($_GESTOR['usuario-recaptcha-active']){
+		if(isset($_CONFIG['usuario-recaptcha-active'])){
+			if($_CONFIG['usuario-recaptcha-active']){
 				// ===== Variáveis de comparação do reCAPTCHA
 				
-				$recaptchaSecretKey = $_GESTOR['usuario-recaptcha-server'];
+				$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
 				
 				$token = $_POST['token'];
 				$action = $_POST['action'];
@@ -999,7 +1003,7 @@ function perfil_usuario_signup(){
 			
 			// ===== Independente do plano que o usuário escolher, sempre iniciar o mesmo com o plano TRIAL
 			
-			$id_usuarios_perfis = $_GESTOR['plano-teste-id-usuario-perfil'];
+			$id_usuarios_perfis = $_CONFIG['plano-teste-id-usuario-perfil'];
 			
 			// ===== Gerar hash da senha
 			
@@ -1118,9 +1122,9 @@ function perfil_usuario_signup(){
 			// ===== Criar o token e guardar o mesmo no banco
 			
 			$tokenPubId = md5(uniqid(rand(), true));
-			$expiration = time() + $_GESTOR['token-lifetime'];
+			$expiration = time() + $_CONFIG['token-lifetime'];
 
-			$pubID = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+			$pubID = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 			
 			$campos = null; $campo_sem_aspas_simples = null;
 			
@@ -1212,12 +1216,12 @@ function perfil_usuario_signup(){
 	
 	// ===== Incluir google reCAPTCHA caso ativo
 	
-	if(isset($_GESTOR['usuario-recaptcha-active'])){
-		if($_GESTOR['usuario-recaptcha-active']){
+	if(isset($_CONFIG['usuario-recaptcha-active'])){
+		if($_CONFIG['usuario-recaptcha-active']){
 			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
-			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_GESTOR['usuario-recaptcha-site'];
+			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
 			
-			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_GESTOR['usuario-recaptcha-site'].'"></script>');
+			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_CONFIG['usuario-recaptcha-site'].'"></script>');
 		}
 	}
 	
@@ -1329,6 +1333,7 @@ function perfil_usuario_signup(){
 
 function perfil_usuario_forgot_password(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if(isset($_REQUEST['_gestor-forgot-password'])){
 		// ===== Validação de campos obrigatórios
@@ -1347,11 +1352,11 @@ function perfil_usuario_forgot_password(){
 		
 		$recaptchaValido = false;
 		
-		if(isset($_GESTOR['usuario-recaptcha-active'])){
-			if($_GESTOR['usuario-recaptcha-active']){
+		if(isset($_CONFIG['usuario-recaptcha-active'])){
+			if($_CONFIG['usuario-recaptcha-active']){
 				// ===== Variáveis de comparação do reCAPTCHA
 				
-				$recaptchaSecretKey = $_GESTOR['usuario-recaptcha-server'];
+				$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
 				
 				$token = $_POST['token'];
 				$action = $_POST['action'];
@@ -1414,9 +1419,9 @@ function perfil_usuario_forgot_password(){
 					// ===== Criar o token e guardar o mesmo no banco
 					
 					$tokenPubId = md5(uniqid(rand(), true));
-					$expiration = time() + $_GESTOR['token-lifetime'];
+					$expiration = time() + $_CONFIG['token-lifetime'];
 		
-					$pubID = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+					$pubID = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 					
 					$campos = null; $campo_sem_aspas_simples = null;
 					
@@ -1463,7 +1468,7 @@ function perfil_usuario_forgot_password(){
 								),
 								Array(
 									'variavel' => '#expiracao#',
-									'valor' => $_GESTOR['token-lifetime'] / 3600,
+									'valor' => $_CONFIG['token-lifetime'] / 3600,
 								),
 								Array(
 									'variavel' => '#assinatura#',
@@ -1517,12 +1522,12 @@ function perfil_usuario_forgot_password(){
 	
 	// ===== Incluir google reCAPTCHA caso ativo
 	
-	if(isset($_GESTOR['usuario-recaptcha-active'])){
-		if($_GESTOR['usuario-recaptcha-active']){
+	if(isset($_CONFIG['usuario-recaptcha-active'])){
+		if($_CONFIG['usuario-recaptcha-active']){
 			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
-			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_GESTOR['usuario-recaptcha-site'];
+			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
 			
-			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_GESTOR['usuario-recaptcha-site'].'"></script>');
+			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_CONFIG['usuario-recaptcha-site'].'"></script>');
 		}
 	}
 	
@@ -1587,6 +1592,7 @@ function perfil_usuario_forgot_password_confirmation(){
 
 function perfil_usuario_redefine_password(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if(isset($_REQUEST['_gestor-redefine-password'])){
 		// ===== Validação de campos obrigatórios
@@ -1611,7 +1617,7 @@ function perfil_usuario_redefine_password(){
 		
 		$tokenPubId = banco_escape_field($_REQUEST['_gestor-redefine-password-token']);
 		
-		$pubID = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+		$pubID = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 		
 		// ===== Verificar se já houve validação do campo e criação da sessão
 		
@@ -1776,7 +1782,7 @@ function perfil_usuario_redefine_password(){
 		
 		$tokenPubId = banco_escape_field($_REQUEST['id']);
 		
-		$pubID = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+		$pubID = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 		
 		// ===== Verificar se já houve validação do campo e criação da sessão
 		
@@ -1958,6 +1964,7 @@ function perfil_usuario_validar_usuario(){
 
 function perfil_usuario_confirmacao_email(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	// ===== Campo de validação dos dados
 	
@@ -1978,7 +1985,7 @@ function perfil_usuario_confirmacao_email(){
 		
 		$tokenPubId = banco_escape_field($_REQUEST['id']);
 		
-		$pubID = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+		$pubID = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 		
 		// ===== Verificar se já houve validação do campo e criação da sessão
 		

@@ -122,6 +122,7 @@ function usuario_gerar_jwt($params = false){
 
 function usuario_gerar_token_autorizacao($params = false){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -141,7 +142,7 @@ function usuario_gerar_token_autorizacao($params = false){
 		if(isset($sessao)){
 			$expiration = '0';
 		} else {
-			$expiration = time() + $_GESTOR['cookie-lifetime'];
+			$expiration = time() + $_CONFIG['cookie-lifetime'];
 		}
 		
 		$keyPublicPath = $_GESTOR['openssl-path'] . 'publica.key';
@@ -154,7 +155,7 @@ function usuario_gerar_token_autorizacao($params = false){
 		
 		$tokenPubId = md5(uniqid(rand(), true));
 		
-		$pubIDValidation = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+		$pubIDValidation = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 		
 		// ===== Gerar o token JWT
 		
@@ -167,7 +168,7 @@ function usuario_gerar_token_autorizacao($params = false){
 		
 		// ===== Salvar cookie no client do usuário
 		
-		setcookie($_GESTOR['cookie-authname'], $token, [
+		setcookie($_CONFIG['cookie-authname'], $token, [
 			'expires' => $expiration,
 			'path' => '/',
 			'domain' => $_SERVER['SERVER_NAME'],
@@ -203,6 +204,7 @@ function usuario_gerar_token_autorizacao($params = false){
 
 function usuario_app_gerar_token_autorizacao($params = false){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -215,7 +217,7 @@ function usuario_app_gerar_token_autorizacao($params = false){
 	if(isset($id_usuarios)){
 		// ===== Definir variáveis para gerar o JWT
 		
-		$expiration = time() + $_GESTOR['app-token-lifetime'];
+		$expiration = time() + $_CONFIG['app-token-lifetime'];
 		
 		$keyPublicPath = $_GESTOR['openssl-path'] . 'publica.key';
 		
@@ -227,7 +229,7 @@ function usuario_app_gerar_token_autorizacao($params = false){
 		
 		$tokenPubId = md5(uniqid(rand(), true));
 		
-		$pubIDValidation = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+		$pubIDValidation = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 		
 		// ===== Gerar o token JWT
 		
@@ -248,7 +250,7 @@ function usuario_app_gerar_token_autorizacao($params = false){
 		$campo_nome = "expiration"; $campo_valor = $expiration; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "ip"; $campo_valor = $_SERVER['REMOTE_ADDR']; 				$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "user_agent"; $campo_valor = $_SERVER['HTTP_USER_AGENT']; 	$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = "origem"; $campo_valor = $_GESTOR['app-origem']; 				$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "origem"; $campo_valor = $_CONFIG['app-origem']; 				$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "data_criacao"; $campo_valor = 'NOW()'; 						$campos[] = Array($campo_nome,$campo_valor,true);
 		
 		banco_insert_name
@@ -268,6 +270,7 @@ function usuario_app_gerar_token_autorizacao($params = false){
 
 function usuario_autorizacao_provisoria($params = false){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -295,7 +298,7 @@ function usuario_autorizacao_provisoria($params = false){
 	
 	if(isset($verificar)){
 		if(existe(gestor_sessao_variavel('usuario-autorizacao-provisoria'))){
-			if(time() > $_GESTOR['usuario-autorizacao-lifetime'] + (int)gestor_sessao_variavel('usuario-autorizacao-provisoria')){
+			if(time() > $_CONFIG['usuario-autorizacao-lifetime'] + (int)gestor_sessao_variavel('usuario-autorizacao-provisoria')){
 				gestor_sessao_variavel_del('usuario-autorizacao-provisoria');
 				
 				return false;
@@ -309,7 +312,7 @@ function usuario_autorizacao_provisoria($params = false){
 	
 	if(isset($verificarModal)){
 		if(existe(gestor_sessao_variavel('usuario-autorizacao-provisoria'))){
-			if(time() > $_GESTOR['usuario-autorizacao-lifetime'] + (int)gestor_sessao_variavel('usuario-autorizacao-provisoria')){
+			if(time() > $_CONFIG['usuario-autorizacao-lifetime'] + (int)gestor_sessao_variavel('usuario-autorizacao-provisoria')){
 				gestor_sessao_variavel_del('usuario-autorizacao-provisoria');
 				
 				$valido = false;

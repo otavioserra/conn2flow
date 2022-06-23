@@ -132,6 +132,7 @@ function modulos_copiar_variaveis(){
 
 function modulos_buscar_ids_duplicados(){
 	global $_GESTOR;
+	global $_BANCOS;
 	
 	$ativar = false;
 	
@@ -153,10 +154,9 @@ function modulos_buscar_ids_duplicados(){
 		return;
 	}
 	
-	// ===== Mudar host caso necessário
+	// ===== Pegar o arquivo de autenticação nos bancos.
 	
-	$_GESTOR['bancoDef']['beta.entrey.com.br']['host'] = 'beta.entrey.com.br';
-	$_GESTOR['bancoDef']['entrey.com.br']['host'] = 'entrey.com.br';
+	require_once($_GESTOR['AUTH_PATH'] . 'bancos.php');
 	
 	// ===== Head inicial
 	
@@ -207,7 +207,7 @@ function modulos_buscar_ids_duplicados(){
 		
 		unset($camposAtualizar);
 		
-		$_GESTOR['banco'] = $_GESTOR['bancoDef'][$serverOrigem];
+		$_BANCO = $_BANCOS[$serverOrigem];
 		
 		$tabelaOrigem = banco_select_name
 		(
@@ -221,7 +221,7 @@ function modulos_buscar_ids_duplicados(){
 		
 		// ===== Tabela Destino
 		
-		$_GESTOR['banco'] = $_GESTOR['bancoDef'][$serverDestino];
+		$_BANCO = $_BANCOS[$serverDestino];
 		
 		$tabelaDestino = banco_select_name
 		(
@@ -293,6 +293,7 @@ function modulos_buscar_ids_duplicados(){
 
 function modulos_sincronizar_bancos(){
 	global $_GESTOR;
+	global $_BANCOS;
 	
 	//return modulos_buscar_ids_duplicados();
 	
@@ -322,10 +323,9 @@ function modulos_sincronizar_bancos(){
 		return;
 	}
 	
-	// ===== Mudar host caso necessário
+	// ===== Pegar o arquivo de autenticação nos bancos.
 	
-	$_GESTOR['bancoDef']['beta.entrey.com.br']['host'] = 'beta.entrey.com.br';
-	$_GESTOR['bancoDef']['entrey.com.br']['host'] = 'entrey.com.br';
+	require_once($_GESTOR['AUTH_PATH'] . 'bancos.php');
 	
 	// ===== Head inicial
 	
@@ -560,7 +560,7 @@ function modulos_sincronizar_bancos(){
 		
 		unset($camposAtualizar);
 		
-		$_GESTOR['banco'] = $_GESTOR['bancoDef'][$serverOrigem];
+		$_BANCO = $_BANCOS[$serverOrigem];
 		
 		$tabelaOrigem = banco_select_name
 		(
@@ -574,7 +574,7 @@ function modulos_sincronizar_bancos(){
 		
 		// ===== Tabela Destino
 		
-		$_GESTOR['banco'] = $_GESTOR['bancoDef'][$serverDestino];
+		$_BANCO = $_BANCOS[$serverDestino];
 		
 		$tabelaDestino = banco_select_name
 		(

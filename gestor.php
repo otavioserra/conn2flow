@@ -573,12 +573,13 @@ function gestor_pagina_ultimas_operacoes(){
 
 function gestor_sessao_iniciar(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
-	if(!isset($_COOKIE[$_GESTOR['session-authname']])){
+	if(!isset($_COOKIE[$_CONFIG['session-authname']])){
 		$sessionId = md5(uniqid(rand(), true));
 		
-		setcookie($_GESTOR['session-authname'], $sessionId, [
-			'expires' => time() + $_GESTOR['session-lifetime'],
+		setcookie($_CONFIG['session-authname'], $sessionId, [
+			'expires' => time() + $_CONFIG['session-lifetime'],
 			'path' => '/',
 			'domain' => $_SERVER['SERVER_NAME'],
 			'secure' => true,
@@ -588,12 +589,13 @@ function gestor_sessao_iniciar(){
 		
 		$_GESTOR['session-id'] = $sessionId;
 	} else {
-		$_GESTOR['session-id'] = $_COOKIE[$_GESTOR['session-authname']];
+		$_GESTOR['session-id'] = $_COOKIE[$_CONFIG['session-authname']];
 	}
 }
 
 function gestor_sessao_id(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	$sessoes = banco_select_name
 	(
@@ -646,7 +648,7 @@ function gestor_sessao_id(){
 				FROM sessoes AS sess 
 					LEFT JOIN sessoes_variaveis AS sess_v 
 						ON sess.id_sessoes=sess_v.id_sessoes 
-				WHERE sess.acesso + ".$_GESTOR['session-lifetime']." < ".time()
+				WHERE sess.acesso + ".$_CONFIG['session-lifetime']." < ".time()
 				);
 		}
 		
@@ -657,7 +659,7 @@ function gestor_sessao_id(){
 }
 
 function gestor_sessao_del(){
-	global $_GESTOR;
+	global $_CONFIG;
 	
 	$id_sessoes = gestor_sessao_id();
 	
@@ -685,7 +687,7 @@ function gestor_sessao_del(){
 		"WHERE id_sessoes='".$id_sessoes."'"
 	);
 	
-	setcookie($_GESTOR['session-authname'], "", [
+	setcookie($_CONFIG['session-authname'], "", [
 		'expires' => time() - 3600,
 		'path' => '/',
 		'domain' => $_SERVER['SERVER_NAME'],
@@ -873,15 +875,16 @@ function gestor_permissao_validar_jwt($params = false){
 
 function gestor_permissao_token(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	// ===== Verifica se cookie no navegador está ativo.
 	
-	if(!isset($_COOKIE[$_GESTOR['cookie-verify']])){
+	if(!isset($_COOKIE[$_CONFIG['cookie-verify']])){
 		// ===== Criar um cookie de verificação
 		
 		$cookieId = md5(uniqid(rand(), true));
 		
-		setcookie($_GESTOR['cookie-verify'], $cookieId, [
+		setcookie($_CONFIG['cookie-verify'], $cookieId, [
 			'expires' => '0',
 			'path' => '/',
 			'domain' => $_SERVER['SERVER_NAME'],
@@ -901,11 +904,11 @@ function gestor_permissao_token(){
 	
 	// ===== Verifica se existe o cookie de autenticação gerado no login com sucesso.
 	
-	if(!isset($_COOKIE[$_GESTOR['cookie-authname']])){
+	if(!isset($_COOKIE[$_CONFIG['cookie-authname']])){
 		return false;
 	}
 	
-	$JWTToken = $_COOKIE[$_GESTOR['cookie-authname']];
+	$JWTToken = $_COOKIE[$_CONFIG['cookie-authname']];
 	
 	if(!existe($JWTToken)){
 		return false;
@@ -919,7 +922,7 @@ function gestor_permissao_token(){
 	$keyPrivateString = fread($fp,8192);
 	fclose($fp);
 	
-	$chavePrivadaSenha = $_GESTOR['openssl-password'];
+	$chavePrivadaSenha = $_CONFIG['openssl-password'];
 	
 	// ===== Verificar se o JWT é válido.
 	
@@ -958,7 +961,7 @@ function gestor_permissao_token(){
 				(
 					"usuarios_tokens",
 					"WHERE expiration=0"
-					." AND TIMESTAMPADD(SECOND,".$_GESTOR['session-garbagetime'].",data_criacao) < NOW()"
+					." AND TIMESTAMPADD(SECOND,".$_CONFIG['session-garbagetime'].",data_criacao) < NOW()"
 				);
 				
 				// ===== Deletar todos os tokens persistentes (expiration != 0) quando o tempo de expiração mais o tempo de vida dos tokens forem menor que o tempo agora.
@@ -1009,7 +1012,7 @@ function gestor_permissao_token(){
 					
 					$time_criacao = strtotime($data_criacao);
 					
-					if($time_criacao + $_GESTOR['session-garbagetime'] < time()){
+					if($time_criacao + $_CONFIG['session-garbagetime'] < time()){
 						$expiracao_ok = false;
 						
 						$id_usuarios_tokens = $usuarios_tokens[0]['id_usuarios_tokens'];
@@ -1040,7 +1043,7 @@ function gestor_permissao_token(){
 					// ===== Validar o token com o hash de validação para evitar geração de token por hacker caso ocorra roubo da tabela 'usuarios_tokens'.
 					
 					$bd_hash = $usuarios_tokens[0]['pubIDValidation'];
-					$token_hash = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+					$token_hash = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 					
 					if($bd_hash === $token_hash){
 						$data_criacao = $usuarios_tokens[0]['data_criacao'];
@@ -1051,7 +1054,7 @@ function gestor_permissao_token(){
 							
 							$time_criacao = strtotime($data_criacao);
 							
-							if($time_criacao + $_GESTOR['cookie-renewtime'] < time()){
+							if($time_criacao + $_CONFIG['cookie-renewtime'] < time()){
 								gestor_incluir_biblioteca('usuario');
 								
 								usuario_gerar_token_autorizacao(Array(
@@ -1080,7 +1083,7 @@ function gestor_permissao_token(){
 	
 	// ===== Caso não valide, deletar cookie e retornar 'false'.
 	
-	setcookie($_GESTOR['cookie-authname'], "", [
+	setcookie($_CONFIG['cookie-authname'], "", [
 		'expires' => time() - 3600,
 		'path' => '/',
 		'domain' => $_SERVER['SERVER_NAME'],
@@ -1089,7 +1092,7 @@ function gestor_permissao_token(){
 		'samesite' => 'Lax',
 	]);
 	
-	unset($_COOKIE[$_GESTOR['cookie-authname']]);
+	unset($_COOKIE[$_CONFIG['cookie-authname']]);
 	
 	return false;
 }
@@ -1773,6 +1776,7 @@ function gestor_roteador_erro($params = false){
 function gestor_roteador(){
 	global $_GESTOR;
 	global $_INDEX;
+	global $_CONFIG;
 	
 	$modulos = Array();
 	
@@ -1796,7 +1800,7 @@ function gestor_roteador(){
 		case '_gestor-cookie-verify': 
 			// ===== Verifica se é retorno de redirecionamento veio junto com o cookie. Se sim redirecionar usuário para a URL com queryString. Senão redireciona automaticamente para página informando a obrigatoriedade do uso de cookies para funcionar a página com permissão.
 			
-			if(!isset($_COOKIE[$_GESTOR['cookie-verify']])){
+			if(!isset($_COOKIE[$_CONFIG['cookie-verify']])){
 				header("Location: " . $_GESTOR['url-raiz'] . 'cookies-is-mandatory/'); exit;
 			} else {
 				$url = urldecode(banco_escape_field($_REQUEST['url']));
@@ -1894,7 +1898,7 @@ function gestor_roteador(){
 			
 			if(existe($modulo)){
 				if($modulos['plugin']){
-					require_once($_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
+					require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
 				} else {
 					require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
 				}
@@ -1929,7 +1933,7 @@ function gestor_roteador(){
 			if($_GESTOR['opcao']){
 				if(existe($modulo)){
 					if($modulos['plugin']){
-						require_once($_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
+						require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
 					} else {
 						require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
 					}
@@ -1954,7 +1958,7 @@ function gestor_roteador(){
 			
 			if(existe($modulo)){
 				if($modulos['plugin']){
-					require_once($_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
+					require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
 				} else {
 					require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
 				}

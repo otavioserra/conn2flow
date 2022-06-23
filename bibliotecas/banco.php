@@ -1,18 +1,18 @@
 <?php
 
 $_GESTOR['biblioteca-banco']							=	Array(
-	'versao' => '1.0.5',
+	'versao' => '1.1.0',
 );
 
 function banco_escape_field($field){
-	global $_GESTOR;
+	global $_BANCO;
 	
 	$connect_db = false;
-	if(!isset($_GESTOR['banco']['conexao']))$connect_db = true;
+	if(!isset($_BANCO['conexao']))$connect_db = true;
 	if($connect_db)banco_conectar();
 	
-	if($_GESTOR['banco']['tipo'] == "mysqli"){
-		return mysqli_real_escape_string($_GESTOR['banco']['conexao'],$field);
+	if($_BANCO['tipo'] == "mysqli"){
+		return mysqli_real_escape_string($_BANCO['conexao'],$field);
 	}
 }
 
@@ -46,44 +46,44 @@ function banco_erro_debug(){
 }
 
 function banco_conectar(){
-	global $_GESTOR;
+	global $_BANCO;
 	
- 	if($_GESTOR['banco']['tipo'] == "mysqli"){
- 		$_GESTOR['banco']['conexao'] = mysqli_connect($_GESTOR['banco']['host'],$_GESTOR['banco']['usuario'],$_GESTOR['banco']['senha'],$_GESTOR['banco']['nome']) or die("<p><b>ERRO BANCO:</b> Conexão com o banco de dados não realizada!</p><p><b>Erro MySQL:</b> ".mysqli_error($_GESTOR['banco']['conexao']).'</p>'.banco_erro_debug());
+ 	if($_BANCO['tipo'] == "mysqli"){
+ 		$_BANCO['conexao'] = mysqli_connect($_BANCO['host'],$_BANCO['usuario'],$_BANCO['senha'],$_BANCO['nome']) or die("<p><b>ERRO BANCO:</b> Conexão com o banco de dados não realizada!</p><p><b>Erro MySQL:</b> ".mysqli_error($_BANCO['conexao']).'</p>'.banco_erro_debug());
 	}
 }
 
 function banco_ping(){
-	global $_GESTOR;
+	global $_BANCO;
 	
- 	if($_GESTOR['banco']['tipo'] == "mysqli"){
-		if(!mysqli_ping($_GESTOR['banco']['conexao'])){
+ 	if($_BANCO['tipo'] == "mysqli"){
+		if(!mysqli_ping($_BANCO['conexao'])){
 			$_BANCO['RECONECT']++;
 		}
 	}
 }
 
 function banco_fechar_conexao(){
-	global $_GESTOR;
+	global $_BANCO;
 	
-	if($_GESTOR['banco']['tipo'] == "mysqli")
- 		$_GESTOR['banco']['conexao'] = mysqli_close($_GESTOR['banco']['conexao']) or die("<p><b>ERRO BANCO:</b> Impossível fechar conexão com o banco de dados!</p><p><b>Erro MySQL:</b> ".mysqli_error($_GESTOR['banco']['conexao']).'</p>'.banco_erro_debug());
+	if($_BANCO['tipo'] == "mysqli")
+ 		$_BANCO['conexao'] = mysqli_close($_BANCO['conexao']) or die("<p><b>ERRO BANCO:</b> Impossível fechar conexão com o banco de dados!</p><p><b>Erro MySQL:</b> ".mysqli_error($_BANCO['conexao']).'</p>'.banco_erro_debug());
 	
-	$_GESTOR['banco']['conexao'] = false;
+	$_BANCO['conexao'] = false;
 }
 
 function banco_query($query){
-	global $_GESTOR;
+	global $_BANCO;
 	
 	$connect_db = false;
-	if(!isset($_GESTOR['banco']['conexao']))$connect_db = true;
+	if(!isset($_BANCO['conexao']))$connect_db = true;
 	if($connect_db)banco_conectar();
 	
-	if($_GESTOR['banco']['tipo'] == "mysqli"){
-		$result = mysqli_query($_GESTOR['banco']['conexao'],$query);
+	if($_BANCO['tipo'] == "mysqli"){
+		$result = mysqli_query($_BANCO['conexao'],$query);
 		
 		if(!$result)
-			die('<b>ERRO BANCO:</b> Consulta Inválida!<br><br><b>Consulta:</b> ' . $query . '<br><br><b>Erro Mysql:</b> ' .  mysqli_error($_GESTOR['banco']['conexao']).banco_erro_debug() );
+			die('<b>ERRO BANCO:</b> Consulta Inválida!<br><br><b>Consulta:</b> ' . $query . '<br><br><b>Erro Mysql:</b> ' .  mysqli_error($_BANCO['conexao']).banco_erro_debug() );
 		else 
 			return $result;
 	}
@@ -91,30 +91,30 @@ function banco_query($query){
 }
 
 function banco_num_rows($result){
-	global $_GESTOR;
+	global $_BANCO;
 	
-	if($_GESTOR['banco']['tipo'] == "mysqli")
+	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_num_rows($result);
 }
 
 function banco_num_fields($result){
-	global $_GESTOR;
+	global $_BANCO;
 	
-	if($_GESTOR['banco']['tipo'] == "mysqli")
+	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_num_fields($result);
 }
 
 function banco_field_name($result,$num_field){
-	global $_GESTOR;
+	global $_BANCO;
 	
-	if($_GESTOR['banco']['tipo'] == "mysqli")
+	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_fetch_field_direct($result,$num_field)->name;
 }
 
 function banco_fields_names($table){
-	global $_GESTOR;
+	global $_BANCO;
 	
-	if($_GESTOR['banco']['tipo'] == "mysqli"){
+	if($_BANCO['tipo'] == "mysqli"){
 		$res = banco_query("select * from ".$table." limit 1");
 		
 		if(banco_num_fields($res)){
@@ -132,23 +132,20 @@ function banco_fields_names($table){
 }
 
 function banco_row($result){
-	global $_GESTOR;
+	global $_BANCO;
 	
-	if($_GESTOR['banco']['tipo'] == "mysqli")
+	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_fetch_row($result);
 }
 
 function banco_row_array($result){
-	global $_GESTOR;
+	global $_BANCO;
 	
-	if($_GESTOR['banco']['tipo'] == "mysqli")
+	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_fetch_array($result);
 }
 
 function banco_sql($sql){
-	global $_SYSTEM;
-	global $_GESTOR;
-	
 	$res = banco_query($sql);
 	
 	if(banco_num_rows($res))
@@ -165,8 +162,6 @@ function banco_sql($sql){
 }
 
 function banco_sql_names($sql,$campos){
-	global $_GESTOR;
-	
 	$res = banco_query($sql);
 	
 	if(banco_num_rows($res)){
@@ -203,8 +198,6 @@ function banco_select($params = false){
 	/**********
 		Descrição: selecionar dados do banco.
 	**********/
-	
-	global $_GESTOR;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -277,8 +270,6 @@ function banco_select($params = false){
 }
 
 function banco_select_name($campos,$tabela,$extra){
-	global $_GESTOR;
-	
 	if($extra)
 		$sql = "SELECT " . $campos . " FROM " . $tabela . " " . $extra;
 	else
@@ -645,10 +636,10 @@ function banco_insert_tudo($campos,$tabela){
 }
 
 function banco_last_id(){
-	global $_GESTOR;
+	global $_BANCO;
 
-	if($_GESTOR['banco']['tipo'] == "mysqli")
-		return mysqli_insert_id($_GESTOR['banco']['conexao']);
+	if($_BANCO['tipo'] == "mysqli")
+		return mysqli_insert_id($_BANCO['conexao']);
 }
 
 function banco_delete($tabela,$extra){
@@ -703,9 +694,6 @@ function banco_campos_virgulas($campos){
 }
 
 function banco_total_rows($tabela,$extra = null){
-	global $_SYSTEM;
-	global $_GESTOR;
-	
 	if(isset($extra)){
 		$sql = "SELECT count(*) as total_record FROM " . $tabela . " " . $extra;
 	} else {

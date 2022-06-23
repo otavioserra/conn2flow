@@ -105,6 +105,7 @@ function host_configuracao_encriptar($valor){
 
 function host_configuracao_decriptar($valor){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	// ===== Abrir chave privada e a senha da chave
 	
@@ -114,7 +115,7 @@ function host_configuracao_decriptar($valor){
 	$chavePrivada = fread($fp,8192);
 	fclose($fp);
 	
-	$chavePrivadaSenha = $_GESTOR['openssl-password'];
+	$chavePrivadaSenha = $_CONFIG['openssl-password'];
 	
 	// ===== Abrir chave privada com a senha
 	
@@ -196,6 +197,7 @@ function host_configuracao_gerar_senha($length=32){
 
 function host_configuracao_pipeline_atualizacao($params = false){
 	global $_GESTOR;
+	global $_CONFIG;
 	global $_INDEX;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
@@ -273,7 +275,7 @@ function host_configuracao_pipeline_atualizacao($params = false){
 				
 				$pubId = md5(uniqid(rand(), true));
 				
-				$hashAlgo = $_GESTOR['platform-hash-algo'];
+				$hashAlgo = $_CONFIG['platform-hash-algo'];
 				$hashPass = host_configuracao_gerar_senha();
 				
 				// ===== Criar chaves de segurança para a comunicação entre as plataformas CLIENTE <-> SERVIDOR
@@ -295,7 +297,7 @@ function host_configuracao_pipeline_atualizacao($params = false){
 				
 				// ===== Criar chaves de segurança para gerenciamento de segurança de usuários no host.
 				
-				$segurancaHashAlgo = $_GESTOR['platform-hash-algo'];
+				$segurancaHashAlgo = $_CONFIG['platform-hash-algo'];
 				$segurancaHashPass = host_configuracao_gerar_senha();
 				
 				$segurancaSenhaChavePrivada = host_configuracao_gerar_senha();
@@ -318,8 +320,8 @@ function host_configuracao_pipeline_atualizacao($params = false){
 				$config = modelo_var_troca($config,"#hash-pass#",$hashPass);
 				$config = modelo_var_troca($config,"#pub-id#",$pubId);
 				$config = modelo_var_troca($config,"#plataforma-id#",$_GESTOR['plataforma-id']);
-				$config = modelo_var_troca($config,"#plataforma-recaptcha-active#",($_GESTOR['platform-recaptcha-active'] ? 'true' : 'false'));
-				$config = modelo_var_troca($config,"#plataforma-recaptcha-site#",$_GESTOR['platform-recaptcha-site']);
+				$config = modelo_var_troca($config,"#plataforma-recaptcha-active#",($_CONFIG['platform-recaptcha-active'] ? 'true' : 'false'));
+				$config = modelo_var_troca($config,"#plataforma-recaptcha-site#",$_CONFIG['platform-recaptcha-site']);
 				$config = modelo_var_troca($config,"#host-production#",$_GESTOR['plataforma']['hosts']['producao']['host']);
 				$config = modelo_var_troca($config,"#host-beta#",$_GESTOR['plataforma']['hosts']['beta']['host']);
 				
@@ -1102,8 +1104,8 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 						
 						// ===== Definição dos caminhos do Plugin localmente
 						
-						$path_plugin = $_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$pluginID.'/remoto/';
-						$path_plugin_update = $_INDEX['sistemas-dir'].'b2make-gestor/plugins/'.$pluginID.'/update/';
+						$path_plugin = $_GESTOR['plugins-path'].$pluginID.'/remoto/';
+						$path_plugin_update = $_GESTOR['plugins-path'].$pluginID.'/update/';
 						$path_temp = sys_get_temp_dir().'/';
 						$temp_id = '-'.md5(uniqid(rand(), true));
 						
@@ -2429,6 +2431,7 @@ function host_configuracao_configuracoes(){
 
 function host_configuracao_forgot_password(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if(isset($_REQUEST['forgot-password'])){
 		// ===== Dados do Usuário
@@ -2442,9 +2445,9 @@ function host_configuracao_forgot_password(){
 		// ===== Criar o token e guardar o mesmo no banco
 		
 		$tokenPubId = md5(uniqid(rand(), true));
-		$expiration = time() + $_GESTOR['token-lifetime'];
+		$expiration = time() + $_CONFIG['token-lifetime'];
 
-		$pubID = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+		$pubID = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 		
 		$campos = null; $campo_sem_aspas_simples = null;
 		
@@ -2506,7 +2509,7 @@ function host_configuracao_forgot_password(){
 					),
 					Array(
 						'variavel' => '#expiracao#',
-						'valor' => $_GESTOR['token-lifetime'] / 3600,
+						'valor' => $_CONFIG['token-lifetime'] / 3600,
 					),
 					Array(
 						'variavel' => '#assinatura#',
@@ -2561,6 +2564,7 @@ function host_configuracao_forgot_password_confirmation(){
 
 function host_configuracao_redefine_password(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if(isset($_REQUEST['_gestor-host-redefine-password'])){
 		// ===== Verificar se tem o redirect e aplicar
@@ -2592,7 +2596,7 @@ function host_configuracao_redefine_password(){
 		
 		$tokenPubId = banco_escape_field($_REQUEST['_gestor-host-redefine-password-token']);
 		
-		$pubID = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+		$pubID = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 		
 		// ===== Verificar se já houve validação do campo e criação da sessão
 		
@@ -2792,7 +2796,7 @@ function host_configuracao_redefine_password(){
 		
 		$tokenPubId = banco_escape_field($_REQUEST['id']);
 		
-		$pubID = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+		$pubID = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 		
 		// ===== Verificar se já houve validação do campo e criação da sessão
 		

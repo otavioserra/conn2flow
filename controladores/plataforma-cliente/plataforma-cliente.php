@@ -13,16 +13,18 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 
 function plataforma_cliente_recaptcha($token,$action){
 	global $_GESTOR;
+	global $_CONFIG;
+	global $_CONFIG;
 	
 	// ===== Google reCAPTCHA v3
 	
 	$recaptchaValido = false;
 	
-	if(isset($_GESTOR['platform-recaptcha-active'])){
-		if($_GESTOR['platform-recaptcha-active']){
+	if(isset($_CONFIG['platform-recaptcha-active'])){
+		if($_CONFIG['platform-recaptcha-active']){
 			// ===== Variáveis de comparação do reCAPTCHA
 			
-			$recaptchaSecretKey = $_GESTOR['platform-recaptcha-server'];
+			$recaptchaSecretKey = $_CONFIG['platform-recaptcha-server'];
 			
 			// ===== Identificador do Host.
 			
@@ -278,6 +280,7 @@ function plataforma_cliente_validar_token_autorizacao($params = false){
 
 function plataforma_cliente_gerar_token_autorizacao($params = false){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -291,7 +294,7 @@ function plataforma_cliente_gerar_token_autorizacao($params = false){
 	
 		// ===== Definir variáveis para gerar o JWT
 		
-		$expiration = time() + $_GESTOR['platform-lifetime'];
+		$expiration = time() + $_CONFIG['platform-lifetime'];
 		
 		// ===== Pegar a chave pública do host
 		
@@ -1102,6 +1105,7 @@ function plataforma_cliente_carrinho(){
 
 function plataforma_cliente_identificacao(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	// ===== Identificador do Host.
 	
@@ -1590,9 +1594,9 @@ function plataforma_cliente_identificacao(){
 						if($status == 'A'){
 							// ===== Criar o token e guardar o mesmo no banco
 							
-							$expiration = time() + $_GESTOR['token-lifetime'];
+							$expiration = time() + $_CONFIG['token-lifetime'];
 				
-							$pubID = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+							$pubID = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 							
 							$campos = null; $campo_sem_aspas_simples = null;
 							
@@ -1640,7 +1644,7 @@ function plataforma_cliente_identificacao(){
 										),
 										Array(
 											'variavel' => '#expiracao#',
-											'valor' => $_GESTOR['token-lifetime'] / 3600,
+											'valor' => $_CONFIG['token-lifetime'] / 3600,
 										),
 										Array(
 											'variavel' => '#assinatura#',
@@ -1731,7 +1735,7 @@ function plataforma_cliente_identificacao(){
 				
 				// ===== Hash do token enviado e comparar com os tokens do banco de dados para ver se existem.
 				
-				$pubID = hash_hmac($_GESTOR['usuario-hash-algo'], $tokenPubId, $_GESTOR['usuario-hash-password']);
+				$pubID = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
 				
 				// ===== Remover todos os tokens expirados.
 				
@@ -1993,7 +1997,7 @@ function plataforma_cliente_identificacao(){
 							'status' => 'USER_INVALID',
 							'error-msg' => $alerta,
 							'data' => Array(
-								'usuarioMaxSenhaInvalidas' => $_GESTOR['usuario-maximo-senhas-invalidas'],
+								'usuarioMaxSenhaInvalidas' => $_CONFIG['usuario-maximo-senhas-invalidas'],
 							),
 						);
 					} else {
@@ -4806,6 +4810,7 @@ function plataforma_cliente_usuario(){
 
 function plataforma_cliente_autenticar_servidor(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if(isset($_REQUEST['token']) && isset($_REQUEST['token_validacao_id']) && isset($_REQUEST['id'])){
 		$token = $_REQUEST['token'];
@@ -4890,7 +4895,7 @@ function plataforma_cliente_autenticar_servidor(){
 						
 						
 						$bd_hash = $plataforma_tokens[0]['pubIDValidation'];
-						$token_hash = hash_hmac($_GESTOR['platform-hash-algo'], $token_validacao_id, $_GESTOR['platform-hash-password']);
+						$token_hash = hash_hmac($_CONFIG['platform-hash-algo'], $token_validacao_id, $_CONFIG['platform-hash-password']);
 						
 						if($bd_hash === $token_hash){
 							$id_hosts = $plataforma_tokens[0]['id_hosts'];
@@ -4911,6 +4916,7 @@ function plataforma_cliente_autenticar_servidor(){
 
 function plataforma_cliente_autenticacao(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if(isset($_REQUEST['token']) && isset($_REQUEST['hostId'])){
 		$hostId = banco_escape_field($_REQUEST['hostId']);
@@ -5019,8 +5025,8 @@ function plataforma_cliente_autenticacao(){
 					
 					$tokenPubId = $token_validacao_id;
 				
-					$pubIDValidation = hash_hmac($_GESTOR['platform-hash-algo'], $tokenPubId, $_GESTOR['platform-hash-password']);
-					$expiration = time() + $_GESTOR['platform-lifetime'];
+					$pubIDValidation = hash_hmac($_CONFIG['platform-hash-algo'], $tokenPubId, $_CONFIG['platform-hash-password']);
+					$expiration = time() + $_CONFIG['platform-lifetime'];
 					
 					// ====== Salvar token no banco
 					
