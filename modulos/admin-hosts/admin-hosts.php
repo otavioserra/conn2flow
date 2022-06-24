@@ -261,7 +261,7 @@ function admin_hosts_editar(){
 				'cor' => ($status_atual == 'A' ? 'green' : 'brown' ),
 			),
 			'excluir' => Array(
-				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=excluir&'.$modulo['tabela']['id'].'='.$id,
+				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=excluir&id='.$id,
 				'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-delete')),
 				'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-delete')),
 				'icon' => 'trash alternate',

@@ -1773,6 +1773,14 @@ function gestor_roteador_erro($params = false){
 	}
 }
 
+function gestor_hotfix(){
+	
+	
+	echo '<p>Hotfix Done!</p>';
+	
+	exit;
+}
+
 function gestor_roteador(){
 	global $_GESTOR;
 	global $_INDEX;
@@ -1790,8 +1798,15 @@ function gestor_roteador(){
 	$_GESTOR['ajax-opcao'] = (isset($_REQUEST['ajaxOpcao']) ? banco_escape_field($_REQUEST['ajaxOpcao']) : false);
 	$_GESTOR['opcao'] = (isset($_REQUEST['opcao']) ? banco_escape_field($_REQUEST['opcao']) : false);
 	$_GESTOR['paginaIframe'] = (isset($_REQUEST['paginaIframe']) ? true : false);
+	$_GESTOR['hotfix'] = (isset($_REQUEST['hotfix']) ? true : false);
 	
 	$_GESTOR['modulo-registro-id'] = (isset($_REQUEST['ajaxRegistroId']) ? banco_escape_field($_REQUEST['ajaxRegistroId']) : NULL);
+	
+	// ===== Implementação de um hotfix.
+	
+	if($_GESTOR['hotfix']){
+		gestor_hotfix();
+	}
 	
 	// ===== Rotear URLs de sistema
 	

@@ -301,7 +301,7 @@ function modulos_sincronizar_bancos(){
 	
 	// ===== Ativar / Desativar
 	
-	$ativar = true;
+	$ativar = false;
 	
 	// ===== Opções.
 	
@@ -353,9 +353,7 @@ function modulos_sincronizar_bancos(){
 		'categorias',
 		'templates',
 		'usuarios_planos',
-		//'usuarios_perfis', // IMPORTATE: Problema de consistência de dados! Pois os identificadores numéricos usados para relação podem ser diferentes!!!!
-		//'usuarios_perfis_modulos',
-		//'usuarios_perfis_modulos_operacoes',
+		'plugins',
 	);
 	
 	// ===== Dados das tabelas.
@@ -489,6 +487,7 @@ function modulos_sincronizar_bancos(){
 				'status',
 			),
 			'comparacaoID' => true,
+			'ignorarAddSlashes' => true,
 		),
 	);
 	
@@ -506,46 +505,19 @@ function modulos_sincronizar_bancos(){
 		),
 	);
 	
-	/* $dados['usuarios_perfis'] = Array(
-		'titulo' => 'Usuários Perfis',
+	$dados['plugins'] = Array(
+		'titulo' => 'Plugins',
 		'tabela' => Array(
-			'nome' => 'usuarios_perfis',
-			'id_referencia' => 'id_usuarios_perfis',
+			'nome' => 'plugins',
+			'id_referencia' => 'id_plugins',
 			'camposComparacao' => Array(
 				'id',
 				'data_modificacao',
 				'status',
 			),
 			'comparacaoID' => true,
-			'ignorarAtualizacoes' => true,
 		),
 	);
-	
-	$dados['usuarios_perfis_modulos'] = Array(
-		'titulo' => 'Usuários Perfis Módulos',
-		'tabela' => Array(
-			'nome' => 'usuarios_perfis_modulos',
-			'id_referencia' => 'id_usuarios_perfis_modulos',
-			'camposComparacao' => Array(
-				'id_usuarios_perfis',
-				'id_modulos',
-			),
-			'ignorarAtualizacoes' => true,
-		),
-	);
-	
-	$dados['usuarios_perfis_modulos_operacoes'] = Array(
-		'titulo' => 'Usuários Perfis Módulos Operações',
-		'tabela' => Array(
-			'nome' => 'usuarios_perfis_modulos_operacoes',
-			'id_referencia' => 'id_usuarios_perfis_modulos_operacoes',
-			'camposComparacao' => Array(
-				'id_usuarios_perfis',
-				'id_modulos_operacoes',
-			),
-			'ignorarAtualizacoes' => true,
-		),
-	); */
 	
 	// ===== Verificar todas as Tabelas
 	
