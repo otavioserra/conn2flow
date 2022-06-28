@@ -208,6 +208,17 @@ function usuarios_planos_editar(){
 		
 		$campo_nome = "cpanel_plano"; $request_name = $campo_nome; $alteracoes_name = 'cpanel-plan'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "ordem"; $request_name = $campo_nome; $alteracoes_name = 'order'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
+		
+		// ===== Filtrar a variável pública.
+		
+		if(isset($_REQUEST['publico'])){
+			if($_REQUEST['publico'] == 'on'){
+				$_REQUEST['publico'] = '1';
+			} else {
+				$_REQUEST['publico'] = '';
+			}
+		}
+		
 		$campo_nome = "publico"; $request_name = $campo_nome; $alteracoes_name = 'public'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
