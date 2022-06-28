@@ -265,7 +265,7 @@ function usuarios_adicionar(){
 					'nome' => 'usuario-perfil',
 					'procurar' => true,
 					'limpar' => true,
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-profile-placeholder')),
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-manager-profile-placeholder')),
 					'tabela' => Array(
 						'nome' => 'usuarios_perfis',
 						'campo' => 'nome',
@@ -281,6 +281,14 @@ function usuarios_editar(){
 	global $_GESTOR;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
+	// ===== Módulo extra para variáveis globais.
+	
+	gestor_pagina_variaveis_modulos(Array(
+		'modulosExtra' => Array(
+			'usuarios',
+		),
+	));
 	
 	// ===== Identificador do 
 	
