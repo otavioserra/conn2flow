@@ -26,6 +26,14 @@ function usuarios_adicionar(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
+	// ===== Módulo extra para variáveis globais.
+	
+	gestor_pagina_variaveis_modulos(Array(
+		'modulosExtra' => Array(
+			'usuarios',
+		),
+	));
+	
 	// ===== Gravar registro no Banco
 	
 	if(isset($_GESTOR['adicionar-banco'])){
