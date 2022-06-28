@@ -173,7 +173,7 @@ function admin_hosts_editar(){
 	
 	// ===== Inclusão Módulo JS
 	
-	gestor_pagina_javascript_incluir();
+	//gestor_pagina_javascript_incluir();
 	
 	// ===== Selecionar dados do banco de dados
 	
