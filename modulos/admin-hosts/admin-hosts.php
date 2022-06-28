@@ -84,7 +84,13 @@ function admin_hosts_editar(){
 				$id_usuarios_planos = $_REQUEST[$request_name];
 				$id_usuarios = $hosts['id_usuarios'];
 				
-				// ===== Alterar no usuários o 'id_usuarios_planos'.
+				// ===== Alterar no 'usuarios_planos_usuarios' o 'id_usuarios_planos'.
+				
+				banco_update_campo('id_usuarios_planos',$_REQUEST[$request_name]);
+				
+				banco_update_executar('usuarios_planos_usuarios',"WHERE id_usuarios='".$id_usuarios."'");
+				
+				// ===== Alterar a versão na tabela usuários do usuário específico.
 				
 				banco_update_campo('versao',"versao + 1",true);
 				banco_update_campo('data_modificacao','NOW()',true);
