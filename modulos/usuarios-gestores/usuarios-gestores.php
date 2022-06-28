@@ -763,22 +763,23 @@ function usuarios_interfaces_padroes(){
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
+					'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
 				),
 				'tabela' => Array(
 					'rodape' => true,
 					'colunas' => Array(
 						Array(
 							'id' => 'nome',
-							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-user-label')),
+							'nome' => gestor_variaveis(Array('modulo' => 'usuarios','id' => 'form-name-user-label')),
 							'ordenar' => 'asc',
 						),
 						Array(
 							'id' => 'nome_conta',
-							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-account-label')),
+							'nome' => gestor_variaveis(Array('modulo' => 'usuarios','id' => 'form-name-account-label')),
 						),
 						Array(
 							'id' => 'id_usuarios_perfis',
-							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-profile-label')),
+							'nome' => gestor_variaveis(Array('modulo' => 'usuarios','id' => 'form-user-profile-label')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
 								'tabela' => Array(
