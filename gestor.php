@@ -1355,19 +1355,19 @@ function gestor_host_configuracao(){
 		
 		// ===== Verificar se usuário é admin do host
 		
-		$hosts_usuarios_admins = banco_select_name
+		$usuarios_gestores_hosts = banco_select_name
 		(
 			banco_campos_virgulas(Array(
 				'id_hosts',
 				'privilegios_admin',
 			))
 			,
-			"hosts_usuarios_admins",
+			"usuarios_gestores_hosts",
 			"WHERE id_usuarios='".$usuario['id_usuarios']."'"
 		);
 		
-		if($hosts_usuarios_admins){
-			$id_hosts = $hosts_usuarios_admins[0]['id_hosts'];
+		if($usuarios_gestores_hosts){
+			$id_hosts = $usuarios_gestores_hosts[0]['id_hosts'];
 			
 			// ===== Vincular id_hosts ao usuário.
 			
@@ -1377,7 +1377,7 @@ function gestor_host_configuracao(){
 			
 			$privilegios_admin = false;
 			
-			if($hosts_usuarios_admins[0]['privilegios_admin']){
+			if($usuarios_gestores_hosts[0]['privilegios_admin']){
 				$privilegios_admin = true;
 			}
 			

@@ -1110,7 +1110,7 @@ function perfil_usuario_signup(){
 			banco_insert_name
 			(
 				$campos,
-				"hosts_usuarios_admins"
+				"usuarios_gestores_hosts"
 			);
 			
 			// ===== Logar o usuário 
@@ -1656,9 +1656,9 @@ function perfil_usuario_redefine_password(){
 			
 			// ===== Pegar a referência do host do usuário para incluir no histórico caso seja um usuário de um host.
 			
-			$hosts_usuarios_admins = banco_select(Array(
+			$usuarios_gestores_hosts = banco_select(Array(
 				'unico' => true,
-				'tabela' => 'hosts_usuarios_admins',
+				'tabela' => 'usuarios_gestores_hosts',
 				'campos' => Array(
 					'id_hosts',
 				),
@@ -1666,8 +1666,8 @@ function perfil_usuario_redefine_password(){
 					"WHERE id_usuarios='".$id_usuarios."'"
 			));
 			
-			if($hosts_usuarios_admins){
-				$id_hosts = $hosts_usuarios_admins['id_hosts'];
+			if($usuarios_gestores_hosts){
+				$id_hosts = $usuarios_gestores_hosts['id_hosts'];
 			}
 			
 			// ===== Criar histórico de alterações.

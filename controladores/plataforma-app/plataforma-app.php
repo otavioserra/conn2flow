@@ -491,9 +491,9 @@ function plataforma_app_login(){
 				if($status == 'A'){
 					// ===== Verificar o host do usuário.
 					
-					$hosts_usuarios_admins = banco_select(Array(
+					$usuarios_gestores_hosts = banco_select(Array(
 						'unico' => true,
-						'tabela' => 'hosts_usuarios_admins',
+						'tabela' => 'usuarios_gestores_hosts',
 						'campos' => Array(
 							'id_hosts',
 						),
@@ -501,7 +501,7 @@ function plataforma_app_login(){
 							"WHERE id_usuarios='".$id_usuarios."'"
 					));
 					
-					if($hosts_usuarios_admins){
+					if($usuarios_gestores_hosts){
 						$user_invalid = false;
 						
 						// ===== Gerar token do usuário.
@@ -727,9 +727,9 @@ function plataforma_app_permissao_token($token = ''){
 					
 					// ===== Verificar o host do usuário.
 					
-					$hosts_usuarios_admins = banco_select(Array(
+					$usuarios_gestores_hosts = banco_select(Array(
 						'unico' => true,
-						'tabela' => 'hosts_usuarios_admins',
+						'tabela' => 'usuarios_gestores_hosts',
 						'campos' => Array(
 							'id_hosts',
 						),
@@ -737,7 +737,7 @@ function plataforma_app_permissao_token($token = ''){
 							"WHERE id_usuarios='".$id_usuarios."'"
 					));
 					
-					if($hosts_usuarios_admins){
+					if($usuarios_gestores_hosts){
 						// ===== Verificar se precisa renovar JWTToken, se sim, apagar token anterior e criar um novo no lugar.
 						
 						$time_criacao = strtotime($data_criacao);
@@ -766,7 +766,7 @@ function plataforma_app_permissao_token($token = ''){
 						
 						$_GESTOR['usuario-id'] = $id_usuarios;
 						$_GESTOR['usuario-token-id'] = $tokenPubId;
-						$_GESTOR['usuario-host-id'] = $hosts_usuarios_admins['id_hosts'];
+						$_GESTOR['usuario-host-id'] = $usuarios_gestores_hosts['id_hosts'];
 						
 						return true;
 					}
