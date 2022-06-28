@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'usuarios-planos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
+	'versao' => '1.1.0',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
 		'nome' => 'usuarios_planos',
@@ -64,7 +64,6 @@ function usuarios_planos_adicionar(){
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		
-		$campo_nome = "id_usuarios_perfis"; $post_nome = 'usuario_perfil'; 				if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "cpanel_plano"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "ordem"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		
@@ -104,21 +103,6 @@ function usuarios_planos_adicionar(){
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-cpanel-plan-label')),
 				)
 			),
-			'campos' => Array(
-				Array(
-					'tipo' => 'select',
-					'id' => 'user-profile',
-					'nome' => 'usuario_perfil',
-					'procurar' => true,
-					'limpar' => true,
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-profile-placeholder')),
-					'tabela' => Array(
-						'nome' => 'usuarios_perfis',
-						'campo' => 'nome',
-						'id_numerico' => 'id_usuarios_perfis',
-					),
-				)
-			)
 		)
 	);
 }
@@ -136,7 +120,6 @@ function usuarios_planos_editar(){
 	
 	$camposBanco = Array(
 		'nome',
-		'id_usuarios_perfis',
 		'cpanel_plano',
 		'ordem',
 	);
@@ -217,12 +200,6 @@ function usuarios_planos_editar(){
 		
 		// ===== Atualização dos demais campos.
 		
-		$campo_nome = "id_usuarios_perfis"; $request_name = 'usuario_perfil'; $alteracoes_name = 'user-profile'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
-				'nome' => 'usuarios_perfis',
-				'campo' => 'nome',
-				'id_numerico' => 'id_usuarios_perfis',
-			));}
-			
 		$campo_nome = "cpanel_plano"; $request_name = $campo_nome; $alteracoes_name = 'cpanel-plan'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "ordem"; $request_name = $campo_nome; $alteracoes_name = 'order'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 
@@ -273,7 +250,6 @@ function usuarios_planos_editar(){
 	
 	if($_GESTOR['banco-resultado']){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
-		$id_usuarios_perfis = (isset($retorno_bd['id_usuarios_perfis']) ? $retorno_bd['id_usuarios_perfis'] : '');
 		$cpanel_plano = (isset($retorno_bd['cpanel_plano']) ? $retorno_bd['cpanel_plano'] : '');
 		$ordem = (isset($retorno_bd['ordem']) ? $retorno_bd['ordem'] : '');
 		
@@ -339,22 +315,6 @@ function usuarios_planos_editar(){
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-cpanel-plan-label')),
 				)
 			),
-			'campos' => Array(
-				Array(
-					'tipo' => 'select',
-					'id' => 'user-profile',
-					'nome' => 'usuario_perfil',
-					'procurar' => true,
-					'limpar' => true,
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-profile-placeholder')),
-					'tabela' => Array(
-						'nome' => 'usuarios_perfis',
-						'campo' => 'nome',
-						'id_numerico' => 'id_usuarios_perfis',
-						'id_selecionado' => $id_usuarios_perfis,
-					),
-				)
-			)
 		)
 	);
 }

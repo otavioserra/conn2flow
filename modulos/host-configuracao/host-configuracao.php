@@ -3061,6 +3061,23 @@ function host_configuracao_start(){
 	
 	gestor_incluir_bibliotecas();
 	
+	// ===== Verifica se o usuário é admin do host, senão for redirecionar para dashboard e alertar.
+	
+	$host_verificacao = gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id']);
+	
+	if(!isset($host_verificacao['privilegios_admin'])){
+		$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-not-admin-host'));
+		
+		interface_alerta(Array(
+			'redirect' => true,
+			'msg' => $alerta
+		));
+		
+		gestor_redirecionar('dashboard/');
+	}
+	
+	// ===== Interfaces principais.
+	
 	if($_GESTOR['ajax']){
 		interface_ajax_iniciar();
 		
@@ -3073,21 +3090,6 @@ function host_configuracao_start(){
 		host_configuracao_interfaces_padroes();
 		
 		interface_iniciar();
-		
-		$host_verificacao = gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id']);
-		
-		// ===== Verifica se o usuário é admin do host, senão for redirecionar para dashboard e alertar.
-		
-		if(!isset($host_verificacao['privilegios_admin'])){
-			$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-not-admin-host'));
-			
-			interface_alerta(Array(
-				'redirect' => true,
-				'msg' => $alerta
-			));
-			
-			gestor_redirecionar('dashboard/');
-		}
 		
 		switch($_GESTOR['opcao']){
 			case 'config': host_configuracao_configuracoes(); break;

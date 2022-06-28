@@ -2,9 +2,9 @@
 
 global $_GESTOR;
 
-$_GESTOR['modulo-id']							=	'usuarios';
+$_GESTOR['modulo-id']							=	'usuarios-gestores';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.1',
+	'versao' => '1.0.0',
 	'bibliotecas' => Array('interface','html','usuario'),
 	'tabela' => Array(
 		'nome' => 'usuarios',
@@ -14,6 +14,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'versao' => 'versao',
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
+		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
 	),
 	'historico' => Array(
 		'moduloIdExtra' => 'perfil-usuario',

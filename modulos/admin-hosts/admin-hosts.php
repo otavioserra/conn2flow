@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'admin-hosts';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
+	'versao' => '1.0.1',
 	'bibliotecas' => Array('interface','html','pagina'),
 	'tabela' => Array(
 		'nome' => 'hosts',
@@ -78,7 +78,7 @@ function admin_hosts_editar(){
 		
 		// ===== Verificar se foi modificado o plano.
 		
-		$campo_nome = "id_usuarios_perfis"; $request_name = 'usuario-perfil'; $alteracoes_name = $campo_nome; if($usuarios[$campo_nome] != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){
+		$campo_nome = "id_usuarios_perfis"; $request_name = 'usuario-plano'; $alteracoes_name = $campo_nome; if($usuarios[$campo_nome] != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){
 				$editar = true;
 				$mudar_plano = true;
 				$id_usuarios_perfis = $_REQUEST[$request_name];
@@ -204,9 +204,21 @@ function admin_hosts_editar(){
 				"WHERE id_usuarios='".$retorno_bd['id_usuarios']."'"
 		));
 		
-		// ===== Dados do usuário.
+		// ===== Pegar o plano atual do usuário.
 		
-		$id_usuarios_perfis = $usuarios['id_usuarios_perfis'];
+		$usuarios_planos_usuarios = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_planos_usuarios',
+			'campos' => Array(
+				'id_usuarios_planos',
+			),
+			'extra' => 
+				"WHERE id_usuarios='".$retorno_bd['id_usuarios']."'"
+		));
+		
+		$id_usuarios_planos = $usuarios_planos_usuarios['id_usuarios_planos'];
+		
+		// ===== Dados do usuário.
 		
 		pagina_trocar_variavel_valor('usuario-nome','<a href="/usuarios/editar/?id='.$usuarios['id'].'">'.$usuarios['nome'].'</a>');
 		pagina_trocar_variavel_valor('usuario-email',$usuarios['email']);
@@ -280,13 +292,13 @@ function admin_hosts_editar(){
 				Array(
 					'tipo' => 'select',
 					'id' => 'user-profile',
-					'nome' => 'usuario-perfil',
+					'nome' => 'usuario-plano',
 					'placeholder' => gestor_variaveis(Array('modulo' => 'usuarios','id' => 'form-user-profile-placeholder')),
 					'tabela' => Array(
 						'nome' => 'usuarios_planos',
 						'campo' => 'nome',
-						'id_numerico' => 'id_usuarios_perfis',
-						'id_selecionado' => (isset($id_usuarios_perfis) ? $id_usuarios_perfis : null ),
+						'id_numerico' => 'id_usuarios_planos',
+						'id_selecionado' => (isset($id_usuarios_planos) ? $id_usuarios_planos : null ),
 					),
 				)
 			)
