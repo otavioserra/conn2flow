@@ -66,11 +66,11 @@ function admin_hosts_editar(){
 		
 		// ===== Pegar dados do usuário proprietário do host.
 		
-		$usuarios = banco_select(Array(
+		$usuarios_planos_usuarios = banco_select(Array(
 			'unico' => true,
-			'tabela' => 'usuarios',
+			'tabela' => 'usuarios_planos_usuarios',
 			'campos' => Array(
-				'id_usuarios_perfis',
+				'id_usuarios_planos',
 			),
 			'extra' => 
 				"WHERE id_usuarios='".$hosts['id_usuarios']."'"
@@ -78,15 +78,14 @@ function admin_hosts_editar(){
 		
 		// ===== Verificar se foi modificado o plano.
 		
-		$campo_nome = "id_usuarios_perfis"; $request_name = 'usuario-plano'; $alteracoes_name = $campo_nome; if($usuarios[$campo_nome] != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){
+		$campo_nome = "id_usuarios_planos"; $request_name = 'usuario-plano'; $alteracoes_name = 'user-plan'; if($usuarios_planos_usuarios[$campo_nome] != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){
 				$editar = true;
 				$mudar_plano = true;
-				$id_usuarios_perfis = $_REQUEST[$request_name];
+				$id_usuarios_planos = $_REQUEST[$request_name];
 				$id_usuarios = $hosts['id_usuarios'];
 				
-				// ===== Alterar no usuários o 'id_usuarios_perfis'.
+				// ===== Alterar no usuários o 'id_usuarios_planos'.
 				
-				banco_update_campo($campo_nome,$_REQUEST[$request_name]);
 				banco_update_campo('versao',"versao + 1",true);
 				banco_update_campo('data_modificacao','NOW()',true);
 				
@@ -98,12 +97,12 @@ function admin_hosts_editar(){
 					'alteracoes' => Array(
 						Array(
 							'campo' => 'form-'.$alteracoes_name.'-label',
-							'valor_antes' => $usuarios[$campo_nome],
+							'valor_antes' => $usuarios_planos_usuarios[$campo_nome],
 							'valor_depois' => banco_escape_field($_REQUEST[$request_name]),
 							'tabela' => Array(
-								'nome' => 'usuarios_perfis',
+								'nome' => 'usuarios_planos',
 								'campo' => 'nome',
-								'id_numerico' => 'id_usuarios_perfis',
+								'id_numerico' => 'id_usuarios_planos',
 							)
 						)
 					),
@@ -118,10 +117,10 @@ function admin_hosts_editar(){
 				
 				// ===== Fazer incluir histórico alterações no host.
 			
-				$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => $usuarios[$campo_nome],'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
+				$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => $usuarios_planos_usuarios[$campo_nome],'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
 					'nome' => 'usuarios_planos',
 					'campo' => 'nome',
-					'id_numerico' => 'id_usuarios_perfis',
+					'id_numerico' => 'id_usuarios_planos',
 				));
 			}
 			
@@ -152,7 +151,7 @@ function admin_hosts_editar(){
 					'cpanel_plano',
 				),
 				'extra' => 
-					"WHERE id_usuarios_perfis='".$id_usuarios_perfis."'"
+					"WHERE id_usuarios_planos='".$id_usuarios_planos."'"
 			));
 			
 			$plano = $usuarios_planos['cpanel_plano'];
