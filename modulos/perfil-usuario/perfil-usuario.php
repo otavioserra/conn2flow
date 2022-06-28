@@ -1243,6 +1243,7 @@ function perfil_usuario_signup(){
 		,
 		"usuarios_planos",
 		"WHERE status='A'"
+		." AND publico IS NOT NULL"
 		." ORDER BY ordem ASC"
 	);
 	
