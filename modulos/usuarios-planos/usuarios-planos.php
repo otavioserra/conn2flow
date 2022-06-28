@@ -83,6 +83,10 @@ function usuarios_planos_adicionar(){
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
 	}
 	
+	// ===== Marcar campo público como padrão.
+	
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#publico#','checked');
+	
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
@@ -122,6 +126,7 @@ function usuarios_planos_editar(){
 		'nome',
 		'cpanel_plano',
 		'ordem',
+		'publico',
 	);
 	
 	$camposBancoPadrao = Array(
@@ -252,10 +257,13 @@ function usuarios_planos_editar(){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
 		$cpanel_plano = (isset($retorno_bd['cpanel_plano']) ? $retorno_bd['cpanel_plano'] : '');
 		$ordem = (isset($retorno_bd['ordem']) ? $retorno_bd['ordem'] : '');
+		$publico = (isset($retorno_bd['publico']) ? $retorno_bd['publico'] : '');
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#cpanel_plano#',$cpanel_plano);
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#ordem#',$ordem);
+		
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#publico#',($publico ? 'checked' : ''));
 		
 		// ===== Popular os metaDados
 		
