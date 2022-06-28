@@ -72,8 +72,6 @@ function usuarios_perfis_adicionar(){
 			$modulo['tabela']['nome']
 		);
 		
-		$id_usuarios_perfis = banco_last_id();
-		
 		// ===== IDs dos módulos e módulos operações.
 		
 		$modulos = banco_select_name
@@ -1036,89 +1034,6 @@ function usuarios_perfis_editar(){
 			"usuarios_perfis_modulos_operacoes",
 			"WHERE perfil='".$id."'"
 		);
-		
-		// ===== Atualizar os dados atuais.
-		
-		$atualizarDados = false; // ATUALIZAR NA VERSÃO LIVE E DEPOIS EXCLUIR!!!!!!!!!!!
-		
-		if($atualizarDados){
-			$usuarios_perfis_aux = banco_select_name
-			(
-				banco_campos_virgulas(Array(
-					'id_usuarios_perfis',
-					'id',
-				))
-				,
-				"usuarios_perfis",
-				"WHERE status='A'"
-			);
-			
-			$usuarios_perfis_modulos_aux = banco_select_name
-			(
-				banco_campos_virgulas(Array(
-					'id_usuarios_perfis_modulos',
-					'id_usuarios_perfis',
-					'id_modulos',
-				))
-				,
-				"usuarios_perfis_modulos",
-				"WHERE perfil IS NULL"
-			);
-			
-			$usuarios_perfis_modulos_operacoes_aux = banco_select_name
-			(
-				banco_campos_virgulas(Array(
-					'id_usuarios_perfis_modulos_operacoes',
-					'id_usuarios_perfis',
-					'id_modulos_operacoes',
-				))
-				,
-				"usuarios_perfis_modulos_operacoes",
-				"WHERE perfil IS NULL"
-			);
-			
-			if($usuarios_perfis_aux)
-			foreach($usuarios_perfis_aux as $upa){
-				if($usuarios_perfis_modulos_aux)
-				foreach($usuarios_perfis_modulos_aux as $upma){
-					if($upma['id_usuarios_perfis'] == $upa['id_usuarios_perfis']){
-						if($modulos)
-						foreach($modulos as $mod){
-							if($upma['id_modulos'] == $mod['id_modulos']){
-								banco_update_campo('perfil',$upa['id']);
-								banco_update_campo('modulo',$mod['id']);
-								banco_update_executar('usuarios_perfis_modulos',"WHERE id_usuarios_perfis_modulos='".$upma['id_usuarios_perfis_modulos']."'");
-								break;
-							}
-						}
-					}
-				}
-				
-				if($usuarios_perfis_modulos_operacoes_aux)
-				foreach($usuarios_perfis_modulos_operacoes_aux as $upmoa){
-					if($upmoa['id_usuarios_perfis'] == $upa['id_usuarios_perfis']){
-						if($modulos_operacoes)
-						foreach($modulos_operacoes as $modOp){
-							if($upmoa['id_modulos_operacoes'] == $modOp['id_modulos_operacoes']){
-								if($modulos)
-								foreach($modulos as $mod){
-									if($modOp['id_modulos'] == $mod['id_modulos']){
-										$modulo_id = $mod['id'];
-										break;
-									}
-								}
-								
-								banco_update_campo('perfil',$upa['id']);
-								banco_update_campo('modulo',$modulo_id);
-								banco_update_campo('operacao',$modOp['id']);
-								banco_update_executar('usuarios_perfis_modulos_operacoes',"WHERE id_usuarios_perfis_modulos_operacoes='".$upmoa['id_usuarios_perfis_modulos_operacoes']."'");
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
 		
 		// ===== Caso encontre, monte o html com todos os módulos em seus grupos
 		

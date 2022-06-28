@@ -267,9 +267,9 @@ function usuarios_adicionar(){
 					'limpar' => true,
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-manager-profile-placeholder')),
 					'tabela' => Array(
-						'nome' => 'usuarios_perfis',
+						'nome' => 'usuarios_gestores_perfis',
 						'campo' => 'nome',
-						'id_numerico' => 'id_usuarios_perfis',
+						'id_numerico' => 'id_usuarios_gestores_perfis',
 					),
 				)
 			)
