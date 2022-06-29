@@ -27,7 +27,7 @@ if(isset($_CRON)){
 	$_GESTOR['ROOT_PATH'] = $_CRON['ROOT_PATH'];
 } else {
 	if($_SERVER['SERVER_NAME'] == "localhost"){
-		$_GESTOR['ROOT_PATH'] = $_SERVER['DOCUMENT_ROOT'].'/sistemas/b2make-gestor/';
+		$_GESTOR['ROOT_PATH'] = $_SERVER['DOCUMENT_ROOT'].'/b2make-gestor/';
 	} else if($_SERVER['SERVER_NAME'] == "beta.entrey.com.br"){
 		$_GESTOR['ROOT_PATH'] = $_SERVER['DOCUMENT_ROOT'].'/../b2make-gestor/';
 	} else {
@@ -68,7 +68,20 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	// ===== Configuração do server de cada host de usuário.
 	
 	$_GESTOR['hosts-server'] = Array(
-		'ativo'						=>	false,
+		'ativo'						=>	true,
+		'cpanel-root-path'			=>	'/home/betaentreycom/b2make-cpanel/',
+		'local'						=>	'betaServer0',
+		'server'					=>	's0',
+		'pacote-inicial'			=>	'TRIAL',
+		'user-perfix'				=>	's0ub',
+		'dominio'					=>	's0.entrey.com.br',
+		'dominio-sufix-regex'		=>	's0\.entrey\.com\.br',
+		'db-user-sufix'				=>	'_entrey',
+		'ftp-user-sufix'			=>	'_entrey',
+		'ftp-root'					=>	'/',
+		'ftp-site-root'				=>	'/public_html/',
+		'ftp-files-root'			=>	'/entrey/files/',
+		'ftp-gestor-root'			=>	'/entrey/',
 	);
 	
 	// ===== Identificador do ambiente da plataforma.

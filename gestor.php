@@ -1414,7 +1414,7 @@ function gestor_host_configuracao(){
 					$usuarios_perfis_modulos = banco_select_name
 					(
 						banco_campos_virgulas(Array(
-							'id_modulos',
+							'id_usuarios_perfis_modulos',
 						))
 						,
 						"usuarios_perfis_modulos",
