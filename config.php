@@ -26,7 +26,7 @@ if(isset($_CRON)){
 	$_SERVER['SERVER_NAME'] = $_CRON['SERVER_NAME'];
 	$_GESTOR['ROOT_PATH'] = $_CRON['ROOT_PATH'];
 } else {
-	$_GESTOR['ROOT_PATH'] = $_SERVER['DOCUMENT_ROOT'].$_INDEX['sistemas-dir'].'b2make-gestor/';
+	$_GESTOR['ROOT_PATH'] = $_SERVER['DOCUMENT_ROOT'].'/'.(isset($_INDEX['acesso-publico-dir']) ? $_INDEX['acesso-publico-dir'] : '').$_INDEX['sistemas-dir'].'b2make-gestor/';
 }
 
 // ===== Incluir arquivos de autenticação do banco, de configurações e caminho para as chaves de segurança principais.
