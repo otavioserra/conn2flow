@@ -1193,7 +1193,7 @@ function usuarios_perfis_editar(){
 				}
 				
 				echo 'antes modulosIncluidosFlag<br>';
-				echo 'modulosIncluidosFlag: '.($modulosIncluidosFlag ? 'true' : 'false').'<br>'.exit;
+				echo 'modulosIncluidosFlag: '.($modulosIncluidosFlag ? 'true' : 'false').'<br>';
 				
 				if($modulosIncluidosFlag){
 					$modulosDepois = modelo_var_troca($modulosDepois,'#modulos#','');
@@ -1212,6 +1212,8 @@ function usuarios_perfis_editar(){
 				}
 				
 				$alteracoes[] = Array('opcao' => 'usuarios-perfis','campo' => 'modules-name','valor_antes' => $modulosAntes,'valor_depois' => $modulosDepois);
+				
+				echo 'alteracoes>> '.print_r($alteracoes,true)."<br>";exit;
 			}
 			
 			// ===== Incluir no histórico as alterações.
