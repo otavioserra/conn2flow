@@ -65,6 +65,7 @@ function usuarios_perfis_adicionar(){
 		
 		// ===== Campos gerais
 		
+		$campo_nome = "id_hosts"; $campo_valor = $_GESTOR['host-id']; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		
@@ -585,6 +586,7 @@ function usuarios_perfis_editar(){
 			$modulo['tabela']['nome'],
 			"WHERE ".$modulo['tabela']['id']."='".$id."'"
 			." AND ".$modulo['tabela']['status']."!='D'"
+			." AND id_hosts='".$_GESTOR['host-id']."'"
 		)){
 			interface_alerta(Array(
 				'redirect' => true,
@@ -1241,6 +1243,7 @@ function usuarios_perfis_editar(){
 		$modulo['tabela']['nome'],
 		"WHERE ".$modulo['tabela']['id']."='".$id."'"
 		." AND ".$modulo['tabela']['status']."!='D'"
+		." AND id_hosts='".$_GESTOR['host-id']."'"
 	);
 	
 	if($_GESTOR['banco-resultado']){
