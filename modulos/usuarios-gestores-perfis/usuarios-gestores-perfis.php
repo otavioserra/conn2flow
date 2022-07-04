@@ -1192,6 +1192,7 @@ function usuarios_perfis_editar(){
 					$modulosDepois = modelo_var_troca($modulosDepois,'#modulos-operacoes#',gestor_variaveis(Array('modulo' => 'interface','id' => 'no-occurrence')));
 				}
 				
+				echo 'antes modulosIncluidosFlag<br>';
 				echo 'modulosIncluidosFlag: '.($modulosIncluidosFlag ? 'true' : 'false').'<br>'.exit;
 				
 				if($modulosIncluidosFlag){
