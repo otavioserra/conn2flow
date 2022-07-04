@@ -81,6 +81,64 @@ function usuarios_perfis_adicionar(){
 			$modulo['tabela']['nome']
 		);
 		
+		// ===== Buscar o id_usuario proprietário do host.
+		
+		$hosts = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'hosts',
+			'campos' => Array(
+				'id_usuarios',
+			),
+			'extra' => 
+				"WHERE id_hosts='".$_GESTOR['host-id']."'"
+		));
+		
+		// ===== Pegar o identificador do perfil do usuário proprietário do host.
+		
+		$usuarios = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios',
+			'campos' => Array(
+				'id_usuarios_perfis',
+			),
+			'extra' => 
+				"WHERE id_usuarios='".$hosts['id_usuarios']."'"
+		));
+		
+		$usuarios_perfis = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_perfis',
+			'campos' => Array(
+				'id',
+			),
+			'extra' => 
+				"WHERE id_usuarios_perfis='".$usuarios['id_usuarios_perfis']."'"
+		));
+		
+		$perfilPai = $usuarios_perfis['id'];
+		
+		// ===== Pegar todos os perfis_modulos e operações do usuário proprietário.
+		
+		$usuarios_perfis_modulos = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'modulo',
+			))
+			,
+			"usuarios_perfis_modulos",
+			"WHERE perfil='".$perfilPai."'"
+		);
+		
+		$usuarios_perfis_modulos_operacoes = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'operacao',
+			))
+			,
+			"usuarios_perfis_modulos_operacoes",
+			"WHERE perfil='".$perfilPai."'"
+		);
+		
 		// ===== IDs dos módulos e módulos operações.
 		
 		$modulos = banco_select_name
@@ -120,6 +178,23 @@ function usuarios_perfis_adicionar(){
 				
 				if($modulos){
 					foreach($modulos as $mod){
+						// ===== Verificar se o módulo faz parte do perfil do proprietário do host, senão continuar.
+						
+						if($usuarios_perfis_modulos){
+							$mFound = false;
+							
+							foreach($usuarios_perfis_modulos as $pm){
+								if($pm['modulo'] == $mod['id']){
+									$mFound = true;
+									break;
+								}
+							}
+							
+							if(!$mFound){
+								continue;
+							}
+						}
+						
 						if($mod['id_modulos'] == $_REQUEST['modulo-'.$count]){
 							$encontrou = true;
 							$modulo_id = $mod['id'];
@@ -131,13 +206,14 @@ function usuarios_perfis_adicionar(){
 				// ===== Caso tenha encontrado, inserir o mesmo como referência.
 				
 				if($encontrou){
+					banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
 					banco_insert_name_campo('perfil',$id);
 					banco_insert_name_campo('modulo',$modulo_id);
 					
 					banco_insert_name
 					(
 						banco_insert_name_campos(),
-						"usuarios_perfis_modulos"
+						"usuarios_gestores_perfis_modulos"
 					);
 				}
 			}
@@ -159,6 +235,23 @@ function usuarios_perfis_adicionar(){
 				
 				if($modulos_operacoes){
 					foreach($modulos_operacoes as $operacao){
+						// ===== Verificar se o módulo operação faz parte do perfil do proprietário do host, senão continuar.
+						
+						if($usuarios_perfis_modulos_operacoes){
+							$mOFound = false;
+							
+							foreach($usuarios_perfis_modulos_operacoes as $pmo){
+								if($pmo['operacao'] == $operacao['id']){
+									$mOFound = true;
+									break;
+								}
+							}
+							
+							if(!$mOFound){
+								continue;
+							}
+						}
+						
 						if($operacao['id_modulos_operacoes'] == $_REQUEST['operacao-'.$count]){
 							$encontrou = true;
 							$operacao_id = $operacao['id'];
@@ -170,13 +263,14 @@ function usuarios_perfis_adicionar(){
 				// ===== Caso tenha encontrado, inserir o mesmo como referência.
 				
 				if($encontrou){
+					banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
 					banco_insert_name_campo('perfil',$id);
 					banco_insert_name_campo('operacao',$operacao_id);
 					
 					banco_insert_name
 					(
 						banco_insert_name_campos(),
-						"usuarios_perfis_modulos_operacoes"
+						"usuarios_gestores_perfis_modulos_operacoes"
 					);
 				}
 			}
@@ -245,7 +339,7 @@ function usuarios_perfis_adicionar(){
 			"WHERE id_usuarios_perfis='".$usuarios['id_usuarios_perfis']."'"
 	));
 	
-	$perfil = $usuarios_perfis['id'];
+	$perfilPai = $usuarios_perfis['id'];
 	
 	// ===== Pegar todos os perfis_modulos e operações do usuário proprietário.
 	
@@ -256,7 +350,7 @@ function usuarios_perfis_adicionar(){
 		))
 		,
 		"usuarios_perfis_modulos",
-		"WHERE perfil='".$perfil."'"
+		"WHERE perfil='".$perfilPai."'"
 	);
 	
 	$usuarios_perfis_modulos_operacoes = banco_select_name
@@ -266,7 +360,7 @@ function usuarios_perfis_adicionar(){
 		))
 		,
 		"usuarios_perfis_modulos_operacoes",
-		"WHERE perfil='".$perfil."'"
+		"WHERE perfil='".$perfilPai."'"
 	);
 	
 	// ===== Buscar no banco módulos / grupo de módulos
@@ -546,6 +640,44 @@ function usuarios_perfis_editar(){
 		
 		$id_numerico = (isset($retorno_bd[$modulo['tabela']['id_numerico']]) ? $retorno_bd[$modulo['tabela']['id_numerico']] : '');
 		
+		// ===== Buscar o id_usuario proprietário do host.
+		
+		$hosts = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'hosts',
+			'campos' => Array(
+				'id_usuarios',
+			),
+			'extra' => 
+				"WHERE id_hosts='".$_GESTOR['host-id']."'"
+		));
+		
+		// ===== Pegar o identificador do perfil do usuário proprietário do host.
+		
+		$usuarios = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios',
+			'campos' => Array(
+				'id_usuarios_perfis',
+			),
+			'extra' => 
+				"WHERE id_usuarios='".$hosts['id_usuarios']."'"
+		));
+		
+		$usuarios_perfis = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_perfis',
+			'campos' => Array(
+				'id',
+			),
+			'extra' => 
+				"WHERE id_usuarios_perfis='".$usuarios['id_usuarios_perfis']."'"
+		));
+		
+		$perfilPai = $usuarios_perfis['id'];
+		
+		// ===== Pegar todos os perfis_modulos e operações do usuário proprietário.
+		
 		$usuarios_perfis_modulos = banco_select_name
 		(
 			banco_campos_virgulas(Array(
@@ -553,7 +685,7 @@ function usuarios_perfis_editar(){
 			))
 			,
 			"usuarios_perfis_modulos",
-			"WHERE perfil='".$id."'"
+			"WHERE perfil='".$perfilPai."'"
 		);
 		
 		$usuarios_perfis_modulos_operacoes = banco_select_name
@@ -563,7 +695,31 @@ function usuarios_perfis_editar(){
 			))
 			,
 			"usuarios_perfis_modulos_operacoes",
+			"WHERE perfil='".$perfilPai."'"
+		);
+		
+		// ===== Pegar todos os perfis_modulos e operações do usuário alvo.
+		
+		$usuarios_gestores_perfis_modulos = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'modulo',
+			))
+			,
+			"usuarios_gestores_perfis_modulos",
 			"WHERE perfil='".$id."'"
+			." AND id_hosts='".$_GESTOR['host-id']."'"
+		);
+		
+		$usuarios_gestores_perfis_modulos_operacoes = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'operacao',
+			))
+			,
+			"usuarios_gestores_perfis_modulos_operacoes",
+			"WHERE perfil='".$id."'"
+			." AND id_hosts='".$_GESTOR['host-id']."'"
 		);
 		
 		// ===== IDs dos módulos e módulos operações.
@@ -616,6 +772,25 @@ function usuarios_perfis_editar(){
 				
 				if($modulos){
 					foreach($modulos as $mod){
+						// ===== Verificar se o módulo faz parte do perfil do proprietário do host, senão continuar.
+						
+						if($usuarios_perfis_modulos){
+							$mFound = false;
+							
+							foreach($usuarios_perfis_modulos as $pm){
+								if($pm['modulo'] == $mod['id']){
+									$mFound = true;
+									break;
+								}
+							}
+							
+							if(!$mFound){
+								continue;
+							}
+						}
+						
+						// ===== Verificar se o módulo enviado é igual ao local.
+						
 						if($mod['id_modulos'] == $_REQUEST['modulo-'.$i]){
 							$encontrou = true;
 							$modulo_id = $mod['id'];
@@ -630,8 +805,8 @@ function usuarios_perfis_editar(){
 					
 					$jaEstavaAtivo = false;
 					
-					if($usuarios_perfis_modulos)
-					foreach($usuarios_perfis_modulos as $upm){
+					if($usuarios_gestores_perfis_modulos)
+					foreach($usuarios_gestores_perfis_modulos as $upm){
 						if($upm['modulo'] == $modulo_id){
 							$jaEstavaAtivo = true;
 							break;
@@ -641,13 +816,14 @@ function usuarios_perfis_editar(){
 					if(!$jaEstavaAtivo){
 						// ===== Caso tenha encontrado e não estiver ativo, inserir o mesmo como referência.
 						
+						banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
 						banco_insert_name_campo('perfil',$id);
 						banco_insert_name_campo('modulo',$modulo_id);
 						
 						banco_insert_name
 						(
 							banco_insert_name_campos(),
-							"usuarios_perfis_modulos"
+							"usuarios_gestores_perfis_modulos"
 						);
 						
 						$modulosIncluidos[$modulo_id] = true;
@@ -657,8 +833,8 @@ function usuarios_perfis_editar(){
 			}
 		}
 		
-		if($usuarios_perfis_modulos)
-		foreach($usuarios_perfis_modulos as $upm){
+		if($usuarios_gestores_perfis_modulos)
+		foreach($usuarios_gestores_perfis_modulos as $upm){
 			// ===== Procurar os módulos que devem ser excluídos.
 			
 			$encontrou = false;
@@ -675,9 +851,10 @@ function usuarios_perfis_editar(){
 			if(!$encontrou){
 				banco_delete
 				(
-					"usuarios_perfis_modulos",
+					"usuarios_gestores_perfis_modulos",
 					"WHERE perfil='".$id."'"
 					." AND modulo='".$upm['modulo']."'"
+					." AND id_hosts='".$_GESTOR['host-id']."'"
 				);
 				
 				$alterouModulos = true;
@@ -696,6 +873,23 @@ function usuarios_perfis_editar(){
 				
 				if($modulos_operacoes){
 					foreach($modulos_operacoes as $modulo_operacao){
+						// ===== Verificar se o módulo operação faz parte do perfil do proprietário do host, senão continuar.
+						
+						if($usuarios_perfis_modulos_operacoes){
+							$mOFound = false;
+							
+							foreach($usuarios_perfis_modulos_operacoes as $pmo){
+								if($pmo['operacao'] == $operacao['id']){
+									$mOFound = true;
+									break;
+								}
+							}
+							
+							if(!$mOFound){
+								continue;
+							}
+						}
+						
 						if($modulo_operacao['id_modulos_operacoes'] == $_REQUEST['operacao-'.$i]){
 							$encontrou = true;
 							$operacao_id = $modulo_operacao['id'];
@@ -710,8 +904,8 @@ function usuarios_perfis_editar(){
 					
 					$jaEstavaAtivo = false;
 					
-					if($usuarios_perfis_modulos_operacoes)
-					foreach($usuarios_perfis_modulos_operacoes as $upmo){
+					if($usuarios_gestores_perfis_modulos_operacoes)
+					foreach($usuarios_gestores_perfis_modulos_operacoes as $upmo){
 						if($upmo['operacao'] == $operacao_id){
 							$jaEstavaAtivo = true;
 							break;
@@ -721,13 +915,14 @@ function usuarios_perfis_editar(){
 					if(!$jaEstavaAtivo){
 						// ===== Caso tenha encontrado, inserir o mesmo como referência.
 						
+						banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
 						banco_insert_name_campo('perfil',$id);
 						banco_insert_name_campo('operacao',$operacao_id);
 						
 						banco_insert_name
 						(
 							banco_insert_name_campos(),
-							"usuarios_perfis_modulos_operacoes"
+							"usuarios_gestores_perfis_modulos_operacoes"
 						);
 						
 						$modulosOperacoesIncluidos[$operacao_id] = true;
@@ -737,8 +932,8 @@ function usuarios_perfis_editar(){
 			}
 		}
 		
-		if($usuarios_perfis_modulos_operacoes)
-		foreach($usuarios_perfis_modulos_operacoes as $upmo){
+		if($usuarios_gestores_perfis_modulos_operacoes)
+		foreach($usuarios_gestores_perfis_modulos_operacoes as $upmo){
 			$encontrou = false;
 			
 			foreach($modulosOperacoesAtivos as $operacao_id => $val){
@@ -751,9 +946,10 @@ function usuarios_perfis_editar(){
 			if(!$encontrou){
 				banco_delete
 				(
-					"usuarios_perfis_modulos_operacoes",
+					"usuarios_gestores_perfis_modulos_operacoes",
 					"WHERE perfil='".$id."'"
 					." AND operacao='".$upmo['operacao']."'"
+					." AND id_hosts='".$_GESTOR['host-id']."'"
 				);
 				
 				$alterouModulosOperacoes = true;
@@ -1012,10 +1208,10 @@ function usuarios_perfis_editar(){
 			
 			if(isset($id_novo)){
 				banco_update_campo('perfil',$id_novo);
-				banco_update_executar('usuarios_perfis_modulos',"WHERE perfil='".$id."'");
+				banco_update_executar('usuarios_gestores_perfis_modulos',"WHERE perfil='".$id."' AND id_hosts='".$_GESTOR['host-id']."'");
 				
 				banco_update_campo('perfil',$id_novo);
-				banco_update_executar('usuarios_perfis_modulos_operacoes',"WHERE perfil='".$id."'");
+				banco_update_executar('usuarios_gestores_perfis_modulos_operacoes',"WHERE perfil='".$id."' AND id_hosts='".$_GESTOR['host-id']."'");
 			}
 		}
 		
@@ -1072,6 +1268,64 @@ function usuarios_perfis_editar(){
 		$cel_nome = 'operacoes';
 		$cel[$cel_nome] = modelo_var_troca($cel[$cel_nome],"#operacoes-nome#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'operations-modules-name')));
 		
+		// ===== Buscar o id_usuario proprietário do host.
+		
+		$hosts = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'hosts',
+			'campos' => Array(
+				'id_usuarios',
+			),
+			'extra' => 
+				"WHERE id_hosts='".$_GESTOR['host-id']."'"
+		));
+		
+		// ===== Pegar o identificador do perfil do usuário proprietário do host.
+		
+		$usuarios = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios',
+			'campos' => Array(
+				'id_usuarios_perfis',
+			),
+			'extra' => 
+				"WHERE id_usuarios='".$hosts['id_usuarios']."'"
+		));
+		
+		$usuarios_perfis = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_perfis',
+			'campos' => Array(
+				'id',
+			),
+			'extra' => 
+				"WHERE id_usuarios_perfis='".$usuarios['id_usuarios_perfis']."'"
+		));
+		
+		$perfilPai = $usuarios_perfis['id'];
+		
+		// ===== Pegar todos os perfis_modulos e operações do usuário proprietário.
+		
+		$usuarios_perfis_modulos = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'modulo',
+			))
+			,
+			"usuarios_perfis_modulos",
+			"WHERE perfil='".$perfilPai."'"
+		);
+		
+		$usuarios_perfis_modulos_operacoes = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'operacao',
+			))
+			,
+			"usuarios_perfis_modulos_operacoes",
+			"WHERE perfil='".$perfilPai."'"
+		);
+		
 		// ===== Buscar no banco módulos / grupo de módulos
 		
 		$modulo_biblioteca_id = $modulo['modulo_biblioteca_id'];
@@ -1118,24 +1372,26 @@ function usuarios_perfis_editar(){
 			." ORDER BY nome ASC"
 		);
 		
-		$usuarios_perfis_modulos = banco_select_name
+		$usuarios_gestores_perfis_modulos = banco_select_name
 		(
 			banco_campos_virgulas(Array(
 				'modulo',
 			))
 			,
-			"usuarios_perfis_modulos",
+			"usuarios_gestores_perfis_modulos",
 			"WHERE perfil='".$id."'"
+			." AND id_hosts='".$_GESTOR['host-id']."'"
 		);
 		
-		$usuarios_perfis_modulos_operacoes = banco_select_name
+		$usuarios_gestores_perfis_modulos_operacoes = banco_select_name
 		(
 			banco_campos_virgulas(Array(
 				'operacao',
 			))
 			,
-			"usuarios_perfis_modulos_operacoes",
+			"usuarios_gestores_perfis_modulos_operacoes",
 			"WHERE perfil='".$id."'"
+			." AND id_hosts='".$_GESTOR['host-id']."'"
 		);
 		
 		// ===== Caso encontre, monte o html com todos os módulos em seus grupos
@@ -1160,6 +1416,23 @@ function usuarios_perfis_editar(){
 				
 				if($modulos){
 					foreach($modulos as $m){
+						// ===== Verificar se o módulo faz parte do perfil do proprietário do host, senão continuar.
+						
+						if($usuarios_perfis_modulos){
+							$mFound = false;
+							
+							foreach($usuarios_perfis_modulos as $pm){
+								if($pm['modulo'] == $m['id']){
+									$mFound = true;
+									break;
+								}
+							}
+							
+							if(!$mFound){
+								continue;
+							}
+						}
+						
 						if($m['id_modulos_grupos'] == $id_modulos_grupos){
 							$cel_aux_2 = $cel[$cel_nome_2];
 			
@@ -1170,6 +1443,23 @@ function usuarios_perfis_editar(){
 							
 							if($modulos_operacoes){
 								foreach($modulos_operacoes as $mo){
+									// ===== Verificar se o módulo operação faz parte do perfil do proprietário do host, senão continuar.
+									
+									if($usuarios_perfis_modulos_operacoes){
+										$mOFound = false;
+										
+										foreach($usuarios_perfis_modulos_operacoes as $pmo){
+											if($pmo['operacao'] == $mo['id']){
+												$mOFound = true;
+												break;
+											}
+										}
+										
+										if(!$mOFound){
+											continue;
+										}
+									}
+									
 									if($mo['id_modulos'] == $m['id_modulos']){
 										$cel_aux_op_2 = $cel[$cel_nome_4];
 						
@@ -1179,8 +1469,8 @@ function usuarios_perfis_editar(){
 										
 										$operacaoChecked = '';
 										
-										if($usuarios_perfis_modulos_operacoes)
-										foreach($usuarios_perfis_modulos_operacoes as $upmo){
+										if($usuarios_gestores_perfis_modulos_operacoes)
+										foreach($usuarios_gestores_perfis_modulos_operacoes as $upmo){
 											if($upmo['operacao'] == $mo['id']){
 												$operacaoChecked = 'checked';
 												break;
@@ -1209,8 +1499,8 @@ function usuarios_perfis_editar(){
 							
 							$checked = '';
 							
-							if($usuarios_perfis_modulos)
-							foreach($usuarios_perfis_modulos as $upm){
+							if($usuarios_gestores_perfis_modulos)
+							foreach($usuarios_gestores_perfis_modulos as $upm){
 								if($upm['modulo'] == $m['id']){
 									$checked = 'checked';
 									break;
