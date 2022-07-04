@@ -1145,7 +1145,7 @@ function usuarios_perfis_editar(){
 					$modulosAntes = modelo_var_troca($modulosAntes,'#modulos#',gestor_variaveis(Array('modulo' => 'interface','id' => 'no-occurrence')));
 				}
 				
-				// ===== Montar valor_depois do hostórico
+				// ===== Montar valor_depois do histórico
 				
 				$modulosDepois = '';
 				$operacoesIncluidosFlag = false;
@@ -1186,13 +1186,15 @@ function usuarios_perfis_editar(){
 					}
 				}
 				
+				echo 'modulosDepois: '.$modulosDepois.'<br>';
+				
 				if($operacoesIncluidosFlag){
 					$modulosDepois = modelo_var_troca($modulosDepois,'#modulos-operacoes#','');
 				} else {
 					$modulosDepois = modelo_var_troca($modulosDepois,'#modulos-operacoes#',gestor_variaveis(Array('modulo' => 'interface','id' => 'no-occurrence')));
 				}
 				
-				echo 'antes modulosIncluidosFlag<br>';
+				echo 'modulosDepois[operacoesIncluidosFlag]: '.$modulosDepois.'<br>';
 				echo 'modulosIncluidosFlag: '.($modulosIncluidosFlag ? 'true' : 'false').'<br>';
 				
 				if($modulosIncluidosFlag){
