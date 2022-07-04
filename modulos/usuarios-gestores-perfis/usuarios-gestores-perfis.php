@@ -1175,7 +1175,7 @@ function usuarios_perfis_editar(){
 				}
 				
 				if(count($historicoModulosIncluidos) > 0){
-					echo 'count(historicoModulosIncluidos) > 0<br>';
+					echo 'count(historicoModulosIncluidos) > 0 ; $modulosDepois: '.$modulosDepois.'<br>';
 					if(strlen($modulosDepois) == 0){
 						$modulosDepois = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'historic-change-modules-layout'));
 					}
