@@ -1035,8 +1035,10 @@ function usuarios_perfis_editar(){
 						if($modulos)
 						foreach($modulos as $m){
 							if($modulo_id == $m['id']){
-								if(!isset($historicoModulosIncluidos[$m['id']])){
+								echo 'Incluído: '.$m['id'].'<br>';
+								if(!$historicoModulosIncluidos[$m['id']]){
 									$historicoModulosIncluidos[$m['id']]['nome'] = $m['nome'];
+									echo '!historicoModulosIncluidos<br>';
 								}
 							}
 						}
@@ -1173,6 +1175,7 @@ function usuarios_perfis_editar(){
 				}
 				
 				if(count($historicoModulosIncluidos) > 0){
+					echo 'count(historicoModulosIncluidos) > 0<br>';
 					if(strlen($modulosDepois) == 0){
 						$modulosDepois = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'historic-change-modules-layout'));
 					}
@@ -1188,6 +1191,8 @@ function usuarios_perfis_editar(){
 				} else {
 					$modulosDepois = modelo_var_troca($modulosDepois,'#modulos-operacoes#',gestor_variaveis(Array('modulo' => 'interface','id' => 'no-occurrence')));
 				}
+				
+				echo 'modulosIncluidosFlag: '.($modulosIncluidosFlag ? 'true' : 'false').'<br>'.exit;
 				
 				if($modulosIncluidosFlag){
 					$modulosDepois = modelo_var_troca($modulosDepois,'#modulos#','');
