@@ -1035,6 +1035,7 @@ function usuarios_perfis_editar(){
 						if($modulos)
 						foreach($modulos as $m){
 							if($modulo_id == $m['id']){
+								echo 'Incluiu<br>';exit;
 								if(!$historicoModulosIncluidos[$m['id']]){
 									$historicoModulosIncluidos[$m['id']]['nome'] = $m['nome'];
 								}
