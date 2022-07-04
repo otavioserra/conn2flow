@@ -199,7 +199,6 @@ function admin_hosts_editar(){
 			'unico' => true,
 			'tabela' => 'usuarios',
 			'campos' => Array(
-				'id_usuarios_perfis',
 				'id',
 				'nome',
 				'usuario',

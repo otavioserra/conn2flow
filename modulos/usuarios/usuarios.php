@@ -461,11 +461,16 @@ function usuarios_editar(){
 		
 		// ===== Atualização dos demais campos.
 		
-		$campo_nome = "id_usuarios_perfis"; $request_name = 'usuario-perfil'; $alteracoes_name = 'user-profile'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
-				'nome' => 'usuarios_perfis',
-				'campo' => 'nome',
-				'id_numerico' => 'id_usuarios_perfis',
-			));}
+		$campo_nome = "id_usuarios_perfis"; $request_name = 'usuario-perfil'; $alteracoes_name = 'user-profile'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){
+				$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
+						'nome' => 'usuarios_perfis',
+						'campo' => 'nome',
+						'id_numerico' => 'id_usuarios_perfis',
+					));
+				$alterouUsuarioPerfil = true;
+				$usuarioPerfilAntes = banco_select_campos_antes($campo_nome);
+				$usuarioPerfilDepois = banco_escape_field($_REQUEST[$request_name]);
+			}
 		
 		$campo_nome = "nome_conta"; $request_name = $campo_nome; $alteracoes_name = 'name-account'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		
@@ -515,6 +520,128 @@ function usuarios_editar(){
 				"usuarios_tokens",
 				"WHERE id_usuarios='".$id_usuarios."'"
 			);
+			
+			// ===== Se alterar o usuário perfil, filtrar todos os perfis dos usuários gestores filhos desse perfil.
+			
+			if(isset($alterouUsuarioPerfil)){
+				// ===== Verificar se o usuário é proprietário de um host.
+				
+				$hosts = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts',
+					'campos' => Array(
+						'id_hosts',
+					),
+					'extra' => 
+						"WHERE id_usuarios='".$id_usuarios."'"
+				));
+				
+				// ===== Se sim, atualizar todos os perfis de gestores do host e remover as permissões não autorizadas.
+				
+				if($hosts){
+					$id_hosts = $hosts['id_hosts'];
+					
+					// ===== Pegar as tabelas com as permissões do perfil selecionado.
+					
+					$usuarios_perfis = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'usuarios_perfis',
+						'campos' => Array(
+							'id',
+						),
+						'extra' => 
+							"WHERE id_usuarios_perfis='".$usuarioPerfilDepois."'"
+					));
+					
+					$perfil = $usuarios_perfis['id'];
+					
+					// ===== Pegar as tabelas com as permissões de módulo e operações do perfil.
+					
+					$usuarios_perfis_modulos = banco_select(Array(
+						'tabela' => 'usuarios_perfis_modulos',
+						'campos' => Array(
+							'modulo',
+						),
+						'extra' => 
+							"WHERE perfil='".$perfil."'"
+					));
+					
+					$usuarios_perfis_modulos_operacoes = banco_select(Array(
+						'tabela' => 'usuarios_perfis_modulos_operacoes',
+						'campos' => Array(
+							'operacao',
+						),
+						'extra' => 
+							"WHERE perfil='".$perfil."'"
+					));
+					
+					// ===== Pegar as tabelas com as permissões dos módulos e operações dos perfis de gestores.
+					
+					$usuarios_gestores_perfis_modulos = banco_select(Array(
+						'tabela' => 'usuarios_gestores_perfis_modulos',
+						'campos' => Array(
+							'id_usuarios_gestores_perfis_modulos',
+							'modulo',
+						),
+						'extra' => 
+							"WHERE id_hosts='".$id_hosts."'"
+					));
+					
+					$usuarios_gestores_perfis_modulos_operacoes = banco_select(Array(
+						'tabela' => 'usuarios_gestores_perfis_modulos_operacoes',
+						'campos' => Array(
+							'id_usuarios_gestores_perfis_modulos_operacoes',
+							'operacao',
+						),
+						'extra' => 
+							"WHERE id_hosts='".$id_hosts."'"
+					));
+					
+					// ===== Comprar os registros de 'usuarios_perfis_modulos' com 'usuarios_gestores_perfis_modulos' e remover as permissões não autorizadas.
+					
+					if($usuarios_gestores_perfis_modulos)
+					foreach($usuarios_gestores_perfis_modulos as $ugpm){
+						$moduloFound = false;
+						if($usuarios_perfis_modulos)
+						foreach($usuarios_perfis_modulos as $upm){
+							if($ugpm['modulo'] == $upm['modulo']){
+								$moduloFound = true;
+								break;
+							}
+						}
+						
+						if(!$moduloFound){
+							banco_delete
+							(
+								"usuarios_gestores_perfis_modulos",
+								"WHERE id_usuarios_gestores_perfis_modulos='".$ugpm['id_usuarios_gestores_perfis_modulos']."'"
+							);
+						}
+					}
+					
+					// ===== Comprar os registros de 'usuarios_perfis_modulos_operacoes' com 'usuarios_gestores_perfis_modulos_operacoes' e remover as permissões não autorizadas.
+					
+					if($usuarios_gestores_perfis_modulos_operacoes)
+					foreach($usuarios_gestores_perfis_modulos_operacoes as $ugpmo){
+						$operacaoFound = false;
+						if($usuarios_perfis_modulos_operacoes)
+						foreach($usuarios_perfis_modulos_operacoes as $upmo){
+							if($ugpmo['operacao'] == $upmo['operacao']){
+								$operacaoFound = true;
+								break;
+							}
+						}
+						
+						if(!$operacaoFound){
+							banco_delete
+							(
+								"usuarios_gestores_perfis_modulos_operacoes",
+								"WHERE id_usuarios_gestores_perfis_modulos_operacoes='".$ugpmo['id_usuarios_gestores_perfis_modulos_operacoes']."'"
+							);
+						}
+					}
+				}
+			}
 		}
 		
 		// ===== Reler URL.
