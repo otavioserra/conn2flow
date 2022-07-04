@@ -28,7 +28,7 @@ function usuarios_perfis_adicionar(){
 	
 	gestor_pagina_variaveis_modulos(Array(
 		'modulosExtra' => Array(
-			'usuarios',
+			'usuarios-perfis',
 		),
 	));
 	
