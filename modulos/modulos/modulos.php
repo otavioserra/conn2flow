@@ -42,8 +42,8 @@ function modulos_copiar_variaveis(){
 	// ===== Definir os módulos origem e destino
 	
 	$modulos = Array(
-		'origem' => 'usuarios',
-		'destino' => 'usuarios-gestores',
+		'origem' => 'usuarios-perfis',
+		'destino' => 'usuarios-gestores-perfis',
 	);
 	
 	// ===== Buscar no banco de dados 
