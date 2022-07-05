@@ -271,6 +271,12 @@ function usuarios_adicionar(){
 						'campo' => 'nome',
 						'id_numerico' => 'id_usuarios_gestores_perfis',
 					),
+					'dadosAntes' => Array(
+						Array(
+							'texto' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'option-parent-label')),
+							'valor' => 'pai',
+						),
+					),
 				)
 			)
 		)

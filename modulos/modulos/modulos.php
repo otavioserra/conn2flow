@@ -30,7 +30,7 @@ function modulos_copiar_variaveis(){
 	
 	// ===== Ativar / Desativar
 	
-	$ativar = true;
+	$ativar = false;
 	
 	if(!$ativar){
 		$_GESTOR['pagina'] .= '<h2>COPIAR VARIÁVEIS - <span class="ui error text">DESATIVADO</span></h2>';

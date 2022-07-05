@@ -1100,13 +1100,13 @@ function usuarios_perfis_editar(){
 				$modulosRemovidosFlag = false;
 				
 				if(count($historicoModulosOperacoesRemovidos) > 0){
-					$modulosAntes = gestor_variaveis(Array('modulo' => 'usuarios-perfis','id' => 'historic-change-modules-layout'));
+					$modulosAntes = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'historic-change-modules-layout'));
 					
 					foreach($historicoModulosOperacoesRemovidos as $modulo_id => $mo){
 						$operacoesTxt = '';
 						
 						if(isset($mo['operacoes'])){
-							$operacoesTxt = gestor_variaveis(Array('modulo' => 'usuarios-perfis','id' => 'historic-change-operations'));
+							$operacoesTxt = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'historic-change-operations'));
 							$operacoesFlag = false;
 							
 							foreach($mo['operacoes'] as $op){
@@ -1124,7 +1124,7 @@ function usuarios_perfis_editar(){
 				
 				if(count($historicoModulosRemovidos) > 0){
 					if(strlen($modulosAntes) == 0){
-						$modulosAntes = gestor_variaveis(Array('modulo' => 'usuarios-perfis','id' => 'historic-change-modules-layout'));
+						$modulosAntes = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'historic-change-modules-layout'));
 					}
 					
 					foreach($historicoModulosRemovidos as $modulo_id => $mo){
@@ -1152,13 +1152,13 @@ function usuarios_perfis_editar(){
 				$modulosIncluidosFlag = false;
 				
 				if(count($historicoModulosOperacoesIncluidos) > 0){
-					$modulosDepois = gestor_variaveis(Array('modulo' => 'usuarios-perfis','id' => 'historic-change-modules-layout'));
+					$modulosDepois = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'historic-change-modules-layout'));
 					
 					foreach($historicoModulosOperacoesIncluidos as $modulo_id => $mo){
 						$operacoesTxt = '';
 						
 						if(isset($mo['operacoes'])){
-							$operacoesTxt = gestor_variaveis(Array('modulo' => 'usuarios-perfis','id' => 'historic-change-operations'));
+							$operacoesTxt = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'historic-change-operations'));
 							$operacoesFlag = false;
 							
 							foreach($mo['operacoes'] as $op){
@@ -1176,7 +1176,7 @@ function usuarios_perfis_editar(){
 				
 				if(count($historicoModulosIncluidos) > 0){
 					if(strlen($modulosDepois) == 0){
-						$modulosDepois = gestor_variaveis(Array('modulo' => 'usuarios-perfis','id' => 'historic-change-modules-layout'));
+						$modulosDepois = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'historic-change-modules-layout'));
 					}
 					
 					foreach($historicoModulosIncluidos as $modulo_id => $mo){
