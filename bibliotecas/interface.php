@@ -888,7 +888,7 @@ function interface_formulario_campos($params = false){
 		// placeholder - String - Opcional - Se definido o select terá uma opção coringa para mostrar na caixa quando não houver valor selecionado.
 		// selectClass - String - Opcional - Se definido será incluída a classe ou classes no final do parâmetro class do select.
 		
-		// Ou tabela Ou dados
+		// Ou tabela Ou dados Ou dadosAntes Ou dadosDepois
 		
 		// tabela - Array - Opcional - Conjunto com dados que virão de uma tabela no banco de dados
 			// id - Bool - Opcional - Caso definido, vai usar o campo id como campo referencial e não o id_numerico.
@@ -901,7 +901,7 @@ function interface_formulario_campos($params = false){
 		// valor_selecionado - String - Opcional - Caso definido, deixar a opção com o valor do id selecionado.
 		// valor_selecionado_icone - String - Opcional - Caso definido, mostrar ícone na versão menu (não funciona no tipo select/option).
 		// placeholder_icone - String - Opcional - Caso definido, mostrar ícone no 'text default' na versão menu (não funciona no tipo select/option).
-		// dados - Array - Opcional - Conjunto com dados que virão de um array
+		// dados, dadosAntes, dadosDepois - Array - Opcional - Conjunto com dados que virão de um array
 			// texto - String - Obrigatório - Texto de cada opção no select.
 			// valor - String - Obrigatório - Valor de cada opção no select.
 			// icone - String - Opcional - Ícone que deverá ser aplicado a cada dado.
@@ -947,6 +947,60 @@ function interface_formulario_campos($params = false){
 							$campo_saida .= "		".'<option value="">'.$campo['placeholder'].'</option>'."\n";
 						}
 					}
+					
+					// ===== Dados antes ou dados depois.
+					
+					if(isset($campo['dadosAntes']) || isset($campo['dadosDepois'])){
+						$dadosAntes = (isset($campo['dadosAntes']) ? $campo['dadosAntes'] : Array());
+						$dadosDepois = (isset($campo['dadosDepois']) ? $campo['dadosDepois'] : Array());
+						
+						$camposAntes = '';
+						$camposDepois = '';
+						
+						if(isset($campo['valor_selecionado'])){
+							$valor_selecionado = $campo['valor_selecionado'];
+						}
+						
+						foreach($dadosAntes as $dado){
+							if(isset($dado['texto']) && isset($dado['valor'])){
+								if(isset($campo['menu'])){
+									$camposAntes .= "			".'<div class="item '.(isset($valor_selecionado) ? ($valor_selecionado == $dado['valor'] ? 'active selected' : '' ) : '' ).'" data-value="'.$dado['valor'].'">'.(isset($dado['icone']) ? '<i class="'.$dado['icone'].' icon"></i>' : '').$dado['texto'].'</div>'."\n";
+									
+									if(isset($valor_selecionado)){
+										if($valor_selecionado == $dado['valor']){
+											$camposAntes = modelo_var_troca($camposAntes,"#selectedValue#",' value="'.$dado['valor'].'"');
+										}
+									}
+								} else {
+									$camposAntes .= "		".'<option value="'.$dado['valor'].'"'.(isset($valor_selecionado) ? ($valor_selecionado == $dado['valor'] ? ' selected' : '' ) : '' ).'>'.$dado['texto'].'</option>'."\n";
+								}
+							}
+						}
+						
+						foreach($dadosDepois as $dado){
+							if(isset($dado['texto']) && isset($dado['valor'])){
+								if(isset($campo['menu'])){
+									$camposDepois .= "			".'<div class="item '.(isset($valor_selecionado) ? ($valor_selecionado == $dado['valor'] ? 'active selected' : '' ) : '' ).'" data-value="'.$dado['valor'].'">'.(isset($dado['icone']) ? '<i class="'.$dado['icone'].' icon"></i>' : '').$dado['texto'].'</div>'."\n";
+									
+									if(isset($valor_selecionado)){
+										if($valor_selecionado == $dado['valor']){
+											$camposDepois = modelo_var_troca($camposDepois,"#selectedValue#",' value="'.$dado['valor'].'"');
+										}
+									}
+								} else {
+									$camposDepois .= "		".'<option value="'.$dado['valor'].'"'.(isset($valor_selecionado) ? ($valor_selecionado == $dado['valor'] ? ' selected' : '' ) : '' ).'>'.$dado['texto'].'</option>'."\n";
+								}
+							}
+						}
+					}
+					
+					// ===== Incluir os campos antes.
+					
+					if(isset($camposAntes)){
+						$campo_saida .= $camposAntes;
+					}
+					
+					// ===== Dados da tabela ou dados específicos.
 					
 					if(isset($campo['tabela'])){
 						$tabela = $campo['tabela'];
@@ -1028,6 +1082,12 @@ function interface_formulario_campos($params = false){
 								}
 							}
 						}
+					}
+					
+					// ===== Incluir os campos antes.
+					
+					if(isset($camposDepois)){
+						$campo_saida .= $camposDepois;
 					}
 					
 					// ===== Finalizar a montagem do select

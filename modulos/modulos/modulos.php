@@ -30,7 +30,7 @@ function modulos_copiar_variaveis(){
 	
 	// ===== Ativar / Desativar
 	
-	$ativar = false;
+	$ativar = true;
 	
 	if(!$ativar){
 		$_GESTOR['pagina'] .= '<h2>COPIAR VARIÁVEIS - <span class="ui error text">DESATIVADO</span></h2>';
@@ -42,8 +42,8 @@ function modulos_copiar_variaveis(){
 	// ===== Definir os módulos origem e destino
 	
 	$modulos = Array(
-		'origem' => 'admin-componentes',
-		'destino' => 'componentes',
+		'origem' => 'usuarios-gestores',
+		'destino' => 'usuarios',
 	);
 	
 	// ===== Buscar no banco de dados 
