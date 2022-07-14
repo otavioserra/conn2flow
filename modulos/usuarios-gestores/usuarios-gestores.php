@@ -564,13 +564,67 @@ function usuarios_editar(){
 			$primeiro_nome = $nomes[0];
 		}
 		
-		// ===== Atualização dos demais campos.
+		// ===== Verificar se o perfil enviado é herança de privilégios ou se é um perfil criado pelo usuário. Caso for um perfil próprio, vincular este perfil ao usuário.
 		
-		$campo_nome = "id_usuarios_perfis"; $request_name = 'usuario-perfil'; $alteracoes_name = 'user-profile'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
-				'nome' => 'usuarios_perfis',
-				'campo' => 'nome',
-				'id_numerico' => 'id_usuarios_perfis',
-			));}
+		$id_hosts = $_GESTOR['host-id'];
+		
+		$campo_nome = "gestor_perfil"; $request_name = 'usuario-perfil'; $alteracoes_name = 'user-manager-profile'; if(banco_select_campos_antes($campo_nome) != ($_REQUEST[$request_name] != 'pai' ? $_REQUEST[$request_name] : NULL)){
+			
+			// ===== Valor antes da mudança.
+			
+			if(banco_select_campos_antes($campo_nome)){
+				$usuarios_gestores_perfis = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'usuarios_gestores_perfis',
+					'campos' => Array(
+						'nome',
+					),
+					'extra' => 
+						"WHERE id='".banco_select_campos_antes($campo_nome)."'"
+						." AND status!='D'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				$usuarioPerfilValorAntes = $usuarios_gestores_perfis['nome'];
+			} else {
+				$usuarioPerfilValorAntes = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'option-parent-label'));
+			}
+			
+			// ===== Atualizar conforme o perfil é do pai ou não.
+			
+			if($_REQUEST['usuario-perfil'] != 'pai'){
+				$IDPerfilUsuarioGestor = banco_escape_field($_REQUEST['usuario-perfil']);
+				
+				$usuarios_gestores_perfis = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'usuarios_gestores_perfis',
+					'campos' => Array(
+						'nome',
+						'id',
+					),
+					'extra' => 
+						"WHERE id_usuarios_gestores_perfis='".$IDPerfilUsuarioGestor."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				if($usuarios_gestores_perfis){
+					$gestor_perfil = $usuarios_gestores_perfis['id'];
+					$usuarioPerfilValorDepois = $usuarios_gestores_perfis['nome'];
+					
+					$editar['dados'][] = $campo_nome."='" . $gestor_perfil . "'";
+				} else {
+					$editar['dados'][] = $campo_nome."=NULL";
+					$usuarioPerfilValorDepois = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'option-parent-label'));
+				}
+			} else {
+				$editar['dados'][] = $campo_nome."=NULL";
+				$usuarioPerfilValorDepois = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'option-parent-label'));
+			}
+			
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => $usuarioPerfilValorAntes,'valor_depois' => $usuarioPerfilValorDepois);
+		}
+		
+		// ===== Atualização dos demais campos.
 		
 		$campo_nome = "nome_conta"; $request_name = $campo_nome; $alteracoes_name = 'name-account'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		
@@ -587,9 +641,52 @@ function usuarios_editar(){
 		$campo_nome = "nome_do_meio"; $request_name = $campo_nome; $alteracoes_name = 'middle-name'; if(banco_select_campos_antes($campo_nome) != (isset($$campo_nome) ? $$campo_nome : NULL)){$editar['dados'][] = $campo_nome."=" . (isset($$campo_nome) ? "'".$$campo_nome."'" : 'NULL');}
 		
 		
+		// ===== Verificar se houve alteração do privilégio de administração.
+		
+		$id_usuarios = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico']));
+		
+		$usuarios_gestores_hosts = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_gestores_hosts',
+			'campos' => Array(
+				'privilegios_admin',
+			),
+			'extra' => 
+				"WHERE id_usuarios='".$id_usuarios."'"
+				." AND id_hosts='".$id_hosts."'"
+		));
+		
+		if($usuarios_gestores_hosts['privilegios_admin']){
+			$privilegios_admin_antes = true;
+		} else {
+			$privilegios_admin_antes = false;
+		}
+		
+		if($_REQUEST['privilegios_admin'] == 'on'){
+			$privilegios_admin_depois = true;
+		} else {
+			$privilegios_admin_depois = false;
+		}
+		
+		if($privilegios_admin_antes != $privilegios_admin_depois){
+			$privilegios_admin_mudou = true;
+			
+			banco_update_campo('privilegios_admin',($privilegios_admin_depois ? '1' : 'NULL'),true);
+			
+			banco_update_executar(
+				'usuarios_gestores_hosts',
+				"WHERE id_usuarios='".$id_usuarios."'"
+				." AND id_hosts='".$id_hosts."'"
+			);
+			
+			$alteracoes_name = 'permission';
+			
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'filtro' => 'checkbox','valor_antes' => ($privilegios_admin_antes ? '1' : '0'),'valor_depois' => ($privilegios_admin_depois ? '1' : '0'));
+		}
+		
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
-		if(isset($editar['dados'])){
+		if(isset($editar['dados']) || isset($privilegios_admin_mudou)){
 			$campo_nome = $modulo['tabela']['versao']; $editar['dados'][] = $campo_nome." = ".$campo_nome." + 1";
 			$campo_nome = $modulo['tabela']['data_modificacao']; $editar['dados'][] = $campo_nome."=NOW()";
 			
