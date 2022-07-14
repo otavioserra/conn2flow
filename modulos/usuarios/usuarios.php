@@ -536,7 +536,7 @@ function usuarios_editar(){
 						"WHERE id_usuarios='".$id_usuarios."'"
 				));
 				
-				// ===== Se sim, atualizar todos os perfis de gestores do host e remover as permissões não autorizadas.
+				// ===== Se sim, atualizar todos os perfis de gestores do host e remover as permissões não autorizadas. Bem como atualizar o perfil principal de todos os usuários filhos.
 				
 				if($hosts){
 					$id_hosts = $hosts['id_hosts'];
@@ -640,6 +640,12 @@ function usuarios_editar(){
 							);
 						}
 					}
+					
+					// ===== Atualizar todos os filhos com o perfil atual.
+					
+					banco_update_campo('id_usuarios_perfis',$usuarioPerfilDepois);
+					
+					banco_update_executar('usuarios',"WHERE id_hosts='".$id_hosts."' AND gestor IS NOT NULL");
 				}
 			}
 		}
