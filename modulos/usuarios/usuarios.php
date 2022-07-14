@@ -927,8 +927,15 @@ function usuarios_interfaces_padroes(){
 								'id' => 'outraTabela',
 								'tabela' => Array(
 									'nome' => 'hosts',
-									'campo_trocar' => 'dominio',
+									'campo_trocar' => 'id_usuarios',
 									'campo_referencia' => 'id_hosts',
+									'encapsular' => '<a href="/teste/?id=#campo_referencia#">#campo_trocar#</a>',
+								),
+								'tabela2' => Array(
+									'nome' => 'usuarios',
+									'campo_trocar' => 'nome',
+									'campo_referencia' => 'id_usuarios',
+									'encapsular' => '<a href="/teste/?id=#campo_referencia#">#campo_trocar#</a>',
 								),
 								'valor_senao_existe' => '<span class="ui text info">N / A</span>',
 							)

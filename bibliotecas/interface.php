@@ -64,6 +64,7 @@ function interface_trocar_valor_outra_tabela($params = false){
 	
 	// tabela - Array - Obrigatório - Tabela que será usada para trocar valores.
 		// where - Tipo - Opcional - Valor extra para aplicar ao campo where.
+	// encapsular - String - Opcional - Retornar valor referente e de troca encapsulado num texto padrão com marcadores referentes.
 	
 	// ===== 
 	
@@ -95,9 +96,16 @@ function interface_trocar_valor_outra_tabela($params = false){
 			);
 			
 			if($resultado){
+				if(isset($encapsular)){
+					$encapsular = modelo_var_troca_tudo($encapsular,"#campo_referencia#",$dado);
+					$depois = modelo_var_troca_tudo($encapsular,"#campo_trocar#",$resultado[0][$tabela['campo_trocar']]);
+				} else {
+					$depois = $resultado[0][$tabela['campo_trocar']];
+				}
+				
 				$_GESTOR['interface_trocar_valor_outra_tabela'][$tabela['nome']][$tabela['campo_referencia']] = Array(
 					'antes' => $dado,
-					'depois' => $resultado[0][$tabela['campo_trocar']],
+					'depois' => $depois,
 				);
 				
 				return $resultado[0][$tabela['campo_trocar']];
@@ -179,7 +187,7 @@ function interface_formatar_dado($params = false){
 			break;
 			case 'data': $dado = interface_data_from_datetime_to_text($dado); break;
 			case 'dataHora': $dado = interface_data_hora_from_datetime_to_text($dado); break;
-			case 'outraTabela': $dado = interface_trocar_valor_outra_tabela(Array('dado' => $dado,'tabela' => $formato['tabela'])); break;
+			case 'outraTabela': $dado = interface_trocar_valor_outra_tabela(Array('dado' => $dado,'tabela' => $formato['tabela'],'tabela2' => (isset($formato['tabela2']) ? $formato['tabela2'] : NULL)); break;
 			case 'outroConjunto': $dado = interface_trocar_valor_outro_conjunto(Array('dado' => $dado,'conjunto' => $formato['conjunto'])); break;
 		}
 		
