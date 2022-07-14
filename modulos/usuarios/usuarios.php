@@ -937,9 +937,9 @@ function usuarios_interfaces_padroes(){
 									'camposExtras' => Array(
 										'id',
 									),
-									'encapsular' => '<a href="/teste/?id=#id#">#nome#</a>',
+									'encapsular' => '<a href="editar/?id=#id#">#nome#</a>',
 								),
-								'valor_senao_existe' => '<span class="ui text info">N / A</span>',
+								'valor_senao_existe' => '<b><span class="ui text grey">N / A</span></b>',
 							)
 						),
 						Array(
