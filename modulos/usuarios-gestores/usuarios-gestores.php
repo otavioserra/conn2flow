@@ -569,7 +569,21 @@ function usuarios_editar(){
 		$id_hosts = $_GESTOR['host-id'];
 		
 		if($_REQUEST['usuario-perfil'] != 'pai'){
-			$usuarioPerfilGestor = banco_escape_field($_REQUEST['usuario-perfil']);
+			$id_usuarios_gestores_perfis = banco_escape_field($_REQUEST['usuario-perfil']);
+			
+			$usuarios_gestores_perfis = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios_gestores_perfis',
+				'campos' => Array(
+					'nome',
+					'id',
+				),
+				'extra' => 
+					"WHERE id_usuarios_gestores_perfis='".$id_usuarios_gestores_perfis."'"
+					." AND id_hosts='".$id_hosts."'"
+			));
+			
+			$usuarioPerfilGestor = $usuarios_gestores_perfis['id'];
 		} else {
 			$usuarioPerfilGestor = NULL;
 		}
@@ -582,7 +596,7 @@ function usuarios_editar(){
 			// ===== Valor antes da mudança.
 			
 			if(banco_select_campos_antes($campo_nome)){
-				$usuarios_gestores_perfis = banco_select(Array(
+				$usuarios_gestores_perfis_antes = banco_select(Array(
 					'unico' => true,
 					'tabela' => 'usuarios_gestores_perfis',
 					'campos' => Array(
@@ -594,7 +608,7 @@ function usuarios_editar(){
 						." AND id_hosts='".$id_hosts."'"
 				));
 				
-				$usuarioPerfilValorAntes = $usuarios_gestores_perfis['nome'];
+				$usuarioPerfilValorAntes = $usuarios_gestores_perfis_antes['nome'];
 			} else {
 				$usuarioPerfilValorAntes = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'option-parent-label'));
 			}
@@ -602,18 +616,6 @@ function usuarios_editar(){
 			// ===== Atualizar conforme o perfil é do pai ou não.
 			
 			if($_REQUEST['usuario-perfil'] != 'pai'){
-				$usuarios_gestores_perfis = banco_select(Array(
-					'unico' => true,
-					'tabela' => 'usuarios_gestores_perfis',
-					'campos' => Array(
-						'nome',
-						'id',
-					),
-					'extra' => 
-						"WHERE id_usuarios_gestores_perfis='".$usuarioPerfilGestor."'"
-						." AND id_hosts='".$id_hosts."'"
-				));
-				
 				if($usuarios_gestores_perfis){
 					$gestor_perfil = $usuarios_gestores_perfis['id'];
 					$usuarioPerfilValorDepois = $usuarios_gestores_perfis['nome'];
