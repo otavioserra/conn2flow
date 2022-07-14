@@ -568,7 +568,13 @@ function usuarios_editar(){
 		
 		$id_hosts = $_GESTOR['host-id'];
 		
-		$campo_nome = "gestor_perfil"; $request_name = 'usuario-perfil'; $alteracoes_name = 'user-manager-profile'; if(banco_select_campos_antes($campo_nome) != ($_REQUEST[$request_name] != 'pai' ? $_REQUEST[$request_name] : NULL)){
+		if($_REQUEST['usuario-perfil'] != 'pai'){
+			$usuarioPerfilGestor = banco_escape_field($_REQUEST['usuario-perfil']);
+		} else {
+			$usuarioPerfilGestor = NULL;
+		}
+		
+		$campo_nome = "gestor_perfil"; $request_name = 'usuario-perfil'; $alteracoes_name = 'user-manager-profile'; if(banco_select_campos_antes($campo_nome) != $usuarioPerfilGestor){
 			
 			// ===== Valor antes da mudança.
 			
@@ -593,8 +599,6 @@ function usuarios_editar(){
 			// ===== Atualizar conforme o perfil é do pai ou não.
 			
 			if($_REQUEST['usuario-perfil'] != 'pai'){
-				$IDPerfilUsuarioGestor = banco_escape_field($_REQUEST['usuario-perfil']);
-				
 				$usuarios_gestores_perfis = banco_select(Array(
 					'unico' => true,
 					'tabela' => 'usuarios_gestores_perfis',
@@ -603,7 +607,7 @@ function usuarios_editar(){
 						'id',
 					),
 					'extra' => 
-						"WHERE id_usuarios_gestores_perfis='".$IDPerfilUsuarioGestor."'"
+						"WHERE id_usuarios_gestores_perfis='".$usuarioPerfilGestor."'"
 						." AND id_hosts='".$id_hosts."'"
 				));
 				
