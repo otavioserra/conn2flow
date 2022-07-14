@@ -64,6 +64,7 @@ function interface_trocar_valor_outra_tabela($params = false){
 	
 	// tabela - Array - Obrigatório - Tabela que será usada para trocar valores.
 		// where - Tipo - Opcional - Valor extra para aplicar ao campo where.
+		// valor_senao_existe - String - Opcional - Valor retornado caso não exista o dado.
 	
 	// ===== 
 	
@@ -101,6 +102,11 @@ function interface_trocar_valor_outra_tabela($params = false){
 				);
 				
 				return $resultado[0][$tabela['campo_trocar']];
+			} else {
+				if(isset($valor_senao_existe)){
+					return $valor_senao_existe;
+				}
+				
 			}
 		}
 	}

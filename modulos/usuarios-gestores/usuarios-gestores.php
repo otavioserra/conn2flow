@@ -844,7 +844,7 @@ function usuarios_interfaces_padroes(){
 					'campos' => Array(
 						'nome',
 						'nome_conta',
-						'id_usuarios_perfis',
+						'gestor_perfil',
 						$modulo['tabela']['data_criacao'],
 						$modulo['tabela']['data_modificacao'],
 					),
@@ -865,14 +865,16 @@ function usuarios_interfaces_padroes(){
 							'nome' => gestor_variaveis(Array('modulo' => 'usuarios','id' => 'form-name-account-label')),
 						),
 						Array(
-							'id' => 'id_usuarios_perfis',
-							'nome' => gestor_variaveis(Array('modulo' => 'usuarios','id' => 'form-user-profile-label')),
+							'id' => 'gestor_perfil',
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-manager-profile-label')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
 								'tabela' => Array(
-									'nome' => 'usuarios_perfis',
+									'nome' => 'usuarios_gestores_perfis',
 									'campo_trocar' => 'nome',
-									'campo_referencia' => 'id_usuarios_perfis',
+									'campo_referencia' => 'id',
+									'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
+									'valor_senao_existe' => '<span class="ui text info">'.gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'list-parent-label')).'</span>',
 								),
 							)
 						),
