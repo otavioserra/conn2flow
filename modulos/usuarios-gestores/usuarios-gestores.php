@@ -924,6 +924,7 @@ function usuarios_editar(){
 						'id_numerico' => 'id_usuarios_gestores_perfis',
 						'id_selecionado' => $id_usuarios_gestores_perfis,
 					),
+					'valor_selecionado' => $id_usuarios_gestores_perfis,
 					'dadosAntes' => Array(
 						Array(
 							'texto' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'option-parent-label')),
