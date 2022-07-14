@@ -112,7 +112,7 @@ function interface_trocar_valor_outra_tabela($params = false){
 					'depois' => $depois,
 				);
 				
-				return $resultado[0][$tabela['campo_trocar']];
+				return $depois;
 			}
 		}
 	}
