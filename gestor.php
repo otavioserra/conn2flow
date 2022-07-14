@@ -1137,7 +1137,7 @@ function gestor_permissao_modulo(){
 			// ===== Verificar se o usuário tem um perfil de gestor ativo.
 			
 			if(existe($usuario['gestor_perfil'])){
-				$gestor_perfil = $usuario['gestor_perfil']);
+				$gestor_perfil = $usuario['gestor_perfil'];
 				
 				// ===== Verificar se o módulo alvo tem permissão no perfil.
 				
