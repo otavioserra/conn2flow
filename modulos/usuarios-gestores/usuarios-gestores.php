@@ -184,7 +184,22 @@ function usuarios_adicionar(){
 		// ===== Verificar se o perfil enviado é herança de privilégios ou se é um perfil criado pelo usuário. Caso for um perfil próprio, vincular este perfil ao usuário.
 		
 		if($_REQUEST['usuario-perfil'] != 'pai'){
-			$gestor_perfil = $_REQUEST['usuario-perfil'];
+			$IDPerfilUsuarioGestor = banco_escape_field($_REQUEST['usuario-perfil']);
+			
+			$usuarios_gestores_perfis = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios_gestores_perfis',
+				'campos' => Array(
+					'id',
+				),
+				'extra' => 
+					"WHERE id_usuarios_gestores_perfis='".$IDPerfilUsuarioGestor."'"
+					." AND id_hosts='".$_GESTOR['host-id']."'"
+			));
+			
+			if($usuarios_gestores_perfis){
+				$gestor_perfil = $usuarios_gestores_perfis['id'];
+			}
 		}
 		
 		// ===== Campos gerais
@@ -368,6 +383,7 @@ function usuarios_editar(){
 	// ===== Definição dos campos do banco de dados para editar.
 	
 	$camposBanco = Array(
+		'id_usuarios',
 		'id_usuarios_perfis',
 		'nome',
 		'nome_conta',
@@ -376,6 +392,7 @@ function usuarios_editar(){
 		'primeiro_nome',
 		'ultimo_nome',
 		'nome_do_meio',
+		'gestor_perfil',
 	);
 	
 	$camposBancoPadrao = Array(
@@ -626,7 +643,8 @@ function usuarios_editar(){
 	);
 	
 	if($_GESTOR['banco-resultado']){
-		$id_usuarios_perfis = (isset($retorno_bd['id_usuarios_perfis']) ? $retorno_bd['id_usuarios_perfis'] : '');
+		$id_usuarios = (isset($retorno_bd['id_usuarios']) ? $retorno_bd['id_usuarios'] : '');
+		$gestor_perfil = (isset($retorno_bd['gestor_perfil']) ? $retorno_bd['gestor_perfil'] : '');
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
 		$nome_conta = (isset($retorno_bd['nome_conta']) ? $retorno_bd['nome_conta'] : '');
 		$email = (isset($retorno_bd['email']) ? $retorno_bd['email'] : '');
@@ -650,6 +668,47 @@ function usuarios_editar(){
 		} else {
 			$cel_nome = 'senha-campos'; $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 		}
+		
+		// ===== Pegar id numérico do perfil gestor do usuário.
+		
+		$id_hosts = $_GESTOR['host-id'];
+		
+		if(existe($gestor_perfil)){
+			$usuarios_gestores_perfis = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios_gestores_perfis',
+				'campos' => Array(
+					'id_usuarios_gestores_perfis',
+				),
+				'extra' => 
+					"WHERE id='".$gestor_perfil."'"
+					." AND id_hosts='".$id_hosts."'"
+					." AND status!='D'"
+			));
+			
+			if($usuarios_gestores_perfis){
+				$id_usuarios_gestores_perfis = $usuarios_gestores_perfis['id_usuarios_gestores_perfis'];
+			} else {
+				$id_usuarios_gestores_perfis = 'pai';
+			}
+		} else {
+			$id_usuarios_gestores_perfis = 'pai';
+		}
+		
+		// ===== Verificar se o usuário tem permissão administrativa.
+		
+		$usuarios_gestores_hosts = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_gestores_hosts',
+			'campos' => Array(
+				'privilegios_admin',
+			),
+			'extra' => 
+				"WHERE id_hosts='".$id_hosts."'"
+				." AND id_usuarios='".$id_usuarios."'"
+		));
+		
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#checked#',($usuarios_gestores_hosts['privilegios_admin'] ? 'checked' : ''));
 		
 		// ===== Popular os metaDados
 		
@@ -755,12 +814,18 @@ function usuarios_editar(){
 					'nome' => 'usuario-perfil',
 					'procurar' => true,
 					'limpar' => true,
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-profile-placeholder')),
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-manager-profile-placeholder')),
 					'tabela' => Array(
-						'nome' => 'usuarios_perfis',
+						'nome' => 'usuarios_gestores_perfis',
 						'campo' => 'nome',
-						'id_numerico' => 'id_usuarios_perfis',
-						'id_selecionado' => $id_usuarios_perfis,
+						'id_numerico' => 'id_usuarios_gestores_perfis',
+						'id_selecionado' => $id_usuarios_gestores_perfis,
+					),
+					'dadosAntes' => Array(
+						Array(
+							'texto' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'option-parent-label')),
+							'valor' => 'pai',
+						),
 					),
 				)
 			)
