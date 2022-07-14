@@ -96,9 +96,13 @@ function interface_trocar_valor_outra_tabela($params = false){
 			);
 			
 			if($resultado){
-				if(isset($encapsular)){
+				if(isset($tabela['encapsular'])){
+					$encapsular = $tabela['encapsular'];
+					
 					$encapsular = modelo_var_troca_tudo($encapsular,"#campo_referencia#",$dado);
-					$depois = modelo_var_troca_tudo($encapsular,"#campo_trocar#",$resultado[0][$tabela['campo_trocar']]);
+					$encapsular = modelo_var_troca_tudo($encapsular,"#campo_trocar#",$resultado[0][$tabela['campo_trocar']]);
+					
+					$depois = $encapsular;
 				} else {
 					$depois = $resultado[0][$tabela['campo_trocar']];
 				}
