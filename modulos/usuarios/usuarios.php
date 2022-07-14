@@ -662,6 +662,8 @@ function usuarios_editar(){
 	
 	// ===== Selecionar dados do banco de dados
 	
+	$hostsFound = false;
+	
 	$retorno_bd = banco_select_editar
 	(
 		banco_campos_virgulas($camposBancoEditar)
@@ -699,8 +701,6 @@ function usuarios_editar(){
 		}
 		
 		// ===== Verificar se é usuário pai. Se sim linkar com o pai. Senão, remover widget desta informação.
-		
-		$hostsFound = false;
 		
 		if(existe($id_hosts)){
 			$hosts = banco_select(Array(
@@ -838,6 +838,7 @@ function usuarios_editar(){
 					'tipo' => 'select',
 					'id' => 'user-profile',
 					'nome' => 'usuario-perfil',
+					'disabled' => ($hostsFound ? true : NULL),
 					'procurar' => true,
 					'limpar' => true,
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-profile-placeholder')),

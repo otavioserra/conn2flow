@@ -951,6 +951,7 @@ function interface_formulario_campos($params = false){
 		
 		// ##### Caso tipo = 'select'
 		
+		// disabled - Bool - Opcional - Se habilitado, o select ficará desabilitado e só poderá ser visto.
 		// menu - Bool - Opcional - Se habilitado, o select terá mais opções visuais.
 		// procurar - Bool - Opcional - Se habilitado, é possível procurar um valor no select digitando no teclado.
 		// limpar - Bool - Opcional - Se habilitado, o select tem uma opção de deselecionar a opção selecionada.
@@ -998,11 +999,11 @@ function interface_formulario_campos($params = false){
 			switch($campo['tipo']){
 				case 'select':
 					if(isset($campo['menu'])){
-						$campo_saida = "	".'<div id="'.$campo['id'].'" class="ui '.(isset($campo['fluid']) ? 'fluid ':'').(isset($campo['procurar']) ? 'search ':'').(isset($campo['limpar']) ? 'clearable ':'').(isset($campo['multiple']) ? 'multiple ':'').'selection dropdown'.(isset($campo['selectClass']) ? ' '.$campo['selectClass'] : '').'">'."\n";
+						$campo_saida = "	".'<div id="'.$campo['id'].'" class="ui '.(isset($campo['disabled']) ? 'disabled ':'').(isset($campo['fluid']) ? 'fluid ':'').(isset($campo['procurar']) ? 'search ':'').(isset($campo['limpar']) ? 'clearable ':'').(isset($campo['multiple']) ? 'multiple ':'').'selection dropdown'.(isset($campo['selectClass']) ? ' '.$campo['selectClass'] : '').'">'."\n";
 						$campo_saida .= "		".'<input type="hidden" name="'.$campo['nome'].'"#selectedValue#>'."\n";
 						$campo_saida .= "		".'<i class="dropdown icon"></i>'."\n";
 					} else {
-						$campo_saida = "	".'<select id="'.$campo['id'].'" class="ui '.(isset($campo['fluid']) ? 'fluid ':'').(isset($campo['procurar']) ? 'search ':'').(isset($campo['limpar']) ? 'clearable ':'').'dropdown'.(isset($campo['selectClass']) ? ' '.$campo['selectClass'] : '').'" name="'.$campo['nome'].'"'.(isset($campo['multiple']) ? ' multiple':'').'>'."\n";
+						$campo_saida = "	".'<select id="'.$campo['id'].'" class="ui '.(isset($campo['disabled']) ? 'disabled ':'').(isset($campo['fluid']) ? 'fluid ':'').(isset($campo['procurar']) ? 'search ':'').(isset($campo['limpar']) ? 'clearable ':'').'dropdown'.(isset($campo['selectClass']) ? ' '.$campo['selectClass'] : '').'" name="'.$campo['nome'].'"'.(isset($campo['multiple']) ? ' multiple':'').'>'."\n";
 					}
 					
 					if(isset($campo['placeholder'])){
