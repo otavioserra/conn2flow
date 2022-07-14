@@ -890,7 +890,7 @@ function usuarios_interfaces_padroes(){
 						'nome',
 						'nome_conta',
 						'id_usuarios_perfis',
-						$modulo['tabela']['data_criacao'],
+						'id_hosts',
 						$modulo['tabela']['data_modificacao'],
 					),
 					'id' => $modulo['tabela']['id'],
@@ -921,10 +921,17 @@ function usuarios_interfaces_padroes(){
 							)
 						),
 						Array(
-							'id' => $modulo['tabela']['data_criacao'],
-							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),
-							'formatar' => 'dataHora',
-							'nao_procurar' => true,
+							'id' => 'id_hosts',
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'list-host-label')),
+							'formatar' => Array(
+								'id' => 'outraTabela',
+								'tabela' => Array(
+									'nome' => 'hosts',
+									'campo_trocar' => 'dominio',
+									'campo_referencia' => 'id_hosts',
+									'valor_senao_existe' => '<span class="ui text info">N / A</span>',
+								),
+							)
 						),
 						Array(
 							'id' => $modulo['tabela']['data_modificacao'],
