@@ -187,7 +187,7 @@ function interface_formatar_dado($params = false){
 			break;
 			case 'data': $dado = interface_data_from_datetime_to_text($dado); break;
 			case 'dataHora': $dado = interface_data_hora_from_datetime_to_text($dado); break;
-			case 'outraTabela': $dado = interface_trocar_valor_outra_tabela(Array('dado' => $dado,'tabela' => $formato['tabela'],'tabela2' => (isset($formato['tabela2']) ? $formato['tabela2'] : NULL)); break;
+			case 'outraTabela': $dado = interface_trocar_valor_outra_tabela(Array('dado' => $dado,'tabela' => $formato['tabela'],'tabela2' => (isset($formato['tabela2']) ? $formato['tabela2'] : NULL),)); break;
 			case 'outroConjunto': $dado = interface_trocar_valor_outro_conjunto(Array('dado' => $dado,'conjunto' => $formato['conjunto'])); break;
 		}
 		
