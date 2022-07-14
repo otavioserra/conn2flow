@@ -151,20 +151,62 @@ function usuarios_adicionar(){
 			$primeiro_nome = $nomes[0];
 		}
 		
+		// ===== Pegar o identificador do usuário proprietário do host.
+		
+		$id_hosts = $_GESTOR['host-id'];
+		
+		$hosts = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'hosts',
+			'campos' => Array(
+				'id_usuarios',
+			),
+			'extra' => 
+				"WHERE id_hosts='".$id_hosts."'"
+		));
+		
+		$IDUsuarioProprietario = $hosts['id_usuarios'];
+		
+		// ===== Pegar o identificador do perfil do usuário proprietário do host.
+		
+		$usuarios = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios',
+			'campos' => Array(
+				'id_usuarios_perfis',
+			),
+			'extra' => 
+				"WHERE id_usuarios='".$IDUsuarioProprietario."'"
+		));
+		
+		$id_usuarios_perfis = $usuarios['id_usuarios_perfis'];
+		
+		// ===== Verificar se o perfil enviado é herança de privilégios ou se é um perfil criado pelo usuário. Caso for um perfil próprio, vincular este perfil ao usuário.
+		
+		if($_REQUEST['usuario-perfil'] != 'pai'){
+			$gestor_perfil = $_REQUEST['usuario-perfil'];
+		}
+		
 		// ===== Campos gerais
 		
-		$campo_nome = "id_usuarios_perfis"; $post_nome = "usuario-perfil";				if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "id_hosts"; $campo_valor = $id_hosts;								$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "id_usuarios_perfis"; $campo_valor = $id_usuarios_perfis;			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "nome_conta"; $post_nome = "nome"; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		
 		$campo_nome = "usuario"; $post_nome = "usuario"; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "senha"; $campo_valor = $senhaHash; 								$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = "email"; $post_nome = "email"; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "email"; $post_nome = "email"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		
 		$campo_nome = "primeiro_nome"; 					 								if(isset($primeiro_nome))		$campos[] = Array($campo_nome,$primeiro_nome);
 		$campo_nome = "nome_do_meio"; 					 								if(isset($nome_do_meio))		$campos[] = Array($campo_nome,$nome_do_meio);
 		$campo_nome = "ultimo_nome"; 					 								if(isset($ultimo_nome))		$campos[] = Array($campo_nome,$ultimo_nome);
+		
+		// ===== Dados do gestor.
+		
+		$campo_nome = "gestor"; $campo_valor = '1';										$campos[] = Array($campo_nome,$campo_valor,true);
+		$campo_nome = "gestor_perfil"; 					 								if(isset($gestor_perfil))		$campos[] = Array($campo_nome,$gestor_perfil);
 		
 		// ===== Campos comuns
 		
@@ -178,6 +220,29 @@ function usuarios_adicionar(){
 			$campos,
 			$modulo['tabela']['nome']
 		);
+		
+		$id_usuarios = banco_last_id();
+		
+		// ===== Verificar se o usuário tem privilégios de administração. Se sim, marcar para habilitar esta opção.
+		
+		if($_REQUEST['privilegios_admin'] == 'on'){
+			$privilegios_admin = true;
+		}
+		
+		// ===== Incluir o usuário na tabela de gestores do host.
+		
+		banco_insert_name_campo('id_hosts',$id_hosts);
+		banco_insert_name_campo('id_usuarios',$id_usuarios);
+		
+		if(isset($privilegios_admin)){ banco_insert_name_campo('privilegios_admin','1',true); }
+		
+		banco_insert_name
+		(
+			banco_insert_name_campos(),
+			"usuarios_gestores_hosts"
+		);
+		
+		// ===== Redirecionar para a página de edição.
 		
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
 	}
