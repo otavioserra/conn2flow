@@ -923,13 +923,13 @@ function usuarios_interfaces_padroes(){
 						Array(
 							'id' => 'id_hosts',
 							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'list-host-label')),
+							'valor_senao_existe' => '<span class="ui text info">N / A</span>',
 							'formatar' => Array(
 								'id' => 'outraTabela',
 								'tabela' => Array(
 									'nome' => 'hosts',
 									'campo_trocar' => 'dominio',
 									'campo_referencia' => 'id_hosts',
-									'valor_senao_existe' => '<span class="ui text info">N / A</span>',
 								),
 							)
 						),
