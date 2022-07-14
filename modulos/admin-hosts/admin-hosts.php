@@ -505,6 +505,10 @@ function admin_hosts_interfaces_padroes(){
 									'nome' => 'usuarios',
 									'campo_trocar' => 'nome',
 									'campo_referencia' => 'id_usuarios',
+									'camposExtras' => Array(
+										'id',
+									),
+									'encapsular' => '<a href="/usuarios/editar/?id=#id#">#nome#</a>',
 								),
 							)
 						),
