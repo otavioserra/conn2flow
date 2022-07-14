@@ -498,7 +498,7 @@ function admin_hosts_interfaces_padroes(){
 						Array(
 							'id' => 'id_usuarios',
 							'ordenar' => 'desc',
-							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-name')),
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'user-owner-name')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
 								'tabela' => Array(
