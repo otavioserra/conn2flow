@@ -929,7 +929,6 @@ function usuarios_interfaces_padroes(){
 									'nome' => 'hosts',
 									'campo_trocar' => 'id_usuarios',
 									'campo_referencia' => 'id_hosts',
-									'encapsular' => '<a href="/teste/?id=#campo_referencia#">#campo_trocar#</a>',
 								),
 								'tabela2' => Array(
 									'nome' => 'usuarios',

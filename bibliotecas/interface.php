@@ -64,6 +64,7 @@ function interface_trocar_valor_outra_tabela($params = false){
 	
 	// tabela - Array - Obrigatório - Tabela que será usada para trocar valores.
 		// where - Tipo - Opcional - Valor extra para aplicar ao campo where.
+	// tabela2 - Array - Opcional - Tabela que será usada para trocar valores.
 	// encapsular - String - Opcional - Retornar valor referente e de troca encapsulado num texto padrão com marcadores referentes.
 	
 	// ===== 
@@ -111,6 +112,34 @@ function interface_trocar_valor_outra_tabela($params = false){
 					'antes' => $dado,
 					'depois' => $depois,
 				);
+				
+				// ===== Caso exista uma tabela2, trocar o resultado da tabela pela o valor da tabela2.
+				
+				if(isset($tabela2)){
+					$resultado2 = banco_select_name
+					(
+						banco_campos_virgulas(Array(
+							$tabela2['campo_trocar'],
+						))
+						,
+						$tabela2['nome'],
+						"WHERE ".$tabela2['campo_referencia']."='".$depois."'"
+						.(isset($tabela2['where']) ? ' AND ('.$tabela2['where'].')' : '')
+					);
+					
+					if($resultado2){
+						if(isset($tabela2['encapsular'])){
+							$encapsular = $tabela2['encapsular'];
+							
+							$encapsular = modelo_var_troca_tudo($encapsular,"#campo_referencia#",$depois);
+							$encapsular = modelo_var_troca_tudo($encapsular,"#campo_trocar#",$resultado2[0][$tabela2['campo_trocar']]);
+							
+							$depois = $encapsular;
+						} else {
+							$depois = $resultado2[0][$tabela2['campo_trocar']];
+						}
+					}
+				}
 				
 				return $depois;
 			}
