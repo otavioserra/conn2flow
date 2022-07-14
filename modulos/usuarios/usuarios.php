@@ -922,7 +922,7 @@ function usuarios_interfaces_padroes(){
 						),
 						Array(
 							'id' => 'id_hosts',
-							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'list-host-label')),
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'list-user-parent-label')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
 								'tabela' => Array(
