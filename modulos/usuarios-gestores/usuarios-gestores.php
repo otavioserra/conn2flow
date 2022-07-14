@@ -574,6 +574,7 @@ function usuarios_editar(){
 			$usuarioPerfilGestor = NULL;
 		}
 		
+		$campo_nome = "gestor_perfil";
 		echo banco_select_campos_antes($campo_nome).' != '.$usuarioPerfilGestor;exit;
 		
 		$campo_nome = "gestor_perfil"; $request_name = 'usuario-perfil'; $alteracoes_name = 'user-manager-profile'; if(banco_select_campos_antes($campo_nome) != $usuarioPerfilGestor){
