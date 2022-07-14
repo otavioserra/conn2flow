@@ -86,27 +86,104 @@ function gestor_pagina_menu($params = false){
 	
 	$usuario = gestor_usuario();
 	
-	$usuarios_perfis = banco_select(Array(
-		'unico' => true,
-		'tabela' => 'usuarios_perfis',
-		'campos' => Array(
-			'id',
-		),
-		'extra' => 
-			"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
-	));
+	// ===== Verificar se o usuário é filho de um host ou não.
 	
-	$perfil = $usuarios_perfis['id'];
-	
-	$usuarios_perfis_modulos = banco_select_name
-	(
-		banco_campos_virgulas(Array(
-			'modulo',
-		))
-		,
-		"usuarios_perfis_modulos",
-		"WHERE perfil='".$perfil."'"
-	);
+	if(existe($usuario['id_hosts'])){
+		// ===== Verificar se o usuário tem um perfil de gestor ativo.
+		
+		if(existe($usuario['gestor_perfil'])){
+			$gestor_perfil = $usuario['gestor_perfil'];
+			
+			// ===== Verificar se o módulo alvo tem permissão no perfil.
+			
+			$usuarios_perfis_modulos = banco_select_name
+			(
+				banco_campos_virgulas(Array(
+					'modulo',
+				))
+				,
+				"usuarios_gestores_perfis_modulos",
+				"WHERE perfil='".$gestor_perfil."'"
+				." AND id_hosts='".$usuario['id_hosts']."'"
+			);
+		} else {
+			// ===== Pegar o usuário pai do usuário em questão.
+			
+			$hosts = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'hosts',
+				'campos' => Array(
+					'id_usuarios',
+				),
+				'extra' => 
+					"WHERE id_hosts='".$usuario['id_hosts']."'"
+			));
+			
+			// ===== Pegar o identificador do perfil do pai do usuário.
+			
+			$usuarios = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios',
+				'campos' => Array(
+					'id_usuarios_perfis',
+				),
+				'extra' => 
+					"WHERE id_usuarios='".$hosts['id_usuarios']."'"
+			));
+			
+			// ===== Pegar o perfil do usuário.
+			
+			$usuarios_perfis = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios_perfis',
+				'campos' => Array(
+					'id',
+				),
+				'extra' => 
+					"WHERE id_usuarios_perfis='".$usuarios['id_usuarios_perfis']."'"
+			));
+			
+			$perfil = $usuarios_perfis['id'];
+			
+			// ===== Verificar se o módulo alvo tem permissão no perfil.
+			
+			$usuarios_perfis_modulos = banco_select_name
+			(
+				banco_campos_virgulas(Array(
+					'modulo',
+				))
+				,
+				"usuarios_perfis_modulos",
+				"WHERE perfil='".$perfil."'"
+			);
+		}
+	} else {
+		// ===== Pegar o perfil do usuário.
+		
+		$usuarios_perfis = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_perfis',
+			'campos' => Array(
+				'id',
+			),
+			'extra' => 
+				"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
+		));
+		
+		$perfil = $usuarios_perfis['id'];
+		
+		// ===== Verificar se o módulo alvo tem permissão no perfil.
+		
+		$usuarios_perfis_modulos = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'modulo',
+			))
+			,
+			"usuarios_perfis_modulos",
+			"WHERE perfil='".$perfil."'"
+		);
+	}
 	
 	// ===== Pegar dados de páginas e módulos
 	
