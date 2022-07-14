@@ -63,6 +63,10 @@ function interface_trocar_valor_outra_tabela($params = false){
 	// ===== Parâmetros
 	
 	// tabela - Array - Obrigatório - Tabela que será usada para trocar valores.
+		// nome - String - Obrigatório - Nome da tabela.
+		// campo_referencia - String - Obrigatório - Referência do campo na tabela.
+		// campo_trocar - String - Obrigatório - Nome do campo que o valor será trocado.
+		// camposExtras - Array - Opcional - Conjunto com os campos extras que devem ser lidos do banco.
 		// where - Tipo - Opcional - Valor extra para aplicar ao campo where.
 	// tabela2 - Array - Opcional - Tabela que será usada para trocar valores.
 	// encapsular - String - Opcional - Retornar valor referente e de troca encapsulado num texto padrão com marcadores referentes.
@@ -85,11 +89,21 @@ function interface_trocar_valor_outra_tabela($params = false){
 				}
 			}
 			
+			// ===== Incluir campos extras na consulta com o banco de dados quando necessário.
+			
+			$camposBD = Array(
+				$tabela['campo_trocar'],
+			);
+			
+			if(isset($tabela['camposExtras'])){
+				$camposBD = array_merge($camposBD,$tabela['camposExtras']);
+			}
+			
+			// ===== Buscar no banco de dados o dado para trocar.
+			
 			$resultado = banco_select_name
 			(
-				banco_campos_virgulas(Array(
-					$tabela['campo_trocar'],
-				))
+				banco_campos_virgulas($camposBD)
 				,
 				$tabela['nome'],
 				"WHERE ".$tabela['campo_referencia']."='".$dado."'"
@@ -101,7 +115,10 @@ function interface_trocar_valor_outra_tabela($params = false){
 					$encapsular = $tabela['encapsular'];
 					
 					$encapsular = modelo_var_troca_tudo($encapsular,"#campo_referencia#",$dado);
-					$encapsular = modelo_var_troca_tudo($encapsular,"#campo_trocar#",$resultado[0][$tabela['campo_trocar']]);
+					
+					foreach($camposBD as $campoBD){
+						$encapsular = modelo_var_troca_tudo($encapsular,"#".$campoBD."#",$resultado[0][$campoBD]);
+					}
 					
 					$depois = $encapsular;
 				} else {
@@ -116,11 +133,21 @@ function interface_trocar_valor_outra_tabela($params = false){
 				// ===== Caso exista uma tabela2, trocar o resultado da tabela pela o valor da tabela2.
 				
 				if(isset($tabela2)){
+					// ===== Incluir campos extras na consulta com o banco de dados quando necessário.
+					
+					$camposBD2 = Array(
+						$tabela2['campo_trocar'],
+					);
+					
+					if(isset($tabela2['camposExtras'])){
+						$camposBD2 = array_merge($camposBD2,$tabela2['camposExtras']);
+					}
+					
+					// ===== Buscar no banco de dados o dado para trocar.
+					
 					$resultado2 = banco_select_name
 					(
-						banco_campos_virgulas(Array(
-							$tabela2['campo_trocar'],
-						))
+						banco_campos_virgulas($camposBD2)
 						,
 						$tabela2['nome'],
 						"WHERE ".$tabela2['campo_referencia']."='".$depois."'"
@@ -132,7 +159,10 @@ function interface_trocar_valor_outra_tabela($params = false){
 							$encapsular = $tabela2['encapsular'];
 							
 							$encapsular = modelo_var_troca_tudo($encapsular,"#campo_referencia#",$depois);
-							$encapsular = modelo_var_troca_tudo($encapsular,"#campo_trocar#",$resultado2[0][$tabela2['campo_trocar']]);
+							
+							foreach($camposBD2 as $campoBD){
+								$encapsular = modelo_var_troca_tudo($encapsular,"#".$campoBD."#",$resultado2[0][$campoBD]);
+							}
 							
 							$depois = $encapsular;
 						} else {

@@ -934,7 +934,10 @@ function usuarios_interfaces_padroes(){
 									'nome' => 'usuarios',
 									'campo_trocar' => 'nome',
 									'campo_referencia' => 'id_usuarios',
-									'encapsular' => '<a href="/teste/?id=#campo_referencia#">#campo_trocar#</a>',
+									'camposExtras' => Array(
+										'id',
+									),
+									'encapsular' => '<a href="/teste/?id=#id#">#nome#</a>',
 								),
 								'valor_senao_existe' => '<span class="ui text info">N / A</span>',
 							)
