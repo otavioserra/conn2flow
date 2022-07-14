@@ -84,6 +84,10 @@ function interface_trocar_valor_outra_tabela($params = false){
 				}
 			}
 			
+			if(!existe($dado) && isset($valor_senao_existe)){
+				return $valor_senao_existe;
+			}
+			
 			$resultado = banco_select_name
 			(
 				banco_campos_virgulas(Array(
