@@ -280,6 +280,7 @@ function usuarios_editar(){
 	// ===== Definição dos campos do banco de dados para editar.
 	
 	$camposBanco = Array(
+		'id_hosts',
 		'id_usuarios_perfis',
 		'nome',
 		'nome_conta',
@@ -671,6 +672,7 @@ function usuarios_editar(){
 	);
 	
 	if($_GESTOR['banco-resultado']){
+		$id_hosts = (isset($retorno_bd['id_hosts']) ? $retorno_bd['id_hosts'] : '');
 		$id_usuarios_perfis = (isset($retorno_bd['id_usuarios_perfis']) ? $retorno_bd['id_usuarios_perfis'] : '');
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
 		$nome_conta = (isset($retorno_bd['nome_conta']) ? $retorno_bd['nome_conta'] : '');
@@ -694,6 +696,44 @@ function usuarios_editar(){
 			$cel_nome = 'senha-botao'; $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 		} else {
 			$cel_nome = 'senha-campos'; $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+		}
+		
+		// ===== Verificar se é usuário pai. Se sim linkar com o pai. Senão, remover widget desta informação.
+		
+		$hostsFound = false;
+		
+		if(existe($id_hosts)){
+			$hosts = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'hosts',
+				'campos' => Array(
+					'id_usuarios',
+				),
+				'extra' => 
+					"WHERE id_hosts='".$id_hosts."'"
+			));
+			
+			if($hosts){
+				$usuarios = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'usuarios',
+					'campos' => Array(
+						'nome',
+						'id',
+					),
+					'extra' => 
+						"WHERE id_usuarios='".$hosts['id_usuarios']."'"
+				));
+				
+				$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#idPai#',$usuarios['id']);
+				$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nomePai#',$usuarios['nome']);
+				
+				$hostsFound = true;
+			}
+		}
+		
+		if(!$hostsFound){
+			$cel_nome = 'usuario-pai'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 		}
 		
 		// ===== Popular os metaDados
