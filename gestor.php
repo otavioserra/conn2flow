@@ -1131,31 +1131,124 @@ function gestor_permissao_modulo(){
 	);
 	
 	if($modulos){
-		$usuarios_perfis = banco_select(Array(
-			'unico' => true,
-			'tabela' => 'usuarios_perfis',
-			'campos' => Array(
-				'id',
-			),
-			'extra' => 
-				"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
-		));
+		// ===== Verificar se o usuário é filho de um host ou não.
 		
-		$perfil = $usuarios_perfis['id'];
-		
-		$usuarios_perfis_modulos = banco_select_name
-		(
-			banco_campos_virgulas(Array(
-				'id_usuarios_perfis_modulos',
-			))
-			,
-			"usuarios_perfis_modulos",
-			"WHERE perfil='".$perfil."'"
-			." AND modulo='".$modulo."'"
-		);
-		
-		if($usuarios_perfis_modulos){
-			return true;
+		if(existe($usuario['id_hosts'])){
+			// ===== Verificar se o usuário tem um perfil de gestor ativo.
+			
+			if(existe($usuario['gestor_perfil'])){
+				$gestor_perfil = $usuario['gestor_perfil']);
+				
+				// ===== Verificar se o módulo alvo tem permissão no perfil.
+				
+				$usuarios_gestores_perfis_modulos = banco_select_name
+				(
+					banco_campos_virgulas(Array(
+						'id_usuarios_gestores_perfis_modulos',
+					))
+					,
+					"usuarios_gestores_perfis_modulos",
+					"WHERE perfil='".$gestor_perfil."'"
+					." AND modulo='".$modulo."'"
+					." AND id_hosts='".$usuario['id_hosts']."'"
+				);
+				
+				// ===== Caso tenha permissão retornar true.
+				
+				if($usuarios_gestores_perfis_modulos){
+					return true;
+				}
+			} else {
+				// ===== Pegar o usuário pai do usuário em questão.
+				
+				$hosts = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts',
+					'campos' => Array(
+						'id_usuarios',
+					),
+					'extra' => 
+						"WHERE id_hosts='".$usuario['id_hosts']."'"
+				));
+				
+				// ===== Pegar o identificador do perfil do pai do usuário.
+				
+				$usuarios = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'usuarios',
+					'campos' => Array(
+						'id_usuarios_perfis',
+					),
+					'extra' => 
+						"WHERE id_usuarios='".$hosts['id_usuarios']."'"
+				));
+				
+				// ===== Pegar o perfil do usuário.
+				
+				$usuarios_perfis = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'usuarios_perfis',
+					'campos' => Array(
+						'id',
+					),
+					'extra' => 
+						"WHERE id_usuarios_perfis='".$usuarios['id_usuarios_perfis']."'"
+				));
+				
+				$perfil = $usuarios_perfis['id'];
+				
+				// ===== Verificar se o módulo alvo tem permissão no perfil.
+				
+				$usuarios_perfis_modulos = banco_select_name
+				(
+					banco_campos_virgulas(Array(
+						'id_usuarios_perfis_modulos',
+					))
+					,
+					"usuarios_perfis_modulos",
+					"WHERE perfil='".$perfil."'"
+					." AND modulo='".$modulo."'"
+				);
+				
+				// ===== Caso tenha permissão retornar true.
+				
+				if($usuarios_perfis_modulos){
+					return true;
+				}
+			}
+		} else {
+			// ===== Pegar o perfil do usuário.
+			
+			$usuarios_perfis = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios_perfis',
+				'campos' => Array(
+					'id',
+				),
+				'extra' => 
+					"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
+			));
+			
+			$perfil = $usuarios_perfis['id'];
+			
+			// ===== Verificar se o módulo alvo tem permissão no perfil.
+			
+			$usuarios_perfis_modulos = banco_select_name
+			(
+				banco_campos_virgulas(Array(
+					'id_usuarios_perfis_modulos',
+				))
+				,
+				"usuarios_perfis_modulos",
+				"WHERE perfil='".$perfil."'"
+				." AND modulo='".$modulo."'"
+			);
+			
+			// ===== Caso tenha permissão retornar true.
+			
+			if($usuarios_perfis_modulos){
+				return true;
+			}
 		}
 	}
 	
@@ -1233,12 +1326,15 @@ function gestor_usuario(){
 		$usuarios = banco_select_name
 		(
 			banco_campos_virgulas(Array(
+				'id_hosts',
 				'id_usuarios',
 				'id_usuarios_perfis',
 				'id',
 				'usuario',
 				'nome',
 				'email',
+				'gestor',
+				'gestor_perfil',
 			))
 			,
 			"usuarios",
@@ -1248,9 +1344,12 @@ function gestor_usuario(){
 		return $usuarios[0];
 	} else {
 		return Array(
+			'id_hosts' => '',
 			'id_usuarios' => '0',
 			'id_usuarios_perfis' => '0',
 			'id' => '_anonimo',
+			'gestor' => '',
+			'gestor_perfil' => '',
 			'usuario' => '_anonimo',
 			'nome' => 'Anônimo',
 		);
