@@ -17,7 +17,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
 	),
 	'historico' => Array(
-		'moduloIdExtra' => 'perfil-usuario',
+		'moduloIdExtra' => 'hosts-usuarios',
 	),
 );
 
