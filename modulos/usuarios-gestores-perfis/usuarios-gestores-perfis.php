@@ -24,6 +24,8 @@ function usuarios_perfis_adicionar(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
+	$modulo_biblioteca_id = $modulo['modulo_biblioteca_id'];
+	
 	// ===== Módulo extra para variáveis globais.
 	
 	gestor_pagina_variaveis_modulos(Array(
@@ -60,6 +62,7 @@ function usuarios_perfis_adicionar(){
 				'nome' => $modulo['tabela']['nome'],
 				'campo' => $modulo['tabela']['id'],
 				'id_nome' => $modulo['tabela']['id_numerico'],
+				'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
 			),
 		));
 		
@@ -152,6 +155,7 @@ function usuarios_perfis_adicionar(){
 			"modulos",
 			"WHERE status='A'"
 			." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+			." AND host IS NULL"
 		);
 		
 		$modulos_operacoes = banco_select_name
@@ -393,6 +397,7 @@ function usuarios_perfis_adicionar(){
 		"modulos",
 		"WHERE status='A'"
 		." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+		." AND host IS NULL"
 		." ORDER BY nome ASC"
 	);
 	
@@ -546,6 +551,8 @@ function usuarios_perfis_editar(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
+	$modulo_biblioteca_id = $modulo['modulo_biblioteca_id'];
+	
 	// ===== Módulo extra para variáveis globais.
 	
 	gestor_pagina_variaveis_modulos(Array(
@@ -612,7 +619,7 @@ function usuarios_perfis_editar(){
 		
 		$editar = Array(
 			'tabela' => $modulo['tabela']['nome'],
-			'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D'",
+			'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D' AND id_hosts='".$_GESTOR['host-id']."'",
 		);
 		
 		$campo_nome = "nome"; $request_name = 'nome'; $alteracoes_name = 'name'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; if(!isset($_REQUEST['_gestor-nao-alterar-id'])){$alterar_id = true;} $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
@@ -627,6 +634,7 @@ function usuarios_perfis_editar(){
 					'campo' => $modulo['tabela']['id'],
 					'id_nome' => $modulo['tabela']['id_numerico'],
 					'id_valor' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
+					'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
 				),
 			));
 			
@@ -646,6 +654,7 @@ function usuarios_perfis_editar(){
 			$modulo['tabela']['nome'],
 			"WHERE ".$modulo['tabela']['id']."='".$id."'"
 			." AND ".$modulo['tabela']['status']."!='D'"
+			." AND id_hosts='".$_GESTOR['host-id']."'"
 		);
 		
 		$id_numerico = (isset($retorno_bd[$modulo['tabela']['id_numerico']]) ? $retorno_bd[$modulo['tabela']['id_numerico']] : '');
@@ -745,6 +754,7 @@ function usuarios_perfis_editar(){
 			"modulos",
 			"WHERE status='A'"
 			." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+			." AND host IS NULL"
 		);
 		
 		$modulos_operacoes = banco_select_name
@@ -774,6 +784,7 @@ function usuarios_perfis_editar(){
 		// ===== Módulos
 		
 		for($i=1;$i<$numModulos;$i++){
+			if(isset($_REQUEST['modulo-'.$i]))
 			if($_REQUEST['modulo-'.$i]){
 				// ===== Procurar o módulo referido e marcar como ativo.
 				
@@ -1341,8 +1352,6 @@ function usuarios_perfis_editar(){
 		
 		// ===== Buscar no banco módulos / grupo de módulos
 		
-		$modulo_biblioteca_id = $modulo['modulo_biblioteca_id'];
-		
 		$modulos_grupos = banco_select_name
 		(
 			banco_campos_virgulas(Array(
@@ -1368,6 +1377,7 @@ function usuarios_perfis_editar(){
 			"modulos",
 			"WHERE status='A'"
 			." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+			." AND host IS NULL"
 			." ORDER BY nome ASC"
 		);
 		

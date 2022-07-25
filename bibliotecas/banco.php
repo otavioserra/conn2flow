@@ -495,6 +495,10 @@ function banco_insert_name($dados,$tabela){
 
 	foreach($dados as $dado){
 		if(isset($dado[1])){
+			if(!isset($dado[2])){
+				$dado[2] = false;
+			}
+			
 			$nomes .= (strlen($nomes) > 0 ? ',' : '') . $dado[0];
 			$campos .= (strlen($campos) > 0 ? ',' : '') . ( $dado[2] ? $dado[1] : "'" . $dado[1] . "'" );
 		}
@@ -561,7 +565,11 @@ function banco_insert_name_varios($params = false){
 			
 			// ===== Montar o campo nomes
 			
-			$nomes .= (isset($nomes) ? ',' : '') . $campo['nome'];
+			if(!isset($nomes)){
+				$nomes = '';
+			}
+			
+			$nomes .= (existe($nomes) ? ',' : '') . $campo['nome'];
 			
 			// ===== Se houver a opção 'sem_aspas_simples'
 			
@@ -572,6 +580,10 @@ function banco_insert_name_varios($params = false){
 			if(isset($campo['valores'])){
 				$linha = 0;
 				foreach($campo['valores'] as $valor){
+					if(!isset($camposProcessados[$linha])){
+						$camposProcessados[$linha] = '';
+					}
+					
 					$camposProcessados[$linha] .= ($coluna > 0 ? ',' : '(')
 						.( isset($valor) ? ($sem_aspas_simples ? '' : "'") . $valor . ($sem_aspas_simples ? '' : "'") : 'NULL' )
 						.($coluna < count($campos) - 1 ? '' : ')');
@@ -584,7 +596,11 @@ function banco_insert_name_varios($params = false){
 		
 		if(isset($camposProcessados))
 		foreach($camposProcessados as $campo){
-			$conjunto_campos .= (isset($conjunto_campos) ? ",\n" : '') . $campo;
+			if(!isset($conjunto_campos)){
+				$conjunto_campos = '';
+			}
+			
+			$conjunto_campos .= (existe($conjunto_campos) ? ",\n" : '') . $campo;
 		}
 		
 		if(isset($conjunto_campos)){

@@ -209,6 +209,7 @@ function interface_formatar_dado($params = false){
 	// dado - String - Opcional - Dado que será formatado.
 	// formato - String|Array - Opcional - Formato a ser aplicado ou conjunto de dados para formatar dado.
 	// valor_senao_existe - String - Opcional - Senão houver valor, este será aplicado.
+	// valor_substituir_por_rotulo - Array - Opcional - Conjunto de valores com os rótulos que serão substituídos. Exemplo, quando o dado tiver valor '1', trocar por 'Sim'.
 	
 	// Se formato - Array
 	
@@ -220,7 +221,8 @@ function interface_formatar_dado($params = false){
 		// nome - String - Obrigatório - nome da tabela do banco de dados.
 		// campo_trocar - String - Obrigatório - Nome do campo que será usado para subistituir o valor.
 		// campo_referencia - String - Obrigatório - Nome do campo identificador do valor que será comparado afim de trocar pelo valor do banco caso exista.
-		
+	// tabela2 - Array - Opcional - Dados da tabela que será aplicada na formatação da tabela1.
+	
 	// Se formato == 'outroConjunto'
 	
 	// conjunto - Array - Obrigatório - Dados do conjunto que será aplicado na formatação.
@@ -253,6 +255,20 @@ function interface_formatar_dado($params = false){
 			case 'outraTabela': $dado = interface_trocar_valor_outra_tabela(Array('dado' => $dado,'tabela' => $formato['tabela'],'tabela2' => (isset($formato['tabela2']) ? $formato['tabela2'] : NULL),)); break;
 			case 'outroConjunto': $dado = interface_trocar_valor_outro_conjunto(Array('dado' => $dado,'conjunto' => $formato['conjunto'])); break;
 		}
+		
+		// ===== Verificar se é necessário substituir valores por rótulos.
+		
+		if(isset($formato['valor_substituir_por_rotulo'])){
+			$valor_substituir_por_rotulo = $formato['valor_substituir_por_rotulo'];
+			
+			foreach($valor_substituir_por_rotulo as $valorRotulo){
+				if($valorRotulo['valor'] == $dado){
+					$dado = $valorRotulo['rotulo'];
+					break;
+				}
+			}
+		}
+		
 		
 		return $dado;
 	} else {
@@ -357,7 +373,7 @@ function interface_historico_incluir($params = false){
 		
 		1 - campo - o histórico só mostrará o nome do campo que foi alterado.
 		2 - campo, valor_antes e valor_depois - o histórico mostra o valor antes e depois de uma alteração.
-		3 - alteracao, alteracao_txt [campo] - o histórico mostra um valor pré-definido, caso necessário informar um valor a mais, basta informar a 'alteracao_txt' e se quiser também o 'campo'. E caso o valor do 'alteracao' tenha marcação #campo# , o sistema subistituirá esse valor com o nome do 'campo'.
+		3 - alteracao, alteracao_txt [campo] - o histórico mostra um valor pré-definido, caso necessário informar um valor a mais, basta informar a 'alteracao_txt' e se quiser também o 'campo'. E caso o valor do 'alteracao' tenha marcação #campo# , o sistema substituirá esse valor com o nome do 'campo'.
 	*/
 	// ===== 
 	
@@ -583,7 +599,7 @@ function interface_historico($params = false){
 				
 				// ===== Informar o autor do registro do histórico.
 				
-				$autor = '<a href="'.$_GESTOR['url-raiz'].'hosts-usuarios/editar/?id='.$user_id.'">' . $user_primeiro_nome . '</a>';
+				$autor = '<a href="'.$_GESTOR['url-raiz'].'usuarios-hospedeiro/editar/?id='.$user_id.'">' . $user_primeiro_nome . '</a>';
 			} else {
 				// ===== Buscar a referência do usuário do sistema que incluiu o registro.
 				
@@ -3581,7 +3597,7 @@ function interface_visualizar_finalizar($params = false){
 	
 	if(!isset($forcarSemID)){
 		$pagina = interface_historico(Array(
-			'id' => $id,
+			'id' => NULL,
 			'modulo' => $_GESTOR['modulo-id'],
 			'pagina' => $pagina,
 		));

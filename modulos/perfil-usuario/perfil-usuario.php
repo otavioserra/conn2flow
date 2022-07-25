@@ -1001,9 +1001,23 @@ function perfil_usuario_signup(){
 				gestor_redirecionar('signup/');
 			}
 			
-			// ===== Independente do plano que o usuário escolher, sempre iniciar o mesmo com o plano TRIAL
+			// ===== Independente do plano que o usuário escolher, sempre iniciar o mesmo com o perfil do usuário padrão.
 			
-			$id_usuarios_perfis = $_CONFIG['plano-teste-id-usuario-perfil'];
+			$usuarios_perfis = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios_perfis',
+				'campos' => Array(
+					'id_usuarios_perfis',
+				),
+				'extra' => 
+					"WHERE padrao IS NOT NULL"
+			));
+			
+			if($usuarios_perfis['id_usuarios_perfis']){
+				$id_usuarios_perfis = $usuarios_perfis['id_usuarios_perfis'];
+			} else {
+				$id_usuarios_perfis = $_CONFIG['usuario-perfil-id-padrao'];
+			}
 			
 			// ===== Gerar hash da senha
 			

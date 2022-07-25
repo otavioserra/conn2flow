@@ -6,7 +6,7 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR['versao']								=	'1.3.0'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'1.3.5'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'entrey-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
 $_GESTOR['host-configuracao-id-modulo']			=	'host-configuracao'; // Identificador módulo de configuração do host.

@@ -42,8 +42,8 @@ function modulos_copiar_variaveis(){
 	// ===== Definir os módulos origem e destino
 	
 	$modulos = Array(
-		'origem' => 'usuarios-perfis',
-		'destino' => 'usuarios-gestores-perfis',
+		'origem' => 'usuarios-hospedeiro-perfis-admin',
+		'destino' => 'usuarios-hospedeiro-perfis',
 	);
 	
 	// ===== Buscar no banco de dados 
@@ -323,6 +323,8 @@ function modulos_sincronizar_bancos(){
 	if(!$ativar){
 		$_GESTOR['pagina'] .= '<h2>SINCRONIZAR BANCOS - <span class="ui error text">DESATIVADO</span></h2>';
 		return;
+	} else {
+		$_GESTOR['pagina'] = '';
 	}
 	
 	// ===== Pegar o arquivo de autenticação nos bancos.
@@ -915,6 +917,7 @@ function modulos_adicionar(){
 		$campo_nome = "plugin"; $post_nome = "plugin"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "nao_menu_principal"; $post_nome = "menu"; 						if($_REQUEST[$post_nome] == 'nao')		$campos[] = Array($campo_nome,'1',true);
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "host"; $post_nome = "host"; $campo_valor = '1';					if($_REQUEST[$post_nome] == 'on')		$campos[] = Array($campo_nome,$campo_valor,true);
 		
 		// ===== Campos comuns
 		
@@ -1021,6 +1024,7 @@ function modulos_editar(){
 		'nao_menu_principal',
 		'titulo',
 		'plugin',
+		'host',
 	);
 	
 	$camposBancoPadrao = Array(
@@ -1112,6 +1116,10 @@ function modulos_editar(){
 		
 		$campo_nome = "nao_menu_principal"; $request_name = 'menu'; $alteracoes_name = 'menu'; if((banco_select_campos_antes($campo_nome) ? 'nao' : 'sim' ) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."=" . (banco_escape_field($_REQUEST[$request_name]) == 'nao' ? '1' : 'NULL' ); $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => (banco_select_campos_antes($campo_nome) ? 'Não' : 'Sim'),'valor_depois' => (banco_escape_field($_REQUEST[$request_name])) == 'sim' ? 'Sim' : 'Não');}
 		
+		$campo_nome = "host"; $request_name = 'host'; $alteracoes_name = 'host'; if(banco_select_campos_antes($campo_nome) != ($_REQUEST[$request_name] == 'on' ? '1' : NULL)){
+			$editar['dados'][] = $campo_nome."=" . ($_REQUEST[$request_name] == 'on' ? '1' : 'NULL');
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'filtro' => 'checkbox','valor_antes' => (banco_select_campos_antes($campo_nome) ? '1' : '0'),'valor_depois' => ($_REQUEST[$request_name] == 'on' ? '1' : '0'));
+		}
 		
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
@@ -1166,11 +1174,13 @@ function modulos_editar(){
 		$id_modulos_grupos = (isset($retorno_bd['id_modulos_grupos']) ? $retorno_bd['id_modulos_grupos'] : '');
 		$titulo = (isset($retorno_bd['titulo']) ? $retorno_bd['titulo'] : '');
 		$plugin_id = (isset($retorno_bd['plugin']) ? $retorno_bd['plugin'] : '');
+		$host = (isset($retorno_bd['host']) ? true : false);
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#icone#',$icone);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#icone2#',$icone2);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#titulo#',$titulo);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#checked#',($host ? 'checked' : ''));
 		
 		// ===== Popular os metaDados
 		
@@ -1313,7 +1323,7 @@ function modulos_interfaces_padroes(){
 						'nome',
 						'id_modulos_grupos',
 						'plugin',
-						$modulo['tabela']['data_criacao'],
+						'host',
 						$modulo['tabela']['data_modificacao'],
 					),
 					'id' => $modulo['tabela']['id'],
@@ -1353,10 +1363,17 @@ function modulos_interfaces_padroes(){
 							)
 						),
 						Array(
-							'id' => $modulo['tabela']['data_criacao'],
-							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),
-							'formatar' => 'dataHora',
-							'nao_procurar' => true,
+							'id' => 'host',
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-host-label')),
+							'formatar' => Array(
+								'valor_substituir_por_rotulo' => Array(
+									Array(
+										'valor' => '1',
+										'rotulo' => '<b><span class="ui text blue">Sim</span></b>',
+									),
+								),
+								'valor_senao_existe' => '<b><span class="ui text grey">Não</span></b>',
+							)
 						),
 						Array(
 							'id' => $modulo['tabela']['data_modificacao'],

@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'pedidos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.10',
+	'versao' => '1.0.11',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
 		'nome' => 'hosts_pedidos',
@@ -138,6 +138,27 @@ function pedidos_visualizar(){
 	$cel_nome = 'cel-servico'; $cel[$cel_nome] = pagina_celula($cel_nome);
 	$cel_nome = 'cel-voucher'; $cel[$cel_nome] = pagina_celula($cel_nome);
 	$cel_nome = 'cel-pagamentos'; $cel[$cel_nome] = pagina_celula($cel_nome);
+	
+	// ===== Pegar os dados do usuário do pedido.
+	
+	$hosts_usuarios = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'hosts_usuarios',
+		'campos' => Array(
+			'nome',
+			'cpf',
+			'cnpj',
+			'cnpj_ativo',
+			'telefone',
+		),
+		'extra' => 
+			"WHERE id_hosts_usuarios='".$hosts_pedidos['id_hosts_usuarios']."'"
+			." AND id_hosts='".$_GESTOR['host-id']."'"
+	));
+	
+	$usuario['nome'] = $hosts_usuarios['nome'];
+	$usuario['telefone'] = $hosts_usuarios['telefone'];
+	$usuario['documento'] = ($hosts_usuarios['cnpj_ativo'] ? $hosts_usuarios['cnpj'] : $hosts_usuarios['cpf'] );
 	
 	// ===== Varrer os serviços do pedido.
 	
@@ -467,7 +488,7 @@ function pedidos_visualizar(){
 	
 	// ===== Modal para mostrar pagador.
 	
-	$modal .= gestor_componente(Array(
+	$modal = gestor_componente(Array(
 		'id' => 'modal-simples',
 	));
 	

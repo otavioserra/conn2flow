@@ -1693,6 +1693,7 @@ function templates_preview(){
 		$modulo['tabela']['nome'],
 		"WHERE ".$modulo['tabela']['id']."='".$id."'"
 		." AND ".$modulo['tabela']['status']."!='D'"
+		." AND id_hosts='".$_GESTOR['host-id']."'"
 	);
 	
 	if($_GESTOR['banco-resultado']){

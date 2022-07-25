@@ -23,6 +23,8 @@ function usuarios_perfis_adicionar(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
+	$modulo_biblioteca_id = $modulo['modulo_biblioteca_id'];
+	
 	// ===== Gravar registro no Banco
 	
 	if(isset($_GESTOR['adicionar-banco'])){
@@ -58,6 +60,7 @@ function usuarios_perfis_adicionar(){
 		
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "padrao"; $post_nome = "padrao"; $campo_valor = '1';				if($_REQUEST[$post_nome] == 'on'){		$campos[] = Array($campo_nome,$campo_valor,true);}
 		
 		// ===== Campos comuns
 		
@@ -65,7 +68,15 @@ function usuarios_perfis_adicionar(){
 		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
 		$campo_nome = $modulo['tabela']['data_modificacao']; $campo_valor = 'NOW()'; 	$campos[] = Array($campo_nome,$campo_valor,true);
-	
+		
+		// ===== Remover o padrão do registro anterior.
+		
+		banco_update_campo('padrao','NULL',true);
+		
+		banco_update_executar($modulo['tabela']['nome'],"WHERE padrao IS NOT NULL");
+		
+		// ===== Inserir os dados novos no banco de dados.
+		
 		banco_insert_name
 		(
 			$campos,
@@ -84,6 +95,7 @@ function usuarios_perfis_adicionar(){
 			"modulos",
 			"WHERE status='A'"
 			." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+			." AND host IS NULL"
 		);
 		
 		$modulos_operacoes = banco_select_name
@@ -103,6 +115,7 @@ function usuarios_perfis_adicionar(){
 		$count = 1;
 		
 		for($i=1;$i<$totalModulos;$i++){
+			if(isset($_REQUEST['modulo-'.$count]))
 			if($_REQUEST['modulo-'.$count]){
 				// ===== Procurar o módulo referido.
 				
@@ -230,6 +243,7 @@ function usuarios_perfis_adicionar(){
 		"modulos",
 		"WHERE status='A'"
 		." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+		." AND host IS NULL"
 		." ORDER BY nome ASC"
 	);
 	
@@ -348,6 +362,8 @@ function usuarios_perfis_editar(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
+	$modulo_biblioteca_id = $modulo['modulo_biblioteca_id'];
+	
 	// ===== Identificador do 
 	
 	$id = $_GESTOR['modulo-registro-id'];
@@ -356,6 +372,7 @@ function usuarios_perfis_editar(){
 	
 	$camposBanco = Array(
 		'nome',
+		'padrao',
 		$modulo['tabela']['id_numerico'],
 	);
 	
@@ -430,6 +447,15 @@ function usuarios_perfis_editar(){
 		
 		// ===== Atualização dos demais campos.
 		
+		$campo_nome = "padrao"; $request_name = 'padrao'; $alteracoes_name = 'default'; if(banco_select_campos_antes($campo_nome) != ($_REQUEST[$request_name] == 'on' ? '1' : NULL)){
+			$editar['dados'][] = $campo_nome."=" . ($_REQUEST[$request_name] == 'on' ? '1' : 'NULL');
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'filtro' => 'checkbox','valor_antes' => (banco_select_campos_antes($campo_nome) ? '1' : '0'),'valor_depois' => ($_REQUEST[$request_name] == 'on' ? '1' : '0'));
+			
+			$padrao = true;
+		}
+		
+		// ===== Pegar os dados atuais do registro no banco de dados.
+		
 		$retorno_bd = banco_select_editar
 		(
 			banco_campos_virgulas(Array(
@@ -476,6 +502,7 @@ function usuarios_perfis_editar(){
 			"modulos",
 			"WHERE status='A'"
 			." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+			." AND host IS NULL"
 		);
 		
 		$modulos_operacoes = banco_select_name
@@ -505,6 +532,7 @@ function usuarios_perfis_editar(){
 		// ===== Módulos
 		
 		for($i=1;$i<$numModulos;$i++){
+			if(isset($_REQUEST['modulo-'.$i]))
 			if($_REQUEST['modulo-'.$i]){
 				// ===== Procurar o módulo referido e marcar como ativo.
 				
@@ -661,8 +689,20 @@ function usuarios_perfis_editar(){
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
 		if(isset($editar['dados']) || isset($alterouModulos) || isset($alterouModulosOperacoes)){
+			// ===== Remover o padrão do registro anterior.
+			
+			if(isset($padrao)){
+				banco_update_campo('padrao','NULL',true);
+				
+				banco_update_executar($modulo['tabela']['nome'],"WHERE padrao IS NOT NULL");
+			}
+			
+			// ===== Atualizar versão e data.
+			
 			$campo_nome = $modulo['tabela']['versao']; $editar['dados'][] = $campo_nome." = ".$campo_nome." + 1";
 			$campo_nome = $modulo['tabela']['data_modificacao']; $editar['dados'][] = $campo_nome."=NOW()";
+			
+			// ===== Executar edição no banco de dados.
 			
 			$editar['sql'] = banco_campos_virgulas($editar['dados']);
 			
@@ -939,8 +979,10 @@ function usuarios_perfis_editar(){
 	if($_GESTOR['banco-resultado']){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
 		$id_numerico = (isset($retorno_bd[$modulo['tabela']['id_numerico']]) ? $retorno_bd[$modulo['tabela']['id_numerico']] : '');
+		$padrao = (isset($retorno_bd['padrao']) ? true : false);
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#padrao-checked#',($padrao ? 'checked' : ''));
 		
 		// ===== Popular os metaDados
 		
@@ -971,8 +1013,6 @@ function usuarios_perfis_editar(){
 		
 		// ===== Buscar no banco módulos / grupo de módulos
 		
-		$modulo_biblioteca_id = $modulo['modulo_biblioteca_id'];
-		
 		$modulos_grupos = banco_select_name
 		(
 			banco_campos_virgulas(Array(
@@ -998,6 +1038,7 @@ function usuarios_perfis_editar(){
 			"modulos",
 			"WHERE status='A'"
 			." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+			." AND host IS NULL"
 			." ORDER BY nome ASC"
 		);
 		
@@ -1201,6 +1242,7 @@ function usuarios_perfis_interfaces_padroes(){
 					'nome' => $modulo['tabela']['nome'],
 					'campos' => Array(
 						'nome',
+						'padrao',
 						$modulo['tabela']['data_criacao'],
 						$modulo['tabela']['data_modificacao'],
 					),
@@ -1214,6 +1256,19 @@ function usuarios_perfis_interfaces_padroes(){
 							'id' => 'nome',
 							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-name')),
 							'ordenar' => 'asc',
+						),
+						Array(
+							'id' => 'padrao',
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-default-label')),
+							'formatar' => Array(
+								'valor_substituir_por_rotulo' => Array(
+									Array(
+										'valor' => '1',
+										'rotulo' => '<b><span class="ui text blue">Sim</span></b>',
+									),
+								),
+								'valor_senao_existe' => '<b><span class="ui text grey">Não</span></b>',
+							)
 						),
 						Array(
 							'id' => $modulo['tabela']['data_criacao'],

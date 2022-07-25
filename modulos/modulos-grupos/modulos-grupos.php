@@ -58,7 +58,7 @@ function modulos_grupos_adicionar(){
 		$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		
+		$campo_nome = "host"; $post_nome = "host"; $campo_valor = '1';					if($_REQUEST[$post_nome] == 'on')		$campos[] = Array($campo_nome,$campo_valor,true);
 		
 		// ===== Campos comuns
 		
@@ -108,6 +108,7 @@ function modulos_grupos_editar(){
 	
 	$camposBanco = Array(
 		'nome',
+		'host',
 	);
 	
 	$camposBancoPadrao = Array(
@@ -181,7 +182,10 @@ function modulos_grupos_editar(){
 		
 		// ===== Atualização dos demais campos.
 		
-		
+		$campo_nome = "host"; $request_name = 'host'; $alteracoes_name = 'host'; if(banco_select_campos_antes($campo_nome) != ($_REQUEST[$request_name] == 'on' ? '1' : NULL)){
+			$editar['dados'][] = $campo_nome."=" . ($_REQUEST[$request_name] == 'on' ? '1' : 'NULL');
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'filtro' => 'checkbox','valor_antes' => (banco_select_campos_antes($campo_nome) ? '1' : '0'),'valor_depois' => ($_REQUEST[$request_name] == 'on' ? '1' : '0'));
+		}
 		
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
@@ -230,8 +234,10 @@ function modulos_grupos_editar(){
 	
 	if($_GESTOR['banco-resultado']){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
+		$host = (isset($retorno_bd['host']) ? true : false);
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#checked#',($host ? 'checked' : ''));
 		
 		// ===== Popular os metaDados
 		
@@ -302,6 +308,7 @@ function modulos_grupos_interfaces_padroes(){
 					'nome' => $modulo['tabela']['nome'],
 					'campos' => Array(
 						'nome',
+						'host',
 						$modulo['tabela']['data_criacao'],
 						$modulo['tabela']['data_modificacao'],
 					),
@@ -315,6 +322,19 @@ function modulos_grupos_interfaces_padroes(){
 							'id' => 'nome',
 							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-name')),
 							'ordenar' => 'asc',
+						),
+						Array(
+							'id' => 'host',
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-host-label')),
+							'formatar' => Array(
+								'valor_substituir_por_rotulo' => Array(
+									Array(
+										'valor' => '1',
+										'rotulo' => '<b><span class="ui text blue">Sim</span></b>',
+									),
+								),
+								'valor_senao_existe' => '<b><span class="ui text grey">Não</span></b>',
+							)
 						),
 						Array(
 							'id' => $modulo['tabela']['data_criacao'],

@@ -2277,6 +2277,43 @@ function api_cliente_menus($params = false){
 	}
 }
 
+function api_cliente_usuario($params = false){
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// opcao - String - Obrigatório - Opção almejada.
+	
+	// ===== 
+	
+	if(isset($opcao)){
+		$host_verificacao = gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id']);
+		
+		$dados = Array();
+		
+		switch($opcao){
+			case 'removerTokens':
+				// ===== Enviar o 'id_hosts_usuarios'.
+			
+				$dados['id_hosts_usuarios'] = $id_hosts_usuarios;
+			break;
+		}
+		
+		// ===== Acessar a interface no cliente e retornar objeto do retorno.
+		
+		$retorno = api_cliente_interface(Array(
+			'interface' => 'usuario',
+			'id_hosts' => $host_verificacao['id_hosts'],
+			'opcao' => $opcao,
+			'dados' => $dados,
+		));
+		
+		return $retorno;
+	}
+}
+
 // ===== Funções auxiliares.
 
 function api_cliente_retornar_erro($params = false){
