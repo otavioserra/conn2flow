@@ -2933,6 +2933,64 @@ function plataforma_servidor_menus(){
 	return $retorno;
 }
 
+function plataforma_servidor_usuario(){
+	
+	// ===== Verificar qual opção desta interface está sendo disparada e tratar cada caso separadamente.
+	
+	$opcao = $_REQUEST['opcao'];
+	
+	switch($opcao){
+		case 'removerTokens':
+			// ===== Decodificar os dados em formato Array
+			
+			$dados = Array();
+			if(isset($_REQUEST['dados'])){
+				$dados = json_decode($_REQUEST['dados'],true);
+			}
+			
+			// ===== Verifica o ID referencial do registro.
+			
+			$id_hosts_usuarios = $dados['id_hosts_usuarios'];
+			
+			if(isset($id_hosts_usuarios)){
+				// ===== Remover todos os usuários tokens do usuário atual.
+				
+				banco_delete
+				(
+					"usuarios_tokens",
+					"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+				);
+				
+				// ===== Controle dos registros.
+				
+				$todos_ok = true;
+				
+				// ===== Caso algum tenha dado erro, retornar o erro.
+				
+				if($todos_ok){
+					$retorno = Array(
+						'status' => 'OK',
+					);
+				} else {
+					$retorno = Array(
+						'status' => 'ID_NOT_DEFINED',
+					);
+				}
+			} else {
+				$retorno = Array(
+					'status' => 'EMPTY_RECORDS',
+				);
+			}
+		break;
+		default:
+			$retorno = Array(
+				'status' => 'OPTION_NOT_DEFINED',
+			);
+	}
+
+	return $retorno;
+}
+
 // =========================== Funções de Acesso
 
 function plataforma_servidor_autenticar_cliente(){
@@ -3237,6 +3295,7 @@ function plataforma_servidor_start(){
 			case 'postagens':					 $dados = plataforma_servidor_postagens(); break;
 			case 'vouchers':					 $dados = plataforma_servidor_vouchers(); break;
 			case 'menus':						 $dados = plataforma_servidor_menus(); break;
+			case 'usuario':						 $dados = plataforma_servidor_usuario(); break;
 		}
 	}
 	
