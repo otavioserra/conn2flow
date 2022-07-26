@@ -322,6 +322,7 @@ function atualizar_banco_de_dados(){
 				'CREATE TABLE IF NOT EXISTS `usuarios` (
 					`id_usuarios` INT NOT NULL AUTO_INCREMENT,
 					`id_hosts_usuarios` INT NULL DEFAULT NULL,
+					`id_hosts_usuarios_perfis` INT NULL,
 					`nome_conta` VARCHAR(255) NULL DEFAULT NULL,
 					`nome` VARCHAR(255) NULL DEFAULT NULL,
 					`id` VARCHAR(255) NULL DEFAULT NULL,
