@@ -3112,6 +3112,7 @@ function plataforma_servidor_usuario_perfis(){
 					if($usuarios_perfis){
 						foreach($usuario_perfil as $campo => $valor){
 							switch($campo){
+								case 'sistema':
 								case 'padrao':
 									banco_update_campo($campo,(existe($valor) ? $valor : 'NULL'),true);
 								break;
@@ -3124,6 +3125,7 @@ function plataforma_servidor_usuario_perfis(){
 					} else {
 						foreach($usuario_perfil as $campo => $valor){
 							switch($campo){
+								case 'sistema':
 								case 'padrao':
 									banco_insert_name_campo($campo,(existe($valor) ? $valor : 'NULL'),true);
 								break;
