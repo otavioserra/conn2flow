@@ -3000,6 +3000,8 @@ function plataforma_servidor_usuario(){
 			}
 		break;
 		case 'editar':
+		case 'status':
+		case 'excluir':
 			// ===== Decodificar os dados em formato Array
 			
 			$dados = Array();
