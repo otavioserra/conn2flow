@@ -2940,7 +2940,7 @@ function plataforma_servidor_usuario(){
 	$opcao = $_REQUEST['opcao'];
 	
 	switch($opcao){
-		case 'removerTokens':
+		case 'adicionar':
 			// ===== Decodificar os dados em formato Array
 			
 			$dados = Array();
@@ -2953,13 +2953,92 @@ function plataforma_servidor_usuario(){
 			$id_hosts_usuarios = $dados['id_hosts_usuarios'];
 			
 			if(isset($id_hosts_usuarios)){
-				// ===== Remover todos os usuários tokens do usuário atual.
+				// ====== Criar usuário no banco.
 				
-				banco_delete
+				$campos = null; $campo_sem_aspas_simples = null;
+				
+				foreach($dados['usuario'] as $chave => $dado){
+					switch($chave){
+						case 'cnpj_ativo':
+							$campo_nome = $chave; $campo_valor = (existe($dado) ? "1" : "NULL"); 	$campos[] = Array($campo_nome,$campo_valor,true);
+						break;
+						/* case 'int':
+							$campo_nome = $chave; $campo_valor = (existe($dado) ? $dado : "NULL"); 	$campos[] = Array($campo_nome,$campo_valor,true);
+						break; */
+						default:
+							if(existe($dado)){
+								$campo_nome = $chave; $campo_valor = banco_escape_field($dado); 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+							}
+					}
+				}
+				
+				banco_insert_name
 				(
-					"usuarios_tokens",
-					"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+					$campos,
+					"usuarios"
 				);
+				
+				// ===== Controle dos registros.
+				
+				$todos_ok = true;
+				
+				// ===== Caso algum tenha dado erro, retornar o erro.
+				
+				if($todos_ok){
+					$retorno = Array(
+						'status' => 'OK',
+					);
+				} else {
+					$retorno = Array(
+						'status' => 'ID_NOT_DEFINED',
+					);
+				}
+			} else {
+				$retorno = Array(
+					'status' => 'EMPTY_RECORDS',
+				);
+			}
+		break;
+		case 'editar':
+			// ===== Decodificar os dados em formato Array
+			
+			$dados = Array();
+			if(isset($_REQUEST['dados'])){
+				$dados = json_decode($_REQUEST['dados'],true);
+			}
+			
+			// ===== Verifica o ID referencial do registro.
+			
+			$id_hosts_usuarios = $dados['id_hosts_usuarios'];
+			
+			if(isset($id_hosts_usuarios)){
+				// ===== Atualizar o usuário localmente.
+				
+				if($dados['usuario']){
+					$usuario = $dados['usuario'];
+					
+					foreach($usuario as $campo => $valor){
+						switch($campo){
+							case 'cnpj_ativo':
+								banco_update_campo($campo,(existe($valor) ? $valor : 'NULL'),true);
+							break;
+							default:
+								banco_update_campo($campo,$valor);
+						}
+					}
+					
+					banco_update_executar('usuarios',"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'");
+				}
+				
+				// ===== Remover todos os usuários tokens do usuário atual caso necessário.
+				
+				if(isset($dados['renovarToken'])){
+					banco_delete
+					(
+						"usuarios_tokens",
+						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+					);
+				}
 				
 				// ===== Controle dos registros.
 				
