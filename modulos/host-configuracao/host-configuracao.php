@@ -664,6 +664,25 @@ function host_configuracao_pipeline_atualizacao($params = false){
 					$finalizacaoOK = false;
 				}
 				
+				// ===== Atualizar usuarios_perfis no host do cliente.
+				
+				$retorno = api_cliente_usuario_perfis(Array(
+					'opcao' => 'atualizar',
+				));
+				
+				if(!$retorno['completed']){
+					$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
+					
+					$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
+					
+					interface_alerta(Array(
+						'redirect' => true,
+						'msg' => $alerta
+					));
+					
+					$finalizacaoOK = false;
+				}
+				
 				// ===== Caso esteja tudo ok, guardar no histórico e redirecionar. Senão, redirecionar e alertar o usuário.
 				
 				if($finalizacaoOK){

@@ -2387,33 +2387,70 @@ function api_cliente_usuario_perfis($params = false){
 		
 		switch($opcao){
 			case 'atualizar':
-				// ===== Enviar o 'id_hosts_usuarios'.
-			
-				$dados['id_hosts_usuarios'] = $id_hosts_usuarios;
+				$id_hosts = $host_verificacao['id_hosts'];
 				
-				// ===== Retornar o hosts_usuarios atualizado.
+				// ===== Baixar os perfis de usuários de host tanto global quanto personalizado.
 				
-				$hosts_usuarios = banco_select(Array(
-					'unico' => true,
-					'tabela' => 'hosts_usuarios',
+				$hosts_usuarios_perfis = banco_select(Array(
+					'tabela' => 'hosts_usuarios_perfis',
 					'campos' => '*',
 					'extra' => 
-						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
-						." AND id_hosts='".$host_verificacao['id_hosts']."'"
+						"WHERE id_hosts='".$id_hosts."'"
+						." OR id_hosts IS NULL"
 				));
 				
-				unset($hosts_usuarios['id_hosts']);
-				unset($hosts_usuarios['senha']);
-				unset($hosts_usuarios['ppp_remembered_card_hash']);
+				// ===== Varrer todos os perfis e baixar as permissões dos mesmos.
 				
-				$dados['usuario'] = $hosts_usuarios;
+				$dados['usuarios_perfis'] = Array();
+				$dados['usuarios_perfis_modulos'] = Array();
+				$dados['usuarios_perfis_modulos_operacoes'] = Array();
 				
-				// ===== Caso seja necessário remover os tokens.
-				
-				if(isset($renovarToken)){
-					$dados['renovarToken'] = true;
+				if($hosts_usuarios_perfis)
+				foreach($hosts_usuarios_perfis as $host_usuario_perfil){
+					// ===== Incluir e filtrar o usuário perfil nos dados de requisição.
+					
+					unset($host_usuario_perfil['id_hosts']);
+					
+					$dados['usuarios_perfis'][] = $host_usuario_perfil;
+					
+					// ===== Baixar os módulos permitidos deste perfil.
+					
+					$perfil = $host_usuario_perfil['id'];
+					
+					$hosts_usuarios_perfis_modulos = banco_select(Array(
+						'tabela' => 'hosts_usuarios_perfis_modulos',
+						'campos' => Array(
+							'id_hosts_usuarios_perfis_modulos',
+							'perfil',
+							'modulo',
+						),
+						'extra' => 
+							"WHERE id_hosts='".$id_hosts."'"
+							." AND perfil='".$perfil."'"
+					));
+					
+					if($hosts_usuarios_perfis_modulos){
+						$dados['usuarios_perfis_modulos'] = array_merge($dados['usuarios_perfis_modulos'],$hosts_usuarios_perfis_modulos);
+					}
+					
+					// ===== Baixar os módulos operacoes permitidos deste perfil.
+					
+					$hosts_usuarios_perfis_modulos_operacoes = banco_select(Array(
+						'tabela' => 'hosts_usuarios_perfis_modulos_operacoes',
+						'campos' => Array(
+							'id_hosts_usuarios_perfis_modulos_operacoes',
+							'perfil',
+							'operacao',
+						),
+						'extra' => 
+							"WHERE id_hosts='".$id_hosts."'"
+							." AND perfil='".$perfil."'"
+					));
+					
+					if($hosts_usuarios_perfis_modulos){
+						$dados['usuarios_perfis_modulos_operacoes'] = array_merge($dados['usuarios_perfis_modulos_operacoes'],$hosts_usuarios_perfis_modulos_operacoes);
+					}
 				}
-			
 			break;
 			case 'adicionar':
 			case 'editar':
@@ -2480,7 +2517,7 @@ function api_cliente_usuario_perfis($params = false){
 		// ===== Acessar a interface no cliente e retornar objeto do retorno.
 		
 		$retorno = api_cliente_interface(Array(
-			'interface' => 'usuario',
+			'interface' => 'usuario-perfis',
 			'id_hosts' => $host_verificacao['id_hosts'],
 			'opcao' => $opcao,
 			'dados' => $dados,
