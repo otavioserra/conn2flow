@@ -3094,7 +3094,7 @@ function plataforma_servidor_usuario_perfis(){
 			if(isset($usuarios_perfis)){
 				// ===== Varrer todos os usuários perfis enviados.
 				
-				$usuarios_perfis_processados = Array();
+				$perfis_processados = Array();
 				
 				foreach($usuarios_perfis as $usuario_perfil){
 					// ===== Busca no banco de dados o ID referido.
@@ -3125,7 +3125,7 @@ function plataforma_servidor_usuario_perfis(){
 						
 						banco_update_executar('usuarios_perfis',"WHERE id_usuarios_perfis='".$usuarios_perfis_local['id_usuarios_perfis']."'");
 						
-						$usuarios_perfis_processados[] = $usuarios_perfis_local['id_usuarios_perfis'];
+						$perfis_processados[] = $usuarios_perfis_local['id_usuarios_perfis'];
 					} else {
 						foreach($usuario_perfil as $campo => $valor){
 							switch($campo){
@@ -3144,7 +3144,7 @@ function plataforma_servidor_usuario_perfis(){
 							"usuarios_perfis"
 						);
 						
-						$usuarios_perfis_processados[] = banco_last_id();
+						$perfis_processados[] = banco_last_id();
 					}
 				}
 				
@@ -3162,9 +3162,9 @@ function plataforma_servidor_usuario_perfis(){
 				if($usuarios_perfis_local){
 					foreach($usuarios_perfis_local as $usuario_perfil){
 						$found = false;
-						if($usuarios_perfis_processados){
-							foreach($usuarios_perfis_processados as $usuario_perfil_proc){
-								if($usuario_perfil['id_usuarios_perfis'] == $usuario_perfil_proc['id_usuarios_perfis']){
+						if($perfis_processados){
+							foreach($perfis_processados as $perfil_proc){
+								if($usuario_perfil['id_usuarios_perfis'] == $perfil_proc){
 									$found = true;
 									break;
 								}
@@ -3186,7 +3186,7 @@ function plataforma_servidor_usuario_perfis(){
 				$usuarios_perfis_modulos = $dados['usuarios_perfis_modulos'];
 				
 				if(isset($usuarios_perfis_modulos)){
-					$usuarios_perfis_modulos_processados = Array();
+					$perfis_processados = Array();
 					
 					foreach($usuarios_perfis_modulos as $usuario_perfil_modulo){
 						// ===== Busca no banco de dados o ID referido.
@@ -3213,7 +3213,7 @@ function plataforma_servidor_usuario_perfis(){
 							
 							banco_update_executar('usuarios_perfis_modulos',"WHERE id_usuarios_perfis_modulos='".$usuarios_perfis_modulos_local['id_usuarios_perfis_modulos']."'");
 							
-							$usuarios_perfis_modulos_processados[] = $usuarios_perfis_modulos_local['id_usuarios_perfis_modulos'];
+							$perfis_processados[] = $usuarios_perfis_modulos_local['id_usuarios_perfis_modulos'];
 						} else {
 							foreach($usuario_perfil_modulo as $campo => $valor){
 								switch($campo){
@@ -3228,7 +3228,7 @@ function plataforma_servidor_usuario_perfis(){
 								"usuarios_perfis_modulos"
 							);
 							
-							$usuarios_perfis_modulos_processados[] = banco_last_id();
+							$perfis_processados[] = banco_last_id();
 						}
 					}
 				}
@@ -3247,9 +3247,9 @@ function plataforma_servidor_usuario_perfis(){
 				if($usuarios_perfis_modulos_local){
 					foreach($usuarios_perfis_modulos_local as $usuario_perfil_modulo){
 						$found = false;
-						if($usuarios_perfis_modulos_processados){
-							foreach($usuarios_perfis_modulos_processados as $usuario_perfil_modulo_proc){
-								if($usuario_perfil_modulo['id_usuarios_perfis_modulos'] == $usuario_perfil_modulo_proc['id_usuarios_perfis_modulos']){
+						if($perfis_processados){
+							foreach($perfis_processados as $perfil_proc){
+								if($usuario_perfil_modulo['id_usuarios_perfis_modulos'] == $perfil_proc){
 									$found = true;
 									break;
 								}
@@ -3271,7 +3271,7 @@ function plataforma_servidor_usuario_perfis(){
 				$usuarios_perfis_modulos_operacoes = $dados['usuarios_perfis_modulos_operacoes'];
 				
 				if(isset($usuarios_perfis_modulos_operacoes)){
-					$usuarios_perfis_modulos_operacoes_processados = Array();
+					$perfis_processados = Array();
 					
 					foreach($usuarios_perfis_modulos_operacoes as $usuario_perfil_modulo_operacao){
 						// ===== Busca no banco de dados o ID referido.
@@ -3298,7 +3298,7 @@ function plataforma_servidor_usuario_perfis(){
 							
 							banco_update_executar('usuarios_perfis_modulos_operacoes',"WHERE id_usuarios_perfis_modulos_operacoes='".$usuarios_perfis_modulos_operacoes_local['id_usuarios_perfis_modulos_operacoes']."'");
 							
-							$usuarios_perfis_modulos_operacoes_processados[] = $usuarios_perfis_modulos_operacoes_local['id_usuarios_perfis_modulos_operacoes'];
+							$perfis_processados[] = $usuarios_perfis_modulos_operacoes_local['id_usuarios_perfis_modulos_operacoes'];
 						} else {
 							foreach($usuario_perfil_modulo_operacao as $campo => $valor){
 								switch($campo){
@@ -3313,7 +3313,7 @@ function plataforma_servidor_usuario_perfis(){
 								"usuarios_perfis_modulos_operacoes"
 							);
 							
-							$usuarios_perfis_modulos_operacoes_processados[] = banco_last_id();
+							$perfis_processados[] = banco_last_id();
 						}
 					}
 				}
@@ -3332,9 +3332,9 @@ function plataforma_servidor_usuario_perfis(){
 				if($usuarios_perfis_modulos_operacoes_local){
 					foreach($usuarios_perfis_modulos_operacoes_local as $usuario_perfil_modulo_operacao){
 						$found = false;
-						if($usuarios_perfis_modulos_operacoes_processados){
-							foreach($usuarios_perfis_modulos_operacoes_processados as $usuario_perfil_modulo_operacao_proc){
-								if($usuario_perfil_modulo_operacao['id_usuarios_perfis_modulos_operacoes'] == $usuario_perfil_modulo_operacao_proc['id_usuarios_perfis_modulos_operacoes']){
+						if($perfis_processados){
+							foreach($perfis_processados as $perfil_proc){
+								if($usuario_perfil_modulo_operacao['id_usuarios_perfis_modulos_operacoes'] == $perfil_proc){
 									$found = true;
 									break;
 								}
