@@ -2294,10 +2294,35 @@ function api_cliente_usuario($params = false){
 		$dados = Array();
 		
 		switch($opcao){
-			case 'removerTokens':
+			case 'adicionar':
+			case 'editar':
 				// ===== Enviar o 'id_hosts_usuarios'.
 			
 				$dados['id_hosts_usuarios'] = $id_hosts_usuarios;
+				
+				// ===== Retornar o hosts_usuarios atualizado.
+				
+				$hosts_usuarios = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_usuarios',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$host_verificacao['id_hosts']."'"
+				));
+				
+				unset($hosts_usuarios['id_hosts']);
+				unset($hosts_usuarios['senha']);
+				unset($hosts_usuarios['ppp_remembered_card_hash']);
+				
+				$dados['usuario'] = $hosts_usuarios;
+				
+				// ===== Caso seja necessário remover os tokens.
+				
+				if(isset($renovarToken)){
+					$dados['renovarToken'] = true;
+				}
+			
 			break;
 		}
 		

@@ -211,6 +211,28 @@ function usuarios_adicionar(){
 			$modulo['tabela']['nome']
 		);
 		
+		$id_hosts_usuarios = banco_last_id();
+		
+		// ===== Chamada da API-Cliente para atualizar no host do usuário.
+		
+		gestor_incluir_biblioteca('api-cliente');
+		
+		$retorno = api_cliente_usuario(Array(
+			'opcao' => 'adicionar',
+			'id_hosts_usuarios' => $id_hosts_usuarios,
+		));
+		
+		if(!$retorno['completed']){
+			$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
+			
+			$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
+			
+			interface_alerta(Array(
+				'redirect' => true,
+				'msg' => $alerta
+			));
+		}
+		
 		// ===== Redirecionar para a página de edição.
 		
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
@@ -563,6 +585,14 @@ function usuarios_editar(){
 		
 		// ===== Atualização dos demais campos.
 		
+		$campo_nome = "id_hosts_usuarios_perfis"; $request_name = 'usuario-perfil'; $alteracoes_name = 'user-profile'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){
+				$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
+						'nome' => 'hosts_usuarios_perfis',
+						'campo' => 'nome',
+						'id_numerico' => 'id_hosts_usuarios_perfis',
+					));
+			}
+			
 		$campo_nome = "nome_conta"; $request_name = $campo_nome; $alteracoes_name = 'name-account'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		
 		$campo_nome = "usuario"; $request_name = $campo_nome; $alteracoes_name = 'user'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));
@@ -619,35 +649,34 @@ function usuarios_editar(){
 			
 			// ===== Remover tokens do usuário
 			
-			if(isset($renovarToken)){
-				$id_hosts_usuarios = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico']));
+			$id_hosts_usuarios = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico']));
+			
+			banco_delete
+			(
+				"hosts_usuarios_tokens",
+				"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+				." AND id_hosts='".$id_hosts."'"
+			);
+			
+			// ===== Chamada da API-Cliente para atualizar no host do usuário.
+			
+			gestor_incluir_biblioteca('api-cliente');
+			
+			$retorno = api_cliente_usuario(Array(
+				'opcao' => 'editar',
+				'id_hosts_usuarios' => $id_hosts_usuarios,
+				'renovarToken' => (isset($renovarToken) ? true : NULL),
+			));
+			
+			if(!$retorno['completed']){
+				$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
 				
-				banco_delete
-				(
-					"hosts_usuarios_tokens",
-					"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
-					." AND id_hosts='".$id_hosts."'"
-				);
+				$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
 				
-				// ===== Chamada da API-Cliente para remover tokens no host do usuário.
-				
-				gestor_incluir_biblioteca('api-cliente');
-				
-				$retorno = api_cliente_usuario(Array(
-					'opcao' => 'removerTokens',
-					'id_hosts_usuarios' => $id_hosts_usuarios,
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $alerta
 				));
-				
-				if(!$retorno['completed']){
-					$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
-					
-					$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
-					
-					interface_alerta(Array(
-						'redirect' => true,
-						'msg' => $alerta
-					));
-				}
 			}
 		}
 		

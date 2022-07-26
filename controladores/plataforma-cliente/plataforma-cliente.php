@@ -1510,6 +1510,7 @@ function plataforma_cliente_identificacao(){
 						
 						unset($usuarios['id_hosts']);
 						unset($usuarios['senha']);
+						unset($usuarios['ppp_remembered_card_hash']);
 						
 						// ===== Retornar os dados.
 						
