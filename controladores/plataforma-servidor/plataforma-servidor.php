@@ -3072,6 +3072,196 @@ function plataforma_servidor_usuario(){
 	return $retorno;
 }
 
+function plataforma_servidor_usuario_perfis(){
+	
+	// ===== Verificar qual opção desta interface está sendo disparada e tratar cada caso separadamente.
+	
+	$opcao = $_REQUEST['opcao'];
+	
+	switch($opcao){
+		case 'atualizar':
+			// ===== Decodificar os dados em formato Array
+			
+			$dados = Array();
+			if(isset($_REQUEST['dados'])){
+				$dados = json_decode($_REQUEST['dados'],true);
+			}
+			
+			// ===== Verifica o ID referencial do registro.
+			
+			$usuarios_perfis = $dados['usuarios_perfis'];
+			
+			if(isset($usuarios_perfis)){
+				// ===== Varrer todos os usuários perfis enviados.
+				
+				foreach($usuarios_perfis as $usuario_perfil){
+					// ===== Busca no banco de dados o ID referido.
+					
+					$usuarios_perfis = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'usuarios_perfis',
+						'campos' => Array(
+							'id_usuarios_perfis',
+						),
+						'extra' => 
+							"WHERE id_hosts_usuarios_perfis='".$usuario_perfil['id_hosts_usuarios_perfis']."'"
+					));
+					
+					// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
+					
+					if($usuarios_perfis){
+						foreach($usuario_perfil as $campo => $valor){
+							switch($campo){
+								case 'padrao':
+									banco_update_campo($campo,(existe($valor) ? $valor : 'NULL'),true);
+								break;
+								default:
+									banco_update_campo($campo,$valor);
+							}
+						}
+						
+						banco_update_executar('usuarios_perfis',"WHERE id_usuarios_perfis='".$usuarios_perfis['id_usuarios_perfis']."'");
+					} else {
+						foreach($usuario_perfil as $campo => $valor){
+							switch($campo){
+								case 'padrao':
+									banco_insert_name_campo($campo,(existe($valor) ? $valor : 'NULL'),true);
+								break;
+								default:
+									banco_insert_name_campo($campo,$valor);
+							}
+						}
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"usuarios_perfis"
+						);
+					}
+				}
+				
+				// ===== Varrer todos os usuários perfis módulos enviados.
+				
+				$usuarios_perfis_modulos = $dados['usuarios_perfis_modulos'];
+				
+				if(isset($usuarios_perfis_modulos)){
+					foreach($usuarios_perfis_modulos as $usuario_perfil_modulo){
+						// ===== Busca no banco de dados o ID referido.
+						
+						$usuarios_perfis_modulos = banco_select(Array(
+							'unico' => true,
+							'tabela' => 'usuarios_perfis_modulos',
+							'campos' => Array(
+								'id_usuarios_perfis_modulos',
+							),
+							'extra' => 
+								"WHERE id_hosts_usuarios_perfis_modulos='".$usuario_perfil_modulo['id_hosts_usuarios_perfis_modulos']."'"
+						));
+						
+						// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
+						
+						if($usuarios_perfis_modulos){
+							foreach($usuario_perfil_modulo as $campo => $valor){
+								switch($campo){
+									default:
+										banco_update_campo($campo,$valor);
+								}
+							}
+							
+							banco_update_executar('usuarios_perfis_modulos',"WHERE id_usuarios_perfis_modulos='".$usuarios_perfis_modulos['id_usuarios_perfis_modulos']."'");
+						} else {
+							foreach($usuario_perfil_modulo as $campo => $valor){
+								switch($campo){
+									default:
+										banco_insert_name_campo($campo,$valor);
+								}
+							}
+							
+							banco_insert_name
+							(
+								banco_insert_name_campos(),
+								"usuarios_perfis_modulos"
+							);
+						}
+					}
+				}
+				
+				// ===== Varrer todos os usuários perfis módulos enviados.
+				
+				$usuarios_perfis_modulos_operacoes = $dados['usuarios_perfis_modulos_operacoes'];
+				
+				if(isset($usuarios_perfis_modulos_operacoes)){
+					foreach($usuarios_perfis_modulos_operacoes as $usuario_perfil_modulo_operacao){
+						// ===== Busca no banco de dados o ID referido.
+						
+						$usuarios_perfis_modulos_operacoes = banco_select(Array(
+							'unico' => true,
+							'tabela' => 'usuarios_perfis_modulos_operacoes',
+							'campos' => Array(
+								'id_usuarios_perfis_modulos_operacoes',
+							),
+							'extra' => 
+								"WHERE id_hosts_usuarios_perfis_modulos_operacoes='".$usuario_perfil_modulo_operacao['id_hosts_usuarios_perfis_modulos_operacoes']."'"
+						));
+						
+						// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
+						
+						if($usuarios_perfis_modulos_operacoes){
+							foreach($usuario_perfil_modulo_operacao as $campo => $valor){
+								switch($campo){
+									default:
+										banco_update_campo($campo,$valor);
+								}
+							}
+							
+							banco_update_executar('usuarios_perfis_modulos_operacoes',"WHERE id_usuarios_perfis_modulos_operacoes='".$usuarios_perfis_modulos_operacoes['id_usuarios_perfis_modulos_operacoes']."'");
+						} else {
+							foreach($usuario_perfil_modulo_operacao as $campo => $valor){
+								switch($campo){
+									default:
+										banco_insert_name_campo($campo,$valor);
+								}
+							}
+							
+							banco_insert_name
+							(
+								banco_insert_name_campos(),
+								"usuarios_perfis_modulos_operacoes"
+							);
+						}
+					}
+				}
+				
+				// ===== Controle dos registros.
+				
+				$todos_ok = true;
+				
+				// ===== Caso algum tenha dado erro, retornar o erro.
+				
+				if($todos_ok){
+					$retorno = Array(
+						'status' => 'OK',
+					);
+				} else {
+					$retorno = Array(
+						'status' => 'ID_NOT_DEFINED',
+					);
+				}
+			} else {
+				$retorno = Array(
+					'status' => 'EMPTY_RECORDS',
+				);
+			}
+		break;
+		default:
+			$retorno = Array(
+				'status' => 'OPTION_NOT_DEFINED',
+			);
+	}
+
+	return $retorno;
+}
+
 // =========================== Funções de Acesso
 
 function plataforma_servidor_autenticar_cliente(){
@@ -3377,6 +3567,7 @@ function plataforma_servidor_start(){
 			case 'vouchers':					 $dados = plataforma_servidor_vouchers(); break;
 			case 'menus':						 $dados = plataforma_servidor_menus(); break;
 			case 'usuario':						 $dados = plataforma_servidor_usuario(); break;
+			case 'usuario-perfis':				 $dados = plataforma_servidor_usuario_perfis(); break;
 		}
 	}
 	
