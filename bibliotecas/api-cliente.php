@@ -2460,6 +2460,8 @@ function api_cliente_usuario_perfis($params = false){
 						$dados['usuarios_perfis_modulos_operacoes'] = array_merge($dados['usuarios_perfis_modulos_operacoes'],$hosts_usuarios_perfis_modulos_operacoes);
 					}
 				}
+				
+				echo 'Dados>> '.print_r($dados,true)."<br>";exit;
 			break;
 			case 'adicionar':
 			case 'editar':
