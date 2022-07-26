@@ -3099,7 +3099,7 @@ function plataforma_servidor_usuario_perfis(){
 				foreach($usuarios_perfis as $usuario_perfil){
 					// ===== Busca no banco de dados o ID referido.
 					
-					$usuarios_perfis = banco_select(Array(
+					$usuarios_perfis_local = banco_select(Array(
 						'unico' => true,
 						'tabela' => 'usuarios_perfis',
 						'campos' => Array(
@@ -3111,7 +3111,7 @@ function plataforma_servidor_usuario_perfis(){
 					
 					// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
 					
-					if($usuarios_perfis){
+					if($usuarios_perfis_local){
 						foreach($usuario_perfil as $campo => $valor){
 							switch($campo){
 								case 'sistema':
@@ -3123,9 +3123,9 @@ function plataforma_servidor_usuario_perfis(){
 							}
 						}
 						
-						banco_update_executar('usuarios_perfis',"WHERE id_usuarios_perfis='".$usuarios_perfis['id_usuarios_perfis']."'");
+						banco_update_executar('usuarios_perfis',"WHERE id_usuarios_perfis='".$usuarios_perfis_local['id_usuarios_perfis']."'");
 						
-						$usuarios_perfis_processados[] = $usuarios_perfis['id_usuarios_perfis'];
+						$usuarios_perfis_processados[] = $usuarios_perfis_local['id_usuarios_perfis'];
 					} else {
 						foreach($usuario_perfil as $campo => $valor){
 							switch($campo){
@@ -3150,7 +3150,7 @@ function plataforma_servidor_usuario_perfis(){
 				
 				// ===== Excluir perfis não processados.
 				
-				$usuarios_perfis = banco_select(Array(
+				$usuarios_perfis_local = banco_select(Array(
 					'tabela' => 'usuarios_perfis',
 					'campos' => Array(
 						'id_usuarios_perfis',
@@ -3159,8 +3159,8 @@ function plataforma_servidor_usuario_perfis(){
 						""
 				));
 				
-				if($usuarios_perfis){
-					foreach($usuarios_perfis as $usuario_perfil){
+				if($usuarios_perfis_local){
+					foreach($usuarios_perfis_local as $usuario_perfil){
 						$found = false;
 						if($usuarios_perfis_processados){
 							foreach($usuarios_perfis_processados as $usuario_perfil_proc){
@@ -3191,7 +3191,7 @@ function plataforma_servidor_usuario_perfis(){
 					foreach($usuarios_perfis_modulos as $usuario_perfil_modulo){
 						// ===== Busca no banco de dados o ID referido.
 						
-						$usuarios_perfis_modulos = banco_select(Array(
+						$usuarios_perfis_modulos_local = banco_select(Array(
 							'unico' => true,
 							'tabela' => 'usuarios_perfis_modulos',
 							'campos' => Array(
@@ -3203,7 +3203,7 @@ function plataforma_servidor_usuario_perfis(){
 						
 						// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
 						
-						if($usuarios_perfis_modulos){
+						if($usuarios_perfis_modulos_local){
 							foreach($usuario_perfil_modulo as $campo => $valor){
 								switch($campo){
 									default:
@@ -3211,9 +3211,9 @@ function plataforma_servidor_usuario_perfis(){
 								}
 							}
 							
-							banco_update_executar('usuarios_perfis_modulos',"WHERE id_usuarios_perfis_modulos='".$usuarios_perfis_modulos['id_usuarios_perfis_modulos']."'");
+							banco_update_executar('usuarios_perfis_modulos',"WHERE id_usuarios_perfis_modulos='".$usuarios_perfis_modulos_local['id_usuarios_perfis_modulos']."'");
 							
-							$usuarios_perfis_modulos_processados[] = $usuarios_perfis_modulos['id_usuarios_perfis_modulos'];
+							$usuarios_perfis_modulos_processados[] = $usuarios_perfis_modulos_local['id_usuarios_perfis_modulos'];
 						} else {
 							foreach($usuario_perfil_modulo as $campo => $valor){
 								switch($campo){
@@ -3235,7 +3235,7 @@ function plataforma_servidor_usuario_perfis(){
 				
 				// ===== Excluir perfis módulos não processados.
 				
-				$usuarios_perfis_modulos = banco_select(Array(
+				$usuarios_perfis_modulos_local = banco_select(Array(
 					'tabela' => 'usuarios_perfis_modulos',
 					'campos' => Array(
 						'id_usuarios_perfis_modulos',
@@ -3244,8 +3244,8 @@ function plataforma_servidor_usuario_perfis(){
 						""
 				));
 				
-				if($usuarios_perfis_modulos){
-					foreach($usuarios_perfis_modulos as $usuario_perfil_modulo){
+				if($usuarios_perfis_modulos_local){
+					foreach($usuarios_perfis_modulos_local as $usuario_perfil_modulo){
 						$found = false;
 						if($usuarios_perfis_modulos_processados){
 							foreach($usuarios_perfis_modulos_processados as $usuario_perfil_modulo_proc){
@@ -3276,7 +3276,7 @@ function plataforma_servidor_usuario_perfis(){
 					foreach($usuarios_perfis_modulos_operacoes as $usuario_perfil_modulo_operacao){
 						// ===== Busca no banco de dados o ID referido.
 						
-						$usuarios_perfis_modulos_operacoes = banco_select(Array(
+						$usuarios_perfis_modulos_operacoes_local = banco_select(Array(
 							'unico' => true,
 							'tabela' => 'usuarios_perfis_modulos_operacoes',
 							'campos' => Array(
@@ -3288,7 +3288,7 @@ function plataforma_servidor_usuario_perfis(){
 						
 						// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
 						
-						if($usuarios_perfis_modulos_operacoes){
+						if($usuarios_perfis_modulos_operacoes_local){
 							foreach($usuario_perfil_modulo_operacao as $campo => $valor){
 								switch($campo){
 									default:
@@ -3296,9 +3296,9 @@ function plataforma_servidor_usuario_perfis(){
 								}
 							}
 							
-							banco_update_executar('usuarios_perfis_modulos_operacoes',"WHERE id_usuarios_perfis_modulos_operacoes='".$usuarios_perfis_modulos_operacoes['id_usuarios_perfis_modulos_operacoes']."'");
+							banco_update_executar('usuarios_perfis_modulos_operacoes',"WHERE id_usuarios_perfis_modulos_operacoes='".$usuarios_perfis_modulos_operacoes_local['id_usuarios_perfis_modulos_operacoes']."'");
 							
-							$usuarios_perfis_modulos_operacoes_processados[] = $usuarios_perfis_modulos_operacoes['id_usuarios_perfis_modulos_operacoes'];
+							$usuarios_perfis_modulos_operacoes_processados[] = $usuarios_perfis_modulos_operacoes_local['id_usuarios_perfis_modulos_operacoes'];
 						} else {
 							foreach($usuario_perfil_modulo_operacao as $campo => $valor){
 								switch($campo){
@@ -3320,7 +3320,7 @@ function plataforma_servidor_usuario_perfis(){
 				
 				// ===== Excluir perfis módulos operações não processados.
 				
-				$usuarios_perfis_modulos_operacoes = banco_select(Array(
+				$usuarios_perfis_modulos_operacoes_local = banco_select(Array(
 					'tabela' => 'usuarios_perfis_modulos_operacoes',
 					'campos' => Array(
 						'id_usuarios_perfis_modulos_operacoes',
@@ -3329,8 +3329,8 @@ function plataforma_servidor_usuario_perfis(){
 						""
 				));
 				
-				if($usuarios_perfis_modulos_operacoes){
-					foreach($usuarios_perfis_modulos_operacoes as $usuario_perfil_modulo_operacao){
+				if($usuarios_perfis_modulos_operacoes_local){
+					foreach($usuarios_perfis_modulos_operacoes_local as $usuario_perfil_modulo_operacao){
 						$found = false;
 						if($usuarios_perfis_modulos_operacoes_processados){
 							foreach($usuarios_perfis_modulos_operacoes_processados as $usuario_perfil_modulo_operacao_proc){
