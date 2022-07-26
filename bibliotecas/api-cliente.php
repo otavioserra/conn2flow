@@ -2324,6 +2324,36 @@ function api_cliente_usuario($params = false){
 				}
 			
 			break;
+			case 'status':
+			case 'excluir':
+				// ===== Enviar o 'id_hosts_usuarios'.
+			
+				$dados['id_hosts_usuarios'] = $id_hosts_usuarios;
+				
+				// ===== Retornar o hosts_usuarios atualizado.
+				
+				$hosts_usuarios = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_usuarios',
+					'campos' => Array(
+						'status',
+						'versao',
+						'data_modificacao',
+					),
+					'extra' => 
+						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$host_verificacao['id_hosts']."'"
+				));
+				
+				$dados['usuario'] = $hosts_usuarios;
+				
+				// ===== Caso seja necessário remover os tokens.
+				
+				if(isset($renovarToken)){
+					$dados['renovarToken'] = true;
+				}
+			
+			break;
 		}
 		
 		// ===== Acessar a interface no cliente e retornar objeto do retorno.

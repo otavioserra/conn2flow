@@ -913,18 +913,44 @@ function usuarios_status(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
+	$id_hosts = $_GESTOR['host-id'];
+	
 	// ===== Remover tokens do usuário
 	
 	$mudar_status = $_GESTOR['modulo-registro-status'];
 	
+	$id_hosts_usuarios = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico']));
+	
 	if($mudar_status == 'I'){
-		$id_usuarios = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico']));
-		
 		banco_delete
 		(
-			"usuarios_tokens",
-			"WHERE id_usuarios='".$id_usuarios."'"
+			"hosts_usuarios_tokens",
+			"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+			." AND id_hosts='".$id_hosts."'"
 		);
+		
+		$renovarToken = true;
+	}
+	
+	// ===== Chamada da API-Cliente para atualizar no host do usuário.
+	
+	gestor_incluir_biblioteca('api-cliente');
+	
+	$retorno = api_cliente_usuario(Array(
+		'opcao' => 'status',
+		'id_hosts_usuarios' => $id_hosts_usuarios,
+		'renovarToken' => (isset($renovarToken) ? true : NULL),
+	));
+	
+	if(!$retorno['completed']){
+		$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
+		
+		$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
+		
+		interface_alerta(Array(
+			'redirect' => true,
+			'msg' => $alerta
+		));
 	}
 }
 
@@ -933,15 +959,39 @@ function usuarios_excluir(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
+	$id_hosts = $_GESTOR['host-id'];
+	
 	// ===== Remover tokens do usuário
 	
-	$id_usuarios = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico']));
+	$id_hosts_usuarios = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico']));
 	
 	banco_delete
 	(
-		"usuarios_tokens",
-		"WHERE id_usuarios='".$id_usuarios."'"
+		"hosts_usuarios_tokens",
+		"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+		." AND id_hosts='".$id_hosts."'"
 	);
+	
+	// ===== Chamada da API-Cliente para atualizar no host do usuário.
+	
+	gestor_incluir_biblioteca('api-cliente');
+	
+	$retorno = api_cliente_usuario(Array(
+		'opcao' => 'excluir',
+		'id_hosts_usuarios' => $id_hosts_usuarios,
+		'renovarToken' => true,
+	));
+	
+	if(!$retorno['completed']){
+		$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
+		
+		$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
+		
+		interface_alerta(Array(
+			'redirect' => true,
+			'msg' => $alerta
+		));
+	}
 }
 
 function usuarios_interfaces_padroes(){
