@@ -2369,6 +2369,127 @@ function api_cliente_usuario($params = false){
 	}
 }
 
+function api_cliente_usuario_perfis($params = false){
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// opcao - String - Obrigatório - Opção almejada.
+	
+	// ===== 
+	
+	if(isset($opcao)){
+		$host_verificacao = gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id']);
+		
+		$dados = Array();
+		
+		switch($opcao){
+			case 'atualizar':
+				// ===== Enviar o 'id_hosts_usuarios'.
+			
+				$dados['id_hosts_usuarios'] = $id_hosts_usuarios;
+				
+				// ===== Retornar o hosts_usuarios atualizado.
+				
+				$hosts_usuarios = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_usuarios',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$host_verificacao['id_hosts']."'"
+				));
+				
+				unset($hosts_usuarios['id_hosts']);
+				unset($hosts_usuarios['senha']);
+				unset($hosts_usuarios['ppp_remembered_card_hash']);
+				
+				$dados['usuario'] = $hosts_usuarios;
+				
+				// ===== Caso seja necessário remover os tokens.
+				
+				if(isset($renovarToken)){
+					$dados['renovarToken'] = true;
+				}
+			
+			break;
+			case 'adicionar':
+			case 'editar':
+				// ===== Enviar o 'id_hosts_usuarios'.
+			
+				$dados['id_hosts_usuarios'] = $id_hosts_usuarios;
+				
+				// ===== Retornar o hosts_usuarios atualizado.
+				
+				$hosts_usuarios = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_usuarios',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$host_verificacao['id_hosts']."'"
+				));
+				
+				unset($hosts_usuarios['id_hosts']);
+				unset($hosts_usuarios['senha']);
+				unset($hosts_usuarios['ppp_remembered_card_hash']);
+				
+				$dados['usuario'] = $hosts_usuarios;
+				
+				// ===== Caso seja necessário remover os tokens.
+				
+				if(isset($renovarToken)){
+					$dados['renovarToken'] = true;
+				}
+			
+			break;
+			case 'status':
+			case 'excluir':
+				// ===== Enviar o 'id_hosts_usuarios'.
+			
+				$dados['id_hosts_usuarios'] = $id_hosts_usuarios;
+				
+				// ===== Retornar o hosts_usuarios atualizado.
+				
+				$hosts_usuarios = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_usuarios',
+					'campos' => Array(
+						'status',
+						'versao',
+						'data_modificacao',
+					),
+					'extra' => 
+						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$host_verificacao['id_hosts']."'"
+				));
+				
+				$dados['usuario'] = $hosts_usuarios;
+				
+				// ===== Caso seja necessário remover os tokens.
+				
+				if(isset($renovarToken)){
+					$dados['renovarToken'] = true;
+				}
+			
+			break;
+		}
+		
+		// ===== Acessar a interface no cliente e retornar objeto do retorno.
+		
+		$retorno = api_cliente_interface(Array(
+			'interface' => 'usuario',
+			'id_hosts' => $host_verificacao['id_hosts'],
+			'opcao' => $opcao,
+			'dados' => $dados,
+		));
+		
+		return $retorno;
+	}
+}
+
 // ===== Funções auxiliares.
 
 function api_cliente_retornar_erro($params = false){
