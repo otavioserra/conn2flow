@@ -45,6 +45,8 @@ function hosts_usuarios_perfis_adicionar(){
 		
 		// ===== Definição do identificador
 		
+		$id_hosts = $_GESTOR['host-id'];
+		
 		$campos = null;
 		$campo_sem_aspas_simples = false;
 		
@@ -54,13 +56,13 @@ function hosts_usuarios_perfis_adicionar(){
 				'nome' => $modulo['tabela']['nome'],
 				'campo' => $modulo['tabela']['id'],
 				'id_nome' => $modulo['tabela']['id_numerico'],
-				'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
+				'where' => "id_hosts='".$id_hosts."'", // Somente acessar dados do host permitido.
 			),
 		));
 		
 		// ===== Campos gerais
 		
-		$campo_nome = "id_hosts"; $campo_valor = $_GESTOR['host-id']; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "id_hosts"; $campo_valor = $id_hosts; 							$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "padrao"; $post_nome = "padrao"; $campo_valor = '1';				if($_REQUEST[$post_nome] == 'on'){		$campos[] = Array($campo_nome,$campo_valor,true);}
@@ -76,7 +78,7 @@ function hosts_usuarios_perfis_adicionar(){
 		
 		banco_update_campo('padrao','NULL',true);
 		
-		banco_update_executar($modulo['tabela']['nome'],"WHERE padrao IS NOT NULL AND id_hosts='".$_GESTOR['host-id']."'");
+		banco_update_executar($modulo['tabela']['nome'],"WHERE padrao IS NOT NULL AND id_hosts='".$id_hosts."'");
 		
 		// ===== Inserir os dados novos no banco de dados.
 		
@@ -137,6 +139,7 @@ function hosts_usuarios_perfis_adicionar(){
 				// ===== Caso tenha encontrado, inserir o mesmo como referência.
 				
 				if($encontrou){
+					banco_insert_name_campo('id_hosts',$id_hosts);
 					banco_insert_name_campo('perfil',$id);
 					banco_insert_name_campo('modulo',$modulo_id);
 					
@@ -176,6 +179,7 @@ function hosts_usuarios_perfis_adicionar(){
 				// ===== Caso tenha encontrado, inserir o mesmo como referência.
 				
 				if($encontrou){
+					banco_insert_name_campo('id_hosts',$id_hosts);
 					banco_insert_name_campo('perfil',$id);
 					banco_insert_name_campo('operacao',$operacao_id);
 					
@@ -393,13 +397,15 @@ function hosts_usuarios_perfis_editar(){
 	if(isset($_GESTOR['atualizar-banco'])){
 		// ===== Recuperar o estado dos dados do banco de dados antes de editar.
 		
+		$id_hosts = $_GESTOR['host-id'];
+		
 		if(!banco_select_campos_antes_iniciar(
 			banco_campos_virgulas($camposBancoAntes)
 			,
 			$modulo['tabela']['nome'],
 			"WHERE ".$modulo['tabela']['id']."='".$id."'"
 			." AND ".$modulo['tabela']['status']."!='D'"
-			." AND id_hosts='".$_GESTOR['host-id']."'"
+			." AND id_hosts='".$id_hosts."'"
 		)){
 			interface_alerta(Array(
 				'redirect' => true,
@@ -425,7 +431,7 @@ function hosts_usuarios_perfis_editar(){
 		
 		$editar = Array(
 			'tabela' => $modulo['tabela']['nome'],
-			'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D' AND id_hosts='".$_GESTOR['host-id']."'",
+			'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D' AND id_hosts='".$id_hosts."'",
 		);
 		
 		$campo_nome = "nome"; $request_name = 'nome'; $alteracoes_name = 'name'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; if(!isset($_REQUEST['_gestor-nao-alterar-id'])){$alterar_id = true;} $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
@@ -440,7 +446,7 @@ function hosts_usuarios_perfis_editar(){
 					'campo' => $modulo['tabela']['id'],
 					'id_nome' => $modulo['tabela']['id_numerico'],
 					'id_valor' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-					'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
+					'where' => "id_hosts='".$id_hosts."'", // Somente acessar dados do host permitido.
 				),
 			));
 			
@@ -469,7 +475,7 @@ function hosts_usuarios_perfis_editar(){
 			$modulo['tabela']['nome'],
 			"WHERE ".$modulo['tabela']['id']."='".$id."'"
 			." AND ".$modulo['tabela']['status']."!='D'"
-			." AND id_hosts='".$_GESTOR['host-id']."'"
+			." AND id_hosts='".$id_hosts."'"
 		);
 		
 		$id_numerico = (isset($retorno_bd[$modulo['tabela']['id_numerico']]) ? $retorno_bd[$modulo['tabela']['id_numerico']] : '');
@@ -571,6 +577,7 @@ function hosts_usuarios_perfis_editar(){
 					if(!$jaEstavaAtivo){
 						// ===== Caso tenha encontrado e não estiver ativo, inserir o mesmo como referência.
 						
+						banco_insert_name_campo('id_hosts',$id_hosts);
 						banco_insert_name_campo('perfil',$id);
 						banco_insert_name_campo('modulo',$modulo_id);
 						
@@ -608,6 +615,7 @@ function hosts_usuarios_perfis_editar(){
 					"hosts_usuarios_perfis_modulos",
 					"WHERE perfil='".$id."'"
 					." AND modulo='".$upm['modulo']."'"
+					." AND id_hosts='".$id_hosts."'"
 				);
 				
 				$alterouModulos = true;
@@ -651,6 +659,7 @@ function hosts_usuarios_perfis_editar(){
 					if(!$jaEstavaAtivo){
 						// ===== Caso tenha encontrado, inserir o mesmo como referência.
 						
+						banco_insert_name_campo('id_hosts',$id_hosts);
 						banco_insert_name_campo('perfil',$id);
 						banco_insert_name_campo('operacao',$operacao_id);
 						
@@ -684,6 +693,7 @@ function hosts_usuarios_perfis_editar(){
 					"hosts_usuarios_perfis_modulos_operacoes",
 					"WHERE perfil='".$id."'"
 					." AND operacao='".$upmo['operacao']."'"
+					." AND id_hosts='".$id_hosts."'"
 				);
 				
 				$alterouModulosOperacoes = true;
@@ -699,7 +709,7 @@ function hosts_usuarios_perfis_editar(){
 			if(isset($padrao)){
 				banco_update_campo('padrao','NULL',true);
 				
-				banco_update_executar($modulo['tabela']['nome'],"WHERE padrao IS NOT NULL AND id_hosts='".$_GESTOR['host-id']."'");
+				banco_update_executar($modulo['tabela']['nome'],"WHERE padrao IS NOT NULL AND id_hosts='".$id_hosts."'");
 			}
 			
 			// ===== Atualizar versão e data.
@@ -954,10 +964,10 @@ function hosts_usuarios_perfis_editar(){
 			
 			if(isset($id_novo)){
 				banco_update_campo('perfil',$id_novo);
-				banco_update_executar('hosts_usuarios_perfis_modulos',"WHERE perfil='".$id."'");
+				banco_update_executar('hosts_usuarios_perfis_modulos',"WHERE perfil='".$id."' AND id_hosts='".$id_hosts."'");
 				
 				banco_update_campo('perfil',$id_novo);
-				banco_update_executar('hosts_usuarios_perfis_modulos_operacoes',"WHERE perfil='".$id."'");
+				banco_update_executar('hosts_usuarios_perfis_modulos_operacoes',"WHERE perfil='".$id."' AND id_hosts='".$id_hosts."'");
 			}
 		}
 		

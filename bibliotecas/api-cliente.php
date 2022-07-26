@@ -2407,6 +2407,14 @@ function api_cliente_usuario_perfis($params = false){
 				
 				if($hosts_usuarios_perfis)
 				foreach($hosts_usuarios_perfis as $host_usuario_perfil){
+					// ===== Verifica se o perfil é do host ou não.
+					
+					if($host_usuario_perfil['id_hosts']){
+						$perfilDoHost = true;
+					} else {
+						$perfilDoHost = false;
+					}
+					
 					// ===== Incluir e filtrar o usuário perfil nos dados de requisição.
 					
 					unset($host_usuario_perfil['id_hosts']);
@@ -2425,8 +2433,8 @@ function api_cliente_usuario_perfis($params = false){
 							'modulo',
 						),
 						'extra' => 
-							"WHERE id_hosts='".$id_hosts."'"
-							." AND perfil='".$perfil."'"
+							"WHERE perfil='".$perfil."'"
+							.($perfilDoHost ? " AND id_hosts='".$id_hosts."'" : "")
 					));
 					
 					if($hosts_usuarios_perfis_modulos){
@@ -2443,8 +2451,8 @@ function api_cliente_usuario_perfis($params = false){
 							'operacao',
 						),
 						'extra' => 
-							"WHERE id_hosts='".$id_hosts."'"
-							." AND perfil='".$perfil."'"
+							"WHERE perfil='".$perfil."'"
+							.($perfilDoHost ? " AND id_hosts='".$id_hosts."'" : "")
 					));
 					
 					if($hosts_usuarios_perfis_modulos){
