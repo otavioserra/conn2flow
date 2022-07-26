@@ -189,7 +189,7 @@ function interface_historico($params = false){
 	$paginaAtual = 0;
 	$totalPaginas = 0;
 	
-	$whereModulo = "modulo='".$modulo."'";
+	$whereModulo = "modulo='".$modulo."'".(isset($id) ? " AND id='".$id."'" : '');
 	
 	// ===== Verificar o total de registros.
 	
