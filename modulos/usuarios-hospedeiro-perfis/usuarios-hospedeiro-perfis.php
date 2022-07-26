@@ -56,7 +56,7 @@ function hosts_usuarios_perfis_adicionar(){
 				'nome' => $modulo['tabela']['nome'],
 				'campo' => $modulo['tabela']['id'],
 				'id_nome' => $modulo['tabela']['id_numerico'],
-				'where' => "id_hosts='".$id_hosts."'", // Somente acessar dados do host permitido.
+				'where' => "(id_hosts='".$id_hosts."' OR id_hosts IS NULL)",
 			),
 		));
 		
@@ -446,7 +446,7 @@ function hosts_usuarios_perfis_editar(){
 					'campo' => $modulo['tabela']['id'],
 					'id_nome' => $modulo['tabela']['id_numerico'],
 					'id_valor' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-					'where' => "id_hosts='".$id_hosts."'", // Somente acessar dados do host permitido.
+					'where' => "(id_hosts='".$id_hosts."' OR id_hosts IS NULL)",
 				),
 			));
 			

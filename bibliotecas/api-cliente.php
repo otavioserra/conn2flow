@@ -2413,6 +2413,7 @@ function api_cliente_usuario_perfis($params = false){
 						$perfilDoHost = true;
 					} else {
 						$perfilDoHost = false;
+						$host_usuario_perfil['sistema'] = '1';
 					}
 					
 					// ===== Incluir e filtrar o usuário perfil nos dados de requisição.
