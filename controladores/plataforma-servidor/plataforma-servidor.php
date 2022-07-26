@@ -3094,6 +3094,8 @@ function plataforma_servidor_usuario_perfis(){
 			if(isset($usuarios_perfis)){
 				// ===== Varrer todos os usuários perfis enviados.
 				
+				$usuarios_perfis_processados = Array();
+				
 				foreach($usuarios_perfis as $usuario_perfil){
 					// ===== Busca no banco de dados o ID referido.
 					
@@ -3122,6 +3124,8 @@ function plataforma_servidor_usuario_perfis(){
 						}
 						
 						banco_update_executar('usuarios_perfis',"WHERE id_usuarios_perfis='".$usuarios_perfis['id_usuarios_perfis']."'");
+						
+						$usuarios_perfis_processados[] = $usuarios_perfis['id_usuarios_perfis'];
 					} else {
 						foreach($usuario_perfil as $campo => $valor){
 							switch($campo){
@@ -3139,6 +3143,41 @@ function plataforma_servidor_usuario_perfis(){
 							banco_insert_name_campos(),
 							"usuarios_perfis"
 						);
+						
+						$usuarios_perfis_processados[] = banco_last_id();
+					}
+				}
+				
+				// ===== Excluir perfis não processados.
+				
+				$usuarios_perfis = banco_select(Array(
+					'tabela' => 'usuarios_perfis',
+					'campos' => Array(
+						'id_usuarios_perfis',
+					),
+					'extra' => 
+						""
+				));
+				
+				if($usuarios_perfis){
+					foreach($usuarios_perfis as $usuario_perfil){
+						$found = false;
+						if($usuarios_perfis_processados){
+							foreach($usuarios_perfis_processados as $usuario_perfil_proc){
+								if($usuario_perfil['id_usuarios_perfis'] == $usuario_perfil_proc['id_usuarios_perfis']){
+									$found = true;
+									break;
+								}
+							}
+						}
+						
+						if(!$found){
+							banco_delete
+							(
+								"usuarios_perfis",
+								"WHERE id_usuarios_perfis='".$usuario_perfil['id_usuarios_perfis']."'"
+							);
+						}
 					}
 				}
 				
@@ -3147,6 +3186,8 @@ function plataforma_servidor_usuario_perfis(){
 				$usuarios_perfis_modulos = $dados['usuarios_perfis_modulos'];
 				
 				if(isset($usuarios_perfis_modulos)){
+					$usuarios_perfis_modulos_processados = Array();
+					
 					foreach($usuarios_perfis_modulos as $usuario_perfil_modulo){
 						// ===== Busca no banco de dados o ID referido.
 						
@@ -3171,6 +3212,8 @@ function plataforma_servidor_usuario_perfis(){
 							}
 							
 							banco_update_executar('usuarios_perfis_modulos',"WHERE id_usuarios_perfis_modulos='".$usuarios_perfis_modulos['id_usuarios_perfis_modulos']."'");
+							
+							$usuarios_perfis_modulos_processados[] = $usuarios_perfis_modulos['id_usuarios_perfis_modulos'];
 						} else {
 							foreach($usuario_perfil_modulo as $campo => $valor){
 								switch($campo){
@@ -3184,15 +3227,52 @@ function plataforma_servidor_usuario_perfis(){
 								banco_insert_name_campos(),
 								"usuarios_perfis_modulos"
 							);
+							
+							$usuarios_perfis_modulos_processados[] = banco_last_id();
 						}
 					}
 				}
 				
-				// ===== Varrer todos os usuários perfis módulos enviados.
+				// ===== Excluir perfis módulos não processados.
+				
+				$usuarios_perfis_modulos = banco_select(Array(
+					'tabela' => 'usuarios_perfis_modulos',
+					'campos' => Array(
+						'id_usuarios_perfis_modulos',
+					),
+					'extra' => 
+						""
+				));
+				
+				if($usuarios_perfis_modulos){
+					foreach($usuarios_perfis_modulos as $usuario_perfil_modulo){
+						$found = false;
+						if($usuarios_perfis_modulos_processados){
+							foreach($usuarios_perfis_modulos_processados as $usuario_perfil_modulo_proc){
+								if($usuario_perfil_modulo['id_usuarios_perfis_modulos'] == $usuario_perfil_modulo_proc['id_usuarios_perfis_modulos']){
+									$found = true;
+									break;
+								}
+							}
+						}
+						
+						if(!$found){
+							banco_delete
+							(
+								"usuarios_perfis_modulos",
+								"WHERE id_usuarios_perfis_modulos='".$usuario_perfil_modulo['id_usuarios_perfis_modulos']."'"
+							);
+						}
+					}
+				}
+				
+				// ===== Varrer todos os usuários perfis módulos operações enviados.
 				
 				$usuarios_perfis_modulos_operacoes = $dados['usuarios_perfis_modulos_operacoes'];
 				
 				if(isset($usuarios_perfis_modulos_operacoes)){
+					$usuarios_perfis_modulos_operacoes_processados = Array();
+					
 					foreach($usuarios_perfis_modulos_operacoes as $usuario_perfil_modulo_operacao){
 						// ===== Busca no banco de dados o ID referido.
 						
@@ -3217,6 +3297,8 @@ function plataforma_servidor_usuario_perfis(){
 							}
 							
 							banco_update_executar('usuarios_perfis_modulos_operacoes',"WHERE id_usuarios_perfis_modulos_operacoes='".$usuarios_perfis_modulos_operacoes['id_usuarios_perfis_modulos_operacoes']."'");
+							
+							$usuarios_perfis_modulos_operacoes_processados[] = $usuarios_perfis_modulos_operacoes['id_usuarios_perfis_modulos_operacoes'];
 						} else {
 							foreach($usuario_perfil_modulo_operacao as $campo => $valor){
 								switch($campo){
@@ -3229,6 +3311,41 @@ function plataforma_servidor_usuario_perfis(){
 							(
 								banco_insert_name_campos(),
 								"usuarios_perfis_modulos_operacoes"
+							);
+							
+							$usuarios_perfis_modulos_operacoes_processados[] = banco_last_id();
+						}
+					}
+				}
+				
+				// ===== Excluir perfis módulos operações não processados.
+				
+				$usuarios_perfis_modulos_operacoes = banco_select(Array(
+					'tabela' => 'usuarios_perfis_modulos_operacoes',
+					'campos' => Array(
+						'id_usuarios_perfis_modulos_operacoes',
+					),
+					'extra' => 
+						""
+				));
+				
+				if($usuarios_perfis_modulos_operacoes){
+					foreach($usuarios_perfis_modulos_operacoes as $usuario_perfil_modulo_operacao){
+						$found = false;
+						if($usuarios_perfis_modulos_operacoes_processados){
+							foreach($usuarios_perfis_modulos_operacoes_processados as $usuario_perfil_modulo_operacao_proc){
+								if($usuario_perfil_modulo_operacao['id_usuarios_perfis_modulos_operacoes'] == $usuario_perfil_modulo_operacao_proc['id_usuarios_perfis_modulos_operacoes']){
+									$found = true;
+									break;
+								}
+							}
+						}
+						
+						if(!$found){
+							banco_delete
+							(
+								"usuarios_perfis_modulos_operacoes",
+								"WHERE id_usuarios_perfis_modulos_operacoes='".$usuario_perfil_modulo_operacao['id_usuarios_perfis_modulos_operacoes']."'"
 							);
 						}
 					}
