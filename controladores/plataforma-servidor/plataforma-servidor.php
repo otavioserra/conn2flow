@@ -3372,6 +3372,355 @@ function plataforma_servidor_usuario_perfis(){
 				);
 			}
 		break;
+		case 'adicionar':
+		case 'editar':
+			// ===== Decodificar os dados em formato Array
+			
+			$dados = Array();
+			if(isset($_REQUEST['dados'])){
+				$dados = json_decode($_REQUEST['dados'],true);
+			}
+			
+			// ===== Verifica o ID referencial do registro.
+			
+			$usuarios_perfis = $dados['usuarios_perfis'];
+			
+			if(isset($usuarios_perfis)){
+				// ===== Pegar o perfil do usuário enviado.
+				
+				if($usuarios_perfis){
+					// ===== Pegar o identificador do perfil.
+					
+					$perfil = $usuarios_perfis['id'];
+					
+					// ===== Busca no banco de dados o ID referido.
+					
+					$usuarios_perfis_local = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'usuarios_perfis',
+						'campos' => Array(
+							'id_usuarios_perfis',
+						),
+						'extra' => 
+							"WHERE id_hosts_usuarios_perfis='".$usuario_perfil['id_hosts_usuarios_perfis']."'"
+					));
+					
+					// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
+					
+					if($usuarios_perfis_local){
+						foreach($usuario_perfil as $campo => $valor){
+							switch($campo){
+								case 'sistema':
+								case 'padrao':
+									banco_update_campo($campo,(existe($valor) ? $valor : 'NULL'),true);
+								break;
+								default:
+									banco_update_campo($campo,$valor);
+							}
+						}
+						
+						banco_update_executar('usuarios_perfis',"WHERE id_usuarios_perfis='".$usuarios_perfis_local['id_usuarios_perfis']."'");
+					} else {
+						foreach($usuario_perfil as $campo => $valor){
+							switch($campo){
+								case 'sistema':
+								case 'padrao':
+									banco_insert_name_campo($campo,(existe($valor) ? $valor : 'NULL'),true);
+								break;
+								default:
+									banco_insert_name_campo($campo,$valor);
+							}
+						}
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"usuarios_perfis"
+						);
+					}
+					
+					// ===== Varrer o usuários perfis módulo enviado.
+					
+					$usuarios_perfis_modulos = $dados['usuarios_perfis_modulos'];
+					
+					if(isset($usuarios_perfis_modulos)){
+						$perfis_processados = Array();
+						
+						foreach($usuarios_perfis_modulos as $usuario_perfil_modulo){
+							// ===== Busca no banco de dados o ID referido.
+							
+							$usuarios_perfis_modulos_local = banco_select(Array(
+								'unico' => true,
+								'tabela' => 'usuarios_perfis_modulos',
+								'campos' => Array(
+									'id_usuarios_perfis_modulos',
+								),
+								'extra' => 
+									"WHERE id_hosts_usuarios_perfis_modulos='".$usuario_perfil_modulo['id_hosts_usuarios_perfis_modulos']."'"
+							));
+							
+							// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
+							
+							if($usuarios_perfis_modulos_local){
+								foreach($usuario_perfil_modulo as $campo => $valor){
+									switch($campo){
+										default:
+											banco_update_campo($campo,$valor);
+									}
+								}
+								
+								banco_update_executar('usuarios_perfis_modulos',"WHERE id_usuarios_perfis_modulos='".$usuarios_perfis_modulos_local['id_usuarios_perfis_modulos']."'");
+								
+								$perfis_processados[] = $usuarios_perfis_modulos_local['id_usuarios_perfis_modulos'];
+							} else {
+								foreach($usuario_perfil_modulo as $campo => $valor){
+									switch($campo){
+										default:
+											banco_insert_name_campo($campo,$valor);
+									}
+								}
+								
+								banco_insert_name
+								(
+									banco_insert_name_campos(),
+									"usuarios_perfis_modulos"
+								);
+								
+								$perfis_processados[] = banco_last_id();
+							}
+						}
+					}
+					
+					// ===== Excluir perfis módulos não processados.
+					
+					$usuarios_perfis_modulos_local = banco_select(Array(
+						'tabela' => 'usuarios_perfis_modulos',
+						'campos' => Array(
+							'id_usuarios_perfis_modulos',
+						),
+						'extra' => 
+							"WHERE perfil='".$perfil."'"
+					));
+					
+					if($usuarios_perfis_modulos_local){
+						foreach($usuarios_perfis_modulos_local as $usuario_perfil_modulo){
+							$found = false;
+							if($perfis_processados){
+								foreach($perfis_processados as $perfil_proc){
+									if($usuario_perfil_modulo['id_usuarios_perfis_modulos'] == $perfil_proc){
+										$found = true;
+										break;
+									}
+								}
+							}
+							
+							if(!$found){
+								banco_delete
+								(
+									"usuarios_perfis_modulos",
+									"WHERE id_usuarios_perfis_modulos='".$usuario_perfil_modulo['id_usuarios_perfis_modulos']."'"
+								);
+							}
+						}
+					}
+					
+					// ===== Varrer todos os usuários perfis módulos operações enviados.
+					
+					$usuarios_perfis_modulos_operacoes = $dados['usuarios_perfis_modulos_operacoes'];
+					
+					if(isset($usuarios_perfis_modulos_operacoes)){
+						$perfis_processados = Array();
+						
+						foreach($usuarios_perfis_modulos_operacoes as $usuario_perfil_modulo_operacao){
+							// ===== Busca no banco de dados o ID referido.
+							
+							$usuarios_perfis_modulos_operacoes_local = banco_select(Array(
+								'unico' => true,
+								'tabela' => 'usuarios_perfis_modulos_operacoes',
+								'campos' => Array(
+									'id_usuarios_perfis_modulos_operacoes',
+								),
+								'extra' => 
+									"WHERE id_hosts_usuarios_perfis_modulos_operacoes='".$usuario_perfil_modulo_operacao['id_hosts_usuarios_perfis_modulos_operacoes']."'"
+							));
+							
+							// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
+							
+							if($usuarios_perfis_modulos_operacoes_local){
+								foreach($usuario_perfil_modulo_operacao as $campo => $valor){
+									switch($campo){
+										default:
+											banco_update_campo($campo,$valor);
+									}
+								}
+								
+								banco_update_executar('usuarios_perfis_modulos_operacoes',"WHERE id_usuarios_perfis_modulos_operacoes='".$usuarios_perfis_modulos_operacoes_local['id_usuarios_perfis_modulos_operacoes']."'");
+								
+								$perfis_processados[] = $usuarios_perfis_modulos_operacoes_local['id_usuarios_perfis_modulos_operacoes'];
+							} else {
+								foreach($usuario_perfil_modulo_operacao as $campo => $valor){
+									switch($campo){
+										default:
+											banco_insert_name_campo($campo,$valor);
+									}
+								}
+								
+								banco_insert_name
+								(
+									banco_insert_name_campos(),
+									"usuarios_perfis_modulos_operacoes"
+								);
+								
+								$perfis_processados[] = banco_last_id();
+							}
+						}
+					}
+					
+					// ===== Excluir perfil módulos operações não processados.
+					
+					$usuarios_perfis_modulos_operacoes_local = banco_select(Array(
+						'tabela' => 'usuarios_perfis_modulos_operacoes',
+						'campos' => Array(
+							'id_usuarios_perfis_modulos_operacoes',
+						),
+						'extra' => 
+							"WHERE perfil='".$perfil."'"
+					));
+					
+					if($usuarios_perfis_modulos_operacoes_local){
+						foreach($usuarios_perfis_modulos_operacoes_local as $usuario_perfil_modulo_operacao){
+							$found = false;
+							if($perfis_processados){
+								foreach($perfis_processados as $perfil_proc){
+									if($usuario_perfil_modulo_operacao['id_usuarios_perfis_modulos_operacoes'] == $perfil_proc){
+										$found = true;
+										break;
+									}
+								}
+							}
+							
+							if(!$found){
+								banco_delete
+								(
+									"usuarios_perfis_modulos_operacoes",
+									"WHERE id_usuarios_perfis_modulos_operacoes='".$usuario_perfil_modulo_operacao['id_usuarios_perfis_modulos_operacoes']."'"
+								);
+							}
+						}
+					}
+				}
+				
+				// ===== Controle dos registros.
+				
+				$todos_ok = true;
+				
+				// ===== Caso algum tenha dado erro, retornar o erro.
+				
+				if($todos_ok){
+					$retorno = Array(
+						'status' => 'OK',
+					);
+				} else {
+					$retorno = Array(
+						'status' => 'ID_NOT_DEFINED',
+					);
+				}
+			} else {
+				$retorno = Array(
+					'status' => 'EMPTY_RECORDS',
+				);
+			}
+		break;
+		case 'excluir':
+		case 'status':
+			// ===== Decodificar os dados em formato Array
+			
+			$dados = Array();
+			if(isset($_REQUEST['dados'])){
+				$dados = json_decode($_REQUEST['dados'],true);
+			}
+			
+			// ===== Verifica o ID referencial do registro.
+			
+			$usuarios_perfis = $dados['usuarios_perfis'];
+			
+			if(isset($usuarios_perfis)){
+				// ===== Pegar o perfil do usuário enviado.
+				
+				if($usuarios_perfis){
+					// ===== Pegar o identificador do perfil.
+					
+					$perfil = $usuarios_perfis['id'];
+					
+					// ===== Busca no banco de dados o ID referido.
+					
+					$usuarios_perfis_local = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'usuarios_perfis',
+						'campos' => Array(
+							'id_usuarios_perfis',
+						),
+						'extra' => 
+							"WHERE id_hosts_usuarios_perfis='".$usuario_perfil['id_hosts_usuarios_perfis']."'"
+					));
+					
+					// ===== Se existir atualiza a tabela com os dados enviados.
+					
+					if($usuarios_perfis_local){
+						foreach($usuario_perfil as $campo => $valor){
+							switch($campo){
+								case 'sistema':
+								case 'padrao':
+									banco_update_campo($campo,(existe($valor) ? $valor : 'NULL'),true);
+								break;
+								default:
+									banco_update_campo($campo,$valor);
+							}
+						}
+						
+						banco_update_executar('usuarios_perfis',"WHERE id_usuarios_perfis='".$usuarios_perfis_local['id_usuarios_perfis']."'");
+					}
+					
+					if($opcao == 'excluir'){
+						// ===== Excluir perfis módulos.
+						
+						banco_delete
+						(
+							"usuarios_perfis_modulos",
+							"WHERE perfil='".$perfil."'"
+						);
+						
+						// ===== Excluir perfil módulos operações não processados.
+						
+						banco_delete
+						(
+							"usuarios_perfis_modulos_operacoes",
+							"WHERE perfil='".$perfil."'"
+						);
+					}
+				}
+				
+				// ===== Controle dos registros.
+				
+				$todos_ok = true;
+				
+				// ===== Caso algum tenha dado erro, retornar o erro.
+				
+				if($todos_ok){
+					$retorno = Array(
+						'status' => 'OK',
+					);
+				} else {
+					$retorno = Array(
+						'status' => 'ID_NOT_DEFINED',
+					);
+				}
+			} else {
+				$retorno = Array(
+					'status' => 'EMPTY_RECORDS',
+				);
+			}
+		break;
 		default:
 			$retorno = Array(
 				'status' => 'OPTION_NOT_DEFINED',
