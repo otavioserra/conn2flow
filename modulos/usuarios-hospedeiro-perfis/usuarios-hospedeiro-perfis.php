@@ -991,6 +991,28 @@ function hosts_usuarios_perfis_editar(){
 				banco_update_campo('perfil',$id_novo);
 				banco_update_executar('hosts_usuarios_perfis_modulos_operacoes',"WHERE perfil='".$id."' AND id_hosts='".$id_hosts."'");
 			}
+			
+			// ===== Chamada da API-Cliente para atualizar no host do usuário.
+			
+			$id_hosts_usuarios_perfis = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico']));
+			
+			gestor_incluir_biblioteca('api-cliente');
+			
+			$retorno = api_cliente_usuario_perfis(Array(
+				'opcao' => 'editar',
+				'id_hosts_usuarios_perfis' => $id_hosts_usuarios_perfis,
+			));
+			
+			if(!$retorno['completed']){
+				$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
+				
+				$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
+				
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => $alerta
+				));
+			}
 		}
 		
 		// ===== Reler URL.
@@ -1268,6 +1290,62 @@ function hosts_usuarios_perfis_editar(){
 	);
 }
 
+function hosts_usuarios_perfis_status(){
+	global $_GESTOR;
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
+	// ===== Chamada da API-Cliente para atualizar no host do usuário.
+	
+	$id_hosts_usuarios_perfis = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico']));
+	
+	gestor_incluir_biblioteca('api-cliente');
+	
+	$retorno = api_cliente_usuario_perfis(Array(
+		'opcao' => 'status',
+		'id_hosts_usuarios_perfis' => $id_hosts_usuarios_perfis,
+	));
+	
+	if(!$retorno['completed']){
+		$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
+		
+		$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
+		
+		interface_alerta(Array(
+			'redirect' => true,
+			'msg' => $alerta
+		));
+	}
+}
+
+function hosts_usuarios_perfis_excluir(){
+	global $_GESTOR;
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
+	// ===== Chamada da API-Cliente para atualizar no host do usuário.
+	
+	$id_hosts_usuarios_perfis = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico']));
+	
+	gestor_incluir_biblioteca('api-cliente');
+	
+	$retorno = api_cliente_usuario_perfis(Array(
+		'opcao' => 'excluir',
+		'id_hosts_usuarios_perfis' => $id_hosts_usuarios_perfis,
+	));
+	
+	if(!$retorno['completed']){
+		$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
+		
+		$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
+		
+		interface_alerta(Array(
+			'redirect' => true,
+			'msg' => $alerta
+		));
+	}
+}
+
 function hosts_usuarios_perfis_interfaces_padroes(){
 	global $_GESTOR;
 	
@@ -1390,6 +1468,8 @@ function hosts_usuarios_perfis_start(){
 		switch($_GESTOR['opcao']){
 			case 'adicionar': hosts_usuarios_perfis_adicionar(); break;
 			case 'editar': hosts_usuarios_perfis_editar(); break;
+			case 'status': hosts_usuarios_perfis_status(); break;
+			case 'excluir': hosts_usuarios_perfis_excluir(); break;
 		}
 		
 		interface_finalizar();
