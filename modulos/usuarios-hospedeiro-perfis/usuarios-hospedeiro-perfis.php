@@ -88,6 +88,8 @@ function hosts_usuarios_perfis_adicionar(){
 			$modulo['tabela']['nome']
 		);
 		
+		$id_hosts_usuarios_perfis = banco_last_id();
+		
 		// ===== IDs dos módulos e módulos operações.
 		
 		$modulos = banco_select_name
@@ -192,6 +194,26 @@ function hosts_usuarios_perfis_adicionar(){
 			}
 			
 			$count++;
+		}
+		
+		// ===== Chamada da API-Cliente para atualizar no host do usuário.
+		
+		gestor_incluir_biblioteca('api-cliente');
+		
+		$retorno = api_cliente_usuario_perfis(Array(
+			'opcao' => 'adicionar',
+			'id_hosts_usuarios_perfis' => $id_hosts_usuarios_perfis,
+		));
+		
+		if(!$retorno['completed']){
+			$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-client-error'));
+			
+			$alerta = modelo_var_troca($alerta,"#error-msg#",$retorno['error-msg']);
+			
+			interface_alerta(Array(
+				'redirect' => true,
+				'msg' => $alerta
+			));
 		}
 		
 		// ===== Redirecionar

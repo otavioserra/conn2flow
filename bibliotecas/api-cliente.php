@@ -2463,63 +2463,111 @@ function api_cliente_usuario_perfis($params = false){
 			break;
 			case 'adicionar':
 			case 'editar':
-				// ===== Enviar o 'id_hosts_usuarios'.
+				// ===== Enviar o 'id_hosts_usuarios_perfis'.
 			
-				$dados['id_hosts_usuarios'] = $id_hosts_usuarios;
+				$dados['id_hosts_usuarios_perfis'] = $id_hosts_usuarios_perfis;
 				
-				// ===== Retornar o hosts_usuarios atualizado.
+				$id_hosts = $host_verificacao['id_hosts'];
 				
-				$hosts_usuarios = banco_select(Array(
+				// ===== Baixar o perfil de usuários de host personalizado.
+				
+				$hosts_usuarios_perfis = banco_select(Array(
 					'unico' => true,
-					'tabela' => 'hosts_usuarios',
+					'tabela' => 'hosts_usuarios_perfis',
 					'campos' => '*',
 					'extra' => 
-						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
-						." AND id_hosts='".$host_verificacao['id_hosts']."'"
+						"WHERE id_hosts='".$id_hosts."'"
+						." AND id_hosts_usuarios_perfis='".$id_hosts_usuarios_perfis."'"
 				));
 				
-				unset($hosts_usuarios['id_hosts']);
-				unset($hosts_usuarios['senha']);
-				unset($hosts_usuarios['ppp_remembered_card_hash']);
+				// ===== Varrer todos os dados do perfil e baixar as permissões do mesmo.
 				
-				$dados['usuario'] = $hosts_usuarios;
+				$dados['usuarios_perfis_modulos'] = Array();
+				$dados['usuarios_perfis_modulos_operacoes'] = Array();
 				
-				// ===== Caso seja necessário remover os tokens.
-				
-				if(isset($renovarToken)){
-					$dados['renovarToken'] = true;
+				if($hosts_usuarios_perfis){
+					// ===== Verifica se o perfil é do host ou não.
+					
+					if($hosts_usuarios_perfis['id_hosts']){
+						$perfilDoHost = true;
+					} else {
+						$perfilDoHost = false;
+						$hosts_usuarios_perfis['sistema'] = '1';
+					}
+					
+					// ===== Incluir e filtrar o usuário perfil nos dados de requisição.
+					
+					unset($hosts_usuarios_perfis['id_hosts']);
+					
+					$dados['usuarios_perfis'] = $hosts_usuarios_perfis;
+					
+					// ===== Baixar os módulos permitidos deste perfil.
+					
+					$perfil = $hosts_usuarios_perfis['id'];
+					
+					$hosts_usuarios_perfis_modulos = banco_select(Array(
+						'tabela' => 'hosts_usuarios_perfis_modulos',
+						'campos' => Array(
+							'id_hosts_usuarios_perfis_modulos',
+							'perfil',
+							'modulo',
+						),
+						'extra' => 
+							"WHERE perfil='".$perfil."'"
+							.($perfilDoHost ? " AND id_hosts='".$id_hosts."'" : "")
+					));
+					
+					if($hosts_usuarios_perfis_modulos){
+						$dados['usuarios_perfis_modulos'] = array_merge($dados['usuarios_perfis_modulos'],$hosts_usuarios_perfis_modulos);
+					}
+					
+					// ===== Baixar os módulos operacoes permitidos deste perfil.
+					
+					$hosts_usuarios_perfis_modulos_operacoes = banco_select(Array(
+						'tabela' => 'hosts_usuarios_perfis_modulos_operacoes',
+						'campos' => Array(
+							'id_hosts_usuarios_perfis_modulos_operacoes',
+							'perfil',
+							'operacao',
+						),
+						'extra' => 
+							"WHERE perfil='".$perfil."'"
+							.($perfilDoHost ? " AND id_hosts='".$id_hosts."'" : "")
+					));
+					
+					if($hosts_usuarios_perfis_modulos){
+						$dados['usuarios_perfis_modulos_operacoes'] = array_merge($dados['usuarios_perfis_modulos_operacoes'],$hosts_usuarios_perfis_modulos_operacoes);
+					}
 				}
-			
 			break;
-			case 'status':
 			case 'excluir':
-				// ===== Enviar o 'id_hosts_usuarios'.
+			case 'status':
+				// ===== Enviar o 'id_hosts_usuarios_perfis'.
 			
-				$dados['id_hosts_usuarios'] = $id_hosts_usuarios;
+				$dados['id_hosts_usuarios_perfis'] = $id_hosts_usuarios_perfis;
 				
-				// ===== Retornar o hosts_usuarios atualizado.
+				$id_hosts = $host_verificacao['id_hosts'];
 				
-				$hosts_usuarios = banco_select(Array(
+				// ===== Baixar o perfil de usuários de host personalizado.
+				
+				$hosts_usuarios_perfis = banco_select(Array(
 					'unico' => true,
-					'tabela' => 'hosts_usuarios',
+					'tabela' => 'hosts_usuarios_perfis',
 					'campos' => Array(
 						'status',
 						'versao',
 						'data_modificacao',
 					),
 					'extra' => 
-						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
-						." AND id_hosts='".$host_verificacao['id_hosts']."'"
+						"WHERE id_hosts='".$id_hosts."'"
+						." AND id_hosts_usuarios_perfis='".$id_hosts_usuarios_perfis."'"
 				));
 				
-				$dados['usuario'] = $hosts_usuarios;
-				
-				// ===== Caso seja necessário remover os tokens.
-				
-				if(isset($renovarToken)){
-					$dados['renovarToken'] = true;
+				if($hosts_usuarios_perfis){
+					unset($hosts_usuarios_perfis['id_hosts']);
+					
+					$dados['usuarios_perfis'] = $hosts_usuarios_perfis;
 				}
-			
 			break;
 		}
 		
