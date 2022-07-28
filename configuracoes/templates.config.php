@@ -25,6 +25,7 @@ $configuracao = Array(
 			'caminho' => 'carrinho/',
 			'tipo' => 'pagina',
 			'modulo' => 'carrinho',
+			'sem_permissao' => true,
 		),
 		'identificacao' => Array(
 			'layout-id' => 'layout-principal',
@@ -44,18 +45,21 @@ $configuracao = Array(
 			'caminho' => 'identificacao-cadastro/',
 			'tipo' => 'pagina',
 			'modulo' => 'identificacao-cadastro',
+			'sem_permissao' => true,
 		),
 		'identificacao-esqueceu-senha' => Array(
 			'layout-id' => 'layout-principal',
 			'caminho' => 'identificacao-esqueceu-senha/',
 			'tipo' => 'pagina',
 			'modulo' => 'identificacao-esqueceu-senha',
+			'sem_permissao' => true,
 		),
 		'identificacao-redefinir-senha' => Array(
 			'layout-id' => 'layout-principal',
 			'caminho' => 'identificacao-redefinir-senha/',
 			'tipo' => 'pagina',
 			'modulo' => 'identificacao-redefinir-senha',
+			'sem_permissao' => true,
 		),
 		'emissao' => Array(
 			'layout-id' => 'layout-principal',
@@ -95,9 +99,11 @@ $configuracao = Array(
 		),
 		'servicos' => Array(
 			'multiplo' => true,
+			'sem_permissao' => true,
 		),
 		'postagens' => Array(
 			'multiplo' => true,
+			'sem_permissao' => true,
 		),
 		// Plugin: Agendamentos
 		'agendamentos' => Array(
