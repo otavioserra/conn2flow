@@ -31,6 +31,7 @@ $configuracao = Array(
 			'caminho' => 'identificacao/',
 			'tipo' => 'pagina',
 			'modulo' => 'identificacao',
+			'sem_permissao' => true,
 		),
 		'identificacao-area-restrita' => Array(
 			'layout-id' => 'layout-principal',

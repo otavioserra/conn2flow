@@ -624,6 +624,7 @@ function api_cliente_templates_atualizar($params = false){
 							if(isset($catDados['nao-adicionar'])) $registro['nao-adicionar'] = $catDados['nao-adicionar'];
 							if(isset($catDados['multiplo'])) $registro['multiplo'] = $catDados['multiplo'];
 							if(isset($catDados['plugin'])) $registro['plugin'] = $catDados['plugin'];
+							if(isset($catDados['sem_permissao'])) $registro['sem_permissao'] = $catDados['sem_permissao'];
 							
 							$registros[] = $registro;
 						}
@@ -862,6 +863,10 @@ function api_cliente_templates_atualizar($params = false){
 													banco_update_campo('template_versao',$registro['versao']);
 													banco_update_campo('template_id',$registro['id']);
 													
+													if(isset($registro['sem_permissao'])){
+														banco_update_campo('sem_permissao','1',true);
+													}
+													
 													// ===== Dados padrões.
 													
 													banco_update_campo('versao',$registro['versao']);
@@ -959,6 +964,10 @@ function api_cliente_templates_atualizar($params = false){
 										banco_insert_name_campo('template_id',$registro['id']);
 										banco_insert_name_campo('template_versao',$registro['versao']);
 										
+										if(isset($registro['sem_permissao'])){
+											banco_insert_name_campo('sem_permissao','1',true);
+										}
+										
 										// ===== Caso exista modulo, criar na tabela.
 										
 										if(isset($registro['modulo'])){ banco_insert_name_campo('modulo',$registro['modulo']); }
@@ -989,6 +998,10 @@ function api_cliente_templates_atualizar($params = false){
 										banco_update_campo('css',$registro['css']);
 										banco_update_campo('template_versao',$registro['versao']);
 										banco_update_campo('template_id',$registro['id']);
+										
+										if(isset($registro['sem_permissao'])){
+											banco_update_campo('sem_permissao','1',true);
+										}
 										
 										// ===== Dados padrões.
 										
