@@ -2566,6 +2566,7 @@ function api_cliente_usuario_perfis($params = false){
 				if($hosts_usuarios_perfis){
 					$dados['usuarios_perfis'] = $hosts_usuarios_perfis;
 				}
+				echo 'dados>> '.print_r($dados,true)."<br>";exit;
 			break;
 		}
 		
