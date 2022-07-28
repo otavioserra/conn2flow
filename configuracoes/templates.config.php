@@ -103,7 +103,7 @@ $configuracao = Array(
 			'layout-id' => 'layout-principal',
 			'caminho' => 'agendamentos/',
 			'tipo' => 'pagina',
-			'modulo' => 'agendamentos',
+			'modulo' => 'agendamentos-host',
 			'plugin' => 'agendamentos',
 		),
 		// Plugin: Escalas
@@ -111,7 +111,7 @@ $configuracao = Array(
 			'layout-id' => 'layout-principal',
 			'caminho' => 'escalas/',
 			'tipo' => 'pagina',
-			'modulo' => 'escalas',
+			'modulo' => 'escalas-host',
 			'plugin' => 'escalas',
 		),
 	),
