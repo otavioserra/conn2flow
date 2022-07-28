@@ -3642,6 +3642,7 @@ function plataforma_servidor_usuario_perfis(){
 			
 			// ===== Verifica o ID referencial do registro.
 			
+			$id_hosts_usuarios_perfis = $dados['id_hosts_usuarios_perfis'];
 			$usuarios_perfis = $dados['usuarios_perfis'];
 			
 			if(isset($usuarios_perfis)){
@@ -3661,7 +3662,7 @@ function plataforma_servidor_usuario_perfis(){
 							'id_usuarios_perfis',
 						),
 						'extra' => 
-							"WHERE id_hosts_usuarios_perfis='".$usuarios_perfis['id_hosts_usuarios_perfis']."'"
+							"WHERE id_hosts_usuarios_perfis='".$id_hosts_usuarios_perfis."'"
 					));
 					
 					// ===== Se existir atualiza a tabela com os dados enviados.
