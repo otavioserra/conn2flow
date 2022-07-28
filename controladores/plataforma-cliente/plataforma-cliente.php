@@ -1446,9 +1446,50 @@ function plataforma_cliente_identificacao(){
 							$primeiro_nome = $nomes[0];
 						}
 						
+						// ===== Definir o usuário host perfil padrão. 1 - Verificar se há um perfil personalizado padrão. 2 - Senão houver, pegar o perfil padrão do sistema.
+						
+						$hosts_usuarios_perfis = banco_select(Array(
+							'unico' => true,
+							'tabela' => 'hosts_usuarios_perfis',
+							'campos' => Array(
+								'id_hosts_usuarios_perfis',
+							),
+							'extra' => 
+								"WHERE id_hosts='".$id_hosts."'"
+								." AND status='A'"
+								." AND padrao IS NOT NULL"
+						));
+						
+						if($hosts_usuarios_perfis){
+							$id_hosts_usuarios_perfis = $hosts_usuarios_perfis['id_hosts_usuarios_perfis'];
+						}
+						
+						if(!isset($id_hosts_usuarios_perfis)){
+							$hosts_usuarios_perfis = banco_select(Array(
+								'unico' => true,
+								'tabela' => 'hosts_usuarios_perfis',
+								'campos' => Array(
+									'id_hosts_usuarios_perfis',
+								),
+								'extra' => 
+									"WHERE id_hosts IS NULL"
+									." AND status='A'"
+									." AND padrao IS NOT NULL"
+							));
+							
+							if($hosts_usuarios_perfis){
+								$id_hosts_usuarios_perfis = $hosts_usuarios_perfis['id_hosts_usuarios_perfis'];
+							}
+						}
+						
+						if(!isset($id_hosts_usuarios_perfis)){
+							$id_hosts_usuarios_perfis = '1';
+						}
+						
 						// ====== Criar usuário no banco.
 						
 						banco_insert_name_campo('id_hosts',$id_hosts);
+						banco_insert_name_campo('id_hosts_usuarios_perfis',$id_hosts_usuarios_perfis);
 						banco_insert_name_campo('id',$id);
 						banco_insert_name_campo('nome',$dados['nome']);
 						banco_insert_name_campo('nome_conta',$dados['nome']);
