@@ -768,10 +768,6 @@ function voucher_ajax_padrao(){
 function voucher_start(){
 	global $_GESTOR;
 	
-	// ===== Verificar se o usuário está logado.
-	
-	gestor_permissao();
-	
 	// ===== Opções da interface, senão executar padrão.
 	
 	if($_GESTOR['ajax']){

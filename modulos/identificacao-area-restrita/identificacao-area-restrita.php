@@ -196,10 +196,6 @@ function identificacao_area_restrita_ajax_padrao(){
 function identificacao_area_restrita_start(){
 	global $_GESTOR;
 	
-	// ===== Verificar se o usuário está logado.
-	
-	gestor_permissao();
-	
 	// ===== Opções da interface, senão executar padrão.
 	
 	if($_GESTOR['ajax']){

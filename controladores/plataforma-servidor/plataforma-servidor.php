@@ -3351,6 +3351,58 @@ function plataforma_servidor_usuario_perfis(){
 					}
 				}
 				
+				// ===== Varrer todos os modulos enviados.
+				
+				$modulos = $dados['modulos'];
+				
+				if(isset($modulos)){
+					foreach($modulos as $modulo){
+						// ===== Busca no banco de dados o ID referido.
+						
+						$modulos_local = banco_select(Array(
+							'unico' => true,
+							'tabela' => 'modulos',
+							'campos' => Array(
+								'id_modulos',
+							),
+							'extra' => 
+								"WHERE id_modulos='".$modulo['id_modulos']."'"
+						));
+						
+						// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
+						
+						if($modulos_local){
+							foreach($modulo as $campo => $valor){
+								switch($campo){
+									case 'nao_menu_principal':
+										banco_update_campo($campo,(existe($valor) ? $valor : 'NULL'),true);
+									break;
+									default:
+										banco_update_campo($campo,$valor);
+								}
+							}
+							
+							banco_update_executar('modulos',"WHERE id_modulos='".$modulos_local['id_modulos']."'");
+						} else {
+							foreach($modulo as $campo => $valor){
+								switch($campo){
+									case 'nao_menu_principal':
+										banco_insert_name_campo($campo,(existe($valor) ? $valor : 'NULL'),true);
+									break;
+									default:
+										banco_insert_name_campo($campo,$valor);
+								}
+							}
+							
+							banco_insert_name
+							(
+								banco_insert_name_campos(),
+								"modulos"
+							);
+						}
+					}
+				}
+				
 				// ===== Controle dos registros.
 				
 				$todos_ok = true;

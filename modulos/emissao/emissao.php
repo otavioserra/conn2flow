@@ -750,10 +750,6 @@ function emissao_start(){
 		gestor_sessao_variavel('criar-pedido','true');
 	}
 	
-	// ===== Verificar se o usuário está logado.
-	
-	gestor_permissao();
-	
 	// ===== Criar pedido.
 	
 	emissao_criar_pedido();

@@ -1422,6 +1422,103 @@ function gestor_permissao(){
 	}
 }
 
+function gestor_permissao_modulo(){
+	global $_GESTOR;
+	
+	$usuario = gestor_usuario();
+	$modulo = $_GESTOR['modulo'];
+	
+	if(!existe($modulo)){
+		return true;
+	}
+	
+	$modulos = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'id_modulos',
+		))
+		,
+		"modulos",
+		"WHERE id='".$modulo."'"
+		." AND status='A'"
+	);
+	
+	if($modulos){
+		// ===== Pegar o perfil do usuário.
+		
+		$usuarios_perfis = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_perfis',
+			'campos' => Array(
+				'id',
+			),
+			'extra' => 
+				"WHERE id_hosts_usuarios_perfis='".$usuario['id_hosts_usuarios_perfis']."'"
+		));
+		
+		$perfil = $usuarios_perfis['id'];
+		
+		// ===== Verificar se o módulo alvo tem permissão no perfil.
+		
+		$usuarios_perfis_modulos = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'id_usuarios_perfis_modulos',
+			))
+			,
+			"usuarios_perfis_modulos",
+			"WHERE perfil='".$perfil."'"
+			." AND modulo='".$modulo."'"
+		);
+		
+		// ===== Caso tenha permissão retornar true.
+		
+		if($usuarios_perfis_modulos){
+			return true;
+		}
+	}
+	
+	gestor_incluir_biblioteca('interface');
+	
+	interface_alerta(Array(
+		'redirect' => true,
+		'msg' => gestor_variaveis(Array('modulo' => 'usuarios','id' => 'alert-without-permission'))
+	));
+	
+	return false;
+}
+
+function gestor_usuario(){
+	global $_GESTOR;
+	
+	if(isset($_GESTOR['usuario-id'])){
+		$usuarios = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'id_hosts_usuarios',
+				'id_hosts_usuarios_perfis',
+				'id',
+				'usuario',
+				'nome',
+				'email',
+			))
+			,
+			"usuarios",
+			"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+		);
+		
+		return $usuarios[0];
+	} else {
+		return Array(
+			'id_hosts_usuarios' => '0',
+			'id_hosts_usuarios_perfis' => '0',
+			'id' => '_anonimo',
+			'usuario' => '_anonimo',
+			'nome' => 'Anônimo',
+		);
+	}
+}
+
 // =========================== Funções de Acesso
 
 function gestor_roteador_301_ou_404($params = false){
@@ -1582,6 +1679,7 @@ function gestor_roteador(){
 			'modulo_id_registro',
 			'opcao',
 			'plugin',
+			'sem_permissao',
 		);
 		
 		// ===== Se válido pegar o html também.
@@ -1594,6 +1692,7 @@ function gestor_roteador(){
 			'modulo',
 			'modulo_id_registro',
 			'plugin',
+			'sem_permissao',
 		);
 	} else {
 		$campos = Array(
@@ -1605,6 +1704,7 @@ function gestor_roteador(){
 			'opcao',
 			'nome',
 			'plugin',
+			'sem_permissao',
 		);
 	}
 	
@@ -1626,6 +1726,12 @@ function gestor_roteador(){
 		$_GESTOR['modulo'] = $paginas[0]['modulo'];
 		$_GESTOR['plugin'] = ($paginas[0]['plugin'] ? $paginas[0]['plugin'] : false);
 		$_GESTOR['modulo_id_registro'] = (existe($paginas[0]['modulo_id_registro']) ? $paginas[0]['modulo_id_registro'] : null);
+		
+		if(existe($_GESTOR['modulo'])){
+			if(!existe($paginas[0]['sem_permissao'])){
+				gestor_permissao();
+			}
+		}
 	}
 	
 	// ===== Disparar o módulo caso houver e devolver a página ou dados ajax ou alterar opções e redirecionar para a raiz do módulo.

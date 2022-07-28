@@ -619,10 +619,6 @@ function pagamento_ajax_padrao(){
 function pagamento_start(){
 	global $_GESTOR;
 	
-	// ===== Verificar se o usuário está logado.
-	
-	gestor_permissao();
-	
 	// ===== Opções da interface, senão executar padrão.
 	
 	if($_GESTOR['ajax']){
