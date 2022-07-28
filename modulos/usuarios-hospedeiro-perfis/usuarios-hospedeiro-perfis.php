@@ -1352,6 +1352,16 @@ function hosts_usuarios_perfis_interfaces_padroes(){
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
 	switch($_GESTOR['opcao']){
+		case 'status':
+			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
+				'callbackFunction' => 'hosts_usuarios_perfis_status',
+			);
+		break;
+		case 'excluir':
+			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
+				'callbackFunction' => 'hosts_usuarios_perfis_excluir',
+			);
+		break;
 		case 'listar':
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
@@ -1468,8 +1478,6 @@ function hosts_usuarios_perfis_start(){
 		switch($_GESTOR['opcao']){
 			case 'adicionar': hosts_usuarios_perfis_adicionar(); break;
 			case 'editar': hosts_usuarios_perfis_editar(); break;
-			case 'status': hosts_usuarios_perfis_status(); break;
-			case 'excluir': hosts_usuarios_perfis_excluir(); break;
 		}
 		
 		interface_finalizar();
