@@ -2564,10 +2564,10 @@ function api_cliente_usuario_perfis($params = false){
 				));
 				
 				if($hosts_usuarios_perfis){
-					unset($hosts_usuarios_perfis['id_hosts']);
-					
 					$dados['usuarios_perfis'] = $hosts_usuarios_perfis;
 				}
+				
+				echo 'dados>> '.print_r($dados,true)."<br>";exit;
 			break;
 		}
 		
