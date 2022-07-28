@@ -2460,6 +2460,29 @@ function api_cliente_usuario_perfis($params = false){
 						$dados['usuarios_perfis_modulos_operacoes'] = array_merge($dados['usuarios_perfis_modulos_operacoes'],$hosts_usuarios_perfis_modulos_operacoes);
 					}
 				}
+				
+				// ===== Enviar os módulos do host atualizados.
+				
+				$dados['modulos'] = Array();
+				$modulosProc = Array();
+				
+				$modulos = banco_select(Array(
+					'tabela' => 'modulos',
+					'campos' => '*',
+					'extra' => 
+						"WHERE host IS NOT NULL"
+						." AND status!='D'"
+				));
+				
+				if($modulos)
+				foreach($modulos as $modulo){
+					unset($modulo['id_usuarios']);
+					unset($modulo['host']);
+					
+					$modulosProc[] = $modulo;
+				}
+				
+				$dados['modulos'] = $modulosProc;
 			break;
 			case 'adicionar':
 			case 'editar':
