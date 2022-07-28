@@ -3402,13 +3402,13 @@ function plataforma_servidor_usuario_perfis(){
 							'id_usuarios_perfis',
 						),
 						'extra' => 
-							"WHERE id_hosts_usuarios_perfis='".$usuario_perfil['id_hosts_usuarios_perfis']."'"
+							"WHERE id_hosts_usuarios_perfis='".$usuarios_perfis['id_hosts_usuarios_perfis']."'"
 					));
 					
 					// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
 					
 					if($usuarios_perfis_local){
-						foreach($usuario_perfil as $campo => $valor){
+						foreach($usuarios_perfis as $campo => $valor){
 							switch($campo){
 								case 'sistema':
 								case 'padrao':
@@ -3421,7 +3421,7 @@ function plataforma_servidor_usuario_perfis(){
 						
 						banco_update_executar('usuarios_perfis',"WHERE id_usuarios_perfis='".$usuarios_perfis_local['id_usuarios_perfis']."'");
 					} else {
-						foreach($usuario_perfil as $campo => $valor){
+						foreach($usuarios_perfis as $campo => $valor){
 							switch($campo){
 								case 'sistema':
 								case 'padrao':
