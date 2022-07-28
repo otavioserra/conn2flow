@@ -1000,6 +1000,16 @@ function usuarios_interfaces_padroes(){
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
 	switch($_GESTOR['opcao']){
+		case 'status':
+			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
+				'callbackFunction' => 'usuarios_status',
+			);
+		break;
+		case 'excluir':
+			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
+				'callbackFunction' => 'usuarios_excluir',
+			);
+		break;
 		case 'listar':
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
@@ -1123,8 +1133,6 @@ function usuarios_start(){
 		switch($_GESTOR['opcao']){
 			case 'adicionar': usuarios_adicionar(); break;
 			case 'editar': usuarios_editar(); break;
-			case 'status': usuarios_status(); break;
-			case 'excluir': usuarios_excluir(); break;
 		}
 		
 		interface_finalizar();
