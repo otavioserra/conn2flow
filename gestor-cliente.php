@@ -1420,6 +1420,21 @@ function gestor_permissao(){
 			));
 		}
 	}
+	
+	if(!gestor_permissao_modulo()){
+		if($_GESTOR['ajax']){
+			gestor_roteador_erro(Array(
+				'codigo' => 401,
+				'ajax' => $_GESTOR['ajax'],
+				'redirect' => 'minha-conta/',
+			));
+		} else {
+			gestor_roteador_erro(Array(
+				'codigo' => 401,
+				'redirect' => 'minha-conta/',
+			));
+		}
+	}
 }
 
 function gestor_permissao_modulo(){

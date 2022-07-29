@@ -365,10 +365,22 @@ function meus_dados_padrao(){
 			"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
 	));
 	
+	// ===== Usuário Perfil Host.
+	
+	$usuarios_perfis = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios_perfis',
+		'campos' => Array(
+			'nome',
+		),
+		'extra' => 
+			"WHERE id_hosts_usuarios_perfis='".$usuarios['id_hosts_usuarios_perfis']."'"
+	));
+	
 	// ===== Incluir dados na página.
 	
 	pagina_trocar_variavel_valor('conta-nome',$usuarios['nome_conta']);
-	pagina_trocar_variavel_valor('perfil-usuario','Usuário Loja');
+	pagina_trocar_variavel_valor('perfil-usuario',$usuarios_perfis['nome']);
 	pagina_trocar_variavel_valor('email',$usuarios['email']);
 	pagina_trocar_variavel_valor('usuario',$usuarios['usuario']);
 	pagina_trocar_variavel_valor('nome',$usuarios['nome']);
