@@ -70,23 +70,25 @@ function minha_conta_padrao(){
 	
 	if($menus_itens)
 	foreach($menus_itens as $item){
-		// ===== Se o módulo tiver permissão de acesso incluir
-		
-		$modulo_perfil = false;
-		
-		if($usuarios_perfis_modulos)
-		foreach($usuarios_perfis_modulos as $upm){
-			if($upm['modulo'] == $item['id']){
-				$modulo_perfil = true;
-				break;
-			}
-		}
-		
-		if(!$modulo_perfil){
-			continue;
-		}
-		
 		if($item['id'] != 'sair'){
+			// ===== Se o módulo tiver permissão de acesso incluir
+			
+			$modulo_perfil = false;
+			
+			if($usuarios_perfis_modulos)
+			foreach($usuarios_perfis_modulos as $upm){
+				if($upm['modulo'] == $item['id']){
+					$modulo_perfil = true;
+					break;
+				}
+			}
+			
+			if(!$modulo_perfil){
+				continue;
+			}
+			
+			// ===== Montar o menu.
+			
 			$cel_aux = $cel[$cel_nome];
 			
 			$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"url",$item['url']);
