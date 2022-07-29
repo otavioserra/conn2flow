@@ -20,6 +20,36 @@ function minha_conta_padrao(){
 	gestor_incluir_biblioteca('formato');
 	gestor_incluir_biblioteca('interface');
 	
+	// ===== Pegar dados do usuário.
+	
+	$usuario = gestor_usuario();
+	
+	// ===== Pegar o perfil do usuário.
+	
+	$usuarios_perfis = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios_perfis',
+		'campos' => Array(
+			'id',
+		),
+		'extra' => 
+			"WHERE id_hosts_usuarios_perfis='".$usuario['id_hosts_usuarios_perfis']."'"
+	));
+	
+	$perfil = $usuarios_perfis['id'];
+	
+	// ===== Verificar se o módulo alvo tem permissão no perfil.
+	
+	$usuarios_perfis_modulos = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'modulo',
+		))
+		,
+		"usuarios_perfis_modulos",
+		"WHERE perfil='".$perfil."'"
+	);
+	
 	// ===== Pegar os dados do menu do banco de dados.
 	
 	$menus_itens = banco_select(Array(
@@ -40,6 +70,22 @@ function minha_conta_padrao(){
 	
 	if($menus_itens)
 	foreach($menus_itens as $item){
+		// ===== Se o módulo tiver permissão de acesso incluir
+		
+		$modulo_perfil = false;
+		
+		if($usuarios_perfis_modulos)
+		foreach($usuarios_perfis_modulos as $upm){
+			if($upm['modulo'] == $item['id']){
+				$modulo_perfil = true;
+				break;
+			}
+		}
+		
+		if(!$modulo_perfil){
+			continue;
+		}
+		
 		if($item['id'] != 'sair'){
 			$cel_aux = $cel[$cel_nome];
 			

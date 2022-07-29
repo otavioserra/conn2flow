@@ -1507,22 +1507,26 @@ function gestor_usuario(){
 	global $_GESTOR;
 	
 	if(isset($_GESTOR['usuario-id'])){
-		$usuarios = banco_select_name
-		(
-			banco_campos_virgulas(Array(
-				'id_hosts_usuarios',
-				'id_hosts_usuarios_perfis',
-				'id',
-				'usuario',
-				'nome',
-				'email',
-			))
-			,
-			"usuarios",
-			"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
-		);
+		if(!isset($_GESTOR['usuario'])){
+			$usuarios = banco_select_name
+			(
+				banco_campos_virgulas(Array(
+					'id_hosts_usuarios',
+					'id_hosts_usuarios_perfis',
+					'id',
+					'usuario',
+					'nome',
+					'email',
+				))
+				,
+				"usuarios",
+				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+			);
+			
+			$_GESTOR['usuario'] = $usuarios[0];
+		}
 		
-		return $usuarios[0];
+		return $_GESTOR['usuario'];
 	} else {
 		return Array(
 			'id_hosts_usuarios' => '0',
