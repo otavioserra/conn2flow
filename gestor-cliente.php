@@ -1497,7 +1497,7 @@ function gestor_permissao_modulo(){
 	
 	interface_alerta(Array(
 		'redirect' => true,
-		'msg' => gestor_variaveis(Array('modulo' => 'usuarios','id' => 'alert-without-permission'))
+		'msg' => gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-without-permission'))
 	));
 	
 	return false;
