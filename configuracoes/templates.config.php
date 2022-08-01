@@ -7,6 +7,7 @@
 // ===== Definições da variável.
 
 $configuracao = Array(
+	'versao' => 1,
 	'atualizar' => Array( // Templates que deverão serem atualizados na lista de todos os outros com suas configurações.
 		'layout-principal' => Array(),
 		'layout-simples' => Array(),
