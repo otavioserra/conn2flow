@@ -483,8 +483,8 @@ function cron_agendamentos_sorteio(){
 					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#codigo#",$codigo);
 					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#titulo#",$tituloEstabelecimento);
 					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#data#",$data_str);
-					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#url-confirmacao#",'<a target="agendamento" href="'.$hostUrl.'agendamentos/?acao=confirmar&token='.$token.'" style="overflow-wrap: break-word;">'.$hostUrl.'agendamentos/?acao=confirmar&token='.$token.'</a>');
-					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#url-cancelamento#",'<a target="agendamento" href="'.$hostUrl.'agendamentos/?acao=cancelar&token='.$token.'" style="overflow-wrap: break-word;">'.$hostUrl.'agendamentos/?acao=cancelar&token='.$token.'</a>');
+					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#url-confirmacao#",'<a target="agendamento" href="'.$hostUrl.'agendamentos-publico/?acao=confirmar&token='.$token.'" style="overflow-wrap: break-word;">'.$hostUrl.'agendamentos-publico/?acao=confirmar&token='.$token.'</a>');
+					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#url-cancelamento#",'<a target="agendamento" href="'.$hostUrl.'agendamentos-publico/?acao=cancelar&token='.$token.'" style="overflow-wrap: break-word;">'.$hostUrl.'agendamentos-publico/?acao=cancelar&token='.$token.'</a>');
 					
 					// ===== Enviar email ao usuário solicitando a confirmação ou cancelamento do agendamento.
 					
