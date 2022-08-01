@@ -113,6 +113,14 @@ $configuracao = Array(
 			'modulo' => 'agendamentos-host',
 			'plugin' => 'agendamentos',
 		),
+		'agendamentos-publico' => Array(
+			'layout-id' => 'layout-principal',
+			'caminho' => 'agendamentos-publico/',
+			'tipo' => 'pagina',
+			'modulo' => 'agendamentos-host-publico',
+			'plugin' => 'agendamentos',
+			'sem_permissao' => true,
+		),
 		// Plugin: Escalas
 		'escalas' => Array(
 			'layout-id' => 'layout-principal',
