@@ -1,7 +1,5 @@
 $(document).ready(function(){
-	
-	function start(){
-		
+	function escalaAtivo(){
 		$('.ui.selection.dropdown')
 			.dropdown({
 			})
@@ -10,21 +8,46 @@ $(document).ready(function(){
 		$('.datepicker').datepicker({
 			format: "dd/mm/yy",
 			language: "pt-BR",
-			maxViewMode: 0,
-			datesDisabled: "17/08/2022",
+			datesDisabled: gestor.escalas.datasDesabilitadas,
 			multidate: true,
-			todayHighlight: true,
-			startDate: "01/08/2022",
-			endDate: "31/08/2022",
+			startDate: gestor.escalas.dataInicio,
+			endDate: gestor.escalas.dataFim,
 			beforeShowDay: function(date) {
-				var hilightedDays = [1,3,8,20,21,16,26,30];
+				var datasDestacadas = gestor.escalas.datasDestacadas;
+				var day = (date.getDate() < 10 ? '0' : '') + date.getDate();
+				var month = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
+				var year = date.getFullYear();
+				var dateFormated = day + '/' + month + '/' + year;
 				
-				if(~hilightedDays.indexOf(date.getDate())) {
-					return {classes: 'highlighted', tooltip: 'Title'};
+				for(var key in datasDestacadas){
+					var dataDestacada = datasDestacadas[key];
+					
+					if(dateFormated == dataDestacada){
+						return {classes: 'highlighted', tooltip: gestor.escalas.highlightedTooltip};
+					}
 				}
 			}
-		});
-
+		})
+		.on('changeDate', function(e) {
+			var dates = '';
+			
+			for(var key in e.dates){
+				var date = e.dates[key];
+				var i = parseInt(key);
+				
+				dates += (dates.length > 0 ? ',':'') + e.format(i);
+			}
+			
+			$('input[name="datas"]').val(dates);
+		})
+		;
+	}
+	
+	function start(){
+		
+		// ===== Escala ativo.
+		
+		if($('.escala-ativo').length > 0){ escalaAtivo(); }
 	}
 	
 	start();

@@ -1,7 +1,7 @@
 <?php
 
 /**********
-	Descrição: Configurações de Agendamentos.
+	Descrição: Configurações de Escalas.
 **********/
 
 // ===== Definições da variável.
