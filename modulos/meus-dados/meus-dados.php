@@ -589,7 +589,7 @@ function meus_dados_padrao(){
 	
 	// ===== Inclusão do jQuery-Mask-Plugin
 	
-	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'jQuery-Mask-Plugin-v1.14.16/jquery.mask.min.js"></script>';
+	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-Mask-Plugin-v1.14.16/jquery.mask.min.js"></script>');
 	
 	// ===== Incluir o JS.
 	
