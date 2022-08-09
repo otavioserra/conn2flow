@@ -1178,6 +1178,18 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 							}
 						}
 						
+						// ===== Copiar o SQL de atualização do plugin para o '/public_html' do host do cliente
+						
+						$update_sql = file_get_contents($path_plugin_update.'update.sql');
+						
+						ftp_chdir($_GESTOR['ftp-conexao'],'/public_html');
+						
+						$nome_file = 'update.sql';
+						$tmp_file = $path_temp.$nome_file.'-tmp'.$temp_id;
+						file_put_contents($tmp_file, $update_sql);
+						ftp_colocar_arquivo(Array('remoto' => $nome_file,'local' => $tmp_file));
+						unlink($tmp_file);
+						
 						// ===== Copiar script de atualização do plugin para o '/public_html' do host do cliente
 						
 						$update_sys = file_get_contents($path_plugin_update.'update-plugin.php');
