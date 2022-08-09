@@ -60,7 +60,7 @@ function escalas_calendario($params = false){
 		,
 		"escalas_controle",
 		"WHERE data >= ".$prmeiroDiaMes
-		" AND data <= ".$ultimoDiaMes
+		." AND data <= ".$ultimoDiaMes
 	);
 	
 	// ===== Pegar o período de férias para remover do calendário do mês.
@@ -160,9 +160,9 @@ function escalas_calendario($params = false){
 				}
 				
 				if(!$flag3){
-					$datasDestacadas .= (existe($datasDestacadas) ? ',','') . $dataFormatada;
+					$datasDestacadas .= (existe($datasDestacadas) ? ',':'') . $dataFormatada;
 				} else {
-					$datasDesabilitadas .= (existe($datasDesabilitadas) ? ',','') . $dataFormatada;
+					$datasDesabilitadas .= (existe($datasDesabilitadas) ? ',':'') . $dataFormatada;
 				}
 			}
 		}
