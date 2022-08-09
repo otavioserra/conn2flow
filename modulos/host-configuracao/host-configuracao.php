@@ -1237,6 +1237,7 @@ function host_configuracao_pipeline_atualizar_plugins($params = false){
 						}
 						
 						ftp_delete($_GESTOR['ftp-conexao'], 'update-plugin.php');
+						ftp_delete($_GESTOR['ftp-conexao'], 'update.sql');
 						
 						if($install_error){
 							$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'host-update-plugin-fatal-error'));
