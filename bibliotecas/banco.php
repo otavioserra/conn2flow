@@ -1,7 +1,7 @@
 <?php
 
 $_GESTOR['biblioteca-banco']							=	Array(
-	'versao' => '1.0.5',
+	'versao' => '1.0.6',
 );
 
 function banco_escape_field($field){
@@ -945,6 +945,22 @@ function banco_insert_update($params = false){
 				$tabela['nome']
 			);
 		}
+	}
+}
+
+function banco_tabelas_lista(){
+	global $_GESTOR;
+	
+	if($_GESTOR['banco']['tipo'] == "mysqli"){
+		$tabelaLista = Array();
+		
+		$res = banco_query("SHOW TABLES");
+		
+		while($cRow = mysqli_fetch_array($res)){
+			$tabelaLista[] = $cRow[0];
+		}
+		
+		return $tabelaLista;
 	}
 }
 
