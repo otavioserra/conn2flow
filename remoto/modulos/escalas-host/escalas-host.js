@@ -1,13 +1,19 @@
 $(document).ready(function(){
 	function escalaAtivo(){
-		$('.ui.selection.dropdown')
+		$('.ui.dropdown')
 			.dropdown({
+				onChange: function(value){
+					var dataArr = value.split('_');
+					
+					window.open('./?mes='+dataArr[0]+'&ano='+dataArr[1],'_self');
+				}
 			})
 		;
 		
 		$('.datepicker').datepicker({
 			format: "dd/mm/yy",
 			language: "pt-BR",
+			maxViewMode: 0,
 			datesDisabled: gestor.escalas.datasDesabilitadas,
 			todayHighlight: true,
 			multidate: true,

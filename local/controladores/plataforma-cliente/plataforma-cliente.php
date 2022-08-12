@@ -11,9 +11,224 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 
 // =========================== Funções Auxiliares
 
+function plataforma_cliente_plugin_data_permitida($params = false){
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Inclusão de bibliotecas.
+	
+	gestor_incluir_biblioteca('formato');
+	
+	// ===== Padrões caso não seja definido via parâmetros.
+	
+	if(!isset($mes)){ $mes = date('n'); }
+	if(!isset($ano)){ $ano = date('Y'); }
+	if(!isset($hoje)){ $hoje = time(); }
+	if(!isset($inscricaoInicio)){ $inscricaoInicio = ''; }
+	
+	// ===== Passar string para int para fazer contas.
+	
+	$mes = (int)$mes;
+	$ano = (int)$ano;
+	
+	// ===== Verificar se o mês atual é o mesmo do mês procurado. Se for, então é um calendário com possibilidade de vagas residuais.
+	
+	$mesAtual = (int)date('n');
+	
+	if($mesAtual == $mes){
+		$mesVagasResiduais = true;
+	} else {
+		$mesVagasResiduais = false;
+	}
+	
+	// ===== Definir a data do primeiro dia e do último dia do mês procurado.
+	
+	if($mes < 10){
+		$mes = '0'.$mes;
+	}
+	
+	$prmeiroDiaMes = date($ano.'-'.$mes.'-01');
+	$ultimoDiaMes = date($ano.'-'.$mes.'-'.date('t',strtotime($prmeiroDiaMes)));
+	
+	// ===== Pegar as configurações das escalas.
+	
+	$config = gestor_variaveis(Array('modulo' => 'configuracoes-escalas','conjunto' => true));
+	
+	$dias_semana = (existe($config['dias-semana']) ? explode(',',$config['dias-semana']) : Array());
+	$anos = (existe($config['calendario-anos']) ? (int)$config['calendario-anos'] : 2);
+	$dias_semana_maximo_vagas_arr = (existe($config['dias-semana-maximo-vagas']) ? explode(',',$config['dias-semana-maximo-vagas']) : Array());
+	$datas_extras_dias_semana_maximo_vagas_arr = (existe($config['datas-extras-dias-semana-maximo-vagas']) ? explode(',',$config['datas-extras-dias-semana-maximo-vagas']) : Array());
+	if(existe($config['datas-indisponiveis'])) $datas_indisponiveis = (existe($config['datas-indisponiveis-valores']) ? explode('|',$config['datas-indisponiveis-valores']) : Array()); else $datas_indisponiveis = Array();
+	if(existe($config['datas-extras-disponiveis'])) $datas_extras_disponiveis = (existe($config['datas-extras-disponiveis-valores']) ? explode('|',$config['datas-extras-disponiveis-valores']) : Array()); else $datas_extras_disponiveis = Array();
+	$calendario_ferias_de = (existe($config['calendario-ferias-de']) ? trim($config['calendario-ferias-de']) : '15 December');
+	$calendario_ferias_ate = (existe($config['calendario-ferias-ate']) ? trim($config['calendario-ferias-ate']) : '20 January');
+	$periodoLimiteAlteracao = (existe($config['periodo-limite-alteracao']) ? $config['periodo-limite-alteracao'] : '');
+	
+	// ===== Verificar as datas na tabela controle de datas e total de vagas.
+	
+	$escalas_controle = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'data',
+			'total',
+		))
+		,
+		"hosts_escalas_controle",
+		"WHERE data >= ".$prmeiroDiaMes
+		." AND data <= ".$ultimoDiaMes
+		." AND id_hosts='".$id_hosts."'"
+	);
+	
+	// ===== Pegar o período de férias para remover do calendário do mês.
+	
+	for($i=-1;$i<$anos+1;$i++){
+		$periodo_ferias[] = Array(
+			'inicio' => strtotime($calendario_ferias_de." ".($ano+$i)),
+			'fim' => strtotime($calendario_ferias_ate." ".($ano+$i+1)),
+		);
+	}
+	
+	// ===== Definição do primeiro e último dia deste calendário.
+	
+	$primeiro_dia = strtotime($prmeiroDiaMes);
+	$ultimo_dia = strtotime($ultimoDiaMes);
+	
+	// ===== Verificar se hoje é antes do início da inscrição. Caso positivo, não permirtir selecionar as datas.
+	
+	$inscricaoInicioTempo = strtotime(str_replace('/', '-', $inscricaoInicio));
+	
+	$antesDaInscricao = false;
+	
+	if($hoje < $inscricaoInicioTempo){
+		$antesDaInscricao = true;
+	}
+	
+	// ===== Varrer todos os dias do mês.
+	
+	$diaLimiteAlteracao = strtotime(date("Y-m-d", $hoje) . " + ".$periodoLimiteAlteracao." day");
+	$dia = $primeiro_dia;
+	
+	do {
+		$data_extra_permitida = false;
+		$data_extra_posicao = 0;
+		$datasDestacada = false;
+		$flag = false;
+		$dataFormatada = date('d/m/Y', $dia);
+		
+		if($periodo_ferias){
+			foreach($periodo_ferias as $periodo){
+				if(
+					$dia > $periodo['inicio'] &&
+					$dia < $periodo['fim']
+				){
+					$flag = true;
+					break;
+				}
+			}
+		}
+		
+		if($datas_extras_disponiveis){
+			foreach($datas_extras_disponiveis as $ded){
+				if($dataFormatada == $ded){
+					$flag = false;
+					$data_extra_permitida = true;
+					break;
+				}
+				$data_extra_posicao++;
+			}
+		}
+		
+		if($datas_indisponiveis){
+			foreach($datas_indisponiveis as $di){
+				if($dataFormatada == $di){
+					$flag = true;
+					break;
+				}
+			}
+		}
+		
+		if(!$flag){
+			$flag2 = false;
+			$count_dias = 0;
+			
+			if($data_extra_permitida){
+				$flag2 = true;
+				$count_dias = $data_extra_posicao;
+			} else {
+				if($dias_semana)
+				foreach($dias_semana as $dia_semana){
+					if($dia_semana == strtolower(date('D',$dia))){
+						$flag2 = true;
+						break;
+					}
+					$count_dias++;
+				}
+			}
+			
+			if($flag2){
+				$dataAux = date('Y-m-d', $dia);
+				$flag3 = false;
+				
+				if($mesVagasResiduais){
+					if($escalas_controle){
+						foreach($escalas_controle as $escalas_data){
+							if($dataAux == $escalas_data['data']){
+								if($data_extra_permitida){
+									if(count($datas_extras_dias_semana_maximo_vagas_arr) > 1){
+										$dias_semana_maximo_vagas = $datas_extras_dias_semana_maximo_vagas_arr[$count_dias];
+									} else {
+										$dias_semana_maximo_vagas = $datas_extras_dias_semana_maximo_vagas_arr[0];
+									}
+								} else {
+									if(count($dias_semana_maximo_vagas_arr) > 1){
+										$dias_semana_maximo_vagas = $dias_semana_maximo_vagas_arr[$count_dias];
+									} else {
+										$dias_semana_maximo_vagas = $dias_semana_maximo_vagas_arr[0];
+									}
+								}
+								
+								if((int)$dias_semana_maximo_vagas < (int)$escalas_data['total']){
+									$flag3 = true;
+								}
+								
+								break;
+							}
+						}
+					}
+				}
+				
+				// ===== Não permitir selecionar datas do passado mais o periodoLimiteAlteracao.
+				
+				if($dia < $diaLimiteAlteracao){
+					$flag3 = true;
+				}
+				
+				// ===== Não permitir selecionar datas antes da inscrição.
+				
+				if($antesDaInscricao){
+					$flag3 = true;
+				}
+				
+				// ===== Data permitida.
+				
+				if(!$flag3){
+					if($data == date('d/m/Y', $dia)){
+						return true;
+					}
+				}
+			}
+		}
+		
+		$dia += 86400;
+	} while ($dia <= $ultimo_dia);
+	
+	return false;
+}
+
 // =========================== Funções da Plataforma
 
-function plataforma_cliente_plugin_opcao(){
+function plataforma_cliente_plugin_escalas(){
 	global $_GESTOR;
 	
 	// ===== Identificador do Host.
@@ -25,7 +240,7 @@ function plataforma_cliente_plugin_opcao(){
 	$opcao = $_REQUEST['opcao'];
 	
 	switch($opcao){
-		case 'opcao':
+		case 'escalar':
 			// ===== Decodificar os dados em formato Array
 			
 			$dados = Array();
@@ -33,12 +248,116 @@ function plataforma_cliente_plugin_opcao(){
 				$dados = json_decode($_REQUEST['dados'],true);
 			}
 			
-			// ===== Verificar se os campos obrigatórios foram enviados: dado.
+			// ===== Verificar se os campos obrigatórios foram enviados: usuarioID, mes e ano.
 			
-			if(isset($dados['dado'])){
+			if(isset($dados['usuarioID']) && isset($dados['mes']) && isset($dados['ano'])){
+				// ===== Pegar os dados de configuração.
+				
+				gestor_incluir_biblioteca('configuracao');
+				
+				$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-escalas'));
+				
+				$escala_ativacao = (existe($config['escala-ativacao']) ? true : false);
+				$msg_escala_suspenso = (existe($config['msg-escala-suspenso']) ? $config['msg-escala-suspenso'] : '');
+				$diaInicioInscricao = (existe($config['dia-inicio-inscricao']) ? $config['dia-inicio-inscricao'] : '');
+				$mesInicioInscricao = (existe($config['mes-inicio-inscricao']) ? $config['mes-inicio-inscricao'] : '');
+				
+				// ===== Caso o agendamento estiver inativo, retornar mensagem de inatividade.
+				
+				if(!$escala_ativacao){
+					return Array(
+						'status' => 'ESCALAMENTO_INATIVO',
+						'error-msg' => $msg_escala_suspenso,
+					);
+				}
+				
 				// ===== Tratar os dados enviados.
 				
+				$id_hosts_usuarios = banco_escape_field($dados['usuarioID']);
+				$mes = $dados['mes'];
+				$ano = $dados['ano'];
+				$datasStr = $dados['datas'];
 				
+				// ===== Definição do tempo do dia de agora.
+				
+				//$hoje = strtotime('21-07-2022');
+				$hoje = time();
+				
+				// ===== Passar o mês e o ano para inteiro.
+				
+				$mes = (int)$mes;
+				$ano = (int)$ano;
+				
+				// ===== Definir o início da inscrição.
+				
+				$mesInicioInscricaoAux = $mes - (int)$mesInicioInscricao;
+				$diaInicioInscricaoAux = $diaInicioInscricao;
+				$anoInicioInscricaoAux = $ano;
+				
+				if($mesInicioInscricaoAux < 1){
+					$mesInicioInscricaoAux = 12;
+					$anoInicioInscricaoAux--; 
+				}
+				
+				if($mesInicioInscricaoAux < 10){
+					$mesInicioInscricaoAux = '0' . $mesInicioInscricaoAux;
+				}
+				
+				if($diaInicioInscricaoAux < 10){
+					$diaInicioInscricaoAux = '0' . $diaInicioInscricaoAux;
+				}
+				
+				$data_inscricao_inicio = $diaInicioInscricaoAux . '/' . $mesInicioInscricaoAux . '/' . $anoInicioInscricaoAux;
+				
+				// ===== Verificar se as datas enviadas são permitidas. Senão for alguma ou várias, retornar mensagem de erro com a listagem das datas não permitidas.
+				
+				if(existe($datasStr)){
+					$algumaDataNaoPermitida = false;
+					$datasNaoPermitidas = '';
+					$datas = explode(',',$datasStr);
+					
+					if($datas)
+					foreach($datas as $data){
+						if(!plataforma_cliente_plugin_data_permitida(Array(
+							'data' => $data,
+							'mes' => $mes,
+							'ano' => $ano,
+							'hoje' => $hoje,
+							'inscricaoInicio' => $data_inscricao_inicio,
+							'id_hosts' => $id_hosts,
+						))){
+							$algumaDataNaoPermitida = true;
+							$datasNaoPermitidas .= (existe($datasNaoPermitidas) ? ', ','') . $datasNaoPermitidas;
+						}
+					}
+					
+					if($algumaDataNaoPermitida){
+						$msgEscalamentoDataNaoPermitida = (existe($config['msg-escalamento-data-nao-permitida']) ? $config['msg-escalamento-data-nao-permitida'] : '');
+						
+						$msgEscalamentoDataNaoPermitida = modelo_var_troca_tudo($msgEscalamentoDataNaoPermitida,"#datas#",$datasNaoPermitidas);
+						
+						return Array(
+							'status' => 'ESCALAMENTO_DATA_NAO_PERMITIDA',
+							'error-msg' => $msgEscalamentoDataNaoPermitida,
+						);
+					}
+				} else {
+					$datas = Array();
+				}
+				
+				// ===== Criar ou pegar os dados da escala do mês / ano requisitados.
+				
+				$hosts_escalas = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_escalas',
+					'campos' => Array(
+						'campo1',
+					),
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+						." AND id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." ORDER BY dados DESC"
+				));
 				
 				// ===== Retornar dados.
 				
@@ -69,7 +388,7 @@ function plataforma_cliente_plugin_start(){
 	// ===== Verifica a opção, executa interface caso encontrado e retorna os dados
 	
 	switch($_GESTOR['caminho'][1]){
-		case 'opcao': $dados = plataforma_cliente_plugin_opcao(); break;
+		case 'escalas': $dados = plataforma_cliente_plugin_escalas(); break;
 	}
 
 	// ===== Caso haja dados criados por alguma opção, retornar os dados. Senão retornar NULL.

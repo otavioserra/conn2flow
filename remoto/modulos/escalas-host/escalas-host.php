@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'escalas-host';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.28',
+	'versao' => '1.0.35',
 );
 
 // ===== Funções Auxiliares
@@ -217,7 +217,7 @@ function escalas_calendario($params = false){
 					$flag3 = true;
 				}
 				
-				// ===== .
+				// ===== Data permitida.
 				
 				if(!$flag3){
 					$datasDestacadas[] = $dataFormatada;
@@ -241,10 +241,6 @@ function escalas_calendario($params = false){
 	// ===== Variáveis JS.
 	
 	$_GESTOR['javascript-vars']['escalas'] = $JScalendario;
-	
-	// ===== Retornar o valor das datas selecionadas.
-	
-	return '04/08/2022,11/08/2022,16/08/2022,18/08/2022';
 }
 
 // ===== Funções Principais
@@ -279,14 +275,79 @@ function escalas_padrao(){
 	// ===== Verificar se o sistema de escala está ativo ou não e tratar cada caso.
 	
 	if($escala_ativacao){
+		// ===== Caso o usuário tenha ativado o botão salvar escala, tratar o salvamento da escala.
+		
+		if(isset($_REQUEST['escalar'])){
+			if(
+				isset($_REQUEST['mes']) && 
+				isset($_REQUEST['ano'])
+			){
+				// ===== Pegar os valores enviados e escapar os dados.
+				
+				$mes = banco_escape_field($_REQUEST['mes']);
+				$ano = banco_escape_field($_REQUEST['ano']);
+				$datas = banco_escape_field(isset($_REQUEST['datas']) ? $_REQUEST['datas'] : '');
+				
+				// ===== API-Servidor para escalar.
+				
+				gestor_incluir_biblioteca('api-servidor');
+				
+				$retorno = api_servidor_interface(Array(
+					'interface' => 'escalas',
+					'plugin' => 'escalas',
+					'opcao' => 'escalar',
+					'dados' => Array(
+						'usuarioID' => $_GESTOR['usuario-id'],
+						'mes' => $mes,
+						'ano' => $ano,
+						'datas' => $datas,
+					),
+				));
+				
+				if(!$retorno['completed']){
+					switch($retorno['status']){
+						case 'ESCALAMENTO_INATIVO':
+						case 'ESCALAMENTO_DATA_NAO_PERMITIDA':
+							$alerta = (existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status']);
+						break;
+						default:
+							$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-servidor-error'));
+							
+							$alerta = modelo_var_troca($alerta,"#error-msg#",(existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status'] ));
+					}
+					
+					interface_alerta(Array(
+						'redirect' => true,
+						'msg' => $alerta
+					));
+				} else {
+					// ===== Dados de retorno.
+					
+					$dados = Array();
+					if(isset($retorno['data'])){
+						$dados = $retorno['data'];
+					}
+					
+					// ===== Alertar o usuário.
+					
+					interface_alerta(Array(
+						'redirect' => true,
+						'msg' => $dados['alerta']
+					));
+				}
+				
+				gestor_redirecionar('escalas/?mes='.((int)$mes < 10 ? '0': '').$mes.'&ano='.$ano);
+			}
+		}
+		
 		// ===== Remover a célula inativo e alteracoes.
 		
 		$cel_nome = 'inativo'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 		
 		// ===== Definição do mês e ano do calendário.
 		
-		$hoje = strtotime('21-07-2022');
-		//$hoje = time();
+		//$hoje = strtotime('21-07-2022');
+		$hoje = time();
 		
 		$mes = (isset($_REQUEST['mes']) ? $_REQUEST['mes'] : date('m') );
 		$ano = (isset($_REQUEST['ano']) ? $_REQUEST['ano'] : date('Y') );
@@ -320,10 +381,33 @@ function escalas_padrao(){
 		$mesAtual = $mesInicio;
 		$anoAtual = $anoInicio;
 		
+		$mesesNomes = Array(
+			1 => 'Janeiro',
+			2 => 'Fevereiro',
+			3 => 'Março',
+			4 => 'Abril',
+			5 => 'Maio',
+			6 => 'Junho',
+			7 => 'Julho',
+			8 => 'Agosto',
+			9 => 'Setembro',
+			10 => 'Outubro',
+			11 => 'Novembro',
+			12 => 'Dezembro',
+		);
+		
 		for($i=0;$i<$totalMeses;$i++){
+			$mesAtualFormatado = ($mesAtual+1);
+			
+			$dataTexto = $mesesNomes[$mesAtualFormatado] . ' / ' . $anoAtual;
+			
+			if($mesAtualFormatado < 10){
+				$mesAtualFormatado = '0'.$mesAtualFormatado;
+			}
+			
 			$mesesAnos[] = Array(
-				'texto' => ($mesAtual+1).'_'.$anoAtual,
-				'valor' => ($mesAtual+1).'_'.$anoAtual,
+				'texto' => $dataTexto,
+				'valor' => $mesAtualFormatado.'_'.$anoAtual,
 			);
 			
 			$mesAtual++;
@@ -341,7 +425,6 @@ function escalas_padrao(){
 					'id' => 'meses',
 					'nome' => 'meses',
 					'procurar' => true,
-					//'limpar' => true,
 					'valor_selecionado' => $mesAnoSelecionado,
 					'placeholder' => '',
 					'dados' => $mesesAnos,
@@ -372,16 +455,25 @@ function escalas_padrao(){
 		
 		// ===== Montagem do calendário.
 		
-		$datasSelecionadas = escalas_calendario(Array(
+		escalas_calendario(Array(
 			'mes' => $mes,
 			'ano' => $ano,
 			'hoje' => $hoje,
 			'inscricaoInicio' => $data_inscricao_inicio,
 		));
 		
-		// ===== Colocar as datas selecionadas caso houver.
+		// ===== Pegar as datas selecionadas anteriormente pelo usuário.
+		
+		$datasSelecionadas = '04/08/2022,11/08/2022,16/08/2022,18/08/2022';
+		
+		// ===== Colocar as datas selecionadas caso houver, mês e ano atual.
+		
+		$mesAtual = $mes;
+		$anoAtual = $ano;
 		
 		pagina_trocar_variavel_valor('datas-selecionadas',$datasSelecionadas);
+		pagina_trocar_variavel_valor('mes-atual',$mesAtual);
+		pagina_trocar_variavel_valor('ano-atual',$anoAtual);
 		
 		// ===== Definir a data do início da confirmação.
 		
