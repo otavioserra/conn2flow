@@ -9,6 +9,7 @@ $(document).ready(function(){
 			format: "dd/mm/yy",
 			language: "pt-BR",
 			datesDisabled: gestor.escalas.datasDesabilitadas,
+			todayHighlight: true,
 			multidate: true,
 			startDate: gestor.escalas.dataInicio,
 			endDate: gestor.escalas.dataFim,
