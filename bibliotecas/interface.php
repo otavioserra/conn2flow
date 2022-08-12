@@ -3,10 +3,744 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-interface']							=	Array(
-	'versao' => '1.0.6',
+	'versao' => '1.1.0',
 );
 
 // ===== Funções auxiliares
+
+function interface_formulario_campos($params = false){
+	global $_GESTOR;
+
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// pagina - String - Opcional - Fornecer a página onde será incluído o campo ao invés de colocar na página padrão.
+	// campos - Array - Opcional - Conjunto de todos os campos.
+		// tipo - String - Obrigatório - Identificador do tipo do campo.
+		// id - String - Obrigatório - Identificador do campo.
+		// nome - String - Obrigatório - Nome do campo.
+		
+		// ##### Caso tipo = 'select'
+		
+		// disabled - Bool - Opcional - Se habilitado, o select ficará desabilitado e só poderá ser visto.
+		// menu - Bool - Opcional - Se habilitado, o select terá mais opções visuais.
+		// procurar - Bool - Opcional - Se habilitado, é possível procurar um valor no select digitando no teclado.
+		// limpar - Bool - Opcional - Se habilitado, o select tem uma opção de deselecionar a opção selecionada.
+		// multiple - Bool - Opcional - Se habilitado, o select tem uma opção de selecionar várias opções ao mesmo tempo.
+		// fluid - Bool - Opcional - Se habilitado, o select será do tipo fluído tentando completar toda a tela.
+		// placeholder - String - Opcional - Se definido o select terá uma opção coringa para mostrar na caixa quando não houver valor selecionado.
+		// selectClass - String - Opcional - Se definido será incluída a classe ou classes no final do parâmetro class do select.
+		
+		// Ou tabela Ou dados Ou dadosAntes Ou dadosDepois
+		
+		// tabela - Array - Opcional - Conjunto com dados que virão de uma tabela no banco de dados
+			// id - Bool - Opcional - Caso definido, vai usar o campo id como campo referencial e não o id_numerico.
+			// nome - String - Obrigatório - nome da tabela do banco de dados.
+			// campo - String - Obrigatório - campo da tabela que será retornado como valor textual das opções.
+			// id_numerico - String - Obrigatório - identificador numérico da dos dados da tabela.
+			// id_selecionado - Int - Opcional - Caso definido, deixar a opção com o valor do id selecionado.
+			// where - String - Opcional - Caso definido, usar o where como filtro na tabela do banco de dados.
+		
+		// valor_selecionado - String - Opcional - Caso definido, deixar a opção com o valor do id selecionado.
+		// valor_selecionado_icone - String - Opcional - Caso definido, mostrar ícone na versão menu (não funciona no tipo select/option).
+		// placeholder_icone - String - Opcional - Caso definido, mostrar ícone no 'text default' na versão menu (não funciona no tipo select/option).
+		// dados, dadosAntes, dadosDepois - Array - Opcional - Conjunto com dados que virão de um array
+			// texto - String - Obrigatório - Texto de cada opção no select.
+			// valor - String - Obrigatório - Valor de cada opção no select.
+			// icone - String - Opcional - Ícone que deverá ser aplicado a cada dado.
+		
+		// ##### Caso tipo = 'imagepick'
+		
+		// id_arquivos - Int - Opcional - Id referencial do arquivo.
+		
+		// ##### Caso tipo = 'imagepick-hosts'
+		
+		// id_hosts_arquivos - Int - Opcional - Id referencial do arquivo no host.
+		
+		// ##### Caso tipo = 'templates-hosts'
+		
+		// categoria_id - String - Obrigatório - Identificador da categoria de templates.
+		// template_id - String - Opcional - Id do template.
+		// template_tipo - String - Opcional - Tipo do template (gestor ou hosts).
+	
+	// ===== 
+	
+	if(isset($campos)){
+		foreach($campos as $campo){
+			switch($campo['tipo']){
+				case 'select':
+					if(isset($campo['menu'])){
+						$campo_saida = "	".'<div id="'.$campo['id'].'" class="ui '.(isset($campo['disabled']) ? 'disabled ':'').(isset($campo['fluid']) ? 'fluid ':'').(isset($campo['procurar']) ? 'search ':'').(isset($campo['limpar']) ? 'clearable ':'').(isset($campo['multiple']) ? 'multiple ':'').'selection dropdown'.(isset($campo['selectClass']) ? ' '.$campo['selectClass'] : '').'">'."\n";
+						$campo_saida .= "		".'<input type="hidden" name="'.$campo['nome'].'"#selectedValue#>'."\n";
+						$campo_saida .= "		".'<i class="dropdown icon"></i>'."\n";
+					} else {
+						$campo_saida = "	".'<select id="'.$campo['id'].'" class="ui '.(isset($campo['disabled']) ? 'disabled ':'').(isset($campo['fluid']) ? 'fluid ':'').(isset($campo['procurar']) ? 'search ':'').(isset($campo['limpar']) ? 'clearable ':'').'dropdown'.(isset($campo['selectClass']) ? ' '.$campo['selectClass'] : '').'" name="'.$campo['nome'].'"'.(isset($campo['multiple']) ? ' multiple':'').'>'."\n";
+					}
+					
+					if(isset($campo['placeholder'])){
+						if(isset($campo['menu'])){
+							if(isset($campo['valor_selecionado_texto'])){
+								$campo_saida .= "		".'<div class="text">'.(isset($campo['valor_selecionado_icone']) ? '<i class="'.$campo['valor_selecionado_icone'].' icon"></i>' : '').$campo['valor_selecionado_texto'].'</div>'."\n";
+							} else {
+								$campo_saida .= "		".'<div class="default text">'.(isset($campo['placeholder_icone']) ? '<i class="'.$campo['placeholder_icone'].' icon"></i>' : '').$campo['placeholder'].'</div>'."\n";
+							}
+						
+							$campo_saida .= "		".'<div class="menu">'."\n";
+						} else {
+							$campo_saida .= "		".'<option value="">'.$campo['placeholder'].'</option>'."\n";
+						}
+					}
+					
+					// ===== Dados antes ou dados depois.
+					
+					if(isset($campo['dadosAntes']) || isset($campo['dadosDepois'])){
+						$dadosAntes = (isset($campo['dadosAntes']) ? $campo['dadosAntes'] : Array());
+						$dadosDepois = (isset($campo['dadosDepois']) ? $campo['dadosDepois'] : Array());
+						
+						$camposAntes = '';
+						$camposDepois = '';
+						
+						if(isset($campo['valor_selecionado'])){
+							$valor_selecionado = $campo['valor_selecionado'];
+						}
+						
+						foreach($dadosAntes as $dado){
+							if(isset($dado['texto']) && isset($dado['valor'])){
+								if(isset($campo['menu'])){
+									$camposAntes .= "			".'<div class="item '.(isset($valor_selecionado) ? ($valor_selecionado == $dado['valor'] ? 'active selected' : '' ) : '' ).'" data-value="'.$dado['valor'].'">'.(isset($dado['icone']) ? '<i class="'.$dado['icone'].' icon"></i>' : '').$dado['texto'].'</div>'."\n";
+									
+									if(isset($valor_selecionado)){
+										if($valor_selecionado == $dado['valor']){
+											$camposAntes = modelo_var_troca($camposAntes,"#selectedValue#",' value="'.$dado['valor'].'"');
+										}
+									}
+								} else {
+									$camposAntes .= "		".'<option value="'.$dado['valor'].'"'.(isset($valor_selecionado) ? ($valor_selecionado == $dado['valor'] ? ' selected' : '' ) : '' ).'>'.$dado['texto'].'</option>'."\n";
+								}
+							}
+						}
+						
+						foreach($dadosDepois as $dado){
+							if(isset($dado['texto']) && isset($dado['valor'])){
+								if(isset($campo['menu'])){
+									$camposDepois .= "			".'<div class="item '.(isset($valor_selecionado) ? ($valor_selecionado == $dado['valor'] ? 'active selected' : '' ) : '' ).'" data-value="'.$dado['valor'].'">'.(isset($dado['icone']) ? '<i class="'.$dado['icone'].' icon"></i>' : '').$dado['texto'].'</div>'."\n";
+									
+									if(isset($valor_selecionado)){
+										if($valor_selecionado == $dado['valor']){
+											$camposDepois = modelo_var_troca($camposDepois,"#selectedValue#",' value="'.$dado['valor'].'"');
+										}
+									}
+								} else {
+									$camposDepois .= "		".'<option value="'.$dado['valor'].'"'.(isset($valor_selecionado) ? ($valor_selecionado == $dado['valor'] ? ' selected' : '' ) : '' ).'>'.$dado['texto'].'</option>'."\n";
+								}
+							}
+						}
+					}
+					
+					// ===== Incluir os campos antes.
+					
+					if(isset($camposAntes)){
+						$campo_saida .= $camposAntes;
+					}
+					
+					// ===== Dados da tabela ou dados específicos.
+					
+					if(isset($campo['tabela'])){
+						$tabela = $campo['tabela'];
+						
+						if(isset($tabela['id'])){
+							if(isset($tabela['nome']) && isset($tabela['campo'])){
+								$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+								
+								$resultado = banco_select_name
+								(
+									banco_campos_virgulas(Array(
+										$tabela['campo'],
+										$modulo['tabela']['id']
+									))
+									,
+									$tabela['nome'],
+									"WHERE ".$modulo['tabela']['status']."='A'"
+									.(isset($tabela['where']) ? ' AND ('.$tabela['where'].')' : '' )
+									." ORDER BY ".$tabela['campo']." ASC"
+								);
+								
+								if($resultado){
+									foreach($resultado as $res){
+										if(isset($campo['menu'])){
+											$campo_saida .= "			".'<div class="item '.(isset($tabela['id_selecionado']) ? ($tabela['id_selecionado'] == $res[$modulo['tabela']['id']] ? 'active selected' : '' ) : '' ).'" data-value="'.$res[$modulo['tabela']['id']].'">'.$res[$tabela['campo']].'</div>'."\n";
+										} else {
+											$campo_saida .= "		".'<option value="'.$res[$modulo['tabela']['id']].'"'.(isset($tabela['id_selecionado']) ? ($tabela['id_selecionado'] == $res[$modulo['tabela']['id']] ? ' selected' : '' ) : '' ).'>'.$res[$tabela['campo']].'</option>'."\n";
+										}
+									}
+								}
+							}
+						} else {
+							if(isset($tabela['nome']) && isset($tabela['campo']) && isset($tabela['id_numerico'])){
+								$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+								
+								$resultado = banco_select_name
+								(
+									banco_campos_virgulas(Array(
+										$tabela['campo'],
+										$tabela['id_numerico']
+									))
+									,
+									$tabela['nome'],
+									"WHERE ".$modulo['tabela']['status']."='A'"
+									.(isset($tabela['where']) ? ' AND ('.$tabela['where'].')' : '' )
+									." ORDER BY ".$tabela['campo']." ASC"
+								);
+								
+								if($resultado){
+									foreach($resultado as $res){
+										if(isset($campo['menu'])){
+											$campo_saida .= "			".'<div class="item '.(isset($tabela['id_selecionado']) ? ($tabela['id_selecionado'] == $res[$tabela['id_numerico']] ? 'active selected' : '' ) : '' ).'" data-value="'.$res[$tabela['id_numerico']].'">'.$res[$tabela['campo']].'</div>'."\n";
+										} else {
+											$campo_saida .= "		".'<option value="'.$res[$tabela['id_numerico']].'"'.(isset($tabela['id_selecionado']) ? ($tabela['id_selecionado'] == $res[$tabela['id_numerico']] ? ' selected' : '' ) : '' ).'>'.$res[$tabela['campo']].'</option>'."\n";
+										}
+									}
+								}
+							}
+						}
+					} else if(isset($campo['dados'])){
+						$dados = $campo['dados'];
+						
+						if(isset($campo['valor_selecionado'])){
+							$valor_selecionado = $campo['valor_selecionado'];
+						}
+						
+						foreach($dados as $dado){
+							if(isset($dado['texto']) && isset($dado['valor'])){
+								if(isset($campo['menu'])){
+									$campo_saida .= "			".'<div class="item '.(isset($valor_selecionado) ? ($valor_selecionado == $dado['valor'] ? 'active selected' : '' ) : '' ).'" data-value="'.$dado['valor'].'">'.(isset($dado['icone']) ? '<i class="'.$dado['icone'].' icon"></i>' : '').$dado['texto'].'</div>'."\n";
+									
+									if(isset($valor_selecionado)){
+										if($valor_selecionado == $dado['valor']){
+											$campo_saida = modelo_var_troca($campo_saida,"#selectedValue#",' value="'.$dado['valor'].'"');
+										}
+									}
+								} else {
+									$campo_saida .= "		".'<option value="'.$dado['valor'].'"'.(isset($valor_selecionado) ? ($valor_selecionado == $dado['valor'] ? ' selected' : '' ) : '' ).'>'.$dado['texto'].'</option>'."\n";
+								}
+							}
+						}
+					}
+					
+					// ===== Incluir os campos antes.
+					
+					if(isset($camposDepois)){
+						$campo_saida .= $camposDepois;
+					}
+					
+					// ===== Finalizar a montagem do select
+					
+					if(isset($campo['menu'])){
+						$campo_saida .= "		".'</div>'."\n";
+						$campo_saida .= "	".'</div>'."\n";
+						
+						$campo_saida = modelo_var_troca($campo_saida,"#selectedValue#",'');
+					} else {
+						$campo_saida .= "	".'</select>'."\n";
+					}
+					
+					// ===== Incluir o select na página
+					
+					if(isset($pagina)){
+						return modelo_var_troca($pagina,'<span>#select-'.$campo['id'].'#</span>',$campo_saida);
+					} else {
+						$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<span>#select-'.$campo['id'].'#</span>',$campo_saida);
+					}
+				break;
+				case 'imagepick':
+					// ===== Ler o layout do image pick
+					
+					$imagepick = gestor_componente(Array(
+						'id' => 'widget-imagem',
+						'modulosExtra' => Array(
+							'interface',
+						),
+					));
+					
+					// ===== Definir valores padrões
+					
+					$imagepickJS['padroes'] = Array(
+						'fileId' => '-1',
+						'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-default-name')),
+						'data' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-default-date')),
+						'tipo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-default-type')),
+						'imgSrc' => $_GESTOR['url-full'] . 'images/imagem-padrao.png',
+					);
+					
+					$imagepickJS['modal'] = Array(
+						'head' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-modal-head')),
+						'cancel' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-modal-cancel')),
+						'url' => $_GESTOR['url-full'] . 'admin-arquivos/?paginaIframe=sim',
+					);
+					
+					$imagepickJS['alertas'] = Array(
+						'naoImagem' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-alert-not-image')),
+					);
+					
+					// ===== Se existe o arquivo, baixar dados do banco, senão definir valores padrões
+					
+					$found = false;
+					if(isset($campo['id_arquivos'])){
+						$id_arquivos = $campo['id_arquivos'];
+						
+						$arquivos = banco_select_name
+						(
+							banco_campos_virgulas(Array(
+								'tipo',
+								'nome',
+								'data_criacao',
+								'caminho',
+								'caminho_mini',
+							))
+							,
+							"arquivos",
+							"WHERE id_arquivos='".$id_arquivos."'"
+						);
+						
+						if($arquivos){
+							$found = true;
+							
+							if($arquivos[0]['caminho_mini']){
+								$imgSrc = $_GESTOR['url-full'] . $arquivos[0]['caminho_mini'];
+							} else {
+								$imgSrc = $_GESTOR['url-full'] . 'images/imagem-padrao.png';
+							}
+							
+							$data = interface_formatar_dado(Array('dado' => $arquivos[0]['data_criacao'], 'formato' => 'dataHora'));
+							$nome = $arquivos[0]['nome'];
+							$tipo = $arquivos[0]['tipo'];
+							
+							$fileId = $id_arquivos;
+						}
+					}
+					
+					if(!$found){
+						$fileId = $imagepickJS['padroes']['fileId'];
+						$nome = $imagepickJS['padroes']['nome'];
+						$data = $imagepickJS['padroes']['data'];
+						$tipo = $imagepickJS['padroes']['tipo'];
+						$imgSrc = $imagepickJS['padroes']['imgSrc'];
+					}
+					
+					// ===== Alterar os dados do widget
+					
+					$imagepick = modelo_var_troca($imagepick,"#cont-id#",$campo['id']);
+					$imagepick = modelo_var_troca($imagepick,"#campo-nome#",$campo['nome']);
+					
+					$imagepick = modelo_var_troca_tudo($imagepick,"#file-id#",$fileId);
+					$imagepick = modelo_var_troca($imagepick,"#nome#",$nome);
+					$imagepick = modelo_var_troca($imagepick,"#tipo#",$tipo);
+					$imagepick = modelo_var_troca($imagepick,"#data#",$data);
+					$imagepick = modelo_var_troca($imagepick,"#img-src#",$imgSrc);
+					
+					// ===== Incluir o imagepick na página
+					
+					if(isset($pagina)){
+						$pagina = modelo_var_troca($pagina,'<span>#imagepick-'.$campo['id'].'#</span>',$imagepick);
+					} else {
+						$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<span>#imagepick-'.$campo['id'].'#</span>',$imagepick);
+					}
+					
+					// ===== Atualizar variável javascript
+					
+					$_GESTOR['javascript-vars']['interface']['imagepick'] = $imagepickJS;
+					
+					// ===== Incluir o componente iframe modal
+					
+					interface_componentes_incluir(Array(
+						'componente' => Array(
+							'modal-iframe',
+							'modal-alerta',
+						)
+					));
+					
+					// ===== Se precisar retornar a página.
+				
+					if(isset($pagina)){
+						return $pagina;
+					}
+				break;
+				case 'imagepick-hosts':
+					// ===== Ler o layout do image pick
+					
+					$imagepick = gestor_componente(Array(
+						'id' => 'widget-imagem',
+						'modulosExtra' => Array(
+							'interface',
+						),
+					));
+					
+					// ===== Definir valores padrões
+					
+					$imagepickJS['padroes'] = Array(
+						'fileId' => '-1',
+						'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-default-name')),
+						'data' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-default-date')),
+						'tipo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-default-type')),
+						'imgSrc' => $_GESTOR['url-full'] . 'images/imagem-padrao.png',
+					);
+					
+					$imagepickJS['modal'] = Array(
+						'head' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-modal-head')),
+						'cancel' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-modal-cancel')),
+						'url' => $_GESTOR['url-full'] . 'arquivos/?paginaIframe=sim',
+					);
+					
+					$imagepickJS['alertas'] = Array(
+						'naoImagem' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-alert-not-image')),
+					);
+					
+					// ===== Se existe o arquivo, baixar dados do banco, senão definir valores padrões
+					
+					$found = false;
+					if(isset($campo['id_hosts_arquivos'])){
+						$id_hosts_arquivos = $campo['id_hosts_arquivos'];
+						
+						$arquivos = banco_select_name
+						(
+							banco_campos_virgulas(Array(
+								'tipo',
+								'nome',
+								'data_criacao',
+								'caminho',
+								'caminho_mini',
+							))
+							,
+							"hosts_arquivos",
+							"WHERE id_hosts_arquivos='".$id_hosts_arquivos."'"
+						);
+						
+						if($arquivos){
+							$found = true;
+							
+							if($arquivos[0]['caminho_mini']){
+								// ===== Carregar domínio do host.
+								
+								gestor_incluir_biblioteca('host');
+								$dominio = host_url(Array(
+									'opcao' => 'full',
+								));
+								
+								// ===== Montar imgSrc.
+								
+								$imgSrc = $dominio . $arquivos[0]['caminho_mini'];
+							} else {
+								$imgSrc = $_GESTOR['url-full'] . 'images/imagem-padrao.png';
+							}
+							
+							$data = interface_formatar_dado(Array('dado' => $arquivos[0]['data_criacao'], 'formato' => 'dataHora'));
+							$nome = $arquivos[0]['nome'];
+							$tipo = $arquivos[0]['tipo'];
+							
+							$fileId = $id_hosts_arquivos;
+						}
+					}
+					
+					if(!$found){
+						$fileId = $imagepickJS['padroes']['fileId'];
+						$nome = $imagepickJS['padroes']['nome'];
+						$data = $imagepickJS['padroes']['data'];
+						$tipo = $imagepickJS['padroes']['tipo'];
+						$imgSrc = $imagepickJS['padroes']['imgSrc'];
+					}
+					
+					// ===== Alterar os dados do widget
+					
+					$imagepick = modelo_var_troca($imagepick,"#cont-id#",$campo['id']);
+					$imagepick = modelo_var_troca($imagepick,"#campo-nome#",$campo['nome']);
+					
+					$imagepick = modelo_var_troca_tudo($imagepick,"#file-id#",$fileId);
+					$imagepick = modelo_var_troca($imagepick,"#nome#",$nome);
+					$imagepick = modelo_var_troca($imagepick,"#tipo#",$tipo);
+					$imagepick = modelo_var_troca($imagepick,"#data#",$data);
+					$imagepick = modelo_var_troca($imagepick,"#img-src#",$imgSrc);
+					
+					// ===== Incluir o imagepick na página
+					
+					if(isset($pagina)){
+						$pagina = modelo_var_troca($pagina,'<span>#imagepick-'.$campo['id'].'#</span>',$imagepick);
+					} else {
+						$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<span>#imagepick-'.$campo['id'].'#</span>',$imagepick);
+					}
+					
+					// ===== Atualizar variável javascript
+					
+					$_GESTOR['javascript-vars']['interface']['imagepick'] = $imagepickJS;
+					
+					// ===== Incluir o componente iframe modal
+					
+					interface_componentes_incluir(Array(
+						'componente' => Array(
+							'modal-iframe',
+							'modal-alerta',
+						)
+					));
+					
+					// ===== Se precisar retornar a página.
+				
+					if(isset($pagina)){
+						return $pagina;
+					}
+				break;
+				case 'templates-hosts':
+					// ===== Ler o layout do template pick
+					
+					$templatePick = gestor_componente(Array(
+						'id' => 'widget-template',
+						'modulosExtra' => Array(
+							'interface',
+						),
+					));
+					
+					// ===== Pegar a categoria
+					
+					$categorias = banco_select_name
+					(
+						banco_campos_virgulas(Array(
+							'nome',
+							'id_categorias',
+						))
+						,
+						"categorias",
+						"WHERE status!='D'"
+						." AND id='".$campo['categoria_id']."'"
+					);
+					
+					if(!$categorias){
+						$msgError = modelo_var_troca(gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-error-load')),"#msg#",gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-template-error-category')).': #1');
+						$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<span>#templates-'.$campo['id'].'#</span>',$msgError);
+						return;
+					}
+					
+					$id_categorias = $categorias[0]['id_categorias'];
+					
+					// ===== Definir valores padrões
+					
+					$templatesJS['modal'] = Array(
+						'head' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-template-modal-head')),
+						'cancel' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-template-modal-cancel')),
+						'url' => $_GESTOR['url-full'] . 'templates/seletores/?paginaIframe=sim&modelo=paginas&categoria_id='.$campo['categoria_id'],
+					);
+					
+					// ===== Se template_id e template_tipo foram enviados, baixar dados do banco, senão definir valores padrões.
+					
+					$found = false;
+					if(isset($campo['template_id']) && isset($campo['template_tipo'])){
+						// ===== Verificar se o tipo enviado é o correto, senão devolver erro.
+						
+						switch($campo['template_tipo']){
+							case 'gestor':
+								$templates = banco_select_name
+								(
+									banco_campos_virgulas(Array(
+										'id',
+										'nome',
+										'id_arquivos_Imagem',
+										'data_modificacao',
+									))
+									,
+									"templates",
+									"WHERE status!='D'"
+									." AND id='".$campo['template_id']."'"
+								);
+								
+								$tipoLabelID = 'template-gestor-label';
+							break;
+							case 'hosts':
+								$templates = banco_select_name
+								(
+									banco_campos_virgulas(Array(
+										'id',
+										'nome',
+										'id_hosts_arquivos_Imagem',
+										'data_modificacao',
+									))
+									,
+									"hosts_templates",
+									"WHERE status!='D'"
+									." AND id='".$campo['template_id']."'"
+								);
+								
+								$tipoLabelID = 'template-custom-label';
+							break;
+							default:
+								$msgError = modelo_var_troca(gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-error-load')),"#msg#",gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-template-error-category')).': #3');
+								$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<span>#templates-'.$campo['id'].'#</span>',$msgError);
+								return;
+						}
+						
+						if(!$templates){
+							$msgError = modelo_var_troca(gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-error-load')),"#msg#",gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-template-error-category')).': #4');
+							$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<span>#templates-'.$campo['id'].'#</span>',$msgError);
+							return;
+						}
+						
+						// ===== Formatar os campos principais.
+						
+						$templateId = $templates[0]['id'];
+						$templateTipo = $campo['template_tipo'];
+						
+						$nome = $templates[0]['nome'];
+						$tipo = gestor_variaveis(Array('modulo' => 'templates','id' => $tipoLabelID));
+						$data = interface_formatar_dado(Array('dado' => $templates[0]['data_modificacao'], 'formato' => 'dataHora'));
+						
+						// ===== Se existir pegar o caminho do arquivo mini.
+						
+						switch($campo['template_tipo']){
+							case 'gestor':
+								$id_arquivos = $templates[0]['id_arquivos_Imagem'];
+								
+								if(existe($id_arquivos)){
+									$resultado = banco_select_name(
+										banco_campos_virgulas(Array(
+											'caminho_mini',
+										)),
+										"arquivos",
+										"WHERE id_arquivos='".$id_arquivos."'"
+									);
+									
+									if($resultado){
+										if(existe($resultado[0]['caminho_mini'])){
+											$caminho_mini = $resultado[0]['caminho_mini'];
+										}
+									}
+								}
+								
+								// ===== Domínio completo do Gestor.
+						
+								$dominio = $_GESTOR['url-full'];
+							break;
+							case 'hosts':
+								$id_hosts_arquivos = $templates[0]['id_hosts_arquivos_Imagem'];
+								
+								if(existe($id_hosts_arquivos)){
+									$resultado = banco_select_name(
+										banco_campos_virgulas(Array(
+											'caminho_mini',
+										)),
+										"hosts_arquivos",
+										"WHERE id_hosts_arquivos='".$id_hosts_arquivos."'"
+									);
+									
+									if($resultado){
+										if(existe($resultado[0]['caminho_mini'])){
+											$caminho_mini = $resultado[0]['caminho_mini'];
+										}
+									}
+								}
+								
+								// ===== Carregar domínio do host.
+								
+								gestor_incluir_biblioteca('host');
+								$dominio = host_url(Array(
+									'opcao' => 'full',
+								));
+						}
+					} else {
+						// ===== Pegar template 'padrao' da categoria_id.
+						
+						$templates = banco_select_name
+						(
+							banco_campos_virgulas(Array(
+								'id',
+								'nome',
+								'id_arquivos_Imagem',
+								'data_modificacao',
+							))
+							,
+							"templates",
+							"WHERE status!='D'"
+							." AND id_categorias='".$id_categorias."'"
+							." AND padrao IS NOT NULL"
+						);
+						
+						if(!$templates){
+							$msgError = modelo_var_troca(gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-error-load')),"#msg#",gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-template-error-category')).': #2');
+							$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<span>#templates-'.$campo['id'].'#</span>',$msgError);
+							return;
+						}
+						
+						// ===== Formatar os campos principais.
+						
+						$templateId = $templates[0]['id'];
+						$templateTipo = 'gestor';
+						
+						$nome = $templates[0]['nome'];
+						$tipo = gestor_variaveis(Array('modulo' => 'templates','id' => 'template-gestor-label'));
+						$data = interface_formatar_dado(Array('dado' => $templates[0]['data_modificacao'], 'formato' => 'dataHora'));
+						
+						// ===== Se existir pegar o caminho do arquivo mini.
+						
+						$id_arquivos = $templates[0]['id_arquivos_Imagem'];
+						
+						if(existe($id_arquivos)){
+							$resultado = banco_select_name(
+								banco_campos_virgulas(Array(
+									'caminho_mini',
+								)),
+								"arquivos",
+								"WHERE id_arquivos='".$id_arquivos."'"
+							);
+							
+							if($resultado){
+								if(existe($resultado[0]['caminho_mini'])){
+									$caminho_mini = $resultado[0]['caminho_mini'];
+								}
+							}
+						}
+						
+						// ===== Domínio completo do Gestor.
+				
+						$dominio = $_GESTOR['url-full'];
+					}
+					
+					// ===== Imagem Mini padrão ou Imagem Referência.
+					
+					if(existe($caminho_mini)){
+						$imgSrc = $dominio . $caminho_mini;
+					} else {
+						$imgSrc = $_GESTOR['url-full'] . 'images/imagem-padrao.png';
+					}
+					
+					// ===== Alterar os dados do widget
+					
+					$templatePick = modelo_var_troca($templatePick,"#cont-id#",$campo['id']);
+					$templatePick = modelo_var_troca($templatePick,"#campo-nome#",$campo['nome'].'_id');
+					$templatePick = modelo_var_troca($templatePick,"#campo-tipo#",$campo['nome'].'_tipo');
+					
+					$templatePick = modelo_var_troca($templatePick,"#template-id#",$templateId);
+					$templatePick = modelo_var_troca($templatePick,"#template-tipo#",$templateTipo);
+					$templatePick = modelo_var_troca($templatePick,"#nome#",$nome);
+					$templatePick = modelo_var_troca($templatePick,"#tipo#",$tipo);
+					$templatePick = modelo_var_troca($templatePick,"#data#",$data);
+					$templatePick = modelo_var_troca($templatePick,"#img-src#",$imgSrc);
+					
+					// ===== Incluir o templatePick na página
+					
+					$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<span>#templates-'.$campo['id'].'#</span>',$templatePick);
+					
+					// ===== Atualizar variável javascript
+					
+					$_GESTOR['javascript-vars']['interface']['templates'] = $templatesJS;
+					
+					// ===== Incluir o componente iframe modal
+					
+					interface_componentes_incluir(Array(
+						'componente' => Array(
+							'modal-iframe',
+						)
+					));
+				break;
+			}
+		}
+	}
+}
 
 function interface_alerta($params = false){
 	global $_GESTOR;
