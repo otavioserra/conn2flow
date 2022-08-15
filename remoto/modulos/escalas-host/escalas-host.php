@@ -9,6 +9,171 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 
 // ===== Funções Auxiliares
 
+function escalas_data_dias_antes($mes = 0,$ano = 0, $diasPeriodo = 0, $dataInicial = NULL){
+	// ===== Definir a data inicial caso a mesma não tenha sido definida.
+	
+	if(!isset($dataInicial)){
+		$dataInicial = date('d-m-Y');
+	}
+	
+	$dataInicial = str_replace('/', '-', $dataInicial);
+	
+	// ===== Pegar o mês e o ano da data inicial.
+	
+	$diaInicial = (int)date('j',strtotime($dataInicial));
+	$mesInicial = (int)date('n',strtotime($dataInicial));
+	$anoInicial = (int)date('Y',strtotime($dataInicial));
+	
+	// ===== Filtrar os dados e colocarem eles como numérico.
+	
+	$mes = (int)$mes;
+	$ano = (int)$ano;
+	$diasPeriodo = (int)$diasPeriodo;
+	
+	// ===== Verifica se a data faz parte desse mês. Se sim, retorna a data procurada. Senão, remove a quantidade de dias do mês atual.
+	
+	if($diasPeriodo < $diaInicial){
+		$diaFim = $diaInicial - $diasPeriodo;
+		$mesFim = ($mesInicial < 10 ? '0':'') . $mesInicial;
+		$anoFim = ($anoInicial < 10 ? '0':'') . $anoInicial;
+		
+		return $diaFim . '/' . $mesFim . '/' . $anoFim;
+	} else {
+		$diasPeriodo = $diasPeriodo - $diaInicial;
+	}
+	
+	// ===== Variáveis de controle do loop.
+	
+	$limiteLoop = 1000;
+	$countLoop = 0;
+	
+	// ===== Faz o loop e buscar a data.
+	
+	while(true){
+		if(!isset($anoFim)){
+			$anoFim = $ano;
+		}
+		
+		if(!isset($mesFim)){
+			$mesFim = $mes - 1;
+		} else {
+			$mesFim--;
+		}
+		
+		if($mesFim < 1){
+			$mesFim = 12;
+			$anoFim--;
+		}
+		
+		$totalDiasMes = cal_days_in_month(CAL_GREGORIAN, $mesFim, $anoFim);
+		
+		$diaFim = $totalDiasMes - ($diasPeriodo - (isset($diasFimContados) ? $diasFimContados : 0));
+		
+		if($diaFim > 0){
+			$mesFim = ($mesFim < 10 ? '0':'') . $mesFim;
+			$diaFim = ($diaFim < 10 ? '0':'') . $diaFim;
+			
+			return $diaFim . '/' . $mesFim . '/' . $anoFim;
+		} else {
+			if(!isset($diasFimContados)){
+				$diasFimContados = $totalDiasMes;
+			} else {
+				$diasFimContados += $totalDiasMes;
+			}
+		}
+		
+		$countLoop++;
+		
+		if($countLoop > $limiteLoop){
+			return '';
+		}
+	}
+}
+
+function escalas_data_dias_depois($mes = 0,$ano = 0, $diasPeriodo = 0, $dataInicial = NULL){
+	// ===== Definir a data inicial caso a mesma não tenha sido definida.
+	
+	if(!isset($dataInicial)){
+		$dataInicial = date('d/m/Y');
+	}
+	
+	$dataInicial = str_replace('/', '-', $dataInicial);
+	
+	// ===== Pegar o mês e o ano da data inicial.
+	
+	$numDiasMes = (int)date('t',strtotime($dataInicial));
+	
+	$diaInicial = (int)date('j',strtotime($dataInicial));
+	$mesInicial = (int)date('n',strtotime($dataInicial));
+	$anoInicial = (int)date('Y',strtotime($dataInicial));
+	
+	// ===== Filtrar os dados e colocarem eles como numérico.
+	
+	$mes = (int)$mes;
+	$ano = (int)$ano;
+	$diasPeriodo = (int)$diasPeriodo;
+	
+	// ===== Verifica se a data faz parte desse mês. Se sim, retorna a data procurada. Senão, remove a quantidade de dias do mês atual.
+	
+	if($diasPeriodo <= $numDiasMes - $diaInicial){
+		$diaFim = $diaInicial + $diasPeriodo;
+		$mesFim = ($mesInicial < 10 ? '0':'') . $mesInicial;
+		$anoFim = ($anoInicial < 10 ? '0':'') . $anoInicial;
+		
+		return $diaFim . '/' . $mesFim . '/' . $anoFim;
+	} else {
+		$diasPeriodo = $diasPeriodo - ($numDiasMes - $diaInicial);
+	}
+	
+	// ===== Variáveis de controle do loop.
+	
+	$limiteLoop = 1000;
+	$countLoop = 0;
+	
+	// ===== Faz o loop e buscar a data.
+	
+	while(true){
+		if(!isset($anoFim)){
+			$anoFim = $ano;
+		}
+		
+		if(!isset($mesFim)){
+			$mesFim = $mes + 1;
+		} else {
+			$mesFim++;
+		}
+		
+		if($mesFim > 12){
+			$mesFim = 1;
+			$anoFim++;
+		}
+		
+		$totalDiasMes = cal_days_in_month(CAL_GREGORIAN, $mesFim, $anoFim);
+		
+		$diasNoMes = ($totalDiasMes - ($diasPeriodo - (isset($diasFimContados) ? $diasFimContados : 0)));
+		
+		if($diasNoMes <= $totalDiasMes && $diasNoMes > 0){
+			$diaFim = 1 + ($diasPeriodo - (isset($diasFimContados) ? $diasFimContados : 0));
+			$mesFim = ($mesFim < 10 ? '0':'') . $mesFim;
+			$diaFim = ($diaFim < 10 ? '0':'') . $diaFim;
+			
+			return $diaFim . '/' . $mesFim . '/' . $anoFim;
+		} else {
+			if(!isset($diasFimContados)){
+				$diasFimContados = $totalDiasMes;
+			} else {
+				$diasFimContados += $totalDiasMes;
+			}
+		}
+		
+		$countLoop++;
+		
+		if($countLoop > $limiteLoop){
+			return '';
+		}
+	}
+}
+
 function escalas_calendario($params = false){
 	global $_GESTOR;
 	
@@ -471,97 +636,16 @@ function escalas_padrao(){
 		$mesAtual = $mes;
 		$anoAtual = $ano;
 		
+		$mesAtualFormatado = ($mesAtual < 10 ? '0':'') . $mesAtual;
+		
 		pagina_trocar_variavel_valor('datas-selecionadas',$datasSelecionadas);
 		pagina_trocar_variavel_valor('mes-atual',$mesAtual);
 		pagina_trocar_variavel_valor('ano-atual',$anoAtual);
 		
-		// ===== Definir a data do início da confirmação.
+		// ===== Definir a data do início e fim da confirmação.
 		
-		$definirConfirmacao = true;
-		while($definirConfirmacao){
-			if(!isset($anoInicioConfirmacao)){
-				$anoInicioConfirmacao = $ano;
-			}
-			
-			if(!isset($mesInicioConfirmacao)){
-				$mesInicioConfirmacao = $mes - 1;
-			} else {
-				$mesInicioConfirmacao--;
-			}
-			
-			if($mesInicioConfirmacao < 1){
-				$mesInicioConfirmacao = 12;
-				$anoInicioConfirmacao--;
-			}
-			
-			$totalDiasMes = cal_days_in_month(CAL_GREGORIAN, $mesInicioConfirmacao, $anoInicioConfirmacao);
-			
-			$diaInicioConfirmacao = $totalDiasMes - ($diasInicioConfirmacao - (isset($diasInicioConfirmacaoContados) ? $diasInicioConfirmacaoContados : 0));
-			
-			if($diaInicioConfirmacao > 0){
-				if($mesInicioConfirmacao < 10){
-					$mesInicioConfirmacao = '0' . $mesInicioConfirmacao;
-				}
-				
-				if($diaInicioConfirmacao < 10){
-					$diaInicioConfirmacao = '0' . $diaInicioConfirmacao;
-				}
-				
-				$data_confirmacao_inicio = $diaInicioConfirmacao . '/' . $mesInicioConfirmacao . '/' . $anoInicioConfirmacao;
-				
-				$definirConfirmacao = false;
-			} else {
-				if(!isset($diasInicioConfirmacaoContados)){
-					$diasInicioConfirmacaoContados = $totalDiasMes;
-				} else {
-					$diasInicioConfirmacaoContados += $totalDiasMes;
-				}
-			}
-		}
-		
-		// ===== Definir a data do fim da confirmação.
-		
-		$definirConfirmacao = true;
-		while($definirConfirmacao){
-			if(!isset($anoFimConfirmacao)){
-				$anoFimConfirmacao = $ano;
-			}
-			
-			if(!isset($mesFimConfirmacao)){
-				$mesFimConfirmacao = $mes - 1;
-			} else {
-				$mesFimConfirmacao--;
-			}
-			
-			if($mesFimConfirmacao < 1){
-				$mesFimConfirmacao = 12;
-				$anoFimConfirmacao--;
-			}
-			
-			$totalDiasMes = cal_days_in_month(CAL_GREGORIAN, $mesFimConfirmacao, $anoFimConfirmacao);
-			
-			$diaFimConfirmacao = $totalDiasMes - ($diasFimConfirmacao - (isset($diasFimConfirmacaoContados) ? $diasFimConfirmacaoContados : 0));
-			
-			if($diaFimConfirmacao > 0){
-				if($mesFimConfirmacao < 10){
-					$mesFimConfirmacao = '0' . $mesFimConfirmacao;
-				}
-				
-				if($diaFimConfirmacao < 10){
-					$diaFimConfirmacao = '0' . $diaFimConfirmacao;
-				}
-				
-				$data_confirmacao_fim = $diaFimConfirmacao . '/' . $mesFimConfirmacao . '/' . $anoFimConfirmacao;
-				
-				$definirConfirmacao = false;
-			} else {
-				if(!isset($diasFimConfirmacaoContados)){
-					$diasFimConfirmacaoContados = $totalDiasMes;
-				} else {
-					$diasFimConfirmacaoContados += $totalDiasMes;
-				}
-			}
-		}
+		$data_confirmacao_inicio = escalas_data_dias_antes($mes,$ano,$diasInicioConfirmacao,'01/'. $mesAtualFormatado . '/' . $anoAtual);
+		$data_confirmacao_fim = escalas_data_dias_antes($mes,$ano,$diasFimConfirmacao,'01/'. $mesAtualFormatado . '/' . $anoAtual);
 		
 		// ===== Definir a data de inscrição fim.
 		
