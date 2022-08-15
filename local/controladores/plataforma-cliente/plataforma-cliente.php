@@ -65,21 +65,6 @@ function plataforma_cliente_plugin_data_permitida($params = false){
 	$calendario_ferias_ate = (existe($config['calendario-ferias-ate']) ? trim($config['calendario-ferias-ate']) : '20 January');
 	$periodoLimiteAlteracao = (existe($config['periodo-limite-alteracao']) ? $config['periodo-limite-alteracao'] : '');
 	
-	// ===== Verificar as datas na tabela controle de datas e total de vagas.
-	
-	$escalas_controle = banco_select_name
-	(
-		banco_campos_virgulas(Array(
-			'data',
-			'total',
-		))
-		,
-		"hosts_escalas_controle",
-		"WHERE data >= ".$prmeiroDiaMes
-		." AND data <= ".$ultimoDiaMes
-		." AND id_hosts='".$id_hosts."'"
-	);
-	
 	// ===== Pegar o período de férias para remover do calendário do mês.
 	
 	for($i=-1;$i<$anos+1;$i++){
@@ -169,34 +154,6 @@ function plataforma_cliente_plugin_data_permitida($params = false){
 			if($flag2){
 				$dataAux = date('Y-m-d', $dia);
 				$flag3 = false;
-				
-				if($mesVagasResiduais){
-					if($escalas_controle){
-						foreach($escalas_controle as $escalas_data){
-							if($dataAux == $escalas_data['data']){
-								if($data_extra_permitida){
-									if(count($datas_extras_dias_semana_maximo_vagas_arr) > 1){
-										$dias_semana_maximo_vagas = $datas_extras_dias_semana_maximo_vagas_arr[$count_dias];
-									} else {
-										$dias_semana_maximo_vagas = $datas_extras_dias_semana_maximo_vagas_arr[0];
-									}
-								} else {
-									if(count($dias_semana_maximo_vagas_arr) > 1){
-										$dias_semana_maximo_vagas = $dias_semana_maximo_vagas_arr[$count_dias];
-									} else {
-										$dias_semana_maximo_vagas = $dias_semana_maximo_vagas_arr[0];
-									}
-								}
-								
-								if((int)$dias_semana_maximo_vagas < (int)$escalas_data['total']){
-									$flag3 = true;
-								}
-								
-								break;
-							}
-						}
-					}
-				}
 				
 				// ===== Não permitir selecionar datas do passado mais o periodoLimiteAlteracao.
 				
@@ -309,6 +266,112 @@ function plataforma_cliente_plugin_escalas(){
 				
 				$data_inscricao_inicio = $diaInicioInscricaoAux . '/' . $mesInicioInscricaoAux . '/' . $anoInicioInscricaoAux;
 				
+				// ===== Definir a data do início da confirmação.
+				
+				$definirConfirmacao = true;
+				while($definirConfirmacao){
+					if(!isset($anoInicioConfirmacao)){
+						$anoInicioConfirmacao = $ano;
+					}
+					
+					if(!isset($mesInicioConfirmacao)){
+						$mesInicioConfirmacao = $mes - 1;
+					} else {
+						$mesInicioConfirmacao--;
+					}
+					
+					if($mesInicioConfirmacao < 1){
+						$mesInicioConfirmacao = 12;
+						$anoInicioConfirmacao--;
+					}
+					
+					$totalDiasMes = cal_days_in_month(CAL_GREGORIAN, $mesInicioConfirmacao, $anoInicioConfirmacao);
+					
+					$diaInicioConfirmacao = $totalDiasMes - ($diasInicioConfirmacao - (isset($diasInicioConfirmacaoContados) ? $diasInicioConfirmacaoContados : 0));
+					
+					if($diaInicioConfirmacao > 0){
+						if($mesInicioConfirmacao < 10){
+							$mesInicioConfirmacao = '0' . $mesInicioConfirmacao;
+						}
+						
+						if($diaInicioConfirmacao < 10){
+							$diaInicioConfirmacao = '0' . $diaInicioConfirmacao;
+						}
+						
+						$data_confirmacao_inicio = $diaInicioConfirmacao . '/' . $mesInicioConfirmacao . '/' . $anoInicioConfirmacao;
+						
+						$definirConfirmacao = false;
+					} else {
+						if(!isset($diasInicioConfirmacaoContados)){
+							$diasInicioConfirmacaoContados = $totalDiasMes;
+						} else {
+							$diasInicioConfirmacaoContados += $totalDiasMes;
+						}
+					}
+				}
+				
+				// ===== Definir a data do fim da confirmação.
+				
+				$definirConfirmacao = true;
+				while($definirConfirmacao){
+					if(!isset($anoFimConfirmacao)){
+						$anoFimConfirmacao = $ano;
+					}
+					
+					if(!isset($mesFimConfirmacao)){
+						$mesFimConfirmacao = $mes - 1;
+					} else {
+						$mesFimConfirmacao--;
+					}
+					
+					if($mesFimConfirmacao < 1){
+						$mesFimConfirmacao = 12;
+						$anoFimConfirmacao--;
+					}
+					
+					$totalDiasMes = cal_days_in_month(CAL_GREGORIAN, $mesFimConfirmacao, $anoFimConfirmacao);
+					
+					$diaFimConfirmacao = $totalDiasMes - ($diasFimConfirmacao - (isset($diasFimConfirmacaoContados) ? $diasFimConfirmacaoContados : 0));
+					
+					if($diaFimConfirmacao > 0){
+						if($mesFimConfirmacao < 10){
+							$mesFimConfirmacao = '0' . $mesFimConfirmacao;
+						}
+						
+						if($diaFimConfirmacao < 10){
+							$diaFimConfirmacao = '0' . $diaFimConfirmacao;
+						}
+						
+						$data_confirmacao_fim = $diaFimConfirmacao . '/' . $mesFimConfirmacao . '/' . $anoFimConfirmacao;
+						
+						$definirConfirmacao = false;
+					} else {
+						if(!isset($diasFimConfirmacaoContados)){
+							$diasFimConfirmacaoContados = $totalDiasMes;
+						} else {
+							$diasFimConfirmacaoContados += $totalDiasMes;
+						}
+					}
+				}
+				
+				// ===== Definir a data de inscrição fim.
+				
+				$data_inscricao_fim = date('d/m/Y', strtotime(str_replace('/', '-', $data_confirmacao_inicio) . ' -1 day'));
+				
+				// ===== Definir a data inicial e final do mês.
+				
+				$data_inicial_mes = date('d/m/Y', strtotime(str_replace('/', '-', $data_confirmacao_fim) . ' +1 day'));
+				
+				$mesInicio = $mes;
+				$anoInicio = $ano;
+				
+				if($mesInicio < 10){
+					$mesInicio = '0' . $mesInicio;
+				}
+				
+				$prmeiroDiaMes = date($anoInicio.'-'.$mesInicio.'-01');
+				$data_final_mes = date('t',strtotime($prmeiroDiaMes)) . '/' . $mesInicio . '/' . $anoInicio;
+				
 				// ===== Verificar se as datas enviadas são permitidas. Senão for alguma ou várias, retornar mensagem de erro com a listagem das datas não permitidas.
 				
 				if(existe($datasStr)){
@@ -324,7 +387,6 @@ function plataforma_cliente_plugin_escalas(){
 							'ano' => $ano,
 							'hoje' => $hoje,
 							'inscricaoInicio' => $data_inscricao_inicio,
-							'id_hosts' => $id_hosts,
 						))){
 							$algumaDataNaoPermitida = true;
 							$datasNaoPermitidas .= (existe($datasNaoPermitidas) ? ', ','') . $datasNaoPermitidas;
@@ -351,13 +413,67 @@ function plataforma_cliente_plugin_escalas(){
 					'unico' => true,
 					'tabela' => 'hosts_escalas',
 					'campos' => Array(
-						'campo1',
+						'id_hosts_escalas',
 					),
 					'extra' => 
 						"WHERE id_hosts='".$id_hosts."'"
 						." AND id_hosts_usuarios='".$id_hosts_usuarios."'"
-						." ORDER BY dados DESC"
+						." AND mes='".$mes."'"
+						." AND ano='".$ano."'"
 				));
+				
+				if($hosts_escalas){
+					$id_hosts_escalas = $hosts_escalas['id_hosts_escalas'];
+				} else {
+					// ===== Gerar o token de validação.
+					
+					gestor_incluir_biblioteca('autenticacao');
+					
+					$validacao = autenticacao_cliente_gerar_token_validacao(Array(
+						'id_hosts' => $id_hosts,
+					));
+					
+					$pubID = $validacao['pubID'];
+					$token = $validacao['token'];
+					
+					// ===== Inserir no banco de dados a escala do mês.
+					
+					banco_insert_name_campo('id_hosts',$id_hosts);
+					banco_insert_name_campo('id_hosts_usuarios',$id_hosts_usuarios);
+					banco_insert_name_campo('mes',$mes);
+					banco_insert_name_campo('ano',$ano);
+					banco_insert_name_campo('status','novo');
+					banco_insert_name_campo('pubID',$pubID);
+					banco_insert_name_campo('versao','1');
+					banco_insert_name_campo('data_criacao','NOW()');
+					banco_insert_name_campo('data_modificacao','NOW()');
+					
+					banco_insert_name
+					(
+						banco_insert_name_campos(),
+						"hosts_escalas"
+					);
+					
+					$id_hosts_escalas = banco_last_id();
+				}
+				
+				// ===== Criar ou pegar as datas da escala do mês / ano.
+				
+				$hosts_escalas_datas = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_escalas_datas',
+					'campos' => Array(
+						'id_hosts_escalas_datas',
+						'data',
+						'status',
+					),
+					'extra' => 
+						"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				// ===== .
+				
 				
 				// ===== Retornar dados.
 				
