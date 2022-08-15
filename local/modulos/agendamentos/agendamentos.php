@@ -51,6 +51,7 @@ function agendamentos_calendario(){
 	
 	$dia = $primeiro_dia;
 	do {
+		$dataFormatada = date('d/m/Y', $dia);
 		$flag = false;
 		
 		if($periodo_ferias){
@@ -67,10 +68,7 @@ function agendamentos_calendario(){
 		
 		if($datas_indisponiveis){
 			foreach($datas_indisponiveis as $di){
-				if(
-					$dia > strtotime(formato_dado_para('date',$di).' 00:00:00') &&
-					$dia < strtotime(formato_dado_para('date',$di).' 23:59:59')
-				){
+				if($dataFormatada == $di){
 					$flag = true;
 					break;
 				}

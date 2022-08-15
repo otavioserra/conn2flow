@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos-host';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.1.0',
+	'versao' => '1.1.3',
 	'numRegistrosPorPagina' => 20,
 );
 
@@ -62,6 +62,7 @@ function agendamentos_calendario($params = false){
 	
 	$dia = $primeiro_dia;
 	do {
+		$dataFormatada = date('d/m/Y', $dia);
 		$flag = false;
 		
 		if($periodo_ferias){
@@ -78,10 +79,7 @@ function agendamentos_calendario($params = false){
 		
 		if($datas_indisponiveis){
 			foreach($datas_indisponiveis as $di){
-				if(
-					$dia > strtotime(formato_dado_para('date',$di).' 00:00:00') &&
-					$dia < strtotime(formato_dado_para('date',$di).' 23:59:59')
-				){
+				if($dataFormatada == $di){
 					$flag = true;
 					break;
 				}

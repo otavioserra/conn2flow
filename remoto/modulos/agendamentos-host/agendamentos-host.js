@@ -262,12 +262,12 @@ $(document).ready(function(){
 			
 			// ===== Buscar os dados no servidor e montar na tela o resultado.
 			
-			var opcao = 'agendamentos';
+			var opcao = 'agendamentos-host';
 			var ajaxOpcao = 'dados-do-agendamento';
 			
 			$.ajax({
 				type: 'POST',
-				url: gestor.raiz + gestor.moduloId + '/',
+				url: gestor.raiz + 'agendamentos/',
 				data: {
 					opcao : opcao,
 					ajax : 'sim',
@@ -334,7 +334,7 @@ $(document).ready(function(){
 			
 			// ===== Carregar dados do servidor.
 			
-			var opcao = 'agendamentos';
+			var opcao = 'agendamentos-host';
 			var ajaxOpcao = 'mais-resultados';
 			
 			carregarObjs[tipo].paginaAtual++;
@@ -343,7 +343,7 @@ $(document).ready(function(){
 			
 			$.ajax({
 				type: 'POST',
-				url: gestor.raiz + gestor.moduloId + '/',
+				url: gestor.raiz + 'agendamentos/',
 				data: { 
 					opcao,
 					ajax : 'sim',
