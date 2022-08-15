@@ -494,6 +494,26 @@ function plataforma_cliente_plugin_escalas(){
 					$datas = Array();
 				}
 				
+				// ===== Verificar qual fase da escala.
+				
+				$faseAtual = '';
+				
+				if(
+					$hoje >= strtotime(str_replace('/', '-', $data_inscricao_inicio)) && 
+					$hoje < strtotime(str_replace('/', '-', $data_confirmacao_inicio)) - 1
+				){
+					$faseAtual = 'inscricao';
+				} else if(
+					$hoje >= strtotime(str_replace('/', '-', $data_confirmacao_inicio)) && 
+					$hoje < strtotime(str_replace('/', '-', $data_inicial_mes)) - 1
+				){
+					$faseAtual = 'confirmacao';
+				} else if(
+					$hoje >= strtotime(str_replace('/', '-', $data_inicial_mes))
+				){
+					$faseAtual = 'utilizacao';
+				}
+				
 				// ===== Criar ou pegar os dados da escala do mês / ano requisitados.
 				
 				$hosts_escalas = banco_select(Array(
@@ -547,7 +567,6 @@ function plataforma_cliente_plugin_escalas(){
 				// ===== Criar ou pegar as datas da escala do mês / ano.
 				
 				$hosts_escalas_datas = banco_select(Array(
-					'unico' => true,
 					'tabela' => 'hosts_escalas_datas',
 					'campos' => Array(
 						'id_hosts_escalas_datas',
@@ -561,31 +580,138 @@ function plataforma_cliente_plugin_escalas(){
 				
 				// ===== Varrer todas as datas enviadas e atualizar no banco conforme necessidade.
 				
+				$datasProcessadasIDs = Array();
+				
 				if(existe($datasStr)){
 					$datas = explode(',',$datasStr);
 					
 					for($i=0;$i<count($datas);$i++){
+						$data = formato_dado_para('date',$datas[$i]);
 						$dataFound = false;
+						$id_hosts_escalas_datas = '';
+						$status = '';
 						
 						if($hosts_escalas_datas)
 						foreach($hosts_escalas_datas as $hed){
-							if(formato_dado_para('date',$datas[$i]) == $hed['data']){
+							if($data == $hed['data']){
 								$dataFound = true;
+								$id_hosts_escalas_datas = $hed['id_hosts_escalas_datas'];
+								$status = $hed['status'];
 								break;
 							}
 						}
 						
 						if(!$dataFound){
-							banco_insert_name_campo('id_hosts',$id_hosts);
-							banco_insert_name_campo('id_hosts_escalas',$id_hosts_escalas);
-							banco_insert_name_campo('data',$data);
-							banco_insert_name_campo('id_hosts_escalas',$id_hosts_escalas);
+							switch($faseAtual){
+								case 'inscricao':
+								case 'utilizacao':
+									banco_insert_name_campo('id_hosts',$id_hosts);
+									banco_insert_name_campo('id_hosts_escalas',$id_hosts_escalas);
+									banco_insert_name_campo('data',$data);
+									banco_insert_name_campo('status','novo');
+									banco_insert_name_campo('selecionada','1',true);
+									
+									banco_insert_name
+									(
+										banco_insert_name_campos(),
+										"hosts_escalas_datas"
+									);
+									
+									$id_hosts_escalas_datas = banco_last_id();
+								break;
+								case 'confirmacao':
+									continue;
+								break;
+							}
+						} else {
+							switch($faseAtual){
+								case 'inscricao':
+								case 'utilizacao':
+									banco_update_campo('selecionada','1',true);
+									
+									banco_update_executar(
+										'hosts_escalas_datas',
+										"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+										." AND id_hosts='".$id_hosts."'"
+										." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
+									);
+								break;
+								case 'confirmacao':
+									if($status == 'qualificado'){
+										banco_update_campo('selecionada','1',true);
+										
+										banco_update_executar(
+											'hosts_escalas_datas',
+											"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+											." AND id_hosts='".$id_hosts."'"
+											." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
+										);
+									}
+								break;
+							}
 							
-							banco_insert_name
-							(
-								banco_insert_name_campos(),
-								"hosts_escalas_datas"
-							);
+						}
+						
+						$datasProcessadasIDs[] = $id_hosts_escalas_datas;
+					}
+				}
+				
+				// ===== Apagar os registros não processados. Ou então, dependendo da fase, somente marcar como não selecionado.
+				
+				$hosts_escalas_datas = banco_select(Array(
+					'tabela' => 'hosts_escalas_datas',
+					'campos' => Array(
+						'id_hosts_escalas_datas',
+						'status',
+					),
+					'extra' => 
+						"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				if($hosts_escalas_datas){
+					foreach($hosts_escalas_datas as $hed){
+						$found = false;
+						$id_hosts_escalas_datas = '';
+						$status = '';
+						
+						if($datasProcessadasIDs){
+							foreach($datasProcessadasIDs as $dpID){
+								if($hed['id_hosts_escalas_datas'] == $dpID){
+									$found = true;
+									$id_hosts_escalas_datas = $hed['id_hosts_escalas_datas'];
+									$status = $hed['status'];
+									break;
+								}
+							}
+						}
+						
+						if($found){
+							switch($faseAtual){
+								case 'inscricao':
+								case 'utilizacao':
+									banco_update_campo('selecionada','NULL',true);
+									
+									banco_update_executar(
+										'hosts_escalas_datas',
+										"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+										." AND id_hosts='".$id_hosts."'"
+										." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
+									);
+								break;
+								case 'confirmacao':
+									if($status == 'qualificado'){
+										banco_update_campo('selecionada','NULL',true);
+										
+										banco_update_executar(
+											'hosts_escalas_datas',
+											"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+											." AND id_hosts='".$id_hosts."'"
+											." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
+										);
+									}
+								break;
+							}
 						}
 					}
 				}
