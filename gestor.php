@@ -34,7 +34,7 @@ if((isset($_GESTOR['caminho-extensao']) ? $_GESTOR['caminho-extensao'] : null)){
 }
 
 if($_GESTOR['arquivo-estatico']){
-	require_once($_INDEX['sistemas-dir'].'b2make-gestor/controladores/arquivo-estatico/arquivo-estatico.php');
+	require_once($_GESTOR['controladores-path'].'arquivo-estatico/arquivo-estatico.php');
 	exit;
 }
 
@@ -43,13 +43,13 @@ if($_GESTOR['arquivo-estatico']){
 if(isset($_GESTOR['caminho']))
 switch($_GESTOR['caminho'][0]){
 	case '_plataforma':
-		require_once($_INDEX['sistemas-dir'].'b2make-gestor/controladores/plataforma-cliente/plataforma-cliente.php'); exit;
+		require_once($_GESTOR['controladores-path'].'plataforma-cliente/plataforma-cliente.php'); exit;
 	break;
 	case '_gateways':
-		require_once($_INDEX['sistemas-dir'].'b2make-gestor/controladores/plataforma-gateways/plataforma-gateways.php'); exit;
+		require_once($_GESTOR['controladores-path'].'plataforma-gateways/plataforma-gateways.php'); exit;
 	break;
 	case '_app':
-		require_once($_INDEX['sistemas-dir'].'b2make-gestor/controladores/plataforma-app/plataforma-app.php'); exit;
+		require_once($_GESTOR['controladores-path'].'plataforma-app/plataforma-app.php'); exit;
 	break;
 }
 
@@ -2095,10 +2095,10 @@ function gestor_roteador(){
 				if($modulos['plugin']){
 					require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
 				} else {
-					require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
+					require_once($_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php');
 				}
 			} else if($_GESTOR['opcao']){
-				require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/global.php');
+				require_once($_GESTOR['modulos-path'].'global.php');
 			}
 			
 			// ===== Retornar a página formatada para o cliente
@@ -2130,7 +2130,7 @@ function gestor_roteador(){
 					if($modulos['plugin']){
 						require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
 					} else {
-						require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
+						require_once($_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php');
 					}
 				}
 				
@@ -2155,10 +2155,10 @@ function gestor_roteador(){
 				if($modulos['plugin']){
 					require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
 				} else {
-					require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$modulo.'/'.$modulo.'.php');
+					require_once($_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php');
 				}
 			} else if($_GESTOR['opcao']){
-				require_once($_INDEX['sistemas-dir'].'b2make-gestor/modulos/global.php');
+				require_once($_GESTOR['modulos-path'].'global.php');
 			}
 			
 			// ===== Incluir um layout específico, ou padrão ou nenhum.

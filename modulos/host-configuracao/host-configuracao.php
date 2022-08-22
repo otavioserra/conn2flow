@@ -309,7 +309,7 @@ function host_configuracao_pipeline_atualizacao($params = false){
 				
 				// ===== Criar arquivo de configuração e alterar dados do mesmo.
 				
-				$config = file_get_contents($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$_GESTOR['modulo-id'].'/templates/config.template.php');
+				$config = file_get_contents($_GESTOR['modulos-path'].$_GESTOR['modulo-id'].'/templates/config.template.php');
 				
 				$config = modelo_var_troca($config,"#bd-user#",$user_db);
 				$config = modelo_var_troca($config,"#bd-name#",$user_db);
@@ -334,8 +334,8 @@ function host_configuracao_pipeline_atualizacao($params = false){
 			
 			// ===== Criar .htaccess e index.php da plataforma do cliente.
 			
-			$index = file_get_contents($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$_GESTOR['modulo-id'].'/templates/index.template.php');
-			$modelo_htaccess = file_get_contents($_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$_GESTOR['modulo-id'].'/templates/template.htaccess');
+			$index = file_get_contents($_GESTOR['modulos-path'].$_GESTOR['modulo-id'].'/templates/index.template.php');
+			$modelo_htaccess = file_get_contents($_GESTOR['modulos-path'].$_GESTOR['modulo-id'].'/templates/template.htaccess');
 			
 			// ===== Definição dos caminhos do Gestor Cliente e Gestor Cliente Update
 			

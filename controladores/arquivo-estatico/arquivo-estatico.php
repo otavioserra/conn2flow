@@ -40,18 +40,18 @@ function arquivo_estatico_start(){
 			case 'css':
 				if($alvo){
 					if($_GESTOR['caminho'][count($_GESTOR['caminho'])-1] != $ext.'.'.$ext){
-						$file = $_INDEX['sistemas-dir'].'b2make-gestor/assets/'.$_GESTOR['caminho-total'];
+						$file = $_GESTOR['assets-path'].$_GESTOR['caminho-total'];
 					} else {
 						if(count($_GESTOR['caminho']) > 2){
 							$file = $_GESTOR['plugins-path'].$alvo.'/local/modulos/'.$alvo2.'/'.$alvo2.'.'.$ext;
 						} else {
-							$file = $_INDEX['sistemas-dir'].'b2make-gestor/modulos/'.$alvo.'/'.$alvo.'.'.$ext;
+							$file = $_GESTOR['modulos-path'].$alvo.'/'.$alvo.'.'.$ext;
 						}
 					}
 				}
 			break;
 			default:
-				$file = $_INDEX['sistemas-dir'].'b2make-gestor/assets/'.$_GESTOR['caminho-total'];
+				$file = $_GESTOR['assets-path'].$_GESTOR['caminho-total'];
 		}
 		
 		if(file_exists($file)){
@@ -72,7 +72,7 @@ function arquivo_estatico_start(){
 		
 		// ===== Arquivos gerenciado pelos usuários via módulo arquivos.
 		
-		$file = $_INDEX['sistemas-dir'].'b2make-gestor/contents/'.$_GESTOR['caminho-total'];
+		$file = $_GESTOR['contents-path'].$_GESTOR['caminho-total'];
 		
 		if(file_exists($file)){
 			$lastModified = filemtime($file);

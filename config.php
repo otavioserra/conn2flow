@@ -46,7 +46,8 @@ $_GESTOR['plugins-path']						=	$_GESTOR['ROOT_PATH'].'../b2make-gestor-plugins/
 // ===== Definição dos caminhos em disco padrões.
 
 $_GESTOR['bibliotecas-path']					=	$_GESTOR['ROOT_PATH'].'bibliotecas/';
-$_GESTOR['modulos-path']						=	$_GESTOR['ROOT_PATH'].'bibliotecas/';
+$_GESTOR['modulos-path']						=	$_GESTOR['ROOT_PATH'].'modulos/';
+$_GESTOR['controladores-path']					=	$_GESTOR['ROOT_PATH'].'controladores/';
 $_GESTOR['assets-path']							=	$_GESTOR['ROOT_PATH'].'assets/';
 $_GESTOR['contents-path']						=	$_GESTOR['ROOT_PATH'].'contents/';
 $_GESTOR['configuracoes-path']					=	$_GESTOR['ROOT_PATH'].'configuracoes/';
