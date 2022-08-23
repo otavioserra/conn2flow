@@ -29,10 +29,23 @@ if(isset($_CRON)){
 	$_GESTOR['ROOT_PATH'] = $_SERVER['DOCUMENT_ROOT'].'/'.(isset($_INDEX['acesso-publico-dir']) ? $_INDEX['acesso-publico-dir'] : '').$_INDEX['sistemas-dir'].'b2make-gestor/';
 }
 
-// ===== Incluir arquivos de autenticação do banco, de configurações e caminho para as chaves de segurança principais.
+// ===== Definição dos caminhos de autenticação.
 
 $_GESTOR['AUTH_PATH']							=	$_GESTOR['ROOT_PATH'] . 'autenticacoes/';
 $_GESTOR['AUTH_PATH_SERVER']					=	$_GESTOR['AUTH_PATH'] . $_SERVER['SERVER_NAME'] . '/';
+
+// ===== Verificar se existe a pasta de autenticacao. Senão existir finalizar e retornar erro 404.
+
+if(!is_dir($_GESTOR['AUTH_PATH_SERVER'])){
+	http_response_code(404);
+	echo json_encode(Array(
+		'error' => '404',
+		'info' => 'Domain not found',
+	));
+	exit;
+}
+
+// ===== Incluir arquivos de autenticação do banco, de configurações e caminho para as chaves de segurança principais.
 
 require_once($_GESTOR['AUTH_PATH_SERVER'] . 'banco.php');
 require_once($_GESTOR['AUTH_PATH_SERVER'] . 'config.php');
