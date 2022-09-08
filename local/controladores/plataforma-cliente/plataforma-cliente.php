@@ -11,6 +11,182 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 
 // =========================== Funções Auxiliares
 
+function plataforma_cliente_plugin_montar_calendario($mes,$ano,$diasComEventos = Array(),$diasSemEventos = Array()){
+	// Definição dos styles da tabela.
+	
+	$styles = '
+	<style>
+		.calendar{
+			background-color: #d9edf7;
+			font-size:16px;
+		}
+		.calendar caption{
+			color: #204d74;
+			font-weight: bold;
+			line-height:30px;
+			font-size:18px;
+		}
+		.day{
+			text-align:center;
+			min-width:35px;
+			line-height:30px;
+		}
+		.event{
+			text-align:center;
+			min-width:35px;
+			line-height:30px;
+			background-color: #204d74;
+			color: white;
+			font-weight: bold;
+		}
+		.not-event{
+			text-align:center;
+			min-width:35px;
+			line-height:30px;
+			background-color: #db2828;
+			color: white;
+			font-weight: bold;
+		}
+	</style>
+	';
+	
+	// Passar os estilos para o formato inline.
+	
+	$process = false;
+	foreach(preg_split("/((\r?\n)|(\r\n?))/", $styles) as $styleLine){
+		$styleLine = trim($styleLine);
+		$open = false;
+		$close = false;
+		
+		if(preg_match('/'.preg_quote('{').'/', $styleLine) > 0){
+			$idStyleNow = preg_replace('/\{/', '', $styleLine);
+			$open = true;
+			$process = true;
+		}
+		
+		if(preg_match('/'.preg_quote('}').'/', $styleLine) > 0){
+			$close = true;
+			$process = false;
+		}
+		
+		if($process && !$open){
+			if(!isset($stylesInline[$idStyleNow])){
+				$stylesInline[$idStyleNow] = '';
+			}
+			
+			$stylesInline[$idStyleNow] .= $styleLine;
+		}
+	}
+	
+	// Create array containing abbreviations of days of week and mess names.
+	$daysOfWeek = array('Dom','Seg','Ter','Qua','Qui','Sex','Sab');
+	$messOfano = array('Nenhum','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro');
+
+	// What is the first day of the mes in question?
+	$firstDayOfmes = mktime(0,0,0,$mes,1,$ano);
+
+	// How many days does this mes contain?
+	$numberDays = date('t',$firstDayOfmes);
+
+	// Retrieve some information about the first day of the
+	// mes in question.
+	$dateComponents = getdate($firstDayOfmes);
+
+	// What is the name of the mes in question?
+	$mesName = $messOfano[$mes];
+
+	// What is the index value (0-6) of the first day of the
+	// mes in question.
+	$dayOfWeek = $dateComponents['wday'];
+
+	// Create the table tag opener and day headers
+
+	$calendar = "<table class='calendar' style='".$stylesInline['.calendar']."' cellspacing='5'>";
+	$calendar .= "<caption style='".$stylesInline['.calendar caption']."'>$mesName $ano</caption>";
+	$calendar .= "<tr>";
+
+	// Create the calendar headers
+
+	foreach($daysOfWeek as $day){
+		$calendar .= "<th class='header'>$day</th>";
+	} 
+
+	// Create the rest of the calendar
+
+	// Initiate the day counter, starting with the 1st.
+
+	$currentDay = 1;
+
+	$calendar .= "</tr><tr>";
+
+	// The variable $dayOfWeek is used to
+	// ensure that the calendar
+	// display consists of exactly 7 columns.
+
+	if($dayOfWeek > 0){ 
+		$calendar .= "<td colspan='$dayOfWeek'>&nbsp;</td>"; 
+	}
+
+	$mes = str_pad($mes, 2, "0", STR_PAD_LEFT);
+
+	while ($currentDay <= $numberDays) {
+
+		// Seventh column (Saturday) reached. Start a new row.
+
+		if ($dayOfWeek == 7) {
+			$dayOfWeek = 0;
+			$calendar .= "</tr><tr>";
+		}
+
+		$currentDayRel = str_pad($currentDay, 2, "0", STR_PAD_LEFT);
+
+		$date = "$ano-$mes-$currentDayRel";
+		
+		$cssDay = '.day';
+		
+		// Marcar dias com eventos
+		
+		if($diasComEventos)
+		foreach($diasComEventos as $day){
+			if($day == $currentDay){
+				$cssDay = '.event';
+				break;
+			}
+		}
+		
+		// Marcar dias sem eventos
+		
+		if($diasSemEventos)
+		foreach($diasSemEventos as $day){
+			if($day == $currentDay){
+				$cssDay = '.not-event';
+				break;
+			}
+		}
+		
+		$calendar .= "<td class='day' style='".$stylesInline[$cssDay]."' rel='$date'>$currentDay</td>";
+
+		// Increment counters
+
+		$currentDay++;
+		$dayOfWeek++;
+	}
+
+	// Complete the row of the last week in mes, if necessary
+
+	if ($dayOfWeek != 7) { 
+		$remainingDays = 7 - $dayOfWeek;
+		$calendar .= "<td colspan='$remainingDays'>&nbsp;</td>"; 
+	}
+
+	$calendar .= "</tr>";
+
+	$calendar .= "</table>";
+
+	return $calendar;
+
+}
+
 function plataforma_cliente_plugin_data_permitida($params = false){
 	global $_GESTOR;
 	
@@ -494,7 +670,7 @@ function plataforma_cliente_plugin_escalas(){
 					$datas = Array();
 				}
 				
-				// ===== Verificar qual fase da escala.
+				// ===== Verificar qual fase a escala se encontra.
 				
 				$faseAtual = '';
 				
@@ -514,6 +690,28 @@ function plataforma_cliente_plugin_escalas(){
 					$faseAtual = 'utilizacao';
 				}
 				
+				// ===== Pegar a quantidade de vagas totais do mês.
+				
+				switch($faseAtual){
+					case 'utilizacao':
+						$dateInicio = formato_dado_para('date',$data_inicial_mes);
+						$dateFim = formato_dado_para('date',$data_final_mes);
+						
+						$hosts_escalas_controle = banco_select(Array(
+							'tabela' => 'hosts_escalas_controle',
+							'campos' => Array(
+								'id_hosts_escalas_controle',
+								'data',
+								'total',
+							),
+							'extra' => 
+								"WHERE data >= '".$dateInicio."'"
+								." AND data <= '".$dateFim."'"
+								." AND id_hosts='".$id_hosts."'"
+						));
+					break;
+				}
+				
 				// ===== Criar ou pegar os dados da escala do mês / ano requisitados.
 				
 				$hosts_escalas = banco_select(Array(
@@ -521,6 +719,7 @@ function plataforma_cliente_plugin_escalas(){
 					'tabela' => 'hosts_escalas',
 					'campos' => Array(
 						'id_hosts_escalas',
+						'pubID',
 					),
 					'extra' => 
 						"WHERE id_hosts='".$id_hosts."'"
@@ -529,8 +728,11 @@ function plataforma_cliente_plugin_escalas(){
 						." AND ano='".$ano."'"
 				));
 				
+				$novaEscala = false;
+				
 				if($hosts_escalas){
 					$id_hosts_escalas = $hosts_escalas['id_hosts_escalas'];
+					$pubID = $hosts_escalas['pubID'];
 				} else {
 					// ===== Gerar o token de validação.
 					
@@ -562,6 +764,8 @@ function plataforma_cliente_plugin_escalas(){
 					);
 					
 					$id_hosts_escalas = banco_last_id();
+					
+					$novaEscala = true;
 				}
 				
 				// ===== Criar ou pegar as datas da escala do mês / ano.
@@ -578,22 +782,37 @@ function plataforma_cliente_plugin_escalas(){
 						." AND id_hosts='".$id_hosts."'"
 				));
 				
+				// ===== Pegar os dados para cálculo de total de vagas.
+				
+				$dias_semana = (existe($config['dias-semana']) ? explode(',',$config['dias-semana']) : Array());
+				$dias_semana_maximo_vagas_arr = (existe($config['dias-semana-maximo-vagas']) ? explode(',',$config['dias-semana-maximo-vagas']) : Array());
+				$datas_extras_dias_semana_maximo_vagas_arr = (existe($config['datas-extras-dias-semana-maximo-vagas']) ? explode(',',$config['datas-extras-dias-semana-maximo-vagas']) : Array());
+				if(existe($config['datas-extras-disponiveis'])) $datas_extras_disponiveis = (existe($config['datas-extras-disponiveis-valores']) ? explode('|',$config['datas-extras-disponiveis-valores']) : Array()); else $datas_extras_disponiveis = Array();
+				
 				// ===== Varrer todas as datas enviadas e atualizar no banco conforme necessidade.
 				
 				$datasProcessadasIDs = Array();
+				$datasSemVagas = Array();
+				$diasEscalados = Array();
+				$datasSemVagasFound = false;
+				$escalaAtualizada = false;
+				$escalaControleAtualizada = false;
 				
 				if(existe($datasStr)){
 					$datas = explode(',',$datasStr);
 					
 					for($i=0;$i<count($datas);$i++){
-						$data = formato_dado_para('date',$datas[$i]);
+						$dataFormatada = $datas[$i];
+						$dataTipoDate = formato_dado_para('date',$dataFormatada);
+						$dataTempo = strtotime(str_replace('/', '-', $dataFormatada));
+						$diaDaData = date('j',$dataTempo);
 						$dataFound = false;
 						$id_hosts_escalas_datas = '';
 						$status = '';
 						
 						if($hosts_escalas_datas)
 						foreach($hosts_escalas_datas as $hed){
-							if($data == $hed['data']){
+							if($dataTipoDate == $hed['data']){
 								$dataFound = true;
 								$id_hosts_escalas_datas = $hed['id_hosts_escalas_datas'];
 								$status = $hed['status'];
@@ -604,10 +823,11 @@ function plataforma_cliente_plugin_escalas(){
 						if(!$dataFound){
 							switch($faseAtual){
 								case 'inscricao':
-								case 'utilizacao':
+									// ===== Incluir o registro novo no banco de dados.
+									
 									banco_insert_name_campo('id_hosts',$id_hosts);
 									banco_insert_name_campo('id_hosts_escalas',$id_hosts_escalas);
-									banco_insert_name_campo('data',$data);
+									banco_insert_name_campo('data',$dataTipoDate);
 									banco_insert_name_campo('status','novo');
 									banco_insert_name_campo('selecionada','1',true);
 									
@@ -618,15 +838,104 @@ function plataforma_cliente_plugin_escalas(){
 									);
 									
 									$id_hosts_escalas_datas = banco_last_id();
+									
+									$diasEscalados[] = $diaDaData;
 								break;
 								case 'confirmacao':
 									continue;
+								break;
+								case 'utilizacao':
+									// ===== Definir o total de vagas.
+									
+									$data_extra_permitida = false;
+									$data_extra_posicao = 0;
+									$count_dias = 0;
+									
+									if($datas_extras_disponiveis){
+										foreach($datas_extras_disponiveis as $ded){
+											if($dataFormatada == $ded){
+												$data_extra_permitida = true;
+												break;
+											}
+											$data_extra_posicao++;
+										}
+									}
+									
+									if($data_extra_permitida){
+										$count_dias = $data_extra_posicao;
+									} else {
+										if($dias_semana)
+										foreach($dias_semana as $dia_semana){
+											if($dia_semana == strtolower(date('D',$dataTempo))){
+												break;
+											}
+											$count_dias++;
+										}
+									}
+									
+									if($data_extra_permitida){
+										if(count($datas_extras_dias_semana_maximo_vagas_arr) > 1){
+											$totalVagas = $datas_extras_dias_semana_maximo_vagas_arr[$count_dias];
+										} else {
+											$totalVagas = $datas_extras_dias_semana_maximo_vagas_arr[0];
+										}
+									} else {
+										if(count($dias_semana_maximo_vagas_arr) > 1){
+											$totalVagas = $dias_semana_maximo_vagas_arr[$count_dias];
+										} else {
+											$totalVagas = $dias_semana_maximo_vagas_arr[0];
+										}
+									}
+									
+									// ===== Verificar se há vagas disponíveis na fase de 'utilização'. Se sim, diminuir uma vaga no total na escala controle da data.
+									
+									$dataSemVagaFound = false;
+									
+									if($hosts_escalas_controle)
+									foreach($hosts_escalas_controle as $hec){
+										if($dataTipoDate == $hec['data']){
+											if((int)$hec['total'] + 1 <= $totalVagas){
+												banco_update_campo('total','total+1',true);
+												
+												banco_update_executar('hosts_escalas_controle',"WHERE id_hosts_escalas_controle='".$hec['id_hosts_escalas_controle']."' AND id_hosts='".$id_hosts."'");
+												$escalaControleAtualizada = true;
+											} else {
+												$datasSemVagasFound = true;
+												$dataSemVagaFound = true;
+											}
+											break;
+										}
+									}
+									
+									// ===== Caso não tenha vaga, não incluir no banco de dados e continuar o loop. Além disso, guarda a data para informar o usuário do problema.
+									
+									if($dataSemVagaFound){
+										$datasSemVagas[] = $dataFormatada;
+										continue;
+									}
+									
+									// ===== Senão incluir o registro com status 'vaga-residual' no banco de dados.
+									
+									banco_insert_name_campo('id_hosts',$id_hosts);
+									banco_insert_name_campo('id_hosts_escalas',$id_hosts_escalas);
+									banco_insert_name_campo('data',$dataTipoDate);
+									banco_insert_name_campo('status','vaga-residual');
+									banco_insert_name_campo('selecionada','1',true);
+									
+									banco_insert_name
+									(
+										banco_insert_name_campos(),
+										"hosts_escalas_datas"
+									);
+									
+									$id_hosts_escalas_datas = banco_last_id();
+									
+									$diasEscalados[] = $diaDaData;
 								break;
 							}
 						} else {
 							switch($faseAtual){
 								case 'inscricao':
-								case 'utilizacao':
 									banco_update_campo('selecionada','1',true);
 									
 									banco_update_executar(
@@ -635,6 +944,9 @@ function plataforma_cliente_plugin_escalas(){
 										." AND id_hosts='".$id_hosts."'"
 										." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
 									);
+									
+									$diasEscalados[] = $diaDaData;
+									$escalaAtualizada = true;
 								break;
 								case 'confirmacao':
 									if($status == 'qualificado'){
@@ -646,7 +958,95 @@ function plataforma_cliente_plugin_escalas(){
 											." AND id_hosts='".$id_hosts."'"
 											." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
 										);
+										
+										$diasEscalados[] = $diaDaData;
+										$escalaAtualizada = true;
 									}
+								break;
+								case 'utilizacao':
+									// ===== Definir o total de vagas.
+									
+									$data_extra_permitida = false;
+									$data_extra_posicao = 0;
+									$count_dias = 0;
+									
+									if($datas_extras_disponiveis){
+										foreach($datas_extras_disponiveis as $ded){
+											if($dataFormatada == $ded){
+												$data_extra_permitida = true;
+												break;
+											}
+											$data_extra_posicao++;
+										}
+									}
+									
+									if($data_extra_permitida){
+										$count_dias = $data_extra_posicao;
+									} else {
+										if($dias_semana)
+										foreach($dias_semana as $dia_semana){
+											if($dia_semana == strtolower(date('D',$dataTempo))){
+												break;
+											}
+											$count_dias++;
+										}
+									}
+									
+									if($data_extra_permitida){
+										if(count($datas_extras_dias_semana_maximo_vagas_arr) > 1){
+											$totalVagas = $datas_extras_dias_semana_maximo_vagas_arr[$count_dias];
+										} else {
+											$totalVagas = $datas_extras_dias_semana_maximo_vagas_arr[0];
+										}
+									} else {
+										if(count($dias_semana_maximo_vagas_arr) > 1){
+											$totalVagas = $dias_semana_maximo_vagas_arr[$count_dias];
+										} else {
+											$totalVagas = $dias_semana_maximo_vagas_arr[0];
+										}
+									}
+									
+									// ===== Verificar se há vagas disponíveis na fase de 'utilização'. Se sim, diminuir uma vaga no total na escala controle da data.
+									
+									$dataSemVagaFound = false;
+									
+									if($hosts_escalas_controle)
+									foreach($hosts_escalas_controle as $hec){
+										if($dataTipoDate == $hec['data']){
+											if((int)$hec['total'] + 1 <= $totalVagas){
+												banco_update_campo('total','total+1',true);
+												
+												banco_update_executar('hosts_escalas_controle',"WHERE id_hosts_escalas_controle='".$hec['id_hosts_escalas_controle']."' AND id_hosts='".$id_hosts."'");
+												$escalaControleAtualizada = true;
+											} else {
+												$datasSemVagasFound = true;
+												$dataSemVagaFound = true;
+											}
+											break;
+										}
+									}
+									
+									// ===== Caso não tenha vaga, não atualizar no banco de dados e continuar o loop. Além disso, guarda a data para informar o usuário do problema.
+									
+									if($dataSemVagaFound){
+										$datasSemVagas[] = $dataFormatada;
+										continue;
+									}
+									
+									// ===== Senão atualizar o registro com status 'vaga-residual' no banco de dados.
+									
+									banco_update_campo('selecionada','1',true);
+									banco_update_campo('status','vaga-residual');
+									
+									banco_update_executar(
+										'hosts_escalas_datas',
+										"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+										." AND id_hosts='".$id_hosts."'"
+										." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
+									);
+									
+									$diasEscalados[] = $diaDaData;
+									$escalaAtualizada = true;
 								break;
 							}
 							
@@ -671,25 +1071,22 @@ function plataforma_cliente_plugin_escalas(){
 				
 				if($hosts_escalas_datas){
 					foreach($hosts_escalas_datas as $hed){
-						$found = false;
-						$id_hosts_escalas_datas = '';
-						$status = '';
+						$foundDataProcessada = false;
+						$id_hosts_escalas_datas = $hed['id_hosts_escalas_datas'];
+						$status = $hed['status'];
 						
 						if($datasProcessadasIDs){
 							foreach($datasProcessadasIDs as $dpID){
 								if($hed['id_hosts_escalas_datas'] == $dpID){
-									$found = true;
-									$id_hosts_escalas_datas = $hed['id_hosts_escalas_datas'];
-									$status = $hed['status'];
+									$foundDataProcessada = true;
 									break;
 								}
 							}
 						}
 						
-						if($found){
+						if(!$foundDataProcessada){
 							switch($faseAtual){
 								case 'inscricao':
-								case 'utilizacao':
 									banco_update_campo('selecionada','NULL',true);
 									
 									banco_update_executar(
@@ -698,6 +1095,8 @@ function plataforma_cliente_plugin_escalas(){
 										." AND id_hosts='".$id_hosts."'"
 										." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
 									);
+									
+									$escalaAtualizada = true;
 								break;
 								case 'confirmacao':
 									if($status == 'qualificado'){
@@ -709,20 +1108,224 @@ function plataforma_cliente_plugin_escalas(){
 											." AND id_hosts='".$id_hosts."'"
 											." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
 										);
+										
+										$escalaAtualizada = true;
 									}
+								break;
+								case 'utilizacao':
+									banco_update_campo('selecionada','NULL',true);
+									
+									banco_update_executar(
+										'hosts_escalas_datas',
+										"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+										." AND id_hosts='".$id_hosts."'"
+										." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
+									);
+									
+									$escalaAtualizada = true;
 								break;
 							}
 						}
 					}
 				}
 				
+				// ===== Atualizar a data de modificação da tabela escala caso necessário.
+				
+				if($escalaAtualizada){
+					banco_update_campo('data_modificacao','NOW()',true);
+					
+					banco_update_executar(
+						'hosts_escalas',
+						"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+						." AND id_hosts='".$id_hosts."'"
+					);
+				}
+				
+				// ===== Montar o calendário das datas da escala.
+				
+				$calendario = plataforma_cliente_plugin_montar_calendario($mes,$ano,$diasEscalados);
+				
+				// ===== Caso seja um novo registro, enviar um email com a confirmação da criação da escala em cada fase diferente. Senão somente retornar uma mensagem de conclusão.
+				
+				$msgExtra = '';
+				
+				if($novaEscala){
+					switch($faseAtual){
+						case 'inscricao':
+						case 'utilizacao':
+							// ===== Pegar dados do usuário.
+							
+							$hosts_usuarios = banco_select(Array(
+								'unico' => true,
+								'tabela' => 'hosts_usuarios',
+								'campos' => Array(
+									'nome',
+									'email',
+								),
+								'extra' => 
+									"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+									." AND id_hosts='".$id_hosts."'"
+							));
+							
+							// ===== Formatar dados do email.
+							
+							$escalamentoAssunto = (existe($config['escalamento-assunto']) ? $config['escalamento-assunto'] : '');
+							$escalamentoMensagem = (existe($config['escalamento-mensagem']) ? $config['escalamento-mensagem'] : '');
+							$msgConclusaoEscalamento = (existe($config['msg-conclusao-escalamento']) ? $config['msg-conclusao-escalamento'] : '');
+							
+							$tituloEstabelecimento = (existe($config['titulo-estabelecimento']) ? $config['titulo-estabelecimento'] : '');
+							
+							$email = $hosts_usuarios['email'];
+							$nome = $hosts_usuarios['nome'];
+							
+							$codigo = date('dmY').formato_zero_a_esquerda($id_hosts_escalas,6);
+						break;
+					}
+					
+					// ===== Definição da mensagem extra de cada fase.
+					
+					switch($faseAtual){
+						case 'inscricao':
+							$msgExtra = (existe($config['msg-extra-conclusao-inscricao']) ? $config['msg-extra-conclusao-inscricao'] : '');
+						break;
+						case 'utilizacao':
+							$msgExtra = (existe($config['msg-extra-conclusao-utilizacao']) ? $config['msg-extra-conclusao-utilizacao'] : '');
+						break;
+					}
+					
+					// ===== Formatar mensagem do email.
+					
+					switch($faseAtual){
+						case 'inscricao':
+						case 'utilizacao':
+							gestor_incluir_biblioteca('host');
+							
+							$escalamentoAssunto = modelo_var_troca_tudo($escalamentoAssunto,"#codigo#",$codigo);
+							$escalamentoAssunto = modelo_var_troca_tudo($escalamentoAssunto,"#mes#",$mes);
+							
+							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#codigo#",$codigo);
+							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#mes#",$mes);
+							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#calendario#",$calendario);
+							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#data1#",$data_confirmacao_inicio);						
+							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#data2#",$data_confirmacao_fim);
+							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#extra#",$msgExtra);						
+							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#url-escalamento#",'<a target="escalamento" href="'.host_url(Array('opcao'=>'full')).'escalas/" style="overflow-wrap: break-word;">'.host_url(Array('opcao'=>'full')).'escalas/</a>');
+							
+							// ===== Enviar email com a notificação de criação da escala.
+							
+							gestor_incluir_biblioteca(Array('comunicacao','host'));
+							
+							if(comunicacao_email(Array(
+								'hostPersonalizacao' => true,
+								'destinatarios' => Array(
+									Array(
+										'email' => $email,
+										'nome' => $nome,
+									),
+								),
+								'mensagem' => Array(
+									'assunto' => $escalamentoAssunto,
+									'html' => $escalamentoMensagem,
+									'htmlAssinaturaAutomatica' => true,
+									'htmlVariaveis' => Array(
+										Array(
+											'variavel' => '[[url]]',
+											'valor' => host_url(Array('opcao'=>'full')),
+										),
+									),
+								),
+							))){
+								
+							}
+						break;
+						case 'utilizacao':
+							$msgConclusaoEscalamento = (existe($config['msg-conclusao-escalamento']) ? $config['msg-conclusao-escalamento'] : '');
+						break;
+					}
+				} else {
+					$msgConclusaoEscalamento = (existe($config['msg-conclusao-escalamento']) ? $config['msg-conclusao-escalamento'] : '');
+				}
+				
+				// ===== Colocar a mensagem extra na mensagem de retorno caso necessário. Senão remover o marcador extra da mensagem de retorno.
+				
+				if(existe($msgExtra)){
+					$msgConclusaoEscalamento = modelo_var_troca_tudo($msgConclusaoEscalamento,"#extra#",$msgExtra);
+				} else {
+					$cel_nome = 'extra'; $msgConclusaoEscalamento = modelo_tag_in($msgConclusaoEscalamento,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+				}
+				
+				// ===== Caso tenha sido alterada o 'hosts_escalas_controle', enviar os dados atualizados.
+				
+				if($escalaControleAtualizada){
+					$dateInicio = formato_dado_para('date',$data_inicial_mes);
+					$dateFim = formato_dado_para('date',$data_final_mes);
+					
+					$hosts_escalas_controle = banco_select(Array(
+						'tabela' => 'hosts_escalas_controle',
+						'campos' => '*',
+						'extra' => 
+							"WHERE data >= '".$dateInicio."'"
+							." AND data <= '".$dateFim."'"
+							." AND id_hosts='".$id_hosts."'"
+					));
+					
+					if($hosts_escalas_controle)
+					foreach($hosts_escalas_controle as $escala_controle){
+						unset($escala_controle['id_hosts']);
+						
+						$hosts_escalas_controle_proc[] = $escala_controle;
+					}
+				}
+				
+				// ===== Tratar dados de retorno.
+				
+				$hosts_escalas = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_escalas',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				unset($hosts_escalas['id_hosts']);
+				
+				$hosts_escalas_datas = banco_select(Array(
+					'tabela' => 'hosts_escalas_datas',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				$hosts_escalas_datas_proc = Array();
+				
+				if($hosts_escalas_datas)
+				foreach($hosts_escalas_datas as $hosts_escala_data){
+					unset($hosts_escala_data['id_hosts']);
+					
+					$hosts_escalas_datas_proc[] = $hosts_escala_data;
+				}
+				
+				$retornoDados = Array(
+					'escalas' => $hosts_escalas,
+					'escalas_datas' => $hosts_escalas_datas_proc,
+					'alerta' => $msgConclusaoEscalamento,
+				);
+				
+				if(isset($hosts_escalas_controle_proc)){
+					$retornoDados['escalas_controle'] = Array(
+						'tabela' => $hosts_escalas_controle_proc,
+						'dateInicio' => $dateInicio,
+						'dateFim' => $dateFim,
+					);
+				}
+				
 				// ===== Retornar dados.
 				
 				return Array(
 					'status' => 'OK',
-					'data' => Array(
-						//'dado' => $dado,
-					),
+					'data' => $retornoDados,
 				);
 			} else {
 				return Array(

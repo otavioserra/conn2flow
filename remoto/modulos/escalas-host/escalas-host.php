@@ -493,6 +493,200 @@ function escalas_padrao(){
 						$dados = $retorno['data'];
 					}
 					
+					// ===== Criar ou atualizar a escala localmente.
+					
+					if(isset($dados['escalas'])){
+						$escalas = $dados['escalas'];
+						
+						$id_hosts_escalas = $escalas['id_hosts_escalas'];
+						
+						$escalasLocal = banco_select(Array(
+							'unico' => true,
+							'tabela' => 'escalas',
+							'campos' => Array(
+								'id_hosts_escalas',
+							),
+							'extra' => 
+								"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+						));
+						
+						if($escalasLocal){
+							foreach($escalas as $key => $valor){
+								switch($key){
+									case 'ano':
+									case 'mes':
+									case 'versao':
+										banco_update_campo($key,($valor ? $valor : '0'),true);
+									break;
+									default:
+										banco_update_campo($key,$valor);
+								}
+							}
+							
+							banco_update_executar('escalas',"WHERE id_hosts_escalas='".$id_hosts_escalas."'");
+						} else {
+							foreach($escalas as $key => $valor){
+								switch($key){
+									case 'ano':
+									case 'mes':
+									case 'versao':
+										banco_insert_name_campo($key,($valor ? $valor : '0'),true);
+									break;
+									default:
+										banco_insert_name_campo($key,$valor);
+								}
+							}
+							
+							banco_insert_name
+							(
+								banco_insert_name_campos(),
+								"escalas"
+							);
+						}
+						
+						// ===== Criar ou atualizar as escalas datas localmente.
+						
+						if(isset($dados['escalas_datas'])){
+							$escalas_datas = $dados['escalas_datas'];
+							$escalasDatasProcessadas = Array();
+							
+							$escalasDatasLocal = banco_select(Array(
+								'tabela' => 'escalas_datas',
+								'campos' => Array(
+									'id_hosts_escalas_datas',
+								),
+								'extra' => 
+									"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+							));
+							
+							foreach($escalas_datas as $escala_data){
+								$id_hosts_escalas_datas = $escala_data['id_hosts_escalas_datas'];
+								$foundDataLocal = false;
+								
+								if($escalasDatasLocal){
+									foreach($escalasDatasLocal as $escalaDataLocal){
+										if($id_hosts_escalas_datas == $escalaDataLocal['id_hosts_escalas_datas']){
+											$foundDataLocal = true;
+											break;
+										}
+									}
+								}
+								
+								if($foundDataLocal){
+									foreach($escala_data as $key => $valor){
+										switch($key){
+											default:
+												banco_update_campo($key,$valor);
+										}
+									}
+									
+									banco_update_executar('escalas_datas',"WHERE id_hosts_escalas_datas='".$id_hosts_escalas_datas."'");
+								} else {
+									foreach($escala_data as $key => $valor){
+										switch($key){
+											default:
+												banco_insert_name_campo($key,$valor);
+										}
+									}
+									
+									banco_insert_name
+									(
+										banco_insert_name_campos(),
+										"escalas_datas"
+									);
+								}
+								
+								$escalasDatasProcessadas[] = $id_hosts_escalas_datas;
+							}
+							
+							// ===== Deleter as escalas datas não encontradas, ou seja, que foram excluídas na operação.
+							
+							if($escalasDatasLocal){
+								foreach($escalasDatasLocal as $escalaDataLocal){
+									$foundDataLocal = false;
+									
+									if($escalasDatasProcessadas)
+									foreach($escalasDatasProcessadas as $escalaDataProcessada){
+										if($escalaDataProcessada == $escalaDataLocal['id_hosts_escalas_datas']){
+											$foundDataLocal = true;
+											break;
+										}
+									}
+									
+									if(!$foundDataLocal){
+										banco_delete
+										(
+											"escalas_datas",
+											"WHERE id_hosts_escalas_datas='".$escalaDataLocal['id_hosts_escalas_datas']."'"
+										);
+									}
+								}
+							}
+						}
+					}
+					
+					// ===== Atualizar 'escalas_controle' caso necessário.
+					
+					if(isset($dados['escalas_controle'])){
+						$escalas_controle = $dados['escalas_controle']['tabela'];
+						$dateInicio = $dados['escalas_controle']['dateInicio'];
+						$dateFim = $dados['escalas_controle']['dateFim'];
+						
+						$escalasControleLocal = banco_select(Array(
+							'tabela' => 'escalas_controle',
+							'campos' => Array(
+								'id_hosts_escalas_controle',
+							),
+							'extra' => 
+								"WHERE data >= '".$dateInicio."'"
+								." AND data <= '".$dateFim."'"
+						));
+						
+						foreach($escalas_controle as $escala_controle){
+							$id_hosts_escalas_controle = $escala_controle['id_hosts_escalas_controle'];
+							$foundEscalaControleLocal = false;
+							
+							if($escalasControleLocal){
+								foreach($escalasControleLocal as $escalaControleLocal){
+									if($id_hosts_escalas_controle == $escalaControleLocal['id_hosts_escalas_controle']){
+										$foundEscalaControleLocal = true;
+										break;
+									}
+								}
+							}
+							
+							if($foundEscalaControleLocal){
+								foreach($escala_controle as $key => $valor){
+									switch($key){
+										case 'total':
+											banco_update_campo($key,($valor ? $valor : '0'),true);
+										break;
+										default:
+											banco_update_campo($key,$valor);
+									}
+								}
+								
+								banco_update_executar('escalas_controle',"WHERE id_hosts_escalas_controle='".$id_hosts_escalas_controle."'");
+							} else {
+								foreach($escala_controle as $key => $valor){
+									switch($key){
+										case 'total':
+											banco_insert_name_campo($key,($valor ? $valor : '0'),true);
+										break;
+										default:
+											banco_insert_name_campo($key,$valor);
+									}
+								}
+								
+								banco_insert_name
+								(
+									banco_insert_name_campos(),
+									"escalas_controle"
+								);
+							}
+						}
+					}
+					
 					// ===== Alertar o usuário.
 					
 					interface_alerta(Array(
