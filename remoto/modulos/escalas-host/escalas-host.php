@@ -823,7 +823,36 @@ function escalas_padrao(){
 		
 		// ===== Pegar as datas selecionadas anteriormente pelo usuário.
 		
-		$datasSelecionadas = '04/08/2022,11/08/2022,16/08/2022,18/08/2022';
+		$datasSelecionadas = '';
+		
+		$escalas = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'escalas',
+			'campos' => Array(
+				'id_hosts_escalas',
+			),
+			'extra' => 
+				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+				." AND mes='".$mes."'"
+				." AND ano='".$ano."'"
+		));
+		
+		if($escalas){
+			$escalas_datas = banco_select(Array(
+				'tabela' => 'escalas_datas',
+				'campos' => Array(
+					'data',
+				),
+				'extra' => 
+					"WHERE id_hosts_escalas='".$escalas['id_hosts_escalas']."'"
+					." AND selecionada IS NOT NULL"
+			));
+			
+			if($escalas_datas)
+			foreach($escalas_datas as $escala_data){
+				$datasSelecionadas .= (existe($datasSelecionadas) ? ',' : '') . formato_dado_para('data',$escala_data['data']);
+			}
+		}
 		
 		// ===== Colocar as datas selecionadas caso houver, mês e ano atual.
 		
