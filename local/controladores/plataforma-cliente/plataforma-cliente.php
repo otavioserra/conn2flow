@@ -652,7 +652,7 @@ function plataforma_cliente_plugin_escalas(){
 							'inscricaoInicio' => $data_inscricao_inicio,
 						))){
 							$algumaDataNaoPermitida = true;
-							$datasNaoPermitidas .= (existe($datasNaoPermitidas) ? ', ':'') . $datasNaoPermitidas;
+							$datasNaoPermitidas .= (existe($datasNaoPermitidas) ? ', ':'') . $data;
 						}
 					}
 					
