@@ -343,8 +343,6 @@ function plataforma_cliente_plugin_data_permitida($params = false){
 					$flag3 = true;
 				}
 				
-				echo $data.' == '.date('d/m/Y', $dia) . ' - ' . ' Flag3: ' . ($flag3 ? 'SIM':'NAO') . '<br>';
-				
 				// ===== Data permitida.
 				
 				if(!$flag3){
@@ -756,8 +754,8 @@ function plataforma_cliente_plugin_escalas(){
 					banco_insert_name_campo('status','novo');
 					banco_insert_name_campo('pubID',$pubID);
 					banco_insert_name_campo('versao','1');
-					banco_insert_name_campo('data_criacao','NOW()');
-					banco_insert_name_campo('data_modificacao','NOW()');
+					banco_insert_name_campo('data_criacao','NOW()',true);
+					banco_insert_name_campo('data_modificacao','NOW()',true);
 					
 					banco_insert_name
 					(
