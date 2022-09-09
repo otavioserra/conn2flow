@@ -549,6 +549,10 @@ function plataforma_cliente_plugin_escalas(){
 			// ===== Verificar se os campos obrigatórios foram enviados: usuarioID, mes e ano.
 			
 			if(isset($dados['usuarioID']) && isset($dados['mes']) && isset($dados['ano'])){
+				// ===== Incluir bibliotecas padrões.
+				
+				gestor_incluir_biblioteca('formato');
+				
 				// ===== Pegar os dados de configuração.
 				
 				gestor_incluir_biblioteca('configuracao');
@@ -890,10 +894,13 @@ function plataforma_cliente_plugin_escalas(){
 									// ===== Verificar se há vagas disponíveis na fase de 'utilização'. Se sim, diminuir uma vaga no total na escala controle da data.
 									
 									$dataSemVagaFound = false;
+									$dataEscalaControleEncontrada = false;
 									
 									if($hosts_escalas_controle)
 									foreach($hosts_escalas_controle as $hec){
 										if($dataTipoDate == $hec['data']){
+											$dataEscalaControleEncontrada = true;
+											
 											if((int)$hec['total'] + 1 <= $totalVagas){
 												banco_update_campo('total','total+1',true);
 												
@@ -904,6 +911,21 @@ function plataforma_cliente_plugin_escalas(){
 												$dataSemVagaFound = true;
 											}
 											break;
+										}
+									}
+									
+									if(!$dataEscalaControleEncontrada){
+										if(1 <= $totalVagas){
+											banco_insert_name_campo('id_hosts',$id_hosts);
+											banco_insert_name_campo('data',$dataTipoDate);
+											banco_insert_name_campo('total','1',true);
+											banco_insert_name_campo('status','utilizacao');
+											
+											banco_insert_name
+											(
+												banco_insert_name_campos(),
+												"hosts_escalas_controle"
+											);
 										}
 									}
 									
@@ -1009,10 +1031,13 @@ function plataforma_cliente_plugin_escalas(){
 									// ===== Verificar se há vagas disponíveis na fase de 'utilização'. Se sim, diminuir uma vaga no total na escala controle da data.
 									
 									$dataSemVagaFound = false;
+									$dataEscalaControleEncontrada = false;
 									
 									if($hosts_escalas_controle)
 									foreach($hosts_escalas_controle as $hec){
 										if($dataTipoDate == $hec['data']){
+											$dataEscalaControleEncontrada = true;
+											
 											if((int)$hec['total'] + 1 <= $totalVagas){
 												banco_update_campo('total','total+1',true);
 												
@@ -1023,6 +1048,21 @@ function plataforma_cliente_plugin_escalas(){
 												$dataSemVagaFound = true;
 											}
 											break;
+										}
+									}
+									
+									if(!$dataEscalaControleEncontrada){
+										if(1 <= $totalVagas){
+											banco_insert_name_campo('id_hosts',$id_hosts);
+											banco_insert_name_campo('data',$dataTipoDate);
+											banco_insert_name_campo('total','1',true);
+											banco_insert_name_campo('status','utilizacao');
+											
+											banco_insert_name
+											(
+												banco_insert_name_campos(),
+												"hosts_escalas_controle"
+											);
 										}
 									}
 									
@@ -1200,11 +1240,14 @@ function plataforma_cliente_plugin_escalas(){
 						case 'utilizacao':
 							gestor_incluir_biblioteca('host');
 							
+							$mesEAno = formato_zero_a_esquerda($mes,2) . '/' . $ano;
+							
 							$escalamentoAssunto = modelo_var_troca_tudo($escalamentoAssunto,"#codigo#",$codigo);
-							$escalamentoAssunto = modelo_var_troca_tudo($escalamentoAssunto,"#mes#",$mes);
+							$escalamentoAssunto = modelo_var_troca_tudo($escalamentoAssunto,"#mes#",$mesEAno);
 							
 							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#codigo#",$codigo);
-							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#mes#",$mes);
+							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#titulo#",$tituloEstabelecimento);
+							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#mes#",$mesEAno);
 							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#calendario#",$calendario);
 							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#data1#",$data_confirmacao_inicio);						
 							$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#data2#",$data_confirmacao_fim);
