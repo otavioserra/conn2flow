@@ -343,7 +343,7 @@ function plataforma_cliente_plugin_data_permitida($params = false){
 					$flag3 = true;
 				}
 				
-				echo $data . ' - ' . ' Flag3: ' . ($flag3 ? 'SIM':'NAO') . '<br>';
+				echo $data.' == '.date('d/m/Y', $dia) . ' - ' . ' Flag3: ' . ($flag3 ? 'SIM':'NAO') . '<br>';
 				
 				// ===== Data permitida.
 				
