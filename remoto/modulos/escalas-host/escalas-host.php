@@ -382,6 +382,12 @@ function escalas_calendario($params = false){
 					$flag3 = true;
 				}
 				
+				// ===== Não permitir selecionar datas de não qualificados na confirmação.
+				
+				if($naoQualificado){
+					$flag3 = true;
+				}
+				
 				// ===== Data permitida.
 				
 				if(!$flag3){
@@ -797,45 +803,17 @@ function escalas_padrao(){
 			)
 		));
 		
-		// ===== Definir o início da inscrição.
-		
-		$mesInicioInscricaoAux = $mes - (int)$mesInicioInscricao;
-		$diaInicioInscricaoAux = $diaInicioInscricao;
-		$anoInicioInscricaoAux = $ano;
-		
-		if($mesInicioInscricaoAux < 1){
-			$mesInicioInscricaoAux = 12;
-			$anoInicioInscricaoAux--; 
-		}
-		
-		if($mesInicioInscricaoAux < 10){
-			$mesInicioInscricaoAux = '0' . $mesInicioInscricaoAux;
-		}
-		
-		if($diaInicioInscricaoAux < 10){
-			$diaInicioInscricaoAux = '0' . $diaInicioInscricaoAux;
-		}
-		
-		$data_inscricao_inicio = $diaInicioInscricaoAux . '/' . $mesInicioInscricaoAux . '/' . $anoInicioInscricaoAux;
-		
-		// ===== Montagem do calendário.
-		
-		escalas_calendario(Array(
-			'mes' => $mes,
-			'ano' => $ano,
-			'hoje' => $hoje,
-			'inscricaoInicio' => $data_inscricao_inicio,
-		));
-		
 		// ===== Pegar as datas selecionadas anteriormente pelo usuário.
 		
 		$datasSelecionadas = '';
+		$status = '';
 		
 		$escalas = banco_select(Array(
 			'unico' => true,
 			'tabela' => 'escalas',
 			'campos' => Array(
 				'id_hosts_escalas',
+				'status',
 			),
 			'extra' => 
 				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
@@ -844,6 +822,8 @@ function escalas_padrao(){
 		));
 		
 		if($escalas){
+			$status = $escalas['status'];
+			
 			$escalas_datas = banco_select(Array(
 				'tabela' => 'escalas_datas',
 				'campos' => Array(
@@ -871,6 +851,27 @@ function escalas_padrao(){
 		pagina_trocar_variavel_valor('mes-atual',$mesAtual);
 		pagina_trocar_variavel_valor('ano-atual',$anoAtual);
 		
+		// ===== Definir o início da inscrição.
+		
+		$mesInicioInscricaoAux = $mes - (int)$mesInicioInscricao;
+		$diaInicioInscricaoAux = $diaInicioInscricao;
+		$anoInicioInscricaoAux = $ano;
+		
+		if($mesInicioInscricaoAux < 1){
+			$mesInicioInscricaoAux = 12;
+			$anoInicioInscricaoAux--; 
+		}
+		
+		if($mesInicioInscricaoAux < 10){
+			$mesInicioInscricaoAux = '0' . $mesInicioInscricaoAux;
+		}
+		
+		if($diaInicioInscricaoAux < 10){
+			$diaInicioInscricaoAux = '0' . $diaInicioInscricaoAux;
+		}
+		
+		$data_inscricao_inicio = $diaInicioInscricaoAux . '/' . $mesInicioInscricaoAux . '/' . $anoInicioInscricaoAux;
+		
 		// ===== Definir a data do início e fim da confirmação.
 		
 		$data_confirmacao_inicio = escalas_data_dias_antes($mes,$ano,$diasInicioConfirmacao,'01/'. $mesAtualFormatado . '/' . $anoAtual);
@@ -893,6 +894,46 @@ function escalas_padrao(){
 		
 		$prmeiroDiaMes = date($anoInicio.'-'.$mesInicio.'-01');
 		$data_final_mes = date('t',strtotime($prmeiroDiaMes)) . '/' . $mesInicio . '/' . $anoInicio;
+		
+		// ===== Verificar qual fase a escala se encontra.
+		
+		$faseAtual = '';
+		
+		if(
+			$hoje >= strtotime(str_replace('/', '-', $data_inscricao_inicio)) && 
+			$hoje < strtotime(str_replace('/', '-', $data_confirmacao_inicio)) - 1
+		){
+			$faseAtual = 'inscricao';
+		} else if(
+			$hoje >= strtotime(str_replace('/', '-', $data_confirmacao_inicio)) && 
+			$hoje < strtotime(str_replace('/', '-', $data_inicial_mes)) - 1
+		){
+			$faseAtual = 'confirmacao';
+		} else if(
+			$hoje >= strtotime(str_replace('/', '-', $data_inicial_mes))
+		){
+			$faseAtual = 'utilizacao';
+		}
+		
+		// ===== Verificar se a escala está em fase de confirmação. Se sim, somente permitir modificações em escala com estado 'qualificado'.
+		
+		switch($faseAtual){
+			case 'utilizacao':
+				if($status != 'qualificado'){
+					$naoQualificado = true;
+				}
+			break;
+		}
+		
+		// ===== Montagem do calendário.
+		
+		escalas_calendario(Array(
+			'mes' => $mes,
+			'ano' => $ano,
+			'hoje' => $hoje,
+			'inscricaoInicio' => $data_inscricao_inicio,
+			'naoQualificado' => (isset($naoQualificado) ? true : false),
+		));
 		
 		// ===== Definir as datas dos períodos de atualizações.
 		
