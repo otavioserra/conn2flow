@@ -895,60 +895,6 @@ function escalas_padrao(){
 		$prmeiroDiaMes = date($anoInicio.'-'.$mesInicio.'-01');
 		$data_final_mes = date('t',strtotime($prmeiroDiaMes)) . '/' . $mesInicio . '/' . $anoInicio;
 		
-		// ===== Verificar qual fase a escala se encontra.
-		
-		$faseAtual = '';
-		
-		if(
-			$hoje >= strtotime(str_replace('/', '-', $data_inscricao_inicio)) && 
-			$hoje < strtotime(str_replace('/', '-', $data_confirmacao_inicio)) - 1
-		){
-			$faseAtual = 'inscricao';
-		} else if(
-			$hoje >= strtotime(str_replace('/', '-', $data_confirmacao_inicio)) && 
-			$hoje < strtotime(str_replace('/', '-', $data_inicial_mes)) - 1
-		){
-			$faseAtual = 'confirmacao';
-		} else if(
-			$hoje >= strtotime(str_replace('/', '-', $data_inicial_mes))
-		){
-			$faseAtual = 'utilizacao';
-		}
-		
-		// ===== Verificar se a escala está em fase de confirmação. Se sim, somente permitir modificações em escala com estado 'qualificado'.
-		
-		switch($faseAtual){
-			case 'utilizacao':
-				if($status != 'qualificado'){
-					$naoQualificado = true;
-				}
-			break;
-		}
-		
-		// ===== Montagem do calendário.
-		
-		escalas_calendario(Array(
-			'mes' => $mes,
-			'ano' => $ano,
-			'hoje' => $hoje,
-			'inscricaoInicio' => $data_inscricao_inicio,
-			'naoQualificado' => (isset($naoQualificado) ? true : false),
-		));
-		
-		// ===== Definir as datas dos períodos de atualizações.
-		
-		pagina_trocar_variavel_valor('data-inscricao-inicio',$data_inscricao_inicio);
-		pagina_trocar_variavel_valor('data-inscricao-fim',$data_inscricao_fim);
-		
-		pagina_trocar_variavel_valor('data-confirmacao-inicio',$data_confirmacao_inicio);
-		pagina_trocar_variavel_valor('data-confirmacao-fim',$data_confirmacao_fim);
-		
-		pagina_trocar_variavel_valor('data-inicial-mes',$data_inicial_mes);
-		
-		// ===== Mostrar o periodoLimiteAlteracao.
-		
-		pagina_trocar_variavel_valor('periodo-limite-alteracao',$periodoLimiteAlteracao);
-		
 		// ===== Passar todas as datas para o formato 'time'.
 		
 		$tempo['inscricao-inicio'] = strtotime(str_replace('/', '-', $data_inscricao_inicio));
@@ -987,6 +933,40 @@ function escalas_padrao(){
 			$faseAtual = 'utilizacao';
 		}
 		
+		// ===== Verificar se a escala está em fase de confirmação. Se sim, somente permitir modificações em escala com estado 'qualificado'.
+		
+		switch($faseAtual){
+			case 'utilizacao':
+				if($status != 'qualificado'){
+					$naoQualificado = true;
+				}
+			break;
+		}
+		
+		// ===== Montagem do calendário.
+		
+		escalas_calendario(Array(
+			'mes' => $mes,
+			'ano' => $ano,
+			'hoje' => $hoje,
+			'inscricaoInicio' => $data_inscricao_inicio,
+			'naoQualificado' => (isset($naoQualificado) ? true : false),
+		));
+		
+		// ===== Definir as datas dos períodos de atualizações.
+		
+		pagina_trocar_variavel_valor('data-inscricao-inicio',$data_inscricao_inicio);
+		pagina_trocar_variavel_valor('data-inscricao-fim',$data_inscricao_fim);
+		
+		pagina_trocar_variavel_valor('data-confirmacao-inicio',$data_confirmacao_inicio);
+		pagina_trocar_variavel_valor('data-confirmacao-fim',$data_confirmacao_fim);
+		
+		pagina_trocar_variavel_valor('data-inicial-mes',$data_inicial_mes);
+		
+		// ===== Mostrar o periodoLimiteAlteracao.
+		
+		pagina_trocar_variavel_valor('periodo-limite-alteracao',$periodoLimiteAlteracao);
+		
 		// ===== Definir a interface gráfica de cada fase.
 		
 		switch($faseAtual){
@@ -1012,6 +992,10 @@ function escalas_padrao(){
 				
 				$cel_nome = 'concluido'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'indisponivel'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				
+				if($status != 'qualificado'){
+					$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				}
 			break;
 			case 'utilizacao':
 				pagina_trocar_variavel_valor('inscricao-step','completed',true);
