@@ -582,8 +582,8 @@ function plataforma_cliente_plugin_escalas(){
 				
 				// ===== Definição do tempo do dia de agora.
 				
-				//$hoje = strtotime('21-07-2022');
-				$hoje = time();
+				$hoje = strtotime('21-09-2022');
+				//$hoje = time();
 				
 				// ===== Passar o mês e o ano para inteiro.
 				

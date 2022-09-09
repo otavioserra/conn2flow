@@ -711,8 +711,8 @@ function escalas_padrao(){
 		
 		// ===== Definição do mês e ano do calendário.
 		
-		//$hoje = strtotime('21-07-2022');
-		$hoje = time();
+		$hoje = strtotime('21-09-2022');
+		//$hoje = time();
 		
 		$mes = (isset($_REQUEST['mes']) ? $_REQUEST['mes'] : date('m') );
 		$ano = (isset($_REQUEST['ano']) ? $_REQUEST['ano'] : date('Y') );
