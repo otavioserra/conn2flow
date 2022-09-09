@@ -576,7 +576,7 @@ function escalas_padrao(){
 									foreach($escala_data as $key => $valor){
 										switch($key){
 											case 'selecionada':
-												banco_update_campo($key,($valor ? $valor : '0'),true);
+												banco_update_campo($key,($valor ? $valor : 'NULL'),true);
 											break;
 											default:
 												banco_update_campo($key,$valor);
@@ -588,7 +588,7 @@ function escalas_padrao(){
 									foreach($escala_data as $key => $valor){
 										switch($key){
 											case 'selecionada':
-												banco_insert_name_campo($key,($valor ? $valor : '0'),true);
+												banco_insert_name_campo($key,($valor ? $valor : 'NULL'),true);
 											break;
 											default:
 												banco_insert_name_campo($key,$valor);
