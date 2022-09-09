@@ -1229,6 +1229,9 @@ function plataforma_cliente_plugin_escalas(){
 					switch($faseAtual){
 						case 'inscricao':
 							$msgExtra = (existe($config['msg-extra-conclusao-inscricao']) ? $config['msg-extra-conclusao-inscricao'] : '');
+							
+							$msgExtra = modelo_var_troca_tudo($msgExtra,"#data1#",$data_confirmacao_inicio);						
+							$msgExtra = modelo_var_troca_tudo($msgExtra,"#data2#",$data_confirmacao_fim);
 						break;
 						case 'utilizacao':
 							$msgExtra = (existe($config['msg-extra-conclusao-utilizacao']) ? $config['msg-extra-conclusao-utilizacao'] : '');
