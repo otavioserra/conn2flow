@@ -926,6 +926,7 @@ function plataforma_cliente_plugin_escalas(){
 												banco_insert_name_campos(),
 												"hosts_escalas_controle"
 											);
+											$escalaControleAtualizada = true;
 										}
 									}
 									
@@ -1063,6 +1064,7 @@ function plataforma_cliente_plugin_escalas(){
 												banco_insert_name_campos(),
 												"hosts_escalas_controle"
 											);
+											$escalaControleAtualizada = true;
 										}
 									}
 									
