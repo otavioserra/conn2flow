@@ -995,6 +995,7 @@ function escalas_padrao(){
 				
 				if($status != 'qualificado'){
 					$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+					$cel_nome = 'salvar-botao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				}
 			break;
 			case 'utilizacao':
