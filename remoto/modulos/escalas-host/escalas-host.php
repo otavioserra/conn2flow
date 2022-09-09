@@ -936,7 +936,7 @@ function escalas_padrao(){
 		// ===== Verificar se a escala está em fase de confirmação. Se sim, somente permitir modificações em escala com estado 'qualificado'.
 		
 		switch($faseAtual){
-			case 'utilizacao':
+			case 'confirmacao':
 				if($status != 'qualificado'){
 					$naoQualificado = true;
 				}
