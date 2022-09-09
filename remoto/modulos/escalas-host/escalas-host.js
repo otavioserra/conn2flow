@@ -11,7 +11,7 @@ $(document).ready(function(){
 		;
 		
 		$('.datepicker').datepicker({
-			format: "dd/mm/yy",
+			format: "dd/mm/yyyy",
 			language: "pt-BR",
 			maxViewMode: 0,
 			datesDisabled: gestor.escalas.datasDesabilitadas,
