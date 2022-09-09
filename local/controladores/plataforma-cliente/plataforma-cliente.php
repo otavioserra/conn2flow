@@ -343,6 +343,8 @@ function plataforma_cliente_plugin_data_permitida($params = false){
 					$flag3 = true;
 				}
 				
+				echo $data . ' - ' . ' Flag3: ' . ($flag3 ? 'SIM':'NAO') . '<br>';
+				
 				// ===== Data permitida.
 				
 				if(!$flag3){
