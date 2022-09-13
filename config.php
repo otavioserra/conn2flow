@@ -10,6 +10,7 @@ $configuracao = Array(
 	'id' => 'escalas',
 	'versao_num' => 1,
 	'versao' => '1.0.0',
+	'cronAtivo' => true,
 	'moduloConfig' => 'configuracoes-escalas',
 	'menusPadroes' => Array(
 		'menuMinhaConta' => Array(

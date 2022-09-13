@@ -1175,6 +1175,7 @@ function plataforma_cliente_plugin_escalas(){
 				
 				if($escalaAtualizada){
 					banco_update_campo('data_modificacao','NOW()',true);
+					banco_update_campo('versao','versao=versao+1',true);
 					
 					banco_update_executar(
 						'hosts_escalas',
