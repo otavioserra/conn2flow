@@ -385,7 +385,7 @@ function cron_escalas_sorteio(){
 						." AND status='novo'"
 				));
 				
-				// ===== Verificar os escalas datas no banco de dados do mês / ano desejado.
+				// ===== Verificar as escalas datas no banco de dados do mês / ano desejado.
 				
 				$hosts_escalas_datas = banco_select(Array(
 					'tabela' => 'hosts_escalas_datas',
@@ -401,7 +401,7 @@ function cron_escalas_sorteio(){
 						." AND selecionada IS NOT NULL"
 				));
 				
-				// ===== Definir o status atual do processo de sorteio caso exista agendamento 'novo' não processado.
+				// ===== Definir o status atual do processo de sorteio caso exista escalamento 'novo' não processado.
 				
 				if($hosts_escalas){
 					foreach($hosts_escalas as $hosts_escala){
@@ -426,8 +426,6 @@ function cron_escalas_sorteio(){
 										'id_hosts_escalas_datas' => $hosts_escala_data['id_hosts_escalas_datas'],
 									);
 								}
-								
-								break;
 							}
 						}
 					}
@@ -482,7 +480,7 @@ function cron_escalas_sorteio(){
 				$totalescalas = $escalaDados['total'];
 				$dataFormatada = formato_dado_para('data',$data);
 				
-				// ===== Definir o total de vagas de escala para a data.
+				// ===== Definir o total de vagas de escala para a data atual.
 				
 				$data_extra_permitida = false;
 				$data_extra_posicao = 0;
@@ -542,9 +540,11 @@ function cron_escalas_sorteio(){
 							'id_hosts_usuarios' => $escala['id_hosts_usuarios'],
 						);
 						
+						$id_hosts_usuarios = $escala['id_hosts_usuarios'];
+						
 						// ===== Pegar o peso do usuário.
 						
-						if(!isset($hosts_escalas_pesos[$escala['id_hosts_usuarios']])){
+						if(!isset($hosts_escalas_pesos[$id_hosts_usuarios])){
 							$hosts_escalas_pesos_banco = banco_select(Array(
 								'unico' => true,
 								'tabela' => 'hosts_escalas_pesos',
@@ -552,17 +552,17 @@ function cron_escalas_sorteio(){
 									'peso',
 								),
 								'extra' => 
-									"WHERE id_hosts_usuarios='".$escala['id_hosts_usuarios']."'"
+									"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
 									." AND id_hosts='".$id_hosts."'"
 							));
 							
 							if($hosts_escalas_pesos_banco){
-								$hosts_escalas_pesos[$escala['id_hosts_usuarios']] = Array(
+								$hosts_escalas_pesos[$id_hosts_usuarios] = Array(
 									'peso' => (int)$hosts_escalas_pesos_banco['peso'],
 									'banco' => true,
 								);
 							} else {
-								$hosts_escalas_pesos[$escala['id_hosts_usuarios']] = Array(
+								$hosts_escalas_pesos[$id_hosts_usuarios] = Array(
 									'peso' => 0,
 								);
 							}
@@ -570,7 +570,7 @@ function cron_escalas_sorteio(){
 						
 						// ===== Montar a quantidade de bilhetes que um usuário tem baseado no seu peso.
 						
-						$peso = $hosts_escalas_pesos[$escala['id_hosts_usuarios']]['peso'];
+						$peso = $hosts_escalas_pesos[$id_hosts_usuarios]['peso'];
 						if($peso > 0){
 							for($i=0;$i<$peso+1;$i++){
 								$bilhetes[] = $bilhete;
@@ -592,6 +592,10 @@ function cron_escalas_sorteio(){
 						
 						$id_hosts_escalas = $bilhetes_aux[$indice]['id_hosts_escalas'];
 						$sorteados[] = $bilhetes_aux[$indice];
+						
+						// ===== Marcar o usuário como sorteado em pelo menos uma data.
+						
+						$sorteadosEmPeloMenosUmaData[$id_hosts_escalas] = true;
 						
 						$vagas_sorteadas += 1;
 						
@@ -618,17 +622,13 @@ function cron_escalas_sorteio(){
 						banco_update_executar('hosts_escalas_datas',"WHERE id_hosts_escalas_datas='".$sorteado['id_hosts_escalas_datas']."'");
 					}
 					
-					// ===== escalas NÃO sorteados atualizar pesos.
+					// ===== Escalas NÃO sorteadas atualizar pesos.
 					
 					if(count($sorteados) > 0){
-						if($bilhetes)
+						if(count($bilhetes) > 0)
 						foreach($bilhetes as $bilhete){
 							$id_hosts_usuarios = $bilhete['id_hosts_usuarios'];
 							$id_hosts_escalas = $bilhete['id_hosts_escalas'];
-							
-							// ===== Marcar o usuário como sorteado em pelo menos uma data.
-							
-							$sorteadosEmPeloMenosUmaData[$id_hosts_escalas] = true;
 							
 							// ===== Verificar se a escala foi sorteada ou não.
 							
@@ -640,7 +640,7 @@ function cron_escalas_sorteio(){
 								}
 							}
 						
-							// ===== Aumentar o peso dos usuários não sorteados afim de aumentar em 100% de chance a próxima vez que passará por um sorteio. Para os sorteados, zerar o peso para ter uma única chance no próximo sorteio.
+							// ===== Aumentar o peso dos usuários não sorteados em cada data afim de aumentar em 100% de chance a próxima vez que passará por um sorteio. Para os sorteados, diminuir o peso para ter menos chance no próximo sorteio.
 							
 							if(!isset($hosts_escalas_pesos[$id_hosts_usuarios])){
 								$hosts_escalas_pesos[$id_hosts_usuarios]['peso'] = 0;
@@ -676,18 +676,18 @@ function cron_escalas_sorteio(){
 				}
 			}
 			
-			// ===== Atualizar ou criar novo registro no banco de dados com o peso atualizado de cada usuário.
+			// ===== Atualizar ou criar novo registro no banco de dados com os pesos atualizados de cada usuário.
 			
 			if($hosts_escalas_pesos)
 			foreach($hosts_escalas_pesos as $id_hosts_usuarios => $escala_peso){
 				if(isset($escala_peso['banco'])){
-					banco_update_campo('peso',$escala_peso['banco']['peso']);
+					banco_update_campo('peso',$escala_peso['peso'],true);
 					
 					banco_update_executar('hosts_escalas_pesos',"WHERE id_hosts_usuarios='".$id_hosts_usuarios."' AND id_hosts='".$id_hosts."'");
 				} else {
 					banco_insert_name_campo('id_hosts',$id_hosts);
 					banco_insert_name_campo('id_hosts_usuarios',$id_hosts_usuarios);
-					banco_insert_name_campo('peso',$escala_peso['banco']['peso']);
+					banco_insert_name_campo('peso',$escala_peso['peso'],true);
 					
 					banco_insert_name
 					(
@@ -740,7 +740,7 @@ function cron_escalas_sorteio(){
 					." AND status='qualificado'"
 			));
 			
-			// ===== Verificar os escalas datas no banco de dados do mês / ano desejado.
+			// ===== Verificar as escalas datas no banco de dados do mês / ano desejado.
 			
 			$hosts_escalas_datas = banco_select(Array(
 				'tabela' => 'hosts_escalas_datas',
@@ -767,14 +767,12 @@ function cron_escalas_sorteio(){
 				$emailConfirmacaoMensagem = (existe($config['email-confirmacao-mensagem']) ? $config['email-confirmacao-mensagem'] : '');
 				$tituloEstabelecimento = (existe($config['titulo-estabelecimento']) ? $config['titulo-estabelecimento'] : '');
 				
-				// ===== Formatar a data em questão para o formado brasileiro e pegar url completa do host, bem como incluir as bibliotecas necessárias.
+				// ===== Pegar url completa do host, bem como incluir as bibliotecas necessárias.
 				
 				gestor_incluir_biblioteca('host');
 				gestor_incluir_biblioteca('comunicacao');
-				gestor_incluir_biblioteca('autenticacao');
 				gestor_incluir_biblioteca('modelo');
 				
-				$data_str = formato_dado_para('data',$data);
 				$hostUrl = host_url(Array('opcao'=>'full','id_hosts' => $id_hosts));
 				
 				// ===== Varrer todos os escalas.
@@ -820,14 +818,18 @@ function cron_escalas_sorteio(){
 					
 					$codigo = date('dmY').formato_zero_a_esquerda($id_hosts_escalas,6);
 					
+					$mesEAno = formato_zero_a_esquerda($mesAtual,2) . '/' . $anoAtual;
+					
 					// ===== Formatar mensagem do email.
 					
 					$emailConfirmacaoAssuntoAux = $emailConfirmacaoAssunto;
 					$emailConfirmacaoMensagemAux = $emailConfirmacaoMensagem;
 					
 					$emailConfirmacaoAssuntoAux = modelo_var_troca_tudo($emailConfirmacaoAssuntoAux,"#codigo#",$codigo);
+					$emailConfirmacaoAssuntoAux = modelo_var_troca_tudo($emailConfirmacaoAssuntoAux,"#mes#",$mesEAno);
 					
-					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#calendario#",$calendario);						
+					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#calendario#",$calendario);
+					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#mes#",$mesEAno);					
 					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#data1#",$data_confirmacao_inicio);						
 					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#data2#",$data_confirmacao_fim);
 					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#codigo#",$codigo);
@@ -912,7 +914,7 @@ function cron_escalas_sorteio(){
 			$hosts_escalas_proc[] = $escala;
 		}
 		
-		// ===== Verificar os escalas datas no banco de dados do mês / ano desejado.
+		// ===== Pegar os dados das escalas datas qualificadas no banco de dados.
 		
 		$hosts_escalas_datas = banco_select(Array(
 			'tabela' => 'hosts_escalas_datas',
