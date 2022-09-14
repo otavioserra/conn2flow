@@ -812,7 +812,8 @@ function usuarios_editar(){
 					'regrasExtra' => Array(
 						Array(
 							'regra' => 'regexPermited',
-							'regex' => '/^[a-z][a-z0-9]+(\.[a-z0-9]{2,})*([@]?([a-z0-9]{2,}\.)*[a-z0-9]{2,})*$/gi',
+							//'regex' => '/^[a-z][a-z0-9]+(\.[a-z0-9]{2,})*([@]?([a-z0-9]{2,}\.)*[a-z0-9]{2,})*$/gi',
+							'regex' => "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/",
 							'regexPermitedChars' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'user-permited-chars')),
 						)
 					),
