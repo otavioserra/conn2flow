@@ -293,6 +293,7 @@ function cron_escalas_sorteio(){
 	
 	$mesAtual = (int)date('n');
 	$anoAtual = (int)date('Y');
+	$mesAtualFormatado = date('m');
 	
 	// ===== Varrer todos hosts.
 	
@@ -312,8 +313,6 @@ function cron_escalas_sorteio(){
 		$diasFimConfirmacao = (existe($config['dias-fim-confirmacao']) ? $config['dias-fim-confirmacao'] : '');
 		
 		// ===== Definir a data do início da confirmação.
-		
-		$mesAtualFormatado = date('m');
 		
 		$data_confirmacao_inicio = cron_data_dias_antes($mesAtual,$anoAtual,$diasInicioConfirmacao,'01/'. $mesAtualFormatado . '/' . $anoAtual);
 		$data_confirmacao_fim = cron_data_dias_antes($mesAtual,$anoAtual,$diasFimConfirmacao,'01/'. $mesAtualFormatado . '/' . $anoAtual);
@@ -883,7 +882,7 @@ function cron_escalas_sorteio(){
 			}
 		}
 		
-		// ===== Alterar o status do agendamento datas para 'confirmacoes-enviadas'.
+		// ===== Alterar o status do hosts_escalas_cron para 'confirmacoes-enviadas'.
 		
 		banco_update_campo('status','confirmacoes-enviadas');
 		banco_update_campo('versao','versao+1',true);
@@ -904,7 +903,7 @@ function cron_escalas_sorteio(){
 				"WHERE mes='".$mesAtual."'"
 				." AND ano='".$anoAtual."'"
 				." AND id_hosts='".$id_hosts."'"
-				." AND status='qualificado'"
+				." AND (status='qualificado' OR status='email-enviado' OR status='email-nao-enviado')"
 		));
 		
 		if($hosts_escalas)
@@ -962,6 +961,220 @@ function cron_escalas_sorteio(){
 	}
 }
 
+function cron_escalas_expiracao_fase_confirmacao(){
+	global $_GESTOR;
+	
+	// ===== Incluir bibliotecas necessárias.
+	
+	gestor_incluir_biblioteca('formato');
+	
+	// ===== Módulo variáveis.
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
+	// ===== Identificadores dos Hosts.
+	
+	$hostsIDs = $_GESTOR['pluginHostsIDs'];
+	
+	// ===== Variáveis de controle valores iniciais.
+	
+	$hojeDataFormatada = date('d/m/Y');
+	
+	$mesAtual = (int)date('n');
+	$anoAtual = (int)date('Y');
+	$mesAtualFormatado = date('m');
+	
+	// ===== Varrer todos hosts.
+	
+	if($hostsIDs)
+	foreach($hostsIDs as $id_hosts){
+		// ===== Variáveis de controle.
+		
+		$outroHost = false;
+		
+		// ===== Pegar os dados de configuração do host atual.
+		
+		gestor_incluir_biblioteca('configuracao');
+		
+		$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-escalas', 'id_hosts' => $id_hosts));
+		
+		$diasFimConfirmacao = (existe($config['dias-fim-confirmacao']) ? $config['dias-fim-confirmacao'] : '');
+		
+		// ===== Definir a data do fim da confirmação.
+		
+		$data_confirmacao_fim = cron_data_dias_antes($mesAtual,$anoAtual,$diasFimConfirmacao,'01/'. $mesAtualFormatado . '/' . $anoAtual);
+		
+		$data_expiracao_confirmacao = date('d/m/Y', strtotime(str_replace('/', '-', $data_confirmacao_fim) . ' +1 day'));
+		
+		// ===== Verificar se hoje é o dia da expiração da confirmação. Caso positivo, expirar todas as escalas com status 'confirmacoes-enviadas'.
+		
+		if($data_expiracao_confirmacao == $hojeDataFormatada){
+			$hosts_escalas_cron = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'hosts_escalas_cron',
+				'campos' => Array(
+					'status',
+				),
+				'extra' => 
+					"WHERE mes='".$mesAtual."'"
+					." AND ano='".$anoAtual."'"
+					." AND id_hosts='".$id_hosts."'"
+					." AND status='confirmacoes-enviadas'"
+			));
+			
+			if($hosts_escalas_cron){
+				// ===== Pegar os dados das escalas qualificadas no banco de dados.
+				
+				$hosts_escalas = banco_select(Array(
+					'tabela' => 'hosts_escalas',
+					'campos' => Array(
+						'id_hosts_usuarios',
+						'id_hosts_escalas',
+					),
+					'extra' => 
+						"WHERE mes='".$mesAtual."'"
+						." AND ano='".$anoAtual."'"
+						." AND id_hosts='".$id_hosts."'"
+						." AND (status='qualificado' OR status='email-enviado' OR status='email-nao-enviado')"
+				));
+				
+				// ===== Verificar se foi encontrado.
+				
+				if($hosts_escalas){
+					// ===== Baixar as escalas datas no banco de dados do mês / ano desejado.
+					
+					$hosts_escalas_datas = banco_select(Array(
+						'tabela' => 'hosts_escalas_datas',
+						'campos' => Array(
+							'data',
+							'id_hosts_escalas',
+							'id_hosts_escalas_datas',
+						),
+						'extra' => 
+							"WHERE data>='".$data_inicial_mes."'"
+							." AND data<='".$data_final_mes."'"
+							." AND id_hosts='".$id_hosts."'"
+							." AND selecionada IS NOT NULL"
+							." AND status='qualificado'"
+					));
+					
+					// ===== Varrer todas as escalas.
+					
+					foreach($hosts_escalas as $hosts_escala){
+						
+						// ===== Varrer todas as escalas datas e trocar o status para 'nao-confirmado'.
+						
+						if($hosts_escalas_datas){
+							foreach($hosts_escalas_datas as $hosts_escala_data){
+								if($hosts_escala['id_hosts_escalas'] == $hosts_escala_data['id_hosts_escalas']){
+									banco_update_campo('status','nao-confirmado');
+									banco_update_campo('selecionada','NULL',true);
+									
+									banco_update_executar('hosts_escalas_datas',"WHERE id_hosts='".$id_hosts."' AND id_hosts_escalas_datas='".$hosts_escala_data['id_hosts_escalas_datas']."'");
+								}
+							}
+						}
+						
+						// ===== Trocar o status de todas as escalas para 'nao-confirmado'.
+						
+						banco_update_campo('status','nao-confirmado');
+						banco_update_campo('versao','versao+1',true);
+						banco_update_campo('data_modificacao','NOW()',true);
+						
+						banco_update_executar('hosts_escalas',"WHERE id_hosts='".$id_hosts."' AND id_hosts_escalas='".$hosts_escala['id_hosts_escalas']."'");
+					}	
+				}
+			} else {
+				$outroHost = true;
+			}
+		} else {
+			$outroHost = true;
+		}
+		
+		// ===== Continuar loop em outro host.
+		
+		if($outroHost){
+			continue;
+		}
+		
+		// ===== Alterar o status do hosts_escalas_cron para 'finalizado'.
+		
+		banco_update_campo('status','finalizado');
+		banco_update_campo('versao','versao+1',true);
+		banco_update_campo('data_modificacao','NOW()',true);
+		
+		banco_update_executar('hosts_escalas_cron',
+			"WHERE mes='".$mesAtual."'"
+			." AND ano='".$anoAtual."'"
+			." AND id_hosts='".$id_hosts."'"
+		);
+		
+		// ===== Pegar os dados das escalas 'nao-confirmado' no banco de dados.
+		
+		$hosts_escalas = banco_select(Array(
+			'tabela' => 'hosts_escalas',
+			'campos' => '*',
+			'extra' => 
+				"WHERE mes='".$mesAtual."'"
+				." AND ano='".$anoAtual."'"
+				." AND id_hosts='".$id_hosts."'"
+				." AND status='nao-confirmado'"
+		));
+		
+		if($hosts_escalas)
+		foreach($hosts_escalas as $escala){
+			unset($escala['id_hosts']);
+			
+			$hosts_escalas_proc[] = $escala;
+		}
+		
+		// ===== Pegar os dados das escalas datas 'nao-confirmado' no banco de dados.
+		
+		$hosts_escalas_datas = banco_select(Array(
+			'tabela' => 'hosts_escalas_datas',
+			'campos' => '*',
+			'extra' => 
+				"WHERE data>='".$data_inicial_mes."'"
+				." AND data<='".$data_final_mes."'"
+				." AND id_hosts='".$id_hosts."'"
+				." AND status='nao-confirmado'"
+		));
+		
+		if($hosts_escalas_datas)
+		foreach($hosts_escalas_datas as $escala_data){
+			unset($escala_data['id_hosts']);
+			
+			$hosts_escalas_datas_proc[] = $escala_data;
+		}
+		
+		// ===== Incluir os dados no host de cada cliente.
+		
+		gestor_incluir_biblioteca('api-cliente');
+		
+		$retorno = api_cliente_interface(Array(
+			'interface' => 'cron-escalas',
+			'plugin' => 'escalas',
+			'id_hosts' => $id_hosts,
+			'opcao' => 'atualizar',
+			'dados' => Array(
+				'escalas' => (isset($hosts_escalas_proc) ? $hosts_escalas_proc : Array()),
+				'escalas_datas' => (isset($hosts_escalas_datas_proc) ? $hosts_escalas_datas_proc : Array()),
+			),
+		));
+		
+		// ===== Caso haja algum erro, incluir no log do cron.
+		
+		if(!$retorno['completed']){
+			cron_log(
+				'FUNCAO: cron-escalas[atualizar]'."\n".
+				'ID-HOST: '.$id_hosts."\n".
+				'ERROR-MSG: '."\n".
+				$retorno['error-msg']
+			);
+		}
+	}
+}
+
 // =========================== Funções de Acesso
 
 function cron_escalas_start(){
@@ -976,6 +1189,7 @@ function cron_escalas_start(){
 	// ===== Pipeline de execução do cron.
 	
 	cron_escalas_sorteio();
+	cron_escalas_expiracao_fase_confirmacao();
 
 	// ===== Retorno padrão.
 	

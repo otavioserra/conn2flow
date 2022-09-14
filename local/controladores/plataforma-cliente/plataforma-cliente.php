@@ -972,7 +972,11 @@ function plataforma_cliente_plugin_escalas(){
 									$escalaAtualizada = true;
 								break;
 								case 'confirmacao':
-									if($status == 'qualificado'){
+									if(
+										$status == 'qualificado' ||
+										$status == 'email-enviado' ||
+										$status == 'email-nao-enviado'
+									){
 										banco_update_campo('selecionada','1',true);
 										
 										banco_update_executar(
@@ -1141,7 +1145,11 @@ function plataforma_cliente_plugin_escalas(){
 									$escalaAtualizada = true;
 								break;
 								case 'confirmacao':
-									if($status == 'qualificado'){
+									if(
+										$status == 'qualificado' ||
+										$status == 'email-enviado' ||
+										$status == 'email-nao-enviado'
+									){
 										banco_update_campo('selecionada','NULL',true);
 										
 										banco_update_executar(
