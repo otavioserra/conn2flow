@@ -1006,6 +1006,11 @@ function cron_escalas_expiracao_fase_confirmacao(){
 		
 		$data_expiracao_confirmacao = date('d/m/Y', strtotime(str_replace('/', '-', $data_confirmacao_fim) . ' +1 day'));
 		
+		// ===== Definir a data de início e final do mês alvo.
+		
+		$data_inicial_mes = $anoAtual.'-'.$mesAtualFormatado.'-01';
+		$data_final_mes = $anoAtual.'-'.$mesAtualFormatado.'-'.date('t',strtotime($data_inicial_mes));
+		
 		// ===== Verificar se hoje é o dia da expiração da confirmação. Caso positivo, expirar todas as escalas com status 'confirmacoes-enviadas'.
 		
 		if($data_expiracao_confirmacao == $hojeDataFormatada){
