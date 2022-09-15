@@ -659,7 +659,7 @@ function cron_escalas_sorteio(){
 				} else {
 					// ===== Escalas qualificar todos para confirmação.
 					
-					foreach($escalaDados['ids'] => $escala){
+					foreach($escalaDados['ids'] as $escala){
 						$id_hosts_escalas = $escala['id_hosts_escalas'];
 						
 						// ===== Marcar o usuário como sorteado em pelo menos uma data.
