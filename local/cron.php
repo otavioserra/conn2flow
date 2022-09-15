@@ -532,7 +532,7 @@ function cron_escalas_sorteio(){
 				if($sortear){
 					// ===== Preparação de bilhetes com aplicação de pesos.
 					
-					foreach($escalaDados['ids'] => $escala){
+					foreach($escalaDados['ids'] as $escala){
 						$bilhete = Array(
 							'id_hosts_escalas_datas' => $escala['id_hosts_escalas_datas'],
 							'id_hosts_escalas' => $escala['id_hosts_escalas'],
