@@ -295,14 +295,12 @@ function cron_escalas_sorteio(){
 	$anoAtual = (int)date('Y');
 	$mesAtualFormatado = date('m');
 	
-	echo 'Entrou!'."\n";
-	
 	// ===== Varrer todos hosts.
 	
 	if($hostsIDs)
 	foreach($hostsIDs as $id_hosts){
 		
-		echo 'id_hosts: '.$id_hosts."\n";
+		echo 'id_hosts: '.$id_hosts.' - mesAtual: '.$mesAtual.' - anoAtual: '.$anoAtual."\n";
 		
 		// ===== Pegar os dados de configuração do host atual.
 		
