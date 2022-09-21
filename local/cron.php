@@ -440,9 +440,11 @@ function cron_escalas_sorteio(){
 										'total' => 1,
 										'status' => 'novo',
 										'ids' => Array(
-											'id_hosts_usuarios' => $hosts_escala['id_hosts_usuarios'],
-											'id_hosts_escalas' => $hosts_escala['id_hosts_escalas'],
-											'id_hosts_escalas_datas' => $hosts_escala_data['id_hosts_escalas_datas'],
+											Array(
+												'id_hosts_usuarios' => $hosts_escala['id_hosts_usuarios'],
+												'id_hosts_escalas' => $hosts_escala['id_hosts_escalas'],
+												'id_hosts_escalas_datas' => $hosts_escala_data['id_hosts_escalas_datas'],
+											)
 										),
 									);
 								} else {
