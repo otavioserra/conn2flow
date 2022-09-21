@@ -660,24 +660,31 @@ function cron_escalas_sorteio(){
 					// ===== Escalas qualificar todos para confirmação.
 					
 					foreach($escalaDados['ids'] as $escala){
-						$id_hosts_escalas = $escala['id_hosts_escalas'];
+						if(
+							isset($escala['id_hosts_escalas']) &&
+							isset($escala['id_hosts_escalas_datas'])
+						){
+							$id_hosts_escalas = $escala['id_hosts_escalas'];
+							$id_hosts_escalas_datas = $escala['id_hosts_escalas_datas'];
+							
+							// ===== Marcar o usuário como sorteado em pelo menos uma data.
+							
+							$sorteadosEmPeloMenosUmaData[$id_hosts_escalas] = true;
+							
+							// ===== Alterar estado no banco de dados para qualificado.
+							
+							banco_update_campo('status','qualificado');
+							
+							banco_update_executar('hosts_escalas_datas',"WHERE id_hosts_escalas_datas='".$id_hosts_escalas_datas."'");
+						}
 						
-						// ===== Marcar o usuário como sorteado em pelo menos uma data.
-						
-						$sorteadosEmPeloMenosUmaData[$id_hosts_escalas] = true;
-						
-						// ===== Alterar estado no banco de dados para qualificado.
-						
-						banco_update_campo('status','qualificado');
-						
-						banco_update_executar('hosts_escalas_datas',"WHERE id_hosts_escalas_datas='".$escala['id_hosts_escalas_datas']."'");
 					}
 				}
 			}
 			
 			// ===== Atualizar ou criar novo registro no banco de dados com os pesos atualizados de cada usuário.
 			
-			if($hosts_escalas_pesos)
+			if(isset($hosts_escalas_pesos))
 			foreach($hosts_escalas_pesos as $id_hosts_usuarios => $escala_peso){
 				if(isset($escala_peso['banco'])){
 					banco_update_campo('peso',$escala_peso['peso'],true);
