@@ -651,10 +651,6 @@ function cron_escalas_sorteio(){
 						banco_update_executar('hosts_escalas_datas',"WHERE id_hosts_escalas_datas='".$sorteado['id_hosts_escalas_datas']."'");
 					}
 					
-					if($_CRON['DEBUG']){
-						echo 'sorteados: '.print_r($sorteados,true)."\n";
-					}
-					
 					// ===== Escalas NÃO sorteadas atualizar pesos.
 					
 					if(count($sorteados) > 0){
@@ -827,11 +823,19 @@ function cron_escalas_sorteio(){
 					
 					$diasEscalados = Array();
 					
+					if($_CRON['DEBUG']){
+						$calendarioDebug = '';
+					}
+					
 					if($hosts_escalas_datas)
 					foreach($hosts_escalas_datas as $hosts_escala_data){
 						if($id_hosts_escalas == $hosts_escala_data['id_hosts_escalas']){
 							$diaDaData = date('j',strtotime($hosts_escala_data['data']));
 							$diasEscalados[] = $diaDaData;
+							
+							if($_CRON['DEBUG']){
+								$calendarioDebug .= (existe($calendarioDebug) ? ', ':'').$diaDaData;
+							}
 						}
 					}
 					
@@ -907,7 +911,7 @@ function cron_escalas_sorteio(){
 					} else {
 						$status_escalamento = 'debug-email-enviado';
 						
-						echo "Sorteado: ".$nome."\n";
+						echo "Sorteado: ".$nome.' '.$calendarioDebug."\n";
 					}
 					
 					// ===== Atualizar a escala no banco de dados.
