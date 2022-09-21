@@ -191,8 +191,6 @@ function cron_montar_calendario($mes,$ano,$diasComEventos = Array(),$diasSemEven
 function cron_data_dias_antes($mes = 0,$ano = 0, $diasPeriodo = 0, $dataInicial = NULL){
 	// ===== Definir a data inicial caso a mesma não tenha sido definida.
 	
-	echo $mes.' '.$ano.' '.$diasPeriodo.' '.$dataInicial."\n";
-	
 	if(!isset($dataInicial)){
 		$dataInicial = date('d-m-Y');
 	}
@@ -275,6 +273,7 @@ function cron_data_dias_antes($mes = 0,$ano = 0, $diasPeriodo = 0, $dataInicial 
 
 function cron_escalas_sorteio(){
 	global $_GESTOR;
+	global $_CRON;
 	
 	// ===== Incluir bibliotecas necessárias.
 	
@@ -865,30 +864,34 @@ function cron_escalas_sorteio(){
 					
 					// ===== Enviar email ao usuário solicitando a confirmação ou cancelamento da escala.
 					
-					if(comunicacao_email(Array(
-						'hostPersonalizacao' => true,
-						'id_hosts' => $id_hosts,
-						'destinatarios' => Array(
-							Array(
-								'email' => $email,
-								'nome' => $nome,
-							),
-						),
-						'mensagem' => Array(
-							'assunto' => $emailConfirmacaoAssuntoAux,
-							'html' => $emailConfirmacaoMensagemAux,
-							'htmlAssinaturaAutomatica' => true,
-							'htmlVariaveis' => Array(
+					if(!$_CRON['DEBUG']){
+						if(comunicacao_email(Array(
+							'hostPersonalizacao' => true,
+							'id_hosts' => $id_hosts,
+							'destinatarios' => Array(
 								Array(
-									'variavel' => '[[url]]',
-									'valor' => $hostUrl,
+									'email' => $email,
+									'nome' => $nome,
 								),
 							),
-						),
-					))){
-						$status_escalamento = 'email-enviado';
+							'mensagem' => Array(
+								'assunto' => $emailConfirmacaoAssuntoAux,
+								'html' => $emailConfirmacaoMensagemAux,
+								'htmlAssinaturaAutomatica' => true,
+								'htmlVariaveis' => Array(
+									Array(
+										'variavel' => '[[url]]',
+										'valor' => $hostUrl,
+									),
+								),
+							),
+						))){
+							$status_escalamento = 'email-enviado';
+						} else {
+							$status_escalamento = 'email-nao-enviado';
+						}
 					} else {
-						$status_escalamento = 'email-nao-enviado';
+						$status_escalamento = 'debug-email-enviado';
 					}
 					
 					// ===== Atualizar a escala no banco de dados.
