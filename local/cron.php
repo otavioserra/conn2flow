@@ -958,7 +958,6 @@ function cron_escalas_sorteio(){
 				"WHERE mes='".$mesAlvo."'"
 				." AND ano='".$anoAlvo."'"
 				." AND id_hosts='".$id_hosts."'"
-				." AND (status='qualificado' OR status='email-enviado' OR status='email-nao-enviado')"
 		));
 		
 		if($hosts_escalas)
@@ -977,8 +976,6 @@ function cron_escalas_sorteio(){
 				"WHERE data>='".$data_inicial_mes."'"
 				." AND data<='".$data_final_mes."'"
 				." AND id_hosts='".$id_hosts."'"
-				." AND selecionada IS NOT NULL"
-				." AND status='qualificado'"
 		));
 		
 		if($hosts_escalas_datas)

@@ -935,11 +935,12 @@ function escalas_padrao(){
 		
 		// ===== Verificar se a escala está em fase de confirmação. Se sim, somente permitir modificações em escala com estado 'qualificado'.
 		
+		$naoQualificado = false;
 		switch($faseAtual){
 			case 'confirmacao':
 				if(
-					$status != 'qualificado' ||
-					$status != 'email-enviado' ||
+					$status != 'qualificado' &&
+					$status != 'email-enviado' &&
 					$status != 'email-nao-enviado'
 				){
 					$naoQualificado = true;
@@ -954,7 +955,7 @@ function escalas_padrao(){
 			'ano' => $ano,
 			'hoje' => $hoje,
 			'inscricaoInicio' => $data_inscricao_inicio,
-			'naoQualificado' => (isset($naoQualificado) ? true : false),
+			'naoQualificado' => $naoQualificado,
 		));
 		
 		// ===== Definir as datas dos períodos de atualizações.
@@ -997,7 +998,7 @@ function escalas_padrao(){
 				$cel_nome = 'concluido'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'indisponivel'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				
-				if($status != 'qualificado'){
+				if($naoQualificado){
 					$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 					$cel_nome = 'salvar-botao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				}
