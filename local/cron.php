@@ -495,6 +495,10 @@ function cron_escalas_sorteio(){
 		// ===== Sortear ou qualificar escalas para confirmação.
 		
 		if($novaQualificacao){
+			if($_CRON['DEBUG']){
+				echo 'escalaDatas: '.print_r($escalaDatas,true)."\n";
+			}
+			
 			if($escalaDatas)
 			foreach($escalaDatas as $data => $escalaDados){
 				// ===== Variáveis de controle do sorteio.
