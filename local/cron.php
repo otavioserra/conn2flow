@@ -293,15 +293,22 @@ function cron_escalas_sorteio(){
 	
 	$mesAtual = (int)date('n');
 	$anoAtual = (int)date('Y');
-	$mesAtualFormatado = date('m');
+	
+	// ===== O mês alvo é sempre um mês a frente do mês atual.
+	
+	$mesAlvo = $mesAtual + 1;
+	
+	if($anoAtual > 12){
+		$mesAlvo = 1;
+		$anoAlvo = $anoAtual + 1;
+	}
+	
+	$mesAlvoFormatado = formato_zero_a_esquerda($mesAlvo,2);
 	
 	// ===== Varrer todos hosts.
 	
 	if($hostsIDs)
 	foreach($hostsIDs as $id_hosts){
-		
-		echo 'id_hosts: '.$id_hosts.' - mesAtual: '.$mesAtual.' - anoAtual: '.$anoAtual."\n";
-		
 		// ===== Pegar os dados de configuração do host atual.
 		
 		gestor_incluir_biblioteca('configuracao');
@@ -317,13 +324,19 @@ function cron_escalas_sorteio(){
 		
 		// ===== Definir a data do início da confirmação.
 		
-		$data_confirmacao_inicio = cron_data_dias_antes($mesAtual,$anoAtual,$diasInicioConfirmacao,'01/'. $mesAtualFormatado . '/' . $anoAtual);
-		$data_confirmacao_fim = cron_data_dias_antes($mesAtual,$anoAtual,$diasFimConfirmacao,'01/'. $mesAtualFormatado . '/' . $anoAtual);
+		$data_confirmacao_inicio = cron_data_dias_antes($mesAlvo,$anoAlvo,$diasInicioConfirmacao,'01/'. $mesAlvoFormatado . '/' . $anoAlvo);
+		$data_confirmacao_fim = cron_data_dias_antes($mesAlvo,$anoAlvo,$diasFimConfirmacao,'01/'. $mesAlvoFormatado . '/' . $anoAlvo);
+		
+		// ===== Verificar se é dia de sorteio. Se for dar prosseguimento, senão continuar o loop.
+		
+		if($data_confirmacao_inicio != $hojeDataFormatada){
+			continue;
+		}
 		
 		// ===== Definir a data de início e final do mês alvo.
 		
-		$data_inicial_mes = $anoAtual.'-'.$mesAtualFormatado.'-01';
-		$data_final_mes = $anoAtual.'-'.$mesAtualFormatado.'-'.date('t',strtotime($data_inicial_mes));
+		$data_inicial_mes = $anoAlvo.'-'.$mesAlvoFormatado.'-01';
+		$data_final_mes = $anoAlvo.'-'.$mesAlvoFormatado.'-'.date('t',strtotime($data_inicial_mes));
 		
 		// ===== Verificar se o escalas cron existe no banco de dados. Senão criar a referência controladora do sorteio do mês / ano atual.
 		
@@ -334,8 +347,8 @@ function cron_escalas_sorteio(){
 				'status',
 			),
 			'extra' => 
-				"WHERE mes='".$mesAtual."'"
-				." AND ano='".$anoAtual."'"
+				"WHERE mes='".$mesAlvo."'"
+				." AND ano='".$anoAlvo."'"
 				." AND id_hosts='".$id_hosts."'"
 		));
 		
@@ -343,8 +356,8 @@ function cron_escalas_sorteio(){
 		
 		if(!$hosts_escalas_cron){
 			banco_insert_name_campo('id_hosts',$id_hosts);
-			banco_insert_name_campo('mes',$mesAtual);
-			banco_insert_name_campo('ano',$anoAtual);
+			banco_insert_name_campo('mes',$mesAlvo);
+			banco_insert_name_campo('ano',$anoAlvo);
 			banco_insert_name_campo('status','novo');
 			banco_insert_name_campo('versao','1',true);
 			banco_insert_name_campo('data_criacao','NOW()',true);
@@ -381,8 +394,8 @@ function cron_escalas_sorteio(){
 						'id_hosts_escalas',
 					),
 					'extra' => 
-						"WHERE mes='".$mesAtual."'"
-						." AND ano='".$anoAtual."'"
+						"WHERE mes='".$mesAlvo."'"
+						." AND ano='".$anoAlvo."'"
 						." AND id_hosts='".$id_hosts."'"
 						." AND status='novo'"
 				));
@@ -447,8 +460,8 @@ function cron_escalas_sorteio(){
 				banco_update_campo('data_modificacao','NOW()',true);
 				
 				banco_update_executar('hosts_escalas_cron',
-					"WHERE mes='".$mesAtual."'"
-					." AND ano='".$anoAtual."'"
+					"WHERE mes='".$mesAlvo."'"
+					." AND ano='".$anoAlvo."'"
 					." AND id_hosts='".$id_hosts."'"
 				);
 			break;
@@ -725,8 +738,8 @@ function cron_escalas_sorteio(){
 			banco_update_campo('data_modificacao','NOW()',true);
 			
 			banco_update_executar('hosts_escalas_cron',
-				"WHERE mes='".$mesAtual."'"
-				." AND ano='".$anoAtual."'"
+				"WHERE mes='".$mesAlvo."'"
+				." AND ano='".$anoAlvo."'"
 				." AND id_hosts='".$id_hosts."'"
 			);
 		}
@@ -743,8 +756,8 @@ function cron_escalas_sorteio(){
 					'id_hosts_escalas',
 				),
 				'extra' => 
-					"WHERE mes='".$mesAtual."'"
-					." AND ano='".$anoAtual."'"
+					"WHERE mes='".$mesAlvo."'"
+					." AND ano='".$anoAlvo."'"
 					." AND id_hosts='".$id_hosts."'"
 					." AND status='qualificado'"
 			));
@@ -806,7 +819,7 @@ function cron_escalas_sorteio(){
 					
 					// ===== Montar o calendário das datas da escala.
 					
-					$calendario = cron_montar_calendario($mesAtual,$anoAtual,$diasEscalados);
+					$calendario = cron_montar_calendario($mesAlvo,$anoAlvo,$diasEscalados);
 					
 					// ===== Pegar dados do usuário.
 					
@@ -827,7 +840,7 @@ function cron_escalas_sorteio(){
 					
 					$codigo = date('dmY').formato_zero_a_esquerda($id_hosts_escalas,6);
 					
-					$mesEAno = formato_zero_a_esquerda($mesAtual,2) . '/' . $anoAtual;
+					$mesEAno = formato_zero_a_esquerda($mesAlvo,2) . '/' . $anoAlvo;
 					
 					// ===== Formatar mensagem do email.
 					
@@ -899,8 +912,8 @@ function cron_escalas_sorteio(){
 		banco_update_campo('data_modificacao','NOW()',true);
 		
 		banco_update_executar('hosts_escalas_cron',
-			"WHERE mes='".$mesAtual."'"
-			." AND ano='".$anoAtual."'"
+			"WHERE mes='".$mesAlvo."'"
+			." AND ano='".$anoAlvo."'"
 			." AND id_hosts='".$id_hosts."'"
 		);
 		
@@ -910,8 +923,8 @@ function cron_escalas_sorteio(){
 			'tabela' => 'hosts_escalas',
 			'campos' => '*',
 			'extra' => 
-				"WHERE mes='".$mesAtual."'"
-				." AND ano='".$anoAtual."'"
+				"WHERE mes='".$mesAlvo."'"
+				." AND ano='".$anoAlvo."'"
 				." AND id_hosts='".$id_hosts."'"
 				." AND (status='qualificado' OR status='email-enviado' OR status='email-nao-enviado')"
 		));
