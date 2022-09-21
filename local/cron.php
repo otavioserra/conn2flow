@@ -913,7 +913,7 @@ function cron_escalas_sorteio(){
 							$status_escalamento = 'email-nao-enviado';
 						}
 					} else {
-						$status_escalamento = 'debug-email-enviado';
+						$status_escalamento = 'email-enviado';
 						
 						echo "Sorteado: ".$nome.' '.$calendarioDebug."\n";
 					}

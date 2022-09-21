@@ -937,7 +937,11 @@ function escalas_padrao(){
 		
 		switch($faseAtual){
 			case 'confirmacao':
-				if($status != 'qualificado'){
+				if(
+					$status != 'qualificado' ||
+					$status != 'email-enviado' ||
+					$status != 'email-nao-enviado'
+				){
 					$naoQualificado = true;
 				}
 			break;
