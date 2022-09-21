@@ -609,10 +609,6 @@ function cron_escalas_sorteio(){
 						}
 					}
 					
-					if($_CRON['DEBUG']){
-						echo 'bilhetes: '.print_r($bilhetes,true)."\n";
-					}
-					
 					// ===== Sortear os bilhetes.
 					
 					$sorteados = Array();
@@ -653,6 +649,10 @@ function cron_escalas_sorteio(){
 						banco_update_campo('status','qualificado');
 						
 						banco_update_executar('hosts_escalas_datas',"WHERE id_hosts_escalas_datas='".$sorteado['id_hosts_escalas_datas']."'");
+					}
+					
+					if($_CRON['DEBUG']){
+						echo 'sorteados: '.print_r($sorteados,true)."\n";
 					}
 					
 					// ===== Escalas NÃO sorteadas atualizar pesos.
@@ -907,7 +907,7 @@ function cron_escalas_sorteio(){
 					} else {
 						$status_escalamento = 'debug-email-enviado';
 						
-						echo "Sorteado: ".$nome.' '.$email."\n";
+						echo "Sorteado: ".$nome."\n";
 					}
 					
 					// ===== Atualizar a escala no banco de dados.
