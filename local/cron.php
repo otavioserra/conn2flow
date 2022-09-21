@@ -191,6 +191,8 @@ function cron_montar_calendario($mes,$ano,$diasComEventos = Array(),$diasSemEven
 function cron_data_dias_antes($mes = 0,$ano = 0, $diasPeriodo = 0, $dataInicial = NULL){
 	// ===== Definir a data inicial caso a mesma não tenha sido definida.
 	
+	echo $mes.' '.$ano.' '.$diasPeriodo.' '.$dataInicial."\n";
+	
 	if(!isset($dataInicial)){
 		$dataInicial = date('d-m-Y');
 	}
