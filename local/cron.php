@@ -387,6 +387,14 @@ function cron_escalas_sorteio(){
 		
 		// ===== Verificar o status do processo do sorteio. Se for 'novo', fazer uma nova tentativa de qualificação, senão continuar loop e ir para outro host.
 		
+		if($_CRON['DEBUG']){
+			$statusProcessoSorteio = 'novo';
+			
+			banco_update_campo('status','novo');
+			
+			banco_update_executar('hosts_escalas',"WHERE 1");
+		}
+		
 		switch($statusProcessoSorteio){
 			case 'novo':
 				// ===== Pegar as escalas no banco de dados para mês / ano desejado.
