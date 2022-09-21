@@ -297,7 +297,7 @@ function cron_escalas_sorteio(){
 	
 	// ===== O mês alvo é sempre um mês a frente do mês atual.
 	
-	$mesAlvo = $mesAtual + 1;
+	$mesAlvo = $mesAtual;
 	$anoAlvo = $anoAtual;
 	
 	if($mesAlvo > 12){
@@ -330,8 +330,6 @@ function cron_escalas_sorteio(){
 		$data_confirmacao_fim = cron_data_dias_antes($mesAlvo,$anoAlvo,$diasFimConfirmacao,'01/'. $mesAlvoFormatado . '/' . $anoAlvo);
 		
 		// ===== Verificar se é dia de sorteio. Se for dar prosseguimento, senão continuar o loop.
-		
-		echo $data_confirmacao_inicio.' != '.$hojeDataFormatada."\n";
 		
 		if($data_confirmacao_inicio != $hojeDataFormatada){
 			continue;
