@@ -393,6 +393,10 @@ function cron_escalas_sorteio(){
 			banco_update_campo('status','novo');
 			
 			banco_update_executar('hosts_escalas',"WHERE 1");
+			
+			banco_update_campo('status','novo');
+			
+			banco_update_executar('hosts_escalas_datas',"WHERE 1");
 		}
 		
 		switch($statusProcessoSorteio){
