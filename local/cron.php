@@ -892,6 +892,8 @@ function cron_escalas_sorteio(){
 						}
 					} else {
 						$status_escalamento = 'debug-email-enviado';
+						
+						echo "Sorteado: ".$nome.' '.$email."\n";
 					}
 					
 					// ===== Atualizar a escala no banco de dados.
