@@ -329,6 +329,8 @@ function cron_escalas_sorteio(){
 		
 		// ===== Verificar se é dia de sorteio. Se for dar prosseguimento, senão continuar o loop.
 		
+		echo $data_confirmacao_inicio.' != '.$hojeDataFormatada."\n";
+		
 		if($data_confirmacao_inicio != $hojeDataFormatada){
 			continue;
 		}
