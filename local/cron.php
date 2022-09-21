@@ -297,7 +297,7 @@ function cron_escalas_sorteio(){
 	
 	// ===== O mês alvo é sempre um mês a frente do mês atual.
 	
-	$mesAlvo = $mesAtual;
+	$mesAlvo = $mesAtual + 1;
 	$anoAlvo = $anoAtual;
 	
 	if($mesAlvo > 12){
