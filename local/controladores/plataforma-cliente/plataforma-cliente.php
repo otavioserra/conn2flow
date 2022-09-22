@@ -819,6 +819,12 @@ function plataforma_cliente_plugin_escalas(){
 						$id_hosts_escalas_datas = '';
 						$status = '';
 						
+						// ===== Ignorar datas do passado para manter histórico de datas selecionadas no passado.
+						
+						if($dataTempo < $tempoLimiteAlteracao){
+							continue;
+						}
+						
 						// ===== Procurar a data se já foi definida anteriormente.
 						
 						if($hosts_escalas_datas)
@@ -829,15 +835,6 @@ function plataforma_cliente_plugin_escalas(){
 								$status = $hed['status'];
 								break;
 							}
-						}
-						
-						// ===== Ignorar datas do passado para manter histórico de datas selecionadas no passado.
-						
-						if($dataTempo < $tempoLimiteAlteracao){
-							if($dataFound){
-								$datasProcessadasIDs[] = $id_hosts_escalas_datas;
-							}
-							continue;
 						}
 						
 						// ===== Tratar cada fase caso tenha encontrado ou não o registo.
@@ -1143,6 +1140,15 @@ function plataforma_cliente_plugin_escalas(){
 						$id_hosts_escalas_datas = $hed['id_hosts_escalas_datas'];
 						$status = $hed['status'];
 						$dataTipoDate = $hed['data'];
+						$dataTempo = strtotime($dataTipoDate);
+						
+						// ===== Ignorar datas do passado para manter histórico de datas selecionadas no passado.
+						
+						if($dataTempo < $tempoLimiteAlteracao){
+							continue;
+						}
+						
+						// ===== Procurar se a data foi processada.
 						
 						if($datasProcessadasIDs){
 							foreach($datasProcessadasIDs as $dpID){
