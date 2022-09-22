@@ -837,8 +837,6 @@ function plataforma_cliente_plugin_escalas(){
 							}
 						}
 						
-						echo $dataFormatada.' '.$dataFound.'<br>';
-						
 						// ===== Tratar cada fase caso tenha encontrado ou não o registo.
 						
 						if(!$dataFound){
@@ -975,6 +973,7 @@ function plataforma_cliente_plugin_escalas(){
 								break;
 							}
 						} else {
+							echo $faseAtual.' '.$dataFormatada.' '.$dataFound.'<br>';
 							switch($faseAtual){
 								case 'inscricao':
 									banco_update_campo('selecionada','1',true);
