@@ -785,6 +785,7 @@ function plataforma_cliente_plugin_escalas(){
 						'id_hosts_escalas_datas',
 						'data',
 						'status',
+						'selecionada',
 					),
 					'extra' => 
 						"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
@@ -816,6 +817,7 @@ function plataforma_cliente_plugin_escalas(){
 						$dataTempo = strtotime(str_replace('/', '-', $dataFormatada));
 						$diaDaData = date('j',$dataTempo);
 						$dataFound = false;
+						$dataSelecionada = false;
 						$id_hosts_escalas_datas = '';
 						$status = '';
 						
@@ -833,6 +835,11 @@ function plataforma_cliente_plugin_escalas(){
 								$dataFound = true;
 								$id_hosts_escalas_datas = $hed['id_hosts_escalas_datas'];
 								$status = $hed['status'];
+								
+								if($hed['selecionada']){
+									$dataSelecionada = true;
+								}
+								
 								break;
 							}
 						}
@@ -973,29 +980,15 @@ function plataforma_cliente_plugin_escalas(){
 								break;
 							}
 						} else {
-							switch($faseAtual){
-								case 'inscricao':
-									banco_update_campo('selecionada','1',true);
-									banco_update_campo('selecionada_inscricao','1',true);
-									
-									banco_update_executar(
-										'hosts_escalas_datas',
-										"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
-										." AND id_hosts='".$id_hosts."'"
-										." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
-									);
-									
-									$diasEscalados[] = $diaDaData;
-									$escalaAtualizada = true;
-								break;
-								case 'confirmacao':
-									if(
-										$status == 'qualificado' ||
-										$status == 'email-enviado' ||
-										$status == 'email-nao-enviado'
-									){
+							// ===== Verificar se o estado selecionado já está definido. Se sim, não há necessidade de atualizações.
+							
+							if(!$dataSelecionada){
+								// ===== Caso contrário, aplicar em cada fase a atualização necessária.
+								
+								switch($faseAtual){
+									case 'inscricao':
 										banco_update_campo('selecionada','1',true);
-										banco_update_campo('selecionada_confirmacao','1',true);
+										banco_update_campo('selecionada_inscricao','1',true);
 										
 										banco_update_executar(
 											'hosts_escalas_datas',
@@ -1006,114 +999,133 @@ function plataforma_cliente_plugin_escalas(){
 										
 										$diasEscalados[] = $diaDaData;
 										$escalaAtualizada = true;
-									}
-								break;
-								case 'utilizacao':
-									// ===== Definir o total de vagas.
-									
-									$data_extra_permitida = false;
-									$data_extra_posicao = 0;
-									$count_dias = 0;
-									
-									if($datas_extras_disponiveis){
-										foreach($datas_extras_disponiveis as $ded){
-											if($dataFormatada == $ded){
-												$data_extra_permitida = true;
-												break;
-											}
-											$data_extra_posicao++;
-										}
-									}
-									
-									if($data_extra_permitida){
-										$count_dias = $data_extra_posicao;
-									} else {
-										if($dias_semana)
-										foreach($dias_semana as $dia_semana){
-											if($dia_semana == strtolower(date('D',$dataTempo))){
-												break;
-											}
-											$count_dias++;
-										}
-									}
-									
-									if($data_extra_permitida){
-										if(count($datas_extras_dias_semana_maximo_vagas_arr) > 1){
-											$totalVagas = $datas_extras_dias_semana_maximo_vagas_arr[$count_dias];
-										} else {
-											$totalVagas = $datas_extras_dias_semana_maximo_vagas_arr[0];
-										}
-									} else {
-										if(count($dias_semana_maximo_vagas_arr) > 1){
-											$totalVagas = $dias_semana_maximo_vagas_arr[$count_dias];
-										} else {
-											$totalVagas = $dias_semana_maximo_vagas_arr[0];
-										}
-									}
-									
-									// ===== Verificar se há vagas disponíveis na fase de 'utilização'. Se sim, diminuir uma vaga no total na escala controle da data.
-									
-									$dataSemVagaFound = false;
-									$dataEscalaControleEncontrada = false;
-									
-									if($hosts_escalas_controle)
-									foreach($hosts_escalas_controle as $hec){
-										if($dataTipoDate == $hec['data']){
-											$dataEscalaControleEncontrada = true;
+									break;
+									case 'confirmacao':
+										if(
+											$status == 'qualificado' ||
+											$status == 'email-enviado' ||
+											$status == 'email-nao-enviado'
+										){
+											banco_update_campo('selecionada','1',true);
+											banco_update_campo('selecionada_confirmacao','1',true);
 											
-											if((int)$hec['total'] + 1 <= $totalVagas){
-												banco_update_campo('total','total+1',true);
-												
-												banco_update_executar('hosts_escalas_controle',"WHERE id_hosts_escalas_controle='".$hec['id_hosts_escalas_controle']."' AND id_hosts='".$id_hosts."'");
-												$escalaControleAtualizada = true;
-											} else {
-												$datasSemVagasFound = true;
-												$dataSemVagaFound = true;
-											}
-											break;
-										}
-									}
-									
-									if(!$dataEscalaControleEncontrada){
-										if(1 <= $totalVagas){
-											banco_insert_name_campo('id_hosts',$id_hosts);
-											banco_insert_name_campo('data',$dataTipoDate);
-											banco_insert_name_campo('total','1',true);
-											banco_insert_name_campo('status','utilizacao');
-											
-											banco_insert_name
-											(
-												banco_insert_name_campos(),
-												"hosts_escalas_controle"
+											banco_update_executar(
+												'hosts_escalas_datas',
+												"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+												." AND id_hosts='".$id_hosts."'"
+												." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
 											);
-											$escalaControleAtualizada = true;
+											
+											$diasEscalados[] = $diaDaData;
+											$escalaAtualizada = true;
 										}
-									}
-									
-									// ===== Caso não tenha vaga, não atualizar no banco de dados e continuar o loop. Além disso, guarda a data para informar o usuário do problema.
-									
-									if($dataSemVagaFound){
-										$datasSemVagas[] = $dataFormatada;
-										continue;
-									}
-									
-									// ===== Senão atualizar o registro com status 'vaga-residual' no banco de dados.
-									
-									banco_update_campo('selecionada','1',true);
-									banco_update_campo('status','vaga-residual');
-									
-									banco_update_executar(
-										'hosts_escalas_datas',
-										"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
-										." AND id_hosts='".$id_hosts."'"
-										." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
-									);
-									
-									$diasEscalados[] = $diaDaData;
-									$escalaAtualizada = true;
-								break;
+									break;
+									case 'utilizacao':
+										// ===== Definir o total de vagas.
+										
+										$data_extra_permitida = false;
+										$data_extra_posicao = 0;
+										$count_dias = 0;
+										
+										if($datas_extras_disponiveis){
+											foreach($datas_extras_disponiveis as $ded){
+												if($dataFormatada == $ded){
+													$data_extra_permitida = true;
+													break;
+												}
+												$data_extra_posicao++;
+											}
+										}
+										
+										if($data_extra_permitida){
+											$count_dias = $data_extra_posicao;
+										} else {
+											if($dias_semana)
+											foreach($dias_semana as $dia_semana){
+												if($dia_semana == strtolower(date('D',$dataTempo))){
+													break;
+												}
+												$count_dias++;
+											}
+										}
+										
+										if($data_extra_permitida){
+											if(count($datas_extras_dias_semana_maximo_vagas_arr) > 1){
+												$totalVagas = $datas_extras_dias_semana_maximo_vagas_arr[$count_dias];
+											} else {
+												$totalVagas = $datas_extras_dias_semana_maximo_vagas_arr[0];
+											}
+										} else {
+											if(count($dias_semana_maximo_vagas_arr) > 1){
+												$totalVagas = $dias_semana_maximo_vagas_arr[$count_dias];
+											} else {
+												$totalVagas = $dias_semana_maximo_vagas_arr[0];
+											}
+										}
+										
+										// ===== Verificar se há vagas disponíveis na fase de 'utilização'. Se sim, diminuir uma vaga no total na escala controle da data.
+										
+										$dataSemVagaFound = false;
+										$dataEscalaControleEncontrada = false;
+										
+										if($hosts_escalas_controle)
+										foreach($hosts_escalas_controle as $hec){
+											if($dataTipoDate == $hec['data']){
+												$dataEscalaControleEncontrada = true;
+												
+												if((int)$hec['total'] + 1 <= $totalVagas){
+													banco_update_campo('total','total+1',true);
+													
+													banco_update_executar('hosts_escalas_controle',"WHERE id_hosts_escalas_controle='".$hec['id_hosts_escalas_controle']."' AND id_hosts='".$id_hosts."'");
+													$escalaControleAtualizada = true;
+												} else {
+													$datasSemVagasFound = true;
+													$dataSemVagaFound = true;
+												}
+												break;
+											}
+										}
+										
+										if(!$dataEscalaControleEncontrada){
+											if(1 <= $totalVagas){
+												banco_insert_name_campo('id_hosts',$id_hosts);
+												banco_insert_name_campo('data',$dataTipoDate);
+												banco_insert_name_campo('total','1',true);
+												banco_insert_name_campo('status','utilizacao');
+												
+												banco_insert_name
+												(
+													banco_insert_name_campos(),
+													"hosts_escalas_controle"
+												);
+												$escalaControleAtualizada = true;
+											}
+										}
+										
+										// ===== Caso não tenha vaga, não atualizar no banco de dados e continuar o loop. Além disso, guarda a data para informar o usuário do problema.
+										
+										if($dataSemVagaFound){
+											$datasSemVagas[] = $dataFormatada;
+											continue;
+										}
+										
+										// ===== Senão atualizar o registro com status 'vaga-residual' no banco de dados.
+										
+										banco_update_campo('selecionada','1',true);
+										banco_update_campo('status','vaga-residual');
+										
+										banco_update_executar(
+											'hosts_escalas_datas',
+											"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+											." AND id_hosts='".$id_hosts."'"
+											." AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'"
+										);
+										
+										$diasEscalados[] = $diaDaData;
+										$escalaAtualizada = true;
+									break;
+								}
 							}
-							
 						}
 						
 						$datasProcessadasIDs[] = $id_hosts_escalas_datas;
