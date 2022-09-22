@@ -195,16 +195,6 @@ function escalas_calendario($params = false){
 	$mes = (int)$mes;
 	$ano = (int)$ano;
 	
-	// ===== Verificar se o mês atual é o mesmo do mês procurado. Se for, então é um calendário com possibilidade de vagas residuais.
-	
-	$mesAtual = (int)date('n');
-	
-	if($mesAtual == $mes){
-		$mesVagasResiduais = true;
-	} else {
-		$mesVagasResiduais = false;
-	}
-	
 	// ===== Definir a data do primeiro dia e do último dia do mês procurado.
 	
 	if($mes < 10){
@@ -342,7 +332,24 @@ function escalas_calendario($params = false){
 				$data = date('Y-m-d', $dia);
 				$flag3 = false;
 				
-				if($mesVagasResiduais){
+				// ===== Verificar se é fase de utilização, caso positivo verificar se há vagas disponíveis para datas não 'confirmado' ou 'vaga-residual'. Para estas, simplesmente permitir.
+				
+				if($faseUtilizacao){
+					$dataUtilizavelNaoEncontrada = true;
+					if(!$naoUtilizavel){
+						// ===== Caso haja pelo menos uma data permitida, verificar se a mesma já foi selecionada previamente. Caso positivo, apenas continuar. Senão, verirfifcar se há vagas disponíveis para permitir.
+						
+						if(count($datasUtilizacao) > 0){
+							foreach($datasUtilizacao as $dataUtilizacao){
+								if($data == $dataUtilizacao){
+									$dataUtilizavelNaoEncontrada = false;
+									break;
+								}
+							}
+						}
+					}
+					
+					if($dataUtilizavelNaoEncontrada)
 					if($escalas_controle){
 						foreach($escalas_controle as $escalas_data){
 							if($data == $escalas_data['data']){
@@ -600,6 +607,8 @@ function escalas_padrao(){
 									foreach($escala_data as $key => $valor){
 										switch($key){
 											case 'selecionada':
+											case 'selecionada_inscricao':
+											case 'selecionada_confirmacao':
 												banco_update_campo($key,($valor ? $valor : 'NULL'),true);
 											break;
 											default:
@@ -612,6 +621,8 @@ function escalas_padrao(){
 									foreach($escala_data as $key => $valor){
 										switch($key){
 											case 'selecionada':
+											case 'selecionada_inscricao':
+											case 'selecionada_confirmacao':
 												banco_insert_name_campo($key,($valor ? $valor : 'NULL'),true);
 											break;
 											default:
@@ -951,12 +962,19 @@ function escalas_padrao(){
 			$faseAtual = 'utilizacao';
 		}
 		
-		// ===== Verificar se a escala está em fase de confirmação. Se sim, somente permitir modificações em escala com estado 'qualificado'.
+		// ===== Variáveis de controle para montagem do calendário.
 		
 		$naoQualificado = false;
 		$faseConfirmacao = false;
 		$datasQualificadas = Array();
+		$naoUtilizavel = false;
+		$faseUtilizacao = false;
+		$datasUtilizacao = Array();
+		
 		switch($faseAtual){
+			
+			// ===== Verificar se a escala está em fase de confirmação. Se sim, somente permitir modificações em escala com estado 'qualificado'.
+			
 			case 'confirmacao':
 				if(
 					$status != 'qualificado' &&
@@ -986,6 +1004,37 @@ function escalas_padrao(){
 					}
 				}
 			break;
+			
+			// ===== Verificar se a escala está em fase de utilização. Se sim, somente permitir modificações em escala com estado 'confirmado' ou 'vaga-residual'.
+			
+			case 'utilizacao':
+				if(
+					$status != 'confirmado' &&
+					$status != 'vaga-residual'
+				){
+					$naoUtilizavel = true;
+				}
+				$faseUtilizacao = true;
+				
+				// ===== Pegar todas as datas qualificadas para filtrar o calendário.
+				
+				if($escalas){
+					$escalas_datas = banco_select(Array(
+						'tabela' => 'escalas_datas',
+						'campos' => Array(
+							'data',
+						),
+						'extra' => 
+							"WHERE id_hosts_escalas='".$escalas['id_hosts_escalas']."'"
+							." AND (status='confirmado' OR status='vaga-residual')"
+					));
+					
+					if($escalas_datas)
+					foreach($escalas_datas as $escala_data){
+						$datasUtilizacao[] = $escala_data['data'];
+					}
+				}
+			break;
 		}
 		
 		// ===== Montagem do calendário.
@@ -998,6 +1047,9 @@ function escalas_padrao(){
 			'naoQualificado' => $naoQualificado,
 			'faseConfirmacao' => $faseConfirmacao,
 			'datasQualificadas' => $datasQualificadas,
+			'naoUtilizavel' => $naoUtilizavel,
+			'faseUtilizacao' => $faseUtilizacao,
+			'datasUtilizacao' => $datasUtilizacao,
 		));
 		
 		// ===== Definir as datas dos períodos de atualizações.

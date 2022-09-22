@@ -834,6 +834,7 @@ function plataforma_cliente_plugin_escalas(){
 									banco_insert_name_campo('data',$dataTipoDate);
 									banco_insert_name_campo('status','novo');
 									banco_insert_name_campo('selecionada','1',true);
+									banco_insert_name_campo('selecionada_inscricao','1',true);
 									
 									banco_insert_name
 									(
@@ -960,6 +961,7 @@ function plataforma_cliente_plugin_escalas(){
 							switch($faseAtual){
 								case 'inscricao':
 									banco_update_campo('selecionada','1',true);
+									banco_update_campo('selecionada_inscricao','1',true);
 									
 									banco_update_executar(
 										'hosts_escalas_datas',
@@ -978,6 +980,7 @@ function plataforma_cliente_plugin_escalas(){
 										$status == 'email-nao-enviado'
 									){
 										banco_update_campo('selecionada','1',true);
+										banco_update_campo('selecionada_confirmacao','1',true);
 										
 										banco_update_executar(
 											'hosts_escalas_datas',
@@ -1134,6 +1137,7 @@ function plataforma_cliente_plugin_escalas(){
 							switch($faseAtual){
 								case 'inscricao':
 									banco_update_campo('selecionada','NULL',true);
+									banco_update_campo('selecionada_inscricao','NULL',true);
 									
 									banco_update_executar(
 										'hosts_escalas_datas',
@@ -1151,6 +1155,7 @@ function plataforma_cliente_plugin_escalas(){
 										$status == 'email-nao-enviado'
 									){
 										banco_update_campo('selecionada','NULL',true);
+										banco_update_campo('selecionada_confirmacao','NULL',true);
 										
 										banco_update_executar(
 											'hosts_escalas_datas',

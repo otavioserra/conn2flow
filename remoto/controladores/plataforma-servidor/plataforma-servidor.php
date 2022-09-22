@@ -91,6 +91,8 @@ function plataforma_servidor_cron_escalas(){
 						foreach($escala_data as $key => $valor){
 							switch($key){
 								case 'selecionada':
+								case 'selecionada_inscricao':
+								case 'selecionada_confirmacao':
 									banco_update_campo($key,($valor ? $valor : 'NULL'),true);
 								break;
 								default:
