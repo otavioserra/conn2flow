@@ -808,7 +808,7 @@ function plataforma_cliente_plugin_escalas(){
 				$escalaAtualizada = false;
 				$escalaControleAtualizada = false;
 				
-				echo $datasStr;
+				$msgDebug = $datasStr;
 				
 				if(existe($datasStr)){
 					$datas = explode(',',$datasStr);
@@ -1384,6 +1384,10 @@ function plataforma_cliente_plugin_escalas(){
 				}
 				
 				// ===== Colocar a mensagem extra na mensagem de retorno caso necessário. Senão remover o marcador extra da mensagem de retorno.
+				
+				if(isset($msgDebug)){
+					$msgExtra .= $msgDebug;
+				}
 				
 				if(existe($msgExtra)){
 					$msgConclusaoEscalamento = modelo_var_troca_tudo($msgConclusaoEscalamento,"#extra#",$msgExtra);
