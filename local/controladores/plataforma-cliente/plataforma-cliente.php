@@ -1140,6 +1140,7 @@ function plataforma_cliente_plugin_escalas(){
 						'id_hosts_escalas_datas',
 						'status',
 						'data',
+						'selecionada',
 					),
 					'extra' => 
 						"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
@@ -1153,11 +1154,18 @@ function plataforma_cliente_plugin_escalas(){
 						$status = $hed['status'];
 						$dataTipoDate = $hed['data'];
 						$dataTempo = strtotime($dataTipoDate);
+						$dataSelecionada = false;
 						
 						// ===== Ignorar datas do passado para manter histórico de datas selecionadas no passado.
 						
 						if($dataTempo < $tempoLimiteAlteracao){
 							continue;
+						}
+						
+						// ===== Verificar se a data está selecionada.
+						
+						if($hed['selecionada']){
+							$dataSelecionada = true;
 						}
 						
 						// ===== Procurar se a data foi processada.
@@ -1171,7 +1179,7 @@ function plataforma_cliente_plugin_escalas(){
 							}
 						}
 						
-						if(!$foundDataProcessada){
+						if(!$foundDataProcessada && $dataSelecionada){
 							switch($faseAtual){
 								case 'inscricao':
 									banco_update_campo('selecionada','NULL',true);
