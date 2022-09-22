@@ -54,12 +54,15 @@ $(document).ready(function(){
 		$('.confirmarBtn,.cancelarBtn').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
-			var op = 'cancelar';
+			var mes = $('input[name="mes"]').val();
+			var ano = $('input[name="ano"]').val();
+			
+			var escolha = 'cancelar';
 			if($(this).hasClass('confirmarBtn')){
-				op = 'confirmar';
+				escolha = 'confirmar';
 			}
 			
-			window.open('./?confirmacao=sim&op='+op,'_self');
+			window.open('./?confirmacao=sim&escolha='+escolha+'&mes='+mes+'&ano='+ano,'_self');
 		});
 	}
 	
