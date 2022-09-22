@@ -48,6 +48,19 @@ $(document).ready(function(){
 			$('input[name="datas"]').val(dates);
 		})
 		;
+		
+		// ===== Listener da confirmação.
+		
+		$('.confirmarBtn,.cancelarBtn').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			var op = 'cancelar';
+			if($(this).hasClass('confirmarBtn')){
+				op = 'confirmar';
+			}
+			
+			window.open('./?confirmacao=sim&op='+op,'_self');
+		});
 	}
 	
 	function start(){

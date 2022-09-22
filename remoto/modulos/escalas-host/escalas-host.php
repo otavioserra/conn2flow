@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'escalas-host';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.36',
+	'versao' => '1.1.0',
 );
 
 // ===== Funções Auxiliares
@@ -925,6 +925,7 @@ function escalas_padrao(){
 		// ===== Pegar a escala do mês do usuário.
 		
 		$status = '';
+		$data_confirmacao = '';
 		
 		$escalas = banco_select(Array(
 			'unico' => true,
@@ -932,6 +933,7 @@ function escalas_padrao(){
 			'campos' => Array(
 				'id_hosts_escalas',
 				'status',
+				'data_confirmacao',
 			),
 			'extra' => 
 				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
@@ -941,12 +943,14 @@ function escalas_padrao(){
 		
 		if($escalas){
 			$status = $escalas['status'];
+			$data_confirmacao = $escalas['data_confirmacao'];
 		}
 		
 		// ===== Variáveis de controle para montagem do calendário.
 		
 		$datasSelecionadas = '';
 		$naoQualificado = false;
+		$confirmado = false;
 		$faseConfirmacao = false;
 		$datasQualificadas = Array();
 		$faseUtilizacao = false;
@@ -979,16 +983,22 @@ function escalas_padrao(){
 				}
 			break;
 			
-			// ===== Somente permitir modificações em escala com estado 'qualificado', 'email-enviado' ou 'email-nao-enviado'.
+			// ===== Somente permitir modificações em escala com estado 'qualificado', 'email-enviado', 'email-nao-enviado' ou 'confirmado'.
 			
 			case 'confirmacao':
 				if(
 					$status != 'qualificado' &&
 					$status != 'email-enviado' &&
-					$status != 'email-nao-enviado'
+					$status != 'email-nao-enviado' &&
+					$status != 'confirmado'
 				){
 					$naoQualificado = true;
 				}
+				
+				if($status == 'confirmado'){
+					$confirmado = true;
+				}
+				
 				$faseConfirmacao = true;
 				
 				// ===== Pegar todas as datas qualificadas para filtrar o calendário.
@@ -1078,6 +1088,12 @@ function escalas_padrao(){
 		
 		pagina_trocar_variavel_valor('periodo-limite-alteracao',$periodoLimiteAlteracao);
 		
+		// ===== Definir a data_confirmacao caso necessário.
+		
+		if($confirmado){
+			pagina_trocar_variavel_valor('data-da-confirmacao',$data_confirmacao);
+		}
+		
 		// ===== Definir a interface gráfica de cada fase.
 		
 		switch($faseAtual){
@@ -1086,6 +1102,7 @@ function escalas_padrao(){
 				$cel_nome = 'disponivel'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'salvar-botao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				$cel_nome = 'confirmado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 			break;
 			case 'inscricao':
 				pagina_trocar_variavel_valor('inscricao-step','active',true);
@@ -1095,6 +1112,7 @@ function escalas_padrao(){
 				$cel_nome = 'concluido'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'indisponivel'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				$cel_nome = 'confirmado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 			break;
 			case 'confirmacao':
 				pagina_trocar_variavel_valor('inscricao-step','completed',true);
@@ -1108,6 +1126,12 @@ function escalas_padrao(){
 					$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 					$cel_nome = 'salvar-botao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				}
+				
+				if($confirmado){
+					$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				} else {
+					$cel_nome = 'confirmado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				}
 			break;
 			case 'utilizacao':
 				pagina_trocar_variavel_valor('inscricao-step','completed',true);
@@ -1117,11 +1141,13 @@ function escalas_padrao(){
 				$cel_nome = 'concluido'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'indisponivel'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				$cel_nome = 'confirmado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 			break;
 			default:
 				$cel_nome = 'indisponivel'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'disponivel'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				$cel_nome = 'confirmado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'salvar-botao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 		}
 	} else {
