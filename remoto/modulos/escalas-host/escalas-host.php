@@ -832,53 +832,12 @@ function escalas_padrao(){
 			)
 		));
 		
-		// ===== Pegar as datas selecionadas anteriormente pelo usuário.
-		
-		$datasSelecionadas = '';
-		$status = '';
-		
-		$escalas = banco_select(Array(
-			'unico' => true,
-			'tabela' => 'escalas',
-			'campos' => Array(
-				'id_hosts_escalas',
-				'status',
-			),
-			'extra' => 
-				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
-				." AND mes='".$mes."'"
-				." AND ano='".$ano."'"
-		));
-		
-		if($escalas){
-			$status = $escalas['status'];
-			
-			$escalas_datas = banco_select(Array(
-				'tabela' => 'escalas_datas',
-				'campos' => Array(
-					'data',
-				),
-				'extra' => 
-					"WHERE id_hosts_escalas='".$escalas['id_hosts_escalas']."'"
-					." AND selecionada IS NOT NULL"
-			));
-			
-			if($escalas_datas)
-			foreach($escalas_datas as $escala_data){
-				$datasSelecionadas .= (existe($datasSelecionadas) ? ',' : '') . formato_dado_para('data',$escala_data['data']);
-			}
-		}
-		
 		// ===== Colocar as datas selecionadas caso houver, mês e ano atual.
 		
 		$mesAtual = $mes;
 		$anoAtual = $ano;
 		
 		$mesAtualFormatado = ($mesAtual < 10 ? '0':'') . $mesAtual;
-		
-		pagina_trocar_variavel_valor('datas-selecionadas',$datasSelecionadas);
-		pagina_trocar_variavel_valor('mes-atual',$mesAtual);
-		pagina_trocar_variavel_valor('ano-atual',$anoAtual);
 		
 		// ===== Definir o início da inscrição.
 		
@@ -962,8 +921,30 @@ function escalas_padrao(){
 			$faseAtual = 'utilizacao';
 		}
 		
+		// ===== Pegar a escala do mês do usuário.
+		
+		$status = '';
+		
+		$escalas = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'escalas',
+			'campos' => Array(
+				'id_hosts_escalas',
+				'status',
+			),
+			'extra' => 
+				"WHERE id_hosts_usuarios='".$_GESTOR['usuario-id']."'"
+				." AND mes='".$mes."'"
+				." AND ano='".$ano."'"
+		));
+		
+		if($escalas){
+			$status = $escalas['status'];
+		}
+		
 		// ===== Variáveis de controle para montagem do calendário.
 		
+		$datasSelecionadas = '';
 		$naoQualificado = false;
 		$faseConfirmacao = false;
 		$datasQualificadas = Array();
@@ -971,9 +952,34 @@ function escalas_padrao(){
 		$faseUtilizacao = false;
 		$datasUtilizacao = Array();
 		
+		// ===== Verificar cada fase da escala e definir as variáveis de controle do calendário.
+		
 		switch($faseAtual){
 			
-			// ===== Verificar se a escala está em fase de confirmação. Se sim, somente permitir modificações em escala com estado 'qualificado'.
+			// ===== Permitir modificações na escala de forma livre.
+			
+			case 'inscricao':
+				// ===== Pegar todas as datas selecionadas para filtrar o calendário.
+				
+				if($escalas){
+					$escalas_datas = banco_select(Array(
+						'tabela' => 'escalas_datas',
+						'campos' => Array(
+							'data',
+						),
+						'extra' => 
+							"WHERE id_hosts_escalas='".$escalas['id_hosts_escalas']."'"
+							." AND selecionada IS NOT NULL"
+					));
+					
+					if($escalas_datas)
+					foreach($escalas_datas as $escala_data){
+						$datasSelecionadas .= (existe($datasSelecionadas) ? ',' : '') . formato_dado_para('data',$escala_data['data']);
+					}
+				}
+			break;
+			
+			// ===== Somente permitir modificações em escala com estado 'qualificado'.
 			
 			case 'confirmacao':
 				if(
@@ -992,6 +998,7 @@ function escalas_padrao(){
 						'tabela' => 'escalas_datas',
 						'campos' => Array(
 							'data',
+							'selecionada',
 						),
 						'extra' => 
 							"WHERE id_hosts_escalas='".$escalas['id_hosts_escalas']."'"
@@ -1001,11 +1008,17 @@ function escalas_padrao(){
 					if($escalas_datas)
 					foreach($escalas_datas as $escala_data){
 						$datasQualificadas[] = $escala_data['data'];
+						
+						// ===== Pegar todas as datas selecionadas para filtrar o calendário.
+						
+						if($escala_data['selecionada']){
+							$datasSelecionadas .= (existe($datasSelecionadas) ? ',' : '') . formato_dado_para('data',$escala_data['data']);
+						}
 					}
 				}
 			break;
 			
-			// ===== Verificar se a escala está em fase de utilização. Se sim, somente permitir modificações em escala com estado 'confirmado' ou 'vaga-residual'.
+			// ===== Somente permitir modificações em escala com estado 'confirmado' ou 'vaga-residual'.
 			
 			case 'utilizacao':
 				if(
@@ -1023,6 +1036,7 @@ function escalas_padrao(){
 						'tabela' => 'escalas_datas',
 						'campos' => Array(
 							'data',
+							'selecionada',
 						),
 						'extra' => 
 							"WHERE id_hosts_escalas='".$escalas['id_hosts_escalas']."'"
@@ -1032,6 +1046,12 @@ function escalas_padrao(){
 					if($escalas_datas)
 					foreach($escalas_datas as $escala_data){
 						$datasUtilizacao[] = $escala_data['data'];
+						
+						// ===== Pegar todas as datas selecionadas para filtrar o calendário.
+						
+						if($escala_data['selecionada']){
+							$datasSelecionadas .= (existe($datasSelecionadas) ? ',' : '') . formato_dado_para('data',$escala_data['data']);
+						}
 					}
 				}
 			break;
@@ -1053,6 +1073,10 @@ function escalas_padrao(){
 		));
 		
 		// ===== Definir as datas dos períodos de atualizações.
+		
+		pagina_trocar_variavel_valor('datas-selecionadas',$datasSelecionadas);
+		pagina_trocar_variavel_valor('mes-atual',$mesAtual);
+		pagina_trocar_variavel_valor('ano-atual',$anoAtual);
 		
 		pagina_trocar_variavel_valor('data-inscricao-inicio',$data_inscricao_inicio);
 		pagina_trocar_variavel_valor('data-inscricao-fim',$data_inscricao_fim);
