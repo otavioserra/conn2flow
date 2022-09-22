@@ -822,6 +822,7 @@ function plataforma_cliente_plugin_escalas(){
 						// ===== Ignorar datas do passado para manter histórico de datas selecionadas no passado.
 						
 						if($dataTempo < $tempoLimiteAlteracao){
+							echo $dataFormatada.', ';
 							continue;
 						}
 						
