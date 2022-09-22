@@ -208,16 +208,6 @@ function plataforma_cliente_plugin_data_permitida($params = false){
 	$mes = (int)$mes;
 	$ano = (int)$ano;
 	
-	// ===== Verificar se o mês atual é o mesmo do mês procurado. Se for, então é um calendário com possibilidade de vagas residuais.
-	
-	$mesAtual = (int)date('n');
-	
-	if($mesAtual == $mes){
-		$mesVagasResiduais = true;
-	} else {
-		$mesVagasResiduais = false;
-	}
-	
 	// ===== Definir a data do primeiro dia e do último dia do mês procurado.
 	
 	if($mes < 10){
@@ -563,7 +553,8 @@ function plataforma_cliente_plugin_escalas(){
 				$msg_escala_suspenso = (existe($config['msg-escala-suspenso']) ? $config['msg-escala-suspenso'] : '');
 				$diaInicioInscricao = (existe($config['dia-inicio-inscricao']) ? $config['dia-inicio-inscricao'] : '');
 				$mesInicioInscricao = (existe($config['mes-inicio-inscricao']) ? $config['mes-inicio-inscricao'] : '');
-				
+				$periodoLimiteAlteracao = (existe($config['periodo-limite-alteracao']) ? $config['periodo-limite-alteracao'] : '');
+	
 				// ===== Caso o agendamento estiver inativo, retornar mensagem de inatividade.
 				
 				if(!$escala_ativacao){
@@ -584,6 +575,10 @@ function plataforma_cliente_plugin_escalas(){
 				
 				//$hoje = strtotime('21-09-2022');
 				$hoje = time();
+				
+				// ===== Definir o dia limite de alteração para poder ignorar datas do passado.
+				
+				$tempoLimiteAlteracao = strtotime(date("Y-m-d", $hoje) . " + ".$periodoLimiteAlteracao." day");
 				
 				// ===== Passar o mês e o ano para inteiro.
 				
@@ -648,6 +643,16 @@ function plataforma_cliente_plugin_escalas(){
 					
 					if($datas)
 					foreach($datas as $data){
+						// ===== Ignorar datas do passado para manter histórico de datas selecionadas no passado.
+						
+						$dataTime = strtotime(str_replace('/', '-', $data));
+						
+						if($dataTime < $tempoLimiteAlteracao){
+							continue;
+						}
+						
+						// ===== Verificar se a data é permitida.
+						
 						if(!plataforma_cliente_plugin_data_permitida(Array(
 							'data' => $data,
 							'mes' => $mes,
@@ -814,6 +819,8 @@ function plataforma_cliente_plugin_escalas(){
 						$id_hosts_escalas_datas = '';
 						$status = '';
 						
+						// ===== Procurar a data se já foi definida anteriormente.
+						
 						if($hosts_escalas_datas)
 						foreach($hosts_escalas_datas as $hed){
 							if($dataTipoDate == $hed['data']){
@@ -823,6 +830,17 @@ function plataforma_cliente_plugin_escalas(){
 								break;
 							}
 						}
+						
+						// ===== Ignorar datas do passado para manter histórico de datas selecionadas no passado.
+						
+						if($dataTempo < $tempoLimiteAlteracao){
+							if($dataFound){
+								$datasProcessadasIDs[] = $id_hosts_escalas_datas;
+							}
+							continue;
+						}
+						
+						// ===== Tratar cada fase caso tenha encontrado ou não o registo.
 						
 						if(!$dataFound){
 							switch($faseAtual){
