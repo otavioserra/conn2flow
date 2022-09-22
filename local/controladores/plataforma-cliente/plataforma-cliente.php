@@ -808,8 +808,6 @@ function plataforma_cliente_plugin_escalas(){
 				$escalaAtualizada = false;
 				$escalaControleAtualizada = false;
 				
-				$msgDebug = $datasStr;
-				
 				if(existe($datasStr)){
 					$datas = explode(',',$datasStr);
 					
