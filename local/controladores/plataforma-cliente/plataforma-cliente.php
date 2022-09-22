@@ -973,7 +973,6 @@ function plataforma_cliente_plugin_escalas(){
 								break;
 							}
 						} else {
-							echo $faseAtual.' '.$dataFormatada.' '.$dataFound.'<br>';
 							switch($faseAtual){
 								case 'inscricao':
 									banco_update_campo('selecionada','1',true);
@@ -1345,6 +1344,21 @@ function plataforma_cliente_plugin_escalas(){
 					}
 				} else {
 					$msgConclusaoEscalamento = (existe($config['msg-conclusao-escalamento']) ? $config['msg-conclusao-escalamento'] : '');
+				}
+				
+				// ===== Caso haja alguma data sem vagas, incluir a mensagem na msgExtra.
+				
+				if(count($datasSemVagas) > 0){
+					$msgDatasSemVagas = (existe($config['msg-datas-sem-vagas']) ? $config['msg-datas-sem-vagas'] : '');
+					
+					$datasSemVagasStr = '';
+					foreach($datasSemVagas as $dataSemVaga){
+						$datasSemVagasStr .= (existe($datasSemVagasStr) ? ', ':'' ) . $dataSemVaga;
+					}
+					
+					$msgDatasSemVagas = modelo_var_troca_tudo($msgDatasSemVagas,"#datas#",$datasSemVagasStr);
+					
+					$msgExtra .= $msgDatasSemVagas;
 				}
 				
 				// ===== Colocar a mensagem extra na mensagem de retorno caso necessário. Senão remover o marcador extra da mensagem de retorno.
