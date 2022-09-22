@@ -1103,6 +1103,7 @@ function escalas_padrao(){
 				$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'salvar-botao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'confirmado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				$cel_nome = 'nao-qualificado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 			break;
 			case 'inscricao':
 				pagina_trocar_variavel_valor('inscricao-step','active',true);
@@ -1113,6 +1114,7 @@ function escalas_padrao(){
 				$cel_nome = 'indisponivel'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'confirmado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				$cel_nome = 'nao-qualificado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 			break;
 			case 'confirmacao':
 				pagina_trocar_variavel_valor('inscricao-step','completed',true);
@@ -1125,6 +1127,8 @@ function escalas_padrao(){
 				if($naoQualificado){
 					$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 					$cel_nome = 'salvar-botao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				} else {
+					$cel_nome = 'nao-qualificado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				}
 				
 				if($confirmado){
@@ -1142,12 +1146,14 @@ function escalas_padrao(){
 				$cel_nome = 'indisponivel'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'confirmado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				$cel_nome = 'nao-qualificado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 			break;
 			default:
 				$cel_nome = 'indisponivel'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'disponivel'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'confirmacao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'confirmado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+				$cel_nome = 'nao-qualificado'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 				$cel_nome = 'salvar-botao'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 		}
 	} else {
