@@ -1472,6 +1472,386 @@ function plataforma_cliente_plugin_escalas(){
 				);
 			}
 		break;
+		case 'confirmacao':
+			// ===== Decodificar os dados em formato Array
+			
+			$dados = Array();
+			if(isset($_REQUEST['dados'])){
+				$dados = json_decode($_REQUEST['dados'],true);
+			}
+			
+			// ===== Verificar se os campos obrigatórios foram enviados: usuarioID, escolha, mes e ano.
+			
+			if(isset($dados['usuarioID']) && isset($dados['escolha']) && isset($dados['mes']) && isset($dados['ano'])){
+				// ===== Incluir bibliotecas padrões.
+				
+				gestor_incluir_biblioteca('formato');
+				
+				// ===== Pegar os dados de configuração.
+				
+				gestor_incluir_biblioteca('configuracao');
+				
+				$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-escalas'));
+				
+				$escala_ativacao = (existe($config['escala-ativacao']) ? true : false);
+				$msg_escala_suspenso = (existe($config['msg-escala-suspenso']) ? $config['msg-escala-suspenso'] : '');
+				
+				// ===== Caso o agendamento estiver inativo, retornar mensagem de inatividade.
+				
+				if(!$escala_ativacao){
+					return Array(
+						'status' => 'ESCALAMENTO_INATIVO',
+						'error-msg' => $msg_escala_suspenso,
+					);
+				}
+				
+				// ===== Tratar os dados enviados.
+				
+				$id_hosts_usuarios = banco_escape_field($dados['usuarioID']);
+				$mes = $dados['mes'];
+				$ano = $dados['ano'];
+				$escolha = $dados['escolha'];
+				
+				// ===== Definição do tempo do dia de agora.
+				
+				//$hoje = strtotime('21-09-2022');
+				$hoje = time();
+				
+				// ===== Passar o mês e o ano para inteiro.
+				
+				$mes = (int)$mes;
+				$ano = (int)$ano;
+				
+				// ===== Definir a data do início e fim da confirmação.
+				
+				$mesAtualFormatado = ($mes < 10 ? '0':'') . $mes;
+				
+				$diasInicioConfirmacao = (existe($config['dias-inicio-confirmacao']) ? $config['dias-inicio-confirmacao'] : '');
+				$diasFimConfirmacao = (existe($config['dias-fim-confirmacao']) ? $config['dias-fim-confirmacao'] : '');
+				
+				$data_confirmacao_inicio = plataforma_cliente_plugin_data_dias_antes($mes,$ano,$diasInicioConfirmacao,'01/'. $mesAtualFormatado . '/' . $ano);
+				$data_confirmacao_fim = plataforma_cliente_plugin_data_dias_antes($mes,$ano,$diasFimConfirmacao,'01/'. $mesAtualFormatado . '/' . $ano);
+				
+				// ===== Definir a data inicial e final do mês.
+				
+				$data_inicial_mes = date('d/m/Y', strtotime(str_replace('/', '-', $data_confirmacao_fim) . ' +1 day'));
+				
+				$mesInicio = $mes;
+				$anoInicio = $ano;
+				
+				if($mesInicio < 10){
+					$mesInicio = '0' . $mesInicio;
+				}
+				
+				$prmeiroDiaMes = date($anoInicio.'-'.$mesInicio.'-01');
+				$data_final_mes = date('t',strtotime($prmeiroDiaMes)) . '/' . $mesInicio . '/' . $anoInicio;
+				
+				// ===== Pegar a quantidade de vagas totais do mês.
+		
+				$dateInicio = formato_dado_para('date',$data_inicial_mes);
+				$dateFim = formato_dado_para('date',$data_final_mes);
+				
+				$hosts_escalas_controle = banco_select(Array(
+					'tabela' => 'hosts_escalas_controle',
+					'campos' => Array(
+						'id_hosts_escalas_controle',
+						'data',
+						'total',
+					),
+					'extra' => 
+						"WHERE data >= '".$dateInicio."'"
+						." AND data <= '".$dateFim."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				// ===== Pegar os dados da escala do mês / ano requisitados.
+				
+				$hosts_escalas = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_escalas',
+					'campos' => Array(
+						'id_hosts_escalas',
+					),
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+						." AND id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND mes='".$mes."'"
+						." AND ano='".$ano."'"
+				));
+				
+				$id_hosts_escalas = $hosts_escalas['id_hosts_escalas'];
+				
+				// ===== Pegar as datas da escala do mês / ano.
+				
+				$hosts_escalas_datas = banco_select(Array(
+					'tabela' => 'hosts_escalas_datas',
+					'campos' => Array(
+						'id_hosts_escalas_datas',
+						'data',
+					),
+					'extra' => 
+						"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+						." AND id_hosts='".$id_hosts."'"
+						." AND status='qualificado'"
+				));
+				
+				// ===== Variáveis de controle.
+				
+				$escalaControleAtualizada = false;
+				$diasEscalados = Array();
+				
+				// ===== Verificar a escolha e aplicar as modificações necessárias.
+				
+				switch($escolha){
+					case 'confirmar':
+						// ===== Reservar as vagas para cada data atualizando 'hosts_escalas_controle'.
+						
+						if($hosts_escalas_datas)
+						foreach($hosts_escalas_datas as $escala_data){
+							$dataTipoDate = $escala_data['data'];
+							$diaDaData = date('j',strtotime($dataTipoDate));
+							
+							$diasEscalados[] = $diaDaData;
+							
+							$dataEscalaControleEncontrada = false;
+							
+							if($hosts_escalas_controle)
+							foreach($hosts_escalas_controle as $hec){
+								if($dataTipoDate == $hec['data']){
+									$dataEscalaControleEncontrada = true;
+									
+									banco_update_campo('total','total+1',true);
+									
+									banco_update_executar('hosts_escalas_controle',"WHERE id_hosts_escalas_controle='".$hec['id_hosts_escalas_controle']."' AND id_hosts='".$id_hosts."'");
+									break;
+								}
+							}
+							
+							if(!$dataEscalaControleEncontrada){
+								banco_insert_name_campo('id_hosts',$id_hosts);
+								banco_insert_name_campo('data',$dataTipoDate);
+								banco_insert_name_campo('total','1',true);
+								banco_insert_name_campo('status','confirmacao');
+								
+								banco_insert_name
+								(
+									banco_insert_name_campos(),
+									"hosts_escalas_controle"
+								);
+							}
+							
+							$escalaControleAtualizada = true;
+						}
+						
+						// ===== Modificar o status para 'confirmado' das datas e da escala.
+						
+						if($hosts_escalas_datas)
+						foreach($hosts_escalas_datas as $escala_data){
+							$id_hosts_escalas_datas = $escala_data['id_hosts_escalas_datas'];
+							
+							banco_update_campo('status','confirmado');
+							
+							banco_update_executar('hosts_escalas_datas',"WHERE id_hosts='".$id_hosts."' AND id_hosts_escalas='".$id_hosts_escalas."' AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'");
+						}
+						
+						banco_update_campo('status','confirmado');
+						banco_update_campo('data_confirmacao','NOW()',true);
+						banco_update_campo('data_modificacao','NOW()',true);
+						banco_update_campo('versao','versao=versao+1',true);
+						
+						banco_update_executar('hosts_escalas',"WHERE id_hosts='".$id_hosts."' AND id_hosts_escalas='".$id_hosts_escalas."'");
+						
+						// ===== Montar o calendário das datas da escala.
+						
+						$calendario = plataforma_cliente_plugin_montar_calendario($mes,$ano,$diasEscalados);
+					break;
+					case 'cancelar':
+						// ===== Modificar o status para 'cancelado' das datas e da escala.
+						
+						if($hosts_escalas_datas)
+						foreach($hosts_escalas_datas as $escala_data){
+							$id_hosts_escalas_datas = $escala_data['id_hosts_escalas_datas'];
+							
+							banco_update_campo('status','cancelado');
+							
+							banco_update_executar('hosts_escalas_datas',"WHERE id_hosts='".$id_hosts."' AND id_hosts_escalas='".$id_hosts_escalas."' AND id_hosts_escalas_datas='".$id_hosts_escalas_datas."'");
+						}
+						
+						banco_update_campo('status','cancelado');
+						banco_update_campo('data_modificacao','NOW()',true);
+						banco_update_campo('versao','versao=versao+1',true);
+						
+						banco_update_executar('hosts_escalas',"WHERE id_hosts='".$id_hosts."' AND id_hosts_escalas='".$id_hosts_escalas."'");
+					break;
+				}
+				
+				// ===== Pegar dados do usuário.
+				
+				$hosts_usuarios = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_usuarios',
+					'campos' => Array(
+						'nome',
+						'email',
+					),
+					'extra' => 
+						"WHERE id_hosts_usuarios='".$id_hosts_usuarios."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				// ===== Formatar dados do email.
+				
+				switch($escolha){
+					case 'confirmar':
+						$escalamentoAssunto = (existe($config['escalamento-confirmar-assunto']) ? $config['escalamento-confirmar-assunto'] : '');
+						$escalamentoMensagem = (existe($config['escalamento-confirmar-mensagem']) ? $config['escalamento-confirmar-mensagem'] : '');
+						$msgConfirmacaoEscalamento = (existe($config['msg-conclusao-confirmar-escalamento']) ? $config['msg-conclusao-confirmar-escalamento'] : '');
+					break;
+					case 'cancelar':
+						$escalamentoAssunto = (existe($config['escalamento-cancelar-assunto']) ? $config['escalamento-cancelar-assunto'] : '');
+						$escalamentoMensagem = (existe($config['escalamento-cancelar-mensagem']) ? $config['escalamento-cancelar-mensagem'] : '');
+						$msgConfirmacaoEscalamento = (existe($config['msg-conclusao-cancelar-escalamento']) ? $config['msg-conclusao-cancelar-escalamento'] : '');
+					break;
+				}
+				
+				$tituloEstabelecimento = (existe($config['titulo-estabelecimento']) ? $config['titulo-estabelecimento'] : '');
+				
+				$email = $hosts_usuarios['email'];
+				$nome = $hosts_usuarios['nome'];
+				
+				$codigo = date('dmY').formato_zero_a_esquerda($id_hosts_escalas,6);
+				
+				// ===== Formatar mensagem do email.
+		
+				gestor_incluir_biblioteca('host');
+				
+				$mesEAno = formato_zero_a_esquerda($mes,2) . '/' . $ano;
+				
+				switch($escolha){
+					case 'confirmar':
+						$escalamentoAssunto = modelo_var_troca_tudo($escalamentoAssunto,"#codigo#",$codigo);
+						$escalamentoAssunto = modelo_var_troca_tudo($escalamentoAssunto,"#mes#",$mesEAno);
+						
+						$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#codigo#",$codigo);
+						$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#titulo#",$tituloEstabelecimento);
+						$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#mes#",$mesEAno);
+						$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#calendario#",$calendario);
+						$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#url-escalamento#",'<a target="escalamento" href="'.host_url(Array('opcao'=>'full')).'escalas/" style="overflow-wrap: break-word;">'.host_url(Array('opcao'=>'full')).'escalas/</a>');
+					break;
+					case 'cancelar':
+						$escalamentoAssunto = modelo_var_troca_tudo($escalamentoAssunto,"#codigo#",$codigo);
+						$escalamentoAssunto = modelo_var_troca_tudo($escalamentoAssunto,"#mes#",$mesEAno);
+						
+						$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#codigo#",$codigo);
+						$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#titulo#",$tituloEstabelecimento);
+						$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#mes#",$mesEAno);
+						$escalamentoMensagem = modelo_var_troca_tudo($escalamentoMensagem,"#url-escalamento#",'<a target="escalamento" href="'.host_url(Array('opcao'=>'full')).'escalas/" style="overflow-wrap: break-word;">'.host_url(Array('opcao'=>'full')).'escalas/</a>');
+					break;
+				}
+				
+				// ===== Enviar email com a notificação de criação da escala.
+				
+				gestor_incluir_biblioteca(Array('comunicacao','host'));
+				
+				if(comunicacao_email(Array(
+					'hostPersonalizacao' => true,
+					'destinatarios' => Array(
+						Array(
+							'email' => $email,
+							'nome' => $nome,
+						),
+					),
+					'mensagem' => Array(
+						'assunto' => $escalamentoAssunto,
+						'html' => $escalamentoMensagem,
+						'htmlAssinaturaAutomatica' => true,
+						'htmlVariaveis' => Array(
+							Array(
+								'variavel' => '[[url]]',
+								'valor' => host_url(Array('opcao'=>'full')),
+							),
+						),
+					),
+				))){
+					
+				}
+				
+				// ===== Caso tenha sido alterada o 'hosts_escalas_controle', enviar os dados atualizados.
+				
+				if($escalaControleAtualizada){
+					$hosts_escalas_controle = banco_select(Array(
+						'tabela' => 'hosts_escalas_controle',
+						'campos' => '*',
+						'extra' => 
+							"WHERE data >= '".$dateInicio."'"
+							." AND data <= '".$dateFim."'"
+							." AND id_hosts='".$id_hosts."'"
+					));
+					
+					if($hosts_escalas_controle)
+					foreach($hosts_escalas_controle as $escala_controle){
+						unset($escala_controle['id_hosts']);
+						
+						$hosts_escalas_controle_proc[] = $escala_controle;
+					}
+				}
+				
+				// ===== Tratar dados de retorno.
+				
+				$hosts_escalas = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts_escalas',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				unset($hosts_escalas['id_hosts']);
+				
+				$hosts_escalas_datas = banco_select(Array(
+					'tabela' => 'hosts_escalas_datas',
+					'campos' => '*',
+					'extra' => 
+						"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				$hosts_escalas_datas_proc = Array();
+				
+				if($hosts_escalas_datas)
+				foreach($hosts_escalas_datas as $hosts_escala_data){
+					unset($hosts_escala_data['id_hosts']);
+					
+					$hosts_escalas_datas_proc[] = $hosts_escala_data;
+				}
+				
+				$retornoDados = Array(
+					'escalas' => $hosts_escalas,
+					'escalas_datas' => $hosts_escalas_datas_proc,
+					'alerta' => $msgConfirmacaoEscalamento,
+				);
+				
+				if(isset($hosts_escalas_controle_proc)){
+					$retornoDados['escalas_controle'] = Array(
+						'tabela' => $hosts_escalas_controle_proc,
+						'dateInicio' => $dateInicio,
+						'dateFim' => $dateFim,
+					);
+				}
+				
+				// ===== Retornar dados.
+				
+				return Array(
+					'status' => 'OK',
+					'data' => $retornoDados,
+				);
+			} else {
+				return Array(
+					'status' => 'MANDATORY_FIELDS_NOT_INFORMED',
+				);
+			}
+		break;
 		default:
 			return Array(
 				'status' => 'OPTION_NOT_DEFINED',

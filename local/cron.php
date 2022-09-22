@@ -880,7 +880,7 @@ function cron_escalas_sorteio(){
 					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#data2#",$data_confirmacao_fim);
 					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#codigo#",$codigo);
 					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#titulo#",$tituloEstabelecimento);
-					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#url-escalamento#",'<a target="escalamento" href="'.host_url(Array('opcao'=>'full')).'escalas/" style="overflow-wrap: break-word;">'.host_url(Array('opcao'=>'full')).'escalas/</a>');
+					$emailConfirmacaoMensagemAux = modelo_var_troca_tudo($emailConfirmacaoMensagemAux,"#url-escalamento#",'<a target="escalamento" href="'.host_url(Array('opcao'=>'full','id_hosts' => $id_hosts)).'escalas/" style="overflow-wrap: break-word;">'.host_url(Array('opcao'=>'full','id_hosts' => $id_hosts)).'escalas/</a>');
 					
 					// ===== Enviar email ao usuário solicitando a confirmação ou cancelamento da escala.
 					

@@ -741,6 +741,213 @@ function escalas_padrao(){
 			}
 		}
 		
+		// ===== Caso o usuário tenha ativado a opção de confirmação.
+		
+		if(isset($_REQUEST['confirmacao'])){
+			if(
+				isset($_REQUEST['escolha']) && 
+				isset($_REQUEST['mes']) && 
+				isset($_REQUEST['ano'])
+			){
+				// ===== Pegar os valores enviados e escapar os dados.
+				
+				$escolha = banco_escape_field($_REQUEST['escolha']);
+				$mes = banco_escape_field($_REQUEST['mes']);
+				$ano = banco_escape_field($_REQUEST['ano']);
+				
+				// ===== API-Servidor para confirmacao.
+				
+				gestor_incluir_biblioteca('api-servidor');
+				
+				$retorno = api_servidor_interface(Array(
+					'interface' => 'escalas',
+					'plugin' => 'escalas',
+					'opcao' => 'confirmacao',
+					'dados' => Array(
+						'usuarioID' => $_GESTOR['usuario-id'],
+						'mes' => $mes,
+						'ano' => $ano,
+						'escolha' => $escolha,
+					),
+				));
+				
+				if(!$retorno['completed']){
+					switch($retorno['status']){
+						case 'ESCALAMENTO_INATIVO':
+							$alerta = (existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status']);
+						break;
+						default:
+							$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-servidor-error'));
+							
+							$alerta = modelo_var_troca($alerta,"#error-msg#",(existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status'] ));
+					}
+					
+					interface_alerta(Array(
+						'redirect' => true,
+						'msg' => $alerta
+					));
+				} else {
+					// ===== Dados de retorno.
+					
+					$dados = Array();
+					if(isset($retorno['data'])){
+						$dados = $retorno['data'];
+					}
+					
+					// ===== Atualizar a escala localmente.
+					
+					if(isset($dados['escalas'])){
+						$escalas = $dados['escalas'];
+						
+						$id_hosts_escalas = $escalas['id_hosts_escalas'];
+						
+						$escalasLocal = banco_select(Array(
+							'unico' => true,
+							'tabela' => 'escalas',
+							'campos' => Array(
+								'id_hosts_escalas',
+							),
+							'extra' => 
+								"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+						));
+						
+						if($escalasLocal){
+							foreach($escalas as $key => $valor){
+								switch($key){
+									case 'ano':
+									case 'mes':
+									case 'versao':
+										banco_update_campo($key,($valor ? $valor : '0'),true);
+									break;
+									default:
+										banco_update_campo($key,$valor);
+								}
+							}
+							
+							banco_update_executar('escalas',"WHERE id_hosts_escalas='".$id_hosts_escalas."'");
+						}
+						
+						// ===== Atualizar as escalas datas localmente.
+						
+						if(isset($dados['escalas_datas'])){
+							$escalas_datas = $dados['escalas_datas'];
+							$escalasDatasProcessadas = Array();
+							
+							$escalasDatasLocal = banco_select(Array(
+								'tabela' => 'escalas_datas',
+								'campos' => Array(
+									'id_hosts_escalas_datas',
+								),
+								'extra' => 
+									"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+							));
+							
+							foreach($escalas_datas as $escala_data){
+								$id_hosts_escalas_datas = $escala_data['id_hosts_escalas_datas'];
+								$foundDataLocal = false;
+								
+								if($escalasDatasLocal){
+									foreach($escalasDatasLocal as $escalaDataLocal){
+										if($id_hosts_escalas_datas == $escalaDataLocal['id_hosts_escalas_datas']){
+											$foundDataLocal = true;
+											break;
+										}
+									}
+								}
+								
+								if($foundDataLocal){
+									foreach($escala_data as $key => $valor){
+										switch($key){
+											case 'selecionada':
+											case 'selecionada_inscricao':
+											case 'selecionada_confirmacao':
+												banco_update_campo($key,($valor ? $valor : 'NULL'),true);
+											break;
+											default:
+												banco_update_campo($key,$valor);
+										}
+									}
+									
+									banco_update_executar('escalas_datas',"WHERE id_hosts_escalas_datas='".$id_hosts_escalas_datas."'");
+								}
+							}
+						}
+					}
+					
+					// ===== Atualizar 'escalas_controle' caso necessário.
+					
+					if(isset($dados['escalas_controle'])){
+						$escalas_controle = $dados['escalas_controle']['tabela'];
+						$dateInicio = $dados['escalas_controle']['dateInicio'];
+						$dateFim = $dados['escalas_controle']['dateFim'];
+						
+						$escalasControleLocal = banco_select(Array(
+							'tabela' => 'escalas_controle',
+							'campos' => Array(
+								'id_hosts_escalas_controle',
+							),
+							'extra' => 
+								"WHERE data >= '".$dateInicio."'"
+								." AND data <= '".$dateFim."'"
+						));
+						
+						foreach($escalas_controle as $escala_controle){
+							$id_hosts_escalas_controle = $escala_controle['id_hosts_escalas_controle'];
+							$foundEscalaControleLocal = false;
+							
+							if($escalasControleLocal){
+								foreach($escalasControleLocal as $escalaControleLocal){
+									if($id_hosts_escalas_controle == $escalaControleLocal['id_hosts_escalas_controle']){
+										$foundEscalaControleLocal = true;
+										break;
+									}
+								}
+							}
+							
+							if($foundEscalaControleLocal){
+								foreach($escala_controle as $key => $valor){
+									switch($key){
+										case 'total':
+											banco_update_campo($key,($valor ? $valor : '0'),true);
+										break;
+										default:
+											banco_update_campo($key,$valor);
+									}
+								}
+								
+								banco_update_executar('escalas_controle',"WHERE id_hosts_escalas_controle='".$id_hosts_escalas_controle."'");
+							} else {
+								foreach($escala_controle as $key => $valor){
+									switch($key){
+										case 'total':
+											banco_insert_name_campo($key,($valor ? $valor : '0'),true);
+										break;
+										default:
+											banco_insert_name_campo($key,$valor);
+									}
+								}
+								
+								banco_insert_name
+								(
+									banco_insert_name_campos(),
+									"escalas_controle"
+								);
+							}
+						}
+					}
+					
+					// ===== Alertar o usuário.
+					
+					interface_alerta(Array(
+						'redirect' => true,
+						'msg' => $dados['alerta']
+					));
+				}
+				
+				gestor_redirecionar('escalas/?mes='.((int)$mes < 10 ? '0': '').$mes.'&ano='.$ano);
+			}
+		}
+		
 		// ===== Remover a célula inativo e alteracoes.
 		
 		$cel_nome = 'inativo'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
