@@ -336,18 +336,19 @@ function escalas_calendario($params = false){
 				
 				if($faseUtilizacao){
 					$dataUtilizavelNaoEncontrada = true;
-					if(!$naoUtilizavel){
-						// ===== Caso haja pelo menos uma data permitida, verificar se a mesma já foi selecionada previamente. Caso positivo, apenas continuar. Senão, verirfifcar se há vagas disponíveis para permitir.
-						
-						if(count($datasUtilizacao) > 0){
-							foreach($datasUtilizacao as $dataUtilizacao){
-								if($data == $dataUtilizacao){
-									$dataUtilizavelNaoEncontrada = false;
-									break;
-								}
+					
+					// ===== Caso haja pelo menos uma data permitida, verificar se a mesma já foi selecionada previamente. Caso positivo, apenas continuar. Senão, verificar se há vagas disponíveis para permitir.
+					
+					if(count($datasUtilizacao) > 0){
+						foreach($datasUtilizacao as $dataUtilizacao){
+							if($data == $dataUtilizacao){
+								$dataUtilizavelNaoEncontrada = false;
+								break;
 							}
 						}
 					}
+					
+					// ===== Verificar se há vagas disponíveis para uma data específica, somente se a data não é utilizada.
 					
 					if($dataUtilizavelNaoEncontrada)
 					if($escalas_controle){
@@ -948,7 +949,6 @@ function escalas_padrao(){
 		$naoQualificado = false;
 		$faseConfirmacao = false;
 		$datasQualificadas = Array();
-		$naoUtilizavel = false;
 		$faseUtilizacao = false;
 		$datasUtilizacao = Array();
 		
@@ -979,7 +979,7 @@ function escalas_padrao(){
 				}
 			break;
 			
-			// ===== Somente permitir modificações em escala com estado 'qualificado'.
+			// ===== Somente permitir modificações em escala com estado 'qualificado', 'email-enviado' ou 'email-nao-enviado'.
 			
 			case 'confirmacao':
 				if(
@@ -1018,40 +1018,29 @@ function escalas_padrao(){
 				}
 			break;
 			
-			// ===== Somente permitir modificações em escala com estado 'confirmado' ou 'vaga-residual'.
+			// ===== Somente permitir modificações em escala com estado 'confirmado' ou 'vaga-residual'. Senão, para formar o calendário será necessário verificar a quantidade de vagas.
 			
 			case 'utilizacao':
-				if(
-					$status != 'confirmado' &&
-					$status != 'vaga-residual'
-				){
-					$naoUtilizavel = true;
-				}
 				$faseUtilizacao = true;
 				
-				// ===== Pegar todas as datas qualificadas para filtrar o calendário.
+				// ===== Pegar todas as datas com status 'confirmado' ou 'vaga-residual' para filtrar o calendário.
 				
 				if($escalas){
 					$escalas_datas = banco_select(Array(
 						'tabela' => 'escalas_datas',
 						'campos' => Array(
 							'data',
-							'selecionada',
 						),
 						'extra' => 
 							"WHERE id_hosts_escalas='".$escalas['id_hosts_escalas']."'"
 							." AND (status='confirmado' OR status='vaga-residual')"
+							." AND selecionada IS NOT NULL"
 					));
 					
 					if($escalas_datas)
 					foreach($escalas_datas as $escala_data){
 						$datasUtilizacao[] = $escala_data['data'];
-						
-						// ===== Pegar todas as datas selecionadas para filtrar o calendário.
-						
-						if($escala_data['selecionada']){
-							$datasSelecionadas .= (existe($datasSelecionadas) ? ',' : '') . formato_dado_para('data',$escala_data['data']);
-						}
+						$datasSelecionadas .= (existe($datasSelecionadas) ? ',' : '') . formato_dado_para('data',$escala_data['data']);
 					}
 				}
 			break;
@@ -1067,7 +1056,6 @@ function escalas_padrao(){
 			'naoQualificado' => $naoQualificado,
 			'faseConfirmacao' => $faseConfirmacao,
 			'datasQualificadas' => $datasQualificadas,
-			'naoUtilizavel' => $naoUtilizavel,
 			'faseUtilizacao' => $faseUtilizacao,
 			'datasUtilizacao' => $datasUtilizacao,
 		));

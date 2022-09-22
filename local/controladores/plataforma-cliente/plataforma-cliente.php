@@ -1112,6 +1112,7 @@ function plataforma_cliente_plugin_escalas(){
 					'campos' => Array(
 						'id_hosts_escalas_datas',
 						'status',
+						'data',
 					),
 					'extra' => 
 						"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
@@ -1123,6 +1124,7 @@ function plataforma_cliente_plugin_escalas(){
 						$foundDataProcessada = false;
 						$id_hosts_escalas_datas = $hed['id_hosts_escalas_datas'];
 						$status = $hed['status'];
+						$dataTipoDate = $hed['data'];
 						
 						if($datasProcessadasIDs){
 							foreach($datasProcessadasIDs as $dpID){
@@ -1178,6 +1180,18 @@ function plataforma_cliente_plugin_escalas(){
 									);
 									
 									$escalaAtualizada = true;
+									
+									if($hosts_escalas_controle)
+									foreach($hosts_escalas_controle as $hec){
+										if($dataTipoDate == $hec['data']){
+											banco_update_campo('total','total-1',true);
+											
+											banco_update_executar('hosts_escalas_controle',"WHERE id_hosts_escalas_controle='".$hec['id_hosts_escalas_controle']."' AND id_hosts='".$id_hosts."'");
+											$escalaControleAtualizada = true;
+
+											break;
+										}
+									}
 								break;
 							}
 						}
