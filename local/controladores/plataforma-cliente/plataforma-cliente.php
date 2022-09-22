@@ -837,6 +837,8 @@ function plataforma_cliente_plugin_escalas(){
 							}
 						}
 						
+						echo $dataFormatada.' '.$dataFound.'<br>';
+						
 						// ===== Tratar cada fase caso tenha encontrado ou não o registo.
 						
 						if(!$dataFound){
@@ -1098,8 +1100,6 @@ function plataforma_cliente_plugin_escalas(){
 									}
 									
 									// ===== Senão atualizar o registro com status 'vaga-residual' no banco de dados.
-									
-									echo $dataFormatada.', ';
 									
 									banco_update_campo('selecionada','1',true);
 									banco_update_campo('status','vaga-residual');
