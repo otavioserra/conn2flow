@@ -388,6 +388,24 @@ function escalas_calendario($params = false){
 					$flag3 = true;
 				}
 				
+				// ===== Verificar se é fase de confirmação, caso positivo somente permitir modificar datas qualificadas.
+				
+				if($faseConfirmacao){
+					if(count($datasQualificadas) > 0){
+						$dataQualificadaEncontrada = false;
+						foreach($datasQualificadas as $dataQualificada){
+							if($data == $dataQualificada){
+								$dataQualificadaEncontrada = true;
+								break;
+							}
+						}
+						
+						if(!$dataQualificadaEncontrada){
+							$flag3 = true;
+						}
+					}
+				}
+				
 				// ===== Data permitida.
 				
 				if(!$flag3){
@@ -936,6 +954,8 @@ function escalas_padrao(){
 		// ===== Verificar se a escala está em fase de confirmação. Se sim, somente permitir modificações em escala com estado 'qualificado'.
 		
 		$naoQualificado = false;
+		$faseConfirmacao = false;
+		$datasQualificadas = Array();
 		switch($faseAtual){
 			case 'confirmacao':
 				if(
@@ -944,6 +964,26 @@ function escalas_padrao(){
 					$status != 'email-nao-enviado'
 				){
 					$naoQualificado = true;
+				}
+				$faseConfirmacao = true;
+				
+				// ===== Pegar todas as datas qualificadas para filtrar o calendário.
+				
+				if($escalas){
+					$escalas_datas = banco_select(Array(
+						'tabela' => 'escalas_datas',
+						'campos' => Array(
+							'data',
+						),
+						'extra' => 
+							"WHERE id_hosts_escalas='".$escalas['id_hosts_escalas']."'"
+							." AND status='qualificado'"
+					));
+					
+					if($escalas_datas)
+					foreach($escalas_datas as $escala_data){
+						$datasQualificadas[] = $escala_data['data'];
+					}
 				}
 			break;
 		}
@@ -956,6 +996,8 @@ function escalas_padrao(){
 			'hoje' => $hoje,
 			'inscricaoInicio' => $data_inscricao_inicio,
 			'naoQualificado' => $naoQualificado,
+			'faseConfirmacao' => $faseConfirmacao,
+			'datasQualificadas' => $datasQualificadas,
 		));
 		
 		// ===== Definir as datas dos períodos de atualizações.
