@@ -774,6 +774,7 @@ function escalas_padrao(){
 				if(!$retorno['completed']){
 					switch($retorno['status']){
 						case 'ESCALAMENTO_INATIVO':
+						case 'CONFIRMACAO_FORA_DO_PRAZO':
 							$alerta = (existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status']);
 						break;
 						default:
