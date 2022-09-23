@@ -729,6 +729,7 @@ function plataforma_cliente_plugin_escalas(){
 					'campos' => Array(
 						'id_hosts_escalas',
 						'pubID',
+						'status',
 					),
 					'extra' => 
 						"WHERE id_hosts='".$id_hosts."'"
@@ -742,6 +743,7 @@ function plataforma_cliente_plugin_escalas(){
 				if($hosts_escalas){
 					$id_hosts_escalas = $hosts_escalas['id_hosts_escalas'];
 					$pubID = $hosts_escalas['pubID'];
+					$escalaStatus = $hosts_escalas['status'];
 				} else {
 					// ===== Gerar o token de validação.
 					
@@ -773,6 +775,7 @@ function plataforma_cliente_plugin_escalas(){
 					);
 					
 					$id_hosts_escalas = banco_last_id();
+					$escalaStatus = 'novo';
 					
 					$novaEscala = true;
 				}
@@ -806,6 +809,7 @@ function plataforma_cliente_plugin_escalas(){
 				$diasEscalados = Array();
 				$datasSemVagasFound = false;
 				$escalaAtualizada = false;
+				$escalaUtilizacao = false;
 				$escalaControleAtualizada = false;
 				
 				if(existe($datasStr)){
@@ -977,6 +981,7 @@ function plataforma_cliente_plugin_escalas(){
 									$id_hosts_escalas_datas = banco_last_id();
 									
 									$diasEscalados[] = $diaDaData;
+									$escalaUtilizacao = true;
 								break;
 							}
 						} else {
@@ -1123,6 +1128,7 @@ function plataforma_cliente_plugin_escalas(){
 										
 										$diasEscalados[] = $diaDaData;
 										$escalaAtualizada = true;
+										$escalaUtilizacao = true;
 									break;
 								}
 							}
@@ -1253,6 +1259,20 @@ function plataforma_cliente_plugin_escalas(){
 						"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
 						." AND id_hosts='".$id_hosts."'"
 					);
+				}
+				
+				// ===== Atualizar status da escala caso seja uma 'vaga-residual' e não é do tipo 'confirmado' ou o próprio. Motivo: ignorar os confirmados afim de manter histórico. Por isso esse novo status apenas para escalas criadas com vagas residuais.
+				
+				if($escalaUtilizacao){
+					if($escalaStatus != 'confirmado' && $escalaStatus != 'vaga-residual'){
+						banco_update_campo('status','vaga-residual');
+						
+						banco_update_executar(
+							'hosts_escalas',
+							"WHERE id_hosts_escalas='".$id_hosts_escalas."'"
+							." AND id_hosts='".$id_hosts."'"
+						);
+					}
 				}
 				
 				// ===== Montar o calendário das datas da escala.
