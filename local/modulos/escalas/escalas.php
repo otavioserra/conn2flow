@@ -623,7 +623,7 @@ function escalas_ajax_atualizar(){
 				// ===== Incluir a tabela no buffer de impressão.
 				
 				comunicacao_impressao(Array(
-					'titulo' => 'Escalas Confirmadas - '.$dataStr,
+					'titulo' => 'Escalas Confirmadas / Vagas Residuais - '.$dataStr,
 					'pagina' => $tabelaAux,
 				));
 			}
