@@ -1,6 +1,5 @@
 $(document).ready(function(){
 	
-	
 	function escalas_atualizar(p={}){
 		// ===== Caso não exista, criar o objeto de controle.
 		
