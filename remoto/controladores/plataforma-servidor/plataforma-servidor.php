@@ -105,6 +105,68 @@ function plataforma_servidor_cron_escalas(){
 				}
 			}
 			
+			// ===== Atualizar 'escalas_controle' caso necessário.
+			
+			if(isset($dados['escalas_controle'])){
+				$escalas_controle = $dados['escalas_controle']['tabela'];
+				$dateInicio = $dados['escalas_controle']['dateInicio'];
+				$dateFim = $dados['escalas_controle']['dateFim'];
+				
+				$escalasControleLocal = banco_select(Array(
+					'tabela' => 'escalas_controle',
+					'campos' => Array(
+						'id_hosts_escalas_controle',
+					),
+					'extra' => 
+						"WHERE data >= '".$dateInicio."'"
+						." AND data <= '".$dateFim."'"
+				));
+				
+				foreach($escalas_controle as $escala_controle){
+					$id_hosts_escalas_controle = $escala_controle['id_hosts_escalas_controle'];
+					$foundEscalaControleLocal = false;
+					
+					if($escalasControleLocal){
+						foreach($escalasControleLocal as $escalaControleLocal){
+							if($id_hosts_escalas_controle == $escalaControleLocal['id_hosts_escalas_controle']){
+								$foundEscalaControleLocal = true;
+								break;
+							}
+						}
+					}
+					
+					if($foundEscalaControleLocal){
+						foreach($escala_controle as $key => $valor){
+							switch($key){
+								case 'total':
+									banco_update_campo($key,($valor ? $valor : '0'),true);
+								break;
+								default:
+									banco_update_campo($key,$valor);
+							}
+						}
+						
+						banco_update_executar('escalas_controle',"WHERE id_hosts_escalas_controle='".$id_hosts_escalas_controle."'");
+					} else {
+						foreach($escala_controle as $key => $valor){
+							switch($key){
+								case 'total':
+									banco_insert_name_campo($key,($valor ? $valor : '0'),true);
+								break;
+								default:
+									banco_insert_name_campo($key,$valor);
+							}
+						}
+						
+						banco_insert_name
+						(
+							banco_insert_name_campos(),
+							"escalas_controle"
+						);
+					}
+				}
+			}
+			
 			// ===== Retornar dados.
 			
 			return Array(
