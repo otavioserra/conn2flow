@@ -385,18 +385,6 @@ function cron_escalas_sorteio(){
 		
 		// ===== Verificar o status do processo do sorteio. Se for 'novo', fazer uma nova tentativa de qualificação, senão continuar loop e ir para outro host.
 		
-		if($_CRON['DEBUG']){
-			$statusProcessoSorteio = 'novo';
-			
-			banco_update_campo('status','novo');
-			
-			banco_update_executar('hosts_escalas',"WHERE 1");
-			
-			banco_update_campo('status','novo');
-			
-			banco_update_executar('hosts_escalas_datas',"WHERE 1");
-		}
-		
 		switch($statusProcessoSorteio){
 			case 'novo':
 				// ===== Pegar as escalas no banco de dados para mês / ano desejado.
@@ -825,19 +813,11 @@ function cron_escalas_sorteio(){
 					
 					$diasEscalados = Array();
 					
-					if($_CRON['DEBUG']){
-						$calendarioDebug = '';
-					}
-					
 					if($hosts_escalas_datas)
 					foreach($hosts_escalas_datas as $hosts_escala_data){
 						if($id_hosts_escalas == $hosts_escala_data['id_hosts_escalas']){
 							$diaDaData = date('j',strtotime($hosts_escala_data['data']));
 							$diasEscalados[] = $diaDaData;
-							
-							if($_CRON['DEBUG']){
-								$calendarioDebug .= (existe($calendarioDebug) ? ', ':'').$diaDaData;
-							}
 						}
 					}
 					
@@ -884,36 +864,30 @@ function cron_escalas_sorteio(){
 					
 					// ===== Enviar email ao usuário solicitando a confirmação ou cancelamento da escala.
 					
-					if(!$_CRON['DEBUG']){
-						if(comunicacao_email(Array(
-							'hostPersonalizacao' => true,
-							'id_hosts' => $id_hosts,
-							'destinatarios' => Array(
+					if(comunicacao_email(Array(
+						'hostPersonalizacao' => true,
+						'id_hosts' => $id_hosts,
+						'destinatarios' => Array(
+							Array(
+								'email' => $email,
+								'nome' => $nome,
+							),
+						),
+						'mensagem' => Array(
+							'assunto' => $emailConfirmacaoAssuntoAux,
+							'html' => $emailConfirmacaoMensagemAux,
+							'htmlAssinaturaAutomatica' => true,
+							'htmlVariaveis' => Array(
 								Array(
-									'email' => $email,
-									'nome' => $nome,
+									'variavel' => '[[url]]',
+									'valor' => $hostUrl,
 								),
 							),
-							'mensagem' => Array(
-								'assunto' => $emailConfirmacaoAssuntoAux,
-								'html' => $emailConfirmacaoMensagemAux,
-								'htmlAssinaturaAutomatica' => true,
-								'htmlVariaveis' => Array(
-									Array(
-										'variavel' => '[[url]]',
-										'valor' => $hostUrl,
-									),
-								),
-							),
-						))){
-							$status_escalamento = 'email-enviado';
-						} else {
-							$status_escalamento = 'email-nao-enviado';
-						}
-					} else {
+						),
+					))){
 						$status_escalamento = 'email-enviado';
-						
-						echo "Sorteado: ".$nome.' '.$calendarioDebug."\n";
+					} else {
+						$status_escalamento = 'email-nao-enviado';
 					}
 					
 					// ===== Atualizar a escala no banco de dados.
