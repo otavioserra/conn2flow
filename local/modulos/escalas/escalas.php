@@ -612,7 +612,7 @@ function escalas_ajax_atualizar(){
 				// ===== Pegar o componente 'impressao-cabecalho'.
 				
 				$impressaoCabecalho = gestor_componente(Array(
-					'id' => 'impressao-cabecalho',
+					'id' => 'impressao-cabecalho-escalas',
 				));
 				
 				$impressaoCabecalho = modelo_var_troca($impressaoCabecalho,"#data#",$dataStr);
@@ -623,7 +623,7 @@ function escalas_ajax_atualizar(){
 				// ===== Incluir a tabela no buffer de impressão.
 				
 				comunicacao_impressao(Array(
-					'titulo' => 'Escalas Confirmados - '.$dataStr,
+					'titulo' => 'Escalas Confirmadas - '.$dataStr,
 					'pagina' => $tabelaAux,
 				));
 			}
