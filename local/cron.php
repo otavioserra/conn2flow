@@ -1041,6 +1041,7 @@ function cron_escalas_expiracao_fase_confirmacao(){
 		// ===== Variáveis de controle.
 		
 		$outroHost = false;
+		$escalaControleAtualizada = true;
 		
 		// ===== Pegar os dados de configuração do host atual.
 		
@@ -1061,7 +1062,7 @@ function cron_escalas_expiracao_fase_confirmacao(){
 		$data_inicial_mes = $anoAtual.'-'.$mesAtualFormatado.'-01';
 		$data_final_mes = $anoAtual.'-'.$mesAtualFormatado.'-'.date('t',strtotime($data_inicial_mes));
 		
-		// ===== Verificar se hoje é o dia da expiração da confirmação. Caso positivo, expirar todas as escalas com status 'confirmacoes-enviadas'.
+		// ===== Verificar se hoje é o dia da expiração da confirmação. Caso positivo, expirar todas as escalas com status 'confirmacoes-enviadas'. E devolver vagas das datas confirmadas mas deselecionadas.
 		
 		if($data_expiracao_confirmacao == $hojeDataFormatada){
 			$hosts_escalas_cron = banco_select(Array(
@@ -1078,12 +1079,11 @@ function cron_escalas_expiracao_fase_confirmacao(){
 			));
 			
 			if($hosts_escalas_cron){
-				// ===== Pegar os dados das escalas qualificadas no banco de dados.
+				// ===== Pegar os dados das escalas 'qualificadas' no banco de dados. Ou seja, escalas que foram sorteadas e não confirmadas.
 				
 				$hosts_escalas = banco_select(Array(
 					'tabela' => 'hosts_escalas',
 					'campos' => Array(
-						'id_hosts_usuarios',
 						'id_hosts_escalas',
 					),
 					'extra' => 
@@ -1101,7 +1101,6 @@ function cron_escalas_expiracao_fase_confirmacao(){
 					$hosts_escalas_datas = banco_select(Array(
 						'tabela' => 'hosts_escalas_datas',
 						'campos' => Array(
-							'data',
 							'id_hosts_escalas',
 							'id_hosts_escalas_datas',
 						),
@@ -1109,7 +1108,6 @@ function cron_escalas_expiracao_fase_confirmacao(){
 							"WHERE data>='".$data_inicial_mes."'"
 							." AND data<='".$data_final_mes."'"
 							." AND id_hosts='".$id_hosts."'"
-							." AND selecionada IS NOT NULL"
 							." AND status='qualificado'"
 					));
 					
@@ -1133,6 +1131,98 @@ function cron_escalas_expiracao_fase_confirmacao(){
 						// ===== Trocar o status de todas as escalas para 'nao-confirmado'.
 						
 						banco_update_campo('status','nao-confirmado');
+						banco_update_campo('versao','versao+1',true);
+						banco_update_campo('data_modificacao','NOW()',true);
+						
+						banco_update_executar('hosts_escalas',"WHERE id_hosts='".$id_hosts."' AND id_hosts_escalas='".$hosts_escala['id_hosts_escalas']."'");
+					}	
+				}
+				
+				// ===== Pegar a quantidade de vagas totais do mês.
+		
+				$hosts_escalas_controle = banco_select(Array(
+					'tabela' => 'hosts_escalas_controle',
+					'campos' => Array(
+						'id_hosts_escalas_controle',
+						'data',
+					),
+					'extra' => 
+						"WHERE data >= '".$data_inicial_mes."'"
+						." AND data <= '".$data_final_mes."'"
+						." AND id_hosts='".$id_hosts."'"
+				));
+				
+				// ===== Pegar os dados das escalas 'confirmadas' no banco de dados. Ou seja, escalas que foram sorteadas e confirmadas.
+				
+				$hosts_escalas = banco_select(Array(
+					'tabela' => 'hosts_escalas',
+					'campos' => Array(
+						'id_hosts_escalas',
+					),
+					'extra' => 
+						"WHERE mes='".$mesAtual."'"
+						." AND ano='".$anoAtual."'"
+						." AND id_hosts='".$id_hosts."'"
+						." AND status='confirmado'"
+				));
+				
+				// ===== Verificar se foi encontrado.
+				
+				if($hosts_escalas){
+					// ===== Expirar as escalas datas no banco de dados do mês / ano desejado não selecionadas. Ou seja, as datas que foram confirmadas, mas o usuário deselecionou as mesmas em algum momento do período de confirmação.
+					
+					$hosts_escalas_datas = banco_select(Array(
+						'tabela' => 'hosts_escalas_datas',
+						'campos' => Array(
+							'data',
+							'id_hosts_escalas',
+							'id_hosts_escalas_datas',
+						),
+						'extra' => 
+							"WHERE data>='".$data_inicial_mes."'"
+							." AND data<='".$data_final_mes."'"
+							." AND id_hosts='".$id_hosts."'"
+							." AND selecionada IS NULL"
+							." AND status='confirmado'"
+					));
+					
+					// ===== Varrer todas as escalas.
+					
+					foreach($hosts_escalas as $hosts_escala){
+						
+						// ===== Varrer todas as escalas datas e trocar o status para 'expirado'.
+						
+						if($hosts_escalas_datas){
+							foreach($hosts_escalas_datas as $hosts_escala_data){
+								if($hosts_escala['id_hosts_escalas'] == $hosts_escala_data['id_hosts_escalas']){
+									$dataTipoDate = $hosts_escala_data['data'];
+									
+									// ===== Devolver a vaga reservada para o sistema.
+									
+									if($hosts_escalas_controle)
+									foreach($hosts_escalas_controle as $hec){
+										if($dataTipoDate == $hec['data']){
+											banco_update_campo('total','total-1',true);
+											
+											banco_update_executar('hosts_escalas_controle',"WHERE id_hosts_escalas_controle='".$hec['id_hosts_escalas_controle']."' AND id_hosts='".$id_hosts."'");
+											
+											$escalaControleAtualizada = true;
+											
+											break;
+										}
+									}
+									
+									// ===== Alterar o status para 'expirado' de cada data.
+									
+									banco_update_campo('status','expirado');
+									
+									banco_update_executar('hosts_escalas_datas',"WHERE id_hosts='".$id_hosts."' AND id_hosts_escalas_datas='".$hosts_escala_data['id_hosts_escalas_datas']."'");
+								}
+							}
+						}
+						
+						// ===== Trocar o status de todas as escalas para 'utilizacao'.
+						
 						banco_update_campo('versao','versao+1',true);
 						banco_update_campo('data_modificacao','NOW()',true);
 						
@@ -1164,7 +1254,7 @@ function cron_escalas_expiracao_fase_confirmacao(){
 			." AND id_hosts='".$id_hosts."'"
 		);
 		
-		// ===== Pegar os dados das escalas 'nao-confirmado' no banco de dados.
+		// ===== Pegar os dados das escalas 'confirmado', 'nao-confirmado' no banco de dados.
 		
 		$hosts_escalas = banco_select(Array(
 			'tabela' => 'hosts_escalas',
@@ -1173,7 +1263,7 @@ function cron_escalas_expiracao_fase_confirmacao(){
 				"WHERE mes='".$mesAtual."'"
 				." AND ano='".$anoAtual."'"
 				." AND id_hosts='".$id_hosts."'"
-				." AND status='nao-confirmado'"
+				." AND (status='confirmado' OR status='nao-confirmado')"
 		));
 		
 		if($hosts_escalas)
@@ -1183,7 +1273,7 @@ function cron_escalas_expiracao_fase_confirmacao(){
 			$hosts_escalas_proc[] = $escala;
 		}
 		
-		// ===== Pegar os dados das escalas datas 'nao-confirmado' no banco de dados.
+		// ===== Pegar os dados das escalas datas 'expirado', 'nao-confirmado' no banco de dados.
 		
 		$hosts_escalas_datas = banco_select(Array(
 			'tabela' => 'hosts_escalas_datas',
@@ -1192,7 +1282,7 @@ function cron_escalas_expiracao_fase_confirmacao(){
 				"WHERE data>='".$data_inicial_mes."'"
 				." AND data<='".$data_final_mes."'"
 				." AND id_hosts='".$id_hosts."'"
-				." AND status='nao-confirmado'"
+				." AND (status='expirado' OR status='nao-confirmado')"
 		));
 		
 		if($hosts_escalas_datas)
@@ -1200,6 +1290,39 @@ function cron_escalas_expiracao_fase_confirmacao(){
 			unset($escala_data['id_hosts']);
 			
 			$hosts_escalas_datas_proc[] = $escala_data;
+		}
+		
+		$enviarDados = Array(
+			'escalas' => (isset($hosts_escalas_proc) ? $hosts_escalas_proc : Array()),
+			'escalas_datas' => (isset($hosts_escalas_datas_proc) ? $hosts_escalas_datas_proc : Array()),
+		);
+		
+		// ===== Caso tenha sido alterada o 'hosts_escalas_controle', enviar os dados atualizados.
+		
+		if($escalaControleAtualizada){
+			$hosts_escalas_controle = banco_select(Array(
+				'tabela' => 'hosts_escalas_controle',
+				'campos' => '*',
+				'extra' => 
+					"WHERE data >= '".$data_inicial_mes."'"
+					." AND data <= '".$data_final_mes."'"
+					." AND id_hosts='".$id_hosts."'"
+			));
+			
+			if($hosts_escalas_controle)
+			foreach($hosts_escalas_controle as $escala_controle){
+				unset($escala_controle['id_hosts']);
+				
+				$hosts_escalas_controle_proc[] = $escala_controle;
+			}
+		}
+		
+		if(isset($hosts_escalas_controle_proc)){
+			$enviarDados['escalas_controle'] = Array(
+				'tabela' => $hosts_escalas_controle_proc,
+				'dateInicio' => $data_inicial_mes,
+				'dateFim' => $data_final_mes,
+			);
 		}
 		
 		// ===== Incluir os dados no host de cada cliente.
@@ -1211,10 +1334,7 @@ function cron_escalas_expiracao_fase_confirmacao(){
 			'plugin' => 'escalas',
 			'id_hosts' => $id_hosts,
 			'opcao' => 'atualizar',
-			'dados' => Array(
-				'escalas' => (isset($hosts_escalas_proc) ? $hosts_escalas_proc : Array()),
-				'escalas_datas' => (isset($hosts_escalas_datas_proc) ? $hosts_escalas_datas_proc : Array()),
-			),
+			'dados' => $enviarDados,
 		));
 		
 		// ===== Caso haja algum erro, incluir no log do cron.
