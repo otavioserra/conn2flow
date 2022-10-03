@@ -550,6 +550,9 @@ function escalas_padrao(){
 									case 'versao':
 										banco_update_campo($key,($valor ? $valor : '0'),true);
 									break;
+									case 'data_confirmacao':
+										banco_update_campo($key,($valor ? $valor : 'NULL'),true);
+									break;
 									default:
 										banco_update_campo($key,$valor);
 								}
@@ -563,6 +566,9 @@ function escalas_padrao(){
 									case 'mes':
 									case 'versao':
 										banco_insert_name_campo($key,($valor ? $valor : '0'),true);
+									break;
+									case 'data_confirmacao':
+										banco_insert_name_campo($key,($valor ? $valor : 'NULL'),true);
 									break;
 									default:
 										banco_insert_name_campo($key,$valor);
