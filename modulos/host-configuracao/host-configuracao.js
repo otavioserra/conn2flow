@@ -223,6 +223,7 @@ $(document).ready(function(){
 							$('.google-recaptcha-ativo').removeClass('escondido');
 						} else {
 							$('.google-recaptcha-ativo').addClass('escondido');
+							$('.google-recaptcha-instalacao').removeClass('escondido');
 						}
 					}
 					
@@ -238,6 +239,7 @@ $(document).ready(function(){
 							$('.google-recaptcha-ativo').removeClass('escondido');
 						} else {
 							$('.google-recaptcha-ativo').addClass('escondido');
+							$('.google-recaptcha-instalacao-v2').removeClass('escondido');
 						}
 					}
 					
