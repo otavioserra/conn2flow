@@ -222,7 +222,7 @@ $(document).ready(function(){
 					if(dominioProprio){
 						$('.contRecaptcha').show();
 						
-						if('googleRecaptchaInstalado' in gestor.host){
+						if('googleRecaptchaV2Instalado' in gestor.host){
 							$('.google-recaptcha-ativo').removeClass('escondido');
 						} else {
 							$('.google-recaptcha-ativo').addClass('escondido');
@@ -238,7 +238,7 @@ $(document).ready(function(){
 					if(dominioProprio){
 						$('.contRecaptcha').show();
 						
-						if('googleRecaptchaV2Instalado' in gestor.host){
+						if('googleRecaptchaInstalado' in gestor.host){
 							$('.google-recaptcha-ativo').removeClass('escondido');
 						} else {
 							$('.google-recaptcha-ativo').addClass('escondido');
@@ -273,12 +273,12 @@ $(document).ready(function(){
 		
 		switch(googleRecaptchaTipo){
 			case 'recaptcha-v2':
-				if('googleRecaptchaInstalado' in gestor.host){
+				if('googleRecaptchaV2Instalado' in gestor.host){
 					recaptchaInstalado = true;
 				}
 			break;
 			case 'recaptcha-v3':
-				if('googleRecaptchaV2Instalado' in gestor.host){
+				if('googleRecaptchaInstalado' in gestor.host){
 					recaptchaInstalado = true;
 				}
 			break;
