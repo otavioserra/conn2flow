@@ -55,7 +55,7 @@ function plataforma_cliente_recaptcha($token,$action,$gRecaptchaResponse = null)
 			
 			// ===== Verificar conforme o tipo do reCAPTCHA.
 			
-			switch($var){
+			switch($tipo){
 				case 'recaptcha-v2':
 					// ===== Verificar se o host tem reCAPTCHA ativado.
 					
@@ -89,7 +89,7 @@ function plataforma_cliente_recaptcha($token,$action,$gRecaptchaResponse = null)
 					
 					// ===== Verificar se o retorno do servidor é válido, senão não validar o reCAPTCHA
 					
-					if($arrResponse["success"]) {
+					if($arrResponse["success"] == '1') {
 						$recaptchaValido = true;
 					}
 				break;
