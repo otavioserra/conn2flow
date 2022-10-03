@@ -55,6 +55,8 @@ function plataforma_cliente_recaptcha($token,$action,$gRecaptchaResponse = null)
 			
 			// ===== Verificar conforme o tipo do reCAPTCHA.
 			
+			echo $tipo;
+			
 			switch($tipo){
 				case 'recaptcha-v2':
 					// ===== Verificar se o host tem reCAPTCHA ativado.
@@ -76,6 +78,8 @@ function plataforma_cliente_recaptcha($token,$action,$gRecaptchaResponse = null)
 						}
 					}
 					
+					echo ' '.$gRecaptchaResponse;
+					
 					// ===== Chamada ao servidor do Google reCAPTCHA para conferência se o token enviado no formulário é válido.
 					
 					$ch = curl_init();
@@ -92,6 +96,8 @@ function plataforma_cliente_recaptcha($token,$action,$gRecaptchaResponse = null)
 					if($arrResponse["success"] == '1') {
 						$recaptchaValido = true;
 					}
+					
+					echo print_r($arrResponse,true);
 				break;
 				case 'recaptcha-v3':
 					// ===== Verificar se o host tem reCAPTCHA ativado.
