@@ -22,6 +22,14 @@ function plataforma_cliente_recaptcha($token,$action,$gRecaptchaResponse = null)
 	
 	if(isset($_CONFIG['platform-recaptcha-active'])){
 		if($_CONFIG['platform-recaptcha-active']){
+			// ===== Variáveis de comparação do reCAPTCHA
+			
+			$recaptchaSecretKey = $_CONFIG['platform-recaptcha-server'];
+			
+			// ===== Identificador do Host.
+			
+			$id_hosts = $_GESTOR['host-id'];
+			
 			// ===== Verificar no banco de dados qual é o tipo atual do host.
 			
 			$tipo = 'nenhum';
@@ -45,17 +53,7 @@ function plataforma_cliente_recaptcha($token,$action,$gRecaptchaResponse = null)
 				}
 			}
 			
-			// ===== Variáveis de comparação do reCAPTCHA
-			
-			$recaptchaSecretKey = $_CONFIG['platform-recaptcha-server'];
-			
-			// ===== Identificador do Host.
-			
-			$id_hosts = $_GESTOR['host-id'];
-			
 			// ===== Verificar conforme o tipo do reCAPTCHA.
-			
-			echo $tipo;
 			
 			switch($tipo){
 				case 'recaptcha-v2':
