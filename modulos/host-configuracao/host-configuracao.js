@@ -162,6 +162,8 @@ $(document).ready(function(){
 		
 		// ===== Controle de tipo de domínio.
 		
+		var dominioProprio = false;
+		
 		function dominioTipo(id, start = false){
 			switch(id){
 				case 'sistema':
@@ -179,6 +181,8 @@ $(document).ready(function(){
 					$('.controleDominio[data-id="proprio"]').addClass(['active','blue']);
 					
 					$(formSelector).form('add rule', 'dominio_proprio_url',{ rules : gestor.interface.regrasValidacao.dominio_proprio_url.rules });
+					
+					dominioProprio = true;
 				break;
 			}
 			
@@ -200,19 +204,28 @@ $(document).ready(function(){
 		function controleRecaptcha(id){
 			switch(id){
 				case 'nenhum':
-					$('.contRecaptcha').hide();
+					if(dominioProprio){
+						$('.contRecaptcha').hide();
+					}
+					
 					$('.controleRecaptcha[data-id="nenhum"]').addClass(['active','blue']);
 					$('.controleRecaptcha[data-id="recaptcha-v2"]').removeClass(['active','blue']);
 					$('.controleRecaptcha[data-id="recaptcha-v3"]').removeClass(['active','blue']);
 				break;
 				case 'recaptcha-v2':
-					$('.contRecaptcha').show();
+					if(dominioProprio){
+						$('.contRecaptcha').show();
+					}
+					
 					$('.controleRecaptcha[data-id="nenhum"]').removeClass(['active','blue']);
 					$('.controleRecaptcha[data-id="recaptcha-v2"]').addClass(['active','blue']);
 					$('.controleRecaptcha[data-id="recaptcha-v3"]').removeClass(['active','blue']);
 				break;
 				case 'recaptcha-v3':
-					$('.contRecaptcha').show();
+					if(dominioProprio){
+						$('.contRecaptcha').show();
+					}
+					
 					$('.controleRecaptcha[data-id="nenhum"]').removeClass(['active','blue']);
 					$('.controleRecaptcha[data-id="recaptcha-v2"]').removeClass(['active','blue']);
 					$('.controleRecaptcha[data-id="recaptcha-v3"]').addClass(['active','blue']);
