@@ -76,6 +76,7 @@ function api_servidor_identificacao($params = false){
 	// senha - String - Obrigatório - Senha do usuário do host.
 	// token - String - Opcional - Token do reCAPATCHA caso ativo do host.
 	// usuarioTokenID - String - Opcional - Token do reCAPATCHA caso ativo do host.
+	// gRecaptchaResponse - String - Opcional - Token do reCAPATCHA v2.
 	
 	// Se opcao == 'criarConta'
 	
@@ -109,6 +110,7 @@ function api_servidor_identificacao($params = false){
 				);
 				
 				if(isset($token)){ $dados['token'] = $token;}
+				if(isset($gRecaptchaResponse)){ $dados['gRecaptchaResponse'] = $gRecaptchaResponse;}
 				if(isset($usuarioTokenID)){ $dados['usuarioTokenID'] = $usuarioTokenID;}
 			break;
 			case 'sair':
@@ -139,6 +141,7 @@ function api_servidor_identificacao($params = false){
 				);
 				
 				if(isset($token)){ $dados['token'] = $token;}
+				if(isset($gRecaptchaResponse)){ $dados['gRecaptchaResponse'] = $gRecaptchaResponse;}
 			break;
 			case 'cadastrar':
 				// ===== Campos obrigatórios.
@@ -161,6 +164,7 @@ function api_servidor_identificacao($params = false){
 				if(isset($cpf)){ $dados['cpf'] = $cpf;}
 				if(isset($cnpj)){ $dados['cnpj'] = $cnpj;}
 				if(isset($token)){ $dados['token'] = $token;}
+				if(isset($gRecaptchaResponse)){ $dados['gRecaptchaResponse'] = $gRecaptchaResponse;}
 			break;
 			case 'esqueceuSenha':
 				// ===== Campos obrigatórios.
@@ -177,6 +181,7 @@ function api_servidor_identificacao($params = false){
 				);
 				
 				if(isset($token)){ $dados['token'] = $token;}
+				if(isset($gRecaptchaResponse)){ $dados['gRecaptchaResponse'] = $gRecaptchaResponse;}
 			break;
 			case 'redefinirSenha':
 				// ===== Campos obrigatórios.
