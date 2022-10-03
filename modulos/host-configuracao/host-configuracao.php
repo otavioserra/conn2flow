@@ -2218,7 +2218,7 @@ function host_configuracao_configuracoes(){
 		$campo = 'google_recaptcha_tipo'; $alteracoes_name = 'recaptcha'; if($mudouRecaptchaTipo){
 			$editar = true;
 			$alterarDominio = true;
-			banco_update_campo($campo,$_REQUEST['recaptcha-tipo'],true);
+			banco_update_campo($campo,$_REQUEST['recaptcha-tipo']);
 			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => ($hosts['google_recaptcha_tipo'] ? $hosts['google_recaptcha_tipo'] : 'nenhum' ),'valor_depois' => $_REQUEST['recaptcha-tipo']);
 		}
 		
