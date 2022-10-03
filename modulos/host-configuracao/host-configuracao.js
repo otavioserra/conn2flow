@@ -208,6 +208,7 @@ $(document).ready(function(){
 			$('.google-recaptcha-instalacao').addClass('escondido');
 			$('.google-recaptcha-instalacao-v2').addClass('escondido');
 			
+			$('input[name="google-recaptcha-tipo"]').val('');
 			$('input[name="google-recaptcha-comando"]').val('');
 			
 			switch(id){
@@ -230,6 +231,7 @@ $(document).ready(function(){
 							$('.google-recaptcha-ativo').addClass('escondido');
 							$('.google-recaptcha-instalacao-v2').removeClass('escondido');
 							
+							$('input[name="google-recaptcha-tipo"]').val(id);
 							$('input[name="google-recaptcha-comando"]').val('instalar');
 						}
 					}
@@ -248,6 +250,7 @@ $(document).ready(function(){
 							$('.google-recaptcha-ativo').addClass('escondido');
 							$('.google-recaptcha-instalacao').removeClass('escondido');
 							
+							$('input[name="google-recaptcha-tipo"]').val(id);
 							$('input[name="google-recaptcha-comando"]').val('instalar');
 						}
 					}
