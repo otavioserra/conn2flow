@@ -148,27 +148,6 @@ $(document).ready(function(){
 	if($('#_gestor-interface-config-dados').length > 0){
 		var formSelector = '#host-configuracao';
 		
-		function dominioTipo(id, start = false){
-			switch(id){
-				case 'sistema':
-					$('.contProprio').hide();
-					$('.controleDominio[data-id="sistema"]').addClass(['active','blue']);
-					$('.controleDominio[data-id="proprio"]').removeClass(['active','blue']);
-					
-					$(formSelector).form('remove fields', ['dominio_proprio_url']);
-				break;
-				case 'proprio':
-					$('.contProprio').show();
-					$('.controleDominio[data-id="sistema"]').removeClass(['active','blue']);
-					$('.controleDominio[data-id="proprio"]').addClass(['active','blue']);
-					
-					$(formSelector).form('add rule', 'dominio_proprio_url',{ rules : gestor.interface.regrasValidacao.dominio_proprio_url.rules });
-				break;
-			}
-			
-			$('input[name="tipo"]').val(id);
-		}
-		
 		// ===== Formulário.
 		
 		$(formSelector)
@@ -183,6 +162,29 @@ $(document).ready(function(){
 		
 		// ===== Controle de tipo de domínio.
 		
+		function dominioTipo(id, start = false){
+			switch(id){
+				case 'sistema':
+					$('.contProprio').hide();
+					$('.contRecaptcha').hide();
+					$('.controleDominio[data-id="sistema"]').addClass(['active','blue']);
+					$('.controleDominio[data-id="proprio"]').removeClass(['active','blue']);
+					
+					$(formSelector).form('remove fields', ['dominio_proprio_url']);
+				break;
+				case 'proprio':
+					$('.contProprio').show();
+					$('.contRecaptcha').show();
+					$('.controleDominio[data-id="sistema"]').removeClass(['active','blue']);
+					$('.controleDominio[data-id="proprio"]').addClass(['active','blue']);
+					
+					$(formSelector).form('add rule', 'dominio_proprio_url',{ rules : gestor.interface.regrasValidacao.dominio_proprio_url.rules });
+				break;
+			}
+			
+			$('input[name="tipo"]').val(id);
+		}
+		
 		dominioTipo((gestor.host.dominioProprio ? 'proprio' : 'sistema'),true);
 		
 		$('.controleDominio').on('mouseup tap',function(e){
@@ -191,6 +193,43 @@ $(document).ready(function(){
 			var id = $(this).attr('data-id');
 			
 			dominioTipo(id);
+		});
+		
+		// ===== Controle do reCAPTCHA.
+		
+		function controleRecaptcha(id){
+			switch(id){
+				case 'nenhum':
+					$('.contRecaptcha').hide();
+					$('.controleRecaptcha[data-id="nenhum"]').addClass(['active','blue']);
+					$('.controleRecaptcha[data-id="recaptcha-v2"]').removeClass(['active','blue']);
+					$('.controleRecaptcha[data-id="recaptcha-v3"]').removeClass(['active','blue']);
+				break;
+				case 'recaptcha-v2':
+					$('.contRecaptcha').show();
+					$('.controleRecaptcha[data-id="nenhum"]').removeClass(['active','blue']);
+					$('.controleRecaptcha[data-id="recaptcha-v2"]').addClass(['active','blue']);
+					$('.controleRecaptcha[data-id="recaptcha-v3"]').removeClass(['active','blue']);
+				break;
+				case 'recaptcha-v3':
+					$('.contRecaptcha').show();
+					$('.controleRecaptcha[data-id="nenhum"]').removeClass(['active','blue']);
+					$('.controleRecaptcha[data-id="recaptcha-v2"]').removeClass(['active','blue']);
+					$('.controleRecaptcha[data-id="recaptcha-v3"]').addClass(['active','blue']);
+				break;
+			}
+			
+			$('input[name="recaptcha-tipo"]').val(id);
+		}
+		
+		controleRecaptcha(gestor.host.googleRecaptchaTipo,true);
+		
+		$('.controleRecaptcha').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			var id = $(this).attr('data-id');
+			
+			controleRecaptcha(id);
 		});
 		
 		// ===== Google reCAPTCHA inicialização.

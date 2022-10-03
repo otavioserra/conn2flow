@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'host-configuracao';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.2.2',
+	'versao' => '1.3.0',
 	'bibliotecas' => Array('interface','html','pagina'),
 	'tabela' => Array(
 		'nome' => 'hosts',
@@ -2287,6 +2287,7 @@ function host_configuracao_configuracoes(){
 			'gestor_cliente_versao',
 			'gestor_cliente_versao_num',
 			'google_recaptcha_ativo',
+			'google_recaptcha_tipo',
 		),
 		'extra' => 
 			"WHERE id_hosts='".$id_hosts."'"
@@ -2308,14 +2309,22 @@ function host_configuracao_configuracoes(){
 		pagina_trocar_variavel_valor('#tipo-sistema#','',true);
 		
 		pagina_trocar_variavel_valor('#cont-proprio#','',true);
+		pagina_trocar_variavel_valor('#cont-recaptcha#','',true);
 	} else {
 		pagina_trocar_variavel_valor('#tipo-proprio#','',true);
 		pagina_trocar_variavel_valor('#tipo-sistema#','blue active',true);
 		
 		pagina_trocar_variavel_valor('#cont-proprio#','escondido',true);
+		pagina_trocar_variavel_valor('#cont-recaptcha#','escondido',true);
 	}
 	
 	pagina_trocar_variavel_valor('#dominio_proprio_url#',$dominio_proprio_url,true);
+	
+	// ===== verificar o tipo do google reCAPTCHA.
+	
+	if($hosts['google_recaptcha_tipo']){
+		$googleRecaptchaTipo = $hosts['google_recaptcha_tipo'];
+	}
 	
 	// ===== Servidores de DNS disponíveis para o host.
 	
@@ -2440,6 +2449,12 @@ function host_configuracao_configuracoes(){
 	
 	if(isset($google_recaptcha_ativo)){
 		$JShost['googleRecaptchaInstalado'] = true;
+	}
+	
+	if(isset($googleRecaptchaTipo)){
+		$JShost['googleRecaptchaTipo'] = $googleRecaptchaTipo;
+	} else {
+		$JShost['googleRecaptchaTipo'] = 'nenhum';
 	}
 	
 	// ===== Variáveis JS.
