@@ -89,7 +89,7 @@ function plataforma_cliente_recaptcha($token,$action,$gRecaptchaResponse = null)
 					
 					// ===== Verificar se o retorno do servidor é válido, senão não validar o reCAPTCHA
 					
-					if($arrResponse["success"] == '1') {
+					if($arrResponse["success"]) {
 						$recaptchaValido = true;
 					}
 				break;
