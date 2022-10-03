@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'host-configuracao';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.3.2',
+	'versao' => '1.3.5',
 	'bibliotecas' => Array('interface','html','pagina'),
 	'tabela' => Array(
 		'nome' => 'hosts',
@@ -2287,6 +2287,7 @@ function host_configuracao_configuracoes(){
 			'gestor_cliente_versao',
 			'gestor_cliente_versao_num',
 			'google_recaptcha_ativo',
+			'google_recaptcha_v2_ativo',
 			'google_recaptcha_tipo',
 		),
 		'extra' => 
@@ -2301,6 +2302,7 @@ function host_configuracao_configuracoes(){
 	
 	$dominio_proprio_url = ($hosts['dominio_proprio_url'] ? $hosts['dominio_proprio_url'] : '');
 	$google_recaptcha_ativo = ($hosts['google_recaptcha_ativo'] ? true : null);
+	$google_recaptcha_v2_ativo = ($hosts['google_recaptcha_v2_ativo'] ? true : null);
 	
 	// ===== Botão de selecionar o tipo próprio ou sistema.
 	
@@ -2449,6 +2451,10 @@ function host_configuracao_configuracoes(){
 	
 	if(isset($google_recaptcha_ativo)){
 		$JShost['googleRecaptchaInstalado'] = true;
+	}
+	
+	if(isset($google_recaptcha_v2_ativo)){
+		$JShost['googleRecaptchaV2Instalado'] = true;
 	}
 	
 	if(isset($googleRecaptchaTipo)){

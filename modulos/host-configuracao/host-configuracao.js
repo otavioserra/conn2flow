@@ -203,6 +203,7 @@ $(document).ready(function(){
 		
 		// ===== Controle do reCAPTCHA.
 		
+		var googleRecaptchaTipo = gestor.host.googleRecaptchaTipo;
 		function controleRecaptcha(id){
 			switch(id){
 				case 'nenhum':
@@ -235,9 +236,10 @@ $(document).ready(function(){
 			}
 			
 			$('input[name="recaptcha-tipo"]').val(id);
+			googleRecaptchaTipo = id;
 		}
 		
-		controleRecaptcha(gestor.host.googleRecaptchaTipo,true);
+		controleRecaptcha(googleRecaptchaTipo,true);
 		
 		$('.controleRecaptcha').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
@@ -253,48 +255,56 @@ $(document).ready(function(){
 			var excluirChecked = false;
 			
 			$('.google-recaptcha-ativo').removeClass('escondido');
-			
-			$('.gr-controle').on('mouseup tap',function(e){
-				if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
-				
-				$('.gr-controle').removeClass('active');
-				
-				const action = $(this).attr('data-action');
-				switch(action){
-					case 'reinstalar':
-						$('.google-recaptcha-ativo').addClass('escondido');
-						$('.google-recaptcha-instalacao').removeClass('escondido');
-						$('input[name="google-recaptcha-comando"]').val('reinstalar');
-					break;
-					case 'excluir':
-						if(excluirChecked){
-							$(this).removeClass('active');
-							$(this).removeClass('orange');
-							$(this).addClass('negative');
-							$(this).find('.icon').removeClass('check');
-							$(this).find('.icon').addClass('times');
-							excluirChecked = false;
-							$('input[name="google-recaptcha-comando"]').val('');
-						} else {
-							$(this).addClass('active');
-							$(this).addClass('orange');
-							$(this).removeClass('negative');
-							$(this).find('.icon').removeClass('times');
-							$(this).find('.icon').addClass('check');
-							excluirChecked = true;
-							$('input[name="google-recaptcha-comando"]').val('excluir');
-						}
-					break;
-					default:
-						
-				}
-			});
 		} else {
-			$('.google-recaptcha-instalacao').removeClass('escondido');
+			switch(googleRecaptchaTipo){
+				case 'recaptcha-v2': $('.google-recaptcha-instalacao-v2').removeClass('escondido'); break;
+				case 'recaptcha-v3': $('.google-recaptcha-instalacao').removeClass('escondido'); break;
+			}
+			
+			$('input[name="google-recaptcha-tipo"]').val(googleRecaptchaTipo);
 			$('input[name="google-recaptcha-comando"]').val('instalar');
 		}
 		
-		
+		$('.gr-controle').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			$('.gr-controle').removeClass('active');
+			
+			const action = $(this).attr('data-action');
+			switch(action){
+				case 'reinstalar':
+					$('.google-recaptcha-ativo').addClass('escondido');
+					switch(googleRecaptchaTipo){
+						case 'recaptcha-v2': $('.google-recaptcha-instalacao-v2').removeClass('escondido'); break;
+						case 'recaptcha-v3': $('.google-recaptcha-instalacao').removeClass('escondido'); break;
+					}
+					
+					$('input[name="google-recaptcha-tipo"]').val(googleRecaptchaTipo);
+					$('input[name="google-recaptcha-comando"]').val('reinstalar');
+				break;
+				case 'excluir':
+					if(excluirChecked){
+						$(this).removeClass('active');
+						$(this).removeClass('orange');
+						$(this).addClass('negative');
+						$(this).find('.icon').removeClass('check');
+						$(this).find('.icon').addClass('times');
+						excluirChecked = false;
+						$('input[name="google-recaptcha-comando"]').val('');
+					} else {
+						$(this).addClass('active');
+						$(this).addClass('orange');
+						$(this).removeClass('negative');
+						$(this).find('.icon').removeClass('times');
+						$(this).find('.icon').addClass('check');
+						excluirChecked = true;
+						$('input[name="google-recaptcha-comando"]').val('excluir');
+					}
+				break;
+				default:
+					
+			}
+		});
 	}
 	
 });
