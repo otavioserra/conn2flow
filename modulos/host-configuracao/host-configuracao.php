@@ -2112,6 +2112,7 @@ function host_configuracao_configuracoes(){
 				'versao',
 				'dominio_proprio',
 				'dominio_proprio_url',
+				'google_recaptcha_tipo',
 			),
 			'extra' => 
 				"WHERE id_hosts='".$id_hosts."'"
@@ -2144,33 +2145,84 @@ function host_configuracao_configuracoes(){
 			switch($_REQUEST['google-recaptcha-comando']){
 				case 'instalar':
 				case 'reinstalar':
-					if(existe($_REQUEST['google_recaptcha_site']) && existe($_REQUEST['google_recaptcha_secret'])){
-						$campo = 'google_recaptcha_site'; $campo_valor = $_REQUEST[$campo]; banco_update_campo($campo,$campo_valor);
-						$campo = 'google_recaptcha_secret'; $campo_valor = $_REQUEST[$campo]; banco_update_campo($campo,$campo_valor);
-						banco_update_campo('google_recaptcha_ativo','1',true);
-						
-						$editar = true;
-						$alteracoes[] = Array('campo' => 'google-recaptcha');
-						$recaptchaAlterado = true;
-					} else {
-						interface_alerta(Array(
-							'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-google-recaptcha-mandatory-fields'))
-						));
+					switch($_REQUEST['google-recaptcha-tipo']){
+						case 'recaptcha-v3':
+							if(existe($_REQUEST['google_recaptcha_site']) && existe($_REQUEST['google_recaptcha_secret'])){
+								$campo = 'google_recaptcha_site'; $campo_valor = $_REQUEST[$campo]; banco_update_campo($campo,$campo_valor);
+								$campo = 'google_recaptcha_secret'; $campo_valor = $_REQUEST[$campo]; banco_update_campo($campo,$campo_valor);
+								banco_update_campo('google_recaptcha_ativo','1',true);
+								
+								$editar = true;
+								$alteracoes[] = Array('campo' => 'google-recaptcha');
+								$recaptchaAlterado = true;
+							} else {
+								interface_alerta(Array(
+									'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-google-recaptcha-mandatory-fields'))
+								));
+							}
+						break;
+						case 'recaptcha-v2':
+							if(existe($_REQUEST['google_recaptcha_v2_site']) && existe($_REQUEST['google_recaptcha_v2_secret'])){
+								$campo = 'google_recaptcha_v2_site'; $campo_valor = $_REQUEST[$campo]; banco_update_campo($campo,$campo_valor);
+								$campo = 'google_recaptcha_v2_secret'; $campo_valor = $_REQUEST[$campo]; banco_update_campo($campo,$campo_valor);
+								banco_update_campo('google_recaptcha_v2_ativo','1',true);
+								
+								$editar = true;
+								$alteracoes[] = Array('campo' => 'google-recaptcha');
+								$recaptchaAlterado = true;
+							} else {
+								interface_alerta(Array(
+									'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-google-recaptcha-mandatory-fields'))
+								));
+							}
+						break;
 					}
 				break;
 				case 'excluir':
-					banco_update_campo('google_recaptcha_site','NULL',true);
-					banco_update_campo('google_recaptcha_secret','NULL',true);
-					banco_update_campo('google_recaptcha_ativo','NULL',true);
-					
-					$editar = true;
-					$alteracoes[] = Array('campo' => 'google-recaptcha');
-					$recaptchaAlterado = true;
+					switch($_REQUEST['google-recaptcha-tipo']){
+						case 'recaptcha-v3':
+							banco_update_campo('google_recaptcha_site','NULL',true);
+							banco_update_campo('google_recaptcha_secret','NULL',true);
+							banco_update_campo('google_recaptcha_ativo','NULL',true);
+							
+							$editar = true;
+							$alteracoes[] = Array('campo' => 'google-recaptcha');
+							$recaptchaAlterado = true;
+						break;
+						case 'recaptcha-v2':
+							banco_update_campo('google_recaptcha_v2_site','NULL',true);
+							banco_update_campo('google_recaptcha_v2_secret','NULL',true);
+							banco_update_campo('google_recaptcha_v2_ativo','NULL',true);
+							
+							$editar = true;
+							$alteracoes[] = Array('campo' => 'google-recaptcha');
+							$recaptchaAlterado = true;
+						break;
+					}
 				break;
 			}
 		}
 		
-		// ===== Caso tenha sido alterado o domío próprio.
+		// ===== Verificar se o google recaptcha tipo foi modificado.
+		
+		$mudouRecaptchaTipo = false;
+		
+		if($hosts['google_recaptcha_tipo']){
+			if($hosts['google_recaptcha_tipo'] != $_REQUEST['recaptcha-tipo']){
+				$mudouRecaptchaTipo = true;
+			}
+		} else {
+			$mudouRecaptchaTipo = true;
+		}
+		
+		$campo = 'google_recaptcha_tipo'; $alteracoes_name = 'recaptcha'; if($mudouRecaptchaTipo){
+			$editar = true;
+			$alterarDominio = true;
+			banco_update_campo($campo,$_REQUEST['recaptcha-tipo'],true);
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => ($hosts['google_recaptcha_tipo'] ? $hosts['google_recaptcha_tipo'] : 'nenhum' ),'valor_depois' => $_REQUEST['recaptcha-tipo']);
+		}
+		
+		// ===== Caso tenha sido alterado o domínio próprio.
 		
 		$campo = 'dominio_proprio'; $alteracoes_name = 'type-domain'; if(isset($alterou_dominio_proprio)){
 			$editar = true;
