@@ -30,7 +30,7 @@ $(document).ready(function(){
 				.form({
 					fields : (gestor.formulario[formId_1].regrasValidacao ? gestor.formulario[formId_1].regrasValidacao : {}),
 					onSuccess(event, fields){
-						if(typeof gestor.googleRecaptchaActive !== typeof undefined && gestor.googleRecaptchaActive !== false){
+						if('googleRecaptchaActive' in gestor){
 							var action = 'logar'; // Action 
 							var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
 							
@@ -47,6 +47,16 @@ $(document).ready(function(){
 					}
 				});
 			
+			// ===== Google reCAPTCHA V2 condições.
+			
+			if('googleRecaptchaActiveV2' in gestor){
+				var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
+				
+				var widgetId = grecaptcha.render(document.getElementById('google-recaptcha-v2-login'), {
+					'sitekey' : googleSiteKey
+				});
+			}
+			
 			// ===== Form formCriarConta.
 			
 			var formId_2 = 'formCriarConta';
@@ -56,7 +66,7 @@ $(document).ready(function(){
 				.form({
 					fields : (gestor.formulario[formId_2].regrasValidacao ? gestor.formulario[formId_2].regrasValidacao : {}),
 					onSuccess(event, fields){
-						if(typeof gestor.googleRecaptchaActive !== typeof undefined && gestor.googleRecaptchaActive !== false){
+						if('googleRecaptchaActive' in gestor){
 							var action = 'criarConta'; // Action 
 							var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
 							
@@ -73,6 +83,15 @@ $(document).ready(function(){
 					}
 				});
 			
+			// ===== Google reCAPTCHA V2 condições.
+			
+			if('googleRecaptchaActiveV2' in gestor){
+				var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
+				
+				var widgetId2 = grecaptcha.render(document.getElementById('google-recaptcha-v2-criar-conta'), {
+					'sitekey' : googleSiteKey
+				});
+			}
 		}
 	}
 	

@@ -527,16 +527,35 @@ function formulario_google_recaptcha(){
 	
 	if($variaveis){
 		foreach($variaveis as $variavel){
-			if($variavel['id'] == 'chave-site'){
-				if($variavel['valor']){
-					$chave = $variavel['valor'];
-				}
-			}
-			
-			if($variavel['id'] == 'ativo'){
-				if($variavel['valor']){
-					$ativo = true;
-				}
+			$googleRecaptcha[$variavel['id']] = $variavel['valor'];
+		}
+		
+		if(isset($googleRecaptcha['tipo'])){
+			switch($googleRecaptcha['tipo']){
+				case 'recaptcha-v3':
+					if(isset($googleRecaptcha['chave-site'])){
+						if($googleRecaptcha['chave-site']){
+							$chave = $googleRecaptcha['chave-site'];
+						}
+					}
+					if(isset($googleRecaptcha['ativo'])){
+						if($googleRecaptcha['ativo']){
+							$ativo = true;
+						}
+					}
+				break;
+				case 'recaptcha-v2':
+					if(isset($googleRecaptcha['chave-site-v2'])){
+						if($googleRecaptcha['chave-site-v2']){
+							$chave = $googleRecaptcha['chave-site-v2'];
+						}
+					}
+					if(isset($googleRecaptcha['ativo-v2'])){
+						if($googleRecaptcha['ativo-v2']){
+							$ativo = true;
+						}
+					}
+				break;
 			}
 		}
 	}
@@ -546,6 +565,39 @@ function formulario_google_recaptcha(){
 	} else {
 		return null;
 	}
+}
+
+function formulario_google_recaptcha_tipo(){
+	/**********
+		Descrição: Verifica se existe google recaptcha definido para essa conta e devolve o tipo ativo.
+	**********/
+	
+	global $_GESTOR;
+	
+	$variaveis = banco_select(Array(
+		'tabela' => 'variaveis',
+		'campos' => Array(
+			'id',
+			'valor',
+		),
+		'extra' => 
+			"WHERE modulo='google-recaptcha'"
+			." AND id='tipo'"
+	));
+	
+	if($variaveis){
+		foreach($variaveis as $variavel){
+			$googleRecaptcha[$variavel['id']] = $variavel['valor'];
+		}
+		
+		if(isset($googleRecaptcha['tipo'])){
+			if($googleRecaptcha['tipo']){
+				return $googleRecaptcha['tipo'];
+			}
+		}
+	}
+	
+	return 'nenhum';
 }
 
 ?>
