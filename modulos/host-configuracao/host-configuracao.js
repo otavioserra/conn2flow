@@ -208,6 +208,8 @@ $(document).ready(function(){
 			$('.google-recaptcha-instalacao').addClass('escondido');
 			$('.google-recaptcha-instalacao-v2').addClass('escondido');
 			
+			$('input[name="google-recaptcha-comando"]').val('');
+			
 			switch(id){
 				case 'nenhum':
 					if(dominioProprio){
@@ -217,8 +219,6 @@ $(document).ready(function(){
 					$('.controleRecaptcha[data-id="nenhum"]').addClass(['active','blue']);
 					$('.controleRecaptcha[data-id="recaptcha-v2"]').removeClass(['active','blue']);
 					$('.controleRecaptcha[data-id="recaptcha-v3"]').removeClass(['active','blue']);
-					
-					$('input[name="google-recaptcha-comando"]').val('');
 				break;
 				case 'recaptcha-v2':
 					if(dominioProprio){
