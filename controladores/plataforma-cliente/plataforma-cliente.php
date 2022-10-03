@@ -11,7 +11,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 
 // =========================== Funções Extras
 
-function plataforma_cliente_recaptcha($token,$action){
+function plataforma_cliente_recaptcha($token,$action,$gRecaptchaResponse = null){
 	global $_GESTOR;
 	global $_CONFIG;
 	global $_CONFIG;
@@ -22,6 +22,29 @@ function plataforma_cliente_recaptcha($token,$action){
 	
 	if(isset($_CONFIG['platform-recaptcha-active'])){
 		if($_CONFIG['platform-recaptcha-active']){
+			// ===== Verificar no banco de dados qual é o tipo atual do host.
+			
+			$tipo = 'nenhum';
+			$hosts = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'hosts',
+				'campos' => Array(
+					'google_recaptcha_tipo',
+				),
+				'extra' => 
+					"WHERE id_hosts='".$id_hosts."'"
+			));
+			
+			if($hosts['google_recaptcha_tipo']){
+				$tipo = $hosts['google_recaptcha_tipo'];
+				
+				// ===== Caso o tipo seja nenhum, significa que o usuário desativou o reCAPTCHA, portanto, retornar true.
+				
+				if($tipo == 'nenhum'){
+					return true;
+				}
+			}
+			
 			// ===== Variáveis de comparação do reCAPTCHA
 			
 			$recaptchaSecretKey = $_CONFIG['platform-recaptcha-server'];
@@ -30,41 +53,83 @@ function plataforma_cliente_recaptcha($token,$action){
 			
 			$id_hosts = $_GESTOR['host-id'];
 			
-			// ===== Verificar se o host tem reCAPTCHA está ativado.
+			// ===== Verificar conforme o tipo do reCAPTCHA.
 			
-			$hosts = banco_select(Array(
-				'unico' => true,
-				'tabela' => 'hosts',
-				'campos' => Array(
-					'google_recaptcha_ativo',
-					'google_recaptcha_secret',
-				),
-				'extra' => 
-					"WHERE id_hosts='".$id_hosts."'"
-			));
-			
-			if($hosts['google_recaptcha_ativo']){
-				if($hosts['google_recaptcha_secret']){
-					$recaptchaSecretKey = $hosts['google_recaptcha_secret'];
-				}
-			}
-			
-			
-			// ===== Chamada ao servidor do Google reCAPTCHA para conferência se o token enviado no formulário é válido.
-			
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('secret' => $recaptchaSecretKey, 'response' => $token)));
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			$response = curl_exec($ch);
-			curl_close($ch);
-			$arrResponse = json_decode($response, true);
-			
-			// ===== Verificar se o retorno do servidor é válido, senão não validar o reCAPTCHA
-			
-			if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5) {
-				$recaptchaValido = true;
+			switch($var){
+				case 'recaptcha-v2':
+					// ===== Verificar se o host tem reCAPTCHA ativado.
+					
+					$hosts = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'hosts',
+						'campos' => Array(
+							'google_recaptcha_v2_ativo',
+							'google_recaptcha_v2_secret',
+						),
+						'extra' => 
+							"WHERE id_hosts='".$id_hosts."'"
+					));
+					
+					if($hosts['google_recaptcha_v2_ativo']){
+						if($hosts['google_recaptcha_v2_secret']){
+							$recaptchaSecretKey = $hosts['google_recaptcha_v2_secret'];
+						}
+					}
+					
+					// ===== Chamada ao servidor do Google reCAPTCHA para conferência se o token enviado no formulário é válido.
+					
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
+					curl_setopt($ch, CURLOPT_POST, 1);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('secret' => $recaptchaSecretKey, 'response' => $gRecaptchaResponse)));
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					$response = curl_exec($ch);
+					curl_close($ch);
+					$arrResponse = json_decode($response, true);
+					
+					// ===== Verificar se o retorno do servidor é válido, senão não validar o reCAPTCHA
+					
+					if($arrResponse["success"] == '1') {
+						$recaptchaValido = true;
+					}
+				break;
+				case 'recaptcha-v3':
+					// ===== Verificar se o host tem reCAPTCHA ativado.
+					
+					$hosts = banco_select(Array(
+						'unico' => true,
+						'tabela' => 'hosts',
+						'campos' => Array(
+							'google_recaptcha_ativo',
+							'google_recaptcha_secret',
+						),
+						'extra' => 
+							"WHERE id_hosts='".$id_hosts."'"
+					));
+					
+					if($hosts['google_recaptcha_ativo']){
+						if($hosts['google_recaptcha_secret']){
+							$recaptchaSecretKey = $hosts['google_recaptcha_secret'];
+						}
+					}
+					
+					// ===== Chamada ao servidor do Google reCAPTCHA para conferência se o token enviado no formulário é válido.
+					
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
+					curl_setopt($ch, CURLOPT_POST, 1);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('secret' => $recaptchaSecretKey, 'response' => $token)));
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					$response = curl_exec($ch);
+					curl_close($ch);
+					$arrResponse = json_decode($response, true);
+					
+					// ===== Verificar se o retorno do servidor é válido, senão não validar o reCAPTCHA
+					
+					if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5) {
+						$recaptchaValido = true;
+					}
+				break;
 			}
 		} else {
 			$recaptchaValido = true;
@@ -1127,7 +1192,7 @@ function plataforma_cliente_identificacao(){
 			// ===== Verificar se os campos obrigatórios foram enviados: email e senha.
 			
 			if(isset($dados['email']) && isset($dados['senha']) && isset($dados['usuario_token'])){
-				if(plataforma_cliente_recaptcha($dados['token'],$opcao)){
+				if(plataforma_cliente_recaptcha($dados['token'],$opcao,$dados['gRecaptchaResponse'])){
 					$user_invalid = true;
 					
 					// ===== Verificar se o usuário já está logado, caso esteja, deletar token anterior no banco.
@@ -1294,7 +1359,7 @@ function plataforma_cliente_identificacao(){
 			// ===== Verificar se os campos obrigatórios foram enviados: email.
 			
 			if(isset($dados['email'])){
-				if(plataforma_cliente_recaptcha($dados['token'],$opcao)){
+				if(plataforma_cliente_recaptcha($dados['token'],$opcao,$dados['gRecaptchaResponse'])){
 					// ===== Passar o email para letras minúsculas.
 					
 					$dados['email'] = strtolower($dados['email']);
@@ -1369,7 +1434,7 @@ function plataforma_cliente_identificacao(){
 			// ===== Verificar se os campos obrigatórios foram enviados: email.
 			
 			if(isset($dados['email'])){
-				if(plataforma_cliente_recaptcha($dados['token'],$opcao)){
+				if(plataforma_cliente_recaptcha($dados['token'],$opcao,$dados['gRecaptchaResponse'])){
 					// ===== Passar o email para letras minúsculas.
 					
 					$dados['email'] = strtolower($dados['email']);
@@ -1598,7 +1663,7 @@ function plataforma_cliente_identificacao(){
 			// ===== Verificar se os campos obrigatórios foram enviados: email e tokenPubId.
 			
 			if(isset($dados['email']) && isset($dados['tokenPubId'])){
-				if(plataforma_cliente_recaptcha($dados['token'],$opcao)){
+				if(plataforma_cliente_recaptcha($dados['token'],$opcao,$dados['gRecaptchaResponse'])){
 					// ===== Passar o email para letras minúsculas.
 					
 					$dados['email'] = strtolower($dados['email']);
