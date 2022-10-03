@@ -329,6 +329,7 @@ $(document).ready(function(){
 						$(this).find('.icon').removeClass('check');
 						$(this).find('.icon').addClass('times');
 						excluirChecked = false;
+						$('input[name="google-recaptcha-tipo"]').val('');
 						$('input[name="google-recaptcha-comando"]').val('');
 					} else {
 						$(this).addClass('active');
@@ -337,6 +338,7 @@ $(document).ready(function(){
 						$(this).find('.icon').removeClass('times');
 						$(this).find('.icon').addClass('check');
 						excluirChecked = true;
+						$('input[name="google-recaptcha-tipo"]').val(googleRecaptchaTipo);
 						$('input[name="google-recaptcha-comando"]').val('excluir');
 					}
 				break;
