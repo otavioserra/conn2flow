@@ -204,7 +204,7 @@ $(document).ready(function(){
 		// ===== Controle do reCAPTCHA.
 		
 		var googleRecaptchaTipo = gestor.host.googleRecaptchaTipo;
-		function controleRecaptcha(id){
+		function controleRecaptcha(id, start = false){
 			$('.google-recaptcha-instalacao').addClass('escondido');
 			$('.google-recaptcha-instalacao-v2').addClass('escondido');
 			
@@ -217,6 +217,8 @@ $(document).ready(function(){
 					$('.controleRecaptcha[data-id="nenhum"]').addClass(['active','blue']);
 					$('.controleRecaptcha[data-id="recaptcha-v2"]').removeClass(['active','blue']);
 					$('.controleRecaptcha[data-id="recaptcha-v3"]').removeClass(['active','blue']);
+					
+					$('input[name="google-recaptcha-comando"]').val('');
 				break;
 				case 'recaptcha-v2':
 					if(dominioProprio){
@@ -227,6 +229,8 @@ $(document).ready(function(){
 						} else {
 							$('.google-recaptcha-ativo').addClass('escondido');
 							$('.google-recaptcha-instalacao-v2').removeClass('escondido');
+							
+							$('input[name="google-recaptcha-comando"]').val('instalar');
 						}
 					}
 					
@@ -243,6 +247,8 @@ $(document).ready(function(){
 						} else {
 							$('.google-recaptcha-ativo').addClass('escondido');
 							$('.google-recaptcha-instalacao').removeClass('escondido');
+							
+							$('input[name="google-recaptcha-comando"]').val('instalar');
 						}
 					}
 					
@@ -293,7 +299,6 @@ $(document).ready(function(){
 			}
 			
 			$('input[name="google-recaptcha-tipo"]').val(googleRecaptchaTipo);
-			$('input[name="google-recaptcha-comando"]').val('instalar');
 		}
 		
 		$('.gr-controle').on('mouseup tap',function(e){
