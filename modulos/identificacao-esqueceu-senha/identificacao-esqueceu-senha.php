@@ -133,15 +133,32 @@ function identificacao_esqueceu_senha_padrao(){
 				// ===== Verificar se o host tem reCAPTCHA próprio.
 				
 				$chaveSite = formulario_google_recaptcha();
+				$recaptchaTipo = formulario_google_recaptcha_tipo();
 				
 				// ===== configurar o Google reCAPTCHA.
 				
 				$googleRecaptchaSite = (isset($chaveSite) ? $chaveSite : $_GESTOR['plataforma-cliente']['plataforma-recaptcha-site']);
-			
-				$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
-				$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $googleRecaptchaSite;
 				
-				gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$googleRecaptchaSite.'"></script>');
+				if(isset($recaptchaTipo)){
+					switch($recaptchaTipo){
+						case 'recaptcha-v2':
+							$_GESTOR['javascript-vars']['googleRecaptchaActiveV2'] = true;
+							$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $googleRecaptchaSite;
+							gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render=explicit"></script>');
+						break;
+						case 'recaptcha-v3':
+							$recaptchaV3 = true;
+						break;
+					}
+				} else {
+					$recaptchaV3 = true;
+				}
+				
+				if(isset($recaptchaV3)){
+					$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
+					$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $googleRecaptchaSite;
+					gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$googleRecaptchaSite.'"></script>');
+				}
 			}
 		}
 		

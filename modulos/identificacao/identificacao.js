@@ -50,11 +50,23 @@ $(document).ready(function(){
 			// ===== Google reCAPTCHA V2 condições.
 			
 			if('googleRecaptchaActiveV2' in gestor){
+				var documentId = 'google-recaptcha-v2-login';
+				
+				$('#'+documentId).css('paddingBottom','15px');
 				var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
 				
-				var widgetId = grecaptcha.render(document.getElementById('google-recaptcha-v2-login'), {
-					'sitekey' : googleSiteKey
+				grecaptcha.ready(function() {
+					var widgetId = grecaptcha.render(document.getElementById(documentId), {
+						'sitekey' : googleSiteKey,
+						'callback' : verifyCallback,
+					});
 				});
+				
+				$('#'+documentId).parent().find('button').addClass('disabled');
+				
+				function verifyCallback(){
+					$('#'+documentId).parent().find('button').removeClass('disabled');
+				}
 			}
 			
 			// ===== Form formCriarConta.
@@ -86,11 +98,23 @@ $(document).ready(function(){
 			// ===== Google reCAPTCHA V2 condições.
 			
 			if('googleRecaptchaActiveV2' in gestor){
+				var documentId2 = 'google-recaptcha-v2-criar-conta';
+				
+				$('#'+documentId2).css('paddingBottom','15px');
 				var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
 				
-				var widgetId2 = grecaptcha.render(document.getElementById('google-recaptcha-v2-criar-conta'), {
-					'sitekey' : googleSiteKey
+				grecaptcha.ready(function() {
+					var widgetId2 = grecaptcha.render(document.getElementById(documentId2), {
+						'sitekey' : googleSiteKey,
+						'callback' : verifyCallback,
+					});
 				});
+				
+				$('#'+documentId2).parent().find('button').addClass('disabled');
+				
+				function verifyCallback(){
+					$('#'+documentId2).parent().find('button').removeClass('disabled');
+				}
 			}
 		}
 	}

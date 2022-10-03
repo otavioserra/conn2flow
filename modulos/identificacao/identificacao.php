@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'identificacao';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.1.0',
+	'versao' => '1.1.5',
 );
 
 // ===== Funções Auxiliares
@@ -367,17 +367,25 @@ function identificacao_padrao(){
 				
 				$googleRecaptchaSite = (isset($chaveSite) ? $chaveSite : $_GESTOR['plataforma-cliente']['plataforma-recaptcha-site']);
 				
-				switch($recaptchaTipo){
-					case 'recaptcha-v2':
-						$_GESTOR['javascript-vars']['googleRecaptchaActiveV2'] = true;
-						$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $googleRecaptchaSite;
-						gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js"></script>');
-					break;
-					case 'recaptcha-v3':
-						$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
-						$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $googleRecaptchaSite;
-						gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js"></script>');
-					break;
+				if(isset($recaptchaTipo)){
+					switch($recaptchaTipo){
+						case 'recaptcha-v2':
+							$_GESTOR['javascript-vars']['googleRecaptchaActiveV2'] = true;
+							$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $googleRecaptchaSite;
+							gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render=explicit"></script>');
+						break;
+						case 'recaptcha-v3':
+							$recaptchaV3 = true;
+						break;
+					}
+				} else {
+					$recaptchaV3 = true;
+				}
+				
+				if(isset($recaptchaV3)){
+					$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
+					$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $googleRecaptchaSite;
+					gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$googleRecaptchaSite.'"></script>');
 				}
 			}
 		}

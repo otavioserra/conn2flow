@@ -597,7 +597,7 @@ function formulario_google_recaptcha_tipo(){
 		}
 	}
 	
-	return 'nenhum';
+	return null;
 }
 
 ?>
