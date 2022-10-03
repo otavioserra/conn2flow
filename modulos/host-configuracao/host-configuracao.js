@@ -173,6 +173,8 @@ $(document).ready(function(){
 					$('.controleDominio[data-id="proprio"]').removeClass(['active','blue']);
 					
 					$(formSelector).form('remove fields', ['dominio_proprio_url']);
+					
+					dominioProprio = false;
 				break;
 				case 'proprio':
 					$('.contProprio').show();
