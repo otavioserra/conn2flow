@@ -1606,8 +1606,11 @@ function api_cliente_variaveis($params = false){
 					'unico' => true,
 					'tabela' => 'hosts',
 					'campos' => Array(
+						'google_recaptcha_tipo',
 						'google_recaptcha_ativo',
 						'google_recaptcha_site',
+						'google_recaptcha_v2_ativo',
+						'google_recaptcha_v2_site',
 					),
 					'extra' => 
 						"WHERE id_hosts='".$host_verificacao['id_hosts']."'"
@@ -1616,8 +1619,11 @@ function api_cliente_variaveis($params = false){
 				// ===== Processamento dos valores locai para id remoto.
 				
 				$hosts_proc = Array(
+					'tipo' => ($hosts['google_recaptcha_tipo'] ? $hosts['google_recaptcha_tipo'] : 'nenhum'),
 					'ativo' => ($hosts['google_recaptcha_ativo'] ? $hosts['google_recaptcha_ativo'] : '0'),
 					'chave-site' => ($hosts['google_recaptcha_site'] ? $hosts['google_recaptcha_site'] : ''),
+					'ativo-v2' => ($hosts['google_recaptcha_v2_ativo'] ? $hosts['google_recaptcha_v2_ativo'] : '0'),
+					'chave-site-v2' => ($hosts['google_recaptcha_v2_site'] ? $hosts['google_recaptcha_v2_site'] : ''),
 				);
 				
 				// ===== Enviar os registros.
