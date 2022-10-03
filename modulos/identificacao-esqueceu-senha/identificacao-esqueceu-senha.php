@@ -53,6 +53,7 @@ function identificacao_esqueceu_senha_padrao(){
 			'email' => banco_escape_field($_REQUEST['email']),
 			'tokenPubId' => $tokenPubId,
 			'token' => (isset($_REQUEST['token']) ? banco_escape_field($_REQUEST['token']) : null),
+			'gRecaptchaResponse' => (isset($_REQUEST['g-recaptcha-response']) ? banco_escape_field($_REQUEST['g-recaptcha-response']) : null),
 		));
 		
 		if(!$retorno['completed']){

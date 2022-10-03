@@ -186,6 +186,7 @@ function identificacao_padrao(){
 			'email' => banco_escape_field($_REQUEST['email']),
 			'senha' => banco_escape_field($_REQUEST['senha']),
 			'token' => (isset($_REQUEST['token']) ? banco_escape_field($_REQUEST['token']) : null),
+			'gRecaptchaResponse' => (isset($_REQUEST['g-recaptcha-response']) ? banco_escape_field($_REQUEST['g-recaptcha-response']) : null),
 			'usuarioTokenID' => (isset($_GESTOR['usuario-token-id']) ? $_GESTOR['usuario-token-id'] : null),
 		));
 		
@@ -260,6 +261,7 @@ function identificacao_padrao(){
 			'opcao' => 'criarConta',
 			'email' => banco_escape_field($_REQUEST['email']),
 			'token' => (isset($_REQUEST['token']) ? banco_escape_field($_REQUEST['token']) : null),
+			'gRecaptchaResponse' => (isset($_REQUEST['g-recaptcha-response']) ? banco_escape_field($_REQUEST['g-recaptcha-response']) : null),
 		));
 		
 		if(!$retorno['completed']){

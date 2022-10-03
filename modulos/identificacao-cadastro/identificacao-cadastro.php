@@ -90,6 +90,7 @@ function identificacao_cadastro_padrao(){
 			'cpf' => (isset($_REQUEST['cpf']) ? banco_escape_field($_REQUEST['cpf']) : null),
 			'cnpj' => (isset($_REQUEST['cnpj']) ? banco_escape_field($_REQUEST['cnpj']) : null),
 			'token' => (isset($_REQUEST['token']) ? banco_escape_field($_REQUEST['token']) : null),
+			'gRecaptchaResponse' => (isset($_REQUEST['g-recaptcha-response']) ? banco_escape_field($_REQUEST['g-recaptcha-response']) : null),
 		));
 		
 		if(!$retorno['completed']){
