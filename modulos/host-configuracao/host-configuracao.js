@@ -205,6 +205,9 @@ $(document).ready(function(){
 		
 		var googleRecaptchaTipo = gestor.host.googleRecaptchaTipo;
 		function controleRecaptcha(id){
+			$('.google-recaptcha-instalacao').addClass('escondido');
+			$('.google-recaptcha-instalacao-v2').addClass('escondido');
+			
 			switch(id){
 				case 'nenhum':
 					if(dominioProprio){
