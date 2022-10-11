@@ -311,6 +311,7 @@ function plataforma_servidor_paginas(){
 						switch($chave){
 							case 'template_padrao':
 							case 'template_modificado':
+							case 'sem_permissao':
 								$campo_nome = $chave; $editar[$campo_tabela][] = (existe($dado) ? $campo_nome."=1" : $campo_nome."=NULL");
 							break;
 							case 'template_versao':
@@ -360,6 +361,7 @@ function plataforma_servidor_paginas(){
 						switch($chave){
 							case 'template_padrao':
 							case 'template_modificado':
+							case 'sem_permissao':
 								$campo_nome = $chave; $campo_valor = (existe($dado) ? "1" : "NULL"); 	$campos[] = Array($campo_nome,$campo_valor,true);
 							break;
 							case 'template_versao':
