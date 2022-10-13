@@ -284,6 +284,8 @@ function plataforma_cliente_plugin_data_permitida($params = false){
 				if($dataFormatada == $ded){
 					$flag = false;
 					$data_extra_permitida = true;
+					
+					echo $dataFormatada;
 					break;
 				}
 				$data_extra_posicao++;
