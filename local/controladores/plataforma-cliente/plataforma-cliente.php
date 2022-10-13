@@ -260,6 +260,8 @@ function plataforma_cliente_plugin_data_permitida($params = false){
 	$diaLimiteAlteracao = strtotime(date("Y-m-d", $hoje) . " + ".$periodoLimiteAlteracao." day");
 	$dia = $primeiro_dia;
 	
+	echo print_r($datas_extras_disponiveis,true);
+	
 	do {
 		$data_extra_permitida = false;
 		$data_extra_posicao = 0;
