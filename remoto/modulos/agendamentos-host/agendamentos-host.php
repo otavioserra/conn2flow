@@ -140,7 +140,7 @@ function agendamentos_calendario($params = false){
 		$dia += 86400;
 		
 		if($limitar_calendario){
-			if($dia > $limitar_calendario){
+			if($dia >= $limitar_calendario){
 				break;
 			}
 		}
