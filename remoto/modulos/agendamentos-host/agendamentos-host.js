@@ -171,6 +171,7 @@ $(document).ready(function(){
 						field.attr('data-num',num);
 						field.find('label').html('Acompanhante '+num);
 						field.find('input').prop('name','acompanhante-'+num);
+						field.find('input').prop('placeholder','Nome Completo do Acompanhante '+num);
 						field.find('input').attr('data-validate','acompanhante'+num);
 						
 						acompanhantesCont.append(field);
