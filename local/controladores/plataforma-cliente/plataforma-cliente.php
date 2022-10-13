@@ -58,6 +58,12 @@ function plataforma_cliente_plugin_data_permitida($data){
 	
 	$dia = $primeiro_dia;
 	do {
+		if($limitar_calendario){
+			if($dia >= $limitar_calendario){
+				break;
+			}
+		}
+		
 		$flag = false;
 		
 		if($periodo_ferias){
@@ -111,12 +117,6 @@ function plataforma_cliente_plugin_data_permitida($data){
 		}
 		
 		$dia += 86400;
-		
-		if($limitar_calendario){
-			if($dia > $limitar_calendario){
-				break;
-			}
-		}
 	} while ($dia < $ultimo_dia);
 	
 	return false;

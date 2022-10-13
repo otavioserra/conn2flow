@@ -62,6 +62,12 @@ function agendamentos_calendario($params = false){
 	
 	$dia = $primeiro_dia;
 	do {
+		if($limitar_calendario){
+			if($dia >= $limitar_calendario){
+				break;
+			}
+		}
+		
 		$dataFormatada = date('d/m/Y', $dia);
 		$flag = false;
 		
@@ -138,12 +144,6 @@ function agendamentos_calendario($params = false){
 		}
 		
 		$dia += 86400;
-		
-		if($limitar_calendario){
-			if($dia >= $limitar_calendario){
-				break;
-			}
-		}
 	} while ($dia < $ultimo_dia);
 	
 	$JScalendario['datas_disponiveis'] = $datas;
