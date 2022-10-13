@@ -219,7 +219,7 @@ function plataforma_cliente_plugin_data_permitida($params = false){
 	
 	// ===== Pegar as configurações das escalas.
 	
-	$config = gestor_variaveis(Array('modulo' => 'configuracoes-escalas','conjunto' => true));
+	$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-escalas'));
 	
 	$dias_semana = (existe($config['dias-semana']) ? explode(',',$config['dias-semana']) : Array());
 	$anos = (existe($config['calendario-anos']) ? (int)$config['calendario-anos'] : 2);
@@ -260,10 +260,6 @@ function plataforma_cliente_plugin_data_permitida($params = false){
 	$diaLimiteAlteracao = strtotime(date("Y-m-d", $hoje) . " + ".$periodoLimiteAlteracao." day");
 	$dia = $primeiro_dia;
 	
-	echo print_r($config,true);
-	echo '>> '.$config['datas-extras-disponiveis'].' '.$config['datas-extras-disponiveis-valores'];
-	echo print_r($datas_extras_disponiveis,true);
-	
 	do {
 		$data_extra_permitida = false;
 		$data_extra_posicao = 0;
@@ -288,8 +284,6 @@ function plataforma_cliente_plugin_data_permitida($params = false){
 				if($dataFormatada == $ded){
 					$flag = false;
 					$data_extra_permitida = true;
-					
-					echo $dataFormatada;
 					break;
 				}
 				$data_extra_posicao++;
