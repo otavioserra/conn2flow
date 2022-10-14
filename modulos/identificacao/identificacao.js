@@ -38,14 +38,23 @@ $(document).ready(function(){
 								grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
 									$(formSelector_1).append('<input type="hidden" name="token" value="'+token+'">');
 									$(formSelector_1).append('<input type="hidden" name="action" value="'+action+'">');
-									$(formSelector_1).unbind('submit').submit();
 								});
 							});
-							
-							return false;
 						}
+						
+						return false;
 					}
 				});
+			
+			$(formSelector_1).find('button').on('mouseup tap',function(e){
+				if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+				
+				if($(this).hasClass('disabled')){
+					return false;
+				}
+				
+				$(formSelector_1).unbind('submit').submit();
+			});
 			
 			// ===== Google reCAPTCHA V2 condições.
 			
@@ -86,14 +95,23 @@ $(document).ready(function(){
 								grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
 									$(formSelector_2).append('<input type="hidden" name="token" value="'+token+'">');
 									$(formSelector_2).append('<input type="hidden" name="action" value="'+action+'">');
-									$(formSelector_2).unbind('submit').submit();
 								});
 							});
-							
-							return false;
 						}
+						
+						return false;
 					}
 				});
+			
+			$(formSelector_2).find('button').on('mouseup tap',function(e){
+				if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+				
+				if($(this).hasClass('disabled')){
+					return false;
+				}
+				
+				$(formSelector_2).unbind('submit').submit();
+			});
 			
 			// ===== Google reCAPTCHA V2 condições.
 			

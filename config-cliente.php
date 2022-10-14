@@ -2,7 +2,7 @@
 
 // ===== Definições de variáveis gerais do gestor
 
-$_GESTOR['versao']								=	'1.0.0'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'1.0.1'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'entrey-'; // Identificador básico do gestor
 $_GESTOR['modulos-caminho']						=	'bibliotecas/'; // Caminho relativo a raiz dos módulos bibliotecas do gestor
 $_GESTOR['session-authname']					=	'_HSID'; // Nome do cookie de sessão de usuário

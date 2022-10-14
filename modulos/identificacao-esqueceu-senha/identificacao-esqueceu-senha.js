@@ -5,9 +5,9 @@ $(document).ready(function(){
 		// ===== Form Esqueceu Senha.
 		
 		var formId_1 = 'formEsqueceuSenha';
-		var formSelector_1 = '#formEsqueceuSenha';
+		var formSelector = '#formEsqueceuSenha';
 		
-		$(formSelector_1)
+		$(formSelector)
 			.form({
 				fields : (gestor.formulario[formId_1].regrasValidacao ? gestor.formulario[formId_1].regrasValidacao : {}),
 				onSuccess(event, fields){
@@ -17,16 +17,25 @@ $(document).ready(function(){
 						
 						grecaptcha.ready(function() {
 							grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
-								$(formSelector_1).append('<input type="hidden" name="token" value="'+token+'">');
-								$(formSelector_1).append('<input type="hidden" name="action" value="'+action+'">');
-								$(formSelector_1).unbind('submit').submit();
+								$(formSelector).append('<input type="hidden" name="token" value="'+token+'">');
+								$(formSelector).append('<input type="hidden" name="action" value="'+action+'">');
 							});
 						});
-						
-						return false;
 					}
+					
+					return false;
 				}
 			});
+		
+		$(formSelector).find('button').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			if($(this).hasClass('disabled')){
+				return false;
+			}
+			
+			$(formSelector).unbind('submit').submit();
+		});
 		
 		// ===== Google reCAPTCHA V2 condições.
 		
