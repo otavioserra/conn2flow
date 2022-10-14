@@ -1208,7 +1208,7 @@ function plataforma_cliente_identificacao(){
 					
 					// ===== Passar o email para letras minúsculas.
 					
-					$dados['email'] = strtolower($dados['email']);
+					$dados['email'] = trim(strtolower($dados['email']));
 					
 					// ===== Verificar se os dados enviados batem com algum usuário dentro do sistema
 					
@@ -1362,7 +1362,7 @@ function plataforma_cliente_identificacao(){
 				if(plataforma_cliente_recaptcha($dados['token'],$opcao,$dados['gRecaptchaResponse'])){
 					// ===== Passar o email para letras minúsculas.
 					
-					$dados['email'] = strtolower($dados['email']);
+					$dados['email'] = trim(strtolower($dados['email']));
 					
 					// ===== Verificar se os dados enviados batem com algum usuário dentro do sistema
 					
@@ -1437,7 +1437,8 @@ function plataforma_cliente_identificacao(){
 				if(plataforma_cliente_recaptcha($dados['token'],$opcao,$dados['gRecaptchaResponse'])){
 					// ===== Passar o email para letras minúsculas.
 					
-					$dados['email'] = strtolower($dados['email']);
+					$dados['email'] = trim(strtolower($dados['email']));
+					$dados['nome'] = trim(ucwords(strtolower($dados['nome'])));
 					
 					// ===== Verificar se os dados enviados batem com algum usuário dentro do sistema
 					
@@ -1666,7 +1667,7 @@ function plataforma_cliente_identificacao(){
 				if(plataforma_cliente_recaptcha($dados['token'],$opcao,$dados['gRecaptchaResponse'])){
 					// ===== Passar o email para letras minúsculas.
 					
-					$dados['email'] = strtolower($dados['email']);
+					$dados['email'] = trim(strtolower($dados['email']));
 					
 					// ===== Pegar os campos obrigatórios.
 					
@@ -4631,7 +4632,7 @@ function plataforma_cliente_usuario(){
 						case 'email':
 							// ===== Verificar se já existe o email em alguma outra conta.
 							
-							$email = banco_escape_field($dados['email']);
+							$email = strtolower(trim(banco_escape_field($dados['email'])));
 							
 							$hosts_usuarios_outro = banco_select_name
 							(
