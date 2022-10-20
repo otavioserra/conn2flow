@@ -66,7 +66,6 @@ function agendamentos_confirmacao_publico(){
 		// ===== Verificar se o status atual do agendamento permite confirmação.
 		
 		if(
-			$status == 'confirmado' ||
 			$status == 'qualificado' ||
 			$status == 'email-enviado' ||
 			$status == 'email-nao-enviado'
