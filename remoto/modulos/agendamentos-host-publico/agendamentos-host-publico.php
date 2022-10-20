@@ -100,9 +100,15 @@ function agendamentos_confirmacao_publico(){
 				gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
 			}
 		} else {
+			if($status == 'confirmado'){
+				$msgRetorno = $config['msg-agendamento-ja-confirmado'];
+			} else {
+				$msgRetorno = $config['msg-confirmacao-status-nao-permitido'];
+			}
+			
 			interface_alerta(Array(
 				'redirect' => true,
-				'msg' => 'AGENDAMENTO_STATUS_NAO_PERMITIDO_CONFIRMACAO'
+				'msg' => $msgRetorno
 			));
 			
 			gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
