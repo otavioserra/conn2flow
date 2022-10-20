@@ -1094,6 +1094,7 @@ function agendamentos_ajax_atualizar(){
 				$agendamentosAux = Array(
 					'nome' => $hosts_usuarios['nome'],
 					'acompanhantes' => $acompanhantes,
+					'status' => $agendamento['status'],
 				);
 				
 				// ===== Pegar os dados dos acompanhantes.
