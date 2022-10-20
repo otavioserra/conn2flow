@@ -1312,12 +1312,6 @@ function plataforma_cliente_plugin_alteracao(){
 				$dados = json_decode($_REQUEST['dados'],true);
 			}
 			
-			gestor_incluir_biblioteca(Array(
-				'log',
-			));
-			
-			log_disco('[plataforma_cliente_plugin_alteracao] confirmarPublico');
-			
 			// ===== Verificar se os campos obrigatórios foram enviados: pubId.
 			
 			if(isset($dados['pubId'])){
