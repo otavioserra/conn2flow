@@ -24,7 +24,7 @@ function testes_testes(){
 	
 	// ===== Área de testes.
 	
-	$id_hosts = '16';
+	$id_hosts = '27';
 	$mesAlvo = 11;
 	$anoAlvo = 2022;
 	
