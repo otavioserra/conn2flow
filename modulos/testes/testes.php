@@ -17,167 +17,6 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	),
 );
 
-function plataforma_cliente_plugin_data_dias_antes($mes = 0,$ano = 0, $diasPeriodo = 0, $dataInicial = NULL){
-	// ===== Definir a data inicial caso a mesma não tenha sido definida.
-	
-	if(!isset($dataInicial)){
-		$dataInicial = date('d/m/Y');
-	}
-	
-	// ===== Pegar o mês e o ano da data inicial.
-	
-	$diaInicial = (int)date('j');
-	$mesInicial = (int)date('n');
-	$anoInicial = (int)date('Y');
-	
-	// ===== Filtrar os dados e colocarem eles como numérico.
-	
-	$mes = (int)$mes;
-	$ano = (int)$ano;
-	$diasPeriodo = (int)$diasPeriodo;
-	
-	// ===== Verifica se a data faz parte desse mês. Se sim, retorna a data procurada. Senão, remove a quantidade de dias do mês atual.
-	
-	if($diasPeriodo < $diaInicial){
-		$diaFim = $diaInicial - $diasPeriodo;
-		$mesFim = ($mesInicial < 10 ? '0':'') . $mesInicial;
-		$anoFim = ($anoInicial < 10 ? '0':'') . $anoInicial;
-		
-		return $diaFim . '/' . $mesFim . '/' . $anoFim;
-	} else {
-		$diasPeriodo = $diasPeriodo - $diaInicial;
-	}
-	
-	// ===== Variáveis de controle do loop.
-	
-	$limiteLoop = 1000;
-	$countLoop = 0;
-	
-	// ===== Faz o loop e buscar a data.
-	
-	while(true){
-		if(!isset($anoFim)){
-			$anoFim = $ano;
-		}
-		
-		if(!isset($mesFim)){
-			$mesFim = $mes - 1;
-		} else {
-			$mesFim--;
-		}
-		
-		if($mesFim < 1){
-			$mesFim = 12;
-			$anoFim--;
-		}
-		
-		$totalDiasMes = cal_days_in_month(CAL_GREGORIAN, $mesFim, $anoFim);
-		
-		$diaFim = $totalDiasMes - ($diasPeriodo - (isset($diasFimContados) ? $diasFimContados : 0));
-		
-		if($diaFim > 0){
-			$mesFim = ($mesFim < 10 ? '0':'') . $mesFim;
-			$diaFim = ($diaFim < 10 ? '0':'') . $diaFim;
-			
-			return $diaFim . '/' . $mesFim . '/' . $anoFim;
-		} else {
-			if(!isset($diasFimContados)){
-				$diasFimContados = $totalDiasMes;
-			} else {
-				$diasFimContados += $totalDiasMes;
-			}
-		}
-		
-		$countLoop++;
-		
-		if($countLoop > $limiteLoop){
-			return '';
-		}
-	}
-}
-
-function plataforma_cliente_plugin_data_dias_depois($mes = 0,$ano = 0, $diasPeriodo = 0, $dataInicial = NULL){
-	// ===== Definir a data inicial caso a mesma não tenha sido definida.
-	
-	if(!isset($dataInicial)){
-		$dataInicial = date('d/m/Y');
-	}
-	
-	// ===== Pegar o mês e o ano da data inicial.
-	
-	$numDiasMes = (int)date('t');
-	
-	$diaInicial = (int)date('j');
-	$mesInicial = (int)date('n');
-	$anoInicial = (int)date('Y');
-	
-	// ===== Filtrar os dados e colocarem eles como numérico.
-	
-	$mes = (int)$mes;
-	$ano = (int)$ano;
-	$diasPeriodo = (int)$diasPeriodo;
-	
-	// ===== Verifica se a data faz parte desse mês. Se sim, retorna a data procurada. Senão, remove a quantidade de dias do mês atual.
-	
-	if($diasPeriodo <= $numDiasMes - $diaInicial){
-		$diaFim = $diaInicial + $diasPeriodo;
-		$mesFim = ($mesInicial < 10 ? '0':'') . $mesInicial;
-		$anoFim = ($anoInicial < 10 ? '0':'') . $anoInicial;
-		
-		return $diaFim . '/' . $mesFim . '/' . $anoFim;
-	} else {
-		$diasPeriodo = $diasPeriodo - ($numDiasMes - $diaInicial);
-	}
-	
-	// ===== Variáveis de controle do loop.
-	
-	$limiteLoop = 1000;
-	$countLoop = 0;
-	
-	// ===== Faz o loop e buscar a data.
-	
-	while(true){
-		if(!isset($anoFim)){
-			$anoFim = $ano;
-		}
-		
-		if(!isset($mesFim)){
-			$mesFim = $mes + 1;
-		} else {
-			$mesFim++;
-		}
-		
-		if($mesFim > 12){
-			$mesFim = 1;
-			$anoFim++;
-		}
-		
-		$totalDiasMes = cal_days_in_month(CAL_GREGORIAN, $mesFim, $anoFim);
-		
-		$diasNoMes = ($totalDiasMes - ($diasPeriodo - (isset($diasFimContados) ? $diasFimContados : 0)));
-		
-		if($diasNoMes <= $totalDiasMes && $diasNoMes > 0){
-			$diaFim = 1 + ($diasPeriodo - (isset($diasFimContados) ? $diasFimContados : 0));
-			$mesFim = ($mesFim < 10 ? '0':'') . $mesFim;
-			$diaFim = ($diaFim < 10 ? '0':'') . $diaFim;
-			
-			return $diaFim . '/' . $mesFim . '/' . $anoFim;
-		} else {
-			if(!isset($diasFimContados)){
-				$diasFimContados = $totalDiasMes;
-			} else {
-				$diasFimContados += $totalDiasMes;
-			}
-		}
-		
-		$countLoop++;
-		
-		if($countLoop > $limiteLoop){
-			return '';
-		}
-	}
-}
-
 function testes_testes(){
 	global $_GESTOR;
 	
@@ -185,8 +24,76 @@ function testes_testes(){
 	
 	// ===== Área de testes.
 	
-	//echo plataforma_cliente_plugin_data_dias_antes(8,2022,46, $dataInicial = date('d/m/Y')).'<br>';
-	echo plataforma_cliente_plugin_data_dias_depois(8,2022,77, $dataInicial = date('d/m/Y'));
+	$id_hosts = '16';
+	$mesAlvo = 11;
+	$anoAlvo = 2022;
+	
+	$data_inicial_mes = '01-11-2022';
+	$data_final_mes = '30-11-2022';
+	
+	// ===== Pegar os dados das escalas qualificadas no banco de dados.
+	
+	$hosts_escalas = banco_select(Array(
+		'tabela' => 'hosts_escalas',
+		'campos' => '*',
+		'extra' => 
+			"WHERE mes='".$mesAlvo."'"
+			." AND ano='".$anoAlvo."'"
+			." AND id_hosts='".$id_hosts."'"
+	));
+	
+	if($hosts_escalas)
+	foreach($hosts_escalas as $escala){
+		unset($escala['id_hosts']);
+		
+		$hosts_escalas_proc[] = $escala;
+	}
+	
+	// ===== Pegar os dados das escalas datas qualificadas no banco de dados.
+	
+	$hosts_escalas_datas = banco_select(Array(
+		'tabela' => 'hosts_escalas_datas',
+		'campos' => '*',
+		'extra' => 
+			"WHERE data>='".$data_inicial_mes."'"
+			." AND data<='".$data_final_mes."'"
+			." AND id_hosts='".$id_hosts."'"
+	));
+	
+	if($hosts_escalas_datas)
+	foreach($hosts_escalas_datas as $escala_data){
+		unset($escala_data['id_hosts']);
+		
+		$hosts_escalas_datas_proc[] = $escala_data;
+	}
+	
+	// ===== Incluir os dados no host de cada cliente.
+	
+	gestor_incluir_biblioteca('api-cliente');
+	
+	$retorno = api_cliente_interface(Array(
+		'interface' => 'cron-escalas',
+		'plugin' => 'escalas',
+		'id_hosts' => $id_hosts,
+		'opcao' => 'atualizar',
+		'dados' => Array(
+			'escalas' => (isset($hosts_escalas_proc) ? $hosts_escalas_proc : Array()),
+			'escalas_datas' => (isset($hosts_escalas_datas_proc) ? $hosts_escalas_datas_proc : Array()),
+		),
+	));
+	
+	// ===== Caso haja algum erro, incluir no log do cron.
+	
+	if(!$retorno['completed']){
+		echo
+			'FUNCAO: cron-escalas[atualizar]'."\n".
+			'ID-HOST: '.$id_hosts."\n".
+			'ERROR-MSG: '."\n".
+			$retorno['error-msg']
+		;
+	} else {
+		echo 'Foi!';
+	}
 	
 	exit;
 	
