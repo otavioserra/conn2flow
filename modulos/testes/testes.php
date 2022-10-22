@@ -28,8 +28,8 @@ function testes_testes(){
 	$mesAlvo = 11;
 	$anoAlvo = 2022;
 	
-	$data_inicial_mes = '01-11-2022';
-	$data_final_mes = '30-11-2022';
+	$data_inicial_mes = '2022-11-01';
+	$data_final_mes = '2022-11-30';
 	
 	// ===== Pegar os dados das escalas qualificadas no banco de dados.
 	
