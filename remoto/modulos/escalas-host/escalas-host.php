@@ -551,7 +551,11 @@ function escalas_padrao(){
 										banco_update_campo($key,($valor ? $valor : '0'),true);
 									break;
 									case 'data_confirmacao':
-										banco_update_campo($key,($valor ? $valor : 'NULL'),true);
+										if(existe($valor)){
+											banco_update_campo($key,$valor);
+										} else {
+											banco_update_campo($key,'NULL',true);
+										}
 									break;
 									default:
 										banco_update_campo($key,$valor);
@@ -568,7 +572,11 @@ function escalas_padrao(){
 										banco_insert_name_campo($key,($valor ? $valor : '0'),true);
 									break;
 									case 'data_confirmacao':
-										banco_insert_name_campo($key,($valor ? $valor : 'NULL'),true);
+										if(existe($valor)){
+											banco_insert_name_campo($key,$valor);
+										} else {
+											banco_insert_name_campo($key,'NULL',true);
+										}
 									break;
 									default:
 										banco_insert_name_campo($key,$valor);
@@ -1305,7 +1313,7 @@ function escalas_padrao(){
 		// ===== Definir a data_confirmacao caso necessário.
 		
 		if($confirmado){
-			pagina_trocar_variavel_valor('data-da-confirmacao',$data_confirmacao);
+			pagina_trocar_variavel_valor('data-da-confirmacao',formato_dado_para('dataHora',$data_confirmacao));
 		}
 		
 		// ===== Definir a interface gráfica de cada fase.

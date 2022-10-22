@@ -56,7 +56,11 @@ function plataforma_servidor_cron_escalas(){
 						foreach($escala as $key => $valor){
 							switch($key){
 								case 'data_confirmacao':
-									banco_update_campo($key,($valor ? $valor : 'NULL'),true);
+									if(existe($valor)){
+										banco_update_campo($key,$valor);
+									} else {
+										banco_update_campo($key,'NULL',true);
+									}
 								break;
 								case 'versao':
 									banco_update_campo($key,($valor ? $valor : '0'),true);
