@@ -609,8 +609,6 @@ function escalas_ajax_atualizar(){
 				if($escalas){
 					$tabelaImpressao = $layoutImpressao;
 					
-					$cel_nome = 'th-acompanhantes'; $cel[$cel_nome] = modelo_tag_val($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $tabelaImpressao = modelo_tag_in($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
-					$cel_nome = 'td-acompanhantes'; $cel[$cel_nome] = modelo_tag_val($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $tabelaImpressao = modelo_tag_in($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 					$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $tabelaImpressao = modelo_tag_in($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 					
 					$cel_nome = 'cel';
