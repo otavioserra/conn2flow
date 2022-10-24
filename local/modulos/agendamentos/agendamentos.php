@@ -1410,7 +1410,7 @@ function agendamentos_ajax_atualizar(){
 						for($i=$acompanhanteNum;$i<=$maximoAcompanhantes;$i++){
 							$cel_aux_2 = $cel['td-acompanhantes'];
 							
-							$cel_aux_2 = modelo_var_troca($cel_aux_2,"#td-acompanhantes#",$acompanhantesDados['nome']);
+							$cel_aux_2 = modelo_var_troca($cel_aux_2,"#td-acompanhantes#",'');
 							
 							$cel_aux = modelo_var_in($cel_aux,'<!-- td-acompanhantes -->',$cel_aux_2);
 						}
