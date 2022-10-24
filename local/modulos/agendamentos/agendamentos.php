@@ -1357,6 +1357,8 @@ function agendamentos_ajax_atualizar(){
 			if($total > 0){
 				// ===== Pegar as configurações das agendamentos.
 				
+				gestor_incluir_biblioteca('configuracao');
+				
 				$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-agendamentos'));
 				
 				// ===== Pegar o layout de impressão.
