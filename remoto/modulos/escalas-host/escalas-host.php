@@ -1234,7 +1234,7 @@ function escalas_padrao(){
 						),
 						'extra' => 
 							"WHERE id_hosts_escalas='".$escalas['id_hosts_escalas']."'"
-							." AND status='qualificado'"
+							." AND (status='qualificado' OR status='email-enviado' OR status='email-nao-enviado' OR status='confirmado')"
 					));
 					
 					if($escalas_datas)

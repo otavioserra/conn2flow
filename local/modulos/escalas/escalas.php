@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'escalas';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.1',
+	'versao' => '1.1.0',
 	'plugin' => 'escalas',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
@@ -29,7 +29,7 @@ function escalas_calendario(){
 	$ano_inicio = date('Y');
 	$hoje = date('Y-m-d');
 	
-	$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-agendamentos'));
+	$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-escalas'));
 	
 	$dias_semana = (existe($config['dias-semana']) ? explode(',',$config['dias-semana']) : Array());
 	$anos = (existe($config['calendario-anos']) ? (int)$config['calendario-anos'] : 2);
@@ -594,9 +594,45 @@ function escalas_ajax_atualizar(){
 			// ===== Impressão opções.
 			
 			if($total > 0){
+				// ===== Pegar as configurações das escalas.
+				
+				$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-escalas'));
+				
+				// ===== Pegar o layout de impressão.
+				
+				$layoutImpressao = $config['escalas-impressao'];
+				
+				// ===== Montar tabela de impressão.
+				
+				if($escalas){
+					$tabelaImpressao = $layoutImpressao;
+					
+					$cel_nome = 'th-acompanhantes'; $cel[$cel_nome] = modelo_tag_val($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $tabelaImpressao = modelo_tag_in($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					$cel_nome = 'td-acompanhantes'; $cel[$cel_nome] = modelo_tag_val($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $tabelaImpressao = modelo_tag_in($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $tabelaImpressao = modelo_tag_in($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					
+					$cel_nome = 'cel';
+					
+					foreach($escalas as $escala){
+						$cel_aux = $cel[$cel_nome];
+						
+						$cel_aux = modelo_var_troca($cel_aux,"#nome#",$escala['nome']);
+						
+						// ===== Incluir o nome.
+						
+						$tabelaImpressao = modelo_var_in($tabelaImpressao,'<!-- '.$cel_nome.' -->',$cel_aux);
+					}
+					
+					$tabelaImpressao = modelo_var_troca($tabelaImpressao,'<!-- '.$cel_nome.' -->','');
+				} else {
+					$tabelaImpressao = '';
+				}
+				
+				// ===== Variáveis padrões de impressão.
+				
 				$imprimir = true;
 				
-				$tabelaAux = $tabela;
+				$tabelaAux = $tabelaImpressao;
 				
 				// ===== Incluir a tabela no buffer de impressão.
 				
