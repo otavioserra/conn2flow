@@ -1382,6 +1382,8 @@ function agendamentos_ajax_atualizar(){
 						$tabelaImpressao = modelo_var_in($tabelaImpressao,'<!-- th-acompanhantes -->',$cel_aux);
 					}
 					
+					$tabelaImpressao = modelo_var_troca($tabelaImpressao,'<!-- th-acompanhantes -->','');
+					
 					$cel_nome = 'cel';
 					
 					foreach($agendamentos as $agendamento){
@@ -1407,7 +1409,7 @@ function agendamentos_ajax_atualizar(){
 							}
 						}
 						
-						for($i=$acompanhanteNum;$i<=$maximoAcompanhantes;$i++){
+						for($i=($acompanhanteNum+1);$i<=$maximoAcompanhantes;$i++){
 							$cel_aux_2 = $cel['td-acompanhantes'];
 							
 							$cel_aux_2 = modelo_var_troca($cel_aux_2,"#td-acompanhantes#",'');
@@ -1415,7 +1417,7 @@ function agendamentos_ajax_atualizar(){
 							$cel_aux = modelo_var_in($cel_aux,'<!-- td-acompanhantes -->',$cel_aux_2);
 						}
 						
-						$cel_aux = modelo_var_in($cel_aux,'<!-- td-acompanhantes -->','');
+						$cel_aux = modelo_var_troca($cel_aux,'<!-- td-acompanhantes -->','');
 						
 						$tabelaImpressao = modelo_var_in($tabelaImpressao,'<!-- '.$cel_nome.' -->',$cel_aux);
 					}
