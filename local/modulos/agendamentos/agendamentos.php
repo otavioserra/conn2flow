@@ -1299,13 +1299,135 @@ function agendamentos_ajax_atualizar(){
 			} else {
 				$tabela = '';
 			}
-
+			
+			// ===== Montar tabela.
+			
+			$maximoAcompanhantes = 0;
+			
+			if($agendamentos){
+				$cel_nome = 'th-senha'; $tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->',$cel[$cel_nome]);
+				$cel_nome = 'th-visto'; $tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->',$cel[$cel_nome]);
+				
+				$cel_nome = 'cel-agendamento';
+				
+				foreach($agendamentos as $agendamento){
+					$cel_aux = $cel[$cel_nome];
+					
+					// ===== Incluir a senha.
+					
+					$cel_aux = modelo_var_troca($cel_aux,"<!-- td-senha -->",$cel['td-senha']);
+					$cel_aux = modelo_var_troca($cel_aux,"<!-- td-visto -->",$cel['td-visto']);
+					
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"senha",$agendamento['senha']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"nome",$agendamento['nome']);
+					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"visto",'');
+					
+					// ===== Popular os acompanhantes.
+					
+					$acompanhanteNum = 0;
+					if(isset($agendamento['acompanhantesDados'])){
+						$cel_aux = modelo_var_troca($cel_aux,"<!-- td-acompanhantes -->",$cel['td-acompanhantes']);
+						
+						foreach($agendamento['acompanhantesDados'] as $acompanhantesDados){
+							$acompanhanteNum++;
+							
+							$cel_acomp = 'cel-acompanhante'; $cel_aux_2 = $cel[$cel_acomp];
+							
+							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"num",$acompanhanteNum);
+							$cel_aux_2 = pagina_celula_trocar_variavel_valor($cel_aux_2,"acompanhante",$acompanhantesDados['nome']);
+							
+							$cel_aux = modelo_var_in($cel_aux,'<!-- '.$cel_acomp.' -->',$cel_aux_2);
+						}
+					}
+					
+					if($acompanhanteNum > $maximoAcompanhantes){
+						$maximoAcompanhantes = $acompanhanteNum;
+					}
+					
+					$tabela = modelo_var_in($tabela,'<!-- '.$cel_nome.' -->',$cel_aux);
+				}
+				
+				$tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->','');
+			} else {
+				$tabela = '';
+			}
+			
 			// ===== Impressão opções.
 			
 			if($total > 0){
+				// ===== Pegar as configurações das agendamentos.
+				
+				$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-agendamentos'));
+				
+				// ===== Pegar o layout de impressão.
+				
+				$layoutImpressao = $config['agendamentos-impressao'];
+				
+				// ===== Montar tabela de impressão.
+				
+				if($agendamentos){
+					$tabelaImpressao = $layoutImpressao;
+					
+					$cel_nome = 'th-acompanhantes'; $cel[$cel_nome] = modelo_tag_val($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $tabelaImpressao = modelo_tag_in($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					$cel_nome = 'td-acompanhantes'; $cel[$cel_nome] = modelo_tag_val($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $tabelaImpressao = modelo_tag_in($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					$cel_nome = 'cel'; $cel[$cel_nome] = modelo_tag_val($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $tabelaImpressao = modelo_tag_in($tabelaImpressao,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					
+					for($i=1;$i<=$maximoAcompanhantes;$i++){
+						$cel_aux = $cel['th-acompanhantes'];
+						
+						$cel_aux = modelo_var_troca($cel_aux,"#th-acompanhante#",'Acompanhante '.$i);
+						
+						$tabelaImpressao = modelo_var_in($tabelaImpressao,'<!-- th-acompanhantes -->',$cel_aux);
+					}
+					
+					$cel_nome = 'cel';
+					
+					foreach($agendamentos as $agendamento){
+						$cel_aux = $cel[$cel_nome];
+						
+						// ===== Incluir a senha e o nome.
+						
+						$cel_aux = modelo_var_troca($cel_aux,"#senha#",$agendamento['senha']);
+						$cel_aux = modelo_var_troca($cel_aux,"#nome#",$agendamento['nome']);
+						
+						// ===== Popular os acompanhantes.
+						
+						$acompanhanteNum = 0;
+						if(isset($agendamento['acompanhantesDados'])){
+							foreach($agendamento['acompanhantesDados'] as $acompanhantesDados){
+								$acompanhanteNum++;
+								
+								$cel_aux_2 = $cel['td-acompanhantes'];
+								
+								$cel_aux_2 = modelo_var_troca($cel_aux_2,"#td-acompanhantes#",$acompanhantesDados['nome']);
+								
+								$cel_aux = modelo_var_in($cel_aux,'<!-- td-acompanhantes -->',$cel_aux_2);
+							}
+						}
+						
+						for($i=$acompanhanteNum;$i<=$maximoAcompanhantes;$i++){
+							$cel_aux_2 = $cel['td-acompanhantes'];
+							
+							$cel_aux_2 = modelo_var_troca($cel_aux_2,"#td-acompanhantes#",$acompanhantesDados['nome']);
+							
+							$cel_aux = modelo_var_in($cel_aux,'<!-- td-acompanhantes -->',$cel_aux_2);
+						}
+						
+						$cel_aux = modelo_var_in($cel_aux,'<!-- td-acompanhantes -->','');
+						
+						$tabelaImpressao = modelo_var_in($tabelaImpressao,'<!-- '.$cel_nome.' -->',$cel_aux);
+					}
+					
+					$tabelaImpressao = modelo_var_troca($tabelaImpressao,'<!-- '.$cel_nome.' -->','');
+				} else {
+					$tabelaImpressao = '';
+				}
+				
+				// ===== Variáveis padrões de impressão.
+				
 				$imprimir = true;
 				
-				$tabelaAux = $tabela;
+				$tabelaAux = $tabelaImpressao;
 				
 				// ===== Incluir a tabela no buffer de impressão.
 				
