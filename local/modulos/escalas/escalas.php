@@ -596,6 +596,8 @@ function escalas_ajax_atualizar(){
 			if($total > 0){
 				// ===== Pegar as configurações das escalas.
 				
+				gestor_incluir_biblioteca('configuracao');
+				
 				$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-escalas'));
 				
 				// ===== Pegar o layout de impressão.
