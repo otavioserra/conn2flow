@@ -382,6 +382,7 @@ function escalas_ajax_atualizar(){
 				'campos' => Array(
 					'id_hosts_escalas',
 					'id_hosts_usuarios',
+					'status',
 				),
 				'extra' => 
 					"WHERE id_hosts='".$id_hosts."'"
@@ -414,10 +415,12 @@ function escalas_ajax_atualizar(){
 				
 				// ===== Pegar o identificador do usuário da escala_data.
 				
+				$escalaStatus = '';
 				if($hosts_escalas)
 				foreach($hosts_escalas as $escala){
 					if($id_hosts_escalas == $escala['id_hosts_escalas']){
 						$id_hosts_usuarios = $escala['id_hosts_usuarios'];
+						$escalaStatus = $escala['status'];
 						break;
 					}
 				}
@@ -437,6 +440,7 @@ function escalas_ajax_atualizar(){
 				
 				$escalaAux = Array(
 					'nome' => $hosts_usuarios['nome'],
+					'status' => $escalaStatus,
 				);
 				
 				// ===== Atualizar o total de pessoas escaladas.
