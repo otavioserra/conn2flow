@@ -569,6 +569,10 @@ function plataforma_cliente_plugin_agendamentos(){
 				$acompanhantes = (int)$dados['acompanhantes'];
 				$acompanhantesNomes = $dados['acompanhantesNomes'];
 				
+				for($i=0;$i<(int)$acompanhantes;$i++){{
+					$acompanhantesNomes[$i] = trim(ucwords(strtolower($acompanhantesNomes[$i])));
+				}
+				
 				// ===== Verificar se a data enviada é permitida. Senão for retornar mensagem de erro.
 				
 				if(!plataforma_cliente_plugin_data_permitida($agendamentoData)){
