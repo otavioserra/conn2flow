@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'escalas-host';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.1.0',
+	'versao' => '1.1.1',
 );
 
 // ===== Funções Auxiliares
@@ -1047,7 +1047,6 @@ function escalas_padrao(){
 					'tipo' => 'select',
 					'id' => 'meses',
 					'nome' => 'meses',
-					'procurar' => true,
 					'valor_selecionado' => $mesAnoSelecionado,
 					'placeholder' => '',
 					'dados' => $mesesAnos,
