@@ -53,6 +53,8 @@ function escalas_calendario(){
 	do {
 		$dataFormatada = date('d/m/Y', $dia);
 		$flag = false;
+		$data_extra_permitida = false;
+		$data_extra_posicao = 0;
 		
 		if($periodo_ferias){
 			foreach($periodo_ferias as $periodo){
@@ -69,9 +71,11 @@ function escalas_calendario(){
 		if($datas_extras_disponiveis){
 			foreach($datas_extras_disponiveis as $ded){
 				if($dataFormatada == $ded){
-					$flag = true;
+					$flag = false;
+					$data_extra_permitida = true;
 					break;
 				}
+				$data_extra_posicao++;
 			}
 		}
 		
@@ -87,13 +91,19 @@ function escalas_calendario(){
 		if(!$flag){
 			$flag2 = false;
 			$count_dias = 0;
-			if($dias_semana)
-			foreach($dias_semana as $dia_semana){
-				if($dia_semana == strtolower(date('D',$dia))){
-					$flag2 = true;
-					break;
+			
+			if($data_extra_permitida){
+				$flag2 = true;
+				$count_dias = $data_extra_posicao;
+			} else {
+				if($dias_semana)
+				foreach($dias_semana as $dia_semana){
+					if($dia_semana == strtolower(date('D',$dia))){
+						$flag2 = true;
+						break;
+					}
+					$count_dias++;
 				}
-				$count_dias++;
 			}
 			
 			if($flag2){
