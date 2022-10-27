@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.31',
+	'versao' => '1.0.32',
 	'plugin' => 'agendamentos',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
@@ -15,6 +15,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'versao' => 'versao',
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
+		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
 	),
 );
 
@@ -800,6 +801,7 @@ function agendamentos_interfaces_padroes(){
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
+					'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
 				),
 				'tabela' => Array(
 					'rodape' => true,
