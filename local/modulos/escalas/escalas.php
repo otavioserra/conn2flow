@@ -34,7 +34,7 @@ function escalas_calendario(){
 	$dias_semana = (existe($config['dias-semana']) ? explode(',',$config['dias-semana']) : Array());
 	$anos = (existe($config['calendario-anos']) ? (int)$config['calendario-anos'] : 2);
 	if(existe($config['datas-indisponiveis'])) $datas_indisponiveis = (existe($config['datas-indisponiveis-valores']) ? explode('|',$config['datas-indisponiveis-valores']) : Array()); else $datas_indisponiveis = Array();
-	$calendario_ferias_de = (existe($config['calendario-ferias-de']) ? trim($config['calendario-ferias-de']) : '15 December');
+	if(existe($config['datas-extras-disponiveis'])) $datas_extras_disponiveis = (existe($config['datas-extras-disponiveis-valores']) ? explode('|',$config['datas-extras-disponiveis-valores']) : Array()); else $datas_extras_disponiveis = Array();$calendario_ferias_de = (existe($config['calendario-ferias-de']) ? trim($config['calendario-ferias-de']) : '15 December');
 	$calendario_ferias_ate = (existe($config['calendario-ferias-ate']) ? trim($config['calendario-ferias-ate']) : '20 January');
 	
 	$ano_fim = (int)$ano_inicio + $anos;
@@ -60,6 +60,15 @@ function escalas_calendario(){
 					$dia > $periodo['inicio'] &&
 					$dia < $periodo['fim']
 				){
+					$flag = true;
+					break;
+				}
+			}
+		}
+		
+		if($datas_extras_disponiveis){
+			foreach($datas_extras_disponiveis as $ded){
+				if($dataFormatada == $ded){
 					$flag = true;
 					break;
 				}
