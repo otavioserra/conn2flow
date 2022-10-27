@@ -265,10 +265,7 @@ function escalas_ajax_atualizar(){
 	
 	// ===== Pegar células da tabela.
 	
-	$cel_nome = 'th-visto'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	$cel_nome = 'th-email'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
-	
-	$cel_nome = 'td-visto'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	
 	$cel_nome = 'enviado'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	$cel_nome = 'nao-enviado'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
@@ -592,16 +589,10 @@ function escalas_ajax_atualizar(){
 			// ===== Montar tabela.
 			
 			if($escalas){
-				$cel_nome = 'th-visto'; $tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->',$cel[$cel_nome]);
-				
 				$cel_nome = 'cel-escala';
 				
 				foreach($escalas as $escala){
 					$cel_aux = $cel[$cel_nome];
-					
-					$cel_aux = modelo_var_troca($cel_aux,"<!-- td-visto -->",$cel['td-visto']);
-					
-					// ===== Incluir o nome.
 					
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"nome",$escala['nome']);
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"visto",'');
