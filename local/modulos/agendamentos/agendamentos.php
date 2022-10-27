@@ -917,14 +917,11 @@ function agendamentos_ajax_atualizar(){
 	// ===== Pegar células da tabela.
 	
 	$cel_nome = 'th-senha'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
-	$cel_nome = 'th-visto'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	$cel_nome = 'th-email'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	
 	$cel_nome = 'cel-acompanhante'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	$cel_nome = 'td-acompanhantes'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	$cel_nome = 'td-senha'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
-	
-	$cel_nome = 'td-visto'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	
 	$cel_nome = 'enviado'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
 	$cel_nome = 'nao-enviado'; $cel[$cel_nome] = pagina_celula($cel_nome,false);
@@ -1258,7 +1255,6 @@ function agendamentos_ajax_atualizar(){
 			
 			if($agendamentos){
 				$cel_nome = 'th-senha'; $tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->',$cel[$cel_nome]);
-				$cel_nome = 'th-visto'; $tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->',$cel[$cel_nome]);
 				
 				$cel_nome = 'cel-agendamento';
 				
@@ -1268,7 +1264,6 @@ function agendamentos_ajax_atualizar(){
 					// ===== Incluir a senha.
 					
 					$cel_aux = modelo_var_troca($cel_aux,"<!-- td-senha -->",$cel['td-senha']);
-					$cel_aux = modelo_var_troca($cel_aux,"<!-- td-visto -->",$cel['td-visto']);
 					
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"senha",$agendamento['senha']);
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"nome",$agendamento['nome']);
@@ -1306,7 +1301,6 @@ function agendamentos_ajax_atualizar(){
 			
 			if($agendamentos){
 				$cel_nome = 'th-senha'; $tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->',$cel[$cel_nome]);
-				$cel_nome = 'th-visto'; $tabela = modelo_var_troca($tabela,'<!-- '.$cel_nome.' -->',$cel[$cel_nome]);
 				
 				$cel_nome = 'cel-agendamento';
 				
@@ -1316,7 +1310,6 @@ function agendamentos_ajax_atualizar(){
 					// ===== Incluir a senha.
 					
 					$cel_aux = modelo_var_troca($cel_aux,"<!-- td-senha -->",$cel['td-senha']);
-					$cel_aux = modelo_var_troca($cel_aux,"<!-- td-visto -->",$cel['td-visto']);
 					
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"senha",$agendamento['senha']);
 					$cel_aux = pagina_celula_trocar_variavel_valor($cel_aux,"nome",$agendamento['nome']);
