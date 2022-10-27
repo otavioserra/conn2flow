@@ -569,7 +569,7 @@ function plataforma_cliente_plugin_agendamentos(){
 				$acompanhantes = (int)$dados['acompanhantes'];
 				$acompanhantesNomes = $dados['acompanhantesNomes'];
 				
-				for($i=0;$i<(int)$acompanhantes;$i++){{
+				for($i=0;$i<(int)$acompanhantes;$i++){
 					$acompanhantesNomes[$i] = trim(ucwords(strtolower($acompanhantesNomes[$i])));
 				}
 				
