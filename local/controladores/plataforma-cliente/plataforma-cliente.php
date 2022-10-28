@@ -1007,6 +1007,7 @@ function plataforma_cliente_plugin_escalas(){
 									break;
 									case 'confirmacao':
 										if(
+											$status == 'confirmado' ||
 											$status == 'qualificado' ||
 											$status == 'email-enviado' ||
 											$status == 'email-nao-enviado'
@@ -1202,6 +1203,7 @@ function plataforma_cliente_plugin_escalas(){
 								break;
 								case 'confirmacao':
 									if(
+										$status == 'confirmado' ||
 										$status == 'qualificado' ||
 										$status == 'email-enviado' ||
 										$status == 'email-nao-enviado'
