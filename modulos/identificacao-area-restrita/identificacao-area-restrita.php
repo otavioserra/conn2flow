@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'identificacao-area-restrita';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.5',
+	'versao' => '1.0.6',
 );
 
 // ===== Funções Auxiliares
@@ -146,7 +146,7 @@ function identificacao_area_restrita_padrao(){
 	
 	// ===== Validação do formulário.
 	
-	formulario_validacao(Array(
+	/* formulario_validacao(Array(
 		'formId' => 'restrictArea',
 		'validacao' => Array(
 			Array(
@@ -155,7 +155,7 @@ function identificacao_area_restrita_padrao(){
 				'label' => gestor_variaveis(Array('modulo' => 'loja-configuracoes','id' => 'identificacao-senha-label')),
 			),
 		)
-	));
+	)); */
 	
 	// ===== Alterações no layout da página.
 	
