@@ -19,7 +19,6 @@ $(document).ready(function(){
 							grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
 								$(formSelector).append('<input type="hidden" name="token" value="'+token+'">');
 								$(formSelector).append('<input type="hidden" name="action" value="'+action+'">');
-								//$(formSelector).unbind('submit').submit();
 								
 								$.formSubmit({
 									id : 'formOnSuccessCalback',
@@ -39,6 +38,18 @@ $(document).ready(function(){
 			}
 		});
 		
+		$(formSelector).find('button').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			if($(this).hasClass('disabled')){
+				return false;
+			}
+			
+			$.formSubmit({
+				id : 'formOnSuccessCalback',
+			});
+		});
+		
 	}
 	
 	if($('#_gestor-form-logar').length > 0){
@@ -47,7 +58,7 @@ $(document).ready(function(){
 		
 		var formSelector = '#_gestor-form-logar';
 		
-		$('#_gestor-form-logar')
+		$(formSelector)
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
 				onSuccess(event, fields){
@@ -59,7 +70,6 @@ $(document).ready(function(){
 							grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
 								$(formSelector).append('<input type="hidden" name="token" value="'+token+'">');
 								$(formSelector).append('<input type="hidden" name="action" value="'+action+'">');
-								$(formSelector).unbind('submit').submit();
 							});
 						});
 						
@@ -67,6 +77,16 @@ $(document).ready(function(){
 					}
 				}
 			});
+			
+		$(formSelector).find('button').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			if($(this).hasClass('disabled')){
+				return false;
+			}
+			
+			$(formSelector).unbind('submit').submit();
+		});
 		
 		/* function initFingerprintJS(){
 			// Initialize an agent at application startup.
@@ -88,7 +108,7 @@ $(document).ready(function(){
 	if($('#_gestor-form-forgot-password').length > 0){
 		var formSelector = '#_gestor-form-forgot-password';
 		
-		$('#_gestor-form-forgot-password')
+		$(formSelector)
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
 				onSuccess(event, fields){
@@ -100,7 +120,6 @@ $(document).ready(function(){
 							grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
 								$(formSelector).append('<input type="hidden" name="token" value="'+token+'">');
 								$(formSelector).append('<input type="hidden" name="action" value="'+action+'">');
-								$(formSelector).unbind('submit').submit();
 							});
 						});
 						
@@ -108,6 +127,16 @@ $(document).ready(function(){
 					}
 				}
 			});
+			
+		$(formSelector).find('button').on('mouseup tap',function(e){
+			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			
+			if($(this).hasClass('disabled')){
+				return false;
+			}
+			
+			$(formSelector).unbind('submit').submit();
+		});
 	}
 	
 	if($('#_gestor-validar-usuario').length > 0){
