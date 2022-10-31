@@ -191,9 +191,15 @@ function identificacao_padrao(){
 		));
 		
 		if(!$retorno['completed']){
-			$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-servidor-error'));
-			
-			$alerta = modelo_var_troca($alerta,"#error-msg#",(existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status'] ));
+			switch($retorno['status']){
+				case 'USER_INVALID':
+					$alerta = (existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status']);
+				break;
+				default:
+					$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-api-servidor-error'));
+					
+					$alerta = modelo_var_troca($alerta,"#error-msg#",(existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status'] ));
+			}
 			
 			if($ajax){
 				return Array(
