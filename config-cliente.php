@@ -41,6 +41,10 @@ $_GESTOR['contents-basedir']					=	'files';
 $_GESTOR['contents-thumbnail']					=	'mini';
 $_GESTOR['plugins-path']						=	$_GESTOR['ROOT_PATH'].'plugins/';
 
+// ===== Nome da pasta do Fomantic UI principal relativo a pasta assets.
+
+$_GESTOR['fomantic-ui-folder']					=	'fomantic-UI@2.9.0';
+
 // ===== Definição e inclusão de todas as bibliotecas necessárias para o funcionamento do gestor
 
 $_GESTOR['bibliotecas-dados'] = Array(
