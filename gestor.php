@@ -552,8 +552,7 @@ function gestor_pagina_css(){
 	global $_GESTOR;
 	
 	$css_global = '';
-	//$css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'semantic-UI/semantic.min.css" />';
-	$css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'fomantic-UI@2.8.8/dist/semantic.min.css" />';
+	$css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].$_GESTOR['fomantic-ui-folder'].'/dist/semantic.min.css" />';
 	
 	if(!isset($_GESTOR['css'])) $_GESTOR['css'] = Array();
 	if(!isset($_GESTOR['css-fim'])) $_GESTOR['css-fim'] = Array();
@@ -589,8 +588,7 @@ function gestor_pagina_javascript(){
 	
 	$js_global_includes = '';
 	$js_padrao[] = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>'; // jQuery
-	//$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].'semantic-UI/semantic.min.js"></script>'; // Semantic-UI
-	$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].'fomantic-UI@2.8.8/dist/semantic.min.js"></script>'; // Semantic-UI
+	$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['fomantic-ui-folder'].'/dist/semantic.min.js"></script>'; // Semantic-UI
 	$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].'global/global.js?v='.$_GESTOR['versao'].'"></script>'; // Global JS
 	
 	if(!isset($_GESTOR['javascript'])) $_GESTOR['javascript'] = Array();

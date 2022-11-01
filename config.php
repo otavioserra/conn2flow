@@ -66,6 +66,10 @@ $_GESTOR['contents-path']						=	$_GESTOR['ROOT_PATH'].'contents/';
 $_GESTOR['configuracoes-path']					=	$_GESTOR['ROOT_PATH'].'configuracoes/';
 $_GESTOR['logs-path']							=	$_GESTOR['ROOT_PATH'].'logs/';
 
+// ===== Nome da pasta do Fomantic UI principal relativo a pasta assets.
+
+$_GESTOR['fomantic-ui-folder']					=	'fomantic-UI@2.9.0';
+
 // ===== Definições de variáveis padrões do sistema em hosts diferentes
 
 if($_SERVER['SERVER_NAME'] == "localhost"){
