@@ -70,6 +70,8 @@ $(document).ready(function(){
 							grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
 								$(formSelector2).append('<input type="hidden" name="token" value="'+token+'">');
 								$(formSelector2).append('<input type="hidden" name="action" value="'+action+'">');
+								
+								$(formSelector2).unbind('submit').submit();
 							});
 						});
 					}
