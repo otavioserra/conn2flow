@@ -741,6 +741,13 @@ function perfil_usuario_signin(){
 				
 				// ===== Verificar se o retorno do servidor é válido, senão não validar o reCAPTCHA
 				
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => 'Google: '.print_r($arrResponse,true)
+				));
+				
+				gestor_redirecionar('signin/');
+				
 				if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5) {
 					$recaptchaValido = true;
 				}
