@@ -122,6 +122,8 @@ $(document).ready(function(){
 							grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
 								$(formSelector3).append('<input type="hidden" name="token" value="'+token+'">');
 								$(formSelector3).append('<input type="hidden" name="action" value="'+action+'">');
+								
+								$(formSelector3).unbind('submit').submit();
 							});
 						});
 					}
@@ -137,7 +139,7 @@ $(document).ready(function(){
 				return false;
 			}
 			
-			$(formSelector3).unbind('submit').submit();
+			$(formSelector3).form('submit');
 		});
 	}
 	
