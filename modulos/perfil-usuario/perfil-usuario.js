@@ -32,9 +32,9 @@ $(document).ready(function(){
 							id : 'formOnSuccessCalback',
 						});
 					}
-					
-					return false;
 				}
+				
+				return false;
 			}
 		});
 		
@@ -56,9 +56,9 @@ $(document).ready(function(){
 		$('.checkbox')
 			.checkbox();
 		
-		var formSelector = '#_gestor-form-logar';
+		var formSelector2 = '#_gestor-form-logar';
 		
-		$(formSelector)
+		$(formSelector2)
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
 				onSuccess(event, fields){
@@ -68,24 +68,24 @@ $(document).ready(function(){
 						
 						grecaptcha.ready(function() {
 							grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
-								$(formSelector).append('<input type="hidden" name="token" value="'+token+'">');
-								$(formSelector).append('<input type="hidden" name="action" value="'+action+'">');
+								$(formSelector2).append('<input type="hidden" name="token" value="'+token+'">');
+								$(formSelector2).append('<input type="hidden" name="action" value="'+action+'">');
 							});
 						});
-						
-						return false;
 					}
+					
+					return false;
 				}
 			});
 			
-		$(formSelector).find('button').on('mouseup tap',function(e){
+		$(formSelector2).find('button').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
 			if($(this).hasClass('disabled')){
 				return false;
 			}
 			
-			$(formSelector).unbind('submit').submit();
+			$(formSelector2).unbind('submit').submit();
 		});
 		
 		/* function initFingerprintJS(){
@@ -106,9 +106,9 @@ $(document).ready(function(){
 	}
 	
 	if($('#_gestor-form-forgot-password').length > 0){
-		var formSelector = '#_gestor-form-forgot-password';
+		var formSelector3 = '#_gestor-form-forgot-password';
 		
-		$(formSelector)
+		$(formSelector3)
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
 				onSuccess(event, fields){
@@ -118,24 +118,24 @@ $(document).ready(function(){
 						
 						grecaptcha.ready(function() {
 							grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
-								$(formSelector).append('<input type="hidden" name="token" value="'+token+'">');
-								$(formSelector).append('<input type="hidden" name="action" value="'+action+'">');
+								$(formSelector3).append('<input type="hidden" name="token" value="'+token+'">');
+								$(formSelector3).append('<input type="hidden" name="action" value="'+action+'">');
 							});
 						});
-						
-						return false;
 					}
+					
+					return false;
 				}
 			});
 			
-		$(formSelector).find('button').on('mouseup tap',function(e){
+		$(formSelector3).find('button').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
 			if($(this).hasClass('disabled')){
 				return false;
 			}
 			
-			$(formSelector).unbind('submit').submit();
+			$(formSelector3).unbind('submit').submit();
 		});
 	}
 	

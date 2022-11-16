@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'perfil-usuario';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.1.2',
+	'versao' => '1.1.3',
 	'bibliotecas' => Array('interface','html','usuario'),
 	'tabela' => Array(
 		'nome' => 'usuarios',
@@ -743,7 +743,7 @@ function perfil_usuario_signin(){
 				
 				interface_alerta(Array(
 					'redirect' => true,
-					'msg' => 'Requests: '.print_r($_REQUEST,true).' - Google: '.print_r($arrResponse,true)
+					'msg' => 'Google: '.print_r($arrResponse,true)
 				));
 				
 				gestor_redirecionar('signin/');
