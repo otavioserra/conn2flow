@@ -725,8 +725,8 @@ function perfil_usuario_signin(){
 				
 				$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
 				
-				$token = $_POST['token'];
-				$action = $_POST['action'];
+				$token = $_REQUEST['token'];
+				$action = $_REQUEST['action'];
 				
 				// ===== Chamada ao servidor do Google reCAPTCHA para conferência se o token enviado no formulário é válido.
 				
@@ -743,7 +743,7 @@ function perfil_usuario_signin(){
 				
 				interface_alerta(Array(
 					'redirect' => true,
-					'msg' => 'Google: '.print_r($arrResponse,true)
+					'msg' => 'Requests: '.print_r($_REQUEST,true).' - Google: '.print_r($arrResponse,true)
 				));
 				
 				gestor_redirecionar('signin/');
