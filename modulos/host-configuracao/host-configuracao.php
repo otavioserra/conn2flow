@@ -2777,11 +2777,17 @@ function host_configuracao_redefine_password(){
 			
 			banco_update_executar($modulo['tabela']['nome'],"WHERE id_hosts='".$id_hosts."'");
 			
+			// ===== Pegar o IP do usuário.
+			
+			gestor_incluir_biblioteca('ip');
+			
+			$ip = ip_get();
+			
 			// ===== Criar histórico de alterações.
 			
 			$resetPasswordTXT = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'reset-password'));
 			
-			$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#ip#",$_SERVER['REMOTE_ADDR']);
+			$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#ip#",$ip);
 			$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#user-agent#",$_SERVER['HTTP_USER_AGENT']);
 			
 			$alteracoes[] = Array('alteracao' => 'reset-password','alteracao_txt' => $resetPasswordTXT);

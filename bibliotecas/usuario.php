@@ -177,6 +177,12 @@ function usuario_gerar_token_autorizacao($params = false){
 			'samesite' => 'Lax',
 		]);
 		
+		// ===== Pegar o IP do usuário.
+		
+		gestor_incluir_biblioteca('ip');
+		
+		$ip = ip_get();
+		
 		// ====== Salvar token no banco
 		
 		$campos = null; $campo_sem_aspas_simples = null;
@@ -186,7 +192,7 @@ function usuario_gerar_token_autorizacao($params = false){
 		$campo_nome = "pubIDValidation"; $campo_valor = $pubIDValidation; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		//$campo_nome = "fingerprint"; $campo_valor = $fingerprint; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "expiration"; $campo_valor = $expiration; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = "ip"; $campo_valor = $_SERVER['REMOTE_ADDR']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "ip"; $campo_valor = $ip; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "user_agent"; $campo_valor = $_SERVER['HTTP_USER_AGENT']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "data_criacao"; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
 		
@@ -240,6 +246,12 @@ function usuario_app_gerar_token_autorizacao($params = false){
 			'pubID' => $tokenPubId,
 		));
 		
+		// ===== Pegar o IP do usuário.
+		
+		gestor_incluir_biblioteca('ip');
+		
+		$ip = ip_get();
+		
 		// ====== Salvar token no banco
 		
 		$campos = null; $campo_sem_aspas_simples = null;
@@ -248,7 +260,7 @@ function usuario_app_gerar_token_autorizacao($params = false){
 		$campo_nome = "pubID"; $campo_valor = $tokenPubId; 							$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "pubIDValidation"; $campo_valor = $pubIDValidation; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "expiration"; $campo_valor = $expiration; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = "ip"; $campo_valor = $_SERVER['REMOTE_ADDR']; 				$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "ip"; $campo_valor = $ip; 									$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "user_agent"; $campo_valor = $_SERVER['HTTP_USER_AGENT']; 	$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "origem"; $campo_valor = $_CONFIG['app-origem']; 				$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "data_criacao"; $campo_valor = 'NOW()'; 						$campos[] = Array($campo_nome,$campo_valor,true);

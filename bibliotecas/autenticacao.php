@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-autenticacao']							=	Array(
-	'versao' => '1.0.0',
+	'versao' => '1.1.0',
 );
 
 // ===== Funções auxiliares
@@ -608,6 +608,202 @@ function autenticacao_cliente_gerar_token_validacao($params = false){
 	}
 	
 	return Array();
+}
+
+function autenticacao_acesso_verificar($params = false){
+	/**********
+		Descrição: Função responsável por verificar o acesso de usuários e retornar o estado do acesso atual bem como mensagem de alerta caso necessário.
+	**********/
+	
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// tipo - String - Obrigatório - Identificador único do tipo de acesso.
+	
+	// ===== 
+	
+	$retorno = [
+		'permitido' => false,
+	];
+	
+	if(isset($tipo)){
+		// ===== Limpar os acessos antigos.
+		
+		autenticacao_acessos_limpeza();
+		
+		// ===== Pegar o IP do usuário.
+
+		gestor_incluir_biblioteca('ip');
+
+		$ip = ip_get();
+		
+		// ===== Verificar se o limite de erros de acesso foram atingidos na tabela acessos e tratar cada caso baseado no máximo de erros de acesso.
+		
+		$acessos = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'acessos',
+			'campos' => Array(
+				'status',
+			),
+			'extra' => 
+				"WHERE tipo='".$tipo."'"
+				." AND ip='".$ip."'"
+		));
+		
+		if($acessos){
+			$retorno['status'] = $acessos['status'];
+			
+			switch($acessos['status']){
+				case 'bloqueado':
+					$retorno['permitido'] = false;
+				break;
+				default:
+					$retorno['permitido'] = true;
+			}
+		} else {
+			$retorno['permitido'] = true;
+		}
+	}
+	
+	return $retorno;
+}
+
+function autenticacao_acesso_falha($params = false){
+	/**********
+		Descrição: Função responsável por incluir falha de acesso de usuários.
+	**********/
+	
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// tipo - String - Obrigatório - Identificador único do tipo de acesso.
+	
+	// ===== 
+	
+	if(isset($tipo)){
+		// ===== Quantidade total de falhas do tipo informado e quantidade de bloqueios de um IP.
+		
+		$quantidade = 0;
+		$bloqueios = 0;
+		
+		// ===== Pegar o IP do usuário.
+
+		gestor_incluir_biblioteca('ip');
+
+		$ip = ip_get();
+		
+		// ===== Verificar se existe a tabela acessos para o ip atual.
+		
+		$acessos = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'acessos',
+			'campos' => Array(
+				'quantidade',
+				'bloqueios',
+			),
+			'extra' => 
+				"WHERE tipo='".$tipo."'"
+				." AND ip='".$ip."'"
+		));
+		
+		// ===== Pegar a quantidade atual e incrementar um.
+		
+		if($acessos){
+			$quantidade = ($acessos['quantidade'] ? (int)$acessos['quantidade'] : 0);
+			$bloqueios = ($acessos['bloqueios'] ? (int)$acessos['bloqueios'] : 0);
+		}
+		
+		$quantidade++;
+		
+		// ===== Definir o estado do acesso.
+		
+		$maximoLoginsSimples = $_CONFIG['acessos-maximo-logins-simples'];
+		$maximoFalhasLogins = $_CONFIG['acessos-maximo-falhas-logins'];
+		
+		if($quantidade <= $maximoLoginsSimples){
+			$status = 'livre';
+		} else if($quantidade <= $maximoFalhasLogins){
+			$status = 'antispam';
+		} else {
+			$status = 'bloqueado';
+		}
+		
+		// ===== Caso seja bloqueado, calcular tempo limite de bloqueio.
+		
+		if($status == 'bloqueado'){
+			$bloqueios++;
+			$tempo_bloqueio = $bloqueios * $_CONFIG['acessos-tempo-bloqueio-ip'] + time();
+		}
+		
+		// ===== Atualizar ou criar o registro de acesso com falha no banco de dados.
+		
+		if($acessos){
+			banco_update_campo('status',$status);
+			banco_update_campo('tempo_modificacao',time());
+			
+			if(isset($tempo_bloqueio)){
+				banco_update_campo('bloqueios',$bloqueios);
+				banco_update_campo('tempo_bloqueio',$tempo_bloqueio);
+				banco_update_campo('quantidade','0');
+			} else {
+				banco_update_campo('quantidade',$quantidade);
+			}
+			
+			banco_update_executar('acessos',"WHERE tipo='".$tipo."' AND ip='".$ip."'");
+		} else {
+			banco_insert_name_campo('ip',$ip);
+			banco_insert_name_campo('tipo',$tipo);
+			banco_insert_name_campo('tempo_modificacao',time());
+			banco_insert_name_campo('status',$status);
+			
+			if(isset($tempo_bloqueio)){
+				banco_insert_name_campo('bloqueios',$bloqueios);
+				banco_insert_name_campo('tempo_bloqueio',$tempo_bloqueio);
+				banco_insert_name_campo('quantidade','0');
+			} else {
+				banco_insert_name_campo('quantidade',$quantidade);
+			}
+			
+			banco_insert_name
+			(
+				banco_insert_name_campos(),
+				"acessos"
+			);
+		}
+	}
+}
+
+function autenticacao_acessos_limpeza($params = false){
+	/**********
+		Descrição: Função responsável por limpar a tabela de acessos e remover registros antigos.
+	**********/
+	
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Remover registros antigos
+	
+	$tempoDesbloqueio = $_CONFIG['acessos-tempo-desbloqueio-ip'];
+	
+	banco_delete
+	(
+		"acessos",
+		"WHERE tempo_modificacao + ".$tempoDesbloqueio." < ".time()
+	);
+	
+	// ===== Desbloquear ips com tempo de bloqueio expirado.
+	
+	banco_update_campo('status','livre');
+	
+	banco_update_executar('acessos',"WHERE status='bloqueado' AND tempo_bloqueio < ".time());
+	
 }
 
 ?>

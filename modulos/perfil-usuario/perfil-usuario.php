@@ -697,7 +697,15 @@ function perfil_usuario_signin(){
 	global $_GESTOR;
 	global $_CONFIG;
 	
-	if(isset($_REQUEST['_gestor-logar'])){
+	// ===== Verificar a permissão do acesso.
+	
+	gestor_incluir_biblioteca('autenticacao');
+	
+	$acesso = autenticacao_acesso_verificar(['tipo' => 'login']);
+	
+	// ===== Tratar a função logar.
+	
+	if(isset($_REQUEST['_gestor-logar']) && $acesso['permitido']){
 		// ===== Validação de campos obrigatórios
 		
 		interface_validacao_campos_obrigatorios(Array(
@@ -719,7 +727,7 @@ function perfil_usuario_signin(){
 		
 		$recaptchaValido = false;
 		
-		if(isset($_CONFIG['usuario-recaptcha-active'])){
+		if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
 			if($_CONFIG['usuario-recaptcha-active']){
 				// ===== Variáveis de comparação do reCAPTCHA
 				
@@ -839,6 +847,8 @@ function perfil_usuario_signin(){
 		// ===== Se o usuário for inválido, redirecionar signin.
 		
 		if($user_invalid){
+			autenticacao_acesso_falha(['tipo' => 'login']);
+			
 			sleep(3);
 			
 			if($user_inactive){
@@ -865,9 +875,17 @@ function perfil_usuario_signin(){
 		}
 	}
 	
+	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
+	
+	if($acesso['permitido']){
+		gestor_incluir_biblioteca('pagina');
+		
+		$cel_nome = 'bloqueado-mensagem'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	}
+	
 	// ===== Incluir google reCAPTCHA caso ativo
 	
-	if(isset($_CONFIG['usuario-recaptcha-active'])){
+	if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
 		if($_CONFIG['usuario-recaptcha-active']){
 			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
 			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
@@ -1684,11 +1702,17 @@ function perfil_usuario_redefine_password(){
 				$id_hosts = $usuarios_gestores_hosts['id_hosts'];
 			}
 			
+			// ===== Pegar o IP do usuário.
+			
+			gestor_incluir_biblioteca('ip');
+			
+			$ip = ip_get();
+			
 			// ===== Criar histórico de alterações.
 			
 			$resetPasswordTXT = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'reset-password'));
 			
-			$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#ip#",$_SERVER['REMOTE_ADDR']);
+			$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#ip#",$ip);
 			$resetPasswordTXT = modelo_var_troca($resetPasswordTXT,"#user-agent#",$_SERVER['HTTP_USER_AGENT']);
 			
 			$alteracoes[] = Array('alteracao' => 'reset-password','alteracao_txt' => $resetPasswordTXT);
