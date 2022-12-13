@@ -677,6 +677,7 @@ function autenticacao_acesso_falha($params = false){
 	**********/
 	
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -785,6 +786,7 @@ function autenticacao_acessos_limpeza($params = false){
 	**********/
 	
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
