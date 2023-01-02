@@ -52,7 +52,7 @@ $(document).ready(function(){
 			
 			submitBtnClicked = true;
 			
-			$('.ui.form.interfaceFormPadrao').form('submit');
+			$(formSelector).form('submit');
 		});
 		
 	}
