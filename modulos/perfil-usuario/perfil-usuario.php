@@ -749,6 +749,7 @@ function perfil_usuario_signin(){
 				
 				// ===== Verificar se o retorno do servidor é válido, senão não validar o reCAPTCHA
 				
+				echo '_REQUEST>> '.print_r($_REQUEST,true)."<br>";
 				echo 'arrResponse>> '.print_r($arrResponse,true)."<br>";exit;
 				
 				if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5) {
