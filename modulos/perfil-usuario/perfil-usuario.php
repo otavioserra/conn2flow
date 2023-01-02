@@ -1368,7 +1368,13 @@ function perfil_usuario_forgot_password(){
 	global $_GESTOR;
 	global $_CONFIG;
 	
-	if(isset($_REQUEST['_gestor-forgot-password'])){
+	// ===== Verificar a permissão do acesso.
+	
+	gestor_incluir_biblioteca('autenticacao');
+	
+	$acesso = autenticacao_acesso_verificar(['tipo' => 'forgot-password']);
+	
+	if(isset($_REQUEST['_gestor-forgot-password']) && $acesso['permitido']){
 		// ===== Validação de campos obrigatórios
 		
 		interface_validacao_campos_obrigatorios(Array(
@@ -1385,7 +1391,7 @@ function perfil_usuario_forgot_password(){
 		
 		$recaptchaValido = false;
 		
-		if(isset($_CONFIG['usuario-recaptcha-active'])){
+		if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
 			if($_CONFIG['usuario-recaptcha-active']){
 				// ===== Variáveis de comparação do reCAPTCHA
 				
@@ -1525,6 +1531,8 @@ function perfil_usuario_forgot_password(){
 		// ===== Se o usuário for inválido, redirecionar forgot-password.
 		
 		if($user_invalid){
+			autenticacao_acesso_falha(['tipo' => 'forgot-password']);
+			
 			sleep(3);
 			
 			if($user_inactive){
@@ -1553,9 +1561,17 @@ function perfil_usuario_forgot_password(){
 		}
 	}
 	
+	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
+	
+	if($acesso['permitido']){
+		gestor_incluir_biblioteca('pagina');
+		
+		$cel_nome = 'bloqueado-mensagem'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	}
+	
 	// ===== Incluir google reCAPTCHA caso ativo
 	
-	if(isset($_CONFIG['usuario-recaptcha-active'])){
+	if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
 		if($_CONFIG['usuario-recaptcha-active']){
 			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
 			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
