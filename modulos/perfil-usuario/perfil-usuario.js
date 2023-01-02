@@ -72,15 +72,15 @@ $(document).ready(function(){
 								$(formSelector2).append('<input type="hidden" name="token" value="'+token+'">');
 								$(formSelector2).append('<input type="hidden" name="action" value="'+action+'">');
 								
-								$(formSelector2).unbind('submit').submit();
+								if(!submitBtnClicked){
+									$(formSelector2).unbind('submit').submit();
+								}
 							});
 						});
-						
+					}
+					
+					if(!submitBtnClicked){
 						return false;
-					} else {
-						if(!submitBtnClicked){
-							return false;
-						}
 					}
 				}
 			});
