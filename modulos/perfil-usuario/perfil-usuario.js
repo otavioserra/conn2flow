@@ -78,7 +78,6 @@ $(document).ready(function(){
 						
 						return false;
 					} else {
-						console.log('form');
 						if(!submitBtnClicked){
 							return false;
 						}
@@ -95,7 +94,7 @@ $(document).ready(function(){
 			
 			submitBtnClicked = true;
 			
-			console.log('formSelector2');
+			$(formSelector2).form('submit');
 		});
 	}
 	
