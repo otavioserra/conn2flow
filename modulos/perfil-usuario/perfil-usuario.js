@@ -87,7 +87,7 @@ $(document).ready(function(){
 				return false;
 			}
 			
-			$(formSelector2).form('submit');
+			$(formSelector2).unbind('submit').submit();
 		});
 		
 		/* function initFingerprintJS(){
