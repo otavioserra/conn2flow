@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'perfil-usuario';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.1.13',
+	'versao' => '1.1.14',
 	'bibliotecas' => Array('interface','html','usuario'),
 	'tabela' => Array(
 		'nome' => 'usuarios',
