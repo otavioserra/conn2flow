@@ -85,7 +85,7 @@ $(document).ready(function(){
 				}
 			});
 			
-		$(formSelector2).find('button').on('mouseup tap',function(e){
+		$(formSelector2).find('._gestor-form-login-btn').on('mouseup tap',function(e){
 			if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 			
 			if($(this).hasClass('disabled')){
