@@ -62,7 +62,7 @@ $(document).ready(function(){
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
 				onSuccess(event, fields){
-					if(typeof gestor.googleRecaptchaActive !== typeof undefined && gestor.googleRecaptchaActive !== false){
+					if('googleRecaptchaActive' in gestor){
 						var action = 'logar'; // Action 
 						var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
 						
@@ -87,7 +87,7 @@ $(document).ready(function(){
 				return false;
 			}
 			
-			$(formSelector2).unbind('submit').submit();
+			$(formSelector2).form('submit');
 		});
 		
 		/* function initFingerprintJS(){

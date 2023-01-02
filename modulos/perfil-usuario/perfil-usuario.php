@@ -703,6 +703,8 @@ function perfil_usuario_signin(){
 	
 	$acesso = autenticacao_acesso_verificar(['tipo' => 'login']);
 	
+	echo print_r($acesso);exit;
+	
 	// ===== Tratar a função logar.
 	
 	if(isset($_REQUEST['_gestor-logar']) && $acesso['permitido']){
