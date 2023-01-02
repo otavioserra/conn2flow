@@ -58,6 +58,11 @@ $(document).ready(function(){
 		
 		var formSelector2 = '#_gestor-form-logar';
 		
+		var googleRecaptcha = false;
+		if('googleRecaptchaActive' in gestor){
+			googleRecaptcha = true;
+		}
+		
 		$(formSelector2)
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
@@ -87,7 +92,9 @@ $(document).ready(function(){
 				return false;
 			}
 			
-			$(formSelector2).unbind('submit').submit();
+			if(!googleRecaptcha){
+				$(formSelector2).unbind('submit').submit();
+			}
 		});
 		
 		/* function initFingerprintJS(){
