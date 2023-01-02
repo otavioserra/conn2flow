@@ -68,14 +68,14 @@ $(document).ready(function(){
 						var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
 						
 						grecaptcha.ready(function() {
-							grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
-								$(formSelector2).append('<input type="hidden" name="token" value="'+token+'">');
-								$(formSelector2).append('<input type="hidden" name="action" value="'+action+'">');
-								
-								if(!submitBtnClicked){
+							if(submitBtnClicked){
+								grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
+									$(formSelector2).append('<input type="hidden" name="token" value="'+token+'">');
+									$(formSelector2).append('<input type="hidden" name="action" value="'+action+'">');
+									
 									$(formSelector2).unbind('submit').submit();
-								}
-							});
+								});
+							}
 						});
 					}
 					
