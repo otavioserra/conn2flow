@@ -117,6 +117,11 @@ $(document).ready(function(){
 	if($('#_gestor-form-forgot-password').length > 0){
 		var formSelector3 = '#_gestor-form-forgot-password';
 		
+		var googleRecaptcha = false;
+		if('googleRecaptchaActive' in gestor){
+			googleRecaptcha = true;
+		}
+		
 		$(formSelector3)
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
@@ -146,7 +151,9 @@ $(document).ready(function(){
 				return false;
 			}
 			
-			$(formSelector3).form('submit');
+			if(!googleRecaptcha){
+				$(formSelector3).unbind('submit').submit();
+			}
 		});
 	}
 	
