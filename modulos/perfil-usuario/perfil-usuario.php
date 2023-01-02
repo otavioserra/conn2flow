@@ -1262,9 +1262,11 @@ function perfil_usuario_signup(){
 		$cel_nome = 'formulario'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	}
 	
+	autenticacao_acesso_cadastrar(['tipo' => 'signup']);
+	
 	// ===== Incluir google reCAPTCHA caso ativo
 	
-	if(isset($_CONFIG['usuario-recaptcha-active'])){
+	if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
 		if($_CONFIG['usuario-recaptcha-active']){
 			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
 			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
