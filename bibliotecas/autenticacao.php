@@ -672,6 +672,112 @@ function autenticacao_acesso_verificar($params = false){
 	return $retorno;
 }
 
+function autenticacao_acesso_cadastrar($params = false){
+	/**********
+		Descrição: Função responsável por cadastrar acessos de usuários em locais do sistema.
+	**********/
+	
+	global $_GESTOR;
+	global $_CONFIG;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// tipo - String - Obrigatório - Identificador único do tipo de acesso.
+	
+	// ===== 
+	
+	if(isset($tipo)){
+		// ===== Quantidade total de cadastros do tipo informado e quantidade de bloqueios de um IP.
+		
+		$quantidade = 0;
+		$bloqueios = 0;
+		
+		// ===== Pegar o IP do usuário.
+
+		gestor_incluir_biblioteca('ip');
+
+		$ip = ip_get();
+		
+		// ===== Verificar se existe a tabela acessos para o ip atual.
+		
+		$acessos = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'acessos',
+			'campos' => Array(
+				'quantidade',
+				'bloqueios',
+			),
+			'extra' => 
+				"WHERE tipo='".$tipo."'"
+				." AND ip='".$ip."'"
+		));
+		
+		// ===== Pegar a quantidade atual e incrementar um.
+		
+		if($acessos){
+			$quantidade = ($acessos['quantidade'] ? (int)$acessos['quantidade'] : 0);
+			$bloqueios = ($acessos['bloqueios'] ? (int)$acessos['bloqueios'] : 0);
+		}
+		
+		$quantidade++;
+		
+		// ===== Definir o estado do acesso.
+		
+		$maximoCadastros = $_CONFIG['acessos-maximo-cadastros'];
+		
+		if($quantidade <= $maximoCadastros){
+			$status = 'livre';
+		} else {
+			$status = 'bloqueado';
+		}
+		
+		// ===== Caso seja bloqueado, calcular tempo limite de bloqueio.
+		
+		if($status == 'bloqueado'){
+			$bloqueios++;
+			$tempo_bloqueio = $bloqueios * $_CONFIG['acessos-tempo-bloqueio-ip'] + time();
+		}
+		
+		// ===== Atualizar ou criar o registro de acesso com o cadastro no banco de dados.
+		
+		if($acessos){
+			banco_update_campo('status',$status);
+			banco_update_campo('tempo_modificacao',time());
+			
+			if(isset($tempo_bloqueio)){
+				banco_update_campo('bloqueios',$bloqueios);
+				banco_update_campo('tempo_bloqueio',$tempo_bloqueio);
+				banco_update_campo('quantidade','0');
+			} else {
+				banco_update_campo('quantidade',$quantidade);
+			}
+			
+			banco_update_executar('acessos',"WHERE tipo='".$tipo."' AND ip='".$ip."'");
+		} else {
+			banco_insert_name_campo('ip',$ip);
+			banco_insert_name_campo('tipo',$tipo);
+			banco_insert_name_campo('tempo_modificacao',time());
+			banco_insert_name_campo('status',$status);
+			
+			if(isset($tempo_bloqueio)){
+				banco_insert_name_campo('bloqueios',$bloqueios);
+				banco_insert_name_campo('tempo_bloqueio',$tempo_bloqueio);
+				banco_insert_name_campo('quantidade','0');
+			} else {
+				banco_insert_name_campo('quantidade',$quantidade);
+			}
+			
+			banco_insert_name
+			(
+				banco_insert_name_campos(),
+				"acessos"
+			);
+		}
+	}
+}
+
 function autenticacao_acesso_falha($params = false){
 	/**********
 		Descrição: Função responsável por incluir falha de acesso de usuários.

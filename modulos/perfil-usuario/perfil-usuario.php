@@ -881,6 +881,8 @@ function perfil_usuario_signin(){
 		gestor_incluir_biblioteca('pagina');
 		
 		$cel_nome = 'bloqueado-mensagem'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	} else {
+		$cel_nome = 'formulario'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	}
 	
 	// ===== Incluir google reCAPTCHA caso ativo
@@ -922,7 +924,13 @@ function perfil_usuario_signup(){
 	global $_GESTOR;
 	global $_CONFIG;
 	
-	if(isset($_REQUEST['_gestor-signup'])){
+	// ===== Verificar a permissão do acesso.
+	
+	gestor_incluir_biblioteca('autenticacao');
+	
+	$acesso = autenticacao_acesso_verificar(['tipo' => 'signup']);
+	
+	if(isset($_REQUEST['_gestor-signup']) && $acesso['permitido']){
 		$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 		
 		// ===== Validação de campos obrigatórios
