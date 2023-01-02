@@ -57,11 +57,7 @@ $(document).ready(function(){
 			.checkbox();
 		
 		var formSelector2 = '#_gestor-form-logar';
-		
-		var googleRecaptcha = false;
-		if('googleRecaptchaActive' in gestor){
-			googleRecaptcha = true;
-		}
+		var submitBtnClicked = false;
 		
 		$(formSelector2)
 			.form({
@@ -81,6 +77,10 @@ $(document).ready(function(){
 						});
 						
 						return false;
+					} else {
+						if(!submitBtnClicked){
+							return false;
+						}
 					}
 				}
 			});
@@ -92,26 +92,8 @@ $(document).ready(function(){
 				return false;
 			}
 			
-			/* if(!googleRecaptcha){
-				$(formSelector2).unbind('submit').submit();
-			} */
+			submitBtnClicked = true;
 		});
-		
-		/* function initFingerprintJS(){
-			// Initialize an agent at application startup.
-			const fpPromise = FingerprintJS.load();
-
-			// Get the visitor identifier when you need it.
-			fpPromise
-				.then(fp => fp.get())
-				.then(result => {
-					// This is the visitor identifier:
-					const visitorId = result.visitorId;
-					$('#_gestor-fingerprint').val(visitorId);
-				})
-		}
-		
-		initFingerprintJS(); */
 	}
 	
 	if($('#_gestor-form-forgot-password').length > 0){
