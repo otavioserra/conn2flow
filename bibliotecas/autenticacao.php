@@ -727,7 +727,7 @@ function autenticacao_acesso_cadastrar($params = false){
 		
 		$maximoCadastros = $_CONFIG['acessos-maximo-cadastros'];
 		
-		if($quantidade <= $maximoCadastros){
+		if($quantidade < $maximoCadastros){
 			$status = 'livre';
 		} else {
 			$status = 'bloqueado';
@@ -834,9 +834,9 @@ function autenticacao_acesso_falha($params = false){
 		$maximoLoginsSimples = $_CONFIG['acessos-maximo-logins-simples'];
 		$maximoFalhasLogins = $_CONFIG['acessos-maximo-falhas-logins'];
 		
-		if($quantidade <= $maximoLoginsSimples){
+		if($quantidade < $maximoLoginsSimples){
 			$status = 'livre';
-		} else if($quantidade <= $maximoFalhasLogins){
+		} else if($quantidade < $maximoFalhasLogins){
 			$status = 'antispam';
 		} else {
 			$status = 'bloqueado';

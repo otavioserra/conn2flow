@@ -1181,6 +1181,10 @@ function perfil_usuario_signup(){
 			
 			$tokens_id = banco_last_id();
 			
+			// ===== Incluir acesso do tipo signup para evitar SPAM de cadastros.
+			
+			autenticacao_acesso_cadastrar(['tipo' => 'signup']);
+			
 			// ===== Enviar o email confirmando o cadastro junto com a URL de confirmação do email.
 			
 			$nome = $_REQUEST['nome'];
@@ -1261,8 +1265,6 @@ function perfil_usuario_signup(){
 	} else {
 		$cel_nome = 'formulario'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	}
-	
-	autenticacao_acesso_cadastrar(['tipo' => 'signup']);
 	
 	// ===== Incluir google reCAPTCHA caso ativo
 	
