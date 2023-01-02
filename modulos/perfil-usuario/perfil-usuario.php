@@ -877,9 +877,8 @@ function perfil_usuario_signin(){
 	
 	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
 	
-	if($acesso['permitido']){
-		gestor_incluir_biblioteca('pagina');
-		
+	gestor_incluir_biblioteca('pagina');
+	if($acesso['permitido']){	
 		$cel_nome = 'bloqueado-mensagem'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	} else {
 		$cel_nome = 'formulario'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
