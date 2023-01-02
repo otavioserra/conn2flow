@@ -627,6 +627,7 @@ function autenticacao_acesso_verificar($params = false){
 	
 	$retorno = [
 		'permitido' => false,
+		'status' => 'livre',
 	];
 	
 	if(isset($tipo)){
