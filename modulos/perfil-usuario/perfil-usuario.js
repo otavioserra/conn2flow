@@ -79,9 +79,9 @@ $(document).ready(function(){
 								$(formSelector2).unbind('submit').submit();
 							});
 						});
+						
+						return false;
 					}
-					
-					return false;
 				}
 			});
 			
@@ -92,9 +92,9 @@ $(document).ready(function(){
 				return false;
 			}
 			
-			if(!googleRecaptcha){
+			/* if(!googleRecaptcha){
 				$(formSelector2).unbind('submit').submit();
-			}
+			} */
 		});
 		
 		/* function initFingerprintJS(){
