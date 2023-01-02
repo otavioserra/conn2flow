@@ -126,7 +126,7 @@ $(document).ready(function(){
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
 				onSuccess(event, fields){
-					if(typeof gestor.googleRecaptchaActive !== typeof undefined && gestor.googleRecaptchaActive !== false){
+					if('googleRecaptchaActive' in gestor){
 						var action = 'forgotPassword'; // Action 
 						var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
 						
