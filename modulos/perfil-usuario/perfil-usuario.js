@@ -39,6 +39,10 @@ $(document).ready(function(){
 				
 				if(!submitBtnClicked){
 					return false;
+				} else {
+					$.formSubmit({
+						id : 'formOnSuccessCalback',
+					});
 				}
 			}
 		});
