@@ -52,9 +52,7 @@ $(document).ready(function(){
 			
 			submitBtnClicked = true;
 			
-			$.formSubmit({
-				id : 'formOnSuccessCalback',
-			});
+			$(formSelector).form('submit');
 		});
 		
 	}
