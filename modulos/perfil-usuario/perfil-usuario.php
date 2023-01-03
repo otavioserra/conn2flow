@@ -959,7 +959,7 @@ function perfil_usuario_signup(){
 		
 		$recaptchaValido = false;
 		
-		if(isset($_CONFIG['usuario-recaptcha-active'])){
+		if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
 			if($_CONFIG['usuario-recaptcha-active']){
 				// ===== Variáveis de comparação do reCAPTCHA
 				
