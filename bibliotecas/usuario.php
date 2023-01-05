@@ -175,6 +175,12 @@ function usuario_token_dados($params = false){
 		$expiration = time() + $_GESTOR['cookie-lifetime'];
 	}
 	
+	// ===== Pegar o IP do usuário.
+	
+	gestor_incluir_biblioteca('ip');
+	
+	$ip = ip_get();
+	
 	// ===== Gerar ID do Token
 	
 	$tokenPubId = md5(uniqid(rand(), true));
@@ -182,7 +188,7 @@ function usuario_token_dados($params = false){
 	$usuario_token = Array(
 		'pubID' => $tokenPubId,
 		'expiration' => $expiration,
-		'ip' => $_SERVER['REMOTE_ADDR'],
+		'ip' => $ip,
 		'user_agent' => $_SERVER['HTTP_USER_AGENT'],
 	);
 	

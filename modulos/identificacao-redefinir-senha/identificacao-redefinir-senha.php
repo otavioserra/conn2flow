@@ -70,6 +70,12 @@ function identificacao_redefinir_senha_padrao(){
 		// ===== Caso autorizado atualizar senha no banco, senão alertar o usuário e redirecionar para esqueceu senha novamente.
 		
 		if($autorizacaoRedefinicao){
+			// ===== Pegar o IP do usuário.
+
+			gestor_incluir_biblioteca('ip');
+
+			$ip = ip_get();
+
 			// ===== API-Servidor para esqueceu senha.
 			
 			gestor_incluir_biblioteca('api-servidor');
@@ -78,7 +84,7 @@ function identificacao_redefinir_senha_padrao(){
 				'opcao' => 'redefinirSenha',
 				'senha' => banco_escape_field($_REQUEST['senha']),
 				'tokenPubId' => $tokenPubId,
-				'userIP' => $_SERVER['REMOTE_ADDR'],
+				'userIP' => $ip,
 				'userUserAgent' => $_SERVER['HTTP_USER_AGENT'],
 			));
 			

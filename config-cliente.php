@@ -59,6 +59,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'formulario' => Array('formulario.php'),
 	'usuario' => Array('usuario.php'),
 	'log' => Array('log.php'),
+	'ip' => Array('ip.php'),
 );
 
 if($_GESTOR['bibliotecas'])
