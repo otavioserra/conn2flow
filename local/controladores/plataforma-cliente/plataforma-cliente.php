@@ -7,6 +7,8 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'plataforma-cliente-plugin';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.0.0',
+	'forcarDataHoje' => true,
+	'dataHojeForcada' => '2023-01-20',
 );
 
 // =========================== Funções Auxiliares
@@ -16,8 +18,15 @@ function plataforma_cliente_plugin_data_permitida($data){
 	
 	gestor_incluir_biblioteca('formato');
 	
+	// ===== Variáveis do módulo.
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
+	if($modulo['forcarDataHoje']){ $hoje = $modulo['dataHojeForcada']; } else { $hoje = date('Y-m-d'); }
+	
+	// ===== .
+	
 	$ano_inicio = date('Y');
-	$hoje = date('Y-m-d');
 	
 	$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-agendamentos'));
 	
@@ -523,6 +532,10 @@ function plataforma_cliente_plugin_data_agendamento_cancelar($params = false){
 function plataforma_cliente_plugin_agendamentos(){
 	global $_GESTOR;
 	
+	// ===== Variáveis do módulo.
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
 	// ===== Identificador do Host.
 	
 	$id_hosts = $_GESTOR['host-id'];
@@ -638,7 +651,7 @@ function plataforma_cliente_plugin_agendamentos(){
 				
 				// ===== Verificar o cupom de prioridade.
 				
-				$hoje = date('Y-m-d');
+				if($modulo['forcarDataHoje']){ $hoje = $modulo['dataHojeForcada']; } else { $hoje = date('Y-m-d'); }
 				
 				if(isset($dados['cupom']))
 				if(existe($dados['cupom'])){
@@ -1301,6 +1314,10 @@ function plataforma_cliente_plugin_agendamentos(){
 function plataforma_cliente_plugin_alteracao(){
 	global $_GESTOR;
 	
+	// ===== Variáveis do módulo.
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
 	// ===== Identificador do Host.
 	
 	$id_hosts = $_GESTOR['host-id'];
@@ -1369,7 +1386,7 @@ function plataforma_cliente_plugin_alteracao(){
 					case 'confirmar':
 						// ===== Dados do agendamento.
 						
-						$hoje = date('Y-m-d');
+						if($modulo['forcarDataHoje']){ $hoje = $modulo['dataHojeForcada']; } else { $hoje = date('Y-m-d'); }
 						
 						// ===== Configuração de fase de sorteio.
 					
@@ -1677,7 +1694,7 @@ function plataforma_cliente_plugin_alteracao(){
 					case 'confirmar':
 						// ===== Dados do agendamento.
 						
-						$hoje = date('Y-m-d');
+						if($modulo['forcarDataHoje']){ $hoje = $modulo['dataHojeForcada']; } else { $hoje = date('Y-m-d'); }
 						
 						// ===== Configuração de fase de sorteio.
 					
