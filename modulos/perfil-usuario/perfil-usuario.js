@@ -85,6 +85,8 @@ $(document).ready(function(){
 									$(formSelector2).unbind('submit').submit();
 								});
 							});
+							
+							return false;
 						}
 					}
 					
@@ -129,6 +131,8 @@ $(document).ready(function(){
 									
 									$(formSelector3).unbind('submit').submit();
 								});
+								
+								return false;
 							}
 						});
 					}
