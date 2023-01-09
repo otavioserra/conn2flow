@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-autenticacao']							=	Array(
-	'versao' => '1.1.0',
+	'versao' => '1.2.0',
 );
 
 // ===== Funções auxiliares
@@ -774,6 +774,59 @@ function autenticacao_acesso_cadastrar($params = false){
 				banco_insert_name_campos(),
 				"acessos"
 			);
+		}
+	}
+}
+
+function autenticacao_acesso_confirmar($params = false){
+	/**********
+		Descrição: Função responsável por incluir confirmação de acesso de usuários.
+	**********/
+	
+	global $_GESTOR;
+	global $_CONFIG;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// tipo - String - Obrigatório - Identificador único do tipo de acesso.
+	
+	// ===== 
+	
+	if(isset($tipo)){
+		// ===== Pegar o IP do usuário.
+
+		gestor_incluir_biblioteca('ip');
+
+		$ip = ip_get();
+		
+		// ===== Verificar se existe a tabela acessos para o ip atual.
+		
+		$acessos = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'acessos',
+			'campos' => Array(
+				'quantidade',
+				'bloqueios',
+			),
+			'extra' => 
+				"WHERE tipo='".$tipo."'"
+				." AND ip='".$ip."'"
+		));
+		
+		// ===== Definir o estado do acesso.
+		
+		$status = 'livre';
+		
+		// ===== Atualizar o registro de acesso com confirmação no banco de dados.
+		
+		if($acessos){
+			banco_update_campo('status',$status);
+			banco_update_campo('tempo_modificacao',time());
+			banco_update_campo('quantidade','0');
+			
+			banco_update_executar('acessos',"WHERE tipo='".$tipo."' AND ip='".$ip."'");
 		}
 	}
 }

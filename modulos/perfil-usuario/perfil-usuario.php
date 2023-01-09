@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'perfil-usuario';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.2.3',
+	'versao' => '1.2.4',
 	'bibliotecas' => Array('interface','html','usuario'),
 	'tabela' => Array(
 		'nome' => 'usuarios',
@@ -807,6 +807,10 @@ function perfil_usuario_signin(){
 					if($status == 'A'){
 						$user_invalid = false;
 						
+						// ===== Incluir a confirmação do acesso para poder remover qualquer limitação de acesso do tipo específico.
+						
+						autenticacao_acesso_confirmar(['tipo' => 'login']);
+						
 						// ===== Caso o usuário escolher a opção para manter logado, gera token de autenticação com tempo de expiração, senão será expirado assim que o usuário fechar navegador
 						
 						if(isset($_REQUEST['permanecer-logado'])){
@@ -1497,6 +1501,10 @@ function perfil_usuario_forgot_password(){
 					);
 					
 					$tokens_id = banco_last_id();
+					
+					// ===== Incluir a confirmação do acesso para poder remover qualquer limitação de acesso do tipo específico.
+					
+					autenticacao_acesso_confirmar(['tipo' => 'forgot-password']);
 					
 					// ===== Enviar o email com as instruções para renovar a senha.
 					
