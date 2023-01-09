@@ -311,8 +311,8 @@ function modulos_sincronizar_bancos(){
 	
 	$servers = Array(
 		'origem' => 'beta.entrey.com.br',
-		'destino' => 'localhost',
-		//'destino' => 'entrey.com.br',
+		//'destino' => 'localhost',
+		'destino' => 'entrey.com.br',
 	);
 	
 	$serverOrigem = $servers['origem'];

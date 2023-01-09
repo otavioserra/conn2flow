@@ -6,7 +6,7 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR['versao']								=	'1.5.0'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'1.5.1'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'entrey-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
 $_GESTOR['host-configuracao-id-modulo']			=	'host-configuracao'; // Identificador módulo de configuração do host.
@@ -181,8 +181,8 @@ $_GESTOR['plataforma'] = Array(
 // ===== Definições do gestor cliente.
 
 $_GESTOR['gestor-cliente'] = Array(
-	'versao' => '1.5.0',
-	'versao_num' => 19,
+	'versao' => '1.5.1',
+	'versao_num' => 20,
 );
 
 // ===== Definição e inclusão de todas as bibliotecas necessárias para o funcionamento do gestor
