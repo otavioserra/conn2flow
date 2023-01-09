@@ -1740,7 +1740,7 @@ function plataforma_cliente_plugin_alteracao(){
 							// ===== Confirmação de vagas residuais se permitido. Senão retornar erro.
 							
 							if(
-								strtotime($hoje) > strtotime($data.' - '.$fase_residual.' day') &&
+								strtotime($hoje) >= strtotime($data.' - '.$fase_residual.' day') &&
 								strtotime($hoje) <= strtotime($data.' - 1 day')
 							){
 								$confirmar = true;

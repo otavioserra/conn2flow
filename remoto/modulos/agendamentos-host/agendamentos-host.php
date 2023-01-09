@@ -259,7 +259,7 @@ function agendamentos_confirmacao(){
 			}
 		} else {
 			if(
-				strtotime($hoje) > strtotime($data.' - '.$fase_residual.' day') &&
+				strtotime($hoje) >= strtotime($data.' - '.$fase_residual.' day') &&
 				strtotime($hoje) <= strtotime($data.' - 1 day')
 			){
 				
