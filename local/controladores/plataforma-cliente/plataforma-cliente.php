@@ -8,7 +8,7 @@ $_GESTOR['modulo-id']							=	'plataforma-cliente-plugin';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.0.0',
 	'forcarDataHoje' => true,
-	'dataHojeForcada' => '2023-01-19',
+	'dataHojeForcada' => '2023-01-18',
 );
 
 // =========================== Funções Auxiliares

@@ -7,7 +7,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.1.4',
 	'numRegistrosPorPagina' => 20,
 	'forcarDataHoje' => true,
-	'dataHojeForcada' => '2023-01-20',
+	'dataHojeForcada' => '2023-01-18',
 );
 
 // ===== Funções Auxiliares
