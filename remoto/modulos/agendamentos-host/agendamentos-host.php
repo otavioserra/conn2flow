@@ -6,6 +6,8 @@ $_GESTOR['modulo-id']							=	'agendamentos-host';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.1.4',
 	'numRegistrosPorPagina' => 20,
+	'forcarDataHoje' => true,
+	'dataHojeForcada' => '2023-01-20',
 );
 
 // ===== Funções Auxiliares
@@ -18,7 +20,14 @@ function agendamentos_calendario($params = false){
 	gestor_incluir_biblioteca('formato');
 	
 	$ano_inicio = date('Y');
-	$hoje = date('Y-m-d');
+	
+	// ===== Variáveis do módulo.
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
+	if($modulo['forcarDataHoje']){ $hoje = $modulo['dataHojeForcada']; } else { $hoje = date('Y-m-d'); }
+	
+	// ===== .
 	
 	$config = gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','conjunto' => true));
 	
@@ -191,11 +200,16 @@ function agendamentos_confirmacao(){
 		
 		$_GESTOR['javascript-vars']['expiradoOuNaoEncontrado'] = true;
 	} else {
+		// ===== Variáveis do módulo.
+		
+		$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+		
+		if($modulo['forcarDataHoje']){ $hoje = $modulo['dataHojeForcada']; } else { $hoje = date('Y-m-d'); }
+		
 		// ===== Verificar se a confirmação está no período válido.
 		
 		// ===== Dados do agendamento.
 		
-		$hoje = date('Y-m-d');
 		$data = $agendamentos['data'];
 		$status = $agendamentos['status'];
 		
@@ -204,6 +218,7 @@ function agendamentos_confirmacao(){
 		$config = gestor_variaveis(Array('modulo' => 'configuracoes-agendamentos','conjunto' => true));
 		
 		$fase_sorteio = (existe($config['fase-sorteio']) ? explode(',',$config['fase-sorteio']) : Array(7,5));
+		$fase_residual = (existe($config['fase-residual']) ? (int)$config['fase-residual'] : 5);
 		
 		// ===== Verificar se o status atual do agendamento permite confirmação.
 		
@@ -243,12 +258,19 @@ function agendamentos_confirmacao(){
 				gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
 			}
 		} else {
-			interface_alerta(Array(
-				'redirect' => true,
-				'msg' => 'AGENDAMENTO_STATUS_NAO_PERMITIDO_CONFIRMACAO'
-			));
-			
-			gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
+			if(
+				strtotime($hoje) > strtotime($data.' - '.$fase_residual.' day') &&
+				strtotime($hoje) <= strtotime($data.' - 1 day')
+			){
+				
+			} else {
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => 'AGENDAMENTO_STATUS_NAO_PERMITIDO_CONFIRMACAO'
+				));
+				
+				gestor_redirecionar('agendamentos/?tela=agendamentos-anteriores');
+			}
 		}
 		
 		// ===== Solicitação de confirmação do agendamento.
@@ -616,6 +638,10 @@ function agendamentos_cancelamento(){
 function agendamentos_padrao(){
 	global $_GESTOR;
 	
+	// ===== Variáveis do módulo.
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
 	// ===== Ação disparada.
 	
 	switch($_REQUEST['acao']){
@@ -888,9 +914,9 @@ function agendamentos_padrao(){
 		
 		agendamentos_calendario();
 		
-		// ===== Valor time do dia de amanhã.
+		// ===== Valor time do dia de hoje.
 		
-		$hoje = date('Y-m-d');
+		if($modulo['forcarDataHoje']){ $hoje = $modulo['dataHojeForcada']; } else { $hoje = date('Y-m-d'); }
 		
 		// ===== Pegar agendamento do usuário no banco de dados.
 		
@@ -1427,9 +1453,13 @@ function agendamentos_ajax_mais_resultados(){
 	
 	$numRegistrosPorPagina = $_GESTOR['modulo#'.$_GESTOR['modulo-id']]['numRegistrosPorPagina'];
 	
-	// ===== Valor time do dia de amanhã.
+	// ===== Variáveis do módulo.
 	
-	$hoje = date('Y-m-d');
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
+	// ===== Valor time do dia de hoje.
+	
+	if($modulo['forcarDataHoje']){ $hoje = $modulo['dataHojeForcada']; } else { $hoje = date('Y-m-d'); }
 	
 	// ===== Status de agendamento.
 	

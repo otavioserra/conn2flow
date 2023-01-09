@@ -1682,6 +1682,7 @@ function plataforma_cliente_plugin_alteracao(){
 						// ===== Configuração de fase de sorteio.
 					
 						$fase_sorteio = (existe($config['fase-sorteio']) ? explode(',',$config['fase-sorteio']) : Array(7,5));
+						$fase_residual = (existe($config['fase-residual']) ? (int)$config['fase-residual'] : 5);
 						
 						// ===== Verificar se o status atual do agendamento permite confirmação.
 						
@@ -1697,27 +1698,7 @@ function plataforma_cliente_plugin_alteracao(){
 								strtotime($data) >= strtotime($hoje.' + '.($fase_sorteio[1]+1).' day') &&
 								strtotime($data) < strtotime($hoje.' + '.($fase_sorteio[0]+1).' day')
 							){
-								// ===== Caso não tenha sido confirmado anteriormente, confirmar o agendamento.
-								
-								$retorno = plataforma_cliente_plugin_data_agendamento_confirmar(Array(
-									'id_hosts' => $id_hosts,
-									'id_hosts_agendamentos' => $id_hosts_agendamentos,
-									'id_hosts_usuarios' => $id_hosts_usuarios,
-									'data' => $data,
-								));
-								
-								// ===== Verificar se a confirmação ocorreu corretamente.
-								
-								if(!$retorno['confirmado']){
-									return Array(
-										'status' => $retorno['status'],
-										'error-msg' => $retorno['alerta'],
-									);
-								} else {
-									// ===== Alerta de confirmação do agendamento.
-									
-									$retornoDados['alerta'] = $retorno['alerta'];
-								}
+								$confirmar = true;
 							} else {
 								// ===== Datas do período de confirmação.
 								
@@ -1739,9 +1720,44 @@ function plataforma_cliente_plugin_alteracao(){
 								);
 							}
 						} else {
-							return Array(
-								'status' => 'AGENDAMENTO_STATUS_NAO_PERMITIDO_CONFIRMACAO',
-							);
+							// ===== Confirmação de vagas residuais se permitido. Senão retornar erro.
+							
+							if(
+								strtotime($hoje) > strtotime($data.' - '.$fase_residual.' day') &&
+								strtotime($hoje) <= strtotime($data.' - 1 day')
+							){
+								$confirmar = true;
+							} else {
+								return Array(
+									'status' => 'AGENDAMENTO_STATUS_NAO_PERMITIDO_CONFIRMACAO',
+								);
+							}
+						}
+						
+						// ===== Caso tenha permissão para poder confirmar, fazer as operações necessárias.
+						
+						if(isset($confirmar)){
+							// ===== Caso não tenha sido confirmado anteriormente, confirmar o agendamento.
+							
+							$retorno = plataforma_cliente_plugin_data_agendamento_confirmar(Array(
+								'id_hosts' => $id_hosts,
+								'id_hosts_agendamentos' => $id_hosts_agendamentos,
+								'id_hosts_usuarios' => $id_hosts_usuarios,
+								'data' => $data,
+							));
+							
+							// ===== Verificar se a confirmação ocorreu corretamente.
+							
+							if(!$retorno['confirmado']){
+								return Array(
+									'status' => $retorno['status'],
+									'error-msg' => $retorno['alerta'],
+								);
+							} else {
+								// ===== Alerta de confirmação do agendamento.
+								
+								$retornoDados['alerta'] = $retorno['alerta'];
+							}
 						}
 					break;
 					default:
