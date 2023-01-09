@@ -7,7 +7,7 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'plataforma-cliente-plugin';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.0.0',
-	'forcarDataHoje' => true,
+	'forcarDataHoje' => false,
 	'dataHojeForcada' => '2023-01-18',
 );
 
@@ -1746,8 +1746,7 @@ function plataforma_cliente_plugin_alteracao(){
 								$confirmar = true;
 							} else {
 								return Array(
-									'status' => 'AGENDAMENTO_STATUS_NAO_PERMITIDO_CONFIRMACAO '.date('Y-m-d',strtotime($hoje)).' > '.date('Y-m-d',strtotime($data.' - '.$fase_residual.' day')).' && '.
-								date('Y-m-d',strtotime($hoje)).' <= '.date('Y-m-d',strtotime($data.' - 1 day')),
+									'status' => 'AGENDAMENTO_STATUS_NAO_PERMITIDO_CONFIRMACAO',
 								);
 							}
 						}

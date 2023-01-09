@@ -6,8 +6,8 @@ $_GESTOR['modulo-id']							=	'agendamentos-host';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.1.4',
 	'numRegistrosPorPagina' => 20,
-	'forcarDataHoje' => true,
-	'dataHojeForcada' => '2023-01-18',
+	'forcarDataHoje' => false,
+	'dataHojeForcada' => '2023-01-19',
 );
 
 // ===== Funções Auxiliares
