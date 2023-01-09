@@ -1729,7 +1729,8 @@ function plataforma_cliente_plugin_alteracao(){
 								$confirmar = true;
 							} else {
 								return Array(
-									'status' => 'AGENDAMENTO_STATUS_NAO_PERMITIDO_CONFIRMACAO',
+									'status' => 'AGENDAMENTO_STATUS_NAO_PERMITIDO_CONFIRMACAO '.date('Y-m-d',strtotime($hoje)).' > '.date('Y-m-d',strtotime($data.' - '.$fase_residual.' day')).' && '.
+								date('Y-m-d',strtotime($hoje).' <= '.date('Y-m-d',strtotime($data.' - 1 day')),
 								);
 							}
 						}
