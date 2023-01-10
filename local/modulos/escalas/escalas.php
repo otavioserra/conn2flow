@@ -317,6 +317,7 @@ function escalas_ajax_atualizar(){
 					"WHERE id_hosts='".$id_hosts."'"
 					." AND data='".$data."'"
 					." AND status='novo'"
+					." AND selecionada IS NOT NULL"
 			));
 			
 			// ===== Varrer todas as hosts_escalas_datas.
@@ -418,6 +419,7 @@ function escalas_ajax_atualizar(){
 					"WHERE id_hosts='".$id_hosts."'"
 					." AND data='".$data."'"
 					." AND status='qualificado'"
+					." AND selecionada IS NOT NULL"
 			));
 			
 			// ===== Varrer todas as hosts_escalas_datas.
@@ -533,6 +535,7 @@ function escalas_ajax_atualizar(){
 					"WHERE id_hosts='".$id_hosts."'"
 					." AND data='".$data."'"
 					." AND (status='confirmado' OR status='vaga-residual')"
+					." AND selecionada IS NOT NULL"
 			));
 			
 			// ===== Varrer todas as hosts_escalas_datas.
@@ -705,6 +708,7 @@ function escalas_ajax_atualizar(){
 					"WHERE id_hosts='".$id_hosts."'"
 					." AND data='".$data."'"
 					." AND status='nao-confirmados'"
+					." AND selecionada IS NOT NULL"
 			));
 			
 			// ===== Varrer todas as hosts_escalas_datas.
@@ -805,6 +809,7 @@ function escalas_ajax_atualizar(){
 					"WHERE id_hosts='".$id_hosts."'"
 					." AND data='".$data."'"
 					." AND status='cancelado'"
+					." AND selecionada IS NOT NULL"
 			));
 			
 			// ===== Varrer todas as hosts_escalas_datas.
