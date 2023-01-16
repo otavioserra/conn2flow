@@ -12,10 +12,13 @@
 			
 			// ===== .
 			
+			var contHeight = 300;
+			
 			if(settings.verticalResize === 'auto'){
 				$(this).css('height','100%');
 			} else {
 				$(this).css('height',settings.verticalResize+'px');
+				contHeight = parseInt(settings.verticalResize);
 			}
 			
 			// ===== Apply img bg for all items.
@@ -28,11 +31,16 @@
 			
 			// ===== Controls.
 			
-			var controlLeft = $('<div class="control-left"><i class="chevron left link big icon"></i></div>');
-			var controlRight = $('<div class="control-right"><i class="chevron right link big icon"></i></div>');
+			var controlLeft = $('<div class="control-left"><i class="chevron left inverted link big icon"></i></div>');
+			var controlRight = $('<div class="control-right"><i class="chevron right inverted link big icon"></i></div>');
 			
 			$(this).append(controlLeft);
 			$(this).append(controlRight);
+			
+			var controlTop = (controlLeft.outerHeight(true) + contHeight) / 2;
+			
+			controlLeft.css('top',controlTop+'px');
+			controlRight.css('top',controlTop+'px');
 			
 			// ===== Show caroucel conteiner.
 			
