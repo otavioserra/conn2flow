@@ -37,9 +37,7 @@
 			$(this).append(controlLeft);
 			$(this).append(controlRight);
 			
-			console.log(controlLeft.outerHeight(true));
-			
-			var controlTop = (contHeight) / 2 - (controlLeft.outerHeight(true)) / 2;
+			var controlTop = (contHeight) / 2;
 			
 			controlLeft.css('top',controlTop+'px');
 			controlRight.css('top',controlTop+'px');
@@ -47,6 +45,13 @@
 			// ===== Show caroucel conteiner.
 			
 			$(this).show();
+			
+			// ===== Apply margin ajusts.
+			
+			var controlTop = (contHeight) / 2 - (controlLeft.outerHeight(true)) / 2;
+			
+			controlLeft.css('top',controlTop+'px');
+			controlRight.css('top',controlTop+'px');
         },
         show : function( ) {    },// IS
         hide : function( ) {  },// GOOD
