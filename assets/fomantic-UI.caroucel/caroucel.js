@@ -2,7 +2,15 @@
 
     var methods = {
         init : function(options) {
-			console.log(options.msg);
+			// ===== default options.
+			
+			var defaultOptions = {
+				
+			};
+			
+			var settings = $.extend(defaultOptions, options);
+			
+			$(this).show();
         },
         show : function( ) {    },// IS
         hide : function( ) {  },// GOOD
