@@ -1,6 +1,7 @@
 .caroucel{
 	display:none;
 	overflow-y:hidden;
+	position:relative;
 }
 .caroucel .items{
 	width:inherit;
@@ -12,4 +13,20 @@
     background-position: center center;
 	width:inherit;
 	height:inherit;
+}
+.caroucel .control-left{
+	position:absolute;
+	left:10px;
+}
+.caroucel .control-right{
+	position:absolute;
+	right:10px;
+}
+.caroucel .control-center{
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:-15px;
+}
+.caroucel .control-center .circle{
+	margin:5px;
 }

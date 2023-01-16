@@ -26,6 +26,14 @@
 				}
 			});
 			
+			// ===== Controls.
+			
+			var controlLeft = $('<div class"control-left"><i class="chevron left link big icon"></i></div>');
+			var controlRight = $('<div class"control-right"><i class="chevron right link big icon"></i></div>');
+			
+			$(this).append(controlLeft);
+			$(this).append(controlRight);
+			
 			// ===== Show caroucel conteiner.
 			
 			$(this).show();
