@@ -21,12 +21,29 @@
 				contHeight = parseInt(settings.verticalResize);
 			}
 			
-			// ===== Apply img bg for all items.
+			// ===== Change all items.
 			
+			var first = true;
 			$(this).find('.items').find('.item').each(function(){
+				// ===== Apply img bg for all items.
+				
 				if($(this).attr('data-src') !== undefined) {
 					$(this).css('backgroundImage','url('+$(this).attr('data-src')+')');
 				}
+				
+				// ===== Central circles controls.
+				
+				if(first){
+					var controlCenter = $('<div class="control-center"></div>');
+					controlCenter.parents('.caroucel').append(controlCenter);
+					var controlCircle = $('<div class="circle"><i class="circle inverted secondary link big icon"></i></div>');
+					first = false;
+				} else {
+					var controlCircle = $('<div class="circle"><i class="circle outline inverted link big icon"></i></div>');
+					var controlCenter = $(this).parents('.caroucel');
+				}
+				
+				controlCenter.append(controlCircle);
 			});
 			
 			// ===== Controls.
