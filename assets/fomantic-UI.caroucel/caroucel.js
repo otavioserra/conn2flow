@@ -39,8 +39,8 @@
 					var controlCircle = $('<div class="circle"><i class="circle inverted secondary link big icon"></i></div>');
 					first = false;
 				} else {
-					var controlCircle = $('<div class="circle"><i class="circle outline inverted link big icon"></i></div>');
 					var controlCenter = $(this).parents('.caroucel');
+					var controlCircle = $('<div class="circle"><i class="circle outline inverted link big icon"></i></div>');
 				}
 				
 				controlCenter.append(controlCircle);
