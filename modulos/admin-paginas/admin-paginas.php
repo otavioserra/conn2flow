@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'admin-paginas';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.8',
+	'versao' => '1.1.0',
 	'bibliotecas' => Array('interface','html'),
 	'tabela' => Array(
 		'nome' => 'paginas',
@@ -714,7 +714,7 @@ function admin_paginas_interfaces_padroes(){
 					'campos' => Array(
 						'nome',
 						'modulo',
-						$modulo['tabela']['data_criacao'],
+						'caminho',
 						$modulo['tabela']['data_modificacao'],
 					),
 					'id' => $modulo['tabela']['id'],
@@ -742,10 +742,9 @@ function admin_paginas_interfaces_padroes(){
 							)
 						),
 						Array(
-							'id' => $modulo['tabela']['data_criacao'],
-							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),
-							'formatar' => 'dataHora',
-							'nao_procurar' => true,
+							'id' => 'caminho',
+							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-url-path')),
+							'ordenar' => 'asc',
 						),
 						Array(
 							'id' => $modulo['tabela']['data_modificacao'],
