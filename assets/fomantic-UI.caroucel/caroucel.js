@@ -37,7 +37,7 @@
 			$(this).append(controlLeft);
 			$(this).append(controlRight);
 			
-			var controlTop = (controlLeft.outerHeight(true)) / 2 - (contHeight) / 2;
+			var controlTop = (contHeight) / 2 - (controlLeft.outerHeight(true)) / 2;
 			
 			controlLeft.css('top',controlTop+'px');
 			controlRight.css('top',controlTop+'px');
