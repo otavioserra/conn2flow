@@ -1,3 +1,4 @@
 .caroucel{
 	display:none;
+	overflow-y:hidden;
 }
