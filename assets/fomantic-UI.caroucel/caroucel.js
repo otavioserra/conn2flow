@@ -21,6 +21,11 @@
 				contHeight = parseInt(settings.verticalResize);
 			}
 			
+			// ===== Control center holder.
+			
+			var controlCenter = $('<div class="control-center"></div>');
+			$(this).append(controlCenter);
+			
 			// ===== Change all items.
 			
 			var first = true;
@@ -34,12 +39,9 @@
 				// ===== Central circles controls.
 				
 				if(first){
-					var controlCenter = $('<div class="control-center"></div>');
-					$(this).parents('.caroucel').append(controlCenter);
 					var controlCircle = $('<div class="circle"><i class="circle inverted secondary link big icon"></i></div>');
 					first = false;
 				} else {
-					var controlCenter = $(this).parents('.caroucel');
 					var controlCircle = $('<div class="circle"><i class="circle outline inverted link big icon"></i></div>');
 				}
 				
