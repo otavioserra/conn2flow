@@ -2,3 +2,14 @@
 	display:none;
 	overflow-y:hidden;
 }
+.caroucel .items{
+	width:inherit;
+	height:inherit;
+}
+.caroucel .items .item{
+	background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+	width:inherit;
+	height:inherit;
+}
