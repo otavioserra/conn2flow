@@ -35,7 +35,7 @@
 				
 				if(first){
 					var controlCenter = $('<div class="control-center"></div>');
-					controlCenter.parents('.caroucel').append(controlCenter);
+					$(this).parents('.caroucel').append(controlCenter);
 					var controlCircle = $('<div class="circle"><i class="circle inverted secondary link big icon"></i></div>');
 					first = false;
 				} else {
