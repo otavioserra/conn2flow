@@ -14,12 +14,11 @@ function pagina_inicial_start(){
 	
 	// ===== Inclusão Módulo CSS
 	
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'jquery.glide/jeffry.in.css">');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'jquery.glide/jeffry.in.slider.css">');
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'fomantic-UI.caroucel/caroucel.css">');
 	
 	// ===== Inclusão Módulo JS
 	
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jquery.glide/jquery.glide.min.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'fomantic-UI.caroucel/caroucel.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
 	gestor_pagina_javascript_incluir();
 }
 
