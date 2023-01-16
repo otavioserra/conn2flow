@@ -2,7 +2,7 @@
 
     var methods = {
         init : function(options) {
-			console.log('Init');
+			console.log(options.msg);
         },
         show : function( ) {    },// IS
         hide : function( ) {  },// GOOD

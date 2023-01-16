@@ -1,3 +1,5 @@
 $(document).ready(function(){
-	$('.caroucel').caroucel();
+	$('.caroucel').caroucel({
+		msg:"msg"
+	});
 });
