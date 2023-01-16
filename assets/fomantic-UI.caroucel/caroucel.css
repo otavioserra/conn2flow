@@ -23,7 +23,7 @@
 	right:10px;
 }
 .caroucel .control-center{
-	margin-left:auto;
-	margin-right:auto;
-	margin-top:-15px;
+	margin-top: -40px;
+    width: inherit;
+    text-align: center;
 }

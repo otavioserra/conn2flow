@@ -39,10 +39,10 @@
 				// ===== Central circles controls.
 				
 				if(first){
-					var controlCircle = $('<i class="circle inverted secondary link big icon"></i>');
+					var controlCircle = $('<i class="circle inverted secondary link large icon"></i>');
 					first = false;
 				} else {
-					var controlCircle = $('<i class="circle outline inverted link big icon"></i>');
+					var controlCircle = $('<i class="circle inverted link large icon"></i>');
 				}
 				
 				controlCenter.append(controlCircle);
