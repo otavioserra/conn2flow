@@ -18,6 +18,14 @@
 				$(this).css('height',settings.verticalResize+'px');
 			}
 			
+			// ===== Apply img bg for all items.
+			
+			$(this).find('.items').find('.item').each(function(){
+				if($(this).attr('data-src') !== undefined) {
+					$(this).css('backgroundImage','url('+$(this).attr('data-src')+')');
+				}
+			});
+			
 			// ===== Show caroucel conteiner.
 			
 			$(this).show();
