@@ -1,5 +1,5 @@
 $(document).ready(function(){
 	$('.caroucel').caroucel({
-		verticalResize : '400'
+		verticalResize : '550'
 	});
 });
