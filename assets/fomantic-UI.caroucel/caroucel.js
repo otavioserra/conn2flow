@@ -175,7 +175,7 @@
 		
 		var leftEnd;
 		switch(opt.direction){
-			case 'left':
+			case 'right':
 				leftEnd = parentWidth+'px';
 				nextSlide.css('left','-'+parentWidth+'px');
 			break;
