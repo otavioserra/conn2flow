@@ -12,7 +12,7 @@
 			var defaultOptions = {
 				verticalResize : 'auto', // Auto / Value resize of main holder - Accept: 'auto' or 'int value' to fix vertical height
 				animation: { // Default values of animation slides
-					time: 300, // Time until animation finish
+					time: 1000, // Time until animation finish
 				}
 			};
 			
