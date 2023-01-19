@@ -158,7 +158,6 @@
 		actualSlide.css('zIndex','1');
 		actualSlide.css('top','0');
 		
-		
 		// ===== Animate and change slides based on direction and when was finish return actualSlide do default behavior.
 		
 		var leftEnd;
@@ -176,7 +175,9 @@
 			left: leftEnd,
 		}, settings.animation.time, function() {
 			actualSlide.css('position','relative');
-			actualSlide.css('zIndex','1');
+			actualSlide.css('zIndex','auto');
+			actualSlide.css('left','auto');
+			actualSlide.css('top','auto');
 			
 			actualSlide.remove();
 			

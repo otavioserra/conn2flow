@@ -6,6 +6,7 @@
 .caroucel .items{
 	width:inherit;
 	height:inherit;
+	position:relative;
 }
 .caroucel .items .item{
 	background-size: cover;
