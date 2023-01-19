@@ -166,7 +166,7 @@
 		} else {
 			switch(opt.direction){
 				case 'right':
-					if(settings.totalSlides < settings.currentSlide + 1){
+					if(settings.totalSlides <= settings.currentSlide + 1){
 						nextSlideNum = settings.currentSlide + 1;
 					} else {
 						nextSlideNum = 1;
