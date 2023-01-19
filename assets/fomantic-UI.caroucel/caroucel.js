@@ -273,6 +273,8 @@
 		
 			settings.animating = false;
 			
+			settings.currentSlide = parseInt(nextSlide.attr('data-num'));
+			
 			refreshControlCenter();
 		});
 	}
