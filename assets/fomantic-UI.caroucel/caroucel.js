@@ -86,8 +86,6 @@
 			
 			// ===== Listeners of buttons.
 			
-			console.log('listeners');
-			
 			$('.control-left').on('mouseup tap',function(e){
 				if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 				
@@ -146,10 +144,10 @@
 		$(obj).find('.items').find('.item').each(function(){
 			
 			if(first){
-				actualSlide = this;
+				actualSlide = $(this);
 				first = false;
 			} else {
-				nextSlide = this;
+				nextSlide = $(this);
 				return false;
 			}
 		});
