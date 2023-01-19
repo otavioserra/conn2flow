@@ -243,7 +243,7 @@
 				nextSlide.css('left',parentWidth+'px');
 		}
 		
-		console.log('parentWidth: '+parentWidth+', parentHeight: '+parentHeight+', leftEnd: '+leftEnd);
+		console.log('actualSlideNum: '+actualSlide.attr('data-num')+', nextSlideNum: '+nextSlide.attr('data-num'));
 		
 		actualSlide.animate({
 			left: leftEnd,
