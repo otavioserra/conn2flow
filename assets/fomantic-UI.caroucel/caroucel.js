@@ -185,14 +185,19 @@
 			
 			if(interactionNum == settings.currentSlide){
 				actualSlide = $(this);
+				actualSlide.remove();
 			}
 			
 			// ===== Get the next slide.
 			
 			if(interactionNum == nextSlideNum){
 				nextSlide = $(this);
+				nextSlide.remove();
 			}
 		});
+		
+		$(obj).find('.items').prepend(nextSlide);
+		$(obj).find('.items').prepend(actualSlide);
 		
 		// ===== Change state to animating for prevent overflow.
 		
