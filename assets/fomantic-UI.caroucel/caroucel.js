@@ -157,9 +157,7 @@
 		actualSlide.css('position','absolute');
 		actualSlide.css('zIndex','1');
 		actualSlide.css('top','0');
-		actualSlide.remove();
 		
-		$(obj).find('.items').append(actualSlide);
 		
 		// ===== Animate and change slides based on direction and when was finish return actualSlide do default behavior.
 		
@@ -179,6 +177,11 @@
 		}, settings.animation.time, function() {
 			actualSlide.css('position','relative');
 			actualSlide.css('zIndex','1');
+			
+			actualSlide.remove();
+			
+			$(obj).find('.items').append(actualSlide);
+		
 			settings.animating = false;
 		});
 	}
