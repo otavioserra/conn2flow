@@ -176,12 +176,12 @@
 		var leftEnd;
 		switch(opt.direction){
 			case 'right':
-				leftEnd = parentWidth;
-				nextSlide.css('left','-'+parentWidth);
+				leftEnd = parentWidth+'px';
+				nextSlide.css('left','-'+parentWidth+'px');
 			break;
 			default:
-				leftEnd = '-'+parentWidth;
-				nextSlide.css('left',parentWidth);
+				leftEnd = '-'+parentWidth+'px';
+				nextSlide.css('left',parentWidth+'px');
 		}
 		
 		actualSlide.animate({
