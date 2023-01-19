@@ -102,8 +102,6 @@
 			$('.control-left').on('mouseup tap',function(e){
 				if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 				
-				console.log('.control-left');
-				
 				changeSlide({
 					direction : 'left'
 				});
@@ -149,12 +147,37 @@
 			return false;
 		}
 		
+		// ===== Get next slide num.
+		
+		var actualSlide, nextSlide, nextSlideNum;
+		
+		if('slide' in opt){
+			if(settings.currentSlide == parseInt(opt.slide)){
+				return false;
+			} else {
+				nextSlideNum = parseInt(opt.slide);
+			}
+		} else {
+			switch(opt.direction){
+				case 'right':
+					if(settings.totalSlides < settings.currentSlide + 1){
+						nextSlideNum = settings.currentSlide + 1;
+					} else {
+						nextSlideNum = 1;
+					}
+				break;
+				default:
+					if(0 < settings.currentSlide - 1){
+						nextSlideNum = settings.currentSlide - 1;
+					} else {
+						nextSlideNum = settings.totalSlides;
+					}
+			}
+		}
+		
 		// ===== Get both actual slide and next slide.
 		
-		var actualSlide, nextSlide, stop;
-		
 		var first = true;
-		var stop = false;
 		$(obj).find('.items').find('.item').each(function(){
 			var interactionNum = parseInt($(this).attr('data-num'));
 			
@@ -166,45 +189,10 @@
 			
 			// ===== Get the next slide.
 			
-			if('slide' in opt){
-				if(settings.currentSlide == parseInt(opt.slide)){
-					stop = true;
-					return false;
-				} else {
-					if(interactionNum == parseInt(opt.slide)){
-						nextSlide = $(this);
-					}
-				}
-			} else {
-				switch(opt.direction){
-					case 'right':
-						if(settings.totalSlides < settings.currentSlide + 1){
-							if(interactionNum == settings.currentSlide + 1){
-								nextSlide = $(this);
-							}
-						} else {
-							if(interactionNum == 1){
-								nextSlide = $(this);
-							}
-						}
-					break;
-					default:
-						if(0 < settings.currentSlide - 1){
-							if(interactionNum == settings.currentSlide - 1){
-								nextSlide = $(this);
-							}
-						} else {
-							if(interactionNum == settings.totalSlides){
-								nextSlide = $(this);
-							}
-						}
-				}
+			if(interactionNum == nextSlideNum){
+				nextSlide = $(this);
 			}
 		});
-		
-		if(stop){
-			return false;
-		}
 		
 		// ===== Change state to animating for prevent overflow.
 		
