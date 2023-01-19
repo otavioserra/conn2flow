@@ -157,6 +157,12 @@
 			} else {
 				nextSlideNum = parseInt(opt.slide);
 			}
+			
+			if(parseInt(opt.slide) > settings.currentSlide){
+				opt.direction = 'right';
+			} else {
+				opt.direction = 'left';
+			}
 		} else {
 			switch(opt.direction){
 				case 'right':
