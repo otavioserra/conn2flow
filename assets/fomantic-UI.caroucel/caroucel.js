@@ -35,7 +35,7 @@
 			
 			// ===== Control center holder.
 			
-			var controlCenter = $('<div class="control-center"></div>');
+			var controlCenter = $('<div class="holder"><div class="control-center"></div></div>');
 			$(obj).append(controlCenter);
 			
 			// ===== Change all items.

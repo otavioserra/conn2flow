@@ -26,9 +26,13 @@
 	right:10px;
 	z-index:10;
 }
-.caroucel .control-center{
+.caroucel .holder{
+	position:absolute;
+	bottom:0px;
+	z-index:10;
+}
+.caroucel .holder .control-center{
 	margin-top: -35px;
     width: inherit;
     text-align: center;
-	z-index:10;
 }
