@@ -131,7 +131,7 @@
 		
 		settings.animating = true;
 		
-		// ===== Get parent resolution to use as root coordinates for the change animation.
+		// ===== Get parent size to use as root coordinates for the change animation.
 		
 		var parentWidth = $(obj).outerWidth(true);
 		var parentHeight = $(obj).outerHeight(true);
@@ -157,6 +157,8 @@
 		actualSlide.css('position','absolute');
 		actualSlide.css('zIndex','1');
 		actualSlide.css('top','0');
+		actualSlide.css('width',parentWidth);
+		actualSlide.css('height',parentHeight);
 		
 		// ===== Animate and change slides based on direction and when was finish return actualSlide do default behavior.
 		
@@ -164,10 +166,10 @@
 		switch(opt.direction){
 			case 'right':
 				actualSlide.css('left','0');
-				leftEnd = parentHeight;
+				leftEnd = parentWidth;
 			break;
 			default:
-				actualSlide.css('left',parentHeight);
+				actualSlide.css('left',parentWidth);
 				leftEnd = '0';
 		}
 		
@@ -178,6 +180,8 @@
 			actualSlide.css('zIndex','auto');
 			actualSlide.css('left','auto');
 			actualSlide.css('top','auto');
+			actualSlide.css('width','inherit');
+			actualSlide.css('height','inherit');
 			
 			actualSlide.remove();
 			
