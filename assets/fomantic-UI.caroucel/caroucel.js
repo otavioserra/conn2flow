@@ -157,6 +157,7 @@
 		actualSlide.css('position','absolute');
 		actualSlide.css('zIndex','1');
 		actualSlide.css('top','0');
+		actualSlide.css('left','0');
 		actualSlide.css('width',parentWidth);
 		actualSlide.css('height',parentHeight);
 		
@@ -165,12 +166,10 @@
 		var leftEnd;
 		switch(opt.direction){
 			case 'right':
-				actualSlide.css('left','0');
 				leftEnd = parentWidth;
 			break;
 			default:
-				actualSlide.css('left',parentWidth);
-				leftEnd = '0';
+				leftEnd = '-'+parentWidth;
 		}
 		
 		actualSlide.animate({
