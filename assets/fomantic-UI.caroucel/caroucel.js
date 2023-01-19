@@ -157,7 +157,7 @@
 		actualSlide.css('position','absolute');
 		actualSlide.css('zIndex','1');
 		actualSlide.css('top','0');
-		actualSlide.remove().append(obj);
+		actualSlide.remove().appendTo(obj);
 		
 		// ===== Animate and change slides based on direction and when was finish return actualSlide do default behavior.
 		
