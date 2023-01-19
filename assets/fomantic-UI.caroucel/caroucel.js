@@ -89,6 +89,8 @@
 			$('.control-left').on('mouseup tap',function(e){
 				if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
 				
+				console.log('.control-left');
+				
 				changeSlide({
 					direction : 'left'
 				});
