@@ -21,6 +21,8 @@
 			// ===== Internal settings.
 			
 			settings.animating = false; // State of animating or stoped.
+			settings.totalSlides = 0;
+			settings.currentSlide = 1;
 			
 			// ===== .
 			
@@ -55,6 +57,7 @@
 				// ===== Central circles controls.
 				
 				num++;
+				settings.totalSlides++;
 				
 				if(first){
 					var controlCircle = $('<i class="circle inverted secondary link icon" data-num="'+num+'"></i>');
@@ -153,26 +156,48 @@
 		var first = true;
 		var stop = false;
 		$(obj).find('.items').find('.item').each(function(){
+			var interactionNum = parseInt($(this).attr('data-num'));
 			
-			if(first){
-				if('slide' in opt){
-					if($(this).attr('data-num') == opt.slide){
-						stop = true;
-						return false;
+			// ===== Get actual slide obj.
+			
+			if(interactionNum == settings.currentSlide){
+				actualSlide = $(this);
+			}
+			
+			// ===== Get the next slide.
+			
+			if('slide' in opt){
+				if(settings.currentSlide == parseInt(opt.slide)){
+					stop = true;
+					return false;
+				} else {
+					if(interactionNum == parseInt(opt.slide)){
+						nextSlide = $(this);
 					}
 				}
-				
-				actualSlide = $(this);
-				first = false;
 			} else {
-				if('slide' in opt){
-					if($(this).attr('data-num') == opt.slide){
-						nextSlide = $(this);
-						return false;
-					}
-				} else {
-					nextSlide = $(this);
-					return false;
+				switch(opt.direction){
+					case 'right':
+						if(settings.totalSlides < settings.currentSlide + 1){
+							if(interactionNum == settings.currentSlide + 1){
+								nextSlide = $(this);
+							}
+						} else {
+							if(interactionNum == 1){
+								nextSlide = $(this);
+							}
+						}
+					break;
+					default:
+						if(0 < settings.currentSlide - 1){
+							if(interactionNum == settings.currentSlide - 1){
+								nextSlide = $(this);
+							}
+						} else {
+							if(interactionNum == settings.totalSlides){
+								nextSlide = $(this);
+							}
+						}
 				}
 			}
 		});
