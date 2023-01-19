@@ -243,6 +243,8 @@
 				nextSlide.css('left',parentWidth+'px');
 		}
 		
+		console.log('parentWidth: '+parentWidth+', parentHeight: '+parentHeight+', leftEnd: '+leftEnd);
+		
 		actualSlide.animate({
 			left: leftEnd,
 		}, settings.animation.time, function() {
