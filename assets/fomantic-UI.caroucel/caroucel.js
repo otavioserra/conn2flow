@@ -119,7 +119,7 @@
 				
 				changeSlide({
 					direction : 'right',
-					slide : $(this).attr('data-num');
+					slide : $(this).attr('data-num')
 				});
 			});
         },
