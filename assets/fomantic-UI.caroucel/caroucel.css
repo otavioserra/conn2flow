@@ -28,6 +28,7 @@
 }
 .caroucel .holder{
 	position:absolute;
+	width:inherit;
 	bottom:0px;
 	z-index:10;
 }
