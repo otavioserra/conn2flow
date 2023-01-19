@@ -113,6 +113,15 @@
 					direction : 'right'
 				});
 			});
+			
+			$('.control-center i').on('mouseup tap',function(e){
+				if(e.which != 1 && e.which != 0 && e.which != undefined) return false;
+				
+				changeSlide({
+					direction : 'right',
+					slide : $(this).attr('data-num');
+				});
+			});
         },
         show : function( ) {    },// IS
         hide : function( ) {  },// GOOD
@@ -157,8 +166,15 @@
 				actualSlide = $(this);
 				first = false;
 			} else {
-				nextSlide = $(this);
-				return false;
+				if('slide' in opt){
+					if($(this).attr('data-num') == opt.slide){
+						nextSlide = $(this);
+						return false;
+					}
+				} else {
+					nextSlide = $(this);
+					return false;
+				}
 			}
 		});
 		
@@ -225,6 +241,8 @@
 	}
 	
 	function refreshControlCenter(){
+		// ===== Compare the num of all slides with all dot's control center to mark current active slide.
+		
 		var first = true;
 		
 		$(obj).find('.items').find('.item').each(function(){
