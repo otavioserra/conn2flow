@@ -146,23 +146,22 @@
 			return false;
 		}
 		
-		// ===== Change state to animating for prevent overflow.
-		
-		settings.animating = true;
-		
-		// ===== Get parent size to use as root coordinates for the change animation.
-		
-		var parentWidth = $(obj).outerWidth(true);
-		var parentHeight = $(obj).outerHeight(true);
-		
 		// ===== Get both actual slide and next slide.
 		
-		var actualSlide, nextSlide;
+		var actualSlide, nextSlide, stop;
 		
 		var first = true;
+		var stop = false;
 		$(obj).find('.items').find('.item').each(function(){
 			
 			if(first){
+				if('slide' in opt){
+					if($(this).attr('data-num') == opt.slide){
+						stop = true;
+						return false;
+					}
+				}
+				
 				actualSlide = $(this);
 				first = false;
 			} else {
@@ -177,6 +176,19 @@
 				}
 			}
 		});
+		
+		if(stop){
+			return false;
+		}
+		
+		// ===== Change state to animating for prevent overflow.
+		
+		settings.animating = true;
+		
+		// ===== Get parent size to use as root coordinates for the change animation.
+		
+		var parentWidth = $(obj).outerWidth(true);
+		var parentHeight = $(obj).outerHeight(true);
 		
 		// ===== Change slides options before animation and repositioning the actual slides on DOM to last position.
 		
