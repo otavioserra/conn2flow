@@ -164,15 +164,24 @@
 		actualSlide.css('width',parentWidth);
 		actualSlide.css('height',parentHeight);
 		
+		nextSlide.css('position','absolute');
+		nextSlide.css('zIndex','1');
+		nextSlide.css('top','0');
+		nextSlide.css('left','0');
+		nextSlide.css('width',parentWidth);
+		nextSlide.css('height',parentHeight);
+		
 		// ===== Animate and change slides based on direction and when was finish return actualSlide do default behavior.
 		
 		var leftEnd;
 		switch(opt.direction){
 			case 'right':
 				leftEnd = parentWidth;
+				nextSlide.css('left','-'+parentWidth);
 			break;
 			default:
 				leftEnd = '-'+parentWidth;
+				nextSlide.css('left',parentWidth);
 		}
 		
 		actualSlide.animate({
@@ -188,6 +197,19 @@
 			actualSlide.remove();
 			
 			$(obj).find('.items').append(actualSlide);
+		
+			settings.animating = false;
+		});
+		
+		nextSlide.animate({
+			left: '0',
+		}, settings.animation.time, function() {
+			nextSlide.css('position','relative');
+			nextSlide.css('zIndex','auto');
+			nextSlide.css('left','auto');
+			nextSlide.css('top','auto');
+			nextSlide.css('width','inherit');
+			nextSlide.css('height','inherit');
 		
 			settings.animating = false;
 		});
