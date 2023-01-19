@@ -1,5 +1,6 @@
 .caroucel{
 	display:none;
+	overflow-x:hidden;
 	overflow-y:hidden;
 	position:relative;
 }
@@ -18,13 +19,16 @@
 .caroucel .control-left{
 	position:absolute;
 	left:10px;
+	z-index:10;
 }
 .caroucel .control-right{
 	position:absolute;
 	right:10px;
+	z-index:10;
 }
 .caroucel .control-center{
 	margin-top: -35px;
     width: inherit;
     text-align: center;
+	z-index:10;
 }
