@@ -44,8 +44,9 @@
 			// ===== Change all items.
 			
 			var first = true;
+			var num = 0;
 			$(obj).find('.items').find('.item').each(function(){
-				// ===== Apply img bg for all items.
+				// ===== Apply img bg for all items slides.
 				
 				if($(this).attr('data-src') !== undefined) {
 					$(this).css('backgroundImage','url('+$(this).attr('data-src')+')');
@@ -53,14 +54,20 @@
 				
 				// ===== Central circles controls.
 				
+				num++;
+				
 				if(first){
-					var controlCircle = $('<i class="circle inverted secondary link icon"></i>');
+					var controlCircle = $('<i class="circle inverted secondary link icon" data-num="'+num+'"></i>');
 					first = false;
 				} else {
-					var controlCircle = $('<i class="circle inverted link icon"></i>');
+					var controlCircle = $('<i class="circle inverted link icon" data-num="'+num+'"></i>');
 				}
 				
 				controlCenter.append(controlCircle);
+				
+				// ===== Apply same identification number of control circle to slide for correlation.
+				
+				$(this).attr('data-num',num);
 			});
 			
 			// ===== Controls.
@@ -171,7 +178,7 @@
 		nextSlide.css('width',parentWidth);
 		nextSlide.css('height',parentHeight);
 		
-		// ===== Animate and change slides based on direction and when was finish return actualSlide do default behavior.
+		// ===== Animate and change slides based on direction and when was finish return actualSlide and nextSlide to default behavior.
 		
 		var leftEnd;
 		switch(opt.direction){
@@ -212,6 +219,30 @@
 			nextSlide.css('height','inherit');
 		
 			settings.animating = false;
+			
+			refreshControlCenter();
+		});
+	}
+	
+	function refreshControlCenter(){
+		var first = true;
+		
+		$(obj).find('.items').find('.item').each(function(){
+			var currentNum = $(this).attr('data-num');
+			
+			$(obj).find('.control-center').find('i').each(function(){
+				var currentControlNum = $(this).attr('data-num');
+				
+				if(currentNum == currentControlNum){
+					if(first){
+						$(this).addClass('secondary');
+					} else {
+						$(this).removeClass('secondary');
+					}
+				}
+			});
+			
+			first = false;
 		});
 	}
 	
