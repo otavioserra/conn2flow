@@ -2,7 +2,7 @@
 
 global $_GESTOR;
 
-$_GESTOR['modulo-id']							=	'pagina-inicial';
+$_GESTOR['modulo-id']							=	'paginas-secundarias';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.0.2',
 );
