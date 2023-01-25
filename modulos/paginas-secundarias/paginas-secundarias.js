@@ -8,12 +8,12 @@ $(document).ready(function(){
 	
 	// ===== animação em 'como funciona'.
 	
-	$('.iconAnimation')
+	/* $('.iconAnimation')
 		.transition({
 			animation : 'jiggle',
 			duration  : 800,
 			interval  : 1200
 		})
 		.transition('set looping')
-		;
+		; */
 });
