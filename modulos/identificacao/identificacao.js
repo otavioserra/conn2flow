@@ -87,17 +87,6 @@ $(document).ready(function(){
 				.form({
 					fields : (gestor.formulario[formId_2].regrasValidacao ? gestor.formulario[formId_2].regrasValidacao : {}),
 					onSuccess(event, fields){
-						// ===== Aplicar trim no campo email.
-						
-						var email = $(formSelector_2).find('input[name="email"]').val();
-						
-						console.log(email);
-						email.trim();
-						$(formSelector_2).find('input[name="email"]').val(email);
-						console.log(email);
-						
-						// ===== .
-						
 						if('googleRecaptchaActive' in gestor){
 							var action = 'criarConta'; // Action 
 							var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
@@ -120,6 +109,17 @@ $(document).ready(function(){
 				if($(this).hasClass('disabled')){
 					return false;
 				}
+				
+				// ===== Aplicar trim no campo email.
+				
+				var email = $(formSelector_2).find('input[name="email"]').val();
+				
+				console.log(email);
+				email.trim();
+				$(formSelector_2).find('input[name="email"]').val(email);
+				console.log(email);
+				
+				// ===== .
 				
 				$(formSelector_2).unbind('submit').submit();
 			});
