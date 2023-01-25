@@ -87,6 +87,14 @@ $(document).ready(function(){
 				.form({
 					fields : (gestor.formulario[formId_2].regrasValidacao ? gestor.formulario[formId_2].regrasValidacao : {}),
 					onSuccess(event, fields){
+						// ===== Aplicar trim no campo email.
+						
+						var email = $(formSelector_2).find('input[name="email"]').val();
+						email.trim();
+						$(formSelector_2).find('input[name="email"]').val(email);
+						
+						// ===== .
+						
 						if('googleRecaptchaActive' in gestor){
 							var action = 'criarConta'; // Action 
 							var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
