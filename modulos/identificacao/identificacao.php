@@ -247,6 +247,10 @@ function identificacao_padrao(){
 	}
 	
 	if(isset($_REQUEST['criar-conta'])){
+		// ===== Filtrar o email.
+		
+		$_REQUEST['email'] = trim(strtolower($_REQUEST['email']));
+		
 		// ===== Validação de campos obrigatórios
 		
 		formulario_validacao_campos_obrigatorios(Array(
@@ -265,7 +269,7 @@ function identificacao_padrao(){
 		
 		$retorno = api_servidor_identificacao(Array(
 			'opcao' => 'criarConta',
-			'email' => banco_escape_field(trim($_REQUEST['email'])),
+			'email' => banco_escape_field($_REQUEST['email']),
 			'token' => (isset($_REQUEST['token']) ? banco_escape_field($_REQUEST['token']) : null),
 			'gRecaptchaResponse' => (isset($_REQUEST['g-recaptcha-response']) ? banco_escape_field($_REQUEST['g-recaptcha-response']) : null),
 		));
