@@ -12,7 +12,7 @@ $(document).ready(function(){
 		.transition({
 			animation : 'jiggle',
 			duration  : 1000,
-			interval  : 600
+			interval  : 1200
 		})
 		.transition('set looping')
 		;
