@@ -11,7 +11,7 @@ $(document).ready(function(){
 	$('.iconAnimation')
 		.transition({
 			animation : 'jiggle',
-			duration  : 1000,
+			duration  : 800,
 			interval  : 1200
 		})
 		.transition('set looping')
