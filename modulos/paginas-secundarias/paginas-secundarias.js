@@ -1,6 +1,19 @@
 $(document).ready(function(){
+	
+	// ===== cards special 'a plataforma'.
+
 	$('.special.cards .image').dimmer({
-		// As hover is not working on mobile, you might use click on those devices as fallback
 		on: 'ontouchstart' in document.documentElement ? 'click' : 'hover',
 	});
+	
+	// ===== animação em 'como funciona'.
+	
+	$('.iconAnimation')
+		.transition({
+			animation : 'jiggle',
+			duration  : 800,
+			interval  : 200
+		})
+		.transition('set looping')
+		;
 });
