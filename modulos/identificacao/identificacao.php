@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'identificacao';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.1.3',
+	'versao' => '1.1.4',
 );
 
 // ===== Funções Auxiliares
@@ -265,7 +265,7 @@ function identificacao_padrao(){
 		
 		$retorno = api_servidor_identificacao(Array(
 			'opcao' => 'criarConta',
-			'email' => banco_escape_field($_REQUEST['email']),
+			'email' => banco_escape_field(trim($_REQUEST['email'])),
 			'token' => (isset($_REQUEST['token']) ? banco_escape_field($_REQUEST['token']) : null),
 			'gRecaptchaResponse' => (isset($_REQUEST['g-recaptcha-response']) ? banco_escape_field($_REQUEST['g-recaptcha-response']) : null),
 		));
