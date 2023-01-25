@@ -90,8 +90,11 @@ $(document).ready(function(){
 						// ===== Aplicar trim no campo email.
 						
 						var email = $(formSelector_2).find('input[name="email"]').val();
+						
+						console.log(email);
 						email.trim();
 						$(formSelector_2).find('input[name="email"]').val(email);
+						console.log(email);
 						
 						// ===== .
 						
