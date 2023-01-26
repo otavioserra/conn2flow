@@ -71,13 +71,13 @@ function formulario_validacao($params = false){
 					);
 				break;
 				case 'texto-obrigatorio':
-					$prompt[1] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-empty'));
+					$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-empty'));
 					$prompt[1] = modelo_var_troca($prompt[1],"#label#",$regra['label']);
 					
-					$prompt[2] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-min-length'));
+					$prompt[2] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-min-length'));
 					$prompt[2] = modelo_var_troca($prompt[2],"#label#",$regra['label']);
 					
-					$prompt[3] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-max-length'));
+					$prompt[3] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-max-length'));
 					$prompt[3] = modelo_var_troca($prompt[3],"#label#",$regra['label']);
 					
 					$regras_validacao[$regra['campo']] = Array(
@@ -98,16 +98,16 @@ function formulario_validacao($params = false){
 					);
 				break;
 				case 'texto-obrigatorio-verificar-campo':
-					$prompt[1] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-empty'));
+					$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-empty'));
 					$prompt[1] = modelo_var_troca($prompt[1],"#label#",$regra['label']);
 					
-					$prompt[2] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-min-length'));
+					$prompt[2] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-min-length'));
 					$prompt[2] = modelo_var_troca($prompt[2],"#label#",$regra['label']);
 					
-					$prompt[3] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-max-length'));
+					$prompt[3] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-max-length'));
 					$prompt[3] = modelo_var_troca($prompt[3],"#label#",$regra['label']);
 					
-					$prompt[4] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-verify-field'));
+					$prompt[4] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-verify-field'));
 					$prompt[4] = modelo_var_troca_tudo($prompt[4],"#label#",$regra['label']);
 					
 					$regras_validacao[$regra['campo']] = Array(
@@ -139,7 +139,7 @@ function formulario_validacao($params = false){
 					}
 				break;
 				case 'selecao-obrigatorio':
-					$prompt[1] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-select'));
+					$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-select'));
 					$prompt[1] = modelo_var_troca($prompt[1],"#label#",$regra['label']);
 					
 					$regras_validacao[$regra['campo']] = Array(
@@ -152,7 +152,7 @@ function formulario_validacao($params = false){
 					);
 				break;
 				case 'nao-vazio':
-					$prompt[1] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-empty'));
+					$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-empty'));
 					$prompt[1] = modelo_var_troca($prompt[1],"#label#",$regra['label']);
 					
 					$regras_validacao[$regra['campo']] = Array(
@@ -165,10 +165,10 @@ function formulario_validacao($params = false){
 					);
 				break;
 				case 'email':
-					$prompt[1] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-empty'));
+					$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-empty'));
 					$prompt[1] = modelo_var_troca($prompt[1],"#label#",$regra['label']);
 					
-					$prompt[2] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-email'));
+					$prompt[2] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-email'));
 					$prompt[2] = modelo_var_troca($prompt[2],"#label#",$regra['label']);
 					
 					$regras_validacao[$regra['campo']] = Array(
@@ -185,16 +185,16 @@ function formulario_validacao($params = false){
 					);
 				break;
 				case 'senha':
-					$prompt[1] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-empty'));
+					$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-empty'));
 					$prompt[1] = modelo_var_troca($prompt[1],"#label#",$regra['label']);
 					
-					$prompt[2] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-min-length-password'));
+					$prompt[2] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-min-length-password'));
 					$prompt[2] = modelo_var_troca($prompt[2],"#label#",$regra['label']);
 					
-					$prompt[3] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-max-length'));
+					$prompt[3] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-max-length'));
 					$prompt[3] = modelo_var_troca($prompt[3],"#label#",$regra['label']);
 					
-					$prompt[4] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-password-chars'));
+					$prompt[4] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-password-chars'));
 					$prompt[4] = modelo_var_troca($prompt[4],"#label#",$regra['label']);
 					
 					$regras_validacao[$regra['campo']] = Array(
@@ -221,13 +221,13 @@ function formulario_validacao($params = false){
 				case 'email-comparacao':
 					if(isset($regra['comparcao'])){
 						if(isset($regra['comparcao']['id']) && isset($regra['comparcao']['campo-1']) && isset($regra['comparcao']['campo-2'])){
-							$prompt[1] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-empty'));
+							$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-empty'));
 							$prompt[1] = modelo_var_troca($prompt[1],"#label#",$regra['label']);
 							
-							$prompt[2] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-email'));
+							$prompt[2] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-email'));
 							$prompt[2] = modelo_var_troca($prompt[2],"#label#",$regra['label']);
 							
-							$prompt[3] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-email-compare'));
+							$prompt[3] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-email-compare'));
 							$prompt[3] = modelo_var_troca($prompt[3],"#campo-1#",$regra['comparcao']['campo-1']);
 							$prompt[3] = modelo_var_troca($prompt[3],"#campo-2#",$regra['comparcao']['campo-2']);
 							
@@ -253,20 +253,20 @@ function formulario_validacao($params = false){
 				case 'senha-comparacao':
 					if(isset($regra['comparcao'])){
 						if(isset($regra['comparcao']['id']) && isset($regra['comparcao']['campo-1']) && isset($regra['comparcao']['campo-2'])){
-							$prompt[1] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-empty'));
+							$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-empty'));
 							$prompt[1] = modelo_var_troca($prompt[1],"#label#",$regra['label']);
 							
-							$prompt[2] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-min-length-password'));
+							$prompt[2] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-min-length-password'));
 							$prompt[2] = modelo_var_troca($prompt[2],"#label#",$regra['label']);
 							
-							$prompt[3] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-max-length'));
+							$prompt[3] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-max-length'));
 							$prompt[3] = modelo_var_troca($prompt[3],"#label#",$regra['label']);
 							
-							$prompt[4] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-email-compare'));
+							$prompt[4] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-email-compare'));
 							$prompt[4] = modelo_var_troca($prompt[4],"#campo-1#",$regra['comparcao']['campo-1']);
 							$prompt[4] = modelo_var_troca($prompt[4],"#campo-2#",$regra['comparcao']['campo-2']);
 							
-							$prompt[5] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-password-chars'));
+							$prompt[5] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-password-chars'));
 							$prompt[5] = modelo_var_troca($prompt[5],"#label#",$regra['label']);
 							
 							$regras_validacao[$regra['campo']] = Array(
@@ -299,17 +299,17 @@ function formulario_validacao($params = false){
 				case 'email-comparacao-verificar-campo':
 					if(isset($regra['comparcao'])){
 						if(isset($regra['comparcao']['id']) && isset($regra['comparcao']['campo-1']) && isset($regra['comparcao']['campo-2'])){
-							$prompt[1] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-empty'));
+							$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-empty'));
 							$prompt[1] = modelo_var_troca($prompt[1],"#label#",$regra['label']);
 							
-							$prompt[2] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-email'));
+							$prompt[2] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-email'));
 							$prompt[2] = modelo_var_troca($prompt[2],"#label#",$regra['label']);
 							
-							$prompt[3] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-email-compare'));
+							$prompt[3] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-email-compare'));
 							$prompt[3] = modelo_var_troca($prompt[3],"#campo-1#",$regra['comparcao']['campo-1']);
 							$prompt[3] = modelo_var_troca($prompt[3],"#campo-2#",$regra['comparcao']['campo-2']);
 							
-							$prompt[4] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-verify-field'));
+							$prompt[4] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-verify-field'));
 							$prompt[4] = modelo_var_troca_tudo($prompt[4],"#label#",$regra['label']);
 							
 							$regras_validacao[$regra['campo']] = Array(
@@ -349,7 +349,7 @@ function formulario_validacao($params = false){
 				foreach($regrasExtra as $regraExtra){
 					switch($regraExtra['regra']){
 						case 'regexPermited':
-							$prompt[1] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-regex-permited-chars'));
+							$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-regex-permited-chars'));
 							$prompt[1] = modelo_var_troca_tudo($prompt[1],"#label#",$regra['label']);
 							$prompt[1] = modelo_var_troca_tudo($prompt[1],"#permited-chars#",$regraExtra['regexPermitedChars']);
 							
@@ -359,7 +359,7 @@ function formulario_validacao($params = false){
 							);
 						break;
 						case 'regexNecessary':
-							$prompt[1] = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-regex-necessary-chars'));
+							$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-regex-necessary-chars'));
 							$prompt[1] = modelo_var_troca_tudo($prompt[1],"#label#",$regra['label']);
 							$prompt[1] = modelo_var_troca_tudo($prompt[1],"#necessary-chars#",$regraExtra['regexNecessaryChars']);
 							
