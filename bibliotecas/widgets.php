@@ -3,10 +3,10 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-widgets']							=	Array(
-	'versao' => '1.0.1',
+	'versao' => '1.0.0',
 	'widgets' => Array(
 		'formulario-contato' => Array(
-			'versao' => '1.0.0', // Versão do widget.
+			'versao' => '1.0.1', // Versão do widget.
 			'componenteID' => 'widgets-formulario-contato', // Identificador único do componente do widget.
 			'jsCaminho' => 'widgets.js', // Caminho do JS controlador desse widget para ser inserido junto com o mesmo.
 			'modulosExtras' => 'contatos', // Identificadores dos módulos separados por ',' que devem ser usados para trocar o valor das variáveis globais.
