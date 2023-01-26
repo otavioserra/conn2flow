@@ -43,6 +43,21 @@ function widgets_formulario_contato($params = false){
 			'campo' => 'nome',
 			'label' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-name')),
 		),
+		Array(
+			'regra' => 'email',
+			'campo' => 'email',
+			'label' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-email')),
+		),
+		Array(
+			'regra' => 'nao-vazio',
+			'campo' => 'telefone',
+			'label' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-tel')),
+		),
+		Array(
+			'regra' => 'texto-obrigatorio',
+			'campo' => 'mensagem',
+			'label' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-message')),
+		),
 	);
 	
 	formulario_validacao(Array(
