@@ -16,6 +16,48 @@ $_GESTOR['biblioteca-widgets']							=	Array(
 
 // ===== Funções auxiliares
 
+// ===== Funções controladoras dos widgets
+
+function widgets_formulario_contato($params = false){
+	/**********
+		Descrição: controlador dos widgets 'formulário contato'.
+	**********/
+	
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// ===== 
+	
+	// ===== Disparar regras de validação do formulário.
+	
+	
+}
+
+function widgets_controller($params = false){
+	/**********
+		Descrição: controlador programático de todos os widgets.
+	**********/
+	
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// id - String - Obrigatório - Identificador único do widget.
+	
+	// ===== 
+	
+	if(isset($id)){
+		switch($id){
+			case 'formulario-contato': widgets_formulario_contato(); break;
+		}
+	}
+}
+
 // ===== Funções principais
 
 function widgets_search($params = false){
@@ -130,6 +172,12 @@ function widgets_get($params = false){
 					$_GESTOR['paginas-variaveis'][$modulo] = true;
 				}
 			}
+			
+			// ===== Disparar o controlador do widget caso haja.
+			
+			widgets_controller(Array(
+				'id' => $id,
+			));
 			
 			// ===== retornar o widget componente.
 			

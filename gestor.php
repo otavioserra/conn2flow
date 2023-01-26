@@ -647,7 +647,7 @@ function gestor_pagina_javascript(){
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- pagina#js -->',$js_global_vars.$js_global_includes);
 }
 
-function gestor_pagina_javascript_incluir($js = false){
+function gestor_pagina_javascript_incluir($js = false,$id = false){
 	global $_GESTOR;
 	
 	if(!$js){
@@ -657,6 +657,12 @@ function gestor_pagina_javascript_incluir($js = false){
 			$_GESTOR['javascript-fim'][] = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
 		}
 	} else {
+		switch($js){
+			case 'biblioteca':
+				$js = '<script src="'.$_GESTOR['url-raiz'].'interface/'.$id.'.js?v='.$_GESTOR['biblioteca-'.$id]['versao'].'"></script>';
+			break;
+		}
+		
 		$_GESTOR['javascript-fim'][] = $js;
 	}
 }
