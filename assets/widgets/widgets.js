@@ -16,19 +16,17 @@ $(document).ready(function(){
 		
 		// ===== Telefone controle.
 		
-		if($('.telefoneCampos').length > 0){
-			var SPMaskBehavior = function (val) {
-				return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+		var SPMaskBehavior = function (val) {
+			return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+		},
+		spOptions = {
+			onKeyPress: function(val, e, field, options) {
+				field.mask(SPMaskBehavior.apply({}, arguments), options);
 			},
-			spOptions = {
-				onKeyPress: function(val, e, field, options) {
-					field.mask(SPMaskBehavior.apply({}, arguments), options);
-				},
-				clearIfNotMatch: true
-			};
+			clearIfNotMatch: true
+		};
 
-			$('.telefone').mask(SPMaskBehavior, spOptions);
-		}
+		$('.telefone').mask(SPMaskBehavior, spOptions);
 	}
 	
 	function widgets_index(){
