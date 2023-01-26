@@ -7,7 +7,7 @@ $_GESTOR['biblioteca-widgets']							=	Array(
 	'widgets' => Array(
 		'formulario-contato' => Array(
 			'versao' => '1.0.0', // Versão do widget.
-			'componenteID' => 'formulario-contato', // Identificador único do componente do widget.
+			'componenteID' => 'widgets-formulario-contato', // Identificador único do componente do widget.
 			'jsCaminho' => 'widgets.js', // Caminho do JS controlador desse widget para ser inserido junto com o mesmo.
 		),
 	),
