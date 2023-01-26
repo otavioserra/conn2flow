@@ -91,9 +91,37 @@ function widgets_get($params = false){
 			
 			$widgetComponente = gestor_componente(Array(
 				'id' => $widget['componenteID'],
+				'return_css' => true,
 			));
 			
-			return $widgetComponente;
+			// ===== Incluir o CSS do widget.
+			
+			if(isset($widgetComponente['css']))
+			if(existe($widgetComponente['css'])){
+				$incluirCSS = false;
+				
+				if(!isset($_GESTOR['widgets-css'])){
+					$_GESTOR['widgets-css'][$id] = true;
+					$incluirCSS = true;
+				} else if(!isset($_GESTOR['widgets-css'][$id])){
+					$_GESTOR['widgets-css'][$id] = true;
+					$incluirCSS = true;
+				}
+				
+				if($incluirCSS){
+					$css = preg_replace("/(^|\n)/m", "\n        ", $widgetComponente['css']);
+					
+					$css = '<style>'."\n".
+						$css."\n".
+						'</style>'."\n";
+					
+					gestor_pagina_css_incluir($css);
+				}
+			}
+			
+			// ===== retornar o widget componente.
+			
+			return (isset($widgetComponente['html']) ? $widgetComponente['html'] : '');
 		}
 		
 	}
