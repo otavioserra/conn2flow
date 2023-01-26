@@ -495,6 +495,29 @@ function gestor_pagina_variaveis($params = false){
 	$caminho = (isset($_GESTOR['caminho-total']) ? $_GESTOR['caminho-total'] : '');
 	$caminho = rtrim($caminho,'/').'/';
 	
+	// ===== Busca por widgets na página.
+	
+	$pattern = "/".preg_quote($open)."widgets#(.+?)".preg_quote($close)."/i";
+	preg_match_all($pattern, $_GESTOR['pagina'], $matchesWidgets);
+	
+	if($matchesWidgets){
+		// ===== Incluir a biblioteca dos widgets e disparar a função de iniciação dos mesmos.
+		
+		gestor_incluir_biblioteca('widgets');
+		
+		// ===== Varrer todos os matchs e trocar os marcadores por seus widgets.
+		
+		foreach($matchesWidgets[1] as $match){
+			$widget = widgets_get(Array(
+				'id' => $match,
+			));
+			
+			if(existe($widget)){
+				$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open."widgets#".$match.$close,$widget);
+			}
+		}
+	}
+	
 	// ===== Página variáveis trocar
 	
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#menu'.$close,gestor_pagina_menu());
@@ -543,29 +566,6 @@ function gestor_pagina_variaveis($params = false){
 				if(existe($valor)){
 					$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.$match.$close,$valor);
 				}
-			}
-		}
-	}
-	
-	// ===== Busca por widgets na página.
-	
-	$pattern = "/".preg_quote($open)."widgets#(.+?)".preg_quote($close)."/i";
-	preg_match_all($pattern, $_GESTOR['pagina'], $matchesWidgets);
-	
-	if($matchesWidgets){
-		// ===== Incluir a biblioteca dos widgets e disparar a função de iniciação dos mesmos.
-		
-		gestor_incluir_biblioteca('widgets');
-		
-		// ===== Varrer todos os matchs e trocar os marcadores por seus widgets.
-		
-		foreach($matchesWidgets[1] as $match){
-			$widget = widgets_get(Array(
-				'id' => $match,
-			));
-			
-			if(existe($widget)){
-				$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open."widgets#".$match.$close,$widget);
 			}
 		}
 	}

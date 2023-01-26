@@ -1,7 +1,11 @@
 $(document).ready(function(){
-	
-	if($('#_widgets-formulario-contato').length > 0){
+	function widgets_formulario_contato(){
 		
 	}
 	
+	function widgets_index(){
+		if($('#_widgets-formulario-contato').length > 0){ widgets_formulario_contato(); }
+	}
+	
+	widgets_index();
 });
