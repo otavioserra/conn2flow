@@ -133,27 +133,17 @@ function widgets_get($params = false){
 		));
 		
 		if(isset($widget)){
-			// ===== incluir o JS do widget.
-			
-			$incluirJS = false;
-			
-			if(!isset($_GESTOR['widgets-js'])){
-				$_GESTOR['widgets-js'][$widget['jsCaminho']] = true;
-				$incluirJS = true;
-			} else if(!isset($_GESTOR['widgets-js'][$widget['jsCaminho']])){
-				$_GESTOR['widgets-js'][$widget['jsCaminho']] = true;
-				$incluirJS = true;
-			}
-			
-			if($incluirJS){
-				gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'widgets/'.$widget['jsCaminho'].'?v='.$widget['versao'].'"></script>');
-			}
-			
 			// ===== pegar o componente do widget alvo.
 			
 			$widgetComponente = gestor_componente(Array(
 				'id' => $widget['componenteID'],
 				'return_css' => true,
+			));
+			
+			// ===== Disparar o controlador do widget caso haja.
+			
+			widgets_controller(Array(
+				'id' => $id,
 			));
 			
 			// ===== Incluir o CSS do widget.
@@ -181,6 +171,22 @@ function widgets_get($params = false){
 				}
 			}
 			
+			// ===== incluir o JS do widget.
+			
+			$incluirJS = false;
+			
+			if(!isset($_GESTOR['widgets-js'])){
+				$_GESTOR['widgets-js'][$widget['jsCaminho']] = true;
+				$incluirJS = true;
+			} else if(!isset($_GESTOR['widgets-js'][$widget['jsCaminho']])){
+				$_GESTOR['widgets-js'][$widget['jsCaminho']] = true;
+				$incluirJS = true;
+			}
+			
+			if($incluirJS){
+				gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'widgets/'.$widget['jsCaminho'].'?v='.$widget['versao'].'"></script>');
+			}
+			
 			// ===== Módulos extras para trocar variáveis.
 			
 			if(isset($widget['modulosExtras'])){
@@ -191,12 +197,6 @@ function widgets_get($params = false){
 					$_GESTOR['paginas-variaveis'][$modulo] = true;
 				}
 			}
-			
-			// ===== Disparar o controlador do widget caso haja.
-			
-			widgets_controller(Array(
-				'id' => $id,
-			));
 			
 			// ===== retornar o widget componente.
 			
