@@ -9,6 +9,7 @@ $_GESTOR['biblioteca-widgets']							=	Array(
 			'versao' => '1.0.0', // Versão do widget.
 			'componenteID' => 'widgets-formulario-contato', // Identificador único do componente do widget.
 			'jsCaminho' => 'widgets.js', // Caminho do JS controlador desse widget para ser inserido junto com o mesmo.
+			'modulosExtras' => 'contatos', // Identificadores dos módulos separados por ',' que devem ser usados para trocar o valor das variáveis globais.
 		),
 	),
 );
@@ -116,6 +117,17 @@ function widgets_get($params = false){
 						'</style>'."\n";
 					
 					gestor_pagina_css_incluir($css);
+				}
+			}
+			
+			// ===== Módulos extras para trocar variáveis.
+			
+			if(isset($widget['modulosExtras'])){
+				$modulosExtras = explode(',',$widget['modulosExtras']);
+				
+				if($modulosExtras)
+				foreach($modulosExtras as $modulo){
+					$_GESTOR['paginas-variaveis'][$modulo] = true;
 				}
 			}
 			
