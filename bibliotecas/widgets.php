@@ -112,7 +112,7 @@ function widgets_get($params = false){
 					$css = preg_replace("/(^|\n)/m", "\n        ", $widgetComponente['css']);
 					
 					$css = '<style>'."\n".
-						$css."\n".
+						$css."\n        ".
 						'</style>'."\n";
 					
 					gestor_pagina_css_incluir($css);
