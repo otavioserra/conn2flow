@@ -31,9 +31,24 @@ function widgets_formulario_contato($params = false){
 	
 	// ===== 
 	
+	// ===== Incluir a biblioteca formulario.
+	
+	gestor_incluir_biblioteca('formulario');
+	
 	// ===== Disparar regras de validação do formulário.
 	
+	$validacao = Array(
+		Array(
+			'regra' => 'texto-obrigatorio',
+			'campo' => 'nome',
+			'label' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-name')),
+		),
+	);
 	
+	formulario_validacao(Array(
+		'formId' => '_widgets-form-contato',
+		'validacao' => $validacao,
+	));
 }
 
 function widgets_controller($params = false){

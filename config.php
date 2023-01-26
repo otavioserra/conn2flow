@@ -210,6 +210,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'cpanel' => Array('cpanel.php'),
 	'ip' => Array('ip.php'),
 	'widgets' => Array('widgets.php'),
+	'formulario' => Array('formulario.php'),
 );
 
 if($_GESTOR['bibliotecas'])
