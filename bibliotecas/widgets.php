@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-widgets']							=	Array(
-	'versao' => '1.0.0',
+	'versao' => '1.0.1',
 	'widgets' => Array(
 		'formulario-contato' => Array(
 			'versao' => '1.0.0', // Versão do widget.
@@ -49,6 +49,10 @@ function widgets_formulario_contato($params = false){
 		'formId' => '_widgets-form-contato',
 		'validacao' => $validacao,
 	));
+	
+	// ===== Inclusão do jQuery-Mask-Plugin
+	
+	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-Mask-Plugin-v1.14.16/jquery.mask.min.js"></script>');
 }
 
 function widgets_controller($params = false){
