@@ -546,6 +546,29 @@ function gestor_pagina_variaveis($params = false){
 			}
 		}
 	}
+	
+	// ===== Busca por widgets na página.
+	
+	$pattern = "/".preg_quote($open)."widgets#(.+?)".preg_quote($close)."/i";
+	preg_match_all($pattern, $_GESTOR['pagina'], $matchesWidgets);
+	
+	if($matchesWidgets){
+		// ===== Incluir a biblioteca dos widgets e disparar a função de iniciação dos mesmos.
+		
+		gestor_incluir_biblioteca('widgets');
+		
+		// ===== Varrer todos os matchs e trocar os marcadores por seus widgets.
+		
+		foreach($matchesWidgets[1] as $match){
+			$widget = widgets_get(Array(
+				'id' => $match,
+			));
+			
+			if(existe($widget)){
+				$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open."widgets#".$match.$close,$widget);
+			}
+		}
+	}
 }
 
 function gestor_pagina_css(){

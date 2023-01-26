@@ -209,6 +209,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'pdf' => Array('pdf.php'),
 	'cpanel' => Array('cpanel.php'),
 	'ip' => Array('ip.php'),
+	'widgets' => Array('widgets.php'),
 );
 
 if($_GESTOR['bibliotecas'])
