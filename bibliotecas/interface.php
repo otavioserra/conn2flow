@@ -4118,13 +4118,17 @@ function interface_listar_ajax($params = false){
 				}
 			}
 			
-			if(strlen($search) > 0){
-				foreach($columnsExtraSearch as $col){
-					$procurar .= (strlen($procurar) > 0 ? ' OR ':'')."UCASE(".$col.") LIKE UCASE('%".$search."%')";
+			if(isset($columnsExtraSearch)){
+				if(strlen($search) > 0){
+					foreach($columnsExtraSearch as $col){
+						$procurar .= (strlen($procurar) > 0 ? ' OR ':'')."UCASE(".$col.") LIKE UCASE('%".$search."%')";
+					}
 				}
 			}
 		}
 	}
+	
+	echo $procurar;exit;
 	
 	// ===== Dados do Banco
 	
