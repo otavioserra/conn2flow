@@ -4453,6 +4453,7 @@ function interface_listar_tabela($params = false){
 				'pageLength' => $interface['registrosPorPagina'],
 				'displayStart' => (int)$interface['registroInicial'],
 				'columns' => $interface['columns'],
+				'columnsExtraSearch' => $interface['columnsExtraSearch'],
 				'order' => $interface['order'],
 				'opcoes' => (isset($opcoes) ? $opcoes : null),
 			),
