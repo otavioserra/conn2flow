@@ -4128,9 +4128,6 @@ function interface_listar_ajax($params = false){
 		}
 	}
 	
-	echo $_REQUEST['columnsExtraSearch'];
-	echo $procurar;exit;
-	
 	// ===== Dados do Banco
 	
 	if(isset($banco['status'])){
