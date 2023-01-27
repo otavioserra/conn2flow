@@ -935,7 +935,6 @@ $(document).ready(function() {
 					"pageLength": parseInt(lista.pageLength),
 					"displayStart": parseInt(lista.displayStart),
 					"columns": lista.columns,
-					"columnsExtraSearch": lista.columnsExtraSearch,
 					"order": lista.order,
 					"ajax": {
 						"url": gestor.raiz + lista.url,
@@ -944,6 +943,7 @@ $(document).ready(function() {
 							d.opcao = "listar";
 							d.ajax = "true";
 							d.ajaxOpcao = "listar";
+							d.columnsExtraSearch = lista.columnsExtraSearch;
 						}
 					},
 					columnDefs: [
