@@ -4309,7 +4309,9 @@ function interface_listar_tabela($params = false){
 			
 			// ===== incluir colunas extras apenas para busca.
 			
-			$interface['columnsExtraSearch'][] = 'id';
+			if(isset($interface['columnsExtraSearch'])){
+				$interface['columnsExtraSearch'][] = 'id';
+			}
 			
 			// ===== Coluna status caso precise ativar/desativar registro 
 			
