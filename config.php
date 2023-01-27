@@ -211,6 +211,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'ip' => Array('ip.php'),
 	'widgets' => Array('widgets.php'),
 	'formulario' => Array('formulario.php'),
+	'geral' => Array('geral.php'),
 );
 
 if($_GESTOR['bibliotecas'])

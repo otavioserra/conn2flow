@@ -935,6 +935,7 @@ $(document).ready(function() {
 					"pageLength": parseInt(lista.pageLength),
 					"displayStart": parseInt(lista.displayStart),
 					"columns": lista.columns,
+					"columnsExtraSearch": lista.columnsExtraSearch,
 					"order": lista.order,
 					"ajax": {
 						"url": gestor.raiz + lista.url,

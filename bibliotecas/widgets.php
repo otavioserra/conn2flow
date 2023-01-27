@@ -65,6 +65,21 @@ function widgets_formulario_contato($params = false){
 		'validacao' => $validacao,
 	));
 	
+	// ===== Verificar a permissão do acesso.
+	
+	gestor_incluir_biblioteca('autenticacao');
+	
+	$acesso = autenticacao_acesso_verificar(['tipo' => 'formulario-contato']);
+	
+	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
+	
+	gestor_incluir_biblioteca('pagina');
+	if($acesso['permitido']){	
+		$cel_nome = 'bloqueado-mensagem'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	} else {
+		$cel_nome = 'formulario'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	}
+	
 	// ===== Inclusão do jQuery-Mask-Plugin
 	
 	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-Mask-Plugin-v1.14.16/jquery.mask.min.js"></script>');

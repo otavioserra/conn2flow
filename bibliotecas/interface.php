@@ -4080,6 +4080,10 @@ function interface_listar_ajax($params = false){
 		$columns = $_REQUEST['columns'];
 	}
 	
+	if(isset($_REQUEST['columnsExtraSearch'])){
+		$columnsExtraSearch = $_REQUEST['columnsExtraSearch'];
+	}
+	
 	if(isset($_REQUEST['order'])){
 		$orderBanco = '';
 		$order = $_REQUEST['order'];
@@ -4111,6 +4115,12 @@ function interface_listar_ajax($params = false){
 					if($col['searchable'] == "true"){
 						$procurar .= (strlen($procurar) > 0 ? ' OR ':'')."UCASE(".$col['data'].") LIKE UCASE('%".$search."%')";
 					}
+				}
+			}
+			
+			if(strlen($search) > 0){
+				foreach($columnsExtraSearch as $col){
+					$procurar .= (strlen($procurar) > 0 ? ' OR ':'')."UCASE(".$col.") LIKE UCASE('%".$search."%')";
 				}
 			}
 		}
@@ -4296,6 +4306,10 @@ function interface_listar_tabela($params = false){
 				$interface['columns'][] = $columns;
 				$count++;
 			}
+			
+			// ===== incluir colunas extras apenas para busca.
+			
+			$interface['columnsExtraSearch'][] = 'id';
 			
 			// ===== Coluna status caso precise ativar/desativar registro 
 			

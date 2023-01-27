@@ -685,6 +685,7 @@ function autenticacao_acesso_cadastrar($params = false){
 	// ===== Parâmetros
 	
 	// tipo - String - Obrigatório - Identificador único do tipo de acesso.
+	// antispam - Bool - Opcional - Caso queira ativar o antispam entre a qauntidade de acessos e limite máximo de acessos.
 	
 	// ===== 
 	
@@ -725,12 +726,23 @@ function autenticacao_acesso_cadastrar($params = false){
 		
 		// ===== Definir o estado do acesso.
 		
-		$maximoCadastros = $_CONFIG['acessos-maximo-cadastros'];
+		$maximoCadastros = $_CONFIG['acessos-maximo-cadastros'][$tipo];
+		$maximoCadastrosSimples = $_CONFIG['acessos-maximo-cadastros-simples'][$tipo];
 		
-		if($quantidade < $maximoCadastros){
-			$status = 'livre';
+		if(isset($antispam)){
+			if($quantidade < $maximoCadastrosSimples){
+				$status = 'livre';
+			} else if($quantidade < $maximoCadastros){
+				$status = 'antispam';
+			} else {
+				$status = 'bloqueado';
+			}
 		} else {
-			$status = 'bloqueado';
+			if($quantidade < $maximoCadastros){
+				$status = 'livre';
+			} else {
+				$status = 'bloqueado';
+			}
 		}
 		
 		// ===== Caso seja bloqueado, calcular tempo limite de bloqueio.
