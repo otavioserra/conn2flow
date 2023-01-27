@@ -4309,7 +4309,7 @@ function interface_listar_tabela($params = false){
 			
 			// ===== incluir colunas extras apenas para busca.
 			
-			if(isset($interface['columnsExtraSearch'])){
+			if(!isset($interface['columnsExtraSearch'])){
 				$interface['columnsExtraSearch'][] = 'id';
 			}
 			
