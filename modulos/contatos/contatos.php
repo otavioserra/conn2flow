@@ -22,6 +22,10 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 function contatos_start(){
 	global $_GESTOR;
 	
+	// ===== Incluir as bibliotecas do módulo.
+	
+	gestor_incluir_bibliotecas();
+	
 	// ===== Verificar a permissão do acesso.
 	
 	gestor_incluir_biblioteca('autenticacao');
