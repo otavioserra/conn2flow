@@ -125,7 +125,9 @@ function widgets_controller($params = false){
 	
 	if(isset($id) && isset($html)){
 		switch($id){
-			case 'formulario-contato': $html = widgets_formulario_contato($html); break;
+			case 'formulario-contato': $html = widgets_formulario_contato(Array(
+				'html' => $html,
+			)); break;
 		}
 	} else {
 		return '';
