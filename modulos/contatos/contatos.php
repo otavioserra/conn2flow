@@ -127,7 +127,7 @@ function contatos_start(){
 			
 			// ===== Incluir acesso do tipo 'formulario-contato' para evitar SPAM de cadastros.
 			
-			autenticacao_acesso_cadastrar(['tipo' => 'formulario-contato']);
+			autenticacao_acesso_cadastrar(['tipo' => 'formulario-contato','antispam' => true]);
 			
 			// ===== destinatários dos emails.
 			
