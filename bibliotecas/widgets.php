@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-widgets']							=	Array(
-	'versao' => '1.0.0',
+	'versao' => '1.0.1',
 	'widgets' => Array(
 		'formulario-contato' => Array(
 			'versao' => '1.0.2', // Versão do widget.
@@ -24,6 +24,7 @@ function widgets_formulario_contato($params = false){
 	**********/
 	
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -78,6 +79,17 @@ function widgets_formulario_contato($params = false){
 		$cel_nome = 'bloqueado-mensagem'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	} else {
 		$cel_nome = 'formulario'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	}
+	
+	// ===== Incluir google reCAPTCHA caso ativo
+	
+	if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
+		if($_CONFIG['usuario-recaptcha-active']){
+			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
+			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
+			
+			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_CONFIG['usuario-recaptcha-site'].'"></script>');
+		}
 	}
 	
 	// ===== Inclusão do jQuery-Mask-Plugin
