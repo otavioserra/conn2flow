@@ -129,49 +129,67 @@ function contatos_start(){
 			
 			autenticacao_acesso_cadastrar(['tipo' => 'formulario-contato']);
 			
-			// ===== Enviar o contato por email.
+			// ===== destinatários dos emails.
 			
-			$nome = $_REQUEST['nome'];
-			$email = $_REQUEST['email'];
+			$destinatariosTXT = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'contacts-delivery-emails'));
+			
+			$destinatarios = explode(';',trim($destinatariosTXT));
+
+			if($destinatarios)
+			foreach($destinatarios as $destinatario){
+				$destinatario = trim($destinatario);
+				
+				if(preg_match('/</', $destinatario) > 0){
+					$arrAux = explode('<',trim($destinatario));
+					$nomeAux = $arrAux[0];
+					$emailAux = rtrim($arrAux[1], '>');
+					
+					$destinatatiosArr[] = Array(
+						'email' => $emailAux,
+						'nome' => $nomeAux,
+					);
+				} else {
+					$destinatatiosArr[] = Array(
+						'email' => $destinatario,
+					);
+				}
+			}
+			
+			// ===== formatar o contato por email.
+			
+			if(isset($_REQUEST['nome'])){ $nome = $_REQUEST['nome']; } else { $nome = ''; }
+			if(isset($_REQUEST['email'])){ $email = $_REQUEST['email']; } else { $email = ''; }
+			if(isset($_REQUEST['telefone'])){ $telefone = $_REQUEST['telefone']; } else { $telefone = ''; }
+			if(isset($_REQUEST['mensagem'])){ $mensagemTXT = $_REQUEST['mensagem']; } else { $mensagemTXT = ''; }
+			
 			$numero = date('Ymd') . $tokens_id;
 			
-			$assunto = modelo_var_troca(gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'signup-mail-subject')),"#numero#",$numero);
+			$assunto = modelo_var_troca(gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'contacts-subject-emails')),"#cod#",$numero);
+			$mensagem = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'contacts-message-emails'));
+			
+			$mensagem = modelo_var_troca($mensagem,"#codigo#",$numero);
+			$mensagem = modelo_var_troca($mensagem,"#nome#",$nome);
+			$mensagem = modelo_var_troca($mensagem,"#email#",$email);
+			$mensagem = modelo_var_troca($mensagem,"#telefone#",$telefone);
+			$mensagem = modelo_var_troca($mensagem,"#mensagem#",$mensagemTXT);
+			
+			// ===== enviar o email.
 			
 			gestor_incluir_biblioteca('comunicacao');
 			
 			if(comunicacao_email(Array(
-				'destinatarios' => Array(
-					Array(
-						'email' => $email,
-						'nome' => $nome,
-					),
+				'destinatarios' => $destinatatiosArr,
+				'remetente' => Array(
+					'responderPara' => $email,
+					'responderParaNome' => $nome,
 				),
 				'mensagem' => Array(
 					'assunto' => $assunto,
-					'htmlLayoutID' => 'layout-email-novo-cadastro',
-					'htmlVariaveis' => Array(
-						Array(
-							'variavel' => '#nome#',
-							'valor' => $nome,
-						),
-						Array(
-							'variavel' => '#url-signin#',
-							'valor' => '<a href="https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].'signin/">https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].'signin/</a>',
-						),
-						Array(
-							'variavel' => '#url-confirmacao#',
-							'valor' => '<a href="https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].'email-confirmation/?id='.$tokenPubId.'">https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].'email-confirmation/?id='.$tokenPubId.'</a>',
-						),
-						Array(
-							'variavel' => '#assinatura#',
-							'valor' => gestor_componente(Array(
-								'id' => 'layout-emails-assinatura',
-							)),
-						),
-					),
+					'html' => $mensagem,
+					'htmlAssinaturaAutomatica' => true,
 				),
 			))){
-				// Email de confirmação enviado com sucesso!
+				
 			}
 			
 			// ===== redirecionar caso tudo ocorra normalmente sem problemas para a página de sucesso.
