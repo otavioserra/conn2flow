@@ -129,6 +129,8 @@ function widgets_controller($params = false){
 				'html' => $html,
 			)); break;
 		}
+		
+		return $html;
 	} else {
 		return '';
 	}
