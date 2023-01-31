@@ -110,10 +110,10 @@ function contatos_start(){
 			// ===== guardar contato no banco.
 			
 			banco_insert_name_campo('tipo','contato');
-			if(isset($_REQUEST['nome'])){ banco_insert_name_campo('nome',$_REQUEST['nome'],true); }
-			if(isset($_REQUEST['email'])){ banco_insert_name_campo('email',$_REQUEST['email'],true); }
-			if(isset($_REQUEST['telefone'])){ banco_insert_name_campo('telefone',$_REQUEST['telefone'],true); }
-			if(isset($_REQUEST['mensagem'])){ banco_insert_name_campo('mensagem',$_REQUEST['mensagem'],true); }
+			if(isset($_REQUEST['nome'])){ banco_insert_name_campo('nome',$_REQUEST['nome']); }
+			if(isset($_REQUEST['email'])){ banco_insert_name_campo('email',$_REQUEST['email']); }
+			if(isset($_REQUEST['telefone'])){ banco_insert_name_campo('telefone',$_REQUEST['telefone']); }
+			if(isset($_REQUEST['mensagem'])){ banco_insert_name_campo('mensagem',$_REQUEST['mensagem']); }
 			banco_insert_name_campo('status','A');
 			banco_insert_name_campo('versao','1',true);
 			banco_insert_name_campo('data_criacao','NOW()',true);
