@@ -301,7 +301,8 @@ function modulos_sincronizar_bancos(){
 	
 	// ===== Ativar / Desativar
 	
-	$ativar = false;
+	$ativar = true;
+	$debugar = false;
 	
 	// ===== Opções.
 	
@@ -611,6 +612,15 @@ function modulos_sincronizar_bancos(){
 							}
 						}
 					}
+				}
+				
+				// ===== Debugar o ID de um elemento caso necessário.
+				
+				if($debugar){
+					if('pagina-raiz-do-sistema' == $to['id']){
+						echo 'DEBUG: <p>Tabela Origem:</p>'.print_r($to,true) . '<br>'."\n".'<p>Tabela Destino:</p>' .print_r($td,true);
+					}
+					
 				}
 				
 				// ===== Senão encontrou, inserir o dado no destino.

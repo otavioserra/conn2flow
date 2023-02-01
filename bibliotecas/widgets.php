@@ -84,8 +84,6 @@ function widgets_formulario_contato($params = false){
 			$cel_nome = 'formulario'; $html = modelo_tag_in($html,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 		}
 		
-		$cel_nome = 'apagar_cel'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
-		
 		// ===== Incluir google reCAPTCHA caso ativo
 		
 		if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
