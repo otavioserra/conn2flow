@@ -21,7 +21,7 @@ function aplicarCor($texto,$corNome = 'noColor'){
 	
 	// ===== Array com todas as cores disponíveis.
 	
-	$noColor = '\033[0m';
+	$noColor = '\\033[0m';
 	$colors = Array(
 		'black' => '0;30',
 		'red' => '0;31',
@@ -44,7 +44,7 @@ function aplicarCor($texto,$corNome = 'noColor'){
 	// ===== Aplicar a cor se encontrado, senão aplica sem cor.
 	
 	if(isset($colors[$corNome])){
-		$texto = '\033['.$colors[$corNome].'m' . $texto . $noColor;
+		$texto = '\\033['.$colors[$corNome].'m' . $texto . $noColor;
 	} else {
 		$texto = $noColor . $texto;
 	}
