@@ -5,6 +5,6 @@ include_once 'cpanel-functions.php';
 
 global $_CPANEL;
 	
-echo "Atualizou! Novo! 2";
+echo "Atualizou! Novo!\n";
 
 ?>
