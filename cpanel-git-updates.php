@@ -45,7 +45,7 @@ function aplicarCor($texto,$corNome = 'noColor'){
 	
 	if(isset($colors[$corNome])){
 		$texto = "\033[".$colors[$corNome]."m" . $texto . $noColor;
-	} else {
+	} else { 
 		$texto = $noColor . $texto;
 	}
 	
