@@ -1013,7 +1013,7 @@ function gestor_permissao_token(){
 	
 	// ===== Verifica se cookie no navegador está ativo.
 	
-	gestor_cookie_verificacao()
+	gestor_cookie_verificacao();
 	
 	// ===== Verifica se existe o cookie de autenticação gerado no login com sucesso.
 	
