@@ -997,13 +997,15 @@ function gestor_permissao_token(){
 			'samesite' => 'Lax',
 		]);
 		
-		// ===== Redirecionar o usuário afim de conferir se está ativo numa nova conexão com a URL e queryString.
+		// ===== Redirecionar o usuário afim de conferir se está ativo numa nova conexão com a URL e queryString caso o mesmo não tenha sido logado de outra forma.
 		
-		$url = urlencode($_GESTOR['caminho-total']);
-		$queryString = urlencode(gestor_querystring());
-		
-		header("Location: " . $_GESTOR['url-raiz'] . '_gestor-cookie-verify/'.$cookieId.'/?url='.$url.(existe($queryString) ? '&queryString='.$queryString : ''));
-		exit;
+		if(!isset($_COOKIE[$_CONFIG['cookie-authname']])){
+			$url = urlencode($_GESTOR['caminho-total']);
+			$queryString = urlencode(gestor_querystring());
+			
+			header("Location: " . $_GESTOR['url-raiz'] . '_gestor-cookie-verify/'.$cookieId.'/?url='.$url.(existe($queryString) ? '&queryString='.$queryString : ''));
+			exit;
+		}
 	}
 	
 	// ===== Verifica se existe o cookie de autenticação gerado no login com sucesso.
