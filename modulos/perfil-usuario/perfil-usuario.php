@@ -879,6 +879,10 @@ function perfil_usuario_signin(){
 		}
 	}
 	
+	// ===== Verifica se o cookie está ativo no navegador do usuário.
+	
+	gestor_cookie_verificacao();
+	
 	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
 	
 	gestor_incluir_biblioteca('pagina');
@@ -1260,6 +1264,10 @@ function perfil_usuario_signup(){
 			gestor_redirecionar('dashboard/');
 		}
 	}
+	
+	// ===== Verifica se o cookie está ativo no navegador do usuário.
+	
+	gestor_cookie_verificacao();
 	
 	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
 	

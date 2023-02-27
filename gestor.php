@@ -977,7 +977,7 @@ function gestor_permissao_validar_jwt($params = false){
 	}
 }
 
-function gestor_permissao_token(){
+function gestor_cookie_verificacao(){
 	global $_GESTOR;
 	global $_CONFIG;
 	
@@ -999,14 +999,21 @@ function gestor_permissao_token(){
 		
 		// ===== Redirecionar o usuário afim de conferir se está ativo numa nova conexão com a URL e queryString caso o mesmo não tenha sido logado de outra forma.
 		
-		if(!isset($_COOKIE[$_CONFIG['cookie-authname']])){
-			$url = urlencode($_GESTOR['caminho-total']);
-			$queryString = urlencode(gestor_querystring());
-			
-			header("Location: " . $_GESTOR['url-raiz'] . '_gestor-cookie-verify/'.$cookieId.'/?url='.$url.(existe($queryString) ? '&queryString='.$queryString : ''));
-			exit;
-		}
+		$url = urlencode($_GESTOR['caminho-total']);
+		$queryString = urlencode(gestor_querystring());
+		
+		header("Location: " . $_GESTOR['url-raiz'] . '_gestor-cookie-verify/'.$cookieId.'/?url='.$url.(existe($queryString) ? '&queryString='.$queryString : ''));
+		exit;
 	}
+}
+
+function gestor_permissao_token(){
+	global $_GESTOR;
+	global $_CONFIG;
+	
+	// ===== Verifica se cookie no navegador está ativo.
+	
+	gestor_cookie_verificacao()
 	
 	// ===== Verifica se existe o cookie de autenticação gerado no login com sucesso.
 	
