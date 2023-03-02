@@ -52,11 +52,39 @@ function aplicarCor($texto,$corNome = 'noColor'){
 	return $texto;
 }
 
+$args_variaveis_bool = Array(
+	'bool1',
+);
+$args_variaveis_valor = Array(
+	'valor1',
+);
+
+// ===== Parâmetros passados no command line.
+
+for($i=1;$i<$argc;$i++){
+	if(isset($args_variaveis_bool))
+	foreach($args_variaveis_bool as $varBool){
+		$$varBool = true;
+	}
+	
+	if(isset($args_variaveis_valor))
+	foreach($args_variaveis_valor as $varValor){
+		if(preg_match('/'.preg_quote($varValor.'=').'/i', $argv[$i]) > 0){
+			$$varValor = preg_replace('/'.preg_quote($varValor.'=').'/i', '', $argv[$i]);
+		}
+	}
+}
+
 $erro = aplicarCor('ERRO: ','red');
 $info = aplicarCor('é necessário mudar o seguinte ID: #582jdo459wk','yellow');
 $titulo = aplicarCor('Entrey atualizando o plugin...','blue');
 
 echo "\n".$titulo."\n";
 echo $erro . $info."\n";
+
+if(isset($valor1)){
+	echo 'valor1='.$valor1;
+}
+
 
 ?>
