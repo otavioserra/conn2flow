@@ -111,6 +111,9 @@ function plugins_hosts_editar(){
 	
 	$camposBanco = Array(
 		'nome',
+		'diretorio',
+		'git',
+		'publico',
 	);
 	
 	$camposBancoPadrao = Array(
@@ -223,8 +226,14 @@ function plugins_hosts_editar(){
 	
 	if($_GESTOR['banco-resultado']){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
+		$diretorio = (isset($retorno_bd['diretorio']) ? $retorno_bd['diretorio'] : '');
+		$git = (isset($retorno_bd['git']) ? true : false);
+		$publico = (isset($retorno_bd['publico']) ? true : false);
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#diretorio#',$diretorio);
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#git#',($git ? 'checked' : ''));
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#publico#',($publico ? 'checked' : ''));
 		
 		// ===== Popular os metaDados
 		
