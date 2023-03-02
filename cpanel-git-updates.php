@@ -83,7 +83,7 @@ echo "\n".$titulo."\n";
 echo $erro . $info."\n";
 
 if(isset($valor1)){
-	echo 'valor1='.$valor1;
+	echo '>>> valor1='.$valor1;
 }
 
 
