@@ -58,6 +58,9 @@ function plugins_hosts_adicionar(){
 		
 		banco_insert_name_campo('id',$id);
 		if(isset($_REQUEST['nome'])){ banco_insert_name_campo('nome',$_REQUEST['nome']); }
+		if(isset($_REQUEST['diretorio'])){ banco_insert_name_campo('diretorio',$_REQUEST['diretorio']); }
+		if(isset($_REQUEST['git'])){ banco_insert_name_campo('git','1',true); }
+		if(isset($_REQUEST['publico'])){ banco_insert_name_campo('publico','1',true); }
 		
 		// ===== Campos comuns
 		
