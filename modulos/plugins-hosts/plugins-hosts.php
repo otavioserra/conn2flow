@@ -187,7 +187,23 @@ function plugins_hosts_editar(){
 		
 		// ===== Atualização dos demais campos.
 		
+		$campo = 'diretorio'; $request = 'diretorio'; $alteracoes_name = 'directory'; if(banco_select_campos_antes($campo) != (isset($_REQUEST[$request]) ? $_REQUEST[$request] : NULL)){
+			$editar = true;
+			banco_update_campo($campo,$_REQUEST[$request],false,true);
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo),'valor_depois' => banco_escape_field($_REQUEST[$request]));
+		}
 		
+		$campo = 'git'; $request = 'git'; $alteracoes_name = 'git'; if(banco_select_campos_antes($campo) != (isset($_REQUEST[$request]) ? '1' : NULL)){
+			$editar = true;
+			banco_update_campo($campo,(isset($_REQUEST[$request]) ? '1' : 'NULL'),true);
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'filtro' => 'checkbox','valor_antes' => (banco_select_campos_antes($campo) ? '1' : '0'),'valor_depois' => (isset($_REQUEST[$request]) ? '1' : '0'));
+		}
+		
+		$campo = 'publico'; $request = 'publico'; $alteracoes_name = 'public'; if(banco_select_campos_antes($campo) != (isset($_REQUEST[$request]) ? '1' : NULL)){
+			$editar = true;
+			banco_update_campo($campo,(isset($_REQUEST[$request]) ? '1' : 'NULL'),true);
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'filtro' => 'checkbox','valor_antes' => (banco_select_campos_antes($campo) ? '1' : '0'),'valor_depois' => (isset($_REQUEST[$request]) ? '1' : '0'));
+		}
 		
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
