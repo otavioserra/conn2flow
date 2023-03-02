@@ -54,7 +54,7 @@ function aplicarCor($texto,$corNome = 'noColor'){
 
 $erro = aplicarCor('ERRO: ','red');
 $info = aplicarCor('é necessário mudar o seguinte ID: #582jdo459wk','yellow');
-$titulo = aplicarCor('Entrey atualizando o plugin... ','blue');
+$titulo = aplicarCor('Entrey atualizando o plugin...','blue');
 
 echo "\n".$titulo."\n";
 echo $erro . $info."\n";
