@@ -16,6 +16,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
 	),
+	'interfaceNaoAplicarIdHost' => true,
 );
 
 function plugins_hosts_adicionar(){
