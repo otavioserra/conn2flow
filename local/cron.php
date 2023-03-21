@@ -8,6 +8,8 @@ $_GESTOR['modulo-id']							=	'cron-escalas';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.0.0',
 	'maxEmailsPerCycle' => 50,
+	'dataFormatadaDebugAtivo' => true,
+	'dataFormatadaDebug' => '22/03/2023',
 );
 
 // =========================== Funções Auxiliares
@@ -290,7 +292,12 @@ function cron_escalas_sorteio(){
 	// ===== Variáveis de controle valores iniciais.
 	
 	$hoje = date('Y-m-d');
-	$hojeDataFormatada = date('d/m/Y');
+	
+	if($modulo['dataFormatadaDebugAtivo']){
+		$hojeDataFormatada = $modulo['dataFormatadaDebug'];
+	} else {
+		$hojeDataFormatada = date('d/m/Y');
+	}
 	
 	$mesAtual = (int)date('n');
 	$anoAtual = (int)date('Y');
@@ -1002,7 +1009,11 @@ function cron_escalas_expiracao_fase_confirmacao(){
 	
 	// ===== Variáveis de controle valores iniciais.
 	
-	$hojeDataFormatada = date('d/m/Y');
+	if($modulo['dataFormatadaDebugAtivo']){
+		$hojeDataFormatada = $modulo['dataFormatadaDebug'];
+	} else {
+		$hojeDataFormatada = date('d/m/Y');
+	}
 	
 	$mesAtual = (int)date('n');
 	$anoAtual = (int)date('Y');

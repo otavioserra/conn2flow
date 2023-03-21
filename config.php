@@ -8,8 +8,8 @@
 
 $configuracao = Array(
 	'id' => 'escalas',
-	'versao_num' => 1,
-	'versao' => '1.0.1',
+	'versao_num' => 2,
+	'versao' => '1.0.2',
 	'cronAtivo' => true,
 	'moduloConfig' => 'configuracoes-escalas',
 	'menusPadroes' => Array(
