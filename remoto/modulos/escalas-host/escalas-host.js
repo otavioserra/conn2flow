@@ -21,30 +21,16 @@ $(document).ready(function(){
 			endDate: gestor.escalas.dataFim,
 			beforeShowDay: function(date) {
 				var datasDestacadas = gestor.escalas.datasDestacadas;
-				var datasDesabilitadas = gestor.escalas.datasDesabilitadas;
 				var day = (date.getDate() < 10 ? '0' : '') + date.getDate();
 				var month = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
 				var year = date.getFullYear();
 				var dateFormated = day + '/' + month + '/' + year;
 				
-				var dataDesabilitadaFlag = false;
-				
-				for(var key in datasDesabilitadas){
-					var dataDesabilitada = datasDesabilitadas[key];
+				for(var key in datasDestacadas){
+					var dataDestacada = datasDestacadas[key];
 					
-					if(dateFormated == dataDesabilitada){
-						dataDesabilitadaFlag = true;
-						break;
-					}
-				}
-				
-				if(!dataDesabilitadaFlag){
-					for(var key in datasDestacadas){
-						var dataDestacada = datasDestacadas[key];
-						
-						if(dateFormated == dataDestacada){
-							return {classes: 'highlighted', tooltip: gestor.escalas.highlightedTooltip};
-						}
+					if(dateFormated == dataDestacada){
+						return {classes: 'highlighted', tooltip: gestor.escalas.highlightedTooltip};
 					}
 				}
 			}

@@ -1291,6 +1291,30 @@ function escalas_padrao(){
 			'datasUtilizacao' => $datasUtilizacao,
 		));
 		
+		// ===== Filtrar as datas selecionadas e só permitir mostrar datas destacadas.
+		
+		$datasDestacadas = $_GESTOR['javascript-vars']['escalas']['datasDestacadas'];
+		$datasSelecionadasAux = explode(',',$datasSelecionadas);
+		$datasSelecionadasSaida = '';
+		
+		foreach($datasDestacadas as $dataDestacada){
+			$found = false;
+			
+			if(isset($datasSelecionadasAux))
+			foreach($datasSelecionadasAux as $dataSelecionadaAux){
+				if($dataDestacada == $dataSelecionadaAux){
+					$found = true;
+					break;
+				}
+			}
+			
+			if($found){
+				$datasSelecionadasSaida .= (existe($datasSelecionadasSaida) ? ',' : '') . $dataDestacada;
+			}
+		}
+		
+		$datasSelecionadas = $datasSelecionadasSaida;
+		
 		// ===== Definir as datas dos períodos de atualizações.
 		
 		pagina_trocar_variavel_valor('datas-selecionadas',$datasSelecionadas);
