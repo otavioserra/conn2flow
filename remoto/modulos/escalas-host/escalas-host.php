@@ -5,6 +5,8 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'escalas-host';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.1.2',
+	'dataDebugAtivo' => true,
+	'dataDebug' => '22-03-2023',
 );
 
 // ===== Funções Auxiliares
@@ -452,6 +454,10 @@ function escalas_padrao(){
 		'formato',
 		'interface',
 	));
+	
+	// ===== Módulo variáveis.
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
 	// ===== Codificação do plugin.
 	
@@ -969,8 +975,11 @@ function escalas_padrao(){
 		
 		// ===== Definição do mês e ano do calendário.
 		
-		//$hoje = strtotime('21-09-2022');
-		$hoje = time();
+		if($modulo['dataDebugAtivo']){
+			$hoje = strtotime($modulo['dataDebug']);
+		} else {
+			$hoje = time();
+		}
 		
 		$mes = (isset($_REQUEST['mes']) ? $_REQUEST['mes'] : date('m') );
 		$ano = (isset($_REQUEST['ano']) ? $_REQUEST['ano'] : date('Y') );

@@ -7,6 +7,8 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'plataforma-cliente-plugin';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.0.0',
+	'dataDebugAtivo' => true,
+	'dataDebug' => '22-03-2023',
 );
 
 // =========================== Funções Auxiliares
@@ -523,6 +525,10 @@ function plataforma_cliente_plugin_escalas(){
 	
 	$id_hosts = $_GESTOR['host-id'];
 	
+	// ===== Módulo variáveis.
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
 	// ===== Verificar qual opção desta interface está sendo disparada e tratar cada caso separadamente.
 	
 	$opcao = $_REQUEST['opcao'];
@@ -573,8 +579,11 @@ function plataforma_cliente_plugin_escalas(){
 				
 				// ===== Definição do tempo do dia de agora.
 				
-				//$hoje = strtotime('21-09-2022');
-				$hoje = time();
+				if($modulo['dataDebugAtivo']){
+					$hoje = strtotime($modulo['dataDebug']);
+				} else {
+					$hoje = time();
+				}
 				
 				// ===== Definir o dia limite de alteração para poder ignorar datas do passado.
 				
@@ -1536,8 +1545,11 @@ function plataforma_cliente_plugin_escalas(){
 				
 				// ===== Definição do tempo do dia de agora.
 				
-				//$hoje = strtotime('21-09-2022');
-				$hoje = time();
+				if($modulo['dataDebugAtivo']){
+					$hoje = strtotime($modulo['dataDebug']);
+				} else {
+					$hoje = time();
+				}
 				
 				// ===== Passar o mês e o ano para inteiro.
 				
