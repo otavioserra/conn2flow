@@ -293,12 +293,15 @@ function cron_escalas_sorteio(){
 	
 	if($modulo['dataFormatadaDebugAtivo']){
 		$hojeDataFormatada = $modulo['dataFormatadaDebug'];
+		
+		$mesAtual = (int)date('n',strtotime($hojeDataFormatada));
+		$anoAtual = (int)date('Y',strtotime($hojeDataFormatada));
 	} else {
 		$hojeDataFormatada = date('d/m/Y');
+		
+		$mesAtual = (int)date('n');
+		$anoAtual = (int)date('Y');
 	}
-	
-	$mesAtual = (int)date('n');
-	$anoAtual = (int)date('Y');
 	
 	// ===== O mês alvo é sempre um mês a frente do mês atual.
 	
