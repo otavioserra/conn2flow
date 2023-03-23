@@ -311,7 +311,7 @@ function cron_escalas_sorteio(){
 	}
 	
 	$mesAlvoFormatado = formato_zero_a_esquerda($mesAlvo,2);
-	
+	/
 	// ===== Varrer todos hosts.
 	
 	if($hostsIDs)
