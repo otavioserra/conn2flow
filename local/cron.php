@@ -294,8 +294,8 @@ function cron_escalas_sorteio(){
 	if($modulo['dataFormatadaDebugAtivo']){
 		$hojeDataFormatada = $modulo['dataFormatadaDebug'];
 		
-		$mesAtual = (int)date('n',strtotime($hojeDataFormatada));
-		$anoAtual = (int)date('Y',strtotime($hojeDataFormatada));
+		$mesAtual = (int)date('n',strtotime(str_replace('/', '-', $hojeDataFormatada)));
+		$anoAtual = (int)date('Y',strtotime(str_replace('/', '-', $hojeDataFormatada)));
 	} else {
 		$hojeDataFormatada = date('d/m/Y');
 		
