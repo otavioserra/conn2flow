@@ -8,7 +8,7 @@ $_GESTOR['modulo-id']							=	'cron-escalas';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.0.0',
 	'maxEmailsPerCycle' => 50,
-	'dataFormatadaDebugAtivo' => true,
+	'dataFormatadaDebugAtivo' => false,
 	'dataFormatadaDebug' => '21/04/2023',
 );
 

@@ -7,7 +7,7 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'plataforma-cliente-plugin';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.0.0',
-	'dataDebugAtivo' => true,
+	'dataDebugAtivo' => false,
 	'dataDebug' => '29-04-2023',
 );
 

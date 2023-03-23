@@ -5,7 +5,7 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'escalas-host';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.1.2',
-	'dataDebugAtivo' => true,
+	'dataDebugAtivo' => false,
 	'dataDebug' => '29-04-2023',
 );
 
