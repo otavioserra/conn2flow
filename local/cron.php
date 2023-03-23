@@ -291,8 +291,6 @@ function cron_escalas_sorteio(){
 	
 	// ===== Variáveis de controle valores iniciais.
 	
-	$hoje = date('Y-m-d');
-	
 	if($modulo['dataFormatadaDebugAtivo']){
 		$hojeDataFormatada = $modulo['dataFormatadaDebug'];
 	} else {
