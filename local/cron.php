@@ -9,7 +9,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.0.0',
 	'maxEmailsPerCycle' => 50,
 	'dataFormatadaDebugAtivo' => true,
-	'dataFormatadaDebug' => '22/03/2023',
+	'dataFormatadaDebug' => '21/04/2023',
 );
 
 // =========================== Funções Auxiliares
