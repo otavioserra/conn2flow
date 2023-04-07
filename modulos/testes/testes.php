@@ -18,6 +18,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 );
 
 function getUserIP() {
+	
     $ipaddress="";
     if (isset($_SERVER['HTTP_CLIENT_IP']))
         $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
@@ -35,7 +36,8 @@ function getUserIP() {
         $ipaddress = $_SERVER['REMOTE_ADDR'];
     else
         $ipaddress="UNKNOWN";
-    return $ipaddress;
+	
+	return gethostbyname($ipaddress);
 }
 
 function testes_testes(){
