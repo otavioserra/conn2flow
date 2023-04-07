@@ -5,7 +5,7 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'testes';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.0.9',
-	'bibliotecas' => Array('interface','html','pagina'),
+	'bibliotecas' => Array('interface','html','pagina','ip'),
 	'tabela' => Array(
 		'nome' => 'template',
 		'id' => 'id',
@@ -20,13 +20,16 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 function testes_testes(){
 	global $_GESTOR;
 	
-	$pagina = '';
+	$pagina = 'IP: '.ip_get(true);
 	
 	// ===== Área de testes.
 	
 	
+	
 	// ===== Inclusão Módulo JS
 	
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/core.min.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha256.js"></script>');
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Alteração da página.

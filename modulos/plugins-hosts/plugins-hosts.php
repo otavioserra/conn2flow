@@ -308,51 +308,6 @@ function plugins_hosts_editar(){
 	);
 }
 
-function plugins_hosts_editar_incomum(){
-	global $_GESTOR;
-	
-	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
-	
-	// ===== Identificador do registro
-	
-	$id = $_GESTOR['modulo-registro-id'];
-	
-	// ===== Selecionar dados do banco de dados.
-	
-	$retorno_bd = banco_select_editar
-	(
-		banco_campos_virgulas(Array(
-			'campo',
-		))
-		,
-		$modulo['tabela']['nome'],
-		"WHERE ".$modulo['tabela']['id']."='".$id."'"
-		." AND ".$modulo['tabela']['status']."!='D'"
-	);
-	
-	if($_GESTOR['banco-resultado']){
-		
-	}
-	
-	// ===== Inclusão Módulo JS
-	
-	gestor_pagina_javascript_incluir();
-	
-	// ===== Interface adicionar finalizar opções
-	
-	$_GESTOR['interface'][$_GESTOR['interface-opcao']]['finalizar'] = Array(
-		'formulario' => Array(
-			'validacao' => Array(
-				Array(
-					'regra' => 'texto-obrigatorio',
-					'campo' => 'nome',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
-				)
-			)
-		)
-	);
-}
-
 function plugins_hosts_status(){
 	global $_GESTOR;
 	
@@ -385,9 +340,6 @@ function plugins_hosts_interfaces_padroes(){
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'callbackFunction' => 'plugins_hosts_excluir',
 			);
-		break;
-		case 'editar-incomum':
-			$_GESTOR['interface-opcao'] = 'editar-incomum';
 		break;
 		case 'listar':
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
