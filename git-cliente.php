@@ -10,6 +10,29 @@ require_once('config-cliente.php');
 
 require_once('config.php');
 
+// ===== Parâmetros passados no command line.
+
+$args_variaveis_bool = Array(
+	'',
+);
+$args_variaveis_valor = Array(
+	'rep_dir',
+);
+
+for($i=1;$i<$argc;$i++){
+	if(isset($args_variaveis_bool))
+	foreach($args_variaveis_bool as $varBool){
+		$$varBool = true;
+	}
+	
+	if(isset($args_variaveis_valor))
+	foreach($args_variaveis_valor as $varValor){
+		if(preg_match('/'.preg_quote($varValor.'=').'/i', $argv[$i]) > 0){
+			$$varValor = preg_replace('/'.preg_quote($varValor.'=').'/i', '', $argv[$i]);
+		}
+	}
+}
+
 // =========================== Funções Auxiliares
 
 function aplicarCor($texto,$corNome = 'noColor'){
@@ -62,6 +85,10 @@ function aplicarCor($texto,$corNome = 'noColor'){
 // =========================== Funções de Acesso
 
 function git_start(){
+	
+	$rep_dir = aplicarCor($rep_dir,'yellow');
+	
+	echo 'Repositório Diretório: '.$rep_dir . "\n";
 	
 	$feito = aplicarCor('Finalizado com sucesso!','green');
 	
