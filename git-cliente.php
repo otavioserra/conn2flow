@@ -90,6 +90,8 @@ function git_start(){
 	if(isset($_GESTOR['rep_dir'])){
 		$rep_dir = aplicarCor($_GESTOR['rep_dir'],'yellow');
 		
+		$rep_dir = preg_replace('/'.preg_quote('/.git').'/i', '', $rep_dir);
+		
 		echo 'Repositório Diretório: '.$rep_dir . "\n";
 	}
 	
