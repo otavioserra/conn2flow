@@ -22,13 +22,13 @@ $args_variaveis_valor = Array(
 for($i=1;$i<$argc;$i++){
 	if(isset($args_variaveis_bool))
 	foreach($args_variaveis_bool as $varBool){
-		$$varBool = true;
+		$_GESTOR[$varBool] = true;
 	}
 	
 	if(isset($args_variaveis_valor))
 	foreach($args_variaveis_valor as $varValor){
 		if(preg_match('/'.preg_quote($varValor.'=').'/i', $argv[$i]) > 0){
-			$$varValor = preg_replace('/'.preg_quote($varValor.'=').'/i', '', $argv[$i]);
+			$_GESTOR[$varValor] = preg_replace('/'.preg_quote($varValor.'=').'/i', '', $argv[$i]);
 		}
 	}
 }
@@ -85,10 +85,13 @@ function aplicarCor($texto,$corNome = 'noColor'){
 // =========================== Funções de Acesso
 
 function git_start(){
+	global $_GESTOR;
 	
-	$rep_dir = aplicarCor($rep_dir,'yellow');
-	
-	echo 'Repositório Diretório: '.$rep_dir . "\n";
+	if(isset($_GESTOR['rep_dir'])){
+		$rep_dir = aplicarCor($_GESTOR['rep_dir'],'yellow');
+		
+		echo 'Repositório Diretório: '.$rep_dir . "\n";
+	}
 	
 	$feito = aplicarCor('Finalizado com sucesso!','green');
 	
