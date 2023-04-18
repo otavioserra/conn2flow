@@ -81,6 +81,7 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	
 	$_GESTOR['hosts-server'] = Array(
 		'ativo'						=>	true,
+		'user-root-path'			=>	'/home/',
 		'cpanel-root-path'			=>	'/home/betaentreycom/b2make-cpanel/',
 		'local'						=>	'betaServer0',
 		'server'					=>	's0',
@@ -108,6 +109,7 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	
 	$_GESTOR['hosts-server'] = Array(
 		'ativo'						=>	true,
+		'user-root-path'			=>	'/home/',
 		'cpanel-root-path'			=>	'/home/betaentreycom/b2make-cpanel/',
 		'local'						=>	'betaServer0',
 		'server'					=>	's0',
@@ -135,6 +137,7 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	
 	$_GESTOR['hosts-server'] = Array(
 		'ativo'						=>	true,
+		'user-root-path'			=>	'/home/',
 		'cpanel-root-path'			=>	'/home/entreycom/b2make-cpanel/',
 		'local'						=>	'server0',
 		'server'					=>	's0',

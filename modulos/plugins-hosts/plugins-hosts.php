@@ -29,6 +29,35 @@ function plugins_hosts_adicionar(){
 	if(isset($_GESTOR['adicionar-banco'])){
 		$usuario = gestor_usuario();
 		
+		// ===== Verificar se já existe diretório igual em outro plugin da conta e ao mesmo tempo aplicar '/' no final do diretório.
+		
+		$request = 'diretorio';
+		if(isset($_REQUEST[$request])){
+			$_REQUEST[$request] = rtrim($_REQUEST[$request],'/').'/';
+			
+			$resultado = banco_select_name
+			(
+				banco_campos_virgulas(Array(
+					$modulo['tabela']['id_numerico'],
+				))
+				,
+				$modulo['tabela']['nome'],
+				"WHERE ".$request."='".banco_escape_field($_REQUEST[$request])."'"
+				.(isset($modulo['tabela']['where']) ? " AND ".$modulo['tabela']['where'] : "" )
+				." AND ".$modulo['tabela']['status']."!='D'"
+				.($_GESTOR['opcao'] == 'editar' ? ' AND '.$modulo['tabela']['id']."!='".$_GESTOR['modulo-registro-id']."'" : '')
+			);
+			
+			if($resultado){
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-diretorio-outro-plugin'))
+				));
+				
+				gestor_redirecionar_raiz();
+			}
+		}
+		
 		// ===== Validação de campos obrigatórios
 		
 		interface_validacao_campos_obrigatorios(Array(
@@ -129,6 +158,35 @@ function plugins_hosts_editar(){
 	// ===== Gravar Atualizações no Banco
 	
 	if(isset($_GESTOR['atualizar-banco'])){
+		// ===== Verificar se já existe diretório igual em outro plugin da conta e ao mesmo tempo aplicar '/' no final do diretório.
+		
+		$request = 'diretorio';
+		if(isset($_REQUEST[$request])){
+			$_REQUEST[$request] = rtrim($_REQUEST[$request],'/').'/';
+			
+			$resultado = banco_select_name
+			(
+				banco_campos_virgulas(Array(
+					$modulo['tabela']['id_numerico'],
+				))
+				,
+				$modulo['tabela']['nome'],
+				"WHERE ".$request."='".banco_escape_field($_REQUEST[$request])."'"
+				.(isset($modulo['tabela']['where']) ? " AND ".$modulo['tabela']['where'] : "" )
+				." AND ".$modulo['tabela']['status']."!='D'"
+				.($_GESTOR['opcao'] == 'editar' ? ' AND '.$modulo['tabela']['id']."!='".$_GESTOR['modulo-registro-id']."'" : '')
+			);
+			
+			if($resultado){
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-diretorio-outro-plugin'))
+				));
+				
+				gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
+			}
+		}
+		
 		// ===== Recuperar o estado dos dados do banco de dados antes de editar.
 		
 		if(!banco_select_campos_antes_iniciar(
@@ -160,7 +218,13 @@ function plugins_hosts_editar(){
 		
 		// ===== Valores padrões da tabela e regras para o campo nome
 		
-		$campo = 'nome'; $request = 'nome'; $alteracoes_name = 'name'; if(banco_select_campos_antes($campo) != (isset($_REQUEST[$request]) ? $_REQUEST[$request] : NULL)){
+		$campo = 'nome'; $request = 'nome'; $alteracoes_name = 'name'; 
+		
+		if(isset($_REQUEST[$request])){
+			$_REQUEST[$request] = rtrim($_REQUEST[$request],'/').'/';
+		}
+		
+		if(banco_select_campos_antes($campo) != (isset($_REQUEST[$request]) ? $_REQUEST[$request] : NULL)){
 			$editar = true;
 			banco_update_campo($campo,$_REQUEST[$request],false,true);
 			if(!isset($_REQUEST['_gestor-nao-alterar-id'])){$alterar_id = true;}

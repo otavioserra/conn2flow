@@ -4941,12 +4941,46 @@ function plataforma_cliente_git(){
 				
 				$rep_dir = banco_escape_field($dados['rep_dir']);
 				
+				// ===== Pegar o usuário do cPanel para formar o diretório raiz do host.
+				
+				$hosts = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'hosts',
+					'campos' => Array(
+						'user_cpanel',
+					),
+					'extra' => 
+						"WHERE id_hosts='".$id_hosts."'"
+				));
+				
+				$rootPath = $_GESTOR['hosts-server']['user-root-path'];
+				
+				if($hosts){
+					$rootPath .= $hosts['user_cpanel'].'/';
+				}
+				
+				// ===== Verificar se o plugin informado faz parte da conta do usuário. Se sim, remover o diretório root do usuário para comparar no banco.
+				
+				if(preg_match('/'.preg_quote($rootPath, '/').'/i', $rep_dir) > 0){
+					$rep_dir = preg_replace('/'.preg_quote($rootPath, '/').'/i', '', $rep_dir);
+					$rep_dir = rtrim($rep_dir,'/').'/';
+				} else {
+					$alerta = gestor_variaveis(Array('modulo' => 'git-cliente','id' => 'alerta-plugin-nao-pertence-a-conta'));
+					
+					return Array(
+						'status' => 'PLUGIN_NOT_FROM_YOUR_ACCOUNT',
+						'error-msg' => $alerta,
+					);
+				}
+				
 				// ===== Procurar pelo plugin dado o diretório do repositório.
 				
 				$plugins_hosts = banco_select(Array(
 					'unico' => true,
 					'tabela' => 'plugins_hosts',
-					'campos' => '*',
+					'campos' => Array(
+						'id_usuarios',
+					),
 					'extra' => 
 						"WHERE diretorio='".$rep_dir."'"
 				));
