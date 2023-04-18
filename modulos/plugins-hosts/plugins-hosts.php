@@ -49,9 +49,11 @@ function plugins_hosts_adicionar(){
 			);
 			
 			if($resultado){
+				$alerta = modelo_var_troca(gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-diretorio-outro-plugin')),"#diretorio#",$_REQUEST[$request]);
+				
 				interface_alerta(Array(
 					'redirect' => true,
-					'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-diretorio-outro-plugin'))
+					'msg' => $alerta,
 				));
 				
 				gestor_redirecionar_raiz();
@@ -178,9 +180,11 @@ function plugins_hosts_editar(){
 			);
 			
 			if($resultado){
+				$alerta = modelo_var_troca(gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-diretorio-outro-plugin')),"#diretorio#",$_REQUEST[$request]);
+				
 				interface_alerta(Array(
 					'redirect' => true,
-					'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-diretorio-outro-plugin'))
+					'msg' => $alerta,
 				));
 				
 				gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
