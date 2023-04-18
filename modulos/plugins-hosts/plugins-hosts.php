@@ -415,6 +415,7 @@ function plugins_hosts_interfaces_padroes(){
 					'nome' => $modulo['tabela']['nome'],
 					'campos' => Array(
 						'nome',
+						'diretorio',
 						$modulo['tabela']['data_criacao'],
 						$modulo['tabela']['data_modificacao'],
 					),
@@ -428,6 +429,10 @@ function plugins_hosts_interfaces_padroes(){
 							'id' => 'nome',
 							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-name')),
 							'ordenar' => 'asc',
+						),
+						Array(
+							'id' => 'diretorio',
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-directory-label')),
 						),
 						Array(
 							'id' => $modulo['tabela']['data_criacao'],
