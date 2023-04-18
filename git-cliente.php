@@ -4,6 +4,8 @@
 
 $_GESTOR										=	Array();
 
+$_GESTOR['bibliotecas']							=	Array('banco','modelo');
+
 require_once('config-cliente.php');
 
 // ===== Configuração deste host
@@ -34,6 +36,72 @@ for($i=1;$i<$argc;$i++){
 }
 
 // =========================== Funções Auxiliares
+
+function existe($dado = false){
+	switch(gettype($dado)){
+		case 'array':
+			if(count($dado) > 0){
+				return true;
+			} else {
+				return false;
+			}
+		break;
+		case 'string':
+			if(strlen($dado) > 0){
+				return true;
+			} else {
+				return false;
+			}
+		break;
+		default:
+			if($dado){
+				return true;
+			} else {
+				return false;
+			}
+	}
+}
+
+function gestor_incluir_biblioteca($biblioteca){
+	global $_GESTOR;
+	
+	if(isset($biblioteca)){
+		switch(gettype($biblioteca)){
+			case 'array':
+				foreach($biblioteca as $bi){
+					if(isset($_GESTOR['bibliotecas-inseridas'][$bi])){
+						continue;
+					}
+					
+					$caminhos = $_GESTOR['bibliotecas-dados'][$bi];
+					
+					if($caminhos){
+						$_GESTOR['bibliotecas-inseridas'][$bi] = true;
+						
+						foreach($caminhos as $caminho){
+							require_once($_GESTOR['modulos-caminho'].$caminho);
+						}
+					}
+				}
+			break;
+			default:
+				if(isset($_GESTOR['bibliotecas-inseridas'][$biblioteca])){
+					return;
+				}
+				
+				$caminhos = $_GESTOR['bibliotecas-dados'][$biblioteca];
+				
+				if($caminhos){
+					$_GESTOR['bibliotecas-inseridas'][$biblioteca] = true;
+					
+					foreach($caminhos as $caminho){
+						require_once($_GESTOR['modulos-caminho'].$caminho);
+					}
+				}
+		}
+	}
+}
+
 
 function aplicarCor($texto,$corNome = 'noColor'){
 	// ===== referência das cores: https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux/28938235#28938235.
