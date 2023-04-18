@@ -87,17 +87,56 @@ function aplicarCor($texto,$corNome = 'noColor'){
 function git_start(){
 	global $_GESTOR;
 	
+	// ===== Caso o diretório do repositório não seja informado, retornar erro. Senão continuar.
+	
 	if(isset($_GESTOR['rep_dir'])){
 		$rep_dir = aplicarCor($_GESTOR['rep_dir'],'yellow');
 		
 		$rep_dir = preg_replace('/\/\.git/i', '', $rep_dir);
 		
 		echo 'Repositório Diretório: '.$rep_dir . "\n";
+		
+		// ===== API-Servidor para disparar processo de atualização do plugin.
+		
+		gestor_incluir_biblioteca('api-servidor');
+		
+		$retorno = api_servidor_interface(Array(
+			'interface' => 'git',
+			'opcao' => 'atualizar',
+			'dados' => Array(
+				'rep_dir' => $rep_dir,
+			),
+		));
+		
+		if(!$retorno['completed']){
+			switch($retorno['status']){
+				default:
+					$alerta = (existe($retorno['error-msg']) ? $retorno['error-msg'] : $retorno['status']);
+			}
+			
+			echo aplicarCor('Finalizado com erro: ','red') . (isset($alerta) ? aplicarCor($alerta,'orange') : aplicarCor('não definido!','orange'));
+		} else {
+			// ===== Dados de retorno.
+			
+			$dados = Array();
+			if(isset($retorno['data'])){
+				$dados = $retorno['data'];
+			}
+			
+			// ===== Criar ou atualizar o plugin localmente.
+			
+			if(isset($dados['plugin'])){
+				$plugin = $dados['plugin'];
+				
+				
+			}
+			
+			echo aplicarCor('Finalizado com sucesso!','green');
+		}
+	} else {
+		echo aplicarCor('não encontrado!','orange') . "\n";
+		echo aplicarCor('Finalizado com erro!','red');
 	}
-	
-	$feito = aplicarCor('Finalizado com sucesso!','green');
-	
-	echo $feito; 
 }
 
 // =========================== Iniciar Git
