@@ -4914,6 +4914,129 @@ function plataforma_cliente_usuario(){
 	}
 }
 
+function plataforma_cliente_git(){
+	global $_GESTOR;
+	
+	// ===== Identificador do Host.
+	
+	$id_hosts = $_GESTOR['host-id'];
+	
+	// ===== Verificar qual opção desta interface está sendo disparada e tratar cada caso separadamente.
+	
+	$opcao = $_REQUEST['opcao'];
+	
+	switch($opcao){
+		case 'atualizar':
+			// ===== Decodificar os dados em formato Array
+			
+			$dados = Array();
+			if(isset($_REQUEST['dados'])){
+				$dados = json_decode($_REQUEST['dados'],true);
+			}
+			
+			// ===== Verificar se os campos obrigatórios foram enviados: rep_dir.
+			
+			if(isset($dados['rep_dir'])){
+				// ===== Filtrar os campos.
+				
+				$rep_dir = banco_escape_field($dados['rep_dir']);
+				
+				// ===== Procurar pelo plugin dado o diretório do repositório.
+				
+				$plugins_hosts = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'plugins_hosts',
+					'campos' => '*',
+					'extra' => 
+						"WHERE diretorio='".$rep_dir."'"
+				));
+				
+				if($plugins_hosts){
+					// ===== Verificar se o plugin encontrado faz parte do host utilizado para atualização.
+					
+					$usuarios_gestores_hosts = banco_select(Array(
+						'tabela' => 'usuarios_gestores_hosts',
+						'campos' => Array(
+							'id_usuarios',
+						),
+						'extra' => 
+							"WHERE id_hosts='".$id_hosts."'"
+							." AND privilegios_admin IS NOT NULL"
+					));
+					
+					if($usuarios_gestores_hosts)
+					foreach($usuarios_gestores_hosts as $usuario_gestor_host){
+						if($usuario_gestor_host['id_usuarios'] == $plugins_hosts['id_usuarios']){
+							$gestorEncontrado = true;
+							break;
+						}
+					}
+					
+					// ===== Se gestor não encontrado, devolver erro.
+					
+					if(!isset($gestorEncontrado)){
+						$alerta = gestor_variaveis(Array('modulo' => 'git-cliente','id' => 'alerta-plugin-sem-permissao'));
+						
+						return Array(
+							'status' => 'PLUGIN_FORBIDDEN',
+							'error-msg' => $alerta,
+						);
+					}
+					
+					// ===== Atualizar plugin.
+					
+					
+					
+					// ===== Incluir o histórico da alteração no plugins_hosts.
+					
+					/* gestor_incluir_biblioteca('log');
+					
+					log_hosts_usuarios(Array(
+						'id_hosts' => $id_hosts,
+						'id_hosts_usuarios' => $id_hosts_usuarios,
+						'id' => $id_hosts_usuarios,
+						'tabela' => Array(
+							'nome' => 'plugins_hosts',
+							'versao' => 'versao',
+							'id_numerico' => 'id_hosts_usuarios',
+						),
+						'alteracoes' => Array(
+							Array(
+								'modulo' => 'hosts-usuarios',
+								'alteracao' => 'update-data',
+								'alteracao_txt' => $alteracaoTxt,
+							)
+						),
+					)); */
+					
+					// ===== Retornar dados.
+					
+					return Array(
+						'status' => 'OK',
+						'data' => Array(
+						),
+					);
+				} else {
+					$alerta = gestor_variaveis(Array('modulo' => 'git-cliente','id' => 'alerta-plugin-nao-encontrado'));
+					
+					return Array(
+						'status' => 'PLUGIN_NOT_FOUND',
+						'error-msg' => $alerta,
+					);
+				}
+			} else {
+				return Array(
+					'status' => 'MANDATORY_FIELDS_NOT_INFORMED',
+				);
+			}
+		break;
+		default:
+			return  Array(
+				'status' => 'OPTION_NOT_DEFINED',
+			);
+	}
+}
+
 // =========================== Funções de Acesso
 
 function plataforma_cliente_autenticar_servidor(){
@@ -5234,6 +5357,7 @@ function plataforma_cliente_start(){
 			case 'pagamento': $dados = plataforma_cliente_pagamento(); break;
 			case 'voucher': $dados = plataforma_cliente_voucher(); break;
 			case 'usuario': $dados = plataforma_cliente_usuario(); break;
+			case 'git': $dados = plataforma_cliente_git(); break;
 		}
 	}
 	
