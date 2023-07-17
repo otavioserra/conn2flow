@@ -102,7 +102,6 @@ function gestor_incluir_biblioteca($biblioteca){
 	}
 }
 
-
 function aplicarCor($texto,$corNome = 'noColor'){
 	// ===== referência das cores: https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux/28938235#28938235.
 	
