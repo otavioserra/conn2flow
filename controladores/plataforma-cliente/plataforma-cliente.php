@@ -5017,7 +5017,7 @@ function plataforma_cliente_git(){
 						);
 					}
 					
-					// ===== Atualizar plugin.
+					// ===== Atualizar ou instalar o plugin no gestor conforme config do plugin.
 					
 					
 					

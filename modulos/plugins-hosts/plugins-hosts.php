@@ -319,6 +319,24 @@ function plugins_hosts_editar(){
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#git#',($git ? 'checked' : ''));
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#publico#',($publico ? 'checked' : ''));
 		
+		// ===== Pegar o usuário do cPanel para formar o diretório raiz do host.
+		
+		$hosts = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'hosts',
+			'campos' => Array(
+				'user_cpanel',
+			),
+			'extra' => 
+				"WHERE id_hosts='".$id_hosts."'"
+		));
+		
+		$rootPath = $_GESTOR['hosts-server']['user-root-path'];
+		
+		if($hosts){
+			$rootPath .= $hosts['user_cpanel'].'/';
+		}
+		
 		// ===== Popular os metaDados
 		
 		$status_atual = (isset($retorno_bd[$modulo['tabela']['status']]) ? $retorno_bd[$modulo['tabela']['status']] : '');
