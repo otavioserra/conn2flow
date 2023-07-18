@@ -8,8 +8,8 @@
 
 $configuracao = Array(
 	'id' => 'agendamentos',
-	'versao_num' => 2,
-	'versao' => '1.0.1',
+	'versao_num' => 3,
+	'versao' => '1.0.2',
 	'cronAtivo' => true,
 	'moduloConfig' => 'configuracoes-agendamentos',
 	'menusPadroes' => Array(
