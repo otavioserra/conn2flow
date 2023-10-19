@@ -1,5 +1,7 @@
 $(document).ready(function(){
 	
+	var eventDates = [];
+
 	function configuracao_tipos_plugins(obj = null){
 		// ===== TinyMCE opções.
 		
@@ -63,9 +65,6 @@ $(document).ready(function(){
 		
 		// ===== Variáveis do componente 'calendar' datas-multiplas.
 		
-		var eventDates = [];
-		var idsConts = 0;
-
 		var calendarDatasMultiplasOpt = {
 			text: calendarPtBR,
 			type: 'date',
@@ -140,6 +139,8 @@ $(document).ready(function(){
 				$(this).calendar('destroy').html('').calendar(calendarDatasMultiplasOpt);
 			}
 		}
+
+		window.calendarDatasMultiplasOpt = calendarDatasMultiplasOpt;
 
 		// ===== Variáveis do componente 'calendar' data-hora.
 		
@@ -790,6 +791,7 @@ $(document).ready(function(){
 			var datesInput = $(this).parents('.datas-multiplas').find('.calendar-dates-input');
 			var datesStr = datesInput.val();
 			var inputRemoveDates = [];
+			var id = parentCont.attr('data-id');
 			
 			var dateObj = $(this).parents('.date-value');
 			inputRemoveDates.push(dateObj.attr('data-value'));
@@ -818,11 +820,18 @@ $(document).ready(function(){
 					
 					if(!found){
 						datesUpdated = datesUpdated + (datesUpdated.length > 0 ? '|' : '') + currentDate;
+					} else {
+						eventDates[id] = eventDates[id].filter((item) => item.dateFormatedID !== currentDate);
 					}
 				});
 				
 				datesInput.val(datesUpdated);
 			}
+
+			var calendarDatasMultiplasOpt = window.calendarDatasMultiplasOpt;
+
+			calendarDatasMultiplasOpt.eventDates = eventDates[id];
+			parentCont.parents('.datas-multiplas').find('.ui.calendar.multiplo').calendar('destroy').html('').calendar(calendarDatasMultiplasOpt);
 			
 			e.stopPropagation();
 		});
@@ -978,6 +987,7 @@ $(document).ready(function(){
 			var datesInput = $(this).parents('.datas-multiplas').find('.calendar-dates-input');
 			var datesStr = datesInput.val();
 			var inputRemoveDates = [];
+			var id = parentCont.attr('data-id');
 			
 			var dateObj = $(this).parents('.date-value');
 			inputRemoveDates.push(dateObj.attr('data-value'));
@@ -1006,11 +1016,19 @@ $(document).ready(function(){
 					
 					if(!found){
 						datesUpdated = datesUpdated + (datesUpdated.length > 0 ? '|' : '') + currentDate;
+					} else {
+						eventDates[id] = eventDates[id].filter((item) => item.dateFormatedID !== currentDate);
 					}
 				});
 				
 				datesInput.val(datesUpdated);
 			}
+			
+			var calendarDatasMultiplasOpt = window.calendarDatasMultiplasOpt;
+
+			calendarDatasMultiplasOpt.eventDates = eventDates[id];
+
+			parentCont.parents('.datas-multiplas').find('.ui.calendar.multiplo').calendar('destroy').html('').calendar(calendarDatasMultiplasOpt);
 			
 			e.stopPropagation();
 		});
