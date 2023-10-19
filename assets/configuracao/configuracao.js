@@ -134,10 +134,9 @@ $(document).ready(function(){
 					parentCont.find('.calendar-dates-input').val(dateStrNew);
 
 					eventDates[id] = eventDates[id].filter((item) => item.dateFormatedID !== dateFormatedID);
-
-					calendarDatasMultiplasOpt.eventDates = eventDates[id];
 				}
 				
+				calendarDatasMultiplasOpt.eventDates = eventDates[id];
 				$(this).calendar('destroy').html('').calendar(calendarDatasMultiplasOpt);
 			}
 		}
