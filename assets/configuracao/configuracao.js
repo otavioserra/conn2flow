@@ -63,6 +63,9 @@ $(document).ready(function(){
 		
 		// ===== Variáveis do componente 'calendar' datas-multiplas.
 		
+		var eventDates = [];
+		var idsConts = 0;
+
 		var calendarDatasMultiplasOpt = {
 			text: calendarPtBR,
 			type: 'date',
@@ -83,6 +86,13 @@ $(document).ready(function(){
 				var parentCont = $(this).parents('.datas-multiplas');
 				var datesStr = parentCont.find('.calendar-dates-input').val();
 				var dateFound = false;
+				var id = parentCont.attr('data-id');
+
+				if(date === null){
+					return;
+				}
+
+				var dateFormatedID = (date.getDate() < 10 ? '0' : '') + date.getDate() + '/' + ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1) + '/' + date.getFullYear();
 				
 				if(datesStr !== undefined){
 					var datesArr = datesStr.split('|');
@@ -103,10 +113,35 @@ $(document).ready(function(){
 					parentCont.find('.calendar-dates').append(dateBtn);
 					
 					parentCont.find('.calendar-dates-input').val(datesStr + (datesStr.length > 0 ? '|' : '') + dateFormated);
+
+					eventDates[id].push({
+						date,
+						message: 'Data selecionada',
+						class: 'green',
+						variation: 'green',
+						dateFormatedID
+					});
+				} else {
+					var dateStrNew = '';
+					$.each(datesArr, function(index, date) {
+						if(date != dateFormated){
+							dateStrNew = dateStrNew + (dateStrNew.length > 0 ? '|' : '') + date;
+						}
+					});
+
+					parentCont.find('.calendar-dates').find('a[data-value="'+dateFormated+'"]').remove();
+
+					parentCont.find('.calendar-dates-input').val(dateStrNew);
+
+					eventDates[id] = eventDates[id].filter((item) => item.dateFormatedID !== dateFormatedID);
+
+					calendarDatasMultiplasOpt.eventDates = eventDates[id];
 				}
+				
+				$(this).calendar('destroy').html('').calendar(calendarDatasMultiplasOpt);
 			}
 		}
-		
+
 		// ===== Variáveis do componente 'calendar' data-hora.
 		
 		var calendarDataHoraOpt = {
@@ -144,7 +179,7 @@ $(document).ready(function(){
 				}
 			},
 		}
-		
+
 		// ===== Tratar diferença entre objeto e leitura inicial.
 		
 		if(obj !== null){
@@ -152,11 +187,12 @@ $(document).ready(function(){
 			if(obj.find('.quantidade').length > 0){ obj.find('.quantidade').mask("#.##0", {reverse: true}); }
 			if(obj.find('.ui.checkbox').length > 0){ obj.find('.ui.checkbox').checkbox(); }
 			if(obj.find('.ui.calendar.multiplo').length > 0){ 
-				obj.find('.ui.calendar.multiplo').calendar(calendarDatasMultiplasOpt);
 				obj.find('.ui.datas-multiplas').each(function(){
 					var parentCont = $(this);
 					var datesStr = parentCont.find('.calendar-dates-input').val();
-					
+					var dates = new Array();
+					var id = parentCont.attr('data-id');
+
 					if(datesStr !== undefined){
 						if(datesStr.length > 0){
 							var datesArr = datesStr.split('|');
@@ -165,10 +201,26 @@ $(document).ready(function(){
 								var dateBtn = $('<a class="ui label transition noselect date-value" data-value="'+dateFormated+'">'+dateFormated+'<i class="delete icon date-delete"></i></a>');
 								
 								parentCont.find('.calendar-dates').append(dateBtn);
+
+								var dateArr = dateFormated.split('/');
+								var date = new Date(parseInt(dateArr[2]), (parseInt(dateArr[1])-1), parseInt(dateArr[0]));
+								var dateFormatedID = (date.getDate() < 10 ? '0' : '') + date.getDate() + '/' + ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1) + '/' + date.getFullYear();
+
+								dates.push({
+									date,
+									message: 'Data selecionada',
+									class: 'green',
+									variation: 'green',
+									dateFormatedID
+								});
 							});
 						}
 					}
+				
+					eventDates[id] = dates;
+					calendarDatasMultiplasOpt.eventDates = dates;
 				});
+				obj.find('.ui.calendar.multiplo').calendar(calendarDatasMultiplasOpt);
 			}
 			
 			if(obj.find('.ui.calendar.data-hora').length > 0){
@@ -212,12 +264,13 @@ $(document).ready(function(){
 			$('.variavelCont').find('.dinheiro').mask("#.##0,00", {reverse: true});
 			$('.variavelCont').find('.quantidade').mask("#.##0", {reverse: true});
 			$('.variavelCont').find('.ui.checkbox').checkbox();
-			$('.variavelCont').find('.ui.calendar.multiplo').calendar(calendarDatasMultiplasOpt);
 			$('.variavelCont').find('.ui.calendar.data-hora').calendar(calendarDataHoraOpt);
 			$('.variavelCont').find('.ui.calendar.data').calendar(calendarDataOpt);
 			$('.variavelCont').find('.ui.datas-multiplas').each(function(){
 				var parentCont = $(this);
 				var datesStr = parentCont.find('.calendar-dates-input').val();
+				var dates = new Array();
+				var id = parentCont.attr('data-id');
 				
 				if(datesStr !== undefined){
 					if(datesStr.length > 0){
@@ -227,10 +280,26 @@ $(document).ready(function(){
 							var dateBtn = $('<a class="ui label transition noselect date-value" data-value="'+dateFormated+'">'+dateFormated+'<i class="delete icon date-delete"></i></a>');
 							
 							parentCont.find('.calendar-dates').append(dateBtn);
+
+							var dateArr = dateFormated.split('/');
+							var date = new Date(parseInt(dateArr[2]), (parseInt(dateArr[1])-1), parseInt(dateArr[0]));
+							var dateFormatedID = (date.getDate() < 10 ? '0' : '') + date.getDate() + '/' + ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1) + '/' + date.getFullYear();
+
+							dates.push({
+								date,
+								message: 'Data selecionada',
+								class: 'green',
+								variation: 'green',
+								dateFormatedID
+							});
 						});
 					}
 				}
+				
+				eventDates[id] = dates;
+				calendarDatasMultiplasOpt.eventDates = dates;
 			});
+			$('.variavelCont').find('.ui.calendar.multiplo').calendar(calendarDatasMultiplasOpt);
 			
 			$('.variavelCont').find('.tinymce').each(function(){
 				gestor.configuracao.tinySettings.totalEditors++;
