@@ -320,7 +320,7 @@ function interface_alerta($params = false){
 						$_GESTOR['javascript-vars']['interface'] = Array();
 					}
 					
-					$_GESTOR['javascript-vars']['interface']['alerta'] = $alerta;
+					$_GESTOR['javascript-vars']['interface']['alert'] = $alerta;
 					
 					interface_componentes_incluir(Array(
 						'componente' => Array(
