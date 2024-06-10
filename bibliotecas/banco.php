@@ -50,6 +50,7 @@ function banco_conectar(){
 	
  	if($_GESTOR['banco']['tipo'] == "mysqli"){
  		$_GESTOR['banco']['conexao'] = mysqli_connect($_GESTOR['banco']['host'],$_GESTOR['banco']['usuario'],$_GESTOR['banco']['senha'],$_GESTOR['banco']['nome']) or die("<p><b>ERRO BANCO:</b> Conexão com o banco de dados não realizada!</p><p><b>Erro MySQL:</b> ".mysqli_error($_GESTOR['banco']['conexao']).'</p>'.banco_erro_debug());
+		mysqli_set_charset($_GESTOR['banco']['conexao'], "utf8");
 	}
 }
 
