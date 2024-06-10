@@ -639,7 +639,7 @@ function gestor_pagina_javascript(){
 	if($_GESTOR['paginaIframe']) $variaveis_js['paginaIframe'] = true;
 	
 	$js_global_vars = '<script>
-		var gestor = '.json_encode((isset($_GESTOR['javascript-vars']) ? array_merge($variaveis_js, $_GESTOR['javascript-vars']):$variaveis_js)).';
+		var gestor = '.json_encode((isset($_GESTOR['javascript-vars']) ? array_merge($variaveis_js, $_GESTOR['javascript-vars']):$variaveis_js), JSON_UNESCAPED_UNICODE).';
 	</script>'."\n";
 	
 	// ===== Inclusão na página
