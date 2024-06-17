@@ -71,9 +71,15 @@ function cron_agendamentos_sorteio(){
 		
 		$config = configuracao_hosts_variaveis(Array('modulo' => 'configuracoes-agendamentos', 'id_hosts' => $id_hosts));
 		
+		$agendamento_ativacao = (existe($config['agendamento-ativacao']) ? true : false);
 		$fase_sorteio = (existe($config['fase-sorteio']) ? explode(',',$config['fase-sorteio']) : Array(7,5));
 		$dias_semana_maximo_vagas_arr = (existe($config['dias-semana-maximo-vagas']) ? explode(',',$config['dias-semana-maximo-vagas']) : Array());
 		$dias_semana = (existe($config['dias-semana']) ? explode(',',$config['dias-semana']) : Array());
+
+		// ===== Verificar se o agendamento está ativado.
+		if( ! $agendamento_ativacao){
+			continue;
+		}
 		
 		// ===== Data do sorteio.
 		
