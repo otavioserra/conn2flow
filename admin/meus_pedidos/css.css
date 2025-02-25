@@ -1,0 +1,124 @@
+.texto1 {
+	color: #096;
+	font-weight: bold;
+}
+.texto2 {
+	color: #C03;
+	font-weight: bold;
+}
+.texto3 {
+	color: #03F;
+	font-weight: bold;
+}
+
+.texto4 {
+	color: #009;
+	font-weight: bold;
+}
+
+.ordenacao {
+	text-align: center;
+}
+#_voucher-pedidos{
+	margin:10px 0px;
+}
+#_voucher-pedidos label{
+	float:left;
+	display:block;
+	padding-top:10px;
+}
+#_voucher-pedidos select{
+	float:left;
+	display:block;
+	margin-left:5px;
+}
+#_voucher-menu{
+	margin:10px 0px;
+}
+#_voucher-form-presente{
+	display:none;
+}
+#_voucher-form-presente label{
+	margin-top:5px;
+	display:block;
+}
+#_voucher-form-presente textarea{
+	float:left;
+	display:block;
+	margin-bottom:10px;
+}
+#_voucher-lay-topo{
+	width:699px;
+	height:299px;
+}
+#_voucher-lay-miolo{
+	width:674px;
+	padding:10px 13px;
+}
+#_voucher-lay-base{
+	width:385px;
+	padding:10px 13px;
+}
+#_voucher-lay-num{
+	float:right;
+	margin:3px 3px 3px 0px;
+}
+#_voucher-lay-num div{
+	float:left;
+	padding:5px 5px 2px 5px;
+	margin-left:5px;
+}
+#_voucher-lay-de div,#_voucher-lay-para div,#_voucher-lay-mens div{
+	float:left;
+	padding:5px 5px 2px 5px;
+	margin:3px 3px 3px 0px;
+}
+#_voucher-lay-de div,#_voucher-lay-para div{
+	width:70px;
+}
+.voucher-caixa-txt{
+	background-color:#EFEFEF;
+	padding:5px 5px 2px 5px;
+}
+#_voucher-lay-mens div.voucher-caixa-txt{
+	padding-bottom:15px;
+}
+#_voucher-lay-de div.voucher-caixa-txt,#_voucher-lay-para div.voucher-caixa-txt{
+	min-width:300px;
+}
+#_voucher-lay-servicos{
+	width:65px;
+	float:left;
+	padding:5px 5px 2px 5px;
+	margin:3px 3px 3px 0px;
+}
+#voucher-lista-servicos{
+	float:right;
+	width:580px;
+	margin-right:-2px;
+	border:none;
+}
+._voucher-lay-servico td{
+	padding:5px 5px 2px 5px;
+}
+.voucher-servico-nome{
+	min-width:105px;
+}
+.voucher-servico-senha{
+	margin:3px 0px 3px 0px;
+}
+.voucher-servico-quant{
+	text-align:center;
+	width:20px;
+}
+.voucher-servico-codigo{
+	text-align:center;
+	width:125px;
+}
+.voucher-servico-senha{
+	text-align:center;
+	width:45px;
+}
+#_voucher-lay-topo{
+	background-image:url(../../files/projeto/images/voucher-topo.jpg);
+}

@@ -1,0 +1,52 @@
+<!--!#del#(#!--><link href="../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><!--!#del#)#!-->
+<hr>
+<h2>Menu</h2>
+<hr>
+<!-- menu < -->
+<div class="top">
+<div id="lay_topo">
+	<div class="in_busca_mask">
+         <div class="in_busca"><b>Bem Vindo</b> ao painel administrativo do seu Site.
+            <p>Clique nas imagens abaixo ou no menu de acesso r&aacute;pido para iniciar ou editar seus trabalhos.</p>
+        </div>
+    </div>
+    <a href="!#caminho_raiz#!logout/" id="lay_botao_sair">
+		<img src="!#caminho_raiz#!images/admin/sair-icone.png" alt="Sair" border="0" title="Sair do Sistema" /><br>
+        Sair
+	</a>
+    <div id="lay_usuario"><div id="lay_timer"></div>!#user#!</div>
+</div>
+<!-- menu > -->
+<hr>
+<h2>In&iacute;cio</h2>
+<hr>
+<!-- inicio < -->
+<!-- cat < -->
+<div class="conteiner">
+	<h2>#cat_titulo:</h2>
+	<!-- item < -->
+    <div class="item"><a href="#item_href" title="#item_titulo">
+        <div class="imagem" style="background-position:-#img_coluna#px -#img_linha#px;"></div>
+        <h3>#item_nome</h3>
+    </a>
+    </div><!-- item > -->
+	<div class="clear"></div>
+</div><!-- cat > -->
+<div class="clear"></div>
+</div>
+<!-- inicio > -->
+<hr>
+<h2>Mudar Logo</h2>
+<hr>
+<!-- mudar_logo < -->
+<div class="conteiner">
+    <p>Escolha o arquivo de imagem e clique no bot&atilde;o <strong>Enviar</strong>.</p>
+    <form action="." method="post" enctype="multipart/form-data" name="form" id="form">
+        <p><input name="imagem" type="file" id="imagem" size="120" /></p>
+        <input name="opcao" type="hidden" id="opcao" value="mudar_logo_base" />
+        <input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+        <p><input type="submit" name="Submit" id="button" value="Enviar" /></p>
+    </form>
+</div>
+<!-- mudar_logo > -->

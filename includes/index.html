@@ -1,0 +1,179 @@
+<!--!#del#(#!--><link href="css/padrao.css" rel="stylesheet" type="text/css" />
+<link href="css/index.css" rel="stylesheet" type="text/css" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><!--!#del#)#!-->
+<p>&nbsp;</p>
+<hr />
+<h3>Formul&aacute;rio Instala&ccedil;&atilde;o</h3>
+<hr />
+<!-- install < -->
+<h1>Instala&ccedil;&atilde;o</h1>
+#maquina_testes#
+<p>Defina nos campos abaixo o usu&aacute;rio e a senha do administrador do sistema bem como o dom&iacute;nio do portal, m&oacute;dulos dispon&iacute;veis e em seguida clique no bot&atilde;o instalar.</p>
+<form action="." method="post" name="install" id="install">
+	<label for="usuario">Usu&aacute;rio:</label>
+    <input name="usuario" type="text" id="usuario" size="50" />
+	<span id="mens_usuario"></span>
+	<label for="senha">Senha:</label>
+    <input name="senha" type="password" id="senha" size="50" />
+	<span id="mens_senha"></span>
+	<label for="senha2">Senha:</label>
+    <input name="senha2" type="password" id="senha2" size="50" />
+	<label for="dominio">Dom&iacute;nio:</label>
+    <input name="dominio" type="text" id="dominio" size="90" />
+	<h2>M&oacute;dulos</h2>
+	<div><div style="float:left;">For&ccedil;ar exclus&atilde;o dos m&oacute;dulos fisicamente?</div>
+		<label for="forcar_exclusao1" style="display:block; float:left;"><input name="forcar_exclusao" type="radio" id="forcar_exclusao1" value="Sim" checked="checked" style="display:inline; margin:0px 5px -5px 5px;" />Sim</label>
+		<label for="forcar_exclusao2" style="display:block; float:left;"><input name="forcar_exclusao" type="radio" id="forcar_exclusao2" value="Nao" style="display:inline; margin:0px 5px -5px 5px;" />N&atilde;o</label>
+		<div class="clear"></div>
+	</div>
+	<!-- cat < -->
+	<div class="conteiner">
+		<h3>#cat_titulo:</h3>
+			<!-- item < -->
+				<label style="float:left; text-align:center; margin:10px; display:block;" for="modulo_#id_modulo#">
+		<div style="background-image:url(#root#images/admin/icon-painel-lateral.png); background-position:#item_img; width:20px; height:20px; margin:0px auto;" title="#item_titulo"></div>
+					<h4>#item_nome</h4>
+					<input name="modulo_#id_modulo#" type="checkbox" id="modulo_#id_modulo#" value="1" style="margin:0px auto; width:15px;"#checked# />
+				</label>
+			<!-- item > -->
+			<div class="clear"></div>
+	</div><!-- cat > -->
+    <input type="submit" name="Submit" id="login-botao" value="Instalar" style="display:block; margin:10px auto; width:70px; height:25px;" />
+    <input name="opcao" type="hidden" id="opcao" value="install-salvar" />
+</form>
+<!-- install > -->
+<hr />
+<h3>Formul&aacute;rio Esqueceu Senha </h3>
+<hr />
+<!-- esqueceu_senha < -->
+<div id="b2make-esqueceu-senha-cont">
+	<a id="b2make-esqueceu-senha-fechar" href="!#caminho_raiz#!"></a>
+    <div id="b2make-esqueceu-senha-mask">
+        <h1>ESQUECEU A SENHA</h1>
+        <p>Digite o seu email e clique no bot&atilde;o enviar para gerar uma nova senha.</p>
+        <form action="." method="post" name="esqueceu_senha" id="esqueceu_senha">
+            <label for="esqueceu_senha-email">EMAIL</label>
+            <input name="esqueceu_senha-email" type="text" id="esqueceu_senha-email">
+            <div id="recaptcha_div"></div>
+            <input type="submit" name="submit" id="esqueceu_senha-botao" value="ENVIAR" />
+            <input name="opcao" type="hidden" id="opcao" value="esqueceu_senha_banco" />
+        </form>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- esqueceu_senha > -->
+<hr />
+<h3>Formul&aacute;rio Redefinir Senha.</h3>
+<hr />
+<!-- redefinir_senha < -->
+<div id="b2make-redefinir-senha-cont">
+	<a id="b2make-redefinir-senha-fechar" href="!#caminho_raiz#!"></a>
+    <div id="b2make-redefinir-senha-mask">
+        <h1>REDEFINIR SENHA</h1>
+        <p>Preencha os campos abaixo.</p>
+        <form action="." method="post" name="redefinir_senha" id="redefinir_senha">
+            <label for="cadastro-senha">NOVA SENHA</label>
+            <input name="senha" type="password" id="cadastro-senha">
+            <label for="cadastro-senha2">REPITA SENHA</label>
+            <input name="senha2" type="password" id="cadastro-senha2">
+            <input type="submit" name="submit" id="esqueceu_senha-botao" value="REDEFINIR">
+            <input name="usuario" type="hidden" id="cadastro-usuario" value="#usuario#">
+            <input name="cod" type="hidden" id="cadastro-cod" value="#cod#">
+            <input name="key" type="hidden" id="cadastro-key" value="#key#">
+            <input name="opcao" type="hidden" id="opcao" value="redefinir_senha_banco">
+        </form>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- redefinir_senha > -->
+<hr />
+<h3>Conte&uacute;do Layout</h3>
+<hr />
+<!-- conteudo < -->
+<div id="conteudo">
+	#info_acima#
+    <!-- menu_navegacao < -->#menu_navegacao#<!-- menu_navegacao > -->
+	<!-- titulo < --><div class="h1 justify">#titulo#</div><!-- titulo > -->
+	<!-- titulo_img < -->#titulo_img#<!-- titulo_img > -->
+  	<!-- sub_titulo < --><h2 class="justify">#sub_titulo#</h2><!-- sub_titulo > -->
+  	<!-- sub_titulo_2 < --><h2 class="justify">#sub_titulo_2#</h2><!-- sub_titulo_2 > -->
+    <!-- author < --><div class="justify">#author#</div><!-- author > -->
+	<!-- data < --><div class="justify data">#data#</div><!-- data > -->
+	<!-- texto < --><div class="justify">#texto#</div><!-- texto > -->
+	<!-- texto2 < --><div class="justify">#texto2#</div><!-- texto2 > -->
+	<!-- link_externo < --><a href="#link_externo#" target="_blank">#link_externo#</a><!-- link_externo > -->
+	<!-- imagem_pequena < -->#imagem_pequena#<!-- imagem_pequena > -->
+	<!-- imagem_grande < -->#imagem_grande#<!-- imagem_grande > -->
+	<!-- musica < -->#musica#<!-- musica > -->
+	<!-- galeria < -->#galeria#<!-- galeria > -->
+	<!-- galeria_grupo < -->#galeria_grupo#<!-- galeria_grupo > -->
+	<!-- galeria_todas < -->#galeria_todas#<!-- galeria_todas > -->
+	<!-- videos < -->#videos#<!-- videos > -->
+	<!-- videos_grupo < -->#videos_grupo#<!-- videos_grupo > -->
+	<!-- videos_todas < -->#videos_todas#<!-- videos_todas > -->
+	<!-- servico < -->#servico#<!-- servico > -->
+	<!-- produto < -->#produto#<!-- produto > -->
+	<!-- parametros < -->#parametros#<!-- parametros > -->
+	<!-- conteudos_relacionados < -->#conteudos_relacionados#<!-- conteudos_relacionados > -->
+    <!-- comentarios < -->#comentarios#<!-- comentarios > -->
+    <!-- addthis < -->#addthis#<!-- addthis > -->
+    <!-- comentarios_facebook < -->#comentarios_facebook#<!-- comentarios_facebook > -->
+    <!-- categoria < -->#categoria#<!-- categoria > -->
+	#info_abaixo#
+</div>
+<!-- conteudo > -->
+<hr />
+<h3>Layout Body - Vari&aacute;veis que s&atilde;o inseridas no final do body</h3>
+<hr />
+<!-- layout_body < -->
+<div id="alerta_box_shadow"></div>
+<div id="alerta_box">
+	<span id="alerta_box_fechar" class="link_hover"></span>
+	<div id="alerta_box_header">ALERTA!</div>
+	<div id="alerta_box_texto"></div>
+	<div id="alerta_box_botao" class="link_hover">OK</div>
+</div>
+<div id="ajax_lendo"></div>
+<div id="ajax_erro">Erro<p>Não foi possível ler a página!</p></div>
+<div id="alerta"></div>
+<div id="alerta_php">#alerta_php</div>
+<div id="lendo"></div>
+<!-- layout_body > -->
+<hr />
+<hr />
+<h3>Layout Head - Vari&aacute;veis que s&atilde;o inseridas no final do head</h3>
+<hr />
+<!-- layout_head < -->
+<!--!#html_meta#!-->
+	<link rel="shortcut icon" href="!#caminho_raiz#!files/projeto/favicon.ico?v=!#versao-projeto#!" >
+	<!--[if IE]>
+	<style type="text/css" media="all">.borderitem {border-style: solid;}</style>
+	<![endif]-->
+<!--!#paginaCssPadrao#!-->
+<!--!#paginaCss#!-->
+	<!--[if IE 7]><link href="!#caminho_tema#!projeto-ie7.css?v=!#versao-projeto#!" rel="stylesheet" type="text/css" /><![endif]-->
+	<!--[if IE 8]><link href="!#caminho_tema#!projeto-ie8.css?v=!#versao-projeto#!" rel="stylesheet" type="text/css" /><![endif]-->
+	<!--[if gte IE 9]><link href="!#caminho_tema#!projeto-ie9-gte.css?v=!#versao-projeto#!" rel="stylesheet" type="text/css" /><![endif]-->
+	<![if !IE]><link href="!#caminho_tema#!projeto-not-ie.css?v=!#versao-projeto#!" rel="stylesheet" type="text/css" /><![endif]>
+	<script type="text/javascript">
+		var variaveis_js = !#variaveis_js#!;
+	</script>
+<!--!#googleAnalytics#!-->
+<!--!#paginaJs#!-->
+<!-- layout_head > -->
+<hr />
+<h3>Layout Head Mobile - Vari&aacute;veis que s&atilde;o inseridas no final do head</h3>
+<hr />
+<!-- layout_head_mobile < -->
+<!--!#html_meta#!-->
+<!--!#paginaCssPadrao#!-->
+<!--!#paginaCss#!-->
+	<script type="text/javascript">
+		var variaveis_js = !#variaveis_js#!;
+	</script>
+<!--!#googleAnalytics#!-->
+<!--!#paginaJs#!-->
+<!-- layout_head_mobile > -->
+<hr />
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

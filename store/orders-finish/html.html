@@ -1,0 +1,76 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><link href="../../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!-->
+<hr />
+<h1>Prefer&ecirc;ncia</h1>
+<hr />
+<!-- form < -->
+<table border="0" width="100%" cellpadding="10">
+  <tr>
+    <td>
+    <h2>Pedido</h2>
+    <table width="100%" border="0" cellspacing="5" class="tabela_lista content">
+    <tr>
+      <td width="80" align="left" class="lista_header_2">C&oacute;digo:</td>
+      <td class="lista_cel_2"><input type="text" id="pedido-codigo" size="50"></td>
+    </tr>
+    <tr>
+      <td align="left" class="lista_header_2">Senha:</td>
+      <td align="left" class="lista_cel_2"><input type="text" id="pedido-senha" size="10"></td>
+    </tr>
+    <tr>
+      <td align="left">&nbsp;</td>
+      <td align="left"><input type="button" name="enviar" id="pedido-button" value="Enviar" title="Clique para enviar"></td>
+    </tr>
+</table></td>
+    <td>
+    <h2>Servi&ccedil;o</h2>
+    <table width="100%" border="0" cellspacing="5" class="tabela_lista content">
+    <tr>
+      <td width="80" align="left" class="lista_header_2">C&oacute;digo:</td>
+      <td class="lista_cel_2"><input type="text" id="servico-codigo" size="50"></td>
+    </tr>
+    <tr>
+      <td align="left" class="lista_header_2">Senha:</td>
+      <td align="left" class="lista_cel_2"><input type="text" id="servico-senha" size="10"></td>
+    </tr>
+    <tr>
+      <td align="left">&nbsp;</td>
+      <td align="left"><input type="button" name="enviar" id="servico-button" value="Enviar" title="Clique para enviar"></td>
+    </tr>
+</table></td>
+  </tr>
+</table>
+<div id="cont-baixar-retorno"></div>
+<!-- form > -->
+<hr />
+<h1>Baixar</h1>
+<hr />
+<!-- retorno < -->
+<p>Tem certeza que deseja baixar o seguinte #pedido-servico-titulo#? Para isso basta confirmar clicando no bot&atilde;o <b>Baixar</b> logo abaixo</p>
+<table width="100%" border="0" cellspacing="5" class="tabela_lista content">
+    <tr>
+      <td width="120" align="left" class="lista_header_2">C&oacute;digo:</td>
+      <td class="lista_cel_2">#codigo#</td>
+    </tr>
+    <tr>
+      <td align="left" class="lista_header_2">Data:</td>
+      <td class="lista_cel_2">#data#</td>
+    </tr>
+    <tr>
+      <td align="left" class="lista_header_2">Servi&ccedil;o(s):</td>
+      <td align="left" class="lista_cel_2">#servicos#</td>
+    </tr>
+    <tr>
+      <td align="left" class="lista_header_2">Observa&ccedil;&atilde;o:</td>
+      <td align="left" class="lista_cel_2"><textarea id="baixar-observacao" cols="40" rows="5"></textarea></td>
+    </tr>
+    <tr>
+      <td align="left">&nbsp;</td>
+      <td align="left"><input type="hidden" id="baixar-pedido-servico" value="#pedido-servico#"><input type="hidden" id="baixar-senha" value="#baixar-senha#"><input type="hidden" id="baixar-codigo" value="#baixar-codigo#"><input type="button" name="baixar" id="baixar-button" value="Baixar" title="Clique para baixar"></td>
+    </tr>
+</table>
+<div class="clear"></div>
+<!-- retorno > -->
+<hr />
+<p>&nbsp;</p>

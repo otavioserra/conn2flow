@@ -1,0 +1,130 @@
+<!--!#del#(#!--><link href="../includes/css/padrao.css" rel="stylesheet" type="text/css" />
+<link href="../includes/css/interface.css" rel="stylesheet" type="text/css" /><!--!#del#)#!-->
+<hr />
+<h1>Formul&aacute;rio </h1>
+<hr />
+<!-- form < -->
+<form action="index.php" method="post" enctype="multipart/form-data" name="form" id="form">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+  <tr>
+    <td align="left" class="principal">
+    <table width="100%" border="0" class="tabela_lista">
+      <tr>
+        <td width="100" align="left" class="lista_header">Para:</td>
+        <td align="left" class="lista_cel"><input name="para" type="text" class="para" id="para" value="#para" size="80" readonly="readonly" onclick="escolher_para(#para_js_id)" title="Clique para escolher o destinatário dessa mensagem" />
+        <input name="para_opcao" type="hidden" id="para_opcao" value="#para_opcao" />
+        <input name="para_id" type="hidden" id="para_id" value="#para_id" /></td>
+      </tr>
+      <tr>
+        <td width="100" align="left" class="lista_header">Assunto:</td>
+        <td align="left" class="lista_cel"><input name="assunto" type="text" id="assunto" value="#assunto" size="80" /></td>
+      </tr><tr>
+        <td align="left" class="lista_header">mensagem:</td>
+        <td align="left" class="lista_cel"><textarea name="mensagem" id="mensagem" cols="78" rows="5" class="tinymce_mini">#mensagem</textarea></td>
+      </tr>
+    </table>
+    <table width="100%" border="0">
+      <tr>
+        <td width="370"><input name="opcao" type="hidden" id="opcao" value="#opcao" />
+          <input name="id" type="hidden" id="id" value="#id" />
+          <input type="submit" name="Submit" id="button" value="#botao" title="Clique nesse bot&atilde;o para GRAVAR as altera&ccedil;&otilde;es" /></td>
+        <td>&nbsp;</td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+</form>
+<!-- form > -->
+<hr />
+<h1>Formul&aacute;rio </h1>
+<hr />
+<!-- ver < -->
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+    <tr>
+      <td align="left" class="principal"><table width="100%" border="0" class="tabela_lista">
+        <tr>
+          <td width="100" align="left" class="lista_header">Data:</td>
+          <td align="left" class="lista_cel"><strong>#data</strong></td>
+        </tr>
+        <tr>
+          <td width="100" align="left" class="lista_header">De:</td>
+          <td align="left" class="lista_cel">#de</td>
+        </tr>
+        <tr>
+          <td width="100" align="left" class="lista_header">Para:</td>
+          <td align="left" class="lista_cel">#para</td>
+        </tr>
+        <tr>
+          <td width="100" align="left" class="lista_header">Assunto:</td>
+          <td align="left" class="lista_cel">#assunto</td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">mensagem:</td>
+          <td align="left" valign="top" class="lista_cel">#mensagem</td>
+        </tr>
+      </table></td>
+    </tr>
+  </table>
+<!-- ver > -->
+<hr />
+<h1>Para Selecionar </h1>
+<hr />
+<!-- para < -->
+<h1>#titulo</h1>
+<p>Escolha umas das op&ccedil;&otilde;es a seguir:</p>
+<table width="300" border="0" cellspacing="4" cellpadding="0">
+  <tr>
+    <td width="33%" align="center"><a href="?opcao=para&amp;usuario=sim" title="Mensagem para um Usu&aacute;rio"><img src="!#caminho_raiz#!images/icons/email_grupos.png" alt="Usu&aacute;rio" border="0" title="Mensagem para um Usu&aacute;rio" /></a>
+      <h2><a href="?opcao=para&amp;usuario=sim" title="Mensagem para um Usu&aacute;rio">Usu&aacute;rio</a></h2></td>
+    <td width="33%" align="center"><a href="?opcao=para&amp;grupo=sim" title="Mensagem para um ou mais Grupo(s)"><img src="!#caminho_raiz#!images/icons/usuarios.png" alt="Grupos" border="0" title="Mensagem para um ou mais Grupo(s)" /></a>
+      <h2><a href="?opcao=para&amp;grupo=sim" title="Mensagem para um ou mais Grupo(s)">Grupo</a></h2></td>
+  </tr>
+</table>
+<!-- para > -->
+<hr />
+<h1>Usu&aacute;rio </h1>
+<hr />
+<!-- usuario < -->
+<h1>Usu&aacute;rio</h1>
+<p><a href="?opcao=escolher_para"><img src="!#caminho_raiz#!images/icons/voltar.png" alt="Voltar para selecionar outro" title="Voltar para selecionar outro" width="36" height="36" border="0" /></a></p>
+<p>Digite uma parte do nome do usu&aacute;rio e escolha um nome da lista, no final aperte a tecla ENTER ou ent&atilde;o clique no bot&atilde;o ESCOLHER:</p>
+<table width="100%" border="0">
+  <tr>
+    <td align="left"><form id="form_usuario" name="form_usuario" method="post" action="index.php">
+      <table border="0" cellspacing="0">
+        <tr>
+          <td><input type="text" name="busca_nome2" id="busca_nome2" value="Buscar usuário..." size="60" onclick="this.value='';"  title="Digite uma parte do texto do nome do usuário que está buscando, aguarde um pouco que o sistema retorna as possibilidades em uma lista, escolha uma opção e clique no botão ESCOLHER ou então aperte a tecla ENTER do teclado." /></td>
+          <td><input type="submit" name="button" id="button" value="Escolher" /></td>
+        </tr>
+      </table>
+      <input name="nome_id" type="hidden" id="nome_id" value="0" />
+    </form></td>
+  </tr>
+</table>
+<!-- usuario > -->
+<hr />
+<h1>Grupos</h1>
+<hr />
+<!-- grupo < -->
+<h1>Grupos</h1>
+<p><a href="?opcao=escolher_para"><img src="!#caminho_raiz#!images/icons/voltar.png" alt="Voltar para selecionar outro" title="Voltar para selecionar outro" width="36" height="36" border="0" /></a></p>
+<p>Selecione todos os grupo e no t&eacute;rmino clique no bot&atilde;o SELECIONAR:</p>
+<form action="index.php" method="post" name="form_grupo" id="form_grupo">
+  <table width="100%" border="0" class="tabela_lista">
+    <!-- cel2 < -->
+    <tr>
+      <!-- cel1 < -->
+      <td width="20" class="lista_cel"><input name="grupo_id#grupo_num_11" id="grupo_id#grupo_num_12" type="checkbox" value="#grupo_id"#checked /></td>
+      <td class="lista_cel" id="grupo_nome#grupo_num_21">#grupo_name</td>
+      <!-- cel1 > -->
+    </tr>
+    <!-- cel2 > -->
+  </table>
+  <div id="botao">
+    <input name="grupo_num" type="hidden" id="grupo_num" value="#num" />
+    <input type="submit" name="Submit" id="button" value="Selecionar" />
+  </div>
+</form>
+<!-- grupo > -->
+<hr />
+<h3>&nbsp;</h3>

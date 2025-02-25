@@ -1,0 +1,67 @@
+.texto1 {
+	color: #096;
+	font-weight: bold;
+}
+.texto2 {
+	color: #C03;
+	font-weight: bold;
+}
+.texto3 {
+	color: #03F;
+	font-weight: bold;
+}
+
+.texto4 {
+	color: #009;
+	font-weight: bold;
+}
+
+.ordenacao {
+	text-align: center;
+}
+#descricao{
+	width:420px;
+	height:120px;
+}
+#b2make-change-password-2{
+	display:none;
+}
+#b2make-change-password-button{
+	color: #00F;
+	cursor:pointer;
+}
+#b2make-my-profile-form #b2make-change-password-2 input{
+	margin-top:10px;
+	width:150px;
+}
+#b2make-my-profile-form label{
+	line-height:28px;
+	margin:5px 5px 0px 0px;
+	float:left;
+	width:150px;
+	background-color:#D7D9DD;
+	padding-left:7px;
+}
+#b2make-my-profile-form #my-profile-esqueceu-senha{
+	margin:10px 0px;
+}
+#b2make-my-profile-form a{
+	color: #00F;
+}
+#b2make-my-profile-form #senha-mudar{
+	margin:10px 0px 0px 0px;
+	font-size:16px;
+	line-height:16px;
+	color:#9DB831;
+	float:left;
+}
+.in_informacao {
+    position: absolute;
+    top: 70px;
+	left:15px;
+    width: calc(100% - 60px);
+    padding-bottom: 30px;
+}
+#b2make-signature-cancel{
+	margin-left:15px;
+}

@@ -1,0 +1,125 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<form id="b2make-formulario-banners">
+    <label for="b2make-fb-nome" id="b2make-fb-nome-lbl">Nome:</label>
+    <input id="b2make-fb-nome" name="nome" data-validate="text" class="b2make-input-select b2make-tooltip" title="Clique para mudar o nome do banner">
+</form>
+<form id="b2make-formulario-banners-dados">
+    <label for="b2make-fb-titulo" id="b2make-fb-titulo-lbl">T&iacute;tulo:</label>
+    <input id="b2make-fb-titulo" name="titulo" data-validate="text" class="b2make-input-select b2make-tooltip" title="Clique para mudar o t&iacute;tulo do banner">
+    <label for="b2make-fb-sub-titulo" id="b2make-fb-sub-titulo-lbl">Sub-t&iacute;tulo:</label>
+    <input id="b2make-fb-sub-titulo" name="sub_titulo" data-validate="text" class="b2make-input-select b2make-tooltip" title="Clique para mudar o sub-t&iacute;tulo do banner">
+    <label for="b2make-fb-url" id="b2make-fb-url-lbl">Url:</label>
+    <input id="b2make-fb-url" name="url" data-validate="text" class="b2make-input-select b2make-tooltip" title="Clique para mudar a url do banner">
+</form>
+<div id="b2make-widget-options-banners">
+    <label id="b2make-wo-banners-lbl">Banners:</label>
+    <div id="b2make-wo-banners-editar-btn" class="b2make-tooltip b2make-suboptions-editar" title="Clique para editar os Servi&ccedil;os">EDITAR</div>
+    <label id="b2make-wo-banners-layout-tipo-lbl" for="b2make-wo-banners-layout-tipo">Layout Tipo:</label>
+    <select id="b2make-wo-banners-layout-tipo" class="b2make-tooltip" title="Clique para definir o tipo de layout do widget banner atual.">
+        <option value="padrao">Padr&atilde;o</option>
+        <option value="caixa-seta">Caixa Seta</option>
+    </select>
+</div>
+<div id="b2make-widget-sub-options-banners">
+	<div id="b2make-banners-btn" class="b2make-uploads-btn"><input id="b2make-banners-input" accept="image/jpeg,image/gif,image/png" class="b2make-uploads-input" type="file" name="files[]" multiple></div>
+    <div id="b2make-banners-lista-images"></div>
+    <div id="b2make-banners-lista-images-hide"></div>
+    <div id="b2make-banners-add" class="b2make-btn-lightbox b2make-tooltip" title="Clique para CRIAR um BANNER">NOVO</div>
+    <div id="b2make-banners-lista-banners"></div>
+    <div id="b2make-banners-opcoes">
+        <div id="b2make-banners-confirm-delete">
+            <input id="b2make-banners-confirm-delete-input" type="checkbox" checked>
+            <div id="b2make-banners-confirm-delete-title">Perguntar antes de excluir imagem</div>
+        </div>
+    </div>
+</div>
+<div id="b2make-conteiner-aba-extra-banners">
+    <div id="b2make-woca-banners-layout" title="Clique para acessar as op&ccedil;&otilde;es de layout do Banner" class="b2make-woc-menu-aba b2make-tooltip" data-type="banners" data-id="layout" data-posicao-extra="1">LAYOUT</div>
+    <div id="b2make-woca-banners-texto" title="Clique para acessar as op&ccedil;&otilde;es de texto do Banner" class="b2make-woc-menu-aba b2make-tooltip" data-type="banners" data-id="texto" data-posicao-extra="2">TEXTO</div>
+    <div id="b2make-woca-banners-animacao" title="Clique para acessar as op&ccedil;&otilde;es de anima&ccedil;&atilde;o do Banner" class="b2make-woc-menu-aba b2make-tooltip" data-type="banners" data-id="animacao" data-posicao-extra="3">ANIMA&Ccedil;&Atilde;O</div>
+    <div class="b2make-conteiner-aba-extra" data-type="banners" data-id="layout">
+    	<div id="b2make-wo-banners-widget-cor-lbl" class="b2make-menu-label"></div>
+        <div id="b2make-wo-banners-widget-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-banners-widget-cor-val"></div>
+        <div id="b2make-wo-banners-caixa-cor-lbl" class="b2make-menu-label">T&iacute;tulos Preenchimento:</div>
+        <div id="b2make-wo-banners-seta-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-banners-seta-cor-val"></div>
+        <div id="b2make-wo-banners-seta-cor-lbl" class="b2make-menu-label">Seta Preenchimento:</div>
+        <div id="b2make-wo-banners-caixa-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-banners-caixa-cor-val"></div>
+        <label id="b2make-wo-banners-titulo-topo-lbl" class="b2make-menu-label" for="b2make-wo-banners-titulo-topo">T&iacute;tulos Topo:</label>
+        <input id="b2make-wo-banners-titulo-topo" name="titulo_topo" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a dist&acirc;ncia da caixa de t&iacute;tulos em rela&ccedil;&atilde;o ao topo do banner" value="290">
+        <label id="b2make-wo-banners-titulo-margem-lbl" class="b2make-menu-label" for="b2make-wo-banners-titulo-margem">T&iacute;tulos Margem:</label>
+        <input id="b2make-wo-banners-titulo-margem" name="titulo_margem" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a margem da caixa dos t&iacute;tulos do banner em rela&ccedil;&atilde;o aos lados das imagens" value="20">
+        <label id="b2make-wo-banners-titulo-padding-lbl" class="b2make-menu-label" for="b2make-wo-banners-titulo-padding">T&iacute;tulos Preenchimento:</label>
+        <input id="b2make-wo-banners-titulo-padding" name="titulo_padding" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar o enchimento da caixa dos t&iacute;tulos do banner em rela&ccedil;&atilde;o aos lados das imagens" value="10">
+        <label id="b2make-wo-banners-seta-topo-lbl" class="b2make-menu-label" for="b2make-wo-banners-seta-topo">Seta Topo:</label>
+        <input id="b2make-wo-banners-seta-topo" name="seta_topo" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a dist&acirc;ncia da seta de navega&ccedil;&atilde;o em rela&ccedil;&atilde;o ao topo do banner" value="150">
+        <label id="b2make-wo-banners-seta-margem-lbl" class="b2make-menu-label" for="b2make-wo-banners-seta-margem">Seta Margem:</label>
+        <input id="b2make-wo-banners-seta-margem" name="seta_margem" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a margem da seta de navega&ccedil;&atilde;o do banner em rela&ccedil;&atilde;o aos lados das imagens" value="20">
+        <label id="b2make-wo-banners-seta-visivel-lbl" class="b2make-menu-label" for="b2make-wo-banners-seta-visivel">Seta Vis&iacute;vel:</label>
+        <select name="seta_visivel" id="b2make-wo-banners-seta-visivel" class="b2make-tooltip" title="Clique para mudar a visibilidade da seta do banner">
+            <option value="s">Sim</option>
+            <option value="n">Não</option>
+    	</select>
+        <label id="b2make-wo-banners-seta-tamanho-lbl" class="b2make-menu-label" for="b2make-wo-banners-seta-tamanho">Seta Tamanho:</label>
+        <input id="b2make-wo-banners-seta-tamanho" name="seta_tamanho" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar o tamanho da seta de navega&ccedil;&atilde;o do banner." value="30">
+    </div>
+    <div class="b2make-conteiner-aba-extra" data-type="banners" data-id="texto">
+        <label id="b2make-wo-banners-titulo-lbl" class="b2make-menu-label">T&iacute;tulo:</label>
+        <div id="b2make-wo-banners-titulo-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-banners-titulo-cor-val"></div>
+        <div id="b2make-wo-banners-titulo-text-cont" class="b2make-fonts-instance" data-font-negrito="sim"></div>
+        <label id="b2make-wo-banners-sub-titulo-lbl" class="b2make-menu-label">Sub-T&iacute;tulo:</label>
+        <div id="b2make-wo-banners-sub-titulo-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-banners-sub-titulo-cor-val"></div>
+        <div id="b2make-wo-banners-sub-titulo-text-cont" class="b2make-fonts-instance"></div>
+    </div>
+    <div class="b2make-conteiner-aba-extra" data-type="banners" data-id="animacao">
+    	<label id="b2make-wo-banners-animation-lbl" class="b2make-menu-label">Animar:</label>
+        <div id="b2make-wo-banners-animation-start-pause" class="b2make-tooltip" title="Clique para iniciar/pausar a anima&ccedil;&atilde;o do banner atual"></div>
+    	<label id="b2make-wo-banners-animation-type-lbl" class="b2make-menu-label">Tipo de Transi&ccedil;&atilde;o:</label>
+        <select name="animationType" id="b2make-wo-banners-animation-type" class="b2make-tooltip" title="Clique para mudar o tipo de transi&ccedil;&atilde;o da troca das imagens do banner">
+            <option value="slideRight">slideRight</option>
+            <option value="slideLeft">slideLeft</option>
+            <option value="slideTop">slideTop</option>
+            <option value="slideDown">slideDown</option>
+            <option value="fade">fade</option>
+    	</select>
+        <label id="b2make-wo-banners-ease-type-lbl" class="b2make-menu-label">Efeito de Transi&ccedil;&atilde;o:</label>
+        <select name="easeType" id="b2make-wo-banners-ease-type" class="b2make-tooltip" title="Clique para mudar o efeito de transi&ccedil;&atilde;o da troca das imagens do banner">
+            <option value="linear">linear</option>
+            <option value="swing">swing</option>
+            <option value="easeInQuad">easeInQuad</option>
+            <option value="easeInCubic">easeInCubic</option>
+            <option value="easeInQuart">easeInQuart</option>
+            <option value="easeInQuint">easeInQuint</option>
+            <option value="easeInSine">easeInSine</option>
+            <option value="easeInExpo">easeInExpo</option>
+            <option value="easeInCirc">easeInCirc</option>
+            <option value="easeInElastic">easeInElastic</option>
+            <option value="easeInBack">easeInBack</option>
+            <option value="easeInBounce">easeInBounce</option>
+            <option value="easeOutQuad">easeOutQuad</option>
+            <option value="easeOutCubic">easeOutCubic</option>
+            <option value="easeOutQuart">easeOutQuart</option>
+            <option value="easeOutQuint">easeOutQuint</option>
+            <option value="easeOutSine">easeOutSine</option>
+            <option value="easeOutExpo">easeOutExpo</option>
+            <option value="easeOutCirc">easeOutCirc</option>
+            <option value="easeOutElastic">easeOutElastic</option>
+            <option value="easeOutBack">easeOutBack</option>
+            <option value="easeOutBounce">easeOutBounce</option>
+            <option value="easeInOutQuad">easeInOutQuad</option>
+            <option value="easeInOutCubic">easeInOutCubic</option>
+            <option value="easeInOutQuart">easeInOutQuart</option>
+            <option value="easeInOutQuint">easeInOutQuint</option>
+            <option value="easeInOutSine">easeInOutSine</option>
+            <option value="easeInOutExpo">easeInOutExpo</option>
+            <option value="easeInOutCirc">easeInOutCirc</option>
+            <option value="easeInOutElastic">easeInOutElastic</option>
+            <option value="easeInOutBack">easeInOutBack</option>
+            <option value="easeInOutBounce">easeInOutBounce</option>
+    	</select>
+        <label id="b2make-wo-banners-tempo-transicao-lbl" class="b2make-menu-label" for="b2make-wo-banners-tempo-transicao">Tempo de Transi&ccedil;&atilde;o:</label>
+        <input id="b2make-wo-banners-tempo-transicao" name="tempo_transicao" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar o Tempo de Transi&ccedil;&atilde;o entre imagens do banner em milisegundos" value="500">
+        <label id="b2make-wo-banners-tempo-exposicao-lbl" class="b2make-menu-label" for="b2make-wo-banners-tempo-exposicao">Tempo de Exposi&ccedil;&atilde;o:</label>
+        <input id="b2make-wo-banners-tempo-exposicao" name="tempo_exposicao" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar o Tempo de Exposi&ccedil;&atilde;o de uma imagem entre trasi&ccedil;&otilde;es do banner em milisegundos" value="3000">
+    </div>
+</div>

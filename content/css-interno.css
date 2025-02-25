@@ -1,0 +1,14 @@
+#b2make-gestor-topo{
+	z-index:12;
+}
+#b2make-gestor-site{
+	position:absolute;
+	left:270px;
+	bottom:auto;
+	min-width:1075px;
+	width:calc(100% - 270px);
+	overflow:hidden;
+}
+._menu_principal{
+	margin-right:275px;
+}

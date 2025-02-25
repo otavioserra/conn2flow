@@ -1,0 +1,86 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><link href="../../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<h2>Formul&aacute;rio</h2>
+<hr />
+<!-- form < -->
+<form action="." method="post" name="form" id="form" enctype="multipart/form-data">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+    <tr>
+      <td align="left" class="principal"><table width="100%" border="0" cellspacing="5" class="tabela_lista">
+      	<!-- topo < --><tr>
+          <td colspan="2" align="left">
+          	<table width="100%" border="0" cellspacing="5" class="principal">
+    			<tr>
+                  <td class="lista_header" align="center" width="130">Data:</td>
+                  <td class="lista_header" align="center" width="60">Vers&atilde;o:</td>
+                  <td class="lista_header" align="left">Visualizar:</td>
+                </tr>
+                <tr>
+                  <td class="lista_cel" align="center">#data#</td>
+                  <td class="lista_cel" align="center">#versao#</td>
+                  <td class="lista_cel" align="left">#visualizar#</td>
+                </tr>
+             </table>
+    	  </td>
+        </tr><!-- topo > -->
+		<tr>
+          <td align="left" class="lista_header">Nome:</td>
+          <td class="lista_cel"><input name="nome" type="text" id="nome" value="#nome#" size="80" /></td>
+        </tr>
+		<tr>
+		  <td align="left" class="lista_header">Imagem Topo:</td>
+		  <td class="lista_cel"><div id="cont-imagem_topo">#imagem_topo#</div><input name="imagem_topo" type="file" id="imagem_topo" size="60" /></td>
+		  </tr>
+		<tr>
+		  <td align="left" class="lista_header">Conte&uacute;dos</td>
+		  <td class="lista_cel"><div id="cont-conteudos">#conteudos#</div><input name="conteudos_txt" type="text" id="conteudos_txt" value="" size="80" class="auto_complete" /><input name="conteudos" type="hidden" id="conteudos" value="#conteudos_ids#" /></td>
+		  </tr>
+		<tr>
+		  <td align="left" class="lista_header">Imagem Rodap&eacute;:</td>
+		  <td class="lista_cel"><div id="cont-imagem_rodape">#imagem_rodape#</div><input name="imagem_rodape" type="file" id="imagem_rodape" size="60" /></td>
+		  </tr>
+        <tr>
+          <td width="150" align="left" class="lista_header">Layout:</td>
+          <td class="lista_cel">#layout#</td>
+        </tr>
+      </table>
+        <!-- botao < --><table width="100%" border="0">
+          <tr>
+            <td align="center"><input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+              <input name="opcao" type="hidden" id="opcao" value="#opcao" />
+              <input name="id" type="hidden" id="id" value="#id" />
+              <input type="submit" name="Submit" id="button" value="#botao" /></td>
+          </tr>
+      </table><!-- botao > --></td>
+    </tr>
+  </table>
+</form>
+<!-- form > -->
+<hr />
+<h3>Lista Conte&uacute;dos</h3>
+<hr />
+<!-- conteudo < -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+    <tr>
+      <td align="left" class="principal"><table width="100%" border="0" cellspacing="5" class="tabela_lista">
+        <tr>
+          <td width="22" align="center" class="lista_header">A&ccedil;&atilde;o</td>
+          <td class="lista_header">Conte&uacute;do</td>
+        </tr>
+		<!-- cel < --><tr>
+          <td align="center" class="lista_cel"><ul class="_menu_opcoes">
+	<!-- <li class="_opcoes_li">
+    	<a href=".?opcao=conteudo_img&id=#id#" title="Mudar Imagem dessa Entrada na Newsletter" alt="Mudar Imagem dessa Entrada na Newsletter"><img src="../../images/icons/selecionar_img.png" border="0"/></a>
+    </li><li class="_opcoes_li">-->
+    	<a href="#" title="Excluir essa Entrada da Newsletter" alt="Excluir essa Entrada da Newsletter" onclick="excluir('.','#id#','conteudo_excluir')" class="excluir"></a>
+    </li>
+</ul></td>
+          <td class="lista_cel">#titulo#</td>
+        </tr><!-- cel > -->
+      </table>
+        </td>
+    </tr>
+  </table>
+<!-- conteudo > -->
+<hr />

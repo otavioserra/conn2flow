@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>!#paginaTitulo#!</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<!--!#html_meta#!-->
+	<link rel="shortcut icon" href="!#caminho_raiz#!favicon.ico!#versao#!" >
+<!--!#del#(#!--><link href="css.css" rel="stylesheet" type="text/css" /><link href="../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../includes/css/layout2.css" rel="stylesheet" type="text/css" /><!--!#del#)#!-->
+<!--!#paginaCssPadrao#!-->
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+<!--!#paginaCss#!-->
+	<script type="application/javascript">
+		var variaveis_js = !#variaveis_js#!;
+	</script>
+<!--!#paginaJs#!-->
+<!--!#googleAnalytics#!-->
+</head>
+<body>
+<ul id="b2make-menu-perfil">
+    <li data-id="site">CONSTRUTOR</li>
+    <li data-id="segmentos">MUDAR MODELO</li>
+    <li data-id="my-profile">MEUS DADOS</li>
+    <li data-id="payment">PAGAMENTOS</li>
+    <li data-id="upgrade-plan">UPGRADE/PLANO</li>
+    <li data-id="exit">Sair</li>
+</ul>
+<!--!#menu-lateral#!-->
+<div id="b2make-menu">
+	<div id="b2make-menu-min">
+        <div id="b2make-logomarca-principal"></div>
+        <div id="b2make-menus-holders">
+            <div id="b2make-menu-holder" class="b2make-tooltip" title="Adicionar novos conteiners e/ou widgets"></div>
+            <div id="b2make-menu-holder-widgets" class="b2make-tooltip" title="Selecionar conteiners e/ou widgets existentes"></div>
+            <div id="b2make-menu-publish" class="b2make-tooltip" title="Publicar a página atual no ambiente real"></div>
+            <div id="b2make-menu-save" class="b2make-tooltip" title="Salvar a página atual"></div>
+            <div id="b2make-page-options-holder" class="b2make-tooltip" title="Clique para modificar as configurações da página"></div>
+            <div id="b2make-menu-save-template" class="b2make-tooltip" title="Salvar a página atual em um template"></div>
+            <div id="b2make-change-template" class="b2make-tooltip" title="Trocar o template atual por um outro pré-existente"></div>
+        </div>
+        <div id="b2make-menu-start">
+            <div class="b2make-widget-options-title-line"></div>
+        	<div class="b2make-widget-options-title">!#titulo-modulo#!</div>
+        </div>
+        <div id="b2make-account-menu">
+        	<div id="b2make-account-menu-snapshot" class="b2make-tooltip b2make-other-options" data-title="Foto Perfil" data-type="foto-perfil" data-obj="b2make-account-menu-snapshot" title="Clique para mudar a imagem do seu perfil"></div>
+            <div id="b2make-account-menu-texto" class="b2make-tooltip" title="Clique para abrir o menu de opções do seu perfil">!#user#!</div>
+        </div>
+    </div>
+</div>
+<div id="b2make-site">
+	!#body#!
+</div>
+<div id="ajax_lendo">Carregando</div>
+<div id="ajax_erro">Erro<p>Não foi possível ler a página!</p></div>
+<div id="alerta"></div>
+<div id="alerta_php">#alerta_php</div>
+<div id="popup"><iframe width="1100" height="500" allowtransparency="yes" frameborder="0"></iframe></div>
+<div id="lendo"></div>
+</body>
+</html>

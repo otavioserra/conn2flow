@@ -1,0 +1,60 @@
+.texto1 {
+	color: #096;
+	font-weight: bold;
+}
+.texto2 {
+	color: #C03;
+	font-weight: bold;
+}
+.texto3 {
+	color: #03F;
+	font-weight: bold;
+}
+
+.texto4 {
+	color: #009;
+	font-weight: bold;
+}
+
+.ordenacao {
+	text-align: center;
+}
+.validade-holder{
+	position:relative;
+}
+.alterar-validade{
+	cursor:pointer;
+}
+.caixa-validade{
+	display:none;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:160px;
+	height:25px;
+	background-color: #CCC;
+	padding:5px 0px 5px 5px;
+}
+.data{
+	width:80px;
+	margin:0px 0px 0px 0px;
+}
+.botao-validade{
+	margin:0px 0px 0px 5px;
+}
+.editar{
+	background-image:url(../../images/admin/icon-central.png);
+	width:16px;
+	height:16px;
+	background-position:-32px -0px;
+	display:block;
+	float:right;
+}
+#imprimir{
+	display:block;
+	margin:20px 0px;
+	cursor:pointer;
+}
+#codigo_rastreio-cont{
+	display:none;
+}

@@ -1,0 +1,119 @@
+<!--!#del#(#!--><link href="css.css" rel="stylesheet" type="text/css" /><link href="../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../includes/css/layout2.css" rel="stylesheet" type="text/css" /><!--!#del#)#!-->
+<div id="b2make-widget-sub-options-contents">
+    <div id="b2make-contents-add" class="b2make-tooltip b2make-btn-lightbox" title="Clique para CRIAR um CONTE&Uacute;DO">NOVO</div>
+    <label id="b2make-contents-options-sel-lbl" for="b2make-contents-options-sel">Conte&uacute;dos Filtro:</label>
+    <select id="b2make-contents-options-sel" class="b2make-tooltip" title="Clique para definir se o widget atual mostrará todos os posts ou apenas alguns em uma escolha livre.">
+        <option value="todos-posts">Todos Posts</option>
+        <option value="conteudo-tipo">Conte&uacute;do Tipo</option>
+        <option value="escolha-pontual">Escolha Pontual</option>
+    </select>
+    <div id="b2make-contents-lista-cont">
+        <div id="b2make-contents-lista" class="b2make-lista-dados" data-fields="nome,NOME,b2make-contents-lista-nome,400,left" data-field-id="id_site_conteudos" data-options="edit,block" data-ajax-option="contents" data-ajax-no="sim"></div>
+    </div>
+    <div id="b2make-contents-lista-conteudo-tipo-cont">
+        <div id="b2make-contents-lista-conteudo-tipo" class="b2make-lista-dados" data-fields="nome,NOME,b2make-contents-lista-nome,400,left" data-field-id="id_site_conteudos" data-options="block" data-ajax-option="contents" data-ajax-no="sim"></div>
+    </div>
+    <div id="b2make-contents-options-cont">
+    	<label id="b2make-contents-ordem-sel-lbl" for="b2make-contents-ordem-sel">Ordena&ccedil;&atilde;o Tipo:</label>
+        <select id="b2make-contents-ordem-sel" class="b2make-tooltip" title="Clique para definir a ordenação dos conteúdos no widget atual.">
+            <option value="data-desc">Data Cria&ccedil;&atilde;o Descendente</option>
+            <option value="data-asc">Data Cria&ccedil;&atilde;o Ascendente</option>
+            <option value="data-modificacao-desc">Data Modifica&ccedil;&atilde;o Descendente</option>
+            <option value="data-modificacao-asc">Data Modifica&ccedil;&atilde;o Ascendente</option>
+            <option value="alfabetica-desc">Alfab&eacute;tica Descendente</option>
+            <option value="alfabetica-asc">Alfab&eacute;tica Ascendente</option>
+        </select>
+    </div>
+</div>
+<div id="b2make-widget-sub-options-contents-tags">
+    <div id="b2make-contents-lista-cont-tags">
+        <div id="b2make-contents-lista-tags" class="b2make-lista-dados" data-fields="nome,NOME,b2make-contents-lista-tags-nome,400,left" data-field-id="id_site_conteudos_tags" data-options="edit,block" data-ajax-option="contents" data-ajax-no="sim"></div>
+    </div>        
+</div>
+<div id="b2make-widget-options-contents">
+    <label id="b2make-wo-contents-lbl">Conteúdos:</label>
+    <div id="b2make-wo-contents-editar-btn" class="b2make-tooltip b2make-suboptions-editar" title="Clique para editar os Conteúdos">EDITAR</div>
+    <label id="b2make-wo-contents-acao-click-lbl" for="b2make-wo-contents-acao-click">A&ccedil;&atilde;o Clique:</label>
+    <select id="b2make-wo-contents-acao-click" class="b2make-tooltip" title="Clique para definir se ação de clique para acessar a página do conteúdo será no botão ou na área inteira de cada conteúdo">
+        <option value="botao">Bot&atilde;o</option>
+        <option value="area">&Aacute;rea</option>
+    </select>
+    <label for="b2make-contents-botao-texto" id="b2make-contents-botao-texto-lbl">Botão Texto:</label>
+    <input id="b2make-contents-botao-texto" name="botao-texto" data-validate="text" class="b2make-input-select b2make-tooltip" title="Clique para mudar o texto do botão de acesso dos conteúdos">
+    <label id="b2make-wo-contents-layout-tipo-lbl" for="b2make-wo-contents-layout-tipo">Layout Tipo:</label>
+    <select id="b2make-wo-contents-layout-tipo" class="b2make-tooltip" title="Clique para definir o tipo de layout do widget conteúdo atual.">
+        <option value="padrao">Padr&atilde;o</option>
+        <option value="imagem">Imagem Grande</option>
+        <option value="menu">Menu Tags</option>
+        <option value="mosaico">Mosaico</option>
+        <option value="lista-texto">Lista Texto</option>
+    </select>
+    <label id="b2make-wo-contents-menu-tags-lbl">Tags:</label>
+    <div id="b2make-wo-contents-menu-tags-btn" class="b2make-tooltip b2make-suboptions-editar" title="Clique para editar as tags" data-type="sub-options-custom" data-sub-options-cont="#b2make-widget-sub-options-contents-tags" data-sub-options-title="Tags">EDITAR</div>
+</div>
+<div id="b2make-conteiner-aba-extra-contents">
+    <div id="b2make-woca-contents-layout" title="Clique para acessar as opções de layout do Botão de Download" class="b2make-woc-menu-aba b2make-tooltip" data-type="contents" data-id="layout" data-posicao-extra="1">LAYOUT</div>
+    <div id="b2make-woca-contents-texto" title="Clique para acessar as opções de texto do Botão de Download" class="b2make-woc-menu-aba b2make-tooltip" data-type="contents" data-id="texto" data-posicao-extra="2">TEXTO</div>
+    <div class="b2make-conteiner-aba-extra" data-type="contents" data-id="layout">
+    	<div id="b2make-wo-contents-widget-cor-lbl" class="b2make-menu-label">Widget Preenchimento:</div>
+        <div id="b2make-wo-contents-widget-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-contents-widget-cor-val"></div>
+        <div id="b2make-wo-contents-caixa-cor-lbl" class="b2make-menu-label">Caixa Preenchimento:</div>
+        <div id="b2make-wo-contents-caixa-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-contents-caixa-cor-val"></div>
+        <div id="b2make-wo-contents-botao-cor-lbl" class="b2make-menu-label">Botão Preenchimento:</div>
+        <div id="b2make-wo-contents-botao-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-contents-botao-cor-val"></div>
+        <label id="b2make-wo-contents-tamanho-cont-lbl" class="b2make-menu-label" for="b2make-wo-contents-tamanho-cont">Largura da Área:</label>
+        <input id="b2make-wo-contents-tamanho-cont" name="tamanho" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a largura das caixas dos conteúdos" value="160">
+        <label id="b2make-wo-contents-tamanho-cont-2-lbl" class="b2make-menu-label" for="b2make-wo-contents-tamanho-cont-2">Altura da Área:</label>
+        <input id="b2make-wo-contents-tamanho-cont-2" name="tamanho" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a altura das caixas dos conteúdos" value="280">
+        <label id="b2make-wo-contents-altura-imagem-lbl" class="b2make-menu-label" for="b2make-wo-contents-altura-imagem">Altura da Imagem:</label>
+        <input id="b2make-wo-contents-altura-imagem" name="tamanho" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a altura das imagens dos conteúdos" value="160">
+		<label id="b2make-wo-contents-margem-cont-lbl" class="b2make-menu-label" for="b2make-wo-contents-margem-cont">Margem da Área:</label>
+        <input id="b2make-wo-contents-margem-cont" name="margem" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a margem das caixas dos conteúdos" value="10">
+		<label id="b2make-wo-contents-margem-seta-lbl" class="b2make-menu-label" for="b2make-wo-contents-margem-seta">Margem da Setinha:</label>
+        <input id="b2make-wo-contents-margem-seta" name="margem" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a margem das setinhas dos conteúdos" value="15">
+        <label id="b2make-wo-contents-tamanho-seta-lbl" class="b2make-menu-label" for="b2make-wo-contents-tamanho-seta">Tamanho da Setinha:</label>
+        <input id="b2make-wo-contents-tamanho-seta" name="tamanho" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar o tamanho das setinhas dos conteúdos" value="20">
+        <div id="b2make-wo-contents-seta-cor-lbl" class="b2make-menu-label">Cor Setinha:</div>
+        <div id="b2make-wo-contents-seta-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-contents-seta-cor-val"></div>
+        <label id="b2make-wo-contents-altura-textos-cont-lbl" class="b2make-menu-label" for="b2make-wo-contents-altura-textos-cont">Altura dos Textos:</label>
+        <input id="b2make-wo-contents-altura-textos-cont" name="tamanho" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a altura da caixa dos textos">
+        <div id="b2make-wo-contents-textos-cor-lbl" class="b2make-menu-label">Cor Textos:</div>
+        <div id="b2make-wo-contents-textos-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-contents-textos-cor-val"></div>
+        <div id="b2make-wo-contents-menu-cor-lbl" class="b2make-menu-label">Cor Menu:</div>
+        <div id="b2make-wo-contents-menu-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-contents-menu-cor-val"></div>
+        <label id="b2make-wo-contents-menu-largura-cont-lbl" class="b2make-menu-label" for="b2make-wo-contents-menu-largura-cont">Largura do Menu:</label>
+        <input id="b2make-wo-contents-menu-largura-cont" name="menu-largura" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a largura dos menus dos conteúdos" value="200">
+        <label id="b2make-wo-contents-menu-altura-cont-lbl" class="b2make-menu-label" for="b2make-wo-contents-menu-altura-cont">Altura do Menu:</label>
+        <input id="b2make-wo-contents-menu-altura-cont" name="menu-altura" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a altura dos menus dos conteúdos" value="80">
+        <label id="b2make-wo-contents-menu-margem-cont-lbl" class="b2make-menu-label" for="b2make-wo-contents-menu-margem-cont">Margem do Menu:</label>
+        <input id="b2make-wo-contents-menu-margem-cont" name="menu-altura" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a margem dos menus dos conteúdos" value="5">
+        <label id="b2make-wo-contents-menu-botao-largura-cont-lbl" class="b2make-menu-botao-label" for="b2make-wo-contents-menu-botao-largura-cont">Largura do Botão:</label>
+        <input id="b2make-wo-contents-menu-botao-largura-cont" name="menu-botao-largura" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a largura dos botões dos conteúdos" value="100">
+        <label id="b2make-wo-contents-menu-botao-altura-cont-lbl" class="b2make-menu-botao-label" for="b2make-wo-contents-menu-botao-altura-cont">Altura do Botão:</label>
+        <input id="b2make-wo-contents-menu-botao-altura-cont" name="menu-botao-altura" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a altura dos botões dos conteúdos" value="40">
+        <label id="b2make-wo-contents-menu-botao-margem-cont-lbl" class="b2make-menu-botao-label" for="b2make-wo-contents-menu-botao-margem-cont">Margem do Botão:</label>
+        <input id="b2make-wo-contents-menu-botao-margem-cont" name="menu-botao-altura" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar a margem dos botões dos conteúdos" value="20">
+        <label id="b2make-wo-contents-linhas-descricao-lbl" class="b2make-menu-botao-label" for="b2make-wo-contents-linhas-descricao">Linhas Descrição:</label>
+        <input id="b2make-wo-contents-linhas-descricao" name="menu-botao-altura" class="b2make-input-select b2make-tooltip b2make-input-only-number" title="Clique para mudar o número de linhas da descrição dos conteúdos" value="3">
+    </div>
+    <div class="b2make-conteiner-aba-extra" data-type="contents" data-id="texto">
+        <label id="b2make-wo-contents-titulo-lbl" class="b2make-menu-label">Título:</label>
+        <div id="b2make-wo-contents-titulo-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-contents-titulo-cor-val"></div>
+        <div id="b2make-wo-contents-titulo-text-cont" class="b2make-fonts-instance" data-font-negrito="sim"></div>
+        <label id="b2make-wo-contents-texto-lbl" class="b2make-menu-label">Descrição:</label>
+        <div id="b2make-wo-contents-texto-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-contents-texto-cor-val"></div>
+        <div id="b2make-wo-contents-texto-text-cont" class="b2make-fonts-instance"></div>
+        <label id="b2make-wo-contents-botao-text-lbl" class="b2make-menu-label">Botão:</label>
+        <div id="b2make-wo-contents-botao-text-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-contents-botao-text-cor-val"></div>
+        <div id="b2make-wo-contents-botao-text-cont" class="b2make-fonts-instance" data-font-negrito="sim" data-options="font-select,font-size,font-negrito,font-italico"></div>
+        <label id="b2make-wo-contents-tags-lbl" class="b2make-menu-label">Tags:</label>
+        <div id="b2make-wo-contents-tags-text-cont" class="b2make-fonts-instance"></div>
+        <label id="b2make-wo-contents-menu-lbl" class="b2make-menu-label">Menu:</label>
+        <div id="b2make-wo-contents-menu-text-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-contents-menu-text-cor-val"></div>
+        <div id="b2make-wo-contents-menu-text-cont" class="b2make-fonts-instance"></div>
+        <label id="b2make-wo-contents-menu-botao-lbl" class="b2make-menu-label">Botão:</label>
+        <div id="b2make-wo-contents-menu-botao-text-cor-val" class="b2make-jpicker" data-position="middle" data-obj-callback="#b2make-wo-contents-menu-botao-text-cor-val"></div>
+        <div id="b2make-wo-contents-menu-botao-text-cont" class="b2make-fonts-instance"></div>
+    </div>
+</div>

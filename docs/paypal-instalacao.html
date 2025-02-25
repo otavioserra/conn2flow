@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>PayPal - Instalação</title>
+</head>
+
+<body>
+<h3>PayPal</h3>
+		<p>&Eacute; necess&aacute;rio ter uma conta no PayPal e um aplicativo do mesmo para poder ativar esta op&ccedil;&atilde;o. Para isso basta seguir os passos a seguir:</p>
+		<ol>
+        	<li>Acesse o seguinte endere&ccedil;o de internet: <a href="https://developer.paypal.com" target="_blank">PayPal Developers</a>.</li>
+            <li>Clique no bot&atilde;o &quot;Log into Dashboard&quot;,</li>
+            <li>Informe o seu usu&aacute;rio e sua senha do PayPal, ou ent&atilde;o se n&atilde;o tiver um, crie uma nova conta do PayPal e retome esses passos.</li>
+            <li>Dentro da Dashborad do PayPal Developers, no menu a esquerda, clique na op&ccedil;&atilde;o &quot;My Apps &amp; Credentials&quot;.</li>
+            <li>Role a p&aacute;gina at&eacute; encontrar a se&ccedil;&atilde;o &quot;NVP/SOAP API apps&quot; e clique no bot&atilde;o azul escrito &quot;Enable Webhooks&quot;.</li>
+            <li>Role novamente a p&aacute;gina agora para cima at&eacute; a se&ccedil;&atilde;o &quot;REST API apps&quot; e clique no bot&atilde;o &quot;Create App&quot;. Isso ir&aacute; redirecionar a p&aacute;gina para o formul&aacute;rio de cria&ccedil;&atilde;o do App PayPal.</li>
+            <li>No formul&aacute;rio de cria&ccedil;&atilde;o do App PayPal, d&ecirc; um nome a seu App por exemplo &quot;Minha Loja&quot; no campo &quot;App Name&quot;. No campo &quot;Sandbox developer account&quot; coloque o sugerido, sen&atilde;o v&aacute; at&eacute; o menu da esquerda e escolha SANDBOX / Accounts e crie uma nova conta de sandbox l&aacute; e retorne a esta etapa novamente.</li>
+            <li>Clique no bot&atilde;o Create App. Ap&oacute;s isso o sistema do PayPal vai redirecionar para a p&aacute;gina do seu App do PayPal j&aacute; pronto para o uso.</li>
+            <li>Copie o Client ID e o Secret gerados no seu App para um lugar seguro tanto para o ambiente Sandbox quanto para o ambiente Live. Para alternar entre eles, basta clicar nos bot&otilde;es Sandbox e Live do lado direito do nome do seu app do PayPal na parte superior da tela.</li>
+            <li>Volte novamente a esta tela e clique no bot&atilde;o INSTALAR abaixo. Informe os Client ID e Secret do modo Sandbox e Live. Clique no bot&atilde;o Gravar.</li>
+            <li>Ap&oacute;s a instala&ccedil;&atilde;o do PayPal no B2make ser&aacute; necess&aacute;rio habilitar o PayPal Reference. Para isso basta clicar no bot&atilde;o HABILITAR REFERENCE e ent&atilde;o no bot&atilde;o Gravar. O navegador ent&atilde;o redireionar&aacute; esta p&aacute;gina para a p&aacute;gina do PayPal.</li>
+            <li>Informe seu usu&aacute;rio e senha do PayPal novamente e entre. O PayPal ent&atilde;o ir&aacute; lhe mostrar um contrato de uso. Basta ler o contrato e clicar no bot&atilde;o Concordo. Est&aacute; a&ccedil;&atilde;o ir&aacute; redirecionar novamente seu navegador para o ambiente B2make com o PayPal Reference ativo. </li>
+            <li>Por fim, basta seguir as op&ccedil;&otilde;es informadas abaixo para alternar entre modos de uso do B2make com o PayPal para a sua loja funcionar corretamente.</li>
+        </ol>
+<p><strong>Informa&ccedil;&otilde;es &Uacute;teis</strong></p>
+<ul>
+  <li>Para o PayPal funcionar no B2make, &eacute; obrigat&oacute;rio que o mesmo esteja instalado aqui no B2make e com o PayPal Reference habilitado conforme descrito os passos acima.</li>
+  <li>&Eacute; obrigat&oacute;rio na instal&ccedil;&atilde;o informar  o <strong>ClientID</strong> e o <strong>Secret</strong> do aplicativo criado no PayPal Developers aqui no B2make tanto no modo <strong>LIVE</strong> quanto no modo <strong>SANDBOX</strong>.</li>
+  <li>Com o aplicativo configurado, &eacute; necess&aacute;rio escolher a op&ccedil;&atilde;o <strong>ATIVAR</strong> para o PayPal  funcionar, ou <strong>DESATIVAR</strong> para o mesmo ficar desabilitado aqui no B2make.</li>
+  <li>Com o aplicativo ativado, &eacute; necess&aacute;rio definir a op&ccedil;&atilde;o <strong>SANDBOX</strong> para ativar o ambiente de testes de vendas. Ou ent&atilde;o a op&ccedil;&atilde;o <strong>LIVE</strong> para a loja funcionar em ambiente real.</li>
+  <li>Caso deseje usar o checkout transparente, ou seja, que a cobran&ccedil;a de cart&otilde;es de cr&eacute;dito seja diretamente feita na sua loja, &eacute; neces&aacute;rio que sua conta no PayPal seja business e que esteja ativo na sua conta o PayPal Plus. Para isso &eacute; necess&aacute;rio entrar em contato diretamente com o PayPal para ativa&ccedil;&atilde;o desta op&ccedil;&atilde;o com eles. Ap&oacute;s os tr&acirc;mites entre eles e consequentemente ativa&ccedil;&atilde;o do PayPal Plus, a sua loja no B2make automaticamente ir&aacute; funcionar com o PayPal Plus. Basta que nas op&ccedil;&otilde;es abaixo esteja ativado a op&ccedil;&atilde;o <strong>PAYPAL PLUS ATIVO</strong>. Acesse este link para maiores informa&ccedil;&otilde;es: <a href="https://www.paypal.com/br/webapps/mpp/paypal-payments-pro" target="_blank">PayPal Plus</a> . Caso sua conta PayPal n&atilde;o estiver configurada para usar o PayPal Plus, basta clicar no bot&atilde;o <strong>PAYPAL PLUS INATIVO</strong> que apenas o bot&atilde;o Pagar com o PayPal ficar&aacute; ativo na sua loja. </li>
+</ul>
+</body>
+</html>

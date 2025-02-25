@@ -1,0 +1,10 @@
+#b2make-wotc-text-editar{
+	position:absolute;
+	width:25px;
+	height:25px;
+	top:0px;
+	left:0px;
+	cursor:pointer;
+	background-image:url(../../images/b2make-bt-collection.png?v=6);
+	background-position:-271px -5px;
+}

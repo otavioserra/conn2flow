@@ -1,0 +1,134 @@
+html{
+	margin: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	font-smooth: auto;
+	color: #000;
+	text-decoration: none;
+	line-height: 1.3em;
+	letter-spacing: 0.025em;
+	text-align: left;
+	vertical-align: top;
+	word-spacing: 0.1em;
+	white-space: normal;
+	padding: 0px;
+	background-color: #FFF;
+	background-repeat: repeat-x;
+	background-position: top;
+}
+body{
+	padding: 0px;
+	margin: 0px;
+	background-color: #FFF;
+	color: #000;
+}
+table{
+	text-decoration: none;
+}
+p{
+	text-decoration: none;
+}
+b{
+	font-weight: bold;
+	text-decoration: none;
+}
+a{
+	color: #00F;
+	text-decoration: none;
+}
+a:visited{
+	color: #00F;
+	text-decoration: none;
+}
+a:hover{
+	color: #00F;
+	text-decoration: underline;
+}
+input,textarea,select{
+	border: 1px solid #999;
+}
+h1,.h1{
+	font-size: 25px;
+	font-weight: bold;
+	color: #000;
+}
+h2,.h2{
+	font-size: 20px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #000;
+}
+h3,.h3{
+	font-size: 16px;
+	font-weight: bold;
+	color: #000;
+}
+h4,.h4{
+	font-size: 12px;
+	font-weight: bold;
+	color: #000;
+}
+.clear {
+	clear: both;
+	width:100%;
+}
+.aimg:hover {
+	border: 2px solid #FFF;
+	margin:0px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	opacity:0.90;
+	-moz-opacity: 0.90;
+	filter: alpha(opacity=90);
+}
+.aimg{
+	margin:2px;
+}
+input[type="submit"]:hover ,input[type="button"]:hover{
+	cursor: pointer;
+}
+
+.b2make-check-box{
+}
+.b2make-check-box div{
+	background-color: #D7D9DD;
+    color: #58585B;
+    cursor: pointer;
+    line-height: 22px;
+    padding: 0px 10px 0px 10px;
+	border-right:solid 1px #FFF;
+	float:left;
+	margin:0px;
+}
+.b2make-check-box div:first-child{
+	-webkit-border-radius: 10px 0 0 10px;
+	border-radius: 10px 0 0 10px;
+}
+.b2make-check-box div:last-child{
+	-webkit-border-radius: 0 10px 10px 0;
+	border-radius: 0 10px 10px 0;
+	border:none;
+}
+.b2make-check-box div[data-checked="checked"]{
+	background-color: #464E56;
+	color:#FFF;
+}
+.b2make-check-box div:hover{
+	background-color: #464E56;
+	color:#FFF;
+}
+.b2make-check-box div[data-only-one="true"]{
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+.b2make-check-box[data-disabled="true"] div:hover{
+	background-color: #D7D9DD;
+	color:#58585B;
+	cursor:default;
+}
+.b2make-check-box[data-disabled="true"] div[data-checked="checked"]:hover{
+	background-color: #464E56;
+	color:#FFF;
+	cursor:default;
+}

@@ -1,0 +1,70 @@
+#b2make-wo-progresso-porcentagem-lbl {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 90px;
+}
+#b2make-wo-progresso-porcentagem {
+    position: absolute;
+    left: 90px;
+    top: 0px;
+    width: 40px;
+    text-align: center;
+}
+#b2make-wo-progresso-espessura-lbl {
+    position: absolute;
+    left: 0px;
+    top: 24px;
+    width: 90px;
+}
+#b2make-wo-progresso-espessura {
+    position: absolute;
+    left: 90px;
+    top: 24px;
+    width: 40px;
+    text-align: center;
+}
+#b2make-wo-progresso-barra1-cor-val {
+    position: absolute;
+    left: 150px;
+    top: 0px;
+}
+#b2make-wo-progresso-barra2-cor-val {
+    position: absolute;
+    left: 180px;
+    top: 0px;
+}
+#b2make-wo-progresso-texto-cor-val {
+    position: absolute;
+    left: 210px;
+    top: 0px;
+}
+#b2make-wo-progresso-porcentagem-text-cont{
+	position:absolute;
+	left:240px;
+	top:0px;
+}
+.b2make-progresso-barra-cont{
+	width:100%;
+	position:relative;
+}
+.b2make-progresso-barra-1{
+	z-index:1;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:inherit;
+	height:inherit;
+	background-color:#CCC;
+}
+.b2make-progresso-barra-2{
+	z-index:2;
+	position:absolute;
+	top:0px;
+	left:0px;
+	height:inherit;
+	background-color:#1e7fd0;
+}
+.b2make-progresso-texto{
+	padding:5px;
+}

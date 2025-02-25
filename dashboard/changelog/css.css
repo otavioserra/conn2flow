@@ -1,0 +1,39 @@
+/******************** Gestor **********************/
+#b2make-gestor-site{
+	padding:15px 20px 30px 15px;
+	width: calc(100% - 305px);
+}
+/******************** Local **********************/
+h1{
+	font-size: 23px;
+    line-height: 23px;
+    color: #000000;
+    margin-bottom: 18px;
+	padding-left:15px;
+	font-weight: normal;
+}
+.b2make-dashboard-cont{
+	padding:0px 15px 15px 15px;
+}
+.b2make-dashboard-titulo-principal{
+    font-size: 17px;
+    color: rgba(0,0,0,0.6);
+	padding:0px 15px 15px 15px;
+}
+.b2make-dashboard-titulo{
+    font-size: 17px;
+    color: rgba(0,0,0,0.6);
+	padding:0px 15px 10px 0px;
+}
+.b2make-dashboard-tipo{
+	font-size:11px;
+	color: rgba(0,0,0,0.38);
+	padding:0px 10px 10px 0px;
+}
+.b2make-dashboard-list{
+	margin:0px 0px 10px 0px;
+}
+.b2make-dashboard-list li{
+	font-size:11px;
+	color: rgba(0,0,0,0.38);
+}

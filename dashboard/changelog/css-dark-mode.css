@@ -1,0 +1,20 @@
+/******************** Gestor **********************/
+#b2make-gestor-site{
+	background-color:rgb(64,67,74);
+}
+/******************** Local **********************/
+h1{
+	color: #FFF;
+}
+.b2make-dashboard-titulo-principal{
+    color: #FFF;
+}
+.b2make-dashboard-titulo{
+    color: #FFF;
+}
+.b2make-dashboard-tipo{
+	color: #FFF;
+}
+.b2make-dashboard-list li{
+	color: #FFF;
+}

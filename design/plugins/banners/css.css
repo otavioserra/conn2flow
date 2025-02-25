@@ -1,0 +1,688 @@
+.b2make-banners-widget-holder{
+	height:inherit;
+	width:inherit;
+}
+.b2make-banners-widget-image{
+	float:left;
+	width:100%;
+	height:inherit;
+	background-size: cover;
+	background-repeat:no-repeat;
+	background-position:top center;
+	position:relative;
+	color:#000;
+}
+a.b2make-banners-widget-image:hover{
+	text-decoration:none;
+}
+.b2make-banners-widget-image-cont{
+	position:absolute;
+	display:none;
+}
+.b2make-banners-widget-titulo{
+	width:inherit;
+	position:absolute;
+	top:165px;
+	line-height:17px;
+	font-size:17px;
+	color:#FFF;
+	max-height:34px;
+	overflow:hidden;
+	text-overflow: ellipsis;
+}
+#b2make-banners-btn{
+	position: absolute;
+    top: 0px;
+    left: 120px;
+}
+#b2make-banners-swfupload-control p{
+	margin:10px 10px 10px 0px;
+	font-size:9px;
+	color:#FFF;
+}
+#b2make-banners-opcoes{
+	position:absolute;
+	left:230px;
+	top:0px;
+	width:190px;
+}
+#b2make-banners-confirm-delete{
+	position:absolute;
+	left:0px;
+	top:0px;
+	cursor:pointer;
+	display:block;
+	width:240px;
+	color:#434142;
+	font-size:12px;
+}
+#b2make-banners-confirm-delete-input{
+	cursor:pointer;
+}
+#b2make-banners-confirm-delete-title{
+	position:absolute;
+	top:2px;
+	left:22px;
+	width:220px;
+}
+#b2make-banners-lista-banners{
+	overflow-y:auto;
+	width:270px;
+	height:290px;
+	position:absolute;
+	left:15px;
+	top:35px;
+	background-color:#FFF;
+	padding:5px;
+}
+#b2make-banners-add{
+	position:absolute;
+	left:15px;
+	top:0px;
+}
+#b2make-banners-lista-images{
+	height:300px;
+	width:465px;
+	overflow:auto;
+	margin-right:0px;
+	position:absolute;
+	left:305px;
+	top:35px;
+	z-index:1;
+}
+#b2make-fb-nome-lbl{
+	display:block;
+	margin-bottom:5px;
+}
+#b2make-fb-nome{
+	width:300px;
+}
+.b2make-banners-lista-banners{
+	margin:2px 5px;
+	min-height:16px;
+	max-height:26px;
+	position:relative;
+}
+.b2make-banners-show{
+	background-image:url(../../images/b2make-bt-collection.png?v=6);
+	background-position:-331px -2px;
+	width:25px;
+	height:25px;
+	float:left;
+	cursor:pointer;
+}
+.b2make-banners-show[data-status="show"]{
+	background-position:-301px -2px;
+}
+.b2make-banners-nome{
+	float:left;
+	margin-left:3px;
+	width:180px;
+	font-size:12px;
+	line-height:25px;
+	max-height:25px;
+	color:#000000;
+	overflow:hidden;
+	cursor:pointer;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+	padding-top:2px;
+}
+.b2make-banners-nome[data-status="show"]{
+	font-weight:bold;
+}
+.b2make-banners-edit{
+	background-image:url(../../images/b2make-bt-collection.png?v=6);
+	background-position:-271px -2px;
+	width:25px;
+	height:25px;
+	position:absolute;
+	top:0px;
+	right:27px;
+	cursor:pointer;
+}
+.b2make-banners-delete{
+	background-image:url(../../images/b2make-bt-collection.png?v=6);
+	background-position:-361px -2px;
+	width:25px;
+	height:26px;
+	position:absolute;
+	top:0px;
+	right:0px;
+	cursor:pointer;
+}
+.b2make-banners-image-holder{
+	width:77px;
+	height:78px;
+	line-height:78px;
+	text-align:center;
+	float:left;
+	margin:5px 5px 30px 5px;
+	position:relative;
+	border:1px solid #F7F7F8;
+	background-color:#F7F7F8;
+	cursor:pointer;
+}
+.b2make-banners-image-holder:hover{
+	border:1px solid #434142;
+}
+.b2make-banners-image-holder-clicked{
+	border:1px solid #434142;
+	background-color:#4B5057;
+}
+.b2make-banners-image-holder img,.b2make-banners-imagem{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%,-50%); /* IE 9 */
+   	-webkit-transform: translate(-50%,-50%); /* Safari */
+}
+.b2make-banners-image-delete{
+	background-image:url(../../images/b2make-bt-collection-mini.png?v=6);
+	background-position:-289px -2px;
+	width:20px;
+	height:20px;
+	position:absolute;
+	bottom:-25px;
+	right:0px;
+	z-index:1;
+	cursor:pointer;
+}
+.b2make-banners-data-edit{
+	background-image:url(../../images/b2make-bt-collection-mini.png?v=6);
+	background-position:-215px -2px;
+	width:20px;
+	height:20px;
+	position:absolute;
+	bottom:-25px;
+	right:21px;
+	z-index:1;
+	cursor:pointer;
+}
+#b2make-wo-banners-lbl{
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:80px;
+}
+#b2make-wo-banners-editar-btn{
+	position:absolute;
+	left:60px;
+	top:0px;
+	width:60px;
+}
+#b2make-wo-banners-titulo-lbl{
+	position:absolute;
+	left:0px;
+	top:23px;
+	width:80px;
+}
+#b2make-wo-banners-titulo-cor-val{
+	position:absolute;
+	left:70px;
+	top:23px;
+}
+#b2make-wo-banners-titulo-text-cont{
+	position:absolute;
+	left:95px;
+	top:23px;
+}
+#b2make-woca-banners-layout{
+	width:50px;
+}
+#b2make-woca-banners-texto{
+	width:50px;
+}
+.b2make-conteiner-aba-extra[data-type="banners"]{
+	position:absolute;
+	left:31px;
+	top:5px;
+}
+#b2make-wo-banners-widget-cor-lbl{
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:25px;
+	height:25px;
+	background-image:url(../../images/b2make-bt-collection.png?v=6);
+	background-position:-451px -35px;
+}
+#b2make-wo-banners-widget-cor-val{
+	position:absolute;
+	left:150px;
+	top:48px;
+}
+#b2make-wo-banners-caixa-cor-lbl{
+	position:absolute;
+	left:0px;
+	top:24px;
+	width:150px;
+}
+#b2make-wo-banners-caixa-cor-val{
+	position:absolute;
+	left:150px;
+	top:24px;
+}
+#b2make-wo-banners-seta-cor-lbl{
+	position:absolute;
+	left:0px;
+	top:48px;
+	width:150px;
+}
+#b2make-wo-banners-seta-cor-val{
+	position:absolute;
+	left:40px;
+	top:0px;
+}
+#b2make-wo-banners-titulo-topo-lbl{
+	position:absolute;
+	left:180px;
+	top:0px;
+	width:175px;
+}
+#b2make-wo-banners-titulo-topo{
+	position:absolute;
+	left:325px;
+	top:0px;
+	text-align:center;
+	width:50px;
+}
+#b2make-wo-banners-titulo-margem-lbl{
+	position:absolute;
+	left:180px;
+	top:24px;
+	width:175px;
+}
+#b2make-wo-banners-titulo-margem{
+	position:absolute;
+	left:325px;
+	top:24px;
+	text-align:center;
+	width:50px;
+}
+#b2make-wo-banners-titulo-padding-lbl{
+	position:absolute;
+	left:180px;
+	top:48px;
+	width:175px;
+}
+#b2make-wo-banners-titulo-padding{
+	position:absolute;
+	left:325px;
+	top:48px;
+	text-align:center;
+	width:50px;
+}
+#b2make-wo-banners-seta-topo-lbl{
+	position:absolute;
+	left:390px;
+	top:0px;
+	width:175px;
+}
+#b2make-wo-banners-seta-topo{
+	position:absolute;
+	left:480px;
+	top:0px;
+	text-align:center;
+	width:50px;
+}
+#b2make-wo-banners-seta-margem-lbl{
+	position:absolute;
+	left:390px;
+	top:24px;
+	width:175px;
+}
+#b2make-wo-banners-seta-margem{
+	position:absolute;
+	left:480px;
+	top:24px;
+	text-align:center;
+	width:50px;
+}
+#b2make-wo-banners-seta-tamanho-lbl{
+	position:absolute;
+	left:540px;
+	top:0px;
+	width:175px;
+}
+#b2make-wo-banners-seta-tamanho{
+	position:absolute;
+	left:635px;
+	top:0px;
+	text-align:center;
+	width:50px;
+}
+#b2make-wo-banners-seta-visivel-lbl{
+	position:absolute;
+	left:390px;
+	top:48px;
+	width:175px;
+}
+#b2make-wo-banners-seta-visivel{
+	position:absolute;
+	left:480px;
+	top:48px;
+	text-align:center;
+	width:50px;
+	cursor:pointer;
+}
+#b2make-wo-banners-titulo-lbl{
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:70px;
+}
+#b2make-wo-banners-titulo-cor-val{
+	position:absolute;
+	left:75px;
+	top:0px;
+}
+#b2make-wo-banners-titulo-text-cont{
+	position:absolute;
+	left:100px;
+	top:0px;
+}
+#b2make-wo-banners-sub-titulo-lbl{
+	position:absolute;
+	left:0px;
+	top:24px;
+	width:70px;
+}
+#b2make-wo-banners-sub-titulo-cor-val{
+	position:absolute;
+	left:75px;
+	top:24px;
+}
+#b2make-wo-banners-sub-titulo-text-cont{
+	position:absolute;
+	left:100px;
+	top:24px;
+}
+#b2make-wo-banners-preco-lbl{
+	position:absolute;
+	left:0px;
+	top:48px;
+	width:70px;
+}
+#b2make-wo-banners-preco-cor-val{
+	position:absolute;
+	left:75px;
+	top:48px;
+}
+#b2make-wo-banners-preco-text-cont{
+	position:absolute;
+	left:100px;
+	top:48px;
+}
+#b2make-wo-banners-botao-text-lbl{
+	position:absolute;
+	left:450px;
+	top:0px;
+	width:50px;
+}
+#b2make-wo-banners-botao-text-cor-val{
+	position:absolute;
+	left:500px;
+	top:0px;
+}
+#b2make-wo-banners-botao-text-cont{
+	position:absolute;
+	left:525px;
+	top:0px;
+}
+#b2make-banners-lista{
+	overflow-y:auto;
+	width:740px;
+	height:200px;
+	position:absolute;
+	left:15px;
+	top:45px;
+	background-color:#ECEDEF;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+}
+#b2make-banners-add{
+	position:absolute;
+	left:14px;
+	top:0px;
+}
+.b2make-banners-lista{
+	margin:2px 5px;
+	min-height:16px;
+	max-height:26px;
+	position:relative;
+}
+.b2make-banners-list{
+	width:inherit;
+	height:inherit;
+	overflow-y:auto;
+}
+.b2make-service-cont{
+	float:left;
+	margin:10px;
+	height:280px;
+	width:159px;
+	background-color:#FFF;
+	overflow:hidden;
+	padding:10px;
+	position:relative;
+	display:block;
+}
+.b2make-service-name{
+	margin:5px 0px;
+	font-size:18px;
+	line-height:20px;
+	max-height:40px;
+	font-weight:bold;
+	overflow:hidden;
+}
+.b2make-service-descricao{
+	margin:5px 0px;
+	line-height:15px;
+	font-size:13px;
+	overflow:hidden;
+	max-height:30px;
+}
+.b2make-service-comprar{
+	cursor:pointer;
+	position:absolute;
+	bottom:10px;
+	right:10px;
+	background-color:#F00000;
+	padding:5px;
+	line-height:18px;
+	font-weight:bold;
+	display:block;
+	color:#58585B;
+}
+.b2make-service-preco{
+	position:absolute;
+	left:10px;
+	bottom:10px;
+	font-weight:bold;
+	font-size:16px;
+}
+.b2make-banners-lista-banners{
+	position:relative;
+}
+#b2make-banners-mask{
+	border:dashed 3px #000;
+	width:75px;
+	height:74px;
+	line-height:74px;
+	text-align:center;
+	float:left;
+	margin:5px 5px 30px 5px;
+	position:relative;
+	background-image:url(../../images/b2make-widget-conteiner-mask.png);
+}
+#b2make-banners-lista-images-hide{
+	display:none;
+}
+#b2make-fb-titulo-lbl{
+	display:block;
+	margin-bottom:5px;
+}
+#b2make-fb-titulo{
+	width:400px;
+}
+#b2make-fb-sub-titulo-lbl{
+	display:block;
+	margin-bottom:5px;
+}
+#b2make-fb-sub-titulo{
+	width:400px;
+}
+#b2make-fb-url-lbl{
+	display:block;
+	margin-bottom:5px;
+}
+#b2make-fb-url{
+	width:400px;
+}
+.b2make-banners-widget-image-titulo{
+	color:#000000;
+	font-size:20px;
+}
+.b2make-banners-widget-image-sub-titulo{
+	color:#000000;
+	font-size:15px;
+	margin-top:0.3em;
+}
+#b2make-wo-banners-ease-type-lbl{
+	position:absolute;
+	left:0px;
+	top:48px;
+	width:140px;
+}
+#b2make-wo-banners-ease-type{
+	position:absolute;
+	left:140px;
+	top:48px;
+	width:150px;
+	cursor:pointer;
+}
+#b2make-wo-banners-animation-type-lbl{
+	position:absolute;
+	left:0px;
+	top:24px;
+	width:140px;
+}
+#b2make-wo-banners-animation-type{
+	position:absolute;
+	left:140px;
+	top:24px;
+	width:150px;
+	cursor:pointer;
+}
+#b2make-wo-banners-tempo-transicao-lbl{
+	position:absolute;
+	left:300px;
+	top:0px;
+	width:140px;
+}
+#b2make-wo-banners-tempo-transicao{
+	position:absolute;
+	left:440px;
+	top:0px;
+	width:50px;
+	text-align:center;
+	cursor:pointer;
+}
+#b2make-wo-banners-tempo-exposicao-lbl{
+	position:absolute;
+	left:300px;
+	top:24px;
+	width:140px;
+}
+#b2make-wo-banners-tempo-exposicao{
+	position:absolute;
+	left:440px;
+	top:24px;
+	width:50px;
+	text-align:center;
+	cursor:pointer;
+}
+#b2make-wo-banners-animation-lbl{
+	position: absolute;
+	left:0px;
+	top:0px;
+}
+#b2make-wo-banners-animation-start-pause{
+	position:absolute;
+	top:5px;
+	left:60px;
+	width:17px;
+	height:12px;
+	background-image:url(../../images/b2make-slideshow-start-pause.png);
+	cursor:pointer;
+}
+.b2make-banners-widget-seta-left{
+	position:absolute;
+	left:50px;
+	top:50px;
+	width:30px;
+	height:30px;
+	cursor:pointer;
+	z-index:1;
+}
+.b2make-banners-widget-seta-right{
+	position:absolute;
+	right:50px;
+	top:50px;
+	width:30px;
+	height:30px;
+	cursor:pointer;
+	z-index:1;
+}
+.b2make-banners-widget-seta-left img,.b2make-banners-widget-seta-right img,.b2make-banners-widget-seta-left div,.b2make-banners-widget-seta-right div{
+	width:inherit;
+	height:inherit;
+}
+.b2make-banners-widget-seta-cont-left{
+	position:absolute;
+	left:0px;
+	top:0px;
+	height:inherit;
+	width:60px;
+	background-color:rgba(255,255,255,0.3);
+	z-index:1;
+}
+.b2make-banners-widget-seta-cont-right{
+	position:absolute;
+	right:0px;
+	top:0px;
+	height:inherit;
+	width:60px;
+	background-color:rgba(255,255,255,0.3);
+	z-index:1;
+}
+.b2make-banners-widget-seta-2-left{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+	width:18px;
+	height:28px;
+}
+.b2make-banners-widget-seta-2-right{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+	width:18px;
+	height:28px;
+}
+#b2make-wo-banners-layout-tipo {
+    position: absolute;
+    top: 24px;
+    left: 80px;
+    cursor: pointer;
+}
+#b2make-wo-banners-layout-tipo-lbl {
+    position: absolute;
+    top: 24px;
+    width: 80px;
+}

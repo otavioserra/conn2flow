@@ -1,0 +1,369 @@
+#b2make-wo-services-lbl{
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:80px;
+}
+#b2make-wo-services-editar-btn{
+	position:absolute;
+	left:60px;
+	top:0px;
+	width:60px;
+}
+#b2make-wo-services-titulo-lbl{
+	position:absolute;
+	left:0px;
+	top:23px;
+	width:80px;
+}
+#b2make-wo-services-titulo-cor-val{
+	position:absolute;
+	left:70px;
+	top:23px;
+}
+#b2make-wo-services-titulo-text-cont{
+	position:absolute;
+	left:95px;
+	top:23px;
+}
+#b2make-woca-services-layout{
+	width:50px;
+}
+#b2make-woca-services-texto{
+	width:50px;
+}
+.b2make-conteiner-aba-extra[data-type="services"]{
+	position:absolute;
+	left:31px;
+	top:5px;
+}
+#b2make-wo-services-widget-cor-lbl{
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:150px;
+}
+#b2make-wo-services-widget-cor-val{
+	position:absolute;
+	left:150px;
+	top:0px;
+}
+#b2make-wo-services-caixa-cor-lbl{
+	position:absolute;
+	left:0px;
+	top:24px;
+	width:150px;
+}
+#b2make-wo-services-caixa-cor-val{
+	position:absolute;
+	left:150px;
+	top:24px;
+}
+#b2make-wo-services-botao-cor-lbl{
+	position:absolute;
+	left:0px;
+	top:48px;
+	width:150px;
+}
+#b2make-wo-services-botao-cor-val{
+	position:absolute;
+	left:150px;
+	top:48px;
+}
+#b2make-wo-services-titulo-lbl{
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:70px;
+}
+#b2make-wo-services-titulo-cor-val{
+	position:absolute;
+	left:75px;
+	top:0px;
+}
+#b2make-wo-services-titulo-text-cont{
+	position:absolute;
+	left:100px;
+	top:0px;
+}
+#b2make-wo-services-descricao-lbl{
+	position:absolute;
+	left:0px;
+	top:24px;
+	width:70px;
+}
+#b2make-wo-services-descricao-cor-val{
+	position:absolute;
+	left:75px;
+	top:24px;
+}
+#b2make-wo-services-descricao-text-cont{
+	position:absolute;
+	left:100px;
+	top:24px;
+}
+#b2make-wo-services-preco-lbl{
+	position:absolute;
+	left:0px;
+	top:48px;
+	width:70px;
+}
+#b2make-wo-services-preco-cor-val{
+	position:absolute;
+	left:75px;
+	top:48px;
+}
+#b2make-wo-services-preco-text-cont{
+	position:absolute;
+	left:100px;
+	top:48px;
+}
+#b2make-wo-services-botao-text-lbl{
+	position:absolute;
+	left:450px;
+	top:0px;
+	width:50px;
+}
+#b2make-wo-services-botao-text-cor-val{
+	position:absolute;
+	left:500px;
+	top:0px;
+}
+#b2make-wo-services-botao-text-cont{
+	position:absolute;
+	left:525px;
+	top:0px;
+}
+#b2make-services-lista{
+	overflow-y:auto;
+	width:740px;
+	height:200px;
+	position:absolute;
+	left:15px;
+	top:45px;
+	background-color:#ECEDEF;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+}
+#b2make-services-add{
+	position:absolute;
+	left:14px;
+	top:0px;
+}
+.b2make-services-lista{
+	margin:2px 5px;
+	min-height:16px;
+	max-height:26px;
+	position:relative;
+}
+.b2make-services-show{
+	background-image:url(../images/b2make-icon-list-options.png);
+	background-position:-88px -2px;
+	width:12px;
+	height:12px;
+	float:left;
+	cursor:pointer;
+}
+.b2make-services-show[data-status="show"]{
+	background-position:-73px -2px;
+}
+.b2make-services-nome{
+	float:left;
+	margin-left:2px;
+	width:120px;
+	font-size:11px;
+	line-height:13px;
+	max-height:26px;
+	color:#000000;
+	overflow:hidden;
+}
+.b2make-services-edit{
+	background-image:url(../images/b2make-icon-list-options.png);
+	background-position:0px 0px;
+	width:16px;
+	height:16px;
+	position:absolute;
+	top:0px;
+	right:14px;
+	cursor:pointer;
+}
+.b2make-services-list{
+	width:inherit;
+	height:inherit;
+	overflow-y:auto;
+	text-align:center;
+}
+.b2make-service-cont{
+	display:inline-block !important;
+	margin:10px;
+	height:280px;
+	width:159px;
+	background-color:#FFF;
+	overflow:hidden;
+	padding:10px;
+	position:relative;
+	display:block;
+}
+.b2make-service-imagem{
+	background-size:cover;
+}
+.b2make-service-name{
+	margin:5px 0px;
+	font-size:18px;
+	line-height:20px;
+	max-height:40px;
+	font-weight:bold;
+	overflow:hidden;
+}
+.b2make-service-descricao{
+	margin:5px 0px;
+	line-height:15px;
+	font-size:13px;
+	overflow:hidden;
+	max-height:30px;
+}
+.b2make-service-comprar{
+	cursor:pointer;
+	position:absolute;
+	bottom:10px;
+	right:10px;
+	background-color:#F00000;
+	padding:5px;
+	line-height:18px;
+	font-weight:bold;
+	display:block;
+	color:#58585B;
+}
+.b2make-service-preco{
+	position:absolute;
+	left:10px;
+	bottom:10px;
+	font-weight:bold;
+	font-size:16px;
+}
+#b2make-wo-acao-click-lbl{
+	position:absolute;
+	top:24px;
+	width:80px;
+}
+#b2make-wo-acao-click{
+	position:absolute;
+	top:24px;
+	left:80px;
+}
+#b2make-wo-services-tamanho-cont-lbl{
+	position:absolute;
+	left:180px;
+	top:0px;
+	width:130px;
+}
+#b2make-wo-services-tamanho-cont{
+	position:absolute;
+	left:300px;
+	top:0px;
+	width:40px;
+	text-align:center;
+}
+#b2make-wo-services-tamanho-cont-2-lbl{
+	position:absolute;
+	left:180px;
+	top:24px;
+	width:130px;
+}
+#b2make-wo-services-tamanho-cont-2{
+	position:absolute;
+	left:300px;
+	top:24px;
+	width:40px;
+	text-align:center;
+}
+#b2make-wo-services-altura-imagem-lbl{
+	position:absolute;
+	left:180px;
+	top:48px;
+	width:130px;
+}
+#b2make-wo-services-altura-imagem{
+	position:absolute;
+	left:300px;
+	top:48px;
+	width:40px;
+	text-align:center;
+}
+#b2make-wo-services-margem-cont-lbl{
+	position:absolute;
+	left:355px;
+	top:0px;
+	width:110px;
+}
+#b2make-wo-services-margem-cont{
+	position:absolute;
+	left:465px;
+	top:0px;
+	width:40px;
+	text-align:center;
+}
+#b2make-services-add{
+	position:absolute;
+	left:14px;
+	top:0px;
+}
+#b2make-services-options-sel-lbl{
+	position:absolute;
+	top:0px;
+	width:120px;
+	left:120px;
+}
+#b2make-services-options-sel{
+	position:absolute;
+	top:0px;
+	left:235px;
+	cursor:pointer;
+}
+#b2make-services-options-cont{
+	margin:2px 5px;
+	min-height:16px;
+	max-height:26px;
+	position:relative;
+}
+#b2make-services-ordem-sel-lbl{
+	position:absolute;
+	top:10px;
+	width:120px;
+	left:0px;
+}
+#b2make-services-ordem-sel{
+	position:absolute;
+	top:10px;
+	left:120px;
+	cursor:pointer;
+}
+.b2make-services-lista{
+	margin:2px 5px;
+	min-height:16px;
+	max-height:26px;
+	position:relative;
+}
+#b2make-services-lista{
+	overflow-y:auto;
+	width:740px;
+	height:200px;
+	position:absolute;
+	left:15px;
+	top:45px;
+	background-color:#ECEDEF;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+	margin-top:15px;
+}
+#b2make-services-lista-categoria{
+	overflow-y:auto;
+	width:740px;
+	height:200px;
+	position:absolute;
+	left:15px;
+	top:60px;
+	background-color:#ECEDEF;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+}

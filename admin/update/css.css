@@ -1,0 +1,77 @@
+.grupo {
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+}
+.coluna1 {
+
+}
+.coluna2 {
+
+}
+.opcao {
+	margin: 5px 0px 5px 0px;
+	padding: 5px;
+	background-image: url(../../images/admin/box-branco.png);
+}
+.input  {
+	margin-right: 10px;
+	float: left;
+	width: 300px;
+}
+.input2  {
+	margin-right: 10px;
+	float: left;
+	width: 665px;
+}
+
+.botao {
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+}
+.input label {
+	display: block;
+	padding-bottom: 5px;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #000;
+}
+.opcao .descricao span {
+	font-size: 10pt;
+	color: #06F;
+	display: none;
+}
+.info {
+	float: right;
+	width: 535px;
+}
+.info2 {
+	float: right;
+	width: 210px;
+}
+
+.input2 label {
+	display: block;
+	padding-bottom: 5px;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #000000;
+}
+#instalacao-conteiner {
+	width: 400px;
+	position: relative;
+}
+.update_cel {
+	margin-bottom: 5px;
+	padding: 5px;
+}
+.update_carregando {
+	background-image: url(../../images/icons/lendo.gif);
+	background-position: left -2px;
+	background-repeat: no-repeat;
+	height: 19px;
+	width: 220px;
+	float: right;
+	color: #0C3;
+}

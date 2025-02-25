@@ -1,0 +1,47 @@
+/******************** Gestor **********************/
+#b2make-gestor-site{
+	background-color:#383A3F;
+}
+/******************** Local **********************/
+#saudacoes{
+	color:#FFF;
+}
+#saudacoes span{
+	color:#FFF;
+}
+.conteiner-card{
+	background-color:rgb(64,67,74);
+}
+.card-icon{
+	background-color: rgba(255,255,255,0.08);
+}
+.card-number{
+	color: rgba(255,255,255,0.87);
+}
+.card-label{
+	color: rgba(255,255,255,0.38);
+}
+.card-label-2{
+	color: #FFF;
+}
+.conteiner-card-chart,.conteiner-card-news{
+	background-color:rgb(64,67,74);
+}
+.card-chart{
+	color:#000;
+}
+#services-dont-exists{
+	color: rgba(255,255,255,0.6);
+}
+.service-label,.service-state,.service-stock,.service-sales{
+	color:#FFF;
+}
+.recent-requests-bars-tit,.recent-requests-bars-value{
+	color:rgba(255,255,255,0.6);
+}
+.recent-requests-bars-holder{
+	background-color:rgba(255,255,255,0.6);
+}
+.service-icon-action{
+	background-color:#FFF;
+}

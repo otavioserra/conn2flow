@@ -1,0 +1,1 @@
+[17-Aug-2020 17:42:26 America/Sao_Paulo] PHP Fatal error:  require(): Failed opening required '../../../b2make-xmlapi/cpanel-domain-mobile-add.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/platform/public_html/config/index.php on line 2097

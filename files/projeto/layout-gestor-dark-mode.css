@@ -1,0 +1,238 @@
+/******************** Gestor Dark Mode **********************/
+.ui-dialog-content p{
+	color:#000;
+}
+p{
+	color:#FFF;
+}
+#b2make-gestor-topo{
+	background-color:#383A3F;
+	border-bottom:rgba(255,255,255,0.08) solid 1px;
+}
+#b2make-gestor-dark-mode-switcher{
+	background-color:#FFFFFF;
+	border:rgba(112,112,112,0.08) solid 1px;
+}
+#b2make-gestor-dark-mode-circle{
+	left:21px;
+	border:rgba(0,0,0,0.11) solid 1px;
+	background-color:rgba(0,0,0,0.08);
+}
+#b2make-gestor-logo{
+	background-image:url(../../images/gestor/logo-dark.png);
+}
+#b2make-gestor-account-texto{
+	color:#FFF;	
+}
+#b2make-gestor-account-user{
+	color:#FFF;
+}
+#b2make-gestor-menu{
+	background-color:#383A3F;
+}
+#b2make-gestor-site{
+	background-color:rgb(64,67,74);
+	-webkit-box-shadow: -3px 3px 6px 0 rgba(255,255,255,0.08);
+	box-shadow: -3px 3px 6px 0 rgba(255,255,255,0.08);
+	color:#FFF;
+}
+#b2make-gestor-disk-usage-title{
+	color:rgba(255,255,255,0.6);
+}
+#b2make-gestor-disk-usage-percent{
+	color:rgba(255,255,255,0.38);
+}
+#b2make-gestor-disk-usage-slide-cont{
+	background-color:rgba(255,255,255,0.3);
+}
+.b2make-gestor-menu-pai-icone{
+	background-color:rgba(255,255,255,0.5);
+}
+.b2make-gestor-menu-pai-titulo{
+	color:rgba(255,255,255,0.5);
+}
+.b2make-gestor-menu-filho-titulo{
+	color:rgba(255,255,255,0.5);
+}
+.b2make-gestor-menu-filho-atual{
+	color:rgb(50,140,230);
+}
+#_in_informacao_titulo{
+	color:#FFF;
+}
+#busca_nome{
+	background-color:#2F3135;
+	color:rgba(255,255,255,0.38);
+}
+#busca_nome::placeholder{
+	color:rgba(255,255,255,0.38);
+}
+.b2make-componentes-select-holder,.b2make-componentes-datepicker-holder{
+	background-color:#393C42;
+	color:#FFF;
+	border-color:rgba(255,255,255,0.14);
+}
+.b2make-componentes-datepicker-holder input{
+	background-color:#393C42;
+}
+.b2make-componentes-datepicker-input::placeholder{
+	color:#FFF;
+}
+#esquecer-button{
+	background-color:#696C71;
+	color:#FFF;
+}
+.lista_header,.lista_header_acao{
+	background-color:#393C42;
+	color:rgba(255,255,255,0.87);
+}
+.lista_cel{
+	background-color:#40434A;
+	border-top:3px solid #40434A !important;
+	border-bottom:1px solid #40434A;
+	color:#FFF;
+}
+.lista_header_2 {
+	color:#FFF;
+	background-color:transparent;
+}
+.lista_cel_2{
+	color:#FFF;
+}
+.data-cont,.data-label{
+	color:#FFF !important;
+}
+a,a:visited{
+	color:#408FDE;
+}
+.title-cont{
+	color:#FFF !important;
+	border-bottom: 1px solid rgba(255,255,255,0.14) !important;
+}
+#validade-data-cont{
+	color:#FFF;
+}
+.percent{
+	color:#FFF;
+}
+.ui-widget-shadow {
+	-webkit-box-shadow: -8px -8px 8px rgba(100,100,100,0.7) !important;
+	box-shadow: -8px -8px 8px rgba(100,100,100,0.7) !important;
+}
+.b2make-componentes-select-holder-2{
+	background-color:rgba(64,67,74,0.9);
+	color:#FFF;
+}
+.b2make-componentes-select-holder-2:hover{
+	background-color:rgba(64,67,74,0.9);
+}
+.b2make-componentes-select-options{
+	background-color:rgba(64,67,74,0.9);
+	color:#FFF;
+}
+.b2make-componentes-select-option{
+	color:#FFF;
+}
+.data-value{
+	color:#FFF !important;
+}
+h2{
+	color:#FFF;
+}
+.alterar-validade,.visualizar-voucher,.imprimir-voucher,.baixar-manual-voucher,.alterar-identidade{
+	background-color:#53555C !important;
+}
+.caixa-validade-data,.caixa-validade{
+	background-color:#53555C !important;
+}
+#b2make-my-profile-form a,#b2make-change-password-button {
+    color:#408FDE !important;
+}
+#b2make-my-profile-form label {
+    background-color: #40434A !important;
+}
+.news-cel{
+	color:#FFF;
+}
+.div_lista_header,.div_lista_header_acao{
+	color: rgba(255, 255, 255, 0.87);
+}
+.div_lista_cel{
+	background-color: rgb(64, 67, 74);
+	color:#FFF;
+}
+.status-baixado{
+	background-color: rgba(255,255,255,0.38) !important;
+}
+.label-titulos{
+	color:#FFF !important;
+}
+.uploads-change-btn{
+	background-color:rgba(255,255,255,0.22) !important;
+	color:#FFF !important;
+}
+.btn-2{
+	background-color:rgba(255,255,255,0.22) !important;
+	color:#FFF !important;
+}
+.uploads-del-btn{
+	color:#FC8484 !important;
+}
+.tags-cont[data-type="pai"]{
+	background-color:rgba(255,255,255,0.22) !important;
+	color:#FFF !important;
+}
+.tags-cont[data-type="pai"][data-checked="sim"]{
+	background-color:rgba(50,140,230,0.11) !important;
+	color:#328CE6 !important;
+}
+#imagem-principal-cont div{
+	color:#FFF;
+}
+#stats-cont div,#stats-cont div a,#stats-cont div a:visited{
+	color:#FFF;
+}
+.marcador-cont,#tags-principal-tit{
+	color:#FFF !important;
+}
+.opcoes .opcao{
+	background-image:none;
+	color:#FFF;
+}
+.opcao .input label,.opcao .input2 label b{
+	color:#FFF;
+}
+.opcoes .opcao .info,.opcoes .opcao .info2{
+	color:#FFF;
+}
+.interno_sim{
+	color:#D1F0CD !important;
+}
+.interno_nao{
+	color:#408FDE !important;
+}
+.cortesia_sim{
+	color:#D1F0CD !important;
+}
+.cortesia_nao{
+	color:#408FDE !important;
+}
+.caixa-validade-fechar{
+	color: #FC8484 !important;
+}
+#tipo-fechar,.edit-campos-fechar,#add-campos-fechar{
+    background-image: url(images/b2make-close-2.png) !important;
+}
+.categoria-titulo{
+	color: #FFF !important;
+}
+.categoria-descricao{
+	color: #FFF !important;
+}
+/******************** B2make Interface **********************/
+.bi-botao{
+	background-color:#53555C;
+}
+.bi-carrossel-stats{
+	color: #FFFFFF;
+}

@@ -1,0 +1,166 @@
+.texto1 {
+	color: #096;
+	font-weight: bold;
+}
+.texto2 {
+	color: #C03;
+	font-weight: bold;
+}
+.texto3 {
+	color: #03F;
+	font-weight: bold;
+}
+
+.texto4 {
+	color: #009;
+	font-weight: bold;
+}
+
+.ordenacao {
+	text-align: center;
+}
+.galeria-foto{
+	width:100px;
+	height:75px;
+	float:left;
+	margin:10px;
+	position:relative;
+}
+.galeria-excluir-mask{
+	position:absolute;
+	right:0px;
+	top:0px;
+	width:16px;
+	height:16px;
+	background-color:#FFF;
+	padding:3px;
+}
+.galeria-excluir-foto{
+	background-image:url(../../images/admin/icon-central.png);
+	background-position:-96px 0px;
+	width:16px;
+	height:16px;
+	cursor:pointer;
+}
+#tabela_dados{
+	display:block;
+	float:left;
+	max-width:850px;
+}
+#categorias-produtos-cont{
+	float:left;
+	width: 30%;                         /* para navegadores que não suportam calc() */
+	width: -webkit-calc(100% - 870px);  /* para Chrome */
+	width: -moz-calc(100% - 870px);     /* para Firefox */
+	width: calc(100% - 870px);          /* para suporte nativo */
+	min-width:300px;
+	margin:15px 0px 0px 20px;
+}
+@media (max-width: 1460px){
+	#categorias-produtos-cont{
+		width: 100%;
+		margin:15px 0px 15px 0px;
+	}
+	#tabela_dados{
+		display:table;
+		width:100%;
+		max-width:100%;
+	}
+}
+#categorias-produtos-tit{
+	line-height:24px;
+	position:relative;
+}
+#categorias-produtos-txt{
+	margin-top:5px;
+	line-height:24px;
+	overflow:auto;
+}
+#categoria-add{
+	background-position:-40px -0px;
+	background-repeat: no-repeat;
+	background-image: url(../../images/admin/icon-superior.png);
+	position: absolute;
+	top: 6px;
+	right:6px;
+	width: 20px;
+	height: 20px;
+	cursor:pointer;
+}
+#categoria-add-cont{
+	background-color:#F7F7F8;
+	padding:2px;
+	position:absolute;
+	z-index:2;
+	top:2px;
+	right:2px;
+	display:none;
+}
+div#categorias-lista ul{
+	margin:0px 0px 0px 5px;
+	padding:0px 0px 0px 0px;
+	list-style:none;
+}
+div#categorias-lista ul li{
+	display:block;
+	padding:0px 0px 0px 10px;
+	cursor:pointer;
+	position:relative;
+}
+.barra1{
+	background-image:url(images/barra1.jpg);
+	background-repeat:repeat-x;
+}
+.categorias-controles{
+	position:absolute;
+	right:0px;
+	top:0px;
+	display:none;
+}
+.categorias-add{
+	background-position:-40px -0px;
+	background-repeat: no-repeat;
+	background-image: url(../../images/admin/icon-superior.png);
+	position: absolute;
+	top: 2px;
+	right:48px;
+	width: 20px;
+	height: 20px;
+	cursor:pointer;
+}
+.categorias-editar{
+	background-position:-80px -0px;
+	background-repeat: no-repeat;
+	background-image: url(../../images/admin/icon-superior.png);
+	position: absolute;
+	top: 2px;
+	right:24px;
+	width: 20px;
+	height: 20px;
+	cursor:pointer;
+}
+.categorias-excluir{
+	background-position:-140px -0px;
+	background-repeat: no-repeat;
+	background-image: url(../../images/admin/icon-superior.png);
+	position: absolute;
+	top: 2px;
+	right:2px;
+	width: 20px;
+	height: 20px;
+	cursor:pointer;
+}
+.categoria-selecionada{
+	background-image:url(images/barra2.jpg);
+	background-repeat:repeat-x;
+}
+#categoria-selecionada-seta{
+	background-image:url(images/seta.png);
+	background-repeat:no-repeat;
+	background-position:left center;
+	position:absolute;
+	left:0px;
+	top:6px;
+	width:8px;
+	height:11px;
+}

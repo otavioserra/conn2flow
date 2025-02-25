@@ -1,0 +1,35 @@
+#b2make-wogm-endereco-lbl{
+}
+#b2make-wogm-endereco-input{
+	position:absolute;
+	top:0px;
+	left:70px;
+	width:300px;
+	cursor:pointer;
+}
+#b2make-wogm-zoom-lbl{
+	position:absolute;
+	left:0px;
+	top:24px;
+	width:85px;
+}
+#b2make-wogm-zoom-input{
+	position:absolute;
+	top:24px;
+	left:85px;
+	width:30px;
+	text-align:center;
+	cursor:pointer;
+}
+#b2make-wogm-style-lbl{
+	position:absolute;
+	left:125px;
+	top:24px;
+	width:40px;
+}
+#b2make-wogm-style-input{
+	position:absolute;
+	top:24px;
+	left:165px;
+	cursor:pointer;
+}

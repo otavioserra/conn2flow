@@ -1,0 +1,2545 @@
+html{
+	margin: 0px;
+	font-family: 'Roboto Condensed', sans-serif;
+	font-size: 11px;
+	font-smooth: auto;
+	color: #58585B;
+	text-decoration: none;
+	line-height: normal;
+	letter-spacing: normal;
+	text-align: left;
+	vertical-align: top;
+	word-spacing: normal;
+	white-space: normal;
+	padding: 0px;
+	background-color: #FFF;
+	background-repeat: repeat-x;
+	background-position: top;
+}
+body{
+	padding: 0px;
+	margin: 0px;
+	background-color: #FFF;
+	color: #000;
+	-webkit-backface-visibility: hidden;
+}
+table{
+	text-decoration: none;
+}
+p{
+	text-decoration: none;
+}
+b{
+	font-weight: bold;
+	text-decoration: none;
+}
+a{
+	color: #00F;
+	text-decoration: none;
+}
+a:visited{
+	color: #00F;
+	text-decoration: none;
+}
+a:hover{
+	color: #00F;
+	text-decoration: underline;
+}
+input,textarea,select{
+	border: 1px solid #999;
+}
+h1,.h1{
+	font-size: 25px;
+	font-weight: bold;
+	color: #000;
+}
+h2,.h2{
+	font-size: 20px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #000;
+}
+h3,.h3{
+	font-size: 16px;
+	font-weight: bold;
+	color: #000;
+}
+h4,.h4{
+	font-size: 12px;
+	font-weight: bold;
+	color: #000;
+}
+button, input[type="button"], input[type="submit"]{
+	background-color:#D7D9DD;
+	color: #58585B;
+	cursor:pointer;
+	border:none;
+	line-height:22px;
+	padding:0px 10px 0px 10px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+button:hover, input[type="button"]:hover, input[type="submit"]:hover{
+	background-color: #464E56;
+	color:#FFF;
+}
+select{
+	font-weight: normal;
+	border:none;
+	padding:2px 15px 2px 5px;
+	color: #FFFFFF;
+	background-color: #383B3F;
+	font-family: 'Roboto Condensed', sans-serif;
+	font-size: 11px;
+	-webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+	background-image:url(//platform.b2make.com/design/images/b2make-select-arrow.png);
+	background-repeat:no-repeat;
+	background-position:right 4px center;
+	line-height:16px;
+}
+select:hover{
+	background-image:url(//platform.b2make.com/design/images/b2make-select-arrow-2.png);
+}
+input,textarea{
+	font-weight: normal;
+	border: none;
+	padding:1px 5px;
+	color: #434142;
+	background-color: #ECEDEF;
+	font-family: 'Roboto Condensed', sans-serif;
+	font-size: 11px;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+}
+.clear {
+	clear: both;
+	width:100%;
+}
+.aimg:hover {
+	border: 2px solid #FFF;
+	margin:0px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	opacity:0.90;
+	-moz-opacity: 0.90;
+	filter: alpha(opacity=90);
+}
+.aimg{
+	margin:2px;
+}
+input[type="submit"]:hover ,input[type="button"]:hover{
+	cursor: pointer;
+}
+.pp_social{
+	display:none;
+}
+#b2make-dialogbox{
+	position:fixed;
+	width:300px;
+	height:240px;
+	display:none;
+	border:#99989D 1px solid;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	background-color:#FFF;
+	z-index:1002;
+	-webkit-box-shadow: 2px 2px 6px 3px rgba(0,0,0,0.2);
+	box-shadow: 2px 2px 6px 3px rgba(0,0,0,0.2);
+}
+#b2make-dialogbox-head{
+	padding:0px 20px;
+	line-height:44px;
+	font-size:22px;
+	font-weight:bold;
+	background-color:#434142;
+	color:#fff;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+#b2make-dialogbox-msg p:first-child{
+	margin-top:0px;
+}
+#b2make-dialogbox-msg{
+	padding:15px;
+	color:#434142;
+	font-size:13px;
+}
+#b2make-dialogbox-btns{
+	padding:15px;
+	border-top:1px solid #99989D;
+	position:absolute;
+	left:0px;
+	bottom:0px;
+	width:calc(100% - 30px);
+}
+.b2make-dialogbox-btn{
+	float:right;
+	margin-left:15px;
+	padding:0px 15px;
+	line-height:32px;
+	font-size:17px;
+	background-color:#A1BC31;
+	border: #A1BC31 1px solid;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color:#FFF;
+	font-weight:bold;
+	cursor:pointer;
+}
+.b2make-dialogbox-btn:hover{
+	background-color: #BCC636;
+	border: #BCC636 1px solid;
+}
+.b2make-widget{
+	overflow:hidden;
+	z-index:1;
+}
+.b2make-conteiner-area{
+	height:inherit;
+	position:relative;
+	margin:0px auto;
+	width:1000px;
+	overflow:visible;
+	z-index:2;
+}
+.b2make-widget-out{
+	width:inherit;
+	height:inherit;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:1;
+}
+div.b2make-widget[data-type="galeria"] div.b2make-widget-out,div.b2make-widget[data-type="agenda"] div.b2make-widget-out{
+	padding:5px 10px 5px 5px;
+}
+div.b2make-widget[data-type="imagem"]{
+    background-position: center;
+}
+.b2make-texto{
+	overflow-y:auto;
+}
+.b2make-texto-table{
+	width: inherit;
+	height: inherit;
+	display:table;
+}
+.b2make-texto-cel { 
+    display: table-cell;
+}
+.b2make-galeria-widget-image{
+	width:150px;
+	height:110px;
+	line-height:110px;
+	text-align:center;
+	float:left;
+	margin:7px 7px;
+	position:relative;
+	cursor:pointer;
+	border:2px solid #CCC;
+	background-color:#EEE;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+.b2make-galeria-widget-image img{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+}
+.pp_pic_holder{
+	overflow:hidden;
+}
+.b2make-gwi-prev{
+	float:left;
+	background-color:#ccc;
+	width:30px;
+	height:calc(100% - 10px);
+	cursor:pointer;
+	font-size:12px;
+}
+.b2make-gwi-next{
+	float:right;
+	background-color:#ccc;
+	width:30px;
+	height:calc(100% - 10px);
+	cursor:pointer;
+	margin-right:12px;
+	font-size:12px;
+}
+.b2make-gwi-prev:hover,.b2make-gwi-next:hover{
+	background-color:#333;
+	color:#FFF;
+}
+.b2make-galeria-widget-holder{
+	float:left;
+	width:calc(100% - 73px);
+	overflow:hidden;
+}
+.b2make-gwi-table{
+	width: inherit;
+	height: inherit;
+	display:table;
+	text-align:center;
+}
+.b2make-gwi-cel { 
+    display: table-cell;
+	vertical-align: middle;
+	line-height:30px;
+	padding-top:15px;
+}
+.b2make-player-control {
+	position: absolute;
+	height: inherit;
+	width: inherit;
+	left: 0px;
+	top: 0px;
+	cursor:default;
+}
+.b2make-player-controls{
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: inherit;
+    height: 20%;
+    margin: auto;
+}
+.b2make-player-prev {
+	height: 9px;
+	width: 13px;
+	float:left;
+	margin:-2px 1px auto 5px;
+	overflow:hidden;
+	cursor:pointer;
+	position:relative;
+}
+.b2make-player-play {
+	height: 14px;
+	width: 13px;
+	float:left;
+	margin:-4px 0px 0px 4px;
+	overflow:hidden;
+	position:relative;
+	cursor:pointer;
+}
+.b2make-player-stop {
+	height: 12px;
+	width: 10px;
+	float:left;
+	margin:4px 2px auto 2px;
+	cursor:pointer;
+}
+.b2make-player-next {
+	height: 10px;
+	width: 15px;
+	float:left;
+	margin:-2px 2px auto 3px;
+	overflow:hidden;
+	position:relative;
+	cursor:pointer;
+}
+.b2make-player-time {
+	height: 9px;
+	width: 30px;
+	margin:-3px 10px auto auto;
+	color: #434142;
+	overflow: hidden;
+	text-align: center;
+	position:relative;
+	font-size:9px;
+	float:right;
+}
+.b2make-player-tit {
+	display:block;
+	height: 18px;
+	width: calc(100% - 103px);
+	overflow:hidden;
+	float:left;
+	margin:-3px 2px auto 2px;
+	overflow: hidden;
+	color: #434142;
+	text-align: left;
+	font-size:9px;
+}
+.b2make-player-controls{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+.b2make-player-pause_css div{
+	position:absolute;
+	left:-14px;
+}
+.b2make-wsoae-prev{
+	float:left;
+	background-color:#ECEDEF;
+	width:30px;
+	height: inherit;
+	cursor:pointer;
+	font-size:12px;
+}
+.b2make-wsoae-next{
+	float:right;
+	background-color:#ECEDEF;
+	width:30px;
+	height:inherit;
+	cursor:pointer;
+	margin-right:12px;
+	font-size:12px;
+}
+.b2make-wsoae-prev:hover,.b2make-wsoae-next:hover{
+	background-color:#333;
+	color:#FFF;
+}
+.b2make-eventos-widget-holder{
+	float:left;
+	width:calc(100% - 73px);
+	overflow:hidden;
+}
+.b2make-wsoae-table{
+	width: inherit;
+	height: inherit;
+	display:table;
+	text-align:center;
+}
+.b2make-wsoae-cel { 
+    display: table-cell;
+	vertical-align: middle;
+	line-height:inherit;
+}
+.b2make-widget-eventos{
+	float:left;
+	width:190px;
+	height:190px;
+	overflow:hidden;
+	margin:0px 0px 20px 20px;
+	padding:20px;
+	background-color: #ECEDEF;
+}
+.b2make-widget-eventos-data{
+	font-size:72px;
+	line-height:72px;
+	color:#A1BC31;
+	text-align:center;
+}
+.b2make-widget-eventos-mes{
+	font-size:46px;
+	line-height:46px;
+	color:#A1BC31;
+	text-align:center;
+}
+.b2make-widget-eventos-hora{
+	display:none;
+}
+.b2make-widget-eventos-titulo{
+	margin:10px 0px;
+	text-align:center;
+	font-size:16px;
+	line-height:16px;
+}
+.b2make-widget-eventos-descricao{
+	text-align:center;
+	font-size:13px;
+	line-height:13px;
+}
+.b2make-widget-menu{
+	padding-top:1px;
+	width:inherit;
+	height:inherit;
+	cursor:pointer;
+}
+.b2make-widget-menu-barra{
+	width:70%;
+	height:13%;
+	margin: 14% 15%;
+	background-color:#000;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+#b2make-widget-menu-holder{
+	position:absolute;
+	z-index:99;
+}
+#b2make-widget-menu-holder div{
+	display:block;
+	padding:0px 5px;
+	background-color:#000000;
+	color:#FFF;
+	width:165px;
+	line-height:24px;
+	font-size:18px;
+	margin-bottom:1px;
+	cursor:pointer;
+	overflow:hidden;
+}
+#b2make-widget-menu-holder div:hover{
+	text-decoration:none;
+	background-color:#999;
+	color:#CCC;
+}
+.b2make-widget-form_contato{
+	display:block;
+	width:100%;
+}
+.b2make-widget-form_contato label{
+	display:block;
+	width:100%;
+	margin:6px 0px;
+}
+.b2make-widget-form_contato input[type="text"]{
+	display:block;
+	width:100%;
+	margin:6px 0px;
+}
+.b2make-widget-form_contato textarea{
+	display:block;
+	width:100%;
+	height:70px;
+	margin:6px 0px;
+}
+.b2make-widget-form_contato input[type="button"]{
+	display:block;
+	padding:4px 6px;
+	float:right;
+	margin:6px;
+}
+.b2make-albumfotos-widget-holder,.b2make-albumfotos-widget-holder-2{
+	height:inherit;
+}
+.b2make-albumfotos-widget-menu{
+	padding:20px;
+	text-align:center;
+}
+.b2make-albumfotos-widget-menu-entry{
+	display:inline-block;
+	margin:15px 25px;
+	color:#606060;
+	border:2px #606060 solid;
+	-webkit-border-radius: 30px;
+	border-radius: 30px;
+	font-size:16px;
+	font-weight:bold;
+	min-width:170px;
+	height:50px;
+	line-height:50px;
+	overflow:hidden;
+	text-align:center;
+	cursor:pointer;
+}
+.b2make-albumfotos-widget-menu-entry[data-status="selected"]{
+	border:2px #1B4174 solid;
+	background-color:#1B4174;
+	color:#FFF;
+}
+.b2make-albumfotos-widget-images-descricao{
+	background-color:rgba(27,65,116,0.9);
+	position:absolute;
+	bottom:51px;
+	line-height:30px;
+	width:100%;
+	text-align:center;
+	overflow:hidden;
+	color:#FFF;
+	font-size:12px;
+	z-index:99;
+}
+.b2make-albumfotos-widget-content{
+	position:relative;
+}
+.b2make-albumfotos-widget-images-cont{
+	background-color:#FFF;
+	width:calc(100% - 130px);
+	height: inherit;
+	position:absolute;
+	left:60px;
+	overflow:hidden;
+	border:solid #FFF 5px;
+}
+.b2make-albumfotos-animation-holder{
+	position:absolute;
+	z-index:1;
+}
+.b2make-albumfotos-imagem1{
+	position:absolute;
+	left:0px;
+	top:0px;
+	background-size:cover;
+}
+.b2make-albumfotos-imagem2{
+	position:absolute;
+	top:0px;
+	background-size:cover;
+}
+.b2make-albumfotos-widget-image-2{
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:calc(100% - 51px);
+	background-size:cover;
+}
+.b2make-albumfotos-widget-images-mini{
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	width:100%;
+	height:45px;
+	overflow:hidden;
+}
+.b2make-albumfotos-widget-image-mini{
+	display:inline-block;
+	margin:0px 5px 5px 0px;
+	width:67px;
+	height:40px;
+	background-size:cover;
+	cursor:pointer;
+}
+.b2make-albumfotos-widget-left-arrow-cont{
+	position:absolute;
+	left:0px;
+	top:0px;
+	height:inherit;
+	width:60px;
+	z-index:1;
+}
+.b2make-albumfotos-widget-right-arrow-cont{
+	position:absolute;
+	right:0px;
+	top:0px;
+	height:inherit;
+	width:60px;
+	z-index:1;
+}
+.b2make-albumfotos-widget-left-arrow{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+	width:18px;
+	height:28px;
+	cursor:pointer;
+}
+.b2make-albumfotos-widget-right-arrow{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+	width:18px;
+	height:28px;
+	cursor:pointer;
+}
+.b2make-albumfotos-widget-image{
+	cursor:pointer;
+	margin:18px 18px 38px 18px;
+	float:left;
+	width:159px;
+	height:180px;
+	background-size: auto 159px;
+	background-repeat:no-repeat;
+	background-position:top center;
+	position:relative;
+}
+.b2make-albumfotos-widget-titulo{
+	width:inherit;
+	position:absolute;
+	bottom:-27px;
+	line-height:17px;
+	font-size:17px;
+	color:#FFF;
+}
+.b2make-albumfotos-legenda-btn{
+	position:absolute;
+	top:183px;
+	width:135px;
+	padding:5px 12px;
+	cursor:pointer;
+	text-align:left;
+	background-color:#ededed;
+	font-family:Helvetica, sans-serif;
+	font-size:18px;
+	color:#272727;
+}
+.b2make-albumfotos-legenda-cont{
+	position:absolute;
+	top:203px;
+	padding:10px 12px;
+	width:135px;
+	max-height:100px;
+	overflow-y:auto;
+	display:none;
+	background-color:#ededed;
+	z-index:999;
+	font-size:16px;
+	line-height:19px;
+	font-family:Helvetica, sans-serif;
+	color:#272727;
+}
+.b2make-slideshow-widget-holder{
+	position:absolute;
+	height:inherit;
+}
+.b2make-slideshow-widget-image{
+	height:inherit;
+	float:left;
+	background-size:auto 100%;
+	background-repeat:no-repeat;
+	cursor:pointer;
+}
+.b2make-albummusicas-widget-album{
+	float:left;
+	margin:15px;
+	width:300px;
+	min-height:142px;
+	background-color:#F7F7F8;
+	position:relative;
+	cursor:default;
+}
+.b2make-albummusicas-widget-titulo{
+	color:#211915;
+	font-size:16px;
+	line-height:18px;
+	position:absolute;
+	left:10px;
+	top:1px;
+	width:280px;
+	overflow:hidden;
+}
+.b2make-albummusicas-widget-controls,.b2make-albummusicas-widget-album .b2make-player-controls{
+	background-color:#4A72B0;
+	height:34px;
+	margin-top:20px;
+	position:relative;
+	width:100%;
+}
+.b2make-albummusicas-widget-sem-mp3{
+	margin-top:20px;
+	text-align:center;
+	color:#211915;
+	font-size:16px;
+	line-height:18px;
+}
+.b2make-albummusicas-widget-list-mp3s{
+	margin:10px;
+}
+.b2make-albummusicas-widget-mp3{
+	font-size:12px;
+	line-height:14px;
+	height:14px;
+	color:#211915;
+	cursor:pointer;
+	overflow:hidden;
+}
+.b2make-albummusicas-widget-playing{
+	color:#A1BC31;
+}
+.b2make-albummusicas-widget-controls .b2make-player-prev {
+	height: 12px;
+	width: 18px;
+	top: 11px;
+	left: 8px;
+	margin:auto;
+	position:absolute;
+	cursor:pointer;
+}
+.b2make-albummusicas-widget-controls .b2make-player-play {
+	height: 26px;
+	width: 26px;
+	top: 4px;
+	margin:auto;
+	left: 30px;
+	position:absolute;
+	cursor:pointer;
+}
+.b2make-albummusicas-widget-controls .b2make-player-stop {
+	height: 12px;
+	width: 18px;
+	top: 6px;
+	left: 17px;
+	position:absolute;
+	cursor:pointer;
+}
+.b2make-albummusicas-widget-controls .b2make-player-next {
+	height: 12px;
+	width: 18px;
+	top: 11px;
+	left: 63px;
+	margin:auto;
+	position:absolute;
+	cursor:pointer;
+}
+.b2make-albummusicas-widget-controls .b2make-player-time {
+	height: 18px;
+	width: 40px;
+	top: 10px;
+	left: 256px;
+	color: #FFF;
+	overflow: hidden;
+	text-align: center;
+	position:absolute;
+	font-size:12px;
+	margin:auto;
+	float: none;
+	line-height:14px;
+}
+.b2make-albummusicas-widget-controls .b2make-player-tit {
+	display:block;
+	height: 18px;
+	width: 165px;
+	overflow:hidden;
+	top: 10px;
+	left: 85px;
+	overflow: hidden;
+	color: #FFF;
+	text-align: left;
+	position:absolute;
+	font-size:12px;
+	margin:auto;
+	float: none;
+	line-height:14px;
+}
+.b2make-albummusicas-widget-controls .b2make-player-pause_css div{
+	position:absolute;
+	left:-30px;
+	top:-1px;
+}
+.b2make-widget-form_contato{
+	display:block;
+	width:100%;
+	height:inherit;
+}
+.b2make-widget-form_contato label{
+	display:block;
+	width:100%;
+	margin:6px 0px;
+}
+.b2make-widget-form_contato input[type="text"]{
+	display:block;
+	width:100%;
+	margin:6px 0px;
+}
+.b2make-widget-form_contato textarea{
+	display:block;
+	width:100%;
+	height:70px;
+	margin:6px 0px;
+}
+.b2make-widget-form_contato input[type="button"]{
+	display:block;
+	padding:4px 6px;
+	float:right;
+	margin:6px 1px 6px 6px;
+}
+.b2make-widget-form_contato .b2make-formulario-obrigatorio{
+	color:#F00;
+	font-weight:bold;
+	float:left;
+	margin:6px;
+	width:150px;
+}
+.b2make-widget-form_contato .b2make-formulario-erro{
+	background-color:#F00;
+	color:#FFF;
+}
+.b2make-widget-form_contato .b2make-formulario-enviado{
+	color: #093;
+	font-weight:bold;
+	float:left;
+	margin:6px;
+	width:150px;
+}
+.b2make-widget-form_contato .b2make-carregando{
+	background-image:url(//platform.b2make.com/design/images/b2make-loading.gif);
+	background-size:36px 36px;
+	background-repeat:no-repeat;
+	background-position:center center;
+	background-color:rgba(200, 200, 200, 0.7);
+	width:inherit;
+	height:inherit;
+	z-index:1;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.b2make-loading-area{
+	height:100px;
+	background-image:url(//platform.b2make.com/design/images/b2make-loading.gif);
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:center center;
+	background-color:#FFF;
+}
+#b2make-pagina-voltar-topo{
+	position:fixed;
+	right:20px;
+	bottom:20px;
+	width:61px;
+	height:61px;
+	cursor:pointer;
+	z-index:999;
+	background-image:url(//platform.b2make.com/design/images/b2make-voltar-ao-topo.png);
+}
+._parallax-nav-btn{
+	width:26px;
+	height:26px;
+	cursor:pointer;
+	background-repeat:no-repeat;
+}
+.b2make-redessociais-rede{
+	overflow:hidden;
+	float:left;
+	position:relative;
+}
+#b2make-technology-cont{
+	background-image: url(//platform.b2make.com/teste/includes/eservices/images/b2make-icon-poweredby-2.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-color: #ECEDEF;
+	width: 100%;
+	height: 39px;
+	z-index: 899;
+}
+#b2make-technology-cont #b2make-technology-link{
+	display:block;
+	margin:0px auto;
+	width:30px;
+	height:inherit;
+}
+.b2make-mobile-link{
+	display:block;
+	position:absolute;
+	top:0px;
+	left: 10px;
+	width:150px;
+	height:36px;
+	line-height:36px;
+	text-align:left;
+	color: #423F40 !important;
+	font-size: 10px;
+	cursor: pointer;
+	-webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+.b2make-instagram-posts{
+	display:block;
+	border:none;
+	float:left;
+	margin:15px;
+	width:220px;
+	height:220px;
+	background-repeat:no-repeat;
+	background-size:auto 100%;
+}
+.addthis_toolbox a {
+    margin-bottom: 5px;
+    line-height: initial;
+}
+.b2make-download-widget-link{
+	display:block;
+	width:inherit;
+	height:inherit;
+}
+.b2make-download-widget-link:hover{
+	text-decoration:none;
+}
+.b2make-download-widget-holder{
+	text-align:center;
+	background-color: #000;
+	color: #FFF;
+	font-size:16px;
+	font-weight:bold;
+}
+.b2make-download-widget-gradient{
+	width:inherit;
+	height:inherit;
+	position:absolute;
+	z-index:1;
+	left:0px;
+	top:0px;
+/* Permalink - use to edit and share this gradient: //colorzilla.com/gradient-editor/#000000+79,000000+79,000000+100&0+0,0.46+87,0.04+100 */
+	background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,0.42) 79%, rgba(0,0,0,0.46) 87%, rgba(0,0,0,0.04) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.42) 79%,rgba(0,0,0,0.46) 87%,rgba(0,0,0,0.04) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.42) 79%,rgba(0,0,0,0.46) 87%,rgba(0,0,0,0.04) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#0a000000',GradientType=0 ); /* IE6-9 */
+}
+.b2make-services-list{
+	width:inherit;
+	height:inherit;
+	overflow-y:auto;
+	text-align:center;
+}
+.b2make-service-cont{
+	display:inline-block !important;
+	margin:10px;
+	height:280px;
+	width:159px;
+	background-color:#FFF;
+	overflow:hidden;
+	padding:10px;
+	position:relative;
+	display:block;
+	color:#000;
+}
+.b2make-service-cont:hover{
+	text-decoration:none;
+}
+.b2make-service-name{
+	margin:5px 0px;
+	font-size:18px;
+	line-height:20px;
+	max-height:40px;
+	font-weight:bold;
+	overflow:hidden;
+	color:#000;
+}
+.b2make-service-descricao{
+	margin:5px 0px;
+	line-height:15px;
+	font-size:13px;
+	overflow:hidden;
+	max-height:30px;
+	color:#000;
+}
+.b2make-service-comprar{
+	cursor:pointer;
+	position:absolute;
+	bottom:10px;
+	right:10px;
+	background-color:#F00000;
+	padding:5px;
+	line-height:18px;
+	font-weight:bold;
+	display:block;
+	color:#58585B;
+}
+.b2make-service-preco{
+	position:absolute;
+	left:10px;
+	bottom:10px;
+	font-weight:bold;
+	font-size:16px;
+	color:#000;
+}
+.b2make-service-comprar:hover{
+	text-decoration:none;
+}
+.b2make-service-preco{
+	position:absolute;
+	left:10px;
+	bottom:10px;
+	font-weight:bold;
+	font-size:16px;
+}
+#b2make-services-carrinho{
+	position:fixed;
+	top:200px;
+	width:800px;
+	height:440px;
+	left:calc(50% - 325px);
+	top:calc(50% - 200px);
+	background-color:#eaeaea;
+	z-index:1001;
+	-webkit-box-shadow: 6px 6px 6px 0 rgba(0,0,0,0.2);
+	box-shadow: 6px 6px 6px 0 rgba(0,0,0,0.2);
+}
+#b2make-services-carrinho[data-mobile="true"]{
+	width:590px;
+	left:5px;
+}
+#b2make-services-carrinho-carregamento{
+	background-image:url(//platform.b2make.com/design/images/b2make-loading.gif);
+	background-position:center center;
+	background-color:#FFF;
+	background-repeat:no-repeat;
+	width:inherit;
+	height:270px;
+	position:absolute;
+	top:70px;
+	left:0px;
+	z-index:10;
+	display:none;
+}
+#b2make-services-carrinho-tit{
+	font-size:18px;
+	line-height:18px;
+	padding:10px 10px 10px 7px;
+	color:#434142;
+	text-transform:uppercase;
+}
+#b2make-services-carrinho-fechar{
+	position:absolute;
+	top:10px;
+	right:10px;
+	width:17px;
+	height:17px;
+	cursor:pointer;
+	background-image:url(//platform.b2make.com/design/images/b2make-store-carrinho-fechar.png);
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+#b2make-services-carrinho-lista-tit{
+	margin:0px 7px;
+	background-color:#babbc0;
+	height:30px;
+}
+.b2make-services-carrinho-lista-tit{
+	float:left;
+	font-size:13px;
+	text-transform:uppercase;
+	padding:5px;
+	line-height:20px;
+}
+.b2make-services-carrinho-lista-cont{
+	border-top:1px solid #E8E8E8;
+	background-color:#FFF;
+	height:30px;
+	overflow:hidden;
+	margin:0px 7px;
+}
+.b2make-services-carrinho-lista{
+	float:left;
+	font-size:14px;
+	padding:5px;
+	line-height:20px;
+	height:27px;
+	overflow:hidden;
+	display:inline-block;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.b2make-services-carrinho-lista input{
+	border:1px solid #babbc0;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	padding:0px 5px;
+	line-height:19px;
+	width:32px;
+}
+.b2make-sclt-quant-value{
+	background-color:#FFF;
+	width:35px;
+	text-align:center;
+}
+.b2make-sclt-nome{
+	width:400px;
+	overflow:hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align:center;
+}
+.b2make-sclt-nome[data-mobile="true"]{
+	width:200px;
+}
+.b2make-sclt-nome-ajuste{
+	text-align:left;
+}
+.b2make-sclt-quant{
+	width:50px;
+	text-align:center;
+}
+.b2make-sclt-excluir{
+	width:50px;
+	text-align:center;
+}
+.b2make-sclt-preco-unitario{
+	width:110px;
+}
+.b2make-sclt-preco-unitario[data-mobile="true"]{
+	width:90px;
+}
+.b2make-sclt-sub-total{
+	width:115px;
+	border-right: none;
+}
+.b2make-sclt-sub-total[data-mobile="true"]{
+	width:90px;
+}
+#b2make-services-carrinho-lista{
+	background-color:#E8E8E8;
+	height:275px;
+	overflow-y:auto;
+}
+#b2make-services-carrinho-total{
+	line-height:20px;
+	padding:10px;
+	text-align:right;
+	font-size:20px;
+	font-weight:bold;
+	border-top:solid 1px #434142;
+	border-bottom:solid 1px #434142;
+}
+#b2make-services-carrinho-continuar{
+	position:absolute;
+	right:190px;
+	bottom:15px;
+	line-height:22px;
+	padding:0px 20px;
+	background-color:#3c6298;
+	color:#FFF;
+	font-size:15px;
+	cursor:pointer;
+}
+#b2make-services-carrinho-continuar:hover{
+	text-decoration:none;
+}
+#b2make-services-carrinho-finalizar{
+	position:absolute;
+	right:15px;
+	bottom:15px;
+	line-height:26px;
+	padding:0px 20px;
+	background-color:#a1bc31;
+	color:#FFF;
+	font-size:18px;
+	cursor:pointer;
+}
+.b2make-sclt-excluir-btn{
+	background-image:url(//platform.b2make.com/design/images/b2make-icon-list-options.png);
+	background-position:-38px 0px;
+	width:16px;
+	height:16px;
+	margin:1px auto 5px auto;
+	cursor:pointer;
+}
+.b2make-widget-loading{
+	background-image:url(//platform.b2make.com/design/images/b2make-loading.gif);
+	background-position:center center;
+	background-color:#FFF;
+	background-repeat:no-repeat;
+	width:inherit;
+	height:inherit;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:10;
+}
+.b2make-eservices-preco-label-1{
+	font-size:70%;
+	color:#000;
+}
+.b2make-eservices-preco-label-2{
+	font-size:70%;
+	color:#000;
+}
+.b2make-banners-widget-holder{
+	height:inherit;
+	width:inherit;
+}
+.b2make-banners-widget-image{
+	float:left;
+	width:100%;
+	height:inherit;
+	background-size: cover;
+	background-repeat:no-repeat;
+	background-position:top center;
+	position:relative;
+	color:#000;
+}
+a.b2make-banners-widget-image:hover{
+	text-decoration:none;
+}
+.b2make-banners-widget-image-cont{
+	position:absolute;
+	display:none;
+}
+.b2make-banners-widget-image-titulo{
+	color:#000000;
+	font-size:20px;
+}
+.b2make-banners-widget-image-sub-titulo{
+	color:#000000;
+	font-size:15px;
+	margin-top:0.3em;
+}
+.b2make-banners-widget-seta-left{
+	position:absolute;
+	left:50px;
+	top:50px;
+	width:30px;
+	height:30px;
+	cursor:pointer;
+	z-index:999;
+}
+.b2make-banners-widget-seta-right{
+	position:absolute;
+	right:50px;
+	top:50px;
+	width:30px;
+	height:30px;
+	cursor:pointer;
+	z-index:999;
+}
+.b2make-library-loading{
+	background-image:url(//platform.b2make.com/design/images/b2make-loading.gif);
+	background-position:center center;
+	background-color:#FFF;
+	background-repeat:no-repeat;
+	width:inherit;
+	height:270px;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:10;
+}
+.b2make-widget-formularios{
+	display:block;
+	width:100%;
+	height:inherit;
+}
+.b2make-widget-formularios label{
+	display:block;
+	width:100%;
+	margin:6px 0px;
+}
+.b2make-widget-formularios input[type="text"]{
+	display:block;
+	width:100%;
+	margin:6px 0px;
+}
+.b2make-widget-formularios textarea{
+	display:block;
+	width:100%;
+	height:70px;
+	margin:6px 0px;
+}
+.b2make-widget-formularios input[type="button"]{
+	display:block;
+	padding:4px 6px;
+	float:right;
+	margin:6px;
+}
+.b2make-widget-formularios .b2make-formulario-obrigatorio{
+	color:#F00;
+	font-weight:bold;
+	float:left;
+	margin:6px;
+	width:150px;
+}
+.b2make-widget-formularios .b2make-formulario-erro{
+	background-color:#F00;
+	color:#FFF;
+}
+.b2make-widget-formularios .b2make-formulario-enviado{
+	color: #093;
+	font-weight:bold;
+	float:left;
+	margin:6px;
+	width:150px;
+}
+.b2make-widget-formularios .b2make-carregando{
+	background-image:url(//platform.b2make.com/design/images/b2make-loading.gif);
+	background-size:36px 36px;
+	background-repeat:no-repeat;
+	background-position:center center;
+	background-color:rgba(200, 200, 200, 0.7);
+	width:inherit;
+	height:inherit;
+	z-index:1;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.b2make-service-imagem{
+	background-size:cover;
+}
+.b2make-galeria-imagens-widget-image{
+	cursor:pointer;
+	margin:0px;
+	float:left;
+	width:200px;
+	height:200px;
+	background-size: cover;
+	background-repeat:no-repeat;
+	background-position:center center;
+	position:relative;
+}
+.b2make-galeria-imagens-widget-image-2{
+	width:inherit;
+	background-size:cover;
+	background-position:center center;
+	float:left;
+	cursor:pointer;
+}
+.b2make-galeria-imagens-descricao-cont{
+	float:left;
+	width:100%;
+	font-size:16px;
+	line-height:40px;
+	text-align:center;
+}
+.b2make-contents{
+	width:inherit;
+	height:inherit;
+	text-align:center;
+}
+.b2make-content-cont{
+	display:inline-block !important;
+	margin:10px;
+	height:280px;
+	width:159px;
+	background-color:#FFF;
+	overflow:hidden;
+	padding:10px;
+	position:relative;
+	display:block;
+}
+a.b2make-content-cont:visited, a .b2make-content-name, a .b2make-content-texto{
+	color:#000000;
+}
+a.b2make-content-cont:hover, a .b2make-content-name:hover, a .b2make-content-texto:hover{
+	text-decoration:none;
+	color:#000000;
+}
+.b2make-content-imagem{
+	background-size:cover;
+}
+.b2make-content-name{
+	margin:5px 0px;
+	font-size:18px;
+	line-height:20px;
+	max-height:40px;
+	font-weight:bold;
+	overflow:hidden;
+}
+.b2make-content-texto{
+	margin:5px 0px;
+	line-height:15px;
+	font-size:13px;
+	overflow:hidden;
+	max-height:30px;
+}
+.b2make-content-acessar{
+	cursor:pointer;
+	position:absolute;
+	bottom:10px;
+	right:10px;
+	background-color:#141414;
+	padding:5px;
+	line-height:18px;
+	font-weight:bold;
+	display:block;
+	color:#FFFFFF;
+}
+a.b2make-content-acessar:visited{
+	color:#FFFFFF;
+}
+a.b2make-content-acessar:hover{
+	text-decoration:none;
+	color:#FFFFFF;
+}
+.b2make-content-next{
+	position:absolute;
+	right:15px;
+	top:140px;
+	width:20px;
+	height:20px;
+	font-size:20px;
+	color:#000000;
+	cursor:pointer;
+	z-index:1;
+	line-height:20px;
+	-webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+.b2make-content-previous{
+	position:absolute;
+	left:15px;
+	top:140px;
+	width:20px;
+	height:20px;
+	font-size:20px;
+	color:#000000;
+	cursor:pointer;
+	z-index:1;
+	line-height:20px;
+	-webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+.b2make-content-cont-2{
+	display:inline-block;
+	margin:10px;
+	height:280px;
+	width:159px;
+	background-color:#FFF;
+	position:relative;
+}
+.b2make-content-cont-3{
+	position:absolute;
+	background-color:#FFF;
+}
+a.b2make-content-cont-4{
+	overflow:hidden;
+	display:block;
+	width:calc(100% - 35px);
+	color:#1B4174;
+	padding-right:35px;
+	text-align:left;
+	font-size:19px;
+	line-height:50px;
+	height:50px;
+	text-overflow: ellipsis;
+    white-space: nowrap;
+	border-bottom:1px solid rgba(27,65,116,0.1);
+	background-image:url(//platform.b2make.com/design/images/b2make-contents-lista-texto-mais.png?v=1);
+	background-repeat:no-repeat;
+	background-position:center right;
+}
+.b2make-content-cont-4:last-child{
+	border-bottom:none;
+}
+a.b2make-content-cont-4:visited{
+	color:#1B4174;
+}
+.b2make-content-imagem-2{
+	background-size:cover;
+	background-position:center center;
+	position:absolute;
+	width:inherit;
+	height:inherit;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+}
+.b2make-content-imagem-mask{
+	position:absolute;
+	width:inherit;
+	height:inherit;
+	overflow:hidden;
+}
+.b2make-content-tag-cont{
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	width:calc(100% - 10px);
+	text-align:right;
+	padding:5px;
+}
+.b2make-img-zoom-transition {
+    -webkit-transform: scale(1.3); 
+    -moz-transform: scale(1.3);
+    -o-transform: scale(1.3);
+    transform: scale(1.3);
+}
+.b2make-content-texto-cont{
+	position:absolute;
+	width:calc(100% - 30px);
+	bottom:0px;
+	padding:15px;
+	background-color:rgba(0,0,0,0.4);
+	overflow:hidden;
+}
+.b2make-content-name-2{
+	font-size:18px;
+	line-height:20px;
+	max-height:40px;
+	font-weight:bold;
+	overflow:hidden;
+	width:calc(100% - 30px);
+}
+.b2make-content-texto-2{
+	line-height:15px;
+	font-size:13px;
+	overflow:hidden;
+	max-height:45px;
+	width:calc(100% - 30px);
+}
+a.b2make-content-cont-2:visited, a .b2make-content-texto-cont .b2make-content-name-2, a .b2make-content-texto-cont .b2make-content-texto-2{
+	color:#FFFFFF;
+}
+a.b2make-content-cont-2:hover, a .b2make-content-texto-cont .b2make-content-name-2:hover, a .b2make-content-texto-cont .b2make-content-texto-2:hover{
+	text-decoration:none;
+	color:#FFFFFF;
+}
+a.b2make-content-cont-3:visited, a .b2make-content-texto-cont .b2make-content-name-2, a .b2make-content-texto-cont .b2make-content-texto-2{
+	color:#FFFFFF;
+}
+a.b2make-content-cont-3:hover, a .b2make-content-texto-cont .b2make-content-name-2:hover, a .b2make-content-texto-cont .b2make-content-texto-2:hover{
+	text-decoration:none;
+	color:#FFFFFF;
+}
+.b2make-menu-tags{
+	width:inherit;
+	text-align:left;
+}
+.b2make-menu-tag{
+	display:inline-block;
+	width:200px;
+	line-height:80px;
+	text-align:center;
+	color:#606060;
+	font-size:20px;
+	margin:5px;
+	padding:0px 10px;
+	background-color:#e1e1e1;
+	border-bottom: solid 5px #e1e1e1;
+	cursor:pointer;
+}
+.b2make-content-acessar-2{
+	cursor:pointer;
+	background-color:#141414;
+	padding:5px;
+	line-height:18px;
+	font-weight:bold;
+	display:block;
+	color:#FFFFFF;
+	margin:0px auto;
+	-webkit-border-radius: 7px 7px 7px 7px;
+	border-radius: 7px 7px 7px 7px;
+	overflow:hidden;
+}
+.b2make-content-acessar-2:visited{
+	color:#FFFFFF;
+}
+a.b2make-content-acessar-2:hover{
+	text-decoration:none;
+	color:#FFFFFF;
+}
+.b2make-content-acessar-mask{
+	position:absolute;
+	bottom:-30px;
+	left:0px;
+	width:100%;
+	height:10px;
+}
+.b2make-menu-paginas{
+	background-color:#003F72;
+	width:inherit;
+	height:inherit;
+	cursor:pointer;
+}
+.b2make-menu-paginas[data-escrito-menu="s"]{
+	background-image:url(//platform.b2make.com/design/plugins/menu-paginas/images/b2make-menu-paginas-com-escrito.png?v=1);
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+.b2make-menu-paginas[data-escrito-menu="n"]{
+	background-image:url(//platform.b2make.com/design/plugins/menu-paginas/images/b2make-menu-paginas-sem-escrito.png);
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+.b2make-menu-paginas-submenu{
+	position:absolute;
+	background-color:rgba(27,65,116,0.9);
+	width:400px;
+	height:500px;
+	z-index:9999;
+}
+.b2make-menu-paginas-submenu ul{
+	list-style:none;
+	margin:0px;
+	padding:0px;
+}
+.b2make-menu-paginas-submenu ul li{
+	display:block;
+	margin:0px;
+	padding:0px;
+	border-bottom:1px #325482 solid;
+	overflow:hidden;
+}
+.b2make-menu-paginas-submenu ul li:last-child{
+	border-bottom:none;
+}
+.b2make-menu-paginas-submenu ul li a{
+	padding-left:30px;
+	width:370px;
+	font-size:18px;
+	font-weight:bold;
+	line-height:60px;
+	max-height:60px;
+	color:#FFF;
+	font-family:'Maven Pro';
+	overflow:hidden;
+	display:inline-block;
+	text-overflow: ellipsis;
+}
+.b2make-conteiner-banners-holder{
+	height:inherit;
+	width:inherit;
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+.b2make-conteiner-banners-image{
+	float:left;
+	width:100%;
+	height:inherit;
+	background-size: cover;
+	background-repeat:no-repeat;
+	background-position:top center;
+	position:relative;
+	color:#000;
+}
+a.b2make-conteiner-banners-image:hover{
+	text-decoration:none;
+}
+.b2make-conteiner-banners-image-cont{
+	position:absolute;
+	display:none;
+}
+.b2make-conteiner-banners-titulo{
+	width:inherit;
+	position:absolute;
+	top:165px;
+	line-height:17px;
+	font-size:17px;
+	color:#FFF;
+	max-height:34px;
+	overflow:hidden;
+	text-overflow: ellipsis;
+}
+.b2make-conteiner-banners-seta-left{
+	position:absolute;
+	left:100px;
+	top:50%;
+	transform: translate(0px,-50%);
+	width:43px;
+	height:72px;
+	cursor:pointer;
+	z-index:2;
+}
+.b2make-conteiner-banners-seta-right{
+	position:absolute;
+	right:100px;
+	top:50%;
+	transform: translate(0px,-50%);
+	width:43px;
+	height:72px;
+	cursor:pointer;
+	z-index:2;
+}
+.b2make-conteiner-banners-seta-left img,.b2make-conteiner-banners-seta-right img,.b2make-conteiner-banners-seta-left div,.b2make-conteiner-banners-seta-right div{
+	width:inherit;
+	height:inherit;
+}
+.b2make-youtube-cont{
+	width:inherit;
+	height:inherit;
+	background-color:#000;
+	background-repeat:no-repeat;
+	background-size:cover;
+	background-position:center center;
+	cursor:pointer;
+}
+.b2make-youtube-play{
+	width:60px;
+	height:60px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-image:url(//platform.b2make.com/design/images/b2make-youtube-play.png);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+.b2make-youtube-texto{
+	width:calc(100% - 30px);
+	padding:15px;
+	height:50px;
+	background-color:rgba(200,200,200,0.4);
+	font-size:20px;
+	color:#FFF;
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	overflow:hidden;
+}
+.b2make-progresso-barra-cont{
+	width:100%;
+	position:relative;
+}
+.b2make-progresso-barra-1{
+	z-index:1;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:inherit;
+	height:inherit;
+	background-color:#CCC;
+}
+.b2make-progresso-barra-2{
+	z-index:2;
+	position:absolute;
+	top:0px;
+	left:0px;
+	height:inherit;
+	background-color:#1e7fd0;
+}
+.b2make-progresso-texto{
+	padding:5px;
+}
+.b2make-banners-widget-seta-cont-left{
+	position:absolute;
+	left:0px;
+	top:0px;
+	height:inherit;
+	width:60px;
+	background-color:rgba(255,255,255,0.3);
+	z-index:1;
+}
+.b2make-banners-widget-seta-cont-right{
+	position:absolute;
+	right:0px;
+	top:0px;
+	height:inherit;
+	width:60px;
+	background-color:rgba(255,255,255,0.3);
+	z-index:1;
+}
+.b2make-banners-widget-seta-2-left{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+	width:18px;
+	height:28px;
+	cursor:pointer;
+}
+.b2make-banners-widget-seta-2-right{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+	width:18px;
+	height:28px;
+	cursor:pointer;
+}
+.b2make-widget[data-type="breadcrumbs"] .b2make-widget-out .b2make-widget-loading{
+	background-size:contain;
+}
+.b2make-breadcrumbs{
+	width:inherit;
+	height:inherit;
+}
+.b2make-breadcrumbs-link{
+	font-size:15px;
+	color:#C7C7C7;
+}
+.b2make-breadcrumbs-link-sep{
+	font-size:15px;
+	color:#C7C7C7;
+}
+.b2make-breadcrumbs-link-2{
+	color:#A4A6AA;
+}
+a.b2make-breadcrumbs-link:hover,a.b2make-breadcrumbs-link:visited{
+	color:#C7C7C7;
+}
+a.b2make-breadcrumbs-link-2:hover,a.b2make-breadcrumbs-link-2:visited{
+	color:#A4A6AA;
+}
+.b2make-posts-filter{
+	width:inherit;
+	height:inherit;
+}
+.b2make-posts-filter-ficha-html-holder{
+	display:none;
+}
+.b2make-posts-filter-cont{
+	background-image:url(//platform.b2make.com/design/images/b2make-posts-filter-menu-setinha.png);
+	background-repeat:no-repeat;
+	background-position:right 5px center;
+	background-color:#FFF;
+	display:inline-block;
+	line-height:28px;
+	padding:0px 28px 0px 7px;
+	margin:5px 10px;
+	border:1px #1b4174 solid;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	font-size:15px;
+	min-width:50px;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    appearance:none;
+	cursor:pointer;
+	color:#222222;
+}
+.b2make-posts-filter-cont:hover{
+	background-image:url(//platform.b2make.com/design/images/b2make-posts-filter-menu-setinha.png);
+	background-position:right 5px center;
+}
+.b2make-posts-filter-cont-2{
+	background-image:url(//platform.b2make.com/design/images/b2make-posts-filter-menu-setinha.png);
+	background-repeat:no-repeat;
+	background-position:right 5px center;
+	background-color:#FFF;
+	display:inline-block;
+	line-height:28px;
+	padding:0px 28px 0px 7px;
+	margin:5px 15px;
+	border:1px #1b4174 solid;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	font-size:15px;
+	width:242px;
+	text-align:left;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    appearance:none;
+	color:#222222;
+	cursor:pointer;
+}
+.b2make-posts-filter-cont-2:hover{
+	background-image:url(//platform.b2make.com/design/images/b2make-posts-filter-menu-setinha.png);
+	background-position:right 5px center;
+}
+.b2make-posts-filter-cont-2-lbl{
+	font-size:17px;
+	line-height:20px;
+	color:#222222;
+	width:240px;
+	text-align:left;
+	display:inline-block;
+	margin:10px 15px 0px 0px;
+}
+.b2make-posts-filter-btn{
+	background-color:#1b4174;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	line-height:39px;
+	color:#FFF;
+	font-size:15px;
+	text-align:center;
+	min-width:70px;
+	padding:0px 7px;
+	display:inline-block;
+	margin:5px 10px;
+	cursor:pointer;
+}
+.b2make-posts-filter-btn-2{
+	background-color:#1b4174;
+	line-height:39px;
+	color:#FFF;
+	font-size:15px;
+	text-align:center;
+	min-width:70px;
+	padding:0px 7px;
+	display:inline-block;
+	margin:5px 15px;
+	cursor:pointer;
+}
+.b2make-posts-filter-menu[data-orientacao="vertical"] .b2make-posts-filter-btn-2{
+	margin-bottom:10px;
+}
+.b2make-posts-filter-menu[data-type="menu-resultados"]{
+	background-image:url(//platform.b2make.com/design/images/b2make-posts-filter-resultados.png);
+	background-repeat:no-repeat;
+	background-position:top 10px center;
+	background-color:#FFF;
+	width:270px;
+	height:calc(100% - 70px);
+	padding-top:70px;
+	float:left;
+	text-align:right;
+}
+.b2make-posts-filter-menu[data-orientacao="vertical"]{
+	width:100%;
+	height:auto;
+}
+.b2make-posts-filter-menu[data-orientacao="vertical"] .b2make-posts-filter-cont-2-lbl{
+	width:100%;
+	padding-left:10px;
+}
+.b2make-posts-filter-menu[data-orientacao="vertical"] .b2make-posts-filter-cont-2{
+	width:calc(100% - 20px);
+	margin:5px 10px 5px 0px;
+}
+.b2make-posts-filter-lista{
+	display:inline-block;
+	width:calc(100% - 270px);
+	height:inherit;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+.b2make-posts-filter-lista[data-orientacao="vertical"]{
+	width:100%;
+	margin-top:10px;
+	height:auto;
+}
+.b2make-posts-filter-conteudo{
+	position:relative;
+	background-color:#FFF;
+	width:860px;
+	height:282px;
+	margin:0px 0px 10px 10px;
+}
+.b2make-posts-filter-ficha-imagem-grande{
+	background-image:url(//platform.b2make.com/design/images/b2make-album-sem-imagem.png);
+	width:281px;
+	height:281px;
+	background-size:cover;
+	background-position:center center;
+}
+.b2make-posts-filter-ficha-habita{
+	width:auto;
+	height:15px;
+	position:absolute;
+	left:296px;
+	top:30px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	font-weight:bold;
+}
+.b2make-posts-filter-ficha-cidade{
+	width:auto;
+	height:23px;
+	position:absolute;
+	left:296px;
+	top:49px;
+	font-family:'Myriad Pro';
+	font-size:36px;
+	font-weight:bold;
+	color:#E3A325;
+	text-transform:uppercase;
+}
+.b2make-posts-filter-ficha-txt-terreno{
+	width:auto;
+	height:16px;
+	position:absolute;
+	left:345px;
+	top:120px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	color:#4C4C4C;
+	font-weight:normal;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-txt-suites{
+	width:auto;
+	height:16px;
+	position:absolute;
+	left:345px;
+	top:195px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	color:#4C4C4C;
+	font-weight:normal;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-txt-dormitorios{
+	width:auto;
+	height:16px;
+	position:absolute;
+	left:485px;
+	top:120px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	color:#4C4C4C;
+	font-weight:normal;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-txt-vagas{
+	width:auto;
+	height:16px;
+	position:absolute;
+	left:485px;
+	top:195px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	color:#4C4C4C;
+	font-weight:normal;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-terreno-m2{
+	background-image:url(//platform.b2make.com/design/images/b2make-album-sem-imagem.png);
+	background-size:cover;
+	background-position:center center;
+	padding-left:0px;
+	width:40px;
+	height:40px;;
+	line-height:10px;
+	position:absolute;
+	left:296px;
+	top:110px;
+	font-family:'Myriad Pro';
+	font-size:12px;
+	color:#222222;
+}
+.b2make-posts-filter-ficha-suites{
+	background-image:url(//platform.b2make.com/design/images/b2make-album-sem-imagem.png);
+	background-size:cover;
+	background-position:center center;
+	padding-left:0px;
+	width:40px;
+	height:40px;
+	line-height:10px;
+	position:absolute;
+	left:296px;
+	top:185px;
+	font-family:'Myriad Pro';
+	font-size:12px;
+	color:#222222;
+}
+.b2make-posts-filter-ficha-dormitorios{
+	background-image:url(//platform.b2make.com/design/images/b2make-album-sem-imagem.png);
+	background-size:cover;
+	background-position:center center;
+	padding-left:0px;
+	width:40px;
+	height:40px;
+	line-height:30px;
+	position:absolute;
+	left:438px;
+	top:110px;
+	font-family:'Myriad Pro';
+	font-size:12px;
+	color:#222222;
+}
+.b2make-posts-filter-ficha-vagas{
+	background-image:url(//platform.b2make.com/design/images/b2make-album-sem-imagem.png);
+	background-size:cover;
+	background-position:center center;
+	padding-left:0px;
+	width:40px;
+	height:40px;
+	line-height:30px;
+	position:absolute;
+	left:438px;
+	top:185px;
+	font-family:'Myriad Pro';
+	font-size:12px;
+	color:#222222;
+}
+.b2make-posts-filter-ficha-lancamento{
+	background-color:#E3A325;
+	width:282px;
+	height:33px;
+	line-height:33px;
+	position:absolute;
+	left:297px;
+	top:238px;
+	font-family:'Myriad Pro';
+	font-size:17px;
+	color:#fff;
+	font-weight:bold;
+	text-transform:capitalize;
+	margin: auto;
+	text-align:center;
+	-moz-border-radius:18px;
+	-webkit-border-radius:18px;
+	border-radius: 12px;
+}
+.b2make-posts-filter-ficha-barra-vertical{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html/images/b2make-posts-filter-barra-vertical.png);
+	width:3px;
+	height:228px;
+	background-size:cover;
+	background-position:center center;
+	left:599px;
+	top:30px;
+	position:absolute;
+
+}
+.b2make-posts-filter-ficha-barra-use-seu-fgts {
+	background-image:url(//platform.b2make.com/design/images/b2make-album-sem-imagem.png);
+	width:75px;
+	height:40px;
+	background-size:cover;
+	background-position:center center;
+	left:610px;
+	top:49px;
+	position:absolute;
+}
+.b2make-posts-filter-ficha-barra-minha-casa-minha-vida {
+	background-image:url(//platform.b2make.com/design/images/b2make-album-sem-imagem.png);
+	width:75px;
+	height:40px;
+	background-size:cover;
+	background-position:center center;
+	left:690px;
+	top:49px;
+	position:absolute;
+}
+.b2make-posts-filter-ficha-barra-estagio {
+	background-image:url(//platform.b2make.com/design/images/b2make-album-sem-imagem.png);
+	width:75px;
+	height:40px;
+	background-size:cover;
+	background-position:center center;
+	left:770px;
+	top:49px;
+	position:absolute;
+}
+.b2make-posts-filter-ficha-apartirde{
+	width:50px;
+	height:11px;
+	position:absolute;
+	left:610px;
+	top:115px;
+	font-family:'Myriad Pro';
+	font-size:10px;
+	color:#4C4C4C;
+	font-weight:bold;
+}
+.b2make-posts-filter-ficha-valor{
+	width:auto;
+	height:28px;
+	position:absolute;
+	left:610px;
+	top:135px;
+	font-family:'Myriad Pro';
+	font-size:26px;
+	color:#1B4174;
+	font-weight:bold;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-botao1{
+	position:absolute;
+	top:197px;
+	left:610px;
+	font-weight:bold;
+	text-transform:capitalize;
+	text-align:center;
+	line-height:40px;
+	width:210px;  
+	height:39px;	
+	display:block;
+	font-family:'Myriad Pro';
+	padding:0px;
+	text-align:center;	
+	color:#999;
+	background:#EFEFEF;
+}	
+#b2make-posts-filter-link-botao-filho{
+	width:209px;
+	height:38px;
+	border:0px solid #000;
+	background-color:#EFEFEF;
+	text-decoration: none;
+	display:block;
+	position:absolute;
+	top:197px;
+	left:610px;
+	font-family:'Myriad Pro';
+	text-align:center;
+	line-height:38px;
+	color:#686868;
+	font-size:16px;
+}
+#b2make-posts-filter-link-botao-filho:hover{
+	background-color: #DBDBDB;
+	color:#333;
+	text-decoration: none;
+}
+/********** Ficha Vertical **************/
+.b2make-posts-filter-conteudo-2{
+	margin-left:-0;
+	width:100%;
+	margin-bottom:10px;
+	background-color:#FFF;
+	padding-bottom:100px;
+}
+.b2make-posts-filter-ficha-imagem-grande-2{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-foto-obra1.jpg);
+	width:100%;
+	height:490px;
+	background-repeat:no-repeat;
+	background-size:cover;
+	background-position:center center;
+}
+.b2make-posts-filter-ficha-habita-2{
+	width:calc(100% - 60px);
+	height: auto;
+	padding: 0px;
+	margin:35px 0px 0px 20px;
+	font-family:'Myriad Pro';
+	font-size:26.60px;
+	font-weight:bold;
+	color:#4C4C4C;
+	display:block;
+
+}
+.b2make-posts-filter-ficha-cidade-2{
+	width:calc(100% - 60px);
+	margin:5px 0px 0px 20px;
+	font-size:64.18px;
+	font-family:'Myriad Pro';
+	font-weight:bold;
+	color:#555555;
+	text-transform: uppercase;
+	text-align:left;
+	padding-bottom:0px;
+}
+.b2make-pfc-cont{
+	width:100%;
+	margin:7px 20px 56px 0px;
+	
+}
+.b2make-pfc-coluna{
+	width:50%;
+	margin-left:0px;
+	text-align:center;
+	float:left;
+	margin-bottom:20px;
+	margin-top:20px;
+	padding-top:17px;
+}
+.b2make-pfc-clear{
+	clear:both;
+}
+.b2make-pfc-elemento{
+	display:inline-block;
+	height:17px;
+	width:190px;
+	text-align:center;
+	margin:17px 0px 0px -55px;
+}
+.b2make-pfc-elemento-img-1{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-terreno-m2.png);
+	background-size:cover;
+	margin-right:10px;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	vertical-align:middle;
+}
+.b2make-pfc-elemento-img-2{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-suites.png);
+	background-size:cover;
+	margin-right:10px;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	vertical-align:middle;
+}
+.b2make-pfc-elemento-img-3{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-dormitorios.png);
+	background-size:cover;
+	margin-right:10px;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	vertical-align:middle;
+}
+.b2make-pfc-elemento-img-4{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-vagas.png);
+	background-size:cover;
+	margin-right:10px;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	vertical-align:middle;
+}
+
+.b2make-pfc-elemento-txt{
+	display:inline-block;
+	font-size: 27px;
+    font-family: 'Myriad Pro';
+    color: #4C4C4C;
+    font-weight: normal;
+    text-transform: capitalize;
+	text-align:left;
+	max-height:51px;
+	overflow:hidden;
+	width:100px;
+	white-space: nowrap;
+	vertical-align:middle;
+}
+.b2make-pfc-coluna-2{
+	width:30%;
+	text-align:center;
+	float:left;
+}
+.b2make-pfc-elemento-2-estagio{
+	background: url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-pronto-para-morar.jpg) no-repeat right;
+	width: 125px;
+    height: 62px;
+    background-size: cover;
+    background-position: center center;
+	display:inline-block;
+}
+.b2make-pfc-elemento-2-minha-vida{
+	background: url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-fgts.jpg) no-repeat right;
+	width: 125px;
+    height: 62px;
+    background-size: cover;
+    background-position: center center;
+	display:inline-block;
+}
+
+.b2make-pfc-elemento-2-fgts{
+	background: url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-lazer-incrivel-hoga.jpg) no-repeat right;
+	width: 125px;
+    height: 62px;
+    background-size: cover;
+    background-position: center center;
+	display:inline-block;
+}
+
+.b2make-posts-filter-ficha-lancamento-2{
+	width:calc(100% - 50px);
+	margin:0px 20px -8px 20px;
+	line-height:48px;
+	display:inline-block;
+	font-family: 'Myriad Pro';
+	font-size: 23.84px;
+	color: #fff;
+	font-weight: bold;
+	text-transform: capitalize;
+	background-color: #3D9BE9;
+	text-align: center;
+	border-radius: 11px;
+}
+.b2make-posts-filter-ficha-apartirde-2{
+	width:400px;
+	text-align:left;
+	margin: 0px 0px 0px 20px;
+	clear:both;	
+	font-family: 'Myriad Pro';
+	font-size: 27px;
+	color: #4C4C4C;
+	font-weight: bold;
+	position:relative;
+	
+	
+	margin:10px 20px 18px 20px;
+}
+.b2make-posts-filter-ficha-valor-2{
+	margin:10px 20px 58px 20px;
+	line-height:40px;
+	text-align:left;
+	font-family: 'Myriad Pro';
+	font-size: 66px;
+	color: #1B4174;
+	font-weight: bold;
+	text-transform: capitalize;
+}
+#b2make-posts-filter-link-botao-filho-2{
+	border:0px solid #000;
+	background-color:#EFEFEF;
+	text-decoration: none;
+	display:block;
+	font-family:'Myriad Pro';
+	text-align:center;
+	width:100%;
+	max-width:450px;
+	font-weight:bold;
+	text-transform:capitalize;
+	margin:0 auto;
+	font-size:29px;
+	color:#686868;
+	line-height:80px
+}
+#b2make-posts-filter-link-botao-filho-2:hover,#b2make-posts-filter-link-botao-filho-2:visited{
+	background-color: #DBDBDB;
+	color:#333;
+	text-decoration: none;
+}
+/***********************************/
+.b2make-posts-filter-sem-resultados{
+	background-color:#FFF;
+}
+.b2make-posts-filter-sem-resultados-txt{
+	font-size:18px;
+	padding:15px;
+}
+#b2make-widget-loja{
+	position:fixed;
+	top:0px;
+	right:0px;
+	z-index:99;
+	width:110px;
+	height:45px;
+	background-color:#000;
+}
+#b2make-widget-loja-dados-pessoais{
+	background-image:url(//platform.b2make.com/images/store/b2make-widget-loja-dados-pessoais-2.png);
+	background-size:cover;
+	width:30px;
+	height:30px;
+	position:absolute;
+	top:7px;
+	left:15px;
+}
+#b2make-widget-loja-carrinho{
+	background-image:url(//platform.b2make.com/images/store/b2make-widget-loja-carrinho-2.png);
+	background-size:cover;
+	width:40px;
+	height:30px;
+	position:absolute;
+	top:7px;
+	right:15px;
+}
+#b2make-widget-loja.b2make-widget-loja-mobile{
+	width:180px;
+	height:80px;
+}
+#b2make-widget-loja-dados-pessoais.b2make-widget-loja-dados-pessoais-mobile{
+	top:12px;
+	width:50px;
+	height:50px;
+	left:22px;
+}
+#b2make-widget-loja-carrinho.b2make-widget-loja-carrinho-mobile{
+	top:12px;
+	width:70px;
+	height:52px;
+	right:22px;
+}
+.b2make-formularios-checkbox-cont{
+	display:inline-block;
+}
+.b2make-formularios-checkbox-cont input{
+	display:inline-block;
+	margin-right:5px;
+}
+.b2make-formularios-checkbox-cont label{
+	display:inline-block;
+	width:auto;
+}
+.b2make-accordion{
+	width: inherit;
+	height: inherit;
+}
+.b2make-accordion-table{
+	width: inherit;
+	height: inherit;
+	display:table;
+	cursor:pointer;
+}
+.b2make-accordion-cel { 
+    display: table-cell;
+	vertical-align: middle;
+	text-align:center;
+}
+.b2make-accordion-texto-cont{
+	display:none;
+	padding:10px;
+	overflow:hidden;
+	margin-top:10px;
+}
+.b2make-galeria-imagens-widget-holder-2{
+	width:inherit;
+	height:inherit;
+}

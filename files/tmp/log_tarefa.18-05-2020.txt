@@ -1,0 +1,4 @@
+[17:21:18 -03][teste] 404.shtml.
+[17:22:15 -03][anonimo] 404.shtml.
+[17:22:17 -03][teste] 404.shtml.
+[17:23:01 -03][teste] 404.shtml.

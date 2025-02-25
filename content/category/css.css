@@ -1,0 +1,25 @@
+.texto1 {
+	color: #096;
+	font-weight: bold;
+}
+.texto2 {
+	color: #C03;
+	font-weight: bold;
+}
+.texto3 {
+	color: #03F;
+	font-weight: bold;
+}
+
+.texto4 {
+	color: #009;
+	font-weight: bold;
+}
+
+.ordenacao {
+	text-align: center;
+}
+#descricao{
+	width:420px;
+	height:120px;
+}

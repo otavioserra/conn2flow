@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>!#paginaTitulo#!</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--!#html_meta#!-->
+	<link rel="shortcut icon" href="!#caminho_raiz#!favicon.ico!#versao#!" >
+<!--!#del#(#!--><link href="css.css" rel="stylesheet" type="text/css" /><link href="../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../includes/css/layout2.css" rel="stylesheet" type="text/css" /><!--!#del#)#!-->
+<!--!#paginaCssPadrao#!-->
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+<!--!#paginaCss#!-->
+	<script type="application/javascript">
+		var variaveis_js = !#variaveis_js#!;
+	</script>
+<!--!#paginaJs#!-->
+<!--!#googleAnalytics#!-->
+</head>
+<body>
+<div id="b2make-jpicker-conteiner">
+    <span id="b2make-jpicker-widget"></span>
+</div>
+<!--!#menu-lateral#!-->
+<div id="b2make-menu">
+    <div id="b2make-logomarca-principal"></div>
+    <div id="b2make-menus-holders">
+        <div id="b2make-menu-holder" class="b2make-tooltip" title="Adicionar novos conteiners e/ou widgets"></div>
+        <div id="b2make-menu-holder-widgets" class="b2make-tooltip" title="Selecionar conteiners e/ou widgets existentes"></div>
+        <div id="b2make-menu-publish" class="b2make-tooltip" title="Publicar a página atual no ambiente real"></div>
+        <div id="b2make-menu-save" class="b2make-tooltip" title="Salvar a página atual"></div>
+        <div id="b2make-page-options-holder" class="b2make-tooltip" title="Clique para modificar as configurações da página"></div>
+        <div id="b2make-menu-save-template" class="b2make-tooltip" title="Salvar a página atual em um template"></div>
+        <div id="b2make-change-template" class="b2make-tooltip" title="Trocar o template atual por um outro pré-existente"></div>
+    </div>
+</div>
+<div id="b2make-site">
+	!#body#!
+</div>
+<div id="b2make-fonts-conteiner">
+	<div style="font-family:'Open Sans';" title="Selecionar a fonte do objeto desejado" class="b2make-tooltip b2make-fonts-holder">Open Sans</div>
+    <div class="b2make-fonts-count">
+        <ul class="b2make-fonts-list">
+            <li style="font-family:Open Sans;">Open Sans</li>
+            <li style="font-family:Arial;">Arial</li>
+            <li style="font-family:Helvetica;">Helvetica</li>
+            <li style="font-family:Times New Roman;">Times New Roman</li>
+            <li style="font-family:Times;">Times</li>
+            <li style="font-family:Courier New;">Courier New</li>
+            <li style="font-family:Courier;">Courier</li>
+            <li style="font-family:Palatino;">Palatino</li>
+            <li style="font-family:Garamond;">Garamond</li>
+            <li style="font-family:Avant Garde;">Avant Garde</li>
+            <li style="font-family:Verdana;">Verdana</li>
+            <li style="font-family:Tahoma;">Tahoma</li>
+            <li style="font-family:Georgia;">Georgia</li>
+            <li style="font-family:Comic Sans MS;">Comic Sans MS</li>
+            <li style="font-family:Trebuchet MS;">Trebuchet MS</li>
+            <li style="font-family:Arial Black;">Arial Black</li>
+            <li style="font-family:Impact;">Impact</li>
+        </ul>
+        <div class="b2make-fonts-google-fontes"></div>
+        <div class="b2make-fonts-count-teste">Preview: AaBbCc ÁáÉéÍíÓóÚúÇç</div>
+        <div class="b2make-fonts-count-ok b2make-btn-lightbox">OK</div>
+    </div>
+    <input class="b2make-input-select b2make-input-only-number b2make-tooltip b2make-fonts-size" title="Define o tamanho da fonte do objeto desejado" value="20">
+    <div class="b2make-tooltip b2make-fonts-negrito" title="Clique para fonte do objeto em negrito"></div>
+    <div class="b2make-tooltip b2make-fonts-italico" title="Clique para fonte do objeto em italico"></div>
+    <div class="b2make-fonts-align b2make-tooltip b2make-fonts-align-left" data-id="left" title="Clique para alinhar a fonte do objeto na esquerda"></div>
+    <div class="b2make-fonts-align b2make-tooltip b2make-fonts-align-center" data-id="center" title="Clique para alinhar a fonte do objeto no centro"></div>
+    <div class="b2make-fonts-align b2make-tooltip b2make-fonts-align-right" data-id="right" title="Clique para alinhar a fonte do objeto na direita"></div>
+    <div class="b2make-fonts-align b2make-tooltip b2make-fonts-align-justify" data-id="justify" title="Clique para justificar a fonte do objeto"></div>
+</div>
+<div id="ajax_lendo">Carregando</div>
+<div id="ajax_erro">Erro<p>Não foi possível ler a página!</p></div>
+<div id="alerta"></div>
+<div id="alerta_php">#alerta_php</div>
+<div id="popup"><iframe width="1100" height="500" allowtransparency="yes" frameborder="0"></iframe></div>
+<div id="lendo"></div>
+</body>
+</html>

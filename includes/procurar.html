@@ -1,0 +1,67 @@
+<!--!#del#(#!--><link href="css/interface.css" rel="stylesheet" type="text/css" /><!--!#del#)#!-->
+<hr />
+<h3>Layout</h3>
+<hr />
+<!-- layout < -->
+<!-- informacao_titulo < --><h1>#informacao_titulo</h1><!-- informacao_titulo > -->
+<div class="_informacao_acima">#_informacao_acima</div>
+<div class="menu_paginas_1">#menu_paginas_1</div>
+<div class="in_informacao">#informacao</div>
+<div class="menu_paginas_1">#menu_paginas_2</div>
+<div class="_informacao_abaixo">#_informacao_abaixo</div>
+<!-- layout > -->
+<hr />
+<h3>Menu de P&aacute;ginas</h3>
+<hr />
+<!-- menu_paginas < -->
+<form id="#menu_id" name="#menu_nome" method="get" action="#url">
+  <table border="0" cellspacing="0" cellpadding="2">
+    <tr>
+      <td>Menu de P&aacute;ginas: </td>
+      <td><table width="150" border="0" cellpadding="2" cellspacing="2">
+        <tr>
+          <td width="25"><!-- comeco < -->
+            <input name="comeco" type="button" value="&lt;&lt;" onclick="menu_paginas2(this.form,1)" />
+            <!-- comeco > --></td>
+          <td width="17"><!-- anterior < -->
+            <input name="anterior" type="button" value="&lt;" onclick="menu_paginas2(this.form,2)" />
+            <!-- anterior > --></td>
+          <td><select name="paginas" onchange="menu_paginas2(this.form,3)">
+            <!-- options < -->
+            <option value="#num_pagina_valor"#checked>#num_pagina</option>
+            <!-- options > -->
+          </select></td>
+          <td><!-- proximo < -->
+            <input name="proximo" type="button" value="&gt;" onclick="menu_paginas2(this.form,4)" />
+            <!-- proximo > --></td>
+          <td><!-- ultimo < -->
+            <input name="ultimo" type="button" value="&gt;&gt;" onclick="menu_paginas2(this.form,5)" />
+            <!-- ultimo > --></td>
+        </tr>
+      </table></td>
+    </tr>
+  </table>
+  <input name="num_menu" type="hidden" value="#num_menu" />
+  <input name="opcao" type="hidden" value="#menu_opcao" />
+<input name="opcao_menu" type="hidden" />
+</form>
+<!-- menu_paginas > -->
+<hr />
+<h3>Procurar</h3>
+<hr />
+<!-- lista < -->
+<div id="cont_procurar">
+	<div class="h1 justify">#procurar_titulo</div>
+	<h2 class="justify">#procurar_sub_titulo</h2>
+	<div id="cont_secundario" class="#css_tabela_lista div_item">
+		<!-- result_box < --><!-- result_cel < --><div class="div_item" style="margin:10px;">
+			#img_mini#
+			<!-- titulo < --><div class="h2">#titulo</div><!-- titulo > -->
+			<!-- texto < --><div class="justify">#texto</div><!-- texto > -->
+			<div class="clear"></div>
+		</div><!-- result_cel > --><!-- result_box > -->
+	</div>
+</div>
+<!-- lista > -->
+<hr />
+<p>&nbsp;</p>

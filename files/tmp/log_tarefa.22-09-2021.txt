@@ -1,0 +1,235 @@
+[15:05:32 -03][anonimo] SESSION-ID: e9c05b5aa2d243610cf32268ecb7dbfc REQUEST:Array
+(
+    [caminho] => teste/includes/eservices/images/b2make-icon-poweredby-2.png
+)
+.
+[15:05:35 -03][anonimo] SESSION-ID: b47cec17fce7f4719c1b78f2a71846f3 REQUEST:Array
+(
+    [caminho] => teste/includes/eservices/images/b2make-icon-poweredby-2.png
+)
+.
+[15:05:38 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+)
+.
+[15:05:39 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [css] => sim
+    [opcao] => tinymce
+    [only-fonts] => sim
+    [v] => 1632329412
+)
+.
+[15:05:39 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => menu-paginas-start
+)
+.
+[15:05:39 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => input-start-values
+    [str_json] => {"variaveis":[{"id":"b2make-page-options-title","variavel":"pagina-title"},{"id":"b2make-page-options-description","variavel":"pagina-description"},{"id":"b2make-page-options-keywords","variavel":"pagina-keywords"},{"id":"b2make-page-options-codigo-head","variavel":"pagina-codigo-head"}]}
+)
+.
+[15:05:39 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => biblioteca_imagens_lista
+)
+.
+[15:05:39 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => conteiner-banners
+)
+.
+[15:05:40 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => arquivos_lista
+)
+.
+[15:05:40 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => albuns-fotos
+)
+.
+[15:05:40 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => players-musicas
+)
+.
+[15:05:40 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => slides-show
+)
+.
+[15:05:40 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => albuns-musicas
+)
+.
+[15:05:40 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => agendas
+)
+.
+[15:05:40 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => conteiner-banners-images
+    [id] => 197
+)
+.
+[15:05:40 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => agenda-eventos
+    [id] => 371
+)
+.
+[15:05:40 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => contents
+)
+.
+[15:05:40 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => contents-html-list
+)
+.
+[15:05:40 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => contents-html-list
+)
+.
+[15:05:41 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+)
+.
+[15:05:42 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [css] => sim
+    [opcao] => tinymce
+    [only-fonts] => sim
+    [v] => 1632329412
+)
+.
+[15:05:42 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => input-start-values
+    [str_json] => {"variaveis":[{"id":"b2make-page-options-title","variavel":"pagina-title"},{"id":"b2make-page-options-description","variavel":"pagina-description"},{"id":"b2make-page-options-keywords","variavel":"pagina-keywords"},{"id":"b2make-page-options-codigo-head","variavel":"pagina-codigo-head"}]}
+)
+.
+[15:05:42 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => menu-paginas-start
+)
+.
+[15:05:42 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => conteiner-banners
+)
+.
+[15:05:42 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => albuns-fotos
+)
+.
+[15:05:42 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => biblioteca_imagens_lista
+)
+.
+[15:05:42 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => arquivos_lista
+)
+.
+[15:05:42 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => slides-show
+)
+.
+[15:05:42 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => players-musicas
+)
+.
+[15:05:42 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => albuns-musicas
+)
+.
+[15:05:42 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => agendas
+)
+.
+[15:05:42 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => conteiner-banners-images
+    [id] => 197
+)
+.
+[15:05:43 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => agenda-eventos
+    [id] => 371
+)
+.
+[15:05:43 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => contents
+)
+.
+[15:05:43 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => contents-html-list
+)
+.
+[15:05:43 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [ajax] => sim
+    [opcao] => contents-html-list
+)
+.
+[15:05:44 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [caminho] => 403.shtml
+)
+.
+[15:05:44 -03][contato@auditte.com.br] SESSION-ID: da5db36453195237693a870f47c20132 REQUEST:Array
+(
+    [caminho] => signin
+)
+.
+[15:06:04 -03][anonimo] SESSION-ID: b47cec17fce7f4719c1b78f2a71846f3 REQUEST:Array
+(
+    [caminho] => teste/includes/eservices/images/b2make-icon-poweredby-2.png
+)
+.

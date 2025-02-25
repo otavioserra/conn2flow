@@ -1,0 +1,49 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><link href="../../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<h2>Formul&aacute;rio</h2>
+<hr />
+<!-- form < -->
+<form action="." method="post" name="form" id="form">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+    <tr>
+      <td align="left" class="principal"><table width="100%" border="0" cellspacing="5" class="tabela_lista">
+        <tr>
+          <td width="120" align="left" class="lista_header">Nome:</td>
+          <td class="lista_cel"><input name="nome" type="text" id="nome" value="#nome#" size="80" /></td>
+        </tr>
+        <tr>
+          <td width="120" align="left" class="lista_header">C&oacute;digo do Cupom:</td>
+          <td class="lista_cel"><input name="codigo" type="text" id="codigo" value="#codigo#" size="80" maxlength="100" /></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Desconto (%):</td>
+          <td align="left" class="lista_cel"><input name="desconto" type="text" id="desconto" value="#desconto#" size="5" maxlength="3" class="inteiro"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Quantidade:</td>
+          <td align="left" class="lista_cel"><input name="max_usos" type="text" id="max_usos" value="#max_usos#" size="9" maxlength="9" class="inteiro"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Desconto Per&iacute;odo:</td>
+          <td align="left" class="lista_cel">&agrave; partir de 
+            <input name="data_inicio" type="text" id="data_inicio" value="#data_inicio#" size="10" maxlength="3" class="data"> 
+            at&eacute; 
+            <input name="data_fim" type="text" id="data_fim" value="#data_fim#" size="10" maxlength="3" class="data"> 
+            OBS.: Se deixar as datas em branco o desconto ser&aacute; perp&eacute;tuo.</td>
+        </tr>
+      </table>
+        <!-- botao < --><table width="100%" border="0">
+          <tr>
+            <td align="center"><input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+              <input name="opcao" type="hidden" id="opcao" value="#opcao" />
+              <input name="id" type="hidden" id="id" value="#id" />
+              <input type="submit" name="Submit" id="button" value="#botao" /></td>
+          </tr>
+        </table><!-- botao > --></td>
+    </tr>
+  </table>
+</form>
+<!-- form > -->
+<hr />
+<h3>&nbsp;</h3>

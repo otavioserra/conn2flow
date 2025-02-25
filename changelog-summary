@@ -1,0 +1,23 @@
+# Change Log Summary
+
+B2make Digital Services LTDA-ME (b2make.com)
+
+A summary of all notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## [3.5.0] - 09.10.2020
+### Serviço 2.0 com uma série de novidades na definição de serviços.
+## [3.4.0] - 10.08.2020
+### Plataforma no host do cliente que proporciona uma série de melhorias nas páginas dos clientes.
+## [3.3.0] - 14.05.2020
+### Nova interface da loja na própria URL.
+## [3.2.0] - 20.02.2020
+### Criação de biblioteca de imagens dentro dos serviços e definição de observação padrão para serviços.
+## [3.1.0] - 18.09.2019
+### Foi incluída uma nova opção de inclusão de identificação de cada voucher de cada serviço. Agora é possível incluir nome, documento e telefone de um terceiro.
+## [3.0.0] - 10.09.2019
+### Olá! Essa é a versão 3.0.0 da B2Make. Repensamos todo design para criar uma interface mais prática e intuitiva. Agora ficou ainda melhor vender seus ingressos e serviços online.
+## [2.6.0] - 16.05.2019
+### Nossa versão 2.6.0 trouxe uma novidade: O Botão Accordion. O "efeito sanfona" permite que caixas de texto fiquem visíveis somente quando o usuário desejar. Basta um clique. Aplicamos essa possibilidade também para as legendas dos Álbuns de Fotos.

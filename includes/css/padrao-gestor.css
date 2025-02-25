@@ -1,0 +1,202 @@
+html{
+	margin: 0px;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 11px;
+	color: #58585B;
+	text-decoration: none;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	letter-spacing: normal;
+	text-align: left;
+	vertical-align: top;
+	word-spacing: normal;
+	white-space: normal;
+	padding: 0px;
+	background-color: #FFF;
+	background-repeat: repeat;
+	background-position: center top;
+	background-attachment: fixed;
+
+}
+body{
+	margin: 0px;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+}
+table{
+	color: #000000;
+	text-decoration: none;
+}
+p{
+	font-weight: normal;
+	color: #000000;
+	text-decoration: none;
+}
+b,strong{
+	font-weight: bold;
+	text-decoration: none;
+}
+a{
+	color: #1257A1;
+	text-decoration: none;
+}
+a:visited{
+	color: #1257A1;
+	text-decoration: none;
+}
+a:hover{
+	color: #1257A1;
+}
+input,textarea{
+	font-weight: normal;
+	border: solid 1px #8D96A0;
+	padding:0px 6px;
+	color:rgba(0,0,0,0.87);
+	background-color: #FFF;
+	font-size: 11px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	line-height:22px;
+}
+select{
+	font-weight: normal;
+	border: solid 1px #8D96A0;
+	padding:0px 6px;
+	color:rgba(0,0,0,0.87);
+	background-color: #FFF;
+	font-size: 11px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	line-height:22px;
+	height:22px;
+}
+button, input[type="button"], input[type="submit"]{
+	background-color:#328CE6;
+	color: #FFF;
+	cursor:pointer;
+	border:none;
+	line-height:11px;
+	font-size:11px;
+	padding:8px 13px;
+	-webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+button:hover, input[type="button"]:hover, input[type="submit"]:hover{
+	
+}
+h1,.h1{
+	font-size: 14pt;
+	color: #000;
+	font-weight: bold;
+}
+h2,.h2{
+	font-size: 12pt;
+	font-weight: bold;
+	color: #232323;
+	text-decoration: none;
+}
+h3,.h3{
+	font-size: 10pt;
+	color: #464646;
+	font-weight: bold;
+}
+.clear {
+	clear: both;
+}
+.float-left{
+	float:left;
+}
+.float-right{
+	float:right;
+}
+#ajax_lendo{
+	display:none;
+	opacity:0.90;
+	-moz-opacity: 0.90;
+	filter: alpha(opacity=90);
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	width: 145px;
+	height: 60px;
+	background-image: url(../../images/icons/lendo2.gif);
+	background-repeat: no-repeat;
+	background-position: center 50px;
+	color: #333;
+	background-color: #FFF;
+	padding: 15px;
+	border: 4px solid #CCC;
+	text-align: center;
+	font-size: 16pt;
+	font-weight: bold;
+}
+#ajax_erro{
+	display:none;
+	opacity:0.90;
+	-moz-opacity: 0.90;
+	filter: alpha(opacity=90);
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	width: 145px;
+	height: 60px;
+	color: #F9C;
+	background-color: #F00;
+	padding: 15px;
+	border: 4px solid #CCC;
+	text-align: center;
+	font-size: 16pt;
+	font-weight: bold;
+}
+#ajax_erro p{
+	text-align: center;
+	font-size: 10pt;
+	font-weight: normal;
+	margin-top: 5px;
+}
+.b2make-check-box{
+}
+.b2make-check-box div{
+	background-color: #D7D9DD;
+    color: #58585B;
+    cursor: pointer;
+    line-height: 22px;
+    padding: 0px 10px 0px 10px;
+	border-right:solid 1px #FFF;
+	float:left;
+	margin:0px;
+}
+.b2make-check-box div:first-child{
+	-webkit-border-radius: 10px 0 0 10px;
+	border-radius: 10px 0 0 10px;
+}
+.b2make-check-box div:last-child{
+	-webkit-border-radius: 0 10px 10px 0;
+	border-radius: 0 10px 10px 0;
+	border:none;
+}
+.b2make-check-box div[data-checked="checked"]{
+	background-color: #464E56;
+	color:#FFF;
+}
+.b2make-check-box div:hover{
+	background-color: #464E56;
+	color:#FFF;
+}
+.b2make-check-box div[data-only-one="true"]{
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+.b2make-check-box[data-disabled="true"] div:hover{
+	background-color: #D7D9DD;
+	color:#58585B;
+	cursor:default;
+}
+.b2make-check-box[data-disabled="true"] div[data-checked="checked"]:hover{
+	background-color: #464E56;
+	color:#FFF;
+	cursor:default;
+}

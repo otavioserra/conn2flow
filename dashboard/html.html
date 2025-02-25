@@ -1,0 +1,110 @@
+<!--!#del#(#!--><link href="../includes/css/padrao-gestor.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><link href="css-dark-mode.css" rel="stylesheet" type="text/css" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><!--!#del#)#!-->
+<hr>
+<h2>Menu</h2>
+<hr>
+<!-- inicio < -->
+<div id="conteiner-principal">
+    <div id="conteiner-cards">
+    	<div class="conteiner-card-column conteiner-card-column-2">
+    		<div id="saudacoes">Seja bem-vindo <span>#usuario_nome#</span>, um &oacute;timo dia hoje n&atilde;o?</div>
+            <!-- data < --><div id="select-cont">#select-data#</div><!-- data > -->
+        </div>
+        <div class="clear"></div>
+    	<!-- financeiro < --><div class="conteiner-card-column">
+            <div id="card-new-clients" class="conteiner-card">
+            	<div class="card-number">#new-clients#</div>
+                <div class="card-label">Novos Clientes</div>
+                <div class="card-icon"></div>
+            </div>
+            <div id="card-sells" class="conteiner-card">
+            	<div class="card-number">#month-sales#</div>
+                <div class="card-label">Vendas</div>
+                <div class="card-icon"></div>
+            </div>
+        </div>
+    	<div class="conteiner-card-column">
+            <div id="card-revenue" class="conteiner-card">
+            	<div class="card-number">#day-total#</div>
+                <div class="card-label">Ticket M&eacute;dio</div>
+                <div class="card-icon"></div>
+            </div>
+            <div id="card-monthly-total" class="conteiner-card">
+            	<div class="card-number">#month-total#</div>
+                <div class="card-label">Total Mensal</div>
+                <div class="card-icon"></div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="card-monthly-summary" class="conteiner-card-column conteiner-card-chart">
+        	<div class="card-label-2">Resumo Mensal</div>
+            <div class="card-chart">
+            	<div id="monthly-summary-cont">
+                	<canvas id="monthly-summary"></canvas>
+                </div>
+            </div>
+        </div>
+        <div id="card-recent-requests" class="conteiner-card-column conteiner-card-chart">
+        	<div class="card-label-2">Pedidos Recentes</div>
+            <div class="card-chart">
+                <div id="recent-requests-cont-mask">
+                    <div id="recent-requests-cont">
+                        <canvas id="recent-requests"></canvas>
+                    </div>
+                </div>
+                <div class="recent-requests-bars-cont" data-id="1">
+                	<div class="recent-requests-bars-tit">Conclu&iacute;dos</div>
+                    <div class="recent-requests-bars-holder">
+                    	<div class="recent-requests-bars-percent"></div>
+                    </div>
+                    <div class="recent-requests-bars-value"></div>
+                </div>
+                <div class="recent-requests-bars-cont" data-id="2">
+                	<div class="recent-requests-bars-tit">Aguardando</div>
+                    <div class="recent-requests-bars-holder">
+                    	<div class="recent-requests-bars-percent"></div>
+                    </div>
+                    <div class="recent-requests-bars-value"></div>
+                </div>
+                <div class="recent-requests-bars-cont" data-id="3">
+                	<div class="recent-requests-bars-tit">Expirados ou Negados</div>
+                    <div class="recent-requests-bars-holder">
+                    	<div class="recent-requests-bars-percent"></div>
+                    </div>
+                    <div class="recent-requests-bars-value"></div>
+                </div>
+                <div class="recent-requests-bars-cont" data-id="4">
+                	<div class="recent-requests-bars-tit">Total</div>
+                    <div class="recent-requests-bars-holder">
+                    	<div class="recent-requests-bars-percent"></div>
+                    </div>
+                    <div class="recent-requests-bars-value"></div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div><!-- financeiro > -->
+        <div id="card-services" class="conteiner-card-column conteiner-card-news#class-user-custom#">
+        	<div class="card-label-2">Servi&ccedil;os</div>
+            <a href="../store/services/" class="card-link">Ver todos os servi&ccedil;os ></a>
+            <div id="services-conteiner">
+                <!-- services-cel < --><a href="#url#" class="services-cel">
+                    <div class="service-icon-state"#icon-state#></div>
+                    <div class="service-label">#label#</div>
+                    <div class="service-state">#state#</div>
+                    <div class="service-stock">#stock#</div>
+                    <div class="service-sales">#sales#</div>
+                    <div class="service-icon-action"></div>
+                </a><!-- services-cel > -->
+            </div>
+        </div>
+        <div id="card-news" class="conteiner-card-column conteiner-card-news#class-user-custom#">
+        	<div class="card-label-2">Novidades</div>
+            <a href="changelog" class="card-link">Ver todas as novidades ></a>
+            <div id="news-cont">
+           		#change-log-summary#
+            </div>
+        </div>
+    </div>
+</div>
+<!-- inicio > -->
+<hr>

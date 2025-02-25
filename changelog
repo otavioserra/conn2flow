@@ -1,0 +1,214 @@
+# Change Log
+
+B2make Digital Services LTDA-ME (b2make.com)
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## [3.5.0] - 09.10.2020
+### Changed
+- Serviços 2.0 - Foram desenvolvidas uma série de melhorias para o módulo serviços como: categoriazação de serviços, títulos de páginas personalizados, slugs, expiração de pedidos com status aguardando pagamento, visibilidade de serviços, etc.
+## [3.4.0] - 10.08.2020
+### Added
+- Plataforma Host Cliente - Foi desenvolvida uma nova maneira de interagir entre a plataforma B2make no servidor principal e nos servidores de cada conta de hospedagem, assim uma série de melhorias foram implementadas nesta nova alternativa.
+## [3.3.0] - 14.05.2020
+### Added
+- Store - Nova interface da loja na própria URL.
+## [3.2.0] - 20.02.2020
+### Added
+- Store - Serviços - Criação de Biblioteca de imagens e observação padrão com opções de inclusão/edição/exclusão.
+- Config - Adicionado campo para definição de observação padrão de serviços.
+## [3.1.0] - 18.09.2019
+### Changed
+- Store - Alterar Identificação - Foi incluída uma nova opção de inclusão de identificação de cada voucher de cada serviço. Agora é possível incluir nome, documento e telefone de um terceiro.
+## [3.0.0] - 10.09.2019
+### Added
+- Interface Gráfica - Adicionada nova interface com recursos mais práticos e intuitivos para melhor navegação entre todos os elementos do sistema.
+- Dashboard - Adicionada nova página inicial para acessar recursos mais facilmente e ter um sumário geral das vendas da sua loja.
+### Changed
+- Design - Menu - Novo menu mais prático e intuitivo.
+## [2.6.0] - 16.05.2019
+### Added
+- Design - Botão Accordion - Adicionado um novo widget que é um botão com um escrito que quando clicado abre-se uma caixa de texto com efeito sanfona de abertura e fechamento. Este texto é do tipo texto complexo com editor de texto complexo.
+## [2.6.0] - 16.05.2019
+### Added
+- Design - Botão Accordion - Adicionado um novo widget que é um botão com um escrito que quando clicado abre-se uma caixa de texto com efeito sanfona de abertura e fechamento. Este texto é do tipo texto complexo com editor de texto complexo.
+### Changed
+- Design - Álbum de Fotos - Adicionado legenda para cada álbum com efeito sanfona de abertura e fechamento das legendas.
+## [2.5.0] - 02.05.2019
+### Changed
+- Design - Formulários - Adicionado o tipo de campo seleção e checagem.
+## [2.4.0] - 25.02.2019
+### Added
+- E-Services - Loja na Própria URL - Agora todo o processo de checkout das compras podem ser feitos diretamente na URL do cliente. Para ativar esta opção basta acessar Configurações e marque na aba Loja a opção "Loja na Própria URL".
+- Design - Inclusão do novo widget Texto Complexo para diagramar um texto complexo usando um editor de html online. Nesta opção ainda há opção de adicionar arquivos e imagens ao texto.
+- Conteúdo - Inclusão do novo widget Texto Complexo para diagramar um texto complexo usando um editor de html online. Nesta opção ainda há opção de adicionar arquivos e imagens ao texto.
+- Design - Inclusão da opção Área Global. Com esta nova opção é possível criar uma área e usar a mesma área em arquivos diferentes. Qualquer modificação nesta área será aplicada a todas as outras referências desta área em outras páginas.
+## [2.3.0] - 24.09.2018
+### Added
+- E-Services - PayPal Plus - Implementação do meio de pagamento Pay Pal Plus.
+### Fixed
+- Design - Inclusão do botão uploader na Galeria de Imagens.
+- Design - Troca da conta padrão do Twitter para b2_make.
+- Design - Troca do vídeo padrão do Widget Youtube para https://youtu.be/XIp4HCCNjA0 .
+- Design - Widgets que usam iframe (codigo html / maps) não passavam o conteúdo da página mestre pras páginas copiadas.
+- Design - Breadcrumb - O breadcrumb da pagina mestre não atualizava automaticamente nas páginas que usam o modelo de páginas.
+- Design - Formulário Contato - Mudança de campo para obrigatório gerava erro na página publicada.
+## [2.20.0] - 12.04.2018
+### Added
+- Design - Posts Filtro - Foi criado um novo widget que permite filtrar conteúdos usando um menu de tags. Este filtro pode ser apenas do tipo menu como do tipo menu com os resultados da filtragem.
+### Changed
+- Design - Posts - Além das opções de Conteúdos Filtro: Todos Posts e Escolha Pontual, agora pode escolher por Conteúdo Tipo.
+## [2.19.0] - 06.02.2018
+### Added
+- Design - Código HTML - Foi criado um novo widget que permite inserir qualquer código HTML na página. Também é permitido a inserção de código CSS ou JavaScript usando o mesmo widget.
+### Changed
+- Design - Galeria de Imagens - Opção de inserção de uma descrição para as imagens.
+## [2.18.0] - 02.02.2018
+### Changed
+- Design - Galeria de Imagens - Nova opção de layout do tipo mosaico.
+## [2.17.0] - 26.01.2018
+### Added
+- Design - Breadcrumbs - Foi criado um novo widget que automaticamente cria um menu tipo árvore para localizar as urls e nomes das páginas pai de uma página em específico. Por exemplo, quando uma url está nesse endereço http://dominio/pai/filho/neto , o sistema gera um menu Início / Pai / Filho / Neto e cada uma dessas palavras tem um link de acesso a página em específico.
+## [2.16.0] - 19.01.2018
+### Added
+- Design - Álbum Fotos - Foi criado um novo tipo de layout para o Álbum de Fotos.
+## [2.15.0] - 08.01.2018
+### Added
+- Design - Banners - Foi criado um novo tipo de layout do Banner.
+## [2.14.0] - 08.01.2018
+### Added
+- Design - Progresso - Foi criado um novo tipo de widget que consiste numa barra de cor e uma porcentagem para representar o progresso de algo.
+## [2.13.0] - 19.12.2017
+### Changed
+- Design - Posts - Foi inserido 2 novos tipos de layouts de widgets dos Posts sendo que um deles tem um menu de tags. Ambos tem opção de marcação de conteúdos usando tags.
+- Design - Youtube - Foi inserido um novo tipo de layout dos vídeos. Agora pode criar uma imagem que abre um vídeo usando um lightbox para visualização.
+## [2.12.0] - 05.12.2017
+### Added
+- Design - Full Banner - As áreas agora podem ter um banner no fundo animado.
+## [2.11.6] - 14.11.2017
+### Added
+- Conteúdos - Criado nova metodologia de categoriazação de conteúdos.
+- Conteúdos - Criado nova metodologia de tagamento de conteúdo.
+- Conteúdos - Criado nova metodologia de tipos de conteúdo. Agora é possível criar multi páginas mestre um para cada tipo e também inserir/editar/remover campos em cada tipo.
+### Fixed
+- Loja - O erro na opção esqueceu sua senha foi corrigido.
+## [2.10.0] - 03.10.2017
+### Added
+- Design - Versão mobile.
+- Serviços - Versão mobile.
+- Conteúdos - Versão mobile.
+- Serviços - Validade dos serviços por data.
+### Fixed
+- Design - Botão "MAIS" está abrindo deslocado para a esquerda..
+- Design - Caixa de texto com problemas após clicar em ENTER.
+- Design - Foi verificado um problema após o salvamento e reload da página que tenha o widget Banner e o widget Formulários, o widget Formulários apresenta erros e o Banner não.
+## [2.9.0] - 23.07.2017
+### Added
+- Conteúdos - Com essa nova opção pode-se criar páginas fora do ambiente do Design e alterar o layout visual na página mestre de conteúdos.
+## [2.8.1] - 08.06.2017
+### Fixed
+- Design - Banners - Agora o menu de banners vem selecionado corretamente o banner atual no menu de escolha de banners.
+## [2.8.0] - 05.06.2017
+### Added
+- Design - Páginas Mestre - Qualquer alteração de layout da página mestre de serviços pode ser aplicado a um ou vários serviços em lote.
+## [2.7.0] - 31.05.2017
+### Added
+- Design - Galeria de Imagens - Nova ferramenta de imagens em "grid".
+### Fixed
+- Design - Uploader Filename - Havia um problema no nome do arquivo enviado ao servidor em todos os widgets que enviam arquivos ao servidor. Quando o uploader retorna com sucesso o envio de imagens, estava apresentando erro de "undefined" no nome dos arquivos retornados.
+## [2.6.0] - 25.05.2017
+### Added
+- Páginas - Robots.txt - Os mecanismos de busca da internet usam esse arquivo, que fica localizado na raiz do site, com os dados do site que são necessário para a indexação das páginas do site.
+- Páginas - Sitemaps - Todas as páginas de uma conta são mapeadas para um sitemaps.xml localizado no seguinte local: DOMINIO_DO_CLIENTE / files / sitemaps / sitemaps.xml.
+- Configurações - Meta Global - Agora é possível inserir/editar/remover códigos da HEAD das páginas HTML em lote para todas as páginas publicadas.
+- Configurações - Aprimoramento SEO - Inserção das ferramentas do Google Webmaster Tools: Google Site Verification e Google Analytics em lote para todas as páginas publicadas.
+### Changed
+- Menu Principal - Removido o campo do Plano e colocado no lugar o Código da conta.
+- Configurações - Movido o local das Configurações de Loja para Configurações globais. O local de acesso era /store/config/ e passou para /config/.
+### Fixed
+- Design - Contas recem criadas tinham problemas com a visualização de imagens devido a um curto período de tempo para o sistema assinar o certificado de segurança no domínio recém criado.
+- Homepage - Preview Pages - Google fonts agora estão sendo lidas no preview de páginas.
+- Loja - Serviços - Título das páginas de serviços aparecendo corretamente no lugar de "Título da Página".
+## [2.5.0] - 10.05.2017
+### Added
+- Design - Widget Google Maps - criar mapas independentes com estilo visual, zomm inicial e endereço ou local específico.
+- Páginas - Opção de copiar e colar entre páginas.
+### Changed
+- Design - E-Serviços - Nova opção de habilitar área de hiperlink no todo de cada serviço e não apenas no botão comprar.
+### Fixed
+- Loja - Serviços - Havia um problema de formatação de URL na hora de publicar os serviços de hosts que tinham domínio próprio.
+## [2.3.1] - 25.04.2017
+### Added
+- Dashboard - Rotina automática de atualização das mudanças feitas no B2make e incluídas na tela inicial do B2make.
+### Fixed
+- Design - Abertura de Template - Um campo informado incorretamente no banco dados causava um erro na abertura de página vinda do template.
+- Design - Menu Páginas - Quando mudava de página pelo menu ocorria um salvamento incorreto de página. Uma página era sobrescrita pela anterior.
+## [2.3.0] - 24.04.2017
+### Added
+- Design - Widget formulário - criar vários formulários independentes.
+- Design - Widget formulário - definir campos personalizados do formulário independentes.
+- Design - Widget formulário - definir email de destino do contato para cada formulário independente.
+### Changed
+- Design - Widget formulário de contato teve um aprimoramento e agora se chama formulários.
+- Design - Menu Páginas - totalmente modificado para melhor navegação no mesmo.
+### Fixed
+- Design - Área fixa criava uma área em branco no fim da página quando o parallax estiver definido como desativado.
+## [2.2.2] - 17.03.2017
+### Added
+- Design - Salvamento automático das páginas.
+### Fixed
+- Design - Widget instagram com tela branca.
+## [2.2.1] - 16.03.2017
+### Changed
+- Design - Aprimoramento do Banner com inserção de novas opções de animação bem como seta indicadoura para mudar de imagens no Banner.
+### Fixed
+- Design - Áreas fixas apresentavam um comportamento de desalinhamento.
+- Sistema - Correção de bugs gerais.
+## [2.2.0] - 23.02.2017
+### Added
+- Usuários - Módulo de gerência de usuários do sistema além do usuário padrão da conta.
+- Design - Widget de criação de banners na versão beta disponibilizado.
+- Loja - Voucher com opção de des/habilitar para presente.
+- Loja - Voucher com opção de des/habilitar temas.
+- Infraestrutura - Implementação de certificado de segurança em todo o B2make.
+- Infraestrutura - Implementação de certificado de segurança nas contas de clientes B2make.
+### Changed
+- Design - Grid agora é opcional e pode ser habilitado nas configurações.
+- Serviços - Página mestre dos serviços foi aprimorada.
+### Fixed
+- Design - Facebook like corrigido o bug com a implantação do certificado de segurança.
+- Design - Widget selos sociais corrigida avatar do instagram.
+- Design - Correção de bugs em geral.
+## [2.1.1] - 07.02.2017
+### Added
+- Loja - Checkout Transparente PagSeguro.
+- Loja - Definição via configurações de quantidade de parcelamentos sem juros.
+### Fixed
+- Design - Correção de bugs.
+## [2.0.4] - 06.12.2016
+### Added
+- Design - Duplicar áreas e widgets
+- Design - Copiar áreas e widgets
+- Design - Colar áreas e widgets
+## [2.0.3] - 30.11.2016
+### Added
+- Design - Réguas e Linha Guia.
+- Design - Grade de orientação.
+- Design - Link de tipo hash # para acessar widgets dentro da página
+## [2.0.2] - 26.11.2016
+### Added
+- Website - Nova versão do website.
+### Changed
+- Website - Simplificação de Cadastro e Login.
+## [2.0.1] - 24.11.2016
+### Added
+- Loja - Liberação da Loja Online de Serviços.
+### Changed
+- Design - Melhoramento do Widget Instagram. 
+## [2.0.0] - 18.11.2016
+### Added
+- Design - Nova Interface Visual.
+- Design - Melhoramento e Aprimoramento da Experiência do Usuário. 

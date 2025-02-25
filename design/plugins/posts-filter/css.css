@@ -1,0 +1,725 @@
+#b2make-wo-posts_filter-lbl{
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:80px;
+}
+#b2make-wo-posts_filter-editar-btn{
+	position:absolute;
+	left:80px;
+	top:0px;
+	width:60px;
+}
+#b2make-posts-filter-lista-cont{
+	margin-top:15px;
+}
+#b2make-wo-posts_filter-ficha-html-lbl{
+	position:absolute;
+	left:180px;
+	top:0px;
+	width:80px;
+}
+#b2make-wo-posts_filter-ficha-html-btn{
+	position:absolute;
+	left:265px;
+	top:0px;
+	width:60px;
+}
+#b2make-wo-posts_filter-layout-tipo-lbl{
+    position: absolute;
+    top: 24px;
+    width: 80px;
+}
+#b2make-wo-posts_filter-layout-tipo{
+    position: absolute;
+    top: 24px;
+    left: 80px;
+    cursor: pointer;
+}
+#b2make-wo-posts_filter-layout-orientacao-lbl{
+    position: absolute;
+    top: 0px;
+	left:365px;
+    width: 70px;
+}
+#b2make-wo-posts_filter-layout-orientacao{
+    position: absolute;
+    top: 0px;
+    left: 445px;
+    cursor: pointer;
+}
+#b2make-posts_filter-botao-filtrar-url-lbl{
+    position: absolute;
+    left: 210px;
+    top: 24px;
+    width: 120px;
+}
+#b2make-posts_filter-botao-filtrar-url{
+    position: absolute;
+    left: 330px;
+    top: 24px;
+    width: 260px;
+}
+#b2make-wo-posts_filter-ficha-html,#b2make-wo-posts_filter-sem-resultados-html{
+	width:100%;
+	height:400px;
+}
+.b2make-posts-filter{
+	width:inherit;
+	height:inherit;
+}
+.b2make-posts-filter-ficha-html-holder,.b2make-posts-filter-ficha-html-vertical-holder,.b2make-posts-filter-sem-resultados-html-holder{
+	display:none;
+}
+.b2make-posts-filter-cont{
+	background-image:url(../../images/b2make-posts-filter-menu-setinha.png);
+	background-repeat:no-repeat;
+	background-position:right 5px center;
+	display:inline-block;
+	line-height:28px;
+	padding:0px 28px 0px 7px;
+	margin:5px 10px;
+	border:1px #1b4174 solid;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	font-size:15px;
+	min-width:50px;
+}
+.b2make-posts-filter-cont-2{
+	background-image:url(../../images/b2make-posts-filter-menu-setinha.png);
+	background-repeat:no-repeat;
+	background-position:right 5px center;
+	display:inline-block;
+	line-height:28px;
+	padding:0px 28px 0px 7px;
+	margin:5px 15px;
+	border:1px #1b4174 solid;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	font-size:15px;
+	width:205px;
+	text-align:left;
+}
+.b2make-posts-filter-cont-2-lbl{
+	font-size:17px;
+	line-height:20px;
+	color:#222222;
+	width:240px;
+	text-align:left;
+	display:inline-block;
+	margin:10px 15px 0px 0px;
+}
+.b2make-posts-filter-btn{
+	background-color:#1b4174;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	line-height:39px;
+	color:#FFF;
+	font-size:15px;
+	text-align:center;
+	min-width:70px;
+	padding:0px 7px;
+	display:inline-block;
+	margin:5px 10px;
+}
+.b2make-posts-filter-btn-2{
+	background-color:#1b4174;
+	line-height:39px;
+	color:#FFF;
+	font-size:15px;
+	text-align:center;
+	min-width:70px;
+	padding:0px 7px;
+	display:inline-block;
+	margin:5px 15px;
+}
+.b2make-posts-filter-menu[data-orientacao="vertical"] .b2make-posts-filter-btn-2{
+	margin-bottom:10px;
+}
+.b2make-posts-filter-menu[data-type="menu-resultados"]{
+	background-image:url(../../images/b2make-posts-filter-resultados.png);
+	background-repeat:no-repeat;
+	background-position:top 10px center;
+	background-color:#FFF;
+	width:270px;
+	height:calc(100% - 70px);
+	padding-top:70px;
+	float:left;
+	text-align:right;
+}
+.b2make-posts-filter-menu[data-orientacao="vertical"]{
+	width:100%;
+	height:auto;
+}
+.b2make-posts-filter-menu[data-orientacao="vertical"] .b2make-posts-filter-cont-2-lbl{
+	width:100%;
+	padding-left:10px;
+}
+.b2make-posts-filter-menu[data-orientacao="vertical"] .b2make-posts-filter-cont-2{
+	width:calc(100% - 60px);
+	margin:5px 10px 5px 0px;
+}
+.b2make-posts-filter-lista{
+	display:inline-block;
+	width:calc(100% - 270px);
+	height:inherit;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+.b2make-posts-filter-lista[data-orientacao="vertical"]{
+	width:100%;
+	margin-top:10px;
+	height:auto;
+}
+/********** Ficha **************/
+.b2make-posts-filter-conteudo{
+	position:relative;
+	background-color:#FFF;
+	width:860px;
+	height:282px;
+	margin:0px 0px 10px 10px;
+}
+.b2make-posts-filter-ficha-imagem-grande{
+	background-image:url(../../images/b2make-album-sem-imagem.png);
+	width:281px;
+	height:281px;
+	background-size:cover;
+	background-position:center center;
+}
+.b2make-posts-filter-ficha-habita{
+	width:auto;
+	height:15px;
+	position:absolute;
+	left:296px;
+	top:30px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	font-weight:bold;
+}
+.b2make-posts-filter-ficha-cidade{
+	width:auto;
+	height:23px;
+	position:absolute;
+	left:296px;
+	top:49px;
+	font-family:'Myriad Pro';
+	font-size:36px;
+	font-weight:bold;
+	color:#E3A325;
+	text-transform:uppercase;
+}
+.b2make-posts-filter-ficha-txt-terreno{
+	width:auto;
+	height:16px;
+	position:absolute;
+	left:345px;
+	top:120px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	color:#4C4C4C;
+	font-weight:normal;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-txt-suites{
+	width:auto;
+	height:16px;
+	position:absolute;
+	left:345px;
+	top:195px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	color:#4C4C4C;
+	font-weight:normal;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-txt-dormitorios{
+	width:auto;
+	height:16px;
+	position:absolute;
+	left:485px;
+	top:120px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	color:#4C4C4C;
+	font-weight:normal;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-txt-vagas{
+	width:auto;
+	height:16px;
+	position:absolute;
+	left:485px;
+	top:195px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	color:#4C4C4C;
+	font-weight:normal;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-terreno-m2{
+	background-image:url(../../images/b2make-album-sem-imagem.png);
+	background-size:cover;
+	background-position:center center;
+	padding-left:0px;
+	width:40px;
+	height:40px;;
+	line-height:10px;
+	position:absolute;
+	left:296px;
+	top:110px;
+	font-family:'Myriad Pro';
+	font-size:12px;
+	color:#222222;
+}
+.b2make-posts-filter-ficha-suites{
+	background-image:url(../../images/b2make-album-sem-imagem.png);
+	background-size:cover;
+	background-position:center center;
+	padding-left:0px;
+	width:40px;
+	height:40px;
+	line-height:10px;
+	position:absolute;
+	left:296px;
+	top:185px;
+	font-family:'Myriad Pro';
+	font-size:12px;
+	color:#222222;
+}
+.b2make-posts-filter-ficha-dormitorios{
+	background-image:url(../../images/b2make-album-sem-imagem.png);
+	background-size:cover;
+	background-position:center center;
+	padding-left:0px;
+	width:40px;
+	height:40px;
+	line-height:30px;
+	position:absolute;
+	left:438px;
+	top:110px;
+	font-family:'Myriad Pro';
+	font-size:12px;
+	color:#222222;
+}
+.b2make-posts-filter-ficha-vagas{
+	background-image:url(../../images/b2make-album-sem-imagem.png);
+	background-size:cover;
+	background-position:center center;
+	padding-left:0px;
+	width:40px;
+	height:40px;
+	line-height:30px;
+	position:absolute;
+	left:438px;
+	top:185px;
+	font-family:'Myriad Pro';
+	font-size:12px;
+	color:#222222;
+}
+.b2make-posts-filter-ficha-lancamento{
+	background-color:#E3A325;
+	width:282px;
+	height:33px;
+	line-height:33px;
+	position:absolute;
+	left:297px;
+	top:238px;
+	font-family:'Myriad Pro';
+	font-size:17px;
+	color:#fff;
+	font-weight:bold;
+	text-transform:capitalize;
+	margin: auto;
+	text-align:center;
+	-moz-border-radius:18px;
+	-webkit-border-radius:18px;
+	border-radius: 12px;
+}
+.b2make-posts-filter-ficha-barra-vertical{
+	background-image:url(ficha-html/images/b2make-posts-filter-barra-vertical.png);
+	width:3px;
+	height:228px;
+	background-size:cover;
+	background-position:center center;
+	left:599px;
+	top:30px;
+	position:absolute;
+
+}
+.b2make-posts-filter-ficha-barra-use-seu-fgts {
+	background-image:url(../../images/b2make-album-sem-imagem.png);
+	width:75px;
+	height:40px;
+	background-size:cover;
+	background-position:center center;
+	left:610px;
+	top:49px;
+	position:absolute;
+}
+.b2make-posts-filter-ficha-barra-minha-casa-minha-vida {
+	background-image:url(../../images/b2make-album-sem-imagem.png);
+	width:75px;
+	height:40px;
+	background-size:cover;
+	background-position:center center;
+	left:690px;
+	top:49px;
+	position:absolute;
+}
+.b2make-posts-filter-ficha-barra-estagio {
+	background-image:url(../../images/b2make-album-sem-imagem.png);
+	width:75px;
+	height:40px;
+	background-size:cover;
+	background-position:center center;
+	left:770px;
+	top:49px;
+	position:absolute;
+}
+.b2make-posts-filter-ficha-apartirde{
+	width:50px;
+	height:11px;
+	position:absolute;
+	left:610px;
+	top:115px;
+	font-family:'Myriad Pro';
+	font-size:10px;
+	color:#4C4C4C;
+	font-weight:bold;
+}
+.b2make-posts-filter-ficha-valor{
+	width:auto;
+	height:28px;
+	position:absolute;
+	left:610px;
+	top:135px;
+	font-family:'Myriad Pro';
+	font-size:26px;
+	color:#1B4174;
+	font-weight:bold;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-botao1{
+	position:absolute;
+	top:197px;
+	left:610px;
+	font-weight:bold;
+	text-transform:capitalize;
+	text-align:center;
+	line-height:40px;
+	width:210px;  
+	height:39px;	
+	display:block;
+	font-family:'Myriad Pro';
+	padding:0px;
+	text-align:center;	
+	color:#999;
+	background:#EFEFEF;
+}	
+#b2make-posts-filter-link-botao-filho{
+	width:209px;
+	height:38px;
+	border:0px solid #000;
+	background-color:#EFEFEF;
+	text-decoration: none;
+	display:block;
+	position:absolute;
+	top:197px;
+	left:610px;
+	font-family:'Myriad Pro';
+	text-align:center;
+	line-height:38px;
+	color:#686868;
+	font-size:16px;
+}
+#b2make-posts-filter-link-botao-filho:hover{
+	background-color: #DBDBDB;
+	color:#333;
+	text-decoration: none;
+}
+/********** Ficha Vertical **************/
+.b2make-posts-filter-conteudo-2{
+	margin-left:-0;
+	width:100%;
+	margin-bottom:10px;
+	background-color:#FFF;
+	padding-bottom:100px;
+}
+.b2make-posts-filter-ficha-imagem-grande-2{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-foto-obra1.jpg);
+	width:100%;
+	height:490px;
+	background-repeat:no-repeat;
+	background-size:cover;
+	background-position:center center;
+}
+.b2make-posts-filter-ficha-habita-2{
+	width:calc(100% - 60px);
+	height: auto;
+	padding: 0px;
+	margin:35px 0px 0px 20px;
+	font-family:'Myriad Pro';
+	font-size:26.60px;
+	font-weight:bold;
+	color:#4C4C4C;
+	display:block;
+
+}
+.b2make-posts-filter-ficha-cidade-2{
+	width:calc(100% - 60px);
+	margin:5px 0px 0px 20px;
+	font-size:64.18px;
+	font-family:'Myriad Pro';
+	font-weight:bold;
+	color:#555555;
+	text-transform: uppercase;
+	text-align:left;
+	padding-bottom:0px;
+}
+.b2make-pfc-cont{
+	width:100%;
+	margin:7px 20px 56px 0px;
+	
+}
+.b2make-pfc-coluna{
+	width:50%;
+	margin-left:0px;
+	text-align:center;
+	float:left;
+	margin-bottom:20px;
+	margin-top:20px;
+	padding-top:17px;
+}
+.b2make-pfc-clear{
+	clear:both;
+}
+.b2make-pfc-elemento{
+	display:inline-block;
+	height:17px;
+	width:190px;
+	text-align:center;
+	margin:17px 0px 0px -55px;
+}
+.b2make-pfc-elemento-img-1{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-terreno-m2.png);
+	background-size:cover;
+	margin-right:10px;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	vertical-align:middle;
+}
+.b2make-pfc-elemento-img-2{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-suites.png);
+	background-size:cover;
+	margin-right:10px;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	vertical-align:middle;
+}
+.b2make-pfc-elemento-img-3{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-dormitorios.png);
+	background-size:cover;
+	margin-right:10px;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	vertical-align:middle;
+}
+.b2make-pfc-elemento-img-4{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-vagas.png);
+	background-size:cover;
+	margin-right:10px;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	vertical-align:middle;
+}
+
+.b2make-pfc-elemento-txt{
+	display:inline-block;
+	font-size: 27px;
+    font-family: 'Myriad Pro';
+    color: #4C4C4C;
+    font-weight: normal;
+    text-transform: capitalize;
+	text-align:left;
+	max-height:51px;
+	overflow:hidden;
+	width:100px;
+	white-space: nowrap;
+	vertical-align:middle;
+}
+.b2make-pfc-coluna-2{
+	width:30%;
+	text-align:center;
+	float:left;
+}
+.b2make-pfc-elemento-2-estagio{
+	background: url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-pronto-para-morar.jpg) no-repeat right;
+	width: 125px;
+    height: 62px;
+    background-size: cover;
+    background-position: center center;
+	display:inline-block;
+}
+.b2make-pfc-elemento-2-minha-vida{
+	background: url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-fgts.jpg) no-repeat right;
+	width: 125px;
+    height: 62px;
+    background-size: cover;
+    background-position: center center;
+	display:inline-block;
+}
+
+.b2make-pfc-elemento-2-fgts{
+	background: url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-lazer-incrivel-hoga.jpg) no-repeat right;
+	width: 125px;
+    height: 62px;
+    background-size: cover;
+    background-position: center center;
+	display:inline-block;
+}
+
+.b2make-posts-filter-ficha-lancamento-2{
+	width:calc(100% - 50px);
+	margin:0px 20px -8px 20px;
+	line-height:48px;
+	display:inline-block;
+	font-family: 'Myriad Pro';
+	font-size: 23.84px;
+	color: #fff;
+	font-weight: bold;
+	text-transform: capitalize;
+	background-color: #3D9BE9;
+	text-align: center;
+	border-radius: 11px;
+}
+.b2make-posts-filter-ficha-apartirde-2{
+	width:400px;
+	text-align:left;
+	margin: 0px 0px 0px 20px;
+	clear:both;	
+	font-family: 'Myriad Pro';
+	font-size: 27px;
+	color: #4C4C4C;
+	font-weight: bold;
+	position:relative;
+	
+	
+	margin:10px 20px 18px 20px;
+}
+.b2make-posts-filter-ficha-valor-2{
+	margin:10px 20px 58px 20px;
+	line-height:40px;
+	text-align:left;
+	font-family: 'Myriad Pro';
+	font-size: 66px;
+	color: #1B4174;
+	font-weight: bold;
+	text-transform: capitalize;
+}
+#b2make-posts-filter-link-botao-filho-2{
+	border:0px solid #000;
+	background-color:#EFEFEF;
+	text-decoration: none;
+	display:block;
+	font-family:'Myriad Pro';
+	text-align:center;
+	width:100%;
+	max-width:450px;
+	font-weight:bold;
+	text-transform:capitalize;
+	margin:0 auto;
+	font-size:29px;
+	color:#686868;
+	line-height:80px
+}
+#b2make-posts-filter-link-botao-filho-2:hover,#b2make-posts-filter-link-botao-filho-2:visited{
+	background-color: #DBDBDB;
+	color:#333;
+	text-decoration: none;
+}
+/***********************************/
+#b2make-posts_filter-contents-lbl{
+	position:absolute;
+	left:215px;
+	top:24px;
+	width:80px;
+}
+#b2make-posts_filter-contents-editar-btn{
+	position:absolute;
+	left:290px;
+	top:24px;
+	width:60px;
+}
+#b2make-wo-posts_filter-sem-resultados-html-lbl{
+	position:absolute;
+	left:390px;
+	top:24px;
+	width:140px;
+}
+#b2make-wo-posts_filter-sem-resultados-html-btn{
+	position:absolute;
+	left:540px;
+	top:24px;
+	width:60px;
+}
+#b2make-posts_filter-contents-add{
+	position:absolute;
+	left:14px;
+	top:0px;
+}
+#b2make-posts_filter-contents-options-sel-lbl{
+	position:absolute;
+	top:0px;
+	width:120px;
+	left:120px;
+}
+#b2make-posts_filter-contents-options-sel{
+	position:absolute;
+	top:0px;
+	left:235px;
+	cursor:pointer;
+}
+#b2make-posts_filter-contents-lista{
+	overflow-y:auto;
+	width:740px;
+	height:200px;
+	position:absolute;
+	left:15px;
+	top:45px;
+	background-color:#ECEDEF;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+}
+#b2make-posts_filter-contents-lista-conteudo-tipo{
+	overflow-y:auto;
+	width:740px;
+	height:200px;
+	position:absolute;
+	left:15px;
+	top:60px;
+	background-color:#ECEDEF;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+}
+#b2make-posts_filter-contents-options-cont{
+	margin:2px 5px;
+	min-height:16px;
+	max-height:26px;
+	position:relative;
+}
+#b2make-posts_filter-contents-ordem-sel-lbl{
+	position:absolute;
+	top:10px;
+	width:120px;
+	left:0px;
+}
+#b2make-posts_filter-contents-ordem-sel{
+	position:absolute;
+	top:10px;
+	left:120px;
+	cursor:pointer;
+}

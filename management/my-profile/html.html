@@ -1,0 +1,124 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><link href="../../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<h2>Formul&aacute;rio</h2>
+<hr />
+<!-- form < -->
+<form action="." method="post" name="form" id="b2make-my-profile-form" enctype="multipart/form-data">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+    <tr>
+      <td align="left" class="principal"><table width="100%" border="0" cellspacing="5" class="tabela_lista">
+        <tr>
+          <td width="150" align="left" class="lista_header_2">Sair do Sistema:</td>
+          <td class="lista_cel_2"><a href="!#caminho_raiz#!logout">Confirmar Sa&iacute;da</a>
+          </td>
+        </tr>
+        <tr>
+          <td width="150" align="left" class="lista_header_2">Avatar:</td>
+          <td class="lista_cel_2"><input name="avatar" type="file" id="avatar" size="60">
+          </td>
+        </tr>
+        <tr>
+          <td width="150" align="left" class="lista_header_2">E-mail:</td>
+          <td class="lista_cel_2"><input name="usuario" type="text" id="usuario" value="#email#" size="80" maxlength="100" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Senha:</td>
+          <td align="left" class="lista_cel_2">Clique <span id="b2make-change-password-button">aqui</span> para mudar a senha.
+          <div id="b2make-change-password-2">
+            <label for="senha">SENHA ATUAL</label>
+            <input name="senha" type="password" id="senha" tabindex="2">					
+            <div class="clear"></div><div id="my-profile-esqueceu-senha">Esqueceu sua senha? Clique <a href="!#caminho_raiz#!esqueceu-sua-senha" id="esqueceu-senha">aqui</a>.</div>
+            <div class="clear"></div>
+            <label for="senha2">SENHA NOVA</label>
+            <input name="senha2" type="password" id="senha2" tabindex="3">					
+            <div class="clear"></div>
+            <label for="senha3">REDIGITE SENHA NOVA</label>
+            <input name="senha3" type="password" id="senha3" tabindex="4">					
+            <div class="clear"></div>
+        </div></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Nome:</td>
+          <td class="lista_cel_2"><input name="nome" type="text" id="nome" value="#nome#" size="30" maxlength="255" /></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Sobrenome:</td>
+          <td class="lista_cel_2"><input name="sobrenome" type="text" id="sobrenome" value="#sobrenome#" size="80" maxlength="255" /></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">CEP:</td>
+          <td align="left" class="lista_cel_2"><input name="cep" type="text" id="cep" value="#cep#" size="9" maxlength="9" class="cep"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Endere&ccedil;o:</td>
+          <td align="left" class="lista_cel_2"><input name="endereco" type="text" id="endereco" value="#endereco#" size="80" maxlength="100"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">N&uacute;mero:</td>
+          <td align="left" class="lista_cel_2"><input name="numero" type="text" id="numero" value="#numero#" size="8" maxlength="10" class="inteiro"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Complemento:</td>
+          <td align="left" class="lista_cel_2"><input name="complemento" type="text" id="complemento" value="#complemento#" size="80" maxlength="100"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Bairro:</td>
+          <td align="left" class="lista_cel_2"><input name="bairro" type="text" id="bairro" value="#bairro#" size="80" maxlength="100"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Cidade:</td>
+          <td align="left" class="lista_cel_2"><input name="cidade" type="text" id="cidade" value="#cidade#" size="80" maxlength="100"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">UF:</td>
+          <td align="left" class="lista_cel_2"><input name="uf" type="text" id="uf" value="#uf#" size="3" maxlength="2"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Telefone:</td>
+          <td align="left" class="lista_cel_2"><input name="telefone" type="text" id="telefone" value="#telefone#" size="20" maxlength="30" class="telefone"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Celular:</td>
+          <td align="left" class="lista_cel_2"><input name="celular" type="text" id="celular" value="#celular#" size="20" maxlength="30" class="telefone"></td>
+        </tr>
+      	<!-- excluir-cont < --><tr>
+          <td width="150" align="left" class="lista_header_2">Assinatura:</td>
+          <td class="lista_cel_2"><!--<a href="!#caminho_raiz#!upgrade-plan">Upgrade de Plano</a> | --><a href="?opcao=signature-cancel">Excluir Conta</a></td>
+        </tr><!-- excluir-cont > -->
+      </table>
+        <!-- botao < --><table width="100%" border="0">
+          <tr>
+            <td align="center"><input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+              <input name="opcao" type="hidden" id="opcao" value="#opcao" />
+              <input name="id" type="hidden" id="id" value="#id" />
+              <input name="more_options" type="hidden" id="more_options" value="#more_options" />
+              <input type="button" name="b2make-my-profile-save" id="b2make-my-profile-save" value="#botao" /></td>
+          </tr>
+        </table><!-- botao > --></td>
+    </tr>
+  </table>
+</form>
+<!-- form > -->
+<hr />
+<h2>Assinatura Cancelamento</h2>
+<hr />
+<!-- signature-cancel < -->
+<div id="b2make-signature-cancel">
+	<h1>Excluir Conta</h1>
+  	<p>Tem certeza que voc&ecirc; quer excluir a sua conta B2Make? Essa opera&ccedil;&atilde;o n&atilde;o tem retorno e todos os dados da sua conta B2Make ser&atilde;o exclu&iacute;dos!</p>
+	<input type="button" name="button" id="b2make-signature-cancel-confirm" class="b2mae-button-default" value="CONFIRMAR EXCLUS&Atilde;O DE CONTA">
+</div>
+<!-- signature-cancel > -->
+<hr />
+<h2>Assinatura Cancelamento</h2>
+<hr />
+<!-- signature-canceled < -->
+<div id="b2make-signature-canceled">
+	<h1>Conta Exclu&iacute;da</h1>
+  	<p>A sua conta foi exclu&iacute;da com sucesso!</p>
+    <input type="button" name="button" id="b2make-signature-canceled-input" value="B2MAKE INÍCIO">
+</div>
+<!-- signature-canceled > -->
+<hr />

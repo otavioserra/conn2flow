@@ -1,0 +1,390 @@
+.interno_sim{
+	color:green;
+}
+.interno_nao{
+	color:blue;
+}
+.cortesia_sim{
+	color:green;
+}
+.cortesia_nao{
+	color:blue;
+}
+.texto1 {
+	color: #096;
+	font-weight: bold;
+}
+.texto2 {
+	color: #C03;
+	font-weight: bold;
+}
+.texto3 {
+	color: #03F;
+	font-weight: bold;
+}
+
+.texto4 {
+	color: #009;
+	font-weight: bold;
+}
+
+.ordenacao {
+	text-align: center;
+}
+.validade-holder{
+	position:relative;
+}
+.alterar-validade{
+	cursor:pointer;
+}
+.caixa-validade{
+	display:none;
+	position:absolute;
+	top:-15px;
+	left:120px;
+	width:180px;
+	height:25px;
+	background-color: #E8F2FD;
+	padding:7px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.caixa-validade-data{
+	display:none;
+	position:absolute;
+	top:-15px;
+	left:120px;
+	width:240px;
+	height:26px;
+	background-color:#E8F2FD;
+	padding:7px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.caixa-validade-fechar{
+	position:absolute;
+	top:-9px;
+	right:-4px;
+	color:#900;
+	font-size:15px;
+	font-weight:bold;
+	cursor:pointer;
+}
+.caixa-baixar{
+	display:none;
+	position:absolute;
+	top:-30px;
+	left:0px;
+	width:280px;
+	height:102px;
+	background-color: #E8F2FD;
+	padding:7px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+	position:relative;
+}
+.caixa-baixar-fechar{
+	position:absolute;
+	top:-9px;
+	right:-4px;
+	color:#900;
+	font-size:15px;
+	font-weight:bold;
+	cursor:pointer;
+}
+.caixa-baixar-textarea{
+	width:200px;
+	height:100px;
+}
+.data{
+	width:80px;
+	margin:2px 0px 0px 0px;
+	background-color:#FFF;
+}
+.hora{
+	width:50px;
+	margin:2px 0px 0px 0px;
+	background-color:#FFF;
+}
+.botao-validade{
+	background-color:#328CE6;
+	color:#FFF;
+	position:absolute;
+	top:10px;
+	right:10px;
+	cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+	width:50px;
+	line-height:22px;
+	text-align:center;
+}
+.botao-baixar{
+	background-color:#328CE6;
+	color:#FFF;
+	position:absolute;
+	top:10px;
+	right:10px;
+	cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+	width:50px;
+	line-height:22px;
+	text-align:center;
+	padding:8px 0px !important;
+}
+.caixa-validade .botao-validade{
+	line-height:17px;
+	text-align:center;
+	padding:2px;
+}
+.editar{
+	width:80px;
+	line-height:27px;
+	display:block;
+	background-color:#E8F2FD;
+	color:#328CE6;
+	text-align:center;
+	cursor:pointer;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	position:absolute;
+	left:120px;
+	top:-15px;
+}
+.visualizar-voucher,.imprimir-voucher,.baixar-manual-voucher{
+	width:80px;
+	line-height:27px;
+	display:inline-block;
+	background-color:#E8F2FD;
+	color:#328CE6;
+	text-align:center;
+	cursor:pointer;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	cursor:pointer;
+	margin-right:10px;
+}
+#imprimir{
+	display:block;
+	margin:20px 0px;
+	cursor:pointer;
+}
+#codigo_rastreio-cont{
+	display:none;
+}
+.status-concluido{
+	display:inline-block;
+	color:#143311;
+	background-color:#D1F0CD;
+	padding:4px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	width:80px;
+	text-align:center;
+}
+.status-aguardando{
+	display:inline-block;
+	color:#7E3737;
+	background-color:#F9EDC7;
+	padding:4px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	width:80px;
+}
+.status-cancelado{
+	display:inline-block;
+	color:#7E3737;
+	background-color:#FFE0E0;
+	padding:4px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	width:80px;
+}
+.status-baixado{
+	width:20px;
+	height:22px;
+	background-color:rgba(0,0,0,0.38);
+	-webkit-mask-image:url(../../images/gestor/icones-b2make-3.svg);
+	mask-image:url(../../images/gestor/icones-b2make-3.svg);
+	-webkit-mask-size:260px;
+	mask-size:260px;
+	-webkit-mask-position: -53px -52px;
+	mask-position: -53px -52px;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	cursor:pointer;
+	display:inline-block;
+	vertical-align:middle;
+}
+.status-nao-baixado{
+	width:20px;
+	height:22px;
+	background-color:#1E8FFF;
+	-webkit-mask-image:url(../../images/gestor/icones-b2make-3.svg);
+	mask-image:url(../../images/gestor/icones-b2make-3.svg);
+	-webkit-mask-size:260px;
+	mask-size:260px;
+	-webkit-mask-position: -27px -52px;
+	mask-position: -27px -52px;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	cursor:pointer;
+	display:inline-block;
+	vertical-align:middle;
+}
+.form-cont{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+.history-cont{
+	color:rgba(0,0,0,0.38);
+}
+.card-cont{
+	flex: none;
+	vertical-align:top;
+	width:442px;
+	margin-right:15px;
+}
+.title-cont{
+	color:rgba(0,0,0,0.87);
+	font-size:17px;
+	border-bottom:1px solid rgba(112,112,112,0.08);
+	padding:9px 0px;
+}
+.data-column{
+	width:120px;
+	display:inline-block;
+}
+.data-cont{
+	margin:18px 0px;
+}
+.data-label{
+	color:rgba(0,0,0,0.87);
+	font-size:11px;
+	font-weight:600;
+	margin-bottom:5px;
+}
+#pedido-status{
+}
+.data-value{
+	color:rgba(0,0,0,0.6);
+}
+#b2make-voucher-2{
+	width:450px;
+	margin:0px auto;
+}
+#b2make-voucher-2-presente-img{
+	width:calc(100% - 32px);
+	height:180px;
+	background-size:cover;
+	-webkit-print-color-adjust: exact;
+}
+.b2make-voucher-2-cont{
+	border:solid 1px #efeff0;
+	padding:15px;
+	margin-bottom:10px;
+	font-size:11px;
+	line-height:14px;
+}
+.b2make-voucher-2-service-img{
+	display:inline-block;
+	vertical-align:top;
+	background-size:cover;
+	width:170px;
+	height:170px;
+	margin-right:15px;
+	-webkit-print-color-adjust: exact;
+}
+.b2make-voucher-2-store-img{
+	display:inline-block;
+	vertical-align:top;
+	background-size:cover;
+	width:145px;
+	height:70px;
+	margin-right:15px;
+	-webkit-print-color-adjust: exact;
+}
+.b2make-voucher-2-service-desc{
+	display:inline-block;
+	vertical-align:top;
+	width:calc(100% - 191px);
+}
+.b2make-voucher-2-store-desc{
+	display:inline-block;
+	vertical-align:top;
+	width:calc(100% - 166px);
+	text-align:justify;
+}
+.b2make-voucher-2-qrcode{
+	text-align:center;
+	padding-top:0px;
+	padding-bottom:0px;
+}
+.b2make-voucher-2-qrcode-img{
+	width:150px;
+	height:150px;
+}
+#b2make-purchases-voucher-view-cont{
+	position:fixed;
+	width:100%;
+	height:100vh;
+	top:0px;
+	left:0px;
+	background-color:#FFF;
+	z-index:100;
+}
+#b2make-purchases-voucher-service-view-tit{
+	padding:10px;
+	text-align:center;
+	font-size:14px;
+}
+#b2make-purchases-voucher-service-view-close{
+	position:absolute;
+	top:0px;
+	right:0px;
+	z-index:1;
+	padding:0px 10px 10px 10px;
+	font-size:50px;
+	font-weight:bold;
+	background-color:#FFF;
+	cursor:pointer;
+}
+.caixa-identidade{
+	display:none;
+	position:absolute;
+	top:-15px;
+	left:120px;
+	width:250px;
+	height:120px;
+	background-color: #E8F2FD;
+	padding:7px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.caixa-identidade-fechar{
+	position:absolute;
+	top:-9px;
+	right:-4px;
+	color:#900;
+	font-size:15px;
+	font-weight:bold;
+	cursor:pointer;
+}
+.botao-identidade{
+	background-color:#328CE6;
+	color:#FFF;
+	position:absolute;
+	bottom:10px;
+	right:10px;
+	cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+	line-height:22px;
+	text-align:center;
+}
+.caixa-identidade input[type="text"]{
+	width:calc(100% - 14px);
+	margin-bottom:5px;
+}

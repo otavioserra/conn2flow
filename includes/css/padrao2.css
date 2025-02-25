@@ -1,0 +1,186 @@
+@font-face {
+    font-family: 'Gotham';
+    src: url('../../design/webfontkit/gotham-book-webfont.woff2') format('woff2'),
+         url('../../design/webfontkit/gotham-book-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'Gotham Bold';
+    src: url('../../design/webfontkit/gotham-bold-webfont.woff2') format('woff2'),
+         url('../../design/webfontkit/gotham-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+html{
+	margin: 0px;
+	font-family: 'Gotham', sans-serif;
+	font-size: 11px;
+	color: #58585B;
+	text-decoration: none;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	letter-spacing: normal;
+	text-align: left;
+	vertical-align: top;
+	word-spacing: normal;
+	white-space: normal;
+	padding: 0px;
+	background-color: #FFF;
+	background-repeat: repeat;
+	background-position: center top;
+	background-attachment: fixed;
+
+}
+body{
+	margin: 0px;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	font-family: 'Gotham', sans-serif;
+}
+table{
+	color: #000000;
+	text-decoration: none;
+}
+p{
+	font-weight: normal;
+	color: #000000;
+	text-decoration: none;
+	font-family: 'Gotham', sans-serif;
+}
+b,strong{
+	font-family: 'Gotham Bold', sans-serif;
+	font-weight: bold;
+	text-decoration: none;
+}
+a{
+	color: #1257A1;
+	text-decoration: none;
+}
+a:visited{
+	color: #1257A1;
+	text-decoration: none;
+}
+a:hover{
+	color: #1257A1;
+	text-decoration: underline;
+}
+input,textarea{
+	font-weight: normal;
+	border: none;
+	padding:3px 6px;
+	color: #434142;
+	background-color: #ECEDEF;
+	font-family: 'Gotham', sans-serif;
+	font-size: 11px;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+}
+select{
+	font-weight: normal;
+	border:none;
+	padding: 3px;
+	color: #58585B;
+	background-color: #D7D9DD;
+	font-family: 'Gotham', sans-serif;
+	font-size: 11px;
+}
+button, input[type="button"], input[type="submit"]{
+	background-color:#D7D9DD;
+	color: #58585B;
+	cursor:pointer;
+	border:none;
+	line-height:22px;
+	padding:0px 10px 0px 10px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+button:hover, input[type="button"]:hover, input[type="submit"]:hover{
+	background-color: #464E56;
+	color:#FFF;
+}
+h1,.h1{
+	font-size: 14pt;
+	color: #000;
+	font-weight: bold;
+}
+h2,.h2{
+	font-size: 12pt;
+	font-weight: bold;
+	color: #232323;
+	text-decoration: none;
+}
+h3,.h3{
+	font-size:18px;
+	color: #464646;
+	font-weight: bold;
+}
+.clear {
+	clear: both;
+}
+.float-left{
+	float:left;
+}
+.float-right{
+	float:right;
+}
+.b2make-check-box{
+}
+.b2make-check-box div{
+	background-color: #D7D9DD;
+    color: #58585B;
+    cursor: pointer;
+    line-height: 22px;
+    padding: 0px 10px 0px 10px;
+	border-right:solid 1px #FFF;
+	float:left;
+	margin:0px;
+}
+.b2make-check-box div:first-child{
+	-webkit-border-radius: 10px 0 0 10px;
+	border-radius: 10px 0 0 10px;
+}
+.b2make-check-box div:last-child{
+	-webkit-border-radius: 0 10px 10px 0;
+	border-radius: 0 10px 10px 0;
+	border:none;
+}
+.b2make-check-box div[data-checked="checked"]{
+	background-color: #464E56;
+	color:#FFF;
+}
+.b2make-check-box div:hover{
+	background-color: #464E56;
+	color:#FFF;
+}
+.b2make-check-box div[data-only-one="true"]{
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+.b2make-check-box[data-disabled="true"] div:hover{
+	background-color: #D7D9DD;
+	color:#58585B;
+	cursor:default;
+}
+.b2make-check-box[data-disabled="true"] div[data-checked="checked"]:hover{
+	background-color: #464E56;
+	color:#FFF;
+	cursor:default;
+}
+input, textarea {
+    font-weight: normal;
+    border: solid 1px #8D96A0;
+    padding: 0px 6px;
+    color: rgba(0,0,0,0.87);
+    background-color: #FFF;
+    font-size: 11px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    line-height: 22px;
+}

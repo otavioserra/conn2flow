@@ -1,0 +1,149 @@
+.texto1 {
+	color: #096;
+	font-weight: bold;
+}
+.texto2 {
+	color: #C03;
+	font-weight: bold;
+}
+.texto3 {
+	color: #03F;
+	font-weight: bold;
+}
+
+.texto4 {
+	color: #009;
+	font-weight: bold;
+}
+
+.ordenacao {
+	text-align: center;
+}
+.label_redes {
+	float: left;
+	width: 80px;
+	height: 15px;
+	background-color: #D90008;
+	color: #FFF;
+	font-weight: bold;
+	margin-right: 3px;
+	margin-top: 2px;
+	font-size: 11pt;
+	padding-top: 2px;
+	padding-right: 3px;
+	padding-bottom: 4px;
+	padding-left: 3px;
+}
+#input_ordem_salvar {
+	margin-bottom: 10px;
+}
+.menu { padding: 0; clear: both; }
+.menu li { display: block; }
+.menu li a { background: #ccf; padding: 10px; float:left; border-right: 1px solid #ccf; border-bottom: none; text-decoration: none; color: #000; font-weight: bold;}
+.menu li.active a { background: #eef; }
+.content { float: left; clear: both; border: 1px solid #ccf; border-top: none; border-left: none; background: #eef; padding: 5px; position:relative; }
+
+#tags-add{
+	cursor: pointer;
+	background-image: url(../../images/icons/adicionar.png);
+	background-repeat: no-repeat;
+	background-position: 3px center;
+	padding:4px 4px 4px 21px;
+	font-size: 14px;
+	font-weight: bold;
+	color: #06F;
+	border:1px solid #666;
+	float:left;
+}
+#tags-add:hover{
+	text-decoration:underline;
+}
+#tags-add-cont{
+	display: none;
+}
+#tags-add-cont label{
+	float:left;
+	font-size: 11px;
+	font-weight: bold;
+	padding:4px 3px 0px 10px;
+}
+#tags-add-texto{
+	float:left;
+}
+#tags-add-button{
+	float:left;
+	margin-left:5px;
+	margin-top:-1px;
+}
+#tags-marcador{
+	width:100%;
+}
+.tags-conteiner-entry{
+	padding:4px;
+	float:left;
+	cursor:pointer;
+}
+.tags-conteiner-entry input{
+	margin-top:2px;
+	display:block;
+	float:left;
+}
+.tags-conteiner-entry .tags-nome{
+	float:left;
+	padding:0px 2px;
+	font-size: 13px;
+}
+.tags-conteiner-entry .tags-excluir{
+	float: left;
+	background-image: url(../../images/icons/excluir.png);
+	height: 16px;
+	width: 16px;
+	margin-top:1px;
+}
+.excluir-data{
+	background-image:url('http://localhost/fgo/images/icons/excluir.png');
+	width:16px;
+	height:16px;
+	cursor:pointer;
+}
+#datas-add{
+	cursor: pointer;
+	background-image: url(../../images/icons/adicionar.png);
+	background-repeat: no-repeat;
+	background-position: 3px center;
+	padding:4px 4px 4px 21px;
+	font-size: 14px;
+	font-weight: bold;
+	color: #06F;
+	border:1px solid #666;
+	float:left;
+	margin:5px 0px 0px 0px;
+}
+#datas-add:hover{
+	text-decoration:underline;
+}
+#datas-padrao{
+	display:none;
+}
+#datas-cont div input{
+	float:left;
+	margin-right:6px;
+}
+#datas-cont div div{
+	float:left;
+}
+#datas-cont-rotulo{
+}
+#datas-cont-r1,#datas-cont-r2,#datas-cont-r3{
+	float:left;
+	margin-right:5px;
+	text-align:center;
+	font-size: 14px;
+	font-weight: bold;
+}
+#datas-cont-r1{
+	width:87px;
+}
+#datas-cont-r2{
+	width:57px;
+}

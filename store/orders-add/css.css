@@ -1,0 +1,85 @@
+.texto1 {
+	color: #096;
+	font-weight: bold;
+}
+.texto2 {
+	color: #C03;
+	font-weight: bold;
+}
+.texto3 {
+	color: #03F;
+	font-weight: bold;
+}
+
+.texto4 {
+	color: #009;
+	font-weight: bold;
+}
+
+.ordenacao {
+	text-align: center;
+}
+.servicos-quant{
+	text-align:center;
+}
+.servicos-excluir{
+	cursor:pointer;
+}
+#imprimir{
+	display:block;
+	margin:20px 0px;
+	cursor:pointer;
+}
+.status-concluido{
+	display:inline-block;
+	color:#143311;
+	background-color:#D1F0CD;
+	padding:4px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	width:80px;
+	text-align:center;
+}
+.status-aguardando{
+	display:inline-block;
+	color:#7E3737;
+	background-color:#F9EDC7;
+	padding:4px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	width:80px;
+	text-align:center;
+}
+.status-cancelado{
+	display:inline-block;
+	color:#7E3737;
+	background-color:#FFE0E0;
+	padding:4px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	width:80px;
+	text-align:center;
+}
+#form-2{
+	display:block;
+}
+.field{
+}
+.botao{
+	padding:10px;
+}
+#form-2 label{
+	display:inline-block;
+	width:80px;
+	color:rgba(0,0,0,0.87);
+	padding: 10px;
+    vertical-align: middle;
+    line-height: 18px;
+    font-size: 13px;
+    font-weight: bold
+}
+#form-2 input[type="checkbox"]{
+	display:inline-block;
+    vertical-align: middle;
+	cursor:pointer;
+}

@@ -1,0 +1,73 @@
+<!--!#del#(#!--><link href="css/interface.css" rel="stylesheet" type="text/css" /><!--!#del#)#!-->
+<hr />
+<h3>Layout</h3>
+<hr />
+<!-- layout < -->
+<div id="cadastro">
+	#info_acima#
+	#cadastro#
+    #info_abaixo#
+</div>
+<!-- layout > -->
+<hr />
+<h3>Cadastro</h3>
+<hr />
+<!-- cadastro < -->
+<form action="#form#action#" method="#form#method#" enctype="multipart/form-data" name="#form#name#" id="#form#id#"#extra#>
+	<!-- campos -->
+	<input type="hidden" name="MAX_FILE_SIZE" value="#input#max_file_size#" />
+	<input name="opcao" type="hidden" id="opcao" value="#input#opcao#" />
+	<input name="id" type="hidden" id="id" value="#input#id#" />
+	<input name="campos_obrigatorios" type="hidden" id="campos_obrigatorios" value="#input#campos_obrigatorios#" />
+	<input name="formulario_id" type="hidden" id="formulario_id" value="#input#formulario#" />
+	<!-- botao < --><input type="submit" name="submit" id="button" value="#input#botao#value#" title="#input#botao#title#" /><!-- botao > -->
+</form>
+<!-- cadastro > -->
+<hr />
+<h3>Campo Layout</h3>
+<hr />
+<!-- layout_campo < -->
+<div class="campo_layout lista_cel">
+	#info_acima#
+    #campo#
+    <div class="info infotexto">
+        #descricao#
+    </div>
+    #info_abaixo#
+</div>
+<!-- layout_campo > -->
+<hr />
+<h3>Campos</h3>
+<hr />
+<!-- layout_campos < -->
+	<!-- label < --><label for="#for#"#extra#>#label#</label>
+	<!-- label > -->
+	<!-- status < --><input name="#nome#" id="#id#" maxlength="1" value="#valor#" type="text" tabindex="#tabindex#"#extra#>
+    <!-- status > -->
+	<!-- texto < --><input name="#nome#" id="#id#" value="#valor#" type="text" tabindex="#tabindex#"#extra#>
+    <!-- texto > -->
+	<!-- hidden < --><input name="#nome#" id="#id#" value="#valor#" type="hidden"#extra#>
+    <!-- hidden > -->
+	<!-- texto_area < --><textarea name="#nome#" id="#id#" tabindex="#tabindex#"#extra#>#valor#</textarea>
+    <!-- texto_area > -->
+	<!-- radio < --><input name="#nome#" id="#id#" value="#valor#" type="radio" tabindex="#tabindex#"#extra#>
+    <!-- radio > -->
+	<!-- select < --><select name="#nome#" id="#id#" tabindex="#tabindex#"#extra#>
+    	<!-- select_opt < --><option value="#valor#">#opcao#</option>
+    	<!-- select_opt > -->
+	</select>
+	<!-- select > -->
+	<!-- codigo < --><div class="item6 item_margin div_cel div_item">
+        <label class="label2 div_text" for="mensagem" style="width: 95px; top: 2px;">C&oacute;digo de Valida&ccedil;&atilde;o:</label>
+        <div class="box_codigo_imagem">
+            <div style="width: 200px; text-align:center;"><a href="#box_codigo_imagem" id="trocar_imagem"><img src="#image_code_src" alt="#image_code_alt" id="imagem_seguranca" border="0" />
+            <strong>Clique para Recarregar C&oacute;digo</strong></a></div><div class="item_margin">Digite o c&oacute;digo da imagem acima:
+		</div>
+            <div id="alerta_codigo_imagem" class="caixa_alerta_codigo"></div>
+            <input name="codigo_imagem" type="text" id="codigo_imagem" value="#codigo_imagem#" size="20" class="item_margin" />
+        </div>
+    </div>
+	<!-- codigo > -->
+<!-- layout_campos > -->
+<hr />
+<p>&nbsp;</p>

@@ -1,0 +1,61 @@
+<!--!#del#(#!--><link href="css.css" rel="stylesheet" type="text/css" /><link href="../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../includes/css/layout2.css" rel="stylesheet" type="text/css" /><!--!#del#)#!-->
+
+<div id="b2make-widget-options-posts-filter">
+	<label id="b2make-wo-posts_filter-lbl">Filtros:</label>
+	<div id="b2make-wo-posts_filter-editar-btn" class="b2make-tooltip b2make-suboptions-editar" title="Clique para editar os Filtros">EDITAR</div>
+    <label id="b2make-wo-posts_filter-ficha-html-lbl">Ficha HTML:</label>
+    <div id="b2make-wo-posts_filter-ficha-html-btn" class="b2make-tooltip b2make-suboptions-editar" title="Clique para editar a ficha HTML dos resultados do filtro" data-type="sub-options-custom" data-sub-options-cont="#b2make-widget-sub-options-posts-filter-ficha-html" data-sub-options-title="Ficha HTML">EDITAR</div>
+    <label id="b2make-wo-posts_filter-layout-tipo-lbl" for="b2make-wo-posts_filter-layout-tipo">Layout Tipo:</label>
+    <select id="b2make-wo-posts_filter-layout-tipo" class="b2make-tooltip" title="Clique para definir o tipo de Filtro de Posts.">
+        <option value="menu_resultados">Menu e Resultados</option>
+        <option value="menu">Menu</option>
+    </select>
+    <label id="b2make-wo-posts_filter-layout-orientacao-lbl" for="b2make-wo-posts_filter-layout-orientacao">Orienta&ccedil;&atilde;o:</label>
+    <select id="b2make-wo-posts_filter-layout-orientacao" class="b2make-tooltip" title="Clique para definir a orientação dos resultados do Filtro de Posts.">
+        <option value="horizontal">Horizontal</option>
+        <option value="vertical">Vertical</option>
+    </select>
+    <label for="b2make-posts_filter-botao-filtrar-url" id="b2make-posts_filter-botao-filtrar-url-lbl">Bot&atilde;o Filtrar URL:</label>
+    <input id="b2make-posts_filter-botao-filtrar-url" name="botao-texto" data-validate="text" class="b2make-input-select b2make-tooltip" title="Clique para mudar a URL alvo do bot&atilde;o Filtrar">
+    <label id="b2make-posts_filter-contents-lbl">Conteúdos:</label>
+    <div id="b2make-posts_filter-contents-editar-btn" class="b2make-tooltip b2make-suboptions-editar" title="Clique para editar os Conteúdos" data-type="sub-options-custom" data-sub-options-cont="#b2make-widget-sub-options-posts-filter-conteudos" data-sub-options-title="Conte&uacute;dos">EDITAR</div>
+    <label id="b2make-wo-posts_filter-sem-resultados-html-lbl">Sem Resultados HTML:</label>
+    <div id="b2make-wo-posts_filter-sem-resultados-html-btn" class="b2make-tooltip b2make-suboptions-editar" title="Clique para editar o HTML dos resultados do filtro sem resultados encontrados" data-type="sub-options-custom" data-sub-options-cont="#b2make-widget-sub-options-posts-filter-sem-resultados-html" data-sub-options-title="Sem Resultados HTML">EDITAR</div>
+</div>
+<div id="b2make-widget-sub-options-posts-filter">
+	<div id="b2make-posts-filter-add" class="b2make-tooltip b2make-btn-lightbox" title="Clique para CRIAR um FILTRO">NOVO</div>
+	<div id="b2make-posts-filter-lista-cont">
+		<div id="b2make-posts-filter-lista" class="b2make-lista-dados" data-fields="nome,NOME,b2make-posts-filter-lista-nome,400,left" data-field-id="id_site_conteudos_tags" data-options="edit,block" data-ajax-option="posts-filter" data-ajax-no="sim"></div>
+	</div>        
+</div>
+<div id="b2make-widget-sub-options-posts-filter-ficha-html">
+    <textarea class="b2make-input-select" id="b2make-wo-posts_filter-ficha-html"></textarea>
+</div>
+<div id="b2make-widget-sub-options-posts-filter-conteudos">
+    <div id="b2make-posts_filter-contents-add" class="b2make-tooltip b2make-btn-lightbox" title="Clique para CRIAR um CONTE&Uacute;DO">NOVO</div>
+    <label id="b2make-posts_filter-contents-options-sel-lbl" for="b2make-posts_filter-contents-options-sel">Conte&uacute;dos Filtro:</label>
+    <select id="b2make-posts_filter-contents-options-sel" class="b2make-tooltip" title="Clique para definir se o widget atual mostrará todos os posts ou apenas alguns em uma escolha livre.">
+        <option value="todos-posts">Todos Posts</option>
+        <option value="conteudo-tipo">Conte&uacute;do Tipo</option>
+        <option value="escolha-pontual">Escolha Pontual</option>
+    </select>
+    <div id="b2make-posts_filter-contents-lista-cont">
+        <div id="b2make-posts_filter-contents-lista" class="b2make-lista-dados" data-fields="nome,NOME,b2make-contents-lista-nome,400,left" data-field-id="id_site_conteudos" data-options="edit,block" data-ajax-option="contents" data-ajax-no="sim"></div>
+    </div>
+    <div id="b2make-posts_filter-contents-lista-conteudo-tipo-cont">
+        <div id="b2make-posts_filter-contents-lista-conteudo-tipo" class="b2make-lista-dados" data-fields="nome,NOME,b2make-contents-lista-nome,400,left" data-field-id="id_site_conteudos" data-options="block" data-ajax-option="contents" data-ajax-no="sim"></div>
+    </div>
+    <div id="b2make-posts_filter-contents-options-cont">
+    	<label id="b2make-posts_filter-contents-ordem-sel-lbl" for="b2make-posts_filter-contents-ordem-sel">Ordena&ccedil;&atilde;o Tipo:</label>
+        <select id="b2make-posts_filter-contents-ordem-sel" class="b2make-tooltip" title="Clique para definir a ordenação dos conteúdos no widget atual.">
+            <option value="data-desc">Data Descendente</option>
+            <option value="data-asc">Data Ascendente</option>
+            <option value="alfabetica-desc">Alfab&eacute;tica Descendente</option>
+            <option value="alfabetica-asc">Alfab&eacute;tica Ascendente</option>
+        </select>
+    </div>
+</div>
+<div id="b2make-widget-sub-options-posts-filter-sem-resultados-html">
+    <textarea class="b2make-input-select" id="b2make-wo-posts_filter-sem-resultados-html"></textarea>
+</div>

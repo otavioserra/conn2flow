@@ -1,0 +1,24 @@
+OpenCaptcha v1.1
+================
+
+OpenCaptcha is a php script designed to dynamically
+create a captcha image in .png form.  It uses a
+randomly chosen background, a randomly chosen string
+of a randomly chosen length, color, size, and orientation,
+along with randomly coloured and placed lines to create
+an image that only a human can interpret.
+
+Disclaimer
+----------
+Do not use this script as the only means of authentication.
+No captcha image is 100% effective.  Given enough time and
+programming, even the most difficult captcha image can be
+interpreted by a computer.
+
+To ensure the maximum effectiveness of this script, combine
+it with a timer and a "maximum-tries" routine.
+
+Fonts
+-----
+Fonts distributed with this script are released under the GPL
+by Dustin Norlander at http://www.dustimo.com

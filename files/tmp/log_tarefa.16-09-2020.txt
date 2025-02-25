@@ -1,0 +1,38 @@
+[15:48:34 -03][otavio@b2make.com] /servicos/otavio.
+[15:48:34 -03][otavio@b2make.com] ./index.html.
+[15:48:34 -03][otavio@b2make.com] /servicos/otavio/.
+[15:48:34 -03][otavio@b2make.com] /servicos.
+[15:48:34 -03][otavio@b2make.com] Array
+(
+    [0] => ./.
+    [1] => ./..
+    [2] => ./index.html
+    [3] => ./teste-otaavio
+    [4] => ./otavio-novo
+)
+.
+[15:52:20 -03][otavio@b2make.com] Array
+(
+    [0] => ./.
+    [1] => ./..
+    [2] => ./index.html
+    [3] => ./teste-otaavio
+    [4] => ./otavio
+)
+.
+[15:53:33 -03][otavio@b2make.com] Array
+(
+    [0] => ./.
+    [1] => ./..
+    [2] => ./index.html
+)
+.
+[15:53:33 -03][otavio@b2make.com] Array
+(
+    [0] => ./.
+    [1] => ./..
+    [2] => ./index.html
+    [3] => ./teste-otaavio
+    [4] => ./otavio-novo
+)
+.

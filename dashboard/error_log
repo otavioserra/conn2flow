@@ -1,0 +1,14 @@
+[31-Aug-2020 18:10:11 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function config_publish_all_library() in /home/platform/public_html/dashboard/index.php:691
+Stack trace:
+#0 /home/platform/public_html/dashboard/index.php(748): upgrade_host_update(7)
+#1 /home/platform/public_html/dashboard/index.php(1224): upgrade_host()
+#2 /home/platform/public_html/dashboard/index.php(1240): main()
+#3 {main}
+  thrown in /home/platform/public_html/dashboard/index.php on line 691
+[31-Aug-2020 18:10:40 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function config_publish_all_library() in /home/platform/public_html/dashboard/index.php:691
+Stack trace:
+#0 /home/platform/public_html/dashboard/index.php(748): upgrade_host_update(7)
+#1 /home/platform/public_html/dashboard/index.php(1224): upgrade_host()
+#2 /home/platform/public_html/dashboard/index.php(1240): main()
+#3 {main}
+  thrown in /home/platform/public_html/dashboard/index.php on line 691

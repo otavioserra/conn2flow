@@ -1,0 +1,261 @@
+.b2make-posts-filter-conteudo{
+	width:831px;
+	height:282px;
+}
+.b2make-posts-filter-ficha-imagem-grande{
+	background-image:url(images/b2make-posts-filter-imagem-grande.png);
+	width:281px;
+	height:281px;
+	background-size:cover;
+	background-position:center center;
+}
+.b2make-posts-filter-ficha-habita{
+	width:auto;
+	height:15px;
+	position:absolute;
+	left:296px;
+	top:30px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	font-weight:bold;
+}
+.b2make-posts-filter-ficha-cidade{
+	width:auto;
+	height:23px;
+	position:absolute;
+	left:296px;
+	top:49px;
+	font-family:'Myriad Pro';
+	font-size:36px;
+	font-weight:bold;
+	color:#E3A325;
+	text-transform:uppercase;
+}
+.b2make-posts-filter-ficha-txt-terreno{
+	width:auto;
+	height:16px;
+	position:absolute;
+	left:345px;
+	top:120px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	color:#4C4C4C;
+	font-weight:normal;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-txt-suites{
+	width:auto;
+	height:16px;
+	position:absolute;
+	left:345px;
+	top:195px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	color:#4C4C4C;
+	font-weight:normal;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-txt-dormitorios{
+	width:auto;
+	height:16px;
+	position:absolute;
+	left:485px;
+	top:120px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	color:#4C4C4C;
+	font-weight:normal;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-txt-vagas{
+	width:auto;
+	height:16px;
+	position:absolute;
+	left:485px;
+	top:195px;
+	font-family:'Myriad Pro';
+	font-size:14px;
+	color:#4C4C4C;
+	font-weight:normal;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-terreno-m2{
+	background-image:url(images/b2make-posts-filter-terreno-m2.png);
+	background-size:cover;
+	background-position:center center;
+	padding-left:0px;
+	width:40px;
+	height:40px;;
+	line-height:10px;
+	position:absolute;
+	left:296px;
+	top:110px;
+	font-family:'Myriad Pro';
+	font-size:12px;
+	color:#222222;
+}
+.b2make-posts-filter-ficha-suites{
+	background-image:url(images/b2make-posts-filter-suites.png);
+	background-size:cover;
+	background-position:center center;
+	padding-left:0px;
+	width:40px;
+	height:40px;
+	line-height:10px;
+	position:absolute;
+	left:296px;
+	top:185px;
+	font-family:'Myriad Pro';
+	font-size:12px;
+	color:#222222;
+}
+.b2make-posts-filter-ficha-dormitorios{
+	background-image:url(images/b2make-posts-filter-dormitorios.png);
+	background-size:cover;
+	background-position:center center;
+	padding-left:0px;
+	width:40px;
+	height:40px;
+	line-height:30px;
+	position:absolute;
+	left:438px;
+	top:110px;
+	font-family:'Myriad Pro';
+	font-size:12px;
+	color:#222222;
+}
+.b2make-posts-filter-ficha-vagas{
+	background-image:url(images/b2make-posts-filter-vagas.png);
+	background-size:cover;
+	background-position:center center;
+	padding-left:0px;
+	width:40px;
+	height:40px;
+	line-height:30px;
+	position:absolute;
+	left:438px;
+	top:185px;
+	font-family:'Myriad Pro';
+	font-size:12px;
+	color:#222222;
+}
+.b2make-posts-filter-ficha-lancamento{
+	background-color:#E3A325;
+	width:282px;
+	height:33px;
+	line-height:33px;
+	position:absolute;
+	left:297px;
+	top:238px;
+	font-family:'Myriad Pro';
+	font-size:17px;
+	color:#fff;
+	font-weight:bold;
+	text-transform:capitalize;
+	margin: auto;
+	text-align:center;
+	-moz-border-radius:18px;
+	-webkit-border-radius:18px;
+	border-radius: 12px;
+}
+.b2make-posts-filter-ficha-barra-vertical{
+	background-image:url(images/b2make-posts-filter-barra-vertical.png);
+	width:3px;
+	height:228px;
+	background-size:cover;
+	background-position:center center;
+	left:599px;
+	top:30px;
+	position:absolute;
+
+}
+.b2make-posts-filter-ficha-barra-use-seu-fgts {
+	background-image:url(images/b2make-posts-filter-vagas-use-seu-fgts.png);
+	width:75px;
+	height:40px;
+	background-size:cover;
+	background-position:center center;
+	left:610px;
+	top:49px;
+	position:absolute;
+}
+.b2make-posts-filter-ficha-barra-minha-casa-minha-vida {
+	background-image:url(images/b2make-posts-filter-fgts.png);
+	width:75px;
+	height:40px;
+	background-size:cover;
+	background-position:center center;
+	left:690px;
+	top:49px;
+	position:absolute;
+}
+.b2make-posts-filter-ficha-barra-estagio {
+	background-image:url(images/b2make-posts-filter-super-varanda.png);
+	width:75px;
+	height:40px;
+	background-size:cover;
+	background-position:center center;
+	left:770px;
+	top:49px;
+	position:absolute;
+}
+.b2make-posts-filter-ficha-apartirde{
+	width:50px;
+	height:11px;
+	position:absolute;
+	left:610px;
+	top:115px;
+	font-family:'Myriad Pro';
+	font-size:10px;
+	color:#4C4C4C;
+	font-weight:bold;
+}
+.b2make-posts-filter-ficha-valor{
+	width:auto;
+	height:28px;
+	position:absolute;
+	left:610px;
+	top:135px;
+	font-family:'Myriad Pro';
+	font-size:26px;
+	color:#1B4174;
+	font-weight:bold;
+	text-transform:capitalize;
+}
+.b2make-posts-filter-ficha-botao1{
+	position:absolute;
+	top:197px;
+	left:610px;
+	font-weight:bold;
+	text-transform:capitalize;
+	text-align:center;
+	line-height:40px;
+	width:210px;  
+	height:39px;	
+	display:block;
+	font-family:'Myriad Pro';
+	padding:0px;
+	text-align:center;	
+	color:#999;
+	background:#EFEFEF;
+}	
+#b2make-posts-filter-link-botao-filho{
+	width:209px;
+	height:38px;
+	border:0px solid #000;
+	background-color:#EFEFEF;
+	text-decoration: none;
+	display:block;
+	position:absolute;
+	top:197px;
+	left:610px;
+	font-family:'Myriad Pro';
+	text-align:center;
+	line-height:38px;
+	color:#686868;
+}
+#b2make-posts-filter-link-botao-filho:hover{
+	background-color: #DBDBDB;
+	color:#333;
+	text-decoration: none;
+}

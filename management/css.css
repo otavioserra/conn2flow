@@ -1,0 +1,114 @@
+._menu_principal{
+	position:absolute;
+	left:263px;
+	top:40px;
+}
+#lay_topo_2{
+	position:absolute;
+	left:245px;
+	top:0px;
+}
+#lay_base_2{
+	margin-top:110px !important;
+}
+#b2make-site{
+	padding-top:1px;
+	z-index:9;
+	position:absolute;
+	float:none;
+	top:0px;
+}
+#b2make-menu{
+	height:98px;
+	width:100%;
+	background-color:#EEEEEE;
+	position:fixed;
+	padding-top:1px;
+	z-index:10;
+	top:0px;
+	left:0px;
+}
+#b2make-menu-min{
+	position:relative;
+	margin:0px auto;
+	width:1000px;
+}
+#b2make-menu-mask{
+	height:110px;
+}
+#b2make-logomarca-principal{
+	position:absolute;
+	left:50px;
+	top:12px;
+	background-image:url(../design/images/b2make-logomarca-principal-2.png);
+	width:115px;
+	height:32px;
+}
+#b2make-menu-start{
+	position:absolute;
+	top:0px;
+	left:160px;
+	height:64px;
+	z-index:11;
+	width:680px;
+}
+.b2make-widget-options-title-line{
+	width:1px;
+	height:65px;
+	border-left:1px #fff solid;
+	position:absolute;
+	top:5px;
+	left:-9px;
+}
+#b2make-widget-options-title,.b2make-widget-options-title{
+	position:absolute;
+	top:38px;
+	left:-36px;
+	font-weight:bold;
+	-moz-transform: rotate(270deg);
+	-webkit-transform: rotate(270deg);
+	-o-transform: rotate(270deg);
+	-ms-transform: rotate(270deg);
+	transform: rotate(270deg);
+	color:#FFF;
+	font-size:13px;
+	border-bottom:1px #fff solid;
+	width:88px;
+	line-height:15px;
+	padding-bottom:6px;
+	text-align:right;
+	white-space:nowrap;
+}
+#nome_buscar{
+	display:block;
+	position:absolute;
+	top:0px;
+	z-index:999;
+	margin-left:20px;
+}
+#in_menu_principal{
+	float:left;
+	margin-top:10px;
+}
+#lay_topo_2{
+	margin:40px 0px 0px 0px;
+	padding:0px;
+	height:20px;
+}
+#lay_base_2{
+	margin:0px 0px 0px 0px;
+	padding:0px 15px 15px 15px;
+}
+.content{
+	width:100%;
+}
+._menu_principal{
+	position:absolute;
+	top:60px;
+}
+#_in_informacao_titulo{
+	margin-top:40px;
+}
+#conteiner-principal{
+	margin:115px 15px 15px 15px;
+}

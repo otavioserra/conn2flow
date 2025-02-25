@@ -1,0 +1,16 @@
+#b2make-wo-codigo-html-lbl {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 110px;
+}
+#b2make-wo-codigo-html-editar-btn {
+    position: absolute;
+    left: 110px;
+    top: 0px;
+    width: 60px;
+}
+#b2make-wo-codigo-html-textarea{
+	width:742px;
+	height:414px;
+}

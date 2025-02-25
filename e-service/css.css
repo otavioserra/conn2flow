@@ -1,0 +1,137 @@
+#b2make-site{
+	z-index:1;
+	position:relative;
+	width:1000px;
+	margin:110px auto 10px auto;
+}
+#b2make-menu{
+	height:110px;
+	width:100%;
+	background-color:#4B5057;
+	position:fixed;
+	padding-top:1px;
+	z-index:10;
+	top:0px;
+	left:0px;
+	-webkit-box-shadow: 6px 6px 6px 0 rgba(0,0,0,0.2);
+	box-shadow: 6px 6px 6px 0 rgba(0,0,0,0.2);
+}
+#b2make-menu-min{
+	position:relative;
+	margin:0px auto;
+	width:1000px;
+}
+#b2make-menu-mask{
+	height:110px;
+}
+#b2make-logomarca-principal{
+	position:absolute;
+	left:10px;
+	top:10px;
+	background-image:url(images/b2make-logomarca-principal.png);
+	width:119px;
+	height:29px;
+}
+#b2make-menu-start{
+	position:absolute;
+	top:0px;
+	left:160px;
+	height:64px;
+	z-index:11;
+	width:680px;
+}
+.b2make-widget-options-title-line{
+	width:1px;
+	height:65px;
+	border-left:1px #fff solid;
+	position:absolute;
+	top:5px;
+	left:-9px;
+}
+#b2make-widget-options-title,.b2make-widget-options-title{
+	position:absolute;
+	top:38px;
+	left:-36px;
+	font-weight:bold;
+	-moz-transform: rotate(270deg);
+	-webkit-transform: rotate(270deg);
+	-o-transform: rotate(270deg);
+	-ms-transform: rotate(270deg);
+	transform: rotate(270deg);
+	color:#FFF;
+	font-size:13px;
+	border-bottom:1px #fff solid;
+	width:88px;
+	line-height:15px;
+	padding-bottom:6px;
+	text-align:right;
+	white-space:nowrap;
+}
+#b2make-account-menu{
+	position:absolute;
+	top:5px;
+	left:840px;
+	width:160px;
+	height:78px;
+	border-left:solid 1px #FFF;
+}
+#b2make-account-menu-snapshot{
+	background-image:url(images/b2make-user-profile.png);
+	background-size:auto 100%;
+	width:28px;
+	height:28px;
+	position:absolute;
+	left:10px;
+	top:5px;
+	cursor:pointer;
+	-webkit-border-radius: 14px 14px 14px 14px;
+	border-radius:14px 14px 14px 14px;
+}
+#b2make-account-menu-texto{
+	font-size:12px;
+	line-height:14px;
+	color:#FFF;
+	max-width:100px;
+	padding-right:15px;
+	background-image:url(images/b2make-select-arrow.png);
+	background-position:right center;
+	background-repeat:no-repeat;
+	position:absolute;
+	left:48px;
+	top:11px;
+	cursor:pointer;	
+}
+#b2make-account-menu-texto:hover{
+	background-image:url(images/b2make-select-arrow-2.png);
+}
+#b2make-menu-perfil{
+	display:none;
+	position:fixed;
+	top:16px;
+	left:38px;
+	list-style:none;
+	margin:0px;
+	padding:4px 0px;
+	background-color:#ECEDEF;
+	border:#99989D solid 1px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	z-index:999999999;
+	-webkit-box-shadow: 2px 2px 6px 3px rgba(0,0,0,0.2);
+	box-shadow: 2px 2px 6px 3px rgba(0,0,0,0.2);
+}
+#b2make-menu-perfil li{
+	cursor:pointer;
+	margin:0px;
+	padding:0px 7px;
+	line-height:19px;
+	color:#434142;
+	font-size:13px;
+	font-weight:bold;
+	min-width:120px;
+}
+#b2make-menu-perfil li:hover{
+	background-color:#C2C3C8;
+	font-weight:normal;
+}

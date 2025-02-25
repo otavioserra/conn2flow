@@ -1,0 +1,335 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="css.css" rel="stylesheet" type="text/css" />
+<link href="css-interno.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<hr />
+<h2>Formul&aacute;rio</h2>
+<hr />
+<!-- form-2 < -->
+<form action="." method="post" name="form" id="form" enctype="multipart/form-data">
+    <div id="conteiner-principal">
+    	<div id="stats-cont">
+            <div id="url-cont">#url</div>
+            <div id="data-cont">#data</div>
+        </div>
+        <div class="marcador-cont">@conteudo#nome</div>
+        <input name="nome" type="text" id="nome" value="#nome#" maxlength="100" placeholder="Nome" />
+        <!-- campo-texto < --><div class="marcador-cont">@conteudo#texto</div>
+        <textarea name="texto" id="texto" placeholder="Texto">#texto#</textarea><!-- campo-texto > -->
+        <!-- campos < --><div class="campos-holder-cont">
+            <div class="campo-nome-cont">#campo-nome#</div>
+            <div class="marcador-cont">#campo-marcador#</div>
+            <div class="campos-cont">#campo-valor#</div>
+            <div class="campos-btns-cont">
+                <div class="campos-btns btn-2" data-opcao="campo-editar" data-id="#campo-id#" title="Clique para poder editar esse campo.">Editar</div>
+                <div class="campos-btns btn-2" data-opcao="campo-excluir" data-id="#campo-id#" title="Clique para poder excluir esse campo.">Excluir</div>
+              </div>
+              <div class="edit-campos-form">
+                <input name="edit-campos-nome" type="text" class="edit-campos-nome" size="30" maxlength="100">
+                <input type="button" name="button" class="edit-campos-button" value="Enviar">
+                <div class="edit-campos-fechar b2make-fechar-button"></div>
+            </div>
+        </div><!-- campos > -->
+        <!-- add-campos < --><div class="label-titulos">Adicionar Campos:</div>
+        <div id="add-campos-cont">#add-campos-select#</div>
+        <div id="add-field" class="btn-1" title="Clique para criar um novo campo para esse conteúdo.">Criar</div>
+        <div id="add-campos-form">
+            <input name="add-campos-nome" type="text" id="add-campos-nome" size="30" maxlength="100">
+            <input type="button" name="button" id="add-campos-button" value="Enviar">
+            <div id="add-campos-fechar" class="b2make-fechar-button"></div>
+        </div><!-- add-campos > -->
+    </div>
+	<div id="conteiner-lateral">
+        <input type="submit" name="Submit" id="conteudo-salvar" value="#botao">
+        <!-- campo-imagem < --><div id="imagem-principal-cont">
+            <div class="imagem-principal-label">Imagem Principal</div>
+            <div class="marcador-cont">@conteudo#imagem</div>
+        </div>
+        <div id="imagem-principal-holder" class="uploads" data-id="imagem-principal"#imagem-principal-extra#></div>
+        <div class="clear"></div><!-- campo-imagem > -->
+        <div class="label-titulos">Layout Mestre</div>
+        <div id="layout-mestre-select">#tipo#</div>
+        <div id="tipo-add" class="btn-1" title="Clique para adicionar um layout mestre">Criar</div>
+        <div id="tipo-edit" class="btn-2" title="Clique para editar este layout mestre">Editar</div>
+        <div id="tipo-del" class="btn-2" title="Clique para deletar este layout mestre">Excluir</div>
+        <div id="tipo-form">
+            <input name="tipo-nome" type="text" id="tipo-nome" size="30" maxlength="100">
+            <input type="button" name="tipo-button" id="tipo-button" value="Enviar">
+            <div id="tipo-fechar" class="b2make-fechar-button"></div>
+        </div>
+        <div id="categoria-cont">
+            <div class="label-titulos">Categoria</div>
+            <div id="categoria-select">#categoria</div>
+        </div>
+        <div id="tags-new-cont">
+            <div class="label-titulos">Tags</div>
+            <input name="tags-add-input" type="text" id="tags-add-input" maxlength="100" placeholder="Adicionar tag...">
+            <div id="tags-raiz-select">#tags-raiz#</div>
+            <input type="button" name="tags-add-btn" id="tags-add-btn" value="Criar">
+        </div>
+        <div id="tags-principal-cont">
+            <div id="tags-principal-tit">Tag Principal:</div>
+            <select id="tags-principal-sel" name="tag-principal-sel">
+                #tags-principal-opt#
+            </select>
+        </div>
+        <div id="tags-cont">#tags#</div>
+    </div>
+    <input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+    <input name="opcao" type="hidden" id="opcao" value="#opcao" />
+    <input name="id" type="hidden" id="id" value="#id" />
+    <input name="more_options" type="hidden" id="more_options" value="#more_options" />
+</form>
+<!-- campos-tipos < --><div id="campos-tipos-cont">
+	<!-- texto-complexo < --><div class="b2make-texto-complexo-conteiner" data-id="#id#"><textarea name="#name#" id="#id#"#extra# class="campo-texto-complexo#class-extra#" placeholder="#campo-nome#">#valor#</textarea></div><!-- texto-complexo > -->
+	<!-- texto-longo < --><textarea name="#name#" id="#id#"#extra# class="campo-texto-longo#class-extra#" placeholder="#campo-nome#">#valor#</textarea><!-- texto-longo > -->
+    <!-- texto-curto < --><input name="#name#" type="text" id="#id#" maxlength="100"#extra# class="campo-texto-curto#class-extra#" value="#valor#" placeholder="#campo-nome#"><!-- texto-curto > -->
+    <!-- imagem < --><div id="#name#-holder" class="uploads uploads-campos-extra" data-id="#id#"#img-extra#></div><!-- imagem > -->
+</div><!-- campos-tipos > -->
+<div id="pagina-mestre-conteudo-tipo-cont">#pagina-mestre-conteudo-tipo#</div>
+<div id="pagina-mestre-conteudo-tipo-mobile-cont">#pagina-mestre-conteudo-tipo-mobile#</div>
+<div id="campos-htmls-cont">
+	<div class="b2make-widget" id="area-id-texto" data-type="conteiner" data-area="conteiner-area-id-texto" data-area-largura="1200" style="background-color: rgb(232, 233, 235); position: relative; overflow: hidden; height: 300px; left: auto; top: auto; z-index: auto; border: none; background-size: 100%; cursor: default;">
+        <div class="b2make-widget b2make-conteiner-area" id="conteiner-area-id-texto" data-type="conteiner-area" style="border-left: none; border-right: none; background-color: transparent;">
+            <div class="b2make-widget b2make-texto" id="widget-id-texto" data-type="texto" data-bordas-atual="todas" style="position: absolute; font-size: 20px; color: rgb(0, 0, 0); top: 30px; left: 30px; width: 300px; height: 150px; background-size: 100%; border: 0px solid rgb(0, 0, 0); border-radius: 0px;" data-marcador="marcador-id-texto">
+                <div class="b2make-texto-table" data-type="texto">
+                    <div class="b2make-texto-cel" data-type="texto">Texto</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="b2make-widget" id="mobile-area-id-texto" data-type="conteiner" style="background-color: rgb(232, 233, 235); position: relative; overflow: hidden; height: 300px; left: auto; width: 1653px; top: auto; z-index: auto; border: none; background-size: 100%; cursor: default;">
+        <div class="b2make-widget b2make-texto" id="mobile-widget-id-texto" data-type="texto" data-bordas-atual="todas" style="position: absolute; font-size: 20px; color: rgb(0, 0, 0); top: 30px; left: 30px; width: 300px; height: 150px; background-size: 100%; border: 0px solid rgb(0, 0, 0); border-radius: 0px;" data-marcador="mobile-marcador-id-texto">
+            <div class="b2make-texto-table" data-type="texto">
+                <div class="b2make-texto-cel" data-type="texto">Texto</div>
+            </div>
+        </div>
+    </div>
+    <div class="b2make-widget" id="area-id-imagem" data-type="conteiner" data-area="conteiner-area-id-imagem" data-area-largura="1200" style="background-color: rgb(232, 233, 235); position: relative; overflow: hidden; height: 300px; left: auto; top: auto; z-index: auto; border: none; background-size: 100%;">
+    	<div class="b2make-widget b2make-conteiner-area" id="conteiner-area-id-imagem" data-type="conteiner-area" style="border-left: none; border-right: none; background-color: transparent;">
+        	<div class="b2make-widget" id="widget-id-imagem" data-type="imagem" data-bordas-atual="todas" style="position: absolute; font-size: 16px; color: rgb(0, 0, 0); top: 30px; left: 68px; width: 252px; height: 218px; border: 0px solid rgb(0, 0, 0); border-radius: 0px;" data-marcador="marcador-id-imagem"><img class="b2make-biblioteca-imagens-default" src="//platform.b2make.com/design/images/b2make-album-sem-imagem.png" style="width:100%"></div>
+        </div>
+    </div>
+    <div class="b2make-widget" id="mobile-area-id-imagem" data-type="conteiner" data-area-largura="1200" style="background-color: rgb(232, 233, 235); position: relative; overflow: hidden; height: 300px; left: auto; top: auto; z-index: auto; border: none; background-size: 100%;">
+        <div class="b2make-widget" id="mobile-widget-id-imagem" data-type="imagem" data-bordas-atual="todas" style="position: absolute; font-size: 16px; color: rgb(0, 0, 0); top: 30px; left: 68px; width: 252px; height: 218px; border: 0px solid rgb(0, 0, 0); border-radius: 0px;" data-marcador="mobile-marcador-id-imagem"><img class="b2make-biblioteca-imagens-default" src="//platform.b2make.com/design/images/b2make-album-sem-imagem.png" style="width:100%"></div>
+    </div>
+    <div class="b2make-widget" id="area-id-texto-complexo" data-type="conteiner" data-area="conteiner-area-id-texto-complexo" data-area-largura="1200" style="background-color: rgb(232, 233, 235); position: absolute; overflow: hidden; height: 300px; left: auto; width: 100%; top: 0px; z-index: 1; border: none; background-size: 100%; bottom: auto; min-width: 1200px; cursor: default;">
+    	<div class="b2make-widget b2make-conteiner-area" id="conteiner-area-id-texto-complexo" data-type="conteiner-area" style="border-left: none; border-right: none; width: 1200px; background-color: transparent; cursor: default;">
+        	<div class="b2make-widget" id="widget-id-texto-complexo" data-type="texto-complexo" data-type-out="widget-out" data-ler-script="true" data-bordas-atual="todas" style="position: absolute; top: 30px; left: 30px; width: 300px; height: 200px; border: 0px solid rgb(0, 0, 0); border-radius: 0px; cursor: default;" data-marcador="marcador-id-texto-complexo">
+            	<div class="b2make-widget-out">
+                	<div class="b2make-texto-complexo">Texto Complexo</div>
+                </div>
+                <div class="b2make-widget-mask" data-type="texto-complexo" data-type-out="widget-out" style=""></div>
+            </div>
+        </div>
+    </div>
+    <div class="b2make-widget" id="mobile-area-id-texto-complexo" data-type="conteiner" data-area-largura="1200" style="background-color: rgb(232, 233, 235); position: absolute; overflow: hidden; height: 300px; left: auto; width: 100%; top: 0px; z-index: 1; border: none; background-size: 100%; bottom: auto; min-width: 1200px; cursor: default;">
+        <div class="b2make-widget" id="mobile-widget-id-texto-complexo" data-type="texto-complexo" data-type-out="widget-out" data-ler-script="true" data-bordas-atual="todas" style="position: absolute; top: 30px; left: 30px; width: 300px; height: 200px; border: 0px solid rgb(0, 0, 0); border-radius: 0px; cursor: default;" data-marcador="mobile-marcador-id-texto-complexo">
+            <div class="b2make-widget-out">
+                <div class="b2make-texto-complexo">Texto Complexo</div>
+            </div>
+            <div class="b2make-widget-mask" data-type="texto-complexo" data-type-out="widget-out" style=""></div>
+        </div>
+    </div>
+</div>
+<div id="b2make-statusbox">
+	<div id="b2make-statusbox-upload">
+    	<p id="b2make-statusbox-queuestatus"></p>
+        <ol id="b2make-statusbox-log">
+        </ol>
+    </div>
+   	<div id="b2make-upload-holder"></div>
+</div>
+<div id="uploads-cont">
+    <div class="uploads-cont uploads-without-img">
+        <div class="uploads-dropzone"></div>
+        <div class="uploads-label uploads-dropzone-dropinfo">Solte a imagem aqui</div>
+        <div class="uploads-label uploads-dropzone-options">Arraste imagens aqui<br>ou</div>
+        <div class="uploads-btn uploads-dropzone-options">
+            <span>Upload</span>
+            <input accept="image/jpeg,image/gif,image/png" class="b2make-uploads-input" type="file" name="files[]" multiple>
+        </div>
+    </div>
+    <div class="uploads-btns-cont">
+        <div class="uploads-change-btn">Substituir Imagem</div>
+        <div class="uploads-del-btn">Remover Imagem</div>
+    </div>
+    <input type="hidden" class="uploads-input-change">
+    <input type="hidden" class="uploads-input-del">
+    <input type="hidden" class="uploads-input-data">
+</div>
+<!-- form-2 > -->
+<hr />
+<h2>Formul&aacute;rio</h2>
+<hr />
+<!-- form < -->
+<form action="." method="post" name="form" id="form" enctype="multipart/form-data">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+  <tr>
+    <td align="left" class="principal"><table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+      <tr>
+        <td align="left" class="principal"><table width="100%" border="0" cellspacing="5" class="tabela_lista">
+          <tr>
+            <td width="150" align="left" class="lista_header">Conte&uacute;do Tipo:</td>
+            <td class="lista_cel" style="position:relative;"><div id="tipo-cont">#tipo#</div>
+              <div id="tipo-add" class="btns-bg" title="Clique para adicionar um tipo de conteúdo"></div>
+              <div id="tipo-edit" class="btns-bg" title="Clique para editar este tipo de conteúdo"></div>
+              <div id="tipo-del" class="btns-bg" title="Clique para deletar este tipo de conteúdo"></div>
+              <div id="tipo-form">
+                <input name="tipo-nome" type="text" id="tipo-nome" size="30" maxlength="100">
+                <input type="button" name="button" id="tipo-button" value="Enviar">
+                <div id="tipo-fechar" class="b2make-fechar-button"></div>
+              </div></td>
+          </tr>
+          <tr>
+            <td width="150" align="left" class="lista_header">P&aacute;gina URL:</td>
+            <td class="lista_cel">#url</td>
+          </tr>
+          <tr>
+            <td width="150" align="left" class="lista_header">P&aacute;gina Data:</td>
+            <td class="lista_cel">#data</td>
+          </tr>
+          <tr>
+            <td width="150" align="left" class="lista_header">Categoria Principal:</td>
+            <td class="lista_cel">#categoria</td>
+          </tr>
+          <tr>
+            <td width="150" align="left" class="lista_header">Tags:</td>
+            <td class="lista_cel">
+            	<div id="tags-principal-cont">
+                	<div id="tags-principal-tit">Tag Principal:</div>
+                	<select id="tags-principal-sel" name="tag-principal-sel">
+                    	#tags-principal-opt#
+                    </select>
+                </div>
+            	<div id="tags-cont">#tags#</div>
+            </td>
+          </tr>
+          <tr>
+            <td width="150" align="left" class="lista_header">Nome:</td>
+            <td class="lista_cel campos-valor-cont campos-valor-cont" height="50" valign="top">
+            	<input name="nome" type="text" id="nome" value="#nome" size="80" maxlength="100" />
+                <div class="campos-marcador">Marcador:<br><b>@conteudo#nome</b></div>
+            </td>
+          </tr>
+          <!-- campo-imagem < --><tr>
+            <td align="left" class="lista_header">Imagem:</td>
+            <td align="left" class="lista_cel campos-valor-cont" height="50" valign="top">
+            	<input name="imagem_path" type="file" id="imagem_path" size="60" />
+              	<div>#imagem_path#</div>
+                <div class="campos-marcador">Marcador:<br><b>@conteudo#imagem</b></div>
+                <div class="campos-btns-cont-2">
+                	<div class="btns-bg campos-btns-2" data-opcao="campo-excluir" data-id="imagem" title="Clique para poder excluir esse campo padrão."></div>
+                </div>
+            </td>
+          </tr><!-- campo-imagem > -->
+          <!-- campo-texto < --><tr>
+            <td align="left" class="lista_header">Texto:</td>
+            <td align="left" class="lista_cel campos-valor-cont">
+            	<textarea name="texto" id="texto">#texto</textarea>
+                <div class="campos-marcador">Marcador:<br><b>@conteudo#texto</b></div>
+                <div class="campos-btns-cont-2">
+                	<div class="btns-bg campos-btns-2" data-opcao="campo-excluir" data-id="texto" title="Clique para poder excluir esse campo padrão."></div>
+                </div>
+            </td>
+          </tr><!-- campo-texto > -->
+          <!-- campos < -->
+          <tr>
+            <td width="150" align="left" class="lista_header campo-nome">#campo-nome#:</td>
+            <td align="left" class="lista_cel campos-valor-cont" height="50" valign="top"><div class="campos-cont">#campo-valor#</div>
+              <div class="campos-marcador">Marcador:<br><b>#campo-marcador#</b></div>
+              <div class="campos-btns-cont">
+                <div class="btns-bg campos-btns" data-opcao="campo-editar" data-id="#campo-id#" title="Clique para poder editar esse campo."></div>
+                <div class="btns-bg campos-btns" data-opcao="campo-excluir" data-id="#campo-id#" title="Clique para poder excluir esse campo."></div>
+              </div>
+              <div class="edit-campos-form">
+                <input name="edit-campos-nome" type="text" class="edit-campos-nome" size="30" maxlength="100">
+                <input type="button" name="button" class="edit-campos-button" value="Enviar">
+                <div class="edit-campos-fechar b2make-fechar-button"></div>
+            </div></td>
+          </tr>
+          <!-- campos > -->
+          <!-- add-campos < -->
+          <tr>
+            <td width="150" align="left" class="lista_header">Adicionar Campos:</td>
+            <td align="left" class="lista_cel add-campos-cel-cont">
+            	<div id="add-campos-cont">#add-campos-select#</div>
+                <div id="add-field" class="btns-bg" title="Clique para criar um novo campo para esse conteúdo."></div>
+                <div id="add-campos-form">
+                    <input name="add-campos-nome" type="text" id="add-campos-nome" size="30" maxlength="100">
+                    <input type="button" name="button" id="add-campos-button" value="Enviar">
+                    <div id="add-campos-fechar" class="b2make-fechar-button"></div>
+                </div>
+            </td>
+          </tr>
+          <!-- add-campos > -->
+        </table>
+          <!-- botao < -->
+          <table width="100%" border="0">
+            <tr>
+              <td align="center"><input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+                <input name="opcao" type="hidden" id="opcao" value="#opcao" />
+                <input name="id" type="hidden" id="id" value="#id" />
+                <input name="more_options" type="hidden" id="more_options" value="#more_options" />
+                <input type="submit" name="Submit" id="button" value="#botao" /></td>
+            </tr>
+          </table>
+          <!-- botao > --></td>
+      </tr>
+    </table></td>
+  </tr>
+  </table>
+</form>
+<!-- campos-tipos < --><div id="campos-tipos-cont">
+	<!-- texto-complexo < --><div class="b2make-texto-complexo-conteiner" data-id="#id#"><textarea name="#name#" id="#id#"#extra# class="campo-texto-complexo#class-extra#">#valor#</textarea></div><!-- texto-complexo > -->
+	<!-- texto-longo < --><textarea name="#name#" id="#id#"#extra# class="campo-texto-longo#class-extra#">#valor#</textarea><!-- texto-longo > -->
+    <!-- texto-curto < --><input name="#name#" type="text" id="#id#" maxlength="100"#extra# class="campo-texto-curto#class-extra#" value="#valor#"><!-- texto-curto > -->
+    <!-- imagem < --><input name="#name#" type="file" id="#id#" size="60">
+    <div>#imagem_path#</div><!-- imagem > -->
+</div><!-- campos-tipos > -->
+<div id="pagina-mestre-conteudo-tipo-cont">#pagina-mestre-conteudo-tipo#</div>
+<div id="pagina-mestre-conteudo-tipo-mobile-cont">#pagina-mestre-conteudo-tipo-mobile#</div>
+<div id="campos-htmls-cont">
+	<div class="b2make-widget" id="area-id-texto" data-type="conteiner" data-area="conteiner-area-id-texto" data-area-largura="1200" style="background-color: rgb(232, 233, 235); position: relative; overflow: hidden; height: 300px; left: auto; top: auto; z-index: auto; border: none; background-size: 100%; cursor: default;">
+        <div class="b2make-widget b2make-conteiner-area" id="conteiner-area-id-texto" data-type="conteiner-area" style="border-left: none; border-right: none; background-color: transparent;">
+            <div class="b2make-widget b2make-texto" id="widget-id-texto" data-type="texto" data-bordas-atual="todas" style="position: absolute; font-size: 20px; color: rgb(0, 0, 0); top: 30px; left: 30px; width: 300px; height: 150px; background-size: 100%; border: 0px solid rgb(0, 0, 0); border-radius: 0px;" data-marcador="marcador-id-texto">
+                <div class="b2make-texto-table" data-type="texto">
+                    <div class="b2make-texto-cel" data-type="texto">Texto</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="b2make-widget" id="mobile-area-id-texto" data-type="conteiner" style="background-color: rgb(232, 233, 235); position: relative; overflow: hidden; height: 300px; left: auto; width: 1653px; top: auto; z-index: auto; border: none; background-size: 100%; cursor: default;">
+        <div class="b2make-widget b2make-texto" id="mobile-widget-id-texto" data-type="texto" data-bordas-atual="todas" style="position: absolute; font-size: 20px; color: rgb(0, 0, 0); top: 30px; left: 30px; width: 300px; height: 150px; background-size: 100%; border: 0px solid rgb(0, 0, 0); border-radius: 0px;" data-marcador="mobile-marcador-id-texto">
+            <div class="b2make-texto-table" data-type="texto">
+                <div class="b2make-texto-cel" data-type="texto">Texto</div>
+            </div>
+        </div>
+    </div>
+    <div class="b2make-widget" id="area-id-imagem" data-type="conteiner" data-area="conteiner-area-id-imagem" data-area-largura="1200" style="background-color: rgb(232, 233, 235); position: relative; overflow: hidden; height: 300px; left: auto; top: auto; z-index: auto; border: none; background-size: 100%;">
+    	<div class="b2make-widget b2make-conteiner-area" id="conteiner-area-id-imagem" data-type="conteiner-area" style="border-left: none; border-right: none; background-color: transparent;">
+        	<div class="b2make-widget" id="widget-id-imagem" data-type="imagem" data-bordas-atual="todas" style="position: absolute; font-size: 16px; color: rgb(0, 0, 0); top: 30px; left: 68px; width: 252px; height: 218px; border: 0px solid rgb(0, 0, 0); border-radius: 0px;" data-marcador="marcador-id-imagem"><img class="b2make-biblioteca-imagens-default" src="//platform.b2make.com/design/images/b2make-album-sem-imagem.png" style="width:100%"></div>
+        </div>
+    </div>
+    <div class="b2make-widget" id="mobile-area-id-imagem" data-type="conteiner" data-area-largura="1200" style="background-color: rgb(232, 233, 235); position: relative; overflow: hidden; height: 300px; left: auto; top: auto; z-index: auto; border: none; background-size: 100%;">
+        <div class="b2make-widget" id="mobile-widget-id-imagem" data-type="imagem" data-bordas-atual="todas" style="position: absolute; font-size: 16px; color: rgb(0, 0, 0); top: 30px; left: 68px; width: 252px; height: 218px; border: 0px solid rgb(0, 0, 0); border-radius: 0px;" data-marcador="mobile-marcador-id-imagem"><img class="b2make-biblioteca-imagens-default" src="//platform.b2make.com/design/images/b2make-album-sem-imagem.png" style="width:100%"></div>
+    </div>
+    <div class="b2make-widget" id="area-id-texto-complexo" data-type="conteiner" data-area="conteiner-area-id-texto-complexo" data-area-largura="1200" style="background-color: rgb(232, 233, 235); position: absolute; overflow: hidden; height: 300px; left: auto; width: 100%; top: 0px; z-index: 1; border: none; background-size: 100%; bottom: auto; min-width: 1200px; cursor: default;">
+    	<div class="b2make-widget b2make-conteiner-area" id="conteiner-area-id-texto-complexo" data-type="conteiner-area" style="border-left: none; border-right: none; width: 1200px; background-color: transparent; cursor: default;">
+        	<div class="b2make-widget" id="widget-id-texto-complexo" data-type="texto-complexo" data-type-out="widget-out" data-ler-script="true" data-bordas-atual="todas" style="position: absolute; top: 30px; left: 30px; width: 300px; height: 200px; border: 0px solid rgb(0, 0, 0); border-radius: 0px; cursor: default;" data-marcador="marcador-id-texto-complexo">
+            	<div class="b2make-widget-out">
+                	<div class="b2make-texto-complexo">Texto Complexo</div>
+                </div>
+                <div class="b2make-widget-mask" data-type="texto-complexo" data-type-out="widget-out" style=""></div>
+            </div>
+        </div>
+    </div>
+    <div class="b2make-widget" id="mobile-area-id-texto-complexo" data-type="conteiner" data-area-largura="1200" style="background-color: rgb(232, 233, 235); position: absolute; overflow: hidden; height: 300px; left: auto; width: 100%; top: 0px; z-index: 1; border: none; background-size: 100%; bottom: auto; min-width: 1200px; cursor: default;">
+        <div class="b2make-widget" id="mobile-widget-id-texto-complexo" data-type="texto-complexo" data-type-out="widget-out" data-ler-script="true" data-bordas-atual="todas" style="position: absolute; top: 30px; left: 30px; width: 300px; height: 200px; border: 0px solid rgb(0, 0, 0); border-radius: 0px; cursor: default;" data-marcador="mobile-marcador-id-texto-complexo">
+            <div class="b2make-widget-out">
+                <div class="b2make-texto-complexo">Texto Complexo</div>
+            </div>
+            <div class="b2make-widget-mask" data-type="texto-complexo" data-type-out="widget-out" style=""></div>
+        </div>
+    </div>
+</div>
+<!-- form > -->

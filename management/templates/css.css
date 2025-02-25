@@ -1,0 +1,149 @@
+select{
+	font-weight: normal;
+	border:none;
+	padding:2px 15px 2px 5px;
+	color: #FFFFFF;
+	background-color: #383B3F;
+	font-family: 'Gotham', sans-serif;
+	font-size: 11px;
+	-webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+	background-image:url(../../design/images/b2make-select-arrow.png);
+	background-repeat:no-repeat;
+	background-position:right 4px center;
+	line-height:16px;
+	cursor:pointer;
+}
+select:hover{
+	background-image:url(../../design/images/b2make-select-arrow-2.png?v=2);
+}
+.texto1 {
+	color: #096;
+	font-weight: bold;
+}
+.texto2 {
+	color: #C03;
+	font-weight: bold;
+}
+.texto3 {
+	color: #03F;
+	font-weight: bold;
+}
+
+.texto4 {
+	color: #009;
+	font-weight: bold;
+}
+
+.ordenacao {
+	text-align: center;
+}
+#descricao{
+	width:420px;
+	height:120px;
+}
+
+#b2make-segmentos,#b2make-segmentos option{
+	text-transform:uppercase;
+}
+
+#b2make-templates-title{
+	font-size:24px;
+	margin-bottom:15px;
+	color:#211915;
+}
+#b2make-segmentos{
+	font-size:17px;
+	line-height:28px;
+	padding:0px 40px;
+	background-position:right 8px center;
+	margin:0px 0px 78px 0px;
+}
+#b2make-segmentos option{
+	font-size:17px;
+	line-height:28px;
+	padding:0px 40px;
+}
+#b2make-templates{
+	width:inherit;
+	height:inherit;
+	text-align:center;
+}
+.b2make-templates-cont{
+	display:inline-block;
+	width:330px;
+	height:205px;
+	overflow:hidden;
+	margin:35px 21px;
+	border:solid 2px #FFF;
+}
+.b2make-templates-imagem{
+	width:inherit;
+	height:inherit;
+	background-size:cover;
+	position:relative;
+}
+.b2make-templates-imagem-mask{
+	width:inherit;
+	height:inherit;
+	background-color:rgba(255,255,255,0.8);
+	display:none;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:1;
+	cursor:pointer;
+}
+.b2make-templates-ver{
+	font-size:20px;
+	color:#211915;
+	position:absolute;
+	top:126px;
+	left:150px;
+	z-index:2;
+	cursor:pointer;
+}
+.b2make-templates-ver:hover{
+	text-decoration:underline;
+}
+.b2make-templates-escolher{
+	font-size:20px;
+	color:#211915;
+	position:absolute;
+	top:70px !important;
+	left:120px;
+	z-index:2;
+	cursor:pointer;
+}
+.b2make-templates-escolher:hover{
+	text-decoration:underline;
+}
+.b2make-template-cont-selected{
+	border:solid 2px #000000;
+}
+#b2make-templates-mais-opcoes{
+	cursor:pointer;
+	color:#000000;
+	line-height:36px;
+	text-align:center;
+	margin:25px auto;
+	font-size:16px;
+	text-align:center;	
+	border:solid 1px #000000;
+	width:180px;	
+}
+#b2make-page-plans{
+	text-align:center;
+	width:100%;
+	margin-top:20px;
+}
+#b2make-page-templates{
+	text-align:center;
+}
+.b2make-site-texto-margin{
+	position:relative;
+	margin:110px 15px 15px 15px;
+}

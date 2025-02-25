@@ -1,0 +1,110 @@
+OpenCaptcha v1.1
+INSTALL
+=======
+
+Requirements
+------------
+This script has been tested with PHP 4.4.4 and PHP 5.20.
+The gd library and png support must be present in your version of PHP
+
+instructions
+------------
+
+1. Unpack opencaptcha.tar.gz and place it in the same directory as the 
+   form you wish to protect.
+
+2. The form that OpenCaptcha is to protect must be a php page, and must
+   have an active session. If it is not currently a php page, add the
+   following line to the top of the script:
+
+   <?php session_start(); ?>
+
+   Then, rename the script using the .php extension.
+
+3. To have the captcha image display on the screen place this code where
+   you want it to appear:
+
+   <img src = "/path/to/captcha.php" alt = "Security Image" />
+
+   You must also add a text field for the user to enter the captcha text.
+   This is just a regular input field.
+
+4. OpenCaptcha uses the session variable $_SESSION['captchaText'] to hold
+   the text in the captcha image. In the page that your form points to,
+   place the following code:
+
+   <?php
+   session_start();
+   if ($_SESSION['captchaText'] != $_RESULT['theNameofYourTextField']){
+      echo "Incorrect captcha text entered.";
+   }
+   ?>
+
+   You obviously want to do more than display an error message like this,
+   but this is the general idea.
+
+   After you've verified that the captcha string was correctly entered,
+   it is necessary to unset the $_SESSION['captchaText'] variable in
+   case you want to use it again during the current session.  To do this
+   use the following code after your validation:
+
+   <?php
+   unset($_SESSION['captchaText']);
+   ?>
+
+5. Configure OpenCaptcha to your specifications by editing the configuration
+   section of captcha.php.
+
+   $minStringLength - This is used to set the minimum length of the captcha
+      string.
+
+   $maxStringLength - This is used to set the maximum length of the captcha
+      string.
+
+   $fontPath - The path were your true type fonts are stored.  Only .ttf files
+      will work with OpenCaptcha.  The fonts included with OpenCaptcha have
+      been released under the GPL by http://www.dustismo.com/.
+
+   $backgroundPath - The path were your backgrounds are stored.  Backgrounds
+      must be valid .png files and should be an appropriate size to fit the
+      captcha text, otherwise you will get an undesireable result.
+
+   $angle - OpenCaptcha can write text to the image at an angle.  Straight
+      text requires a value of 0. For angled text, choose a value between 0 and
+      90.  If $angle is set to 20, the offset used could be anywhere between
+      -20 and 20.
+
+   $captchaCharacters - This string is a list of characters that the captcha text
+      will be chosen from.  Be careful about using some symbols that may be too
+      difficult to distinguish between.
+
+   $caseSensitive - If set to true, OpenCaptcha will set the random captcha string
+      to all UPPERCASE.  Make sure your script does the same to make it case-
+      insensitive.
+
+   $minFontSize - The minimum font size. Some fonts may not be readable if this
+      value is set too low. To set a specific font size make $minFontSize and
+      $maxFontSize the same value.  This value must be greater than 10.
+
+   $maxFontSize - The maximum font size. Some fonts may not be readable if this
+      value is set too low. To set a specific font size make $minFontSize and
+      $maxFontSize the same value.  This value must be greater than 10.
+
+   $minLines - OpenCaptcha can draw "interference" line across the image in random
+      places from top to bottom.  This value determines the minimum number of
+      lines to draw.  To draw no lines, use 0 for this value and $maxLines.  Be
+      careful not to draw too many lines or the captcha will be unreadable.
+
+   $maxLines - OpenCaptcha can draw "interference" line across the image in random
+      places from top to bottom.  This value determines the maximum number of
+      lines to draw.  To draw no lines, use 0 for this value and $minLines.  Be
+      careful not to draw too many lines or the captcha will be unreadable.
+
+   $shadow - OpenCaptcha can create a shadow behind the text.  To get this effect,
+      set this value to true.
+
+   $shadowOffsetX - This value determines how wide the shadow appears.  This will
+      have no effect if $shadow is set to false.
+
+   $shadowOffsetY - This value determines how wide the shadow appears.  This will
+      have no effect if $shadow is set to false.

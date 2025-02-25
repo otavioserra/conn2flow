@@ -1,0 +1,83 @@
+.b2make-accordion{
+	width: inherit;
+	height: inherit;
+}
+.b2make-accordion-table{
+	width: inherit;
+	height: inherit;
+	display:table;
+}
+.b2make-accordion-cel { 
+    display: table-cell;
+	vertical-align: middle;
+	text-align:center;
+}
+#b2make-wo-accordion-editar-btn{
+	position:absolute;
+	left:50px;
+	top:0px;
+}
+.b2make-accordion-texto-cont{
+	display:none;
+}
+#b2make-accordion-texto-conteiner{
+	position:relative;
+	width:700px;
+	height:300px;
+}
+#b2make-accordion-preenchimento-lbl{
+	left: 31px;
+	top: 6px;
+	width: 120px;
+}
+#b2make-accordion-preenchimento-cor-val{
+	position: absolute;
+	left: 195px;
+	top: 6px;
+}
+#b2make-accordion-preenchimento-2-cor-val{
+	position: absolute;
+	left: 225px;
+	top: 6px;
+}
+#b2make-accordion-texto-lbl{
+	left: 31px;
+	top: 6px;
+	width: 85px;
+}
+#b2make-accordion-texto-cor-val{
+	position: absolute;
+	left: 130px;
+	top: 6px;
+}
+#b2make-accordion-texto-2-cor-val{
+	position: absolute;
+	left: 160px;
+	top: 6px;
+}
+#b2make-accordion-botao-texto-cont{
+	position: absolute;
+	left: 190px;
+	top: 6px;
+}
+#b2make-accordion-preenchimento-texto-lbl{
+	left: 31px;
+	top: 30px;
+	width: 165px;
+}
+#b2make-accordion-preenchimento-texto-cor-val{
+	position: absolute;
+	left: 195px;
+	top: 30px;
+}
+#b2make-accordion-botao-texto-lbl{
+	left: 0px;
+	top: 24px;
+	width: 100px;
+}
+#b2make-accordion-botao-texto-val{
+	position: absolute;
+	left: 100px;
+	top: 24px;
+	width: 300px;
+}

@@ -1,0 +1,12 @@
+TODO
+====
+
+1.	Specify text colours. Sometimes the text colour is too similar to
+	the background colour causing it to be difficult to read.
+
+2.	Text displayed out of bounds.  Occasionally, the text will get 
+	cut off at the edge of the image.  This isn't supposed to happen, 
+	and will be fixed in the next major version.
+
+3.	Ability for each character to have a different font, colour, 
+	angle, and position.

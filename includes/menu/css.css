@@ -1,0 +1,387 @@
+#b2make-menu-conteiner{
+	position:fixed;
+	top:79px;
+	bottom:0px;
+	left:0px;
+	z-index:102;
+	width:250px;
+	background-color:#EEEEEE;
+	overflow:hidden;
+}
+#b2make-menu-title{
+	font-size:12px;
+	color:#959499;
+	position:absolute;
+	top:39px;
+	left:16px;
+	width:120px;
+	line-height:12px;
+	height:12px;
+	overflow:hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+#b2make-menu-back{
+	background-image:url(images/b2make-menu-back-arrow.png);
+	background-repeat:no-repeat;
+	background-position:6px center;
+	padding-left:18px;
+	line-height:12px;
+	height:12px;
+	position:absolute;
+	top:39px;
+	right:16px;
+	cursor:pointer;
+	color:#434142;
+}
+#b2make-menu-anchor{
+	width:100%;
+	height:21px;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:2;
+}
+.b2make-menu-anchor-title-up{
+	color:#434142;
+	float:right;
+	background-image:url(images/b2make-menu-anchor-arrow-up.png);
+	background-repeat:no-repeat;
+	background-position:right 1px;
+	font-size:13px;
+	margin-top:3px;
+	margin-right:10px;
+	padding-right:20px;
+	cursor:pointer;
+}
+.b2make-menu-anchor-title-down{
+	color:#EEEEEE;
+	float:right;
+	background-image:url(images/b2make-menu-anchor-arrow-down.png);
+	background-repeat:no-repeat;
+	background-position:right 2px;
+	font-size:13px;
+	margin-top:3px;
+	margin-right:10px;
+	padding-right:20px;
+	cursor:pointer;
+}
+#b2make-menu-area{
+	width:inherit;
+	margin-top:60px;
+	overflow-y:auto;
+}
+#b2make-menu-area-transicao{
+	width:inherit;
+	position:absolute;
+	left:0px;
+	top:60px;
+	z-index:1;
+	overflow:hidden;
+	display:none;
+}
+#b2make-menu-area-mask{
+	width:inherit;
+	position:absolute;
+	left:0px;
+	top:0px;
+	z-index:2;
+	background-image:url(images/b2make-menu-degrade-lateral.png);
+	background-repeat:repeat-y;
+	background-size:100%;
+}
+#b2make-menu-area-animation{
+	position:absolute;
+	top:0px;
+}
+#b2make-menu-areas{
+	display:none;
+}
+.b2make-menu-area-in{
+}
+.b2make-menu-nav{
+	list-style:none;
+	margin:0px;
+	padding:0px;
+	display:block;
+	user-select: none;
+}
+.b2make-menu-nav li{
+	display:block;
+	line-height:16px;
+	color:#434142;
+	font-size:14px;
+	padding:4px 0px 3px 45px;
+	margin:0px;
+	cursor:pointer;
+}
+.b2make-menu-nav li:hover{
+	background-color:#E0E0E0;
+}
+#b2make-account-menu{
+	position:absolute;
+	bottom:5px;
+	left:0px;
+	width:100%;
+	height:220px;
+}
+#b2make-account-menu-snapshot{
+	background-image:url(images/b2make-user-profile.png);
+	background-size:auto 100%;
+	width:28px;
+	height:28px;
+	position:absolute;
+	left:45px;
+	top:5px;
+	-webkit-border-radius: 14px 14px 14px 14px;
+	border-radius:14px 14px 14px 14px;
+}
+#b2make-account-menu-texto{
+	font-size:12px;
+	line-height:14px;
+	max-width:100px;
+	padding-right:15px;
+	position:absolute;
+	left:83px;
+	top:15px;
+}
+#b2make-account-menu-options{
+	margin-top:40px;
+	width:100%;
+}
+#b2make-disk-usage-title{
+	position:absolute;
+	left:45px;
+	top:140px;
+	width:170px;
+	color:#434142;
+	font-size:12px;
+}
+#b2make-disk-usage-title-2{
+	position:absolute;
+	left:45px;
+	top:180px;
+	width:170px;
+	color:#434142;
+	font-size:12px;
+}
+#b2make-disk-usage-title .b2make-disk-usage-normal,#b2make-disk-usage-title-2 .b2make-disk-usage-normal{
+}
+#b2make-disk-usage-title .b2make-disk-usage-warning,#b2make-disk-usage-title-2 .b2make-disk-usage-warning{
+}
+#b2make-disk-usage-cont{
+	position:absolute;
+	left:45px;
+	top:154px;
+	width:170px;
+	height:4px;
+	background-color:#FFF;
+}
+#b2make-disk-usage-slide{
+	width:82%;
+	height:inherit;
+}
+#b2make-disk-usage-cont .b2make-disk-usage-normal{
+	background-color: #434142;
+}
+#b2make-disk-usage-cont .b2make-disk-usage-warning{
+	background-color: #CC0000;
+}
+#b2make-account-plan{
+	position:absolute;
+	left:45px;
+	top:163px;
+	width:170px;
+	height:4px;
+	display:none;
+}
+#b2make-account-user{
+	position:absolute;
+	left:45px;
+	top:163px;
+	width:170px;
+	height:4px;
+	color:#434142;
+	font-size:12px;
+}
+#b2make-menu-paginas{
+	position:relative;
+	margin-top:-5px;
+}
+#b2make-menu-paginas-adicionar{
+	position:absolute;
+	top:-25px;
+	left:10px;
+}
+#b2make-menu-paginas-conteiner{
+	background-image:url(../../design/images/b2make-loading.gif);
+	background-repeat:no-repeat;
+	background-position:center center;
+	width:inherit;
+	height:inherit;
+}
+.b2make-menu-paginas-nivel{
+	padding:0px;
+	margin:0px;
+	list-style:none;
+	display:block;
+}
+.b2make-menu-paginas-nivel:first-child{
+	margin-top:35px;
+}
+.b2make-menu-paginas-entrada{
+	position:relative;
+	display:block;
+	cursor:pointer;
+	height:24px;
+	font-size:12px;
+	width:100%;
+}
+.b2make-menu-paginas-entrada:hover{
+	background-color:#dcdcdc;
+}
+.b2make-menu-paginas-entrada-mask{
+	position:relative;
+	width:210px;
+	height:24px;
+}
+.b2make-menu-paginas-url{
+	background-image:url(../../design/images/b2make-bt-menu-collection-03.png);
+	background-position:-27px -3px;
+	width:17px;
+	height:17px;
+	position:absolute;
+	top:3px;
+	right:63px;
+	display:none;
+}
+.b2make-menu-paginas-duplicate{
+	background-image:url(../../design/images/b2make-bt-menu-collection-03.png);
+	background-position:-487px -3px;
+	width:17px;
+	height:17px;
+	position:absolute;
+	top:3px;
+	right:43px;
+	display:none;
+}
+.b2make-menu-paginas-edit{
+	background-image:url(../../design/images/b2make-bt-menu-collection-03.png);
+	background-position:-465px -3px;
+	width:17px;
+	height:17px;
+	position:absolute;
+	top:3px;
+	right:23px;
+	display:none;
+}
+.b2make-menu-paginas-del{
+	background-image:url(../../design/images/b2make-bt-menu-collection-03.png);
+	background-position:-510px -3px;
+	width:17px;
+	height:17px;
+	position:absolute;
+	top:3px;
+	right:3px;
+	display:none;
+}
+#b2make-menu-paginas-menu-pagina-mestre{
+	position:absolute;
+	top:-25px;
+	right:0px;
+	width:100px;
+	height:25px;
+}
+.b2make-menu-paginas-publicar-pagina-mestre{
+	background-image:url(../../design/images/b2make-bt-menu-collection-03.png);
+	background-position:-0px -3px;
+	width:25px;
+	height:25px;
+	position:absolute;
+	top:3px;
+	right:43px;
+	cursor:pointer;
+}
+.b2make-menu-paginas-nome{
+	line-height:24px;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:150px;
+    white-space: nowrap;
+    overflow:hidden !important;
+    text-overflow: ellipsis;
+}
+.b2make-menu-paginas-atual{
+	background-color:#dcdcdc;
+	font-weight:bold;
+}
+#b2make-screens-change-cont{
+	width:105px;
+	margin:5px auto 5px auto;
+	position:relative;
+	min-height: 60px;
+}
+#b2make-screen-change-desktop{
+	position:absolute;
+	top:10px;
+	left:20px;
+	background-image:url(../../design/images/b2make-screen-desktop.png);
+	width:29px;
+	height:18px;
+	cursor:pointer;
+}
+#b2make-screen-change-tablet{
+	position:absolute;
+	top:20px;
+	left:46px;
+	background-image:url(../../design/images/b2make-screen-tablet.png);
+	width:25px;
+	height:18px;
+	cursor:pointer;
+}
+#b2make-screen-change-phone{
+	position:absolute;
+	top:8px;
+	right:25px;
+	background-image:url(../../design/images/b2make-screen-phone.png);
+	width:13px;
+	height:22px;
+	cursor:pointer;
+}
+#b2make-mobile-reset{
+	position:absolute;
+	top:35px;
+	left:20px;
+	width:130px;
+	cursor:pointer;
+	display:none;
+}
+#b2make-sub-widgets-conts{
+	display:none;
+}
+/******************* V2 ***************************/
+#b2make-menu-design{
+	position:absolute;
+	top:20px;
+	left:16px;
+	width:120px;
+	height:20px;
+	display:flex;
+	justify-content: flex-start;
+}
+.b2make-menu-opcao{
+	display:inline-block;
+	margin:5px;
+	cursor:pointer;
+}
+.b2make-menu-local{
+	display:none;
+}
+#b2make-menu-area{
+	margin-top:50px;
+	overflow-y:auto;
+}
+.b2make-menu-opcao-selected{
+	font-weight:bold;
+}

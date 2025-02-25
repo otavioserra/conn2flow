@@ -1,0 +1,1233 @@
+html{
+	margin: 0px;
+	font-family: 'Open Sans', Verdana,  Geneva, sans-serif;
+	font-size: 11px;
+	color: #58585B;
+	text-decoration: none;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	letter-spacing: normal;
+	text-align: left;
+	vertical-align: top;
+	word-spacing: normal;
+	white-space: normal;
+	padding: 0px;
+	background-color: #FFF;
+	background-repeat: repeat;
+	background-position: center top;
+	background-attachment: fixed;
+	text-rendering: optimizeLegibility !important;
+	-webkit-font-smoothing: antialiased !important;
+}
+select{
+	font-weight: normal;
+	border:none;
+	border-right:5px solid #4B5057;
+	padding:5px 15px 5px 5px;
+	color: #FFFFFF;
+	background-color: #4B5057;
+	font-family: 'Open Sans', Verdana,  Geneva, sans-serif;
+	font-size: 11px;
+	-webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+	background-image:url(images/b2make-select-arrow-1.png);
+	background-repeat:no-repeat;
+	background-position:right center;
+	cursor:pointer;
+}
+select:hover{
+	background-image:url(images/b2make-select-arrow-1-2.png);
+}
+a:hover{
+	text-decoration:none;
+}
+h1{
+	width:100%;
+	max-width:860px;
+	color:#434142;
+	margin:30px 7px 40px 7px;
+	font-size:30px;
+	font-weight:normal;
+	line-height:34px;
+	border-bottom:solid 1px #A7A6AC;
+	padding-bottom:10px;
+}
+.h1{
+	font-weight:normal;
+}
+.justify p{
+	font-size:17px;
+	line-height: 27px;
+    color: #4A72AC;
+}
+#b2make-listener {
+    display: none;
+}
+#b2make-pagina-corpo-ajuste{
+	width:100%;
+	max-width:1400px;
+	margin:20px auto 120px auto;
+}
+#b2make-pagina-menu-principal{
+	margin:0px;
+	padding:0px;
+	float:left;
+	width:170px;
+	margin-top:-20px;
+	min-height:500px;
+	background-color:#eaeaea;
+	padding-top:30px;
+	padding-left:30px;
+	list-style:none;
+}
+#b2make-pagina-menu-principal li{
+}
+#b2make-pagina-menu-principal li a{
+	font-size:18px;
+	line-height:22px;
+	color:#434142;
+}
+#b2make-pagina-menu-principal li a:visited{
+	color:#434142;
+}
+#cont_principal{
+	width:calc(100% - 240px);
+	float:right;
+}
+#cont_principal p,form#esqueceu_senha label{
+	font-size:17px;
+	line-height: 27px;
+    color: #4A72AC;
+}
+#b2make-menu-loja{
+    position: absolute;
+    top:0px;
+	right:0px;
+	z-index:99;
+	width:110px;
+	height:45px;
+	background-color:#000;
+}
+#b2make-menu-loja-dados-pessoais {
+    background-image:url(//platform.b2make.com/images/store/b2make-widget-loja-dados-pessoais-2.png);
+	background-size:cover;
+	width:30px;
+	height:30px;
+	position:absolute;
+	top:7px;
+	left:15px;
+}
+#b2make-menu-loja-carrinho {
+    background-image:url(//platform.b2make.com/images/store/b2make-widget-loja-carrinho-2.png);
+	background-size:cover;
+	width:40px;
+	height:30px;
+	position:absolute;
+	top:7px;
+	right:15px;
+}
+.b2make-layout-mask{
+	width:100%;
+	max-width:1400px;
+	margin:0px auto;
+}
+.addthis_toolbox{
+	margin:30px 0px;
+}
+#alerta_box_fechar{
+	display:none;
+}
+#alerta_box{
+	border:#99989D 1px solid;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	background-color:#FFF;
+}
+#alerta_box_header{
+	font-family: 'Open Sans', Verdana,  Geneva, sans-serif;
+	padding:0px 20px;
+	line-height:44px;
+	font-size:22px;
+	font-weight:bold;
+	background-color:#434142 !important;
+	color:#fff;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	margin:0px;
+}
+#alerta_box_texto p:first-child{
+	margin-top:0px;
+}
+#alerta_box_texto,#alerta_box_texto p{
+	font-family: 'Open Sans', Verdana,  Geneva, sans-serif;
+	padding:15px;
+	color:#434142;
+	font-size:13px;
+}
+#b2make-dialogbox-btns{
+	padding:15px 15px 5px 0px;
+	border-top:1px solid #99989D;
+	position:absolute;
+	left:0px;
+	bottom:0px;
+	width:calc(100% - 15px);
+}
+#alerta_box_botao{
+	float:right;
+	margin:15px 15px 0px 0px;
+	padding:0px 15px;
+	line-height:32px;
+	font-size:17px;
+	background-color:#A1BC31;
+	border: #A1BC31 1px solid;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color:#FFF;
+	font-weight:bold;
+	cursor:pointer;
+	position:relative;
+}
+#alerta_box_botao:hover{
+	background-color: #BCC636;
+	border: #BCC636 1px solid;
+}
+#b2make-segmentos{
+	cursor:pointer;
+}
+#b2make-segmentos li:hover{
+	text-decoration:underline;
+	color:#00C;
+}
+#b2make-templates{
+	cursor:pointer;
+}
+#b2make-templates li:hover{
+	text-decoration:underline;
+	color:#00C;
+}
+#b2make-banner-principal{
+	position:relative;
+	background-repeat:no-repeat;
+	background-size:100%;
+	height:614px;
+	margin:0px auto;
+}
+#b2make-topo-principal{
+	position:relative;
+	width:100%;
+	max-width:1000px;
+	margin:-614px auto 0px auto;
+}
+#b2make-logo-principal{
+	display:block;
+	background-image:url(images/b2make-logo-principal.png);
+	width:129px;
+	height:134px;
+	position:absolute;
+	top:22px;
+	left:66px;
+}
+#b2make-logo-principal:hover{
+	text-decoration:none;
+}
+#b2make-redes-sociais{
+	display:block;
+	position:absolute;
+	right:0px;
+	top:10px;
+	margin:0px;
+	padding:0px;
+	list-style:none;
+	width:100px;
+}
+#b2make-redes-sociais li{
+	float:left;
+	padding:0px;
+	margin:0px;
+	margin-right:6px;
+	display:block;
+}
+#b2make-redes-sociais li a{
+	display:block;
+	background-image:url(images/b2make-redes-sociais.png);
+	width:18px;
+	height:18px;
+	cursor:pointer;
+}
+#b2make-redes-sociais li a:hover{
+	text-decoration:none;
+}
+#b2make-redes-sociais li a#b2make-redes-1{
+	background-position:0px 0px;
+	width:11px;
+}
+#b2make-redes-sociais li a#b2make-redes-2{
+	background-position:-19px 0px;
+	width:11px;
+}
+#b2make-redes-sociais li a#b2make-redes-3{
+	background-position:-37px 0px;
+}
+#b2make-redes-sociais li a#b2make-redes-4{
+	background-position:-60px 0px;
+}
+#b2make-menu-principal{
+	display:block;
+	position:absolute;
+	left:350px;
+	top:60px;
+	margin:0px;
+	padding:0px;
+	list-style:none;
+}
+#b2make-menu-principal li{
+	float:left;
+	padding:0px;
+	margin:0px;
+	margin-right:6px;
+	display:block;
+}
+#b2make-menu-principal li a,#b2make-menu-principal li div{
+	display:block;
+	width:95px;
+	line-height:25px;
+	background-color:#FFF;
+	color:#4A72AC;
+	font-size:14px;
+	text-align:center;
+	-webkit-border-radius: 3px 3px 3px 3px;
+	border-radius: 3px 3px 3px 3px;
+	border:1px #FFF solid;
+	cursor:pointer;
+}
+#b2make-menu-principal li a:hover{
+	text-decoration:none;
+}
+#b2make-menu-principal li:nth-child(2) div{
+	width:120px;
+}
+#b2make-menu-principal li:nth-child(6) a{
+	border:1px #FFF solid;
+	color:#FFF;
+	background-color:#9DB831;
+}
+#b2make-banner-chamada-bg{
+	background-color: rgba(168, 199, 67, 0.80);
+	position:relative;
+	margin:397px auto 0px auto;
+	height:122px;
+}
+#b2make-banner-chamada{
+	position:relative;
+	width:100%;
+	max-width:1000px;
+	margin:-122px auto 0px auto;
+}
+#b2make-banner-chamada-esquerda{
+	float:left;
+	width:500px;
+	margin-top:20px;
+}
+#b2make-banner-chamada-esquerda-1{
+	font-size:40px;
+	line-height:42px;
+	color:#FFF;
+}
+#b2make-banner-chamada-esquerda-2{
+	font-size:24px;
+	line-height:26px;
+	color:#FFF;
+	margin-top:3px;
+}
+#b2make-banner-chamada-centro{
+	position:absolute;
+	left:500px;
+	top:-87px;
+	padding:10px;
+	background-color: rgba(255, 255, 255, 0.70);
+	-webkit-box-shadow: 6px 6px 6px 0 rgba(0,0,0,0.2);
+	box-shadow: 6px 6px 6px 0 rgba(0,0,0,0.2);
+}
+#b2make-banner-chamada-centro-1{
+	margin-top:5px;
+	color:#434142;
+	font-size:22px;
+	line-height:24px;
+	text-align:right;
+}
+#b2make-banner-chamada-centro-2{
+	margin-top:0px;
+	color:#434142;
+	font-size:36px;
+	line-height:38px;
+	text-align:right;
+}
+#b2make-banner-chamada-direita{
+	float:right;
+	width:450px;
+	margin-top:-5px;
+}
+#b2make-banner-chamada-direita-1{
+	background-image:url(images/b2make-estrela-rank.png);
+	background-repeat:no-repeat;
+	background-position:left center;
+	padding-left:50px;
+	font-size:49px;
+	font-weight:bold;
+	color:#FFF;
+	float:right;
+	margin-top:5px;
+}
+#b2make-banner-chamada-direita-2{
+	color:#FFF;
+	font-size:25px;
+	line-height:27px;
+	float:right;
+	text-align:right;
+}
+#topo-ajuste{
+	height:194px;
+}
+#como-funciona{
+	padding-top:1px;
+	margin-top:0px;
+	background-color:#2A72B0;
+	height:374px;
+}
+#recursos{
+	background-color:#F3F3F4;
+	height:520px;
+}
+#b2make-modelos-home{
+	background-color:#FFF;
+	padding:1px 0px;
+	width:900px;
+	margin:0px auto;
+	height:300px;
+}
+#b2make-modelos-home-cont{
+	padding:1px 0px;
+}
+#paralax-modelos{
+	background-color:#FFF;
+}
+#b2make-olho-mercado{
+	height:81px;
+	background-color:#F3F3F4;
+	padding-top:1px;
+}
+#planos{
+	height:584px;
+	background-color:#9DB831;
+	padding-top:1px;
+}
+#b2make-crie-o-seu{
+	height:144px;
+	background-color:#F3F3F4;
+	padding-top:1px;
+}
+#b2make-rodape-bg{
+	min-height:130px;
+	padding-top:1px;
+	background-color:#ECEDEF;
+	margin-bottom:0px;
+}
+#b2make-menu-float-bg{
+	height:102px;
+	width:100%;
+	background-color:#000000;
+}
+#b2make-menu-float{
+	position:relative;
+}
+#b2make-logo-menu-float{
+	display:block;
+	max-width:400px;
+	height:70px;
+	position:absolute;
+	top:15px;
+	left:50px;
+	background-repeat:no-repeat;
+	background-position:left center;
+	overflow:hidden;
+}
+#b2make-slogan-menu{
+	position:absolute;
+	color:#FFF;
+	top:50px;
+	left:116px;
+	width:200px;
+	height:20px;
+	font-size:25px;
+	font-weight:bold;
+}
+#b2make-logo-menu-float:hover{
+	text-decoration:none;
+}
+#b2make-triangulo-azul{
+	background-image:url(images/b2make-triangulo-azul.png);
+	width:39px;
+	height:24px;
+	margin:0px auto;
+}
+#b2make-triangulo-cinza{
+	background-image:url(images/b2make-triangulo-cinza.png);
+	width:56px;
+	height:34px;
+	margin:-1px auto 0px auto;
+}
+#b2make-como-funciona{
+	margin:80px auto 0px auto;
+	width:1000px;
+	color:#FFF;
+	font-size:16px;
+	line-height:18px;
+}
+#b2make-como-funciona p{
+	color:#FFF;
+	font-size:16px;
+	line-height:18px;
+}
+#b2make-como-funciona-span-1{
+	font-size:40px;
+	line-height:40px;
+	color:#FFF;
+}
+#b2make-como-funciona-span-2{
+	font-size:24px;
+	line-height:24px;
+	color:#FFF;
+}
+#b2make-como-funciona-span-3{
+	font-size:21px;
+	line-height:21px;
+	color:#FFF;
+}
+#b2make-como-funciona-link{
+	display:block;
+	margin:20px auto 0px auto;
+	background-color: rgba(157, 184, 49, 0.80);
+	line-height:26px;
+	text-align:center;
+	width:95px;
+	color:#FFF;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+}
+#b2make-diferenciais{
+	width:1000px;
+	margin:0px auto;
+	position:relative;
+}
+#b2make-diferenciais-tit{
+	width:400px;
+	text-align:center;
+	font-size:40px;
+	line-height:40px;
+	color:#434142;
+	margin:60px auto 10px auto;
+}
+.b2make-diferenciais-caixa{
+	width:290px;
+	margin-right:63px;
+	float:left;
+}
+.b2make-diferenciais-caixa:last-child{
+	margin-right:0px;
+}
+.b2make-diferenciais-caixa-tit{
+	color:#434142;
+	font-size:25px;
+	line-height:35px;
+	text-align:center;
+}
+.b2make-diferenciais-caixa-cont{
+	height:273px;
+	padding:10px 10px 10px 0px;
+	color:#FFF;
+	font-size:16px;
+	line-height:19px;
+}
+.b2make-diferenciais-caixa-cont ul{
+	margin:5px 0px;
+	padding-left:30px;
+	display:block;
+}
+.b2make-diferenciais-caixa-cont ul li{
+	margin-left:0px;
+}
+.b2make-diferenciais-caixa-cont span{
+	margin-top:5px;
+	margin-left:15px;
+	margin-bottom:10px;
+	display:block;
+}
+#b2make-diferenciais-caixa-tec{
+	background-color:#4A72AC;
+}
+#b2make-diferenciais-caixa-mer{
+	background-color:#0092D2;
+}
+#b2make-diferenciais-caixa-fer{
+	background-color:#4A72AC;
+}
+#b2make-olho-mercado-tit{
+	margin:15px auto 0px auto;
+	width:1000px;
+	color:#4A72AC;
+	font-size:19px;
+	line-height:22px;
+}
+#b2make-planos-lay{
+	width:1000px;
+	position:relative;
+	margin:0px auto;
+}
+#b2make-planos-tit{
+	margin:10px 0px 10px 0px;
+	color:#FFF;
+	font-size:20px;
+	line-height:24px;
+}
+#b2make-planos-tit span{
+	font-size:24px;
+	line-height:28px;
+}
+.b2make-planos-caixa{
+	width:232px;
+	float:left;
+	margin-right:11px;
+}
+.b2make-planos-caixa-tit{
+	background-color: rgba(255, 255, 255, 0.40);
+	line-height:56px;
+	font-size:29px;
+	padding-left:12px;
+	padding-right:12px;
+	color:#4A72AC;
+}
+.b2make-planos-caixa-cont{
+	background-color: rgba(255, 255, 255, 0.20);
+	height:177px;
+	padding:10px 15px;
+	color:#FFF;
+	font-size:18px;
+	line-height:21px;
+}
+.b2make-planos-caixa-tit div{
+	float:right;
+	margin-top:17px;
+	font-size:18px;
+	line-height:18px;
+	color:#FFF;
+}
+.b2make-planos-caixa-2{
+	width:243px;
+	float:left;
+}
+#b2make-planos-caixa-2-last{
+	width:232px;
+}
+.b2make-planos-espaco{
+	color:#FFF;
+	font-size:17px;
+	background-color:#4A72AC;
+	text-align:center;
+	line-height:56px;
+}
+.b2make-planos-valor{
+	color:#4A72AC;
+	font-size:29px;
+	background-color:#FFF;
+	text-align:center;
+	line-height:56px;
+}
+.b2make-planos-valor span{
+	font-size:14px;
+	line-height:14px;
+}
+.b2make-planos-caixa-2 a{
+	background-color:#BA3176;
+	line-height:26px;
+	width:95px;
+	font-size:14px;
+	color:#FFF;
+	text-align:center;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+	display:block;
+	margin:5px auto 0px auto;
+}
+#b2make-planos-tit-2{
+	margin-top:20px;
+	color:#FFF;
+	font-size:18px;
+	line-height:18px;
+}
+#b2make-crie-o-seu-tit{
+	width:1000px;
+	margin:20px auto 0px auto;
+	font-size:22px;
+	line-height:25px;
+	color:#4A72AC;
+}
+#b2make-crie-o-seu-tit a{
+	background-color:#9DB831;
+	line-height:26px;
+	width:117px;
+	font-size:17px;
+	color:#FFF;
+	text-align:center;
+	-webkit-border-radius: 2px 2px 2px 2px;
+	border-radius: 2px 2px 2px 2px;
+	display:block;
+	margin:18px auto 0px auto;
+}
+#b2make-logo-rodape{
+	cursor:pointer;
+	display:block;
+	background-image:url(images/b2make-logo-rodape.png);
+	width:55px;
+	height:58px;
+	position:absolute;
+	top:26px;
+	left:69px;
+}
+#b2make-redes-sociais-2{
+	display:block;
+	position:absolute;
+	left:69px;
+	top:91px;
+	margin:0px;
+	padding:0px;
+	list-style:none;
+	width:100px;
+}
+#b2make-redes-sociais-2 li{
+	float:left;
+	padding:0px;
+	margin:0px;
+	margin-right:6px;
+	display:block;
+}
+#b2make-redes-sociais-2 li a{
+	display:block;
+	background-image:url(images/b2make-redes-sociais-2.png);
+	width:22px;
+	height:21px;
+	cursor:pointer;
+}
+#b2make-redes-sociais-2 li a:hover{
+	text-decoration:none;
+}
+#b2make-redes-sociais-2 li a#b2make-redes-1{
+	background-position:0px 0px;
+	width:14px;
+	height:20px;
+}
+#b2make-redes-sociais-2 li a#b2make-redes-2{
+	background-position:-19px 0px;
+	width:14px;
+}
+#b2make-redes-sociais-2 li a#b2make-redes-3{
+	background-position:-42px 0px;
+}
+#b2make-redes-sociais-2 li a#b2make-redes-4{
+	background-position:-69px 0px;
+}
+#b2make-rodape{
+	margin:20px auto;
+	position:relative;
+	padding-top:1px;
+}
+#b2make-rodape-info-loja{
+	width:325px;
+	margin-left:50px;
+	margin-bottom:20px;
+	float:left;
+	position:relative;
+	padding-top:1px;
+	color:#717175;
+	font-size:14px;
+	line-height:22px;
+	text-align:left;
+}
+#b2make-rodape-info-loja span{
+	font-size:16px;
+	font-weight:bold;
+}
+#b2make-tecnologias-logos{
+	float:right;
+	width:100%;
+	max-width:650px;
+	margin:50px 50px 20px 0px;
+	text-align:right;
+}
+#b2make-tecnologia-paypal{
+	background-image:url(../../images/store/b2make-tecnologia-paypal.png);
+	width:120px;
+	height:29px;
+	display:inline-block;
+	margin-top:5px;
+	margin-right:60px;
+}
+#b2make-tecnologia-cartoes{
+	background-image:url(../../images/store/b2make-tecnologia-cartoes.png);
+	width:239px;
+	height:26px;
+	display:inline-block;
+	margin-top:6px;
+	margin-right:60px;
+}
+#b2make-tecnologia-amazon{
+	background-image:url(../../images/store/b2make-tecnologia-amazon.png);
+	width:103px;
+	height:40px;
+	display:inline-block;
+}
+@media screen and (max-width: 1100px) {
+	#b2make-tecnologias-logos{
+		max-width:none;
+		text-align:center;
+		margin-top:0px;
+		margin-bottom:0px;
+		width:calc(100% - 100px);
+	}
+	#b2make-tecnologia-paypal,#b2make-tecnologia-cartoes,#b2make-tecnologia-amazon{
+		margin-right:30px;
+		margin-left:30px;
+		margin-bottom:20px;
+	}
+}
+#b2make-rodape-caixas{
+	margin-top:27px;
+	margin-left:392px;
+}
+.b2make-rodape-caixa{
+	width:101px;
+	padding-right:10px;
+	float:left;
+}
+.b2make-rodape-tit{
+	font-size:12px;
+	line-height:14px;
+	color:#FFF;
+	font-weight:bold;
+}
+.b2make-rodape-links{
+	padding:0px;
+	margin:0px;
+	list-style:none;
+}
+.b2make-rodape-links li{
+	padding:0px;
+	margin:0px;
+}
+.b2make-rodape-links li a{
+	line-height:16px;
+	font-size:12px;
+	color:#FFF;
+}
+#b2make-rodape-copyright{
+	margin:150px auto 0px auto;
+	width:300px;
+	text-align:center;
+	color:#FFF;
+	font-size:12px;
+	line-height:12px;
+}
+#b2make-account-menu{
+	position:absolute;
+	top:15px;
+	left:885px;
+	width:160px;
+	height:78px;
+	z-index:2;
+}
+#b2make-menu-perfil{
+	display:none;
+	position:fixed;
+	top:26px;
+	left:38px;
+	list-style:none;
+	margin:0px;
+	padding:4px 0px;
+	background-color:#ECEDEF;
+	border:#99989D solid 1px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	z-index:999999999;
+	-webkit-box-shadow: 2px 2px 6px 3px rgba(0,0,0,0.2);
+	box-shadow: 2px 2px 6px 3px rgba(0,0,0,0.2);
+}
+#b2make-menu-perfil li{
+	cursor:pointer;
+	margin:0px;
+	padding:0px 7px;
+	line-height:19px;
+	color:#434142;
+	font-size:13px;
+	font-weight:bold;
+	min-width:120px;
+}
+#b2make-menu-perfil li:hover{
+	background-color:#C2C3C8;
+	font-weight:normal;
+}
+#b2make-account-menu-snapshot{
+	background-image:url(../../site/images/b2make-user-profile.png);
+	background-size:auto 100%;
+	width:28px;
+	height:28px;
+	position:absolute;
+	left:10px;
+	top:5px;
+	cursor:pointer;
+	-webkit-border-radius: 14px 14px 14px 14px;
+	border-radius:14px 14px 14px 14px;
+}
+#b2make-account-menu-texto{
+	font-size:12px;
+	line-height:14px;
+	color:#FFF;
+	max-width:100px;
+	padding-right:15px;
+	background-image:url(../../site/images/b2make-select-arrow.png);
+	background-position:right center;
+	background-repeat:no-repeat;
+	position:absolute;
+	left:48px;
+	top:11px;
+	cursor:pointer;	
+}
+#b2make-account-menu-texto:hover{
+	background-image:url(../../site/images/b2make-select-arrow-2.png);
+}
+#b2make-account-menu-2{
+	position:absolute;
+	top:54px;
+	left:885px;
+	width:160px;
+	height:78px;
+	z-index:2;
+}
+#b2make-menu-perfil-2{
+	display:none;
+	position:absolute;
+	top:54px;
+	left:38px;
+	list-style:none;
+	margin:0px;
+	padding:4px 0px;
+	background-color:#ECEDEF;
+	border:#99989D solid 1px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	z-index:999999999;
+	-webkit-box-shadow: 2px 2px 6px 3px rgba(0,0,0,0.2);
+	box-shadow: 2px 2px 6px 3px rgba(0,0,0,0.2);
+}
+#b2make-menu-perfil-2 li{
+	cursor:pointer;
+	margin:0px;
+	padding:0px 7px;
+	line-height:19px;
+	color:#434142;
+	font-size:13px;
+	font-weight:bold;
+	min-width:120px;
+}
+#b2make-menu-perfil-2 li:hover{
+	background-color:#C2C3C8;
+	font-weight:normal;
+}
+#b2make-account-menu-snapshot-2{
+	background-image:url(../../site/images/b2make-user-profile.png);
+	background-size:auto 100%;
+	width:28px;
+	height:28px;
+	position:absolute;
+	left:10px;
+	top:5px;
+	cursor:pointer;
+	-webkit-border-radius: 14px 14px 14px 14px;
+	border-radius:14px 14px 14px 14px;
+}
+#b2make-account-menu-texto-2{
+	font-size:12px;
+	line-height:14px;
+	color:#FFF;
+	max-width:100px;
+	padding-right:15px;
+	background-image:url(../../site/images/b2make-select-arrow.png);
+	background-position:right center;
+	background-repeat:no-repeat;
+	position:absolute;
+	left:48px;
+	top:11px;
+	cursor:pointer;	
+}
+#b2make-account-menu-texto-2:hover{
+	background-image:url(../../site/images/b2make-select-arrow-2.png);
+}
+#b2make-pagina-voltar-topo{
+	position:fixed;
+	right:20px;
+	bottom:20px;
+	width:61px;
+	height:61px;
+	cursor:pointer;
+	z-index:999;
+	background-image:url(../../site/images/b2make-voltar-ao-topo.png);
+}
+.b2make-paralax-layer{
+	width:100%;
+	min-width:1050px;
+}
+.b2make-conteiner-ajuste{
+	padding-left:0px;
+}
+#b2make-segmentos-titulo{
+	color:#4A72AC;
+	font-size:24px;
+	line-height:28px;
+	margin:0px 15px 0px 0px;
+	float:left;
+}
+select#b2make-segmentos{
+	line-height:25px;
+	width:150px;
+	-webkit-border-radius: 3px 3px 3px 3px;
+	border-radius: 3px 3px 3px 3px;
+	font-size:15px;
+	background-image:url(images/b2make-select-arrow-1.png);
+	background-position:130px center;
+}
+select#b2make-segmentos:hover{
+	background-image:url(images/b2make-select-arrow-1-2.png);
+}
+#b2make-templates-mais-opcoes{
+	background-color:#9BB631;
+	-webkit-border-radius: 3px 3px 3px 3px;
+	border-radius: 3px 3px 3px 3px;
+	width:150px;
+	line-height:33px;
+	color:#FFF;
+	text-align:center;
+	cursor:pointer;
+	font-size:18px;
+	margin:20px auto 30px auto;
+}
+#b2make-templates-title{
+	color:#211915;
+	font-size:30px;
+	line-height:45px;
+	margin:15px 0px;
+}
+.b2make-templates-cont{
+	width:264px;
+	margin:10px;
+	padding:7px;
+	float:left;
+	cursor:pointer;
+}
+.b2make-templates-escolher{
+	color:#FFF;
+	background-color:#4A72AA;
+	font-size:16px;
+	line-height:30px;
+	width: auto;
+	padding:0px 7px;
+	text-align:center;
+	-webkit-border-radius: 12px 12px 12px 12px;
+	border-radius:12px 12px 12px 12px;
+	position:absolute;
+	left:40px;
+	top:90px;
+	display:none;
+}
+.b2make-templates-ver{
+	color:#FFF;
+	background-color:#4A72AA;
+	font-size:16px;
+	line-height:30px;
+	width:75px;
+	text-align:center;
+	-webkit-border-radius: 12px 12px 12px 12px;
+	border-radius:12px 12px 12px 12px;
+	position:absolute;
+	left:40px;
+	top:45px;
+	display:none;
+}
+.b2make-templates-imagem{
+	width:264px;
+	height:168px;
+	margin:0px auto;
+	background-size:auto 100%;
+	background-repeat:no-repeat;
+	-webkit-border-radius: 15px 15px 15px 15px;
+	border-radius:15px 15px 15px 15px;
+	position:relative;
+}
+.b2make-templates-imagem-mask{
+	background-color: rgba(255, 255, 255, 0.7);
+	width:inherit;
+	height:inherit;
+	display:none;
+}
+.b2make-templates-nome{
+	color:#434142;
+	font-size:20px;
+	line-height:20px;
+	margin:10px 0px;
+	height:20px;
+	text-align:center;
+	overflow:hidden;
+}
+.b2make-templates-descricao{
+	color:#95BC0F;
+	font-size:15px;
+	line-height:15px;
+	margin:0px;
+	height:45px;
+	overflow:hidden;
+}
+#ajax_lendo2{
+	display:none;
+	opacity:0.90;
+	-moz-opacity: 0.90;
+	filter: alpha(opacity=90);
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	width: 300px;
+	height: 130px;
+	background-image: url(../../images/icons/lendo2.gif);
+	background-repeat: no-repeat;
+	background-position: center 50px;
+	color: #333;
+	background-color: #FFF;
+	padding: 15px;
+	border: 4px solid #CCC;
+	text-align: center;
+	font-size: 16pt;
+	font-weight: bold;
+}
+#b2make-install-loading{
+	position:absolute;
+	left:15px;
+	top:100px;
+	width:240px;
+	height:4px;
+	background-color:#FFF;
+	border: 1px solid #CCC;
+}
+#b2make-install-loading-slide{
+	width:82%;
+	background-color:#A1BC31;
+	height:inherit;
+}
+#b2make-install-loading-perc{
+	position:absolute;
+	left:260px;
+	top:90px;
+	width:60px;
+	text-align:center;
+}
+#b2make-install-loading-label{
+	position:absolute;
+	left:15px;
+	top:120px;
+	width:300px;
+	text-align:center;
+}
+#b2make-menu-float-links{
+	display:block;
+	padding:18px 0px 0px 0px;
+	list-style:none;
+}
+#b2make-menu-float-links li{
+	padding:0px;
+	margin:0px 0px 18px 50px;
+	display:inline-block;
+	width:100px;
+}
+#b2make-menu-float-links li a,#b2make-menu-float-links li div{
+	display:block;
+	width:65px;
+	line-height:25px;
+	color:#434142;
+	font-size:13px;
+	cursor:pointer;
+}
+#b2make-menu-float-links li a:hover{
+	text-decoration:underline;
+}
+#b2make-menu-float-links li:nth-child(1) a{
+	width:110px;
+}
+#b2make-menu-float-links li:nth-child(6) a{
+	width:135px;
+}
+#b2make-eservices-meus-dados a{
+	width:110px !important;
+}
+#b2make-rodape-powered-by{
+	background-image:url(../../images/store/b2make-rodape-logo.png);
+	background-repeat:no-repeat;
+	background-position:center center;
+	background-color:#434142;
+	width:100%;
+	height:28px;
+	margin:0px auto 0px auto;
+	clear:both;
+}
+#b2make-rodape-logo-link{
+	display:block;
+	margin:0px auto 0px auto;
+	width:50px;
+	height:inherit;
+}
+#b2make-menu-ambiente-seguro{
+	position:absolute;
+	right:50px;
+	top:25px;
+	background-image:url(../../images/store/b2make-menu-ambiente-seguro.png);
+	width:34px;
+	height:51px;
+}
+#b2make-pagina-menu-principal-btn{
+	width:50px;
+	height:41px;
+	cursor:pointer;
+	top:30px;
+	left:20px;
+	position:absolute;
+	display:none;
+}
+.b2make-pagina-menu-principal-barra{
+	height:9px;
+	background-color:#FFF;
+}
+.b2make-pagina-menu-principal-barra[data-type="meio"]{
+	margin:7px 0px;
+}
+#b2make-pagina-menu-principal-fechar-btn{
+	position:fixed;
+	font-size:60px;
+	right:20px;
+	top:20px;
+	z-index:200;
+	cursor:pointer;
+	display:none;
+}

@@ -1,0 +1,527 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><link href="../../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<h2>Formul&aacute;rio Servi&ccedil;os</h2>
+<hr />
+<!-- form < -->
+<form action="." method="post" name="form" id="form">
+<div class="form-cont">
+	<div class="card-cont">
+    	<div class="title-cont">Cliente</div>
+        <div class="data-cont">
+        	<div class="data-label">Nome</div>
+            <div class="data-value">#usuario_pedido#</div>
+        </div>
+        <div class="data-cont">
+        	<div class="data-label">E-mail</div>
+            <div class="data-value">#usuario_email#</div>
+        </div>
+        <div class="data-cont">
+        	<div class="data-label">Telefone</div>
+            <div class="data-value">#usuario_telefone#</div>
+        </div>
+        <div class="data-cont">
+        	<div class="data-label">#label_cpf_ou_cnpj#</div>
+            <div class="data-value">#usuario_cpf_cnpj#</div>
+        </div>
+    </div>
+    <div class="card-cont">
+    	<div class="title-cont">Pedido</div>
+        <div class="data-cont">
+        	<div class="data-label">Data</div>
+            <div class="data-value">#data#</div>
+        </div>
+        <div class="data-cont">
+        	<div class="data-column">
+                <div class="data-label">C&oacute;digo</div>
+                <div class="data-value" id="pedido-codigo">#codigo#</div>
+            </div>
+        	<!-- pedido-senha < --><div class="data-column">
+                <div class="data-label">Senha</div>
+                <div class="data-value">#senha#</div>
+            </div><!-- pedido-senha > -->
+        </div>
+        <div class="data-cont">
+        	<div class="data-label">Status</div>
+            <div class="data-value" id="pedido-status">#status#</div>
+        </div>
+        <div class="data-cont">
+        	<div class="data-column">
+                <div class="data-label">Presente</div>
+                <div class="data-value">#presente#</div>
+            </div>
+        	<div class="data-column">
+                <div class="data-label">Interno</div>
+                <div class="data-value">#interno#</div>
+            </div>
+        	<div class="data-column">
+                <div class="data-label">Cortesia</div>
+                <div class="data-value">#cortesia#</div>
+            </div>
+        </div>
+        <div class="data-cont">
+        	<div class="data-label">Valor Total</div>
+            <div class="data-value">R$ #valor_total#</div>
+        </div>
+        <!-- baixa-voucher-cel < --><div class="data-cont">
+        	<div class="data-label">Baixa</div>
+        </div>
+        <div class="data-cont">
+        	<div class="data-column">
+                <div class="data-label">Data</div>
+                <div class="data-value">#data_baixa#</div>
+            </div>
+        	<div class="data-column">
+                <div class="data-label">Nome do Usu&aacute;rio</div>
+                <div class="data-value">#usuario#</div>
+            </div>
+        	<div class="data-column">
+                <div class="data-label">Protocolo</div>
+                <div class="data-value">#protocolo#</div>
+            </div>
+        </div>
+        <!-- baixa-voucher-observacao-cel < --><div class="data-cont">
+        	<div class="data-label">Observa&ccedil;&atilde;o</div>
+            <div class="data-value">#observacao_baixa#</div>
+        </div><!-- baixa-voucher-observacao-cel > --><!-- baixa-voucher-cel > -->
+    </div>
+</div>
+<div class="form-cont">
+    <!-- servicos < --><div class="card-cont">
+    	<div class="title-cont">Servi&ccedil;o #codigo#</div>
+        <div class="data-cont">
+        	<div class="data-label">Nome</div>
+            <div class="data-value">#nome#</div>
+        </div>
+        <div class="data-cont">
+        	<div class="data-label">Valor</div>
+            <div class="data-value">R$ #sub_total#</div>
+        </div>
+        <!-- servicos-senha < --><div class="data-cont">
+        	<div class="data-column">
+                <div class="data-label">C&oacute;digo</div>
+                <div class="data-value" id="pedido-codigo">#codigo#</div>
+            </div>
+        	<div class="data-column">
+                <div class="data-label">Senha</div>
+                <div class="data-value">#senha#</div>
+            </div>
+        </div><!-- servicos-senha > -->
+        <!-- voucher-cel < --><div class="data-cont">
+        	<div class="data-label">Voucher</div>
+            <div class="data-value">
+            	<div class="visualizar-voucher" data-id_pedidos="#id_pedidos#" data-id_pedidos_servicos="#id_pedidos_servicos#">Visualizar</div>
+                <div class="imprimir-voucher" data-id_pedidos="#id_pedidos#" data-id_pedidos_servicos="#id_pedidos_servicos#">Imprimir</div>
+            </div>
+        </div><!-- voucher-cel > -->
+        <div class="data-cont">
+        	<div class="data-label">Validade</div>
+            <div class="data-value">
+            	<div style="position:relative;">
+                	<span class="validade-value">#validade#</span>
+                    <!-- validade < --><div class="alterar-validade editar" data-id="#codigo_servico#" data-data="#data_pedido#">Editar</div>
+                    <div class="caixa-validade">
+                    	<div class="caixa-validade-fechar">X</div>
+                    	<input type="text" class="data">&nbsp;&nbsp;<input type="button" value="Alterar" class="botao-validade">
+                    </div>
+                    <div class="caixa-validade-data">
+                    	<div class="caixa-validade-fechar">X</div>
+                    	<input type="text" class="data">&nbsp;&nbsp;<input type="text" class="hora">&nbsp;&nbsp;<div class="botao-validade">Alterar</div>
+                    </div>
+                    <input name="opcao" type="hidden" id="validade_tipo" value="#validade_tipo#" />
+                    <input name="opcao" type="hidden" id="validade_data" value="#validade_data#" />
+                    <input name="opcao" type="hidden" id="validade_hora" value="#validade_hora#" />
+                    <!-- validade > -->
+                </div>
+            </div>
+        </div>
+        <div class="data-cont">
+        	<div class="data-column">
+                <div class="data-label">Identifica&ccedil;&atilde;o</div>
+                <div class="data-value" style="position:relative;">
+                    <!-- identificacao < --><div class="alterar-identidade editar">Editar</div>
+                    <div class="caixa-identidade" data-id_pedidos="#id_pedidos#" data-id_pedidos_servicos="#id_pedidos_servicos#">
+                    	<div class="caixa-identidade-fechar">X</div>
+                    	<input name="nome" type="text" class="nome primeiro-nome" placeholder="Nome">
+                    	<input name="doc" type="text" class="nome" placeholder="Documento">
+                    	<input name="tel" type="text" class="nome telefone" placeholder="Telefone">
+                        <input type="button" value="Alterar" class="botao-identidade">
+                    </div>
+                    <!-- identificacao > -->
+                </div>
+            </div>
+        </div>
+        <div class="data-cont identificacao-cont">
+        	<div class="data-column">
+                <div class="data-label">Nome</div>
+                <div class="data-value identificacao-nome">#identificacao_nome#</div>
+            </div>
+        	<div class="data-column">
+                <div class="data-label">Documento</div>
+                <div class="data-value identificacao-doc">#identificacao_documento#</div>
+            </div>
+        	<div class="data-column">
+                <div class="data-label">Telefone</div>
+                <div class="data-value identificacao-tel">#identificacao_telefone#</div>
+            </div>
+        </div>
+        <!-- baixar-manual-cel < --><div class="data-cont">
+        	<div class="data-label">Baixar Voucher</div>
+            <div class="data-value">
+            	<div class="baixar-manual-voucher" data-id_pedidos="#id_pedidos#" data-id_pedidos_servicos="#id_pedidos_servicos#">Baixar</div>
+                <div class="caixa-baixar">
+                    <div class="caixa-baixar-fechar">X</div>
+                    <textarea name="observacao" placeholder="Observação" class="caixa-baixar-textarea"></textarea><input type="button" value="Baixar" class="botao-baixar">
+                </div>
+            </div>
+        </div><!-- baixar-manual-cel > -->
+        <!-- baixa-cel < --><div class="data-cont">
+        	<div class="data-label">Baixa</div>
+        </div>
+        <div class="data-cont">
+        	<div class="data-column">
+                <div class="data-label">Data</div>
+                <div class="data-value">#data_baixa#</div>
+            </div>
+        	<div class="data-column">
+                <div class="data-label">Nome do Usu&aacute;rio</div>
+                <div class="data-value">#usuario_baixa#</div>
+            </div>
+        	<div class="data-column">
+                <div class="data-label">Protocolo</div>
+                <div class="data-value">#protocolo_baixa#</div>
+            </div>
+        </div>
+        <!-- baixa-observacao-cel < --><div class="data-cont">
+        	<div class="data-label">Observa&ccedil;&atilde;o</div>
+            <div class="data-value">#observacao_baixa#</div>
+        </div><!-- baixa-observacao-cel > --><!-- baixa-cel > -->
+    </div><!-- servicos > -->
+</div>
+</form>
+<div class="history-cont">
+	<div class="title-cont">Hist&oacute;rico</div>
+    <div class="data-cont">#log#</div>
+</div>
+<!-- form > -->
+<!-- form-antigo < -->    
+<form>
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+    <tr>
+      <td align="left" class="principal"><table width="100%" border="0" cellspacing="5" class="tabela_lista">
+        <tr>
+          <td width="140" align="left" class="lista_header">Nome do Cliente:</td>
+          <td class="lista_cel">#usuario_pedido#</td>
+        </tr>
+        <tr>
+          <td colspan="2" class="lista_cel"><table border="0" width="100%" cellspacing="5"> 
+            <tr>
+              <td class="lista_header" align="center">Data</td>
+              <td class="lista_header" align="center">Status</td>
+              <td class="lista_header" align="center">C&oacute;digo</td>
+              <td class="lista_header" align="center">Senha</td>
+              <td class="lista_header" align="center">Para Presente</td>
+              <td class="lista_header" align="center">Interno</td>
+              <td class="lista_header" align="center">Cortesia</td>
+              <td class="lista_header" align="center">Valor Total (R$)</td>
+              <td class="lista_header" align="center">Op&ccedil;&otilde;es</td>
+            </tr>
+            <tr>
+              <td class="lista_cel" align="center">#data#</td>
+              <td class="lista_cel" align="center"><b>#status#</b></td>
+              <td class="lista_cel" align="center" id="pedido-codigo">#codigo#</td>
+              <td class="lista_cel" align="center">#senha#</td>
+              <td class="lista_cel" align="center">#presente#</td>
+              <td class="lista_cel" align="center">#interno#</td>
+              <td class="lista_cel" align="center">#cortesia#</td>
+              <td class="lista_cel" align="center">#valor_total#</td>
+              <td class="lista_cel" align="center">#opcoes#</td>
+            </tr>
+          </table></td>
+        </tr>
+        <!-- mensagem-cel < -->
+        <tr>
+          <td colspan="2" class="lista_cel">
+            <table border="0" width="100%" cellspacing="5">
+              <tr>
+                <td colspan="2" class="lista_header" align="center">Mensagem</td>
+              </tr>
+              <tr>
+                  <td align="left" class="lista_header" width="100">De:</td>
+                  <td align="left" class="lista_cel">#de#</td>
+                </tr>
+                <tr>
+                  <td align="left" class="lista_header">Para:</td>
+                  <td align="left" class="lista_cel">#para#</td>
+                </tr>
+                <tr>
+                  <td align="left" class="lista_header">Mensagem:</td>
+                  <td align="left" class="lista_cel">#mensagem#</td>
+                </tr>
+              </table>
+           </td>
+       	</tr><!-- mensagem-cel > -->
+        <!-- baixa-voucher-cel < --><tr>
+          <td colspan="2" class="lista_cel">
+          	<table border="0" width="100%" cellspacing="5">
+            <tr>
+                <td colspan="3" class="lista_header" align="center">Baixa</td>
+              </tr>
+            <tr>
+              <td class="lista_header" align="center" width="100">Data</td>
+              <td class="lista_header" align="center">Nome do Usu&aacute;rio</td>
+              <td class="lista_header" align="center">Protocolo</td>
+            </tr>
+            <tr>
+              <td class="lista_cel">#data_baixa#</td>
+              <td class="lista_cel">#usuario#</td>
+              <td class="lista_cel">#protocolo#</td>
+            </tr>
+            <tr>
+              <td class="lista_header">Observa&ccedil;&atilde;o</td>
+              <td colspan="2" class="lista_cel">#observacao_baixa#</td>
+              </tr>
+            </table></td>
+       	</tr><!-- baixa-voucher-cel > -->
+        <tr>
+          <td align="left" class="lista_header">Servi&ccedil;os:</td>
+          <td align="left" class="lista_cel"><table border="0" width="100%" cellspacing="5">
+            <!-- servicos < --><tr>
+              <td class="lista_header" colspan="8" align="center">Servi&ccedil;o</td>
+            </tr>  
+            <tr>
+              <td class="lista_header" align="center">Nome</td>
+              <td class="lista_header" align="center">C&oacute;digo</td>
+              <td class="lista_header" align="center">Senha</td>
+              <td class="lista_header" align="center" style="width:120px;">Validade</td>
+              <td class="lista_header" align="center">Valor (R$)</td>
+              <td class="lista_header" align="center">Valor Original (R$)</td>
+              <td class="lista_header" align="center">Desconto (%)</td>
+              <td class="lista_header" align="center">Op&ccedil;&otilde;es</td>
+            </tr>
+            <tr>
+              <td class="lista_cel">#nome#</td>
+              <td class="lista_cel">#codigo#</td>
+              <td class="lista_cel">#senha#</td>
+              <td class="lista_cel validade-holder" width="100" align="center">
+              	<div style="position:relative;">
+                	<span class="validade-value">#validade#</span>
+                    <!-- validade < -->&nbsp;&nbsp;
+                    <div class="alterar-validade editar" data-id="#codigo_servico#" data-data="#data_pedido#"></div>
+                    <div class="caixa-validade">
+                    	<div class="caixa-validade-fechar">X</div>
+                    	<input type="text" class="data">&nbsp;&nbsp;<input type="button" value="Alterar" class="botao-validade">
+                    </div>
+                    <div class="caixa-validade-data">
+                    	<div class="caixa-validade-fechar">X</div>
+                    	<input type="text" class="data">&nbsp;&nbsp;<input type="text" class="hora">&nbsp;&nbsp;<input type="button" value="Alterar" class="botao-validade">
+                    </div>
+                    <input name="opcao" type="hidden" id="validade_tipo" value="#validade_tipo#" />
+                    <input name="opcao" type="hidden" id="validade_data" value="#validade_data#" />
+                    <input name="opcao" type="hidden" id="validade_hora" value="#validade_hora#" />
+                    <!-- validade > -->
+                </div></td>
+              <td class="lista_cel" align="center">#sub_total#</td>
+              <td class="lista_cel" align="center">#valor_original#</td>
+              <td class="lista_cel" align="center">#desconto#</td>
+              <td class="lista_cel">#opcoes#</td>
+            </tr>
+            <!-- baixa-cel < --><tr>
+              <td colspan="8" class="lista_header" align="center">Baixa</td>
+            </tr>
+            <tr>
+              <td class="lista_header" align="center">Protocolo</td>
+              <td class="lista_header" align="center">Nome do Usu&aacute;rio</td>
+              <td class="lista_header" colspan="5" align="center">Data</td>
+              <td class="lista_header" align="center">Op&ccedil;&otilde;es</td>
+            </tr>
+            <tr>
+              <td class="lista_cel">#protocolo_baixa#</td>
+              <td class="lista_cel">#usuario_baixa#</td>
+              <td class="lista_cel" colspan="5">#data_baixa#</td>
+              <td class="lista_cel" align="center">#opcoes_baixa#</td>
+            </tr>
+            <tr>
+              <td class="lista_header">Observa&ccedil;&atilde;o</td>
+              <td colspan="7" class="lista_cel">#observacao_baixa#</td>
+              </tr>
+            <!-- baixa-cel > --><!-- servicos > -->
+          </table></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="lista_cel"><table border="0" width="100%" cellspacing="5">
+            <tr>
+                <td class="lista_header" align="center">Hist&oacute;rico</td>
+              </tr>
+            <tr>
+              <td class="lista_cel">#log#</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+        <!-- botao < --><table width="100%" border="0">
+          <tr>
+            <td align="center"><input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+              <input name="opcao" type="hidden" id="opcao" value="#opcao" />
+              <input name="id" type="hidden" id="id" value="#id" />
+              <input type="submit" name="Submit" id="button" value="#botao" /></td>
+          </tr>
+        </table><!-- botao > --></td>
+    </tr>
+  </table>
+</form>
+<!-- form-antigo > -->
+<hr />
+<h2>Formul&aacute;rio Produtos</h2>
+<hr />
+<!-- form2 < -->
+<form action="." method="post" name="form" id="form">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+    <tr>
+      <td align="left" class="principal"><table width="100%" border="0" cellspacing="5" class="tabela_lista">
+        <tr>
+          <td width="140" align="left" class="lista_header">Nome do Cliente:</td>
+          <td class="lista_cel">#usuario_pedido#</td>
+        </tr>
+        <tr>
+          <td colspan="2" class="lista_cel"><table border="0" width="100%" cellspacing="5"> 
+            <tr>
+              <td class="lista_header" align="center" width="150">Data</td>
+              <td class="lista_header" align="center" width="150">Pagamento</td>
+              <td class="lista_header" align="center" width="150">Envio</td>
+              <td class="lista_header" align="center" width="150">C&oacute;digo</td>
+              <td class="lista_header" align="center" width="150">Valor Total (R$)</td>
+              <td class="lista_header" align="center" width="150">Valor Total c/ Frete (R$)</td>
+              <td class="lista_header" align="center">Op&ccedil;&otilde;es</td>
+            </tr>
+            <tr>
+              <td class="lista_cel" align="center">#data#</td>
+              <td class="lista_cel" align="center"><b>#status#</b></td>
+              <td class="lista_cel" align="center" id="envio-td"><b>#status_envio#</b></td>
+              <td class="lista_cel" align="center">#codigo#</td>
+              <td class="lista_cel" align="center">#valor_total#</td>
+              <td class="lista_cel" align="center">#valor_total_frete#</td>
+              <td class="lista_cel" align="center">#opcoes#</td>
+            </tr>
+          </table></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Produtos:</td>
+          <td align="left" class="lista_cel"><table border="0" width="100%" cellspacing="3">
+            <!-- produtos < --><tr>
+              <td class="lista_header" colspan="8" align="center">Produto</td>
+            </tr>  
+            <tr>
+              <td class="lista_header" align="center">Nome</td>
+              <td class="lista_header" align="center">C&oacute;digo</td>
+              <td class="lista_header" align="center">Valor (R$)</td>
+              <td class="lista_header" align="center">Valor Original (R$)</td>
+              <td class="lista_header" align="center">Desconto (%)</td>
+              <td class="lista_header" align="center">Op&ccedil;&otilde;es</td>
+            </tr>
+            <tr>
+              <td class="lista_cel">#nome#</td>
+              <td class="lista_cel">#codigo#</td>
+              <td class="lista_cel" align="center">#sub_total#</td>
+              <td class="lista_cel" align="center">#valor_original#</td>
+              <td class="lista_cel" align="center">#desconto#</td>
+              <td class="lista_cel">#opcoes#</td>
+            </tr><!-- produtos > -->
+          </table></td>
+        </tr>
+        <!-- destinatario-cel < -->
+        <tr>
+          <td colspan="2" class="lista_cel">
+            <table border="0" width="100%" cellspacing="5">
+              <tr>
+                <td colspan="2" class="lista_header" align="center">Destinat&aacute;rio</td>
+              </tr>
+              <tr>
+                  <td align="left" class="lista_header" width="100">Nome:</td>
+                  <td align="left" class="lista_cel">#dest_nome#</td>
+                </tr>
+                <tr>
+                  <td align="left" class="lista_header">Endere&ccedil;o:</td>
+                  <td align="left" class="lista_cel">#dest_endereco##dest_num##dest_complemento##dest_bairro#</td>
+                </tr>
+                <tr>
+                  <td align="left" class="lista_header">Cidade / UF:</td>
+                  <td align="left" class="lista_cel">#dest_cidade##dest_uf#</td>
+                </tr>
+                <tr>
+                  <td align="left" class="lista_header">CEP:</td>
+                  <td align="left" class="lista_cel">#dest_cep#</td>
+                </tr>
+                <tr>
+                  <td align="left" class="lista_header">Tipo Frete:</td>
+                  <td align="left" class="lista_cel">#tipo_frete#</td>
+                </tr>
+                <tr>
+                  <td align="left" class="lista_header">Valor Frete:</td>
+                  <td align="left" class="lista_cel">#valor_frete#</td>
+                </tr>
+                <tr>
+                  <td align="left" class="lista_header">C&oacute;digo Rastreio:</td>
+                  <td align="left" class="lista_cel" id="codigo_rastreio-td">#codigo_rastreio#</td>
+                </tr>
+                <!-- mudar_envio < --><tr>
+                  <td align="left" class="lista_header">Mudar Envio</td>
+                  <td align="left" class="lista_cel">#envio# 
+                  <div id="codigo_rastreio-cont">
+                  	<label for="codigo_rastreio-txt">C&oacute;digo Rastreio:</label><input type="text" name="codigo_rastreio-txt" id="codigo_rastreio-txt"><input type="button" name="codigo_rastreio-btn" id="codigo_rastreio-btn" value="Enviar Código"><input type="button" name="codigo_rastreio-btn2" id="codigo_rastreio-btn2" value="Sem Código">
+                  </div></td>
+                </tr><!-- mudar_envio > -->
+              </table>
+           </td>
+       	</tr><!-- destinatario-cel > -->
+        <tr>
+          <td align="left" class="lista_header">Produtos:</td>
+          <td align="left" class="lista_cel"><table border="0" width="100%" cellspacing="3">
+            <!-- produtos < --><tr>
+              <td class="lista_header" colspan="8" align="center">Produto</td>
+            </tr>  
+            <tr>
+              <td class="lista_header" align="center">Nome</td>
+              <td class="lista_header" align="center">C&oacute;digo</td>
+              <td class="lista_header" align="center">Valor (R$)</td>
+              <td class="lista_header" align="center">Valor Original (R$)</td>
+              <td class="lista_header" align="center">Desconto (%)</td>
+              <td class="lista_header" align="center">Op&ccedil;&otilde;es</td>
+            </tr>
+            <tr>
+              <td class="lista_cel">#nome#</td>
+              <td class="lista_cel">#codigo#</td>
+              <td class="lista_cel" align="center">#sub_total#</td>
+              <td class="lista_cel" align="center">#valor_original#</td>
+              <td class="lista_cel" align="center">#desconto#</td>
+              <td class="lista_cel">#opcoes#</td>
+            </tr><!-- produtos > -->
+          </table></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="lista_cel"><table border="0" width="100%" cellspacing="5">
+            <tr>
+                <td class="lista_header" align="center">Hist&oacute;rico</td>
+              </tr>
+            <tr>
+              <td class="lista_cel">#log#</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <input name="id" type="hidden" id="id" value="#id" />
+        <!-- botao < --><table width="100%" border="0">
+          <tr>
+            <td align="center"><input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+              <input name="opcao" type="hidden" id="opcao" value="#opcao" />
+              <input type="submit" name="Submit" id="button" value="#botao" /></td>
+          </tr>
+        </table><!-- botao > --></td>
+    </tr>
+  </table>
+</form>
+<!-- form2 > -->
+<hr />
+<h3>&nbsp;</h3>

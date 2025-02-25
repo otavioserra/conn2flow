@@ -1,0 +1,548 @@
+
+#b2make-signin-cont{
+	margin-bottom:30px;
+}
+#b2make-signin-login-cont{
+	float:left;
+	width:350px;
+	margin-right:15px;
+	padding-top:7px;
+}
+#b2make-signin-cadastro-line{
+	background-color:#A9A8AE;
+	height:150px;
+	width:1px;
+	float:left;
+	margin-top:17px;
+}
+#b2make-signin-cadastro-redes-sociais{
+	margin:10px 13px 30px 0px;
+	float:left;
+}
+#b2make-signin-cadastro-facebook{
+	background-image:url(../../files/projeto/images/b2make-acessar-facebook-botao.png);
+	width:23px;
+	height:28px;
+	background-position:15px center;
+	background-repeat:no-repeat;
+	cursor:pointer;
+	border:1px solid #FFF;
+	color:#FFF;
+	padding:12px 0px 0px 20px !important;
+	text-align:center;
+}
+#b2make-signin-login{
+	position:relative;
+}
+#b2make-signin-login label{
+	color:#1e1e1e;
+	position:absolute;
+	display:block;
+	z-index:1;
+	font-size:16px;
+	line-height:25px;
+	padding:6px 8px 0px 8px;
+}
+#b2make-signin-login input{
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+	line-height:19px;
+	padding:3px 8px;
+	font-size:17px;
+	color:#434142;
+	width:321px;
+	margin-top:6px;
+	width:350px;
+}
+#b2make-signin-login #login-esqueceu-senha{
+	margin:10px 0px;
+	font-size:12px;
+	line-height:12px;
+	color:#FFF;
+}
+#b2make-signin-login #login-esqueceu-senha a{
+	color:#FFF;
+}
+#login-esqueceu-senha a:hover{
+	text-decoration:underline;
+}
+#b2make-signin-login-entrar{
+	cursor:pointer;
+	color:#FFF;
+	line-height:36px;
+	text-align:center;
+	margin:15px auto;
+	font-size:16px;
+	text-align:center;	
+	border:solid 1px #FFF;
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+	width:180px;
+}
+#b2make-payment-paypal{
+	cursor:pointer;
+	background-image:url(images/b2make-payment-paypal.png);
+	width:135px;
+	height:35px;
+	float:left;
+	margin:50px 10px 10px 0px;
+}
+#b2make-payment-pagseguro{
+	cursor:pointer;
+	background-image:url(images/b2make-payment-pagseguro.png);
+	width:152px;
+	height:35px;
+	float:right;
+	margin:50px 0px 10px 10px;
+}
+.b2mae-button-default{
+	cursor:pointer;
+	width:154px;
+	line-height:32px;
+	background-color:#BA3176;
+	text-align:center;
+	color:#FFF;
+	font-size:21px;
+	-webkit-border-radius: 3px 3px 3px 3px;
+	border-radius: 3px 3px 3px 3px;
+	margin:50px auto;
+}
+#b2make-my-profile-form input{
+	-webkit-border-radius: 3px 3px 3px 3px;
+	border-radius: 3px 3px 3px 3px;
+	border:#959499 solid 1px;
+	line-height:25px;
+	padding:0px 8px;
+	font-size:17px;
+	color:#434142;
+	width:321px;
+	margin-top:6px;
+	float: left;
+}
+#b2make-my-profile-form label{
+	color:#4A72AC;
+	font-size:24px;
+	line-height:28px;
+	margin:5px 5px 0px 0px;
+	float:left;
+	width:200px;
+}
+#b2make-my-profile-form #my-profile-esqueceu-senha{
+	margin:10px 0px;
+	font-size:16px;
+	line-height:16px;
+	color:#9DB831;
+}
+#b2make-my-profile-form #senha-mudar{
+	margin:10px 0px 0px 0px;
+	font-size:16px;
+	line-height:16px;
+	color:#9DB831;
+	float:left;
+}
+#b2make-my-profile-form #senha-mudar #b2make-change-password-button{
+	color: #00F;
+	cursor:pointer;
+}
+#b2make-change-password-2{
+	display:none;
+}
+#b2make-my-profile-form #cep{
+	width:100px;
+}
+#b2make-my-profile-form .numero-uf-label{
+	color:#4A72AC;
+	font-size:24px;
+	line-height:28px;
+	margin:5px 5px 0px 0px;
+	width:40px;
+	text-align:center;
+	float:left;
+}
+#b2make-my-profile-form #numero,#b2make-my-profile-form #uf{
+	width:50px;
+}
+#b2make-dialogbox{
+	position:fixed;
+	width:300px;
+	height:240px;
+	display:none;
+	border:#99989D 1px solid;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	background-color:#FFF;
+	z-index:15;
+}
+#b2make-dialogbox-head{
+	padding:0px 20px;
+	line-height:44px;
+	font-size:22px;
+	font-weight:bold;
+	background-color:#434142;
+	color:#fff;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+#b2make-dialogbox-msg p:first-child{
+	margin-top:0px;
+}
+#b2make-dialogbox-msg{
+	padding:15px;
+	color:#434142;
+	font-size:13px;
+}
+#b2make-dialogbox-btns2{
+	padding:15px;
+	border-top:1px solid #99989D;
+	position:absolute;
+	left:0px;
+	bottom:0px;
+	width:calc(100% - 30px);
+}
+.b2make-dialogbox-btn{
+	float:right;
+	margin-left:15px;
+	padding:0px 15px;
+	line-height:32px;
+	font-size:17px;
+	background-color:#A1BC31;
+	border: #A1BC31 1px solid;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color:#FFF;
+	font-weight:bold;
+	cursor:pointer;
+}
+.b2make-dialogbox-btn:hover{
+	background-color: #BCC636;
+	border: #BCC636 1px solid;
+}
+#b2make-my-profile-assinatura{
+	line-height:25px;
+	padding:0px 8px;
+	font-size:17px;
+	color:#434142;
+	width:500px;
+	margin-top:6px;
+	float: left;
+}
+#b2make-signature-cancel p,#b2make-signature-canceled p{
+	font-size:21px;
+	line-height:27px;
+	color:#4A72AC;
+}
+#b2make-signature-cancel-confirm{
+	width:400px;
+}
+#b2make-signup-cadastro{
+	display:none;
+}
+select#layout{
+	line-height:25px;
+	width:150px;
+	-webkit-border-radius: 3px 3px 3px 3px;
+	border-radius: 3px 3px 3px 3px;
+	font-size:15px;
+	background-image:url(images/b2make-select-arrow-1.png);
+	background-position:130px center;
+}
+select#layout:hover{
+	background-image:url(images/b2make-select-arrow-1-2.png);
+}
+.b2make-cadastro-invalido{
+	border:solid 1px #FF0000 !important;
+}
+.b2make-cadastro-invalido-mens{
+	color:#FF0000;
+	margin:0px 8px 8px 8px;
+	padding-top:8px;
+	font-size:12px;
+	line-height:12px;
+	clear:both;
+}
+#b2make-signin-cont_principal{
+	background-color:#1e1e1e;
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+}
+#b2make-signin-mask{
+	width:360px;
+	margin:100px auto 25px auto;
+}
+#b2make-signin-fechar{
+	background-image:url(../../files/projeto/images/b2make-login-fechar.png);
+	width:39px;
+	height:39px;
+	position:absolute;
+	top:25px;
+	right:25px;
+	display:none;
+}
+#b2make-signin-mask h1{
+	margin:8px 0px;
+	color:#FFF;
+	font-size:26px;
+	font-weight:normal;
+}
+#b2make-signin-sub-titulo{
+	color:#FFF;
+	margin:0px 0px 15px 0px;
+	font-size:16px;
+}
+#b2make-payment-cont{
+	background-color:#1e1e1e;
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+}
+#b2make-payment-mask{
+	width:360px;
+	margin:100px auto 25px auto;
+}
+#b2make-payment-fechar{
+	background-image:url(../../files/projeto/images/b2make-login-fechar.png);
+	width:39px;
+	height:39px;
+	position:absolute;
+	top:25px;
+	right:25px;
+	display:block;
+}
+#b2make-payment h1{
+	color:#FFF;
+	font-size:26px;
+	font-weight:normal;
+	margin:8px 0px;
+}
+#b2make-payment p{
+	color:#FFF;
+	margin:0px 0px 15px 0px;
+	font-size:16px;
+}
+#b2make-payment-complete-cont{
+	background-color:#1e1e1e;
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+}
+#b2make-payment-complete-mask{
+	width:360px;
+	margin:100px auto 25px auto;
+}
+#b2make-payment-complete h1{
+	color:#FFF;
+	font-size:26px;
+	font-weight:normal;
+	margin:8px 0px;
+}
+#b2make-acess-mensage{
+	font-size:16px;
+	color:#fff;
+}
+#b2make-acess-site{
+	cursor:pointer;
+	color:#FFF;
+	line-height:36px;
+	text-align:center;
+	margin:15px auto;
+	font-size:16px;
+	text-align:center;	
+	border:solid 1px #FFF;
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+	width:180px;
+}
+#b2make-signup-success-cont{
+	background-color:#1e1e1e;
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+}
+#b2make-signup-success-mask{
+	width:360px;
+	margin:100px auto 25px auto;
+}
+#b2make-signup-success h1{
+	color:#FFF;
+	font-size:26px;
+	font-weight:normal;
+	margin:8px 0px;
+}
+#b2make-signup-cont{
+	background-color:#1e1e1e;
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+}
+#b2make-signup-mask{
+	width:360px;
+	margin:100px auto 25px auto;
+}
+#b2make-signup-fechar{
+	background-image:url(../../files/projeto/images/b2make-login-fechar.png);
+	width:39px;
+	height:39px;
+	position:absolute;
+	top:25px;
+	right:25px;
+	display:block;
+}
+#b2make-signup-mask h1{
+	margin:8px 0px;
+	color:#FFF;
+	font-size:26px;
+	font-weight:normal;
+}
+#b2make-signup-mask p{
+	color:#FFF;
+	margin:0px 0px 15px 0px;
+	font-size:16px;
+}
+#b2make-signup-cadastro-form label{
+	color:#1e1e1e;
+	position:absolute;
+	display:block;
+	z-index:1;
+	font-size:16px;
+	line-height:25px;
+	padding:6px 8px 0px 8px;
+}
+#b2make-signup-cadastro-form input{
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+	line-height:19px;
+	padding:3px 8px;
+	font-size:17px;
+	color:#434142;
+	width:321px;
+	margin-top:6px;
+	width:350px;
+}
+#b2make-signup-cadastro-facebook{
+	background-image:url(../../files/projeto/images/b2make-acessar-facebook-botao.png);
+	width:23px;
+	height:28px;
+	font-size:14px;
+	background-position:15px center;
+	background-repeat:no-repeat;
+	cursor:pointer;
+	border:1px solid #FFF;
+	color:#FFF;
+	padding:12px 0px 0px 20px !important;
+	text-align:center;
+	margin:20px 0px;
+}
+#b2make-signup-plano-label{
+	font-size:18px;
+	margin:0px 5px 0px 20px;
+	float:left;
+	color:#FFF;
+}
+#b2make-signup-plano-val{
+	float:left;
+	font-size:18px;
+	color:#FFF;
+}
+#b2make-signup-plano-modificar{
+	float:right;
+	margin-right:20px;
+	font-size:13px;
+	color:#FFF;
+	cursor:pointer;
+}
+#b2make-signup-plano-modificar:hover{
+	text-decoration:underline;
+}
+#b2make-signup-template-cont{
+	margin-top:10px;
+}
+#b2make-signup-template-label{
+	font-size:18px;
+	margin:0px 5px 0px 20px;
+	float:left;
+	color:#FFF;
+}
+#b2make-signup-template-val{
+	float:left;
+	font-size:18px;
+	color:#FFF;
+}
+#b2make-signup-template-modificar{
+	float:right;
+	margin-right:20px;
+	font-size:13px;
+	color:#FFF;
+	cursor:pointer;
+}
+#b2make-signup-template-modificar:hover{
+	text-decoration:underline;
+}
+#b2make-signup-cadastrar{
+	cursor:pointer;
+	color:#FFF;
+	line-height:36px;
+	text-align:center;
+	margin:25px auto;
+	font-size:16px;
+	text-align:center;	
+	border:solid 1px #FFF;
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+	width:180px;
+}
+#b2make-signup-lightbox{
+	z-index:2;
+	background-color:#fff;
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:calc(100% - 140px);
+	height:calc(100% - 70px);
+	margin:0px 70px 70px 70px;
+	display:none;
+}
+#b2make-signup-lightbox-fechar{
+	background-image:url(../../files/projeto/images/b2make-signup-fechar.png);
+	width:39px;
+	height:39px;
+	position:absolute;
+	top:25px;
+	right:25px;
+	display:block;
+	cursor:pointer;
+}
+#recaptcha_div{
+	margin:25px 0px 0px 0px;
+}
+#b2make-install-loading{
+	margin:55px auto 14px auto;
+	background-color:#ccc;
+	width:200px;
+	height:5px;
+}
+#b2make-install-loading-slide{
+	background-color:#434142;
+	height: inherit;
+}
+#b2make-install-loading-perc{
+	font-size:10px;
+	color:#434142;
+}
+#b2make-install-loading-label{
+	margin:30px auto 0px auto;
+	font-size:16px;
+}

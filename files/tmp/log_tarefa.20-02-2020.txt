@@ -1,0 +1,40 @@
+[11:13:29 -03][anonimo] Array.
+[11:14:04 -03][anonimo] Array.
+[11:14:18 -03][anonimo] Array.
+[11:33:52 -03][anonimo] Array.
+[13:16:30 -03][anonimo] Array.
+[13:43:41 -03][anonimo] Array.
+[14:15:52 -03][anonimo] Array.
+[14:37:52 -03][anonimo] Array.
+[14:39:20 -03][anonimo] Array.
+[14:56:10 -03][anonimo] Array.
+[15:06:48 -03][anonimo] Array.
+[15:12:37 -03][anonimo] Array.
+[15:27:33 -03][anonimo] Array.
+[17:53:22 -03][teste] Array.
+[17:54:25 -03][teste] Array.
+[18:02:41 -03][anonimo] Array.
+[18:13:28 -03][teste] .
+[18:17:37 -03][teste] .
+[18:18:35 -03][teste] 192 .
+[18:19:08 -03][teste] 192 1.
+[18:33:53 -03][anonimo] Array.
+[18:34:53 -03][anonimo] Array.
+[18:37:37 -03][anonimo] Array.
+[18:37:54 -03][anonimo] Array.
+[18:40:29 -03][anonimo] > .
+[18:40:29 -03][anonimo] Array.
+[18:41:19 -03][anonimo] >  .
+[18:41:19 -03][anonimo] Array.
+[18:42:55 -03][anonimo] >.
+[18:42:55 -03][anonimo] >  .
+[18:42:55 -03][anonimo] Array.
+[18:47:46 -03][anonimo] Array
+(
+    [ajax] => sim
+    [opcao] => e-services/loja-1/voucher-view
+    [pedido_id] => 3870
+    [pedido_servico_id] => 5083
+    [_iframe_session] => 1ad11b53d4d8a367bc4f9a732313575c941d56c5
+)
+.

@@ -1,0 +1,11 @@
+v1.2
+
+*	Replaced some of the default backgrounds because it was too
+	difficult to read text from in some cases.
+
+*	Captcha images no longer need to be saved to disk. They are
+	output directly to the page.
+
+*	Added a refresh javascript function, so that if the user can't 
+	read the captcha text from the image, the can request a new one 
+	without reloading the page and losing information on the form.

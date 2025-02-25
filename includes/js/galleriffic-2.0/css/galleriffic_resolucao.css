@@ -1,0 +1,11 @@
+
+div.content,div.loader,div.navigation,div.image-desc,div.slideshow a.advance-link {
+	width: 555px; /* Tamanho máximo da galeria */
+}
+
+div.slideshow-container,div.loader,div.slideshow a.advance-link {
+	height: 502px; /* Altura máxima das imagens */
+}
+div.slideshow a.advance-link {
+	line-height: 502px; /* Altura máxima das imagens */
+}

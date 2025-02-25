@@ -1,0 +1,205 @@
+/********** Ficha Vertical **************/
+.b2make-posts-filter-conteudo-2{
+	margin-left:-0;
+	width:100%;
+	margin-bottom:10px;
+	background-color:#FFF;
+	padding-bottom:100px;
+}
+.b2make-posts-filter-ficha-imagem-grande-2{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-foto-obra1.jpg);
+	width:100%;
+	height:490px;
+	background-repeat:no-repeat;
+	background-size:cover;
+	background-position:center center;
+}
+.b2make-posts-filter-ficha-habita-2{
+	width:calc(100% - 60px);
+	height: auto;
+	padding: 0px;
+	margin:35px 0px 0px 20px;
+	font-family:'Myriad Pro';
+	font-size:26.60px;
+	font-weight:bold;
+	color:#4C4C4C;
+	display:block;
+
+}
+.b2make-posts-filter-ficha-cidade-2{
+	width:calc(100% - 60px);
+	margin:5px 0px 0px 20px;
+	font-size:64.18px;
+	font-family:'Myriad Pro';
+	font-weight:bold;
+	color:#555555;
+	text-transform: uppercase;
+	text-align:left;
+	padding-bottom:0px;
+}
+.b2make-pfc-cont{
+	width:100%;
+	margin:7px 20px 56px 0px;
+	
+}
+.b2make-pfc-coluna{
+	width:50%;
+	margin-left:0px;
+	text-align:center;
+	float:left;
+	margin-bottom:20px;
+	margin-top:20px;
+	padding-top:17px;
+}
+.b2make-pfc-clear{
+	clear:both;
+}
+.b2make-pfc-elemento{
+	display:inline-block;
+	height:17px;
+	width:190px;
+	text-align:center;
+	margin:17px 0px 0px -55px;
+}
+.b2make-pfc-elemento-img-1{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-terreno-m2.png);
+	background-size:cover;
+	margin-right:10px;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	vertical-align:middle;
+}
+.b2make-pfc-elemento-img-2{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-suites.png);
+	background-size:cover;
+	margin-right:10px;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	vertical-align:middle;
+}
+.b2make-pfc-elemento-img-3{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-dormitorios.png);
+	background-size:cover;
+	margin-right:10px;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	vertical-align:middle;
+}
+.b2make-pfc-elemento-img-4{
+	background-image:url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-vagas.png);
+	background-size:cover;
+	margin-right:10px;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	vertical-align:middle;
+}
+
+.b2make-pfc-elemento-txt{
+	display:inline-block;
+	font-size: 27px;
+    font-family: 'Myriad Pro';
+    color: #4C4C4C;
+    font-weight: normal;
+    text-transform: capitalize;
+	text-align:left;
+	max-height:51px;
+	overflow:hidden;
+	width:100px;
+	white-space: nowrap;
+	vertical-align:middle;
+}
+.b2make-pfc-coluna-2{
+	width:30%;
+	text-align:center;
+	float:left;
+}
+.b2make-pfc-elemento-2-estagio{
+	background: url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-pronto-para-morar.jpg) no-repeat right;
+	width: 125px;
+    height: 62px;
+    background-size: cover;
+    background-position: center center;
+	display:inline-block;
+}
+.b2make-pfc-elemento-2-minha-vida{
+	background: url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-posts-filter-fgts.jpg) no-repeat right;
+	width: 125px;
+    height: 62px;
+    background-size: cover;
+    background-position: center center;
+	display:inline-block;
+}
+
+.b2make-pfc-elemento-2-fgts{
+	background: url(//platform.b2make.com/design/plugins/posts-filter/ficha-html-vertical/images/b2make-lazer-incrivel-hoga.jpg) no-repeat right;
+	width: 125px;
+    height: 62px;
+    background-size: cover;
+    background-position: center center;
+	display:inline-block;
+}
+
+.b2make-posts-filter-ficha-lancamento-2{
+	width:calc(100% - 50px);
+	margin:0px 20px -8px 20px;
+	line-height:48px;
+	display:inline-block;
+	font-family: 'Myriad Pro';
+	font-size: 23.84px;
+	color: #fff;
+	font-weight: bold;
+	text-transform: capitalize;
+	background-color: #3D9BE9;
+	text-align: center;
+	border-radius: 11px;
+}
+.b2make-posts-filter-ficha-apartirde-2{
+	width:400px;
+	text-align:left;
+	margin: 0px 0px 0px 20px;
+	clear:both;	
+	font-family: 'Myriad Pro';
+	font-size: 27px;
+	color: #4C4C4C;
+	font-weight: bold;
+	position:relative;
+	
+	
+	margin:10px 20px 18px 20px;
+}
+.b2make-posts-filter-ficha-valor-2{
+	margin:10px 20px 58px 20px;
+	line-height:40px;
+	text-align:left;
+	font-family: 'Myriad Pro';
+	font-size: 66px;
+	color: #1B4174;
+	font-weight: bold;
+	text-transform: capitalize;
+}
+#b2make-posts-filter-link-botao-filho-2{
+	border:0px solid #000;
+	background-color:#EFEFEF;
+	text-decoration: none;
+	display:block;
+	font-family:'Myriad Pro';
+	text-align:center;
+	width:100%;
+	max-width:450px;
+	font-weight:bold;
+	text-transform:capitalize;
+	margin:0 auto;
+	font-size:29px;
+	color:#686868;
+	line-height:80px
+}
+#b2make-posts-filter-link-botao-filho-2:hover,#b2make-posts-filter-link-botao-filho-2:visited{
+	background-color: #DBDBDB;
+	color:#333;
+	text-decoration: none;
+}
+/***********************************/

@@ -1,0 +1,93 @@
+.texto1 {
+	color: #096;
+	font-weight: bold;
+}
+.texto2 {
+	color: #C03;
+	font-weight: bold;
+}
+.texto3 {
+	color: #03F;
+	font-weight: bold;
+}
+
+.texto4 {
+	color: #009;
+	font-weight: bold;
+}
+
+.ordenacao {
+	text-align: center;
+}
+#modulos {
+	width:auto;
+	height:400px;
+	overflow:auto;
+	border:1px solid gray;
+}
+#perfil_grupos {
+	padding: 10px;
+	margin-top: 10px;
+}
+#perfil_grupos #perfil_modulo {
+	padding: 10px;
+	margin-top: 10px;
+}
+
+#perfil_grupos #perfil_modulo input[type="checkbox"] {
+	float: left;
+	margin-top: 10px;
+}
+#perfil_grupos #perfil_modulo #perfil_operacao {
+	width: 207px;
+	float: left;
+	margin-right: 10px;
+	margin-top: 10px;
+	padding: 5px;
+}
+
+#perfil_grupos #perfil_modulo p {
+	clear: left;
+}
+#perfil_grupos #perfil_modulo img {
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+#perfil_grupos #perfil_modulo h2 {
+	float: left;
+	margin-top: 18px;
+	margin-left: 5px;
+}
+#perfil_grupos #perfil_modulo h3 {
+	float: left;
+	margin-left: 5px;
+	margin-top: 1px;
+}
+#perfil_grupos #perfil_modulo #perfil_operacao input[type="checkbox"] {
+	float: left;
+	margin-top: 3px;
+}
+#perfil_grupos #perfil_modulo #perfil_operacao p {
+	clear: left;
+}
+.modulo-imagem{
+	background-image:url(../../images/admin/icon-painel-lateral.png);
+	width:20px;
+	height:20px;
+	float:left;
+	margin-bottom:0px;
+}
+.modulo-titulo{
+	float:left;
+	padding:5px 0px 0px 5px;
+	
+}
+.clear{
+	width:100%;
+	height:1px;
+	clear:both;
+}
+div#perfil_operacao{
+	min-height:100px;
+}

@@ -1,0 +1,145 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><link href="../../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="../../files/projeto/layout-gestor.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<h2>Formul&aacute;rio</h2>
+<hr />
+<!-- form < -->
+<form action="." method="post" name="form" id="form" enctype="multipart/form-data">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+    <tr>
+      <td align="left" class="principal"><table width="100%" border="0" cellspacing="5" class="tabela_lista">
+      	<tr>
+          <td width="160" align="left" class="lista_header_2">Meta Dados:</td>
+          <td class="lista_cel_2">#meta-dados#</td>
+        </tr>
+        <tr>
+          <td width="150" align="left" class="lista_header_2">Nome:</td>
+          <td class="lista_cel_2"><input name="nome" type="text" id="nome" value="#nome" size="80" maxlength="100" /></td>
+        </tr>
+      	<tr>
+          <td width="150" align="left" class="lista_header_2">Categoria:</td>
+          <td class="lista_cel_2">
+          	#categoria#
+            <div id="categorias-menu">
+                <div id="categoria-criar-btn" class="bi-btns bi-btn-add bi-noselect bi-box-open" data-box-id="#categorias-box" data-event-open="add-open" data-event-close="add-close" data-btn-title="Criar" title="Clique para criar uma nova categoria."><div class="icon"></div>Criar</div>
+                <div id="categoria-editar-btn" class="bi-btns bi-btn-edit bi-noselect bi-box-open" data-box-id="#categorias-box" data-event-open="edit-open" data-event-close="edit-close" data-btn-title="Editar" title="Clique para editar esta categoria."><div class="icon"></div>Editar</div>
+                <div id="categoria-remover-btn" class="bi-btns bi-btn-del bi-noselect" title="Clique para remover esta categoria."><div class="icon"></div>Remover</div>
+            </div>
+            <div id="categorias-box" class="bi-box">
+            	<div class="bi-box-close">X</div>
+                <input type="text" id="categoria-nome">
+                <input type="button" class="bi-box-btn">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td width="150" align="left" class="lista_header_2">Slug:</td>
+          <td class="lista_cel_2"><input name="url_personalizada" type="text" id="url_personalizada" value="#url_personalizada#" size="80" maxlength="100" /></td>
+        </tr>
+        <tr>
+          <td width="150" align="left" class="lista_header_2">HTML Meta Robots:</td>
+          <td class="lista_cel_2">#html_meta_robots#</td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Descri&ccedil;&atilde;o:</td>
+          <td align="left" class="lista_cel_2">
+          <div id="descricao-menu" class="bi-aba-opcoes-menu" data-type="callback" data-conts="Nova,nova,Clique para inserir uma nova descri&ccedil;&atilde;o.;Padr&atilde;o,padrao,Clique para inserir a descri&ccedil;&atilde;o padr&atilde;o." data-atual="1" data-callback="sim"></div>
+          <textarea name="descricao" id="descricao">#descricao</textarea></td>
+        </tr>
+        <tr>
+          <td width="150" align="left" class="lista_header_2">Título Personalizado:</td>
+          <td class="lista_cel_2"><input name="titulo_personalizado" type="text" id="titulo_personalizado" value="#titulo_personalizado#" size="80" maxlength="100" /></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Imagem:</td>
+          <td align="left" class="lista_cel_2">
+          	<div class="bi-aba-opcoes-menu" data-type="content-switch" data-conts="Biblioteca,biblioteca,Clique para acessar a biblioteca de imagens.;Imagem Pontual,upload,Clique para enviar uma imagem pontual." data-atual="#imagem_tipo#" data-input="imagem_biblioteca"></div>
+            <div class="bi-aba-opcoes-conts">
+                <div class="bi-aba-opcoes-cont" data-id="biblioteca">
+                	<div id="b2make-biblioteca-imagens-btn" class="b2make-uploads-btn" title="Adicionar na biblioteaca uma imagem"><div style="-webkit-mask-position:-42px -14px;mask-position:-42px -14px;background-color:#FFF;" class="icon"></div><div class="label">Adicionar</div><input id="b2make-biblioteca-imagens-input" accept="image/jpeg,image/gif,image/png" class="b2make-uploads-input" type="file" name="files[]" multiple></div>
+                	<div id="b2make-biblioteca-imagens-opcoes">
+                    	<div id="b2make-biblioteca-imagens-excluir-selecao" class="bi-carrossel-remover-selecao bi-noselect" data-carrossel="#b2make-biblioteca-imagens-lista" title="Remover seleção da imagem."><div style="-webkit-mask-position:-70px -14px;mask-position:-70px -14px;background-color:#AEAEAE;" class="icon"></div><div class="label">Remover Sele&ccedil;&atilde;o</div></div>
+                    	<!--<div id="b2make-biblioteca-imagens-confirm-delete">
+                        	<input id="b2make-biblioteca-imagens-confirm-delete-input" type="checkbox" checked>
+                        	<div id="b2make-biblioteca-imagens-confirm-delete-title">Perguntar antes de excluir imagem</div>
+                    	</div>-->
+                	</div>
+                	<div id="b2make-biblioteca-imagens-lista" class="bi-carrossel" data-callback="sim"></div>
+                    <input name="biblioteca-imagens-id" type="hidden" id="biblioteca-imagens-id" value="#imagem_biblioteca_id#" />
+                    
+                </div>
+                <div class="bi-aba-opcoes-cont" data-id="upload">
+                    <input name="imagem_path" type="file" id="imagem_path" size="60" />
+                    <div id="imagem-pontual">#imagem_path#</div>
+                </div>
+            </div></td>
+        </tr>
+        <tr>
+          <td width="150" align="left" class="lista_header_2">Visibilidade:</td>
+          <td class="lista_cel_2">
+          	<div id="visibilidade-pai">
+                <div id="visibilidade-select" class="visibilidade-cont">#visibilidade-select#</div>
+                <div id="visibilidade-inputs" class="visibilidade-cont">
+                    <div id="visibilidade-data-inicio"><input name="data-inicio" type="text" id="data-inicio" value="#data-inicio#" size="20" maxlength="20" readonly="readonly"></div>
+                    <div id="visibilidade-data-fim"><input name="data-fim" type="text" id="data-fim" value="#data-fim#" size="20" maxlength="20" readonly="readonly"></div>
+                    <div id="visibilidade-data-periodo">De <input name="data-periodo" type="text" id="data-periodo" value="#data-periodo#" size="32" maxlength="40" readonly="readonly"></div>
+                </div>
+            </div></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Validade de Uso:</td>
+          <td align="left" class="lista_cel_2">
+              <select id="validade-trocar">
+              	<option value="P">Por Per&iacute;odo</option>
+              	<option value="D">Por Data</option>
+              </select>
+              <div id="validade-periodo-cont"><input name="validade" type="text" id="validade" value="#validade#" size="3" maxlength="3" class="inteiro"> dia(s)</div><div id="validade-data-cont">Data: <input name="validade_data" type="text" id="validade_data" value="#validade_data#" size="15" maxlength="15" class="data"> Hora: <input name="validade_hora" type="text" id="validade_hora" value="#validade_hora#" size="15" maxlength="15" class="hora"></div>
+              <input name="validade_tipo" type="hidden" id="validade_tipo" value="#validade_tipo#" />
+           </td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Lote:</td>
+          <td align="left" class="lista_cel_2" id="lote-cont">
+          	<div>#lote-select#</div>
+            <div id="lote-unico"><label for="quantidade">Quantidade</label><input name="quantidade" type="text" id="quantidade" value="#quantidade#" size="9" maxlength="9" class="inteiro"><label for="preco">Preço</label><input name="preco" type="text" id="preco" value="#preco#" size="10" maxlength="10" class="float"></div>
+            <div id="lote-variado"></div>
+            <input name="lotes-quantidade" type="hidden" id="lotes-quantidade" value="#lotes-quantidade#">
+            <input name="lotes-dados" type="hidden" id="lotes-dados" value="#lotes-dados#">
+          </td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header_2">Observa&ccedil;&atilde;o:</td>
+          <td class="lista_cel_2">
+          	<div id="observacao-menu" class="bi-aba-opcoes-menu" data-type="callback" data-conts="Nova,nova,Clique para inserir uma nova observa&ccedil;&atilde;o.;Padr&atilde;o,padrao,Clique para inserir a observa&ccedil;&atilde;o padr&atilde;o." data-atual="1" data-callback="sim"></div>
+          	<textarea name="observacao" id="observacao">#observacao#</textarea>
+          </td>
+        </tr>
+      </table>
+        <!-- botao < --><table width="100%" border="0">
+          <tr>
+            <td align="center"><input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+              <input name="opcao" type="hidden" id="opcao" value="#opcao" />
+              <input name="id" type="hidden" id="id" value="#id" />
+              <input name="more_options" type="hidden" id="more_options" value="#more_options" />
+              <input type="submit" name="Submit" id="button" value="#botao" /></td>
+          </tr>
+        </table><!-- botao > --></td>
+    </tr>
+  </table>
+</form>
+<!-- hitorico < --><div class="history-cont">
+	<div class="title-cont">Hist&oacute;rico</div>
+    <div class="data-cont">#log#</div>
+</div><!-- hitorico > -->
+<div id="b2make-statusbox">
+	<div id="b2make-statusbox-upload">
+    	<p id="b2make-statusbox-queuestatus"></p>
+        <ol id="b2make-statusbox-log">
+        </ol>
+    </div>
+   	<div id="b2make-upload-holder"></div>
+</div>
+<!-- form > -->
+<hr />
+<h3>&nbsp;</h3>

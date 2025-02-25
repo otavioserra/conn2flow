@@ -1,0 +1,21 @@
+[21-Sep-2020 15:20:46 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Class 'QRcode' not found in /home/betab2make/public_html/store/services/index.php:2148
+Stack trace:
+#0 /home/betab2make/public_html/store/services/index.php(2861): services_qrcode()
+#1 /home/betab2make/public_html/store/services/index.php(2876): start()
+#2 {main}
+  thrown in /home/betab2make/public_html/store/services/index.php on line 2148
+[21-Sep-2020 15:21:08 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Class 'QRcode' not found in /home/betab2make/public_html/store/services/index.php:2148
+Stack trace:
+#0 /home/betab2make/public_html/store/services/index.php(2861): services_qrcode()
+#1 /home/betab2make/public_html/store/services/index.php(2876): start()
+#2 {main}
+  thrown in /home/betab2make/public_html/store/services/index.php on line 2148
+[21-Sep-2020 15:22:39 America/Sao_Paulo] PHP Fatal error:  require(): Failed opening required 'includes/php/qrlib/qrlib.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/betab2make/public_html/store/services/index.php on line 2146
+[21-Sep-2020 15:24:16 America/Sao_Paulo] PHP Fatal error:  require(): Failed opening required 'includes/php/qrlib/qrlib.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/betab2make/public_html/store/services/index.php on line 2146
+[21-Sep-2020 15:24:27 America/Sao_Paulo] PHP Fatal error:  require(): Failed opening required 'includes/php/qrlib/qrlib.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/betab2make/public_html/store/services/index.php on line 2146
+[21-Sep-2020 15:26:15 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Class 'QRcode' not found in /home/betab2make/public_html/store/services/index.php:2148
+Stack trace:
+#0 /home/betab2make/public_html/store/services/index.php(2861): services_qrcode()
+#1 /home/betab2make/public_html/store/services/index.php(2876): start()
+#2 {main}
+  thrown in /home/betab2make/public_html/store/services/index.php on line 2148

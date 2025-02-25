@@ -1,0 +1,425 @@
+#b2make-formularios-dados{
+	position:absolute;
+	left:310px;
+	width:460px;
+	top:35px;
+	height:400px;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+#b2make-formularios-campos{
+	position:absolute;
+	top:70px;
+}
+#b2make-formularios-email-lbl{
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:120px;
+}
+#b2make-formularios-email{
+	position:absolute;
+	left:120px;
+	top:0px;
+	width:320px;
+}
+#b2make-formularios-assunto-lbl{
+	position:absolute;
+	left:0px;
+	top:25px;
+	width:120px;
+}
+#b2make-formularios-assunto{
+	position:absolute;
+	left:120px;
+	top:25px;
+	width:320px;
+}
+#b2make-wofc-campos-lbl{
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:80px;
+}
+#b2make-wofc-campos{
+	position:absolute;
+	left:80px;
+	top:0px;
+}
+#b2make-wofc-bordas-lbl{
+	position:absolute;
+	left:205px;
+	top:5px;
+	width:130px;
+}
+#b2make-wofc-bordas-cont{
+	position:absolute;
+	left:251px;
+	top:5px;
+	width:500px;
+}
+#b2make-wofc-caixa-cor-lbl{
+	position:absolute;
+	left:31px;
+	top:5px;
+	width:160px;
+}
+#b2make-wofc-caixa-cor-val{
+	position:absolute;
+	left:175px;
+	top:5px;
+}
+#b2make-wofc-bordas-lbl-2{
+	position:absolute;
+	left:205px;
+	top:30px;
+	width:50px;
+}
+#b2make-wofc-bordas-cont-2{
+	position:absolute;
+	left:251px;
+	top:30px;
+	width:500px;
+}
+#b2make-wofc-caixa-cor-lbl-2{
+	position:absolute;
+	left:31px;
+	top:30px;
+	width:150px;
+}
+#b2make-wofc-caixa-cor-val-2{
+	position:absolute;
+	left:175px;
+	top:30px;
+}
+#b2make-wofc-rotulo-lbl{
+	position:absolute;
+	left:31px;
+	top:6px;
+	width:50px;
+}
+#b2make-wofc-rotulo-cor-val{
+	position:absolute;
+	left:81px;
+	top:6px;
+}
+#b2make-wofc-rotulo-text-cont{
+	position:absolute;
+	left:111px;
+	top:6px;
+	z-index:999999;
+}
+#b2make-wofc-preenchimento-lbl{
+	position:absolute;
+	left:31px;
+	top:30px;
+	width:80px;
+}
+#b2make-wofc-preenchimento-cor-val{
+	position:absolute;
+	left:131px;
+	top:30px;
+}
+#b2make-wofc-preenchimento-text-cont{
+	position:absolute;
+	left:161px;
+	top:30px;
+}
+#b2make-wofc-botao-lbl{
+	position:absolute;
+	left:31px;
+	top:54px;
+	width:50px;
+}
+#b2make-wofc-botao-cor-val{
+	position:absolute;
+	left:81px;
+	top:54px;
+}
+#b2make-wofc-botao-text-cont{
+	position:absolute;
+	left:111px;
+	top:54px;
+}
+#b2make-formularios-lista-formularios{
+	overflow-y:auto;
+	width:270px;
+	height:290px;
+	position:absolute;
+	left:15px;
+	top:35px;
+	background-color:#FFF;
+	padding:5px;
+}
+.b2make-formularios-lista-formularios{
+	margin:2px 5px;
+	min-height:16px;
+	max-height:26px;
+	position:relative;
+}
+.b2make-formularios-show{
+	background-image:url(../../images/b2make-bt-collection.png?v=6);
+	background-position:-331px -2px;
+	width:25px;
+	height:25px;
+	float:left;
+	cursor:pointer;
+}
+.b2make-formularios-show[data-status="show"]{
+	background-position:-301px -2px;
+}
+.b2make-formularios-nome{
+	float:left;
+	margin-left:3px;
+	width:180px;
+	font-size:12px;
+	line-height:25px;
+	max-height:25px;
+	color:#000000;
+	overflow:hidden;
+	cursor:pointer;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+	padding-top:2px;
+	padding-left:3px;
+}
+.b2make-formularios-nome[data-status="show"]{
+	font-weight:bold;
+}
+.b2make-formularios-edit{
+	background-image:url(../../images/b2make-bt-collection.png?v=6);
+	background-position:-271px -2px;
+	width:25px;
+	height:25px;
+	position:absolute;
+	top:0px;
+	right:27px;
+	cursor:pointer;
+}
+.b2make-formularios-delete{
+	background-image:url(../../images/b2make-bt-collection.png?v=6);
+	background-position:-361px -2px;
+	width:25px;
+	height:26px;
+	position:absolute;
+	top:0px;
+	right:0px;
+	cursor:pointer;
+}
+#b2make-formularios-add{
+	position:absolute;
+	left:14px;
+	top:0px;
+}
+#b2make-formularios-campos{
+	width:425px;
+}
+.b2make-formularios-campos{
+	background-color:#e8e9eb;
+	padding:10px;
+	margin-bottom:5px;
+	cursor:move;
+	width:100%;
+}
+.b2make-formularios-campos select{
+	display:block;
+	cursor:pointer;
+	margin-top:25px;
+}
+.b2make-formularios-campos label{
+	float:left;
+}
+.b2make-formularios-coluna{
+	display:inline-block;
+	text-align:center;
+	vertical-align:top;
+	height:66px;
+	position:relative;
+}
+.b2make-formularios-coluna-1{
+	width:200px;
+	margin-right:10px;
+	border-right:solid 1px #bebfc4;
+}
+.b2make-formularios-coluna-2{
+	width:150px;
+	margin-right:10px;
+	border-right:solid 1px #bebfc4;
+}
+.b2make-formularios-campo{
+	float:left;
+	cursor:default;
+	width:100%;
+	text-align:left;
+}
+.b2make-formularios-campo-nome{
+	margin:4px 0px;
+	width:180px;
+}
+#b2make-formularios-mask{
+	border:dashed 3px #000;
+	width:419px;
+	height:80px;
+	line-height:80px;
+	margin-bottom:5px;
+	position:relative;
+	background-image:url(../../images/b2make-widget-conteiner-mask.png);
+}
+#b2make-formularios-campos-hide{
+	display:none;
+}
+#b2make-formularios-adicionar{
+}
+.b2make-formularios-excluir{
+	background-image:url(../../images/b2make-bt-collection.png);
+	background-position: -361px -2px;
+	width:30px;
+	height:30px;
+	cursor:pointer;
+	position:absolute;
+	top:20px;
+	left:0px;
+}
+.b2make-formularios-obrigatorio{
+	display:block;
+	position:absolute;
+	top:25px;
+	left:30px;
+	cursor:pointer;
+}
+#b2make-ff-nome-lbl{
+	display:block;
+	margin-bottom:5px;
+}
+#b2make-ff-nome{
+	width:300px;
+}
+.b2make-widget-formularios{
+	display:block;
+	width:100%;
+	padding:10px;
+}
+.b2make-widget-formularios label{
+	display:block;
+	width:calc(100% - 22px);
+	margin:6px 0px;
+}
+.b2make-widget-formularios input[type="text"]{
+	display:block;
+	width:calc(100% - 22px);
+	margin:6px 0px;
+}
+.b2make-widget-formularios textarea{
+	display:block;
+	width:calc(100% - 22px);
+	height:70px;
+	margin:6px 0px;
+}
+.b2make-widget-formularios input[type="button"]{
+	display:block;
+	padding:4px 6px;
+	float:right;
+	margin:6px 20px 0px 0px;
+}
+.b2make-formularios-select-options-edit{
+	background-image:url(../../images/b2make-bt-collection.png?v=6);
+	background-position:-271px -2px;
+	width:25px;
+	height:25px;
+	position:absolute;
+	top:21px;
+	left:80px;
+	cursor:pointer;
+}
+#b2make-formularios-select-options-campo-lbl{
+	position:absolute;
+	top:0px;
+	left:15px;
+	font-weight:bold;
+}
+#b2make-formularios-select-options-add{
+	position:absolute;
+	left:15px;
+	top:25px;
+}
+#b2make-formularios-lista-select-options{
+	overflow-y:auto;
+	width:730px;
+	height:290px;
+	position:absolute;
+	left:15px;
+	top:60px;
+	background-color:#FFF;
+	padding:5px;
+}
+.b2make-formularios-lista-select-options{
+	display:inline-block;
+	width:350px;
+	margin-right:15px;
+	position:relative;
+}
+#b2make-ffco-nome-lbl{
+	display:block;
+	margin-bottom:5px;
+}
+#b2make-ffco-nome{
+	width:300px;
+}
+.b2make-formularios-campos-opcoes-nome{
+	float:left;
+	margin-left:3px;
+	width:180px;
+	font-size:12px;
+	line-height:25px;
+	max-height:25px;
+	color:#000000;
+	overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+	padding-top:2px;
+	padding-left:3px;
+}
+.b2make-formularios-campos-opcoes-edit{
+	background-image:url(../../images/b2make-bt-collection.png?v=6);
+	background-position:-271px -2px;
+	width:25px;
+	height:25px;
+	position:absolute;
+	top:0px;
+	right:27px;
+	cursor:pointer;
+}
+.b2make-formularios-campos-opcoes-delete{
+	background-image:url(../../images/b2make-bt-collection.png?v=6);
+	background-position:-361px -2px;
+	width:25px;
+	height:26px;
+	position:absolute;
+	top:0px;
+	right:0px;
+	cursor:pointer;
+}
+#b2make-formularios-select-options-label-lbl{
+	position:absolute;
+	left:150px;
+	width:40px;
+	top:25px;
+}
+#b2make-formularios-select-options-label{
+	position:absolute;
+	left:200px;
+	width:350px;
+	top:25px;
+	cursor:pointer;
+}
+.b2make-formularios-checkbox-cont{
+	display:inline-block;
+}
+.b2make-formularios-checkbox-cont input{
+	display:inline-block;
+	margin-right:5px;
+}
+.b2make-formularios-checkbox-cont label{
+	display:inline-block;
+	width:auto;
+}

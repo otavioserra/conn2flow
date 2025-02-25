@@ -1,0 +1,25 @@
+body{
+	padding: 0px;
+	margin: 0px;
+}
+iframe{
+	border:none;
+	width:100%;
+	height:100%;
+	position:absolute;
+	z-index:2;
+}
+div[name="b2make-config"]{
+	width: 100px;
+	height: 100px;
+	background-image:url('//platform.b2make.com/images/icons/lendo2.gif');
+	background-repeat:no-repeat;
+	background-position:center center;
+	background-size: 50px auto;
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+}

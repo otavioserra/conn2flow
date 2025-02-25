@@ -1,0 +1,229 @@
+<!--!#del#(#!--><link href="../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><!--!#del#)#!-->
+<hr />
+<h1>Formul&aacute;rio </h1>
+<hr />
+<!-- form < -->
+<div id="b2make-jpicker-conteiner">
+    <span id="b2make-jpicker-widget"></span>
+</div>
+<form action="." method="post" name="form" id="form" enctype="multipart/form-data">
+    <!-- cel-site < --><div id="site" class="grupo coluna1 content">
+        <div class="opcoes">
+            #site$
+            <div class="clear"></div>
+        </div>
+    </div><!-- cel-site > -->
+    <!-- cel-store < --><div id="loja" class="grupo coluna1 content">
+        <div class="opcoes">
+            #loja$
+            <div class="clear"></div>
+        </div>
+    </div><!-- cel-store > -->
+    <!-- cel-voucher < --><div id="voucher" class="grupo coluna1 content">
+        <div class="opcoes">
+            #voucher$
+          	<div class="clear"></div>
+        </div>
+    </div><!-- cel-voucher > -->
+    <!-- cel-paypal < --><div id="paypal-plus" class="grupo coluna2 content">
+        <div class="opcoes">
+            #paypal-plus$
+          	<div class="clear"></div>
+      </div>
+    </div><!-- cel-paypal > -->
+    <div id="categorias-cont">
+   		<!-- categoria < --><div class="categoria-cont">
+            <div class="categoria-esquerda-cont">
+                <div class="categoria-titulo">#titulo#</div>
+                <div class="categoria-descricao">#descricao#</div>
+            </div>
+            <div class="categoria-direita-cont">
+            	<div class="categoria-dados-cont"><!-- dados --></div>
+            </div>
+    	</div><!-- categoria > -->
+    </div>
+    <div class="clear"></div>
+    <!-- botao < --><div class="botao">
+        <input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+        <input name="opcao" type="hidden" id="opcao" value="#opcao" />
+        <input name="id" type="hidden" id="id" value="#id" />
+        <input type="submit" name="Submit" id="salvar-dados-btn" value="#botao" title="Clique no botão para Gravar as alterações" />
+    </div><!-- botao > -->
+</form>
+<div id="b2make-fonts-conteiner">
+	<div style="font-family:'Open Sans';" title="Selecionar a fonte do objeto desejado" class="b2make-tooltip b2make-fonts-holder">Open Sans</div>
+    <div class="b2make-fonts-count">
+        <ul class="b2make-fonts-list">
+            <li style="font-family:Open Sans;">Open Sans</li>
+            <li style="font-family:Arial;">Arial</li>
+            <li style="font-family:Helvetica;">Helvetica</li>
+            <li style="font-family:Times New Roman;">Times New Roman</li>
+            <li style="font-family:Times;">Times</li>
+            <li style="font-family:Courier New;">Courier New</li>
+            <li style="font-family:Courier;">Courier</li>
+            <li style="font-family:Palatino;">Palatino</li>
+            <li style="font-family:Garamond;">Garamond</li>
+            <li style="font-family:Avant Garde;">Avant Garde</li>
+            <li style="font-family:Verdana;">Verdana</li>
+            <li style="font-family:Tahoma;">Tahoma</li>
+            <li style="font-family:Georgia;">Georgia</li>
+            <li style="font-family:Comic Sans MS;">Comic Sans MS</li>
+            <li style="font-family:Trebuchet MS;">Trebuchet MS</li>
+            <li style="font-family:Arial Black;">Arial Black</li>
+            <li style="font-family:Impact;">Impact</li>
+        </ul>
+        <div class="b2make-fonts-google-fontes"></div>
+        <div class="b2make-fonts-count-teste">Preview: AaBbCc ÁáÉéÍíÇç</div>
+        <div class="b2make-fonts-count-ok b2make-btn-lightbox">OK</div>
+    </div>
+    <input class="b2make-input-select b2make-input-only-number b2make-tooltip b2make-fonts-size" title="Define o tamanho da fonte do objeto desejado" value="20">
+    <div class="b2make-tooltip b2make-fonts-negrito" title="Clique para fonte do objeto em negrito"></div>
+    <div class="b2make-tooltip b2make-fonts-italico" title="Clique para fonte do objeto em italico"></div>
+    <div class="b2make-fonts-align b2make-tooltip b2make-fonts-align-left" data-id="left" title="Clique para alinhar a fonte do objeto na esquerda"></div>
+    <div class="b2make-fonts-align b2make-tooltip b2make-fonts-align-center" data-id="center" title="Clique para alinhar a fonte do objeto no centro"></div>
+    <div class="b2make-fonts-align b2make-tooltip b2make-fonts-align-right" data-id="right" title="Clique para alinhar a fonte do objeto na direita"></div>
+    <div class="b2make-fonts-align b2make-tooltip b2make-fonts-align-justify" data-id="justify" title="Clique para justificar a fonte do objeto"></div>
+</div>
+<!-- form > -->
+<hr />
+<h1>Formul&aacute;rio Opções</h1>
+<hr />
+<!-- opcoes < -->
+<!-- image < --><div class="opcao image">
+  <div class="input">
+    <label title="#descricao">#titulo</label>
+    </div>
+    <div class="clear"></div>
+    <div class="static"><input name="#variavel" type="file" id="#variavel" size="60" /><br>#valor</div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- image > -->
+<!-- static < --><div class="opcao string">
+  <div class="input">
+    <label title="#descricao">#titulo</label>
+    </div>
+    <div class="clear"></div>
+    <div class="static">#valor</div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- static > -->
+<!-- tinymce < --><div class="opcao text">
+    <div class="input2">
+        <label title="#descricao">#titulo</label>
+        <textarea name="#variavel" id="#variavel" cols="50" rows="5" class="tinymce">#valor</textarea>
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- tinymce > -->
+<!-- codemirror-html < --><div class="opcao text">
+    <div class="input2">
+        <label title="#descricao">#titulo</label>
+        <textarea name="#variavel" id="#variavel" cols="50" rows="5" class="codemirror-html">#valor</textarea>
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- codemirror-html > -->
+<!-- codemirror-js < --><div class="opcao text">
+    <div class="input2">
+        <label title="#descricao">#titulo</label>
+        <textarea name="#variavel" id="#variavel" cols="50" rows="5" class="codemirror-js">#valor</textarea>
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- codemirror-js > -->
+<!-- codemirror-js-mini < --><div class="opcao text">
+    <div class="input2">
+        <label title="#descricao">#titulo</label>
+        <textarea name="#variavel" id="#variavel" cols="50" rows="5" class="codemirror-js-mini">#valor</textarea>
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- codemirror-js-mini > -->
+<!-- codemirror-css < --><div class="opcao text">
+    <div class="input2">
+        <label title="#descricao">#titulo</label>
+        <textarea name="#variavel" id="#variavel" cols="50" rows="5" class="codemirror-css">#valor</textarea>
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- codemirror-css > -->
+<!-- text < --><div class="opcao text">
+  <div class="input">
+    <label title="#descricao">#titulo</label>
+    <textarea name="#variavel" id="#variavel" cols="50" rows="5" class="#class">#valor</textarea>
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- text > -->
+<!-- text-enter < --><div class="opcao text">
+  <div class="input">
+    <label title="#descricao">#titulo</label>
+    <textarea name="#variavel" id="#variavel" cols="50" rows="5" class="#class">#valor</textarea>
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- text-enter > -->
+<!-- string < --><div class="opcao string">
+  <div class="input">
+    <label title="#descricao">#titulo</label>
+    <input name="#variavel" id="#variavel" size="#size" maxlength="#maxlength" value="#valor" type="text" class="#class">
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- string > -->
+<!-- int < --><div class="opcao string">
+  <div class="input">
+    <label title="#descricao">#titulo</label>
+    <input name="#variavel" id="#variavel" size="#size" maxlength="#maxlength" value="#valor" type="number" class="#class"#extra-attr#>
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- int > -->
+<!-- float < --><div class="opcao string">
+  <div class="input">
+    <label title="#descricao">#titulo</label>
+    <input name="#variavel" id="#variavel" size="#size" maxlength="#maxlength" value="#valor" type="text" class="#class">
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- float > -->
+<!-- money < --><div class="opcao string">
+  <div class="input">
+    <label title="#descricao">#titulo</label>
+    <input name="#variavel" id="#variavel" size="#size" maxlength="#maxlength" value="#valor" type="text" class="#class">
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- money > -->
+<!-- bool < --><div class="opcao string">
+  <div class="input">
+    <label title="#descricao">#titulo</label>
+    <input name="#variavel" id="#variavel" value="1" type="checkbox"#valor class="#class">
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- bool > -->
+<!-- status < --><div class="opcao string">
+  <div class="input">
+    <label title="#descricao">#titulo</label>
+    <input name="#variavel" id="#variavel" size="2" maxlength="1" value="#valor" type="text" class="#class">
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- status > -->
+<!-- select < --><div class="opcao string">
+  <div class="input">
+    <label title="#descricao">#titulo</label>
+    <select name="#variavel" id="#variavel" class="#class">
+    	<!-- options < --><option value="#valor"#selected#>#label</option><!-- options > -->
+    </select>
+    </div>
+    <!-- exclusao_botao -->
+    <div class="clear"></div>
+</div><!-- select > -->
+<!-- opcoes > -->
+<hr />
+<p>&nbsp;</p>

@@ -1,0 +1,16 @@
+[11:31:26 -03][alice@homeocenter.com.br] Nao.
+[11:35:34 -03][alice@homeocenter.com.br] alice@homeocenter.com.br fe0002c899cd321ebf6cc6b36d62fd4e .
+[11:42:42 -03][alice@homeocenter.com.br] SSSS.
+[11:43:41 -03][alice@homeocenter.com.br] SSSS1.
+[11:43:41 -03][alice@homeocenter.com.br] SSSS2.
+[11:44:48 -03][alice@homeocenter.com.br] SSSS1.
+[11:44:48 -03][alice@homeocenter.com.br] SSSS2.
+[11:54:33 -03][alice@homeocenter.com.br] alice@homeocenter.com.br fe0002c899cd321ebf6cc6b36d62fd4e Array
+(
+    [0] => Array
+        (
+            [id_upload_permissao] => 2916
+        )
+
+)
+.

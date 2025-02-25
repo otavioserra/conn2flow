@@ -1,0 +1,919 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="../css/padrao.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<hr />
+<h2>Identifique-se</h2>
+<hr />
+<!-- identify_yourself < -->
+<div id="b2make-identify-yourself-cont">
+    <div id="b2make-signup-cadastro">
+    <div id="b2make-signup-cadastro-titulo">Quero criar uma conta</div>
+    <form id="b2make-signup-cadastro-form" name="b2make-signup-cadastro-form">
+        <div id="b2make-signup-cadastro-fields">
+            <input name="nome" type="text" id="nome" maxlength="100" placeholder="Primeiro Nome" class="b2make-cadastro-validacao">
+            <input name="ultimo_nome" type="text" id="ultimo_nome" maxlength="100" placeholder="Último Nome" class="b2make-cadastro-validacao">
+            <input name="email" type="text" id="email" placeholder="E-mail" class="b2make-cadastro-validacao" autocomplete="new-password">
+            <div id="pres_email" class="cont-mensagem"></div>
+            <input name="senha" type="password" id="senha" placeholder="Criar Senha" class="b2make-cadastro-validacao" autocomplete="new-password">
+            <div id="pres_senha" class="cont-mensagem"></div>
+            <input name="senha2" type="password" id="senha2" placeholder="Confirme sua senha" class="b2make-cadastro-validacao">
+            <input type="text" id="telefone" name="telefone" placeholder="Telefone" value="" class="b2make-cadastro-validacao telefone">
+        <div id="cpf-cnpj" class="b2make-check-box" data-request-field="cpf-cnpj-check" data-checked-num="1" data-callback="#cpf-cnpj">
+            <div data-val="CPF" title="Clique para escolher o tipo de documento CPF">CPF</div>
+            <div data-val="CNPJ" title="Clique para escolher o tipo de documento CNPJ">CNPJ</div>
+        </div>
+        <input type="text" id="cpf" name="cpf" class="b2make-cadastro-validacao cpf" placeholder="CPF" value="">
+        <input type="text" id="cnpj" name="cnpj" class="b2make-cadastro-validacao cnpj" placeholder="CNPJ" value="">
+            <div class="clear"></div>
+            <div id="recaptcha_div"></div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div id="b2make-signup-cadastrar">CADASTRAR</div>
+        <!--<div class="b2make-linha-ou"><div class="b2make-linha-ou-texto">OU</div></div>
+        <div class="clear"></div>
+        <div id="b2make-signup-cadastro-redes-sociais">
+            <div id="b2make-signup-cadastro-facebook">Faça seu cadastro com o Facebook</div>
+        </div>-->
+        <!-- signup-iframe -->
+        <input name="opcao" type="hidden" value="e-services/!#b2make-loja-atual#!/signup-request" id="opcao">
+        <!-- signup-iframe-session -->
+    </form>
+    </div>
+    <div id="b2make-signin-cadastro-line"></div>
+    <div id="b2make-signin-cont">
+        <div id="b2make-signin-login-cont">
+        	<div id="b2make-signin-cadastro-titulo">Já sou cliente</div>
+            <form name="b2make-signin-login" id="b2make-signin-login">
+                <input name="usuario" type="text" id="usuario" placeholder="E-mail">
+                <input name="senha" type="password" id="senha-login" placeholder="Senha">
+                <div id="login-esqueceu-senha">Esqueceu sua senha? Clique <a href="#esqueceu-senha-link#" id="esqueceu-senha" target="#target#">aqui</a>.</div>
+                <div id="b2make-signin-login-entrar">ENTRAR</div>
+                <div id="login-favoritos"></div>
+                <!-- signin-iframe -->
+                <input name="opcao" type="hidden" value="e-services/!#b2make-loja-atual#!/signin-request" id="opcao2">
+                <!-- signin-iframe-session -->
+            </form>
+            <!--<div class="clear"></div>
+            <div class="b2make-linha-ou"><div class="b2make-linha-ou-texto">OU</div></div>
+            <div id="b2make-signin-cadastro-redes-sociais">
+                <div id="b2make-signin-cadastro-facebook">Acessar com o Facebook</div>
+            </div>-->
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- identify_yourself > -->
+<hr />
+<h3>Formul&aacute;rio Esqueceu Senha </h3>
+<hr />
+<!-- esqueceu_senha < -->
+<form action="." method="post" name="esqueceu_senha2" id="esqueceu_senha2">
+	<label for="esqueceu_senha-email">Email cadastrado:</label>
+    <input name="esqueceu_senha-email" type="text" id="esqueceu_senha-email">
+    <div id="recaptcha_div"></div>
+    <input type="submit" name="submit" id="esqueceu_senha-botao" value="Enviar" />
+    <!-- iframe -->
+    <input name="opcao" type="hidden" id="opcao" value="e-services/#loja-atual#/forgot-your-password-request" />
+    <div id="recaptcha_div"></div>
+</form>
+<div class="clear"></div>
+<!-- esqueceu_senha > -->
+<hr />
+<h3>Formul&aacute;rio Redefinir Senha.</h3>
+<hr />
+<!-- redefinir_senha < -->
+<form action="." method="post" name="redefinir_senha2" id="redefinir_senha2">
+	<label for="cadastro-senha">Senha:</label>
+	<input name="senha" type="password" id="cadastro-senha">
+	<div id="mens_senha" class="cont-mensagem"></div>
+	<div class="clear"></div>
+	<div class="inbox">
+		<div class="graybar" id="graybar"></div>
+		<div class="colorbar" id="colorbar"></div>
+		<span class="percent" id="percent">0%</span>
+		<span class="result" id='result'>For&ccedil;a da senha</span>
+	</div>
+	<div class="clear"></div>
+	<label for="cadastro-senha2">Redigite a senha:</label>
+	<input name="senha2" type="password" id="cadastro-senha2">
+	<div class="clear"></div>
+    <input type="submit" name="submit" id="esqueceu_senha-botao" value="Redefinir">
+    <input name="usuario" type="hidden" id="cadastro-usuario" value="#usuario#">
+    <input name="cod" type="hidden" id="cadastro-cod" value="#cod#">
+    <input name="key" type="hidden" id="cadastro-key" value="#key#">
+    <!-- iframe -->
+    <input name="opcao" type="hidden" id="opcao" value="e-services/#loja-atual#/password-reset-request">
+</form>
+<div class="clear"></div>
+<!-- redefinir_senha > -->
+<hr />
+<h2>Checkout Indisponibilidade</h2>
+<hr />
+<!-- checkout_indisponibilidade < -->
+<div id="b2make-checkout-unavailability-cont">
+    <p>Infelizmente um ou mais servi&ccedil;os est&atilde;o indispon&iacute;veis no momento. Voc&ecirc; pode continuar e cadastrar este pedido sem os servi&ccedil;os marcados abaixo ou ent&atilde;o cancelar a compra atual.</p>
+    <div class="b2make-pedido-cont">
+        <div class="b2make-pedido-header">
+            <div class="b2make-pedido-celula-3">Serviço</div>
+            <div class="b2make-pedido-celula-3">Quantidade</div>
+            <div class="b2make-pedido-celula-3">Disponibilidade</div>
+            <div class="b2make-pedido-celula-3">Preço Unitário</div>
+            <div class="b2make-pedido-celula-3">Sub Total</div>
+            <div class="clear"></div>
+        </div>
+        <!-- cel1 < --><div class="b2make-pedido-itens">
+            <div class="b2make-pedido-celula-3#class#">#nome#</div>
+            <div class="b2make-pedido-celula-3#class#">#quant#</div>
+            <div class="b2make-pedido-celula-3#class#">#disponibilidade#</div>
+            <div class="b2make-pedido-celula-3#class#">#preco-unitario#</div>
+            <div class="b2make-pedido-celula-3#class#">#sub-total#</div>
+            <div class="clear"></div>
+        </div><!-- cel1 > -->
+    </div>
+    <div id="b2make-payment-cont-rodape">
+        <div id="b2make-payment-cont-total-tit-itens"><span id="b2make-payment-cont-num-itens">#num-itens#</span> serviço(s) no pedido.</div>
+        <div id="b2make-payment-cont-total">#total#</div>
+        <div id="b2make-payment-cont-total-tit">Total dos Serviços:</div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <a id="b2make-services-pedido-cancelar" href="!#caminho_raiz#!e-services/!#b2make-loja-atual#!/cancel-purchase">Cancelar Compra</a>
+    <a id="b2make-services-pedido-finalizar" href="!#caminho_raiz#!e-services/!#b2make-loja-atual#!/request-register">Cadastrar Pedido</a>
+    <div class="clear"></div>
+</div>
+<!-- checkout_indisponibilidade > -->
+<hr />
+<h2>Voucher</h2>
+<hr />
+<!-- voucher < -->
+<div id="b2make-voucher-cont">
+    <div id="b2make-voucher-lay-topo"><img src="#imagem_topo#">#voucher-topo#</div>
+    <div id="b2make-voucher-lay-miolo" background="#imagem_textura#" style="background-image:url(#imagem_textura#);background-color:##cor_fundo#;">
+        <table id="b2make-voucher-lay-num" cellspacing="0">
+            <tr>
+                <td id="b2make-voucher-lay-numero-mask">&nbsp;</td>
+                <td id="b2make-voucher-lay-numero-lbl" class="voucher-caixa-txt">Voucher Nº</td>
+                <td id="b2make-voucher-lay-numero-codigo" class="voucher-caixa-txt">#voucher-codigo#</td>
+                <td id="b2make-voucher-lay-numero-senha" class="voucher-caixa-txt">#voucher-senha#</td>
+            </tr>
+        </table>
+        <!-- de-para < -->
+        <table id="b2make-voucher-lay-destinatario" cellspacing="0">
+    		<tr>
+            	<td colspan="2" id="b2make-voucher-lay-de-lbl" class="voucher-caixa-txt"><b>De:</b> #voucher-de#</td>
+            </tr>
+    		<tr>
+            	<td colspan="2" id="b2make-voucher-lay-para-lbl" class="voucher-caixa-txt"><b>Para:</b> #voucher-para#</td>
+            </tr>
+    		<tr>
+            	<td id="b2make-voucher-lay-mens-lbl" class="voucher-caixa-txt" valign="top"><b>Mensagem:</b></td>
+                <td id="b2make-voucher-lay-mens-txt" class="voucher-caixa-txt">#voucher-mensagem#</td>
+            </tr>
+        </table><!-- de-para > -->
+        <table id="voucher-lista-servicos" cellspacing="3">
+        	<tr class="b2make-voucher-lay-servico">
+				<td id="b2make-voucher-servico-header-nome" class="voucher-caixa-txt-2">Servi&ccedil;os</td>
+				<td id="b2make-voucher-servico-header-validade" class="voucher-caixa-txt-2">Validade</td>
+                <td id="b2make-voucher-servico-header-numero" class="voucher-caixa-txt-2">N&uacute;mero</td>
+				<td id="b2make-voucher-servico-header-senha" class="voucher-caixa-txt-2">Senha</td>
+			</tr>
+            <!-- lista-servicos < --><tr class="b2make-voucher-lay-servico">
+				<td class="voucher-caixa-txt voucher-servico-nome">#servico-nome#</td>
+				<td class="voucher-caixa-txt voucher-servico-validade">#servico-validade#</td>
+                <td class="voucher-caixa-txt voucher-servico-codigo">#servico-codigo#</td>
+				<td class="voucher-caixa-txt voucher-servico-senha">#servico-senha#</td>
+			</tr><!-- lista-servicos > -->
+		</table>
+		<!--<table id="b2make-voucher-lay-base" cellspacing="0">
+            <tr>
+                <td id="b2make-voucher-lay-base-observacao" class="voucher-caixa-txt">#voucher-base#</td>
+            </tr>
+        </table>-->
+		<table id="b2make-voucher-lay-loja" cellspacing="0">
+            <tr>
+                <td id="b2make-voucher-lay-loja-txt" class="voucher-caixa-txt">#voucher-loja#</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!-- remover_impressao < --><div id="b2make-voucher-lay-concluir">#voucher-concluir#</div>
+<div id="b2make-voucher-lay-layouts" data-id="#voucher-tema-id-pedido#"><!-- voucher-layouts < -->
+	<div class="b2make-voucher-temas" data-id="#voucher-tema-id#">
+		<img src="#voucher-tema-img-topo#" class="b2make-voucher-temas-img-topo">
+        <div class="b2make-voucher-temas-img-textura" style=" background-image:url(#voucher-tema-img-textura#); background-color:#voucher-tema-cor-textura#;"></div>
+        <div class="clear"></div>
+    </div>
+<!-- voucher-layouts > --></div><!-- remover_impressao > -->
+<!-- voucher > -->
+<div class="clear"></div></div>
+<hr />
+<h2>Voucher Menu</h2>
+<hr />
+<!-- voucher_menu < -->
+<div id="b2make-voucher-pedidos">
+	<div id="b2make-voucher-pedido-numero"><label>Pedido Número:</label>#lista-pedidos#</div>
+    <div class="clear"></div>
+	<div id="b2make-voucher-pedido-todos">#lista-voucher#</div>
+    <div class="clear"></div>
+	<div id="b2make-voucher-pedido-servicos">#lista-servicos#</div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="b2make-voucher-menu">
+	<!-- para-presente < --><div id="b2make-voucher-para-presente" class="b2make-voucher-menu-botoes">PARA PRESENTE
+<br><span class="b2make-voucher-span">PREENCHA SEUS DADOS</span></div>
+	<div id="b2make-voucher-para-voce" class="b2make-voucher-menu-botoes">PARA VOC&Ecirc;<br><span class="b2make-voucher-span">EU IREI UTILIZAR</span></div><!-- para-presente > -->
+	<div id="b2make-voucher-alterar-campos" class="b2make-voucher-menu-botoes">ALTERAR<br><span class="b2make-voucher-span">MENSAGEM</span></div>
+	<!-- tema-modificar < --><div id="b2make-voucher-tema" class="b2make-voucher-menu-botoes">TEMA<br><span class="b2make-voucher-span">MODIFICAR</span></div><!-- tema-modificar > -->
+	<div id="b2make-voucher-visulizar" class="b2make-voucher-menu-botoes">VISUALIZAR<br><span class="b2make-voucher-span">VOUCHER</span></div>
+	<div id="b2make-voucher-imprimir" class="b2make-voucher-menu-botoes">IMPRIMIR<br><span class="b2make-voucher-span">VOUCHER</span></div>
+    <div id="b2make-voucher-enviar-email" class="b2make-voucher-menu-botoes">ENVIAR<br><span class="b2make-voucher-span">POR EMAIL</span></div>
+    <div id="b2make-voucher-concluir">CONCLUIR<br><span class="b2make-voucher-span">MEU VOUCHER</span></div>
+    <div class="clear"></div>
+    <input type="hidden" id="b2make-voucher-presente-flag" value="#presente-flag#">
+</div>
+<!-- voucher_menu > -->
+<div class="clear"></div></div>
+<hr />
+<hr />
+<h2>Voucher Menu Admin</h2>
+<hr />
+<!-- voucher_menu_admin < -->
+<div id="b2make-voucher-menu">
+	<div id="b2make-voucher-menu-titulo">MENU</div>
+	<input type="button" id="b2make-voucher-visulizar" value="Visualizar">&nbsp;<input type="button" id="b2make-voucher-imprimir" value="Imprimir">&nbsp;<input type="button" id="b2make-voucher-presente" value="#presente-value#" data-flag="#presente-flag#">&nbsp;<input type="button" id="b2make-voucher-alterar-campos" value="Alterar Campos">
+</div>
+<!-- voucher_menu_admin > -->
+<hr />
+<h2>Voucher Email</h2>
+<hr />
+<!-- voucher_email < -->
+<form id="b2make-voucher-form-email">
+	<p>Digite o email da pessoa desejada e clique no bot&atilde;o enviar.</p>
+    <input name="email" type="text" id="b2make-voucher-email" maxlength="100" value="E-MAIL:" data-default="E-MAIL:">
+    <div class="clear"></div>
+    <!-- iframe -->
+    <input type="button" value="Enviar" id="b2make-voucher-botao-enviar-email">
+</form>
+<!-- voucher_email > -->
+<hr />
+<h2>Voucher Presente Admin</h2>
+<hr />
+<h2>Voucher Presente</h2>
+<hr />
+<!-- voucher_presente < -->
+<form id="b2make-voucher-form-presente">
+	<p>Escreva os campos abaixo e clique no bot&atilde;o Salvar.</p>
+    <input name="de" type="text" id="b2make-voucher-form-presente-de" value="#de#" data-default="DE:" maxlength="100">
+    <div class="clear"></div>
+    <input name="para" type="text" id="b2make-voucher-form-presente-para" value="#para#" data-default="PARA:" maxlength="100">
+    <div class="clear"></div>
+    <textarea name="mensagem" id="b2make-voucher-form-presente-mensagem" maxlength="400" data-default="MENSAGEM:">#mensagem#</textarea>
+    <div class="clear"></div>
+    <!-- iframe -->
+    <input type="hidden" name="opcao" value="e-services/!#b2make-loja-atual#!/voucher-form-gift">
+    <input type="submit" value="Salvar">
+</form>
+<!-- voucher_presente > -->
+<hr />
+<h2>Voucher Presente Admin</h2>
+<hr />
+<!-- voucher_presente_admin < -->
+<form id="b2make-voucher-form-presente">
+	<p>Escreve os campos abaixo e clique no bot&atilde;o Salvar.</p>
+    <label>De:</label>
+    <input name="de" type="text" id="b2make-voucher-form-presente-de" value="#de#" maxlength="100">
+    <label>Para:</label>
+    <input name="para" type="text" id="b2make-voucher-form-presente-para" value="#para#" maxlength="100">
+    <label>Mensagem:</label>
+    <textarea name="mensagem" id="b2make-voucher-form-presente-mensagem">#mensagem#</textarea>
+    <div class="clear"></div>
+    <input type="hidden" name="opcao" value="voucher-form-presente">
+    <input type="hidden" name="id" value="#id#">
+    <input type="submit" value="Salvar">
+</form>
+<!-- voucher_presente_admin > -->
+<hr />
+<h2>Voucher Base</h2>
+<hr />
+<!-- voucher_base < -->
+* Esse voucher &eacute; v&aacute;lido at&eacute; o dia #data-expiracao#
+<!-- voucher_base > -->
+<hr />
+<h2>Pagamento</h2>
+<hr />
+<!-- pagamento < -->
+<div class="b2make-payment-cont">
+    <div id="b2make-payment-formas-cont">
+        <ul id="b2make-payment-formas-menu">
+            <!-- ppplus < --><li data-id="cartao-de-credito"#credit-card-extra#>Cart&atilde;o de Cr&eacute;dito Pr&oacute;prio</li>
+            <li data-id="outro-pagador"#other-payer-extra#>Cart&atilde;o de Cr&eacute;dito de Terceiro</li><!-- ppplus > -->
+            <!-- paypal < --><li data-id="paypal"#paypal-extra#>PayPal</li><!-- paypal > -->
+        </ul>
+        <div id="b2make-payment-formas">
+            #payment-formas#
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div id="b2make-payment-pedido-cont">
+        <div class="b2make-payment-titulo-pedido">Seu Pedido - #pedido-num#</div>
+        <div class="b2make-pedido-cont">
+            <!-- cel1 < --><div class="b2make-pedido-itens-novo">
+                <div class="b2make-pedido-celula">#servico#</div>
+                <div class="b2make-pedido-celula">#preco#</div>
+                <div class="b2make-pedido-celula">Qtd: #quantidade#</div>
+                <div class="b2make-pedido-celula">Total: #sub-total#</div>
+                <div class="clear"></div>
+            </div><!-- cel1 > -->
+        </div>
+        <div id="b2make-payment-cont-rodape-novo">
+            <div id="b2make-payment-cont-total-tit">Total dos Serviços:</div>
+            <div id="b2make-payment-cont-total">#total#</div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div id="b2make-payment-finalizar">FINALIZAR</div>
+        <div id="b2make-payment-outro-pagador-finalizar">FINALIZAR</div>
+        <div id="b2make-payment-paypal">&nbsp;</div>
+	</div>
+    <div class="clear"></div>
+</div>
+<!-- pagamento > -->
+<hr />
+<h2>Pagamento Efetuado Com Sucesso</h2>
+<hr />
+<!-- retorno_pagamento_sucesso < -->
+<h1>Pagamento</h1>
+<p>Pagamento Efetuado Com Sucesso</p>
+<a href="#url#" id="b2make-payment-gerar-voucher"><div id="b2make-payment-sucesso-maozinha"></div>Clique aqui para<br>
+<span>GERAR SEU VOUCHER</span></a>
+<!-- retorno_pagamento_sucesso > -->
+<hr />
+<h2>Pagamento Aguardando Aprova&ccedil;&atilde;o</h2>
+<hr />
+<!-- retorno_pagamento_aguarde < -->
+<h1>Pagamento</h1>
+<h2 class="b2make-payment-sucesso-sub-titulo">Pagamento Aguardando Aprova&ccedil;&atilde;o</h2>
+<p>O seu pagamento est&aacute; aguardando autoriaza&ccedil;&atilde;o da financeira. Quando o pagamento for conclu&iacute;do, o sistema automaticamente ir&aacute; lhe enviar um e-mail comunicando com os procedimentos para a conclus&atilde;o dessa compra.<br>&nbsp;</p>
+<!-- retorno_pagamento_aguarde > -->
+<p>&nbsp;</p>
+<hr />
+<!-- retorno_pagamento_processando < -->
+<h1>Pagamento</h1>
+<h2 class="b2make-payment-sucesso-sub-titulo">Pagamento Sendo Processado</h2>
+<p>O seu pagamento est&aacute; sendo processado. Favor aguardar um breve momento...</p>
+<p><img src="!#caminho_raiz#!images/icons/loading11.gif" /></p>
+<div id="b2make-retorno-pagamento-processando"></div>
+<!-- retorno_pagamento_processando > -->
+<p>&nbsp;</p>
+<hr />
+<h2>Pagamento Cancelado pela Operadora</h2>
+<hr />
+<!-- retorno_pagamento_cancelado < -->
+<h1>Pagamento</h1>
+<h2 class="b2make-payment-sucesso-sub-titulo">Pagamento Cancelado pela Operadora</h2>
+<p>O seu pagamento foi cancelado pela operadora escolhida e n&atilde;o &eacute; poss&iacute;vel gerar o seu voucher. Como alternativa voc&ecirc; pode escolher outra forma de pagamento clicando em #url#.</p>
+<!-- retorno_pagamento_cancelado > -->
+<hr />
+<h2>PayPal</h2>
+<hr />
+<!-- paypal_cont < -->
+<div id="paypal-cont" class="b2make-payment-formas-cont" data-id="paypal">
+	<div class="b2make-pfc-cont">
+        <div class="b2make-pfc-fundo-cinza">
+            <div class="b2make-pfc-fundo-txt-paypal">Por que comprar com a PayPal?</div>
+            <div class="b2make-pfc-fundo-txt-pague">Pague com os cartões de credito?</div>
+            
+                <div class="b2make-pfc-fundo-bandeiras"> 
+                    <div class="bandeira1"></div>
+                    <div class="bandeira2"></div>
+                    <div class="bandeira3"></div>
+                    <div class="bandeira4"></div>
+                    <div class="bandeira5"></div>
+                    <div class="bandeira6"></div>
+                </div>
+          
+        </div>
+        <div class="b2make-pfc-coluna">
+        
+            <div class="b2make-pfc-elemento">
+            
+                <div class="b2make-pfc-elemento-img" ></div>
+                <div class="b2make-pfc-elemento-txt" ><b>É Grátis, fácil e seguro</b>
+    Abra sua conta, cadastre seus cartões de crédito e passe a compra só com email e senha</div>
+            </div>
+        </div>
+        
+        <div class="b2make-pfc-coluna">
+            <div class="b2make-pfc-elemento">
+                <div class="b2make-pfc-elemento-img1"></div>
+                <div class="b2make-pfc-elemento-txt1">Continue a acumular milhas no seu cartão de crédito</div>
+            </div>
+        </div>
+                
+            <div class="b2make-pfc-clear"></div>
+            <div class="b2make-pfc-fundo-linha"></div>        
+            <div class="b2make-pfc-fundo-texto"><b>PayPal é como a sua carteira</b>, só que digital. Você cria a sua conta grátis, armazena seus cartões de forma segura e paga em poucos cliques. Faça como 203 milhões de pessoas ao redor do mundo que usam PayPal</div> 
+    
+        <div class="b2make-pfc-fim">
+             <div class="b2make-pfc-texto-paypal">
+             
+             <div class="b2make-pfc-texto-pay1">Dúvidas ligue </div>
+             <div class="b2make-pfc-texto-pay2">0800-047-4482</div>
+             
+             </div>
+             <div class="b2make-pfc-logo-paypal">
+             <div class="b2make-pfc-logo-pay"></div>
+             </div>
+        </div>
+    
+    </div>
+</div>
+<!-- paypal_cont > -->
+<hr />
+<h2>PayPal Plus</h2>
+<hr />
+<!-- paypal_plus_cont < -->
+<div id="paypal-plus-comprador-cont" class="b2make-payment-formas-cont" data-id="cartao-de-credito">
+    <div id="b2make-ppplusDiv"></div>
+</div>
+<!-- paypal_plus_cont > -->
+<hr />
+<h2>PayPal Plus Outro Pagador</h2>
+<hr />
+<!-- paypal_plus_outro_cont < -->
+<div id="paypal-plus-outro-comprador-cont" class="b2make-payment-formas-cont" data-id="outro-pagador">
+    <p id="paypal-plus-comprador-tit">Preencha as informa&ccedil;&otilde;es pessoais do outro pagador desta compra.</p>
+    <form id="paypal-plus-comprador-form">
+        <input type="text" id="paypal-plus-cf-first-name" placeholder="Primeiro Nome" value="#primeiro-nome#" name="nome">
+        <input type="text" id="paypal-plus-cf-last-name" placeholder="&Uacute;ltimo Nome" value="#ultimo-nome#" name="ultimo-nome">
+        <input type="text" id="paypal-plus-cf-email" placeholder="Email" value="#email#" name="email">
+        <input type="text" id="paypal-plus-cf-telefone" placeholder="Telefone" class="telefone" value="#telefone#" name="telefone">
+        <div id="paypal-plus-cf-cpf-cnpj" class="b2make-check-box" data-request-field="paypal-plus-cf-cpf-cnpj-check" data-checked-num="1" data-callback="#paypal-plus-cf-cpf-cnpj">
+            <div data-val="CPF" title="Clique para escolher o tipo de documento CPF">CPF</div>
+            <div data-val="CNPJ" title="Clique para escolher o tipo de documento CNPJ">CNPJ</div>
+        </div>
+        <input type="text" id="paypal-plus-cf-cpf" class="cpf" placeholder="CPF" value="#cpf#" name="cpf">
+        <input type="text" id="paypal-plus-cf-cnpj" class="cnpj" placeholder="CNPJ" value="#cnpj#" name="cnpj">
+        <!-- iframe -->
+        <input name="opcao" type="hidden" value="e-services/#loja#/ppplus-other-buyer" id="opcao">
+        <input type="button" value="CONTINUAR" id="paypal-plus-cf-btn">
+    </form>
+    <div></div>
+    <div id="b2make-ppplusDiv-2"></div>
+</div>
+<!-- paypal_plus_outro_cont > -->
+<hr />
+<h2>Carrinho</h2>
+<hr />
+<!-- cart < -->
+<div id="b2make-cart-cont">
+    <div id="b2make-store-phases">
+    	<div class="b2make-store-phases-link-ball b2make-store-phases-link-ball-active b2make-loja-bg-color-1">1</div>
+        <div class="b2make-store-phases-line"></div>
+    	<div class="b2make-store-phases-link-ball">2</div>
+        <div class="b2make-store-phases-line"></div>
+    	<div class="b2make-store-phases-link-ball">3</div>
+        <div class="b2make-store-phases-line"></div>
+    	<div class="b2make-store-phases-link-ball">4</div>
+        <div class="clear"></div>
+        <div class="b2make-store-phases-link b2make-store-phases-link-active b2make-loja-color-1">CARRINHO</div>
+    	<div class="b2make-store-phases-link">CADASTRO</div>
+    	<div class="b2make-store-phases-link">EMISSÃO</div>
+    	<div class="b2make-store-phases-link">PAGAMENTO</div>
+    </div>
+    <div id="b2make-store-cart-cont">
+        <div id="b2make-store-cart">
+            <div id="b2make-store-cart-head-row" class="b2make-loja-bg-color-1">
+                <div class="b2make-store-cart-head-cell" id="b2make-schc-1">SERVI&Ccedil;OS</div>
+                <div class="b2make-store-cart-head-cell" id="b2make-schc-2">VALOR</div>
+                <div class="b2make-store-cart-head-cell" id="b2make-schc-3">QTD.</div>
+                <div class="b2make-store-cart-head-cell" id="b2make-schc-4">SUB TOTAL</div>
+            </div>
+            <!-- cel < --><div class="b2make-store-cart-row" data-id="#id_servicos#">
+                <div class="b2make-store-cart-cell b2make-scc-1">
+                    <div class="b2make-store-cart-del"></div>
+                    <div class="b2make-store-cart-servico-nome">#servico-nome#</div>
+                </div>
+                <div class="b2make-store-cart-cell b2make-scc-2">R$ #servico-preco#</div>
+                <div class="b2make-store-cart-cell b2make-scc-3">
+                    <div class="b2make-store-cart-quantity-change-mask">
+                        <div class="b2make-store-cart-quantity-change-minus b2make-noselect"><span class="b2make-noselect">-</span></div>
+                        <input type="text" class="b2make-store-cart-quantity inteiro" value="#servico-quantidade#">
+                        <div class="b2make-store-cart-quantity-change-plus b2make-noselect"><span class="b2make-noselect">+</span> </div>
+                    </div>
+                </div>
+                <div class="b2make-store-cart-cell b2make-scc-4">R$ #servico-sub-total#</div>
+            </div><!-- cel > -->
+        </div>
+    	<div id="b2make-store-cart-without-services">Sem servi&ccedil;os cadastrados no seu carrinho.</div>
+        <a id="b2make-store-keep-buying" href="#continuar-comprando-url#" target="_top">&#171; COMPRAR MAIS</a>
+    </div>
+    <div id="b2make-store-cart-summary-cont">
+    	<div id="b2make-store-cart-summary">
+            <div id="b2make-store-cart-summary-head-row" class="b2make-loja-bg-color-1">
+                <div class="b2make-store-cart-summary-head-cell" id="b2make-scshc-1">TOTAL DO CARRINHO</div>
+                <div class="b2make-store-cart-summary-head-cell">&nbsp;</div>
+            </div>
+            <div class="b2make-store-cart-summary-row">
+                <div class="b2make-store-cart-summary-cell">Total</div>
+                <div class="b2make-store-cart-summary-cell b2make-scsc-2">R$ #total#</div>
+            </div>
+        </div>
+        <div id="b2make-store-cart-checkout" class="b2make-loja-bg-color-3">FECHAR COMPRA</div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- cart > -->
+<hr />
+<h2>Cadastro</h2>
+<hr />
+<!-- signup-2 < -->
+<div id="b2make-signup-2-cont">
+    <div id="b2make-store-phases">
+    	<a class="b2make-store-phases-link-ball" href="#cart-link#" target="#target#">1</a>
+        <div class="b2make-store-phases-line"></div>
+    	<div class="b2make-store-phases-link-ball b2make-store-phases-link-ball-active b2make-loja-bg-color-1">2</div>
+        <div class="b2make-store-phases-line"></div>
+    	<div class="b2make-store-phases-link-ball">3</div>
+        <div class="b2make-store-phases-line"></div>
+    	<div class="b2make-store-phases-link-ball">4</div>
+        <div class="clear"></div>
+        <a class="b2make-store-phases-link" href="#cart-link#" target="#target#">CARRINHO</a>
+    	<div class="b2make-store-phases-link b2make-store-phases-link-active b2make-loja-color-1">CADASTRO</div>
+    	<div class="b2make-store-phases-link">EMISSÃO</div>
+    	<div class="b2make-store-phases-link">PAGAMENTO</div>
+    </div>
+    <div id="b2make-signup-2-login">
+    	<div id="b2make-signup-login-link" class="b2make-noselect">J&aacute; &eacute; cadastrado, clique aqui para entrar</div>
+        <div id="b2make-signup-login-cont">
+        	<form id="b2make-signup-login-form" name="b2make-signup-login-form">
+                <input name="usuario" type="text" id="login-email" maxlength="100" placeholder="E-mail">
+                <input autocomplete="new-password" name="senha" type="password" id="login-senha" maxlength="100" placeholder="Sua Senha">
+                <div class="clear"></div>
+                <div id="b2make-signup-login-btn" class="b2make-loja-bg-color-3 b2make-noselect">ENTRAR</div>
+                <div id="b2make-signup-login-lembre-me" class="b2make-check-box-item b2make-noselect" data-request-field="login-lembre-me">Lembre-me</div>
+                <div class="clear"></div>
+                <a href="#esqueceu-senha-link#" id="b2make-signup-login-perdeu-senha" class="b2make-noselect" target="#target#">Perdeu a Senha?</a>
+                <!-- signin-iframe -->
+                <input name="opcao" type="hidden" value="e-services/!#b2make-loja-atual#!/signin-2-request" id="opcao2">
+                <!-- signin-iframe-session -->
+            </form>
+        </div>
+    </div>
+    <div id="b2make-signup-cadastro-2">
+    <form id="b2make-signup-cadastro-form" name="b2make-signup-cadastro-form">
+        <div id="b2make-signup-cadastro-fields-2">
+            <input name="primeiro-nome" type="text" id="primeiro-nome" maxlength="100" placeholder="Primeiro Nome" class="form-field">
+            <input name="ultimo-nome" type="text" id="ultimo-nome" maxlength="100" placeholder="Último Nome" class="form-field">
+            <input name="email" type="text" id="email" placeholder="E-mail" class="form-field" autocomplete="new-password">
+            <input name="senha" type="password" id="senha" placeholder="Senha" class="form-field" autocomplete="new-password">
+            <div class="clear"></div>
+            <input name="senha2" type="password" id="senha2" placeholder="Confirme sua Senha" class="form-field">
+            <input name="telefone" type="text" id="telefone" placeholder="Telefone" class="telefone form-field">
+            <div id="cpf-cnpj" class="b2make-check-box" data-request-field="cpf-cnpj-check" data-checked-num="1" data-callback="#cpf-cnpj">
+                <div data-val="CPF" title="Clique para escolher o tipo de documento CPF">CPF</div>
+                <div data-val="CNPJ" title="Clique para escolher o tipo de documento CNPJ">CNPJ</div>
+            </div>
+            <input type="text" id="cpf" name="cpf" class="form-field cpf" placeholder="CPF" value="">
+            <input type="text" id="cnpj" name="cnpj" class="form-field cnpj" placeholder="CNPJ" value="">
+            <div class="clear"></div>
+            <div id="recaptcha_div"></div>
+            <div class="clear"></div>
+            <div id="b2make-signup-2-cadastrar" class="b2make-loja-bg-color-3 b2make-noselect">CADASTRAR</div>
+        </div>
+        <div id="b2make-signup-cadastro-pedido">
+        	<div id="b2make-signup-cadastro-pedido-head" class="b2make-loja-bg-color-1">SEU PEDIDO</div>
+            <div id="b2make-signup-cadastro-pedido-sevicos">
+                <!-- cel < --><div class="b2make-signup-cadastro-pedido-row">
+                    <div class="b2make-signup-cadastro-pedido-servico">#servico#</div>
+                    <div class="b2make-signup-cadastro-pedido-quantidade">Qtd. #quantidade#</div>
+                    <div class="b2make-signup-cadastro-pedido-preco">Valor: R$ #preco#</div>
+                    <div class="b2make-signup-cadastro-pedido-sub-total">Total: R$ #sub-total#</div>
+                    <div class="clear"></div>
+                </div><!-- cel > -->
+                <div id="b2make-signup-cadastro-pedido-without-services"#sem-servico-extra#>Sem servi&ccedil;os cadastrados no seu pedido.</div>
+                <div class="clear"></div>
+            </div>
+            <div id="b2make-signup-cadastro-pedido-total">TOTAL DO PEDIDO: R$ #total#</div>
+        </div>
+        <div class="clear"></div>
+        <!-- signup-iframe -->
+        <input name="opcao" type="hidden" value="e-services/!#b2make-loja-atual#!/signup-2-request" id="opcao">
+        <!-- signup-iframe-session -->
+    </form>
+    </div>
+</div>
+<!-- signup-2 > -->
+<hr />
+<h2>Cadastro</h2>
+<hr />
+<!-- emission < -->
+<div id="b2make-emission-cont">
+    <div id="b2make-store-phases">
+    	<div class="b2make-store-phases-link-ball">1</div>
+        <div class="b2make-store-phases-line"></div>
+    	<div class="b2make-store-phases-link-ball">2</div>
+        <div class="b2make-store-phases-line"></div>
+    	<div class="b2make-store-phases-link-ball b2make-store-phases-link-ball-active b2make-loja-bg-color-1">3</div>
+        <div class="b2make-store-phases-line"></div>
+    	<div class="b2make-store-phases-link-ball">4</div>
+        <div class="clear"></div>
+        <div class="b2make-store-phases-link">CARRINHO</div>
+    	<div class="b2make-store-phases-link">CADASTRO</div>
+    	<div class="b2make-store-phases-link b2make-store-phases-link-active b2make-loja-color-1">EMISSÃO</div>
+    	<div class="b2make-store-phases-link">PAGAMENTO</div>
+    </div>
+    <div id="b2make-signup-cadastro-2">
+    <form id="b2make-emission-form" name="b2make-emission-form">
+        <div id="b2make-signup-cadastro-fields-2">
+            <div id="b2make-store-emission-title" class="b2make-loja-bg-color-1">IDENTIFICAÇÃO</div>
+            <!-- cel-emission < --><div class="b2make-store-emission-cel" data-id="#servico-codigo#">
+                <div class="b2make-store-emission-service-name">#servico-nome# - #servico-codigo#</div>
+                <div class="b2make-store-emission-radio-cont">
+                    <input type="radio" name="#servico-input-name#" id="#servico-input-id-1#" value="para_voce" checked>
+                    <label for="#servico-input-id-1#">Uso Próprio</label>
+                    <input type="radio" name="#servico-input-name#" id="#servico-input-id-2#" value="para_terceiro">
+                    <label for="#servico-input-id-2#" class="label-2">Para terceiro</label>
+                </div>
+                <input type="text" id="#servico-input-name#_nome_id" name="#servico-input-name#_nome" maxlength="100" placeholder="Nome">
+                <input type="text" id="#servico-input-name#_doc_id" name="#servico-input-name#_doc" maxlength="100" placeholder="Documento">
+                <input type="text" id="#servico-input-name#_tel_id" name="#servico-input-name#_tel" placeholder="Telefone" class="telefone">
+            </div><!-- cel-emission > -->
+            <div class="clear"></div>
+        </div>
+        <div id="b2make-signup-cadastro-pedido">
+        	<div id="b2make-signup-cadastro-pedido-head" class="b2make-loja-bg-color-1">SEU PEDIDO - #pedido-num#</div>
+            <div id="b2make-signup-cadastro-pedido-sevicos">
+                <!-- cel < --><div class="b2make-signup-cadastro-pedido-row">
+                    <div class="b2make-signup-cadastro-pedido-servico">#servico#</div>
+                    <div class="b2make-signup-cadastro-pedido-quantidade">Qtd. #quantidade#</div>
+                    <div class="b2make-signup-cadastro-pedido-preco">Valor: R$ #preco#</div>
+                    <div class="b2make-signup-cadastro-pedido-sub-total">Total: R$ #sub-total#</div>
+                    <div class="clear"></div>
+                </div><!-- cel > -->
+                <div id="b2make-signup-cadastro-pedido-without-services"#sem-servico-extra#>Sem servi&ccedil;os cadastrados no seu pedido.</div>
+                <div class="clear"></div>
+            </div>
+            <div id="b2make-signup-cadastro-pedido-total">TOTAL DO PEDIDO: R$ #total#</div>
+            <div id="b2make-emission-cadastrar" class="b2make-loja-bg-color-3 b2make-noselect">PAGAR</div>
+        </div>
+        <div class="clear"></div>
+        <input name="opcao" type="hidden" value="e-services/!#b2make-loja-atual#!/emission-request" id="opcao">
+        <!-- emission-iframe-session -->
+    </form>
+    </div>
+</div>
+<!-- emission > -->
+<hr />
+<h2>Pagamento</h2>
+<hr />
+<!-- payment-2 < -->
+<div id="b2make-cart-cont">
+    <div id="b2make-store-phases">
+    	<div class="b2make-store-phases-link-ball" href="!#b2make-loja-atual-url#!cart">1</div>
+        <div class="b2make-store-phases-line"></div>
+    	<div class="b2make-store-phases-link-ball" href="!#b2make-loja-atual-url#!signup">2</div>
+        <div class="b2make-store-phases-line"></div>
+    	<div class="b2make-store-phases-link-ball" href="!#b2make-loja-atual-url#!emission">3</div>
+        <div class="b2make-store-phases-line"></div>
+    	<div class="b2make-store-phases-link-ball b2make-store-phases-link-ball-active b2make-loja-bg-color-1" href="!#b2make-loja-atual-url#!payment">4</div>
+        <div class="clear"></div>
+        <div class="b2make-store-phases-link" href="!#b2make-loja-atual-url#!cart">CARRINHO</div>
+    	<div class="b2make-store-phases-link" href="!#b2make-loja-atual-url#!signup">CADASTRO</div>
+    	<div class="b2make-store-phases-link" href="!#b2make-loja-atual-url#!emission">EMISSÃO</div>
+    	<div class="b2make-store-phases-link b2make-store-phases-link-active b2make-loja-color-1" href="!#b2make-loja-atual-url#!payment">PAGAMENTO</div>
+    </div>
+    <div class="b2make-payment-cont">
+        <div id="b2make-payment-formas-cont">
+            <ul id="b2make-payment-formas-menu">
+                <!-- ppplus < --><li data-id="cartao-de-credito"#credit-card-extra#>Cart&atilde;o de Cr&eacute;dito Pr&oacute;prio</li>
+                <li data-id="outro-pagador"#other-payer-extra#>Cart&atilde;o de Cr&eacute;dito de Terceiro</li><!-- ppplus > -->
+                <!-- paypal < --><li data-id="paypal"#paypal-extra#>PayPal</li><!-- paypal > -->
+            </ul>
+            <div id="b2make-payment-formas">
+                #payment-formas#
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div id="b2make-payment-pedido-cont">
+            <div class="b2make-payment-titulo-pedido b2make-loja-bg-color-1">SEU PEDIDO - #pedido-num#</div>
+            <div class="b2make-pedido-cont">
+                <!-- cel1 < --><div class="b2make-signup-cadastro-pedido-row">
+                    <div class="b2make-signup-cadastro-pedido-servico">#servico#</div>
+                    <div class="b2make-signup-cadastro-pedido-quantidade">Qtd. #quantidade#</div>
+                    <div class="b2make-signup-cadastro-pedido-preco">Valor: R$ #preco#</div>
+                    <div class="b2make-signup-cadastro-pedido-sub-total">Total: R$ #sub-total#</div>
+                    <div class="clear"></div>
+                </div><!-- cel1 > -->
+            </div>
+        </div>
+        <div id="b2make-payment-cont-rodape-novo">TOTAL DO PEDIDO: #total#</div>
+        <div id="b2make-payment-finalizar" class="b2make-loja-bg-color-3">EFETUAR PAGAMENTO</div>
+        <div id="b2make-payment-outro-pagador-finalizar" class="b2make-loja-bg-color-3">PAGAR</div>
+        <div id="b2make-payment-paypal">&nbsp;</div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- payment-2 > -->
+<hr />
+<h2>Usu&aacute;rio Atualizar Dados</h2>
+<hr />
+<!-- account < -->
+<div class="b2make-eservices-title">Minha Conta</div>
+<p>Altere seus dados conforme necessidade e no fim clique no bot&atilde;o ATUALIZAR para salvar seus dados pessoais atualizados.</p>
+<div id="b2make-user-update-cont">
+    <form id="b2make-user-update-form">
+        <input type="text" id="b2make-user-update-nome" name="nome" placeholder="Primeiro Nome" value="#nome#">
+        <input type="text" id="b2make-user-update-ultimo-nome" name="ultimo-nome" placeholder="&Uacute;ltimo Nome" value="#ultimo-nome#">
+        <input type="text" id="b2make-user-update-telefone" name="telefone" placeholder="Telefone" class="telefone" value="#telefone#">
+        <div id="b2make-user-update-cpf-cnpj" class="b2make-check-box" data-request-field="cnpj_selecionado" data-checked-num="#cpf_ou_cnpj#" data-callback="#b2make-user-update-cpf-cnpj">
+            <div data-val="nao" title="Clique para escolher o tipo de documento CPF">CPF</div>
+            <div data-val="sim" title="Clique para escolher o tipo de documento CNPJ">CNPJ</div>
+        </div>
+        <input type="text" id="b2make-user-update-cpf" class="cpf" name="cpf" placeholder="CPF" value="#cpf#">
+        <input type="text" id="b2make-user-update-cnpj" class="cnpj" name="cnpj" placeholder="CNPJ" value="#cnpj#">
+        <!-- iframe -->
+        <input type="hidden" name="opcao" value="e-services/!#b2make-loja-atual#!/account-db">
+        <div id="b2make-user-update-btn">ATUALIZAR</div>
+    </form>
+</div>
+<!-- cel-historico < -->
+<h2>Hist&oacute;rico de Altera&ccedil;&otilde;es</h2>
+#historico#
+<!-- cel-historico > -->
+<!-- account > -->
+<hr />
+<h2>Compras</h2>
+<hr />
+<!-- purchases < -->
+<div id="b2make-purchases-cont">
+    <div class="b2make-eservices-title">Compras</div>
+    <!-- cel-payment < --><div class="b2make-purchases-payment-cont">
+        <div class="b2make-purchases-payment-title">#order-title#</div>
+        <div class="b2make-purchases-payment-status"><div class="b2make-purchases-payment-status-ball b2make-noselect"></div><div class="b2make-purchases-payment-status-text">Aguardando Pagamento</div></div>
+        <div class="b2make-purchases-payment-button b2make-noselect" data-id="#order-id#">PAGAR</div>
+        <div class="b2make-purchases-payment-button-2 b2make-noselect">DETALHES</div>
+        <div class="clear"></div>
+        <div class="b2make-purchases-payment-details">
+            <!-- cel-order < --><div class="b2make-purchases-payment-order">
+                <div class="b2make-purchases-payment-service-img" style="background-image:url(#imagem#);"></div>
+                <div class="b2make-purchases-payment-service-desc">#descricao#</div>
+            </div><!-- cel-order > -->
+            <div class="b2make-purchases-payment-order b2make-purchases-payment-order-total">Total: #order-total#</div>
+        </div>
+        <div class="clear"></div>
+    </div><!-- cel-payment > -->
+    <!-- cel-voucher < --><div class="b2make-purchases-voucher-cont" data-id="#order-id#">
+        <div class="b2make-purchases-voucher-title">#order-title#</div>
+        <div class="b2make-purchases-voucher-status">
+        	<div class="b2make-purchases-voucher-status-ball"></div>
+            <div class="b2make-purchases-voucher-status-text">Pago</div>
+        </div>
+        <div class="b2make-purchases-voucher-status"><div class="b2make-purchases-voucher-status-ball"></div>
+        <div class="b2make-purchases-voucher-status-text">Dispon&iacute;vel</div></div>
+        <div class="b2make-purchases-voucher-details">
+            <!-- cel-order < --><div class="b2make-purchases-voucher-order b2make-purchases-voucher-order-desc" data-id="#pedido-service-id#">
+                <div class="b2make-purchases-voucher-service-img" style="background-image:url(#imagem#);"></div>
+                <div class="b2make-purchases-voucher-service-desc">
+                    <div class="b2make-purchases-service-status">
+                        <div class="b2make-purchases-service-status-text"#service-status-text-extra#>#codigo-senha#</div>
+                        <div class="b2make-purchases-service-status-ball"#service-status-ball-extra#></div>
+                    </div>
+                    #descricao#
+                </div>
+                <!-- cel-botoes < --><div class="b2make-purchases-voucher-service-btns" data-id="#pedido-service-id#">
+                	<div class="b2make-purchases-voucher-service-btn b2make-noselect b2make-purchases-voucher-service-identification">IDENTIFICAÇÃO</div>
+                	<div class="b2make-purchases-voucher-service-btn b2make-noselect b2make-purchases-voucher-service-mail">ENVIAR EMAIL</div>
+                	<div class="b2make-purchases-voucher-service-btn b2make-noselect b2make-purchases-voucher-service-print">IMPRIMIR</div>
+                	<div class="b2make-purchases-voucher-service-btn b2make-noselect b2make-purchases-voucher-service-view">VISUALIZAR</div>
+                    <div class="b2make-purchases-voucher-email-cont">
+                    	<input type="text" placeholder="E-MAIL:" id="b2make-purchases-voucher-email-#num#" name="email">
+                        <div class="b2make-purchases-voucher-service-btn b2make-purchases-voucher-email-btn-enviar">ENVIAR</div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="b2make-purchases-voucher-identification-cont" data-id="#pedido-service-id#">
+                    <input type="text" placeholder="NOME" value="#identificacao_nome#" maxlength="100" name="identificacao_nome">
+                    <input type="text" placeholder="DOCUMENTO" value="#identificacao_documento#" maxlength="100" name="identificacao_documento">
+                    <input type="text" placeholder="TELEFONE" value="#identificacao_telefone#" maxlength="20" name="identificacao_telefone" class="telefone">
+                    <div class="b2make-purchases-voucher-service-btn b2make-purchases-voucher-identification-btn-salvar">SALVAR</div>
+                    <div class="clear"></div>
+                </div><!-- cel-botoes > -->
+                <!-- cel-baixa-servico < --><div class="b2make-purchases-payment-order-baixa">#baixa-servico#</div><!-- cel-baixa-servico > -->
+            </div>
+            <!-- cel-acoes < --><div class="b2make-purchases-voucher-order b2make-purchases-voucher-order-escolha">
+            	<div class="b2make-purchases-voucher-service-btn b2make-purchases-voucher-service-btn-editar b2make-noselect"#presente-editar-extra#>EDITAR</div>
+            	<div class="b2make-purchases-voucher-escolha-pessoa" data-id="#pedido-service-id#">
+                	<div class="b2make-purchases-voucher-checkbox-cont">
+                    	<input type="checkbox" value="pessoal" id="b2make-purchases-voucher-checkbox-pessoal-#num#"#pessoal-extra#>
+                        <label for="b2make-purchases-voucher-checkbox-pessoal-#num#" class="b2make-noselect">PARA VOC&Ecirc;</label>
+                    </div>
+                    <div class="b2make-purchases-voucher-checkbox-cont">
+                        <input type="checkbox" value="presente" id="b2make-purchases-voucher-checkbox-presente-#num#"#presente-extra#>
+                        <label for="b2make-purchases-voucher-checkbox-presente-#num#" class="b2make-noselect">PARA PRESENTE</label>
+                    </div>
+                    <div class="b2make-purchases-voucher-presente-cont"#presente-cont-extra#>
+                    	<input type="text" placeholder="DE:" value="#de#" id="b2make-purchases-voucher-presente-de-#num#" name="de">
+                        <input type="text" placeholder="PARA:" value="#para#" id="b2make-purchases-voucher-presente-para-#num#" name="para">
+                        <textarea placeholder="MENSAGEM:" id="b2make-purchases-voucher-presente-de-#num#" name="mensagem" maxlength="1000">#mensagem#</textarea>
+                        <div class="b2make-purchases-voucher-service-img-tema b2make-noselect"#tema-img-extra#>#tema-img-nenhum#</div>
+                        <div class="b2make-purchases-voucher-service-btn b2make-purchases-voucher-service-btn-tema b2make-noselect">ESCOLHA O TEMA</div>
+                        <div class="clear"></div>
+                        <div class="b2make-purchases-voucher-service-tema-cont"></div>
+                        <div class="b2make-purchases-voucher-service-btn b2make-purchases-voucher-service-btn-salvar">SALVAR</div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="b2make-purchases-voucher-order b2make-purchases-voucher-codes">
+            	<div class="b2make-purchases-service-qrcode" style="background-image:url(#qrcode#);"></div>
+            </div><!-- cel-acoes > --><!-- cel-order > -->
+            <div class="b2make-purchases-payment-order b2make-purchases-payment-order-total">Total: #order-total#</div>
+        </div>
+        <div class="clear"></div>
+    </div><!-- cel-voucher > -->
+    <!-- cel-order-comum < --><div class="b2make-purchases-payment-cont">
+        <div class="b2make-purchases-payment-title">#order-title#</div>
+        <div class="b2make-purchases-payment-status"><div class="b2make-purchases-payment-status-ball b2make-noselect"#status-ball-extra#></div><div class="b2make-purchases-payment-status-text"#status-texto-extra#>#status-texto#</div></div>
+        <div class="b2make-purchases-payment-button-2 b2make-noselect">DETALHES</div>
+        <div class="clear"></div>
+        <div class="b2make-purchases-payment-details">
+        <!-- cel-baixa < --><div class="b2make-purchases-payment-order b2make-purchases-payment-order-baixa">#baixa#</div><!-- cel-baixa > -->
+            <!-- cel-order < -->
+            <div class="b2make-purchases-payment-order">
+                <div class="b2make-purchases-payment-service-img" style="background-image:url(#imagem#);"></div>
+                <div class="b2make-purchases-payment-service-desc">#descricao#</div>
+                <!-- cel-baixa-servico < --><div class="b2make-purchases-payment-order-baixa">#baixa-servico#</div><!-- cel-baixa-servico > -->
+            </div><!-- cel-order > -->
+            <div class="b2make-purchases-payment-order b2make-purchases-payment-order-total">Total: #order-total#</div>
+        </div>
+        <div class="clear"></div>
+    </div><!-- cel-order-comum > -->
+    <!-- orders -->
+</div><!-- purchases > -->
+<hr />
+<h2>Compras</h2>
+<hr />
+<!-- voucher-2 < -->
+<!-- voucher-cel < --><div id="b2make-voucher-2">
+	<!-- cel-presente < --><div id="b2make-voucher-2-presente-cont">
+    	<!-- cel-presente-img < --><div id="b2make-voucher-2-presente-img" class="b2make-voucher-2-cont"><img src="#presente-img#" style="width: 100%;"></div><!-- cel-presente-img > -->
+        <div class="b2make-voucher-2-cont">#presente-cartao#</div>
+    </div><!-- cel-presente > -->
+    <div class="b2make-voucher-2-cont">
+    	<div class="b2make-voucher-2-service-img"#service-img#></div>
+        <div class="b2make-voucher-2-service-desc">#service-desc#</div>
+    </div>
+    <div class="b2make-voucher-2-cont b2make-voucher-2-qrcode">
+    	<img class="b2make-voucher-2-qrcode-img" src="#qrcode#">
+    </div>
+    <div class="b2make-voucher-2-cont">#comprador#</div>
+    <div class="b2make-voucher-2-cont">
+    	<div class="b2make-voucher-2-store-img"#store-img#></div>
+        <div class="b2make-voucher-2-store-desc">#store-desc#</div>
+    </div>
+</div><!-- voucher-cel > -->
+<!-- voucher-2 > -->
+<hr />
+<h2>Voucher Mail</h2>
+<hr />
+<!-- voucher-mail < -->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>#html-title#</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <meta name="viewport" content="width=470">
+</head>
+<body style="margin: 0px;font-family: 'Open Sans', Verdana, Geneva, sans-serif;font-size: 11px;color:#000;text-decoration: none;font-style: normal;line-height: normal;font-weight: normal;letter-spacing: normal;text-align: left;vertical-align: top;word-spacing: normal;white-space: normal;padding: 0px;background-color: #FFF;background-repeat: repeat;background-position: center top;background-attachment: fixed;text-rendering: optimizeLegibility !important;-webkit-font-smoothing: antialiased !important;">
+    <!-- voucher-cel < --><div style="width: 450px;display: block; margin:10px;">
+        <!-- cel-presente < --><div style="display: block;">
+            <!-- cel-presente-img < --><div style="width: 418px;border: solid 1px #efeff0;padding: 15px;margin-bottom: 10px;font-size: 11px;line-height: 14px;"><img src="#presente-img#" style="width: 418px;"></div><!-- cel-presente-img > -->
+            <!-- cel-presente-cartao < --><div style="border: solid 1px #efeff0;padding: 15px;margin-bottom: 10px;font-size: 11px;line-height: 14px;">#presente-cartao#</div><!-- cel-presente-cartao > -->
+        </div><!-- cel-presente > -->
+        <div style="border: solid 1px #efeff0;padding: 15px;margin-bottom: 10px;font-size: 11px;line-height: 14px;">
+            <div style="display: inline-block;vertical-align: top;width: 170px;margin-right: 15px;"><!-- service-img < --><img src="#service-img#" style="width: 170px;"><!-- service-img > --></div>
+            <div style="display: inline-block;vertical-align: top;width:227px;">#service-desc#</div>
+        </div>
+        <div style="border: solid 1px #efeff0;padding: 15px;margin-bottom: 10px;font-size: 11px;line-height: 14px;text-align: center;padding-top: 1px;padding-bottom: 1px;">
+            <img style="width: 175px;height: 175px;" src="#qrcode#">
+        </div>
+        <div style="border: solid 1px #efeff0;padding: 15px;margin-bottom: 10px;font-size: 11px;line-height: 14px;">#comprador#</div>
+        <div style="border: solid 1px #efeff0;padding: 15px;margin-bottom: 10px;font-size: 11px;line-height: 14px;">
+            <div style="display: inline-block;vertical-align:middle;width: 145px;min-height: 70px;margin-right: 15px; text-align:center;"><!-- store-img < --><img src="#store-img#" style="#store-img-size# vertical-align:middle;"><!-- store-img > --></div>
+            <div style="display: inline-block;vertical-align: top;width: 227px;text-align: justify;">#store-desc#</div>
+        </div>
+    </div><!-- voucher-cel > -->
+</body>
+</html>
+<!-- voucher-mail > -->
+<hr />
+<h2>Testes</h2>
+<hr />
+<!-- testes < -->
+
+<!-- testes > -->
