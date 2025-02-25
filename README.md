@@ -1,4 +1,3 @@
-```markdown
 # Conn2Flow CMS - Open Source
 
 **Welcome to Conn2Flow CMS!**
@@ -19,9 +18,7 @@ To run Conn2Flow locally, you will need a configured LAMP (Linux, Apache, MySQL,
 *Basic Steps*:
 
 1. Clone the repository:*** (Once the public Git repository is published, the link will be inserted here)
-```bash
-git clone [GIT_REPOSITORY_URL_HERE]
-```
+ git clone [GIT_REPOSITORY_URL_HERE]
 2. Configure the Database:***
  Create a MySQL database for Conn2Flow.
  Import the database schema (if provided, or follow the installation instructions in the future documentation).
