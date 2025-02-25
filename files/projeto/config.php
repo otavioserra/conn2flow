@@ -113,7 +113,7 @@ if($_B2MAKE_TESTES){
 if($_SERVER['SERVER_NAME'] == "localhost"){
 	$_BANCO['TYPE']							=		"mysqli";
 	$_BANCO['USUARIO']						=		"root";
-	$_BANCO['SENHA']						=		"serra123";
+	$_BANCO['SENHA']						=		"SECRET";
 	$_BANCO['NOME']							=		"b2makeco_versao2";
 	$_BANCO['HOST']							=		"127.0.0.1";
 	$_BANCO['UTF8']							=		false;
@@ -137,7 +137,7 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	$_B2MAKE_PLAN_FREE = 'TRIAL';
 	$_B2MAKE_PAGINA_LOCAL = true;
 	$_B2MAKE_SCRIPTS_FORCE_RELOAD = true;
-} else if($_SERVER['SERVER_NAME'] == "beta.b2make.com"){
+} else if($_SERVER['SERVER_NAME'] == "beta.domain.com"){
 	$_BANCO['TYPE']							=		"mysqli";
 	$_BANCO['HOST']							=		"localhost";
 	$_BANCO['UTF8']							=		false;
@@ -145,21 +145,21 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	
 	if($_B2MAKE_TESTES || $_B2MAKE_TESTES2){
 		$_BANCO['USUARIO']						=		"b2makeco_versao2";
-		$_BANCO['SENHA']						=		"Y@1**FgTqwrn";
+		$_BANCO['SENHA']						=		"SECRET";
 		$_BANCO['NOME']							=		"b2makeco_versao2";
 		$_B2MAKE_TESTES_PATH					=		'/teste';
 	} else {
 		$_BANCO['USUARIO']						=		"betab2ma_versao2";
-		$_BANCO['SENHA']						=		"Adp2s@v@";
+		$_BANCO['SENHA']						=		"SECRET";
 		$_BANCO['NOME']							=		"betab2ma_versao2";
 	}
 	
-	$_B2MAKE_HOST = 'beta.b2make.com';
-	$_B2MAKE_INC = 'https://beta.b2make.com/b2make-inc/';
-	$_B2MAKE_URL = 'https://beta.b2make.com'.$_B2MAKE_TESTES_PATH.'/';
-	$_B2MAKE_URL_SEM_SLASH = 'https://beta.b2make.com'.$_B2MAKE_TESTES_PATH;
-	$_B2MAKE_FTP_SITE_HOST = 's0.b2make.com';
-	$_B2MAKE_FTP_FILES_HOST = 's0.b2make.com';
+	$_B2MAKE_HOST = 'beta.domain.com';
+	$_B2MAKE_INC = 'https://beta.domain.com/b2make-inc/';
+	$_B2MAKE_URL = 'https://beta.domain.com'.$_B2MAKE_TESTES_PATH.'/';
+	$_B2MAKE_URL_SEM_SLASH = 'https://beta.domain.com'.$_B2MAKE_TESTES_PATH;
+	$_B2MAKE_FTP_SITE_HOST = 's0.domain.com';
+	$_B2MAKE_FTP_FILES_HOST = 's0.domain.com';
 	$_B2MAKE_SITE_SUFIX_REGEX = '\.s0\.b2make\.com';
 	$_B2MAKE_FTP_SITE_PATH = false;
 	$_B2MAKE_FTP_FILES_PATH = 'files';
@@ -186,23 +186,23 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	
 	if($_B2MAKE_TESTES || $_B2MAKE_TESTES2){
 		//$_BANCO['USUARIO']						=		"b2makeco_versao2";
-		//$_BANCO['SENHA']						=		"Y@1**FgTqwrn";
+		//$_BANCO['SENHA']						=		"SECRET";
 		$_BANCO['USUARIO']						=		"platform_b2make";
-		$_BANCO['SENHA']						=		"zq,AZj&Rt7%h";
+		$_BANCO['SENHA']						=		"SECRET";
 		$_BANCO['NOME']							=		"platform_b2make";
 		$_B2MAKE_TESTES_PATH					=		'/teste';
 	} else {
 		$_BANCO['USUARIO']						=		"platform_b2make";
-		$_BANCO['SENHA']						=		"zq,AZj&Rt7%h";
+		$_BANCO['SENHA']						=		"SECRET";
 		$_BANCO['NOME']							=		"platform_b2make";
 	}
 	
-	$_B2MAKE_HOST = 'platform.b2make.com';
-	$_B2MAKE_INC = 'https://platform.b2make.com/b2make-inc/';
-	$_B2MAKE_URL = 'https://platform.b2make.com'.$_B2MAKE_TESTES_PATH.'/';
-	$_B2MAKE_URL_SEM_SLASH = 'https://platform.b2make.com'.$_B2MAKE_TESTES_PATH;
-	$_B2MAKE_FTP_SITE_HOST = 's0.b2make.com';
-	$_B2MAKE_FTP_FILES_HOST = 's0.b2make.com';
+	$_B2MAKE_HOST = 'platform.domain.com';
+	$_B2MAKE_INC = 'https://platform.domain.com/b2make-inc/';
+	$_B2MAKE_URL = 'https://platform.domain.com'.$_B2MAKE_TESTES_PATH.'/';
+	$_B2MAKE_URL_SEM_SLASH = 'https://platform.domain.com'.$_B2MAKE_TESTES_PATH;
+	$_B2MAKE_FTP_SITE_HOST = 's0.domain.com';
+	$_B2MAKE_FTP_FILES_HOST = 's0.domain.com';
 	$_B2MAKE_SITE_SUFIX_REGEX = '\.s0\.b2make\.com';
 	$_B2MAKE_FTP_SITE_PATH = false;
 	$_B2MAKE_FTP_FILES_PATH = 'files';
@@ -310,48 +310,48 @@ $_PROJETO['b2make_stores_permissoes']					=	Array('orders','services','voucher-l
 
 //$_PAGSEGURO_SANDBOX = true;
 
-$_PROJETO['PAGSEGURO_EMAIL']							=	'b2make@b2make.com';
-$_PROJETO['PAGSEGURO_TOKEN']							=	'D185B6BEA07148D1A191426835B27105';
-$_PROJETO['PAGSEGURO_APP_PUB_ID']						=	'PUB1AD09F01FDCA47DD930987C696AE0E3B';
+$_PROJETO['PAGSEGURO_EMAIL']							=	'b2make@domain.com';
+$_PROJETO['PAGSEGURO_TOKEN']							=	'SECRET';
+$_PROJETO['PAGSEGURO_APP_PUB_ID']						=	'SECRET';
 $_PROJETO['PAGSEGURO_APP_ID']							=	'b2make';
-$_PROJETO['PAGSEGURO_APP_KEY']							=	'A7B321E399992CFAA4F6DFB9151CE53C';
-$_PROJETO['PAGSEGURO_APP_PASS']							=	'Yzv4nXkIq@b@';
+$_PROJETO['PAGSEGURO_APP_KEY']							=	'SECRET';
+$_PROJETO['PAGSEGURO_APP_PASS']							=	'SECRET';
 $_PROJETO['PAGSEGURO_APP_TAXA']							=	2.99;
 $_PROJETO['PAGSEGURO_SANDBOX_APP_PUB_ID']				=	'a definir';
 $_PROJETO['PAGSEGURO_SANDBOX_APP_ID']					=	'app2119394205';
-$_PROJETO['PAGSEGURO_SANDBOX_APP_KEY']					=	'D9D5ACE7B8B885C004E52F8982E77D28';
-$_PROJETO['PAGSEGURO_SANDBOX_EMAIL_COMPRADOR']			=	'c63017299095439123626@sandbox.pagseguro.com.br';
+$_PROJETO['PAGSEGURO_SANDBOX_APP_KEY']					=	'SECRET';
+$_PROJETO['PAGSEGURO_SANDBOX_EMAIL_COMPRADOR']			=	'account@sandbox.pagseguro.com.br';
 $_PROJETO['PAGSEGURO_PARCELAS_SEM_JUROS_MAX']			=	12;
 
 //$_PAYPAL_SANDBOX = true;
 
-$_PROJETO['PAYPAL_SANDBOX_USER']						=	'b2make-facilitator_api1.b2make.com';
-$_PROJETO['PAYPAL_SANDBOX_PASS']						=	'TPQ3WLEEYULFNS2N';
+$_PROJETO['PAYPAL_SANDBOX_USER']						=	'b2make-facilitator_api1.domain.com';
+$_PROJETO['PAYPAL_SANDBOX_PASS']						=	'SECRET';
 $_PROJETO['PAYPAL_SANDBOX_SIGNATURE']					=	'Ai1PaghZh5FmBLCDCTQpwG8jB264AqvoPM2XMLreZewrT9pJ87rR0.3S';
-$_PROJETO['PAYPAL_SANDBOX_EMAIL']						=	'b2make-facilitator@b2make.com';
-$_PROJETO['PAYPAL_USER']								=	'b2make_api1.b2make.com';
-$_PROJETO['PAYPAL_PASS']								=	'P7SVBNQEFTF5RDDL';
-$_PROJETO['PAYPAL_SIGNATURE']							=	'An5ns1Kso7MWUdW4ErQKJJJ4qi4-AxXvev25ZBGvby2bzPTYmpR-5VZE';
-$_PROJETO['PAYPAL_COMISSAO_EMAIL']						=	'b2make@b2make.com';
+$_PROJETO['PAYPAL_SANDBOX_EMAIL']						=	'b2make-facilitator@domain.com';
+$_PROJETO['PAYPAL_USER']								=	'b2make_api1.domain.com';
+$_PROJETO['PAYPAL_PASS']								=	'SECRET';
+$_PROJETO['PAYPAL_SIGNATURE']							=	'SECRET';
+$_PROJETO['PAYPAL_COMISSAO_EMAIL']						=	'b2make@domain.com';
 $_PROJETO['PAYPAL_COMISSAO_TAXA']						=	2.99;
-$_PROJETO['PAYPAL_COMISSAO_ID']							=	'7FQ3U3DZJE7J6';
+$_PROJETO['PAYPAL_COMISSAO_ID']							=	'SECRET';
 $_PROJETO['PAYPAL_COMISSAO_TESTES']						=	false;
 $_PROJETO['PAYPAL_COMISSAO_ASSUNTO']					=	'Pagamento de taxa sobre uso do B2make';
 $_PROJETO['PAYPAL_COMISSAO_MENSAGEM']					=	'Pagamento de taxa sobre uso do B2make';
-$_PROJETO['PAYPAL_B2MAKE_SANDBOX_ID']					=	'ASiRM8MWj_ArWLKSMEHywreAOthHD6fug5xTEtKiSaBaBlpU6XX4YdsoJTYI42SlhHxi3QmsgDHrzA33';
-$_PROJETO['PAYPAL_B2MAKE_SANDBOX_SECRET']				=	'EHUKXjpenz-dV07NbXh7B4gOm3GrNNeyI0si8I2lNAaczedk4WTeifw1etcIrJh9UB01PNDR00zMa3s5';
-$_PROJETO['PAYPAL_B2MAKE_LIVE_ID']						=	'ARnA3d4isM3DEt4skWXnqL4OgGTJMj4lqoZpNmW7-9xPbxLyu0ucB1whzBinc2FHrjfbCoZPni8kOvDf';
-$_PROJETO['PAYPAL_B2MAKE_LIVE_SECRET']					=	'EPpnEzDxux03j7c5VE306KT4rHtHjDV32rXfOWruS15qGOdIyVK_JWPC3Clw61JGGs3yKGOkT9ZU0e-r';
+$_PROJETO['PAYPAL_B2MAKE_SANDBOX_ID']					=	'SECRET';
+$_PROJETO['PAYPAL_B2MAKE_SANDBOX_SECRET']				=	'SECRET';
+$_PROJETO['PAYPAL_B2MAKE_LIVE_ID']						=	'SECRET';
+$_PROJETO['PAYPAL_B2MAKE_LIVE_SECRET']					=	'SECRET';
 
 $_PROJETO['PPPLUS_SEGURANCA_TENTATIVAS_MINUTOS']		=	15;
 $_PROJETO['PPPLUS_SEGURANCA_TENTATIVAS_MAX']			=	10;
 $_PROJETO['PPPLUS_TESTES']								=	false;
 
 $_PROJETO['INSTAGRAM_CLIENT_ID']						=	'2504698409745806';
-$_PROJETO['INSTAGRAM_CLIENT_SECRET']					=	'fe0e6dd4e81f536fe2185adf54516a07';
+$_PROJETO['INSTAGRAM_CLIENT_SECRET']					=	'SECRET';
 /* 
 $_PROJETO['INSTAGRAM_CLIENT_ID']						=	'404564020435250';
-$_PROJETO['INSTAGRAM_CLIENT_SECRET']					=	'22bd56d53da9f7145c716192279745f8';
+$_PROJETO['INSTAGRAM_CLIENT_SECRET']					=	'SECRET';
  */
 $_PROJETO['servicos']['new_width_mini']					=	'159';
 $_PROJETO['servicos']['new_height_mini']				=	'159';
