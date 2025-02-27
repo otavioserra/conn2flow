@@ -7,7 +7,7 @@
 // ===== Definições de variáveis gerais do gestor.
 
 $_GESTOR['versao']								=	'1.5.1'; // Versão do gestor como um todo.
-$_GESTOR['id']									=	'entrey-'; // Identificador básico do gestor
+$_GESTOR['id']									=	'b2make-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
 $_GESTOR['host-configuracao-id-modulo']			=	'host-configuracao'; // Identificador módulo de configuração do host.
 
@@ -75,32 +75,32 @@ $_GESTOR['fomantic-ui-folder']					=	'fomantic-UI@2.9.0';
 if($_SERVER['SERVER_NAME'] == "localhost"){
 	// ===== Url raiz.
 	
-	$_GESTOR['url-raiz']							=	'/entrey/';
+	$_GESTOR['url-raiz']							=	'/b2make/';
 	
 	// ===== Configuração do server de cada host de usuário.
 	
 	$_GESTOR['hosts-server'] = Array(
 		'ativo'						=>	true,
 		'user-root-path'			=>	'/home/',
-		'cpanel-root-path'			=>	'/home/betaentreycom/b2make-cpanel/',
+		'cpanel-root-path'			=>	'/home/b2make/b2make-cpanel/',
 		'local'						=>	'betaServer0',
 		'server'					=>	's0',
 		'pacote-inicial'			=>	'TRIAL',
 		'user-perfix'				=>	's0ub',
-		'dominio'					=>	's0.entrey.com.br',
-		'dominio-sufix-regex'		=>	's0\.entrey\.com\.br',
-		'db-user-sufix'				=>	'_entrey',
-		'ftp-user-sufix'			=>	'_entrey',
+		'dominio'					=>	's0.b2make.com',
+		'dominio-sufix-regex'		=>	's0\.b2make\.com',
+		'db-user-sufix'				=>	'_b2make',
+		'ftp-user-sufix'			=>	'_b2make',
 		'ftp-root'					=>	'/',
 		'ftp-site-root'				=>	'/public_html/',
-		'ftp-files-root'			=>	'/entrey/files/',
-		'ftp-gestor-root'			=>	'/entrey/',
+		'ftp-files-root'			=>	'/b2make/files/',
+		'ftp-gestor-root'			=>	'/b2make/',
 	);
 	
 	// ===== Identificador do ambiente da plataforma.
 	
 	$_GESTOR['plataforma-id'] = 'local';
-} else if($_SERVER['SERVER_NAME'] == "beta.entrey.com.br"){
+} else if($_SERVER['SERVER_NAME'] == "beta.b2make.com"){
 	// ===== Url raiz.
 	
 	$_GESTOR['url-raiz']							=	'/';
@@ -110,19 +110,19 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	$_GESTOR['hosts-server'] = Array(
 		'ativo'						=>	true,
 		'user-root-path'			=>	'/home/',
-		'cpanel-root-path'			=>	'/home/betaentreycom/b2make-cpanel/',
+		'cpanel-root-path'			=>	'/home/betab2makecom/b2make-cpanel/',
 		'local'						=>	'betaServer0',
 		'server'					=>	's0',
 		'pacote-inicial'			=>	'TRIAL',
 		'user-perfix'				=>	's0ub',
-		'dominio'					=>	's0.entrey.com.br',
-		'dominio-sufix-regex'		=>	's0\.entrey\.com\.br',
-		'db-user-sufix'				=>	'_entrey',
-		'ftp-user-sufix'			=>	'_entrey',
+		'dominio'					=>	's0.b2make.com',
+		'dominio-sufix-regex'		=>	's0\.b2make\.com',
+		'db-user-sufix'				=>	'_b2make',
+		'ftp-user-sufix'			=>	'_b2make',
 		'ftp-root'					=>	'/',
 		'ftp-site-root'				=>	'/public_html/',
-		'ftp-files-root'			=>	'/entrey/files/',
-		'ftp-gestor-root'			=>	'/entrey/',
+		'ftp-files-root'			=>	'/b2make/files/',
+		'ftp-gestor-root'			=>	'/b2make/',
 	);
 	
 	// ===== Identificador do ambiente da plataforma.
@@ -138,19 +138,19 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	$_GESTOR['hosts-server'] = Array(
 		'ativo'						=>	true,
 		'user-root-path'			=>	'/home/',
-		'cpanel-root-path'			=>	'/home/entreycom/b2make-cpanel/',
+		'cpanel-root-path'			=>	'/home/b2makecom/b2make-cpanel/',
 		'local'						=>	'server0',
 		'server'					=>	's0',
 		'pacote-inicial'			=>	'TRIAL',
 		'user-perfix'				=>	's0u',
-		'dominio'					=>	's0.entrey.com.br',
-		'dominio-sufix-regex'		=>	's0\.entrey\.com\.br',
-		'db-user-sufix'				=>	'_entrey',
-		'ftp-user-sufix'			=>	'_entrey',
+		'dominio'					=>	's0.b2make.com',
+		'dominio-sufix-regex'		=>	's0\.b2make\.com',
+		'db-user-sufix'				=>	'_b2make',
+		'ftp-user-sufix'			=>	'_b2make',
 		'ftp-root'					=>	'/',
 		'ftp-site-root'				=>	'/public_html/',
-		'ftp-files-root'			=>	'/entrey/files/',
-		'ftp-gestor-root'			=>	'/entrey/',
+		'ftp-files-root'			=>	'/b2make/files/',
+		'ftp-gestor-root'			=>	'/b2make/',
 	);
 	
 	// ===== Identificador do ambiente da plataforma.
@@ -173,10 +173,10 @@ $_GESTOR['pagina#contato-url']					=	'contato/'; // Página de contatos relativo
 $_GESTOR['plataforma'] = Array(
 	'hosts' => Array(
 		'producao' => Array(
-			'host' => 'entrey.com.br',
+			'host' => 'b2make.com.br',
 		),
 		'beta' => Array(
-			'host' => 'beta.entrey.com.br',
+			'host' => 'beta.b2make.com.br',
 		),
 	)
 );
