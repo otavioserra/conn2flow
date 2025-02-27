@@ -1,0 +1,49 @@
+#_autenticar-login-cont{
+	float:left;
+	width:260px;
+	margin:0px 15px 0px 0px;
+}
+#_autenticar-cadastro-cont{
+	float:left;
+	width:400px;
+}
+._autenticar-txt{
+	background-color:#CBCBCB;
+	padding:7px 10px;
+	margin:10px 0px;
+	font-weight:bold;
+}
+#_autenticar-login label{
+	font-weight:bold;
+	display:block;
+}
+#_autenticar-login input[type="text"],#_autenticar-login input[type="password"]{
+	width:250px;
+	margin:5px 0px;
+}
+#_autenticar-login input[type="submit"]{
+	margin:10px 0px;
+}
+#_autenticar-login #login-esqueceu-senha{
+	margin-top:5px;
+}
+#_autenticar-cadastro label{
+	font-weight:bold;
+	display:block;
+}
+#_autenticar-cadastro input[type="text"],#_autenticar-cadastro input[type="password"]{
+	width:390px;
+	margin:5px 0px;
+}
+#_autenticar-cadastro .inbox{
+	margin-bottom:5px;
+}
+#_autenticar-cadastro .hidden{
+	display:none;
+}
+#_autenticar-cadastro input[type="button"]{
+	margin:10px 0px;
+}
+.dialog{
+	display:none;
+}

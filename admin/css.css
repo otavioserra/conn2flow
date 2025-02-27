@@ -1,0 +1,72 @@
+.top {
+	position: relative;
+}
+.conteiner {
+	padding: 20px;
+	position: relative;
+	margin: 0px;
+}
+.item {
+	margin-right: 20px;
+	position: relative;
+	float: left;
+	margin-bottom: 10px;
+}
+.item a {
+	padding: 13px 0px 2px 0px;
+	display: block;
+	width: 100%;
+}
+.item a:hover {
+	text-decoration: none;
+
+}
+.item a h2 {
+	display: block;
+	text-align: center;
+	font-size: 12px;
+	line-height: 15px;
+	height: 30px;
+}
+.imagem {
+	margin-right: auto;
+	margin-left: auto;
+	background-image:url(../images/admin/icon-painel-lateral.png);
+	width:20px;
+	height:20px;
+}
+#in_topo {
+	text-align:center;
+	padding: 9px;
+	background-color:#D7D9DD;
+	min-width:600px;
+}
+#in_topo span {
+	font-size: 16px;
+	font-weight: bold;
+}
+#lay_topo{
+	background-color:#D7D9DD;
+	min-height:70px;
+	min-width:800px;
+	position:relative;
+}
+.in_busca_mask{
+	float:left;
+	width:75%;                         /* para navegadores que não suportam calc() */
+	width: -webkit-calc(100% - 200px);  /* para Chrome */
+	width: -moz-calc(100% - 200px);     /* para Firefox */
+	width: calc(100% - 200px);          /* para suporte nativo */
+}
+.in_busca {
+	width:400px;
+	margin:10px auto 0px auto;
+}
+#lay_botao_sair{
+	float:right;
+	line-height:20px;
+	display:block;
+	text-align:center;
+	margin:15px 45px 0px 0px;
+	color:#58585B;
+}

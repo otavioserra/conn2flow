@@ -1,0 +1,155 @@
+<!--!#del#(#!--><link href="../../includes/css/padrao.css" rel="stylesheet" type="text/css" />
+<link href="layout-padrao.css" rel="stylesheet" type="text/css" />
+<link href="../../includes/css/index.css" rel="stylesheet" type="text/css" /><link rel="stylesheet" type="text/css" href="layout.css" media="all" /><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" type="text/css" href="projeto-ie.css" media="all" />
+<link rel="stylesheet" type="text/css" href="projeto-not-ie.css" media="all" /><!--!#del#)#!-->
+<hr />
+<h3>P&aacute;gina Inicial</h3>
+<hr />
+<!-- inicio < -->
+<!-- inicio > -->
+<hr />	
+<h3>Layout P&aacute;ginas</h3>
+<hr />
+<!-- layout < -->
+<div id="layout">#body</div>
+<!-- layout > -->
+<hr />
+<h3>Formul&aacute;rio Contato</h3>
+<hr />
+<!-- #modulos#formulario_contato# < -->
+<form id="form_contato" name="form_contato">
+	<label for="contato_nome">Nome</label>
+	<input name="nome" type="text" id="contato_nome" maxlength="100" />
+	<label for="contato_email">Email</label>
+	<input name="email" type="text" id="contato_email" maxlength="100" />
+	<label for="contato_mensagem">Mensagem</label>
+	<textarea name="mensagem" id="contato_mensagem"></textarea>
+	<input name="contato_botao" type="button" id="contato_botao" value="OK" />
+	<input name="opcao" type="hidden" value="contato_banco" />
+</form>
+<!-- #modulos#formulario_contato# > -->
+<hr />
+<h3>P&aacute;gina N&atilde;o Encontrada</h3>
+<hr />
+<!-- pagina_nao_encontrada < -->
+<div id="pagina_nao_encontrada" style="padding:30px; text-align:center;">
+	<img src="#imagem#" alt="Esta P&aacute;gina N&atilde;o Est&aacute; Dispon&iacute;vel - Erro 404" />
+</div>
+<!-- pagina_nao_encontrada > -->
+<hr />
+<h3>Galerias</h3>
+<hr />
+<!-- galerias < -->
+<h1>#nome#</h1>
+<div class="galeria-imagens">#imagens#</div>
+<!-- galerias > -->
+<hr />
+<h3>Galerias V&iacute;deos</h3>
+<hr />
+<!-- galerias_videos < -->
+<h1>#nome#</h1>
+<div class="galeria-videos">#videos#</div>
+<!-- galerias_videos > -->
+<hr />
+<h3>Formul&aacute;rio Cadastramento de Usu&aacute;rios</h3>
+<hr />
+<!-- #modulos#formulario_usuario# < -->
+<div>
+<form id="form_usuario" name="form_usuario" action="">
+	<label for="cadastro-usuario">Usu&aacute;rio:</label>
+	<input name="usuario" type="text" id="cadastro-usuario" />
+	<div id="mens_usuario" class="cont-mensagem"></div>
+	<div class="clear"></div>
+	<label for="cadastro-senha">Senha:</label>
+	<input name="senha" type="password" id="cadastro-senha" />
+	<div id="mens_senha" class="cont-mensagem"></div>
+	<div class="clear"></div>
+	<div class="inbox">
+		<div class="graybar" id="graybar"></div>
+		<div class="colorbar" id="colorbar"></div>
+		<span class="percent" id="percent">0%</span>
+		<span class="result" id='result'>For&ccedil;a da senha</span>
+	</div>
+	<div class="clear"></div>
+	<label for="cadastro-senha2">Redigite a senha:</label>
+	<input name="senha2" type="password" id="cadastro-senha2" />
+	<div class="clear"></div>
+	<label for="cadastro-email">E-mail:</label>
+	<input name="email" type="text" id="cadastro-email" />
+	<div id="mens_email" class="cont-mensagem"></div>
+	<div class="clear"></div>
+	<label for="cadastro-nome">Nome:</label>
+	<input name="nome" type="text" id="cadastro-nome" />
+	<div class="clear"></div>
+	<label for="cadastro-sobrenome">Sobrenome:</label>
+	<input name="sobrenome" type="text" id="cadastro-sobrenome" />
+	<div class="clear"></div>
+	<label for="cadastro-cep">CEP:</label>
+	<input name="cep" type="text" id="cadastro-cep" style="width:70px;" class="cep" />
+	<div class="clear"></div>
+	<label for="cadastro-endereco">Endere&ccedil;o:</label>
+	<input name="endereco" type="text" id="cadastro-endereco" />
+	<div class="clear"></div>
+	<label for="cadastro-numero">N&uacute;mero:</label>
+	<input name="numero" type="text" id="cadastro-numero" style="width:50px;" maxlength="6" />
+	<div class="clear"></div>
+	<label for="cadastro-complemento">Complemento:</label>
+	<input name="complemento" type="text" id="cadastro-complemento" />
+	<div class="clear"></div>
+	<label for="cadastro-bairro">Bairro:</label>
+	<input name="bairro" type="text" id="cadastro-bairro" />
+	<div class="clear"></div>
+	<label for="cadastro-cidade">Cidade:</label>
+	<input name="cidade" type="text" id="cadastro-cidade" />
+	<div class="clear"></div>
+	<label for="cadastro-uf">UF:</label>
+	<input name="uf" type="text" id="cadastro-uf" style="width:20px; text-transform:uppercase;" maxlength="2" />
+	<div class="clear"></div>
+	<label for="cadastro-telefone">Telefone:</label>
+	<input name="telefone" type="text" id="cadastro-telefone" class="telefone" style="width:100px;" />
+	<div class="clear"></div>
+	<label for="cadastro-celular">Celular:</label>
+	<input name="celular" type="text" id="cadastro-celular" class="telefone" style="width:100px;" />
+	<div class="clear"></div>
+	<div id="recaptcha_div"></div>
+	<div class="clear"></div>
+	<input type="button" class="link_hover" id="cadastro-botao" value="Cadastrar">
+	<input name="opcao" type="hidden" value="cadastro_banco" />
+	<div class="clear"></div>
+	<div class="hidden" id="d_usuario">Este usuário já está em uso! Escolha outro.</div>
+	<div class="hidden" id="d_senha">Senha e Redigite a Senha são diferentes.</div>
+	<div class="hidden" id="d_caracter">Usuário no mínimo 3 e no máx 20 caracteres.</div>
+	<div class="hidden" id="d_caracter_in">Caracteres inválidos, apenas caracteres alfanuméricos e ( _ ou @ ou . ).</div>
+	<div class="hidden" id="d_email">Este email já está em uso! Escolha outro.</div>
+</form>
+</div>
+<!-- #modulos#formulario_usuario# > -->
+<hr />
+<h3>Formul&aacute;rio Cadastramento de Usu&aacute;rios</h3>
+<hr />
+<!-- contatos < -->
+<table width="100%" border="0" cellspacing="5" class="tabela_lista">
+  <tr>
+    <td width="130" align="left" class="lista_header">Data:</td>
+    <td align="left" class="lista_cel"><strong>#data</strong></td>
+  </tr>
+  <tr>
+    <td align="left" class="lista_header">Nome:</td>
+    <td align="left" class="lista_cel">#nome</td>
+  </tr>
+  <tr>
+    <td align="left" class="lista_header">E-mail:</td>
+    <td align="left" class="lista_cel"><a href="mailto:#email">#email</a></td>
+  </tr>
+  <tr>
+    <td align="left" class="lista_header">Mensagem:</td>
+    <td align="left" class="lista_cel">#mensagem</td>
+  </tr>
+</table>
+<!-- contatos > -->
+<hr />
+<h3></h3>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

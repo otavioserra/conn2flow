@@ -1,0 +1,111 @@
+.texto1 {
+	color: #096;
+	font-weight: bold;
+}
+.texto2 {
+	color: #C03;
+	font-weight: bold;
+}
+.texto3 {
+	color: #03F;
+	font-weight: bold;
+}
+
+.texto4 {
+	color: #009;
+	font-weight: bold;
+}
+
+.ordenacao {
+	text-align: center;
+}
+.cont-img-vid{
+	float: left;
+	width:75px;
+	margin:10px;
+	background-color:#FFF;
+	padding:15px 15px 10px 15px;
+}
+.controles{
+	margin:5px 0px 0px -4px;
+	width:100px;
+}
+.video_call{
+	height:75px;
+	cursor:pointer;
+	display:block;
+	border:none;
+}
+.video_cont{
+	height:79px;
+	padding-top:1px;
+}
+#jquery_jplayer_1{
+	margin-left:35px;
+}
+#jp_container_1 {
+	margin: 0px 0px 0px 0px;
+}
+#jp_container_1 a{
+	width:39px;
+	height:39px;
+	display:block;
+	margin:0px 0px 0px 300px;
+}
+#cont-total{
+	position:fixed;
+	width:100%;
+	height:100%;
+	background-color:#FFF;
+	margin:-10px;
+}
+.input-ordenacao{
+	text-align:center;
+	margin:-2px 5px 0px 0px;
+	display:block;
+	float:left;
+	width:30px;
+}
+.a-bloquear{
+	margin-right:2px;
+}
+.mover-esq{
+	background-image:url(../../images/admin/icon-central.png);
+	width:16px;
+	height:16px;
+	background-position:-32px -16px;
+	display:block;
+	float:left;
+}
+.mover-dir{
+	background-image:url(../../images/admin/icon-central.png);
+	width:16px;
+	height:16px;
+	background-position:-16px -16px;
+	display:block;
+	float:left;
+}
+.bloquear-ativo{
+	background-image:url(../../images/admin/icon-central.png);
+	width:16px;
+	height:16px;
+	background-position:-80px -0px;
+	display:block;
+	float:left;
+}
+.bloquear-inativo{
+	background-image:url(../../images/admin/icon-central.png);
+	width:16px;
+	height:16px;
+	background-position:-64px -0px;
+	display:block;
+	float:left;
+}
+.excluir{
+	background-image:url(../../images/admin/icon-central.png);
+	width:16px;
+	height:16px;
+	background-position:-96px -0px;
+	display:block;
+	float:left;
+}

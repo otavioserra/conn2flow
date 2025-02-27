@@ -1,0 +1,47 @@
+<!--!#del#(#!--><link href="../../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="../../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<hr />
+<h3>Layout Imagens</h3>
+<hr />
+<!-- layout_imagens < -->
+#ferramenta
+<!-- layout_imagens > -->
+<hr />
+<h3>Uploads</h3>
+<hr />
+<!-- upload_imagens < -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td><h1>Upload de Imagens / V&iacute;deos</h1>
+			<div id="swfupload-control">
+				<p>&Eacute; permitido no m&aacute;ximo 100 imagens (jpg, png, gif) e/ou 100 v&iacute;deos (webm, ogv, m4v), sendo que cada imagem/v&iacute;deo pode ter no m&aacute;ximo 10 MB.</p>
+				<p>Clique no bot&atilde;o abaixo para iniciar o envio das imagens.</p>
+				<span id="swfupload-button"></span>
+				<p id="queuestatus" ></p>
+				<ol id="log">
+				</ol>
+			</div></td>
+	</tr>
+</table>
+<input name="usuario" id="usuario" type="hidden" value="#usuario" />
+<input name="sessao" id="sessao" type="hidden" value="#sessao" />
+<!-- upload_imagens > -->
+<hr />
+<h3>Lista Imagens</h3>
+<hr />
+<!-- lista_imagens < -->
+<!-- col1 < -->
+<div class="cont-img-vid">
+	<div class="img-vid">#img_vid#</div>
+	<div class="controles">
+    <!-- adicionar < --><a href="?opcao=ordenar_background&tipo=esq&id=#id#" class="a-bloquear mover-esq" title="Mover Esquerda"></a>
+    <a href="?opcao=ordenar_background&tipo=dir&id=#id#" class="a-bloquear mover-dir" title="Mover Direita"></a><!-- adicionar > -->
+    <!-- bloquear < --><a href="?opcao=bloqueio&tipo=#tipo#&id=#id#" class="a-bloquear #bloq-class#" title="#bloq-title#"></a><!-- bloquear > -->
+    <!-- excluir < --><a href="#" onclick="excluir('.','#id#','excluir')" title="Excluir" class="excluir"></a><!-- excluir > --></div>
+</div>
+<!-- col1 > -->
+<div class="clear"></div>
+<!-- lista_imagens > -->
+<hr />

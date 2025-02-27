@@ -1,0 +1,748 @@
+#_carrinho-pedido{
+	color:#7E7E7E;
+	line-height:25px;
+	font-size:20px;
+	font-weight:bold;
+}
+#_carrinho-etapas{
+	color:#7E7E7E;
+	line-height:20px;
+	font-size:16px;
+	font-weight:bold;
+}
+#_carrinho-titulo{
+	color:#7E7E7E;
+	line-height:30px;
+	font-size:12px;
+	font-weight:bold;
+	background-color:#E9E9E9;
+	padding-left:10px;
+}
+._carrinho-cont{
+	margin:3px 0px 0px 0px;
+	width:100%;
+	color:#7E7E7E;
+	line-height:14px;
+	font-size:12px;
+	background-color:#FFF;
+	background-image:url(../../images/icons/ecom-background-header.gif);
+	background-repeat:repeat-x;
+	border:solid 1px #E9E9E9;
+}
+#_carrinho-cont{
+	margin:0px 0px 3px 0px;
+	background-image: none;
+}
+._carrinho-cont tr{
+	padding:0px;
+	margin:0px;
+}
+._carrinho-cont tr td{
+	padding:8px 5px;
+	margin:0px;
+	text-align:center;
+}
+._carrinho-cont tr td a{
+	font-weight:bold;
+}
+#_carrinho-cont-header tr:nth-child(1) td{
+	font-weight:bold;
+}
+#_carrinho-cont-header tr:nth-child(2) td{
+	background-color:#E9E9E9;
+	line-height:3px;
+	padding:0px;
+}
+._carrinho-cont tr td:nth-child(1){
+	text-align:left;
+}
+._carrinho-cont tr td:nth-child(2){
+	width:70px;
+	border-left:solid 1px #E9E9E9;
+	font-weight:bold;
+}
+._carrinho-cont tr td:nth-child(3){
+	width:70px;
+	border-left:solid 1px #E9E9E9;
+	font-weight:bold;
+}
+._carrinho-cont tr td:nth-child(4){
+	width:90px;
+	border-left:solid 1px #E9E9E9;
+	font-weight:bold;
+}
+._carrinho-cont tr td:nth-child(5){
+	width:90px;
+	border-left:solid 1px #E9E9E9;
+	font-weight:bold;
+}
+#_carrinho-cont tr td:nth-child(5){
+	color:#C60005;
+}
+._carrinho-excluir-item{
+	cursor:pointer;
+	display:block;
+	margin:2px auto 0px auto;
+}
+#_carrinho-rodape{
+	color:#7E7E7E;
+	line-height:30px;
+	font-size:12px;
+	font-weight:bold;
+	background-color:#E9E9E9;
+	padding:6px 10px;
+	margin-bottom:20px;
+}
+#_pedido-frete-cont{
+	color:#7E7E7E;
+	line-height:30px;
+	font-size:12px;
+	font-weight:bold;
+	background-color:#E9E9E9;
+	padding:6px 10px;
+	margin-bottom:20px;
+}
+#_pedido-frete-cont #_pedido-frete{
+	float:right;
+	font-size:20px;
+	color:#C60005;
+	margin-top:5px;
+}
+#_pedido-frete-cont #_pedido-frete-tit{
+	float:right;
+	color:#7E7E7E;
+	line-height:30px;
+	font-size:20px;
+	font-weight:bold;
+	padding:6px 10px;
+}
+#_carrinho-cupom{
+	color:#7E7E7E;
+	line-height:30px;
+	font-size:12px;
+	font-weight:bold;
+	background-color:#E9E9E9;
+	padding:8px 10px 6px 10px;
+	margin-bottom:20px;
+	text-align:right;
+}
+#_carrinho-cupom input{
+	width:150px;
+}
+#_carrinho-rodape #_carrinho-total-tit-itens{
+	float:left;
+}
+#_carrinho-rodape #_carrinho-total-tit{
+	float:right;
+	font-size:20px;
+}
+#_carrinho-rodape #_carrinho-total,#_carrinho-rodape #_pedido-total{
+	float:right;
+	font-size:20px;
+	color:#C60005;
+	margin-left:10px;
+}
+#_carrinho-valor-total-pedido #_carrinho-total-pedido{
+	float:right;
+	font-size:20px;
+	line-height:30px;
+	color:#C60005;
+	padding:6px 0px 6px 10px;
+	margin-left:10px;
+}
+#_carrinho-valor-total-pedido #_carrinho-total-pedido-tit{
+	float:right;
+	color:#7E7E7E;
+	line-height:30px;
+	font-size:20px;
+	font-weight:bold;
+	padding:6px 10px;
+	margin-bottom:20px;
+}
+#_carrinho-continuar,#_carrinho-continuar-2{
+	cursor:pointer;
+	float:right;
+	margin:15px 0px;
+	padding:10px 15px;
+	line-height:18px;
+	font-size:18px;
+	color:#FFF;
+	background-color:#AD0000;
+}
+#_carrinho-validar-cupom{
+	cursor:pointer;
+	float:right;
+	margin:15px 0px 6px 0px;
+	padding:10px 15px;
+	line-height:18px;
+	font-size:18px;
+	color:#FFF;
+	background-color:#16619D;
+	font-weight:normal;
+	display:none;
+}
+#_carrinho-continuar-comprando{
+	cursor:pointer;
+	float:left;
+	margin:15px 0px;
+	padding:10px 15px;
+	line-height:18px;
+	font-size:18px;
+	color:#FFF;
+	background-color:#757575;
+}
+#_carrinho-cupom-cont{
+	display:none;
+	text-align:right;
+}
+#_carrinho-cupom-nao-aplicavel{
+	display:none;
+	line-height:16px;
+	font-size:14px;
+	color:#AD0000;
+}
+#_carrinho-cupom-desconto-tit{
+	border-left: solid 1px #757575;
+	margin-left:5px;
+	padding-left:5px;
+}
+#_carrinho-cupom-desconto{
+	border-right: solid 1px #757575;
+	margin-right:5px;
+	padding-right:5px;
+}
+#_carrinho-cupom-valor-tit{
+	font-size:20px;
+}
+#_carrinho-cupom-valor{
+	font-size:20px;
+	color:#16619D;
+}
+#_voucher-rodape{
+	margin-bottom:20px;
+}
+#_voucher-cont{
+	-webkit-print-color-adjust:exact;
+}
+#_voucher-pedidos{
+	margin:10px 0px;
+	border-bottom: 2px dotted #B6B7B9;
+	padding:10px 0px 30px 0px;
+}
+#_voucher-pedidos label{
+	float:left;
+	display:block;
+	padding-top:10px;
+	color:#F17134;
+	font-size:27px;
+	line-height:27px;
+}
+#_voucher-pedidos select{
+	float:left;
+	display:block;
+	margin-left:5px;
+	background-color:#CED0D1;
+	border:1px #CED0D1 solid;
+	padding:6px;
+	font-size:16px;
+	line-height:16px;
+	color:#17619B;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+}
+#_voucher-menu{
+	margin:10px 0px;
+	background-color:#F6F6F6;
+	border:solid 1px #CED0D1;
+	height:42px;
+}
+#_voucher-menu-titulo{
+	line-height:42px;
+	color:#FFF;
+	font-size:14px;
+	font-family: Arial, Gotham, "Helvetica Neue", Helvetica, sans-serif;
+	font-weight: bold;
+	padding:0px 8px;
+	float:left;
+	background-color:#F07034;
+}
+._voucher-span{
+	color:#6C6D71;
+	font-size:7px;
+	line-height:6px;
+	font-weight:normal;
+}
+._voucher-menu-botoes{
+	background-repeat:no-repeat;
+	border-right:solid 1px #E3E4E5;
+	font-family: Arial, Gotham, "Helvetica Neue", Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	line-height:9px;
+	color:#17619B;
+	height:22px;
+	float:left;
+	margin-top:5px;
+	padding-right:7px;
+	cursor:pointer;
+}
+#_voucher-para-presente{
+	background-image:url(../../images/icons/ico-para-presente.png);
+	padding-left:38px;
+	padding-top:10px;
+	background-position:5px center;
+}
+#_voucher-para-voce{
+	background-image:url(../../images/icons/ico-para-voce.png);
+	padding-left:38px;
+	padding-top:10px;
+	background-position:5px center;
+}
+#_voucher-alterar-campos{
+	background-image:url(../../images/icons/ico-alterar.png);
+	padding-left:38px;
+	padding-top:10px;
+	background-position:5px center;
+}
+#_voucher-tema{
+	background-image:url(../../images/icons/ico-tema.png);
+	padding-left:35px;
+	padding-top:10px;
+	background-position:5px center;
+}
+#_voucher-visulizar{
+	background-image:url(../../images/icons/ico-visualizar.png);
+	padding-left:42px;
+	padding-top:10px;
+	background-position:5px center;
+}
+#_voucher-imprimir{
+	background-image:url(../../images/icons/ico-imprimir.png);
+	padding-left:35px;
+	padding-top:10px;
+	background-position:5px center;
+}
+#_voucher-enviar-email{
+	background-image:url(../../images/icons/ico-enviar-email.png);
+	padding-left:35px;
+	padding-top:10px;
+	background-position:5px center;
+}
+#_voucher-concluir{
+	background-image:url(../../images/icons/ico-concluir.png);
+	padding-left:22px;
+	padding-top:10px;
+	background-position:0px center;
+	background-repeat:no-repeat;
+	font-family: Arial, Gotham, "Helvetica Neue", Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	line-height:9px;
+	color:#F17134;
+	height:22px;
+	float:right;
+	margin-top:5px;
+	margin-right:20px;
+	cursor:pointer;
+}
+#_voucher-form-email{
+	display:none;
+}
+#_voucher-form-presente{
+	display:none;
+}
+#_voucher-form-presente input[type="submit"],#_voucher-form-email input[type="button"]{
+	font-family: Arial, Gotham, "Helvetica Neue", Helvetica, sans-serif;
+	padding:0px 10px;
+	line-height:32px;
+	font-size:16px;
+	font-weight:bold;
+	border:none;
+	color:#FFF;
+	background-color:#AB1E10;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	margin-top:10px;
+	margin-left:0px;
+}
+#_voucher-form-presente label{
+	margin-top:5px;
+	display:block;
+}
+#_voucher-form-presente textarea{
+	float:left;
+	display:block;
+	margin-bottom:10px;
+}
+#_voucher-lay-topo{
+	width:700px;
+	overflow:hidden;
+}
+#_voucher-lay-topo img{
+	display:block;
+}
+#_voucher-lay-miolo{
+	width:674px;
+	padding:10px 13px;
+}
+#_voucher-lay-base{
+	padding:10px 13px;
+}
+#_voucher-lay-num{
+	border:none;
+	width:100%;
+}
+#_voucher-lay-destinatario{
+	border:none;
+	width:100%;
+}
+#_voucher-lay-numero-lbl{
+	width:120px;
+	text-align:right;
+}
+#_voucher-lay-numero-codigo{
+	width:100px;
+	text-align:center;
+}
+#_voucher-lay-numero-senha{
+	width:45px;
+	text-align:center;
+}
+.voucher-caixa-txt{
+	background-color:#EFEFEF;
+	padding:5px 5px 2px 5px;
+}
+#_voucher-lay-de-lbl{
+	width:100px;
+}
+#_voucher-lay-servicos{
+	width:65px;
+	float:left;
+	padding:5px 5px 2px 5px;
+	margin:3px 3px 3px 0px;
+}
+#voucher-lista-servicos{
+	border:none;
+	width:100%;
+}
+._voucher-lay-servico td{
+	padding:5px 5px 2px 5px;
+}
+.voucher-servico-nome{
+	min-width:105px;
+}
+.voucher-servico-senha{
+	margin:3px 0px 3px 0px;
+}
+.voucher-servico-validade{
+	text-align:center;
+	width:80px;
+}
+.voucher-servico-codigo{
+	text-align:center;
+	width:100px;
+}
+.voucher-servico-senha{
+	text-align:center;
+	width:45px;
+}
+._voucher-temas{
+	cursor:pointer;
+	margin:10px;
+	float:left;
+	width:320px;
+}
+._voucher-temas-img-topo{
+	width:320px;
+	display:block;
+}
+._voucher-temas-img-textura{
+	height:20px;
+}
+._voucher-temas-escolher1,._voucher-temas-escolher2{
+	font-family: Arial, Gotham, "Helvetica Neue", Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	color:#17619B;
+	margin-top:10px;
+	margin-left:120px;
+	padding-left:20px;
+	background-repeat:no-repeat;
+}
+._voucher-temas-escolher1{
+	background-image: url(../../images/icons/voucher-tema-escolher-1.png);
+}
+._voucher-temas-escolher2{
+	background-image: url(../../images/icons/voucher-tema-escolher-2.png);
+}
+#cont-loja-online-mais,#cont-meus-pedidos-mais{
+	padding:10px 0px;
+	margin:20px auto;
+	background-color:#16619D;
+	color:#FFF;
+	line-height:16px;
+	font-size:16px;
+	cursor:pointer;
+	width:160px;
+	text-align:center;
+}
+._pagamento-pergunta{
+	color:#F17134;
+	font-size:27px;
+	margin:15px 0px;
+	line-height:27px;
+}
+._pagamento-formas{
+	border-top: 2px dotted #B6B7B9;
+	border-bottom: 2px dotted #B6B7B9;
+	padding:25px;
+}
+._pagamento-formas a{
+	display:block;
+	float:left;
+	margin:0px 35px;
+}
+._pagamento-titulo-pedido{
+	color:#17619B;
+	font-size:18px;
+	line-height:18px;
+	font-weight:normal;
+	margin:30px 0px 5px 0px;
+}
+._pagamento-sucesso-sub-titulo{
+	color:#F17134;
+	font-size:27px;
+	margin:15px 0px;
+	line-height:27px;
+	padding:15px 0px 30px 0px;
+	margin:0px 0px 30px 0px;
+	border-bottom: 2px dotted #B6B7B9;
+	display:block;
+}
+#_pagamento-gerar-voucher{
+	background-color:#F07034;
+	background-image:url(../../images/icons/ico-gerar-voucher.png);
+	background-repeat:no-repeat;
+	background-position:right center;
+	border-right:10px solid #F07034;
+	padding:10px 70px 20px 15px;
+	display:block;
+	color:#FFF;
+	font-family: Arial, Gotham, "Helvetica Neue", Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	line-height:11px;
+	width:280px;
+	margin-bottom:20px;
+}
+#_pagamento-gerar-voucher span{
+	font-size:21px;
+	line-height:21px;
+}
+#_meus-pedidos-table{
+	margin:3px 0px 0px 0px;
+	width:100%;
+	color:#7E7E7E;
+	line-height:30px;
+	font-size:12px;
+	font-weight:bold;
+	background-color:#FFF;
+	background-image:url(../../images/icons/ecom-background-header.gif);
+	background-repeat:repeat-x;
+	border:solid 1px #E9E9E9;
+}
+#_meus-pedidos-table tr td:nth-child(1){
+	width:50px;
+	text-align:left;
+}
+#_meus-pedidos-table tr td:nth-child(2){
+	width:150px;
+	border-left:solid 1px #E9E9E9;
+}
+#_meus-pedidos-table tr td:nth-child(3){
+	width:120px;
+	border-left:solid 1px #E9E9E9;
+}
+#_meus-pedidos-table tr td:nth-child(4){
+	border-left:solid 1px #E9E9E9;
+	text-align:left;
+}
+#_meus-pedidos-table tr{
+	padding:0px;
+	margin:0px;
+}
+#_meus-pedidos-table tr td{
+	padding:5px;
+	margin:0px;
+	text-align:center;
+}
+._meus-pedidos-opcoes{
+	cursor:pointer;
+}
+#_meus-pedidos-legenda{
+	float:right;
+	margin:15px 0px;
+	padding:5px 7px;
+	color:#7E7E7E;
+	line-height:22px;
+	font-size:12px;
+	font-weight:bold;
+	background-color:#FFF;
+	background-image:url(../../images/icons/ecom-background-header.gif);
+	background-repeat:repeat-x;
+	border:solid 1px #E9E9E9;
+	border-left:none;
+}
+._meus-pedidos-legenda-img{
+	display:block;
+	float:left;
+	margin:3px 5px 0px 0px;
+}
+#_meus-pedidos-legenda-tit{
+	margin:15px 0px;
+	padding:5px 7px;
+	color:#7E7E7E;
+	line-height:22px;
+	font-size:12px;
+	font-weight:bold;
+	background-color:#FFF;
+	background-image:url(../../images/icons/ecom-background-header.gif);
+	background-repeat:repeat-x;
+	border:solid 1px #E9E9E9;
+	float:right;
+}
+#_carrinho-frete{
+	float:right;
+	margin:0px 0px 20px 0px;
+}
+#_carrinho-frete-tit{
+	float:left;
+	font-size:14px;
+	color:#7E7E7E;
+	padding-top:2px;
+}
+#_carrinho-frete-input-tit{
+	float:left;
+	background-color:#7E7E7E;
+	color:#FFF;
+	padding:0px 5px;
+	margin-left:10px;
+	line-height:24px;
+}
+#_carrinho-frete-inputs{
+	float:left;
+}
+input#_carrinho-frete-input{
+	float:left;
+	display:block;
+	border:solid 1px #E9E9E9;
+	margin:0px;
+	line-height:20px;
+}
+#_carrinho-frete-button{
+	float:left;
+	display:block;
+	line-height:18px;
+	margin:0px;
+	cursor:pointer;
+	padding:3px 5px;
+	line-height:16px;
+	font-size:14px;
+	color:#FFF;
+	background-color:#757575;
+}
+ul#_carrinho-frete-result{
+	float:right;
+	display:block;
+	margin:10px 0px 0px 0px;
+	list-style:none;
+}
+ul#_carrinho-frete-result li{
+	display:block;
+	padding-left:30px;
+	background-repeat:no-repeat;
+	background-position: left center;
+	width:200px;
+	cursor:pointer;
+	margin:7px 0px;
+}
+._carrinho-frete-result-tit{
+	float:left;
+}
+._carrinho-frete-result-prazo{
+	float:right;
+	width:75px;
+	text-align:center;
+}
+._carrinho-frete-result-preco{
+	width:55px;
+	text-align:right;
+	float:right;
+}
+#_carrinho-frete-result li._carrinho-frete-sel{
+	background-image:url(../../files/projeto/images/carrinho-frete-sel.png);
+}
+#_carrinho-frete-result li._carrinho-frete-sel2{
+	background-image:url(../../files/projeto/images/carrinho-frete-sel2.png);
+}
+#_endereco_entrega{
+	display:block;
+	width:402px;
+}
+#_endereco_entrega input{
+	width:300px;
+	float:left;
+	margin-bottom:7px;
+}
+#_endereco_entrega label{
+	width:100px;
+	float:left;
+	margin-bottom:7px;
+}
+._indisponivel-cont-int{
+	padding:10px;
+}
+#_indisponivel-btn{
+	display:block;
+	padding:4px 7px;
+	margin-top:10px;
+	line-height:18px;
+	cursor:pointer;
+	padding:3px 5px;
+	line-height:16px;
+	font-size:14px;
+	color:#FFF;
+	background-color:#757575;
+}
+#_indisponivel-form{
+	display:none;
+	width:208px;
+}
+#_indisponivel-form label{
+	float:left;
+	display:block;
+	width:100px;
+}
+#_indisponivel-form input[type="text"]{
+	float:left;
+	display:block;
+	width:200px;
+	padding:3px;
+	margin-bottom:5px;
+}
+#_indisponivel-form input[type="submit"]{
+	float:right;
+	display:block;
+	padding:4px 7px;
+	margin-top:5px;
+	margin-right:0px;
+	line-height:18px;
+	cursor:pointer;
+	padding:3px 5px;
+	line-height:16px;
+	font-size:14px;
+	color:#FFF;
+	background-color:#757575;
+}

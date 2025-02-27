@@ -1,0 +1,123 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="../../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<h3>Formul&aacute;rio </h3>
+<hr />
+<!-- form < -->
+<form id="form" name="form" method="post" action=".">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+  <tr>
+    <td align="left" class="principal">
+    <table border="0" cellspacing="5" class="tabela_lista" width="100%">
+      <tr>
+        <td width="80" align="left" class="lista_header">Nome:</td>
+        <td align="left" class="lista_cel"><input name="nome" type="text" id="nome" value="#nome" size="40" /></td>
+      </tr>
+      <tr>
+      	<td align="left" class="lista_header">Descri&ccedil;&atilde;o:</td>
+      	<td align="left" class="lista_cel"><input name="descricao" type="text" id="descricao" value="#descricao" size="120" /></td>
+      	</tr>
+      <!-- grupo < --><tr>
+        <td align="left" class="lista_header">Grupo:</td>
+        <td align="left" class="lista_cel">#grupo#</td>
+      </tr><!-- grupo > -->
+    </table>
+    <!-- botao < --><table width="100%" border="0">
+      <tr>
+        <td align="center"><input name="opcao" type="hidden" id="opcao" value="#opcao" />
+          <input name="id" type="hidden" id="id" value="#id" />
+          <input type="submit" name="Submit" id="button" value="#botao" title="Clique nesse bot&atilde;o para GRAVAR as altera&ccedil;&otilde;es" /></td>
+      </tr>
+    </table><!-- botao > --></td>
+  </tr>
+</table>
+</form>
+<!-- form > -->
+<hr />
+<h3>Layout Imagens</h3>
+<hr />
+<!-- layout_videos < -->
+#ferramenta
+<!-- layout_videos > -->
+<hr />
+<h3>Cadastrar V&iacute;deos</h3>
+<hr />
+<!-- videos_enviar < -->
+<h1>Cadastrar V&iacute;deos</h1>
+<form id="form3" name="form3" method="post" action=".">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+  <tr>
+    <td align="left" class="principal">
+    <table border="0" cellspacing="5" class="tabela_lista" width="100%">
+      <tr>
+      	<td width="80" align="left" class="lista_header">V&iacute;deos:</td>
+      	<td align="left" class="lista_cel"><textarea name="videos_youtube" id="videos_youtube" cols="120" rows="3" class="textarea_noenter"></textarea></td>
+      	</tr>
+    </table>
+    <!-- botao < --><table width="100%" border="0">
+      <tr>
+        <td align="center"><input name="opcao" type="hidden" id="opcao" value="#opcao" />
+          <input name="id" type="hidden" id="id" value="#galeria_id" />
+          <input type="submit" name="Submit" id="button" value="#botao" title="Clique nesse bot&atilde;o para GRAVAR as altera&ccedil;&otilde;es" /></td>
+      </tr>
+    </table><!-- botao > --></td>
+  </tr>
+</table>
+</form>
+<!-- videos_enviar > -->
+<hr />
+<h3>Lista Imagens</h3>
+<hr />
+<!-- lista_videos < -->
+<form id="imagens" name="imagens" method="post" action=".">
+<table width="100%" border="0" cellspacing="5" class="tabela_lista">
+	<!-- row1 < --><tr>
+		<!-- col1 < --><td><table border="0" cellspacing="5" class="div_cel">
+					<tr>
+						<td colspan="2" align="center" class="img_cel1">#image</td>
+					</tr>
+					<tr>
+						<td align="center"><input name="#descricao_name" type="text" id="#descricao_id" value="#descricao_val" size="28" />
+						<input name="#imagem_name" type="hidden" id="#imagem_id" value="#imagem_val" /></td>
+						<td align="center" class="img_cel2"><!-- excluir < --><a href="#" onclick="excluir('.','#id','imagem_excluir')" class="excluir" title="Excluir"></a><!-- excluir > --></td>
+					</tr>
+			</table></td><!-- col1 > -->
+	</tr><!-- row1 > -->
+</table>
+<!-- botao < --><table width="100%" border="0">
+	<tr>
+		<td align="center" class="cel3">
+		<input name="opcao" type="hidden" id="opcao" value="editar_imagens" />
+		<input type="submit" name="Editar" id="Editar" value="Gravar" title="Clique nesse bot&atilde;o para GRAVAR as altera&ccedil;&otilde;es" />
+	</td>
+  </tr>
+</table><!-- botao > -->
+</form>
+<!-- lista_videos > -->
+<hr />
+<h3>Grupos </h3>
+<hr />
+<!-- grupos < -->
+<form id="grupos" name="grupos" method="post" action=".">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+  <tr>
+    <td align="left" class="principal">
+    <table border="0" cellspacing="5" class="tabela_lista" width="100%">
+      <tr>
+        <td width="80" align="left" class="lista_header">Nome:</td>
+        <td align="left" class="lista_cel"><input name="grupo" type="text" id="grupo" value="#grupo#" size="40" /></td>
+      </tr>
+    </table>
+    <!-- botao < --><table width="100%" border="0">
+      <tr>
+        <td align="center"><input name="opcao" type="hidden" id="opcao" value="#opcao" />
+          <input name="id" type="hidden" id="id" value="#id" />
+          <input type="submit" name="Submit" id="button" value="#botao" title="Clique nesse bot&atilde;o para GRAVAR as altera&ccedil;&otilde;es" /></td>
+      </tr>
+    </table><!-- botao > --></td>
+  </tr>
+</table>
+</form>
+<!-- grupos > -->
+<p>&nbsp;</p>

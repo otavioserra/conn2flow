@@ -1,0 +1,206 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="../css/padrao.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<h2>Autenticar</h2>
+<hr />
+<!-- autenticar < -->
+<h1>Autenticar</h1>
+<div id="_autenticar-login-cont">
+	<div class="_autenticar-txt">J&aacute; sou cadastrado</div>
+    <form name="_autenticar-login" id="_autenticar-login">
+        <label for="_autenticar-usuario">E-mail</label>
+        <input name="usuario" type="text" id="_autenticar-usuario" tabindex="1">
+        <label for="_autenticar-senha">Senha</label>
+        <input name="senha" type="password" id="_autenticar-senha" tabindex="2">
+        <input type="submit" name="Submit" id="login-botao" value="Entrar" tabindex="3">
+        <input name="opcao" type="hidden" id="opcao" value="logar">
+        <input name="ecommerce" type="hidden" id="ecommerce" value="1">
+        <div id="login-esqueceu-senha">Esqueceu sua senha? Clique <a href="!#caminho_raiz#!esqueceu-sua-senha" id="esqueceu-senha">aqui</a>.</div>
+        <div id="login-favoritos"></div>
+        #login-facebook#
+    </form>
+</div>
+<div id="_autenticar-cadastro-cont">
+	<div class="_autenticar-txt">Ainda n&atilde;o possuo cadastro</div>
+    <p>Preencha os campos abaixo e em seguida clique no bot&atilde;o Cadastrar</p>
+    <form id="_autenticar-cadastro" name="_autenticar-cadastro">
+    	<label for="nome">Nome</label>
+        <input name="nome" type="text" id="nome" maxlength="100">
+        <div class="clear"></div>
+        <label for="email">E-mail</label>
+        <input name="email" type="text" id="email">
+        <div id="pres_email" class="cont-mensagem"></div>
+        <div class="clear"></div>
+        <label for="email2">Confirme seu e-mail</label>
+        <input name="email2" type="text" id="email2">
+        <div class="clear"></div>
+        <label for="senha">Senha</label>
+        <input name="senha" type="password" id="senha">
+        <div id="pres_senha" class="cont-mensagem"></div>
+        <div class="clear"></div>
+        <div class="inbox">
+            <div class="graybar" id="graybar"></div>
+            <div class="colorbar" id="colorbar"></div>
+            <span class="percent" id="percent">0%</span>
+            <span class="result" id=\'result\'>For&ccedil;a da senha</span>
+        </div>
+        <div class="clear"></div>
+        <label for="senha2">Confirme sua senha</label>
+        <input name="senha2" type="password" id="senha2">
+        <div class="clear"></div>
+        <label for="nome">Digite as palavras que você vê na caixa, em ordem e separadas por um espaço. Ao fazer isso, você ajuda a impedir que programas automatizados invadam este serviço.</label>
+        <div id="recaptcha_div"></div>
+        <input type="button" id="botao_cadastro_user" value="Cadastrar">
+        <input name="opcao" type="hidden" value="autenticar-cadastro" id="opcao">
+        <div class="clear"></div>
+        <div class="hidden" id="d_usuario">Este usuário já está em uso! Escolha outro.</div>
+        <div class="hidden" id="d_senha">Senha e Redigite a Senha são diferentes.</div>
+        <div class="hidden" id="d_caracter">Usuário no mínimo 3 e no máx 20 caracteres.</div>
+        <div class="hidden" id="d_caracter_in">Caracteres inválidos, apenas caracteres alfanuméricos e ( _ ou @ ou . ).</div>
+        <div class="hidden" id="d_email">Este email já está em uso! Escolha outro.</div>
+    </form>
+</div>
+<div class="clear"></div>
+<!-- autenticar > -->
+<hr />
+<h2>Email Assunto</h2>
+<hr />
+<!-- email_assunto < -->#titulo# - Cadastro Efetuado - nº #cod#<!-- email_assunto > -->
+<hr />
+<h2>Email Mensagem</h2>
+<hr />
+<!-- email_mensagem < -->
+<h3><strong style="font-size: 1.5em;">Bem vindo a(o) #titulo#</strong></h3>
+<h2>Seu cadastro foi efetuado com sucesso!</h2>
+<h2>Protocolo n&ordm; #codigo#</h2>
+<p>Segue abaixo seu usu&aacute;rio e sua senha:</p>
+<p>Usu&aacute;rio: #usuario#<br />
+Senha: #senha#</p>
+<p>Para acessar a sua conta &eacute; necess&aacute;rio ativar o seu cadastro atrav&eacute;s desse link: <a>#url#</a></p>
+<p>Ap&oacute;s a ativa&ccedil;&atilde;o da conta, voc&ecirc; pode acessar a sua conta atrav&eacute;s desse link: #url2#</p>
+<p>Atenciosamente,</p>
+#assinatura#
+<!-- email_mensagem > -->
+<hr />
+<h2>Alerta Cadastrado com Sucesso</h2>
+<hr />
+<!-- alerta_sucesso < -->
+<p><b><span style="color:green;">Opera&ccedil;&atilde;o conclu&iacute;da com sucesso!</span></b></p>
+<p>Foi enviado um email de confirma&ccedil;&atilde;o no endere&ccedil;o de email que voc&ecirc; preencheu. Entre no seu programa de emails, abra esse email enviado com o assunto "#assunto#" e clique no link de valida&ccedil;&atilde;o da sua conta para validar a sua conta e voc&ecirc; poder acessar o seu painel de usu&aacute;rio. Sen&atilde;o conseguir clicar no link, copie o link completo fornecido&nbsp;e cole o mesmo na barra do seu navegador e aperte a tecla enter.</p>
+<p>Observa&ccedil;&atilde;o 1: Se por algum acaso n&atilde;o receber esse email verifique se o mesmo n&atilde;o foi considereado SPAM pelo seu programa de email. Entre na lista de emails SPAM e verifique se isso ocorreu. Se mesmo assim n&atilde;o recebeu, aguarde por volta de 10 minutos e tente novamente verificar o email. Se mesmo assim n&atilde;o receber, entre em contato pelo email para saber como proceder reportando o ocorrido: <a href="mailto:#email#">#nome#</a>.</p>
+<!-- alerta_sucesso > -->
+<hr />
+<h2>Alerta Valida&ccedil;&atilde;o Inv&aacute;lida</h2>
+<hr />
+<!-- alerta_invalido < -->
+<p>Código de valida&ccedil;&atilde;o <b style="color:red;">inv&aacute;lido</b>!</p>
+O c&oacute;digo de valida&ccedil;&atilde;o especificado &eacute; inv&aacute;lido ou j&aacute; foi usado! Favor entrar em contato pelo email para saber como proceder reportando o ocorrido: <a href="mailto:#email#">#nome#</a></p>
+<!-- alerta_invalido > -->
+<h2>Alerta Valida&ccedil;&atilde;o Inv&aacute;lida</h2>
+<hr />
+<!-- alerta_sucesso2 < -->
+<p><b><span style="color:green;">Opera&ccedil;&atilde;o conclu&iacute;da com sucesso!</span></b></p>
+Entre com o seu email e com a sua senha para ter acesso.<!-- alerta_sucesso2 > -->
+<hr />
+<h2>Minha Conta</h2>
+<hr />
+<!-- minha-conta < -->
+<h1>Minha Conta</h1>
+<div id="_minha-conta-cont">
+<form id="_minha-conta-form" name="_minha-conta-form">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+    <tr>
+      <td align="left" class="principal">
+      #historico#
+<h2>Conta de Usu&aacute;rio</h2>
+        <table width="100%" border="0" cellspacing="5" class="tabela_lista">
+          <tr>
+            <td width="130" align="left" class="_minha-conta-label">Usu&aacute;rio:</td>
+            <td align="left"><input name="usuario" type="text" id="minha-conta-usuario" value="#usuario" size="20" style="width: 182px;" /><input name="edit_usuario" type="hidden" id="edit_usuario" value="#edit_usuario" />
+              <span id="mens_usuario" class="div_item col_margin"></span></td>
+          </tr>
+          <tr>
+            <td align="left" class="_minha-conta-label">Senha:</td>
+            <td align="left"><input name="senha" type="password" id="minha-conta-senha" value="#senha" size="20" style="width: 182px;" />
+              <span id="mens_senha" class="div_item col_margin"></span>
+              <div class="inbox">
+              	<div class="graybar" id="graybar"></div>
+                <div class="colorbar" id="colorbar"></div>
+                <span class="percent" id="percent">0%</span>
+                <span class="result" id='result'>For&ccedil;a da senha</span>
+              </div></td>
+          </tr>
+          <tr>
+            <td align="left" class="_minha-conta-label">Redigite a Senha:</td>
+            <td align="left"><input name="senha2" type="password" id="minha-conta-senha2" value="#senha2" size="20" style="width: 182px;" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="_minha-conta-label">Perfil do Usu&aacute;rio:</td>
+            <td align="left">#perfil</td>
+          </tr>
+        </table>
+        <h2>Dados Gerais</h2>
+        <table width="100%" border="0" cellspacing="5" class="tabela_lista">
+          <tr>
+            <td width="130" align="left" class="_minha-conta-label">E-mail:</td>
+            <td align="left"><input name="email" type="text" id="minha-conta-email" value="#email" size="40" /><input name="edit_email" type="hidden" id="edit_email" value="#edit_email" />
+              <span id="mens_email" class="div_item col_margin"></span></td>
+          </tr>
+          <tr>
+            <td align="left" class="_minha-conta-label">Nome:</td>
+            <td align="left"><input name="nome" type="text" id="minha-conta-nome" value="#nome" size="20" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="_minha-conta-label">Sobrenome:</td>
+            <td align="left"><input name="sobrenome" type="text" id="sobrenome" value="#sobrenome" size="50" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="_minha-conta-label">CEP:</td>
+            <td align="left"><input name="cep" type="text" class="cep" id="cep" value="#cep" size="10" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="_minha-conta-label">Endere&ccedil;o:</td>
+            <td align="left"><input name="endereco" type="text" id="endereco" value="#endereco" size="50" />
+              n&deg;
+              <input name="numero" type="text" id="numero" value="#numero" size="5" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="_minha-conta-label">Complemento:</td>
+            <td align="left"><input name="complemento" type="text" id="complemento" value="#complemento" size="40" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="_minha-conta-label">Bairro:</td>
+            <td align="left"><input name="bairro" type="text" id="bairro" value="#bairro" size="40" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="_minha-conta-label">Cidade:</td>
+            <td align="left"><input name="cidade" type="text" id="cidade" value="#cidade" size="40" />
+              UF
+              <input name="uf" type="text" id="uf" value="#uf" size="3" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="_minha-conta-label">Telefone:</td>
+            <td align="left"><input name="telefone" type="text" id="telefone" value="#tel" size="14" class="telefone" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="_minha-conta-label">Celular:</td>
+            <td align="left"><input name="celular" type="text" id="celular" value="#cel" size="14" class="telefone" /></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<input name="opcao" type="hidden" id="opcao" value="#opcao" />
+<input name="grupos_num" type="hidden" id="grupos_num" value="#grupos_num" />
+<input name="id" type="hidden" id="id" value="#id" />
+<input name="cep_search" type="hidden" id="cep_search" value="#cep_search" />
+<input type="button" name="button" id="minha-conta-botao" value="#botao" title="Clique nesse bot&atilde;o para GRAVAR as altera&ccedil;&otilde;es" />
+</form>
+<div class="dialog" id="d_usuario">Este usuário já está em uso! Escolha outro.</div>
+<div class="dialog" id="d_senha">Senha e Redigite a Senha são diferentes.</div>
+<div class="dialog" id="d_caracter">Usuário no mínimo 3 e no máx 20 caracteres.</div>
+<div class="dialog" id="d_caracter_in">Caracteres inválidos, apenas caracteres alfanuméricos e ( _ ou @ ou . ).</div>
+<div class="dialog" id="d_email">Este email já está em uso! Escolha outro.</div>
+</div>
+<!-- minha-conta > -->
+<hr>

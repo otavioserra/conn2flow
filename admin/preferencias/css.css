@@ -1,0 +1,129 @@
+.grupo {
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+}
+.coluna1 {
+
+}
+.coluna2 {
+	width: 100%;
+
+}
+.opcao {
+	margin: 5px 0px 5px 0px;
+	padding: 5px;
+	background-image: url(../../images/admin/box-branco.png);
+	position:relative;
+}
+.input  {
+	margin-right: 10px;
+	float: left;
+	width: 300px;
+}
+.input2  {
+	margin-right: 10px;
+	float: left;
+	width: 665px;
+}
+
+.botao {
+	margin-top: 5px;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+}
+.input label {
+	display: block;
+	padding-bottom: 5px;
+	color: #000;
+}
+.opcao .descricao span {
+	font-size: 10pt;
+	color: #06F;
+	display: none;
+}
+.info {
+	float: right;
+	width: 535px;
+}
+.info2 {
+	float: right;
+	width: 210px;
+}
+
+.input2 label {
+	display: block;
+	padding-bottom: 5px;
+	color: #000000;
+}
+.menu { padding: 0; clear: both; }
+.menu li { display: block; }
+.menu li a { background: #D7D9DD; padding: 10px; float:left;  border-bottom: none; text-decoration: none; color: #000;}
+.menu li.active a { background: #F7F7F8; }
+.content { float: left; clear: both; padding: 5px; position:relative;background: #F7F7F8; }
+.cat-inserir{
+	position:absolute;
+	top:10px;
+	right:64px;
+}
+.cat-editar{
+	position:absolute;
+	top:10px;
+	right:37px;
+}
+.cat-excluir{
+	position:absolute;
+	top:10px;
+	right:10px;
+}
+.pre-editar{
+	position:absolute;
+	bottom:10px;
+	right:32px;
+}
+.pre-excluir{
+	position:absolute;
+	bottom:10px;
+	right:10px;
+}
+.editar{
+	background-image:url(../../images/admin/icon-central.png);
+	width:16px;
+	height:16px;
+	background-position:-32px -0px;
+	display:block;
+	float:left;
+}
+.excluir{
+	background-image:url(../../images/admin/icon-central.png);
+	width:16px;
+	height:16px;
+	background-position:-96px -0px;
+	display:block;
+	float:left;
+}
+.link-cat-adicionar{
+	background-image:url(../../images/admin/icon-superior.png);
+	width:20px;
+	height:20px;
+	background-position:-40px -0px;
+	display:block;
+	float:left;
+}
+.link-cat-editar{
+	background-image:url(../../images/admin/icon-superior.png);
+	width:20px;
+	height:20px;
+	background-position:-80px -0px;
+	display:block;
+	float:left;
+}
+.link-cat-excluir{
+	background-image:url(../../images/admin/icon-superior.png);
+	width:20px;
+	height:20px;
+	background-position:-140px -0px;
+	display:block;
+	float:left;
+}

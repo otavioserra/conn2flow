@@ -1,0 +1,891 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /><link href="../../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<h2>Permiss&otilde;es</h2>
+<hr />
+<!-- form < -->
+<form id="form" name="form" enctype="multipart/form-data" method="post" action=".">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+  <tr>
+    <td align="left" class="principal"><h2>Configura&ccedil;&atilde;o #_titulo_opcao#</h2>
+	  <!-- nivel < -->
+	  <p>N&iacute;vel dos Conte&uacute;dos abaixo do Conte&uacute;do atual: #nivel#</p>
+	  <!-- nivel > -->
+      <ul id="menu" class="menu">
+        <li class="active"><a href="#opcoes">Opções</a></li>
+        <li><a href="#configuracoes">Configuração</a></li>
+        <li><a href="#layout2">Layout</a></li>
+        <li><a href="#imagens">Imagens</a></li>
+    </ul>
+ 	<div id="opcoes" class="content">
+	  <h3>Opções</h3>
+	  <div class="item_margin infotexto">Definição de quais opções um conteúdo / conjunto de conte&uacute;dos apresenta nos diversos m&oacute;dulos do sistema respons&aacute;veis por manipular conte&uacute;dos.</div>
+      <table border="0" cellspacing="5" class="tabela_lista" width="100%">
+	  <!-- addthis < --><tr class="checkbox_label" title="Selecione para ter Add-this">
+	  	<td width="160" align="left" class="lista_header">Add-This:</td>
+	  	<td align="left" class="lista_cel"><input name="addthis" type="checkbox" id="addthis" value="1"#CHK_addthis# />
+	  		<div class="item_margin infotexto">Ferramenta de copartilhamento de conte&uacute;do com outros sistemas como Facebook, Orkut, etc. Para maiores informa&ccedil;&otilde;es acesse:   <a href="http://www.addthis.com/" target="_blank">http://www.addthis.com/</a></div></td>
+  	</tr><!-- addthis > -->
+	  <tr class="checkbox_label" title="Selecione para não indexar">
+        <td align="left" class="lista_header">Não Indexar:</td>
+        <td align="left" class="lista_cel"><input name="no_robots" type="checkbox" id="no_robots" value="1"#CHK_no_robots# />
+        <div class="item_margin infotexto">Selecione para que o conte&uacute;do n&atilde;o seja indexado pelos robots.</div></td>
+      </tr>
+	  <tr class="checkbox_label" title="Selecione para não mostrar em buscas">
+        <td align="left" class="lista_header">Não Mostrar em Buscas:</td>
+        <td align="left" class="lista_cel"><input name="no_search" type="checkbox" id="no_search" value="1"#CHK_no_search# />
+        <div class="item_margin infotexto">Selecione para que o conte&uacute;do n&atilde;o seja mostrado nos processos de buscas dentro do sistema.</div></td>
+      </tr>
+      <tr class="checkbox_label" title="Selecione para não ter layout">
+        <td align="left" class="lista_header">P&aacute;gina Sem Layout Principal:</td>
+        <td align="left" class="lista_cel"><input name="no_layout" type="checkbox" id="no_layout" value="1"#CHK_no_layout# />
+        <div class="item_margin infotexto">Selecione para que o conte&uacute;do n&atilde;o tenha layout da p&aacute;gina principal. &Uacute;til para quando tem a necessidade de criar uma <i>landing page.</i></div></td>
+      </tr>
+	  <tr class="checkbox_label" title="Selecione para ter menu principal">
+        <td align="left" class="lista_header">Menu Principal:</td>
+        <td align="left" class="lista_cel"><input name="menu_principal" type="checkbox" id="menu_principal" value="1"#CHK_menu_principal# />
+        <div class="item_margin infotexto">Selecione para que o conte&uacute;do fa&ccedil;a parte do menu principal do portal. &Uacute;til para quando tem a necessidade de se criar um menu principal com sub-itens.</div></td>
+      </tr>
+	  <tr class="checkbox_label" title="Selecione para ter identificador auxiliar">
+        <td align="left" class="lista_header">Identificador Auxiliar:</td>
+        <td align="left" class="lista_cel"><input name="identificador_auxiliar" type="checkbox" id="identificador_auxiliar" value="1"#CHK_identificador_auxiliar# />
+        <div class="item_margin infotexto">Selecione para criar um Identificador Auxiliar &uacute;nico. &Uacute;til para ser usado por ferramentas que necessitem que o conte&uacute;do tenha um identificador fixo que podem mudar o T&iacute;tulo e em consequ&ecirc;ncia o Identificador Principal e mesmo assim continuem a identificar algum elemento, como por exemplo um conteiner<i>.</i></div></td>
+      </tr>
+	  <tr title="Selecione para ter conteiner posi&ccedil;&atilde;o">
+        <td align="left" class="lista_header">Conteiner Posi&ccedil;&atilde;o:</td>
+        <td align="left" class="lista_cel"><input name="conteiner_posicao" type="checkbox" id="conteiner_posicao" value="1"#CHK_conteiner_posicao# />
+		Efeito: #conteiner_posicao_efeito# 
+        Tempo: 
+        	<input name="conteiner_posicao_tempo" type="text" id="conteiner_posicao_tempo" value="#conteiner_posicao_tempo#" size="5" maxlength="5" class="inteiro" /> 
+        <div class="item_margin infotexto">Selecione para que o conte&uacute;do tenha um conteiner de posicionamento em um conteiner espec&iacute;fico. Defina o efeito de transi&ccedil;&atilde;o (
+        	<a href="http://jqueryui.com/demos/effect/easing.html" target="_blank">
+        		demo dos efeitos
+        		</a>
+        	) bem como o tempo em milisegundos que durar&aacute; a transi&ccedil;&atilde;o. Defina a posi&ccedil;&atilde;o x e y nos conte&uacute;dos para uma navega&ccedil;&atilde;o animada entre os conte&uacute;dos como se os mesmos fizessem parte de um mapa.</div></td>
+      </tr>
+      <!-- comentarios < --><tr class="checkbox_label" title="Selecione para ter coment&aacute;rios">
+        <td align="left" class="lista_header">Coment&aacute;rios:</td>
+        <td align="left" class="lista_cel"><input name="comentarios" type="checkbox" id="comentarios" value="1"#CHK_comentarios# />
+        <div class="item_margin infotexto">Selecione para vincular ao(s) conte&uacute;do(s) coment&aacute;rios publicados por usu&aacute;rios comuns do sistema em rela&ccedil;&atilde;o ao(s) mesmo(s) conte&uacute;do(s). N&atilde;o &eacute; necess&aacute;rio ser usu&aacute;rio registrado no sistema para enviar comentr&aacute;ios, apenas preencher um pequeno formul&aacute;rio de indentifica&ccedil;&atilde;o.</div></td>
+      </tr><!-- comentarios > -->
+    </table>
+ 	</div>
+    <div id="configuracoes" class="content">
+      <h3>
+      Configura&ccedil;&atilde;o
+      </h3>
+	  <div class="item_margin infotexto">
+	  	Definição de quais campos do conteúdo / conjunto de conte&uacute;dos serão usados em um conteúdo qualquer. Ou seja, como será o conteúdo em relação aos seus tipos de informações diferentes como um título, um texto, uma imagem, etc. Cada um desses campos ser&atilde;o usados no layout do conte&uacute;do em alguma posi&ccedil;&atilde;o pr&eacute;-fixada no layout.
+	  </div>
+	<table border="0" cellspacing="5" class="tabela_lista">
+      <tr class="checkbox_label" title="Selecione para ter título">
+      	<td width="160" align="left" class="lista_header">T&iacute;tulo:</td>
+      	<td align="left" class="lista_cel"><input name="titulo" type="checkbox" id="titulo" value="1"#CHK_titulo# />
+      	<div class="item_margin infotexto">
+      	T&iacute;tulo
+      		&eacute; o t&iacute;tulo do conte&uacute;do, tanto pode ser usado
+      		para defini&ccedil;&atilde;o do t&iacute;tulo
+      		do layout do conte&uacute;do,
+      		como para ser o nome desse conte&uacute;do e seu identificador &uacute;nico dentro dos conte&uacute;dos.
+      		Esse campo ser&aacute; usado por motores de busca de informa&ccedil;&atilde;o
+      		tais como google, yahoo, bing, etc.<br> Valor no Layout: <strong>titulo</strong>
+      	</div></td>
+      	</tr>
+      <tr class="checkbox_label" title="Selecione para ter título imagem">
+        <td align="left" class="lista_header">T&iacute;tulo Imagem:</td>
+        <td align="left" class="lista_cel"><input name="titulo_img" type="checkbox" id="titulo_img" value="1"#CHK_titulo_img# /><div class="item_margin infotexto">
+        		T&iacute;tulo
+              imagem &eacute; uma imagem qualquer que serve para ser usado como
+              imagem de t&iacute;tulo do layout do conte&uacute;do ao inv&eacute;s de usar o t&iacute;tulo textual. &Uacute;til
+              quando se quer definir uma imagem como t&iacute;tulo ao inv&eacute;s
+            de um texto.<br> Valor no Layout: <strong>titulo_img</strong></div></td>
+      </tr>
+      <tr class="checkbox_label" title="Selecione para ter sub-título">
+        <td align="left" class="lista_header">Sub-T&iacute;tulo:</td>
+        <td align="left" class="lista_cel"><input name="sub_titulo" type="checkbox" id="sub_titulo" value="1"#CHK_sub_titulo# /><div class="item_margin infotexto">
+        	Sub-t&iacute;tulo
+              &eacute; usado para ser o sub-t&iacute;tulo do layout do conte&uacute;do. &Uacute;til
+              quando se est&aacute;
+              diagramando textos que tenham sub-t&iacute;tulos.<br> Valor no Layout: <strong>sub_titulo</strong>
+        </div></td>
+      </tr>
+      <tr class="checkbox_label" title="Selecione para ter data">
+        <td align="left" class="lista_header">Autor:</td>
+        <td align="left" class="lista_cel"><input name="author" type="checkbox" id="author" value="1"#CHK_author# />
+        <div class="item_margin infotexto">
+        Autor &eacute; usado para definir um autor para um conte&uacute;do.<br> 
+              Valor no Layout: <strong>author</strong>
+        </div></td>
+      </tr>
+	  <tr class="checkbox_label" title="Selecione para ter data">
+        <td align="left" class="lista_header">Data:</td>
+        <td align="left" class="lista_cel"><input name="data" type="checkbox" id="data" value="1"#CHK_data# /><div class="item_margin infotexto">
+        Data de cria&ccedil;&atilde;o ou modifica&ccedil;&atilde;o
+              desse conte&uacute;do ou ainda da ocorr&ecirc;ncia futura do conte&uacute;do.<br> 
+              Valor no Layout: <strong>data</strong>
+        </div></td>
+      </tr>
+      <tr class="checkbox_label" title="Selecione para ter texto">
+        <td align="left" class="lista_header">Texto:</td>
+        <td align="left" class="lista_cel"><input name="texto" type="checkbox" id="texto" value="1"#CHK_texto# /><div class="item_margin infotexto">Defina o texto do conte&uacute;do,
+              ou seja, qualquer informa&ccedil;&atilde;o textual. No uso do editor
+              HTML (TinyMCE)
+              &eacute; poss&iacute;vel colocar no corpo do conte&uacute;do uma
+              s&eacute;rie de informa&ccedil;&atilde;o.
+              Ou seja, tudo que o editor permitir de inser&ccedil;&atilde;o de
+              informa&ccedil;&atilde;o.<br> Valor no Layout: <strong>texto</strong>
+        </div></td>
+      </tr>
+	  <tr class="checkbox_label" title="Selecione para ter Texto 2">
+        <td align="left" class="lista_header">Texto 2:</td>
+        <td align="left" class="lista_cel"><input name="texto2" type="checkbox" id="texto2" value="1"#CHK_texto2# /><div class="item_margin infotexto">Defina o texto 2 do conte&uacute;do,
+              ou seja, qualquer informa&ccedil;&atilde;o textual. No uso do editor
+              HTML (TinyMCE)
+              &eacute; poss&iacute;vel colocar no corpo do conte&uacute;do uma
+              s&eacute;rie de informa&ccedil;&atilde;o.
+              Ou seja, tudo que o editor permitir de inser&ccedil;&atilde;o de
+              informa&ccedil;&atilde;o.<br> 
+              Valor no Layout: <strong>texto2</strong>
+        </div></td>
+      </tr>
+      <tr class="checkbox_label" title="Selecione para ter link externo">
+        <td align="left" class="lista_header">Link Externo:</td>
+        <td align="left" class="lista_cel"><input name="link_externo" type="checkbox" id="link_externo" value="1"#CHK_link_externo# /><div class="item_margin infotexto">
+        	Link Externo &eacute; um endere&ccedil;o de
+          internet ao qual o conte&uacute;do est&aacute; vinculado com outra informa&ccedil;&atilde;o externa ao conte&uacute;do.<br> 
+          Valor no Layout: <strong>link_externo</strong>
+        </div></td>
+      </tr>
+      <tr class="checkbox_label" title="Selecione para ter imagem pequena">
+        <td align="left" class="lista_header">Imagem Pequena:</td>
+        <td align="left" class="lista_cel"><input name="imagem_pequena" type="checkbox" id="imagem_pequena" value="1"#CHK_imagem_pequena# /><div class="item_margin infotexto">
+        	Imagem pequena &eacute; um campo que
+              permite o envio de uma imagem pequena.<br> Valor no Layout: <strong>imagem_pequena</strong>
+        </div></td>
+      </tr>
+      <tr class="checkbox_label" title="Selecione para ter imagem grande">
+        <td align="left" class="lista_header">Imagem Grande:</td>
+        <td align="left" class="lista_cel"><input name="imagem_grande" type="checkbox" id="imagem_grande" value="1"#CHK_imagem_grande# /><div class="item_margin infotexto">
+        	Imagem grande &eacute; um campo
+            que permite o envio de uma imagem grande.<br> Valor no Layout: <strong>imagem_grande</strong>
+        </div></td>
+      </tr>
+	  <tr class="checkbox_label" title="Selecione para ter música">
+        <td align="left" class="lista_header">M&uacute;sica:</td>
+        <td align="left" class="lista_cel"><input name="musica" type="checkbox" id="musica" value="1"#CHK_musica# />
+        <div class="item_margin infotexto">M&uacute;sica &eacute; um campo
+            que permite o envio de uma m&uacute;sica mp3.<br>
+        	 Valor no Layout: <strong>musica</strong>
+        </div></td>
+      </tr>
+	  <!-- galerias < --><tr class="checkbox_label" title="Selecione para ter galeria">
+        <td align="left" class="lista_header">Galeria de Imagens:</td>
+        <td align="left" class="lista_cel"><input name="galeria" type="checkbox" id="galeria" value="1"#CHK_galeria# />
+        <div class="item_margin infotexto">
+        	Galeria de Imagens &eacute; um campo de vincula&ccedil;&atilde;o de uma galeria de imagens com o conte&uacute;do. &Uacute;til para ser usado quando um conte&uacute;do cont&ecirc;m uma s&eacute;rie de imagens.<br> 
+              Valor no Layout: <strong>galeria</strong>
+        </div></td>
+      </tr>
+	  <tr class="checkbox_label" title="Selecione para ter grupo de galeria">
+        <td align="left" class="lista_header">Galeria de Imagens Grupo:</td>
+        <td align="left" class="lista_cel"><input name="galeria_grupo" type="checkbox" id="galeria_grupo" value="1"#CHK_galeria_grupo# />
+        <div class="item_margin infotexto">
+        	Galeria de Imagens Grupo &eacute; um campo de vincula&ccedil;&atilde;o de um grupo de galeria de imagens com o conte&uacute;do. &Uacute;til para ser usado quando um conte&uacute;do cont&ecirc;m uma s&eacute;rie de galerias de imagens espec&iacute;fica.<br> 
+              Valor no Layout: <strong>galeria_grupo</strong>
+        </div></td>
+      </tr>
+      <tr class="checkbox_label" title="Selecione para ter todas as galerias">
+        <td align="left" class="lista_header">Galerias de Imagens Todas:</td>
+        <td align="left" class="lista_cel"><input name="galeria_todas" type="checkbox" id="galeria_todas" value="1"#CHK_galeria_todas# />
+        <div class="item_margin infotexto">
+        	Galerias de Imagens Todas &eacute; uma vincula&ccedil;&atilde;o de todas as galerias de imagem com o conte&uacute;do. &Uacute;til para ser usado na publica&ccedil;&atilde;o de todas as galerias de imagens.<br> 
+              Valor no Layout: <strong>galeria_todas</strong>
+        </div></td>
+      </tr><!-- galerias > -->
+      <!-- videos < --><tr class="checkbox_label" title="Selecione para ter videos">
+        <td align="left" class="lista_header">Galeria de V&iacute;deos:</td>
+        <td align="left" class="lista_cel"><input name="videos" type="checkbox" id="videos" value="1"#CHK_videos# />
+        <div class="item_margin infotexto">
+        	Galeria de V&iacute;deos &eacute; um campo de vincula&ccedil;&atilde;o de videos com o conte&uacute;do. &Uacute;til para ser usado quando um conte&uacute;do cont&ecirc;m uma s&eacute;rie de v&iacute;deos.<br> 
+              Valor no Layout: <strong>videos</strong>
+        </div></td>
+      </tr>
+	  <tr class="checkbox_label" title="Selecione para ter grupo de videos">
+        <td align="left" class="lista_header">Galeria de V&iacute;deos Grupo:</td>
+        <td align="left" class="lista_cel"><input name="videos_grupo" type="checkbox" id="videos_grupo" value="1"#CHK_videos_grupo# />
+        <div class="item_margin infotexto">
+        	Galeria de V&iacute;deos Grupo &eacute; um campo de vincula&ccedil;&atilde;o de um grupo de videos  com o conte&uacute;do. &Uacute;til para ser usado quando um conte&uacute;do cont&ecirc;m uma s&eacute;rie de galerias de v&iacute;deos espec&iacute;ficos.<br> 
+              Valor no Layout: <strong>videos_grupo</strong>
+        </div></td>
+      </tr>
+      <tr class="checkbox_label" title="Selecione para ter todas as videoss">
+        <td align="left" class="lista_header">Galerias de V&iacute;deos Todas:</td>
+        <td align="left" class="lista_cel"><input name="videos_todas" type="checkbox" id="videos_todas" value="1"#CHK_videos_todas# />
+        <div class="item_margin infotexto">Galerias de V&iacute;deos Todas &eacute; uma vincula&ccedil;&atilde;o de todos os v&iacute;deos  com o conte&uacute;do. &Uacute;til para ser usado na publica&ccedil;&atilde;o de todos as galerias de videos.<br> 
+              Valor no Layout: <strong>videos_todas</strong>
+        </div></td>
+      </tr><!-- videos > -->
+	  <tr class="checkbox_label" title="Selecione para ter conte&uacute;dos relacionados">
+        <td align="left" class="lista_header">Conte&uacute;dos Relacionados:</td>
+        <td align="left" class="lista_cel"><input name="conteudos_relacionados" type="checkbox" id="conteudos_relacionados" value="1"#CHK_conteudos_relacionados# />
+        <div class="item_margin infotexto">
+        	Conte&uacute;dos Relacionados &eacute; uma vincula&ccedil;&atilde;o de uma lista de conte&uacute;dos filhos de um conte&uacute;do que &eacute; do tipo Grupo de Conte&uacute;dos e que tenha conte&uacute;dos filhos desse conte&uacute;do em espec&iacute;fico. Ou seja, o conte&uacute;do que tiver filhos ter&aacute; no corpo do conte&uacute;do em um local espec&iacute;fico do conte&uacute;do um menu de acesso dos conte&uacute;dos filhos desse conte&uacute;do. &Uacute;til para ser usado quando se quer mostrar o relacionamento entre os conte&uacute;dos, por exemplo um conte&uacute;do produtos que tenha uma s&eacute;rie de produtos ser&aacute; mostrado um menu de acesso aos seus produtos.<br> 
+              Valor no Layout: <strong>conteudos_relacionados</strong>
+        </div></td>
+      </tr>
+	  <!-- parametros < --><tr class="checkbox_label" title="Selecione para ter par&acirc;metros">
+        <td align="left" class="lista_header">Par&acirc;metros:</td>
+        <td align="left" class="lista_cel"><input name="parametros" type="checkbox" id="parametros" value="1"#CHK_parametros# /><div class="item_margin infotexto">
+        	Par&acirc;metros &eacute; um campo de vincula&ccedil;&atilde;o de uma s&eacute;rie de par&acirc;metros com o conte&uacute;do. &Uacute;til para ser usado quando um conte&uacute;do cont&ecirc;m uma s&eacute;rie de campos que n&atilde;o s&atilde;o definidos por padr&atilde;o.<br> 
+              Valor no Layout: <strong>parametros</strong>
+        </div></td>
+      </tr><!-- parametros > -->
+    </table>
+    </div>
+    <div id="layout2" class="content">
+	<h3>
+	Layout
+	</h3>
+	  <div class="item_margin infotexto">
+	  	Definição da estrutura visual do layout do conte&uacute;do / conjunto de conte&uacute;dos.
+	  Com essa op&ccedil;&atilde;o &eacute; poss&iacute;vel definir posicionamento e regras HTML dos 
+	  campos acima escolhidos.
+	  </div>
+      <table border="0" cellspacing="5" class="tabela_lista">
+	  <tr class="checkbox_label" title="Selecione para usar layout personalizado">
+	  	<td width="160" align="left" class="lista_header">Usar Personalizado:</td>
+	  	<td align="left" class="lista_cel"><input name="layout_status" type="checkbox" id="layout_status" value="1"#CHK_layout_status# />
+	  		<div class="item_margin infotexto">
+	  			Selecione essa op&ccedil;&atilde;o para ativar o uso do layout personalizado. Se essa op&ccedil;&atilde;o n&atilde;o estiver selecionada o sistema ir&aacute; usar um layout definido previamente, ou seja, um layout padr&atilde;o dos conte&uacute;dos.</div></td>
+  	</tr>
+	  <tr class="checkbox_label">
+        <td align="left" class="lista_header">Layout:</td>
+        <td align="left" class="lista_cel nao_mudar_cor">
+        <div class="item_margin infotexto">
+        	Defina ou modifique o layout a seguir.
+        A regra para um campo ser posicionado no layout &eacute; o seguinte: Nos campos acima veja o <strong>Valor no Layout</strong> e coloque  '#valor#'. Por exemplo para o campo <strong>T&iacute;tulo</strong> coloque o valor <strong>#titulo#</strong> no layout.
+        Use <em>'&lt;!-- valor &lt; --&gt;#valor# com elementos HTML&lt;!-- valor &gt; --&gt;'</em> caso for desabilitar algum campo
+		no futuro, sen&atilde;o use apenas '#valor#'. Sempre mantenha #info_acima# e #info_abaixo# definidos em algum lugar no layout pois o sistema se utiliza desses valores para colocar mais informa&ccedil;&otilde;es, como por exemplo o AddThis.
+        </div>
+		<textarea name="layout" id="layout" class="caixa_texto1">#layout#</textarea>
+		  <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("layout"), {mode: "text/html", tabMode: "indent", lineNumbers: true, indentWithTabs:true, indentUnit:8, lineWrapping:true});
+    </script></td>
+      </tr>
+    </table>
+    </div>
+    <div id="imagens" class="content">
+	<h3>
+	Imagens
+	</h3>
+	  <div class="item_margin infotexto">
+	  	Definição dos padr&otilde;es relacionadas com os t&iacute;tulo imagens, imagens grandes e imagens pequenas do conte&uacute;do / conjunto de conte&uacute;dos. </div>
+      <table border="0" cellspacing="5" class="tabela_lista">
+	  <tr title="Defina a largura e a altura de recorte dos T&iacute;tulos Imagens">
+	  	<td width="160" align="left" class="lista_header">Recorte T&iacute;tulo Imagem:</td>
+	  	<td align="left" class="lista_cel">
+	  		<table border="0">
+	  			<tr>
+	  				<td width="240"><label for="titulo_img_width">Largura:</label><input name="titulo_img_width" type="text" id="titulo_img_width" value="#titulo_img_width#" size="5" maxlength="5" class="inteiro" />&nbsp;<label for="titulo_img_height">Altura:</label><input name="titulo_img_height" type="text" id="titulo_img_height" value="#titulo_img_height#" size="5" maxlength="5" class="inteiro" /></td>
+	  				<td><table border="0">
+	  		<tr>
+	  				<td><input name="titulo_img_recorte_y" type="radio" id="titulo_img_recorte_y1" value="1"#CHK_titulo_img_recorte_y1# /></td>
+	  				<td><label for="titulo_img_recorte_y1">Recortar a imagem horizontalmente no centro e verticalmente no meio.</label></td>
+  				</tr>
+	  			<tr>
+	  				<td><input name="titulo_img_recorte_y" type="radio" id="titulo_img_recorte_y2" value="2"#CHK_titulo_img_recorte_y2# /></td>
+	  				<td><label for="titulo_img_recorte_y2">Recortar a imagem horizontalmente no centro e verticalmente no topo.</label></td>
+  				</tr>
+  			</table></td>
+  				</tr>
+  			</table>
+<div class="item_margin infotexto">Resolu&ccedil;&atilde;o m&aacute;xima que os T&iacute;tulo Imagens podem ter para n&atilde;o serem recortadas nessa resolu&ccedil;&atilde;o. Se a imagem for menor que essa resolu&ccedil;&atilde;o mant&eacute;m a resolu&ccedil;&atilde;o original. O recorte &eacute; feito no centro das imagens nessa resolu&ccedil;&atilde;o definida.</div></td>
+  	</tr>
+	<tr title="Defina a largura e a altura de recorte das Imagens Pequenas">
+	  	<td width="160" align="left" class="lista_header">Recorte Imagem Pequena:</td>
+	  	<td align="left" class="lista_cel">
+		<table border="0">
+	  			<tr>
+	  				<td width="240"><label for="imagem_pequena_width">Largura:</label><input name="imagem_pequena_width" type="text" id="imagem_pequena_width" value="#imagem_pequena_width#" size="5" maxlength="5" class="inteiro" />&nbsp;<label for="imagem_pequena_height">Altura:</label><input name="imagem_pequena_height" type="text" id="imagem_pequena_height" value="#imagem_pequena_height#" size="5" maxlength="5" class="inteiro" /></td>
+	  				<td><table border="0">
+	  		<tr>
+	  				<td><input name="imagem_pequena_recorte_y" type="radio" id="imagem_pequena_recorte_y1" value="1"#CHK_imagem_pequena_recorte_y1# /></td>
+	  				<td><label for="imagem_pequena_recorte_y1">Recortar a imagem horizontalmente no centro e verticalmente no meio.</label></td>
+  				</tr>
+	  			<tr>
+	  				<td><input name="imagem_pequena_recorte_y" type="radio" id="imagem_pequena_recorte_y2" value="2"#CHK_imagem_pequena_recorte_y2# /></td>
+	  				<td><label for="imagem_pequena_recorte_y2">Recortar a imagem horizontalmente no centro e verticalmente no topo.</label></td>
+  				</tr>
+  			</table></td>
+  				</tr>
+  			</table>
+	  		<div class="item_margin infotexto">Resolu&ccedil;&atilde;o m&aacute;xima que as Imagens Pequenas podem ter para n&atilde;o serem recortadas nessa resolu&ccedil;&atilde;o. Se a imagem for menor que essa resolu&ccedil;&atilde;o mant&eacute;m a resolu&ccedil;&atilde;o original. O recorte &eacute; feito no centro das imagens nessa resolu&ccedil;&atilde;o definida.</div></td>
+  	</tr>
+	<tr title="Defina a largura e a altura de recorte dos Imagens Grandes">
+	  	<td width="160" align="left" class="lista_header">Recorte Imagem Grande:</td>
+	  	<td align="left" class="lista_cel">
+		<table border="0">
+	  			<tr>
+	  				<td width="240"><label for="imagem_grande_width">Largura:</label><input name="imagem_grande_width" type="text" id="imagem_grande_width" value="#imagem_grande_width#" size="5" maxlength="5" class="inteiro" />&nbsp;<label for="imagem_grande_height">Altura:</label><input name="imagem_grande_height" type="text" id="imagem_grande_height" value="#imagem_grande_height#" size="5" maxlength="5" class="inteiro" /></td>
+	  				<td><table border="0">
+	  		<tr>
+	  				<td><input name="imagem_grande_recorte_y" type="radio" id="imagem_grande_recorte_y1" value="1"#CHK_imagem_grande_recorte_y1# /></td>
+	  				<td><label for="imagem_grande_recorte_y1">Recortar a imagem horizontalmente no centro e verticalmente no meio.</label></td>
+  				</tr>
+	  			<tr>
+	  				<td><input name="imagem_grande_recorte_y" type="radio" id="imagem_grande_recorte_y2" value="2"#CHK_imagem_grande_recorte_y2# /></td>
+	  				<td><label for="imagem_grande_recorte_y2">Recortar a imagem horizontalmente no centro e verticalmente no topo.</label></td>
+  				</tr>
+  			</table></td>
+  				</tr>
+  			</table>
+	  		<div class="item_margin infotexto">Resolu&ccedil;&atilde;o m&aacute;xima que as Imagens Grandes podem ter para n&atilde;o serem recortadas nessa resolu&ccedil;&atilde;o. Se a imagem for menor que essa resolu&ccedil;&atilde;o mant&eacute;m a resolu&ccedil;&atilde;o original. O recorte &eacute; feito no centro das imagens nessa resolu&ccedil;&atilde;o definida.</div></td>
+  	</tr>
+	<tr>
+	  <td align="left" class="lista_header">M&aacute;scara T&iacute;tulo Imagem:</td>
+	  <td align="left" class="lista_cel"><table border="0" cellspacing="0">
+		<tr>
+		  <td><input name="titulo_img_mask" type="file" id="titulo_img_mask" size="60" /></td>
+		</tr>
+		<tr>
+		  <td><table border="0">
+		  	<tr>
+		  		<td><input name="titulo_img_mask_pos" type="radio" id="titulo_img_mask_pos1" value="1"#CHK_titulo_img_mask_pos1# /></td>
+		  		<td><label for="titulo_img_mask_pos1">Mascarar toda a imagem.</label></td>
+		  		<td colspan="4">&nbsp;</td>
+	  		</tr>
+		  	<tr>
+		  		<td><input name="titulo_img_mask_pos" type="radio" id="titulo_img_mask_pos2" value="2"#CHK_titulo_img_mask_pos2# /></td>
+		  		<td><label for="titulo_img_mask_pos2">Posicionar a m&aacute;scara em uma posi&ccedil;&atilde;o na imagem.</label></td>
+		  		<td>Posi&ccedil;&atilde;o Horizontal:</td>
+		  		<td>#titulo_img_mask_pos_hor#</td>
+		  		<td>Posi&ccedil;&atilde;o Vertical:</td>
+		  		<td>#titulo_img_mask_pos_ver#</td>
+	  		</tr>
+		  	<tr>
+		  		<td><input name="titulo_img_mask_pos" type="radio" id="titulo_img_mask_pos3" value="3"#CHK_titulo_img_mask_pos3# /></td>
+		  		<td><label for="titulo_img_mask_pos3">N&atilde;o Mascarar.</label></td>
+		  		<td>&nbsp;</td>
+		  		<td>&nbsp;</td>
+		  		<td>&nbsp;</td>
+		  		<td>&nbsp;</td>
+	  		</tr>
+	  	</table></td>
+		</tr>
+		<tr>
+			<td>#titulo_img_mask#</td>
+		</tr>
+	  </table>
+	  	<div class="item_margin infotexto">
+	  		M&aacute;scara T&iacute;tulo Imagem &eacute; uma imagem que ser&aacute; sobreposta aos T&iacute;tulos Imagens em uma posi&ccedil;&atilde;o em espec&iacute;fico ou ent&atilde;o cobrindo toda a imagem. Use uma m&aacute;scara de uma imagem PNG com transpar&ecirc;ncia para um melhor resultado. Tipos de imagens permitidos: PNG, JPG e GIF.</div></td>
+	</tr>
+	<tr>
+	  <td align="left" class="lista_header">M&aacute;scara Imagem Pequena:</td>
+	  <td align="left" class="lista_cel"><table border="0" cellspacing="0">
+	  	<tr>
+	  			<td><input name="imagem_pequena_mask" type="file" id="imagem_pequena_mask" size="60" /></td>
+  			</tr>
+	  		<tr>
+	  			<td><table border="0">
+	  				<tr>
+	  					<td><input name="imagem_pequena_mask_pos" type="radio" id="imagem_pequena_mask_pos1" value="1"#CHK_imagem_pequena_mask_pos1# /></td>
+	  					<td><label for="imagem_pequena_mask_pos1">Mascarar toda a imagem.</label></td>
+	  					<td colspan="4">&nbsp;</td>
+  					</tr>
+	  				<tr>
+	  					<td><input name="imagem_pequena_mask_pos" type="radio" id="imagem_pequena_mask_pos2" value="2"#CHK_imagem_pequena_mask_pos2# /></td>
+	  					<td><label for="imagem_pequena_mask_pos2">Posicionar a m&aacute;scara em uma posi&ccedil;&atilde;o na imagem.</label></td>
+	  					<td>Posi&ccedil;&atilde;o Horizontal:</td>
+	  					<td>#imagem_pequena_mask_pos_hor#</td>
+	  					<td>Posi&ccedil;&atilde;o Vertical:</td>
+	  					<td>#imagem_pequena_mask_pos_ver#</td>
+  					</tr>
+	  				<tr>
+	  					<td><input name="imagem_pequena_mask_pos" type="radio" id="imagem_pequena_mask_pos3" value="3"#CHK_imagem_pequena_mask_pos3# /></td>
+	  					<td><label for="imagem_pequena_mask_pos3">N&atilde;o Mascarar.</label></td>
+	  					<td>&nbsp;</td>
+	  					<td>&nbsp;</td>
+	  					<td>&nbsp;</td>
+	  					<td>&nbsp;</td>
+  					</tr>
+  				</table></td>
+  			</tr>
+	  		<tr>
+	  			<td>#imagem_pequena_mask#</td>
+  			</tr>
+  		</table>
+<div class="item_margin infotexto">
+	M&aacute;scara Imagem Pequena &eacute; uma imagem que ser&aacute; sobreposta as Imagens Pequenas em uma posi&ccedil;&atilde;o em espec&iacute;fica ou ent&atilde;o cobrindo toda a imagem. Use uma m&aacute;scara de uma imagem PNG com transpar&ecirc;ncia para um melhor resultado. Tipos de imagens permitidos: PNG, JPG e GIF.</div></td>
+	</tr>
+	<tr>
+	  <td align="left" class="lista_header">M&aacute;scara Imagem Grande:</td>
+	  <td align="left" class="lista_cel"><table border="0" cellspacing="0">
+	  	<tr>
+	  		<td><input name="imagem_grande_mask" type="file" id="imagem_grande_mask" size="60" /></td>
+  		</tr>
+	  	<tr>
+	  		<td><table border="0">
+	  			<tr>
+	  				<td><input name="imagem_grande_mask_pos" type="radio" id="imagem_grande_mask_pos1" value="1"#CHK_imagem_grande_mask_pos1# /></td>
+	  				<td><label for="imagem_grande_mask_pos1">Mascarar toda a imagem.</label></td>
+	  				<td colspan="4">&nbsp;</td>
+  				</tr>
+	  			<tr>
+	  				<td><input name="imagem_grande_mask_pos" type="radio" id="imagem_grande_mask_pos2" value="2"#CHK_imagem_grande_mask_pos2# /></td>
+	  				<td><label for="imagem_grande_mask_pos2">Posicionar a m&aacute;scara em uma posi&ccedil;&atilde;o na imagem.</label></td>
+	  				<td>Posi&ccedil;&atilde;o Horizontal:</td>
+	  				<td>#imagem_grande_mask_pos_hor#</td>
+	  				<td>Posi&ccedil;&atilde;o Vertical:</td>
+	  				<td>#imagem_grande_mask_pos_ver#</td>
+  				</tr>
+	  			<tr>
+	  				<td><input name="imagem_grande_mask_pos" type="radio" id="imagem_grande_mask_pos3" value="3"#CHK_imagem_grande_mask_pos3# /></td>
+	  				<td><label for="imagem_grande_mask_pos3">N&atilde;o Mascarar.</label></td>
+	  				<td>&nbsp;</td>
+	  				<td>&nbsp;</td>
+	  				<td>&nbsp;</td>
+	  				<td>&nbsp;</td>
+  				</tr>
+  			</table></td>
+  		</tr>
+	  	<tr>
+	  		<td>#imagem_grande_mask#</td>
+  		</tr>
+  	</table>
+<div class="item_margin infotexto">
+	M&aacute;scara Imagem Grande &eacute; uma imagem que ser&aacute; sobreposta as Imagens Grandes em uma posi&ccedil;&atilde;o em espec&iacute;fica ou ent&atilde;o cobrindo toda a imagem. Use uma m&aacute;scara de uma imagem PNG com transpar&ecirc;ncia para um melhor resultado. Tipos de imagens permitidos: PNG, JPG e GIF.</div></td>
+	</tr>
+    </table>
+    </div>
+      <table width="100%" border="0">
+      	<tr>
+        <td width="370" align="center"><input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+		<input name="opcao" type="hidden" id="opcao" value="#opcao#" />
+        	<input name="id" type="hidden" id="id" value="#id#" />
+        	<input name="tipo" type="hidden" id="tipo" value="#tipo#" />
+        	<input type="submit" name="Submit" id="button" value="#botao#" title="Clique nesse bot&atilde;o para GRAVAR as altera&ccedil;&otilde;es" /><!-- deletar < -->&nbsp;<input type="button" name="deletar" id="deletar" value="Deletar" title="Clique nesse bot&atilde;o para DELETAR as altera&ccedil;&otilde;es" onclick="window.open('?opcao=permisao_deletar&id=#id#&tipo=#tipo#','_self');" /><!-- deletar > --></td>
+        </tr>
+    </table>
+	</td>
+  </tr>
+</table>
+</form>
+<!-- form > -->
+<hr />
+<h2>Conte&uacute;do</h2>
+<hr />
+<!-- form2 < -->
+<form action="." method="post" enctype="multipart/form-data" name="form2" id="form2">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+	<tr>
+      <td align="left" class="principal"><table width="100%" border="0" cellspacing="5" class="tabela_lista">
+	  	<tr>
+		  <td colspan="2"><table width="100%" border="0" cellspacing="5" class="tabela_lista" style="margin-bottom: 0px; margin-top: 0px;">
+		  	<tr>
+		  		<td width="160" align="center" class="lista_header">Tipo:</td>
+		  		<td align="center" class="lista_header">Identificador:</td>
+		  		<td align="center" class="lista_header">URL:</td>
+				<td width="150" align="center" class="lista_header">Data:</td>
+				<td width="80" align="center" class="lista_header">Publicar</td>
+	  		</tr>
+		  	<tr>
+		  		<td valign="top" class="lista_cel"><table border="0" cellspacing="0">
+		  			<tr>
+		  				<td><input name="tipo" type="radio" id="tipo1" value="C" title="Selecione para ser do tipo Conte&uacute;do" checked></td>
+		  				<td align="left" style="padding-top:5px;"><label for="tipo1" title="Selecione para ser do tipo Conte&uacute;do">Conte&uacute;do</label></td>
+	  				</tr>
+		  			<tr>
+		  				<td><input name="tipo" type="radio" id="tipo2" value="L" title="Selecione para ser do tipo Lista de Conte&uacute;dos" disabled></td>
+		  				<td style="padding-top:5px;"><label for="tipo2" title="Selecione para ser do tipo Lista de Conte&uacute;dos">Conjunto de Conte&uacute;dos</label></td>
+	  				</tr>
+	  			</table>
+		  			<div class="infotexto item_margin">
+		  				O tipo define se essa entrada ser&aacute; um conte&uacute;do ou ent&atilde;o um conjunto de conte&uacute;dos.
+		  			</div></td>
+		  		<td valign="top" class="lista_cel"><strong>#identificador#</strong>
+				<div class="item_margin infotexto">Identificador &uacute;nico desse conte&uacute;do.</div>
+				<table border="0" cellspacing="0">
+					<tr>
+						<td class="lista_header">Acessos:</td>
+						<td class="lista_cel">#hits#</td>
+						</tr>
+				</table></td>
+		  		<td valign="top" class="lista_cel"><strong>#caminho_raiz_2#</strong>
+            <div class="item_margin infotexto">
+            	URL desse conte&uacute;do.
+            </div></td>
+				<td align="center" valign="top" class="lista_cel"><table>
+	<tr>
+		<td><input name="data" type="text" id="data" value="#data#" size="10" maxlength="10" class="data" style="text-align:center" /></td>
+		<td><input name="hora" type="text" id="hora" value="#hora#" size="5" maxlength="5" class="hora" style="text-align:center" /></td>
+	</tr>
+</table>
+<div class="item_margin infotexto">Data de cria&ccedil;&atilde;o, ou modifica&ccedil;&atilde;o, ou ocorr&ecirc;ncia
+	desse conte&uacute;do.</div>
+			  <table border="0" cellspacing="0">
+					<tr>
+						<td rowspan="2" class="lista_header">Autom&aacute;tica:</td>
+						<td><input name="data_automatica" type="radio" id="data_automatica1" value="1" title="Selecione para que o conteúdo tenha geração de data automaticamente"#CHK_DATA1# /></td>
+						<td align="left" style="padding-top:5px;"><label for="data_automatica1" title="Selecione para que o conteúdo tenha geração de data automaticamente">Sim</label></td>
+					</tr>
+					<tr>
+						<td><input name="data_automatica" type="radio" id="data_automatica2" value="0" title="Selecione para que o conteúdo NÃO tenha geração de data automaticamente"#CHK_DATA2# /></td>
+						<td style="padding-top:5px;"><label for="data_automatica2" title="Selecione para que o conteúdo NÃO tenha geração de data automaticamente">N&atilde;o</label></td>
+					</tr>
+				</table></td>
+				<td align="center" valign="top" class="lista_cel"><table border="0" cellspacing="0">
+					<tr>
+						<td><input name="status" type="radio" id="status1" value="A" title="Selecione para publicar"#CHK_STATUS1# /></td>
+						<td align="left" style="padding-top:5px;"><label for="status1" title="Selecione para publicar">Sim</label></td>
+					</tr>
+					<tr>
+						<td><input name="status" type="radio" id="status2" value="B" title="Selecione para n&atilde;o publicar"#CHK_STATUS2# /></td>
+						<td style="padding-top:5px;"><label for="status2" title="Selecione para n&atilde;o publicar">N&atilde;o</label></td>
+					</tr>
+				</table>
+					<div class="infotexto item_margin">
+						Conte&uacute;do publicado ou n&atilde;o.
+					</div></td>
+	  		</tr>
+	  	</table></td>
+		 </tr>
+     </table>
+<ul id="menu" class="menu">
+    <li class="active"><a href="#conteudo">Conte&uacute;do</a></li>
+    <li><a href="#seo">SEO</a></li>
+    <!-- remover_layout_menu < --><li><a href="#layout">Layout</a></li><!-- remover_layout_menu > -->
+    <li><a href="#datas">Datas</a></li>
+</ul>
+<div id="conteudo" class="content">
+<table width="100%" border="0" cellspacing="5" class="tabela_lista">
+		  <!-- identificador_auxiliar < --><tr>
+          <td width="160" align="left" class="lista_header">Identificador Auxiliar:</td>
+          <td align="left" class="lista_cel"><input name="identificador_auxiliar" type="text" id="identificador_auxiliar" value="#identificador_auxiliar#" size="120" maxlength="90" />
+            <div class="item_margin infotexto">Identificador Auxiliar &eacute; utilizado quando tem a necessidade de se alterar um conte&uacute;do sem que o mesmo perca a refer&ecirc;ncia com alguma ferramenta de controle. Por exemplo nos controladores de conteiners.</div></td>
+        </tr><!-- identificador_auxiliar > -->
+        <tr>
+          <td width="160" align="left" class="lista_header">T&iacute;tulo:</td>
+          <td align="left" class="lista_cel"><input name="titulo" type="text" id="titulo" value="#titulo#" size="120" maxlength="90" />
+            <div class="item_margin infotexto">T&iacute;tulo
+            &eacute; o t&iacute;tulo do conte&uacute;do, tanto pode ser usado
+            para defini&ccedil;&atilde;o do t&iacute;tulo
+              do layout do conte&uacute;do em um lugar pr&eacute;-fixado do layout,
+              como para ser o nome desse conte&uacute;do.
+              Esse campo ser&aacute; usado por motores de busca de informa&ccedil;&atilde;o
+            tais como google, yahoo, bing, etc. Esse campo tem um limite de 90 caracteres.</div></td>
+        </tr>
+        <!-- titulo_img < --><tr>
+          <td align="left" class="lista_header">T&iacute;tulo Imagem:</td>
+          <td align="left" class="lista_cel"><table border="0" cellspacing="0">
+            <tr>
+              <td><input name="titulo_img" type="file" id="titulo_img" size="60" /></td>
+            </tr>
+            <tr>
+              <td>#titulo_img#</td>
+            </tr>
+            <tr>
+            	<td><table border="0" cellspacing="5">
+				<tr>
+				  <td class="lista_header">Nome:</td>
+				  <td class="lista_cel nao_mudar_cor"><input name="titulo_img_name" type="text" id="titulo_img_name" value="#titulo_img_name#" size="100" maxlength="100" /><br />&nbsp;Nome real: <b>#titulo_img_name_real#</b></td>
+			  	</tr>
+				<tr>
+				  <td class="lista_header">Title:</td>
+				  <td class="lista_cel nao_mudar_cor"><input name="titulo_img_title" type="text" id="titulo_img_title" value="#titulo_img_title#" size="100" maxlength="100" /></td>
+			  	</tr>
+				<tr>
+				  <td class="lista_header">Alt:</td>
+				  <td class="lista_cel nao_mudar_cor"><input name="titulo_img_alt" type="text" id="titulo_img_alt" value="#titulo_img_alt#" size="100" maxlength="100" /></td>
+			  	</tr>
+			  	</table>
+            </tr>
+          </table>
+          <div class="item_margin infotexto">
+          	T&iacute;tulo
+              imagem &eacute; uma imagem qualquer que serve para ser usado como
+              imagem de t&iacute;tulo do layout do conte&uacute;do em um lugar
+              pr&eacute;-fixado do layout. &Uacute;til
+              quando se quer definir uma imagem como t&iacute;tulo ao inv&eacute;s
+            de um texto. Nome &eacute; o campo que define o nome do arquivo f&iacute;sico real. Title e alt s&atilde;o par&acirc;metros usados na imagem para auxiliar os motores de busca 
+          na classifica&ccedil;&atilde;o da imagem.
+          </div></td>
+        </tr><!-- titulo_img > -->
+        <!-- author < --><tr>
+          <td width="160" align="left" class="lista_header">Autor:</td>
+          <td align="left" class="lista_cel"><input name="author" type="text" id="author" value="#author#" size="120" maxlength="255" />
+            <div class="item_margin infotexto">Autor
+            &eacute; o autor do conte&uacute;do respons&aacute;vel pelo conte&uacute;do.
+              Esse campo ser&aacute; usado por motores de busca de informa&ccedil;&atilde;o
+            tais como google, yahoo, bing, etc. Esse campo tem um limite de 255 caracteres.</div></td>
+        </tr><!-- author > -->
+        <!-- sub_titulo < --><tr>
+          <td align="left" class="lista_header">Sub-T&iacute;tulo:</td>
+          <td align="left" class="lista_cel"><textarea name="sub_titulo" id="sub_titulo" cols="120" rows="3" class="textarea_noenter" maxlength="255">#sub_titulo#</textarea>
+            <div class="item_margin infotexto">Sub-t&iacute;tulo
+              &eacute; usado para ser o sub-t&iacute;tulo do layout do conte&uacute;do
+              em um lugar pr&eacute;-fixado do layout. &Uacute;til
+              quando se est&aacute;
+              diagramando textos que tenham sub-t&iacute;tulos.</div></td>
+        </tr><!-- sub_titulo > -->
+        <!-- texto < --><tr>
+          <td align="left" class="lista_header">Texto:</td>
+          <td align="left" class="lista_cel"><textarea name="texto" id="texto" cols="120" rows="15" class="tinymce">#texto#</textarea>
+            <div class="item_margin infotexto">Defina o texto do conte&uacute;do,
+              ou seja, qualquer informa&ccedil;&atilde;o textual. No uso do editor
+              HTML (TinyMCE)
+              &eacute; poss&iacute;vel colocar no corpo do conte&uacute;do uma
+              s&eacute;rie de informa&ccedil;&atilde;o.
+              Ou seja, tudo que o editor permitir de inser&ccedil;&atilde;o de
+              informa&ccedil;&atilde;o.</div></td>
+        </tr><!-- texto > -->
+		<!-- texto2 < --><tr>
+          <td align="left" class="lista_header">Texto 2:</td>
+          <td align="left" class="lista_cel"><textarea name="texto2" id="texto2" cols="120" rows="15" class="tinymce">#texto2#</textarea>
+            <div class="item_margin infotexto">Defina o texto 2 do conte&uacute;do,
+              ou seja, qualquer informa&ccedil;&atilde;o textual. No uso do editor
+              HTML (TinyMCE)
+              &eacute; poss&iacute;vel colocar no corpo do conte&uacute;do uma
+              s&eacute;rie de informa&ccedil;&atilde;o.
+              Ou seja, tudo que o editor permitir de inser&ccedil;&atilde;o de
+              informa&ccedil;&atilde;o.</div></td>
+        </tr><!-- texto2 > -->
+        <!-- imagem_pequena < --><tr>
+          <td align="left" class="lista_header">Imagem Pequena:</td>
+          <td align="left" class="lista_cel"><table border="0" cellspacing="0">
+            <tr>
+              <td><input name="imagem_pequena" type="file" id="imagem_pequena" size="60" /></td>
+            </tr>
+            <tr>
+              <td>#imagem_pequena#</td>
+            </tr>
+			<tr>
+            	<td><table border="0" cellspacing="5">
+				<tr>
+				  <td class="lista_header">Nome:</td>
+				  <td class="lista_cel nao_mudar_cor"><input name="imagem_pequena_name" type="text" id="imagem_pequena_name" value="#imagem_pequena_name#" size="100" maxlength="100" /><br />&nbsp;Nome real: <b>#imagem_pequena_name_real#</b></td>
+			  	</tr>
+				<tr>
+				  <td class="lista_header">Title:</td>
+				  <td class="lista_cel nao_mudar_cor"><input name="imagem_pequena_title" type="text" id="imagem_pequena_title" value="#imagem_pequena_title#" size="100" maxlength="100" /></td>
+			  	</tr>
+				<tr>
+				  <td class="lista_header">Alt:</td>
+				  <td class="lista_cel nao_mudar_cor"><input name="imagem_pequena_alt" type="text" id="imagem_pequena_alt" value="#imagem_pequena_alt#" size="100" maxlength="100" /></td>
+			  	</tr>
+			  	</table>
+            </tr>
+          </table>
+            <div class="item_margin infotexto">Imagem pequena &eacute; um campo que
+              permite o envio de uma imagem pequena para ser usada no layout
+            desse conte&uacute;do em um lugar pr&eacute;-fixado do layout. Nome &eacute; o campo que define o nome do arquivo f&iacute;sico real. Title e alt s&atilde;o par&acirc;metros usados na imagem para auxiliar os motores de busca 
+          na classifica&ccedil;&atilde;o da imagem.</div></td>
+        </tr><!-- imagem_pequena > -->
+        <!-- imagem_grande < --><tr>
+          <td align="left" class="lista_header">Imagem Grande:</td>
+          <td align="left" class="lista_cel"><table border="0" cellspacing="0">
+            <tr>
+              <td><input name="imagem_grande" type="file" id="imagem_grande" size="60" /></td>
+            </tr>
+            <tr>
+              <td>#imagem_grande#</td>
+            </tr>
+			<tr>
+            	<td><table border="0" cellspacing="5">
+				<tr>
+				  <td class="lista_header">Nome:</td>
+				  <td class="lista_cel nao_mudar_cor"><input name="imagem_grande_name" type="text" id="imagem_grande_name" value="#imagem_grande_name#" size="100" maxlength="100" /><br />&nbsp;Nome real: <b>#imagem_grande_name_real#</b></td>
+			  	</tr>
+				<tr>
+				  <td class="lista_header">Title:</td>
+				  <td class="lista_cel nao_mudar_cor"><input name="imagem_grande_title" type="text" id="imagem_grande_title" value="#imagem_grande_title#" size="100" maxlength="100" /></td>
+			  	</tr>
+				<tr>
+				  <td class="lista_header">Alt:</td>
+				  <td class="lista_cel nao_mudar_cor"><input name="imagem_grande_alt" type="text" id="imagem_grande_alt" value="#imagem_grande_alt#" size="100" maxlength="100" /></td>
+			  	</tr>
+			  	</table>
+            </tr>
+          </table>
+          <div class="item_margin infotexto">Imagem grande &eacute; um campo
+            que permite o envio de uma imagem grande para ser usada no layout
+            desse conte&uacute;do em um lugar pr&eacute;-fixado do layout. Nome &eacute; o campo que define o nome do arquivo f&iacute;sico real. Title e alt s&atilde;o par&acirc;metros usados na imagem para auxiliar os motores de busca 
+          na classifica&ccedil;&atilde;o da imagem.</div></td>
+        </tr><!-- imagem_grande > -->
+		<!-- musica < --><tr>
+          <td align="left" class="lista_header">Música:</td>
+          <td align="left" class="lista_cel"><table border="0" cellspacing="0">
+            <tr>
+              <td><input name="musica" type="file" id="musica" size="60" /></td>
+            </tr>
+            <tr>
+              <td>#musica#</td>
+            </tr>
+          </table>
+          <div class="item_margin infotexto">Uma m&uacute;sica vinculada a esse conte&uacute;do que ser&aacute; usado no layout desse conte&uacute;do
+              em um lugar pr&eacute;-fixado
+            do layout.</div></td>
+        </tr><!-- musica > -->
+        <!-- link_externo < --><tr>
+          <td align="left" class="lista_header">Link Externo:</td>
+          <td align="left" class="lista_cel"><input name="link_externo" type="text" id="link_externo" value="#link_externo#" size="120" maxlength="255" />
+            <div class="item_margin infotexto">Link Externo &eacute; um endere&ccedil;o de
+              internet que ser&aacute; usado no layout desse conte&uacute;do
+              em um lugar pr&eacute;-fixado
+            do layout.</div></td>
+        </tr><!-- link_externo > -->
+		<!-- galeria < --><tr>
+          <td align="left" class="lista_header">Galeria de Imagens:</td>
+          <td align="left" class="lista_cel"><input name="galeria" type="text" id="galeria" value="#galeria#" size="100" readonly />&nbsp;<input type="button" name="galeria_escolher" id="galeria_escolher" value="Escolher" />
+		  <input name="galeria_id" type="hidden" id="galeria_id" value="#galeria_id#" />
+		  <div id="galeria_imagens_cont">#galeria_imagens#</div>
+            <div class="item_margin infotexto">
+            	Clique no bot&atilde;o <strong>Escolher</strong> para poder vincular uma galeria a esse conte&uacute;do.
+			</div></td>
+        </tr><!-- galeria > -->
+		<!-- galeria_grupo < --><tr>
+          <td align="left" class="lista_header">Galeria de Imagens Grupo:</td>
+          <td align="left" class="lista_cel"><input name="galeria_grupo" type="text" id="galeria_grupo" value="#galeria_grupo#" size="100" readonly />&nbsp;<input type="button" name="galeria_grupo_escolher" id="galeria_grupo_escolher" value="Escolher" />
+		  <input name="galeria_grupo_id" type="hidden" id="galeria_grupo_id" value="#galeria_grupo_id#" />
+		  <div id="galeria_grupo_imagens_cont">#galeria_grupo_imagens#</div>
+            <div class="item_margin infotexto">
+            	Clique no bot&atilde;o <strong>Escolher</strong> para poder vincular um grupo de galerias a esse conte&uacute;do.
+			</div></td>
+        </tr><!-- galeria_grupo > -->
+		<!-- videos < --><tr>
+          <td align="left" class="lista_header">Galeria de V&iacute;deos:</td>
+          <td align="left" class="lista_cel"><input name="videos" type="text" id="videos" value="#videos#" size="100" readonly />&nbsp;<input type="button" name="videos_escolher" id="videos_escolher" value="Escolher" />
+		  <input name="videos_id" type="hidden" id="videos_id" value="#videos_id#" />
+		  <div id="galerias_videos_cont">#galerias_videos#</div>
+            <div class="item_margin infotexto">
+            	Clique no bot&atilde;o <strong>Escolher</strong> para poder vincular uma galeria a esse conte&uacute;do.
+			</div></td>
+        </tr><!-- videos > -->
+		<!-- videos_grupo < --><tr>
+          <td align="left" class="lista_header">Galeria de V&iacute;deos Grupo:</td>
+          <td align="left" class="lista_cel"><input name="videos_grupo" type="text" id="videos_grupo" value="#videos_grupo#" size="100" readonly />&nbsp;<input type="button" name="videos_grupo_escolher" id="videos_grupo_escolher" value="Escolher" />
+		  <input name="videos_grupo_id" type="hidden" id="videos_grupo_id" value="#videos_grupo_id#" />
+		  <div id="galerias_grupo_videos_cont">#galerias_grupo_videos#</div>
+            <div class="item_margin infotexto">
+            	Clique no bot&atilde;o <strong>Escolher</strong> para poder vincular um grupo de galerias a esse conte&uacute;do.
+			</div></td>
+        </tr><!-- videos_grupo > -->
+      </table>
+ </div>
+ <div id="seo" class="content"> 
+ 	<table width="100%" border="0" cellspacing="5" class="tabela_lista">
+    	<tr>
+          <td width="160" align="left" class="lista_header">Tags:</td>
+          <td align="left" class="lista_cel">#tags#
+            <div class="item_margin infotexto"> Selecione as tags que definem esse conte&uacute;do. Tags s&atilde;o conjunto de palavras que interelacionam conte&uacute;dos de assuntos similares. Para adicionar novas tags &eacute; s&oacute; clicar no bot&atilde;o Adicionar Novas Tags. Para excluir tags &eacute; s&oacute; clicar no X ao lado direito de cada tag.</div></td>
+        </tr>  
+ 		<tr>
+          <td width="160" align="left" class="lista_header">Descri&ccedil;&atilde;o:</td>
+          <td align="left" class="lista_cel"><textarea name="description" id="description" cols="120" rows="3" maxlength="250" class="textarea_noenter">#description#</textarea>
+            <div class="item_margin infotexto"> Descri&ccedil;&atilde;o do que &eacute; esse conte&uacute;do. Esse campo ser&aacute; usado
+              por motores de busca de informa&ccedil;&atilde;o tais como google,
+            yahoo, bing, etc. Fundamental para o desenvolvimento do SEO. Esse campo tem um limite de 250 caracteres.</div></td>
+        </tr>
+		<tr>
+          <td align="left" class="lista_header">Palavras Chaves:</td>
+          <td align="left" class="lista_cel"><textarea name="keywords" id="keywords" cols="120" rows="3" maxlength="200" class="textarea_noenter">#keywords#</textarea>
+            <div class="item_margin infotexto">Defina
+            as palavras chaves vinculadas a esse conte&uacute;do. Separe todas
+            as palavras, ou frases, por v&iacute;rgula simples. Esse campo ser&aacute; usado
+            por motores de busca de informa&ccedil;&atilde;o tais como google,
+            yahoo, bing, etc. Esse campo tem um limite de 200 caracteres.</div></td>
+        </tr>
+    <!-- redes_sociais < --><tr>
+          <td align="left" class="lista_header">Redes Sociais:</td>
+          <td align="left" class="lista_cel">
+		  <label for="redes_titulo" class="label_redes">T&iacute;tulo:</label>
+		  <input name="redes_titulo" type="text" id="redes_titulo" value="#redes_titulo#" size="105" maxlength="90" />
+		  <div class="clear"></div>
+		  <label for="redes_subtitulo" class="label_redes">Descri&ccedil;&atilde;o:</label>
+		  <input name="redes_subtitulo" type="text" id="redes_subtitulo" value="#redes_subtitulo#" size="105" maxlength="500" />
+		  <div class="item_margin infotexto">Defina o T&iacute;tulo e a Descri&ccedil;&atilde;o se quiser definir uma mensagem em espec&iacute;fico que ser&aacute; postado nas redes sociais vinculados &agrave; esse conte&uacute;do espec&iacute;fico. Se se deixar esses dois campos em brancos, por padr&atilde;o, o sistema colocar&aacute; no T&iacute;tulo das Redes Sociais o T&iacute;tulo do Conte&uacute;do e na Descri&ccedil;&atilde;o das Redes Sociais o Texto do Conte&uacute;do.</div></td>
+        </tr><!-- redes_sociais > -->
+     </table>
+ </div>
+  <!-- remover_layout < --><div id="layout" class="content">
+ 	<table width="100%" border="0" cellspacing="5" class="tabela_lista">
+        <!-- conteiner_posicao < --><tr>
+	  	<td width="160" align="left" class="lista_header">Posicionamento:</td>
+	  	<td align="left" class="lista_cel"><label for="conteiner_posicao_x">Posi&ccedil;&atilde;o X:</label>
+	  		<input name="conteiner_posicao_x" type="text" id="conteiner_posicao_x" value="#conteiner_posicao_x#" size="5" maxlength="5" class="inteiro" />
+	  		&nbsp;
+	  		<label for="conteiner_posicao_y">Posi&ccedil;&atilde;o Y:</label>
+	  		<input name="conteiner_posicao_y" type="text" id="conteiner_posicao_y" value="#conteiner_posicao_y#" size="5" maxlength="5" class="inteiro" />	  		
+	  		<div class="item_margin infotexto">Defina a posi&ccedil;&atilde;o relativa X e Y que esse conte&uacute;do aparecer&aacute; em rela&ccedil;&atilde;o aos outros conte&uacute;dos no mesmo conteiner em um local do layout.</div></td>
+  	</tr><!-- conteiner_posicao > -->
+     </table>
+ </div><!-- remover_layout > -->
+ <div id="datas" class="content">
+ 	<table width="100%" border="0" cellspacing="5" class="tabela_lista">
+        <!-- conteiner_posicao < --><tr>
+	  	<td width="160" align="left" class="lista_header">Datas:</td>
+	  	<td align="left" class="lista_cel">
+            <div id="datas-cont">
+            	<div id="datas-cont-rotulo">
+                	<div id="datas-cont-r1">Data</div>
+                    <div id="datas-cont-r2">Hora</div>
+                    <div id="datas-cont-r3">ID Externo</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+                <!-- datas-cel < --><div id="data_tr-#id-data#">
+                    <input name="data-#id-data#" type="text" id="data-#id-data#" value="#data_val#" size="10" maxlength="10" class="data" style="text-align:center">
+                    <input name="hora-#id-data#" type="text" id="hora-#id-data#" value="#hora_val#" size="5" maxlength="5" class="hora" style="text-align:center">
+                    <input name="id_externo-#id-data#" type="text" id="id_externo-#id-data#" value="#id_externo_val#" size="5" maxlength="5" class="inteiro" style="text-align:center">
+                    <!-- datas-del < --><div class="excluir-data" id="data-#id-data#"></div><!-- datas-del > -->
+                    <div class="clear"></div>
+            	</div><!-- datas-cel > -->
+            </div>
+            <div id="datas-padrao">
+            	<div id="data_tr-#id-data#">
+                    <input name="data-#id-data#" type="text" id="data-#id-data#" value="#data_val#" size="10" maxlength="10" class="data" style="text-align:center">
+                    <input name="hora-#id-data#" type="text" id="hora-#id-data#" value="#hora_val#" size="5" maxlength="5" class="hora" style="text-align:center">
+                    <input name="id_externo-#id-data#" type="text" id="id_externo-#id-data#" size="5" maxlength="5" class="inteiro" style="text-align:center">
+                    <div class="excluir-data" id="data-#id-data#"></div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <input name="datas-ids-html" type="hidden" id="datas-ids-html" value="#datas-ids-html#" />
+            <div id="datas-add">Adicionar Novas Datas</div>
+            <div class="clear"></div>
+            <div class="item_margin infotexto">Defina todas as datas e horários desse evento.</div></td>
+  	</tr><!-- conteiner_posicao > -->
+     </table>
+ </div>
+      </td>
+    </tr>
+  </table>
+  <!-- botao < --><table width="100%" border="0">
+          <tr>
+            <td align="center"><input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+              <input name="opcao" type="hidden" id="opcao" value="#opcao#" />
+              <input name="id" type="hidden" id="id" value="#id#" />
+              <input type="submit" name="Submit" id="button" value="#botao#" title="Clique nesse bot&atilde;o para GRAVAR as altera&ccedil;&otilde;es" /></td>
+          </tr>
+        </table><!-- botao > -->
+</form>
+<!-- form2 > -->
+<hr />
+<h2>Exclus&atilde;o Bot&atilde;o</h2>
+<hr />
+<!-- remover < -->
+<div><a href="#link#"><img src="../../images/icons/db_remove.png" alt="Remover" width="32" height="32" border="0" title="Clique para remover esse ítem" /></a></div>
+<!-- remover > -->
+<hr />
+<h3>Galerias de Imagens</h3>
+<hr />
+<!-- galerias_conteiner < -->
+<div id="galerias_imagens">#imagens#</div>
+<!-- galerias_conteiner > -->
+<hr />
+<h3>Galerias de V&iacute;deos</h3>
+<hr />
+<!-- galerias_videos_conteiner < -->
+<div id="galerias_videos">#videos#</div>
+<!-- galerias_videos_conteiner > -->
+<hr />
+<p>&nbsp;</p>

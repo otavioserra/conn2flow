@@ -1,0 +1,54 @@
+.header1 {
+	background-color: #BEE1CD;
+	color: #000066;
+	padding: 5px;
+	font-size: 12px;
+	font-weight: bold;
+}
+.tabela1 {
+	margin: 3px;
+	background-color: #EAEAEA;
+	margin-bottom: 10px;
+	border: 1px solid #666666;
+}
+.texto1 {
+	color: #FC0202;
+}
+.texto2 {
+	font-size: 7pt;
+	color: #999;
+}
+.texto3 {
+	color: #0C6;
+}
+
+
+.bg_color1 {
+	background-color: #DDDDDD;
+}
+.cel1 {
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-top-color: #CCCCCC;
+	border-right-color: #CCCCCC;
+	border-bottom-color: #CCCCCC;
+	border-left-color: #CCCCCC;
+}
+.cel2 {
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-top-color: #CCCCCC;
+	border-right-color: #CCCCCC;
+	border-bottom-color: #CCCCCC;
+	border-left-color: #CCCCCC;
+}
+.cel3 {
+	padding-bottom: 10px;
+}

@@ -1,0 +1,176 @@
+<!--!#del#(#!--><link href="css/interface.css" rel="stylesheet" type="text/css" /><!--!#del#)#!-->
+<hr />
+<h3>Layout</h3>
+<hr />
+<!-- layout < -->
+<!-- informacao_titulo < --><h1 style="margin:40px 0px 0px 0px;">#informacao_titulo</h1><!-- informacao_titulo > -->
+<div class="in_busca">#busca</div>
+<div class="_menu_principal">#menu_principal</div>
+<div class="in_legenda">#legenda</div>
+<div class="_informacao_acima">#_informacao_acima</div>
+<div class="menu_paginas_1">#menu_paginas_1</div>
+<div class="in_informacao">#informacao</div>
+<div class="menu_paginas_1">#menu_paginas_2</div>
+<div class="_informacao_abaixo">#_informacao_abaixo</div>
+<!-- layout > -->
+<hr />
+<h3>Layout P&aacute;gina</h3>
+<hr />
+<!-- layout_pagina < -->
+<div id="lay_topo">
+	<div class="in_busca_mask"><div class="in_busca">#busca</div></div>
+    <a href="!#caminho_raiz#!logout/" id="lay_botao_sair">
+		<img src="!#caminho_raiz#!images/admin/sair-icone.png" alt="Sair" border="0" title="Sair do Sistema" /><br>
+        Sair
+	</a>
+    <div id="lay_usuario"><div id="lay_timer"></div>!#user#!</div>
+</div>
+<div id="lay_base">
+    <div class="_menu_principal">#menu_principal</div>
+    <!-- informacao_titulo < --><div id="_in_informacao_titulo">/#informacao_titulo</div><!-- informacao_titulo > -->
+    <div class="_in_informacao_titulo">#_informacao_acima</div>
+    <div class="menu_paginas_1">#menu_paginas_1</div>
+    <div class="in_informacao">#informacao</div>
+    <div class="menu_paginas_1">#menu_paginas_2</div>
+    <div class="_informacao_abaixo">#_informacao_abaixo</div>
+</div>
+<!-- layout_pagina > -->
+<hr />
+<h3>Menu de P&aacute;ginas</h3>
+<hr />
+<!-- menu_paginas < -->
+<form id="#menu_id" name="#menu_nome" method="get" action="#url">
+	<!-- comeco < --><div class="_menu_pagina_cont"><input name="comeco" type="button" value="&lt;&lt;" onclick="menu_paginas2(this.form,1)" data-inline="true" /></div><!-- comeco > -->
+	<!-- anterior < --><div class="_menu_pagina_cont"><input name="anterior" type="button" value="&lt;" onclick="menu_paginas2(this.form,2)" data-inline="true" /></div><!-- anterior > -->
+	<div class="_menu_pagina_cont"><select name="paginas" onchange="menu_paginas2(this.form,3)" data-inline="true"><!-- options < --><option value="#num_pagina_valor"#checked>#num_pagina</option><!-- options > --></select></div>
+	<!-- proximo < --><div class="_menu_pagina_cont"><input name="proximo" type="button" value="&gt;" onclick="menu_paginas2(this.form,4)" data-inline="true" /></div><!-- proximo > -->
+	<!-- ultimo < --><div class="_menu_pagina_cont"><input name="ultimo" type="button" value="&gt;&gt;" onclick="menu_paginas2(this.form,5)" data-inline="true" /></div><!-- ultimo > -->
+  <input name="num_menu" type="hidden" value="#num_menu" />
+  <input name="opcao" type="hidden" value="#menu_opcao" />
+  <input name="opcao_menu" type="hidden" />
+  <!-- extra -->
+</form>
+<div style="clear:both"></div>
+<!-- menu_paginas > -->
+<hr />
+<h3>Menu Principal</h3>
+<hr />
+<!-- menu_principal < -->
+<ul id="in_menu_principal">
+<!-- cel1 < --><li><a href="#url" title="#title" alt="#alt"><div style="background-position:-#img_coluna#px -#img_linha#px;"></div>#name#</a></li><!-- cel1 > -->
+</ul>
+<div class="clear"></div>
+<!-- menu_principal > -->
+<hr />
+<h3>Legenda</h3>
+<hr />
+<!-- legenda < -->
+<div class="in_legenda_titulo">Legenda:</div> 
+<ul id="in_legenda_ul">
+<!-- cel1 < --><li class="in_legenda_li">
+        <div class="in_legenda_dados">
+            <div class="in_legenda_img"><img src="#img#" border="0" /></div>
+            <div class="in_legenda_name">#legenda#</div>
+        </div>
+        #separador#
+        <div class="clear"></div>
+    </li><!-- cel1 > -->
+</ul>
+<!-- legenda > -->
+<hr />
+<h3>Lista</h3>
+<hr />
+<!-- lista < -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="#css_tabela_lista#">
+  <!-- header < --><tr class="lista_header_tr">
+    <!-- cel_header < --><td class="#css_lista_header##campo_header_class#"#campo_header_extra#>#campo_header_valor#</td><!-- cel_header > -->
+    <!-- acao_header < --><td align="center" class="#css_acao_header#"#acao_header_extra#>#acao_header_valor#</td><!-- acao_header > -->
+  </tr><!-- header > -->
+  <!-- cel_dados < --><tr>
+    <!-- cel_valor < --><td style="border-top:3px solid #FFF;" class="#css_lista_cel##campo_dados_class#"#campo_dados_extra#>#campo_dados_valor#</td><!-- cel_valor > -->
+    <!-- acao_valor < --><td style="border-top:3px solid #FFF;" align="center" class="#css_lista_cel#">#acao_dados_valor#</td><!-- acao_valor > -->
+  </tr><!-- cel_dados > -->
+</table>
+<!-- lista > -->
+<hr />
+<h3>Lista Not&iacute;cias</h3>
+<hr />
+<!-- lista_noticias < -->
+<ul class="#class_ul#"#ul_extra#>
+	<!-- cel < --><li#li_extra#><a href="#a_link#"#a_extra#><!-- format < --><strong>#titulo#</strong><!-- format > --></a></li><!-- cel > -->
+    <!-- cel2 < --><li#li_extra#><a href="#a_link#"#a_extra#><!-- format2 < -->#data# - #titulo#<!-- format2 > --></a></li><!-- cel2 > -->
+</ul>
+<!-- lista_noticias > -->
+<hr />
+<h3>Lista Op&ccedil;&otilde;es</h3>
+<hr />
+<!-- menu_opcoes < -->
+<ul class="_menu_opcoes">
+	<!-- cel1 < --><li class="_opcoes_li">
+    	<a href="#url" title="#title" alt="#alt"#link_extra><div style="background-position:-#img_coluna#px -#img_linha#px;"#img_extra></div></a>
+    </li><!-- cel1 > -->
+    <!-- cel2 < --><li class="_opcoes_li">
+    	<input name="#input_name" id="#input_id" type="#input_type"#input_extra />
+    </li><!-- cel2 > -->
+</ul>
+<!-- menu_opcoes > -->
+<hr />
+<h3>Lista Busca</h3>
+<hr />
+<!-- busca < -->
+<form id="nome_buscar" name="nome_buscar" method="post" action="#buscar_url">
+    <input name="#buscar_name" type="text" id="#buscar_id" title="Digite uma parte do texto do que está buscando, aguarde um pouco que o sistema retorna as possibilidades em uma lista, escolha uma opção e clique no botão Ver ou então aperte a tecla ENTER do teclado." onclick="this.value='';" value="Buscar #buscar_val..." size="40" class="in_busca_input auto_complete" />
+  <input type="hidden" name="id" id="nome_id" />
+    <input name="buscar_opcao" type="hidden" id="buscar_opcao" value="#buscar_opcao" />
+    <input type="submit" name="button" id="buscar_button" value=" " title="Clique nesse botão para BUSCAR as informações" />
+</form>
+<!-- busca > -->
+<hr />
+<h3>Calend&aacute;rio</h3>
+<hr />
+<!-- calendario < -->
+<table width="#navegador_tabela_width" border="0" cellspacing="5" class="tabela_lista">
+  <tr>
+    <td class="lista_header"#navegador_extra>
+    	<a href="#anterior_url" title="#anterior_title" alt="#anterior_alt"#anterior_link_extra><img src="#anterior_img" border="0"#anterior_img_extra/></a>
+        &nbsp;#navegador_mes&nbsp;#navegador_ano&nbsp;
+        <a href="#proximo_url" title="#proximo_title" alt="#proximo_alt"#proximo_link_extra><img src="#proximo_img" border="0"#proximo_img_extra/></a>
+    </td>
+  </tr>
+</table>
+<table width="#calendario_width" border="0" cellspacing="5" class="tabela_lista">
+  <tr>
+    <td class="lista_header"#header_1_extra>#header_1_valor</td>
+    <td class="lista_header"#header_2_extra>#header_2_valor</td>
+    <td class="lista_header"#header_3_extra>#header_3_valor</td>
+    <td class="lista_header"#header_4_extra>#header_4_valor</td>
+    <td class="lista_header"#header_5_extra>#header_5_valor</td>
+    <td class="lista_header"#header_6_extra>#header_6_valor</td>
+    <td class="lista_header"#header_7_extra>#header_7_valor</td>
+  </tr>
+  <!-- cel1 < --><tr>
+    <td class="acao_cel#campo_1_class"#campo_1_extra><span class="dia">#campo_1_dia</span><span class="valor">#campo_1_valor</span></td>
+    <td class="acao_cel#campo_2_class"#campo_2_extra><span class="dia">#campo_2_dia</span><span class="valor">#campo_2_valor</span></td>
+    <td class="acao_cel#campo_3_class"#campo_3_extra><span class="dia">#campo_3_dia</span><span class="valor">#campo_3_valor</span></td>
+    <td class="acao_cel#campo_4_class"#campo_4_extra><span class="dia">#campo_4_dia</span><span class="valor">#campo_4_valor</span></td>
+    <td class="acao_cel#campo_5_class"#campo_5_extra><span class="dia">#campo_5_dia</span><span class="valor">#campo_5_valor</span></td>
+    <td class="acao_cel#campo_6_class"#campo_6_extra><span class="dia">#campo_6_dia</span><span class="valor">#campo_6_valor</span></td>
+    <td class="acao_cel#campo_7_class"#campo_7_extra><span class="dia">#campo_7_dia</span><span class="valor">#campo_7_valor</span></td>
+  </tr><!-- cel1 > -->
+</table>
+<!-- calendario > -->
+<hr />
+<h3>Eventos Calend&aacute;rio</h3>
+<hr />
+<!-- eventos_calendario < -->
+<table border="0">
+  <!-- lista < --><tr title="#evento_titulo">
+    <td><div class="evento_caixa_cor" style="background-color:##evento_cor"></div></td>
+    <td class="evento_texto">#evento_texto</td>
+  </tr><!-- lista > -->
+</table>
+<!-- mais < --><p class="evento_mais">Mais...</p><!-- mais > -->
+<!-- eventos_calendario > -->
+<hr />
+<p></p>
+<p>&nbsp;</p>

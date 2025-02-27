@@ -1,0 +1,101 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /><link href="../../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<h2>Formul&aacute;rio</h2>
+<hr />
+<!-- form < -->
+<form action="." method="post" name="form" id="form" enctype="multipart/form-data">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+    <tr>
+      <td align="left" class="principal">
+      <table id="tabela_dados" border="0" cellspacing="5" class="tabela_lista">
+        <tr>
+          <td width="150" align="left" class="lista_header">Nome:</td>
+          <td class="lista_cel"><input name="nome" type="text" id="nome" value="#nome" size="80" maxlength="100" /></td>
+        </tr>
+        <tr>
+          <td width="150" align="left" class="lista_header">Url:</td>
+          <td class="lista_cel">#url#</td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Visibilidade:</td>
+          <td align="left" class="lista_cel">&agrave; partir de 
+            <input name="visivel_de" type="text" id="visivel_de" value="#visivel_de#" size="10" maxlength="3" class="data"> 
+            at&eacute; 
+            <input name="visivel_ate" type="text" id="visivel_ate" value="#visivel_ate#" size="10" maxlength="3" class="data"> 
+            OBS.: Se deixar as datas em branco irá ser visível sempre.</td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Observa&ccedil;&atilde;o:</td>
+          <td class="lista_cel"><input name="observacao" type="text" id="observacao" value="#observacao#" size="80" maxlength="255" /></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Quantidade:</td>
+          <td align="left" class="lista_cel"><input name="quantidade" type="text" id="quantidade" value="#quantidade#" size="9" maxlength="9" class="inteiro"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Peso (Kg):</td>
+          <td align="left" class="lista_cel"><input name="peso" type="text" id="peso" value="#peso#" size="5" maxlength="8" class="float"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Dimens&otilde;es (cm):</td>
+          <td align="left" class="lista_cel">Largura 
+            <input name="largura" type="text" id="largura" value="#largura#" size="5" maxlength="3" class="inteiro"> Altura 
+            <input name="altura" type="text" id="altura" value="#altura#" size="5" maxlength="3" class="inteiro"> Comprimento 
+            <input name="comprimento" type="text" id="comprimento" value="#comprimento#" size="5" maxlength="3" class="inteiro"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Pre&ccedil;o (R$):</td>
+          <td align="left" class="lista_cel"><input name="preco" type="text" id="preco" value="#preco#" size="10" maxlength="10" class="float"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Desconto (%):</td>
+          <td align="left" class="lista_cel"><input name="desconto" type="text" id="desconto" value="#desconto#" size="5" maxlength="3" class="inteiro"></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Desconto Per&iacute;odo:</td>
+          <td align="left" class="lista_cel">&agrave; partir de 
+            <input name="desconto_de" type="text" id="desconto_de" value="#desconto_de#" size="10" maxlength="3" class="data"> 
+            at&eacute; 
+            <input name="desconto_ate" type="text" id="desconto_ate" value="#desconto_ate#" size="10" maxlength="3" class="data"> 
+            OBS.: Se deixar as datas em branco o desconto ser&aacute; perp&eacute;tuo.</td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Galeria Imagem:</td>
+          <td align="left" class="lista_cel"><div id="galeria-cont">#imagem_path#</div>
+          <div class="clear"></div>
+          <div id="swfupload-control">
+				<p>&Eacute; permitido no m&aacute;ximo 100 imagens (jpg, png, gif), sendo que cada imagem pode ter no m&aacute;ximo 10 MB.</p>
+				<p>Clique no bot&atilde;o abaixo para iniciar o envio das imagens.</p>
+				<span id="swfupload-button"></span>
+				<p id="queuestatus" ></p>
+				<ol id="log">
+				</ol>
+			</div>
+<input name="usuario" id="usuario" type="hidden" value="#usuario" />
+<input name="sessao" id="sessao" type="hidden" value="#sessao" /></td>
+        </tr>
+        <tr>
+          <td align="left" class="lista_header">Descri&ccedil;&atilde;o:</td>
+          <td align="left" class="lista_cel"><textarea name="descricao" id="descricao" class="tinymce">#descricao</textarea></td>
+        </tr>
+      </table>
+      <div id="categorias-produtos-cont">
+        <div id="categorias-produtos-tit" class="lista_header">Categoria:<div id="categoria-add-cont"><input type="text" id="categoria-add-txt"><input type="button" id="categoria-add-btn" value="Ok"></div><div id="categoria-add"></div></div>
+        <div id="categorias-produtos-txt" class="lista_cel">#categorias#</div>
+      </div>
+      <input name="id_categorias_produtos" type="hidden" id="id_categorias_produtos" value="#id_categorias_produtos#" />
+        <!-- botao < --><table width="100%" border="0">
+          <tr>
+            <td align="center"><input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+              <input name="opcao" type="hidden" id="opcao" value="#opcao" />
+              <input name="id" type="hidden" id="id" value="#id" />
+              <input type="submit" name="Submit" id="button" value="#botao" /></td>
+          </tr>
+        </table><!-- botao > --></td>
+    </tr>
+  </table>
+</form>
+<!-- form > -->
+<hr />
+<h3>&nbsp;</h3>

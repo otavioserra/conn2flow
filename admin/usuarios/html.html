@@ -1,0 +1,141 @@
+<!--!#del#(#!--><link href="../../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!-->
+<hr />
+<h1>Formul&aacute;rio </h1>
+<hr />
+<!-- form < -->
+<form id="form" name="form" method="post" action=".">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+    <tr>
+      <td align="left" class="principal">
+      #historico#
+<h3>Conta de Usu&aacute;rio</h3>
+        <table width="100%" border="0" cellspacing="5" class="tabela_lista">
+          <tr>
+            <td width="130" align="left" class="lista_header">Usu&aacute;rio:</td>
+            <td align="left" class="lista_cel"><input name="usuario" type="text" id="usuario" value="#usuario" size="20" style="width: 182px;" /><input name="edit_usuario" type="hidden" id="edit_usuario" value="#edit_usuario" />
+              <span id="mens_usuario" class="div_item col_margin"></span></td>
+          </tr>
+          <tr>
+            <td align="left" class="lista_header">Senha:</td>
+            <td align="left" class="lista_cel"><input name="senha" type="password" id="senha" value="#senha" size="20" style="width: 182px;" />
+              <span id="mens_senha" class="div_item col_margin"></span>
+              <div class="inbox">
+              	<div class="graybar" id="graybar"></div>
+                <div class="colorbar" id="colorbar"></div>
+                <span class="percent" id="percent">0%</span>
+                <span class="result" id='result'>For&ccedil;a da senha</span>
+              </div></td>
+          </tr>
+          <tr>
+            <td align="left" class="lista_header">Redigite a Senha:</td>
+            <td align="left" class="lista_cel"><input name="senha2" type="password" id="senha2" value="#senha2" size="20" style="width: 182px;" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="lista_header">Perfil do Usu&aacute;rio:</td>
+            <td align="left" class="lista_cel">#perfil</td>
+          </tr>
+        </table>
+        <h3>Dados Gerais</h3>
+        <table width="100%" border="0" cellspacing="5" class="tabela_lista">
+          <tr>
+            <td width="130" align="left" class="lista_header">E-mail:</td>
+            <td align="left" class="lista_cel"><input name="email" type="text" id="email" value="#email" size="40" /><input name="edit_email" type="hidden" id="edit_email" value="#edit_email" />
+              <span id="mens_email" class="div_item col_margin"></span></td>
+          </tr>
+          <tr>
+            <td align="left" class="lista_header">Nome:</td>
+            <td align="left" class="lista_cel"><input name="nome" type="text" id="nome" value="#nome" size="20" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="lista_header">Sobrenome:</td>
+            <td align="left" class="lista_cel"><input name="sobrenome" type="text" id="sobrenome" value="#sobrenome" size="50" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="lista_header">CEP:</td>
+            <td align="left" class="lista_cel"><input name="cep" type="text" class="cep" id="cep" value="#cep" size="10" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="lista_header">Endere&ccedil;o:</td>
+            <td align="left" class="lista_cel"><input name="endereco" type="text" id="endereco" value="#endereco" size="50" />
+              n&deg;
+              <input name="numero" type="text" id="numero" value="#numero" size="5" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="lista_header">Complemento:</td>
+            <td align="left" class="lista_cel"><input name="complemento" type="text" id="complemento" value="#complemento" size="40" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="lista_header">Bairro:</td>
+            <td align="left" class="lista_cel"><input name="bairro" type="text" id="bairro" value="#bairro" size="40" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="lista_header">Cidade:</td>
+            <td align="left" class="lista_cel"><input name="cidade" type="text" id="cidade" value="#cidade" size="40" />
+              UF
+              <input name="uf" type="text" id="uf" value="#uf" size="3" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="lista_header">Telefone:</td>
+            <td align="left" class="lista_cel"><input name="telefone" type="text" id="telefone" value="#tel" size="14" class="telefone" /></td>
+          </tr>
+          <tr>
+            <td align="left" class="lista_header">Celular:</td>
+            <td align="left" class="lista_cel"><input name="celular" type="text" id="celular" value="#cel" size="14" class="telefone" /></td>
+          </tr>
+        </table>
+        <!-- grupo_cel < --><h3>Grupos</h3>
+        <table width="100%" border="0" cellspacing="5" class="tabela_lista">
+          <!-- cel2 < -->
+          <tr>
+            <!-- cel1 < -->
+            <td width="20" class="lista_cel"><input name="grupo#grupo_num" type="checkbox" value="#grupo_id"#checked /></td>
+            <td class="lista_cel">#grupo_name</td>
+            <!-- cel1 > -->
+          </tr>
+          <!-- cel2 > -->
+        </table><!-- grupo_cel > -->
+        <!-- botao < --><table width="100%" border="0">
+          <tr>
+            <td align="center"><input name="opcao" type="hidden" id="opcao" value="#opcao" />
+              <input name="grupos_num" type="hidden" id="grupos_num" value="#grupos_num" />
+              <input name="id" type="hidden" id="id" value="#id" />
+              <input name="cep_search" type="hidden" id="cep_search" value="#cep_search" />
+<input type="submit" name="Submit" id="button" value="#botao" title="Clique nesse bot&atilde;o para GRAVAR as altera&ccedil;&otilde;es" /></td>
+          </tr>
+        </table><!-- botao > --></td>
+    </tr>
+  </table>
+</form>
+<div class="dialog" id="d_usuario">Este usuário já está em uso! Escolha outro.</div>
+<div class="dialog" id="d_senha">Senha e Redigite a Senha são diferentes.</div>
+<div class="dialog" id="d_caracter">Usuário no mínimo 3 e no máx 20 caracteres.</div>
+<div class="dialog" id="d_caracter_in">Caracteres inválidos, apenas caracteres alfanuméricos e ( _ ou @ ou . ).</div>
+<div class="dialog" id="d_email">Este email já está em uso! Escolha outro.</div>
+<!-- form > -->
+<hr />
+<h1>Grupos</h1>
+<hr />
+<!-- grupos < -->
+<form action="." method="post" name="grupos" id="grupos">
+  <table width="100%" border="0" cellspacing="5" class="tabela_lista">
+    <!-- cel2 < -->
+    <tr>
+      <!-- cel1 < -->
+      <td width="20" class="lista_cel"><input name="grupo#grupo_num" type="checkbox" value="#grupo_id"#checked /></td>
+      <td class="lista_cel">#grupo_name</td>
+      <!-- cel1 > -->
+    </tr>
+    <!-- cel2 > -->
+  </table>
+  <div id="botao">
+    <input name="num" type="hidden" id="num" value="#num" />
+    <input name="opcao" type="hidden" id="opcao" value="#opcao" />
+    <input name="id" type="hidden" id="id" value="#id" />
+    <input name="id_usuario_perfil" type="hidden" id="id_usuario_perfil" value="#usuario_perfil_id" />
+<input type="submit" name="Submit" id="button" value="#botao" title="Clique nesse bot&atilde;o para GRAVAR as altera&ccedil;&otilde;es" />
+  </div>
+</form>
+<!-- grupos > -->
+<hr />

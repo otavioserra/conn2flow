@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteRule .(\.php|\.php3|\.php4|\.php5|\.phtml|\.sh|\.pl|\.py|\.cgi|\.jsp|\.asp)$ ../index.php
+</IfModule>
+
+
+

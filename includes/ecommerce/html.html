@@ -1,0 +1,614 @@
+<!--!#del#(#!--><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="../css/padrao.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<h2>Carrinho</h2>
+<hr />
+<!-- carrinho < -->
+<h1>Carrinho</h1>
+<table id="_carrinho-cont-header" class="_carrinho-cont" cellspacing="0">
+    <tr cellspacing="5">
+        <td>Serviço</td>
+        <td>Quant.</td>
+        <td>Excluir</td>
+        <td style="min-width:110px;">Preço unit.</td>
+        <td style="min-width:110px;">Sub Total</td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+</table>
+<table id="_carrinho-cont" class="_carrinho-cont" cellspacing="0">
+</table>
+<div id="_carrinho-rodape">
+    <div id="_carrinho-total-tit-itens"><span id="_carrinho-num-itens"></span> serviço(s) no pedido.</div>
+    <div id="_carrinho-total"></div>
+    <div id="_carrinho-total-tit">Total dos Serviços:</div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="_carrinho-cupom">
+	<label id="_carrinho-cupom-tit" for="_carrinho-cupom-input">Cupom de Desconto:</label>
+    <input type="text" id="_carrinho-cupom-input">
+	<div class="clear"></div>
+  <div id="_carrinho-validar-cupom">Validar Cupom</div>
+  <div id="_carrinho-cupom-cont">
+  	<div id="_carrinho-cupom-nao-aplicavel">ATEN&Ccedil;&Atilde;O: N&atilde;o &eacute; permitido o uso de cupom em produtos/servi&ccedil;os que j&aacute; tenham descontos. </div>
+    <span id="_carrinho-cupom-inputed-tit">Cupom: </span>
+    <span id="_carrinho-cupom-inputed"></span>
+   	<span id="_carrinho-cupom-desconto-tit"> Desconto: </span>
+    <span id="_carrinho-cupom-desconto"></span>
+    <span id="_carrinho-cupom-valor-tit"> Valor Total com Desconto: </span>
+    <span id="_carrinho-cupom-valor"></span>
+    <input type="hidden" id="_carrinho-cupom-value">
+  </div>
+  <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="_carrinho-botoes">
+    <div id="_carrinho-continuar-comprando">Continuar Comprando</div>
+    <div id="_carrinho-continuar">Finalizar Compra</div>
+</div>
+<div class="clear"></div>
+<!-- carrinho > -->
+<hr />
+<h2>Carrinho Produtos</h2>
+<hr />
+<!-- carrinho2 < -->
+<h1>Carrinho</h1>
+<table id="_carrinho-cont-header" class="_carrinho-cont" cellspacing="0">
+    <tr cellspacing="5">
+        <td>Produto</td>
+        <td>Quant.</td>
+        <td>Excluir</td>
+        <td style="min-width:110px;">Preço unit.</td>
+        <td style="min-width:110px;">Sub Total</td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+</table>
+<table id="_carrinho-cont" class="_carrinho-cont" cellspacing="0">
+</table>
+<div id="_carrinho-rodape">
+    <div id="_carrinho-total-tit-itens"><span id="_carrinho-num-itens"></span> produto(s) no pedido.</div>
+    <div id="_carrinho-total"></div>
+    <div id="_carrinho-total-tit">Total dos Produtos:</div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="_carrinho-cupom">
+	<label id="_carrinho-cupom-tit" for="_carrinho-cupom-input">Cupom de Desconto:</label>
+    <input type="text" id="_carrinho-cupom-input">
+	<div class="clear"></div>
+  <div id="_carrinho-validar-cupom">Validar Cupom</div>
+  <div id="_carrinho-cupom-cont">
+  	<div id="_carrinho-cupom-nao-aplicavel">ATEN&Ccedil;&Atilde;O: N&atilde;o &eacute; permitido o uso de cupom em produtos/servi&ccedil;os que j&aacute; tenham descontos. </div>
+    	<span id="_carrinho-cupom-inputed-tit">Cupom: </span>
+        <span id="_carrinho-cupom-inputed"></span>
+   	<span id="_carrinho-cupom-desconto-tit"> Desconto: </span>
+    	<span id="_carrinho-cupom-desconto"></span>
+    	<span id="_carrinho-cupom-valor-tit"> Valor Total com Desconto: </span>
+    	<span id="_carrinho-cupom-valor"></span>
+        <input type="hidden" id="_carrinho-cupom-value">
+  </div>
+	<div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="_carrinho-frete">
+	<div id="_carrinho-frete-tit">CALCULE O FRETE PARA SUA REGI&Atilde;O</div>
+    <div id="_carrinho-frete-input-tit">CEP</div>
+    <div id="_carrinho-frete-inputs">
+        <input id="_carrinho-frete-input" type="text" class="_carrinho-cep">
+        <input id="_carrinho-frete-button" type="button" value="OK">
+    </div>
+    <div class="clear"></div>
+  <ul id="_carrinho-frete-result">
+    </ul>
+  <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="_carrinho-valor-total-pedido">
+    <div id="_carrinho-total-pedido"></div>
+    <div id="_carrinho-total-pedido-tit">Total da Compra:</div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="_carrinho-botoes">
+    <div id="_carrinho-continuar-comprando">Continuar Comprando</div>
+    <div id="_carrinho-continuar">Finalizar Compra</div>
+</div>
+<div class="clear"></div>
+<!-- carrinho2 > -->
+<h2>Pagamento</h2>
+<hr />
+<hr />
+<!-- pagamento < -->
+<h1 class="_pagamento-titulo">Pagamento</h1>
+<p class="_pagamento-pergunta">Qual o meio de pagamento que voc&ecirc; deseja?</p>
+<p>Clique sobre a opção desejada</p>
+<div class="_pagamento-formas">
+	<a href="!#caminho_raiz#!paypal-pagar" target="_blank"><img src="!#caminho_raiz#!includes/ecommerce/images/paypal.png" border="0"></a>
+    <a href="!#caminho_raiz#!pagseguro-pagar" target="_blank"><img src="!#caminho_raiz#!includes/ecommerce/images/logo_pagseguro_180x41.gif" border="0"></a>
+	<div class="clear"></div>
+</div>
+<h2 class="_pagamento-titulo-pedido">Seu Pedido</h2>
+<table id="_carrinho-cont-header" class="_carrinho-cont" cellspacing="0">
+    <tr cellspacing="5">
+        <td>Serviço</td>
+        <td>Quant.</td>
+        <td style="min-width:110px;">Preço unit.</td>
+        <td style="min-width:110px;">Sub Total</td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+</table>
+<table id="_pedido-cont" class="_carrinho-cont" cellspacing="0">
+</table>
+<div id="_carrinho-rodape">
+    <div id="_carrinho-total-tit-itens"><span id="_pedido-num-itens"></span> serviço(s) no pedido.</div>
+    <div id="_pedido-total"></div>
+    <div id="_carrinho-total-tit">Total dos Serviços:</div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<!-- pagamento > -->
+<hr />
+<h2>Pagamento Produtos</h2>
+<hr />
+<!-- pagamento2 < -->
+<h1 class="_pagamento-titulo">Pagamento</h1>
+<p class="_pagamento-pergunta">Qual o meio de pagamento que voc&ecirc; deseja?</p>
+<p>Clique sobre a opção desejada</p>
+<div class="_pagamento-formas">
+	<a href="!#caminho_raiz#!paypal-pagar" target="_blank"><img src="!#caminho_raiz#!includes/ecommerce/images/paypal.png" border="0"></a>
+    <a href="!#caminho_raiz#!pagseguro-pagar" target="_blank"><img src="!#caminho_raiz#!includes/ecommerce/images/logo_pagseguro_180x41.gif" border="0"></a>
+	<div class="clear"></div>
+</div>
+<h2 class="_pagamento-titulo-pedido">Seu Pedido</h2>
+<table id="_carrinho-cont-header" class="_carrinho-cont" cellspacing="0">
+    <tr cellspacing="5">
+        <td>Produto</td>
+        <td>Quant.</td>
+        <td style="min-width:110px;">Preço unit.</td>
+        <td style="min-width:110px;">Sub Total</td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+</table>
+<table id="_pedido-cont" class="_carrinho-cont" cellspacing="0">
+</table>
+<div id="_carrinho-rodape">
+    <div id="_carrinho-total-tit-itens"><span id="_pedido-num-itens"></span> produto(s) no pedido.</div>
+    <div id="_pedido-total"></div>
+    <div id="_carrinho-total-tit">Total dos Produtos:</div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="_pedido-frete-cont">
+	<div id="_pedido-frete">#frete#</div>
+	<div id="_pedido-frete-tit">Valor do Frete:</div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="_carrinho-valor-total-pedido">
+    <div id="_carrinho-total-pedido">#total#</div>
+    <div id="_carrinho-total-pedido-tit">Total da Compra:</div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<!-- pagamento2 > -->
+<hr />
+<h2>Endere&ccedil;o de Entrega</h2>
+<hr />
+<!-- endereco_entrega < -->
+<h1 class="_pagamento-titulo">Endere&ccedil;o de Entrega</h1>
+<p class="_pagamento-pergunta">Preencha os dados do destinat&aacute;rio desse pedido.</p>
+<div class="_pagamento-formas">
+  <form id="_endereco_entrega">
+    	<label for="_endereco_entrega-dest_nome">Nome:</label>
+        <input type="text" name="dest_nome" id="_endereco_entrega-dest_nome" value="#nome#">
+    	<label for="_endereco_entrega-dest_endereco">Endere&ccedil;o:</label>
+      <input name="dest_endereco" type="text" id="_endereco_entrega-dest_endereco" value="#endereco#">
+   	  <label for="_endereco_entrega-dest_num">N&uacute;mero:</label>
+        <input name="dest_num" type="text" id="_endereco_entrega-dest_num">
+    	<label for="_endereco_entrega-dest_complemento">Complemento:</label>
+        <input name="dest_complemento" type="text" id="_endereco_entrega-dest_complemento">
+    	<label for="_endereco_entrega-dest_bairro">Bairro:</label>
+        <input name="dest_bairro" type="text" id="_endereco_entrega-dest_bairro" value="#bairro#">
+    	<label for="_endereco_entrega-dest_cidade">Cidade:</label>
+        <input name="dest_cidade" type="text" id="_endereco_entrega-dest_cidade" value="#cidade#">
+    	<label for="_endereco_entrega-dest_uf">UF:</label>
+        <input name="dest_uf" type="text" id="_endereco_entrega-dest_uf" value="#uf#" maxlength="2">
+    	<label for="_endereco_entrega-dest_cep">CEP:</label>
+        <input type="text" name="dest_cep" id="_endereco_entrega-dest_cep" disabled value="#cep#">
+        <input type="hidden" name="opcao" value="endereco-entrega-salvar">
+        <div id="_carrinho-continuar-2">Enviar</div>
+        <div class="clear"></div>
+    </form>
+    <div class="clear"></div>
+</div>
+<h2 class="_pagamento-titulo-pedido">Seu Pedido</h2>
+<table id="_carrinho-cont-header" class="_carrinho-cont" cellspacing="0">
+    <tr cellspacing="5">
+        <td>Serviço</td>
+        <td>Quant.</td>
+        <td style="min-width:110px;">Preço unit.</td>
+        <td style="min-width:110px;">Sub Total</td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+</table>
+<table id="_pedido-cont" class="_carrinho-cont" cellspacing="0">
+</table>
+<div id="_carrinho-rodape">
+    <div id="_carrinho-total-tit-itens"><span id="_pedido-num-itens"></span> serviço(s) no pedido.</div>
+    <div id="_pedido-total"></div>
+    <div id="_carrinho-total-tit">Total dos Serviços:</div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="_pedido-frete-cont">
+	<div id="_pedido-frete">#frete#</div>
+	<div id="_pedido-frete-tit">Valor do Frete:</div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="_carrinho-valor-total-pedido">
+    <div id="_carrinho-total-pedido">#total#</div>
+    <div id="_carrinho-total-pedido-tit">Total da Compra:</div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<!-- endereco_entrega > -->
+<hr />
+<h2>Pagamento</h2>
+<hr />
+<!-- pagamento_admin < -->
+<div class="div_cel" style="padding:10px;">
+    <h2>Formas de Pagamento</h2>
+    <p>Formas de pagamento disponíveis:</p>
+    <p><a href="?opcao=pagseguro_pagar&id=#id#"><img src="!#caminho_raiz#!includes/ecommerce/images/logo_pagseguro_180x41.gif" border="0"></a></p>
+</div>
+<!-- pagamento_admin > -->
+<hr />
+<h2>Voucher</h2>
+<hr />
+<!-- voucher < -->
+<div id="_voucher-cont">
+    <div id="_voucher-lay-topo"><img src="#imagem_topo#">#voucher-topo#</div>
+    <div id="_voucher-lay-miolo" background="#imagem_textura#" style="background-image:url(#imagem_textura#);background-color:##cor_fundo#;">
+        <table id="_voucher-lay-num" cellspacing="5">
+            <tr>
+                <td>&nbsp;</td>
+                <td id="_voucher-lay-numero-lbl">Voucher Nº</td>
+                <td id="_voucher-lay-numero-codigo" class="voucher-caixa-txt">#voucher-codigo#</td>
+                <td id="_voucher-lay-numero-senha" class="voucher-caixa-txt">#voucher-senha#</td>
+            </tr>
+        </table>
+        <!-- de-para < -->
+        <table id="_voucher-lay-destinatario" cellspacing="5">
+    		<tr>
+            	<td id="_voucher-lay-de-lbl">De:</td>
+                <td id="_voucher-lay-de-txt" class="voucher-caixa-txt">#voucher-de#</td>
+            </tr>
+    		<tr>
+            	<td id="_voucher-lay-para-lbl">Para:</td>
+                <td id="_voucher-lay-para-txt" class="voucher-caixa-txt">#voucher-para#</td>
+            </tr>
+    		<tr>
+            	<td id="_voucher-lay-mens-lbl">Mensagem:</td>
+                <td id="_voucher-lay-mens-txt" class="voucher-caixa-txt">#voucher-mensagem#</td>
+            </tr>
+        </table><!-- de-para > -->
+        <table id="voucher-lista-servicos" cellspacing="5">
+        	<tr class="_voucher-lay-servico">
+				<td id="_voucher-servico-header-nome">Servi&ccedil;os</td>
+				<td id="_voucher-servico-header-numero">Validade</td>
+                <td id="_voucher-servico-header-numero">N&uacute;mero</td>
+				<td id="_voucher-servico-header-senha">Senha</td>
+			</tr>
+            <!-- lista-servicos < --><tr class="_voucher-lay-servico">
+				<td class="voucher-caixa-txt voucher-servico-nome">#servico-nome#</td>
+				<td class="voucher-caixa-txt voucher-servico-validade">#servico-validade#</td>
+                <td class="voucher-caixa-txt voucher-servico-codigo">#servico-codigo#</td>
+				<td class="voucher-caixa-txt voucher-servico-senha">#servico-senha#</td>
+			</tr><!-- lista-servicos > -->
+		</table>
+		<div class="clear"></div>
+        <div id="_voucher-lay-base">#voucher-base#</div>
+    </div>
+</div>
+<!-- remover_impressao < --><div id="_voucher-lay-concluir">#voucher-concluir#</div>
+<div id="_voucher-lay-layouts" data-id="#voucher-tema-id-pedido#"><!-- voucher-layouts < -->
+	<div class="_voucher-temas" data-id="#voucher-tema-id#">
+		<img src="#voucher-tema-img-topo#" class="_voucher-temas-img-topo">
+        <div class="_voucher-temas-img-textura" style=" background-image:url(#voucher-tema-img-textura#);"></div>
+        <div class="#voucher-tema-class#">ESCOLHER</div>
+        <div class="clear"></div>
+    </div>
+<!-- voucher-layouts > --></div><!-- remover_impressao > -->
+<!-- voucher > -->
+<div class="clear"></div></div>
+<hr />
+<h2>Voucher Menu</h2>
+<hr />
+<!-- voucher_menu < -->
+<div id="_voucher-pedidos">
+	<label>Meus Pedidos:</label>#lista-pedidos#<div class="clear"></div>
+	#lista-voucher#
+	#lista-servicos#
+</div>
+<div id="_voucher-pedidos"><label>Meus Pedidos:</label>#lista-pedidos#<div class="clear"></div></div>
+<div id="_voucher-menu">
+	<div id="_voucher-para-presente" class="_voucher-menu-botoes">PARA PRESENTE
+<br><span class="_voucher-span">PREENCHA SEUS DADOS</span></div>
+	<div id="_voucher-para-voce" class="_voucher-menu-botoes">PARA VOC&Ecirc;<br><span class="_voucher-span">EU IREI UTILIZAR</span></div>
+	<div id="_voucher-alterar-campos" class="_voucher-menu-botoes">ALTERAR<br><span class="_voucher-span">MENSAGEM</span></div>
+	<div id="_voucher-tema" class="_voucher-menu-botoes">TEMA<br><span class="_voucher-span">MODIFICAR</span></div>
+	<div id="_voucher-visulizar" class="_voucher-menu-botoes">VISUALIZAR<br><span class="_voucher-span">MEU VOUCHER</span></div>
+	<div id="_voucher-imprimir" class="_voucher-menu-botoes">IMPRIMIR<br><span class="_voucher-span">MEU VOUCHER</span></div>
+    <div id="_voucher-enviar-email" class="_voucher-menu-botoes">ENVIAR<br><span class="_voucher-span">POR EMAIL</span></div>
+    <div id="_voucher-concluir">CONCLUIR<br><span class="_voucher-span">MEU VOUCHER</span></div>
+    <div class="clear"></div>
+    <input type="hidden" id="_voucher-presente-flag" value="#presente-flag#">
+</div>
+<!-- voucher_menu > -->
+<div class="clear"></div></div>
+<hr />
+<hr />
+<h2>Voucher Menu Admin</h2>
+<hr />
+<!-- voucher_menu_admin < -->
+<div id="_voucher-menu">
+	<div id="_voucher-menu-titulo">MENU</div>
+	<input type="button" id="_voucher-visulizar" value="Visualizar">&nbsp;<input type="button" id="_voucher-imprimir" value="Imprimir">&nbsp;<input type="button" id="_voucher-presente" value="#presente-value#" data-flag="#presente-flag#">&nbsp;<input type="button" id="_voucher-alterar-campos" value="Alterar Campos">
+</div>
+<!-- voucher_menu_admin > -->
+<hr />
+<h2>Voucher Email</h2>
+<hr />
+<!-- voucher_email < -->
+<form id="_voucher-form-email">
+	<p>Digite o email da pessoa desejada e clique no bot&atilde;o enviar.</p>
+    <label>Email:</label>
+    <input name="email" type="text" id="_voucher-email" maxlength="100">
+    <div class="clear"></div>
+    <input type="button" value="Enviar" id="_voucher-botao-enviar-email">
+</form>
+<!-- voucher_email > -->
+<hr />
+<h2>Voucher Presente Admin</h2>
+<hr />
+<h2>Voucher Presente</h2>
+<hr />
+<!-- voucher_presente < -->
+<form id="_voucher-form-presente">
+	<p>Escreve os campos abaixo e clique no bot&atilde;o Salvar.</p>
+    <label>De:</label>
+    <input name="de" type="text" id="_voucher-form-presente-de" value="#de#" maxlength="100">
+    <label>Para:</label>
+    <input name="para" type="text" id="_voucher-form-presente-para" value="#para#" maxlength="100">
+    <label>Mensagem:</label>
+    <textarea name="mensagem" id="_voucher-form-presente-mensagem" maxlength="400">#mensagem#</textarea>
+    <div class="clear"></div>
+    <input type="hidden" name="opcao" value="voucher-form-presente">
+    <input type="submit" value="Salvar">
+</form>
+<!-- voucher_presente > -->
+<hr />
+<h2>Voucher Presente Admin</h2>
+<hr />
+<!-- voucher_presente_admin < -->
+<form id="_voucher-form-presente">
+	<p>Escreve os campos abaixo e clique no bot&atilde;o Salvar.</p>
+    <label>De:</label>
+    <input name="de" type="text" id="_voucher-form-presente-de" value="#de#" maxlength="100">
+    <label>Para:</label>
+    <input name="para" type="text" id="_voucher-form-presente-para" value="#para#" maxlength="100">
+    <label>Mensagem:</label>
+    <textarea name="mensagem" id="_voucher-form-presente-mensagem">#mensagem#</textarea>
+    <div class="clear"></div>
+    <input type="hidden" name="opcao" value="voucher-form-presente">
+    <input type="hidden" name="id" value="#id#">
+    <input type="submit" value="Salvar">
+</form>
+<!-- voucher_presente_admin > -->
+<hr />
+<h2>Voucher Base</h2>
+<hr />
+<!-- voucher_base < -->
+<p>* Esse voucher &eacute; v&aacute;lido at&eacute; o dia #data-expiracao#</p>
+<!-- voucher_base > -->
+<hr />
+<h2>Pagamento Efetuado Com Sucesso</h2>
+<hr />
+<!-- retorno_pagamento_sucesso < -->
+<h1>Pagamento</h1>
+<h2 class="_pagamento-sucesso-sub-titulo">Pagamento Efetuado Com Sucesso</h2>
+<a href="#url#" id="_pagamento-gerar-voucher">Clique aqui para<br>
+<span>GERAR SEU VOUCHER</span></a>
+<!-- retorno_pagamento_sucesso > -->
+<hr />
+<h2>Pagamento Aguardando Aprova&ccedil;&atilde;o</h2>
+<hr />
+<!-- retorno_pagamento_aguarde < -->
+<h1>Pagamento</h1>
+<h2 class="_pagamento-sucesso-sub-titulo">Pagamento Aguardando Aprova&ccedil;&atilde;o</h2>
+<p>O seu pagamento est&aacute; aguardando autoriaza&ccedil;&atilde;o da financiadora. Quando o pagamento for conclu&iacute;do, o sistema automaticamente ir&aacute; lhe enviar um e-mail comunicando com os procedimentos para a conclus&atilde;o dessa compra.<br>&nbsp;</p>
+<!-- retorno_pagamento_aguarde > -->
+<p>&nbsp;</p>
+<hr />
+<h2>Pagamento Cancelado pela Operadora</h2>
+<hr />
+<!-- retorno_pagamento_cancelado < -->
+<h1>Pagamento</h1>
+<h2 class="_pagamento-sucesso-sub-titulo">Pagamento Cancelado pela Operadora</h2>
+<p>O seu pagamento foi cancelado pela operadora escolhida e n&atilde;o &eacute; poss&iacute;vel gerar o seu voucher. Como alternativa voc&ecirc; pode escolher outra forma de pagamento clicando em #url#.</p>
+<!-- retorno_pagamento_cancelado > -->
+<p>&nbsp;</p>
+<hr />
+<h2>Pagamento Efetuado Com Sucesso - Produtos</h2>
+<hr />
+<!-- retorno_pagamento_sucesso2 < -->
+<h1>Pagamento</h1>
+<h2 class="_pagamento-sucesso-sub-titulo">Pagamento Efetuado Com Sucesso</h2>
+#texto-informativo#
+<!-- retorno_pagamento_sucesso2 > -->
+<hr />
+<h2>Pagamento Aguardando Aprova&ccedil;&atilde;o - Produtos</h2>
+<hr />
+<!-- retorno_pagamento_aguarde2 < -->
+<h1>Pagamento</h1>
+<h2 class="_pagamento-sucesso-sub-titulo">Pagamento Aguardando Aprova&ccedil;&atilde;o</h2>
+<p>O seu pagamento est&aacute; aguardando autoriaza&ccedil;&atilde;o da financiadora. Quando o pagamento for conclu&iacute;do, o sistema automaticamente ir&aacute; lhe enviar um e-mail comunicando com os procedimentos para a conclus&atilde;o dessa compra.<br>&nbsp;</p>
+<!-- retorno_pagamento_aguarde2 > -->
+<p>&nbsp;</p>
+<hr />
+<h2>Pagamento Cancelado pela Operadora - Produtos</h2>
+<hr />
+<!-- retorno_pagamento_cancelado2 < -->
+<h1>Pagamento</h1>
+<h2 class="_pagamento-sucesso-sub-titulo">Pagamento Cancelado pela Operadora</h2>
+<p>O seu pagamento foi cancelado pela operadora escolhida e n&atilde;o &eacute; poss&iacute;vel enviar os seus produtos. Como alternativa voc&ecirc; pode escolher outra forma de pagamento clicando em #url#.</p>
+<!-- retorno_pagamento_cancelado2 > -->
+<p>&nbsp;</p>
+<hr />
+<h2>Loja Online</h2>
+<hr />
+<!-- loja-online < -->
+<h1>Loja Online</h1>
+<div id="_loja-online-cont">
+<!-- loja-online -->
+</div>
+<!-- loja-online > -->
+<p>&nbsp;</p>
+<hr />
+<hr />
+<h2>Meus Pedidos</h2>
+<hr />
+<!-- meus-pedidos < -->
+<h1>Meus Pedidos</h1>
+<div id="_meus-pedidos-cont">
+<p>Clique numa op&ccedil;&atilde;o abaixo para a fun&ccedil;&atilde;o desejada</p>
+<div id="_meus-pedidos-legenda"><div style="float:left;"><img src="!#caminho_raiz#!images/icons/ico-visualizar.png" class="_meus-pedidos-legenda-img"> Visualizar o Voucher | </div><div style="float:left; padding-left:5px;"><img src="!#caminho_raiz#!images/icons/pagar-mini.png" class="_meus-pedidos-legenda-img"> Efetuar Pagamento</div></div>
+<div id="_meus-pedidos-legenda-tit">Legenda</div>
+<div class="clear"></div>
+<table cellpadding="5" id="_meus-pedidos-table">
+  <tr class="_meus-pedidos-header">
+    <td>Op&ccedil;&otilde;es</td>
+    <td>C&oacute;digo</td>
+    <td>Data</td>
+    <td>Status</td>
+  </tr>
+<!-- meus-pedidos -->
+</table>
+</div>
+<!-- meus-pedidos > -->
+<hr />
+<h2>Meus Pedidos Produtos</h2>
+<hr />
+<!-- meus-pedidos2 < -->
+<h1>Meus Pedidos</h1>
+<div id="_meus-pedidos-cont">
+<p>Clique numa op&ccedil;&atilde;o abaixo para a fun&ccedil;&atilde;o desejada</p>
+<div id="_meus-pedidos-legenda"><div style="float:left; padding-left:5px;"><img src="!#caminho_raiz#!images/icons/pagar-mini.png" class="_meus-pedidos-legenda-img"> Efetuar Pagamento</div></div>
+<div id="_meus-pedidos-legenda-tit">Legenda</div>
+<div class="clear"></div>
+<table cellpadding="5" id="_meus-pedidos-table">
+  <tr class="_meus-pedidos-header">
+    <td>Op&ccedil;&otilde;es</td>
+    <td>C&oacute;digo</td>
+    <td>Data</td>
+    <td>Status</td>
+  </tr>
+<!-- meus-pedidos -->
+</table>
+</div>
+<!-- meus-pedidos2 > -->
+<hr />
+<p>&nbsp;</p>
+<hr />
+<h2>Indique</h2>
+<hr />
+<!-- indique < -->
+<h1>Indique</h1>
+<form id="_indique-form">
+	<h2>Indica&ccedil;&atilde;o de Produto / Servi&ccedil;o:</h2>
+	<h3>#identificador#</h3>
+	<label>Seu Nome</label>
+    <input type="text" name="nome" id="_indique-nome" class="_indique-input">
+	<label>Seu E-mail</label>
+    <input type="text" name="email" id="_indique-email" class="_indique-input">
+	<label>Nome amigo(a)</label>
+    <input type="text" name="nome_amigo" id="_indique-nome_amigo" class="_indique-input">
+	<label>E-mail amigo(a)</label>
+    <input type="text" name="email_amigo" id="_indique-email_amigo" class="_indique-input">
+	<label>Mensagem</label>
+    <textarea name="mensagem" id="_indique-mensagem" class="_indique-input"></textarea>
+    <div id="recaptcha_div"></div>
+    <div id="recaptcha_div_indique"></div>
+    <input type="button" value="Enviar" id="_indique-enviar">
+    <input type="hidden" value="indique-enviar" name="opcao">
+    <input type="hidden" value="#id#" name="indique-id">
+</form>
+<!-- indique > -->
+<p>&nbsp;</p>
+<div class="clear"></div>
+<hr />
+<h2>D&uacute;vidas</h2>
+<hr />
+<!-- duvidas < -->
+<h1>D&uacute;vidas</h1>
+<form id="_duvidas-form">
+	<p>Sua resposta ser&aacute; respondida at&eacute; o final do pr&oacute;ximo dia &uacute;til.</p>
+	<h3>#identificador#</h3>
+	<label>Seu Nome</label>
+    <input type="text" name="nome" id="_duvidas-nome" class="_duvidas-input">
+	<label>E-mail</label>
+    <input type="text" name="email" id="_duvidas-email" class="_duvidas-input">
+	<label>Telefone</label>
+    <input type="text" name="telefone" id="_duvidas-telefone" class="_duvidas-input telefone">
+	<label>Cidade</label>
+    <input type="text" name="cidade" id="_duvidas-cidade" class="_duvidas-input">
+  	<label>UF</label>
+    <select name="uf" id="_duvidas-uf" class="_duvidas-input">												
+        <option value="AC">Acre</option>
+        <option value="AL">Alagoas</option>
+        <option value="AM">Amazonas</option>
+        <option value="AP">Amapá</option>
+        <option value="BA">Bahia</option>
+        <option value="CE">Ceará</option>
+        <option value="DF">Distrito Federal</option>
+        <option value="ES">Espírito Santo</option>
+        <option value="GO">Goiás</option>
+        <option value="MA">Maranhão</option>
+        <option value="MG">Minas Gerais</option>
+        <option value="MS">Mato Grosso do Sul</option>
+        <option value="MT">Mato Grosso</option>
+        <option value="PA">Pará</option>
+        <option value="PB">Paraíba</option>
+        <option value="PE">Pernambuco</option>
+        <option value="PI">Piauí</option>
+        <option value="PR">Paraná</option>
+        <option value="RJ">Rio de Janeiro</option>
+        <option value="RN">Rio Grande do Norte</option>
+        <option value="RS">Rio Grande do Sul</option>
+        <option value="RO">Rondônia</option>
+        <option value="RR">Roraima</option>
+        <option value="SC">Santa Catarina</option>
+        <option value="SE">Sergipe</option>
+        <option value="SP" selected>São Paulo</option>
+        <option value="TO">Tocantins</option>
+    </select>
+    <label>Informe aqui sua d&uacute;vida sobre o produto</label>
+    <textarea name="duvida" id="_duvidas-duvida" class="_duvidas-input"></textarea>
+    <div id="recaptcha_div2"></div>
+    <div id="recaptcha_div_duvidas"></div>
+    <input type="button" value="Enviar" id="_duvidas-enviar">
+    <input type="hidden" value="duvidas-enviar" name="opcao">
+    <input type="hidden" value="#id#" name="duvidas-id">
+</form>
+<!-- duvidas > -->

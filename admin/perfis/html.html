@@ -1,0 +1,60 @@
+<!--!#del#(#!--><link href="../../includes/css/padrao2.css" rel="stylesheet" type="text/css" />
+<link href="../../includes/css/interface.css" rel="stylesheet" type="text/css" />
+<link href="css.css" rel="stylesheet" type="text/css" /><!--!#del#)#!--><hr />
+<h2>Formul&aacute;rio</h2>
+<hr />
+<!-- form < -->
+<form action="." method="post" enctype="multipart/form-data" name="form" id="form">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="principal">
+    <tr>
+      <td align="left" class="principal"><table width="100%" border="0" cellspacing="5" class="tabela_lista">
+        <tr>
+          <td width="75" align="left" class="lista_header">Nome:</td>
+          <td align="left" class="lista_cel">
+            <input name="nome" type="text" id="nome" value="#nome" size="80" />
+            <p class="infotexto">Escolha o nome identificador desse perfil.</p></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="left"><h1>Grupos de Perfis</h1>
+            <p class="infotexto">&Eacute; necess&aacute;rio definir os m&oacute;dulos que os usu&aacute;rios desse perfil ter&atilde;o acesso, para isso selecione clicando com o mouse as caixas de sele&ccedil;&atilde;o afim de definir quais m&oacute;dulos ser&atilde;o permitidos. Al&eacute;m disso, da mesma maneira escolha as opera&ccedil;&otilde;es que os usu&aacute;rios ter&atilde;o permi&ccedil;&atilde;o em cada m&oacute;dulo.</p>
+          #perfis</td>
+          </tr>
+      </table>
+        <!-- botao < --><table width="100%" border="0">
+          <tr>
+            <td align="center"><input name="opcao" type="hidden" id="opcao" value="#opcao" />
+              <input name="id" type="hidden" id="id" value="#id" />
+              <input name="operacoes" type="hidden" id="operacoes" value="#operacoes" />
+              <input name="modulos" type="hidden" id="modulos" value="#modulos" />
+            <input type="submit" name="Submit" id="button" value="#botao" title="Clique nesse bot&atilde;o para GRAVAR as altera&ccedil;&otilde;es" /></td>
+          </tr>
+        </table><!-- botao > --></td>
+    </tr>
+  </table>
+</form>
+<!-- form > -->
+<hr />
+<h2>Perfis</h2>
+<hr />
+<!-- perfis < -->
+<div id="perfil_grupos" class="div_cel">
+	<h2>#grupo_nome</h2>
+    <p>#grupo_descricao</p>
+    <!-- modulo < --><div class="lista_cel" id="perfil_modulo">
+    	<div width="60" title="#modulo_nome" style="background-position:-#img_coluna#px -#img_linha#px;" class="modulo-imagem"></div>
+   	  <div class="modulo-titulo">#modulo_nome</div>
+      <div class="clear"></div>
+    	<input name="#modulo_name" type="checkbox" class="modulo_chk" id="#modulo_id" value="#modulo_val"#modulo_checked />
+        <p class="infotexto">#modulo_descricao</p>
+        <!-- operacao < --><div id="perfil_operacao" class="div_cel2">
+        	<input name="#operacao_name" type="checkbox" id="#operacao_id" value="#operacao_val" class="operacao_chk#operacao_class"#operacao_checked />
+          <h3>#operacao_nome</h3>
+	        <p class="infotexto">#operacao_descricao</p>
+        </div><!-- operacao > -->
+      <div class="clear"></div>
+    </div><!-- modulo > -->
+</div>
+<!-- perfis > -->
+<hr />
+<h3></h3>
+<h3>&nbsp;</h3>

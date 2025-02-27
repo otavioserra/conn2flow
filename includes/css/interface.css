@@ -1,0 +1,444 @@
+#in_menu_principal {
+	padding:0px;
+	margin:0px;
+	list-style-type: none;
+	display: block;
+	float:right;
+}
+#in_menu_principal li {
+	float: left;
+	display: block;
+}
+#in_menu_principal li a{
+	line-height:30px;
+	display:block;
+	padding-left:25px;
+	margin-right:15px;
+	position:relative;
+	color: #58585B;
+}
+#in_menu_principal li a div{
+	background-repeat:no-repeat;
+	background-image:url(../../images/admin/icon-superior.png);
+	position:absolute;
+	top:4px;
+	left:0px;
+	width:20px;
+	height:20px;
+}
+.tabela_lista {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.lista_header  {
+	padding: 5px;
+	vertical-align: middle;
+	line-height:20px;
+	background-color:#D7D9DD;
+}
+.lista_cel  {
+	padding: 5px;
+	background-color:#F7F7F8;
+}
+.lista_cel_hover  {
+	padding: 5px;
+	background-color:#EDEEF0;
+	border-top:3px solid #FFF;
+}
+.tabela_lista tr .acao_cel .dia {
+	float: right;
+	position: relative;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-bottom-color: #000;
+	border-left-color: #000;
+	top: -5px;
+	right: -5px;
+	padding: 5px;
+	color: #000066;
+	background-color: #BEE1CD;
+	font-weight: bold;
+	font-size: 10pt;
+	width: 15px;
+	text-align: center;
+}
+.tabela_lista tr .acao_cel .valor {
+	float: left;
+	position: relative;
+	margin-top: 5px;
+}
+.tabela_lista .acao_cel {
+	padding: 5px;
+	border: 1px solid #333;
+	background-color: #FFF;
+}
+hr {
+	clear: left;
+}
+.in_busca_mask{
+	float:left;
+	width:75%;                         /* para navegadores que não suportam calc() */
+	width: -webkit-calc(100% - 200px);  /* para Chrome */
+	width: -moz-calc(100% - 200px);     /* para Firefox */
+	width: calc(100% - 200px);          /* para suporte nativo */
+}
+.in_busca {
+	width:400px;
+	margin:27px auto 0px auto;
+}
+._menu_principal {
+	margin-bottom: 10px;
+	margin-top: 0px;
+}
+
+.in_informacao {
+}
+#_in_informacao_titulo{
+	background-image:url(../../images/admin/titulo-home.png);
+	background-repeat:no-repeat;
+	font-size:13px;
+	line-height:13px;
+	color:#58585B;
+	padding:2px 20px;
+	margin-bottom:18px;
+}
+._menu_opcoes {
+	padding: 0px;
+	list-style-type: none;
+	margin: 0px;
+}
+._menu_opcoes ._opcoes_li {
+	float: left;
+	margin-right: 3px;
+	margin-left: 2px;
+}
+._opcoes_li div{
+	background-image:url(../../images/admin/icon-central.png);
+	width:16px;
+	height:16px;
+}
+.menu_paginas_1 {
+	margin-top: 5px;
+	margin-right: auto;
+	margin-bottom: 5px;
+	margin-left: auto;
+	width: 300px;
+}
+.eventos_ul {
+	margin: 0px;
+	padding-left: 0px;
+}
+.eventos_li {
+	list-style-type: none;
+	margin-bottom: 3px;
+}
+.evento_caixa_cor {
+	height: 15px;
+	width: 15px;
+}
+.evento_texto {
+	padding-left: 5px;
+
+}
+.evento_mais {
+	margin-top: 5px;
+	margin-bottom: 0px;
+}
+.in_menu_barrinha {
+	border-left-style: solid;
+	border-left-width: 2px;
+	border-left-color: #999;
+}
+._informacao_acima {
+}
+.div_lista {
+
+}
+.div_header  {
+	background-color:#D7D9DD;
+	color: #FFF;
+	font-size: 11pt;
+	font-weight: bold;
+	vertical-align: middle;
+}
+.div_cel {
+	background-color:#F7F7F8;
+}
+.div_cel2  {
+	background-color: #E6E6E6;
+}
+.div_item {
+	padding: 5px;
+}
+.div_text  {
+	color: #27156E;
+	font-weight: bold;
+}
+.infotexto {
+	color: #464646;
+	font-weight: normal;
+	text-align: justify;
+	background-image: url(../../images/icons/info.png);
+	background-repeat: no-repeat;
+	background-position:0px 2px;
+	padding-bottom: 9px;
+	padding-left: 11px;
+}
+.item_margin {
+	margin-top: 7px;
+}
+.col_margin {
+	margin-left: 7px;
+}
+.lista_noticias {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+.lista_noticias li{
+	margin-bottom: 8px;
+
+}
+.lista_imagens {
+}
+.imagem {
+	margin: 15px;
+}
+.form_cadastro {
+	display: block;
+}
+.campo_layout {
+	position: relative;
+}
+.imagens_animate .boxgrid{
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	border-radius:5px;
+	float:left;
+	overflow:hidden;
+	position:relative;
+	/* border:solid 1px #FFF; */
+	background:#1A1A1A;
+}
+.imagens_animate strong{
+	font-weight:normal;
+	position:absolute;
+	overflow:hidden;
+	margin:5px 5px 15px 5px;
+	height:0px;
+	z-index:1;
+	color: #FFF;
+}
+.curve{
+	overflow:hidden;
+	display:block;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	border-radius:5px;
+}
+.in_ordenar_up {
+	background-image: url(../../images/icons/up.png);
+	background-repeat: no-repeat;
+	background-position: 4px center;
+	padding-left: 24px;
+}
+.in_ordenar_down {
+	background-image: url(../../images/icons/down.png);
+	background-repeat: no-repeat;
+	background-position: 4px center;
+	padding-left: 24px;
+}
+.in_busca_input {
+	padding: 5px;
+	background-color: #464E56;
+	color: #FFF;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	-webkit-border-radius:0px;
+	-moz-border-radius:0px;
+	border-radius:0px;
+	width: 300px;
+}
+._menu_pagina_cont {
+	padding: 3px;
+	float: left;
+}
+.in_fundo {
+	background-image: url(../../images/admin/meio.png);
+}
+.in_inf_esq {
+	background-image: url(../../images/admin/esinferior-esquerda.png);
+	height: 11px;
+	width: 13px;
+	background-repeat: no-repeat;
+}
+.in_inf_dir {
+	background-image: url(../../images/admin/inferior-direita.png);
+	background-repeat: no-repeat;
+	height: 11px;
+	width: 17px;
+}
+.in_inf_meio {
+	background-image: url(../../images/admin/inferior-meio.png);
+	background-repeat: repeat-x;
+}
+.in_meio_dir {
+	background-image: url(../../images/admin/centro-direita.png);
+	background-repeat: repeat-y;
+}
+.in_top_dir {
+	background-image: url(../../images/admin/topo-direira.png);
+	background-repeat: no-repeat;
+	height: 7px;
+	width: 17px;
+}
+.in_barra_lateral {
+	background-color: #999;
+	height: 60px;
+	width: 2px;
+	float: left;
+	margin-top: -5px;
+}
+.in_legenda {
+	float: right;
+}
+.in_legenda_titulo {
+	float: left;
+	color: #000;
+	font-size: 12px;
+	font-weight: bold;
+	margin-right: 20px;
+}
+#in_legenda_ul {
+	list-style-type: none;
+	padding: 0px;
+	float: left;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 2px;
+	margin-left: 0px;
+}
+.in_legenda_li {
+	float: left;
+	display: block;
+	position: relative;
+}
+
+.in_legenda_dados {
+	margin-right: 7px;
+	margin-left: 6px;
+}
+.in_legenda_img {
+	float: left;
+	margin-right: 5px;
+}
+.in_legenda_name {
+	float: left;
+	margin-right: 12px;
+	margin-top: 1px;
+}
+.in_barra_lateral2 {
+	background-color: #999;
+	height: 16px;
+	width: 1px;
+	float: left;
+	margin-top: -1px;
+	margin-left: 0px;
+}
+.in_ul_conteudos_relacionados {
+}
+.in_li_conteudos_relacionados {
+	list-style-type: square;
+}
+#lay_topo{
+	background-color:#D7D9DD;
+	min-height:70px;
+	min-width:800px;
+	position:relative;
+}
+#lay_base{
+	padding:30px;
+	min-width:800px;
+}
+#lay_botao_sair{
+	float:right;
+	line-height:20px;
+	display:block;
+	text-align:center;
+	margin:15px 45px 0px 0px;
+	color:#58585B;
+}
+#lay_botao_sair:hover{
+	text-decoration:none;
+}
+#lay_usuario{
+	float:right;
+	margin:20px 15px 0px 0px;
+	width:117px;
+}
+#lay_timer{
+	margin-bottom:3px;
+}
+input#buscar_button{
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	margin-left:-5px;
+	background-image:url(../../images/admin/buscar-icone.png);
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-color: #464E56;
+}
+input#buscar_button:hover{
+	background-color: #464E56;
+}
+.lista_header_acao{
+	background-color:#D7D9DD;
+}
+#input_ordem_salvar{
+	padding:5px;
+	background-color:#D7D9DD;
+	position: absolute;
+}
+#_informacao_titulo{
+	background-image:url(../../images/admin/titulo-home.png);
+	background-repeat:no-repeat;
+	font-size:13px;
+	line-height:13px;
+	color:#58585B;
+	padding:2px 20px;
+	margin-bottom:18px;
+}
+._lay-lista-conteudos{
+	display:block;
+	background-image:url(../../images/admin/icon-central.png);
+	background-position:-16px 0px;
+	width:16px;
+	height:16px;
+}
+._lay-config-conjunto-conteudos{
+	display:block;
+	background-image:url(../../images/admin/icon-central.png);
+	background-position:-48px 0px;
+	width:16px;
+	height:16px;
+}
+._lay-conteudo{
+	display:block;
+	background-image:url(../../images/admin/icon-central.png);
+	background-position:0px 0px;
+	width:16px;
+	height:16px;
+}
+._in_arquivos-list{
+	background-image:url(../../images/admin/icon-central.png);
+	width:16px;
+	height:16px;
+}
+.lista_cel a{
+	color:#58585B;
+}

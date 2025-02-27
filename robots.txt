@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /bd/
+Disallow: /docs/
+Disallow: /email/
+Disallow: /Scripts/
+Disallow: /includes/
+Sitemap: http://www.dominio.com.br/files/sitemaps/sitemap.xml
