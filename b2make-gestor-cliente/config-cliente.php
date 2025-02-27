@@ -3,7 +3,7 @@
 // ===== Definições de variáveis gerais do gestor
 
 $_GESTOR['versao']								=	'1.5.0'; // Versão do gestor como um todo.
-$_GESTOR['id']									=	'entrey-'; // Identificador básico do gestor
+$_GESTOR['id']									=	'b2make-'; // Identificador básico do gestor
 $_GESTOR['modulos-caminho']						=	'bibliotecas/'; // Caminho relativo a raiz dos módulos bibliotecas do gestor
 $_GESTOR['session-authname']					=	'_HSID'; // Nome do cookie de sessão de usuário
 $_GESTOR['session-lifetime']					=	60*60*3; // 3 horas para as sessões serem deletadas
