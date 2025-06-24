@@ -15,7 +15,7 @@ O objetivo é fornecer um ponto de partida organizado para agilizar a criação 
 
 A estrutura de pastas foi pensada para organizar os diferentes tipos de mídia que você usará no seu projeto.
 
-` ` `
+```
 /
 ├── audios/             # Para efeitos sonoros (SFX) e narrações.
 ├── captures/           # Para gravações de tela ou de jogos (gameplay).
@@ -26,7 +26,7 @@ A estrutura de pastas foi pensada para organizar os diferentes tipos de mídia q
 |
 ├── projeto_16-9.blend  # Arquivo pré-configurado para formato Widescreen (1920x1080 @ 60fps). Ideal para YouTube.
 └── projeto_9-16.blend  # Arquivo pré-configurado para formato Vertical (1080x1920). Ideal para Reels, Shorts, etc.
-` ` `
+```
 
 ## Configurações dos Arquivos .blend
 
