@@ -1,6 +1,6 @@
 {
     "DesktopAudioDevice1": {
-        "prev_ver": 520093700,
+        "prev_ver": 520093699,
         "name": "Áudio do desktop",
         "uuid": "ee96629e-9c87-421a-b639-a7f0c0b02253",
         "id": "wasapi_output_capture",
@@ -31,7 +31,7 @@
         "private_settings": {}
     },
     "AuxAudioDevice1": {
-        "prev_ver": 520093700,
+        "prev_ver": 520093699,
         "name": "Mic/Aux",
         "uuid": "3af71346-b417-49d6-8c9a-515e971450ff",
         "id": "wasapi_input_capture",
@@ -42,7 +42,7 @@
         "mixers": 255,
         "sync": 0,
         "flags": 0,
-        "volume": 0.77858000993728638,
+        "volume": 0.58821976184844971,
         "balance": 0.5,
         "enabled": true,
         "muted": false,
@@ -61,8 +61,8 @@
         "monitoring_type": 0,
         "private_settings": {}
     },
-    "current_scene": "Tela",
-    "current_program_scene": "Tela",
+    "current_scene": "Janela",
+    "current_program_scene": "Janela",
     "scene_order": [
         {
             "name": "Cam"
@@ -161,7 +161,7 @@
     },
     "sources": [
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Apresentação de slides",
             "uuid": "ce016a07-34e3-441e-8608-2e4c3aa86396",
             "id": "slideshow",
@@ -202,7 +202,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Cam",
             "uuid": "29850a35-ff8c-4c7b-9e07-5da94093dfa9",
             "id": "scene",
@@ -232,24 +232,24 @@
                         "id": 5,
                         "group_item_backup": false,
                         "pos": {
-                            "x": -5.0,
-                            "y": -5.0
+                            "x": -1175.5,
+                            "y": -9.0
                         },
                         "pos_rel": {
                             "x": -1.7870370149612427,
                             "y": -1.0092592239379883
                         },
                         "scale": {
-                            "x": 1.0052083730697632,
-                            "y": 1.0092592239379883
+                            "x": 1.7870371341705322,
+                            "y": 1.7942386865615845
                         },
                         "scale_rel": {
                             "x": 1.0052083730697632,
                             "y": 1.0092592239379883
                         },
                         "bounds": {
-                            "x": 1.0,
-                            "y": 1.0
+                            "x": 2.0,
+                            "y": 2.0
                         },
                         "bounds_rel": {
                             "x": 0.0018518518190830946,
@@ -287,24 +287,24 @@
                         "id": 11,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 1316.0,
-                            "y": 541.0
+                            "x": 1173.0,
+                            "y": 962.0
                         },
                         "pos_rel": {
                             "x": 0.65925925970077515,
                             "y": 0.0018517971038818359
                         },
                         "scale": {
-                            "x": 0.69791674613952637,
-                            "y": 0.6967741847038269
+                            "x": 1.2407408952713013,
+                            "y": 1.2387096881866455
                         },
                         "scale_rel": {
                             "x": 0.69791674613952637,
                             "y": 0.6967741847038269
                         },
                         "bounds": {
-                            "x": 1.0,
-                            "y": 1.0
+                            "x": 2.0,
+                            "y": 2.0
                         },
                         "bounds_rel": {
                             "x": 0.0018518518190830946,
@@ -342,16 +342,16 @@
                         "id": 10,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 70.0,
-                            "y": 633.5
+                            "x": -1042.0,
+                            "y": 1126.0
                         },
                         "pos_rel": {
                             "x": -1.6481481790542603,
                             "y": 0.17314815521240234
                         },
                         "scale": {
-                            "x": 0.69791668653488159,
-                            "y": 0.6967741847038269
+                            "x": 1.2407407760620117,
+                            "y": 1.2387096881866455
                         },
                         "scale_rel": {
                             "x": 0.69791668653488159,
@@ -397,16 +397,16 @@
                         "id": 9,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 70.0,
-                            "y": 503.0
+                            "x": -1042.0,
+                            "y": 894.0
                         },
                         "pos_rel": {
                             "x": -1.6481481790542603,
                             "y": -0.068518519401550293
                         },
                         "scale": {
-                            "x": 0.69791668653488159,
-                            "y": 0.6967741847038269
+                            "x": 1.2407407760620117,
+                            "y": 1.2387096881866455
                         },
                         "scale_rel": {
                             "x": 0.69791668653488159,
@@ -452,7 +452,7 @@
                         "id": 14,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 0.0,
+                            "x": -1166.5,
                             "y": 0.0
                         },
                         "pos_rel": {
@@ -460,16 +460,16 @@
                             "y": -1.0
                         },
                         "scale": {
-                            "x": 1.0,
-                            "y": 1.0
+                            "x": 1.7777777910232544,
+                            "y": 1.7777777910232544
                         },
                         "scale_rel": {
                             "x": 1.0,
                             "y": 1.0
                         },
                         "bounds": {
-                            "x": 1920.0,
-                            "y": 1080.0
+                            "x": 3413.5,
+                            "y": 1920.0
                         },
                         "bounds_rel": {
                             "x": 3.5555555820465088,
@@ -507,24 +507,24 @@
                         "id": 4,
                         "group_item_backup": false,
                         "pos": {
-                            "x": -15.0,
-                            "y": -15.0
+                            "x": -1193.5,
+                            "y": -26.5
                         },
                         "pos_rel": {
                             "x": -1.8055555820465088,
                             "y": -1.0277777910232544
                         },
                         "scale": {
-                            "x": 1.0,
-                            "y": 1.0
+                            "x": 1.7777777910232544,
+                            "y": 1.7777777910232544
                         },
                         "scale_rel": {
                             "x": 1.0,
                             "y": 1.0
                         },
                         "bounds": {
-                            "x": 1935.0,
-                            "y": 1112.0
+                            "x": 3440.0,
+                            "y": 1977.0
                         },
                         "bounds_rel": {
                             "x": 3.5833332538604736,
@@ -562,16 +562,16 @@
                         "id": 2,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 1704.0,
-                            "y": 293.0
+                            "x": 1862.5,
+                            "y": 521.0
                         },
                         "pos_rel": {
                             "x": 1.3777778148651123,
                             "y": -0.45740741491317749
                         },
                         "scale": {
-                            "x": -0.78385418653488159,
-                            "y": 0.78386455774307251
+                            "x": -1.3935185670852661,
+                            "y": 1.3935370445251465
                         },
                         "scale_rel": {
                             "x": -0.78385418653488159,
@@ -617,16 +617,16 @@
                         "id": 8,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 621.0,
-                            "y": 40.0
+                            "x": -62.5,
+                            "y": 71.0
                         },
                         "pos_rel": {
                             "x": -0.62777775526046753,
                             "y": -0.92592591047286987
                         },
                         "scale": {
-                            "x": 0.80214542150497437,
-                            "y": 0.80167597532272339
+                            "x": 1.4260363578796387,
+                            "y": 1.4252017736434937
                         },
                         "scale_rel": {
                             "x": 0.80214542150497437,
@@ -682,34 +682,12 @@
                 "libobs.hide_scene_item.9": [],
                 "libobs.show_scene_item.14": [],
                 "libobs.hide_scene_item.14": [],
-                "libobs.show_scene_item.4": [
-                    {
-                        "alt": true,
-                        "key": "OBS_KEY_P"
-                    }
-                ],
-                "libobs.hide_scene_item.4": [
-                    {
-                        "alt": true,
-                        "key": "OBS_KEY_O"
-                    }
-                ],
+                "libobs.show_scene_item.4": [],
+                "libobs.hide_scene_item.4": [],
                 "libobs.show_scene_item.2": [],
                 "libobs.hide_scene_item.2": [],
-                "libobs.show_scene_item.8": [
-                    {
-                        "control": true,
-                        "alt": true,
-                        "key": "OBS_KEY_L"
-                    }
-                ],
-                "libobs.hide_scene_item.8": [
-                    {
-                        "control": true,
-                        "alt": true,
-                        "key": "OBS_KEY_K"
-                    }
-                ]
+                "libobs.show_scene_item.8": [],
+                "libobs.hide_scene_item.8": []
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
@@ -717,7 +695,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Cam + Janela",
             "uuid": "14a0c22b-cc35-40dd-8c06-7fa2a962e5b0",
             "id": "scene",
@@ -747,24 +725,24 @@
                         "id": 1,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 0.0,
-                            "y": -88.0
+                            "x": -1166.5,
+                            "y": -156.5
                         },
                         "pos_rel": {
                             "x": -1.7777777910232544,
                             "y": -1.1629629135131836
                         },
                         "scale": {
-                            "x": 0.82051283121109009,
-                            "y": 0.75052118301391602
+                            "x": 1.4586894512176514,
+                            "y": 1.3342598676681519
                         },
                         "scale_rel": {
                             "x": 1.4586894512176514,
                             "y": 1.3342598676681519
                         },
                         "bounds": {
-                            "x": 1920.0,
-                            "y": 1168.0
+                            "x": 3413.5,
+                            "y": 2076.5
                         },
                         "bounds_rel": {
                             "x": 3.5555555820465088,
@@ -802,7 +780,7 @@
                         "id": 6,
                         "group_item_backup": false,
                         "pos": {
-                            "x": -1166.5,
+                            "x": -3240.5,
                             "y": 0.0
                         },
                         "pos_rel": {
@@ -810,16 +788,16 @@
                             "y": -1.0
                         },
                         "scale": {
-                            "x": 1.7777777910232544,
-                            "y": 1.7777777910232544
+                            "x": 3.1604938507080078,
+                            "y": 3.1604938507080078
                         },
                         "scale_rel": {
                             "x": 1.7777777910232544,
                             "y": 1.7777777910232544
                         },
                         "bounds": {
-                            "x": 3413.5,
-                            "y": 1920.0
+                            "x": 6068.5,
+                            "y": 3413.5
                         },
                         "bounds_rel": {
                             "x": 6.321296215057373,
@@ -857,24 +835,24 @@
                         "id": 7,
                         "group_item_backup": false,
                         "pos": {
-                            "x": -15.0,
-                            "y": -15.0
+                            "x": -1193.5,
+                            "y": -26.5
                         },
                         "pos_rel": {
                             "x": -1.8055555820465088,
                             "y": -1.0277777910232544
                         },
                         "scale": {
-                            "x": 1.0,
-                            "y": 1.0
+                            "x": 1.7777777910232544,
+                            "y": 1.7777777910232544
                         },
                         "scale_rel": {
                             "x": 1.0,
                             "y": 1.0
                         },
                         "bounds": {
-                            "x": 1935.0,
-                            "y": 1112.0
+                            "x": 3440.0,
+                            "y": 1977.0
                         },
                         "bounds_rel": {
                             "x": 3.5833332538604736,
@@ -912,16 +890,16 @@
                         "id": 2,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 695.0,
-                            "y": 522.0
+                            "x": 69.0,
+                            "y": 928.0
                         },
                         "pos_rel": {
                             "x": -0.49074074625968933,
                             "y": -0.033333361148834229
                         },
                         "scale": {
-                            "x": -0.5696721076965332,
-                            "y": 0.56938773393630981
+                            "x": -1.0127503871917725,
+                            "y": 1.0122448205947876
                         },
                         "scale_rel": {
                             "x": -1.0127503871917725,
@@ -967,16 +945,16 @@
                         "id": 8,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 1411.0,
-                            "y": 50.0
+                            "x": 1342.0,
+                            "y": 89.0
                         },
                         "pos_rel": {
                             "x": 0.83518517017364502,
                             "y": -0.90740740299224854
                         },
                         "scale": {
-                            "x": 1.7777777910232544,
-                            "y": 1.7777777910232544
+                            "x": 3.1604938507080078,
+                            "y": 3.1604938507080078
                         },
                         "scale_rel": {
                             "x": 1.7777777910232544,
@@ -1022,16 +1000,16 @@
                         "id": 9,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 614.5,
-                            "y": 53.5
+                            "x": -74.0,
+                            "y": 95.0
                         },
                         "pos_rel": {
                             "x": -0.63981479406356812,
                             "y": -0.90092593431472778
                         },
                         "scale": {
-                            "x": 2.1179137229919434,
-                            "y": 2.1186928749084473
+                            "x": 3.7651798725128174,
+                            "y": 3.7665650844573975
                         },
                         "scale_rel": {
                             "x": 2.1179137229919434,
@@ -1074,7 +1052,7 @@
                     {
                         "control": true,
                         "alt": true,
-                        "key": "OBS_KEY_0"
+                        "key": "OBS_KEY_2"
                     }
                 ],
                 "libobs.show_scene_item.1": [],
@@ -1120,7 +1098,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Cam + Tela",
             "uuid": "891f6a4f-6b85-47a3-95df-064d8dbec77f",
             "id": "scene",
@@ -1150,24 +1128,24 @@
                         "id": 1,
                         "group_item_backup": false,
                         "pos": {
-                            "x": -542.0,
-                            "y": -90.0
+                            "x": -2130.0,
+                            "y": -160.0
                         },
                         "pos_rel": {
                             "x": -2.7814815044403076,
                             "y": -1.1666666269302368
                         },
                         "scale": {
-                            "x": 0.82051283121109009,
-                            "y": 0.75052118301391602
+                            "x": 1.4586894512176514,
+                            "y": 1.3342598676681519
                         },
                         "scale_rel": {
                             "x": 0.82051283121109009,
                             "y": 0.75052118301391602
                         },
                         "bounds": {
-                            "x": 3004.0,
-                            "y": 1172.0
+                            "x": 5340.5,
+                            "y": 2083.5
                         },
                         "bounds_rel": {
                             "x": 5.5629630088806152,
@@ -1205,16 +1183,16 @@
                         "id": 2,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 695.0,
-                            "y": 522.0
+                            "x": 69.0,
+                            "y": 928.0
                         },
                         "pos_rel": {
                             "x": -0.49074074625968933,
                             "y": -0.033333361148834229
                         },
                         "scale": {
-                            "x": -0.5696721076965332,
-                            "y": 0.56938773393630981
+                            "x": -1.0127503871917725,
+                            "y": 1.0122448205947876
                         },
                         "scale_rel": {
                             "x": -0.5696721076965332,
@@ -1271,7 +1249,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Cam + Tela Cheia",
             "uuid": "a501a13b-81c6-4159-ae8c-77a15302e735",
             "id": "scene",
@@ -1301,20 +1279,20 @@
                         "id": 1,
                         "group_item_backup": false,
                         "pos": {
-                            "x": -329.0,
-                            "y": 0.0
+                            "x": -1166.5,
+                            "y": 245.5
                         },
                         "pos_rel": {
-                            "x": -2.3870370388031006,
-                            "y": -1.0
+                            "x": -1.7777777910232544,
+                            "y": -0.74444442987442017
                         },
                         "scale": {
-                            "x": 0.75,
-                            "y": 0.75
+                            "x": 0.99276489019393921,
+                            "y": 0.99259263277053833
                         },
                         "scale_rel": {
-                            "x": 0.75,
-                            "y": 0.75
+                            "x": 0.5584302544593811,
+                            "y": 0.55833333730697632
                         },
                         "bounds": {
                             "x": 0.0,
@@ -1356,16 +1334,16 @@
                         "id": 2,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 695.0,
-                            "y": 522.0
+                            "x": 69.0,
+                            "y": 928.0
                         },
                         "pos_rel": {
                             "x": -0.49074074625968933,
                             "y": -0.033333361148834229
                         },
                         "scale": {
-                            "x": -0.5696721076965332,
-                            "y": 0.56938773393630981
+                            "x": -1.0127503871917725,
+                            "y": 1.0122448205947876
                         },
                         "scale_rel": {
                             "x": -0.5696721076965332,
@@ -1422,14 +1400,13 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Capa ",
             "uuid": "d0b7dcc9-c17e-41ef-a11a-5308d51ac531",
             "id": "image_source",
             "versioned_id": "image_source",
             "settings": {
-                "file": "C:/Users/otavi/OneDrive/Documentos/Conn2Flow/imagens/[CANVA PROMPT_ Abstract, futuristic digital art background. Visualize interconnected networks, glowing nodes representing data and ideas, subtle human silhouettes collaborating with abstract AI repr.jpg",
-                "undo_suuid": "d0b7dcc9-c17e-41ef-a11a-5308d51ac531"
+                "file": "C:/Users/otavi/OneDrive/Documentos/Conn2Flow/imagens/[CANVA PROMPT_ Create an inspiring and modern digital artwork representing the launch of _Conn2Flow,_ an open-source global ecosystem. Visualize a central, glowing Conn2Flow logo o.jpg"
             },
             "mixers": 0,
             "sync": 0,
@@ -1449,14 +1426,13 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Captura de janela",
             "uuid": "e9736d8e-4565-418d-9995-78540e2feaa1",
             "id": "window_capture",
             "versioned_id": "window_capture",
             "settings": {
-                "window": "Início - Canva - Google Chrome:Chrome_WidgetWin_1:chrome.exe",
-                "undo_uuid": "e9736d8e-4565-418d-9995-78540e2feaa1"
+                "window": "Nova guia - Google Chrome:Chrome_WidgetWin_1:chrome.exe"
             },
             "mixers": 255,
             "sync": 0,
@@ -1481,38 +1457,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
-            "name": "Captura de janela 2",
-            "uuid": "12e3dce0-f07f-4d7c-8c17-17df6fb86b32",
-            "id": "window_capture",
-            "versioned_id": "window_capture",
-            "settings": {
-                "window": "otavioserra/conn2flow at obs-settings - Google Chrome:Chrome_WidgetWin_1:chrome.exe"
-            },
-            "mixers": 255,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.unmute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": []
-            },
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Captura de monitor",
             "uuid": "d6e63298-da47-478c-9217-63c6744538f4",
             "id": "monitor_capture",
@@ -1538,7 +1483,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Dispositivo de captura de vídeo",
             "uuid": "433c240d-096f-407b-82f4-27e57e3aa8e5",
             "id": "dshow_input",
@@ -1572,7 +1517,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Fonte de mídia",
             "uuid": "1309d0be-ddbd-411f-b464-066caf1bd070",
             "id": "ffmpeg_source",
@@ -1607,7 +1552,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Fonte de vídeo do VLC",
             "uuid": "373e1a11-1696-4349-828a-1fe79681f2b1",
             "id": "vlc_source",
@@ -1663,7 +1608,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Fonte de vídeo do VLC 2",
             "uuid": "9aaf9c90-0244-4a79-a53a-fa0ece0d353e",
             "id": "vlc_source",
@@ -1749,7 +1694,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Janela",
             "uuid": "5091571c-9961-458d-934f-cfa49ce54188",
             "id": "scene",
@@ -1779,24 +1724,24 @@
                         "id": 1,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 0.0,
-                            "y": -88.0
+                            "x": -1166.5,
+                            "y": -156.5
                         },
                         "pos_rel": {
                             "x": -1.7777777910232544,
                             "y": -1.1629629135131836
                         },
                         "scale": {
-                            "x": 0.82051283121109009,
-                            "y": 0.75052118301391602
+                            "x": 1.4586894512176514,
+                            "y": 1.3342598676681519
                         },
                         "scale_rel": {
                             "x": 0.82051283121109009,
                             "y": 0.75052118301391602
                         },
                         "bounds": {
-                            "x": 1920.0,
-                            "y": 1168.0
+                            "x": 3413.5,
+                            "y": 2076.5
                         },
                         "bounds_rel": {
                             "x": 3.5555555820465088,
@@ -1834,24 +1779,24 @@
                         "id": 3,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 0.0,
-                            "y": -46.0
+                            "x": -1166.5,
+                            "y": -82.0
                         },
                         "pos_rel": {
                             "x": -1.7777777910232544,
                             "y": -1.085185170173645
                         },
                         "scale": {
-                            "x": 1.0,
-                            "y": 1.0
+                            "x": 1.7777777910232544,
+                            "y": 1.7777777910232544
                         },
                         "scale_rel": {
                             "x": 1.0,
                             "y": 1.0
                         },
                         "bounds": {
-                            "x": 1920.0,
-                            "y": 1126.0
+                            "x": 3413.5,
+                            "y": 2002.0
                         },
                         "bounds_rel": {
                             "x": 3.5555555820465088,
@@ -1900,14 +1845,13 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Slide 1",
             "uuid": "d22026f6-91f2-4043-bfd2-a77422aa0b3d",
             "id": "image_source",
             "versioned_id": "image_source",
             "settings": {
-                "file": "C:/Users/otavi/OneDrive/Documentos/Conn2Flow/Logomarca.png",
-                "undo_suuid": "d22026f6-91f2-4043-bfd2-a77422aa0b3d"
+                "file": "C:/Users/otavi/OneDrive/Documentos/Conn2Flow/Logomarca.png"
             },
             "mixers": 0,
             "sync": 0,
@@ -1927,7 +1871,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Slide 2",
             "uuid": "cc4a3a8c-43b8-4c8a-be14-a7ea6fdc7ce8",
             "id": "image_source",
@@ -1953,7 +1897,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Slide 3",
             "uuid": "afeecf3e-85f1-4e42-b3f7-45d64fcbbd93",
             "id": "image_source",
@@ -1979,7 +1923,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Slide 4",
             "uuid": "5a08e762-4b39-481b-9e02-d51f6fbaf536",
             "id": "image_source",
@@ -2005,13 +1949,13 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Tela",
             "uuid": "8c88f11c-130e-44a8-b833-f1007b3c2c80",
             "id": "scene",
             "versioned_id": "scene",
             "settings": {
-                "id_counter": 4,
+                "id_counter": 3,
                 "custom_size": false,
                 "items": [
                     {
@@ -2035,83 +1979,28 @@
                         "id": 1,
                         "group_item_backup": false,
                         "pos": {
-                            "x": -542.0,
-                            "y": -90.0
+                            "x": -2130.0,
+                            "y": -160.0
                         },
                         "pos_rel": {
                             "x": -2.7814815044403076,
                             "y": -1.1666666269302368
                         },
                         "scale": {
-                            "x": 0.82051283121109009,
-                            "y": 0.75052118301391602
+                            "x": 1.4586894512176514,
+                            "y": 1.3342598676681519
                         },
                         "scale_rel": {
                             "x": 1.4586894512176514,
                             "y": 1.3342598676681519
                         },
                         "bounds": {
-                            "x": 3004.0,
-                            "y": 1172.0
+                            "x": 5340.5,
+                            "y": 2083.5
                         },
                         "bounds_rel": {
                             "x": 5.5629630088806152,
                             "y": 2.17037034034729
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "Captura de janela 2",
-                        "source_uuid": "12e3dce0-f07f-4d7c-8c17-17df6fb86b32",
-                        "visible": false,
-                        "locked": false,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 4,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 309.0,
-                            "y": 29.0
-                        },
-                        "pos_rel": {
-                            "x": -1.2055555582046509,
-                            "y": -0.94629627466201782
-                        },
-                        "scale": {
-                            "x": 0.45495906472206116,
-                            "y": 0.4586518406867981
-                        },
-                        "scale_rel": {
-                            "x": 0.45495906472206116,
-                            "y": 0.4586518406867981
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
                         },
                         "scale_filter": "disable",
                         "blend_method": "default",
@@ -2145,28 +2034,28 @@
                         "id": 3,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 109.0,
-                            "y": 123.0
+                            "x": -1166.5,
+                            "y": 0.0
                         },
                         "pos_rel": {
-                            "x": -1.5759259462356567,
-                            "y": -0.77222222089767456
+                            "x": -1.7777777910232544,
+                            "y": -1.0
                         },
                         "scale": {
-                            "x": 1.0,
-                            "y": 1.0
+                            "x": 1.7777777910232544,
+                            "y": 1.7777777910232544
                         },
                         "scale_rel": {
                             "x": 1.0,
                             "y": 1.0
                         },
                         "bounds": {
-                            "x": 706.0,
-                            "y": 419.0
+                            "x": 3413.5,
+                            "y": 1920.0
                         },
                         "bounds_rel": {
-                            "x": 1.3074073791503906,
-                            "y": 0.77592593431472778
+                            "x": 3.5555555820465088,
+                            "y": 2.0
                         },
                         "scale_filter": "disable",
                         "blend_method": "default",
@@ -2202,8 +2091,6 @@
                 ],
                 "libobs.show_scene_item.1": [],
                 "libobs.hide_scene_item.1": [],
-                "libobs.show_scene_item.4": [],
-                "libobs.hide_scene_item.4": [],
                 "libobs.show_scene_item.3": [],
                 "libobs.hide_scene_item.3": []
             },
@@ -2213,7 +2100,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 520093700,
+            "prev_ver": 520093699,
             "name": "Tela Cheia",
             "uuid": "7fc11a4a-285e-415f-a065-0d64d109d41f",
             "id": "scene",
@@ -2243,20 +2130,20 @@
                         "id": 1,
                         "group_item_backup": false,
                         "pos": {
-                            "x": -329.0,
-                            "y": 0.0
+                            "x": -1166.5,
+                            "y": 245.5
                         },
                         "pos_rel": {
-                            "x": -2.3870370388031006,
-                            "y": -1.0
+                            "x": -1.7777777910232544,
+                            "y": -0.74444442987442017
                         },
                         "scale": {
-                            "x": 0.75,
-                            "y": 0.75
+                            "x": 0.99276489019393921,
+                            "y": 0.99259263277053833
                         },
                         "scale_rel": {
-                            "x": 0.75,
-                            "y": 0.75
+                            "x": 0.5584302544593811,
+                            "y": 0.55833333730697632
                         },
                         "bounds": {
                             "x": 0.0,
