@@ -6,8 +6,8 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR['versao']								=	'1.7.0'; // Versão do gestor como um todo.
-$_GESTOR['id']									=	'b2make-'; // Identificador básico do gestor
+$_GESTOR['versao']								=	'1.8.0'; // Versão do gestor como um todo.
+$_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
 $_GESTOR['host-configuracao-id-modulo']			=	'host-configuracao'; // Identificador módulo de configuração do host.
 
@@ -20,13 +20,19 @@ $_GESTOR['variavel-global']						=	Array(
 	'closeText' => ']]', // Fechamento de uma variável na definição da mesma
 );
 
-// ===== Detecção de execução do cron e definições de ambiente.
-
-if(isset($_CRON)){
+if (php_sapi_name() === 'cli') {
+	// Ambiente de linha de comando (usado por Phinx, scripts, etc.)
+	// Define o ROOT_PATH de forma absoluta e confiável a partir da localização deste arquivo.
+	$_GESTOR['ROOT_PATH'] = __DIR__ . '/';
+	// Define um SERVER_NAME padrão para a lógica de configuração funcionar.
+	$_SERVER['SERVER_NAME'] = 'localhost';
+} else if(isset($_CRON)){
+	// Ambiente de execução via CRON
 	$_SERVER['SERVER_NAME'] = $_CRON['SERVER_NAME'];
 	$_GESTOR['ROOT_PATH'] = $_CRON['ROOT_PATH'];
 } else {
-	$_GESTOR['ROOT_PATH'] = $_SERVER['DOCUMENT_ROOT'].'/'.(isset($_INDEX['acesso-publico-dir']) ? $_INDEX['acesso-publico-dir'] : '').$_INDEX['sistemas-dir'].'b2make-gestor/';
+	// Ambiente de execução via Web (Apache, etc.)
+	$_GESTOR['ROOT_PATH'] = $_SERVER['DOCUMENT_ROOT'].'/'.(isset($_INDEX['acesso-publico-dir']) ? $_INDEX['acesso-publico-dir'] : '').$_INDEX['sistemas-dir'].'gestor/';
 }
 
 // ===== Definição dos caminhos de autenticação.
@@ -38,17 +44,24 @@ $_GESTOR['AUTH_PATH_SERVER']					=	$_GESTOR['AUTH_PATH'] . $_SERVER['SERVER_NAME
 
 require_once $_GESTOR['ROOT_PATH'] . 'vendor/autoload.php';
 
-try {
-    $dotenv = Dotenv\Dotenv::createImmutable($_GESTOR['AUTH_PATH_SERVER']);
-    $dotenv->load();
-} catch (\Dotenv\Exception\InvalidPathException $e) {
-    http_response_code(503);
-    echo json_encode([
-        'error' => '503',
-        'info' => 'Configuration file (.env) not found for domain: ' . $_SERVER['SERVER_NAME'],
-        'details' => 'Please ensure the directory exists and contains a valid .env file: ' . $_GESTOR['AUTH_PATH_SERVER']
-    ]);
-    exit;
+if (class_exists(Dotenv\Dotenv::class)) {
+    try {
+        $dotenv = Dotenv\Dotenv::createImmutable($_GESTOR['AUTH_PATH_SERVER']);
+        $dotenv->load();
+    } catch (\Dotenv\Exception\InvalidPathException $e) {
+        http_response_code(503);
+        echo json_encode([
+            'error' => '503',
+            'info' => 'Configuration file (.env) not found for domain: ' . $_SERVER['SERVER_NAME'],
+            'details' => 'Please ensure the directory exists and contains a valid .env file: ' . $_GESTOR['AUTH_PATH_SERVER']
+        ]);
+        exit;
+    }
+} else {
+    // Se a classe Dotenv não existe, é porque as dependências do Composer não foram instaladas.
+    http_response_code(500);
+    echo "Erro Crítico: A classe Dotenv não foi encontrada. Execute 'composer install' na pasta 'gestor'.\n";
+    exit(1); // Sai com um código de erro para scripts de linha de comando.
 }
 
 // ===== Popular as configurações globais a partir do .env =====
@@ -92,7 +105,7 @@ $_GESTOR['openssl-path'] = $_GESTOR['AUTH_PATH_SERVER'] . ($_ENV['OPENSSL_KEYS_S
 
 // ===== Definição do caminho em disco dos plugins.
 
-$_GESTOR['plugins-path']						=	$_GESTOR['ROOT_PATH'].'../b2make-gestor-plugins/';
+$_GESTOR['plugins-path']						=	$_GESTOR['ROOT_PATH'].'../conn2flow-gestor-plugins/';
 
 // ===== Definição dos caminhos em disco padrões.
 
@@ -108,93 +121,28 @@ $_GESTOR['logs-path']							=	$_GESTOR['ROOT_PATH'].'logs/';
 
 $_GESTOR['fomantic-ui-folder']					=	'fomantic-UI@2.9.0';
 
-// ===== Definições de variáveis padrões do sistema em hosts diferentes
+// ===== Carrega as configurações de ambiente do .env =====
 
-if($_SERVER['SERVER_NAME'] == "localhost"){
-	// ===== Url raiz.
-	
-	$_GESTOR['url-raiz']							=	'/b2make/';
-	
-	// ===== Configuração do server de cada host de usuário.
-	
-	$_GESTOR['hosts-server'] = Array(
-		'ativo'						=>	true,
-		'user-root-path'			=>	'/home/',
-		'cpanel-root-path'			=>	'/home/b2make/b2make-cpanel/',
-		'local'						=>	'betaServer0',
-		'server'					=>	's0',
-		'pacote-inicial'			=>	'TRIAL',
-		'user-perfix'				=>	's0ub',
-		'dominio'					=>	's0.b2make.com',
-		'dominio-sufix-regex'		=>	's0\.b2make\.com',
-		'db-user-sufix'				=>	'_b2make',
-		'ftp-user-sufix'			=>	'_b2make',
-		'ftp-root'					=>	'/',
-		'ftp-site-root'				=>	'/public_html/',
-		'ftp-files-root'			=>	'/b2make/files/',
-		'ftp-gestor-root'			=>	'/b2make/',
-	);
-	
-	// ===== Identificador do ambiente da plataforma.
-	
-	$_GESTOR['plataforma-id'] = 'local';
-} else if($_SERVER['SERVER_NAME'] == "beta.b2make.com"){
-	// ===== Url raiz.
-	
-	$_GESTOR['url-raiz']							=	'/';
-	
-	// ===== Configuração do server de cada host de usuário.
-	
-	$_GESTOR['hosts-server'] = Array(
-		'ativo'						=>	true,
-		'user-root-path'			=>	'/home/',
-		'cpanel-root-path'			=>	'/home/betab2makecom/b2make-cpanel/',
-		'local'						=>	'betaServer0',
-		'server'					=>	's0',
-		'pacote-inicial'			=>	'TRIAL',
-		'user-perfix'				=>	's0ub',
-		'dominio'					=>	's0.b2make.com',
-		'dominio-sufix-regex'		=>	's0\.b2make\.com',
-		'db-user-sufix'				=>	'_b2make',
-		'ftp-user-sufix'			=>	'_b2make',
-		'ftp-root'					=>	'/',
-		'ftp-site-root'				=>	'/public_html/',
-		'ftp-files-root'			=>	'/b2make/files/',
-		'ftp-gestor-root'			=>	'/b2make/',
-	);
-	
-	// ===== Identificador do ambiente da plataforma.
-	
-	$_GESTOR['plataforma-id'] = 'beta';
-} else {
-	// ===== Banco e url raiz.
-	
-	$_GESTOR['url-raiz']							=	'/';
-	
-	// ===== Configuração do server de cada host de usuário.
-	
-	$_GESTOR['hosts-server'] = Array(
-		'ativo'						=>	true,
-		'user-root-path'			=>	'/home/',
-		'cpanel-root-path'			=>	'/home/b2makecom/b2make-cpanel/',
-		'local'						=>	'server0',
-		'server'					=>	's0',
-		'pacote-inicial'			=>	'TRIAL',
-		'user-perfix'				=>	's0u',
-		'dominio'					=>	's0.b2make.com',
-		'dominio-sufix-regex'		=>	's0\.b2make\.com',
-		'db-user-sufix'				=>	'_b2make',
-		'ftp-user-sufix'			=>	'_b2make',
-		'ftp-root'					=>	'/',
-		'ftp-site-root'				=>	'/public_html/',
-		'ftp-files-root'			=>	'/b2make/files/',
-		'ftp-gestor-root'			=>	'/b2make/',
-	);
-	
-	// ===== Identificador do ambiente da plataforma.
-	
-	$_GESTOR['plataforma-id'] 		= 'producao'; 
-}
+$_GESTOR['plataforma-id'] = $_ENV['PLATAFORMA_ID'] ?? 'producao';
+$_GESTOR['url-raiz'] = $_ENV['URL_RAIZ'] ?? '/';
+
+$_GESTOR['hosts-server'] = [
+    'ativo'                 => filter_var($_ENV['HOSTS_SERVER_ACTIVE'] ?? false, FILTER_VALIDATE_BOOLEAN),
+    'user-root-path'        => $_ENV['HOSTS_SERVER_USER_ROOT_PATH'] ?? '/',
+    'cpanel-root-path'      => $_ENV['HOSTS_SERVER_CPANEL_ROOT_PATH'] ?? '',
+    'local'                 => $_ENV['HOSTS_SERVER_LOCAL'] ?? '',
+    'server'                => $_ENV['HOSTS_SERVER_SERVER'] ?? '',
+    'pacote-inicial'        => $_ENV['HOSTS_SERVER_PACOTE_INICIAL'] ?? 'TRIAL',
+    'user-perfix'           => $_ENV['HOSTS_SERVER_USER_PERFIX'] ?? '',
+    'dominio'               => $_ENV['HOSTS_SERVER_DOMINIO'] ?? '',
+    'dominio-sufix-regex'   => $_ENV['HOSTS_SERVER_DOMINIO_SUFIX_REGEX'] ?? '',
+    'db-user-sufix'         => $_ENV['HOSTS_SERVER_DB_USER_SUFIX'] ?? '',
+    'ftp-user-sufix'        => $_ENV['HOSTS_SERVER_FTP_USER_SUFIX'] ?? '',
+    'ftp-root'              => $_ENV['HOSTS_SERVER_FTP_ROOT'] ?? '/',
+    'ftp-site-root'         => $_ENV['HOSTS_SERVER_FTP_SITE_ROOT'] ?? '/public_html/',
+    'ftp-files-root'        => $_ENV['HOSTS_SERVER_FTP_FILES_ROOT'] ?? '',
+    'ftp-gestor-root'       => $_ENV['HOSTS_SERVER_FTP_GESTOR_ROOT'] ?? '',
+];
 
 // ===== Definições de variáveis padrões do sistema que dependem de host 
 
@@ -208,16 +156,13 @@ $_GESTOR['pagina#contato-url']					=	'contato/'; // Página de contatos relativo
 
 // ===== Definições da plataforma de comunicação entre clientes e servidor.
 
-$_GESTOR['plataforma'] = Array(
-	'hosts' => Array(
-		'producao' => Array(
-			'host' => 'b2make.com.br',
-		),
-		'beta' => Array(
-			'host' => 'beta.b2make.com.br',
-		),
-	)
-);
+// Carrega a definição do host da plataforma a partir do .env do ambiente atual.
+$platformHostId = $_ENV['PLATAFORMA_HOST_ID'] ?? 'producao';
+$platformHostUrl = $_ENV['PLATAFORMA_HOST_URL'] ?? 'localhost';
+
+$_GESTOR['plataforma']['hosts'][$platformHostId] = [
+    'host' => $platformHostUrl,
+];
 
 // ===== Definições do gestor cliente.
 
@@ -255,7 +200,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'geral' => Array('geral.php'),
 );
 
-if($_GESTOR['bibliotecas'])
+if(isset($_GESTOR['bibliotecas']))
 foreach($_GESTOR['bibliotecas'] as $_biblioteca){
 	$_caminhos = $_GESTOR['bibliotecas-dados'][$_biblioteca];
 	
