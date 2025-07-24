@@ -1,20 +1,8 @@
 <?php
 
-// Durante a instalação, usamos os parâmetros diretamente do .env se estiver disponível
-// ou usa variáveis de ambiente padrão do sistema
-$dbHost = $_ENV['DB_HOST'] ?? 'localhost';
-$dbName = $_ENV['DB_DATABASE'] ?? '';
-$dbUser = $_ENV['DB_USERNAME'] ?? '';
-$dbPass = $_ENV['DB_PASSWORD'] ?? '';
-
-// Se não encontrou no ambiente, tenta carregar do config.php se existir
-if (empty($dbName) && file_exists(__DIR__ . '/../config.php')) {
-    require_once __DIR__ . '/../config.php';
-    $dbHost = $_BANCO['host'] ?? $dbHost;
-    $dbName = $_BANCO['nome'] ?? $dbName;
-    $dbUser = $_BANCO['usuario'] ?? $dbUser;
-    $dbPass = $_BANCO['senha'] ?? $dbPass;
-}
+// Carrega a configuração principal da aplicação para ter acesso às credenciais do banco.
+// O caminho sobe um nível ('../') para encontrar o config.php na raiz do gestor.
+require_once __DIR__ . '/../config.php';
 
 return [
     'paths' => [
@@ -27,10 +15,10 @@ return [
         'default_environment'     => 'gestor', // Usaremos este como nosso único ambiente
         'gestor' => [
             'adapter' => 'mysql',
-            'host'    => $dbHost,
-            'name'    => $dbName,
-            'user'    => $dbUser,
-            'pass'    => $dbPass,
+            'host'    => $_BANCO['host'] ?? 'localhost',
+            'name'    => $_BANCO['nome'] ?? '',
+            'user'    => $_BANCO['usuario'] ?? '',
+            'pass'    => $_BANCO['senha'] ?? '',
             'port'    => 3306,
             'charset' => 'utf8mb4',
         ]
