@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Lista de campos para validar
             const fieldsToValidate = [
-                'db_host', 'db_name', 'db_user', 'admin_name',
+                'db_host', 'db_name', 'db_user', 'domain', 'admin_name',
                 'admin_email', 'admin_pass', 'admin_pass_confirm'
             ];
             // Limpa erros anteriores
@@ -100,6 +100,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const dbUser = document.getElementById('db_user').value.trim();
             if (!dbUser) { showError('db_user', translations.error_db_user_required || 'O Usuário do Banco de Dados é obrigatório.'); isValid = false; }
+
+            const domain = document.getElementById('domain').value.trim();
+            if (!domain) { showError('domain', translations.error_domain_required || 'O Domínio é obrigatório.'); isValid = false; }
 
             const adminName = document.getElementById('admin_name').value.trim();
             if (!adminName) { showError('admin_name', translations.error_admin_name_required || 'O Nome Completo do administrador é obrigatório.'); isValid = false; }
