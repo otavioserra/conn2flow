@@ -85,9 +85,13 @@ class Installer
 
     private function run_migrations()
     {
-        // Executa as migrações e seeders do Phinx
-        $this->runPhinxMigrations();
-        $this->runPhinxSeeders();
+        // Tenta executar as migrações e seeders do Phinx primeiro
+        $phinxSuccess = $this->tryPhinxMigrations();
+        
+        if (!$phinxSuccess) {
+            // Se Phinx falhou, usa SQL alternativo
+            $this->runSqlMigrations();
+        }
         
         // Copia o index.php do public-access para a raiz
         $this->setupPublicAccess();
@@ -100,6 +104,39 @@ class Installer
             'message' => __('progress_configuring'),
             'redirect_url' => './?success=true&lang=' . ($this->data['lang'] ?? 'pt-br')
         ];
+    }
+
+    /**
+     * Tenta executar migrações via Phinx (retorna true se sucesso, false se falhou)
+     */
+    private function tryPhinxMigrations()
+    {
+        try {
+            $this->runPhinxMigrations();
+            $this->runPhinxSeeders();
+            return true;
+        } catch (Exception $e) {
+            // Log do erro para debug (opcional)
+            error_log('Phinx failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Executa migrações via SQL puro (fallback)
+     */
+    private function runSqlMigrations()
+    {
+        $gestorPath = dirname($this->baseDir) . '/gestor';
+        $sqlPath = $gestorPath . '/db/conn2flow-schema.sql';
+        
+        // Verifica se o arquivo SQL existe
+        if (!file_exists($sqlPath)) {
+            throw new Exception(__('error_sql_schema_not_found', 'Arquivo de schema SQL não encontrado: ') . $sqlPath);
+        }
+        
+        // Executa o SQL
+        $this->executeSqlFile($sqlPath);
     }
 
     /**
@@ -120,31 +157,15 @@ class Installer
             throw new Exception(__('error_phinx_config_not_found', 'Arquivo de configuração do Phinx não encontrado.'));
         }
         
-        // Define variáveis de ambiente para o Phinx
-        $envVars = [
-            'DB_HOST=' . escapeshellarg($this->data['db_host']),
-            'DB_DATABASE=' . escapeshellarg($this->data['db_name']),
-            'DB_USERNAME=' . escapeshellarg($this->data['db_user']),
-            'DB_PASSWORD=' . escapeshellarg($this->data['db_pass'] ?? '')
-        ];
-        
-        $envString = implode(' ', $envVars);
-        
-        // Executa as migrações - adaptado para Windows/PowerShell
+        // Executa as migrações - o config.php já carrega automaticamente do .env
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             // Windows - usando PowerShell
-            $envSet = [];
-            foreach (['DB_HOST', 'DB_DATABASE', 'DB_USERNAME', 'DB_PASSWORD'] as $i => $key) {
-                $value = [$this->data['db_host'], $this->data['db_name'], $this->data['db_user'], $this->data['db_pass'] ?? ''][$i];
-                $envSet[] = '$env:' . $key . '="' . addslashes($value) . '"';
-            }
-            $envString = implode('; ', $envSet);
-            $command = "powershell -Command \"$envString; Set-Location '$gestorPath'; & '$phinxBinPath' migrate -c '$phinxConfigPath'\"";
+            $command = "powershell -Command \"Set-Location '$gestorPath'; & '$phinxBinPath' migrate -c '$phinxConfigPath'\"";
         } else {
             // Linux/Unix
-            $envString = implode(' ', $envVars);
-            $command = "cd \"$gestorPath\" && $envString \"$phinxBinPath\" migrate -c \"$phinxConfigPath\" 2>&1";
+            $command = "cd \"$gestorPath\" && \"$phinxBinPath\" migrate -c \"$phinxConfigPath\" 2>&1";
         }
+        
         $output = [];
         $returnVar = 0;
         
@@ -165,31 +186,15 @@ class Installer
         $phinxConfigPath = $gestorPath . '/utilitarios/phinx.php';
         $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
         
-        // Define variáveis de ambiente para o Phinx
-        $envVars = [
-            'DB_HOST=' . escapeshellarg($this->data['db_host']),
-            'DB_DATABASE=' . escapeshellarg($this->data['db_name']),
-            'DB_USERNAME=' . escapeshellarg($this->data['db_user']),
-            'DB_PASSWORD=' . escapeshellarg($this->data['db_pass'] ?? '')
-        ];
-        
-        $envString = implode(' ', $envVars);
-        
-        // Executa todos os seeders - adaptado para Windows/PowerShell
+        // Executa todos os seeders - o config.php já carrega automaticamente do .env
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             // Windows - usando PowerShell
-            $envSet = [];
-            foreach (['DB_HOST', 'DB_DATABASE', 'DB_USERNAME', 'DB_PASSWORD'] as $i => $key) {
-                $value = [$this->data['db_host'], $this->data['db_name'], $this->data['db_user'], $this->data['db_pass'] ?? ''][$i];
-                $envSet[] = '$env:' . $key . '="' . addslashes($value) . '"';
-            }
-            $envString = implode('; ', $envSet);
-            $command = "powershell -Command \"$envString; Set-Location '$gestorPath'; & '$phinxBinPath' seed:run -c '$phinxConfigPath'\"";
+            $command = "powershell -Command \"Set-Location '$gestorPath'; & '$phinxBinPath' seed:run -c '$phinxConfigPath'\"";
         } else {
             // Linux/Unix
-            $envString = implode(' ', $envVars);
-            $command = "cd \"$gestorPath\" && $envString \"$phinxBinPath\" seed:run -c \"$phinxConfigPath\" 2>&1";
+            $command = "cd \"$gestorPath\" && \"$phinxBinPath\" seed:run -c \"$phinxConfigPath\" 2>&1";
         }
+        
         $output = [];
         $returnVar = 0;
         
@@ -198,6 +203,41 @@ class Installer
         if ($returnVar !== 0) {
             $errorOutput = implode("\n", $output);
             throw new Exception(__('error_seeder_failed', 'Falha ao executar seeders: ') . $errorOutput);
+        }
+    }
+
+    /**
+     * Executa um arquivo SQL diretamente via PDO
+     */
+    private function executeSqlFile($sqlPath)
+    {
+        try {
+            // Conecta ao banco de dados
+            $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
+            $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ]);
+
+            // Lê o arquivo SQL
+            $sql = file_get_contents($sqlPath);
+            
+            if ($sql === false) {
+                throw new Exception(__('error_read_sql_file', 'Erro ao ler arquivo SQL: ') . $sqlPath);
+            }
+
+            // Divide o SQL em statements individuais
+            $statements = array_filter(array_map('trim', explode(';', $sql)));
+            
+            // Executa cada statement
+            foreach ($statements as $statement) {
+                if (!empty($statement)) {
+                    $pdo->exec($statement);
+                }
+            }
+            
+        } catch (PDOException $e) {
+            throw new Exception(__('error_sql_execution', 'Erro ao executar SQL: ') . $e->getMessage());
         }
     }
 

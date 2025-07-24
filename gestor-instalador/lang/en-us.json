@@ -49,5 +49,8 @@
     "error_phinx_not_found": "Phinx not found. Run composer install first.",
     "error_phinx_config_not_found": "Phinx configuration file not found.",
     "error_migration_failed": "Failed to run migrations: ",
-    "error_seeder_failed": "Failed to run seeders: "
+    "error_seeder_failed": "Failed to run seeders: ",
+    "error_sql_schema_not_found": "SQL schema file not found: ",
+    "error_read_sql_file": "Error reading SQL file: ",
+    "error_sql_execution": "Error executing SQL: "
 }
