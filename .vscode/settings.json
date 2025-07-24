@@ -7,10 +7,15 @@
         "*.php": "php"
     },
     "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "terminal.integrated.automationProfile.windows": "Git Bash",
     "terminal.integrated.profiles.windows": {
         "Git Bash": {
             "path": "C:\\Program Files\\Git\\bin\\bash.exe",
-            "args": ["--login", "-i"]
+            "args": [
+                "--login",
+                "-i"
+            ],
+            "icon": "terminal-bash"
         },
         "PowerShell": {
             "path": "powershell.exe"
