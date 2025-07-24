@@ -1,0 +1,85 @@
+name: Release Gestor Instalador
+
+on:
+  push:
+    tags:
+      - 'instalador-v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Create instalador.zip
+      run: |
+        # Criar o arquivo ZIP com apenas o gestor-instalador
+        cd gestor-instalador
+        zip -r ../instalador.zip . \
+          -x "*.git*" \
+          -x "*.DS_Store*" \
+          -x "*.log*" \
+          -x "temp/*"
+          
+    - name: Get tag name
+      id: tag
+      run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.TAG_NAME }}
+        release_name: "Instalador ${{ steps.tag.outputs.TAG_NAME }}"
+        body: |
+          ## 🛠️ Conn2Flow Instalador Release
+          
+          Instalador automático do sistema Conn2Flow.
+          
+          ### ✨ Funcionalidades:
+          - Instalação totalmente automatizada
+          - Interface web amigável
+          - Sistema híbrido de migração (Phinx + SQL fallback)
+          - Compatível com hospedagem compartilhada (cPanel)
+          - Suporte multi-idioma (PT-BR, EN)
+          
+          ### 🔧 Como usar:
+          1. Baixe o `instalador.zip`
+          2. Extraia em seu servidor web
+          3. Acesse via navegador: `http://seudominio.com/gestor-instalador/`
+          4. Siga o assistente de instalação
+          
+          ### 📋 Requisitos:
+          - PHP 8.1+
+          - MySQL 5.7+ ou MariaDB 10.2+
+          - Extensões: zip, curl, mbstring, openssl, pdo_mysql
+          - Acesso à internet (para download do gestor)
+          
+          ### 🎯 Funcionalidades do Instalador:
+          - ✅ Validação de requisitos do sistema
+          - ✅ Download automático do gestor mais recente
+          - ✅ Configuração automática do banco de dados
+          - ✅ Geração de chaves de segurança
+          - ✅ Configuração de domínio e usuário admin
+          - ✅ Cleanup automático pós-instalação
+          
+          ### 🌐 Ambientes Suportados:
+          - Hosting compartilhado (cPanel/Plesk)
+          - VPS/Servidor dedicado
+          - Desenvolvimento local (XAMPP/WAMP/MAMP)
+        draft: false
+        prerelease: false
+        
+    - name: Upload instalador.zip
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./instalador.zip
+        asset_name: instalador.zip
+        asset_content_type: application/zip

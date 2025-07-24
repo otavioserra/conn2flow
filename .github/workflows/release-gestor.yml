@@ -1,0 +1,92 @@
+name: Release Gestor
+
+on:
+  push:
+    tags:
+      - 'gestor-v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: zip, curl, mbstring, openssl
+        
+    - name: Install Composer dependencies
+      run: |
+        cd gestor
+        composer install --no-dev --optimize-autoloader
+        
+    - name: Generate SQL schema with seeders
+      run: |
+        cd gestor/utilitarios
+        php generate-sql-simple.php
+        
+    - name: Create gestor.zip
+      run: |
+        # Remove arquivos desnecessários
+        rm -rf gestor/.git*
+        rm -rf gestor/vendor/bin/.phpunit
+        rm -rf gestor/vendor/composer/tmp-*
+        
+        # Criar o arquivo ZIP
+        cd gestor
+        zip -r ../gestor.zip . \
+          -x "*.git*" \
+          -x "vendor/bin/.phpunit*" \
+          -x "vendor/composer/tmp-*" \
+          -x "node_modules/*" \
+          -x "*.DS_Store*" \
+          -x "*.log*"
+          
+    - name: Get tag name
+      id: tag
+      run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.TAG_NAME }}
+        release_name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
+        body: |
+          ## 🚀 Conn2Flow Gestor Release
+          
+          Esta release contém o sistema gestor completo do Conn2Flow.
+          
+          ### 📦 Conteúdo:
+          - Sistema gestor completo
+          - 75 migrações de banco de dados
+          - 14 seeders com dados iniciais
+          - Schema SQL pré-gerado para fallback
+          - Dependências do Composer otimizadas
+          
+          ### 🔧 Como usar:
+          1. Use o [Conn2Flow Installer](https://github.com/otavioserra/conn2flow/releases) para instalação automática
+          2. Ou extraia manualmente e configure conforme documentação
+          
+          ### 📋 Requisitos:
+          - PHP 8.1+
+          - MySQL 5.7+ ou MariaDB 10.2+
+          - Extensões: zip, curl, mbstring, openssl
+        draft: false
+        prerelease: false
+        
+    - name: Upload gestor.zip
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./gestor.zip
+        asset_name: gestor.zip
+        asset_content_type: application/zip
