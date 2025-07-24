@@ -121,13 +121,43 @@ function autenticacao_openssl_gerar_chaves($params = false){
 				
 				$res = openssl_pkey_new($config);
 				
+				// Verifica se a geração da chave foi bem-sucedida
+				if ($res === false) {
+					// Tenta com configurações mais simples para Windows
+					$simpleConfig = array(
+						"digest_alg" => "sha256",
+						"private_key_bits" => 2048,
+						"private_key_type" => OPENSSL_KEYTYPE_RSA,
+					);
+					$res = openssl_pkey_new($simpleConfig);
+					
+					// Se ainda falhar, lança erro com detalhes
+					if ($res === false) {
+						$error = openssl_error_string();
+						throw new Exception("Erro ao gerar chave OpenSSL: " . ($error ?: "Configuração OpenSSL inválida"));
+					}
+				}
+				
 				if(isset($senha)){
-					openssl_pkey_export($res, $chavePrivada,$senha);
+					$exportResult = openssl_pkey_export($res, $chavePrivada, $senha);
 				} else {
-					openssl_pkey_export($res, $chavePrivada);
+					$exportResult = openssl_pkey_export($res, $chavePrivada);
+				}
+				
+				// Verifica se a exportação foi bem-sucedida
+				if ($exportResult === false) {
+					$error = openssl_error_string();
+					throw new Exception("Erro ao exportar chave privada: " . ($error ?: "Erro desconhecido"));
 				}
 				
 				$chavePrivadaDetalhes = openssl_pkey_get_details($res);
+				
+				// Verifica se conseguiu obter os detalhes da chave
+				if ($chavePrivadaDetalhes === false) {
+					$error = openssl_error_string();
+					throw new Exception("Erro ao obter detalhes da chave: " . ($error ?: "Erro desconhecido"));
+				}
+				
 				$chavePublica = $chavePrivadaDetalhes["key"];
 				
 				return Array(

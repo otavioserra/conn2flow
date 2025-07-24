@@ -177,7 +177,23 @@ async function runInstallation(initialFormData) {
                 throw new Error(`Erro do servidor: ${response.statusText}`);
             }
 
-            const result = await response.json();
+            // Tenta ler a resposta como texto primeiro para detectar erros PHP
+            const responseText = await response.text();
+            
+            // Verifica se a resposta parece ser um erro PHP/HTML
+            if (responseText.includes('<br') || responseText.includes('Fatal error') || responseText.includes('Warning')) {
+                console.error('Erro PHP detectado:', responseText);
+                throw new Error('Erro interno do servidor. Verifique os logs do PHP ou o arquivo installer.log para mais detalhes.');
+            }
+            
+            // Tenta fazer parse do JSON
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (jsonError) {
+                console.error('Resposta não é JSON válido:', responseText);
+                throw new Error('Resposta inválida do servidor. Verifique o arquivo installer.log para mais detalhes.');
+            }
 
             if (result.status === 'error') { throw new Error(result.message); }
 
