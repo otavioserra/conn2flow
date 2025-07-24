@@ -5,6 +5,9 @@ on:
     tags:
       - 'gestor-v*'
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -16,7 +19,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1'
+        php-version: '8.2'
         extensions: zip, curl, mbstring, openssl
         
     - name: Install Composer dependencies
@@ -75,7 +78,7 @@ jobs:
           2. Ou extraia manualmente e configure conforme documentação
           
           ### 📋 Requisitos:
-          - PHP 8.1+
+          - PHP 8.2+
           - MySQL 5.7+ ou MariaDB 10.2+
           - Extensões: zip, curl, mbstring, openssl
         draft: false
