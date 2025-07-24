@@ -76,6 +76,19 @@ class Installer
         // Configura os arquivos do sistema
         $this->configureSystem();
         
+        return [
+            'status' => 'success',
+            'message' => __('progress_unzipping'),
+            'next_step' => 'run_migrations'
+        ];
+    }
+
+    private function run_migrations()
+    {
+        // Executa as migrações e seeders do Phinx
+        $this->runPhinxMigrations();
+        $this->runPhinxSeeders();
+        
         // Copia o index.php do public-access para a raiz
         $this->setupPublicAccess();
         
@@ -84,9 +97,108 @@ class Installer
         
         return [
             'status' => 'finished',
-            'message' => __('progress_unzipping'),
+            'message' => __('progress_configuring'),
             'redirect_url' => './?success=true&lang=' . ($this->data['lang'] ?? 'pt-br')
         ];
+    }
+
+    /**
+     * Executa as migrações do Phinx
+     */
+    private function runPhinxMigrations()
+    {
+        $gestorPath = dirname($this->baseDir) . '/gestor';
+        $phinxConfigPath = $gestorPath . '/utilitarios/phinx.php';
+        $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
+        
+        // Verifica se o Phinx está instalado
+        if (!file_exists($phinxBinPath)) {
+            throw new Exception(__('error_phinx_not_found', 'Phinx não encontrado. Execute composer install primeiro.'));
+        }
+        
+        if (!file_exists($phinxConfigPath)) {
+            throw new Exception(__('error_phinx_config_not_found', 'Arquivo de configuração do Phinx não encontrado.'));
+        }
+        
+        // Define variáveis de ambiente para o Phinx
+        $envVars = [
+            'DB_HOST=' . escapeshellarg($this->data['db_host']),
+            'DB_DATABASE=' . escapeshellarg($this->data['db_name']),
+            'DB_USERNAME=' . escapeshellarg($this->data['db_user']),
+            'DB_PASSWORD=' . escapeshellarg($this->data['db_pass'] ?? '')
+        ];
+        
+        $envString = implode(' ', $envVars);
+        
+        // Executa as migrações - adaptado para Windows/PowerShell
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            // Windows - usando PowerShell
+            $envSet = [];
+            foreach (['DB_HOST', 'DB_DATABASE', 'DB_USERNAME', 'DB_PASSWORD'] as $i => $key) {
+                $value = [$this->data['db_host'], $this->data['db_name'], $this->data['db_user'], $this->data['db_pass'] ?? ''][$i];
+                $envSet[] = '$env:' . $key . '="' . addslashes($value) . '"';
+            }
+            $envString = implode('; ', $envSet);
+            $command = "powershell -Command \"$envString; Set-Location '$gestorPath'; & '$phinxBinPath' migrate -c '$phinxConfigPath'\"";
+        } else {
+            // Linux/Unix
+            $envString = implode(' ', $envVars);
+            $command = "cd \"$gestorPath\" && $envString \"$phinxBinPath\" migrate -c \"$phinxConfigPath\" 2>&1";
+        }
+        $output = [];
+        $returnVar = 0;
+        
+        exec($command, $output, $returnVar);
+        
+        if ($returnVar !== 0) {
+            $errorOutput = implode("\n", $output);
+            throw new Exception(__('error_migration_failed', 'Falha ao executar migrações: ') . $errorOutput);
+        }
+    }
+
+    /**
+     * Executa os seeders do Phinx
+     */
+    private function runPhinxSeeders()
+    {
+        $gestorPath = dirname($this->baseDir) . '/gestor';
+        $phinxConfigPath = $gestorPath . '/utilitarios/phinx.php';
+        $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
+        
+        // Define variáveis de ambiente para o Phinx
+        $envVars = [
+            'DB_HOST=' . escapeshellarg($this->data['db_host']),
+            'DB_DATABASE=' . escapeshellarg($this->data['db_name']),
+            'DB_USERNAME=' . escapeshellarg($this->data['db_user']),
+            'DB_PASSWORD=' . escapeshellarg($this->data['db_pass'] ?? '')
+        ];
+        
+        $envString = implode(' ', $envVars);
+        
+        // Executa todos os seeders - adaptado para Windows/PowerShell
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            // Windows - usando PowerShell
+            $envSet = [];
+            foreach (['DB_HOST', 'DB_DATABASE', 'DB_USERNAME', 'DB_PASSWORD'] as $i => $key) {
+                $value = [$this->data['db_host'], $this->data['db_name'], $this->data['db_user'], $this->data['db_pass'] ?? ''][$i];
+                $envSet[] = '$env:' . $key . '="' . addslashes($value) . '"';
+            }
+            $envString = implode('; ', $envSet);
+            $command = "powershell -Command \"$envString; Set-Location '$gestorPath'; & '$phinxBinPath' seed:run -c '$phinxConfigPath'\"";
+        } else {
+            // Linux/Unix
+            $envString = implode(' ', $envVars);
+            $command = "cd \"$gestorPath\" && $envString \"$phinxBinPath\" seed:run -c \"$phinxConfigPath\" 2>&1";
+        }
+        $output = [];
+        $returnVar = 0;
+        
+        exec($command, $output, $returnVar);
+        
+        if ($returnVar !== 0) {
+            $errorOutput = implode("\n", $output);
+            throw new Exception(__('error_seeder_failed', 'Falha ao executar seeders: ') . $errorOutput);
+        }
     }
 
     /**

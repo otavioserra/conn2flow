@@ -29,7 +29,8 @@
     "success_button": "Acessar o Gestor",
     "progress_validating": "Dados validados. Baixando arquivos do sistema...",
     "progress_downloading": "Arquivos baixados. Descompactando...",
-    "progress_unzipping": "Instalação concluída com sucesso! Redirecionando...",
+    "progress_unzipping": "Arquivos descompactados. Configurando banco de dados...",
+    "progress_configuring": "Sistema configurado com sucesso! Redirecionando...",
     "error_passwords_mismatch_server": "As senhas do administrador não coincidem.",
     "error_invalid_step": "Etapa de instalação inválida.",
     "error_field_required": "Todos os campos são obrigatórios.",
@@ -44,5 +45,9 @@
     "error_generate_keys": "Erro ao gerar chaves de segurança",
     "error_missing_user_lib": "Biblioteca de usuário não encontrada",
     "error_missing_auth_lib": "Biblioteca de autenticação não encontrada",
-    "error_env_template_not_found": "Arquivo .env de template não encontrado"
+    "error_env_template_not_found": "Arquivo .env de template não encontrado",
+    "error_phinx_not_found": "Phinx não encontrado. Execute composer install primeiro.",
+    "error_phinx_config_not_found": "Arquivo de configuração do Phinx não encontrado.",
+    "error_migration_failed": "Falha ao executar migrações: ",
+    "error_seeder_failed": "Falha ao executar seeders: "
 }

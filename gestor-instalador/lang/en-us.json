@@ -29,7 +29,8 @@
     "success_button": "Access Manager",
     "progress_validating": "Input validated. Downloading system files...",
     "progress_downloading": "Files downloaded. Unzipping...",
-    "progress_unzipping": "Installation complete! Redirecting...",
+    "progress_unzipping": "Files extracted. Configuring database...",
+    "progress_configuring": "System configured successfully! Redirecting...",
     "error_passwords_mismatch_server": "The administrator passwords do not match.",
     "error_invalid_step": "Invalid installation step.",
     "error_field_required": "All fields are required.",
@@ -44,5 +45,9 @@
     "error_generate_keys": "Error generating security keys",
     "error_missing_user_lib": "User library not found",
     "error_missing_auth_lib": "Authentication library not found",
-    "error_env_template_not_found": ".env template file not found"
+    "error_env_template_not_found": ".env template file not found",
+    "error_phinx_not_found": "Phinx not found. Run composer install first.",
+    "error_phinx_config_not_found": "Phinx configuration file not found.",
+    "error_migration_failed": "Failed to run migrations: ",
+    "error_seeder_failed": "Failed to run seeders: "
 }
