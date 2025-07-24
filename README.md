@@ -43,10 +43,29 @@ Conn2Flow features a modern **automated web installer** that simplifies the inst
 ### Installation Steps
 
 1. **Download the Installer**
+   
+   **Option 1 - Direct Download (Current Version):**
    ```bash
-   wget https://github.com/otavioserra/conn2flow/releases/latest/download/instalador.zip
+   # Linux/macOS
+   wget https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.0.6/instalador.zip
+   
+   # Windows PowerShell
+   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.0.6/instalador.zip" -OutFile "instalador.zip"
    ```
-   Or download manually from the [releases page](https://github.com/otavioserra/conn2flow/releases).
+   
+   **Option 2 - Always Latest Installer:**
+   ```bash
+   # Linux/macOS
+   LATEST=$(gh release list --repo otavioserra/conn2flow | grep "instalador-v" | head -n1 | awk '{print $3}')
+   wget "https://github.com/otavioserra/conn2flow/releases/download/${LATEST}/instalador.zip"
+   
+   # Windows PowerShell
+   $latest = (gh release list --json tagName | ConvertFrom-Json | Where-Object { $_.tagName -like "instalador-v*" } | Select-Object -First 1).tagName
+   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/$latest/instalador.zip" -OutFile "instalador.zip"
+   ```
+   
+   **Option 3 - Manual Download:**
+   Go to the [releases page](https://github.com/otavioserra/conn2flow/releases) and download the latest **Instalador** release (look for `instalador-v*` tags, not the "Latest" badge which points to the Gestor system).
 
 2. **Extract to Your Web Directory**
    ```bash
