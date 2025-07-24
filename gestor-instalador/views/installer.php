@@ -89,7 +89,22 @@
                     <div>
                         <label for="install_path" data-translate="install_path_label" class="block text-gray-700 text-sm font-bold mb-2"><?= __('install_path_label') ?></label>
                         <div class="flex space-x-2">
-                            <input type="text" id="install_base_path" name="install_base_path" value="<?= dirname(dirname($_SERVER['DOCUMENT_ROOT'] ?? dirname(dirname(__DIR__)))) ?>" class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow" autocomplete="off" placeholder="C:\caminho\seguro">
+                            <input type="text" id="install_base_path" name="install_base_path" value="<?php
+                                // Detecta o caminho um nível acima da pasta pública atual
+                                $currentDir = dirname(__DIR__); // Pasta onde está o instalador
+                                $suggestedBase = dirname($currentDir); // Um nível acima
+                                
+                                // Se está acessando diretamente pela raiz do domínio
+                                if (isset($_SERVER['DOCUMENT_ROOT'])) {
+                                    $docRoot = $_SERVER['DOCUMENT_ROOT'];
+                                    // Se o instalador está na raiz pública, sugere um nível acima
+                                    if (strpos($currentDir, $docRoot) === 0) {
+                                        $suggestedBase = dirname($docRoot);
+                                    }
+                                }
+                                
+                                echo htmlspecialchars($suggestedBase);
+                            ?>" class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow" autocomplete="off" placeholder="C:\caminho\seguro">
                             <span class="flex items-center px-2 text-gray-500">/</span>
                             <input type="text" id="install_folder_name" name="install_folder_name" value="conn2flow-gestor" class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-40" autocomplete="off" placeholder="gestor">
                         </div>

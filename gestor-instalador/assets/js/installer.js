@@ -90,16 +90,16 @@ document.addEventListener('DOMContentLoaded', function () {
         // Atualiza o caminho quando os campos mudarem
         document.getElementById('install_base_path').addEventListener('input', updateInstallPath);
         document.getElementById('install_folder_name').addEventListener('input', updateInstallPath);
-        
+
         // Inicializa o campo oculto
         updateInstallPath();
 
         form.addEventListener('submit', function (event) {
             event.preventDefault();
-            
+
             // Atualiza o caminho antes de validar
             updateInstallPath();
-            
+
             let isValid = true;
 
             // Lista de campos para validar
