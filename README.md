@@ -1,103 +1,216 @@
-# Conn2Flow - The Open Source CMS System
+# Conn2Flow - Modern Open Source CMS
 
 **Welcome to Conn2Flow CMS!**
 
-Conn2Flow is a lightweight and flexible open-source Content Management System (CMS) built using LAMP technology (Linux, Apache, MySQL, and PHP). Originally developed as a proprietary CMS named B2make, Conn2Flow is now being released to the open-source community to foster collaboration and innovation.
+Conn2Flow is a modern, lightweight and flexible open-source Content Management System (CMS) built using LAMP technology (Linux, Apache, MySQL, and PHP). Originally developed as a proprietary CMS named B2make, Conn2Flow is now being released to the open-source community to foster collaboration and innovation.
 
 **Online Demos**
 
-You will be able to experience Conn2Flow in two demo versions (**not yet published**):
+You will be able to experience Conn2Flow in demo versions (**coming soon**):
 
-* Latest Version (app.conn2flow.com):  [app.conn2flow.com](http://app.conn2flow.com) (not yet online) - This is the current version of Conn2Flow, developed with Git and representing the latest project state.
-* Legacy Version (v1.conn2flow.com): [v1.conn2flow.com](http://v1.conn2flow.com) (not yet online) - This is the legacy version of Conn2Flow, based on the original B2make developed with Tortoise CVS. It is provided for demonstration and historical reference purposes.
+* Latest Version (app.conn2flow.com): [app.conn2flow.com](http://app.conn2flow.com) (coming soon) - This will showcase the current version of Conn2Flow with all modern features.
+* Legacy Showcase (v1.conn2flow.com): [v1.conn2flow.com](http://v1.conn2flow.com) (coming soon) - Historical reference of the B2make legacy system.
 
-## Repository Info
+## Repository Structure
 
-This repository has 3 branches with the 3 big versions delivered throughout time. 2 legacy versions and the actual version.
-* **v0-legacy:** The first version was delivered in 2012.
-* **v1-legacy:** The second version that delivered in 2015.
-* **main:** The actual version with the last big modification was in 2023, but the first major delivery was in 2019.
+This repository contains the modern Conn2Flow system with automated installation and management:
 
-The actual version is a bundle of a couple of sub-projects stored in these folders explained below.
-* **b2make-app:**  React Native app project made to interact with the main server system.
-* **b2make-cpanel:**  all libraries implementation which integrates with cPanel using cPanel API 2 and WHM API 1
-* **b2make-gestor:**  the main server system project folder. 
-* **b2make-gestor-cliente:**  the distributed system project folder. 
-* **b2make-gestor-cliente-update:**  the distributed updater system project folder. 
-* **b2make-gestor-plugins:**  the plugins root project folder which stores all plugins project folders. 
-* **b2make-public-access:**  folder with all files needed for a new installation be configurated on Apache public_html folder. 
+* **gestor/**: The main server system - core CMS with all management features
+* **gestor-cliente/**: Distributed client system for multi-site management  
+* **gestor-cliente-update/**: Automated update system for distributed clients
+* **gestor-instalador/**: Web-based automated installer with multilingual support
+* **gestor-plugins/**: Plugin ecosystem for extending functionality
+* **cpanel/**: cPanel integration libraries (optional - system also works via FTP)
 
-## Getting Started
+### Legacy Branches
+* **b2make-legacy**: Complete legacy system preserved for reference
+* **v0-legacy**: Original 2012 version
+* **v1-legacy**: 2015 version
 
-To run Conn2Flow locally, you will need a configured LAMP (Linux, Apache, MySQL, PHP) environment. And an installation of a WHM/cPanel server (we working to remove this dependence from cPanel, but this current version is mandatory).
+The legacy b2make-* folder structure has been modernized and is now available in the `b2make-legacy` branch for historical reference. 
 
-**Basic Steps:**
+## Quick Installation
 
-1.  **Clone the repository:**
-    * The default installation needs to be located on the same level as the public_html folder from Apache.
-    * It can be changed by modify relative/absolute paths inside the public access script in ``b2make-public-access/index.php``:
-      ```php
-	    $_INDEX['sistemas-dir-root'] = '../'; // Change this relative/absolute path to your custom installation path.
-      ```
-    * Clone the repository inside the installation path defined above.
-      ```bash
-      git clone git@github.com:otavioserra/conn2flow.git
-      ```
-2.  **Setup Configurations:**
-    * Remove b2make-app from your installation because it will not be used by the system.
-    * Move all files from b2make-public-access to public_html folder from Apache. After you can remove ``b2make-public-access`` if you want it because it is not to be used anymore.
-    * Change all general definitions for the main server at ``b2make-gestor/config.php`` as you want.
-    * Change all project definitions inside the ``b2make-gestor/autenticacoes`` folder. Each sub-folder stored inside it is named with the domain name the system uses (useful for 2 or 3 environments like alpha/beta testing environment and production one. Or websites with lots of parked domains pointing to the same app). Inside each folder you need to change 4 files:
-        * ``chaves/gestor/privada.key``: is the OPENSSL private key, it is needed to be defined (RSA / sha512 / 2048 bits).
-        * ``chaves/gestor/publica.key``: is the OPENSSL public key, it is needed to be defined (RSA / sha512 / 2048 bits).
-        * ``banco.php``: MySQL database settings with credentials to system work.
-        * ``config.php``: The major configurations with lots of credentials to external APIs, email sender config, etc. Change the 'SECRET' value with the password defined on OPENSSL private key creation at ``$_CONFIG['openssl-password'] = 'SECRET';``.
-    * Change credentials and paths inside ``b2make-cpanel/cpanel-config.php``. You can get cPanel credentials defining a new one at: [cPanel API Tokens How-To](https://docs.cpanel.net/knowledge-base/security/how-to-use-cpanel-api-tokens/)
-    * **IMPORTANT:** store one clone of the configuration files in a security local to not overwrite these when you will update the whole system to a new version.
-3.  **Configure the Database:**
-    * **Create a MySQL Database:**
-        * Log in to your MySQL server (e.g., using a MySQL client or phpMyAdmin).
-        * Create a new database for Conn2Flow. You can choose any name, for example, `conn2flow_db`.
-        * Example SQL command (using MySQL command line):
-          ```sql
-          CREATE DATABASE conn2flow_db;
-          ```
-        * **REMEMBER:** Change all variables from all ``banco.php`` explained in the before section with this new db_name.
-    * **Import Database Schema:**
-        *   Get the database scheme at ``b2make-gestor/banco/gestor.mwb`` using [MySQL Workbench Tool](https://www.mysql.com/products/workbench/). Export to SQL file or connect to the database inside it and use the option to sync your database.
-        *   Example SQL command (using MySQL command line, assuming schema file exported is `database.sql` in the project root):
-            ```sql
-            USE conn2flow_db;
-            SOURCE database.sql;
-            ```
-    *   **Configure Database Credentials:**
-        * Change all variables from all ``banco.php`` explained in the before section with these new credentials like database name, user, password, and host.
-4.  **Configure the Web Server (Apache):**
-      * Configure a Virtual Host in Apache to point to the Conn2Flow project root folder.
-      * Ensure Apache has the correct permissions to access the project files.
-5.  **Access via Browser:**
-      * Open your browser and access the address configured in the Virtual Host (e.g., `http://localhost/conn2flow` or the domain you configured).
-      * Follow the installation/configuration instructions that appear on the screen (if any).
+Conn2Flow features a modern **automated web installer** that simplifies the installation process to just a few clicks. No complex manual configuration required!
 
-## Community
+### Prerequisites
 
-**License**
+- **Web Server**: Apache or Nginx with PHP support
+- **PHP**: Version 8.0 or higher with required extensions (curl, zip, pdo_mysql, openssl)
+- **MySQL**: Version 5.7 or higher (or MariaDB equivalent)
+- **Write Permissions**: Web server must have write access to installation directory
 
-Conn2Flow will be distributed under an open-source license to ensure freedom of use, modification, and distribution. Candidate licenses include [MIT License](https://www.google.com/url?sa=E&source=gmail&q=https://opensource.org/licenses/MIT) or [GNU GPL v3](https://www.google.com/url?sa=E&source=gmail&q=https://www.gnu.org/licenses/gpl-3.0.en.html). The final license will be defined soon.
+### Installation Steps
 
-**Contributing**
+1. **Download the Installer**
+   ```bash
+   wget https://github.com/otavioserra/conn2flow/releases/latest/download/instalador.zip
+   ```
+   Or download manually from the [releases page](https://github.com/otavioserra/conn2flow/releases).
 
-Contributions are welcome! If you want to contribute to Conn2Flow, please:
+2. **Extract to Your Web Directory**
+   ```bash
+   unzip instalador.zip -d /path/to/your/webroot/
+   ```
 
-* Report bugs and suggestions for improvements through the repository's Issues system.
-* Submit Pull Requests with bug fixes, new features, or code improvements.
-* Help with documentation and translations.
-* Participate in the community (communication channels to be defined).
+3. **Run the Web Installer**
+   - Open your browser and navigate to: `http://yourdomain.com/gestor-instalador/`
+   - The installer supports **Portuguese (BR)** and **English (US)**
+   - Follow the step-by-step guided installation
 
-**Communication**
+4. **Configure Your Installation**
+   The web installer will ask for:
+   - **Database credentials** (host, name, username, password)
+   - **Installation path** (can be outside public folder for security)
+   - **Domain name** for your site
+   - **Administrator account** details
 
-Communication channels for the Conn2Flow community, such as [forum/mailing list/chat - to be defined], will be created soon. Stay tuned for more information! But you can find the founder's personal contact inside their LinkedIn: [https://www.linkedin.com/in/otaviocserra/](https://www.linkedin.com/in/otaviocserra/) 
+5. **Automatic Setup**
+   The installer will automatically:
+   - Download the latest Conn2Flow system
+   - Create database tables and initial data
+   - Configure authentication and security keys
+   - Set up proper file permissions
+   - Configure public access files
+   - Clean up installation files
 
------
+6. **Access Your CMS**
+   After installation, access your new CMS at the configured domain.
 
-**Conn2Flow - Transforming B2make into Open Source!**
+### Security Features
+
+- **Flexible Installation Paths**: Install the system outside your public web folder for enhanced security
+- **Automatic Key Generation**: RSA keys and security tokens generated automatically
+- **Secure Cleanup**: Installer removes itself after successful installation
+- **Detailed Logging**: Complete installation log for troubleshooting
+
+### Manual Installation (Advanced Users)
+
+For advanced users who prefer manual installation or need custom configurations:
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/otavioserra/conn2flow.git
+   cd conn2flow
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   cd gestor
+   composer install
+   ```
+
+3. **Configure Environment**
+   - Copy configuration examples from `autenticacoes.exemplo/`
+   - Set up database credentials and domain-specific settings
+   - Generate OpenSSL keys for security
+
+4. **Database Setup**
+   - Import schema from `gestor/db/conn2flow-schema.sql`
+   - Or use Phinx migrations: `vendor/bin/phinx migrate`
+
+5. **Web Server Configuration**
+   - Point your web server to the `public-access` files
+   - Ensure proper permissions and PHP extensions
+
+## System Features
+
+### Core CMS Features
+- **Content Management**: Full-featured content creation and editing
+- **User Management**: Role-based access control and user authentication
+- **Multi-site Support**: Manage multiple domains from single installation
+- **Plugin System**: Extensible architecture with custom plugins
+- **Security**: OpenSSL encryption, secure authentication, and access controls
+
+### Technical Features
+- **Modern PHP**: Built for PHP 8.0+ with modern coding standards
+- **Database**: MySQL/MariaDB with migration system
+- **Automated Updates**: Built-in system update mechanism
+- **Distributed Architecture**: Support for client-server configurations
+- **FTP Integration**: Direct file management capabilities
+- **cPanel Integration**: Optional cPanel API integration (not required)
+
+### Installation Benefits
+- **One-Click Installation**: Web-based installer with guided setup
+- **Multilingual Support**: Portuguese and English interface
+- **Flexible Deployment**: Install anywhere, not just public folders
+- **Automatic Configuration**: All security keys and settings generated automatically
+- **Clean Installation**: Self-removing installer leaves no traces
+
+## Development & Architecture
+
+### Modern Development Stack
+- **PHP 8.0+**: Modern PHP features and performance
+- **Composer**: Dependency management and autoloading
+- **Phinx**: Database migrations and schema management
+- **GitHub Actions**: Automated builds and releases
+- **Modular Design**: Clean separation of concerns
+
+### Directory Structure
+```
+gestor/                 # Main CMS system
+├── bibliotecas/        # Core libraries
+├── controladores/      # MVC controllers
+├── modulos/           # System modules
+├── autenticacoes/     # Domain-specific configurations
+├── db/               # Database migrations and schema
+├── public-access/    # Public web files
+└── vendor/           # Composer dependencies
+
+gestor-instalador/     # Web installer
+├── src/              # Installer logic
+├── views/            # Installation interface
+├── lang/             # Multilingual support
+└── assets/           # CSS, JS, images
+
+cpanel/               # cPanel integration (optional)
+gestor-cliente/       # Distributed client system
+gestor-plugins/       # Plugin ecosystem
+```
+
+## Community & Support
+
+### Contributing
+
+We welcome contributions! Here's how you can help:
+
+- **Report Issues**: Use GitHub Issues to report bugs or suggest features
+- **Submit Pull Requests**: Contribute code improvements and new features
+- **Documentation**: Help improve documentation and translations
+- **Testing**: Test new releases and provide feedback
+
+### Development Guidelines
+
+1. **Fork the Repository**: Create your own fork for development
+2. **Create Feature Branch**: Work on features in dedicated branches
+3. **Follow Standards**: Use PSR coding standards and existing patterns
+4. **Write Tests**: Include tests for new functionality
+5. **Document Changes**: Update documentation for new features
+
+### Getting Help
+
+- **GitHub Issues**: For bug reports and feature requests
+- **Discussions**: For general questions and community support
+- **LinkedIn**: Connect with the founder at [https://www.linkedin.com/in/otaviocserra/](https://www.linkedin.com/in/otaviocserra/)
+
+## License
+
+Conn2Flow is released under an open-source license to ensure freedom of use, modification, and distribution. License details will be finalized soon with community input.
+
+## Roadmap
+
+### Upcoming Features
+- **Enhanced Plugin System**: More powerful plugin architecture
+- **REST API**: Full API for headless CMS usage
+- **Mobile App**: React Native companion app (future release)
+- **Multi-language Content**: Built-in translation management
+- **Performance Optimization**: Caching and optimization features
+
+### Migration from Legacy
+Users of the legacy B2make system can find migration tools and documentation in the `b2make-legacy` branch.
+
+---
+
+**Conn2Flow - Modern CMS. Simple Installation. Powerful Features.**
+
+*Transforming the legacy B2make system into a modern, community-driven open-source CMS.*
