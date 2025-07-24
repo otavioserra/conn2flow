@@ -113,31 +113,90 @@ function autenticacao_openssl_gerar_chaves($params = false){
 	if(isset($tipo)){
 		switch($tipo){
 			case 'RSA':
-				$config = array(
-					"digest_alg" => "sha512",
-					"private_key_bits" => 2048,
-					"private_key_type" => OPENSSL_KEYTYPE_RSA,
-				);
+				// Limpa erros anteriores do OpenSSL
+				while (openssl_error_string() !== false) {
+					// Remove todos os erros da fila
+				}
 				
-				$res = openssl_pkey_new($config);
-				
-				// Verifica se a geração da chave foi bem-sucedida
-				if ($res === false) {
-					// Tenta com configurações mais simples para Windows
-					$simpleConfig = array(
+				// Lista de configurações para tentar (da mais complexa para a mais simples)
+				$configs = [
+					// Configuração padrão completa
+					[
+						"digest_alg" => "sha512",
+						"private_key_bits" => 2048,
+						"private_key_type" => OPENSSL_KEYTYPE_RSA,
+					],
+					// Configuração alternativa SHA256
+					[
 						"digest_alg" => "sha256",
 						"private_key_bits" => 2048,
 						"private_key_type" => OPENSSL_KEYTYPE_RSA,
-					);
-					$res = openssl_pkey_new($simpleConfig);
+					],
+					// Configuração mínima para Windows com chave menor
+					[
+						"digest_alg" => "sha256",
+						"private_key_bits" => 1024,
+						"private_key_type" => OPENSSL_KEYTYPE_RSA,
+					],
+					// Configuração apenas com tipo (usa padrões do sistema)
+					[
+						"private_key_type" => OPENSSL_KEYTYPE_RSA,
+					],
+					// Configuração vazia (usa todos os padrões)
+					[]
+				];
+				
+				$res = false;
+				$configUsada = null;
+				
+				foreach ($configs as $index => $config) {
+					// Limpa erros antes de cada tentativa
+					while (openssl_error_string() !== false) {
+						// Remove erros da fila
+					}
 					
-					// Se ainda falhar, lança erro com detalhes
-					if ($res === false) {
-						$error = openssl_error_string();
-						throw new Exception("Erro ao gerar chave OpenSSL: " . ($error ?: "Configuração OpenSSL inválida"));
+					$res = openssl_pkey_new($config);
+					
+					if ($res !== false) {
+						$configUsada = $index + 1;
+						break;
+					}
+					
+					// Se falhou, registra o erro mas continua tentando
+					$error = openssl_error_string();
+					if ($error) {
+						error_log("OpenSSL tentativa " . ($index + 1) . " falhou: " . $error);
 					}
 				}
 				
+				// Se todas as configurações falharam
+				if ($res === false) {
+					$lastError = '';
+					while (($error = openssl_error_string()) !== false) {
+						$lastError = $error;
+					}
+					
+					// Informações do sistema para debug
+					$phpVersion = PHP_VERSION;
+					$opensslVersion = OPENSSL_VERSION_TEXT ?? 'Não disponível';
+					$osInfo = php_uname();
+					
+					throw new Exception(
+						"Erro crítico ao gerar chave OpenSSL. Todas as configurações falharam.\n" .
+						"Último erro: " . ($lastError ?: "Erro desconhecido") . "\n" .
+						"PHP: {$phpVersion}\n" .
+						"OpenSSL: {$opensslVersion}\n" .
+						"Sistema: {$osInfo}\n" .
+						"Sugestão: Verifique se a extensão OpenSSL está habilitada e configurada corretamente."
+					);
+				}
+				
+				// Log da configuração que funcionou
+				if ($configUsada) {
+					error_log("OpenSSL: Chave gerada com sucesso usando configuração {$configUsada}");
+				}
+				
+				// Exporta a chave privada
 				if(isset($senha)){
 					$exportResult = openssl_pkey_export($res, $chavePrivada, $senha);
 				} else {
@@ -146,16 +205,23 @@ function autenticacao_openssl_gerar_chaves($params = false){
 				
 				// Verifica se a exportação foi bem-sucedida
 				if ($exportResult === false) {
-					$error = openssl_error_string();
-					throw new Exception("Erro ao exportar chave privada: " . ($error ?: "Erro desconhecido"));
+					$error = '';
+					while (($err = openssl_error_string()) !== false) {
+						$error = $err;
+					}
+					throw new Exception("Erro ao exportar chave privada: " . ($error ?: "Erro desconhecido na exportação"));
 				}
 				
+				// Obtém os detalhes da chave (incluindo a chave pública)
 				$chavePrivadaDetalhes = openssl_pkey_get_details($res);
 				
 				// Verifica se conseguiu obter os detalhes da chave
 				if ($chavePrivadaDetalhes === false) {
-					$error = openssl_error_string();
-					throw new Exception("Erro ao obter detalhes da chave: " . ($error ?: "Erro desconhecido"));
+					$error = '';
+					while (($err = openssl_error_string()) !== false) {
+						$error = $err;
+					}
+					throw new Exception("Erro ao obter detalhes da chave: " . ($error ?: "Erro desconhecido nos detalhes"));
 				}
 				
 				$chavePublica = $chavePrivadaDetalhes["key"];
