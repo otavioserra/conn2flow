@@ -43,7 +43,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label for="db_host" data-translate="db_host_label" class="block text-gray-700 text-sm font-bold mb-2"><?= __('db_host_label') ?></label>
-                            <input type="text" id="db_host" name="db_host" class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" autocomplete="off">
+                            <input type="text" id="db_host" name="db_host" value="<?= $_SERVER['HTTP_HOST'] ?? 'localhost' ?>" class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" autocomplete="off">
                             <p id="db_host-error" class="text-red-500 text-xs italic mt-2 hidden"></p>
                         </div>
                         <div>

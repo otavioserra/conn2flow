@@ -94,6 +94,39 @@ document.addEventListener('DOMContentLoaded', function () {
         // Inicializa o campo oculto
         updateInstallPath();
 
+        // Função para sincronizar o domínio do banco com o domínio do site
+        const syncDomainFields = () => {
+            const domainField = document.getElementById('domain');
+            const dbHostField = document.getElementById('db_host');
+            
+            if (domainField && dbHostField) {
+                // Sincroniza quando o domínio do site é alterado
+                domainField.addEventListener('input', function() {
+                    const domainValue = this.value.trim();
+                    // Só atualiza se o campo do banco estiver vazio ou igual ao valor anterior
+                    if (!dbHostField.value.trim() || dbHostField.dataset.autoFilled === 'true') {
+                        dbHostField.value = domainValue;
+                        dbHostField.dataset.autoFilled = 'true';
+                    }
+                });
+                
+                // Marca quando o usuário edita manualmente o campo do banco
+                dbHostField.addEventListener('input', function() {
+                    if (this.value.trim() !== domainField.value.trim()) {
+                        this.dataset.autoFilled = 'false';
+                    }
+                });
+                
+                // Inicializa a marcação para os campos já preenchidos
+                if (dbHostField.value.trim() === domainField.value.trim()) {
+                    dbHostField.dataset.autoFilled = 'true';
+                }
+            }
+        };
+
+        // Inicializa a sincronização dos domínios
+        syncDomainFields();
+
         form.addEventListener('submit', function (event) {
             event.preventDefault();
 
