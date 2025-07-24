@@ -87,9 +87,11 @@ class Installer
             mkdir($this->tempDir, 0755, true);
         }
 
-        // URL do release do gestor no GitHub
-        $gestorUrl = 'https://github.com/otavioserra/conn2flow/releases/latest/download/gestor.zip';
+        // Busca a URL do release mais recente do gestor usando GitHub API
+        $gestorUrl = $this->getLatestGestorReleaseUrl();
         $gestorZipPath = $this->tempDir . '/gestor.zip';
+
+        $this->log("URL do gestor detectada: {$gestorUrl}");
 
         // Download do arquivo gestor.zip
         $this->downloadFile($gestorUrl, $gestorZipPath);
@@ -748,5 +750,50 @@ class Installer
             
             $this->log("ATENÇÃO: Chaves de exemplo criadas. SUBSTITUA por chaves reais após a instalação!", 'WARNING');
         }
+    }
+
+    /**
+     * Busca a URL do release mais recente do gestor usando GitHub API
+     */
+    private function getLatestGestorReleaseUrl()
+    {
+        $this->log("Buscando release mais recente do gestor...");
+        
+        // Tenta usar a API do GitHub para buscar releases
+        $apiUrl = 'https://api.github.com/repos/otavioserra/conn2flow/releases';
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Conn2Flow-Installer/1.0');
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        
+        if ($httpCode === 200 && $response !== false) {
+            $releases = json_decode($response, true);
+            
+            if (is_array($releases)) {
+                // Procura pelo release mais recente do gestor
+                foreach ($releases as $release) {
+                    if (isset($release['tag_name']) && strpos($release['tag_name'], 'gestor-v') === 0) {
+                        // Encontrou um release do gestor
+                        $tag = $release['tag_name'];
+                        $url = "https://github.com/otavioserra/conn2flow/releases/download/{$tag}/gestor.zip";
+                        $this->log("Release do gestor encontrado: {$tag}");
+                        return $url;
+                    }
+                }
+            }
+        }
+        
+        $this->log("Não foi possível buscar via API, usando fallback para gestor-v1.0.3", 'WARNING');
+        
+        // Fallback para versão conhecida se a API falhar
+        return 'https://github.com/otavioserra/conn2flow/releases/download/gestor-v1.0.3/gestor.zip';
     }
 }
