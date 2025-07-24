@@ -5,33 +5,64 @@ class Installer
     private $data;
     private $baseDir;
     private $tempDir;
+    private $logFile;
 
     public function __construct(array $postData)
     {
         $this->data = $postData;
         $this->baseDir = dirname(__DIR__); // Diretório do instalador
         $this->tempDir = $this->baseDir . '/temp';
+        $this->logFile = $this->baseDir . '/installer.log';
+        
+        // Inicia o log
+        $this->log("=== Iniciando instalação em " . date('Y-m-d H:i:s') . " ===");
+    }
+
+    /**
+     * Registra mensagens no log do instalador
+     */
+    private function log($message, $level = 'INFO')
+    {
+        $timestamp = date('Y-m-d H:i:s');
+        $logMessage = "[{$timestamp}] [{$level}] {$message}" . PHP_EOL;
+        file_put_contents($this->logFile, $logMessage, FILE_APPEND | LOCK_EX);
     }
 
     public function runStep(string $step)
     {
+        $this->log("Executando etapa: {$step}");
+        
         if (method_exists($this, $step)) {
-            return $this->$step();
+            try {
+                $result = $this->$step();
+                $this->log("Etapa {$step} concluída com sucesso");
+                return $result;
+            } catch (Exception $e) {
+                $this->log("Erro na etapa {$step}: " . $e->getMessage(), 'ERROR');
+                throw $e;
+            }
         }
+        
+        $this->log("Etapa inválida: {$step}", 'ERROR');
         throw new Exception(__('error_invalid_step', "Etapa de instalação inválida."));
     }
 
     private function validate_input()
     {
+        $this->log("Iniciando validação dos dados de entrada");
+        $this->log("Caminho de instalação solicitado: " . ($this->data['install_path'] ?? 'não informado'));
+        
         // Validação básica do lado do servidor
         $required = ['db_host', 'db_name', 'db_user', 'domain', 'install_path', 'admin_name', 'admin_email', 'admin_pass'];
         foreach ($required as $field) {
             if (empty($this->data[$field])) {
+                $this->log("Campo obrigatório vazio: {$field}", 'ERROR');
                 throw new Exception(__('error_field_required', "Todos os campos são obrigatórios."));
             }
         }
 
         if ($this->data['admin_pass'] !== $this->data['admin_pass_confirm']) {
+            $this->log("Senhas do administrador não coincidem", 'ERROR');
             throw new Exception(__('error_passwords_mismatch_server'));
         }
 
@@ -41,6 +72,7 @@ class Installer
         // Testa conexão com o banco de dados
         $this->testDatabaseConnection();
 
+        $this->log("Validação dos dados concluída com sucesso");
         return [
             'status' => 'success',
             'message' => __('progress_validating'),
@@ -75,13 +107,21 @@ class Installer
         
         // Usa o caminho de instalação personalizado
         $installPath = $this->data['install_path'];
+        $this->log("Descompactando arquivos para: {$installPath}");
         
-        // Descompacta o gestor.zip no caminho especificado pelo usuário
-        $this->extractZip($gestorZipPath, dirname($installPath));
+        // Cria o diretório de instalação se não existir
+        if (!is_dir($installPath)) {
+            $this->log("Criando diretório de instalação: {$installPath}");
+            mkdir($installPath, 0755, true);
+        }
+        
+        // Descompacta o gestor.zip DENTRO do caminho especificado (não um nível acima)
+        $this->extractZip($gestorZipPath, $installPath);
         
         // Configura os arquivos do sistema
         $this->configureSystem();
         
+        $this->log("Descompactação e configuração concluídas");
         return [
             'status' => 'success',
             'message' => __('progress_unzipping'),
@@ -525,25 +565,73 @@ class Installer
         $publicAccessPath = $gestorPath . '/public-access';
         
         // A pasta pública é onde está o instalador (pasta atual)
-        $rootPath = dirname($this->baseDir);
+        $publicPath = dirname($this->baseDir);
+        
+        $this->log("Configurando acesso público - Gestor em: {$gestorPath}");
+        $this->log("Pasta pública detectada: {$publicPath}");
         
         if (is_dir($publicAccessPath)) {
             // Copia o index.php do public-access para a pasta pública (onde está o instalador)
             $sourceIndex = $publicAccessPath . '/index.php';
-            $targetIndex = $rootPath . '/index.php';
+            $targetIndex = $publicPath . '/index.php';
+            
+            $this->log("Copiando index.php de {$sourceIndex} para {$targetIndex}");
             
             if (file_exists($sourceIndex)) {
-                copy($sourceIndex, $targetIndex);
+                // Modifica o index.php para apontar para o caminho correto do gestor
+                $indexContent = file_get_contents($sourceIndex);
+                
+                // Calcula o caminho relativo do public para o gestor
+                $relativePath = $this->getRelativePath($publicPath, $gestorPath);
+                $this->log("Caminho relativo calculado: {$relativePath}");
+                
+                // Substitui o caminho no index.php
+                $indexContent = str_replace('../gestor/', $relativePath . '/', $indexContent);
+                $indexContent = str_replace('../gestor\\', $relativePath . '\\', $indexContent);
+                
+                file_put_contents($targetIndex, $indexContent);
+                $this->log("Index.php configurado com sucesso");
+            } else {
+                $this->log("Arquivo source index.php não encontrado: {$sourceIndex}", 'ERROR');
             }
-            
+
             // Copia o .htaccess se existir
             $sourceHtaccess = $publicAccessPath . '/.htaccess';
-            $targetHtaccess = $rootPath . '/.htaccess';
+            $targetHtaccess = $publicPath . '/.htaccess';
             
             if (file_exists($sourceHtaccess)) {
                 copy($sourceHtaccess, $targetHtaccess);
+                $this->log("Arquivo .htaccess copiado");
             }
+        } else {
+            $this->log("Diretório public-access não encontrado: {$publicAccessPath}", 'ERROR');
         }
+    }
+
+    /**
+     * Calcula o caminho relativo entre dois diretórios
+     */
+    private function getRelativePath($from, $to) 
+    {
+        $from = rtrim(str_replace('\\', '/', $from), '/');
+        $to = rtrim(str_replace('\\', '/', $to), '/');
+        
+        $fromParts = explode('/', $from);
+        $toParts = explode('/', $to);
+        
+        // Remove partes comuns
+        while (count($fromParts) && count($toParts) && $fromParts[0] === $toParts[0]) {
+            array_shift($fromParts);
+            array_shift($toParts);
+        }
+        
+        // Adiciona "../" para cada parte restante em $from
+        $relativeParts = array_fill(0, count($fromParts), '..');
+        
+        // Adiciona as partes restantes de $to
+        $relativeParts = array_merge($relativeParts, $toParts);
+        
+        return implode('/', $relativeParts);
     }
 
     /**

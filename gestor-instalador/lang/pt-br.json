@@ -15,7 +15,7 @@
     "admin_pass_confirm_label": "Confirmar Senha:",
     "install_path_title": "Caminho de Instalação",
     "install_path_label": "Pasta de Instalação do Gestor:",
-    "install_path_help": "Pasta onde o gestor será instalado (recomendado fora da pasta pública por segurança)",
+    "install_path_help": "Caminho seguro + nome da pasta onde o gestor será instalado (recomendado fora da pasta pública)",
     "security_warning": "⚠️ IMPORTANTE: Por segurança, instale o gestor FORA da pasta pública (public_html, www, htdocs). O instalador sugere uma pasta segura, mas você pode alterar conforme necessário.",
     "error_install_path_required": "O caminho de instalação é obrigatório.",
     "error_install_path_invalid": "O caminho de instalação informado não é válido.",

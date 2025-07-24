@@ -79,8 +79,27 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     if (form) {
+        // Função para atualizar o caminho completo
+        const updateInstallPath = () => {
+            const basePath = document.getElementById('install_base_path').value.trim();
+            const folderName = document.getElementById('install_folder_name').value.trim();
+            const fullPath = basePath && folderName ? basePath + '/' + folderName : '';
+            document.getElementById('install_path').value = fullPath;
+        };
+
+        // Atualiza o caminho quando os campos mudarem
+        document.getElementById('install_base_path').addEventListener('input', updateInstallPath);
+        document.getElementById('install_folder_name').addEventListener('input', updateInstallPath);
+        
+        // Inicializa o campo oculto
+        updateInstallPath();
+
         form.addEventListener('submit', function (event) {
             event.preventDefault();
+            
+            // Atualiza o caminho antes de validar
+            updateInstallPath();
+            
             let isValid = true;
 
             // Lista de campos para validar

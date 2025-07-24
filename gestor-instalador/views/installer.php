@@ -88,7 +88,12 @@
                     </div>
                     <div>
                         <label for="install_path" data-translate="install_path_label" class="block text-gray-700 text-sm font-bold mb-2"><?= __('install_path_label') ?></label>
-                        <input type="text" id="install_path" name="install_path" value="<?= dirname(dirname($_SERVER['DOCUMENT_ROOT'] ?? dirname(dirname(__DIR__)))) . DIRECTORY_SEPARATOR . 'gestor' ?>" class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" autocomplete="off">
+                        <div class="flex space-x-2">
+                            <input type="text" id="install_base_path" name="install_base_path" value="<?= dirname(dirname($_SERVER['DOCUMENT_ROOT'] ?? dirname(dirname(__DIR__)))) ?>" class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow" autocomplete="off" placeholder="C:\caminho\seguro">
+                            <span class="flex items-center px-2 text-gray-500">/</span>
+                            <input type="text" id="install_folder_name" name="install_folder_name" value="conn2flow-gestor" class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-40" autocomplete="off" placeholder="gestor">
+                        </div>
+                        <input type="hidden" id="install_path" name="install_path" value="">
                         <p data-translate="install_path_help" class="text-gray-600 text-xs mt-1"><?= __('install_path_help') ?></p>
                         <p id="install_path-error" class="text-red-500 text-xs italic mt-2 hidden"></p>
                     </div>

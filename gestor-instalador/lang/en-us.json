@@ -15,7 +15,7 @@
     "admin_pass_confirm_label": "Confirm Password:",
     "install_path_title": "Installation Path",
     "install_path_label": "Manager Installation Folder:",
-    "install_path_help": "Folder where the manager will be installed (recommended outside public folder for security)",
+    "install_path_help": "Secure path + folder name where the manager will be installed (recommended outside public folder)",
     "security_warning": "⚠️ IMPORTANT: For security, install the manager OUTSIDE the public folder (public_html, www, htdocs). The installer suggests a secure folder, but you can change it as needed.",
     "error_install_path_required": "The installation path is required.",
     "error_install_path_invalid": "The specified installation path is not valid.",

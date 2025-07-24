@@ -52,6 +52,16 @@ try {
     echo json_encode($response);
 
 } catch (Exception $e) {
-    send_json_error($e->getMessage(), 500);
+    // Log do erro para debug
+    error_log("Erro no instalador: " . $e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine());
+    
+    // Se estamos em desenvolvimento, mostra mais detalhes
+    $isDev = isset($_GET['debug']) || (isset($_POST['debug']) && $_POST['debug'] === '1');
+    
+    if ($isDev) {
+        send_json_error($e->getMessage() . " (Arquivo: " . basename($e->getFile()) . ":" . $e->getLine() . ")", 500);
+    } else {
+        send_json_error($e->getMessage(), 500);
+    }
 }
 ?>
