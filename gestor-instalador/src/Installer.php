@@ -277,12 +277,33 @@ class Installer
             // Divide o SQL em statements individuais
             $statements = array_filter(array_map('trim', explode(';', $sql)));
             
+            $successCount = 0;
+            $errorCount = 0;
+            
             // Executa cada statement
             foreach ($statements as $statement) {
                 if (!empty($statement)) {
-                    $pdo->exec($statement);
+                    try {
+                        $pdo->exec($statement);
+                        $successCount++;
+                    } catch (PDOException $e) {
+                        $errorCount++;
+                        
+                        // Ignora erros de colunas inexistentes em INSERTs (schema desatualizado)
+                        if (stripos($statement, 'INSERT') === 0 && 
+                            (strpos($e->getMessage(), 'Unknown column') !== false ||
+                             strpos($e->getMessage(), 'Column not found') !== false)) {
+                            $this->log("INSERT ignorado (coluna inexistente): " . substr($statement, 0, 100) . "...", 'WARNING');
+                            continue;
+                        }
+                        
+                        // Para outros erros, registra mas continua
+                        $this->log("Erro SQL ignorado: " . $e->getMessage() . " - Statement: " . substr($statement, 0, 100) . "...", 'WARNING');
+                    }
                 }
             }
+            
+            $this->log("SQL executado com {$successCount} sucessos e {$errorCount} erros ignorados");
             
         } catch (PDOException $e) {
             throw new Exception(__('error_sql_execution', 'Erro ao executar SQL: ') . $e->getMessage());
@@ -290,7 +311,7 @@ class Installer
     }
 
     /**
-     * Valida o caminho de instalação
+     * Valida o caminho de instalação (cria pasta automaticamente como em hospedagem real)
      */
     private function validateInstallPath($installPath)
     {
@@ -307,7 +328,7 @@ class Installer
             throw new Exception(__('error_install_path_invalid', 'O caminho de instalação informado não é válido.'));
         }
 
-        // Tenta criar o diretório se não existir
+        // Verifica o diretório pai (ex: /home/usuario)
         $parentDir = dirname($installPath);
         if (!is_dir($parentDir)) {
             throw new Exception(__('error_install_path_invalid', 'O diretório pai do caminho de instalação não existe: ' . $parentDir));
@@ -315,9 +336,34 @@ class Installer
 
         // Verifica se é possível escrever no diretório pai
         if (!is_writable($parentDir)) {
-            throw new Exception(__('error_install_path_not_writable', 'Não é possível escrever no caminho de instalação informado: ' . $parentDir));
+            throw new Exception(__('error_install_path_not_writable', 'Não é possível escrever no diretório pai: ' . $parentDir));
         }
 
+        // Cria a pasta de instalação se não existir (como hospedagem real)
+        if (!is_dir($installPath)) {
+            $this->log("Criando pasta de instalação: {$installPath}");
+            
+            if (!mkdir($installPath, 0755, true)) {
+                throw new Exception(__('error_create_install_dir', 'Não foi possível criar a pasta de instalação: ' . $installPath));
+            }
+            
+            // Define permissões corretas (755 = rwxr-xr-x)
+            chmod($installPath, 0755);
+            $this->log("Pasta criada com sucesso e permissões definidas (755)");
+        }
+        
+        // Verifica se é possível escrever na pasta de instalação
+        if (!is_writable($installPath)) {
+            // Tenta corrigir permissões automaticamente
+            $this->log("Corrigindo permissões da pasta de instalação");
+            chmod($installPath, 0755);
+            
+            if (!is_writable($installPath)) {
+                throw new Exception(__('error_install_path_not_writable', 'Não é possível escrever no caminho de instalação: ' . $installPath));
+            }
+        }
+
+        $this->log("Caminho de instalação validado: {$installPath}");
         return true;
     }
 

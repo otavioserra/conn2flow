@@ -1,0 +1,12 @@
+{
+    "php.validate.enable": true,
+    "php.suggest.basic": false,
+    "php.executablePath": "C:\\tools\\php84\\php.exe",
+    "intelephense.environment.phpVersion": "8.4.8",
+    "files.associations": {
+        "*.php": "php"
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "docker.commands.compose": "docker-compose",
+    "docker.commands.composeParallel": true
+}
