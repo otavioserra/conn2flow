@@ -24,7 +24,7 @@ class Installer
     private function validate_input()
     {
         // Validação básica do lado do servidor
-        $required = ['db_host', 'db_name', 'db_user', 'domain', 'admin_name', 'admin_email', 'admin_pass'];
+        $required = ['db_host', 'db_name', 'db_user', 'domain', 'install_path', 'admin_name', 'admin_email', 'admin_pass'];
         foreach ($required as $field) {
             if (empty($this->data[$field])) {
                 throw new Exception(__('error_field_required', "Todos os campos são obrigatórios."));
@@ -34,6 +34,9 @@ class Installer
         if ($this->data['admin_pass'] !== $this->data['admin_pass_confirm']) {
             throw new Exception(__('error_passwords_mismatch_server'));
         }
+
+        // Valida o caminho de instalação
+        $this->validateInstallPath($this->data['install_path']);
 
         // Testa conexão com o banco de dados
         $this->testDatabaseConnection();
@@ -70,8 +73,11 @@ class Installer
     {
         $gestorZipPath = $this->tempDir . '/gestor.zip';
         
-        // Descompacta o gestor.zip na pasta pai do instalador
-        $this->extractZip($gestorZipPath, dirname($this->baseDir));
+        // Usa o caminho de instalação personalizado
+        $installPath = $this->data['install_path'];
+        
+        // Descompacta o gestor.zip no caminho especificado pelo usuário
+        $this->extractZip($gestorZipPath, dirname($installPath));
         
         // Configura os arquivos do sistema
         $this->configureSystem();
@@ -127,7 +133,7 @@ class Installer
      */
     private function runSqlMigrations()
     {
-        $gestorPath = dirname($this->baseDir) . '/gestor';
+        $gestorPath = $this->getGestorPath();
         $sqlPath = $gestorPath . '/db/conn2flow-schema.sql';
         
         // Verifica se o arquivo SQL existe
@@ -144,7 +150,7 @@ class Installer
      */
     private function runPhinxMigrations()
     {
-        $gestorPath = dirname($this->baseDir) . '/gestor';
+        $gestorPath = $this->getGestorPath();
         $phinxConfigPath = $gestorPath . '/utilitarios/phinx.php';
         $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
         
@@ -182,7 +188,7 @@ class Installer
      */
     private function runPhinxSeeders()
     {
-        $gestorPath = dirname($this->baseDir) . '/gestor';
+        $gestorPath = $this->getGestorPath();
         $phinxConfigPath = $gestorPath . '/utilitarios/phinx.php';
         $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
         
@@ -239,6 +245,46 @@ class Installer
         } catch (PDOException $e) {
             throw new Exception(__('error_sql_execution', 'Erro ao executar SQL: ') . $e->getMessage());
         }
+    }
+
+    /**
+     * Valida o caminho de instalação
+     */
+    private function validateInstallPath($installPath)
+    {
+        // Verifica se o caminho não está vazio
+        if (empty($installPath)) {
+            throw new Exception(__('error_install_path_required', 'O caminho de instalação é obrigatório.'));
+        }
+
+        // Normaliza o caminho (remove barras duplas, etc.)
+        $installPath = rtrim(str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $installPath), DIRECTORY_SEPARATOR);
+        
+        // Verifica se o caminho parece válido
+        if (!preg_match('/^[a-zA-Z]:[\\\\\/]/', $installPath) && !preg_match('/^\//', $installPath)) {
+            throw new Exception(__('error_install_path_invalid', 'O caminho de instalação informado não é válido.'));
+        }
+
+        // Tenta criar o diretório se não existir
+        $parentDir = dirname($installPath);
+        if (!is_dir($parentDir)) {
+            throw new Exception(__('error_install_path_invalid', 'O diretório pai do caminho de instalação não existe: ' . $parentDir));
+        }
+
+        // Verifica se é possível escrever no diretório pai
+        if (!is_writable($parentDir)) {
+            throw new Exception(__('error_install_path_not_writable', 'Não é possível escrever no caminho de instalação informado: ' . $parentDir));
+        }
+
+        return true;
+    }
+
+    /**
+     * Retorna o caminho de instalação do gestor
+     */
+    private function getGestorPath()
+    {
+        return $this->data['install_path'] ?? dirname($this->baseDir) . '/gestor';
     }
 
     /**
@@ -311,7 +357,7 @@ class Installer
      */
     private function configureSystem()
     {
-        $gestorPath = dirname($this->baseDir) . '/gestor';
+        $gestorPath = $this->getGestorPath();
         
         // Remove o arquivo config.php antigo se existir (não vamos mais usar)
         $oldConfigPath = $gestorPath . '/config.php';
@@ -384,7 +430,7 @@ class Installer
         }
         
         // Carrega a função do gestor para gerar as chaves
-        $gestorPath = dirname($this->baseDir) . '/gestor';
+        $gestorPath = $this->getGestorPath();
         $autenticacaoLibPath = $gestorPath . '/bibliotecas/autenticacao.php';
         
         if (file_exists($autenticacaoLibPath)) {
@@ -475,12 +521,14 @@ class Installer
      */
     private function setupPublicAccess()
     {
-        $gestorPath = dirname($this->baseDir) . '/gestor';
+        $gestorPath = $this->getGestorPath();
         $publicAccessPath = $gestorPath . '/public-access';
+        
+        // A pasta pública é onde está o instalador (pasta atual)
         $rootPath = dirname($this->baseDir);
         
         if (is_dir($publicAccessPath)) {
-            // Copia o index.php do public-access para a raiz
+            // Copia o index.php do public-access para a pasta pública (onde está o instalador)
             $sourceIndex = $publicAccessPath . '/index.php';
             $targetIndex = $rootPath . '/index.php';
             

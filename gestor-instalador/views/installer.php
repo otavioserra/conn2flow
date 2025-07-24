@@ -69,6 +69,31 @@
                     </div>
                 </div>
 
+                <!-- Installation Path Configuration -->
+                <div class="mb-6">
+                    <h2 data-translate="install_path_title" class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4"><?= __('install_path_title') ?></h2>
+                    <div class="mb-4 p-4 bg-yellow-50 border-l-4 border-yellow-400">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p data-translate="security_warning" class="text-sm text-yellow-700">
+                                    <?= __('security_warning') ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="install_path" data-translate="install_path_label" class="block text-gray-700 text-sm font-bold mb-2"><?= __('install_path_label') ?></label>
+                        <input type="text" id="install_path" name="install_path" value="<?= dirname(dirname($_SERVER['DOCUMENT_ROOT'] ?? dirname(dirname(__DIR__)))) . DIRECTORY_SEPARATOR . 'gestor' ?>" class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" autocomplete="off">
+                        <p data-translate="install_path_help" class="text-gray-600 text-xs mt-1"><?= __('install_path_help') ?></p>
+                        <p id="install_path-error" class="text-red-500 text-xs italic mt-2 hidden"></p>
+                    </div>
+                </div>
+
                 <!-- Admin User Configuration -->
                 <div class="mb-6">
                     <h2 data-translate="admin_config_title" class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4"><?= __('admin_config_title') ?></h2>

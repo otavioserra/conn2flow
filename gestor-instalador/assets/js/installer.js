@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Lista de campos para validar
             const fieldsToValidate = [
-                'db_host', 'db_name', 'db_user', 'domain', 'admin_name',
+                'db_host', 'db_name', 'db_user', 'domain', 'install_path', 'admin_name',
                 'admin_email', 'admin_pass', 'admin_pass_confirm'
             ];
             // Limpa erros anteriores
@@ -103,6 +103,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const domain = document.getElementById('domain').value.trim();
             if (!domain) { showError('domain', translations.error_domain_required || 'O Domínio é obrigatório.'); isValid = false; }
+
+            const installPath = document.getElementById('install_path').value.trim();
+            if (!installPath) { showError('install_path', translations.error_install_path_required || 'O caminho de instalação é obrigatório.'); isValid = false; }
 
             const adminName = document.getElementById('admin_name').value.trim();
             if (!adminName) { showError('admin_name', translations.error_admin_name_required || 'O Nome Completo do administrador é obrigatório.'); isValid = false; }
