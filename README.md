@@ -46,12 +46,12 @@ Conn2Flow features a modern **automated web installer** that simplifies the inst
    
 **Linux/macOS:**
 ```bash
-curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.0.9/instalador.zip
+curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.0.10/instalador.zip
 ```
 
 **Windows PowerShell:**
 ```powershell
-Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.0.9/instalador.zip" -OutFile "instalador.zip"
+Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.0.10/instalador.zip" -OutFile "instalador.zip"
 ```   **Option 2 - Always Latest Installer:**
    ```bash
    # Linux/macOS
@@ -183,6 +183,41 @@ gestor-instalador/     # Web installer
 
 cpanel/               # cPanel integration (optional)
 gestor-cliente/       # Distributed client system
+```
+
+## Current Versions
+
+### Latest Stable Releases
+
+**Gestor (Core System)**: `v1.0.5` *(Latest)*
+- ✅ Complete verification system for database migrations and seeders
+- ✅ Enhanced Docker development environment with MySQL 8.0 + phpMyAdmin
+- ✅ Organized utility scripts and VS Code PHP 8.4.8 configuration
+- ✅ Corrected database schema with proper conn2flow structure
+- ✅ All 75 tables verified with correct field counts
+- ✅ All 14 seeders verified with proper data loads
+- ✅ Ready for production installation and testing
+
+**Instalador (Installer)**: `v1.0.10` *(Latest)*
+- ✅ Enhanced OpenSSL key generation with Windows compatibility
+- ✅ Improved database schema validation and error handling
+- ✅ Complete Docker integration for development and testing
+- ✅ Database migration verification (75 tables)
+- ✅ Seeder verification (14 seeders) 
+- ✅ Enhanced logging and debugging capabilities
+- ✅ VS Code development environment configuration
+
+### Version History
+- **Gestor v1.0.4**: Database schema improvements
+- **Gestor v1.0.3**: Core system stabilization
+- **Instalador v1.0.9**: GitHub API integration fixes
+- **Instalador v1.0.8**: OpenSSL key generation improvements
+
+### Development Environment
+- **Docker**: Complete development stack with PHP 8.3 + Apache + MySQL 8.0
+- **Local PHP**: 8.4.8 CLI for utility scripts and development tools
+- **Database**: Verified schema with 75 tables and comprehensive seeders
+- **Testing**: Migration and seeder verification scripts included
 gestor-plugins/       # Plugin ecosystem
 ```
 
