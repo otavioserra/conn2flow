@@ -141,6 +141,9 @@ class Installer
             $this->runSqlMigrations();
         }
         
+        // Cria a página de sucesso no gestor
+        $this->createSuccessPage();
+        
         // Copia o index.php do public-access para a raiz
         $this->setupPublicAccess();
         
@@ -150,7 +153,7 @@ class Installer
         return [
             'status' => 'finished',
             'message' => __('progress_configuring'),
-            'redirect_url' => './?success=true&lang=' . ($this->data['lang'] ?? 'pt-br')
+            'redirect_url' => './instalacao-sucesso?lang=' . ($this->data['lang'] ?? 'pt-br')
         ];
     }
 
@@ -691,6 +694,103 @@ class Installer
         $relativeParts = array_merge($relativeParts, $toParts);
         
         return implode('/', $relativeParts);
+    }
+
+    /**
+     * Cria uma página de sucesso da instalação no gestor
+     */
+    private function createSuccessPage()
+    {
+        try {
+            // Conecta ao banco de dados
+            $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
+            $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ]);
+
+            // Busca um layout básico (usamos o layout simples se existir)
+            $layoutQuery = "SELECT id_hosts_layouts FROM hosts_layouts WHERE status = 'A' AND (id = 'layout-pagina-simples' OR id = 'layout-pagina-padrao') ORDER BY id = 'layout-pagina-simples' DESC LIMIT 1";
+            $layoutResult = $pdo->query($layoutQuery);
+            $layout = $layoutResult->fetch();
+            
+            if (!$layout) {
+                $this->log("Nenhum layout encontrado para página de sucesso, pulando criação", 'WARNING');
+                return;
+            }
+            
+            $layoutId = $layout['id_hosts_layouts'];
+            $this->log("Layout encontrado para página de sucesso: ID {$layoutId}");
+            
+            // HTML da página de sucesso
+            $successHtml = '
+<div style="text-align: center; padding: 40px; font-family: Arial, sans-serif;">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <div style="background: #d4edda; border: 1px solid #c3e6cb; border-radius: 5px; padding: 20px; margin-bottom: 20px;">
+            <h1 style="color: #155724; margin: 0 0 15px 0;">
+                🎉 Instalação Concluída com Sucesso!
+            </h1>
+            <p style="color: #155724; margin: 0; font-size: 16px;">
+                O Conn2Flow foi instalado e configurado com sucesso em seu servidor.
+            </p>
+        </div>
+        
+        <div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px; padding: 20px; margin-bottom: 20px;">
+            <h3 style="color: #333; margin-top: 0;">Próximos Passos:</h3>
+            <ol style="text-align: left; color: #666;">
+                <li>Acesse o painel administrativo do seu site</li>
+                <li>Configure suas preferências de sistema</li>
+                <li>Personalize o design e conteúdo</li>
+                <li>Comece a usar o Conn2Flow!</li>
+            </ol>
+        </div>
+        
+        <div>
+            <a href="./" style="background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
+                Acessar Painel Administrativo
+            </a>
+        </div>
+        
+        <p style="margin-top: 20px; color: #666; font-size: 14px;">
+            Esta página será removida automaticamente após o primeiro acesso ao painel.
+        </p>
+    </div>
+</div>';
+
+            // CSS da página
+            $successCss = '
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}';
+
+            // Insere a página de sucesso na tabela hosts_paginas
+            $insertQuery = "
+                INSERT INTO hosts_paginas (
+                    id_hosts, id_usuarios, id_hosts_layouts, nome, id, caminho, tipo, 
+                    html, css, status, versao, data_criacao, data_modificacao
+                ) VALUES (
+                    1, 1, :layout_id, 'Instalação Concluída', 'instalacao-sucesso', 'instalacao-sucesso', 'pagina',
+                    :html, :css, 'A', 1, NOW(), NOW()
+                )";
+            
+            $stmt = $pdo->prepare($insertQuery);
+            $stmt->execute([
+                'layout_id' => $layoutId,
+                'html' => $successHtml,
+                'css' => $successCss
+            ]);
+            
+            $this->log("Página de sucesso criada: instalacao-sucesso");
+            
+        } catch (PDOException $e) {
+            $this->log("Erro ao criar página de sucesso: " . $e->getMessage(), 'WARNING');
+            // Não falha a instalação por causa disso
+        }
     }
 
     /**

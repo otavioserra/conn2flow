@@ -8,8 +8,7 @@ services:
     volumes:
       # Simula estrutura cPanel: /home/usuario/
       - ./gestor:/home/conn2flow/sistema-instalado
-      # REMOVIDO: ./gestor-instalador:/var/www/html/gestor-instalador
-      # O instalador agora é copiado na build para evitar deletar arquivos do projeto
+      - ./gestor-instalador:/var/www/html/gestor-instalador
       - ./cpanel:/home/conn2flow/cpanel
       - ./gestor-cliente:/home/conn2flow/gestor-cliente
       # Pasta pública (acessível via web)
@@ -21,6 +20,7 @@ services:
       - mysql
     networks:
       - conn2flow-network
+
   # Banco de dados MySQL
   mysql:
     image: mysql:8.0
@@ -38,6 +38,7 @@ services:
       - ./gestor/db/conn2flow-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
     networks:
       - conn2flow-network
+
   # phpMyAdmin para administração do banco
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -54,9 +55,11 @@ services:
       - mysql
     networks:
       - conn2flow-network
+
 volumes:
   mysql_data:
     driver: local
+
 networks:
   conn2flow-network:
     driver: bridge

@@ -1,4 +1,4 @@
-# Dockerfile SIMPLIFICADO para conn2flow - Apenas infraestrutura básica
+# Dockerfile para conn2flow - Ambiente de Produção
 FROM php:8.3-apache
 
 # Instalar dependências do sistema
@@ -43,9 +43,18 @@ COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
 # Configurar diretório de trabalho
 WORKDIR /var/www/html
 
-# Configurar permissões como no cPanel - pasta raiz do usuário Apache
+# Copiar arquivos da aplicação
+COPY . .
+
+# Configurar permissões
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
+
+# Criar diretórios necessários
+RUN mkdir -p /var/www/html/gestor/logs \
+    && mkdir -p /var/www/html/gestor/temp \
+    && chown -R www-data:www-data /var/www/html/gestor/logs \
+    && chown -R www-data:www-data /var/www/html/gestor/temp
 
 # Copiar e configurar script de inicialização
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -54,5 +63,5 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 # Expor porta 80
 EXPOSE 80
 
-# Comando de inicialização
+# Comando de inicialização com nosso script personalizado
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
