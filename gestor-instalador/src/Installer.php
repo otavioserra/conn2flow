@@ -702,12 +702,16 @@ class Installer
     private function createSuccessPage()
     {
         try {
+            $this->log("Iniciando criação da página de sucesso...");
+            
             // Conecta ao banco de dados
             $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
             $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             ]);
+            
+            $this->log("Conectado ao banco de dados com sucesso");
 
             // Busca um layout básico (usamos o layout simples se existir)
             $layoutQuery = "SELECT id_hosts_layouts FROM hosts_layouts WHERE status = 'A' AND (id = 'layout-pagina-simples' OR id = 'layout-pagina-padrao') ORDER BY id = 'layout-pagina-simples' DESC LIMIT 1";
@@ -715,15 +719,78 @@ class Installer
             $layout = $layoutResult->fetch();
             
             if (!$layout) {
-                $this->log("Nenhum layout encontrado para página de sucesso, pulando criação", 'WARNING');
-                return;
+                $this->log("Nenhum layout encontrado para página de sucesso, tentando qualquer layout ativo...", 'WARNING');
+                
+                // Tenta buscar qualquer layout ativo
+                $fallbackQuery = "SELECT id_hosts_layouts FROM hosts_layouts WHERE status = 'A' LIMIT 1";
+                $fallbackResult = $pdo->query($fallbackQuery);
+                $layout = $fallbackResult->fetch();
+                
+                if (!$layout) {
+                    $this->log("Nenhum layout ativo encontrado, pulando criação da página", 'WARNING');
+                    return;
+                }
             }
             
             $layoutId = $layout['id_hosts_layouts'];
             $this->log("Layout encontrado para página de sucesso: ID {$layoutId}");
             
-            // HTML da página de sucesso
-            $successHtml = '
+            // Verifica se já existe uma página com o mesmo caminho
+            $checkQuery = "SELECT COUNT(*) as count FROM hosts_paginas WHERE caminho = 'instalacao-sucesso'";
+            $checkResult = $pdo->query($checkQuery);
+            $existingPage = $checkResult->fetch();
+            
+            if ($existingPage['count'] > 0) {
+                $this->log("Página de sucesso já existe, atualizando...");
+                
+                // Atualiza a página existente
+                $updateQuery = "UPDATE hosts_paginas SET 
+                    data_modificacao = NOW(),
+                    html = :html,
+                    css = :css
+                    WHERE caminho = 'instalacao-sucesso'";
+                
+                $stmt = $pdo->prepare($updateQuery);
+                $stmt->execute([
+                    'html' => $this->getSuccessPageHtml(),
+                    'css' => $this->getSuccessPageCss()
+                ]);
+                
+                $this->log("Página de sucesso atualizada: instalacao-sucesso");
+                return;
+            }
+            
+            // Insere nova página de sucesso na tabela hosts_paginas
+            $insertQuery = "
+                INSERT INTO hosts_paginas (
+                    id_hosts, id_usuarios, id_hosts_layouts, nome, id, caminho, tipo, 
+                    html, css, status, versao, data_criacao, data_modificacao
+                ) VALUES (
+                    1, 1, :layout_id, 'Instalação Concluída', 'instalacao-sucesso', 'instalacao-sucesso', 'pagina',
+                    :html, :css, 'A', 1, NOW(), NOW()
+                )";
+            
+            $stmt = $pdo->prepare($insertQuery);
+            $stmt->execute([
+                'layout_id' => $layoutId,
+                'html' => $this->getSuccessPageHtml(),
+                'css' => $this->getSuccessPageCss()
+            ]);
+            
+            $this->log("Página de sucesso criada: instalacao-sucesso");
+            
+        } catch (PDOException $e) {
+            $this->log("Erro ao criar página de sucesso: " . $e->getMessage(), 'WARNING');
+            // Não falha a instalação por causa disso
+        }
+    }
+
+    /**
+     * Retorna o HTML da página de sucesso
+     */
+    private function getSuccessPageHtml()
+    {
+        return '
 <div style="text-align: center; padding: 40px; font-family: Arial, sans-serif;">
     <div style="max-width: 600px; margin: 0 auto;">
         <div style="background: #d4edda; border: 1px solid #c3e6cb; border-radius: 5px; padding: 20px; margin-bottom: 20px;">
@@ -756,9 +823,14 @@ class Installer
         </p>
     </div>
 </div>';
+    }
 
-            // CSS da página
-            $successCss = '
+    /**
+     * Retorna o CSS da página de sucesso
+     */
+    private function getSuccessPageCss()
+    {
+        return '
 body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
@@ -767,30 +839,6 @@ body {
     align-items: center;
     justify-content: center;
 }';
-
-            // Insere a página de sucesso na tabela hosts_paginas
-            $insertQuery = "
-                INSERT INTO hosts_paginas (
-                    id_hosts, id_usuarios, id_hosts_layouts, nome, id, caminho, tipo, 
-                    html, css, status, versao, data_criacao, data_modificacao
-                ) VALUES (
-                    1, 1, :layout_id, 'Instalação Concluída', 'instalacao-sucesso', 'instalacao-sucesso', 'pagina',
-                    :html, :css, 'A', 1, NOW(), NOW()
-                )";
-            
-            $stmt = $pdo->prepare($insertQuery);
-            $stmt->execute([
-                'layout_id' => $layoutId,
-                'html' => $successHtml,
-                'css' => $successCss
-            ]);
-            
-            $this->log("Página de sucesso criada: instalacao-sucesso");
-            
-        } catch (PDOException $e) {
-            $this->log("Erro ao criar página de sucesso: " . $e->getMessage(), 'WARNING');
-            // Não falha a instalação por causa disso
-        }
     }
 
     /**
@@ -903,7 +951,7 @@ body {
      */
     private function getLatestGestorReleaseUrl()
     {
-        $this->log("Buscando release mais recente do gestor...");
+        $this->log("Buscando release mais recente do gestor via GitHub API...");
         
         // Tenta usar a API do GitHub para buscar releases
         $apiUrl = 'https://api.github.com/repos/otavioserra/conn2flow/releases';
@@ -915,31 +963,47 @@ body {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Conn2Flow-Installer/1.0');
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
         curl_close($ch);
+        
+        // Log detalhado para debug
+        $this->log("API Response HTTP Code: {$httpCode}");
+        if (!empty($curlError)) {
+            $this->log("CURL Error: {$curlError}", 'WARNING');
+        }
         
         if ($httpCode === 200 && $response !== false) {
             $releases = json_decode($response, true);
             
             if (is_array($releases)) {
+                $this->log("Encontrados " . count($releases) . " releases no repositório");
+                
                 // Procura pelo release mais recente do gestor
                 foreach ($releases as $release) {
                     if (isset($release['tag_name']) && strpos($release['tag_name'], 'gestor-v') === 0) {
                         // Encontrou um release do gestor
                         $tag = $release['tag_name'];
                         $url = "https://github.com/otavioserra/conn2flow/releases/download/{$tag}/gestor.zip";
-                        $this->log("Release do gestor encontrado: {$tag}");
+                        $this->log("✅ Release do gestor encontrado automaticamente: {$tag}");
+                        $this->log("URL do download: {$url}");
                         return $url;
                     }
                 }
+                
+                $this->log("Nenhum release do gestor encontrado na API", 'WARNING');
+            } else {
+                $this->log("Resposta da API inválida - não é um array", 'WARNING');
             }
+        } else {
+            $this->log("Falha na requisição da API: HTTP {$httpCode}", 'WARNING');
         }
         
-        $this->log("Não foi possível buscar via API, usando fallback para gestor-v1.0.3", 'WARNING');
-        
-        // Fallback para versão conhecida se a API falhar
-        return 'https://github.com/otavioserra/conn2flow/releases/download/gestor-v1.0.3/gestor.zip';
+        // Se chegou até aqui, a API falhou ou não encontrou releases
+        $this->log("❌ Falha ao buscar releases via API do GitHub", 'ERROR');
+        throw new Exception(__('error_github_api_failed', 'Não foi possível acessar os releases do GitHub. Verifique sua conexão com a internet e tente novamente.'));
     }
 }
