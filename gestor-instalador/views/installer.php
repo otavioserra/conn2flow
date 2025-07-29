@@ -61,11 +61,18 @@
                             <input type="password" id="db_pass" name="db_pass" class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" autocomplete="new-password">
                             <p id="db_pass-error" class="text-red-500 text-xs italic mt-2 hidden"></p>
                         </div>
+                    </div>
+                    
+                    <!-- SSL Configuration - Full Width -->
+                    <div class="mb-4">
                         <div>
                             <label for="domain" data-translate="domain_label" class="block text-gray-700 text-sm font-bold mb-2"><?= __('domain_label') ?></label>
                             <input type="text" id="domain" name="domain" value="<?= $_SERVER['HTTP_HOST'] ?? 'localhost' ?>" class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="exemplo.com" autocomplete="off">
                             <p id="domain-error" class="text-red-500 text-xs italic mt-2 hidden"></p>
                         </div>
+                    </div>
+                    
+                    <div class="mb-4">
                         <div>
                             <label for="ssl_enabled" class="block text-gray-700 text-sm font-bold mb-2">
                                 <span data-translate="ssl_enabled_label">SSL/HTTPS Configurado?</span>
@@ -84,8 +91,10 @@
                                 <span data-translate="ssl_enabled_help">Se você não tem certificado SSL configurado, selecione "Não" para evitar redirecionamentos forçados.</span>
                             </p>
                         </div>
-                        
-                        <!-- Clean Install Option -->
+                    </div>
+                    
+                    <!-- Clean Install Option - Full Width -->
+                    <div class="mb-4">
                         <div>
                             <label for="clean_install" class="block text-gray-700 text-sm font-bold mb-2">
                                 <span data-translate="clean_install_label">Opções de Instalação</span>

@@ -157,6 +157,10 @@ class Installer
         
         // Executa as migrações e seeders do Phinx (com opção de instalação limpa)
         $this->runPhinxMigrations();
+        
+        // Atualiza o seeder de usuários com os dados do formulário antes de executar
+        $this->updateUserSeeder();
+        
         $this->runPhinxSeeders();
         
         // Cria a página de sucesso no gestor
@@ -384,6 +388,87 @@ class Installer
     }
 
     /**
+     * Atualiza o UsuariosSeeder.php com os dados do formulário antes de executar os seeders
+     */
+    private function updateUserSeeder()
+    {
+        $this->log("=== ATUALIZANDO SEEDER DE USUÁRIOS ===");
+        
+        try {
+            $gestorPath = $this->getGestorPath();
+            $seederPath = $gestorPath . '/db/seeds/UsuariosSeeder.php';
+            
+            if (!file_exists($seederPath)) {
+                throw new Exception("Arquivo UsuariosSeeder.php não encontrado: " . $seederPath);
+            }
+            
+            // Hash da senha usando PASSWORD_ARGON2I como no sistema principal
+            $hashedPassword = password_hash($this->data['admin_pass'], PASSWORD_ARGON2I, ["cost" => 9]);
+            
+            $this->log("👤 Atualizando seeder com dados do administrador: {$this->data['admin_name']} ({$this->data['admin_email']})");
+            
+            // Lê o conteúdo atual do seeder
+            $seederContent = file_get_contents($seederPath);
+            
+            // Data atual para os campos de data
+            $currentDate = date('Y-m-d H:i:s');
+            
+            // Cria o novo array de dados com os dados do formulário
+            $newUserData = [
+                'id_usuarios' => '1',
+                'id_hosts' => 'NULL',
+                'id_usuarios_perfis' => ' 1',
+                'nome_conta' => $this->data['admin_name'],
+                'nome' => $this->data['admin_name'],
+                'id' => strtolower(str_replace(' ', '', $this->data['admin_name'])),
+                'usuario' => 'admin',
+                'senha' => $hashedPassword,
+                'email' => $this->data['admin_email'],
+                'primeiro_nome' => $this->data['admin_name'],
+                'ultimo_nome' => 'NULL',
+                'nome_do_meio' => 'NULL',
+                'status' => 'A',
+                'versao' => ' 6',
+                'data_criacao' => $currentDate,
+                'data_modificacao' => $currentDate,
+                'email_confirmado' => 'NULL',
+                'gestor' => 'NULL',
+                'gestor_perfil' => 'NULL',
+            ];
+            
+            // Monta o novo array PHP como string
+            $newDataString = "        \$data = [\n            [\n";
+            foreach ($newUserData as $key => $value) {
+                if ($value === 'NULL') {
+                    $newDataString .= "                '$key' => NULL,\n";
+                } else {
+                    $newDataString .= "                '$key' => '$value',\n";
+                }
+            }
+            $newDataString .= "            ],\n        ];";
+            
+            // Substitui o array de dados no seeder usando regex
+            $pattern = '/\$data\s*=\s*\[.*?\];/s';
+            $updatedContent = preg_replace($pattern, $newDataString, $seederContent);
+            
+            if ($updatedContent === null) {
+                throw new Exception("Erro ao processar regex no arquivo seeder");
+            }
+            
+            // Escreve o arquivo atualizado
+            if (file_put_contents($seederPath, $updatedContent) === false) {
+                throw new Exception("Falha ao escrever arquivo seeder atualizado");
+            }
+            
+            $this->log("✅ UsuariosSeeder.php atualizado com sucesso!");
+            
+        } catch (Exception $e) {
+            $this->log("❌ Erro ao atualizar seeder de usuários: " . $e->getMessage(), 'ERROR');
+            throw new Exception(__('error_user_seeder_update', 'Falha ao atualizar seeder de usuários: ' . $e->getMessage()));
+        }
+    }
+
+    /**
      * Corrige permissões do Phinx após descompactação
      */
     private function fixPhinxPermissions()
@@ -535,12 +620,6 @@ class Installer
     private function configureSystem()
     {
         $gestorPath = $this->getGestorPath();
-        
-        // Remove o arquivo config.php antigo se existir (não vamos mais usar)
-        $oldConfigPath = $gestorPath . '/config.php';
-        if (file_exists($oldConfigPath)) {
-            unlink($oldConfigPath);
-        }
         
         // Cria arquivos de autenticação a partir dos exemplos
         $this->setupAuthenticationFiles($gestorPath);
