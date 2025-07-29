@@ -6,7 +6,7 @@ $_GESTOR										=	Array();
 
 $_GESTOR['bibliotecas']							=	Array('banco','gestor','modelo');
 
-require_once('config.php');
+require_once(__DIR__ . '/config.php');
 
 // =========================== Definição do Caminho da Página
 

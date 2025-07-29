@@ -126,6 +126,9 @@ class Installer
         // Descompacta o gestor.zip DENTRO do caminho especificado (não um nível acima)
         $this->extractZip($gestorZipPath, $installPath);
         
+        // Corrige permissões do Phinx após descompactação
+        $this->fixPhinxPermissions();
+        
         // Configura os arquivos do sistema
         $this->configureSystem();
         
@@ -139,13 +142,9 @@ class Installer
 
     private function run_migrations()
     {
-        // Tenta executar as migrações e seeders do Phinx primeiro
-        $phinxSuccess = $this->tryPhinxMigrations();
-        
-        if (!$phinxSuccess) {
-            // Se Phinx falhou, usa SQL alternativo
-            $this->runSqlMigrations();
-        }
+        // Executa as migrações e seeders do Phinx (sem fallback)
+        $this->runPhinxMigrations();
+        $this->runPhinxSeeders();
         
         // Cria a página de sucesso no gestor
         $this->createSuccessPage();
@@ -164,39 +163,6 @@ class Installer
     }
 
     /**
-     * Tenta executar migrações via Phinx (retorna true se sucesso, false se falhou)
-     */
-    private function tryPhinxMigrations()
-    {
-        try {
-            $this->runPhinxMigrations();
-            $this->runPhinxSeeders();
-            return true;
-        } catch (Exception $e) {
-            // Log do erro para debug (opcional)
-            error_log('Phinx failed: ' . $e->getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Executa migrações via SQL puro (fallback)
-     */
-    private function runSqlMigrations()
-    {
-        $gestorPath = $this->getGestorPath();
-        $sqlPath = $gestorPath . '/db/conn2flow-schema.sql';
-        
-        // Verifica se o arquivo SQL existe
-        if (!file_exists($sqlPath)) {
-            throw new Exception(__('error_sql_schema_not_found', 'Arquivo de schema SQL não encontrado: ') . $sqlPath);
-        }
-        
-        // Executa o SQL
-        $this->executeSqlFile($sqlPath);
-    }
-
-    /**
      * Executa as migrações do Phinx
      */
     private function runPhinxMigrations()
@@ -205,13 +171,29 @@ class Installer
         $phinxConfigPath = $gestorPath . '/utilitarios/phinx.php';
         $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
         
+        $this->log("=== INICIANDO MIGRAÇÕES PHINX ===");
+        $this->log("Gestor Path: {$gestorPath}");
+        $this->log("Phinx Config: {$phinxConfigPath}");
+        $this->log("Phinx Binary: {$phinxBinPath}");
+        
         // Verifica se o Phinx está instalado
         if (!file_exists($phinxBinPath)) {
-            throw new Exception(__('error_phinx_not_found', 'Phinx não encontrado. Execute composer install primeiro.'));
+            throw new Exception(__('error_phinx_not_found', 'Phinx não encontrado: ' . $phinxBinPath));
         }
         
         if (!file_exists($phinxConfigPath)) {
-            throw new Exception(__('error_phinx_config_not_found', 'Arquivo de configuração do Phinx não encontrado.'));
+            throw new Exception(__('error_phinx_config_not_found', 'Arquivo de configuração do Phinx não encontrado: ' . $phinxConfigPath));
+        }
+        
+        // Verifica permissões do Phinx
+        if (!is_executable($phinxBinPath)) {
+            $this->log("⚠️  Corrigindo permissões do Phinx: {$phinxBinPath}");
+            chmod($phinxBinPath, 0755);
+            
+            if (!is_executable($phinxBinPath)) {
+                throw new Exception("Não foi possível tornar o Phinx executável: {$phinxBinPath}");
+            }
+            $this->log("✅ Permissões do Phinx corrigidas com sucesso");
         }
         
         // Executa as migrações - o config.php já carrega automaticamente do .env
@@ -223,15 +205,24 @@ class Installer
             $command = "cd \"$gestorPath\" && \"$phinxBinPath\" migrate -c \"$phinxConfigPath\" 2>&1";
         }
         
+        $this->log("🚀 Executando comando Phinx migrations:");
+        $this->log("   {$command}");
+        
         $output = [];
         $returnVar = 0;
         
         exec($command, $output, $returnVar);
         
+        $outputStr = implode("\n", $output);
+        $this->log("📄 Saída completa do Phinx (migrations):");
+        $this->log($outputStr);
+        
         if ($returnVar !== 0) {
-            $errorOutput = implode("\n", $output);
-            throw new Exception(__('error_migration_failed', 'Falha ao executar migrações: ') . $errorOutput);
+            $this->log("❌ Phinx migrations falhou com código: {$returnVar}", 'ERROR');
+            throw new Exception(__('error_migration_failed', 'Falha ao executar migrações Phinx. Código: ' . $returnVar . '. Saída: ' . $outputStr));
         }
+        
+        $this->log("✅ Migrações Phinx executadas com sucesso!");
     }
 
     /**
@@ -243,6 +234,8 @@ class Installer
         $phinxConfigPath = $gestorPath . '/utilitarios/phinx.php';
         $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
         
+        $this->log("=== INICIANDO SEEDERS PHINX ===");
+        
         // Executa todos os seeders - o config.php já carrega automaticamente do .env
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             // Windows - usando PowerShell
@@ -252,70 +245,39 @@ class Installer
             $command = "cd \"$gestorPath\" && \"$phinxBinPath\" seed:run -c \"$phinxConfigPath\" 2>&1";
         }
         
+        $this->log("🌱 Executando comando Phinx seeders:");
+        $this->log("   {$command}");
+        
         $output = [];
         $returnVar = 0;
         
         exec($command, $output, $returnVar);
         
+        $outputStr = implode("\n", $output);
+        $this->log("📄 Saída completa do Phinx (seeders):");
+        $this->log($outputStr);
+        
         if ($returnVar !== 0) {
-            $errorOutput = implode("\n", $output);
-            throw new Exception(__('error_seeder_failed', 'Falha ao executar seeders: ') . $errorOutput);
+            $this->log("❌ Phinx seeders falhou com código: {$returnVar}", 'ERROR');
+            throw new Exception(__('error_seeder_failed', 'Falha ao executar seeders Phinx. Código: ' . $returnVar . '. Saída: ' . $outputStr));
         }
+        
+        $this->log("✅ Seeders Phinx executados com sucesso!");
     }
 
     /**
-     * Executa um arquivo SQL diretamente via PDO
+     * Corrige permissões do Phinx após descompactação
      */
-    private function executeSqlFile($sqlPath)
+    private function fixPhinxPermissions()
     {
-        try {
-            // Conecta ao banco de dados
-            $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
-            $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            ]);
-
-            // Lê o arquivo SQL
-            $sql = file_get_contents($sqlPath);
-            
-            if ($sql === false) {
-                throw new Exception(__('error_read_sql_file', 'Erro ao ler arquivo SQL: ') . $sqlPath);
-            }
-
-            // Divide o SQL em statements individuais
-            $statements = array_filter(array_map('trim', explode(';', $sql)));
-            
-            $successCount = 0;
-            $errorCount = 0;
-            
-            // Executa cada statement
-            foreach ($statements as $statement) {
-                if (!empty($statement)) {
-                    try {
-                        $pdo->exec($statement);
-                        $successCount++;
-                    } catch (PDOException $e) {
-                        $errorCount++;
-                        
-                        // Ignora erros de colunas inexistentes em INSERTs (schema desatualizado)
-                        if (stripos($statement, 'INSERT') === 0 && 
-                            (strpos($e->getMessage(), 'Unknown column') !== false ||
-                             strpos($e->getMessage(), 'Column not found') !== false)) {
-                            $this->log("INSERT ignorado (coluna inexistente): " . substr($statement, 0, 100) . "...", 'WARNING');
-                            continue;
-                        }
-                        
-                        // Para outros erros, registra mas continua
-                        $this->log("Erro SQL ignorado: " . $e->getMessage() . " - Statement: " . substr($statement, 0, 100) . "...", 'WARNING');
-                    }
-                }
-            }
-            
-            $this->log("SQL executado com {$successCount} sucessos e {$errorCount} erros ignorados");
-            
-        } catch (PDOException $e) {
-            throw new Exception(__('error_sql_execution', 'Erro ao executar SQL: ') . $e->getMessage());
+        $gestorPath = $this->getGestorPath();
+        $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
+        
+        if (file_exists($phinxBinPath)) {
+            chmod($phinxBinPath, 0755);
+            $this->log("Permissões do Phinx corrigidas: {$phinxBinPath}");
+        } else {
+            $this->log("Arquivo Phinx não encontrado para correção de permissões: {$phinxBinPath}", 'WARNING');
         }
     }
 
