@@ -196,13 +196,35 @@ class Installer
             $this->log("✅ Permissões do Phinx corrigidas com sucesso");
         }
         
-        // Executa as migrações - o config.php já carrega automaticamente do .env
+        // Define variáveis de ambiente para o Phinx usar durante a instalação
+        $this->log("🔧 Configurando variáveis de ambiente para Phinx...");
+        $envVars = [
+            'PHINX_DB_HOST' => $this->data['db_host'],
+            'PHINX_DB_NAME' => $this->data['db_name'],
+            'PHINX_DB_USER' => $this->data['db_user'],
+            'PHINX_DB_PASS' => $this->data['db_pass'] ?? ''
+        ];
+        
+        $this->log("   Host: {$envVars['PHINX_DB_HOST']}");
+        $this->log("   Database: {$envVars['PHINX_DB_NAME']}");
+        $this->log("   User: {$envVars['PHINX_DB_USER']}");
+        $this->log("   Password: " . (empty($envVars['PHINX_DB_PASS']) ? '[VAZIA]' : '[DEFINIDA]'));
+        
+        // Executa as migrações com as variáveis de ambiente definidas
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            // Windows - usando PowerShell
-            $command = "powershell -Command \"Set-Location '$gestorPath'; & '$phinxBinPath' migrate -c '$phinxConfigPath'\"";
+            // Windows - usando PowerShell com variáveis de ambiente
+            $envString = '';
+            foreach ($envVars as $key => $value) {
+                $envString .= "\$env:$key='$value'; ";
+            }
+            $command = "powershell -Command \"$envString Set-Location '$gestorPath'; & '$phinxBinPath' migrate -c '$phinxConfigPath'\"";
         } else {
-            // Linux/Unix
-            $command = "cd \"$gestorPath\" && \"$phinxBinPath\" migrate -c \"$phinxConfigPath\" 2>&1";
+            // Linux/Unix - define variáveis inline
+            $envString = '';
+            foreach ($envVars as $key => $value) {
+                $envString .= "$key=" . escapeshellarg($value) . " ";
+            }
+            $command = "cd \"$gestorPath\" && $envString\"$phinxBinPath\" migrate -c \"$phinxConfigPath\" 2>&1";
         }
         
         $this->log("🚀 Executando comando Phinx migrations:");
@@ -236,13 +258,30 @@ class Installer
         
         $this->log("=== INICIANDO SEEDERS PHINX ===");
         
-        // Executa todos os seeders - o config.php já carrega automaticamente do .env
+        // Define variáveis de ambiente para o Phinx usar durante a instalação
+        $this->log("🔧 Configurando variáveis de ambiente para Phinx...");
+        $envVars = [
+            'PHINX_DB_HOST' => $this->data['db_host'],
+            'PHINX_DB_NAME' => $this->data['db_name'],
+            'PHINX_DB_USER' => $this->data['db_user'],
+            'PHINX_DB_PASS' => $this->data['db_pass'] ?? ''
+        ];
+        
+        // Executa todos os seeders com as variáveis de ambiente definidas
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            // Windows - usando PowerShell
-            $command = "powershell -Command \"Set-Location '$gestorPath'; & '$phinxBinPath' seed:run -c '$phinxConfigPath'\"";
+            // Windows - usando PowerShell com variáveis de ambiente
+            $envString = '';
+            foreach ($envVars as $key => $value) {
+                $envString .= "\$env:$key='$value'; ";
+            }
+            $command = "powershell -Command \"$envString Set-Location '$gestorPath'; & '$phinxBinPath' seed:run -c '$phinxConfigPath'\"";
         } else {
-            // Linux/Unix
-            $command = "cd \"$gestorPath\" && \"$phinxBinPath\" seed:run -c \"$phinxConfigPath\" 2>&1";
+            // Linux/Unix - define variáveis inline
+            $envString = '';
+            foreach ($envVars as $key => $value) {
+                $envString .= "$key=" . escapeshellarg($value) . " ";
+            }
+            $command = "cd \"$gestorPath\" && $envString\"$phinxBinPath\" seed:run -c \"$phinxConfigPath\" 2>&1";
         }
         
         $this->log("🌱 Executando comando Phinx seeders:");
