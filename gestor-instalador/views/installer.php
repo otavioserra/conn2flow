@@ -84,6 +84,22 @@
                                 <span data-translate="ssl_enabled_help">Se você não tem certificado SSL configurado, selecione "Não" para evitar redirecionamentos forçados.</span>
                             </p>
                         </div>
+                        
+                        <!-- Clean Install Option -->
+                        <div>
+                            <label for="clean_install" class="block text-gray-700 text-sm font-bold mb-2">
+                                <span data-translate="clean_install_label">Opções de Instalação</span>
+                            </label>
+                            <div class="flex items-center">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="clean_install" name="clean_install" value="1" class="mr-2" checked>
+                                    <span data-translate="clean_install_text">Instalação limpa (remove dados existentes no banco)</span>
+                                </label>
+                            </div>
+                            <p class="text-gray-600 text-xs mt-1">
+                                <span data-translate="clean_install_help">⚠️ Se DESMARCADO, irá preservar dados existentes no banco. Se MARCADO, irá apagar todas as tabelas antes da instalação.</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
 

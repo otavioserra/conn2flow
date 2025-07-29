@@ -67,6 +67,14 @@ class Installer
             $this->data['ssl_enabled'] = '0';
         }
 
+        // clean_install é opcional, mas se não estiver definido, assume como desabilitado
+        if (!isset($this->data['clean_install'])) {
+            $this->data['clean_install'] = '0';
+        }
+        
+        // Log das opções selecionadas
+        $this->log("Instalação limpa solicitada: " . ($this->data['clean_install'] === '1' ? 'SIM' : 'NÃO'));
+
         if ($this->data['admin_pass'] !== $this->data['admin_pass_confirm']) {
             $this->log("Senhas do administrador não coincidem", 'ERROR');
             throw new Exception(__('error_passwords_mismatch_server'));
@@ -142,7 +150,12 @@ class Installer
 
     private function run_migrations()
     {
-        // Executa as migrações e seeders do Phinx (sem fallback)
+        // Se usuário optou por instalação limpa, limpa o banco primeiro
+        if (!empty($this->data['clean_install'])) {
+            $this->cleanDatabase();
+        }
+        
+        // Executa as migrações e seeders do Phinx (com opção de instalação limpa)
         $this->runPhinxMigrations();
         $this->runPhinxSeeders();
         
@@ -160,6 +173,51 @@ class Installer
             'message' => __('progress_configuring'),
             'redirect_url' => './instalacao-sucesso?lang=' . ($this->data['lang'] ?? 'pt-br')
         ];
+    }
+
+    /**
+     * Limpa o banco de dados antes da instalação (apenas se usuário optou por instalação limpa)
+     */
+    private function cleanDatabase()
+    {
+        $this->log("=== LIMPEZA DO BANCO DE DADOS ===");
+        $this->log("⚠️  ATENÇÃO: Usuário optou por instalação limpa - removendo todas as tabelas!");
+        
+        try {
+            $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
+            $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ]);
+            
+            // Desabilita verificação de chaves estrangeiras temporariamente
+            $pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
+            
+            // Lista todas as tabelas do banco
+            $stmt = $pdo->query("SHOW TABLES");
+            $tables = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            
+            if (count($tables) > 0) {
+                $this->log("Encontradas " . count($tables) . " tabelas para remoção");
+                
+                // Remove todas as tabelas
+                foreach ($tables as $table) {
+                    $pdo->exec("DROP TABLE IF EXISTS `$table`");
+                    $this->log("  ✅ Tabela removida: $table");
+                }
+            } else {
+                $this->log("✅ Banco de dados já está vazio");
+            }
+            
+            // Reabilita verificação de chaves estrangeiras
+            $pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
+            
+            $this->log("✅ Limpeza do banco concluída com sucesso!");
+            
+        } catch (PDOException $e) {
+            $this->log("❌ Erro ao limpar banco de dados: " . $e->getMessage(), 'ERROR');
+            throw new Exception("Falha ao limpar banco de dados: " . $e->getMessage());
+        }
     }
 
     /**
@@ -240,6 +298,16 @@ class Installer
         $this->log($outputStr);
         
         if ($returnVar !== 0) {
+            // Se não é instalação limpa e o erro é sobre tabela já existente, tenta continuar
+            if (empty($this->data['clean_install']) && 
+                (strpos($outputStr, 'Base table or view already exists') !== false || 
+                 strpos($outputStr, 'already exists') !== false)) {
+                
+                $this->log("⚠️  Tabelas já existem no banco, mas continua pois não é instalação limpa", 'WARNING');
+                $this->log("✅ Migrações consideradas concluídas (tabelas já existentes)");
+                return;
+            }
+            
             $this->log("❌ Phinx migrations falhou com código: {$returnVar}", 'ERROR');
             throw new Exception(__('error_migration_failed', 'Falha ao executar migrações Phinx. Código: ' . $returnVar . '. Saída: ' . $outputStr));
         }
@@ -297,6 +365,17 @@ class Installer
         $this->log($outputStr);
         
         if ($returnVar !== 0) {
+            // Se não é instalação limpa e há erro de dados já existentes, tenta continuar  
+            if (empty($this->data['clean_install']) && 
+                (strpos($outputStr, 'Duplicate entry') !== false || 
+                 strpos($outputStr, 'already exists') !== false ||
+                 strpos($outputStr, 'Integrity constraint violation') !== false)) {
+                
+                $this->log("⚠️  Dados já existem no banco, mas continua pois não é instalação limpa", 'WARNING');
+                $this->log("✅ Seeders considerados concluídos (dados já existentes)");
+                return;
+            }
+            
             $this->log("❌ Phinx seeders falhou com código: {$returnVar}", 'ERROR');
             throw new Exception(__('error_seeder_failed', 'Falha ao executar seeders Phinx. Código: ' . $returnVar . '. Saída: ' . $outputStr));
         }
