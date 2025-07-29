@@ -27,11 +27,6 @@ jobs:
         cd gestor
         composer install --no-dev --optimize-autoloader
         
-    - name: Generate SQL schema with seeders
-      run: |
-        cd gestor/utilitarios
-        php generate-sql-simple.php
-        
     - name: Create gestor.zip
       run: |
         # Remove arquivos desnecessários

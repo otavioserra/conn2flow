@@ -37,13 +37,13 @@ fi
 echo "Nova versão é: $NEW_VERSION"
 
 # 2. Adiciona, commita e cria uma tag anotada no Git com mensagens distintas
-echo "Criando commit e tag para a versão v$NEW_VERSION..."
+echo "Criando commit e tag para a versão gestor-v$NEW_VERSION..."
 # Adiciona ao stage o config.php modificado E quaisquer outras alterações
 # no diretório de trabalho. Isso garante que o commit do release inclua
 # todo o trabalho que foi realizado.
 git add .
 git commit -m "$COMMIT_DETAILS"
-git tag -a "v$NEW_VERSION" -m "$TAG_SUMMARY"
+git tag -a "gestor-v$NEW_VERSION" -m "$TAG_SUMMARY"
 
-echo "Release v$NEW_VERSION criado com sucesso!"
+echo "Release gestor-v$NEW_VERSION criado com sucesso!"
 echo "Não se esqueça de rodar 'git push' e 'git push --tags' para enviar ao repositório remoto."
