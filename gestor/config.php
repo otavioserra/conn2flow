@@ -6,7 +6,7 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR['versao']								=	'1.8.0'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'1.8.1'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
 $_GESTOR['host-configuracao-id-modulo']			=	'host-configuracao'; // Identificador módulo de configuração do host.
@@ -32,7 +32,7 @@ if (php_sapi_name() === 'cli') {
 	$_GESTOR['ROOT_PATH'] = $_CRON['ROOT_PATH'];
 } else {
 	// Ambiente de execução via Web (Apache, etc.)
-	$_GESTOR['ROOT_PATH'] = $_SERVER['DOCUMENT_ROOT'].'/'.(isset($_INDEX['acesso-publico-dir']) ? $_INDEX['acesso-publico-dir'] : '').$_INDEX['sistemas-dir'].'gestor/';
+	$_GESTOR['ROOT_PATH'] = $_INDEX['sistemas-dir'];
 }
 
 // ===== Definição dos caminhos de autenticação.
@@ -87,6 +87,7 @@ $_CONFIG = [
     'cookie-verify'                     => $_ENV['COOKIE_VERIFY'] ?? '_BCVID',
     'cookie-lifetime'                   => (int)($_ENV['COOKIE_LIFETIME'] ?? 1296000),
     'cookie-renewtime'                  => (int)($_ENV['COOKIE_RENEWTIME'] ?? 86400),
+    'cookie-secure'                     => filter_var($_ENV['COOKIE_SECURE'] ?? false, FILTER_VALIDATE_BOOLEAN),
     'openssl-password'                  => $_ENV['OPENSSL_PASSWORD'] ?? '',
     'usuario-hash-password'             => $_ENV['USUARIO_HASH_PASSWORD'] ?? '',
     'usuario-hash-algo'                 => $_ENV['USUARIO_HASH_ALGO'] ?? 'sha512',
@@ -98,6 +99,34 @@ $_CONFIG = [
     'token-lifetime'                    => (int)($_ENV['TOKEN_LIFETIME'] ?? 3600),
     'plano-teste-id-usuario-perfil'     => $_ENV['PLANO_TESTE_ID_USUARIO_PERFIL'] ?? '2',
     'autenticacao-token-lifetime'       => (int)($_ENV['AUTENTICACAO_TOKEN_LIFETIME'] ?? 15552000),
+    
+    // Configurações da Plataforma Cliente
+    'platform-lifetime'                 => (int)($_ENV['PLATFORM_LIFETIME'] ?? 900),
+    'platform-hash-password'            => $_ENV['PLATFORM_HASH_PASSWORD'] ?? '',
+    'platform-hash-algo'                => $_ENV['PLATFORM_HASH_ALGO'] ?? 'sha512',
+    'platform-recaptcha-active'         => filter_var($_ENV['PLATFORM_RECAPTCHA_ACTIVE'] ?? false, FILTER_VALIDATE_BOOLEAN),
+    'platform-recaptcha-site'           => $_ENV['PLATFORM_RECAPTCHA_SITE'] ?? '',
+    'platform-recaptcha-server'         => $_ENV['PLATFORM_RECAPTCHA_SERVER'] ?? '',
+    
+    // Configurações do Aplicativo
+    'app-recaptcha-active'              => filter_var($_ENV['APP_RECAPTCHA_ACTIVE'] ?? false, FILTER_VALIDATE_BOOLEAN),
+    'app-token-lifetime'                => (int)($_ENV['APP_TOKEN_LIFETIME'] ?? 2592000),
+    'app-token-renewtime'               => (int)($_ENV['APP_TOKEN_RENEWTIME'] ?? 86400),
+    'app-origem'                        => $_ENV['APP_ORIGEM'] ?? 'app',
+    
+    // Controle de Acessos
+    'acessos-maximo-falhas-logins'      => (int)($_ENV['ACESSOS_MAXIMO_FALHAS_LOGINS'] ?? 10),
+    'acessos-maximo-logins-simples'     => (int)($_ENV['ACESSOS_MAXIMO_LOGINS_SIMPLES'] ?? 3),
+    'acessos-tempo-bloqueio-ip'         => (int)($_ENV['ACESSOS_TEMPO_BLOQUEIO_IP'] ?? 86400),
+    'acessos-tempo-desbloqueio-ip'      => (int)($_ENV['ACESSOS_TEMPO_DESBLOQUEIO_IP'] ?? 2592000),
+    'acessos-maximo-cadastros'          => [
+        'signup' => (int)($_ENV['ACESSOS_MAXIMO_CADASTROS_SIGNUP'] ?? 1),
+        'formulario-contato' => (int)($_ENV['ACESSOS_MAXIMO_CADASTROS_FORMULARIO_CONTATO'] ?? 10),
+    ],
+    'acessos-maximo-cadastros-simples'  => [
+        'signup' => (int)($_ENV['ACESSOS_MAXIMO_CADASTROS_SIMPLES_SIGNUP'] ?? 1),
+        'formulario-contato' => (int)($_ENV['ACESSOS_MAXIMO_CADASTROS_SIMPLES_FORMULARIO_CONTATO'] ?? 3),
+    ],
 ];
 
 // O caminho das chaves agora também vem do .env, mas a pasta base é a do ambiente.

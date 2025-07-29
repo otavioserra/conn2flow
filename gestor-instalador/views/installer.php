@@ -66,6 +66,24 @@
                             <input type="text" id="domain" name="domain" value="<?= $_SERVER['HTTP_HOST'] ?? 'localhost' ?>" class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="exemplo.com" autocomplete="off">
                             <p id="domain-error" class="text-red-500 text-xs italic mt-2 hidden"></p>
                         </div>
+                        <div>
+                            <label for="ssl_enabled" class="block text-gray-700 text-sm font-bold mb-2">
+                                <span data-translate="ssl_enabled_label">SSL/HTTPS Configurado?</span>
+                            </label>
+                            <div class="flex items-center space-x-4">
+                                <label class="flex items-center">
+                                    <input type="radio" id="ssl_enabled_yes" name="ssl_enabled" value="1" class="mr-2" <?= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'checked' : '' ?>>
+                                    <span data-translate="ssl_enabled_yes">Sim, tenho SSL configurado</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" id="ssl_enabled_no" name="ssl_enabled" value="0" class="mr-2" <?= (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') ? 'checked' : '' ?>>
+                                    <span data-translate="ssl_enabled_no">Não, apenas HTTP</span>
+                                </label>
+                            </div>
+                            <p class="text-gray-600 text-xs mt-1">
+                                <span data-translate="ssl_enabled_help">Se você não tem certificado SSL configurado, selecione "Não" para evitar redirecionamentos forçados.</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
 

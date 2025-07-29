@@ -51,6 +51,7 @@ class Installer
     {
         $this->log("Iniciando validação dos dados de entrada");
         $this->log("Caminho de instalação solicitado: " . ($this->data['install_path'] ?? 'não informado'));
+        $this->log("SSL habilitado: " . ($this->data['ssl_enabled'] ?? 'não informado'));
         
         // Validação básica do lado do servidor
         $required = ['db_host', 'db_name', 'db_user', 'domain', 'install_path', 'admin_name', 'admin_email', 'admin_pass'];
@@ -59,6 +60,11 @@ class Installer
                 $this->log("Campo obrigatório vazio: {$field}", 'ERROR');
                 throw new Exception(__('error_field_required', "Todos os campos são obrigatórios."));
             }
+        }
+
+        // ssl_enabled é opcional, mas se não estiver definido, assume como desabilitado
+        if (!isset($this->data['ssl_enabled'])) {
+            $this->data['ssl_enabled'] = '0';
         }
 
         if ($this->data['admin_pass'] !== $this->data['admin_pass_confirm']) {
@@ -500,6 +506,17 @@ class Installer
             $envContent = preg_replace('/^EMAIL_FROM=.*$/m', 'EMAIL_FROM=noreply@' . $domain, $envContent);
             $envContent = preg_replace('/^EMAIL_REPLY_TO=.*$/m', 'EMAIL_REPLY_TO=noreply@' . $domain, $envContent);
             
+            // Detecta se estamos numa subpasta e configura URL_RAIZ
+            $currentPath = $_SERVER['REQUEST_URI'] ?? '';
+            $installerPath = dirname($currentPath);
+            if ($installerPath !== '/' && !empty($installerPath)) {
+                $this->log("Configurando URL_RAIZ para subpasta: {$installerPath}/");
+                $envContent = preg_replace('/^URL_RAIZ=.*$/m', 'URL_RAIZ=' . $installerPath . '/', $envContent);
+            } else {
+                $this->log("Configurando URL_RAIZ para raiz: /");
+                $envContent = preg_replace('/^URL_RAIZ=.*$/m', 'URL_RAIZ=/', $envContent);
+            }
+            
             // Salva o arquivo modificado
             if (file_put_contents($envPath, $envContent) === false) {
                 throw new Exception(__('error_create_env', 'Erro ao criar arquivo .env'));
@@ -623,48 +640,99 @@ class Installer
      */
     private function setupPublicAccess()
     {
-        $gestorPath = $this->getGestorPath();
-        $publicAccessPath = $gestorPath . '/public-access';
+        $this->log("Configurando acesso público...");
         
-        // A pasta pública é onde está o instalador (pasta atual)
-        $publicPath = dirname($this->baseDir);
+        // Os arquivos processados ficam na própria pasta do instalador
+        $targetPath = $this->baseDir;
         
-        $this->log("Configurando acesso público - Gestor em: {$gestorPath}");
-        $this->log("Pasta pública detectada: {$publicPath}");
+        $this->log("Pasta do instalador (onde ficarão os arquivos finais): {$targetPath}");
+        
+        // A pasta public-access está local no instalador
+        $publicAccessPath = $this->baseDir . '/public-access';
         
         if (is_dir($publicAccessPath)) {
-            // Copia o index.php do public-access para a pasta pública (onde está o instalador)
+            // Processa e salva o index.php na pasta do instalador
             $sourceIndex = $publicAccessPath . '/index.php';
-            $targetIndex = $publicPath . '/index.php';
-            
-            $this->log("Copiando index.php de {$sourceIndex} para {$targetIndex}");
+            $targetIndex = $targetPath . '/index.php';
             
             if (file_exists($sourceIndex)) {
-                // Modifica o index.php para apontar para o caminho correto do gestor
                 $indexContent = file_get_contents($sourceIndex);
                 
-                // Calcula o caminho relativo do public para o gestor
-                $relativePath = $this->getRelativePath($publicPath, $gestorPath);
-                $this->log("Caminho relativo calculado: {$relativePath}");
+                // Pega os valores do formulário para substituir no template
+                $serverName = $this->data['server_name'] ?? 'localhost';
+                $gestorFullPath = $this->data['install_base_path'] . '/' . $this->data['install_folder_name'] . '/';
                 
-                // Substitui o caminho no index.php
-                $indexContent = str_replace('../gestor/', $relativePath . '/', $indexContent);
-                $indexContent = str_replace('../gestor\\', $relativePath . '\\', $indexContent);
+                $this->log("Server name: {$serverName}");
+                $this->log("Caminho completo do gestor: {$gestorFullPath}");
                 
+                // Substitui os placeholders no template
+                $indexContent = str_replace('"dominio"', '"' . $serverName . '"', $indexContent);
+                $indexContent = str_replace("'caminho'", "'" . $gestorFullPath . "'", $indexContent);
+                
+                $this->log("Template processado - domínio: {$serverName}, caminho: {$gestorFullPath}");
+                
+                // Sobrescreve o index.php do instalador com o processado
                 file_put_contents($targetIndex, $indexContent);
-                $this->log("Index.php configurado com sucesso");
+                $this->log("Index.php processado e salvo em {$targetIndex}");
             } else {
                 $this->log("Arquivo source index.php não encontrado: {$sourceIndex}", 'ERROR');
             }
 
-            // Copia o .htaccess se existir
+            // Processa e salva o .htaccess na pasta do instalador
             $sourceHtaccess = $publicAccessPath . '/.htaccess';
-            $targetHtaccess = $publicPath . '/.htaccess';
+            $targetHtaccess = $targetPath . '/.htaccess';
             
             if (file_exists($sourceHtaccess)) {
-                copy($sourceHtaccess, $targetHtaccess);
-                $this->log("Arquivo .htaccess copiado");
+                $htaccessContent = file_get_contents($sourceHtaccess);
+                
+                // Detecta se estamos numa subpasta e ajusta o RewriteBase
+                $currentPath = $_SERVER['REQUEST_URI'] ?? '';
+                $installerPath = dirname($currentPath);
+                if ($installerPath !== '/' && !empty($installerPath)) {
+                    $this->log("Detectada instalação em subpasta: {$installerPath}");
+                    
+                    // Adiciona ou modifica o RewriteBase para a subpasta
+                    if (strpos($htaccessContent, 'RewriteBase') !== false) {
+                        $htaccessContent = preg_replace('/^\s*RewriteBase\s+.*$/m', "\tRewriteBase {$installerPath}/", $htaccessContent);
+                    } else {
+                        // Adiciona RewriteBase após RewriteEngine On
+                        $htaccessContent = preg_replace('/(RewriteEngine\s+On)/i', "$1\n\tRewriteBase {$installerPath}/", $htaccessContent);
+                    }
+                    
+                    // Adiciona flag [L] se não existir
+                    if (strpos($htaccessContent, '[L]') === false) {
+                        $htaccessContent = preg_replace('/(RewriteRule\s+[^[]*)$/m', '$1 [L]', $htaccessContent);
+                    }
+                } else {
+                    $this->log("Instalação na raiz - mantendo .htaccess padrão");
+                }
+                
+                // Se SSL não está habilitado, remove as linhas de redirect HTTPS
+                if (empty($this->data['ssl_enabled']) || $this->data['ssl_enabled'] == '0') {
+                    $this->log("SSL não habilitado - removendo redirect HTTPS do .htaccess");
+                    
+                    // Remove as linhas que forçam redirect para HTTPS
+                    $htaccessContent = preg_replace('/^\s*RewriteCond\s+%\{HTTPS\}\s+off.*$/m', '', $htaccessContent);
+                    $htaccessContent = preg_replace('/^\s*RewriteRule\s+\^\(\.\*\)\$\s+https:\/\/.*$/m', '', $htaccessContent);
+                    
+                    // Remove linhas vazias múltiplas
+                    $htaccessContent = preg_replace('/\n\s*\n\s*\n/', "\n\n", $htaccessContent);
+                } else {
+                    $this->log("SSL habilitado - mantendo redirect HTTPS no .htaccess");
+                }
+                
+                // Sobrescreve o .htaccess existente com o processado
+                file_put_contents($targetHtaccess, $htaccessContent);
+                $this->log("Arquivo .htaccess processado e salvo em {$targetHtaccess}");
             }
+            
+            // Remove a pasta public-access após processar os arquivos
+            $this->removeDirectory($publicAccessPath);
+            $this->log("Pasta public-access removida: {$publicAccessPath}");
+            
+            // Remove todos os arquivos do instalador exceto index.php e .htaccess
+            $this->cleanupInstallerFiles();
+            
         } else {
             $this->log("Diretório public-access não encontrado: {$publicAccessPath}", 'ERROR');
         }
@@ -842,6 +910,48 @@ body {
     }
 
     /**
+     * Remove todos os arquivos do instalador exceto index.php e .htaccess processados
+     */
+    private function cleanupInstallerFiles()
+    {
+        $this->log("Removendo arquivos do instalador, mantendo apenas index.php e .htaccess processados...");
+        
+        // Lista de pastas para remover completamente
+        $foldersToRemove = [
+            'src',
+            'views', 
+            'assets',
+            'lang'
+        ];
+        
+        // Lista de arquivos para remover
+        $filesToRemove = [
+            'installer.log',
+            'teste-seguranca.txt'
+        ];
+        
+        // Remove pastas
+        foreach ($foldersToRemove as $folder) {
+            $folderPath = $this->baseDir . '/' . $folder;
+            if (is_dir($folderPath)) {
+                $this->removeDirectory($folderPath);
+                $this->log("Pasta removida: {$folderPath}");
+            }
+        }
+        
+        // Remove arquivos
+        foreach ($filesToRemove as $file) {
+            $filePath = $this->baseDir . '/' . $file;
+            if (file_exists($filePath)) {
+                unlink($filePath);
+                $this->log("Arquivo removido: {$filePath}");
+            }
+        }
+        
+        $this->log("Limpeza concluída. Restam apenas index.php e .htaccess na pasta do instalador.");
+    }
+
+    /**
      * Remove todos os arquivos do instalador
      */
     private function cleanupInstaller()
@@ -849,23 +959,11 @@ body {
         // Remove diretório temporário
         if (is_dir($this->tempDir)) {
             $this->removeDirectory($this->tempDir);
+            $this->log("Diretório temporário removido: {$this->tempDir}");
         }
         
-        // Lista de arquivos e pastas do instalador para remover
-        $itemsToRemove = [
-            $this->baseDir . '/src',
-            $this->baseDir . '/views', 
-            $this->baseDir . '/assets',
-            $this->baseDir . '/lang'
-        ];
-        
-        foreach ($itemsToRemove as $item) {
-            if (is_dir($item)) {
-                $this->removeDirectory($item);
-            } elseif (file_exists($item)) {
-                unlink($item);
-            }
-        }
+        // A limpeza dos arquivos do instalador é feita em cleanupInstallerFiles()
+        // chamada pelo setupPublicAccess(), deixando apenas index.php e .htaccess
     }
 
     /**

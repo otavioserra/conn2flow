@@ -1,0 +1,30 @@
+# Docker - Ambiente de desenvolvimento local
+docker/dados/
+*.tar.gz
+
+# Logs
+*.log
+
+# Arquivos temporários
+temp/
+tmp/
+
+# Arquivos de configuração local
+.env.local
+config.local.php
+
+# Dependências
+node_modules/
+vendor/
+
+# Cache
+cache/
+*.cache
+
+# Uploads
+uploads/
+files/
+
+# Sistema
+.DS_Store
+Thumbs.db
