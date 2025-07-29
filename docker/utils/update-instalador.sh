@@ -2,6 +2,7 @@
 
 # Script para atualizar automaticamente o instalador do conn2flow
 # Busca a versão mais recente no GitHub e substitui o arquivo local
+# INCLUI RESET COMPLETO DO AMBIENTE (pastas + logs)
 # 
 # Uso: ./update-instalador.sh [pasta_instalacao]
 # Exemplo: ./update-instalador.sh instalador
@@ -11,17 +12,48 @@
 # Verifica se foi passado parâmetro para a pasta de instalação
 INSTALL_FOLDER=${1:-"instalador"}
 
-echo "🔍 Buscando versão mais recente do instalador no GitHub..."
+echo "� INICIANDO RESET COMPLETO DO AMBIENTE CONN2FLOW"
+echo "=================================================="
 echo "📁 Pasta de destino: public_html/$INSTALL_FOLDER"
+echo ""
 
-# URL da API do GitHub para releases
-API_URL="https://api.github.com/repos/otavioserra/conn2flow/releases"
-
+# PASSO 1: LIMPEZA COMPLETA DAS PASTAS
+echo "🧹 PASSO 1: Limpando pastas home/ e public_html/..."
 # Diretório onde estão os dados do Docker
 DADOS_DIR="$(dirname "$0")/../dados"
 cd "$DADOS_DIR"
-
 echo "📂 Diretório de trabalho: $(pwd)"
+
+# Remove todo conteúdo das pastas
+rm -rf home/* public_html/*
+echo "   ✅ Pastas home/ e public_html/ completamente limpas"
+
+# PASSO 2: LIMPEZA DOS LOGS DO DOCKER
+echo ""
+echo "🗑️ PASSO 2: Limpando logs do ambiente Docker..."
+
+# Limpa logs do PHP
+docker exec conn2flow-app bash -c "echo '�️ Logs limpados automaticamente em: \$(date)' > /var/log/php_errors.log" 2>/dev/null
+if [ $? -eq 0 ]; then
+    echo "   ✅ Log PHP limpo"
+else
+    echo "   ⚠️ Container conn2flow-app não encontrado ou não está rodando"
+fi
+
+# Limpa logs do Apache
+docker exec conn2flow-app bash -c "echo '🗑️ Logs limpados automaticamente em: \$(date)' > /var/log/apache2/access.log && echo '🗑️ Logs limpados automaticamente em: \$(date)' > /var/log/apache2/error.log" 2>/dev/null
+if [ $? -eq 0 ]; then
+    echo "   ✅ Logs Apache limpos"
+else
+    echo "   ⚠️ Falha ao limpar logs do Apache"
+fi
+
+# PASSO 3: DOWNLOAD DA NOVA VERSÃO
+echo ""
+echo "📥 PASSO 3: Baixando nova versão do instalador..."
+
+# URL da API do GitHub para releases
+API_URL="https://api.github.com/repos/otavioserra/conn2flow/releases"
 
 # Busca o release mais recente do instalador
 echo "🌐 Consultando API do GitHub..."
@@ -73,12 +105,33 @@ fi
 
 cd ../..
 
+# PASSO 4: VERIFICAÇÃO FINAL E STATUS
 echo ""
-echo "🎉 ATUALIZAÇÃO CONCLUÍDA!"
-echo "📋 Resumo:"
-echo "   • Versão: instalador-v$LATEST_RELEASE"
-echo "   • Arquivo: gestor-instalador.tar.gz (atualizado)"
-echo "   • Descompactado em: public_html/$INSTALL_FOLDER/"
-echo "   • Acesso: http://localhost/$INSTALL_FOLDER/"
+echo "🔍 PASSO 4: Verificação final do ambiente..."
+
+# Verifica status dos containers Docker
+echo "🐳 Status dos containers:"
+CONTAINERS_STATUS=$(docker ps --format "table {{.Names}}\t{{.Status}}" | grep conn2flow)
+if [ $? -eq 0 ]; then
+    echo "$CONTAINERS_STATUS"
+else
+    echo "   ⚠️ Nenhum container conn2flow encontrado rodando"
+fi
+
 echo ""
-echo "✨ Pronto para nova instalação!"
+echo "📁 Verificação das pastas:"
+echo "   home/: $(ls -la home/ 2>/dev/null | wc -l) itens"
+echo "   public_html/: $(ls -la public_html/ 2>/dev/null | wc -l) itens"
+
+echo ""
+echo "🎉 RESET E ATUALIZAÇÃO CONCLUÍDOS!"
+echo "=================================================="
+echo "📋 Resumo completo:"
+echo "   • ✅ Pastas home/ e public_html/ completamente limpas"
+echo "   • ✅ Logs Docker resetados (PHP + Apache)"
+echo "   • ✅ Nova versão: instalador-v$LATEST_RELEASE"
+echo "   • ✅ Arquivo: gestor-instalador.tar.gz (atualizado)"
+echo "   • ✅ Descompactado em: public_html/$INSTALL_FOLDER/"
+echo "   • 🌐 Acesso: http://localhost/$INSTALL_FOLDER/"
+echo ""
+echo "✨ AMBIENTE PRONTO PARA NOVA INSTALAÇÃO! ✨"

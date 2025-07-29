@@ -1022,42 +1022,83 @@ class Installer
     /**
      * Retorna o HTML da página de sucesso
      */
-    private function getSuccessPageHtml()
-    {
-        return '
-<div style="text-align: center; padding: 40px; font-family: Arial, sans-serif;">
-    <div style="max-width: 600px; margin: 0 auto;">
-        <div style="background: #d4edda; border: 1px solid #c3e6cb; border-radius: 5px; padding: 20px; margin-bottom: 20px;">
-            <h1 style="color: #155724; margin: 0 0 15px 0;">
-                🎉 Instalação Concluída com Sucesso!
-            </h1>
-            <p style="color: #155724; margin: 0; font-size: 16px;">
-                O Conn2Flow foi instalado e configurado com sucesso em seu servidor.
-            </p>
+     private function getSuccessPageHtml()
+     {
+         return '
+<div class="ui main container">
+    <div class="ui centered grid">
+        <div class="twelve wide column">
+            <!-- Mensagem de Sucesso -->
+            <div class="ui positive message">
+                <div class="header">
+                    <i class="checkmark icon"></i>
+                    Instalação Concluída com Sucesso!
+                </div>
+                <p>O Conn2Flow foi instalado e configurado com sucesso em seu servidor.</p>
+            </div>
+            
+            <!-- Próximos Passos -->
+            <div class="ui segment">
+                <div class="ui header">
+                    <i class="list icon"></i>
+                    <div class="content">
+                        Próximos Passos
+                        <div class="sub header">Siga estas etapas para começar a usar o Conn2Flow</div>
+                    </div>
+                </div>
+                
+                <div class="ui ordered steps">
+                    <div class="step">
+                        <i class="user icon"></i>
+                        <div class="content">
+                            <div class="title">Acesse o Painel</div>
+                            <div class="description">Entre no painel administrativo do seu site</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="settings icon"></i>
+                        <div class="content">
+                            <div class="title">Configure o Sistema</div>
+                            <div class="description">Ajuste suas preferências de sistema</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="paint brush icon"></i>
+                        <div class="content">
+                            <div class="title">Personalize o Design</div>
+                            <div class="description">Customize o visual e conteúdo</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="rocket icon"></i>
+                        <div class="content">
+                            <div class="title">Comece a Usar</div>
+                            <div class="description">Aproveite todas as funcionalidades!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Botão de Acesso -->
+            <div class="ui center aligned segment">
+                <a href="@[[pagina#url-raiz]]@dashboard" class="ui huge primary button">
+                    <i class="sign in icon"></i>
+                    Acessar Painel Administrativo
+                </a>
+            </div>
+            
+            <!-- Nota Final -->
+            <div class="ui info message">
+                <div class="header">
+                    <i class="info circle icon"></i>
+                    Nota
+                </div>
+                <p>Esta página será removida automaticamente após o primeiro acesso ao painel.</p>
+            </div>
         </div>
-        
-        <div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px; padding: 20px; margin-bottom: 20px;">
-            <h3 style="color: #333; margin-top: 0;">Próximos Passos:</h3>
-            <ol style="text-align: left; color: #666;">
-                <li>Acesse o painel administrativo do seu site</li>
-                <li>Configure suas preferências de sistema</li>
-                <li>Personalize o design e conteúdo</li>
-                <li>Comece a usar o Conn2Flow!</li>
-            </ol>
-        </div>
-        
-        <div>
-            <a href="./" style="background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
-                Acessar Painel Administrativo
-            </a>
-        </div>
-        
-        <p style="margin-top: 20px; color: #666; font-size: 14px;">
-            Esta página será removida automaticamente após o primeiro acesso ao painel.
-        </p>
     </div>
 </div>';
-    }
+     }
 
     /**
      * Retorna o CSS da página de sucesso
