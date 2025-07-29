@@ -25,14 +25,14 @@ jobs:
     - name: Install Composer dependencies
       run: |
         cd gestor
-        composer install --no-dev --optimize-autoloader
+        composer install --no-dev --optimize-autoloader --no-interaction
         
     - name: Create gestor.zip
       run: |
-        # Remove arquivos desnecessários
-        rm -rf gestor/.git*
-        rm -rf gestor/vendor/bin/.phpunit
-        rm -rf gestor/vendor/composer/tmp-*
+        # Remove arquivos desnecessários se existirem
+        rm -rf gestor/.git* || true
+        rm -rf gestor/vendor/bin/.phpunit* || true
+        rm -rf gestor/vendor/composer/tmp-* || true
         
         # Criar o arquivo ZIP
         cd gestor
@@ -42,7 +42,10 @@ jobs:
           -x "vendor/composer/tmp-*" \
           -x "node_modules/*" \
           -x "*.DS_Store*" \
-          -x "*.log*"
+          -x "*.log*" \
+          -x "tests/*" \
+          -x ".env*" \
+          -x "phpunit.xml*"
           
     - name: Get tag name
       id: tag
@@ -59,13 +62,12 @@ jobs:
         body: |
           ## 🚀 Conn2Flow Gestor Release
           
-          Esta release contém o sistema gestor completo do Conn2Flow.
+          Esta release contém o sistema gestor completo do Conn2Flow com seeders corrigidos.
           
           ### 📦 Conteúdo:
           - Sistema gestor completo
           - 75 migrações de banco de dados
-          - 14 seeders com dados iniciais
-          - Schema SQL pré-gerado para fallback
+          - 14 seeders com dados iniciais (escapes corrigidos)
           - Dependências do Composer otimizadas
           
           ### 🔧 Como usar:
@@ -73,9 +75,14 @@ jobs:
           2. Ou extraia manualmente e configure conforme documentação
           
           ### 📋 Requisitos:
-          - PHP 8.2+
+          - PHP 8.1+
           - MySQL 5.7+ ou MariaDB 10.2+
-          - Extensões: zip, curl, mbstring, openssl
+          - Extensões: zip, curl, mbstring, openssl, pdo_mysql
+          
+          ### 🎯 Correções desta versão:
+          - ✅ Corrige escapes incorretos nos seeders do Phinx
+          - ✅ Elimina erros de sintaxe em 254 sequências de escape
+          - ✅ Garante funcionamento correto dos dados HTML/CSS
         draft: false
         prerelease: false
         files: gestor.zip
