@@ -15,7 +15,7 @@ final class CreateVariaveisTable extends AbstractMigration
         $table->addColumn('linguagem_codigo', 'string', ['limit' => 10, 'null' => true, 'default' => null])
               ->addColumn('modulo', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('id', 'string', ['limit' => 255, 'null' => true, 'default' => null])
-              ->addColumn('valor', 'text', ['null' => true])
+              ->addColumn('valor', 'text', ['limit' => \Phinx\Db\Adapter\MysqlAdapter::TEXT_MEDIUM, 'null' => true])
               ->addColumn('tipo', 'string', ['limit' => 100, 'null' => true, 'default' => null])
               ->addColumn('grupo', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('descricao', 'string', ['limit' => 255, 'null' => true, 'default' => null])
