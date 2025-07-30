@@ -163,6 +163,9 @@ class Installer
         
         $this->runPhinxSeeders();
         
+        // Login automático do usuário administrador criado
+        $this->createAdminAutoLogin();
+        
         // Executa correções para registros problemáticos dos seeders
         $this->fixProblematicSeederData();
         
@@ -482,6 +485,75 @@ class Installer
     }
 
     /**
+     * Cria login automático para o usuário administrador criado
+     */
+    private function createAdminAutoLogin()
+    {
+        $this->log("=== CONFIGURANDO LOGIN AUTOMÁTICO DO ADMINISTRADOR ===");
+        
+        try {
+            // Simular ambiente do gestor para usar as bibliotecas
+            $this->setupGestorEnvironment();
+            
+            // As bibliotecas necessárias são carregadas pelo config.php
+            // Só precisamos incluir especificamente a biblioteca do usuário
+            $gestorPath = $this->getGestorPath();
+            require_once $gestorPath . '/bibliotecas/usuario.php';
+            
+            $this->log("📝 Gerando token de autorização para o usuário administrador (ID: 1)");
+            
+            // ID do usuário administrador criado (sempre 1 pelo seeder)
+            $adminUserId = 1;
+            
+            // Gerar token de autorização com "permanecer logado" = true
+            // Usa todas as configurações corretas do $_CONFIG carregado do .env
+            $tokenResult = usuario_gerar_token_autorizacao([
+                'id_usuarios' => $adminUserId
+                // Não passa 'sessao' => true, para manter logado (cookie persistente)
+            ]);
+            
+            if ($tokenResult) {
+                $this->log("✅ Login automático configurado com sucesso! Usuário administrador estará logado após instalação.");
+                $this->log("🔑 Token de autorização gerado usando configurações do .env");
+                $this->log("🍪 Cookie configurado: " . $_CONFIG['cookie-authname'] . " por " . ($_CONFIG['cookie-lifetime'] / 86400) . " dias");
+            } else {
+                $this->log("⚠️ Falha ao configurar login automático, mas instalação pode continuar", 'WARNING');
+            }
+            
+        } catch (Exception $e) {
+            $this->log("⚠️ Erro ao configurar login automático: " . $e->getMessage(), 'WARNING');
+            // Não interrompemos a instalação por causa do login automático
+            // Mas vamos registrar o erro detalhado para debug
+            $this->log("Detalhes do erro: " . $e->getFile() . ':' . $e->getLine(), 'WARNING');
+        }
+    }
+
+    /**
+     * Configura ambiente mínimo do gestor para usar bibliotecas
+     */
+    private function setupGestorEnvironment()
+    {
+        global $_GESTOR, $_CONFIG, $_BANCO;
+        
+        // Incluir o config.php do gestor que já carrega tudo do .env
+        $gestorPath = $this->getGestorPath();
+        require_once $gestorPath . '/config.php';
+        
+        // O config.php já populou $_GESTOR, $_CONFIG e $_BANCO corretamente do .env
+        // Só precisamos garantir algumas variáveis específicas para o contexto do instalador
+        
+        // Garantir que REQUEST_URI existe para detectUrlRaiz
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            $_SERVER['REQUEST_URI'] = $this->detectUrlRaiz();
+        }
+        
+        // Verificar se o ambiente foi configurado corretamente
+        $this->log("🔧 Ambiente configurado - URL_RAIZ: " . $_GESTOR['url-raiz']);
+        $this->log("🔧 Ambiente configurado - OpenSSL Path: " . $_GESTOR['openssl-path']);
+        $this->log("🔧 Ambiente configurado - Cookie Name: " . $_CONFIG['cookie-authname']);
+    }
+
+    /**
      * Corrige permissões do Phinx após descompactação
      */
     private function fixPhinxPermissions()
@@ -711,9 +783,24 @@ class Installer
             require_once $autenticacaoLibPath;
             
             try {
-                // Gera as chaves RSA usando a função específica da plataforma
-                $this->log("Tentando gerar chaves OpenSSL...");
-                $chaves = autenticacao_openssl_gerar_chaves(['tipo' => 'RSA']);
+                // Lê a senha do arquivo .env já configurado
+                $envPath = $domainDir . '/.env';
+                $opensslPassword = null;
+                
+                if (file_exists($envPath)) {
+                    $envContent = file_get_contents($envPath);
+                    if (preg_match('/^OPENSSL_PASSWORD=(.*)$/m', $envContent, $matches)) {
+                        $opensslPassword = trim($matches[1]);
+                        $this->log("🔑 Usando senha OpenSSL do .env para gerar chaves");
+                    }
+                }
+                
+                // Gera as chaves RSA usando a função específica da plataforma COM SENHA
+                $this->log("Tentando gerar chaves OpenSSL com senha...");
+                $chaves = autenticacao_openssl_gerar_chaves([
+                    'tipo' => 'RSA',
+                    'senha' => $opensslPassword // USA A SENHA DO .ENV
+                ]);
                 
                 if ($chaves && isset($chaves['publica']) && isset($chaves['privada'])) {
                     // Salva a chave pública
@@ -947,30 +1034,13 @@ class Installer
             
             $this->log("Conectado ao banco de dados com sucesso");
 
-            // Busca um layout básico (usamos o layout simples se existir)
-            $layoutQuery = "SELECT id_hosts_layouts FROM hosts_layouts WHERE status = 'A' AND (id = 'layout-pagina-simples' OR id = 'layout-pagina-padrao') ORDER BY id = 'layout-pagina-simples' DESC LIMIT 1";
-            $layoutResult = $pdo->query($layoutQuery);
-            $layout = $layoutResult->fetch();
-            
-            if (!$layout) {
-                $this->log("Nenhum layout encontrado para página de sucesso, tentando qualquer layout ativo...", 'WARNING');
-                
-                // Tenta buscar qualquer layout ativo
-                $fallbackQuery = "SELECT id_hosts_layouts FROM hosts_layouts WHERE status = 'A' LIMIT 1";
-                $fallbackResult = $pdo->query($fallbackQuery);
-                $layout = $fallbackResult->fetch();
-                
-                if (!$layout) {
-                    $this->log("Nenhum layout ativo encontrado, pulando criação da página", 'WARNING');
-                    return;
-                }
-            }
-            
-            $layoutId = $layout['id_hosts_layouts'];
-            $this->log("Layout encontrado para página de sucesso: ID {$layoutId}");
+            // Usa diretamente o layout ID 23 (Layout Página Sem Permissão) 
+            // que é adequado para páginas externas sem menu administrativo
+            $layoutId = 23;
+            $this->log("Usando layout ID 23 (sem menu) para página de sucesso");
             
             // Verifica se já existe uma página com o mesmo caminho
-            $checkQuery = "SELECT COUNT(*) as count FROM hosts_paginas WHERE caminho = 'instalacao-sucesso'";
+            $checkQuery = "SELECT COUNT(*) as count FROM paginas WHERE caminho = 'instalacao-sucesso'";
             $checkResult = $pdo->query($checkQuery);
             $existingPage = $checkResult->fetch();
             
@@ -978,7 +1048,7 @@ class Installer
                 $this->log("Página de sucesso já existe, atualizando...");
                 
                 // Atualiza a página existente
-                $updateQuery = "UPDATE hosts_paginas SET 
+                $updateQuery = "UPDATE paginas SET 
                     data_modificacao = NOW(),
                     html = :html,
                     css = :css
@@ -994,13 +1064,13 @@ class Installer
                 return;
             }
             
-            // Insere nova página de sucesso na tabela hosts_paginas
+            // Insere nova página de sucesso na tabela paginas
             $insertQuery = "
-                INSERT INTO hosts_paginas (
-                    id_hosts, id_usuarios, id_hosts_layouts, nome, id, caminho, tipo, 
+                INSERT INTO paginas (
+                    id_usuarios, id_layouts, nome, id, caminho, tipo, 
                     html, css, status, versao, data_criacao, data_modificacao
                 ) VALUES (
-                    1, 1, :layout_id, 'Instalação Concluída', 'instalacao-sucesso', 'instalacao-sucesso', 'pagina',
+                    1, :layout_id, 'Instalação Concluída', 'instalacao-sucesso', 'instalacao-sucesso', 'pagina',
                     :html, :css, 'A', 1, NOW(), NOW()
                 )";
             
@@ -1093,7 +1163,7 @@ class Installer
                     <i class="info circle icon"></i>
                     Nota
                 </div>
-                <p>Esta página será removida automaticamente após o primeiro acesso ao painel.</p>
+                <p>Esta página será removida automaticamente quando você acessar o painel administrativo pela primeira vez.</p>
             </div>
         </div>
     </div>
@@ -1117,11 +1187,11 @@ body {
     }
 
     /**
-     * Remove todos os arquivos do instalador exceto index.php e .htaccess processados
+     * Remove todos os arquivos do instalador exceto index.php, .htaccess e installer.log
      */
     private function cleanupInstallerFiles()
     {
-        $this->log("Removendo arquivos do instalador, mantendo apenas index.php e .htaccess processados...");
+        $this->log("Removendo arquivos do instalador, mantendo apenas index.php, .htaccess e installer.log...");
         
         // Lista de pastas para remover completamente
         $foldersToRemove = [
@@ -1131,9 +1201,8 @@ body {
             'lang'
         ];
         
-        // Lista de arquivos para remover
+        // Lista de arquivos para remover (installer.log será preservado para debug)
         $filesToRemove = [
-            'installer.log',
             'teste-seguranca.txt'
         ];
         
@@ -1155,7 +1224,7 @@ body {
             }
         }
         
-        $this->log("Limpeza concluída. Restam apenas index.php e .htaccess na pasta do instalador.");
+        $this->log("Limpeza concluída. Restam apenas index.php, .htaccess e installer.log na pasta do instalador.");
     }
 
     /**

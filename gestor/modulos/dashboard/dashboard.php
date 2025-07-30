@@ -429,8 +429,57 @@ function dashboard_menu(){
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->','');
 }
 
+function dashboard_remover_pagina_instalacao_sucesso(){
+	global $_GESTOR;
+	
+	try {
+		// ===== Verificar se existe a página de instalação-sucesso
+		
+		$paginas = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'paginas',
+			'campos' => Array(
+				'id_paginas',
+				'nome',
+			),
+			'extra' => "WHERE caminho = 'instalacao-sucesso' AND status = 'A'"
+		));
+		
+		if($paginas && isset($paginas['id_paginas'])){
+			// ===== Remover a página da base de dados
+			
+			banco_delete(Array(
+				'tabela' => 'paginas',
+				'extra' => "WHERE id_paginas = '".$paginas['id_paginas']."'"
+			));
+			
+			// ===== Exibir toast informativo
+			
+			dashboard_toast(Array(
+				'id' => 'instalacao-sucesso-removida',
+				'opcoes' => Array(
+					'title' => 'Página de Instalação Removida',
+					'message' => 'A página de instalação foi removida automaticamente após o primeiro acesso ao painel.',
+					'class' => 'success',
+					'displayTime' => 8000,
+					'showProgress' => 'bottom'
+				),
+				'botoes' => Array()
+			));
+		}
+		
+	} catch (Exception $e) {
+		// ===== Em caso de erro, não interromper o carregamento do dashboard
+		// Apenas log interno se necessário
+	}
+}
+
 function dashboard_pagina_inicial(){
 	global $_GESTOR;
+	
+	// ===== Remover página de instalação-sucesso se existir
+	
+	dashboard_remover_pagina_instalacao_sucesso();
 	
 	// ===== Inclusão de Componentes
 	
