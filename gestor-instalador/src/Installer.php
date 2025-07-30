@@ -163,11 +163,11 @@ class Installer
         
         $this->runPhinxSeeders();
         
-        // Login automático do usuário administrador criado
-        $this->createAdminAutoLogin();
-        
         // Executa correções para registros problemáticos dos seeders
         $this->fixProblematicSeederData();
+        
+        // AGORA que o .env foi criado, usuários inseridos E correções aplicadas, configura login automático
+        $this->createAdminAutoLogin();
         
         // Cria a página de sucesso no gestor
         $this->createSuccessPage();
@@ -236,7 +236,7 @@ class Installer
     private function runPhinxMigrations()
     {
         $gestorPath = $this->getGestorPath();
-        $phinxConfigPath = $gestorPath . '/utilitarios/phinx.php';
+        $phinxConfigPath = $gestorPath . '/phinx.php';
         $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
         
         $this->log("=== INICIANDO MIGRAÇÕES PHINX ===");
@@ -331,7 +331,7 @@ class Installer
     private function runPhinxSeeders()
     {
         $gestorPath = $this->getGestorPath();
-        $phinxConfigPath = $gestorPath . '/utilitarios/phinx.php';
+        $phinxConfigPath = $gestorPath . '/phinx.php';
         $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
         
         $this->log("=== INICIANDO SEEDERS PHINX ===");

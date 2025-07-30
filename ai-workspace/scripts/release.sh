@@ -21,7 +21,7 @@ RELEASE_TYPE=$1
 TAG_SUMMARY=$2
 COMMIT_DETAILS=$3
 CONFIG_FILE="gestor/config.php"
-VERSION_SCRIPT="gestor/utilitarios/version.php"
+VERSION_SCRIPT="ai-workspace/scripts/version.php"
 
 # 1. Roda o script PHP para atualizar a versão no config.php
 echo "Atualizando a versão ($RELEASE_TYPE)..."

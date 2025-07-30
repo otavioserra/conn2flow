@@ -43,9 +43,9 @@ if ($isInstalling) {
 
 return [
     'paths' => [
-        // Como o arquivo de config está em /utilitarios, subimos um nível para encontrar a pasta /db.
-        'migrations' => '%%PHINX_CONFIG_DIR%%/../db/migrations',
-        'seeds'      => '%%PHINX_CONFIG_DIR%%/../db/seeds'
+        // Como o arquivo de config está na raiz do gestor, vamos para a pasta /db.
+        'migrations' => '%%PHINX_CONFIG_DIR%%/db/migrations',
+        'seeds'      => '%%PHINX_CONFIG_DIR%%/db/seeds'
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',

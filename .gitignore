@@ -25,9 +25,6 @@ cache/
 uploads/
 files/
 
-# Utilitários locais
-utilitarios/
-
 # Sistema
 .DS_Store
 Thumbs.db
