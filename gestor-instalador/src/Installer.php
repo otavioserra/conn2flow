@@ -533,10 +533,19 @@ class Installer
      */
     private function setupGestorEnvironment()
     {
-        global $_GESTOR, $_CONFIG, $_BANCO;
+        global $_GESTOR, $_CONFIG, $_BANCO, $_INDEX;
         
-        // Incluir o config.php do gestor que já carrega tudo do .env
         $gestorPath = $this->getGestorPath();
+
+        // Define a variável que o config.php espera para o ROOT_PATH.
+        // Sem isso, o caminho para a pasta 'autenticacoes' e, consequentemente,
+        // para o .env, não é encontrado corretamente.
+        if (!isset($_INDEX)) {
+            $_INDEX = [];
+        }
+        $_INDEX['sistemas-dir'] = $gestorPath . '/';
+
+        // Incluir o config.php do gestor que já carrega tudo do .env
         require_once $gestorPath . '/config.php';
         
         // O config.php já populou $_GESTOR, $_CONFIG e $_BANCO corretamente do .env
