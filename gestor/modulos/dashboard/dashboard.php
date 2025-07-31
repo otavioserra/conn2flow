@@ -448,10 +448,7 @@ function dashboard_remover_pagina_instalacao_sucesso(){
 		if($paginas && isset($paginas['id_paginas'])){
 			// ===== Remover a página da base de dados
 			
-			banco_delete(Array(
-				'tabela' => 'paginas',
-				'extra' => "WHERE id_paginas = '".$paginas['id_paginas']."'"
-			));
+			banco_delete('paginas',"WHERE id_paginas = '".$paginas['id_paginas']."'");
 			
 			// ===== Exibir toast informativo
 			

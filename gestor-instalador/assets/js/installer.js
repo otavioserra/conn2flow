@@ -98,10 +98,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const syncDomainFields = () => {
             const domainField = document.getElementById('domain');
             const dbHostField = document.getElementById('db_host');
-            
+
             if (domainField && dbHostField) {
                 // Sincroniza quando o domínio do site é alterado
-                domainField.addEventListener('input', function() {
+                domainField.addEventListener('input', function () {
                     const domainValue = this.value.trim();
                     // Só atualiza se o campo do banco estiver vazio ou igual ao valor anterior
                     if (!dbHostField.value.trim() || dbHostField.dataset.autoFilled === 'true') {
@@ -109,14 +109,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         dbHostField.dataset.autoFilled = 'true';
                     }
                 });
-                
+
                 // Marca quando o usuário edita manualmente o campo do banco
-                dbHostField.addEventListener('input', function() {
+                dbHostField.addEventListener('input', function () {
                     if (this.value.trim() !== domainField.value.trim()) {
                         this.dataset.autoFilled = 'false';
                     }
                 });
-                
+
                 // Inicializa a marcação para os campos já preenchidos
                 if (dbHostField.value.trim() === domainField.value.trim()) {
                     dbHostField.dataset.autoFilled = 'true';
@@ -185,64 +185,100 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-async function runInstallation(initialFormData) {
+function handleInstallationError(errorData) {
     const progressMessage = document.getElementById('progress-message');
-    let nextStep = 'validate_input';
-    let isFinished = false;
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const errorIcon = document.getElementById('error-icon');
+    const logContainer = document.getElementById('error-log-container');
+    const logContentEl = document.getElementById('error-log-content');
+    const copyLogBtn = document.getElementById('copy-log-btn');
+    const retryBtn = document.getElementById('retry-btn');
+    const mainInstallBtn = document.querySelector('#installer-form button[type="submit"]');
 
-    // Usamos uma cópia dos dados para adicionar a ação de cada etapa
-    let postData = new FormData();
-    for (let pair of initialFormData.entries()) {
-        postData.append(pair[0], pair[1]);
-    }
-    postData.append('lang', currentLang);
+    // Troca o ícone de carregando pelo de erro
+    loadingSpinner.classList.add('hidden');
+    errorIcon.classList.remove('hidden');
 
-    while (!isFinished) {
-        postData.set('action', nextStep);
+    // Atualiza a mensagem de erro principal
+    progressMessage.textContent = errorData.message || (translations.error_unknown || 'Ocorreu um erro desconhecido.');
+    progressMessage.classList.remove('text-gray-700');
+    progressMessage.classList.add('text-red-500');
 
-        try {
-            const response = await fetch('.', {
-                method: 'POST',
-                body: postData
+    // Mostra o log se ele existir na resposta
+    if (errorData.log_content && errorData.log_content.trim()) {
+        logContentEl.textContent = errorData.log_content.trim();
+        logContainer.classList.remove('hidden');
+
+        copyLogBtn.onclick = () => {
+            navigator.clipboard.writeText(logContentEl.textContent).then(() => {
+                copyLogBtn.textContent = translations.log_copied_button || 'Copiado!';
+                setTimeout(() => {
+                    copyLogBtn.textContent = translations.copy_log_button || 'Copiar Log';
+                }, 2000);
             });
+        };
+    }
 
-            if (!response.ok) {
-                throw new Error(`Erro do servidor: ${response.statusText}`);
-            }
+    // Mostra
+    async function runInstallation(initialFormData) {
+        const progressMessage = document.getElementById('progress-message');
+        let nextStep = 'validate_input';
+        let isFinished = false;
 
-            // Tenta ler a resposta como texto primeiro para detectar erros PHP
-            const responseText = await response.text();
+        // Usamos uma cópia dos dados para adicionar a ação de cada etapa
+        let postData = new FormData();
+        for (let pair of initialFormData.entries()) {
+            postData.append(pair[0], pair[1]);
+        }
+        postData.append('lang', currentLang);
 
-            // Verifica se a resposta parece ser um erro PHP/HTML
-            if (responseText.includes('<br') || responseText.includes('Fatal error') || responseText.includes('Warning')) {
-                console.error('Erro PHP detectado:', responseText);
-                throw new Error('Erro interno do servidor. Verifique os logs do PHP ou o arquivo installer.log para mais detalhes.');
-            }
+        while (!isFinished) {
+            postData.set('action', nextStep);
 
-            // Tenta fazer parse do JSON
-            let result;
             try {
-                result = JSON.parse(responseText);
-            } catch (jsonError) {
-                console.error('Resposta não é JSON válido:', responseText);
-                throw new Error('Resposta inválida do servidor. Verifique o arquivo installer.log para mais detalhes.');
+                const response = await fetch('.', {
+                    method: 'POST',
+                    body: postData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro do servidor: ${response.statusText}`);
+                }
+
+                // Tenta ler a resposta como texto primeiro para detectar erros PHP
+                const responseText = await response.text();
+
+                // Verifica se a resposta parece ser um erro PHP/HTML
+                if (responseText.includes('<br') || responseText.includes('Fatal error') || responseText.includes('Warning')) {
+                    console.error('Erro PHP detectado:', responseText);
+                    throw new Error('Erro interno do servidor. Verifique os logs do PHP ou o arquivo installer.log para mais detalhes.');
+                }
+
+                // Tenta fazer parse do JSON
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch (jsonError) {
+                    console.error('Resposta não é JSON válido:', responseText);
+                    throw new Error('Resposta inválida do servidor. Verifique o arquivo installer.log para mais detalhes.');
+                }
+
+                if (result.status === 'error') { throw new Error(result.message); }
+
+                progressMessage.textContent = result.message;
+
+                if (result.status === 'finished') {
+                    isFinished = true;
+                    window.location.href = result.redirect_url;
+                } else {
+                    nextStep = result.next_step;
+                }
+            } catch (error) {
+                progressMessage.textContent = `Ocorreu um erro: ${error.message}`;
+                progressMessage.classList.remove('text-gray-700');
+                progressMessage.classList.add('text-red-500');
+                isFinished = true; // Para o loop em caso de erro
             }
-
-            if (result.status === 'error') { throw new Error(result.message); }
-
-            progressMessage.textContent = result.message;
-
-            if (result.status === 'finished') {
-                isFinished = true;
-                window.location.href = result.redirect_url;
-            } else {
-                nextStep = result.next_step;
-            }
-        } catch (error) {
-            progressMessage.textContent = `Ocorreu um erro: ${error.message}`;
-            progressMessage.classList.remove('text-gray-700');
-            progressMessage.classList.add('text-red-500');
-            isFinished = true; // Para o loop em caso de erro
         }
     }
 }

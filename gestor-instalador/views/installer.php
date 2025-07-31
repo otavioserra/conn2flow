@@ -198,13 +198,34 @@
 
     <!-- Modal de Carregamento -->
     <div id="loading-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
-        <div class="bg-white p-8 rounded-lg shadow-xl text-center">
-            <svg class="animate-spin h-12 w-12 text-blue-500 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <div class="bg-white p-8 rounded-lg shadow-xl text-center w-full max-w-lg">
+            <svg id="loading-spinner" class="animate-spin h-12 w-12 text-blue-500 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            <p id="progress-message" class="text-lg font-semibold text-gray-700">Iniciando a instalação, por favor aguarde...</p>
-            <p class="text-sm text-gray-500">Isso pode levar alguns minutos. Não feche esta janela.</p>
+            <svg id="error-icon" class="hidden h-12 w-12 text-red-500 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p id="progress-message" data-translate="progress_starting" class="text-lg font-semibold text-gray-700"><?= __('progress_starting') ?></p>
+            <p id="progress-details" data-translate="progress_details" class="text-sm text-gray-500"><?= __('progress_details') ?></p>
+
+            <!-- Container para o Log de Erros (escondido por padrão) -->
+            <div id="error-log-container" class="hidden text-left mt-6">
+                <div class="flex justify-between items-center">
+                    <h3 data-translate="error_log_title" class="text-md font-semibold text-gray-800"><?= __('error_log_title') ?></h3>
+                    <button id="copy-log-btn" data-translate="copy_log_button" class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-bold py-1 px-3 rounded">
+                        <?= __('copy_log_button') ?>
+                    </button>
+                </div>
+                <div class="mt-2 bg-gray-100 p-3 rounded-md max-h-40 overflow-y-auto border border-gray-300">
+                    <pre id="error-log-content" class="text-xs text-gray-600 whitespace-pre-wrap break-all"></pre>
+                </div>
+            </div>
+            
+            <!-- Botão para tentar novamente -->
+            <button id="retry-btn" data-translate="retry_button" class="hidden mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <?= __('retry_button') ?>
+            </button>
         </div>
     </div>
 

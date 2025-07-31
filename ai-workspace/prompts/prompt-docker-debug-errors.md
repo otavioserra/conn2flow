@@ -5,6 +5,14 @@
 - **Erros de instalação:** O arquivo de log do instalador está localizado em: `docker\dados\public_html\instalador\installer.log`
 
 ## 📋 Sequência de Comandos
+- **Pasta do Docker:** Verifique se vc está na pasta certa: `docker/dados`.
+```
+pwd
+```
+Senão estiver acesse a pasta:
+```
+cd docker/dados
+```
 - **Verificar erros de instalação:**
 ```
 docker compose exec app bash -c "cat /var/www/html/instalador/installer.log"
