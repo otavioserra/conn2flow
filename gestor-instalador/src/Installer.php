@@ -1046,14 +1046,9 @@ class Installer
             ]);
             
             $this->log("Conectado ao banco de dados com sucesso");
-
-            // Usa diretamente o layout ID 23 (Layout Página Sem Permissão) 
-            // que é adequado para páginas externas sem menu administrativo
-            $layoutId = 23;
-            $this->log("Usando layout ID 23 (sem menu) para página de sucesso");
             
-            // Verifica se já existe uma página com o mesmo caminho
-            $checkQuery = "SELECT COUNT(*) as count FROM paginas WHERE caminho = 'instalacao-sucesso'";
+            // Verifica se já existe uma página com o mesmo id
+            $checkQuery = "SELECT COUNT(*) as count FROM paginas WHERE id = 'instalacao-sucesso'";
             $checkResult = $pdo->query($checkQuery);
             $existingPage = $checkResult->fetch();
             
@@ -1064,7 +1059,7 @@ class Installer
                     data_modificacao = NOW(),
                     html = :html,
                     css = :css
-                    WHERE caminho = 'instalacao-sucesso'";
+                    WHERE id = 'instalacao-sucesso'";
                 $stmt = $pdo->prepare($updateQuery);
                 $stmt->execute([
                     'html' => $this->getSuccessPageHtml(),
@@ -1073,26 +1068,6 @@ class Installer
                 $this->log("Página de sucesso atualizada e sobrescrita: instalacao-sucesso");
                 return;
             }
-            
-            // Insere nova página de sucesso na tabela paginas
-            $insertQuery = "
-                INSERT INTO paginas (
-                    id_usuarios, id_layouts, nome, id, caminho, tipo, 
-                    html, css, status, versao, data_criacao, data_modificacao
-                ) VALUES (
-                    1, :layout_id, 'Instalação Concluída', 'instalacao-sucesso', 'instalacao-sucesso', 'pagina',
-                    :html, :css, 'A', 1, NOW(), NOW()
-                )";
-            
-            $stmt = $pdo->prepare($insertQuery);
-            $stmt->execute([
-                'layout_id' => $layoutId,
-                'html' => $this->getSuccessPageHtml(),
-                'css' => $this->getSuccessPageCss()
-            ]);
-            
-            $this->log("Página de sucesso criada: instalacao-sucesso");
-            
         } catch (PDOException $e) {
             $this->log("Erro ao criar página de sucesso: " . $e->getMessage(), 'WARNING');
             // Não falha a instalação por causa disso

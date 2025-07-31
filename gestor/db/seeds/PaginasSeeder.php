@@ -3520,7 +3520,7 @@ final class PaginasSeeder extends AbstractSeed
             ],
             [
                 'id_usuarios' => '1',
-                'id_layouts' => '1',
+                'id_layouts' => '23',
                 'nome' => 'Instalação Concluída',
                 'id' => 'instalacao-sucesso',
                 'caminho' => 'instalacao-sucesso/',
