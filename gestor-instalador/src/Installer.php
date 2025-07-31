@@ -1058,22 +1058,19 @@ class Installer
             $existingPage = $checkResult->fetch();
             
             if ($existingPage['count'] > 0) {
-                $this->log("Página de sucesso já existe, atualizando...");
-                
-                // Atualiza a página existente
+                $this->log("Página de sucesso já existe, atualização forçada do HTML e CSS...");
+                // Atualiza a página existente, sobrescrevendo SEMPRE o HTML e CSS
                 $updateQuery = "UPDATE paginas SET 
                     data_modificacao = NOW(),
                     html = :html,
                     css = :css
                     WHERE caminho = 'instalacao-sucesso'";
-                
                 $stmt = $pdo->prepare($updateQuery);
                 $stmt->execute([
                     'html' => $this->getSuccessPageHtml(),
                     'css' => $this->getSuccessPageCss()
                 ]);
-                
-                $this->log("Página de sucesso atualizada: instalacao-sucesso");
+                $this->log("Página de sucesso atualizada e sobrescrita: instalacao-sucesso");
                 return;
             }
             
@@ -1114,7 +1111,7 @@ class Installer
             <!-- Mensagem de Sucesso -->
             <div class="ui positive message">
                 <div class="header">
-                    <i class="checkmark icon"></i>
+                    <i class="exclamation triangle icon"></i>
                     Instalação Concluída com Sucesso!
                 </div>
                 <p>O Conn2Flow foi instalado e configurado com sucesso em seu servidor.</p>
