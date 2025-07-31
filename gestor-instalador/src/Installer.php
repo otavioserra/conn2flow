@@ -495,9 +495,13 @@ class Installer
             // Simular ambiente do gestor para usar as bibliotecas
             $this->setupGestorEnvironment();
             
-            // As bibliotecas necessárias são carregadas pelo config.php
-            // Só precisamos incluir especificamente a biblioteca do usuário
+            // Carrega manualmente as bibliotecas essenciais do gestor,
+            // pois o instalador não executa o bootstrap completo do gestor.php.
+            // A ordem é importante para resolver as dependências.
             $gestorPath = $this->getGestorPath();
+            require_once $gestorPath . '/bibliotecas/banco.php';
+            require_once $gestorPath . '/bibliotecas/gestor.php';
+            require_once $gestorPath . '/bibliotecas/ip.php'; // Dependência de usuario.php
             require_once $gestorPath . '/bibliotecas/usuario.php';
             
             $this->log("📝 Gerando token de autorização para o usuário administrador (ID: 1)");

@@ -1,22 +1,24 @@
-# RELEASE: Conn2Flow Instalador - Correção de Erro 503 (Julho 2025)
+# RELEASE: Conn2Flow Instalador - Correção de Dependência de Bibliotecas (Julho 2025)
 
 ## RESUMO DAS ALTERAÇÕES
 
-- Corrigido um **bug crítico de erro 503** que ocorria durante a etapa de instalação `createAdminAutoLogin`.
-- **Causa Raiz:** O script `config.php` do `gestor` era chamado pelo instalador sem o contexto adequado, resultando na falha ao localizar o arquivo `.env` recém-criado (o caminho para `autenticacoes/localhost/` era montado incorretamente).
-- **Solução:** A função `setupGestorEnvironment()` no `Installer.php` foi atualizada para definir a variável global `$_INDEX['sistemas-dir']` com o caminho correto da instalação do `gestor` *antes* de incluir o `config.php`. Isso garante que o ambiente do gestor seja simulado corretamente e que o arquivo `.env` seja encontrado.
+- Corrigido um **bug fatal** que ocorria durante a etapa de instalação `createAdminAutoLogin` com o erro: `PHP Fatal error: Call to undefined function gestor_incluir_biblioteca()`.
+- **Causa Raiz:** A função `createAdminAutoLogin()` no `Installer.php` tentava utilizar a biblioteca `usuario.php` do gestor, mas as dependências dessa biblioteca (`banco.php`, `gestor.php`, `ip.php`) não estavam sendo carregadas no escopo do instalador.
+- **Solução:** Foram adicionados `require_once` para todas as bibliotecas essenciais do gestor na ordem correta dentro da função `createAdminAutoLogin()`, garantindo que todas as funções estejam disponíveis durante a execução.
 
 ## ARQUIVOS MODIFICADOS
 
-- `gestor-instalador/src/Installer.php` (função `setupGestorEnvironment`)
+- `gestor-instalador/src/Installer.php` (função `createAdminAutoLogin`)
 
 ## INSTRUÇÕES PARA O AGENTE GIT
 
-1. Gerar um novo release zipado do `gestor-instalador` com a correção acima.
-2. Publicar a nova versão do instalador.
-3. Atualizar a documentação técnica (`CONN2FLOW-INSTALADOR-DETALHADO.md`) para refletir a correção e a importância da variável `$_INDEX['sistemas-dir']`.
+1.  Executar o script de release para o instalador com o tipo `patch` e as mensagens de commit apropriadas. Exemplo:
+    `./ai-workspace/scripts/release-instalador.sh patch "fix(install): Corrige dependências de bibliotecas" "fix(install): Adiciona require_once para bibliotecas ausentes em createAdminAutoLogin para resolver erro fatal."`
+2.  O script irá incrementar a versão para **1.0.23** e criar a tag `instalador-v1.0.23`.
+3.  Gerar um novo release zipado do `gestor-instalador` com a correção.
+4.  Publicar a nova versão do instalador.
 
-**Versão:** 1.0.22
+**Versão:** 1.0.23
 **Data:** Julho 2025
 **Criticidade:** Crítica (Impedia a conclusão da instalação)
 **Compatibilidade:** Total
