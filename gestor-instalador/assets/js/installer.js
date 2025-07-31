@@ -218,67 +218,67 @@ function handleInstallationError(errorData) {
             });
         };
     }
+}
 
-    // Mostra
-    async function runInstallation(initialFormData) {
-        const progressMessage = document.getElementById('progress-message');
-        let nextStep = 'validate_input';
-        let isFinished = false;
+// Função global para rodar a instalação
+async function runInstallation(initialFormData) {
+    const progressMessage = document.getElementById('progress-message');
+    let nextStep = 'validate_input';
+    let isFinished = false;
 
-        // Usamos uma cópia dos dados para adicionar a ação de cada etapa
-        let postData = new FormData();
-        for (let pair of initialFormData.entries()) {
-            postData.append(pair[0], pair[1]);
-        }
-        postData.append('lang', currentLang);
+    // Usamos uma cópia dos dados para adicionar a ação de cada etapa
+    let postData = new FormData();
+    for (let pair of initialFormData.entries()) {
+        postData.append(pair[0], pair[1]);
+    }
+    postData.append('lang', currentLang);
 
-        while (!isFinished) {
-            postData.set('action', nextStep);
+    while (!isFinished) {
+        postData.set('action', nextStep);
 
-            try {
-                const response = await fetch('.', {
-                    method: 'POST',
-                    body: postData
-                });
+        try {
+            const response = await fetch('.', {
+                method: 'POST',
+                body: postData
+            });
 
-                if (!response.ok) {
-                    throw new Error(`Erro do servidor: ${response.statusText}`);
-                }
-
-                // Tenta ler a resposta como texto primeiro para detectar erros PHP
-                const responseText = await response.text();
-
-                // Verifica se a resposta parece ser um erro PHP/HTML
-                if (responseText.includes('<br') || responseText.includes('Fatal error') || responseText.includes('Warning')) {
-                    console.error('Erro PHP detectado:', responseText);
-                    throw new Error('Erro interno do servidor. Verifique os logs do PHP ou o arquivo installer.log para mais detalhes.');
-                }
-
-                // Tenta fazer parse do JSON
-                let result;
-                try {
-                    result = JSON.parse(responseText);
-                } catch (jsonError) {
-                    console.error('Resposta não é JSON válido:', responseText);
-                    throw new Error('Resposta inválida do servidor. Verifique o arquivo installer.log para mais detalhes.');
-                }
-
-                if (result.status === 'error') { throw new Error(result.message); }
-
-                progressMessage.textContent = result.message;
-
-                if (result.status === 'finished') {
-                    isFinished = true;
-                    window.location.href = result.redirect_url;
-                } else {
-                    nextStep = result.next_step;
-                }
-            } catch (error) {
-                progressMessage.textContent = `Ocorreu um erro: ${error.message}`;
-                progressMessage.classList.remove('text-gray-700');
-                progressMessage.classList.add('text-red-500');
-                isFinished = true; // Para o loop em caso de erro
+            if (!response.ok) {
+                throw new Error(`Erro do servidor: ${response.statusText}`);
             }
+
+            // Tenta ler a resposta como texto primeiro para detectar erros PHP
+            const responseText = await response.text();
+
+            // Verifica se a resposta parece ser um erro PHP/HTML
+            if (responseText.includes('<br') || responseText.includes('Fatal error') || responseText.includes('Warning')) {
+                console.error('Erro PHP detectado:', responseText);
+                throw new Error('Erro interno do servidor. Verifique os logs do PHP ou o arquivo installer.log para mais detalhes.');
+            }
+
+            // Tenta fazer parse do JSON
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (jsonError) {
+                console.error('Resposta não é JSON válido:', responseText);
+                throw new Error('Resposta inválida do servidor. Verifique o arquivo installer.log para mais detalhes.');
+            }
+
+            if (result.status === 'error') { throw new Error(result.message); }
+
+            progressMessage.textContent = result.message;
+
+            if (result.status === 'finished') {
+                isFinished = true;
+                window.location.href = result.redirect_url;
+            } else {
+                nextStep = result.next_step;
+            }
+        } catch (error) {
+            progressMessage.textContent = `Ocorreu um erro: ${error.message}`;
+            progressMessage.classList.remove('text-gray-700');
+            progressMessage.classList.add('text-red-500');
+            isFinished = true; // Para o loop em caso de erro
         }
     }
 }
