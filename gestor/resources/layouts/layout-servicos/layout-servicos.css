@@ -1,0 +1,16 @@
+.logo-imagem{
+    max-width: 130px;
+}
+.logo-imagem-mobile img{
+    max-width: 130px;
+}
+@media screen and (max-width: 770px) {
+    .desktopcode {
+        display: none;
+    }
+}
+@media screen and (min-width: 770px) {
+    .mobilecode {
+        display: none;
+    }
+}

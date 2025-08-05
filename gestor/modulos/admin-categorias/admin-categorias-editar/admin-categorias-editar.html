@@ -1,0 +1,21 @@
+<div class="field">
+    <label>#form-name-label#</label>
+    <input type="text" name="nome" placeholder="#form-name-placeholder#" value="#nome#">
+</div>
+<div class="field">
+    <label>#form-module-label#</label>
+    <span>#select-module#</span>
+</div>
+<div class="field">
+    <label>@[[form-plugin-label]]@</label>
+    <span>#select-plugin#</span>
+</div>
+<!-- categoria-pai < -->
+<div class="field">
+    <label>#form-categories-parent-label#</label> #cont-categoria-pai#
+</div><!-- categoria-pai > -->
+<div class="field">
+    <label>#form-categories-child-label#</label>
+    <a class="ui mini button orange" href="@[[pagina#url-raiz]]@admin-categorias/adicionar-filho/?id=#categoria-pai#" data-content="@[[category-child-placeholder]]@" data-id="adicionar-filho">
+        <i class="plus circle icon"></i> @[[category-child-label]]@ </a> #categorias-filho#
+</div>

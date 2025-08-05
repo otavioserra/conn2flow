@@ -1,0 +1,26 @@
+<div class="ui fluid horizontal card _gestor-widgetTemplate-cont" id="#cont-id#">
+    <div class="image fileImageParent">
+        <img>
+        <div class="fileImage">
+            <img src="#img-src#" class="widgetTemplate-image">
+        </div>
+    </div>
+    <div class="content">
+        <div class="ui small header widgetTemplate-nome">#nome#</div>
+        <div class="description">
+            <div class="ui list">
+                <div class="item widgetTemplate-data">
+                    <i class="calendar alternate outline icon"></i>
+                    #data#
+                </div>
+                <div class="item widgetTemplate-tipo">
+                    <i class="info circle icon"></i>
+                    #tipo#
+                </div>
+            </div>
+            <div class="ui blue button _gestor-widgetTemplate-btn-change" data-tooltip="@[[widget-template-button-change-tooltip]]@" data-inverted="">@[[widget-template-button-change]]@</div>
+        </div>
+    </div>
+    <input type="hidden" value="#template-id#" name="#campo-nome#" class="widgetTemplate-templateId">
+    <input type="hidden" value="#template-tipo#" name="#campo-tipo#" class="widgetTemplate-templateTipo">
+</div>

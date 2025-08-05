@@ -1,0 +1,16 @@
+.botao-mais {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index:1;
+}
+.botao-menos {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index:1;
+}
+.quantidade{
+	text-align:right;
+    padding-right:13px;
+}

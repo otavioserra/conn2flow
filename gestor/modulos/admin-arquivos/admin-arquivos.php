@@ -4,7 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'admin-arquivos';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.3',
+	'versao' => '1.0.4',
 	'bibliotecas' => Array('interface','html','arquivo'),
 	'tabela' => Array(
 		'nome' => 'arquivos',
@@ -21,6 +21,14 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 );
 
 // ===== Interfaces Auxiliares
+
+function admin_arquivos_criar_dir_herdando_permissao($dir) {
+	if (!is_dir($dir)) {
+		$pai = dirname($dir);
+		$permissao_pai = is_dir($pai) ? fileperms($pai) & 0777 : 0755;
+		mkdir($dir, $permissao_pai, true);
+	}
+}
 
 function admin_arquivos_lista($params = false){
 	global $_GESTOR;
@@ -777,21 +785,10 @@ function admin_arquivos_ajax_upload_file(){
 	$basedir = 'files';
 	$thumbnail = 'mini';
 	
-	if(!is_dir($_GESTOR['contents-path'].$basedir)){
-		mkdir($_GESTOR['contents-path'].$basedir, 0755);
-	}
-	
-	if(!is_dir($_GESTOR['contents-path'].$basedir.'/'.date('Y'))){
-		mkdir($_GESTOR['contents-path'].$basedir.'/'.date('Y'), 0755);
-	}
-	
-	if(!is_dir($_GESTOR['contents-path'].$basedir.'/'.date('Y').'/'.date('m'))){
-		mkdir($_GESTOR['contents-path'].$basedir.'/'.date('Y').'/'.date('m'), 0755);
-	}
-	
-	if(!is_dir($_GESTOR['contents-path'].$basedir.'/'.date('Y').'/'.date('m').'/'.$thumbnail)){
-		mkdir($_GESTOR['contents-path'].$basedir.'/'.date('Y').'/'.date('m').'/'.$thumbnail, 0755);
-	}
+	admin_arquivos_criar_dir_herdando_permissao($_GESTOR['contents-path'].$basedir);
+	admin_arquivos_criar_dir_herdando_permissao($_GESTOR['contents-path'].$basedir.'/'.date('Y'));
+	admin_arquivos_criar_dir_herdando_permissao($_GESTOR['contents-path'].$basedir.'/'.date('Y').'/'.date('m'));
+	admin_arquivos_criar_dir_herdando_permissao($_GESTOR['contents-path'].$basedir.'/'.date('Y').'/'.date('m').'/'.$thumbnail);
 	
 	$caminho = $basedir.'/'.date('Y').'/'.date('m').'/';
 	$caminho_mini = $basedir.'/'.date('Y').'/'.date('m').'/'.$thumbnail.'/';

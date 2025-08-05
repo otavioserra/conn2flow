@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- pagina#titulo -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.css">
+    <!-- pagina#css -->
+    <!-- pagina#js -->
+    <style type="text/css">
+        body {
+            background-color: #F4F5FA;
+        }
+
+        .h3 {
+            color: #00000099
+        }
+
+        .h2 {
+            font: normal normal 300 23px/32px Open Sans;
+        }
+
+        .menubarperfilmargin {
+            margin-top: 5px;
+        }
+
+        .menubarlogomargin {
+            margin-left: 18px;
+        }
+
+        .menumobilemargin {
+            margin-top: 6px;
+        }
+
+        #entrey-uso-dados {
+            position: fixed;
+            top: auto;
+            bottom: 20px;
+            left: 20px;
+            width: inherit;
+            margin-left: -13px;
+        }
+
+        .texto {
+            white-space: nowrap;
+        }
+
+        @media screen and (max-width: 770px) {
+            .desktopcode {
+                display: none;
+            }
+        }
+
+        @media screen and (min-width: 770px) {
+            .mobilecode {
+                display: none;
+            }
+        }
+
+        .margin {
+            margin-right: 13px;
+            margin-left: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="desktopcode">
+        <div class="ui three column padded stackable grid">
+            <div class="row">
+                <div class="three wide column">
+                    <div class="menubarlogomargin">
+                        <div class="logo">
+                            <a href="#">
+                                <img src="https://platform.b2make.com/images/gestor/logo.png">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="seven wide column">
+                    <div class="ui grid">
+                        <div class="two column row">
+                            <div class="column left aligned">
+                                <div class="topmenusearch ui category search">
+                                    <div class="ui icon input">
+                                        <input class="prompt" type="text" placeholder="O que você procura?">
+                                        <i class="search icon"></i>
+                                    </div>
+                                    <div class="results"></div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <button class="topmenubutton ui primary button">
+                                    Ajuda
+                                </button>
+                                <button class="topmenubutton ui button">
+                                    Upgrade
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="usuario six wide column right aligned">
+                    <div class="menubarperfilmargin">
+                        <i class="user icon"></i>
+                        <span style="color:#000000DE;">Nome Usuário</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui divider"></div>
+        <div class="ui two column padded stackable grid">
+            <div class="row">
+                <div class="three wide column">
+                    <div class="ui fluid  secondary vertical pointing menu">
+                        <a class="active item">
+                            Dashboard
+                        </a>
+                        <a class="item">
+                            Loja
+                        </a>
+                        <a class="item">
+                            Conteúdos
+                        </a>
+                        <a class="item">
+                            Usuários
+                        </a>
+                        <a class="item">
+                            Design
+                        </a>
+                        <a class="item">
+                            Configurações
+                        </a>
+                    </div>
+                    <div id="entrey-uso-dados">
+                        <div class="ui active progress">
+                            <div class="bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div class="label">Uso do disco</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="thirteen wide black column">
+                    <div class="ui grid">
+                        <div class="wide column">
+                            <div class="row">
+                                <div class="ui segment">
+                                    <div class="ui grid">
+                                        <div class="eight wide red column">
+                                            <h2>Pedidos</h2>
+                                        </div>
+                                        <div class="right aligned eight wide grey column">
+                                            <button class="ui primary button">
+                                                <i class="plus icon"></i>
+                                                Novo Pedido
+                                            </button>
+                                            <button class="ui primary button">
+                                                <i class="share icon"></i>
+                                                Exportar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="ui grid">
+                                        <div class="three wide orange column">
+                                            <div class="ui search">
+                                                <div class="ui icon input">
+                                                    <input class="prompt" type="text" placeholder="Buscar conteúdo...">
+                                                    <i class="left aligned search icon"></i>
+                                                </div>
+                                                <div class="results"></div>
+                                            </div>
+                                        </div>
+                                        <div class="thirteen wide brown column">
+                                            <div class="ui grid">
+                                                <div class="two wide green column">
+                                                    <h5>Filtrar por:</h5>
+                                                </div>
+                                                <div class="three wide purple column">
+                                                    <div class="ui compact menu">
+                                                        <div class="ui simple dropdown item">
+                                                            Serviço
+                                                            <i class="dropdown icon"></i>
+                                                            <div class="menu">
+                                                                <div class="item">Choice 1</div>
+                                                                <div class="item">Choice 2</div>
+                                                                <div class="item">Choice 3</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ui simple dropdown item">
+                                                            Status
+                                                            <i class="dropdown icon"></i>
+                                                            <div class="menu">
+                                                                <div class="item">Choice 1</div>
+                                                                <div class="item">Choice 2</div>
+                                                                <div class="item">Choice 3</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="eight green wide column">
+                                                    <div class="ui form">
+                                                        <div class="two fields">
+                                                            <div class="field">
+                                                                <label>De</label>
+                                                                <div class="ui calendar" id="rangestart">
+                                                                    <div class="ui input left icon">
+                                                                        <i class="calendar icon"></i>
+                                                                        <input type="text" placeholder="Start">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="field">
+                                                                <label>Até</label>
+                                                                <div class="ui calendar" id="rangeend">
+                                                                    <div class="ui input left icon">
+                                                                        <i class="calendar icon"></i>
+                                                                        <input type="text" placeholder="End">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="three purple wide column">
+                                                    <button class="ui primary button">
+                                                        Filtrar
+                                                    </button>
+                                                    <button class="ui button">
+                                                        Limpar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ui grid">
+                                            
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,129 @@
+<div class="ui grid">
+    <div class="column">
+        <div class="ui button variavelBtnAdicionar">
+            <i class="add icon"></i>
+            @[[variavel-add-btn]]@
+        </div>
+    </div>
+</div>
+<div class="ui divider"></div>
+<div class="ui two doubling cards variaveisCont" id="_gestor-configuracao-administracao">
+    <!-- item < --><div class="card variavelCont" data-id="#variavelID#" data-num="#variavelNum#" data-tipo="#variavelTipo#">
+        <div class="content">
+            <div class="ui circular red icon tiny right floated button variavelBtnExcluir">
+                <i class="icon trash alternate outline"></i>
+            </div>
+            <div class="ui circular blue icon tiny right floated button variavelBtnEditar">
+                <i class="icon edit outline"></i>
+            </div>
+            <div class="header">
+                <span class="ui text teal variavelNome">#variavelNome#</span>
+            </div>
+            <div class="description">
+                <p class="variavelDescricaoCont">
+                    <i class="icon blue info circle"></i>
+                    <span class="variavelDescricao">#variavelDescricao#</span>
+                </p>
+                <span class="variavelGrupoCont">
+                	<a class="ui ribbon teal label variavelGrupo">#variavelGrupo#</a>
+                </span>
+                <div class="ui fitted basic segment variavelValor">
+                    #variavelValor#
+                </div>
+            </div>
+            <input name="ref-#ref-num#" type="hidden" value="#ref-valor#" />
+        </div>
+    </div><!-- item > -->
+</div>
+<div class="componenteAdicionarBaixo">
+	<div class="ui divider"></div>
+    <div class="ui grid">
+        <div class="column">
+            <div class="ui button variavelBtnAdicionarAbaixo">
+                <i class="add icon"></i>
+                @[[variavel-add-btn]]@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="camposModelos escondido">#campos-modelos#</div>
+<input id="variaveis-total" name="variaveis-total" type="hidden" value="#variaveis-total#" />
+<div class="ui two doubling cards modeloItens">
+    <div class="card adicionar">
+        <div class="content">
+            <div class="ui circular red icon tiny right floated button adicionarBtnCancelar">
+                <i class="icon times"></i>
+            </div>
+            <div class="header">
+                <span class="ui text blue">Adicionar Variável</span>
+            </div>
+            <div class="description">
+                <p>
+                    <i class="icon blue info circle"></i>
+                    Preencha os campos abaixo e clique no botão Enviar.
+                </p>
+                <div class="two fields">
+                    <div class="field">
+                        <label>@[[variavel-id-label]]@</label>
+                        <input type="text" name="id-#id-num#" placeholder="@[[variavel-id-placeholder]]@" class="identificador" data-validate="ids-obrigatorios" maxlength="255" />
+                    </div>
+                    <div class="field">
+                        <label>@[[variavel-group-label]]@</label>
+                        <input type="text" name="grupo-#grupo-num#" placeholder="@[[variavel-group-placeholder]]@" class="grupo" maxlength="255" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label>@[[variavel-description-label]]@</label>
+                    <input type="text" name="descricao-#descricao-num#" placeholder="@[[variavel-description-placeholder]]@" class="descricao" maxlength="255" />
+                </div>
+                <div class="field">
+                    <label>@[[variavel-tipo-label]]@</label>
+                    <span>#select-tipo#</span>
+                </div>
+                <div class="field">
+                    <label>@[[variavel-valor-label]]@</label>
+                    <span class="variavelValor">#variavelValor#</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card editar">
+        <div class="content">
+            <div class="ui circular red icon tiny right floated button editarBtnCancelar">
+                <i class="icon times"></i>
+            </div>
+            <div class="header">
+                <span class="ui text yellow">Editar Variável</span>
+            </div>
+            <div class="description">
+                <p>
+                    <i class="icon yellow info circle"></i>
+                    Altere os campos abaixo e clique no botão Enviar.
+                </p>
+                <div class="two fields">
+                    <div class="field">
+                        <label>@[[variavel-id-label]]@</label>
+                        <input type="text" name="id-#id-num#" placeholder="@[[variavel-id-placeholder]]@" value="#id-valor#" class="identificador" data-validate="ids-obrigatorios" maxlength="255" />
+                    </div>
+                    <div class="field">
+                        <label>@[[variavel-group-label]]@</label>
+                        <input type="text" name="grupo-#grupo-num#" placeholder="@[[variavel-group-placeholder]]@" value="#grupo-valor#" class="grupo" maxlength="255" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label>@[[variavel-description-label]]@</label>
+                    <input type="text" name="descricao-#descricao-num#" placeholder="@[[variavel-description-placeholder]]@" value="#descricao-valor#" class="descricao" maxlength="255" />
+                </div>
+                <div class="field">
+                    <label>@[[variavel-tipo-label]]@</label>
+                    <span>#select-tipo#</span>
+                </div>
+                <div class="field">
+                    <label>@[[variavel-valor-label]]@</label>
+                    <span class="variavelValor">#variavelValor#</span>
+                </div>
+            </div>
+            <input name="ref-#ref-num#" type="hidden" value="#ref-valor#" class="variavelReferencia" />
+        </div>
+    </div>
+</div>

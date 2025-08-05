@@ -1,0 +1,147 @@
+<div class="ui stackable grid">
+    <div class="ten wide column">
+    	<h2 class="ui dividing header">
+            <i class="cloud icon"></i>
+            <div class="content"> Domínio <div class="sub header">É aqui que você altera as informações do domínio do seu site.</div>
+            </div>
+        </h2>
+        <div class="ui blue message">
+            URL Atual do Seu Site: <b><a href="#url-site#">#url-site#</a></b>.
+        </div>
+        <div class="field">
+            <label>@[[form-type-domain-label]]@</label>
+            <div class="ui large buttons">
+                <div class="ui button controleDominio #tipo-sistema#" data-id="sistema" data-tooltip="@[[type-system-tooltip]]@" data-inverted="">@[[form-type-system]]@</div>
+                <div class="or" data-text="ou"></div>
+                <div class="ui button controleDominio #tipo-proprio#" data-id="proprio" data-tooltip="@[[type-own-tooltip]]@" data-inverted="">@[[form-type-own]]@</div>
+            </div>
+            <input type="hidden" name="tipo" value="#tipo-value#">
+        </div>
+        <div class="contProprio #cont-proprio#">
+            <div class="field">
+                <label>@[[form-own-domain-label]]@</label>
+                <input type="text" name="dominio_proprio_url" placeholder="@[[form-own-domain-placeholder]]@" value="#dominio_proprio_url#">
+            </div>
+            <div class="ui info message visible">
+                <div class="header">
+                    Importante
+                </div>
+                <p>Para que seu domínio próprio funcione corretamente, é necessário seguir os seguinte passos:</p>
+                <ol class="ui list">
+                    <li>Preencha a URL do seu domínio próprio e clique em enviar para poder instalar este domínio no seu hospedeiro no nosso sistema.</li>
+                    <li>Copie os seguintes NSs a seguir, acesse o sistema de gerenciamento do seu domínio na provedora autoridade do seu domínio e altere os servidores de DNS por lá.
+                        <ol>
+                            <!-- ns-cel < --><li><b>#ns#</b></li><!-- ns-cel > -->
+                        </ol>
+                    </li>
+                    <li>Aguarde o prazo de propagação dos servidores de DNS informado pela sua provedora.</li>
+                </ol>
+            </div>
+            <div class="ui hidden divider"></div>
+        </div>
+        <div class="field">
+            <label>@[[form-recaptcha-label]]@</label>
+            <div class="ui large buttons">
+                <div class="ui button controleRecaptcha" data-id="nenhum" data-tooltip="@[[recaptcha-none-tooltip]]@" data-inverted="">@[[form-recaptcha-none]]@</div>
+                <div class="ui button controleRecaptcha" data-id="recaptcha-v2" data-tooltip="@[[recaptcha-v2-tooltip]]@" data-inverted="">@[[form-recaptcha-v2]]@</div>
+                <div class="ui button controleRecaptcha" data-id="recaptcha-v3" data-tooltip="@[[recaptcha-v3-tooltip]]@" data-inverted="">@[[form-recaptcha-v3]]@</div>
+            </div>
+            <input type="hidden" name="recaptcha-tipo" value="#recaptcha-tipo-value#">
+        </div>
+        <div class="contRecaptcha #cont-recaptcha#">
+            <h3 class="ui dividing header">
+                <i class="user shield icon"></i>
+                <div class="content"> Google reCAPTCHA<div class="sub header">Para que o seu domínio próprio possa ser usado por usuários de maneira segura, é necessário que o Google reCAPTCHA esteja corretamente instalado em nosso sistema.</div>
+                </div>
+            </h3>
+            <div class="google-recaptcha-ativo escondido">
+                <div class="ui active positive button">
+                    <i class="check circle outline icon"></i>
+                    Instalado
+                </div>
+                <div class="ui blue button gr-controle" data-action="reinstalar">
+                    <i class="cog icon"></i>
+                    Reinstalar
+                </div>
+                <div class="ui negative button gr-controle" data-action="excluir">
+                    <i class="times icon"></i>
+                    Excluir
+                </div>
+                <input type="hidden" name="google-recaptcha-comando">
+                <input type="hidden" name="google-recaptcha-tipo">
+            </div>
+            <div class="google-recaptcha-instalacao escondido">
+                <div class="ui info message visible">
+                    <div class="header">
+                        Instruções de instalação do Google reCAPTCHA v3
+                    </div>
+                    <ol class="ui list">
+                        <li>Com uma conta Google acesse o site: <a href="https://www.google.com/recaptcha/admin" target="google-recaptcha">https://www.google.com/recaptcha/admin</a></li>
+                        <li>Selecione a opção "Criar" para registrar um novo site.</li>
+                        <li>Preencha o formulário de criação informando:
+                            <ol>
+                                <li>Etiqueta - Pode ser o seu domínio próprio ou outro nome que preferir.</li>
+                                <li>Tipo reCAPTCHA - Selecione a opção reCAPTCHA v3.</li>
+                                <li>Domínios - Inclua o domínio próprio informado acima.</li>
+                                <li>Selecione - Aceitar os Termos de Serviço do reCAPTCHA</li>
+                            </ol>
+                        </li>
+                        <li>Clique no botão enviar do site do Google para criar as chaves.</li>
+                        <li>Copie as 2 chaves geradas nos botões <span class="ui text blue">COPIAR CHAVE DE SITE.</span> e <span class="ui text blue">COPIAR CHAVE SECRETA</span> de lá e cole nos campos correspondentes logo abaixo aqui.</li>
+                        <li>Por fim, clique no botão enviar abaixo para salvar estas chaves no nosso sistema.</li>
+                    </ol>
+                </div>
+                <div class="field">
+                    <label>@[[form-google-recaptcha-site-label]]@</label>
+                    <input type="text" name="google_recaptcha_site" placeholder="@[[form-google-recaptcha-site-placeholder]]@">
+                </div>
+                <div class="field">
+                    <label>@[[form-google-recaptcha-secret-label]]@</label>
+                    <input type="text" name="google_recaptcha_secret" placeholder="@[[form-google-recaptcha-secret-placeholder]]@">
+                </div>
+            </div>
+            <div class="google-recaptcha-instalacao-v2 escondido">
+                <div class="ui info message visible">
+                    <div class="header">
+                        Instruções de instalação do Google reCAPTCHA v2
+                    </div>
+                    <ol class="ui list">
+                        <li>Com uma conta Google acesse o site: <a href="https://www.google.com/recaptcha/admin" target="google-recaptcha">https://www.google.com/recaptcha/admin</a></li>
+                        <li>Selecione a opção "Criar" para registrar um novo site.</li>
+                        <li>Preencha o formulário de criação informando:
+                            <ol>
+                                <li>Etiqueta - Pode ser o seu domínio próprio ou outro nome que preferir.</li>
+                                <li>Tipo reCAPTCHA - Selecione a opção reCAPTCHA v2.</li>
+                                <li>Domínios - Inclua o domínio próprio informado acima.</li>
+                                <li>Selecione - Aceitar os Termos de Serviço do reCAPTCHA</li>
+                            </ol>
+                        </li>
+                        <li>Clique no botão enviar do site do Google para criar as chaves.</li>
+                        <li>Copie as 2 chaves geradas nos botões <span class="ui text blue">COPIAR CHAVE DE SITE.</span> e <span class="ui text blue">COPIAR CHAVE SECRETA</span> de lá e cole nos campos correspondentes logo abaixo aqui.</li>
+                        <li>Por fim, clique no botão enviar abaixo para salvar estas chaves no nosso sistema.</li>
+                    </ol>
+                </div>
+                <div class="field">
+                    <label>@[[form-google-recaptcha-site-label]]@</label>
+                    <input type="text" name="google_recaptcha_v2_site" placeholder="@[[form-google-recaptcha-site-placeholder]]@">
+                </div>
+                <div class="field">
+                    <label>@[[form-google-recaptcha-secret-label]]@</label>
+                    <input type="text" name="google_recaptcha_v2_secret" placeholder="@[[form-google-recaptcha-secret-placeholder]]@">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="six wide column">
+    	<div class="ui message">
+            <div class="ui center aligned header medium">@[[host-update-title]]@</div>
+            <p>#mensagem-atualizacao#</p>
+        	<a class="fluid ui button blue" href="@[[pagina#url-raiz]]@host-update/">@[[host-changes-update-button]]@</a>
+        </div>
+    	<div class="ui message">
+            <div class="ui center aligned header medium">@[[host-plugins-title]]@</div>
+            <p>#mensagem-plugins#</p>
+        	<a class="fluid ui button blue" href="@[[pagina#url-raiz]]@host-plugins/">@[[host-plugins-button]]@</a>
+        </div>
+    </div>
+</div>

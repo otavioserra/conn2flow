@@ -1,0 +1,170 @@
+<div class="field">
+    <label>#form-name-label#</label>
+    <input type="text" name="nome" placeholder="#form-name-placeholder#">
+</div>
+<div class="field">
+    <label>#form-thumbnail-label#</label>
+    <span>#imagepick-thumbnail#</span>
+</div>
+<div class="field">
+    <label>#form-description-label#</label>
+    <textarea class="tinymce" name="descricao"></textarea>
+</div>
+<div class="field">
+    <label>@[[form-type-label]]@</label>
+    <div class="ui large buttons">
+        <div class="ui button active blue controleTipo" data-id="simples" data-tooltip="@[[type-simple-tooltip]]@" data-inverted="">@[[form-type-simple]]@</div>
+        <div class="or" data-text="ou"></div>
+        <div class="ui button controleTipo" data-id="lotes-variacoes" data-tooltip="@[[type-batch-tooltip]]@" data-inverted="">@[[form-type-batch]]@</div>
+    </div>
+    <input type="hidden" name="tipo" value="simples">
+</div>
+<div class="simplesCont">
+    <div class="two fields">
+        <div class="field">
+            <label>@[[form-price-label]]@</label>
+            <div class="ui labeled input">
+                <label for="preco" class="ui label">R$</label>
+                <input type="text" name="preco" placeholder="@[[form-price-placeholder]]@" class="preco">
+            </div>
+        </div>
+        <div class="field">
+            <label>@[[form-quantity-label]]@</label>
+            <input type="text" name="quantidade" placeholder="@[[form-quantity-placeholder]]@" class="quantidade">
+        </div>
+    </div>
+    <div class="field">
+        <div class="ui checkbox cheGratuito">
+            <input type="checkbox" tabindex="0" name="gratuito" class="hidden gratuito" value="1">
+            <label>@[[form-free-label]]@</label>
+        </div>
+    </div>
+</div>
+<div class="lotesVariacoesCont escondido">
+    <div class="ui dividing header">@[[batch-title]]@</div>
+    <div class="ui blue floating labeled icon dropdown button lotesMenu" data-tooltip="@[[batch-menu-tooltip]]@" data-inverted="">
+        <i class="dropdown icon"></i>
+        <span class="text">#lotes-menu-selected-nome#</span>
+        <div class="menu">
+            <!-- lote-menu-cel < --><div class="item" data-value="#lotes-menu-value#">#lotes-menu-nome#</div><!-- lote-menu-cel > -->
+        </div>
+    </div>
+    <div class="ui button positive loteAdicionar" data-tooltip="@[[batch-add-tooltip]]@" data-inverted="">
+        <i class="plus circle icon"></i>
+        @[[btn-batch-add]]@
+    </div>
+    <!-- lote-cel < --><div class="ui segment loteCont" data-value="#lote-value#" data-num="#lote-num#">
+        <!-- btn-del < --><div class="ui button red right floated button loteExcluir" data-tooltip="@[[batch-del-tooltip]]@" data-inverted="" data-position="top right">
+            <i class="times circle icon"></i>
+            @[[btn-batch-del]]@
+        </div><!-- btn-del > -->
+        <!-- btn-duplicar < --><div class="ui button blue right floated button loteDuplicar" data-tooltip="@[[batch-duplicate-tooltip]]@" data-inverted="" data-position="top right">
+            <i class="copy outline icon"></i>
+            @[[btn-batch-duplicate]]@
+        </div><!-- btn-duplicar > -->
+        <div class="field">
+            <label>@[[form-batch-label]]@</label>
+            <input type="text" placeholder="@[[form-batch-name]]@" value="#lote-nome#" maxlength="100" class="loteNome">
+        </div>
+        <div class="field">
+            <label>@[[form-visibility-label]]@</label>
+            <span>#select-visibility#</span>
+        </div>
+        <div class="data-inicio data-visibilidade escondido">
+            <div class="field">
+                <label>@[[form-startdate-label]]@</label>
+                <div class="ui calendar inverted startdate">
+                    <div class="ui input left icon">
+                        <i class="calendar icon"></i>
+                        <input type="text" placeholder="@[[date-start-label]]@" class="inputDataInicio">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="data-fim data-visibilidade escondido">
+            <div class="field">
+                <label>@[[form-enddate-label]]@</label>
+                <div class="ui calendar inverted enddate">
+                    <div class="ui input left icon">
+                        <i class="calendar icon"></i>
+                        <input type="text" placeholder="@[[date-end-label]]@" class="inputDataFim">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="data-periodo data-visibilidade escondido">
+            <div class="two fields">
+                <div class="field">
+                    <label>@[[form-rangestart-label]]@</label>
+                    <div class="ui calendar inverted rangestart">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" placeholder="@[[date-start-label]]@" class="inputDataInicio">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>@[[form-rangeend-label]]@</label>
+                    <div class="ui calendar inverted rangeend">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" placeholder="@[[date-end-label]]@" class="inputDataFim">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui dividing header">@[[variations-title]]@</div>
+        <div class="ui button positive varAdicionar" data-tooltip="@[[variations-add-tooltip]]@" data-inverted="">
+            <i class="plus circle icon"></i>
+            @[[btn-variations-add]]@
+        </div>
+        <div class="ui divided items varItems">
+            <!-- variacao-cel < --><div class="item varItem" data-value="#variacao-value#" data-num="#variacao-num#">
+                <div class="content">
+                    <!-- var-btn-del < --><div class="ui button red right floated button varExcluir" data-tooltip="@[[variations-del-tooltip]]@" data-inverted="" data-position="top right">
+                        <i class="times circle icon"></i>
+                        @[[btn-variation-del]]@
+                    </div><!-- var-btn-del > -->
+                    <div class="field">
+                        <label>@[[form-variations-name-label]]@</label>
+                        <input type="text" placeholder="@[[form-variations-name-placeholder]]@" value="#variacao-nome#" maxlength="100" class="variacaoNome" data-validate="variacaoNome">
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>@[[form-variations-price-label]]@</label>
+                            <div class="ui labeled input">
+                                <label for="preco" class="ui label">R$</label>
+                                <input type="text" placeholder="@[[form-price-placeholder]]@" value="#variacao-preco#" class="preco variacaoPreco" data-validate="variacaoPreco">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>@[[form-variations-quantity-label]]@</label>
+                            <input type="text" placeholder="@[[form-quantity-placeholder]]@" value="#variacao-quantidade#" class="quantidade variacaoQuantidade" data-validate="variacaoQuantidade">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox cheVariacaoGratuito">
+                            <input type="checkbox" tabindex="0" class="hidden variacaoGratuito" value="1">
+                            <label>@[[variation-free-label]]@</label>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- variacao-cel > -->
+        </div>
+    </div><!-- lote-cel > -->
+    <div class="lotesContsFim"></div>
+    <div class="lotesModelos">
+        #lotes-modelos#
+    </div>
+</div>
+<div class="ui dividing header">@[[section-page]]@</div>
+<div class="field">
+    <label>#form-path-label#</label>
+    <input type="text" name="paginaCaminho" placeholder="#form-path-placeholder#">
+</div>
+<div class="field">
+    <label>#form-template-label#</label>
+    <span>#templates-template#</span>
+</div>
+<input type="hidden" name="dadosServidor" value="#dadosServidor#" id="dadosServidor">

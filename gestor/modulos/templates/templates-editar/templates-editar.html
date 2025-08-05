@@ -1,0 +1,55 @@
+<!-- template-ativacao < -->
+<table class="ui celled table">
+    <thead>
+        <tr>
+            <th>@[[activation-title]]@</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <!-- btn-active < -->
+                <a class="ui active positive button">
+                    <i class="check circle outline icon"></i> @[[button-active]]@ </a><!-- btn-active > -->
+                <!-- btn-activate < -->
+                <a class="ui orange button templateActivate" data-tooltip="@[[button-tooltip-activate]]@" data-inverted="" href="@[[pagina#url-raiz]]@@[[pagina#modulo-id]]@/ativar/?modelo=#modelo#&amp;tipo=#template-tipo#&amp;id=#template-id#&amp;editar=sim">
+                    <i class="circle outline icon"></i> @[[button-activate]]@ </a><!-- btn-activate > -->
+                <!-- btn-update < -->
+                <a class="ui positive button templateUpdate" data-tooltip="@[[button-tooltip-update]]@" data-inverted="" href="@[[pagina#url-raiz]]@@[[pagina#modulo-id]]@/atualizacoes/?atualizar=sim&amp;editar=sim&amp;modelo=#modelo#&amp;id=#template-id#&amp;categoria_id=#categoria-id#">
+                    <i class="cloud download alternate icon"></i> @[[button-update]]@ </a><!-- btn-update > -->
+                <!-- btn-updated < -->
+                <a class="ui button">
+                    <i class="check circle outline icon"></i> @[[button-updated]]@ </a><!-- btn-updated > -->
+            </td>
+        </tr>
+    </tbody>
+</table>
+<!-- template-ativacao > -->
+<div class="field">
+    <label>#form-name-label#</label>
+    <input type="text" name="nome" placeholder="#form-name-placeholder#" value="#nome#">
+</div>
+<div class="field">
+    <label>#form-category-label#</label>
+    <span>#select-category#</span>
+</div>
+<div class="field">
+    <label>#form-default-label#</label>
+    <div class="ui toggle checkbox">
+        <input type="checkbox" name="padrao" data-checked="#padrao#">
+        <label>&nbsp;</label>
+    </div>
+</div>
+<div class="field">
+    <label>#form-thumbnail-label#</label>
+    <span>#imagepick-thumbnail#</span>
+</div>
+<div class="ui top attached tabular menu">
+    <a class="active item" data-tab="codigo-html" data-tooltip="#form-html-tooltip#" data-position="top left" data-inverted="">#form-html-label#</a>
+    <a class="item" data-tab="css" data-tooltip="#form-css-tooltip#" data-position="top left" data-inverted="">#form-css-label#</a>
+</div>
+<div class="ui bottom attached active tab segment" data-tab="codigo-html">#pagina-html-backup# <textarea class="codemirror-html" name="html">#pagina-html#</textarea>
+</div>
+<div class="ui bottom attached tab segment" data-tab="css">#pagina-css-backup# <textarea class="codemirror-css" name="css">#pagina-css#</textarea>
+</div>
+<input type="hidden" name="modelo" value="#modelo#">

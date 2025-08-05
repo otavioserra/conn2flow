@@ -1,0 +1,11 @@
+.barraLateral {
+    border-right: 1px solid lightgrey;
+}
+.column > .button {
+    margin-bottom: 0.75em;
+}
+@media screen and (max-width: 770px) {
+    .barraLateral {
+        border-right: none;
+    }
+}

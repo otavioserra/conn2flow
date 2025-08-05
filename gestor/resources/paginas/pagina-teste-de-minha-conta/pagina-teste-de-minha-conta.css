@@ -1,0 +1,19 @@
+.espaco-entre-elementos-desktop {
+    height: 50px;
+}
+.espaco-entre-elementos-mobile {
+    height: 10px;
+}
+.paddingItens {
+    padding: 10px;
+}
+@media screen and (max-width: 770px) {
+    .desktopcode {
+        display: none;
+    }
+}
+@media screen and (min-width: 770px) {
+    .mobilecode {
+        display: none;
+    }
+}

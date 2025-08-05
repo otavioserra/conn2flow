@@ -1,0 +1,49 @@
+<div class="escondido">
+    <div class="ui top attached tabular menu" id="menus-cont">
+        <a class="active item" data-tab="menuPaginaInicial" data-position="top left" data-inverted="">@[[label-menu-pagina-inicial]]@</a>
+    </div>
+    <div class="ui bottom attached tab segment active menuCont" data-tab="menuPaginaInicial">
+        <div class="field escondido">
+            <label>@[[label-tipo]]@</label>
+            <div class="ui large buttons">
+                <div class="ui button controleTipo blue active" data-id="padrao" data-tooltip="@[[tooltip-padrao]]@" data-inverted="">@[[label-padrao]]@</div>
+                <div class="or" data-text="ou"></div>
+                <div class="ui button controleTipo" data-id="personalizado" data-tooltip="@[[tooltip-personalizado]]@" data-inverted="">@[[label-personalizado]]@</div>
+            </div>
+            <input type="hidden" name="tipo" value="padrao">
+        </div>
+        <div class="menu-itens-cont"></div>
+    </div>
+</div>
+<div class="ui top attached tabular menu" id="menus-cont">
+    <a class="active item" data-tab="menuMinhaConta" data-position="top left" data-inverted="">@[[label-menu-minha-conta]]@</a>
+</div>
+<div class="ui bottom attached tab segment active menuCont" data-tab="menuMinhaConta">
+    <div class="menu-itens-cont"></div>
+</div>
+<div class="menu-item-template">
+    <div class="menu-item" draggable="false">
+        <div class="item-grab escondido">
+            <i class="grip lines large icon"></i>
+        </div>
+        <div class="item-opcoes">
+            <div class="ui accordion">
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    <span class="itemNome"></span>
+                </div>
+                <div class="content">
+                    <div class="field">
+                        <div class="ui right aligned toggle checkbox itemInativo">
+                            <input type="checkbox">
+                            <label>Inativo: </label>
+                        </div>
+                    </div>
+                    <p>URL: <span class="itemUrl"></span>.</p>
+                    <p>Tipo: <span class="itemTipo"></span>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="dadosServidor" value="#dadosServidor#" id="dadosServidor">

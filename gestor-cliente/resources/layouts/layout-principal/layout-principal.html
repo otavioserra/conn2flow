@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- pagina#titulo -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="@[[pagina#url-raiz]]@favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="@[[pagina#url-raiz]]@favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="@[[pagina#url-raiz]]@favicon/favicon-16x16.png">
+    <link rel="manifest" href="@[[pagina#url-raiz]]@favicon/site.webmanifest">
+    <link rel="mask-icon" href="@[[pagina#url-raiz]]@favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <!-- pagina#css -->
+    <!-- pagina#js -->
+</head>
+<body>
+    <div class="ui grid colunatop">
+        <div class="wide column">
+            <div class="ui vertically padded container grid">
+                <div class="middle aligned three column tablet computer only row">
+                    <div class="three wide column">
+                        <a href="@[[pagina#url-raiz]]@" class="ui small image">
+                            <img src="@[[layout#logo-principal]]@">
+                        </a>
+                    </div>
+                    <div class="nine wide center aligned column">
+                        @[[layout#step]]@
+                    </div>
+                    <div class="four wide column">
+                        <div class="ui two column grid">
+                            <div class="column">
+                                <a href="@[[pagina#url-raiz]]@minha-conta/">
+                                    <i class="large user black icon"></i>
+                                    <span class="ui black text">Minha Conta</span>
+                                </a>
+                            </div>
+                            <div class="column">
+                                <a href="@[[pagina#url-raiz]]@carrinho/">
+                                    <i class="large shopping cart black icon"></i>
+                                    <span class="ui black text">Carrinho</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="middle aligned two column mobile only row">
+                    <div class="twelve wide column">
+                        <a href="@[[pagina#url-raiz]]@" class="ui small image">
+                            <img src="@[[layout#logo-principal]]@">
+                        </a>
+                    </div>
+                    <div class="four wide column">
+                        <div class="ui two column grid">
+                            <div class="column">
+                                <a href="@[[pagina#url-raiz]]@minha-conta/">
+                                	<i class="big user black icon"></i>
+                                </a>
+                            </div>
+                            <div class="column">
+                                <a href="@[[pagina#url-raiz]]@carrinho/">
+                                    <i class="big shopping cart black icon"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="one column mobile only row">
+                    <div class="sixteen wide column">
+                        @[[layout#step-mobile]]@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @[[pagina#corpo]]@
+    <div class="ui grid colunabottom">
+        <div class="wide column">
+            <div class="ui vertically padded container stackable grid">
+                <div class="three column middle aligned tablet computer only row">
+                    <div class="four wide column">
+                        @[[layout#loja-dados]]@
+                    </div>
+                    <div class="eight wide column"></div>
+                    <div class="right aligned four wide  column">
+                        <div class="ui medium image">
+                            <img src="@[[layout#formas-de-pagamento]]@">
+                        </div>
+                    </div>
+                </div>
+                <div class="one column center aligned mobile only row">
+                    <div class="column">
+                        @[[layout#loja-dados]]@
+                    </div>
+                    <div class="column">
+                        <div class="ui medium image">
+                            <img src="@[[layout#formas-de-pagamento]]@">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui dimmer paginaCarregando">
+        <div class="ui huge text loader">Carregando</div>
+    </div>
+    <div class="ui dimmer informativoDimmer"></div>
+</body>
+</html>

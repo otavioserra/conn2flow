@@ -1,0 +1,137 @@
+<div class="ui container">
+    <div class="ui hidden divider"></div>
+    <div class="ui hidden divider"></div>
+    <div class="ui stackable grid">
+        <div class="two column row">
+            <div class="ten wide column">
+                <div class="contServicos">
+                    <!-- cont-servicos < -->
+                    <!-- cel-servicos < -->
+                    <div class="ui segment" data-id="@[[servico-id]]@" data-id-varicao="@[[varicao-id]]@">
+                        <div class="excluir">
+                            <i class="big times circle icon"></i>
+                        </div>
+                        <div class="botao-mais">
+                            <button class="ui medium icon button botaoMais">
+                                <i class="plus circle icon"></i>
+                            </button>
+                        </div>
+                        <div class="botao-menos">
+                            <button class="ui medium icon button botaoMenos">
+                                <i class="minus circle icon"></i>
+                            </button>
+                        </div>
+                        <div class="ui three column grid">
+                            <div class="row">
+                                <div class="five wide column">
+                                    <img class="ui fluid image" src="@[[servico-imagem]]@">
+                                </div>
+                                <div class="eight wide column">
+                                    <div class="ui medium header">@[[servico-nome]]@</div>
+                                    <div class="ui tiny header">R$ @[[servico-preco]]@</div>
+                                    <div class="ui tiny header">Subtotal: R$ @[[servico-subtotal]]@</div>
+                                </div>
+                                <div class="three wide middle aligned column">
+                                    <div class="ui small header">
+                                        <div class="quantidade">@[[servico-quantidade]]@</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- cel-servicos > -->
+                    <!-- cont-servicos > -->
+                </div>
+            </div>
+            <div class="six wide column">
+                <div class="ui segment">
+                    <div class="ui medium header">Resumo do Pedido</div>
+                    <div class="ui divider"></div>
+                    <div class="contResumo">
+                        <!-- cont-resumo < -->
+                        <!-- cel-resumo < --><div class="ui grid">
+                        <div class="four wide column">
+                            <i class="huge black file alternate icon"></i>
+                        </div>
+                        <div class="twelve wide column">
+                            <div class="ui medium header">@[[servico-nome]]@</div>
+                            <div class="ui tiny header">Subtotal: R$ @[[servico-subtotal]]@</div>
+                        </div>
+                        </div>
+                        <div class="ui divider"></div><!-- cel-resumo > -->
+                        <div class="ui small header">Subtotal: R$ @[[subtotal]]@</div>
+                        <div class="ui small header">Desconto: R$ @[[descontos]]@</div>
+                        <div class="ui divider"></div>
+                        <div class="ui medium header">Total: R$ @[[total]]@</div>
+                        <!-- cont-resumo > -->
+                    </div>
+                    <div class="ui divider"></div>
+                    <button class="fluid ui black button botaoProximo">Prosseguir para identificação</button>
+                    <button class="fluid ui button botaoContinuarComprando">Continuar comprando</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui hidden divider"></div>
+    <div class="ui hidden divider"></div>
+</div>
+<!-- vazio [[
+<div class="ui icon message">
+    <i class="huge icons">
+        <i class="shopping cart icon"></i>
+        <i class="top right corner times red icon"></i>
+    </i>
+    <div class="content">
+        <div class="header"> Carrinho Vazio </div>
+        <p>O seu carrinho está vazio. É necessário incluir ítens no carrinho para poder continuar.</p>
+    </div>
+</div>
+]] vazio -->
+<!-- step [[
+<div class="ui tiny ordered steps">
+    <div class="active step">
+        <div class="content">
+            <div class="title">Carrinho</div>
+        </div>
+    </div>
+    <div class="disabled step">
+        <div class="content">
+            <div class="title">Identificação</div>
+        </div>
+    </div>
+    <div class="disabled step">
+        <div class="content">
+            <div class="title">Emissão</div>
+        </div>
+    </div>
+    <div class="disabled step">
+        <div class="content">
+            <div class="title">Pagamento</div>
+        </div>
+    </div>
+</div>
+]] step -->
+<!-- step-mobile [[
+<div class="ui tiny fluid steps">
+    <div class="active step">
+        <div class="content">
+            <div class="title">Carrinho</div>
+        </div>
+    </div>
+    <div class="disabled step">
+        <div class="content">
+            <div class="title">Identificação</div>
+        </div>
+    </div>
+    <div class="disabled step">
+        <div class="content">
+            <div class="title">Emissão</div>
+        </div>
+    </div>
+    <div class="disabled step">
+        <div class="content">
+            <div class="title">Pagamento</div>
+        </div>
+    </div>
+</div>
+]] step-mobile -->

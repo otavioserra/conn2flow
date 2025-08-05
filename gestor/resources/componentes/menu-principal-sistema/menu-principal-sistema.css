@@ -1,0 +1,10 @@
+.ajusteItem{
+    padding-left:10px !important;
+}
+#entrey-menu-principal-close{
+    position:absolute;
+    top:10px;
+    right:0px;
+    z-index:1;
+    cursor:pointer;
+}

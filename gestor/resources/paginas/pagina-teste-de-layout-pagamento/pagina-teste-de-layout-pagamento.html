@@ -1,0 +1,137 @@
+<div class="ui hidden divider"></div>
+<div class="ui hidden divider"></div>
+<div class="ui padded grid">
+    <div class="column"></div>
+    <div class="eight wide column">
+        <div class="row">
+            <!--wireframe pagamento-->
+            <div class="ui segment">
+                <div class="ui fluid steps">
+                    <div class="active step">
+                        <i class="payment icon"></i>
+                        <div class="content">
+                            <div class="title">Cartão de Crédito Próprio</div>
+                        </div>
+                    </div>
+                    <div class="disabled step">
+                        <i class="payment icon"></i>
+                        <div class="content">
+                            <div class="title">Cartão de Crédito de Terceiro</div>
+                        </div>
+                    </div>
+                    <div class="disabled step">
+                        <i class="paypal icon"></i>
+                        <div class="content">
+                            <div class="title">PayPal</div>
+                        </div>
+                    </div>
+                </div>
+                <!--Cartão de crédito próprio -->
+                <form class="ui form">
+                    <div class="field">
+                        <input type="text" name="Número do cartão" placeholder="Número do cartão">
+                    </div>
+                    <div class="field">
+                        <label>Nome do títular do cartão</label>
+                        <div class="two fields">
+                            <div class="field">
+                                <input type="text" name="Nome" placeholder="Nome">
+                            </div>
+                            <div class="field">
+                                <input type="text" name="Sobrenome" placeholder="Sobrenome">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fields">
+                        <div class="ten wide field">
+                            <label>Vencimento</label>
+                            <div class="two fields">
+                                <div class="field">
+                                    <select class="ui fluid search dropdown" name="MM">
+                                        <option value="">Mês</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <select class="ui fluid search dropdown" name="AA">
+                                        <option value="">Ano</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="six wide field">
+                            <label>Código de segurança (CSC)</label>
+                            <input type="text" name="3 dígitos" placeholder="3 dígitos">
+                        </div>
+                    </div>
+                    <div class="ui fluid placeholder">1x de R$ 1,50</div> <!-- Valores da parcela  -->
+                    <div class="ui hidden divider"></div>
+                    <label>Suas informações serão coletadas de acordo com a Política de Privacidade do PayPal.</label>
+                    <div class="ui hidden divider"></div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" tabindex="0" class="hidden">
+                            <label>Salve o número do meu cartão de crédito para a próxima compra neste vendedor.</label>
+                        </div>
+                    </div>
+                </form>
+                <div class="ui hidden divider"></div>
+                <!--Cartão de crédito de terceiros -->
+                <p>Preencha as informações pessoais do outro pagador desta compra e clique no botão CONTINUAR.</p>
+                <form class="ui form">
+                    <div class="field">
+                        <input type="text" name="Primeiro Nome" placeholder="Primeiro Nome">
+                    </div>
+                    <div class="field">
+                        <input type="text" name="Último Nome" placeholder="Último Nome">
+                    </div>
+                    <div class="field">
+                        <input type="text" name="Email" placeholder="Email">
+                    </div>
+                    <div class="field">
+                        <input type="text" name="Telefone" placeholder="Telefone">
+                    </div>
+                    <div class="field">
+                        <div class="ui buttons">
+                            <button class="ui button">CPF</button>
+                            <button class="ui button">CNPJ</button>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <input type="text" name="CPF" placeholder="CPF">
+                    </div>
+                </form>
+                <!--wireframe paypal -->
+                <div class="ui fluid placeholder">
+                    <div class="image">IMAGEM PAYPAL</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="six wide column">
+        <div class="row">
+            <div class="ui segment">
+                <h3>Resumo do Pedidos</h3>
+                <div class="ui divider"></div>
+                <div class="ui sixteen wide columns grid">
+                    <div class="row">
+                        <div class="two column">
+                            <i class="big black file alternate icon"></i>
+                        </div>
+                        <div class="fourteen wide column">
+                            <h5>#nome-do-curso/produto#</h5>
+                            <h3>#Subtotal:R$#</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui divider"></div>
+                <h5> #Subtotal: R$#</h5>
+                <h5> #Desconto: R$#</h5>
+                <div class="ui divider"></div>
+                <h3> #Total: R$#</h3>
+                <div class="ui divider"></div>
+                <button class="fluid ui button">Prosseguir para identificação</button>
+            </div>
+        </div>
+    </div>
+    <div class="column"></div>
+</div>

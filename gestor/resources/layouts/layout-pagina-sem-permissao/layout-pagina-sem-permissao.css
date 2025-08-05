@@ -1,0 +1,88 @@
+#gestor-pagina-menu{
+    float:left;
+    width:200px;
+    height:200px;
+    padding:20px;
+}
+#gestor-pagina-corpo{
+    float:right;
+    width:calc(100% - 260px);
+    margin-right:20px;
+}
+#gestor-listener{
+    display:none;
+}
+#entrey-logo-principal{
+    width:130px;
+}
+body {
+    background-color: #F4F5FA;
+}
+.menubarperfilmargin {
+    margin-top: 5px;
+}
+.menubarlogomargin {
+    margin-left: 18px;
+}
+.menumobilemargin {
+    margin-top: 6px;
+}
+#entrey-uso-dados{
+    position: fixed;
+    top: auto;
+    bottom: 20px;
+    left: 20px;
+    width: inherit;
+    margin-left: -13px;
+}
+.texto{
+    white-space: nowrap;
+}
+@media screen and (max-width: 770px) {
+    .desktopcode {
+        display: none;
+    }
+    #entrey-menu-principal{
+        display: none;
+        position: fixed;
+    	background-color:#FFF;
+        width:100%;
+        top:0px;
+        left:0px;
+        bottom:0px;
+        z-index:999999;
+    }
+    #entrey-menu-principal-close{
+        display: block;
+    }
+    #_gestor-interface-listar{
+        padding: 1em 0px;
+    }
+    #_gestor-interface-listar-column{
+    	padding: 1em 0px;
+    }
+    #_gestor-interface-lista-tabela_filter .input{
+        width: calc(100% - 100px);
+    }
+    #_gestor-interface-lista-tabela_filter{
+        text-align:left;
+    }
+}
+@media screen and (min-width: 770px) {
+    .mobilecode {
+        display: none;
+    }
+    #entrey-menu-principal{
+        display: block;
+    }
+    #entrey-menu-principal-close{
+        display: none;
+    }
+    #_gestor-interface-lista-tabela_filter .input{
+        width: 250px;
+    }
+}
+.margin {
+    margin-right: 13px;
+    margin-left: 13px;
+}

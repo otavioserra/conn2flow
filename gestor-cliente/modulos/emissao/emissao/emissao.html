@@ -1,0 +1,171 @@
+<div class="ui container">
+    <div class="ui hidden divider"></div>
+    <div class="ui hidden divider"></div>
+    <div class="ui stackable grid">
+        <div class="two column row">
+            <div class="ten wide column">
+                <div class="contVouchers">
+                    <!-- cont-vouchers < -->
+                    <!-- cel-voucher < -->
+                    <div class="ui segment voucherCell" data-id="@[[voucher-id]]@">
+                        <div class="ui two column grid">
+                            <div class="row">
+                                <div class="six wide column">
+                                    <img class="ui fluid image" src="@[[servico-imagem]]@">
+                                    <div class="ui hidden divider"></div>
+                                    <button class="ui fluid black button botaoAlterarIdentidade">
+                                        <i class="pen icon"></i>
+                                        Alterar Identidade
+                                    </button>
+                                </div>
+                                <div class="ten wide column">
+                                    <div class="ui medium header">@[[servico-nome]]@</div>
+                                    <div class="ui small header">
+                                        <i class="address card icon"></i>
+                                        <div class="content">
+                                            Identidade
+                                        </div>
+                                    </div>
+                                    <table class="ui very basic table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="collapsing"><i class="right triangle large fitted icon"></i> <span class="ui small header">Nome</span></td>
+                                                <td class="campoNome">@[[identificacao-nome]]@</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="collapsing"><i class="right triangle large fitted icon"></i> <span class="ui small header">Documento</span></td>
+                                                <td class="campoDocumento">@[[identificacao-documento]]@</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="collapsing"><i class="right triangle large fitted icon"></i> <span class="ui small header">Telefone</span></td>
+                                                <td class="campoTelefone">@[[identificacao-telefone]]@</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="contAlteracaoIdentidade">
+                            <div class="ui hidden divider"></div>
+                            <form class="ui form formAlterarIdentificacao">
+                                <div class="field">
+                                    <input type="text" name="nome" placeholder="Nome">
+                                </div>
+                                <div class="field">
+                                    <input type="text" name="documento" placeholder="Documento">
+                                </div>
+                                <div class="field">
+                                    <input type="text" name="telefone" placeholder="Telefone" class="tel">
+                                </div>
+                                <div class="ui sixteen wide columns grid">
+                                    <div class="eight wide column">
+                                        <div class="row">
+                                            <div class="ui fluid button botaoCancelar">Cancelar</div>
+                                        </div>
+                                    </div>
+                                    <div class="eight wide column">
+                                        <div class="row">
+                                            <button class="ui fluid black submit button">Salvar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui error message"></div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- cel-voucher > -->
+                    <!-- cont-vouchers > -->
+                </div>
+            </div>
+            <div class="six wide column">
+                <div class="ui segment">
+                    <div class="ui medium header">Resumo do Pedido: @[[codigo]]@</div>
+                    <div class="ui divider"></div>
+                    <div class="contResumo">
+                        <!-- cont-resumo < -->
+                        <!-- cel-resumo < --><div class="ui grid">
+                        <div class="four wide column">
+                            <i class="huge black file alternate icon"></i>
+                        </div>
+                        <div class="twelve wide column">
+                            <div class="ui medium header">@[[servico-nome]]@</div>
+                            <div class="ui tiny header">Subtotal: R$ @[[servico-subtotal]]@</div>
+                        </div>
+                        </div>
+                        <div class="ui divider"></div><!-- cel-resumo > -->
+                        <div class="ui small header">Subtotal: R$ @[[subtotal]]@</div>
+                        <div class="ui small header">Desconto: R$ @[[descontos]]@</div>
+                        <div class="ui divider"></div>
+                        <div class="ui medium header">Total: R$ @[[total]]@</div>
+                        <!-- cont-resumo > -->
+                    </div>
+                    <div class="ui divider"></div>
+                    <button class="fluid ui black button botaoProximo">Prosseguir para Pagamento</button>
+                    <button class="fluid ui black button botaoProximoGratuito">Prosseguir para Pagamento</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui hidden divider"></div>
+    <div class="ui hidden divider"></div>
+</div>
+<!-- vazio [[
+<div class="ui icon message">
+    <i class="huge icons">
+        <i class="user icon"></i>
+        <i class="top right corner times red icon"></i>
+    </i>
+    <div class="content">
+        <div class="header"> Pedido Vazio </div>
+        <p>O seu pedido não tem nenhum serviço cadastrado.</p>
+    </div>
+</div>
+]] vazio -->
+<!-- step [[
+<div class="ui tiny ordered steps">
+    <div class="completed step">
+        <div class="content">
+            <div class="title">Carrinho</div>
+        </div>
+    </div>
+    <div class="completed step">
+        <div class="content">
+            <div class="title">Identificação</div>
+        </div>
+    </div>
+    <div class="active step">
+        <div class="content">
+            <div class="title">Emissão</div>
+        </div>
+    </div>
+    <div class="disabled step">
+        <div class="content">
+            <div class="title">Pagamento</div>
+        </div>
+    </div>
+</div>
+]] step -->
+<!-- step-mobile [[
+<div class="ui tiny fluid steps">
+    <div class="completed step">
+        <div class="content">
+            <div class="title">Carrinho</div>
+        </div>
+    </div>
+    <div class="completed step">
+        <div class="content">
+            <div class="title">Identificação</div>
+        </div>
+    </div>
+    <div class="active step">
+        <div class="content">
+            <div class="title">Emissão</div>
+        </div>
+    </div>
+    <div class="disabled step">
+        <div class="content">
+            <div class="title">Pagamento</div>
+        </div>
+    </div>
+</div>
+]] step-mobile -->

@@ -1,0 +1,68 @@
+<div class="field">
+    <label>@[[form-name-account-label]]@</label>
+    <input type="text" name="nome_conta" placeholder="@[[form-name-account-placeholder]]@" value="#nome_conta#">
+</div>
+<div class="field">
+    <label>@[[form-name-user-label]]@</label>
+    <input type="text" name="nome" placeholder="@[[form-name-user-placeholder]]@" value="#nome#">
+</div>
+<table class="ui celled table">
+    <thead>
+        <tr>
+            <th>@[[first-name]]@</th>
+            <th>@[[middle-name]]@</th>
+            <th>@[[last-name]]@</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="first-name">#primeiro_nome#</td>
+            <td class="middle-name">#nome_do_meio#</td>
+            <td class="last-name">#ultimo_nome#</td>
+        </tr>
+    </tbody>
+</table>
+<div class="two fields">
+    <div class="field">
+        <label>@[[form-user-manager-profile-label]]@</label>
+        <span>#select-user-profile#</span>
+    </div>
+    <div class="field">
+        <label>@[[form-permission-label]]@</label>
+        <div class="ui toggle checkbox">
+            <input type="checkbox" name="privilegios_admin" data-checked="#checked#">
+            <label>&nbsp;</label>
+        </div>
+    </div>
+</div>
+<div class="field">
+    <label>@[[form-email-label]]@</label>
+    <input type="email" name="email" placeholder="@[[form-email-placeholder]]@" value="#email#">
+</div>
+<div class="field">
+    <label>@[[form-email-2-label]]@</label>
+    <input type="email" name="email-2" placeholder="@[[form-email-2-placeholder]]@" value="#email#">
+</div>
+<div class="field">
+    <label>@[[form-user-label]]@</label>
+    <input type="text" name="usuario" placeholder="@[[form-user-placeholder]]@" value="#usuario#">
+</div>
+<!-- senha-campos < -->
+<div class="two fields" id="senha-campos">
+    <div class="field">
+        <label>@[[form-password-label]]@</label>
+        <input type="password" name="senha" placeholder="@[[form-password-placeholder]]@" autocomplete="new-password">
+    </div>
+    <div class="field">
+        <label>@[[form-password-2-label]]@</label>
+        <input type="password" name="senha-2" placeholder="@[[form-password-2-placeholder]]@" autocomplete="new-password">
+    </div>
+    <input type="hidden" name="senha-atualizar" value="1">
+</div><!-- senha-campos > -->
+<!-- senha-botao < -->
+<div class="field">
+    <label>@[[form-password-label]]@</label>
+    <a class="ui button" href="@[[pagina#url-raiz]]@@[[pagina#url-caminho]]@?id=@[[pagina#registro-id]]@&amp;password-button=1#senha-campos">
+        <i class="user lock icon"></i> @[[form-password-button]]@ </a>
+</div>
+<!-- senha-botao > -->

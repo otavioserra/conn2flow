@@ -1,0 +1,252 @@
+<div class="ui container">
+    <div class="ui hidden divider"></div>
+    <div class="ui hidden divider"></div>
+    <!-- pagamento-inativo < -->
+    <div class="ui icon negative message">
+        <i class="ban icon"></i>
+        <div class="content">
+            <div class="header">
+                Nenhum Meio de Pagamento Ativo
+            </div>
+            <p>Não é possível fazer o pagamento deste pedido uma vez que nenhum meio de pagamento está ativo no momento. Tente novamente mais tarde.</p>
+        </div>
+    </div>
+    <!-- pagamento-inativo > -->
+    <!-- pagamento-ativo < -->
+    <div class="ui stackable grid">
+        <div class="two column row">
+            <div class="ten wide column">
+                <div class="contPagamentos">
+                    <div class="ui segment">
+                        <div class="ui three item secondary stackable menu">
+                            <!-- menu-ppp-ativo < -->
+                            <a class="active item" data-id="proprio">
+                                <div class="ui basic segment">
+                                    <div class="ui small header">
+                                        <i class="payment icon"></i>
+                                        <div class="content"> Cartão Próprio </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="item" data-id="terceiro">
+                                <div class="ui basic segment">
+                                    <div class="ui small header">
+                                        <i class="payment  icon"></i>
+                                        <div class="content"> Cartão de Terceiro </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="item" data-id="paypal">
+                                <div class="ui basic segment">
+                                    <div class="ui small header">
+                                        <i class="paypal icon"></i>
+                                        <div class="content"> PayPal </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <!-- menu-ppp-ativo > -->
+                            <!-- menu-ppp-inativo < -->
+                            <a class="active item" data-id="paypal">
+                                <div class="ui basic segment">
+                                    <div class="ui small header">
+                                        <i class="paypal icon"></i>
+                                        <div class="content"> PayPal </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <!-- menu-ppp-inativo > -->
+                        </div>
+                        <!-- proprio cont -->
+                        <div class="pagComp proprioComp escondido">
+                            <div id="proprioPPPIframe"></div>
+                        </div>
+                        <!-- terceiro cont -->
+                        <div class="pagComp terceiroComp escondido">
+                            <div class="terceiroForm">
+                                <div class="ui icon blue message">
+                                    <i class="user edit icon"></i>
+                                    <div class="content">
+                                        <p>Preencha as informações pessoais do outro pagador desta compra e clique no botão CONTINUAR.</p>
+                                    </div>
+                                </div>
+                                <form id="formOutroPagador" class="ui form formOutroPagador">
+                                    <div class="field">
+                                        <input type="text" name="nome" placeholder="Nome Completo" autofocus autocomplete="new-password">
+                                    </div>
+                                    <div class="field">
+                                        <input type="text" name="email" placeholder="Email" autocomplete="new-password">
+                                    </div>
+                                    <div class="field">
+                                        <div class="ui buttons">
+                                            <div class="ui button active controleDoc" data-id="cpf">CPF</div>
+                                            <div class="or" data-text="ou"></div>
+                                            <div class="ui button controleDoc" data-id="cnpj">CNPJ</div>
+                                        </div>
+                                        <input type="hidden" name="cnpj_ativo" value="nao">
+                                    </div>
+                                    <div class="two fields">
+                                        <div class="field">
+                                            <input type="text" name="cpf" placeholder="CPF" class="cpf" autocomplete="new-password">
+                                        </div>
+                                        <div class="field escondido">
+                                            <input type="text" name="cnpj" placeholder="CNPJ" class="cnpj" autocomplete="new-password">
+                                        </div>
+                                        <div class="field">
+                                            <input type="text" name="telefone" placeholder="Telefone" class="telefone" autocomplete="new-password">
+                                        </div>
+                                    </div>
+                                    <button class="fluid ui button">CONTINUAR</button>
+                                    <div class="ui error message"></div>
+                                </form>
+                            </div>
+                            <div class="terceiroPPPCont escondido">
+                                <div class="ui icon green message">
+                                    <i class="user check icon"></i>
+                                    <div class="content">
+                                        <p>Outro pagador: <b><span class="ui large blue text terceiroNome">Nome Outro Pagador</span></b>. Caso queira mudar o pagador e preencher novamente o formulário: <a class="ui blue label outroPagadorTrocar">Trocar Pagador</a></p>
+                                    </div>
+                                </div>
+                                <div id="terceiroPPPIframe"></div>
+                            </div>
+                        </div>
+                        <!-- paypal cont -->
+                        <div class="pfc-cont pagComp paypalComp escondido">
+                            <div class="pfc-fundo-cinza">
+                                <div class="pfc-fundo-txt-paypal">Por que comprar com a PayPal?</div>
+                                <div class="pfc-fundo-txt-pague">Pague com os cartões de credito?</div>
+                                <div class="pfc-fundo-bandeiras"> 
+                                    <div class="bandeira1"></div>
+                                    <div class="bandeira2"></div>
+                                    <div class="bandeira3"></div>
+                                    <div class="bandeira4"></div>
+                                    <div class="bandeira5"></div>
+                                    <div class="bandeira6"></div>
+                                </div>
+                            </div>
+                            <div class="pfc-coluna">
+                                <div class="pfc-elemento">
+                                    <div class="pfc-elemento-img"></div>
+                                    <div class="pfc-elemento-txt"><b>É Grátis, fácil e seguro</b>
+                                        Abra sua conta, cadastre seus cartões de crédito e passe a compra só com email e senha</div>
+                                </div>
+                            </div>
+                            <div class="pfc-coluna">
+                                <div class="pfc-elemento">
+                                    <div class="pfc-elemento-img1"></div>
+                                    <div class="pfc-elemento-txt1">Continue a acumular milhas no seu cartão de crédito</div>
+                                </div>
+                            </div>
+                            <div class="pfc-clear"></div>
+                            <div class="pfc-fundo-linha"></div>        
+                            <div class="pfc-fundo-texto"><b>PayPal é como a sua carteira</b>, só que digital. Você cria a sua conta grátis, armazena seus cartões de forma segura e paga em poucos cliques. Faça como 203 milhões de pessoas ao redor do mundo que usam PayPal</div>
+                            <div class="pfc-fim">
+                                <div class="pfc-texto-paypal">
+                                    <div class="pfc-texto-pay1">Dúvidas ligue </div>
+                                    <div class="pfc-texto-pay2">0800-047-4482</div>
+                                </div>
+                                <div class="pfc-logo-paypal">
+                                    <div class="pfc-logo-pay"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="six wide column">
+                <div class="ui segment">
+                    <div class="ui medium header">Resumo do Pedido: @[[codigo]]@</div>
+                    <div class="ui divider"></div>
+                    <div class="contResumo">
+                        <!-- cont-resumo < -->
+                        <!-- cel-resumo < --><div class="ui grid">
+                        <div class="four wide column">
+                            <i class="huge black file alternate icon"></i>
+                        </div>
+                        <div class="twelve wide column">
+                            <div class="ui medium header">@[[servico-nome]]@</div>
+                            <div class="ui tiny header">Subtotal: R$ @[[servico-subtotal]]@</div>
+                        </div>
+                        </div>
+                        <div class="ui divider"></div><!-- cel-resumo > -->
+                        <div class="ui small header">Subtotal: R$ @[[subtotal]]@</div>
+                        <div class="ui small header">Desconto: R$ @[[descontos]]@</div>
+                        <div class="ui divider"></div>
+                        <div class="ui medium header">Total: R$ @[[total]]@</div>
+                        <!-- cont-resumo > -->
+                    </div>
+                    <div class="ui divider"></div>
+                    <!-- btns-ppp-ativo < -->
+                    <div class="pagComp proprioBtnCont">
+                        <div class="fluid ui blue button disabled" id="proprio-btn">Pagar</div>
+                    </div>
+                    <div class="pagComp terceiroBtnCont escondido">
+                        <div class="fluid ui blue button disabled" id="terceiro-btn">Pagar</div>
+                    </div>
+                    <!-- btns-ppp-ativo > -->
+                    <div class="pagComp paypalBtnCont escondido">
+                        <button class="fluid ui blue button disabled" id="paypalBtnFake">Pague com PayPal</button>
+                        <div id="paypalBtn"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- pagamento-ativo > -->
+    <!-- pagamento-gratuito < -->
+    <div class="ui header">Pedido Gratuito</div>
+    <p>Processando pedido gratuito...</p>
+    <div class="ui active page dimmer">
+        <div class="ui text large loader">Processando Pedido Gratuito</div>
+    </div>
+    <!-- pagamento-gratuito > -->
+    <div class="ui hidden divider"></div>
+    <div class="ui hidden divider"></div>
+</div>
+<!-- step [[
+<div class="ui tiny ordered steps">
+    <div class="completed step">
+        <div class="content">
+            <div class="title">Carrinho</div>
+        </div>
+    </div>
+    <div class="completed step">
+        <div class="content">
+            <div class="title">Identificação</div>
+        </div>
+    </div>
+    <div class="completed step">
+        <div class="content">
+            <div class="title">Emissão</div>
+        </div>
+    </div>
+    <div class="active step">
+        <div class="content">
+            <div class="title">Pagamento</div>
+        </div>
+    </div>
+</div>
+]] step -->
+<!-- step-mobile [[
+<div class="ui tiny fluid steps">
+    <div class="completed step">
+        <div class="content">
+            <div class="title">Carrinho</div>
+        </div>
+    </div>
+    <div class="completed step">
+        <div class="content">
+            <div class="title">Identificação</div>
+        </div>
+    </div>
+    <div class="completed step">
+        <div class="content">
+            <div class="title">Emissão</div>
+        </div>
+    </div>
+    <div class="active step">
+        <div class="content">
+            <div class="title">Pagamento</div>
+        </div>
+    </div>
+</div>
+]] step-mobile -->

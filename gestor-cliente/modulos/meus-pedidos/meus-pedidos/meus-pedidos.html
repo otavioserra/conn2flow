@@ -1,0 +1,58 @@
+<div class="ui container">
+    <div class="ui hidden divider"></div>
+    <div class="ui hidden divider"></div>
+    <!-- pedidos < -->
+    <div class="ui stackable two column grid pedidos">
+        <!-- pedido-cel < --><div class="column">
+        <div class="ui segment">
+            <div class="ui top large attached label">Pedido Código: #@[[codigo]]@</div>
+            <table class="ui definition unstackable table">
+                <tbody>
+                    <tr>
+                        <td class="four wide">Valor</td>
+                        <td>@[[valor]]@</td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>@[[status]]@</td>
+                    </tr>
+                    <tr>
+                        <td>Data Criação</td>
+                        <td>@[[data-criacao]]@</td>
+                    </tr>
+                    <tr>
+                        <td>Data Modificação</td>
+                        <td>@[[data-modificacao]]@</td>
+                    </tr>
+                    <tr>
+                        <td>Opções</td>
+                        <td>@[[opcoes]]@</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div><!-- pedido-cel > -->
+    </div>
+    <!-- carregar-mais < -->
+    <div class="ui basic center aligned segment">
+        <button class="ui button blue carregarMais">Carregar Mais</button>
+    </div>
+    <!-- carregar-mais > -->
+    <!-- pedidos > -->
+    <!-- sem-pedidos [[
+<div class="ui icon message">
+    <i class="huge icons">
+        <i class="receipt icon"></i>
+        <i class="top right corner times red icon"></i>
+    </i>
+    <div class="content">
+        <div class="header"> Sem Pedidos </div>
+        <div class="ui bulleted list">
+            <div class="item">Você não tem nenhum pedido até o momento.</div>
+        </div>
+    </div>
+</div>
+]] sem-pedidos -->
+    <div class="ui hidden divider"></div>
+    <div class="ui hidden divider"></div>
+</div>

@@ -6,7 +6,6 @@ Esta pasta contém templates padronizados para iniciar conversas com diferentes 
 
 ### 🎯 Gerais
 - **`template-nova-conversa.md`** - Template principal para desenvolvimento
-- **`Prompt Nova Conversa.md`** - Template original (manter como referência)
 
 ### 🔧 Especializados *(planejados)*
 - **`prompt-desenvolvimento.md`** - Para desenvolvimento de features
