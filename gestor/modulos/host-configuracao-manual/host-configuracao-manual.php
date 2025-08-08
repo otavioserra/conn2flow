@@ -7,6 +7,26 @@ $_GESTOR['modulo-id']							=	'host-configuracao-manual';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'versao' => '1.0.0',
 	'bibliotecas' => Array('interface','html','pagina','host'),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Instalação Manual de Host',
+			        'id' => 'host-configuracao-manual',
+			        'path' => '/host-manual-install/',
+			        'type' => 'modulo',
+			        'option' => 'instalar',
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 // Incluindo as funções do módulo original que ainda serão úteis (geração de senhas, criptografia, etc)

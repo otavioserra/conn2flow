@@ -16,6 +16,41 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_modificacao' => 'data_modificacao',
 		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Pedidos',
+			        'id' => 'pedidos',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'pedidos/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Pedidos - Visualizar',
+			        'id' => 'pedidos-visualizar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'pedidos/visualizar/',
+			        'type' => 'system',
+			        'option' => 'visualizar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'c7829c81604973c65e54097fdce62dc9',
+			            'css' => '719484d11b22a41739437ec1e28f423a',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function pedidos_visualizar(){

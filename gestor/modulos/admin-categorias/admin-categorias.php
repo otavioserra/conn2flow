@@ -16,6 +16,77 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Admin Categorias',
+			        'id' => 'admin-categorias',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-categorias/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Admin Categorias - Adicionar',
+			        'id' => 'admin-categorias-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-categorias/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'fc2e7b2eec2cda42ffc77a68ff6c4a5d',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Admin Categorias - Editar',
+			        'id' => 'admin-categorias-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-categorias/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'f203515a290225b3238882e883f9d828',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Admin Categorias - Adicionar Filho',
+			        'id' => 'admin-categorias-adicionar-filho',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-categorias/adicionar-filho/',
+			        'type' => 'system',
+			        'option' => 'adicionar-filho',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '65a5fe2f37df43131bdfc83432513519',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [
+			    [
+			        'name' => 'Teste Componente Módulo',
+			        'id' => 'teste-componente-modulo',
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			],
+		],
+	],
 );
 
 // ===== Funções Auxiliares

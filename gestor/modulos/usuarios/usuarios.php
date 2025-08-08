@@ -18,6 +18,54 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'historico' => Array(
 		'moduloIdExtra' => 'perfil-usuario',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Usuários',
+			        'id' => 'usuarios',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários - Adicionar',
+			        'id' => 'usuarios-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '0e4d39920b17ee4329ec7570f23f9247',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários - Editar',
+			        'id' => 'usuarios-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '2f363546fda25c2e25c7aeeaa4a476da',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function usuarios_adicionar(){

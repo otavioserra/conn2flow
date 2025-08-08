@@ -15,6 +15,41 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Página de Testes',
+			        'id' => 'pagina-de-testes',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'pagina-de-testes/',
+			        'type' => 'page',
+			        'option' => 'testes',
+			        'root' => true,
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => '0b58367cd17703c084b92e6bf311f9a4',
+			        ],
+			    ],
+			    [
+			        'name' => 'Sem Permissão Teste',
+			        'id' => 'sem-permissao-teste',
+			        'layout' => 'layout-pagina-simples',
+			        'path' => 'testes/sem-permissao/',
+			        'type' => 'system',
+			        'option' => 'sem-permissao',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '599d814ccd070be528a96bc560fadcef',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function getUserIP() {

@@ -17,6 +17,86 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_modificacao' => 'data_modificacao',
 		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Agendamentos',
+			        'id' => 'agendamentos',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'agendamentos/',
+			        'type' => 'system',
+			        'option' => 'administrar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Cupons de Prioridade',
+			        'id' => 'cupons-de-prioridade',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'agendamentos/cupons-de-prioridade/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Cupons de Prioridade - Adicionar',
+			        'id' => 'cupons-de-prioridade-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'agendamentos/cupons-de-prioridade/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Cupons de Prioridade - Editar',
+			        'id' => 'cupons-de-prioridade-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'agendamentos/cupons-de-prioridade/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			],
+			'components' => [
+			    [
+			        'name' => 'Impressão Cabeçalho',
+			        'id' => 'impressao-cabecalho',
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Tabela Cupons Prioridade',
+			        'id' => 'tabela-cupons-prioridade',
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			],
+		],
+	],
 );
 
 // ===== Funções Auxiliares

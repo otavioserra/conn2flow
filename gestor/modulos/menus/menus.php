@@ -15,6 +15,28 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Menus',
+			        'id' => 'menus',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'menus/',
+			        'type' => 'system',
+			        'option' => 'config',
+			        'root' => true,
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '00526f0cbab35125f79c391056a0f95f',
+			            'css' => '06a47937ff45a2e842315a49a679d3fc',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function menus_config(){

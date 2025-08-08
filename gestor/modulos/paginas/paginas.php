@@ -800,6 +800,54 @@ function hosts_paginas_interfaces_padroes(){
 						'cor' => 'blue',
 					),
 				),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Páginas',
+			        'id' => 'paginas',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'paginas/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Páginas - Adicionar',
+			        'id' => 'paginas-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'paginas/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '60d506a6b4ea89e191ad934a1f9f956f',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Páginas - Editar',
+			        'id' => 'paginas-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'paginas/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '0a27e97a25e2bc6b5214489a9025b07f',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 			);
 		break;
 		case 'status':

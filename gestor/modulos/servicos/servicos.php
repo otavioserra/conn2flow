@@ -590,6 +590,54 @@ function servicos_adicionar(){
 				),
 			)
 		),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Serviços',
+			        'id' => 'servicos',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'servicos/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Serviços - Adicionar',
+			        'id' => 'servicos-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'servicos/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '631d2fa48c9b589430a46113a9690b52',
+			            'css' => 'ad66d4a62cec6d638233bcbac8aed46c',
+			        ],
+			    ],
+			    [
+			        'name' => 'Serviços - Editar',
+			        'id' => 'servicos-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'servicos/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'd9972fac28974f2fbcb8ed1045a34c6b',
+			            'css' => 'ad66d4a62cec6d638233bcbac8aed46c',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 	);
 	
 	$dadosServidor = htmlentities(json_encode($dadosServidor));

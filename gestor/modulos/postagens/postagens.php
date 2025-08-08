@@ -912,6 +912,54 @@ function postagens_interfaces_padroes(){
 						'cor' => 'blue',
 					),
 				),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Postagens',
+			        'id' => 'postagens',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'postagens/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Postagens - Adicionar',
+			        'id' => 'postagens-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'postagens/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'b1ec418459426d3fad227f6a3867a7f0',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Postagens - Editar',
+			        'id' => 'postagens-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'postagens/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '606ec6b441ccce0bc7b1cae15f6e08c2',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 			);
 		break;
 	}

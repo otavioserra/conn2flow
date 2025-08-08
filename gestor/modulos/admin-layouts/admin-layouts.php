@@ -16,6 +16,80 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Admin Layouts',
+			        'id' => 'admin-layouts',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-layouts/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Admin Layouts - Editar',
+			        'id' => 'admin-layouts-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-layouts/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '77ecd4a57a138f62f7aba2a41ad07d10',
+			            'css' => '790844bbf8e5096b40503eac9a60d721',
+			        ],
+			    ],
+			    [
+			        'name' => 'Admin Layouts - Adicionar',
+			        'id' => 'admin-layouts-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-layouts/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '3662c00cd39c81d8f43aedff4270a71a',
+			            'css' => 'ce06862621b92714d6717376aba8c2ab',
+			        ],
+			    ],
+			    [
+			        'name' => 'Emissão teste',
+			        'id' => 'emissao-teste',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-layouts/emissao/',
+			        'type' => 'page',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '951b7dd20d4948f0bb859ef663a16ed0',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Emissão',
+			        'id' => 'emissao',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-layouts/asdasdasd/',
+			        'type' => 'system',
+			        'root' => true,
+			        'without_permission' => true,
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '67c62da199c18f63bd0b81b81fcaa45d',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function admin_layouts_adicionar(){

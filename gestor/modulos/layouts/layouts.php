@@ -16,6 +16,54 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_modificacao' => 'data_modificacao',
 		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Layouts',
+			        'id' => 'layouts',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'layouts/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Layouts - Adicionar',
+			        'id' => 'layouts-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'layouts/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '3662c00cd39c81d8f43aedff4270a71a',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Layouts - Editar',
+			        'id' => 'layouts-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'layouts/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '77ecd4a57a138f62f7aba2a41ad07d10',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function hosts_layouts_adicionar(){

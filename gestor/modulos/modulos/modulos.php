@@ -193,6 +193,106 @@ function modulos_buscar_ids_duplicados(){
 			'ignorarAtualizacoes' => true,
 			'ignorarAddSlashes' => true,
 		),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Módulos',
+			        'id' => 'modulos',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'modulos/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Módulos - Adicionar',
+			        'id' => 'modulos-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'modulos/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '9439eb9e98debf8dce934216f6735dae',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Módulos - Editar',
+			        'id' => 'modulos-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'modulos/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'd78b01e64a55afbf20cb548448f2adbc',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Módulos - Variáveis',
+			        'id' => 'modulos-variaveis',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'modulos/variaveis/',
+			        'type' => 'system',
+			        'option' => 'variaveis',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'c3322a1549a8c1b36e4e9d648cdab369',
+			            'css' => '44d19aa88ee9abed08f25ab4b7a93ae2',
+			        ],
+			    ],
+			    [
+			        'name' => 'Módulos Administração de Sistema - Sincronizar Bancos',
+			        'id' => 'modulos-administracao-de-sistema-sincronizar-bancos',
+			        'layout' => 'layout-pagina-sem-permissao',
+			        'path' => 'modulos/sincronizar-bancos/',
+			        'type' => 'system',
+			        'option' => 'sincronizar-bancos',
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Módulos Administração de Sistema - Copiar Variáveis',
+			        'id' => 'modulos-administracao-de-sistema-copiar-variaveis',
+			        'layout' => 'layout-pagina-sem-permissao',
+			        'path' => 'modulos/copiar-variaveis/',
+			        'type' => 'system',
+			        'option' => 'copiar-variaveis',
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Sincronizar Bancos',
+			        'id' => 'sincronizar-bancos',
+			        'layout' => 'layout-pagina-sem-permissao',
+			        'path' => 'modulos/sincronizar-bancos/',
+			        'type' => 'system',
+			        'option' => 'sincronizar-bancos',
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 	);
 	
 	foreach($tabelas as $tabela){

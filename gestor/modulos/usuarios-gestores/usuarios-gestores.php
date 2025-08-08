@@ -19,6 +19,54 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'historico' => Array(
 		'moduloIdExtra' => 'perfil-usuario',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Usuários Gestores',
+			        'id' => 'usuarios-gestores',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-gestores/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários Gestores - Adicionar',
+			        'id' => 'usuarios-gestores-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-gestores/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '9e6cdd511b6ce7a88c8a691490a9e8c8',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários Gestores - Editar',
+			        'id' => 'usuarios-gestores-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-gestores/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'a5ad23e5006dad3a7c0fea9a92bc318c',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function usuarios_adicionar(){

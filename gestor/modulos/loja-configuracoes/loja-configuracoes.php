@@ -11,6 +11,28 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'id' => 'id',
 		'id_numerico' => 'id_'.'hosts_variaveis',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Loja Configurações',
+			        'id' => 'loja-configuracoes',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'loja-configuracoes/',
+			        'type' => 'system',
+			        'option' => 'config',
+			        'root' => true,
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'e9a39d099d0c52dbc914bcb1b792dca6',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 // ===== Funções Auxiliares

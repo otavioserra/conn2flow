@@ -1323,6 +1323,54 @@ function usuarios_perfis_interfaces_padroes(){
 						'cor' => 'blue',
 					),
 				),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Usuários Perfis',
+			        'id' => 'usuarios-perfis',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-perfis/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários Perfis - Adicionar',
+			        'id' => 'usuarios-perfis-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-perfis/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'fa4eb8342191da856f9bdfd0c4600189',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários Perfis - Editar',
+			        'id' => 'usuarios-perfis-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-perfis/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'cc8d9a2d0d8ae6b00523f6e5d50f3c55',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 			);
 		break;
 	}

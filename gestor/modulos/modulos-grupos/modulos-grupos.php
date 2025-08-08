@@ -15,6 +15,67 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Módulos Grupos',
+			        'id' => 'modulos-grupos',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'modulos-grupos/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Módulos Grupos - Adicionar',
+			        'id' => 'modulos-grupos-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'modulos-grupos/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '4c5b33e993a4f77438a14e51677fce05',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Módulos Grupos - Editar',
+			        'id' => 'modulos-grupos-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'modulos-grupos/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '7b9c7f1b9498d9099d15b7d90a88a05a',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Teste de Adição - Novo',
+			        'id' => 'teste-de-adicao-novo',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'modulos-grupos/funcao/',
+			        'type' => 'page',
+			        'option' => 'funcao',
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function modulos_grupos_adicionar(){

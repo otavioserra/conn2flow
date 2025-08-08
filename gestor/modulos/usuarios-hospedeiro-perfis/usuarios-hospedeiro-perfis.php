@@ -1450,6 +1450,54 @@ function hosts_usuarios_perfis_interfaces_padroes(){
 						'cor' => 'blue',
 					),
 				),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Usuários Hospedeiro Perfis',
+			        'id' => 'usuarios-hospedeiro-perfis',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-hospedeiro-perfis/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários Hospedeiro Perfis - Adicionar',
+			        'id' => 'usuarios-hospedeiro-perfis-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-hospedeiro-perfis/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '85f6f0fa6aef9954afc5da483a266742',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários Hospedeiro Perfis - Editar',
+			        'id' => 'usuarios-hospedeiro-perfis-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-hospedeiro-perfis/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '34fa172e5418016e67b74388d8d07517',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 			);
 		break;
 	}

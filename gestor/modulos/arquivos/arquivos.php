@@ -19,6 +19,41 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'imagem' => Array(
 		'mini_width' => 200,
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Arquivos',
+			        'id' => 'arquivos',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'arquivos/',
+			        'type' => 'system',
+			        'option' => 'listar-arquivos',
+			        'root' => true,
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'e39ca6c90ae587323b153dc33bbc47e3',
+			            'css' => '701235bfff333789477b95cef8060234',
+			        ],
+			    ],
+			    [
+			        'name' => 'Arquivos - Adicionar',
+			        'id' => 'arquivos-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'arquivos/adicionar/',
+			        'type' => 'system',
+			        'option' => 'upload',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '6de224c1f87273e92e870c0870da2cf8',
+			            'css' => 'be42908fa1ef5959dc07e53d527fe60d',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 // ===== Interfaces Auxiliares

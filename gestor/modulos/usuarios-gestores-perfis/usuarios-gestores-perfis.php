@@ -1685,6 +1685,54 @@ function usuarios_perfis_interfaces_padroes(){
 						'cor' => 'blue',
 					),
 				),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Usuários Gestores Perfis',
+			        'id' => 'usuarios-gestores-perfis',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-gestores-perfis/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários Gestores Perfis - Adicionar',
+			        'id' => 'usuarios-gestores-perfis-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-gestores-perfis/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '61a4fcb4fc80216a38fb5e40a5e544e7',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários Gestores Perfis - Editar',
+			        'id' => 'usuarios-gestores-perfis-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-gestores-perfis/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '8cde358a3d847ba628d35653c34ccefa',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 			);
 		break;
 	}

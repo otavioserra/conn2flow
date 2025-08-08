@@ -1324,6 +1324,54 @@ function hosts_usuarios_perfis_interfaces_padroes(){
 						'cor' => 'blue',
 					),
 				),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Usuários Hospedeiro Perfis Admin',
+			        'id' => 'usuarios-hospedeiro-perfis-admin',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-hospedeiro-perfis-admin/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários Hospedeiro Perfis Admin - Adicionar',
+			        'id' => 'usuarios-hospedeiro-perfis-admin-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-hospedeiro-perfis-admin/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'fa4eb8342191da856f9bdfd0c4600189',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários Hospedeiro Perfis Admin - Editar',
+			        'id' => 'usuarios-hospedeiro-perfis-admin-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-hospedeiro-perfis-admin/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'cc8d9a2d0d8ae6b00523f6e5d50f3c55',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 			);
 		break;
 	}

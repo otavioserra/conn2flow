@@ -14,6 +14,41 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			'class' => 'black',
 		),
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Dashboard',
+			        'id' => 'dashboard',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'dashboard/',
+			        'type' => 'system',
+			        'option' => 'inicio',
+			        'root' => true,
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '1b854ede756a411d1a317e20401c6b4d',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Dashboard Pré Publicação',
+			        'id' => 'testes-do-dashboard',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'octavio-pagina/',
+			        'type' => 'system',
+			        'option' => 'dashboard-teste',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'b67e53ae2f70f150c2341f00e7279778',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function dashboard_toast($params = false){

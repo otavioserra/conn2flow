@@ -15,6 +15,54 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Admin Componentes',
+			        'id' => 'admin-componentes',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-componentes/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Admin Componentes - Adicionar',
+			        'id' => 'admin-componentes-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-componentes/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '8f45096270270440a767a4b1714fb7e4',
+			            'css' => 'ce06862621b92714d6717376aba8c2ab',
+			        ],
+			    ],
+			    [
+			        'name' => 'Admin Componentes - Editar',
+			        'id' => 'admin-componentes-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-componentes/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'e77ceb8c3a19d117fe17fae2923d0150',
+			            'css' => '790844bbf8e5096b40503eac9a60d721',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function admin_componentes_adicionar(){

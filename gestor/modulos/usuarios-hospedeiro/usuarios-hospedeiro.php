@@ -19,6 +19,54 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 	'historico' => Array(
 		'moduloIdExtra' => 'hosts-usuarios',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Usuários Hospedeiro',
+			        'id' => 'usuarios-hospedeiro',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-hospedeiro/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários Hospedeiro - Adicionar',
+			        'id' => 'usuarios-hospedeiro-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-hospedeiro/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '5fc1bb02584dde4830bf12d2bffc7c2f',
+			            'css' => 'c120e3f8edf1c289de8b09f494657350',
+			        ],
+			    ],
+			    [
+			        'name' => 'Usuários Hospedeiro - Editar',
+			        'id' => 'usuarios-hospedeiro-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'usuarios-hospedeiro/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'db04e2c1091e64bb42353bdea3534322',
+			            'css' => 'c120e3f8edf1c289de8b09f494657350',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function usuarios_adicionar(){

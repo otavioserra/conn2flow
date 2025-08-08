@@ -12,6 +12,28 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'id' => 'id',
 		'id_numerico' => 'id_'.'hosts_variaveis',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Configurações de Agendamentos',
+			        'id' => 'configuracoes-de-agendamentos',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'configuracoes-agendamentos/',
+			        'type' => 'system',
+			        'option' => 'config',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 // ===== Funções Auxiliares

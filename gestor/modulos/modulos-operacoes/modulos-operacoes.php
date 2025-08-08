@@ -15,6 +15,54 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Módulos Operações',
+			        'id' => 'modulos-operacoes',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'modulos-operacoes/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Módulos Operações - Adicionar',
+			        'id' => 'modulos-operacoes-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'modulos-operacoes/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '13daed3811c3397964c10696d51948c4',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Módulos Operações - Editar',
+			        'id' => 'modulos-operacoes-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'modulos-operacoes/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'e5033776dc862a9139c9948b68df67aa',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function modulos_operacoes_adicionar(){

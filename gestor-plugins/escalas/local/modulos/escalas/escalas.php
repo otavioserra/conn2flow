@@ -16,6 +16,38 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Escalas',
+			        'id' => 'escalas',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'escalas/',
+			        'type' => 'system',
+			        'option' => 'administrar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			],
+			'components' => [
+			    [
+			        'name' => 'Impressão Cabeçalho Escalas',
+			        'id' => 'impressao-cabecalho-escalas',
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			],
+		],
+	],
 );
 
 // ===== Funções Auxiliares

@@ -16,6 +16,41 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Admin Hosts',
+			        'id' => 'admin-hosts',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-hosts/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Admin Hosts - Editar',
+			        'id' => 'admin-hosts-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-hosts/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '8dcc752f8fc5eff5a1398ba8c7e3a99c',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function admin_hosts_editar(){

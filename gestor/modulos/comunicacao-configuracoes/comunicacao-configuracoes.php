@@ -11,6 +11,41 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'id' => 'id',
 		'id_numerico' => 'id_'.'hosts_variaveis',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Comunicação Configurações',
+			        'id' => 'comunicacao-configuracoes',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'comunicacao-configuracoes/',
+			        'type' => 'system',
+			        'option' => 'config',
+			        'root' => true,
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'a260107449f3e3a36513442c78ab2609',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Disparador de Emails Teste',
+			        'id' => 'disparador-de-emails-teste',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'comunicacao-configuracoes/disparador-emails/',
+			        'type' => 'system',
+			        'option' => 'disparador-emails',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '1914100d1be7ff5d604dc529548ae2fb',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 // ===== Funções Auxiliares

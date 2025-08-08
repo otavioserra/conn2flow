@@ -15,6 +15,54 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 		'data_criacao' => 'data_criacao',
 		'data_modificacao' => 'data_modificacao',
 	),
+	'resources' => [
+		'pt-br' => [
+			'layouts' => [],
+			'pages' => [
+			    [
+			        'name' => 'Admin Plugins',
+			        'id' => 'admin-plugins',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-plugins/',
+			        'type' => 'system',
+			        'option' => 'listar',
+			        'root' => true,
+			        'version' => '0',
+			        'checksum' => [
+			            'html' => '',
+			            'css' => '',
+			        ],
+			    ],
+			    [
+			        'name' => 'Admin Plugins - Adicionar',
+			        'id' => 'admin-plugins-adicionar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-plugins/adicionar/',
+			        'type' => 'system',
+			        'option' => 'adicionar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => '554ce8157bb7aaaf4dba021b747a75a0',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			    [
+			        'name' => 'Admin Plugins - Editar',
+			        'id' => 'admin-plugins-editar',
+			        'layout' => 'layout-administrativo-do-gestor',
+			        'path' => 'admin-plugins/editar/',
+			        'type' => 'system',
+			        'option' => 'editar',
+			        'version' => '1.1',
+			        'checksum' => [
+			            'html' => 'c4bd791baff253a5adf99a634f2fbabb',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			        ],
+			    ],
+			],
+			'components' => [],
+		],
+	],
 );
 
 function admin_plugins_adicionar(){
