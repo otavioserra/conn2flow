@@ -30,10 +30,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'system',
 			        'option' => 'listar-arquivos',
 			        'root' => true,
-			        'version' => '1.1',
+			        'version' => '1.2',
 			        'checksum' => [
-			            'html' => 'e39ca6c90ae587323b153dc33bbc47e3',
-			            'css' => '701235bfff333789477b95cef8060234',
+			            'html' => '8f33d8113e655162a32f7a7213409e19',
+			            'css' => 'da65a7d1abba118408353e14d6102779',
+			            'combined' => 'ddb032331dd7e8da25416f3ac40a104a',
 			        ],
 			    ],
 			    [
@@ -43,10 +44,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-arquivos/adicionar/',
 			        'type' => 'system',
 			        'option' => 'upload',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '6de224c1f87273e92e870c0870da2cf8',
-			            'css' => 'be42908fa1ef5959dc07e53d527fe60d',
+			            'html' => '394122d6c6e3f8ba4ac350a5d7791b33',
+			            'css' => '72b0bf4a8ae69c7acf2cffbd036d1c62',
+			            'combined' => 'defcd0d295170fbfe13cc2788dd402fe',
 			        ],
 			    ],
 			    [
@@ -56,10 +58,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-arquivos/emissao-teste/',
 			        'type' => 'system',
 			        'without_permission' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
 			            'html' => '',
 			            'css' => '',
+			            'combined' => '',
 			        ],
 			    ],
 			],

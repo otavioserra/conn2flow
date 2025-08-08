@@ -28,10 +28,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -41,10 +42,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-hosts/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '8dcc752f8fc5eff5a1398ba8c7e3a99c',
+			            'html' => '2705a7d4d5e84c96012eca9a6cd339ed',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '2705a7d4d5e84c96012eca9a6cd339ed',
 			        ],
 			    ],
 			],

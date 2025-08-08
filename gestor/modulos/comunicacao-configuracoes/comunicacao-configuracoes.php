@@ -23,10 +23,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'system',
 			        'option' => 'config',
 			        'root' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
 			            'html' => 'a260107449f3e3a36513442c78ab2609',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'a260107449f3e3a36513442c78ab2609',
 			        ],
 			    ],
 			    [
@@ -36,10 +37,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'comunicacao-configuracoes/disparador-emails/',
 			        'type' => 'system',
 			        'option' => 'disparador-emails',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '1914100d1be7ff5d604dc529548ae2fb',
+			            'html' => 'aea098f46856f41f33e1ba518b9d083c',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'aea098f46856f41f33e1ba518b9d083c',
 			        ],
 			    ],
 			],

@@ -61,8 +61,9 @@ function incrementVersion($current_version) {
 
 // Função para comparar checksums
 function checksumsChanged($old_checksum, $new_checksum) {
+    // Se não há checksum anterior, considerar que houve mudança apenas se há conteúdo novo
     if (!isset($old_checksum['combined']) || !isset($new_checksum['combined'])) {
-        return true;
+        return false; // Não forçar atualização se não há checksums para comparar
     }
     return $old_checksum['combined'] !== $new_checksum['combined'];
 }
@@ -75,39 +76,59 @@ function updateResourceInMapping(&$resource_item, $new_checksum) {
         
         echo "⬆️ Versão atualizada: {$resource_item['id']} -> v{$resource_item['version']}\n";
         return true;
+    } else {
+        echo "✅ Nenhuma alteração detectada: {$resource_item['id']} (mantendo v{$resource_item['version']})\n";
+        return false;
     }
-    return false;
 }
 
-// Função para processar arquivo de módulo
+// Função para processar arquivo de módulo (apenas se existirem arquivos físicos)
 function updateModuleResourceMapping($module_path, $module_id, $language, $resource_type, $resource_id, $new_checksum) {
     $module_file = $module_path . "/$module_id.php";
     if (!file_exists($module_file)) {
         return false;
     }
     
+    // Verificar se existem arquivos físicos antes de processar
+    $resource_dir = $module_path . "/resources/$language/$resource_type/$resource_id";
+    $html_file = $resource_dir . "/$resource_id.html";
+    $css_file = $resource_dir . "/$resource_id.css";
+    
+    // Se não existir nem HTML nem CSS físicos, não processar
+    if (!file_exists($html_file) && !file_exists($css_file)) {
+        // Não é erro - recurso pode ser definido apenas no array
+        return false;
+    }
+    
     // Ler conteúdo do arquivo do módulo
     $module_content = file_get_contents($module_file);
     
-    // Procurar pela estrutura específica do recurso no módulo
-    $pattern = '/(\[\s*\'name\'\s*=>\s*[^,]+,\s*\'id\'\s*=>\s*\'' . preg_quote($resource_id) . '\',.*?\'version\'\s*=>\s*\')([^\']+)(\',\s*\'checksum\'\s*=>\s*\[\s*\'html\'\s*=>\s*\')([^\']*)(\',\s*\'css\'\s*=>\s*\')([^\']*)(\',?\s*\]\s*,)/s';
+    // Pattern atualizado para incluir a variável 'combined' que agora existe em todos os módulos
+    $pattern = '/(\[\s*\'name\'\s*=>\s*[^,]+,\s*\'id\'\s*=>\s*\'' . preg_quote($resource_id) . '\',.*?\'version\'\s*=>\s*\')([^\']+)(\',\s*\'checksum\'\s*=>\s*\[\s*\'html\'\s*=>\s*\')([^\']*)(\',\s*\'css\'\s*=>\s*\')([^\']*)(\',\s*\'combined\'\s*=>\s*\')([^\']*)(\',?\s*\]\s*,?\s*\]\s*,)/s';
     
     if (preg_match($pattern, $module_content, $matches)) {
         $old_version = $matches[2];
         $old_html_checksum = $matches[4];
         $old_css_checksum = $matches[6];
+        $old_combined_checksum = $matches[8];
         
-        // Comparar checksums
-        $old_combined = md5($old_html_checksum . $old_css_checksum);
+        // Criar checksum antigo no mesmo formato
+        $old_checksum_structure = [
+            'html' => $old_html_checksum,
+            'css' => $old_css_checksum,
+            'combined' => $old_combined_checksum
+        ];
         
-        if ($old_combined !== $new_checksum['combined']) {
+        // Comparar checksums usando a função existente
+        if (checksumsChanged($old_checksum_structure, $new_checksum)) {
             // Incrementar versão
             $new_version = incrementVersion($old_version);
             
-            // Criar nova estrutura de checksum
+            // Criar nova estrutura de checksum incluindo 'combined'
             $new_resource = $matches[1] . $new_version . $matches[3] . 
                            $new_checksum['html'] . $matches[5] . 
-                           $new_checksum['css'] . $matches[7];
+                           $new_checksum['css'] . $matches[7] . 
+                           $new_checksum['combined'] . $matches[9];
             
             // Substituir no conteúdo
             $new_module_content = str_replace($matches[0], $new_resource, $module_content);
@@ -117,12 +138,14 @@ function updateModuleResourceMapping($module_path, $module_id, $language, $resou
             
             echo "⬆️ Módulo $module_id - Versão atualizada: $resource_id -> v$new_version\n";
             return true;
+        } else {
+            echo "✅ Módulo $module_id - Nenhuma alteração detectada: $resource_id (mantendo v$old_version)\n";
+            return false;
         }
     } else {
-        echo "⚠️ Módulo $module_id - Padrão não encontrado para: $resource_id\n";
+        // Não é mais um aviso - recurso sem arquivos físicos é normal
+        return false;
     }
-    
-    return false;
 }
 
 // Função para gerar código PHP do seeder

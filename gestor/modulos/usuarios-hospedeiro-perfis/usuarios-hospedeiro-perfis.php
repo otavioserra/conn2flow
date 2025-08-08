@@ -1462,10 +1462,11 @@ function hosts_usuarios_perfis_interfaces_padroes(){
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -1475,10 +1476,11 @@ function hosts_usuarios_perfis_interfaces_padroes(){
 			        'path' => 'usuarios-hospedeiro-perfis/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '85f6f0fa6aef9954afc5da483a266742',
+			            'html' => 'c8360c3836f86ea2fda65c72db9849dd',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'c8360c3836f86ea2fda65c72db9849dd',
 			        ],
 			    ],
 			    [
@@ -1488,10 +1490,11 @@ function hosts_usuarios_perfis_interfaces_padroes(){
 			        'path' => 'usuarios-hospedeiro-perfis/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '34fa172e5418016e67b74388d8d07517',
+			            'html' => '3d289cbc9669e1b6ccdf94f813f8e1f2',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '3d289cbc9669e1b6ccdf94f813f8e1f2',
 			        ],
 			    ],
 			],

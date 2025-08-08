@@ -812,10 +812,11 @@ function hosts_paginas_interfaces_padroes(){
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -825,10 +826,11 @@ function hosts_paginas_interfaces_padroes(){
 			        'path' => 'paginas/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '60d506a6b4ea89e191ad934a1f9f956f',
+			            'html' => 'd80bc815d72c1f09657064b22bf98338',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd80bc815d72c1f09657064b22bf98338',
 			        ],
 			    ],
 			    [
@@ -838,10 +840,11 @@ function hosts_paginas_interfaces_padroes(){
 			        'path' => 'paginas/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '0a27e97a25e2bc6b5214489a9025b07f',
+			            'html' => 'eb6e44c32b31b9d55c44557ed1c7c927',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'eb6e44c32b31b9d55c44557ed1c7c927',
 			        ],
 			    ],
 			],

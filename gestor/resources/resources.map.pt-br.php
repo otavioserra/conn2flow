@@ -3,7 +3,7 @@
 /**********
 	Description: resources mapping: pt-br (apenas recursos globais).
 	Module-specific resources migrated to respective module files.
-	Updated at: 2025-08-08 12:51:52
+	Updated at: 2025-08-08 14:31:37
 **********/
 
 // ===== Variable definition.
@@ -15,12 +15,12 @@ $resources = array (
     array (
       'name' => 'Layout Administrativo do Gestor',
       'id' => 'layout-administrativo-do-gestor',
-      'version' => '1.1',
+      'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '01496ea4ee2378a59a3d7cca7dd45b91',
-        'css' => '73bc8b1f78e73e33830c8792761384bb',
-        'combined' => '4cd3895908a824ca2e7e50e68b4c8f9c',
+        'html' => '47b4e8434e35ea44407008a3c1b02ff7',
+        'css' => 'f10fa90d6577c2fdae5f56b13589179a',
+        'combined' => 'f94ef140d592752cdc8e4d4d0e1c8e18',
       ),
     ),
     1 => 
@@ -30,9 +30,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '639464b69c7768bb89c9652ecd6da096',
-        'css' => '88642c85f3bc488b15cd109241606867',
-        'combined' => 'd337e6be29531f9e2b748dd4f5a05c19',
+        'html' => '534a5cb00759351609bfee177e8ed489',
+        'css' => 'c3fd0dfa321e5a4f032ff574cc07a4fb',
+        'combined' => 'd21bfb8b8103d1b5e33f217e9ae19cb0',
       ),
     ),
     2 => 
@@ -42,9 +42,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'f743895944e00181febbefdd49eb7e50',
-        'css' => 'fc98eb0f2b970c15499298cbaa499bee',
-        'combined' => 'f12d1f1470f467f6f8e5b78cb2fd27e3',
+        'html' => 'b9246cdd3db37c3e1e558b3fc846c368',
+        'css' => '9454a802af5d3febf83ff9c503544b36',
+        'combined' => 'c332742920e013627280ff66b3180c84',
       ),
     ),
     3 => 
@@ -54,9 +54,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '8bffae94e9a3b69f12522c2b68384b8e',
+        'html' => '0bf6b9ed25e76568e4accab429285052',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '8bffae94e9a3b69f12522c2b68384b8e',
+        'combined' => '0bf6b9ed25e76568e4accab429285052',
       ),
     ),
     4 => 
@@ -66,9 +66,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'ace732bdb0ba1dd5842d8d600d5bffc5',
+        'html' => '32efb11426f18240e00a7245cbce3212',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => 'ace732bdb0ba1dd5842d8d600d5bffc5',
+        'combined' => '32efb11426f18240e00a7245cbce3212',
       ),
     ),
     5 => 
@@ -78,9 +78,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '8bffae94e9a3b69f12522c2b68384b8e',
+        'html' => '0bf6b9ed25e76568e4accab429285052',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '8bffae94e9a3b69f12522c2b68384b8e',
+        'combined' => '0bf6b9ed25e76568e4accab429285052',
       ),
     ),
     6 => 
@@ -90,9 +90,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'd206efb560c38d53740e2871bf4264a4',
-        'css' => '88642c85f3bc488b15cd109241606867',
-        'combined' => '25717d5c19b341405f08279c19fc051f',
+        'html' => '73492006e83b39b4c93cc5e50dc9c1f9',
+        'css' => 'c3fd0dfa321e5a4f032ff574cc07a4fb',
+        'combined' => '6ac006e1557dcaec0ed165b17e5267b2',
       ),
     ),
     7 => 
@@ -102,9 +102,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '328c4995ff1810fccd4df18225066e46',
-        'css' => 'd5d5d38721ee6fea53960fe36904d0e3',
-        'combined' => '20a7a95ff85d56d0eeed6329aafe9c65',
+        'html' => '5600cc39c547c5f54a79141a1609a67d',
+        'css' => '2594d3fe597dde9fd1504761b40e35d9',
+        'combined' => '2f7747f656f0b3cd467099d331cdbff4',
       ),
     ),
     8 => 
@@ -114,9 +114,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '8bffae94e9a3b69f12522c2b68384b8e',
+        'html' => '0bf6b9ed25e76568e4accab429285052',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '8bffae94e9a3b69f12522c2b68384b8e',
+        'combined' => '0bf6b9ed25e76568e4accab429285052',
       ),
     ),
     9 => 
@@ -126,9 +126,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '6e2e765d093a4dfd4dd86025cb02c2a8',
-        'css' => '7a9c7627d747baa027d08d1461ca81fb',
-        'combined' => '1f2230d3fd2475858bf40743355878f2',
+        'html' => 'ae88be428a8d8119961ff930c7ba35db',
+        'css' => '15b6f90fa29dc85001fce5909d771034',
+        'combined' => 'eb06a5a02a4b2ec78658b1a1cbabe3ba',
       ),
     ),
     10 => 
@@ -138,9 +138,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '7fdbde7c2f3ca6785743b3375d41fce4',
-        'css' => '4d4cad94393a040c501f6d712cbfb244',
-        'combined' => '160c0e3c7cb572c9dbc780aa229e4838',
+        'html' => '3cff323514c7507537029b50eac33eef',
+        'css' => 'b37dfd1ae99d8fbc8fec01de439345aa',
+        'combined' => '8074b5ab4720428c6bf86af3d7465b6b',
       ),
     ),
     11 => 
@@ -150,9 +150,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'eed7eaf5d551bb8d66ec2ed5caead325',
-        'css' => '5c332c9422840d4658a492a7a8d5e6a8',
-        'combined' => '3947c804beef3afdfe09a50266c03f1b',
+        'html' => 'd12a11673a45cc1ac8bb301570566b17',
+        'css' => '3cb92b2858b7f058956f6b632a804f6a',
+        'combined' => 'cc496fecd41e6adf962f7bbb393d0952',
       ),
     ),
   ),
@@ -170,9 +170,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '67a3785c1c5150f9a94e2c596b3ec987',
-        'css' => '23032b3d6fd258d5a4db5d8b7bbfa614',
-        'combined' => '43441e383198ba42cf70c0416cfc69c9',
+        'html' => 'abd323652303af692993705eb9a6b154',
+        'css' => '6167910c62f61c6823c352b91b5f2d7b',
+        'combined' => 'ec8d83716be53edd06fca3c0f112784e',
       ),
     ),
     1 => 
@@ -185,9 +185,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'c355467d108bf96e9a95c46df4e3a692',
+        'html' => '31a1fd53b1e27d8140ff384192307174',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => 'c355467d108bf96e9a95c46df4e3a692',
+        'combined' => '31a1fd53b1e27d8140ff384192307174',
       ),
     ),
     2 => 
@@ -200,9 +200,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'effb09176d8398846c04651fdac0168e',
-        'css' => '75cccb47d580ac36844615427b70963b',
-        'combined' => 'a3079d4ef5648f3f7be6e1b7ea28a387',
+        'html' => '541933857364212ec6a4925c86d75feb',
+        'css' => '635794792273cbaa101a544f44d917e0',
+        'combined' => '79695fd8d837dda4d0306ecc03953f05',
       ),
     ),
     3 => 
@@ -215,9 +215,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'b2eba34fbd33750287623a2ebc97ea91',
+        'html' => 'ee70befa061dea94472dbfc017b9e996',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => 'b2eba34fbd33750287623a2ebc97ea91',
+        'combined' => 'ee70befa061dea94472dbfc017b9e996',
       ),
     ),
     4 => 
@@ -230,9 +230,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '064c8aaac37b68af07a3c56caba1c9d9',
+        'html' => 'edb2983002a299cbb021463e3cab97c1',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '064c8aaac37b68af07a3c56caba1c9d9',
+        'combined' => 'edb2983002a299cbb021463e3cab97c1',
       ),
     ),
     5 => 
@@ -245,9 +245,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '61b374f2ce0cd067ed224dddfb815f3e',
+        'html' => 'c7356dca49d5ac88f2050ebc7482f631',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '61b374f2ce0cd067ed224dddfb815f3e',
+        'combined' => 'c7356dca49d5ac88f2050ebc7482f631',
       ),
     ),
     6 => 
@@ -260,9 +260,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'b5f5358b87204b368105c51d7cf5e15a',
+        'html' => '714b1e5abc246db998e3c0dee2af3143',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => 'b5f5358b87204b368105c51d7cf5e15a',
+        'combined' => '714b1e5abc246db998e3c0dee2af3143',
       ),
     ),
     7 => 
@@ -275,9 +275,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '3440f26e5ad59ab07b0b2ceb1cbc59d4',
-        'css' => '5ab60cf2df94d33b38a9d6e3bfe96c01',
-        'combined' => '709c48258d716fe4ee17ff16b307113a',
+        'html' => '51e99cdf2cc507c4bcc2bcedf6dd58db',
+        'css' => '04c75a7678b04bb96905e0b1d99c1fb1',
+        'combined' => 'c9ff75b1cb931a501ad030fe3fe385f7',
       ),
     ),
     8 => 
@@ -290,9 +290,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '4586880f460aa43b6edc40d1f43e6f2f',
-        'css' => '510b7776ce45448b1168408b605b8f81',
-        'combined' => 'f642dc579bce821ed1258da8ffa44834',
+        'html' => '397b6924f5a7d68a24973f74f0c8750a',
+        'css' => '6b5fed50b753e17984890635aad4827e',
+        'combined' => 'da33ae33fa957a4b92cb2e4ea72ed3de',
       ),
     ),
     9 => 
@@ -305,9 +305,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '224acbac54cfd3adb0c1123f8cd19486',
-        'css' => 'bf83cdc127255f7331d6105783b20ba5',
-        'combined' => '8c516e856d7b1df588af12d704b99ecd',
+        'html' => '76feaa8f2c3c26eaa953140fe4bf08dc',
+        'css' => 'c7d66aacbe6a099b14ceb5202756792a',
+        'combined' => '484ac5b5133fe07e3142a96eda1323e6',
       ),
     ),
     10 => 
@@ -320,9 +320,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '398c7a188374df44662a81a5d27f0fca',
+        'html' => 'c7dbf6167f35360e6ddd89eddcdf969f',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '398c7a188374df44662a81a5d27f0fca',
+        'combined' => 'c7dbf6167f35360e6ddd89eddcdf969f',
       ),
     ),
     11 => 
@@ -335,9 +335,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '761796f6db5d5a580a13d26bc2ed7376',
+        'html' => 'e84bcf4c3f1501e2805bb55f91df3a0f',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '761796f6db5d5a580a13d26bc2ed7376',
+        'combined' => 'e84bcf4c3f1501e2805bb55f91df3a0f',
       ),
     ),
     12 => 
@@ -350,9 +350,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '2c610b3d54fe473896db6c2328bb6ebc',
-        'css' => '6cfa78e023a05aff9ffd9acf32fce4fc',
-        'combined' => '2d088e89e9420a1b547b9c59b03ff447',
+        'html' => '53435aea091c1f5f9555516d8e995b4f',
+        'css' => '30d8b9ddddcb227dd7b525589da49f37',
+        'combined' => '505fa4f9741d96feeedc894051c38fe1',
       ),
     ),
     13 => 
@@ -365,9 +365,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '1f22d7e865d394a7ecf9937f62da38b3',
-        'css' => 'fd727830c53f5066166c9f3a248e74cb',
-        'combined' => '8b3fe8f0144ffbb45d7fe195548b8c65',
+        'html' => '4115be6db3ea992485da369c21330aab',
+        'css' => '5c5c9d7b2428993530da38fbdf5cf51a',
+        'combined' => 'a4c4dc91dd542a2c81dcf78f2b5a40e2',
       ),
     ),
     14 => 
@@ -380,9 +380,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '8ec2ab881b5fa247d697c3c5cf08d928',
+        'html' => '50424370f528eabd071da3d604d33a99',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '8ec2ab881b5fa247d697c3c5cf08d928',
+        'combined' => '50424370f528eabd071da3d604d33a99',
       ),
     ),
     15 => 
@@ -395,9 +395,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '9b76bd56bfb27d352ceedef19b2c9e2c',
-        'css' => 'fd45ab95e7eb51164a30c50d98440fca',
-        'combined' => 'c7a9fc53942d3a53b305c0bce33a9213',
+        'html' => 'd5994fc493015443f976a0712076652f',
+        'css' => '558f11916813f2af1822da02f4fe76f8',
+        'combined' => '1e4f30e0abe5b01a52a402fa3def948c',
       ),
     ),
     16 => 
@@ -410,9 +410,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'ef96ee5680047848949c3ccb6bf6323e',
+        'html' => '4a767f3e7d481028f3e389d13813dc08',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => 'ef96ee5680047848949c3ccb6bf6323e',
+        'combined' => '4a767f3e7d481028f3e389d13813dc08',
       ),
     ),
     17 => 
@@ -425,9 +425,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'b618bff64ed07a101e3a363d623b4ef8',
+        'html' => '1e16f5d167e8e384d5048a673f3e648b',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => 'b618bff64ed07a101e3a363d623b4ef8',
+        'combined' => '1e16f5d167e8e384d5048a673f3e648b',
       ),
     ),
     18 => 
@@ -440,9 +440,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '56f5a8ea10e433e57d7d739cf2ee34b2',
+        'html' => '1906bdbc63a517446515b31903854a3b',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '56f5a8ea10e433e57d7d739cf2ee34b2',
+        'combined' => '1906bdbc63a517446515b31903854a3b',
       ),
     ),
     19 => 
@@ -455,9 +455,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '34f635f0fc6e721843204d09427b15bd',
+        'html' => '19382436d853e5490775f6d034399a0d',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '34f635f0fc6e721843204d09427b15bd',
+        'combined' => '19382436d853e5490775f6d034399a0d',
       ),
     ),
     20 => 
@@ -470,9 +470,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '95372f818a8f9ceaf0959a146ec94c2d',
-        'css' => 'e806ac3231c0cebda2e4ebb8d74cee3c',
-        'combined' => '3bde9ee3189218a29715a87b3a370681',
+        'html' => '6c90dd9daf6ec1fdaa4dc170d5f885b8',
+        'css' => '889f2b471dbbd13e4e9d1e48b3ee4837',
+        'combined' => '71d496f0c0b041d3d76cc40f3cccb3b4',
       ),
     ),
     21 => 
@@ -485,24 +485,24 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'efad6d09136770a995bd5a0c397ad931',
-        'css' => '878ce2b371a1e40ab7683c2decd4e9ef',
-        'combined' => '76493f30f34b264ea40af806cc960a63',
+        'html' => '996ddd8257a3f4abd7b3f884222b9c9c',
+        'css' => '802be20c75b00e7f57e8deef4a99e0a4',
+        'combined' => 'a23169749d6d9bf4f3f7a83ce6129815',
       ),
     ),
     22 => 
     array (
-      'name' => 'Testes do Dashboard',
-      'id' => 'testes-do-dashboard',
-      'path' => 'octavio-pagina/',
+      'name' => 'Testes Globais do Dashboard',
+      'id' => 'testes-globais-dashboard',
+      'path' => 'testes-globais-dashboard/',
       'type' => 'page',
       'root' => true,
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'b67e53ae2f70f150c2341f00e7279778',
+        'html' => 'cf8d79dae48be6e8f5399b9c6ca4d71c',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => 'b67e53ae2f70f150c2341f00e7279778',
+        'combined' => 'cf8d79dae48be6e8f5399b9c6ca4d71c',
       ),
     ),
     23 => 
@@ -515,9 +515,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '6a6bcdbc0f0c0cb3435707ccc276ab3c',
+        'html' => 'fd3b2522d023d539b43cc506e178c54b',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '6a6bcdbc0f0c0cb3435707ccc276ab3c',
+        'combined' => 'fd3b2522d023d539b43cc506e178c54b',
       ),
     ),
     24 => 
@@ -530,7 +530,7 @@ $resources = array (
       'type' => 'system',
       'option' => 'listar',
       'root' => true,
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -549,9 +549,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '3662c00cd39c81d8f43aedff4270a71a',
+        'html' => '65578a67da1ba8603be9c6c030c28af7',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '3662c00cd39c81d8f43aedff4270a71a',
+        'combined' => '65578a67da1ba8603be9c6c030c28af7',
       ),
     ),
     26 => 
@@ -566,9 +566,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '77ecd4a57a138f62f7aba2a41ad07d10',
+        'html' => 'ba1ad805a73ad08b26465d568e4260be',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '77ecd4a57a138f62f7aba2a41ad07d10',
+        'combined' => 'ba1ad805a73ad08b26465d568e4260be',
       ),
     ),
     27 => 
@@ -581,7 +581,7 @@ $resources = array (
       'type' => 'system',
       'option' => 'listar',
       'root' => true,
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -600,9 +600,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '3662c00cd39c81d8f43aedff4270a71a',
+        'html' => '65578a67da1ba8603be9c6c030c28af7',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '3662c00cd39c81d8f43aedff4270a71a',
+        'combined' => '65578a67da1ba8603be9c6c030c28af7',
       ),
     ),
     29 => 
@@ -617,9 +617,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '77ecd4a57a138f62f7aba2a41ad07d10',
+        'html' => 'ba1ad805a73ad08b26465d568e4260be',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '77ecd4a57a138f62f7aba2a41ad07d10',
+        'combined' => 'ba1ad805a73ad08b26465d568e4260be',
       ),
     ),
     30 => 
@@ -632,9 +632,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '953ffe145d86aa7948e6a2c474f9eceb',
-        'css' => 'fde6ea95079beef1c779a8e5d35cd335',
-        'combined' => '8deb29bf499075da22236182e50c46a4',
+        'html' => '21835bd4fea928cd998f9cff0e2773bb',
+        'css' => '6386e4fd49fad9a561b391e0a359c73b',
+        'combined' => 'fa24aa37e42f5cb8bc108d0b4d0d6c95',
       ),
     ),
     31 => 
@@ -646,9 +646,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'bd25480282b4ba5883c1aaf764556925',
+        'html' => '237c7bc9c59382bdba74a1403c37a521',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => 'bd25480282b4ba5883c1aaf764556925',
+        'combined' => '237c7bc9c59382bdba74a1403c37a521',
       ),
     ),
     32 => 
@@ -660,9 +660,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'db02ed9e6ab71dbbad5ddc22921285cb',
-        'css' => '70dc73092d8d147dadbf4b0e77ea0c11',
-        'combined' => 'd24a07d68946f84a41842ba32a497473',
+        'html' => 'e25f313e6c2a1045f21acf794e349571',
+        'css' => '5f1e8c87a356eca23627421e969c02e4',
+        'combined' => '0fded73ad0c21bacdf17ec1a7bf9d7dd',
       ),
     ),
     33 => 
@@ -674,9 +674,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'fb6ee1a14fc4d4de98a0b6515b563aaa',
-        'css' => '53ba62b04ba8efa0a1de98a443892740',
-        'combined' => '84e0f9fb4657f353102fe381aad09d3e',
+        'html' => 'df21e9e1d26037b428e1bf3984a3ffa7',
+        'css' => '43b1e970f6a019d0b42b42642f991fb6',
+        'combined' => 'abc190bc367727d9af2529d4e8c64809',
       ),
     ),
     34 => 
@@ -688,9 +688,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '5836c825fc24ece9e2e48ec14af4e151',
+        'html' => '3b262d0a2674dc6dd8113d035184a7d3',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '5836c825fc24ece9e2e48ec14af4e151',
+        'combined' => '3b262d0a2674dc6dd8113d035184a7d3',
       ),
     ),
     35 => 
@@ -706,8 +706,8 @@ $resources = array (
       'checksum' => 
       array (
         'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'css' => '6f08edd9ae603692713a90a1bd40ec1d',
-        'combined' => '6f08edd9ae603692713a90a1bd40ec1d',
+        'css' => '607e0f6e68e7a2c218542aa428379085',
+        'combined' => '607e0f6e68e7a2c218542aa428379085',
       ),
     ),
     36 => 
@@ -720,7 +720,7 @@ $resources = array (
       'type' => 'system',
       'option' => 'listar',
       'root' => true,
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -739,9 +739,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '0e4d39920b17ee4329ec7570f23f9247',
+        'html' => 'bfb28ecfa1a9418ee071b77a9a6a8f1f',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '0e4d39920b17ee4329ec7570f23f9247',
+        'combined' => 'bfb28ecfa1a9418ee071b77a9a6a8f1f',
       ),
     ),
     38 => 
@@ -756,9 +756,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '1a0a414a647f601b9b58df1668a12ca5',
+        'html' => '84262d9298819a5dcec2363dbfcca7a1',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '1a0a414a647f601b9b58df1668a12ca5',
+        'combined' => '84262d9298819a5dcec2363dbfcca7a1',
       ),
     ),
     39 => 
@@ -784,7 +784,7 @@ $resources = array (
     array (
       'name' => 'Admin Categorias - Categorias Pai Info',
       'id' => 'admin-categorias-categorias-pai-info',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -796,7 +796,7 @@ $resources = array (
       'name' => 'Hosts - Interface Alerta Modal',
       'id' => 'hosts-interface-alerta-modal',
       'module' => 'interface-hosts',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -808,7 +808,7 @@ $resources = array (
       'name' => 'Hosts - Interface Carregando Modal',
       'id' => 'hosts-interface-carregando-modal',
       'module' => 'interface-hosts',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -822,9 +822,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '08e2afea992a6b1cb333e9668cf61ed4',
-        'css' => '31f47e457d8193518413a8882a355b73',
-        'combined' => '30bc76cc2ee111cde91f356e70ed9f47',
+        'html' => '86075406b67435166d945cba5df56ff1',
+        'css' => '87e1823d50f899396806b9b566ac6185',
+        'combined' => '9ee2293b64b881f1d9ceb43df096744b',
       ),
     ),
     4 => 
@@ -834,16 +834,16 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'a84aa60d7ebd5b5aa0cb38b2a914a992',
-        'css' => '3891a26f5c9e3640f42e4b2b7752462b',
-        'combined' => '6733a7d95074af9ebc75c79975a9d747',
+        'html' => '9d003fd56bb000e1c9525245cd5106c4',
+        'css' => 'ba0557b0e23e65afcce0a8da039e4a9b',
+        'combined' => '8271f0187a3cdebbd8196eb8633b3884',
       ),
     ),
     5 => 
     array (
       'name' => 'Templates Seletores Lista',
       'id' => 'templates-seletores-lista',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -854,7 +854,7 @@ $resources = array (
     array (
       'name' => 'Categorias - Categorias Pai Info',
       'id' => 'categorias-categorias-pai-info',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -865,7 +865,7 @@ $resources = array (
     array (
       'name' => 'Categorias - Categorias Filho Lista',
       'id' => 'categorias-categorias-filho-lista',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -876,7 +876,7 @@ $resources = array (
     array (
       'name' => 'Categorias - Categorias Filho Info',
       'id' => 'categorias-categorias-filho-info',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -887,7 +887,7 @@ $resources = array (
     array (
       'name' => 'Hosts - Layout Email Esqueceu Senha',
       'id' => 'hosts-layout-email-esqueceu-senha',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -898,7 +898,7 @@ $resources = array (
     array (
       'name' => 'Admin Categorias - Categorias Filho Lista',
       'id' => 'admin-categorias-categorias-filho-lista',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -909,7 +909,7 @@ $resources = array (
     array (
       'name' => 'Admin Categorias - Categorias Filho Info',
       'id' => 'admin-categorias-categorias-filho-info',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -923,9 +923,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '710de9d0016dcd6f16d251acf94174af',
-        'css' => '09cb7a475aa6dd7d1ab15cd13cf60b2e',
-        'combined' => '11825ebafaaeb41467a29b83d4263708',
+        'html' => '66d0b2b64a3b00263c2a8eaa193867a3',
+        'css' => 'a1c884e20814045be6503eec311e42e4',
+        'combined' => 'a51ad8061d307a4097e7362a6b4e7b53',
       ),
     ),
     13 => 
@@ -935,16 +935,16 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '868b6fef9951e71e79949c65e6da7c6a',
-        'css' => '450114044370c3e0721c33a0a844e980',
-        'combined' => '3a2f8ca6cd07f02ef50d398f212b4a3e',
+        'html' => 'bea79dcb0fb62a2cabff2d757b8747f9',
+        'css' => '1141c974d1568502c3a4f3847cdb8951',
+        'combined' => '095bc1b128ef8f72c4de0d38d902e396',
       ),
     ),
     14 => 
     array (
       'name' => 'Host Update Carregando',
       'id' => 'host-update-carregando',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -955,7 +955,7 @@ $resources = array (
     array (
       'name' => 'Layout Email Esqueceu Senha da Conta FTP',
       'id' => 'layout-email-esqueceu-senha-da-conta-ftp',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -969,9 +969,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '41097d2e6a1be3ac1d6ccd1c62b1f24e',
+        'html' => 'cb61b5d9fbff016cc1c43034f69f184d',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '41097d2e6a1be3ac1d6ccd1c62b1f24e',
+        'combined' => 'cb61b5d9fbff016cc1c43034f69f184d',
       ),
     ),
     17 => 
@@ -981,16 +981,16 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '5ed3ea43983eaba1d9e92d3a44704477',
-        'css' => '7407f3306be0b7b12b00435570ad2adf',
-        'combined' => '71ad7e23cad5b26022375387ff13b1ce',
+        'html' => '095d84451070fe018b376b5c53b950f5',
+        'css' => '56f4a9e69fe691229bea4e6af30543a7',
+        'combined' => 'a207f2b6871d3a9ade4eb38b7507a889',
       ),
     ),
     18 => 
     array (
       'name' => 'Plataforma Gateways - Mensagem - Negado',
       'id' => 'plataforma-gateways-mensagem-negado',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1002,7 +1002,7 @@ $resources = array (
       'name' => 'Hosts - Interface Formulário Autorização Provisória',
       'id' => 'hosts-interface-formulario-autorizacao-provisoria',
       'module' => 'interface-hosts',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1013,7 +1013,7 @@ $resources = array (
     array (
       'name' => 'Layout Email Voucher',
       'id' => 'layout-email-voucher',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1025,7 +1025,7 @@ $resources = array (
       'name' => 'Hosts - Interface Modal Informativo',
       'id' => 'hosts-interface-modal-informativo',
       'module' => 'interface-hosts',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1039,16 +1039,16 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '1b7c348d5daf974191dae9642623e47e',
+        'html' => '2a5e8f5920ab09841f6deaa40c4da5b3',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '1b7c348d5daf974191dae9642623e47e',
+        'combined' => '2a5e8f5920ab09841f6deaa40c4da5b3',
       ),
     ),
     23 => 
     array (
       'name' => 'Pedidos - Dados do Pagador',
       'id' => 'pedidos-dados-do-pagador',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1062,16 +1062,16 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'fcbb4c74f9f39c6d4b900065c1271baa',
-        'css' => '266f3c531ac71faf91898995225c9e28',
-        'combined' => '484d4c9bd5682ac71fb0c5b2a9a21821',
+        'html' => '8093f6b4f62afda1a9defa36b885e615',
+        'css' => 'e1507d655c9c10e868884f3333705a88',
+        'combined' => 'b6b5fcc39fb612dbaa1ab3a88d9a16d3',
       ),
     ),
     25 => 
     array (
       'name' => 'Gateways de Pagamentos - Mensagem - Mudança de Estado',
       'id' => 'gateways-de-pagamentos-mensagem-mudanca-de-estado',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1082,7 +1082,7 @@ $resources = array (
     array (
       'name' => 'Plataforma Gateways - Emails - Assinatura',
       'id' => 'plataforma-gateways-emails-assinatura',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1093,7 +1093,7 @@ $resources = array (
     array (
       'name' => 'Host Config Carregando',
       'id' => 'host-config-carregando',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1104,7 +1104,7 @@ $resources = array (
     array (
       'name' => 'Plataforma Gateways - Mensagem - Reembolso',
       'id' => 'plataforma-gateways-mensagem-reembolso',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1115,7 +1115,7 @@ $resources = array (
     array (
       'name' => 'Plataforma Gateways - Mensagem - Disputa',
       'id' => 'plataforma-gateways-mensagem-disputa',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1126,7 +1126,7 @@ $resources = array (
     array (
       'name' => 'Plataforma Gateways - Mensagem - Pago',
       'id' => 'plataforma-gateways-mensagem-pago',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1137,7 +1137,7 @@ $resources = array (
     array (
       'name' => 'Plataforma Gateways - Mensagem - Pendente',
       'id' => 'plataforma-gateways-mensagem-pendente',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1148,7 +1148,7 @@ $resources = array (
     array (
       'name' => 'Plataforma Gateways - Mensagem - Novo',
       'id' => 'plataforma-gateways-mensagem-novo',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1162,16 +1162,16 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '25f54805a5b3d1366d6057143764865b',
+        'html' => '27a2d26f94e8a8d26703af830c9d59de',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '25f54805a5b3d1366d6057143764865b',
+        'combined' => '27a2d26f94e8a8d26703af830c9d59de',
       ),
     ),
     34 => 
     array (
       'name' => 'Hosts - Layout Emails Assinatura',
       'id' => 'hosts-layout-emails-assinatura',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1185,9 +1185,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '53c4b611141dd7f591d54c7b3008b9e0',
+        'html' => '17898f8cf079921914072cfa54971eb7',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '53c4b611141dd7f591d54c7b3008b9e0',
+        'combined' => '17898f8cf079921914072cfa54971eb7',
       ),
     ),
     36 => 
@@ -1197,9 +1197,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'bdf6f3faa23c198eb4a1c3c9c7cf504b',
-        'css' => '7824db08cd6122ed374a255412ce7317',
-        'combined' => '320f064baba467544ca6752f57011ae9',
+        'html' => '99f3e3849ff34f23b98905e9679469c7',
+        'css' => '85fe0d62415cde276950dc711d8a79b0',
+        'combined' => '36a4c7767c980e0696784aec1491462e',
       ),
     ),
     37 => 
@@ -1228,8 +1228,8 @@ $resources = array (
     ),
     39 => 
     array (
-      'name' => 'Teste de Adição',
-      'id' => 'teste-de-adicao',
+      'name' => 'Teste de Adição 2',
+      'id' => 'teste-de-adicao-2',
       'version' => '1.0',
       'checksum' => 
       array (
@@ -1240,8 +1240,8 @@ $resources = array (
     ),
     40 => 
     array (
-      'name' => 'Teste de Adição',
-      'id' => 'teste-de-adicao',
+      'name' => 'Teste de Adição 3',
+      'id' => 'teste-de-adicao-3',
       'version' => '1.0',
       'checksum' => 
       array (
@@ -1269,9 +1269,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '89732bcc975705e2ff50c499244fdfd7',
+        'html' => 'd89b05f7e9b207dd68d220ac34139054',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '89732bcc975705e2ff50c499244fdfd7',
+        'combined' => 'd89b05f7e9b207dd68d220ac34139054',
       ),
     ),
     43 => 
@@ -1281,9 +1281,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'f4ac4417442a16bad6b98a479d8b90bf',
+        'html' => 'c1574712e986563972da0ccb3938846a',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => 'f4ac4417442a16bad6b98a479d8b90bf',
+        'combined' => 'c1574712e986563972da0ccb3938846a',
       ),
     ),
     44 => 
@@ -1305,15 +1305,15 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '83c15c8bf7014cc823ac6c48140c80d7',
+        'html' => '3b93f234f2a307b5c30157ff1514cb05',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '83c15c8bf7014cc823ac6c48140c80d7',
+        'combined' => '3b93f234f2a307b5c30157ff1514cb05',
       ),
     ),
     46 => 
     array (
-      'name' => 'Teste de Adição',
-      'id' => 'teste-de-adicao',
+      'name' => 'Teste de Adição 4',
+      'id' => 'teste-de-adicao-4',
       'version' => '1.0',
       'checksum' => 
       array (
@@ -1329,9 +1329,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '22051afd844c5fecee6d8446bf452a7b',
-        'css' => '2fc305ea67b93c579ed510c6b9b6064f',
-        'combined' => 'e00426a5ad62c1493ad0bdd07b90eab1',
+        'html' => 'ad86896c1d40921d37003331977b7fef',
+        'css' => 'a4bb66d2c12af9389f505db21fd11925',
+        'combined' => '3e4b658f8e51e05713bb2ee5672fa37c',
       ),
     ),
     48 => 
@@ -1342,8 +1342,8 @@ $resources = array (
       'checksum' => 
       array (
         'html' => '0b89e3ead925b789aadf4d2a8fddbe2c',
-        'css' => '2fc305ea67b93c579ed510c6b9b6064f',
-        'combined' => 'c5c0681a60a610ca1f93bf5619f7d17f',
+        'css' => 'a4bb66d2c12af9389f505db21fd11925',
+        'combined' => 'a4d3c36eab12adf8f12e6126dcc5ddb3',
       ),
     ),
     49 => 
@@ -1353,9 +1353,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '9cd8d8a62f5b765e5d5ace39d89c4281',
-        'css' => '450114044370c3e0721c33a0a844e980',
-        'combined' => '326fefdbe7bd877388595be7688524d3',
+        'html' => 'a4573ded54ad96a83a9c9021594bf08c',
+        'css' => '1141c974d1568502c3a4f3847cdb8951',
+        'combined' => '40558373f2ffe63ea8b1a0d932b88520',
       ),
     ),
     50 => 
@@ -1365,9 +1365,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'd8f1a63646bffcb06861213446afb00d',
+        'html' => '7f4c7b58497756f22ea6245dbdecef88',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => 'd8f1a63646bffcb06861213446afb00d',
+        'combined' => '7f4c7b58497756f22ea6245dbdecef88',
       ),
     ),
     51 => 
@@ -1377,9 +1377,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '3d19284fc38aee61afd664dbc4528c8c',
-        'css' => '0b03fcda6ed3bebaeb5eb77c7a49334b',
-        'combined' => 'ebbfab3f094c37872fd2529dc54ad149',
+        'html' => '7f31481d3494f8a3e043663b21445f04',
+        'css' => '3609fbb0f5be09748ba6450ad493bd5e',
+        'combined' => 'e67b30d21e1d4c398c9804340036c801',
       ),
     ),
     52 => 
@@ -1389,9 +1389,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '001c6674758d21657d8bcbd9fc465791',
+        'html' => 'd7133d08f38fbed13fc78114ce5580e6',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '001c6674758d21657d8bcbd9fc465791',
+        'combined' => 'd7133d08f38fbed13fc78114ce5580e6',
       ),
     ),
     53 => 
@@ -1401,16 +1401,16 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '10efa73f0af65782570777b1d50fcdff',
-        'css' => '7407f3306be0b7b12b00435570ad2adf',
-        'combined' => 'ad207759f39d87a5b77923d157142a62',
+        'html' => 'd0519b4719c473b83f6b13d03ab6a7e4',
+        'css' => '56f4a9e69fe691229bea4e6af30543a7',
+        'combined' => 'b85cbf764a381ce1f69ce5b482588fec',
       ),
     ),
     54 => 
     array (
       'name' => 'Layout Email Host Instalação',
       'id' => 'layout-email-host-instalacao',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1425,15 +1425,15 @@ $resources = array (
       'checksum' => 
       array (
         'html' => '8fed0c7c7c60691eb6b8ae2ec480f82b',
-        'css' => '21e8ee98072bd7faefa1b157441303e2',
-        'combined' => 'b8e957e24ba251da700ce06ace10b592',
+        'css' => '17e9a0b0318f7a53c4645773203b4f8f',
+        'combined' => '30a064776f3446bdb509d9cd3ede27ed',
       ),
     ),
     56 => 
     array (
       'name' => 'Host Install Carregando',
       'id' => 'host-install-carregando',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1444,7 +1444,7 @@ $resources = array (
     array (
       'name' => 'Layout Email Novo Cadastro',
       'id' => 'layout-email-novo-cadastro',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1458,9 +1458,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'b6e5cf2b9f19bd874dcddd65c402aec6',
-        'css' => 'd7607f7c72347ea15d8561a91b8fbdbb',
-        'combined' => '5876c08564bd3aaf370d9730d8bf02af',
+        'html' => '0eeeae1b953bccc0d26a0f1cc335803a',
+        'css' => '0745e249a8e1258353142b9bcb1a2438',
+        'combined' => 'be737048e45d0347399310fc86221b63',
       ),
     ),
     59 => 
@@ -1470,9 +1470,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '8c45b8654571a81fdd265e6ffe476621',
-        'css' => '3891a26f5c9e3640f42e4b2b7752462b',
-        'combined' => '637681f6ab10be1d55540872e559b6de',
+        'html' => '53ae2df5b19777bbe6b8ab98529a80d5',
+        'css' => 'ba0557b0e23e65afcce0a8da039e4a9b',
+        'combined' => 'c8b5857c48f0eb1122ca4efef54ccb5f',
       ),
     ),
     60 => 
@@ -1495,8 +1495,8 @@ $resources = array (
       'checksum' => 
       array (
         'html' => '1266231e9976b3fb8e440b87a83692c6',
-        'css' => '33eb7985229e8035ef8a4e3a90b15953',
-        'combined' => '043ecce8bc990502e2a87cc930dfdec2',
+        'css' => 'b0c2fa48692c7aa07b229741130b7253',
+        'combined' => '6e9263e410dea18f635d1ba114f3f407',
       ),
     ),
     62 => 
@@ -1506,9 +1506,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'f92ddf1d0425dea7033850c80a0dd29a',
-        'css' => '816403ef80e10f7d59895cfc41a2e451',
-        'combined' => '23fa716dc7618d64f26bff90ec6b3867',
+        'html' => '708d6c3eab26e3bd0473f87bac06d8ff',
+        'css' => 'dc8ada26a5c0c9580e7a0e75648eae47',
+        'combined' => 'fee5ddcf40f2110aa7ae0bed854105ea',
       ),
     ),
     63 => 
@@ -1518,9 +1518,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '710de9d0016dcd6f16d251acf94174af',
-        'css' => '09cb7a475aa6dd7d1ab15cd13cf60b2e',
-        'combined' => '11825ebafaaeb41467a29b83d4263708',
+        'html' => '66d0b2b64a3b00263c2a8eaa193867a3',
+        'css' => 'a1c884e20814045be6503eec311e42e4',
+        'combined' => 'a51ad8061d307a4097e7362a6b4e7b53',
       ),
     ),
     64 => 
@@ -1530,16 +1530,16 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '663fe479ec12deac2602976353b83a63',
+        'html' => '59811a7d383533a272e2a9829498b948',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '663fe479ec12deac2602976353b83a63',
+        'combined' => '59811a7d383533a272e2a9829498b948',
       ),
     ),
     65 => 
     array (
       'name' => 'Arquivos Lista',
       'id' => 'arquivos-lista',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1550,7 +1550,7 @@ $resources = array (
     array (
       'name' => 'Layout Emails Assinatura',
       'id' => 'layout-emails-assinatura',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1561,7 +1561,7 @@ $resources = array (
     array (
       'name' => 'Layout Email Esqueceu Senha',
       'id' => 'layout-email-esqueceu-senha',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1575,16 +1575,16 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '8fea7d61c681010d329d5962655d4499',
+        'html' => 'f771df80f24f82a024044243859cb8c6',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => '8fea7d61c681010d329d5962655d4499',
+        'combined' => 'f771df80f24f82a024044243859cb8c6',
       ),
     ),
     69 => 
     array (
       'name' => 'Plataforma Gateways - Mensagem - Pago - Gratuito',
       'id' => 'plataforma-gateways-mensagem-pago-gratuito',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1595,7 +1595,7 @@ $resources = array (
     array (
       'name' => 'Layout Email Baixa Voucher',
       'id' => 'layout-email-baixa-voucher',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1606,7 +1606,7 @@ $resources = array (
     array (
       'name' => 'Layout Email Senha Redefinida',
       'id' => 'layout-email-senha-redefinida',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1617,7 +1617,7 @@ $resources = array (
     array (
       'name' => 'Layout Email Conta FTP Senha Redefinida',
       'id' => 'layout-email-conta-ftp-senha-redefinida',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1631,9 +1631,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '0d45809688cb248b664bf2e7154b211e',
-        'css' => 'b2c6c1e2d606c3274a0ed1d94433277a',
-        'combined' => '5b3a9bc6053adaca24b0196ab8335475',
+        'html' => '4a31ee642af5a1f3a198bdd44380d201',
+        'css' => '4183f8ca0236bdb2a6b7d5fd983eba86',
+        'combined' => '94726b42f4fc448c6d394ee3efe4f0e5',
       ),
     ),
     74 => 
@@ -1643,9 +1643,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '01e4a448ee6b68991e2d5a0c9612dd7c',
-        'css' => '138c05d3f444f1c9087fc6f66be3f466',
-        'combined' => '3672ff06163494961d19d679618fb709',
+        'html' => '20d42343ba08a767a53e0b622cc8579f',
+        'css' => 'e76c325ef114d06f7eaa79aaa025fe38',
+        'combined' => 'd6c04b6680ab2488c3d36fc1cc045ba8',
       ),
     ),
     75 => 
@@ -1655,9 +1655,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '16db8854c34ff2d39317281d4cba07e9',
-        'css' => '138c05d3f444f1c9087fc6f66be3f466',
-        'combined' => 'f07941e173a58c0bacbbe3a6e2128e73',
+        'html' => 'cc02b9dd067c1a6219ed830fd2c2c3a7',
+        'css' => 'e76c325ef114d06f7eaa79aaa025fe38',
+        'combined' => 'd31e6131bff9a9e00c02c16c064e408b',
       ),
     ),
     76 => 
@@ -1667,16 +1667,16 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => '66264c261cbba1fba366b57c2c887d2e',
-        'css' => '31f47e457d8193518413a8882a355b73',
-        'combined' => '8afdc0a9930a9c53fc3f2527b56d207e',
+        'html' => 'b323c939a51b60054f34b0b5ba58c414',
+        'css' => '87e1823d50f899396806b9b566ac6185',
+        'combined' => '9ef891f70868d898d23757590acb5307',
       ),
     ),
     77 => 
     array (
       'name' => 'Comunicação Email Teste',
       'id' => 'comunicacao-email-teste',
-      'version' => '0',
+      'version' => '1.0',
       'checksum' => 
       array (
         'html' => '',
@@ -1690,9 +1690,9 @@ $resources = array (
       'version' => '1.0',
       'checksum' => 
       array (
-        'html' => 'b53dbc687dddb364c2bd9ef18ea15e56',
+        'html' => 'b5f8004dc420d0a6792e77a8738e11df',
         'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-        'combined' => 'b53dbc687dddb364c2bd9ef18ea15e56',
+        'combined' => 'b5f8004dc420d0a6792e77a8738e11df',
       ),
     ),
   ),

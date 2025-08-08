@@ -1697,10 +1697,11 @@ function usuarios_perfis_interfaces_padroes(){
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -1710,10 +1711,11 @@ function usuarios_perfis_interfaces_padroes(){
 			        'path' => 'usuarios-gestores-perfis/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '61a4fcb4fc80216a38fb5e40a5e544e7',
+			            'html' => 'a5c9fc9f425bedb5ba58d37866584cb2',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'a5c9fc9f425bedb5ba58d37866584cb2',
 			        ],
 			    ],
 			    [
@@ -1723,10 +1725,11 @@ function usuarios_perfis_interfaces_padroes(){
 			        'path' => 'usuarios-gestores-perfis/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '8cde358a3d847ba628d35653c34ccefa',
+			            'html' => '7059b24a7c1462e9db441e4e94741229',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '7059b24a7c1462e9db441e4e94741229',
 			        ],
 			    ],
 			],

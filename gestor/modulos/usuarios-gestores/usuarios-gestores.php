@@ -31,10 +31,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -44,10 +45,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'usuarios-gestores/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '9e6cdd511b6ce7a88c8a691490a9e8c8',
+			            'html' => '39d78b242536105599b985442b8ad040',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '39d78b242536105599b985442b8ad040',
 			        ],
 			    ],
 			    [
@@ -57,10 +59,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'usuarios-gestores/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'a5ad23e5006dad3a7c0fea9a92bc318c',
+			            'html' => '910b8ac615cfcfcac18a52b495f99ef8',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '910b8ac615cfcfcac18a52b495f99ef8',
 			        ],
 			    ],
 			],

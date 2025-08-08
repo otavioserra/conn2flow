@@ -205,10 +205,11 @@ function modulos_buscar_ids_duplicados(){
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -218,10 +219,11 @@ function modulos_buscar_ids_duplicados(){
 			        'path' => 'modulos/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '9439eb9e98debf8dce934216f6735dae',
+			            'html' => '9d81f949dae0fcb93847661ae0b4feea',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '9d81f949dae0fcb93847661ae0b4feea',
 			        ],
 			    ],
 			    [
@@ -231,10 +233,11 @@ function modulos_buscar_ids_duplicados(){
 			        'path' => 'modulos/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'd78b01e64a55afbf20cb548448f2adbc',
+			            'html' => 'd704c8f82c733a8fc4455ffd72f0c079',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd704c8f82c733a8fc4455ffd72f0c079',
 			        ],
 			    ],
 			    [
@@ -244,10 +247,11 @@ function modulos_buscar_ids_duplicados(){
 			        'path' => 'modulos/variaveis/',
 			        'type' => 'system',
 			        'option' => 'variaveis',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'c3322a1549a8c1b36e4e9d648cdab369',
-			            'css' => '44d19aa88ee9abed08f25ab4b7a93ae2',
+			            'html' => '5d9d649e25d5d366b064b87fa7fc4fce',
+			            'css' => 'a67c7f7ada890bdeca6f064ce2ace341',
+			            'combined' => 'dfcc91e18003537fba43d02e65246b56',
 			        ],
 			    ],
 			    [
@@ -257,10 +261,11 @@ function modulos_buscar_ids_duplicados(){
 			        'path' => 'modulos/sincronizar-bancos/',
 			        'type' => 'system',
 			        'option' => 'sincronizar-bancos',
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -270,10 +275,11 @@ function modulos_buscar_ids_duplicados(){
 			        'path' => 'modulos/copiar-variaveis/',
 			        'type' => 'system',
 			        'option' => 'copiar-variaveis',
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -283,10 +289,11 @@ function modulos_buscar_ids_duplicados(){
 			        'path' => 'modulos/sincronizar-bancos/',
 			        'type' => 'system',
 			        'option' => 'sincronizar-bancos',
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			],

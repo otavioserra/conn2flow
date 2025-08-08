@@ -27,10 +27,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'page',
 			        'option' => 'testes',
 			        'root' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
 			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => '0b58367cd17703c084b92e6bf311f9a4',
+			            'css' => '34f7db7b7216749f473bd29f4a18a0e8',
+			            'combined' => '34f7db7b7216749f473bd29f4a18a0e8',
 			        ],
 			    ],
 			    [
@@ -40,10 +41,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'testes/sem-permissao/',
 			        'type' => 'system',
 			        'option' => 'sem-permissao',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
 			            'html' => '599d814ccd070be528a96bc560fadcef',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '599d814ccd070be528a96bc560fadcef',
 			        ],
 			    ],
 			],

@@ -28,10 +28,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -41,10 +42,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-categorias/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'fc2e7b2eec2cda42ffc77a68ff6c4a5d',
+			            'html' => '26d51b73e6f66aca1ec7ccc951074be9',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '26d51b73e6f66aca1ec7ccc951074be9',
 			        ],
 			    ],
 			    [
@@ -54,10 +56,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-categorias/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'f203515a290225b3238882e883f9d828',
+			            'html' => '09eaa76323c04d08fafb7aafe45a8e24',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '09eaa76323c04d08fafb7aafe45a8e24',
 			        ],
 			    ],
 			    [
@@ -67,10 +70,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-categorias/adicionar-filho/',
 			        'type' => 'system',
 			        'option' => 'adicionar-filho',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '65a5fe2f37df43131bdfc83432513519',
+			            'html' => 'a077ab99e801977830ffe957c68ef3ed',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'a077ab99e801977830ffe957c68ef3ed',
 			        ],
 			    ],
 			],
@@ -78,10 +82,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			    [
 			        'name' => 'Teste Componente Módulo',
 			        'id' => 'teste-componente-modulo',
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
 			            'html' => '',
 			            'css' => '',
+			            'combined' => '',
 			        ],
 			    ],
 			],

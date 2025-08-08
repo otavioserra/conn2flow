@@ -30,10 +30,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'host-install/',
 			        'type' => 'system',
 			        'option' => 'instalar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '0d0d4a7a820832e52745843df6b8f4ad',
+			            'html' => '677ca88b21cf326e2927ff88348eb231',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '677ca88b21cf326e2927ff88348eb231',
 			        ],
 			    ],
 			    [
@@ -43,10 +44,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'host-config/',
 			        'type' => 'system',
 			        'option' => 'configurar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '7b29b87c4dbd3ef762dea86d07e79153',
+			            'html' => 'c814c219db08d526256a6334f70cf78f',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'c814c219db08d526256a6334f70cf78f',
 			        ],
 			    ],
 			    [
@@ -56,10 +58,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'host-config-forgot-password/',
 			        'type' => 'system',
 			        'option' => 'esqueceu-senha',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'ca140834fba75417079413be67dbcb02',
+			            'html' => 'c58e965efca8c80f054c2aa56bc047a4',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'c58e965efca8c80f054c2aa56bc047a4',
 			        ],
 			    ],
 			    [
@@ -69,10 +72,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'host-config-redefine-password/',
 			        'type' => 'system',
 			        'option' => 'redefinir-senha',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '7d500c073fcab37ee26d34cde3d6deb6',
+			            'html' => 'a913f078f052430e5c51b618e171ac6f',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'a913f078f052430e5c51b618e171ac6f',
 			        ],
 			    ],
 			    [
@@ -82,10 +86,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'host-config-forgot-password-confirmation/',
 			        'type' => 'system',
 			        'option' => 'esqueceu-senha-confirmacao',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'ed818747e1a8b2b240c592bd2c13e20e',
+			            'html' => 'c7eab78c337d414c4da4015d409d236e',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'c7eab78c337d414c4da4015d409d236e',
 			        ],
 			    ],
 			    [
@@ -95,10 +100,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'host-config-redefine-password-confirmation/',
 			        'type' => 'system',
 			        'option' => 'redefinir-senha-confirmacao',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '292366d3bc933395ad85b70ccb29e76a',
+			            'html' => '28c989f67e4b3ede39f67e74391b0232',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '28c989f67e4b3ede39f67e74391b0232',
 			        ],
 			    ],
 			    [
@@ -108,10 +114,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'host-update/',
 			        'type' => 'system',
 			        'option' => 'atualizar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '96f9a1d4b3ddf88118a8463c229ac3a9',
+			            'html' => '36f9a9a7f9e37f145e48caab2e8bbcbd',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '36f9a9a7f9e37f145e48caab2e8bbcbd',
 			        ],
 			    ],
 			    [
@@ -121,10 +128,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'plataforma-servidor-testes/',
 			        'type' => 'system',
 			        'option' => 'plataforma-testes',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '76e70f473bb62a24296bfaafd3bcd8b5',
+			            'html' => '8cbb38c279c502d7342999dcdb109b4d',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '8cbb38c279c502d7342999dcdb109b4d',
 			        ],
 			    ],
 			    [
@@ -135,10 +143,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'system',
 			        'option' => 'config',
 			        'root' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'a768ccaaceced0523336b7bc0e9bd8b0',
-			            'css' => 'c120e3f8edf1c289de8b09f494657350',
+			            'html' => 'b8ad084c87f9b78afae839cd33cf28b4',
+			            'css' => 'f32438e7149f85825359382e76eec749',
+			            'combined' => '9c5750d03a5789127182117ed535a78b',
 			        ],
 			    ],
 			    [
@@ -148,10 +157,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'host-plugins/',
 			        'type' => 'system',
 			        'option' => 'plugins',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'ed654959783ea7688d2d97299e75e4ea',
+			            'html' => '133384c714c0b70922e9cb1fba3084d2',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '133384c714c0b70922e9cb1fba3084d2',
 			        ],
 			    ],
 			],
@@ -159,10 +169,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			    [
 			        'name' => 'Host Plugins Update Carregando',
 			        'id' => 'host-plugins-update-carregando',
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
 			            'html' => '',
 			            'css' => '',
+			            'combined' => '',
 			        ],
 			    ],
 			],

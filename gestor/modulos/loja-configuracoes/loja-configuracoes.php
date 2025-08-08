@@ -23,10 +23,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'system',
 			        'option' => 'config',
 			        'root' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'e9a39d099d0c52dbc914bcb1b792dca6',
+			            'html' => 'd389427fd0548aefdb7bc99859dd782f',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd389427fd0548aefdb7bc99859dd782f',
 			        ],
 			    ],
 			],

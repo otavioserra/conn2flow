@@ -28,10 +28,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -41,10 +42,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-layouts/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '77ecd4a57a138f62f7aba2a41ad07d10',
-			            'css' => '790844bbf8e5096b40503eac9a60d721',
+			            'html' => 'ba1ad805a73ad08b26465d568e4260be',
+			            'css' => '0c9ea4a87a3788f62f7e4e6e63c80a5e',
+			            'combined' => '7bbf08407b099e10b048427d2c2da4a3',
 			        ],
 			    ],
 			    [
@@ -54,10 +56,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-layouts/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '3662c00cd39c81d8f43aedff4270a71a',
-			            'css' => 'ce06862621b92714d6717376aba8c2ab',
+			            'html' => '65578a67da1ba8603be9c6c030c28af7',
+			            'css' => 'bdb85de7c6afcf6a3fdca44a2b25b9ff',
+			            'combined' => '823d9e6c01a59becc22c8cf58f0200c1',
 			        ],
 			    ],
 			    [
@@ -66,10 +69,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'layout' => 'layout-administrativo-do-gestor',
 			        'path' => 'admin-layouts/emissao/',
 			        'type' => 'page',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '951b7dd20d4948f0bb859ef663a16ed0',
+			            'html' => 'c03712e94846c0734d390d6a98bd6d7f',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'c03712e94846c0734d390d6a98bd6d7f',
 			        ],
 			    ],
 			    [
@@ -80,10 +84,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'system',
 			        'root' => true,
 			        'without_permission' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '67c62da199c18f63bd0b81b81fcaa45d',
+			            'html' => '315ddba71715884bda43fde4c244c32e',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '315ddba71715884bda43fde4c244c32e',
 			        ],
 			    ],
 			],

@@ -42,10 +42,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -55,10 +56,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'templates/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '82278fec463f44090e17ff3ba91c8d66',
+			            'html' => '792654941d81caee0b89718fc421d22d',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '792654941d81caee0b89718fc421d22d',
 			        ],
 			    ],
 			    [
@@ -68,10 +70,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'templates/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'dd982492f3ddae7e851b21b30178e074',
+			            'html' => 'd7e87f2c8f6cdfa3121dc01da1245091',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd7e87f2c8f6cdfa3121dc01da1245091',
 			        ],
 			    ],
 			    [
@@ -81,10 +84,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'templates/editar-indice/',
 			        'type' => 'system',
 			        'option' => 'editar-indice',
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -94,10 +98,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'templates/seletores/',
 			        'type' => 'system',
 			        'option' => 'seletores-listar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'd0ff2b1d359c05ae090514b054ad4b2c',
-			            'css' => '019c4b82a45f71000961e23d3e958779',
+			            'html' => '2d8f53814ed468fdddc7a5e472824359',
+			            'css' => '9f46e740c3be4e3172eeb2e03627abdb',
+			            'combined' => 'a668c36dbe02018fffad6194c1737f08',
 			        ],
 			    ],
 			    [
@@ -107,10 +112,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'templates/atualizacoes/',
 			        'type' => 'system',
 			        'option' => 'atualizacoes',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'cddd25ebffeb9cf4ed02edb027b2d152',
+			            'html' => 'f76a628b6cd89b7866da279d7bfe495c',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'f76a628b6cd89b7866da279d7bfe495c',
 			        ],
 			    ],
 			    [
@@ -120,10 +126,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'templates/ativar/',
 			        'type' => 'system',
 			        'option' => 'ativar',
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -133,10 +140,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'templates/preview/',
 			        'type' => 'system',
 			        'option' => 'preview',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '7d56049c47c89d1530a57c128b7240f5',
+			            'html' => '7eeb15dc7b8f6d8e89102154a09cf6d1',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '7eeb15dc7b8f6d8e89102154a09cf6d1',
 			        ],
 			    ],
 			],

@@ -27,10 +27,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -40,10 +41,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'modulos-grupos/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '4c5b33e993a4f77438a14e51677fce05',
+			            'html' => 'b31c7f2d881bcad6c89fa3fed8365855',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'b31c7f2d881bcad6c89fa3fed8365855',
 			        ],
 			    ],
 			    [
@@ -53,10 +55,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'modulos-grupos/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '7b9c7f1b9498d9099d15b7d90a88a05a',
+			            'html' => '36e3752df78811bc45f4ca5abf8c889d',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '36e3752df78811bc45f4ca5abf8c889d',
 			        ],
 			    ],
 			    [
@@ -66,10 +69,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'modulos-grupos/funcao/',
 			        'type' => 'page',
 			        'option' => 'funcao',
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			],

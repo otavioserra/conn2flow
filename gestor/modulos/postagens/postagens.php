@@ -924,10 +924,11 @@ function postagens_interfaces_padroes(){
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -937,10 +938,11 @@ function postagens_interfaces_padroes(){
 			        'path' => 'postagens/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'b1ec418459426d3fad227f6a3867a7f0',
+			            'html' => 'b3f99385d76a4208ba4ef736cfd2afa6',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'b3f99385d76a4208ba4ef736cfd2afa6',
 			        ],
 			    ],
 			    [
@@ -950,10 +952,11 @@ function postagens_interfaces_padroes(){
 			        'path' => 'postagens/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '606ec6b441ccce0bc7b1cae15f6e08c2',
+			            'html' => '499e3aa65d37ee86b0d1f14c20393330',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '499e3aa65d37ee86b0d1f14c20393330',
 			        ],
 			    ],
 			],

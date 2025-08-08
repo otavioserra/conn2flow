@@ -162,10 +162,11 @@ function perfil_usuario_area_restrita(){
 			        'type' => 'system',
 			        'option' => 'signin',
 			        'without_permission' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '25259d8999aef58bd1de9237e966a295',
+			            'html' => '1a28df4eb15690a1a94815ac85e7d7b2',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '1a28df4eb15690a1a94815ac85e7d7b2',
 			        ],
 			    ],
 			    [
@@ -175,10 +176,11 @@ function perfil_usuario_area_restrita(){
 			        'path' => 'signout/',
 			        'type' => 'system',
 			        'option' => 'signout',
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -189,10 +191,11 @@ function perfil_usuario_area_restrita(){
 			        'type' => 'system',
 			        'option' => 'editar',
 			        'root' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '954e780f5373a2dc13604902ebd5f6a5',
+			            'html' => '409c497b763a304093568e3c7f7e417a',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '409c497b763a304093568e3c7f7e417a',
 			        ],
 			    ],
 			    [
@@ -202,10 +205,11 @@ function perfil_usuario_area_restrita(){
 			        'path' => 'restrict-area/',
 			        'type' => 'system',
 			        'option' => 'area-restrita',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '562eb703cf279fdec65c904b9b0cc8ae',
+			            'html' => 'b106ef13fa11754052fb9a31122c643c',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'b106ef13fa11754052fb9a31122c643c',
 			        ],
 			    ],
 			    [
@@ -216,10 +220,11 @@ function perfil_usuario_area_restrita(){
 			        'type' => 'system',
 			        'option' => 'validar-usuario',
 			        'without_permission' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '3e5479f6effdc7f07c7758dbbae54c87',
+			            'html' => 'df58b7e5c554fb44a338c46b5bc2f8a6',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'df58b7e5c554fb44a338c46b5bc2f8a6',
 			        ],
 			    ],
 			    [
@@ -230,10 +235,11 @@ function perfil_usuario_area_restrita(){
 			        'type' => 'system',
 			        'option' => 'forgot-password',
 			        'without_permission' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'a12b249886e4075dc48ca3380c880f0e',
+			            'html' => '36252affc726b0a003349db772ffe552',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '36252affc726b0a003349db772ffe552',
 			        ],
 			    ],
 			    [
@@ -244,10 +250,11 @@ function perfil_usuario_area_restrita(){
 			        'type' => 'system',
 			        'option' => 'forgot-password-confirmation',
 			        'without_permission' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '71603e548a8b6d82f361f1fb10f4cf43',
+			            'html' => '100a56701ff0b6d915e3cf9e3f2791c8',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '100a56701ff0b6d915e3cf9e3f2791c8',
 			        ],
 			    ],
 			    [
@@ -258,10 +265,11 @@ function perfil_usuario_area_restrita(){
 			        'type' => 'system',
 			        'option' => 'redefine-password',
 			        'without_permission' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '020c66d7500f79babf577ff35a65a5c5',
+			            'html' => '920fbd11ee6d54345028e33ac3d7599c',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '920fbd11ee6d54345028e33ac3d7599c',
 			        ],
 			    ],
 			    [
@@ -272,10 +280,11 @@ function perfil_usuario_area_restrita(){
 			        'type' => 'system',
 			        'option' => 'redefine-password-confirmation',
 			        'without_permission' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'd2bf3839042072d83a8d519e07a09b8d',
+			            'html' => '1e674e0f0326986bb2b77ec4130490ae',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '1e674e0f0326986bb2b77ec4130490ae',
 			        ],
 			    ],
 			    [
@@ -286,10 +295,11 @@ function perfil_usuario_area_restrita(){
 			        'type' => 'system',
 			        'option' => 'signup',
 			        'without_permission' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'bd37456a11d550b952a2250627bfe3e3',
+			            'html' => '62ae3b0260aed09055dbd0cd3ff7f33e',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '62ae3b0260aed09055dbd0cd3ff7f33e',
 			        ],
 			    ],
 			    [
@@ -300,10 +310,11 @@ function perfil_usuario_area_restrita(){
 			        'type' => 'system',
 			        'option' => 'confirmacao-email',
 			        'without_permission' => true,
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '7e4e5a4488720f91c42604d9b8654db8',
+			            'html' => '589314427de8eec6b99dcffb571ce7cb',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '589314427de8eec6b99dcffb571ce7cb',
 			        ],
 			    ],
 			],

@@ -41,10 +41,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -54,10 +55,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-templates/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '20eee4d1b720449bf75bb9abf6d826c0',
+			            'html' => '17f07bd85ab4ed269b7784a95b0785db',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '17f07bd85ab4ed269b7784a95b0785db',
 			        ],
 			    ],
 			    [
@@ -67,10 +69,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-templates/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '07c02cd11a72d60971354dd3963faf3c',
+			            'html' => '017173c25a1692eb65c96dbe2cedf67a',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '017173c25a1692eb65c96dbe2cedf67a',
 			        ],
 			    ],
 			    [
@@ -80,10 +83,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-templates/editar-layout/',
 			        'type' => 'system',
 			        'option' => 'editar-layout',
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -93,10 +97,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-templates/adicionar-paginas/',
 			        'type' => 'system',
 			        'option' => 'adicionar-paginas',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '93dbe435ac34d94ebd06c5d89070c0a9',
+			            'html' => 'c7dbfb79a8abe985e1cfef678b6a947b',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'c7dbfb79a8abe985e1cfef678b6a947b',
 			        ],
 			    ],
 			    [
@@ -106,10 +111,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-templates/editar-indice/',
 			        'type' => 'system',
 			        'option' => 'editar-indice',
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -119,10 +125,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-templates/editar-paginas/',
 			        'type' => 'system',
 			        'option' => 'editar-paginas',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'a24e35ba30eabbb76179e2da3a90fe2a',
+			            'html' => '0ac6ddbff44db170212a033086e941f9',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '0ac6ddbff44db170212a033086e941f9',
 			        ],
 			    ],
 			    [
@@ -132,10 +139,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-templates/editar-template/',
 			        'type' => 'system',
 			        'option' => 'editar-template',
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -145,10 +153,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-templates/adicionar-layouts/',
 			        'type' => 'system',
 			        'option' => 'adicionar-layouts',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'ea42d1dbc1b0bd7bc10f0335d2b5921c',
+			            'html' => '28fc5a6b25095dd34a3dba6674a08f0e',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '28fc5a6b25095dd34a3dba6674a08f0e',
 			        ],
 			    ],
 			    [
@@ -158,10 +167,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-templates/editar-layouts/',
 			        'type' => 'system',
 			        'option' => 'editar-layouts',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'c3a3143394040c9ff4f164ec199b2d55',
+			            'html' => '8864fd0e462b55ed7dd02b9ee03fcbba',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '8864fd0e462b55ed7dd02b9ee03fcbba',
 			        ],
 			    ],
 			    [
@@ -171,10 +181,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-templates/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '20eee4d1b720449bf75bb9abf6d826c0',
+			            'html' => '17f07bd85ab4ed269b7784a95b0785db',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '17f07bd85ab4ed269b7784a95b0785db',
 			        ],
 			    ],
 			    [
@@ -184,10 +195,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-templates/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '07c02cd11a72d60971354dd3963faf3c',
+			            'html' => '017173c25a1692eb65c96dbe2cedf67a',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '017173c25a1692eb65c96dbe2cedf67a',
 			        ],
 			    ],
 			    [
@@ -197,10 +209,11 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 			        'path' => 'admin-templates/preview/',
 			        'type' => 'system',
 			        'option' => 'preview',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '7d56049c47c89d1530a57c128b7240f5',
+			            'html' => '7eeb15dc7b8f6d8e89102154a09cf6d1',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '7eeb15dc7b8f6d8e89102154a09cf6d1',
 			        ],
 			    ],
 			],

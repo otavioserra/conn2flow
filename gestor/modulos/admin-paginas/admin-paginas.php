@@ -805,10 +805,11 @@ function admin_paginas_interfaces_padroes(){
 			        'type' => 'system',
 			        'option' => 'listar',
 			        'root' => true,
-			        'version' => '0',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
+			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
 			        ],
 			    ],
 			    [
@@ -818,10 +819,11 @@ function admin_paginas_interfaces_padroes(){
 			        'path' => 'admin-paginas/editar/',
 			        'type' => 'system',
 			        'option' => 'editar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'ae1165f1c5049ef2d9eefe56fcbfca5d',
+			            'html' => '36b79f4f7655d7cdfaec91e831e1fbc7',
 			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
+			            'combined' => '36b79f4f7655d7cdfaec91e831e1fbc7',
 			        ],
 			    ],
 			    [
@@ -831,10 +833,11 @@ function admin_paginas_interfaces_padroes(){
 			        'path' => 'admin-paginas/adicionar/',
 			        'type' => 'system',
 			        'option' => 'adicionar',
-			        'version' => '1.1',
+			        'version' => '1.0',
 			        'checksum' => [
-			            'html' => 'e2dd968835e611beae51716d90667b38',
-			            'css' => '790844bbf8e5096b40503eac9a60d721',
+			            'html' => '0880fe0c78efeb8d80cc7c1c07e8d2c5',
+			            'css' => '0c9ea4a87a3788f62f7e4e6e63c80a5e',
+			            'combined' => 'd2649ba963b679cd62adaee770d4a417',
 			        ],
 			    ],
 			],

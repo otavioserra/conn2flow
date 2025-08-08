@@ -9,24 +9,26 @@
 # Exemplo: ./update-instalador.sh subdominio/install
 # Padrão: instalador
 
+
 # Verifica se foi passado parâmetro para a pasta de instalação
 INSTALL_FOLDER=${1:-"instalador"}
 
 echo "� INICIANDO RESET COMPLETO DO AMBIENTE CONN2FLOW"
 echo "=================================================="
-echo "📁 Pasta de destino: public_html/$INSTALL_FOLDER"
+echo "📁 Pasta de destino: sites/localhost/public_html/$INSTALL_FOLDER"
 echo ""
 
 # PASSO 1: LIMPEZA COMPLETA DAS PASTAS
-echo "🧹 PASSO 1: Limpando pastas home/ e public_html/..."
+echo "🧹 PASSO 1: Limpando pastas home/, sites/localhost/public_html/ e removendo public_html antigo..."
 # Diretório onde estão os dados do Docker
 DADOS_DIR="$(dirname "$0")/../dados"
 cd "$DADOS_DIR"
 echo "📂 Diretório de trabalho: $(pwd)"
 
-# Remove todo conteúdo das pastas
-rm -rf home/* public_html/*
-echo "   ✅ Pastas home/ e public_html/ completamente limpas"
+# Remove todo conteúdo das pastas multi-site
+rm -rf home/* sites/localhost/public_html/*
+echo "   ✅ Pastas home/ e sites/localhost/public_html/ completamente limpas"
+
 
 # PASSO 2: LIMPEZA DOS LOGS DO DOCKER
 echo ""
@@ -82,20 +84,21 @@ fi
 # Renomeia para o padrão atual
 mv "instalador-novo.zip" "gestor-instalador.tar.gz"
 
-echo "🧹 Limpando pasta public_html/$INSTALL_FOLDER (se existir)..."
-rm -rf "public_html/$INSTALL_FOLDER"
 
-echo "📦 Descompactando na pasta public_html/$INSTALL_FOLDER..."
-mkdir -p "public_html/$INSTALL_FOLDER"
-cd "public_html/$INSTALL_FOLDER"
+echo "🧹 Limpando pasta sites/localhost/public_html/$INSTALL_FOLDER (se existir)..."
+rm -rf "sites/localhost/public_html/$INSTALL_FOLDER"
+
+echo "📦 Descompactando na pasta sites/localhost/public_html/$INSTALL_FOLDER..."
+mkdir -p "sites/localhost/public_html/$INSTALL_FOLDER"
+cd "sites/localhost/public_html/$INSTALL_FOLDER"
 
 # Descompacta o arquivo
-if unzip -q "../../gestor-instalador.tar.gz"; then
+if unzip -q "../../../../gestor-instalador.tar.gz"; then
     echo "✅ Instalador descompactado com sucesso!"
 else
     echo "❌ Erro ao descompactar. Tentando com tar..."
-    cd ../..
-    if tar -xzf "gestor-instalador.tar.gz" -C "public_html/$INSTALL_FOLDER"; then
+    cd ../../..
+    if tar -xzf "gestor-instalador.tar.gz" -C "sites/localhost/public_html/$INSTALL_FOLDER"; then
         echo "✅ Instalador descompactado com tar!"
     else
         echo "❌ Erro ao descompactar arquivo"
@@ -103,7 +106,7 @@ else
     fi
 fi
 
-cd ../..
+cd ../../..
 
 # PASSO 4: VERIFICAÇÃO FINAL E STATUS
 echo ""
@@ -120,8 +123,9 @@ fi
 
 echo ""
 echo "📁 Verificação das pastas:"
+
 echo "   home/: $(ls -la home/ 2>/dev/null | wc -l) itens"
-echo "   public_html/: $(ls -la public_html/ 2>/dev/null | wc -l) itens"
+echo "   sites/localhost/public_html/: $(ls -la sites/localhost/public_html/ 2>/dev/null | wc -l) itens"
 
 echo ""
 echo "🎉 RESET E ATUALIZAÇÃO CONCLUÍDOS!"
