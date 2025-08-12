@@ -62,7 +62,49 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-tooltip",
+                    "value": "Clique para abrir o Código HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-label",
+                    "value": "Código HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-tooltip",
+                    "value": "Clique para abrir o CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-label",
+                    "value": "CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Selecione opcionalmente um módulo",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

@@ -61,7 +61,54 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-cpanel-plan-label",
+                    "value": "Plano do cPanel",
+                    "type": "string"
+                },
+                {
+                    "id": "form-cpanel-plan-placeholder",
+                    "value": "Plano do cPanel",
+                    "type": "string"
+                },
+                {
+                    "id": "form-order-label",
+                    "value": "Ordem",
+                    "type": "string"
+                },
+                {
+                    "id": "form-order-placeholder",
+                    "value": "Ordem",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-profile-label",
+                    "value": "Usuário Perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-profile-placeholder",
+                    "value": " Usuário Perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "form-public-label",
+                    "value": "Disponível em Novos Cadastros",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

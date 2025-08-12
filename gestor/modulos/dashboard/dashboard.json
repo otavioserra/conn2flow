@@ -61,7 +61,49 @@
                     "option": "dashboard-teste"
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "logout-grup",
+                    "value": "Sair",
+                    "type": "string"
+                },
+                {
+                    "id": "logout-label",
+                    "value": "Sair",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-title",
+                    "value": "Atualização Disponível",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-message",
+                    "value": "Há uma atualização disponível. Deseja atualizar agora?",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-button-positive-label",
+                    "value": "Atualizar Agora",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-button-positive-message",
+                    "value": "Você será redirecionado para a tela de atualizações...",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-button-negative-label",
+                    "value": "Não Atualizar",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-button-negative-message",
+                    "value": "O sistema armazenará sua escolha. Se mudar de ideia acesse: <b>#url#<\/b>.",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

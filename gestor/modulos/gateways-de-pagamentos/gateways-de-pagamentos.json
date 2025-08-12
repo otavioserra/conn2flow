@@ -66,7 +66,144 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "app-sandbox-code",
+                    "value": "Client ID - Sandbox",
+                    "type": "string"
+                },
+                {
+                    "id": "app-sandbox-secret",
+                    "value": "Secret - Sandbox",
+                    "type": "string"
+                },
+                {
+                    "id": "app-code",
+                    "value": "Client ID - Live",
+                    "type": "string"
+                },
+                {
+                    "id": "app-secret",
+                    "value": "Secret - Live",
+                    "type": "string"
+                },
+                {
+                    "id": "error-live-empty-result",
+                    "value": "PayPal Plus Live devido o servidor do PayPal retornar um resultado vazio. Favor tentar novamente mais tarde.",
+                    "type": "string"
+                },
+                {
+                    "id": "error-live",
+                    "value": "PayPal Plus Live devido o servidor do PayPal retornar o seguinte erro: PayPal Plus: <b>#error# - #error_description#<\/b>.",
+                    "type": "string"
+                },
+                {
+                    "id": "error-webhook-live-empty-result",
+                    "value": "PayPal Plus Live Notificador (WebHooks) devido o servidor do PayPal retornar um resultado vazio. Favor tentar novamente mais tarde.",
+                    "type": "string"
+                },
+                {
+                    "id": "error-webhook-live",
+                    "value": "PayPal Plus Live Notificador (WebHooks) devido o servidor do PayPal retornar o seguinte erro: PayPal Plus: <b>#error# - #error_description#<\/b>.",
+                    "type": "string"
+                },
+                {
+                    "id": "error-sandbox-empty-result",
+                    "value": "PayPal Plus Sandbox devido o servidor do PayPal retornar um resultado vazio. Favor tentar novamente mais tarde.",
+                    "type": "string"
+                },
+                {
+                    "id": "error-sandbox",
+                    "value": "PayPal Plus Sandbox devido o servidor do PayPal retornar o seguinte erro: PayPal Plus: <b>#error# - #error_description#<\/b>.",
+                    "type": "string"
+                },
+                {
+                    "id": "error-webhook-sandbox",
+                    "value": "PayPal Plus Sandbox Notificador (WebHooks) devido o servidor do PayPal retornar o seguinte erro: PayPal Plus: <b>#error# - #error_description#<\/b>.",
+                    "type": "string"
+                },
+                {
+                    "id": "error-webhook-sandbox-empty-result",
+                    "value": "PayPal Plus Sandbox Notificador (WebHooks) devido o servidor do PayPal retornar um resultado vazio. Favor tentar novamente mais tarde.",
+                    "type": "string"
+                },
+                {
+                    "id": "error-install",
+                    "value": "Não foi possível instalar o PayPal devido aos seguinte(s) erro(s):<div class=\"ui bulleted list\"><!-- item < --><div class=\"item\">#item#<\/div><!-- item > --><\/div>",
+                    "type": "string"
+                },
+                {
+                    "id": "app-install-success",
+                    "value": "Instalação do APP do PayPal e WebHook executada com sucesso! ",
+                    "type": "string"
+                },
+                {
+                    "id": "app-uninstall-success",
+                    "value": "Desinstalação do APP do PayPal e WebHook executada com sucesso! ",
+                    "type": "string"
+                },
+                {
+                    "id": "app-not-installed",
+                    "value": "Não é possível desinstalar o APP PayPal pois o mesmo não está instalado!",
+                    "type": "string"
+                },
+                {
+                    "id": "uninstall-confirm-title",
+                    "value": "Confirmação de Desinstalação",
+                    "type": "string"
+                },
+                {
+                    "id": "uninstall-confirm-menssage",
+                    "value": "<p>Você tem certeza que quer desinstalar o APP do PayPal? <\/p><div class=\"ui negative message\"><div class=\"header\">IMPORTANTE<\/div><p>Todas as comunicações entre sua conta PayPal e o nosso gestor serão finalizadas. Assim, caso haja alguma mudança de estado de pedidos em andamento, atualizações de pagamentos e etc. Isso não será mais tratado pelo nosso sistema. Mas, esses dados poderão ser acessados na sua conta PayPal diretamente.<\/p><\/div>",
+                    "type": "string"
+                },
+                {
+                    "id": "uninstall-confirm-button-cancel",
+                    "value": "Cancelar",
+                    "type": "string"
+                },
+                {
+                    "id": "uninstall-confirm-button-confirm",
+                    "value": "Confirmar",
+                    "type": "string"
+                },
+                {
+                    "id": "emails-subject",
+                    "value": "Seu pedido [[codigo]] foi atualizado para: [[status]]",
+                    "type": "string"
+                },
+                {
+                    "id": "status-pending",
+                    "value": "Em análise",
+                    "type": "string"
+                },
+                {
+                    "id": "status-paid",
+                    "value": "Pago",
+                    "type": "string"
+                },
+                {
+                    "id": "status-dispute",
+                    "value": "Em disputa",
+                    "type": "string"
+                },
+                {
+                    "id": "status-refunded",
+                    "value": "Reembolso",
+                    "type": "string"
+                },
+                {
+                    "id": "status-denied",
+                    "value": "Negado",
+                    "type": "string"
+                },
+                {
+                    "id": "status-expired",
+                    "value": "Expirado",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

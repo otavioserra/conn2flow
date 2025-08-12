@@ -1,0 +1,958 @@
+[
+    {
+        "id": "form-teste-2",
+        "value": "sdasdasd",
+        "type": "string"
+    },
+    {
+        "id": "form-teste-novo",
+        "value": "Otávio Campos Novo",
+        "type": "string"
+    },
+    {
+        "id": "teste",
+        "value": "Primeiro Nome",
+        "type": "string"
+    },
+    {
+        "id": "user-or-pass-invalid",
+        "value": "Usuário e\/ou Senha da sua conta FTP é inválido. Favor tentar novamente. Caso o problema persista, tente trocar a senha da conta FTP acessando o link de mudança de senha. Senão entre em contato com o suporte relatando o problema.",
+        "type": "string"
+    },
+    {
+        "id": "form-css-label",
+        "value": "CSS",
+        "type": "string"
+    },
+    {
+        "id": "form-css-tooltip",
+        "value": "Clique para abrir o CSS",
+        "type": "string"
+    },
+    {
+        "id": "form-html-label",
+        "value": "Código HTML",
+        "type": "string"
+    },
+    {
+        "id": "form-html-tooltip",
+        "value": "Clique para abrir o Código HTML",
+        "type": "string"
+    },
+    {
+        "id": "form-name-label",
+        "value": "Nome",
+        "type": "string"
+    },
+    {
+        "id": "form-name-placeholder",
+        "value": "Nome",
+        "type": "string"
+    },
+    {
+        "id": "form-css-label",
+        "value": "CSS",
+        "type": "string"
+    },
+    {
+        "id": "form-css-tooltip",
+        "value": "Clique para abrir o CSS",
+        "type": "string"
+    },
+    {
+        "id": "form-html-label",
+        "value": "Código HTML",
+        "type": "string"
+    },
+    {
+        "id": "form-html-tooltip",
+        "value": "Clique para abrir o Código HTML",
+        "type": "string"
+    },
+    {
+        "id": "form-name-label",
+        "value": "Nome",
+        "type": "string"
+    },
+    {
+        "id": "form-name-placeholder",
+        "value": "Nome",
+        "type": "string"
+    },
+    {
+        "id": "novo-teste",
+        "value": "Hello People 2",
+        "type": "string"
+    },
+    {
+        "id": "alerta-servico-indisponivel",
+        "value": "Este serviço se encontra indisponível",
+        "type": "string"
+    },
+    {
+        "id": "alerta-quantidade-indisponivel",
+        "value": "Este serviço se encontra esgotado!",
+        "type": "string"
+    },
+    {
+        "id": "alert-api-servidor-error",
+        "value": "<h3>Houve um <span class=\"ui error text\">erro<\/span> na comunicação com o servidor!<\/h3><p>A API do servidor retornou o seguinte erro: #error-msg#<\/p>",
+        "type": "string"
+    },
+    {
+        "id": "alert-title",
+        "value": "Alerta",
+        "type": "string"
+    },
+    {
+        "id": "alert-button-ok",
+        "value": "Ok",
+        "type": "string"
+    },
+    {
+        "id": "validation-empty",
+        "value": "É obrigatório preencher o campo <b>#label#<\/b>.",
+        "type": "string"
+    },
+    {
+        "id": "validation-min-length",
+        "value": "O campo <b>#label#<\/b> deve ter no mínimo 3 caracteres.",
+        "type": "string"
+    },
+    {
+        "id": "validation-max-length",
+        "value": "O campo <b>#label#<\/b> deve ter no máximo 100 caracteres.",
+        "type": "string"
+    },
+    {
+        "id": "validation-verify-field",
+        "value": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor preenchido. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+        "type": "string"
+    },
+    {
+        "id": "validation-select",
+        "value": "É obrigatório selecionar pelo menos uma opção do campo <b>#label#<\/b>.",
+        "type": "string"
+    },
+    {
+        "id": "validation-email",
+        "value": "É obrigatório definir um email válido no campo <b>#label#<\/b>.",
+        "type": "string"
+    },
+    {
+        "id": "validation-min-length-password",
+        "value": "O campo <b>#label#<\/b> deve ter no mínimo 12 caracteres.",
+        "type": "string"
+    },
+    {
+        "id": "validation-password-chars",
+        "value": "O campo  <b>#label#<\/b> precisa ter no mínimo <b>um caracter minúsculo<\/b>,  no mínimo <b>um caracter maiúsculo<\/b>,  no mínimo <b>um número<\/b> e pelo menos um caracter especial igual a <b>!@#$%^&*<\/b>.",
+        "type": "string"
+    },
+    {
+        "id": "validation-email-compare",
+        "value": "O campo <b>#campo-1#<\/b> é diferente do campo <b>#campo-2#<\/b>. É obrigatório que ambos tenham o mesmo valor.",
+        "type": "string"
+    },
+    {
+        "id": "validation-regex-permited-chars",
+        "value": "Só é permitido no campo <b>#label#<\/b> os seguintes caracteres : <b>#permited-chars#<\/b>. Favor remover os caracteres  inválidos e tentar novamente.",
+        "type": "string"
+    },
+    {
+        "id": "validation-regex-necessary-chars",
+        "value": "É necessário definir no campo <b>#label#<\/b> os seguintes caracteres : <b>#necessary-chars#<\/b>. Favor incluir os caracteres  e tentar novamente.",
+        "type": "string"
+    },
+    {
+        "id": "identificacao-email-label",
+        "value": "Email",
+        "type": "string"
+    },
+    {
+        "id": "identificacao-senha-label",
+        "value": "Senha",
+        "type": "string"
+    },
+    {
+        "id": "identificacao-cpf-label",
+        "value": "CPF",
+        "type": "string"
+    },
+    {
+        "id": "identificacao-cnpj-label",
+        "value": "CNPJ",
+        "type": "string"
+    },
+    {
+        "id": "alerta-informar-email",
+        "value": "É necessário informar o email antes de se cadastrar.",
+        "type": "string"
+    },
+    {
+        "id": "identificacao-nome-label",
+        "value": "Nome Completo",
+        "type": "string"
+    },
+    {
+        "id": "identificacao-senha-2-label",
+        "value": "Confirmar Senha",
+        "type": "string"
+    },
+    {
+        "id": "identificacao-email-2-label",
+        "value": "Confirme o Email",
+        "type": "string"
+    },
+    {
+        "id": "alert-redefine-password-expiration-or-invalid",
+        "value": "O token enviado perdeu o prazo de validade. É necessário refazer o processo e tentar novamente.",
+        "type": "string"
+    },
+    {
+        "id": "alert-redefine-password-expiration-or-invalid",
+        "value": "O token enviado perdeu o prazo de validade. É necessário refazer o processo e tentar novamente.",
+        "type": "string"
+    },
+    {
+        "id": "redefine-password-pass-label",
+        "value": "Senha",
+        "type": "string"
+    },
+    {
+        "id": "redefine-password-pass-2-label",
+        "value": "Confirmar Senha",
+        "type": "string"
+    },
+    {
+        "id": "validation-min-max-length",
+        "value": "O campo <b>#label#<\/b> é obrigatório. Deve ter no mínimo <b>#min#<\/b> e no máximo <b>#max#<\/b> caracteres.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-pedido-carrinho-vazio",
+        "value": "Não é possível criar o seu pedido pois seu carrinho se encontra vazio.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-pedido-carrinho-nao-encontrado",
+        "value": "Seu carrinho não foi encontrado. Favor refazer sua compra.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-informar-pedido",
+        "value": "É necessário informar o código do pedido para poder emitir o voucher.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-pedido-nao-encontrado",
+        "value": "Não foi encontrado o pedido solicitado. Favor escolher outro pedido e tentar novamente.",
+        "type": "string"
+    },
+    {
+        "id": "emissao-nome-label",
+        "value": "Nome",
+        "type": "string"
+    },
+    {
+        "id": "emissao-documento-label",
+        "value": "Documento",
+        "type": "string"
+    },
+    {
+        "id": "emissao-telefone-label",
+        "value": "Telefone",
+        "type": "string"
+    },
+    {
+        "id": "identificacao-telefone-label",
+        "value": "Telefone",
+        "type": "string"
+    },
+    {
+        "id": "token-empty-result",
+        "value": "Não foi possível gerar o token do PayPal devido o servidor do PayPal retornar um resultado vazio. Favor tentar novamente mais tarde.",
+        "type": "string"
+    },
+    {
+        "id": "token-error",
+        "value": "Não foi possível gerar o token do PayPal devido o servidor do PayPal retornar o seguinte erro: PayPal Plus: <b>#error# - #error_description#<\/b>.",
+        "type": "string"
+    },
+    {
+        "id": "token-mandatory-fields",
+        "value": "É obrigatório informar clientId,  secret e id_hosts.",
+        "type": "string"
+    },
+    {
+        "id": "reference-description",
+        "value": "Autorizo a Entrey efetuar a cobrança de #taxa#% por transação dos valores de venda dos serviços\/produtos da minha loja na Entrey.",
+        "type": "string"
+    },
+    {
+        "id": "reference-empty-result",
+        "value": "Não foi possível habilitar o reference do PayPal devido o servidor do PayPal retornar um resultado vazio. Favor tentar novamente mais tarde.",
+        "type": "string"
+    },
+    {
+        "id": "reference-token-error",
+        "value": "Não foi possível habilitar o reference do PayPal devido o servidor do PayPal retornar o seguinte erro: PayPal: <b>[#name#] - [#details#] - #message#<\/b>.",
+        "type": "string"
+    },
+    {
+        "id": "reference-return-cancel",
+        "value": "Foi optado pelo cancelamento da habilitação do PayPal Reference. Todo procedimento anterior foi cancelado.",
+        "type": "string"
+    },
+    {
+        "id": "reference-return-token-invalid",
+        "value": "O código de conferência token BA armazenado é diferente do retornado pelo PayPal. É necessário refazer a operação.",
+        "type": "string"
+    },
+    {
+        "id": "reference-return-empty-result",
+        "value": "Não foi possível habilitar o reference do PayPal devido o servidor do PayPal retornar um resultado vazio na finalização da habilitação do PayPal Reference. Favor tentar novamente mais tarde.",
+        "type": "string"
+    },
+    {
+        "id": "reference-return-token-error",
+        "value": "Não foi possível finalizar a habilitação do PayPal Reference devido o servidor do PayPal retornar o seguinte erro: PayPal: <b>#error# - #description#<\/b>.",
+        "type": "string"
+    },
+    {
+        "id": "reference-return-success",
+        "value": "PayPal Reference habilitado com sucesso.",
+        "type": "string"
+    },
+    {
+        "id": "error-not-defined",
+        "value": "Ocorreu um erro não detectado.",
+        "type": "string"
+    },
+    {
+        "id": "novo",
+        "value": "<span class=\"ui grey label\">Novo<\/span>",
+        "type": "string",
+        "group": "pedidos-status"
+    },
+    {
+        "id": "aguardando-pagamento",
+        "value": "<span class=\"ui pink label\">Aguardando Pagamento<\/span>",
+        "type": "string",
+        "group": "pedidos-status"
+    },
+    {
+        "id": "pendente",
+        "value": "<span class=\"ui orange label\">Pendente<\/span>",
+        "type": "string",
+        "group": "pedidos-status"
+    },
+    {
+        "id": "pago",
+        "value": "<span class=\"ui blue label\">Pago<\/span>",
+        "type": "string",
+        "group": "pedidos-status"
+    },
+    {
+        "id": "disputa",
+        "value": "<span class=\"ui red label\">Disputa<\/span>",
+        "type": "string",
+        "group": "pedidos-status"
+    },
+    {
+        "id": "reembolso",
+        "value": "<span class=\"ui olive label\">Reembolso<\/span>",
+        "type": "string",
+        "group": "pedidos-status"
+    },
+    {
+        "id": "negado",
+        "value": "<span class=\"ui red label\">Negado<\/span>",
+        "type": "string",
+        "group": "pedidos-status"
+    },
+    {
+        "id": "expirado",
+        "value": "<span class=\"ui yellow label\">Expirado<\/span>",
+        "type": "string",
+        "group": "pedidos-status"
+    },
+    {
+        "id": "live",
+        "value": "<span class=\"ui blue label\">Live<\/span>",
+        "type": "string",
+        "group": "pedidos-ambiente"
+    },
+    {
+        "id": "sandbox",
+        "value": "<span class=\"ui grey label\">Sandbox<\/span>",
+        "type": "string",
+        "group": "pedidos-ambiente"
+    },
+    {
+        "id": "alerta-paypal-inativo",
+        "value": "O gateway de pagamento PayPal está inativo.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-paypal-status-invalido",
+        "value": "Não é permitido refazer um pagamento em um pedido que já concluiu o processo de pagamento.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-paypal-tentativas-maximas-alcancadas",
+        "value": "Você foi bloqueado momentaneamente para pagar este pedido por exceder o limite de tentativas de pagamento. São permitidas <b>#maximo#<\/b> tentativas em <b>#tentativas#<\/b> minutos. Tente pagar novamente em <b>#tentativas#<\/b> minutos.",
+        "type": "string"
+    },
+    {
+        "id": "payment-error",
+        "value": "Não foi possível criar o pagamento no PayPal devido o servidor do PayPal retornar o seguinte erro: PayPal Plus: <b>#error# - #error_description#<\/b>.",
+        "type": "string"
+    },
+    {
+        "id": "payment-empty-result",
+        "value": "Não foi possível criar o pagamento no PayPal devido o servidor do PayPal retornar um resultado vazio. Favor tentar novamente mais tarde.",
+        "type": "string"
+    },
+    {
+        "id": "payment-mandatory-fields",
+        "value": "É obrigatório informar codigo e id_hosts.",
+        "type": "string"
+    },
+    {
+        "id": "payment-other-payer-error",
+        "value": "É necessário preencher todos os dados do comprador antes de clicar no botão CONTINUAR.",
+        "type": "string"
+    },
+    {
+        "id": "payment-execute-empty-result",
+        "value": "Não foi possível finalizar o pagamento do PayPal devido o servidor do PayPal retornar um resultado vazio. Favor tentar novamente mais tarde.",
+        "type": "string"
+    },
+    {
+        "id": "payment-execute-not-autorized",
+        "value": "Sua operadora de cartões <b>NÃO<\/b> autorizou o pagamento. Favor entrar em contato com o seu banco afim de saber como proceder. Depois disso, tente pagar novamente.",
+        "type": "string"
+    },
+    {
+        "id": "payment-execute-error",
+        "value": "Não foi possível efetuar o pagamento no PayPal devido o servidor do PayPal retornar o seguinte erro: PayPal: <b>#error# - #error_description#<\/b>.",
+        "type": "string"
+    },
+    {
+        "id": "payment-execute-pay-id-not-found",
+        "value": "Pay ID não encontrado.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-paypal-pagamento-completado",
+        "value": "Pagamento concluído com sucesso!",
+        "type": "string"
+    },
+    {
+        "id": "alerta-paypal-pagamento-pendente",
+        "value": "Seu pagamento ainda não foi completamente processado. Assim que o status de pagamento for alterado, a Entrey irá entrar em contato com novas informações através do E-mail. Ou então você pode acessar suas compras e verificar se o mesmo já foi processado.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-pedido-nao-pago",
+        "value": "Este pedido não foi pago, por isso não é possível emitir seu voucher.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-pedido-nao-novo",
+        "value": "Este pedido já passou pela a etapa de emissão. Caso queira alterar as identidades do voucher, você pode ir em <a href=\"\/minhas-compras\/\">Minhas Compras<\/a>.",
+        "type": "string"
+    },
+    {
+        "id": "inform-title",
+        "value": "Informativo",
+        "type": "string"
+    },
+    {
+        "id": "alerta-voucher-nao-encontrado",
+        "value": "Seu voucher não foi encontrado no servidor.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-voucher-email-sucesso",
+        "value": "Email enviado com sucesso!",
+        "type": "string"
+    },
+    {
+        "id": "alerta-voucher-alterar-identificacao-sucesso",
+        "value": "Alteração da identificação concluída com sucesso!",
+        "type": "string"
+    },
+    {
+        "id": "alerta-voucher-email-nao-enviado",
+        "value": "Não foi possível enviar o email por algum erro no servidor. Tente novamente ou então tente mais tarde.",
+        "type": "string"
+    },
+    {
+        "id": "identificacao-usuario-label",
+        "value": "Usuário",
+        "type": "string"
+    },
+    {
+        "id": "alert-there-is-a-field",
+        "value": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-usuario-nao-encontrado",
+        "value": "Usuário não encontrado no servidor.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-usuario-alterar-dados-sucesso",
+        "value": "Alteração dos dados concluída com sucesso!",
+        "type": "string"
+    },
+    {
+        "id": "alerta-usuario-campo-nao-encontrado",
+        "value": "Campo não encontrado no servidor.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-usuario-inativo",
+        "value": "Usuário inativo no sistema.",
+        "type": "string"
+    },
+    {
+        "id": "historic-button-load-more",
+        "value": "Carregar Mais",
+        "type": "string"
+    },
+    {
+        "id": "user-authorization-title",
+        "value": "Área Restrita",
+        "type": "string"
+    },
+    {
+        "id": "user-authorization-message",
+        "value": "Este local tem dados importantes sensíveis. Portanto, por segurança,  é necessário fornecer novamente a sua senha.",
+        "type": "string"
+    },
+    {
+        "id": "user-authorization-cancel",
+        "value": "Cancelar",
+        "type": "string"
+    },
+    {
+        "id": "user-authorization-confirm",
+        "value": "Fornecer Senha",
+        "type": "string"
+    },
+    {
+        "id": "alert-authorization-provisory-not-defined",
+        "value": "Não é permitido alterar nenhum dado do usuário sem autorização provisória.",
+        "type": "string"
+    },
+    {
+        "id": "alerta-pagamento-gratuito-completado",
+        "value": "Processamento de pedido gratuito executado com sucesso!",
+        "type": "string"
+    },
+    {
+        "id": "alerta-pagamento-gratuito-total-maior-que-zero",
+        "value": "Este pedido não é <b>gratuito<\/b> e portanto deve ser efetuado o pagamento antes de continuar!",
+        "type": "string"
+    },
+    {
+        "id": "recaptcha-invalid",
+        "value": "A sua requisição NÃO foi aceita pois nosso sistema automático de segurança considerou a mesma sendo feita por um ROBÔ. Favor tentar novamente, mas caso o problema persista, favor entrar em contato: #url#.",
+        "type": "string"
+    },
+    {
+        "id": "alert-user-inactive",
+        "value": "Usuário inativo no sistema, favor entrar em contato com o suporte para restabelecer sua conta.",
+        "type": "string"
+    },
+    {
+        "id": "alert-user-or-password-invalid",
+        "value": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
+        "type": "string"
+    },
+    {
+        "id": "alert-user-without-host",
+        "value": "Usuário sem host vinculado. O seu usuário não faz parte de nenhum host do sistema. Provavelmente seu perfil não é de administração de um host.",
+        "type": "string"
+    },
+    {
+        "id": "alert-codigo-opcao-mandatory",
+        "value": "É obrigatório enviar o código e a opção para baixar o voucher.",
+        "type": "string"
+    },
+    {
+        "id": "alert-order-not-found",
+        "value": "Pedido não foi encontrado na sua loja! Pedido código: #pedido#",
+        "type": "string"
+    },
+    {
+        "id": "alert-order-not-paied",
+        "value": "Não é possível dar baixa no voucher pois o estado do pedido é:  #status#",
+        "type": "string"
+    },
+    {
+        "id": "alert-voucher-not-valid",
+        "value": "Voucher não validado! Pedido código: #pedido#",
+        "type": "string"
+    },
+    {
+        "id": "alert-voucher-not-found",
+        "value": "Voucher não encontrado! Pedido código: #pedido#",
+        "type": "string"
+    },
+    {
+        "id": "alert-voucher-used",
+        "value": "O voucher ##voucher# do pedido ##pedido# já foi utilizado!",
+        "type": "string"
+    },
+    {
+        "id": "novo",
+        "value": "<span class=\"ui grey label\">Novo<\/span>",
+        "type": "string",
+        "group": "pedidos-voucher-status"
+    },
+    {
+        "id": "disponivel",
+        "value": "<span class=\"ui green label\">Disponível<\/span>",
+        "type": "string",
+        "group": "pedidos-voucher-status"
+    },
+    {
+        "id": "usado",
+        "value": "<span class=\"ui blue label\">Usado<\/span>",
+        "type": "string",
+        "group": "pedidos-voucher-status"
+    },
+    {
+        "id": "alert-voucher-status-error",
+        "value": "Não é possível baixar o voucher ##voucher# do pedido ##pedido#! Estado do voucher: #estado#",
+        "type": "string"
+    },
+    {
+        "id": "alert-orders-finished",
+        "value": "Voucher ##codigo# baixado com sucesso!",
+        "type": "string"
+    },
+    {
+        "id": "alert-orders-finished-api-client-error",
+        "value": "Voucher ##codigo# baixado com sucesso! Mas houve um erro na comunicação com o host do site: #error-msg#",
+        "type": "string"
+    },
+    {
+        "id": "expirado",
+        "value": "<span class=\"ui yellow label\">Expirado<\/span>",
+        "type": "string",
+        "group": "pedidos-voucher-status"
+    },
+    {
+        "id": "variavel-id-label",
+        "value": "Variável",
+        "type": "string"
+    },
+    {
+        "id": "variavel-id-placeholder",
+        "value": "Identificador da Variável",
+        "type": "string"
+    },
+    {
+        "id": "variavel-group-label",
+        "value": "Grupo",
+        "type": "string"
+    },
+    {
+        "id": "variavel-group-placeholder",
+        "value": "Grupo da variável (opcional)",
+        "type": "string"
+    },
+    {
+        "id": "variavel-tipo-label",
+        "value": "Tipo",
+        "type": "string"
+    },
+    {
+        "id": "variavel-tipo-placeholder",
+        "value": "Selecione o tipo...",
+        "type": "string"
+    },
+    {
+        "id": "variavel-valor-label",
+        "value": "Valor",
+        "type": "string"
+    },
+    {
+        "id": "variavel-add-btn",
+        "value": "Adicionar Variável",
+        "type": "string"
+    },
+    {
+        "id": "variavel-description-label",
+        "value": "Descrição",
+        "type": "string"
+    },
+    {
+        "id": "variavel-description-placeholder",
+        "value": "Descrição da variável (opcional)",
+        "type": "string"
+    },
+    {
+        "id": "teste",
+        "value": "Nome 2",
+        "type": "string"
+    },
+    {
+        "id": "historic-change",
+        "value": "Alterou ",
+        "type": "string",
+        "description": "Padrão de inclusão no histórico"
+    },
+    {
+        "id": "default-value-change",
+        "value": "Clique para subistituir pelo valor padrão desta variável.",
+        "type": "string",
+        "description": "Tooltip do botão resetar para o valor padrão"
+    },
+    {
+        "id": "form-value-placeholder",
+        "value": "Valor",
+        "type": "string"
+    },
+    {
+        "id": "form-name-label",
+        "value": "Nome",
+        "type": "string"
+    },
+    {
+        "id": "form-name-placeholder",
+        "value": "Nome",
+        "type": "string"
+    },
+    {
+        "id": "middle-name",
+        "value": "Nome do Meio",
+        "type": "string"
+    },
+    {
+        "id": "first-name",
+        "value": "Primeiro Nome",
+        "type": "string"
+    },
+    {
+        "id": "last-name",
+        "value": "Último Nome",
+        "type": "string"
+    },
+    {
+        "id": "form-email-label",
+        "value": "Email",
+        "type": "string"
+    },
+    {
+        "id": "form-email-placeholder",
+        "value": "Email",
+        "type": "string"
+    },
+    {
+        "id": "form-email-2-label",
+        "value": "Confirme o Email",
+        "type": "string"
+    },
+    {
+        "id": "form-email-2-placeholder",
+        "value": "Confirme o Email",
+        "type": "string"
+    },
+    {
+        "id": "form-user-label",
+        "value": "Usuário",
+        "type": "string"
+    },
+    {
+        "id": "form-user-placeholder",
+        "value": "Usuário",
+        "type": "string"
+    },
+    {
+        "id": "form-password-label",
+        "value": "Senha",
+        "type": "string"
+    },
+    {
+        "id": "form-password-placeholder",
+        "value": "Senha",
+        "type": "string"
+    },
+    {
+        "id": "form-password-2-label",
+        "value": "Confirme a Senha",
+        "type": "string"
+    },
+    {
+        "id": "form-password-2-placeholder",
+        "value": "Confirme a Senha",
+        "type": "string"
+    },
+    {
+        "id": "form-user-profile-label",
+        "value": "Usuário Perfil",
+        "type": "string"
+    },
+    {
+        "id": "form-user-profile-placeholder",
+        "value": "Selecione um perfil",
+        "type": "string"
+    },
+    {
+        "id": "login-titulo",
+        "value": "LOGIN",
+        "type": "string"
+    },
+    {
+        "id": "login-user-label",
+        "value": "Usuário",
+        "type": "string"
+    },
+    {
+        "id": "login-password-label",
+        "value": "Senha",
+        "type": "string"
+    },
+    {
+        "id": "login-button-label",
+        "value": "Entrar",
+        "type": "string"
+    },
+    {
+        "id": "login-forgot-password-label",
+        "value": "Esqueceu sua senha? Clique",
+        "type": "string"
+    },
+    {
+        "id": "login-forgot-password-button",
+        "value": "aqui",
+        "type": "string"
+    },
+    {
+        "id": "login-keep-logged-in-label",
+        "value": "Manter minha conta ativa neste navegador",
+        "type": "string"
+    },
+    {
+        "id": "login-new-register-label",
+        "value": "Não possui uma conta?",
+        "type": "string"
+    },
+    {
+        "id": "login-new-register-button",
+        "value": "Faça seu cadastro",
+        "type": "string"
+    },
+    {
+        "id": "alert-user-or-password-invalid",
+        "value": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
+        "type": "string"
+    },
+    {
+        "id": "alert-user-inactive",
+        "value": "Usuário inativo no sistema, favor entrar em contato com o suporte para restabelecer sua conta.",
+        "type": "string"
+    },
+    {
+        "id": "alert-without-permission",
+        "value": "Você não tem permissão para acessar este local.",
+        "type": "string"
+    },
+    {
+        "id": "alert-there-is-a-field",
+        "value": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+        "type": "string"
+    },
+    {
+        "id": "form-password-button",
+        "value": "Mudar Senha",
+        "type": "string"
+    },
+    {
+        "id": "user-permited-chars",
+        "value": "letras, números, '.' e apenas um '@'",
+        "type": "string"
+    },
+    {
+        "id": "form-name-account-label",
+        "value": "Nome da Conta",
+        "type": "string"
+    },
+    {
+        "id": "form-name-user-label",
+        "value": "Nome do Usuário",
+        "type": "string"
+    },
+    {
+        "id": "form-name-account-placeholder",
+        "value": "Nome da Conta",
+        "type": "string"
+    },
+    {
+        "id": "form-name-user-placeholder",
+        "value": "Nome do Usuário",
+        "type": "string"
+    },
+    {
+        "id": "alert-authorization-provisory-not-defined",
+        "value": "Não é permitido alterar nenhum dado do usuário sem autorização provisória.",
+        "type": "string"
+    },
+    {
+        "id": "restrict-area-info",
+        "value": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar<\/b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
+        "type": "string"
+    },
+    {
+        "id": "restrict-area-info-title",
+        "value": "Autorização Provisória de Alteração",
+        "type": "string"
+    },
+    {
+        "id": "alert-password-invalid",
+        "value": "Senha incorreta! Você tem mais <b>#tentativas#<\/b> tentativas, senão será desconectado automaticamente!",
+        "type": "string"
+    },
+    {
+        "id": "alert-password-invalid-finish",
+        "value": "Senha Incorreta! Você foi desconectado do sistema automaticamente pelo excesso de fornecimento de senhas incorretas. Será necessário informar usuário e senha para ter acesso novamente.",
+        "type": "string"
+    },
+    {
+        "id": "form-user-plan-label",
+        "value": "Usuário Plano",
+        "type": "string"
+    },
+    {
+        "id": "form-user-manager-profile-label",
+        "value": "Usuário Gestor Perfil",
+        "type": "string"
+    },
+    {
+        "id": "form-user-manager-profile-placeholder",
+        "value": "Selecione um perfil...",
+        "type": "string"
+    },
+    {
+        "id": "list-host-label",
+        "value": "Hospedeiro",
+        "type": "string"
+    },
+    {
+        "id": "list-user-parent-label",
+        "value": "Usuário Pai",
+        "type": "string"
+    },
+    {
+        "id": "alert-without-permission",
+        "value": "Você não tem permissão para acessar este local.",
+        "type": "string"
+    }
+]

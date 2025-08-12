@@ -69,6 +69,143 @@
                     "type": "system",
                     "option": "adicionar"
                 }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-editor-tooltip",
+                    "value": "Clique para abrir o Editor HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-editor-label",
+                    "value": "Editor HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-tooltip",
+                    "value": "Clique para abrir o Código HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-label",
+                    "value": "Código HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-tooltip",
+                    "value": "Clique para abrir o CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-label",
+                    "value": "CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-label",
+                    "value": "Identificador",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-placeholder",
+                    "value": "Identificador",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-label",
+                    "value": "Caminho",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-placeholder",
+                    "value": "Caminho",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-label",
+                    "value": "Layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-placeholder",
+                    "value": "Escolha um layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-label",
+                    "value": "Tipo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-placeholder",
+                    "value": "Selecione um tipo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Selecione um módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-option-label",
+                    "value": "Opção",
+                    "type": "string"
+                },
+                {
+                    "id": "form-option-placeholder",
+                    "value": "Opção",
+                    "type": "string"
+                },
+                {
+                    "id": "form-root-label",
+                    "value": "Raiz",
+                    "type": "string"
+                },
+                {
+                    "id": "form-permission-label",
+                    "value": "Sem Permissão",
+                    "type": "string"
+                },
+                {
+                    "id": "form-config-divider",
+                    "value": "Configurações da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-editor-html-switch-label",
+                    "value": "Editor HTML Habilitar",
+                    "type": "string"
+                },
+                {
+                    "id": "editor-html-switch",
+                    "value": null,
+                    "type": "bool"
+                },
+                {
+                    "id": "path-necessary-chars",
+                    "value": "pelo menos uma '\/' no final",
+                    "type": "string"
+                },
+                {
+                    "id": "form-url-label",
+                    "value": "URL Atual da Página",
+                    "type": "string"
+                }
             ]
         }
     }

@@ -76,7 +76,74 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Todos os módulos",
+                    "type": "string"
+                },
+                {
+                    "id": "form-categories-child-label",
+                    "value": "Categorias Filho",
+                    "type": "string"
+                },
+                {
+                    "id": "info-categories-child-empty",
+                    "value": "Nenhuma categoria filho definida!",
+                    "type": "string"
+                },
+                {
+                    "id": "category-child-placeholder",
+                    "value": "Clique para Adicionar Categoria Filho.",
+                    "type": "string"
+                },
+                {
+                    "id": "category-child-label",
+                    "value": "Adicionar",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-parent-label",
+                    "value": "Categoria Pai",
+                    "type": "string"
+                },
+                {
+                    "id": "category-child-parent-not-found",
+                    "value": "Categoria Pai não encontrada. Não é possível adicionar categoria filho sem um pai referente.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-parent-empy",
+                    "value": "Nenhum(a)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-categories-parent-label",
+                    "value": "Categoria Localização",
+                    "type": "string"
+                },
+                {
+                    "id": "root-category",
+                    "value": "Raiz",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

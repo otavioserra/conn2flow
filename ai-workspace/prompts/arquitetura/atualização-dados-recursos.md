@@ -1,21 +1,22 @@
-# Prompt Interactive Programming
+# Atualização Dados Recursos.
+
 - Definições de toda a infraestrutura de programação que serão usados pelos agentes de IA para interagir com o usuário e gerar código de forma dinâmica estão definidas abaixo.
 - Os agentes usarão este arquivo para poder criar e alterar orientações de forma dinâmica, com base nas interações com o usuário. Podendo alterar qualquer parte a qualquer momento. O usuário ficará atento e modificará esse arquivo para garantir que as mudanças sejam compreendidas e implementadas corretamente.
 - Tanto o usuário quanto os agentes de IA poderão modificar as orientações e os elementos de programação definidos neste arquivo a qualquer momento. Sendo assim, o agente sempre deve estar atento às mudanças e adaptar seu comportamento conforme necessário.
 - Abaixo serão definidos pelos agentes e usuários comandos usando pseudo-código onde a definição da syntax está no seguinte arquivo: `ai-workspace\templates\pseudo-language-programming.md`.
 
-## 🤖 Agentes de IA
-- **Agente de Desenvolvimento**: Responsável por criar e modificar estas orientações e o código-fonte da aplicação. **Você é este agente**
-- **Agente GIT**: Responsável por gerenciar o repositório de código-fonte e as versões do projeto. Será rodado por outro agente que irá ler e interpretar as mudanças. Estas mudanças devem ser definidas pelo **Agente de Desenvolvimento**. Para isso crie/modifique o arquivo dentro da pasta com todas as modificações para criação das mensagens pelo assistente GIT: `ai-workspace\git`
-- **Agente Docker**: Responsável por gerenciar os contêineres Docker e a infraestrutura relacionada. Será rodado por outro agente que irá ler e interpretar as mudanças. Estas mudanças devem ser definidas pelo **Agente de Desenvolvimento**.
+## 🤖 Agente de IA
+- **Agente de Desenvolvimento**: Responsável por criar e modificar estas orientações e o código-fonte da aplicação.
+- **Agente GIT**: Responsável por gerenciar o repositório de código-fonte e as versões do projeto. Para isso crie/modifique o arquivo dentro da pasta com todas as modificações para criação das mensagens: `ai-workspace\git\arquitetura\`. Quando precisar gerar o commit, use esse script: `ai-workspace\git\scripts\commit.sh`
+- **Agente Docker**: Responsável por gerenciar os contêineres Docker e a infraestrutura relacionada.
 
 ## ⚙️ Configurações da Implementação
-- Nome dessa implementação: $nomeImplementacao = `NOME`
-- Caminho base: $base = `PATH`.
-- Nome do arquivo da Implementação: $nomeArquivoImplementacao = $base + `NOME_ARQUIVO`.
-- Caminho da pasta de backups caso necessário: $backupPath = `PATH_BACKUP`.
-- Caminho da pasta de logs: $logsPath = `PATH_LOGS`.
-- Caminho da pasta de linguagens: $linguagensPath = `PATH_LINGUAGENS`.
+- Nome dessa implementação: $nomeImplementacao = `Atualização Dados Recursos`
+- Caminho base: $base = `gestor\controladores\agents\arquitetura`.
+- Nome do arquivo da Implementação: $nomeArquivoImplementacao = $base + `atualizacao-dados-recursos.php`.
+- Caminho da pasta de backups caso necessário: $backupPath = `backups\arquitetura`.
+- Caminho da pasta de logs: $logsPath = `gestor\logs\arquitetura`.
+- Caminho da pasta de linguagens: $linguagensPath = `gestor\controladores\agents\arquitetura\lang`.
 - Linguagens suportadas: $linguagensSuportadas = [`pt-br`, `en`].
 - Linguagens de dicionário serão armazenadas em arquivo .JSON.
 - Todos os textos de informação/logs deverão ter multilinguas. Escapados usando função helper `_()`;
@@ -27,8 +28,13 @@
 - Para atualizar o ambiente e refletir as mudanças do repositório, segue o arquivo para sincronização: `docker\utils\sincroniza-gestor.sh checksum`
 
 ## 📖 Bibliotecas
+- Geração de logs: `gestor\bibliotecas\log.php`: `log_disco($msg, $logFilename = "gestor")` > Pode alterar se necessário.
+- Funções de lang: `gestor\bibliotecas\lang.php`: `_()` > Necessário definir.
 
 ## 🎯 Contexto Inicial
+1. Criei com outro agente o seguinte script para atualizar os dados dos recursos sendo este o orquestrador: `gestor\resources\generate.multilingual.seeders.php` e esse o gerador dos dados propriamente dito: `ai-workspace\scripts\arquitetura\generate_seeds_data.php`. Agora vamos integrar os dois scripts em um único script no $nomeArquivoImplementacao .
+2. Nestes 2 scripts foi criada a lógica para gerar os recursos baseados na origem dos dados para `paginas`, `layouts` e `componentes` e todas as suas peculiaridades estão toda implementadas lá. Precisamos adaptar a nova estrutura de código.
+3. 
 
 ## 📝 Orientações para o Agente
 
@@ -40,6 +46,7 @@ main():
 
 main()
 ```
+
 ## 🤔 Dúvidas e 📝 Sugestões
 
 # ✅ Progresso da Implementação

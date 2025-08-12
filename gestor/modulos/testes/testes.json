@@ -49,7 +49,34 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "testebool-2",
+                    "value": "1",
+                    "type": "bool"
+                },
+                {
+                    "id": "tinymce-novo",
+                    "value": "<p>Teste<\/p>\\r\\n<p>teste<\/p>",
+                    "type": "tinymce"
+                },
+                {
+                    "id": "testeoutro",
+                    "value": "function(){\\r\\n    sdfsdfsdfs sd fsd f\\r\\n    sdf sdf sdf sdf \\r\\n}",
+                    "type": "js"
+                },
+                {
+                    "id": "teste-novo",
+                    "value": "function alo(){\\r\\n    var top = 1;\\r\\n}",
+                    "type": "js"
+                },
+                {
+                    "id": "teste-html",
+                    "value": "<html>\\r\\n\\r\\n<\/html>",
+                    "type": "html"
+                }
+            ]
         }
     }
 }

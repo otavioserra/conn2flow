@@ -48,7 +48,44 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "field-key",
+                    "value": "Código",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-to-view",
+                    "value": "Clique para Visualizar",
+                    "type": "string"
+                },
+                {
+                    "id": "field-total",
+                    "value": "Valor",
+                    "type": "string"
+                },
+                {
+                    "id": "field-client",
+                    "value": "Cliente",
+                    "type": "string"
+                },
+                {
+                    "id": "field-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "field-environment",
+                    "value": "Ambiente",
+                    "type": "string"
+                },
+                {
+                    "id": "orders-finish-date",
+                    "value": "<span class=\"ui grey label\">Data da baixa: #data#<\/span>",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

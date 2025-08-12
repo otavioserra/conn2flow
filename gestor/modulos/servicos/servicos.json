@@ -95,6 +95,313 @@
                     "type": "system",
                     "option": "editar"
                 }
+            ],
+            "variables": [
+                {
+                    "id": "section-page",
+                    "value": "Configurações da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-thumbnail-label",
+                    "value": "Imagem",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template-label",
+                    "value": "Template",
+                    "type": "string"
+                },
+                {
+                    "id": "form-price-label",
+                    "value": "Preço",
+                    "type": "string"
+                },
+                {
+                    "id": "form-price-placeholder",
+                    "value": "0.000,00",
+                    "type": "string"
+                },
+                {
+                    "id": "form-quantity-label",
+                    "value": "Quantidade",
+                    "type": "string"
+                },
+                {
+                    "id": "form-quantity-placeholder",
+                    "value": "123",
+                    "type": "string"
+                },
+                {
+                    "id": "form-description-label",
+                    "value": "Descrição",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-label",
+                    "value": "Caminho",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-placeholder",
+                    "value": "Caminho",
+                    "type": "string"
+                },
+                {
+                    "id": "path-necessary-chars",
+                    "value": "pelo menos uma '\/' no final",
+                    "type": "string"
+                },
+                {
+                    "id": "form-url-label",
+                    "value": "URL Atual do Serviço",
+                    "type": "string"
+                },
+                {
+                    "id": "form-quantity-cart-label",
+                    "value": "Quantidade em Carrinhos",
+                    "type": "string"
+                },
+                {
+                    "id": "form-quantity-cart-placeholder",
+                    "value": "Quantidade em Carrinhos",
+                    "type": "string"
+                },
+                {
+                    "id": "form-quantity-order-label",
+                    "value": "Quantidade em Pedidos",
+                    "type": "string"
+                },
+                {
+                    "id": "form-quantity-order-placeholder",
+                    "value": "Quantidade em Pedidos",
+                    "type": "string"
+                },
+                {
+                    "id": "form-quantity-pre-order-label",
+                    "value": "Quantidade em Pedidos Pendentes",
+                    "type": "string"
+                },
+                {
+                    "id": "form-quantity-pre-order-placeholder",
+                    "value": "Quantidade em Pedidos Pendentes",
+                    "type": "string"
+                },
+                {
+                    "id": "menu-quantity-cart",
+                    "value": "Carrinhos",
+                    "type": "string"
+                },
+                {
+                    "id": "menu-quantity-pre-order",
+                    "value": "Pendentes",
+                    "type": "string"
+                },
+                {
+                    "id": "menu-quantity-order",
+                    "value": "Pedidos",
+                    "type": "string"
+                },
+                {
+                    "id": "inventory-control-page",
+                    "value": "Controle de Estoque",
+                    "type": "string"
+                },
+                {
+                    "id": "menu-batch-tooltip",
+                    "value": "Clique para selecionar este lote.",
+                    "type": "string"
+                },
+                {
+                    "id": "batch-title",
+                    "value": "Definições dos Lotes",
+                    "type": "string"
+                },
+                {
+                    "id": "form-batch-name",
+                    "value": "Lote Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-visibility-label",
+                    "value": "Lote Visibilidade",
+                    "type": "string"
+                },
+                {
+                    "id": "form-rangestart-label",
+                    "value": "Data Início",
+                    "type": "string"
+                },
+                {
+                    "id": "form-rangeend-label",
+                    "value": "Data Fim",
+                    "type": "string"
+                },
+                {
+                    "id": "form-batch-label",
+                    "value": "Lote Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "btn-batch-add",
+                    "value": "Adicionar Lote",
+                    "type": "string"
+                },
+                {
+                    "id": "date-start-label",
+                    "value": "Data Inicial do Lote",
+                    "type": "string"
+                },
+                {
+                    "id": "date-end-label",
+                    "value": "Data Final do Lote",
+                    "type": "string"
+                },
+                {
+                    "id": "form-startdate-label",
+                    "value": "Data Início",
+                    "type": "string"
+                },
+                {
+                    "id": "form-enddate-label",
+                    "value": "Data Fim",
+                    "type": "string"
+                },
+                {
+                    "id": "form-visibility-placeholder",
+                    "value": "Lote Visibilidade",
+                    "type": "string"
+                },
+                {
+                    "id": "variations-title",
+                    "value": "Lote Variações",
+                    "type": "string"
+                },
+                {
+                    "id": "form-variations-name-label",
+                    "value": "Variação Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-variations-name-placeholder",
+                    "value": "Variação Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "btn-variations-add",
+                    "value": "Adicionar Variação",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-label",
+                    "value": "Tipo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-simple",
+                    "value": "Simples",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-batch",
+                    "value": "Lotes \/ Variações",
+                    "type": "string"
+                },
+                {
+                    "id": "btn-batch-del",
+                    "value": "Excluir",
+                    "type": "string"
+                },
+                {
+                    "id": "btn-variation-del",
+                    "value": "Excluir",
+                    "type": "string"
+                },
+                {
+                    "id": "type-simple-tooltip",
+                    "value": "Clique para mudar para o tipo Simples.",
+                    "type": "string"
+                },
+                {
+                    "id": "type-batch-tooltip",
+                    "value": "Clique para mudar para o tipo Lotes \/ Variações.",
+                    "type": "string"
+                },
+                {
+                    "id": "batch-add-tooltip",
+                    "value": "Clique para adicionar um novo lote.",
+                    "type": "string"
+                },
+                {
+                    "id": "batch-del-tooltip",
+                    "value": "Clique para excluir este lote.",
+                    "type": "string"
+                },
+                {
+                    "id": "variations-add-tooltip",
+                    "value": "Clique para adicionar uma nova variação.",
+                    "type": "string"
+                },
+                {
+                    "id": "variations-del-tooltip",
+                    "value": "Clique para excluir esta variação.",
+                    "type": "string"
+                },
+                {
+                    "id": "batch-menu-tooltip",
+                    "value": "Clique para selecionar um lote.",
+                    "type": "string"
+                },
+                {
+                    "id": "btn-batch-duplicate",
+                    "value": "Duplicar",
+                    "type": "string"
+                },
+                {
+                    "id": "batch-duplicate-tooltip",
+                    "value": "Clique para duplicar este lote.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-free-label",
+                    "value": "Serviço oferecido de forma gratuita.",
+                    "type": "string"
+                },
+                {
+                    "id": "variation-free-label",
+                    "value": "Variação ofertada de forma gratuita.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-variations-price-label",
+                    "value": "Variação Preço",
+                    "type": "string"
+                },
+                {
+                    "id": "form-variations-quantity-label",
+                    "value": "Variação Quantidade",
+                    "type": "string"
+                },
+                {
+                    "id": "form-variations-startdate-label",
+                    "value": "Data Início",
+                    "type": "string"
+                },
+                {
+                    "id": "form-variations-enddate-label",
+                    "value": "Data Fim",
+                    "type": "string"
+                }
             ]
         }
     }

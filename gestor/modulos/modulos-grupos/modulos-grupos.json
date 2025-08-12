@@ -75,7 +75,24 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-host-label",
+                    "value": "Host",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

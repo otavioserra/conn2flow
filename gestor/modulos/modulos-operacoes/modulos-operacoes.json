@@ -61,7 +61,39 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-operation-label",
+                    "value": "Operação ID",
+                    "type": "string"
+                },
+                {
+                    "id": "form-operation-placeholder",
+                    "value": "Operação ID",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

@@ -29,7 +29,149 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "label-cnpj",
+                    "value": "CNPJ",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-cnpj",
+                    "value": "CNPJ",
+                    "type": "string"
+                },
+                {
+                    "id": "label-cpf",
+                    "value": "CPF",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-cpf",
+                    "value": "CPF",
+                    "type": "string"
+                },
+                {
+                    "id": "label-endereco",
+                    "value": "Endereço",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-endereco",
+                    "value": "Endereço",
+                    "type": "string"
+                },
+                {
+                    "id": "label-numero",
+                    "value": "Número",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-numero",
+                    "value": "Número",
+                    "type": "string"
+                },
+                {
+                    "id": "label-complemento",
+                    "value": "Complemento",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-complemento",
+                    "value": "Complemento",
+                    "type": "string"
+                },
+                {
+                    "id": "label-bairro",
+                    "value": "Bairro",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-bairro",
+                    "value": "Bairro",
+                    "type": "string"
+                },
+                {
+                    "id": "label-cidade",
+                    "value": "Cidade",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-cidade",
+                    "value": "Cidade",
+                    "type": "string"
+                },
+                {
+                    "id": "label-uf",
+                    "value": "UF",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-uf",
+                    "value": "UF",
+                    "type": "string"
+                },
+                {
+                    "id": "label-pais",
+                    "value": "País",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-pais",
+                    "value": "País",
+                    "type": "string"
+                },
+                {
+                    "id": "label-cep",
+                    "value": "CEP",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-cep",
+                    "value": "CEP",
+                    "type": "string"
+                },
+                {
+                    "id": "label-telefone",
+                    "value": "Telefone",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-telefone",
+                    "value": "Telefone",
+                    "type": "string"
+                },
+                {
+                    "id": "label-nome",
+                    "value": "Nome da sua loja",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-nome",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "label-logomarca",
+                    "value": "Logomarca",
+                    "type": "string"
+                },
+                {
+                    "id": "label-continuar-comprando",
+                    "value": "URL Continuar Comprando",
+                    "type": "string"
+                },
+                {
+                    "id": "placeholder-continuar-comprando",
+                    "value": "Use '\/' ou alguma outra localização derivada",
+                    "type": "string"
+                },
+                {
+                    "id": "path-necessary-chars",
+                    "value": "pelo menos uma '\/' no final",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

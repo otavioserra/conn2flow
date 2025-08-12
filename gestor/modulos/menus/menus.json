@@ -33,7 +33,104 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "label-sobre",
+                    "value": "Sobre",
+                    "type": "string"
+                },
+                {
+                    "id": "label-ingressos",
+                    "value": "Ingressos",
+                    "type": "string"
+                },
+                {
+                    "id": "label-mapa",
+                    "value": "Mapa",
+                    "type": "string"
+                },
+                {
+                    "id": "label-menu-pagina-inicial",
+                    "value": "Menu Página Inicial",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-menu-pagina-inicial",
+                    "value": "Clique para selecionar o Menu Página Inicial.",
+                    "type": "string"
+                },
+                {
+                    "id": "label-local-e-data",
+                    "value": "Local e Data",
+                    "type": "string"
+                },
+                {
+                    "id": "label-tipo",
+                    "value": "Tipo",
+                    "type": "string"
+                },
+                {
+                    "id": "label-padrao",
+                    "value": "Padrão",
+                    "type": "string"
+                },
+                {
+                    "id": "label-personalizado",
+                    "value": "Personalizado",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-padrao",
+                    "value": "Clique para mudar para o tipo Padrão.",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-personalizado",
+                    "value": "Clique para mudar para o tipo Personalizado.",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-menu-minha-conta",
+                    "value": "Clique para selecionar o Menu Minha Conta",
+                    "type": "string"
+                },
+                {
+                    "id": "label-menu-minha-conta",
+                    "value": "Menu Minha Conta",
+                    "type": "string"
+                },
+                {
+                    "id": "label-meus-pedidos",
+                    "value": "Meus Pedidos",
+                    "type": "string"
+                },
+                {
+                    "id": "label-meus-dados",
+                    "value": "Meus Dados",
+                    "type": "string"
+                },
+                {
+                    "id": "label-sair",
+                    "value": "Sair",
+                    "type": "string"
+                },
+                {
+                    "id": "label-agendamentos",
+                    "value": "Agendamentos",
+                    "type": "string"
+                },
+                {
+                    "id": "label-escalas",
+                    "value": "Escalas",
+                    "type": "string"
+                },
+                {
+                    "id": "historic-change-menu",
+                    "value": "Alterou ",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

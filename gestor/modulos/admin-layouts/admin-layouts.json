@@ -90,7 +90,54 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-tooltip",
+                    "value": "Clique para abrir o Código HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-label",
+                    "value": "Código HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-tooltip",
+                    "value": "Clique para abrir o CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-label",
+                    "value": "CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fullpage-label",
+                    "value": "Página Completa",
+                    "type": "string"
+                },
+                {
+                    "id": "form-category-label",
+                    "value": "Categoria",
+                    "type": "string"
+                },
+                {
+                    "id": "form-category-placeholder",
+                    "value": "Selecione uma categoria caso necessário.",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

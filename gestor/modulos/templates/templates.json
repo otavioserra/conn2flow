@@ -146,7 +146,314 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-category-label",
+                    "value": "Categoria",
+                    "type": "string"
+                },
+                {
+                    "id": "form-category-placeholder",
+                    "value": "Selecione uma categoria",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-label",
+                    "value": "Layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-placeholder",
+                    "value": "Selecione um layout",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-edit-layout",
+                    "value": "Clique para Editar o Layout",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-edit-layout",
+                    "value": "Editar Layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-thumbnail-label",
+                    "value": "Imagem Referência",
+                    "type": "string"
+                },
+                {
+                    "id": "form-default-label",
+                    "value": "Padrão",
+                    "type": "string"
+                },
+                {
+                    "id": "list-default-yes",
+                    "value": "Sim",
+                    "type": "string"
+                },
+                {
+                    "id": "list-default-no",
+                    "value": "Não",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-insert-page",
+                    "value": "Adicionar Páginas",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-insert-page",
+                    "value": "Clique para Adicionar Páginas.",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-insert-layout",
+                    "value": "Adicionar Layouts",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-insert-layout",
+                    "value": "Clique para Adicionar Layouts.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template-page-placeholder",
+                    "value": "Selecione um Template Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template-page-label",
+                    "value": "Template Página",
+                    "type": "string"
+                },
+                {
+                    "id": "list-default-not-applicable",
+                    "value": "N\/A",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template-layout-label",
+                    "value": "Template Layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template-layout-placeholder",
+                    "value": "Selecione um Template Layout",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-edit-template",
+                    "value": "Clique para Editar o Template",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-edit-template",
+                    "value": "Editar Template",
+                    "type": "string"
+                },
+                {
+                    "id": "form-category-model-label",
+                    "value": "Categoria Pai",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-label",
+                    "value": "CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-tooltip",
+                    "value": "Clique para abrir o CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-label",
+                    "value": "Código HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-tooltip",
+                    "value": "Clique para abrir o Código HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-mandatory-model",
+                    "value": "É obrigatório enviar uma <b>Categoria Pai<\/b> válida antes de de qualquer operação. Exemplo: modelo=paginas",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-default-page",
+                    "value": "Páginas",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-default-page",
+                    "value": "Clique para visualizar Páginas.",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-default-layout",
+                    "value": "Layouts",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-default-layout",
+                    "value": "Clique para visualizar Layouts.",
+                    "type": "string"
+                },
+                {
+                    "id": "selectors-list-label",
+                    "value": "Lista de Templates",
+                    "type": "string"
+                },
+                {
+                    "id": "template-gestor-label",
+                    "value": "Template Gestor",
+                    "type": "string"
+                },
+                {
+                    "id": "template-custom-label",
+                    "value": "Template Personalizado",
+                    "type": "string"
+                },
+                {
+                    "id": "default-text",
+                    "value": "Padrão",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-copy",
+                    "value": "Adicionar",
+                    "type": "string"
+                },
+                {
+                    "id": "default-2-text",
+                    "value": "Padrões",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-tooltip-copy",
+                    "value": "Clique para adicionar template baseado neste.",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-select",
+                    "value": "Selecionar",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-tooltip-select",
+                    "value": "Clique para selecionar este template.",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-updates",
+                    "value": "Atualizações",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-updates",
+                    "value": "Clique para atualizar templates padrões.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-update-ok",
+                    "value": "Templates atualizados com sucesso!",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-active",
+                    "value": "Ativo",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-activate",
+                    "value": "Ativar",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-tooltip-activate",
+                    "value": "Clique para ativar este template.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-mandatory-fields",
+                    "value": "É obrigatório mandar o tipo e o identificador do template.",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-preview",
+                    "value": "Pré-Visualizar",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-preview-page",
+                    "value": "Clique para Pré-Visualizar Página",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-preview-layout",
+                    "value": "Clique para Pré-Visualizar Layout",
+                    "type": "string"
+                },
+                {
+                    "id": "activation-title",
+                    "value": "Ativação",
+                    "type": "string"
+                },
+                {
+                    "id": "button-activate",
+                    "value": "Ativar",
+                    "type": "string"
+                },
+                {
+                    "id": "button-active",
+                    "value": "Ativo",
+                    "type": "string"
+                },
+                {
+                    "id": "button-update",
+                    "value": "Atualizar",
+                    "type": "string"
+                },
+                {
+                    "id": "button-updated",
+                    "value": "Atualizado",
+                    "type": "string"
+                },
+                {
+                    "id": "button-tooltip-activate",
+                    "value": "Clique para ativar este template.",
+                    "type": "string"
+                },
+                {
+                    "id": "button-tooltip-update",
+                    "value": "Clique para atualizar este template.",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-default-component",
+                    "value": "Componentes",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-default-component",
+                    "value": "Clique para visualizar Componentes.",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

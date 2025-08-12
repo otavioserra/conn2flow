@@ -71,6 +71,58 @@
                     "type": "system",
                     "option": "editar"
                 }
+            ],
+            "variables": [
+                {
+                    "id": "section-page",
+                    "value": "Configurações da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-thumbnail-label",
+                    "value": "Imagem",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template-label",
+                    "value": "Template",
+                    "type": "string"
+                },
+                {
+                    "id": "form-description-label",
+                    "value": "Descrição",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-label",
+                    "value": "Caminho",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-placeholder",
+                    "value": "Caminho",
+                    "type": "string"
+                },
+                {
+                    "id": "path-necessary-chars",
+                    "value": "pelo menos uma '\/' no final",
+                    "type": "string"
+                },
+                {
+                    "id": "form-url-label",
+                    "value": "URL Atual da Postagem",
+                    "type": "string"
+                }
             ]
         }
     }

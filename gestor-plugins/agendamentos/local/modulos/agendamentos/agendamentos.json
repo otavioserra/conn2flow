@@ -97,6 +97,92 @@
                         "combined": "494f72ac14d54a7b08c56d19c87c1e8e"
                     }
                 }
+            ],
+            "variables": [
+                {
+                    "id": "label-button-admin",
+                    "value": "Administração",
+                    "type": "string",
+                    "description": "Label do botão administrar"
+                },
+                {
+                    "id": "tooltip-button-admin",
+                    "value": "Clique para administrar os agendamentos",
+                    "type": "string",
+                    "description": "Tooltip do botão administrar"
+                },
+                {
+                    "id": "label-button-coupon",
+                    "value": "Cupons de Prioridade",
+                    "type": "string",
+                    "description": "Label do botão cupom de prioridade"
+                },
+                {
+                    "id": "tooltip-button-coupon",
+                    "value": "Clique para gerenciar os cupons de prioridade",
+                    "type": "string",
+                    "description": "Tooltip do botão cupom de prioridade"
+                },
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-quantity-label",
+                    "value": "Quantidade",
+                    "type": "string"
+                },
+                {
+                    "id": "form-quantity-placeholder",
+                    "value": "Quantidade",
+                    "type": "string"
+                },
+                {
+                    "id": "form-valid-from-label",
+                    "value": "Válido De",
+                    "type": "string"
+                },
+                {
+                    "id": "form-valid-from-placeholder",
+                    "value": "Escolha uma data...",
+                    "type": "string"
+                },
+                {
+                    "id": "form-valid-until-label",
+                    "value": "Válido Até",
+                    "type": "string"
+                },
+                {
+                    "id": "form-valid-until-placeholder",
+                    "value": "Escolha uma data...",
+                    "type": "string"
+                },
+                {
+                    "id": "label-print",
+                    "value": "Imprimir Cupons",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-print",
+                    "value": "Clique para imprimir os Cupons de Prioridade",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-cupons-not-found",
+                    "value": "Cupom de prioridade não encontrado. Favor tente novamente.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-cupons-expired",
+                    "value": "Estes cupons estão vencidos, favor alterar o campo <b>Válido Até<\/b> por uma data maior que a do dia de hoje e tente novamente.",
+                    "type": "string"
+                }
             ]
         }
     }

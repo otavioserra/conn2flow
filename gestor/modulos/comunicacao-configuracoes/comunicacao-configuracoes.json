@@ -43,7 +43,158 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "email-personalizado-ativo",
+                    "value": null,
+                    "type": "bool",
+                    "group": "host-admin",
+                    "description": "Ativar\/Desativar personalização de email"
+                },
+                {
+                    "id": "email-assinatura",
+                    "value": "<p>Atenciosamente<\/p>\\r\\n<p>Minha Empresa<\/p>\\r\\n<p>Acessar Site: <a href=\"[[url]]\">[[url]]<\/a><\/p>",
+                    "type": "tinymce",
+                    "group": "host-admin",
+                    "description": "Assinatura padrão que será incluída no final da mensagem em comunicações por email."
+                },
+                {
+                    "id": "servidor-host",
+                    "value": null,
+                    "type": "string",
+                    "group": "host-admin",
+                    "description": "Host do servidor de disparo de emails."
+                },
+                {
+                    "id": "servidor-usuario",
+                    "value": null,
+                    "type": "string",
+                    "group": "host-admin",
+                    "description": "Email completo do usuário do servidor de disparo de email."
+                },
+                {
+                    "id": "servidor-senha",
+                    "value": null,
+                    "type": "string",
+                    "group": "host-admin",
+                    "description": "Senha do email do usuário do servidor de disparo de email."
+                },
+                {
+                    "id": "servidor-porta",
+                    "value": null,
+                    "type": "string",
+                    "group": "host-admin",
+                    "description": "Porta do servidor de disparo de email."
+                },
+                {
+                    "id": "servidor-certificado-seguranca",
+                    "value": null,
+                    "type": "bool",
+                    "group": "host-admin",
+                    "description": "Ativar\/Desativar certificado de segurança do servidor de disparo de email."
+                },
+                {
+                    "id": "remetente-de",
+                    "value": null,
+                    "type": "string",
+                    "group": "host-admin",
+                    "description": "Email completo do remetente dos emails."
+                },
+                {
+                    "id": "remetente-de-nome",
+                    "value": null,
+                    "type": "string",
+                    "group": "host-admin",
+                    "description": "Nome completo do remetente dos emails."
+                },
+                {
+                    "id": "remetente-responder-para",
+                    "value": null,
+                    "type": "string",
+                    "group": "host-admin",
+                    "description": "Email completo que será informado nos emails no campo reponder para."
+                },
+                {
+                    "id": "remetente-responder-para-nome",
+                    "value": null,
+                    "type": "string",
+                    "group": "host-admin",
+                    "description": "Nome completo que será informado nos emails no campo reponder para."
+                },
+                {
+                    "id": "label-button-config",
+                    "value": "Configurações",
+                    "type": "string",
+                    "description": "Botão de acesso das configurações"
+                },
+                {
+                    "id": "tooltip-button-config",
+                    "value": "Clique para alterar as Configurações",
+                    "type": "string",
+                    "description": "Tooltip de acesso das configurações"
+                },
+                {
+                    "id": "label-button-email",
+                    "value": "Disparador de Emails Teste",
+                    "type": "string",
+                    "description": "Botão de acesso do disparador de emails teste"
+                },
+                {
+                    "id": "tooltip-button-email",
+                    "value": "Clique para acessar o Disparador de Emails Teste",
+                    "type": "string",
+                    "description": "Tooltip de acesso do disparador de emails teste"
+                },
+                {
+                    "id": "email-confirm-title",
+                    "value": "Enviar Email Teste",
+                    "type": "string",
+                    "description": "Título de confirmação do modal de disparo de email."
+                },
+                {
+                    "id": "email-confirm-menssage",
+                    "value": "Deseja enviar um email de teste para o endereço de email do seu cadastro para testar as configurações atuais?",
+                    "type": "text",
+                    "description": "Mensagem de confirmação do modal de disparo de email."
+                },
+                {
+                    "id": "email-confirm-button-cancel",
+                    "value": "Cancelar",
+                    "type": "string",
+                    "description": "Botão cancelar do modal de disparo de email."
+                },
+                {
+                    "id": "email-confirm-button-confirm",
+                    "value": "OK",
+                    "type": "string",
+                    "description": "Botão confirmar do modal de disparo de email."
+                },
+                {
+                    "id": "email-tests-subject",
+                    "value": "Teste do disparador de emails nº #cod#",
+                    "type": "string",
+                    "description": "Assunto dos emails testes que serão enviados."
+                },
+                {
+                    "id": "email-sent-alert",
+                    "value": "Email teste enviado com sucesso!",
+                    "type": "string",
+                    "description": "Alerta dos emails testes que foram enviados"
+                },
+                {
+                    "id": "historic-email-sent",
+                    "value": "Enviou email teste de plataforma",
+                    "type": "string",
+                    "description": "Padrão de inclusão no histórico de email teste enviado"
+                },
+                {
+                    "id": "email-not-sent-alert",
+                    "value": "Email teste NÃO enviado! Reveja os dados de configuração informados e tente novamente.",
+                    "type": "string",
+                    "description": "Alerta de email não enviado por algum problema"
+                }
+            ]
         }
     }
 }

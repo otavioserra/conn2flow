@@ -49,7 +49,29 @@
                     }
                 }
             ],
-            "components": []
+            "components": [],
+            "variables": [
+                {
+                    "id": "field-domain",
+                    "value": "Domínio",
+                    "type": "string"
+                },
+                {
+                    "id": "field-user-cpanel",
+                    "value": "Usuário cPanel",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-plan-label",
+                    "value": "Usuário Plano",
+                    "type": "string"
+                },
+                {
+                    "id": "user-owner-name",
+                    "value": "Usuário Proprietário",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

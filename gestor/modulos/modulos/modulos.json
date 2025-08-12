@@ -121,6 +121,118 @@
                     "type": "system",
                     "option": "sincronizar-bancos"
                 }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-grup-label",
+                    "value": "Grupo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-add-field-label",
+                    "value": "Adicionar Variável",
+                    "type": "string"
+                },
+                {
+                    "id": "form-language-label",
+                    "value": "Linguagem",
+                    "type": "string"
+                },
+                {
+                    "id": "form-icon-label",
+                    "value": "Ícone",
+                    "type": "string"
+                },
+                {
+                    "id": "form-icon-placeholder",
+                    "value": "Ícone",
+                    "type": "string"
+                },
+                {
+                    "id": "form-grup-placeholder",
+                    "value": "Selecione um grupo",
+                    "type": "string"
+                },
+                {
+                    "id": "module-name",
+                    "value": "Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-icon-2-label",
+                    "value": "Ícone Ancorado",
+                    "type": "string"
+                },
+                {
+                    "id": "form-icon-2-placeholder",
+                    "value": "Ícone Ancorado",
+                    "type": "string"
+                },
+                {
+                    "id": "form-menu-label",
+                    "value": "Visualizar no Menu Principal",
+                    "type": "string"
+                },
+                {
+                    "id": "form-menu-placeholder",
+                    "value": "Selecione para visualizar no menu principal",
+                    "type": "string"
+                },
+                {
+                    "id": "form-title-label",
+                    "value": "Título",
+                    "type": "string"
+                },
+                {
+                    "id": "form-title-placeholder",
+                    "value": "Título",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-placeholder",
+                    "value": "Identificador",
+                    "type": "string"
+                },
+                {
+                    "id": "form-value-placeholder",
+                    "value": "Valor",
+                    "type": "string"
+                },
+                {
+                    "id": "form-plugin-label",
+                    "value": "Plugin",
+                    "type": "string"
+                },
+                {
+                    "id": "form-plugin-placeholder",
+                    "value": "Selecione um plugin",
+                    "type": "string"
+                },
+                {
+                    "id": "form-plugin-empty",
+                    "value": "Nenhum",
+                    "type": "string"
+                },
+                {
+                    "id": "module-variables",
+                    "value": "Variáveis",
+                    "type": "string"
+                },
+                {
+                    "id": "form-host-label",
+                    "value": "Host",
+                    "type": "string"
+                }
             ]
         }
     }
