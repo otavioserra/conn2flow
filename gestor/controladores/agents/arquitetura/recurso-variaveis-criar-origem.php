@@ -165,6 +165,8 @@ function formatarVars($variaveis, $modulosIDs, $modulosPluginsMap) {
                 }
                 $varsFormatadasPorTipo['plugins'][$plugin][$modulo][$lang][] = $formattedVar;
             } else { // Se o módulo não for encontrado, trate como global
+                // Adiciona o campo 'modulo' para referência, conforme solicitado
+                $formattedVar['modulo'] = $modulo;
                 if (!isset($varsFormatadasPorTipo['globais'][$lang])) {
                     $varsFormatadasPorTipo['globais'][$lang] = [];
                 }

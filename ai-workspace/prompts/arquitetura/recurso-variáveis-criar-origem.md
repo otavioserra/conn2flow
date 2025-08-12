@@ -128,7 +128,19 @@ main()
 - [x] Adicionar a lógica de internacionalização para mensagens de log/relatório.
 - [x] Revisar e refatorar o código para garantir a qualidade, comentários e aderência aos padrões.
 
+## 🐛 Problemas Identificados
+1. Houve a criação de um arquivo fora das pastas corretas: `gestor\resources\variables.json`
+2. Módulos não existentes dentro da pasta `gestor\modulos` não foram tratados, como por exemplo `"modulo": "_sistema",`. Quando isso ocorrer coloque a variável como global, mas coloque o módulo na definição da variável:
+/* Exemplo:
+    {
+        "id": "ID",
+        "value": "VALUE",
+        "type": "TYPE",
+        "modulo": "_sistema" // Exemplo "_sistema", mas tem vários outros casos como pude ver.
+    }
+*/
+
 ---
 **Data:** 12/08/2025
 **Desenvolvedor:** Otavio Serra
-**Projeto:** Conn2Flow Gestor v1.10.4
+**Projeto:** Conn2Flow Gestor v1.10.5

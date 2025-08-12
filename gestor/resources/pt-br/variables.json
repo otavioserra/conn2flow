@@ -2,957 +2,1145 @@
     {
         "id": "form-teste-2",
         "value": "sdasdasd",
-        "type": "string"
+        "type": "string",
+        "modulo": "teste"
     },
     {
         "id": "form-teste-novo",
         "value": "Otávio Campos Novo",
-        "type": "string"
+        "type": "string",
+        "modulo": "teste"
     },
     {
         "id": "teste",
         "value": "Primeiro Nome",
-        "type": "string"
+        "type": "string",
+        "modulo": "teste"
     },
     {
         "id": "user-or-pass-invalid",
         "value": "Usuário e\/ou Senha da sua conta FTP é inválido. Favor tentar novamente. Caso o problema persista, tente trocar a senha da conta FTP acessando o link de mudança de senha. Senão entre em contato com o suporte relatando o problema.",
-        "type": "string"
+        "type": "string",
+        "modulo": "ftp"
     },
     {
         "id": "form-css-label",
         "value": "CSS",
-        "type": "string"
+        "type": "string",
+        "modulo": "admin-templates-paginas"
     },
     {
         "id": "form-css-tooltip",
         "value": "Clique para abrir o CSS",
-        "type": "string"
+        "type": "string",
+        "modulo": "admin-templates-paginas"
     },
     {
         "id": "form-html-label",
         "value": "Código HTML",
-        "type": "string"
+        "type": "string",
+        "modulo": "admin-templates-paginas"
     },
     {
         "id": "form-html-tooltip",
         "value": "Clique para abrir o Código HTML",
-        "type": "string"
+        "type": "string",
+        "modulo": "admin-templates-paginas"
     },
     {
         "id": "form-name-label",
         "value": "Nome",
-        "type": "string"
+        "type": "string",
+        "modulo": "admin-templates-paginas"
     },
     {
         "id": "form-name-placeholder",
         "value": "Nome",
-        "type": "string"
+        "type": "string",
+        "modulo": "admin-templates-paginas"
     },
     {
         "id": "form-css-label",
         "value": "CSS",
-        "type": "string"
+        "type": "string",
+        "modulo": "admin-templates-layouts"
     },
     {
         "id": "form-css-tooltip",
         "value": "Clique para abrir o CSS",
-        "type": "string"
+        "type": "string",
+        "modulo": "admin-templates-layouts"
     },
     {
         "id": "form-html-label",
         "value": "Código HTML",
-        "type": "string"
+        "type": "string",
+        "modulo": "admin-templates-layouts"
     },
     {
         "id": "form-html-tooltip",
         "value": "Clique para abrir o Código HTML",
-        "type": "string"
+        "type": "string",
+        "modulo": "admin-templates-layouts"
     },
     {
         "id": "form-name-label",
         "value": "Nome",
-        "type": "string"
+        "type": "string",
+        "modulo": "admin-templates-layouts"
     },
     {
         "id": "form-name-placeholder",
         "value": "Nome",
-        "type": "string"
+        "type": "string",
+        "modulo": "admin-templates-layouts"
     },
     {
         "id": "novo-teste",
         "value": "Hello People 2",
-        "type": "string"
+        "type": "string",
+        "modulo": "teste"
     },
     {
         "id": "alerta-servico-indisponivel",
         "value": "Este serviço se encontra indisponível",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-quantidade-indisponivel",
         "value": "Este serviço se encontra esgotado!",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alert-api-servidor-error",
         "value": "<h3>Houve um <span class=\"ui error text\">erro<\/span> na comunicação com o servidor!<\/h3><p>A API do servidor retornou o seguinte erro: #error-msg#<\/p>",
-        "type": "string"
+        "type": "string",
+        "modulo": "interface-hosts"
     },
     {
         "id": "alert-title",
         "value": "Alerta",
-        "type": "string"
+        "type": "string",
+        "modulo": "interface-hosts"
     },
     {
         "id": "alert-button-ok",
         "value": "Ok",
-        "type": "string"
+        "type": "string",
+        "modulo": "interface-hosts"
     },
     {
         "id": "validation-empty",
         "value": "É obrigatório preencher o campo <b>#label#<\/b>.",
-        "type": "string"
+        "type": "string",
+        "modulo": "formulario-hosts"
     },
     {
         "id": "validation-min-length",
         "value": "O campo <b>#label#<\/b> deve ter no mínimo 3 caracteres.",
-        "type": "string"
+        "type": "string",
+        "modulo": "formulario-hosts"
     },
     {
         "id": "validation-max-length",
         "value": "O campo <b>#label#<\/b> deve ter no máximo 100 caracteres.",
-        "type": "string"
+        "type": "string",
+        "modulo": "formulario-hosts"
     },
     {
         "id": "validation-verify-field",
         "value": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor preenchido. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
-        "type": "string"
+        "type": "string",
+        "modulo": "formulario-hosts"
     },
     {
         "id": "validation-select",
         "value": "É obrigatório selecionar pelo menos uma opção do campo <b>#label#<\/b>.",
-        "type": "string"
+        "type": "string",
+        "modulo": "formulario-hosts"
     },
     {
         "id": "validation-email",
         "value": "É obrigatório definir um email válido no campo <b>#label#<\/b>.",
-        "type": "string"
+        "type": "string",
+        "modulo": "formulario-hosts"
     },
     {
         "id": "validation-min-length-password",
         "value": "O campo <b>#label#<\/b> deve ter no mínimo 12 caracteres.",
-        "type": "string"
+        "type": "string",
+        "modulo": "formulario-hosts"
     },
     {
         "id": "validation-password-chars",
         "value": "O campo  <b>#label#<\/b> precisa ter no mínimo <b>um caracter minúsculo<\/b>,  no mínimo <b>um caracter maiúsculo<\/b>,  no mínimo <b>um número<\/b> e pelo menos um caracter especial igual a <b>!@#$%^&*<\/b>.",
-        "type": "string"
+        "type": "string",
+        "modulo": "formulario-hosts"
     },
     {
         "id": "validation-email-compare",
         "value": "O campo <b>#campo-1#<\/b> é diferente do campo <b>#campo-2#<\/b>. É obrigatório que ambos tenham o mesmo valor.",
-        "type": "string"
+        "type": "string",
+        "modulo": "formulario-hosts"
     },
     {
         "id": "validation-regex-permited-chars",
         "value": "Só é permitido no campo <b>#label#<\/b> os seguintes caracteres : <b>#permited-chars#<\/b>. Favor remover os caracteres  inválidos e tentar novamente.",
-        "type": "string"
+        "type": "string",
+        "modulo": "formulario-hosts"
     },
     {
         "id": "validation-regex-necessary-chars",
         "value": "É necessário definir no campo <b>#label#<\/b> os seguintes caracteres : <b>#necessary-chars#<\/b>. Favor incluir os caracteres  e tentar novamente.",
-        "type": "string"
+        "type": "string",
+        "modulo": "formulario-hosts"
     },
     {
         "id": "identificacao-email-label",
         "value": "Email",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "identificacao-senha-label",
         "value": "Senha",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "identificacao-cpf-label",
         "value": "CPF",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "identificacao-cnpj-label",
         "value": "CNPJ",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-informar-email",
         "value": "É necessário informar o email antes de se cadastrar.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "identificacao-nome-label",
         "value": "Nome Completo",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "identificacao-senha-2-label",
         "value": "Confirmar Senha",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "identificacao-email-2-label",
         "value": "Confirme o Email",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alert-redefine-password-expiration-or-invalid",
         "value": "O token enviado perdeu o prazo de validade. É necessário refazer o processo e tentar novamente.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alert-redefine-password-expiration-or-invalid",
         "value": "O token enviado perdeu o prazo de validade. É necessário refazer o processo e tentar novamente.",
-        "type": "string"
+        "type": "string",
+        "modulo": "interface-hosts"
     },
     {
         "id": "redefine-password-pass-label",
         "value": "Senha",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "redefine-password-pass-2-label",
         "value": "Confirmar Senha",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "validation-min-max-length",
         "value": "O campo <b>#label#<\/b> é obrigatório. Deve ter no mínimo <b>#min#<\/b> e no máximo <b>#max#<\/b> caracteres.",
-        "type": "string"
+        "type": "string",
+        "modulo": "formulario-hosts"
     },
     {
         "id": "alerta-pedido-carrinho-vazio",
         "value": "Não é possível criar o seu pedido pois seu carrinho se encontra vazio.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-pedido-carrinho-nao-encontrado",
         "value": "Seu carrinho não foi encontrado. Favor refazer sua compra.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-informar-pedido",
         "value": "É necessário informar o código do pedido para poder emitir o voucher.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-pedido-nao-encontrado",
         "value": "Não foi encontrado o pedido solicitado. Favor escolher outro pedido e tentar novamente.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "emissao-nome-label",
         "value": "Nome",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "emissao-documento-label",
         "value": "Documento",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "emissao-telefone-label",
         "value": "Telefone",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "identificacao-telefone-label",
         "value": "Telefone",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "token-empty-result",
         "value": "Não foi possível gerar o token do PayPal devido o servidor do PayPal retornar um resultado vazio. Favor tentar novamente mais tarde.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "token-error",
         "value": "Não foi possível gerar o token do PayPal devido o servidor do PayPal retornar o seguinte erro: PayPal Plus: <b>#error# - #error_description#<\/b>.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "token-mandatory-fields",
         "value": "É obrigatório informar clientId,  secret e id_hosts.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "reference-description",
         "value": "Autorizo a Entrey efetuar a cobrança de #taxa#% por transação dos valores de venda dos serviços\/produtos da minha loja na Entrey.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "reference-empty-result",
         "value": "Não foi possível habilitar o reference do PayPal devido o servidor do PayPal retornar um resultado vazio. Favor tentar novamente mais tarde.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "reference-token-error",
         "value": "Não foi possível habilitar o reference do PayPal devido o servidor do PayPal retornar o seguinte erro: PayPal: <b>[#name#] - [#details#] - #message#<\/b>.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "reference-return-cancel",
         "value": "Foi optado pelo cancelamento da habilitação do PayPal Reference. Todo procedimento anterior foi cancelado.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "reference-return-token-invalid",
         "value": "O código de conferência token BA armazenado é diferente do retornado pelo PayPal. É necessário refazer a operação.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "reference-return-empty-result",
         "value": "Não foi possível habilitar o reference do PayPal devido o servidor do PayPal retornar um resultado vazio na finalização da habilitação do PayPal Reference. Favor tentar novamente mais tarde.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "reference-return-token-error",
         "value": "Não foi possível finalizar a habilitação do PayPal Reference devido o servidor do PayPal retornar o seguinte erro: PayPal: <b>#error# - #description#<\/b>.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "reference-return-success",
         "value": "PayPal Reference habilitado com sucesso.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "error-not-defined",
         "value": "Ocorreu um erro não detectado.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "novo",
         "value": "<span class=\"ui grey label\">Novo<\/span>",
         "type": "string",
-        "group": "pedidos-status"
+        "group": "pedidos-status",
+        "modulo": "_sistema"
     },
     {
         "id": "aguardando-pagamento",
         "value": "<span class=\"ui pink label\">Aguardando Pagamento<\/span>",
         "type": "string",
-        "group": "pedidos-status"
+        "group": "pedidos-status",
+        "modulo": "_sistema"
     },
     {
         "id": "pendente",
         "value": "<span class=\"ui orange label\">Pendente<\/span>",
         "type": "string",
-        "group": "pedidos-status"
+        "group": "pedidos-status",
+        "modulo": "_sistema"
     },
     {
         "id": "pago",
         "value": "<span class=\"ui blue label\">Pago<\/span>",
         "type": "string",
-        "group": "pedidos-status"
+        "group": "pedidos-status",
+        "modulo": "_sistema"
     },
     {
         "id": "disputa",
         "value": "<span class=\"ui red label\">Disputa<\/span>",
         "type": "string",
-        "group": "pedidos-status"
+        "group": "pedidos-status",
+        "modulo": "_sistema"
     },
     {
         "id": "reembolso",
         "value": "<span class=\"ui olive label\">Reembolso<\/span>",
         "type": "string",
-        "group": "pedidos-status"
+        "group": "pedidos-status",
+        "modulo": "_sistema"
     },
     {
         "id": "negado",
         "value": "<span class=\"ui red label\">Negado<\/span>",
         "type": "string",
-        "group": "pedidos-status"
+        "group": "pedidos-status",
+        "modulo": "_sistema"
     },
     {
         "id": "expirado",
         "value": "<span class=\"ui yellow label\">Expirado<\/span>",
         "type": "string",
-        "group": "pedidos-status"
+        "group": "pedidos-status",
+        "modulo": "_sistema"
     },
     {
         "id": "live",
         "value": "<span class=\"ui blue label\">Live<\/span>",
         "type": "string",
-        "group": "pedidos-ambiente"
+        "group": "pedidos-ambiente",
+        "modulo": "_sistema"
     },
     {
         "id": "sandbox",
         "value": "<span class=\"ui grey label\">Sandbox<\/span>",
         "type": "string",
-        "group": "pedidos-ambiente"
+        "group": "pedidos-ambiente",
+        "modulo": "_sistema"
     },
     {
         "id": "alerta-paypal-inativo",
         "value": "O gateway de pagamento PayPal está inativo.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-paypal-status-invalido",
         "value": "Não é permitido refazer um pagamento em um pedido que já concluiu o processo de pagamento.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-paypal-tentativas-maximas-alcancadas",
         "value": "Você foi bloqueado momentaneamente para pagar este pedido por exceder o limite de tentativas de pagamento. São permitidas <b>#maximo#<\/b> tentativas em <b>#tentativas#<\/b> minutos. Tente pagar novamente em <b>#tentativas#<\/b> minutos.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "payment-error",
         "value": "Não foi possível criar o pagamento no PayPal devido o servidor do PayPal retornar o seguinte erro: PayPal Plus: <b>#error# - #error_description#<\/b>.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "payment-empty-result",
         "value": "Não foi possível criar o pagamento no PayPal devido o servidor do PayPal retornar um resultado vazio. Favor tentar novamente mais tarde.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "payment-mandatory-fields",
         "value": "É obrigatório informar codigo e id_hosts.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "payment-other-payer-error",
         "value": "É necessário preencher todos os dados do comprador antes de clicar no botão CONTINUAR.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "payment-execute-empty-result",
         "value": "Não foi possível finalizar o pagamento do PayPal devido o servidor do PayPal retornar um resultado vazio. Favor tentar novamente mais tarde.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "payment-execute-not-autorized",
         "value": "Sua operadora de cartões <b>NÃO<\/b> autorizou o pagamento. Favor entrar em contato com o seu banco afim de saber como proceder. Depois disso, tente pagar novamente.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "payment-execute-error",
         "value": "Não foi possível efetuar o pagamento no PayPal devido o servidor do PayPal retornar o seguinte erro: PayPal: <b>#error# - #error_description#<\/b>.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "payment-execute-pay-id-not-found",
         "value": "Pay ID não encontrado.",
-        "type": "string"
+        "type": "string",
+        "modulo": "paypal"
     },
     {
         "id": "alerta-paypal-pagamento-completado",
         "value": "Pagamento concluído com sucesso!",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-paypal-pagamento-pendente",
         "value": "Seu pagamento ainda não foi completamente processado. Assim que o status de pagamento for alterado, a Entrey irá entrar em contato com novas informações através do E-mail. Ou então você pode acessar suas compras e verificar se o mesmo já foi processado.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-pedido-nao-pago",
         "value": "Este pedido não foi pago, por isso não é possível emitir seu voucher.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-pedido-nao-novo",
         "value": "Este pedido já passou pela a etapa de emissão. Caso queira alterar as identidades do voucher, você pode ir em <a href=\"\/minhas-compras\/\">Minhas Compras<\/a>.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "inform-title",
         "value": "Informativo",
-        "type": "string"
+        "type": "string",
+        "modulo": "interface-hosts"
     },
     {
         "id": "alerta-voucher-nao-encontrado",
         "value": "Seu voucher não foi encontrado no servidor.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-voucher-email-sucesso",
         "value": "Email enviado com sucesso!",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-voucher-alterar-identificacao-sucesso",
         "value": "Alteração da identificação concluída com sucesso!",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-voucher-email-nao-enviado",
         "value": "Não foi possível enviar o email por algum erro no servidor. Tente novamente ou então tente mais tarde.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "identificacao-usuario-label",
         "value": "Usuário",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alert-there-is-a-field",
         "value": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-usuario-nao-encontrado",
         "value": "Usuário não encontrado no servidor.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-usuario-alterar-dados-sucesso",
         "value": "Alteração dos dados concluída com sucesso!",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-usuario-campo-nao-encontrado",
         "value": "Campo não encontrado no servidor.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-usuario-inativo",
         "value": "Usuário inativo no sistema.",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "historic-button-load-more",
         "value": "Carregar Mais",
-        "type": "string"
+        "type": "string",
+        "modulo": "interface-hosts"
     },
     {
         "id": "user-authorization-title",
         "value": "Área Restrita",
-        "type": "string"
+        "type": "string",
+        "modulo": "interface-hosts"
     },
     {
         "id": "user-authorization-message",
         "value": "Este local tem dados importantes sensíveis. Portanto, por segurança,  é necessário fornecer novamente a sua senha.",
-        "type": "string"
+        "type": "string",
+        "modulo": "interface-hosts"
     },
     {
         "id": "user-authorization-cancel",
         "value": "Cancelar",
-        "type": "string"
+        "type": "string",
+        "modulo": "interface-hosts"
     },
     {
         "id": "user-authorization-confirm",
         "value": "Fornecer Senha",
-        "type": "string"
+        "type": "string",
+        "modulo": "interface-hosts"
     },
     {
         "id": "alert-authorization-provisory-not-defined",
         "value": "Não é permitido alterar nenhum dado do usuário sem autorização provisória.",
-        "type": "string"
+        "type": "string",
+        "modulo": "interface-hosts"
     },
     {
         "id": "alerta-pagamento-gratuito-completado",
         "value": "Processamento de pedido gratuito executado com sucesso!",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "alerta-pagamento-gratuito-total-maior-que-zero",
         "value": "Este pedido não é <b>gratuito<\/b> e portanto deve ser efetuado o pagamento antes de continuar!",
-        "type": "string"
+        "type": "string",
+        "modulo": "loja"
     },
     {
         "id": "recaptcha-invalid",
         "value": "A sua requisição NÃO foi aceita pois nosso sistema automático de segurança considerou a mesma sendo feita por um ROBÔ. Favor tentar novamente, mas caso o problema persista, favor entrar em contato: #url#.",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "alert-user-inactive",
         "value": "Usuário inativo no sistema, favor entrar em contato com o suporte para restabelecer sua conta.",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "alert-user-or-password-invalid",
         "value": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "alert-user-without-host",
         "value": "Usuário sem host vinculado. O seu usuário não faz parte de nenhum host do sistema. Provavelmente seu perfil não é de administração de um host.",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "alert-codigo-opcao-mandatory",
         "value": "É obrigatório enviar o código e a opção para baixar o voucher.",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "alert-order-not-found",
         "value": "Pedido não foi encontrado na sua loja! Pedido código: #pedido#",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "alert-order-not-paied",
         "value": "Não é possível dar baixa no voucher pois o estado do pedido é:  #status#",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "alert-voucher-not-valid",
         "value": "Voucher não validado! Pedido código: #pedido#",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "alert-voucher-not-found",
         "value": "Voucher não encontrado! Pedido código: #pedido#",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "alert-voucher-used",
         "value": "O voucher ##voucher# do pedido ##pedido# já foi utilizado!",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "novo",
         "value": "<span class=\"ui grey label\">Novo<\/span>",
         "type": "string",
-        "group": "pedidos-voucher-status"
+        "group": "pedidos-voucher-status",
+        "modulo": "_sistema"
     },
     {
         "id": "disponivel",
         "value": "<span class=\"ui green label\">Disponível<\/span>",
         "type": "string",
-        "group": "pedidos-voucher-status"
+        "group": "pedidos-voucher-status",
+        "modulo": "_sistema"
     },
     {
         "id": "usado",
         "value": "<span class=\"ui blue label\">Usado<\/span>",
         "type": "string",
-        "group": "pedidos-voucher-status"
+        "group": "pedidos-voucher-status",
+        "modulo": "_sistema"
     },
     {
         "id": "alert-voucher-status-error",
         "value": "Não é possível baixar o voucher ##voucher# do pedido ##pedido#! Estado do voucher: #estado#",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "alert-orders-finished",
         "value": "Voucher ##codigo# baixado com sucesso!",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "alert-orders-finished-api-client-error",
         "value": "Voucher ##codigo# baixado com sucesso! Mas houve um erro na comunicação com o host do site: #error-msg#",
-        "type": "string"
+        "type": "string",
+        "modulo": "plataforma-app"
     },
     {
         "id": "expirado",
         "value": "<span class=\"ui yellow label\">Expirado<\/span>",
         "type": "string",
-        "group": "pedidos-voucher-status"
+        "group": "pedidos-voucher-status",
+        "modulo": "_sistema"
     },
     {
         "id": "variavel-id-label",
         "value": "Variável",
-        "type": "string"
+        "type": "string",
+        "modulo": "configuracao"
     },
     {
         "id": "variavel-id-placeholder",
         "value": "Identificador da Variável",
-        "type": "string"
+        "type": "string",
+        "modulo": "configuracao"
     },
     {
         "id": "variavel-group-label",
         "value": "Grupo",
-        "type": "string"
+        "type": "string",
+        "modulo": "configuracao"
     },
     {
         "id": "variavel-group-placeholder",
         "value": "Grupo da variável (opcional)",
-        "type": "string"
+        "type": "string",
+        "modulo": "configuracao"
     },
     {
         "id": "variavel-tipo-label",
         "value": "Tipo",
-        "type": "string"
+        "type": "string",
+        "modulo": "configuracao"
     },
     {
         "id": "variavel-tipo-placeholder",
         "value": "Selecione o tipo...",
-        "type": "string"
+        "type": "string",
+        "modulo": "configuracao"
     },
     {
         "id": "variavel-valor-label",
         "value": "Valor",
-        "type": "string"
+        "type": "string",
+        "modulo": "configuracao"
     },
     {
         "id": "variavel-add-btn",
         "value": "Adicionar Variável",
-        "type": "string"
+        "type": "string",
+        "modulo": "configuracao"
     },
     {
         "id": "variavel-description-label",
         "value": "Descrição",
-        "type": "string"
+        "type": "string",
+        "modulo": "configuracao"
     },
     {
         "id": "variavel-description-placeholder",
         "value": "Descrição da variável (opcional)",
-        "type": "string"
+        "type": "string",
+        "modulo": "configuracao"
     },
     {
         "id": "teste",
         "value": "Nome 2",
-        "type": "string"
+        "type": "string",
+        "modulo": "configuracao"
     },
     {
         "id": "historic-change",
         "value": "Alterou ",
         "type": "string",
-        "description": "Padrão de inclusão no histórico"
+        "description": "Padrão de inclusão no histórico",
+        "modulo": "configuracao"
     },
     {
         "id": "default-value-change",
         "value": "Clique para subistituir pelo valor padrão desta variável.",
         "type": "string",
-        "description": "Tooltip do botão resetar para o valor padrão"
+        "description": "Tooltip do botão resetar para o valor padrão",
+        "modulo": "configuracao"
     },
     {
         "id": "form-value-placeholder",
         "value": "Valor",
-        "type": "string"
+        "type": "string",
+        "modulo": "configuracao"
     },
     {
         "id": "form-name-label",
         "value": "Nome",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-name-placeholder",
         "value": "Nome",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "middle-name",
         "value": "Nome do Meio",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "first-name",
         "value": "Primeiro Nome",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "last-name",
         "value": "Último Nome",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-email-label",
         "value": "Email",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-email-placeholder",
         "value": "Email",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-email-2-label",
         "value": "Confirme o Email",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-email-2-placeholder",
         "value": "Confirme o Email",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-user-label",
         "value": "Usuário",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-user-placeholder",
         "value": "Usuário",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-password-label",
         "value": "Senha",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-password-placeholder",
         "value": "Senha",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-password-2-label",
         "value": "Confirme a Senha",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-password-2-placeholder",
         "value": "Confirme a Senha",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-user-profile-label",
         "value": "Usuário Perfil",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-user-profile-placeholder",
         "value": "Selecione um perfil",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "login-titulo",
         "value": "LOGIN",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "login-user-label",
         "value": "Usuário",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "login-password-label",
         "value": "Senha",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "login-button-label",
         "value": "Entrar",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "login-forgot-password-label",
         "value": "Esqueceu sua senha? Clique",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "login-forgot-password-button",
         "value": "aqui",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "login-keep-logged-in-label",
         "value": "Manter minha conta ativa neste navegador",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "login-new-register-label",
         "value": "Não possui uma conta?",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "login-new-register-button",
         "value": "Faça seu cadastro",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "alert-user-or-password-invalid",
         "value": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "alert-user-inactive",
         "value": "Usuário inativo no sistema, favor entrar em contato com o suporte para restabelecer sua conta.",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "alert-without-permission",
         "value": "Você não tem permissão para acessar este local.",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "alert-there-is-a-field",
         "value": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-password-button",
         "value": "Mudar Senha",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "user-permited-chars",
         "value": "letras, números, '.' e apenas um '@'",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-name-account-label",
         "value": "Nome da Conta",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-name-user-label",
         "value": "Nome do Usuário",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-name-account-placeholder",
         "value": "Nome da Conta",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-name-user-placeholder",
         "value": "Nome do Usuário",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "alert-authorization-provisory-not-defined",
         "value": "Não é permitido alterar nenhum dado do usuário sem autorização provisória.",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "restrict-area-info",
         "value": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar<\/b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "restrict-area-info-title",
         "value": "Autorização Provisória de Alteração",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "alert-password-invalid",
         "value": "Senha incorreta! Você tem mais <b>#tentativas#<\/b> tentativas, senão será desconectado automaticamente!",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "alert-password-invalid-finish",
         "value": "Senha Incorreta! Você foi desconectado do sistema automaticamente pelo excesso de fornecimento de senhas incorretas. Será necessário informar usuário e senha para ter acesso novamente.",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-user-plan-label",
         "value": "Usuário Plano",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-user-manager-profile-label",
         "value": "Usuário Gestor Perfil",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "form-user-manager-profile-placeholder",
         "value": "Selecione um perfil...",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "list-host-label",
         "value": "Hospedeiro",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "list-user-parent-label",
         "value": "Usuário Pai",
-        "type": "string"
+        "type": "string",
+        "modulo": "usuarios-hosts"
     },
     {
         "id": "alert-without-permission",
         "value": "Você não tem permissão para acessar este local.",
-        "type": "string"
+        "type": "string",
+        "modulo": "interface-hosts"
     }
 ]
