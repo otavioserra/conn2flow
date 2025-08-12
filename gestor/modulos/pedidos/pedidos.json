@@ -1,0 +1,54 @@
+{
+    "versao": "1.0.11",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "hosts_pedidos",
+        "id": "id",
+        "id_numerico": "id_hosts_pedidos",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao",
+        "where": "id_hosts=''"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Pedidos",
+                    "id": "pedidos",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "pedidos\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Pedidos - Visualizar",
+                    "id": "pedidos-visualizar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "pedidos\/visualizar\/",
+                    "type": "system",
+                    "option": "visualizar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "a438ceededcc38a9cf4767b1fa0b6d86",
+                        "css": "1ebc9ca02312e35b369d84e290fab71c",
+                        "combined": "78e85a66aef7d27d1d39b43a67d2010e"
+                    }
+                }
+            ],
+            "components": []
+        }
+    }
+}

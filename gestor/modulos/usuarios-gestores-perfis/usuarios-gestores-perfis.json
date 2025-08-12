@@ -1,0 +1,68 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "usuario"
+    ],
+    "tabela": {
+        "nome": "usuarios_gestores_perfis",
+        "id": "id",
+        "id_numerico": "id_usuarios_gestores_perfis",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao",
+        "where": "id_hosts=''"
+    },
+    "modulo_biblioteca_id": "3",
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "name": "Usuários Gestores Perfis",
+                    "id": "usuarios-gestores-perfis",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-gestores-perfis\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Usuários Gestores Perfis - Adicionar",
+                    "id": "usuarios-gestores-perfis-adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "a5c9fc9f425bedb5ba58d37866584cb2",
+                        "css": "",
+                        "combined": "a5c9fc9f425bedb5ba58d37866584cb2"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-gestores-perfis\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar"
+                },
+                {
+                    "name": "Usuários Gestores Perfis - Editar",
+                    "id": "usuarios-gestores-perfis-editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "7059b24a7c1462e9db441e4e94741229",
+                        "css": "",
+                        "combined": "7059b24a7c1462e9db441e4e94741229"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-gestores-perfis\/editar\/",
+                    "type": "system",
+                    "option": "editar"
+                }
+            ]
+        }
+    }
+}

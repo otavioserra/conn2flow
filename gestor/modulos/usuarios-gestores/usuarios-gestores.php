@@ -3,74 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'usuarios-gestores';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
-	'bibliotecas' => Array('interface','html','usuario'),
-	'tabela' => Array(
-		'nome' => 'usuarios',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'usuarios',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
-	),
-	'historico' => Array(
-		'moduloIdExtra' => 'perfil-usuario',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Usuários Gestores',
-			        'id' => 'usuarios-gestores',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'usuarios-gestores/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Usuários Gestores - Adicionar',
-			        'id' => 'usuarios-gestores-adicionar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'usuarios-gestores/adicionar/',
-			        'type' => 'system',
-			        'option' => 'adicionar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '39d78b242536105599b985442b8ad040',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => '39d78b242536105599b985442b8ad040',
-			        ],
-			    ],
-			    [
-			        'name' => 'Usuários Gestores - Editar',
-			        'id' => 'usuarios-gestores-editar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'usuarios-gestores/editar/',
-			        'type' => 'system',
-			        'option' => 'editar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '910b8ac615cfcfcac18a52b495f99ef8',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => '910b8ac615cfcfcac18a52b495f99ef8',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/usuarios-gestores.json'), true);
 
 function usuarios_adicionar(){
 	global $_GESTOR;

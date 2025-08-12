@@ -1,0 +1,190 @@
+{
+    "versao": "1.2.4",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "usuario"
+    ],
+    "tabela": {
+        "nome": "usuarios",
+        "id": "id",
+        "id_numerico": "id_usuarios",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "historico": {
+        "moduloIdExtra": "usuarios"
+    },
+    "interfaceNaoAplicarIdHost": true,
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "name": "Acessar Sistema",
+                    "id": "acessar-sistema",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "1a28df4eb15690a1a94815ac85e7d7b2",
+                        "css": "",
+                        "combined": "1a28df4eb15690a1a94815ac85e7d7b2"
+                    },
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "signin\/",
+                    "type": "system",
+                    "option": "signin",
+                    "without_permission": true
+                },
+                {
+                    "name": "Sair Sistema",
+                    "id": "sair-sistema",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "signout\/",
+                    "type": "system",
+                    "option": "signout"
+                },
+                {
+                    "name": "Perfil Usuário",
+                    "id": "perfil-usuario",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "409c497b763a304093568e3c7f7e417a",
+                        "css": "",
+                        "combined": "409c497b763a304093568e3c7f7e417a"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "perfil-usuario\/",
+                    "type": "system",
+                    "option": "editar",
+                    "root": true
+                },
+                {
+                    "name": "Área Restrita",
+                    "id": "Area-restrita",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "b106ef13fa11754052fb9a31122c643c",
+                        "css": "",
+                        "combined": "b106ef13fa11754052fb9a31122c643c"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "restrict-area\/",
+                    "type": "system",
+                    "option": "area-restrita"
+                },
+                {
+                    "name": "Validar Usuário",
+                    "id": "validar-usuario",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "df58b7e5c554fb44a338c46b5bc2f8a6",
+                        "css": "",
+                        "combined": "df58b7e5c554fb44a338c46b5bc2f8a6"
+                    },
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "validate-user\/",
+                    "type": "system",
+                    "option": "validar-usuario",
+                    "without_permission": true
+                },
+                {
+                    "name": "Esqueceu a Senha",
+                    "id": "esqueceu-a-senha",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "36252affc726b0a003349db772ffe552",
+                        "css": "",
+                        "combined": "36252affc726b0a003349db772ffe552"
+                    },
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "forgot-password\/",
+                    "type": "system",
+                    "option": "forgot-password",
+                    "without_permission": true
+                },
+                {
+                    "name": "Esqueceu a Senha Email Enviado",
+                    "id": "esqueceu-a-senha-email-enviado",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "100a56701ff0b6d915e3cf9e3f2791c8",
+                        "css": "",
+                        "combined": "100a56701ff0b6d915e3cf9e3f2791c8"
+                    },
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "forgot-password-confirmation\/",
+                    "type": "system",
+                    "option": "forgot-password-confirmation",
+                    "without_permission": true
+                },
+                {
+                    "name": "Redefinir Senha",
+                    "id": "redefinir-senha",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "920fbd11ee6d54345028e33ac3d7599c",
+                        "css": "",
+                        "combined": "920fbd11ee6d54345028e33ac3d7599c"
+                    },
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "redefine-password\/",
+                    "type": "system",
+                    "option": "redefine-password",
+                    "without_permission": true
+                },
+                {
+                    "name": "Redefinir Senha Confirmação",
+                    "id": "redefinir-senha-confirmacao",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "1e674e0f0326986bb2b77ec4130490ae",
+                        "css": "",
+                        "combined": "1e674e0f0326986bb2b77ec4130490ae"
+                    },
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "redefine-password-confirmation\/",
+                    "type": "system",
+                    "option": "redefine-password-confirmation",
+                    "without_permission": true
+                },
+                {
+                    "name": "Cadastrar no Sistema",
+                    "id": "cadastrar-no-sistema",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "62ae3b0260aed09055dbd0cd3ff7f33e",
+                        "css": "",
+                        "combined": "62ae3b0260aed09055dbd0cd3ff7f33e"
+                    },
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "signup\/",
+                    "type": "system",
+                    "option": "signup",
+                    "without_permission": true
+                },
+                {
+                    "name": "Confirmação de Email",
+                    "id": "confirmacao-de-email",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "589314427de8eec6b99dcffb571ce7cb",
+                        "css": "",
+                        "combined": "589314427de8eec6b99dcffb571ce7cb"
+                    },
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "email-confirmation\/",
+                    "type": "system",
+                    "option": "confirmacao-email",
+                    "without_permission": true
+                }
+            ]
+        }
+    }
+}

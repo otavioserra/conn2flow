@@ -3,74 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'usuarios-hospedeiro';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.8',
-	'bibliotecas' => Array('interface','html','usuario'),
-	'tabela' => Array(
-		'nome' => 'hosts_usuarios',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'hosts_usuarios',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
-	),
-	'historico' => Array(
-		'moduloIdExtra' => 'hosts-usuarios',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Usuários Hospedeiro',
-			        'id' => 'usuarios-hospedeiro',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'usuarios-hospedeiro/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Usuários Hospedeiro - Adicionar',
-			        'id' => 'usuarios-hospedeiro-adicionar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'usuarios-hospedeiro/adicionar/',
-			        'type' => 'system',
-			        'option' => 'adicionar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '7b4bbd593c9092d12ed78a970f0a3ffa',
-			            'css' => 'f32438e7149f85825359382e76eec749',
-			            'combined' => 'f4fd54756060e65da2986b735aa2b86e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Usuários Hospedeiro - Editar',
-			        'id' => 'usuarios-hospedeiro-editar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'usuarios-hospedeiro/editar/',
-			        'type' => 'system',
-			        'option' => 'editar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'ff65ee36daf0b7058270d47f42433bc2',
-			            'css' => 'f32438e7149f85825359382e76eec749',
-			            'combined' => '95723913f7f2874453fcbb5dcc081505',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/usuarios-hospedeiro.json'), true);
 
 function usuarios_adicionar(){
 	global $_GESTOR;

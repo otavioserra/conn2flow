@@ -3,42 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'menus';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.27',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'modelo',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'modelo',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Menus',
-			        'id' => 'menus',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'menus/',
-			        'type' => 'system',
-			        'option' => 'config',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '70796b66e14abbd59ee603d3554fa1dd',
-			            'css' => '1d885955ff2c8740f53e2eabc0b5a09b',
-			            'combined' => '19aa9bb758b3061cacb33e3343f46aeb',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/menus.json'), true);
 
 function menus_config(){
 	global $_GESTOR;

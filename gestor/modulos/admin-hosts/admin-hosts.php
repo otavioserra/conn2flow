@@ -3,57 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'admin-hosts';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.1',
-	'bibliotecas' => Array('interface','html','pagina'),
-	'tabela' => Array(
-		'nome' => 'hosts',
-		'nome_especifico' => 'dominio',
-		'id' => 'user_cpanel',
-		'id_numerico' => 'id_'.'hosts',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Admin Hosts',
-			        'id' => 'admin-hosts',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-hosts/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Admin Hosts - Editar',
-			        'id' => 'admin-hosts-editar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-hosts/editar/',
-			        'type' => 'system',
-			        'option' => 'editar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '2705a7d4d5e84c96012eca9a6cd339ed',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => '2705a7d4d5e84c96012eca9a6cd339ed',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/admin-hosts.json'), true);
 
 function admin_hosts_editar(){
 	global $_GESTOR;

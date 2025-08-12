@@ -1,0 +1,34 @@
+{
+    "versao": "1.0.0",
+    "plugin": "escalas",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "hosts_variaveis",
+        "id": "id",
+        "id_numerico": "id_hosts_variaveis"
+    },
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "name": "Configurações de Escala",
+                    "id": "configuracoes-de-escala",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "configuracoes-escalas\/",
+                    "type": "system",
+                    "option": "config",
+                    "root": true
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,75 @@
+{
+    "versao": "1.1.0",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "paginas",
+        "id": "id",
+        "id_numerico": "id_paginas",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "selectDadosTipo": [
+        {
+            "texto": "Sistema",
+            "valor": "sistema"
+        },
+        {
+            "texto": "Página",
+            "valor": "pagina"
+        }
+    ],
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "name": "Admin Páginas",
+                    "id": "admin-paginas",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "68b329da9893e34099c7d8ad5cb9c940",
+                        "css": "",
+                        "combined": "68b329da9893e34099c7d8ad5cb9c940"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Admin Páginas - Editar",
+                    "id": "admin-paginas-editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "36b79f4f7655d7cdfaec91e831e1fbc7",
+                        "css": "",
+                        "combined": "36b79f4f7655d7cdfaec91e831e1fbc7"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas\/editar\/",
+                    "type": "system",
+                    "option": "editar"
+                },
+                {
+                    "name": "Admin Páginas - Adicionar",
+                    "id": "admin-paginas-adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "0880fe0c78efeb8d80cc7c1c07e8d2c5",
+                        "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
+                        "combined": "d2649ba963b679cd62adaee770d4a417"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar"
+                }
+            ]
+        }
+    }
+}

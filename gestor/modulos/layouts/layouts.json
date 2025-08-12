@@ -1,0 +1,68 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "hosts_layouts",
+        "id": "id",
+        "id_numerico": "id_hosts_layouts",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao",
+        "where": "id_hosts=''"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Layouts",
+                    "id": "layouts",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "layouts\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Layouts - Adicionar",
+                    "id": "layouts-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "layouts\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Layouts - Editar",
+                    "id": "layouts-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "layouts\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "components": []
+        }
+    }
+}

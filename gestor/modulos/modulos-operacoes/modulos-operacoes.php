@@ -3,70 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'modulos-operacoes';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'modulos_operacoes',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'modulos_operacoes',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Módulos Operações',
-			        'id' => 'modulos-operacoes',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'modulos-operacoes/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Módulos Operações - Adicionar',
-			        'id' => 'modulos-operacoes-adicionar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'modulos-operacoes/adicionar/',
-			        'type' => 'system',
-			        'option' => 'adicionar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'e69634998ed937fe89cab5d0bc5912be',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'e69634998ed937fe89cab5d0bc5912be',
-			        ],
-			    ],
-			    [
-			        'name' => 'Módulos Operações - Editar',
-			        'id' => 'modulos-operacoes-editar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'modulos-operacoes/editar/',
-			        'type' => 'system',
-			        'option' => 'editar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '225a0ca6b6f949986285b32d7fa180f2',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => '225a0ca6b6f949986285b32d7fa180f2',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/modulos-operacoes.json'), true);
 
 function modulos_operacoes_adicionar(){
 	global $_GESTOR;

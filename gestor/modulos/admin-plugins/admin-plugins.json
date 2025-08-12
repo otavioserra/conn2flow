@@ -1,0 +1,67 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "plugins",
+        "id": "id",
+        "id_numerico": "id_plugins",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Plugins",
+                    "id": "admin-plugins",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-plugins\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin Plugins - Adicionar",
+                    "id": "admin-plugins-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-plugins\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "55c3133cf00c68a151f7d2800643cd95",
+                        "css": "",
+                        "combined": "55c3133cf00c68a151f7d2800643cd95"
+                    }
+                },
+                {
+                    "name": "Admin Plugins - Editar",
+                    "id": "admin-plugins-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-plugins\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "d66253a4a5d9465d318b737cc32456f4",
+                        "css": "",
+                        "combined": "d66253a4a5d9465d318b737cc32456f4"
+                    }
+                }
+            ],
+            "components": []
+        }
+    }
+}

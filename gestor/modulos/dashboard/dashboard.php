@@ -3,56 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'dashboard';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
-	'bibliotecas' => Array('interface','html'),
-	'toasts' => Array(
-		'troca_time' => 5000,
-		'updateNotShowToastTime' => 60*24*7,
-		'opcoes_padroes' => Array(
-			'displayTime' => 10000,
-			'class' => 'black',
-		),
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Dashboard',
-			        'id' => 'dashboard',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'dashboard/',
-			        'type' => 'system',
-			        'option' => 'inicio',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '4f7ffb0c6d3475781fb93034eda548f5',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => '4f7ffb0c6d3475781fb93034eda548f5',
-			        ],
-			    ],
-			    [
-			        'name' => 'Dashboard Testes',
-			        'id' => 'dashboard-testes',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'dashboard-testes/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'cf8d79dae48be6e8f5399b9c6ca4d71c',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'cf8d79dae48be6e8f5399b9c6ca4d71c',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/dashboard.json'), true);
 
 function dashboard_toast($params = false){
 	global $_GESTOR;

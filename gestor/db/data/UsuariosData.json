@@ -1,0 +1,23 @@
+[
+    {
+        "id_usuarios": "1",
+        "id_hosts": null,
+        "id_usuarios_perfis": " 1",
+        "nome_conta": "Administrador",
+        "nome": "Administrador",
+        "id": "administrador",
+        "usuario": "admin",
+        "senha": "$argon2i$v=19$m=65536,t=4,p=1$N0pjcGRSLzBic0lEa283cQ$sJ+NqlPTDoZxCU95GZggRIxXEMFihzbm5Fc8aiE5FQY",
+        "email": "admin@admin",
+        "primeiro_nome": "Administrador",
+        "ultimo_nome": null,
+        "nome_do_meio": null,
+        "status": "A",
+        "versao": " 6",
+        "data_criacao": "2021-02-23 15:39:40",
+        "data_modificacao": "2021-04-27 17:47:05",
+        "email_confirmado": null,
+        "gestor": null,
+        "gestor_perfil": null
+    }
+]

@@ -3,52 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'escalas';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.1.0',
-	'plugin' => 'escalas',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'hosts_escalas',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'hosts_escalas',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Escalas',
-			        'id' => 'escalas',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'escalas/',
-			        'type' => 'system',
-			        'option' => 'administrar',
-			        'root' => true,
-			        'version' => '0',
-			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
-			        ],
-			    ],
-			],
-			'components' => [
-			    [
-			        'name' => 'Impressão Cabeçalho Escalas',
-			        'id' => 'impressao-cabecalho-escalas',
-			        'version' => '0',
-			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
-			        ],
-			    ],
-			],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/escalas.json'), true);
 
 // ===== Funções Auxiliares
 

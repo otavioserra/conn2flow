@@ -1,0 +1,20 @@
+{
+    "arquitetura.corrigir.inicio": "Iniciando correção de dados corrompidos",
+    "arquitetura.corrigir.conexao.sucesso": "Conexão com banco original estabelecida",
+    "arquitetura.corrigir.conexao.falha": "Falha ao conectar no banco original",
+    "arquitetura.corrigir.lendo.banco": "Lendo dados originais do banco",
+    "arquitetura.corrigir.lendo.json": "Lendo dados atuais de recursos JSON",
+    "arquitetura.corrigir.diff.iniciando": "Computando diferenças entre dados antigos e atuais",
+    "arquitetura.corrigir.diff.sem_alteracoes": "Nenhuma alteração necessária encontrada",
+    "arquitetura.corrigir.option.atualizada": "Campo option atualizado",
+    "arquitetura.corrigir.root.atualizado": "Campo root ajustado",
+    "arquitetura.corrigir.path.atualizado": "Campo path normalizado",
+    "arquitetura.corrigir.type.atualizado": "Campo type normalizado",
+    "arquitetura.corrigir.layout.nao_encontrado": "Layout referenciado não encontrado",
+    "arquitetura.corrigir.backup.ok": "Backup criado antes da escrita",
+    "arquitetura.corrigir.persistindo": "Persistindo alterações em disco",
+    "arquitetura.corrigir.persistido": "Alterações escritas com sucesso",
+    "arquitetura.corrigir.dryrun": "Execução em modo dry-run (nenhum arquivo modificado)",
+    "arquitetura.corrigir.relatorio.salvo": "Relatório salvo",
+    "arquitetura.corrigir.fim": "Correção finalizada"
+}

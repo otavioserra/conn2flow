@@ -3,38 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'loja-configuracoes';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.11',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'hosts_variaveis',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'hosts_variaveis',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Loja Configurações',
-			        'id' => 'loja-configuracoes',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'loja-configuracoes/',
-			        'type' => 'system',
-			        'option' => 'config',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd389427fd0548aefdb7bc99859dd782f',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd389427fd0548aefdb7bc99859dd782f',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/loja-configuracoes.json'), true);
 
 // ===== Funções Auxiliares
 

@@ -1,0 +1,142 @@
+[
+    {
+        "name": "Layout Administrativo do Gestor",
+        "id": "layout-administrativo-do-gestor",
+        "version": "1.2",
+        "checksum": {
+            "html": "47b4e8434e35ea44407008a3c1b02ff7",
+            "css": "f10fa90d6577c2fdae5f56b13589179a",
+            "combined": "f94ef140d592752cdc8e4d4d0e1c8e18"
+        }
+    },
+    {
+        "name": "Layout Página Sem Permissão",
+        "id": "layout-pagina-sem-permissao",
+        "version": "1.2",
+        "checksum": {
+            "html": "534a5cb00759351609bfee177e8ed489",
+            "css": "c3fd0dfa321e5a4f032ff574cc07a4fb",
+            "combined": "d21bfb8b8103d1b5e33f217e9ae19cb0"
+        }
+    },
+    {
+        "name": "Layout Emails",
+        "id": "layout-emails",
+        "version": "1.2",
+        "checksum": {
+            "html": "b9246cdd3db37c3e1e558b3fc846c368",
+            "css": "9454a802af5d3febf83ff9c503544b36",
+            "combined": "c332742920e013627280ff66b3180c84"
+        }
+    },
+    {
+        "name": "Layout Iframes",
+        "id": "layout-iframes",
+        "version": "1.2",
+        "checksum": {
+            "html": "0bf6b9ed25e76568e4accab429285052",
+            "css": "",
+            "combined": "0bf6b9ed25e76568e4accab429285052"
+        }
+    },
+    {
+        "name": "Página Lista Pedidos",
+        "id": "pagina-lista-pedidos",
+        "version": "1.2",
+        "checksum": {
+            "html": "32efb11426f18240e00a7245cbce3212",
+            "css": "",
+            "combined": "32efb11426f18240e00a7245cbce3212"
+        }
+    },
+    {
+        "name": "Layout Página Simples",
+        "id": "layout-pagina-simples",
+        "version": "1.2",
+        "checksum": {
+            "html": "0bf6b9ed25e76568e4accab429285052",
+            "css": "",
+            "combined": "0bf6b9ed25e76568e4accab429285052"
+        }
+    },
+    {
+        "name": "Layout Página Configuração",
+        "id": "layout-pagina-configuracao",
+        "version": "1.2",
+        "checksum": {
+            "html": "73492006e83b39b4c93cc5e50dc9c1f9",
+            "css": "c3fd0dfa321e5a4f032ff574cc07a4fb",
+            "combined": "6ac006e1557dcaec0ed165b17e5267b2"
+        }
+    },
+    {
+        "name": "Layout Mestre - Loja",
+        "id": "layout-mestre-loja",
+        "version": "1.2",
+        "checksum": {
+            "html": "5600cc39c547c5f54a79141a1609a67d",
+            "css": "2594d3fe597dde9fd1504761b40e35d9",
+            "combined": "2f7747f656f0b3cd467099d331cdbff4"
+        }
+    },
+    {
+        "name": "Layout Mestre - Páginas",
+        "id": "layout-mestre-paginas",
+        "version": "1.2",
+        "checksum": {
+            "html": "0bf6b9ed25e76568e4accab429285052",
+            "css": "",
+            "combined": "0bf6b9ed25e76568e4accab429285052"
+        }
+    },
+    {
+        "name": "Layout Serviços",
+        "id": "layout-servicos",
+        "version": "1.2",
+        "checksum": {
+            "html": "ae88be428a8d8119961ff930c7ba35db",
+            "css": "15b6f90fa29dc85001fce5909d771034",
+            "combined": "eb06a5a02a4b2ec78658b1a1cbabe3ba"
+        }
+    },
+    {
+        "name": "Layout Página Padrão",
+        "id": "layout-pagina-padrao",
+        "version": "1.2",
+        "checksum": {
+            "html": "3cff323514c7507537029b50eac33eef",
+            "css": "b37dfd1ae99d8fbc8fec01de439345aa",
+            "combined": "8074b5ab4720428c6bf86af3d7465b6b"
+        }
+    },
+    {
+        "name": "Layout Impressão",
+        "id": "layout-impressao",
+        "version": "1.2",
+        "checksum": {
+            "html": "d12a11673a45cc1ac8bb301570566b17",
+            "css": "3cb92b2858b7f058956f6b632a804f6a",
+            "combined": "cc496fecd41e6adf962f7bbb393d0952"
+        }
+    },
+    {
+        "name": "30",
+        "id": "0.2",
+        "version": "1.0",
+        "checksum": {
+            "html": "",
+            "css": "",
+            "combined": ""
+        }
+    },
+    {
+        "name": "Layout Mestre Teste - Principal",
+        "id": "layout-mestre-teste-principal",
+        "version": "1.1",
+        "checksum": {
+            "html": "35fc05e60b8adf4a1d45493cd07c7524",
+            "css": "",
+            "combined": "35fc05e60b8adf4a1d45493cd07c7524"
+        }
+    }
+]

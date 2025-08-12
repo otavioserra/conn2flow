@@ -3,21 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'usuarios-gestores-perfis';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
-	'bibliotecas' => Array('interface','html','usuario'),
-	'tabela' => Array(
-		'nome' => 'usuarios_gestores_perfis',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'usuarios_gestores_perfis',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
-	),
-	'modulo_biblioteca_id' => '3'
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/usuarios-gestores-perfis.json'), true);
 
 function usuarios_perfis_adicionar(){
 	global $_GESTOR;

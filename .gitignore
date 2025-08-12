@@ -4,6 +4,7 @@ docker/dados/
 
 # Logs
 *.log
+gestor/logs/
 
 # Arquivos temporários
 temp/
@@ -28,3 +29,6 @@ files/
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Backups locais
+backups/

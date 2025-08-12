@@ -1,0 +1,68 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "usuario"
+    ],
+    "tabela": {
+        "nome": "hosts_usuarios_perfis",
+        "id": "id",
+        "id_numerico": "id_hosts_usuarios_perfis",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao",
+        "where": "id_hosts=''"
+    },
+    "modulo_biblioteca_id": "3",
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "name": "Usuários Hospedeiro Perfis",
+                    "id": "usuarios-hospedeiro-perfis",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-hospedeiro-perfis\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Usuários Hospedeiro Perfis - Adicionar",
+                    "id": "usuarios-hospedeiro-perfis-adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "c8360c3836f86ea2fda65c72db9849dd",
+                        "css": "",
+                        "combined": "c8360c3836f86ea2fda65c72db9849dd"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-hospedeiro-perfis\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar"
+                },
+                {
+                    "name": "Usuários Hospedeiro Perfis - Editar",
+                    "id": "usuarios-hospedeiro-perfis-editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "3d289cbc9669e1b6ccdf94f813f8e1f2",
+                        "css": "",
+                        "combined": "3d289cbc9669e1b6ccdf94f813f8e1f2"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-hospedeiro-perfis\/editar\/",
+                    "type": "system",
+                    "option": "editar"
+                }
+            ]
+        }
+    }
+}

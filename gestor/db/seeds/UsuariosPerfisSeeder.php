@@ -8,18 +8,7 @@ final class UsuariosPerfisSeeder extends AbstractSeed
 {
     public function run(): void
     {
-        $data = [
-            [
-                'id_usuarios_perfis' => '1',
-                'nome' => 'Administradores',
-                'id' => 'administradores',
-                'padrao' => NULL,
-                'status' => 'A',
-                'versao' => ' 93',
-                'data_criacao' => '2021-03-29 16:22:36',
-                'data_modificacao' => '2022-07-25 15:55:34',
-            ],
-        ];
+        $data = json_decode(file_get_contents(__DIR__ . '/../data/UsuariosPerfisData.json'), true);
 
         if (count($data) > 0) {
             $table = $this->table('usuarios_perfis');

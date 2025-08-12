@@ -3,73 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'usuarios';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.1',
-	'bibliotecas' => Array('interface','html','usuario'),
-	'tabela' => Array(
-		'nome' => 'usuarios',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'usuarios',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'historico' => Array(
-		'moduloIdExtra' => 'perfil-usuario',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Usuários',
-			        'id' => 'usuarios',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'usuarios/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Usuários - Adicionar',
-			        'id' => 'usuarios-adicionar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'usuarios/adicionar/',
-			        'type' => 'system',
-			        'option' => 'adicionar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'bfb28ecfa1a9418ee071b77a9a6a8f1f',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'bfb28ecfa1a9418ee071b77a9a6a8f1f',
-			        ],
-			    ],
-			    [
-			        'name' => 'Usuários - Editar',
-			        'id' => 'usuarios-editar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'usuarios/editar/',
-			        'type' => 'system',
-			        'option' => 'editar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '974db95525781cd2f294d17e81d0b944',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => '974db95525781cd2f294d17e81d0b944',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/usuarios.json'), true);
 
 function usuarios_adicionar(){
 	global $_GESTOR;

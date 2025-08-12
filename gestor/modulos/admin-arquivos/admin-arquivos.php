@@ -3,73 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'admin-arquivos';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.4',
-	'bibliotecas' => Array('interface','html','arquivo'),
-	'tabela' => Array(
-		'nome' => 'arquivos',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'arquivos',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'imagem' => Array(
-		'mini_width' => 200,
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Admin Arquivos',
-			        'id' => 'admin-arquivos',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-arquivos/',
-			        'type' => 'system',
-			        'option' => 'listar-arquivos',
-			        'root' => true,
-			        'version' => '1.2',
-			        'checksum' => [
-			            'html' => '8f33d8113e655162a32f7a7213409e19',
-			            'css' => 'da65a7d1abba118408353e14d6102779',
-			            'combined' => 'ddb032331dd7e8da25416f3ac40a104a',
-			        ],
-			    ],
-			    [
-			        'name' => 'Admin Arquivos - Adicionar',
-			        'id' => 'admin-arquivos-adicionar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-arquivos/adicionar/',
-			        'type' => 'system',
-			        'option' => 'upload',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '394122d6c6e3f8ba4ac350a5d7791b33',
-			            'css' => '72b0bf4a8ae69c7acf2cffbd036d1c62',
-			            'combined' => 'defcd0d295170fbfe13cc2788dd402fe',
-			        ],
-			    ],
-			    [
-			        'name' => 'Emissão teste',
-			        'id' => 'emissao-teste',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-arquivos/emissao-teste/',
-			        'type' => 'system',
-			        'without_permission' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
-			            'combined' => '',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/admin-arquivos.json'), true);
 
 // ===== Interfaces Auxiliares
 

@@ -1,0 +1,103 @@
+{
+    "versao": "1.0.32",
+    "plugin": "agendamentos",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "hosts_conjunto_cupons_prioridade",
+        "id": "id",
+        "id_numerico": "id_hosts_conjunto_cupons_prioridade",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao",
+        "where": "id_hosts='#id_hosts#'"
+    },
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "name": "Agendamentos",
+                    "id": "agendamentos",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "0b9c59644a65900610cf7402b6ad6a56",
+                        "css": "1552f7d68f8c4beacd681d8ed82cd7b5",
+                        "combined": "aba0b96eda9087a057496ea295c48d98"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "agendamentos\/",
+                    "type": "system",
+                    "option": "administrar",
+                    "root": true
+                },
+                {
+                    "name": "Cupons de Prioridade",
+                    "id": "cupons-de-prioridade",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "agendamentos\/cupons-de-prioridade\/",
+                    "type": "system",
+                    "option": "listar"
+                },
+                {
+                    "name": "Cupons de Prioridade - Adicionar",
+                    "id": "cupons-de-prioridade-adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "eb6e48c6a12f6cbd6b3bfaf59b492cc3",
+                        "css": "",
+                        "combined": "eb6e48c6a12f6cbd6b3bfaf59b492cc3"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "agendamentos\/cupons-de-prioridade\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar"
+                },
+                {
+                    "name": "Cupons de Prioridade - Editar",
+                    "id": "cupons-de-prioridade-editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "b95c89e71394abe8088ca71a1db84a56",
+                        "css": "",
+                        "combined": "b95c89e71394abe8088ca71a1db84a56"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "agendamentos\/cupons-de-prioridade\/editar\/",
+                    "type": "system",
+                    "option": "editar"
+                }
+            ],
+            "components": [
+                {
+                    "name": "Impressão Cabeçalho",
+                    "id": "impressao-cabecalho",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "51e10945760ff766e3a38eb7a40fab3f",
+                        "css": "",
+                        "combined": "51e10945760ff766e3a38eb7a40fab3f"
+                    }
+                },
+                {
+                    "name": "Tabela Cupons Prioridade",
+                    "id": "tabela-cupons-prioridade",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "be6c2f4acb31b0cd69e4a012889c9c4b",
+                        "css": "f025fe1a1cd91a20e67c3d14440a5d53",
+                        "combined": "494f72ac14d54a7b08c56d19c87c1e8e"
+                    }
+                }
+            ]
+        }
+    }
+}

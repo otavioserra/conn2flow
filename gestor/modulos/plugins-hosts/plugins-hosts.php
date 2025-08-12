@@ -3,21 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'plugins-hosts';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
-	//'plugin' => 'pluginID',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'plugins_hosts',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'plugins_hosts',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'interfaceNaoAplicarIdHost' => true,
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/plugins-hosts.json'), true);
 
 function plugins_hosts_adicionar(){
 	global $_GESTOR;

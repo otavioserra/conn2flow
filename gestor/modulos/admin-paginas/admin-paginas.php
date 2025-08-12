@@ -3,29 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'admin-paginas';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.1.0',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'paginas',
-		'id' => 'id',
-		'id_numerico' => 'id_paginas',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'selectDadosTipo' => Array(
-		Array(
-			'texto' => 'Sistema',
-			'valor' => 'sistema',
-		),
-		Array(
-			'texto' => 'Página',
-			'valor' => 'pagina',
-		)
-	)
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/admin-paginas.json'), true);
 
 function admin_paginas_adicionar(){
 	global $_GESTOR;

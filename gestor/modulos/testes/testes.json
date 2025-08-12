@@ -1,0 +1,55 @@
+{
+    "versao": "1.0.9",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "pagina",
+        "ip"
+    ],
+    "tabela": {
+        "nome": "template",
+        "id": "id",
+        "id_numerico": "id_template",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Página de Testes",
+                    "id": "pagina-de-testes",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "pagina-de-testes\/",
+                    "type": "page",
+                    "option": "testes",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "34f7db7b7216749f473bd29f4a18a0e8",
+                        "combined": "34f7db7b7216749f473bd29f4a18a0e8"
+                    }
+                },
+                {
+                    "name": "Sem Permissão Teste",
+                    "id": "sem-permissao-teste",
+                    "layout": "layout-pagina-simples",
+                    "path": "testes\/sem-permissao\/",
+                    "type": "system",
+                    "option": "sem-permissao",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "components": []
+        }
+    }
+}

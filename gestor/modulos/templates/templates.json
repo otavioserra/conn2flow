@@ -1,0 +1,152 @@
+{
+    "versao": "1.0.17",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "hosts_templates",
+        "id": "id",
+        "id_numerico": "id_hosts_templates",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao",
+        "where": "id_hosts=''"
+    },
+    "modelos": {
+        "layouts": {
+            "id_modulos": "13",
+            "id_categorias_pai": "17"
+        },
+        "paginas": {
+            "id_modulos": "13",
+            "id_categorias_pai": "18"
+        },
+        "componentes": {
+            "id_modulos": "13",
+            "id_categorias_pai": "29"
+        }
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Templates",
+                    "id": "templates",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "templates\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Templates - Adicionar",
+                    "id": "templates-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "templates\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "792654941d81caee0b89718fc421d22d",
+                        "css": "",
+                        "combined": "792654941d81caee0b89718fc421d22d"
+                    }
+                },
+                {
+                    "name": "Templates - Editar",
+                    "id": "templates-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "templates\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "d7e87f2c8f6cdfa3121dc01da1245091",
+                        "css": "",
+                        "combined": "d7e87f2c8f6cdfa3121dc01da1245091"
+                    }
+                },
+                {
+                    "name": "Templates - Editar Índice",
+                    "id": "templates-editar-Indice",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "templates\/editar-indice\/",
+                    "type": "system",
+                    "option": "editar-indice",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Templates - Seletores",
+                    "id": "templates-seletores",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "templates\/seletores\/",
+                    "type": "system",
+                    "option": "seletores-listar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "2d8f53814ed468fdddc7a5e472824359",
+                        "css": "9f46e740c3be4e3172eeb2e03627abdb",
+                        "combined": "a668c36dbe02018fffad6194c1737f08"
+                    }
+                },
+                {
+                    "name": "Templates - Atualizações",
+                    "id": "templates-atualizacoes",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "templates\/atualizacoes\/",
+                    "type": "system",
+                    "option": "atualizacoes",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "f76a628b6cd89b7866da279d7bfe495c",
+                        "css": "",
+                        "combined": "f76a628b6cd89b7866da279d7bfe495c"
+                    }
+                },
+                {
+                    "name": "Templates - Ativar",
+                    "id": "templates-ativar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "templates\/ativar\/",
+                    "type": "system",
+                    "option": "ativar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Templates - Pré-Visualização",
+                    "id": "templates-pre-visualizacao",
+                    "layout": "layout-pagina-padrao",
+                    "path": "templates\/preview\/",
+                    "type": "system",
+                    "option": "preview",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "7eeb15dc7b8f6d8e89102154a09cf6d1",
+                        "css": "",
+                        "combined": "7eeb15dc7b8f6d8e89102154a09cf6d1"
+                    }
+                }
+            ],
+            "components": []
+        }
+    }
+}

@@ -1,0 +1,67 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "usuario"
+    ],
+    "tabela": {
+        "nome": "usuarios_perfis",
+        "id": "id",
+        "id_numerico": "id_usuarios_perfis",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "modulo_biblioteca_id": "3",
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "name": "Usuários Perfis",
+                    "id": "usuarios-perfis",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-perfis\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Usuários Perfis - Adicionar",
+                    "id": "usuarios-perfis-adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "7c4ceb5911b832310b04ccdc267707a4",
+                        "css": "",
+                        "combined": "7c4ceb5911b832310b04ccdc267707a4"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-perfis\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar"
+                },
+                {
+                    "name": "Usuários Perfis - Editar",
+                    "id": "usuarios-perfis-editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "886ad1f0a721251fceb0b87516dbf9eb",
+                        "css": "",
+                        "combined": "886ad1f0a721251fceb0b87516dbf9eb"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-perfis\/editar\/",
+                    "type": "system",
+                    "option": "editar"
+                }
+            ]
+        }
+    }
+}

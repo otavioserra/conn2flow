@@ -3,25 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'modulos';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.2.1',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'modulos',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'modulos',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'selectDadosLinguagem' => Array(
-		Array(
-			'texto' => 'Português/Brasil',
-			'valor' => 'pt-br',
-		),
-	)
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/modulos.json'), true);
 
 // ===== Funções Administrativas de Sistema
 

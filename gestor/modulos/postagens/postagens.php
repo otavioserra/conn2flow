@@ -3,29 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'postagens';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.7',
-	'bibliotecas' => Array('interface','html','pagina','formato'),
-	'tabela' => Array(
-		'nome' => 'hosts_postagens',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'hosts_postagens',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
-	),
-	'verificarCamposOutraTabela' => Array(
-		'caminho' => Array(
-			'nome' => 'hosts_paginas',
-			'id_numerico' => 'id_'.'hosts_paginas',
-			'id' => 'id',
-			'status' => 'status',
-			'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
-		),
-	)
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/postagens.json'), true);
 
 // ===== Funções auxiliares
 

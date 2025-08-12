@@ -1,0 +1,49 @@
+{
+    "versao": "1.0.15",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "hosts_variaveis",
+        "id": "id",
+        "id_numerico": "id_hosts_variaveis"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Comunicação Configurações",
+                    "id": "comunicacao-configuracoes",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "comunicacao-configuracoes\/",
+                    "type": "system",
+                    "option": "config",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "a260107449f3e3a36513442c78ab2609",
+                        "css": "",
+                        "combined": "a260107449f3e3a36513442c78ab2609"
+                    }
+                },
+                {
+                    "name": "Disparador de Emails Teste",
+                    "id": "disparador-de-emails-teste",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "comunicacao-configuracoes\/disparador-emails\/",
+                    "type": "system",
+                    "option": "disparador-emails",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "components": []
+        }
+    }
+}

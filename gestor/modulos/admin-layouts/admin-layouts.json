@@ -1,0 +1,96 @@
+{
+    "versao": "1.0.1",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "id_numerico": "3",
+    "tabela": {
+        "nome": "layouts",
+        "id": "id",
+        "id_numerico": "id_layouts",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Layouts",
+                    "id": "admin-layouts",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-layouts\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin Layouts - Editar",
+                    "id": "admin-layouts-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-layouts\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin Layouts - Adicionar",
+                    "id": "admin-layouts-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-layouts\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Emissão teste",
+                    "id": "emissao-teste",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-layouts\/emissao\/",
+                    "type": "page",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Emissão",
+                    "id": "emissao",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-layouts\/asdasdasd\/",
+                    "type": "system",
+                    "root": true,
+                    "without_permission": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "components": []
+        }
+    }
+}

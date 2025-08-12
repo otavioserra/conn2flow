@@ -1,0 +1,76 @@
+{
+    "versao": "1.0.8",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "hosts_paginas",
+        "id": "id",
+        "id_numerico": "id_hosts_paginas",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao",
+        "where": "id_hosts=''"
+    },
+    "selectDadosTipo": [
+        {
+            "texto": "Sistema",
+            "valor": "sistema"
+        },
+        {
+            "texto": "Página",
+            "valor": "pagina"
+        }
+    ],
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "name": "Páginas",
+                    "id": "paginas",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "paginas\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Páginas - Adicionar",
+                    "id": "paginas-adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "d80bc815d72c1f09657064b22bf98338",
+                        "css": "",
+                        "combined": "d80bc815d72c1f09657064b22bf98338"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "paginas\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar"
+                },
+                {
+                    "name": "Páginas - Editar",
+                    "id": "paginas-editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "eb6e44c32b31b9d55c44557ed1c7c927",
+                        "css": "",
+                        "combined": "eb6e44c32b31b9d55c44557ed1c7c927"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "paginas\/editar\/",
+                    "type": "system",
+                    "option": "editar"
+                }
+            ]
+        }
+    }
+}

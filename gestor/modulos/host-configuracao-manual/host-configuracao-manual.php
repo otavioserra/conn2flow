@@ -4,31 +4,7 @@ global $_GESTOR;
 
 // Módulo com ID diferente para não conflitar com o original
 $_GESTOR['modulo-id']							=	'host-configuracao-manual';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
-	'bibliotecas' => Array('interface','html','pagina','host'),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Instalação Manual de Host',
-			        'id' => 'host-configuracao-manual',
-			        'path' => '/host-manual-install/',
-			        'type' => 'modulo',
-			        'option' => 'instalar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/host-configuracao-manual.json'), true);
 
 // Incluindo as funções do módulo original que ainda serão úteis (geração de senhas, criptografia, etc)
 require_once(dirname(__FILE__).'/../host-configuracao/host-configuracao.php');

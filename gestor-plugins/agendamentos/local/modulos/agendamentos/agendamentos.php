@@ -3,101 +3,15 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'agendamentos';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.32',
-	'plugin' => 'agendamentos',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'hosts_conjunto_cupons_prioridade',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'hosts_conjunto_cupons_prioridade',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Agendamentos',
-			        'id' => 'agendamentos',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'agendamentos/',
-			        'type' => 'system',
-			        'option' => 'administrar',
-			        'root' => true,
-			        'version' => '0',
-			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
-			        ],
-			    ],
-			    [
-			        'name' => 'Cupons de Prioridade',
-			        'id' => 'cupons-de-prioridade',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'agendamentos/cupons-de-prioridade/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'version' => '0',
-			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
-			        ],
-			    ],
-			    [
-			        'name' => 'Cupons de Prioridade - Adicionar',
-			        'id' => 'cupons-de-prioridade-adicionar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'agendamentos/cupons-de-prioridade/adicionar/',
-			        'type' => 'system',
-			        'option' => 'adicionar',
-			        'version' => '0',
-			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
-			        ],
-			    ],
-			    [
-			        'name' => 'Cupons de Prioridade - Editar',
-			        'id' => 'cupons-de-prioridade-editar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'agendamentos/cupons-de-prioridade/editar/',
-			        'type' => 'system',
-			        'option' => 'editar',
-			        'version' => '0',
-			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
-			        ],
-			    ],
-			],
-			'components' => [
-			    [
-			        'name' => 'Impressão Cabeçalho',
-			        'id' => 'impressao-cabecalho',
-			        'version' => '0',
-			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
-			        ],
-			    ],
-			    [
-			        'name' => 'Tabela Cupons Prioridade',
-			        'id' => 'tabela-cupons-prioridade',
-			        'version' => '0',
-			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
-			        ],
-			    ],
-			],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/agendamentos.json'), true);
+
+// ===== Alterar o 'id_hosts'
+
+$where = $_GESTOR['modulo#'.$_GESTOR['modulo-id']]['tabela']['where'];
+
+$where = modelo_var_troca($where,"#id_hosts#",$_GESTOR['host-id']);
+
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['tabela']['where'] = $where;
 
 // ===== Funções Auxiliares
 

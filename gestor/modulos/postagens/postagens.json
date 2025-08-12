@@ -1,0 +1,77 @@
+{
+    "versao": "1.0.7",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "pagina",
+        "formato"
+    ],
+    "tabela": {
+        "nome": "hosts_postagens",
+        "id": "id",
+        "id_numerico": "id_hosts_postagens",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao",
+        "where": "id_hosts=''"
+    },
+    "verificarCamposOutraTabela": {
+        "caminho": {
+            "nome": "hosts_paginas",
+            "id_numerico": "id_hosts_paginas",
+            "id": "id",
+            "status": "status",
+            "where": "id_hosts=''"
+        }
+    },
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "name": "Postagens",
+                    "id": "postagens",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "postagens\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Postagens - Adicionar",
+                    "id": "postagens-adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "b3f99385d76a4208ba4ef736cfd2afa6",
+                        "css": "",
+                        "combined": "b3f99385d76a4208ba4ef736cfd2afa6"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "postagens\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar"
+                },
+                {
+                    "name": "Postagens - Editar",
+                    "id": "postagens-editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "499e3aa65d37ee86b0d1f14c20393330",
+                        "css": "",
+                        "combined": "499e3aa65d37ee86b0d1f14c20393330"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "postagens\/editar\/",
+                    "type": "system",
+                    "option": "editar"
+                }
+            ]
+        }
+    }
+}

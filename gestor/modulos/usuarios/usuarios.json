@@ -1,0 +1,71 @@
+{
+    "versao": "1.0.1",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "usuario"
+    ],
+    "tabela": {
+        "nome": "usuarios",
+        "id": "id",
+        "id_numerico": "id_usuarios",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "historico": {
+        "moduloIdExtra": "perfil-usuario"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Usuários",
+                    "id": "usuarios",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Usuários - Adicionar",
+                    "id": "usuarios-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "bfb28ecfa1a9418ee071b77a9a6a8f1f",
+                        "css": "",
+                        "combined": "bfb28ecfa1a9418ee071b77a9a6a8f1f"
+                    }
+                },
+                {
+                    "name": "Usuários - Editar",
+                    "id": "usuarios-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "974db95525781cd2f294d17e81d0b944",
+                        "css": "",
+                        "combined": "974db95525781cd2f294d17e81d0b944"
+                    }
+                }
+            ],
+            "components": []
+        }
+    }
+}

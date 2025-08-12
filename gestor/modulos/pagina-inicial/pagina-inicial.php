@@ -3,9 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'pagina-inicial';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.53',
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/pagina-inicial.json'), true);
 
 // ==== Start
 

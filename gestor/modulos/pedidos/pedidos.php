@@ -3,57 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'pedidos';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.11',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'hosts_pedidos',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'hosts_pedidos',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Pedidos',
-			        'id' => 'pedidos',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'pedidos/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Pedidos - Visualizar',
-			        'id' => 'pedidos-visualizar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'pedidos/visualizar/',
-			        'type' => 'system',
-			        'option' => 'visualizar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'a438ceededcc38a9cf4767b1fa0b6d86',
-			            'css' => '1ebc9ca02312e35b369d84e290fab71c',
-			            'combined' => '78e85a66aef7d27d1d39b43a67d2010e',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/pedidos.json'), true);
 
 function pedidos_visualizar(){
 	global $_GESTOR;

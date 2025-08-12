@@ -3,71 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'layouts';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'hosts_layouts',
-		'id' => 'id',
-		'id_numerico' => 'id_hosts_layouts',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Layouts',
-			        'id' => 'layouts',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'layouts/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Layouts - Adicionar',
-			        'id' => 'layouts-adicionar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'layouts/adicionar/',
-			        'type' => 'system',
-			        'option' => 'adicionar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '65578a67da1ba8603be9c6c030c28af7',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => '65578a67da1ba8603be9c6c030c28af7',
-			        ],
-			    ],
-			    [
-			        'name' => 'Layouts - Editar',
-			        'id' => 'layouts-editar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'layouts/editar/',
-			        'type' => 'system',
-			        'option' => 'editar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'ba1ad805a73ad08b26465d568e4260be',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'ba1ad805a73ad08b26465d568e4260be',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/layouts.json'), true);
 
 function hosts_layouts_adicionar(){
 	global $_GESTOR;

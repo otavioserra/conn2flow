@@ -3,21 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'usuarios-hospedeiro-perfis-admin';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
-	'bibliotecas' => Array('interface','html','usuario'),
-	'tabela' => Array(
-		'nome' => 'hosts_usuarios_perfis',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'hosts_usuarios_perfis',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-		'where' => "id_hosts IS NULL",
-	),
-	'modulo_biblioteca_id' => '3'
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/usuarios-hospedeiro-perfis-admin.json'), true);
 
 function hosts_usuarios_perfis_adicionar(){
 	global $_GESTOR;

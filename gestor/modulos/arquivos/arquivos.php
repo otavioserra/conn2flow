@@ -3,60 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'arquivos';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.6',
-	'bibliotecas' => Array('interface','html','arquivo'),
-	'tabela' => Array(
-		'nome' => 'hosts_arquivos',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'hosts_arquivos',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
-	),
-	'imagem' => Array(
-		'mini_width' => 200,
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Arquivos',
-			        'id' => 'arquivos',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'arquivos/',
-			        'type' => 'system',
-			        'option' => 'listar-arquivos',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '90bf146a28c8621989d0d053c814dd3d',
-			            'css' => 'da65a7d1abba118408353e14d6102779',
-			            'combined' => '558ad5a831c1f7234ed529be2d839a60',
-			        ],
-			    ],
-			    [
-			        'name' => 'Arquivos - Adicionar',
-			        'id' => 'arquivos-adicionar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'arquivos/adicionar/',
-			        'type' => 'system',
-			        'option' => 'upload',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '394122d6c6e3f8ba4ac350a5d7791b33',
-			            'css' => '72b0bf4a8ae69c7acf2cffbd036d1c62',
-			            'combined' => 'defcd0d295170fbfe13cc2788dd402fe',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/arquivos.json'), true);
 
 // ===== Interfaces Auxiliares
 

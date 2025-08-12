@@ -1,0 +1,181 @@
+{
+    "versao": "1.3.15",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "pagina"
+    ],
+    "tabela": {
+        "nome": "hosts",
+        "id": "id",
+        "id_numerico": "id_hosts",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "tipoDominio": {
+        "sistema": "Sistema",
+        "proprio": "Próprio"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Hospedeiro Instalação",
+                    "id": "host-instalacao",
+                    "layout": "layout-pagina-configuracao",
+                    "path": "host-install\/",
+                    "type": "system",
+                    "option": "instalar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Hospedeiro Configuração",
+                    "id": "hospedeiro-configuracao",
+                    "layout": "layout-pagina-configuracao",
+                    "path": "host-config\/",
+                    "type": "system",
+                    "option": "configurar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Hospedeiro Esqueceu Senha",
+                    "id": "hospedeiro-esqueceu-senha",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "host-config-forgot-password\/",
+                    "type": "system",
+                    "option": "esqueceu-senha",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Hospedeiro Redefinir Senha",
+                    "id": "hospedeiro-redefinir-senha",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "host-config-redefine-password\/",
+                    "type": "system",
+                    "option": "redefinir-senha",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Hospedeiro Esqueceu Senha Confirmação",
+                    "id": "hospedeiro-esqueceu-senha-confirmacao",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "host-config-forgot-password-confirmation\/",
+                    "type": "system",
+                    "option": "esqueceu-senha-confirmacao",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Hospedeiro Redefinir Senha Confirmação",
+                    "id": "hospedeiro-redefinir-senha-confirmacao",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "host-config-redefine-password-confirmation\/",
+                    "type": "system",
+                    "option": "redefinir-senha-confirmacao",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Hospedeiro Atualização",
+                    "id": "hospedeiro-atualizacao",
+                    "layout": "layout-pagina-configuracao",
+                    "path": "host-update\/",
+                    "type": "system",
+                    "option": "atualizar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Plataforma Servidor Testes",
+                    "id": "plataforma-servidor-testes",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "plataforma-servidor-testes\/",
+                    "type": "system",
+                    "option": "plataforma-testes",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "8cbb38c279c502d7342999dcdb109b4d",
+                        "css": "",
+                        "combined": "8cbb38c279c502d7342999dcdb109b4d"
+                    }
+                },
+                {
+                    "name": "Hospedeiro Configurações",
+                    "id": "hospedeiro-alteracoes",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "host-configuracao\/configuracoes\/",
+                    "type": "system",
+                    "option": "config",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Hospedeiro Plugins",
+                    "id": "hospedeiro-plugins",
+                    "layout": "layout-pagina-configuracao",
+                    "path": "host-plugins\/",
+                    "type": "system",
+                    "option": "plugins",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Host Plugins Update Carregando",
+                    "id": "host-plugins-update-carregando",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,71 @@
+{
+    "versao": "1.0.4",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "arquivo"
+    ],
+    "tabela": {
+        "nome": "arquivos",
+        "id": "id",
+        "id_numerico": "id_arquivos",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "imagem": {
+        "mini_width": 200
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Arquivos",
+                    "id": "admin-arquivos",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-arquivos\/",
+                    "type": "system",
+                    "option": "listar-arquivos",
+                    "root": true,
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "8f33d8113e655162a32f7a7213409e19",
+                        "css": "da65a7d1abba118408353e14d6102779",
+                        "combined": "ddb032331dd7e8da25416f3ac40a104a"
+                    }
+                },
+                {
+                    "name": "Admin Arquivos - Adicionar",
+                    "id": "admin-arquivos-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-arquivos\/adicionar\/",
+                    "type": "system",
+                    "option": "upload",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "394122d6c6e3f8ba4ac350a5d7791b33",
+                        "css": "938b9feb7d3d8dffbb915b2adbf06978",
+                        "combined": "ab4e0f4c373ef06e666beed129143ab5"
+                    }
+                },
+                {
+                    "name": "Emissão teste",
+                    "id": "emissao-teste",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-arquivos\/emissao-teste\/",
+                    "type": "system",
+                    "without_permission": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "components": []
+        }
+    }
+}

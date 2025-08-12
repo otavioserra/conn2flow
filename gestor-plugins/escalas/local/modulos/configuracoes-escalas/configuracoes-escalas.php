@@ -3,38 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'configuracoes-escalas';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
-	'plugin' => 'escalas',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'hosts_variaveis',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'hosts_variaveis',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Configurações de Escala',
-			        'id' => 'configuracoes-de-escala',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'configuracoes-escalas/',
-			        'type' => 'system',
-			        'option' => 'config',
-			        'root' => true,
-			        'version' => '0',
-			        'checksum' => [
-			            'html' => '',
-			            'css' => '',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/configuracoes-escalas.json'), true);
 
 // ===== Funções Auxiliares
 

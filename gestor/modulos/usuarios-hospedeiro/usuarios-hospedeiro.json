@@ -1,0 +1,72 @@
+{
+    "versao": "1.0.8",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "usuario"
+    ],
+    "tabela": {
+        "nome": "hosts_usuarios",
+        "id": "id",
+        "id_numerico": "id_hosts_usuarios",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao",
+        "where": "id_hosts=''"
+    },
+    "historico": {
+        "moduloIdExtra": "hosts-usuarios"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Usuários Hospedeiro",
+                    "id": "usuarios-hospedeiro",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-hospedeiro\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Usuários Hospedeiro - Adicionar",
+                    "id": "usuarios-hospedeiro-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-hospedeiro\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "7b4bbd593c9092d12ed78a970f0a3ffa",
+                        "css": "f32438e7149f85825359382e76eec749",
+                        "combined": "f4fd54756060e65da2986b735aa2b86e"
+                    }
+                },
+                {
+                    "name": "Usuários Hospedeiro - Editar",
+                    "id": "usuarios-hospedeiro-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-hospedeiro\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "ff65ee36daf0b7058270d47f42433bc2",
+                        "css": "f32438e7149f85825359382e76eec749",
+                        "combined": "95723913f7f2874453fcbb5dcc081505"
+                    }
+                }
+            ],
+            "components": []
+        }
+    }
+}

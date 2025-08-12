@@ -10,7 +10,11 @@ $resources = [
 	'languages' => [
         'pt-br' => [
             'name' => 'Português (Brasil)',
-            'path' => 'resources.map.pt-br.php',
+            'data' => [
+                'layouts' => 'layouts.json',
+                'pages' => 'pages.json',
+                'components' => 'components.json',
+            ],
             'version' => '1',
         ],
     ],

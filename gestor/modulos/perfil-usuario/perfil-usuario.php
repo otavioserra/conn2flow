@@ -3,23 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'perfil-usuario';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.2.4',
-	'bibliotecas' => Array('interface','html','usuario'),
-	'tabela' => Array(
-		'nome' => 'usuarios',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'usuarios',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'historico' => Array(
-		'moduloIdExtra' => 'usuarios',
-	),
-	'interfaceNaoAplicarIdHost' => true,
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/perfil-usuario.json'), true);
 
 function perfil_usuario_area_restrita(){
 	global $_GESTOR;

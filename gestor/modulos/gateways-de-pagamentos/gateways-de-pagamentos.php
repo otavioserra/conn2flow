@@ -3,77 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'gateways-de-pagamentos';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.12',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Gateways de Pagamentos',
-			        'id' => 'gateways-de-pagamentos',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'gateways-de-pagamentos/',
-			        'type' => 'system',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'dd096b424d02aa2d7e2678d7ab133750',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'dd096b424d02aa2d7e2678d7ab133750',
-			        ],
-			    ],
-			    [
-			        'name' => 'Gateway de Pagamento - PayPal',
-			        'id' => 'gateway-de-pagamento-paypal',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'gateways-de-pagamentos/paypal/',
-			        'type' => 'system',
-			        'option' => 'paypal',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '517529b3f63c06afe846d59ef8f0103f',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => '517529b3f63c06afe846d59ef8f0103f',
-			        ],
-			    ],
-			    [
-			        'name' => 'Gateway de Pagamento - PayPal Reference Create',
-			        'id' => 'gateway-de-pagamento-paypal-reference-create',
-			        'layout' => 'layout-pagina-simples',
-			        'path' => 'gateways-de-pagamentos/paypal-reference-create/',
-			        'type' => 'system',
-			        'option' => 'paypal-reference-create',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Gateway de Pagamento - PayPal Reference Return',
-			        'id' => 'gateway-de-pagamento-paypal-reference-return',
-			        'layout' => 'layout-pagina-simples',
-			        'path' => 'gateways-de-pagamentos/paypal-reference-return/',
-			        'type' => 'system',
-			        'option' => 'paypal-reference-return',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/gateways-de-pagamentos.json'), true);
 
 // ===== PayPal.
 

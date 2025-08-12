@@ -3,70 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'admin-componentes';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'componentes',
-		'id' => 'id',
-		'id_numerico' => 'id_componentes',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Admin Componentes',
-			        'id' => 'admin-componentes',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-componentes/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Admin Componentes - Adicionar',
-			        'id' => 'admin-componentes-adicionar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-componentes/adicionar/',
-			        'type' => 'system',
-			        'option' => 'adicionar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '02a8f489049e53693834150cb3edf442',
-			            'css' => 'bdb85de7c6afcf6a3fdca44a2b25b9ff',
-			            'combined' => 'c777cd919ffeb64a312af46cd66f7a4b',
-			        ],
-			    ],
-			    [
-			        'name' => 'Admin Componentes - Editar',
-			        'id' => 'admin-componentes-editar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-componentes/editar/',
-			        'type' => 'system',
-			        'option' => 'editar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '1befa0ed6b4dbd98bdceda52e96a625c',
-			            'css' => '0c9ea4a87a3788f62f7e4e6e63c80a5e',
-			            'combined' => 'ac7ebba11cfb2e9f536e0a5f1365feef',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/admin-componentes.json'), true);
 
 function admin_componentes_adicionar(){
 	global $_GESTOR;

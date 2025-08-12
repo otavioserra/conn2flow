@@ -3,70 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'admin-plugins';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.0',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'plugins',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'plugins',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Admin Plugins',
-			        'id' => 'admin-plugins',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-plugins/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Admin Plugins - Adicionar',
-			        'id' => 'admin-plugins-adicionar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-plugins/adicionar/',
-			        'type' => 'system',
-			        'option' => 'adicionar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '55c3133cf00c68a151f7d2800643cd95',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => '55c3133cf00c68a151f7d2800643cd95',
-			        ],
-			    ],
-			    [
-			        'name' => 'Admin Plugins - Editar',
-			        'id' => 'admin-plugins-editar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-plugins/editar/',
-			        'type' => 'system',
-			        'option' => 'editar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd66253a4a5d9465d318b737cc32456f4',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd66253a4a5d9465d318b737cc32456f4',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/admin-plugins.json'), true);
 
 function admin_plugins_adicionar(){
 	global $_GESTOR;

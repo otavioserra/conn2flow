@@ -13,7 +13,7 @@
  */
 
 // Detecta se estamos em contexto de instalação ou produção
-$configPath = __DIR__ . '/../config.php';
+$configPath = __DIR__ . '/config.php';
 $isInstalling = !file_exists($configPath);
 
 if ($isInstalling) {

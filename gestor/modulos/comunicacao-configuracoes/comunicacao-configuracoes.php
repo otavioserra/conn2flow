@@ -3,52 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'comunicacao-configuracoes';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.15',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'hosts_variaveis',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'hosts_variaveis',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Comunicação Configurações',
-			        'id' => 'comunicacao-configuracoes',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'comunicacao-configuracoes/',
-			        'type' => 'system',
-			        'option' => 'config',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'a260107449f3e3a36513442c78ab2609',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'a260107449f3e3a36513442c78ab2609',
-			        ],
-			    ],
-			    [
-			        'name' => 'Disparador de Emails Teste',
-			        'id' => 'disparador-de-emails-teste',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'comunicacao-configuracoes/disparador-emails/',
-			        'type' => 'system',
-			        'option' => 'disparador-emails',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'aea098f46856f41f33e1ba518b9d083c',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'aea098f46856f41f33e1ba518b9d083c',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/comunicacao-configuracoes.json'), true);
 
 // ===== Funções Auxiliares
 

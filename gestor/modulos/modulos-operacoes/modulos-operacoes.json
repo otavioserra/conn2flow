@@ -1,0 +1,67 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "modulos_operacoes",
+        "id": "id",
+        "id_numerico": "id_modulos_operacoes",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Módulos Operações",
+                    "id": "modulos-operacoes",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "modulos-operacoes\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Módulos Operações - Adicionar",
+                    "id": "modulos-operacoes-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "modulos-operacoes\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "e69634998ed937fe89cab5d0bc5912be",
+                        "css": "",
+                        "combined": "e69634998ed937fe89cab5d0bc5912be"
+                    }
+                },
+                {
+                    "name": "Módulos Operações - Editar",
+                    "id": "modulos-operacoes-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "modulos-operacoes\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "225a0ca6b6f949986285b32d7fa180f2",
+                        "css": "",
+                        "combined": "225a0ca6b6f949986285b32d7fa180f2"
+                    }
+                }
+            ],
+            "components": []
+        }
+    }
+}

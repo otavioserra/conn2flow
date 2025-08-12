@@ -3,30 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'paginas';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.0.8',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'hosts_paginas',
-		'id' => 'id',
-		'id_numerico' => 'id_hosts_paginas',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
-	),
-	'selectDadosTipo' => Array(
-		Array(
-			'texto' => 'Sistema',
-			'valor' => 'sistema',
-		),
-		Array(
-			'texto' => 'Página',
-			'valor' => 'pagina',
-		)
-	)
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/paginas.json'), true);
 
 function hosts_paginas_adicionar(){
 	global $_GESTOR;

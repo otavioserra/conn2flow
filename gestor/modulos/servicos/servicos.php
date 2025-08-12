@@ -3,53 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'servicos';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.1.116',
-	'bibliotecas' => Array('interface','html','pagina','formato'),
-	'tabela' => Array(
-		'nome' => 'hosts_servicos',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'hosts_servicos',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-		'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
-	),
-	'verificarCamposOutraTabela' => Array(
-		'caminho' => Array(
-			'nome' => 'hosts_paginas',
-			'id_numerico' => 'id_'.'hosts_paginas',
-			'id' => 'id',
-			'status' => 'status',
-			'where' => "id_hosts='".$_GESTOR['host-id']."'", // Somente acessar dados do host permitido.
-		),
-	),
-	'lotesPadroes' => Array(
-		'nomeLotes' => 'Lote',
-		'idLotes' => 'lote',
-		'nomeVariacao' => 'Variação',
-		'idVariacao' => 'variacao',
-		'visibilidade' => Array(
-			Array(
-				'texto' => 'Sempre',
-				'valor' => 'sempre',
-			),
-			Array(
-				'texto' => 'Data Início',
-				'valor' => 'datainicio',
-			),
-			Array(
-				'texto' => 'Data Fim',
-				'valor' => 'datafim',
-			),
-			Array(
-				'texto' => 'Período',
-				'valor' => 'periodo',
-			),
-		),
-	)
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/servicos.json'), true);
 
 // ===== Funções auxiliares
 

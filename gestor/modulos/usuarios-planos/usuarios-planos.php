@@ -3,70 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'usuarios-planos';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
-	'versao' => '1.1.0',
-	'bibliotecas' => Array('interface','html'),
-	'tabela' => Array(
-		'nome' => 'usuarios_planos',
-		'id' => 'id',
-		'id_numerico' => 'id_'.'usuarios_planos',
-		'status' => 'status',
-		'versao' => 'versao',
-		'data_criacao' => 'data_criacao',
-		'data_modificacao' => 'data_modificacao',
-	),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Usuários Planos',
-			        'id' => 'usuarios-planos',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'usuarios-planos/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Usuários Planos - Adicionar',
-			        'id' => 'usuarios-planos-adicionar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'usuarios-planos/adicionar/',
-			        'type' => 'system',
-			        'option' => 'adicionar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '96f7cef372dd9322a4ab78d0b212b812',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => '96f7cef372dd9322a4ab78d0b212b812',
-			        ],
-			    ],
-			    [
-			        'name' => 'Usuários Planos - Editar',
-			        'id' => 'usuarios-planos-editar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'usuarios-planos/editar/',
-			        'type' => 'system',
-			        'option' => 'editar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '2ac7809800d262ba57a2989ae9900f3f',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => '2ac7809800d262ba57a2989ae9900f3f',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
-);
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/usuarios-planos.json'), true);
 
 function usuarios_planos_adicionar(){
 	global $_GESTOR;
