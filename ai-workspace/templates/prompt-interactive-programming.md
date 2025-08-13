@@ -54,7 +54,7 @@ main()
 - [] Executar o script gerado para ver se funciona corretamente.
 - [] Gerar mensagem detalhada, subistituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"`
 
-## ♻️ Alterações e Correções
+## ♻️ Alterações e Correções 1.0
 
 ## ✅ Progresso da Implementação das Alterações e Correções
 

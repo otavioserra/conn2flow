@@ -91,7 +91,9 @@
                     "layout": "layout-pagina-sem-permissao",
                     "path": "modulos\/sincronizar-bancos\/",
                     "type": "system",
-                    "option": "sincronizar-bancos"
+                    "option": "sincronizar-bancos",
+                    "error": true,
+                    "error_msg": "Caminho de página duplicado: modulos\/sincronizar-bancos\/"
                 },
                 {
                     "name": "Módulos Administração de Sistema - Copiar Variáveis",
@@ -119,7 +121,9 @@
                     "layout": "layout-pagina-sem-permissao",
                     "path": "modulos\/sincronizar-bancos\/",
                     "type": "system",
-                    "option": "sincronizar-bancos"
+                    "option": "sincronizar-bancos",
+                    "error": true,
+                    "error_msg": "Caminho de página duplicado: modulos\/sincronizar-bancos\/"
                 }
             ],
             "variables": [

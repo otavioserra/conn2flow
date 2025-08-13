@@ -256,6 +256,13 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
     $componentsData = [];
     $variablesData = [];
 
+    // Índices de origem para posterior marcação de erros diretamente nos arquivos fonte
+    // Cada item conterá metadados suficientes para reabrir o arquivo e adicionar error/error_msg
+    $originsIndex = [
+        'paginas' => [], // [ ['file'=>..., 'scope'=>global|module|plugin, 'module'=>?, 'plugin'=>?, 'lang'=>..., 'id'=>..., 'path'=>...] ]
+        'variaveis' => [], // [ ['file'=>..., 'scope'=>global|module|plugin, 'module'=>?, 'plugin'=>?, 'lang'=>..., 'id'=>..., 'group'=>...] ]
+    ];
+
     $seenLayouts = [];
     $originUpdates = [];
 
@@ -326,6 +333,16 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                         'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
                         '_layout_id_str' => $item['layout'] ?? null,
                     ];
+                    // Registrar origem página global
+                    $originsIndex['paginas'][] = [
+                        'file' => $listFile,
+                        'scope' => 'global',
+                        'module' => null,
+                        'plugin' => null,
+                        'lang' => $lang,
+                        'id' => $id,
+                        'path' => $item['path'] ?? ($id . '/'),
+                    ];
                 } else { // components
                     $k = $lang . '||' . $id;
                     $cid = $compIdMap[$k] ?? ($compIdMap[$k] = $nextCompId++);
@@ -370,6 +387,15 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                     'tipo' => $v['type'] ?? null,
                     'grupo' => $v['group'] ?? null,
                     'descricao' => $v['description'] ?? null,
+                ];
+                $originsIndex['variaveis'][] = [
+                    'file' => $varsFile,
+                    'scope' => 'global',
+                    'module' => $mod,
+                    'plugin' => null,
+                    'lang' => $lang,
+                    'id' => $id,
+                    'group' => $v['group'] ?? null,
                 ];
             }
         }
@@ -444,6 +470,15 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                                 'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
                                 '_layout_id_str' => $item['layout'] ?? null,
                             ];
+                            $originsIndex['paginas'][] = [
+                                'file' => $jsonFile,
+                                'scope' => 'module',
+                                'module' => $modId,
+                                'plugin' => null,
+                                'lang' => $lang,
+                                'id' => $id,
+                                'path' => $item['path'] ?? ($id . '/'),
+                            ];
                         } else { // components
                             $k = $lang . '|' . $modId . '|' . $id;
                             $cid = $compIdMap[$k] ?? ($compIdMap[$k] = $nextCompId++);
@@ -482,6 +517,15 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                             'tipo' => $v['type'] ?? null,
                             'grupo' => $v['group'] ?? null,
                             'descricao' => $v['description'] ?? null,
+                        ];
+                        $originsIndex['variaveis'][] = [
+                            'file' => $jsonFile,
+                            'scope' => 'module',
+                            'module' => $modId,
+                            'plugin' => null,
+                            'lang' => $lang,
+                            'id' => $id,
+                            'group' => $v['group'] ?? null,
                         ];
                     }
                 }
@@ -564,6 +608,15 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                                     'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
                                     '_layout_id_str' => $item['layout'] ?? null,
                                 ];
+                                $originsIndex['paginas'][] = [
+                                    'file' => $jsonFile,
+                                    'scope' => 'plugin',
+                                    'module' => $modId,
+                                    'plugin' => $plugId,
+                                    'lang' => $lang,
+                                    'id' => $id,
+                                    'path' => $item['path'] ?? ($id . '/'),
+                                ];
                             } else { // components
                                 $k = $lang . '|' . $modId . '|' . $id;
                                 $cid = $compIdMap[$k] ?? ($compIdMap[$k] = $nextCompId++);
@@ -603,6 +656,15 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                                 'grupo' => $v['group'] ?? null,
                                 'descricao' => $v['description'] ?? null,
                             ];
+                            $originsIndex['variaveis'][] = [
+                                'file' => $jsonFile,
+                                'scope' => 'plugin',
+                                'module' => $modId,
+                                'plugin' => $plugId,
+                                'lang' => $lang,
+                                'id' => $id,
+                                'group' => $v['group'] ?? null,
+                            ];
                         }
                     }
                 }
@@ -633,6 +695,7 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
         'pagesData' => $pagesData,
         'componentsData' => $componentsData,
         'variablesData' => $variablesData,
+        'originsIndex' => $originsIndex,
     ];
 }
 
@@ -677,45 +740,182 @@ function garantirSeeders(): void {
 
 // ========================= 6) REPORTE FINAL =========================
 
-function validarDuplicidades(array &$recursos): array {
-    $erros = [];
-    // Duplicidade de IDs (mesmo language + modulo + id) para pages/components/layouts/variables segundo regras
-    $mapPageId = [];
-    $mapPagePath = [];
-    foreach ($recursos['pagesData'] as &$p) {
+/**
+ * Valida duplicidades sem alterar Data.json; retorna relatório e metadados para marcar origem.
+ * Regras:
+ *  - Páginas: duplicidade de id (mesmo lang+modulo) ou caminho (mesmo lang independente de módulo) => erro.
+ *  - Variáveis: duplicidade de id (mesmo lang+modulo) É PERMITIDA se TODOS os registros desse conjunto tiverem 'group' definido E existirem múltiplos valores distintos de group.
+ */
+function validarDuplicidades(array $recursos): array {
+    $report = [];
+    $dupsMeta = [];
+
+    // Páginas (por id dentro de lang+mod) & caminho por lang
+    $byPageId = [];
+    $byPath = [];
+    foreach ($recursos['pagesData'] as $p) {
         $lang = $p['language']; $mod = $p['modulo'] ?? ''; $id = $p['id']; $path = $p['caminho'];
-        $keyId = $lang . '|' . $mod . '|' . $id;
-        if (isset($mapPageId[$keyId])) {
-            $msg = _("dup_pages_id", ['id' => $id]);
-            $p['error'] = true; $p['error_msg'] = $msg;
-            $recursos['pagesData'][$mapPageId[$keyId]]['error'] = true; $recursos['pagesData'][$mapPageId[$keyId]]['error_msg'] = $msg;
-            $erros['paginas']['id'][] = $id;
-        } else { $mapPageId[$keyId] = array_key_last($recursos['pagesData']); }
-        $keyPath = strtolower(trim($path, '/'));
-        if ($keyPath !== '') {
-            if (isset($mapPagePath[$keyPath])) {
-                $msg = _("dup_pages_path", ['path' => $path]);
-                $p['error'] = true; $p['error_msg'] = $msg;
-                $recursos['pagesData'][$mapPagePath[$keyPath]]['error'] = true; $recursos['pagesData'][$mapPagePath[$keyPath]]['error_msg'] = $msg;
-                $erros['paginas']['caminho'][] = $path;
-            } else { $mapPagePath[$keyPath] = array_key_last($recursos['pagesData']); }
+        $kId = $lang . '|' . $mod . '|' . $id;
+        $byPageId[$kId][] = $p;
+        $kPath = $lang . '|' . strtolower(trim($path, '/'));
+        $byPath[$kPath][] = $p;
+    }
+    foreach ($byPageId as $k => $list) {
+        if (count($list) > 1) {
+            $id = $list[0]['id'];
+            $report['paginas']['id'][] = $id;
+            foreach ($list as $item) {
+                $dupsMeta[] = [
+                    'tipo' => 'paginas',
+                    'campo' => 'id',
+                    'id' => $item['id'],
+                    'path' => $item['caminho'],
+                    'lang' => $item['language'],
+                    'module' => $item['modulo'] ?? null,
+                    'msg' => _("dup_pages_id", ['id' => $item['id']]),
+                ];
+            }
         }
     }
-    unset($p);
-    // Variáveis: id único por módulo + idioma
-    $mapVar = [];
-    foreach ($recursos['variablesData'] as &$v) {
-        $lang = $v['linguagem_codigo']; $mod = $v['modulo'] ?? ''; $id = $v['id'];
-        $key = $lang . '|' . $mod . '|' . $id;
-        if (isset($mapVar[$key])) {
-            $msg = _("dup_vars_id", ['id' => $id]);
-            $v['error'] = true; $v['error_msg'] = $msg;
-            $recursos['variablesData'][$mapVar[$key]]['error'] = true; $recursos['variablesData'][$mapVar[$key]]['error_msg'] = $msg;
-            $erros['variaveis']['id'][] = $id;
-        } else { $mapVar[$key] = array_key_last($recursos['variablesData']); }
+    foreach ($byPath as $k => $list) {
+        if (count($list) > 1) {
+            $path = $list[0]['caminho'];
+            $report['paginas']['caminho'][] = $path;
+            foreach ($list as $item) {
+                $dupsMeta[] = [
+                    'tipo' => 'paginas',
+                    'campo' => 'caminho',
+                    'id' => $item['id'],
+                    'path' => $item['caminho'],
+                    'lang' => $item['language'],
+                    'module' => $item['modulo'] ?? null,
+                    'msg' => _("dup_pages_path", ['path' => $item['caminho']]),
+                ];
+            }
+        }
     }
-    unset($v);
-    return $erros;
+
+    // Variáveis (agrupadas por lang+module+id)
+    $byVar = [];
+    foreach ($recursos['variablesData'] as $v) {
+        $k = $v['linguagem_codigo'] . '|' . ($v['modulo'] ?? '') . '|' . $v['id'];
+        $byVar[$k][] = $v;
+    }
+    foreach ($byVar as $k => $list) {
+        if (count($list) > 1) {
+            $groups = [];
+            $allHaveGroup = true;
+            foreach ($list as $item) {
+                $g = $item['grupo'] ?? null;
+                if ($g === null || $g === '') { $allHaveGroup = false; }
+                $groups[$g ?? ''] = true;
+            }
+            $distinctGroups = count($groups);
+            // Permitido se todos têm group e groups > 1
+            if (!($allHaveGroup && $distinctGroups > 1)) {
+                $id = $list[0]['id'];
+                $report['variaveis']['id'][] = $id;
+                foreach ($list as $item) {
+                    $dupsMeta[] = [
+                        'tipo' => 'variaveis',
+                        'campo' => 'id',
+                        'id' => $item['id'],
+                        'group' => $item['grupo'] ?? null,
+                        'lang' => $item['linguagem_codigo'],
+                        'module' => $item['modulo'] ?? null,
+                        'msg' => _("dup_vars_id", ['id' => $item['id']]),
+                    ];
+                }
+            }
+        }
+    }
+
+    return ['report' => $report, 'meta' => $dupsMeta];
+}
+
+/**
+ * Aplica os erros diretamente nos arquivos de origem (globais, módulos, plugins).
+ * @param array $dupsMeta Lista de duplicados com metadados e mensagem.
+ */
+function aplicarErrosOrigem(array $dupsMeta, array $originsIndex): void {
+    // Indexar por (lang,module,id,path,group)
+    $indexPag = [];
+    foreach ($originsIndex['paginas'] as $o) {
+        $key = 'paginas|' . $o['lang'] . '|' . ($o['module'] ?? '') . '|' . $o['id'] . '|' . strtolower(trim($o['path'], '/'));
+        $indexPag[$key][] = $o;
+    }
+    $indexVar = [];
+    foreach ($originsIndex['variaveis'] as $o) {
+        $key = 'variaveis|' . $o['lang'] . '|' . ($o['module'] ?? '') . '|' . $o['id'] . '|' . ($o['group'] ?? '');
+        $indexVar[$key][] = $o;
+    }
+    // Agrupar duplicados por arquivo para minimizar IO
+    $filesToUpdate = [];
+    foreach ($dupsMeta as $d) {
+        // Determinar candidatos pelo tipo
+        if ($d['tipo'] === 'paginas') {
+            // Procurar todas as origens possíveis com mesmo lang+module+id OR mesmo path
+            foreach ($originsIndex['paginas'] as $o) {
+                $match = ($o['lang'] === $d['lang'] && $o['id'] === $d['id']);
+                if ($d['campo'] === 'caminho') {
+                    $match = $match || ($o['lang'] === $d['lang'] && strtolower(trim($o['path'],'/')) === strtolower(trim($d['path'],'/')));
+                }
+                if ($match) {
+                    $filesToUpdate[$o['file']][] = ['tipo'=>'paginas','lang'=>$o['lang'],'id'=>$o['id'],'path'=>$o['path'],'msg'=>$d['msg']];
+                }
+            }
+        } elseif ($d['tipo'] === 'variaveis') {
+            foreach ($originsIndex['variaveis'] as $o) {
+                if ($o['lang'] === $d['lang'] && $o['id'] === $d['id'] && (($o['module'] ?? null) === ($d['module'] ?? null))) {
+                    $filesToUpdate[$o['file']][] = ['tipo'=>'variaveis','lang'=>$o['lang'],'id'=>$o['id'],'group'=>$o['group'],'msg'=>$d['msg']];
+                }
+            }
+        }
+    }
+    foreach ($filesToUpdate as $file => $items) {
+        $json = jsonRead($file);
+        if (!$json) continue;
+        $modified = false;
+        // Detectar se é arquivo de módulo/plugin (tem 'resources') ou lista global (array simples)
+        if (isset($json['resources'])) {
+            // Módulo/Plugin
+            foreach ($json['resources'] as $lang => &$res) {
+                foreach (['pages','variables'] as $t) {
+                    if (!isset($res[$t]) || !is_array($res[$t])) continue;
+                    foreach ($res[$t] as &$entry) {
+                        foreach ($items as $it) {
+                            if ($t === 'pages' && $it['tipo'] === 'paginas' && $lang === $it['lang'] && $entry['id'] === $it['id']) {
+                                if (empty($entry['error'])) { $entry['error'] = true; $entry['error_msg'] = $it['msg']; $modified = true; }
+                            } elseif ($t === 'variables' && $it['tipo'] === 'variaveis' && $lang === $it['lang'] && $entry['id'] === $it['id']) {
+                                if (empty($entry['error'])) { $entry['error'] = true; $entry['error_msg'] = $it['msg']; $modified = true; }
+                            }
+                        }
+                    }
+                    unset($entry);
+                }
+                unset($res);
+            }
+            if ($modified) jsonWrite($file, $json);
+        } elseif (is_array($json)) {
+            // Lista global (pages.json ou variables.json)
+            foreach ($json as &$entry) {
+                if (!is_array($entry) || !isset($entry['id'])) continue;
+                foreach ($items as $it) {
+                    if ($it['tipo'] === 'paginas' && isset($entry['path'])) {
+                        if ($entry['id'] === $it['id'] || strtolower(trim($entry['path'],'/')) === strtolower(trim($it['path'],'/'))) {
+                            if (empty($entry['error'])) { $entry['error'] = true; $entry['error_msg'] = $it['msg']; $modified = true; }
+                        }
+                    } elseif ($it['tipo'] === 'variaveis' && isset($entry['value'])) {
+                        if ($entry['id'] === $it['id']) {
+                            if (empty($entry['error'])) { $entry['error'] = true; $entry['error_msg'] = $it['msg']; $modified = true; }
+                        }
+                    }
+                }
+            }
+            unset($entry);
+            if ($modified) jsonWrite($file, $json);
+        }
+    }
 }
 
 function reporteFinal(array $recursos, array $erros, array $alteracoesOrigem = []): void {
@@ -754,18 +954,20 @@ function reporteFinal(array $recursos, array $erros, array $alteracoesOrigem = [
 
 function main(): void {
     try {
-    log_disco(_('_process_start'), 'atualizacao-dados-recursos');
+        log_disco(_('_process_start'), 'atualizacao-dados-recursos');
         $map = carregarMapeamentoGlobal();
         $existentes = carregarDadosExistentes();
-        $recursos = coletarRecursos($existentes, $map);
-        atualizarDados($existentes, $recursos);
+        $recursos = coletarRecursos($existentes, $map); // inclui originsIndex
+        $resultadoDup = validarDuplicidades($recursos);
+        aplicarErrosOrigem($resultadoDup['meta'], $recursos['originsIndex']);
+        // Remover estrutura de origem antes de persistir
+        unset($recursos['originsIndex']);
+        atualizarDados($existentes, $recursos); // grava Data.json SEM error/error_msg
         garantirSeeders();
-    $erros = validarDuplicidades($recursos);
-    atualizarDados($existentes, $recursos); // persistir com flags de erro
-    reporteFinal($recursos, $erros);
-    log_disco(_('_process_end_success'), 'atualizacao-dados-recursos');
+        reporteFinal($recursos, $resultadoDup['report']);
+        log_disco(_('_process_end_success'), 'atualizacao-dados-recursos');
     } catch (Throwable $e) {
-    log_disco(_('_process_error', ['msg' => $e->getMessage()]), 'atualizacao-dados-recursos');
+        log_disco(_('_process_error', ['msg' => $e->getMessage()]), 'atualizacao-dados-recursos');
         echo 'Erro: ' . $e->getMessage();
     }
 }

@@ -173,34 +173,6 @@
                     }
                 },
                 {
-                    "name": "Admin Templates - Adicionar",
-                    "id": "admin-templates-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-templates\/adicionar\/",
-                    "type": "system",
-                    "option": "adicionar",
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "17f07bd85ab4ed269b7784a95b0785db",
-                        "css": "",
-                        "combined": "17f07bd85ab4ed269b7784a95b0785db"
-                    }
-                },
-                {
-                    "name": "Admin Templates - Editar",
-                    "id": "admin-templates-editar",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-templates\/editar\/",
-                    "type": "system",
-                    "option": "editar",
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "017173c25a1692eb65c96dbe2cedf67a",
-                        "css": "",
-                        "combined": "017173c25a1692eb65c96dbe2cedf67a"
-                    }
-                },
-                {
                     "name": "Admin Templates - Pré-Visualização",
                     "id": "admin-templates-pre-visualizacao",
                     "layout": "layout-pagina-padrao",

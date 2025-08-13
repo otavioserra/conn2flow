@@ -1267,9 +1267,7 @@
         "valor": "<span class=\"ui grey label\">Novo<\/span>",
         "tipo": "string",
         "grupo": "pedidos-voucher-status",
-        "descricao": null,
-        "error": true,
-        "error_msg": "Variável duplicada nesse módulo\/idioma: novo"
+        "descricao": null
     },
     {
         "id_variaveis": "1236",
@@ -1329,9 +1327,7 @@
         "valor": "<span class=\"ui yellow label\">Expirado<\/span>",
         "tipo": "string",
         "grupo": "pedidos-voucher-status",
-        "descricao": null,
-        "error": true,
-        "error_msg": "Variável duplicada nesse módulo\/idioma: expirado"
+        "descricao": null
     },
     {
         "id_variaveis": "1273",
@@ -13081,8 +13077,6 @@
         "valor": "<table class=\"ui unstackable celled very compact table\">\\r\\n    <thead>\\r\\n        <tr>\\r\\n            <th>Nome<\/th>\\r\\n            <th>Visto<\/th>\\r\\n        <\/tr>\\r\\n    <\/thead>\\r\\n    <tbody>\\r\\n        <!-- cel < --><tr>\\r\\n        \t<td>#nome#<\/td>\\r\\n        \t<td> <\/td>\\r\\n        <\/tr><!-- cel > -->\\r\\n    <\/tbody>\\r\\n<\/table>",
         "tipo": "html",
         "grupo": "host-admin",
-        "descricao": "Layout html de impressão das escalas.",
-        "error": true,
-        "error_msg": "Variável duplicada nesse módulo\/idioma: expirado"
+        "descricao": "Layout html de impressão das escalas."
     }
 ]

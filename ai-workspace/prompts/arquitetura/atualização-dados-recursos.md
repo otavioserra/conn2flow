@@ -90,7 +90,7 @@ main()
 - [x] Executar o script gerado para ver se funciona corretamente.
 - [x] Gerar mensagem detalhada e executar commit/push no repositório (script commit.sh não existente, usado git manualmente)
 
-## ♻️ Alterações e Correções
+## ♻️ Alterações e Correções v1.10.7
 1. Vi que vc criou uma nova função na linha #37 do script dentro do mesmo. Mas, como te disse, vc podia mudar a biblioteca. Portanto, coloque a nova função na biblioteca correspondente em vez de deixar no código.
 2. Eu não vi uma rotina para comparar os `id` para encontrar duplicidade. Criar uma rotina para isso. Caso haja alguma duplicidade, o sistema deve marcar o recurso original com um campo `error` igual a `true`, e também o campo `error_msg` com uma mensagem apropriada.
 - Caso haja duplicidade de `id` em `languages` diferentes não tem problema. Apenas ignorar neste caso.
@@ -126,7 +126,28 @@ otavi@Otavio-Trabalho MINGW64 ~/OneDrive/Documentos/GIT/conn2flow (main)
 - [x] Executar o script gerado para ver se funciona corretamente.
 - [ ] Gerar mensagem detalhada e usar script de commit (quando existir) ou procedimento manual temporário
 
+## ♻️ Alterações e Correções v1.10.8
+INFO: Eu removi manualmente as entradas duplicadas. Só ficou as das variáveis com `group` definido.
+```bash
+⚠️ Erros de duplicidade:
+  - paginas (caminho): modulos/sincronizar-bancos/
+```
+1. Regra adicional de variáveis implementada: duplicidades de `id` dentro do mesmo módulo e idioma são permitidas SE todos os registros possuem `group` definido e os grupos são distintos (>1). Caso contrário, marca erro.
+2. Campos `error` e `error_msg` foram removidos dos arquivos Data (`gestor/db/data/*.json`) e agora são adicionados exclusivamente nas fontes de origem (globais/módulos/plugins) conforme solicitado.
+3. Marcação de duplicidade agora não persiste em Data.json evitando problemas nos seeders.
+4. Origem `modulos/sincronizar-bancos/` permanece sinalizada em `gestor/modulos/modulos/modulos.json`.
+
+## ✅ Progresso da Implementação das Alterações e Correções
+- [x] Ajustar regra variáveis (permitir múltiplos ids com groups distintos)
+- [x] Remover error/error_msg de Data.json
+- [x] Adicionar error/error_msg nos arquivos de origem corretos
+- [x] Reexecutar script e validar relatório
+
+## ☑️ Processo Pós Alterações e Correções
+- [ ] Executar novamente o script para garantir consistência após qualquer ajuste residual
+- [ ] Executar commit automatizado com mensagem detalhada
+
 ---
 **Data:** 12/08/2025
 **Desenvolvedor:** Otavio Serra
-**Projeto:** Conn2Flow Gestor v1.10.7
+**Projeto:** Conn2Flow Gestor v1.10.8

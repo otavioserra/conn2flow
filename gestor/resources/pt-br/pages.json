@@ -540,19 +540,5 @@
             "css": "d66e854af0c522ca96e846dc7add5a36",
             "combined": "0ed96a5ede0eadef2e29045aee7518a2"
         }
-    },
-    {
-        "name": "Testes do Dashboard",
-        "id": "testes-do-dashboard",
-        "version": "1.1",
-        "checksum": {
-            "html": "a1733d8e8df1ec7fdbe0d5040b9a5ede",
-            "css": "",
-            "combined": "a1733d8e8df1ec7fdbe0d5040b9a5ede"
-        },
-        "layout": "",
-        "path": "octavio-pagina\/",
-        "type": "page",
-        "root": true
     }
 ]
