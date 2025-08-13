@@ -6,6 +6,14 @@ $_GESTOR['biblioteca-log']							=	Array(
 	'versao' => '1.1.0',
 );
 
+// ===== Defaults para evitar avisos de índices não definidos
+if (!isset($_GESTOR['debug'])) { $_GESTOR['debug'] = false; }
+if (!isset($_GESTOR['logs-path'])) {
+	$defaultLogs = realpath(__DIR__ . '/..') . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'arquitetura' . DIRECTORY_SEPARATOR;
+	if ($defaultLogs && !is_dir($defaultLogs)) @mkdir($defaultLogs, 0775, true);
+	$_GESTOR['logs-path'] = $defaultLogs ?: sys_get_temp_dir() . DIRECTORY_SEPARATOR;
+}
+
 // ===== Funções auxiliares
 
 // ===== Funções principais
@@ -266,21 +274,13 @@ function log_disco($msg, $logFilename = "gestor"){
 	
 	// ===== 
 	
-	$msg = '['.date('D, d M Y H:i:s').'] '.$msg;
-	
-	if($_GESTOR['debug']){
-		echo $msg . "\n";
-	} else {
-		$path = $_GESTOR['logs-path'];
-		
-		$myFile = $path . $logFilename.'-'.date('d-m-Y').".log";
-		
-		if(file_exists($myFile) && filesize($myFile) > 0){
-			$file = file_get_contents($myFile);
-		}
-		
-		file_put_contents($myFile,($file ? $file : '') . $msg . "\n");
-	}
+	$msg = '['.date('Y-m-d H:i:s').'] '.$msg;
+	if (!empty($_GESTOR['debug'])) { echo $msg . "\n"; return; }
+	$path = $_GESTOR['logs-path'] ?? sys_get_temp_dir() . DIRECTORY_SEPARATOR;
+	if (!is_dir($path)) @mkdir($path, 0775, true);
+	$myFile = $path . $logFilename.'-'.date('Y-m-d').".log";
+	$existing = (is_file($myFile) && filesize($myFile) > 0) ? file_get_contents($myFile) : '';
+	file_put_contents($myFile, $existing . $msg . "\n");
 }
 
 ?>

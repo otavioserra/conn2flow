@@ -33,17 +33,7 @@ require_once $BASE_PATH . 'gestor/bibliotecas/lang.php';
 // Biblioteca de logs (pode ser adaptada futuramente). Se não existir função, definimos fallback simples.
 // Carregar biblioteca de log original
 @require_once $BASE_PATH . 'gestor/bibliotecas/log.php';
-// Criar função auxiliar segura independente do log_disco global
-if (!function_exists('log_disco_safe')) {
-    function log_disco_safe($msg, $logFilename = 'gestor') {
-        $logDir = dirname(__DIR__, 4) . DIRECTORY_SEPARATOR . 'gestor' . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'arquitetura';
-        if (!is_dir($logDir)) @mkdir($logDir, 0775, true);
-        $file = $logDir . DIRECTORY_SEPARATOR . $logFilename . '-' . date('Y-m-d') . '.log';
-        file_put_contents($file, '[' . date('Y-m-d H:i:s') . '] ' . $msg . PHP_EOL, FILE_APPEND);
-    }
-}
-// Definir alias local para uso interno
-function log_local($msg, $logFilename = 'gestor') { log_disco_safe($msg, $logFilename); }
+// Usaremos diretamente log_disco() da biblioteca
 
 // Diretórios centrais
 $GESTOR_DIR      = $BASE_PATH . 'gestor' . DIRECTORY_SEPARATOR;
@@ -171,15 +161,15 @@ function carregarMapeamentoGlobal(): array {
     global $RESOURCES_DIR, $LOG_FILE;
     $mapFile = $RESOURCES_DIR . 'resources.map.php';
     if (!file_exists($mapFile)) {
-    log_local(_('_map_file_not_found', ['file' => $mapFile]), $LOG_FILE);
+    log_disco(_('_map_file_not_found', ['file' => $mapFile]), $LOG_FILE);
         throw new RuntimeException('resources.map.php não encontrado');
     }
     $map = include $mapFile; // retorna $resources
     if (!isset($map['languages']) || !is_array($map['languages'])) {
-    log_local(_('_map_invalid_structure'), $LOG_FILE);
+    log_disco(_('_map_invalid_structure'), $LOG_FILE);
         throw new RuntimeException('Estrutura inválida em resources.map.php');
     }
-    log_local(_('_map_loaded', ['langs' => implode(',', array_keys($map['languages']))]), $LOG_FILE);
+    log_disco(_('_map_loaded', ['langs' => implode(',', array_keys($map['languages']))]), $LOG_FILE);
     return $map;
 }
 
@@ -200,7 +190,7 @@ function carregarDadosExistentes(): array {
     $dados = [];
     foreach ($paths as $k => $p) {
         $dados[$k] = jsonRead($p) ?? [];
-    log_local(_('_loaded_existing', ['tipo' => $k, 'qtd' => count($dados[$k])]), $LOG_FILE);
+    log_disco(_('_loaded_existing', ['tipo' => $k, 'qtd' => count($dados[$k])]), $LOG_FILE);
     }
     return $dados;
 }
@@ -631,7 +621,7 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
     }
     unset($p);
 
-    log_local(_('_collected_summary', [
+    log_disco(_('_collected_summary', [
         'layouts' => count($layoutsData),
         'pages' => count($pagesData),
         'components' => count($componentsData),
@@ -657,7 +647,7 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
     jsonWrite($DB_DATA_DIR . 'PaginasData.json', $recursos['pagesData']);
     jsonWrite($DB_DATA_DIR . 'ComponentesData.json', $recursos['componentsData']);
     jsonWrite($DB_DATA_DIR . 'VariaveisData.json', $recursos['variablesData']);
-    log_local(_('_data_written'), $LOG_FILE);
+    log_disco(_('_data_written'), $LOG_FILE);
 }
 
 // ========================= 5) SEEDERS (Garantir) =========================
@@ -676,44 +666,99 @@ function garantirSeeders(): void {
     foreach ($defs as [$class, $table, $dataFile, $tag]) {
         $path = $SEEDS_DIR . $class . '.php';
         if (file_exists($path)) {
-            log_local(_('_seeder_exists', ['seeder' => $class]), $LOG_FILE);
+            log_disco(_('_seeder_exists', ['seeder' => $class]), $LOG_FILE);
             continue;
         }
         $code = "<?php\n\ndeclare(strict_types=1);\n\nuse Phinx\\Seed\\AbstractSeed;\n\nfinal class $class extends AbstractSeed\n{\n    public function run(): void\n    {\n        $data = json_decode(file_get_contents(__DIR__ . '/../data/$dataFile'), true);\n        if (count($data) > 0) {\n            $table = $this->table('$table');\n            if (method_exists($table, 'truncate')) {\n                $table->truncate();\n            }\n            $table->insert($data)->saveData();\n        }\n    }\n}\n";
         file_put_contents($path, $code);
-    log_local(_('_seeder_created', ['seeder' => $class]), $LOG_FILE);
+    log_disco(_('_seeder_created', ['seeder' => $class]), $LOG_FILE);
     }
 }
 
 // ========================= 6) REPORTE FINAL =========================
 
-function reporteFinal(array $recursos): void {
+function validarDuplicidades(array &$recursos): array {
+    $erros = [];
+    // Duplicidade de IDs (mesmo language + modulo + id) para pages/components/layouts/variables segundo regras
+    $mapPageId = [];
+    $mapPagePath = [];
+    foreach ($recursos['pagesData'] as &$p) {
+        $lang = $p['language']; $mod = $p['modulo'] ?? ''; $id = $p['id']; $path = $p['caminho'];
+        $keyId = $lang . '|' . $mod . '|' . $id;
+        if (isset($mapPageId[$keyId])) {
+            $p['error'] = true; $p['error_msg'] = 'ID de página duplicado (mesmo idioma/módulo): ' . $id;
+            $recursos['pagesData'][$mapPageId[$keyId]]['error'] = true; $recursos['pagesData'][$mapPageId[$keyId]]['error_msg'] = 'ID de página duplicado (mesmo idioma/módulo): ' . $id;
+            $erros['paginas']['id'][] = $id;
+        } else { $mapPageId[$keyId] = array_key_last($recursos['pagesData']); }
+        $keyPath = strtolower(trim($path, '/'));
+        if ($keyPath !== '') {
+            if (isset($mapPagePath[$keyPath])) {
+                $p['error'] = true; $p['error_msg'] = 'Caminho de página duplicado: ' . $path;
+                $recursos['pagesData'][$mapPagePath[$keyPath]]['error'] = true; $recursos['pagesData'][$mapPagePath[$keyPath]]['error_msg'] = 'Caminho de página duplicado: ' . $path;
+                $erros['paginas']['caminho'][] = $path;
+            } else { $mapPagePath[$keyPath] = array_key_last($recursos['pagesData']); }
+        }
+    }
+    unset($p);
+    // Variáveis: id único por módulo + idioma
+    $mapVar = [];
+    foreach ($recursos['variablesData'] as &$v) {
+        $lang = $v['linguagem_codigo']; $mod = $v['modulo'] ?? ''; $id = $v['id'];
+        $key = $lang . '|' . $mod . '|' . $id;
+        if (isset($mapVar[$key])) {
+            $v['error'] = true; $v['error_msg'] = 'Variável duplicada nesse módulo/idioma: ' . $id;
+            $recursos['variablesData'][$mapVar[$key]]['error'] = true; $recursos['variablesData'][$mapVar[$key]]['error_msg'] = 'Variável duplicada nesse módulo/idioma: ' . $id;
+            $erros['variaveis']['id'][] = $id;
+        } else { $mapVar[$key] = array_key_last($recursos['variablesData']); }
+    }
+    unset($v);
+    return $erros;
+}
+
+function reporteFinal(array $recursos, array $erros, array $alteracoesOrigem = []): void {
     global $LOG_FILE;
-    $msg = _('_final_report') . PHP_EOL
-        . str_repeat('=', 40) . PHP_EOL
-        . 'Layouts: ' . count($recursos['layoutsData']) . PHP_EOL
-        . 'Páginas: ' . count($recursos['pagesData']) . PHP_EOL
-        . 'Componentes: ' . count($recursos['componentsData']) . PHP_EOL
-        . 'Variáveis: ' . count($recursos['variablesData']) . PHP_EOL
-        . 'TOTAL: ' . (count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['variablesData'])) . PHP_EOL;
-    log_local($msg, $LOG_FILE);
-    echo nl2br($msg);
+    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['variablesData']);
+    $msg = "📝 " . _('_final_report') . PHP_EOL
+        . str_repeat('═', 50) . PHP_EOL
+        . "📦 Layouts: " . count($recursos['layoutsData']) . PHP_EOL
+        . "📄 Páginas: " . count($recursos['pagesData']) . PHP_EOL
+        . "🧩 Componentes: " . count($recursos['componentsData']) . PHP_EOL
+        . "🔧 Variáveis: " . count($recursos['variablesData']) . PHP_EOL
+        . "Σ TOTAL: $total" . PHP_EOL;
+    if (!empty($alteracoesOrigem)) {
+        $msg .= PHP_EOL . "✅ Arquivos origem atualizados:" . PHP_EOL;
+        foreach ($alteracoesOrigem as $k => $q) { $msg .= "  - $k => $q" . PHP_EOL; }
+    }
+    if (!empty($erros)) {
+        $msg .= PHP_EOL . "⚠️ Erros de duplicidade:" . PHP_EOL;
+        foreach ($erros as $tipo => $grupos) {
+            foreach ($grupos as $campo => $lista) {
+                $msg .= "  - $tipo ($campo): " . implode(', ', array_unique($lista)) . PHP_EOL;
+            }
+        }
+    } else {
+        $msg .= PHP_EOL . "✅ Sem duplicidades detectadas." . PHP_EOL;
+    }
+    log_disco($msg, $LOG_FILE);
+    echo $msg;
 }
 
 // ========================= 7) MAIN =========================
 
 function main(): void {
     try {
-    log_local(_('_process_start'), 'atualizacao-dados-recursos');
+    log_disco(_('_process_start'), 'atualizacao-dados-recursos');
         $map = carregarMapeamentoGlobal();
         $existentes = carregarDadosExistentes();
         $recursos = coletarRecursos($existentes, $map);
         atualizarDados($existentes, $recursos);
         garantirSeeders();
-        reporteFinal($recursos);
-    log_local(_('_process_end_success'), 'atualizacao-dados-recursos');
+    $erros = validarDuplicidades($recursos);
+    atualizarDados($existentes, $recursos); // persistir com flags de erro
+    reporteFinal($recursos, $erros);
+    log_disco(_('_process_end_success'), 'atualizacao-dados-recursos');
     } catch (Throwable $e) {
-    log_local(_('_process_error', ['msg' => $e->getMessage()]), 'atualizacao-dados-recursos');
+    log_disco(_('_process_error', ['msg' => $e->getMessage()]), 'atualizacao-dados-recursos');
         echo 'Erro: ' . $e->getMessage();
     }
 }
