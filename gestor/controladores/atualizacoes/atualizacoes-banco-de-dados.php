@@ -146,8 +146,27 @@ function seeders(): array {
 /** Carrega JSON Data file */
 function loadDataFile(string $file): array { $d = json_decode(file_get_contents($file), true); return is_array($d) ? $d : []; }
 
-/** Obtém nome tabela a partir de Data file (LayoutsData.json => layouts) */
-function tabelaFromDataFile(string $file): string { return strtolower(preg_replace('/Data\.json$/', '', basename($file))); }
+/**
+ * Obtém nome da tabela a partir do arquivo *Data.json.
+ * Regras:
+ *  - Remove sufixo Data.json
+ *  - Se já contiver underscore, apenas converte para minúsculo (mantém snake_case existente)
+ *  - Caso contrário, converte CamelCase/PascalCase para snake_case
+ * Exemplos:
+ *  HostsConfiguracoesData.json => hosts_configuracoes
+ *  PaginasData.json            => paginas
+ *  hosts_configuracoesData.json (legado) => hosts_configuracoes
+ */
+function tabelaFromDataFile(string $file): string {
+    $base = preg_replace('/Data\.json$/', '', basename($file));
+    if ($base === '') return '';
+    if (strpos($base, '_') !== false) {
+        return strtolower($base);
+    }
+    // Inserir underscore antes de cada letra maiúscula que não é inicial
+    $snake = preg_replace('/(?<!^)([A-Z])/', '_$1', $base);
+    return strtolower($snake);
+}
 
 /** Insere registros ausentes e atualiza divergentes */
 function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $logDiffs = true): array {
@@ -261,11 +280,11 @@ function comparacaoDados(): array {
     global $DB_DATA_DIR, $LOG_FILE, $CLI_OPTS;
     log_disco(tr('_compare_start'), $LOG_FILE);
     $arquivos = glob($DB_DATA_DIR . '*Data.json');
-    // Filtrar por --tables se fornecido
+    // Filtrar por --tables se fornecido (usa mesma lógica de derivação)
     if (!empty($CLI_OPTS['tables'])) {
         $filter = array_map('strtolower', array_map('trim', explode(',', $CLI_OPTS['tables'])));
         $arquivos = array_filter($arquivos, function($f) use ($filter){
-            $t = strtolower(preg_replace('/Data\.json$/','', basename($f)));
+            $t = tabelaFromDataFile($f);
             return in_array($t, $filter, true);
         });
         log_disco(tr('_filter_tables',[ 'lista'=>implode(',', $filter)]), $LOG_FILE);
@@ -329,8 +348,10 @@ function reverseExport(PDO $pdo, array $tabelas, string $dataDir): void {
     log_disco(tr('_reverse_complete'), $LOG_FILE);
 }
 
+/** Converte nome de tabela snake_case para PascalCase *Data.json */
 function dataFileNameFromTable(string $tabela): string {
-    return ucfirst($tabela) . 'Data.json';
+    $pascal = preg_replace_callback('/(^|_)([a-z])/', function($m){ return strtoupper($m[2]); }, strtolower($tabela));
+    return $pascal . 'Data.json';
 }
 
 function relatorioFinal(array $resumo): void {

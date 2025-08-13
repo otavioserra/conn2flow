@@ -15,9 +15,10 @@
 - O ambiente de testes está na pasta `docker\dados\sites\localhost\conn2flow-gestor`. Que é executado pelo gestor via navegador assim: `http://localhost/instalador/` . O mesmo está na pasta: `docker\dados\sites\localhost\public_html\instalador`
 - Para atualizar o ambiente e refletir as mudanças do repositório, segue o arquivo para sincronização: `docker\utils\sincroniza-gestor.sh checksum`
 - Todos os comandos para executar no ambiente de testes estão no arquivo: `docker\utils\comandos-docker.md`
+- Se precisar executar o PHP lá, exemplo: `docker exec conn2flow-app bash -c "php -v"`
 
 ## 🗃️ Repositório GIT
-- Existe um script feito com todas as operações necessárias internas para gerenciar o repositório: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"`
+- Existe um script feito com todas as operações necessárias internas para gerenciar o repositório: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 - Dentro desse script é feito o versionamento automático do projeto, commit e push. Portanto, não faça os comandos manualmente. Apenas execute o script quando for alterar o repositório.
 
 ## ⚙️ Configurações da Implementação
@@ -138,8 +139,8 @@ Sim, pode fazer.
 - [x] Implementar modo reverso (gerar Data.json a partir do banco) (--reverse)
 
 ## ☑️ Processo Pós-Implementação
-- [] Executar o script gerado para ver se funciona corretamente.
-- [] Gerar mensagem detalhada, subistituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"`
+- [x] Executar o script gerado para ver se funciona corretamente.
+- [x] Gerar mensagem detalhada, subistituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 
 ## ♻️ Alterações e Correções v1.10.11
 ### Novas Flags
@@ -156,6 +157,32 @@ Sim, pode fazer.
 - Atualização de usage help.
 
 ## ✅ Progresso da Implementação das Alterações e Correções
+### v1.10.12 (Execuções e Ajustes)
+- Ajustado script `atualizacoes-banco-de-dados.php` para converter corretamente CamelCase -> snake_case (`HostsConfiguracoes` -> `hosts_configuracoes`).
+- Ajustada função inversa para export (`dataFileNameFromTable`).
+- Filtro `--tables` passou a usar mesma lógica de derivação (consistência).
+- Seeders tornados idempotentes com `truncate()` (Componentes, Layouts, Paginas) evitando `Duplicate entry` ao re-executar.
+- Todos os seeders executados com sucesso após ajustes.
+- Teste específico dry-run em `hosts_configuracoes` sem erro 42S02.
+- Rotina completa executada com `--debug --log-diff` validada.
+
+### Relatório Sintético
+```
+Seeders: OK (sem falhas)
+Erro original: resolvido (mapeamento hosts_configuracoes)
+Sincronização: diffs aplicados conforme logs
+```
+
+### Mensagem de Commit Proposta
+```
+fix(v1.10.12): corrigir mapeamento hosts_configuracoes e tornar seeders idempotentes
+
+- Ajusta tabelaFromDataFile (Camel/PascalCase -> snake_case)
+- Implementa dataFileNameFromTable consistente
+- Unifica filtro --tables
+- Adiciona truncate em Componentes, Layouts, Paginas
+- Validação: seed:run completo e atualização BD OK
+```
 1. Eu fui executar por mim mesmo e deu erro:
 ```bash
 otavi@Otavio-Trabalho MINGW64 ~/OneDrive/Documentos/GIT/conn2flow (main)
@@ -168,10 +195,24 @@ otavi@Otavio-Trabalho MINGW64 ~/OneDrive/Documentos/GIT/conn2flow (main)
 3. Limpei manualmente agora e vc vai poder rodar novamente por vc com o banco limpo.
 
 ## ☑️ Processo Pós Alterações e Correções
-- [] Executar o script gerado para ver se funciona corretamente.
-- [] Gerar mensagem detalhada, subistituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"`
+- [x] Executar o script gerado para ver se funciona corretamente.
+- [x] Gerar mensagem detalhada, subistituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
+
+## ♻️ Alterações e Correções v1.10.12
+1. Encontrei um erro na execução da atualização do banco de dados:
+```
+[2025-08-13 16:41:33] Sincronizando tabela hostsconfiguracoes ...
+[2025-08-13 16:41:33] Erro na rotina: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'conn2flow.hostsconfiguracoes' doesn't exist
+```
+2. Analisa o problema e corrija.
+
+## ✅ Progresso da Implementação das Alterações e Correções
+
+## ☑️ Processo Pós Alterações e Correções
+- [x] Executar o script gerado para ver se funciona corretamente.
+- [x] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "fix(v1.10.12): corrigir mapeamento hosts_configuracoes e seeders idempotentes"`
 
 ---
 **Data:** 13/08/2025
 **Desenvolvedor:** Otavio Serra
-**Projeto:** Conn2Flow v1.10.10
+**Projeto:** Conn2Flow v1.10.12

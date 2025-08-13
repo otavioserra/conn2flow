@@ -17,7 +17,7 @@
 - Todos os comandos para executar no ambiente de testes estão no arquivo: `docker\utils\comandos-docker.md`
 
 ## 🗃️ Repositório GIT
-- Existe um script feito com todas as operações necessárias internas para gerenciar o repositório: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"`
+- Existe um script feito com todas as operações necessárias internas para gerenciar o repositório: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 - Dentro desse script é feito o versionamento automático do projeto, commit e push. Portanto, não faça os comandos manualmente. Apenas execute o script quando for alterar o repositório.
 
 ## ⚙️ Configurações da Implementação
@@ -181,7 +181,7 @@ Correção aplicada: ajuste da geração de `VariaveisData.json` para atribuir n
 
 ## ☑️ Processo Pós Alterações e Correções
 - [x] Executar o script gerado para ver se funciona corretamente.
-- [ ] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" e executar (quando existir) script de commit: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"` (script ainda não presente; utilizar fluxo manual ou criar script futuramente)
+- [x] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" e executar (quando existir) script de commit: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"` (script ainda não presente; utilizar fluxo manual ou criar script futuramente)
 
 ---
 **Data:** 12/08/2025

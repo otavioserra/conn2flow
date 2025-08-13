@@ -15,9 +15,10 @@
 - O ambiente de testes está na pasta `docker\dados\sites\localhost\conn2flow-gestor`. Que é executado pelo gestor via navegador assim: `http://localhost/instalador/` . O mesmo está na pasta: `docker\dados\sites\localhost\public_html\instalador`
 - Para atualizar o ambiente e refletir as mudanças do repositório, segue o arquivo para sincronização: `docker\utils\sincroniza-gestor.sh checksum`
 - Todos os comandos para executar no ambiente de testes estão no arquivo: `docker\utils\comandos-docker.md`
+- Se precisar executar o PHP lá, exemplo: `docker exec conn2flow-app bash -c "php -v"`
 
 ## 🗃️ Repositório GIT
-- Existe um script feito com todas as operações necessárias internas para gerenciar o repositório: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"`
+- Existe um script feito com todas as operações necessárias internas para gerenciar o repositório: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 - Dentro desse script é feito o versionamento automático do projeto, commit e push. Portanto, não faça os comandos manualmente. Apenas execute o script quando for alterar o repositório.
 
 ## ⚙️ Configurações da Implementação
@@ -53,7 +54,7 @@ main()
 
 ## ☑️ Processo Pós-Implementação
 - [] Executar o script gerado para ver se funciona corretamente.
-- [] Gerar mensagem detalhada, subistituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"`
+- [] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 
 ## ♻️ Alterações e Correções 1.0
 
@@ -61,7 +62,7 @@ main()
 
 ## ☑️ Processo Pós Alterações e Correções
 - [] Executar o script gerado para ver se funciona corretamente.
-- [] Gerar mensagem detalhada, subistituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"`
+- [] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 
 ---
 **Data:** dataAtual()

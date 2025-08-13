@@ -11,8 +11,8 @@ set -e
 # Verifica se a mensagem do commit foi passada como argumento
 if [ -z "$1" ]; then
   echo "Erro: Argumentos insuficientes."
-  echo "Uso:   ./ai-workspace/scripts/commit.sh \"Mensagem detalhada para o Commit\""
-  echo "Exemplo: ./ai-workspace/scripts/commit.sh \"Corrige validação de senha\""
+  echo "Uso:   ./ai-workspace/git/scripts/commit.sh \"Mensagem detalhada para o Commit\""
+  echo "Exemplo: ./ai-workspace/git/scripts/commit.sh \"Corrige validação de senha\""
   exit 1
 fi
 
