@@ -30,7 +30,6 @@
 - Todos os textos de informação/logs deverão ter multilinguas. Escapados usando função helper `_()`;
 - O código fonte deverá **ser bem comentado (padrão DocBlock), seguir os padrões de design definidos e ser modular.** Todas as orientações deverão constar nos comentários do código.
 
-
 ## 📖 Bibliotecas
 - Geração de logs: `gestor\bibliotecas\log.php`: `log_disco($msg, $logFilename = "gestor")` > Pode alterar se necessário.
 - Funções de lang: `gestor\bibliotecas\lang.php`: `_()` > Necessário definir.
@@ -124,7 +123,7 @@ otavi@Otavio-Trabalho MINGW64 ~/OneDrive/Documentos/GIT/conn2flow (main)
 
 ## ☑️ Processo Pós Alterações e Correções
 - [x] Executar o script gerado para ver se funciona corretamente.
-- [ ] Gerar mensagem detalhada e usar script de commit (quando existir) ou procedimento manual temporário
+- [x] Gerar mensagem detalhada e usar script de commit (quando existir) ou procedimento manual temporário
 
 ## ♻️ Alterações e Correções v1.10.8
 INFO: Eu removi manualmente as entradas duplicadas. Só ficou as das variáveis com `group` definido.
@@ -144,8 +143,8 @@ INFO: Eu removi manualmente as entradas duplicadas. Só ficou as das variáveis 
 - [x] Reexecutar script e validar relatório
 
 ## ☑️ Processo Pós Alterações e Correções
-- [ ] Executar novamente o script para garantir consistência após qualquer ajuste residual
-- [ ] Executar commit automatizado com mensagem detalhada
+- [x] Executar novamente o script para garantir consistência após qualquer ajuste residual
+- [x] Executar commit automatizado com mensagem detalhada
 
 ---
 **Data:** 12/08/2025

@@ -9,9 +9,9 @@
  */
 
 // Carrega o dicionário de idiomas
-function carregar_dicionario($lang = 'pt-br') {
+function carregar_dicionario($lang = 'pt-br', $base = '') {
     $dicionario = [];
-    $caminhoBase = realpath(__DIR__ . '/../controladores/agents/arquitetura/lang/') . '/';
+    $caminhoBase = realpath(__DIR__ . $base) . '/';
     $caminhoArquivo = $caminhoBase . $lang . '.json';
 
     if (file_exists($caminhoArquivo)) {
