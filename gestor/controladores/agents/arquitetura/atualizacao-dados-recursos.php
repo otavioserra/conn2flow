@@ -686,15 +686,17 @@ function validarDuplicidades(array &$recursos): array {
         $lang = $p['language']; $mod = $p['modulo'] ?? ''; $id = $p['id']; $path = $p['caminho'];
         $keyId = $lang . '|' . $mod . '|' . $id;
         if (isset($mapPageId[$keyId])) {
-            $p['error'] = true; $p['error_msg'] = 'ID de página duplicado (mesmo idioma/módulo): ' . $id;
-            $recursos['pagesData'][$mapPageId[$keyId]]['error'] = true; $recursos['pagesData'][$mapPageId[$keyId]]['error_msg'] = 'ID de página duplicado (mesmo idioma/módulo): ' . $id;
+            $msg = _("dup_pages_id", ['id' => $id]);
+            $p['error'] = true; $p['error_msg'] = $msg;
+            $recursos['pagesData'][$mapPageId[$keyId]]['error'] = true; $recursos['pagesData'][$mapPageId[$keyId]]['error_msg'] = $msg;
             $erros['paginas']['id'][] = $id;
         } else { $mapPageId[$keyId] = array_key_last($recursos['pagesData']); }
         $keyPath = strtolower(trim($path, '/'));
         if ($keyPath !== '') {
             if (isset($mapPagePath[$keyPath])) {
-                $p['error'] = true; $p['error_msg'] = 'Caminho de página duplicado: ' . $path;
-                $recursos['pagesData'][$mapPagePath[$keyPath]]['error'] = true; $recursos['pagesData'][$mapPagePath[$keyPath]]['error_msg'] = 'Caminho de página duplicado: ' . $path;
+                $msg = _("dup_pages_path", ['path' => $path]);
+                $p['error'] = true; $p['error_msg'] = $msg;
+                $recursos['pagesData'][$mapPagePath[$keyPath]]['error'] = true; $recursos['pagesData'][$mapPagePath[$keyPath]]['error_msg'] = $msg;
                 $erros['paginas']['caminho'][] = $path;
             } else { $mapPagePath[$keyPath] = array_key_last($recursos['pagesData']); }
         }
@@ -706,8 +708,9 @@ function validarDuplicidades(array &$recursos): array {
         $lang = $v['linguagem_codigo']; $mod = $v['modulo'] ?? ''; $id = $v['id'];
         $key = $lang . '|' . $mod . '|' . $id;
         if (isset($mapVar[$key])) {
-            $v['error'] = true; $v['error_msg'] = 'Variável duplicada nesse módulo/idioma: ' . $id;
-            $recursos['variablesData'][$mapVar[$key]]['error'] = true; $recursos['variablesData'][$mapVar[$key]]['error_msg'] = 'Variável duplicada nesse módulo/idioma: ' . $id;
+            $msg = _("dup_vars_id", ['id' => $id]);
+            $v['error'] = true; $v['error_msg'] = $msg;
+            $recursos['variablesData'][$mapVar[$key]]['error'] = true; $recursos['variablesData'][$mapVar[$key]]['error_msg'] = $msg;
             $erros['variaveis']['id'][] = $id;
         } else { $mapVar[$key] = array_key_last($recursos['variablesData']); }
     }
@@ -730,14 +733,18 @@ function reporteFinal(array $recursos, array $erros, array $alteracoesOrigem = [
         foreach ($alteracoesOrigem as $k => $q) { $msg .= "  - $k => $q" . PHP_EOL; }
     }
     if (!empty($erros)) {
-        $msg .= PHP_EOL . "⚠️ Erros de duplicidade:" . PHP_EOL;
+        $msg .= PHP_EOL . _("dup_section_header") . PHP_EOL;
         foreach ($erros as $tipo => $grupos) {
             foreach ($grupos as $campo => $lista) {
-                $msg .= "  - $tipo ($campo): " . implode(', ', array_unique($lista)) . PHP_EOL;
+                $msg .= '  ' . _("dup_section_item", [
+                    'tipo' => $tipo,
+                    'campo' => $campo,
+                    'lista' => implode(', ', array_unique($lista))
+                ]) . PHP_EOL;
             }
         }
     } else {
-        $msg .= PHP_EOL . "✅ Sem duplicidades detectadas." . PHP_EOL;
+        $msg .= PHP_EOL . _("dup_section_none") . PHP_EOL;
     }
     log_disco($msg, $LOG_FILE);
     echo $msg;

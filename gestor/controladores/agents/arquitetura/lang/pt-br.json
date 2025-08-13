@@ -38,5 +38,11 @@
     "report_summary_global": "Total de variáveis globais: {count}",
     "report_summary_module": "Total de variáveis de módulos: {count}",
     "report_summary_plugin": "Total de variáveis de plugins: {count}",
-    "report_summary_total": "Total geral: {count}"
+    "report_summary_total": "Total geral: {count}",
+    "dup_pages_id": "ID de página duplicado (mesmo idioma/módulo): {id}",
+    "dup_pages_path": "Caminho de página duplicado: {path}",
+    "dup_vars_id": "Variável duplicada nesse módulo/idioma: {id}",
+    "dup_section_header": "⚠️ Erros de duplicidade:",
+    "dup_section_none": "✅ Sem duplicidades detectadas.",
+    "dup_section_item": "- {tipo} ({campo}): {lista}"
 }
