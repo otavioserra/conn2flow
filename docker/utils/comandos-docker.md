@@ -5,24 +5,29 @@
 docker ps
 ```
 
-## 2. Logs do container principal (Apache/PHP)
+## 2. Executar o PHP
+```bash
+docker exec conn2flow-app bash -c "php -v"
+```
+
+## 3. Logs do container principal (Apache/PHP)
 ```bash
 docker logs conn2flow-app --tail 50                    # Últimas 50 linhas
 docker logs conn2flow-app --tail 50 --follow           # Acompanhar em tempo real
 ```
 
-## 3. Logs PHP de erros (MAIS IMPORTANTE)
+## 4. Logs PHP de erros (MAIS IMPORTANTE)
 ```bash
 docker exec conn2flow-app bash -c "tail -50 /var/log/php_errors.log"
 docker exec conn2flow-app bash -c "tail -f /var/log/php_errors.log"    # Tempo real
 ```
 
-## 4. Logs do MySQL
+## 5. Logs do MySQL
 ```bash
 docker logs conn2flow-mysql --tail 30
 ```
 
-## 5. Logs do Apache (dentro do container) - Multi-domínio
+## 6. Logs do Apache (dentro do container) - Multi-domínio
 ```bash
 # Logs gerais
 docker exec conn2flow-app bash -c "tail -30 /var/log/apache2/access.log"
@@ -37,17 +42,17 @@ docker exec conn2flow-app bash -c "tail -30 /var/log/apache2/site2-access.log"
 docker exec conn2flow-app bash -c "tail -30 /var/log/apache2/site2-error.log"
 ```
 
-## 6. Acesso shell para investigação manual
+## 7. Acesso shell para investigação manual
 ```bash
 docker exec -it conn2flow-app bash
 ```
 
-## 7. Verificar logs de instalação (se existir)
+## 8. Verificar logs de instalação (se existir)
 ```bash
 docker exec conn2flow-app bash -c "find /var/www/sites -name '*.log' -exec tail -20 {} +"
 ```
 
-## 8. Gerenciamento de Sites (NOVO)
+## 9. Gerenciamento de Sites (NOVO)
 ```bash
 # Listar todos os sites
 bash ./gerenciar-sites.sh listar

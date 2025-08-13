@@ -243,12 +243,41 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
 
     $varIdMap = [];
     $nextVarId = 1;
+    // IMPORTANTE: para variáveis a chave de unicidade para reutilização de ID NÃO inclui 'grupo'.
+    // Porém, se encontrarmos no processo de geração duas entradas (mesmo lang+modulo+id) com grupos diferentes,
+    // devemos atribuir NOVOS id_variaveis distintos para cada grupo adicional para evitar duplicidade de id_variaveis
+    // no arquivo final (erro relatado v1.10.11: id_variaveis=1235 repetido para grupos diferentes).
     foreach ($existingVars as $row) {
-        if (isset($row['id'], $row['linguagem_codigo'], $row['id_variaveis'])) {
-            $key = $row['linguagem_codigo'] . '|' . ($row['modulo'] ?? '') . '|' . $row['id'];
-            $varIdMap[$key] = (int)$row['id_variaveis'];
-            $nextVarId = max($nextVarId, (int)$row['id_variaveis'] + 1);
+        if (!isset($row['id'], $row['linguagem_codigo'], $row['id_variaveis'])) continue;
+        $baseKey = $row['linguagem_codigo'] . '|' . ($row['modulo'] ?? '') . '|' . $row['id'];
+        $rowIdVar = (int)$row['id_variaveis'];
+        $g = $row['grupo'] ?? null;
+        if (!isset($varIdMap[$baseKey])) {
+            $varIdMap[$baseKey] = [
+                'primary_id' => $rowIdVar,
+                'groups' => []
+            ];
+            if ($g !== null && $g !== '') {
+                $varIdMap[$baseKey]['groups'][$g] = $rowIdVar; // primeira ocorrência do grupo usa mesmo id_variaveis legado
+            }
+            $nextVarId = max($nextVarId, $rowIdVar + 1);
+            continue;
         }
+        // Já existe baseKey: se grupo definido e ainda não registrado
+        if ($g !== null && $g !== '') {
+            if (!isset($varIdMap[$baseKey]['groups'][$g])) {
+                // Conflito potencial: se id_variaveis reaproveitado igual ao primary_id ou outro grupo, vamos ignorar esse id legado e gerar um novo na próxima geração.
+                if (in_array($rowIdVar, $varIdMap[$baseKey]['groups'], true) || $rowIdVar === $varIdMap[$baseKey]['primary_id']) {
+                    // reservar nada; apenas avançar nextVarId se necessário (não reutilizaremos este id legado repetido)
+                    $nextVarId = max($nextVarId, $rowIdVar + 1);
+                } else {
+                    // id_variaveis distinto já existente para este grupo - preservar
+                    $varIdMap[$baseKey]['groups'][$g] = $rowIdVar;
+                    $nextVarId = max($nextVarId, $rowIdVar + 1);
+                }
+            }
+        }
+        $nextVarId = max($nextVarId, $rowIdVar + 1);
     }
 
     $layoutsData = [];
@@ -377,9 +406,27 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                 $id = $v['id'] ?? null; if (!$id) continue;
                 $mod = $v['modulo'] ?? null; // em globais pode existir modulo campo
                 $k = $lang . '|' . ($mod ?? '') . '|' . $id;
-                $vid = $varIdMap[$k] ?? ($varIdMap[$k] = $nextVarId++);
+                // Atribuição de ID de variável considerando múltiplos grupos distintos
+                $grp = $v['group'] ?? null;
+                if (!isset($varIdMap[$k])) {
+                    // Primeiro encontro dessa base (lang|mod|id)
+                    $varIdMap[$k] = [
+                        'primary_id' => $nextVarId++,
+                        'groups' => []
+                    ];
+                }
+                if ($grp !== null && $grp !== '') {
+                    if (!isset($varIdMap[$k]['groups'][$grp])) {
+                        // Novo grupo distinto: gera novo id_variaveis sem reutilizar o primary_id
+                        $varIdMap[$k]['groups'][$grp] = $nextVarId++;
+                    }
+                    $assignedId = $varIdMap[$k]['groups'][$grp];
+                } else {
+                    // Sem grupo: sempre usa primary_id
+                    $assignedId = $varIdMap[$k]['primary_id'];
+                }
                 $variablesData[] = [
-                    'id_variaveis' => (string)$vid,
+                    'id_variaveis' => (string)$assignedId,
                     'linguagem_codigo' => $lang,
                     'modulo' => $mod,
                     'id' => $id,
@@ -507,9 +554,24 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                     foreach ($modData['resources'][$lang]['variables'] as $v) {
                         $id = $v['id'] ?? null; if (!$id) continue;
                         $k = $lang . '|' . $modId . '|' . $id;
-                        $vid = $varIdMap[$k] ?? ($varIdMap[$k] = $nextVarId++);
+                        $grp = $v['group'] ?? null;
+                        if (!isset($varIdMap[$k])) {
+                            $varIdMap[$k] = [
+                                'primary_id' => $nextVarId++,
+                                'groups' => []
+                            ];
+                        }
+                        if ($grp !== null && $grp !== '') {
+                            if (!isset($varIdMap[$k]['groups'][$grp])) {
+                                $varId = $nextVarId++;
+                                $varIdMap[$k]['groups'][$grp] = $varId;
+                            }
+                            $assignedId = $varIdMap[$k]['groups'][$grp];
+                        } else {
+                            $assignedId = $varIdMap[$k]['primary_id'];
+                        }
                         $variablesData[] = [
-                            'id_variaveis' => (string)$vid,
+                            'id_variaveis' => (string)$assignedId,
                             'linguagem_codigo' => $lang,
                             'modulo' => $modId,
                             'id' => $id,
@@ -645,9 +707,23 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                         foreach ($modData['resources'][$lang]['variables'] as $v) {
                             $id = $v['id'] ?? null; if (!$id) continue;
                             $k = $lang . '|' . $modId . '|' . $id;
-                            $vid = $varIdMap[$k] ?? ($varIdMap[$k] = $nextVarId++);
+                            $grp = $v['group'] ?? null;
+                            if (!isset($varIdMap[$k])) {
+                                $varIdMap[$k] = [
+                                    'primary_id' => $nextVarId++,
+                                    'groups' => []
+                                ];
+                            }
+                            if ($grp !== null && $grp !== '') {
+                                if (!isset($varIdMap[$k]['groups'][$grp])) {
+                                    $varIdMap[$k]['groups'][$grp] = $nextVarId++;
+                                }
+                                $assignedId = $varIdMap[$k]['groups'][$grp];
+                            } else {
+                                $assignedId = $varIdMap[$k]['primary_id'];
+                            }
                             $variablesData[] = [
-                                'id_variaveis' => (string)$vid,
+                                'id_variaveis' => (string)$assignedId,
                                 'linguagem_codigo' => $lang,
                                 'modulo' => $modId,
                                 'id' => $id,

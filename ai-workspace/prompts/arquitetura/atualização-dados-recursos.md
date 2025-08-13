@@ -14,6 +14,7 @@
 - Existe uma infraestrutura de testes prontas e funcional. As configurações do ambiente estão no arquivo `docker\dados\docker-compose.yml`
 - O ambiente de testes está na pasta `docker\dados\sites\localhost\conn2flow-gestor`. Que é executado pelo gestor via navegador assim: `http://localhost/instalador/` . O mesmo está na pasta: `docker\dados\sites\localhost\public_html\instalador`
 - Para atualizar o ambiente e refletir as mudanças do repositório, segue o arquivo para sincronização: `docker\utils\sincroniza-gestor.sh checksum`
+- Todos os comandos para executar no ambiente de testes estão no arquivo: `docker\utils\comandos-docker.md`
 
 ## 🗃️ Repositório GIT
 - Existe um script feito com todas as operações necessárias internas para gerenciar o repositório: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"`
@@ -146,7 +147,43 @@ INFO: Eu removi manualmente as entradas duplicadas. Só ficou as das variáveis 
 - [x] Executar novamente o script para garantir consistência após qualquer ajuste residual
 - [x] Executar commit automatizado com mensagem detalhada
 
+## ♻️ Alterações e Correções v1.10.11
+1. Encontrei um problema de duplicidade de `id_variaveis`=1235 no arquivo: `gestor\db\data\VariaveisData.json`. Acredito que é aquele caso de `id` iguais em `group` diferentes. Pelo que entendi está sendo computado como 2 recursos iguais.
+```json
+{
+        "id_variaveis": "1235",
+        "linguagem_codigo": "pt-br",
+        "modulo": "_sistema",
+        "id": "novo",
+        "valor": "<span class=\"ui grey label\">Novo<\/span>",
+        "tipo": "string",
+        "grupo": "pedidos-status", // Grupo diferente
+        "descricao": null
+    },
+    {
+        "id_variaveis": "1235",
+        "linguagem_codigo": "pt-br",
+        "modulo": "_sistema",
+        "id": "novo",
+        "valor": "<span class=\"ui grey label\">Novo<\/span>",
+        "tipo": "string",
+        "grupo": "pedidos-voucher-status", // Grupo diferente
+        "descricao": null
+    },
+```
+2. Corrija esse problema no script.
+3. Execute o mesmo para poder ver se tem problemas.
+Executar o script e corrigir erros: `php ./gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php`
+
+
+## ✅ Progresso da Implementação das Alterações e Correções
+Correção aplicada: ajuste da geração de `VariaveisData.json` para atribuir novos `id_variaveis` quando existir o mesmo (linguagem, módulo, id) com grupos distintos, evitando reutilização do mesmo identificador numérico (caso do `id_variaveis=1235`). A segunda ocorrência recebeu novo identificador e o relatório não apresenta duplicidades.
+
+## ☑️ Processo Pós Alterações e Correções
+- [x] Executar o script gerado para ver se funciona corretamente.
+- [ ] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" e executar (quando existir) script de commit: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"` (script ainda não presente; utilizar fluxo manual ou criar script futuramente)
+
 ---
 **Data:** 12/08/2025
 **Desenvolvedor:** Otavio Serra
-**Projeto:** Conn2Flow Gestor v1.10.8
+**Projeto:** Conn2Flow Gestor v1.10.11

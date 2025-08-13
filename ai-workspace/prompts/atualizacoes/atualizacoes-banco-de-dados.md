@@ -14,6 +14,7 @@
 - Existe uma infraestrutura de testes prontas e funcional. As configurações do ambiente estão no arquivo `docker\dados\docker-compose.yml`
 - O ambiente de testes está na pasta `docker\dados\sites\localhost\conn2flow-gestor`. Que é executado pelo gestor via navegador assim: `http://localhost/instalador/` . O mesmo está na pasta: `docker\dados\sites\localhost\public_html\instalador`
 - Para atualizar o ambiente e refletir as mudanças do repositório, segue o arquivo para sincronização: `docker\utils\sincroniza-gestor.sh checksum`
+- Todos os comandos para executar no ambiente de testes estão no arquivo: `docker\utils\comandos-docker.md`
 
 ## 🗃️ Repositório GIT
 - Existe um script feito com todas as operações necessárias internas para gerenciar o repositório: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"`
@@ -118,6 +119,12 @@ main():
 main()
 ```
 
+## 🤔 Dúvidas e 📝 Sugestões
+- Adicionar opção `--backup` para criar dump JSON por tabela antes de modificar? (recomendado)
+Sim, o ideal é sempre ter um backup antes de realizar alterações significativas para fazer o fallback.
+- Necessário suportar múltiplos ambientes (ex: staging) ou apenas `localhost`? Podemos parametrizar `--env-dir=`.
+Sim, pode fazer.
+
 ## ✅ Progresso da Implementação
 - [x] Estrutura inicial do script `atualizacoes-banco-de-dados.php`
 - [x] Carregamento multilíngue dedicado (merge dicionário local)
@@ -126,10 +133,45 @@ main()
 - [x] Comparação e sincronização (insert/update) baseada nos arquivos *Data.json
 - [x] Flags CLI: --skip-migrate, --skip-seed, --dry-run, --tables=lista, --help
 - [x] Verificação de ambiente (.env) com instrução de sincronização
-- [ ] Implementar logging detalhado por registro divergente (delta field-level)
-- [ ] Implementar backup opcional antes de alterações (--backup)
-- [ ] Implementar modo reverso (gerar Data.json a partir do banco)
+- [x] Implementar logging detalhado por registro divergente (delta field-level) (flag --log-diff)
+- [x] Implementar backup opcional antes de alterações (--backup)
+- [x] Implementar modo reverso (gerar Data.json a partir do banco) (--reverse)
 
-## 🤔 Dúvidas e 📝 Sugestões
-- Adicionar opção `--backup` para criar dump JSON por tabela antes de modificar? (recomendado)
-- Necessário suportar múltiplos ambientes (ex: staging) ou apenas `localhost`? Podemos parametrizar `--env-dir=`.
+## ☑️ Processo Pós-Implementação
+- [] Executar o script gerado para ver se funciona corretamente.
+- [] Gerar mensagem detalhada, subistituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"`
+
+## ♻️ Alterações e Correções v1.10.11
+### Novas Flags
+- --backup: Cria dump JSON de todas as tabelas alvo antes de sincronizar.
+- --env-dir=nome: Permite escolher diretório de autenticação (default localhost).
+- --reverse: Exporta dados do banco para arquivos *Data.json (DB -> Data) e encerra.
+- --log-diff: Registra no log os campos alterados por registro (limitado a 10 campos).
+
+### Ajustes
+- Correção de paths BASE_PATH para apontar corretamente para gestor/.
+- Adição de exportação reversa com backup de arquivos antigos (rename *.bak.timestamp).
+- Mensagens multilíngues ampliadas (backup, reverse, diffs).
+- Sanitização/limitação de valores em logs (encLog).
+- Atualização de usage help.
+
+## ✅ Progresso da Implementação das Alterações e Correções
+1. Eu fui executar por mim mesmo e deu erro:
+```bash
+otavi@Otavio-Trabalho MINGW64 ~/OneDrive/Documentos/GIT/conn2flow (main)
+$ docker exec conn2flow-app bash -c "php /var/www/sites/localhost/conn2flow-gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php --dry-run --debug"
+Erro: Falha seeders
+
+otavi@Otavio-Trabalho MINGW64 ~/OneDrive/Documentos/GIT/conn2flow (main)
+```
+2. Eu limpei manualmente completamente o banco de dados, rodei novamente e mesmo assim deu o mesmo erro.
+3. Limpei manualmente agora e vc vai poder rodar novamente por vc com o banco limpo.
+
+## ☑️ Processo Pós Alterações e Correções
+- [] Executar o script gerado para ver se funciona corretamente.
+- [] Gerar mensagem detalhada, subistituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/scripts/commit.sh "MensagemDetalhadaAqui"`
+
+---
+**Data:** 13/08/2025
+**Desenvolvedor:** Otavio Serra
+**Projeto:** Conn2Flow v1.10.10
