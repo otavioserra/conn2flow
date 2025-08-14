@@ -77,15 +77,48 @@ main()
 - [x] Executar o script gerado para ver se funciona corretamente.
 - [x] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 
-## ♻️ Alterações e Correções 1.0
+## ♻️ Alterações e Correções v1.10.15
+1. Houve um problema na tabela `paginas` no campo `tipo`. Os recursos originais têm o campo do arquivo .JSON chamado `type`. Este campo ou tem o valor `page` ou `system`. O problema que o gestor usa o valor em português `tipo` com os valores em português: `pagina` e `sistema`. Por isso precisamos atualizar o script para poder fazer essa conversão corretamente.
+2. As seguintes tabelas têm o campo `user_modified`: `paginas`, `layouts`, `componentes` e `variaveis`. Quando esse valor está definido no registro dentro do banco de dados, ou seja `1`, não podemos atualizar os campos `html` e `css` das tabelas: `paginas`, `layouts` e `componentes`. E não podemos atualizar o campo `valor` da tabela `variaveis`. Lembrando que esses valores vêm dos recursos dos arquivos `TabelaData.json` da pasta: `gestor/db/data`. Exemplo: `gestor\db\data\PaginasData.json`
+3. Quando isso ocorrer, ou seja, quando rodarmos o script para atualizar os dados no banco, iremos manter os dados das colunas `html` e `css` das tabelas `paginas`, `layouts` e `componentes`, e o campo `valor` da tabela `variaveis`. Mas, em contrapartida vamos marcar cada registro que isso ocorrer o campo `system_updated` como `1`. E incluir o valor do `html` e `css` dos recursos atualizados nos campos `html_updated` e `css_updated` das tabelas: `paginas`, `layouts` e `componentes`. E o valor do `valor` da tabela `variaveis` no campo `value_updated`.
+4. Em seguida, execute os testes no ambiente de testes para garantir que tudo esteja funcionando corretamente. Exemplo: `docker exec conn2flow-app bash -c "php /var/www/sites/localhost/conn2flow-gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php`
+5. Caso tudo fique resolvido, vamos gerar a versão e as operações do GIT executando o script de commit: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
+
+## 🧭 Estrutura do código-fonte
+```
+migracoes():
+    > Lógica para rodar as migrações
+
+comparacaoDados():
+    > Lógica para comparar os dados
+    > Corrigir a comparação entre os campos `tipo` e `type`.
+    > Manter os dados das colunas `html` e `css` das tabelas `paginas`, `layouts` e `componentes`, e o campo `valor` da tabela `variaveis`.
+    > Marcar o campo `system_updated` como `1` quando os dados forem mantidos.
+    > Incluir os valores atualizados nos campos `html_updated`, `css_updated` e `value_updated`.
+
+relatorioFinal():
+    > Lógica para gerar o relatório final
+
+main():
+    migracoes()
+    comparacaoDados()
+    relatorioFinal()
+
+main()
+```
 
 ## ✅ Progresso da Implementação das Alterações e Correções
+- [x] Implementar conversão type->tipo (page/system => pagina/sistema)
+- [x] Implementar preservação html/css/valor quando user_modified=1
+- [x] Preencher *_updated e system_updated conforme regras
+- [x] Testar script (dry-run) em ambiente docker
+- [ ] Commitar versão v1.10.15
 
 ## ☑️ Processo Pós Alterações e Correções
-- [] Executar o script gerado para ver se funciona corretamente.
-- [] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
+- [x] Executar o script gerado para ver se funciona corretamente.
+- [ ] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 
 ---
-**Data:** dataAtual()
+**Data:** 14/08/2025
 **Desenvolvedor:** Otavio Serra
-**Projeto:** Conn2Flow versao()
+**Projeto:** Conn2Flow v1.10.15

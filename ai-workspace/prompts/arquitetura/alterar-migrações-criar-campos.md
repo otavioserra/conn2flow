@@ -70,11 +70,11 @@ main()
 - [x] Criar migração adicionar campos componentes
 - [x] Criar migração adicionar campos variaveis
 - [x] Validar sintaxe/phinx (não executar up) 
-- [ ] Gerar commit e versão
+- [x] Gerar commit e versão
 
 ## ☑️ Processo Pós-Implementação
 - [x] Executar o script gerado para ver se funciona corretamente.
-- [ ] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
+- [x] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 
 ## ♻️ Alterações e Correções 1.0
 

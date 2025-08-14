@@ -126,7 +126,7 @@ function tabelaFromDataFile(string $file): string {
 function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $logDiffs = true): array {
     if (empty($registros)) return ['inserted'=>0,'updated'=>0,'same'=>0];
     $pk = descobrirPK($tabela, $registros[0]);
-    $columns = array_keys($registros[0]);
+    $columns = array_keys($registros[0]); // baseline inicial (pode variar por linha)
     $sel = $pdo->prepare("SELECT * FROM `$tabela` WHERE `$pk` = :pk LIMIT 1");
     // Seleção alternativa por (id, language) se existir
     $hasAlt = in_array('id', $columns, true) && in_array('language', $columns, true);
@@ -174,26 +174,58 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 }
             }
         } else {
-            // Comparar diferenças campo a campo
+            // Diferenças linha a linha (colunas podem variar)
+            $rowColumns = array_unique(array_merge($columns, array_keys($row)));
             $diff = [];
             $oldVals = [];
-            foreach ($columns as $c) {
+            foreach ($rowColumns as $c) {
                 if (!array_key_exists($c, $row)) continue;
-                // Não tentar alterar PK se proveniente de alt-match
-                if ($c === $pk) continue;
+                if ($c === $pk) continue; // nunca altera PK
                 $vNew = $row[$c]; $vOld = $exist[$c] ?? null;
                 if ($vNew !== $vOld) { $diff[$c] = $vNew; $oldVals[$c] = $vOld; }
             }
+            // v1.10.15: preservação de campos quando user_modified=1
+            $preserveMap = [
+                'paginas'      => ['html','css'],
+                'layouts'      => ['html','css'],
+                'componentes'  => ['html','css'],
+                'variaveis'    => ['valor']
+            ];
+            if (isset($exist['user_modified']) && (int)$exist['user_modified'] === 1 && isset($preserveMap[$tabela])) {
+                $changedPreserved = false;
+                foreach ($preserveMap[$tabela] as $campo) {
+                    if (array_key_exists($campo, $diff)) {
+                        // mover valor novo para *_updated / value_updated
+                        if ($tabela === 'variaveis' && $campo === 'valor') {
+                            if (array_key_exists('value_updated', $exist) || array_key_exists('value_updated', $row)) {
+                                $diff['value_updated'] = $diff[$campo];
+                            }
+                        } else {
+                            $dest = $campo . '_updated';
+                            if (array_key_exists($dest, $exist) || array_key_exists($dest, $row)) {
+                                $diff[$dest] = $diff[$campo];
+                            }
+                        }
+                        unset($diff[$campo]);
+                        $changedPreserved = true;
+                    }
+                }
+                if ($changedPreserved) {
+                    if (array_key_exists('system_updated', $exist) || array_key_exists('system_updated', $row)) {
+                        $diff['system_updated'] = 1;
+                    }
+                    log_disco("USER_MODIFIED_PRESERVADO $tabela pk=$pkVal campos=" . implode(',', $preserveMap[$tabela]), $GLOBALS['LOG_FILE']);
+                }
+            }
             if ($diff) {
                 $sets = implode(',', array_map(fn($c)=>"`$c` = :$c", array_keys($diff)));
-                $diff[":pk"] = $pkVal;
+                $diff[':pk'] = $pkVal;
                 $sql = "UPDATE `$tabela` SET $sets WHERE `$pk` = :pk";
                 $stmt = $pdo->prepare($sql);
                 $params = [];
-                foreach ($diff as $k=>$v) { $params[ $k[0]===':'?$k:':'.$k ] = $v; }
+                foreach ($diff as $k=>$v) { $params[ $k[0]===':' ? $k : ':'.$k ] = $v; }
                 $stmt->execute($params);
                 if ($logDiffs) {
-                    // Montar mensagem detalhada com até 10 campos (para evitar logs gigantes)
                     $pairs = [];
                     $lim = 0;
                     foreach ($diff as $c=>$v) {
@@ -248,6 +280,25 @@ function comparacaoDados(): array {
     foreach ($arquivos as $file) {
         $tabela = tabelaFromDataFile($file);
         $registros = loadDataFile($file);
+        // v1.10.15 Conversões/ajustes pré-sincronização
+        if ($tabela === 'paginas' && $registros) {
+            foreach ($registros as &$r) {
+                if (isset($r['type'])) {
+                    $map = ['page'=>'pagina','system'=>'sistema'];
+                    $val = strtolower((string)$r['type']);
+                    $r['tipo'] = $map[$val] ?? $r['type'];
+                    unset($r['type']);
+                }
+                $r += ['system_updated'=>0,'html_updated'=>null,'css_updated'=>null];
+            }
+            unset($r);
+        } elseif (in_array($tabela, ['layouts','componentes'], true) && $registros) {
+            foreach ($registros as &$r) { $r += ['system_updated'=>0,'html_updated'=>null,'css_updated'=>null]; }
+            unset($r);
+        } elseif ($tabela === 'variaveis' && $registros) {
+            foreach ($registros as &$r) { $r += ['user_modified'=>0,'system_updated'=>0,'value_updated'=>null]; }
+            unset($r);
+        }
         if (!$registros) { log_disco(tr('_compare_no_changes',['tabela'=>$tabela]), $LOG_FILE); continue; }
         log_disco(tr('_executing_table',['tabela'=>$tabela]), $LOG_FILE);
         $resultado = !empty($CLI_OPTS['dry-run']) ? ['inserted'=>0,'updated'=>0,'same'=>count($registros)] : sincronizarTabela($pdo, $tabela, $registros, !empty($CLI_OPTS['log-diff']));
