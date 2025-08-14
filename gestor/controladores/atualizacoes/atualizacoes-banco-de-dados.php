@@ -2,11 +2,11 @@
 /**
  * Rotina de Atualização de Banco de Dados
  * - Executa migrações Phinx
- * - Executa seeders
+ * - (Removido) Execução de seeders durante atualização: seeders agora só na instalação.
  * - Compara dados atuais das tabelas com arquivos JSON em gestor/db/data (inserindo/atualizando conforme necessário)
  * - Gera relatório final
  *
- * Estrutura conforme prompt: migracoes -> seeders -> comparacaoDados -> relatorioFinal -> main
+ * Estrutura atual: migracoes -> comparacaoDados -> relatorioFinal -> main
  * Multilíngue via _() e logs via log_disco().
  */
 
@@ -34,7 +34,7 @@ if (!file_exists($PHINX_BIN) && file_exists($REPO_ROOT . 'vendor/bin/phinx')) {
 $BACKUP_DIR_BASE = $REPO_ROOT . 'backups/atualizacoes/'; // conforme prompt
 
 // Ajuste ambiente log
-global $_GESTOR; if (!isset($_GESTOR)) $_GESTOR = []; if (!isset($_GESTOR['logs-path'])) $_GESTOR['logs-path'] = $BASE_PATH . 'logs/atualizacoes/'; if (!is_dir($_GESTOR['logs-path'])) @mkdir($_GESTOR['logs-path'], 0775, true);
+global $_GESTOR; if (!isset($_GESTOR)) $_GESTOR = []; if (!isset($_GESTOR['logs-path'])) $_GESTOR['logs-path'] = $BASE_PATH . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR; if (!is_dir($_GESTOR['logs-path'])) @mkdir($_GESTOR['logs-path'], 0775, true);
 set_lang('pt-br');
 // Mesclar dicionário local de atualizações (prioridade para chaves locais)
 $localLangDir = __DIR__ . '/lang/';
@@ -96,52 +96,6 @@ function migracoes(): array {
     return ['output' => $out];
 }
 
-/**
- * Executa seeders (todos) usando phinx.
- */
-function seeders(): array {
-    global $PHINX_BIN, $GESTOR_DIR, $LOG_FILE, $CLI_OPTS;
-    log_disco(tr('_seeds_start'), $LOG_FILE);
-    $single = $CLI_OPTS['seed'] ?? '';
-    $cmd = escapeshellcmd(PHP_BINARY) . ' ' . escapeshellarg($PHINX_BIN) . ' seed:run -c ' . escapeshellarg($GESTOR_DIR . 'phinx.php') . ' -e gestor';
-    if ($single) {
-        // aceitar lista separada por vírgulas
-        $seeds = array_filter(array_map('trim', explode(',', $single)));
-        foreach ($seeds as $s) {
-            $seedCmd = $cmd . ' -s ' . escapeshellarg($s);
-            log_disco('DEBUG CMD SEED: ' . $seedCmd, $LOG_FILE);
-            [$code, $out] = runCmd($seedCmd);
-            log_disco($out, $LOG_FILE);
-            if ($code !== 0) {
-                $ignore = !empty($CLI_OPTS['ignore-seed-errors']);
-                $dup = stripos($out, 'Duplicate entry') !== false;
-                if ($dup && $ignore) {
-                    log_disco(tr('_seeds_duplicates_warning'), $LOG_FILE);
-                } else {
-                    log_disco('Erro seeders exitCode=' . $code . ' seed=' . $s, $LOG_FILE);
-                    throw new RuntimeException('Falha seeders');
-                }
-            }
-        }
-        log_disco(tr('_seeds_done'), $LOG_FILE);
-        return ['output' => 'OK seeds individuais'];
-    }
-    log_disco('DEBUG CMD SEEDERS: ' . $cmd, $LOG_FILE);
-    [$code, $out] = runCmd($cmd);
-    log_disco($out, $LOG_FILE);
-    if ($code !== 0) {
-        $ignore = !empty($CLI_OPTS['ignore-seed-errors']);
-        $dup = stripos($out, 'Duplicate entry') !== false;
-        if ($dup && $ignore) {
-            log_disco(tr('_seeds_duplicates_warning'), $LOG_FILE);
-        } else {
-            log_disco('Erro seeders exitCode=' . $code, $LOG_FILE);
-            throw new RuntimeException('Falha seeders');
-        }
-    }
-    log_disco(tr('_seeds_done'), $LOG_FILE);
-    return ['output' => $out];
-}
 
 /** Carrega JSON Data file */
 function loadDataFile(string $file): array { $d = json_decode(file_get_contents($file), true); return is_array($d) ? $d : []; }
@@ -393,8 +347,8 @@ function main(): void {
             return;
         }
         if (!empty($CLI_OPTS['dry-run'])) log_disco(tr('_dry_run_mode'), $LOG_FILE);
-        if (empty($CLI_OPTS['skip-migrate'])) { migracoes(); } else { log_disco(tr('_skip_migrations'), $LOG_FILE); }
-        if (empty($CLI_OPTS['skip-seed'])) { seeders(); } else { log_disco(tr('_skip_seeders'), $LOG_FILE); }
+    if (empty($CLI_OPTS['skip-migrate'])) { migracoes(); } else { log_disco(tr('_skip_migrations'), $LOG_FILE); }
+    // (Removido) Execução de seeders durante atualização
         // Backup opcional
         if (!empty($CLI_OPTS['backup'])) {
             $pdo = db();
@@ -423,6 +377,8 @@ function parseArgs(array $argv): array {
         if (preg_match('/^--([^=]+)=(.+)$/',$a,$m)) { $out[$m[1]] = $m[2]; }
         elseif (substr($a,0,2)=='--') { $out[substr($a,2)] = true; }
     }
+    // Remover opções obsoletas relacionadas a seeders se presentes para evitar efeitos colaterais
+    foreach (['seed','skip-seed','ignore-seed-errors'] as $legacy) { if (isset($out[$legacy])) unset($out[$legacy]); }
     return $out;
 }
 

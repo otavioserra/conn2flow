@@ -9,7 +9,7 @@ $_GESTOR['biblioteca-log']							=	Array(
 // ===== Defaults para evitar avisos de índices não definidos
 if (!isset($_GESTOR['debug'])) { $_GESTOR['debug'] = false; }
 if (!isset($_GESTOR['logs-path'])) {
-	$defaultLogs = realpath(__DIR__ . '/..') . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'arquitetura' . DIRECTORY_SEPARATOR;
+	$defaultLogs = realpath(__DIR__ . '/..') . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR;
 	if ($defaultLogs && !is_dir($defaultLogs)) @mkdir($defaultLogs, 0775, true);
 	$_GESTOR['logs-path'] = $defaultLogs ?: sys_get_temp_dir() . DIRECTORY_SEPARATOR;
 }
