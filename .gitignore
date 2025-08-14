@@ -4,6 +4,7 @@ docker/dados/
 
 # Logs
 *.log
+logs/
 gestor/logs/
 
 # Arquivos temporários

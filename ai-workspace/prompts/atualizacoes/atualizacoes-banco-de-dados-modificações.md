@@ -71,11 +71,11 @@ main()
 ## ✅ Progresso da Implementação
 - [x] Remover função seeders() e chamada em main do arquivo `gestor\\controladores\\atualizacoes\\atualizacoes-banco-de-dados.php`
 - [x] Testar sincronização e execução no ambiente de testes (dry-run executado sem seeders)
-- [ ] Gerar commit e versão
+- [x] Gerar commit e versão
 
 ## ☑️ Processo Pós-Implementação
 - [x] Executar o script gerado para ver se funciona corretamente.
-- [ ] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
+- [x] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 
 ## ♻️ Alterações e Correções 1.0
 

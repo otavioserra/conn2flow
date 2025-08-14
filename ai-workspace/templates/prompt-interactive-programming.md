@@ -13,7 +13,7 @@
 
 ## 🧪 Ambiente de Testes
 - Existe uma infraestrutura de testes prontas e funcional. As configurações do ambiente estão no arquivo `docker\dados\docker-compose.yml`
-- O ambiente de testes está na pasta `docker\dados\sites\localhost\conn2flow-gestor`. Que é executado pelo gestor via navegador assim: `http://localhost/instalador/` . O mesmo está na pasta: `docker\dados\sites\localhost\public_html\instalador`
+- O ambiente de testes está na pasta local `docker\dados\sites\localhost\conn2flow-gestor`, o mesmo está na pasta do ambiente de testes: `/var/www/sites/localhost/conn2flow-gestor/`. Que é executado pelo gestor via navegador assim: `http://localhost/instalador/` . O mesmo está na pasta: `docker\dados\sites\localhost\public_html\instalador`
 - Para atualizar o ambiente e refletir as mudanças do repositório, segue o arquivo para sincronização: `docker\utils\sincroniza-gestor.sh checksum`
 - Todos os comandos para executar no ambiente de testes estão no arquivo: `docker\utils\comandos-docker.md`
 - Se precisar executar o PHP lá, exemplo: `docker exec conn2flow-app bash -c "php -v"`
