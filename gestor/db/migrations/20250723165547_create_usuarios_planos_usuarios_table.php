@@ -15,7 +15,7 @@ final class CreateUsuariosPlanosUsuariosTable extends AbstractMigration
         $table->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => null])
               ->addColumn('id_usuarios_planos', 'integer', ['null' => true, 'default' => null])
               ->addColumn('status', 'char', ['limit' => 1, 'null' => true, 'default' => null])
-              ->addColumn('data_criacao', 'datetime', ['null' => true, 'default' => null])
+              ->addColumn('data_criacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
               ->addColumn('data_aprovacao', 'datetime', ['null' => true, 'default' => null])
               ->addColumn('data_finalizacao', 'datetime', ['null' => true, 'default' => null])
               ->create();

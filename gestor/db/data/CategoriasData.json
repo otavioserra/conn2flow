@@ -8,9 +8,7 @@
         "id": "portal",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-06-04 18:58:01",
-        "data_modificacao": "2021-06-04 18:58:01"
+        "versao": " 1"
     },
     {
         "id_categorias": "2",
@@ -21,9 +19,7 @@
         "id": "site",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-06-04 18:58:26",
-        "data_modificacao": "2021-06-04 18:58:26"
+        "versao": " 1"
     },
     {
         "id_categorias": "3",
@@ -34,9 +30,7 @@
         "id": "servicos",
         "plugin": null,
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2021-06-11 10:35:51",
-        "data_modificacao": "2021-08-17 09:44:51"
+        "versao": " 2"
     },
     {
         "id_categorias": "4",
@@ -47,9 +41,7 @@
         "id": "conteudos",
         "plugin": null,
         "status": "D",
-        "versao": " 3",
-        "data_criacao": "2021-06-11 10:36:04",
-        "data_modificacao": "2021-11-11 16:11:57"
+        "versao": " 3"
     },
     {
         "id_categorias": "5",
@@ -60,9 +52,7 @@
         "id": "carrinho",
         "plugin": null,
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2021-06-22 14:49:27",
-        "data_modificacao": "2021-08-17 09:41:01"
+        "versao": " 2"
     },
     {
         "id_categorias": "6",
@@ -73,9 +63,7 @@
         "id": "identificacao",
         "plugin": null,
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2021-06-22 17:55:22",
-        "data_modificacao": "2021-08-17 09:42:24"
+        "versao": " 2"
     },
     {
         "id_categorias": "7",
@@ -86,9 +74,7 @@
         "id": "emissao",
         "plugin": null,
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2021-06-22 17:55:34",
-        "data_modificacao": "2021-08-17 09:41:56"
+        "versao": " 2"
     },
     {
         "id_categorias": "8",
@@ -99,9 +85,7 @@
         "id": "pagamento",
         "plugin": null,
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2021-06-22 17:55:42",
-        "data_modificacao": "2021-08-17 09:44:18"
+        "versao": " 2"
     },
     {
         "id_categorias": "9",
@@ -112,9 +96,7 @@
         "id": "minha-conta",
         "plugin": null,
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2021-06-22 17:55:52",
-        "data_modificacao": "2021-08-17 09:43:34"
+        "versao": " 2"
     },
     {
         "id_categorias": "10",
@@ -125,9 +107,7 @@
         "id": "meus-pedidos",
         "plugin": null,
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2021-06-22 17:56:04",
-        "data_modificacao": "2021-08-17 09:43:19"
+        "versao": " 2"
     },
     {
         "id_categorias": "11",
@@ -138,9 +118,7 @@
         "id": "layout-simples",
         "plugin": null,
         "status": "A",
-        "versao": " 3",
-        "data_criacao": "2021-06-22 17:56:16",
-        "data_modificacao": "2022-02-09 10:51:17"
+        "versao": " 3"
     },
     {
         "id_categorias": "12",
@@ -151,9 +129,7 @@
         "id": "layout-principal",
         "plugin": null,
         "status": "A",
-        "versao": " 3",
-        "data_criacao": "2021-06-22 17:56:25",
-        "data_modificacao": "2022-02-09 10:51:33"
+        "versao": " 3"
     },
     {
         "id_categorias": "13",
@@ -164,9 +140,7 @@
         "id": "esqueceu-senha",
         "plugin": null,
         "status": "D",
-        "versao": " 3",
-        "data_criacao": "2021-06-23 10:53:39",
-        "data_modificacao": "2021-11-10 18:46:42"
+        "versao": " 3"
     },
     {
         "id_categorias": "14",
@@ -177,9 +151,7 @@
         "id": "cadastro-identificacao",
         "plugin": null,
         "status": "D",
-        "versao": " 6",
-        "data_criacao": "2021-07-08 14:28:24",
-        "data_modificacao": "2021-10-13 09:55:30"
+        "versao": " 6"
     },
     {
         "id_categorias": "15",
@@ -190,9 +162,7 @@
         "id": "pedidos",
         "plugin": null,
         "status": "D",
-        "versao": " 3",
-        "data_criacao": "2021-07-08 14:31:47",
-        "data_modificacao": "2021-11-08 16:52:13"
+        "versao": " 3"
     },
     {
         "id_categorias": "16",
@@ -203,9 +173,7 @@
         "id": "pagina-nao-encontrada",
         "plugin": null,
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2021-08-12 15:07:39",
-        "data_modificacao": "2021-08-17 09:56:52"
+        "versao": " 2"
     },
     {
         "id_categorias": "17",
@@ -216,9 +184,7 @@
         "id": "layouts",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-09-02 14:15:32",
-        "data_modificacao": "2021-09-02 14:15:32"
+        "versao": " 1"
     },
     {
         "id_categorias": "18",
@@ -229,9 +195,7 @@
         "id": "paginas",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-09-02 14:15:43",
-        "data_modificacao": "2021-09-02 14:15:43"
+        "versao": " 1"
     },
     {
         "id_categorias": "19",
@@ -242,9 +206,7 @@
         "id": "interface-hosts",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-10-01 10:17:24",
-        "data_modificacao": "2021-10-01 10:17:24"
+        "versao": " 1"
     },
     {
         "id_categorias": "20",
@@ -255,9 +217,7 @@
         "id": "identificacao-cadastro",
         "plugin": null,
         "status": "D",
-        "versao": " 2",
-        "data_criacao": "2021-10-13 09:54:45",
-        "data_modificacao": "2021-10-13 09:56:07"
+        "versao": " 2"
     },
     {
         "id_categorias": "21",
@@ -268,9 +228,7 @@
         "id": "identificacao-cadastro",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-10-13 09:56:24",
-        "data_modificacao": "2021-10-13 09:56:24"
+        "versao": " 1"
     },
     {
         "id_categorias": "22",
@@ -281,9 +239,7 @@
         "id": "identificacao-esqueceu-senha",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-10-14 15:35:00",
-        "data_modificacao": "2021-10-14 15:35:00"
+        "versao": " 1"
     },
     {
         "id_categorias": "23",
@@ -294,9 +250,7 @@
         "id": "identificacao-redefinir-senha",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-10-14 15:51:08",
-        "data_modificacao": "2021-10-14 15:51:08"
+        "versao": " 1"
     },
     {
         "id_categorias": "24",
@@ -307,9 +261,7 @@
         "id": "minhas-compras",
         "plugin": null,
         "status": "D",
-        "versao": " 2",
-        "data_criacao": "2021-10-29 18:54:49",
-        "data_modificacao": "2021-11-08 14:20:18"
+        "versao": " 2"
     },
     {
         "id_categorias": "25",
@@ -320,9 +272,7 @@
         "id": "voucher",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-10-29 18:55:07",
-        "data_modificacao": "2021-10-29 18:55:07"
+        "versao": " 1"
     },
     {
         "id_categorias": "26",
@@ -333,9 +283,7 @@
         "id": "meus-dados",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-11-08 14:18:59",
-        "data_modificacao": "2021-11-08 14:18:59"
+        "versao": " 1"
     },
     {
         "id_categorias": "27",
@@ -346,9 +294,7 @@
         "id": "identificacao-area-restrita",
         "plugin": null,
         "status": "A",
-        "versao": " 3",
-        "data_criacao": "2021-11-10 14:14:05",
-        "data_modificacao": "2021-11-10 14:35:48"
+        "versao": " 3"
     },
     {
         "id_categorias": "28",
@@ -359,9 +305,7 @@
         "id": "postagens",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-11-11 16:12:09",
-        "data_modificacao": "2021-11-11 16:12:09"
+        "versao": " 1"
     },
     {
         "id_categorias": "29",
@@ -372,9 +316,7 @@
         "id": "componentes",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-11-18 15:32:45",
-        "data_modificacao": "2021-11-18 15:32:45"
+        "versao": " 1"
     },
     {
         "id_categorias": "30",
@@ -385,9 +327,7 @@
         "id": "hosts-interface-carregando-modal",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-11-18 16:36:21",
-        "data_modificacao": "2021-11-18 16:36:21"
+        "versao": " 1"
     },
     {
         "id_categorias": "31",
@@ -398,9 +338,7 @@
         "id": "hosts-interface-formulario-autorizacao-provisoria",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-11-18 16:36:38",
-        "data_modificacao": "2021-11-18 16:36:38"
+        "versao": " 1"
     },
     {
         "id_categorias": "32",
@@ -411,9 +349,7 @@
         "id": "hosts-interface-modal-informativo",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-11-18 16:36:49",
-        "data_modificacao": "2021-11-18 16:36:49"
+        "versao": " 1"
     },
     {
         "id_categorias": "33",
@@ -424,9 +360,7 @@
         "id": "hosts-interface-alerta-modal",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-11-18 16:36:58",
-        "data_modificacao": "2021-11-18 16:36:58"
+        "versao": " 1"
     },
     {
         "id_categorias": "34",
@@ -437,9 +371,7 @@
         "id": "pagina-inicial",
         "plugin": null,
         "status": "D",
-        "versao": " 2",
-        "data_criacao": "2022-02-08 11:11:47",
-        "data_modificacao": "2022-02-08 11:11:57"
+        "versao": " 2"
     },
     {
         "id_categorias": "35",
@@ -450,9 +382,7 @@
         "id": "pagina-inicial",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-02-08 11:12:17",
-        "data_modificacao": "2022-02-08 11:12:17"
+        "versao": " 1"
     },
     {
         "id_categorias": "36",
@@ -463,9 +393,7 @@
         "id": "menu-principal",
         "plugin": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-02-09 15:57:26",
-        "data_modificacao": "2022-02-09 15:57:26"
+        "versao": " 1"
     },
     {
         "id_categorias": "37",
@@ -476,9 +404,7 @@
         "id": "agendamentos",
         "plugin": "agendamentos",
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2022-03-31 14:33:09",
-        "data_modificacao": "2022-03-31 15:47:52"
+        "versao": " 2"
     },
     {
         "id_categorias": "38",
@@ -489,9 +415,7 @@
         "id": "teste",
         "plugin": null,
         "status": "D",
-        "versao": " 5",
-        "data_criacao": "2022-03-31 15:37:52",
-        "data_modificacao": "2022-03-31 15:46:42"
+        "versao": " 5"
     },
     {
         "id_categorias": "39",
@@ -502,9 +426,7 @@
         "id": "teste-2",
         "plugin": null,
         "status": "D",
-        "versao": " 5",
-        "data_criacao": "2022-03-31 15:39:09",
-        "data_modificacao": "2022-03-31 15:46:35"
+        "versao": " 5"
     },
     {
         "id_categorias": "40",
@@ -515,9 +437,7 @@
         "id": "escalas",
         "plugin": "escalas",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-03-31 15:48:58",
-        "data_modificacao": "2022-03-31 15:48:58"
+        "versao": " 1"
     },
     {
         "id_categorias": "41",
@@ -528,8 +448,6 @@
         "id": "agendamentos-publico",
         "plugin": "agendamentos",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-08-01 16:46:32",
-        "data_modificacao": "2022-08-01 16:46:32"
+        "versao": " 1"
     }
 ]

@@ -149,8 +149,6 @@ function resourcePaths(string $base, string $language, string $typeKey, string $
     ];
 }
 
-function nowStr(): string { return date('Y-m-d H:i:s'); }
-
 // ========================= 1) CARREGAR MAPEAMENTO GLOBAL =========================
 
 /**
@@ -230,6 +228,12 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
             $nextPageId = max($nextPageId, (int)$row['id_paginas'] + 1);
         }
     }
+    // Índice auxiliar ignorando módulo para fallback (lang||id)
+    $pageIdMapNoModule = [];
+    foreach ($pageIdMap as $k=>$val) {
+        [$lang,$mod,$pid] = explode('|',$k,3);
+        $pageIdMapNoModule[$lang.'||'.$pid] = $val;
+    }
 
     $compIdMap = [];
     $nextCompId = 1;
@@ -240,6 +244,8 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
             $nextCompId = max($nextCompId, (int)$row['id_componentes'] + 1);
         }
     }
+    $compIdMapNoModule = [];
+    foreach ($compIdMap as $k=>$val) { [$lang,$mod,$cid] = explode('|',$k,3); $compIdMapNoModule[$lang.'||'.$cid] = $val; }
 
     $varIdMap = [];
     $nextVarId = 1;
@@ -327,8 +333,6 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                             'css' => $css,
                             'status' => 'A',
                             'versao' => 1,
-                            'data_criacao' => nowStr(),
-                            'data_modificacao' => nowStr(),
                             'user_modified' => 0,
                             'file_version' => $list[$idx]['version'] ?? '1.0',
                             'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
@@ -336,7 +340,15 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                         $seenLayouts[$id] = true;
                     }
                 } elseif ($fileKey === 'pages') {
-                    $k = $lang . '||' . $id; // modulo vazio
+                    $k = $lang . '||' . $id; // chave global sem módulo
+                    // Se página global tiver um módulo declarado, tentar reaproveitar ID de versão modular
+                    $maybeModule = $item['module'] ?? null;
+                    if (!isset($pageIdMap[$k]) && $maybeModule) {
+                        $modKey = $lang.'|'.$maybeModule.'|'.$id;
+                        if (isset($pageIdMap[$modKey])) {
+                            $pageIdMap[$k] = $pageIdMap[$modKey];
+                        }
+                    }
                     $pid = $pageIdMap[$k] ?? ($pageIdMap[$k] = $nextPageId++);
                     $pagesData[] = [
                         'id_paginas' => $pid,
@@ -355,8 +367,6 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                         'css' => $css,
                         'status' => 'A',
                         'versao' => 1,
-                        'data_criacao' => nowStr(),
-                        'data_modificacao' => nowStr(),
                         'user_modified' => 0,
                         'file_version' => $list[$idx]['version'] ?? '1.0',
                         'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
@@ -374,6 +384,11 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                     ];
                 } else { // components
                     $k = $lang . '||' . $id;
+                    $maybeModule = $item['module'] ?? null;
+                    if (!isset($compIdMap[$k]) && $maybeModule) {
+                        $modKey = $lang.'|'.$maybeModule.'|'.$id;
+                        if (isset($compIdMap[$modKey])) { $compIdMap[$k] = $compIdMap[$modKey]; }
+                    }
                     $cid = $compIdMap[$k] ?? ($compIdMap[$k] = $nextCompId++);
                     $componentsData[] = [
                         'id_componentes' => $cid,
@@ -386,8 +401,6 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                         'css' => $css,
                         'status' => 'A',
                         'versao' => 1,
-                        'data_criacao' => nowStr(),
-                        'data_modificacao' => nowStr(),
                         'user_modified' => 0,
                         'file_version' => $list[$idx]['version'] ?? '1.0',
                         'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
@@ -482,8 +495,6 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                                     'css' => $css,
                                     'status' => 'A',
                                     'versao' => 1,
-                                    'data_criacao' => nowStr(),
-                                    'data_modificacao' => nowStr(),
                                     'user_modified' => 0,
                                     'file_version' => $modData['resources'][$lang][$type][$idx]['version'] ?? '1.0',
                                     'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
@@ -492,6 +503,13 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                             }
                         } elseif ($type === 'pages') {
                             $k = $lang . '|' . $modId . '|' . $id;
+                            if (!isset($pageIdMap[$k])) {
+                                // Reaproveita ID global caso exista (mudança de classificação)
+                                $globalKey = $lang . '||' . $id;
+                                if (isset($pageIdMap[$globalKey])) {
+                                    $pageIdMap[$k] = $pageIdMap[$globalKey];
+                                }
+                            }
                             $pid = $pageIdMap[$k] ?? ($pageIdMap[$k] = $nextPageId++);
                             $pagesData[] = [
                                 'id_paginas' => $pid,
@@ -510,8 +528,6 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                                 'css' => $css,
                                 'status' => 'A',
                                 'versao' => 1,
-                                'data_criacao' => nowStr(),
-                                'data_modificacao' => nowStr(),
                                 'user_modified' => 0,
                                 'file_version' => $modData['resources'][$lang][$type][$idx]['version'] ?? '1.0',
                                 'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
@@ -528,6 +544,10 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                             ];
                         } else { // components
                             $k = $lang . '|' . $modId . '|' . $id;
+                            if (!isset($compIdMap[$k])) {
+                                $globalKey = $lang . '||' . $id;
+                                if (isset($compIdMap[$globalKey])) { $compIdMap[$k] = $compIdMap[$globalKey]; }
+                            }
                             $cid = $compIdMap[$k] ?? ($compIdMap[$k] = $nextCompId++);
                             $componentsData[] = [
                                 'id_componentes' => $cid,
@@ -540,8 +560,6 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                                 'css' => $css,
                                 'status' => 'A',
                                 'versao' => 1,
-                                'data_criacao' => nowStr(),
-                                'data_modificacao' => nowStr(),
                                 'user_modified' => 0,
                                 'file_version' => $modData['resources'][$lang][$type][$idx]['version'] ?? '1.0',
                                 'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
@@ -635,8 +653,6 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                                         'css' => $css,
                                         'status' => 'A',
                                         'versao' => 1,
-                                        'data_criacao' => nowStr(),
-                                        'data_modificacao' => nowStr(),
                                         'user_modified' => 0,
                                         'file_version' => $modData['resources'][$lang][$type][$idx]['version'] ?? '1.0',
                                         'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
@@ -645,6 +661,10 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                                 }
                             } elseif ($type === 'pages') {
                                 $k = $lang . '|' . $modId . '|' . $id;
+                                if (!isset($pageIdMap[$k])) {
+                                    $globalKey = $lang . '||' . $id;
+                                    if (isset($pageIdMap[$globalKey])) { $pageIdMap[$k] = $pageIdMap[$globalKey]; }
+                                }
                                 $pid = $pageIdMap[$k] ?? ($pageIdMap[$k] = $nextPageId++);
                                 $pagesData[] = [
                                     'id_paginas' => $pid,
@@ -663,8 +683,6 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                                     'css' => $css,
                                     'status' => 'A',
                                     'versao' => 1,
-                                    'data_criacao' => nowStr(),
-                                    'data_modificacao' => nowStr(),
                                     'user_modified' => 0,
                                     'file_version' => $modData['resources'][$lang][$type][$idx]['version'] ?? '1.0',
                                     'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
@@ -681,6 +699,10 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                                 ];
                             } else { // components
                                 $k = $lang . '|' . $modId . '|' . $id;
+                                if (!isset($compIdMap[$k])) {
+                                    $globalKey = $lang . '||' . $id;
+                                    if (isset($compIdMap[$globalKey])) { $compIdMap[$k] = $compIdMap[$globalKey]; }
+                                }
                                 $cid = $compIdMap[$k] ?? ($compIdMap[$k] = $nextCompId++);
                                 $componentsData[] = [
                                     'id_componentes' => $cid,
@@ -693,8 +715,6 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
                                     'css' => $css,
                                     'status' => 'A',
                                     'versao' => 1,
-                                    'data_criacao' => nowStr(),
-                                    'data_modificacao' => nowStr(),
                                     'user_modified' => 0,
                                     'file_version' => $modData['resources'][$lang][$type][$idx]['version'] ?? '1.0',
                                     'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),

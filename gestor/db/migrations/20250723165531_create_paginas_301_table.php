@@ -14,7 +14,7 @@ final class CreatePaginas301Table extends AbstractMigration
         $table = $this->table('paginas_301', ['id' => 'id_paginas_301']);
         $table->addColumn('id_paginas', 'integer', ['null' => true, 'default' => null])
               ->addColumn('caminho', 'text', ['null' => true])
-              ->addColumn('data_criacao', 'datetime', ['null' => true, 'default' => null])
+              ->addColumn('data_criacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
               ->create();
     }
 }

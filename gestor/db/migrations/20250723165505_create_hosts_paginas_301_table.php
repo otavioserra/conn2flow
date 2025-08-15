@@ -15,7 +15,7 @@ final class CreateHostsPaginas301Table extends AbstractMigration
         $table->addColumn('id_hosts', 'integer', ['null' => true, 'default' => null])
               ->addColumn('id_hosts_paginas', 'integer', ['null' => true, 'default' => null])
               ->addColumn('caminho', 'text', ['null' => true])
-              ->addColumn('data_criacao', 'datetime', ['null' => true, 'default' => null])
+              ->addColumn('data_criacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
               ->create();
     }
 }

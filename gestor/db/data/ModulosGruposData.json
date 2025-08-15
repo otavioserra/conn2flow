@@ -7,8 +7,6 @@
         "host": null,
         "status": "A",
         "versao": " 4",
-        "data_criacao": "2021-03-16 09:13:10",
-        "data_modificacao": "2022-07-04 16:02:47",
         "ordemMenu": null
     },
     {
@@ -19,8 +17,6 @@
         "host": null,
         "status": "A",
         "versao": " 7",
-        "data_criacao": "2021-03-22 14:37:11",
-        "data_modificacao": "2021-04-20 10:28:15",
         "ordemMenu": " 1"
     },
     {
@@ -31,8 +27,6 @@
         "host": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2021-03-26 14:22:07",
-        "data_modificacao": "2021-03-26 14:22:07",
         "ordemMenu": null
     },
     {
@@ -43,8 +37,6 @@
         "host": null,
         "status": "A",
         "versao": " 2",
-        "data_criacao": "2021-04-22 11:09:02",
-        "data_modificacao": "2021-04-22 11:10:18",
         "ordemMenu": null
     },
     {
@@ -55,8 +47,6 @@
         "host": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2021-06-17 11:56:34",
-        "data_modificacao": "2021-06-17 11:56:34",
         "ordemMenu": null
     },
     {
@@ -67,8 +57,6 @@
         "host": null,
         "status": "D",
         "versao": " 5",
-        "data_criacao": "2021-04-30 12:02:49",
-        "data_modificacao": "2021-04-30 12:03:08",
         "ordemMenu": null
     },
     {
@@ -79,8 +67,6 @@
         "host": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2021-07-21 11:14:22",
-        "data_modificacao": "2021-07-21 11:14:22",
         "ordemMenu": " 4"
     },
     {
@@ -91,8 +77,6 @@
         "host": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2021-09-27 09:06:15",
-        "data_modificacao": "2021-09-27 09:06:15",
         "ordemMenu": " 3"
     },
     {
@@ -103,8 +87,6 @@
         "host": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2021-11-11 16:46:05",
-        "data_modificacao": "2021-11-11 16:46:05",
         "ordemMenu": " 2"
     },
     {
@@ -115,8 +97,6 @@
         "host": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2022-06-28 09:27:18",
-        "data_modificacao": "2022-06-28 09:27:18",
         "ordemMenu": null
     },
     {
@@ -127,8 +107,6 @@
         "host": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2022-07-04 16:03:14",
-        "data_modificacao": "2022-07-04 16:03:14",
         "ordemMenu": null
     },
     {
@@ -139,8 +117,6 @@
         "host": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2022-07-04 16:03:32",
-        "data_modificacao": "2022-07-04 16:03:32",
         "ordemMenu": null
     }
 ]

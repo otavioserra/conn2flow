@@ -16,7 +16,7 @@ final class CreatePlataformaTokensTable extends AbstractMigration
               ->addColumn('pubID', 'string', ['limit' => 100, 'null' => true, 'default' => null])
               ->addColumn('pubIDValidation', 'string', ['limit' => 150, 'null' => true, 'default' => null])
               ->addColumn('expiration', 'integer', ['null' => true, 'default' => null])
-              ->addColumn('data_criacao', 'datetime', ['null' => true, 'default' => null])
+              ->addColumn('data_criacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
               ->addColumn('remoto', 'integer', ['limit' => Phinx\Db\Adapter\MysqlAdapter::INT_TINY, 'null' => true, 'default' => null])
               ->create();
     }

@@ -19,8 +19,8 @@ final class CreateHostsEscalasTable extends AbstractMigration
               ->addColumn('status', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('pubID', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('versao', 'integer', ['null' => true, 'default' => null])
-              ->addColumn('data_criacao', 'datetime', ['null' => true, 'default' => null])
-              ->addColumn('data_modificacao', 'datetime', ['null' => true, 'default' => null])
+              ->addColumn('data_criacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
+              ->addColumn('data_modificacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'])
               ->addColumn('data_confirmacao', 'datetime', ['null' => true, 'default' => null])
               ->create();
     }

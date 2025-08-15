@@ -18,7 +18,7 @@ final class CreateHostsUsuariosTokensTable extends AbstractMigration
               ->addColumn('expiration', 'integer', ['null' => true, 'default' => null])
               ->addColumn('ip', 'string', ['limit' => 100, 'null' => true, 'default' => null])
               ->addColumn('user_agent', 'text', ['null' => true])
-              ->addColumn('data_criacao', 'datetime', ['null' => true, 'default' => null])
+              ->addColumn('data_criacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
               ->create();
     }
 }

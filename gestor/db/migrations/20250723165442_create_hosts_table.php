@@ -11,8 +11,9 @@ final class CreateHostsTable extends AbstractMigration
      */
     public function change(): void
     {
-        $table = $this->table('hosts', ['id' => 'id_hosts']);
-        $table->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => null])
+    $table = $this->table('hosts', ['id' => 'id_hosts']);
+    // Padronização: id_usuarios default 1
+    $table->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => 1])
               ->addColumn('pub_id', 'string', ['limit' => 100, 'null' => true, 'default' => null])
               ->addColumn('pre_configurado', 'integer', ['limit' => Phinx\Db\Adapter\MysqlAdapter::INT_TINY, 'null' => true, 'default' => null])
               ->addColumn('instalado', 'integer', ['limit' => Phinx\Db\Adapter\MysqlAdapter::INT_TINY, 'null' => true, 'default' => null])
@@ -25,8 +26,8 @@ final class CreateHostsTable extends AbstractMigration
               ->addColumn('dominio', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('status', 'char', ['limit' => 1, 'null' => true, 'default' => null])
               ->addColumn('versao', 'integer', ['null' => true, 'default' => null])
-              ->addColumn('data_criacao', 'datetime', ['null' => true, 'default' => null])
-              ->addColumn('data_modificacao', 'datetime', ['null' => true, 'default' => null])
+              ->addColumn('data_criacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
+              ->addColumn('data_modificacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'])
               ->addColumn('chave_publica', 'text', ['null' => true])
               ->addColumn('gestor_cliente_versao', 'string', ['limit' => 100, 'null' => true, 'default' => null])
               ->addColumn('gestor_cliente_versao_num', 'integer', ['null' => true, 'default' => null])

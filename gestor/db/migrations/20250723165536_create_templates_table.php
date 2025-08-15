@@ -22,8 +22,8 @@ final class CreateTemplatesTable extends AbstractMigration
               ->addColumn('css', 'text', ['limit' => Phinx\Db\Adapter\MysqlAdapter::TEXT_MEDIUM, 'null' => true])
               ->addColumn('status', 'char', ['limit' => 1, 'null' => true, 'default' => null])
               ->addColumn('versao', 'integer', ['null' => true, 'default' => null])
-              ->addColumn('data_criacao', 'datetime', ['null' => true, 'default' => null])
-              ->addColumn('data_modificacao', 'datetime', ['null' => true, 'default' => null])
+              ->addColumn('data_criacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
+              ->addColumn('data_modificacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'])
               ->addColumn('padrao', 'integer', ['limit' => Phinx\Db\Adapter\MysqlAdapter::INT_TINY, 'null' => true, 'default' => null])
               ->create();
     }

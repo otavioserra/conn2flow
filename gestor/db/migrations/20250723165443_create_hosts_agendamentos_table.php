@@ -20,8 +20,8 @@ final class CreateHostsAgendamentosTable extends AbstractMigration
               ->addColumn('status', 'string', ['limit' => 100, 'null' => true, 'default' => null])
               ->addColumn('pubID', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('versao', 'integer', ['null' => true, 'default' => null])
-              ->addColumn('data_criacao', 'datetime', ['null' => true, 'default' => null])
-              ->addColumn('data_modificacao', 'datetime', ['null' => true, 'default' => null])
+              ->addColumn('data_criacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
+              ->addColumn('data_modificacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'])
               ->create();
     }
 }

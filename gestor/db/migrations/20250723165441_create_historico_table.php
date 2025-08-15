@@ -11,8 +11,9 @@ final class CreateHistoricoTable extends AbstractMigration
      */
     public function change(): void
     {
-        $table = $this->table('historico', ['id' => 'id_historico']);
-        $table->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => null])
+    $table = $this->table('historico', ['id' => 'id_historico']);
+    // Padronização: id_usuarios default 1
+    $table->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => 1])
               ->addColumn('id_hosts_usuarios', 'integer', ['null' => true, 'default' => null])
               ->addColumn('id_hosts', 'integer', ['null' => true, 'default' => null])
               ->addColumn('modulo', 'string', ['limit' => 255, 'null' => true, 'default' => null])

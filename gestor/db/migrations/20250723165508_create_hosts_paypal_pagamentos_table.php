@@ -24,8 +24,8 @@ final class CreateHostsPaypalPagamentosTable extends AbstractMigration
               ->addColumn('pagador_cpf', 'string', ['limit' => 30, 'null' => true, 'default' => null])
               ->addColumn('pagador_cnpj', 'string', ['limit' => 30, 'null' => true, 'default' => null])
               ->addColumn('pagador_selecionou_cnpj', 'integer', ['limit' => Phinx\Db\Adapter\MysqlAdapter::INT_TINY, 'null' => true, 'default' => null])
-              ->addColumn('data_criacao', 'datetime', ['null' => true, 'default' => null])
-              ->addColumn('data_modificacao', 'datetime', ['null' => true, 'default' => null])
+              ->addColumn('data_criacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
+              ->addColumn('data_modificacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'])
               ->addColumn('live', 'integer', ['limit' => Phinx\Db\Adapter\MysqlAdapter::INT_TINY, 'null' => true, 'default' => null])
               ->addColumn('status', 'string', ['limit' => 100, 'null' => true, 'default' => null])
               ->create();

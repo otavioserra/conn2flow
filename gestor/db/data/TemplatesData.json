@@ -11,8 +11,6 @@
         "css": null,
         "status": "D",
         "versao": " 7",
-        "data_criacao": "2021-06-11 10:45:45",
-        "data_modificacao": "2021-09-02 14:31:21",
         "padrao": null
     },
     {
@@ -27,8 +25,6 @@
         "css": null,
         "status": "D",
         "versao": " 6",
-        "data_criacao": "2021-06-22 14:58:42",
-        "data_modificacao": "2021-09-02 14:31:29",
         "padrao": null
     },
     {
@@ -43,8 +39,6 @@
         "css": null,
         "status": "D",
         "versao": " 2",
-        "data_criacao": "2021-07-08 09:19:51",
-        "data_modificacao": "2021-07-08 10:21:20",
         "padrao": null
     },
     {
@@ -59,8 +53,6 @@
         "css": null,
         "status": "D",
         "versao": " 3",
-        "data_criacao": "2021-07-08 09:33:50",
-        "data_modificacao": "2021-09-02 14:31:37",
         "padrao": null
     },
     {
@@ -75,8 +67,6 @@
         "css": null,
         "status": "D",
         "versao": " 3",
-        "data_criacao": "2021-07-08 10:19:47",
-        "data_modificacao": "2021-09-02 14:31:41",
         "padrao": null
     },
     {
@@ -91,8 +81,6 @@
         "css": null,
         "status": "D",
         "versao": " 3",
-        "data_criacao": "2021-07-08 10:21:35",
-        "data_modificacao": "2021-09-02 14:31:44",
         "padrao": null
     },
     {
@@ -107,8 +95,6 @@
         "css": null,
         "status": "D",
         "versao": " 2",
-        "data_criacao": "2021-07-08 10:25:16",
-        "data_modificacao": "2021-07-14 16:11:12",
         "padrao": null
     },
     {
@@ -123,8 +109,6 @@
         "css": null,
         "status": "D",
         "versao": " 3",
-        "data_criacao": "2021-07-08 10:26:02",
-        "data_modificacao": "2021-09-02 14:31:46",
         "padrao": null
     },
     {
@@ -139,8 +123,6 @@
         "css": null,
         "status": "D",
         "versao": " 4",
-        "data_criacao": "2021-07-08 14:31:07",
-        "data_modificacao": "2021-09-02 14:31:35",
         "padrao": " 1"
     },
     {
@@ -155,8 +137,6 @@
         "css": null,
         "status": "D",
         "versao": " 4",
-        "data_criacao": "2021-07-08 14:32:19",
-        "data_modificacao": "2021-09-02 14:31:49",
         "padrao": " 1"
     },
     {
@@ -171,8 +151,6 @@
         "css": null,
         "status": "A",
         "versao": " 9",
-        "data_criacao": "2021-08-12 15:11:24",
-        "data_modificacao": "2022-02-09 14:56:05",
         "padrao": " 1"
     },
     {
@@ -187,8 +165,6 @@
         "css": null,
         "status": "A",
         "versao": " 7",
-        "data_criacao": "2021-08-17 10:05:36",
-        "data_modificacao": "2022-02-09 10:52:11",
         "padrao": " 1"
     },
     {
@@ -203,8 +179,6 @@
         "css": "Teste 2",
         "status": "D",
         "versao": " 21",
-        "data_criacao": "2021-09-02 14:32:19",
-        "data_modificacao": "2021-09-02 15:26:19",
         "padrao": null
     },
     {
@@ -219,8 +193,6 @@
         "css": null,
         "status": "D",
         "versao": " 3",
-        "data_criacao": "2021-09-02 15:26:38",
-        "data_modificacao": "2021-09-02 15:27:12",
         "padrao": null
     },
     {
@@ -235,8 +207,6 @@
         "css": null,
         "status": "D",
         "versao": " 2",
-        "data_criacao": "2021-09-02 15:27:31",
-        "data_modificacao": "2021-09-02 15:27:47",
         "padrao": null
     },
     {
@@ -251,8 +221,6 @@
         "css": ".botao-mais {\r\n    position: absolute;\r\n    right: 10px;\r\n    top: 10px;\r\n    z-index:1;\r\n}\r\n.botao-menos {\r\n    position: absolute;\r\n    right: 10px;\r\n    bottom: 10px;\r\n    z-index:1;\r\n}\r\n.quantidade{\r\n\ttext-align:right;\r\n    padding-right:13px;\r\n}",
         "status": "A",
         "versao": " 29",
-        "data_criacao": "2021-09-08 17:23:06",
-        "data_modificacao": "2022-02-09 15:41:31",
         "padrao": " 1"
     },
     {
@@ -267,8 +235,6 @@
         "css": null,
         "status": "D",
         "versao": " 9",
-        "data_criacao": "2021-09-08 17:52:26",
-        "data_modificacao": "2022-02-09 15:41:05",
         "padrao": null
     },
     {
@@ -283,8 +249,6 @@
         "css": null,
         "status": "D",
         "versao": " 2",
-        "data_criacao": "2021-09-17 14:43:28",
-        "data_modificacao": "2021-09-23 14:51:26",
         "padrao": null
     },
     {
@@ -299,8 +263,6 @@
         "css": ".colunatop {\r\n    background-color: #E4E7EB;\r\n}\r\n.colunabottom {\r\n    background-color: #E4E7EB;\r\n}\r\n.botoesMargem > .button {\r\n    margin-bottom: 0.75em;\r\n}",
         "status": "A",
         "versao": " 25",
-        "data_criacao": "2021-09-23 14:40:26",
-        "data_modificacao": "2022-02-09 14:55:19",
         "padrao": " 1"
     },
     {
@@ -315,8 +277,6 @@
         "css": ".excluir {\r\n    position: absolute;\r\n    left: -17px;\r\n    top: 10px;\r\n    background-color:#FFF;\r\n    cursor:pointer;\r\n    width:30px;\r\n    z-index:1;\r\n}\r\n.segment > .button {\r\n    margin-bottom: 0.75em;\r\n}\r\n.botao-mais {\r\n    position: absolute;\r\n    right: 10px;\r\n    top: 10px;\r\n    z-index:1;\r\n}\r\n.botao-menos {\r\n    position: absolute;\r\n    right: 10px;\r\n    bottom: 10px;\r\n    z-index:1;\r\n}\r\n.quantidade{\r\n\ttext-align:right;\r\n    padding-right:13px;\r\n}",
         "status": "A",
         "versao": " 20",
-        "data_criacao": "2021-09-23 14:52:24",
-        "data_modificacao": "2022-02-09 14:33:19",
         "padrao": " 1"
     },
     {
@@ -331,8 +291,6 @@
         "css": ".barraLateral {\r\n    border-right: 1px solid lightgrey;\r\n}\r\n.column > .button {\r\n    margin-bottom: 0.75em;\r\n}\r\n@media screen and (max-width: 770px) {\r\n    .barraLateral {\r\n        border-right: none;\r\n    }\r\n}",
         "status": "A",
         "versao": " 29",
-        "data_criacao": "2021-10-07 16:37:25",
-        "data_modificacao": "2022-10-14 16:24:44",
         "padrao": " 1"
     },
     {
@@ -347,8 +305,6 @@
         "css": ".escondido{\r\n    display:none;\r\n}",
         "status": "A",
         "versao": " 34",
-        "data_criacao": "2021-10-13 10:01:20",
-        "data_modificacao": "2022-10-31 19:06:29",
         "padrao": " 1"
     },
     {
@@ -363,8 +319,6 @@
         "css": ".contAlteracaoIdentidade{\r\n    display:none;\r\n}",
         "status": "A",
         "versao": " 46",
-        "data_criacao": "2021-10-14 10:41:39",
-        "data_modificacao": "2022-02-09 15:33:12",
         "padrao": " 1"
     },
     {
@@ -379,8 +333,6 @@
         "css": null,
         "status": "A",
         "versao": " 7",
-        "data_criacao": "2021-10-14 15:56:34",
-        "data_modificacao": "2022-10-03 20:34:51",
         "padrao": " 1"
     },
     {
@@ -395,8 +347,6 @@
         "css": null,
         "status": "A",
         "versao": " 19",
-        "data_criacao": "2021-10-15 14:47:46",
-        "data_modificacao": "2022-02-09 15:36:30",
         "padrao": " 1"
     },
     {
@@ -411,8 +361,6 @@
         "css": ".escondido{\r\n    display:none;\r\n}\r\n#proprioPPPIframe iframe, #terceiroPPPIframe iframe{\r\n    width:100%;\r\n}\r\n\/*********************** Pagar com PayPal *************************\/\r\n.pfc-cont{\r\n    display:none;\r\n}\r\n.pfc-fundo-cinza{\r\n\tposition:relative;\r\n\twidth:100%;\r\n\theight:170px;\r\n\tbackground-color:#f5f5f5;\r\n\tborder: 0px solid gray;\r\n\tborder-radius: 20px 20px 0px 0;\r\n}\r\n.pfc-fundo-txt-paypal{\r\n\twidth:100%;\r\n\theight: auto;\r\n\tcolor:#599ad4;\r\n\tdisplay:inline-block;\r\n\tfont-size: 2.2em;\r\n\ttext-align:center;\r\n\tmargin-top:15px;\r\n}\r\n.pfc-fundo-txt-pague{\r\n\twidth:100%;\r\n\theight: auto;\r\n\tcolor:#080808;\r\n\tdisplay:inline-block;\r\n\tfont-size: 1.4em;\r\n\ttext-align:center;\r\n\tmargin-top: 15px;\r\n}\r\n.pfc-fundo-bandeiras{\r\n\twidth:100%;\r\n\tdisplay: flex;\r\n\tflex-direction: row;\r\n\tjustify-content:space-around;\r\n\talign-items:center;\r\n\tmargin-top:10px;\r\n\theight:auto;\r\n\toverflow-x: auto;\r\n}\r\n.pfc-fundo-bandeiras div{\r\n\tbackground-size: contain;\r\n\tbackground-repeat: no-repeat;\r\n\tbackground-position:center;\r\n\twidth:75px;\r\n\theight:60px;\r\n}\r\n.bandeira1{\r\n\tbackground-image:url(\/images\/paypal\/visa.jpg);\r\n}\r\n.bandeira2{\r\n\tbackground-image:url(\/images\/paypal\/master.jpg);\r\n}\r\n.bandeira3{\r\n\tbackground-image:url(\/images\/paypal\/american.jpg);\r\n}\r\n.bandeira4{\r\n\tbackground-image:url(\/images\/paypal\/elo.jpg);\r\n}\r\n.bandeira5{\r\n\tbackground-image:url(\/images\/paypal\/hipercard.jpg);\r\n}\r\n.bandeira6{\r\n\tbackground-image:url(\/images\/paypal\/hiper.jpg);\r\n}\r\n.pfc-coluna{\r\n\tmargin-top:23px;\r\n\twidth:50%;\r\n\ttext-align:center;\r\n\tfloat:left;\r\n\tposition:relative;\r\n}\r\n.pfc-elemento{\r\n\twidth:100%;\r\n\tdisplay:inline-block;\r\n\theight:auto;\r\n\ttext-align:center;\r\n\tmargin:0 auto;\r\n}\r\n.pfc-elemento-img{\r\n\tbackground:url(\/images\/paypal\/cabeca.jpg);\r\n\tbackground-size:cover;\r\n\tmargin-right:10px;\r\n\tdisplay:inline-block;\r\n\twidth:90px;\r\n\theight:90px;\r\n\tvertical-align:middle;\r\n}\r\n.pfc-elemento-img1{\r\n\tbackground:url(\/images\/paypal\/plane.jpg);\r\n\tbackground-size:cover;\r\n\tmargin-right:10px;\r\n\tdisplay:inline-block;\r\n\twidth:90px;\r\n\theight:90px;\r\n\tvertical-align:middle;\r\n}\r\n.pfc-elemento-txt{\r\n\tline-height:17px;\r\n\tdisplay:inline-block;\r\n\tfont-size:12px;\r\n\tcolor:#4C4C4C;\r\n\tfont-weight:normal;\r\n\ttext-transform:capitalize;\r\n\ttext-align:left;\r\n\toverflow:hidden;\r\n\twidth:180px;\r\n\tvertical-align:middle;\r\n}\r\n.pfc-elemento-txt1{\r\n\tline-height:17px;\r\n\tdisplay:inline-block;\r\n\tfont-size:14px;\r\n\tcolor:#4C4C4C;\r\n\tfont-weight:normal;\r\n\ttext-transform:capitalize;\r\n\ttext-align:left;\r\n\tmax-height:120px;\r\n\toverflow:hidden;\r\n\twidth:180px;\r\n\tvertical-align:middle;\r\n}\r\n.pfc-clear{\r\n\tclear:both;\r\n}\r\n.pfc-fundo-linha{\r\n\twidth:100%;\r\n\theight:10px;\r\n\tmargin-top:10px;\r\n\tdisplay:inline-block;\r\n\tborder-bottom:1px solid #e3e3e3;\r\n}\r\n.pfc-fundo-texto{\r\n\twidth:calc(100% - 30px);\r\n\tmargin:14px 0px;\r\n\tdisplay:inline-block;\r\n\tvertical-align:middle;\r\n\ttext-align:center;\r\n\tcolor:#0066FF;\r\n\tline-height:15px;\r\n\tfont-size:12px;\r\n\tpadding:0px 15px;\r\n}\r\n.pfc-fim{\r\n\twidth:100%;\r\n\theight:80px;\r\n\tmargin-top:10px;\r\n\tdisplay: flex;\r\n\tflex-direction: row;\r\n\tjustify-content:space-around;\r\n\talign-items:center;\r\n\tbackground-color:#f5f5f5;\r\n\tborder: 0px solid gray;\r\n\tborder-radius: 0px 0px 20px 20px;\r\n\tpadding-top:5px;\r\n}\r\n.pfc-texto-paypal{\r\n\theight:80px;\r\n}\r\n.pfc-texto-pay1{\r\n\ttext-align:right;\r\n\tfont-size:25px;\r\n\tcolor:#0066FF;\r\n}\r\n.pfc-texto-pay2{\r\n\ttext-align:center;\r\n\tfont-size:20px;\r\n}\r\n.pfc-logo-paypal{\r\n\theight:80px;\r\n}\r\n.pfc-logo-pay{\r\n\tbackground:url(\/images\/paypal\/new_logo.png);\r\n\tbackground-repeat:no-repeat;\r\n\tbackground-size: contain;\r\n\tmargin: 10px auto 0px auto;\r\n\twidth:201px;\r\n\theight:50px;\r\n}",
         "status": "A",
         "versao": " 36",
-        "data_criacao": "2021-10-19 14:57:22",
-        "data_modificacao": "2022-02-09 15:39:21",
         "padrao": " 1"
     },
     {
@@ -427,8 +375,6 @@
         "css": null,
         "status": "A",
         "versao": " 12",
-        "data_criacao": "2021-10-19 15:03:14",
-        "data_modificacao": "2022-05-12 16:04:46",
         "padrao": " 1"
     },
     {
@@ -443,8 +389,6 @@
         "css": ".escondido{\r\n    display:none;\r\n}\r\n.voucherStatus > .label {\r\n    margin-bottom: 0.75em;\r\n}",
         "status": "A",
         "versao": " 28",
-        "data_criacao": "2021-10-29 18:55:47",
-        "data_modificacao": "2022-03-10 17:26:12",
         "padrao": " 1"
     },
     {
@@ -459,8 +403,6 @@
         "css": null,
         "status": "D",
         "versao": " 2",
-        "data_criacao": "2021-10-29 18:56:10",
-        "data_modificacao": "2021-11-08 14:25:14",
         "padrao": " 1"
     },
     {
@@ -475,8 +417,6 @@
         "css": null,
         "status": "A",
         "versao": " 19",
-        "data_criacao": "2021-11-08 14:25:55",
-        "data_modificacao": "2022-06-01 17:18:01",
         "padrao": " 1"
     },
     {
@@ -491,8 +431,6 @@
         "css": ".escondido{\r\n    display:none;\r\n}",
         "status": "A",
         "versao": " 38",
-        "data_criacao": "2021-11-08 14:26:24",
-        "data_modificacao": "2022-02-09 15:37:08",
         "padrao": " 1"
     },
     {
@@ -507,8 +445,6 @@
         "css": null,
         "status": "A",
         "versao": " 8",
-        "data_criacao": "2021-11-10 14:14:44",
-        "data_modificacao": "2022-02-09 15:34:57",
         "padrao": " 1"
     },
     {
@@ -523,8 +459,6 @@
         "css": null,
         "status": "A",
         "versao": " 2",
-        "data_criacao": "2021-11-11 16:34:18",
-        "data_modificacao": "2022-02-09 15:40:55",
         "padrao": " 1"
     },
     {
@@ -539,8 +473,6 @@
         "css": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2021-11-18 17:14:37",
-        "data_modificacao": "2021-11-18 17:14:37",
         "padrao": " 1"
     },
     {
@@ -555,8 +487,6 @@
         "css": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2021-11-18 17:15:01",
-        "data_modificacao": "2021-11-18 17:15:01",
         "padrao": " 1"
     },
     {
@@ -571,8 +501,6 @@
         "css": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2021-11-18 17:15:25",
-        "data_modificacao": "2021-11-18 17:15:25",
         "padrao": " 1"
     },
     {
@@ -587,8 +515,6 @@
         "css": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2021-11-18 17:15:42",
-        "data_modificacao": "2021-11-18 17:15:42",
         "padrao": " 1"
     },
     {
@@ -603,8 +529,6 @@
         "css": "#banner-cont,#menu-inicial-cont{\r\n    position:relative;\r\n}\r\n#menu-inicial{\r\n    position:absolute;\r\n    top:-80px;\r\n    left:300px;\r\n}\r\n#banner-image {\r\n    background: url(\/images\/pagina-inicial-banner.png?v=1);\r\n    background-position: left top;\r\n    background-size: cover;\r\n    height: 350px;\r\n    width: 100%;\r\n}\r\n#banner-acao-btn{\r\n    position:absolute;\r\n    right:30px;\r\n    top:270px;\r\n}\r\n#data-e-local{\r\n    background-color:#dddada;\r\n}\r\n#ingressos{\r\n    background-color:#dddada;\r\n}\r\n@media screen and (max-width: 768px) {\r\n    #banner-image {\r\n        height: 300px;\r\n    }\r\n    #banner-acao-btn{\r\n        top:220px;\r\n    }\r\n    #menu-inicial{\r\n        position: relative;\r\n        top:auto;\r\n        left:auto;\r\n    }\r\n    #menu-inicial-cont-pai{\r\n        background-color:#dddada;\r\n    }\r\n}\r\n@media screen and (min-width: 769px) and (max-width: 991px) {\r\n    #menu-inicial{\r\n        left:170px;\r\n    }\r\n}\r\n@media screen and (min-width: 992px) and (max-width: 1200px){\r\n    #menu-inicial{\r\n        left:250px;\r\n    }\r\n}",
         "status": "A",
         "versao": " 28",
-        "data_criacao": "2022-02-08 11:13:01",
-        "data_modificacao": "2022-02-11 14:09:44",
         "padrao": " 1"
     },
     {
@@ -619,8 +543,6 @@
         "css": null,
         "status": "A",
         "versao": " 1",
-        "data_criacao": "2022-02-09 15:59:54",
-        "data_modificacao": "2022-02-09 15:59:54",
         "padrao": " 1"
     },
     {
@@ -635,8 +557,6 @@
         "css": ".escondido{\r\n\tdisplay:none;\r\n}\r\n.dataSelecionada{\r\n\tmargin-bottom:.4rem;\r\n}\r\n.cupom{\r\n  text-transform: uppercase;\r\n}",
         "status": "A",
         "versao": " 97",
-        "data_criacao": "2022-03-31 14:33:33",
-        "data_modificacao": "2022-08-01 16:50:03",
         "padrao": " 1"
     },
     {
@@ -651,8 +571,6 @@
         "css": "div.datepicker-inline {\r\n    width: 100% !important;\r\n}\r\ndiv.datepicker table {\r\n    width: 100% !important;\r\n}\r\ndiv.salvarEscalaCont{\r\n    text-align:center;\r\n    margin-top:15px;\r\n}",
         "status": "A",
         "versao": " 50",
-        "data_criacao": "2022-03-31 15:49:19",
-        "data_modificacao": "2022-09-22 18:04:42",
         "padrao": " 1"
     },
     {
@@ -667,8 +585,6 @@
         "css": ".escondido{\r\n\tdisplay:none;\r\n}\r\n.dataSelecionada{\r\n\tmargin-bottom:.4rem;\r\n}\r\n.cupom{\r\n  text-transform: uppercase;\r\n}",
         "status": "A",
         "versao": " 3",
-        "data_criacao": "2022-08-01 16:47:23",
-        "data_modificacao": "2022-10-20 12:05:28",
         "padrao": " 1"
     }
 ]

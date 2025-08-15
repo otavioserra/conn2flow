@@ -11,9 +11,10 @@ final class CreateHostsVariaveisTable extends AbstractMigration
      */
     public function change(): void
     {
-        $table = $this->table('hosts_variaveis', ['id' => 'id_hosts_variaveis']);
-        $table->addColumn('id_hosts', 'integer', ['null' => true, 'default' => null])
-              ->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => null])
+    $table = $this->table('hosts_variaveis', ['id' => 'id_hosts_variaveis']);
+      $table->addColumn('id_hosts', 'integer', ['null' => true, 'default' => null])
+          // Padronização: id_usuarios default 1
+          ->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => 1])
               ->addColumn('linguagem_codigo', 'string', ['limit' => 10, 'null' => true, 'default' => null])
               ->addColumn('modulo', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('id', 'string', ['limit' => 255, 'null' => true, 'default' => null])

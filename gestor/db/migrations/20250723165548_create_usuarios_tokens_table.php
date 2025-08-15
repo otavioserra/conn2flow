@@ -20,7 +20,7 @@ final class CreateUsuariosTokensTable extends AbstractMigration
               ->addColumn('ip', 'string', ['limit' => 100, 'null' => true, 'default' => null])
               ->addColumn('user_agent', 'text', ['null' => true])
               ->addColumn('origem', 'string', ['limit' => 255, 'null' => true, 'default' => null])
-              ->addColumn('data_criacao', 'datetime', ['null' => true, 'default' => null])
+              ->addColumn('data_criacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
               ->addColumn('senha_incorreta_tentativas', 'integer', ['null' => true, 'default' => null])
               ->create();
     }

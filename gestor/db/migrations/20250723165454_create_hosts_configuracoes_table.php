@@ -15,7 +15,7 @@ final class CreateHostsConfiguracoesTable extends AbstractMigration
         $table->addColumn('id_hosts', 'integer', ['null' => true, 'default' => null])
               ->addColumn('modulo', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('versao', 'integer', ['null' => true, 'default' => null])
-              ->addColumn('data_modificacao', 'datetime', ['null' => true, 'default' => null])
+              ->addColumn('data_modificacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'])
               ->create();
     }
 }

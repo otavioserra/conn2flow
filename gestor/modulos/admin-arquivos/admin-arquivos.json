@@ -29,11 +29,11 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.2",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "8f33d8113e655162a32f7a7213409e19",
+                        "html": "a389a1f00509f25b9a5f98a84d94b83e",
                         "css": "da65a7d1abba118408353e14d6102779",
-                        "combined": "ddb032331dd7e8da25416f3ac40a104a"
+                        "combined": "074321dfc614f27ab1a0904b0de373f1"
                     }
                 },
                 {
@@ -69,7 +69,7 @@
             "variables": [
                 {
                     "id": "add-button-label",
-                    "value": "Adicionar Arquivos",
+                    "value": "Adicionar Arquivos - Teste",
                     "type": "string"
                 },
                 {

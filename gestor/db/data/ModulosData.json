@@ -12,9 +12,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 24",
-        "data_criacao": "2021-03-22 14:46:06",
-        "data_modificacao": "2022-07-21 16:40:19"
+        "versao": " 24"
     },
     {
         "id_modulos": "2",
@@ -29,9 +27,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 4",
-        "data_criacao": "2021-03-22 14:49:46",
-        "data_modificacao": "2022-07-21 15:50:12"
+        "versao": " 4"
     },
     {
         "id_modulos": "3",
@@ -46,9 +42,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 5",
-        "data_criacao": "2021-03-22 14:50:01",
-        "data_modificacao": "2021-10-01 10:26:37"
+        "versao": " 5"
     },
     {
         "id_modulos": "4",
@@ -63,9 +57,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 19",
-        "data_criacao": "2021-03-22 14:50:12",
-        "data_modificacao": "2021-11-12 14:58:48"
+        "versao": " 19"
     },
     {
         "id_modulos": "5",
@@ -80,9 +72,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 22",
-        "data_criacao": "2021-03-26 14:08:34",
-        "data_modificacao": "2022-07-22 10:38:05"
+        "versao": " 22"
     },
     {
         "id_modulos": "6",
@@ -97,9 +87,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 47",
-        "data_criacao": "2021-03-26 14:22:27",
-        "data_modificacao": "2022-01-13 17:41:56"
+        "versao": " 47"
     },
     {
         "id_modulos": "7",
@@ -114,9 +102,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 48",
-        "data_criacao": "2021-03-29 17:56:42",
-        "data_modificacao": "2022-07-14 15:53:34"
+        "versao": " 48"
     },
     {
         "id_modulos": "8",
@@ -131,9 +117,7 @@
         "plugin": null,
         "host": null,
         "status": "D",
-        "versao": " 10",
-        "data_criacao": "2021-04-15 14:33:02",
-        "data_modificacao": "2021-04-20 10:26:41"
+        "versao": " 10"
     },
     {
         "id_modulos": "9",
@@ -148,9 +132,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 8",
-        "data_criacao": "2021-04-15 14:46:18",
-        "data_modificacao": "2021-07-19 17:47:38"
+        "versao": " 8"
     },
     {
         "id_modulos": "10",
@@ -165,9 +147,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 31",
-        "data_criacao": "2021-04-22 17:44:33",
-        "data_modificacao": "2022-03-17 15:14:45"
+        "versao": " 31"
     },
     {
         "id_modulos": "11",
@@ -182,9 +162,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 7",
-        "data_criacao": "2021-06-04 18:56:21",
-        "data_modificacao": "2021-09-27 09:17:34"
+        "versao": " 7"
     },
     {
         "id_modulos": "12",
@@ -199,9 +177,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 4",
-        "data_criacao": "2021-06-04 18:56:44",
-        "data_modificacao": "2022-03-31 15:32:00"
+        "versao": " 4"
     },
     {
         "id_modulos": "13",
@@ -216,9 +192,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 9",
-        "data_criacao": "2021-06-11 10:34:54",
-        "data_modificacao": "2022-03-31 15:27:40"
+        "versao": " 9"
     },
     {
         "id_modulos": "14",
@@ -233,9 +207,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 5",
-        "data_criacao": "2021-06-17 11:55:14",
-        "data_modificacao": "2022-07-04 16:07:17"
+        "versao": " 5"
     },
     {
         "id_modulos": "15",
@@ -250,9 +222,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 80",
-        "data_criacao": "2021-06-17 11:57:12",
-        "data_modificacao": "2022-10-03 14:38:17"
+        "versao": " 80"
     },
     {
         "id_modulos": "16",
@@ -267,9 +237,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 5",
-        "data_criacao": "2021-06-17 15:57:25",
-        "data_modificacao": "2022-07-04 16:05:00"
+        "versao": " 5"
     },
     {
         "id_modulos": "17",
@@ -284,9 +252,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 3",
-        "data_criacao": "2021-07-07 17:27:45",
-        "data_modificacao": "2021-07-07 17:31:00"
+        "versao": " 3"
     },
     {
         "id_modulos": "18",
@@ -301,9 +267,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2021-07-21 11:11:29",
-        "data_modificacao": "2021-07-21 11:14:33"
+        "versao": " 2"
     },
     {
         "id_modulos": "19",
@@ -318,9 +282,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2021-07-21 11:12:06",
-        "data_modificacao": "2021-07-21 11:14:48"
+        "versao": " 2"
     },
     {
         "id_modulos": "20",
@@ -335,9 +297,7 @@
         "plugin": null,
         "host": null,
         "status": "D",
-        "versao": " 4",
-        "data_criacao": "2021-08-13 10:36:52",
-        "data_modificacao": "2021-09-02 11:58:19"
+        "versao": " 4"
     },
     {
         "id_modulos": "21",
@@ -352,9 +312,7 @@
         "plugin": null,
         "host": null,
         "status": "D",
-        "versao": " 4",
-        "data_criacao": "2021-08-13 10:37:40",
-        "data_modificacao": "2021-09-02 11:58:14"
+        "versao": " 4"
     },
     {
         "id_modulos": "22",
@@ -369,9 +327,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-08-20 10:44:29",
-        "data_modificacao": "2021-08-20 10:44:29"
+        "versao": " 1"
     },
     {
         "id_modulos": "23",
@@ -386,9 +342,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-08-23 10:06:30",
-        "data_modificacao": "2021-08-23 10:06:30"
+        "versao": " 1"
     },
     {
         "id_modulos": "24",
@@ -403,9 +357,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 44",
-        "data_criacao": "2021-08-27 10:30:28",
-        "data_modificacao": "2021-12-13 16:02:03"
+        "versao": " 44"
     },
     {
         "id_modulos": "25",
@@ -420,9 +372,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 74",
-        "data_criacao": "2021-08-31 15:31:44",
-        "data_modificacao": "2022-04-12 18:31:18"
+        "versao": " 74"
     },
     {
         "id_modulos": "26",
@@ -437,9 +387,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 22",
-        "data_criacao": "2021-09-08 10:39:52",
-        "data_modificacao": "2021-11-18 17:38:22"
+        "versao": " 22"
     },
     {
         "id_modulos": "27",
@@ -454,9 +402,7 @@
         "plugin": null,
         "host": null,
         "status": "D",
-        "versao": " 3",
-        "data_criacao": "2021-09-27 09:16:19",
-        "data_modificacao": "2021-09-27 09:17:19"
+        "versao": " 3"
     },
     {
         "id_modulos": "28",
@@ -471,9 +417,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 16",
-        "data_criacao": "2021-09-27 09:28:13",
-        "data_modificacao": "2022-04-01 14:09:09"
+        "versao": " 16"
     },
     {
         "id_modulos": "29",
@@ -488,9 +432,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 45",
-        "data_criacao": "2021-09-29 17:18:19",
-        "data_modificacao": "2022-01-11 14:54:25"
+        "versao": " 45"
     },
     {
         "id_modulos": "30",
@@ -505,9 +447,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 10",
-        "data_criacao": "2021-10-04 14:06:24",
-        "data_modificacao": "2022-07-29 09:55:51"
+        "versao": " 10"
     },
     {
         "id_modulos": "31",
@@ -522,9 +462,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 4",
-        "data_criacao": "2021-10-08 16:49:45",
-        "data_modificacao": "2021-10-15 18:35:57"
+        "versao": " 4"
     },
     {
         "id_modulos": "32",
@@ -539,9 +477,7 @@
         "plugin": null,
         "host": null,
         "status": "D",
-        "versao": " 2",
-        "data_criacao": "2021-10-20 16:07:10",
-        "data_modificacao": "2021-10-20 16:24:47"
+        "versao": " 2"
     },
     {
         "id_modulos": "33",
@@ -556,9 +492,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 29",
-        "data_criacao": "2021-10-20 16:29:27",
-        "data_modificacao": "2022-02-03 15:14:18"
+        "versao": " 29"
     },
     {
         "id_modulos": "34",
@@ -573,9 +507,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 18",
-        "data_criacao": "2021-10-21 14:22:49",
-        "data_modificacao": "2021-10-29 18:44:00"
+        "versao": " 18"
     },
     {
         "id_modulos": "35",
@@ -590,9 +522,7 @@
         "plugin": null,
         "host": null,
         "status": "D",
-        "versao": " 4",
-        "data_criacao": "2021-10-21 15:22:51",
-        "data_modificacao": "2021-10-21 15:33:29"
+        "versao": " 4"
     },
     {
         "id_modulos": "36",
@@ -607,9 +537,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 12",
-        "data_criacao": "2021-10-26 15:03:29",
-        "data_modificacao": "2022-11-01 15:13:55"
+        "versao": " 12"
     },
     {
         "id_modulos": "37",
@@ -624,9 +552,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2021-11-11 16:52:16",
-        "data_modificacao": "2021-11-11 17:05:55"
+        "versao": " 2"
     },
     {
         "id_modulos": "38",
@@ -641,9 +567,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 4",
-        "data_criacao": "2021-11-12 15:32:45",
-        "data_modificacao": "2021-11-12 15:59:30"
+        "versao": " 4"
     },
     {
         "id_modulos": "39",
@@ -658,9 +582,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2021-11-18 10:33:55",
-        "data_modificacao": "2021-11-18 10:33:55"
+        "versao": " 1"
     },
     {
         "id_modulos": "40",
@@ -675,9 +597,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 7",
-        "data_criacao": "2022-01-12 15:15:32",
-        "data_modificacao": "2022-07-14 16:19:12"
+        "versao": " 7"
     },
     {
         "id_modulos": "41",
@@ -692,9 +612,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 11",
-        "data_criacao": "2022-02-09 17:31:48",
-        "data_modificacao": "2022-05-12 15:38:44"
+        "versao": " 11"
     },
     {
         "id_modulos": "42",
@@ -709,9 +627,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 11",
-        "data_criacao": "2022-03-09 10:07:09",
-        "data_modificacao": "2022-03-10 10:56:02"
+        "versao": " 11"
     },
     {
         "id_modulos": "43",
@@ -726,9 +642,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 3",
-        "data_criacao": "2022-03-29 13:21:17",
-        "data_modificacao": "2022-07-04 16:06:09"
+        "versao": " 3"
     },
     {
         "id_modulos": "44",
@@ -743,9 +657,7 @@
         "plugin": "agendamentos",
         "host": null,
         "status": "A",
-        "versao": " 16",
-        "data_criacao": "2022-03-29 14:28:26",
-        "data_modificacao": "2022-06-21 10:05:02"
+        "versao": " 16"
     },
     {
         "id_modulos": "45",
@@ -760,9 +672,7 @@
         "plugin": "escalas",
         "host": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-03-29 16:10:58",
-        "data_modificacao": "2022-03-29 16:10:58"
+        "versao": " 1"
     },
     {
         "id_modulos": "46",
@@ -777,9 +687,7 @@
         "plugin": "agendamentos",
         "host": null,
         "status": "A",
-        "versao": " 68",
-        "data_criacao": "2022-04-01 14:06:55",
-        "data_modificacao": "2022-10-24 19:57:15"
+        "versao": " 68"
     },
     {
         "id_modulos": "47",
@@ -794,9 +702,7 @@
         "plugin": "agendamentos",
         "host": null,
         "status": "D",
-        "versao": " 2",
-        "data_criacao": "2022-04-04 15:11:45",
-        "data_modificacao": "2022-04-04 15:50:14"
+        "versao": " 2"
     },
     {
         "id_modulos": "48",
@@ -811,9 +717,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 15",
-        "data_criacao": "2022-04-05 10:43:58",
-        "data_modificacao": "2022-04-14 14:41:07"
+        "versao": " 15"
     },
     {
         "id_modulos": "49",
@@ -828,9 +732,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 11",
-        "data_criacao": "2022-05-06 11:19:30",
-        "data_modificacao": "2022-05-09 16:54:16"
+        "versao": " 11"
     },
     {
         "id_modulos": "50",
@@ -845,9 +747,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 6",
-        "data_criacao": "2022-06-28 09:30:24",
-        "data_modificacao": "2022-07-14 10:48:56"
+        "versao": " 6"
     },
     {
         "id_modulos": "51",
@@ -862,9 +762,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-06-28 09:31:25",
-        "data_modificacao": "2022-06-28 09:31:25"
+        "versao": " 1"
     },
     {
         "id_modulos": "52",
@@ -879,9 +777,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 3",
-        "data_criacao": "2022-06-28 09:32:07",
-        "data_modificacao": "2022-07-25 10:36:07"
+        "versao": " 3"
     },
     {
         "id_modulos": "53",
@@ -896,9 +792,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-06-28 09:32:29",
-        "data_modificacao": "2022-06-28 09:32:29"
+        "versao": " 1"
     },
     {
         "id_modulos": "54",
@@ -913,9 +807,7 @@
         "plugin": null,
         "host": null,
         "status": "D",
-        "versao": " 3",
-        "data_criacao": "2022-06-28 09:32:07",
-        "data_modificacao": "2022-07-22 11:24:32"
+        "versao": " 3"
     },
     {
         "id_modulos": "55",
@@ -930,9 +822,7 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": " 3",
-        "data_criacao": "2022-07-21 15:14:10",
-        "data_modificacao": "2022-07-22 11:42:59"
+        "versao": " 3"
     },
     {
         "id_modulos": "56",
@@ -947,9 +837,7 @@
         "plugin": null,
         "host": " 1",
         "status": "D",
-        "versao": " 2",
-        "data_criacao": "2022-07-25 15:58:31",
-        "data_modificacao": "2022-07-28 15:37:18"
+        "versao": " 2"
     },
     {
         "id_modulos": "57",
@@ -964,9 +852,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 11:10:41",
-        "data_modificacao": "2022-07-28 11:10:41"
+        "versao": " 1"
     },
     {
         "id_modulos": "58",
@@ -981,9 +867,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 11:14:50",
-        "data_modificacao": "2022-07-28 11:14:50"
+        "versao": " 1"
     },
     {
         "id_modulos": "59",
@@ -998,9 +882,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 11:15:08",
-        "data_modificacao": "2022-07-28 11:15:08"
+        "versao": " 1"
     },
     {
         "id_modulos": "60",
@@ -1015,9 +897,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 11:15:44",
-        "data_modificacao": "2022-07-28 11:15:44"
+        "versao": " 1"
     },
     {
         "id_modulos": "61",
@@ -1032,9 +912,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 11:16:00",
-        "data_modificacao": "2022-07-28 11:16:00"
+        "versao": " 1"
     },
     {
         "id_modulos": "62",
@@ -1049,9 +927,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 11:16:25",
-        "data_modificacao": "2022-07-28 11:16:25"
+        "versao": " 1"
     },
     {
         "id_modulos": "63",
@@ -1066,9 +942,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 11:16:43",
-        "data_modificacao": "2022-07-28 11:16:43"
+        "versao": " 1"
     },
     {
         "id_modulos": "64",
@@ -1083,9 +957,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2022-07-28 11:16:54",
-        "data_modificacao": "2022-07-28 11:18:45"
+        "versao": " 2"
     },
     {
         "id_modulos": "65",
@@ -1100,9 +972,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 2",
-        "data_criacao": "2022-07-28 11:17:04",
-        "data_modificacao": "2022-07-28 11:19:01"
+        "versao": " 2"
     },
     {
         "id_modulos": "66",
@@ -1117,9 +987,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 11:18:10",
-        "data_modificacao": "2022-07-28 11:18:10"
+        "versao": " 1"
     },
     {
         "id_modulos": "67",
@@ -1134,9 +1002,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 11:18:22",
-        "data_modificacao": "2022-07-28 11:18:22"
+        "versao": " 1"
     },
     {
         "id_modulos": "68",
@@ -1151,9 +1017,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 11:19:27",
-        "data_modificacao": "2022-07-28 11:19:27"
+        "versao": " 1"
     },
     {
         "id_modulos": "69",
@@ -1168,9 +1032,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 11:20:07",
-        "data_modificacao": "2022-07-28 11:20:07"
+        "versao": " 1"
     },
     {
         "id_modulos": "70",
@@ -1185,9 +1047,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 11:20:30",
-        "data_modificacao": "2022-07-28 11:20:30"
+        "versao": " 1"
     },
     {
         "id_modulos": "71",
@@ -1202,9 +1062,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 16:15:46",
-        "data_modificacao": "2022-07-28 16:15:46"
+        "versao": " 1"
     },
     {
         "id_modulos": "72",
@@ -1219,9 +1077,7 @@
         "plugin": null,
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-07-28 16:16:02",
-        "data_modificacao": "2022-07-28 16:16:02"
+        "versao": " 1"
     },
     {
         "id_modulos": "73",
@@ -1236,9 +1092,7 @@
         "plugin": "agendamentos",
         "host": " 1",
         "status": "A",
-        "versao": " 1",
-        "data_criacao": "2022-08-01 16:33:00",
-        "data_modificacao": "2022-08-01 16:33:00"
+        "versao": " 1"
     },
     {
         "id_modulos": "74",
@@ -1253,8 +1107,6 @@
         "plugin": "escalas",
         "host": null,
         "status": "A",
-        "versao": " 36",
-        "data_criacao": "2022-08-08 14:37:50",
-        "data_modificacao": "2022-10-24 19:46:42"
+        "versao": " 36"
     }
 ]

@@ -11,9 +11,11 @@ final class CreatePaginasTable extends AbstractMigration
      */
     public function change(): void
     {
-        $table = $this->table('paginas', ['id' => 'id_paginas']);
-        $table->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => null])
-              ->addColumn('id_layouts', 'integer', ['null' => true, 'default' => null])
+      $table = $this->table('paginas', ['id' => 'id_paginas']);
+      // id_usuarios agora padronizado para default = 1 (registro de sistema/base)
+      $table->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => 1])
+          // Substituição: removido id_layouts (integer) e adicionado layout_id (string) referenciando layouts.id
+          ->addColumn('layout_id', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('nome', 'string', ['limit' => 255, 'null' => false])
               ->addColumn('id', 'string', ['limit' => 255, 'null' => false])
               ->addColumn('language', 'string', ['limit' => 10, 'null' => false, 'default' => 'pt-br'])
@@ -27,8 +29,8 @@ final class CreatePaginasTable extends AbstractMigration
               ->addColumn('css', 'text', ['limit' => Phinx\Db\Adapter\MysqlAdapter::TEXT_MEDIUM, 'null' => true])
               ->addColumn('status', 'char', ['limit' => 1, 'null' => true, 'default' => 'A'])
               ->addColumn('versao', 'integer', ['null' => true, 'default' => 1])
-              ->addColumn('data_criacao', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP'])
-              ->addColumn('data_modificacao', 'datetime', ['null' => true, 'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'])
+              ->addColumn('data_criacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP'])
+              ->addColumn('data_modificacao', 'datetime', ['null' => false, 'default' => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'])
               // Hybrid system fields
               ->addColumn('user_modified', 'integer', ['limit' => Phinx\Db\Adapter\MysqlAdapter::INT_TINY, 'default' => 0])
               ->addColumn('file_version', 'string', ['limit' => 50, 'null' => true, 'default' => null])
