@@ -32,5 +32,5 @@
     "_reverse_empty": "Tabela :tabela vazia, ignorando.",
     "_reverse_complete": "Exportação reversa concluída.",
     "_seeds_duplicates_warning": "Aviso: Erros de duplicidade nos seeders ignorados (chaves já existentes).",
-    "_args_usage": "Uso: php atualizacoes-banco-de-dados.php [--skip-migrate] [--skip-seed] [--dry-run] [--tables=lista] [--backup] [--env-dir=nome] [--reverse] [--log-diff] [--seed=NomeSeeder[,Outro]] [--ignore-seed-errors] [--debug]"
+    "_args_usage": "Uso: php atualizacoes-banco-de-dados.php [--skip-migrate] [--dry-run] [--tables=lista] [--backup] [--env-dir=nome] [--reverse] [--log-diff] [--debug] [--force-all] [--orphans-mode=export|log|ignore]"
 }
