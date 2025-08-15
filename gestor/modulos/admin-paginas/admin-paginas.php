@@ -82,7 +82,19 @@ function admin_paginas_adicionar(){
 		$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "nome"; $post_nome = "pagina-nome"; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = "id_layouts"; $post_nome = "layout"; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		// ===== Layout: armazenar agora layout_id (string) em paginas.layout_id
+		if(isset($_REQUEST['layout']) && $_REQUEST['layout']){
+			$layoutNumerico = banco_escape_field($_REQUEST['layout']);
+			$layoutRow = banco_select_name(
+				banco_campos_virgulas(Array('id','id_layouts')),
+				'layouts',
+				"WHERE id_layouts='".$layoutNumerico."'"
+			);
+			$layoutIdStr = ($layoutRow ? $layoutRow[0]['id'] : null);
+			if($layoutIdStr){
+				$campo_nome = "layout_id"; $campos[] = Array($campo_nome,$layoutIdStr);
+			}
+		}
 		$campo_nome = "tipo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "modulo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "opcao"; $post_nome = 'pagina-opcao'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
@@ -239,7 +251,7 @@ function admin_paginas_editar(){
 	$camposBanco = Array(
 		'nome',
 		'caminho',
-		'id_layouts',
+		'layout_id', // substitui id_layouts
 		'modulo',
 		'tipo',
 		'opcao',
@@ -368,11 +380,20 @@ function admin_paginas_editar(){
 		
 		// ===== Atualização dos demais campos.
 		
-		$campo_nome = "id_layouts"; $request_name = 'layout'; $alteracoes_name = 'layout'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
-				'nome' => 'layouts',
-				'campo' => 'nome',
-				'id_numerico' => 'id_layouts',
-			));}
+		// ===== Layout: mapear numérico enviado para id textual e salvar em layout_id
+		if(isset($_REQUEST['layout']) && $_REQUEST['layout'] !== ''){
+			$layoutNumericoNovo = banco_escape_field($_REQUEST['layout']);
+			$layoutRowNovo = banco_select_name(
+				banco_campos_virgulas(Array('id','id_layouts')),
+				'layouts',
+				"WHERE id_layouts='".$layoutNumericoNovo."'"
+			);
+			$layoutIdNovo = ($layoutRowNovo ? $layoutRowNovo[0]['id'] : null);
+			if($layoutIdNovo && banco_select_campos_antes('layout_id') != $layoutIdNovo){
+				$editar['dados'][] = "layout_id='".$layoutIdNovo."'";
+				$alteracoes[] = Array('campo' => 'form-layout-label', 'valor_antes' => banco_select_campos_antes('layout_id'),'valor_depois' => $layoutIdNovo);
+			}
+		}
 		$campo_nome = "tipo"; $request_name = $campo_nome; $alteracoes_name = 'type'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "modulo"; $request_name = $campo_nome; $alteracoes_name = 'module'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "opcao"; $request_name = 'pagina-opcao'; $alteracoes_name = 'option'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
@@ -497,7 +518,19 @@ function admin_paginas_editar(){
 	if($_GESTOR['banco-resultado']){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
 		$caminho = (isset($retorno_bd['caminho']) ? $retorno_bd['caminho'] : '');
-		$id_layouts = (isset($retorno_bd['id_layouts']) ? $retorno_bd['id_layouts'] : '');
+		// Recuperar layout_id textual e mapear para id_layouts numérico para o select
+		$layout_id = (isset($retorno_bd['layout_id']) ? $retorno_bd['layout_id'] : '');
+		$id_layouts = '';
+		if($layout_id){
+			$layoutRowSel = banco_select_name(
+				banco_campos_virgulas(Array('id_layouts')),
+				'layouts',
+				"WHERE id='".banco_escape_field($layout_id)."'"
+			);
+			if($layoutRowSel){
+				$id_layouts = $layoutRowSel[0]['id_layouts'];
+			}
+		}
 		$bd_modulo = (isset($retorno_bd['modulo']) ? $retorno_bd['modulo'] : '');
 		$tipo = (isset($retorno_bd['tipo']) ? $retorno_bd['tipo'] : '');
 		$opcao = (isset($retorno_bd['opcao']) ? $retorno_bd['opcao'] : '');

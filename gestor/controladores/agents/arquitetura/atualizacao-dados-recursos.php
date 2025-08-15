@@ -1,26 +1,41 @@
 <?php
 /**
- * Atualização de Dados de Recursos (Layouts, Páginas, Componentes e Variáveis)
+ * Atualização de Dados de Recursos (Layouts, Páginas, Componentes e Variáveis) - Versão 2.0
+ * ------------------------------------------------------------------------------------------
+ * Esta versão remove COMPLETAMENTE o controle manual de identificadores numéricos (id_layouts,
+ * id_paginas, id_componentes, id_variaveis). O banco (auto increment) será o único responsável
+ * pela geração das PKs. Os Data.json agora contêm apenas dados sem esses IDs numéricos.
  *
- * Integra a lógica anteriormente distribuída entre:
- *  - gestor/resources/generate.multilingual.seeders.php (orquestrador)
- *  - ai-workspace/scripts/arquitetura/generate_seeds_data.php (geração layouts/páginas/componentes)
- *  - Recurso de migração de variáveis (recurso-variaveis-criar-origem.php)
+ * Regras de unicidade (planejamento v2):
+ *  - Layouts / Componentes: id único por language.
+ *  - Páginas:
+ *      * id único por (language, modulo) — pode repetir entre módulos diferentes.
+ *      * caminho (path/caminho) único por (language) independente de módulo.
+ *  - Variáveis:
+ *      * id único por (language, modulo) salvo quando existir mais de um registro com groups
+ *        distintos e TODOS tiverem group definido — nesse caso todos são válidos.
+ *      * Qualquer duplicidade que viole regra vira órfão.
  *
- * Agora centraliza em um único script de agente seguindo a estrutura definida no prompt:
- *  carregarMapeamentoGlobal -> carregarDadosExistentes -> coletarRecursos -> atualizarDados -> reporteFinal -> main
+ * Órfãos: Recursos inválidos ou duplicados são gravados em gestor/db/orphans/<Tipo>Data.json
+ * para futura análise. Os válidos vão para gestor/db/data.
  *
- * Regras / Objetivos:
- *  - Manter IDs estáveis dos recursos existentes (id_layouts, id_paginas, id_componentes, id_variaveis)
- *  - Atualizar version/checksum em arquivos de origem (layouts/pages/components) quando HTML/CSS mudarem
- *  - Integrar novo recurso "variaveis" gerando VariaveisData.json a partir de globais/módulos/plugins
- *  - Suporte multilíngue via função _() e logs escritos em disco
- *  - Código modular e bem comentado (DocBlocks)
- *  - Não sobrescrever seeders já existentes (LayoutsSeeder, PaginasSeeder, ComponentesSeeder, VariaveisSeeder)
+ * Versionamento: Mantemos campo 'versao' incremental SOMENTE quando checksum (html/css) mudar.
+ * Campo 'file_version' é a versão de origem (sources). Checksum armazenado como string JSON
+ * (compatibilidade histórica).
  *
- * @version 1.0.0
- * @author IA Agent
- * @date 2025-08-12
+ * layout_id: Em páginas vem diretamente do campo 'layout' da origem (sem tradução numérica).
+ *
+ * Estrutura Funções:
+ *  - carregarMapeamentoGlobal
+ *  - carregarDadosExistentes (para reusar versao quando checksum igual)
+ *  - coletarRecursos (aplica unicidade, gera órfãos, calcula versao)
+ *  - atualizarDados (grava data + órfãos)
+ *  - garantirSeeders (gera seeders se faltarem)
+ *  - reporteFinal
+ *  - main
+ *
+ * @version 2.0.0
+ * @date 2025-08-15
  */
 
 declare(strict_types=1);
@@ -174,624 +189,315 @@ function carregarMapeamentoGlobal(): array {
 // ========================= 2) CARREGAR DADOS EXISTENTES =========================
 
 /**
- * Carrega dados existentes para manter IDs estáveis.
- * @return array Estrutura padronizada.
+ * Carrega dados existentes para reutilizar versão caso checksum permaneça igual.
+ * Retorna mapa indexado por chave de unicidade (incluindo language e outros componentes).
  */
 function carregarDadosExistentes(): array {
     global $DB_DATA_DIR, $LOG_FILE;
-    $paths = [
-        'layouts'      => $DB_DATA_DIR . 'LayoutsData.json',
-        'paginas'      => $DB_DATA_DIR . 'PaginasData.json',
-        'componentes'  => $DB_DATA_DIR . 'ComponentesData.json',
-        'variaveis'    => $DB_DATA_DIR . 'VariaveisData.json',
+    $arquivos = [
+        'layouts'     => $DB_DATA_DIR . 'LayoutsData.json',
+        'paginas'     => $DB_DATA_DIR . 'PaginasData.json',
+        'componentes' => $DB_DATA_DIR . 'ComponentesData.json',
+        'variaveis'   => $DB_DATA_DIR . 'VariaveisData.json',
     ];
-    $dados = [];
-    foreach ($paths as $k => $p) {
-        $dados[$k] = jsonRead($p) ?? [];
-    log_disco(_('_loaded_existing', ['tipo' => $k, 'qtd' => count($dados[$k])]), $LOG_FILE);
+    $exist = [];
+    foreach ($arquivos as $tipo => $file) {
+        $lista = jsonRead($file) ?? [];
+        $exist[$tipo] = [];
+        foreach ($lista as $r) {
+            switch ($tipo) {
+                case 'layouts':
+                case 'componentes':
+                    if (!isset($r['language'],$r['id'])) continue 2;
+                    $k = $r['language'].'|'.$r['id'];
+                    break;
+                case 'paginas':
+                    if (!isset($r['language'],$r['id'])) continue 2;
+                    $k = $r['language'].'|'.($r['modulo'] ?? '').'|'.$r['id'];
+                    break;
+                case 'variaveis':
+                    if (!isset($r['linguagem_codigo'],$r['id'])) continue 2;
+                    $k = $r['linguagem_codigo'].'|'.($r['modulo'] ?? '').'|'.$r['id'].'|'.($r['grupo'] ?? '');
+                    break;
+                default: continue 2;
+            }
+            $exist[$tipo][$k] = $r;
+        }
+        log_disco("Existentes ($tipo): ".count($exist[$tipo]), $LOG_FILE);
     }
-    return $dados;
+    return $exist;
 }
 
 // ========================= 3) COLETAR RECURSOS =========================
 
 /**
- * Coleta, consolida e prepara recursos de layouts/páginas/componentes/variáveis.
- * Retorna estrutura consolidada incluindo informações necessárias para geração dos Data.json.
+ * Coleta recursos aplicando regras de unicidade e separando órfãos.
  */
-function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): array {
+function coletarRecursos(array $existentes, array $map): array {
     global $RESOURCES_DIR, $MODULES_DIR, $PLUGINS_DIR, $LOG_FILE;
+    $languages = array_keys($map['languages']);
 
-    $languages = array_keys($dadosMapeamentoGlobal['languages']);
+    $layouts = $paginas = $componentes = $variaveis = [];
+    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[] ];
 
-    // Mapas de IDs existentes
-    $existingLayouts     = $dadosExistentes['layouts'];
-    $existingPages       = $dadosExistentes['paginas'];
-    $existingComponents  = $dadosExistentes['componentes'];
-    $existingVars        = $dadosExistentes['variaveis'];
+    // Índices de unicidade
+    $idxLayouts = [];              // lang|id
+    $idxComponentes = [];          // lang|id
+    $idxPaginasId = [];            // lang|mod|id
+    $idxPaginasPath = [];          // lang|caminho
+    $idxVariaveis = [];            // lang|mod|id => groups[]
 
-    $layoutIdMap = [];
-    $nextLayoutId = 1;
-    foreach ($existingLayouts as $row) {
-        if (isset($row['id'], $row['id_layouts'])) {
-            $layoutIdMap[$row['id']] = (int)$row['id_layouts'];
-            $nextLayoutId = max($nextLayoutId, (int)$row['id_layouts'] + 1);
-        }
-    }
-
-    $pageIdMap = [];
-    $nextPageId = 1;
-    foreach ($existingPages as $row) {
-        if (isset($row['id'], $row['language'], $row['id_paginas'])) {
-            $key = $row['language'] . '|' . ($row['modulo'] ?? '') . '|' . $row['id'];
-            $pageIdMap[$key] = (int)$row['id_paginas'];
-            $nextPageId = max($nextPageId, (int)$row['id_paginas'] + 1);
-        }
-    }
-    // Índice auxiliar ignorando módulo para fallback (lang||id)
-    $pageIdMapNoModule = [];
-    foreach ($pageIdMap as $k=>$val) {
-        [$lang,$mod,$pid] = explode('|',$k,3);
-        $pageIdMapNoModule[$lang.'||'.$pid] = $val;
-    }
-
-    $compIdMap = [];
-    $nextCompId = 1;
-    foreach ($existingComponents as $row) {
-        if (isset($row['id'], $row['language'], $row['id_componentes'])) {
-            $key = $row['language'] . '|' . ($row['modulo'] ?? '') . '|' . $row['id'];
-            $compIdMap[$key] = (int)$row['id_componentes'];
-            $nextCompId = max($nextCompId, (int)$row['id_componentes'] + 1);
-        }
-    }
-    $compIdMapNoModule = [];
-    foreach ($compIdMap as $k=>$val) { [$lang,$mod,$cid] = explode('|',$k,3); $compIdMapNoModule[$lang.'||'.$cid] = $val; }
-
-    $varIdMap = [];
-    $nextVarId = 1;
-    // IMPORTANTE: para variáveis a chave de unicidade para reutilização de ID NÃO inclui 'grupo'.
-    // Porém, se encontrarmos no processo de geração duas entradas (mesmo lang+modulo+id) com grupos diferentes,
-    // devemos atribuir NOVOS id_variaveis distintos para cada grupo adicional para evitar duplicidade de id_variaveis
-    // no arquivo final (erro relatado v1.10.11: id_variaveis=1235 repetido para grupos diferentes).
-    foreach ($existingVars as $row) {
-        if (!isset($row['id'], $row['linguagem_codigo'], $row['id_variaveis'])) continue;
-        $baseKey = $row['linguagem_codigo'] . '|' . ($row['modulo'] ?? '') . '|' . $row['id'];
-        $rowIdVar = (int)$row['id_variaveis'];
-        $g = $row['grupo'] ?? null;
-        if (!isset($varIdMap[$baseKey])) {
-            $varIdMap[$baseKey] = [
-                'primary_id' => $rowIdVar,
-                'groups' => []
-            ];
-            if ($g !== null && $g !== '') {
-                $varIdMap[$baseKey]['groups'][$g] = $rowIdVar; // primeira ocorrência do grupo usa mesmo id_variaveis legado
-            }
-            $nextVarId = max($nextVarId, $rowIdVar + 1);
-            continue;
-        }
-        // Já existe baseKey: se grupo definido e ainda não registrado
-        if ($g !== null && $g !== '') {
-            if (!isset($varIdMap[$baseKey]['groups'][$g])) {
-                // Conflito potencial: se id_variaveis reaproveitado igual ao primary_id ou outro grupo, vamos ignorar esse id legado e gerar um novo na próxima geração.
-                if (in_array($rowIdVar, $varIdMap[$baseKey]['groups'], true) || $rowIdVar === $varIdMap[$baseKey]['primary_id']) {
-                    // reservar nada; apenas avançar nextVarId se necessário (não reutilizaremos este id legado repetido)
-                    $nextVarId = max($nextVarId, $rowIdVar + 1);
-                } else {
-                    // id_variaveis distinto já existente para este grupo - preservar
-                    $varIdMap[$baseKey]['groups'][$g] = $rowIdVar;
-                    $nextVarId = max($nextVarId, $rowIdVar + 1);
-                }
+    // Helper versão + checksum reutilizando existente
+    $versaoChecksum = function(string $tipo, string $chave, ?string $html, ?string $css) use (&$existentes) : array {
+        $cks = buildChecksum($html,$css);
+        $versao = 1;
+        if (isset($existentes[$tipo][$chave])) {
+            $old = $existentes[$tipo][$chave];
+            $oldChecksum = $old['checksum'] ?? null;
+            if (is_string($oldChecksum)) { $dec = json_decode($oldChecksum,true); if ($dec) $oldChecksum=$dec; }
+            if (is_array($oldChecksum) && checksumsEqual($oldChecksum,$cks)) {
+                $versao = (int)($old['versao'] ?? 1);
+            } else {
+                $versao = (int)($old['versao'] ?? 1)+1;
             }
         }
-        $nextVarId = max($nextVarId, $rowIdVar + 1);
-    }
+        return [$versao,$cks];
+    };
 
-    $layoutsData = [];
-    $pagesData = [];
-    $componentsData = [];
-    $variablesData = [];
-
-    // Índices de origem para posterior marcação de erros diretamente nos arquivos fonte
-    // Cada item conterá metadados suficientes para reabrir o arquivo e adicionar error/error_msg
-    $originsIndex = [
-        'paginas' => [], // [ ['file'=>..., 'scope'=>global|module|plugin, 'module'=>?, 'plugin'=>?, 'lang'=>..., 'id'=>..., 'path'=>...] ]
-        'variaveis' => [], // [ ['file'=>..., 'scope'=>global|module|plugin, 'module'=>?, 'plugin'=>?, 'lang'=>..., 'id'=>..., 'group'=>...] ]
-    ];
-
-    $seenLayouts = [];
-    $originUpdates = [];
-
-    // ---- Globais (layouts/pages/components) + variáveis globais
+    // ---------- Globais ----------
     foreach ($languages as $lang) {
-        $langInfo = $dadosMapeamentoGlobal['languages'][$lang];
-        if (!isset($langInfo['data'])) continue;
+        $langInfo = $map['languages'][$lang] ?? null; if (!$langInfo || !isset($langInfo['data'])) continue;
         $dataFiles = $langInfo['data'];
-        foreach (['layouts' => 'layouts', 'pages' => 'pages', 'components' => 'components'] as $tKey => $fileKey) {
-            if (!isset($dataFiles[$fileKey])) continue;
-            $listFile = $RESOURCES_DIR . $lang . DIRECTORY_SEPARATOR . $dataFiles[$fileKey];
-            $list = jsonRead($listFile) ?? [];
-            $changed = false;
-            foreach ($list as $idx => $item) {
-                $id = $item['id'] ?? null;
-                if (!$id) continue;
-                $paths = resourcePaths($RESOURCES_DIR, $lang, $fileKey, $id, true);
-                $html = readFileIfExists($paths['html']);
-                $css  = readFileIfExists($paths['css']);
-                $cks = buildChecksum($html, $css);
-                applyChecksumAndVersionUpdate($list[$idx], $cks, $originUpdates, "global:$lang:$fileKey");
-                if ($fileKey === 'layouts') {
-                    if (!isset($layoutIdMap[$id])) $layoutIdMap[$id] = $nextLayoutId++;
-                    if (!isset($seenLayouts[$id])) {
-                        $layoutsData[] = [
-                            'id_layouts' => $layoutIdMap[$id],
-                            'id_usuarios' => 1,
-                            'nome' => $item['name'] ?? $id,
-                            'id' => $id,
-                            'language' => $lang,
-                            'modulo' => null,
-                            'html' => $html,
-                            'css' => $css,
-                            'status' => 'A',
-                            'versao' => 1,
-                            'user_modified' => 0,
-                            'file_version' => $list[$idx]['version'] ?? '1.0',
-                            'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
-                        ];
-                        $seenLayouts[$id] = true;
-                    }
-                } elseif ($fileKey === 'pages') {
-                    $k = $lang . '||' . $id; // chave global sem módulo
-                    // Se página global tiver um módulo declarado, tentar reaproveitar ID de versão modular
-                    $maybeModule = $item['module'] ?? null;
-                    if (!isset($pageIdMap[$k]) && $maybeModule) {
-                        $modKey = $lang.'|'.$maybeModule.'|'.$id;
-                        if (isset($pageIdMap[$modKey])) {
-                            $pageIdMap[$k] = $pageIdMap[$modKey];
-                        }
-                    }
-                    $pid = $pageIdMap[$k] ?? ($pageIdMap[$k] = $nextPageId++);
-                    $pagesData[] = [
-                        'id_paginas' => $pid,
-                        'id_usuarios' => 1,
-                        'id_layouts' => null,
-                        'nome' => $item['name'] ?? $id,
-                        'id' => $id,
-                        'language' => $lang,
-                        'caminho' => $item['path'] ?? ($id . '/'),
-                        'tipo' => $item['type'] ?? 'sistema',
-                        'modulo' => $item['module'] ?? null,
-                        'opcao' => $item['option'] ?? null,
-                        'raiz' => isset($item['root']) ? (int)!!$item['root'] : null,
-                        'sem_permissao' => isset($item['without_permission']) ? (int)!!$item['without_permission'] : null,
-                        'html' => $html,
-                        'css' => $css,
-                        'status' => 'A',
-                        'versao' => 1,
-                        'user_modified' => 0,
-                        'file_version' => $list[$idx]['version'] ?? '1.0',
-                        'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
-                        '_layout_id_str' => $item['layout'] ?? null,
-                    ];
-                    // Registrar origem página global
-                    $originsIndex['paginas'][] = [
-                        'file' => $listFile,
-                        'scope' => 'global',
-                        'module' => null,
-                        'plugin' => null,
-                        'lang' => $lang,
-                        'id' => $id,
-                        'path' => $item['path'] ?? ($id . '/'),
-                    ];
-                } else { // components
-                    $k = $lang . '||' . $id;
-                    $maybeModule = $item['module'] ?? null;
-                    if (!isset($compIdMap[$k]) && $maybeModule) {
-                        $modKey = $lang.'|'.$maybeModule.'|'.$id;
-                        if (isset($compIdMap[$modKey])) { $compIdMap[$k] = $compIdMap[$modKey]; }
-                    }
-                    $cid = $compIdMap[$k] ?? ($compIdMap[$k] = $nextCompId++);
-                    $componentsData[] = [
-                        'id_componentes' => $cid,
-                        'id_usuarios' => 1,
-                        'nome' => $item['name'] ?? $id,
-                        'id' => $id,
-                        'language' => $lang,
-                        'modulo' => $item['module'] ?? null,
-                        'html' => $html,
-                        'css' => $css,
-                        'status' => 'A',
-                        'versao' => 1,
-                        'user_modified' => 0,
-                        'file_version' => $list[$idx]['version'] ?? '1.0',
-                        'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
-                    ];
-                }
+
+        // Layouts
+        if (!empty($dataFiles['layouts'])) {
+            $file = $RESOURCES_DIR.$lang.DIRECTORY_SEPARATOR.$dataFiles['layouts'];
+            $lista = jsonRead($file) ?? [];
+            foreach ($lista as $l) {
+                $id = $l['id'] ?? null; if(!$id){$orphans['layouts'][]=$l+['_motivo'=>'sem id','language'=>$lang];continue;}
+                $key = $lang.'|'.$id;
+                if(isset($idxLayouts[$key])){ $orphans['layouts'][]=$l+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
+                $idxLayouts[$key]=true;
+                $paths = resourcePaths($RESOURCES_DIR,$lang,'layouts',$id,true);
+                $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
+                [$versao,$cks] = $versaoChecksum('layouts',$key,$html,$css);
+                $layouts[] = [
+                    'nome' => $l['name'] ?? ($l['nome'] ?? $id),
+                    'id' => $id,
+                    'language' => $lang,
+                    'html' => $html,
+                    'css' => $css,
+                    'status' => $l['status'] ?? 'A',
+                    'versao' => $versao,
+                    'file_version' => $l['version'] ?? null,
+                    'checksum' => json_encode($cks,JSON_UNESCAPED_UNICODE)
+                ];
             }
-            // Persistir origem se mudou
-            jsonWrite($listFile, $list);
         }
 
-        // Variáveis globais (variables.json)
-        if (isset($dataFiles['variables'])) {
-            $varsFile = $RESOURCES_DIR . $lang . DIRECTORY_SEPARATOR . $dataFiles['variables'];
-            $vars = jsonRead($varsFile) ?? [];
-            foreach ($vars as $v) {
-                $id = $v['id'] ?? null; if (!$id) continue;
-                $mod = $v['modulo'] ?? null; // em globais pode existir modulo campo
-                $k = $lang . '|' . ($mod ?? '') . '|' . $id;
-                // Atribuição de ID de variável considerando múltiplos grupos distintos
-                $grp = $v['group'] ?? null;
-                if (!isset($varIdMap[$k])) {
-                    // Primeiro encontro dessa base (lang|mod|id)
-                    $varIdMap[$k] = [
-                        'primary_id' => $nextVarId++,
-                        'groups' => []
-                    ];
-                }
-                if ($grp !== null && $grp !== '') {
-                    if (!isset($varIdMap[$k]['groups'][$grp])) {
-                        // Novo grupo distinto: gera novo id_variaveis sem reutilizar o primary_id
-                        $varIdMap[$k]['groups'][$grp] = $nextVarId++;
-                    }
-                    $assignedId = $varIdMap[$k]['groups'][$grp];
-                } else {
-                    // Sem grupo: sempre usa primary_id
-                    $assignedId = $varIdMap[$k]['primary_id'];
-                }
-                $variablesData[] = [
-                    'id_variaveis' => (string)$assignedId,
-                    'linguagem_codigo' => $lang,
-                    'modulo' => $mod,
+        // Componentes
+        if (!empty($dataFiles['components'])) {
+            $file = $RESOURCES_DIR.$lang.DIRECTORY_SEPARATOR.$dataFiles['components'];
+            $lista = jsonRead($file) ?? [];
+            foreach ($lista as $c) {
+                $id = $c['id'] ?? null; if(!$id){$orphans['componentes'][]=$c+['_motivo'=>'sem id','language'=>$lang];continue;}
+                $key = $lang.'|'.$id; if(isset($idxComponentes[$key])){$orphans['componentes'][]=$c+['_motivo'=>'duplicidade id','language'=>$lang];continue;}
+                $idxComponentes[$key]=true;
+                $paths = resourcePaths($RESOURCES_DIR,$lang,'components',$id,true);
+                $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
+                [$versao,$cks] = $versaoChecksum('componentes',$key,$html,$css);
+                $componentes[] = [
+                    'nome' => $c['name'] ?? ($c['nome'] ?? $id),
                     'id' => $id,
-                    'valor' => $v['value'] ?? null,
-                    'tipo' => $v['type'] ?? null,
-                    'grupo' => $v['group'] ?? null,
-                    'descricao' => $v['description'] ?? null,
+                    'language' => $lang,
+                    'modulo' => $c['module'] ?? ($c['modulo'] ?? null),
+                    'html' => $html,
+                    'css' => $css,
+                    'status' => $c['status'] ?? 'A',
+                    'versao' => $versao,
+                    'file_version' => $c['version'] ?? null,
+                    'checksum' => json_encode($cks,JSON_UNESCAPED_UNICODE)
                 ];
-                $originsIndex['variaveis'][] = [
-                    'file' => $varsFile,
-                    'scope' => 'global',
-                    'module' => $mod,
-                    'plugin' => null,
-                    'lang' => $lang,
+            }
+        }
+
+        // Páginas
+        if (!empty($dataFiles['pages'])) {
+            $file = $RESOURCES_DIR.$lang.DIRECTORY_SEPARATOR.$dataFiles['pages'];
+            $lista = jsonRead($file) ?? [];
+            foreach ($lista as $p) {
+                $id = $p['id'] ?? null; if(!$id){$orphans['paginas'][]=$p+['_motivo'=>'sem id','language'=>$lang];continue;}
+                $mod = $p['module'] ?? ($p['modulo'] ?? null);
+                $path = $p['path'] ?? ($p['caminho'] ?? ($id.'/'));
+                $kId = $lang.'|'.($mod??'').'|'.$id; if(isset($idxPaginasId[$kId])){$orphans['paginas'][]=$p+['_motivo'=>'duplicidade id','language'=>$lang];continue;}
+                $kPath = $lang.'|'.strtolower(trim($path,'/')); if(isset($idxPaginasPath[$kPath])){$orphans['paginas'][]=$p+['_motivo'=>'duplicidade caminho','language'=>$lang];continue;}
+                $idxPaginasId[$kId]=true; $idxPaginasPath[$kPath]=true;
+                $paths = resourcePaths($RESOURCES_DIR,$lang,'pages',$id,true);
+                $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
+                [$versao,$cks] = $versaoChecksum('paginas',$kId,$html,$css);
+                $paginas[] = [
+                    'layout_id' => $p['layout'] ?? null,
+                    'nome' => $p['name'] ?? ($p['nome'] ?? $id),
                     'id' => $id,
-                    'group' => $v['group'] ?? null,
+                    'language' => $lang,
+                    'caminho' => $path,
+                    'tipo' => $p['type'] ?? ($p['tipo'] ?? null),
+                    'modulo' => $mod,
+                    'opcao' => $p['option'] ?? ($p['opcao'] ?? null),
+                    'raiz' => $p['root'] ?? ($p['raiz'] ?? null),
+                    'sem_permissao' => $p['without_permission'] ?? ($p['sem_permissao'] ?? null),
+                    'html' => $html,
+                    'css' => $css,
+                    'status' => $p['status'] ?? 'A',
+                    'versao' => $versao,
+                    'file_version' => $p['version'] ?? null,
+                    'checksum' => json_encode($cks,JSON_UNESCAPED_UNICODE)
+                ];
+            }
+        }
+
+        // Variáveis globais
+        if (!empty($dataFiles['variables'])) {
+            $file = $RESOURCES_DIR.$lang.DIRECTORY_SEPARATOR.$dataFiles['variables'];
+            $lista = jsonRead($file) ?? [];
+            foreach ($lista as $v) {
+                $id = $v['id'] ?? null; if(!$id){$orphans['variaveis'][]=$v+['_motivo'=>'sem id','linguagem_codigo'=>$lang];continue;}
+                $mod = $v['module'] ?? ($v['modulo'] ?? '');
+                $grp = $v['group'] ?? ($v['grupo'] ?? null);
+                $base = $lang.'|'.$mod.'|'.$id;
+                if(!isset($idxVariaveis[$base])) $idxVariaveis[$base]=[];
+                $groups = $idxVariaveis[$base];
+                if($grp===null || $grp==='') { // sem group permitido somente se nenhum group já existe
+                    if(!empty($groups) || in_array('', $groups,true)) { $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade sem group','linguagem_codigo'=>$lang]; continue; }
+                } else { // com group
+                    if(in_array($grp,$groups,true)) { $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade group repetido','linguagem_codigo'=>$lang]; continue; }
+                }
+                $idxVariaveis[$base][] = ($grp ?? '');
+                $variaveis[] = [
+                    'linguagem_codigo' => $lang,
+                    'modulo' => $mod!=='' ? $mod : null,
+                    'id' => $id,
+                    'valor' => $v['value'] ?? ($v['valor'] ?? null),
+                    'tipo' => $v['type'] ?? ($v['tipo'] ?? null),
+                    'grupo' => $grp,
+                    'descricao' => $v['description'] ?? ($v['descricao'] ?? null),
                 ];
             }
         }
     }
 
-    // ---- Módulos
+    // ---------- Módulos ----------
     if (is_dir($MODULES_DIR)) {
-        $mods = glob($MODULES_DIR . '*', GLOB_ONLYDIR) ?: [];
+        $mods = glob($MODULES_DIR.'*',GLOB_ONLYDIR) ?: [];
         foreach ($mods as $modPath) {
             $modId = basename($modPath);
-            $jsonFile = $modPath . DIRECTORY_SEPARATOR . $modId . '.json';
-            $modData = jsonRead($jsonFile);
-            if (!$modData) continue;
+            $jsonFile = $modPath.DIRECTORY_SEPARATOR.$modId.'.json';
+            $data = jsonRead($jsonFile); if(!$data) continue;
             foreach ($languages as $lang) {
-                if (!isset($modData['resources'][$lang])) continue;
-                // Layouts/Pages/Components
-                foreach (['layouts', 'pages', 'components'] as $type) {
-                    $arr = $modData['resources'][$lang][$type] ?? [];
-                    foreach ($arr as $idx => $item) {
-                        $id = $item['id'] ?? null; if (!$id) continue;
-                        $paths = resourcePaths($modPath, $lang, $type, $id);
-                        $html = readFileIfExists($paths['html']);
-                        $css  = readFileIfExists($paths['css']);
-                        $cks = buildChecksum($html, $css);
-                        applyChecksumAndVersionUpdate($modData['resources'][$lang][$type][$idx], $cks, $originUpdates, "module:$modId:$lang:$type");
-                        if ($type === 'layouts') {
-                            if (!isset($layoutIdMap[$id])) $layoutIdMap[$id] = $nextLayoutId++;
-                            if (!isset($seenLayouts[$id])) {
-                                $layoutsData[] = [
-                                    'id_layouts' => $layoutIdMap[$id],
-                                    'id_usuarios' => 1,
-                                    'nome' => $item['name'] ?? $id,
-                                    'id' => $id,
-                                    'language' => $lang,
-                                    'modulo' => $modId,
-                                    'html' => $html,
-                                    'css' => $css,
-                                    'status' => 'A',
-                                    'versao' => 1,
-                                    'user_modified' => 0,
-                                    'file_version' => $modData['resources'][$lang][$type][$idx]['version'] ?? '1.0',
-                                    'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
-                                ];
-                                $seenLayouts[$id] = true;
-                            }
-                        } elseif ($type === 'pages') {
-                            $k = $lang . '|' . $modId . '|' . $id;
-                            if (!isset($pageIdMap[$k])) {
-                                // Reaproveita ID global caso exista (mudança de classificação)
-                                $globalKey = $lang . '||' . $id;
-                                if (isset($pageIdMap[$globalKey])) {
-                                    $pageIdMap[$k] = $pageIdMap[$globalKey];
-                                }
-                            }
-                            $pid = $pageIdMap[$k] ?? ($pageIdMap[$k] = $nextPageId++);
-                            $pagesData[] = [
-                                'id_paginas' => $pid,
-                                'id_usuarios' => 1,
-                                'id_layouts' => null,
-                                'nome' => $item['name'] ?? $id,
-                                'id' => $id,
-                                'language' => $lang,
-                                'caminho' => $item['path'] ?? ($id . '/'),
-                                'tipo' => $item['type'] ?? 'sistema',
-                                'modulo' => $modId,
-                                'opcao' => $item['option'] ?? null,
-                                'raiz' => isset($item['root']) ? (int)!!$item['root'] : null,
-                                'sem_permissao' => isset($item['without_permission']) ? (int)!!$item['without_permission'] : null,
-                                'html' => $html,
-                                'css' => $css,
-                                'status' => 'A',
-                                'versao' => 1,
-                                'user_modified' => 0,
-                                'file_version' => $modData['resources'][$lang][$type][$idx]['version'] ?? '1.0',
-                                'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
-                                '_layout_id_str' => $item['layout'] ?? null,
-                            ];
-                            $originsIndex['paginas'][] = [
-                                'file' => $jsonFile,
-                                'scope' => 'module',
-                                'module' => $modId,
-                                'plugin' => null,
-                                'lang' => $lang,
-                                'id' => $id,
-                                'path' => $item['path'] ?? ($id . '/'),
-                            ];
-                        } else { // components
-                            $k = $lang . '|' . $modId . '|' . $id;
-                            if (!isset($compIdMap[$k])) {
-                                $globalKey = $lang . '||' . $id;
-                                if (isset($compIdMap[$globalKey])) { $compIdMap[$k] = $compIdMap[$globalKey]; }
-                            }
-                            $cid = $compIdMap[$k] ?? ($compIdMap[$k] = $nextCompId++);
-                            $componentsData[] = [
-                                'id_componentes' => $cid,
-                                'id_usuarios' => 1,
-                                'nome' => $item['name'] ?? $id,
-                                'id' => $id,
-                                'language' => $lang,
-                                'modulo' => $modId,
-                                'html' => $html,
-                                'css' => $css,
-                                'status' => 'A',
-                                'versao' => 1,
-                                'user_modified' => 0,
-                                'file_version' => $modData['resources'][$lang][$type][$idx]['version'] ?? '1.0',
-                                'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
-                            ];
+                if(empty($data['resources'][$lang])) continue;
+                $res = $data['resources'][$lang];
+                foreach (['layouts','components','pages'] as $tipo) {
+                    $arr = $res[$tipo] ?? [];
+                    foreach ($arr as $item) {
+                        $id = $item['id'] ?? null; if(!$id) continue;
+                        $paths = resourcePaths($modPath,$lang,$tipo,$id);
+                        $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
+                        if ($tipo==='layouts') {
+                            $key = $lang.'|'.$id; if(isset($idxLayouts[$key])) { $orphans['layouts'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
+                            $idxLayouts[$key]=true; [$versao,$cks]=$versaoChecksum('layouts',$key,$html,$css);
+                            $layouts[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                        } elseif ($tipo==='components') {
+                            $key = $lang.'|'.$id; if(isset($idxComponentes[$key])) { $orphans['componentes'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
+                            $idxComponentes[$key]=true; [$versao,$cks]=$versaoChecksum('componentes',$key,$html,$css);
+                            $componentes[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                        } else { // pages
+                            $path = $item['path'] ?? ($id.'/');
+                            $kId = $lang.'|'.$modId.'|'.$id; if(isset($idxPaginasId[$kId])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
+                            $kPath = $lang.'|'.strtolower(trim($path,'/')); if(isset($idxPaginasPath[$kPath])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade caminho','language'=>$lang,'modulo'=>$modId]; continue; }
+                            $idxPaginasId[$kId]=true; $idxPaginasPath[$kPath]=true; [$versao,$cks]=$versaoChecksum('paginas',$kId,$html,$css);
+                            $paginas[] = [ 'layout_id'=>$item['layout'] ?? null,'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'caminho'=>$path,'tipo'=>$item['type'] ?? null,'modulo'=>$modId,'opcao'=>$item['option'] ?? null,'raiz'=>$item['root'] ?? null,'sem_permissao'=>$item['without_permission'] ?? null,'html'=>$html,'css'=>$css,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
                         }
                     }
                 }
-                // Variáveis de módulo
-                if (isset($modData['resources'][$lang]['variables'])) {
-                    foreach ($modData['resources'][$lang]['variables'] as $v) {
-                        $id = $v['id'] ?? null; if (!$id) continue;
-                        $k = $lang . '|' . $modId . '|' . $id;
-                        $grp = $v['group'] ?? null;
-                        if (!isset($varIdMap[$k])) {
-                            $varIdMap[$k] = [
-                                'primary_id' => $nextVarId++,
-                                'groups' => []
-                            ];
-                        }
-                        if ($grp !== null && $grp !== '') {
-                            if (!isset($varIdMap[$k]['groups'][$grp])) {
-                                $varId = $nextVarId++;
-                                $varIdMap[$k]['groups'][$grp] = $varId;
-                            }
-                            $assignedId = $varIdMap[$k]['groups'][$grp];
-                        } else {
-                            $assignedId = $varIdMap[$k]['primary_id'];
-                        }
-                        $variablesData[] = [
-                            'id_variaveis' => (string)$assignedId,
-                            'linguagem_codigo' => $lang,
-                            'modulo' => $modId,
-                            'id' => $id,
-                            'valor' => $v['value'] ?? null,
-                            'tipo' => $v['type'] ?? null,
-                            'grupo' => $v['group'] ?? null,
-                            'descricao' => $v['description'] ?? null,
-                        ];
-                        $originsIndex['variaveis'][] = [
-                            'file' => $jsonFile,
-                            'scope' => 'module',
-                            'module' => $modId,
-                            'plugin' => null,
-                            'lang' => $lang,
-                            'id' => $id,
-                            'group' => $v['group'] ?? null,
-                        ];
+                if (!empty($res['variables'])) {
+                    foreach ($res['variables'] as $v) {
+                        $id = $v['id'] ?? null; if(!$id) continue;
+                        $grp = $v['group'] ?? null; $base = $lang.'|'.$modId.'|'.$id;
+                        if(!isset($idxVariaveis[$base])) $idxVariaveis[$base]=[];
+                        $groups = $idxVariaveis[$base];
+                        if($grp===null || $grp==='') { if(!empty($groups) || in_array('', $groups,true)){ $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade sem group','linguagem_codigo'=>$lang,'modulo'=>$modId]; continue; } }
+                        else { if(in_array($grp,$groups,true)){ $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade group repetido','linguagem_codigo'=>$lang,'modulo'=>$modId]; continue; } }
+                        $idxVariaveis[$base][] = ($grp ?? '');
+                        $variaveis[] = [ 'linguagem_codigo'=>$lang,'modulo'=>$modId,'id'=>$id,'valor'=>$v['value'] ?? null,'tipo'=>$v['type'] ?? null,'grupo'=>$grp,'descricao'=>$v['description'] ?? null ];
                     }
                 }
             }
-            // Persistir se versões/cks alterados
-            jsonWrite($jsonFile, $modData);
         }
     }
 
-    // ---- Plugins
+    // ---------- Plugins (mesma lógica de módulos, caminho diferente) ----------
     if (is_dir($PLUGINS_DIR)) {
-        $plugins = glob($PLUGINS_DIR . '*', GLOB_ONLYDIR) ?: [];
+        $plugins = glob($PLUGINS_DIR.'*',GLOB_ONLYDIR) ?: [];
         foreach ($plugins as $plugPath) {
             $plugId = basename($plugPath);
-            $modsBase = $plugPath . DIRECTORY_SEPARATOR . 'local' . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR;
-            if (!is_dir($modsBase)) continue;
-            $plugMods = glob($modsBase . '*', GLOB_ONLYDIR) ?: [];
-            foreach ($plugMods as $modPath) {
+            $modsBase = $plugPath.DIRECTORY_SEPARATOR.'local'.DIRECTORY_SEPARATOR.'modulos'.DIRECTORY_SEPARATOR;
+            if(!is_dir($modsBase)) continue;
+            $mods = glob($modsBase.'*',GLOB_ONLYDIR) ?: [];
+            foreach ($mods as $modPath) {
                 $modId = basename($modPath);
-                $jsonFile = $modPath . DIRECTORY_SEPARATOR . $modId . '.json';
-                $modData = jsonRead($jsonFile);
-                if (!$modData) continue;
+                $jsonFile = $modPath.DIRECTORY_SEPARATOR.$modId.'.json';
+                $data = jsonRead($jsonFile); if(!$data) continue;
                 foreach ($languages as $lang) {
-                    if (!isset($modData['resources'][$lang])) continue;
-                    foreach (['layouts', 'pages', 'components'] as $type) {
-                        $arr = $modData['resources'][$lang][$type] ?? [];
-                        foreach ($arr as $idx => $item) {
-                            $id = $item['id'] ?? null; if (!$id) continue;
-                            $paths = resourcePaths($modPath, $lang, $type, $id);
-                            $html = readFileIfExists($paths['html']);
-                            $css  = readFileIfExists($paths['css']);
-                            $cks = buildChecksum($html, $css);
-                            applyChecksumAndVersionUpdate($modData['resources'][$lang][$type][$idx], $cks, $originUpdates, "plugin:$plugId:$modId:$lang:$type");
-                            if ($type === 'layouts') {
-                                if (!isset($layoutIdMap[$id])) $layoutIdMap[$id] = $nextLayoutId++;
-                                if (!isset($seenLayouts[$id])) {
-                                    $layoutsData[] = [
-                                        'id_layouts' => $layoutIdMap[$id],
-                                        'id_usuarios' => 1,
-                                        'nome' => $item['name'] ?? $id,
-                                        'id' => $id,
-                                        'language' => $lang,
-                                        'modulo' => $modId,
-                                        'html' => $html,
-                                        'css' => $css,
-                                        'status' => 'A',
-                                        'versao' => 1,
-                                        'user_modified' => 0,
-                                        'file_version' => $modData['resources'][$lang][$type][$idx]['version'] ?? '1.0',
-                                        'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
-                                    ];
-                                    $seenLayouts[$id] = true;
-                                }
-                            } elseif ($type === 'pages') {
-                                $k = $lang . '|' . $modId . '|' . $id;
-                                if (!isset($pageIdMap[$k])) {
-                                    $globalKey = $lang . '||' . $id;
-                                    if (isset($pageIdMap[$globalKey])) { $pageIdMap[$k] = $pageIdMap[$globalKey]; }
-                                }
-                                $pid = $pageIdMap[$k] ?? ($pageIdMap[$k] = $nextPageId++);
-                                $pagesData[] = [
-                                    'id_paginas' => $pid,
-                                    'id_usuarios' => 1,
-                                    'id_layouts' => null,
-                                    'nome' => $item['name'] ?? $id,
-                                    'id' => $id,
-                                    'language' => $lang,
-                                    'caminho' => $item['path'] ?? ($id . '/'),
-                                    'tipo' => $item['type'] ?? 'sistema',
-                                    'modulo' => $modId,
-                                    'opcao' => $item['option'] ?? null,
-                                    'raiz' => isset($item['root']) ? (int)!!$item['root'] : null,
-                                    'sem_permissao' => isset($item['without_permission']) ? (int)!!$item['without_permission'] : null,
-                                    'html' => $html,
-                                    'css' => $css,
-                                    'status' => 'A',
-                                    'versao' => 1,
-                                    'user_modified' => 0,
-                                    'file_version' => $modData['resources'][$lang][$type][$idx]['version'] ?? '1.0',
-                                    'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
-                                    '_layout_id_str' => $item['layout'] ?? null,
-                                ];
-                                $originsIndex['paginas'][] = [
-                                    'file' => $jsonFile,
-                                    'scope' => 'plugin',
-                                    'module' => $modId,
-                                    'plugin' => $plugId,
-                                    'lang' => $lang,
-                                    'id' => $id,
-                                    'path' => $item['path'] ?? ($id . '/'),
-                                ];
-                            } else { // components
-                                $k = $lang . '|' . $modId . '|' . $id;
-                                if (!isset($compIdMap[$k])) {
-                                    $globalKey = $lang . '||' . $id;
-                                    if (isset($compIdMap[$globalKey])) { $compIdMap[$k] = $compIdMap[$globalKey]; }
-                                }
-                                $cid = $compIdMap[$k] ?? ($compIdMap[$k] = $nextCompId++);
-                                $componentsData[] = [
-                                    'id_componentes' => $cid,
-                                    'id_usuarios' => 1,
-                                    'nome' => $item['name'] ?? $id,
-                                    'id' => $id,
-                                    'language' => $lang,
-                                    'modulo' => $modId,
-                                    'html' => $html,
-                                    'css' => $css,
-                                    'status' => 'A',
-                                    'versao' => 1,
-                                    'user_modified' => 0,
-                                    'file_version' => $modData['resources'][$lang][$type][$idx]['version'] ?? '1.0',
-                                    'checksum' => json_encode($cks, JSON_UNESCAPED_UNICODE),
-                                ];
+                    if(empty($data['resources'][$lang])) continue;
+                    $res = $data['resources'][$lang];
+                    foreach (['layouts','components','pages'] as $tipo) {
+                        $arr = $res[$tipo] ?? [];
+                        foreach ($arr as $item) {
+                            $id = $item['id'] ?? null; if(!$id) continue;
+                            $paths = resourcePaths($modPath,$lang,$tipo,$id);
+                            $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
+                            if ($tipo==='layouts') {
+                                $key=$lang.'|'.$id; if(isset($idxLayouts[$key])) { $orphans['layouts'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId,'plugin'=>$plugId]; continue; }
+                                $idxLayouts[$key]=true; [$versao,$cks]=$versaoChecksum('layouts',$key,$html,$css);
+                                $layouts[]=[ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE),'plugin'=>$plugId ];
+                            } elseif ($tipo==='components') {
+                                $key=$lang.'|'.$id; if(isset($idxComponentes[$key])) { $orphans['componentes'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId,'plugin'=>$plugId]; continue; }
+                                $idxComponentes[$key]=true; [$versao,$cks]=$versaoChecksum('componentes',$key,$html,$css);
+                                $componentes[]=[ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE),'plugin'=>$plugId ];
+                            } else { // pages
+                                $path = $item['path'] ?? ($id.'/');
+                                $kId=$lang.'|'.$modId.'|'.$id; if(isset($idxPaginasId[$kId])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId,'plugin'=>$plugId]; continue; }
+                                $kPath=$lang.'|'.strtolower(trim($path,'/')); if(isset($idxPaginasPath[$kPath])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade caminho','language'=>$lang,'modulo'=>$modId,'plugin'=>$plugId]; continue; }
+                                $idxPaginasId[$kId]=true; $idxPaginasPath[$kPath]=true; [$versao,$cks]=$versaoChecksum('paginas',$kId,$html,$css);
+                                $paginas[]=[ 'layout_id'=>$item['layout'] ?? null,'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'caminho'=>$path,'tipo'=>$item['type'] ?? null,'modulo'=>$modId,'opcao'=>$item['option'] ?? null,'raiz'=>$item['root'] ?? null,'sem_permissao'=>$item['without_permission'] ?? null,'html'=>$html,'css'=>$css,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE),'plugin'=>$plugId ];
                             }
                         }
                     }
-                    // Variáveis plugin
-                    if (isset($modData['resources'][$lang]['variables'])) {
-                        foreach ($modData['resources'][$lang]['variables'] as $v) {
-                            $id = $v['id'] ?? null; if (!$id) continue;
-                            $k = $lang . '|' . $modId . '|' . $id;
-                            $grp = $v['group'] ?? null;
-                            if (!isset($varIdMap[$k])) {
-                                $varIdMap[$k] = [
-                                    'primary_id' => $nextVarId++,
-                                    'groups' => []
-                                ];
-                            }
-                            if ($grp !== null && $grp !== '') {
-                                if (!isset($varIdMap[$k]['groups'][$grp])) {
-                                    $varIdMap[$k]['groups'][$grp] = $nextVarId++;
-                                }
-                                $assignedId = $varIdMap[$k]['groups'][$grp];
-                            } else {
-                                $assignedId = $varIdMap[$k]['primary_id'];
-                            }
-                            $variablesData[] = [
-                                'id_variaveis' => (string)$assignedId,
-                                'linguagem_codigo' => $lang,
-                                'modulo' => $modId,
-                                'id' => $id,
-                                'valor' => $v['value'] ?? null,
-                                'tipo' => $v['type'] ?? null,
-                                'grupo' => $v['group'] ?? null,
-                                'descricao' => $v['description'] ?? null,
-                            ];
-                            $originsIndex['variaveis'][] = [
-                                'file' => $jsonFile,
-                                'scope' => 'plugin',
-                                'module' => $modId,
-                                'plugin' => $plugId,
-                                'lang' => $lang,
-                                'id' => $id,
-                                'group' => $v['group'] ?? null,
-                            ];
+                    if (!empty($res['variables'])) {
+                        foreach ($res['variables'] as $v) {
+                            $id = $v['id'] ?? null; if(!$id) continue; $grp = $v['group'] ?? null; $base=$lang.'|'.$modId.'|'.$id;
+                            if(!isset($idxVariaveis[$base])) $idxVariaveis[$base]=[]; $groups=$idxVariaveis[$base];
+                            if($grp===null || $grp===''){ if(!empty($groups)||in_array('', $groups,true)){ $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade sem group','linguagem_codigo'=>$lang,'modulo'=>$modId,'plugin'=>$plugId]; continue; } }
+                            else { if(in_array($grp,$groups,true)){ $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade group repetido','linguagem_codigo'=>$lang,'modulo'=>$modId,'plugin'=>$plugId]; continue; } }
+                            $idxVariaveis[$base][] = ($grp ?? '');
+                            $variaveis[]=[ 'linguagem_codigo'=>$lang,'modulo'=>$modId,'id'=>$id,'valor'=>$v['value'] ?? null,'tipo'=>$v['type'] ?? null,'grupo'=>$grp,'descricao'=>$v['description'] ?? null,'plugin'=>$plugId ];
                         }
                     }
                 }
-                jsonWrite($jsonFile, $modData);
             }
         }
     }
 
-    // Resolver id_layouts nas páginas
-    foreach ($pagesData as &$p) {
-        if (!empty($p['_layout_id_str'])) {
-            $lid = $p['_layout_id_str'];
-            $p['id_layouts'] = $layoutIdMap[$lid] ?? null;
-        }
-        unset($p['_layout_id_str']);
-    }
-    unset($p);
-
     log_disco(_('_collected_summary', [
-        'layouts' => count($layoutsData),
-        'pages' => count($pagesData),
-        'components' => count($componentsData),
-        'variables' => count($variablesData),
+        'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'variables'=>count($variaveis)
     ]), $LOG_FILE);
 
     return [
-        'layoutsData' => $layoutsData,
-        'pagesData' => $pagesData,
-        'componentsData' => $componentsData,
-        'variablesData' => $variablesData,
-        'originsIndex' => $originsIndex,
+        'layoutsData'=>$layouts,
+        'pagesData'=>$paginas,
+        'componentsData'=>$componentes,
+        'variablesData'=>$variaveis,
+        'orphans'=>$orphans,
     ];
 }
 
@@ -801,12 +507,18 @@ function coletarRecursos(array $dadosExistentes, array $dadosMapeamentoGlobal): 
  * Persiste os Data.json finais.
  */
 function atualizarDados(array $dadosExistentes, array $recursos): void {
-    global $DB_DATA_DIR, $LOG_FILE;
-    jsonWrite($DB_DATA_DIR . 'LayoutsData.json', $recursos['layoutsData']);
-    jsonWrite($DB_DATA_DIR . 'PaginasData.json', $recursos['pagesData']);
-    jsonWrite($DB_DATA_DIR . 'ComponentesData.json', $recursos['componentsData']);
-    jsonWrite($DB_DATA_DIR . 'VariaveisData.json', $recursos['variablesData']);
-    log_disco(_('_data_written'), $LOG_FILE);
+    global $DB_DATA_DIR, $GESTOR_DIR, $LOG_FILE;
+    jsonWrite($DB_DATA_DIR.'LayoutsData.json', $recursos['layoutsData']);
+    jsonWrite($DB_DATA_DIR.'PaginasData.json', $recursos['pagesData']);
+    jsonWrite($DB_DATA_DIR.'ComponentesData.json', $recursos['componentsData']);
+    jsonWrite($DB_DATA_DIR.'VariaveisData.json', $recursos['variablesData']);
+    $orphDir = $GESTOR_DIR.'db'.DIRECTORY_SEPARATOR.'orphans'.DIRECTORY_SEPARATOR;
+    if(!is_dir($orphDir)) @mkdir($orphDir,0775,true);
+    foreach (['Layouts','Paginas','Componentes','Variaveis'] as $T) {
+        $k = strtolower($T);
+        jsonWrite($orphDir.$T.'Data.json', $recursos['orphans'][$k] ?? []);
+    }
+    log_disco('Dados persistidos + órfãos.', $LOG_FILE);
 }
 
 // ========================= 5) SEEDERS (Garantir) =========================
@@ -817,254 +529,69 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
 function garantirSeeders(): void {
     global $SEEDS_DIR, $LOG_FILE;
     $defs = [
-        ['LayoutsSeeder', 'layouts', 'LayoutsData.json', 'layouts'],
-        ['PaginasSeeder', 'paginas', 'PaginasData.json', 'paginas'],
-        ['ComponentesSeeder', 'componentes', 'ComponentesData.json', 'componentes'],
-        ['VariaveisSeeder', 'variaveis', 'VariaveisData.json', 'variaveis'],
+        ['LayoutsSeeder','layouts','LayoutsData.json'],
+        ['PaginasSeeder','paginas','PaginasData.json'],
+        ['ComponentesSeeder','componentes','ComponentesData.json'],
+        ['VariaveisSeeder','variaveis','VariaveisData.json'],
     ];
-    foreach ($defs as [$class, $table, $dataFile, $tag]) {
-        $path = $SEEDS_DIR . $class . '.php';
-        if (file_exists($path)) {
-            log_disco(_('_seeder_exists', ['seeder' => $class]), $LOG_FILE);
-            continue;
-        }
-        $code = "<?php\n\ndeclare(strict_types=1);\n\nuse Phinx\\Seed\\AbstractSeed;\n\nfinal class $class extends AbstractSeed\n{\n    public function run(): void\n    {\n        $data = json_decode(file_get_contents(__DIR__ . '/../data/$dataFile'), true);\n        if (count($data) > 0) {\n            $table = $this->table('$table');\n            if (method_exists($table, 'truncate')) {\n                $table->truncate();\n            }\n            $table->insert($data)->saveData();\n        }\n    }\n}\n";
-        file_put_contents($path, $code);
-    log_disco(_('_seeder_created', ['seeder' => $class]), $LOG_FILE);
+    foreach ($defs as [$class,$table,$file]) {
+        $path = $SEEDS_DIR.$class.'.php';
+        if (file_exists($path)) continue;
+        $code = "<?php\n\ndeclare(strict_types=1);\nuse Phinx\\Seed\\AbstractSeed;\nfinal class $class extends AbstractSeed { public function run(): void { $data = json_decode(file_get_contents(__DIR__.'/../data/$file'), true); if(!empty($data)){ $t=$this->table('$table'); if(method_exists($t,'truncate')){ $t->truncate(); } $t->insert($data)->saveData(); } } }\n";
+        file_put_contents($path,$code);
+        log_disco("Seeder criado: $class", $LOG_FILE);
     }
 }
 
 // ========================= 6) REPORTE FINAL =========================
 
-/**
- * Valida duplicidades sem alterar Data.json; retorna relatório e metadados para marcar origem.
- * Regras:
- *  - Páginas: duplicidade de id (mesmo lang+modulo) ou caminho (mesmo lang independente de módulo) => erro.
- *  - Variáveis: duplicidade de id (mesmo lang+modulo) É PERMITIDA se TODOS os registros desse conjunto tiverem 'group' definido E existirem múltiplos valores distintos de group.
- */
 function validarDuplicidades(array $recursos): array {
-    $report = [];
-    $dupsMeta = [];
-
-    // Páginas (por id dentro de lang+mod) & caminho por lang
-    $byPageId = [];
-    $byPath = [];
-    foreach ($recursos['pagesData'] as $p) {
-        $lang = $p['language']; $mod = $p['modulo'] ?? ''; $id = $p['id']; $path = $p['caminho'];
-        $kId = $lang . '|' . $mod . '|' . $id;
-        $byPageId[$kId][] = $p;
-        $kPath = $lang . '|' . strtolower(trim($path, '/'));
-        $byPath[$kPath][] = $p;
+    $erros = [];
+    foreach (['layouts','paginas','componentes','variaveis'] as $t) {
+        $q = count($recursos['orphans'][$t] ?? []); if($q>0) $erros[] = "$t: $q órfãos";
     }
-    foreach ($byPageId as $k => $list) {
-        if (count($list) > 1) {
-            $id = $list[0]['id'];
-            $report['paginas']['id'][] = $id;
-            foreach ($list as $item) {
-                $dupsMeta[] = [
-                    'tipo' => 'paginas',
-                    'campo' => 'id',
-                    'id' => $item['id'],
-                    'path' => $item['caminho'],
-                    'lang' => $item['language'],
-                    'module' => $item['modulo'] ?? null,
-                    'msg' => _("dup_pages_id", ['id' => $item['id']]),
-                ];
-            }
-        }
-    }
-    foreach ($byPath as $k => $list) {
-        if (count($list) > 1) {
-            $path = $list[0]['caminho'];
-            $report['paginas']['caminho'][] = $path;
-            foreach ($list as $item) {
-                $dupsMeta[] = [
-                    'tipo' => 'paginas',
-                    'campo' => 'caminho',
-                    'id' => $item['id'],
-                    'path' => $item['caminho'],
-                    'lang' => $item['language'],
-                    'module' => $item['modulo'] ?? null,
-                    'msg' => _("dup_pages_path", ['path' => $item['caminho']]),
-                ];
-            }
-        }
-    }
-
-    // Variáveis (agrupadas por lang+module+id)
-    $byVar = [];
-    foreach ($recursos['variablesData'] as $v) {
-        $k = $v['linguagem_codigo'] . '|' . ($v['modulo'] ?? '') . '|' . $v['id'];
-        $byVar[$k][] = $v;
-    }
-    foreach ($byVar as $k => $list) {
-        if (count($list) > 1) {
-            $groups = [];
-            $allHaveGroup = true;
-            foreach ($list as $item) {
-                $g = $item['grupo'] ?? null;
-                if ($g === null || $g === '') { $allHaveGroup = false; }
-                $groups[$g ?? ''] = true;
-            }
-            $distinctGroups = count($groups);
-            // Permitido se todos têm group e groups > 1
-            if (!($allHaveGroup && $distinctGroups > 1)) {
-                $id = $list[0]['id'];
-                $report['variaveis']['id'][] = $id;
-                foreach ($list as $item) {
-                    $dupsMeta[] = [
-                        'tipo' => 'variaveis',
-                        'campo' => 'id',
-                        'id' => $item['id'],
-                        'group' => $item['grupo'] ?? null,
-                        'lang' => $item['linguagem_codigo'],
-                        'module' => $item['modulo'] ?? null,
-                        'msg' => _("dup_vars_id", ['id' => $item['id']]),
-                    ];
-                }
-            }
-        }
-    }
-
-    return ['report' => $report, 'meta' => $dupsMeta];
+    return $erros;
 }
 
 /**
  * Aplica os erros diretamente nos arquivos de origem (globais, módulos, plugins).
  * @param array $dupsMeta Lista de duplicados com metadados e mensagem.
  */
-function aplicarErrosOrigem(array $dupsMeta, array $originsIndex): void {
-    // Indexar por (lang,module,id,path,group)
-    $indexPag = [];
-    foreach ($originsIndex['paginas'] as $o) {
-        $key = 'paginas|' . $o['lang'] . '|' . ($o['module'] ?? '') . '|' . $o['id'] . '|' . strtolower(trim($o['path'], '/'));
-        $indexPag[$key][] = $o;
-    }
-    $indexVar = [];
-    foreach ($originsIndex['variaveis'] as $o) {
-        $key = 'variaveis|' . $o['lang'] . '|' . ($o['module'] ?? '') . '|' . $o['id'] . '|' . ($o['group'] ?? '');
-        $indexVar[$key][] = $o;
-    }
-    // Agrupar duplicados por arquivo para minimizar IO
-    $filesToUpdate = [];
-    foreach ($dupsMeta as $d) {
-        // Determinar candidatos pelo tipo
-        if ($d['tipo'] === 'paginas') {
-            // Procurar todas as origens possíveis com mesmo lang+module+id OR mesmo path
-            foreach ($originsIndex['paginas'] as $o) {
-                $match = ($o['lang'] === $d['lang'] && $o['id'] === $d['id']);
-                if ($d['campo'] === 'caminho') {
-                    $match = $match || ($o['lang'] === $d['lang'] && strtolower(trim($o['path'],'/')) === strtolower(trim($d['path'],'/')));
-                }
-                if ($match) {
-                    $filesToUpdate[$o['file']][] = ['tipo'=>'paginas','lang'=>$o['lang'],'id'=>$o['id'],'path'=>$o['path'],'msg'=>$d['msg']];
-                }
-            }
-        } elseif ($d['tipo'] === 'variaveis') {
-            foreach ($originsIndex['variaveis'] as $o) {
-                if ($o['lang'] === $d['lang'] && $o['id'] === $d['id'] && (($o['module'] ?? null) === ($d['module'] ?? null))) {
-                    $filesToUpdate[$o['file']][] = ['tipo'=>'variaveis','lang'=>$o['lang'],'id'=>$o['id'],'group'=>$o['group'],'msg'=>$d['msg']];
-                }
-            }
-        }
-    }
-    foreach ($filesToUpdate as $file => $items) {
-        $json = jsonRead($file);
-        if (!$json) continue;
-        $modified = false;
-        // Detectar se é arquivo de módulo/plugin (tem 'resources') ou lista global (array simples)
-        if (isset($json['resources'])) {
-            // Módulo/Plugin
-            foreach ($json['resources'] as $lang => &$res) {
-                foreach (['pages','variables'] as $t) {
-                    if (!isset($res[$t]) || !is_array($res[$t])) continue;
-                    foreach ($res[$t] as &$entry) {
-                        foreach ($items as $it) {
-                            if ($t === 'pages' && $it['tipo'] === 'paginas' && $lang === $it['lang'] && $entry['id'] === $it['id']) {
-                                if (empty($entry['error'])) { $entry['error'] = true; $entry['error_msg'] = $it['msg']; $modified = true; }
-                            } elseif ($t === 'variables' && $it['tipo'] === 'variaveis' && $lang === $it['lang'] && $entry['id'] === $it['id']) {
-                                if (empty($entry['error'])) { $entry['error'] = true; $entry['error_msg'] = $it['msg']; $modified = true; }
-                            }
-                        }
-                    }
-                    unset($entry);
-                }
-                unset($res);
-            }
-            if ($modified) jsonWrite($file, $json);
-        } elseif (is_array($json)) {
-            // Lista global (pages.json ou variables.json)
-            foreach ($json as &$entry) {
-                if (!is_array($entry) || !isset($entry['id'])) continue;
-                foreach ($items as $it) {
-                    if ($it['tipo'] === 'paginas' && isset($entry['path'])) {
-                        if ($entry['id'] === $it['id'] || strtolower(trim($entry['path'],'/')) === strtolower(trim($it['path'],'/'))) {
-                            if (empty($entry['error'])) { $entry['error'] = true; $entry['error_msg'] = $it['msg']; $modified = true; }
-                        }
-                    } elseif ($it['tipo'] === 'variaveis' && isset($entry['value'])) {
-                        if ($entry['id'] === $it['id']) {
-                            if (empty($entry['error'])) { $entry['error'] = true; $entry['error_msg'] = $it['msg']; $modified = true; }
-                        }
-                    }
-                }
-            }
-            unset($entry);
-            if ($modified) jsonWrite($file, $json);
-        }
-    }
-}
+function aplicarErrosOrigem(array $dupsMeta, array $originsIndex): void { /* V2: não marca origem, usa órfãos */ }
 
-function reporteFinal(array $recursos, array $erros, array $alteracoesOrigem = []): void {
+function reporteFinal(array $recursos, array $erros): void {
     global $LOG_FILE;
     $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['variablesData']);
-    $msg = "📝 " . _('_final_report') . PHP_EOL
-        . str_repeat('═', 50) . PHP_EOL
-        . "📦 Layouts: " . count($recursos['layoutsData']) . PHP_EOL
-        . "📄 Páginas: " . count($recursos['pagesData']) . PHP_EOL
-        . "🧩 Componentes: " . count($recursos['componentsData']) . PHP_EOL
-        . "🔧 Variáveis: " . count($recursos['variablesData']) . PHP_EOL
-        . "Σ TOTAL: $total" . PHP_EOL;
-    if (!empty($alteracoesOrigem)) {
-        $msg .= PHP_EOL . "✅ Arquivos origem atualizados:" . PHP_EOL;
-        foreach ($alteracoesOrigem as $k => $q) { $msg .= "  - $k => $q" . PHP_EOL; }
-    }
-    if (!empty($erros)) {
-        $msg .= PHP_EOL . _("dup_section_header") . PHP_EOL;
-        foreach ($erros as $tipo => $grupos) {
-            foreach ($grupos as $campo => $lista) {
-                $msg .= '  ' . _("dup_section_item", [
-                    'tipo' => $tipo,
-                    'campo' => $campo,
-                    'lista' => implode(', ', array_unique($lista))
-                ]) . PHP_EOL;
-            }
-        }
-    } else {
-        $msg .= PHP_EOL . _("dup_section_none") . PHP_EOL;
-    }
-    log_disco($msg, $LOG_FILE);
-    echo $msg;
+    $totalOrphans = 0; foreach ($recursos['orphans'] as $lst) { $totalOrphans += count($lst); }
+    $msg = "📝 Relatório Final".PHP_EOL.
+           "📦 Layouts: ".count($recursos['layoutsData']).PHP_EOL.
+           "📄 Páginas: ".count($recursos['pagesData']).PHP_EOL.
+           "🧩 Componentes: ".count($recursos['componentsData']).PHP_EOL.
+           "🔧 Variáveis: ".count($recursos['variablesData']).PHP_EOL.
+           "Σ TOTAL: $total".PHP_EOL.
+           "🗃️ Órfãos: $totalOrphans".PHP_EOL;
+    if (!empty($erros)) { $msg .= "⚠️ Problemas: ".implode('; ',$erros).PHP_EOL; }
+    else { $msg .= "✅ Nenhum problema de unicidade adicional.".PHP_EOL; }
+    log_disco($msg,$LOG_FILE); echo $msg;
 }
 
 // ========================= 7) MAIN =========================
 
 function main(): void {
+    global $LOG_FILE;
     try {
-        log_disco(_('_process_start'), 'atualizacao-dados-recursos');
+        log_disco('Início processo V2', $LOG_FILE);
         $map = carregarMapeamentoGlobal();
-        $existentes = carregarDadosExistentes();
-        $recursos = coletarRecursos($existentes, $map); // inclui originsIndex
-        $resultadoDup = validarDuplicidades($recursos);
-        aplicarErrosOrigem($resultadoDup['meta'], $recursos['originsIndex']);
-        // Remover estrutura de origem antes de persistir
-        unset($recursos['originsIndex']);
-        atualizarDados($existentes, $recursos); // grava Data.json SEM error/error_msg
+        $exist = carregarDadosExistentes();
+        $recursos = coletarRecursos($exist,$map);
+        atualizarDados($exist,$recursos);
         garantirSeeders();
-        reporteFinal($recursos, $resultadoDup['report']);
-        log_disco(_('_process_end_success'), 'atualizacao-dados-recursos');
+        $erros = validarDuplicidades($recursos);
+        reporteFinal($recursos,$erros);
+        log_disco('Fim processo V2 OK', $LOG_FILE);
     } catch (Throwable $e) {
-        log_disco(_('_process_error', ['msg' => $e->getMessage()]), 'atualizacao-dados-recursos');
-        echo 'Erro: ' . $e->getMessage();
+        $err = 'Erro fatal: '.$e->getMessage();
+        log_disco($err,$LOG_FILE); echo "❌ $err".PHP_EOL;
     }
 }
 

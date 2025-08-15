@@ -2063,7 +2063,7 @@ function gestor_roteador(){
 		);
 	} else {
 		$campos = Array(
-			'id_layouts',
+			'layout_id',
 			'html',
 			'css',
 			'modulo',
@@ -2202,7 +2202,7 @@ function gestor_roteador(){
 			if(isset($_GESTOR['layout'])){
 				$layout = (isset($_GESTOR['layout']['html']) ? $_GESTOR['layout']['html'] : '');
 				$layout_css = (isset($_GESTOR['layout']['css']) ? $_GESTOR['layout']['css'] : '');
-			} else if($paginas[0]['id_layouts']){
+			} else if($paginas[0]['layout_id']){
 				if($_GESTOR['paginaIframe']){
 					$layouts = gestor_layout(Array(
 						'id' => 'layout-iframes',
@@ -2210,7 +2210,7 @@ function gestor_roteador(){
 					));
 				} else {
 					$layouts = gestor_layout(Array(
-						'id_layouts' => $paginas[0]['id_layouts'],
+						'id' => $paginas[0]['layout_id'],
 						'return_css' => true,
 					));
 				}

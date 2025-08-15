@@ -131,9 +131,7 @@ Necessário padronizar o identificador de usuários nas migrações para valor d
 - [x] Migração `arquivos` ajustada (`id_usuarios` default 1)
 - [x] Migração `hosts_variaveis` ajustada (`id_usuarios` default 1)
 - [x] Demais migrações com `id_usuarios` revisadas e ajustadas
-- [ ] Relacionamento entre páginas e layouts validado (execução real de migrações)
-- [ ] Testes executados e aprovados
-- [ ] Decisões e problemas documentados
+
 
 ### Decisões
 - Optou-se por utilizar identificador alfanumérico para layouts, visando maior flexibilidade e compatibilidade futura.
