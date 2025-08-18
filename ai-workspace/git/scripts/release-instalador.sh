@@ -37,16 +37,16 @@ fi
 echo "Nova versão do instalador é: $NEW_VERSION"
 
 
-# 2. Remove tags antigas da mesma versão (se existirem)
+# 2. Remove todas as tags antigas do padrão instalador-v* localmente e remotamente
 set +e
-OLD_TAGS=$(git tag | grep "^instalador-v$NEW_VERSION$")
+OLD_TAGS=$(git tag | grep "^instalador-v[0-9]")
 if [ -n "$OLD_TAGS" ]; then
-  echo "Removendo tags antigas da mesma versão: $OLD_TAGS"
+  echo "Removendo todas as tags antigas do padrão instalador-v*: $OLD_TAGS"
   for tag in $OLD_TAGS; do
     if [ -n "$tag" ]; then
-  git tag -d "$tag"
-  git push --delete origin "$tag"
-  gh release delete "$tag" --yes
+      git tag -d "$tag"
+      git push --delete origin "$tag"
+      gh release delete "$tag" --yes
     fi
   done
 fi
