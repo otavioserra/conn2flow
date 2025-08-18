@@ -1,14 +1,3 @@
-// Wrapper seguro para tradução customizada (2 argumentos)
-if (!function_exists('__t')) {
-    function __t($key, $replacements = []) {
-        if (function_exists('_') && (new \ReflectionFunction('_'))->getNumberOfParameters() === 1) {
-            // Ambiente gettext: só aceita 1 argumento
-            return _($key);
-        }
-        // Custom: aceita 2 argumentos
-        return _($key, $replacements);
-    }
-}
 <?php
 
 /**
@@ -57,6 +46,18 @@ if (!function_exists('_')) { // Evita conflito com gettext quando carregado
             $text = str_replace('{' . $placeholder . '}', $value, $text);
         }
         return $text;
+    }
+}
+
+// Wrapper seguro para tradução customizada (2 argumentos)
+if (!function_exists('__t')) {
+    function __t($key, $replacements = []) {
+        if (function_exists('_') && (new \ReflectionFunction('_'))->getNumberOfParameters() === 1) {
+            // Ambiente gettext: só aceita 1 argumento
+            return _($key);
+        }
+        // Custom: aceita 2 argumentos
+        return _($key, $replacements);
     }
 }
 
