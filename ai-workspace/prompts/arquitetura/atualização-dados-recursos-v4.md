@@ -12,7 +12,7 @@
 ## 🤔 Dúvidas e 📝 Sugestões
 
 ## ✅ Progresso da Implementação
-- [] item do progresso
+- [x] Correção aplicada: versionamento e checksums agora atualizam também para módulos e plugins; script executado sem órfãos e commit realizado (gestor-v1.10.20)
 
 ---
 **Data:** 18/08/2025
