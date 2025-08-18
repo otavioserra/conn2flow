@@ -12,8 +12,8 @@ set -e
 # Verifica se o tipo de release (patch, minor, major) foi passado como argumento
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
   echo "Erro: Argumentos insuficientes."
-  echo "Uso:   ./gestor/utilitarios/release.sh [tipo] \"Resumo para a Tag\" \"Mensagem detalhada para o Commit\""
-  echo "Exemplo: ./gestor/utilitarios/release.sh patch \"Corrige validação de senha\" \"fix(login): Corrige bug que impedia o uso de caracteres especiais na senha.\""
+  echo "Uso:   ./ai-workspace/git/scripts/release.sh [tipo] \"Resumo para a Tag\" \"Mensagem detalhada para o Commit\""
+  echo "Exemplo: ./ai-workspace/git/scripts/release.sh patch \"Corrige validação de senha\" \"fix(login): Corrige bug que impedia o uso de caracteres especiais na senha.\""
   exit 1
 fi
 
