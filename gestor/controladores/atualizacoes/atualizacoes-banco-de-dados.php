@@ -56,6 +56,9 @@ if (!$BASE_PATH) {
     error_log('[FATAL] Não foi possível resolver o caminho do gestor!');
     throw new RuntimeException('Não foi possível resolver o caminho do gestor!');
 }
+
+require_once $BASE_PATH . 'bibliotecas/lang.php';
+@require_once $BASE_PATH . 'bibliotecas/log.php';
 if (!isset($REPO_ROOT) || !$REPO_ROOT) {
     $REPO_ROOT = realpath($BASE_PATH . '..') . DIRECTORY_SEPARATOR;
 }
