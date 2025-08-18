@@ -729,8 +729,17 @@ function parseArgs(array $argv): array {
     return $out;
 }
 
-if (PHP_SAPI === 'cli') {
+// Permite execução via require/include (web) usando $GLOBALS['CLI_OPTS'] (opcional), ou via CLI.
+if (PHP_SAPI !== 'cli') {
+    global $CLI_OPTS;
+    if (isset($GLOBALS['CLI_OPTS']) && is_array($GLOBALS['CLI_OPTS'])) {
+        $CLI_OPTS = $GLOBALS['CLI_OPTS'];
+    } else {
+        $CLI_OPTS = [];
+    }
+} else {
     global $CLI_OPTS; $CLI_OPTS = parseArgs($argv);
     if (isset($CLI_OPTS['help']) || isset($CLI_OPTS['h'])) { echo tr('_args_usage') . PHP_EOL; exit(0); }
-    main();
 }
+
+main();

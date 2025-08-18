@@ -144,14 +144,13 @@ class Installer
         return [
             'status' => 'success',
             'message' => __('progress_unzipping'),
-            // Mantemos o nome do próximo step para compatibilidade com frontend
-            'next_step' => 'run_migrations'
+            'next_step' => 'run_update_steps'
         ];
     }
 
-    private function run_migrations()
+    private function run_update_steps()
     {
-        $this->log("=== INICIANDO PROCESSO DE ATUALIZAÇÃO (SUBSTITUI MIGRAÇÕES/SEEDERS) ===");
+        $this->log("=== INICIANDO PROCESSO DE ATUALIZAÇÃO (MIGRAÇÕES e DADOS) ===");
 
         // 1. Limpeza opcional do banco
         if (!empty($this->data['clean_install'])) {
@@ -227,8 +226,6 @@ class Installer
             throw new Exception("Falha ao limpar banco de dados: " . $e->getMessage());
         }
     }
-
-    // Métodos relacionados a Phinx e seeders foram removidos. Fluxo consolidado em runUpdateScript().
 
     /**
      * Cria login automático para o usuário administrador criado
@@ -748,6 +745,47 @@ class Installer
     }
 
     /**
+     * Remove todos os arquivos do instalador exceto index.php, .htaccess e installer.log
+     */
+    private function cleanupInstallerFiles()
+    {
+        $this->log("Removendo arquivos do instalador, mantendo apenas index.php, .htaccess e installer.log...");
+        
+        // Lista de pastas para remover completamente
+        $foldersToRemove = [
+            'src',
+            'views', 
+            'assets',
+            'lang'
+        ];
+        
+        // Lista de arquivos para remover (installer.log será preservado para debug)
+        $filesToRemove = [
+            'teste-seguranca.txt'
+        ];
+        
+        // Remove pastas
+        foreach ($foldersToRemove as $folder) {
+            $folderPath = $this->baseDir . '/' . $folder;
+            if (is_dir($folderPath)) {
+                $this->removeDirectory($folderPath);
+                $this->log("Pasta removida: {$folderPath}");
+            }
+        }
+        
+        // Remove arquivos
+        foreach ($filesToRemove as $file) {
+            $filePath = $this->baseDir . '/' . $file;
+            if (file_exists($filePath)) {
+                unlink($filePath);
+                $this->log("Arquivo removido: {$filePath}");
+            }
+        }
+        
+        $this->log("Limpeza concluída. Restam apenas index.php, .htaccess e installer.log na pasta do instalador.");
+    }
+
+    /**
      * Calcula o caminho relativo entre dois diretórios
      */
     private function getRelativePath($from, $to) 
@@ -905,6 +943,28 @@ class Installer
             $this->removeDirectory($dbDir);
             $this->log('Pasta db removida após atualização: ' . $dbDir);
         }
+    }
+
+    /**
+     * Remove um diretório e todo o seu conteúdo recursivamente
+     */
+    private function removeDirectory($dir)
+    {
+        if (!file_exists($dir)) {
+            return true;
+        }
+        if (!is_dir($dir)) {
+            return unlink($dir);
+        }
+        foreach (scandir($dir) as $item) {
+            if ($item == '.' || $item == '..') {
+                continue;
+            }
+            if (!$this->removeDirectory($dir . DIRECTORY_SEPARATOR . $item)) {
+                return false;
+            }
+        }
+        return rmdir($dir);
     }
 
     /**

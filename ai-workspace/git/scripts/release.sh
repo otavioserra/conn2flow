@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Executar: bash ./ai-workspace/git/scripts/release.sh TIPO "TAG_MSG" "COMMIT_MSG"
+
 # Script para automatizar o processo de release:
 # 1. Atualiza a versão no config.php
 # 2. Adiciona as mudanças ao Git
