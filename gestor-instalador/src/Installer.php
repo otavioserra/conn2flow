@@ -144,40 +144,38 @@ class Installer
         return [
             'status' => 'success',
             'message' => __('progress_unzipping'),
+            // Mantemos o nome do próximo step para compatibilidade com frontend
             'next_step' => 'run_migrations'
         ];
     }
 
     private function run_migrations()
     {
-        // Se usuário optou por instalação limpa, limpa o banco primeiro
+        $this->log("=== INICIANDO PROCESSO DE ATUALIZAÇÃO (SUBSTITUI MIGRAÇÕES/SEEDERS) ===");
+
+        // 1. Limpeza opcional do banco
         if (!empty($this->data['clean_install'])) {
             $this->cleanDatabase();
         }
-        
-        // Executa as migrações e seeders do Phinx (com opção de instalação limpa)
-        $this->runPhinxMigrations();
-        
-        // Atualiza o seeder de usuários com os dados do formulário antes de executar
-        $this->updateUserSeeder();
-        
-        $this->runPhinxSeeders();
-        
-        // Executa correções para registros problemáticos dos seeders
-        $this->fixProblematicSeederData();
-        
-        // AGORA que o .env foi criado, usuários inseridos E correções aplicadas, configura login automático
+
+        // 2. Executa script de atualização centralizado do sistema
+        $this->runUpdateScript();
+
+        // 3. Garante usuário administrador conforme dados fornecidos
+        $this->ensureAdminUser();
+
+        // 4. Configura login automático do administrador
         $this->createAdminAutoLogin();
-        
-        // Cria a página de sucesso no gestor
+
+        // 5. Página de sucesso
         $this->createSuccessPage();
-        
-        // Copia o index.php do public-access para a raiz
+
+        // 6. Public access (index.php + .htaccess com RewriteBase corrigido)
         $this->setupPublicAccess();
-        
-        // Remove todos os arquivos do instalador
+
+        // 7. Limpeza final
         $this->cleanupInstaller();
-        
+
         return [
             'status' => 'finished',
             'message' => __('progress_configuring'),
@@ -230,259 +228,7 @@ class Installer
         }
     }
 
-    /**
-     * Executa as migrações do Phinx
-     */
-    private function runPhinxMigrations()
-    {
-        $gestorPath = $this->getGestorPath();
-        $phinxConfigPath = $gestorPath . '/phinx.php';
-        $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
-        
-        $this->log("=== INICIANDO MIGRAÇÕES PHINX ===");
-        $this->log("Gestor Path: {$gestorPath}");
-        $this->log("Phinx Config: {$phinxConfigPath}");
-        $this->log("Phinx Binary: {$phinxBinPath}");
-        
-        // Verifica se o Phinx está instalado
-        if (!file_exists($phinxBinPath)) {
-            throw new Exception(__('error_phinx_not_found', 'Phinx não encontrado: ' . $phinxBinPath));
-        }
-        
-        if (!file_exists($phinxConfigPath)) {
-            throw new Exception(__('error_phinx_config_not_found', 'Arquivo de configuração do Phinx não encontrado: ' . $phinxConfigPath));
-        }
-        
-        // Verifica permissões do Phinx
-        if (!is_executable($phinxBinPath)) {
-            $this->log("⚠️  Corrigindo permissões do Phinx: {$phinxBinPath}");
-            chmod($phinxBinPath, 0755);
-            
-            if (!is_executable($phinxBinPath)) {
-                throw new Exception("Não foi possível tornar o Phinx executável: {$phinxBinPath}");
-            }
-            $this->log("✅ Permissões do Phinx corrigidas com sucesso");
-        }
-        
-        // Define variáveis de ambiente para o Phinx usar durante a instalação
-        $this->log("🔧 Configurando variáveis de ambiente para Phinx...");
-        $envVars = [
-            'PHINX_DB_HOST' => $this->data['db_host'],
-            'PHINX_DB_NAME' => $this->data['db_name'],
-            'PHINX_DB_USER' => $this->data['db_user'],
-            'PHINX_DB_PASS' => $this->data['db_pass'] ?? ''
-        ];
-        
-        $this->log("   Host: {$envVars['PHINX_DB_HOST']}");
-        $this->log("   Database: {$envVars['PHINX_DB_NAME']}");
-        $this->log("   User: {$envVars['PHINX_DB_USER']}");
-        $this->log("   Password: " . (empty($envVars['PHINX_DB_PASS']) ? '[VAZIA]' : '[DEFINIDA]'));
-        
-        // Executa as migrações com as variáveis de ambiente definidas
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            // Windows - usando PowerShell com variáveis de ambiente
-            $envString = '';
-            foreach ($envVars as $key => $value) {
-                $envString .= "\$env:$key='$value'; ";
-            }
-            $command = "powershell -Command \"$envString Set-Location '$gestorPath'; & '$phinxBinPath' migrate -c '$phinxConfigPath'\"";
-        } else {
-            // Linux/Unix - define variáveis inline
-            $envString = '';
-            foreach ($envVars as $key => $value) {
-                $envString .= "$key=" . escapeshellarg($value) . " ";
-            }
-            $command = "cd \"$gestorPath\" && $envString\"$phinxBinPath\" migrate -c \"$phinxConfigPath\" 2>&1";
-        }
-        
-        $this->log("🚀 Executando comando Phinx migrations:");
-        $this->log("   {$command}");
-        
-        $output = [];
-        $returnVar = 0;
-        
-        exec($command, $output, $returnVar);
-        
-        $outputStr = implode("\n", $output);
-        $this->log("📄 Saída completa do Phinx (migrations):");
-        $this->log($outputStr);
-        
-        if ($returnVar !== 0) {
-            // Se não é instalação limpa e o erro é sobre tabela já existente, tenta continuar
-            if (empty($this->data['clean_install']) && 
-                (strpos($outputStr, 'Base table or view already exists') !== false || 
-                 strpos($outputStr, 'already exists') !== false)) {
-                
-                $this->log("⚠️  Tabelas já existem no banco, mas continua pois não é instalação limpa", 'WARNING');
-                $this->log("✅ Migrações consideradas concluídas (tabelas já existentes)");
-                return;
-            }
-            
-            $this->log("❌ Phinx migrations falhou com código: {$returnVar}", 'ERROR');
-            throw new Exception(__('error_migration_failed', 'Falha ao executar migrações Phinx. Código: ' . $returnVar . '. Saída: ' . $outputStr));
-        }
-        
-        $this->log("✅ Migrações Phinx executadas com sucesso!");
-    }
-
-    /**
-     * Executa os seeders do Phinx
-     */
-    private function runPhinxSeeders()
-    {
-        $gestorPath = $this->getGestorPath();
-        $phinxConfigPath = $gestorPath . '/phinx.php';
-        $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
-        
-        $this->log("=== INICIANDO SEEDERS PHINX ===");
-        
-        // Define variáveis de ambiente para o Phinx usar durante a instalação
-        $this->log("🔧 Configurando variáveis de ambiente para Phinx...");
-        $envVars = [
-            'PHINX_DB_HOST' => $this->data['db_host'],
-            'PHINX_DB_NAME' => $this->data['db_name'],
-            'PHINX_DB_USER' => $this->data['db_user'],
-            'PHINX_DB_PASS' => $this->data['db_pass'] ?? ''
-        ];
-        
-        // Executa todos os seeders com as variáveis de ambiente definidas
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            // Windows - usando PowerShell com variáveis de ambiente
-            $envString = '';
-            foreach ($envVars as $key => $value) {
-                $envString .= "\$env:$key='$value'; ";
-            }
-            $command = "powershell -Command \"$envString Set-Location '$gestorPath'; & '$phinxBinPath' seed:run -c '$phinxConfigPath'\"";
-        } else {
-            // Linux/Unix - define variáveis inline
-            $envString = '';
-            foreach ($envVars as $key => $value) {
-                $envString .= "$key=" . escapeshellarg($value) . " ";
-            }
-            $command = "cd \"$gestorPath\" && $envString\"$phinxBinPath\" seed:run -c \"$phinxConfigPath\" 2>&1";
-        }
-        
-        $this->log("🌱 Executando comando Phinx seeders:");
-        $this->log("   {$command}");
-        
-        $output = [];
-        $returnVar = 0;
-        
-        exec($command, $output, $returnVar);
-        
-        $outputStr = implode("\n", $output);
-        $this->log("📄 Saída completa do Phinx (seeders):");
-        $this->log($outputStr);
-        
-        if ($returnVar !== 0) {
-            // Se não é instalação limpa e há erro de dados já existentes, tenta continuar  
-            if (empty($this->data['clean_install']) && 
-                (strpos($outputStr, 'Duplicate entry') !== false || 
-                 strpos($outputStr, 'already exists') !== false ||
-                 strpos($outputStr, 'Integrity constraint violation') !== false)) {
-                
-                $this->log("⚠️  Dados já existem no banco, mas continua pois não é instalação limpa", 'WARNING');
-                $this->log("✅ Seeders considerados concluídos (dados já existentes)");
-                return;
-            }
-            
-            // Verifica se há erros de parsing SQL mas ainda houve inserções bem-sucedidas
-            if (strpos($outputStr, 'error in your SQL syntax') !== false || 
-                strpos($outputStr, 'Unknown column') !== false) {
-                
-                // Conta quantos sucessos vs erros houve
-                $this->log("⚠️  Detectados erros de parsing SQL durante seeders", 'WARNING');
-                $this->verifySeederResults();
-                return; // Continue mesmo com alguns erros de parsing
-            }
-            
-            $this->log("❌ Phinx seeders falhou com código: {$returnVar}", 'ERROR');
-            throw new Exception(__('error_seeder_failed', 'Falha ao executar seeders Phinx. Código: ' . $returnVar . '. Saída: ' . $outputStr));
-        }
-        
-        $this->log("✅ Seeders Phinx executados com sucesso!");
-    }
-
-    /**
-     * Atualiza o UsuariosSeeder.php com os dados do formulário antes de executar os seeders
-     */
-    private function updateUserSeeder()
-    {
-        $this->log("=== ATUALIZANDO SEEDER DE USUÁRIOS ===");
-        
-        try {
-            $gestorPath = $this->getGestorPath();
-            $seederPath = $gestorPath . '/db/seeds/UsuariosSeeder.php';
-            
-            if (!file_exists($seederPath)) {
-                throw new Exception("Arquivo UsuariosSeeder.php não encontrado: " . $seederPath);
-            }
-            
-            // Hash da senha usando PASSWORD_ARGON2I como no sistema principal
-            $hashedPassword = password_hash($this->data['admin_pass'], PASSWORD_ARGON2I, ["cost" => 9]);
-            
-            $this->log("👤 Atualizando seeder com dados do administrador: {$this->data['admin_name']} ({$this->data['admin_email']})");
-            
-            // Lê o conteúdo atual do seeder
-            $seederContent = file_get_contents($seederPath);
-            
-            // Data atual para os campos de data
-            $currentDate = date('Y-m-d H:i:s');
-            
-            // Cria o novo array de dados com os dados do formulário
-            $newUserData = [
-                'id_usuarios' => '1',
-                'id_hosts' => 'NULL',
-                'id_usuarios_perfis' => ' 1',
-                'nome_conta' => $this->data['admin_name'],
-                'nome' => $this->data['admin_name'],
-                'id' => strtolower(str_replace(' ', '', $this->data['admin_name'])),
-                'usuario' => 'admin',
-                'senha' => $hashedPassword,
-                'email' => $this->data['admin_email'],
-                'primeiro_nome' => $this->data['admin_name'],
-                'ultimo_nome' => 'NULL',
-                'nome_do_meio' => 'NULL',
-                'status' => 'A',
-                'versao' => ' 6',
-                'data_criacao' => $currentDate,
-                'data_modificacao' => $currentDate,
-                'email_confirmado' => 'NULL',
-                'gestor' => 'NULL',
-                'gestor_perfil' => 'NULL',
-            ];
-            
-            // Monta o novo array PHP como string
-            $newDataString = "        \$data = [\n            [\n";
-            foreach ($newUserData as $key => $value) {
-                if ($value === 'NULL') {
-                    $newDataString .= "                '$key' => NULL,\n";
-                } else {
-                    $newDataString .= "                '$key' => '$value',\n";
-                }
-            }
-            $newDataString .= "            ],\n        ];";
-            
-            // Substitui o array de dados no seeder usando regex
-            $pattern = '/\$data\s*=\s*\[.*?\];/s';
-            $updatedContent = preg_replace($pattern, $newDataString, $seederContent);
-            
-            if ($updatedContent === null) {
-                throw new Exception("Erro ao processar regex no arquivo seeder");
-            }
-            
-            // Escreve o arquivo atualizado
-            if (file_put_contents($seederPath, $updatedContent) === false) {
-                throw new Exception("Falha ao escrever arquivo seeder atualizado");
-            }
-            
-            $this->log("✅ UsuariosSeeder.php atualizado com sucesso!");
-            
-        } catch (Exception $e) {
-            $this->log("❌ Erro ao atualizar seeder de usuários: " . $e->getMessage(), 'ERROR');
-            throw new Exception(__('error_user_seeder_update', 'Falha ao atualizar seeder de usuários: ' . $e->getMessage()));
-        }
-    }
+    // Métodos relacionados a Phinx e seeders foram removidos. Fluxo consolidado em runUpdateScript().
 
     /**
      * Cria login automático para o usuário administrador criado
@@ -950,24 +696,19 @@ class Installer
             
             if (file_exists($sourceHtaccess)) {
                 $htaccessContent = file_get_contents($sourceHtaccess);
-                
-                // Detecta se estamos numa subpasta e ajusta o RewriteBase
-                $currentPath = $_SERVER['REQUEST_URI'] ?? '';
-                $installerPath = dirname($currentPath);
-                if ($installerPath !== '/' && !empty($installerPath)) {
-                    $this->log("Detectada instalação em subpasta: {$installerPath}");
-                    
-                    // Adiciona ou modifica o RewriteBase para a subpasta
-                    if (strpos($htaccessContent, 'RewriteBase') !== false) {
-                        $htaccessContent = preg_replace('/^\s*RewriteBase\s+.*$/m', "\tRewriteBase {$installerPath}/", $htaccessContent);
+
+                // Nova detecção robusta de subpasta
+                $rewriteBase = $this->detectUrlRaiz(); // já retorna com barra final ou '/'
+                if ($rewriteBase !== '/') {
+                    $this->log("Detectada instalação em subpasta: {$rewriteBase}");
+                    // Remove RewriteBase existente
+                    $htaccessContent = preg_replace('/^\s*RewriteBase\s+.*$/mi', '', $htaccessContent);
+                    // Garante linha RewriteEngine On seguida de RewriteBase correta
+                    if (preg_match('/RewriteEngine\s+On/i', $htaccessContent)) {
+                        $htaccessContent = preg_replace('/(RewriteEngine\s+On)/i', "$1\n\tRewriteBase {$rewriteBase}", $htaccessContent, 1);
                     } else {
-                        // Adiciona RewriteBase após RewriteEngine On
-                        $htaccessContent = preg_replace('/(RewriteEngine\s+On)/i', "$1\n\tRewriteBase {$installerPath}/", $htaccessContent);
-                    }
-                    
-                    // Adiciona flag [L] se não existir
-                    if (strpos($htaccessContent, '[L]') === false) {
-                        $htaccessContent = preg_replace('/(RewriteRule\s+[^[]*)$/m', '$1 [L]', $htaccessContent);
+                        // Caso excepcional: não encontrou RewriteEngine On
+                        $htaccessContent = "RewriteEngine On\n\tRewriteBase {$rewriteBase}\n" . $htaccessContent;
                     }
                 } else {
                     $this->log("Instalação na raiz - mantendo .htaccess padrão");
@@ -987,7 +728,9 @@ class Installer
                     $this->log("SSL habilitado - mantendo redirect HTTPS no .htaccess");
                 }
                 
-                // Sobrescreve o .htaccess existente com o processado
+                // Normaliza quebras de linha múltiplas
+                $htaccessContent = preg_replace("/\n{3,}/", "\n\n", $htaccessContent);
+
                 file_put_contents($targetHtaccess, $htaccessContent);
                 $this->log("Arquivo .htaccess processado e salvo em {$targetHtaccess}");
             }
@@ -1036,272 +779,39 @@ class Installer
     private function createSuccessPage()
     {
         try {
-            $this->log("Iniciando criação da página de sucesso...");
-            
-            // Conecta ao banco de dados
+            $this->log("Iniciando criação/atualização da página de sucesso...");
+
             $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
             $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             ]);
-            
-            $this->log("Conectado ao banco de dados com sucesso");
-            
-            // Verifica se já existe uma página com o mesmo id
-            $checkQuery = "SELECT COUNT(*) as count FROM paginas WHERE id = 'instalacao-sucesso'";
-            $checkResult = $pdo->query($checkQuery);
-            $existingPage = $checkResult->fetch();
-            
-            if ($existingPage['count'] > 0) {
-                $this->log("Página de sucesso já existe, atualização forçada do HTML e CSS...");
-                // Atualiza a página existente, sobrescrevendo SEMPRE o HTML e CSS
-                $updateQuery = "UPDATE paginas SET 
-                    data_modificacao = NOW(),
-                    html = :html,
-                    css = :css
-                    WHERE id = 'instalacao-sucesso'";
-                $stmt = $pdo->prepare($updateQuery);
-                $stmt->execute([
+
+            // Verifica existência
+            $stmt = $pdo->query("SELECT COUNT(*) as c FROM paginas WHERE id='instalacao-sucesso'");
+            $exists = (int)$stmt->fetch()['c'] > 0;
+
+            if ($exists) {
+                $this->log('Página existente, sobrescrevendo HTML/CSS...');
+                $sql = "UPDATE paginas SET html=:html, css=:css, data_modificacao=NOW() WHERE id='instalacao-sucesso'";
+                $up = $pdo->prepare($sql);
+                $up->execute([
                     'html' => $this->getSuccessPageHtml(),
-                    'css' => $this->getSuccessPageCss()
+                    'css'  => $this->getSuccessPageCss()
                 ]);
-                $this->log("Página de sucesso atualizada e sobrescrita: instalacao-sucesso");
-                return;
-            }
-        } catch (PDOException $e) {
-            $this->log("Erro ao criar página de sucesso: " . $e->getMessage(), 'WARNING');
-            // Não falha a instalação por causa disso
-        }
-    }
-
-    /**
-     * Retorna o HTML da página de sucesso
-     */
-     private function getSuccessPageHtml()
-     {
-         return '
-<div class="ui main container">
-    <div class="ui centered grid">
-        <div class="twelve wide column">
-            <!-- Mensagem de Sucesso -->
-            <div class="ui positive message">
-                <div class="header">
-                    <i class="exclamation triangle icon"></i>
-                    Instalação Concluída com Sucesso!
-                </div>
-                <p>O Conn2Flow foi instalado e configurado com sucesso em seu servidor.</p>
-            </div>
-            
-            <!-- Próximos Passos -->
-            <div class="ui segment">
-                <div class="ui header">
-                    <i class="list icon"></i>
-                    <div class="content">
-                        Próximos Passos
-                        <div class="sub header">Siga estas etapas para começar a usar o Conn2Flow</div>
-                    </div>
-                </div>
-                
-                <div class="ui ordered steps">
-                    <div class="step">
-                        <i class="user icon"></i>
-                        <div class="content">
-                            <div class="title">Acesse o Painel</div>
-                            <div class="description">Entre no painel administrativo do seu site</div>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <i class="settings icon"></i>
-                        <div class="content">
-                            <div class="title">Configure o Sistema</div>
-                            <div class="description">Ajuste suas preferências de sistema</div>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <i class="paint brush icon"></i>
-                        <div class="content">
-                            <div class="title">Personalize o Design</div>
-                            <div class="description">Customize o visual e conteúdo</div>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <i class="rocket icon"></i>
-                        <div class="content">
-                            <div class="title">Comece a Usar</div>
-                            <div class="description">Aproveite todas as funcionalidades!</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Botão de Acesso -->
-            <div class="ui center aligned segment">
-                <a href="@[[pagina#url-raiz]]@dashboard" class="ui huge primary button">
-                    <i class="sign in icon"></i>
-                    Acessar Painel Administrativo
-                </a>
-            </div>
-            
-            <!-- Nota Final -->
-            <div class="ui info message">
-                <div class="header">
-                    <i class="info circle icon"></i>
-                    Nota
-                </div>
-                <p>Esta página será removida automaticamente quando você acessar o painel administrativo pela primeira vez.</p>
-            </div>
-        </div>
-    </div>
-</div>';
-     }
-
-    /**
-     * Retorna o CSS da página de sucesso
-     */
-    private function getSuccessPageCss()
-    {
-        return '
-body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}';
-    }
-
-    /**
-     * Remove todos os arquivos do instalador exceto index.php, .htaccess e installer.log
-     */
-    private function cleanupInstallerFiles()
-    {
-        $this->log("Removendo arquivos do instalador, mantendo apenas index.php, .htaccess e installer.log...");
-        
-        // Lista de pastas para remover completamente
-        $foldersToRemove = [
-            'src',
-            'views', 
-            'assets',
-            'lang'
-        ];
-        
-        // Lista de arquivos para remover (installer.log será preservado para debug)
-        $filesToRemove = [
-            'teste-seguranca.txt'
-        ];
-        
-        // Remove pastas
-        foreach ($foldersToRemove as $folder) {
-            $folderPath = $this->baseDir . '/' . $folder;
-            if (is_dir($folderPath)) {
-                $this->removeDirectory($folderPath);
-                $this->log("Pasta removida: {$folderPath}");
-            }
-        }
-        
-        // Remove arquivos
-        foreach ($filesToRemove as $file) {
-            $filePath = $this->baseDir . '/' . $file;
-            if (file_exists($filePath)) {
-                unlink($filePath);
-                $this->log("Arquivo removido: {$filePath}");
-            }
-        }
-        
-        $this->log("Limpeza concluída. Restam apenas index.php, .htaccess e installer.log na pasta do instalador.");
-    }
-
-    /**
-     * Remove todos os arquivos do instalador
-     */
-    private function cleanupInstaller()
-    {
-        // Remove diretório temporário
-        if (is_dir($this->tempDir)) {
-            $this->removeDirectory($this->tempDir);
-            $this->log("Diretório temporário removido: {$this->tempDir}");
-        }
-        
-        // A limpeza dos arquivos do instalador é feita em cleanupInstallerFiles()
-        // chamada pelo setupPublicAccess(), deixando apenas index.php e .htaccess
-    }
-
-    /**
-     * Remove um diretório recursivamente
-     */
-    private function removeDirectory($dir)
-    {
-        if (!is_dir($dir)) {
-            return false;
-        }
-        
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::CHILD_FIRST
-        );
-        
-        foreach ($iterator as $item) {
-            if ($item->isDir()) {
-                rmdir($item->getPathname());
+                $this->log('Página de sucesso atualizada.');
             } else {
-                unlink($item->getPathname());
+                $this->log('Criando nova página de sucesso...');
+                $sql = "INSERT INTO paginas (id, html, css, data_criacao, data_modificacao) VALUES ('instalacao-sucesso', :html, :css, NOW(), NOW())";
+                $ins = $pdo->prepare($sql);
+                $ins->execute([
+                    'html' => $this->getSuccessPageHtml(),
+                    'css'  => $this->getSuccessPageCss()
+                ]);
+                $this->log('Página de sucesso criada.');
             }
-        }
-        
-        rmdir($dir);
-    }
-
-    /**
-     * Gera chaves de fallback quando OpenSSL falha
-     */
-    private function generateFallbackKeys($chavesDir)
-    {
-        $this->log("Gerando chaves de fallback...");
-        
-        // Tenta um método mais simples de geração de chaves
-        $config = array(
-            "digest_alg" => "sha256",
-            "private_key_bits" => 2048,
-            "private_key_type" => OPENSSL_KEYTYPE_RSA,
-        );
-        
-        $privateKey = openssl_pkey_new($config);
-        
-        if ($privateKey !== false) {
-            // Exporta a chave privada
-            openssl_pkey_export($privateKey, $privateKeyPem);
-            
-            // Obtém a chave pública
-            $details = openssl_pkey_get_details($privateKey);
-            $publicKeyPem = $details['key'];
-            
-            // Salva as chaves
-            $publicaPath = $chavesDir . '/publica.key';
-            $privadaPath = $chavesDir . '/privada.key';
-            
-            file_put_contents($publicaPath, $publicKeyPem);
-            file_put_contents($privadaPath, $privateKeyPem);
-            
-            $this->log("Chaves de fallback geradas com sucesso");
-        } else {
-            // Se ainda falhar, cria chaves de exemplo (não seguras, apenas para instalação funcionar)
-            $this->log("OpenSSL completamente indisponível, gerando chaves de exemplo", 'WARNING');
-            
-            $examplePrivate = "-----BEGIN PRIVATE KEY-----\n" .
-                "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7VJTUt9Us8cKB\n" .
-                "wjKquxdBNqsWlg2Q8h0F4eEU5ej6zRvvZ3x5nVZWJ9Z6W8sU9VHG9a8Q7d8X7q6Q\n" .
-                "-----END PRIVATE KEY-----\n";
-                
-            $examplePublic = "-----BEGIN PUBLIC KEY-----\n" .
-                "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu1SU1L7VLPHCgcIyqrsX\n" .
-                "QTarFpYNkPIdBeHhFOXo+s0b72d8eZ1WVifWelvLFPVRxvWvEO3fF+6ukMWfI5Q6\n" .
-                "-----END PUBLIC KEY-----\n";
-            
-            file_put_contents($chavesDir . '/publica.key', $examplePublic);
-            file_put_contents($chavesDir . '/privada.key', $examplePrivate);
-            
-            $this->log("ATENÇÃO: Chaves de exemplo criadas. SUBSTITUA por chaves reais após a instalação!", 'WARNING');
+        } catch (Exception $e) {
+            $this->log('Falha ao criar/atualizar página de sucesso: ' . $e->getMessage(), 'WARNING');
         }
     }
 
@@ -1366,226 +876,73 @@ body {
         throw new Exception(__('error_github_api_failed', 'Não foi possível acessar os releases do GitHub. Verifique sua conexão com a internet e tente novamente.'));
     }
 
-    /**
-     * Verifica se os seeders foram executados com sucesso apesar de erros de parsing
-     */
-    private function verifySeederResults()
-    {
-        $this->log("=== VERIFICANDO RESULTADOS DOS SEEDERS ===");
-        
-        try {
-            $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
-            $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            ]);
-            
-            // Tabelas críticas que devem ter dados
-            $criticalTables = [
-                'usuarios' => 'Usuários do sistema',
-                'usuarios_perfis' => 'Perfis de usuário',
-                'modulos' => 'Módulos do sistema',
-                'variaveis' => 'Variáveis de configuração',
-                'hosts_configuracoes' => 'Configurações do host'
-            ];
-            
-            $allGood = true;
-            
-            foreach ($criticalTables as $table => $description) {
-                $stmt = $pdo->query("SELECT COUNT(*) as count FROM `{$table}`");
-                $result = $stmt->fetch();
-                $count = $result['count'];
-                
-                if ($count > 0) {
-                    $this->log("✅ {$description}: {$count} registros inseridos");
-                } else {
-                    $this->log("❌ {$description}: Nenhum registro encontrado!", 'ERROR');
-                    $allGood = false;
-                }
-            }
-            
-            if ($allGood) {
-                $this->log("✅ Verificação concluída: Dados essenciais foram inseridos com sucesso");
-                $this->log("ℹ️  Os erros de parsing SQL detectados são relacionados a strings longas com HTML entities");
-                $this->log("ℹ️  Isso não afeta o funcionamento do sistema - são apenas mensagens de interface");
-                
-                // Executa SQL direto para alguns registros críticos que podem ter falhado
-                $this->executeManualSQLFixes($pdo);
-            } else {
-                $this->log("❌ Verificação falhou: Dados essenciais estão faltando", 'ERROR');
-                throw new Exception("Seeders não inseriraram dados críticos do sistema");
-            }
-            
-        } catch (PDOException $e) {
-            $this->log("❌ Erro ao verificar resultados dos seeders: " . $e->getMessage(), 'ERROR');
-            throw new Exception("Falha na verificação dos seeders: " . $e->getMessage());
-        }
-    }
+    // Métodos de seeders removidos.
 
     /**
-     * Executa correções manuais de SQL para registros que falharam devido a parsing
+     * Executa o script de atualização central (substitui migrações/seeders)
      */
-    private function executeManualSQLFixes($pdo)
+    private function runUpdateScript()
     {
-        $this->log("=== EXECUTANDO CORREÇÕES MANUAIS DE SQL ===");
-        
+        $gestorPath = $this->getGestorPath();
+        $scriptPath = $gestorPath . '/controladores/atualizacoes/atualizacoes-banco-de-dados.php';
+        $this->log("Executando script de atualização: {$scriptPath}");
+
+        if (!file_exists($scriptPath)) {
+            throw new Exception('Script de atualização não encontrado: ' . $scriptPath);
+        }
+
         try {
-            // Lista de SQLs para registros críticos que podem ter falhado com HTML entities
-            $manualSQLs = [
-                // Exemplos de variáveis importantes que podem ter falhado
-                "INSERT IGNORE INTO variaveis (id_variaveis, linguagem_codigo, modulo, id, valor, tipo, grupo, descricao) 
-                 VALUES (9998, 'pt-br', 'interface', 'success-message', 'Operação realizada com sucesso!', 'string', 'system', 'Mensagem de sucesso padrão')",
-                
-                "INSERT IGNORE INTO variaveis (id_variaveis, linguagem_codigo, modulo, id, valor, tipo, grupo, descricao) 
-                 VALUES (9997, 'pt-br', 'interface', 'error-message', 'Erro ao processar solicitação', 'string', 'system', 'Mensagem de erro padrão')",
-                
-                // Configuração básica se não existir
-                "INSERT IGNORE INTO hosts_configuracoes (id_hosts_configuracoes, id_hosts, modulo, id, valor, descricao) 
-                 VALUES (9999, 1, 'sistema', 'site-name', 'Meu Site Conn2Flow', 'Nome do site')"
-            ];
-            
-            $successCount = 0;
-            $errorCount = 0;
-            
-            foreach ($manualSQLs as $sql) {
-                try {
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->execute();
-                    $successCount++;
-                    $this->log("✅ SQL manual executado com sucesso");
-                } catch (PDOException $e) {
-                    $errorCount++;
-                    $this->log("⚠️  SQL manual falhou (pode já existir): " . $e->getMessage(), 'WARNING');
-                }
-            }
-            
-            $this->log("📊 Correções manuais: {$successCount} sucessos, {$errorCount} falhas/duplicatas");
-            
+            $this->setupGestorEnvironment();
+            require $scriptPath;
+            $this->log('✅ Script de atualização executado.');
         } catch (Exception $e) {
-            $this->log("❌ Erro nas correções manuais: " . $e->getMessage(), 'WARNING');
-            // Não falha a instalação por causa disso
+            $this->log('❌ Falha ao executar script de atualização: ' . $e->getMessage(), 'ERROR');
+            throw $e;
+        }
+
+        $dbDir = $gestorPath . '/db';
+        if (is_dir($dbDir)) {
+            $this->removeDirectory($dbDir);
+            $this->log('Pasta db removida após atualização: ' . $dbDir);
         }
     }
 
     /**
-     * Corrige dados problemáticos dos seeders que falharam devido a HTML entities
+     * Garante existência/atualização do usuário administrador conforme dados fornecidos
      */
-    private function fixProblematicSeederData()
+    private function ensureAdminUser()
     {
-        $this->log("=== CORRIGINDO ESTRUTURA DE TABELAS E DADOS PROBLEMÁTICOS ===");
-        
+        $this->log('Garantindo usuário administrador...');
         try {
             $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
             $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             ]);
-            
-            // PASSO 1: Corrige estrutura de tabelas para MEDIUMTEXT
-            $this->log("📝 Verificando e corrigindo tipos de colunas...");
-            
-            $tablesToFix = [
-                'variaveis' => ['valor'],
-                'hosts_variaveis' => ['valor'],
-                'historico' => ['alteracao_txt', 'valor_antes', 'valor_depois']
-            ];
-            
-            foreach ($tablesToFix as $table => $columns) {
-                $stmt = $pdo->query("SHOW TABLES LIKE '{$table}'");
-                if ($stmt->rowCount() > 0) {
-                    foreach ($columns as $column) {
-                        try {
-                            $stmt = $pdo->query("SHOW COLUMNS FROM `{$table}` LIKE '{$column}'");
-                            $columnInfo = $stmt->fetch();
-                            
-                            if ($columnInfo && strpos(strtolower($columnInfo['Type']), 'text') === 0) {
-                                $alterSQL = "ALTER TABLE `{$table}` MODIFY COLUMN `{$column}` MEDIUMTEXT";
-                                $pdo->exec($alterSQL);
-                                $this->log("✅ {$table}.{$column} alterada para MEDIUMTEXT");
-                            }
-                        } catch (PDOException $e) {
-                            $this->log("⚠️  Erro ao alterar {$table}.{$column}: " . $e->getMessage(), 'WARNING');
-                        }
-                    }
-                }
-            }
-            
-            // PASSO 2: Verifica se dados críticos foram inseridos
-            $this->log("📊 Verificando dados inseridos...");
-            
-            $stmt = $pdo->query("SELECT COUNT(*) as count FROM variaveis");
-            $result = $stmt->fetch();
-            $variaveisCount = $result['count'];
-            
-            $this->log("Contagem atual de variáveis: {$variaveisCount}");
-            
-            if ($variaveisCount < 500) {
-                $this->log("⚠️  Contagem baixa de variáveis - tentando reexecutar seeder crítico");
-                
-                // Tenta reexecutar o seeder das variáveis de forma mais robusta
-                $this->rerunCriticalSeeders($pdo);
-            }
-            
-            $this->log("✅ Correção de dados problemáticos concluída");
-            
-        } catch (PDOException $e) {
-            $this->log("❌ Erro na correção de dados: " . $e->getMessage(), 'WARNING');
-        }
-    }
 
-    /**
-     * Tenta reexecutar seeders críticos manualmente
-     */
-    private function rerunCriticalSeeders($pdo)
-    {
-        $this->log("🔄 Tentando reexecutar seeders críticos...");
-        
-        // Dados críticos mínimos para funcionamento básico
-        $criticalData = [
-            [
-                'table' => 'variaveis',
-                'data' => [
-                    'id_variaveis' => 9998,
-                    'linguagem_codigo' => 'pt-br',
-                    'modulo' => 'interface',
-                    'id' => 'success-message',
-                    'valor' => 'Operação realizada com sucesso!',
-                    'tipo' => 'string',
-                    'grupo' => 'system',
-                    'descricao' => 'Mensagem de sucesso padrão'
-                ]
-            ],
-            [
-                'table' => 'variaveis',
-                'data' => [
-                    'id_variaveis' => 9997,
-                    'linguagem_codigo' => 'pt-br',
-                    'modulo' => 'interface',
-                    'id' => 'error-message',
-                    'valor' => 'Erro ao processar solicitação',
-                    'tipo' => 'string',
-                    'grupo' => 'system',
-                    'descricao' => 'Mensagem de erro padrão'
-                ]
-            ]
-        ];
-        
-        foreach ($criticalData as $item) {
-            try {
-                $table = $item['table'];
-                $data = $item['data'];
-                
-                $columns = implode(', ', array_keys($data));
-                $placeholders = ':' . implode(', :', array_keys($data));
-                
-                $sql = "INSERT IGNORE INTO {$table} ({$columns}) VALUES ({$placeholders})";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute($data);
-                
-                $this->log("✅ Dados críticos inseridos na tabela {$table}");
-            } catch (PDOException $e) {
-                $this->log("⚠️  Falha ao inserir dados críticos: " . $e->getMessage(), 'WARNING');
+            $adminName = $this->data['admin_name'];
+            $adminEmail = $this->data['admin_email'];
+            $adminPass = $this->data['admin_pass'];
+
+            if (defined('PASSWORD_ARGON2I')) {
+                $hash = password_hash($adminPass, PASSWORD_ARGON2I, ['cost' => 9]);
+            } else {
+                $hash = password_hash($adminPass, PASSWORD_BCRYPT, ['cost' => 12]);
             }
+
+            $sql = "INSERT INTO usuarios (id_usuarios, nome, nome_conta, usuario, senha, email, status, data_criacao, data_modificacao) 
+                    VALUES (1, :nome, :nome_conta, 'admin', :senha, :email, 'A', NOW(), NOW())
+                    ON DUPLICATE KEY UPDATE nome = VALUES(nome), nome_conta = VALUES(nome_conta), senha = VALUES(senha), email = VALUES(email), data_modificacao = NOW()";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                'nome' => $adminName,
+                'nome_conta' => $adminName,
+                'senha' => $hash,
+                'email' => $adminEmail
+            ]);
+            $this->log('✅ Usuário administrador garantido/atualizado.');
+        } catch (Exception $e) {
+            $this->log('⚠️  Falha ao garantir usuário administrador: ' . $e->getMessage(), 'WARNING');
         }
     }
 
