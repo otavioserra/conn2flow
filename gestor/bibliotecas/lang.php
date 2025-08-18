@@ -9,22 +9,28 @@
  */
 
 // Carrega o dicionário de idiomas
-function carregar_dicionario($lang = 'pt-br', $base = '') {
-    $dicionario = [];
-    $caminhoBase = realpath(__DIR__ . $base) . '/';
-    $caminhoArquivo = $caminhoBase . $lang . '.json';
+if (!function_exists('carregar_dicionario')) {
+    function carregar_dicionario($lang = 'pt-br', $base = '') {
+        $dicionario = [];
+        $caminhoBase = realpath(__DIR__ . $base) . '/';
+        $caminhoArquivo = $caminhoBase . $lang . '.json';
 
-    if (file_exists($caminhoArquivo)) {
-        $jsonContent = file_get_contents($caminhoArquivo);
-        $dicionario = json_decode($jsonContent, true);
+        if (file_exists($caminhoArquivo)) {
+            $jsonContent = file_get_contents($caminhoArquivo);
+            $dicionario = json_decode($jsonContent, true);
+        }
+
+        return $dicionario;
     }
-
-    return $dicionario;
 }
 
-// Define o idioma padrão
-$GLOBALS['lang'] = 'pt-br';
-$GLOBALS['dicionario'] = carregar_dicionario($GLOBALS['lang']);
+// Define o idioma padrão apenas se ainda não definido
+if (!isset($GLOBALS['lang'])) {
+    $GLOBALS['lang'] = 'pt-br';
+}
+if (!isset($GLOBALS['dicionario'])) {
+    $GLOBALS['dicionario'] = carregar_dicionario($GLOBALS['lang']);
+}
 
 /**
  * Traduz uma chave de idioma.
@@ -33,14 +39,14 @@ $GLOBALS['dicionario'] = carregar_dicionario($GLOBALS['lang']);
  * @param array $replacements Um array associativo de placeholders e seus valores.
  * @return string O texto traduzido.
  */
-function _($key, $replacements = []) {
-    $text = isset($GLOBALS['dicionario'][$key]) ? $GLOBALS['dicionario'][$key] : $key;
-
-    foreach ($replacements as $placeholder => $value) {
-        $text = str_replace('{' . $placeholder . '}', $value, $text);
+if (!function_exists('_')) { // Evita conflito com gettext quando carregado
+    function _($key, $replacements = []) {
+        $text = isset($GLOBALS['dicionario'][$key]) ? $GLOBALS['dicionario'][$key] : $key;
+        foreach ($replacements as $placeholder => $value) {
+            $text = str_replace('{' . $placeholder . '}', $value, $text);
+        }
+        return $text;
     }
-
-    return $text;
 }
 
 /**
@@ -48,7 +54,9 @@ function _($key, $replacements = []) {
  *
  * @param string $lang O código do idioma (ex: 'en', 'pt-br').
  */
-function set_lang($lang) {
-    $GLOBALS['lang'] = $lang;
-    $GLOBALS['dicionario'] = carregar_dicionario($lang);
+if (!function_exists('set_lang')) {
+    function set_lang($lang) {
+        $GLOBALS['lang'] = $lang;
+        $GLOBALS['dicionario'] = carregar_dicionario($lang);
+    }
 }
