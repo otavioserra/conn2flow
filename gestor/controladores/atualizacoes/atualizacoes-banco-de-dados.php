@@ -49,6 +49,11 @@ require_once $BASE_PATH . 'bibliotecas/lang.php';
 $LOG_FILE    = 'atualizacoes-bd';
 $DB_DATA_DIR = $BASE_PATH . 'db/data/';
 $GESTOR_DIR  = $BASE_PATH; // agora corretamente aponta para gestor/
+// Log dos caminhos para debug
+log_disco('[DEBUG] BASE_PATH: ' . $BASE_PATH, $LOG_FILE);
+log_disco('[DEBUG] REPO_ROOT: ' . $REPO_ROOT, $LOG_FILE);
+log_disco('[DEBUG] Caminho esperado do Phinx: ' . $BASE_PATH . 'vendor/bin/phinx', $LOG_FILE);
+log_disco('[DEBUG] Caminho alternativo do Phinx: ' . $REPO_ROOT . 'vendor/bin/phinx', $LOG_FILE);
 // Detecta binário do Phinx de forma robusta
 $PHINX_BIN = $BASE_PATH . 'vendor/bin/phinx';
 if (!file_exists($PHINX_BIN)) {
