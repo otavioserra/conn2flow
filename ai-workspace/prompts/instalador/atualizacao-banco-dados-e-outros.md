@@ -36,7 +36,7 @@
 - [x] Remoção referências a seeders e métodos relacionados
 - [x] Remoção automática da pasta gestor/db após atualização
 - [x] Correção da lógica RewriteBase no .htaccess
-- [ ] Execução script de release com resumo e commit detalhado
+- [x] Execução script de release com resumo e commit detalhado (instalador-v1.1.0)
 
 ---
 **Data:** 18/08/2025

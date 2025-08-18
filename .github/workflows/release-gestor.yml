@@ -27,19 +27,21 @@ jobs:
         cd gestor
         composer install --no-dev --optimize-autoloader --no-interaction
         
-    - name: Generate multilingual seeders
+    - name: Generate Resources Updates
       run: |
-        cd gestor/resources
-        php generate.multilingual.seeders.php
-        echo "Multilingual seeders generated successfully"
-        
-    - name: Commit generated seeders
+        cd gestor/controladores/agents/arquitetura
+        php atualizacao-dados-recursos.php
+        echo "Resource updates generated successfully"
+
+    - name: Commit Resources Updates
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add gestor/db/seeds/*.php
-        git add gestor/resources/resources.map.*.php
-        git diff --cached --quiet || git commit -m "Auto-update seeders for release ${{ github.ref_name }}"
+        git add gestor/db/data/*.json
+        git add gestor/db/orphans/*.json
+        git add gestor/resources/*
+        git add gestor/modulos/*/*.json
+        git diff --cached --quiet || git commit -m "Auto-update resources for release ${{ github.ref_name }}"
         
     - name: Remove resource files
       run: |

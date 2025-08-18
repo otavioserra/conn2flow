@@ -30,7 +30,6 @@
  *  - carregarDadosExistentes (para reusar versao quando checksum igual)
  *  - coletarRecursos (aplica unicidade, gera órfãos, calcula versao)
  *  - atualizarDados (grava data + órfãos)
- *  - garantirSeeders (gera seeders se faltarem)
  *  - reporteFinal
  *  - main
  *
@@ -56,13 +55,11 @@ $RESOURCES_DIR   = $GESTOR_DIR . 'resources' . DIRECTORY_SEPARATOR;
 $MODULES_DIR     = $GESTOR_DIR . 'modulos' . DIRECTORY_SEPARATOR;
 $PLUGINS_DIR     = $BASE_PATH . 'gestor-plugins' . DIRECTORY_SEPARATOR;
 $DB_DATA_DIR     = $GESTOR_DIR . 'db' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
-$SEEDS_DIR       = $GESTOR_DIR . 'db' . DIRECTORY_SEPARATOR . 'seeds' . DIRECTORY_SEPARATOR;
 $LOG_DIR         = $GESTOR_DIR . 'logs' . DIRECTORY_SEPARATOR . 'arquitetura' . DIRECTORY_SEPARATOR;
 $LOG_FILE        = 'atualizacao-dados-recursos';
 
 if (!is_dir($LOG_DIR)) @mkdir($LOG_DIR, 0775, true);
 if (!is_dir($DB_DATA_DIR)) @mkdir($DB_DATA_DIR, 0775, true);
-if (!is_dir($SEEDS_DIR)) @mkdir($SEEDS_DIR, 0775, true);
 
 // Ajustar defaults para biblioteca de log tradicional se necessária
 global $_GESTOR;
@@ -152,6 +149,90 @@ function atualizarArquivosOrigem(array $map): void {
             if ($changed) {
                 jsonWrite($jsonPath,$lista);
                 log_disco("ORIGIN_FILE_SAVED $jsonPath", $LOG_FILE);
+            }
+        }
+    }
+
+    // ====== Atualização para MÓDULOS ======
+    global $MODULES_DIR;
+    if (is_dir($MODULES_DIR)) {
+        $mods = glob($MODULES_DIR.'*', GLOB_ONLYDIR) ?: [];
+        foreach ($mods as $modPath) {
+            $modId = basename($modPath);
+            $jsonFile = $modPath.DIRECTORY_SEPARATOR.$modId.'.json';
+            $data = jsonRead($jsonFile); if(!$data || empty($data['resources'])) continue;
+            $changedModule = false;
+            foreach ($languages as $lang) {
+                if (empty($data['resources'][$lang])) continue; // idioma não presente
+                foreach (['layouts','components','pages'] as $tipo) {
+                    if (empty($data['resources'][$lang][$tipo]) || !is_array($data['resources'][$lang][$tipo])) continue;
+                    foreach ($data['resources'][$lang][$tipo] as &$item) {
+                        $id = $item['id'] ?? null; if(!$id) continue;
+                        $paths = resourcePaths($modPath,$lang,$tipo,$id); // base modulo
+                        $html = readFileIfExists($paths['html']);
+                        $css  = readFileIfExists($paths['css']);
+                        $newChecksum = buildChecksum($html,$css);
+                        $oldChecksum = $item['checksum'] ?? ['html'=>'','css'=>'','combined'=>''];
+                        if (!is_array($oldChecksum)) { $dec=json_decode((string)$oldChecksum,true); if(is_array($dec)) $oldChecksum=$dec; }
+                        if (!checksumsEqual($oldChecksum,$newChecksum)) {
+                            $oldVersion = $item['version'] ?? null;
+                            $item['version'] = incrementVersionStr($oldVersion);
+                            $item['checksum'] = $newChecksum;
+                            $changedModule = true;
+                            log_disco("ORIGIN_UPDATE_MODULE modulo=$modId tipo=$tipo id=$id lang=$lang version {$oldVersion}=>{$item['version']}", $LOG_FILE);
+                        }
+                    }
+                    unset($item);
+                }
+            }
+            if ($changedModule) {
+                jsonWrite($jsonFile,$data);
+                log_disco("ORIGIN_FILE_SAVED_MODULE $jsonFile", $LOG_FILE);
+            }
+        }
+    }
+
+    // ====== Atualização para PLUGINS (módulos locais) ======
+    global $PLUGINS_DIR;
+    if (is_dir($PLUGINS_DIR)) {
+        $plugins = glob($PLUGINS_DIR.'*', GLOB_ONLYDIR) ?: [];
+        foreach ($plugins as $plugPath) {
+            $plugId = basename($plugPath);
+            $modsBase = $plugPath.DIRECTORY_SEPARATOR.'local'.DIRECTORY_SEPARATOR.'modulos'.DIRECTORY_SEPARATOR;
+            if (!is_dir($modsBase)) continue;
+            $mods = glob($modsBase.'*', GLOB_ONLYDIR) ?: [];
+            foreach ($mods as $modPath) {
+                $modId = basename($modPath);
+                $jsonFile = $modPath.DIRECTORY_SEPARATOR.$modId.'.json';
+                $data = jsonRead($jsonFile); if(!$data || empty($data['resources'])) continue;
+                $changedModule = false;
+                foreach ($languages as $lang) {
+                    if (empty($data['resources'][$lang])) continue;
+                    foreach (['layouts','components','pages'] as $tipo) {
+                        if (empty($data['resources'][$lang][$tipo]) || !is_array($data['resources'][$lang][$tipo])) continue;
+                        foreach ($data['resources'][$lang][$tipo] as &$item) {
+                            $id = $item['id'] ?? null; if(!$id) continue;
+                            $paths = resourcePaths($modPath,$lang,$tipo,$id);
+                            $html = readFileIfExists($paths['html']);
+                            $css  = readFileIfExists($paths['css']);
+                            $newChecksum = buildChecksum($html,$css);
+                            $oldChecksum = $item['checksum'] ?? ['html'=>'','css'=>'','combined'=>''];
+                            if (!is_array($oldChecksum)) { $dec=json_decode((string)$oldChecksum,true); if(is_array($dec)) $oldChecksum=$dec; }
+                            if (!checksumsEqual($oldChecksum,$newChecksum)) {
+                                $oldVersion = $item['version'] ?? null;
+                                $item['version'] = incrementVersionStr($oldVersion);
+                                $item['checksum'] = $newChecksum;
+                                $changedModule = true;
+                                log_disco("ORIGIN_UPDATE_PLUGIN plugin=$plugId modulo=$modId tipo=$tipo id=$id lang=$lang version {$oldVersion}=>{$item['version']}", $LOG_FILE);
+                            }
+                        }
+                        unset($item);
+                    }
+                }
+                if ($changedModule) {
+                    jsonWrite($jsonFile,$data);
+                    log_disco("ORIGIN_FILE_SAVED_PLUGIN $jsonFile", $LOG_FILE);
+                }
             }
         }
     }
@@ -567,29 +648,7 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
     log_disco('Dados persistidos + órfãos.', $LOG_FILE);
 }
 
-// ========================= 5) SEEDERS (Garantir) =========================
-
-/**
- * Garante a existência dos seeders padrão sem sobrescrever existentes.
- */
-function garantirSeeders(): void {
-    global $SEEDS_DIR, $LOG_FILE;
-    $defs = [
-        ['LayoutsSeeder','layouts','LayoutsData.json'],
-        ['PaginasSeeder','paginas','PaginasData.json'],
-        ['ComponentesSeeder','componentes','ComponentesData.json'],
-        ['VariaveisSeeder','variaveis','VariaveisData.json'],
-    ];
-    foreach ($defs as [$class,$table,$file]) {
-        $path = $SEEDS_DIR.$class.'.php';
-        if (file_exists($path)) continue;
-        $code = "<?php\n\ndeclare(strict_types=1);\nuse Phinx\\Seed\\AbstractSeed;\nfinal class $class extends AbstractSeed { public function run(): void { $data = json_decode(file_get_contents(__DIR__.'/../data/$file'), true); if(!empty($data)){ $t=$this->table('$table'); if(method_exists($t,'truncate')){ $t->truncate(); } $t->insert($data)->saveData(); } } }\n";
-        file_put_contents($path,$code);
-        log_disco("Seeder criado: $class", $LOG_FILE);
-    }
-}
-
-// ========================= 6) REPORTE FINAL =========================
+// ========================= 5) REPORTE FINAL =========================
 
 function validarDuplicidades(array $recursos): array {
     $erros = [];
@@ -621,7 +680,7 @@ function reporteFinal(array $recursos, array $erros): void {
     log_disco($msg,$LOG_FILE); echo $msg;
 }
 
-// ========================= 7) MAIN =========================
+// ========================= 6) MAIN =========================
 
 function main(): void {
     global $LOG_FILE;
@@ -636,7 +695,6 @@ function main(): void {
         $exist = carregarDadosExistentes();
         $recursos = coletarRecursos($exist,$map);
         atualizarDados($exist,$recursos);
-        garantirSeeders();
         $erros = validarDuplicidades($recursos);
         reporteFinal($recursos,$erros);
         log_disco('Fim processo V2 OK', $LOG_FILE);
