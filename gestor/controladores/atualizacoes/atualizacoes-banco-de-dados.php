@@ -49,10 +49,30 @@ require_once $BASE_PATH . 'bibliotecas/lang.php';
 $LOG_FILE    = 'atualizacoes-bd';
 $DB_DATA_DIR = $BASE_PATH . 'db/data/';
 $GESTOR_DIR  = $BASE_PATH; // agora corretamente aponta para gestor/
-$PHINX_BIN   = $BASE_PATH . 'vendor/bin/phinx'; // vendor dentro de gestor/
-// Fallback: caso vendor esteja na raiz do repositório (cenário legado)
-if (!file_exists($PHINX_BIN) && file_exists($REPO_ROOT . 'vendor/bin/phinx')) {
-    $PHINX_BIN = $REPO_ROOT . 'vendor/bin/phinx';
+// Detecta binário do Phinx de forma robusta
+$PHINX_BIN = $BASE_PATH . 'vendor/bin/phinx';
+if (!file_exists($PHINX_BIN)) {
+    // Fallback: vendor na raiz do repositório
+    $altPhinx = $REPO_ROOT . 'vendor/bin/phinx';
+    if (file_exists($altPhinx)) {
+        $PHINX_BIN = $altPhinx;
+    } else {
+        // Fallback: buscar no PATH do sistema
+        $whichPhinx = trim(shell_exec('which phinx'));
+        if ($whichPhinx && file_exists($whichPhinx)) {
+            $PHINX_BIN = $whichPhinx;
+        } else {
+            // Não encontrou o binário, aborta com log detalhado
+            $msg = '[FATAL] Binário do Phinx não encontrado em nenhum dos caminhos esperados: '
+                . "\nTentativas:"
+                . "\n- $BASE_PATH/vendor/bin/phinx"
+                . "\n- $REPO_ROOT/vendor/bin/phinx"
+                . "\n- PATH do sistema (which phinx)"
+                . "\nAbortando rotina de migração!";
+            log_disco($msg, $LOG_FILE);
+            throw new RuntimeException($msg);
+        }
+    }
 }
 $BACKUP_DIR_BASE = $REPO_ROOT . 'backups/atualizacoes/'; // conforme prompt
 
@@ -107,12 +127,18 @@ function db(): PDO {
 function migracoes(): array {
     global $PHINX_BIN, $GESTOR_DIR, $LOG_FILE;
     log_disco(tr('_migrations_start'), $LOG_FILE);
+    // Verificação explícita do binário do Phinx
+    if (empty($PHINX_BIN) || !is_string($PHINX_BIN) || !file_exists($PHINX_BIN)) {
+        $msg = 'Binário do Phinx não encontrado ou inválido: ' . var_export($PHINX_BIN, true);
+        log_disco($msg, $LOG_FILE);
+        throw new RuntimeException($msg);
+    }
     $cmd = escapeshellcmd(PHP_BINARY) . ' ' . escapeshellarg($PHINX_BIN) . ' migrate -c ' . escapeshellarg($GESTOR_DIR . 'phinx.php') . ' -e gestor';
     log_disco('DEBUG CMD MIGRACOES: ' . $cmd, $LOG_FILE);
     [$code, $out] = runCmd($cmd);
     log_disco($out, $LOG_FILE);
     if ($code !== 0) {
-            log_disco('Erro migrações exitCode=' . $code, $LOG_FILE);
+        log_disco('Erro migrações exitCode=' . $code, $LOG_FILE);
         throw new RuntimeException('Falha migrações');
     }
     log_disco(tr('_migrations_done'), $LOG_FILE);

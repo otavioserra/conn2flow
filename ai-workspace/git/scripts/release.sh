@@ -48,4 +48,6 @@ git commit -m "$COMMIT_DETAILS"
 git tag -a "gestor-v$NEW_VERSION" -m "$TAG_SUMMARY"
 
 echo "Release gestor-v$NEW_VERSION criado com sucesso!"
-echo "Não se esqueça de rodar 'git push' e 'git push --tags' para enviar ao repositório remoto."
+
+git push
+git push --tags

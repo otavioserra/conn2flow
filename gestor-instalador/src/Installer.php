@@ -931,6 +931,19 @@ class Installer
 
         try {
             $this->setupGestorEnvironment();
+            // Garantir variáveis de ambiente para o Phinx
+            $this->log('Setando variáveis de ambiente do banco para migrações...');
+            putenv('PHINX_DB_HOST=' . ($this->data['db_host'] ?? ''));
+            putenv('PHINX_DB_NAME=' . ($this->data['db_name'] ?? ''));
+            putenv('PHINX_DB_USER=' . ($this->data['db_user'] ?? ''));
+            putenv('PHINX_DB_PASS=' . ($this->data['db_pass'] ?? ''));
+            $this->log('Variáveis de ambiente setadas: ' .
+                'PHINX_DB_HOST=' . getenv('PHINX_DB_HOST') . ', ' .
+                'PHINX_DB_NAME=' . getenv('PHINX_DB_NAME') . ', ' .
+                'PHINX_DB_USER=' . getenv('PHINX_DB_USER') . ', ' .
+                'PHINX_DB_PASS=' . (getenv('PHINX_DB_PASS') ? '***' : '(vazio)'));
+
+            $this->log('Executando script de atualização (migrando banco)...');
             require $scriptPath;
             $this->log('✅ Script de atualização executado.');
         } catch (Exception $e) {
