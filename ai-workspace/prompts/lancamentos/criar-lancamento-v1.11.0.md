@@ -11,7 +11,7 @@
 ## 🤔 Dúvidas e 📝 Sugestões
 
 ## ✅ Progresso da Implementação
-- [] item do progresso
+- [x] Release v1.11.0 criado, README atualizado, tags antigas removidas mantendo gestor-v1.11.0
 
 ---
 **Data:** 18/08/2025
