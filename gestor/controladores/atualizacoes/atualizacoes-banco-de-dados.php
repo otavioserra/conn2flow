@@ -165,6 +165,23 @@ function db(): PDO {
 function migracoes(): array {
     global $PHINX_BIN, $GESTOR_DIR, $LOG_FILE;
 
+    // Se PHINX_BIN estiver vazio, resolve novamente
+    if (empty($PHINX_BIN) || !is_string($PHINX_BIN) || !file_exists($PHINX_BIN)) {
+        $basePath = isset($GESTOR_DIR) ? $GESTOR_DIR : (function_exists('getGestorBasePath') ? getGestorBasePath() : null);
+        $repoRoot = $basePath ? realpath($basePath . '..') . DIRECTORY_SEPARATOR : null;
+        $PHINX_BIN = $basePath ? $basePath . 'vendor/bin/phinx' : null;
+        if ($PHINX_BIN && file_exists($PHINX_BIN)) {
+            // ok
+        } elseif ($repoRoot && file_exists($repoRoot . 'vendor/bin/phinx')) {
+            $PHINX_BIN = $repoRoot . 'vendor/bin/phinx';
+        } else {
+            $whichPhinx = trim(shell_exec('which phinx'));
+            if ($whichPhinx && file_exists($whichPhinx)) {
+                $PHINX_BIN = $whichPhinx;
+            }
+        }
+    }
+
     log_disco(tr('_migrations_start'), $LOG_FILE);
     // Exibir variáveis de ambiente relevantes
     $envVars = [

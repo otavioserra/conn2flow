@@ -44,8 +44,9 @@ if [ -n "$OLD_TAGS" ]; then
   echo "Removendo tags antigas da mesma versão: $OLD_TAGS"
   for tag in $OLD_TAGS; do
     if [ -n "$tag" ]; then
-      git tag -d "$tag"
-      git push --delete origin "$tag"
+  git tag -d "$tag"
+  git push --delete origin "$tag"
+  gh release delete "$tag" --yes
     fi
   done
 fi
@@ -58,4 +59,6 @@ git commit -m "$COMMIT_DETAILS"
 git tag -a "instalador-v$NEW_VERSION" -m "$TAG_SUMMARY"
 
 echo "Release instalador-v$NEW_VERSION criado com sucesso!"
-echo "Não se esqueça de rodar 'git push' e 'git push --tags' para enviar ao repositório remoto."
+
+git push
+git push --tags

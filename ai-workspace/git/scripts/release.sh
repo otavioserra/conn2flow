@@ -45,8 +45,9 @@ if [ -n "$OLD_TAGS" ]; then
   echo "Removendo tags antigas da mesma versão: $OLD_TAGS"
   for tag in $OLD_TAGS; do
     if [ -n "$tag" ]; then
-      git tag -d "$tag"
-      git push --delete origin "$tag"
+  git tag -d "$tag"
+  git push --delete origin "$tag"
+  gh release delete "$tag" --yes
     fi
   done
 fi
