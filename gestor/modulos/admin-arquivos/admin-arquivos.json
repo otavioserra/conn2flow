@@ -29,11 +29,11 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "2fc1e259487f4be4e8c784b3ce754307",
+                        "html": "8f33d8113e655162a32f7a7213409e19",
                         "css": "da65a7d1abba118408353e14d6102779",
-                        "combined": "c37fb91e24aca366e9401bb784f18360"
+                        "combined": "ddb032331dd7e8da25416f3ac40a104a"
                     }
                 },
                 {

@@ -189,29 +189,27 @@ gestor-cliente/       # Distributed client system
 
 ### Latest Stable Releases
 
-**Gestor (Core System)**: `v1.0.5` *(Latest)*
-- ✅ Complete verification system for database migrations and seeders
-- ✅ Enhanced Docker development environment with MySQL 8.0 + phpMyAdmin
-- ✅ Organized utility scripts and VS Code PHP 8.4.8 configuration
-- ✅ Corrected database schema with proper conn2flow structure
-- ✅ All 75 tables verified with correct field counts
-- ✅ All 14 seeders verified with proper data loads
-- ✅ Ready for production installation and testing
+**Gestor (Core System)**: `v1.11.0` *(Latest)*
+- ✅ Refatoração completa da sincronização de recursos (IDs naturais, órfãos, checksums html/css/combined)
+- ✅ Versionamento automático de layouts/páginas/componentes globais e de módulos/plugins
+- ✅ Remoção de seeders na rotina de atualização em favor de script unificado
+- ✅ Migrações e schema estabilizados com layout_id string e campos *updated para diffs futuros
+- ✅ Melhorias de internacionalização e logs estruturados
+- ✅ Preparação para cache busting baseado em checksum
 
-**Instalador (Installer)**: `v1.0.10` *(Latest)*
-- ✅ Enhanced OpenSSL key generation with Windows compatibility
-- ✅ Improved database schema validation and error handling
-- ✅ Complete Docker integration for development and testing
-- ✅ Database migration verification (75 tables)
-- ✅ Seeder verification (14 seeders) 
-- ✅ Enhanced logging and debugging capabilities
-- ✅ VS Code development environment configuration
+**Instalador (Installer)**: `v1.1.0` *(Latest)*
+- ✅ Integração com rotina unificada de atualização do sistema (remoção de Phinx/seeders no instalador)
+- ✅ Criação automática do usuário administrador e autologin pós-instalação
+- ✅ Ajuste dinâmico de RewriteBase para instalações em subpastas
+- ✅ Limpeza automática da pasta db e arquivos temporários
+- ✅ Logging detalhado de cada etapa e detecção de URL raiz
 
 ### Version History
-- **Gestor v1.0.4**: Database schema improvements
-- **Gestor v1.0.3**: Core system stabilization
-- **Instalador v1.0.9**: GitHub API integration fixes
-- **Instalador v1.0.8**: OpenSSL key generation improvements
+- **Gestor v1.11.0**: Versionamento automático recursos módulos/plugins; melhorias checksum e remoção definitiva de seeders na atualização.
+- **Gestor v1.10.x**: Correções de duplicidade, internacionalização, unificação geração de recursos, campos de controle *updated*.
+- **Gestor v1.8.7**: Ajustes layout instalação-sucesso e consistência banco.
+- **Instalador v1.1.0**: Refatoração para usar script de atualização central; ajustes RewriteBase e criação admin.
+- **Instalador v1.0.10**: OpenSSL e validações adicionais.
 
 ### Development Environment
 - **Docker**: Complete development stack with PHP 8.3 + Apache + MySQL 8.0
