@@ -79,6 +79,15 @@ if (!file_exists($PHINX_BIN)) {
         }
     }
 }
+// Debug extremo do binário do Phinx
+log_disco('[DEBUG] Teste file_exists: ' . ($PHINX_BIN ? $PHINX_BIN : 'NULL') . ' => ' . (file_exists($PHINX_BIN) ? 'SIM' : 'NÃO'), $LOG_FILE);
+log_disco('[DEBUG] Teste is_file: ' . ($PHINX_BIN ? $PHINX_BIN : 'NULL') . ' => ' . (is_file($PHINX_BIN) ? 'SIM' : 'NÃO'), $LOG_FILE);
+log_disco('[DEBUG] Teste is_readable: ' . ($PHINX_BIN ? $PHINX_BIN : 'NULL') . ' => ' . (is_readable($PHINX_BIN) ? 'SIM' : 'NÃO'), $LOG_FILE);
+log_disco('[DEBUG] Teste realpath: ' . ($PHINX_BIN ? realpath($PHINX_BIN) : 'NULL'), $LOG_FILE);
+if ($PHINX_BIN && file_exists($PHINX_BIN)) {
+    $stat = @stat($PHINX_BIN);
+    log_disco('[DEBUG] stat do binário: ' . print_r($stat, true), $LOG_FILE);
+}
 $BACKUP_DIR_BASE = $REPO_ROOT . 'backups/atualizacoes/'; // conforme prompt
 
 // Ajuste ambiente log
@@ -131,22 +140,42 @@ function db(): PDO {
  */
 function migracoes(): array {
     global $PHINX_BIN, $GESTOR_DIR, $LOG_FILE;
+
     log_disco(tr('_migrations_start'), $LOG_FILE);
+    // Exibir variáveis de ambiente relevantes
+    $envVars = [
+        'PHP_BINARY' => PHP_BINARY,
+        'PHINX_BIN' => $PHINX_BIN,
+        'GESTOR_DIR' => $GESTOR_DIR,
+        'phinx.php' => $GESTOR_DIR . 'phinx.php',
+        'PWD' => getcwd(),
+        'USER' => getenv('USER'),
+        'HOME' => getenv('HOME'),
+    ];
+    foreach ($envVars as $k => $v) {
+        log_disco("[DEBUG] ENV $k = $v", $LOG_FILE);
+        echo "[DEBUG] ENV $k = $v\n";
+    }
     // Verificação explícita do binário do Phinx
     if (empty($PHINX_BIN) || !is_string($PHINX_BIN) || !file_exists($PHINX_BIN)) {
         $msg = 'Binário do Phinx não encontrado ou inválido: ' . var_export($PHINX_BIN, true);
         log_disco($msg, $LOG_FILE);
+        echo $msg . "\n";
         throw new RuntimeException($msg);
     }
     $cmd = escapeshellcmd(PHP_BINARY) . ' ' . escapeshellarg($PHINX_BIN) . ' migrate -c ' . escapeshellarg($GESTOR_DIR . 'phinx.php') . ' -e gestor';
     log_disco('DEBUG CMD MIGRACOES: ' . $cmd, $LOG_FILE);
+    echo "[DEBUG] CMD MIGRACOES: $cmd\n";
     [$code, $out] = runCmd($cmd);
     log_disco($out, $LOG_FILE);
+    echo "[PHINX OUTPUT]\n$out\n";
     if ($code !== 0) {
         log_disco('Erro migrações exitCode=' . $code, $LOG_FILE);
+        echo "[ERRO] Migrações exitCode=$code\n";
         throw new RuntimeException('Falha migrações');
     }
     log_disco(tr('_migrations_done'), $LOG_FILE);
+    echo "[OK] Migrações concluídas!\n";
     return ['output' => $out];
 }
 
