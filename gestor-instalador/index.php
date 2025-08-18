@@ -33,8 +33,8 @@ function read_last_lines($filepath, $lines = 20) {
     return implode('', iterator_to_array($iterator));
 }
 
-require_once 'src/Translator.php';
-require_once 'src/helpers.php';
+require_once __DIR__ . '/src/Translator.php';
+require_once __DIR__ . '/src/helpers.php';
 
 // Se for uma requisição GET, apenas exibe o formulário
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -48,9 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $translator->load($lang);
 
     if (isset($_GET['success']) && $_GET['success'] === 'true') {
-        require_once 'views/success.php';
+    require_once __DIR__ . '/views/success.php';
     } else {
-        require_once 'views/installer.php';
+    require_once __DIR__ . '/views/installer.php';
     }
     exit;
 }
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 // A partir daqui, tratamos apenas requisições POST (AJAX)
 header('Content-Type: application/json');
 
-require_once 'src/Installer.php';
+require_once __DIR__ . '/src/Installer.php';
 
 // Para requisições POST (AJAX), carrega o idioma enviado no corpo da requisição
 $lang = 'pt-br';

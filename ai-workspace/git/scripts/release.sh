@@ -38,6 +38,20 @@ fi
 
 echo "Nova versão é: $NEW_VERSION"
 
+# Remove tags antigas da mesma versão (se existirem)
+set +e
+OLD_TAGS=$(git tag | grep "^gestor-v$NEW_VERSION$")
+if [ -n "$OLD_TAGS" ]; then
+  echo "Removendo tags antigas da mesma versão: $OLD_TAGS"
+  for tag in $OLD_TAGS; do
+    if [ -n "$tag" ]; then
+      git tag -d "$tag"
+      git push --delete origin "$tag"
+    fi
+  done
+fi
+set -e
+
 # 2. Adiciona, commita e cria uma tag anotada no Git com mensagens distintas
 echo "Criando commit e tag para a versão gestor-v$NEW_VERSION..."
 # Adiciona ao stage o config.php modificado E quaisquer outras alterações

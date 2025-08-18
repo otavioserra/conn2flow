@@ -10,9 +10,9 @@ class Installer
     public function __construct(array $postData)
     {
         $this->data = $postData;
-        $this->baseDir = dirname(__DIR__); // Diretório do instalador
-        $this->tempDir = $this->baseDir . '/temp';
-        $this->logFile = $this->baseDir . '/installer.log';
+    $this->baseDir = realpath(dirname(__DIR__)); // Diretório do instalador robusto
+    $this->tempDir = $this->baseDir . DIRECTORY_SEPARATOR . 'temp';
+    $this->logFile = $this->baseDir . DIRECTORY_SEPARATOR . 'installer.log';
         
         // Inicia o log
         $this->log("=== Iniciando instalação em " . date('Y-m-d H:i:s') . " ===");
@@ -103,7 +103,7 @@ class Installer
 
         // Busca a URL do release mais recente do gestor usando GitHub API
         $gestorUrl = $this->getLatestGestorReleaseUrl();
-        $gestorZipPath = $this->tempDir . '/gestor.zip';
+    $gestorZipPath = $this->tempDir . DIRECTORY_SEPARATOR . 'gestor.zip';
 
         $this->log("URL do gestor detectada: {$gestorUrl}");
 
@@ -122,7 +122,7 @@ class Installer
         $gestorZipPath = $this->tempDir . '/gestor.zip';
         
         // Usa o caminho de instalação personalizado
-        $installPath = $this->data['install_path'];
+    $installPath = isset($this->data['install_path']) ? realpath($this->data['install_path']) ?: $this->data['install_path'] : null;
         $this->log("Descompactando arquivos para: {$installPath}");
         
         // Cria o diretório de instalação se não existir
@@ -314,8 +314,8 @@ class Installer
      */
     private function fixPhinxPermissions()
     {
-        $gestorPath = $this->getGestorPath();
-        $phinxBinPath = $gestorPath . '/vendor/bin/phinx';
+    $gestorPath = $this->getGestorPath();
+    $phinxBinPath = $gestorPath . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'phinx';
         
         if (file_exists($phinxBinPath)) {
             chmod($phinxBinPath, 0755);
@@ -387,7 +387,7 @@ class Installer
      */
     private function getGestorPath()
     {
-        return $this->data['install_path'] ?? dirname($this->baseDir) . '/gestor';
+    return isset($this->data['install_path']) ? realpath($this->data['install_path']) ?: $this->data['install_path'] : dirname($this->baseDir) . DIRECTORY_SEPARATOR + 'gestor';
     }
 
     /**

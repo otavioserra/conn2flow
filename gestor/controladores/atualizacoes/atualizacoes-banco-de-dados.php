@@ -35,10 +35,34 @@
 
 declare(strict_types=1);
 
-// $BASE_PATH: raiz do módulo gestor (pasta que contém bibliotecas/, db/, controladores/)
-$BASE_PATH = realpath(__DIR__ . '/../../') . DIRECTORY_SEPARATOR; // .../conn2flow/gestor/
-// $REPO_ROOT: raiz do repositório (um nível acima de gestor/)
+
+// Resolução robusta do caminho do gestor e do repositório
+function getGestorBasePath() {
+    // Tenta usar __FILE__ para garantir caminho absoluto
+    $file = __FILE__;
+    $base = realpath(dirname($file) . '/../../');
+    if ($base && is_dir($base)) return $base . DIRECTORY_SEPARATOR;
+    // Fallback: debug_backtrace para require/include
+    $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+    if (isset($bt[0]['file'])) {
+        $base2 = realpath(dirname($bt[0]['file']) . '/../../');
+        if ($base2 && is_dir($base2)) return $base2 . DIRECTORY_SEPARATOR;
+    }
+    // Fallback removido: não usar getcwd()
+    return null;
+}
+
+$BASE_PATH = getGestorBasePath();
+if (!$BASE_PATH) {
+    error_log('[FATAL] Não foi possível resolver o caminho do gestor!');
+    throw new RuntimeException('Não foi possível resolver o caminho do gestor!');
+}
 $REPO_ROOT = realpath($BASE_PATH . '..') . DIRECTORY_SEPARATOR;
+// Log extra para debug
+if (function_exists('log_disco')) {
+    log_disco('[DEBUG] BASE_PATH (robusto): ' . $BASE_PATH, 'atualizacoes-bd');
+    log_disco('[DEBUG] REPO_ROOT (robusto): ' . $REPO_ROOT, 'atualizacoes-bd');
+}
 
 require_once $BASE_PATH . 'bibliotecas/lang.php';
 @require_once $BASE_PATH . 'bibliotecas/log.php';
@@ -94,7 +118,7 @@ $BACKUP_DIR_BASE = $REPO_ROOT . 'backups/atualizacoes/'; // conforme prompt
 global $_GESTOR; if (!isset($_GESTOR)) $_GESTOR = []; if (!isset($_GESTOR['logs-path'])) $_GESTOR['logs-path'] = $BASE_PATH . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR; if (!is_dir($_GESTOR['logs-path'])) @mkdir($_GESTOR['logs-path'], 0775, true);
 set_lang('pt-br');
 // Mesclar dicionário local de atualizações (prioridade para chaves locais)
-$localLangDir = __DIR__ . '/lang/';
+$localLangDir = $BASE_PATH . 'controladores/atualizacoes/lang/';
 if (is_dir($localLangDir)) {
     $localFile = $localLangDir . $GLOBALS['lang'] . '.json';
     if (file_exists($localFile)) {
@@ -121,7 +145,7 @@ function runCmd(string $cmd): array {
 function db(): PDO {
     static $pdo = null; if ($pdo) return $pdo;
     // Reaproveita lógica do phinx.php para config
-    $configPath = __DIR__ . '/../../config.php';
+    $configPath = $BASE_PATH . 'config.php';
     if (!file_exists($configPath)) throw new RuntimeException('config.php não encontrado para conectar banco.');
     require $configPath; // define $_BANCO
     $host = $_BANCO['host'] ?? 'localhost';
@@ -148,7 +172,7 @@ function migracoes(): array {
         'PHINX_BIN' => $PHINX_BIN,
         'GESTOR_DIR' => $GESTOR_DIR,
         'phinx.php' => $GESTOR_DIR . 'phinx.php',
-        'PWD' => getcwd(),
+        'SCRIPT_PATH' => __FILE__,
         'USER' => getenv('USER'),
         'HOME' => getenv('HOME'),
     ];

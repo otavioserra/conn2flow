@@ -22,7 +22,7 @@ class Translator
     public function load(string $lang = 'pt-br')
     {
         $this->lang = $lang;
-        $filePath = __DIR__ . "/../lang/{$this->lang}.json";
+    $filePath = realpath(__DIR__ . "/../lang/{$this->lang}.json");
 
         if (file_exists($filePath)) {
             $this->translations = json_decode(file_get_contents($filePath), true) ?? [];
