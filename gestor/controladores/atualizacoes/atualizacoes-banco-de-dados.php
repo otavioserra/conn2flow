@@ -36,20 +36,94 @@
 declare(strict_types=1);
 
 
-// Resolução robusta do caminho do gestor e do repositório
+// Inicialização robusta de variáveis globais e caminhos críticos
 function getGestorBasePath() {
-    // Tenta usar __FILE__ para garantir caminho absoluto
     $file = __FILE__;
     $base = realpath(dirname($file) . '/../../');
     if ($base && is_dir($base)) return $base . DIRECTORY_SEPARATOR;
-    // Fallback: debug_backtrace para require/include
     $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
     if (isset($bt[0]['file'])) {
         $base2 = realpath(dirname($bt[0]['file']) . '/../../');
         if ($base2 && is_dir($base2)) return $base2 . DIRECTORY_SEPARATOR;
     }
-    // Fallback removido: não usar getcwd()
     return null;
+}
+
+if (!isset($BASE_PATH) || !$BASE_PATH) {
+    $BASE_PATH = getGestorBasePath();
+}
+if (!$BASE_PATH) {
+    error_log('[FATAL] Não foi possível resolver o caminho do gestor!');
+    throw new RuntimeException('Não foi possível resolver o caminho do gestor!');
+}
+if (!isset($REPO_ROOT) || !$REPO_ROOT) {
+    $REPO_ROOT = realpath($BASE_PATH . '..') . DIRECTORY_SEPARATOR;
+}
+if (!isset($LOG_FILE)) {
+    $LOG_FILE = 'atualizacoes-bd';
+}
+if (!isset($DB_DATA_DIR)) {
+    $DB_DATA_DIR = $BASE_PATH . 'db/data/';
+}
+if (!isset($GESTOR_DIR)) {
+    $GESTOR_DIR = $BASE_PATH;
+}
+if (!isset($PHINX_BIN) || !$PHINX_BIN) {
+    $PHINX_BIN = $BASE_PATH . 'vendor/bin/phinx';
+    if (!file_exists($PHINX_BIN)) {
+        $altPhinx = $REPO_ROOT . 'vendor/bin/phinx';
+        if (file_exists($altPhinx)) {
+            $PHINX_BIN = $altPhinx;
+        } else {
+            $whichPhinx = trim(shell_exec('which phinx'));
+            if ($whichPhinx && file_exists($whichPhinx)) {
+                $PHINX_BIN = $whichPhinx;
+            } else {
+                $msg = '[FATAL] Binário do Phinx não encontrado em nenhum dos caminhos esperados: '
+                    . "\nTentativas:"
+                    . "\n- $BASE_PATH/vendor/bin/phinx"
+                    . "\n- $REPO_ROOT/vendor/bin/phinx"
+                    . "\n- PATH do sistema (which phinx)"
+                    . "\nAbortando rotina de migração!";
+                if (function_exists('log_disco')) log_disco($msg, $LOG_FILE);
+                throw new RuntimeException($msg);
+            }
+        }
+    }
+}
+if (!isset($BACKUP_DIR_BASE)) {
+    $BACKUP_DIR_BASE = $REPO_ROOT . 'backups/atualizacoes/';
+}
+if (function_exists('log_disco')) {
+    log_disco('[DEBUG] BASE_PATH (robusto): ' . $BASE_PATH, $LOG_FILE);
+    log_disco('[DEBUG] REPO_ROOT (robusto): ' . $REPO_ROOT, $LOG_FILE);
+    log_disco('[DEBUG] BASE_PATH: ' . $BASE_PATH, $LOG_FILE);
+    log_disco('[DEBUG] REPO_ROOT: ' . $REPO_ROOT, $LOG_FILE);
+    log_disco('[DEBUG] Caminho esperado do Phinx: ' . $BASE_PATH . 'vendor/bin/phinx', $LOG_FILE);
+    log_disco('[DEBUG] Caminho alternativo do Phinx: ' . $REPO_ROOT . 'vendor/bin/phinx', $LOG_FILE);
+    log_disco('[DEBUG] Teste file_exists: ' . ($PHINX_BIN ? $PHINX_BIN : 'NULL') . ' => ' . (file_exists($PHINX_BIN) ? 'SIM' : 'NÃO'), $LOG_FILE);
+    log_disco('[DEBUG] Teste is_file: ' . ($PHINX_BIN ? $PHINX_BIN : 'NULL') . ' => ' . (is_file($PHINX_BIN) ? 'SIM' : 'NÃO'), $LOG_FILE);
+    log_disco('[DEBUG] Teste is_readable: ' . ($PHINX_BIN ? $PHINX_BIN : 'NULL') . ' => ' . (is_readable($PHINX_BIN) ? 'SIM' : 'NÃO'), $LOG_FILE);
+    log_disco('[DEBUG] Teste realpath: ' . ($PHINX_BIN ? realpath($PHINX_BIN) : 'NULL'), $LOG_FILE);
+    if ($PHINX_BIN && file_exists($PHINX_BIN)) {
+        $stat = @stat($PHINX_BIN);
+        log_disco('[DEBUG] stat do binário: ' . print_r($stat, true), $LOG_FILE);
+    }
+}
+global $_GESTOR;
+if (!isset($_GESTOR)) $_GESTOR = [];
+if (!isset($_GESTOR['logs-path'])) $_GESTOR['logs-path'] = $BASE_PATH . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR;
+if (!is_dir($_GESTOR['logs-path'])) @mkdir($_GESTOR['logs-path'], 0775, true);
+set_lang('pt-br');
+$localLangDir = $BASE_PATH . 'controladores/atualizacoes/lang/';
+if (is_dir($localLangDir)) {
+    $localFile = $localLangDir . $GLOBALS['lang'] . '.json';
+    if (file_exists($localFile)) {
+        $localDict = json_decode(file_get_contents($localFile), true);
+        if (is_array($localDict)) {
+            $GLOBALS['dicionario'] = array_merge($GLOBALS['dicionario'], $localDict);
+        }
+    }
 }
 
 $BASE_PATH = getGestorBasePath();
