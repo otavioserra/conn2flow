@@ -301,15 +301,15 @@ function carregarMapeamentoGlobal(): array {
     global $RESOURCES_DIR, $LOG_FILE;
     $mapFile = $RESOURCES_DIR . 'resources.map.php';
     if (!file_exists($mapFile)) {
-    log_disco(_('_map_file_not_found', ['file' => $mapFile]), $LOG_FILE);
+    log_disco(__t('_map_file_not_found', ['file' => $mapFile]), $LOG_FILE);
         throw new RuntimeException('resources.map.php não encontrado');
     }
     $map = include $mapFile; // retorna $resources
     if (!isset($map['languages']) || !is_array($map['languages'])) {
-    log_disco(_('_map_invalid_structure'), $LOG_FILE);
+    log_disco(__t('_map_invalid_structure'), $LOG_FILE);
         throw new RuntimeException('Estrutura inválida em resources.map.php');
     }
-    log_disco(_('_map_loaded', ['langs' => implode(',', array_keys($map['languages']))]), $LOG_FILE);
+    log_disco(__t('_map_loaded', ['langs' => implode(',', array_keys($map['languages']))]), $LOG_FILE);
     return $map;
 }
 
@@ -615,7 +615,7 @@ function coletarRecursos(array $existentes, array $map): array {
         }
     }
 
-    log_disco(_('_collected_summary', [
+    log_disco(__t('_collected_summary', [
         'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'variables'=>count($variaveis)
     ]), $LOG_FILE);
 
