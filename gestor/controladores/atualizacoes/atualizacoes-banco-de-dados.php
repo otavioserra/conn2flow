@@ -1,13 +1,36 @@
 <?php
+
 /**
  * Rotina de Atualização de Banco de Dados
- * - Executa migrações Phinx
- * - (Removido) Execução de seeders durante atualização: seeders agora só na instalação.
- * - Compara dados atuais das tabelas com arquivos JSON em gestor/db/data (inserindo/atualizando conforme necessário)
- * - Gera relatório final
  *
- * Estrutura atual: migracoes -> comparacaoDados -> relatorioFinal -> main
- * Multilíngue via _() e logs via log_disco().
+ * Funções principais:
+ * - Executa migrações Phinx
+ * - Compara dados atuais das tabelas com arquivos JSON em gestor/db/data (inserindo/atualizando conforme necessário)
+ * - Segrega e exporta registros órfãos conforme regras de unicidade
+ * - Gera relatório final consolidado
+ * - Multilíngue via _() e logs via log_disco()
+ *
+ * Argumentos de linha de comando suportados:
+ *
+ * --debug           : Ativa modo detalhado de logs e exibe operações passo a passo.
+ * --log-diff        : Exibe detalhes das diferenças encontradas entre banco e JSON.
+ * --dry-run         : Simula operações sem alterar o banco (apenas exibe o que seria feito).
+ * --force-all       : Força atualização de todas as tabelas, ignorando checksums anteriores.
+ * --tables=lista    : Sincroniza apenas as tabelas especificadas (ex: --tables=variaveis,paginas).
+ * --orphans-mode=op : Define tratamento de órfãos: export (default), log ou ignore.
+ * --skip-migrate    : Pula execução das migrações Phinx (útil para ambiente já migrado).
+ * --backup          : Realiza backup das tabelas antes de atualizar (em backups/atualizacoes/).
+ * --reverse         : Exporta dados do banco para arquivos *Data.json (modo reverso).
+ * --env-dir=nome    : Define ambiente de autenticação (pasta autenticacoes/<nome>).
+ * --help, -h        : Exibe ajuda detalhada dos argumentos e encerra.
+ *
+ * Exemplos de uso:
+ *   php atualizacoes-banco-de-dados.php --debug --log-diff
+ *   php atualizacoes-banco-de-dados.php --tables=variaveis --force-all
+ *   php atualizacoes-banco-de-dados.php --orphans-mode=log --dry-run
+ *   php atualizacoes-banco-de-dados.php --reverse
+ *
+ * Estrutura principal: migracoes -> comparacaoDados -> relatorioFinal -> main
  */
 
 declare(strict_types=1);

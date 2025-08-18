@@ -42,11 +42,11 @@
     {
         "name": "Página Lista Pedidos",
         "id": "pagina-lista-pedidos",
-        "version": "1.2",
+        "version": "1.4",
         "checksum": {
-            "html": "32efb11426f18240e00a7245cbce3212",
+            "html": "ca9f4d3fc752ed21d8e9d757d26546b7",
             "css": "",
-            "combined": "32efb11426f18240e00a7245cbce3212"
+            "combined": "ca9f4d3fc752ed21d8e9d757d26546b7"
         }
     },
     {

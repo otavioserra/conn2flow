@@ -112,6 +112,52 @@ function buildChecksum(?string $html, ?string $css): array {
 }
 
 /**
+ * Atualiza arquivos de origem (layouts.json, pages.json, components.json) incrementando
+ * version e checksum quando HTML/CSS associados mudaram. Isso garante que:
+ *  - O campo 'version' de origem reflita mudanças de conteúdo.
+ *  - Os checksums em origem sirvam como histórico incremental.
+ * Regras:
+ *  - Se nenhum HTML/CSS existir (ambos vazios ou ausentes) mantém checksum vazio.
+ *  - Incremento segue incrementVersionStr.
+ */
+function atualizarArquivosOrigem(array $map): void {
+    global $RESOURCES_DIR, $LOG_FILE;
+    $languages = array_keys($map['languages']);
+    foreach ($languages as $lang) {
+        $langInfo = $map['languages'][$lang] ?? null; if(!$langInfo||!isset($langInfo['data'])) continue;
+        $dataFiles = $langInfo['data'];
+        foreach ([ 'layouts'=>'layouts', 'components'=>'components', 'pages'=>'pages' ] as $tipoKey=>$dirName) {
+            if (empty($dataFiles[$tipoKey])) continue; // sem arquivo
+            $jsonPath = $RESOURCES_DIR.$lang.DIRECTORY_SEPARATOR.$dataFiles[$tipoKey];
+            $lista = jsonRead($jsonPath); if(!is_array($lista)) continue;
+            $changed=false;
+            foreach ($lista as &$item) {
+                $id = $item['id'] ?? null; if(!$id) continue;
+                // Caminhos de origem (para pages/components/layouts utilizamos mesmo padrão do resources)
+                $paths = resourcePaths($RESOURCES_DIR,$lang,$tipoKey==='pages'?'pages':$tipoKey,$id,true);
+                $html = readFileIfExists($paths['html']);
+                $css  = readFileIfExists($paths['css']);
+                $newChecksum = buildChecksum($html,$css);
+                $oldChecksum = $item['checksum'] ?? ['html'=>'','css'=>'','combined'=>''];
+                if (!is_array($oldChecksum)) { $dec=json_decode((string)$oldChecksum,true); if(is_array($dec)) $oldChecksum=$dec; }
+                if (!checksumsEqual($oldChecksum,$newChecksum)) {
+                    $oldVersion = $item['version'] ?? null;
+                    $item['version'] = incrementVersionStr($oldVersion);
+                    $item['checksum'] = $newChecksum; // mantém formato objeto
+                    $changed=true;
+                    log_disco("ORIGIN_UPDATE $tipoKey id=$id lang=$lang version {$oldVersion}=>{$item['version']}", $LOG_FILE);
+                }
+            }
+            unset($item);
+            if ($changed) {
+                jsonWrite($jsonPath,$lista);
+                log_disco("ORIGIN_FILE_SAVED $jsonPath", $LOG_FILE);
+            }
+        }
+    }
+}
+
+/**
  * Compara checksums.
  */
 function checksumsEqual(array $a, array $b): bool {
@@ -582,6 +628,11 @@ function main(): void {
     try {
         log_disco('Início processo V2', $LOG_FILE);
         $map = carregarMapeamentoGlobal();
+        if (empty($GLOBALS['CLI_ARGS']['no-origin-update'])) {
+            atualizarArquivosOrigem($map);
+        } else {
+            log_disco('PULANDO atualização de arquivos de origem (--no-origin-update)', $LOG_FILE);
+        }
         $exist = carregarDadosExistentes();
         $recursos = coletarRecursos($exist,$map);
         atualizarDados($exist,$recursos);
@@ -596,6 +647,14 @@ function main(): void {
 }
 
 // Executa
+// Captura argumentos simples (--chave ou --chave=valor)
+$GLOBALS['CLI_ARGS'] = [];
+if (PHP_SAPI === 'cli') {
+    foreach ($argv as $a) {
+        if (preg_match('/^--([^=]+)=(.+)$/',$a,$m)) { $GLOBALS['CLI_ARGS'][$m[1]] = $m[2]; }
+        elseif (substr($a,0,2)==='--') { $GLOBALS['CLI_ARGS'][substr($a,2)] = true; }
+    }
+}
 main();
 
 ?>
