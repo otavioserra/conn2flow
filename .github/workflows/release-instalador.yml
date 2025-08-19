@@ -24,7 +24,7 @@ jobs:
           -x "*.git*" \
           -x "*.DS_Store*" \
           -x "*.log*" \
-          -x "temp/*"
+          -x "temp/*" \
           -x ".env.debug"
 
     - name: Get tag name
