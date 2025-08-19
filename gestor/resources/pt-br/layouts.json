@@ -2,21 +2,21 @@
     {
         "name": "Layout Administrativo do Gestor",
         "id": "layout-administrativo-do-gestor",
-        "version": "1.2",
+        "version": "1.4",
         "checksum": {
-            "html": "47b4e8434e35ea44407008a3c1b02ff7",
+            "html": "b66f26e87a5d35ded395ab6d5aaecdf9",
             "css": "f10fa90d6577c2fdae5f56b13589179a",
-            "combined": "f94ef140d592752cdc8e4d4d0e1c8e18"
+            "combined": "217656cc96a827a94449351d9d18fdcf"
         }
     },
     {
         "name": "Layout Página Sem Permissão",
         "id": "layout-pagina-sem-permissao",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "534a5cb00759351609bfee177e8ed489",
+            "html": "474e067290ce9318c978ab463c3ed895",
             "css": "c3fd0dfa321e5a4f032ff574cc07a4fb",
-            "combined": "d21bfb8b8103d1b5e33f217e9ae19cb0"
+            "combined": "1406ab702ddefb4fd6ae89fbaabdbf18"
         }
     },
     {
@@ -62,11 +62,11 @@
     {
         "name": "Layout Página Configuração",
         "id": "layout-pagina-configuracao",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "73492006e83b39b4c93cc5e50dc9c1f9",
+            "html": "474e067290ce9318c978ab463c3ed895",
             "css": "c3fd0dfa321e5a4f032ff574cc07a4fb",
-            "combined": "6ac006e1557dcaec0ed165b17e5267b2"
+            "combined": "1406ab702ddefb4fd6ae89fbaabdbf18"
         }
     },
     {
@@ -102,21 +102,21 @@
     {
         "name": "Layout Página Padrão",
         "id": "layout-pagina-padrao",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "3cff323514c7507537029b50eac33eef",
+            "html": "1dc7daac46c20ff2d657f15480c7101b",
             "css": "b37dfd1ae99d8fbc8fec01de439345aa",
-            "combined": "8074b5ab4720428c6bf86af3d7465b6b"
+            "combined": "3c5baa890bd03274e8120f47bdcfe850"
         }
     },
     {
         "name": "Layout Impressão",
         "id": "layout-impressao",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "d12a11673a45cc1ac8bb301570566b17",
+            "html": "929243be3d2f1b611e572978c2a98367",
             "css": "3cb92b2858b7f058956f6b632a804f6a",
-            "combined": "cc496fecd41e6adf962f7bbb393d0952"
+            "combined": "8f215768f26c873c7f5db3998ec26fea"
         }
     },
     {

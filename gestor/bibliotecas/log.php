@@ -261,11 +261,11 @@ function log_hosts_usuarios($params = false){
 	}
 }
 
-function log_disco($msg, $logFilename = "gestor"){
+function log_disco($msg, $logFilename = "gestor", $deleteFileAfter = false){
 	/**********
 		Descrição: log de mensagens em disco.
+		Parâmetro extra: $deleteFile (bool) - se true, exclui o arquivo antes de gravar.
 	**********/
-	
 	global $_GESTOR;
 	
 	// ===== Parâmetros
@@ -279,6 +279,9 @@ function log_disco($msg, $logFilename = "gestor"){
 	$path = $_GESTOR['logs-path'] ?? sys_get_temp_dir() . DIRECTORY_SEPARATOR;
 	if (!is_dir($path)) @mkdir($path, 0775, true);
 	$myFile = $path . $logFilename.'-'.date('Y-m-d').".log";
+	if ($deleteFileAfter && is_file($myFile)) {
+		@unlink($myFile);
+	}
 	$existing = (is_file($myFile) && filesize($myFile) > 0) ? file_get_contents($myFile) : '';
 	file_put_contents($myFile, $existing . $msg . "\n");
 }

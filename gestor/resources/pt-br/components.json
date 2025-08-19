@@ -2,11 +2,11 @@
     {
         "name": "Admin Categorias - Categorias Pai Info",
         "id": "admin-categorias-categorias-pai-info",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "76ab062b296f7c2958a15f4b99e2feb5",
             "css": "",
-            "combined": ""
+            "combined": "76ab062b296f7c2958a15f4b99e2feb5"
         }
     },
     {
@@ -54,71 +54,71 @@
     {
         "name": "Templates Seletores Lista",
         "id": "templates-seletores-lista",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
-            "css": "",
-            "combined": ""
+            "html": "bc361ac4500c7e161370d8de8adf7062",
+            "css": "37bfbd6dfef8d769cb8ef590c2124951",
+            "combined": "26088c3703c0601d3d93e62570503dce"
         }
     },
     {
         "name": "Categorias - Categorias Pai Info",
         "id": "categorias-categorias-pai-info",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "76ab062b296f7c2958a15f4b99e2feb5",
             "css": "",
-            "combined": ""
+            "combined": "76ab062b296f7c2958a15f4b99e2feb5"
         }
     },
     {
         "name": "Categorias - Categorias Filho Lista",
         "id": "categorias-categorias-filho-lista",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "baa16f5a64c0174eee45e1ffd9cb0eaf",
             "css": "",
-            "combined": ""
+            "combined": "baa16f5a64c0174eee45e1ffd9cb0eaf"
         }
     },
     {
         "name": "Categorias - Categorias Filho Info",
         "id": "categorias-categorias-filho-info",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "fb8509ec37fba0c6f75da3f5ba06446f",
             "css": "",
-            "combined": ""
+            "combined": "fb8509ec37fba0c6f75da3f5ba06446f"
         }
     },
     {
         "name": "Hosts - Layout Email Esqueceu Senha",
         "id": "hosts-layout-email-esqueceu-senha",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "6e6710e729ba5ca2bfed4fca6024299c",
             "css": "",
-            "combined": ""
+            "combined": "6e6710e729ba5ca2bfed4fca6024299c"
         }
     },
     {
         "name": "Admin Categorias - Categorias Filho Lista",
         "id": "admin-categorias-categorias-filho-lista",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "eaa8260243937bfe68688462a0f13fb6",
             "css": "",
-            "combined": ""
+            "combined": "eaa8260243937bfe68688462a0f13fb6"
         }
     },
     {
         "name": "Admin Categorias - Categorias Filho Info",
         "id": "admin-categorias-categorias-filho-info",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "fb8509ec37fba0c6f75da3f5ba06446f",
             "css": "",
-            "combined": ""
+            "combined": "fb8509ec37fba0c6f75da3f5ba06446f"
         }
     },
     {
@@ -144,21 +144,21 @@
     {
         "name": "Host Update Carregando",
         "id": "host-update-carregando",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "7fd123a2020124a0f5f3a5c8fdb1afe2",
             "css": "",
-            "combined": ""
+            "combined": "7fd123a2020124a0f5f3a5c8fdb1afe2"
         }
     },
     {
         "name": "Layout Email Esqueceu Senha da Conta FTP",
         "id": "layout-email-esqueceu-senha-da-conta-ftp",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "45578f3f1c4c1aae2b6ca6fdcf98a90e",
             "css": "",
-            "combined": ""
+            "combined": "45578f3f1c4c1aae2b6ca6fdcf98a90e"
         }
     },
     {
@@ -184,11 +184,11 @@
     {
         "name": "Plataforma Gateways - Mensagem - Negado",
         "id": "plataforma-gateways-mensagem-negado",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "f3fadfede47d5dbbb964382cf961334b",
             "css": "",
-            "combined": ""
+            "combined": "f3fadfede47d5dbbb964382cf961334b"
         }
     },
     {
@@ -205,11 +205,11 @@
     {
         "name": "Layout Email Voucher",
         "id": "layout-email-voucher",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "d8b932a9797deef89540e9f93deed4d4",
             "css": "",
-            "combined": ""
+            "combined": "d8b932a9797deef89540e9f93deed4d4"
         }
     },
     {
@@ -236,11 +236,11 @@
     {
         "name": "Pedidos - Dados do Pagador",
         "id": "pedidos-dados-do-pagador",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "906fcdb88f4cf293bc91e558e10e67c5",
             "css": "",
-            "combined": ""
+            "combined": "906fcdb88f4cf293bc91e558e10e67c5"
         }
     },
     {
@@ -256,81 +256,81 @@
     {
         "name": "Gateways de Pagamentos - Mensagem - Mudança de Estado",
         "id": "gateways-de-pagamentos-mensagem-mudanca-de-estado",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "157c3ccb190c70c0972056d1d0879c9b",
             "css": "",
-            "combined": ""
+            "combined": "157c3ccb190c70c0972056d1d0879c9b"
         }
     },
     {
         "name": "Plataforma Gateways - Emails - Assinatura",
         "id": "plataforma-gateways-emails-assinatura",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "200dec14e69649f5cdaef69e69a6d413",
             "css": "",
-            "combined": ""
+            "combined": "200dec14e69649f5cdaef69e69a6d413"
         }
     },
     {
         "name": "Host Config Carregando",
         "id": "host-config-carregando",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "7de3f267dd996bf11cb08e0f0a1753fc",
             "css": "",
-            "combined": ""
+            "combined": "7de3f267dd996bf11cb08e0f0a1753fc"
         }
     },
     {
         "name": "Plataforma Gateways - Mensagem - Reembolso",
         "id": "plataforma-gateways-mensagem-reembolso",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "8d0a921ccf3b608ad2516b682925a4d6",
             "css": "",
-            "combined": ""
+            "combined": "8d0a921ccf3b608ad2516b682925a4d6"
         }
     },
     {
         "name": "Plataforma Gateways - Mensagem - Disputa",
         "id": "plataforma-gateways-mensagem-disputa",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "c793acc907be9dadd30a864bb91199bc",
             "css": "",
-            "combined": ""
+            "combined": "c793acc907be9dadd30a864bb91199bc"
         }
     },
     {
         "name": "Plataforma Gateways - Mensagem - Pago",
         "id": "plataforma-gateways-mensagem-pago",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "f6af971c191a377fea2473682c5693a1",
             "css": "",
-            "combined": ""
+            "combined": "f6af971c191a377fea2473682c5693a1"
         }
     },
     {
         "name": "Plataforma Gateways - Mensagem - Pendente",
         "id": "plataforma-gateways-mensagem-pendente",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "ac25b6b57e86f201c0ae07f80a223b98",
             "css": "",
-            "combined": ""
+            "combined": "ac25b6b57e86f201c0ae07f80a223b98"
         }
     },
     {
         "name": "Plataforma Gateways - Mensagem - Novo",
         "id": "plataforma-gateways-mensagem-novo",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "eee3aa1582995f33a55e2740f994032a",
             "css": "",
-            "combined": ""
+            "combined": "eee3aa1582995f33a55e2740f994032a"
         }
     },
     {
@@ -346,11 +346,11 @@
     {
         "name": "Hosts - Layout Emails Assinatura",
         "id": "hosts-layout-emails-assinatura",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "e3789ede7f539ef233fbe752ad70bc93",
             "css": "",
-            "combined": ""
+            "combined": "e3789ede7f539ef233fbe752ad70bc93"
         }
     },
     {
@@ -546,11 +546,11 @@
     {
         "name": "Layout Email Host Instalação",
         "id": "layout-email-host-instalacao",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "7b70a83e60b0e499414fc807ab097aa7",
             "css": "",
-            "combined": ""
+            "combined": "7b70a83e60b0e499414fc807ab097aa7"
         }
     },
     {
@@ -566,21 +566,21 @@
     {
         "name": "Host Install Carregando",
         "id": "host-install-carregando",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "1fc1b859d973c6c71108309bbfc6288a",
             "css": "",
-            "combined": ""
+            "combined": "1fc1b859d973c6c71108309bbfc6288a"
         }
     },
     {
         "name": "Layout Email Novo Cadastro",
         "id": "layout-email-novo-cadastro",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "269948c502ca2d65837f8abbef76a89a",
             "css": "",
-            "combined": ""
+            "combined": "269948c502ca2d65837f8abbef76a89a"
         }
     },
     {
@@ -656,31 +656,31 @@
     {
         "name": "Arquivos Lista",
         "id": "arquivos-lista",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "6da8a46c3e87428f93e2c452d47058be",
             "css": "",
-            "combined": ""
+            "combined": "6da8a46c3e87428f93e2c452d47058be"
         }
     },
     {
         "name": "Layout Emails Assinatura",
         "id": "layout-emails-assinatura",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "bae98906634d996be369512d5bc3ecea",
             "css": "",
-            "combined": ""
+            "combined": "bae98906634d996be369512d5bc3ecea"
         }
     },
     {
         "name": "Layout Email Esqueceu Senha",
         "id": "layout-email-esqueceu-senha",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
-            "css": "",
-            "combined": ""
+            "html": "6e6710e729ba5ca2bfed4fca6024299c",
+            "css": "e4b0bc753ae73edf1aea03238ac8b8bb",
+            "combined": "9c908e80b25d8b5c2701575235ad3e69"
         }
     },
     {
@@ -696,41 +696,41 @@
     {
         "name": "Plataforma Gateways - Mensagem - Pago - Gratuito",
         "id": "plataforma-gateways-mensagem-pago-gratuito",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "1e2419cee519e83d43ac14701a3e7d12",
             "css": "",
-            "combined": ""
+            "combined": "1e2419cee519e83d43ac14701a3e7d12"
         }
     },
     {
         "name": "Layout Email Baixa Voucher",
         "id": "layout-email-baixa-voucher",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "ebc88cbe7f7d28f5c98b7da1c7568883",
             "css": "",
-            "combined": ""
+            "combined": "ebc88cbe7f7d28f5c98b7da1c7568883"
         }
     },
     {
         "name": "Layout Email Senha Redefinida",
         "id": "layout-email-senha-redefinida",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "71bef62359404d276334517b6db99e90",
             "css": "",
-            "combined": ""
+            "combined": "71bef62359404d276334517b6db99e90"
         }
     },
     {
         "name": "Layout Email Conta FTP Senha Redefinida",
         "id": "layout-email-conta-ftp-senha-redefinida",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "62f5025db5f02261821553ce2073378b",
             "css": "",
-            "combined": ""
+            "combined": "62f5025db5f02261821553ce2073378b"
         }
     },
     {
@@ -776,11 +776,11 @@
     {
         "name": "Comunicação Email Teste",
         "id": "comunicacao-email-teste",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "",
+            "html": "401255d8c45c417adc4636a2837a8151",
             "css": "",
-            "combined": ""
+            "combined": "401255d8c45c417adc4636a2837a8151"
         }
     },
     {

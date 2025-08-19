@@ -4,12 +4,12 @@
         "id": "admin-categorias-categorias-pai-info",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<table class=\"ui unstackable table\">\r\n    <tbody>\r\n        <tr>\r\n            <td>\r\n                <div class=\"ui large breadcrumb\">\r\n                    <!-- pais < --><a class=\"section\" href=\"#pai-url#\">#pai-nome#<\/a>\r\n                    <!-- div-pais < --><i class=\"right chevron icon divider\"><\/i><!-- div-pais > --><!-- pais > -->\r\n                    <i class=\"right arrow icon divider\"><\/i>\r\n                    <div class=\"active section\">#filho-nome#<\/div>\r\n                <\/div>\r\n            <\/td>\r\n    <\/tbody>\r\n<\/table>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"76ab062b296f7c2958a15f4b99e2feb5\",\"css\":\"\",\"combined\":\"76ab062b296f7c2958a15f4b99e2feb5\"}"
     },
     {
         "nome": "Hosts - Interface Alerta Modal",
@@ -64,84 +64,84 @@
         "id": "templates-seletores-lista",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
-        "css": null,
+        "html": "<div class=\"ui four doubling cards\">\r\n    <!-- card < -->\r\n    <div class=\"ui fluid raised card templateCont\" data-id=\"#template-id#\" data-type=\"#template-tipo#\">\r\n        <div class=\"image fileImage\">\r\n            <img>\r\n            <div class=\"fileImage\">\r\n                <img src=\"#img-src#\">\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"content\">\r\n            <div class=\"ui small header\">\r\n                <!-- padrao < --><a class=\"ui teal ribbon label\">#padrao-texto#<\/a><!-- padrao > -->\r\n                <span>#nome#<\/span>\r\n           \t<\/div>\r\n            <div class=\"description\">\r\n                <div class=\"ui list\">\r\n                    <div class=\"item\">\r\n                        <i class=\"calendar alternate outline icon\"><\/i>\r\n                        #data#\r\n                    <\/div>\r\n                    <div class=\"item\">\r\n                        <i class=\"info circle icon\"><\/i>\r\n                        #tipo#\r\n                    <\/div>\r\n                <\/div>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"extra content center aligned botoesMargem\">\r\n            <!-- btn-select < --><button class=\"ui blue button templateSelect\" data-dados=\"#template-data#\" data-tooltip=\"@[[list-button-tooltip-select]]@\" data-inverted=\"\">@[[list-button-select]]@<\/button><!-- btn-select > -->\r\n            <!-- btn-copy < --><a class=\"ui blue button templateCopy\" data-tooltip=\"@[[list-button-tooltip-copy]]@\" data-inverted=\"\" href=\"@[[pagina#url-raiz]]@@[[pagina#modulo-id]]@\/adicionar\/?modelo=#modelo#&tipo=#template-tipo#&id=#template-id#\">@[[list-button-copy]]@<\/a><!-- btn-copy > -->\r\n            <!-- btn-active < --><a class=\"ui active positive button\">\r\n                <i class=\"check circle outline icon\"><\/i>\r\n                @[[list-button-active]]@\r\n            <\/a><!-- btn-active > -->\r\n            <!-- btn-activate < --><a class=\"ui orange button templateActivate\" data-tooltip=\"@[[list-button-tooltip-activate]]@\" data-inverted=\"\" href=\"@[[pagina#url-raiz]]@@[[pagina#modulo-id]]@\/ativar\/?modelo=#modelo#&tipo=#template-tipo#&id=#template-id#\">\r\n            \t<i class=\"circle outline icon\"><\/i>\r\n            \t@[[list-button-activate]]@\r\n            <\/a><!-- btn-activate > -->\r\n        <\/div>\r\n    <\/div><!-- card > -->\r\n<\/div>",
+        "css": ".fileImage{\r\n    position: relative;\r\n    width: 100%;\r\n    padding-top: 75%;\r\n    overflow:hidden;\r\n}\r\n.fileImage img{\r\n    position: absolute;\r\n    object-fit: cover;\r\n    width: 100%;\r\n    height: 100%;\r\n    top:0;\r\n}",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"bc361ac4500c7e161370d8de8adf7062\",\"css\":\"37bfbd6dfef8d769cb8ef590c2124951\",\"combined\":\"26088c3703c0601d3d93e62570503dce\"}"
     },
     {
         "nome": "Categorias - Categorias Pai Info",
         "id": "categorias-categorias-pai-info",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<table class=\"ui unstackable table\">\r\n    <tbody>\r\n        <tr>\r\n            <td>\r\n                <div class=\"ui large breadcrumb\">\r\n                    <!-- pais < --><a class=\"section\" href=\"#pai-url#\">#pai-nome#<\/a>\r\n                    <!-- div-pais < --><i class=\"right chevron icon divider\"><\/i><!-- div-pais > --><!-- pais > -->\r\n                    <i class=\"right arrow icon divider\"><\/i>\r\n                    <div class=\"active section\">#filho-nome#<\/div>\r\n                <\/div>\r\n            <\/td>\r\n    <\/tbody>\r\n<\/table>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"76ab062b296f7c2958a15f4b99e2feb5\",\"css\":\"\",\"combined\":\"76ab062b296f7c2958a15f4b99e2feb5\"}"
     },
     {
         "nome": "Categorias - Categorias Filho Lista",
         "id": "categorias-categorias-filho-lista",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<table class=\"ui unstackable table\">\r\n    <tbody>\r\n        <!-- item < --><tr>\r\n        <td>\r\n            #nome#\r\n        <\/td>\r\n        <td class=\"right aligned\">\r\n            <a class=\"ui mini button blue\" href=\"@[[pagina#url-raiz]]@categorias\/editar\/?id=#id#\" data-content=\"#tooltip-button-edit#\" data-id=\"editar\">\r\n                <i class=\"edit circle icon\"><\/i>\r\n                #label-button-edit#\r\n            <\/a>\r\n        <\/td>\r\n        <\/tr><!-- item > -->\r\n    <\/tbody>\r\n<\/table>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"baa16f5a64c0174eee45e1ffd9cb0eaf\",\"css\":\"\",\"combined\":\"baa16f5a64c0174eee45e1ffd9cb0eaf\"}"
     },
     {
         "nome": "Categorias - Categorias Filho Info",
         "id": "categorias-categorias-filho-info",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<div class=\"ui info visible message\">\r\n    #message#\r\n<\/div>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"fb8509ec37fba0c6f75da3f5ba06446f\",\"css\":\"\",\"combined\":\"fb8509ec37fba0c6f75da3f5ba06446f\"}"
     },
     {
         "nome": "Hosts - Layout Email Esqueceu Senha",
         "id": "hosts-layout-email-esqueceu-senha",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<p>Caro(a) #nome#,<\/p>\r\n<p>Esqueceu-se da sua senha?<\/p>\r\n<p><b>Redefinir Senha:<\/b> #url#<\/p>\r\n<p>Lembrando que esta ligação vai expirar dentro de #expiracao# hora(s) e só pode ser utilizada uma vez.<\/p>\r\n<p>Se não pretender alterar a sua senha ou não tiver efetuado este pedido, ignore e elimine esta mensagem.<\/p>\r\n#assinatura#",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"6e6710e729ba5ca2bfed4fca6024299c\",\"css\":\"\",\"combined\":\"6e6710e729ba5ca2bfed4fca6024299c\"}"
     },
     {
         "nome": "Admin Categorias - Categorias Filho Lista",
         "id": "admin-categorias-categorias-filho-lista",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<table class=\"ui unstackable table\">\r\n    <tbody>\r\n        <!-- item < --><tr>\r\n        <td>\r\n            #nome#\r\n        <\/td>\r\n        <td class=\"right aligned\">\r\n            <a class=\"ui mini button blue\" href=\"@[[pagina#url-raiz]]@admin-categorias\/editar\/?id=#id#\" data-content=\"#tooltip-button-edit#\" data-id=\"editar\">\r\n                <i class=\"edit circle icon\"><\/i>\r\n                #label-button-edit#\r\n            <\/a>\r\n        <\/td>\r\n        <\/tr><!-- item > -->\r\n    <\/tbody>\r\n<\/table>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"eaa8260243937bfe68688462a0f13fb6\",\"css\":\"\",\"combined\":\"eaa8260243937bfe68688462a0f13fb6\"}"
     },
     {
         "nome": "Admin Categorias - Categorias Filho Info",
         "id": "admin-categorias-categorias-filho-info",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<div class=\"ui info visible message\">\r\n    #message#\r\n<\/div>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"fb8509ec37fba0c6f75da3f5ba06446f\",\"css\":\"\",\"combined\":\"fb8509ec37fba0c6f75da3f5ba06446f\"}"
     },
     {
         "nome": "Interface Formulário Edição Incomum",
@@ -172,24 +172,24 @@
         "id": "host-update-carregando",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<div class=\"ui basic modal atualizando\">\r\n    <div class=\"ui icon large header\">\r\n        <i class=\"circular inverted teal cloud download alternate icon\"><\/i>\r\n        Hospedeiro Atualização\r\n    <\/div>\r\n    <div class=\"ui tiny center aligned header\">Estamos atualizando a plataforma do hospedeiro do seu site para a última versão. Este processo leva poucos segundos.<\/div>\r\n    <div class=\"ui active centered inline slow large loader\"><\/div>\r\n    <div class=\"ui center aligned header\">Atualizando... Aguarde!<\/div>\r\n<\/div>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"7fd123a2020124a0f5f3a5c8fdb1afe2\",\"css\":\"\",\"combined\":\"7fd123a2020124a0f5f3a5c8fdb1afe2\"}"
     },
     {
         "nome": "Layout Email Esqueceu Senha da Conta FTP",
         "id": "layout-email-esqueceu-senha-da-conta-ftp",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<p>Caro(a) #nome#,<\/p>\r\n<p>Esqueceu-se da sua senha da conta FTP?<\/p>\r\n<p><b>Redefinir Senha:<\/b> #url#<\/p>\r\n<p>Lembrando que esta ligação vai expirar dentro de #expiracao# hora(s) e só pode ser utilizada uma vez.<\/p>\r\n<p>Se não pretender alterar a sua senha da conta FTP, ignore e elimine esta mensagem.<\/p>\r\n#assinatura#",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"45578f3f1c4c1aae2b6ca6fdcf98a90e\",\"css\":\"\",\"combined\":\"45578f3f1c4c1aae2b6ca6fdcf98a90e\"}"
     },
     {
         "nome": "Padrao Pagina Mestre - Carrinho",
@@ -220,12 +220,12 @@
         "id": "plataforma-gateways-mensagem-negado",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<h2>@[[titulo]]@<\/h2>\r\n<h3>Pedido nº @[[codigo]]@ - @[[status]]@<\/h3>\r\n<p>A transação não foi aceita pois seu pagamento foi negado pela instituição financeira.<\/p>\r\n@[[assinatura]]@",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"f3fadfede47d5dbbb964382cf961334b\",\"css\":\"\",\"combined\":\"f3fadfede47d5dbbb964382cf961334b\"}"
     },
     {
         "nome": "Hosts - Interface Formulário Autorização Provisória",
@@ -244,12 +244,12 @@
         "id": "layout-email-voucher",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<h3>Voucher enviado por email.<\/h3>\r\n<p>Segue o voucher <b>#voucherID#<\/b> em anexo neste email.<\/p>\r\n#assinatura#",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"d8b932a9797deef89540e9f93deed4d4\",\"css\":\"\",\"combined\":\"d8b932a9797deef89540e9f93deed4d4\"}"
     },
     {
         "nome": "Hosts - Interface Modal Informativo",
@@ -280,12 +280,12 @@
         "id": "pedidos-dados-do-pagador",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<table class=\"ui definition table\">\r\n    <thead>\r\n        <tr>\r\n            <th><\/th>\r\n            <th>Dados do Pagador<\/th>\r\n        <\/tr>\r\n    <\/thead>\r\n    <tbody>\r\n        <tr>\r\n            <td>Nome<\/td>\r\n            <td>#pagador-nome#<\/td>\r\n        <\/tr>\r\n        <tr>\r\n        <\/tr>\r\n        <tr>\r\n            <td>Email<\/td>\r\n            <td>#pagador-email#<\/td>\r\n        <\/tr>\r\n        <tr>\r\n            <td>Telefone<\/td>\r\n            <td>#pagador-telefone#<\/td>\r\n        <\/tr>\r\n        <tr>\r\n            <td>CPF<\/td>\r\n            <td>#pagador-cpf#<\/td>\r\n        <\/tr>\r\n        <tr>\r\n            <td>CNPJ<\/td>\r\n            <td>#pagador-cnpj#<\/td>\r\n        <\/tr>\r\n    <\/tbody>\r\n<\/table>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"906fcdb88f4cf293bc91e558e10e67c5\",\"css\":\"\",\"combined\":\"906fcdb88f4cf293bc91e558e10e67c5\"}"
     },
     {
         "nome": "Interface Formulário Visualização",
@@ -304,96 +304,96 @@
         "id": "gateways-de-pagamentos-mensagem-mudanca-de-estado",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<h2>@[[titulo]]@<\/h2>\r\n<h3>Pedido nº @[[codigo]]@ - @[[status]]@<\/h3>\r\n<p>Houve uma atualização de estado do seu pedido.<\/p>\r\n@[[assinatura]]@",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"157c3ccb190c70c0972056d1d0879c9b\",\"css\":\"\",\"combined\":\"157c3ccb190c70c0972056d1d0879c9b\"}"
     },
     {
         "nome": "Plataforma Gateways - Emails - Assinatura",
         "id": "plataforma-gateways-emails-assinatura",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<p>Atenciosamente.<\/p>\r\n<h3>@[[loja-nome]]@<\/h3>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"200dec14e69649f5cdaef69e69a6d413\",\"css\":\"\",\"combined\":\"200dec14e69649f5cdaef69e69a6d413\"}"
     },
     {
         "nome": "Host Config Carregando",
         "id": "host-config-carregando",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<div class=\"ui basic modal configurando\">\r\n    <div class=\"ui icon large header\">\r\n        <i class=\"circular inverted teal cloud download alternate icon\"><\/i>\r\n        Hospedeiro Configuração\r\n    <\/div>\r\n    <div class=\"ui tiny center aligned header\">Estamos configurando o hospedeiro do seu site e atualizando a plataforma do seu cliente para a última versão. Este processo leva poucos segundos.<\/div>\r\n    <div class=\"ui active centered inline slow large loader\"><\/div>\r\n    <div class=\"ui center aligned header\">Configurando... Aguarde!<\/div>\r\n<\/div>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"7de3f267dd996bf11cb08e0f0a1753fc\",\"css\":\"\",\"combined\":\"7de3f267dd996bf11cb08e0f0a1753fc\"}"
     },
     {
         "nome": "Plataforma Gateways - Mensagem - Reembolso",
         "id": "plataforma-gateways-mensagem-reembolso",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<h2>@[[titulo]]@<\/h2>\r\n<h3>Pedido nº @[[codigo]]@ - @[[status]]@<\/h3>\r\n<p>O valor da transação foi devolvido para você e seu pedido foi cancelado.<\/p>\r\n@[[assinatura]]@",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"8d0a921ccf3b608ad2516b682925a4d6\",\"css\":\"\",\"combined\":\"8d0a921ccf3b608ad2516b682925a4d6\"}"
     },
     {
         "nome": "Plataforma Gateways - Mensagem - Disputa",
         "id": "plataforma-gateways-mensagem-disputa",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<h2>@[[titulo]]@<\/h2>\r\n<h3>Pedido nº @[[codigo]]@ - @[[status]]@<\/h3>\r\n<p>Você, dentro do prazo de liberação da transação, abriu uma disputa.<\/p>\r\n<p>O seu voucher está bloqueado até a regularização dessa disputa.<\/p>\r\n@[[assinatura]]@",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"c793acc907be9dadd30a864bb91199bc\",\"css\":\"\",\"combined\":\"c793acc907be9dadd30a864bb91199bc\"}"
     },
     {
         "nome": "Plataforma Gateways - Mensagem - Pago",
         "id": "plataforma-gateways-mensagem-pago",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<h2>@[[titulo]]@<\/h2>\r\n<h3>Pedido nº @[[codigo]]@ - @[[status]]@<\/h3>\r\n<p>A transação foi paga e recebemos uma confirmação da instituição financeira responsável pelo processamento.<\/p>\r\n<p>O voucher do seu pedido está disponível para Visualização, Impressão ou Envio por e-mail. Para isso acesse: @[[url]]@<\/p>\r\n@[[assinatura]]@",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"f6af971c191a377fea2473682c5693a1\",\"css\":\"\",\"combined\":\"f6af971c191a377fea2473682c5693a1\"}"
     },
     {
         "nome": "Plataforma Gateways - Mensagem - Pendente",
         "id": "plataforma-gateways-mensagem-pendente",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<h2>@[[titulo]]@<\/h2>\r\n<h3>Pedido nº @[[codigo]]@ - @[[status]]@<\/h3>\r\n<p>Você optou por pagar com cartão de crédito e estamos analisando a transação.<\/p>\r\n@[[assinatura]]@",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"ac25b6b57e86f201c0ae07f80a223b98\",\"css\":\"\",\"combined\":\"ac25b6b57e86f201c0ae07f80a223b98\"}"
     },
     {
         "nome": "Plataforma Gateways - Mensagem - Novo",
         "id": "plataforma-gateways-mensagem-novo",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<h2>@[[titulo]]@<\/h2>\r\n<h3>Pedido nº @[[codigo]]@ - @[[status]]@<\/h3>\r\n<p>Você fez um pedido e iniciou a transação, mas até o momento não recebemos nenhuma informação sobre o pagamento.<\/p>\r\n@[[assinatura]]@",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"eee3aa1582995f33a55e2740f994032a\",\"css\":\"\",\"combined\":\"eee3aa1582995f33a55e2740f994032a\"}"
     },
     {
         "nome": "Interface Modal Genérico",
@@ -412,12 +412,12 @@
         "id": "hosts-layout-emails-assinatura",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<p>Atenciosamente<\/p>\r\n<p>Equipe Entrey<\/p>\r\n<p>Acessar Site: <a href=\"@[[url]]@\">@[[url]]@<\/a><\/p>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"e3789ede7f539ef233fbe752ad70bc93\",\"css\":\"\",\"combined\":\"e3789ede7f539ef233fbe752ad70bc93\"}"
     },
     {
         "nome": "Botão Superior Interface",
@@ -652,12 +652,12 @@
         "id": "layout-email-host-instalacao",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<p>Caro(a) #nome#,<\/p>\r\n<p>Foi criado um novo hospedeiro para o seu site no nosso sistema com sucesso!<\/p>\r\n<p><b>IMPORTANTE:<\/b> Guarde as senhas definidas em um local seguro! Em algum momento no futuro, numa operação de manutenção do sistema, poderá ser requisitada a senha novamente! Se por algum acaso perder esta senha da Conta FTP, é possível criar novamente a mesma. Para isso, acesse o sistema e vá até o menu Configurações \/ Hospedeiro \/ Conta FTP.<\/p>\r\n#assinatura#",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"7b70a83e60b0e499414fc807ab097aa7\",\"css\":\"\",\"combined\":\"7b70a83e60b0e499414fc807ab097aa7\"}"
     },
     {
         "nome": "Página Mestre - Página Serviço Especial Natal",
@@ -676,24 +676,24 @@
         "id": "host-install-carregando",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<div class=\"ui basic modal instalando\">\r\n    <div class=\"ui icon large header\">\r\n        <i class=\"circular inverted teal globe icon\"><\/i>\r\n        Hospedeiro Instalação\r\n    <\/div>\r\n    <div class=\"ui tiny center aligned header\">Estamos instalando o hospedeiro do seu site. Este processo leva poucos segundos.<\/div>\r\n    <div class=\"ui active centered inline slow large loader\"><\/div>\r\n    <div class=\"ui center aligned header\">Instalando... Aguarde!<\/div>\r\n<\/div>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"1fc1b859d973c6c71108309bbfc6288a\",\"css\":\"\",\"combined\":\"1fc1b859d973c6c71108309bbfc6288a\"}"
     },
     {
         "nome": "Layout Email Novo Cadastro",
         "id": "layout-email-novo-cadastro",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<p>Caro(a) #nome#,<\/p>\r\n<p>Seja bem vindo à plataforma Entrey!<\/p>\r\n<p>- Caso você não tenha feito esse cadastro, favor desconsiderar este email.<\/p>\r\n<p>- Se você fez o cadastro, é necessário que você confirme o seu email acessando #url-confirmacao#.<\/p>\r\n<p>- Para futuros acessos, você pode acessar via #url-signin#.<\/p>\r\n#assinatura#",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"269948c502ca2d65837f8abbef76a89a\",\"css\":\"\",\"combined\":\"269948c502ca2d65837f8abbef76a89a\"}"
     },
     {
         "nome": "Interface Iframe Modal",
@@ -784,36 +784,36 @@
         "id": "arquivos-lista",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<div class=\"ui medium header\">#categoria#<\/div>\r\n<div class=\"ui four doubling cards\" id=\"#id#\">\r\n    <!-- card < -->\r\n    <div class=\"ui fluid raised card fileCont\" data-id=\"#file-id#\">\r\n        <div class=\"image fileImage\">\r\n            <img>\r\n            <div class=\"fileImage\">\r\n                <img src=\"#img-src#\">\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"content\">\r\n            <div class=\"ui small header\">#nome#<\/div>\r\n            <div class=\"description\">\r\n                <div class=\"ui list\">\r\n                    <div class=\"item\">\r\n                        <i class=\"calendar alternate outline icon\"><\/i>\r\n                        #data#\r\n                    <\/div>\r\n                    <div class=\"item\">\r\n                        <i class=\"info circle icon\"><\/i>\r\n                        #tipo#\r\n                    <\/div>\r\n                <\/div>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"extra content center aligned\">\r\n            <!-- btn-select < --><button class=\"ui blue button fileSelect\" data-id=\"#file-id#\" data-dados=\"#file-data#\" data-tooltip=\"@[[list-button-select-tooltip]]@\" data-inverted=\"\">@[[list-button-select]]@<\/button><!-- btn-select > -->\r\n            <!-- btn-copy < --><button class=\"ui blue button fileCopyUrl\" data-id=\"#file-id#\" data-url=\"#file-url#\" data-tooltip=\"@[[list-button-copy-tooltip]]@\" data-inverted=\"\">@[[list-button-copy]]@<\/button><!-- btn-copy > -->\r\n            <button class=\"ui red button fileDelete\" data-id=\"#file-id#\" data-tooltip=\"@[[list-button-del-tooltip]]@\" data-inverted=\"\">@[[list-button-del]]@<\/button>\r\n        <\/div>\r\n    <\/div><!-- card > -->\r\n<\/div>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"6da8a46c3e87428f93e2c452d47058be\",\"css\":\"\",\"combined\":\"6da8a46c3e87428f93e2c452d47058be\"}"
     },
     {
         "nome": "Layout Emails Assinatura",
         "id": "layout-emails-assinatura",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<p>Atenciosamente<\/p>\r\n<p>Equipe Entrey<\/p>\r\n<p>Acessar Sistema: <a href=\"@[[pagina#url-full-http]]@signin\/\">@[[pagina#url-full-http]]@signin\/<\/a><\/p>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"bae98906634d996be369512d5bc3ecea\",\"css\":\"\",\"combined\":\"bae98906634d996be369512d5bc3ecea\"}"
     },
     {
         "nome": "Layout Email Esqueceu Senha",
         "id": "layout-email-esqueceu-senha",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
-        "css": null,
+        "html": "<p>Caro(a) #nome#,<\/p>\r\n<p>Esqueceu-se da sua senha?<\/p>\r\n<p><b>Redefinir Senha:<\/b> #url#<\/p>\r\n<p>Lembrando que esta ligação vai expirar dentro de #expiracao# hora(s) e só pode ser utilizada uma vez.<\/p>\r\n<p>Se não pretender alterar a sua senha ou não tiver efetuado este pedido, ignore e elimine esta mensagem.<\/p>\r\n#assinatura#",
+        "css": "h1{\r\n    color:blue;\r\n}",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"6e6710e729ba5ca2bfed4fca6024299c\",\"css\":\"e4b0bc753ae73edf1aea03238ac8b8bb\",\"combined\":\"9c908e80b25d8b5c2701575235ad3e69\"}"
     },
     {
         "nome": "Interface Backup Dropdown",
@@ -832,48 +832,48 @@
         "id": "plataforma-gateways-mensagem-pago-gratuito",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<h2>@[[titulo]]@<\/h2>\r\n<h3>Pedido nº @[[codigo]]@ - @[[status]]@<\/h3>\r\n<p>Seu pedido gratuito foi processado com sucesso.<\/p>\r\n<p>O voucher do seu pedido está disponível para Visualização, Impressão ou Envio por e-mail. Para isso acesse: @[[url]]@<\/p>\r\n@[[assinatura]]@",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"1e2419cee519e83d43ac14701a3e7d12\",\"css\":\"\",\"combined\":\"1e2419cee519e83d43ac14701a3e7d12\"}"
     },
     {
         "nome": "Layout Email Baixa Voucher",
         "id": "layout-email-baixa-voucher",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<h3>Voucher utilizado no estabelecimento.<\/h3>\r\n<p>Caro(a) <b>#nome#<\/b>,<\/p>\r\n<p>O voucher <b>#voucherID#<\/b> foi apresentado no estabelecimento, validado com a chave de segurança vinculado ao mesmo e o lojista então deu baixa no sistema com o estado <b>Usado<\/b>.<\/p>\r\n#assinatura#",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"ebc88cbe7f7d28f5c98b7da1c7568883\",\"css\":\"\",\"combined\":\"ebc88cbe7f7d28f5c98b7da1c7568883\"}"
     },
     {
         "nome": "Layout Email Senha Redefinida",
         "id": "layout-email-senha-redefinida",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<p>Caro(a) #nome#,<\/p>\r\n<p>Sua senha foi redefinida com sucesso!<\/p>\r\n<p>Caso não tenha sido você, favor entrar em contato conosco reportando o problema.<\/p>\r\n#assinatura#",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"71bef62359404d276334517b6db99e90\",\"css\":\"\",\"combined\":\"71bef62359404d276334517b6db99e90\"}"
     },
     {
         "nome": "Layout Email Conta FTP Senha Redefinida",
         "id": "layout-email-conta-ftp-senha-redefinida",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<p>Caro(a) #nome#,<\/p>\r\n<p>A senha da sua Conta FTP foi redefinida com sucesso!<\/p>\r\n<p>Caso não tenha sido você, favor entrar em contato conosco reportando o problema.<\/p>\r\n#assinatura#",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"62f5025db5f02261821553ce2073378b\",\"css\":\"\",\"combined\":\"62f5025db5f02261821553ce2073378b\"}"
     },
     {
         "nome": "Configuração - Campos",
@@ -928,12 +928,12 @@
         "id": "comunicacao-email-teste",
         "language": "pt-br",
         "modulo": null,
-        "html": null,
+        "html": "<h1>Email Teste da Plataforma<\/h1>\r\n<p>Você recebeu este email que foi enviado num teste feito na plataforma Entrey.com.br . Caso tenha alguma dúvida ou então entenda isso ser um abuso, favor entrar em contato conosco no suporte.<\/p>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"401255d8c45c417adc4636a2837a8151\",\"css\":\"\",\"combined\":\"401255d8c45c417adc4636a2837a8151\"}"
     },
     {
         "nome": "Impressão Sem Dados",
@@ -964,12 +964,12 @@
         "id": "host-plugins-update-carregando",
         "language": "pt-br",
         "modulo": "host-configuracao",
-        "html": null,
+        "html": "<div class=\"ui basic modal atualizando\">\r\n    <div class=\"ui icon large header\">\r\n        <i class=\"circular inverted teal cloud download alternate icon\"><\/i>\r\n        Hospedeiro Atualização de Plugins\r\n    <\/div>\r\n    <div class=\"ui tiny center aligned header\">Estamos atualizando os plugins do hospedeiro do seu site para a última versão. Este processo leva poucos segundos.<\/div>\r\n    <div class=\"ui active centered inline slow large loader\"><\/div>\r\n    <div class=\"ui center aligned header\">Atualizando... Aguarde!<\/div>\r\n<\/div>",
         "css": null,
         "status": "A",
-        "versao": 1,
-        "file_version": "1.0",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"70526920a5cc063bdbbf43a619e47684\",\"css\":\"\",\"combined\":\"70526920a5cc063bdbbf43a619e47684\"}"
     },
     {
         "nome": "Impressão Cabeçalho",

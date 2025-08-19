@@ -946,7 +946,7 @@
         "opcao": "listar",
         "raiz": true,
         "sem_permissao": null,
-        "html": null,
+        "html": "",
         "css": null,
         "status": "A",
         "versao": 1,
@@ -964,12 +964,12 @@
         "opcao": "editar",
         "raiz": null,
         "sem_permissao": null,
-        "html": null,
-        "css": null,
+        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\" value=\"#nome#\">\n<\/div>\n<div class=\"ui top attached tabular menu\">\n    <a class=\"active item\" data-tab=\"codigo-html\" data-tooltip=\"#form-html-tooltip#\" data-position=\"top left\" data-inverted=\"\">#form-html-label#<\/a>\n    <a class=\"item\" data-tab=\"css\" data-tooltip=\"#form-css-tooltip#\" data-position=\"top left\" data-inverted=\"\">#form-css-label#<\/a>\n<\/div>\n<div class=\"ui bottom attached active tab segment\" data-tab=\"codigo-html\">#pagina-html-backup# <textarea class=\"codemirror-html\" name=\"html\">#pagina-html#<\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css\">#pagina-css-backup# <textarea class=\"codemirror-css\" name=\"css\">#pagina-css#<\/textarea>\n<\/div>",
+        "css": ".CodeMirror{\n    border: 1px solid #ccc;\n}",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"ba1ad805a73ad08b26465d568e4260be\",\"css\":\"0c9ea4a87a3788f62f7e4e6e63c80a5e\",\"combined\":\"7bbf08407b099e10b048427d2c2da4a3\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",
@@ -982,12 +982,12 @@
         "opcao": "adicionar",
         "raiz": null,
         "sem_permissao": null,
-        "html": null,
-        "css": null,
+        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\">\n<\/div>\n<div class=\"ui top attached tabular menu\">\n    <a class=\"active item\" data-tab=\"codigo-html\" data-tooltip=\"#form-html-tooltip#\" data-position=\"top left\" data-inverted=\"\">#form-html-label#<\/a>\n    <a class=\"item\" data-tab=\"css\" data-tooltip=\"#form-css-tooltip#\" data-position=\"top left\" data-inverted=\"\">#form-css-label#<\/a>\n<\/div>\n<div class=\"ui bottom attached active tab segment\" data-tab=\"codigo-html\">\n    <textarea class=\"codemirror-html\" name=\"html\"><\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css\">\n    <textarea class=\"codemirror-css\" name=\"css\"><\/textarea>\n<\/div>",
+        "css": ".CodeMirror{\n    border: 1px solid #ccc;\n}",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"65578a67da1ba8603be9c6c030c28af7\",\"css\":\"bdb85de7c6afcf6a3fdca44a2b25b9ff\",\"combined\":\"823d9e6c01a59becc22c8cf58f0200c1\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",

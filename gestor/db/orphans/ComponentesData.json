@@ -1,1 +1,54 @@
-[]
+[
+    {
+        "name": "Hosts - Interface Alerta Modal",
+        "id": "hosts-interface-alerta-modal",
+        "version": "1.1",
+        "checksum": {
+            "html": "89732bcc975705e2ff50c499244fdfd7",
+            "css": "",
+            "combined": "89732bcc975705e2ff50c499244fdfd7"
+        },
+        "_motivo": "duplicidade id",
+        "language": "pt-br",
+        "modulo": "interface-hosts"
+    },
+    {
+        "name": "Hosts - Interface Carregando Modal",
+        "id": "hosts-interface-carregando-modal",
+        "version": "1.1",
+        "checksum": {
+            "html": "f4ac4417442a16bad6b98a479d8b90bf",
+            "css": "",
+            "combined": "f4ac4417442a16bad6b98a479d8b90bf"
+        },
+        "_motivo": "duplicidade id",
+        "language": "pt-br",
+        "modulo": "interface-hosts"
+    },
+    {
+        "name": "Hosts - Interface Formulário Autorização Provisória",
+        "id": "hosts-interface-formulario-autorizacao-provisoria",
+        "version": "1.1",
+        "checksum": {
+            "html": "663fe479ec12deac2602976353b83a63",
+            "css": "",
+            "combined": "663fe479ec12deac2602976353b83a63"
+        },
+        "_motivo": "duplicidade id",
+        "language": "pt-br",
+        "modulo": "interface-hosts"
+    },
+    {
+        "name": "Hosts - Interface Modal Informativo",
+        "id": "hosts-interface-modal-informativo",
+        "version": "1.1",
+        "checksum": {
+            "html": "ab74c26cad2d258543bf1483437db942",
+            "css": "",
+            "combined": "ab74c26cad2d258543bf1483437db942"
+        },
+        "_motivo": "duplicidade id",
+        "language": "pt-br",
+        "modulo": "interface-hosts"
+    }
+]
