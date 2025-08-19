@@ -55,30 +55,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const form = document.getElementById('installer-form');
 
-    // Função auxiliar para mostrar uma mensagem de erro para um campo específico
-    const showError = (fieldId, message) => {
-        const field = document.getElementById(fieldId);
-        const errorElement = document.getElementById(`${fieldId}-error`);
-        if (field && errorElement) {
-            field.classList.add('border-red-500');
-            field.classList.remove('border-gray-300');
-            errorElement.textContent = message;
-            errorElement.classList.remove('hidden');
-        }
-    };
-
-    // Função auxiliar para esconder a mensagem de erro de um campo
-    const hideError = (fieldId) => {
-        const field = document.getElementById(fieldId);
-        const errorElement = document.getElementById(`${fieldId}-error`);
-        if (field && errorElement) {
-            field.classList.remove('border-red-500');
-            field.classList.add('border-gray-300');
-            errorElement.classList.add('hidden');
-        }
-    };
-
     if (form) {
+        // ...código do modo normal permanece igual...
+        // Função auxiliar para mostrar uma mensagem de erro para um campo específico
+        const showError = (fieldId, message) => {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(`${fieldId}-error`);
+            if (field && errorElement) {
+                field.classList.add('border-red-500');
+                field.classList.remove('border-gray-300');
+                errorElement.textContent = message;
+                errorElement.classList.remove('hidden');
+            }
+        };
+
+        // Função auxiliar para esconder a mensagem de erro de um campo
+        const hideError = (fieldId) => {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(`${fieldId}-error`);
+            if (field && errorElement) {
+                field.classList.remove('border-red-500');
+                field.classList.add('border-gray-300');
+                errorElement.classList.add('hidden');
+            }
+        };
+
         // Função para atualizar o caminho completo
         const updateInstallPath = () => {
             const basePath = document.getElementById('install_base_path').value.trim();
@@ -182,6 +183,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 runInstallation(formData);
             }
         });
+    } else {
+        // Modo debug: não há formulário, dispara instalação automática
+        const modal = document.getElementById('loading-modal') || document.getElementById('progress-container');
+        if (modal) {
+            modal.classList.remove('hidden');
+        }
+        // Cria um FormData mínimo, só com o idioma
+        let debugFormData = new FormData();
+        debugFormData.append('lang', currentLang);
+        // Dispara instalação automática
+        runInstallation(debugFormData);
     }
 });
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script de sincronização segura do gestor para o ambiente Docker
 # Copia apenas arquivos novos ou modificados, nunca apaga nada da origem
-# Uso: bash ./sincroniza-gestor.sh
+# Uso: bash ./docker/utils/sincroniza-gestor.sh checksum
 #
 # Origem:   gestor/
 # Destino:  docker/dados/home/conn2flow-gestor/

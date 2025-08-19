@@ -132,17 +132,6 @@
         "checksum": "{\"html\":\"d12a11673a45cc1ac8bb301570566b17\",\"css\":\"3cb92b2858b7f058956f6b632a804f6a\",\"combined\":\"cc496fecd41e6adf962f7bbb393d0952\"}"
     },
     {
-        "nome": "30",
-        "id": "0.2",
-        "language": "pt-br",
-        "html": null,
-        "css": null,
-        "status": "A",
-        "versao": 1,
-        "file_version": "1.0",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
-    },
-    {
         "nome": "Layout Mestre Teste - Principal",
         "id": "layout-mestre-teste-principal",
         "language": "pt-br",

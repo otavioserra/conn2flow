@@ -120,16 +120,6 @@
         }
     },
     {
-        "name": "30",
-        "id": "0.2",
-        "version": "1.0",
-        "checksum": {
-            "html": "",
-            "css": "",
-            "combined": ""
-        }
-    },
-    {
         "name": "Layout Mestre Teste - Principal",
         "id": "layout-mestre-teste-principal",
         "version": "1.1",

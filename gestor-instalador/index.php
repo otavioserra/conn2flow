@@ -37,22 +37,44 @@ require_once __DIR__ . '/src/Translator.php';
 require_once __DIR__ . '/src/helpers.php';
 
 // Se for uma requisição GET, apenas exibe o formulário
+// Suporte ao modo debug via .env.debug
+$debugEnvPath = __DIR__ . DIRECTORY_SEPARATOR . '.env.debug';
+function load_debug_env($envPath)
+{
+    if (!file_exists($envPath)) return [];
+    $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $data = [];
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0) continue;
+        if (strpos($line, '=') !== false) {
+            list($key, $value) = explode('=', $line, 2);
+            $data[strtolower(trim($key))] = trim($value);
+        }
+    }
+    return $data;
+}
+$debugData = load_debug_env($debugEnvPath);
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Determina o idioma a partir do GET ou usa um padrão
-    $lang = 'pt-br';
-    if (isset($_GET['lang']) && in_array($_GET['lang'], ['pt-br', 'en-us'])) {
-        $lang = $_GET['lang'];
-    }
-
-    $translator = Translator::getInstance();
-    $translator->load($lang);
-
-    if (isset($_GET['success']) && $_GET['success'] === 'true') {
-    require_once __DIR__ . '/views/success.php';
+    if (!empty($debugData)) {
+        // Se .env.debug existe, exibe tela de instalação via modo debug
+        require_once __DIR__ . '/views/debug.php';
+        exit;
     } else {
-    require_once __DIR__ . '/views/installer.php';
+        // Modo normal: exibe formulário
+        $lang = 'pt-br';
+        if (isset($_GET['lang']) && in_array($_GET['lang'], ['pt-br', 'en-us'])) {
+            $lang = $_GET['lang'];
+        }
+        $translator = Translator::getInstance();
+        $translator->load($lang);
+        if (isset($_GET['success']) && $_GET['success'] === 'true') {
+            require_once __DIR__ . '/views/success.php';
+        } else {
+            require_once __DIR__ . '/views/installer.php';
+        }
+        exit;
     }
-    exit;
 }
 
 // A partir daqui, tratamos apenas requisições POST (AJAX)
@@ -69,12 +91,28 @@ $translator = Translator::getInstance();
 $translator->load($lang);
 
 try {
+    // Suporte ao modo debug para requisições POST
+    $debugData = load_debug_env($debugEnvPath);
+    $inputData = $_POST;
+    if (!empty($debugData)) {
+        // Preenche os campos do instalador com os dados do .env.debug
+        foreach ($debugData as $key => $value) {
+            $inputData[$key] = $value;
+        }
+        // Ativa modo debug
+        $inputData['debug'] = '1';
+    }
+
     // A ação determina qual etapa da instalação executar
-    $action = $_POST['action'] ?? 'validate_input';
-    
-    $installer = new Installer($_POST);
+    $action = $inputData['action'] ?? 'validate_input';
+
+    // Se modo debug e SKIP_DOWNLOAD=1, força etapa após download
+    if (!empty($debugData) && isset($debugData['skip_download']) && $debugData['skip_download'] == '1' && $action === 'download_files') {
+        $action = 'unzip_files';
+    }
+
+    $installer = new Installer($inputData);
     $response = $installer->runStep($action);
-    
     echo json_encode($response);
 
 } catch (Exception $e) {

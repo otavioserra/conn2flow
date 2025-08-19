@@ -35,84 +35,22 @@
 
 declare(strict_types=1);
 
+// =====================
+// Configuração Global
+// =====================
+global $LOG_FILE, $BASE_PATH, $DB_DATA_DIR, $PHINX_BIN, $BACKUP_DIR_BASE, $GLOBALS;
 
-// Inicialização robusta de variáveis globais e caminhos críticos
-function getGestorBasePath() {
-    $file = __FILE__;
-    $base = realpath(dirname($file) . '/../../');
-    if ($base && is_dir($base)) return $base . DIRECTORY_SEPARATOR;
-    $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-    if (isset($bt[0]['file'])) {
-        $base2 = realpath(dirname($bt[0]['file']) . '/../../');
-        if ($base2 && is_dir($base2)) return $base2 . DIRECTORY_SEPARATOR;
-    }
-    return null;
-}
+$LOG_FILE = 'atualizacoes-bd';
+$BASE_PATH = realpath(dirname(__FILE__) . '/../../') . DIRECTORY_SEPARATOR;
+$DB_DATA_DIR = $BASE_PATH . 'db/data/';
+$PHINX_BIN = $BASE_PATH . 'vendor/bin/phinx';
+$BACKUP_DIR_BASE = $BASE_PATH . 'backups/atualizacoes/';
 
-if (!isset($BASE_PATH) || !$BASE_PATH) {
-    $BASE_PATH = getGestorBasePath();
-}
-if (!$BASE_PATH) {
-    error_log('[FATAL] Não foi possível resolver o caminho do gestor!');
-    throw new RuntimeException('Não foi possível resolver o caminho do gestor!');
-}
-
+// Bibliotecas
 require_once $BASE_PATH . 'bibliotecas/lang.php';
-@require_once $BASE_PATH . 'bibliotecas/log.php';
-if (!isset($REPO_ROOT) || !$REPO_ROOT) {
-    $REPO_ROOT = realpath($BASE_PATH . '..') . DIRECTORY_SEPARATOR;
-}
-if (!isset($LOG_FILE)) {
-    $LOG_FILE = 'atualizacoes-bd';
-}
-if (!isset($DB_DATA_DIR)) {
-    $DB_DATA_DIR = $BASE_PATH . 'db/data/';
-}
-if (!isset($GESTOR_DIR)) {
-    $GESTOR_DIR = $BASE_PATH;
-}
-if (!isset($PHINX_BIN) || !$PHINX_BIN) {
-    $PHINX_BIN = $BASE_PATH . 'vendor/bin/phinx';
-    if (!file_exists($PHINX_BIN)) {
-        $altPhinx = $REPO_ROOT . 'vendor/bin/phinx';
-        if (file_exists($altPhinx)) {
-            $PHINX_BIN = $altPhinx;
-        } else {
-            $whichPhinx = trim(shell_exec('which phinx'));
-            if ($whichPhinx && file_exists($whichPhinx)) {
-                $PHINX_BIN = $whichPhinx;
-            } else {
-                $msg = '[FATAL] Binário do Phinx não encontrado em nenhum dos caminhos esperados: '
-                    . "\nTentativas:"
-                    . "\n- $BASE_PATH/vendor/bin/phinx"
-                    . "\n- $REPO_ROOT/vendor/bin/phinx"
-                    . "\n- PATH do sistema (which phinx)"
-                    . "\nAbortando rotina de migração!";
-                if (function_exists('log_disco')) log_disco($msg, $LOG_FILE);
-                throw new RuntimeException($msg);
-            }
-        }
-    }
-}
-if (!isset($BACKUP_DIR_BASE)) {
-    $BACKUP_DIR_BASE = $REPO_ROOT . 'backups/atualizacoes/';
-}
-if (function_exists('log_disco')) {
-    log_disco('[DEBUG] BASE_PATH (robusto): ' . $BASE_PATH, $LOG_FILE);
-    log_disco('[DEBUG] REPO_ROOT (robusto): ' . $REPO_ROOT, $LOG_FILE);
-    log_disco('[DEBUG] BASE_PATH: ' . $BASE_PATH, $LOG_FILE);
-    log_disco('[DEBUG] REPO_ROOT: ' . $REPO_ROOT, $LOG_FILE);
-    log_disco('[DEBUG] Caminho esperado do Phinx: ' . $BASE_PATH . 'vendor/bin/phinx', $LOG_FILE);
-    log_disco('[DEBUG] Caminho alternativo do Phinx: ' . $REPO_ROOT . 'vendor/bin/phinx', $LOG_FILE);
-    log_disco('[DEBUG] Teste file_exists: ' . ($PHINX_BIN ? $PHINX_BIN : 'NULL') . ' => ' . (file_exists($PHINX_BIN) ? 'SIM' : 'NÃO'), $LOG_FILE);
-    log_disco('[DEBUG] Teste is_file: ' . ($PHINX_BIN ? $PHINX_BIN : 'NULL') . ' => ' . (is_file($PHINX_BIN) ? 'SIM' : 'NÃO'), $LOG_FILE);
-    log_disco('[DEBUG] Teste is_readable: ' . ($PHINX_BIN ? $PHINX_BIN : 'NULL') . ' => ' . (is_readable($PHINX_BIN) ? 'SIM' : 'NÃO'), $LOG_FILE);
-    log_disco('[DEBUG] Teste realpath: ' . ($PHINX_BIN ? realpath($PHINX_BIN) : 'NULL'), $LOG_FILE);
-    if ($PHINX_BIN && file_exists($PHINX_BIN)) {
-        $stat = @stat($PHINX_BIN);
-        log_disco('[DEBUG] stat do binário: ' . print_r($stat, true), $LOG_FILE);
-    }
-}
+require_once $BASE_PATH . 'bibliotecas/log.php';
+
+// Gestor 
 global $_GESTOR;
 if (!isset($_GESTOR)) $_GESTOR = [];
 if (!isset($_GESTOR['logs-path'])) $_GESTOR['logs-path'] = $BASE_PATH . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR;
@@ -126,81 +64,6 @@ if (is_dir($localLangDir)) {
         if (is_array($localDict)) {
             $GLOBALS['dicionario'] = array_merge($GLOBALS['dicionario'], $localDict);
         }
-    }
-}
-
-$BASE_PATH = getGestorBasePath();
-if (!$BASE_PATH) {
-    error_log('[FATAL] Não foi possível resolver o caminho do gestor!');
-    throw new RuntimeException('Não foi possível resolver o caminho do gestor!');
-}
-$REPO_ROOT = realpath($BASE_PATH . '..') . DIRECTORY_SEPARATOR;
-// Log extra para debug
-if (function_exists('log_disco')) {
-    log_disco('[DEBUG] BASE_PATH (robusto): ' . $BASE_PATH, 'atualizacoes-bd');
-    log_disco('[DEBUG] REPO_ROOT (robusto): ' . $REPO_ROOT, 'atualizacoes-bd');
-}
-
-require_once $BASE_PATH . 'bibliotecas/lang.php';
-@require_once $BASE_PATH . 'bibliotecas/log.php';
-
-// =====================
-// Configuração Global
-// =====================
-$LOG_FILE    = 'atualizacoes-bd';
-$DB_DATA_DIR = $BASE_PATH . 'db/data/';
-$GESTOR_DIR  = $BASE_PATH; // agora corretamente aponta para gestor/
-// Log dos caminhos para debug
-log_disco('[DEBUG] BASE_PATH: ' . $BASE_PATH, $LOG_FILE);
-log_disco('[DEBUG] REPO_ROOT: ' . $REPO_ROOT, $LOG_FILE);
-log_disco('[DEBUG] Caminho esperado do Phinx: ' . $BASE_PATH . 'vendor/bin/phinx', $LOG_FILE);
-log_disco('[DEBUG] Caminho alternativo do Phinx: ' . $REPO_ROOT . 'vendor/bin/phinx', $LOG_FILE);
-// Detecta binário do Phinx de forma robusta
-$PHINX_BIN = $BASE_PATH . 'vendor/bin/phinx';
-if (!file_exists($PHINX_BIN)) {
-    // Fallback: vendor na raiz do repositório
-    $altPhinx = $REPO_ROOT . 'vendor/bin/phinx';
-    if (file_exists($altPhinx)) {
-        $PHINX_BIN = $altPhinx;
-    } else {
-        // Fallback: buscar no PATH do sistema
-        $whichPhinx = trim(shell_exec('which phinx'));
-        if ($whichPhinx && file_exists($whichPhinx)) {
-            $PHINX_BIN = $whichPhinx;
-        } else {
-            // Não encontrou o binário, aborta com log detalhado
-            $msg = '[FATAL] Binário do Phinx não encontrado em nenhum dos caminhos esperados: '
-                . "\nTentativas:"
-                . "\n- $BASE_PATH/vendor/bin/phinx"
-                . "\n- $REPO_ROOT/vendor/bin/phinx"
-                . "\n- PATH do sistema (which phinx)"
-                . "\nAbortando rotina de migração!";
-            log_disco($msg, $LOG_FILE);
-            throw new RuntimeException($msg);
-        }
-    }
-}
-// Debug extremo do binário do Phinx
-log_disco('[DEBUG] Teste file_exists: ' . ($PHINX_BIN ? $PHINX_BIN : 'NULL') . ' => ' . (file_exists($PHINX_BIN) ? 'SIM' : 'NÃO'), $LOG_FILE);
-log_disco('[DEBUG] Teste is_file: ' . ($PHINX_BIN ? $PHINX_BIN : 'NULL') . ' => ' . (is_file($PHINX_BIN) ? 'SIM' : 'NÃO'), $LOG_FILE);
-log_disco('[DEBUG] Teste is_readable: ' . ($PHINX_BIN ? $PHINX_BIN : 'NULL') . ' => ' . (is_readable($PHINX_BIN) ? 'SIM' : 'NÃO'), $LOG_FILE);
-log_disco('[DEBUG] Teste realpath: ' . ($PHINX_BIN ? realpath($PHINX_BIN) : 'NULL'), $LOG_FILE);
-if ($PHINX_BIN && file_exists($PHINX_BIN)) {
-    $stat = @stat($PHINX_BIN);
-    log_disco('[DEBUG] stat do binário: ' . print_r($stat, true), $LOG_FILE);
-}
-$BACKUP_DIR_BASE = $REPO_ROOT . 'backups/atualizacoes/'; // conforme prompt
-
-// Ajuste ambiente log
-global $_GESTOR; if (!isset($_GESTOR)) $_GESTOR = []; if (!isset($_GESTOR['logs-path'])) $_GESTOR['logs-path'] = $BASE_PATH . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR; if (!is_dir($_GESTOR['logs-path'])) @mkdir($_GESTOR['logs-path'], 0775, true);
-set_lang('pt-br');
-// Mesclar dicionário local de atualizações (prioridade para chaves locais)
-$localLangDir = $BASE_PATH . 'controladores/atualizacoes/lang/';
-if (is_dir($localLangDir)) {
-    $localFile = $localLangDir . $GLOBALS['lang'] . '.json';
-    if (file_exists($localFile)) {
-        $localDict = json_decode(file_get_contents($localFile), true) ?: [];
-        $GLOBALS['dicionario'] = array_merge($GLOBALS['dicionario'], $localDict);
     }
 }
 
@@ -220,15 +83,31 @@ function runCmd(string $cmd): array {
 
 /** Conexão PDO reutilizável */
 function db(): PDO {
+    global $BASE_PATH, $_BANCO, $CLI_OPTS, $_ENV;
+
     static $pdo = null; if ($pdo) return $pdo;
-    // Reaproveita lógica do phinx.php para config
-    $configPath = $BASE_PATH . 'config.php';
-    if (!file_exists($configPath)) throw new RuntimeException('config.php não encontrado para conectar banco.');
-    require $configPath; // define $_BANCO
-    $host = $_BANCO['host'] ?? 'localhost';
-    $name = $_BANCO['nome'] ?? '';
-    $user = $_BANCO['usuario'] ?? '';
-    $pass = $_BANCO['senha'] ?? '';
+
+    if(isset($CLI_OPTS['installing']) && isset($CLI_OPTS['db']) && $CLI_OPTS['installing']) {
+        $host = $CLI_OPTS['db']['host'] ?? '';
+        $name = $CLI_OPTS['db']['name'] ?? '';
+        $user = $CLI_OPTS['db']['user'] ?? '';
+        $pass = $CLI_OPTS['db']['pass'] ?? '';
+
+        // Validação básica para evitar erros durante instalação
+        if (empty($host) || empty($name) || empty($user)) {
+            throw new RuntimeException("Configurações de banco não definidas para instalação. Verifique as variáveis CLI_OPTS");
+        }
+    } else {
+        // Reaproveita lógica do phinx.php para config
+        $configPath = $BASE_PATH . 'config.php';
+        if (!file_exists($configPath)) throw new RuntimeException('config.php não encontrado para conectar banco.');
+        require $configPath; // define $_BANCO
+        $host = $_BANCO['host'] ?? 'localhost';
+        $name = $_BANCO['nome'] ?? '';
+        $user = $_BANCO['usuario'] ?? '';
+        $pass = $_BANCO['senha'] ?? '';
+    }
+
     $dsn = "mysql:host=$host;dbname=$name;charset=utf8mb4";
     $pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     return $pdo;
@@ -240,11 +119,11 @@ function db(): PDO {
  * Executa migrações usando phinx.
  */
 function migracoes(): array {
-    global $PHINX_BIN, $GESTOR_DIR, $LOG_FILE;
+    global $PHINX_BIN, $BASE_PATH, $LOG_FILE;
 
     // Se PHINX_BIN estiver vazio, resolve novamente
     if (empty($PHINX_BIN) || !is_string($PHINX_BIN) || !file_exists($PHINX_BIN)) {
-        $basePath = isset($GESTOR_DIR) ? $GESTOR_DIR : (function_exists('getGestorBasePath') ? getGestorBasePath() : null);
+        $basePath = isset($BASE_PATH) ? $BASE_PATH : (function_exists('getGestorBasePath') ? getGestorBasePath() : null);
         $repoRoot = $basePath ? realpath($basePath . '..') . DIRECTORY_SEPARATOR : null;
         $PHINX_BIN = $basePath ? $basePath . 'vendor/bin/phinx' : null;
         if ($PHINX_BIN && file_exists($PHINX_BIN)) {
@@ -259,41 +138,64 @@ function migracoes(): array {
         }
     }
 
+    // Detecta binário do PHP de forma robusta
+    $phpBin = PHP_BINARY;
+    if (empty($phpBin) || !is_string($phpBin) || !file_exists($phpBin)) {
+        $phpBin = trim(shell_exec('which php'));
+        if (!$phpBin || !file_exists($phpBin)) {
+            $phpBin = '/usr/bin/php'; // fallback padrão Linux
+        }
+    }
+
+    // Caminho absoluto do phinx.php
+    $phinxConfig = $BASE_PATH . 'phinx.php';
+    if (!file_exists($phinxConfig)) {
+        // Tenta buscar na raiz do repositório
+        $repoRoot = realpath($BASE_PATH . '..') . DIRECTORY_SEPARATOR;
+        if (file_exists($repoRoot . 'phinx.php')) {
+            $phinxConfig = $repoRoot . 'phinx.php';
+        } else {
+            $msg = 'Arquivo de configuração phinx.php não encontrado: ' . $phinxConfig;
+            log_disco($msg, $LOG_FILE);
+            throw new RuntimeException($msg);
+        }
+    }
+
     log_disco(tr('_migrations_start'), $LOG_FILE);
     // Exibir variáveis de ambiente relevantes
     $envVars = [
-        'PHP_BINARY' => PHP_BINARY,
+        'PHP_BINARY' => $phpBin,
         'PHINX_BIN' => $PHINX_BIN,
-        'GESTOR_DIR' => $GESTOR_DIR,
-        'phinx.php' => $GESTOR_DIR . 'phinx.php',
+        'BASE_PATH' => $BASE_PATH,
+        'phinx.php' => $phinxConfig,
         'SCRIPT_PATH' => __FILE__,
         'USER' => getenv('USER'),
         'HOME' => getenv('HOME'),
     ];
     foreach ($envVars as $k => $v) {
         log_disco("[DEBUG] ENV $k = $v", $LOG_FILE);
-        echo "[DEBUG] ENV $k = $v\n";
+        if (PHP_SAPI === 'cli') echo "[DEBUG] ENV $k = $v\n";
     }
     // Verificação explícita do binário do Phinx
     if (empty($PHINX_BIN) || !is_string($PHINX_BIN) || !file_exists($PHINX_BIN)) {
         $msg = 'Binário do Phinx não encontrado ou inválido: ' . var_export($PHINX_BIN, true);
         log_disco($msg, $LOG_FILE);
-        echo $msg . "\n";
+        if (PHP_SAPI === 'cli') echo $msg . "\n";
         throw new RuntimeException($msg);
     }
-    $cmd = escapeshellcmd(PHP_BINARY) . ' ' . escapeshellarg($PHINX_BIN) . ' migrate -c ' . escapeshellarg($GESTOR_DIR . 'phinx.php') . ' -e gestor';
+    $cmd = escapeshellcmd($phpBin) . ' ' . escapeshellarg($PHINX_BIN) . ' migrate -c ' . escapeshellarg($phinxConfig) . ' -e gestor';
     log_disco('DEBUG CMD MIGRACOES: ' . $cmd, $LOG_FILE);
-    echo "[DEBUG] CMD MIGRACOES: $cmd\n";
+    if (PHP_SAPI === 'cli') echo "[DEBUG] CMD MIGRACOES: $cmd\n";
     [$code, $out] = runCmd($cmd);
     log_disco($out, $LOG_FILE);
-    echo "[PHINX OUTPUT]\n$out\n";
+    if (PHP_SAPI === 'cli') echo "[PHINX OUTPUT]\n$out\n";
     if ($code !== 0) {
         log_disco('Erro migrações exitCode=' . $code, $LOG_FILE);
-        echo "[ERRO] Migrações exitCode=$code\n";
+        if (PHP_SAPI === 'cli') echo "[ERRO] Migrações exitCode=$code\n";
         throw new RuntimeException('Falha migrações');
     }
     log_disco(tr('_migrations_done'), $LOG_FILE);
-    echo "[OK] Migrações concluídas!\n";
+    if (PHP_SAPI === 'cli') echo "[OK] Migrações concluídas!\n";
     return ['output' => $out];
 }
 
@@ -795,11 +697,12 @@ function relatorioFinal(array $resumo): void {
         $msg .= sprintf("📦 %s => +%d ~%d =%d" . PHP_EOL, $tab, $r['inserted'],$r['updated'],$r['same']);
     }
     $msg .= "Σ TOTAL => +$totalIns ~${totalUpd} =${totalSame}" . PHP_EOL;
-    log_disco($msg, $LOG_FILE); echo $msg;
+    log_disco($msg, $LOG_FILE); if (PHP_SAPI === 'cli') echo $msg;
 }
 
-function main(): void {
+function main() {
     global $LOG_FILE, $CLI_OPTS, $BACKUP_DIR_BASE, $DB_DATA_DIR, $CHECKSUM_CHANGED_TABLES;
+
     try {
         log_disco(tr('_process_start'), $LOG_FILE);
         // Verificar .env para ambiente de testes (parametrizado)
@@ -825,7 +728,7 @@ function main(): void {
             return;
         }
         if (!empty($CLI_OPTS['dry-run'])) log_disco(tr('_dry_run_mode'), $LOG_FILE);
-    if (empty($CLI_OPTS['skip-migrate'])) { migracoes(); } else { log_disco(tr('_skip_migrations'), $LOG_FILE); }
+        if (empty($CLI_OPTS['skip-migrate'])) { migracoes(); } else { log_disco(tr('_skip_migrations'), $LOG_FILE); }
 
         // Cálculo de checksums (garante que migration criou manager_updates)
         $pdo = db();
@@ -891,7 +794,7 @@ function main(): void {
         log_disco(tr('_process_end_success'), $LOG_FILE);
     } catch (Throwable $e) {
         log_disco(tr('_process_error',['msg'=>$e->getMessage()]), $LOG_FILE);
-        echo 'Erro: ' . $e->getMessage() . PHP_EOL;
+        if (PHP_SAPI === 'cli') echo 'Erro: ' . $e->getMessage() . PHP_EOL;
     }
 }
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Executar: bash ./ai-workspace/git/scripts/release-instalador.sh TIPO "TAG_MSG" "COMMIT_MSG"
+
 # Script para automatizar o processo de release do GESTOR-INSTALADOR:
 # 1. Atualiza a versão no index.php
 # 2. Adiciona as mudanças ao Git

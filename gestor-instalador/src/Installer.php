@@ -10,9 +10,9 @@ class Installer
     public function __construct(array $postData)
     {
         $this->data = $postData;
-    $this->baseDir = realpath(dirname(__DIR__)); // Diretório do instalador robusto
-    $this->tempDir = $this->baseDir . DIRECTORY_SEPARATOR . 'temp';
-    $this->logFile = $this->baseDir . DIRECTORY_SEPARATOR . 'installer.log';
+        $this->baseDir = realpath(dirname(__DIR__)); // Diretório do instalador robusto
+        $this->tempDir = $this->baseDir . DIRECTORY_SEPARATOR . 'temp';
+        $this->logFile = $this->baseDir . DIRECTORY_SEPARATOR . 'installer.log';
         
         // Inicia o log
         $this->log("=== Iniciando instalação em " . date('Y-m-d H:i:s') . " ===");
@@ -120,26 +120,34 @@ class Installer
     private function unzip_files() 
     {
         $gestorZipPath = $this->tempDir . '/gestor.zip';
-        
         // Usa o caminho de instalação personalizado
-    $installPath = isset($this->data['install_path']) ? realpath($this->data['install_path']) ?: $this->data['install_path'] : null;
+        $installPath = isset($this->data['install_path']) ? realpath($this->data['install_path']) ?: $this->data['install_path'] : null;
         $this->log("Descompactando arquivos para: {$installPath}");
-        
+
         // Cria o diretório de instalação se não existir
         if (!is_dir($installPath)) {
             $this->log("Criando diretório de instalação: {$installPath}");
             mkdir($installPath, 0755, true);
         }
-        
-        // Descompacta o gestor.zip DENTRO do caminho especificado (não um nível acima)
-        $this->extractZip($gestorZipPath, $installPath);
-        
-        // Corrige permissões do Phinx após descompactação
+
+        // Verifica se deve pular a extração do ZIP (aceita SKIP_UNZIP ou skip_unzip)
+        $skipUnzip = (
+            (!empty($this->data['SKIP_UNZIP']) && $this->data['SKIP_UNZIP'] == '1') ||
+            (!empty($this->data['skip_unzip']) && $this->data['skip_unzip'] == '1')
+        );
+        if ($skipUnzip) {
+            $this->log("SKIP_UNZIP ativado: pulando extração do ZIP, mas executando correção de permissões e configuração do sistema");
+        } else {
+            // Descompacta o gestor.zip DENTRO do caminho especificado (não um nível acima)
+            $this->extractZip($gestorZipPath, $installPath);
+        }
+
+        // Corrige permissões do Phinx após descompactação (ou após pular)
         $this->fixPhinxPermissions();
-        
+
         // Configura os arquivos do sistema
         $this->configureSystem();
-        
+
         $this->log("Descompactação e configuração concluídas");
         return [
             'status' => 'success',
@@ -174,6 +182,9 @@ class Installer
 
         // 7. Limpeza final
         $this->cleanupInstaller();
+
+        // Instalação sucesso!
+        $this->log("✅ Instalação concluída com sucesso! ✅");
 
         return [
             'status' => 'finished',
@@ -258,6 +269,8 @@ class Installer
                 'id_usuarios' => $adminUserId
                 // Não passa 'sessao' => true, para manter logado (cookie persistente)
             ]);
+
+            global $_CONFIG;
             
             if ($tokenResult) {
                 $this->log("✅ Login automático configurado com sucesso! Usuário administrador estará logado após instalação.");
@@ -314,8 +327,8 @@ class Installer
      */
     private function fixPhinxPermissions()
     {
-    $gestorPath = $this->getGestorPath();
-    $phinxBinPath = $gestorPath . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'phinx';
+        $gestorPath = $this->getGestorPath();
+        $phinxBinPath = $gestorPath . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'phinx';
         
         if (file_exists($phinxBinPath)) {
             chmod($phinxBinPath, 0755);
@@ -387,7 +400,7 @@ class Installer
      */
     private function getGestorPath()
     {
-    return isset($this->data['install_path']) ? realpath($this->data['install_path']) ?: $this->data['install_path'] : dirname($this->baseDir) . DIRECTORY_SEPARATOR + 'gestor';
+        return isset($this->data['install_path']) ? realpath($this->data['install_path']) ?: $this->data['install_path'] : dirname($this->baseDir) . DIRECTORY_SEPARATOR + 'gestor';
     }
 
     /**
@@ -666,10 +679,12 @@ class Installer
             
             if (file_exists($sourceIndex)) {
                 $indexContent = file_get_contents($sourceIndex);
+
+                global $_CONFIG;
                 
                 // Pega os valores do formulário para substituir no template
-                $serverName = $this->data['server_name'] ?? 'localhost';
-                $gestorFullPath = $this->data['install_base_path'] . '/' . $this->data['install_folder_name'] . '/';
+                $serverName = $this->data['domain'] ?? 'localhost';
+                $gestorFullPath = $this->data['install_path'] . '/';
                 
                 $this->log("Server name: {$serverName}");
                 $this->log("Caminho completo do gestor: {$gestorFullPath}");
@@ -784,6 +799,21 @@ class Installer
         
         $this->log("Limpeza concluída. Restam apenas index.php, .htaccess e installer.log na pasta do instalador.");
     }
+    
+    /**
+     * Remove todos os arquivos do instalador
+     */
+    private function cleanupInstaller()
+    {
+        // Remove diretório temporário
+        if (is_dir($this->tempDir)) {
+            $this->removeDirectory($this->tempDir);
+            $this->log("Diretório temporário removido: {$this->tempDir}");
+        }
+        
+        // A limpeza dos arquivos do instalador é feita em cleanupInstallerFiles()
+        // chamada pelo setupPublicAccess(), deixando apenas index.php e .htaccess
+    }
 
     /**
      * Calcula o caminho relativo entre dois diretórios
@@ -851,6 +881,103 @@ class Installer
         } catch (Exception $e) {
             $this->log('Falha ao criar/atualizar página de sucesso: ' . $e->getMessage(), 'WARNING');
         }
+    }
+
+    /**
+     * Retorna o HTML da página de sucesso
+     */
+     private function getSuccessPageHtml()
+     {
+         return '
+<div class="ui main container">
+    <div class="ui centered grid">
+        <div class="twelve wide column">
+            <!-- Mensagem de Sucesso -->
+            <div class="ui positive message">
+                <div class="header">
+                    <i class="exclamation triangle icon"></i>
+                    Instalação Concluída com Sucesso!
+                </div>
+                <p>O Conn2Flow foi instalado e configurado com sucesso em seu servidor.</p>
+            </div>
+            
+            <!-- Próximos Passos -->
+            <div class="ui segment">
+                <div class="ui header">
+                    <i class="list icon"></i>
+                    <div class="content">
+                        Próximos Passos
+                        <div class="sub header">Siga estas etapas para começar a usar o Conn2Flow</div>
+                    </div>
+                </div>
+                
+                <div class="ui ordered steps">
+                    <div class="step">
+                        <i class="user icon"></i>
+                        <div class="content">
+                            <div class="title">Acesse o Painel</div>
+                            <div class="description">Entre no painel administrativo do seu site</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="settings icon"></i>
+                        <div class="content">
+                            <div class="title">Configure o Sistema</div>
+                            <div class="description">Ajuste suas preferências de sistema</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="paint brush icon"></i>
+                        <div class="content">
+                            <div class="title">Personalize o Design</div>
+                            <div class="description">Customize o visual e conteúdo</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="rocket icon"></i>
+                        <div class="content">
+                            <div class="title">Comece a Usar</div>
+                            <div class="description">Aproveite todas as funcionalidades!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Botão de Acesso -->
+            <div class="ui center aligned segment">
+                <a href="@[[pagina#url-raiz]]@dashboard" class="ui huge primary button">
+                    <i class="sign in icon"></i>
+                    Acessar Painel Administrativo
+                </a>
+            </div>
+            
+            <!-- Nota Final -->
+            <div class="ui info message">
+                <div class="header">
+                    <i class="info circle icon"></i>
+                    Nota
+                </div>
+                <p>Esta página será removida automaticamente quando você acessar o painel administrativo pela primeira vez.</p>
+            </div>
+        </div>
+    </div>
+</div>';
+     }
+
+    /**
+     * Retorna o CSS da página de sucesso
+     */
+    private function getSuccessPageCss()
+    {
+        return '
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}';
     }
 
     /**
@@ -930,19 +1057,19 @@ class Installer
         }
 
         try {
-            $this->setupGestorEnvironment();
-            // Garantir variáveis de ambiente para o Phinx
-            $this->log('Setando variáveis de ambiente do banco para migrações...');
-            putenv('PHINX_DB_HOST=' . ($this->data['db_host'] ?? ''));
-            putenv('PHINX_DB_NAME=' . ($this->data['db_name'] ?? ''));
-            putenv('PHINX_DB_USER=' . ($this->data['db_user'] ?? ''));
-            putenv('PHINX_DB_PASS=' . ($this->data['db_pass'] ?? ''));
-            $this->log('Variáveis de ambiente setadas: ' .
-                'PHINX_DB_HOST=' . getenv('PHINX_DB_HOST') . ', ' .
-                'PHINX_DB_NAME=' . getenv('PHINX_DB_NAME') . ', ' .
-                'PHINX_DB_USER=' . getenv('PHINX_DB_USER') . ', ' .
-                'PHINX_DB_PASS=' . (getenv('PHINX_DB_PASS') ? '***' : '(vazio)'));
+            global $GLOBALS;
 
+            $GLOBALS['CLI_OPTS'] = [
+                'installing' => true,
+                'db' => [
+                    'host' => $this->data['db_host'],
+                    'name' => $this->data['db_name'],
+                    'user' => $this->data['db_user'],
+                    'pass' => $this->data['db_pass'] ?? '',
+                ]
+            ];
+
+            $this->setupGestorEnvironment();
             $this->log('Executando script de atualização (migrando banco)...');
             require $scriptPath;
             $this->log('✅ Script de atualização executado.');
@@ -1003,15 +1130,54 @@ class Installer
                 $hash = password_hash($adminPass, PASSWORD_BCRYPT, ['cost' => 12]);
             }
 
-            $sql = "INSERT INTO usuarios (id_usuarios, nome, nome_conta, usuario, senha, email, status, data_criacao, data_modificacao) 
-                    VALUES (1, :nome, :nome_conta, 'admin', :senha, :email, 'A', NOW(), NOW())
-                    ON DUPLICATE KEY UPDATE nome = VALUES(nome), nome_conta = VALUES(nome_conta), senha = VALUES(senha), email = VALUES(email), data_modificacao = NOW()";
+            // Processar nome
+            $adminName = preg_replace('/\s+/', ' ', trim($adminName));
+            $nomes = explode(' ',$adminName);
+
+            $primeiro_nome = NULL;
+            $ultimo_nome = NULL;
+            $nome_do_meio = NULL;
+
+            if(count($nomes) > 2){
+                for($i=0;$i<count($nomes);$i++){
+                    if($i==0){
+                        $primeiro_nome = $nomes[$i];
+                    } else if($i==count($nomes) - 1){
+                        $ultimo_nome = $nomes[$i];
+                    } else {
+                        $nome_do_meio .= (isset($nome_do_meio) ? ' ':'') . $nomes[$i];
+                    }
+                }
+            } else if(count($nomes) > 1){
+                $primeiro_nome = $nomes[0];
+                $ultimo_nome = $nomes[1];
+            } else {
+                $primeiro_nome = $nomes[0];
+            }
+
+            $sql = "INSERT INTO usuarios (id_usuarios, nome, nome_conta, usuario, senha, email, status".
+                (isset($primeiro_nome) ? ', primeiro_nome' : '').
+                (isset($nome_do_meio) ? ', nome_do_meio' : '').
+                (isset($ultimo_nome) ? ', ultimo_nome' : '').
+                ") VALUES (1, :nome, :nome_conta, :email, :senha, :email, 'A'".
+                (isset($primeiro_nome) ? ', :primeiro_nome' : '').
+                (isset($nome_do_meio) ? ', :nome_do_meio' : '').
+                (isset($ultimo_nome) ? ', :ultimo_nome' : '').
+                ") ON DUPLICATE KEY UPDATE nome = VALUES(nome), nome_conta = VALUES(nome_conta), usuario = VALUES(email), senha = VALUES(senha), email = VALUES(email)".
+                (isset($primeiro_nome) ? ', primeiro_nome = VALUES(primeiro_nome)' : '').
+                (isset($nome_do_meio) ? ', nome_do_meio = VALUES(nome_do_meio)' : '').
+                (isset($ultimo_nome) ? ', ultimo_nome = VALUES(ultimo_nome)' : '').
+                ";";
+                
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 'nome' => $adminName,
                 'nome_conta' => $adminName,
                 'senha' => $hash,
-                'email' => $adminEmail
+                'email' => $adminEmail,
+                'primeiro_nome' => $primeiro_nome,
+                'nome_do_meio' => $nome_do_meio,
+                'ultimo_nome' => $ultimo_nome
             ]);
             $this->log('✅ Usuário administrador garantido/atualizado.');
         } catch (Exception $e) {

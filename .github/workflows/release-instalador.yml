@@ -25,7 +25,8 @@ jobs:
           -x "*.DS_Store*" \
           -x "*.log*" \
           -x "temp/*"
-          
+          -x ".env.debug"
+
     - name: Get tag name
       id: tag
       run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
