@@ -43,7 +43,8 @@ if (!function_exists('__t')) {
     function __t($key, $replacements = []) {
         $text = isset($GLOBALS['dicionario'][$key]) ? $GLOBALS['dicionario'][$key] : $key;
         foreach ($replacements as $placeholder => $value) {
-            $text = str_replace('{' . $placeholder . '}', $value, $text);
+            // Substitui tanto {placeholder} quanto :placeholder
+            $text = str_replace(['{' . $placeholder . '}', ':' . $placeholder], $value, $text);
         }
         return $text;
     }
