@@ -8,7 +8,7 @@
  * - Compara dados atuais das tabelas com arquivos JSON em gestor/db/data (inserindo/atualizando conforme necessário)
  * - Segrega e exporta registros órfãos conforme regras de unicidade
  * - Gera relatório final consolidado
- * - Multilíngue via _() e logs via log_disco()
+ * - Multilíngue via __t() e logs via log_disco()
  *
  * Argumentos de linha de comando suportados:
  *
@@ -68,7 +68,7 @@ if (is_dir($localLangDir)) {
 }
 
 /** Helper simples substituição de placeholders :chave */
-function tr(string $key, array $vars = []): string { $msg = _($key); foreach ($vars as $k => $v) { $msg = str_replace(':' . $k, (string)$v, $msg); } return $msg; }
+function tr(string $key, array $vars = []): string { return __t($key, $vars); }
 
 /** Executa comando shell retornando [exitCode, output] */
 function runCmd(string $cmd): array {

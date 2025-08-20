@@ -38,18 +38,18 @@ function log_disco($message, $file) {
  */
 function lerVariaveis() {
     global $variaveisSeedFile, $logFile;
-    log_disco(_('log_read_vars', ['file' => $variaveisSeedFile]), $logFile);
+    log_disco(__t('log_read_vars', ['file' => $variaveisSeedFile]), $logFile);
     if (!file_exists($variaveisSeedFile)) {
-        log_disco(_('log_read_vars_error', ['file' => $variaveisSeedFile]), $logFile);
+        log_disco(__t('log_read_vars_error', ['file' => $variaveisSeedFile]), $logFile);
         return [];
     }
     $jsonContent = file_get_contents($variaveisSeedFile);
     $data = json_decode($jsonContent, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
-        log_disco(_('log_json_decode_error', ['error' => json_last_error_msg()]), $logFile);
+        log_disco(__t('log_json_decode_error', ['error' => json_last_error_msg()]), $logFile);
         return [];
     }
-    log_disco(_('log_vars_read_success'), $logFile);
+    log_disco(__t('log_vars_read_success'), $logFile);
     return $data;
 }
 
@@ -59,7 +59,7 @@ function lerVariaveis() {
  */
 function modulosIDs() {
     global $modulosPath, $logFile;
-    log_disco(_('log_read_module_ids', ['path' => $modulosPath]), $logFile);
+    log_disco(__t('log_read_module_ids', ['path' => $modulosPath]), $logFile);
     $modulos = [];
     $items = scandir($modulosPath);
     foreach ($items as $item) {
@@ -70,7 +70,7 @@ function modulosIDs() {
             $modulos[] = $item;
         }
     }
-    log_disco(_('log_module_ids_success'), $logFile);
+    log_disco(__t('log_module_ids_success'), $logFile);
     return $modulos;
 }
 
@@ -80,7 +80,7 @@ function modulosIDs() {
  */
 function modulosPluginsIDs() {
     global $pluginsPath, $logFile;
-    log_disco(_('log_read_plugin_module_ids', ['path' => $pluginsPath]), $logFile);
+    log_disco(__t('log_read_plugin_module_ids', ['path' => $pluginsPath]), $logFile);
     $pluginModulesMap = [];
     $plugins = scandir($pluginsPath);
     foreach ($plugins as $plugin) {
@@ -103,7 +103,7 @@ function modulosPluginsIDs() {
             }
         }
     }
-    log_disco(_('log_plugin_module_ids_success'), $logFile);
+    log_disco(__t('log_plugin_module_ids_success'), $logFile);
     return $pluginModulesMap;
 }
 
@@ -116,7 +116,7 @@ function modulosPluginsIDs() {
  */
 function formatarVars($variaveis, $modulosIDs, $modulosPluginsMap) {
     global $logFile;
-    log_disco(_('log_format_vars'), $logFile);
+    log_disco(__t('log_format_vars'), $logFile);
 
     $varsFormatadasPorTipo = [
         'modulos' => [],
@@ -179,7 +179,7 @@ function formatarVars($variaveis, $modulosIDs, $modulosPluginsMap) {
             $varsFormatadasPorTipo['globais'][$lang][] = $formattedVar;
         }
     }
-    log_disco(_('log_format_vars_success'), $logFile);
+    log_disco(__t('log_format_vars_success'), $logFile);
     return $varsFormatadasPorTipo;
 }
 
@@ -189,7 +189,7 @@ function formatarVars($variaveis, $modulosIDs, $modulosPluginsMap) {
  */
 function guardarVarsNosResources($varsFormatadasPorTipo) {
     global $resourcesPath, $modulosPath, $pluginsPath, $logFile;
-    log_disco(_('log_save_vars'), $logFile);
+    log_disco(__t('log_save_vars'), $logFile);
 
     // Salvar variáveis globais
     foreach ($varsFormatadasPorTipo['globais'] as $lang => $vars) {
@@ -199,7 +199,7 @@ function guardarVarsNosResources($varsFormatadasPorTipo) {
         }
         $filePath = $langPath . '/variables.json';
         file_put_contents($filePath, json_encode($vars, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-        log_disco(_('log_save_global_vars', ['lang' => $lang, 'path' => $filePath]), $logFile);
+        log_disco(__t('log_save_global_vars', ['lang' => $lang, 'path' => $filePath]), $logFile);
     }
 
     // Salvar variáveis de módulos
@@ -218,7 +218,7 @@ function guardarVarsNosResources($varsFormatadasPorTipo) {
             }
             $moduleData['resources'][$lang]['variables'] = $vars;
             file_put_contents($moduleFilePath, json_encode($moduleData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-            log_disco(_('log_save_module_vars', ['module' => $modulo, 'lang' => $lang, 'path' => $moduleFilePath]), $logFile);
+            log_disco(__t('log_save_module_vars', ['module' => $modulo, 'lang' => $lang, 'path' => $moduleFilePath]), $logFile);
         }
     }
 
@@ -239,11 +239,11 @@ function guardarVarsNosResources($varsFormatadasPorTipo) {
                 }
                 $moduleData['resources'][$lang]['variables'] = $vars;
                 file_put_contents($moduleFilePath, json_encode($moduleData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-                log_disco(_('log_save_plugin_vars', ['module' => $modulo, 'plugin' => $plugin, 'lang' => $lang, 'path' => $moduleFilePath]), $logFile);
+                log_disco(__t('log_save_plugin_vars', ['module' => $modulo, 'plugin' => $plugin, 'lang' => $lang, 'path' => $moduleFilePath]), $logFile);
             }
         }
     }
-    log_disco(_('log_save_vars_success'), $logFile);
+    log_disco(__t('log_save_vars_success'), $logFile);
 }
 
 /**
@@ -252,15 +252,15 @@ function guardarVarsNosResources($varsFormatadasPorTipo) {
  */
 function reportarMudancas($varsFormatadasPorTipo) {
     global $logFile;
-    log_disco(_('report_generating'), $logFile);
-    $report = _('report_title') . PHP_EOL;
+    log_disco(__t('report_generating'), $logFile);
+    $report = __t('report_title') . PHP_EOL;
     $report .= "===================================" . PHP_EOL . PHP_EOL;
 
     $totalGlobais = 0;
     foreach ($varsFormatadasPorTipo['globais'] as $lang => $vars) {
         $count = count($vars);
         $totalGlobais += $count;
-        $report .= _('report_global_vars', ['lang' => $lang, 'count' => $count]) . PHP_EOL;
+        $report .= __t('report_global_vars', ['lang' => $lang, 'count' => $count]) . PHP_EOL;
     }
 
     $totalModulos = 0;
@@ -268,7 +268,7 @@ function reportarMudancas($varsFormatadasPorTipo) {
         foreach ($langs as $lang => $vars) {
             $count = count($vars);
             $totalModulos += $count;
-            $report .= _('report_module_vars', ['module' => $modulo, 'lang' => $lang, 'count' => $count]) . PHP_EOL;
+            $report .= __t('report_module_vars', ['module' => $modulo, 'lang' => $lang, 'count' => $count]) . PHP_EOL;
         }
     }
 
@@ -278,16 +278,16 @@ function reportarMudancas($varsFormatadasPorTipo) {
             foreach ($langs as $lang => $vars) {
                 $count = count($vars);
                 $totalPlugins += $count;
-                $report .= _('report_plugin_vars', ['plugin' => $plugin, 'module' => $modulo, 'lang' => $lang, 'count' => $count]) . PHP_EOL;
+                $report .= __t('report_plugin_vars', ['plugin' => $plugin, 'module' => $modulo, 'lang' => $lang, 'count' => $count]) . PHP_EOL;
             }
         }
     }
 
-    $report .= PHP_EOL . _('report_summary_title') . PHP_EOL;
-    $report .= _('report_summary_global', ['count' => $totalGlobais]) . PHP_EOL;
-    $report .= _('report_summary_module', ['count' => $totalModulos]) . PHP_EOL;
-    $report .= _('report_summary_plugin', ['count' => $totalPlugins]) . PHP_EOL;
-    $report .= _('report_summary_total', ['count' => ($totalGlobais + $totalModulos + $totalPlugins)]) . PHP_EOL;
+    $report .= PHP_EOL . __t('report_summary_title') . PHP_EOL;
+    $report .= __t('report_summary_global', ['count' => $totalGlobais]) . PHP_EOL;
+    $report .= __t('report_summary_module', ['count' => $totalModulos]) . PHP_EOL;
+    $report .= __t('report_summary_plugin', ['count' => $totalPlugins]) . PHP_EOL;
+    $report .= __t('report_summary_total', ['count' => ($totalGlobais + $totalModulos + $totalPlugins)]) . PHP_EOL;
 
     log_disco($report, $logFile);
     echo nl2br($report);
@@ -309,11 +309,11 @@ function main() {
     // Define o idioma (pode ser dinâmico no futuro)
     set_lang('pt-br');
 
-    log_disco(_('log_start'), $logFile);
+    log_disco(__t('log_start'), $logFile);
 
     $variaveis = lerVariaveis();
     if (empty($variaveis)) {
-        log_disco(_('log_no_vars'), $logFile);
+        log_disco(__t('log_no_vars'), $logFile);
         return;
     }
     
@@ -323,7 +323,7 @@ function main() {
     guardarVarsNosResources($varsFormatadasPorTipo);
     reportarMudancas($varsFormatadasPorTipo);
 
-    log_disco(_('log_end'), $logFile);
+    log_disco(__t('log_end'), $logFile);
 }
 
 // Executa a função principal

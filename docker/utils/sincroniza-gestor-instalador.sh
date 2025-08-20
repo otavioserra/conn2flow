@@ -9,7 +9,7 @@
 
 # Caminhos absolutos para garantir execução de qualquer lugar
 ORIGEM="/c/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor-instalador/"
-DESTINO="/c/Users/otavi/OneDrive/Documentos/GIT/conn2flow/docker/dados/sites/localhost/public_html/teste/"
+DESTINO="/c/Users/otavi/OneDrive/Documentos/GIT/conn2flow/docker/dados/sites/localhost/public_html/instalador/"
 
 # Modo de sincronização: padrao (default), checksum, forcar
 MODO=${1:-padrao}

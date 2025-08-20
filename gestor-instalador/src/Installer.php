@@ -1060,6 +1060,7 @@ body {
             global $GLOBALS;
 
             $GLOBALS['CLI_OPTS'] = [
+                'env-dir' => $this->data['domain'],
                 'installing' => true,
                 'db' => [
                     'host' => $this->data['db_host'],

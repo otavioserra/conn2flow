@@ -2,6 +2,36 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "📦 Docker - Status dos Containers",
+            "type": "shell",
+            "command": "docker ps"
+        },
+        {
+            "label": "📦 Docker - PHP Version",
+            "type": "shell",
+            "command": "docker exec conn2flow-app bash -c \"php -v\""
+        },
+        {
+            "label": "📦 Docker - Logs Apache > 50 Linhas",
+            "type": "shell",
+            "command": "docker logs conn2flow-app --tail 50"
+        },
+        {
+            "label": "📦 Docker - Logs Apache > Tempo Real",
+            "type": "shell",
+            "command": "docker logs conn2flow-app --tail 50 --follow"
+        },
+        {
+            "label": "📦 Docker - Logs PHP > 50 Linhas",
+            "type": "shell",
+            "command": "docker exec conn2flow-app bash -c \"tail -50 /var/log/php_errors.log\""
+        },
+        {
+            "label": "📦 Docker - Logs PHP > Tempo Real",
+            "type": "shell",
+            "command": "docker exec conn2flow-app bash -c \"tail -f /var/log/php_errors.log\""
+        },
+        {
             "label": "🌐 GIT - Release Gestor",
             "type": "shell",
             "command": "bash ./ai-workspace/git/scripts/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
@@ -40,7 +70,7 @@
     "inputs": [
         {
             "id": "tipo",
-            "description": "❔ Tipo de Release (patch, minor, major) ❔",
+            "description": "✔️ Tipo de Release (patch, minor, major) ✔️",
             "type": "promptString"
         },
         {

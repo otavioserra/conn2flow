@@ -32,32 +32,20 @@ if (!isset($GLOBALS['dicionario'])) {
     $GLOBALS['dicionario'] = carregar_dicionario($GLOBALS['lang']);
 }
 
+
 /**
- * Traduz uma chave de idioma.
- *
- * @param string $key A chave a ser traduzida.
- * @param array $replacements Um array associativo de placeholders e seus valores.
- * @return string O texto traduzido.
+ * Traduz uma chave de idioma (sempre usando dicionário customizado, nunca gettext).
+ * @param string $key
+ * @param array $replacements
+ * @return string
  */
-if (!function_exists('_')) { // Evita conflito com gettext quando carregado
-    function _($key, $replacements = []) {
+if (!function_exists('__t')) {
+    function __t($key, $replacements = []) {
         $text = isset($GLOBALS['dicionario'][$key]) ? $GLOBALS['dicionario'][$key] : $key;
         foreach ($replacements as $placeholder => $value) {
             $text = str_replace('{' . $placeholder . '}', $value, $text);
         }
         return $text;
-    }
-}
-
-// Wrapper seguro para tradução customizada (2 argumentos)
-if (!function_exists('__t')) {
-    function __t($key, $replacements = []) {
-        if (function_exists('_') && (new \ReflectionFunction('_'))->getNumberOfParameters() === 1) {
-            // Ambiente gettext: só aceita 1 argumento
-            return _($key);
-        }
-        // Custom: aceita 2 argumentos
-        return _($key, $replacements);
     }
 }
 

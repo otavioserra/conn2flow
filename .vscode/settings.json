@@ -22,5 +22,6 @@
         }
     },
     "docker.commands.compose": "docker-compose",
-    "docker.commands.composeParallel": true
+    "docker.commands.composeParallel": true,
+    "window.zoomLevel": 0.7
 }
