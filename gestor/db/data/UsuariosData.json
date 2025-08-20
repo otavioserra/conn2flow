@@ -2,7 +2,7 @@
     {
         "id_usuarios": "1",
         "id_hosts": null,
-        "id_usuarios_perfis": " 1",
+        "id_usuarios_perfis": "1",
         "nome_conta": "Administrador",
         "nome": "Administrador",
         "id": "administrador",
@@ -13,7 +13,7 @@
         "ultimo_nome": null,
         "nome_do_meio": null,
         "status": "A",
-        "versao": " 6",
+        "versao": "1",
         "email_confirmado": null,
         "gestor": null,
         "gestor_perfil": null

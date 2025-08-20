@@ -1,0 +1,57 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "🌐 GIT - Release Gestor",
+            "type": "shell",
+            "command": "bash ./ai-workspace/git/scripts/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+        },
+        {
+            "label": "🌐 GIT - Release Instalador",
+            "type": "shell",
+            "command": "bash ./ai-workspace/git/scripts/release-instalador.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+        },
+        {
+            "label": "🌐 GIT - Commit Gestor",
+            "type": "shell",
+            "command": "bash ./ai-workspace/git/scripts/commit.sh \"${input:commitMsg}\""
+        },
+        {
+            "label": "🖥️ Atualização - Recursos",
+            "type": "shell",
+            "command": "php ./gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php"
+        },
+        {
+            "label": "🖥️ Atualização - Dados",
+            "type": "shell",
+            "command": "docker exec conn2flow-app bash -c \"php /var/www/sites/localhost/conn2flow-gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php --debug --log-diff\""
+        },
+        {
+            "label": "♻️ Sincronização - Sincronizar Gestor",
+            "type": "shell",
+            "command": "bash docker/utils/sincroniza-gestor.sh checksum"
+        },
+        {
+            "label": "♻️ Sincronização - Sincronizar Gestor Instalador",
+            "type": "shell",
+            "command": "bash ./docker/utils/sincroniza-gestor-instalador.sh checksum"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "tipo",
+            "description": "❔ Tipo de Release (patch, minor, major) ❔",
+            "type": "promptString"
+        },
+        {
+            "id": "tagMsg",
+            "description": "❔ Mensagem da TAG ❔",
+            "type": "promptString"
+        },
+        {
+            "id": "commitMsg",
+            "description": "❔ Mensagem do Commit ❔",
+            "type": "promptString"
+        }
+    ]
+}

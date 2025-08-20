@@ -384,29 +384,33 @@ $(document).ready(function () {
 			});
 
 			bindEvent(window, 'message', function (e) {
-				var data = JSON.parse(e.data);
+				try {
+					var data = JSON.parse(e.data);
 
-				switch (data.moduloId) {
-					case 'admin-arquivos':
-					case 'arquivos':
-						var dados = JSON.parse(decodeURI(data.data));
+					switch (data.moduloId) {
+						case 'admin-arquivos':
+						case 'arquivos':
+							var dados = JSON.parse(decodeURI(data.data));
 
-						if (dados.tipo.match(/image\//) == 'image/') {
-							var objPai = gestor.interface.imagepick.objPai;
+							if (dados.tipo.match(/image\//) == 'image/') {
+								var objPai = gestor.interface.imagepick.objPai;
 
-							objPai.find('input').val(dados.id);
-							objPai.find('.widgetImage-image').attr('src', dados.imgSrc);
-							objPai.find('.widgetImage-nome').html(dados.nome);
-							objPai.find('.widgetImage-data').find('.icon').get(0).nextSibling.remove();
-							objPai.find('.widgetImage-data').append(dados.data);
-							objPai.find('.widgetImage-tipo').find('.icon').get(0).nextSibling.remove();
-							objPai.find('.widgetImage-tipo').append(dados.tipo);
+								objPai.find('input').val(dados.id);
+								objPai.find('.widgetImage-image').attr('src', dados.imgSrc);
+								objPai.find('.widgetImage-nome').html(dados.nome);
+								objPai.find('.widgetImage-data').find('.icon').get(0).nextSibling.remove();
+								objPai.find('.widgetImage-data').append(dados.data);
+								objPai.find('.widgetImage-tipo').find('.icon').get(0).nextSibling.remove();
+								objPai.find('.widgetImage-tipo').append(dados.tipo);
 
-							$('.ui.modal.iframePagina').modal('hide');
-						} else {
-							alerta({ msg: gestor.interface.imagepick.alertas.naoImagem });
-						}
-						break;
+								$('.ui.modal.iframePagina').modal('hide');
+							} else {
+								alerta({ msg: gestor.interface.imagepick.alertas.naoImagem });
+							}
+							break;
+					}
+				} catch (error) {
+					return;
 				}
 			});
 		}
