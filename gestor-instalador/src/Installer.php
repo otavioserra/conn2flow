@@ -1135,10 +1135,6 @@ body {
             $adminName = preg_replace('/\s+/', ' ', trim($adminName));
             $nomes = explode(' ',$adminName);
 
-            $primeiro_nome = NULL;
-            $ultimo_nome = NULL;
-            $nome_do_meio = NULL;
-
             if(count($nomes) > 2){
                 for($i=0;$i<count($nomes);$i++){
                     if($i==0){
@@ -1169,17 +1165,24 @@ body {
                 (isset($nome_do_meio) ? ', nome_do_meio = VALUES(nome_do_meio)' : '').
                 (isset($ultimo_nome) ? ', ultimo_nome = VALUES(ultimo_nome)' : '').
                 ";";
-                
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([
+
+            $params = [
                 'nome' => $adminName,
                 'nome_conta' => $adminName,
                 'senha' => $hash,
-                'email' => $adminEmail,
-                'primeiro_nome' => $primeiro_nome,
-                'nome_do_meio' => $nome_do_meio,
-                'ultimo_nome' => $ultimo_nome
-            ]);
+                'email' => $adminEmail
+            ];
+            if (isset($primeiro_nome)) {
+                $params['primeiro_nome'] = $primeiro_nome;
+            }
+            if (isset($nome_do_meio)) {
+                $params['nome_do_meio'] = $nome_do_meio;
+            }
+            if (isset($ultimo_nome)) {
+                $params['ultimo_nome'] = $ultimo_nome;
+            }
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($params);
             $this->log('✅ Usuário administrador garantido/atualizado.');
         } catch (Exception $e) {
             $this->log('⚠️  Falha ao garantir usuário administrador: ' . $e->getMessage(), 'WARNING');

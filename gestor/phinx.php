@@ -32,6 +32,8 @@ if ($isInstalling) {
 } else {
     // CONTEXTO DE PRODUÇÃO: Carrega config.php normalmente
     require_once $configPath;
+
+    global $_BANCO;
     
     $dbConfig = [
         'host' => $_BANCO['host'] ?? 'localhost',
@@ -44,8 +46,7 @@ if ($isInstalling) {
 return [
     'paths' => [
         // Como o arquivo de config está na raiz do gestor, vamos para a pasta /db.
-        'migrations' => '%%PHINX_CONFIG_DIR%%/db/migrations',
-        'seeds'      => '%%PHINX_CONFIG_DIR%%/db/seeds'
+        'migrations' => '%%PHINX_CONFIG_DIR%%/db/migrations'
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',

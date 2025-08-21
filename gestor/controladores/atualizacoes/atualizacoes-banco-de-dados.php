@@ -38,12 +38,11 @@ declare(strict_types=1);
 // =====================
 // Configuração Global
 // =====================
-global $LOG_FILE, $BASE_PATH, $DB_DATA_DIR, $PHINX_BIN, $BACKUP_DIR_BASE, $GLOBALS;
+global $LOG_FILE, $BASE_PATH, $DB_DATA_DIR, $BACKUP_DIR_BASE, $GLOBALS;
 
 $LOG_FILE = 'atualizacoes-bd';
 $BASE_PATH = realpath(dirname(__FILE__) . '/../../') . DIRECTORY_SEPARATOR;
 $DB_DATA_DIR = $BASE_PATH . 'db/data/';
-$PHINX_BIN = $BASE_PATH . 'vendor/bin/phinx';
 $BACKUP_DIR_BASE = $BASE_PATH . 'backups/atualizacoes/';
 
 // Bibliotecas
@@ -69,17 +68,6 @@ if (is_dir($localLangDir)) {
 
 /** Helper simples substituição de placeholders :chave */
 function tr(string $key, array $vars = []): string { return __t($key, $vars); }
-
-/** Executa comando shell retornando [exitCode, output] */
-function runCmd(string $cmd): array {
-    $descriptor = [1 => ['pipe','w'], 2 => ['pipe','w']];
-    $p = proc_open($cmd, $descriptor, $pipes, null, null);
-    if (!is_resource($p)) return [1, 'proc_open fail'];
-    $out = stream_get_contents($pipes[1]); fclose($pipes[1]);
-    $err = stream_get_contents($pipes[2]); fclose($pipes[2]);
-    $code = proc_close($p);
-    return [$code, trim($out . PHP_EOL . $err)];
-}
 
 /** Conexão PDO reutilizável */
 function db(): PDO {
@@ -119,84 +107,70 @@ function db(): PDO {
  * Executa migrações usando phinx.
  */
 function migracoes(): array {
-    global $PHINX_BIN, $BASE_PATH, $LOG_FILE;
+    global $BASE_PATH, $LOG_FILE;
 
-    // Se PHINX_BIN estiver vazio, resolve novamente
-    if (empty($PHINX_BIN) || !is_string($PHINX_BIN) || !file_exists($PHINX_BIN)) {
-        $basePath = isset($BASE_PATH) ? $BASE_PATH : (function_exists('getGestorBasePath') ? getGestorBasePath() : null);
-        $repoRoot = $basePath ? realpath($basePath . '..') . DIRECTORY_SEPARATOR : null;
-        $PHINX_BIN = $basePath ? $basePath . 'vendor/bin/phinx' : null;
-        if ($PHINX_BIN && file_exists($PHINX_BIN)) {
-            // ok
-        } elseif ($repoRoot && file_exists($repoRoot . 'vendor/bin/phinx')) {
-            $PHINX_BIN = $repoRoot . 'vendor/bin/phinx';
-        } else {
-            $whichPhinx = trim(shell_exec('which phinx'));
-            if ($whichPhinx && file_exists($whichPhinx)) {
-                $PHINX_BIN = $whichPhinx;
-            }
-        }
+    log_disco(tr('_migrations_start'), $LOG_FILE);
+
+    // Caminho do autoload
+    $autoload = $BASE_PATH . 'vendor/autoload.php';
+    if (!file_exists($autoload)) {
+        $msg = 'Autoload do Composer não encontrado em ' . $autoload;
+        log_disco($msg, $LOG_FILE);
+        throw new RuntimeException($msg);
     }
+    require_once $autoload;
 
-    // Detecta binário do PHP de forma robusta
-    $phpBin = PHP_BINARY;
-    if (empty($phpBin) || !is_string($phpBin) || !file_exists($phpBin)) {
-        $phpBin = trim(shell_exec('which php'));
-        if (!$phpBin || !file_exists($phpBin)) {
-            $phpBin = '/usr/bin/php'; // fallback padrão Linux
-        }
-    }
-
-    // Caminho absoluto do phinx.php
-    $phinxConfig = $BASE_PATH . 'phinx.php';
-    if (!file_exists($phinxConfig)) {
-        // Tenta buscar na raiz do repositório
+    // Localiza phinx.php (config array)
+    $phinxConfigFile = $BASE_PATH . 'phinx.php';
+    if (!file_exists($phinxConfigFile)) {
         $repoRoot = realpath($BASE_PATH . '..') . DIRECTORY_SEPARATOR;
         if (file_exists($repoRoot . 'phinx.php')) {
-            $phinxConfig = $repoRoot . 'phinx.php';
+            $phinxConfigFile = $repoRoot . 'phinx.php';
         } else {
-            $msg = 'Arquivo de configuração phinx.php não encontrado: ' . $phinxConfig;
+            $msg = 'Arquivo de configuração phinx.php não encontrado: ' . $phinxConfigFile;
             log_disco($msg, $LOG_FILE);
             throw new RuntimeException($msg);
         }
     }
 
-    log_disco(tr('_migrations_start'), $LOG_FILE);
-    // Exibir variáveis de ambiente relevantes
-    $envVars = [
-        'PHP_BINARY' => $phpBin,
-        'PHINX_BIN' => $PHINX_BIN,
-        'BASE_PATH' => $BASE_PATH,
-        'phinx.php' => $phinxConfig,
-        'SCRIPT_PATH' => __FILE__,
-        'USER' => getenv('USER'),
-        'HOME' => getenv('HOME'),
-    ];
-    foreach ($envVars as $k => $v) {
-        log_disco("[DEBUG] ENV $k = $v", $LOG_FILE);
-        if (PHP_SAPI === 'cli') echo "[DEBUG] ENV $k = $v\n";
-    }
-    // Verificação explícita do binário do Phinx
-    if (empty($PHINX_BIN) || !is_string($PHINX_BIN) || !file_exists($PHINX_BIN)) {
-        $msg = 'Binário do Phinx não encontrado ou inválido: ' . var_export($PHINX_BIN, true);
+    $rawConfig = require $phinxConfigFile; // retorna array
+    if (!is_array($rawConfig)) {
+        $msg = 'Configuração Phinx inválida (esperado array).';
         log_disco($msg, $LOG_FILE);
-        if (PHP_SAPI === 'cli') echo $msg . "\n";
         throw new RuntimeException($msg);
     }
-    $cmd = escapeshellcmd($phpBin) . ' ' . escapeshellarg($PHINX_BIN) . ' migrate -c ' . escapeshellarg($phinxConfig) . ' -e gestor';
-    log_disco('DEBUG CMD MIGRACOES: ' . $cmd, $LOG_FILE);
-    if (PHP_SAPI === 'cli') echo "[DEBUG] CMD MIGRACOES: $cmd\n";
-    [$code, $out] = runCmd($cmd);
-    log_disco($out, $LOG_FILE);
-    if (PHP_SAPI === 'cli') echo "[PHINX OUTPUT]\n$out\n";
-    if ($code !== 0) {
-        log_disco('Erro migrações exitCode=' . $code, $LOG_FILE);
-        if (PHP_SAPI === 'cli') echo "[ERRO] Migrações exitCode=$code\n";
-        throw new RuntimeException('Falha migrações');
+
+    // Instancia objetos do Phinx
+    try {
+        $config = new \Phinx\Config\Config($rawConfig, $phinxConfigFile);
+        // Inputs/Outputs do Symfony Console
+        $input  = new \Symfony\Component\Console\Input\ArrayInput([]);
+        $buffer = new \Symfony\Component\Console\Output\BufferedOutput();
+        $manager = new \Phinx\Migration\Manager($config, $input, $buffer);
+
+        // Ambiente alvo
+        $env = $config->getDefaultEnvironment() ?: 'gestor';
+        log_disco('[DEBUG] MIGRATING ENV=' . $env, $LOG_FILE);
+
+        // Executa as migrações pendentes
+        $manager->migrate($env);
+
+        $out = $buffer->fetch();
+        if ($out !== '') {
+            foreach (explode("\n", trim($out)) as $line) {
+                if ($line==='') continue;
+                log_disco('[PHINX] ' . $line, $LOG_FILE);
+            }
+        }
+        log_disco(tr('_migrations_done'), $LOG_FILE);
+        if (PHP_SAPI === 'cli') echo "[OK] Migrações concluídas via API interna!\n";
+        return ['output' => $out];
+    } catch (\Throwable $e) {
+        $msg = 'Falha ao executar migrações via API: ' . $e->getMessage();
+        log_disco($msg, $LOG_FILE);
+        if (PHP_SAPI === 'cli') echo "[ERRO] $msg\n";
+        throw $e;
     }
-    log_disco(tr('_migrations_done'), $LOG_FILE);
-    if (PHP_SAPI === 'cli') echo "[OK] Migrações concluídas!\n";
-    return ['output' => $out];
 }
 
 

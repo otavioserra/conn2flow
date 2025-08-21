@@ -5,7 +5,7 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR_INSTALADOR['versao']								=	'1.2.2'; // Versão do gestor instalador.
+$_GESTOR_INSTALADOR['versao']								=	'1.3.0'; // Versão do gestor instalador.
 
 // Função para enviar erros em formato JSON
 function send_json_error($message, $statusCode = 400, $logContent = null)
