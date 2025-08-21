@@ -1194,9 +1194,8 @@ body {
      */
     private function detectUrlRaiz()
     {
-        $this->log("=== Iniciando detecção de URL_RAIZ ===");
-        
-        // Debug: log de todas as variáveis relevantes
+        $this->log("=== Iniciando detecção de URL_RAIZ (baseada no arquivo principal) ===");
+        // Log de variáveis relevantes
         $serverVars = [
             'REQUEST_URI' => $_SERVER['REQUEST_URI'] ?? 'não definido',
             'SCRIPT_NAME' => $_SERVER['SCRIPT_NAME'] ?? 'não definido',
@@ -1204,89 +1203,79 @@ body {
             'DOCUMENT_ROOT' => $_SERVER['DOCUMENT_ROOT'] ?? 'não definido',
             'SCRIPT_FILENAME' => $_SERVER['SCRIPT_FILENAME'] ?? 'não definido'
         ];
-        
         foreach ($serverVars as $var => $value) {
             $this->log("Variável {$var}: {$value}");
         }
-        
-        // Método 1: Usar REQUEST_URI se disponível
-        if (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
-            $requestUri = $_SERVER['REQUEST_URI'];
-            $this->log("Analisando REQUEST_URI: {$requestUri}");
-            
-            // Remove query parameters se existirem
-            $path = parse_url($requestUri, PHP_URL_PATH);
-            $this->log("Caminho limpo (sem query): {$path}");
-            
-            // Remove o arquivo (index.php, installer.php, etc)
-            $dirPath = dirname($path);
-            $this->log("Diretório do caminho: {$dirPath}");
-            
-            // Se estamos em uma subpasta, retorna com barra final
-            if ($dirPath !== '/' && !empty($dirPath) && $dirPath !== '.') {
-                $urlRaiz = $dirPath . '/';
-                $this->log("✅ Subpasta detectada via REQUEST_URI: {$urlRaiz}");
-                return $urlRaiz;
+
+        // Preferencialmente usar SCRIPT_FILENAME (arquivo principal em execução)
+        $mainFile = $_SERVER['SCRIPT_FILENAME'] ?? null;
+        $mainName = $_SERVER['SCRIPT_NAME'] ?? null;
+        $docRoot = $_SERVER['DOCUMENT_ROOT'] ?? null;
+
+        if ($mainFile && $docRoot) {
+            $mainDir = dirname(realpath($mainFile));
+            $docRootReal = realpath($docRoot);
+            $this->log("SCRIPT_FILENAME: {$mainFile}");
+            $this->log("DOCUMENT_ROOT: {$docRootReal}");
+            $this->log("Diretório do arquivo principal: {$mainDir}");
+
+            // Se está na raiz física
+            if ($mainDir === $docRootReal) {
+                $this->log("✅ Arquivo principal está na raiz física, retornando '/'");
+                return '/';
+            }
+            // Calcula caminho relativo
+            if (strpos($mainDir, $docRootReal) === 0) {
+                $relativePath = substr($mainDir, strlen($docRootReal));
+                $relativePath = str_replace('\\', '/', $relativePath);
+                $this->log("Caminho relativo do arquivo principal: {$relativePath}");
+                if (!empty($relativePath) && $relativePath !== '/') {
+                    $urlRaiz = $relativePath . '/';
+                    $this->log("✅ Subpasta detectada via arquivo principal: {$urlRaiz}");
+                    return $urlRaiz;
+                }
             }
         }
-        
-        // Método 2: Usar SCRIPT_NAME como fallback
-        if (isset($_SERVER['SCRIPT_NAME']) && !empty($_SERVER['SCRIPT_NAME'])) {
-            $scriptName = $_SERVER['SCRIPT_NAME'];
-            $this->log("Analisando SCRIPT_NAME: {$scriptName}");
-            
-            $dirPath = dirname($scriptName);
-            $this->log("Diretório do script: {$dirPath}");
-            
+
+        // Fallback: usar SCRIPT_NAME
+        if ($mainName) {
+            $dirPath = dirname($mainName);
+            $this->log("Diretório do SCRIPT_NAME: {$dirPath}");
             if ($dirPath !== '/' && !empty($dirPath) && $dirPath !== '.') {
                 $urlRaiz = $dirPath . '/';
                 $this->log("✅ Subpasta detectada via SCRIPT_NAME: {$urlRaiz}");
                 return $urlRaiz;
             }
         }
-        
-        // Método 3: Analisar estrutura física de diretórios
-        $currentFile = __FILE__;
-        $this->log("Arquivo atual: {$currentFile}");
-        
-        if (isset($_SERVER['DOCUMENT_ROOT']) && !empty($_SERVER['DOCUMENT_ROOT'])) {
-            $documentRoot = realpath($_SERVER['DOCUMENT_ROOT']);
-            $currentDir = dirname(realpath($currentFile));
-            
-            $this->log("Document root: {$documentRoot}");
-            $this->log("Diretório atual: {$currentDir}");
-            
-            // Calcula o caminho relativo do instalador em relação ao document root
-            if (strpos($currentDir, $documentRoot) === 0) {
-                $relativePath = substr($currentDir, strlen($documentRoot));
-                $relativePath = str_replace('\\', '/', $relativePath); // Normaliza barras
-                
-                $this->log("Caminho relativo calculado: {$relativePath}");
-                
-                if (!empty($relativePath) && $relativePath !== '/') {
-                    $urlRaiz = $relativePath . '/';
-                    $this->log("✅ Subpasta detectada via estrutura física: {$urlRaiz}");
-                    return $urlRaiz;
-                }
-            }
-        }
-        
-        // Método 4: Verificar padrões conhecidos de pastas
-        $possiblePaths = ['instalador', 'install', 'setup', 'installer'];
-        $currentDirName = basename(dirname(__FILE__));
-        $parentDirName = basename(dirname(dirname(__FILE__)));
-        
-        $this->log("Nome do diretório atual: {$currentDirName}");
-        $this->log("Nome do diretório pai: {$parentDirName}");
-        
-        foreach ($possiblePaths as $folder) {
-            if ($currentDirName === $folder || $parentDirName === $folder) {
-                $urlRaiz = '/' . $folder . '/';
-                $this->log("✅ Subpasta detectada por nome de diretório: {$urlRaiz}");
+
+        // Fallback: usar REQUEST_URI
+        if (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
+            $requestUri = $_SERVER['REQUEST_URI'];
+            $this->log("Analisando REQUEST_URI: {$requestUri}");
+            $path = parse_url($requestUri, PHP_URL_PATH);
+            $dirPath = dirname($path);
+            $this->log("Diretório do caminho: {$dirPath}");
+            if ($dirPath !== '/' && !empty($dirPath) && $dirPath !== '.') {
+                $urlRaiz = $dirPath . '/';
+                $this->log("✅ Subpasta detectada via REQUEST_URI: {$urlRaiz}");
                 return $urlRaiz;
             }
         }
-        
+
+        // Fallback: padrões conhecidos de pastas
+        $possiblePaths = ['instalador', 'install', 'setup', 'installer'];
+        $mainDirName = $mainFile ? basename(dirname($mainFile)) : '';
+        $parentDirName = $mainFile ? basename(dirname(dirname($mainFile))) : '';
+        $this->log("Nome do diretório principal: {$mainDirName}");
+        $this->log("Nome do diretório pai do principal: {$parentDirName}");
+        foreach ($possiblePaths as $folder) {
+            if ($mainDirName === $folder || $parentDirName === $folder) {
+                $urlRaiz = '/' . $folder . '/';
+                $this->log("✅ Subpasta detectada por nome de diretório principal: {$urlRaiz}");
+                return $urlRaiz;
+            }
+        }
+
         // Padrão: raiz
         $this->log("❌ Nenhuma subpasta detectada, usando raiz: /");
         return '/';
