@@ -98,6 +98,8 @@ function db(): PDO {
 
     $dsn = "mysql:host=$host;dbname=$name;charset=utf8mb4";
     $pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+    // Força charset para todas operações
+    $pdo->exec("SET NAMES utf8mb4");
     return $pdo;
 }
 
