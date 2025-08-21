@@ -1,5 +1,12 @@
 <?php
 
+// ===== Força charset UTF-8 em todo o sistema
+
+ini_set('default_charset', 'UTF-8');
+if (function_exists('mb_internal_encoding')) {
+    mb_internal_encoding('UTF-8');
+}
+
 // =========================== Configuração Inicial
 
 $_GESTOR										=	Array();
