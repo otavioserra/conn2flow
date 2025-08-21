@@ -19,6 +19,20 @@ class Installer
     }
 
     /**
+     * Instancia PDO garantindo charset utf8mb4 em todas operações
+     */
+    private function getPdo()
+    {
+        $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
+        $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
+        $pdo->exec("SET NAMES utf8mb4");
+        return $pdo;
+    }
+
+    /**
      * Registra mensagens no log do instalador
      */
     private function log($message, $level = 'INFO')
@@ -202,12 +216,7 @@ class Installer
         $this->log("⚠️  ATENÇÃO: Usuário optou por instalação limpa - removendo todas as tabelas!");
         
         try {
-            $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
-            $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            ]);
-            
+            $pdo = $this->getPdo();
             // Desabilita verificação de chaves estrangeiras temporariamente
             $pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
             
@@ -229,9 +238,7 @@ class Installer
             
             // Reabilita verificação de chaves estrangeiras
             $pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
-            
             $this->log("✅ Limpeza do banco concluída com sucesso!");
-            
         } catch (PDOException $e) {
             $this->log("❌ Erro ao limpar banco de dados: " . $e->getMessage(), 'ERROR');
             throw new Exception("Falha ao limpar banco de dados: " . $e->getMessage());
@@ -409,11 +416,7 @@ class Installer
     private function testDatabaseConnection()
     {
         try {
-            $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
-            $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            ]);
+            $pdo = $this->getPdo();
             return true;
         } catch (PDOException $e) {
             throw new Exception(__('error_database_connection', 'Erro na conexão com o banco de dados: ') . $e->getMessage());
@@ -848,13 +851,7 @@ class Installer
     {
         try {
             $this->log("Iniciando criação/atualização da página de sucesso...");
-
-            $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
-            $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            ]);
-
+            $pdo = $this->getPdo();
             // Verifica existência
             $stmt = $pdo->query("SELECT COUNT(*) as c FROM paginas WHERE id='instalacao-sucesso'");
             $exists = (int)$stmt->fetch()['c'] > 0;
@@ -1115,12 +1112,7 @@ body {
     {
         $this->log('Garantindo usuário administrador...');
         try {
-            $dsn = "mysql:host={$this->data['db_host']};dbname={$this->data['db_name']};charset=utf8mb4";
-            $pdo = new PDO($dsn, $this->data['db_user'], $this->data['db_pass'] ?? '', [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            ]);
-
+            $pdo = $this->getPdo();
             $adminName = $this->data['admin_name'];
             $adminEmail = $this->data['admin_email'];
             $adminPass = $this->data['admin_pass'];

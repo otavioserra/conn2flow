@@ -12,7 +12,7 @@ if (function_exists('mb_internal_encoding')) {
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR_INSTALADOR['versao']								=	'1.3.2'; // Versão do gestor instalador.
+$_GESTOR_INSTALADOR['versao']								=	'1.3.3'; // Versão do gestor instalador.
 
 // Função para enviar erros em formato JSON
 function send_json_error($message, $statusCode = 400, $logContent = null)
