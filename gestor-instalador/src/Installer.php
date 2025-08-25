@@ -194,7 +194,7 @@ class Installer
         // 6. Public access (index.php + .htaccess com RewriteBase corrigido)
         $this->setupPublicAccess();
 
-        // 7. Limpeza final
+        // 7. Limpeza installer final
         $this->cleanupInstaller();
 
         // Instalação sucesso!

@@ -53,13 +53,13 @@ jobs:
         
         echo "All resource files removed from release"
         
-    - name: Create gestor.zip
+    - name: Create gestor.zip + checksum
       run: |
         # Remove arquivos desnecessários se existirem
         rm -rf gestor/.git* || true
         rm -rf gestor/vendor/bin/.phpunit* || true
         rm -rf gestor/vendor/composer/tmp-* || true
-        
+
         # Criar o arquivo ZIP (resource files already removed)
         cd gestor
         zip -r ../gestor.zip . \
@@ -74,11 +74,13 @@ jobs:
           -x "phpunit.xml*" \
           -x "resources/*" \
           -x "modulos/*/resources/*"
-          
+        cd ..
+        sha256sum gestor.zip | awk '{print $1}' > gestor.zip.sha256
+
     - name: Get tag name
       id: tag
       run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-      
+
     - name: Create Release
       id: create_release
       uses: softprops/action-gh-release@v1
@@ -137,4 +139,6 @@ jobs:
           - ✅ **Escalabilidade garantida**: Preparado para crescimento
         draft: false
         prerelease: false
-        files: gestor.zip
+        files: |
+          gestor.zip
+          gestor.zip.sha256
