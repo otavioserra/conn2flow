@@ -65,6 +65,11 @@
             "label": "♻️ Sincronização - Sincronizar Gestor Instalador",
             "type": "shell",
             "command": "bash ./docker/utils/sincroniza-gestor-instalador.sh checksum"
+        },
+        {
+            "label": "♻️ Sincronização - Build Local Gestor",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/atualizacoes/build-local-gestor.sh"
         }
     ],
     "inputs": [

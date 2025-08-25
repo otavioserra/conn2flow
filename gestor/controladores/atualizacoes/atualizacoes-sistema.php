@@ -70,7 +70,7 @@ function logErroCtx(string $msg): void { logAtualizacao($msg, 'ERROR', true); }
 // ----------------------------
 // CLI Parsing & Ajuda
 // ----------------------------
-function parseArgs(array $argv): array {
+function parseArgsUpdate(array $argv): array {
     $out = [];
     foreach ($argv as $i => $a) {
         if ($i === 0) continue;
@@ -93,6 +93,7 @@ function help(): void {
     echo "Uso: php atualizacoes-sistema.php [--flags]\n\n";
     echo "Principais Flags:\n";
     echo "  --tag=GESTOR_TAG        Especifica release (gestor-vX.Y.Z)\n";
+    echo "  --local-artifact        Usa artefato local em docker/dados/sites/localhost/conn2flow-github/ (gestor.zip + gestor.zip.sha256)\n";
     echo "  --domain=DOMINIO        Ambiente (pasta autenticacoes/<dominio>)\n";
     echo "  --only-files            Apenas atualização de arquivos + merge .env\n";
     echo "  --only-db               Apenas banco de dados\n";
@@ -107,8 +108,21 @@ function help(): void {
     echo "  --log-diff              Log detalhado de diffs banco\n";
     echo "  --debug                 Verbosidade maior (DEBUG logs)\n";
     echo "  --clean-temp            Remove staging ao final mesmo em dry-run\n";
+    echo "  --logs-retention-days=N  Mantém somente N dias de logs de atualização e planos (default 14, 0 desativa)\n";
     echo "  --help                  Exibe esta ajuda\n";
-    echo "\nPastas ignoradas na atualização de arquivos (proteção dados usuário): logs/, backups/, temp/, contents/\n";
+    echo "\nFluxo Simplificado:\n";
+    echo "  1. Bootstrap: baixa/usa artefato, extrai, atualiza este script e reexecuta nova versão.\n";
+    echo "  2. Deploy: wipe (remove tudo exceto pastas protegidas) + move novos arquivos.\n";
+    echo "  3. Merge .env (aditivo) e atualização de banco (se não --no-db / não --only-files).\n";
+    echo "\nPastas protegidas (não removidas): logs/, backups/, temp/, contents/, autenticacoes/\n";
+}
+
+// ----------------------------
+// Util: Reconstrói linha de comando preservando argumentos do usuário
+// ----------------------------
+function reconstruirArgs(array $original): array {
+    // Remove índice 0 (script) e retorna somente flags originais
+    $out=[]; foreach($original as $i=>$a){ if($i===0) continue; $out[]=$a; } return $out;
 }
 
 function validarOpts(array &$opts): void {
@@ -224,29 +238,100 @@ function extrairZipGestor(string $zipPath, string $stagingDir): string {
     return $stagingDir;
 }
 
-// ----------------------------
-// ----------------------------
-// Substituição total (com remoção de arquivos obsoletos) preservando contents/
-// ----------------------------
-function coletarArquivos(string $base, array $excludesPattern): array {
-    $result=[]; $it=new RecursiveIteratorIterator(new RecursiveDirectoryIterator($base,RecursiveDirectoryIterator::SKIP_DOTS));
-    foreach($it as $f){ if($f->isDir()) continue; $rel=substr($f->getPathname(), strlen($base)); $rel=str_replace('\\','/',$rel); $skip=false; foreach($excludesPattern as $pat){ if(preg_match($pat,$rel)){ $skip=true; break; } } if(!$skip) $result[$rel]=$f->getPathname(); }
-    return $result;
+// Descobre raiz real do gestor dentro do staging (caso zip tenha pasta encapsuladora)
+function localizarRaizGestor(string $stagingDir): string {
+    logAtualizacao('Localizando raiz do gestor em: '.$stagingDir,'DEBUG');
+    $expectedDirs = ['controladores','bibliotecas','db','vendor'];
+    $ok = true;
+    foreach ($expectedDirs as $d) { if (is_dir($stagingDir.$d)) continue; $ok=false; break; }
+    if ($ok) return $stagingDir; // já é raiz
+    // Se há um único subdiretório, tenta nele
+    $entries = array_values(array_filter(scandir($stagingDir), fn($e)=>$e!=='.' && $e!=='..'));
+    if (count($entries)===1 && is_dir($stagingDir.$entries[0].DIRECTORY_SEPARATOR)) {
+        $sub = $stagingDir.$entries[0].DIRECTORY_SEPARATOR;
+        $ok2=true; foreach ($expectedDirs as $d){ if (!is_dir($sub.$d)) { $ok2=false; break; } }
+        if ($ok2) return $sub;
+    }
+    return $stagingDir; // fallback
 }
-function backupTotal(string $origemBase, string $destBase, array $excludesPattern): void {
-    if(!@mkdir($destBase,0775,true) && !is_dir($destBase)) throw new RuntimeException('Falha criar dir backup');
-    $files=coletarArquivos($origemBase,$excludesPattern);
-    foreach($files as $rel=>$src){ $dest=$destBase.$rel; $dir=dirname($dest); if(!is_dir($dir)) @mkdir($dir,0775,true); @copy($src,$dest); }
+
+// Valida se artefato contém arquivos críticos antes de prosseguir
+function validarArtefato(string $root, array $criticalFiles): void {
+    foreach ($criticalFiles as $cf) {
+        if (!file_exists($root.$cf)) {
+            throw new ExtractionException('Artefato inválido: arquivo crítico ausente no ZIP: '.$cf);
+        }
+    }
 }
-function aplicarOverwriteTotal(string $stagingDir, string $basePath, array $excludesPattern, bool $dry): array {
-    $stagingFiles=coletarArquivos($stagingDir,$excludesPattern);
-    $baseFiles=coletarArquivos($basePath,$excludesPattern);
-    // Remover arquivos que não existem mais no staging
-    $removed=0; if(!$dry){ foreach($baseFiles as $rel=>$full){ if(!isset($stagingFiles[$rel])) { @unlink($full); $removed++; } } }
-    // Copiar / sobrescrever
-    $copied=0; if(!$dry){ foreach($stagingFiles as $rel=>$src){ $dest=$basePath.$rel; $dir=dirname($dest); if(!is_dir($dir)) @mkdir($dir,0775,true); @copy($src,$dest); $copied++; } }
-    return ['removed'=>$removed,'copied'=>$copied,'total_new'=>count($stagingFiles)];
+
+// Localiza template .env dentro do artefato considerando possíveis nomes de diretório
+function localizarEnvTemplate(string $stagingRoot, string $domain, bool $debug=false): ?string {
+    // Ordem de tentativa:
+    // 1. autenticacoes.exemplo/<domain>/.env
+    // 2. autenticacoes.exemplo/localhost/.env
+    // 3. autenticacoes.exemplo/dominio/.env (legado/documentação antiga)
+    $candidatos = [
+        'autenticacoes.exemplo'.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.'.env',
+        'autenticacoes.exemplo'.DIRECTORY_SEPARATOR.'localhost'.DIRECTORY_SEPARATOR.'.env',
+        'autenticacoes.exemplo'.DIRECTORY_SEPARATOR.'dominio'.DIRECTORY_SEPARATOR.'.env',
+    ];
+    foreach ($candidatos as $rel) {
+        $full = $stagingRoot.$rel;
+        if (file_exists($full)) {
+            if ($debug) logAtualizacao('Template .env encontrado: '.$full,'DEBUG');
+            return $full;
+        } else {
+            if ($debug) logAtualizacao('Template .env candidato ausente: '.$full,'DEBUG');
+        }
+    }
+    return null;
 }
+
+// ----------------------------
+// Deploy Simplificado (Wipe + Extract)
+// ----------------------------
+function removerConteudoBase(string $basePath, array $protegidos): int {
+    $removidos = 0;
+    $dh = opendir($basePath);
+    if(!$dh) return 0;
+    while(($entry = readdir($dh)) !== false){
+        if($entry==='.'||$entry==='..') continue;
+        if(in_array($entry,$protegidos,true)) continue; // preserva
+        $full = $basePath.$entry;
+        if(is_dir($full)) { removeDirectoryRecursive($full); $removidos++; }
+        else { @unlink($full); $removidos++; }
+    }
+    closedir($dh);
+    return $removidos;
+}
+function moverConteudoStaging(string $stagingRoot, string $basePath, array $protegidos): int {
+    $movidos=0;
+    $dh = opendir($stagingRoot); if(!$dh) return 0;
+    while(($entry=readdir($dh))!==false){
+        if($entry==='.'||$entry==='..') continue;
+        $src = $stagingRoot.$entry;
+        // Se destino é protegido e já existe, não sobrescrever
+        if(in_array($entry,$protegidos,true) && file_exists($basePath.$entry)) continue;
+        $dst = $basePath.$entry;
+        // Se já existe destino, tenta remover (não protegido) antes
+        if(file_exists($dst) && !in_array($entry,$protegidos,true)) {
+            if(is_dir($dst)) removeDirectoryRecursive($dst); else @unlink($dst);
+        }
+        // Tenta mover (rename) para rapidez; se falhar, copia recursivo
+        if(@rename($src,$dst)) { $movidos++; continue; }
+        // fallback copy
+        if(is_dir($src)) copiarRecursivo($src,$dst); else @copy($src,$dst);
+        $movidos++;
+    }
+    closedir($dh);
+    return $movidos;
+}
+function copiarRecursivo(string $src, string $dst): void {
+    if(is_dir($src)) { if(!is_dir($dst)) @mkdir($dst,0775,true); $it=opendir($src); if($it){ while(($e=readdir($it))!==false){ if($e==='.'||$e==='..') continue; copiarRecursivo($src.DIRECTORY_SEPARATOR.$e,$dst.DIRECTORY_SEPARATOR.$e); } closedir($it);} }
+    else { @copy($src,$dst); }
+}
+
+// (Funções antigas de diff removidas - simplificação wipe+deploy)
 
 // ----------------------------
 // Backup / Aplicação Arquivos
@@ -281,18 +366,48 @@ function mergeEnv(string $envAtualPath, string $envTemplatePath, array &$context
 // Atualização Banco
 // ----------------------------
 function executarAtualizacaoBanco(array $opts): void {
-    global $BASE_PATH;
-    $script=$BASE_PATH.'controladores'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'atualizacoes-banco-de-dados.php';
-    if(!file_exists($script)) throw new DatabaseUpdateException('Script de banco ausente');
-    $GLOBALS['CLI_OPTS']=['env-dir'=>$opts['domain']??'localhost'];
-    foreach(['debug','force-all','tables','log-diff'] as $k){ if(isset($opts[$k])) $GLOBALS['CLI_OPTS'][$k]=$opts[$k]; }
-    logAtualizacao('Banco: iniciando');
-    try {
-        require $script; // script controla seu fluxo
-        logAtualizacao('Banco: concluído');
-    } catch (Throwable $t){
-        throw new DatabaseUpdateException('Falha atualização banco: '.$t->getMessage());
-    }
+        global $BASE_PATH, $GLOBALS;
+        $script = $BASE_PATH . 'controladores' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR . 'atualizacoes-banco-de-dados.php';
+        if (!file_exists($script)) throw new DatabaseUpdateException('Script de banco ausente: ' . $script);
+
+        // Monta argumentos CLI
+        $args = [];
+        foreach (['env-dir', 'debug', 'force-all', 'tables', 'log-diff', 'dry-run'] as $k) {
+            if (isset($opts[$k])) {
+                if (is_bool($opts[$k])) {
+                    if ($opts[$k]) $args[] = "--$k";
+                } else {
+                    $args[] = "--$k=" . escapeshellarg($opts[$k]);
+                }
+            }
+        }
+
+        if (PHP_SAPI === 'cli') {
+            // Executa como processo externo
+            $cmd = "php " . escapeshellarg($script) . " " . implode(' ', $args);
+            logAtualizacao('Banco: executando processo externo: ' . $cmd);
+            $output = [];
+            $ret = 0;
+            exec($cmd, $output, $ret);
+            foreach ($output as $line) logAtualizacao('[BANCO] ' . $line, 'INFO');
+            if ($ret !== 0) throw new DatabaseUpdateException('Falha atualização banco externo (exit=' . $ret . ')');
+            logAtualizacao('Banco: concluído processo externo');
+        } else {
+            // Execução inline (web ou outros)
+            $cli = [
+                'env-dir'    => $opts['domain'] ?? 'localhost',
+                'installing' => false,
+            ];
+            foreach(['debug','force-all','tables','log-diff','dry-run'] as $k){ if(isset($opts[$k])) $cli[$k]=$opts[$k]; }
+            $GLOBALS['CLI_OPTS'] = $cli;
+            logAtualizacao('Banco: incluindo script inline (sem processo externo)');
+            try {
+                require $script;
+                logAtualizacao('Banco: concluído inline');
+            } catch (Throwable $e){
+                throw new DatabaseUpdateException('Falha atualização banco inline: '.$e->getMessage());
+            }
+        }
 }
 
 // ----------------------------
@@ -319,7 +434,7 @@ function exportarPlanoJson(array $plan, array $context): string {
 function renderRelatorioFinal(array $context): string {
     $dur = microtime(true)-$context['start_time'];
     $p=$context['plan']; $stats=$p['stats']??['removed'=>0,'copied'=>0];
-    return 'Atualização concluída em '.number_format($dur,2).'s | copied='.$stats['copied'].' removed='.$stats['removed'].' envAdded='.count($context['env_merge']['added'])."\n";
+    return 'Atualização concluída em '.number_format($dur,2).'s | copied='.( $stats['copied']??0 ).' removed='.( $stats['removed']??0 ).' envAdded='.count($context['env_merge']['added'])."\n";
 }
 
 // ----------------------------
@@ -329,6 +444,54 @@ function removeDirectoryRecursive(string $dir): void {
     if(!is_dir($dir)) return; $it=new RecursiveDirectoryIterator($dir,RecursiveDirectoryIterator::SKIP_DOTS); $ri=new RecursiveIteratorIterator($it,RecursiveIteratorIterator::CHILD_FIRST);
     foreach($ri as $f){ if($f->isDir()) @rmdir($f->getPathname()); else @unlink($f->getPathname()); }
     @rmdir($dir);
+}
+
+// Remove diretórios temporários antigos de atualizações (housekeeping)
+function pruneOldUpdateTempDirs(string $baseTempAtualizacoes, string $currentDir, int $maxAgeHours = 24): void {
+    if(!is_dir($baseTempAtualizacoes)) return;
+    $now = time();
+    $entries = scandir($baseTempAtualizacoes) ?: [];
+    foreach($entries as $e){
+        if($e==='.'||$e==='..') continue;
+        $full = $baseTempAtualizacoes.$e.DIRECTORY_SEPARATOR;
+        if(!is_dir($full)) continue;
+        // Não apagar diretório em uso
+        if($currentDir && strpos($currentDir,$full)===0) continue;
+        $mtime = @filemtime($full) ?: $now;
+        if(($now - $mtime) > $maxAgeHours*3600){
+            logAtualizacao('Housekeeping: removendo temp antigo de atualização '.$full,'DEBUG');
+            removeDirectoryRecursive($full);
+        }
+    }
+}
+
+// Remove logs e planos JSON antigos (atualizacoes-sistema-*.log, atualizacoes-banco-*.log, plan-*.json)
+function pruneOldUpdateLogs(string $logsDir, int $retentionDays, bool $debug=false): void {
+    if ($retentionDays <= 0) { if($debug) logAtualizacao('Retenção de logs desativada (--logs-retention-days=0)','DEBUG'); return; }
+    if (!is_dir($logsDir)) return;
+    $now = time();
+    $cutoff = $now - ($retentionDays * 86400);
+    $patterns = [
+        '/^atualizacoes-sistema-\\d{8}\\.log$/',
+        '/^atualizacoes-banco-\\d{8}\\.log$/',
+        '/^atualizacoes-bd-\\d{8}\\.log$/',
+        '/^plan-\\d{8}-\\d{6}\\.json$/'
+    ];
+    $dh = opendir($logsDir); if(!$dh) return;
+    $removed=0; $kept=0;
+    while(($f=readdir($dh))!==false){
+        if($f==='.'||$f==='..') continue;
+        $full = $logsDir.$f;
+        if(!is_file($full)) continue;
+        $match=false; foreach($patterns as $re){ if(preg_match($re,$f)){ $match=true; break; } }
+        if(!$match) { $kept++; continue; }
+        $mtime = @filemtime($full) ?: $now;
+        if($mtime < $cutoff){
+            if(@unlink($full)) { $removed++; if($debug) logAtualizacao('Housekeeping: removendo log antigo '.$f,'DEBUG'); }
+        } else { $kept++; }
+    }
+    closedir($dh);
+    if($debug) logAtualizacao('Retenção logs: removidos='.$removed.' mantidos='.$kept.' dias='.$retentionDays,'DEBUG');
 }
 
 // ----------------------------
@@ -341,48 +504,227 @@ function hookAfterAll(array &$context): void {}
 // ----------------------------
 // MAIN
 // ----------------------------
-function main(array $argv): int {
-    global $CONTEXT, $BASE_PATH;
+function main_update(array $argv): int {
+    global $CONTEXT, $BASE_PATH, $LOGS_DIR;
     try {
-        $opts=parseArgs($argv); if(isset($opts['help'])) { help(); return EXIT_OK; }
+        $opts=parseArgsUpdate($argv); if(isset($opts['help'])) { help(); return EXIT_OK; }
         validarOpts($opts); $CONTEXT['opts']=$opts; $CONTEXT['debug']=!empty($opts['debug']);
         $dry = !empty($opts['dry-run']);
         $onlyFiles = !empty($opts['only-files']);
         $onlyDb = !empty($opts['only-db']);
         $noDb = !empty($opts['no-db']);
-        $CONTEXT['mode']=$onlyFiles?'only-files':($onlyDb?'only-db':($noDb?'files-without-db':'full'));
-        logAtualizacao('Iniciando atualização modo='.$CONTEXT['mode'].' dryRun='.($dry?'1':'0'));
+    $CONTEXT['mode']=$onlyFiles?'only-files':($onlyDb?'only-db':($noDb?'files-without-db':'full'));
+    // Retenção de logs (default 14 dias se não especificado)
+    $retentionDays = isset($opts['logs-retention-days']) ? (int)$opts['logs-retention-days'] : 14;
+    $CONTEXT['opts']['logs-retention-days']=$retentionDays;
+        logAtualizacao('Iniciando atualização modo='.$CONTEXT['mode'].' dryRun='.($dry?'1':'0').' bootstrap='.(!empty($opts['bootstrap-done'])?'1':'0')); 
+
+        // ----------------------------------------------
+        // FASE 1 (BOOTSTRAP): garantir que executamos a versão NOVA do script
+        // Se não houver flag interna --bootstrap-done, fazemos somente: download/extract/local-artifact, copiar novo script e reexecutar
+        // ----------------------------------------------
+        if (empty($opts['bootstrap-done']) && !$onlyDb) {
+            logAtualizacao('Bootstrap: iniciando (baixar/extrair/copiar script e reexecutar)...');
+            $staging = prepararStaging();
+            $CONTEXT['staging_dir']=$staging;
+            // Download ou artefato local mínimo (sem deploy ainda)
+            if(!empty($opts['local-artifact'])) {
+                $repoRoot = realpath($BASE_PATH.'..').DIRECTORY_SEPARATOR;
+                $localDir = $repoRoot.'conn2flow-github'.DIRECTORY_SEPARATOR;
+                $zip = $localDir.'gestor.zip';
+                $sha = $localDir.'gestor.zip.sha256';
+                if(!file_exists($zip)) throw new DownloadException('Bootstrap: artefato local não encontrado: '.$zip);
+                $CONTEXT['release_tag']=$opts['tag'] ?? 'local-artifact';
+                $CONTEXT['zip_path']=$zip;
+                if(empty($opts['no-verify']) && file_exists($sha)) {
+                    $CONTEXT['checksum']=verifyZipSha256($zip,$sha);
+                }
+                $zipTmp=$staging.'gestor-local.zip'; @copy($zip,$zipTmp); extrairZipGestor($zipTmp,$staging);
+            } else {
+                if(!empty($opts['tag'])) { $CONTEXT['release_tag']=$opts['tag']; }
+                else { $info=descobrirUltimaTagGestor(); $CONTEXT['release_tag']=$info['tag']; }
+                $tag=$CONTEXT['release_tag'];
+                $zip = downloadRelease($tag,$staging);
+                $CONTEXT['zip_path']=$zip;
+                if(empty($opts['no-verify'])){ $shaFile=downloadZipChecksum($tag,$staging); $CONTEXT['checksum']=verifyZipSha256($zip,$shaFile); }
+                extrairZipGestor($zip,$staging);
+            }
+            $realRoot = localizarRaizGestor($staging);
+            $novoScript = $realRoot.'controladores'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'atualizacoes-sistema.php';
+            if(!file_exists($novoScript)) throw new ExtractionException('Bootstrap: script atualizado ausente no artefato');
+            $destScript = __FILE__;
+            // Copia somente se diferente (hash) para reduzir IO
+            $hashOrig = @hash_file('sha256',$destScript) ?: '';
+            $hashNovo = @hash_file('sha256',$novoScript) ?: '';
+            if($hashOrig!==$hashNovo){
+                if(!@copy($novoScript,$destScript)) throw new ExtractionException('Bootstrap: falha ao copiar novo script para destino');
+                logAtualizacao('Bootstrap: script atualizado copiado (hash antigo='.$hashOrig.' novo='.$hashNovo.')');
+            } else {
+                logAtualizacao('Bootstrap: script já estava atualizado (hash='.$hashOrig.')');
+            }
+            // Reexecuta nova versão com flags internas para pular bootstrap e reutilizar staging
+            $userArgs = reconstruirArgs($argv);
+            // Garante que não exista antiga flag bootstrap
+            $userArgs = array_values(array_filter($userArgs, fn($a)=>strpos($a,'--bootstrap-done')!==0));
+            $userArgs[]='--bootstrap-done=1';
+            $userArgs[]='--skip-download'; // pular download na fase 2
+            $userArgs[]='--staging-dir='.escapeshellarg($staging);
+            $userArgs[]='--staging-root='.escapeshellarg($realRoot);
+            if($CONTEXT['release_tag']) $userArgs[]='--tag='.escapeshellarg($CONTEXT['release_tag']);
+            // Propaga no-verify se presente
+            if(!empty($opts['no-verify'])) $userArgs[]='--no-verify';
+            $cmd = 'php '.escapeshellarg($destScript).' '.implode(' ',$userArgs);
+            logAtualizacao('Bootstrap: reexecutando nova versão -> '.$cmd);
+            passthru($cmd,$exit); // repassa saída direto
+            logAtualizacao('Bootstrap: processo filho retornou exit='.$exit);
+            return $exit; // encerra bootstrap
+        }
+
+        // Se estamos em fase 2 e recebemos staging pré-existente, configurar contexto antes de continuar
+        if (!empty($opts['bootstrap-done']) && !empty($opts['staging-dir'])) {
+            $stagingFromFlag = rtrim(str_replace(['"','\"'],'',$opts['staging-dir']),"\/").DIRECTORY_SEPARATOR; // limpeza simples
+            if(is_dir($stagingFromFlag)) { $CONTEXT['staging_dir']=$stagingFromFlag; }
+            if(!empty($opts['staging-root'])) {
+                $rootFlag = rtrim(str_replace(['"','\"'],'',$opts['staging-root']),"\/").DIRECTORY_SEPARATOR;
+                if(is_dir($rootFlag)) $CONTEXT['staging_root']=$rootFlag;
+            }
+        }
+        
+        logAtualizacao('Fase principal: prosseguindo com deploy (bootstrap-done='.(empty($opts['bootstrap-done'])?'0':'1').')');
         hookBeforeFiles($CONTEXT);
 
         // ---------------- Arquivos (modo simplificado overwrite) ----------------
         if(!$onlyDb){
-            $staging=prepararStaging(); $CONTEXT['staging_dir']=$staging;
-            // Descobrir tag
-            if(!empty($opts['tag'])) { $CONTEXT['release_tag']=$opts['tag']; }
-            else { $info=descobrirUltimaTagGestor(); $CONTEXT['release_tag']=$info['tag']; }
-            $tag=$CONTEXT['release_tag'];
-            $zip = !empty($opts['skip-download']) ? ($staging.'gestor.zip') : downloadRelease($tag,$staging);
-            if(!file_exists($zip)) throw new DownloadException('ZIP esperado não encontrado (skip-download?)');
-            $CONTEXT['zip_path']=$zip;
-            // Checksum
-            if(empty($opts['no-verify'])){
-                $shaFile = downloadZipChecksum($tag,$staging);
-                $CONTEXT['checksum']=verifyZipSha256($zip,$shaFile);
-            } else { logAtualizacao('Verificação checksum desativada (--no-verify)','WARNING'); }
-            extrairZipGestor($zip,$staging);
+            // Se bootstrap já trouxe staging, reutiliza; senão cria
+            if(!empty($CONTEXT['staging_dir'])) { $staging=$CONTEXT['staging_dir']; }
+            else { $staging=prepararStaging(); $CONTEXT['staging_dir']=$staging; }
+            if(!empty($opts['local-artifact'])) {
+                // Caminho padrão dentro do container para artefatos locais
+                $repoRoot = realpath($BASE_PATH.'..').DIRECTORY_SEPARATOR;
+                $localDir = $repoRoot.'conn2flow-github'.DIRECTORY_SEPARATOR;
+                $zip = $localDir.'gestor.zip';
+                $sha = $localDir.'gestor.zip.sha256';
+                if(!file_exists($zip)) throw new DownloadException('Artefato local não encontrado: '.$zip);
+                $CONTEXT['release_tag']=$opts['tag'] ?? 'local-artifact';
+                $CONTEXT['zip_path']=$zip;
+                if(empty($opts['no-verify']) && file_exists($sha)) {
+                    $CONTEXT['checksum']=verifyZipSha256($zip,$sha);
+                } elseif(!empty($opts['no-verify'])) {
+                    logAtualizacao('Checksum ignorado (--no-verify) artefato local','WARNING');
+                } else {
+                    // Gera checksum local on-the-fly
+                    try {
+                        $hash=computeFileSha256($zip);
+                        $shaGen=$localDir.'gestor.zip.sha256';
+                        @file_put_contents($shaGen,$hash.PHP_EOL);
+                        $CONTEXT['checksum']=['expected'=>$hash,'got'=>$hash,'file'=>basename($zip),'generated'=>true];
+                        logAtualizacao('Checksum local gerado on-the-fly: '.$hash,'INFO');
+                    } catch (Throwable $e) {
+                        logAtualizacao('Falha gerar checksum local: '.$e->getMessage(),'WARNING');
+                    }
+                }
+                $zipTmp = $staging.'gestor-local.zip'; @copy($zip,$zipTmp); extrairZipGestor($zipTmp,$staging);
+            } else {
+                if(!empty($opts['tag'])) { $CONTEXT['release_tag']=$opts['tag']; }
+                else { $info=descobrirUltimaTagGestor(); $CONTEXT['release_tag']=$info['tag']; }
+                $tag=$CONTEXT['release_tag'];
+                $zip = !empty($opts['skip-download']) ? ($staging.'gestor.zip') : downloadRelease($tag,$staging);
+                if(!file_exists($zip)) throw new DownloadException('ZIP esperado não encontrado (skip-download?)');
+                $CONTEXT['zip_path']=$zip;
+                if(empty($opts['no-verify'])){
+                    $shaFile = downloadZipChecksum($tag,$staging);
+                    $CONTEXT['checksum']=verifyZipSha256($zip,$shaFile);
+                } else { logAtualizacao('Verificação checksum desativada (--no-verify)','WARNING'); }
+                extrairZipGestor($zip,$staging);
+            }
+            // Ajusta raiz real se necessário (se já definida via bootstrap, reutiliza)
+            $realRoot = $CONTEXT['staging_root'] ?? localizarRaizGestor($staging);
+            if ($realRoot !== $staging) { logAtualizacao('Raiz real detectada dentro do ZIP: '.$realRoot,'DEBUG'); }
+            $CONTEXT['staging_root'] = $realRoot;
+            // Validar arquivos críticos antes de qualquer remoção
+            $critical = [
+                'controladores'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'atualizacoes-banco-de-dados.php',
+                'controladores'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'atualizacoes-sistema.php',
+                'phinx.php'
+            ];
+            validarArtefato($realRoot, $critical);
+            logAtualizacao('Artefato validado: arquivos críticos presentes');
+            // Remove artefatos ZIP do staging para não irem para produção
+            foreach(['gestor.zip','gestor-local.zip'] as $zf){
+                $zp = $realRoot.$zf;
+                if(is_file($zp)) { @unlink($zp); logAtualizacao('Removido artefato temporário do staging: '.$zf,'DEBUG'); }
+            }
             // Backup total se solicitado
-            $excludes=['#^contents/#','#^logs/#','#^backups/#','#^temp/#'];
+            // Pastas protegidas (não removidas / não sobrescritas)
+            // IMPORTANTE: 'autenticacoes/' contém configurações específicas por domínio (.env, chaves, etc.)
+            // Mantemos 'autenticacoes.exemplo/' fora da lista para que novos templates continuem sendo distribuídos.
+            $excludes=['#^contents/#','#^logs/#','#^backups/#','#^temp/#','#^autenticacoes/#'];
+            logAtualizacao('Pastas protegidas (excludes overwrite): contents/, logs/, backups/, temp/, autenticacoes/','DEBUG');
             if(!empty($opts['backup']) && !$dry){
                 $backupDir = $BASE_PATH.'backups'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'full'.DIRECTORY_SEPARATOR.date('Ymd-His').DIRECTORY_SEPARATOR;
                 backupTotal($BASE_PATH,$backupDir,$excludes);
                 $CONTEXT['backups'][]=['full_backup'=>$backupDir];
             }
-            // Aplicar overwrite
-            $stats = aplicarOverwriteTotal($staging,$BASE_PATH,$excludes,$dry);
+            // Antes do deploy capturamos (se existir) o template .env dentro do staging para evitar perdê-lo
+            // pois o moverConteudoStaging usa rename sempre que possível e esvazia o staging.
+            $envTemplateRel = null; $envTemplateOriginalPath = null;
+            // Importante: template padrão fica em autenticacoes.exemplo/dominio/.env
+            // Usamos literal 'dominio' para garantir detecção mesmo que --domain seja outro (ex: localhost)
+            $envTemplateInitial = localizarEnvTemplate($realRoot, 'dominio', !empty($opts['debug']));
+            if ($envTemplateInitial) {
+                $envTemplateOriginalPath = $envTemplateInitial; // caminho completo pré-move
+                // Deriva caminho relativo para reconstruir após mover
+                $envTemplateRel = ltrim(substr($envTemplateInitial, strlen($realRoot)), DIRECTORY_SEPARATOR);
+                if(!empty($opts['debug'])) logAtualizacao('Pré-deploy: template .env identificado (rel='.$envTemplateRel.')','DEBUG');
+            } else {
+                if(!empty($opts['debug'])) logAtualizacao('Pré-deploy: nenhum template .env localizado ainda','DEBUG');
+            }
+
             // Merge .env (adiciona novas variáveis)
-            $envAtual=$BASE_PATH.'autenticacoes'.DIRECTORY_SEPARATOR.($opts['domain']??'localhost').DIRECTORY_SEPARATOR.'.env';
-            $envTpl=$staging.'autenticacoes.exemplo'.DIRECTORY_SEPARATOR.'dominio'.DIRECTORY_SEPARATOR.'.env';
-            mergeEnv($envAtual,$envTpl,$CONTEXT,$dry);
+            $envAtual = $BASE_PATH.'autenticacoes'.DIRECTORY_SEPARATOR.($opts['domain']??'localhost').DIRECTORY_SEPARATOR.'.env';
+            $envTpl = null;
+            // Se capturamos antes do deploy, reconstruímos novo caminho
+            if ($envTemplateRel) {
+                $reconstructed = $BASE_PATH.$envTemplateRel; // local após mover
+                if (file_exists($reconstructed)) {
+                    $envTpl = $reconstructed;
+                    if(!empty($opts['debug'])) logAtualizacao('Template .env pós-deploy (reconstructed): '.$envTpl,'DEBUG');
+                } elseif ($envTemplateOriginalPath && file_exists($envTemplateOriginalPath)) {
+                    // fallback improvável (caso rename não tenha ocorrido)
+                    $envTpl = $envTemplateOriginalPath;
+                    if(!empty($opts['debug'])) logAtualizacao('Template .env ainda no staging (fallback): '.$envTpl,'DEBUG');
+                }
+            }
+            // Caso não tenhamos capturado antes ou não reconstruído, tenta busca agora no destino final
+            if (!$envTpl) {
+                // Primeiro tenta o placeholder 'dominio' (estrutura de exemplo)
+                $envTpl = localizarEnvTemplate($BASE_PATH, 'dominio', !empty($opts['debug']));
+            }
+            if (!$envTpl) {
+                // Depois tenta um template específico do domínio atual (se existir)
+                $envTpl = localizarEnvTemplate($BASE_PATH, $opts['domain'] ?? 'localhost', !empty($opts['debug']));
+            }
+            if($envTpl===null) {
+                logAtualizacao('Template .env não encontrado em nenhuma localização esperada','WARNING');
+            }
+            mergeEnv($envAtual,$envTpl??'',$CONTEXT,$dry);
+
+            // Deploy simplificado: remover tudo exceto diretórios protegidos e mover novo conteúdo
+            $protegidos = ['contents','logs','backups','temp','autenticacoes'];
+            if(!$dry){
+                logAtualizacao('Remover conteúdos base...','DEBUG');
+                $removidos = removerConteudoBase($BASE_PATH,$protegidos);
+                logAtualizacao('Wipe concluído (removidos não protegidos) count='.$removidos);
+                $movidos = moverConteudoStaging($realRoot,$BASE_PATH,$protegidos);
+                logAtualizacao('Deploy concluído (itens movidos) count='.$movidos);
+                // Revalida críticos
+                foreach ($critical as $cf){ if(!file_exists($BASE_PATH.$cf)) throw new ExtractionException('Após deploy arquivo crítico ausente: '.$cf); }
+                $stats = ['removed'=>$removidos,'copied'=>$movidos];
+            } else {
+                $stats = ['removed'=>0,'copied'=>0];
+                logAtualizacao('Dry-run: skip wipe/deploy');
+            }
+            
             $CONTEXT['plan']=['stats'=>$stats];
             exportarPlanoJson($CONTEXT['plan'],$CONTEXT);
         }
@@ -391,11 +733,42 @@ function main(array $argv): int {
         if(!$onlyFiles && !$noDb){
             executarAtualizacaoBanco($opts);
             hookAfterDb($CONTEXT);
+            // Após concluir atualização do banco os arquivos fonte em gestor/db (migrations + data JSON)
+            // não são mais necessários em produção. Eles virão novamente no próximo artefato.
+            // Removemos para reduzir superfície e evitar divergências manuais.
+            if(!$dry){
+                $dbDir = $BASE_PATH.'db'.DIRECTORY_SEPARATOR;
+                if (is_dir($dbDir)) {
+                    logAtualizacao('Removendo pasta db pós-atualização (origem de dados já aplicada ao banco)');
+                    removeDirectoryRecursive($dbDir);
+                } else {
+                    logAtualizacao('Pasta db já inexistente (nada a remover)','DEBUG');
+                }
+            } else {
+                logAtualizacao('Dry-run: preservando pasta db (não removida)');
+            }
         }
 
         hookAfterAll($CONTEXT);
         $rel=renderRelatorioFinal($CONTEXT); logAtualizacao(trim($rel)); echo $rel;
-        if(!empty($opts['clean-temp']) && $CONTEXT['staging_dir']) removeDirectoryRecursive($CONTEXT['staging_dir']);
+        // Limpeza de staging sempre (a menos que usuário peça para manter) + poda de antigos
+        $keepTemp = !empty($opts['keep-temp']);
+        if($CONTEXT['staging_dir'] && !$dry && !$keepTemp){
+            logAtualizacao('Limpando diretório staging utilizado: '.$CONTEXT['staging_dir'],'DEBUG');
+            removeDirectoryRecursive($CONTEXT['staging_dir']);
+            // Housekeeping: remove diretórios mais antigos que 24h em temp/atualizacoes
+            global $TEMP_DIR; // base gestor/temp/atualizacoes/
+            $baseUpd = $TEMP_DIR; // já termina com /atualizacoes/
+            pruneOldUpdateTempDirs($baseUpd, $CONTEXT['staging_dir']);
+        } elseif($keepTemp) {
+            logAtualizacao('Flag --keep-temp ativa: preservando staging '.$CONTEXT['staging_dir'],'WARNING');
+        }
+        // Após tudo, aplicar retenção de logs/planos
+        try {
+            pruneOldUpdateLogs($LOGS_DIR, $retentionDays, !empty($opts['debug']));
+        } catch (Throwable $e){
+            logAtualizacao('Falha prune logs: '.$e->getMessage(),'WARNING');
+        }
         return EXIT_OK;
     } catch (DownloadException $e){ logErroCtx($e->getMessage()); echo "ERRO DOWNLOAD: ".$e->getMessage()."\n"; return EXIT_DOWNLOAD; }
     catch (ExtractionException $e){ logErroCtx($e->getMessage()); echo "ERRO EXTRAÇÃO: ".$e->getMessage()."\n"; return EXIT_EXTRACTION; }
@@ -406,6 +779,6 @@ function main(array $argv): int {
     catch (Throwable $t){ logErroCtx('Fatal: '.$t->getMessage()); echo "ERRO FATAL: ".$t->getMessage()."\n"; return EXIT_GENERIC; }
 }
 
-if(PHP_SAPI==='cli') exit(main($argv));
+if(PHP_SAPI==='cli') exit(main_update($argv));
 
-// Execução via web futura: chamar main([]) com parâmetros simulados.
+// Execução via web futura: chamar main_update([]) com parâmetros simulados.

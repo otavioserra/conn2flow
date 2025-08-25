@@ -93,6 +93,7 @@ Flags / Opções CLI suportadas (versão simplificada):
 --log-diff              # Encaminha ao script de banco
 --debug                 # Aumenta verbosidade
 --clean-temp            # Remove staging ao final (mesmo dry-run)
+--logs-retention-days=N # Mantém apenas N dias de logs/plan JSON (default 14, 0 desativa)
 --help                  # Exibe ajuda
 ```
 
@@ -243,6 +244,9 @@ Incluir (futuro) arquivo `controladores/atualizacoes/lang/pt-br.json` e `en.json
 | Rollback | Restaurar snapshot (futuro) | Planejado |
 | Plano JSON | Estatísticas agregadas + checksum + env merge | Implementado |
 | Dry-run Stats | Simular counts sem operações | Pendente |
+| Retenção Logs | Poda automática de logs/planos antigos (--logs-retention-days) | Implementado |
+| Limpeza Temp Antigo | Remoção automática de temp/atualizacoes/ >24h | Implementado |
+| Remoção gestor/db pós update | Remove pasta db após aplicar dados | Implementado |
 | Execução Web / Jobs | Painel administrativo / fila | Futuro |
 
 ## ✅ Progresso da Implementação (Consolidado)
@@ -288,6 +292,11 @@ Incluir (futuro) arquivo `controladores/atualizacoes/lang/pt-br.json` e `en.json
 4. Backup full snapshot.
 5. Plano JSON simplificado.
 6. Documentação atualizada.
+7. Limpeza automática de diretórios temporários antigos (>24h).
+8. Remoção automática de gestor/db após atualização de banco concluída.
+9. Nova flag --logs-retention-days para poda de logs/planos antigos.
+10. Normalização coluna de linguagem (language vs linguagem_codigo) no script de banco.
+11. Remoção de artefatos gestor.zip/gestor-local.zip antes de mover para produção.
 
 ## ✅ Progresso da Implementação das Alterações e Correções
 - [x] Itens 1–6 aplicados
@@ -303,5 +312,39 @@ Incluir (futuro) arquivo `controladores/atualizacoes/lang/pt-br.json` e `en.json
 **Desenvolvedor:** Otavio Serra
 **Projeto:** Conn2Flow v1.14.0
 **Módulo:** Sistema de Atualizações
+
+## 🆕 Novidades v1.14.0
+
+### Adicionado
+- Flag `--logs-retention-days=N` (default 14) para poda automática de:
+    - `logs/atualizacoes/atualizacoes-sistema-YYYYMMDD.log`
+    - `logs/atualizacoes/atualizacoes-bd-YYYYMMDD.log` e variantes (`atualizacoes-banco-`).
+    - Arquivos `plan-YYYYmmdd-HHMMSS.json`.
+- Poda automática de diretórios antigos em `temp/atualizacoes/` (>24h) preservando staging atual.
+- Normalização dinâmica de coluna de linguagem no script de banco (`language` ou `linguagem_codigo`).
+- Prevenção de duplicação de registros multilíngues via índices fallback.
+
+### Alterado
+- Deploy remove artefatos `gestor.zip` / `gestor-local.zip` do staging antes de mover.
+- Pasta `gestor/db/` removida após aplicação dos dados para reduzir divergências e superfície.
+- Ajuda CLI atualizada com nova flag de retenção de logs.
+
+### Corrigido
+- Erros "Unknown column 'language'" em tabelas onde só existia `linguagem_codigo` (detecção + normalização unificada).
+- Crescimento indefinido de logs/planos sem política de retenção.
+- Artefato zip podendo permanecer na raiz após atualização local.
+
+### Removido
+- Dependência de manter `gestor/db/` persistente entre releases (agora transitório).
+
+### Notas
+1. Ajuste retenção: `--logs-retention-days=30` amplia histórico; `0` desativa poda.
+2. Para auditoria prolongada de scripts JSON originais, copiar `gestor/db/` antes ou implementar futura flag de preservação.
+3. Mecanismo de normalização não altera schema, apenas mapeia em tempo de execução.
+
+### Próximos Passos (Planejados)
+- Simulação de stats em `--dry-run`.
+- Rollback usando snapshot full.
+- Flag opcional para preservar pasta `db` após update.
 
 > Este prompt está sincronizado com o modelo simplificado atual. Qualquer evolução (rollback, web UI, fila) deve atualizar aqui primeiro.

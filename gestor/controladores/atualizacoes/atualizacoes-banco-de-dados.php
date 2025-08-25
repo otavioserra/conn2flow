@@ -52,7 +52,7 @@ require_once $BASE_PATH . 'bibliotecas/log.php';
 // Gestor 
 global $_GESTOR;
 if (!isset($_GESTOR)) $_GESTOR = [];
-if (!isset($_GESTOR['logs-path'])) $_GESTOR['logs-path'] = $BASE_PATH . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR;
+$_GESTOR['logs-path'] = $BASE_PATH . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR;
 if (!is_dir($_GESTOR['logs-path'])) @mkdir($_GESTOR['logs-path'], 0775, true);
 set_lang('pt-br');
 $localLangDir = $BASE_PATH . 'controladores/atualizacoes/lang/';
@@ -269,6 +269,26 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     }
     $allowedCols = $schemaCache[$tabela];
 
+    // Descobrir coluna real de linguagem no schema (se existir)
+    $colLangReal = null;
+    if (is_array($allowedCols)) {
+        if (isset($allowedCols['language'])) $colLangReal='language';
+        elseif (isset($allowedCols['linguagem_codigo'])) $colLangReal='linguagem_codigo';
+    }
+    // Normaliza linha JSON para ter somente a coluna real de linguagem (se identificada)
+    $normalizeLangRow = function(array &$r) use ($colLangReal) {
+        if (!$colLangReal) return; // nada a fazer
+        $alt = $colLangReal === 'language' ? 'linguagem_codigo' : 'language';
+        // Se veio só o alias alternativo, copiar para o real
+        if (!isset($r[$colLangReal]) && isset($r[$alt])) {
+            $r[$colLangReal] = $r[$alt];
+        }
+        // Se ambos existem, preferir o real e remover o alternativo para não gerar diffs em coluna inexistente
+        if (isset($r[$colLangReal]) && isset($r[$alt])) {
+            unset($r[$alt]);
+        }
+    };
+
     // Tabelas de recursos que agora usam chaves naturais nos Data.json
     $tabelasChaveNatural = ['paginas','layouts','componentes','variaveis'];
     $pkDeclarada = pkPorTabela($tabela) ?? descobrirPK($tabela, $registros[0]);
@@ -315,6 +335,8 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         // Modo anterior baseado em PK
         $jsonByPk = [];
         foreach ($registros as $r) {
+            // Normalizar linguagem antes de indexar
+            $normalizeLangRow($r);
             if (!array_key_exists($pkDeclarada, $r)) continue; // ignora sem pk
             $jsonByPk[(string)$r[$pkDeclarada]] = $r;
         }
@@ -331,6 +353,15 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             $matched[$pkVal]=true; $diff=[]; $oldVals=[];
             foreach ($row as $c=>$vNew) {
                 if ($c === $pkDeclarada) continue;
+                // Filtrar colunas inexistentes no schema (exceto map de linguagem)
+                if (is_array($allowedCols) && !isset($allowedCols[$c])) {
+                    // Mapear language->linguagem_codigo se necessário
+                    if ($c==='language' && isset($allowedCols['linguagem_codigo']) && !isset($diff['linguagem_codigo'])) {
+                        $vOldMap = $exist['linguagem_codigo'] ?? null;
+                        if (normalizeValue($row['language'])!==normalizeValue($vOldMap)) { $diff['linguagem_codigo']=$row['language']; $oldVals['linguagem_codigo']=$vOldMap; }
+                    }
+                    continue;
+                }
                 $vOld = $exist[$c] ?? null;
                 if ($c==='user_modified' && (int)$vOld===1 && (int)$vNew!==1) continue;
                 if (normalizeValue($vNew)!==normalizeValue($vOld)) { $diff[$c]=$vNew; $oldVals[$c]=$vOld; }
@@ -352,6 +383,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         }
         foreach ($jsonByPk as $pkVal=>$row) {
             if (isset($matched[$pkVal])) continue;
+            $normalizeLangRow($row);
             if (is_array($allowedCols)) { $row = array_intersect_key($row, $allowedCols); }
             $cols=array_keys($row); if(!$cols){ $same++; continue; }
             $placeholders=':'.implode(',:',$cols); $sql="INSERT INTO `$tabela`(".implode(',',array_map(fn($c)=>"`$c`",$cols)).") VALUES ($placeholders)";
@@ -405,12 +437,22 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     foreach ($registros as $row) {
         $k = $naturalKeyFn($tabela, $row);
         if ($k===null) { if ($debug) log_disco("SKIP_INVALID_NATURAL_KEY tabela=$tabela row_sem_chave", $GLOBALS['LOG_FILE']); continue; }
+        // Normalizar linguagem (após gerar chave natural que aceita ambos os aliases)
+        $normalizeLangRow($row);
         if (isset($dbIndex[$k])) {
             $exist = $dbIndex[$k];
             $diff=[]; $oldVals=[];
             foreach ($row as $c=>$vNew) {
                 // Ignorar campos de controle que não fazem parte do JSON natural
                 if ($c === 'user_modified' && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (int)$vNew!==1) continue;
+                // Filtrar colunas inexistentes, com mapeamento de linguagem
+                if (is_array($allowedCols) && !isset($allowedCols[$c])) {
+                    if ($c==='language' && isset($allowedCols['linguagem_codigo']) && !isset($diff['linguagem_codigo'])) {
+                        $vOldMap = $exist['linguagem_codigo'] ?? null;
+                        if (normalizeValue($row['language'])!==normalizeValue($vOldMap)) { $diff['linguagem_codigo']=$row['language']; $oldVals['linguagem_codigo']=$vOldMap; }
+                    }
+                    continue;
+                }
                 $vOld = $exist[$c] ?? null;
                 if (normalizeValue($vNew)!==normalizeValue($vOld)) { $diff[$c]=$vNew; $oldVals[$c]=$vOld; }
             }
@@ -463,9 +505,17 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             if ($existFallback) {
                 // Atualiza registro existente preenchendo linguagem faltante (auto-correção de bug histórico)
                 $exist = $existFallback; $diff=[]; $oldVals=[];
+                $normalizeLangRow($row);
                 foreach ($row as $c=>$vNew) {
                     $vOld = $exist[$c] ?? null;
                     if ($c==='user_modified' && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (int)$vNew!==1) continue;
+                    if (is_array($allowedCols) && !isset($allowedCols[$c])) {
+                        if ($c==='language' && isset($allowedCols['linguagem_codigo']) && !isset($diff['linguagem_codigo'])) {
+                            $vOldMap = $exist['linguagem_codigo'] ?? null;
+                            if (normalizeValue($row['language'])!==normalizeValue($vOldMap)) { $diff['linguagem_codigo']=$row['language']; $oldVals['linguagem_codigo']=$vOldMap; }
+                        }
+                        continue;
+                    }
                     if (normalizeValue($vNew)!==normalizeValue($vOld)) { $diff[$c]=$vNew; $oldVals[$c]=$vOld; }
                 }
                 // Se linguagem só existe como 'language' mas schema usa 'linguagem_codigo', ajustar
@@ -493,6 +543,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 } else { $same++; }
             } else {
                 // Novo registro – inserir (sem PK numérica)
+                $normalizeLangRow($row);
                 if (is_array($allowedCols)) { $row = array_intersect_key($row, $allowedCols); }
                 $cols = array_keys($row);
                 $colsFiltradas = array_filter($cols, fn($c)=>!preg_match('/^id_/', $c)); // evitar enviar id_paginas etc caso apareça

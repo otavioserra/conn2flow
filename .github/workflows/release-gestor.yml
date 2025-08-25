@@ -60,6 +60,13 @@ jobs:
         rm -rf gestor/vendor/bin/.phpunit* || true
         rm -rf gestor/vendor/composer/tmp-* || true
 
+        # Remover somente .env sensíveis da raiz (preservar templates em autenticacoes.exemplo)
+        find gestor -maxdepth 1 -type f -name '.env*' -exec rm -f {} + 2>/dev/null || true
+        # Remover .env internos reais de autenticacoes, exceto os de templates
+        if [ -d gestor/autenticacoes ]; then
+          find gestor/autenticacoes -type f -name '.env*' -not -path '*/autenticacoes.exemplo/*' -exec rm -f {} + 2>/dev/null || true
+        fi
+
         # Criar o arquivo ZIP (resource files already removed)
         cd gestor
         zip -r ../gestor.zip . \
@@ -70,7 +77,6 @@ jobs:
           -x "*.DS_Store*" \
           -x "*.log*" \
           -x "tests/*" \
-          -x ".env*" \
           -x "phpunit.xml*" \
           -x "resources/*" \
           -x "modulos/*/resources/*"
