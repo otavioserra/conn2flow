@@ -804,57 +804,6 @@ function admin_paginas_interfaces_padroes(){
 						'cor' => 'blue',
 					),
 				),
-	'resources' => [
-		'pt-br' => [
-			'layouts' => [],
-			'pages' => [
-			    [
-			        'name' => 'Admin Páginas',
-			        'id' => 'admin-paginas',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-paginas/',
-			        'type' => 'system',
-			        'option' => 'listar',
-			        'root' => true,
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => 'd41d8cd98f00b204e9800998ecf8427e',
-			        ],
-			    ],
-			    [
-			        'name' => 'Admin Páginas - Editar',
-			        'id' => 'admin-paginas-editar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-paginas/editar/',
-			        'type' => 'system',
-			        'option' => 'editar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '36b79f4f7655d7cdfaec91e831e1fbc7',
-			            'css' => 'd41d8cd98f00b204e9800998ecf8427e',
-			            'combined' => '36b79f4f7655d7cdfaec91e831e1fbc7',
-			        ],
-			    ],
-			    [
-			        'name' => 'Admin Páginas - Adicionar',
-			        'id' => 'admin-paginas-adicionar',
-			        'layout' => 'layout-administrativo-do-gestor',
-			        'path' => 'admin-paginas/adicionar/',
-			        'type' => 'system',
-			        'option' => 'adicionar',
-			        'version' => '1.0',
-			        'checksum' => [
-			            'html' => '0880fe0c78efeb8d80cc7c1c07e8d2c5',
-			            'css' => '0c9ea4a87a3788f62f7e4e6e63c80a5e',
-			            'combined' => 'd2649ba963b679cd62adaee770d4a417',
-			        ],
-			    ],
-			],
-			'components' => [],
-		],
-	],
 			);
 		break;
 	}

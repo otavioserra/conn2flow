@@ -38,24 +38,24 @@ declare(strict_types=1);
 // =====================
 // Configuração Global
 // =====================
-global $LOG_FILE, $BASE_PATH, $DB_DATA_DIR, $BACKUP_DIR_BASE, $GLOBALS;
+global $LOG_FILE_DB, $BASE_PATH_DB, $DB_DATA_DIR, $BACKUP_DIR_BASE, $GLOBALS;
 
-$LOG_FILE = 'atualizacoes-bd';
-$BASE_PATH = realpath(dirname(__FILE__) . '/../../') . DIRECTORY_SEPARATOR;
-$DB_DATA_DIR = $BASE_PATH . 'db/data/';
-$BACKUP_DIR_BASE = $BASE_PATH . 'backups/atualizacoes/';
+$LOG_FILE_DB = 'atualizacoes-bd';
+$BASE_PATH_DB = realpath(dirname(__FILE__) . '/../../') . DIRECTORY_SEPARATOR;
+$DB_DATA_DIR = $BASE_PATH_DB . 'db/data/';
+$BACKUP_DIR_BASE = $BASE_PATH_DB . 'backups/atualizacoes/';
 
 // Bibliotecas
-require_once $BASE_PATH . 'bibliotecas/lang.php';
-require_once $BASE_PATH . 'bibliotecas/log.php';
+require_once $BASE_PATH_DB . 'bibliotecas/lang.php';
+require_once $BASE_PATH_DB . 'bibliotecas/log.php';
 
 // Gestor 
 global $_GESTOR;
 if (!isset($_GESTOR)) $_GESTOR = [];
-$_GESTOR['logs-path'] = $BASE_PATH . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR;
+$_GESTOR['logs-path'] = $BASE_PATH_DB . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR;
 if (!is_dir($_GESTOR['logs-path'])) @mkdir($_GESTOR['logs-path'], 0775, true);
 set_lang('pt-br');
-$localLangDir = $BASE_PATH . 'controladores/atualizacoes/lang/';
+$localLangDir = $BASE_PATH_DB . 'controladores/atualizacoes/lang/';
 if (is_dir($localLangDir)) {
     $localFile = $localLangDir . $GLOBALS['lang'] . '.json';
     if (file_exists($localFile)) {
@@ -71,7 +71,7 @@ function tr(string $key, array $vars = []): string { return __t($key, $vars); }
 
 /** Conexão PDO reutilizável */
 function db(): PDO {
-    global $BASE_PATH, $_BANCO, $CLI_OPTS, $_ENV;
+    global $BASE_PATH_DB, $_BANCO, $CLI_OPTS, $_ENV;
 
     static $pdo = null; if ($pdo) return $pdo;
 
@@ -87,7 +87,7 @@ function db(): PDO {
         }
     } else {
         // Reaproveita lógica do phinx.php para config
-        $configPath = $BASE_PATH . 'config.php';
+        $configPath = $BASE_PATH_DB . 'config.php';
         if (!file_exists($configPath)) throw new RuntimeException('config.php não encontrado para conectar banco.');
         require $configPath; // define $_BANCO
         $host = $_BANCO['host'] ?? 'localhost';
@@ -109,28 +109,28 @@ function db(): PDO {
  * Executa migrações usando phinx.
  */
 function migracoes(): array {
-    global $BASE_PATH, $LOG_FILE;
+    global $BASE_PATH_DB, $LOG_FILE_DB;
 
-    log_disco(tr('_migrations_start'), $LOG_FILE);
+    log_disco(tr('_migrations_start'), $LOG_FILE_DB);
 
     // Caminho do autoload
-    $autoload = $BASE_PATH . 'vendor/autoload.php';
+    $autoload = $BASE_PATH_DB . 'vendor/autoload.php';
     if (!file_exists($autoload)) {
         $msg = 'Autoload do Composer não encontrado em ' . $autoload;
-        log_disco($msg, $LOG_FILE);
+        log_disco($msg, $LOG_FILE_DB);
         throw new RuntimeException($msg);
     }
     require_once $autoload;
 
     // Localiza phinx.php (config array)
-    $phinxConfigFile = $BASE_PATH . 'phinx.php';
+    $phinxConfigFile = $BASE_PATH_DB . 'phinx.php';
     if (!file_exists($phinxConfigFile)) {
-        $repoRoot = realpath($BASE_PATH . '..') . DIRECTORY_SEPARATOR;
+        $repoRoot = realpath($BASE_PATH_DB . '..') . DIRECTORY_SEPARATOR;
         if (file_exists($repoRoot . 'phinx.php')) {
             $phinxConfigFile = $repoRoot . 'phinx.php';
         } else {
             $msg = 'Arquivo de configuração phinx.php não encontrado: ' . $phinxConfigFile;
-            log_disco($msg, $LOG_FILE);
+            log_disco($msg, $LOG_FILE_DB);
             throw new RuntimeException($msg);
         }
     }
@@ -138,7 +138,7 @@ function migracoes(): array {
     $rawConfig = require $phinxConfigFile; // retorna array
     if (!is_array($rawConfig)) {
         $msg = 'Configuração Phinx inválida (esperado array).';
-        log_disco($msg, $LOG_FILE);
+        log_disco($msg, $LOG_FILE_DB);
         throw new RuntimeException($msg);
     }
 
@@ -152,7 +152,7 @@ function migracoes(): array {
 
         // Ambiente alvo
         $env = $config->getDefaultEnvironment() ?: 'gestor';
-        log_disco('[DEBUG] MIGRATING ENV=' . $env, $LOG_FILE);
+        log_disco('[DEBUG] MIGRATING ENV=' . $env, $LOG_FILE_DB);
 
         // Executa as migrações pendentes
         $manager->migrate($env);
@@ -161,15 +161,15 @@ function migracoes(): array {
         if ($out !== '') {
             foreach (explode("\n", trim($out)) as $line) {
                 if ($line==='') continue;
-                log_disco('[PHINX] ' . $line, $LOG_FILE);
+                log_disco('[PHINX] ' . $line, $LOG_FILE_DB);
             }
         }
-        log_disco(tr('_migrations_done'), $LOG_FILE);
+        log_disco(tr('_migrations_done'), $LOG_FILE_DB);
         if (PHP_SAPI === 'cli') echo "[OK] Migrações concluídas via API interna!\n";
         return ['output' => $out];
     } catch (\Throwable $e) {
         $msg = 'Falha ao executar migrações via API: ' . $e->getMessage();
-        log_disco($msg, $LOG_FILE);
+        log_disco($msg, $LOG_FILE_DB);
         if (PHP_SAPI === 'cli') echo "[ERRO] $msg\n";
         throw $e;
     }
@@ -264,7 +264,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             $schemaCache[$tabela] = array_fill_keys(array_map(fn($c)=>$c['Field'], $cols), true);
         } catch (Throwable $e) {
             $schemaCache[$tabela] = null; // não conseguiu descobrir; não filtra
-            if ($debug) log_disco("WARN_SCHEMA tabela=$tabela msg=".encLog($e->getMessage()), $GLOBALS['LOG_FILE']);
+            if ($debug) log_disco("WARN_SCHEMA tabela=$tabela msg=".encLog($e->getMessage()), $GLOBALS['LOG_FILE_DB']);
         }
     }
     $allowedCols = $schemaCache[$tabela];
@@ -296,7 +296,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     $usarChaveNatural = in_array($tabela, $tabelasChaveNatural, true) && !$primeiroTemPk; // se JSON não possui mais a PK numérica
 
     if ($debug) {
-        log_disco("SYNC_INI tabela=$tabela modo=".($usarChaveNatural?'natural':'pk')." qtdJson=".count($registros), $GLOBALS['LOG_FILE']);
+        log_disco("SYNC_INI tabela=$tabela modo=".($usarChaveNatural?'natural':'pk')." qtdJson=".count($registros), $GLOBALS['LOG_FILE_DB']);
     }
 
     // Mapa de preservação para user_modified=1
@@ -344,7 +344,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         foreach ($dbRows as $exist) {
             $pkVal = (string)($exist[$pkDeclarada] ?? ''); if ($pkVal==='') continue;
             if (!isset($jsonByPk[$pkVal])) { 
-                if ($debug) log_disco("ORPHAN_DB_ROW tabela=$tabela pk=$pkVal", $GLOBALS['LOG_FILE']);
+                if ($debug) log_disco("ORPHAN_DB_ROW tabela=$tabela pk=$pkVal", $GLOBALS['LOG_FILE_DB']);
                 if ($orphansMode !== 'ignore') { $orphans[] = $exist; }
                 $same++; 
                 continue; 
@@ -373,12 +373,12 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                         else { $dest=$campo.'_updated'; if (isset($exist[$dest])||isset($row[$dest])) $diff[$dest]=$diff[$campo]; }
                         unset($diff[$campo]); $changedPreserved=true; }
                 }
-                if ($changedPreserved) { if (isset($exist['system_updated'])||isset($row['system_updated'])) $diff['system_updated']=1; if ($debug) log_disco("USER_MODIFIED_PRESERVADO $tabela pk=$pkVal", $GLOBALS['LOG_FILE']); }
+                if ($changedPreserved) { if (isset($exist['system_updated'])||isset($row['system_updated'])) $diff['system_updated']=1; if ($debug) log_disco("USER_MODIFIED_PRESERVADO $tabela pk=$pkVal", $GLOBALS['LOG_FILE_DB']); }
             }
             if ($diff) {
-                if ($simulate) { log_disco("SIMULATE_UPDATE $tabela pk=$pkVal campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE']); }
+                if ($simulate) { log_disco("SIMULATE_UPDATE $tabela pk=$pkVal campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE_DB']); }
                 else { $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff))); $sql="UPDATE `$tabela` SET $sets WHERE `$pkDeclarada`=:pk"; $stmt=$pdo->prepare($sql); $params=$diff; $params['pk']=$pkVal; $stmt->execute($params);}            
-                if ($logDiffs) { $pairs=[];$lim=0; foreach ($diff as $c=>$v){$pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(++$lim>=10){$pairs[]='...';break;}} log_disco(tr('_diff_update_detail',['tabela'=>$tabela,'pk'=>$pkVal,'campos'=>implode(', ',$pairs)]),$GLOBALS['LOG_FILE']); }
+                if ($logDiffs) { $pairs=[];$lim=0; foreach ($diff as $c=>$v){$pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(++$lim>=10){$pairs[]='...';break;}} log_disco(tr('_diff_update_detail',['tabela'=>$tabela,'pk'=>$pkVal,'campos'=>implode(', ',$pairs)]),$GLOBALS['LOG_FILE_DB']); }
                 $updated++; } else { $same++; }
         }
         foreach ($jsonByPk as $pkVal=>$row) {
@@ -387,8 +387,8 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             if (is_array($allowedCols)) { $row = array_intersect_key($row, $allowedCols); }
             $cols=array_keys($row); if(!$cols){ $same++; continue; }
             $placeholders=':'.implode(',:',$cols); $sql="INSERT INTO `$tabela`(".implode(',',array_map(fn($c)=>"`$c`",$cols)).") VALUES ($placeholders)";
-            if ($simulate) { log_disco("SIMULATE_INSERT $tabela pk=$pkVal",$GLOBALS['LOG_FILE']); $inserted++; continue; }
-            $stmt=$pdo->prepare($sql); $params=[]; foreach ($row as $c=>$v){$params[':'.$c]=$v;} try { $stmt->execute($params); $inserted++; } catch (PDOException $e){ if (stripos($e->getMessage(),'Duplicate entry')!==false){ log_disco("DUP_SKIP $tabela pk=$pkVal msg=".encLog($e->getMessage()),$GLOBALS['LOG_FILE']); $same++; } else { log_disco("ERROR_INSERT $tabela pk=$pkVal ex=".encLog($e->getMessage()),$GLOBALS['LOG_FILE']); throw $e; } }
+            if ($simulate) { log_disco("SIMULATE_INSERT $tabela pk=$pkVal",$GLOBALS['LOG_FILE_DB']); $inserted++; continue; }
+            $stmt=$pdo->prepare($sql); $params=[]; foreach ($row as $c=>$v){$params[':'.$c]=$v;} try { $stmt->execute($params); $inserted++; } catch (PDOException $e){ if (stripos($e->getMessage(),'Duplicate entry')!==false){ log_disco("DUP_SKIP $tabela pk=$pkVal msg=".encLog($e->getMessage()),$GLOBALS['LOG_FILE_DB']); $same++; } else { log_disco("ERROR_INSERT $tabela pk=$pkVal ex=".encLog($e->getMessage()),$GLOBALS['LOG_FILE_DB']); throw $e; } }
         }
         // Exportar órfãos se houver
         if ($orphans && $orphansMode === 'export') {
@@ -396,11 +396,11 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             if (!is_dir($dir)) @mkdir($dir, 0775, true);
             $file = $dir . $tabela . '-orphans-' . date('Ymd-His') . '.json';
             @file_put_contents($file, json_encode($orphans, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
-            log_disco("ORPHANS_EXPORTED tabela=$tabela qtd=".count($orphans)." arquivo=\"$file\"", $GLOBALS['LOG_FILE']);
+            log_disco("ORPHANS_EXPORTED tabela=$tabela qtd=".count($orphans)." arquivo=\"$file\"", $GLOBALS['LOG_FILE_DB']);
         } elseif ($orphans && $orphansMode === 'log') {
-            log_disco("ORPHANS_DETECTED tabela=$tabela qtd=".count($orphans), $GLOBALS['LOG_FILE']);
+            log_disco("ORPHANS_DETECTED tabela=$tabela qtd=".count($orphans), $GLOBALS['LOG_FILE_DB']);
         }
-        if ($debug) log_disco("SYNC_FIM tabela=$tabela +$inserted ~$updated =$same orphans=".count($orphans)." modo=pk", $GLOBALS['LOG_FILE']);
+        if ($debug) log_disco("SYNC_FIM tabela=$tabela +$inserted ~$updated =$same orphans=".count($orphans)." modo=pk", $GLOBALS['LOG_FILE_DB']);
         return ['inserted'=>$inserted,'updated'=>$updated,'same'=>$same];
     }
 
@@ -436,7 +436,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
 
     foreach ($registros as $row) {
         $k = $naturalKeyFn($tabela, $row);
-        if ($k===null) { if ($debug) log_disco("SKIP_INVALID_NATURAL_KEY tabela=$tabela row_sem_chave", $GLOBALS['LOG_FILE']); continue; }
+        if ($k===null) { if ($debug) log_disco("SKIP_INVALID_NATURAL_KEY tabela=$tabela row_sem_chave", $GLOBALS['LOG_FILE_DB']); continue; }
         // Normalizar linguagem (após gerar chave natural que aceita ambos os aliases)
         $normalizeLangRow($row);
         if (isset($dbIndex[$k])) {
@@ -457,9 +457,9 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 if (normalizeValue($vNew)!==normalizeValue($vOld)) { $diff[$c]=$vNew; $oldVals[$c]=$vOld; }
             }
             if (isset($exist['user_modified']) && (int)$exist['user_modified']===1 && isset($preserveMap[$tabela])) {
-                $changedPreserved=false; foreach ($preserveMap[$tabela] as $campo){ if(array_key_exists($campo,$diff)){ if($tabela==='variaveis' && $campo==='valor'){ if(isset($exist['value_updated'])||isset($row['value_updated'])) $diff['value_updated']=$diff[$campo]; } else { $dest=$campo.'_updated'; if(isset($exist[$dest])||isset($row[$dest])) $diff[$dest]=$diff[$campo]; } unset($diff[$campo]); $changedPreserved=true; }} if($changedPreserved){ if(isset($exist['system_updated'])||isset($row['system_updated'])) $diff['system_updated']=1; if ($debug) log_disco("USER_MODIFIED_PRESERVADO_NAT tabela=$tabela chave=$k", $GLOBALS['LOG_FILE']); }}
+                $changedPreserved=false; foreach ($preserveMap[$tabela] as $campo){ if(array_key_exists($campo,$diff)){ if($tabela==='variaveis' && $campo==='valor'){ if(isset($exist['value_updated'])||isset($row['value_updated'])) $diff['value_updated']=$diff[$campo]; } else { $dest=$campo.'_updated'; if(isset($exist[$dest])||isset($row[$dest])) $diff[$dest]=$diff[$campo]; } unset($diff[$campo]); $changedPreserved=true; }} if($changedPreserved){ if(isset($exist['system_updated'])||isset($row['system_updated'])) $diff['system_updated']=1; if ($debug) log_disco("USER_MODIFIED_PRESERVADO_NAT tabela=$tabela chave=$k", $GLOBALS['LOG_FILE_DB']); }}
             if ($diff) {
-                if ($simulate) { log_disco("SIMULATE_UPDATE_NAT tabela=$tabela chave=$k campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE']); }
+                if ($simulate) { log_disco("SIMULATE_UPDATE_NAT tabela=$tabela chave=$k campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE_DB']); }
                 else {
                     // Atualiza via chave natural (WHERE pelos campos da chave) ou via PK se disponível
                     $whereSql=''; $params=$diff;
@@ -491,7 +491,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                     $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff)));
                     $sql="UPDATE `$tabela` SET $sets $whereSql"; $stmt=$pdo->prepare($sql); $stmt->execute($params);
                 }
-                if ($logDiffs) { $pairs=[];$lim=0; foreach ($diff as $c=>$v){$pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(++$lim>=10){$pairs[]='...';break;}} log_disco(tr('_diff_update_detail',['tabela'=>$tabela,'pk'=>$k,'campos'=>implode(', ',$pairs)]),$GLOBALS['LOG_FILE']); }
+                if ($logDiffs) { $pairs=[];$lim=0; foreach ($diff as $c=>$v){$pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(++$lim>=10){$pairs[]='...';break;}} log_disco(tr('_diff_update_detail',['tabela'=>$tabela,'pk'=>$k,'campos'=>implode(', ',$pairs)]),$GLOBALS['LOG_FILE_DB']); }
                 $updated++;
             } else { $same++; }
         } else {
@@ -523,7 +523,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                     $diff['linguagem_codigo'] = $diff['language']; unset($diff['language']);
                 }
                 if ($diff) {
-                    if ($simulate) { log_disco("SIMULATE_UPDATE_FALLBACK_NAT tabela=$tabela fallback=$fallbackKey campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE']); }
+                    if ($simulate) { log_disco("SIMULATE_UPDATE_FALLBACK_NAT tabela=$tabela fallback=$fallbackKey campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE_DB']); }
                     else {
                         // WHERE por PK numérica se existir senão por combinação fallback + language IS NULL
                         $whereSql=''; $params=$diff;
@@ -538,7 +538,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                         $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff)));
                         $sql="UPDATE `$tabela` SET $sets $whereSql"; $stmt=$pdo->prepare($sql); $stmt->execute($params);
                     }
-                    if ($logDiffs) { $pairs=[]; foreach ($diff as $c=>$v){ $pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(count($pairs)>=10){$pairs[]='...';break;} } log_disco("FALLBACK_UPDATE_NAT tabela=$tabela chave=$fallbackKey campos=".implode(', ',$pairs), $GLOBALS['LOG_FILE']); }
+                    if ($logDiffs) { $pairs=[]; foreach ($diff as $c=>$v){ $pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(count($pairs)>=10){$pairs[]='...';break;} } log_disco("FALLBACK_UPDATE_NAT tabela=$tabela chave=$fallbackKey campos=".implode(', ',$pairs), $GLOBALS['LOG_FILE_DB']); }
                     $updated++;
                 } else { $same++; }
             } else {
@@ -549,10 +549,10 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 $colsFiltradas = array_filter($cols, fn($c)=>!preg_match('/^id_/', $c)); // evitar enviar id_paginas etc caso apareça
                 $placeholders = ':'.implode(',:',$colsFiltradas);
                 $sql = "INSERT INTO `$tabela` (".implode(',',array_map(fn($c)=>"`$c`",$colsFiltradas)).") VALUES ($placeholders)";
-                if ($simulate) { log_disco("SIMULATE_INSERT_NAT tabela=$tabela chave=$k", $GLOBALS['LOG_FILE']); $inserted++; }
+                if ($simulate) { log_disco("SIMULATE_INSERT_NAT tabela=$tabela chave=$k", $GLOBALS['LOG_FILE_DB']); $inserted++; }
                 else {
                     $stmt=$pdo->prepare($sql); $params=[]; foreach ($colsFiltradas as $c){ $params[':'.$c]=$row[$c]; } try { $stmt->execute($params); $inserted++; }
-                    catch (PDOException $e){ if (stripos($e->getMessage(),'Duplicate entry')!==false){ log_disco("DUP_SKIP_NAT tabela=$tabela chave=$k msg=".encLog($e->getMessage()),$GLOBALS['LOG_FILE']); $same++; } else { log_disco("ERROR_INSERT_NAT tabela=$tabela chave=$k ex=".encLog($e->getMessage()),$GLOBALS['LOG_FILE']); throw $e; } }
+                    catch (PDOException $e){ if (stripos($e->getMessage(),'Duplicate entry')!==false){ log_disco("DUP_SKIP_NAT tabela=$tabela chave=$k msg=".encLog($e->getMessage()),$GLOBALS['LOG_FILE_DB']); $same++; } else { log_disco("ERROR_INSERT_NAT tabela=$tabela chave=$k ex=".encLog($e->getMessage()),$GLOBALS['LOG_FILE_DB']); throw $e; } }
                 }
             }
         }
@@ -564,7 +564,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     foreach ($registros as $row) { $nk=$naturalKeyFn($tabela,$row); if($nk!==null) $jsonKeys[$nk]=true; }
     foreach ($dbIndex as $nk=>$exist) {
         if (!isset($jsonKeys[$nk])) {
-            if ($debug) log_disco("ORPHAN_DB_ROW_NAT tabela=$tabela chave=$nk", $GLOBALS['LOG_FILE']);
+            if ($debug) log_disco("ORPHAN_DB_ROW_NAT tabela=$tabela chave=$nk", $GLOBALS['LOG_FILE_DB']);
             if ($orphansMode !== 'ignore') { $orphans[] = $exist; }
         }
     }
@@ -574,12 +574,12 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         if (!is_dir($dir)) @mkdir($dir, 0775, true);
         $file = $dir . $tabela . '-orphans-' . date('Ymd-His') . '.json';
         @file_put_contents($file, json_encode($orphans, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
-    log_disco("ORPHANS_EXPORTED tabela=$tabela qtd=".count($orphans)." arquivo=\"$file\"", $GLOBALS['LOG_FILE']);
+    log_disco("ORPHANS_EXPORTED tabela=$tabela qtd=".count($orphans)." arquivo=\"$file\"", $GLOBALS['LOG_FILE_DB']);
     } elseif ($orphans && $orphansMode === 'log') {
-        log_disco("ORPHANS_DETECTED tabela=$tabela qtd=".count($orphans), $GLOBALS['LOG_FILE']);
+        log_disco("ORPHANS_DETECTED tabela=$tabela qtd=".count($orphans), $GLOBALS['LOG_FILE_DB']);
     }
 
-    if ($debug) log_disco("SYNC_FIM tabela=$tabela +$inserted ~$updated =$same orphans=".count($orphans)." modo=natural", $GLOBALS['LOG_FILE']);
+    if ($debug) log_disco("SYNC_FIM tabela=$tabela +$inserted ~$updated =$same orphans=".count($orphans)." modo=natural", $GLOBALS['LOG_FILE_DB']);
     return ['inserted'=>$inserted,'updated'=>$updated,'same'=>$same];
 }
 
@@ -607,8 +607,8 @@ function normalizeValue($value): string {
 }
 
 function comparacaoDados(): array {
-    global $DB_DATA_DIR, $LOG_FILE, $CLI_OPTS, $CHECKSUM_CHANGED_TABLES;
-    log_disco(tr('_compare_start'), $LOG_FILE);
+    global $DB_DATA_DIR, $LOG_FILE_DB, $CLI_OPTS, $CHECKSUM_CHANGED_TABLES;
+    log_disco(tr('_compare_start'), $LOG_FILE_DB);
     $arquivos = glob($DB_DATA_DIR . '*Data.json');
     // Filtro --tables opcional
     if (!empty($CLI_OPTS['tables'])) {
@@ -616,14 +616,14 @@ function comparacaoDados(): array {
         $arquivos = array_values(array_filter($arquivos, function($f) use ($filter){
             $t = tabelaFromDataFile($f); return in_array(strtolower($t), $filter, true);
         }));
-        log_disco(tr('_filter_tables',[ 'lista'=>implode(',', array_map(fn($f)=>tabelaFromDataFile($f), $arquivos))]), $LOG_FILE);
+        log_disco(tr('_filter_tables',[ 'lista'=>implode(',', array_map(fn($f)=>tabelaFromDataFile($f), $arquivos))]), $LOG_FILE_DB);
     }
     $pdo = db();
     $resumo = [];
     foreach ($arquivos as $file) {
         $tabela = tabelaFromDataFile($file);
         if (is_array($CHECKSUM_CHANGED_TABLES) && !in_array($tabela, $CHECKSUM_CHANGED_TABLES, true)) {
-            log_disco("SKIP_NO_CHECKSUM_CHANGE tabela=$tabela", $LOG_FILE);
+            log_disco("SKIP_NO_CHECKSUM_CHANGE tabela=$tabela", $LOG_FILE_DB);
             continue;
         }
         $registros = loadDataFile($file);
@@ -655,10 +655,10 @@ function comparacaoDados(): array {
                 $r += ['user_modified'=>0,'system_updated'=>0,'value_updated'=>null];
             } unset($r);
         }
-        if (!$registros) { log_disco(tr('_compare_no_changes',['tabela'=>$tabela]), $LOG_FILE); continue; }
-        log_disco(tr('_executing_table',['tabela'=>$tabela]), $LOG_FILE);
+        if (!$registros) { log_disco(tr('_compare_no_changes',['tabela'=>$tabela]), $LOG_FILE_DB); continue; }
+        log_disco(tr('_executing_table',['tabela'=>$tabela]), $LOG_FILE_DB);
         $resultado = sincronizarTabela($pdo, $tabela, $registros, !empty($CLI_OPTS['log-diff']), !empty($CLI_OPTS['dry-run']));
-        log_disco(tr('_compare_summary', ['tabela'=>$tabela,'ins'=>$resultado['inserted'],'upd'=>$resultado['updated'],'same'=>$resultado['same']]), $LOG_FILE);
+        log_disco(tr('_compare_summary', ['tabela'=>$tabela,'ins'=>$resultado['inserted'],'upd'=>$resultado['updated'],'same'=>$resultado['same']]), $LOG_FILE_DB);
         $resumo[$tabela]=$resultado;
     }
     return $resumo;
@@ -666,34 +666,34 @@ function comparacaoDados(): array {
 
 /** Executa backup JSON de tabelas antes das alterações. */
 function executarBackup(PDO $pdo, array $tabelas, string $dirBase): string {
-    global $LOG_FILE;
+    global $LOG_FILE_DB;
     $timestampDir = $dirBase . date('Ymd-His') . '/';
     if (!is_dir($timestampDir) && !@mkdir($timestampDir, 0775, true)) {
-        log_disco(tr('_backup_error',[ 'msg'=>'mkdir fail '.$timestampDir ]), $LOG_FILE);
+        log_disco(tr('_backup_error',[ 'msg'=>'mkdir fail '.$timestampDir ]), $LOG_FILE_DB);
         return '';
     }
-    log_disco(tr('_backup_start',[ 'dir'=>$timestampDir ]), $LOG_FILE);
+    log_disco(tr('_backup_start',[ 'dir'=>$timestampDir ]), $LOG_FILE_DB);
     foreach ($tabelas as $t) {
         try {
             $rows = $pdo->query("SELECT * FROM `$t`")->fetchAll(PDO::FETCH_ASSOC);
             file_put_contents($timestampDir . $t . '.json', json_encode($rows, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
-            log_disco(tr('_backup_table_done',[ 'tabela'=>$t, 'qtd'=>count($rows) ]), $LOG_FILE);
+            log_disco(tr('_backup_table_done',[ 'tabela'=>$t, 'qtd'=>count($rows) ]), $LOG_FILE_DB);
         } catch (Throwable $e) {
-            log_disco(tr('_backup_table_error',[ 'tabela'=>$t, 'msg'=>$e->getMessage() ]), $LOG_FILE);
+            log_disco(tr('_backup_table_error',[ 'tabela'=>$t, 'msg'=>$e->getMessage() ]), $LOG_FILE_DB);
         }
     }
-    log_disco(tr('_backup_complete'), $LOG_FILE);
+    log_disco(tr('_backup_complete'), $LOG_FILE_DB);
     return $timestampDir;
 }
 
 /** Exporta dados do banco para arquivos *Data.json (modo reverso) */
 function reverseExport(PDO $pdo, array $tabelas, string $dataDir): void {
-    global $LOG_FILE;
-    log_disco(tr('_reverse_start'), $LOG_FILE);
+    global $LOG_FILE_DB;
+    log_disco(tr('_reverse_start'), $LOG_FILE_DB);
     foreach ($tabelas as $t) {
         try {
             $rows = $pdo->query("SELECT * FROM `$t`")->fetchAll(PDO::FETCH_ASSOC);
-            if (!$rows) { log_disco(tr('_reverse_empty',[ 'tabela'=>$t ]), $LOG_FILE); continue; }
+            if (!$rows) { log_disco(tr('_reverse_empty',[ 'tabela'=>$t ]), $LOG_FILE_DB); continue; }
             $fileName = dataFileNameFromTable($t);
             $dest = $dataDir . $fileName;
             // backup antigo se existir
@@ -701,12 +701,12 @@ function reverseExport(PDO $pdo, array $tabelas, string $dataDir): void {
                 @rename($dest, $dest . '.bak.' . date('Ymd-His'));
             }
             file_put_contents($dest, json_encode($rows, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
-            log_disco(tr('_reverse_table_done',[ 'tabela'=>$t, 'qtd'=>count($rows) ]), $LOG_FILE);
+            log_disco(tr('_reverse_table_done',[ 'tabela'=>$t, 'qtd'=>count($rows) ]), $LOG_FILE_DB);
         } catch (Throwable $e) {
-            log_disco(tr('_reverse_table_error',[ 'tabela'=>$t, 'msg'=>$e->getMessage() ]), $LOG_FILE);
+            log_disco(tr('_reverse_table_error',[ 'tabela'=>$t, 'msg'=>$e->getMessage() ]), $LOG_FILE_DB);
         }
     }
-    log_disco(tr('_reverse_complete'), $LOG_FILE);
+    log_disco(tr('_reverse_complete'), $LOG_FILE_DB);
 }
 
 /** Converte nome de tabela snake_case para PascalCase *Data.json */
@@ -716,7 +716,7 @@ function dataFileNameFromTable(string $tabela): string {
 }
 
 function relatorioFinal(array $resumo): void {
-    global $LOG_FILE;
+    global $LOG_FILE_DB;
     $totalIns=$totalUpd=$totalSame=0; foreach ($resumo as $r){$totalIns+=$r['inserted'];$totalUpd+=$r['updated'];$totalSame+=$r['same'];}
     $msg = "📝 " . tr('_final_report') . PHP_EOL
         . str_repeat('═',50) . PHP_EOL;
@@ -724,20 +724,20 @@ function relatorioFinal(array $resumo): void {
         $msg .= sprintf("📦 %s => +%d ~%d =%d" . PHP_EOL, $tab, $r['inserted'],$r['updated'],$r['same']);
     }
     $msg .= "Σ TOTAL => +$totalIns ~${totalUpd} =${totalSame}" . PHP_EOL;
-    log_disco($msg, $LOG_FILE); if (PHP_SAPI === 'cli') echo $msg;
+    log_disco($msg, $LOG_FILE_DB); if (PHP_SAPI === 'cli') echo $msg;
 }
 
 function main() {
-    global $LOG_FILE, $CLI_OPTS, $BACKUP_DIR_BASE, $DB_DATA_DIR, $CHECKSUM_CHANGED_TABLES;
+    global $LOG_FILE_DB, $CLI_OPTS, $BACKUP_DIR_BASE, $DB_DATA_DIR, $CHECKSUM_CHANGED_TABLES;
 
     try {
-        log_disco(tr('_process_start'), $LOG_FILE);
+        log_disco(tr('_process_start'), $LOG_FILE_DB);
         // Verificar .env para ambiente de testes (parametrizado)
         $envFolder = $CLI_OPTS['env-dir'] ?? 'localhost';
         $envDir = __DIR__ . '/../../autenticacoes/' . $envFolder . '/';
         if (!file_exists($envDir . '.env')) {
-            log_disco(tr('_env_missing'), $LOG_FILE);
-            log_disco(tr('_hint_sync'), $LOG_FILE);
+            log_disco(tr('_env_missing'), $LOG_FILE_DB);
+            log_disco(tr('_hint_sync'), $LOG_FILE_DB);
             throw new RuntimeException('Ambiente não sincronizado (.env ausente).');
         }
         if (!empty($CLI_OPTS['reverse'])) {
@@ -751,11 +751,11 @@ function main() {
                 $tabelas = array_values(array_filter($tabelas, fn($t)=>in_array(strtolower($t), $filter, true)));
             }
             reverseExport($pdo, $tabelas, $DB_DATA_DIR);
-            log_disco(tr('_process_end_success'), $LOG_FILE);
+            log_disco(tr('_process_end_success'), $LOG_FILE_DB);
             return;
         }
-        if (!empty($CLI_OPTS['dry-run'])) log_disco(tr('_dry_run_mode'), $LOG_FILE);
-        if (empty($CLI_OPTS['skip-migrate'])) { migracoes(); } else { log_disco(tr('_skip_migrations'), $LOG_FILE); }
+        if (!empty($CLI_OPTS['dry-run'])) log_disco(tr('_dry_run_mode'), $LOG_FILE_DB);
+        if (empty($CLI_OPTS['skip-migrate'])) { migracoes(); } else { log_disco(tr('_skip_migrations'), $LOG_FILE_DB); }
 
         // Cálculo de checksums (garante que migration criou manager_updates)
         $pdo = db();
@@ -772,7 +772,7 @@ function main() {
             $prevRow = $stmtPrev->fetch(PDO::FETCH_ASSOC);
             if ($prevRow) { $previousMap = json_decode($prevRow['db_checksum'] ?? '[]', true) ?: []; }
         } catch (Throwable $e) {
-            log_disco('WARN lendo manager_updates: '.encLog($e->getMessage()), $LOG_FILE);
+            log_disco('WARN lendo manager_updates: '.encLog($e->getMessage()), $LOG_FILE_DB);
         }
 
         if ($previousMap && !$forceAll) {
@@ -782,14 +782,14 @@ function main() {
             }
             if ($changed) {
                 $CHECKSUM_CHANGED_TABLES = $changed;
-                log_disco('CHECKSUM_CHANGED_TABLES='.implode(',', $changed), $LOG_FILE);
+                log_disco('CHECKSUM_CHANGED_TABLES='.implode(',', $changed), $LOG_FILE_DB);
             } else {
                 $CHECKSUM_CHANGED_TABLES = []; // nenhuma mudou
-                log_disco('CHECKSUM_NENHUMA_TABELA_MUDOU', $LOG_FILE);
+                log_disco('CHECKSUM_NENHUMA_TABELA_MUDOU', $LOG_FILE_DB);
             }
         } else {
-            if ($forceAll) { log_disco('FORCE_ALL_TABELAS', $LOG_FILE); }
-            elseif (!$previousMap) { log_disco('CHECKSUM_PRIMEIRA_ATUALIZACAO', $LOG_FILE); }
+            if ($forceAll) { log_disco('FORCE_ALL_TABELAS', $LOG_FILE_DB); }
+            elseif (!$previousMap) { log_disco('CHECKSUM_PRIMEIRA_ATUALIZACAO', $LOG_FILE_DB); }
         }
         // Backup opcional
         if (!empty($CLI_OPTS['backup'])) {
@@ -803,7 +803,7 @@ function main() {
             $backupPath = executarBackup($pdo, $tabelas, $BACKUP_DIR_BASE);
         } else { $backupPath = null; }
         if (is_array($CHECKSUM_CHANGED_TABLES) && count($CHECKSUM_CHANGED_TABLES) === 0) {
-            log_disco('SEM_MUDANCAS_DADOS -> pulando sincronizacao', $LOG_FILE);
+            log_disco('SEM_MUDANCAS_DADOS -> pulando sincronizacao', $LOG_FILE_DB);
             $resumo = [];
         } else {
             $resumo = comparacaoDados();
@@ -813,14 +813,14 @@ function main() {
             $versao = $GLOBALS['_GESTOR']['versao'] ?? null;
             $ins = $pdo->prepare('INSERT INTO manager_updates (db_checksum, backup_path, version, date) VALUES (:c,:b,:v,NOW())');
             $ins->execute([':c'=>$checksumsJson, ':b'=>$backupPath, ':v'=>$versao]);
-            log_disco('MANAGER_UPDATES_REGISTRADO id='.$pdo->lastInsertId(), $LOG_FILE);
+            log_disco('MANAGER_UPDATES_REGISTRADO id='.$pdo->lastInsertId(), $LOG_FILE_DB);
         } catch (Throwable $e) {
-            log_disco('WARN registrar manager_updates: '.encLog($e->getMessage()), $LOG_FILE);
+            log_disco('WARN registrar manager_updates: '.encLog($e->getMessage()), $LOG_FILE_DB);
         }
         relatorioFinal($resumo);
-        log_disco(tr('_process_end_success'), $LOG_FILE);
+        log_disco(tr('_process_end_success'), $LOG_FILE_DB);
     } catch (Throwable $e) {
-        log_disco(tr('_process_error',['msg'=>$e->getMessage()]), $LOG_FILE);
+        log_disco(tr('_process_error',['msg'=>$e->getMessage()]), $LOG_FILE_DB);
         if (PHP_SAPI === 'cli') echo 'Erro: ' . $e->getMessage() . PHP_EOL;
     }
 }
@@ -839,7 +839,7 @@ function parseArgs(array $argv): array {
 
 // Permite execução via require/include (web) usando $GLOBALS['CLI_OPTS'] (opcional), ou via CLI.
 if (PHP_SAPI !== 'cli') {
-    global $CLI_OPTS;
+    global $CLI_OPTS, $GLOBALS;
     if (isset($GLOBALS['CLI_OPTS']) && is_array($GLOBALS['CLI_OPTS'])) {
         $CLI_OPTS = $GLOBALS['CLI_OPTS'];
     } else {

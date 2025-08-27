@@ -146,6 +146,15 @@ function banco_row_array($result){
 		return mysqli_fetch_array($result);
 }
 
+function banco_fetch_assoc($result){
+	global $_BANCO;
+	// Retorna próxima linha como array associativo ou null.
+	if($_BANCO['tipo'] == "mysqli"){
+		return mysqli_fetch_assoc($result);
+	}
+	return null;
+}
+
 function banco_sql($sql){
 	$res = banco_query($sql);
 	

@@ -2224,6 +2224,294 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-title",
+        "valor": "Atualizações do Sistema",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-run-button",
+        "valor": "Executar Atualização",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-view-log-button",
+        "valor": "Ver Log",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-last-run",
+        "valor": "Última Execução",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-actions",
+        "valor": "Ações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-detail-title",
+        "valor": "Detalhe da Atualização",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-log-title",
+        "valor": "Log da Execução",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-date",
+        "valor": "Data",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-log",
+        "valor": "Log",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-plan-json",
+        "valor": "Plano JSON",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-full",
+        "valor": "Full",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-files",
+        "valor": "Arquivos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-db",
+        "valor": "Banco",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-back-button",
+        "valor": "Voltar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-select-log-plan",
+        "valor": "Selecione um log ou plano.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-invalid-log",
+        "valor": "Log inválido",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-invalid-plan",
+        "valor": "Plano inválido",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-no-records",
+        "valor": "Nenhuma atualização registrada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-title",
+        "valor": "Histórico de Execuções",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-started",
+        "valor": "Início",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-tag",
+        "valor": "Tag",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-mode",
+        "valor": "Modo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-removed",
+        "valor": "Remov.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-copied",
+        "valor": "Copiados",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-finished",
+        "valor": "Fim",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-cancel",
+        "valor": "Cancelar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-recent-logs",
+        "valor": "Logs Recentes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-progress",
+        "valor": "Progresso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-go-disparar",
+        "valor": "Página Disparar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-advanced-options",
+        "valor": "Opções Avançadas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "admin-categorias",
         "id": "form-name-label",
         "valor": "Nome",

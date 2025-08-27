@@ -52,9 +52,27 @@
             "command": "php ./gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php"
         },
         {
+            "label": "🖥️ Atualização - Sincronizar Gestor",
+            "type": "shell",
+            "command": "bash docker/utils/sincroniza-gestor.sh checksum"
+        },
+        {
             "label": "🖥️ Atualização - Dados",
             "type": "shell",
             "command": "docker exec conn2flow-app bash -c \"php /var/www/sites/localhost/conn2flow-gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php --debug --log-diff\""
+        },
+        {
+            "label": "🖥️ Atualização - COMPLETA 🚀",
+            // Note que esta tarefa NÃO tem a propriedade "command".
+            // Ela serve apenas para orquestrar as outras.
+            "dependsOn": [
+                // Coloque aqui os "labels" EXATOS das tarefas que você quer executar, na ordem.
+                "🖥️ Atualização - Recursos",
+                "🖥️ Atualização - Sincronizar Gestor",
+                "🖥️ Atualização - Dados"
+            ],
+            // Esta é a propriedade mágica que garante a execução em sequência!
+            "dependsOrder": "sequence"
         },
         {
             "label": "♻️ Sincronização - Sincronizar Gestor",

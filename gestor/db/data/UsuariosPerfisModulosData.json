@@ -88,5 +88,10 @@
         "id_usuarios_perfis_modulos": "18",
         "perfil": "administradores",
         "modulo": "usuarios-hospedeiro-perfis-admin"
+    },
+    {
+        "id_usuarios_perfis_modulos": "19",
+        "perfil": "administradores",
+        "modulo": "admin-atualizacoes"
     }
 ]

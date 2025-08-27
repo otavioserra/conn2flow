@@ -85,3 +85,5 @@ mv gestor.zip gestor.zip.sha256 "$OUT_DIR"/
 
 echo "[local-build] Artefatos gerados em: $OUT_DIR" >&2
 ls -l "$OUT_DIR" | sed 's/^/[local-build] /'
+
+docker exec conn2flow-app bash -c "chown -R www-data:www-data /var/www/sites/localhost/conn2flow-github/"

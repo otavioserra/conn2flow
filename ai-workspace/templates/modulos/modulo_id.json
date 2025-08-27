@@ -1,0 +1,47 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "nome_tabela_banco",
+        "id": "id",
+        "id_numerico": "id_nome_tabela_banco",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Nome Livre",
+                    "id": "modulo-id-opcao",
+                    "layout": "layout-id",
+                    "path": "modulo-id/opcao/",
+                    "type": "system|page",
+                    "option": "opcao",
+                    "root": true,
+                    "version": "1.0"
+                }
+            ],
+            "components": [
+                {
+                    "name": "Nome Livre",
+                    "id": "identificador-unico-do-componente-dentro-do-modulo",
+                    "version": "1.0"
+                }
+            ],
+            "variables": [
+                {
+                    "id": "identificador-unico-da-variavel-dentro-do-modulo",
+                    "value": "valor da variável",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

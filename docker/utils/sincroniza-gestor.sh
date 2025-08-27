@@ -10,6 +10,7 @@
 # Caminhos absolutos para garantir execução de qualquer lugar
 ORIGEM="/c/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/"
 DESTINO="/c/Users/otavi/OneDrive/Documentos/GIT/conn2flow/docker/dados/sites/localhost/conn2flow-gestor/"
+PATH_DOCKER="/var/www/sites/localhost/conn2flow-gestor/"
 
 # Modo de sincronização: padrao (default), checksum, forcar
 MODO=${1:-padrao}
@@ -35,6 +36,9 @@ esac
 
 # Executa o comando escolhido
 "${CMD[@]}"
+
+# Atualiza permissões de pasta
+docker exec conn2flow-app bash -c "chown -R www-data:www-data $PATH_DOCKER"
 
 # Mensagem final
 if [ $? -eq 0 ]; then

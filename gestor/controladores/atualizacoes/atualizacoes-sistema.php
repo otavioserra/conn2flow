@@ -30,7 +30,14 @@ class IntegrityException extends RuntimeException {}
 // ----------------------------
 // Contexto Global (imutável após init)
 // ----------------------------
-$BASE_PATH = realpath(__DIR__ . '/../../') . DIRECTORY_SEPARATOR; // gestor/
+// Preferir raiz já definida pelo core do Gestor (config.php) quando disponível.
+global $_GESTOR, $BASE_PATH, $LOGS_DIR, $TEMP_DIR, $LOG_FILE, $CONTEXT;
+
+if (isset($_GESTOR) && !empty($_GESTOR['ROOT_PATH'])) {
+    $BASE_PATH = rtrim($_GESTOR['ROOT_PATH'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR; // raiz gestor
+} else {
+    $BASE_PATH = realpath(__DIR__ . '/../../') . DIRECTORY_SEPARATOR; // fallback CLI/include direto
+}
 $LOGS_DIR  = $BASE_PATH . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR;
 $TEMP_DIR  = $BASE_PATH . 'temp' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR;
 @is_dir($LOGS_DIR) || @mkdir($LOGS_DIR, 0775, true);
@@ -53,17 +60,119 @@ $CONTEXT = [
     'mode' => 'full',
     'release_tag' => null,
     'debug' => false,
+    // Execução web incremental
+    'session_id' => null,
+    'session_log' => null,
 ];
 
 // ----------------------------
 // Logging Helpers
 // ----------------------------
 function logAtualizacao(string $msg, string $level = 'INFO', bool $force = false): void {
-    global $LOG_FILE, $CONTEXT;
+    global $LOG_FILE, $CONTEXT, $BASE_PATH;
+    // Fallback defensivo: se LOG_FILE não inicializado (ex: include parcial), reconstruir
+    if (empty($LOG_FILE) || !is_string($LOG_FILE)) {
+        $logsDir = $BASE_PATH . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR;
+        @is_dir($logsDir) || @mkdir($logsDir,0775,true);
+        $LOG_FILE = $logsDir.'atualizacoes-sistema-'.date('Ymd').'.log';
+    }
     if (!$force && $level === 'DEBUG' && empty($CONTEXT['debug'])) return; // ignora debug se não ativado
     $ts = date('Y-m-d H:i:s');
-    $line = "[$ts][$level] $msg" . PHP_EOL;
-    file_put_contents($LOG_FILE, $line, FILE_APPEND | LOCK_EX);
+    // Prefixa ID de sessão (execução web) para facilitar rastreio cruzado no log diário
+    $prefixSess = $CONTEXT['session_id'] ? '[SID:'.$CONTEXT['session_id'].']' : '';
+    $line = "[$ts][$level]$prefixSess $msg" . PHP_EOL;
+    if (is_string($LOG_FILE)) {
+        @file_put_contents($LOG_FILE, $line, FILE_APPEND | LOCK_EX);
+    }
+    // Também grava em log dedicado da sessão web (se existir)
+    if (!empty($CONTEXT['session_log']) && is_string($CONTEXT['session_log'])) {
+        @file_put_contents($CONTEXT['session_log'], $line, FILE_APPEND | LOCK_EX);
+    }
+}
+
+// ----------------------------
+// Persistência (tabela atualizacoes_execucoes) - utilitários simples
+// ----------------------------
+function db_exec_insert(array $data): ?int {
+    // Usa funções banco_* se disponíveis no runtime do gestor
+    if(!function_exists('banco_insert_name_campo')) return null;
+    foreach($data as $k=>$v){
+        if($v===null){ banco_insert_name_campo($k,'NULL',true,true); }
+        elseif(is_int($v) || is_float($v)){ banco_insert_name_campo($k,(string)$v,true,true); }
+        else { banco_insert_name_campo($k,(string)$v,false,true); }
+    }
+    banco_insert_name(banco_insert_name_campos(),'atualizacoes_execucoes');
+    if(function_exists('mysqli_insert_id')){ global $_BANCO; if(isset($_BANCO['conexao'])) return (int)mysqli_insert_id($_BANCO['conexao']); }
+    return null;
+}
+function db_exec_update(int $id, array $fields): void {
+    if(!function_exists('banco_query')) return; if(!$id) return;
+    $sets=[]; foreach($fields as $k=>$v){ if($v===null) $sets[]="$k=NULL"; else { $val=function_exists('banco_escape_field')?banco_escape_field((string)$v):addslashes((string)$v); $sets[]="$k='".$val."'"; } }
+    if(!$sets) return; $sql='UPDATE atualizacoes_execucoes SET '.implode(',',$sets)." WHERE id_atualizacoes_execucoes=".(int)$id.' LIMIT 1'; banco_query($sql);
+}
+function persist_inicio_execucao(array $ctx): ?int {
+    $data=[
+        'session_id'=>$ctx['session_id']??null,
+        'modo'=>$ctx['mode']??null,
+        'release_tag'=>$ctx['release_tag']??null,
+        'checksum'=>is_array($ctx['checksum']??null)?($ctx['checksum']['value']??null):($ctx['checksum']??null),
+        'env_added'=>isset($ctx['env_merge']['added'])?count($ctx['env_merge']['added']):0,
+        'stats_removed'=>null,
+        'stats_copied'=>null,
+        'started_at'=>date('Y-m-d H:i:s'),
+        'status'=>'running',
+        'exit_code'=>null,
+        'created_at'=>date('Y-m-d H:i:s'),
+        'updated_at'=>date('Y-m-d H:i:s'),
+    ];
+    return db_exec_insert($data);
+}
+function persist_parcial_execucao(int $id, array $ctx): void {
+    if(!$id) return; $stats=$ctx['plan']['stats']??[]; db_exec_update($id,[
+        'env_added'=>isset($ctx['env_merge']['added'])?count($ctx['env_merge']['added']):0,
+        'stats_removed'=>$stats['removed']??null,
+        'stats_copied'=>$stats['copied']??null,
+        'updated_at'=>date('Y-m-d H:i:s'),
+    ]);
+}
+function persist_final_execucao(int $id, array $ctx, int $exitCode, ?string $erro=null): void {
+    if(!$id) return; $stats=$ctx['plan']['stats']??[];
+    // Se stats vazios, tenta extrair de arquivo plano recente gerado nesta execução
+    if((!isset($stats['removed']) || !isset($stats['copied'])) && isset($ctx['last_plan_file']) && is_file($ctx['last_plan_file'])){
+        $planJson = json_decode(@file_get_contents($ctx['last_plan_file']), true);
+        if(is_array($planJson) && isset($planJson['stats'])) $stats = $planJson['stats'];
+    }
+    // Se ainda não temos stats, preservar valores já existentes na linha (evitar sobrescrever com NULL)
+    if(!isset($stats['removed']) || !isset($stats['copied'])){
+        $row = db_exec_select_rows('SELECT stats_removed,stats_copied FROM atualizacoes_execucoes WHERE id_atualizacoes_execucoes='.(int)$id.' LIMIT 1');
+        if($row && isset($row[0])){
+            if(!isset($stats['removed']) && isset($row[0]['stats_removed'])) $stats['removed'] = $row[0]['stats_removed'];
+            if(!isset($stats['copied']) && isset($row[0]['stats_copied'])) $stats['copied'] = $row[0]['stats_copied'];
+        }
+    }
+    db_exec_update($id,[
+        'stats_removed'=>$stats['removed']??null,
+        'stats_copied'=>$stats['copied']??null,
+        'finished_at'=>date('Y-m-d H:i:s'),
+        'status'=>$exitCode===0 && !$erro?'success':'error',
+        'exit_code'=>$exitCode,
+        'error_message'=>$erro,
+        'plan_json_path'=>isset($ctx['last_plan_file'])?$ctx['last_plan_file']:null,
+        'log_file_path'=>$GLOBALS['LOG_FILE']??null,
+        'session_log_path'=>$ctx['session_log']??null,
+        'updated_at'=>date('Y-m-d H:i:s'),
+    ]);
+}
+// Select genérico (PDO pode não estar disponível; fallback silencioso)
+function db_exec_select_rows(string $sql): array {
+    if(!function_exists('banco_query')) return []; // sem driver legacy
+    $res = banco_query($sql);
+    $rows=[]; if($res){ while($r = banco_fetch_assoc($res)){ $rows[]=$r; } }
+    return $rows;
+}
+function persist_existe_em_execucao(): bool {
+    $rows = db_exec_select_rows("SELECT id_atualizacoes_execucoes FROM atualizacoes_execucoes WHERE status='running' ORDER BY started_at DESC LIMIT 1");
+    return !empty($rows);
 }
 function logErroCtx(string $msg): void { logAtualizacao($msg, 'ERROR', true); }
 
@@ -315,12 +424,16 @@ function moverConteudoStaging(string $stagingRoot, string $basePath, array $prot
         $dst = $basePath.$entry;
         // Se já existe destino, tenta remover (não protegido) antes
         if(file_exists($dst) && !in_array($entry,$protegidos,true)) {
-            if(is_dir($dst)) removeDirectoryRecursive($dst); else @unlink($dst);
+            $removeOk=true;
+            if(is_dir($dst)) { removeDirectoryRecursive($dst); $removeOk=!is_dir($dst); }
+            else { @unlink($dst); $removeOk=!file_exists($dst); }
+            if(!$removeOk) logAtualizacao('moverConteudoStaging: falha ao remover destino existente '.$dst,'WARNING');
         }
         // Tenta mover (rename) para rapidez; se falhar, copia recursivo
-        if(@rename($src,$dst)) { $movidos++; continue; }
+        if(@rename($src,$dst)) { $movidos++; logAtualizacao('moverConteudoStaging: rename OK '.$src.' -> '.$dst,'DEBUG'); continue; }
+        else { if(file_exists($src)) logAtualizacao('moverConteudoStaging: rename falhou para '.$src.' -> '.$dst.' tentando copy','DEBUG'); }
         // fallback copy
-        if(is_dir($src)) copiarRecursivo($src,$dst); else @copy($src,$dst);
+        if(is_dir($src)) copiarRecursivo($src,$dst); else { if(!@copy($src,$dst)) logAtualizacao('moverConteudoStaging: copy falhou '.$src.' -> '.$dst,'WARNING'); }
         $movidos++;
     }
     closedir($dh);
@@ -366,20 +479,23 @@ function mergeEnv(string $envAtualPath, string $envTemplatePath, array &$context
 // Atualização Banco
 // ----------------------------
 function executarAtualizacaoBanco(array $opts): void {
-        global $BASE_PATH, $GLOBALS;
+        global $BASE_PATH, $GLOBALS, $_BANCO;
         $script = $BASE_PATH . 'controladores' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR . 'atualizacoes-banco-de-dados.php';
         if (!file_exists($script)) throw new DatabaseUpdateException('Script de banco ausente: ' . $script);
 
         // Monta argumentos CLI
         $args = [];
         foreach (['env-dir', 'debug', 'force-all', 'tables', 'log-diff', 'dry-run'] as $k) {
-            if (isset($opts[$k])) {
-                if (is_bool($opts[$k])) {
-                    if ($opts[$k]) $args[] = "--$k";
-                } else {
-                    $args[] = "--$k=" . escapeshellarg($opts[$k]);
-                }
+            if (!array_key_exists($k,$opts)) continue;
+            $v = $opts[$k];
+            // Tratar valores 1 / '1' como flags booleanas
+            if (is_bool($v) || $v === 1 || $v === '1') {
+                if ($v) $args[] = "--$k"; // só adiciona se true/1
+                continue;
             }
+            // Caso contrário, valor com argumento
+            if (!is_string($v)) $v = (string)$v; // garante string para escapeshellarg
+            $args[] = "--$k=" . escapeshellarg($v);
         }
 
         if (PHP_SAPI === 'cli') {
@@ -396,7 +512,13 @@ function executarAtualizacaoBanco(array $opts): void {
             // Execução inline (web ou outros)
             $cli = [
                 'env-dir'    => $opts['domain'] ?? 'localhost',
-                'installing' => false,
+                'installing' => true,
+                'db' => [
+                    'host' => $_BANCO['host'],
+                    'name' => $_BANCO['nome'],
+                    'user' => $_BANCO['usuario'],
+                    'pass' => $_BANCO['senha'] ?? '',
+                ]
             ];
             foreach(['debug','force-all','tables','log-diff','dry-run'] as $k){ if(isset($opts[$k])) $cli[$k]=$opts[$k]; }
             $GLOBALS['CLI_OPTS'] = $cli;
@@ -414,7 +536,7 @@ function executarAtualizacaoBanco(array $opts): void {
 // Plano JSON / Relatório
 // ----------------------------
 function exportarPlanoJson(array $plan, array $context): string {
-    global $LOGS_DIR;
+    global $LOGS_DIR, $CONTEXT;
     $out=[
         'generated_at'=>date(DATE_ATOM),
         'mode'=>$context['mode'],
@@ -427,6 +549,8 @@ function exportarPlanoJson(array $plan, array $context): string {
     ];
     $file=$LOGS_DIR.'plan-'.date('Ymd-His').'.json';
     file_put_contents($file,json_encode($out,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
+    // Registrar no contexto global para futura persistência (stats fallback)
+    $CONTEXT['last_plan_file'] = $file;
     logAtualizacao('Plano exportado: '.$file);
     return $file;
 }
@@ -517,6 +641,9 @@ function main_update(array $argv): int {
     // Retenção de logs (default 14 dias se não especificado)
     $retentionDays = isset($opts['logs-retention-days']) ? (int)$opts['logs-retention-days'] : 14;
     $CONTEXT['opts']['logs-retention-days']=$retentionDays;
+    // Persistência: início execução
+    $execId = persist_inicio_execucao($CONTEXT);
+    if($execId) $CONTEXT['exec_id']=$execId;
         logAtualizacao('Iniciando atualização modo='.$CONTEXT['mode'].' dryRun='.($dry?'1':'0').' bootstrap='.(!empty($opts['bootstrap-done'])?'1':'0')); 
 
         // ----------------------------------------------
@@ -531,6 +658,15 @@ function main_update(array $argv): int {
             if(!empty($opts['local-artifact'])) {
                 $repoRoot = realpath($BASE_PATH.'..').DIRECTORY_SEPARATOR;
                 $localDir = $repoRoot.'conn2flow-github'.DIRECTORY_SEPARATOR;
+                // Tentativas adicionais (ex: estrutura docker/dados/sites/localhost/conn2flow-github)
+                if(!is_file($localDir.'gestor.zip')){
+                    $altPath = [$BASE_PATH,'..','docker','dados','sites','localhost','conn2flow-github'];
+                    $alt = realpath(join(DIRECTORY_SEPARATOR,$altPath));
+                    if($alt && is_file($alt.DIRECTORY_SEPARATOR.'gestor.zip')){
+                        $localDir = rtrim($alt,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+                        logAtualizacao('Artefato local: usando caminho alternativo '.$localDir,'DEBUG');
+                    }
+                }
                 $zip = $localDir.'gestor.zip';
                 $sha = $localDir.'gestor.zip.sha256';
                 if(!file_exists($zip)) throw new DownloadException('Bootstrap: artefato local não encontrado: '.$zip);
@@ -726,12 +862,14 @@ function main_update(array $argv): int {
             }
             
             $CONTEXT['plan']=['stats'=>$stats];
+            if(!empty($execId)) persist_parcial_execucao($execId,$CONTEXT);
             exportarPlanoJson($CONTEXT['plan'],$CONTEXT);
         }
 
         // ---------------- Banco ----------------
         if(!$onlyFiles && !$noDb){
             executarAtualizacaoBanco($opts);
+            if(!empty($execId)) persist_parcial_execucao($execId,$CONTEXT);
             hookAfterDb($CONTEXT);
             // Após concluir atualização do banco os arquivos fonte em gestor/db (migrations + data JSON)
             // não são mais necessários em produção. Eles virão novamente no próximo artefato.
@@ -769,7 +907,8 @@ function main_update(array $argv): int {
         } catch (Throwable $e){
             logAtualizacao('Falha prune logs: '.$e->getMessage(),'WARNING');
         }
-        return EXIT_OK;
+    if(!empty($execId)) persist_final_execucao($execId,$CONTEXT,0,null);
+    return EXIT_OK;
     } catch (DownloadException $e){ logErroCtx($e->getMessage()); echo "ERRO DOWNLOAD: ".$e->getMessage()."\n"; return EXIT_DOWNLOAD; }
     catch (ExtractionException $e){ logErroCtx($e->getMessage()); echo "ERRO EXTRAÇÃO: ".$e->getMessage()."\n"; return EXIT_EXTRACTION; }
     catch (EnvMergeException $e){ logErroCtx($e->getMessage()); echo "ERRO ENV: ".$e->getMessage()."\n"; return EXIT_ENV_MERGE; }
@@ -781,4 +920,261 @@ function main_update(array $argv): int {
 
 if(PHP_SAPI==='cli') exit(main_update($argv));
 
-// Execução via web futura: chamar main_update([]) com parâmetros simulados.
+// -------------------------------------------------------------
+// Execução Web Incremental (AJAX) - Fase 1.1
+// -------------------------------------------------------------
+// Objetivo: permitir que o módulo admin-atualizacoes orquestre a atualização
+// por etapas, retornando JSON a cada chamada. Mantemos compatibilidade CLI.
+// Etapas (steps) planejadas:
+//  1. bootstrap      (download/extract + possível re-exec; aqui fazemos download + prepara staging + coleta metadata mas NÃO reexecuta via CLI)
+//  2. deploy_files   (wipe + mover arquivos + merge .env + export plano)
+//  3. database       (executar atualizacoes-banco-de-dados.php se aplicável)
+//  4. finalize       (limpeza staging + retention logs + relatório final)
+// Notas:
+//  - Em execução web evitamos reexecução do próprio script (bootstrap simplificado inline).
+//  - session_id: identificador da sequência, mapeia para arquivo de estado JSON em temp/atualizacoes/sessions/<id>.json
+//  - Logs incrementais: agregados em temp/atualizacoes/sessions/<id>.log além do log diário padrão.
+
+// Estado persistido da sessão web
+function webSessionPath(string $sid): string { global $TEMP_DIR; return $TEMP_DIR.'sessions'.DIRECTORY_SEPARATOR.$sid.'.json'; }
+function webSessionLogPath(string $sid): string { global $TEMP_DIR; return $TEMP_DIR.'sessions'.DIRECTORY_SEPARATOR.$sid.'.log'; }
+
+function loadWebState(string $sid): array {
+    $file = webSessionPath($sid);
+    if(!is_file($file)) return [];
+    $json = @file_get_contents($file); if(!$json) return [];
+    $data = json_decode($json,true); return is_array($data)?$data:[];
+}
+function saveWebState(string $sid, array $state): void {
+    $file = webSessionPath($sid); $dir=dirname($file); if(!is_dir($dir)) @mkdir($dir,0775,true);
+    // Pequena limpeza de campos volumosos
+    file_put_contents($file,json_encode($state,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
+}
+
+function gerarSessionId(): string { return bin2hex(random_bytes(8)); }
+
+// Inicia sessão (step bootstrap simplificado)
+function webStart(array $req): array {
+    global $CONTEXT, $TEMP_DIR, $BASE_PATH, $LOGS_DIR;
+    $sid = gerarSessionId();
+    $CONTEXT['session_id']=$sid;
+    $CONTEXT['session_log']=webSessionLogPath($sid);
+    logAtualizacao('WebStart: iniciando sessão');
+    $opts = [
+        'domain'=>$req['domain']??'localhost',
+        'tag'=>$req['tag']??null,
+        'local-artifact'=>!empty($req['local'])?1:null,
+        'no-verify'=>!empty($req['no_verify'])?1:null,
+        'dry-run'=>!empty($req['dry_run'])?1:null,
+        'only-files'=>!empty($req['only_files'])?1:null,
+        'only-db'=>!empty($req['only_db'])?1:null,
+        'no-db'=>!empty($req['no_db'])?1:null,
+        'debug'=>!empty($req['debug'])?1:null,
+        // Extras avançados
+        'log-diff'=>!empty($req['log_diff'])?1:null,
+        'force-all'=>!empty($req['force_all'])?1:null,
+        'backup'=>!empty($req['backup'])?1:null,
+        'download-only'=>!empty($req['download_only'])?1:null,
+        'skip-download'=>!empty($req['skip_download'])?1:null,
+        'clean-temp'=>!empty($req['clean_temp'])?1:null,
+        'tables'=>!empty($req['tables'])?$req['tables']:null,
+        'logs-retention-days'=>!empty($req['logs_retention_days'])?(int)$req['logs_retention_days']:null,
+    ];
+    // Limpa nulls
+    $opts = array_filter($opts,fn($v)=>$v!==null && $v!==false);
+    $CONTEXT['opts']=$opts; $CONTEXT['debug']=!empty($opts['debug']);
+    $dry = !empty($opts['dry-run']) || !empty($opts['download-only']);
+    // Preparar staging e download/extract, mas não aplicar deploy ainda
+    $staging = prepararStaging();
+    $CONTEXT['staging_dir']=$staging;
+    if(!empty($opts['local-artifact'])) {
+        // Busca robusta por diretório conn2flow-github com gestor.zip subindo a árvore
+        $tentativas=[]; $encontradoDir=null; $zip=null; $sha=null;
+        $startDir = realpath(__DIR__); // controladores/atualizacoes
+        $maxUp = 8; $cur = $startDir;
+        while($maxUp-- > 0 && $cur && $cur !== DIRECTORY_SEPARATOR){
+            // candidatos diretos neste nível
+            $cand1 = rtrim($cur,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'conn2flow-github'.DIRECTORY_SEPARATOR;
+            $tentativas[]=$cand1;
+            if(is_file($cand1.'gestor.zip')){ $encontradoDir=$cand1; break; }
+            // se diretório termina com public_html ou instalador, sobe mais mas também tenta um nível acima (ex: .../localhost/ )
+            $cur = dirname($cur);
+        }
+        // Se ainda não achou, tenta irmão de $BASE_PATH se existir
+        if(!$encontradoDir){
+            $baseSibling = dirname(rtrim($BASE_PATH,DIRECTORY_SEPARATOR)).DIRECTORY_SEPARATOR.'conn2flow-github'.DIRECTORY_SEPARATOR;
+            if(!in_array($baseSibling,$tentativas,true)) $tentativas[]=$baseSibling;
+            if(is_file($baseSibling.'gestor.zip')) $encontradoDir=$baseSibling;
+        }
+        if(!$encontradoDir){
+            logErroCtx('WebStart: artefato local ausente. Tentativas: '.implode(' | ',$tentativas));
+            return ['error'=>'Artefato local não encontrado (tentativas: '.implode(', ',$tentativas).')'];
+        }
+        $zip=$encontradoDir.'gestor.zip'; $sha=$encontradoDir.'gestor.zip.sha256';
+        $CONTEXT['release_tag']=$opts['tag'] ?? 'local-artifact';
+        $CONTEXT['zip_path']=$zip;
+        if(empty($opts['no-verify']) && $sha && file_exists($sha)) {
+            $CONTEXT['checksum']=verifyZipSha256($zip,$sha);
+        } elseif(!empty($opts['no-verify'])) {
+            logAtualizacao('WebStart: checksum ignorado (--no-verify)','WARNING');
+        }
+        $zipTmp=$staging.'gestor-local.zip'; @copy($zip,$zipTmp); extrairZipGestor($zipTmp,$staging);
+    } else {
+        if(!empty($opts['tag'])) { $CONTEXT['release_tag']=$opts['tag']; }
+        else { $info=descobrirUltimaTagGestor(); $CONTEXT['release_tag']=$info['tag']; }
+        $tag=$CONTEXT['release_tag'];
+        $zip = downloadRelease($tag,$staging);
+        if(!file_exists($zip)) { logErroCtx('WebStart: ZIP não encontrado após download'); return ['error'=>'ZIP não encontrado']; }
+        $CONTEXT['zip_path']=$zip;
+        if(empty($opts['no-verify'])){
+            $shaFile = downloadZipChecksum($tag,$staging);
+            $CONTEXT['checksum']=verifyZipSha256($zip,$shaFile);
+        }
+        extrairZipGestor($zip,$staging);
+    }
+    $realRoot = localizarRaizGestor($staging);
+    $CONTEXT['staging_root']=$realRoot;
+    $execId = persist_inicio_execucao($CONTEXT) ?? null;
+    $state = [
+        'sid'=>$sid,
+        'exec_id'=>$execId,
+        'step'=>'bootstrap',
+        'created_at'=>date(DATE_ATOM),
+        'opts'=>$opts,
+        'release_tag'=>$CONTEXT['release_tag'],
+        'checksum'=>$CONTEXT['checksum'],
+    'staging_dir'=>$staging,
+    'staging_root'=>$realRoot,
+        'progress'=>['bootstrap'=>['done'=>true,'ts'=>time()]],
+        'errors'=>[],
+        'stats'=>[],
+        'finished'=>false,
+    ];
+    saveWebState($sid,$state);
+    return ['sid'=>$sid,'exec_id'=>$execId,'next'=>'deploy_files','release_tag'=>$CONTEXT['release_tag'],'checksum'=>$CONTEXT['checksum']];
+}
+
+function webDeployFiles(string $sid): array {
+    global $CONTEXT, $BASE_PATH, $_GESTOR; $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; if($st['finished']) return ['error'=>'Sessão já finalizada'];
+    if((empty($BASE_PATH) || !is_string($BASE_PATH)) && isset($_GESTOR['ROOT_PATH'])) {
+        $BASE_PATH = rtrim($_GESTOR['ROOT_PATH'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        logAtualizacao('WebDeployFiles: BASE_PATH de $_GESTOR[ROOT_PATH]','DEBUG');
+    } elseif(empty($BASE_PATH) || !is_string($BASE_PATH)) { // fallback defensivo
+        $BASE_PATH = realpath(__DIR__.'/../../').DIRECTORY_SEPARATOR;
+        logAtualizacao('WebDeployFiles: reconstruído BASE_PATH via realpath='.$BASE_PATH,'WARNING');
+    }
+    $CONTEXT['session_id']=$sid; $CONTEXT['session_log']=webSessionLogPath($sid);
+    $opts=$st['opts']; $dry=!empty($opts['dry-run']) || !empty($opts['download-only']);
+    logAtualizacao('WebDeployFiles: iniciando');
+    // Restaurar staging a partir do estado persistido
+    if(empty($CONTEXT['staging_dir']) && !empty($st['staging_dir'])) $CONTEXT['staging_dir']=$st['staging_dir'];
+    if(empty($CONTEXT['staging_root']) && !empty($st['staging_root'])) $CONTEXT['staging_root']=$st['staging_root'];
+    $staging = $CONTEXT['staging_dir'] ?? null;
+    $realRoot = $CONTEXT['staging_root'] ?? null;
+    if(!$staging || !$realRoot){
+        logAtualizacao('WebDeployFiles: staging ausente no estado','ERROR');
+        return ['error'=>'Staging ausente'];
+    }
+    $critical=[
+        'controladores'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'atualizacoes-banco-de-dados.php',
+        'controladores'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'atualizacoes-sistema.php',
+        'phinx.php'
+    ];
+    validarArtefato($realRoot,$critical);
+    foreach(['gestor.zip','gestor-local.zip'] as $zf){ $zp=$realRoot.$zf; if(is_file($zp)) @unlink($zp); }
+    // Merge .env após preparar template reloc dentro staging -> replicar lógica simplificada
+    $envTemplateInitial = localizarEnvTemplate($realRoot, 'dominio', !empty($opts['debug']));
+    $envTemplateRel=null; $envTemplateOriginalPath=null; if($envTemplateInitial){ $envTemplateOriginalPath=$envTemplateInitial; $envTemplateRel=ltrim(substr($envTemplateInitial, strlen($realRoot)), DIRECTORY_SEPARATOR); }
+    $envAtual=$BASE_PATH.'autenticacoes'.DIRECTORY_SEPARATOR.($opts['domain']??'localhost').DIRECTORY_SEPARATOR.'.env'; $envTpl=null;
+    if($envTemplateRel){ $reconstructed=$BASE_PATH.$envTemplateRel; if(file_exists($reconstructed)) $envTpl=$reconstructed; elseif($envTemplateOriginalPath && file_exists($envTemplateOriginalPath)) $envTpl=$envTemplateOriginalPath; }
+    if(!$envTpl) $envTpl=localizarEnvTemplate($BASE_PATH,'dominio',!empty($opts['debug'])) ?? localizarEnvTemplate($BASE_PATH,$opts['domain']??'localhost',!empty($opts['debug']));
+    if($envTpl) mergeEnv($envAtual,$envTpl,$CONTEXT,$dry); else logAtualizacao('WebDeployFiles: template .env não encontrado','WARNING');
+    $protegidos=['contents','logs','backups','temp','autenticacoes'];
+    if(!$dry){
+        if(empty($BASE_PATH) || !is_dir($BASE_PATH)) {
+            logAtualizacao('WebDeployFiles: BASE_PATH inválido antes de removerConteudoBase','ERROR');
+            return ['error'=>'BASE_PATH inválido'];
+        }
+        $removidos=removerConteudoBase($BASE_PATH,$protegidos);
+        $movidos=moverConteudoStaging($realRoot,$BASE_PATH,$protegidos);
+        $stats=['removed'=>$removidos,'copied'=>$movidos];
+    }
+    else { $stats=['removed'=>0,'copied'=>0]; }
+    $CONTEXT['plan']=['stats'=>$stats];
+    exportarPlanoJson($CONTEXT['plan'],$CONTEXT);
+    $st['progress']['deploy_files']=['done'=>true,'stats'=>$stats,'ts'=>time()];
+    $st['stats']=$stats; $st['step']='deploy_files_done'; saveWebState($sid,$st);
+    if(!empty($st['exec_id'])) persist_parcial_execucao((int)$st['exec_id'],$CONTEXT);
+    logAtualizacao('WebDeployFiles: concluído');
+    // Se for download-only, não segue para database (termina em finalize)
+    $next = (!empty($opts['only-files']) || !empty($opts['download-only'])) ? 'finalize' : 'database';
+    return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'next'=>$next,'stats'=>$stats];
+}
+
+function webDatabase(string $sid): array { global $CONTEXT, $BASE_PATH, $_GESTOR; $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; if($st['finished']) return ['error'=>'Sessão já finalizada']; $CONTEXT['session_id']=$sid; $CONTEXT['session_log']=webSessionLogPath($sid); $opts=$st['opts']; if(!empty($opts['only-files']) || !empty($opts['no-db'])) { return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'skipped'=>true,'next'=>'finalize']; }
+    if((empty($BASE_PATH) || !is_dir($BASE_PATH)) && isset($_GESTOR['ROOT_PATH'])) { $BASE_PATH = rtrim($_GESTOR['ROOT_PATH'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR; logAtualizacao('WebDatabase: BASE_PATH de $_GESTOR[ROOT_PATH]','DEBUG'); }
+    if(empty($BASE_PATH) || !is_dir($BASE_PATH)) { $BASE_PATH = realpath(__DIR__.'/../../').DIRECTORY_SEPARATOR; logAtualizacao('WebDatabase: reconstruído BASE_PATH via realpath='.$BASE_PATH,'WARNING'); }
+    // Verificar presença do script de banco
+    $scriptBanco = $BASE_PATH.'controladores'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'atualizacoes-banco-de-dados.php';
+    if(!is_file($scriptBanco)) {
+        // Possível que staging_root ainda possua script; tentar lá
+        if(!empty($CONTEXT['staging_root'])){
+            $alt = rtrim($CONTEXT['staging_root'],DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'controladores'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'atualizacoes-banco-de-dados.php';
+            if(is_file($alt)) { $scriptBanco=$alt; logAtualizacao('WebDatabase: usando script banco do staging','WARNING'); }
+        }
+    }
+    if(!is_file($scriptBanco)) {
+        logAtualizacao('WebDatabase: script não encontrado em '.$scriptBanco,'ERROR');
+        return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'error'=>'Script não encontrado'];
+    }
+    logAtualizacao('WebDatabase: iniciando com script='.$scriptBanco);
+    try { executarAtualizacaoBanco($opts); $st['progress']['database']=['done'=>true,'ts'=>time()]; saveWebState($sid,$st); if(!empty($st['exec_id'])) persist_parcial_execucao((int)$st['exec_id'],$CONTEXT); logAtualizacao('WebDatabase: concluído'); return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'next'=>'finalize']; }
+    catch(Throwable $e){ $st['errors'][]=$e->getMessage(); saveWebState($sid,$st); if(!empty($st['exec_id'])) persist_final_execucao((int)$st['exec_id'],$CONTEXT,1,$e->getMessage()); logErroCtx('WebDatabase erro: '.$e->getMessage()); return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'error'=>$e->getMessage(),'next'=>'finalize']; }
+}
+
+function webFinalize(string $sid): array { global $CONTEXT, $LOGS_DIR, $TEMP_DIR; $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; if($st['finished']) return ['sid'=>$sid,'already'=>true]; $CONTEXT['session_id']=$sid; $CONTEXT['session_log']=webSessionLogPath($sid); logAtualizacao('WebFinalize: iniciando');
+    try {
+        // Limpeza staging (se ainda existir)
+        if(!empty($CONTEXT['staging_dir']) && is_dir($CONTEXT['staging_dir'])) removeDirectoryRecursive($CONTEXT['staging_dir']);
+    } catch(Throwable $e){ logAtualizacao('WebFinalize: falha limpeza staging '.$e->getMessage(),'WARNING'); }
+    $st['finished']=true; $st['progress']['finalize']=['done'=>true,'ts'=>time()]; saveWebState($sid,$st); if(!empty($st['exec_id'])) persist_final_execucao((int)$st['exec_id'],$CONTEXT,0,null); logAtualizacao('WebFinalize: concluído'); return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'finished'=>true]; }
+
+function webStatus(string $sid): array { $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; $logPath=webSessionLogPath($sid); $tail=''; if(is_file($logPath)){ $tail=@file_get_contents($logPath); } $percent=calcularProgresso($st); return ['sid'=>$sid,'state'=>$st,'progress_percent'=>$percent,'log'=>$tail]; }
+
+function jsonResponse(array $data): void { header('Content-Type: application/json; charset=utf-8'); echo json_encode($data,JSON_UNESCAPED_UNICODE); }
+
+// Router básico quando chamado via web (não CLI)
+if(PHP_SAPI!=='cli') {
+    $action = $_REQUEST['action'] ?? null;
+    if($action){
+        $expected = getenv('ATUALIZACOES_TOKEN');
+        if($expected && ($_REQUEST['token'] ?? '') !== $expected){ jsonResponse(['error'=>'Token inválido']); return; }
+        try {
+            switch($action){
+                case 'start': jsonResponse(webStart($_REQUEST)); break;
+                case 'deploy': jsonResponse(webDeployFiles($_REQUEST['sid']??'')); break;
+                case 'db': jsonResponse(webDatabase($_REQUEST['sid']??'')); break;
+                case 'finalize': jsonResponse(webFinalize($_REQUEST['sid']??'')); break;
+                case 'status': jsonResponse(webStatus($_REQUEST['sid']??'')); break;
+                case 'cancel': jsonResponse(webCancel($_REQUEST['sid']??'')); break;
+                default: jsonResponse(['error'=>'Ação desconhecida']);
+            }
+        } catch(Throwable $e){ jsonResponse(['error'=>$e->getMessage()]); }
+        return; // impedir execução automática main_update
+    }
+}
+
+// Cancelar execução (marca finished e persiste status canceled)
+function webCancel(string $sid): array { global $CONTEXT; $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; if($st['finished']) return ['sid'=>$sid,'already'=>true]; $CONTEXT['session_id']=$sid; $CONTEXT['session_log']=webSessionLogPath($sid); logAtualizacao('WebCancel: solicitando cancelamento','WARNING'); $st['finished']=true; $st['canceled']=true; $st['progress']['canceled']=['done'=>true,'ts'=>time()]; saveWebState($sid,$st); if(!empty($st['exec_id'])) persist_final_execucao((int)$st['exec_id'],$CONTEXT,1,'cancelado'); $percent=calcularProgresso($st); return ['sid'=>$sid,'canceled'=>true,'progress_percent'=>$percent]; }
+
+// Progresso percentual simples baseado em passos concluídos
+function calcularProgresso(array $st): int {
+    $p=10; // bootstrap baseline
+    if(!empty($st['progress']['deploy_files']['done'])) $p=60;
+    if(!empty($st['progress']['database']['done'])) $p=85;
+    if(!empty($st['progress']['finalize']['done'])) $p=100;
+    if(!empty($st['canceled']) && $p<100) { /* mantém valor */ }
+    return $p; }
+
+// Fallback comentário anterior:
+// Execução via web: usar ?action=start -> depois deploy -> db -> finalize (ou status para polling)

@@ -157,6 +157,44 @@ For advanced users who prefer manual installation or need custom configurations:
 
 ## Development & Architecture
 
+### System Update Mechanism (Automated Updates)
+
+Conn2Flow inclui um orquestrador de atualização do núcleo em `gestor/controladores/atualizacoes/atualizacoes-sistema.php` com suporte CLI e execução incremental via web (AJAX). Principais características:
+
+- Download de artefato `gestor.zip` por tag (ex: `gestor-v1.15.0`) ou uso de artefato local (`--local-artifact`)
+- Verificação opcional de integridade SHA256 (`--no-verify` para ignorar)
+- Wipe seletivo preservando diretórios críticos: `contents/`, `logs/`, `backups/`, `temp/`, `autenticacoes/`
+- Deploy otimizado (rename fallback para copy) com estatísticas de arquivos removidos / movidos
+- Merge aditivo de `.env` (novas variáveis adicionadas com bloco `# added-by-update`, variáveis deprecadas apenas logadas)
+- Script unificado de banco: `atualizacoes-banco-de-dados.php` (aplica migrações/dados e remove pasta `gestor/db/` após sucesso para reduzir superfície)
+- Exportação de plano JSON + logs estruturados em `logs/atualizacoes/`
+- Persistência das execuções na tabela `atualizacoes_execucoes` (status, stats, links de log/plano)
+- Housekeeping (retenção configurável, padrão 14 dias) de logs e diretórios temporários
+
+Flags principais (CLI):
+```
+--tag=gestor-vX.Y.Z  --local-artifact  --only-files  --only-db  --no-db  \
+--dry-run  --backup  --download-only  --no-verify  --force-all  --tables=... \
+--log-diff  --logs-retention-days=N  --debug
+```
+
+Execução Web (incremental):
+```
+?action=start -> deploy -> db -> finalize (status para polling, cancel para cancelar)
+```
+Estado de sessão: `temp/atualizacoes/sessions/<sid>.json` + `<sid>.log`.
+
+Documentação completa: `ai-workspace/docs/CONN2FLOW-ATUALIZACOES-SISTEMA.md`.
+
+### File Ownership & Permissions
+
+Para evitar falhas silenciosas de `rename()`/`unlink()` durante deploy (principalmente em containers), garanta que o owner dos diretórios da instalação e artefatos seja o mesmo usuário do processo PHP (ex: `www-data`). Exemplo pós extração / antes de executar atualização:
+```bash
+chown -R www-data:www-data /var/www/sites/localhost/conn2flow-gestor
+chown -R www-data:www-data /var/www/sites/localhost/conn2flow-github
+```
+Falhas de permissão resultarão em avisos de não remoção de pastas antigas e arquivos não atualizados.
+
 ### Modern Development Stack
 - **PHP 8.0+**: Modern PHP features and performance
 - **Composer**: Dependency management and autoloading

@@ -1108,5 +1108,20 @@
         "host": null,
         "status": "A",
         "versao": " 36"
+    },
+    {
+        "id_modulos": "75",
+        "id_modulos_grupos": "12",
+        "id_usuarios": " 1",
+        "nome": "Admin Atualizações",
+        "id": "admin-atualizacoes",
+        "titulo": "Atualizações",
+        "icone": "sync",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": " 1"
     }
 ]
