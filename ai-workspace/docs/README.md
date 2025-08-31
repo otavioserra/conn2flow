@@ -22,6 +22,7 @@ Esta pasta contém toda a documentação técnica detalhada do projeto Conn2Flow
 - **`CONN2FLOW-ADAPTACAO-POS-INSTALACAO.md`** - Adaptações necessárias após instalação
 - **`CONN2FLOW-ATUALIZACOES-SISTEMA.md`** - Sistema de atualizações automáticas
 - **`CONN2FLOW-AMBIENTE-DOCKER.md`** - Ambiente Docker completo de desenvolvimento e testes
+- **`CONN2FLOW-GITHUB-ACTIONS.md`** - Sistema completo de automação CI/CD via GitHub Actions
 - **`CONN2FLOW-SISTEMA-HIBRIDO-MULTILANGUE-CONCLUIDO.md`** - Sistema multilíngue híbrido finalizado
 - **`CONN2FLOW-SISTEMA-MULTILÍNGUE-HIBRIDO.md`** - Documentação do sistema multilíngue híbrido
 
@@ -46,10 +47,10 @@ Sempre leia primeiro:
 
 - **Sistema Core**: Conhecimento geral e changelog
 - **Módulos Funcionais**: Instalador, módulos, roteamento, layouts
-- **Automação**: Exportação, atualizações, preview
-- **Especializados**: Multilíngue, frameworks CSS, adaptações
+- **Automação**: Exportação, atualizações, preview, GitHub Actions CI/CD
+- **Especializados**: Multilíngue, frameworks CSS, adaptações, ambiente Docker
 
 ---
 **Última atualização:** 31 de agosto, 2025  
 **Estrutura:** ai-workspace/docs/  
-**Total de arquivos:** 15 documentos técnicos
+**Total de arquivos:** 16 documentos técnicos

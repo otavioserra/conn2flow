@@ -290,6 +290,7 @@ Conn2Flow includes comprehensive technical documentation for developers and syst
 - **[📱 Preview System](ai-workspace/docs/CONN2FLOW-SISTEMA-PREVIEW-MODALS.md)** - Modal preview system with CodeMirror
 - **[🔄 System Updates](ai-workspace/docs/CONN2FLOW-ATUALIZACOES-SISTEMA.md)** - Automated update mechanism
 - **[🐳 Docker Environment](ai-workspace/docs/CONN2FLOW-AMBIENTE-DOCKER.md)** - Complete development and testing environment
+- **[⚙️ GitHub Actions](ai-workspace/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - Complete CI/CD automation via GitHub Actions
 - **[🌐 Multilingual System](ai-workspace/docs/CONN2FLOW-SISTEMA-HIBRIDO-MULTILANGUE-CONCLUIDO.md)** - Multi-language support
 
 ### Change History
