@@ -1,24 +1,29 @@
 <h1 class="ui header">#titulo#</h1>
-<!-- botoes < --><div class="ui basic right aligned segment">
+<!-- botoes < -->
+<div class="ui basic right aligned segment">
     #botoes#
 </div><!-- botoes > -->
-<!-- meta-dados < --><table class="ui celled table">
+<!-- meta-dados < -->
+<table class="ui celled table">
     <thead>
         <tr>
-            <!-- cel-th < --><th>#meta-titulo#</th>
+            <!-- cel-th < -->
+            <th>#meta-titulo#</th>
             <!-- cel-th > -->
         </tr>
     </thead>
     <tbody>
         <tr>
-            <!-- cel-td < --><td>#meta-dado#</td>
+            <!-- cel-td < -->
+            <td>#meta-dado#</td>
             <!-- cel-td > -->
         </tr>
     </tbody>
 </table><!-- meta-dados > -->
 <form id="#form-id#" action="#form-action#" method="post" name="#form-name#" class="ui form interfaceFormPadrao">
     <div id="_gestor-interface-edit-dados">#form-page#</div>
-    <!-- nao-alterar-id < --><div class="field">
+    <!-- nao-alterar-id < -->
+    <div class="field">
         <div class="ui checkbox">
             <input type="checkbox" name="_gestor-nao-alterar-id" value="1" checked>
             <label>#form-nao-alterar-id-label#</label>
@@ -27,11 +32,19 @@
     <input id="_gestor-atualizar" name="_gestor-atualizar" type="hidden" value="1">
     <input id="_gestor-variavel-id" name="_gestor-registro-id" type="hidden" value="#form-registro-id#">
     <div class="ui error message"></div>
-    <!-- botao-editar < --><div class="ui center aligned basic segment">
-    	<button id="_gestor-interface-edit-button" data-tooltip="#form-button-title#" data-position="top center" data-inverted="" class="positive ui button">#form-button-value#</button>
+    <!-- botao-editar < -->
+    <div class="ui center aligned basic segment">
+        <!-- botao-padrao < -->
+        <button id="_gestor-interface-edit-button" data-tooltip="#form-button-title#" data-position="top center"
+            data-inverted="" class="positive ui button">#form-button-value#</button>
+        <!-- botao-padrao > -->
+        <!-- botoes-rodape < -->
+        #botoes-rodape#
+        <!-- botoes-rodape > -->
     </div><!-- botao-editar > -->
 </form>
-<!-- historico < --><table class="ui celled table">
+<!-- historico < -->
+<table class="ui celled table">
     <thead>
         <tr>
             <th>Histórico de Alterações</th>

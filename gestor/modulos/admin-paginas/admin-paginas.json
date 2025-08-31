@@ -23,8 +23,30 @@
             "valor": "pagina"
         }
     ],
+    "selectDadosFrameworkCSS": [
+        {
+            "texto": "Fomantic-UI",
+            "valor": "fomantic-ui"
+        },
+        {
+            "texto": "TailwindCSS",
+            "valor": "tailwindcss"
+        }
+    ],
     "resources": {
         "pt-br": {
+            "components": [
+                {
+                    "nome": "Modal Página",
+                    "id": "modal-pagina",
+                    "version": "1.9",
+                    "checksum": {
+                        "html": "d815fb0545793072b1072303f7c61c6d",
+                        "css": "",
+                        "combined": "d815fb0545793072b1072303f7c61c6d"
+                    }
+                }
+            ],
             "pages": [
                 {
                     "name": "Admin Páginas",
@@ -44,11 +66,11 @@
                 {
                     "name": "Admin Páginas - Editar",
                     "id": "admin-paginas-editar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "36b79f4f7655d7cdfaec91e831e1fbc7",
+                        "html": "c1cb3fd90215b3f38b6c7cc571f522ff",
                         "css": "",
-                        "combined": "36b79f4f7655d7cdfaec91e831e1fbc7"
+                        "combined": "c1cb3fd90215b3f38b6c7cc571f522ff"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/editar\/",
@@ -58,11 +80,11 @@
                 {
                     "name": "Admin Páginas - Adicionar",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "0880fe0c78efeb8d80cc7c1c07e8d2c5",
+                        "html": "0eecf845e6efd8d9ae1846810cbab405",
                         "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
-                        "combined": "d2649ba963b679cd62adaee770d4a417"
+                        "combined": "9fc528051d8d239e845f0a1519d80da8"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/adicionar\/",
@@ -204,6 +226,66 @@
                 {
                     "id": "form-url-label",
                     "value": "URL Atual da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-page",
+                    "value": "Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-system",
+                    "value": "Sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "form-framework-css-label",
+                    "value": "Framework CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-button-preview",
+                    "value": "Pré-Visualizar",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-preview",
+                    "value": "Clique para pré-visualizar a página",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-title-preview",
+                    "value": "Pré-Visualização da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-button-preview",
+                    "value": "Salvar",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-desktop-preview",
+                    "value": "Computador",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-tablet-preview",
+                    "value": "Tablet",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-mobile-preview",
+                    "value": "Smartphone",
+                    "type": "string"
+                },
+                {
+                    "id": "button-back-tooltip",
+                    "value": "Clique no botão para voltar.",
+                    "type": "string"
+                },
+                {
+                    "id": "button-back-value",
+                    "value": "Voltar",
                     "type": "string"
                 }
             ]

@@ -40,41 +40,75 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Instalador ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🛠️ Conn2Flow Instalador Release
+          ## 🛠️ Conn2Flow Instalador Release v1.4.0 (Suporte Framework CSS + Melhorias)
           
-          Instalador automático do sistema Conn2Flow.
+          Instalador automático do sistema Conn2Flow com **suporte aos novos recursos v1.16.0** incluindo sistema de preview e framework CSS.
+          
+          ### ✨ Novidades desta Versão:
+          - ✅ **Suporte Framework CSS**: Instalação preparada para TailwindCSS + FomanticUI
+          - ✅ **Migrations Atualizadas**: Campo framework_css automaticamente configurado
+          - ✅ **Validação Aprimorada**: Verificação de recursos visuais pós-instalação
+          - ✅ **Preview System Ready**: Instalação preparada para sistema de preview
+          - ✅ **Charset UTF-8 Robusto**: Compatibilidade total com caracteres especiais
+          - ✅ **Logs Detalhados**: Rastreamento completo do processo de instalação
+          
+          ### 🔧 Melhorias Técnicas:
+          - ✅ **getPdo() Unificado**: Método único para todas conexões de banco
+          - ✅ **Detecção de URL Robusta**: Funcionamento em subpasta ou raiz
+          - ✅ **Usuário Admin Otimizado**: Criação robusta com nomes dinâmicos
+          - ✅ **Auto-login Aprimorado**: Configuração automática pós-instalação
+          - ✅ **Limpeza Inteligente**: Remoção automática após sucesso
           
           ### ✨ Funcionalidades:
           - Instalação totalmente automatizada
-          - Interface web amigável
+          - Interface web amigável e multilíngue
           - Sistema híbrido de migração (Phinx + SQL fallback)
           - Compatível com hospedagem compartilhada (cPanel)
           - Suporte multi-idioma (PT-BR, EN)
+          - Preparação automática para preview TailwindCSS
           
           ### 🔧 Como usar:
           1. Baixe o `instalador.zip`
           2. Extraia em seu servidor web
           3. Acesse via navegador: `http://seudominio.com/gestor-instalador/`
           4. Siga o assistente de instalação
+          5. Aproveite os novos recursos de preview!
           
           ### 📋 Requisitos:
           - PHP 8.1+
           - MySQL 5.7+ ou MariaDB 10.2+
           - Extensões: zip, curl, mbstring, openssl, pdo_mysql
-          - Acesso à internet (para download do gestor)
+          - Acesso à internet (para download do gestor + TailwindCSS CDN)
           
           ### 🎯 Funcionalidades do Instalador:
           - ✅ Validação de requisitos do sistema
-          - ✅ Download automático do gestor mais recente
+          - ✅ Download automático do gestor v1.16.0+
           - ✅ Configuração automática do banco de dados
+          - ✅ Migrations framework_css aplicadas automaticamente
           - ✅ Geração de chaves de segurança
           - ✅ Configuração de domínio e usuário admin
+          - ✅ Preparação sistema de preview
           - ✅ Cleanup automático pós-instalação
           
           ### 🌐 Ambientes Suportados:
           - Hosting compartilhado (cPanel/Plesk)
           - VPS/Servidor dedicado
           - Desenvolvimento local (XAMPP/WAMP/MAMP)
+          - Containers Docker
+          
+          ### 🚀 Compatibilidade com Gestor v1.16.0:
+          - ✅ **Módulos Admin**: Instalação preparada para admin-layouts, admin-componentes
+          - ✅ **Framework CSS**: Campo framework_css configurado automaticamente
+          - ✅ **Sistema Preview**: Estrutura preparada para modals e CodeMirror
+          - ✅ **Endpoints Preview**: Configuração automática de controladores
+          - ✅ **Dependências Assets**: Ordem correta de inclusão garantida
+          
+          ### 📊 Melhorias de Robustez:
+          - ✅ **Charset Universal**: UTF-8/utf8mb4 em todas operações
+          - ✅ **Error Handling**: Tratamento robusto de erros SQL
+          - ✅ **Path Detection**: Detecção automática de caminhos e URLs
+          - ✅ **Permission Fixes**: Ajustes automáticos de permissões
+          - ✅ **Cross-Platform**: Funcionamento Windows/Linux/macOS
         draft: false
         prerelease: false
         files: instalador.zip

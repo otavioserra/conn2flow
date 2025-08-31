@@ -81,6 +81,10 @@ $(document).ready(function () {
 		}
 	}
 
+	$.formSubmitNormal = function (p = {}) {
+		$('.ui.form.interfaceFormPadrao').submit();
+	}
+
 	function formIniciar(p = {}) {
 		if (typeof gestor.interface.validarCampos !== typeof undefined && gestor.interface.validarCampos !== false) {
 			var validarCampos = gestor.interface.validarCampos;

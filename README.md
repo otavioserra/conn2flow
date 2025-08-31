@@ -134,7 +134,9 @@ For advanced users who prefer manual installation or need custom configurations:
 ## System Features
 
 ### Core CMS Features
-- **Content Management**: Full-featured content creation and editing
+- **Content Management**: Full-featured content creation and editing with TailwindCSS preview
+- **Multi-Framework CSS**: Choose between TailwindCSS and FomanticUI per resource
+- **Advanced Admin Modules**: Modern interface with real-time preview capabilities
 - **User Management**: Role-based access control and user authentication
 - **Multi-site Support**: Manage multiple domains from single installation
 - **Plugin System**: Extensible architecture with custom plugins
@@ -142,8 +144,10 @@ For advanced users who prefer manual installation or need custom configurations:
 
 ### Technical Features
 - **Modern PHP**: Built for PHP 8.0+ with modern coding standards
-- **Database**: MySQL/MariaDB with migration system
-- **Automated Updates**: Built-in system update mechanism
+- **Database**: MySQL/MariaDB with migration system and framework_css support
+- **Automated Updates**: Built-in system update mechanism with integrity verification
+- **Preview System**: Real-time TailwindCSS/FomanticUI preview for visual resources
+- **Modal Components**: Advanced modal system with CodeMirror integration
 - **Distributed Architecture**: Support for client-server configurations
 - **FTP Integration**: Direct file management capabilities
 - **cPanel Integration**: Optional cPanel API integration (not required)
@@ -227,35 +231,39 @@ gestor-cliente/       # Distributed client system
 
 ### Latest Stable Releases
 
-**Gestor (Core System)**: `v1.11.0` *(Latest)*
-- ✅ Refatoração completa da sincronização de recursos (IDs naturais, órfãos, checksums html/css/combined)
-- ✅ Versionamento automático de layouts/páginas/componentes globais e de módulos/plugins
-- ✅ Remoção de seeders na rotina de atualização em favor de script unificado
-- ✅ Migrações e schema estabilizados com layout_id string e campos *updated para diffs futuros
-- ✅ Melhorias de internacionalização e logs estruturados
-- ✅ Preparação para cache busting baseado em checksum
+**Gestor (Core System)**: `v1.16.0` *(Latest)*
+- ✅ **Sistema de Preview TailwindCSS**: Pré-visualização em tempo real para recursos visuais
+- ✅ **Suporte Multi-Framework CSS**: Escolha entre TailwindCSS e FomanticUI por recurso
+- ✅ **Módulos Admin Modernizados**: admin-layouts, admin-paginas e admin-componentes atualizados
+- ✅ **Sistema Modal Avançado**: Modals responsivos com CodeMirror integrado
+- ✅ **Padrões Técnicos Otimizados**: gestor_componente() e modelo_var_troca() corrigidos
+- ✅ **Documentação Técnica Completa**: Guias e templates para desenvolvedores
 
-**Instalador (Installer)**: `v1.1.0` *(Latest)*
-- ✅ Integração com rotina unificada de atualização do sistema (remoção de Phinx/seeders no instalador)
-- ✅ Criação automática do usuário administrador e autologin pós-instalação
-- ✅ Ajuste dinâmico de RewriteBase para instalações em subpastas
-- ✅ Limpeza automática da pasta db e arquivos temporários
-- ✅ Logging detalhado de cada etapa e detecção de URL raiz
+**Instalador (Installer)**: `v1.4.0` *(Latest)*
+- ✅ **Suporte Framework CSS**: Instalação preparada para novos recursos v1.16.0
+- ✅ **Charset UTF-8 Robusto**: Compatibilidade total com caracteres especiais
+- ✅ **getPdo() Unificado**: Método único para todas conexões de banco
+- ✅ **Detecção URL Robusta**: Funcionamento garantido em subpasta ou raiz
+- ✅ **Auto-login Aprimorado**: Configuração automática pós-instalação
+- ✅ **Logs Detalhados**: Rastreamento completo do processo
 
 ### Version History
+- **Gestor v1.16.0**: Sistema de preview TailwindCSS, suporte multi-framework CSS, módulos admin modernizados, padrões técnicos otimizados.
+- **Gestor v1.15.0**: Sistema de atualização automática consolidado, correção de permissões, documentação técnica.
 - **Gestor v1.11.0**: Versionamento automático recursos módulos/plugins; melhorias checksum e remoção definitiva de seeders na atualização.
 - **Gestor v1.10.x**: Correções de duplicidade, internacionalização, unificação geração de recursos, campos de controle *updated*.
-- **Gestor v1.8.7**: Ajustes layout instalação-sucesso e consistência banco.
+- **Instalador v1.4.0**: Suporte framework CSS, charset UTF-8 robusto, getPdo() unificado, preparação para preview system.
+- **Instalador v1.3.3**: Refatoração robusta com charset utf8mb4, correção de acentuação, instalação em ambientes diversos.
 - **Instalador v1.1.0**: Refatoração para usar script de atualização central; ajustes RewriteBase e criação admin.
-- **Instalador v1.0.10**: OpenSSL e validações adicionais.
 
 ### Development Environment
 - **Docker**: Complete development stack with PHP 8.3 + Apache + MySQL 8.0
 - **Local PHP**: 8.4.8 CLI for utility scripts and development tools
 - **Database**: Verified schema with 75 tables and comprehensive seeders
 - **Testing**: Migration and seeder verification scripts included
-gestor-plugins/       # Plugin ecosystem
-```
+
+# Plugin ecosystem
+gestor-plugins/
 
 ## Community & Support
 

@@ -2529,6 +2529,40 @@ function interface_botoes_cabecalho($params = false){
 	return $botoes_html;
 }
 
+function interface_botoes_rodape($params = false){
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	$botoes_html = '';
+	
+	foreach($botoes_rodape as $id => $botao){
+		switch($id){
+			case 'excluir':
+				$botoes_html .= '
+		<div class="ui button excluir '.$botao['cor'].'" data-href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
+			<i class="'.$botao['icon'].' icon"></i>
+			'.$botao['rotulo'].'
+		</div>';
+			break;
+			default:
+				if(isset($botao['callback'])){
+					$botoes_html .= '
+			<div class="ui button '.$botao['callback'].' '.$botao['cor'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
+				<i class="'.$botao['icon'].' icon"></i>
+				'.$botao['rotulo'].'
+			</div>';
+				} else {
+					$botoes_html .= '
+			<a class="ui button '.$botao['cor'].'" href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'"'.(isset($botao['target']) ? ' target="'.$botao['target'].'"':'').'>
+				'.(isset($botao['icon2']) ? '<i class="icons"><i class="'.$botao['icon'].' icon"></i><i class="'.$botao['icon2'].' icon"></i></i>' : '<i class="'.$botao['icon'].' icon"></i>').'
+				'.$botao['rotulo'].'
+			</a>';
+			}
+		}
+	}
+	
+	return $botoes_html;
+}
+
 // ===== Interfaces ajax
 
 function interface_ajax_backup_campo($params = false){
@@ -2903,7 +2937,14 @@ function interface_adicionar_finalizar($params = false){
 		// tooltip - String - Obrigatório - Pequeno texto descritivo da ação do botão.
 		// icon - String - Obrigatório - Ícone do botão.
 		// cor - String - Obrigatório - Cor do botão.
-	
+	// sem_botao_padrao - Bool - Opcional - Se deve ou não incluir o botão padrão.
+	// botoes_rodape - Array - Opcional - Conjunto de botões no rodapé do formnulário para ações extras.
+		// url - String - Obrigatório - URL de acesso para disparar com o botão.
+		// rotulo - String - Obrigatório - Pequeno texto rótulo do botão.
+		// tooltip - String - Obrigatório - Pequeno texto descritivo da ação do botão.
+		// icon - String - Obrigatório - Ícone do botão.
+		// cor - String - Obrigatório - Cor do botão.
+
 	$pagina = gestor_componente(Array(
 		'id' => 'interface-formulario-inclusao',
 	));
@@ -2914,6 +2955,11 @@ function interface_adicionar_finalizar($params = false){
 	$pagina = modelo_var_troca($pagina,"#form-name#",$_GESTOR['modulo']);
 	$pagina = modelo_var_troca($pagina,"#form-action#",$_GESTOR['url-raiz'].$_GESTOR['caminho-total']);
 	$pagina = modelo_var_troca($pagina,"#form-button-title#",gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-title')));
+
+	if(isset($sem_botao_padrao) && $sem_botao_padrao === true){
+		$pagina = modelo_tag_in($pagina,'<!-- botao-padrao < -->','<!-- botao-padrao > -->','');
+	}
+
 	$pagina = modelo_var_troca($pagina,"#form-button-value#",gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-value')));
 	
 	if(isset($botoes)){
@@ -2921,6 +2967,13 @@ function interface_adicionar_finalizar($params = false){
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+	}
+
+	if(isset($botoes_rodape)){
+		$botoes_html = interface_botoes_rodape($params);
+		$pagina = modelo_var_troca($pagina,"#botoes-rodape#",$botoes_html);
+	} else {
+		$cel_nome = 'botoes-rodape'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 	}
 	
 	$pagina = modelo_var_troca($pagina,"#form-page#",$_GESTOR['pagina']);
@@ -3332,6 +3385,14 @@ function interface_editar_finalizar($params = false){
 	// removerNaoAlterarId - Bool - Opcional - Remover o checkbox de não alterar id.
 	// removerBotaoEditar - Bool - Opcional - Remover o botão editar quando não convir usar o mesmo.
 	
+	// sem_botao_padrao - Bool - Opcional - Se deve ou não incluir o botão padrão.
+	// botoes_rodape - Array - Opcional - Conjunto de botões no rodapé do formnulário para ações extras.
+		// url - String - Obrigatório - URL de acesso para disparar com o botão.
+		// rotulo - String - Obrigatório - Pequeno texto rótulo do botão.
+		// tooltip - String - Obrigatório - Pequeno texto descritivo da ação do botão.
+		// icon - String - Obrigatório - Ícone do botão.
+		// cor - String - Obrigatório - Cor do botão.
+
 	// ===== 
 	
 	// ===== Incluir componentes
@@ -3373,6 +3434,10 @@ function interface_editar_finalizar($params = false){
 	$pagina = modelo_var_troca($pagina,"#form-nao-alterar-id-label#",gestor_variaveis(Array('modulo' => 'interface','id' => 'form-nao-alterar-id-label')));
 	
 	// ===== Remover/Manter botão editar
+
+	if(isset($sem_botao_padrao) && $sem_botao_padrao === true){
+		$pagina = modelo_tag_in($pagina,'<!-- botao-padrao < -->','<!-- botao-padrao > -->','');
+	}
 	
 	if(isset($removerBotaoEditar)){
 		$cel_nome = 'botao-editar'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
@@ -3385,6 +3450,13 @@ function interface_editar_finalizar($params = false){
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+	}
+
+	if(isset($botoes_rodape)){
+		$botoes_html = interface_botoes_rodape($params);
+		$pagina = modelo_var_troca($pagina,"#botoes-rodape#",$botoes_html);
+	} else {
+		$cel_nome = 'botoes-rodape'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 	}
 	
 	$pagina = modelo_var_troca($pagina,"#form-page#",$_GESTOR['pagina']);

@@ -96,53 +96,70 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🌍 Conn2Flow Gestor Release (Sistema Híbrido Multilíngue v1.8.4+)
+          ## 🚀 Conn2Flow Gestor Release v1.16.0 (Sistema de Preview + Framework CSS)
           
-          Esta release contém o sistema gestor completo do Conn2Flow com o **novo sistema híbrido multilíngue**.
+          Esta release traz **grandes melhorias nos módulos administrativos** com sistema de preview TailwindCSS e suporte multi-framework CSS.
+          
+          ### 🎯 Novidades Principais desta Versão:
+          - ✅ **Sistema de Preview TailwindCSS**: Pré-visualização em tempo real para layouts, páginas e componentes
+          - ✅ **Suporte Multi-Framework CSS**: Escolha entre TailwindCSS e FomanticUI por recurso
+          - ✅ **Módulos Admin Modernizados**: admin-layouts, admin-paginas e admin-componentes com interface melhorada
+          - ✅ **Sistema de Modal Avançado**: Modals responsivos com CodeMirror integrado
+          - ✅ **Ordem de Dependências Otimizada**: Resolução de problemas de inicialização DOM
+          - ✅ **Validação de Framework CSS**: Campo obrigatório para recursos visuais
+          
+          ### 🔧 Melhorias Técnicas:
+          - ✅ **gestor_componente() Corrigido**: Uso adequado sem parâmetro 'variaveis'
+          - ✅ **modelo_var_troca() Individual**: Substituições precisas de placeholders
+          - ✅ **Endpoints de Preview**: Sistema robusto para geração de HTML em tempo real
+          - ✅ **JavaScript Otimizado**: Funções de callback para botões personalizados
+          - ✅ **Padrões Documentados**: Template atualizado para novos módulos
           
           ### 📦 Conteúdo:
           - Sistema gestor completo com arquitetura híbrida multilíngue
-          - Migrations para tabelas multilíngues (layouts, pages, components)
-          - Seeders gerados dinamicamente com 264 recursos em pt-br
-          - Sistema preparado para múltiplos idiomas (pt-br, en, es, etc.)
-          - 343 arquivos HTML/CSS organizados via seeders
+          - Migrations para suporte framework_css (campo VARCHAR(50))
+          - Sistema de atualização automática consolidado (v1.15.0)
+          - 264 recursos organizados por idioma (pt-br base)
           - Dependências do Composer otimizadas
+          - Documentação técnica completa
           
-          ### 🔧 Novidades desta versão:
-          - ✅ **Sistema híbrido multilíngue**: Recursos organizados por idioma
-          - ✅ **Instalação ultra-leve**: 343 arquivos físicos convertidos em seeders
-          - ✅ **Modular escalável**: 88 recursos globais + 173 modulares + 10 plugins
-          - ✅ **Multilíngue nativo**: Campo 'language' em todas as tabelas
-          - ✅ **Versionamento automático**: Checksums MD5 para cada recurso
-          - ✅ **Seeders dinâmicos**: 21 layouts + 135 páginas + 108 componentes
+          ### 🔧 Módulos Administrativos Atualizados:
+          - **admin-layouts**: Preview TailwindCSS + validação framework_css
+          - **admin-componentes**: Sistema modal otimizado + CodeMirror
+          - **admin-paginas**: Referência de padrões corretos implementados
           
-          ### 🎯 Distribuição de Recursos:
-          - 🌐 **Recursos Globais**: 32.5% (88 recursos)
-          - 🧩 **Recursos Modulares**: 63.8% (173 recursos)
-          - 🔌 **Recursos Plugins**: 3.7% (10 recursos)
+          ### 🎯 Sistema de Preview:
+          - Modal de pré-visualização responsivo
+          - Suporte TailwindCSS via CDN
+          - Fallback FomanticUI automático
+          - Iframe isolado para renderização
+          - Callback JavaScript personalizado
           
           ### 🔧 Como usar:
-          1. Use o [Conn2Flow Installer](https://github.com/otavioserra/conn2flow/releases) para instalação automática
+          1. Use o [Conn2Flow Installer v1.4.0+](https://github.com/otavioserra/conn2flow/releases) para instalação automática
           2. Ou extraia manualmente e execute: `php phinx.php migrate && php phinx.php seed:run`
+          3. Aproveite os novos recursos de preview nos módulos administrativos
           
           ### 📋 Requisitos:
           - PHP 8.1+
           - MySQL 5.7+ ou MariaDB 10.2+
           - Extensões: zip, curl, mbstring, openssl, pdo_mysql
+          - Acesso à internet (para TailwindCSS CDN no preview)
           
-          ### � Preparação Multilíngue:
-          - ✅ Estrutura `pt-br` completamente implementada
-          - ✅ Pronto para `en`, `es` e outros idiomas
-          - ✅ Campo `language` em todas as tabelas
-          - ✅ Índices otimizados para consultas multilíngues
+          ### 🌟 Padrões Aprendidos e Implementados:
+          - ✅ **Ordem Crítica**: Modal ANTES do CodeMirror nas dependências
+          - ✅ **Componentes**: gestor_componente() retorna HTML que precisa de modelo_var_troca()
+          - ✅ **Frameworks**: Campo framework_css obrigatório para recursos visuais
+          - ✅ **Preview**: Endpoints PHP + JavaScript para pré-visualização
+          - ✅ **Validação**: Formulários com validação de framework CSS
           
           ### 🎉 Melhorias desta versão:
-          - ✅ **Organização perfeita**: 100% dos recursos na estrutura correta
-          - ✅ **Zero arquivos órfãos**: Limpeza completa do sistema
-          - ✅ **Desenvolvimento facilitado**: Devs editam arquivos físicos
-          - ✅ **Administração simplificada**: Admins customizam via painel
-          - ✅ **Deploy automatizado**: GitHub Actions + seeders automáticos
-          - ✅ **Escalabilidade garantida**: Preparado para crescimento
+          - ✅ **Interface moderna**: Sistema de preview intuitivo e responsivo
+          - ✅ **Flexibilidade CSS**: Escolha livre entre frameworks por recurso
+          - ✅ **Desenvolvimento facilitado**: Padrões claros para novos módulos
+          - ✅ **Administração melhorada**: Interface mais rica e funcional
+          - ✅ **Documentação completa**: Guias técnicos para desenvolvedores
+          - ✅ **Compatibilidade preservada**: Zero breaking changes para usuários finais
         draft: false
         prerelease: false
         files: |

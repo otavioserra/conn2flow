@@ -56,6 +56,7 @@ function admin_layouts_adicionar(){
 		$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "framework_css"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "html"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css"; $post_nome = $campo_nome; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		
@@ -74,7 +75,25 @@ function admin_layouts_adicionar(){
 		
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
 	}
-	
+
+	// ===== Pré-Visualização
+
+	$modalLayout = gestor_componente(Array(
+		'id' => 'modal-layout',
+		'modulo' => $_GESTOR['modulo-id'],
+	));
+
+	$modalLayout = modelo_var_troca($modalLayout,'#title#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-title-preview')));
+	$modalLayout = modelo_var_troca($modalLayout,'#desktop#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-desktop-preview')));
+	$modalLayout = modelo_var_troca($modalLayout,'#tablet#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-tablet-preview')));
+	$modalLayout = modelo_var_troca($modalLayout,'#mobile#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-mobile-preview')));
+	$modalLayout = modelo_var_troca($modalLayout,'#button-tooltip#',gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-title')));
+	$modalLayout = modelo_var_troca($modalLayout,'#button-value#',gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-value')));
+	$modalLayout = modelo_var_troca($modalLayout,'#button-back-tooltip#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'button-back-tooltip')));
+	$modalLayout = modelo_var_troca($modalLayout,'#button-back-value#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'button-back-value')));
+
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#modal-preview#',$modalLayout);
+
 	// ===== Inclusão do CodeMirror
 	
 	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/lib/codemirror.css" />';
@@ -103,13 +122,39 @@ function admin_layouts_adicionar(){
 	// ===== Interface adicionar finalizar opções
 	
 	$_GESTOR['interface']['adicionar']['finalizar'] = Array(
+		'sem_botao_padrao' => true,
+		'botoes_rodape' => [
+			'previsualizar' => [
+				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-preview')),
+				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-preview')),
+				'icon' => 'plus circle',
+				'cor' => 'positive',
+				'callback' => 'previsualizar',
+			],
+		],
 		'formulario' => Array(
 			'validacao' => Array(
 				Array(
 					'regra' => 'texto-obrigatorio',
 					'campo' => 'nome',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
+				),
+				Array(
+					'regra' => 'selecao-obrigatorio',
+					'campo' => 'framework_css',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
+					'identificador' => 'framework_css',
 				)
+			),
+			'campos' => Array(
+				Array(
+					'tipo' => 'select',
+					'id' => 'framework-css',
+					'nome' => 'framework_css',
+					'valor_selecionado' => 'fomantic-ui',
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
+					'dados' => $modulo['selectDadosFrameworkCSS'],
+				),
 			),
 		)
 	);
@@ -128,6 +173,7 @@ function admin_layouts_editar(){
 	
 	$camposBanco = Array(
 		'nome',
+		'framework_css',
 		'html',
 		'css',
 	);
@@ -213,6 +259,7 @@ function admin_layouts_editar(){
 		
 		// ===== Atualização dos demais campos.
 		
+		$campo_nome = "framework_css"; $request_name = $campo_nome; $alteracoes_name = 'framework-css'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "html"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label'); if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => banco_select_campos_antes($campo_nome));}}
 		$campo_nome = "css"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label'); if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => banco_select_campos_antes($campo_nome));}}
 		
@@ -297,6 +344,7 @@ function admin_layouts_editar(){
 	
 	if($_GESTOR['banco-resultado']){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
+		$framework_css = (isset($retorno_bd['framework_css']) ? $retorno_bd['framework_css'] : '');
 		$html = (isset($retorno_bd['html']) ? htmlentities($retorno_bd['html']) : '');
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
 		$css_gestor = '';
@@ -318,6 +366,27 @@ function admin_layouts_editar(){
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-css#',$css);
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-css-gestor#',$css_gestor);
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-html#',$html);
+
+		$variaveisTrocarDepois['pagina-css'] = $css;
+		$variaveisTrocarDepois['pagina-html'] = $html;
+
+		// ===== Pré-Visualização
+
+		$modalLayout = gestor_componente(Array(
+			'id' => 'modal-layout',
+			'modulo' => $_GESTOR['modulo-id'],
+		));
+
+		$modalLayout = modelo_var_troca($modalLayout,'#title#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-title-preview')));
+		$modalLayout = modelo_var_troca($modalLayout,'#desktop#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-desktop-preview')));
+		$modalLayout = modelo_var_troca($modalLayout,'#tablet#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-tablet-preview')));
+		$modalLayout = modelo_var_troca($modalLayout,'#mobile#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-mobile-preview')));
+		$modalLayout = modelo_var_troca($modalLayout,'#button-tooltip#',gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-title')));
+		$modalLayout = modelo_var_troca($modalLayout,'#button-value#',gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-value')));
+		$modalLayout = modelo_var_troca($modalLayout,'#button-back-tooltip#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'button-back-tooltip')));
+		$modalLayout = modelo_var_troca($modalLayout,'#button-back-value#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'button-back-value')));
+
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#modal-preview#',$modalLayout);
 		
 		// ===== Dropdown com todos os backups
 		
@@ -348,8 +417,19 @@ function admin_layouts_editar(){
 	// ===== Interface editar finalizar opções
 	
 	$_GESTOR['interface']['editar']['finalizar'] = Array(
+		'sem_botao_padrao' => true,
+		'botoes_rodape' => [
+			'previsualizar' => [
+				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-preview')),
+				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-preview')),
+				'icon' => 'plus circle',
+				'cor' => 'positive',
+				'callback' => 'previsualizar',
+			],
+		],
 		'id' => $id,
 		'metaDados' => $metaDados,
+		'variaveisTrocarDepois' => $variaveisTrocarDepois,
 		'banco' => Array(
 			'nome' => $modulo['tabela']['nome'],
 			'id' => $modulo['tabela']['id'],
@@ -385,6 +465,16 @@ function admin_layouts_editar(){
 					'campo' => 'nome',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
 				)
+			),
+			'campos' => Array(
+				Array(
+					'tipo' => 'select',
+					'id' => 'framework-css',
+					'nome' => 'framework_css',
+					'valor_selecionado' => $framework_css,
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
+					'dados' => $modulo['selectDadosFrameworkCSS'],
+				),
 			),
 		)
 	);

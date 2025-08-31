@@ -1,0 +1,29 @@
+<div class="ui modal fullscreen previsualizar">
+    <div class="header">#title#</div>
+    <div class="scrolling content">
+        <div class="ui buttons" style="margin-bottom: 1rem;">
+            <button class="ui button screenPagina" data-option="desktop">
+                <i class="desktop icon"></i> #desktop#
+            </button>
+            <button class="ui button screenPagina" data-option="tablet">
+                <i class="tablet alternate icon"></i> #tablet#
+            </button>
+            <button class="ui button screenPagina" data-option="mobile">
+                <i class="mobile alternate icon"></i> #mobile#
+            </button>
+        </div>
+        <iframe id="iframe-preview" style="width:100%;height:800px;border:1px solid #ccc;"></iframe>
+    </div>
+    <div class="actions">
+        <div class="ui approve right labeled icon button" data-tooltip="#button-back-tooltip#" data-inverted=""
+            data-position="top right">
+            #button-back-value#
+            <i class="angle left icon"></i>
+        </div>
+        <div class="ui approve right labeled icon button green previsualizarConfirmar" data-tooltip="#button-tooltip#"
+            data-inverted="" data-position="top right">
+            #button-value#
+            <i class="check circle icon"></i>
+        </div>
+    </div>
+</div>

@@ -4,7 +4,7 @@
 # Uso: bash ./docker/utils/sincroniza-gestor-instalador.sh checksum
 #
 # Origem:   gestor-instalador/
-# Destino:  docker/dados/home/conn2flow-gestor/
+# Destino:  docker/dados/sites/localhost/public_html/instalador/
 
 
 # Caminhos absolutos para garantir execução de qualquer lugar

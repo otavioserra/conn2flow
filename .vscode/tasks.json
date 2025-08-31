@@ -75,6 +75,11 @@
             "dependsOrder": "sequence"
         },
         {
+            "label": "♻️ Sincronização - Testes",
+            "type": "shell",
+            "command": "bash docker/utils/sincroniza-teste.sh checksum"
+        },
+        {
             "label": "♻️ Sincronização - Sincronizar Gestor",
             "type": "shell",
             "command": "bash docker/utils/sincroniza-gestor.sh checksum"

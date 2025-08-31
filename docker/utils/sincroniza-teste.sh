@@ -1,16 +1,18 @@
 #!/bin/bash
-# Script de sincronização segura do gestor para o ambiente Docker
+# Script de sincronização segura do teste para o ambiente Docker
 # Copia apenas arquivos novos ou modificados, nunca apaga nada da origem
-# Uso: bash ./docker/utils/sincroniza-gestor.sh checksum
+# Uso: bash ./docker/utils/sincroniza-teste.sh checksum
 #
-# Origem:   gestor/
-# Destino:  docker/dados/sites/localhost/conn2flow-gestor/
+# Origem:   teste-final/ ou teste-tailwind-php/ => TARGET
+# Destino:  docker/dados/sites/localhost/public_html/<TARGET>
 
+# TARGET=teste-final/
+TARGET=teste-tailwind-php/
 
 # Caminhos absolutos para garantir execução de qualquer lugar
-ORIGEM="/c/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/"
-DESTINO="/c/Users/otavi/OneDrive/Documentos/GIT/conn2flow/docker/dados/sites/localhost/conn2flow-gestor/"
-PATH_DOCKER="/var/www/sites/localhost/conn2flow-gestor/"
+ORIGEM="/c/Users/otavi/OneDrive/Documentos/GIT/$TARGET"
+DESTINO="/c/Users/otavi/OneDrive/Documentos/GIT/conn2flow/docker/dados/sites/localhost/public_html/$TARGET"
+PATH_DOCKER="/var/www/sites/localhost/public_html/$TARGET"
 
 # Modo de sincronização: padrao (default), checksum, forcar
 MODO=${1:-padrao}

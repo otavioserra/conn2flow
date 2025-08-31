@@ -496,11 +496,11 @@
     {
         "name": "Interface Formulário Inclusão",
         "id": "interface-formulario-inclusao",
-        "version": "1.2",
+        "version": "1.5",
         "checksum": {
-            "html": "a4573ded54ad96a83a9c9021594bf08c",
+            "html": "63d68cb375343a9393cf8fd7bc1219f3",
             "css": "1141c974d1568502c3a4f3847cdb8951",
-            "combined": "40558373f2ffe63ea8b1a0d932b88520"
+            "combined": "2bd8317be777adf9d12d729fc7cb7992"
         }
     },
     {
@@ -636,11 +636,11 @@
     {
         "name": "Interface Formulário Edição",
         "id": "interface-formulario-edicao",
-        "version": "1.2",
+        "version": "1.4",
         "checksum": {
-            "html": "66d0b2b64a3b00263c2a8eaa193867a3",
+            "html": "79d5e4ef47b76143eb838728cb81eee8",
             "css": "a1c884e20814045be6503eec311e42e4",
-            "combined": "a51ad8061d307a4097e7362a6b4e7b53"
+            "combined": "1f01ba97283aed3e5cee345b7b7adccc"
         }
     },
     {

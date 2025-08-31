@@ -49,6 +49,7 @@ function gestor_componente($params = false){
 
 	// Opcionais
 	
+	// modulo - String - Identificador descritivo do módulo.
 	// return_css - Bool - Se ativo retorna Array com HTML e CSS, senão retorna String com o HTML do componente.
 	// modulosExtra - Array - Se definido, incluir módulos extras para procura automática de variáveis nestes módulos.
 	
@@ -72,6 +73,7 @@ function gestor_componente($params = false){
 			,
 			"componentes",
 			"WHERE id_componentes='".$id_componentes."'"
+			.(isset($modulo) ? " AND modulo='".$modulo."'" : "")
 		);
 	}
 	
@@ -95,6 +97,7 @@ function gestor_componente($params = false){
 						,
 						"componentes",
 						"WHERE ".$ids
+						.(isset($modulo) ? " AND modulo='".$modulo."'" : "")
 					);
 				}
 			break;
@@ -108,6 +111,7 @@ function gestor_componente($params = false){
 					,
 					"componentes",
 					"WHERE id='".$id."'"
+					.(isset($modulo) ? " AND modulo='".$modulo."'" : "")
 				);
 		}
 	}
@@ -205,6 +209,7 @@ function gestor_layout($params = false){
 			banco_campos_virgulas(Array(
 				'html',
 				'css',
+				'framework_css',
 			))
 			,
 			"layouts",
@@ -228,6 +233,7 @@ function gestor_layout($params = false){
 							'id',
 							'html',
 							'css',
+							'framework_css',
 						))
 						,
 						"layouts",
@@ -241,6 +247,7 @@ function gestor_layout($params = false){
 					banco_campos_virgulas(Array(
 						'html',
 						'css',
+						'framework_css',
 					))
 					,
 					"layouts",
@@ -257,7 +264,7 @@ function gestor_layout($params = false){
 				$id = $layout['id'];
 				$html = $layout['html'];
 				$css = $layout['css'];
-				
+
 				if(isset($return_css)){
 					$return[$id] = Array(
 						'html' => $html,
@@ -286,6 +293,9 @@ function gestor_layout($params = false){
 		if($layouts){
 			$html = $layouts[0]['html'];
 			$css = $layouts[0]['css'];
+			$framework_css = $layouts[0]['framework_css'];
+
+			$_GESTOR['layout#framework_css'] = $framework_css;
 			
 			if(isset($return_css)){
 				return Array(

@@ -3,6 +3,11 @@
         "pt-br": {
             "variables": [
                 {
+                    "id": "field-url-path",
+                    "value": "Caminho",
+                    "type": "string"
+                },
+                {
                     "id": "form-button-title",
                     "value": "Clique nesse botão para GRAVAR as alterações.",
                     "type": "string"

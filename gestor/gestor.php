@@ -2077,6 +2077,7 @@ function gestor_roteador(){
 			'opcao',
 			'sem_permissao',
 			'nome',
+			'framework_css',
 		);
 	}
 	
@@ -2185,13 +2186,16 @@ function gestor_roteador(){
 			$nome = $paginas[0]['nome'];
 			$html = $paginas[0]['html'];
 			$css = $paginas[0]['css'];
+			$framework_css = $paginas[0]['framework_css'];
+
 			if(!$_GESTOR['opcao']) $_GESTOR['opcao'] = $paginas[0]['opcao'];
 			
 			// ===== 
 			
 			$_GESTOR['pagina'] = $html;
 			$_GESTOR['pagina#titulo'] = $nome;
-			
+			$_GESTOR['pagina#framework_css'] = $framework_css;
+
 			// ===== Módulo alvo quando houver executar
 			
 			if(existe($modulo)){

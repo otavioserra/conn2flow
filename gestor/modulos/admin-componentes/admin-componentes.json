@@ -13,6 +13,16 @@
         "data_criacao": "data_criacao",
         "data_modificacao": "data_modificacao"
     },
+    "selectDadosFrameworkCSS": [
+        {
+            "texto": "Fomantic-UI",
+            "valor": "fomantic-ui"
+        },
+        {
+            "texto": "TailwindCSS",
+            "valor": "tailwindcss"
+        }
+    ],
     "resources": {
         "pt-br": {
             "layouts": [],
@@ -39,11 +49,11 @@
                     "path": "admin-componentes\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "02a8f489049e53693834150cb3edf442",
+                        "html": "edcfda90e62e5f1425cf72129d41c539",
                         "css": "bdb85de7c6afcf6a3fdca44a2b25b9ff",
-                        "combined": "c777cd919ffeb64a312af46cd66f7a4b"
+                        "combined": "354660481875bdcc68710d4bbeb2e916"
                     }
                 },
                 {
@@ -53,15 +63,26 @@
                     "path": "admin-componentes\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "1befa0ed6b4dbd98bdceda52e96a625c",
+                        "html": "7d847f0c7dead2ddff77c193a730f27c",
                         "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
-                        "combined": "ac7ebba11cfb2e9f536e0a5f1365feef"
+                        "combined": "bcfb207fc72eea8548d8caef00731fe9"
                     }
                 }
             ],
-            "components": [],
+            "components": [
+                {
+                    "nome": "Modal Componente",
+                    "id": "modal-componente",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "4aa7451af32a9fbaaf8d10baf08b847d",
+                        "css": "",
+                        "combined": "4aa7451af32a9fbaaf8d10baf08b847d"
+                    }
+                }
+            ],
             "variables": [
                 {
                     "id": "form-name-label",
@@ -101,6 +122,51 @@
                 {
                     "id": "form-module-placeholder",
                     "value": "Selecione opcionalmente um módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-framework-css-label",
+                    "value": "Framework CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-button-preview",
+                    "value": "Pré-Visualizar",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-preview",
+                    "value": "Clique para pré-visualizar o componente",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-title-preview",
+                    "value": "Pré-Visualização do Componente",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-desktop-preview",
+                    "value": "Computador",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-tablet-preview",
+                    "value": "Tablet",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-mobile-preview",
+                    "value": "Smartphone",
+                    "type": "string"
+                },
+                {
+                    "id": "button-back-tooltip",
+                    "value": "Clique no botão para voltar.",
+                    "type": "string"
+                },
+                {
+                    "id": "button-back-value",
+                    "value": "Voltar",
                     "type": "string"
                 }
             ]

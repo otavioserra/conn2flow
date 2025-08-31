@@ -2719,6 +2719,87 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "form-framework-css-label",
+        "valor": "Framework CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "form-button-preview",
+        "valor": "Pré-Visualizar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "tooltip-button-preview",
+        "valor": "Clique para pré-visualizar o componente",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "modal-title-preview",
+        "valor": "Pré-Visualização do Componente",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "modal-desktop-preview",
+        "valor": "Computador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "modal-tablet-preview",
+        "valor": "Tablet",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "modal-mobile-preview",
+        "valor": "Smartphone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "button-back-tooltip",
+        "valor": "Clique no botão para voltar.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "button-back-value",
+        "valor": "Voltar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "admin-hosts",
         "id": "field-domain",
         "valor": "Domínio",
@@ -2830,6 +2911,87 @@
         "modulo": "admin-layouts",
         "id": "form-category-placeholder",
         "valor": "Selecione uma categoria caso necessário.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-layouts",
+        "id": "form-framework-css-label",
+        "valor": "Framework CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-layouts",
+        "id": "form-button-preview",
+        "valor": "Pré-Visualizar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-layouts",
+        "id": "tooltip-button-preview",
+        "valor": "Clique para pré-visualizar o layout",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-layouts",
+        "id": "modal-title-preview",
+        "valor": "Pré-Visualização do Layout",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-layouts",
+        "id": "modal-desktop-preview",
+        "valor": "Computador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-layouts",
+        "id": "modal-tablet-preview",
+        "valor": "Tablet",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-layouts",
+        "id": "modal-mobile-preview",
+        "valor": "Smartphone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-layouts",
+        "id": "button-back-tooltip",
+        "valor": "Clique no botão para voltar.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-layouts",
+        "id": "button-back-value",
+        "valor": "Voltar",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3073,6 +3235,114 @@
         "modulo": "admin-paginas",
         "id": "form-url-label",
         "valor": "URL Atual da Página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-type-page",
+        "valor": "Página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-type-system",
+        "valor": "Sistema",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-framework-css-label",
+        "valor": "Framework CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-button-preview",
+        "valor": "Pré-Visualizar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "tooltip-button-preview",
+        "valor": "Clique para pré-visualizar a página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "modal-title-preview",
+        "valor": "Pré-Visualização da Página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "modal-button-preview",
+        "valor": "Salvar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "modal-desktop-preview",
+        "valor": "Computador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "modal-tablet-preview",
+        "valor": "Tablet",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "modal-mobile-preview",
+        "valor": "Smartphone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "button-back-tooltip",
+        "valor": "Clique no botão para voltar.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "button-back-value",
+        "valor": "Voltar",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5467,6 +5737,15 @@
         "modulo": "host-configuracao",
         "id": "form-recaptcha-v3",
         "valor": "Google  reCAPTCHA V3",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "interface",
+        "id": "field-url-path",
+        "valor": "Caminho",
         "tipo": "string",
         "grupo": null,
         "descricao": null
