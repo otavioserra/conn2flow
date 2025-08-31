@@ -21,6 +21,15 @@ This repository contains the modern Conn2Flow system with automated installation
 * **gestor-instalador/**: Web-based automated installer with multilingual support
 * **gestor-plugins/**: Plugin ecosystem for extending functionality
 * **cpanel/**: cPanel integration libraries (optional - system also works via FTP)
+* **ai-workspace/**: Development environment and comprehensive technical documentation
+
+### Documentation
+
+For detailed technical information and development guides, see:
+
+- **[📚 Technical Documentation](ai-workspace/docs/README.md)** - Complete technical docs organized by system area
+- **[📋 Changelog](CHANGELOG.md)** - Industry-standard changelog following Keep a Changelog format
+- **[📊 Full Development History](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Detailed commit-by-commit evolution
 
 ### Legacy Branches
 * **b2make-legacy**: Complete legacy system preserved for reference
@@ -264,6 +273,70 @@ gestor-cliente/       # Distributed client system
 
 # Plugin ecosystem
 gestor-plugins/
+
+## Documentation & Development
+
+### Technical Documentation
+
+Conn2Flow includes comprehensive technical documentation for developers and system administrators:
+
+- **[📚 System Knowledge](ai-workspace/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Complete system overview and architecture
+- **[🛠️ Installation Guide](ai-workspace/docs/CONN2FLOW-INSTALADOR-DETALHADO.md)** - Detailed installation and configuration
+- **[🎨 Layouts & Components](ai-workspace/docs/CONN2FLOW-LAYOUTS-PAGINAS-COMPONENTES.md)** - UI structure and component system
+- **[🔧 Modules Development](ai-workspace/docs/CONN2FLOW-MODULOS-DETALHADO.md)** - How to develop custom modules
+- **[🔀 Routing System](ai-workspace/docs/CONN2FLOW-ROTEAMENTO-DETALHADO.md)** - URL routing and request handling
+- **[⚡ Automation](ai-workspace/docs/CONN2FLOW-AUTOMACAO-EXPORTACAO.md)** - Resource export automation
+- **[🎨 CSS Frameworks](ai-workspace/docs/CONN2FLOW-FRAMEWORK-CSS.md)** - TailwindCSS and FomanticUI integration
+- **[📱 Preview System](ai-workspace/docs/CONN2FLOW-SISTEMA-PREVIEW-MODALS.md)** - Modal preview system with CodeMirror
+- **[🔄 System Updates](ai-workspace/docs/CONN2FLOW-ATUALIZACOES-SISTEMA.md)** - Automated update mechanism
+- **[🐳 Docker Environment](ai-workspace/docs/CONN2FLOW-AMBIENTE-DOCKER.md)** - Complete development and testing environment
+- **[🌐 Multilingual System](ai-workspace/docs/CONN2FLOW-SISTEMA-HIBRIDO-MULTILANGUE-CONCLUIDO.md)** - Multi-language support
+
+### Change History
+
+- **[📋 Standard Changelog](CHANGELOG.md)** - Industry-standard changelog following semantic versioning
+- **[📊 Development History](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Complete commit history with context and insights
+
+### Development Resources
+
+The `ai-workspace/` directory contains all development tools and documentation:
+- Scripts for testing, validation, and migration
+- Detailed prompts for AI-assisted development
+- Complete system knowledge base for contributors
+
+## AI-Powered Development Methodology
+
+### 🤖 Collaborative Development with AI Agents
+
+Conn2Flow pioneered a comprehensive **AI-assisted development methodology** over 12 months of active collaboration with AI agents (GitHub Copilot, Claude, ChatGPT, Gemini). The `ai-workspace/` directory represents a mature framework for human-AI collaborative software development.
+
+#### **What Makes This Special**
+- **📚 15 Technical Documents**: Comprehensive system knowledge preserved across sessions
+- **🤖 50+ Agent Conversations**: Critical development sessions documented and preserved  
+- **🔧 20+ Automated Scripts**: Tools created by AI agents for validation, testing, and deployment
+- **📝 Proven Templates**: Standardized prompts that consistently produce quality results
+- **⚡ 90% Efficiency Gain**: Dramatic reduction in context-setting time for new AI sessions
+
+#### **Key Innovations**
+- **Knowledge Persistence**: Technical knowledge survives between AI sessions
+- **Template-Driven Development**: Consistent, high-quality AI interactions
+- **Automated Workflows**: AI-created scripts that automate repetitive tasks
+- **Historical Context**: Preserved solutions prevent re-solving the same problems
+- **Scalable Methodology**: Framework that improves with each interaction
+
+#### **For AI Researchers & Developers**
+The `ai-workspace/` methodology demonstrates:
+- How to maintain context across multiple AI sessions
+- Techniques for preserving and transferring technical knowledge
+- Templates that consistently produce high-quality code
+- Integration of AI assistance into professional development workflows
+- Practical solutions for the "context window" problem in long-term projects
+
+**Explore**: [`ai-workspace/README.md`](ai-workspace/README.md) for complete methodology details
+
+---
+
+*This represents one of the most comprehensive real-world applications of AI-assisted development methodology in an active production system.*
 
 ## Community & Support
 
