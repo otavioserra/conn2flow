@@ -1061,7 +1061,6 @@ function perfil_usuario_signin(){
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
-	//gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'fingerprint3-3.1.0/fp.min.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Interface finalizar opções
@@ -2189,7 +2188,6 @@ function perfil_usuario_validar_usuario(){
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
-	//gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'fingerprint3-3.1.0/fp.min.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Alterar dados do formulário de validação

@@ -5,7 +5,7 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR['versao']								=	'2.0.1'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'2.0.2'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
 
@@ -128,10 +128,6 @@ $_GESTOR['controladores-path']					=	$_GESTOR['ROOT_PATH'].'controladores/';
 $_GESTOR['assets-path']							=	$_GESTOR['ROOT_PATH'].'assets/';
 $_GESTOR['contents-path']						=	$_GESTOR['ROOT_PATH'].'contents/';
 $_GESTOR['logs-path']							=	$_GESTOR['ROOT_PATH'].'logs/';
-
-// ===== Nome da pasta do Fomantic UI principal relativo a pasta assets.
-
-$_GESTOR['fomantic-ui-folder']					=	'fomantic-UI@2.9.0';
 
 // ===== Carrega as configurações de ambiente do .env =====
 

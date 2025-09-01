@@ -22,6 +22,11 @@
             "command": "docker logs conn2flow-app --tail 50 --follow"
         },
         {
+            "label": "📦 Docker - Logs PHP Truncate",
+            "type": "shell",
+            "command": "docker exec conn2flow-app bash -c \"truncate -s 0 /var/log/php_errors.log\""
+        },
+        {
             "label": "📦 Docker - Logs PHP > 50 Linhas",
             "type": "shell",
             "command": "docker exec conn2flow-app bash -c \"tail -50 /var/log/php_errors.log\""

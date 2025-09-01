@@ -66,7 +66,6 @@ require_once $BASE_PATH . 'gestor/bibliotecas/lang.php';
 $GESTOR_DIR      = $BASE_PATH . 'gestor' . DIRECTORY_SEPARATOR;
 $RESOURCES_DIR   = $GESTOR_DIR . 'resources' . DIRECTORY_SEPARATOR;
 $MODULES_DIR     = $GESTOR_DIR . 'modulos' . DIRECTORY_SEPARATOR;
-$PLUGINS_DIR     = $BASE_PATH . 'gestor-plugins' . DIRECTORY_SEPARATOR;
 $DB_DATA_DIR     = $GESTOR_DIR . 'db' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
 $LOG_DIR         = $GESTOR_DIR . 'logs' . DIRECTORY_SEPARATOR . 'arquitetura' . DIRECTORY_SEPARATOR;
 $LOG_FILE        = 'atualizacao-dados-recursos';
@@ -204,51 +203,6 @@ function atualizarArquivosOrigem(array $map): void {
             }
         }
     }
-
-    // ====== Atualização para PLUGINS (módulos locais) ======
-    global $PLUGINS_DIR;
-    if (is_dir($PLUGINS_DIR)) {
-        $plugins = glob($PLUGINS_DIR.'*', GLOB_ONLYDIR) ?: [];
-        foreach ($plugins as $plugPath) {
-            $plugId = basename($plugPath);
-            $modsBase = $plugPath.DIRECTORY_SEPARATOR.'local'.DIRECTORY_SEPARATOR.'modulos'.DIRECTORY_SEPARATOR;
-            if (!is_dir($modsBase)) continue;
-            $mods = glob($modsBase.'*', GLOB_ONLYDIR) ?: [];
-            foreach ($mods as $modPath) {
-                $modId = basename($modPath);
-                $jsonFile = $modPath.DIRECTORY_SEPARATOR.$modId.'.json';
-                $data = jsonRead($jsonFile); if(!$data || empty($data['resources'])) continue;
-                $changedModule = false;
-                foreach ($languages as $lang) {
-                    if (empty($data['resources'][$lang])) continue;
-                    foreach (['layouts','components','pages'] as $tipo) {
-                        if (empty($data['resources'][$lang][$tipo]) || !is_array($data['resources'][$lang][$tipo])) continue;
-                        foreach ($data['resources'][$lang][$tipo] as &$item) {
-                            $id = $item['id'] ?? null; if(!$id) continue;
-                            $paths = resourcePaths($modPath,$lang,$tipo,$id);
-                            $html = readFileIfExists($paths['html']);
-                            $css  = readFileIfExists($paths['css']);
-                            $newChecksum = buildChecksum($html,$css);
-                            $oldChecksum = $item['checksum'] ?? ['html'=>'','css'=>'','combined'=>''];
-                            if (!is_array($oldChecksum)) { $dec=json_decode((string)$oldChecksum,true); if(is_array($dec)) $oldChecksum=$dec; }
-                            if (!checksumsEqual($oldChecksum,$newChecksum)) {
-                                $oldVersion = $item['version'] ?? null;
-                                $item['version'] = incrementVersionStr($oldVersion);
-                                $item['checksum'] = $newChecksum;
-                                $changedModule = true;
-                                log_disco("ORIGIN_UPDATE_PLUGIN plugin=$plugId modulo=$modId tipo=$tipo id=$id lang=$lang version {$oldVersion}=>{$item['version']}", $LOG_FILE);
-                            }
-                        }
-                        unset($item);
-                    }
-                }
-                if ($changedModule) {
-                    jsonWrite($jsonFile,$data);
-                    log_disco("ORIGIN_FILE_SAVED_PLUGIN $jsonFile", $LOG_FILE);
-                }
-            }
-        }
-    }
 }
 
 /**
@@ -374,7 +328,7 @@ function carregarDadosExistentes(): array {
  * Coleta recursos aplicando regras de unicidade e separando órfãos.
  */
 function coletarRecursos(array $existentes, array $map): array {
-    global $RESOURCES_DIR, $MODULES_DIR, $PLUGINS_DIR, $LOG_FILE;
+    global $RESOURCES_DIR, $MODULES_DIR, $LOG_FILE;
     $languages = array_keys($map['languages']);
 
     $layouts = $paginas = $componentes = $variaveis = [];
@@ -578,59 +532,6 @@ function coletarRecursos(array $existentes, array $map): array {
         }
     }
 
-    // ---------- Plugins (mesma lógica de módulos, caminho diferente) ----------
-    if (is_dir($PLUGINS_DIR)) {
-        $plugins = glob($PLUGINS_DIR.'*',GLOB_ONLYDIR) ?: [];
-        foreach ($plugins as $plugPath) {
-            $plugId = basename($plugPath);
-            $modsBase = $plugPath.DIRECTORY_SEPARATOR.'local'.DIRECTORY_SEPARATOR.'modulos'.DIRECTORY_SEPARATOR;
-            if(!is_dir($modsBase)) continue;
-            $mods = glob($modsBase.'*',GLOB_ONLYDIR) ?: [];
-            foreach ($mods as $modPath) {
-                $modId = basename($modPath);
-                $jsonFile = $modPath.DIRECTORY_SEPARATOR.$modId.'.json';
-                $data = jsonRead($jsonFile); if(!$data) continue;
-                foreach ($languages as $lang) {
-                    if(empty($data['resources'][$lang])) continue;
-                    $res = $data['resources'][$lang];
-                    foreach (['layouts','components','pages'] as $tipo) {
-                        $arr = $res[$tipo] ?? [];
-                        foreach ($arr as $item) {
-                            $id = $item['id'] ?? null; if(!$id) continue;
-                            $paths = resourcePaths($modPath,$lang,$tipo,$id);
-                            $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
-                            if ($tipo==='layouts') {
-                                $key=$lang.'|'.$id; if(isset($idxLayouts[$key])) { $orphans['layouts'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId,'plugin'=>$plugId]; continue; }
-                                $idxLayouts[$key]=true; [$versao,$cks]=$versaoChecksum('layouts',$key,$html,$css);
-                                $layouts[]=[ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE),'plugin'=>$plugId ];
-                            } elseif ($tipo==='components') {
-                                $key=$lang.'|'.$id; if(isset($idxComponentes[$key])) { $orphans['componentes'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId,'plugin'=>$plugId]; continue; }
-                                $idxComponentes[$key]=true; [$versao,$cks]=$versaoChecksum('componentes',$key,$html,$css);
-                                $componentes[]=[ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE),'plugin'=>$plugId ];
-                            } else { // pages
-                                $path = $item['path'] ?? ($id.'/');
-                                $kId=$lang.'|'.$modId.'|'.$id; if(isset($idxPaginasId[$kId])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId,'plugin'=>$plugId]; continue; }
-                                $kPath=$lang.'|'.strtolower(trim($path,'/')); if(isset($idxPaginasPath[$kPath])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade caminho','language'=>$lang,'modulo'=>$modId,'plugin'=>$plugId]; continue; }
-                                $idxPaginasId[$kId]=true; $idxPaginasPath[$kPath]=true; [$versao,$cks]=$versaoChecksum('paginas',$kId,$html,$css);
-                                $paginas[]=[ 'layout_id'=>$item['layout'] ?? null,'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'caminho'=>$path,'tipo'=>$item['type'] ?? null,'modulo'=>$modId,'opcao'=>$item['option'] ?? null,'raiz'=>$item['root'] ?? null,'sem_permissao'=>$item['without_permission'] ?? null,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE),'plugin'=>$plugId ];
-                            }
-                        }
-                    }
-                    if (!empty($res['variables'])) {
-                        foreach ($res['variables'] as $v) {
-                            $id = $v['id'] ?? null; if(!$id) continue; $grp = $v['group'] ?? null; $base=$lang.'|'.$modId.'|'.$id;
-                            if(!isset($idxVariaveis[$base])) $idxVariaveis[$base]=[]; $groups=$idxVariaveis[$base];
-                            if($grp===null || $grp===''){ if(!empty($groups)||in_array('', $groups,true)){ $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade sem group','linguagem_codigo'=>$lang,'modulo'=>$modId,'plugin'=>$plugId]; continue; } }
-                            else { if(in_array($grp,$groups,true)){ $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade group repetido','linguagem_codigo'=>$lang,'modulo'=>$modId,'plugin'=>$plugId]; continue; } }
-                            $idxVariaveis[$base][] = ($grp ?? '');
-                            $variaveis[]=[ 'linguagem_codigo'=>$lang,'modulo'=>$modId,'id'=>$id,'valor'=>$v['value'] ?? null,'tipo'=>$v['type'] ?? null,'grupo'=>$grp,'descricao'=>$v['description'] ?? null,'plugin'=>$plugId ];
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     log_disco(__t('_collected_summary', [
         'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'variables'=>count($variaveis)
     ]), $LOG_FILE);
@@ -675,7 +576,7 @@ function validarDuplicidades(array $recursos): array {
 }
 
 /**
- * Aplica os erros diretamente nos arquivos de origem (globais, módulos, plugins).
+ * Aplica os erros diretamente nos arquivos de origem (globais, módulos).
  * @param array $dupsMeta Lista de duplicados com metadados e mensagem.
  */
 function aplicarErrosOrigem(array $dupsMeta, array $originsIndex): void { /* V2: não marca origem, usa órfãos */ }

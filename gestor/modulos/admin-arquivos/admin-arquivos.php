@@ -546,25 +546,21 @@ function admin_arquivos_upload(){
 	
 	// ===== Inclusão Módulo CSS
 	
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.31.0/css/jquery.fileupload.css">');
-	//gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.31.0/css/jquery.fileupload-ui.css">');
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.32.0/css/jquery.fileupload.css">');
+	//gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.32.0/css/jquery.fileupload-ui.css">');
 	
 	// ===== Inclusão Módulo JS
 	
 	// ===== The jQuery UI widget factory, can be omitted if jQuery UI is already included
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.31.0/js/vendor/jquery.ui.widget.js"></script>');
-	// ===== The Load Image plugin is included for the preview images and image resizing functionality
-	//gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'JavaScript-Load-Image/js/load-image.all.min.js"></script>');
-	// ===== The Canvas to Blob plugin is included for image resizing functionality
-	//gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.32.0/js/vendor/jquery.ui.widget.js"></script>');
 	// ===== The Iframe Transport is required for browsers without support for XHR file uploads
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.31.0/js/jquery.iframe-transport.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.32.0/js/jquery.iframe-transport.js"></script>');
 	// ===== The basic File Upload plugin
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.31.0/js/jquery.fileupload.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.32.0/js/jquery.fileupload.js"></script>');
 	// ===== The File Upload processing plugin
-	//gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.31.0/js/jquery.fileupload-process.js"></script>');
+	//gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.32.0/js/jquery.fileupload-process.js"></script>');
 	// ===== The File Upload image preview & resize plugin
-	//gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.31.0/js/jquery.fileupload-image.js"></script>');
+	//gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.32.0/js/jquery.fileupload-image.js"></script>');
 	
 	gestor_pagina_javascript_incluir();
 	
