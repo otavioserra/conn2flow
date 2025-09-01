@@ -5,10 +5,9 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR['versao']								=	'1.16.0'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'2.0.1'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
-$_GESTOR['host-configuracao-id-modulo']			=	'host-configuracao'; // Identificador módulo de configuração do host.
 
 // ===== Definição dos marcadores de abertura e fechamento de varíaveis globais.
 
@@ -99,20 +98,6 @@ $_CONFIG = [
     'plano-teste-id-usuario-perfil'     => $_ENV['PLANO_TESTE_ID_USUARIO_PERFIL'] ?? '2',
     'autenticacao-token-lifetime'       => (int)($_ENV['AUTENTICACAO_TOKEN_LIFETIME'] ?? 15552000),
     
-    // Configurações da Plataforma Cliente
-    'platform-lifetime'                 => (int)($_ENV['PLATFORM_LIFETIME'] ?? 900),
-    'platform-hash-password'            => $_ENV['PLATFORM_HASH_PASSWORD'] ?? '',
-    'platform-hash-algo'                => $_ENV['PLATFORM_HASH_ALGO'] ?? 'sha512',
-    'platform-recaptcha-active'         => filter_var($_ENV['PLATFORM_RECAPTCHA_ACTIVE'] ?? false, FILTER_VALIDATE_BOOLEAN),
-    'platform-recaptcha-site'           => $_ENV['PLATFORM_RECAPTCHA_SITE'] ?? '',
-    'platform-recaptcha-server'         => $_ENV['PLATFORM_RECAPTCHA_SERVER'] ?? '',
-    
-    // Configurações do Aplicativo
-    'app-recaptcha-active'              => filter_var($_ENV['APP_RECAPTCHA_ACTIVE'] ?? false, FILTER_VALIDATE_BOOLEAN),
-    'app-token-lifetime'                => (int)($_ENV['APP_TOKEN_LIFETIME'] ?? 2592000),
-    'app-token-renewtime'               => (int)($_ENV['APP_TOKEN_RENEWTIME'] ?? 86400),
-    'app-origem'                        => $_ENV['APP_ORIGEM'] ?? 'app',
-    
     // Controle de Acessos
     'acessos-maximo-falhas-logins'      => (int)($_ENV['ACESSOS_MAXIMO_FALHAS_LOGINS'] ?? 10),
     'acessos-maximo-logins-simples'     => (int)($_ENV['ACESSOS_MAXIMO_LOGINS_SIMPLES'] ?? 3),
@@ -142,7 +127,6 @@ $_GESTOR['modulos-path']						=	$_GESTOR['ROOT_PATH'].'modulos/';
 $_GESTOR['controladores-path']					=	$_GESTOR['ROOT_PATH'].'controladores/';
 $_GESTOR['assets-path']							=	$_GESTOR['ROOT_PATH'].'assets/';
 $_GESTOR['contents-path']						=	$_GESTOR['ROOT_PATH'].'contents/';
-$_GESTOR['configuracoes-path']					=	$_GESTOR['ROOT_PATH'].'configuracoes/';
 $_GESTOR['logs-path']							=	$_GESTOR['ROOT_PATH'].'logs/';
 
 // ===== Nome da pasta do Fomantic UI principal relativo a pasta assets.
@@ -151,26 +135,7 @@ $_GESTOR['fomantic-ui-folder']					=	'fomantic-UI@2.9.0';
 
 // ===== Carrega as configurações de ambiente do .env =====
 
-$_GESTOR['plataforma-id'] = $_ENV['PLATAFORMA_ID'] ?? 'producao';
 $_GESTOR['url-raiz'] = $_ENV['URL_RAIZ'] ?? '/';
-
-$_GESTOR['hosts-server'] = [
-    'ativo'                 => filter_var($_ENV['HOSTS_SERVER_ACTIVE'] ?? false, FILTER_VALIDATE_BOOLEAN),
-    'user-root-path'        => $_ENV['HOSTS_SERVER_USER_ROOT_PATH'] ?? '/',
-    'cpanel-root-path'      => $_ENV['HOSTS_SERVER_CPANEL_ROOT_PATH'] ?? '',
-    'local'                 => $_ENV['HOSTS_SERVER_LOCAL'] ?? '',
-    'server'                => $_ENV['HOSTS_SERVER_SERVER'] ?? '',
-    'pacote-inicial'        => $_ENV['HOSTS_SERVER_PACOTE_INICIAL'] ?? 'TRIAL',
-    'user-perfix'           => $_ENV['HOSTS_SERVER_USER_PERFIX'] ?? '',
-    'dominio'               => $_ENV['HOSTS_SERVER_DOMINIO'] ?? '',
-    'dominio-sufix-regex'   => $_ENV['HOSTS_SERVER_DOMINIO_SUFIX_REGEX'] ?? '',
-    'db-user-sufix'         => $_ENV['HOSTS_SERVER_DB_USER_SUFIX'] ?? '',
-    'ftp-user-sufix'        => $_ENV['HOSTS_SERVER_FTP_USER_SUFIX'] ?? '',
-    'ftp-root'              => $_ENV['HOSTS_SERVER_FTP_ROOT'] ?? '/',
-    'ftp-site-root'         => $_ENV['HOSTS_SERVER_FTP_SITE_ROOT'] ?? '/public_html/',
-    'ftp-files-root'        => $_ENV['HOSTS_SERVER_FTP_FILES_ROOT'] ?? '',
-    'ftp-gestor-root'       => $_ENV['HOSTS_SERVER_FTP_GESTOR_ROOT'] ?? '',
-];
 
 // ===== Definições de variáveis padrões do sistema que dependem de host 
 
@@ -181,23 +146,6 @@ $_GESTOR['url-full-http']						=	'https://'.$_SERVER['SERVER_NAME'].$_GESTOR['ur
 
 $_GESTOR['modulos-bibliotecas']					=	'bibliotecas/'; // Caminho relativo a raiz dos módulos bibliotecas do gestor
 $_GESTOR['pagina#contato-url']					=	'contato/'; // Página de contatos relativo a raiz do sistema.
-
-// ===== Definições da plataforma de comunicação entre clientes e servidor.
-
-// Carrega a definição do host da plataforma a partir do .env do ambiente atual.
-$platformHostId = $_ENV['PLATAFORMA_HOST_ID'] ?? 'producao';
-$platformHostUrl = $_ENV['PLATAFORMA_HOST_URL'] ?? 'localhost';
-
-$_GESTOR['plataforma']['hosts'][$platformHostId] = [
-    'host' => $platformHostUrl,
-];
-
-// ===== Definições do gestor cliente.
-
-$_GESTOR['gestor-cliente'] = Array(
-	'versao' => '1.6.0',
-	'versao_num' => 21,
-);
 
 // ===== Definição e inclusão de todas as bibliotecas necessárias para o funcionamento do gestor
 

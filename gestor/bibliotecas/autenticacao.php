@@ -581,69 +581,6 @@ function autenticacao_validar_jwt_chave_privada($params = false){
 	}
 }
 
-function autenticacao_qr_code($params = false){
-	/**********
-		Descrição: gerador de QR Code
-	**********/
-	
-	global $_GESTOR;
-	
-	if($params)foreach($params as $var => $val)$$var = $val;
-	
-	// ===== Parâmetros
-	
-	// conteudo - String - Obrigatório - Valor textual do QR Code.
-	// tmpImg - Bool - Opcional - Gerar imagem temporária do QR Code e retornar o caminho.
-	
-	// ===== 
-	
-	if(isset($conteudo)){
-		if(isset($tmpImg)){
-			// ===== Arquivo temporário.
-			
-			$path_temp = sys_get_temp_dir().'/';
-			$temp_id = '-'.md5(uniqid(rand(), true));
-			$tmpImagemPNG = $path_temp.'imagem'.$temp_id.'.png';
-			
-			// ===== Gerar QR Code com a biblioteca QRLIB.
-			
-			require_once $_GESTOR['bibliotecas-path'].'qrlib/qrlib.php';
-			
-			QRcode::png($conteudo, $tmpImagemPNG, QR_ECLEVEL_L, 4, 0);
-			
-			// ===== Retornar o arquivo temporário da Imagem.
-			
-			return $tmpImagemPNG;
-		} else {
-			// ===== Arquivo temporário.
-			
-			$path_temp = sys_get_temp_dir().'/';
-			$temp_id = '-'.md5(uniqid(rand(), true));
-			$tmpImagemPNG = $path_temp.'imagem'.$temp_id;
-			
-			// ===== Gerar QR Code com a biblioteca QRLIB.
-			
-			require_once $_GESTOR['bibliotecas-path'].'qrlib/qrlib.php';
-			
-			QRcode::png($conteudo, $tmpImagemPNG, QR_ECLEVEL_L, 4, 0);
-			
-			// ===== Gerar a imagem base64.
-			
-			$imagemBase64 = 'data:image/png;base64, ' . base64_encode(file_get_contents($tmpImagemPNG));
-			
-			// ===== Apagar arquivo temporário.
-			
-			unlink($tmpImagemPNG);
-			
-			// ===== Retornar Imagem.
-			
-			return $imagemBase64;
-		}
-	} else {
-		return '';
-	}
-}
-
 function autenticacao_cliente_gerar_token_validacao($params = false){
 	global $_GESTOR;
 	global $_CONFIG;

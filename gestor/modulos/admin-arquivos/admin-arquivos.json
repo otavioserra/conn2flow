@@ -65,7 +65,18 @@
                     }
                 }
             ],
-            "components": [],
+            "components": [
+                {
+                    "name": "Arquivos Lista",
+                    "id": "arquivos-lista",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "6da8a46c3e87428f93e2c452d47058be",
+                        "css": "",
+                        "combined": "6da8a46c3e87428f93e2c452d47058be"
+                    }
+                }
+            ],
             "variables": [
                 {
                     "id": "add-button-label",

@@ -40,16 +40,6 @@
         }
     },
     {
-        "name": "Página Lista Pedidos",
-        "id": "pagina-lista-pedidos",
-        "version": "1.4",
-        "checksum": {
-            "html": "ca9f4d3fc752ed21d8e9d757d26546b7",
-            "css": "",
-            "combined": "ca9f4d3fc752ed21d8e9d757d26546b7"
-        }
-    },
-    {
         "name": "Layout Página Simples",
         "id": "layout-pagina-simples",
         "version": "1.2",
@@ -57,46 +47,6 @@
             "html": "0bf6b9ed25e76568e4accab429285052",
             "css": "",
             "combined": "0bf6b9ed25e76568e4accab429285052"
-        }
-    },
-    {
-        "name": "Layout Página Configuração",
-        "id": "layout-pagina-configuracao",
-        "version": "1.3",
-        "checksum": {
-            "html": "474e067290ce9318c978ab463c3ed895",
-            "css": "c3fd0dfa321e5a4f032ff574cc07a4fb",
-            "combined": "1406ab702ddefb4fd6ae89fbaabdbf18"
-        }
-    },
-    {
-        "name": "Layout Mestre - Loja",
-        "id": "layout-mestre-loja",
-        "version": "1.2",
-        "checksum": {
-            "html": "5600cc39c547c5f54a79141a1609a67d",
-            "css": "2594d3fe597dde9fd1504761b40e35d9",
-            "combined": "2f7747f656f0b3cd467099d331cdbff4"
-        }
-    },
-    {
-        "name": "Layout Mestre - Páginas",
-        "id": "layout-mestre-paginas",
-        "version": "1.2",
-        "checksum": {
-            "html": "0bf6b9ed25e76568e4accab429285052",
-            "css": "",
-            "combined": "0bf6b9ed25e76568e4accab429285052"
-        }
-    },
-    {
-        "name": "Layout Serviços",
-        "id": "layout-servicos",
-        "version": "1.2",
-        "checksum": {
-            "html": "ae88be428a8d8119961ff930c7ba35db",
-            "css": "15b6f90fa29dc85001fce5909d771034",
-            "combined": "eb06a5a02a4b2ec78658b1a1cbabe3ba"
         }
     },
     {
@@ -117,16 +67,6 @@
             "html": "929243be3d2f1b611e572978c2a98367",
             "css": "3cb92b2858b7f058956f6b632a804f6a",
             "combined": "8f215768f26c873c7f5db3998ec26fea"
-        }
-    },
-    {
-        "name": "Layout Mestre Teste - Principal",
-        "id": "layout-mestre-teste-principal",
-        "version": "1.1",
-        "checksum": {
-            "html": "35fc05e60b8adf4a1d45493cd07c7524",
-            "css": "",
-            "combined": "35fc05e60b8adf4a1d45493cd07c7524"
         }
     }
 ]

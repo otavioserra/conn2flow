@@ -377,49 +377,6 @@ function gestor_incluir_biblioteca($biblioteca){
 	}
 }
 
-function gestor_incluir_configuracao($params = false){
-	/**********
-		Descrição: incluir uma configuração.
-	**********/
-	
-	global $_GESTOR;
-	
-	if($params)foreach($params as $var => $val)$$var = $val;
-	
-	// ===== Parâmetros
-	
-	// id - String - Obrigatório - Identificador da configuração que será incluída.
-	// plugin - String - Opcional - Identificador do plugin da configuração.
-	
-	// ===== 
-	
-	if(isset($id)){
-		// ===== Caso seja informado o plugin, usar o path do plugin. Senão, usar o path do sistema.
-		
-		if(isset($plugin)){
-			if(isset($_GESTOR['configuracaoes-plugins-inseridos'][$plugin])){
-				if(isset($_GESTOR['configuracaoes-plugins-inseridos'][$plugin][$id])){
-					return $_GESTOR['configuracaoes-plugins-inseridos'][$plugin][$id];
-				}
-			}
-			
-			$_GESTOR['configuracaoes-plugins-inseridos'][$plugin][$id] = require_once($_GESTOR['plugins-path'].$plugin.'/local/configuracoes/'.$id.'.php');
-			
-			return $_GESTOR['configuracaoes-plugins-inseridos'][$plugin][$id];
-		} else {
-			if(isset($_GESTOR['configuracaoes-inseridos'][$id])){
-				return $_GESTOR['configuracaoes-inseridos'][$id];
-			}
-			
-			$_GESTOR['configuracaoes-inseridos'][$id] = require_once($_GESTOR['configuracoes-path'].$id.'.php');
-			
-			return $_GESTOR['configuracaoes-inseridos'][$id];
-		}
-	}
-	
-	return null;
-}
-
 function gestor_variaveis($params = false){
 	global $_GESTOR;
 

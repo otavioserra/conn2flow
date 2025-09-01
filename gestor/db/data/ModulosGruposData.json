@@ -1,7 +1,7 @@
 [
     {
         "id_modulos_grupos": "1",
-        "id_usuarios": " 1",
+        "id_usuarios": "1",
         "nome": "Administração Gestor",
         "id": "administracao",
         "host": null,
@@ -11,27 +11,7 @@
     },
     {
         "id_modulos_grupos": "2",
-        "id_usuarios": " 1",
-        "nome": "Loja",
-        "id": "loja",
-        "host": null,
-        "status": "A",
-        "versao": " 7",
-        "ordemMenu": " 1"
-    },
-    {
-        "id_modulos_grupos": "3",
-        "id_usuarios": " 1",
-        "nome": "Bibliotecas",
-        "id": "bibliotecas",
-        "host": null,
-        "status": "A",
-        "versao": " 1",
-        "ordemMenu": null
-    },
-    {
-        "id_modulos_grupos": "4",
-        "id_usuarios": " 1",
+        "id_usuarios": "1",
         "nome": "Geral",
         "id": "inicio",
         "host": null,
@@ -40,68 +20,8 @@
         "ordemMenu": null
     },
     {
-        "id_modulos_grupos": "5",
-        "id_usuarios": " 2",
-        "nome": "Host",
-        "id": "host",
-        "host": null,
-        "status": "A",
-        "versao": " 1",
-        "ordemMenu": null
-    },
-    {
-        "id_modulos_grupos": "6",
-        "id_usuarios": " 1",
-        "nome": "Teste 2",
-        "id": "teste",
-        "host": null,
-        "status": "D",
-        "versao": " 5",
-        "ordemMenu": null
-    },
-    {
-        "id_modulos_grupos": "7",
-        "id_usuarios": " 1",
-        "nome": "Gestor",
-        "id": "gestor",
-        "host": null,
-        "status": "A",
-        "versao": " 1",
-        "ordemMenu": " 4"
-    },
-    {
-        "id_modulos_grupos": "8",
-        "id_usuarios": " 2",
-        "nome": "Configurações",
-        "id": "configuracoes",
-        "host": null,
-        "status": "A",
-        "versao": " 1",
-        "ordemMenu": " 3"
-    },
-    {
-        "id_modulos_grupos": "9",
-        "id_usuarios": " 2",
-        "nome": "Conteúdos",
-        "id": "conteudos",
-        "host": null,
-        "status": "A",
-        "versao": " 1",
-        "ordemMenu": " 2"
-    },
-    {
-        "id_modulos_grupos": "10",
-        "id_usuarios": " 2",
-        "nome": "Usuários",
-        "id": "usuarios",
-        "host": null,
-        "status": "A",
-        "versao": " 1",
-        "ordemMenu": null
-    },
-    {
-        "id_modulos_grupos": "11",
-        "id_usuarios": " 2",
+        "id_modulos_grupos": "3",
+        "id_usuarios": "1",
         "nome": "Administração Usuários",
         "id": "administracao-usuarios",
         "host": null,
@@ -110,8 +30,8 @@
         "ordemMenu": null
     },
     {
-        "id_modulos_grupos": "12",
-        "id_usuarios": " 2",
+        "id_modulos_grupos": "4",
+        "id_usuarios": "1",
         "nome": "Administração Sistema",
         "id": "administracao-sistema",
         "host": null,
