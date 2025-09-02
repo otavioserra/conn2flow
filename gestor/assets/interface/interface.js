@@ -911,12 +911,7 @@ $(document).ready(function () {
 						return false;
 					}
 				}
-			}
-			);
-
-			function listar_deletar_confirmacao() {
-				return false;
-			}
+			});
 
 			function listar() {
 				var lista = gestor.interface.lista;

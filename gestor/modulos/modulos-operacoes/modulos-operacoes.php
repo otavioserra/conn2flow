@@ -52,7 +52,7 @@ function modulos_operacoes_adicionar(){
 				'nome' => $modulo['tabela']['nome'],
 				'campo' => 'operacao',
 				'id_nome' => $modulo['tabela']['id_numerico'],
-				'where' => 'id_modulos="'.banco_escape_field($_REQUEST["modulo"]).'"',
+				'where' => 'modulo_id="'.banco_escape_field($_REQUEST["modulo"]).'"',
 			),
 		));
 		
@@ -63,7 +63,7 @@ function modulos_operacoes_adicionar(){
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "operacao"; $campo_valor = $operacao; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		
-		$campo_nome = "id_modulos"; $post_nome = 'modulo'; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "modulo_id"; $post_nome = 'modulo'; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		
 		// ===== Campos comuns
 		
@@ -112,7 +112,7 @@ function modulos_operacoes_adicionar(){
 					'tabela' => Array(
 						'nome' => 'modulos',
 						'campo' => 'nome',
-						'id_numerico' => 'id_modulos',
+						'id_numerico' => 'id',
 					),
 				),
 			),
@@ -133,7 +133,7 @@ function modulos_operacoes_editar(){
 	
 	$camposBanco = Array(
 		'nome',
-		'id_modulos',
+		'modulo_id',
 		'operacao',
 	);
 	
@@ -208,11 +208,11 @@ function modulos_operacoes_editar(){
 		}
 		
 		// ===== Atualização dos demais campos.
-		
-		$campo_nome = "id_modulos"; $request_name = 'modulo'; $alteracoes_name = 'module'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
+
+		$campo_nome = "modulo_id"; $request_name = 'modulo'; $alteracoes_name = 'module'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
 				'nome' => 'modulos',
 				'campo' => 'nome',
-				'id_numerico' => 'id_modulos',
+				'id_numerico' => 'id',
 			));}
 		
 		$campo_nome = "operacao"; $request_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){
@@ -223,7 +223,7 @@ function modulos_operacoes_editar(){
 					'campo' => 'operacao',
 					'id_nome' => $modulo['tabela']['id_numerico'],
 					'id_valor' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-					'where' => 'id_modulos="'.banco_escape_field($_REQUEST["modulo"]).'"',
+					'where' => 'modulo_id="'.banco_escape_field($_REQUEST["modulo"]).'"',
 				),
 			));
 			
@@ -280,8 +280,8 @@ function modulos_operacoes_editar(){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
 		$campo = (isset($retorno_bd['campo']) ? $retorno_bd['campo'] : '');
 		$operacao = (isset($retorno_bd['operacao']) ? $retorno_bd['operacao'] : '');
-		$id_modulos = (isset($retorno_bd['id_modulos']) ? $retorno_bd['id_modulos'] : '');
-		
+		$modulo_id = (isset($retorno_bd['modulo_id']) ? $retorno_bd['modulo_id'] : '');
+
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#operacao#',$operacao);
 		
@@ -354,8 +354,8 @@ function modulos_operacoes_editar(){
 					'tabela' => Array(
 						'nome' => 'modulos',
 						'campo' => 'nome',
-						'id_numerico' => 'id_modulos',
-						'id_selecionado' => $id_modulos,
+						'id_numerico' => 'id',
+						'id_selecionado' => $modulo_id,
 					),
 				),
 			),
@@ -375,7 +375,7 @@ function modulos_operacoes_interfaces_padroes(){
 					'nome' => $modulo['tabela']['nome'],
 					'campos' => Array(
 						'nome',
-						'id_modulos',
+						'modulo_id',
 						'operacao',
 						$modulo['tabela']['data_criacao'],
 						$modulo['tabela']['data_modificacao'],
@@ -392,14 +392,14 @@ function modulos_operacoes_interfaces_padroes(){
 							'ordenar' => 'asc',
 						),
 						Array(
-							'id' => 'id_modulos',
+							'id' => 'modulo_id',
 							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-label')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
 								'tabela' => Array(
 									'nome' => 'modulos',
 									'campo_trocar' => 'nome',
-									'campo_referencia' => 'id_modulos',
+									'campo_referencia' => 'id',
 								),
 							),
 							'ordenar' => 'asc',

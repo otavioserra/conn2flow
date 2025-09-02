@@ -199,35 +199,35 @@ function gestor_pagina_menu($params = false){
 		"WHERE raiz IS NOT NULL"
 	);
 	
-	$modulos = banco_select_name
-	(
-		banco_campos_virgulas(Array(
-			'id_modulos',
-			'id_modulos_grupos',
-			'id',
-			'nome',
-			'icone',
-			'icone2',
-			'titulo',
-			'plugin',
-		))
-		,
-		"modulos",
-		"WHERE nao_menu_principal IS NULL"
-		." AND status='A'"
-		." ORDER BY nome ASC"
-	);
-	
-	$modulos_grupos = banco_select(Array(
-		'tabela' => 'modulos_grupos',
-		'campos' => Array(
-			'id_modulos_grupos',
-			'nome',
-			'ordemMenu',
-		),
-		'extra' => 
-			" ORDER BY ordemMenu ASC, nome ASC"
-	));
+		$modulos = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'id_modulos',
+				'modulo_grupo_id', // campo textual
+				'id',
+				'nome',
+				'icone',
+				'icone2',
+				'titulo',
+				'plugin',
+			))
+			,
+			"modulos",
+			"WHERE nao_menu_principal IS NULL"
+			." AND status='A'"
+			." ORDER BY nome ASC"
+		);
+    
+		$modulos_grupos = banco_select(Array(
+			'tabela' => 'modulos_grupos',
+			'campos' => Array(
+				'id', // campo textual
+				'nome',
+				'ordemMenu',
+			),
+			'extra' => 
+				" ORDER BY ordemMenu ASC, nome ASC"
+		));
 	
 	// ===== Verifica se o usuário é admin do host para mostrar no menu o Host Configurações ou não.
 	
@@ -352,28 +352,28 @@ function gestor_pagina_menu($params = false){
 		} else {
 			// ===== Incluir o item no módulo grupo.
 			
-			if(!isset($grupos[$modulo['id_modulos_grupos']])){
+			if(!isset($grupos[$modulo['modulo_grupo_id']])){
 				$achouGrupo = false;
 				$nomeGrupo = '';
 				if($modulos_grupos)
 				foreach($modulos_grupos as $modulo_grupo){
-					if($modulo_grupo['id_modulos_grupos'] == $modulo['id_modulos_grupos']){
+					if($modulo_grupo['id'] == $modulo['modulo_grupo_id']){
 						$achouGrupo = true;
 						$nomeGrupo = $modulo_grupo['nome'];
 						break;
 					}
 				}
-				
+                
 				if($achouGrupo){
-					$grupos[$modulo['id_modulos_grupos']] = $cel['categoria'];
-					
-					$grupos[$modulo['id_modulos_grupos']] = modelo_var_troca($grupos[$modulo['id_modulos_grupos']],'#categoria-nome#',$nomeGrupo);
+					$grupos[$modulo['modulo_grupo_id']] = $cel['categoria'];
+                    
+					$grupos[$modulo['modulo_grupo_id']] = modelo_var_troca($grupos[$modulo['modulo_grupo_id']],'#categoria-nome#',$nomeGrupo);
 				} else {
 					continue;
 				}
 			}
-			
-			$grupos[$modulo['id_modulos_grupos']] = modelo_var_in($grupos[$modulo['id_modulos_grupos']],'<!-- itemMenu -->',$cel_aux);
+            
+			$grupos[$modulo['modulo_grupo_id']] = modelo_var_in($grupos[$modulo['modulo_grupo_id']],'<!-- itemMenu -->',$cel_aux);
 		}
 	}
 	
@@ -397,10 +397,10 @@ function gestor_pagina_menu($params = false){
 	
 	if($modulos_grupos)
 	foreach($modulos_grupos as $modulo_grupo){
-		if(isset($grupos[$modulo_grupo['id_modulos_grupos']])){
+		if(isset($grupos[$modulo_grupo['id']])){
 			$cel_conteiner = $cel['itemContCel'];
-			$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$grupos[$modulo_grupo['id_modulos_grupos']]);
-			
+			$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$grupos[$modulo_grupo['id']]);
+            
 			if($modulo_grupo['ordemMenu']){
 				$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
 			} else {
@@ -1510,18 +1510,15 @@ function gestor_acesso($operacao = false,$modulo = false){
 	);
 	
 	if($modulos){
-		$id_modulos = $modulos[0]['id_modulos'];
-		
 		$modulos_operacoes = banco_select_name
 		(
 			banco_campos_virgulas(Array(
-				'id_modulos_operacoes',
 				'id',
 			))
 			,
 			"modulos_operacoes",
 			"WHERE operacao='".$operacao."'"
-			." AND id_modulos='".$id_modulos."'"
+			." AND modulo_id='".$modulo."'"
 			." AND status='A'"
 		);
 		
@@ -1705,6 +1702,8 @@ function gestor_roteador(){
 	$_GESTOR['hotfix'] = (isset($_REQUEST['hotfix']) ? true : false);
 	
 	$_GESTOR['modulo-registro-id'] = (isset($_REQUEST['ajaxRegistroId']) ? banco_escape_field($_REQUEST['ajaxRegistroId']) : NULL);
+
+	$lang = $_GESTOR['linguagem-codigo'];
 	
 	// ===== Implementação de um hotfix.
 	
@@ -1761,7 +1760,13 @@ function gestor_roteador(){
 			'framework_css',
 		);
 	}
-	
+
+	// ===== Pegar o id também em ambiente de desenvolvimento afim de buscar o resource por id.
+
+	if($_GESTOR['development-env']){
+		$campos[] = 'id';
+	}
+
 	// ===== Buscar no banco de dados o alvo da requisição
 	
 	$paginas = banco_select_name
@@ -1809,7 +1814,20 @@ function gestor_roteador(){
 			// ===== Incluir html da página.
 			
 			if($_GESTOR['ajaxPagina']){
-				$html = $paginas[0]['html'];
+				if($_GESTOR['development-env']){
+					$id = $paginas[0]['id'];
+
+					if(existe($modulo)){
+						$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
+					} else {
+						$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
+					}
+
+					$html = (file_exists($html_path)) ? file_get_contents($html_path) : '';
+				} else {
+					$html = $paginas[0]['html'];
+				}
+				
 				$_GESTOR['pagina'] = $html;
 			}
 			
@@ -1817,7 +1835,7 @@ function gestor_roteador(){
 			
 			if(existe($modulo)){
 				if($modulos['plugin']){
-					require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
+					// require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
 				} else {
 					require_once($_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php');
 				}
@@ -1852,7 +1870,7 @@ function gestor_roteador(){
 			if($_GESTOR['opcao']){
 				if(existe($modulo)){
 					if($modulos['plugin']){
-						require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
+						// require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
 					} else {
 						require_once($_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php');
 					}
@@ -1864,8 +1882,25 @@ function gestor_roteador(){
 			// ===== Senão houver opção de alteração retornar a página alvo
 			
 			$nome = $paginas[0]['nome'];
-			$html = $paginas[0]['html'];
-			$css = $paginas[0]['css'];
+
+			if($_GESTOR['development-env']){
+				$id = $paginas[0]['id'];
+
+				if(existe($modulo)){
+					$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
+					$css_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.css';
+				} else {
+					$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
+					$css_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.css';
+				}
+
+				$html = (file_exists($html_path)) ? file_get_contents($html_path) : '';
+				$css = (file_exists($css_path)) ? file_get_contents($css_path) : '';
+			} else {
+				$html = $paginas[0]['html'];
+				$css = $paginas[0]['css'];
+			}
+
 			$framework_css = $paginas[0]['framework_css'];
 
 			if(!$_GESTOR['opcao']) $_GESTOR['opcao'] = $paginas[0]['opcao'];
@@ -1880,7 +1915,7 @@ function gestor_roteador(){
 			
 			if(existe($modulo)){
 				if($modulos['plugin']){
-					require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
+					// require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
 				} else {
 					require_once($_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php');
 				}

@@ -10,8 +10,6 @@ function usuarios_perfis_adicionar(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
-	$modulo_biblioteca_id = $modulo['modulo_biblioteca_id'];
-	
 	// ===== Gravar registro no Banco
 	
 	if(isset($_GESTOR['adicionar-banco'])){
@@ -75,20 +73,18 @@ function usuarios_perfis_adicionar(){
 		$modulos = banco_select_name
 		(
 			banco_campos_virgulas(Array(
-				'id_modulos',
 				'id',
 			))
 			,
 			"modulos",
 			"WHERE status='A'"
-			." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+			." AND modulo_grupo_id!='bibliotecas'"
 			." AND host IS NULL"
 		);
 		
 		$modulos_operacoes = banco_select_name
 		(
 			banco_campos_virgulas(Array(
-				'id_modulos_operacoes',
 				'id',
 			))
 			,
@@ -111,7 +107,7 @@ function usuarios_perfis_adicionar(){
 				
 				if($modulos){
 					foreach($modulos as $mod){
-						if($mod['id_modulos'] == $_REQUEST['modulo-'.$count]){
+						if($mod['id'] == $_REQUEST['modulo-'.$count]){
 							$encontrou = true;
 							$modulo_id = $mod['id'];
 							break;
@@ -150,7 +146,7 @@ function usuarios_perfis_adicionar(){
 				
 				if($modulos_operacoes){
 					foreach($modulos_operacoes as $operacao){
-						if($operacao['id_modulos_operacoes'] == $_REQUEST['operacao-'.$count]){
+						if($operacao['id'] == $_REQUEST['operacao-'.$count]){
 							$encontrou = true;
 							$operacao_id = $operacao['id'];
 							break;
@@ -204,32 +200,30 @@ function usuarios_perfis_adicionar(){
 	
 	// ===== Buscar no banco módulos / grupo de módulos
 	
-	$modulo_biblioteca_id = $modulo['modulo_biblioteca_id'];
-	
 	$modulos_grupos = banco_select_name
 	(
 		banco_campos_virgulas(Array(
-			'id_modulos_grupos',
+			'id', // campo textual
 			'nome',
 		))
 		,
 		"modulos_grupos",
 		"WHERE status='A'"
-		." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+		." AND id!='bibliotecas'"
 		." ORDER BY nome ASC"
 	);
-	
+    
 	$modulos = banco_select_name
 	(
 		banco_campos_virgulas(Array(
-			'id_modulos',
-			'id_modulos_grupos',
+			'id',
+			'modulo_grupo_id', // campo textual
 			'nome',
 		))
 		,
 		"modulos",
 		"WHERE status='A'"
-		." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+		." AND modulo_grupo_id!='bibliotecas'"
 		." AND host IS NULL"
 		." ORDER BY nome ASC"
 	);
@@ -237,8 +231,8 @@ function usuarios_perfis_adicionar(){
 	$modulos_operacoes = banco_select_name
 	(
 		banco_campos_virgulas(Array(
-			'id_modulos_operacoes',
-			'id_modulos',
+			'id',
+			'modulo_id',
 			'nome',
 		))
 		,
@@ -258,16 +252,16 @@ function usuarios_perfis_adicionar(){
 		$cel_nome_4 = 'operacoes-items';
 		
 		foreach($modulos_grupos as $mg){
-			$id_modulos_grupos = $mg['id_modulos_grupos'];
+			$modulo_grupo_id = $mg['id']; // campo textual
 			$found = false;
-			
+            
 			$cel_aux = $cel[$cel_nome];
-			
+            
 			$cel_aux = modelo_var_troca($cel_aux,"#module-grup-name#",$mg['nome']);
-			
+            
 			if($modulos){
 				foreach($modulos as $m){
-					if($m['id_modulos_grupos'] == $id_modulos_grupos){
+					if($m['modulo_grupo_id'] == $modulo_grupo_id){
 						$cel_aux_2 = $cel[$cel_nome_2];
 						
 						// ===== Operações
@@ -277,11 +271,11 @@ function usuarios_perfis_adicionar(){
 						
 						if($modulos_operacoes){
 							foreach($modulos_operacoes as $mo){
-								if($mo['id_modulos'] == $m['id_modulos']){
+								if($mo['modulo_id'] == $m['id']){
 									$cel_aux_op_2 = $cel[$cel_nome_4];
 					
 									$cel_aux_op_2 = modelo_var_troca($cel_aux_op_2,"#operacao-label#",$mo['nome']);
-									$cel_aux_op_2 = modelo_var_troca($cel_aux_op_2,"#operacao-id#",$mo['id_modulos_operacoes']);
+									$cel_aux_op_2 = modelo_var_troca($cel_aux_op_2,"#operacao-id#",$mo['id']);
 									$cel_aux_op_2 = modelo_var_troca($cel_aux_op_2,"#operacao-num#",$count_operacoes);
 									$cel_aux_op_2 = modelo_var_troca($cel_aux_op_2,"#operacao-checked#",'');
 									
@@ -300,7 +294,7 @@ function usuarios_perfis_adicionar(){
 						// ===== Módulo
 		
 						$cel_aux_2 = modelo_var_troca($cel_aux_2,"#module-label#",$m['nome']);
-						$cel_aux_2 = modelo_var_troca($cel_aux_2,"#id#",$m['id_modulos']);
+						$cel_aux_2 = modelo_var_troca($cel_aux_2,"#id#",$m['id']);
 						$cel_aux_2 = modelo_var_troca($cel_aux_2,"#num#",$count);
 						$cel_aux_2 = modelo_var_troca($cel_aux_2,"#checked#",'');
 						
@@ -348,8 +342,6 @@ function usuarios_perfis_editar(){
 	global $_GESTOR;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
-	
-	$modulo_biblioteca_id = $modulo['modulo_biblioteca_id'];
 	
 	// ===== Identificador do 
 	
@@ -481,22 +473,20 @@ function usuarios_perfis_editar(){
 		$modulos = banco_select_name
 		(
 			banco_campos_virgulas(Array(
-				'id_modulos',
 				'id',
 				'nome',
 			))
 			,
 			"modulos",
 			"WHERE status='A'"
-			." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
+			." AND modulo_grupo_id!='bibliotecas'"
 			." AND host IS NULL"
 		);
 		
 		$modulos_operacoes = banco_select_name
 		(
 			banco_campos_virgulas(Array(
-				'id_modulos',
-				'id_modulos_operacoes',
+				'modulo_id',
 				'id',
 				'nome',
 			))
@@ -528,7 +518,7 @@ function usuarios_perfis_editar(){
 				
 				if($modulos){
 					foreach($modulos as $mod){
-						if($mod['id_modulos'] == $_REQUEST['modulo-'.$i]){
+						if($mod['id'] == $_REQUEST['modulo-'.$i]){
 							$encontrou = true;
 							$modulo_id = $mod['id'];
 							$modulosAtivos[$modulo_id] = true;
@@ -608,7 +598,7 @@ function usuarios_perfis_editar(){
 				
 				if($modulos_operacoes){
 					foreach($modulos_operacoes as $modulo_operacao){
-						if($modulo_operacao['id_modulos_operacoes'] == $_REQUEST['operacao-'.$i]){
+						if($modulo_operacao['id'] == $_REQUEST['operacao-'.$i]){
 							$encontrou = true;
 							$operacao_id = $modulo_operacao['id'];
 							$modulosOperacoesAtivos[$operacao_id] = true;
@@ -724,7 +714,7 @@ function usuarios_perfis_editar(){
 								
 								if($modulos)
 								foreach($modulos as $m){
-									if($m['id_modulos'] == $mo['id_modulos']){
+									if($m['id'] == $mo['modulo_id']){
 										$found = true;
 										break;
 									}
@@ -772,7 +762,7 @@ function usuarios_perfis_editar(){
 								
 								if($modulos)
 								foreach($modulos as $m){
-									if($m['id_modulos'] == $mo['id_modulos']){
+									if($m['id'] == $mo['modulo_id']){
 										$found = true;
 										break;
 									}
@@ -1000,40 +990,38 @@ function usuarios_perfis_editar(){
 		
 		// ===== Buscar no banco módulos / grupo de módulos
 		
-		$modulos_grupos = banco_select_name
-		(
-			banco_campos_virgulas(Array(
-				'id_modulos_grupos',
-				'nome',
-			))
-			,
-			"modulos_grupos",
-			"WHERE status='A'"
-			." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
-			." ORDER BY nome ASC"
-		);
-		
-		$modulos = banco_select_name
-		(
-			banco_campos_virgulas(Array(
-				'id_modulos',
-				'id_modulos_grupos',
-				'nome',
-				'id',
-			))
-			,
-			"modulos",
-			"WHERE status='A'"
-			." AND id_modulos_grupos!='".$modulo_biblioteca_id."'"
-			." AND host IS NULL"
-			." ORDER BY nome ASC"
-		);
+				$modulos_grupos = banco_select_name
+				(
+					banco_campos_virgulas(Array(
+						'id', // campo textual
+						'nome',
+					))
+					,
+					"modulos_grupos",
+					"WHERE status='A'"
+					." AND id!='bibliotecas'"
+					." ORDER BY nome ASC"
+				);
+        
+				$modulos = banco_select_name
+				(
+					banco_campos_virgulas(Array(
+						'modulo_grupo_id', // campo textual
+						'nome',
+						'id',
+					))
+					,
+					"modulos",
+					"WHERE status='A'"
+					." AND modulo_grupo_id!='bibliotecas'"
+					." AND host IS NULL"
+					." ORDER BY nome ASC"
+				);
 		
 		$modulos_operacoes = banco_select_name
 		(
 			banco_campos_virgulas(Array(
-				'id_modulos_operacoes',
-				'id_modulos',
+				'modulo_id',
 				'nome',
 				'id',
 			))
@@ -1076,16 +1064,16 @@ function usuarios_perfis_editar(){
 			$modulosOperacoesAntes = '';
 			
 			foreach($modulos_grupos as $mg){
-				$id_modulos_grupos = $mg['id_modulos_grupos'];
+				$modulo_grupo_id = $mg['id']; // campo textual
 				$found = false;
-				
+                
 				$cel_aux = $cel[$cel_nome];
-				
+                
 				$cel_aux = modelo_var_troca($cel_aux,"#module-grup-name#",$mg['nome']);
-				
+                
 				if($modulos){
 					foreach($modulos as $m){
-						if($m['id_modulos_grupos'] == $id_modulos_grupos){
+						if($m['modulo_grupo_id'] == $modulo_grupo_id){
 							$cel_aux_2 = $cel[$cel_nome_2];
 			
 							// ===== Operações
@@ -1095,11 +1083,11 @@ function usuarios_perfis_editar(){
 							
 							if($modulos_operacoes){
 								foreach($modulos_operacoes as $mo){
-									if($mo['id_modulos'] == $m['id_modulos']){
+									if($mo['modulo_id'] == $m['id']){
 										$cel_aux_op_2 = $cel[$cel_nome_4];
 						
 										$cel_aux_op_2 = modelo_var_troca($cel_aux_op_2,"#operacao-label#",$mo['nome']);
-										$cel_aux_op_2 = modelo_var_troca($cel_aux_op_2,"#operacao-id#",$mo['id_modulos_operacoes']);
+										$cel_aux_op_2 = modelo_var_troca($cel_aux_op_2,"#operacao-id#",$mo['id']);
 										$cel_aux_op_2 = modelo_var_troca($cel_aux_op_2,"#operacao-num#",$count_operacoes);
 										
 										$operacaoChecked = '';
@@ -1129,7 +1117,7 @@ function usuarios_perfis_editar(){
 							// ===== Módulo
 			
 							$cel_aux_2 = modelo_var_troca($cel_aux_2,"#module-label#",$m['nome']);
-							$cel_aux_2 = modelo_var_troca($cel_aux_2,"#id#",$m['id_modulos']);
+							$cel_aux_2 = modelo_var_troca($cel_aux_2,"#id#",$m['id']);
 							$cel_aux_2 = modelo_var_troca($cel_aux_2,"#num#",$count);
 							
 							$checked = '';

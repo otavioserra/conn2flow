@@ -59,20 +59,6 @@
                         "css": "",
                         "combined": "36e3752df78811bc45f4ca5abf8c889d"
                     }
-                },
-                {
-                    "name": "Teste de Adição - Novo",
-                    "id": "teste-de-adicao-novo",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-grupos\/funcao\/",
-                    "type": "page",
-                    "option": "funcao",
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "",
-                        "css": "",
-                        "combined": ""
-                    }
                 }
             ],
             "components": [],

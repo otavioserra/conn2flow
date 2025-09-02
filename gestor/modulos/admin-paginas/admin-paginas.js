@@ -360,4 +360,12 @@ $(document).ready(function () {
 			$.formSubmitNormal();
 		});
 	}
+
+	if ($('#_gestor-interface-listar').length > 0) {
+		$('.ui.radio.checkbox').checkbox({
+			onChange: function () {
+				window.open(gestor.raiz + gestor.moduloCaminho + '?tipo=' + $(this).val(), '_self');
+			}
+		});
+	}
 });

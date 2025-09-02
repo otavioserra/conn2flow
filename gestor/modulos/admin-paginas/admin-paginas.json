@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.0",
+    "versao": "1.1.1",
     "bibliotecas": [
         "interface",
         "html"
@@ -44,6 +44,16 @@
                         "html": "d815fb0545793072b1072303f7c61c6d",
                         "css": "",
                         "combined": "d815fb0545793072b1072303f7c61c6d"
+                    }
+                },
+                {
+                    "nome": "Lista Página ou Sistema",
+                    "id": "lista-pagina-ou-sistema",
+                    "version": "1.3",
+                    "checksum": {
+                        "html": "ae10f7fb5803c7ccc488b8dc552dd0ce",
+                        "css": "",
+                        "combined": "ae10f7fb5803c7ccc488b8dc552dd0ce"
                     }
                 }
             ],
@@ -286,6 +296,26 @@
                 {
                     "id": "button-back-value",
                     "value": "Voltar",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-ambos-label",
+                    "value": "Ambos",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-pagina-label",
+                    "value": "Página",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-sistema-label",
+                    "value": "Sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-tipo-label",
+                    "value": "Tipo",
                     "type": "string"
                 }
             ]

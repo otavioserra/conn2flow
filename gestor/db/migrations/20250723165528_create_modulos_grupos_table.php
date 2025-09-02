@@ -12,7 +12,7 @@ final class CreateModulosGruposTable extends AbstractMigration
     public function change(): void
     {
         $table = $this->table('modulos_grupos', ['id' => 'id_modulos_grupos']);
-        $table->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => null])
+        $table->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => '1'])
               ->addColumn('nome', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('id', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('host', 'integer', ['limit' => Phinx\Db\Adapter\MysqlAdapter::INT_TINY, 'null' => true, 'default' => null])

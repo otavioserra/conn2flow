@@ -1,42 +1,42 @@
 [
     {
-        "id_modulos_grupos": "1",
-        "id_usuarios": "1",
+        "nome": "Bibliotecas",
+        "id": "bibliotecas",
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "ordemMenu": null
+    },
+    {
         "nome": "Administração Gestor",
-        "id": "administracao",
+        "id": "administracao-gestor",
         "host": null,
         "status": "A",
-        "versao": " 4",
+        "versao": "1",
         "ordemMenu": null
     },
     {
-        "id_modulos_grupos": "2",
-        "id_usuarios": "1",
         "nome": "Geral",
-        "id": "inicio",
+        "id": "geral",
         "host": null,
         "status": "A",
-        "versao": " 2",
+        "versao": "1",
         "ordemMenu": null
     },
     {
-        "id_modulos_grupos": "3",
-        "id_usuarios": "1",
         "nome": "Administração Usuários",
         "id": "administracao-usuarios",
         "host": null,
         "status": "A",
-        "versao": " 1",
+        "versao": "1",
         "ordemMenu": null
     },
     {
-        "id_modulos_grupos": "4",
-        "id_usuarios": "1",
         "nome": "Administração Sistema",
         "id": "administracao-sistema",
         "host": null,
         "status": "A",
-        "versao": " 1",
+        "versao": "1",
         "ordemMenu": null
     }
 ]

@@ -1,7 +1,5 @@
 [
     {
-        "id_categorias": "1",
-        "id_usuarios": "1",
         "id_modulos": null,
         "id_categorias_pai": null,
         "nome": "Site",

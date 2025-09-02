@@ -250,33 +250,33 @@ function dashboard_menu(){
 		"WHERE raiz IS NOT NULL"
 	);
 	
-	$modulos = banco_select_name
-	(
-		banco_campos_virgulas(Array(
-			'id_modulos',
-			'id_modulos_grupos',
-			'id',
-			'nome',
-			'icone',
-			'icone2',
-			'plugin',
-		))
-		,
-		"modulos",
-		"ORDER BY nome ASC"
-	);
-	
-	$modulos_grupos = banco_select_name
-	(
-		banco_campos_virgulas(Array(
-			'id_modulos_grupos',
-			'nome',
-		))
-		,
-		"modulos_grupos",
-		"WHERE id!='bibliotecas'".
-		"ORDER BY nome ASC"
-	);
+		$modulos = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'id_modulos',
+				'modulo_grupo_id', // campo textual
+				'id',
+				'nome',
+				'icone',
+				'icone2',
+				'plugin',
+			))
+			,
+			"modulos",
+			"ORDER BY nome ASC"
+		);
+    
+		$modulos_grupos = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'id', // campo textual
+				'nome',
+			))
+			,
+			"modulos_grupos",
+			"WHERE id!='bibliotecas'".
+			"ORDER BY nome ASC"
+		);
 	
 	$cel_nome = 'menu-item'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 	$cel_nome = 'icon'; $cel[$cel_nome] = modelo_tag_val($cel['menu-item'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $cel['menu-item'] = modelo_tag_in($cel['menu-item'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
@@ -310,10 +310,10 @@ function dashboard_menu(){
 	if($modulos_grupos)
 	foreach($modulos_grupos as $mg){
 		$found_grup = false;
-		
+        
 		if($modulos)
 		foreach($modulos as $modulo){
-			if($mg['id_modulos_grupos'] == $modulo['id_modulos_grupos']){
+			if($mg['id'] == $modulo['modulo_grupo_id']){
 				$modulo_perfil = false;
 				
 				if($usuarios_perfis_modulos)
@@ -431,7 +431,7 @@ function dashboard_remover_pagina_instalacao_sucesso(){
 				'id_paginas',
 				'nome',
 			),
-			'extra' => "WHERE caminho = 'instalacao-sucesso' AND status = 'A'"
+			'extra' => "WHERE caminho = 'instalacao-sucesso/' AND status = 'A'"
 		));
 		
 		if($paginas && isset($paginas['id_paginas'])){

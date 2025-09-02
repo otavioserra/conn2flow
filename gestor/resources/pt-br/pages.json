@@ -73,11 +73,11 @@
         "path": "instalacao-sucesso\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "6e46c9e040b94361a08511d690dc888a",
+            "html": "7c11257dbc730a0971d5876f9e0e983b",
             "css": "d66e854af0c522ca96e846dc7add5a36",
-            "combined": "0ed96a5ede0eadef2e29045aee7518a2"
+            "combined": "790aca5c2c8168c8cabc8237fbd029a1"
         }
     }
 ]

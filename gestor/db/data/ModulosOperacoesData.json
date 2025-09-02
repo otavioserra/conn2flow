@@ -1,8 +1,6 @@
 [
     {
-        "id_modulos_operacoes": "1",
-        "id_modulos": " 4",
-        "id_usuarios": " 2",
+        "modulo_id": "admin-paginas",
         "nome": "Modificar Permissão da Página",
         "id": "modificar-permissao-da-pagina",
         "operacao": "permissao-pagina",

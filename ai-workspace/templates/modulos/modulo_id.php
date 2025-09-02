@@ -129,7 +129,7 @@ function modulo_id_adicionar(){
 						'nome' => 'modulos', // Nome da tabela.
 						'campo' => 'nome', // Campo dos registros que serão colocados nos option do select.
 						'id_numerico' => 'id', // Referência do registro.
-						'where' => "id_modulos_grupos!='3'", // Condição para filtrar os registros.
+						'where' => "modulo_grupo_id!='bibliotecas'", // Condição para filtrar os registros.
 					),
 				),
 			)
@@ -391,7 +391,7 @@ function modulo_id_editar(){
 						'campo' => 'nome', // Campo dos registros que serão colocados nos option do select.
 						'id_numerico' => 'id', // Referência do registro.
 						'id_selecionado' => $modulo_id, // Referência atual no banco de dados para o valor selecionado.
-						'where' => "id_modulos_grupos!='3'", // Condição para filtrar os registros.
+						'where' => "modulo_grupo_id!='bibliotecas'", // Condição para filtrar os registros.
 					),
 				),
 			)

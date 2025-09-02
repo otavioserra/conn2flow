@@ -1,6 +1,5 @@
 [
     {
-        "id_usuarios_perfis_modulos_operacoes": "1",
         "perfil": "administradores",
         "operacao": "modificar-permissao-da-pagina"
     }

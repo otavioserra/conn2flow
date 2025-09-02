@@ -2957,7 +2957,7 @@ function interface_adicionar_finalizar($params = false){
 	$pagina = modelo_var_troca($pagina,"#form-button-title#",gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-title')));
 
 	if(isset($sem_botao_padrao) && $sem_botao_padrao === true){
-		$pagina = modelo_tag_in($pagina,'<!-- botao-padrao < -->','<!-- botao-padrao > -->','');
+		$pagina = modelo_tag_del($pagina,'<!-- botao-padrao < -->','<!-- botao-padrao > -->','');
 	}
 
 	$pagina = modelo_var_troca($pagina,"#form-button-value#",gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-value')));
@@ -2966,14 +2966,14 @@ function interface_adicionar_finalizar($params = false){
 		$botoes_html = interface_botoes_cabecalho($params);
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
-		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+		$cel_nome = 'botoes'; $pagina = modelo_tag_del($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 	}
 
 	if(isset($botoes_rodape)){
 		$botoes_html = interface_botoes_rodape($params);
 		$pagina = modelo_var_troca($pagina,"#botoes-rodape#",$botoes_html);
 	} else {
-		$cel_nome = 'botoes-rodape'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+		$cel_nome = 'botoes-rodape'; $pagina = modelo_tag_del($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 	}
 	
 	$pagina = modelo_var_troca($pagina,"#form-page#",$_GESTOR['pagina']);
@@ -3456,7 +3456,7 @@ function interface_editar_finalizar($params = false){
 		$botoes_html = interface_botoes_rodape($params);
 		$pagina = modelo_var_troca($pagina,"#botoes-rodape#",$botoes_html);
 	} else {
-		$cel_nome = 'botoes-rodape'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+		$cel_nome = 'botoes-rodape'; $pagina = modelo_tag_del($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 	}
 	
 	$pagina = modelo_var_troca($pagina,"#form-page#",$_GESTOR['pagina']);
@@ -3866,7 +3866,15 @@ function interface_alteracoes_finalizar($params = false){
 		// tooltip - String - Obrigatório - Pequeno texto descritivo da ação do botão.
 		// icon - String - Obrigatório - Ícone do botão.
 		// cor - String - Obrigatório - Cor do botão.
-		
+	
+	// sem_botao_padrao - Bool - Opcional - Se deve ou não incluir o botão padrão.
+	// botoes_rodape - Array - Opcional - Conjunto de botões no rodapé do formnulário para ações extras.
+		// url - String - Obrigatório - URL de acesso para disparar com o botão.
+		// rotulo - String - Obrigatório - Pequeno texto rótulo do botão.
+		// tooltip - String - Obrigatório - Pequeno texto descritivo da ação do botão.
+		// icon - String - Obrigatório - Ícone do botão.
+		// cor - String - Obrigatório - Cor do botão.
+
 	// ===== 
 	
 	// ===== Incluir componentes
@@ -3897,12 +3905,23 @@ function interface_alteracoes_finalizar($params = false){
 	$pagina = modelo_var_troca($pagina,"#form-button-value#",gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-value')));
 	
 	$cel_nome = 'nao-alterar-id'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+
+	if(isset($sem_botao_padrao) && $sem_botao_padrao === true){
+		$pagina = modelo_tag_in($pagina,'<!-- botao-padrao < -->','<!-- botao-padrao > -->','');
+	}
 	
 	if(isset($botoes)){
 		$botoes_html = interface_botoes_cabecalho($params);
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+	}
+
+	if(isset($botoes_rodape)){
+		$botoes_html = interface_botoes_rodape($params);
+		$pagina = modelo_var_troca($pagina,"#botoes-rodape#",$botoes_html);
+	} else {
+		$cel_nome = 'botoes-rodape'; $pagina = modelo_tag_del($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 	}
 	
 	$pagina = modelo_var_troca($pagina,"#form-page#",$_GESTOR['pagina']);
@@ -4574,6 +4593,7 @@ function interface_listar_finalizar($params = false){
 		// status - String - Opcional - Nome do campo de status do banco de dados para ativar/desativar registro. IMPORTANTE: deve definir os campos 'ativar' e 'desativar' dentro de 'opcoes'
 		
 	// tabela - Array - Obrigatório - Conjunto de dados para a formação da tabela com a lista dos dados.
+		// cabecalho - String - Opcional - Incluir opções extra no cabeçalho da tabela.
 		// rodape - Bool - Obrigatório - Habilitar/Desabilitar o menu do rodapé da tabela.
 		// colunas - Array - Obrigatório - Conjunto com todos as colunas da tabela e suas configurações
 			// id - String - Obrigatório - Identificador da coluna identifica o campo do banco de dados.
@@ -4628,6 +4648,12 @@ function interface_listar_finalizar($params = false){
 		$pagina = modelo_var_troca($pagina,"#botoes#",$botoes_html);
 	} else {
 		$cel_nome = 'botoes'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
+	}
+
+	if(isset($tabela['cabecalho'])){
+		$pagina = modelo_var_troca($pagina,"#cabecalho#",$tabela['cabecalho']);
+	} else {
+		$cel_nome = 'cabecalho'; $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 	}
 	
 	// ===== Incluir Página no gestor

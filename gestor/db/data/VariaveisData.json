@@ -1693,6 +1693,42 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "lista-ambos-label",
+        "valor": "Ambos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "lista-pagina-label",
+        "valor": "Página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "lista-sistema-label",
+        "valor": "Sistema",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "lista-tipo-label",
+        "valor": "Tipo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "admin-plugins",
         "id": "form-name-label",
         "valor": "Nome",
@@ -3668,51 +3704,6 @@
         "id": "password-redefined-mail-subject",
         "valor": "Senha da Conta Entrey redefinida com sucesso nº #numero#",
         "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "testes",
-        "id": "testebool-2",
-        "valor": "1",
-        "tipo": "bool",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "testes",
-        "id": "tinymce-novo",
-        "valor": "<p>Teste<\/p>\\r\\n<p>teste<\/p>",
-        "tipo": "tinymce",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "testes",
-        "id": "testeoutro",
-        "valor": "function(){\\r\\n    sdfsdfsdfs sd fsd f\\r\\n    sdf sdf sdf sdf \\r\\n}",
-        "tipo": "js",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "testes",
-        "id": "teste-novo",
-        "valor": "function alo(){\\r\\n    var top = 1;\\r\\n}",
-        "tipo": "js",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "testes",
-        "id": "teste-html",
-        "valor": "<html>\\r\\n\\r\\n<\/html>",
-        "tipo": "html",
         "grupo": null,
         "descricao": null
     },

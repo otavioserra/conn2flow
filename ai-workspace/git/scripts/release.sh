@@ -40,7 +40,7 @@ echo "Nova versão é: $NEW_VERSION"
 
 ## Remove todas as tags antigas do padrão gestor-v2* localmente e remotamente
 set +e
-OLD_TAGS=$(git tag | grep "^gestor-v2[0-9]")
+OLD_TAGS=$(git tag | grep "^gestor-v2")
 if [ -n "$OLD_TAGS" ]; then
   echo "Removendo todas as tags antigas do padrão gestor-v2*: $OLD_TAGS"
   for tag in $OLD_TAGS; do

@@ -43,7 +43,7 @@ function arquivo_estatico_start(){
 						$file = $_GESTOR['assets-path'].$_GESTOR['caminho-total'];
 					} else {
 						if(count($_GESTOR['caminho']) > 2){
-							$file = $_GESTOR['plugins-path'].$alvo.'/local/modulos/'.$alvo2.'/'.$alvo2.'.'.$ext;
+							// $file = $_GESTOR['plugins-path'].$alvo.'/local/modulos/'.$alvo2.'/'.$alvo2.'.'.$ext;
 						} else {
 							$file = $_GESTOR['modulos-path'].$alvo.'/'.$alvo.'.'.$ext;
 						}

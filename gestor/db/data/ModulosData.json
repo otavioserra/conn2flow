@@ -1,8 +1,6 @@
 [
     {
-        "id_modulos": "1",
-        "id_modulos_grupos": "4",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-sistema",
         "nome": "Módulos",
         "id": "modulos",
         "titulo": null,
@@ -15,9 +13,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "2",
-        "id_modulos_grupos": "4",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-sistema",
         "nome": "Módulos Grupos",
         "id": "modulos-grupos",
         "titulo": null,
@@ -30,9 +26,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "3",
-        "id_modulos_grupos": "1",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-gestor",
         "nome": "Admin Layouts",
         "id": "admin-layouts",
         "titulo": "Layouts",
@@ -45,9 +39,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "4",
-        "id_modulos_grupos": "1",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-gestor",
         "nome": "Admin Páginas",
         "id": "admin-paginas",
         "titulo": "Páginas",
@@ -60,9 +52,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "5",
-        "id_modulos_grupos": "3",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-usuarios",
         "nome": "Usuários Perfis",
         "id": "usuarios-perfis",
         "titulo": null,
@@ -75,9 +65,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "6",
-        "id_modulos_grupos": " 3",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "bibliotecas",
         "nome": "Interface",
         "id": "interface",
         "titulo": null,
@@ -90,9 +78,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "7",
-        "id_modulos_grupos": "3",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-usuarios",
         "nome": "Usuários",
         "id": "usuarios",
         "titulo": null,
@@ -105,9 +91,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "8",
-        "id_modulos_grupos": "2",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-gestor",
         "nome": "Dashboard",
         "id": "dashboard",
         "titulo": null,
@@ -120,9 +104,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "9",
-        "id_modulos_grupos": "2",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "geral",
         "nome": "Perfil Usuário",
         "id": "perfil-usuario",
         "titulo": null,
@@ -135,9 +117,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "10",
-        "id_modulos_grupos": "1",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-gestor",
         "nome": "Admin Arquivos",
         "id": "admin-arquivos",
         "titulo": "Arquivos",
@@ -150,9 +130,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "11",
-        "id_modulos_grupos": "1",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-gestor",
         "nome": "Admin Categorias",
         "id": "admin-categorias",
         "titulo": "Categorias",
@@ -165,9 +143,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "12",
-        "id_modulos_grupos": "4",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-sistema",
         "nome": "Módulos Operações",
         "id": "modulos-operacoes",
         "titulo": null,
@@ -180,39 +156,20 @@
         "versao": "1"
     },
     {
-        "id_modulos": "13",
-        "id_modulos_grupos": "3",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "bibliotecas",
         "nome": "FTP",
         "id": "ftp",
         "titulo": null,
         "icone": null,
         "icone2": null,
-        "nao_menu_principal": " 1",
+        "nao_menu_principal": "1",
         "plugin": null,
         "host": null,
         "status": "A",
         "versao": "1"
     },
     {
-        "id_modulos": "14",
-        "id_modulos_grupos": "1",
-        "id_usuarios": "1",
-        "nome": "Testes",
-        "id": "testes",
-        "titulo": null,
-        "icone": "code",
-        "icone2": null,
-        "nao_menu_principal": null,
-        "plugin": null,
-        "host": null,
-        "status": "A",
-        "versao": "1"
-    },
-    {
-        "id_modulos": "15",
-        "id_modulos_grupos": "1",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-gestor",
         "nome": "Admin Componentes",
         "id": "admin-componentes",
         "titulo": "Componentes",
@@ -225,9 +182,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "16",
-        "id_modulos_grupos": "4",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-sistema",
         "nome": "Admin Plugins",
         "id": "admin-plugins",
         "titulo": "Plugins",
@@ -240,9 +195,7 @@
         "versao": "1"
     },
     {
-        "id_modulos": "17",
-        "id_modulos_grupos": "12",
-        "id_usuarios": "1",
+        "modulo_grupo_id": "administracao-sistema",
         "nome": "Admin Atualizações",
         "id": "admin-atualizacoes",
         "titulo": "Atualizações",

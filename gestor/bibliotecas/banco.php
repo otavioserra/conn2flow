@@ -49,6 +49,7 @@ function banco_conectar(){
 	global $_BANCO;
 	
  	if($_BANCO['tipo'] == "mysqli"){
+		mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
  		$_BANCO['conexao'] = mysqli_connect($_BANCO['host'],$_BANCO['usuario'],$_BANCO['senha'],$_BANCO['nome']) or die("<p><b>ERRO BANCO:</b> Conexão com o banco de dados não realizada!</p><p><b>Erro MySQL:</b> ".mysqli_error($_BANCO['conexao']).'</p>'.banco_erro_debug());
 		mysqli_set_charset($_BANCO['conexao'], "utf8");
 	}
@@ -74,21 +75,21 @@ function banco_fechar_conexao(){
 }
 
 function banco_query($query){
-	global $_BANCO;
-	
-	$connect_db = false;
-	if(!isset($_BANCO['conexao']))$connect_db = true;
-	if($connect_db)banco_conectar();
-	
-	if($_BANCO['tipo'] == "mysqli"){
-		$result = mysqli_query($_BANCO['conexao'],$query);
-		
-		if(!$result)
-			die('<b>ERRO BANCO:</b> Consulta Inválida!<br><br><b>Consulta:</b> ' . $query . '<br><br><b>Erro Mysql:</b> ' .  mysqli_error($_BANCO['conexao']).banco_erro_debug() );
-		else 
-			return $result;
-	}
+    global $_BANCO;
 
+    $connect_db = false;
+    if(!isset($_BANCO['conexao']))$connect_db = true;
+    if($connect_db)banco_conectar();
+
+    if($_BANCO['tipo'] == "mysqli"){
+        try {
+            $result = mysqli_query($_BANCO['conexao'],$query);
+            return $result;
+        } catch (mysqli_sql_exception $e) {
+            error_log("ERRO BANCO: Consulta Inválida!\nConsulta: $query\nErro Mysql: " . $e->getMessage());
+            return false;
+        }
+    }
 }
 
 function banco_num_rows($result){

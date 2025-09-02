@@ -173,13 +173,13 @@
         "id": "interface-listar",
         "language": "pt-br",
         "modulo": null,
-        "html": "<h1 class=\"ui header\">#titulo#<\/h1>\n<!-- botoes < --><div class=\"ui basic right aligned segment\">\n    #botoes#\n<\/div><!-- botoes > -->\n<div id=\"_gestor-interface-listar\" class=\"ui segment\">\n    <div class=\"ui stackable one column grid\">\n        <div class=\"column\" id=\"_gestor-interface-listar-column\">\n            #lista#\n        <\/div>\n    <\/div>\n<\/div>",
+        "html": "<h1 class=\"ui header\">#titulo#<\/h1>\n<!-- botoes < -->\n<div class=\"ui basic right aligned segment\">\n    #botoes#\n<\/div><!-- botoes > -->\n<div id=\"_gestor-interface-listar\" class=\"ui segment\">\n    <!-- cabecalho < -->\n    #cabecalho#\n    <!-- cabecalho > -->\n    <div class=\"ui stackable one column grid\">\n        <div class=\"column\" id=\"_gestor-interface-listar-column\">\n            #lista#\n        <\/div>\n    <\/div>\n<\/div>",
         "css": ".dt-head-center {\n    text-align: center !important;\n}\n.table-responsive-fix{\n    overflow:hidden;\n}\n.segment > .button {\n    margin-bottom: 0.75em;\n}\n#_gestor-interface-listar{\n\tmargin-bottom: 1em;\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.2",
-        "checksum": "{\"html\":\"7f31481d3494f8a3e043663b21445f04\",\"css\":\"3609fbb0f5be09748ba6450ad493bd5e\",\"combined\":\"e67b30d21e1d4c398c9804340036c801\"}"
+        "versao": 2,
+        "file_version": "1.3",
+        "checksum": "{\"html\":\"76139d15005ba763f72ad7adf8bf1170\",\"css\":\"3609fbb0f5be09748ba6450ad493bd5e\",\"combined\":\"b07bd3c6b5484abbf12369d11133b685\"}"
     },
     {
         "nome": "Interface Listar Arquivos Sem Registros",
@@ -381,13 +381,13 @@
         "id": "arquivos-lista",
         "language": "pt-br",
         "modulo": "admin-arquivos",
-        "html": "<div class=\"ui medium header\">#categoria#<\/div>\r\n<div class=\"ui four doubling cards\" id=\"#id#\">\r\n    <!-- card < -->\r\n    <div class=\"ui fluid raised card fileCont\" data-id=\"#file-id#\">\r\n        <div class=\"image fileImage\">\r\n            <img>\r\n            <div class=\"fileImage\">\r\n                <img src=\"#img-src#\">\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"content\">\r\n            <div class=\"ui small header\">#nome#<\/div>\r\n            <div class=\"description\">\r\n                <div class=\"ui list\">\r\n                    <div class=\"item\">\r\n                        <i class=\"calendar alternate outline icon\"><\/i>\r\n                        #data#\r\n                    <\/div>\r\n                    <div class=\"item\">\r\n                        <i class=\"info circle icon\"><\/i>\r\n                        #tipo#\r\n                    <\/div>\r\n                <\/div>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"extra content center aligned\">\r\n            <!-- btn-select < --><button class=\"ui blue button fileSelect\" data-id=\"#file-id#\" data-dados=\"#file-data#\" data-tooltip=\"@[[list-button-select-tooltip]]@\" data-inverted=\"\">@[[list-button-select]]@<\/button><!-- btn-select > -->\r\n            <!-- btn-copy < --><button class=\"ui blue button fileCopyUrl\" data-id=\"#file-id#\" data-url=\"#file-url#\" data-tooltip=\"@[[list-button-copy-tooltip]]@\" data-inverted=\"\">@[[list-button-copy]]@<\/button><!-- btn-copy > -->\r\n            <button class=\"ui red button fileDelete\" data-id=\"#file-id#\" data-tooltip=\"@[[list-button-del-tooltip]]@\" data-inverted=\"\">@[[list-button-del]]@<\/button>\r\n        <\/div>\r\n    <\/div><!-- card > -->\r\n<\/div>",
+        "html": "<div class=\"ui medium header\">#categoria#<\/div>\r\n<div class=\"ui four doubling cards\" id=\"#id#\">\r\n    <!-- card < -->\r\n    <div class=\"ui fluid raised card fileCont\" data-id=\"#file-id#\">\r\n        <div class=\"image fileImage\">\r\n            <img>\r\n            <div class=\"fileImage\">\r\n                <img src=\"#img-src#\">\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"content\">\r\n            <div class=\"ui small header\">#nome#<\/div>\r\n            <div class=\"description\">\r\n                <div class=\"ui list\">\r\n                    <div class=\"item\">\r\n                        <i class=\"calendar alternate outline icon\"><\/i>\r\n                        #data#\r\n                    <\/div>\r\n                    <div class=\"item\">\r\n                        <i class=\"info circle icon\"><\/i>\r\n                        #tipo#\r\n                    <\/div>\r\n                <\/div>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"extra content center aligned\">\r\n            <!-- btn-select < --><button class=\"ui blue button fileSelect\" data-id=\"#file-id#\" data-dados=\"#file-data#\"\r\n                data-tooltip=\"@[[list-button-select-tooltip]]@\"\r\n                data-inverted=\"\">@[[list-button-select]]@<\/button><!-- btn-select > -->\r\n            <!-- btn-copy < --><button class=\"ui blue button fileCopyUrl\" data-id=\"#file-id#\" data-url=\"#file-url#\"\r\n                data-tooltip=\"@[[list-button-copy-tooltip]]@\"\r\n                data-inverted=\"\">@[[list-button-copy]]@<\/button><!-- btn-copy > -->\r\n            <button class=\"ui red button fileDelete\" data-id=\"#file-id#\" data-tooltip=\"@[[list-button-del-tooltip]]@\"\r\n                data-inverted=\"\">@[[list-button-del]]@<\/button>\r\n        <\/div>\r\n    <\/div><!-- card > -->\r\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.2",
-        "checksum": "{\"html\":\"6da8a46c3e87428f93e2c452d47058be\",\"css\":\"\",\"combined\":\"6da8a46c3e87428f93e2c452d47058be\"}"
+        "versao": 2,
+        "file_version": "1.3",
+        "checksum": "{\"html\":\"7fb861d588aebb98b48ff04511e06943\",\"css\":\"\",\"combined\":\"7fb861d588aebb98b48ff04511e06943\"}"
     },
     {
         "nome": "Atualizações - Lista",
@@ -466,5 +466,18 @@
         "versao": 1,
         "file_version": "1.9",
         "checksum": "{\"html\":\"d815fb0545793072b1072303f7c61c6d\",\"css\":\"\",\"combined\":\"d815fb0545793072b1072303f7c61c6d\"}"
+    },
+    {
+        "nome": "lista-pagina-ou-sistema",
+        "id": "lista-pagina-ou-sistema",
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "html": "<div class=\"ui form\">\r\n    <div class=\"inline fields\">\r\n        <label>#tipo#<\/label>\r\n        <div class=\"field\">\r\n            <div class=\"ui radio checkbox\">\r\n                <input type=\"radio\" name=\"tipo\" tabindex=\"1\" value=\"pagina\" #checked_pagina#>\r\n                <label>#pagina#<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"field\">\r\n            <div class=\"ui radio checkbox\">\r\n                <input type=\"radio\" name=\"tipo\" tabindex=\"2\" value=\"sistema\" #checked_sistema#>\r\n                <label>#sistema#<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"field\">\r\n            <div class=\"ui radio checkbox\">\r\n                <input type=\"radio\" name=\"tipo\" value=\"ambos\" tabindex=\"0\" #checked_ambos#>\r\n                <label>#ambos#<\/label>\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 3,
+        "file_version": "1.3",
+        "checksum": "{\"html\":\"ae10f7fb5803c7ccc488b8dc552dd0ce\",\"css\":\"\",\"combined\":\"ae10f7fb5803c7ccc488b8dc552dd0ce\"}"
     }
 ]

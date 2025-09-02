@@ -43,11 +43,11 @@
                     "path": "admin-arquivos\/adicionar\/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "394122d6c6e3f8ba4ac350a5d7791b33",
+                        "html": "e92d605fe333091027237714997c2779",
                         "css": "938b9feb7d3d8dffbb915b2adbf06978",
-                        "combined": "ab4e0f4c373ef06e666beed129143ab5"
+                        "combined": "458ba40cf7e64309e86198f1766e1da8"
                     }
                 },
                 {
@@ -69,11 +69,11 @@
                 {
                     "name": "Arquivos Lista",
                     "id": "arquivos-lista",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "6da8a46c3e87428f93e2c452d47058be",
+                        "html": "7fb861d588aebb98b48ff04511e06943",
                         "css": "",
-                        "combined": "6da8a46c3e87428f93e2c452d47058be"
+                        "combined": "7fb861d588aebb98b48ff04511e06943"
                     }
                 }
             ],

@@ -106,44 +106,33 @@ $(document).ready(function () {
 
 		// ===== Pré-visualização
 
+		// Função para inserir bibliotecas CSS no layout HTML
+		function inserirBibliotecasNoLayout(html, tipo) {
+			let bibliotecas = '';
+			if (tipo === 'fomantic-ui') {
+				bibliotecas = `\n<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">\n<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>\n`;
+			} else {
+				bibliotecas = `\n<script src="https://cdn.tailwindcss.com"></script>\n`;
+			}
+
+			if (html.includes('<!-- pagina#css -->')) {
+				return html.replace('<!-- pagina#css -->', bibliotecas);
+			} else {
+				// Se não existir, insere antes do </head>
+				return html.replace(/<head>([\s\S]*?)(<\/head>)/i, function (match, p1, p2) {
+					return `<head>${p1}${bibliotecas}${p2}`;
+				});
+			}
+		}
+
 		// Função para gerar o conteúdo da página de preview com Tailwind CSS
 		function gerarPreviewHtmlTailwind(htmlDoUsuario) {
-			return `
-			<!DOCTYPE html>
-			<html lang="pt-br">
-			<head>
-				<meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Preview Tailwind</title>
-				<!-- CDN do TailwindCSS -->
-				<script src="https://cdn.tailwindcss.com"></script>
-			</head>
-			<body>
-				${htmlDoUsuario}
-			</body>
-			</html>
-		`;
+			return inserirBibliotecasNoLayout(htmlDoUsuario, 'tailwindcss');
 		}
 
 		// Função para gerar o conteúdo da página de preview com Fomantic UI
 		function gerarPreviewHtmlFomantic(htmlDoUsuario) {
-			return `
-			<!DOCTYPE html>
-			<html lang="pt-br">
-			<head>
-				<meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Preview Fomantic UI</title>
-				<!-- CDN do Fomantic UI -->
-				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">
-				<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
-			</head>
-			<body>
-				${htmlDoUsuario}
-			</body>
-			</html>
-		`;
+			return inserirBibliotecasNoLayout(htmlDoUsuario, 'fomantic-ui');
 		}
 
 		$(document.body).on('mouseup tap', '.previsualizar.button', function (e) {

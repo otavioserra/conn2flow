@@ -5,7 +5,7 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR['versao']								=	'2.0.2'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'2.0.3'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
 
@@ -118,7 +118,7 @@ $_GESTOR['openssl-path'] = $_GESTOR['AUTH_PATH_SERVER'] . ($_ENV['OPENSSL_KEYS_S
 
 // ===== Definição do caminho em disco dos plugins.
 
-$_GESTOR['plugins-path']						=	$_GESTOR['ROOT_PATH'].'../conn2flow-gestor-plugins/';
+// $_GESTOR['plugins-path']						=	$_GESTOR['ROOT_PATH'].'plugins/';
 
 // ===== Definição dos caminhos em disco padrões.
 
@@ -132,6 +132,7 @@ $_GESTOR['logs-path']							=	$_GESTOR['ROOT_PATH'].'logs/';
 // ===== Carrega as configurações de ambiente do .env =====
 
 $_GESTOR['url-raiz'] = $_ENV['URL_RAIZ'] ?? '/';
+$_GESTOR['development-env'] = $_ENV['DEVELOPMENT_ENV'] ?? false;
 
 // ===== Definições de variáveis padrões do sistema que dependem de host 
 

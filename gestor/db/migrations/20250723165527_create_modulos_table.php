@@ -13,7 +13,7 @@ final class CreateModulosTable extends AbstractMigration
     {
         $table = $this->table('modulos', ['id' => 'id_modulos']);
         $table->addColumn('id_modulos_grupos', 'integer', ['null' => true, 'default' => null])
-              ->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => null])
+              ->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => '1'])
               ->addColumn('nome', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('id', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('titulo', 'string', ['limit' => 255, 'null' => true, 'default' => null])

@@ -70,34 +70,6 @@
                         "css": "bdb85de7c6afcf6a3fdca44a2b25b9ff",
                         "combined": "3a6f4fcebb21fc6cb3486f48f70a41b7"
                     }
-                },
-                {
-                    "name": "Emissão teste",
-                    "id": "emissao-teste",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-layouts\/emissao\/",
-                    "type": "page",
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "",
-                        "css": "",
-                        "combined": ""
-                    }
-                },
-                {
-                    "name": "Emissão",
-                    "id": "emissao",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-layouts\/asdasdasd\/",
-                    "type": "system",
-                    "root": true,
-                    "without_permission": true,
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "",
-                        "css": "",
-                        "combined": ""
-                    }
                 }
             ],
             "components": [

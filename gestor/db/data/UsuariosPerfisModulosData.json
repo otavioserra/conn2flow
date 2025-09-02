@@ -67,31 +67,36 @@
     {
         "id_usuarios_perfis_modulos": "14",
         "perfil": "administradores",
-        "modulo": "testes"
+        "modulo": "admin-componentes"
     },
     {
         "id_usuarios_perfis_modulos": "15",
         "perfil": "administradores",
-        "modulo": "admin-componentes"
+        "modulo": "admin-hosts"
     },
     {
         "id_usuarios_perfis_modulos": "16",
         "perfil": "administradores",
-        "modulo": "admin-hosts"
+        "modulo": "usuarios-hospedeiro-perfis-admin"
     },
     {
         "id_usuarios_perfis_modulos": "17",
         "perfil": "administradores",
-        "modulo": "admin-plugins"
+        "modulo": "admin-atualizacoes"
     },
     {
         "id_usuarios_perfis_modulos": "18",
         "perfil": "administradores",
-        "modulo": "usuarios-hospedeiro-perfis-admin"
+        "modulo": "admin-plugins"
     },
     {
         "id_usuarios_perfis_modulos": "19",
-        "perfil": "administradores",
-        "modulo": "admin-atualizacoes"
+        "perfil": "consumidores",
+        "modulo": "dashboard"
+    },
+    {
+        "id_usuarios_perfis_modulos": "20",
+        "perfil": "consumidores",
+        "modulo": "perfil-usuario"
     }
 ]

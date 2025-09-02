@@ -274,443 +274,6 @@ function modulos_buscar_ids_duplicados(){
 	}
 }
 
-function modulos_sincronizar_bancos(){
-	global $_GESTOR;
-	global $_BANCOS;
-	global $_BANCO;
-	
-	//return modulos_buscar_ids_duplicados();
-	
-	// ===== Ativar / Desativar
-	
-	$ativar = true;
-	$debugar = false;
-	
-	// ===== Opções.
-	
-	$forcarAtualizacao = true;				// Forçar atualização dos campos de data modificada.
-	
-	// ===== Definir origem 1 / destino 2
-	
-	$servers = Array(
-		'origem' => 'beta.entrey.com.br',
-		//'destino' => 'localhost',
-		'destino' => 'entrey.com.br',
-	);
-	
-	$serverOrigem = $servers['origem'];
-	$serverDestino = $servers['destino'];
-	
-	// ===== Mostrar mensagem de desativado.
-	
-	if(!$ativar){
-		$_GESTOR['pagina'] .= '<h2>SINCRONIZAR BANCOS - <span class="ui error text">DESATIVADO</span></h2>';
-		return;
-	} else {
-		$_GESTOR['pagina'] = '';
-	}
-	
-	// ===== Pegar o arquivo de autenticação nos bancos.
-	
-	require_once($_GESTOR['AUTH_PATH'] . 'bancos.php');
-	
-	// ===== Head inicial
-	
-	$_GESTOR['pagina'] .= '<h2>SINCRONIZAR BANCOS</h2>';
-	
-	// ===== Parâmetros padrões.
-	
-	$parametrosPadroes = Array(
-		'print1' => 'Módulo - <span class="ui text info">#titulo#</span>: <span class="ui success text">Inserir</span> no Destino',
-		'print2' => 'Módulo - <span class="ui text info">#titulo#</span>: <span class="ui warning text">Atualizar</span> no Destino',
-	);
-	
-	// ===== Tabelas que serão sincronizadas.
-	
-	$tabelas = Array(
-		'variaveis',
-		'paginas',
-		'layouts',
-		'componentes',
-		'modulos_grupos',
-		'modulos',
-		'modulos_operacoes',
-		'categorias',
-		'templates',
-		'usuarios_planos',
-		'plugins',
-	);
-	
-	// ===== Dados das tabelas.
-	
-	$dados['variaveis'] = Array(
-		'titulo' => 'Variáveis',
-		'tabela' => Array(
-			'nome' => 'variaveis',
-			'id_referencia' => 'id_variaveis',
-			'camposComparacao' => Array(
-				'id',
-				'modulo',
-				'grupo',
-			),
-			'comparacaoIDEModuloGrupo' => true,
-			'ignorarAtualizacoes' => true,
-			'ignorarAddSlashes' => true,
-		),
-	);
-	
-	$dados['paginas'] = Array(
-		'titulo' => 'Páginas',
-		'tabela' => Array(
-			'nome' => 'paginas',
-			'id_referencia' => 'id_paginas',
-			'camposComparacao' => Array(
-				'id',
-				'modulo',
-				'data_modificacao',
-				'status',
-			),
-			'comparacaoIDEModulo' => true,
-			'ignorarAddSlashes' => true,
-		),
-	);
-	
-	$dados['layouts'] = Array(
-		'titulo' => 'Layouts',
-		'tabela' => Array(
-			'nome' => 'layouts',
-			'id_referencia' => 'id_layouts',
-			'camposComparacao' => Array(
-				'id',
-				'data_modificacao',
-				'status',
-			),
-			'comparacaoID' => true,
-			'ignorarAddSlashes' => true,
-		),
-	);
-	
-	$dados['componentes'] = Array(
-		'titulo' => 'Componentes',
-		'tabela' => Array(
-			'nome' => 'componentes',
-			'id_referencia' => 'id_componentes',
-			'camposComparacao' => Array(
-				'id',
-				'data_modificacao',
-				'status',
-			),
-			'comparacaoID' => true,
-			'ignorarAddSlashes' => true,
-		),
-	);
-	
-	$dados['modulos_grupos'] = Array(
-		'titulo' => 'Módulos Grupos',
-		'tabela' => Array(
-			'nome' => 'modulos_grupos',
-			'id_referencia' => 'id_modulos_grupos',
-			'camposComparacao' => Array(
-				'id',
-				'data_modificacao',
-				'status',
-			),
-			'comparacaoID' => true,
-		),
-	);
-	
-	$dados['modulos'] = Array(
-		'titulo' => 'Módulos',
-		'tabela' => Array(
-			'nome' => 'modulos',
-			'id_referencia' => 'id_modulos',
-			'camposComparacao' => Array(
-				'id',
-				'data_modificacao',
-				'status',
-			),
-			'comparacaoID' => true,
-		),
-	);
-	
-	$dados['modulos_operacoes'] = Array(
-		'titulo' => 'Módulos Operações',
-		'tabela' => Array(
-			'nome' => 'modulos_operacoes',
-			'id_referencia' => 'id_modulos_operacoes',
-			'camposComparacao' => Array(
-				'id',
-				'data_modificacao',
-				'status',
-			),
-			'comparacaoID' => true,
-		),
-	);
-	
-	$dados['categorias'] = Array(
-		'titulo' => 'Categorias',
-		'tabela' => Array(
-			'nome' => 'categorias',
-			'id_referencia' => 'id_categorias',
-			'camposComparacao' => Array(
-				'id',
-				'data_modificacao',
-				'status',
-			),
-			'comparacaoID' => true,
-		),
-	);
-	
-	$dados['templates'] = Array(
-		'titulo' => 'Templates',
-		'tabela' => Array(
-			'nome' => 'templates',
-			'id_referencia' => 'id_templates',
-			'camposComparacao' => Array(
-				'id',
-				'data_modificacao',
-				'status',
-			),
-			'comparacaoID' => true,
-			'ignorarAddSlashes' => true,
-		),
-	);
-	
-	$dados['usuarios_planos'] = Array(
-		'titulo' => 'Usuário Planos',
-		'tabela' => Array(
-			'nome' => 'usuarios_planos',
-			'id_referencia' => 'id_usuarios_planos',
-			'camposComparacao' => Array(
-				'id',
-				'data_modificacao',
-				'status',
-			),
-			'comparacaoID' => true,
-		),
-	);
-	
-	$dados['plugins'] = Array(
-		'titulo' => 'Plugins',
-		'tabela' => Array(
-			'nome' => 'plugins',
-			'id_referencia' => 'id_plugins',
-			'camposComparacao' => Array(
-				'id',
-				'data_modificacao',
-				'status',
-			),
-			'comparacaoID' => true,
-		),
-	);
-	
-	// ===== Verificar todas as Tabelas
-	
-	foreach($tabelas as $tabela){
-		
-		$idAtual = $tabela;
-		$dadosDef = $dados[$idAtual];
-		
-		// ===== Título da tabela.
-		
-		$titulo = $dadosDef['titulo'];
-		
-		// ===== Tabela Origem
-		
-		unset($camposAtualizar);
-		
-		$_BANCO = $_BANCOS[$serverOrigem];
-		
-		$tabelaOrigem = banco_select_name
-		(
-			'*'
-			,
-			$dadosDef['tabela']['nome'],
-			""
-		);
-		
-		banco_fechar_conexao();
-		
-		// ===== Tabela Destino
-		
-		$_BANCO = $_BANCOS[$serverDestino];
-		
-		$tabelaDestino = banco_select_name
-		(
-			banco_campos_virgulas($dadosDef['tabela']['camposComparacao'])
-			,
-			$dadosDef['tabela']['nome'],
-			""
-		);
-		
-		if($tabelaOrigem){
-			foreach($tabelaOrigem as $to){
-				// ===== Procurar se o dado existe no destino.
-				
-				$found = false;
-				
-				if($tabelaDestino){
-					foreach($tabelaDestino as $td){
-						if(isset($dadosDef['tabela']['comparacaoID'])){
-							if(
-								$to['id'] == $td['id']
-							){
-								$found = true;
-								break;
-							}
-						} else if(isset($dadosDef['tabela']['comparacaoIDEModulo'])){
-							if(
-								$to['id'] == $td['id'] &&
-								$to['modulo'] == $td['modulo']
-							){
-								$found = true;
-								break;
-							}
-						} else if(isset($dadosDef['tabela']['comparacaoIDEModuloGrupo'])){
-							if(
-								$to['id'] == $td['id'] &&
-								$to['grupo'] == $td['grupo'] &&
-								$to['modulo'] == $td['modulo']
-							){
-								$found = true;
-								break;
-							}
-						} else {
-							$camposComparacao = $dadosDef['tabela']['camposComparacao'];
-							
-							$nemTodosSaoIguais = false;
-							foreach($camposComparacao as $cc){
-								if($to[$cc] == $td[$cc]){
-									$found = true;
-								} else {
-									$nemTodosSaoIguais = true;
-								}
-							}
-							
-							if($nemTodosSaoIguais){
-								$found = false;
-							} else {
-								break;
-							}
-						}
-					}
-				}
-				
-				// ===== Debugar o ID de um elemento caso necessário.
-				
-				if($debugar){
-					if('pagina-raiz-do-sistema' == $to['id']){
-						echo 'DEBUG: <p>Tabela Origem:</p>'.print_r($to,true) . '<br>'."\n".'<p>Tabela Destino:</p>' .print_r($td,true);
-					}
-					
-				}
-				
-				// ===== Senão encontrou, inserir o dado no destino.
-				
-				if(!$found){
-					
-					// ===== Colocar o título no início das impressões dos dados que serão inseridos.
-					
-					if(!isset($inserirSinal[$idAtual])){
-						$print1 = modelo_var_troca_tudo($parametrosPadroes['print1'],"#titulo#",$titulo);
-						
-						$_GESTOR['pagina'] .= '<b>'.$print1.':</b><br><br><!-- inserir-'.$idAtual.' -->';
-					}
-					
-					$inserirSinal[$idAtual] = true;
-					
-					// ===== Incluir na impressão o dado a ser incluído para conferência visual.
-					
-					$_GESTOR['pagina'] = modelo_var_in($_GESTOR['pagina'],'<!-- inserir-'.$idAtual.' -->',print_r($to,true).'<div class="ui divider"></div>');
-					
-					// ===== Remover o id_referencia dos dados afim de não gerar conflito.
-					
-					unset($to[$dadosDef['tabela']['id_referencia']]);
-					
-					// ===== Incluir no banco de dados.
-					
-					foreach($to as $key => $val){
-						if(existe($val)){
-							banco_insert_name_campo($key,(isset($dadosDef['tabela']['ignorarAddSlashes']) ? $val : addslashes($val)));
-						} else {
-							banco_insert_name_campo($key,'NULL',true);
-						}
-					}
-					
-					banco_insert_name
-					(
-						banco_insert_name_campos(),
-						$dadosDef['tabela']['nome']
-					);
-				} else {
-					// ===== Se encontrou, verificar se é necessário atualizar.
-					
-					// ===== Verificar quais tabelas deve ignorar atualização.
-					
-					if(isset($dadosDef['tabela']['ignorarAtualizacoes'])){
-						continue;
-					}
-					
-					// ===== Verificar se o status é deletado. Se sim, ignorar.
-					
-					if($to['status'] == 'D' || $td['status'] == 'D'){
-						continue;
-					}
-					
-					// ===== Verificar se necessita de atualização.
-					
-					$atualizar = false;
-					
-					if(strtotime($to['data_modificacao']) > strtotime($td['data_modificacao'])){
-						$atualizar = true;
-					}
-					
-					if($atualizar){
-						// ===== Remover o id_referencia dos dados afim de não gerar conflito.
-						
-						unset($to[$dadosDef['tabela']['id_referencia']]);
-						
-						// ===== Colocar o título no início das impressões dos dados que serão atualizados.
-						
-						if(!isset($atualizaSinal[$idAtual])){
-							$print2 = modelo_var_troca_tudo($parametrosPadroes['print2'],"#titulo#",$titulo);
-							
-							$_GESTOR['pagina'] .= '<b>'.$print2.':</b><br><br><!-- atualizar-'.$idAtual.' -->';
-						}
-						
-						$atualizaSinal[$idAtual] = true;
-						
-						// ===== Incluir na impressão o dado a ser atualizado para conferência visual.
-						
-						$_GESTOR['pagina'] = modelo_var_in($_GESTOR['pagina'],'<!-- atualizar-'.$idAtual.' -->',$to['data_modificacao']. ' > ' . $td['data_modificacao'] . ' - ' . $to['status'] . ' - ' . $to['id'] . ' - '.( $forcarAtualizacao ? '<span class="ui text green">ATUALIZADO</span>' : '').'<div class="ui divider"></div>');
-						
-						// ===== Atualizar no banco de dados caso esta opção esteja disponível.
-						
-						if($forcarAtualizacao){
-							$id_referencia = '';
-							
-							foreach($to as $key => $val){
-								if('id' == $key){
-									$id_referencia = $val;
-									continue;
-								}
-								
-								if(existe($val)){
-									banco_update_campo($key,$val);
-								} else {
-									banco_update_campo($key,'NULL',true);
-								}
-							}
-							
-							banco_update_executar($dadosDef['tabela']['nome'],"WHERE id='".$id_referencia."' AND status!='D'");
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
 // ===== Funções Principais
 
 function modulos_variaveis(){
@@ -903,7 +466,7 @@ function modulos_adicionar(){
 		$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "titulo"; $post_nome = "titulo"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "id_modulos_grupos"; $post_nome = "grupo"; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "modulo_grupo_id"; $post_nome = "grupo"; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "icone"; $post_nome = "icone"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "icone2"; $post_nome = "icone2"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "plugin"; $post_nome = "plugin"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
@@ -958,7 +521,7 @@ function modulos_adicionar(){
 					'tabela' => Array(
 						'nome' => 'modulos_grupos',
 						'campo' => 'nome',
-						'id_numerico' => 'id_modulos_grupos',
+						'id_numerico' => 'id',
 					),
 				),
 				Array(
@@ -1010,7 +573,7 @@ function modulos_editar(){
 	
 	$camposBanco = Array(
 		'nome',
-		'id_modulos_grupos',
+		'modulo_grupo_id',
 		'icone',
 		'icone2',
 		'nao_menu_principal',
@@ -1090,10 +653,10 @@ function modulos_editar(){
 		
 		// ===== Atualização dos demais campos.
 		
-		$campo_nome = "id_modulos_grupos"; $request_name = 'grupo'; $alteracoes_name = 'grup'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
+		$campo_nome = "modulo_grupo_id"; $request_name = 'grupo'; $alteracoes_name = 'grup'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
 				'nome' => 'modulos_grupos',
 				'campo' => 'nome',
-				'id_numerico' => 'id_modulos_grupos',
+				'id_numerico' => 'id',
 			));}
 		
 		$campo_nome = "plugin"; $request_name = 'plugin'; $alteracoes_name = 'plugin'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = (existe($_REQUEST[$request_name]) ? $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'" : $campo_nome."=NULL"); $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]),'tabela' => Array(
@@ -1163,7 +726,7 @@ function modulos_editar(){
 		$icone = (isset($retorno_bd['icone']) ? $retorno_bd['icone'] : '');
 		$icone2 = (isset($retorno_bd['icone2']) ? $retorno_bd['icone2'] : '');
 		$menu_principal = (isset($retorno_bd['nao_menu_principal']) ? 'nao' : 'sim');
-		$id_modulos_grupos = (isset($retorno_bd['id_modulos_grupos']) ? $retorno_bd['id_modulos_grupos'] : '');
+		$modulo_grupo_id = (isset($retorno_bd['modulo_grupo_id']) ? $retorno_bd['modulo_grupo_id'] : '');
 		$titulo = (isset($retorno_bd['titulo']) ? $retorno_bd['titulo'] : '');
 		$plugin_id = (isset($retorno_bd['plugin']) ? $retorno_bd['plugin'] : '');
 		$host = (isset($retorno_bd['host']) ? true : false);
@@ -1250,8 +813,8 @@ function modulos_editar(){
 					'tabela' => Array(
 						'nome' => 'modulos_grupos',
 						'campo' => 'nome',
-						'id_numerico' => 'id_modulos_grupos',
-						'id_selecionado' => $id_modulos_grupos,
+						'id_numerico' => 'id',
+						'id_selecionado' => $modulo_grupo_id,
 					),
 				),
 				Array(
@@ -1301,9 +864,6 @@ function modulos_interfaces_padroes(){
 		case 'variaveis': 
 			$_GESTOR['interface-opcao'] = 'alteracoes';
 		break;
-		case 'sincronizar-bancos': 
-			$_GESTOR['interface-nao-aplicar'] = true;
-		break;
 	}
 	
 	switch($_GESTOR['opcao']){
@@ -1313,7 +873,7 @@ function modulos_interfaces_padroes(){
 					'nome' => $modulo['tabela']['nome'],
 					'campos' => Array(
 						'nome',
-						'id_modulos_grupos',
+						'modulo_grupo_id',
 						'plugin',
 						'host',
 						$modulo['tabela']['data_modificacao'],
@@ -1330,14 +890,14 @@ function modulos_interfaces_padroes(){
 							'ordenar' => 'asc',
 						),
 						Array(
-							'id' => 'id_modulos_grupos',
+							'id' => 'modulo_grupo_id',
 							'nome' => gestor_variaveis(Array('modulo' => 'modulos','id' => 'form-grup-label')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
 								'tabela' => Array(
 									'nome' => 'modulos_grupos',
 									'campo_trocar' => 'nome',
-									'campo_referencia' => 'id_modulos_grupos',
+									'campo_referencia' => 'id',
 								),
 							)
 						),
@@ -1449,7 +1009,6 @@ function modulos_start(){
 			case 'adicionar': modulos_adicionar(); break;
 			case 'editar': modulos_editar(); break;
 			case 'variaveis': modulos_variaveis(); break;
-			case 'sincronizar-bancos': modulos_sincronizar_bancos(); break;
 			case 'copiar-variaveis': modulos_copiar_variaveis(); break;
 		}
 		

@@ -40,6 +40,9 @@ esac
 # Atualiza permissões de pasta
 docker exec conn2flow-app bash -c "chown -R www-data:www-data $PATH_DOCKER"
 
+# Remover o .htaccess
+docker exec conn2flow-app bash -c "rm -f $PATH_DOCKER/.htaccess"
+
 # Mensagem final
 if [ $? -eq 0 ]; then
   echo "✅ Sincronização concluída com sucesso!"

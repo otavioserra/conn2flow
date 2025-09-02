@@ -255,7 +255,7 @@ function admin_paginas_adicionar(){
 						'nome' => 'modulos',
 						'campo' => 'nome',
 						'id_numerico' => 'id',
-						'where' => "id_modulos_grupos!='3'",
+						'where' => "modulo_grupo_id!='bibliotecas'",
 					),
 				),
 				Array(
@@ -768,7 +768,7 @@ function admin_paginas_editar(){
 						'campo' => 'nome',
 						'id_numerico' => 'id',
 						'id_selecionado' => $bd_modulo,
-						'where' => "id_modulos_grupos!='3'",
+						'where' => "modulo_grupo_id!='bibliotecas'",
 					),
 				),
 				Array(
@@ -794,11 +794,49 @@ function admin_paginas_editar(){
 	);
 }
 
+function admin_paginas_listar_cabecalho(){
+	global $_GESTOR;
+
+	// ===== Inclusão Módulo JS
+
+	if ($_GESTOR['opcao'] == 'listar') {
+		gestor_pagina_javascript_incluir();
+	}
+
+	// ===== Pegar o componente.
+
+	$tipo = $_REQUEST['tipo'] ?? 'pagina';
+	$checked = ' checked="checked"';
+
+	$lista_pagina_ou_sistema = gestor_componente(Array(
+		'id' => 'lista-pagina-ou-sistema',
+		'modulo' => $_GESTOR['modulo-id'],
+	));
+
+	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#ambos#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-ambos-label')));
+	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#pagina#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-pagina-label')));
+	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#sistema#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-sistema-label')));
+	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#tipo#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-tipo-label')));
+
+	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#checked_ambos#',$tipo == 'ambos' ? $checked : '');
+	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#checked_pagina#',$tipo == 'pagina' ? $checked : '');
+	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#checked_sistema#',$tipo == 'sistema' ? $checked : '');
+
+	return [
+		'cabecalho' => $lista_pagina_ou_sistema,
+		'tipo' => $tipo,
+	];
+}
+
 function admin_paginas_interfaces_padroes(){
 	global $_GESTOR;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
-	
+
+	$dados = admin_paginas_listar_cabecalho();
+
+	$tipo_nao_visivel = $dados['tipo'] != 'ambos' ? true : null;
+
 	switch($_GESTOR['opcao']){
 		case 'listar':
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
@@ -813,8 +851,10 @@ function admin_paginas_interfaces_padroes(){
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
+					'where' => $dados['tipo'] != 'ambos' && $dados['tipo'] != '' ? "tipo='{$dados['tipo']}'" : null,
 				),
 				'tabela' => Array(
+					'cabecalho' => $dados['cabecalho'],
 					'rodape' => true,
 					'colunas' => Array(
 						Array(
@@ -824,6 +864,7 @@ function admin_paginas_interfaces_padroes(){
 						),
 						Array(
 							'id' => 'tipo',
+							'nao_visivel' => $tipo_nao_visivel,
 							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-label')),
 							'formatar' => Array(
 								'id' => 'outroConjunto',
