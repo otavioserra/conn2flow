@@ -1,6 +1,0 @@
-[2025-09-04 13:26:37] Iniciando rotina de atualização de banco de dados...
-[2025-09-04 13:26:37] Ambiente de testes não sincronizado (.env ausente).
-[2025-09-04 13:26:37] Execute o script de sincronização: docker/utils/sincroniza-gestor.sh checksum e rode dentro do ambiente de testes.
-[2025-09-04 13:26:37] Erro na rotina: Ambiente não sincronizado (.env ausente).
-[2025-09-04 15:53:07] Iniciando rotina de atualização de banco de dados...
-[2025-09-04 15:53:07] DEBUG_PLUGIN_CANDIDATE slug=example-plugin-test base=/var/www/sites/localhost/conn2flow-gestor/ cand=/var/www/sites/localhost/conn2flow-gestor/plugins/example-plugin-test/

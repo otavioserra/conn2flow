@@ -1,8 +1,0 @@
-.barraLateral {
-    border-right: 1px solid lightgrey;
-}
-@media screen and (max-width: 770px) {
-    .barraLateral {
-        border-right: none;
-    }
-}
