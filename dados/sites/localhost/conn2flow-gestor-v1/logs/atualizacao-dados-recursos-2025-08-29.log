@@ -1,0 +1,448 @@
+[2025-08-29 12:03:06] Início processo V2
+[2025-08-29 12:03:06] _map_loaded
+[2025-08-29 12:03:08] Existentes (layouts): 13
+[2025-08-29 12:03:08] Existentes (paginas): 186
+[2025-08-29 12:03:08] Existentes (componentes): 86
+[2025-08-29 12:03:08] Existentes (variaveis): 1340
+[2025-08-29 12:03:08] _collected_summary
+[2025-08-29 12:03:08] Dados persistidos + órfãos.
+[2025-08-29 12:03:08] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 86
+🔧 Variáveis: 1342
+Σ TOTAL: 1627
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 12:03:08] Fim processo V2 OK
+[2025-08-29 12:09:45] Início processo V2
+[2025-08-29 12:09:45] _map_loaded
+[2025-08-29 12:09:46] Existentes (layouts): 13
+[2025-08-29 12:09:46] Existentes (paginas): 186
+[2025-08-29 12:09:46] Existentes (componentes): 86
+[2025-08-29 12:09:46] Existentes (variaveis): 1342
+[2025-08-29 12:09:46] _collected_summary
+[2025-08-29 12:09:46] Dados persistidos + órfãos.
+[2025-08-29 12:09:46] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 86
+🔧 Variáveis: 1343
+Σ TOTAL: 1628
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 12:09:46] Fim processo V2 OK
+[2025-08-29 12:23:47] Início processo V2
+[2025-08-29 12:23:47] _map_loaded
+[2025-08-29 12:23:47] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=pages id=admin-paginas-adicionar lang=pt-br version 1.1=>1.2
+[2025-08-29 12:23:47] ORIGIN_FILE_SAVED_MODULE C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\modulos\admin-paginas\admin-paginas.json
+[2025-08-29 12:23:47] Existentes (layouts): 13
+[2025-08-29 12:23:47] Existentes (paginas): 186
+[2025-08-29 12:23:47] Existentes (componentes): 86
+[2025-08-29 12:23:47] Existentes (variaveis): 1343
+[2025-08-29 12:23:47] _collected_summary
+[2025-08-29 12:23:47] Dados persistidos + órfãos.
+[2025-08-29 12:23:47] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 86
+🔧 Variáveis: 1344
+Σ TOTAL: 1629
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 12:23:47] Fim processo V2 OK
+[2025-08-29 12:25:13] Início processo V2
+[2025-08-29 12:25:13] _map_loaded
+[2025-08-29 12:25:13] Existentes (layouts): 13
+[2025-08-29 12:25:13] Existentes (paginas): 186
+[2025-08-29 12:25:13] Existentes (componentes): 86
+[2025-08-29 12:25:13] Existentes (variaveis): 1344
+[2025-08-29 12:25:13] _collected_summary
+[2025-08-29 12:25:13] Dados persistidos + órfãos.
+[2025-08-29 12:25:13] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 86
+🔧 Variáveis: 1344
+Σ TOTAL: 1629
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 12:25:13] Fim processo V2 OK
+[2025-08-29 12:36:38] Início processo V2
+[2025-08-29 12:36:38] _map_loaded
+[2025-08-29 12:36:38] Existentes (layouts): 13
+[2025-08-29 12:36:38] Existentes (paginas): 186
+[2025-08-29 12:36:38] Existentes (componentes): 86
+[2025-08-29 12:36:38] Existentes (variaveis): 1344
+[2025-08-29 12:36:38] _collected_summary
+[2025-08-29 12:36:38] Dados persistidos + órfãos.
+[2025-08-29 12:36:38] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 86
+🔧 Variáveis: 1344
+Σ TOTAL: 1629
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 12:36:38] Fim processo V2 OK
+[2025-08-29 12:38:12] Início processo V2
+[2025-08-29 12:38:12] _map_loaded
+[2025-08-29 12:38:12] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=pages id=admin-paginas-editar lang=pt-br version 1.1=>1.2
+[2025-08-29 12:38:12] ORIGIN_FILE_SAVED_MODULE C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\modulos\admin-paginas\admin-paginas.json
+[2025-08-29 12:38:12] Existentes (layouts): 13
+[2025-08-29 12:38:12] Existentes (paginas): 186
+[2025-08-29 12:38:12] Existentes (componentes): 86
+[2025-08-29 12:38:12] Existentes (variaveis): 1344
+[2025-08-29 12:38:13] _collected_summary
+[2025-08-29 12:38:13] Dados persistidos + órfãos.
+[2025-08-29 12:38:13] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 86
+🔧 Variáveis: 1344
+Σ TOTAL: 1629
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 12:38:13] Fim processo V2 OK
+[2025-08-29 12:54:09] Início processo V2
+[2025-08-29 12:54:09] _map_loaded
+[2025-08-29 12:54:09] ORIGIN_UPDATE components id=interface-formulario-inclusao lang=pt-br version 1.2=>1.3
+[2025-08-29 12:54:09] ORIGIN_FILE_SAVED C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\resources\pt-br\components.json
+[2025-08-29 12:54:09] Existentes (layouts): 13
+[2025-08-29 12:54:09] Existentes (paginas): 186
+[2025-08-29 12:54:09] Existentes (componentes): 86
+[2025-08-29 12:54:09] Existentes (variaveis): 1344
+[2025-08-29 12:54:09] _collected_summary
+[2025-08-29 12:54:09] Dados persistidos + órfãos.
+[2025-08-29 12:54:09] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 86
+🔧 Variáveis: 1344
+Σ TOTAL: 1629
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 12:54:09] Fim processo V2 OK
+[2025-08-29 13:16:39] Início processo V2
+[2025-08-29 13:16:39] _map_loaded
+[2025-08-29 13:16:39] ORIGIN_UPDATE components id=interface-formulario-inclusao lang=pt-br version 1.3=>1.4
+[2025-08-29 13:16:39] ORIGIN_UPDATE components id=interface-formulario-edicao lang=pt-br version 1.2=>1.3
+[2025-08-29 13:16:39] ORIGIN_FILE_SAVED C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\resources\pt-br\components.json
+[2025-08-29 13:16:39] Existentes (layouts): 13
+[2025-08-29 13:16:39] Existentes (paginas): 186
+[2025-08-29 13:16:39] Existentes (componentes): 86
+[2025-08-29 13:16:39] Existentes (variaveis): 1344
+[2025-08-29 13:16:39] _collected_summary
+[2025-08-29 13:16:39] Dados persistidos + órfãos.
+[2025-08-29 13:16:39] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 86
+🔧 Variáveis: 1346
+Σ TOTAL: 1631
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 13:16:39] Fim processo V2 OK
+[2025-08-29 13:20:06] Início processo V2
+[2025-08-29 13:20:06] _map_loaded
+[2025-08-29 13:20:06] ORIGIN_UPDATE components id=interface-formulario-inclusao lang=pt-br version 1.4=>1.5
+[2025-08-29 13:20:06] ORIGIN_UPDATE components id=interface-formulario-edicao lang=pt-br version 1.3=>1.4
+[2025-08-29 13:20:06] ORIGIN_FILE_SAVED C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\resources\pt-br\components.json
+[2025-08-29 13:20:06] Existentes (layouts): 13
+[2025-08-29 13:20:06] Existentes (paginas): 186
+[2025-08-29 13:20:06] Existentes (componentes): 86
+[2025-08-29 13:20:06] Existentes (variaveis): 1346
+[2025-08-29 13:20:06] _collected_summary
+[2025-08-29 13:20:06] Dados persistidos + órfãos.
+[2025-08-29 13:20:06] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 86
+🔧 Variáveis: 1346
+Σ TOTAL: 1631
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 13:20:06] Fim processo V2 OK
+[2025-08-29 13:44:27] Início processo V2
+[2025-08-29 13:44:27] _map_loaded
+[2025-08-29 13:44:27] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=components id=modal-pagina lang=pt-br version =>1.0
+[2025-08-29 13:44:27] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=pages id=admin-paginas-editar lang=pt-br version 1.2=>1.3
+[2025-08-29 13:44:27] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=pages id=admin-paginas-adicionar lang=pt-br version 1.2=>1.3
+[2025-08-29 13:44:27] ORIGIN_FILE_SAVED_MODULE C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\modulos\admin-paginas\admin-paginas.json
+[2025-08-29 13:44:27] Existentes (layouts): 13
+[2025-08-29 13:44:27] Existentes (paginas): 186
+[2025-08-29 13:44:27] Existentes (componentes): 86
+[2025-08-29 13:44:27] Existentes (variaveis): 1346
+[2025-08-29 13:44:27] _collected_summary
+[2025-08-29 13:44:27] Dados persistidos + órfãos.
+[2025-08-29 13:44:27] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1346
+Σ TOTAL: 1632
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 13:44:27] Fim processo V2 OK
+[2025-08-29 13:46:03] Início processo V2
+[2025-08-29 13:46:03] _map_loaded
+[2025-08-29 13:46:03] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=components id=modal-pagina lang=pt-br version 1.0=>1.1
+[2025-08-29 13:46:03] ORIGIN_FILE_SAVED_MODULE C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\modulos\admin-paginas\admin-paginas.json
+[2025-08-29 13:46:03] Existentes (layouts): 13
+[2025-08-29 13:46:03] Existentes (paginas): 186
+[2025-08-29 13:46:03] Existentes (componentes): 87
+[2025-08-29 13:46:03] Existentes (variaveis): 1346
+[2025-08-29 13:46:03] _collected_summary
+[2025-08-29 13:46:03] Dados persistidos + órfãos.
+[2025-08-29 13:46:03] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1346
+Σ TOTAL: 1632
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 13:46:03] Fim processo V2 OK
+[2025-08-29 13:49:28] Início processo V2
+[2025-08-29 13:49:28] _map_loaded
+[2025-08-29 13:49:28] Existentes (layouts): 13
+[2025-08-29 13:49:28] Existentes (paginas): 186
+[2025-08-29 13:49:28] Existentes (componentes): 87
+[2025-08-29 13:49:28] Existentes (variaveis): 1346
+[2025-08-29 13:49:28] _collected_summary
+[2025-08-29 13:49:28] Dados persistidos + órfãos.
+[2025-08-29 13:49:28] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1346
+Σ TOTAL: 1632
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 13:49:28] Fim processo V2 OK
+[2025-08-29 14:33:16] Início processo V2
+[2025-08-29 14:33:16] _map_loaded
+[2025-08-29 14:33:16] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=components id=modal-pagina lang=pt-br version 1.1=>1.2
+[2025-08-29 14:33:16] ORIGIN_FILE_SAVED_MODULE C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\modulos\admin-paginas\admin-paginas.json
+[2025-08-29 14:33:16] Existentes (layouts): 13
+[2025-08-29 14:33:16] Existentes (paginas): 186
+[2025-08-29 14:33:16] Existentes (componentes): 87
+[2025-08-29 14:33:16] Existentes (variaveis): 1346
+[2025-08-29 14:33:16] _collected_summary
+[2025-08-29 14:33:17] Dados persistidos + órfãos.
+[2025-08-29 14:33:17] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1348
+Σ TOTAL: 1634
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 14:33:17] Fim processo V2 OK
+[2025-08-29 14:53:31] Início processo V2
+[2025-08-29 14:53:31] _map_loaded
+[2025-08-29 14:53:32] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=components id=modal-pagina lang=pt-br version 1.2=>1.3
+[2025-08-29 14:53:32] ORIGIN_FILE_SAVED_MODULE C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\modulos\admin-paginas\admin-paginas.json
+[2025-08-29 14:53:32] Existentes (layouts): 13
+[2025-08-29 14:53:32] Existentes (paginas): 186
+[2025-08-29 14:53:32] Existentes (componentes): 87
+[2025-08-29 14:53:32] Existentes (variaveis): 1348
+[2025-08-29 14:53:32] _collected_summary
+[2025-08-29 14:53:32] Dados persistidos + órfãos.
+[2025-08-29 14:53:32] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1351
+Σ TOTAL: 1637
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 14:53:32] Fim processo V2 OK
+[2025-08-29 14:56:56] Início processo V2
+[2025-08-29 14:56:56] _map_loaded
+[2025-08-29 14:56:56] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=components id=modal-pagina lang=pt-br version 1.3=>1.4
+[2025-08-29 14:56:56] ORIGIN_FILE_SAVED_MODULE C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\modulos\admin-paginas\admin-paginas.json
+[2025-08-29 14:56:56] Existentes (layouts): 13
+[2025-08-29 14:56:56] Existentes (paginas): 186
+[2025-08-29 14:56:56] Existentes (componentes): 87
+[2025-08-29 14:56:56] Existentes (variaveis): 1351
+[2025-08-29 14:56:56] _collected_summary
+[2025-08-29 14:56:56] Dados persistidos + órfãos.
+[2025-08-29 14:56:56] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1351
+Σ TOTAL: 1637
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 14:56:56] Fim processo V2 OK
+[2025-08-29 15:01:29] Início processo V2
+[2025-08-29 15:01:29] _map_loaded
+[2025-08-29 15:01:30] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=components id=modal-pagina lang=pt-br version 1.4=>1.5
+[2025-08-29 15:01:30] ORIGIN_FILE_SAVED_MODULE C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\modulos\admin-paginas\admin-paginas.json
+[2025-08-29 15:01:30] Existentes (layouts): 13
+[2025-08-29 15:01:30] Existentes (paginas): 186
+[2025-08-29 15:01:30] Existentes (componentes): 87
+[2025-08-29 15:01:30] Existentes (variaveis): 1351
+[2025-08-29 15:01:30] _collected_summary
+[2025-08-29 15:01:30] Dados persistidos + órfãos.
+[2025-08-29 15:01:30] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1351
+Σ TOTAL: 1637
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 15:01:30] Fim processo V2 OK
+[2025-08-29 15:03:04] Início processo V2
+[2025-08-29 15:03:04] _map_loaded
+[2025-08-29 15:03:04] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=components id=modal-pagina lang=pt-br version 1.5=>1.6
+[2025-08-29 15:03:04] ORIGIN_FILE_SAVED_MODULE C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\modulos\admin-paginas\admin-paginas.json
+[2025-08-29 15:03:04] Existentes (layouts): 13
+[2025-08-29 15:03:04] Existentes (paginas): 186
+[2025-08-29 15:03:04] Existentes (componentes): 87
+[2025-08-29 15:03:04] Existentes (variaveis): 1351
+[2025-08-29 15:03:04] _collected_summary
+[2025-08-29 15:03:04] Dados persistidos + órfãos.
+[2025-08-29 15:03:04] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1351
+Σ TOTAL: 1637
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 15:03:04] Fim processo V2 OK
+[2025-08-29 15:06:25] Início processo V2
+[2025-08-29 15:06:25] _map_loaded
+[2025-08-29 15:06:25] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=components id=modal-pagina lang=pt-br version 1.6=>1.7
+[2025-08-29 15:06:25] ORIGIN_FILE_SAVED_MODULE C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\modulos\admin-paginas\admin-paginas.json
+[2025-08-29 15:06:25] Existentes (layouts): 13
+[2025-08-29 15:06:25] Existentes (paginas): 186
+[2025-08-29 15:06:25] Existentes (componentes): 87
+[2025-08-29 15:06:25] Existentes (variaveis): 1351
+[2025-08-29 15:06:25] _collected_summary
+[2025-08-29 15:06:25] Dados persistidos + órfãos.
+[2025-08-29 15:06:25] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1353
+Σ TOTAL: 1639
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 15:06:25] Fim processo V2 OK
+[2025-08-29 15:07:44] Início processo V2
+[2025-08-29 15:07:44] _map_loaded
+[2025-08-29 15:07:44] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=components id=modal-pagina lang=pt-br version 1.7=>1.8
+[2025-08-29 15:07:44] ORIGIN_FILE_SAVED_MODULE C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\modulos\admin-paginas\admin-paginas.json
+[2025-08-29 15:07:44] Existentes (layouts): 13
+[2025-08-29 15:07:44] Existentes (paginas): 186
+[2025-08-29 15:07:44] Existentes (componentes): 87
+[2025-08-29 15:07:44] Existentes (variaveis): 1353
+[2025-08-29 15:07:44] _collected_summary
+[2025-08-29 15:07:44] Dados persistidos + órfãos.
+[2025-08-29 15:07:44] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1353
+Σ TOTAL: 1639
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 15:07:44] Fim processo V2 OK
+[2025-08-29 15:14:50] Início processo V2
+[2025-08-29 15:14:50] _map_loaded
+[2025-08-29 15:14:50] Existentes (layouts): 13
+[2025-08-29 15:14:50] Existentes (paginas): 186
+[2025-08-29 15:14:50] Existentes (componentes): 87
+[2025-08-29 15:14:50] Existentes (variaveis): 1353
+[2025-08-29 15:14:50] _collected_summary
+[2025-08-29 15:14:50] Dados persistidos + órfãos.
+[2025-08-29 15:14:50] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1353
+Σ TOTAL: 1639
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 15:14:50] Fim processo V2 OK
+[2025-08-29 15:15:46] Início processo V2
+[2025-08-29 15:15:46] _map_loaded
+[2025-08-29 15:15:46] ORIGIN_UPDATE_MODULE modulo=admin-paginas tipo=components id=modal-pagina lang=pt-br version 1.8=>1.9
+[2025-08-29 15:15:46] ORIGIN_FILE_SAVED_MODULE C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\gestor\modulos\admin-paginas\admin-paginas.json
+[2025-08-29 15:15:46] Existentes (layouts): 13
+[2025-08-29 15:15:46] Existentes (paginas): 186
+[2025-08-29 15:15:46] Existentes (componentes): 87
+[2025-08-29 15:15:46] Existentes (variaveis): 1353
+[2025-08-29 15:15:46] _collected_summary
+[2025-08-29 15:15:46] Dados persistidos + órfãos.
+[2025-08-29 15:15:46] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1353
+Σ TOTAL: 1639
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 15:15:46] Fim processo V2 OK
+[2025-08-29 15:23:47] Início processo V2
+[2025-08-29 15:23:47] _map_loaded
+[2025-08-29 15:23:47] Existentes (layouts): 13
+[2025-08-29 15:23:47] Existentes (paginas): 186
+[2025-08-29 15:23:47] Existentes (componentes): 87
+[2025-08-29 15:23:47] Existentes (variaveis): 1353
+[2025-08-29 15:23:47] _collected_summary
+[2025-08-29 15:23:47] Dados persistidos + órfãos.
+[2025-08-29 15:23:47] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1353
+Σ TOTAL: 1639
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 15:23:47] Fim processo V2 OK
+[2025-08-29 16:45:08] Início processo V2
+[2025-08-29 16:45:08] _map_loaded
+[2025-08-29 16:45:08] Existentes (layouts): 13
+[2025-08-29 16:45:08] Existentes (paginas): 186
+[2025-08-29 16:45:08] Existentes (componentes): 87
+[2025-08-29 16:45:08] Existentes (variaveis): 1353
+[2025-08-29 16:45:08] _collected_summary
+[2025-08-29 16:45:08] Dados persistidos + órfãos.
+[2025-08-29 16:45:08] 📝 Relatório Final
+📦 Layouts: 13
+📄 Páginas: 186
+🧩 Componentes: 87
+🔧 Variáveis: 1353
+Σ TOTAL: 1639
+🗃️ Órfãos: 4
+⚠️ Problemas: componentes: 4 órfãos
+
+[2025-08-29 16:45:08] Fim processo V2 OK

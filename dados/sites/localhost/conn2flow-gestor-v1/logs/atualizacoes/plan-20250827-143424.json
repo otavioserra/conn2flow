@@ -1,0 +1,21 @@
+{
+    "generated_at": "2025-08-27T14:34:24-03:00",
+    "mode": "full",
+    "plan": {
+        "stats": {
+            "removed": 16,
+            "copied": 14
+        }
+    },
+    "dry_run": false,
+    "env_merge": {
+        "added": [],
+        "deprecated": []
+    },
+    "release_tag": null,
+    "stats": {
+        "removed": 16,
+        "copied": 14
+    },
+    "checksum": null
+}

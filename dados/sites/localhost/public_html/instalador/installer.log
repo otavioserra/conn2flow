@@ -1,0 +1,88 @@
+[2025-09-04 15:52:46] [INFO] === Iniciando instalação em 2025-09-04 15:52:46 ===
+[2025-09-04 15:52:46] [INFO] Executando etapa: validate_input
+[2025-09-04 15:52:46] [INFO] Iniciando validação dos dados de entrada
+[2025-09-04 15:52:46] [INFO] Caminho de instalação solicitado: /var/www/sites/localhost/conn2flow-gestor
+[2025-09-04 15:52:46] [INFO] SSL habilitado: 0
+[2025-09-04 15:52:46] [INFO] Instalação limpa solicitada: SIM
+[2025-09-04 15:52:46] [INFO] Caminho de instalação validado: /var/www/sites/localhost/conn2flow-gestor
+[2025-09-04 15:52:46] [INFO] Validação dos dados concluída com sucesso
+[2025-09-04 15:52:46] [INFO] Etapa validate_input concluída com sucesso
+[2025-09-04 15:52:46] [INFO] === Iniciando instalação em 2025-09-04 15:52:46 ===
+[2025-09-04 15:52:46] [INFO] Executando etapa: unzip_files
+[2025-09-04 15:52:46] [INFO] Descompactando arquivos para: /var/www/sites/localhost/conn2flow-gestor
+[2025-09-04 15:52:46] [INFO] SKIP_UNZIP ativado: pulando extração do ZIP, mas executando correção de permissões e configuração do sistema
+[2025-09-04 15:52:46] [INFO] Permissões do Phinx corrigidas: /var/www/sites/localhost/conn2flow-gestor/vendor/bin/phinx
+[2025-09-04 15:52:47] [INFO] === Iniciando detecção de URL_RAIZ (baseada no arquivo principal) ===
+[2025-09-04 15:52:47] [INFO] Variável REQUEST_URI: /instalador/
+[2025-09-04 15:52:47] [INFO] Variável SCRIPT_NAME: /instalador/index.php
+[2025-09-04 15:52:47] [INFO] Variável PHP_SELF: /instalador/index.php
+[2025-09-04 15:52:47] [INFO] Variável DOCUMENT_ROOT: /var/www/sites/localhost/public_html
+[2025-09-04 15:52:47] [INFO] Variável SCRIPT_FILENAME: /var/www/sites/localhost/public_html/instalador/index.php
+[2025-09-04 15:52:47] [INFO] SCRIPT_FILENAME: /var/www/sites/localhost/public_html/instalador/index.php
+[2025-09-04 15:52:47] [INFO] DOCUMENT_ROOT: /var/www/sites/localhost/public_html
+[2025-09-04 15:52:47] [INFO] Diretório do arquivo principal: /var/www/sites/localhost/public_html/instalador
+[2025-09-04 15:52:47] [INFO] Caminho relativo do arquivo principal: /instalador
+[2025-09-04 15:52:47] [INFO] ✅ Subpasta detectada via arquivo principal: /instalador/
+[2025-09-04 15:52:47] [INFO] Configurando URL_RAIZ detectada: /instalador/
+[2025-09-04 15:52:47] [INFO] 🔑 Usando senha OpenSSL do .env para gerar chaves
+[2025-09-04 15:52:47] [INFO] Tentando gerar chaves OpenSSL com senha...
+[2025-09-04 15:52:47] [INFO] Chave pública salva em: /var/www/sites/localhost/conn2flow-gestor/autenticacoes/localhost/chaves/gestor/publica.key
+[2025-09-04 15:52:47] [INFO] Chave privada salva em: /var/www/sites/localhost/conn2flow-gestor/autenticacoes/localhost/chaves/gestor/privada.key
+[2025-09-04 15:52:47] [INFO] Descompactação e configuração concluídas
+[2025-09-04 15:52:47] [INFO] Etapa unzip_files concluída com sucesso
+[2025-09-04 15:52:47] [INFO] === Iniciando instalação em 2025-09-04 15:52:47 ===
+[2025-09-04 15:52:47] [INFO] Executando etapa: run_update_steps
+[2025-09-04 15:52:47] [INFO] === INICIANDO PROCESSO DE ATUALIZAÇÃO (MIGRAÇÕES e DADOS) ===
+[2025-09-04 15:52:47] [INFO] === LIMPEZA DO BANCO DE DADOS ===
+[2025-09-04 15:52:47] [INFO] ⚠️  ATENÇÃO: Usuário optou por instalação limpa - removendo todas as tabelas!
+[2025-09-04 15:52:47] [INFO] ✅ Banco de dados já está vazio
+[2025-09-04 15:52:47] [INFO] ✅ Limpeza do banco concluída com sucesso!
+[2025-09-04 15:52:47] [INFO] Executando script de atualização: /var/www/sites/localhost/conn2flow-gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php
+[2025-09-04 15:52:47] [INFO] 🔧 Ambiente configurado - URL_RAIZ: /instalador/
+[2025-09-04 15:52:47] [INFO] 🔧 Ambiente configurado - OpenSSL Path: /var/www/sites/localhost/conn2flow-gestor/autenticacoes/localhost/chaves/gestor/
+[2025-09-04 15:52:47] [INFO] 🔧 Ambiente configurado - Cookie Name: _C2FCID
+[2025-09-04 15:52:47] [INFO] Executando script de atualização (migrando banco)...
+[2025-09-04 15:52:53] [INFO] ✅ Script de atualização executado.
+[2025-09-04 15:52:54] [INFO] Pasta db removida após atualização: /var/www/sites/localhost/conn2flow-gestor/db
+[2025-09-04 15:52:54] [INFO] Garantindo usuário administrador...
+[2025-09-04 15:52:54] [INFO] ✅ Usuário administrador garantido/atualizado.
+[2025-09-04 15:52:54] [INFO] === CONFIGURANDO LOGIN AUTOMÁTICO DO ADMINISTRADOR ===
+[2025-09-04 15:52:54] [INFO] 🔧 Ambiente configurado - URL_RAIZ: /instalador/
+[2025-09-04 15:52:54] [INFO] 🔧 Ambiente configurado - OpenSSL Path: /var/www/sites/localhost/conn2flow-gestor/autenticacoes/localhost/chaves/gestor/
+[2025-09-04 15:52:54] [INFO] 🔧 Ambiente configurado - Cookie Name: _C2FCID
+[2025-09-04 15:52:54] [INFO] 📝 Gerando token de autorização para o usuário administrador (ID: 1)
+[2025-09-04 15:52:54] [INFO] ✅ Login automático configurado com sucesso! Usuário administrador estará logado após instalação.
+[2025-09-04 15:52:54] [INFO] 🔑 Token de autorização gerado usando configurações do .env
+[2025-09-04 15:52:54] [INFO] 🍪 Cookie configurado: _C2FCID por 15 dias
+[2025-09-04 15:52:54] [INFO] Iniciando criação/atualização da página de sucesso...
+[2025-09-04 15:52:54] [INFO] Página existente, sobrescrevendo HTML/CSS...
+[2025-09-04 15:52:54] [INFO] Página de sucesso atualizada.
+[2025-09-04 15:52:54] [INFO] Configurando acesso público...
+[2025-09-04 15:52:54] [INFO] Pasta do instalador (onde ficarão os arquivos finais): /var/www/sites/localhost/public_html/instalador
+[2025-09-04 15:52:54] [INFO] Server name: localhost
+[2025-09-04 15:52:54] [INFO] Caminho completo do gestor: /var/www/sites/localhost/conn2flow-gestor/
+[2025-09-04 15:52:54] [INFO] Template processado - domínio: localhost, caminho: /var/www/sites/localhost/conn2flow-gestor/
+[2025-09-04 15:52:54] [INFO] Index.php processado e salvo em /var/www/sites/localhost/public_html/instalador/index.php
+[2025-09-04 15:52:54] [INFO] === Iniciando detecção de URL_RAIZ (baseada no arquivo principal) ===
+[2025-09-04 15:52:54] [INFO] Variável REQUEST_URI: /instalador/
+[2025-09-04 15:52:54] [INFO] Variável SCRIPT_NAME: /instalador/index.php
+[2025-09-04 15:52:54] [INFO] Variável PHP_SELF: /instalador/index.php
+[2025-09-04 15:52:54] [INFO] Variável DOCUMENT_ROOT: /var/www/sites/localhost/public_html
+[2025-09-04 15:52:54] [INFO] Variável SCRIPT_FILENAME: /var/www/sites/localhost/public_html/instalador/index.php
+[2025-09-04 15:52:54] [INFO] SCRIPT_FILENAME: /var/www/sites/localhost/public_html/instalador/index.php
+[2025-09-04 15:52:54] [INFO] DOCUMENT_ROOT: /var/www/sites/localhost/public_html
+[2025-09-04 15:52:54] [INFO] Diretório do arquivo principal: /var/www/sites/localhost/public_html/instalador
+[2025-09-04 15:52:54] [INFO] Caminho relativo do arquivo principal: /instalador
+[2025-09-04 15:52:54] [INFO] ✅ Subpasta detectada via arquivo principal: /instalador/
+[2025-09-04 15:52:54] [INFO] Detectada instalação em subpasta: /instalador/
+[2025-09-04 15:52:54] [INFO] SSL não habilitado - removendo redirect HTTPS do .htaccess
+[2025-09-04 15:52:54] [INFO] Arquivo .htaccess processado e salvo em /var/www/sites/localhost/public_html/instalador/.htaccess
+[2025-09-04 15:52:54] [INFO] Pasta public-access removida: /var/www/sites/localhost/public_html/instalador/public-access
+[2025-09-04 15:52:54] [INFO] Removendo arquivos do instalador, mantendo apenas index.php, .htaccess e installer.log...
+[2025-09-04 15:52:54] [INFO] Pasta removida: /var/www/sites/localhost/public_html/instalador/src
+[2025-09-04 15:52:54] [INFO] Pasta removida: /var/www/sites/localhost/public_html/instalador/views
+[2025-09-04 15:52:54] [INFO] Pasta removida: /var/www/sites/localhost/public_html/instalador/assets
+[2025-09-04 15:52:54] [INFO] Pasta removida: /var/www/sites/localhost/public_html/instalador/lang
+[2025-09-04 15:52:54] [INFO] Limpeza concluída. Restam apenas index.php, .htaccess e installer.log na pasta do instalador.
+[2025-09-04 15:52:54] [INFO] ✅ Instalação concluída com sucesso! ✅
+[2025-09-04 15:52:54] [INFO] Etapa run_update_steps concluída com sucesso

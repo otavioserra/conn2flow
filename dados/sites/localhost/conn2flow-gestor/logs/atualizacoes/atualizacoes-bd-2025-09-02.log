@@ -1,0 +1,1012 @@
+[2025-09-02 09:54:54] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 09:54:54] Executando migrações...
+[2025-09-02 09:54:55] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 09:54:56] [PHINX] == 20250723165435 CreateAcessosTable: migrating 
+[2025-09-02 09:54:56] [PHINX]  == 20250723165435 CreateAcessosTable: migrated 0.0310s
+[2025-09-02 09:54:56] [PHINX]  == 20250723165436 CreateArquivosTable: migrating 
+[2025-09-02 09:54:56] [PHINX]  == 20250723165436 CreateArquivosTable: migrated 0.0276s
+[2025-09-02 09:54:56] [PHINX]  == 20250723165437 CreateArquivosCategoriasTable: migrating 
+[2025-09-02 09:54:56] [PHINX]  == 20250723165437 CreateArquivosCategoriasTable: migrated 0.0272s
+[2025-09-02 09:54:56] [PHINX]  == 20250723165438 CreateBackupCamposTable: migrating 
+[2025-09-02 09:54:56] [PHINX]  == 20250723165438 CreateBackupCamposTable: migrated 0.0246s
+[2025-09-02 09:54:56] [PHINX]  == 20250723165439 CreateCategoriasTable: migrating 
+[2025-09-02 09:54:56] [PHINX]  == 20250723165439 CreateCategoriasTable: migrated 0.0279s
+[2025-09-02 09:54:56] [PHINX]  == 20250723165440 CreateComponentesTable: migrating 
+[2025-09-02 09:54:56] [PHINX]  == 20250723165440 CreateComponentesTable: migrated 0.0633s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165441 CreateHistoricoTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165441 CreateHistoricoTable: migrated 0.0305s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165526 CreateLayoutsTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165526 CreateLayoutsTable: migrated 0.0407s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165527 CreateModulosTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165527 CreateModulosTable: migrated 0.0293s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165528 CreateModulosGruposTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165528 CreateModulosGruposTable: migrated 0.0270s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165529 CreateModulosOperacoesTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165529 CreateModulosOperacoesTable: migrated 0.0275s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165530 CreatePaginasTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165530 CreatePaginasTable: migrated 0.0487s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165531 CreatePaginas301Table: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165531 CreatePaginas301Table: migrated 0.0230s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165533 CreatePluginsTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165533 CreatePluginsTable: migrated 0.0247s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165534 CreateSessoesTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165534 CreateSessoesTable: migrated 0.0223s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165535 CreateSessoesVariaveisTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165535 CreateSessoesVariaveisTable: migrated 0.0260s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165537 CreateTokensTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165537 CreateTokensTable: migrated 0.0242s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165538 CreateUsuariosTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165538 CreateUsuariosTable: migrated 0.0266s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165543 CreateUsuariosPerfisTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165543 CreateUsuariosPerfisTable: migrated 0.0269s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165544 CreateUsuariosPerfisModulosTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165544 CreateUsuariosPerfisModulosTable: migrated 0.0256s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165545 CreateUsuariosPerfisModulosOperacoesTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165545 CreateUsuariosPerfisModulosOperacoesTable: migrated 0.0240s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165548 CreateUsuariosTokensTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165548 CreateUsuariosTokensTable: migrated 0.0285s
+[2025-09-02 09:54:57] [PHINX]  == 20250723165549 CreateVariaveisTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250723165549 CreateVariaveisTable: migrated 0.0535s
+[2025-09-02 09:54:57] [PHINX]  == 20250813153000 AlterComponentesIndexIdLanguage: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250813153000 AlterComponentesIndexIdLanguage: migrated 0.0788s
+[2025-09-02 09:54:57] [PHINX]  == 20250813170000 AlterPaginasIndexIdLanguage: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250813170000 AlterPaginasIndexIdLanguage: migrated 0.0503s
+[2025-09-02 09:54:57] [PHINX]  == 20250813170010 AlterLayoutsIndexIdLanguage: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250813170010 AlterLayoutsIndexIdLanguage: migrated 0.0436s
+[2025-09-02 09:54:57] [PHINX]  == 20250814130000 AlterPaginasAddUpdatedFlags: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250814130000 AlterPaginasAddUpdatedFlags: migrated 0.0689s
+[2025-09-02 09:54:57] [PHINX]  == 20250814130010 AlterLayoutsAddUpdatedFlags: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250814130010 AlterLayoutsAddUpdatedFlags: migrated 0.0559s
+[2025-09-02 09:54:57] [PHINX]  == 20250814130020 AlterComponentesAddUpdatedFlags: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250814130020 AlterComponentesAddUpdatedFlags: migrated 0.0627s
+[2025-09-02 09:54:57] [PHINX]  == 20250814130030 AlterVariaveisAddUpdatedFlags: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250814130030 AlterVariaveisAddUpdatedFlags: migrated 0.0443s
+[2025-09-02 09:54:57] [PHINX]  == 20250814140000 CreateManagerUpdatesTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250814140000 CreateManagerUpdatesTable: migrated 0.0316s
+[2025-09-02 09:54:57] [PHINX]  == 20250814141000 CreateAtualizacoesExecucoesTable: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250814141000 CreateAtualizacoesExecucoesTable: migrated 0.0420s
+[2025-09-02 09:54:57] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrated 0.0625s
+[2025-09-02 09:54:57] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrated 0.0651s
+[2025-09-02 09:54:57] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrating 
+[2025-09-02 09:54:57] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrated 0.0581s
+[2025-09-02 09:54:57] Migrações concluídas.
+[2025-09-02 09:54:57] CHECKSUM_PRIMEIRA_ATUALIZACAO
+[2025-09-02 09:54:57] Comparando dados do banco com arquivos Data.json...
+[2025-09-02 09:54:57] Sincronizando tabela categorias ...
+[2025-09-02 09:54:57] SYNC_INI tabela=categorias modo=pk qtdJson=1
+[2025-09-02 09:54:57] SYNC_FIM tabela=categorias +1 ~0 =0 orphans=0 modo=pk
+[2025-09-02 09:54:57] Resumo comparação - categorias => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 09:54:57] Sincronizando tabela componentes ...
+[2025-09-02 09:54:57] SYNC_INI tabela=componentes modo=natural qtdJson=37
+[2025-09-02 09:54:57] SYNC_FIM tabela=componentes +37 ~0 =0 orphans=0 modo=natural
+[2025-09-02 09:54:57] Resumo comparação - componentes => inserções=37, atualizações=0, sem_alteracao=0
+[2025-09-02 09:54:57] Sincronizando tabela layouts ...
+[2025-09-02 09:54:57] SYNC_INI tabela=layouts modo=natural qtdJson=7
+[2025-09-02 09:54:57] SYNC_FIM tabela=layouts +7 ~0 =0 orphans=0 modo=natural
+[2025-09-02 09:54:57] Resumo comparação - layouts => inserções=7, atualizações=0, sem_alteracao=0
+[2025-09-02 09:54:58] Sincronizando tabela modulos ...
+[2025-09-02 09:54:58] SYNC_INI tabela=modulos modo=pk qtdJson=16
+[2025-09-02 09:54:58] SYNC_FIM tabela=modulos +16 ~0 =0 orphans=0 modo=pk
+[2025-09-02 09:54:58] Resumo comparação - modulos => inserções=16, atualizações=0, sem_alteracao=0
+[2025-09-02 09:54:58] Sincronizando tabela modulos_grupos ...
+[2025-09-02 09:54:58] SYNC_INI tabela=modulos_grupos modo=pk qtdJson=4
+[2025-09-02 09:54:58] SYNC_FIM tabela=modulos_grupos +4 ~0 =0 orphans=0 modo=pk
+[2025-09-02 09:54:58] Resumo comparação - modulos_grupos => inserções=4, atualizações=0, sem_alteracao=0
+[2025-09-02 09:54:58] Sincronizando tabela modulos_operacoes ...
+[2025-09-02 09:54:58] SYNC_INI tabela=modulos_operacoes modo=pk qtdJson=1
+[2025-09-02 09:54:58] SYNC_FIM tabela=modulos_operacoes +1 ~0 =0 orphans=0 modo=pk
+[2025-09-02 09:54:58] Resumo comparação - modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 09:54:58] Sincronizando tabela paginas ...
+[2025-09-02 09:54:58] SYNC_INI tabela=paginas modo=natural qtdJson=59
+[2025-09-02 09:54:58] SYNC_FIM tabela=paginas +59 ~0 =0 orphans=0 modo=natural
+[2025-09-02 09:54:58] Resumo comparação - paginas => inserções=59, atualizações=0, sem_alteracao=0
+[2025-09-02 09:54:58] Sincronizando tabela usuarios ...
+[2025-09-02 09:54:58] SYNC_INI tabela=usuarios modo=pk qtdJson=1
+[2025-09-02 09:54:58] SYNC_FIM tabela=usuarios +1 ~0 =0 orphans=0 modo=pk
+[2025-09-02 09:54:58] Resumo comparação - usuarios => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 09:54:58] Sincronizando tabela usuarios_perfis ...
+[2025-09-02 09:54:58] SYNC_INI tabela=usuarios_perfis modo=pk qtdJson=1
+[2025-09-02 09:54:58] SYNC_FIM tabela=usuarios_perfis +1 ~0 =0 orphans=0 modo=pk
+[2025-09-02 09:54:58] Resumo comparação - usuarios_perfis => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 09:54:58] Sincronizando tabela usuarios_perfis_modulos ...
+[2025-09-02 09:54:58] SYNC_INI tabela=usuarios_perfis_modulos modo=pk qtdJson=17
+[2025-09-02 09:54:58] SYNC_FIM tabela=usuarios_perfis_modulos +17 ~0 =0 orphans=0 modo=pk
+[2025-09-02 09:54:58] Resumo comparação - usuarios_perfis_modulos => inserções=17, atualizações=0, sem_alteracao=0
+[2025-09-02 09:54:58] Sincronizando tabela usuarios_perfis_modulos_operacoes ...
+[2025-09-02 09:54:58] SYNC_INI tabela=usuarios_perfis_modulos_operacoes modo=pk qtdJson=1
+[2025-09-02 09:54:58] SYNC_FIM tabela=usuarios_perfis_modulos_operacoes +1 ~0 =0 orphans=0 modo=pk
+[2025-09-02 09:54:58] Resumo comparação - usuarios_perfis_modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 09:54:58] Sincronizando tabela variaveis ...
+[2025-09-02 09:54:58] SYNC_INI tabela=variaveis modo=natural qtdJson=467
+[2025-09-02 09:55:00] SYNC_FIM tabela=variaveis +467 ~0 =0 orphans=0 modo=natural
+[2025-09-02 09:55:00] Resumo comparação - variaveis => inserções=467, atualizações=0, sem_alteracao=0
+[2025-09-02 09:55:00] MANAGER_UPDATES_REGISTRADO id=1
+[2025-09-02 09:55:00] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 categorias => +1 ~0 =0
+📦 componentes => +37 ~0 =0
+📦 layouts => +7 ~0 =0
+📦 modulos => +16 ~0 =0
+📦 modulos_grupos => +4 ~0 =0
+📦 modulos_operacoes => +1 ~0 =0
+📦 paginas => +59 ~0 =0
+📦 usuarios => +1 ~0 =0
+📦 usuarios_perfis => +1 ~0 =0
+📦 usuarios_perfis_modulos => +17 ~0 =0
+📦 usuarios_perfis_modulos_operacoes => +1 ~0 =0
+📦 variaveis => +467 ~0 =0
+Σ TOTAL => +612 ~0 =0
+
+[2025-09-02 09:55:00] Rotina concluída com sucesso.
+[2025-09-02 09:59:47] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 09:59:47] Executando migrações...
+[2025-09-02 09:59:48] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 09:59:48] Migrações concluídas.
+[2025-09-02 09:59:48] CHECKSUM_CHANGED_TABLES=modulos,usuarios_perfis_modulos
+[2025-09-02 09:59:48] Comparando dados do banco com arquivos Data.json...
+[2025-09-02 09:59:48] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-09-02 09:59:48] SKIP_NO_CHECKSUM_CHANGE tabela=componentes
+[2025-09-02 09:59:48] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-09-02 09:59:48] Sincronizando tabela modulos ...
+[2025-09-02 09:59:48] SYNC_INI tabela=modulos modo=pk qtdJson=16
+[2025-09-02 09:59:48] SYNC_FIM tabela=modulos +0 ~0 =16 orphans=0 modo=pk
+[2025-09-02 09:59:48] Resumo comparação - modulos => inserções=0, atualizações=0, sem_alteracao=16
+[2025-09-02 09:59:48] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-09-02 09:59:48] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-09-02 09:59:48] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-09-02 09:59:48] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-09-02 09:59:48] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-09-02 09:59:48] Sincronizando tabela usuarios_perfis_modulos ...
+[2025-09-02 09:59:48] SYNC_INI tabela=usuarios_perfis_modulos modo=pk qtdJson=18
+[2025-09-02 09:59:48] SYNC_FIM tabela=usuarios_perfis_modulos +7 ~0 =11 orphans=0 modo=pk
+[2025-09-02 09:59:48] Resumo comparação - usuarios_perfis_modulos => inserções=7, atualizações=0, sem_alteracao=11
+[2025-09-02 09:59:48] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-09-02 09:59:48] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-09-02 09:59:48] MANAGER_UPDATES_REGISTRADO id=2
+[2025-09-02 09:59:48] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 modulos => +0 ~0 =16
+📦 usuarios_perfis_modulos => +7 ~0 =11
+Σ TOTAL => +7 ~0 =27
+
+[2025-09-02 09:59:48] Rotina concluída com sucesso.
+[2025-09-02 10:32:54] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 10:32:54] Executando migrações...
+[2025-09-02 10:32:55] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 10:32:55] Migrações concluídas.
+[2025-09-02 10:32:55] CHECKSUM_CHANGED_TABLES=modulos
+[2025-09-02 10:32:55] Comparando dados do banco com arquivos Data.json...
+[2025-09-02 10:32:55] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-09-02 10:32:55] SKIP_NO_CHECKSUM_CHANGE tabela=componentes
+[2025-09-02 10:32:55] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-09-02 10:32:55] Sincronizando tabela modulos ...
+[2025-09-02 10:32:55] SYNC_INI tabela=modulos modo=pk qtdJson=16
+[2025-09-02 10:32:55] Atualização modulos PK=16 Campos: id_modulos_grupos [12 => 4]
+[2025-09-02 10:32:55] SYNC_FIM tabela=modulos +0 ~1 =15 orphans=0 modo=pk
+[2025-09-02 10:32:55] Resumo comparação - modulos => inserções=0, atualizações=1, sem_alteracao=15
+[2025-09-02 10:32:55] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-09-02 10:32:55] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-09-02 10:32:55] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-09-02 10:32:55] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-09-02 10:32:55] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-09-02 10:32:55] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-09-02 10:32:55] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-09-02 10:32:55] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-09-02 10:32:55] MANAGER_UPDATES_REGISTRADO id=3
+[2025-09-02 10:32:55] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 modulos => +0 ~1 =15
+Σ TOTAL => +0 ~1 =15
+
+[2025-09-02 10:32:55] Rotina concluída com sucesso.
+[2025-09-02 10:33:51] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 10:33:51] Executando migrações...
+[2025-09-02 10:33:51] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 10:33:53] [PHINX] == 20250723165435 CreateAcessosTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165435 CreateAcessosTable: migrated 0.0358s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165436 CreateArquivosTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165436 CreateArquivosTable: migrated 0.0313s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165437 CreateArquivosCategoriasTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165437 CreateArquivosCategoriasTable: migrated 0.0303s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165438 CreateBackupCamposTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165438 CreateBackupCamposTable: migrated 0.0307s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165439 CreateCategoriasTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165439 CreateCategoriasTable: migrated 0.0287s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165440 CreateComponentesTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165440 CreateComponentesTable: migrated 0.0630s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165441 CreateHistoricoTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165441 CreateHistoricoTable: migrated 0.0274s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165526 CreateLayoutsTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165526 CreateLayoutsTable: migrated 0.0411s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165527 CreateModulosTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165527 CreateModulosTable: migrated 0.0275s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165528 CreateModulosGruposTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165528 CreateModulosGruposTable: migrated 0.0279s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165529 CreateModulosOperacoesTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165529 CreateModulosOperacoesTable: migrated 0.0269s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165530 CreatePaginasTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165530 CreatePaginasTable: migrated 0.0481s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165531 CreatePaginas301Table: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165531 CreatePaginas301Table: migrated 0.0283s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165533 CreatePluginsTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165533 CreatePluginsTable: migrated 0.0280s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165534 CreateSessoesTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165534 CreateSessoesTable: migrated 0.0271s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165535 CreateSessoesVariaveisTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165535 CreateSessoesVariaveisTable: migrated 0.0329s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165537 CreateTokensTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165537 CreateTokensTable: migrated 0.0281s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165538 CreateUsuariosTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165538 CreateUsuariosTable: migrated 0.0275s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165543 CreateUsuariosPerfisTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165543 CreateUsuariosPerfisTable: migrated 0.0310s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165544 CreateUsuariosPerfisModulosTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165544 CreateUsuariosPerfisModulosTable: migrated 0.0264s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165545 CreateUsuariosPerfisModulosOperacoesTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165545 CreateUsuariosPerfisModulosOperacoesTable: migrated 0.0260s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165548 CreateUsuariosTokensTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165548 CreateUsuariosTokensTable: migrated 0.0258s
+[2025-09-02 10:33:53] [PHINX]  == 20250723165549 CreateVariaveisTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250723165549 CreateVariaveisTable: migrated 0.0302s
+[2025-09-02 10:33:53] [PHINX]  == 20250813153000 AlterComponentesIndexIdLanguage: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250813153000 AlterComponentesIndexIdLanguage: migrated 0.0955s
+[2025-09-02 10:33:53] [PHINX]  == 20250813170000 AlterPaginasIndexIdLanguage: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250813170000 AlterPaginasIndexIdLanguage: migrated 0.0542s
+[2025-09-02 10:33:53] [PHINX]  == 20250813170010 AlterLayoutsIndexIdLanguage: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250813170010 AlterLayoutsIndexIdLanguage: migrated 0.0462s
+[2025-09-02 10:33:53] [PHINX]  == 20250814130000 AlterPaginasAddUpdatedFlags: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250814130000 AlterPaginasAddUpdatedFlags: migrated 0.0657s
+[2025-09-02 10:33:53] [PHINX]  == 20250814130010 AlterLayoutsAddUpdatedFlags: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250814130010 AlterLayoutsAddUpdatedFlags: migrated 0.0623s
+[2025-09-02 10:33:53] [PHINX]  == 20250814130020 AlterComponentesAddUpdatedFlags: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250814130020 AlterComponentesAddUpdatedFlags: migrated 0.0612s
+[2025-09-02 10:33:53] [PHINX]  == 20250814130030 AlterVariaveisAddUpdatedFlags: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250814130030 AlterVariaveisAddUpdatedFlags: migrated 0.0476s
+[2025-09-02 10:33:53] [PHINX]  == 20250814140000 CreateManagerUpdatesTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250814140000 CreateManagerUpdatesTable: migrated 0.0338s
+[2025-09-02 10:33:53] [PHINX]  == 20250814141000 CreateAtualizacoesExecucoesTable: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250814141000 CreateAtualizacoesExecucoesTable: migrated 0.0421s
+[2025-09-02 10:33:53] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrated 0.0602s
+[2025-09-02 10:33:53] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrated 0.0687s
+[2025-09-02 10:33:53] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrating 
+[2025-09-02 10:33:53] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrated 0.0619s
+[2025-09-02 10:33:53] Migrações concluídas.
+[2025-09-02 10:33:53] CHECKSUM_PRIMEIRA_ATUALIZACAO
+[2025-09-02 10:33:53] Comparando dados do banco com arquivos Data.json...
+[2025-09-02 10:33:53] Sincronizando tabela categorias ...
+[2025-09-02 10:33:53] Resumo comparação - categorias => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 10:33:53] Sincronizando tabela componentes ...
+[2025-09-02 10:33:54] Resumo comparação - componentes => inserções=37, atualizações=0, sem_alteracao=0
+[2025-09-02 10:33:54] Sincronizando tabela layouts ...
+[2025-09-02 10:33:54] Resumo comparação - layouts => inserções=7, atualizações=0, sem_alteracao=0
+[2025-09-02 10:33:54] Sincronizando tabela modulos ...
+[2025-09-02 10:33:54] Resumo comparação - modulos => inserções=16, atualizações=0, sem_alteracao=0
+[2025-09-02 10:33:54] Sincronizando tabela modulos_grupos ...
+[2025-09-02 10:33:54] Resumo comparação - modulos_grupos => inserções=4, atualizações=0, sem_alteracao=0
+[2025-09-02 10:33:54] Sincronizando tabela modulos_operacoes ...
+[2025-09-02 10:33:54] Resumo comparação - modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 10:33:54] Sincronizando tabela paginas ...
+[2025-09-02 10:33:54] Resumo comparação - paginas => inserções=59, atualizações=0, sem_alteracao=0
+[2025-09-02 10:33:54] Sincronizando tabela usuarios ...
+[2025-09-02 10:33:54] Resumo comparação - usuarios => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 10:33:54] Sincronizando tabela usuarios_perfis ...
+[2025-09-02 10:33:54] Resumo comparação - usuarios_perfis => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 10:33:54] Sincronizando tabela usuarios_perfis_modulos ...
+[2025-09-02 10:33:54] Resumo comparação - usuarios_perfis_modulos => inserções=18, atualizações=0, sem_alteracao=0
+[2025-09-02 10:33:54] Sincronizando tabela usuarios_perfis_modulos_operacoes ...
+[2025-09-02 10:33:54] Resumo comparação - usuarios_perfis_modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 10:33:54] Sincronizando tabela variaveis ...
+[2025-09-02 10:33:56] Resumo comparação - variaveis => inserções=467, atualizações=0, sem_alteracao=0
+[2025-09-02 10:33:56] MANAGER_UPDATES_REGISTRADO id=1
+[2025-09-02 10:33:56] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 categorias => +1 ~0 =0
+📦 componentes => +37 ~0 =0
+📦 layouts => +7 ~0 =0
+📦 modulos => +16 ~0 =0
+📦 modulos_grupos => +4 ~0 =0
+📦 modulos_operacoes => +1 ~0 =0
+📦 paginas => +59 ~0 =0
+📦 usuarios => +1 ~0 =0
+📦 usuarios_perfis => +1 ~0 =0
+📦 usuarios_perfis_modulos => +18 ~0 =0
+📦 usuarios_perfis_modulos_operacoes => +1 ~0 =0
+📦 variaveis => +467 ~0 =0
+Σ TOTAL => +613 ~0 =0
+
+[2025-09-02 10:33:56] Rotina concluída com sucesso.
+[2025-09-02 10:39:08] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 10:39:08] Executando migrações...
+[2025-09-02 10:39:08] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 10:39:08] Migrações concluídas.
+[2025-09-02 10:39:09] CHECKSUM_NENHUMA_TABELA_MUDOU
+[2025-09-02 10:39:09] SEM_MUDANCAS_DADOS -> pulando sincronizacao
+[2025-09-02 10:39:09] MANAGER_UPDATES_REGISTRADO id=2
+[2025-09-02 10:39:09] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+Σ TOTAL => +0 ~0 =0
+
+[2025-09-02 10:39:09] Rotina concluída com sucesso.
+[2025-09-02 10:39:38] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 10:39:38] Executando migrações...
+[2025-09-02 10:39:38] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 10:39:40] [PHINX] == 20250723165435 CreateAcessosTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165435 CreateAcessosTable: migrated 0.0268s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165436 CreateArquivosTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165436 CreateArquivosTable: migrated 0.0276s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165437 CreateArquivosCategoriasTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165437 CreateArquivosCategoriasTable: migrated 0.0270s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165438 CreateBackupCamposTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165438 CreateBackupCamposTable: migrated 0.0301s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165439 CreateCategoriasTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165439 CreateCategoriasTable: migrated 0.0275s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165440 CreateComponentesTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165440 CreateComponentesTable: migrated 0.0620s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165441 CreateHistoricoTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165441 CreateHistoricoTable: migrated 0.0556s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165526 CreateLayoutsTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165526 CreateLayoutsTable: migrated 0.0659s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165527 CreateModulosTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165527 CreateModulosTable: migrated 0.0314s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165528 CreateModulosGruposTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165528 CreateModulosGruposTable: migrated 0.0237s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165529 CreateModulosOperacoesTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165529 CreateModulosOperacoesTable: migrated 0.0282s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165530 CreatePaginasTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165530 CreatePaginasTable: migrated 0.0496s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165531 CreatePaginas301Table: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165531 CreatePaginas301Table: migrated 0.0253s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165533 CreatePluginsTable: migrating 
+[2025-09-02 10:39:40] [PHINX]  == 20250723165533 CreatePluginsTable: migrated 0.0271s
+[2025-09-02 10:39:40] [PHINX]  == 20250723165534 CreateSessoesTable: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250723165534 CreateSessoesTable: migrated 0.0283s
+[2025-09-02 10:39:41] [PHINX]  == 20250723165535 CreateSessoesVariaveisTable: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250723165535 CreateSessoesVariaveisTable: migrated 0.0253s
+[2025-09-02 10:39:41] [PHINX]  == 20250723165537 CreateTokensTable: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250723165537 CreateTokensTable: migrated 0.0248s
+[2025-09-02 10:39:41] [PHINX]  == 20250723165538 CreateUsuariosTable: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250723165538 CreateUsuariosTable: migrated 0.0278s
+[2025-09-02 10:39:41] [PHINX]  == 20250723165543 CreateUsuariosPerfisTable: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250723165543 CreateUsuariosPerfisTable: migrated 0.0325s
+[2025-09-02 10:39:41] [PHINX]  == 20250723165544 CreateUsuariosPerfisModulosTable: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250723165544 CreateUsuariosPerfisModulosTable: migrated 0.0348s
+[2025-09-02 10:39:41] [PHINX]  == 20250723165545 CreateUsuariosPerfisModulosOperacoesTable: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250723165545 CreateUsuariosPerfisModulosOperacoesTable: migrated 0.0383s
+[2025-09-02 10:39:41] [PHINX]  == 20250723165548 CreateUsuariosTokensTable: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250723165548 CreateUsuariosTokensTable: migrated 0.0347s
+[2025-09-02 10:39:41] [PHINX]  == 20250723165549 CreateVariaveisTable: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250723165549 CreateVariaveisTable: migrated 0.0425s
+[2025-09-02 10:39:41] [PHINX]  == 20250813153000 AlterComponentesIndexIdLanguage: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250813153000 AlterComponentesIndexIdLanguage: migrated 0.0807s
+[2025-09-02 10:39:41] [PHINX]  == 20250813170000 AlterPaginasIndexIdLanguage: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250813170000 AlterPaginasIndexIdLanguage: migrated 0.0401s
+[2025-09-02 10:39:41] [PHINX]  == 20250813170010 AlterLayoutsIndexIdLanguage: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250813170010 AlterLayoutsIndexIdLanguage: migrated 0.0428s
+[2025-09-02 10:39:41] [PHINX]  == 20250814130000 AlterPaginasAddUpdatedFlags: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250814130000 AlterPaginasAddUpdatedFlags: migrated 0.0683s
+[2025-09-02 10:39:41] [PHINX]  == 20250814130010 AlterLayoutsAddUpdatedFlags: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250814130010 AlterLayoutsAddUpdatedFlags: migrated 0.0639s
+[2025-09-02 10:39:41] [PHINX]  == 20250814130020 AlterComponentesAddUpdatedFlags: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250814130020 AlterComponentesAddUpdatedFlags: migrated 0.0598s
+[2025-09-02 10:39:41] [PHINX]  == 20250814130030 AlterVariaveisAddUpdatedFlags: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250814130030 AlterVariaveisAddUpdatedFlags: migrated 0.0461s
+[2025-09-02 10:39:41] [PHINX]  == 20250814140000 CreateManagerUpdatesTable: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250814140000 CreateManagerUpdatesTable: migrated 0.0307s
+[2025-09-02 10:39:41] [PHINX]  == 20250814141000 CreateAtualizacoesExecucoesTable: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250814141000 CreateAtualizacoesExecucoesTable: migrated 0.0474s
+[2025-09-02 10:39:41] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrated 0.0637s
+[2025-09-02 10:39:41] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrated 0.0654s
+[2025-09-02 10:39:41] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrating 
+[2025-09-02 10:39:41] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrated 0.0654s
+[2025-09-02 10:39:41] Migrações concluídas.
+[2025-09-02 10:39:41] CHECKSUM_PRIMEIRA_ATUALIZACAO
+[2025-09-02 10:39:41] Comparando dados do banco com arquivos Data.json...
+[2025-09-02 10:39:41] Sincronizando tabela categorias ...
+[2025-09-02 10:39:41] Resumo comparação - categorias => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 10:39:41] Sincronizando tabela componentes ...
+[2025-09-02 10:39:41] Resumo comparação - componentes => inserções=37, atualizações=0, sem_alteracao=0
+[2025-09-02 10:39:41] Sincronizando tabela layouts ...
+[2025-09-02 10:39:41] Resumo comparação - layouts => inserções=7, atualizações=0, sem_alteracao=0
+[2025-09-02 10:39:41] Sincronizando tabela modulos ...
+[2025-09-02 10:39:41] Resumo comparação - modulos => inserções=16, atualizações=0, sem_alteracao=0
+[2025-09-02 10:39:41] Sincronizando tabela modulos_grupos ...
+[2025-09-02 10:39:42] Resumo comparação - modulos_grupos => inserções=4, atualizações=0, sem_alteracao=0
+[2025-09-02 10:39:42] Sincronizando tabela modulos_operacoes ...
+[2025-09-02 10:39:42] Resumo comparação - modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 10:39:42] Sincronizando tabela paginas ...
+[2025-09-02 10:39:42] Resumo comparação - paginas => inserções=59, atualizações=0, sem_alteracao=0
+[2025-09-02 10:39:42] Sincronizando tabela usuarios ...
+[2025-09-02 10:39:42] Resumo comparação - usuarios => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 10:39:42] Sincronizando tabela usuarios_perfis ...
+[2025-09-02 10:39:42] Resumo comparação - usuarios_perfis => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 10:39:42] Sincronizando tabela usuarios_perfis_modulos ...
+[2025-09-02 10:39:42] Resumo comparação - usuarios_perfis_modulos => inserções=18, atualizações=0, sem_alteracao=0
+[2025-09-02 10:39:42] Sincronizando tabela usuarios_perfis_modulos_operacoes ...
+[2025-09-02 10:39:42] Resumo comparação - usuarios_perfis_modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 10:39:42] Sincronizando tabela variaveis ...
+[2025-09-02 10:39:44] Resumo comparação - variaveis => inserções=467, atualizações=0, sem_alteracao=0
+[2025-09-02 10:39:44] MANAGER_UPDATES_REGISTRADO id=1
+[2025-09-02 10:39:44] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 categorias => +1 ~0 =0
+📦 componentes => +37 ~0 =0
+📦 layouts => +7 ~0 =0
+📦 modulos => +16 ~0 =0
+📦 modulos_grupos => +4 ~0 =0
+📦 modulos_operacoes => +1 ~0 =0
+📦 paginas => +59 ~0 =0
+📦 usuarios => +1 ~0 =0
+📦 usuarios_perfis => +1 ~0 =0
+📦 usuarios_perfis_modulos => +18 ~0 =0
+📦 usuarios_perfis_modulos_operacoes => +1 ~0 =0
+📦 variaveis => +467 ~0 =0
+Σ TOTAL => +613 ~0 =0
+
+[2025-09-02 10:39:44] Rotina concluída com sucesso.
+[2025-09-02 12:00:22] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 12:00:22] Executando migrações...
+[2025-09-02 12:00:23] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 12:00:23] [PHINX] == 20250902180000 AlterModulosTableGrupoId: migrating 
+[2025-09-02 12:00:23] [PHINX]  == 20250902180000 AlterModulosTableGrupoId: migrated 0.1775s
+[2025-09-02 12:00:23] Migrações concluídas.
+[2025-09-02 12:00:23] CHECKSUM_CHANGED_TABLES=modulos,modulos_grupos,paginas
+[2025-09-02 12:00:23] Comparando dados do banco com arquivos Data.json...
+[2025-09-02 12:00:23] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-09-02 12:00:23] SKIP_NO_CHECKSUM_CHANGE tabela=componentes
+[2025-09-02 12:00:23] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-09-02 12:00:23] Sincronizando tabela modulos ...
+[2025-09-02 12:00:23] SYNC_INI tabela=modulos modo=pk qtdJson=16
+[2025-09-02 12:00:23] Atualização modulos PK=1 Campos: modulo_grupo_id [NULL => administracao-sistema]
+[2025-09-02 12:00:23] Atualização modulos PK=2 Campos: modulo_grupo_id [NULL => administracao-usuarios]
+[2025-09-02 12:00:23] Atualização modulos PK=3 Campos: modulo_grupo_id [NULL => geral]
+[2025-09-02 12:00:23] Atualização modulos PK=4 Campos: modulo_grupo_id [NULL => administracao]
+[2025-09-02 12:00:23] Atualização modulos PK=5 Campos: modulo_grupo_id [NULL => administracao]
+[2025-09-02 12:00:23] Atualização modulos PK=6 Campos: modulo_grupo_id [NULL => bibliotecas]
+[2025-09-02 12:00:23] Atualização modulos PK=7 Campos: modulo_grupo_id [NULL => administracao-usuarios]
+[2025-09-02 12:00:23] Atualização modulos PK=8 Campos: modulo_grupo_id [NULL => administracao-usuarios]
+[2025-09-02 12:00:23] Atualização modulos PK=9 Campos: modulo_grupo_id [NULL => administracao-sistema]
+[2025-09-02 12:00:23] Atualização modulos PK=10 Campos: modulo_grupo_id [NULL => administracao-sistema]
+[2025-09-02 12:00:23] Atualização modulos PK=11 Campos: modulo_grupo_id [NULL => geral]
+[2025-09-02 12:00:23] Atualização modulos PK=12 Campos: modulo_grupo_id [NULL => administracao-usuarios]
+[2025-09-02 12:00:23] Atualização modulos PK=13 Campos: modulo_grupo_id [NULL => bibliotecas]
+[2025-09-02 12:00:23] Atualização modulos PK=14 Campos: modulo_grupo_id [NULL => geral]
+[2025-09-02 12:00:23] Atualização modulos PK=15 Campos: modulo_grupo_id [NULL => geral]
+[2025-09-02 12:00:23] Atualização modulos PK=16 Campos: modulo_grupo_id [NULL => administracao-sistema]
+[2025-09-02 12:00:23] SYNC_FIM tabela=modulos +0 ~16 =0 orphans=0 modo=pk
+[2025-09-02 12:00:23] Resumo comparação - modulos => inserções=0, atualizações=16, sem_alteracao=0
+[2025-09-02 12:00:23] Sincronizando tabela modulos_grupos ...
+[2025-09-02 12:00:23] SYNC_INI tabela=modulos_grupos modo=pk qtdJson=5
+[2025-09-02 12:00:23] Atualização modulos_grupos PK=1 Campos: nome [Administração Gestor => Bibliotecas], id [administracao => bibliotecas], versao [4 => 1]
+[2025-09-02 12:00:23] Atualização modulos_grupos PK=2 Campos: nome [Geral => Administração Gestor], id [inicio => administracao], versao [2 => 1]
+[2025-09-02 12:00:23] Atualização modulos_grupos PK=3 Campos: nome [Administração Usuários => Geral], id [administracao-usuarios => geral]
+[2025-09-02 12:00:23] Atualização modulos_grupos PK=4 Campos: nome [Administração Sistema => Administração Usuários], id [administracao-sistema => administracao-usuarios]
+[2025-09-02 12:00:24] SYNC_FIM tabela=modulos_grupos +1 ~4 =0 orphans=0 modo=pk
+[2025-09-02 12:00:24] Resumo comparação - modulos_grupos => inserções=1, atualizações=4, sem_alteracao=0
+[2025-09-02 12:00:24] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-09-02 12:00:24] Sincronizando tabela paginas ...
+[2025-09-02 12:00:24] SYNC_INI tabela=paginas modo=natural qtdJson=59
+[2025-09-02 12:00:24] SYNC_FIM tabela=paginas +1 ~0 =58 orphans=0 modo=natural
+[2025-09-02 12:00:24] Resumo comparação - paginas => inserções=1, atualizações=0, sem_alteracao=58
+[2025-09-02 12:00:24] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-09-02 12:00:24] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-09-02 12:00:24] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-09-02 12:00:24] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-09-02 12:00:24] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-09-02 12:00:24] MANAGER_UPDATES_REGISTRADO id=2
+[2025-09-02 12:00:24] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 modulos => +0 ~16 =0
+📦 modulos_grupos => +1 ~4 =0
+📦 paginas => +1 ~0 =58
+Σ TOTAL => +2 ~20 =58
+
+[2025-09-02 12:00:24] Rotina concluída com sucesso.
+[2025-09-02 12:01:05] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 12:01:05] Executando migrações...
+[2025-09-02 12:01:05] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 12:01:07] [PHINX] == 20250723165435 CreateAcessosTable: migrating 
+[2025-09-02 12:01:07] [PHINX]  == 20250723165435 CreateAcessosTable: migrated 0.0310s
+[2025-09-02 12:01:07] [PHINX]  == 20250723165436 CreateArquivosTable: migrating 
+[2025-09-02 12:01:07] [PHINX]  == 20250723165436 CreateArquivosTable: migrated 0.0282s
+[2025-09-02 12:01:07] [PHINX]  == 20250723165437 CreateArquivosCategoriasTable: migrating 
+[2025-09-02 12:01:07] [PHINX]  == 20250723165437 CreateArquivosCategoriasTable: migrated 0.0272s
+[2025-09-02 12:01:07] [PHINX]  == 20250723165438 CreateBackupCamposTable: migrating 
+[2025-09-02 12:01:07] [PHINX]  == 20250723165438 CreateBackupCamposTable: migrated 0.0252s
+[2025-09-02 12:01:07] [PHINX]  == 20250723165439 CreateCategoriasTable: migrating 
+[2025-09-02 12:01:07] [PHINX]  == 20250723165439 CreateCategoriasTable: migrated 0.0263s
+[2025-09-02 12:01:07] [PHINX]  == 20250723165440 CreateComponentesTable: migrating 
+[2025-09-02 12:01:07] [PHINX]  == 20250723165440 CreateComponentesTable: migrated 0.0856s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165441 CreateHistoricoTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165441 CreateHistoricoTable: migrated 0.0354s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165526 CreateLayoutsTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165526 CreateLayoutsTable: migrated 0.0463s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165527 CreateModulosTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165527 CreateModulosTable: migrated 0.0367s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165528 CreateModulosGruposTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165528 CreateModulosGruposTable: migrated 0.0278s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165529 CreateModulosOperacoesTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165529 CreateModulosOperacoesTable: migrated 0.0294s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165530 CreatePaginasTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165530 CreatePaginasTable: migrated 0.0542s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165531 CreatePaginas301Table: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165531 CreatePaginas301Table: migrated 0.0249s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165533 CreatePluginsTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165533 CreatePluginsTable: migrated 0.0280s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165534 CreateSessoesTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165534 CreateSessoesTable: migrated 0.0263s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165535 CreateSessoesVariaveisTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165535 CreateSessoesVariaveisTable: migrated 0.0286s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165537 CreateTokensTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165537 CreateTokensTable: migrated 0.0272s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165538 CreateUsuariosTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165538 CreateUsuariosTable: migrated 0.0294s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165543 CreateUsuariosPerfisTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165543 CreateUsuariosPerfisTable: migrated 0.0276s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165544 CreateUsuariosPerfisModulosTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165544 CreateUsuariosPerfisModulosTable: migrated 0.0247s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165545 CreateUsuariosPerfisModulosOperacoesTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165545 CreateUsuariosPerfisModulosOperacoesTable: migrated 0.0257s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165548 CreateUsuariosTokensTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165548 CreateUsuariosTokensTable: migrated 0.0304s
+[2025-09-02 12:01:08] [PHINX]  == 20250723165549 CreateVariaveisTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250723165549 CreateVariaveisTable: migrated 0.0263s
+[2025-09-02 12:01:08] [PHINX]  == 20250813153000 AlterComponentesIndexIdLanguage: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250813153000 AlterComponentesIndexIdLanguage: migrated 0.0693s
+[2025-09-02 12:01:08] [PHINX]  == 20250813170000 AlterPaginasIndexIdLanguage: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250813170000 AlterPaginasIndexIdLanguage: migrated 0.0440s
+[2025-09-02 12:01:08] [PHINX]  == 20250813170010 AlterLayoutsIndexIdLanguage: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250813170010 AlterLayoutsIndexIdLanguage: migrated 0.0430s
+[2025-09-02 12:01:08] [PHINX]  == 20250814130000 AlterPaginasAddUpdatedFlags: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250814130000 AlterPaginasAddUpdatedFlags: migrated 0.0690s
+[2025-09-02 12:01:08] [PHINX]  == 20250814130010 AlterLayoutsAddUpdatedFlags: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250814130010 AlterLayoutsAddUpdatedFlags: migrated 0.0643s
+[2025-09-02 12:01:08] [PHINX]  == 20250814130020 AlterComponentesAddUpdatedFlags: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250814130020 AlterComponentesAddUpdatedFlags: migrated 0.0619s
+[2025-09-02 12:01:08] [PHINX]  == 20250814130030 AlterVariaveisAddUpdatedFlags: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250814130030 AlterVariaveisAddUpdatedFlags: migrated 0.0485s
+[2025-09-02 12:01:08] [PHINX]  == 20250814140000 CreateManagerUpdatesTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250814140000 CreateManagerUpdatesTable: migrated 0.0347s
+[2025-09-02 12:01:08] [PHINX]  == 20250814141000 CreateAtualizacoesExecucoesTable: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250814141000 CreateAtualizacoesExecucoesTable: migrated 0.0484s
+[2025-09-02 12:01:08] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrated 0.0609s
+[2025-09-02 12:01:08] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrated 0.0677s
+[2025-09-02 12:01:08] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrated 0.0631s
+[2025-09-02 12:01:08] [PHINX]  == 20250902180000 AlterModulosTableGrupoId: migrating 
+[2025-09-02 12:01:08] [PHINX]  == 20250902180000 AlterModulosTableGrupoId: migrated 0.0996s
+[2025-09-02 12:01:08] Migrações concluídas.
+[2025-09-02 12:01:08] CHECKSUM_PRIMEIRA_ATUALIZACAO
+[2025-09-02 12:01:08] Comparando dados do banco com arquivos Data.json...
+[2025-09-02 12:01:08] Sincronizando tabela categorias ...
+[2025-09-02 12:01:08] Resumo comparação - categorias => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 12:01:08] Sincronizando tabela componentes ...
+[2025-09-02 12:01:09] Resumo comparação - componentes => inserções=37, atualizações=0, sem_alteracao=0
+[2025-09-02 12:01:09] Sincronizando tabela layouts ...
+[2025-09-02 12:01:09] Resumo comparação - layouts => inserções=7, atualizações=0, sem_alteracao=0
+[2025-09-02 12:01:09] Sincronizando tabela modulos ...
+[2025-09-02 12:01:09] Resumo comparação - modulos => inserções=16, atualizações=0, sem_alteracao=0
+[2025-09-02 12:01:09] Sincronizando tabela modulos_grupos ...
+[2025-09-02 12:01:09] Resumo comparação - modulos_grupos => inserções=5, atualizações=0, sem_alteracao=0
+[2025-09-02 12:01:09] Sincronizando tabela modulos_operacoes ...
+[2025-09-02 12:01:09] Resumo comparação - modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 12:01:09] Sincronizando tabela paginas ...
+[2025-09-02 12:01:09] Resumo comparação - paginas => inserções=59, atualizações=0, sem_alteracao=0
+[2025-09-02 12:01:09] Sincronizando tabela usuarios ...
+[2025-09-02 12:01:09] Resumo comparação - usuarios => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 12:01:09] Sincronizando tabela usuarios_perfis ...
+[2025-09-02 12:01:09] Resumo comparação - usuarios_perfis => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 12:01:09] Sincronizando tabela usuarios_perfis_modulos ...
+[2025-09-02 12:01:09] Resumo comparação - usuarios_perfis_modulos => inserções=18, atualizações=0, sem_alteracao=0
+[2025-09-02 12:01:09] Sincronizando tabela usuarios_perfis_modulos_operacoes ...
+[2025-09-02 12:01:09] Resumo comparação - usuarios_perfis_modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 12:01:09] Sincronizando tabela variaveis ...
+[2025-09-02 12:01:11] Resumo comparação - variaveis => inserções=467, atualizações=0, sem_alteracao=0
+[2025-09-02 12:01:11] MANAGER_UPDATES_REGISTRADO id=1
+[2025-09-02 12:01:11] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 categorias => +1 ~0 =0
+📦 componentes => +37 ~0 =0
+📦 layouts => +7 ~0 =0
+📦 modulos => +16 ~0 =0
+📦 modulos_grupos => +5 ~0 =0
+📦 modulos_operacoes => +1 ~0 =0
+📦 paginas => +59 ~0 =0
+📦 usuarios => +1 ~0 =0
+📦 usuarios_perfis => +1 ~0 =0
+📦 usuarios_perfis_modulos => +18 ~0 =0
+📦 usuarios_perfis_modulos_operacoes => +1 ~0 =0
+📦 variaveis => +467 ~0 =0
+Σ TOTAL => +614 ~0 =0
+
+[2025-09-02 12:01:11] Rotina concluída com sucesso.
+[2025-09-02 12:17:23] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 12:17:23] Executando migrações...
+[2025-09-02 12:17:23] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 12:17:23] Migrações concluídas.
+[2025-09-02 12:17:23] CHECKSUM_CHANGED_TABLES=modulos,modulos_grupos
+[2025-09-02 12:17:24] Comparando dados do banco com arquivos Data.json...
+[2025-09-02 12:17:24] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-09-02 12:17:24] SKIP_NO_CHECKSUM_CHANGE tabela=componentes
+[2025-09-02 12:17:24] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-09-02 12:17:24] Sincronizando tabela modulos ...
+[2025-09-02 12:17:24] SYNC_INI tabela=modulos modo=pk qtdJson=16
+[2025-09-02 12:17:24] Atualização modulos PK=2 Campos: modulo_grupo_id [administracao-usuarios => administracao-sistema]
+[2025-09-02 12:17:24] Atualização modulos PK=3 Campos: modulo_grupo_id [geral => administracao-gestor]
+[2025-09-02 12:17:24] Atualização modulos PK=4 Campos: modulo_grupo_id [administracao => administracao-gestor]
+[2025-09-02 12:17:24] Atualização modulos PK=5 Campos: modulo_grupo_id [administracao => administracao-usuarios]
+[2025-09-02 12:17:24] Atualização modulos PK=8 Campos: modulo_grupo_id [administracao-usuarios => administracao-gestor]
+[2025-09-02 12:17:24] Atualização modulos PK=9 Campos: modulo_grupo_id [administracao-sistema => geral]
+[2025-09-02 12:17:24] Atualização modulos PK=10 Campos: modulo_grupo_id [administracao-sistema => administracao-gestor]
+[2025-09-02 12:17:24] Atualização modulos PK=11 Campos: modulo_grupo_id [geral => administracao-gestor]
+[2025-09-02 12:17:24] Atualização modulos PK=12 Campos: modulo_grupo_id [administracao-usuarios => administracao-sistema]
+[2025-09-02 12:17:24] Atualização modulos PK=14 Campos: modulo_grupo_id [geral => administracao-gestor]
+[2025-09-02 12:17:24] Atualização modulos PK=15 Campos: modulo_grupo_id [geral => administracao-sistema]
+[2025-09-02 12:17:24] SYNC_FIM tabela=modulos +0 ~11 =5 orphans=0 modo=pk
+[2025-09-02 12:17:24] Resumo comparação - modulos => inserções=0, atualizações=11, sem_alteracao=5
+[2025-09-02 12:17:24] Sincronizando tabela modulos_grupos ...
+[2025-09-02 12:17:24] SYNC_INI tabela=modulos_grupos modo=pk qtdJson=5
+[2025-09-02 12:17:24] Atualização modulos_grupos PK=2 Campos: id [administracao => administracao-gestor]
+[2025-09-02 12:17:24] SYNC_FIM tabela=modulos_grupos +0 ~1 =4 orphans=0 modo=pk
+[2025-09-02 12:17:24] Resumo comparação - modulos_grupos => inserções=0, atualizações=1, sem_alteracao=4
+[2025-09-02 12:17:24] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-09-02 12:17:24] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-09-02 12:17:24] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-09-02 12:17:24] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-09-02 12:17:24] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-09-02 12:17:24] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-09-02 12:17:24] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-09-02 12:17:24] MANAGER_UPDATES_REGISTRADO id=2
+[2025-09-02 12:17:24] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 modulos => +0 ~11 =5
+📦 modulos_grupos => +0 ~1 =4
+Σ TOTAL => +0 ~12 =9
+
+[2025-09-02 12:17:24] Rotina concluída com sucesso.
+[2025-09-02 13:23:37] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 13:23:37] Executando migrações...
+[2025-09-02 13:23:38] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 13:23:38] Migrações concluídas.
+[2025-09-02 13:23:38] CHECKSUM_CHANGED_TABLES=modulos,usuarios_perfis,usuarios_perfis_modulos
+[2025-09-02 13:23:38] Comparando dados do banco com arquivos Data.json...
+[2025-09-02 13:23:38] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-09-02 13:23:38] SKIP_NO_CHECKSUM_CHANGE tabela=componentes
+[2025-09-02 13:23:38] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-09-02 13:23:38] Sincronizando tabela modulos ...
+[2025-09-02 13:23:38] SYNC_INI tabela=modulos modo=pk qtdJson=16
+[2025-09-02 13:23:38] ORPHAN_DB_ROW tabela=modulos pk=teste
+[2025-09-02 13:23:38] ORPHANS_EXPORTED tabela=modulos qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/modulos-orphans-20250902-132338.json"
+[2025-09-02 13:23:38] SYNC_FIM tabela=modulos +0 ~0 =17 orphans=1 modo=pk
+[2025-09-02 13:23:38] Resumo comparação - modulos => inserções=0, atualizações=0, sem_alteracao=17
+[2025-09-02 13:23:38] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-09-02 13:23:38] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-09-02 13:23:38] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-09-02 13:23:38] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-09-02 13:23:38] Sincronizando tabela usuarios_perfis ...
+[2025-09-02 13:23:38] SYNC_INI tabela=usuarios_perfis modo=pk qtdJson=2
+[2025-09-02 13:23:38] Atualização usuarios_perfis PK=1 Campos: versao [7 => 1]
+[2025-09-02 13:23:38] SYNC_FIM tabela=usuarios_perfis +0 ~1 =1 orphans=0 modo=pk
+[2025-09-02 13:23:38] Resumo comparação - usuarios_perfis => inserções=0, atualizações=1, sem_alteracao=1
+[2025-09-02 13:23:38] Sincronizando tabela usuarios_perfis_modulos ...
+[2025-09-02 13:23:38] SYNC_INI tabela=usuarios_perfis_modulos modo=pk qtdJson=20
+[2025-09-02 13:23:38] Atualização usuarios_perfis_modulos PK=20 Campos: perfil [administradores => consumidores]
+[2025-09-02 13:23:38] ORPHAN_DB_ROW tabela=usuarios_perfis_modulos pk=21
+[2025-09-02 13:23:38] ORPHANS_EXPORTED tabela=usuarios_perfis_modulos qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/usuarios_perfis_modulos-orphans-20250902-132338.json"
+[2025-09-02 13:23:38] SYNC_FIM tabela=usuarios_perfis_modulos +6 ~1 =14 orphans=1 modo=pk
+[2025-09-02 13:23:38] Resumo comparação - usuarios_perfis_modulos => inserções=6, atualizações=1, sem_alteracao=14
+[2025-09-02 13:23:38] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-09-02 13:23:38] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-09-02 13:23:38] MANAGER_UPDATES_REGISTRADO id=3
+[2025-09-02 13:23:38] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 modulos => +0 ~0 =17
+📦 usuarios_perfis => +0 ~1 =1
+📦 usuarios_perfis_modulos => +6 ~1 =14
+Σ TOTAL => +6 ~2 =32
+
+[2025-09-02 13:23:39] Rotina concluída com sucesso.
+[2025-09-02 13:25:34] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 13:25:34] Executando migrações...
+[2025-09-02 13:25:35] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 13:25:36] [PHINX] == 20250723165435 CreateAcessosTable: migrating 
+[2025-09-02 13:25:36] [PHINX]  == 20250723165435 CreateAcessosTable: migrated 0.0295s
+[2025-09-02 13:25:36] [PHINX]  == 20250723165436 CreateArquivosTable: migrating 
+[2025-09-02 13:25:36] [PHINX]  == 20250723165436 CreateArquivosTable: migrated 0.0290s
+[2025-09-02 13:25:36] [PHINX]  == 20250723165437 CreateArquivosCategoriasTable: migrating 
+[2025-09-02 13:25:36] [PHINX]  == 20250723165437 CreateArquivosCategoriasTable: migrated 0.0264s
+[2025-09-02 13:25:36] [PHINX]  == 20250723165438 CreateBackupCamposTable: migrating 
+[2025-09-02 13:25:36] [PHINX]  == 20250723165438 CreateBackupCamposTable: migrated 0.0264s
+[2025-09-02 13:25:36] [PHINX]  == 20250723165439 CreateCategoriasTable: migrating 
+[2025-09-02 13:25:36] [PHINX]  == 20250723165439 CreateCategoriasTable: migrated 0.0272s
+[2025-09-02 13:25:36] [PHINX]  == 20250723165440 CreateComponentesTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165440 CreateComponentesTable: migrated 0.0606s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165441 CreateHistoricoTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165441 CreateHistoricoTable: migrated 0.0356s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165526 CreateLayoutsTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165526 CreateLayoutsTable: migrated 0.0411s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165527 CreateModulosTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165527 CreateModulosTable: migrated 0.0318s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165528 CreateModulosGruposTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165528 CreateModulosGruposTable: migrated 0.0292s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165529 CreateModulosOperacoesTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165529 CreateModulosOperacoesTable: migrated 0.0307s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165530 CreatePaginasTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165530 CreatePaginasTable: migrated 0.0465s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165531 CreatePaginas301Table: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165531 CreatePaginas301Table: migrated 0.0243s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165533 CreatePluginsTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165533 CreatePluginsTable: migrated 0.0262s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165534 CreateSessoesTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165534 CreateSessoesTable: migrated 0.0293s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165535 CreateSessoesVariaveisTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165535 CreateSessoesVariaveisTable: migrated 0.0244s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165537 CreateTokensTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165537 CreateTokensTable: migrated 0.0281s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165538 CreateUsuariosTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165538 CreateUsuariosTable: migrated 0.0322s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165543 CreateUsuariosPerfisTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165543 CreateUsuariosPerfisTable: migrated 0.0240s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165544 CreateUsuariosPerfisModulosTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165544 CreateUsuariosPerfisModulosTable: migrated 0.0258s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165545 CreateUsuariosPerfisModulosOperacoesTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165545 CreateUsuariosPerfisModulosOperacoesTable: migrated 0.0259s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165548 CreateUsuariosTokensTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165548 CreateUsuariosTokensTable: migrated 0.0304s
+[2025-09-02 13:25:37] [PHINX]  == 20250723165549 CreateVariaveisTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250723165549 CreateVariaveisTable: migrated 0.0292s
+[2025-09-02 13:25:37] [PHINX]  == 20250813153000 AlterComponentesIndexIdLanguage: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250813153000 AlterComponentesIndexIdLanguage: migrated 0.0644s
+[2025-09-02 13:25:37] [PHINX]  == 20250813170000 AlterPaginasIndexIdLanguage: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250813170000 AlterPaginasIndexIdLanguage: migrated 0.0468s
+[2025-09-02 13:25:37] [PHINX]  == 20250813170010 AlterLayoutsIndexIdLanguage: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250813170010 AlterLayoutsIndexIdLanguage: migrated 0.0400s
+[2025-09-02 13:25:37] [PHINX]  == 20250814130000 AlterPaginasAddUpdatedFlags: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250814130000 AlterPaginasAddUpdatedFlags: migrated 0.0656s
+[2025-09-02 13:25:37] [PHINX]  == 20250814130010 AlterLayoutsAddUpdatedFlags: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250814130010 AlterLayoutsAddUpdatedFlags: migrated 0.0637s
+[2025-09-02 13:25:37] [PHINX]  == 20250814130020 AlterComponentesAddUpdatedFlags: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250814130020 AlterComponentesAddUpdatedFlags: migrated 0.0604s
+[2025-09-02 13:25:37] [PHINX]  == 20250814130030 AlterVariaveisAddUpdatedFlags: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250814130030 AlterVariaveisAddUpdatedFlags: migrated 0.0438s
+[2025-09-02 13:25:37] [PHINX]  == 20250814140000 CreateManagerUpdatesTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250814140000 CreateManagerUpdatesTable: migrated 0.0306s
+[2025-09-02 13:25:37] [PHINX]  == 20250814141000 CreateAtualizacoesExecucoesTable: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250814141000 CreateAtualizacoesExecucoesTable: migrated 0.0409s
+[2025-09-02 13:25:37] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrated 0.0622s
+[2025-09-02 13:25:37] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrated 0.0619s
+[2025-09-02 13:25:37] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrated 0.0618s
+[2025-09-02 13:25:37] [PHINX]  == 20250902180000 AlterModulosTableGrupoId: migrating 
+[2025-09-02 13:25:37] [PHINX]  == 20250902180000 AlterModulosTableGrupoId: migrated 0.0967s
+[2025-09-02 13:25:37] Migrações concluídas.
+[2025-09-02 13:25:37] CHECKSUM_PRIMEIRA_ATUALIZACAO
+[2025-09-02 13:25:37] Comparando dados do banco com arquivos Data.json...
+[2025-09-02 13:25:37] Sincronizando tabela categorias ...
+[2025-09-02 13:25:37] Resumo comparação - categorias => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 13:25:37] Sincronizando tabela componentes ...
+[2025-09-02 13:25:38] Resumo comparação - componentes => inserções=37, atualizações=0, sem_alteracao=0
+[2025-09-02 13:25:38] Sincronizando tabela layouts ...
+[2025-09-02 13:25:38] Resumo comparação - layouts => inserções=7, atualizações=0, sem_alteracao=0
+[2025-09-02 13:25:38] Sincronizando tabela modulos ...
+[2025-09-02 13:25:38] Resumo comparação - modulos => inserções=16, atualizações=0, sem_alteracao=0
+[2025-09-02 13:25:38] Sincronizando tabela modulos_grupos ...
+[2025-09-02 13:25:38] Resumo comparação - modulos_grupos => inserções=5, atualizações=0, sem_alteracao=0
+[2025-09-02 13:25:38] Sincronizando tabela modulos_operacoes ...
+[2025-09-02 13:25:38] Resumo comparação - modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 13:25:38] Sincronizando tabela paginas ...
+[2025-09-02 13:25:38] Resumo comparação - paginas => inserções=59, atualizações=0, sem_alteracao=0
+[2025-09-02 13:25:38] Sincronizando tabela usuarios ...
+[2025-09-02 13:25:38] Resumo comparação - usuarios => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 13:25:38] Sincronizando tabela usuarios_perfis ...
+[2025-09-02 13:25:38] Resumo comparação - usuarios_perfis => inserções=2, atualizações=0, sem_alteracao=0
+[2025-09-02 13:25:38] Sincronizando tabela usuarios_perfis_modulos ...
+[2025-09-02 13:25:38] Resumo comparação - usuarios_perfis_modulos => inserções=20, atualizações=0, sem_alteracao=0
+[2025-09-02 13:25:38] Sincronizando tabela usuarios_perfis_modulos_operacoes ...
+[2025-09-02 13:25:38] Resumo comparação - usuarios_perfis_modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 13:25:38] Sincronizando tabela variaveis ...
+[2025-09-02 13:25:40] Resumo comparação - variaveis => inserções=467, atualizações=0, sem_alteracao=0
+[2025-09-02 13:25:40] MANAGER_UPDATES_REGISTRADO id=1
+[2025-09-02 13:25:40] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 categorias => +1 ~0 =0
+📦 componentes => +37 ~0 =0
+📦 layouts => +7 ~0 =0
+📦 modulos => +16 ~0 =0
+📦 modulos_grupos => +5 ~0 =0
+📦 modulos_operacoes => +1 ~0 =0
+📦 paginas => +59 ~0 =0
+📦 usuarios => +1 ~0 =0
+📦 usuarios_perfis => +2 ~0 =0
+📦 usuarios_perfis_modulos => +20 ~0 =0
+📦 usuarios_perfis_modulos_operacoes => +1 ~0 =0
+📦 variaveis => +467 ~0 =0
+Σ TOTAL => +617 ~0 =0
+
+[2025-09-02 13:25:40] Rotina concluída com sucesso.
+[2025-09-02 14:06:28] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 14:06:28] Executando migrações...
+[2025-09-02 14:06:29] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 14:06:29] [PHINX] == 20250902140000 AlterModulosOperacoesTableAddModuloIdRemoveIdModulos: migrating 
+[2025-09-02 14:06:29] [PHINX]  == 20250902140000 AlterModulosOperacoesTableAddModuloIdRemoveIdModulos: migrated 0.1217s
+[2025-09-02 14:06:29] Migrações concluídas.
+[2025-09-02 14:06:29] CHECKSUM_CHANGED_TABLES=categorias,modulos_grupos,modulos_operacoes,usuarios_perfis_modulos_operacoes
+[2025-09-02 14:06:29] Comparando dados do banco com arquivos Data.json...
+[2025-09-02 14:06:29] Sincronizando tabela categorias ...
+[2025-09-02 14:06:29] SYNC_INI tabela=categorias modo=pk qtdJson=1
+[2025-09-02 14:06:29] SYNC_FIM tabela=categorias +1 ~0 =0 orphans=0 modo=pk
+[2025-09-02 14:06:29] Resumo comparação - categorias => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:29] SKIP_NO_CHECKSUM_CHANGE tabela=componentes
+[2025-09-02 14:06:29] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-09-02 14:06:29] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-09-02 14:06:29] Sincronizando tabela modulos_grupos ...
+[2025-09-02 14:06:29] SYNC_INI tabela=modulos_grupos modo=pk qtdJson=5
+[2025-09-02 14:06:29] SYNC_FIM tabela=modulos_grupos +0 ~0 =5 orphans=0 modo=pk
+[2025-09-02 14:06:29] Resumo comparação - modulos_grupos => inserções=0, atualizações=0, sem_alteracao=5
+[2025-09-02 14:06:29] Sincronizando tabela modulos_operacoes ...
+[2025-09-02 14:06:29] SYNC_INI tabela=modulos_operacoes modo=pk qtdJson=1
+[2025-09-02 14:06:29] Atualização modulos_operacoes PK=modificar-permissao-da-pagina Campos: modulo_id [NULL => admin-paginas]
+[2025-09-02 14:06:30] SYNC_FIM tabela=modulos_operacoes +0 ~1 =0 orphans=0 modo=pk
+[2025-09-02 14:06:30] Resumo comparação - modulos_operacoes => inserções=0, atualizações=1, sem_alteracao=0
+[2025-09-02 14:06:30] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-09-02 14:06:30] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-09-02 14:06:30] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-09-02 14:06:30] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-09-02 14:06:30] Sincronizando tabela usuarios_perfis_modulos_operacoes ...
+[2025-09-02 14:06:30] SYNC_INI tabela=usuarios_perfis_modulos_operacoes modo=pk qtdJson=1
+[2025-09-02 14:06:30] SYNC_FIM tabela=usuarios_perfis_modulos_operacoes +0 ~0 =1 orphans=0 modo=pk
+[2025-09-02 14:06:30] Resumo comparação - usuarios_perfis_modulos_operacoes => inserções=0, atualizações=0, sem_alteracao=1
+[2025-09-02 14:06:30] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-09-02 14:06:30] MANAGER_UPDATES_REGISTRADO id=2
+[2025-09-02 14:06:30] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 categorias => +1 ~0 =0
+📦 modulos_grupos => +0 ~0 =5
+📦 modulos_operacoes => +0 ~1 =0
+📦 usuarios_perfis_modulos_operacoes => +0 ~0 =1
+Σ TOTAL => +1 ~1 =6
+
+[2025-09-02 14:06:30] Rotina concluída com sucesso.
+[2025-09-02 14:06:51] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 14:06:51] Executando migrações...
+[2025-09-02 14:06:51] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 14:06:53] [PHINX] == 20250723165435 CreateAcessosTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165435 CreateAcessosTable: migrated 0.0246s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165436 CreateArquivosTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165436 CreateArquivosTable: migrated 0.0284s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165437 CreateArquivosCategoriasTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165437 CreateArquivosCategoriasTable: migrated 0.0243s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165438 CreateBackupCamposTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165438 CreateBackupCamposTable: migrated 0.0222s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165439 CreateCategoriasTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165439 CreateCategoriasTable: migrated 0.0257s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165440 CreateComponentesTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165440 CreateComponentesTable: migrated 0.0554s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165441 CreateHistoricoTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165441 CreateHistoricoTable: migrated 0.0233s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165526 CreateLayoutsTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165526 CreateLayoutsTable: migrated 0.0380s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165527 CreateModulosTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165527 CreateModulosTable: migrated 0.0274s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165528 CreateModulosGruposTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165528 CreateModulosGruposTable: migrated 0.0237s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165529 CreateModulosOperacoesTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165529 CreateModulosOperacoesTable: migrated 0.0264s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165530 CreatePaginasTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165530 CreatePaginasTable: migrated 0.0424s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165531 CreatePaginas301Table: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165531 CreatePaginas301Table: migrated 0.0222s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165533 CreatePluginsTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165533 CreatePluginsTable: migrated 0.0263s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165534 CreateSessoesTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165534 CreateSessoesTable: migrated 0.0258s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165535 CreateSessoesVariaveisTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165535 CreateSessoesVariaveisTable: migrated 0.0226s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165537 CreateTokensTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165537 CreateTokensTable: migrated 0.0228s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165538 CreateUsuariosTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165538 CreateUsuariosTable: migrated 0.0255s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165543 CreateUsuariosPerfisTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165543 CreateUsuariosPerfisTable: migrated 0.0231s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165544 CreateUsuariosPerfisModulosTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165544 CreateUsuariosPerfisModulosTable: migrated 0.0224s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165545 CreateUsuariosPerfisModulosOperacoesTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165545 CreateUsuariosPerfisModulosOperacoesTable: migrated 0.0243s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165548 CreateUsuariosTokensTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165548 CreateUsuariosTokensTable: migrated 0.0259s
+[2025-09-02 14:06:53] [PHINX]  == 20250723165549 CreateVariaveisTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250723165549 CreateVariaveisTable: migrated 0.0270s
+[2025-09-02 14:06:53] [PHINX]  == 20250813153000 AlterComponentesIndexIdLanguage: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250813153000 AlterComponentesIndexIdLanguage: migrated 0.0648s
+[2025-09-02 14:06:53] [PHINX]  == 20250813170000 AlterPaginasIndexIdLanguage: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250813170000 AlterPaginasIndexIdLanguage: migrated 0.0499s
+[2025-09-02 14:06:53] [PHINX]  == 20250813170010 AlterLayoutsIndexIdLanguage: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250813170010 AlterLayoutsIndexIdLanguage: migrated 0.0441s
+[2025-09-02 14:06:53] [PHINX]  == 20250814130000 AlterPaginasAddUpdatedFlags: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250814130000 AlterPaginasAddUpdatedFlags: migrated 0.0767s
+[2025-09-02 14:06:53] [PHINX]  == 20250814130010 AlterLayoutsAddUpdatedFlags: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250814130010 AlterLayoutsAddUpdatedFlags: migrated 0.0543s
+[2025-09-02 14:06:53] [PHINX]  == 20250814130020 AlterComponentesAddUpdatedFlags: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250814130020 AlterComponentesAddUpdatedFlags: migrated 0.0546s
+[2025-09-02 14:06:53] [PHINX]  == 20250814130030 AlterVariaveisAddUpdatedFlags: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250814130030 AlterVariaveisAddUpdatedFlags: migrated 0.0392s
+[2025-09-02 14:06:53] [PHINX]  == 20250814140000 CreateManagerUpdatesTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250814140000 CreateManagerUpdatesTable: migrated 0.0308s
+[2025-09-02 14:06:53] [PHINX]  == 20250814141000 CreateAtualizacoesExecucoesTable: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250814141000 CreateAtualizacoesExecucoesTable: migrated 0.0374s
+[2025-09-02 14:06:53] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrated 0.0563s
+[2025-09-02 14:06:53] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrated 0.0595s
+[2025-09-02 14:06:53] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrated 0.0544s
+[2025-09-02 14:06:53] [PHINX]  == 20250902140000 AlterModulosOperacoesTableAddModuloIdRemoveIdModulos: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250902140000 AlterModulosOperacoesTableAddModuloIdRemoveIdModulos: migrated 0.0855s
+[2025-09-02 14:06:53] [PHINX]  == 20250902180000 AlterModulosTableGrupoId: migrating 
+[2025-09-02 14:06:53] [PHINX]  == 20250902180000 AlterModulosTableGrupoId: migrated 0.0749s
+[2025-09-02 14:06:53] Migrações concluídas.
+[2025-09-02 14:06:54] CHECKSUM_PRIMEIRA_ATUALIZACAO
+[2025-09-02 14:06:54] Comparando dados do banco com arquivos Data.json...
+[2025-09-02 14:06:54] Sincronizando tabela categorias ...
+[2025-09-02 14:06:54] Resumo comparação - categorias => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:54] Sincronizando tabela componentes ...
+[2025-09-02 14:06:54] Resumo comparação - componentes => inserções=37, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:54] Sincronizando tabela layouts ...
+[2025-09-02 14:06:54] Resumo comparação - layouts => inserções=7, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:54] Sincronizando tabela modulos ...
+[2025-09-02 14:06:54] Resumo comparação - modulos => inserções=16, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:54] Sincronizando tabela modulos_grupos ...
+[2025-09-02 14:06:54] Resumo comparação - modulos_grupos => inserções=5, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:54] Sincronizando tabela modulos_operacoes ...
+[2025-09-02 14:06:54] Resumo comparação - modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:54] Sincronizando tabela paginas ...
+[2025-09-02 14:06:54] Resumo comparação - paginas => inserções=59, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:54] Sincronizando tabela usuarios ...
+[2025-09-02 14:06:54] Resumo comparação - usuarios => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:54] Sincronizando tabela usuarios_perfis ...
+[2025-09-02 14:06:54] Resumo comparação - usuarios_perfis => inserções=2, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:54] Sincronizando tabela usuarios_perfis_modulos ...
+[2025-09-02 14:06:54] Resumo comparação - usuarios_perfis_modulos => inserções=20, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:54] Sincronizando tabela usuarios_perfis_modulos_operacoes ...
+[2025-09-02 14:06:54] Resumo comparação - usuarios_perfis_modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:54] Sincronizando tabela variaveis ...
+[2025-09-02 14:06:56] Resumo comparação - variaveis => inserções=467, atualizações=0, sem_alteracao=0
+[2025-09-02 14:06:56] MANAGER_UPDATES_REGISTRADO id=1
+[2025-09-02 14:06:56] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 categorias => +1 ~0 =0
+📦 componentes => +37 ~0 =0
+📦 layouts => +7 ~0 =0
+📦 modulos => +16 ~0 =0
+📦 modulos_grupos => +5 ~0 =0
+📦 modulos_operacoes => +1 ~0 =0
+📦 paginas => +59 ~0 =0
+📦 usuarios => +1 ~0 =0
+📦 usuarios_perfis => +2 ~0 =0
+📦 usuarios_perfis_modulos => +20 ~0 =0
+📦 usuarios_perfis_modulos_operacoes => +1 ~0 =0
+📦 variaveis => +467 ~0 =0
+Σ TOTAL => +617 ~0 =0
+
+[2025-09-02 14:06:56] Rotina concluída com sucesso.
+[2025-09-02 14:19:56] Iniciando rotina de atualização de banco de dados...
+[2025-09-02 14:19:56] Executando migrações...
+[2025-09-02 14:19:57] [DEBUG] MIGRATING ENV=gestor
+[2025-09-02 14:19:57] Migrações concluídas.
+[2025-09-02 14:19:57] CHECKSUM_NENHUMA_TABELA_MUDOU
+[2025-09-02 14:19:57] SEM_MUDANCAS_DADOS -> pulando sincronizacao
+[2025-09-02 14:19:57] MANAGER_UPDATES_REGISTRADO id=2
+[2025-09-02 14:19:57] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+Σ TOTAL => +0 ~0 =0
+
+[2025-09-02 14:19:57] Rotina concluída com sucesso.

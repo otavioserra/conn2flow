@@ -1,0 +1,10 @@
+[
+    {
+        "id_usuarios_perfis": "1",
+        "nome": "Administradores",
+        "id": "administradores",
+        "padrao": null,
+        "status": "A",
+        "versao": "1"
+    }
+]

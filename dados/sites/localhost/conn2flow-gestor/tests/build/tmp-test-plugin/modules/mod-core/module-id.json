@@ -1,0 +1,40 @@
+{
+    "id": "mod-core",
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "id": "page-core-dashboard",
+                    "name": "Dashboard Core",
+                    "version": "1.0",
+                    "path": "core\/dashboard\/",
+                    "layout": "layout-alpha",
+                    "checksum": {
+                        "html": "xyz",
+                        "css": "",
+                        "combined": "xyz"
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "id": "comp-core-panel",
+                    "name": "Painel Core",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "jjj",
+                        "css": "",
+                        "combined": "jjj"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "core-welcome",
+                    "value": "Bem-vindo Core",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

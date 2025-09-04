@@ -1,0 +1,13 @@
+[2025-08-27 17:23:56][INFO][SID:f666cc667effc46d] WebStart: iniciando sessão
+[2025-08-27 17:23:57][INFO][SID:f666cc667effc46d] Checksum ZIP verificado: 5e03b08b761862f2c7899411949d5a895156d6aa655c7db0aa0ab91b15eaa849
+[2025-08-27 17:24:21][DEBUG][SID:f666cc667effc46d] Localizando raiz do gestor em: /var/www/sites/localhost/conn2flow-gestor/temp/atualizacoes/20250827-172357-aae108/
+[2025-08-27 17:24:22][INFO][SID:f666cc667effc46d] WebDeployFiles: iniciando
+[2025-08-27 17:24:22][INFO][SID:f666cc667effc46d] Merge .env: novas=0 deprecated=0
+[2025-08-27 17:24:29][INFO][SID:f666cc667effc46d] Plano exportado: /var/www/sites/localhost/conn2flow-gestor/logs/atualizacoes/plan-20250827-172428.json
+[2025-08-27 17:24:29][INFO][SID:f666cc667effc46d] WebDeployFiles: concluído
+[2025-08-27 17:24:29][INFO][SID:f666cc667effc46d] WebDatabase: iniciando com script=/var/www/sites/localhost/conn2flow-gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php
+[2025-08-27 17:24:29][INFO][SID:f666cc667effc46d] Banco: incluindo script inline (sem processo externo)
+[2025-08-27 17:24:38][INFO][SID:f666cc667effc46d] Banco: concluído inline
+[2025-08-27 17:24:38][INFO][SID:f666cc667effc46d] WebDatabase: concluído
+[2025-08-27 17:24:38][INFO][SID:f666cc667effc46d] WebFinalize: iniciando
+[2025-08-27 17:24:38][INFO][SID:f666cc667effc46d] WebFinalize: concluído

@@ -1,0 +1,38 @@
+<div class="ui stackable two column centered grid">
+    <div class="column">
+        <div class="ui segment">
+            <form id="_gestor-form-redefine-password" action="@[[pagina#url-raiz]]@redefine-password/" method="post" name="_gestor-form-redefine-password" class="ui form">
+                <div class="ui center aligned header large">@[[redefine-password-title]]@</div>
+                <div class="ui icon blue message">
+                    <i class="user secret icon"></i>
+                    <div class="content">
+                        <div class="header"> @[[redefine-password-message-header]]@ </div>
+                        <p>@[[redefine-password-message-content]]@</p>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>@[[redefine-password-pass-label]]@</label>
+                    <input type="password" name="senha" placeholder="@[[redefine-password-pass-placeholder]]@" autocomplete="new-password">
+                </div>
+                <div class="field">
+                    <label>@[[redefine-password-pass-2-label]]@</label>
+                    <input type="password" name="senha-2" placeholder="@[[redefine-password-pass-2-placeholder]]@" autocomplete="new-password">
+                </div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui error message">&nbsp;</div>
+                <div class="field">
+                    <button class="fluid ui button blue">@[[redefine-password-button]]@</button>
+                    <div class="ui hidden divider">&nbsp;</div>
+                    <div class="ui basic segment center aligned">
+                        <div class="">@[[forgot-password-login-label]]@ <a href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a>
+                        </div>
+                        <div>@[[forgot-password-new-register-label]]@ <a href="@[[pagina#url-raiz]]@signup/">@[[forgot-password-new-register-button]]@</a>
+                        </div>
+                    </div>
+                </div>
+                <input id="_gestor-redefine-password" name="_gestor-redefine-password" type="hidden" value="1">
+                <input id="_gestor-redefine-password-token" name="_gestor-redefine-password-token" type="hidden" value="#token#">
+            </form>
+        </div>
+    </div>
+</div>

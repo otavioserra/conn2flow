@@ -1,0 +1,55 @@
+# Docker ignore file para conn2flow
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+temp/
+logs/
+
+# Arquivos de ambiente local
+.env.local
+.env.development
+config.local.php
+
+# Arquivos do XAMPP/WAMP
+xampp/
+wamp/
+
+# Arquivos do sistema Windows
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Arquivos do VS Code
+.vscode/
+
+# Arquivos do Git (já estão no .gitignore)
+.git/
+.gitignore
+
+# Cache e vendor (se existir)
+vendor/
+node_modules/
+cache/
+
+# Arquivos de backup
+*.bak
+*.backup
+*.old
+
+# Arquivos de configuração específicos do desenvolvimento
+config-dev.php
+config-local.php
+
+# Arquivos de chaves de desenvolvimento (as de produção serão geradas no container)
+chaves/
+*.key
+*.pem
+
+# Arquivos do Docker Compose override
+docker-compose.override.yml
+
+# Arquivos de teste e desenvolvimento
+test/
+tests/
+phpunit.xml

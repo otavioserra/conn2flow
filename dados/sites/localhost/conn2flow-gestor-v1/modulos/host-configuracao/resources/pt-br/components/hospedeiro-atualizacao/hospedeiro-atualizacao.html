@@ -1,0 +1,65 @@
+<!-- atualizacao < -->
+<div class="ui stackable two column centered grid">
+    <div class="column">
+        <div class="ui segment">
+            <form id="_gestor-host-update" action="@[[pagina#url-raiz]]@host-update/" method="post" name="_gestor-host-update" class="ui form interfaceFormPadrao">
+                <div class="ui center aligned header large">@[[host-update-title]]@</div>
+                <div class="ui message">
+                    <div class="header">@[[host-update-msg-title]]@</div>
+                    <p>#mensagem-atualizacao#</p>
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" name="atualizarConfig" value="1">
+                        <label>@[[host-config-update-label]]@</label>
+                    </div>
+                </div>
+                <div class="ui info message visible">
+                    <div class="header">Atualizar Configuração Instruções</div>
+                    <ul class="list">
+                        <li>Só selecione esta opção caso seja realmente necessário. Pois não há necessidade de atualizar as configurações normalmente.</li>
+                        <li>Todas as chaves de segurança serão novamente criadas.</li>
+                        <li>Todos os usuários logados serão desconectados do sistema. Assim, todos deverão refazerem seus logins.</li>
+                    </ul>
+                </div>
+                <input type="hidden" name="atualizar" value="sim">
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui error message">&nbsp;</div>
+                <div class="field">
+                    <button class="fluid ui button blue">#botao-atualizacao#</button>
+                    <div class="ui hidden divider">&nbsp;</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!-- atualizacao > -->
+<!-- conta-ftp < -->
+<div class="ui stackable two column centered grid">
+    <div class="column">
+        <div class="ui segment">
+            <form id="_gestor-host-update" action="@[[pagina#url-raiz]]@host-update/" method="post" name="_gestor-host-update" class="ui form interfaceFormPadrao">
+                <div class="ui center aligned header large">@[[host-update-title]]@</div>
+                <div class="ui message">
+                    <div class="header">@[[host-update-msg-title]]@</div>
+                    <p>@[[host-update-msg-content]]@</p>
+                </div>
+                <input type="hidden" name="user-ftp" value="entrey-user-ftp" autocomplete="username">
+                <div class="ui dividing header">@[[host-update-ftp-title]]@</div>
+                <div class="field">
+                    <label>@[[host-update-ftp-pass-label]]@</label>
+                    <input type="password" name="senha-ftp" placeholder="@[[host-update-ftp-pass-placeholder]]@" autocomplete="current-password">
+                </div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui error message">&nbsp;</div>
+                <div class="field">
+                    <button class="fluid ui button blue">@[[host-update-button-label]]@</button>
+                    <div class="ui hidden divider">&nbsp;</div>
+                    <div class="ui basic segment center aligned">
+                        <div class="">@[[host-update-forgot-password-label]]@ <a href="@[[pagina#url-raiz]]@host-config-forgot-password/">@[[host-update-forgot-password-button]]@</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!-- conta-ftp > -->

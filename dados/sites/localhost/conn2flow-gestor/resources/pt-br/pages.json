@@ -1,0 +1,83 @@
+[
+    {
+        "name": "Contato",
+        "id": "contato",
+        "layout": "layout-pagina-sem-permissao",
+        "path": "contato\/",
+        "type": "page",
+        "version": "1.4",
+        "checksum": {
+            "html": "31a1fd53b1e27d8140ff384192307174",
+            "css": "",
+            "combined": "31a1fd53b1e27d8140ff384192307174"
+        }
+    },
+    {
+        "name": "404 - Página Não Encontrada",
+        "id": "404-pagina-nao-encontrada",
+        "layout": "layout-pagina-sem-permissao",
+        "path": "404\/",
+        "type": "page",
+        "version": "1.2",
+        "checksum": {
+            "html": "ee70befa061dea94472dbfc017b9e996",
+            "css": "",
+            "combined": "ee70befa061dea94472dbfc017b9e996"
+        }
+    },
+    {
+        "name": "Página Raiz do Sistema",
+        "id": "pagina-raiz-do-sistema",
+        "layout": "layout-pagina-sem-permissao",
+        "path": "\/",
+        "type": "page",
+        "version": "1.2",
+        "checksum": {
+            "html": "d56e60c53f59564951210b0d2dc6d7c7",
+            "css": "",
+            "combined": "d56e60c53f59564951210b0d2dc6d7c7"
+        }
+    },
+    {
+        "name": "Cookies Devem Estar Ativados no Seu Navegador",
+        "id": "cookies-devem-estar-ativados-no-seu-navegador",
+        "layout": "layout-pagina-sem-permissao",
+        "path": "cookies-is-mandatory\/",
+        "type": "page",
+        "version": "1.2",
+        "checksum": {
+            "html": "fd3b2522d023d539b43cc506e178c54b",
+            "css": "",
+            "combined": "fd3b2522d023d539b43cc506e178c54b"
+        }
+    },
+    {
+        "name": "Página de Impressão",
+        "id": "pagina-de-impressao",
+        "layout": "layout-impressao",
+        "path": "pagina-de-impressao\/",
+        "type": "system",
+        "option": "impressao",
+        "without_permission": true,
+        "version": "1.2",
+        "checksum": {
+            "html": "",
+            "css": "607e0f6e68e7a2c218542aa428379085",
+            "combined": "607e0f6e68e7a2c218542aa428379085"
+        }
+    },
+    {
+        "name": "Instalação Concluída",
+        "id": "instalacao-sucesso",
+        "layout": "layout-pagina-sem-permissao",
+        "path": "instalacao-sucesso\/",
+        "type": "page",
+        "without_permission": true,
+        "version": "1.3",
+        "checksum": {
+            "html": "7c11257dbc730a0971d5876f9e0e983b",
+            "css": "d66e854af0c522ca96e846dc7add5a36",
+            "combined": "790aca5c2c8168c8cabc8237fbd029a1"
+        }
+    }
+]

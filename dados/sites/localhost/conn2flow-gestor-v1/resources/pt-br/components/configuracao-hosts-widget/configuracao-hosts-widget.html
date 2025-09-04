@@ -1,0 +1,30 @@
+<div class="ui divider"></div>
+<div class="ui two doubling cards variaveisCont" id="_gestor-configuracao-hosts">
+    <!-- item < --><div class="card variavelCont" data-id="#variavelID#" data-num="#variavelNum#" data-tipo="#variavelTipo#">
+        <div class="content">
+            <div class="ui circular blue icon tiny right floated button variavelValorBTN" data-content="@[[default-value-change]]@" data-variation="inverted">
+                <i class="icon undo"></i>
+            </div>
+            <div class="header">
+                <span class="ui text teal variavelNome">#variavelNome#</span>
+            </div>
+            <div class="description">
+                <p class="variavelDescricaoCont">
+                    <i class="icon blue info circle"></i>
+                    <span class="variavelDescricao">#variavelDescricao#</span>
+                </p>
+                <span class="variavelGrupoCont">
+                	<a class="ui ribbon teal label variavelGrupo">#variavelGrupo#</a>
+                </span>
+                <div class="ui fitted basic segment variavelValor">
+                    #variavelValor#
+                </div>
+            </div>
+            <input name="ref-#ref-num#" type="hidden" value="#ref-valor#" />
+            <input name="ref-host-#ref-num#" type="hidden" value="#ref-host-valor#" />
+            <div class="valorPadrao escondido">#valorPadrao#</div>
+        </div>
+    </div><!-- item > -->
+</div>
+<div class="ui divider"></div>
+<input id="variaveis-total" name="variaveis-total" type="hidden" value="#variaveis-total#" />

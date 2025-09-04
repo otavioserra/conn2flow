@@ -1,0 +1,774 @@
+[2025-09-04 11:48:19] Modo dry-run: nenhuma alteração será aplicada.
+[2025-09-04 11:48:19] Skip migrações ativado.
+[2025-09-04 11:48:20] CHECKSUM_CHANGED_TABLES=componentes,example,layouts,paginas,variaveis
+[2025-09-04 11:48:20] Comparando dados do banco com arquivos Data.json...
+[2025-09-04 11:48:20] Sincronizando tabela componentes ...
+[2025-09-04 11:48:20] SYNC_INI tabela=componentes modo=natural qtdJson=6
+[2025-09-04 11:48:20] SIMULATE_UPDATE_NAT tabela=componentes chave=pt-br|global-component-1 campos=html,file_version
+[2025-09-04 11:48:20] SIMULATE_UPDATE_NAT tabela=componentes chave=pt-br|global-component-2 campos=html,framework_css,file_version
+[2025-09-04 11:48:20] SIMULATE_UPDATE_NAT tabela=componentes chave=pt-br|global-component-3 campos=html,file_version
+[2025-09-04 11:48:20] SIMULATE_UPDATE_NAT tabela=componentes chave=pt-br|component-1 campos=html,checksum
+[2025-09-04 11:48:20] SIMULATE_UPDATE_NAT tabela=componentes chave=pt-br|component-2 campos=html,framework_css,checksum
+[2025-09-04 11:48:20] SIMULATE_UPDATE_NAT tabela=componentes chave=pt-br|component-3 campos=html,checksum
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-configuracoes
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|widget-template
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-edicao-incomum
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-inclusao-incomum
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|modal-simples
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-visualizacao
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-modal-generico
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|botao-superior-interface
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-alerta-modal
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-carregando-modal
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-delecao-modal
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-inclusao
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-listar-sem-registros
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-listar
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-listar-arquivos-sem-registros
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|layout-email-novo-cadastro
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-iframe-modal
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|widget-imagem
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|menu-principal-sistema
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-edicao
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-autorizacao-provisoria
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|layout-emails-assinatura
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|layout-email-esqueceu-senha
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-backup-dropdown
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|layout-email-senha-redefinida
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|configuracao-campos
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|configuracao-widget
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-simples
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|impressao-sem-dados
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|arquivos-lista
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-lista
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-detalhe-comp
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|teste-componente-modulo
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|modal-componente
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|modal-layout
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|modal-pagina
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|lista-pagina-ou-sistema
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|comp-box
+[2025-09-04 11:48:20] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|comp-core-panel
+[2025-09-04 11:48:20] ORPHANS_EXPORTED tabela=componentes qtd=39 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-plugin/db/orphans/bd/componentes-orphans-20250904-114820.json"
+[2025-09-04 11:48:20] SYNC_FIM tabela=componentes +0 ~6 =0 orphans=39 modo=natural
+[2025-09-04 11:48:20] Resumo comparação - componentes => inserções=0, atualizações=6, sem_alteracao=0
+[2025-09-04 11:48:20] Sincronizando tabela example ...
+[2025-09-04 11:48:20] WARN_SCHEMA tabela=example msg=SQLSTATE[42S02]: Base table or view not found: 1146 Table...
+[2025-09-04 11:48:20] SYNC_INI tabela=example modo=pk qtdJson=3
+[2025-09-04 11:48:20] Erro na rotina: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'conn2flow.example' doesn't exist
+[2025-09-04 11:48:53] Modo dry-run: nenhuma alteração será aplicada.
+[2025-09-04 11:48:53] Skip migrações ativado.
+[2025-09-04 11:48:53] CHECKSUM_CHANGED_TABLES=componentes,example,layouts,paginas,variaveis
+[2025-09-04 11:48:53] Comparando dados do banco com arquivos Data.json...
+[2025-09-04 11:48:53] Sincronizando tabela componentes ...
+[2025-09-04 11:48:53] SYNC_INI tabela=componentes modo=natural qtdJson=6
+[2025-09-04 11:48:53] SIMULATE_UPDATE_NAT tabela=componentes chave=pt-br|global-component-1 campos=html,file_version
+[2025-09-04 11:48:54] SIMULATE_UPDATE_NAT tabela=componentes chave=pt-br|global-component-2 campos=html,framework_css,file_version
+[2025-09-04 11:48:54] SIMULATE_UPDATE_NAT tabela=componentes chave=pt-br|global-component-3 campos=html,file_version
+[2025-09-04 11:48:54] SIMULATE_UPDATE_NAT tabela=componentes chave=pt-br|component-1 campos=html,checksum
+[2025-09-04 11:48:54] SIMULATE_UPDATE_NAT tabela=componentes chave=pt-br|component-2 campos=html,framework_css,checksum
+[2025-09-04 11:48:54] SIMULATE_UPDATE_NAT tabela=componentes chave=pt-br|component-3 campos=html,checksum
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-configuracoes
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|widget-template
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-edicao-incomum
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-inclusao-incomum
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|modal-simples
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-visualizacao
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-modal-generico
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|botao-superior-interface
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-alerta-modal
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-carregando-modal
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-delecao-modal
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-inclusao
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-listar-sem-registros
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-listar
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-listar-arquivos-sem-registros
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|layout-email-novo-cadastro
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-iframe-modal
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|widget-imagem
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|menu-principal-sistema
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-edicao
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-formulario-autorizacao-provisoria
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|layout-emails-assinatura
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|layout-email-esqueceu-senha
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-backup-dropdown
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|layout-email-senha-redefinida
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|configuracao-campos
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|configuracao-widget
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|interface-simples
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|impressao-sem-dados
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|arquivos-lista
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-lista
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-detalhe-comp
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|teste-componente-modulo
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|modal-componente
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|modal-layout
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|modal-pagina
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|lista-pagina-ou-sistema
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|comp-box
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|comp-core-panel
+[2025-09-04 11:48:54] ORPHANS_EXPORTED tabela=componentes qtd=39 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-plugin/db/orphans/bd/componentes-orphans-20250904-114854.json"
+[2025-09-04 11:48:54] SYNC_FIM tabela=componentes +0 ~6 =0 orphans=39 modo=natural
+[2025-09-04 11:48:54] Resumo comparação - componentes => inserções=0, atualizações=6, sem_alteracao=0
+[2025-09-04 11:48:54] SKIP_TABLE_NOT_FOUND tabela=example
+[2025-09-04 11:48:54] Sincronizando tabela layouts ...
+[2025-09-04 11:48:54] SYNC_INI tabela=layouts modo=natural qtdJson=2
+[2025-09-04 11:48:54] SIMULATE_UPDATE_NAT tabela=layouts chave=pt-br|global-layout-1 campos=html,framework_css,file_version
+[2025-09-04 11:48:54] SIMULATE_UPDATE_NAT tabela=layouts chave=pt-br|global-layout-2 campos=html,file_version
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=layouts chave=pt-br|layout-administrativo-do-gestor
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=layouts chave=pt-br|layout-pagina-sem-permissao
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=layouts chave=pt-br|layout-emails
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=layouts chave=pt-br|layout-iframes
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=layouts chave=pt-br|layout-pagina-simples
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=layouts chave=pt-br|layout-pagina-padrao
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=layouts chave=pt-br|layout-impressao
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=layouts chave=pt-br|layout-alpha
+[2025-09-04 11:48:54] ORPHANS_EXPORTED tabela=layouts qtd=8 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-plugin/db/orphans/bd/layouts-orphans-20250904-114854.json"
+[2025-09-04 11:48:54] SYNC_FIM tabela=layouts +0 ~2 =0 orphans=8 modo=natural
+[2025-09-04 11:48:54] Resumo comparação - layouts => inserções=0, atualizações=2, sem_alteracao=0
+[2025-09-04 11:48:54] Sincronizando tabela paginas ...
+[2025-09-04 11:48:54] SYNC_INI tabela=paginas modo=natural qtdJson=1
+[2025-09-04 11:48:54] SIMULATE_INSERT_NAT tabela=paginas chave=pt-br||teste-plugin
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||contato
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||404-pagina-nao-encontrada
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||pagina-raiz-do-sistema
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||cookies-devem-estar-ativados-no-seu-navegador
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||pagina-de-impressao
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-arquivos|admin-arquivos
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-arquivos|admin-arquivos-adicionar
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-arquivos|emissao-teste
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes-detalhe
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-categorias|admin-categorias
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-categorias|admin-categorias-adicionar
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-categorias|admin-categorias-editar
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-categorias|admin-categorias-adicionar-filho
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-componentes|admin-componentes
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-componentes|admin-componentes-adicionar
+[2025-09-04 11:48:54] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-componentes|admin-componentes-editar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-layouts|admin-layouts
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-layouts|admin-layouts-editar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-layouts|admin-layouts-adicionar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-paginas|admin-paginas
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-paginas|admin-paginas-editar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-paginas|admin-paginas-adicionar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-plugins|admin-plugins
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-plugins|admin-plugins-adicionar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-plugins|admin-plugins-editar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|dashboard|dashboard
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|dashboard|dashboard-testes
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|dashboard|testes-do-dashboard
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos|modulos
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos|modulos-adicionar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos|modulos-editar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos|modulos-variaveis
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos|modulos-administracao-de-sistema-sincronizar-bancos
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos|modulos-administracao-de-sistema-copiar-variaveis
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos-grupos|modulos-grupos
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos-grupos|modulos-grupos-adicionar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos-grupos|modulos-grupos-editar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos-operacoes|modulos-operacoes
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos-operacoes|modulos-operacoes-adicionar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos-operacoes|modulos-operacoes-editar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|acessar-sistema
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|sair-sistema
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|perfil-usuario
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|Area-restrita
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|validar-usuario
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|esqueceu-a-senha
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|esqueceu-a-senha-email-enviado
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|redefinir-senha
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|redefinir-senha-confirmacao
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|cadastrar-no-sistema
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|confirmacao-de-email
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|usuarios|usuarios
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|usuarios|usuarios-adicionar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|usuarios|usuarios-editar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|usuarios-perfis|usuarios-perfis
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|usuarios-perfis|usuarios-perfis-adicionar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|usuarios-perfis|usuarios-perfis-editar
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|mod-core|page-core-dashboard
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||page-home
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||global-page-1
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||global-page-2
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|module-id|page-id
+[2025-09-04 11:48:55] ORPHANS_EXPORTED tabela=paginas qtd=63 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-plugin/db/orphans/bd/paginas-orphans-20250904-114855.json"
+[2025-09-04 11:48:55] SYNC_FIM tabela=paginas +1 ~0 =0 orphans=63 modo=natural
+[2025-09-04 11:48:55] Resumo comparação - paginas => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-04 11:48:55] Sincronizando tabela variaveis ...
+[2025-09-04 11:48:55] SYNC_INI tabela=variaveis modo=natural qtdJson=6
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||variavel-id-label
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||variavel-id-placeholder
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||variavel-group-label
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||variavel-group-placeholder
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||variavel-tipo-label
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||variavel-tipo-placeholder
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||variavel-valor-label
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||variavel-add-btn
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||variavel-description-label
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||variavel-description-placeholder
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||teste
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||historic-change
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||default-value-change
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracao||form-value-placeholder
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-button-label
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-last-modified
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-name
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-type
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-size
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-progress
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-progress-waiting
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-categories-label
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-categories-placeholder
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-files-label
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-categories-info
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-buton-send
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-buton-cancel
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-progress-finish
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-files-copy-clipboard
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-progress-processing
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-progress-error-head
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-progress-error
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-progress-all
+[2025-09-04 11:48:55] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-buton-all-send
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-file-buton-all-cancel
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-buttons-header
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-status-header
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-files-header
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||upload-error-size
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||categories-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||date-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||filter-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||date-start-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||date-end-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||categories-placeholder
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||filter-button
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||filter-info
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||clear-button
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||button-add-tooltip
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||button-add-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||more-results-button
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-files-options-header
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||files-list-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||list-button-copy
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||list-button-del
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||list-not-categorised
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||order-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||order-placeholder
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||order-alphabetical-asc
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||order-alphabetical-desc
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||order-date-asc
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||order-date-desc
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||list-button-select
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||add-files-select
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||list-button-del-tooltip
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||list-button-select-tooltip
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-arquivos||list-button-copy-tooltip
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-title
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-run-button
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-view-log-button
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-last-run
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-status
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-actions
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-detail-title
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-log-title
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-date
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-log
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-plan-json
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-mode-full
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-mode-files
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-mode-db
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-back-button
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-select-log-plan
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-invalid-log
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-invalid-plan
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-no-records
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-history-title
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-history-started
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-history-tag
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-history-mode
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-history-status
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-history-removed
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-history-copied
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-history-finished
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-cancel
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-recent-logs
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-progress
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-go-disparar
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-atualizacoes||updates-advanced-options
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||form-name-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||form-name-placeholder
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||form-module-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||form-module-placeholder
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||form-categories-child-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||info-categories-child-empty
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||category-child-placeholder
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||category-child-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||form-name-parent-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||category-child-parent-not-found
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||form-name-parent-empy
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||form-categories-parent-label
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||root-category
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||form-plugin-placeholder
+[2025-09-04 11:48:56] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-categorias||form-plugin-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||form-name-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||form-name-placeholder
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||form-html-tooltip
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||form-html-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||form-css-tooltip
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||form-css-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||form-module-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||form-module-placeholder
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||form-framework-css-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||form-button-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||tooltip-button-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||modal-title-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||modal-desktop-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||modal-tablet-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||modal-mobile-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||button-back-tooltip
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||button-back-value
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||form-name-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||form-name-placeholder
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||form-html-tooltip
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||form-html-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||form-css-tooltip
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||form-css-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||form-fullpage-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||form-category-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||form-category-placeholder
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||form-framework-css-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||form-button-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||tooltip-button-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||modal-title-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||modal-desktop-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||modal-tablet-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||modal-mobile-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||button-back-tooltip
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||button-back-value
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-name-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-name-placeholder
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-html-editor-tooltip
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-html-editor-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-html-tooltip
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-html-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-css-tooltip
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-css-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-id-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-id-placeholder
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-path-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-path-placeholder
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-layout-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-layout-placeholder
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-type-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-type-placeholder
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-module-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-module-placeholder
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-option-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-option-placeholder
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-root-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-permission-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-config-divider
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-editor-html-switch-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||editor-html-switch
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||path-necessary-chars
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-url-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-type-page
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-type-system
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-framework-css-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||form-button-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||tooltip-button-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||modal-title-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||modal-button-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||modal-desktop-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||modal-tablet-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||modal-mobile-preview
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||button-back-tooltip
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||button-back-value
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||lista-ambos-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||lista-pagina-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||lista-sistema-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-paginas||lista-tipo-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-plugins||form-name-label
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-plugins||form-name-placeholder
+[2025-09-04 11:48:57] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|dashboard||logout-grup
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|dashboard||logout-label
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|dashboard||toast-update-title
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|dashboard||toast-update-message
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|dashboard||toast-update-button-positive-label
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|dashboard||toast-update-button-positive-message
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|dashboard||toast-update-button-negative-label
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|dashboard||toast-update-button-negative-message
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||field-url-path
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||form-button-title
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||form-button-value
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||list-column-options
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||field-name
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||field-date-start
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||field-date-modification
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||tooltip-button-edit
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||tooltip-button-active
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||tooltip-button-desactive
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||tooltip-button-delete
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||tooltip-button-insert
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||label-button-insert
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||label-button-desactive
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||label-button-active
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||label-button-delete
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||field-version
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||field-status
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||field-status-active
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||field-status-inactive
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||delete-confirm-title
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||delete-confirm-menssage
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||delete-confirm-button-cancel
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||delete-confirm-button-confirm
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||historic-checkbox-active
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||historic-checkbox-inactive
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||historic-change-field-after-before
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||historic-change-field-only
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||historic-button-load-more
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||alert-title
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||alert-button-ok
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||ajax-timeout-message
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||historic-change-status
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||historic-delete
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-empty
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-min-length
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-max-length
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-min-max-length
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||problem-get-variable
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||label-button-variable
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||tooltip-button-variable
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||label-button-edit
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||no-occurrence
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-email
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-email-compare
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-min-length-password
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-password-chars
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-select
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||form-nao-alterar-id-label
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||field-id
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-verify-field
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-regex-permited-chars
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||alert-there-is-a-field
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-regex-necessary-chars
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||user-authorization-title
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||user-authorization-message
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||user-authorization-cancel
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||user-authorization-confirm
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||alert-database-field-before-error
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||historic-empty-value
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-image-button-add
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-image-button-del
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-image-default-name
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-image-default-date
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-image-default-type
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-image-modal-head
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-image-modal-cancel
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-image-alert-not-image
+[2025-09-04 11:48:58] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||historic-change-users-profiles
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||alert-api-client-error
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-template-button-change
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-template-modal-head
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-template-modal-cancel
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-error-load
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-template-error-category
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-template-button-change-tooltip
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-image-button-add-tooltip
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||widget-image-button-del-tooltip
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-greater-than-zero
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|interface||validation-domain
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-name-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-name-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-grup-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-add-field-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-language-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-icon-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-icon-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-grup-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||module-name
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-icon-2-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-icon-2-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-menu-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-menu-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-title-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-title-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-id-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-value-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-plugin-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-plugin-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-plugin-empty
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||module-variables
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos||form-host-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos-grupos||form-name-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos-grupos||form-name-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos-grupos||form-host-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos-operacoes||form-name-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos-operacoes||form-name-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos-operacoes||form-module-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos-operacoes||form-module-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos-operacoes||form-operation-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|modulos-operacoes||form-operation-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-authorization-provisory-not-defined
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-password-invalid
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-password-invalid-finish
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-there-is-a-field
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-user-inactive
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-user-or-password-invalid
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-without-permission
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||first-name
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-email-2-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-email-2-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-email-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-email-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-name-account-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-name-account-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-name-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-name-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-name-user-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-name-user-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-password-2-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-password-2-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-password-button
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-password-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-password-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-user-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-user-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-user-profile-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-user-profile-placeholder
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||last-name
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||middle-name
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||restrict-area-info
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||restrict-area-info-title
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||user-permited-chars
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||login-button-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||login-forgot-password-button
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||login-forgot-password-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||login-keep-logged-in-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||login-new-register-button
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||login-new-register-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||login-password-label
+[2025-09-04 11:48:59] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||login-titulo
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||login-user-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||button-change-email
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||button-change-name
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||button-change-password
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||button-change-user
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||form-changes-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-title
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-email-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-email-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-email-2-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-email-2-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-button
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-login-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-login-button
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-new-register-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-new-register-button
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-message-header
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-message-content
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-user-email-invalid
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-confirmation-title
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-confirmation-message-header
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-confirmation-message-content
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||forgot-password-mail-subject
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-redefine-password-expiration-or-invalid
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||redefine-password-title
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||redefine-password-message-header
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||redefine-password-message-content
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||redefine-password-pass-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||redefine-password-pass-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||redefine-password-pass-2-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||redefine-password-pass-2-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||redefine-password-button
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||redefine-password-confirmation-title
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||redefine-password-confirmation-message-header
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||redefine-password-confirmation-message-content
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-login-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-login-button
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-button
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-title
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-name-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-name-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-email-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-email-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-email-2-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-email-2-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-senha-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-senha-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-senha-2-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-senha-2-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-plan
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-recaptcha-invalid
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-recaptcha-invalid-btn
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||signup-mail-subject
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||login-user-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||login-password-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-already-exists-email
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||alert-email-not-sent
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||reset-password
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|perfil-usuario||password-redefined-mail-subject
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-name-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-name-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||middle-name
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||first-name
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||last-name
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-email-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-email-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-email-2-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-email-2-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-user-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-user-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-password-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-password-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-password-2-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-password-2-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-user-profile-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-user-profile-placeholder
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||login-titulo
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||login-user-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||login-password-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||login-button-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||login-forgot-password-label
+[2025-09-04 11:49:00] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||login-forgot-password-button
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||login-keep-logged-in-label
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||login-new-register-label
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||login-new-register-button
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||alert-user-or-password-invalid
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||alert-user-inactive
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||alert-without-permission
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||alert-there-is-a-field
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-password-button
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||user-permited-chars
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-name-account-label
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-name-user-label
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-name-account-placeholder
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-name-user-placeholder
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||alert-authorization-provisory-not-defined
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||restrict-area-info
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||restrict-area-info-title
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||alert-password-invalid
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||alert-password-invalid-finish
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-user-plan-label
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-user-manager-profile-label
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||form-user-manager-profile-placeholder
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||list-host-label
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios||list-user-parent-label
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios-perfis||form-name-label
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios-perfis||form-name-placeholder
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios-perfis||modules-name
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios-perfis||module-select-all
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios-perfis||module-unselect-all
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios-perfis||operations-modules-name
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios-perfis||historic-change-operations
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios-perfis||historic-change-modules-layout
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|usuarios-perfis||form-default-label
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|mod-core||core-welcome
+[2025-09-04 11:49:01] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|||var-msg
+[2025-09-04 11:49:01] ORPHANS_EXPORTED tabela=variaveis qtd=469 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-plugin/db/orphans/bd/variaveis-orphans-20250904-114901.json"
+[2025-09-04 11:49:01] SYNC_FIM tabela=variaveis +0 ~0 =6 orphans=469 modo=natural
+[2025-09-04 11:49:01] Resumo comparação - variaveis => inserções=0, atualizações=0, sem_alteracao=6
+[2025-09-04 11:49:01] MANAGER_UPDATES_REGISTRADO id=3
+[2025-09-04 11:49:01] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~6 =0
+📦 layouts => +0 ~2 =0
+📦 paginas => +1 ~0 =0
+📦 variaveis => +0 ~0 =6
+Σ TOTAL => +1 ~8 =6
+
+[2025-09-04 11:49:01] Rotina concluída com sucesso.
+[2025-09-04 11:56:35] Skip migrações ativado.
+[2025-09-04 11:56:36] CHECKSUM_CHANGED_TABLES=paginas
+[2025-09-04 11:56:36] Comparando dados do banco com arquivos Data.json...
+[2025-09-04 11:56:36] SKIP_NO_CHECKSUM_CHANGE tabela=componentes
+[2025-09-04 11:56:36] SKIP_NO_CHECKSUM_CHANGE tabela=example
+[2025-09-04 11:56:36] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-09-04 11:56:36] Sincronizando tabela paginas ...
+[2025-09-04 11:56:36] SYNC_INI tabela=paginas modo=natural qtdJson=1
+[2025-09-04 11:56:36] ERROR_INSERT_NAT tabela=paginas chave=pt-br||teste-plugin ex=SQLSTATE[HY000]: General error: 1364 Field 'nome' doesn't...
+[2025-09-04 11:56:36] Erro na rotina: SQLSTATE[HY000]: General error: 1364 Field 'nome' doesn't have a default value
+[2025-09-04 11:59:11] Skip migrações ativado.
+[2025-09-04 11:59:12] FORCE_ALL_TABELAS
+[2025-09-04 11:59:12] Comparando dados do banco com arquivos Data.json...
+[2025-09-04 11:59:12] Filtrando para tabelas: paginas
+[2025-09-04 11:59:12] Sincronizando tabela paginas ...
+[2025-09-04 11:59:12] SYNC_INI tabela=paginas modo=natural qtdJson=1
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||contato
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||404-pagina-nao-encontrada
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||pagina-raiz-do-sistema
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||cookies-devem-estar-ativados-no-seu-navegador
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||pagina-de-impressao
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-arquivos|admin-arquivos
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-arquivos|admin-arquivos-adicionar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-arquivos|emissao-teste
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes-detalhe
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-categorias|admin-categorias
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-categorias|admin-categorias-adicionar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-categorias|admin-categorias-editar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-categorias|admin-categorias-adicionar-filho
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-componentes|admin-componentes
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-componentes|admin-componentes-adicionar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-componentes|admin-componentes-editar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-layouts|admin-layouts
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-layouts|admin-layouts-editar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-layouts|admin-layouts-adicionar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-paginas|admin-paginas
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-paginas|admin-paginas-editar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-paginas|admin-paginas-adicionar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-plugins|admin-plugins
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-plugins|admin-plugins-adicionar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-plugins|admin-plugins-editar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|dashboard|dashboard
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|dashboard|dashboard-testes
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|dashboard|testes-do-dashboard
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos|modulos
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos|modulos-adicionar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos|modulos-editar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos|modulos-variaveis
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos|modulos-administracao-de-sistema-sincronizar-bancos
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos|modulos-administracao-de-sistema-copiar-variaveis
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos-grupos|modulos-grupos
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos-grupos|modulos-grupos-adicionar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos-grupos|modulos-grupos-editar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos-operacoes|modulos-operacoes
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos-operacoes|modulos-operacoes-adicionar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|modulos-operacoes|modulos-operacoes-editar
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|acessar-sistema
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|sair-sistema
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|perfil-usuario
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|Area-restrita
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|validar-usuario
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|esqueceu-a-senha
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|esqueceu-a-senha-email-enviado
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|redefinir-senha
+[2025-09-04 11:59:12] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|redefinir-senha-confirmacao
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|cadastrar-no-sistema
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|perfil-usuario|confirmacao-de-email
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|usuarios|usuarios
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|usuarios|usuarios-adicionar
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|usuarios|usuarios-editar
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|usuarios-perfis|usuarios-perfis
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|usuarios-perfis|usuarios-perfis-adicionar
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|usuarios-perfis|usuarios-perfis-editar
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|mod-core|page-core-dashboard
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||page-home
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||global-page-1
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||global-page-2
+[2025-09-04 11:59:13] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|module-id|page-id
+[2025-09-04 11:59:13] ORPHANS_EXPORTED tabela=paginas qtd=63 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-plugin/db/orphans/bd/paginas-orphans-20250904-115913.json"
+[2025-09-04 11:59:13] SYNC_FIM tabela=paginas +1 ~0 =0 orphans=63 modo=natural
+[2025-09-04 11:59:13] Resumo comparação - paginas => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-04 11:59:13] MANAGER_UPDATES_REGISTRADO id=4
+[2025-09-04 11:59:13] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 paginas => +1 ~0 =0
+Σ TOTAL => +1 ~0 =0
+
+[2025-09-04 11:59:13] Rotina concluída com sucesso.
+[2025-09-04 12:27:32] Executando migrações...
+[2025-09-04 12:27:32] [DEBUG] MIGRATING ENV=gestor
+[2025-09-04 12:27:32] Falha ao executar migrações via API: Invalid version `20250903`, should be in format `YYYYMMDDHHMMSS` (length of 14).
+[2025-09-04 12:27:32] Erro na rotina: Invalid version `20250903`, should be in format `YYYYMMDDHHMMSS` (length of 14).

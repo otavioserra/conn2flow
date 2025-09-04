@@ -1,0 +1,292 @@
+[
+    {
+        "name": "Interface Formulário Configurações",
+        "id": "interface-formulario-configuracoes",
+        "version": "1.2",
+        "checksum": {
+            "html": "86075406b67435166d945cba5df56ff1",
+            "css": "87e1823d50f899396806b9b566ac6185",
+            "combined": "9ee2293b64b881f1d9ceb43df096744b"
+        }
+    },
+    {
+        "name": "Widget Template",
+        "id": "widget-template",
+        "version": "1.2",
+        "checksum": {
+            "html": "9d003fd56bb000e1c9525245cd5106c4",
+            "css": "ba0557b0e23e65afcce0a8da039e4a9b",
+            "combined": "8271f0187a3cdebbd8196eb8633b3884"
+        }
+    },
+    {
+        "name": "Interface Formulário Edição Incomum",
+        "id": "interface-formulario-edicao-incomum",
+        "version": "1.2",
+        "checksum": {
+            "html": "66d0b2b64a3b00263c2a8eaa193867a3",
+            "css": "a1c884e20814045be6503eec311e42e4",
+            "combined": "a51ad8061d307a4097e7362a6b4e7b53"
+        }
+    },
+    {
+        "name": "Interface Formulário Inclusão Incomum",
+        "id": "interface-formulario-inclusao-incomum",
+        "version": "1.2",
+        "checksum": {
+            "html": "bea79dcb0fb62a2cabff2d757b8747f9",
+            "css": "1141c974d1568502c3a4f3847cdb8951",
+            "combined": "095bc1b128ef8f72c4de0d38d902e396"
+        }
+    },
+    {
+        "name": "Modal Simples",
+        "id": "modal-simples",
+        "version": "1.2",
+        "checksum": {
+            "html": "2a5e8f5920ab09841f6deaa40c4da5b3",
+            "css": "",
+            "combined": "2a5e8f5920ab09841f6deaa40c4da5b3"
+        }
+    },
+    {
+        "name": "Interface Formulário Visualização",
+        "id": "interface-formulario-visualizacao",
+        "version": "1.2",
+        "checksum": {
+            "html": "8093f6b4f62afda1a9defa36b885e615",
+            "css": "e1507d655c9c10e868884f3333705a88",
+            "combined": "b6b5fcc39fb612dbaa1ab3a88d9a16d3"
+        }
+    },
+    {
+        "name": "Interface Modal Genérico",
+        "id": "interface-modal-generico",
+        "version": "1.2",
+        "checksum": {
+            "html": "27a2d26f94e8a8d26703af830c9d59de",
+            "css": "",
+            "combined": "27a2d26f94e8a8d26703af830c9d59de"
+        }
+    },
+    {
+        "name": "Botão Superior Interface",
+        "id": "botao-superior-interface",
+        "version": "1.6",
+        "checksum": {
+            "html": "53c4b611141dd7f591d54c7b3008b9e0",
+            "css": "",
+            "combined": "53c4b611141dd7f591d54c7b3008b9e0"
+        }
+    },
+    {
+        "name": "Interface Alerta Modal",
+        "id": "interface-alerta-modal",
+        "version": "1.2",
+        "checksum": {
+            "html": "d89b05f7e9b207dd68d220ac34139054",
+            "css": "",
+            "combined": "d89b05f7e9b207dd68d220ac34139054"
+        }
+    },
+    {
+        "name": "Interface Carregando Modal",
+        "id": "interface-carregando-modal",
+        "version": "1.2",
+        "checksum": {
+            "html": "c1574712e986563972da0ccb3938846a",
+            "css": "",
+            "combined": "c1574712e986563972da0ccb3938846a"
+        }
+    },
+    {
+        "name": "Interface Deleção Modal",
+        "id": "interface-delecao-modal",
+        "version": "1.2",
+        "checksum": {
+            "html": "3b93f234f2a307b5c30157ff1514cb05",
+            "css": "",
+            "combined": "3b93f234f2a307b5c30157ff1514cb05"
+        }
+    },
+    {
+        "name": "Interface Formulário Inclusão",
+        "id": "interface-formulario-inclusao",
+        "version": "1.5",
+        "checksum": {
+            "html": "63d68cb375343a9393cf8fd7bc1219f3",
+            "css": "1141c974d1568502c3a4f3847cdb8951",
+            "combined": "2bd8317be777adf9d12d729fc7cb7992"
+        }
+    },
+    {
+        "name": "Interface Listar Sem Registros",
+        "id": "interface-listar-sem-registros",
+        "version": "1.2",
+        "checksum": {
+            "html": "7f4c7b58497756f22ea6245dbdecef88",
+            "css": "",
+            "combined": "7f4c7b58497756f22ea6245dbdecef88"
+        }
+    },
+    {
+        "name": "Interface Listar",
+        "id": "interface-listar",
+        "version": "1.3",
+        "checksum": {
+            "html": "76139d15005ba763f72ad7adf8bf1170",
+            "css": "3609fbb0f5be09748ba6450ad493bd5e",
+            "combined": "b07bd3c6b5484abbf12369d11133b685"
+        }
+    },
+    {
+        "name": "Interface Listar Arquivos Sem Registros",
+        "id": "interface-listar-arquivos-sem-registros",
+        "version": "1.2",
+        "checksum": {
+            "html": "d7133d08f38fbed13fc78114ce5580e6",
+            "css": "",
+            "combined": "d7133d08f38fbed13fc78114ce5580e6"
+        }
+    },
+    {
+        "name": "Layout Email Novo Cadastro",
+        "id": "layout-email-novo-cadastro",
+        "version": "1.2",
+        "checksum": {
+            "html": "269948c502ca2d65837f8abbef76a89a",
+            "css": "",
+            "combined": "269948c502ca2d65837f8abbef76a89a"
+        }
+    },
+    {
+        "name": "Interface Iframe Modal",
+        "id": "interface-iframe-modal",
+        "version": "1.2",
+        "checksum": {
+            "html": "0eeeae1b953bccc0d26a0f1cc335803a",
+            "css": "0745e249a8e1258353142b9bcb1a2438",
+            "combined": "be737048e45d0347399310fc86221b63"
+        }
+    },
+    {
+        "name": "Widget Imagem",
+        "id": "widget-imagem",
+        "version": "1.2",
+        "checksum": {
+            "html": "53ae2df5b19777bbe6b8ab98529a80d5",
+            "css": "ba0557b0e23e65afcce0a8da039e4a9b",
+            "combined": "c8b5857c48f0eb1122ca4efef54ccb5f"
+        }
+    },
+    {
+        "name": "Menu Principal Sistema",
+        "id": "menu-principal-sistema",
+        "version": "1.2",
+        "checksum": {
+            "html": "708d6c3eab26e3bd0473f87bac06d8ff",
+            "css": "dc8ada26a5c0c9580e7a0e75648eae47",
+            "combined": "fee5ddcf40f2110aa7ae0bed854105ea"
+        }
+    },
+    {
+        "name": "Interface Formulário Edição",
+        "id": "interface-formulario-edicao",
+        "version": "1.4",
+        "checksum": {
+            "html": "79d5e4ef47b76143eb838728cb81eee8",
+            "css": "a1c884e20814045be6503eec311e42e4",
+            "combined": "1f01ba97283aed3e5cee345b7b7adccc"
+        }
+    },
+    {
+        "name": "Interface Formulário Autorização Provisória",
+        "id": "interface-formulario-autorizacao-provisoria",
+        "version": "1.2",
+        "checksum": {
+            "html": "59811a7d383533a272e2a9829498b948",
+            "css": "",
+            "combined": "59811a7d383533a272e2a9829498b948"
+        }
+    },
+    {
+        "name": "Layout Emails Assinatura",
+        "id": "layout-emails-assinatura",
+        "version": "1.2",
+        "checksum": {
+            "html": "bae98906634d996be369512d5bc3ecea",
+            "css": "",
+            "combined": "bae98906634d996be369512d5bc3ecea"
+        }
+    },
+    {
+        "name": "Layout Email Esqueceu Senha",
+        "id": "layout-email-esqueceu-senha",
+        "version": "1.2",
+        "checksum": {
+            "html": "6e6710e729ba5ca2bfed4fca6024299c",
+            "css": "e4b0bc753ae73edf1aea03238ac8b8bb",
+            "combined": "9c908e80b25d8b5c2701575235ad3e69"
+        }
+    },
+    {
+        "name": "Interface Backup Dropdown",
+        "id": "interface-backup-dropdown",
+        "version": "1.2",
+        "checksum": {
+            "html": "f771df80f24f82a024044243859cb8c6",
+            "css": "",
+            "combined": "f771df80f24f82a024044243859cb8c6"
+        }
+    },
+    {
+        "name": "Layout Email Senha Redefinida",
+        "id": "layout-email-senha-redefinida",
+        "version": "1.2",
+        "checksum": {
+            "html": "71bef62359404d276334517b6db99e90",
+            "css": "",
+            "combined": "71bef62359404d276334517b6db99e90"
+        }
+    },
+    {
+        "name": "Configuração - Campos",
+        "id": "configuracao-campos",
+        "version": "1.2",
+        "checksum": {
+            "html": "4a31ee642af5a1f3a198bdd44380d201",
+            "css": "4183f8ca0236bdb2a6b7d5fd983eba86",
+            "combined": "94726b42f4fc448c6d394ee3efe4f0e5"
+        }
+    },
+    {
+        "name": "Configuração - Widget",
+        "id": "configuracao-widget",
+        "version": "1.2",
+        "checksum": {
+            "html": "20d42343ba08a767a53e0b622cc8579f",
+            "css": "e76c325ef114d06f7eaa79aaa025fe38",
+            "combined": "d6c04b6680ab2488c3d36fc1cc045ba8"
+        }
+    },
+    {
+        "name": "Interface Simples",
+        "id": "interface-simples",
+        "version": "1.2",
+        "checksum": {
+            "html": "b323c939a51b60054f34b0b5ba58c414",
+            "css": "87e1823d50f899396806b9b566ac6185",
+            "combined": "9ef891f70868d898d23757590acb5307"
+        }
+    },
+    {
+        "name": "Impressão Sem Dados",
+        "id": "impressao-sem-dados",
+        "version": "1.2",
+        "checksum": {
+            "html": "b5f8004dc420d0a6792e77a8738e11df",
+            "css": "",
+            "combined": "b5f8004dc420d0a6792e77a8738e11df"
+        }
+    }
+]

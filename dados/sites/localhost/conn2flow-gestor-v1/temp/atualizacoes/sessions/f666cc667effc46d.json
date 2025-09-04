@@ -1,0 +1,48 @@
+{
+    "sid": "f666cc667effc46d",
+    "exec_id": 21,
+    "step": "deploy_files_done",
+    "created_at": "2025-08-27T17:24:21-03:00",
+    "opts": {
+        "domain": "localhost",
+        "local-artifact": 1,
+        "debug": 1,
+        "log-diff": 1
+    },
+    "release_tag": "local-artifact",
+    "checksum": {
+        "expected": "5e03b08b761862f2c7899411949d5a895156d6aa655c7db0aa0ab91b15eaa849",
+        "got": "5e03b08b761862f2c7899411949d5a895156d6aa655c7db0aa0ab91b15eaa849",
+        "file": "gestor.zip"
+    },
+    "staging_dir": "\/var\/www\/sites\/localhost\/conn2flow-gestor\/temp\/atualizacoes\/20250827-172357-aae108\/",
+    "staging_root": "\/var\/www\/sites\/localhost\/conn2flow-gestor\/temp\/atualizacoes\/20250827-172357-aae108\/",
+    "progress": {
+        "bootstrap": {
+            "done": true,
+            "ts": 1756326261
+        },
+        "deploy_files": {
+            "done": true,
+            "stats": {
+                "removed": 15,
+                "copied": 14
+            },
+            "ts": 1756326269
+        },
+        "database": {
+            "done": true,
+            "ts": 1756326278
+        },
+        "finalize": {
+            "done": true,
+            "ts": 1756326278
+        }
+    },
+    "errors": [],
+    "stats": {
+        "removed": 15,
+        "copied": 14
+    },
+    "finished": true
+}

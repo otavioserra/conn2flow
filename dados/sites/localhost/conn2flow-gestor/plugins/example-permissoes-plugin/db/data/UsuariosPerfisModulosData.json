@@ -1,0 +1,10 @@
+[
+    {
+        "perfil": "administradores",
+        "modulo": "plugin-demo"
+    },
+    {
+        "perfil": "consumidores",
+        "modulo": "plugin-demo"
+    }
+]

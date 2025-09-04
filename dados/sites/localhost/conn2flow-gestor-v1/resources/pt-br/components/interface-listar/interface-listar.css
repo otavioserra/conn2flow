@@ -1,0 +1,12 @@
+.dt-head-center {
+    text-align: center !important;
+}
+.table-responsive-fix{
+    overflow:hidden;
+}
+.segment > .button {
+    margin-bottom: 0.75em;
+}
+#_gestor-interface-listar{
+	margin-bottom: 1em;
+}

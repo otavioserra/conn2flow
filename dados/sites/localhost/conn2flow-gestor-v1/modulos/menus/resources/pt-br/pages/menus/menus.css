@@ -1,0 +1,31 @@
+.escondido{
+    display:none;
+}
+.menu-itens-cont{
+    position:relative;
+}
+.menu-item-template{
+    display:none;
+}
+.menu-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    align-content: flex-start;
+    border: 1px solid #d4d4d5;
+    padding: 4px;
+    margin:10px 0px;
+    border-radius:5px;
+}
+.menu-item:last-of-type{
+    margin-bottom:0px;
+}
+.item-grab{
+    padding-top:6px;
+    width: 40px;
+    cursor:grab;
+    text-align:center;
+}
+.item-opcoes{
+    width: calc(100% - 40px);
+}

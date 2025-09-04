@@ -1,0 +1,63 @@
+<div class="ui stackable two column centered grid">
+    <div class="column">
+        <div class="ui segment">
+            <form id="_gestor-form-logar" action="@[[pagina#url-raiz]]@signin/" method="post" name="_gestor-form-logar" class="ui form">
+                <div class="ui center aligned header large">@[[login-titulo]]@</div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <!-- bloqueado-mensagem < --><div class="ui icon negative message visible">
+                    <i class="exclamation triangle icon"></i>
+                    <div class="content">
+                        <div class="header">
+                            Endereço de IP do seu dispositivo está BLOQUEADO!
+                        </div>
+                        <p>Infelizmente não é possível acessar sua conta deste dispositivo atual devido ao excesso de falhas de tentativa de acesso com usuário e/ou senha inválidos. Favor tentar novamente mais tarde neste dispositivo ou então em um outro numa outra rede.</p>
+                    </div>
+                </div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="field">
+                    <div class="ui hidden divider">&nbsp;</div>
+                    <div class="ui basic segment center aligned">
+                        <div class="">@[[login-forgot-password-label]]@ <a href="@[[pagina#url-raiz]]@forgot-password/">@[[login-forgot-password-button]]@</a>
+                        </div>
+                        <div>@[[login-new-register-label]]@ <a href="@[[pagina#url-raiz]]@signup/">@[[login-new-register-button]]@</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- bloqueado-mensagem > -->
+                <!-- formulario < -->
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="field">
+                    <label>@[[login-user-label]]@</label>
+                    <input type="text" name="usuario" placeholder="@[[login-user-placeholder]]@">
+                </div>
+                <div class="field">
+                    <label>@[[login-password-label]]@</label>
+                    <input type="password" name="senha" placeholder="@[[login-password-placeholder]]@">
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" name="permanecer-logado" value="1">
+                        <label>@[[login-keep-logged-in-label]]@</label>
+                    </div>
+                </div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui error message">&nbsp;</div>
+                <div class="field">
+                    <button class="fluid ui button blue">@[[login-button-label]]@</button>
+                    <div class="ui hidden divider">&nbsp;</div>
+                    <div class="ui basic segment center aligned">
+                        <div class="">@[[login-forgot-password-label]]@ <a href="@[[pagina#url-raiz]]@forgot-password/">@[[login-forgot-password-button]]@</a>
+                        </div>
+                        <div>@[[login-new-register-label]]@ <a href="@[[pagina#url-raiz]]@signup/">@[[login-new-register-button]]@</a>
+                        </div>
+                    </div>
+                </div>
+                <input id="_gestor-logar" name="_gestor-logar" type="hidden" value="1">
+                <input id="_gestor-fingerprint" name="_gestor-fingerprint" type="hidden">
+                <!-- formulario > -->
+            </form>
+        </div>
+    </div>
+</div>

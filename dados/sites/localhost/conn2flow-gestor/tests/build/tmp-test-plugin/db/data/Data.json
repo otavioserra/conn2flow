@@ -1,0 +1,51 @@
+{
+    "resources": {
+        "pt-br": {
+            "layouts": [
+                {
+                    "id": "layout-alpha",
+                    "name": "Layout Alpha",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "abc",
+                        "css": "",
+                        "combined": "abc"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "id": "page-home",
+                    "name": "Página Home",
+                    "version": "1.0",
+                    "path": "home\/",
+                    "layout": "layout-alpha",
+                    "checksum": {
+                        "html": "def",
+                        "css": "",
+                        "combined": "def"
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "id": "comp-box",
+                    "name": "Componente Box",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "ghi",
+                        "css": "",
+                        "combined": "ghi"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "var-msg",
+                    "value": "Olá",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

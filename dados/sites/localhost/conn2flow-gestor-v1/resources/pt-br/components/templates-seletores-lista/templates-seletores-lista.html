@@ -1,0 +1,41 @@
+<div class="ui four doubling cards">
+    <!-- card < -->
+    <div class="ui fluid raised card templateCont" data-id="#template-id#" data-type="#template-tipo#">
+        <div class="image fileImage">
+            <img>
+            <div class="fileImage">
+                <img src="#img-src#">
+            </div>
+        </div>
+        <div class="content">
+            <div class="ui small header">
+                <!-- padrao < --><a class="ui teal ribbon label">#padrao-texto#</a><!-- padrao > -->
+                <span>#nome#</span>
+           	</div>
+            <div class="description">
+                <div class="ui list">
+                    <div class="item">
+                        <i class="calendar alternate outline icon"></i>
+                        #data#
+                    </div>
+                    <div class="item">
+                        <i class="info circle icon"></i>
+                        #tipo#
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="extra content center aligned botoesMargem">
+            <!-- btn-select < --><button class="ui blue button templateSelect" data-dados="#template-data#" data-tooltip="@[[list-button-tooltip-select]]@" data-inverted="">@[[list-button-select]]@</button><!-- btn-select > -->
+            <!-- btn-copy < --><a class="ui blue button templateCopy" data-tooltip="@[[list-button-tooltip-copy]]@" data-inverted="" href="@[[pagina#url-raiz]]@@[[pagina#modulo-id]]@/adicionar/?modelo=#modelo#&tipo=#template-tipo#&id=#template-id#">@[[list-button-copy]]@</a><!-- btn-copy > -->
+            <!-- btn-active < --><a class="ui active positive button">
+                <i class="check circle outline icon"></i>
+                @[[list-button-active]]@
+            </a><!-- btn-active > -->
+            <!-- btn-activate < --><a class="ui orange button templateActivate" data-tooltip="@[[list-button-tooltip-activate]]@" data-inverted="" href="@[[pagina#url-raiz]]@@[[pagina#modulo-id]]@/ativar/?modelo=#modelo#&tipo=#template-tipo#&id=#template-id#">
+            	<i class="circle outline icon"></i>
+            	@[[list-button-activate]]@
+            </a><!-- btn-activate > -->
+        </div>
+    </div><!-- card > -->
+</div>

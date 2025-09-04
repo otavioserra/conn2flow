@@ -1,0 +1,20 @@
+{
+    "arquitetura.corrigir.inicio": "Starting corrupted data correction",
+    "arquitetura.corrigir.conexao.sucesso": "Connection to original database established",
+    "arquitetura.corrigir.conexao.falha": "Failed to connect to original database",
+    "arquitetura.corrigir.lendo.banco": "Reading original data from database",
+    "arquitetura.corrigir.lendo.json": "Reading current resource JSON data",
+    "arquitetura.corrigir.diff.iniciando": "Computing differences between old and current data",
+    "arquitetura.corrigir.diff.sem_alteracoes": "No changes required",
+    "arquitetura.corrigir.option.atualizada": "Option field updated",
+    "arquitetura.corrigir.root.atualizado": "Root field adjusted",
+    "arquitetura.corrigir.path.atualizado": "Path field normalized",
+    "arquitetura.corrigir.type.atualizado": "Type field normalized",
+    "arquitetura.corrigir.layout.nao_encontrado": "Referenced layout not found",
+    "arquitetura.corrigir.backup.ok": "Backup created before writing",
+    "arquitetura.corrigir.persistindo": "Persisting changes to disk",
+    "arquitetura.corrigir.persistido": "Changes written successfully",
+    "arquitetura.corrigir.dryrun": "Dry-run execution (no files modified)",
+    "arquitetura.corrigir.relatorio.salvo": "Report saved",
+    "arquitetura.corrigir.fim": "Correction finished"
+}

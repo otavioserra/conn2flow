@@ -1,0 +1,32 @@
+<div class="ui medium header">#categoria#</div>
+<div class="ui four doubling cards" id="#id#">
+    <!-- card < -->
+    <div class="ui fluid raised card fileCont" data-id="#file-id#">
+        <div class="image fileImage">
+            <img>
+            <div class="fileImage">
+                <img src="#img-src#">
+            </div>
+        </div>
+        <div class="content">
+            <div class="ui small header">#nome#</div>
+            <div class="description">
+                <div class="ui list">
+                    <div class="item">
+                        <i class="calendar alternate outline icon"></i>
+                        #data#
+                    </div>
+                    <div class="item">
+                        <i class="info circle icon"></i>
+                        #tipo#
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="extra content center aligned">
+            <!-- btn-select < --><button class="ui blue button fileSelect" data-id="#file-id#" data-dados="#file-data#" data-tooltip="@[[list-button-select-tooltip]]@" data-inverted="">@[[list-button-select]]@</button><!-- btn-select > -->
+            <!-- btn-copy < --><button class="ui blue button fileCopyUrl" data-id="#file-id#" data-url="#file-url#" data-tooltip="@[[list-button-copy-tooltip]]@" data-inverted="">@[[list-button-copy]]@</button><!-- btn-copy > -->
+            <button class="ui red button fileDelete" data-id="#file-id#" data-tooltip="@[[list-button-del-tooltip]]@" data-inverted="">@[[list-button-del]]@</button>
+        </div>
+    </div><!-- card > -->
+</div>

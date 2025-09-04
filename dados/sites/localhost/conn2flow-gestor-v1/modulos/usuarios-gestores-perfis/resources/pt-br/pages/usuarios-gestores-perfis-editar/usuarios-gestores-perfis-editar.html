@@ -1,0 +1,52 @@
+<div class="field">
+    <label>@[[form-name-label]]@</label>
+    <input type="text" name="nome" placeholder="@[[form-name-placeholder]]@" value="#nome#">
+</div>
+<div class="ui dividing tiny header">#modules-name#</div>
+<!-- grupo < -->
+<div class="ui segment">
+    <div class="ui grid">
+        <div class="column">
+            <div class="ui left floated small header">#module-grup-name#</div>
+            <button class="ui right floated button selectAll" type="button">
+                <i class="check circle outline icon"></i>@[[module-select-all]]@ </button>
+            <button class="ui right floated button unselectAll" type="button">
+                <i class="circle outline icon"></i> @[[module-unselect-all]]@ </button>
+        </div>
+    </div>
+    <div class="ui divided items">
+        <div class="item">
+            <div class="content">
+                <div class="ui cards">
+                    <!-- items < -->
+                    <div class="ui raised card">
+                        <div class="content">
+                            <div class="ui small header">#module-label#</div>
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" name="modulo-#num#" data-checked="#checked#" value="#id#">
+                                <label>&nbsp;</label>
+                            </div>
+                        </div>
+                        <!-- operacoes < -->
+                        <div class="extra content">
+                            <div class="ui basic segment">
+                                <div class="ui tiny header">#operacoes-nome#</div>
+                                <div class="ui relaxed divided list">
+                                    <!-- operacoes-items < -->
+                                    <div class="item">
+                                        <div class="ui checkbox">
+                                            <input type="checkbox" name="operacao-#operacao-num#" data-checked="#operacao-checked#" value="#operacao-id#">
+                                            <label>#operacao-label#</label>
+                                        </div>
+                                    </div><!-- operacoes-items > -->
+                                </div>
+                            </div>
+                        </div><!-- operacoes > -->
+                    </div>
+                    <!-- items > -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- grupo > -->

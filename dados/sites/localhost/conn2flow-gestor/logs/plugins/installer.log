@@ -1,0 +1,162 @@
+[2025-09-03T15:41:53-03:00] [INFO] [PLUGIN:test-plugin] Início processamento (fase stub) origem_tipo=upload
+[2025-09-03T15:41:53-03:00] [PLUGIN:test-plugin] Iniciando processamento slug=test-plugin origem=upload
+[2025-09-03T15:41:53-03:00] [PLUGIN:test-plugin] [ok] arquivo upload copiado
+[2025-09-03T15:41:53-03:00] [PLUGIN:test-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin
+[2025-09-03T15:41:53-03:00] [PLUGIN:test-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/test-plugin
+[2025-09-03T15:41:53-03:00] [PLUGIN:test-plugin] [warn] Data.json não encontrado (sincronização ignorada nesta fase)
+[2025-09-03T15:41:53-03:00] [PLUGIN:test-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T15:41:53-03:00] [PLUGIN:test-plugin] [ok] finalizado
+[2025-09-03T15:41:53-03:00] [INFO] [PLUGIN:test-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T15:43:15-03:00] [INFO] [PLUGIN:test-plugin] Início processamento (fase stub) origem_tipo=upload
+[2025-09-03T15:43:15-03:00] [PLUGIN:test-plugin] Iniciando processamento slug=test-plugin origem=upload
+[2025-09-03T15:43:15-03:00] [PLUGIN:test-plugin] [ok] arquivo upload copiado
+[2025-09-03T15:43:15-03:00] [PLUGIN:test-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin
+[2025-09-03T15:43:15-03:00] [PLUGIN:test-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/test-plugin
+[2025-09-03T15:43:15-03:00] [PLUGIN:test-plugin] [warn] Data.json não encontrado (sincronização ignorada nesta fase)
+[2025-09-03T15:43:15-03:00] [PLUGIN:test-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T15:43:15-03:00] [PLUGIN:test-plugin] [ok] finalizado
+[2025-09-03T15:43:15-03:00] [INFO] [PLUGIN:test-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T15:46:07-03:00] [INFO] [PLUGIN:test-plugin] Início processamento (fase stub) origem_tipo=upload
+[2025-09-03T15:46:07-03:00] [PLUGIN:test-plugin] Iniciando processamento slug=test-plugin origem=upload
+[2025-09-03T15:46:07-03:00] [PLUGIN:test-plugin] [ok] arquivo upload copiado
+[2025-09-03T15:46:07-03:00] [PLUGIN:test-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin
+[2025-09-03T15:46:07-03:00] [PLUGIN:test-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/test-plugin
+[2025-09-03T15:46:07-03:00] [PLUGIN:test-plugin] [debug] verificando Data.json em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin/db/data/Data.json existe=nao
+[2025-09-03T15:46:07-03:00] [PLUGIN:test-plugin] [debug] verificando Data.json em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin/plugin/db/data/Data.json existe=nao
+[2025-09-03T15:46:07-03:00] [PLUGIN:test-plugin] [warn] Data.json não encontrado (sincronização ignorada) primeiros_arquivos=["db\\data\\Data.json","manifest.json"]
+[2025-09-03T15:46:07-03:00] [PLUGIN:test-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T15:46:07-03:00] [PLUGIN:test-plugin] [ok] finalizado
+[2025-09-03T15:46:07-03:00] [INFO] [PLUGIN:test-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T15:46:45-03:00] [INFO] [PLUGIN:test-plugin] Início processamento (fase stub) origem_tipo=upload
+[2025-09-03T15:46:45-03:00] [PLUGIN:test-plugin] Iniciando processamento slug=test-plugin origem=upload
+[2025-09-03T15:46:45-03:00] [PLUGIN:test-plugin] [ok] arquivo upload copiado
+[2025-09-03T15:46:45-03:00] [PLUGIN:test-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin
+[2025-09-03T15:46:45-03:00] [PLUGIN:test-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/test-plugin
+[2025-09-03T15:46:45-03:00] [PLUGIN:test-plugin] [warn] Data.json não encontrado após varredura recursiva
+[2025-09-03T15:46:45-03:00] [PLUGIN:test-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T15:46:45-03:00] [PLUGIN:test-plugin] [ok] finalizado
+[2025-09-03T15:46:45-03:00] [INFO] [PLUGIN:test-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T15:47:56-03:00] [INFO] [PLUGIN:test-plugin] Início processamento (fase stub) origem_tipo=upload
+[2025-09-03T15:47:56-03:00] [PLUGIN:test-plugin] Iniciando processamento slug=test-plugin origem=upload
+[2025-09-03T15:47:56-03:00] [PLUGIN:test-plugin] [ok] arquivo upload copiado
+[2025-09-03T15:47:56-03:00] [PLUGIN:test-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin
+[2025-09-03T15:47:56-03:00] [PLUGIN:test-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/test-plugin
+[2025-09-03T15:47:56-03:00] [PLUGIN:test-plugin] [ok] Data.json localizado em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin/db/data/Data.json
+[2025-09-03T15:47:56-03:00] [PLUGIN:test-plugin] [ok] Data.json copiado (estatísticas: {"resources":1})
+[2025-09-03T15:47:56-03:00] [PLUGIN:test-plugin] [ok] sync granular plugin=test-plugin inserts=4 updates=0 skipped=0
+[2025-09-03T15:47:56-03:00] [PLUGIN:test-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T15:47:56-03:00] [PLUGIN:test-plugin] [ok] finalizado
+[2025-09-03T15:47:56-03:00] [INFO] [PLUGIN:test-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T15:54:00-03:00] [INFO] [PLUGIN:test-plugin] Início processamento (atualizacao) origem_tipo=upload reprocessar=1
+[2025-09-03T15:54:00-03:00] [PLUGIN:test-plugin] Iniciando processamento slug=test-plugin origem=upload
+[2025-09-03T15:54:00-03:00] [PLUGIN:test-plugin] [ok] arquivo upload copiado
+[2025-09-03T15:54:01-03:00] [PLUGIN:test-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin
+[2025-09-03T15:54:01-03:00] [PLUGIN:test-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/test-plugin
+[2025-09-03T15:54:01-03:00] [PLUGIN:test-plugin] [ok] Data.json localizado em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin/db/data/Data.json
+[2025-09-03T15:54:01-03:00] [PLUGIN:test-plugin] [ok] Data.json copiado (estatísticas: {"resources":1})
+[2025-09-03T15:54:01-03:00] [PLUGIN:test-plugin] [ok] sync granular plugin=test-plugin inserts=2 updates=0 skipped=2
+[2025-09-03T15:54:01-03:00] [PLUGIN:test-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T15:54:01-03:00] [PLUGIN:test-plugin] [ok] finalizado
+[2025-09-03T15:54:01-03:00] [INFO] [PLUGIN:test-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T16:02:38-03:00] [INFO] [PLUGIN:test-plugin] Início processamento (atualizacao) origem_tipo=upload reprocessar=1
+[2025-09-03T16:02:38-03:00] [PLUGIN:test-plugin] Iniciando processamento slug=test-plugin origem=upload
+[2025-09-03T16:02:38-03:00] [PLUGIN:test-plugin] [ok] arquivo upload copiado
+[2025-09-03T16:02:38-03:00] [PLUGIN:test-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin
+[2025-09-03T16:02:38-03:00] [PLUGIN:test-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/test-plugin
+[2025-09-03T16:02:38-03:00] [PLUGIN:test-plugin] [ok] Data.json localizado em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin/db/data/Data.json
+[2025-09-03T16:02:38-03:00] [PLUGIN:test-plugin] [ok] Data.json copiado (estatísticas: {"resources":1})
+[2025-09-03T16:02:38-03:00] [PLUGIN:test-plugin] [ok] sync granular plugin=test-plugin inserts=2 updates=0 skipped=2
+[2025-09-03T16:02:38-03:00] [PLUGIN:test-plugin] [ok] sync módulos plugin=test-plugin modules=1 inserts=3 updates=0 skipped=0 layouts=0 pages=1 components=1 variables=1
+[2025-09-03T16:02:38-03:00] [PLUGIN:test-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T16:02:38-03:00] [PLUGIN:test-plugin] [ok] finalizado
+[2025-09-03T16:02:38-03:00] [INFO] [PLUGIN:test-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T16:06:00-03:00] [INFO] [PLUGIN:test-plugin] Início processamento (atualizacao) origem_tipo=upload reprocessar=1
+[2025-09-03T16:06:00-03:00] [PLUGIN:test-plugin] Iniciando processamento slug=test-plugin origem=upload
+[2025-09-03T16:06:00-03:00] [PLUGIN:test-plugin] [ok] arquivo upload copiado
+[2025-09-03T16:06:00-03:00] [PLUGIN:test-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin
+[2025-09-03T16:06:00-03:00] [PLUGIN:test-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/test-plugin
+[2025-09-03T16:06:00-03:00] [PLUGIN:test-plugin] [ok] Data.json localizado em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin/db/data/Data.json
+[2025-09-03T16:06:00-03:00] [PLUGIN:test-plugin] [ok] Data.json copiado (estatísticas: {"resources":1})
+[2025-09-03T16:06:00-03:00] [PLUGIN:test-plugin] [ok] sync granular plugin=test-plugin inserts=2 updates=0 skipped=2
+[2025-09-03T16:06:00-03:00] [PLUGIN:test-plugin] [ok] sync módulos plugin=test-plugin modules=1 inserts=0 updates=1 skipped=2 layouts=0 pages=1 components=1 variables=1
+[2025-09-03T16:06:00-03:00] [PLUGIN:test-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T16:06:00-03:00] [PLUGIN:test-plugin] [ok] finalizado
+[2025-09-03T16:06:00-03:00] [INFO] [PLUGIN:test-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T16:13:22-03:00] [INFO] [PLUGIN:test-plugin] Início processamento (atualizacao) origem_tipo=upload reprocessar=1
+[2025-09-03T16:13:22-03:00] [PLUGIN:test-plugin] Iniciando processamento slug=test-plugin origem=upload
+[2025-09-03T16:13:22-03:00] [PLUGIN:test-plugin] [ok] arquivo upload copiado
+[2025-09-03T16:13:22-03:00] [PLUGIN:test-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin
+[2025-09-03T16:13:23-03:00] [PLUGIN:test-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/test-plugin
+[2025-09-03T16:13:23-03:00] [PLUGIN:test-plugin] [ok] Data.json localizado em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin/db/data/Data.json
+[2025-09-03T16:13:23-03:00] [PLUGIN:test-plugin] [ok] Data.json copiado (estatísticas: {"resources":1})
+[2025-09-03T16:13:23-03:00] [PLUGIN:test-plugin] [ok] sync granular plugin=test-plugin inserts=0 updates=1 skipped=3
+[2025-09-03T16:13:23-03:00] [PLUGIN:test-plugin] [ok] sync módulos plugin=test-plugin modules=1 inserts=0 updates=1 skipped=2 layouts=0 pages=1 components=1 variables=1
+[2025-09-03T16:13:23-03:00] [PLUGIN:test-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T16:13:23-03:00] [PLUGIN:test-plugin] [ok] finalizado
+[2025-09-03T16:13:23-03:00] [INFO] [PLUGIN:test-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T16:13:38-03:00] [INFO] [PLUGIN:test-plugin] Início processamento (atualizacao) origem_tipo=upload reprocessar=1
+[2025-09-03T16:13:38-03:00] [PLUGIN:test-plugin] Iniciando processamento slug=test-plugin origem=upload
+[2025-09-03T16:13:38-03:00] [PLUGIN:test-plugin] [ok] arquivo upload copiado
+[2025-09-03T16:13:38-03:00] [PLUGIN:test-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin
+[2025-09-03T16:13:38-03:00] [PLUGIN:test-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/test-plugin
+[2025-09-03T16:13:38-03:00] [PLUGIN:test-plugin] [ok] Data.json localizado em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin/db/data/Data.json
+[2025-09-03T16:13:38-03:00] [PLUGIN:test-plugin] [ok] Data.json copiado (estatísticas: {"resources":1})
+[2025-09-03T16:13:38-03:00] [PLUGIN:test-plugin] [ok] sync granular plugin=test-plugin inserts=0 updates=1 skipped=3
+[2025-09-03T16:13:38-03:00] [PLUGIN:test-plugin] [ok] sync módulos plugin=test-plugin modules=1 inserts=0 updates=1 skipped=2 layouts=0 pages=1 components=1 variables=1
+[2025-09-03T16:13:38-03:00] [PLUGIN:test-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T16:13:38-03:00] [PLUGIN:test-plugin] [ok] finalizado
+[2025-09-03T16:13:38-03:00] [INFO] [PLUGIN:test-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T16:22:50-03:00] [INFO] [PLUGIN:test-plugin] Início processamento (atualizacao) origem_tipo=upload
+[2025-09-03T16:22:50-03:00] [PLUGIN:test-plugin] Iniciando processamento slug=test-plugin origem=upload
+[2025-09-03T16:22:50-03:00] [PLUGIN:test-plugin] [erro] arquivo upload não encontrado
+[2025-09-03T16:22:50-03:00] [ERROR] [PLUGIN:test-plugin] Processo finalizado com código 10 (PARAMS_OR_FILE)
+[2025-09-03T16:23:26-03:00] [INFO] [PLUGIN:test-plugin] Início processamento (atualizacao) origem_tipo=upload
+[2025-09-03T16:23:26-03:00] [PLUGIN:test-plugin] Iniciando processamento slug=test-plugin origem=upload
+[2025-09-03T16:23:26-03:00] [PLUGIN:test-plugin] [ok] arquivo upload copiado
+[2025-09-03T16:23:26-03:00] [PLUGIN:test-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin
+[2025-09-03T16:23:26-03:00] [PLUGIN:test-plugin] [ok] backup criado em /var/www/sites/localhost/conn2flow-gestor/plugins/_backups/test-plugin-20250903-162326.zip
+[2025-09-03T16:23:26-03:00] [PLUGIN:test-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/test-plugin
+[2025-09-03T16:23:26-03:00] [PLUGIN:test-plugin] [ok] Data.json localizado em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/test-plugin/db/data/Data.json
+[2025-09-03T16:23:26-03:00] [PLUGIN:test-plugin] [ok] Data.json copiado (estatísticas: {"resources":1})
+[2025-09-03T16:23:26-03:00] [PLUGIN:test-plugin] [ok] sync granular plugin=test-plugin inserts=0 updates=1 skipped=3
+[2025-09-03T16:23:26-03:00] [PLUGIN:test-plugin] [ok] sync módulos plugin=test-plugin modules=1 inserts=0 updates=1 skipped=2 layouts=0 pages=1 components=1 variables=1
+[2025-09-03T16:23:26-03:00] [PLUGIN:test-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T16:23:26-03:00] [PLUGIN:test-plugin] [ok] finalizado
+[2025-09-03T16:23:26-03:00] [INFO] [PLUGIN:test-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T19:34:32-03:00] [INFO] [PLUGIN:example-plugin] Início processamento (instalacao) origem_tipo=upload
+[2025-09-03T19:34:32-03:00] [PLUGIN:example-plugin] Iniciando processamento slug=example-plugin origem=upload
+[2025-09-03T19:34:32-03:00] [PLUGIN:example-plugin] [erro] arquivo upload não encontrado
+[2025-09-03T19:34:32-03:00] [ERROR] [PLUGIN:example-plugin] Processo finalizado com código 10 (PARAMS_OR_FILE)
+[2025-09-03T19:34:55-03:00] [INFO] [PLUGIN:example-plugin] Início processamento (instalacao) origem_tipo=upload
+[2025-09-03T19:34:56-03:00] [PLUGIN:example-plugin] Iniciando processamento slug=example-plugin origem=upload
+[2025-09-03T19:34:56-03:00] [PLUGIN:example-plugin] [ok] arquivo upload copiado
+[2025-09-03T19:34:56-03:00] [PLUGIN:example-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/example-plugin
+[2025-09-03T19:34:56-03:00] [PLUGIN:example-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/example-plugin
+[2025-09-03T19:34:56-03:00] [PLUGIN:example-plugin] [warn] Data.json não encontrado após varredura recursiva
+[2025-09-03T19:34:56-03:00] [PLUGIN:example-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T19:34:56-03:00] [PLUGIN:example-plugin] [ok] finalizado
+[2025-09-03T19:34:56-03:00] [INFO] [PLUGIN:example-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T19:43:27-03:00] [INFO] [PLUGIN:example-plugin] Início processamento (atualizacao) origem_tipo=upload reprocessar=1
+[2025-09-03T19:43:28-03:00] [PLUGIN:example-plugin] Iniciando processamento slug=example-plugin origem=upload
+[2025-09-03T19:43:28-03:00] [PLUGIN:example-plugin] [ok] arquivo upload copiado
+[2025-09-03T19:43:28-03:00] [PLUGIN:example-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/example-plugin
+[2025-09-03T19:43:28-03:00] [PLUGIN:example-plugin] [ok] backup criado em /var/www/sites/localhost/conn2flow-gestor/plugins/_backups/example-plugin-20250903-194327.zip
+[2025-09-03T19:43:28-03:00] [PLUGIN:example-plugin] [ok] diretório final atualizado: /var/www/sites/localhost/conn2flow-gestor/plugins/example-plugin
+[2025-09-03T19:43:28-03:00] [PLUGIN:example-plugin] [erro] migrações plugin falharam: Invalid version `20250903`, should be in format `YYYYMMDDHHMMSS` (length of 14).
+[2025-09-03T19:43:28-03:00] [PLUGIN:example-plugin] [ok] Detectado modo multi-arquivos de dados (layouts, paginas, componentes, variaveis)
+[2025-09-03T19:43:28-03:00] [PLUGIN:example-plugin] [ok] sync módulos plugin=example-plugin modules=1 inserts=0 updates=7 skipped=0 layouts=0 pages=1 components=3 variables=3
+[2025-09-03T19:43:28-03:00] [PLUGIN:example-plugin] [ok] multi-data sincronizado plugin=example-plugin layouts=2 pages=3 components=6 variables=6 inserts=17 updates=0 skipped=0
+[2025-09-03T19:43:28-03:00] [PLUGIN:example-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T19:43:28-03:00] [PLUGIN:example-plugin] [ok] finalizado
+[2025-09-03T19:43:28-03:00] [INFO] [PLUGIN:example-plugin] Processo finalizado com código 0 (OK)
+[2025-09-03T19:45:47-03:00] [INFO] [PLUGIN:example-plugin] Início processamento (atualizacao) origem_tipo=upload reprocessar=1
+[2025-09-03T19:45:47-03:00] [PLUGIN:example-plugin] Iniciando processamento slug=example-plugin origem=upload
+[2025-09-03T19:45:47-03:00] [PLUGIN:example-plugin] [ok] arquivo upload copiado
+[2025-09-03T19:45:47-03:00] [PLUGIN:example-plugin] [ok] extração realizada em /var/www/sites/localhost/conn2flow-gestor/temp/plugins/example-plugin
+[2025-09-03T19:45:47-03:00] [PLUGIN:example-plugin] [info] DRY-RUN: pulando move para diretório final
+[2025-09-03T19:45:47-03:00] [PLUGIN:example-plugin] [erro] migrações plugin falharam: Invalid version `20250903`, should be in format `YYYYMMDDHHMMSS` (length of 14).
+[2025-09-03T19:45:48-03:00] [PLUGIN:example-plugin] [info] DRY-RUN: analisando Data.json(s) sem aplicar no banco
+[2025-09-03T19:45:48-03:00] [PLUGIN:example-plugin] [info] multi-arquivos detectados (dry-run)
+[2025-09-03T19:45:48-03:00] [PLUGIN:example-plugin] [ok] metadados persistidos na tabela plugins
+[2025-09-03T19:45:48-03:00] [PLUGIN:example-plugin] [ok] finalizado
+[2025-09-03T19:45:48-03:00] [INFO] [PLUGIN:example-plugin] Processo finalizado com código 0 (OK)

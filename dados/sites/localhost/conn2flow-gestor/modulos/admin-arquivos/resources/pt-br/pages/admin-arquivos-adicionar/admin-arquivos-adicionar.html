@@ -1,0 +1,114 @@
+<!-- botao-voltar < -->
+<a class="botaoVoltar" href="#url#">
+    <i class="arrow circle left big link icon"></i>
+</a><!-- botao-voltar > -->
+<h1 class="ui header">@[[pagina#titulo]]@</h1>
+<div class="ui large header">@[[add-files-options-header]]@</div>
+<div class="ui grid stackable">
+    <div class="six wide column">
+        <div class="ui medium header">@[[add-files-label]]@</div>
+        <p>
+            <input id="fileupload" type="file" name="files[]" multiple="">
+            <label for="fileupload" class="ui button positive">@[[add-button-label]]@</label>
+        </p>
+    </div>
+    <div class="ten wide column">
+        <div class="ui medium header">@[[add-categories-label]]@</div>
+        <div class="ui teal message">@[[add-categories-info]]@</div>
+        <span>#select-categories#</span>
+    </div>
+    <div class="six wide column">
+        <div class="fileButtonsAll hidden">
+            <div class="ui medium header">@[[add-buttons-header]]@</div>
+            <button class="ui positive button fileSendAll">@[[add-file-buton-all-send]]@</button>
+            <button class="ui negative button fileCancelAll">@[[add-file-buton-all-cancel]]@</button>
+        </div>
+    </div>
+    <div class="ten wide column">
+        <div class="fileWaitAll hidden">
+            <div class="ui medium header">@[[add-status-header]]@</div>
+            <div class="ui blue filling indeterminate progress">
+                <div class="bar">
+                    <div class="progress">@[[add-file-progress-waiting]]@</div>
+                </div>
+            </div>
+        </div>
+        <div class="fileProgressAll hidden">
+            <div class="ui medium header">@[[add-status-header]]@</div>
+            <div class="ui indicating progress" data-percent="0">
+                <div class="bar">
+                    <div class="progress"></div>
+                </div>
+                <div class="label">@[[add-file-progress-all]]@</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui large header hidden filesHeader">@[[add-files-header]]@</div>
+<div id="files-cont"></div>
+<!-- files-cel < -->
+<div class="ui segment">
+    <div class="ui grid stackable">
+        <div class="four wide column">
+            <img class="ui image" style="width: 200px; height: 200px; object-fit: cover;" id="#file-img-id#"
+                src="#file-img-src#">
+        </div>
+        <div class="eight wide column middle aligned">
+            <table class="ui definition table">
+                <tbody>
+                    <tr>
+                        <td class="five wide">@[[add-file-name]]@</td>
+                        <td class="eleven wide">#file-name#</td>
+                    </tr>
+                    <tr>
+                        <td>@[[add-file-last-modified]]@</td>
+                        <td>#file-last-modified#</td>
+                    </tr>
+                    <tr>
+                        <td>@[[add-file-size]]@</td>
+                        <td>#file-size#</td>
+                    </tr>
+                    <tr>
+                        <td>@[[add-file-type]]@</td>
+                        <td>#file-type#</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="four wide column middle aligned">
+            <div class="fileWait">
+                <div class="ui blue filling indeterminate progress">
+                    <div class="bar">
+                        <div class="progress">@[[add-file-progress-waiting]]@</div>
+                    </div>
+                </div>
+            </div>
+            <div class="fileProgress hidden">
+                <div class="ui indicating progress" data-percent="0">
+                    <div class="bar">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="label">@[[add-file-progress]]@</div>
+                </div>
+            </div>
+            <div class="ui container center aligned">
+                <button class="ui positive button fileSend">@[[add-file-buton-send]]@</button>
+                <button class="ui negative button fileCancel">@[[add-file-buton-cancel]]@</button>
+                <div class="fileDone hidden">
+                    <!-- btn-select < -->
+                    <button class="ui blue button fileSelect">@[[add-files-select]]@</button><!-- btn-select > -->
+                    <!-- btn-copy < -->
+                    <button
+                        class="ui blue button fileCopyClipboard">@[[add-files-copy-clipboard]]@</button><!-- btn-copy > -->
+                </div>
+            </div>
+            <div class="fileError hidden">
+                <div class="ui negative message">
+                    <div class="header"> @[[add-file-progress-error-head]]@ </div>
+                    <p class="fileErrorBody">erro</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- files-cel > -->

@@ -1,0 +1,697 @@
+[2025-08-29 09:04:14] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 09:04:14] Executando migrações...
+[2025-08-29 09:04:14] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 09:04:15] Migrações concluídas.
+[2025-08-29 09:04:15] CHECKSUM_CHANGED_TABLES=componentes,paginas,variaveis
+[2025-08-29 09:04:15] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 09:04:15] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 09:04:15] Sincronizando tabela componentes ...
+[2025-08-29 09:04:15] SYNC_INI tabela=componentes modo=natural qtdJson=86
+[2025-08-29 09:04:15] Atualização componentes PK=pt-br|impressao-cabecalho Campos: framework_css [NULL => fomantic-ui]
+[2025-08-29 09:04:15] Atualização componentes PK=pt-br|tabela-cupons-prioridade Campos: framework_css [NULL => fomantic-ui]
+[2025-08-29 09:04:15] Atualização componentes PK=pt-br|impressao-cabecalho-escalas Campos: framework_css [NULL => fomantic-ui]
+[2025-08-29 09:04:15] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 09:04:15] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-090415.json"
+[2025-08-29 09:04:15] SYNC_FIM tabela=componentes +0 ~3 =83 orphans=1 modo=natural
+[2025-08-29 09:04:15] Resumo comparação - componentes => inserções=0, atualizações=3, sem_alteracao=83
+[2025-08-29 09:04:15] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 09:04:15] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 09:04:15] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 09:04:15] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 09:04:15] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 09:04:15] Sincronizando tabela paginas ...
+[2025-08-29 09:04:15] SYNC_INI tabela=paginas modo=natural qtdJson=186
+[2025-08-29 09:04:15] Atualização paginas PK=pt-br|agendamentos|agendamentos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-29 09:04:15] Atualização paginas PK=pt-br|agendamentos|cupons-de-prioridade Campos: framework_css [NULL => fomantic-ui]
+[2025-08-29 09:04:15] Atualização paginas PK=pt-br|agendamentos|cupons-de-prioridade-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-29 09:04:15] Atualização paginas PK=pt-br|agendamentos|cupons-de-prioridade-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-29 09:04:15] Atualização paginas PK=pt-br|configuracoes-agendamentos|configuracoes-de-agendamentos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-29 09:04:15] Atualização paginas PK=pt-br|configuracoes-escalas|configuracoes-de-escala Campos: framework_css [NULL => fomantic-ui]
+[2025-08-29 09:04:15] Atualização paginas PK=pt-br|escalas|escalas Campos: framework_css [NULL => fomantic-ui]
+[2025-08-29 09:04:15] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes-disparar
+[2025-08-29 09:04:15] ORPHANS_EXPORTED tabela=paginas qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/paginas-orphans-20250829-090415.json"
+[2025-08-29 09:04:15] SYNC_FIM tabela=paginas +0 ~7 =179 orphans=1 modo=natural
+[2025-08-29 09:04:15] Resumo comparação - paginas => inserções=0, atualizações=7, sem_alteracao=179
+[2025-08-29 09:04:15] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 09:04:15] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 09:04:15] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 09:04:15] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 09:04:15] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 09:04:15] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 09:04:15] Sincronizando tabela variaveis ...
+[2025-08-29 09:04:15] SYNC_INI tabela=variaveis modo=natural qtdJson=1342
+[2025-08-29 09:04:15] SYNC_FIM tabela=variaveis +2 ~0 =1340 orphans=0 modo=natural
+[2025-08-29 09:04:15] Resumo comparação - variaveis => inserções=2, atualizações=0, sem_alteracao=1340
+[2025-08-29 09:04:15] MANAGER_UPDATES_REGISTRADO id=48
+[2025-08-29 09:04:15] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~3 =83
+📦 paginas => +0 ~7 =179
+📦 variaveis => +2 ~0 =1340
+Σ TOTAL => +2 ~10 =1602
+
+[2025-08-29 09:04:15] Rotina concluída com sucesso.
+[2025-08-29 09:10:00] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 09:10:00] Executando migrações...
+[2025-08-29 09:10:00] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 09:10:01] Migrações concluídas.
+[2025-08-29 09:10:01] CHECKSUM_CHANGED_TABLES=variaveis
+[2025-08-29 09:10:01] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=componentes
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 09:10:01] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 09:10:01] Sincronizando tabela variaveis ...
+[2025-08-29 09:10:01] SYNC_INI tabela=variaveis modo=natural qtdJson=1343
+[2025-08-29 09:10:01] SYNC_FIM tabela=variaveis +1 ~0 =1342 orphans=0 modo=natural
+[2025-08-29 09:10:01] Resumo comparação - variaveis => inserções=1, atualizações=0, sem_alteracao=1342
+[2025-08-29 09:10:01] MANAGER_UPDATES_REGISTRADO id=49
+[2025-08-29 09:10:01] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 variaveis => +1 ~0 =1342
+Σ TOTAL => +1 ~0 =1342
+
+[2025-08-29 09:10:01] Rotina concluída com sucesso.
+[2025-08-29 09:24:02] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 09:24:02] Executando migrações...
+[2025-08-29 09:24:02] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 09:24:03] Migrações concluídas.
+[2025-08-29 09:24:03] CHECKSUM_CHANGED_TABLES=paginas,variaveis
+[2025-08-29 09:24:03] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=componentes
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 09:24:03] Sincronizando tabela paginas ...
+[2025-08-29 09:24:03] SYNC_INI tabela=paginas modo=natural qtdJson=186
+[2025-08-29 09:24:03] Atualização paginas PK=pt-br|admin-paginas|admin-paginas-adicionar Campos: html [<div class="field">\n    <label>#form-name-label#</label>... => <div class="field">\n    <label>#form-name-label#</label>...], versao [1 => 2], file_version [1.1 => 1.2], checksum [{"html":"0880fe0c78efeb8d80cc7c1c07e8d2c5","css":"0c9ea4a... => {"html":"d3f1d72452e9c7471f01c84af9b70fe7","css":"0c9ea4a...]
+[2025-08-29 09:24:03] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes-disparar
+[2025-08-29 09:24:03] ORPHANS_EXPORTED tabela=paginas qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/paginas-orphans-20250829-092403.json"
+[2025-08-29 09:24:03] SYNC_FIM tabela=paginas +0 ~1 =185 orphans=1 modo=natural
+[2025-08-29 09:24:03] Resumo comparação - paginas => inserções=0, atualizações=1, sem_alteracao=185
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 09:24:03] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 09:24:03] Sincronizando tabela variaveis ...
+[2025-08-29 09:24:03] SYNC_INI tabela=variaveis modo=natural qtdJson=1344
+[2025-08-29 09:24:03] SYNC_FIM tabela=variaveis +1 ~0 =1343 orphans=0 modo=natural
+[2025-08-29 09:24:03] Resumo comparação - variaveis => inserções=1, atualizações=0, sem_alteracao=1343
+[2025-08-29 09:24:03] MANAGER_UPDATES_REGISTRADO id=50
+[2025-08-29 09:24:03] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 paginas => +0 ~1 =185
+📦 variaveis => +1 ~0 =1343
+Σ TOTAL => +1 ~1 =1528
+
+[2025-08-29 09:24:03] Rotina concluída com sucesso.
+[2025-08-29 09:25:27] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 09:25:27] Executando migrações...
+[2025-08-29 09:25:28] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 09:25:28] Migrações concluídas.
+[2025-08-29 09:25:28] CHECKSUM_NENHUMA_TABELA_MUDOU
+[2025-08-29 09:25:28] SEM_MUDANCAS_DADOS -> pulando sincronizacao
+[2025-08-29 09:25:28] MANAGER_UPDATES_REGISTRADO id=51
+[2025-08-29 09:25:28] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+Σ TOTAL => +0 ~0 =0
+
+[2025-08-29 09:25:28] Rotina concluída com sucesso.
+[2025-08-29 09:36:52] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 09:36:52] Executando migrações...
+[2025-08-29 09:36:53] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 09:36:53] Migrações concluídas.
+[2025-08-29 09:36:53] CHECKSUM_NENHUMA_TABELA_MUDOU
+[2025-08-29 09:36:53] SEM_MUDANCAS_DADOS -> pulando sincronizacao
+[2025-08-29 09:36:53] MANAGER_UPDATES_REGISTRADO id=52
+[2025-08-29 09:36:53] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+Σ TOTAL => +0 ~0 =0
+
+[2025-08-29 09:36:53] Rotina concluída com sucesso.
+[2025-08-29 09:38:27] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 09:38:27] Executando migrações...
+[2025-08-29 09:38:28] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 09:38:28] Migrações concluídas.
+[2025-08-29 09:38:29] CHECKSUM_CHANGED_TABLES=paginas
+[2025-08-29 09:38:29] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=componentes
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 09:38:29] Sincronizando tabela paginas ...
+[2025-08-29 09:38:29] SYNC_INI tabela=paginas modo=natural qtdJson=186
+[2025-08-29 09:38:29] Atualização paginas PK=pt-br|admin-paginas|admin-paginas-editar Campos: html [<div class="ui blue message"> @[[form-url-label]]@: <b>\n... => <div class="ui blue message"> @[[form-url-label]]@: <b>\n...], versao [1 => 2], file_version [1.1 => 1.2], checksum [{"html":"36b79f4f7655d7cdfaec91e831e1fbc7","css":"","comb... => {"html":"d95e5473fb4f95f0b1f9a8b97f713449","css":"","comb...]
+[2025-08-29 09:38:29] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes-disparar
+[2025-08-29 09:38:29] ORPHANS_EXPORTED tabela=paginas qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/paginas-orphans-20250829-093829.json"
+[2025-08-29 09:38:29] SYNC_FIM tabela=paginas +0 ~1 =185 orphans=1 modo=natural
+[2025-08-29 09:38:29] Resumo comparação - paginas => inserções=0, atualizações=1, sem_alteracao=185
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 09:38:29] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-08-29 09:38:29] MANAGER_UPDATES_REGISTRADO id=53
+[2025-08-29 09:38:29] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 paginas => +0 ~1 =185
+Σ TOTAL => +0 ~1 =185
+
+[2025-08-29 09:38:29] Rotina concluída com sucesso.
+[2025-08-29 09:54:24] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 09:54:24] Executando migrações...
+[2025-08-29 09:54:24] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 09:54:25] Migrações concluídas.
+[2025-08-29 09:54:25] CHECKSUM_CHANGED_TABLES=componentes
+[2025-08-29 09:54:25] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 09:54:25] Sincronizando tabela componentes ...
+[2025-08-29 09:54:25] SYNC_INI tabela=componentes modo=natural qtdJson=86
+[2025-08-29 09:54:25] Atualização componentes PK=pt-br|interface-formulario-inclusao Campos: html [<h1 class="ui header">#titulo#</h1>\n<!-- botoes < --><di... => <h1 class="ui header">#titulo#</h1>\n<!-- botoes < -->\n<...], versao [1 => 2], file_version [1.2 => 1.3], checksum [{"html":"a4573ded54ad96a83a9c9021594bf08c","css":"1141c97... => {"html":"d6414f260f28ce0fbbe367d42a37fbd5","css":"1141c97...]
+[2025-08-29 09:54:25] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 09:54:25] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-095425.json"
+[2025-08-29 09:54:25] SYNC_FIM tabela=componentes +0 ~1 =85 orphans=1 modo=natural
+[2025-08-29 09:54:25] Resumo comparação - componentes => inserções=0, atualizações=1, sem_alteracao=85
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 09:54:25] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-08-29 09:54:25] MANAGER_UPDATES_REGISTRADO id=54
+[2025-08-29 09:54:25] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~1 =85
+Σ TOTAL => +0 ~1 =85
+
+[2025-08-29 09:54:25] Rotina concluída com sucesso.
+[2025-08-29 10:16:54] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 10:16:54] Executando migrações...
+[2025-08-29 10:16:55] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 10:16:55] Migrações concluídas.
+[2025-08-29 10:16:55] CHECKSUM_CHANGED_TABLES=componentes,variaveis
+[2025-08-29 10:16:55] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 10:16:55] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 10:16:55] Sincronizando tabela componentes ...
+[2025-08-29 10:16:55] SYNC_INI tabela=componentes modo=natural qtdJson=86
+[2025-08-29 10:16:55] Atualização componentes PK=pt-br|interface-formulario-inclusao Campos: html [<h1 class="ui header">#titulo#</h1>\n<!-- botoes < -->\n<... => <h1 class="ui header">#titulo#</h1>\n<!-- botoes < -->\n<...], versao [2 => 3], file_version [1.3 => 1.4], checksum [{"html":"d6414f260f28ce0fbbe367d42a37fbd5","css":"1141c97... => {"html":"199dce841ffe5da79f87aceef5869e67","css":"1141c97...]
+[2025-08-29 10:16:55] Atualização componentes PK=pt-br|interface-formulario-edicao Campos: html [<h1 class="ui header">#titulo#</h1>\n<!-- botoes < --><di... => <h1 class="ui header">#titulo#</h1>\n<!-- botoes < -->\n<...], versao [1 => 2], file_version [1.2 => 1.3], checksum [{"html":"66d0b2b64a3b00263c2a8eaa193867a3","css":"a1c884e... => {"html":"eedc600e68b0a47bb10ca7bac6fad346","css":"a1c884e...]
+[2025-08-29 10:16:55] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 10:16:55] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-101655.json"
+[2025-08-29 10:16:55] SYNC_FIM tabela=componentes +0 ~2 =84 orphans=1 modo=natural
+[2025-08-29 10:16:55] Resumo comparação - componentes => inserções=0, atualizações=2, sem_alteracao=84
+[2025-08-29 10:16:55] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 10:16:55] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 10:16:55] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 10:16:55] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 10:16:55] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 10:16:55] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 10:16:55] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 10:16:56] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 10:16:56] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 10:16:56] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 10:16:56] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 10:16:56] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 10:16:56] Sincronizando tabela variaveis ...
+[2025-08-29 10:16:56] SYNC_INI tabela=variaveis modo=natural qtdJson=1346
+[2025-08-29 10:16:56] SYNC_FIM tabela=variaveis +2 ~0 =1344 orphans=0 modo=natural
+[2025-08-29 10:16:56] Resumo comparação - variaveis => inserções=2, atualizações=0, sem_alteracao=1344
+[2025-08-29 10:16:56] MANAGER_UPDATES_REGISTRADO id=55
+[2025-08-29 10:16:56] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~2 =84
+📦 variaveis => +2 ~0 =1344
+Σ TOTAL => +2 ~2 =1428
+
+[2025-08-29 10:16:56] Rotina concluída com sucesso.
+[2025-08-29 10:20:20] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 10:20:20] Executando migrações...
+[2025-08-29 10:20:20] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 10:20:21] Migrações concluídas.
+[2025-08-29 10:20:21] CHECKSUM_CHANGED_TABLES=componentes
+[2025-08-29 10:20:21] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 10:20:21] Sincronizando tabela componentes ...
+[2025-08-29 10:20:21] SYNC_INI tabela=componentes modo=natural qtdJson=86
+[2025-08-29 10:20:21] Atualização componentes PK=pt-br|interface-formulario-inclusao Campos: html [<h1 class="ui header">#titulo#</h1>\n<!-- botoes < -->\n<... => <h1 class="ui header">#titulo#</h1>\n<!-- botoes < -->\n<...], versao [3 => 4], file_version [1.4 => 1.5], checksum [{"html":"199dce841ffe5da79f87aceef5869e67","css":"1141c97... => {"html":"63d68cb375343a9393cf8fd7bc1219f3","css":"1141c97...]
+[2025-08-29 10:20:21] Atualização componentes PK=pt-br|interface-formulario-edicao Campos: html [<h1 class="ui header">#titulo#</h1>\n<!-- botoes < -->\n<... => <h1 class="ui header">#titulo#</h1>\n<!-- botoes < -->\n<...], versao [2 => 3], file_version [1.3 => 1.4], checksum [{"html":"eedc600e68b0a47bb10ca7bac6fad346","css":"a1c884e... => {"html":"79d5e4ef47b76143eb838728cb81eee8","css":"a1c884e...]
+[2025-08-29 10:20:21] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 10:20:21] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-102021.json"
+[2025-08-29 10:20:21] SYNC_FIM tabela=componentes +0 ~2 =84 orphans=1 modo=natural
+[2025-08-29 10:20:21] Resumo comparação - componentes => inserções=0, atualizações=2, sem_alteracao=84
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 10:20:21] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-08-29 10:20:21] MANAGER_UPDATES_REGISTRADO id=56
+[2025-08-29 10:20:21] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~2 =84
+Σ TOTAL => +0 ~2 =84
+
+[2025-08-29 10:20:21] Rotina concluída com sucesso.
+[2025-08-29 10:44:41] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 10:44:41] Executando migrações...
+[2025-08-29 10:44:42] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 10:44:42] Migrações concluídas.
+[2025-08-29 10:44:42] CHECKSUM_CHANGED_TABLES=componentes,paginas
+[2025-08-29 10:44:42] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 10:44:42] Sincronizando tabela componentes ...
+[2025-08-29 10:44:42] SYNC_INI tabela=componentes modo=natural qtdJson=87
+[2025-08-29 10:44:42] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 10:44:42] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-104442.json"
+[2025-08-29 10:44:42] SYNC_FIM tabela=componentes +1 ~0 =86 orphans=1 modo=natural
+[2025-08-29 10:44:42] Resumo comparação - componentes => inserções=1, atualizações=0, sem_alteracao=86
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 10:44:42] Sincronizando tabela paginas ...
+[2025-08-29 10:44:42] SYNC_INI tabela=paginas modo=natural qtdJson=186
+[2025-08-29 10:44:42] Atualização paginas PK=pt-br|admin-paginas|admin-paginas-editar Campos: html [<div class="ui blue message"> @[[form-url-label]]@: <b>\n... => <div class="ui blue message"> @[[form-url-label]]@: <b>\n...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"d95e5473fb4f95f0b1f9a8b97f713449","css":"","comb... => {"html":"c1cb3fd90215b3f38b6c7cc571f522ff","css":"","comb...]
+[2025-08-29 10:44:42] Atualização paginas PK=pt-br|admin-paginas|admin-paginas-adicionar Campos: html [<div class="field">\n    <label>#form-name-label#</label>... => <div class="field">\n    <label>#form-name-label#</label>...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"d3f1d72452e9c7471f01c84af9b70fe7","css":"0c9ea4a... => {"html":"0eecf845e6efd8d9ae1846810cbab405","css":"0c9ea4a...]
+[2025-08-29 10:44:42] Atualização paginas PK=pt-br|perfil-usuario|acessar-sistema Campos: html [<div class="ui stackable two column centered grid">\n    ... => <div class="ui stackable two column centered grid">\n    ...], versao [3 => 1]
+[2025-08-29 10:44:42] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes-disparar
+[2025-08-29 10:44:42] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||teste-de-pagina
+[2025-08-29 10:44:42] ORPHANS_EXPORTED tabela=paginas qtd=2 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/paginas-orphans-20250829-104442.json"
+[2025-08-29 10:44:42] SYNC_FIM tabela=paginas +0 ~3 =183 orphans=2 modo=natural
+[2025-08-29 10:44:42] Resumo comparação - paginas => inserções=0, atualizações=3, sem_alteracao=183
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 10:44:42] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-08-29 10:44:42] MANAGER_UPDATES_REGISTRADO id=57
+[2025-08-29 10:44:42] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +1 ~0 =86
+📦 paginas => +0 ~3 =183
+Σ TOTAL => +1 ~3 =269
+
+[2025-08-29 10:44:42] Rotina concluída com sucesso.
+[2025-08-29 10:46:17] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 10:46:17] Executando migrações...
+[2025-08-29 10:46:18] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 10:46:18] Migrações concluídas.
+[2025-08-29 10:46:18] CHECKSUM_CHANGED_TABLES=componentes
+[2025-08-29 10:46:18] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 10:46:18] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 10:46:18] Sincronizando tabela componentes ...
+[2025-08-29 10:46:18] SYNC_INI tabela=componentes modo=natural qtdJson=87
+[2025-08-29 10:46:18] Atualização componentes PK=pt-br|modal-pagina Campos: html [<div class="ui modal longer">\n    <div class="header">#t... => <div class="ui modal longer previsualizar">\n    <div cla...], versao [1 => 2], file_version [1.0 => 1.1], checksum [{"html":"e7cb3210979aa66378f3cdc51334021f","css":"","comb... => {"html":"739fd5e2baf671b470b61fdd70d4c847","css":"","comb...]
+[2025-08-29 10:46:18] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 10:46:18] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-104618.json"
+[2025-08-29 10:46:18] SYNC_FIM tabela=componentes +0 ~1 =86 orphans=1 modo=natural
+[2025-08-29 10:46:18] Resumo comparação - componentes => inserções=0, atualizações=1, sem_alteracao=86
+[2025-08-29 10:46:18] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 10:46:18] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 10:46:18] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 10:46:18] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 10:46:18] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 10:46:18] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 10:46:18] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 10:46:18] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 10:46:18] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 10:46:18] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 10:46:18] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 10:46:19] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 10:46:19] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-08-29 10:46:19] MANAGER_UPDATES_REGISTRADO id=58
+[2025-08-29 10:46:19] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~1 =86
+Σ TOTAL => +0 ~1 =86
+
+[2025-08-29 10:46:19] Rotina concluída com sucesso.
+[2025-08-29 10:49:42] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 10:49:42] Executando migrações...
+[2025-08-29 10:49:43] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 10:49:43] Migrações concluídas.
+[2025-08-29 10:49:43] CHECKSUM_NENHUMA_TABELA_MUDOU
+[2025-08-29 10:49:43] SEM_MUDANCAS_DADOS -> pulando sincronizacao
+[2025-08-29 10:49:43] MANAGER_UPDATES_REGISTRADO id=59
+[2025-08-29 10:49:44] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+Σ TOTAL => +0 ~0 =0
+
+[2025-08-29 10:49:44] Rotina concluída com sucesso.
+[2025-08-29 11:33:32] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 11:33:32] Executando migrações...
+[2025-08-29 11:33:32] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 11:33:33] Migrações concluídas.
+[2025-08-29 11:33:33] CHECKSUM_CHANGED_TABLES=componentes,variaveis
+[2025-08-29 11:33:33] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 11:33:33] Sincronizando tabela componentes ...
+[2025-08-29 11:33:33] SYNC_INI tabela=componentes modo=natural qtdJson=87
+[2025-08-29 11:33:33] Atualização componentes PK=pt-br|modal-pagina Campos: html [<div class="ui modal longer previsualizar">\n    <div cla... => <div class="ui modal longer previsualizar">\n    <div cla...], versao [2 => 3], file_version [1.1 => 1.2], checksum [{"html":"739fd5e2baf671b470b61fdd70d4c847","css":"","comb... => {"html":"272a27b33235670b0f343f97e82f73e3","css":"","comb...]
+[2025-08-29 11:33:33] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 11:33:33] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-113333.json"
+[2025-08-29 11:33:33] SYNC_FIM tabela=componentes +0 ~1 =86 orphans=1 modo=natural
+[2025-08-29 11:33:33] Resumo comparação - componentes => inserções=0, atualizações=1, sem_alteracao=86
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 11:33:33] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 11:33:33] Sincronizando tabela variaveis ...
+[2025-08-29 11:33:33] SYNC_INI tabela=variaveis modo=natural qtdJson=1348
+[2025-08-29 11:33:33] SYNC_FIM tabela=variaveis +2 ~0 =1346 orphans=0 modo=natural
+[2025-08-29 11:33:33] Resumo comparação - variaveis => inserções=2, atualizações=0, sem_alteracao=1346
+[2025-08-29 11:33:33] MANAGER_UPDATES_REGISTRADO id=60
+[2025-08-29 11:33:33] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~1 =86
+📦 variaveis => +2 ~0 =1346
+Σ TOTAL => +2 ~1 =1432
+
+[2025-08-29 11:33:33] Rotina concluída com sucesso.
+[2025-08-29 11:53:46] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 11:53:46] Executando migrações...
+[2025-08-29 11:53:47] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 11:53:47] Migrações concluídas.
+[2025-08-29 11:53:47] CHECKSUM_CHANGED_TABLES=componentes,variaveis
+[2025-08-29 11:53:47] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 11:53:47] Sincronizando tabela componentes ...
+[2025-08-29 11:53:47] SYNC_INI tabela=componentes modo=natural qtdJson=87
+[2025-08-29 11:53:47] Atualização componentes PK=pt-br|modal-pagina Campos: html [<div class="ui modal longer previsualizar">\n    <div cla... => <div class="ui modal longer previsualizar">\n    <div cla...], versao [3 => 4], file_version [1.2 => 1.3], checksum [{"html":"272a27b33235670b0f343f97e82f73e3","css":"","comb... => {"html":"2b93a52f072b4aaef8f0227e083e3762","css":"","comb...]
+[2025-08-29 11:53:47] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 11:53:47] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-115347.json"
+[2025-08-29 11:53:47] SYNC_FIM tabela=componentes +0 ~1 =86 orphans=1 modo=natural
+[2025-08-29 11:53:47] Resumo comparação - componentes => inserções=0, atualizações=1, sem_alteracao=86
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 11:53:47] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 11:53:47] Sincronizando tabela variaveis ...
+[2025-08-29 11:53:47] SYNC_INI tabela=variaveis modo=natural qtdJson=1351
+[2025-08-29 11:53:47] SYNC_FIM tabela=variaveis +3 ~0 =1348 orphans=0 modo=natural
+[2025-08-29 11:53:47] Resumo comparação - variaveis => inserções=3, atualizações=0, sem_alteracao=1348
+[2025-08-29 11:53:47] MANAGER_UPDATES_REGISTRADO id=61
+[2025-08-29 11:53:47] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~1 =86
+📦 variaveis => +3 ~0 =1348
+Σ TOTAL => +3 ~1 =1434
+
+[2025-08-29 11:53:47] Rotina concluída com sucesso.
+[2025-08-29 11:57:10] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 11:57:10] Executando migrações...
+[2025-08-29 11:57:11] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 11:57:11] Migrações concluídas.
+[2025-08-29 11:57:11] CHECKSUM_CHANGED_TABLES=componentes
+[2025-08-29 11:57:11] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 11:57:11] Sincronizando tabela componentes ...
+[2025-08-29 11:57:11] SYNC_INI tabela=componentes modo=natural qtdJson=87
+[2025-08-29 11:57:11] Atualização componentes PK=pt-br|modal-pagina Campos: html [<div class="ui modal longer previsualizar">\n    <div cla... => <div class="ui modal fullscreen previsualizar">\n    <div...], versao [4 => 5], file_version [1.3 => 1.4], checksum [{"html":"2b93a52f072b4aaef8f0227e083e3762","css":"","comb... => {"html":"59a748ba4f7d52ad7d84a9e81294ff47","css":"","comb...]
+[2025-08-29 11:57:11] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 11:57:11] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-115711.json"
+[2025-08-29 11:57:11] SYNC_FIM tabela=componentes +0 ~1 =86 orphans=1 modo=natural
+[2025-08-29 11:57:11] Resumo comparação - componentes => inserções=0, atualizações=1, sem_alteracao=86
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 11:57:11] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-08-29 11:57:11] MANAGER_UPDATES_REGISTRADO id=62
+[2025-08-29 11:57:11] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~1 =86
+Σ TOTAL => +0 ~1 =86
+
+[2025-08-29 11:57:11] Rotina concluída com sucesso.
+[2025-08-29 12:01:44] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 12:01:44] Executando migrações...
+[2025-08-29 12:01:45] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 12:01:45] Migrações concluídas.
+[2025-08-29 12:01:45] CHECKSUM_CHANGED_TABLES=componentes
+[2025-08-29 12:01:45] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 12:01:45] Sincronizando tabela componentes ...
+[2025-08-29 12:01:45] SYNC_INI tabela=componentes modo=natural qtdJson=87
+[2025-08-29 12:01:45] Atualização componentes PK=pt-br|modal-pagina Campos: html [<div class="ui modal fullscreen previsualizar">\n    <div... => <div class="ui modal fullscreen previsualizar">\n    <div...], versao [5 => 6], file_version [1.4 => 1.5], checksum [{"html":"59a748ba4f7d52ad7d84a9e81294ff47","css":"","comb... => {"html":"242c3dd1ada01a961309c0edd3470777","css":"","comb...]
+[2025-08-29 12:01:45] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 12:01:45] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-120145.json"
+[2025-08-29 12:01:45] SYNC_FIM tabela=componentes +0 ~1 =86 orphans=1 modo=natural
+[2025-08-29 12:01:45] Resumo comparação - componentes => inserções=0, atualizações=1, sem_alteracao=86
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 12:01:45] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-08-29 12:01:45] MANAGER_UPDATES_REGISTRADO id=63
+[2025-08-29 12:01:45] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~1 =86
+Σ TOTAL => +0 ~1 =86
+
+[2025-08-29 12:01:45] Rotina concluída com sucesso.
+[2025-08-29 12:03:18] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 12:03:18] Executando migrações...
+[2025-08-29 12:03:18] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 12:03:19] Migrações concluídas.
+[2025-08-29 12:03:19] CHECKSUM_CHANGED_TABLES=componentes
+[2025-08-29 12:03:19] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 12:03:19] Sincronizando tabela componentes ...
+[2025-08-29 12:03:19] SYNC_INI tabela=componentes modo=natural qtdJson=87
+[2025-08-29 12:03:19] Atualização componentes PK=pt-br|modal-pagina Campos: html [<div class="ui modal fullscreen previsualizar">\n    <div... => <div class="ui modal fullscreen previsualizar">\n    <div...], versao [6 => 7], file_version [1.5 => 1.6], checksum [{"html":"242c3dd1ada01a961309c0edd3470777","css":"","comb... => {"html":"ef0ae9e40468402fe3ded2b907c97563","css":"","comb...]
+[2025-08-29 12:03:19] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 12:03:19] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-120319.json"
+[2025-08-29 12:03:19] SYNC_FIM tabela=componentes +0 ~1 =86 orphans=1 modo=natural
+[2025-08-29 12:03:19] Resumo comparação - componentes => inserções=0, atualizações=1, sem_alteracao=86
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 12:03:19] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-08-29 12:03:19] MANAGER_UPDATES_REGISTRADO id=64
+[2025-08-29 12:03:19] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~1 =86
+Σ TOTAL => +0 ~1 =86
+
+[2025-08-29 12:03:19] Rotina concluída com sucesso.
+[2025-08-29 12:06:40] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 12:06:40] Executando migrações...
+[2025-08-29 12:06:41] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 12:06:41] Migrações concluídas.
+[2025-08-29 12:06:41] CHECKSUM_CHANGED_TABLES=componentes,variaveis
+[2025-08-29 12:06:41] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 12:06:41] Sincronizando tabela componentes ...
+[2025-08-29 12:06:41] SYNC_INI tabela=componentes modo=natural qtdJson=87
+[2025-08-29 12:06:41] Atualização componentes PK=pt-br|modal-pagina Campos: html [<div class="ui modal fullscreen previsualizar">\n    <div... => <div class="ui modal fullscreen previsualizar">\n    <div...], versao [7 => 8], file_version [1.6 => 1.7], checksum [{"html":"ef0ae9e40468402fe3ded2b907c97563","css":"","comb... => {"html":"838c4ed3f0bbff0b3d964dcb3a78b79f","css":"","comb...]
+[2025-08-29 12:06:41] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 12:06:41] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-120641.json"
+[2025-08-29 12:06:41] SYNC_FIM tabela=componentes +0 ~1 =86 orphans=1 modo=natural
+[2025-08-29 12:06:41] Resumo comparação - componentes => inserções=0, atualizações=1, sem_alteracao=86
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 12:06:41] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 12:06:41] Sincronizando tabela variaveis ...
+[2025-08-29 12:06:41] SYNC_INI tabela=variaveis modo=natural qtdJson=1353
+[2025-08-29 12:06:41] SYNC_FIM tabela=variaveis +2 ~0 =1351 orphans=0 modo=natural
+[2025-08-29 12:06:41] Resumo comparação - variaveis => inserções=2, atualizações=0, sem_alteracao=1351
+[2025-08-29 12:06:41] MANAGER_UPDATES_REGISTRADO id=65
+[2025-08-29 12:06:41] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~1 =86
+📦 variaveis => +2 ~0 =1351
+Σ TOTAL => +2 ~1 =1437
+
+[2025-08-29 12:06:42] Rotina concluída com sucesso.
+[2025-08-29 12:07:59] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 12:07:59] Executando migrações...
+[2025-08-29 12:07:59] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 12:08:00] Migrações concluídas.
+[2025-08-29 12:08:00] CHECKSUM_CHANGED_TABLES=componentes
+[2025-08-29 12:08:00] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 12:08:00] Sincronizando tabela componentes ...
+[2025-08-29 12:08:00] SYNC_INI tabela=componentes modo=natural qtdJson=87
+[2025-08-29 12:08:00] Atualização componentes PK=pt-br|modal-pagina Campos: html [<div class="ui modal fullscreen previsualizar">\n    <div... => <div class="ui modal fullscreen previsualizar">\n    <div...], versao [8 => 9], file_version [1.7 => 1.8], checksum [{"html":"838c4ed3f0bbff0b3d964dcb3a78b79f","css":"","comb... => {"html":"0834fdd09e1dcf69727c06af03570bc4","css":"","comb...]
+[2025-08-29 12:08:00] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 12:08:00] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-120800.json"
+[2025-08-29 12:08:00] SYNC_FIM tabela=componentes +0 ~1 =86 orphans=1 modo=natural
+[2025-08-29 12:08:00] Resumo comparação - componentes => inserções=0, atualizações=1, sem_alteracao=86
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 12:08:00] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-08-29 12:08:00] MANAGER_UPDATES_REGISTRADO id=66
+[2025-08-29 12:08:00] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~1 =86
+Σ TOTAL => +0 ~1 =86
+
+[2025-08-29 12:08:00] Rotina concluída com sucesso.
+[2025-08-29 12:15:05] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 12:15:05] Executando migrações...
+[2025-08-29 12:15:06] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 12:15:06] Migrações concluídas.
+[2025-08-29 12:15:06] CHECKSUM_NENHUMA_TABELA_MUDOU
+[2025-08-29 12:15:07] SEM_MUDANCAS_DADOS -> pulando sincronizacao
+[2025-08-29 12:15:07] MANAGER_UPDATES_REGISTRADO id=67
+[2025-08-29 12:15:07] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+Σ TOTAL => +0 ~0 =0
+
+[2025-08-29 12:15:07] Rotina concluída com sucesso.
+[2025-08-29 12:16:01] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 12:16:01] Executando migrações...
+[2025-08-29 12:16:01] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 12:16:02] Migrações concluídas.
+[2025-08-29 12:16:02] CHECKSUM_CHANGED_TABLES=componentes
+[2025-08-29 12:16:02] Comparando dados do banco com arquivos Data.json...
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-29 12:16:02] Sincronizando tabela componentes ...
+[2025-08-29 12:16:02] SYNC_INI tabela=componentes modo=natural qtdJson=87
+[2025-08-29 12:16:02] Atualização componentes PK=pt-br|modal-pagina Campos: html [<div class="ui modal fullscreen previsualizar">\n    <div... => <div class="ui modal fullscreen previsualizar">\n    <div...], versao [9 => 10], file_version [1.8 => 1.9], checksum [{"html":"0834fdd09e1dcf69727c06af03570bc4","css":"","comb... => {"html":"d815fb0545793072b1072303f7c61c6d","css":"","comb...]
+[2025-08-29 12:16:02] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-29 12:16:02] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250829-121602.json"
+[2025-08-29 12:16:02] SYNC_FIM tabela=componentes +0 ~1 =86 orphans=1 modo=natural
+[2025-08-29 12:16:02] Resumo comparação - componentes => inserções=0, atualizações=1, sem_alteracao=86
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-29 12:16:02] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-08-29 12:16:02] MANAGER_UPDATES_REGISTRADO id=68
+[2025-08-29 12:16:02] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~1 =86
+Σ TOTAL => +0 ~1 =86
+
+[2025-08-29 12:16:02] Rotina concluída com sucesso.
+[2025-08-29 12:24:02] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 12:24:02] Executando migrações...
+[2025-08-29 12:24:02] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 12:24:03] Migrações concluídas.
+[2025-08-29 12:24:03] CHECKSUM_NENHUMA_TABELA_MUDOU
+[2025-08-29 12:24:03] SEM_MUDANCAS_DADOS -> pulando sincronizacao
+[2025-08-29 12:24:03] MANAGER_UPDATES_REGISTRADO id=69
+[2025-08-29 12:24:03] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+Σ TOTAL => +0 ~0 =0
+
+[2025-08-29 12:24:03] Rotina concluída com sucesso.
+[2025-08-29 13:45:22] Iniciando rotina de atualização de banco de dados...
+[2025-08-29 13:45:22] Executando migrações...
+[2025-08-29 13:45:22] [DEBUG] MIGRATING ENV=gestor
+[2025-08-29 13:45:23] Migrações concluídas.
+[2025-08-29 13:45:23] CHECKSUM_NENHUMA_TABELA_MUDOU
+[2025-08-29 13:45:23] SEM_MUDANCAS_DADOS -> pulando sincronizacao
+[2025-08-29 13:45:23] MANAGER_UPDATES_REGISTRADO id=70
+[2025-08-29 13:45:23] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+Σ TOTAL => +0 ~0 =0
+
+[2025-08-29 13:45:23] Rotina concluída com sucesso.

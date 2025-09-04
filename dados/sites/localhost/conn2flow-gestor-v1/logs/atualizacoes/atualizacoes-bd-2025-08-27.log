@@ -1,0 +1,782 @@
+[2025-08-27 14:31:35] Iniciando rotina de atualização de banco de dados...
+[2025-08-27 14:31:35] Executando migrações...
+[2025-08-27 14:31:35] [DEBUG] MIGRATING ENV=gestor
+[2025-08-27 14:31:36] Migrações concluídas.
+[2025-08-27 14:31:36] CHECKSUM_CHANGED_TABLES=componentes,paginas,variaveis
+[2025-08-27 14:31:36] Comparando dados do banco com arquivos Data.json...
+[2025-08-27 14:31:36] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-27 14:31:36] Sincronizando tabela componentes ...
+[2025-08-27 14:31:36] SYNC_INI tabela=componentes modo=natural qtdJson=86
+[2025-08-27 14:31:36] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-27 14:31:36] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250827-143136.json"
+[2025-08-27 14:31:36] SYNC_FIM tabela=componentes +0 ~0 =86 orphans=1 modo=natural
+[2025-08-27 14:31:36] Resumo comparação - componentes => inserções=0, atualizações=0, sem_alteracao=86
+[2025-08-27 14:31:36] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-27 14:31:36] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-27 14:31:36] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-27 14:31:36] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-27 14:31:36] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-27 14:31:36] Sincronizando tabela paginas ...
+[2025-08-27 14:31:36] SYNC_INI tabela=paginas modo=natural qtdJson=186
+[2025-08-27 14:31:36] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes-disparar
+[2025-08-27 14:31:36] ORPHANS_EXPORTED tabela=paginas qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/paginas-orphans-20250827-143136.json"
+[2025-08-27 14:31:36] SYNC_FIM tabela=paginas +0 ~0 =186 orphans=1 modo=natural
+[2025-08-27 14:31:36] Resumo comparação - paginas => inserções=0, atualizações=0, sem_alteracao=186
+[2025-08-27 14:31:36] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-27 14:31:36] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-27 14:31:36] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-27 14:31:36] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-27 14:31:36] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-27 14:31:36] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-27 14:31:36] Sincronizando tabela variaveis ...
+[2025-08-27 14:31:36] SYNC_INI tabela=variaveis modo=natural qtdJson=1340
+[2025-08-27 14:31:36] SYNC_FIM tabela=variaveis +0 ~0 =1340 orphans=0 modo=natural
+[2025-08-27 14:31:36] Resumo comparação - variaveis => inserções=0, atualizações=0, sem_alteracao=1340
+[2025-08-27 14:31:36] MANAGER_UPDATES_REGISTRADO id=42
+[2025-08-27 14:31:36] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~0 =86
+📦 paginas => +0 ~0 =186
+📦 variaveis => +0 ~0 =1340
+Σ TOTAL => +0 ~0 =1612
+
+[2025-08-27 14:31:36] Rotina concluída com sucesso.
+[2025-08-27 14:50:15] Iniciando rotina de atualização de banco de dados...
+[2025-08-27 14:50:15] Executando migrações...
+[2025-08-27 14:50:16] [DEBUG] MIGRATING ENV=gestor
+[2025-08-27 14:50:16] Migrações concluídas.
+[2025-08-27 14:50:16] CHECKSUM_CHANGED_TABLES=componentes,paginas,variaveis
+[2025-08-27 14:50:16] Comparando dados do banco com arquivos Data.json...
+[2025-08-27 14:50:16] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-27 14:50:16] Sincronizando tabela componentes ...
+[2025-08-27 14:50:16] SYNC_INI tabela=componentes modo=natural qtdJson=86
+[2025-08-27 14:50:16] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-27 14:50:16] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250827-145016.json"
+[2025-08-27 14:50:16] SYNC_FIM tabela=componentes +0 ~0 =86 orphans=1 modo=natural
+[2025-08-27 14:50:16] Resumo comparação - componentes => inserções=0, atualizações=0, sem_alteracao=86
+[2025-08-27 14:50:16] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-27 14:50:16] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-27 14:50:16] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-27 14:50:16] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-27 14:50:16] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-27 14:50:16] Sincronizando tabela paginas ...
+[2025-08-27 14:50:16] SYNC_INI tabela=paginas modo=natural qtdJson=186
+[2025-08-27 14:50:16] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes-disparar
+[2025-08-27 14:50:16] ORPHANS_EXPORTED tabela=paginas qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/paginas-orphans-20250827-145016.json"
+[2025-08-27 14:50:16] SYNC_FIM tabela=paginas +0 ~0 =186 orphans=1 modo=natural
+[2025-08-27 14:50:16] Resumo comparação - paginas => inserções=0, atualizações=0, sem_alteracao=186
+[2025-08-27 14:50:16] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-27 14:50:16] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-27 14:50:16] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-27 14:50:16] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-27 14:50:17] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-27 14:50:17] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-27 14:50:17] Sincronizando tabela variaveis ...
+[2025-08-27 14:50:17] SYNC_INI tabela=variaveis modo=natural qtdJson=1340
+[2025-08-27 14:50:17] SYNC_FIM tabela=variaveis +0 ~0 =1340 orphans=0 modo=natural
+[2025-08-27 14:50:17] Resumo comparação - variaveis => inserções=0, atualizações=0, sem_alteracao=1340
+[2025-08-27 14:50:17] MANAGER_UPDATES_REGISTRADO id=44
+[2025-08-27 14:50:17] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~0 =86
+📦 paginas => +0 ~0 =186
+📦 variaveis => +0 ~0 =1340
+Σ TOTAL => +0 ~0 =1612
+
+[2025-08-27 14:50:17] Rotina concluída com sucesso.
+[2025-08-27 14:51:27] Iniciando rotina de atualização de banco de dados...
+[2025-08-27 14:51:27] Executando migrações...
+[2025-08-27 14:51:27] [DEBUG] MIGRATING ENV=gestor
+[2025-08-27 14:51:28] Migrações concluídas.
+[2025-08-27 14:51:28] CHECKSUM_CHANGED_TABLES=componentes,paginas,variaveis
+[2025-08-27 14:51:28] Comparando dados do banco com arquivos Data.json...
+[2025-08-27 14:51:28] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-27 14:51:28] Sincronizando tabela componentes ...
+[2025-08-27 14:51:28] SYNC_INI tabela=componentes modo=natural qtdJson=83
+[2025-08-27 14:51:28] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|impressao-cabecalho
+[2025-08-27 14:51:28] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|tabela-cupons-prioridade
+[2025-08-27 14:51:28] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|impressao-cabecalho-escalas
+[2025-08-27 14:51:28] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-27 14:51:28] ORPHANS_EXPORTED tabela=componentes qtd=4 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250827-145128.json"
+[2025-08-27 14:51:28] SYNC_FIM tabela=componentes +0 ~0 =83 orphans=4 modo=natural
+[2025-08-27 14:51:28] Resumo comparação - componentes => inserções=0, atualizações=0, sem_alteracao=83
+[2025-08-27 14:51:28] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-27 14:51:28] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-27 14:51:28] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-27 14:51:28] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-27 14:51:28] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-27 14:51:29] Sincronizando tabela paginas ...
+[2025-08-27 14:51:29] SYNC_INI tabela=paginas modo=natural qtdJson=179
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|agendamentos|agendamentos
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|agendamentos|cupons-de-prioridade
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|agendamentos|cupons-de-prioridade-adicionar
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|agendamentos|cupons-de-prioridade-editar
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|configuracoes-agendamentos|configuracoes-de-agendamentos
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|configuracoes-escalas|configuracoes-de-escala
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|escalas|escalas
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes-disparar
+[2025-08-27 14:51:29] ORPHANS_EXPORTED tabela=paginas qtd=8 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/paginas-orphans-20250827-145129.json"
+[2025-08-27 14:51:29] SYNC_FIM tabela=paginas +0 ~0 =179 orphans=8 modo=natural
+[2025-08-27 14:51:29] Resumo comparação - paginas => inserções=0, atualizações=0, sem_alteracao=179
+[2025-08-27 14:51:29] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-27 14:51:29] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-27 14:51:29] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-27 14:51:29] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-27 14:51:29] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-27 14:51:29] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-27 14:51:29] Sincronizando tabela variaveis ...
+[2025-08-27 14:51:29] SYNC_INI tabela=variaveis modo=natural qtdJson=1229
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||label-button-admin
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||tooltip-button-admin
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||label-button-coupon
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||tooltip-button-coupon
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-name-label
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-name-placeholder
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-quantity-label
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-quantity-placeholder
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-valid-from-label
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-valid-from-placeholder
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-valid-until-label
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-valid-until-placeholder
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||label-print
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||tooltip-print
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||alert-cupons-not-found
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||alert-cupons-expired
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|agendamento-ativacao
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|datas-indisponiveis
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|calendario-anos
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|calendario-limite-mes-a-frente
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|fase-escolha-livre
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|fase-residual
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|agendamento-assunto
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|calendario-ferias-ate
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|calendario-ferias-de
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|desagendamento-assunto
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|dias-semana
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|dias-semana-maximo-vagas
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|email-confirmacao-assunto
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|fase-sorteio
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|pre-agendamento-assunto
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|pre-desagendamento-assunto
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|datas-indisponiveis-valores
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|agendamento-mensagem
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|desagendamento-mensagem
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|email-confirmacao-mensagem
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-cancelado
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-confirmado
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-data-nao-permitida
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-expirado
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-ja-existe
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-nao-encontrado
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-sem-vagas
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-suspenso
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-conclusao-agendamento
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-conclusao-pre-agendamento
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-vagas-residuais-indisponiveis
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|pre-agendamento-mensagem
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|texto-sem-agendamentos-cadastrados
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|form-msg-data
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|form-msg-acompanhante
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|max-acompanhantes
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|titulo-estabelecimento
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-confirmado
+[2025-08-27 14:51:29] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-novo
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-finalizado
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-qualificado
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-nao-qualificado
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-vagas-residuais
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-sem-vagas-residuais
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos||teste
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos||data-multipla
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos||data
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos||data-hora
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos||teste-tinymce
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|texto-agendamentos-cadastrados
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|cupom-prioridade-descricao
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|msg-cupom-prioridade-inativo
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|msg-cupom-prioridade-vencido
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|msg-cupom-prioridade-ja-utilizado
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|msg-cupom-prioridade-nao-encontrado
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-app|msg-agendamento-ja-confirmado
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-app|msg-confirmacao-status-nao-permitido
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|agendamentos-impressao
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|escala-ativacao
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|msg-escala-suspenso
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|calendario-ferias-de
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|calendario-ferias-ate
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|calendario-anos
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|dias-semana
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|dias-semana-maximo-vagas
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|datas-indisponiveis
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|datas-indisponiveis-valores
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|datas-extras-disponiveis
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|datas-extras-disponiveis-valores
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|datas-extras-dias-semana-maximo-vagas
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|dia-inicio-inscricao
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|mes-inicio-inscricao
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|dias-inicio-confirmacao
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|dias-fim-confirmacao
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|periodo-limite-alteracao
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|calendario-inicio
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|calendario-fim
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|msg-escalamento-data-nao-permitida
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalamento-assunto
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalamento-mensagem
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|titulo-estabelecimento
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-conclusao-escalamento
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-extra-conclusao-inscricao
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-extra-conclusao-utilizacao
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|email-confirmacao-assunto
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|email-confirmacao-mensagem
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-datas-sem-vagas
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalamento-confirmar-assunto
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalamento-confirmar-mensagem
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-conclusao-confirmar-escalamento
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalamento-cancelar-assunto
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalamento-cancelar-mensagem
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-conclusao-cancelar-escalamento
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-confirmacao-fora-do-prazo
+[2025-08-27 14:51:30] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalas-impressao
+[2025-08-27 14:51:30] ORPHANS_EXPORTED tabela=variaveis qtd=111 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/variaveis-orphans-20250827-145130.json"
+[2025-08-27 14:51:30] SYNC_FIM tabela=variaveis +0 ~0 =1229 orphans=111 modo=natural
+[2025-08-27 14:51:30] Resumo comparação - variaveis => inserções=0, atualizações=0, sem_alteracao=1229
+[2025-08-27 14:51:30] MANAGER_UPDATES_REGISTRADO id=45
+[2025-08-27 14:51:30] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~0 =83
+📦 paginas => +0 ~0 =179
+📦 variaveis => +0 ~0 =1229
+Σ TOTAL => +0 ~0 =1491
+
+[2025-08-27 14:51:30] Rotina concluída com sucesso.
+[2025-08-27 15:18:35] Iniciando rotina de atualização de banco de dados...
+[2025-08-27 15:18:35] Executando migrações...
+[2025-08-27 15:18:35] [DEBUG] MIGRATING ENV=gestor
+[2025-08-27 15:18:36] Migrações concluídas.
+[2025-08-27 15:18:36] CHECKSUM_CHANGED_TABLES=componentes,paginas,variaveis
+[2025-08-27 15:18:36] Comparando dados do banco com arquivos Data.json...
+[2025-08-27 15:18:36] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-27 15:18:36] Sincronizando tabela componentes ...
+[2025-08-27 15:18:36] SYNC_INI tabela=componentes modo=natural qtdJson=86
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|admin-categorias-categorias-pai-info Campos: html [<table class="ui unstackable table">\n    <tbody>\n      ... => <table class="ui unstackable table">\n    <tbody>\n      ...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"76ab062b296f7c2958a15f4b99e2feb5","css":"","comb... => {"html":"7d565f9182a447515db661c097cf06e8","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|templates-seletores-lista Campos: html [<div class="ui four doubling cards">\n    <!-- card < -->... => <div class="ui four doubling cards">\n    <!-- card < -->...], css [.fileImage{\n    position: relative;\n    width: 100%;\n ... => .fileImage{\n    position: relative;\n    width: 100%;\n ...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"bc361ac4500c7e161370d8de8adf7062","css":"37bfbd6... => {"html":"c674bbb07b7a3e1668844ce6ba646107","css":"72ffce1...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|categorias-categorias-pai-info Campos: html [<table class="ui unstackable table">\n    <tbody>\n      ... => <table class="ui unstackable table">\n    <tbody>\n      ...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"76ab062b296f7c2958a15f4b99e2feb5","css":"","comb... => {"html":"7d565f9182a447515db661c097cf06e8","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|categorias-categorias-filho-lista Campos: html [<table class="ui unstackable table">\n    <tbody>\n      ... => <table class="ui unstackable table">\n    <tbody>\n      ...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"baa16f5a64c0174eee45e1ffd9cb0eaf","css":"","comb... => {"html":"5844c03abd1547325c26e622ca82f679","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|categorias-categorias-filho-info Campos: html [<div class="ui info visible message">\n    #message#\n</div> => <div class="ui info visible message">\n    #message#\n</div>], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"fb8509ec37fba0c6f75da3f5ba06446f","css":"","comb... => {"html":"2b5394fe49b8a5fa96a3ad33391c2319","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|hosts-layout-email-esqueceu-senha Campos: html [<p>Caro(a) #nome#,</p>\n<p>Esqueceu-se da sua senha?</p>\... => <p>Caro(a) #nome#,</p>\n<p>Esqueceu-se da sua senha?</p>\...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"6e6710e729ba5ca2bfed4fca6024299c","css":"","comb... => {"html":"0dfd41316fd9355ef67b10cc6b1e04ad","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|admin-categorias-categorias-filho-lista Campos: html [<table class="ui unstackable table">\n    <tbody>\n      ... => <table class="ui unstackable table">\n    <tbody>\n      ...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"eaa8260243937bfe68688462a0f13fb6","css":"","comb... => {"html":"fa6886d682bc63a6c480a9d9af2cd920","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|admin-categorias-categorias-filho-info Campos: html [<div class="ui info visible message">\n    #message#\n</div> => <div class="ui info visible message">\n    #message#\n</div>], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"fb8509ec37fba0c6f75da3f5ba06446f","css":"","comb... => {"html":"2b5394fe49b8a5fa96a3ad33391c2319","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|host-update-carregando Campos: html [<div class="ui basic modal atualizando">\n    <div class=... => <div class="ui basic modal atualizando">\n    <div class=...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"7fd123a2020124a0f5f3a5c8fdb1afe2","css":"","comb... => {"html":"e5461fa7cbc8b9812069ed33305f6c95","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|layout-email-esqueceu-senha-da-conta-ftp Campos: html [<p>Caro(a) #nome#,</p>\n<p>Esqueceu-se da sua senha da co... => <p>Caro(a) #nome#,</p>\n<p>Esqueceu-se da sua senha da co...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"45578f3f1c4c1aae2b6ca6fdcf98a90e","css":"","comb... => {"html":"39ecfaad1cb0b009a1c00267b759e439","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-negado Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"f3fadfede47d5dbbb964382cf961334b","css":"","comb... => {"html":"e5710cd635668cd75df31e68c27b62f6","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|layout-email-voucher Campos: html [<h3>Voucher enviado por email.</h3>\n<p>Segue o voucher <... => <h3>Voucher enviado por email.</h3>\n<p>Segue o voucher <...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"d8b932a9797deef89540e9f93deed4d4","css":"","comb... => {"html":"346b2189361de57a7ddda8a8e43f89b5","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|pedidos-dados-do-pagador Campos: html [<table class="ui definition table">\n    <thead>\n       ... => <table class="ui definition table">\n    <thead>\n       ...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"906fcdb88f4cf293bc91e558e10e67c5","css":"","comb... => {"html":"fb257c4d816d06ddefc998eb99c9421b","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|gateways-de-pagamentos-mensagem-mudanca-de-estado Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"157c3ccb190c70c0972056d1d0879c9b","css":"","comb... => {"html":"6a1ab17724b68285a7d0a6079a660673","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|plataforma-gateways-emails-assinatura Campos: html [<p>Atenciosamente.</p>\n<h3>@[[loja-nome]]@</h3> => <p>Atenciosamente.</p>\n<h3>@[[loja-nome]]@</h3>], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"200dec14e69649f5cdaef69e69a6d413","css":"","comb... => {"html":"3f11a62796c0461988385da00da395c0","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|host-config-carregando Campos: html [<div class="ui basic modal configurando">\n    <div class... => <div class="ui basic modal configurando">\n    <div class...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"7de3f267dd996bf11cb08e0f0a1753fc","css":"","comb... => {"html":"2fa29aa0709b12ea45665f957ebe8b8a","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-reembolso Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"8d0a921ccf3b608ad2516b682925a4d6","css":"","comb... => {"html":"43ea4b29c8c5ce30839ea2b77908cea8","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-disputa Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"c793acc907be9dadd30a864bb91199bc","css":"","comb... => {"html":"6a4d182d7a902eebd3f6719d17672570","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-pago Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"f6af971c191a377fea2473682c5693a1","css":"","comb... => {"html":"4cbb60d8b60cf3206945ef2f203f9763","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-pendente Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"ac25b6b57e86f201c0ae07f80a223b98","css":"","comb... => {"html":"ef172d52e7cd86169f39e547fc7fb737","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-novo Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"eee3aa1582995f33a55e2740f994032a","css":"","comb... => {"html":"e35f07a99c563258faaf35cbe7256e30","css":"","comb...]
+[2025-08-27 15:18:36] Atualização componentes PK=pt-br|hosts-layout-emails-assinatura Campos: html [<p>Atenciosamente</p>\n<p>Equipe Entrey</p>\n<p>Acessar S... => <p>Atenciosamente</p>\n<p>Equipe Entrey</p>\n<p>Acessar S...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"e3789ede7f539ef233fbe752ad70bc93","css":"","comb... => {"html":"b0605a8a624e02d03a35b98c5ee6de75","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|layout-email-host-instalacao Campos: html [<p>Caro(a) #nome#,</p>\n<p>Foi criado um novo hospedeiro ... => <p>Caro(a) #nome#,</p>\n<p>Foi criado um novo hospedeiro ...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"7b70a83e60b0e499414fc807ab097aa7","css":"","comb... => {"html":"1678c78d36a677dbc4b795b7610db377","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|host-install-carregando Campos: html [<div class="ui basic modal instalando">\n    <div class="... => <div class="ui basic modal instalando">\n    <div class="...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"1fc1b859d973c6c71108309bbfc6288a","css":"","comb... => {"html":"fc0a77faa1499f23246b6165d71f5ad2","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|layout-email-novo-cadastro Campos: html [<p>Caro(a) #nome#,</p>\n<p>Seja bem vindo à plataforma E... => <p>Caro(a) #nome#,</p>\n<p>Seja bem vindo à plataforma E...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"269948c502ca2d65837f8abbef76a89a","css":"","comb... => {"html":"447021ae9358098d9adb9627ecb65014","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|arquivos-lista Campos: html [<div class="ui medium header">#categoria#</div>\n<div cla... => <div class="ui medium header">#categoria#</div>\n<div cla...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"6da8a46c3e87428f93e2c452d47058be","css":"","comb... => {"html":"4188ef82d4482a48bc75dea5b0dac9c4","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|layout-emails-assinatura Campos: html [<p>Atenciosamente</p>\n<p>Equipe Entrey</p>\n<p>Acessar S... => <p>Atenciosamente</p>\n<p>Equipe Entrey</p>\n<p>Acessar S...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"bae98906634d996be369512d5bc3ecea","css":"","comb... => {"html":"6411590a438bb1b96dae7bfb0fe89dc2","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|layout-email-esqueceu-senha Campos: html [<p>Caro(a) #nome#,</p>\n<p>Esqueceu-se da sua senha?</p>\... => <p>Caro(a) #nome#,</p>\n<p>Esqueceu-se da sua senha?</p>\...], css [h1{\n    color:blue;\n} => h1{\n    color:blue;\n}], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"6e6710e729ba5ca2bfed4fca6024299c","css":"e4b0bc7... => {"html":"0dfd41316fd9355ef67b10cc6b1e04ad","css":"2f40d13...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-pago-gratuito Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"1e2419cee519e83d43ac14701a3e7d12","css":"","comb... => {"html":"babb1ce83d4e78d54acfb741c6e9eb38","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|layout-email-baixa-voucher Campos: html [<h3>Voucher utilizado no estabelecimento.</h3>\n<p>Caro(a... => <h3>Voucher utilizado no estabelecimento.</h3>\n<p>Caro(a...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"ebc88cbe7f7d28f5c98b7da1c7568883","css":"","comb... => {"html":"5c695e12cc34c9fc5e1683cb39e83780","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|layout-email-senha-redefinida Campos: html [<p>Caro(a) #nome#,</p>\n<p>Sua senha foi redefinida com s... => <p>Caro(a) #nome#,</p>\n<p>Sua senha foi redefinida com s...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"71bef62359404d276334517b6db99e90","css":"","comb... => {"html":"a733b0e5baa367661d0636c0bab45c5b","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|layout-email-conta-ftp-senha-redefinida Campos: html [<p>Caro(a) #nome#,</p>\n<p>A senha da sua Conta FTP foi r... => <p>Caro(a) #nome#,</p>\n<p>A senha da sua Conta FTP foi r...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"62f5025db5f02261821553ce2073378b","css":"","comb... => {"html":"e6828b756bf211d846b6265014c3d4ef","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|comunicacao-email-teste Campos: html [<h1>Email Teste da Plataforma</h1>\n<p>Você recebeu este... => <h1>Email Teste da Plataforma</h1>\n<p>Você recebeu este...], versao [2 => 3], file_version [1.2 => 1.3], checksum [{"html":"401255d8c45c417adc4636a2837a8151","css":"","comb... => {"html":"98cd5d697e6c6f1bfd798819ae65539f","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|atualizacoes-lista Campos: html [<div class="ui segment" id="admin-atualizacoes-root"\n   ... => <div class="ui segment" id="admin-atualizacoes-root"\n   ...], versao [11 => 12], file_version [1.13 => 1.14], checksum [{"html":"49f985d7f385bc65c554db83a925e8b8","css":"","comb... => {"html":"e007e7b6b9725f54b3d1d050343728f6","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|atualizacoes-detalhe-comp Campos: html [<div class="ui segment">\n    <div class="ui header">@[[u... => <div class="ui segment">\n    <div class="ui header">@[[u...], versao [3 => 4], file_version [1.3 => 1.4], checksum [{"html":"2165f501c194d36a1b7944cf7901805b","css":"","comb... => {"html":"d15a8a39cceb60aed8b27527b750cac2","css":"","comb...]
+[2025-08-27 15:18:37] Atualização componentes PK=pt-br|host-plugins-update-carregando Campos: html [<div class="ui basic modal atualizando">\n    <div class=... => <div class="ui basic modal atualizando">\n    <div class=...], versao [2 => 3], file_version [1.1 => 1.2], checksum [{"html":"70526920a5cc063bdbbf43a619e47684","css":"","comb... => {"html":"60e29cf494b4e51a71936336e0dc7f9d","css":"","comb...]
+[2025-08-27 15:18:37] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-27 15:18:37] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250827-151837.json"
+[2025-08-27 15:18:37] SYNC_FIM tabela=componentes +0 ~36 =50 orphans=1 modo=natural
+[2025-08-27 15:18:37] Resumo comparação - componentes => inserções=0, atualizações=36, sem_alteracao=50
+[2025-08-27 15:18:37] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-27 15:18:37] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-27 15:18:37] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-27 15:18:37] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-27 15:18:37] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-27 15:18:37] Sincronizando tabela paginas ...
+[2025-08-27 15:18:37] SYNC_INI tabela=paginas modo=natural qtdJson=186
+[2025-08-27 15:18:37] Atualização paginas PK=pt-br|admin-atualizacoes|admin-atualizacoes Campos: html [<h1 class="ui header">@[[updates-title]]@</h1>\n<div>#dyn... => <h1 class="ui header">@[[updates-title]]@</h1>\n<div>#dyn...], versao [1 => 2], file_version [1.1 => 1.2], checksum [{"html":"59f177cb2724589cb275a5f5e8b2f202","css":"","comb... => {"html":"3b4111f3cd39194b7053bfbffa69ba62","css":"","comb...]
+[2025-08-27 15:18:37] Atualização paginas PK=pt-br|admin-atualizacoes|admin-atualizacoes-detalhe Campos: html [<h1 class="ui header">@[[updates-detail-title]]@</h1>\n<d... => <h1 class="ui header">@[[updates-detail-title]]@</h1>\n<d...], versao [1 => 2], file_version [1.1 => 1.2], checksum [{"html":"8666d7429a44a9827ac8e21bebfa839d","css":"","comb... => {"html":"57671f489f494af3ded385b978e857a9","css":"","comb...]
+[2025-08-27 15:18:37] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes-disparar
+[2025-08-27 15:18:37] ORPHANS_EXPORTED tabela=paginas qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/paginas-orphans-20250827-151837.json"
+[2025-08-27 15:18:37] SYNC_FIM tabela=paginas +0 ~2 =184 orphans=1 modo=natural
+[2025-08-27 15:18:37] Resumo comparação - paginas => inserções=0, atualizações=2, sem_alteracao=184
+[2025-08-27 15:18:37] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-27 15:18:37] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-27 15:18:37] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-27 15:18:37] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-27 15:18:37] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-27 15:18:37] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-27 15:18:37] Sincronizando tabela variaveis ...
+[2025-08-27 15:18:37] SYNC_INI tabela=variaveis modo=natural qtdJson=1340
+[2025-08-27 15:18:37] SYNC_FIM tabela=variaveis +0 ~0 =1340 orphans=0 modo=natural
+[2025-08-27 15:18:37] Resumo comparação - variaveis => inserções=0, atualizações=0, sem_alteracao=1340
+[2025-08-27 15:18:37] MANAGER_UPDATES_REGISTRADO id=46
+[2025-08-27 15:18:37] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~36 =50
+📦 paginas => +0 ~2 =184
+📦 variaveis => +0 ~0 =1340
+Σ TOTAL => +0 ~38 =1574
+
+[2025-08-27 15:18:37] Rotina concluída com sucesso.
+[2025-08-27 17:24:30] Iniciando rotina de atualização de banco de dados...
+[2025-08-27 17:24:30] Executando migrações...
+[2025-08-27 17:24:30] [DEBUG] MIGRATING ENV=gestor
+[2025-08-27 17:24:31] [PHINX] == 20250827110000 AlterLayoutsAddFrameworkCss: migrating 
+[2025-08-27 17:24:31] [PHINX]  == 20250827110000 AlterLayoutsAddFrameworkCss: migrated 0.2950s
+[2025-08-27 17:24:31] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrating 
+[2025-08-27 17:24:31] [PHINX]  == 20250827110010 AlterPaginasAddFrameworkCss: migrated 0.0479s
+[2025-08-27 17:24:31] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrating 
+[2025-08-27 17:24:31] [PHINX]  == 20250827110020 AlterComponentesAddFrameworkCss: migrated 0.0436s
+[2025-08-27 17:24:31] Migrações concluídas.
+[2025-08-27 17:24:32] CHECKSUM_CHANGED_TABLES=componentes,layouts,paginas,variaveis
+[2025-08-27 17:24:32] Comparando dados do banco com arquivos Data.json...
+[2025-08-27 17:24:32] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-27 17:24:32] Sincronizando tabela componentes ...
+[2025-08-27 17:24:32] SYNC_INI tabela=componentes modo=natural qtdJson=83
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|admin-categorias-categorias-pai-info Campos: html [<table class="ui unstackable table">\n    <tbody>\n      ... => <table class="ui unstackable table">\n    <tbody>\n      ...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"7d565f9182a447515db661c097cf06e8","css":"","comb... => {"html":"76ab062b296f7c2958a15f4b99e2feb5","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|hosts-interface-alerta-modal Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|hosts-interface-carregando-modal Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-formulario-configuracoes Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|widget-template Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|templates-seletores-lista Campos: html [<div class="ui four doubling cards">\n    <!-- card < -->... => <div class="ui four doubling cards">\n    <!-- card < -->...], css [.fileImage{\n    position: relative;\n    width: 100%;\n ... => .fileImage{\n    position: relative;\n    width: 100%;\n ...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"c674bbb07b7a3e1668844ce6ba646107","css":"72ffce1... => {"html":"bc361ac4500c7e161370d8de8adf7062","css":"37bfbd6...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|categorias-categorias-pai-info Campos: html [<table class="ui unstackable table">\n    <tbody>\n      ... => <table class="ui unstackable table">\n    <tbody>\n      ...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"7d565f9182a447515db661c097cf06e8","css":"","comb... => {"html":"76ab062b296f7c2958a15f4b99e2feb5","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|categorias-categorias-filho-lista Campos: html [<table class="ui unstackable table">\n    <tbody>\n      ... => <table class="ui unstackable table">\n    <tbody>\n      ...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"5844c03abd1547325c26e622ca82f679","css":"","comb... => {"html":"baa16f5a64c0174eee45e1ffd9cb0eaf","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|categorias-categorias-filho-info Campos: html [<div class="ui info visible message">\n    #message#\n</div> => <div class="ui info visible message">\n    #message#\n</div>], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"2b5394fe49b8a5fa96a3ad33391c2319","css":"","comb... => {"html":"fb8509ec37fba0c6f75da3f5ba06446f","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|hosts-layout-email-esqueceu-senha Campos: html [<p>Caro(a) #nome#,</p>\n<p>Esqueceu-se da sua senha?</p>\... => <p>Caro(a) #nome#,</p>\n<p>Esqueceu-se da sua senha?</p>\...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"0dfd41316fd9355ef67b10cc6b1e04ad","css":"","comb... => {"html":"6e6710e729ba5ca2bfed4fca6024299c","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|admin-categorias-categorias-filho-lista Campos: html [<table class="ui unstackable table">\n    <tbody>\n      ... => <table class="ui unstackable table">\n    <tbody>\n      ...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"fa6886d682bc63a6c480a9d9af2cd920","css":"","comb... => {"html":"eaa8260243937bfe68688462a0f13fb6","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|admin-categorias-categorias-filho-info Campos: html [<div class="ui info visible message">\n    #message#\n</div> => <div class="ui info visible message">\n    #message#\n</div>], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"2b5394fe49b8a5fa96a3ad33391c2319","css":"","comb... => {"html":"fb8509ec37fba0c6f75da3f5ba06446f","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-formulario-edicao-incomum Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-formulario-inclusao-incomum Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|host-update-carregando Campos: html [<div class="ui basic modal atualizando">\n    <div class=... => <div class="ui basic modal atualizando">\n    <div class=...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"e5461fa7cbc8b9812069ed33305f6c95","css":"","comb... => {"html":"7fd123a2020124a0f5f3a5c8fdb1afe2","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|layout-email-esqueceu-senha-da-conta-ftp Campos: html [<p>Caro(a) #nome#,</p>\n<p>Esqueceu-se da sua senha da co... => <p>Caro(a) #nome#,</p>\n<p>Esqueceu-se da sua senha da co...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"39ecfaad1cb0b009a1c00267b759e439","css":"","comb... => {"html":"45578f3f1c4c1aae2b6ca6fdcf98a90e","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|padrao-pagina-mestre-carrinho Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|top-footer-teste Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-negado Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"e5710cd635668cd75df31e68c27b62f6","css":"","comb... => {"html":"f3fadfede47d5dbbb964382cf961334b","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|hosts-interface-formulario-autorizacao-provisoria Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|layout-email-voucher Campos: html [<h3>Voucher enviado por email.</h3>\n<p>Segue o voucher <... => <h3>Voucher enviado por email.</h3>\n<p>Segue o voucher <...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"346b2189361de57a7ddda8a8e43f89b5","css":"","comb... => {"html":"d8b932a9797deef89540e9f93deed4d4","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|hosts-interface-modal-informativo Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|modal-simples Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|pedidos-dados-do-pagador Campos: html [<table class="ui definition table">\n    <thead>\n       ... => <table class="ui definition table">\n    <thead>\n       ...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"fb257c4d816d06ddefc998eb99c9421b","css":"","comb... => {"html":"906fcdb88f4cf293bc91e558e10e67c5","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-formulario-visualizacao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|gateways-de-pagamentos-mensagem-mudanca-de-estado Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"6a1ab17724b68285a7d0a6079a660673","css":"","comb... => {"html":"157c3ccb190c70c0972056d1d0879c9b","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|plataforma-gateways-emails-assinatura Campos: html [<p>Atenciosamente.</p>\n<h3>@[[loja-nome]]@</h3> => <p>Atenciosamente.</p>\n<h3>@[[loja-nome]]@</h3>], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"3f11a62796c0461988385da00da395c0","css":"","comb... => {"html":"200dec14e69649f5cdaef69e69a6d413","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|host-config-carregando Campos: html [<div class="ui basic modal configurando">\n    <div class... => <div class="ui basic modal configurando">\n    <div class...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"2fa29aa0709b12ea45665f957ebe8b8a","css":"","comb... => {"html":"7de3f267dd996bf11cb08e0f0a1753fc","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-reembolso Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"43ea4b29c8c5ce30839ea2b77908cea8","css":"","comb... => {"html":"8d0a921ccf3b608ad2516b682925a4d6","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-disputa Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"6a4d182d7a902eebd3f6719d17672570","css":"","comb... => {"html":"c793acc907be9dadd30a864bb91199bc","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-pago Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"4cbb60d8b60cf3206945ef2f203f9763","css":"","comb... => {"html":"f6af971c191a377fea2473682c5693a1","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-pendente Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"ef172d52e7cd86169f39e547fc7fb737","css":"","comb... => {"html":"ac25b6b57e86f201c0ae07f80a223b98","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-novo Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"e35f07a99c563258faaf35cbe7256e30","css":"","comb... => {"html":"eee3aa1582995f33a55e2740f994032a","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-modal-generico Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|hosts-layout-emails-assinatura Campos: html [<p>Atenciosamente</p>\n<p>Equipe Entrey</p>\n<p>Acessar S... => <p>Atenciosamente</p>\n<p>Equipe Entrey</p>\n<p>Acessar S...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"b0605a8a624e02d03a35b98c5ee6de75","css":"","comb... => {"html":"e3789ede7f539ef233fbe752ad70bc93","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|botao-superior-interface Campos: framework_css [NULL => fomantic-ui], versao [8 => 1]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|teste-de-edicao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|teste-de-adicao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|teste-nova-pagina Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|teste-de-adicao-2 Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|teste-de-adicao-3 Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|teste-novo-adicao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-alerta-modal Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-carregando-modal Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|teste-adicao-novo Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-delecao-modal Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|teste-de-adicao-4 Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|teste-historico Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|teste-de-adicao-denovo-0 Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-formulario-inclusao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-listar-sem-registros Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-listar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-listar-arquivos-sem-registros Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|menutop-teste Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|layout-email-host-instalacao Campos: html [<p>Caro(a) #nome#,</p>\n<p>Foi criado um novo hospedeiro ... => <p>Caro(a) #nome#,</p>\n<p>Foi criado um novo hospedeiro ...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"1678c78d36a677dbc4b795b7610db377","css":"","comb... => {"html":"7b70a83e60b0e499414fc807ab097aa7","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|pagina-mestre-pagina-servico-especial-natal Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|host-install-carregando Campos: html [<div class="ui basic modal instalando">\n    <div class="... => <div class="ui basic modal instalando">\n    <div class="...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"fc0a77faa1499f23246b6165d71f5ad2","css":"","comb... => {"html":"1fc1b859d973c6c71108309bbfc6288a","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|layout-email-novo-cadastro Campos: html [<p>Caro(a) #nome#,</p>\n<p>Seja bem vindo à plataforma E... => <p>Caro(a) #nome#,</p>\n<p>Seja bem vindo à plataforma E...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"447021ae9358098d9adb9627ecb65014","css":"","comb... => {"html":"269948c502ca2d65837f8abbef76a89a","css":"","comb...]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|interface-iframe-modal Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|widget-imagem Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|pagina-mestre-conteudos-padrao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|teste-componente Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:32] Atualização componentes PK=pt-br|menu-principal-sistema Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|interface-formulario-edicao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|interface-formulario-autorizacao-provisoria Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|arquivos-lista Campos: html [<div class="ui medium header">#categoria#</div>\n<div cla... => <div class="ui medium header">#categoria#</div>\n<div cla...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"4188ef82d4482a48bc75dea5b0dac9c4","css":"","comb... => {"html":"6da8a46c3e87428f93e2c452d47058be","css":"","comb...]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|layout-emails-assinatura Campos: html [<p>Atenciosamente</p>\n<p>Equipe Entrey</p>\n<p>Acessar S... => <p>Atenciosamente</p>\n<p>Equipe Entrey</p>\n<p>Acessar S...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"6411590a438bb1b96dae7bfb0fe89dc2","css":"","comb... => {"html":"bae98906634d996be369512d5bc3ecea","css":"","comb...]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|layout-email-esqueceu-senha Campos: html [<p>Caro(a) #nome#,</p>\n<p>Esqueceu-se da sua senha?</p>\... => <p>Caro(a) #nome#,</p>\n<p>Esqueceu-se da sua senha?</p>\...], css [h1{\n    color:blue;\n} => h1{\n    color:blue;\n}], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"0dfd41316fd9355ef67b10cc6b1e04ad","css":"2f40d13... => {"html":"6e6710e729ba5ca2bfed4fca6024299c","css":"e4b0bc7...]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|interface-backup-dropdown Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|plataforma-gateways-mensagem-pago-gratuito Campos: html [<h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s... => <h2>@[[titulo]]@</h2>\n<h3>Pedido nº @[[codigo]]@ - @[[s...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"babb1ce83d4e78d54acfb741c6e9eb38","css":"","comb... => {"html":"1e2419cee519e83d43ac14701a3e7d12","css":"","comb...]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|layout-email-baixa-voucher Campos: html [<h3>Voucher utilizado no estabelecimento.</h3>\n<p>Caro(a... => <h3>Voucher utilizado no estabelecimento.</h3>\n<p>Caro(a...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"5c695e12cc34c9fc5e1683cb39e83780","css":"","comb... => {"html":"ebc88cbe7f7d28f5c98b7da1c7568883","css":"","comb...]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|layout-email-senha-redefinida Campos: html [<p>Caro(a) #nome#,</p>\n<p>Sua senha foi redefinida com s... => <p>Caro(a) #nome#,</p>\n<p>Sua senha foi redefinida com s...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"a733b0e5baa367661d0636c0bab45c5b","css":"","comb... => {"html":"71bef62359404d276334517b6db99e90","css":"","comb...]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|layout-email-conta-ftp-senha-redefinida Campos: html [<p>Caro(a) #nome#,</p>\n<p>A senha da sua Conta FTP foi r... => <p>Caro(a) #nome#,</p>\n<p>A senha da sua Conta FTP foi r...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"e6828b756bf211d846b6265014c3d4ef","css":"","comb... => {"html":"62f5025db5f02261821553ce2073378b","css":"","comb...]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|configuracao-campos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|configuracao-widget Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|configuracao-hosts-widget Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|interface-simples Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|comunicacao-email-teste Campos: html [<h1>Email Teste da Plataforma</h1>\n<p>Você recebeu este... => <h1>Email Teste da Plataforma</h1>\n<p>Você recebeu este...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.3 => 1.2], checksum [{"html":"98cd5d697e6c6f1bfd798819ae65539f","css":"","comb... => {"html":"401255d8c45c417adc4636a2837a8151","css":"","comb...]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|impressao-sem-dados Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|atualizacoes-lista Campos: html [<div class="ui segment" id="admin-atualizacoes-root"\n   ... => <div class="ui segment" id="admin-atualizacoes-root"\n   ...], framework_css [NULL => fomantic-ui], versao [12 => 1], file_version [1.14 => 1.13], checksum [{"html":"e007e7b6b9725f54b3d1d050343728f6","css":"","comb... => {"html":"49f985d7f385bc65c554db83a925e8b8","css":"","comb...]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|atualizacoes-detalhe-comp Campos: html [<div class="ui segment">\n    <div class="ui header">@[[u... => <div class="ui segment">\n    <div class="ui header">@[[u...], framework_css [NULL => fomantic-ui], versao [4 => 1], file_version [1.4 => 1.3], checksum [{"html":"d15a8a39cceb60aed8b27527b750cac2","css":"","comb... => {"html":"2165f501c194d36a1b7944cf7901805b","css":"","comb...]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|teste-componente-modulo Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização componentes PK=pt-br|host-plugins-update-carregando Campos: html [<div class="ui basic modal atualizando">\n    <div class=... => <div class="ui basic modal atualizando">\n    <div class=...], framework_css [NULL => fomantic-ui], versao [3 => 1], file_version [1.2 => 1.1], checksum [{"html":"60e29cf494b4e51a71936336e0dc7f9d","css":"","comb... => {"html":"70526920a5cc063bdbbf43a619e47684","css":"","comb...]
+[2025-08-27 17:24:33] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|impressao-cabecalho
+[2025-08-27 17:24:33] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|tabela-cupons-prioridade
+[2025-08-27 17:24:33] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|impressao-cabecalho-escalas
+[2025-08-27 17:24:33] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-27 17:24:33] ORPHANS_EXPORTED tabela=componentes qtd=4 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250827-172433.json"
+[2025-08-27 17:24:33] SYNC_FIM tabela=componentes +0 ~83 =0 orphans=4 modo=natural
+[2025-08-27 17:24:33] Resumo comparação - componentes => inserções=0, atualizações=83, sem_alteracao=0
+[2025-08-27 17:24:33] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-27 17:24:33] Sincronizando tabela layouts ...
+[2025-08-27 17:24:33] SYNC_INI tabela=layouts modo=natural qtdJson=13
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|layout-administrativo-do-gestor Campos: framework_css [NULL => fomantic-ui], versao [5 => 1]
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|layout-pagina-sem-permissao Campos: framework_css [NULL => fomantic-ui], versao [2 => 1]
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|layout-emails Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|layout-iframes Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|pagina-lista-pedidos Campos: framework_css [NULL => fomantic-ui], versao [3 => 1]
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|layout-pagina-simples Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|layout-pagina-configuracao Campos: framework_css [NULL => fomantic-ui], versao [2 => 1]
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|layout-mestre-loja Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|layout-mestre-paginas Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|layout-servicos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|layout-pagina-padrao Campos: framework_css [NULL => fomantic-ui], versao [2 => 1]
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|layout-impressao Campos: framework_css [NULL => fomantic-ui], versao [2 => 1]
+[2025-08-27 17:24:33] Atualização layouts PK=pt-br|layout-mestre-teste-principal Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] SYNC_FIM tabela=layouts +0 ~13 =0 orphans=0 modo=natural
+[2025-08-27 17:24:33] Resumo comparação - layouts => inserções=0, atualizações=13, sem_alteracao=0
+[2025-08-27 17:24:33] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-27 17:24:33] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-27 17:24:33] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-27 17:24:33] Sincronizando tabela paginas ...
+[2025-08-27 17:24:33] SYNC_INI tabela=paginas modo=natural qtdJson=179
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||teste-coluna-centralizada Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||contato Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||teste-variavel-global Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||404-pagina-nao-encontrada Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||pagina-raiz-do-sistema Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||dashboard-caixa Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||emissao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||pagina-teste-de-layout Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||pagina-teste-de-layout-emissao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||pagina-teste-de-layout-meus-pedidos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||pagina-teste-de-layout-pagamento Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||pagina-teste-de-layout-cadastro Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||pagina-teste-de-layout-identificacao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||pagina-teste-de-layout-pedidos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||error-buttons-stacking-without-margin-top Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||rascunho Campos: framework_css [NULL => fomantic-ui], versao [3 => 1]
+[2025-08-27 17:24:33] Atualização paginas PK=pt-br||pagina-teste-de-layout-pagamento-ccproprio Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||pagina-teste-de-layout-pagamento-ccterceiro Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||pagina-teste-de-layout-pagamento-paypal Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||pagina-teste-de-layout-pagamento-ccproprio-cartao-salvo-ou-novo-cartao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||pagina-teste-de-minha-conta Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||teste-mudanca Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||testes-globais-dashboard Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||cookies-devem-estar-ativados-no-seu-navegador Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates-paginas|admin-templates-paginas Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates-paginas|admin-templates-paginas-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates-paginas|admin-templates-paginas-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates-layouts|admin-templates-layouts Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates-layouts|admin-templates-layouts-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates-layouts|admin-templates-layouts-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||pagina-servicos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||pagina-mestre-teste-servico Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||pagina-mestre-teste-carrinho Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||pagina-mestre-teste-identificacao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||pagina-mestre-teste-identificacao-cadastro Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||pagina-de-impressao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|usuarios-hosts|usuarios-hosts Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|usuarios-hosts|usuarios-hosts-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|usuarios-hosts|usuarios-hosts-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br||instalacao-sucesso Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-arquivos|admin-arquivos Campos: framework_css [NULL => fomantic-ui], versao [6 => 1]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-arquivos|admin-arquivos-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-arquivos|emissao-teste Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-atualizacoes|admin-atualizacoes Campos: html [<h1 class="ui header">@[[updates-title]]@</h1>\n<div>#dyn... => <h1 class="ui header">@[[updates-title]]@</h1>\n<div>#dyn...], framework_css [NULL => fomantic-ui], versao [2 => 1], file_version [1.2 => 1.1], checksum [{"html":"3b4111f3cd39194b7053bfbffa69ba62","css":"","comb... => {"html":"59f177cb2724589cb275a5f5e8b2f202","css":"","comb...]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-atualizacoes|admin-atualizacoes-detalhe Campos: html [<h1 class="ui header">@[[updates-detail-title]]@</h1>\n<d... => <h1 class="ui header">@[[updates-detail-title]]@</h1>\n<d...], framework_css [NULL => fomantic-ui], versao [2 => 1], file_version [1.2 => 1.1], checksum [{"html":"57671f489f494af3ded385b978e857a9","css":"","comb... => {"html":"8666d7429a44a9827ac8e21bebfa839d","css":"","comb...]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-categorias|admin-categorias Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-categorias|admin-categorias-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-categorias|admin-categorias-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-categorias|admin-categorias-adicionar-filho Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-componentes|admin-componentes Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-componentes|admin-componentes-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-componentes|admin-componentes-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-hosts|admin-hosts Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-hosts|admin-hosts-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-layouts|admin-layouts Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-layouts|admin-layouts-editar Campos: framework_css [NULL => fomantic-ui], versao [2 => 1]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-layouts|admin-layouts-adicionar Campos: framework_css [NULL => fomantic-ui], versao [2 => 1]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-layouts|emissao-teste Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-layouts|emissao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-paginas|admin-paginas Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-paginas|admin-paginas-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-paginas|admin-paginas-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-plugins|admin-plugins Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-plugins|admin-plugins-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-plugins|admin-plugins-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates|admin-templates Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates|admin-templates-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates|admin-templates-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates|admin-templates-editar-layout Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates|admin-templates-adicionar-paginas Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates|admin-templates-editar-Indice Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates|admin-templates-editar-paginas Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates|admin-templates-editar-template Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates|admin-templates-adicionar-layouts Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates|admin-templates-editar-layouts Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|admin-templates|admin-templates-pre-visualizacao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|arquivos|arquivos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|arquivos|arquivos-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|categorias|categorias Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|categorias|categorias-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|categorias|categorias-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|categorias|categorias-adicionar-filho Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|componentes|componentes Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|componentes|componentes-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|componentes|componentes-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:34] Atualização paginas PK=pt-br|comunicacao-configuracoes|comunicacao-configuracoes Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|comunicacao-configuracoes|disparador-de-emails-teste Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|dashboard|dashboard Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|dashboard|dashboard-testes Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|dashboard|testes-do-dashboard Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|gateways-de-pagamentos|gateways-de-pagamentos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|gateways-de-pagamentos|gateway-de-pagamento-paypal Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|gateways-de-pagamentos|gateway-de-pagamento-paypal-reference-create Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|gateways-de-pagamentos|gateway-de-pagamento-paypal-reference-return Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|host-configuracao|host-instalacao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|host-configuracao|hospedeiro-configuracao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|host-configuracao|hospedeiro-esqueceu-senha Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|host-configuracao|hospedeiro-redefinir-senha Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|host-configuracao|hospedeiro-esqueceu-senha-confirmacao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|host-configuracao|hospedeiro-redefinir-senha-confirmacao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|host-configuracao|hospedeiro-atualizacao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|host-configuracao|plataforma-servidor-testes Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|host-configuracao|hospedeiro-alteracoes Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|host-configuracao|hospedeiro-plugins Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|host-configuracao-manual|host-configuracao-manual Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|layouts|layouts Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|layouts|layouts-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|layouts|layouts-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|loja-configuracoes|loja-configuracoes Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|menus|menus Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos|modulos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos|modulos-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos|modulos-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos|modulos-variaveis Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos|modulos-administracao-de-sistema-sincronizar-bancos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos|modulos-administracao-de-sistema-copiar-variaveis Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos-grupos|modulos-grupos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos-grupos|modulos-grupos-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos-grupos|modulos-grupos-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos-grupos|teste-de-adicao-novo Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos-operacoes|modulos-operacoes Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos-operacoes|modulos-operacoes-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|modulos-operacoes|modulos-operacoes-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|paginas|paginas Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|paginas|paginas-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|paginas|paginas-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|pedidos|pedidos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|pedidos|pedidos-visualizar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|perfil-usuario|acessar-sistema Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|perfil-usuario|sair-sistema Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|perfil-usuario|perfil-usuario Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|perfil-usuario|Area-restrita Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|perfil-usuario|validar-usuario Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|perfil-usuario|esqueceu-a-senha Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|perfil-usuario|esqueceu-a-senha-email-enviado Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|perfil-usuario|redefinir-senha Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|perfil-usuario|redefinir-senha-confirmacao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|perfil-usuario|cadastrar-no-sistema Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|perfil-usuario|confirmacao-de-email Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|postagens|postagens Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|postagens|postagens-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|postagens|postagens-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|servicos|servicos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|servicos|servicos-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|servicos|servicos-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|templates|templates Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|templates|templates-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|templates|templates-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|templates|templates-editar-Indice Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|templates|templates-seletores Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|templates|templates-atualizacoes Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|templates|templates-ativar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:35] Atualização paginas PK=pt-br|templates|templates-pre-visualizacao Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|testes|pagina-de-testes Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|testes|sem-permissao-teste Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios|usuarios Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios|usuarios-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios|usuarios-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-gestores|usuarios-gestores Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-gestores|usuarios-gestores-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-gestores|usuarios-gestores-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-gestores-perfis|usuarios-gestores-perfis Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-gestores-perfis|usuarios-gestores-perfis-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-gestores-perfis|usuarios-gestores-perfis-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-hospedeiro|usuarios-hospedeiro Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-hospedeiro|usuarios-hospedeiro-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-hospedeiro|usuarios-hospedeiro-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-hospedeiro-perfis|usuarios-hospedeiro-perfis Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-hospedeiro-perfis|usuarios-hospedeiro-perfis-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-hospedeiro-perfis|usuarios-hospedeiro-perfis-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-hospedeiro-perfis-admin|usuarios-hospedeiro-perfis-admin Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-hospedeiro-perfis-admin|usuarios-hospedeiro-perfis-admin-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-hospedeiro-perfis-admin|usuarios-hospedeiro-perfis-admin-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-perfis|usuarios-perfis Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-perfis|usuarios-perfis-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-perfis|usuarios-perfis-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-planos|usuarios-planos Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-planos|usuarios-planos-adicionar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] Atualização paginas PK=pt-br|usuarios-planos|usuarios-planos-editar Campos: framework_css [NULL => fomantic-ui]
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|agendamentos|agendamentos
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|agendamentos|cupons-de-prioridade
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|agendamentos|cupons-de-prioridade-adicionar
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|agendamentos|cupons-de-prioridade-editar
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|configuracoes-agendamentos|configuracoes-de-agendamentos
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|configuracoes-escalas|configuracoes-de-escala
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|escalas|escalas
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes-disparar
+[2025-08-27 17:24:36] ORPHANS_EXPORTED tabela=paginas qtd=8 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/paginas-orphans-20250827-172436.json"
+[2025-08-27 17:24:36] SYNC_FIM tabela=paginas +0 ~179 =0 orphans=8 modo=natural
+[2025-08-27 17:24:36] Resumo comparação - paginas => inserções=0, atualizações=179, sem_alteracao=0
+[2025-08-27 17:24:36] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-27 17:24:36] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-27 17:24:36] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-27 17:24:36] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-27 17:24:36] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-27 17:24:36] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-27 17:24:36] Sincronizando tabela variaveis ...
+[2025-08-27 17:24:36] SYNC_INI tabela=variaveis modo=natural qtdJson=1229
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||label-button-admin
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||tooltip-button-admin
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||label-button-coupon
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||tooltip-button-coupon
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-name-label
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-name-placeholder
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-quantity-label
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-quantity-placeholder
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-valid-from-label
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-valid-from-placeholder
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-valid-until-label
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||form-valid-until-placeholder
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||label-print
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||tooltip-print
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||alert-cupons-not-found
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|agendamentos||alert-cupons-expired
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|agendamento-ativacao
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|datas-indisponiveis
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|calendario-anos
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|calendario-limite-mes-a-frente
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|fase-escolha-livre
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|fase-residual
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|agendamento-assunto
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|calendario-ferias-ate
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|calendario-ferias-de
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|desagendamento-assunto
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|dias-semana
+[2025-08-27 17:24:36] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|dias-semana-maximo-vagas
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|email-confirmacao-assunto
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|fase-sorteio
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|pre-agendamento-assunto
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|pre-desagendamento-assunto
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|datas-indisponiveis-valores
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|agendamento-mensagem
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|desagendamento-mensagem
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|email-confirmacao-mensagem
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-cancelado
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-confirmado
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-data-nao-permitida
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-expirado
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-ja-existe
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-nao-encontrado
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-sem-vagas
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-agendamento-suspenso
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-conclusao-agendamento
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-conclusao-pre-agendamento
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|msg-vagas-residuais-indisponiveis
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|pre-agendamento-mensagem
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|texto-sem-agendamentos-cadastrados
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|form-msg-data
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|form-msg-acompanhante
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-both|max-acompanhantes
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|titulo-estabelecimento
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-confirmado
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-novo
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-finalizado
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-qualificado
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-nao-qualificado
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-vagas-residuais
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-system|status-sem-vagas-residuais
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos||teste
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos||data-multipla
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos||data
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos||data-hora
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos||teste-tinymce
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|texto-agendamentos-cadastrados
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|cupom-prioridade-descricao
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|msg-cupom-prioridade-inativo
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|msg-cupom-prioridade-vencido
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|msg-cupom-prioridade-ja-utilizado
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|msg-cupom-prioridade-nao-encontrado
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-app|msg-agendamento-ja-confirmado
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-app|msg-confirmacao-status-nao-permitido
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-agendamentos|host-admin|agendamentos-impressao
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|escala-ativacao
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|msg-escala-suspenso
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|calendario-ferias-de
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|calendario-ferias-ate
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|calendario-anos
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|dias-semana
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|dias-semana-maximo-vagas
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|datas-indisponiveis
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|datas-indisponiveis-valores
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|datas-extras-disponiveis
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|datas-extras-disponiveis-valores
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|datas-extras-dias-semana-maximo-vagas
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|dia-inicio-inscricao
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|mes-inicio-inscricao
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|dias-inicio-confirmacao
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|dias-fim-confirmacao
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|periodo-limite-alteracao
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|calendario-inicio
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|calendario-fim
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-both|msg-escalamento-data-nao-permitida
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalamento-assunto
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalamento-mensagem
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|titulo-estabelecimento
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-conclusao-escalamento
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-extra-conclusao-inscricao
+[2025-08-27 17:24:37] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-extra-conclusao-utilizacao
+[2025-08-27 17:24:38] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|email-confirmacao-assunto
+[2025-08-27 17:24:38] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|email-confirmacao-mensagem
+[2025-08-27 17:24:38] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-datas-sem-vagas
+[2025-08-27 17:24:38] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalamento-confirmar-assunto
+[2025-08-27 17:24:38] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalamento-confirmar-mensagem
+[2025-08-27 17:24:38] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-conclusao-confirmar-escalamento
+[2025-08-27 17:24:38] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalamento-cancelar-assunto
+[2025-08-27 17:24:38] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalamento-cancelar-mensagem
+[2025-08-27 17:24:38] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-conclusao-cancelar-escalamento
+[2025-08-27 17:24:38] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|msg-confirmacao-fora-do-prazo
+[2025-08-27 17:24:38] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|configuracoes-escalas|host-admin|escalas-impressao
+[2025-08-27 17:24:38] ORPHANS_EXPORTED tabela=variaveis qtd=111 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/variaveis-orphans-20250827-172438.json"
+[2025-08-27 17:24:38] SYNC_FIM tabela=variaveis +0 ~0 =1229 orphans=111 modo=natural
+[2025-08-27 17:24:38] Resumo comparação - variaveis => inserções=0, atualizações=0, sem_alteracao=1229
+[2025-08-27 17:24:38] MANAGER_UPDATES_REGISTRADO id=47
+[2025-08-27 17:24:38] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~83 =0
+📦 layouts => +0 ~13 =0
+📦 paginas => +0 ~179 =0
+📦 variaveis => +0 ~0 =1229
+Σ TOTAL => +0 ~275 =1229
+
+[2025-08-27 17:24:38] Rotina concluída com sucesso.

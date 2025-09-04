@@ -1,0 +1,143 @@
+[2025-08-31 14:49:39] Iniciando rotina de atualização de banco de dados...
+[2025-08-31 14:49:39] Executando migrações...
+[2025-08-31 14:49:39] [DEBUG] MIGRATING ENV=gestor
+[2025-08-31 14:49:40] Migrações concluídas.
+[2025-08-31 14:49:40] CHECKSUM_CHANGED_TABLES=componentes,paginas,variaveis
+[2025-08-31 14:49:40] Comparando dados do banco com arquivos Data.json...
+[2025-08-31 14:49:40] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-31 14:49:40] Sincronizando tabela componentes ...
+[2025-08-31 14:49:40] SYNC_INI tabela=componentes modo=natural qtdJson=89
+[2025-08-31 14:49:40] Atualização componentes PK=pt-br|modal-pagina Campos: html [<div class="ui modal fullscreen previsualizar">\n    <div... => <div class="ui modal fullscreen previsualizar">\n    <div...]
+[2025-08-31 14:49:40] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-31 14:49:40] ORPHANS_EXPORTED tabela=componentes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250831-144940.json"
+[2025-08-31 14:49:40] SYNC_FIM tabela=componentes +2 ~1 =86 orphans=1 modo=natural
+[2025-08-31 14:49:40] Resumo comparação - componentes => inserções=2, atualizações=1, sem_alteracao=86
+[2025-08-31 14:49:40] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-31 14:49:40] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-31 14:49:40] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-31 14:49:40] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-31 14:49:40] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-31 14:49:40] Sincronizando tabela paginas ...
+[2025-08-31 14:49:40] SYNC_INI tabela=paginas modo=natural qtdJson=186
+[2025-08-31 14:49:40] Atualização paginas PK=pt-br|admin-componentes|admin-componentes-adicionar Campos: html [<div class="field">\n    <label>#form-name-label#</label>... => <div class="field">\n    <label>#form-name-label#</label>...], versao [1 => 2], file_version [1.0 => 1.1], checksum [{"html":"02a8f489049e53693834150cb3edf442","css":"bdb85de... => {"html":"edcfda90e62e5f1425cf72129d41c539","css":"bdb85de...]
+[2025-08-31 14:49:40] Atualização paginas PK=pt-br|admin-componentes|admin-componentes-editar Campos: html [<div class="field">\n    <label>#form-name-label#</label>... => <div class="field">\n    <label>#form-name-label#</label>...], versao [1 => 2], file_version [1.0 => 1.1], checksum [{"html":"1befa0ed6b4dbd98bdceda52e96a625c","css":"0c9ea4a... => {"html":"7d847f0c7dead2ddff77c193a730f27c","css":"0c9ea4a...]
+[2025-08-31 14:49:40] Atualização paginas PK=pt-br|admin-layouts|admin-layouts-editar Campos: html [<div class="field">\n    <label>#form-name-label#</label>... => <div class="field">\n    <label>#form-name-label#</label>...], versao [1 => 2], file_version [1.2 => 1.3], checksum [{"html":"ba1ad805a73ad08b26465d568e4260be","css":"0c9ea4a... => {"html":"22f3c5303a35ded112df2c91c73ed121","css":"0c9ea4a...]
+[2025-08-31 14:49:40] Atualização paginas PK=pt-br|admin-layouts|admin-layouts-adicionar Campos: html [<div class="field">\n    <label>#form-name-label#</label>... => <div class="field">\n    <label>#form-name-label#</label>...], versao [1 => 2], file_version [1.2 => 1.3], checksum [{"html":"65578a67da1ba8603be9c6c030c28af7","css":"bdb85de... => {"html":"634b5fe90aede4b14ecc76d231d31402","css":"bdb85de...]
+[2025-08-31 14:49:40] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br|admin-atualizacoes|admin-atualizacoes-disparar
+[2025-08-31 14:49:40] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||teste-de-pagina
+[2025-08-31 14:49:40] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||teste-de-pagina-1
+[2025-08-31 14:49:40] ORPHAN_DB_ROW_NAT tabela=paginas chave=pt-br||teste-de-pagina-inicial
+[2025-08-31 14:49:40] ORPHANS_EXPORTED tabela=paginas qtd=4 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/paginas-orphans-20250831-144940.json"
+[2025-08-31 14:49:40] SYNC_FIM tabela=paginas +0 ~4 =182 orphans=4 modo=natural
+[2025-08-31 14:49:40] Resumo comparação - paginas => inserções=0, atualizações=4, sem_alteracao=182
+[2025-08-31 14:49:40] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-31 14:49:40] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-31 14:49:40] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-31 14:49:40] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-31 14:49:40] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-31 14:49:40] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-31 14:49:40] Sincronizando tabela variaveis ...
+[2025-08-31 14:49:40] SYNC_INI tabela=variaveis modo=natural qtdJson=1377
+[2025-08-31 14:49:40] SYNC_FIM tabela=variaveis +24 ~0 =1353 orphans=0 modo=natural
+[2025-08-31 14:49:40] Resumo comparação - variaveis => inserções=24, atualizações=0, sem_alteracao=1353
+[2025-08-31 14:49:40] MANAGER_UPDATES_REGISTRADO id=71
+[2025-08-31 14:49:40] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +2 ~1 =86
+📦 paginas => +0 ~4 =182
+📦 variaveis => +24 ~0 =1353
+Σ TOTAL => +26 ~5 =1621
+
+[2025-08-31 14:49:40] Rotina concluída com sucesso.
+[2025-08-31 15:27:53] Iniciando rotina de atualização de banco de dados...
+[2025-08-31 15:27:53] Executando migrações...
+[2025-08-31 15:27:53] [DEBUG] MIGRATING ENV=gestor
+[2025-08-31 15:27:54] Migrações concluídas.
+[2025-08-31 15:27:54] CHECKSUM_NENHUMA_TABELA_MUDOU
+[2025-08-31 15:27:54] SEM_MUDANCAS_DADOS -> pulando sincronizacao
+[2025-08-31 15:27:54] MANAGER_UPDATES_REGISTRADO id=72
+[2025-08-31 15:27:54] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+Σ TOTAL => +0 ~0 =0
+
+[2025-08-31 15:27:54] Rotina concluída com sucesso.
+[2025-08-31 15:35:26] Iniciando rotina de atualização de banco de dados...
+[2025-08-31 15:35:26] Executando migrações...
+[2025-08-31 15:35:26] [DEBUG] MIGRATING ENV=gestor
+[2025-08-31 15:35:27] Migrações concluídas.
+[2025-08-31 15:35:27] CHECKSUM_CHANGED_TABLES=variaveis
+[2025-08-31 15:35:27] Comparando dados do banco com arquivos Data.json...
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=componentes
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-31 15:35:27] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-31 15:35:27] Sincronizando tabela variaveis ...
+[2025-08-31 15:35:27] SYNC_INI tabela=variaveis modo=natural qtdJson=1371
+[2025-08-31 15:35:27] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||modal-close
+[2025-08-31 15:35:27] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||modal-back
+[2025-08-31 15:35:27] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||modal-confirm
+[2025-08-31 15:35:27] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||modal-responsive-desktop
+[2025-08-31 15:35:27] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||modal-responsive-tablet
+[2025-08-31 15:35:27] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-componentes||modal-responsive-mobile
+[2025-08-31 15:35:27] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||modal-close
+[2025-08-31 15:35:27] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||modal-back
+[2025-08-31 15:35:27] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||modal-confirm
+[2025-08-31 15:35:27] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||modal-responsive-desktop
+[2025-08-31 15:35:27] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||modal-responsive-tablet
+[2025-08-31 15:35:27] ORPHAN_DB_ROW_NAT tabela=variaveis chave=pt-br|admin-layouts||modal-responsive-mobile
+[2025-08-31 15:35:27] ORPHANS_EXPORTED tabela=variaveis qtd=12 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/variaveis-orphans-20250831-153527.json"
+[2025-08-31 15:35:27] SYNC_FIM tabela=variaveis +6 ~0 =1365 orphans=12 modo=natural
+[2025-08-31 15:35:27] Resumo comparação - variaveis => inserções=6, atualizações=0, sem_alteracao=1365
+[2025-08-31 15:35:27] MANAGER_UPDATES_REGISTRADO id=73
+[2025-08-31 15:35:27] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 variaveis => +6 ~0 =1365
+Σ TOTAL => +6 ~0 =1365
+
+[2025-08-31 15:35:27] Rotina concluída com sucesso.
+[2025-08-31 15:40:03] Iniciando rotina de atualização de banco de dados...
+[2025-08-31 15:40:03] Executando migrações...
+[2025-08-31 15:40:03] [DEBUG] MIGRATING ENV=gestor
+[2025-08-31 15:40:04] Migrações concluídas.
+[2025-08-31 15:40:04] CHECKSUM_CHANGED_TABLES=componentes
+[2025-08-31 15:40:04] Comparando dados do banco com arquivos Data.json...
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=categorias
+[2025-08-31 15:40:04] Sincronizando tabela componentes ...
+[2025-08-31 15:40:04] SYNC_INI tabela=componentes modo=natural qtdJson=89
+[2025-08-31 15:40:04] Atualização componentes PK=pt-br|modal-componente Campos: html [<div class="ui modal fullscreen previsualizar">\n    <div... => <div class="ui modal fullscreen previsualizar">\n    <div...], versao [1 => 2], file_version [1.1 => 1.2], checksum [{"html":"8171757609ec504ea62dfcdb56e44a1e","css":"","comb... => {"html":"4aa7451af32a9fbaaf8d10baf08b847d","css":"","comb...]
+[2025-08-31 15:40:04] Atualização componentes PK=pt-br|modal-layout Campos: html [<div class="ui modal fullscreen previsualizar">\n    <div... => <div class="ui modal fullscreen previsualizar">\n    <div...], versao [1 => 2], file_version [1.1 => 1.2], checksum [{"html":"8171757609ec504ea62dfcdb56e44a1e","css":"","comb... => {"html":"4aa7451af32a9fbaaf8d10baf08b847d","css":"","comb...]
+[2025-08-31 15:40:04] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|atualizacoes-disparar
+[2025-08-31 15:40:04] ORPHAN_DB_ROW_NAT tabela=componentes chave=pt-br|teste
+[2025-08-31 15:40:04] ORPHANS_EXPORTED tabela=componentes qtd=2 arquivo="/var/www/sites/localhost/conn2flow-gestor/db/orphans/bd/componentes-orphans-20250831-154004.json"
+[2025-08-31 15:40:04] SYNC_FIM tabela=componentes +0 ~2 =87 orphans=2 modo=natural
+[2025-08-31 15:40:04] Resumo comparação - componentes => inserções=0, atualizações=2, sem_alteracao=87
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=hosts_configuracoes
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=layouts
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=modulos
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_grupos
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=modulos_operacoes
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=paginas
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=plugins
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=templates
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=usuarios_perfis_modulos_operacoes
+[2025-08-31 15:40:04] SKIP_NO_CHECKSUM_CHANGE tabela=variaveis
+[2025-08-31 15:40:04] MANAGER_UPDATES_REGISTRADO id=74
+[2025-08-31 15:40:04] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 componentes => +0 ~2 =87
+Σ TOTAL => +0 ~2 =87
+
+[2025-08-31 15:40:04] Rotina concluída com sucesso.

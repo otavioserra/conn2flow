@@ -1,0 +1,30 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "pagina",
+        "host"
+    ],
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Instalação Manual de Host",
+                    "id": "host-configuracao-manual",
+                    "path": "\/host-manual-install\/",
+                    "type": "modulo",
+                    "option": "instalar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "components": []
+        }
+    }
+}

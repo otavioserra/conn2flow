@@ -1,0 +1,236 @@
+{
+    "versao": "1.0.2",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "atualizacoes_execucoes",
+        "id": "id",
+        "id_numerico": "id_atualizacoes_execucoes",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Atualizações",
+                    "id": "admin-atualizacoes",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-atualizacoes\/",
+                    "type": "system",
+                    "option": "listar-atualizacoes",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "59f177cb2724589cb275a5f5e8b2f202",
+                        "css": "",
+                        "combined": "59f177cb2724589cb275a5f5e8b2f202"
+                    }
+                },
+                {
+                    "name": "Admin Atualizações - Detalhe",
+                    "id": "admin-atualizacoes-detalhe",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-atualizacoes\/detalhe\/",
+                    "type": "system",
+                    "option": "detalhe-atualizacao",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "8666d7429a44a9827ac8e21bebfa839d",
+                        "css": "",
+                        "combined": "8666d7429a44a9827ac8e21bebfa839d"
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Atualizações - Lista",
+                    "id": "atualizacoes-lista",
+                    "version": "1.13",
+                    "checksum": {
+                        "html": "49f985d7f385bc65c554db83a925e8b8",
+                        "css": "",
+                        "combined": "49f985d7f385bc65c554db83a925e8b8"
+                    }
+                },
+                {
+                    "name": "Atualizações - Detalhe",
+                    "id": "atualizacoes-detalhe-comp",
+                    "version": "1.3",
+                    "checksum": {
+                        "html": "2165f501c194d36a1b7944cf7901805b",
+                        "css": "",
+                        "combined": "2165f501c194d36a1b7944cf7901805b"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "updates-title",
+                    "value": "Atualizações do Sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-run-button",
+                    "value": "Executar Atualização",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-view-log-button",
+                    "value": "Ver Log",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-last-run",
+                    "value": "Última Execução",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-actions",
+                    "value": "Ações",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-detail-title",
+                    "value": "Detalhe da Atualização",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-log-title",
+                    "value": "Log da Execução",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-date",
+                    "value": "Data",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-log",
+                    "value": "Log",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-plan-json",
+                    "value": "Plano JSON",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-full",
+                    "value": "Full",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-files",
+                    "value": "Arquivos",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-db",
+                    "value": "Banco",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-back-button",
+                    "value": "Voltar",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-select-log-plan",
+                    "value": "Selecione um log ou plano.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-invalid-log",
+                    "value": "Log inválido",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-invalid-plan",
+                    "value": "Plano inválido",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-no-records",
+                    "value": "Nenhuma atualização registrada.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-title",
+                    "value": "Histórico de Execuções",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-started",
+                    "value": "Início",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-tag",
+                    "value": "Tag",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-mode",
+                    "value": "Modo",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-removed",
+                    "value": "Remov.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-copied",
+                    "value": "Copiados",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-finished",
+                    "value": "Fim",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-cancel",
+                    "value": "Cancelar",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-recent-logs",
+                    "value": "Logs Recentes",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-progress",
+                    "value": "Progresso",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-go-disparar",
+                    "value": "Página Disparar",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-advanced-options",
+                    "value": "Opções Avançadas",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

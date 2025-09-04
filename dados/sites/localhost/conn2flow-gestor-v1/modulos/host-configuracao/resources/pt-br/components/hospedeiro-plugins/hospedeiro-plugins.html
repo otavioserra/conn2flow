@@ -1,0 +1,60 @@
+<!-- atualizacao < -->
+<div class="ui stackable two column centered grid">
+    <div class="column">
+        <div class="ui segment">
+            <form id="_gestor-host-plugins" action="@[[pagina#url-raiz]]@host-plugins/" method="post" name="_gestor-host-plugins" class="ui form interfaceFormPadrao">
+                <div class="ui center aligned header large">@[[host-plugins-title]]@</div>
+                <div class="ui message">
+                    <div class="header">@[[host-plugins-msg-title]]@</div>
+                    <p>Ative ou inative os plugins abaixo que melhor convir. Depois, clique no botão <b>@[[host-plugins-btn]]@</b> para que o sistema habilite / desabilite os módulos gerenciais dos plugins e instale / remova os módulos no hospedeiro da sua conta.</p>
+                </div>
+                <div class="ui header">Plugins:</div>
+                <div class="ui relaxed divided list">
+                    <!-- plugins < --><div class="item">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="#name#" data-checked="#checked#" value="1">
+                            <label>#titulo#</label>
+                        </div>
+                    </div><!-- plugins > -->
+                </div>
+                <input type="hidden" name="atualizar" value="sim">
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui error message">&nbsp;</div>
+                <div class="field">
+                    <button class="fluid ui button blue">@[[host-plugins-btn]]@</button>
+                    <div class="ui hidden divider">&nbsp;</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!-- atualizacao > -->
+<!-- conta-ftp < -->
+<div class="ui stackable two column centered grid">
+    <div class="column">
+        <div class="ui segment">
+            <form id="_gestor-host-plugins" action="@[[pagina#url-raiz]]@host-plugins/" method="post" name="_gestor-host-plugins" class="ui form interfaceFormPadrao">
+                <div class="ui center aligned header large">@[[host-plugins-title]]@</div>
+                <div class="ui message">
+                    <div class="header">@[[host-plugins-msg-title]]@</div>
+                    <p>@[[host-plugins-msg-2-content]]@</p>
+                </div>
+                <input type="hidden" name="user-ftp" value="entrey-user-ftp" autocomplete="username">
+                <div class="ui dividing header">@[[host-update-ftp-title]]@</div>
+                <div class="field">
+                    <label>@[[host-update-ftp-pass-label]]@</label>
+                    <input type="password" name="senha-ftp" placeholder="@[[host-update-ftp-pass-placeholder]]@" autocomplete="current-password">
+                </div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui error message">&nbsp;</div>
+                <div class="field">
+                    <button class="fluid ui button blue">@[[host-plugins-btn]]@</button>
+                    <div class="ui hidden divider">&nbsp;</div>
+                    <div class="ui basic segment center aligned">
+                        <div class="">@[[host-update-forgot-password-label]]@ <a href="@[[pagina#url-raiz]]@host-config-forgot-password/">@[[host-update-forgot-password-button]]@</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!-- conta-ftp > -->

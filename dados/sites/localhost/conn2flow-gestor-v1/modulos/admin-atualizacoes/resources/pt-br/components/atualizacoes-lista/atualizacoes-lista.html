@@ -1,0 +1,111 @@
+<div class="ui segment" id="admin-atualizacoes-root"
+    data-endpoint="?ajax=1&modulo=admin-atualizacoes&ajax-opcao=update">
+    <div style="margin-bottom:0.75em;">
+        <a class="ui small button" href="disparar/">@[[updates-go-disparar]]@</a>
+    </div>
+    <div class="ui small header" style="margin:0 0 .5em;">1) Escolha o modo &nbsp; 2) Ajuste opções &nbsp; 3) Clique
+        Iniciar: <span id="atualizacoes-mode-label">(modo não selecionado)</span></div>
+    <div class="ui buttons" id="atualizacoes-buttons" style="margin-bottom:1em;">
+        <button class="ui button upd-mode-btn" data-modo="full">@[[updates-mode-full]]@</button>
+        <button class="ui button upd-mode-btn" data-modo="only-files">@[[updates-mode-files]]@</button>
+        <button class="ui button upd-mode-btn" data-modo="only-db">@[[updates-mode-db]]@</button>
+    </div>
+    <div class="ui segment" style="margin-top:1em;">
+        <h4 class="ui header">Opções Avançadas</h4>
+        <div class="ui stackable three column grid">
+            <div class="column">
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="local"
+                        id="flag-local"><label for="flag-local">--local-artifact</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="debug" id="flag-debug"
+                        checked><label for="flag-debug">--debug</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="dry_run"
+                        id="flag-dry-run"><label for="flag-dry-run">--dry-run</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="download_only"
+                        id="flag-download-only"><label for="flag-download-only">--download-only</label></div><br>
+            </div>
+            <div class="column">
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="no_db"
+                        id="flag-no-db"><label for="flag-no-db">--no-db</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="no_verify"
+                        id="flag-no-verify"><label for="flag-no-verify">--no-verify</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="force_all"
+                        id="flag-force-all"><label for="flag-force-all">--force-all</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="log_diff"
+                        id="flag-log-diff"><label for="flag-log-diff">--log-diff</label></div><br>
+            </div>
+            <div class="column">
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="backup"
+                        id="flag-backup"><label for="flag-backup">--backup</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="skip_download"
+                        id="flag-skip-download"><label for="flag-skip-download">--skip-download</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="clean_temp"
+                        id="flag-clean-temp"><label for="flag-clean-temp">--clean-temp</label></div><br>
+                <div class="field" style="margin-top:0.5em;">
+                    <label style="font-weight:bold;">--tables=</label>
+                    <input type="text" id="upd-tables" placeholder="paginas,variaveis" style="width:100%;">
+                </div>
+                <div class="field" style="margin-top:0.5em;">
+                    <label style="font-weight:bold;">--logs-retention-days=</label>
+                    <input type="number" id="upd-logs-retention-days" min="0" placeholder="14" style="width:100%;">
+                </div>
+            </div>
+        </div>
+        <div class="field" style="margin-top:0.5em;">
+            <label style="font-weight:bold;">Tag (--tag)</label>
+            <input type="text" id="upd-tag" placeholder="gestor-v1.14.0" style="width:300px;">
+        </div>
+        <div class="field" style="margin-top:0.5em;">
+            <label style="font-weight:bold;">Domain (--domain)</label>
+            <input type="text" id="upd-domain" placeholder="localhost" style="width:300px;">
+        </div>
+    </div>
+    <div style="margin-bottom:1em;margin-top:1em;">
+        <button class="ui primary button" id="atualizacoes-start-btn">@[[updates-run-button]]@</button>
+        <button class="ui red button" id="atualizacoes-cancel-btn" data-action="cancel"
+            style="display:none;">@[[updates-cancel]]@</button>
+        <div class="ui small indicating progress" id="atualizacoes-progress-bar" data-percent="0"
+            style="display:none;min-width:200px;margin-top:1em;margin-bottom:2em;vertical-align:middle;">
+            <div class="bar">
+                <div class="progress"></div>
+            </div>
+            <div class="label">@[[updates-progress]]@</div>
+        </div>
+        <!-- loader inline será injetado via JS -->
+    </div>
+    <!-- Área de log unificada (CodeMirror vivo) -->
+    <textarea id="atualizacoes-log-textarea" class="codemirror-log" data-mode="text" data-live="1" style="display:none;"
+        rows="14"></textarea>
+    <pre class="fallback-log" style="max-height:40vh;overflow:auto;display:none;"></pre>
+    <div style="margin-top:1em;">#plano-link#</div>
+    <h3 class="ui header" style="margin-top:2em;">@[[updates-history-title]]@</h3>
+    <table class="ui very basic compact table" id="atualizacoes-historico-table">
+        <thead>
+            <tr>
+                <th>@[[updates-history-started]]@</th>
+                <th>@[[updates-history-tag]]@</th>
+                <th>@[[updates-history-mode]]@</th>
+                <th>@[[updates-history-status]]@</th>
+                <th>@[[updates-history-removed]]@</th>
+                <th>@[[updates-history-copied]]@</th>
+                <th>@[[updates-history-finished]]@</th>
+                <th>@[[updates-actions]]@</th>
+            </tr>
+        </thead>
+        <tbody>
+            #historico_linhas#
+        </tbody>
+    </table>
+    <h3 class="ui header" style="margin-top:2em;">@[[updates-recent-logs]]@</h3>
+    <table class="ui celled table compact" style="margin-top:1em;">
+        <thead>
+            <tr>
+                <th>@[[updates-date]]@</th>
+                <th>@[[updates-log]]@</th>
+                <th>@[[updates-actions]]@</th>
+            </tr>
+        </thead>
+        <tbody>
+            #linhas#
+        </tbody>
+    </table>
+</div>

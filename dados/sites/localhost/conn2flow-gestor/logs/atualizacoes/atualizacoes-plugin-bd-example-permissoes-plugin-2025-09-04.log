@@ -1,0 +1,277 @@
+[2025-09-04 14:41:39] Executando migrações...
+[2025-09-04 14:41:39] [DEBUG] MIGRATING ENV=gestor
+[2025-09-04 14:41:39] Migrações concluídas.
+[2025-09-04 14:41:39] FORCE_ALL_TABELAS
+[2025-09-04 14:41:39] Comparando dados do banco com arquivos Data.json...
+[2025-09-04 14:41:39] Sincronizando tabela modulos ...
+[2025-09-04 14:41:39] SYNC_INI tabela=modulos modo=pk qtdJson=1
+[2025-09-04 14:41:39] ORPHAN_DB_ROW tabela=modulos pk=modulos
+[2025-09-04 14:41:39] ORPHAN_DB_ROW tabela=modulos pk=modulos-grupos
+[2025-09-04 14:41:39] ORPHAN_DB_ROW tabela=modulos pk=admin-layouts
+[2025-09-04 14:41:39] ORPHAN_DB_ROW tabela=modulos pk=admin-paginas
+[2025-09-04 14:41:39] ORPHAN_DB_ROW tabela=modulos pk=usuarios-perfis
+[2025-09-04 14:41:39] ORPHAN_DB_ROW tabela=modulos pk=interface
+[2025-09-04 14:41:40] ORPHAN_DB_ROW tabela=modulos pk=usuarios
+[2025-09-04 14:41:40] ORPHAN_DB_ROW tabela=modulos pk=dashboard
+[2025-09-04 14:41:40] ORPHAN_DB_ROW tabela=modulos pk=perfil-usuario
+[2025-09-04 14:41:40] ORPHAN_DB_ROW tabela=modulos pk=admin-arquivos
+[2025-09-04 14:41:40] ORPHAN_DB_ROW tabela=modulos pk=admin-categorias
+[2025-09-04 14:41:40] ORPHAN_DB_ROW tabela=modulos pk=modulos-operacoes
+[2025-09-04 14:41:40] ORPHAN_DB_ROW tabela=modulos pk=ftp
+[2025-09-04 14:41:40] ORPHAN_DB_ROW tabela=modulos pk=admin-componentes
+[2025-09-04 14:41:40] ORPHAN_DB_ROW tabela=modulos pk=admin-plugins
+[2025-09-04 14:41:40] ORPHAN_DB_ROW tabela=modulos pk=admin-atualizacoes
+[2025-09-04 14:41:40] ORPHANS_EXPORTED tabela=modulos qtd=16 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-permissoes-plugin/db/orphans/bd/modulos-orphans-20250904-144140.json"
+[2025-09-04 14:41:40] SYNC_FIM tabela=modulos +1 ~0 =16 orphans=16 modo=pk
+[2025-09-04 14:41:40] Resumo comparação - modulos => inserções=1, atualizações=0, sem_alteracao=16
+[2025-09-04 14:41:40] Sincronizando tabela usuarios_perfis_modulos ...
+[2025-09-04 14:41:40] SYNC_INI tabela=usuarios_perfis_modulos modo=natural qtdJson=2
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|dashboard
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios-perfis
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|modulos
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|modulos-grupos
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-layouts
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-paginas
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|perfil-usuario
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-arquivos
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-categorias
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-templates
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|modulos-operacoes
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios-planos
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-componentes
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-hosts
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios-hospedeiro-perfis-admin
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-atualizacoes
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-plugins
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=consumidores|dashboard
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=consumidores|perfil-usuario
+[2025-09-04 14:41:40] ORPHANS_EXPORTED tabela=usuarios_perfis_modulos qtd=20 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-permissoes-plugin/db/orphans/bd/usuarios_perfis_modulos-orphans-20250904-144140.json"
+[2025-09-04 14:41:40] SYNC_FIM tabela=usuarios_perfis_modulos +2 ~0 =0 orphans=20 modo=natural
+[2025-09-04 14:41:40] Resumo comparação - usuarios_perfis_modulos => inserções=2, atualizações=0, sem_alteracao=0
+[2025-09-04 14:41:40] Sincronizando tabela usuarios_perfis_modulos_operacoes ...
+[2025-09-04 14:41:40] SYNC_INI tabela=usuarios_perfis_modulos_operacoes modo=natural qtdJson=1
+[2025-09-04 14:41:40] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos_operacoes chave=administradores|modificar-permissao-da-pagina
+[2025-09-04 14:41:40] ORPHANS_EXPORTED tabela=usuarios_perfis_modulos_operacoes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-permissoes-plugin/db/orphans/bd/usuarios_perfis_modulos_operacoes-orphans-20250904-144140.json"
+[2025-09-04 14:41:40] SYNC_FIM tabela=usuarios_perfis_modulos_operacoes +1 ~0 =0 orphans=1 modo=natural
+[2025-09-04 14:41:40] Resumo comparação - usuarios_perfis_modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-04 14:41:40] MANAGER_UPDATES_REGISTRADO id=2
+[2025-09-04 14:41:40] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 modulos => +1 ~0 =16
+📦 usuarios_perfis_modulos => +2 ~0 =0
+📦 usuarios_perfis_modulos_operacoes => +1 ~0 =0
+Σ TOTAL => +4 ~0 =16
+
+[2025-09-04 14:41:40] Rotina concluída com sucesso.
+[2025-09-04 14:41:49] Executando migrações...
+[2025-09-04 14:41:49] [DEBUG] MIGRATING ENV=gestor
+[2025-09-04 14:41:50] Migrações concluídas.
+[2025-09-04 14:41:50] CHECKSUM_NENHUMA_TABELA_MUDOU
+[2025-09-04 14:41:50] SEM_MUDANCAS_DADOS -> pulando sincronizacao
+[2025-09-04 14:41:50] MANAGER_UPDATES_REGISTRADO id=3
+[2025-09-04 14:41:50] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+Σ TOTAL => +0 ~0 =0
+
+[2025-09-04 14:41:50] Rotina concluída com sucesso.
+[2025-09-04 15:06:10] Executando migrações...
+[2025-09-04 15:06:10] [DEBUG] MIGRATING ENV=gestor
+[2025-09-04 15:06:11] Migrações concluídas.
+[2025-09-04 15:06:11] FORCE_ALL_TABELAS
+[2025-09-04 15:06:11] Comparando dados do banco com arquivos Data.json...
+[2025-09-04 15:06:11] Sincronizando tabela modulos ...
+[2025-09-04 15:06:11] SYNC_INI tabela=modulos modo=pk qtdJson=1
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=modulos
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=modulos-grupos
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=admin-layouts
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=admin-paginas
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=usuarios-perfis
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=interface
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=usuarios
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=dashboard
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=perfil-usuario
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=admin-arquivos
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=admin-categorias
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=modulos-operacoes
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=ftp
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=admin-componentes
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=admin-plugins
+[2025-09-04 15:06:11] ORPHAN_DB_ROW tabela=modulos pk=admin-atualizacoes
+[2025-09-04 15:06:11] ORPHANS_EXPORTED tabela=modulos qtd=16 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-permissoes-plugin/db/orphans/bd/modulos-orphans-20250904-150611.json"
+[2025-09-04 15:06:11] SYNC_FIM tabela=modulos +0 ~0 =17 orphans=16 modo=pk
+[2025-09-04 15:06:11] Resumo comparação - modulos => inserções=0, atualizações=0, sem_alteracao=17
+[2025-09-04 15:06:11] Sincronizando tabela usuarios_perfis_modulos ...
+[2025-09-04 15:06:11] SYNC_INI tabela=usuarios_perfis_modulos modo=natural qtdJson=2
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|dashboard
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios-perfis
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|modulos
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|modulos-grupos
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-layouts
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-paginas
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|perfil-usuario
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-arquivos
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-categorias
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-templates
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|modulos-operacoes
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios-planos
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-componentes
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-hosts
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios-hospedeiro-perfis-admin
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-atualizacoes
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-plugins
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=consumidores|dashboard
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=consumidores|perfil-usuario
+[2025-09-04 15:06:11] ORPHANS_EXPORTED tabela=usuarios_perfis_modulos qtd=20 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-permissoes-plugin/db/orphans/bd/usuarios_perfis_modulos-orphans-20250904-150611.json"
+[2025-09-04 15:06:11] SYNC_FIM tabela=usuarios_perfis_modulos +0 ~0 =2 orphans=20 modo=natural
+[2025-09-04 15:06:11] Resumo comparação - usuarios_perfis_modulos => inserções=0, atualizações=0, sem_alteracao=2
+[2025-09-04 15:06:11] Sincronizando tabela usuarios_perfis_modulos_operacoes ...
+[2025-09-04 15:06:11] SYNC_INI tabela=usuarios_perfis_modulos_operacoes modo=natural qtdJson=1
+[2025-09-04 15:06:11] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos_operacoes chave=administradores|modificar-permissao-da-pagina
+[2025-09-04 15:06:11] ORPHANS_EXPORTED tabela=usuarios_perfis_modulos_operacoes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-permissoes-plugin/db/orphans/bd/usuarios_perfis_modulos_operacoes-orphans-20250904-150611.json"
+[2025-09-04 15:06:11] SYNC_FIM tabela=usuarios_perfis_modulos_operacoes +0 ~0 =1 orphans=1 modo=natural
+[2025-09-04 15:06:11] Resumo comparação - usuarios_perfis_modulos_operacoes => inserções=0, atualizações=0, sem_alteracao=1
+[2025-09-04 15:06:11] MANAGER_UPDATES_REGISTRADO id=4
+[2025-09-04 15:06:11] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 modulos => +0 ~0 =17
+📦 usuarios_perfis_modulos => +0 ~0 =2
+📦 usuarios_perfis_modulos_operacoes => +0 ~0 =1
+Σ TOTAL => +0 ~0 =20
+
+[2025-09-04 15:06:11] Rotina concluída com sucesso.
+[2025-09-04 15:09:47] Executando migrações...
+[2025-09-04 15:09:47] [DEBUG] MIGRATING ENV=gestor
+[2025-09-04 15:09:48] [PHINX] == 20250904100000 AlterModulosGruposOperacoesAddPlugin: migrating 
+[2025-09-04 15:09:48] [PHINX]  == 20250904100000 AlterModulosGruposOperacoesAddPlugin: migrated 0.1235s
+[2025-09-04 15:09:48] Migrações concluídas.
+[2025-09-04 15:09:48] FORCE_ALL_TABELAS
+[2025-09-04 15:09:48] Comparando dados do banco com arquivos Data.json...
+[2025-09-04 15:09:48] Sincronizando tabela modulos ...
+[2025-09-04 15:09:48] SYNC_INI tabela=modulos modo=pk qtdJson=1
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=modulos
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=modulos-grupos
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=admin-layouts
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=admin-paginas
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=usuarios-perfis
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=interface
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=usuarios
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=dashboard
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=perfil-usuario
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=admin-arquivos
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=admin-categorias
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=modulos-operacoes
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=ftp
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=admin-componentes
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=admin-plugins
+[2025-09-04 15:09:48] ORPHAN_DB_ROW tabela=modulos pk=admin-atualizacoes
+[2025-09-04 15:09:48] ORPHANS_EXPORTED tabela=modulos qtd=16 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-permissoes-plugin/db/orphans/bd/modulos-orphans-20250904-150948.json"
+[2025-09-04 15:09:48] SYNC_FIM tabela=modulos +0 ~0 =17 orphans=16 modo=pk
+[2025-09-04 15:09:48] Resumo comparação - modulos => inserções=0, atualizações=0, sem_alteracao=17
+[2025-09-04 15:09:48] Sincronizando tabela usuarios_perfis_modulos ...
+[2025-09-04 15:09:48] SYNC_INI tabela=usuarios_perfis_modulos modo=natural qtdJson=2
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|dashboard
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios-perfis
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|modulos
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|modulos-grupos
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-layouts
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-paginas
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|perfil-usuario
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-arquivos
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-categorias
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-templates
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|modulos-operacoes
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios-planos
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-componentes
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-hosts
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios-hospedeiro-perfis-admin
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-atualizacoes
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-plugins
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=consumidores|dashboard
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=consumidores|perfil-usuario
+[2025-09-04 15:09:48] ORPHANS_EXPORTED tabela=usuarios_perfis_modulos qtd=20 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-permissoes-plugin/db/orphans/bd/usuarios_perfis_modulos-orphans-20250904-150948.json"
+[2025-09-04 15:09:48] SYNC_FIM tabela=usuarios_perfis_modulos +0 ~0 =2 orphans=20 modo=natural
+[2025-09-04 15:09:48] Resumo comparação - usuarios_perfis_modulos => inserções=0, atualizações=0, sem_alteracao=2
+[2025-09-04 15:09:48] Sincronizando tabela usuarios_perfis_modulos_operacoes ...
+[2025-09-04 15:09:48] SYNC_INI tabela=usuarios_perfis_modulos_operacoes modo=natural qtdJson=1
+[2025-09-04 15:09:48] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos_operacoes chave=administradores|modificar-permissao-da-pagina
+[2025-09-04 15:09:48] ORPHANS_EXPORTED tabela=usuarios_perfis_modulos_operacoes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-permissoes-plugin/db/orphans/bd/usuarios_perfis_modulos_operacoes-orphans-20250904-150948.json"
+[2025-09-04 15:09:48] SYNC_FIM tabela=usuarios_perfis_modulos_operacoes +0 ~0 =1 orphans=1 modo=natural
+[2025-09-04 15:09:48] Resumo comparação - usuarios_perfis_modulos_operacoes => inserções=0, atualizações=0, sem_alteracao=1
+[2025-09-04 15:09:48] MANAGER_UPDATES_REGISTRADO id=5
+[2025-09-04 15:09:48] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 modulos => +0 ~0 =17
+📦 usuarios_perfis_modulos => +0 ~0 =2
+📦 usuarios_perfis_modulos_operacoes => +0 ~0 =1
+Σ TOTAL => +0 ~0 =20
+
+[2025-09-04 15:09:48] Rotina concluída com sucesso.
+[2025-09-04 15:12:35] Executando migrações...
+[2025-09-04 15:12:36] [DEBUG] MIGRATING ENV=gestor
+[2025-09-04 15:12:36] Migrações concluídas.
+[2025-09-04 15:12:36] FORCE_ALL_TABELAS
+[2025-09-04 15:12:36] Comparando dados do banco com arquivos Data.json...
+[2025-09-04 15:12:36] Sincronizando tabela modulos ...
+[2025-09-04 15:12:36] SYNC_INI tabela=modulos modo=pk qtdJson=1
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=modulos
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=modulos-grupos
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=admin-layouts
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=admin-paginas
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=usuarios-perfis
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=interface
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=usuarios
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=dashboard
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=perfil-usuario
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=admin-arquivos
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=admin-categorias
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=modulos-operacoes
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=ftp
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=admin-componentes
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=admin-plugins
+[2025-09-04 15:12:36] ORPHAN_DB_ROW tabela=modulos pk=admin-atualizacoes
+[2025-09-04 15:12:36] ORPHANS_EXPORTED tabela=modulos qtd=16 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-permissoes-plugin/db/orphans/bd/modulos-orphans-20250904-151236.json"
+[2025-09-04 15:12:36] SYNC_FIM tabela=modulos +1 ~0 =16 orphans=16 modo=pk
+[2025-09-04 15:12:36] Resumo comparação - modulos => inserções=1, atualizações=0, sem_alteracao=16
+[2025-09-04 15:12:36] Sincronizando tabela usuarios_perfis_modulos ...
+[2025-09-04 15:12:36] SYNC_INI tabela=usuarios_perfis_modulos modo=natural qtdJson=2
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|dashboard
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios-perfis
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|modulos
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|modulos-grupos
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-layouts
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-paginas
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|perfil-usuario
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-arquivos
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-categorias
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-templates
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|modulos-operacoes
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios-planos
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-componentes
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-hosts
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|usuarios-hospedeiro-perfis-admin
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-atualizacoes
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=administradores|admin-plugins
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=consumidores|dashboard
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos chave=consumidores|perfil-usuario
+[2025-09-04 15:12:36] ORPHANS_EXPORTED tabela=usuarios_perfis_modulos qtd=20 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-permissoes-plugin/db/orphans/bd/usuarios_perfis_modulos-orphans-20250904-151236.json"
+[2025-09-04 15:12:36] SYNC_FIM tabela=usuarios_perfis_modulos +2 ~0 =0 orphans=20 modo=natural
+[2025-09-04 15:12:36] Resumo comparação - usuarios_perfis_modulos => inserções=2, atualizações=0, sem_alteracao=0
+[2025-09-04 15:12:36] Sincronizando tabela usuarios_perfis_modulos_operacoes ...
+[2025-09-04 15:12:36] SYNC_INI tabela=usuarios_perfis_modulos_operacoes modo=natural qtdJson=1
+[2025-09-04 15:12:36] ORPHAN_DB_ROW_NAT tabela=usuarios_perfis_modulos_operacoes chave=administradores|modificar-permissao-da-pagina
+[2025-09-04 15:12:36] ORPHANS_EXPORTED tabela=usuarios_perfis_modulos_operacoes qtd=1 arquivo="/var/www/sites/localhost/conn2flow-gestor/plugins/example-permissoes-plugin/db/orphans/bd/usuarios_perfis_modulos_operacoes-orphans-20250904-151236.json"
+[2025-09-04 15:12:36] SYNC_FIM tabela=usuarios_perfis_modulos_operacoes +1 ~0 =0 orphans=1 modo=natural
+[2025-09-04 15:12:36] Resumo comparação - usuarios_perfis_modulos_operacoes => inserções=1, atualizações=0, sem_alteracao=0
+[2025-09-04 15:12:36] MANAGER_UPDATES_REGISTRADO id=2
+[2025-09-04 15:12:36] 📝 Relatório Final Atualização BD
+══════════════════════════════════════════════════
+📦 modulos => +1 ~0 =16
+📦 usuarios_perfis_modulos => +2 ~0 =0
+📦 usuarios_perfis_modulos_operacoes => +1 ~0 =0
+Σ TOTAL => +4 ~0 =16
+
+[2025-09-04 15:12:36] Rotina concluída com sucesso.
