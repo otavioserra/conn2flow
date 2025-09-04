@@ -59,7 +59,7 @@
         {
             "label": "🖥️ Atualização - Sincronizar Gestor",
             "type": "shell",
-            "command": "bash docker/utils/sincroniza-gestor.sh checksum"
+            "command": "bash ../conn2flow-docker-test-environment/utils/sincroniza-gestor.sh checksum"
         },
         {
             "label": "🖥️ Atualização - Dados",
@@ -82,17 +82,17 @@
         {
             "label": "♻️ Sincronização - Testes",
             "type": "shell",
-            "command": "bash docker/utils/sincroniza-teste.sh checksum"
+            "command": "bash ../conn2flow-docker-test-environment/utils/sincroniza-teste.sh checksum"
         },
         {
             "label": "♻️ Sincronização - Sincronizar Gestor",
             "type": "shell",
-            "command": "bash docker/utils/sincroniza-gestor.sh checksum"
+            "command": "bash ../conn2flow-docker-test-environment/utils/sincroniza-gestor.sh checksum"
         },
         {
             "label": "♻️ Sincronização - Sincronizar Gestor Instalador",
             "type": "shell",
-            "command": "bash ./docker/utils/sincroniza-gestor-instalador.sh checksum"
+            "command": "bash ../conn2flow-docker-test-environment/utils/sincroniza-gestor-instalador.sh checksum"
         },
         {
             "label": "♻️ Sincronização - Build Local Gestor",

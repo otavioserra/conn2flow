@@ -7,7 +7,7 @@
 
 echo "=== CORREÇÃO DE ASPAS ESCAPADAS EM RESOURCES ===\n\n";
 
-$basePath = "c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow";
+$basePath = realpath(__DIR__ . '/../../../');
 $targets = [
     "$basePath/gestor/resources/pt-br/pages",
     "$basePath/gestor/resources/pt-br/layouts",

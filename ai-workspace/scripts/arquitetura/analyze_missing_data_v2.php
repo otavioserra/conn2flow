@@ -7,7 +7,7 @@
 echo "=== ANALISANDO DADOS AUSENTES NA MIGRAÇÃO JSON (V2) ===\n\n";
 
 // Caminhos dos arquivos
-$basePath = "c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow";
+$basePath = realpath(__DIR__ . '/../../../');
 $sqlPath = "$basePath/gestor/db/old";
 $resourcesPath = "$basePath/gestor/resources/pt-br";
 

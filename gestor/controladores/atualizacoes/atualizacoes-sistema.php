@@ -202,7 +202,7 @@ function help(): void {
     echo "Uso: php atualizacoes-sistema.php [--flags]\n\n";
     echo "Principais Flags:\n";
     echo "  --tag=GESTOR_TAG        Especifica release (gestor-vX.Y.Z)\n";
-    echo "  --local-artifact        Usa artefato local em docker/dados/sites/localhost/conn2flow-github/ (gestor.zip + gestor.zip.sha256)\n";
+    echo "  --local-artifact        Usa artefato local em ../conn2flow-docker-test-environment/dados/sites/localhost/conn2flow-github/ (gestor.zip + gestor.zip.sha256)\n";
     echo "  --domain=DOMINIO        Ambiente (pasta autenticacoes/<dominio>)\n";
     echo "  --only-files            Apenas atualização de arquivos + merge .env\n";
     echo "  --only-db               Apenas banco de dados\n";
@@ -658,9 +658,9 @@ function main_update(array $argv): int {
             if(!empty($opts['local-artifact'])) {
                 $repoRoot = realpath($BASE_PATH.'..').DIRECTORY_SEPARATOR;
                 $localDir = $repoRoot.'conn2flow-github'.DIRECTORY_SEPARATOR;
-                // Tentativas adicionais (ex: estrutura docker/dados/sites/localhost/conn2flow-github)
+                // Tentativas adicionais (ex: estrutura ../conn2flow-docker-test-environment/dados/sites/localhost/conn2flow-github)
                 if(!is_file($localDir.'gestor.zip')){
-                    $altPath = [$BASE_PATH,'..','docker','dados','sites','localhost','conn2flow-github'];
+                    $altPath = [$BASE_PATH,'..','..','conn2flow-docker-test-environment','dados','sites','localhost','conn2flow-github'];
                     $alt = realpath(join(DIRECTORY_SEPARATOR,$altPath));
                     if($alt && is_file($alt.DIRECTORY_SEPARATOR.'gestor.zip')){
                         $localDir = rtrim($alt,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;

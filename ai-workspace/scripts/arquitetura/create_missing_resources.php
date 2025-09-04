@@ -7,7 +7,7 @@
 echo "=== CRIANDO RECURSOS AUSENTES ===\n\n";
 
 // Carrega o relatório de análise
-$basePath = "c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow";
+$basePath = realpath(__DIR__ . '/../../../'); // raiz dinâmica
 $reportFile = "$basePath/missing_data_complete_report.json";
 
 if (!file_exists($reportFile)) {

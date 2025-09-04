@@ -16,22 +16,34 @@ services:
   ftp:          # Servidor FTP multi-domínio (ProFTPD)
 ```
 
-### Estrutura Multi-Domínio
+### Estrutura Multi-Domínio (Atual - Repositório Externo)
+
+Agora o ambiente Docker foi movido para um repositório dedicado:
+
+`../conn2flow-docker-test-environment/dados/`
+
+Estrutura principal de sites:
 
 ```
-docker/dados/sites/
-├── localhost/              # Domínio principal de desenvolvimento
-│   ├── conn2flow-gestor/   # Sistema principal (sincronizado)
-│   ├── public_html/        # Arquivos web públicos
-│   │   └── instalador/     # Instalador web
-│   └── home/               # Arquivos privados
-├── site1.local/            # Site de teste 1
-│   ├── public_html/        # Arquivos web públicos
-│   └── home/               # Arquivos privados
-└── site2.local/            # Site de teste 2
-    ├── public_html/        # Arquivos web públicos
-    └── home/               # Arquivos privados
+../conn2flow-docker-test-environment/dados/sites/
+├── localhost/
+│   ├── conn2flow-gestor/        # Cópia/sincronização do gestor para testes
+│   ├── conn2flow-gestor-v1/     # Snapshot/versão anterior (exemplo)
+│   ├── conn2flow-github/        # Artefatos build local (gestor.zip)
+│   ├── public_html/
+│   │   ├── instalador/          # Instalador web
+│   │   └── gestor-v1/           # Exemplo de versão exposta
+│   ├── home/                    # Espaço reservado
+│   └── ...                      # Demais pastas internas
+├── site1.local/
+│   ├── public_html/
+│   └── home/
+└── site2.local/
+  ├── public_html/
+  └── home/
 ```
+
+> LEGADO: Referências antigas a `docker/dados/` dentro deste repositório principal agora devem ser interpretadas como `../conn2flow-docker-test-environment/dados/`.
 
 ## 🚀 Configuração e Uso
 
@@ -43,14 +55,14 @@ docker/dados/sites/
 ### Inicialização Rápida
 
 ```bash
-# Navegar para o diretório Docker
-cd docker/dados/
+# Navegar para o diretório DOCKER externo
+cd ../conn2flow-docker-test-environment/dados
 
-# Construir e iniciar todos os serviços
-docker-compose up --build -d
+# Construir e iniciar (compose v2 já aceita "docker compose")
+docker compose up --build -d
 
-# Verificar status dos containers
-docker ps
+# Verificar status
+docker compose ps
 ```
 
 ### Acesso aos Serviços
@@ -108,8 +120,8 @@ curl -H "Host: site2.local" "http://localhost"
 
 ### Gerenciamento de Sites
 ```bash
-# Script utilitário para gerenciar sites
-cd docker/utils/
+# Script utilitário (repositório docker externo)
+cd ../conn2flow-docker-test-environment/utils/
 
 # Listar sites existentes
 bash gerenciar-sites.sh listar
@@ -163,17 +175,20 @@ docker exec conn2flow-app chmod 644 /var/www/sites/DOMINIO/public_html/arquivo.e
 
 ### Script de Sincronização
 ```bash
-# Sincronizar alterações do gestor para Docker
-cd docker/utils/
+# Repositório principal (este): editar código em gestor/
+# Repositório docker: executar scripts de sincronização
 
-# Modo padrão (baseado em data/hora)
-bash sincroniza-gestor.sh
+# Caminhar para utilitários Docker externos
+cd ../conn2flow-docker-test-environment/utils/
 
-# Modo checksum (compara conteúdo)
+# Sincronizar gestor → ambiente docker (checksum recomendado)
 bash sincroniza-gestor.sh checksum
 
-# Modo força (sobrescreve tudo)
-bash sincroniza-gestor.sh forcar
+# Sincronizar instalador
+bash sincroniza-gestor-instalador.sh checksum
+
+# Sincronizar projeto de teste (exemplo TARGET)
+TARGET=teste-tailwind-php bash sincroniza-teste.sh checksum
 ```
 
 ### Fluxo de Desenvolvimento
@@ -335,22 +350,24 @@ cat docker/utils/comandos-docker.md
 ## 📚 Arquivos de Referência
 
 ### Documentação Essencial
-- `docker/dados/DOCKER-README.md` - Guia completo de uso
-- `docker/dados/STATUS-FTP-FINAL.md` - Status do sistema FTP
-- `docker/utils/comandos-docker.md` - Comandos úteis
-- `docker/dados/README-FTP-SISTEMA.md` - Manual detalhado FTP
+- `../conn2flow-docker-test-environment/dados/DOCKER-README.md` - Guia completo de uso
+- `../conn2flow-docker-test-environment/dados/STATUS-FTP-FINAL.md` - Status FTP
+- `../conn2flow-docker-test-environment/utils/comandos-docker.md` - Comandos úteis
+- `../conn2flow-docker-test-environment/dados/README-FTP-SISTEMA.md` - Manual FTP
 
 ### Scripts Utilitários
-- `docker/utils/sincroniza-gestor.sh` - Sincronização de código
-- `docker/dados/gerenciar-sites.sh` - Gerenciamento de sites
-- `docker/dados/gerenciar-ftp-sistema.sh` - Gerenciamento FTP
-- `docker/utils/verificar_dados.php` - Diagnóstico do sistema
+- `../conn2flow-docker-test-environment/utils/sincroniza-gestor.sh`
+- `../conn2flow-docker-test-environment/utils/sincroniza-gestor-instalador.sh`
+- `../conn2flow-docker-test-environment/utils/sincroniza-teste.sh`
+- `../conn2flow-docker-test-environment/dados/gerenciar-sites.sh`
+- `../conn2flow-docker-test-environment/dados/gerenciar-ftp-sistema.sh`
+- `../conn2flow-docker-test-environment/utils/verificar_dados.php`
 
 ### Configurações
-- `docker/dados/docker-compose.yml` - Orquestração dos serviços
-- `docker/dados/Dockerfile` - Container da aplicação
-- `docker/dados/Dockerfile.ftp` - Container FTP
-- `docker/dados/sites.conf` - Configuração Apache multi-domínio
+- `../conn2flow-docker-test-environment/dados/docker-compose.yml`
+- `../conn2flow-docker-test-environment/dados/Dockerfile`
+- `../conn2flow-docker-test-environment/dados/Dockerfile.ftp`
+- `../conn2flow-docker-test-environment/dados/sites.conf`
 
 ---
 
@@ -366,5 +383,5 @@ O ambiente Docker do Conn2Flow representa uma **solução madura e completa** pa
 - **🛠️ Debugging facilitado** com acesso shell completo
 
 **Status**: ✅ **Produção - Estável e Documentado**  
-**Última atualização**: Agosto 2025  
+**Última atualização**: Setembro 2025  
 **Desenvolvido por**: Otavio Serra + Agentes IA

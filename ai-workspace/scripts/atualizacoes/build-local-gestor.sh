@@ -3,7 +3,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 GESTOR_DIR="$REPO_ROOT/gestor"
-OUT_DIR="$REPO_ROOT/docker/dados/sites/localhost/conn2flow-github"
+# Diretório de saída agora aponta para repositório docker-test externo
+DOCKER_ENV_ROOT="$REPO_ROOT/../conn2flow-docker-test-environment/dados"
+OUT_DIR="$DOCKER_ENV_ROOT/sites/localhost/conn2flow-github"
+mkdir -p "$OUT_DIR"
 mkdir -p "$OUT_DIR"
 TMP_DIR="$(mktemp -d)"
 cleanup(){ rm -rf "$TMP_DIR" || true; }

@@ -7,7 +7,7 @@
 echo "=== ANALISANDO DADOS AUSENTES NA MIGRAÇÃO JSON ===\n\n";
 
 // Caminhos dos arquivos
-$basePath = "c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow";
+$basePath = realpath(__DIR__ . '/../../../'); // raiz do repositório (dinâmico)
 $sqlPath = "$basePath/gestor/db/old";
 $resourcesPath = "$basePath/gestor/resources/pt-br";
 
@@ -358,7 +358,7 @@ foreach ($results as $type => $missing) {
     $report['summary']['by_type'][$type] = count($missing);
 }
 
-file_put_contents("$basePath/missing_data_report.json", json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+file_put_contents($basePath . '/missing_data_report.json', json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 echo "Relatório detalhado salvo em: missing_data_report.json\n";
 
 echo "Análise concluída!\n";
