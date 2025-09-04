@@ -1,5 +1,5 @@
 # Docker - Ambiente de desenvolvimento local
-dados/
+dados/sites/
 *.tar.gz
 
 # Logs
