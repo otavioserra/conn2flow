@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Global Layout 1",
+        "id": "global-layout-1",
+        "framework_css": "tailwindcss",
+        "version": "1.0",
+        "checksum": {
+            "html": "",
+            "css": "",
+            "combined": ""
+        }
+    },
+    {
+        "name": "Global Layout 2",
+        "id": "global-layout-2",
+        "version": "1.0",
+        "checksum": {
+            "html": "",
+            "css": "",
+            "combined": ""
+        }
+    }
+]

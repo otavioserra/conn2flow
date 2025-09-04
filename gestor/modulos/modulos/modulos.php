@@ -728,7 +728,7 @@ function modulos_editar(){
 		$menu_principal = (isset($retorno_bd['nao_menu_principal']) ? 'nao' : 'sim');
 		$modulo_grupo_id = (isset($retorno_bd['modulo_grupo_id']) ? $retorno_bd['modulo_grupo_id'] : '');
 		$titulo = (isset($retorno_bd['titulo']) ? $retorno_bd['titulo'] : '');
-		$plugin_id = (isset($retorno_bd['plugin']) ? $retorno_bd['plugin'] : '');
+		$plugin = (isset($retorno_bd['plugin']) ? $retorno_bd['plugin'] : '');
 		$host = (isset($retorno_bd['host']) ? true : false);
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
@@ -827,7 +827,7 @@ function modulos_editar(){
 					'tabela' => Array(
 						'nome' => 'plugins',
 						'campo' => 'nome',
-						'id_selecionado' => $plugin_id,
+						'id_selecionado' => $plugin,
 						'id' => true,
 					),
 				),

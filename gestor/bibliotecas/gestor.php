@@ -743,4 +743,229 @@ function gestor_pagina_variaveis_globais($params = false){
 	}
 }
 
+// =========================== Funções de Sessões e Cookies
+
+function gestor_sessao_iniciar(){
+	global $_GESTOR;
+	global $_CONFIG;
+	
+	if(!isset($_COOKIE[$_CONFIG['session-authname']])){
+		$sessionId = md5(uniqid(rand(), true));
+		
+		setcookie($_CONFIG['session-authname'], $sessionId, [
+			'expires' => time() + $_CONFIG['session-lifetime'],
+			'path' => '/',
+			'domain' => $_SERVER['SERVER_NAME'],
+			'secure' => true,
+			'httponly' => true,
+			'samesite' => 'Lax',
+		]);
+		
+		$_GESTOR['session-id'] = $sessionId;
+	} else {
+		$_GESTOR['session-id'] = $_COOKIE[$_CONFIG['session-authname']];
+	}
+}
+
+function gestor_sessao_id(){
+	global $_GESTOR;
+	global $_CONFIG;
+	
+	$sessoes = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'id_sessoes',
+		))
+		,
+		"sessoes",
+		"WHERE id='".banco_escape_field($_GESTOR['session-id'])."'"
+	);
+	
+	if($sessoes){
+		$id_sessoes = $sessoes[0]['id_sessoes'];
+		
+		// ===== Caso não tenha sido acessado ainda, atualizar o tempo de acesso.
+		
+		if(!isset($_GESTOR['session-accessed'])){
+			banco_update
+			(
+				"acesso='".time()."'",
+				"sessoes",
+				"WHERE id_sessoes='".$id_sessoes."'"
+			);
+			
+			$_GESTOR['session-accessed'] = true;
+		}
+	} else {
+		// ===== Senão existir, criar nova sessão no banco.
+		
+		$campos = null; $campo_sem_aspas_simples = null;
+		
+		$campo_nome = "id"; $campo_valor = banco_escape_field($_GESTOR['session-id']); 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "acesso"; $campo_valor = time(); 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		
+		banco_insert_name
+		(
+			$campos,
+			"sessoes"
+		);
+		
+		$id_sessoes = banco_last_id();
+	}
+	
+	// =====  Remover sessões antigas aleatoriamente para não fazer isso toda vez.
+	
+	if(!isset($_GESTOR['session-accessed-clean'])){
+		if(rand(0,50) == 0){
+			$res = banco_query(
+				"DELETE sess,sess_v 
+				FROM sessoes AS sess 
+					LEFT JOIN sessoes_variaveis AS sess_v 
+						ON sess.id_sessoes=sess_v.id_sessoes 
+				WHERE sess.acesso + ".$_CONFIG['session-lifetime']." < ".time()
+				);
+		}
+		
+		$_GESTOR['session-accessed-clean'] = true;
+	}
+	
+	return $id_sessoes;
+}
+
+function gestor_sessao_del(){
+	global $_CONFIG;
+	
+	$id_sessoes = gestor_sessao_id();
+	
+	$sessoes_variaveis = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'id_sessoes_variaveis',
+		))
+		,
+		"sessoes_variaveis",
+		"WHERE id_sessoes='".$id_sessoes."'"
+	);
+	
+	if($sessoes_variaveis){
+		banco_delete
+		(
+			"sessoes_variaveis",
+			"WHERE id_sessoes='".$id_sessoes."'"
+		);
+	}
+	
+	banco_delete
+	(
+		"sessoes",
+		"WHERE id_sessoes='".$id_sessoes."'"
+	);
+	
+	setcookie($_CONFIG['session-authname'], "", [
+		'expires' => time() - 3600,
+		'path' => '/',
+		'domain' => $_SERVER['SERVER_NAME'],
+		'secure' => true,
+		'httponly' => true,
+		'samesite' => 'Lax',
+	]);
+}
+
+function gestor_sessao_variavel($variavel,$valor = NULL){
+	global $_GESTOR;
+	
+	$id_sessoes = gestor_sessao_id();
+	
+	if(isset($valor)){
+		$sessoes_variaveis = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'valor',
+			))
+			,
+			"sessoes_variaveis",
+			"WHERE id_sessoes='".$id_sessoes."'"
+			." AND variavel='".$variavel."'"
+		);
+		
+		if($sessoes_variaveis){
+			banco_update
+			(
+				"valor='".addslashes(json_encode($valor))."'",
+				"sessoes_variaveis",
+				"WHERE id_sessoes='".$id_sessoes."'"
+				." AND variavel='".$variavel."'"
+			);
+		} else {
+			$campos = null; $campo_sem_aspas_simples = null;
+			
+			$campo_nome = "id_sessoes"; $campo_valor = $id_sessoes; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			$campo_nome = "variavel"; $campo_valor = $variavel; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			$campo_nome = "valor"; $campo_valor = addslashes(json_encode($valor)); 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			
+			banco_insert_name
+			(
+				$campos,
+				"sessoes_variaveis"
+			);
+		}
+	} else {
+		$sessoes_variaveis = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'valor',
+			))
+			,
+			"sessoes_variaveis",
+			"WHERE id_sessoes='".$id_sessoes."'"
+			." AND variavel='".$variavel."'"
+		);
+		
+		if($sessoes_variaveis){
+			return ($sessoes_variaveis[0]['valor'] ? json_decode($sessoes_variaveis[0]['valor'],true) : '');
+		} else {
+			return '';
+		}
+	}
+}
+
+function gestor_sessao_variavel_del($variavel){
+	global $_GESTOR;
+	
+	$id_sessoes = gestor_sessao_id();
+	
+	$sessoes_variaveis = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'id_sessoes_variaveis',
+		))
+		,
+		"sessoes_variaveis",
+		"WHERE id_sessoes='".$id_sessoes."'"
+		." AND variavel='".$variavel."'"
+	);
+	
+	if($sessoes_variaveis){
+		banco_delete
+		(
+			"sessoes_variaveis",
+			"WHERE id_sessoes_variaveis='".$sessoes_variaveis[0]['id_sessoes_variaveis']."'"
+		);
+	}
+}
+
+function gestor_sessao_del_all(){
+	banco_delete
+	(
+		"sessoes_variaveis",
+		""
+	);
+	
+	banco_delete
+	(
+		"sessoes",
+		""
+	);
+}
+
 ?>

@@ -1,0 +1,26 @@
+[
+    {
+        "nome": "Global Layout 1",
+        "id": "global-layout-1",
+        "language": "pt-br",
+        "html": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n\r\n<head>\r\n    <!-- pagina#titulo -->\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <!-- pagina#css -->\r\n    <!-- pagina#js -->\r\n<\/head>\r\n\r\n<body class=\"bg-gray-100 min-h-screen flex flex-col\">\r\n    <!-- Header -->\r\n    <header class=\"bg-blue-700 text-white py-4 shadow\">\r\n        <div class=\"container mx-auto px-4\">\r\n            <h1 class=\"text-2xl font-bold\">Global Layout 1<\/h1>\r\n            <p class=\"text-sm\">Example layout using Tailwind CSS<\/p>\r\n        <\/div>\r\n    <\/header>\r\n    <!-- Main Content -->\r\n    <main class=\"flex-1 container mx-auto px-4 py-8\">\r\n        <!-- Page content will be injected here -->\r\n        @[[pagina#corpo]]@\r\n    <\/main>\r\n    <!-- Footer -->\r\n    <footer class=\"bg-blue-700 text-white py-3 mt-auto\">\r\n        <div class=\"container mx-auto px-4 text-center text-sm\">\r\n            &copy; 2025 Conn2Flow Plugin Example\r\n        <\/div>\r\n    <\/footer>\r\n<\/body>\r\n\r\n<\/html>",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"html\":\"f2bce5e41440b7266b3c7ca46ead1d79\",\"css\":\"\",\"combined\":\"f2bce5e41440b7266b3c7ca46ead1d79\"}"
+    },
+    {
+        "nome": "Global Layout 2",
+        "id": "global-layout-2",
+        "language": "pt-br",
+        "html": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n\r\n<head>\r\n    <!-- pagina#titulo -->\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <!-- pagina#css -->\r\n    <!-- pagina#js -->\r\n<\/head>\r\n\r\n<body>\r\n    <!-- Header -->\r\n    <div class=\"ui top fixed menu\">\r\n        <div class=\"ui container\">\r\n            <a class=\"header item\">Global Layout 2<\/a>\r\n            <div class=\"right menu\">\r\n                <div class=\"item\">Example layout using Fomantic UI<\/div>\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n    <!-- Main Content -->\r\n    <div class=\"ui container\" style=\"margin-top: 5em;\">\r\n        <div class=\"ui segment\">\r\n            @[[pagina#corpo]]@\r\n        <\/div>\r\n    <\/div>\r\n    <!-- Footer -->\r\n    <div class=\"ui inverted vertical footer segment\" style=\"margin-top: 3em;\">\r\n        <div class=\"ui container center aligned\">\r\n            <span>&copy; 2025 Conn2Flow Plugin Example<\/span>\r\n        <\/div>\r\n    <\/div>\r\n<\/body>\r\n\r\n<\/html>",
+        "css": null,
+        "framework_css": null,
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"html\":\"04ed2c030d8b41f2927c59a661cf9d2a\",\"css\":\"\",\"combined\":\"04ed2c030d8b41f2927c59a661cf9d2a\"}"
+    }
+]

@@ -1,0 +1,20 @@
+{
+    "id": "example-plugin",
+    "nome": "Example Plugin",
+    "versao": "0.1.0",
+    "descricao": "Plugin de exemplo para skeleton inicial.",
+    "compatibilidade": {
+        "min": "1.0.0",
+        "max": "2.x"
+    },
+    "autor": "Conn2Flow",
+    "license": "MIT",
+    "recursos": {
+        "layouts": true,
+        "pages": true,
+        "components": false,
+        "variables": true
+    },
+    "scripts_pos_instalacao": [],
+    "checksum_override": null
+}

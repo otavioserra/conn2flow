@@ -45,6 +45,15 @@ function admin_plugins_adicionar(){
 		
 		banco_insert_name_campo('id',$id);
 		if(isset($_REQUEST['nome'])){ banco_insert_name_campo('nome',$_REQUEST['nome']); }
+		// Campos de origem (fase 1)
+		$origem_tipo = isset($_REQUEST['origem_tipo']) ? $_REQUEST['origem_tipo'] : '';
+		$origem_referencia = isset($_REQUEST['origem_referencia']) ? $_REQUEST['origem_referencia'] : '';
+		$origem_branch_tag = isset($_REQUEST['origem_branch_tag']) ? $_REQUEST['origem_branch_tag'] : '';
+		$origem_credencial_ref = isset($_REQUEST['origem_credencial_ref']) ? $_REQUEST['origem_credencial_ref'] : '';
+		if($origem_tipo!=='') banco_insert_name_campo('origem_tipo',$origem_tipo);
+		if($origem_referencia!=='') banco_insert_name_campo('origem_referencia',$origem_referencia);
+		if($origem_branch_tag!=='') banco_insert_name_campo('origem_branch_tag',$origem_branch_tag);
+		if($origem_credencial_ref!=='') banco_insert_name_campo('origem_credencial_ref',$origem_credencial_ref);
 		
 		// ===== Campos comuns
 		
@@ -76,6 +85,10 @@ function admin_plugins_adicionar(){
 					'campo' => 'nome',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
 				)
+			),
+			// Campos extras para interface (renderização custom - sem validação obrigatória aqui)
+			'campos_extras' => Array(
+				'origem_tipo','origem_referencia','origem_branch_tag','origem_credencial_ref'
 			)
 		)
 	);
@@ -93,7 +106,7 @@ function admin_plugins_editar(){
 	// ===== Definição dos campos do banco de dados para editar.
 	
 	$camposBanco = Array(
-		'nome',
+		'nome','origem_tipo','origem_referencia','origem_branch_tag','origem_credencial_ref'
 	);
 	
 	$camposBancoPadrao = Array(
@@ -145,6 +158,13 @@ function admin_plugins_editar(){
 			banco_update_campo($campo,$_REQUEST[$request],false,true);
 			if(!isset($_REQUEST['_gestor-nao-alterar-id'])){$alterar_id = true;}
 			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo),'valor_depois' => banco_escape_field($_REQUEST[$request]));
+		}
+		// Demais campos simples
+		foreach(['origem_tipo','origem_referencia','origem_branch_tag','origem_credencial_ref'] as $c){
+			if(isset($_REQUEST[$c]) && banco_select_campos_antes($c) != $_REQUEST[$c]){
+				$editar = true; banco_update_campo($c,$_REQUEST[$c]);
+				$alteracoes[] = Array('campo'=>$c,'valor_antes'=>banco_select_campos_antes($c),'valor_depois'=>banco_escape_field($_REQUEST[$c]));
+			}
 		}
 		
 		// ===== Se mudar o nome, mudar o identificador do registro
@@ -210,8 +230,33 @@ function admin_plugins_editar(){
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
 		
 		// ===== Popular os metaDados
-		
+
 		$status_atual = (isset($retorno_bd[$modulo['tabela']['status']]) ? $retorno_bd[$modulo['tabela']['status']] : '');
+
+		// ===== Metadados extras do plugin (Fase 1)
+		$camposExtra = [
+			'origem_tipo'=>'Origem',
+			'origem_referencia'=>'Referência',
+			'origem_branch_tag'=>'Branch/Tag',
+			'origem_credencial_ref'=>'Credencial Ref',
+			'versao_instalada'=>'Versão Instalada',
+			'checksum_pacote'=>'Checksum',
+			'status_execucao'=>'Status Execução',
+			'data_ultima_atualizacao'=>'Última Atualização'
+		];
+		foreach($camposExtra as $c=>$label){
+			if(isset($retorno_bd[$c])){
+				$metaDados[] = Array('titulo'=>$label,'dado'=>htmlentities($retorno_bd[$c]));
+			}
+		}
+		// Manifest prettified
+		if(!empty($retorno_bd['manifest_json'])){
+			$manifestPretty = json_decode($retorno_bd['manifest_json'],true);
+			if(is_array($manifestPretty)){
+				$manifestHtml = '<pre style="max-height:300px;overflow:auto;background:#f8f8f8;border:1px solid #ddd;padding:8px;">'.htmlentities(json_encode($manifestPretty, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE)).'</pre>';
+				$metaDados[] = Array('titulo'=>'Manifest','dado'=>$manifestHtml);
+			}
+		}
 		
 		if(isset($retorno_bd[$modulo['tabela']['data_criacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_criacao']], 'formato' => 'dataHora'))); }
 		if(isset($retorno_bd[$modulo['tabela']['data_modificacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_modificacao']], 'formato' => 'dataHora'))); }
@@ -238,6 +283,27 @@ function admin_plugins_editar(){
 				'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-insert')),
 				'icon' => 'plus circle',
 				'cor' => 'blue',
+			),
+			'instalar' => Array(
+				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=acao&acao=instalar&'.$modulo['tabela']['id'].'='.$id,
+				'rotulo' => 'Instalar',
+				'tooltip' => 'Instalar / Reinstalar plugin (usa origem configurada)',
+				'icon' => 'download',
+				'cor' => 'teal',
+			),
+			'atualizar' => Array(
+				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=acao&acao=atualizar&'.$modulo['tabela']['id'].'='.$id,
+				'rotulo' => 'Atualizar',
+				'tooltip' => 'Atualizar plugin (se checksum diferente)',
+				'icon' => 'sync',
+				'cor' => 'olive',
+			),
+			'reprocessar' => Array(
+				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=acao&acao=reprocessar&'.$modulo['tabela']['id'].'='.$id,
+				'rotulo' => 'Reprocessar',
+				'tooltip' => 'Forçar reprocessamento (ignora checksum)',
+				'icon' => 'redo',
+				'cor' => 'brown',
 			),
 			'status' => Array(
 				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=status&'.$modulo['tabela']['status'].'='.($status_atual == 'A' ? 'I' : 'A' ).'&'.$modulo['tabela']['id'].'='.$id.'&redirect='.urlencode($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id),
@@ -313,6 +379,27 @@ function admin_plugins_interfaces_padroes(){
 						'icon' => 'edit',
 						'cor' => 'basic blue',
 					),
+					'instalar' => Array(
+						'opcao' => 'acao',
+						'acao' => 'instalar',
+						'tooltip' => 'Instalar/Reinstalar',
+						'icon' => 'download',
+						'cor' => 'basic teal',
+					),
+					'atualizar' => Array(
+						'opcao' => 'acao',
+						'acao' => 'atualizar',
+						'tooltip' => 'Atualizar',
+						'icon' => 'sync',
+						'cor' => 'basic olive',
+					),
+					'reprocessar' => Array(
+						'opcao' => 'acao',
+						'acao' => 'reprocessar',
+						'tooltip' => 'Forçar Reprocessar',
+						'icon' => 'redo',
+						'cor' => 'basic brown',
+					),
 					'ativar' => Array(
 						'opcao' => 'status',
 						'status_atual' => 'I',
@@ -355,9 +442,74 @@ function admin_plugins_interfaces_padroes(){
 function admin_plugins_ajax_opcao(){
 	global $_GESTOR;
 	
-	$_GESTOR['ajax-json'] = Array(
-		'status' => 'Ok',
-	);
+	$acao = isset($_REQUEST['acao']) ? $_REQUEST['acao'] : null;
+	$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : null;
+	if($acao && $id){
+		$res = admin_plugins_executar_acao($acao,$id,true);
+		$_GESTOR['ajax-json'] = $res;
+	} else {
+		$_GESTOR['ajax-json'] = Array('status'=>'Ok');
+	}
+}
+
+function admin_plugins_executar_acao($acao,$id,$retornarArray=false){
+	$permitidas = ['instalar','atualizar','reprocessar'];
+	if(!in_array($acao,$permitidas,true)) return ['status'=>'erro','msg'=>'Ação inválida'];
+	// Buscar registro do plugin
+	$row = banco_select(Array(
+		'tabela'=>'plugins',
+		'campos'=>['id','origem_tipo','origem_referencia','origem_branch_tag','origem_credencial_ref'],
+		'extra'=>"WHERE id='".banco_escape_field($id)."'"
+	));
+	if(!$row) return ['status'=>'erro','msg'=>'Plugin não encontrado'];
+	$row = $row[0];
+	$script = realpath(__DIR__.'/../../controladores/plugins/atualizacao-plugin.php');
+	if(!$script) return ['status'=>'erro','msg'=>'Script orchestrator não localizado'];
+	$cmd = 'php '.escapeshellarg($script).' --id='.escapeshellarg($row['id']).' --origem_tipo='.escapeshellarg($row['origem_tipo']);
+	// Interpretar origem_referencia (para github: owner/repo) ou local path
+	if($row['origem_tipo']==='github_publico' || $row['origem_tipo']==='github_privado'){
+		if(strpos($row['origem_referencia'],'/')!==false){
+			list($owner,$repo)=explode('/', $row['origem_referencia'],2); $cmd.=' --owner='.escapeshellarg($owner).' --repo='.escapeshellarg($repo);
+		}
+		if(!empty($row['origem_branch_tag'])) $cmd.=' --ref='.escapeshellarg($row['origem_branch_tag']);
+		if($row['origem_tipo']==='github_privado' && !empty($row['origem_credencial_ref'])) $cmd.=' --cred_ref='.escapeshellarg($row['origem_credencial_ref']);
+	} elseif($row['origem_tipo']==='local_path') {
+		if(!empty($row['origem_referencia'])) $cmd.=' --local_path='.escapeshellarg($row['origem_referencia']);
+	}
+	if($acao==='reprocessar') $cmd.=' --reprocessar';
+	$saida = @shell_exec($cmd.' 2>&1');
+	// Últimas linhas de log específicas do plugin
+	$logFile = dirname(__DIR__,2).'/logs/plugins/installer.log';
+	$logTail='';
+	if(file_exists($logFile)){
+		$lines = @file($logFile); if($lines){
+			$filtered = array_values(array_filter($lines,function($l) use ($id){ return strpos($l,'[PLUGIN:'.$id.']')!==false; }));
+			$logTail = implode('', array_slice($filtered,-15));
+		}
+	}
+	$resultado = [
+		'status' => 'ok',
+		'acao' => $acao,
+		'cmd' => $cmd,
+		'saida' => $saida,
+		'log' => $logTail,
+	];
+	if($retornarArray) return $resultado;
+	interface_alerta(Array('msg'=>'Ação '.$acao.' executada.')); 
+	return $resultado;
+}
+
+function admin_plugins_acao(){
+	global $_GESTOR; 
+	$acao = isset($_REQUEST['acao'])?$_REQUEST['acao']:null; 
+	$id = isset($_REQUEST[$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['tabela']['id']])?$_REQUEST[$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['tabela']['id']]:null;
+	if($acao && $id){
+		$res = admin_plugins_executar_acao($acao,$id,true);
+		interface_alerta(Array('msg'=>'Execução '.$acao.': '.htmlentities(substr($res['saida'],0,300))));
+		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?id='.$id);
+	} else {
+		gestor_redirecionar($_GESTOR['modulo-id'].'/');
+	}
 }
 
 // ==== Start
@@ -383,6 +535,7 @@ function admin_plugins_start(){
 		switch($_GESTOR['opcao']){
 			case 'adicionar': admin_plugins_adicionar(); break;
 			case 'editar': admin_plugins_editar(); break;
+			case 'acao': admin_plugins_acao(); break;
 		}
 		
 		interface_finalizar();

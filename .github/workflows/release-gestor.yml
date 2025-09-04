@@ -96,7 +96,7 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🚀 Conn2Flow Gestor Release v1.16.0 (Sistema de Preview + Framework CSS)
+          ## 🚀 Conn2Flow Gestor Release v2.0.X (Sistema de Preview + Framework CSS)
           
           Esta release traz **grandes melhorias nos módulos administrativos** com sistema de preview TailwindCSS e suporte multi-framework CSS.
           

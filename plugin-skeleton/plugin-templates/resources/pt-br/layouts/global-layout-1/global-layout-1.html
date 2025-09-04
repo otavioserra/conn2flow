@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- pagina#titulo -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- pagina#css -->
+    <!-- pagina#js -->
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-blue-700 text-white py-4 shadow">
+        <div class="container mx-auto px-4">
+            <h1 class="text-2xl font-bold">Global Layout 1</h1>
+            <p class="text-sm">Example layout using Tailwind CSS</p>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="flex-1 container mx-auto px-4 py-8">
+        <!-- Page content will be injected here -->
+        @[[pagina#corpo]]@
+    </main>
+    <!-- Footer -->
+    <footer class="bg-blue-700 text-white py-3 mt-auto">
+        <div class="container mx-auto px-4 text-center text-sm">
+            &copy; 2025 Conn2Flow Plugin Example
+        </div>
+    </footer>
+</body>
+
+</html>

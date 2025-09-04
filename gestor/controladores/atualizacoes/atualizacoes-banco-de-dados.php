@@ -48,6 +48,8 @@ $BACKUP_DIR_BASE = $BASE_PATH_DB . 'backups/atualizacoes/';
 // Bibliotecas
 require_once $BASE_PATH_DB . 'bibliotecas/lang.php';
 require_once $BASE_PATH_DB . 'bibliotecas/log.php';
+require_once $BASE_PATH_DB . 'bibliotecas/banco.php';
+require_once $BASE_PATH_DB . 'bibliotecas/gestor.php';
 
 // Gestor 
 global $_GESTOR;
@@ -102,8 +104,6 @@ function db(): PDO {
     $pdo->exec("SET NAMES utf8mb4");
     return $pdo;
 }
-
-// (Removido) Função listaTabelasData não necessária neste momento.
 
 /**
  * Executa migrações usando phinx.
@@ -231,7 +231,10 @@ function pkPorTabela(string $tabela): ?string {
         'paginas' => 'id_paginas',
         'layouts' => 'id_layouts',
         'componentes' => 'id_componentes',
-        'variaveis' => 'id_variaveis'
+    'variaveis' => 'id_variaveis',
+    // Permissões / relacionamentos
+    'usuarios_perfis_modulos' => 'id_usuarios_perfis_modulos',
+    'usuarios_perfis_modulos_operacoes' => 'id_usuarios_perfis_modulos_operacoes'
     ];
     return $map[$tabela] ?? null;
 }
@@ -289,8 +292,13 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         }
     };
 
-    // Tabelas de recursos que agora usam chaves naturais nos Data.json
-    $tabelasChaveNatural = ['paginas','layouts','componentes','variaveis'];
+    // Tabelas que usam chaves naturais nos Data.json (sem PK numérica nos arquivos)
+    // Recursos principais + tabelas de permissões (perfis x módulos x operações)
+    $tabelasChaveNatural = [
+        'paginas','layouts','componentes','variaveis',
+        // Permissões de perfis: combinação única por (perfil,modulo) e (perfil,operacao)
+        'usuarios_perfis_modulos','usuarios_perfis_modulos_operacoes'
+    ];
     $pkDeclarada = pkPorTabela($tabela) ?? descobrirPK($tabela, $registros[0]);
     $primeiroTemPk = array_key_exists($pkDeclarada, $registros[0]);
     $usarChaveNatural = in_array($tabela, $tabelasChaveNatural, true) && !$primeiroTemPk; // se JSON não possui mais a PK numérica
@@ -320,6 +328,10 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 $lang = $row['language'] ?? $row['linguagem_codigo'] ?? null; if (!isset($lang,$row['id'])) return null; $mod = $row['modulo'] ?? ''; return strtolower($lang).'|'.$mod.'|'.$row['id'];
             case 'variaveis':
                 $lang = $row['language'] ?? $row['linguagem_codigo'] ?? null; if (!isset($lang,$row['id'])) return null; $mod = $row['modulo'] ?? ''; $grp = $row['grupo'] ?? ''; return strtolower($lang).'|'.$mod.'|'.$grp.'|'.$row['id'];
+            case 'usuarios_perfis_modulos':
+                if (!isset($row['perfil'],$row['modulo'])) return null; return strtolower($row['perfil']).'|'.strtolower($row['modulo']);
+            case 'usuarios_perfis_modulos_operacoes':
+                if (!isset($row['perfil'],$row['operacao'])) return null; return strtolower($row['perfil']).'|'.strtolower($row['operacao']);
             default: return null;
         }
     };
@@ -818,6 +830,7 @@ function main() {
             log_disco('WARN registrar manager_updates: '.encLog($e->getMessage()), $LOG_FILE_DB);
         }
         relatorioFinal($resumo);
+        gestor_sessao_del_all(); // limpa cache de sessão do gestor (se houver)
         log_disco(tr('_process_end_success'), $LOG_FILE_DB);
     } catch (Throwable $e) {
         log_disco(tr('_process_error',['msg'=>$e->getMessage()]), $LOG_FILE_DB);

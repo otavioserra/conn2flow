@@ -1,0 +1,24 @@
+.example-box {
+	border: 2px solid #2185d0;
+	background: #f4f8fb;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(33,133,208,0.08);
+	padding: 1.5em;
+	margin-bottom: 1.5em;
+	transition: box-shadow 0.2s, border-color 0.2s;
+}
+.example-box:hover {
+	border-color: #1678c2;
+	box-shadow: 0 4px 16px rgba(33,133,208,0.18);
+}
+.example-box .ui.header {
+	color: #2185d0;
+}
+.example-box .ui.button {
+	background: #2185d0;
+	color: #fff;
+	border-radius: 4px;
+}
+.example-box .ui.button:hover {
+	background: #1678c2;
+}

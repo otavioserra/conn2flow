@@ -1,6 +1,5 @@
 [
     {
-        "id_usuarios_perfis": "1",
         "nome": "Administradores",
         "id": "administradores",
         "padrao": null,
@@ -8,7 +7,6 @@
         "versao": "1"
     },
     {
-        "id_usuarios_perfis": "2",
         "nome": "Consumidores",
         "id": "consumidores",
         "padrao": true,

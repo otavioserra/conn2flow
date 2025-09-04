@@ -1,0 +1,68 @@
+name: Release Plugin (Skeleton Temporário)
+
+on:
+  push:
+    tags:
+      - 'plugin-v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: zip, curl, mbstring, openssl
+
+      - name: Generate Plugin Resources Data (Data.json)
+        run: |
+          php plugin-skeleton/utils/controllers/agents/update-data-resources-plugin.php
+          echo "Plugin Data.json generated"
+
+      - name: Commit Generated Data.json
+        run: |
+          git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+          if [ -f plugin-skeleton/plugin/db/data/Data.json ]; then
+            git add plugin-skeleton/plugin/db/data/Data.json
+            git diff --cached --quiet || git commit -m "Auto-update plugin Data.json ${{ github.ref_name }}"
+          fi
+
+      - name: Prepare plugin artifact (remove dev-only dirs)
+        run: |
+          rm -rf plugin-skeleton/plugin/.git* || true
+          # Futuro: remover recursos pesados opcionais
+          cd plugin-skeleton/plugin
+          zip -r ../../gestor-plugin.zip . \
+            -x "*.git*" \
+            -x "vendor/composer/tmp-*" \
+            -x "node_modules/*" \
+            -x "*.DS_Store*" \
+            -x "tests/*"
+          cd ../../
+          sha256sum gestor-plugin.zip | awk '{print $1}' > gestor-plugin.zip.sha256
+
+      - name: Get tag name
+        id: tag
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag.outputs.TAG_NAME }}
+          name: "Plugin ${{ steps.tag.outputs.TAG_NAME }}"
+          body: |
+            Release automático do plugin (skeleton temporário).
+            Este workflow será ajustado quando o plugin-skeleton for movido para branch dedicada.
+          files: |
+            gestor-plugin.zip
+            gestor-plugin.zip.sha256
