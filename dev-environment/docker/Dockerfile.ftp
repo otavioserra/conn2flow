@@ -1,0 +1,20 @@
+# Dockerfile para FTP com ProFTPD - Mais rápido e simples para ambiente de testes
+FROM ubuntu:22.04
+
+# Instalar ProFTPD e dependências
+RUN apt-get update && apt-get install -y \
+    proftpd-basic \
+    openssl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Expor as portas necessárias
+EXPOSE 20 21 21100-21110
+
+# Copiar configuração personalizada
+COPY proftpd-custom.conf /etc/proftpd/proftpd.conf
+COPY entrypoint-proftpd.sh /usr/local/bin/entrypoint-proftpd.sh
+
+# Tornar script executável
+RUN chmod +x /usr/local/bin/entrypoint-proftpd.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint-proftpd.sh"]

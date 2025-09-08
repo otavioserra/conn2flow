@@ -75,11 +75,11 @@
                 {
                     "nome": "Modal Componente",
                     "id": "modal-componente",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "4aa7451af32a9fbaaf8d10baf08b847d",
+                        "html": "a67b32353b2471c080e7d8c0996fb700",
                         "css": "",
-                        "combined": "4aa7451af32a9fbaaf8d10baf08b847d"
+                        "combined": "a67b32353b2471c080e7d8c0996fb700"
                     }
                 }
             ],

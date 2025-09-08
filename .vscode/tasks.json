@@ -39,17 +39,17 @@
         {
             "label": "🌐 GIT - Release Gestor",
             "type": "shell",
-            "command": "bash ./ai-workspace/git/scripts/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+            "command": "bash ./ai-workspace/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
         },
         {
             "label": "🌐 GIT - Release Instalador",
             "type": "shell",
-            "command": "bash ./ai-workspace/git/scripts/release-instalador.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+            "command": "bash ./ai-workspace/scripts/releases/release-instalador.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
         },
         {
             "label": "🌐 GIT - Commit Gestor",
             "type": "shell",
-            "command": "bash ./ai-workspace/git/scripts/commit.sh \"${input:commitMsg}\""
+            "command": "bash ./ai-workspace/scripts/commits/commit.sh \"${input:commitMsg}\""
         },
         {
             "label": "🖥️ Atualização - Recursos",
@@ -59,7 +59,7 @@
         {
             "label": "🖥️ Atualização - Sincronizar Gestor",
             "type": "shell",
-            "command": "bash ../conn2flow-docker-test-environment/utils/sincroniza-gestor.sh checksum"
+            "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor.sh checksum"
         },
         {
             "label": "🖥️ Atualização - Dados",
@@ -80,24 +80,19 @@
             "dependsOrder": "sequence"
         },
         {
-            "label": "♻️ Sincronização - Testes",
-            "type": "shell",
-            "command": "bash ../conn2flow-docker-test-environment/utils/sincroniza-teste.sh checksum"
-        },
-        {
             "label": "♻️ Sincronização - Sincronizar Gestor",
             "type": "shell",
-            "command": "bash ../conn2flow-docker-test-environment/utils/sincroniza-gestor.sh checksum"
+            "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor.sh checksum"
         },
         {
             "label": "♻️ Sincronização - Sincronizar Gestor Instalador",
             "type": "shell",
-            "command": "bash ../conn2flow-docker-test-environment/utils/sincroniza-gestor-instalador.sh checksum"
+            "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor-instalador.sh checksum"
         },
         {
             "label": "♻️ Sincronização - Build Local Gestor",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/atualizacoes/build-local-gestor.sh"
+            "command": "bash ./ai-workspace/scripts/updates/build-local-gestor.sh"
         }
     ],
     "inputs": [

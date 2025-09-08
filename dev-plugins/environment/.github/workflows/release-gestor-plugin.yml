@@ -1,0 +1,94 @@
+name: Release Plugin (Multi-Plugin Automation)
+
+on:
+  push:
+    tags:
+      - 'plugin-*'
+
+permissions:
+  contents: write
+jobs:
+  release-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: zip, curl, mbstring, openssl
+
+
+      - name: Get plugin id from tag
+        id: taginfo
+        run: |
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          PLUGIN_ID=$(echo "$TAG_NAME" | sed -E 's/^plugin-(.+)-v[0-9.]+$/\1/')
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "PLUGIN_ID=$PLUGIN_ID" >> $GITHUB_OUTPUT
+
+      - name: Read environment.json and get plugin info
+        id: plugininfo
+        run: |
+          PLUGIN_ID="${{ steps.taginfo.outputs.PLUGIN_ID }}"
+          ENV_PATH="../../environment.json"
+          PLUGIN_PATH=$(jq -r --arg id "$PLUGIN_ID" '.plugins[] | select(.id==$id) | .path' "$ENV_PATH")
+          PLUGIN_NAME=$(jq -r --arg id "$PLUGIN_ID" '.plugins[] | select(.id==$id) | .name' "$ENV_PATH")
+          if [ -z "$PLUGIN_PATH" ] || [ "$PLUGIN_PATH" = "null" ]; then
+            echo "Plugin with id $PLUGIN_ID not found in environment.json" >&2
+            exit 1
+          fi
+          echo "PLUGIN_PATH=$PLUGIN_PATH" >> $GITHUB_OUTPUT
+          echo "PLUGIN_NAME=$PLUGIN_NAME" >> $GITHUB_OUTPUT
+
+      - name: Generate Plugin Resources Data (Data.json)
+        run: |
+          PHP_SCRIPT="../../scripts/resources/update-data-resources-plugin.php --plugin-root=$PLUGIN_PATH  --deploy-plugin-root=../../deploys/${{ steps.taginfo.outputs.PLUGIN_ID }}"
+          if [ ! -f "$PHP_SCRIPT" ]; then
+            echo "Script not found: $PHP_SCRIPT" >&2
+            exit 1
+          fi
+          php "$PHP_SCRIPT"
+          echo "Plugin Data.json generated"
+        env:
+          PLUGIN_PATH: ${{ steps.plugininfo.outputs.PLUGIN_PATH }}
+
+      - name: Commit Generated Data.json
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          DATA_JSON="../../${{ steps.plugininfo.outputs.PLUGIN_PATH }}/db/data/Data.json"
+          if [ -f "$DATA_JSON" ]; then
+            git add "$DATA_JSON"
+            git diff --cached --quiet || git commit -m "Auto-update plugin Data.json ${{ github.ref_name }}"
+          fi
+
+      - name: Prepare plugin artifact (remove dev-only dirs)
+        run: |
+          PLUGIN_DIR="../../${{ steps.plugininfo.outputs.PLUGIN_PATH }}"
+          rm -rf "$PLUGIN_DIR/.git*" || true
+          cd "$PLUGIN_DIR"
+          zip -r ../../gestor-plugin.zip . \
+            -x "*.git*" \
+            -x "vendor/composer/tmp-*" \
+            -x "node_modules/*" \
+            -x "*.DS_Store*" \
+            -x "tests/*"
+          cd ../../
+          sha256sum gestor-plugin.zip | awk '{print $1}' > gestor-plugin.zip.sha256
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.taginfo.outputs.TAG_NAME }}
+          name: "Plugin ${{ steps.plugininfo.outputs.PLUGIN_NAME }} ${{ steps.taginfo.outputs.TAG_NAME }}"
+          body: |
+            Automated release for plugin (temporary skeleton).
+            This workflow will be improved when plugin-skeleton is moved to a dedicated branch.
+          files: |
+            gestor-plugin.zip
+            gestor-plugin.zip.sha256

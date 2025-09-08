@@ -39,21 +39,21 @@
                 {
                     "nome": "Modal Página",
                     "id": "modal-pagina",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "d815fb0545793072b1072303f7c61c6d",
+                        "html": "0bc84361f1eafaff98aae09157422e26",
                         "css": "",
-                        "combined": "d815fb0545793072b1072303f7c61c6d"
+                        "combined": "0bc84361f1eafaff98aae09157422e26"
                     }
                 },
                 {
                     "nome": "Lista Página ou Sistema",
                     "id": "lista-pagina-ou-sistema",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "ae10f7fb5803c7ccc488b8dc552dd0ce",
+                        "html": "d0e62efa4ab45262de04a3304cde584a",
                         "css": "",
-                        "combined": "ae10f7fb5803c7ccc488b8dc552dd0ce"
+                        "combined": "d0e62efa4ab45262de04a3304cde584a"
                     }
                 }
             ],

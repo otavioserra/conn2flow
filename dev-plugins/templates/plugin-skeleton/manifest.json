@@ -1,0 +1,20 @@
+{
+    "id": "example-plugin",
+    "name": "Example Plugin",
+    "version": "0.1.0",
+    "description": "Example plugin for initial skeleton.",
+    "compatibility": {
+        "min": "1.0.0",
+        "max": "2.x"
+    },
+    "author": "Conn2Flow",
+    "license": "MIT",
+    "resources": {
+        "layouts": true,
+        "pages": true,
+        "components": false,
+        "variables": true
+    },
+    "post_install_scripts": [],
+    "checksum_override": null
+}

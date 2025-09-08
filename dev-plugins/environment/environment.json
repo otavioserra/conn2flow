@@ -1,0 +1,21 @@
+{
+    "name": "Conn2Flow Plugin Development Environment",
+    "description": "Configuration file for the Conn2Flow plugin development environment. Defines which plugin is active for automation scripts. Adjust the 'activePlugin' section to switch between different plugins during development. Ensure the 'plugins' array includes all plugins you may work with, specifying their IDs, names, and paths.",
+    "activePlugin": {
+        "id": "pluginId"
+    },
+    "devEnvironment": {
+        "source": "",
+        "target": "",
+        "dockerPath": "/var/www/sites/localhost/conn2flow-gestor/plugins/",
+        "tests": "tests",
+        "testsBuild": "tests/build"
+    },
+    "plugins": [
+        {
+            "id": "pluginId",
+            "name": "PluginName",
+            "path": "../PathToPlugin"
+        }
+    ]
+}

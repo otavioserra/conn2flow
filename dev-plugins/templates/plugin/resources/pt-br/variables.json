@@ -1,0 +1,17 @@
+[
+    {
+        "id": "variable-global-1",
+        "value": "value-1",
+        "type": "tipo"
+    },
+    {
+        "id": "variable-global-2",
+        "value": "value-2",
+        "type": "string"
+    },
+    {
+        "id": "variable-global-3",
+        "value": "value-3",
+        "type": "tipo"
+    }
+]

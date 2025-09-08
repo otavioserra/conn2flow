@@ -1,0 +1,75 @@
+services:
+  # Aplicação conn2flow
+  app:
+    build: .
+    container_name: conn2flow-app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ../data/sites/localhost/public_html:/var/www/html
+      - ../data/sites:/var/www/sites
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - PHP_INI_SCAN_DIR=/usr/local/etc/php/conf.d
+    depends_on:
+      - mysql
+    networks:
+      - conn2flow-network
+
+  # Servidor FTP com ProFTPD (mais rápido para testes)
+  ftp:
+    build:
+      context: .
+      dockerfile: Dockerfile.ftp
+    container_name: conn2flow-ftp
+    restart: unless-stopped
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
+    volumes:
+      # Sites compartilhados - cada pasta de domínio é a raiz do usuário FTP
+      - ../data/sites:/home/ftp
+    environment:
+      - PROFTPD_LOG_LEVEL=info
+    networks:
+      - conn2flow-network
+  # Banco de dados MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: conn2flow-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: conn2flow
+      MYSQL_USER: conn2flow_user
+      MYSQL_PASSWORD: conn2flow_pass
+      TZ: America/Sao_Paulo
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - conn2flow-network
+  # phpMyAdmin para administração do banco
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: conn2flow-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root123
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - conn2flow-network
+volumes:
+  mysql_data:
+    driver: local
+networks:
+  conn2flow-network:
+    driver: bridge

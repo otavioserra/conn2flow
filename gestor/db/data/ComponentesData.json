@@ -95,13 +95,13 @@
         "id": "botao-superior-interface",
         "language": "pt-br",
         "modulo": null,
-        "html": "<a class=\"ui button #cor#\" href=\"#url#\" data-content=\"#tooltip#\" data-id=\"adicionar\">\r\n    <i class=\"#icon# icon\"><\/i>\r\n    #label#\r\n<\/a>",
+        "html": "<a class=\"ui button #cor#\" href=\"#url#\" data-content=\"#tooltip#\" data-id=\"adicionar\">\n    <i class=\"#icon# icon\"><\/i>\n    #label#\n<\/a>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"53c4b611141dd7f591d54c7b3008b9e0\",\"css\":\"\",\"combined\":\"53c4b611141dd7f591d54c7b3008b9e0\"}"
+        "versao": 2,
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"17898f8cf079921914072cfa54971eb7\",\"css\":\"\",\"combined\":\"17898f8cf079921914072cfa54971eb7\"}"
     },
     {
         "nome": "Interface Alerta Modal",
@@ -199,13 +199,13 @@
         "id": "layout-email-novo-cadastro",
         "language": "pt-br",
         "modulo": null,
-        "html": "<p>Caro(a) #nome#,<\/p>\r\n<p>Seja bem vindo à plataforma Entrey!<\/p>\r\n<p>- Caso você não tenha feito esse cadastro, favor desconsiderar este email.<\/p>\r\n<p>- Se você fez o cadastro, é necessário que você confirme o seu email acessando #url-confirmacao#.<\/p>\r\n<p>- Para futuros acessos, você pode acessar via #url-signin#.<\/p>\r\n#assinatura#",
+        "html": "<p>Caro(a) #nome#,<\/p>\n<p>Seja bem vindo à plataforma Entrey!<\/p>\n<p>- Caso você não tenha feito esse cadastro, favor desconsiderar este email.<\/p>\n<p>- Se você fez o cadastro, é necessário que você confirme o seu email acessando #url-confirmacao#.<\/p>\n<p>- Para futuros acessos, você pode acessar via #url-signin#.<\/p>\n#assinatura#",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.2",
-        "checksum": "{\"html\":\"269948c502ca2d65837f8abbef76a89a\",\"css\":\"\",\"combined\":\"269948c502ca2d65837f8abbef76a89a\"}"
+        "versao": 2,
+        "file_version": "1.3",
+        "checksum": "{\"html\":\"447021ae9358098d9adb9627ecb65014\",\"css\":\"\",\"combined\":\"447021ae9358098d9adb9627ecb65014\"}"
     },
     {
         "nome": "Interface Iframe Modal",
@@ -277,26 +277,26 @@
         "id": "layout-emails-assinatura",
         "language": "pt-br",
         "modulo": null,
-        "html": "<p>Atenciosamente<\/p>\r\n<p>Equipe Entrey<\/p>\r\n<p>Acessar Sistema: <a href=\"@[[pagina#url-full-http]]@signin\/\">@[[pagina#url-full-http]]@signin\/<\/a><\/p>",
+        "html": "<p>Atenciosamente<\/p>\n<p>Equipe Entrey<\/p>\n<p>Acessar Sistema: <a href=\"@[[pagina#url-full-http]]@signin\/\">@[[pagina#url-full-http]]@signin\/<\/a><\/p>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.2",
-        "checksum": "{\"html\":\"bae98906634d996be369512d5bc3ecea\",\"css\":\"\",\"combined\":\"bae98906634d996be369512d5bc3ecea\"}"
+        "versao": 2,
+        "file_version": "1.3",
+        "checksum": "{\"html\":\"6411590a438bb1b96dae7bfb0fe89dc2\",\"css\":\"\",\"combined\":\"6411590a438bb1b96dae7bfb0fe89dc2\"}"
     },
     {
         "nome": "Layout Email Esqueceu Senha",
         "id": "layout-email-esqueceu-senha",
         "language": "pt-br",
         "modulo": null,
-        "html": "<p>Caro(a) #nome#,<\/p>\r\n<p>Esqueceu-se da sua senha?<\/p>\r\n<p><b>Redefinir Senha:<\/b> #url#<\/p>\r\n<p>Lembrando que esta ligação vai expirar dentro de #expiracao# hora(s) e só pode ser utilizada uma vez.<\/p>\r\n<p>Se não pretender alterar a sua senha ou não tiver efetuado este pedido, ignore e elimine esta mensagem.<\/p>\r\n#assinatura#",
-        "css": "h1{\r\n    color:blue;\r\n}",
+        "html": "<p>Caro(a) #nome#,<\/p>\n<p>Esqueceu-se da sua senha?<\/p>\n<p><b>Redefinir Senha:<\/b> #url#<\/p>\n<p>Lembrando que esta ligação vai expirar dentro de #expiracao# hora(s) e só pode ser utilizada uma vez.<\/p>\n<p>Se não pretender alterar a sua senha ou não tiver efetuado este pedido, ignore e elimine esta mensagem.<\/p>\n#assinatura#",
+        "css": "h1{\n    color:blue;\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.2",
-        "checksum": "{\"html\":\"6e6710e729ba5ca2bfed4fca6024299c\",\"css\":\"e4b0bc753ae73edf1aea03238ac8b8bb\",\"combined\":\"9c908e80b25d8b5c2701575235ad3e69\"}"
+        "versao": 2,
+        "file_version": "1.3",
+        "checksum": "{\"html\":\"0dfd41316fd9355ef67b10cc6b1e04ad\",\"css\":\"2f40d13cf61ff32dcb801f3fec1d211f\",\"combined\":\"67e9a5119e68ec38f6cd816ad7b3aaa0\"}"
     },
     {
         "nome": "Interface Backup Dropdown",
@@ -316,13 +316,13 @@
         "id": "layout-email-senha-redefinida",
         "language": "pt-br",
         "modulo": null,
-        "html": "<p>Caro(a) #nome#,<\/p>\r\n<p>Sua senha foi redefinida com sucesso!<\/p>\r\n<p>Caso não tenha sido você, favor entrar em contato conosco reportando o problema.<\/p>\r\n#assinatura#",
+        "html": "<p>Caro(a) #nome#,<\/p>\n<p>Sua senha foi redefinida com sucesso!<\/p>\n<p>Caso não tenha sido você, favor entrar em contato conosco reportando o problema.<\/p>\n#assinatura#",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.2",
-        "checksum": "{\"html\":\"71bef62359404d276334517b6db99e90\",\"css\":\"\",\"combined\":\"71bef62359404d276334517b6db99e90\"}"
+        "versao": 2,
+        "file_version": "1.3",
+        "checksum": "{\"html\":\"a733b0e5baa367661d0636c0bab45c5b\",\"css\":\"\",\"combined\":\"a733b0e5baa367661d0636c0bab45c5b\"}"
     },
     {
         "nome": "Configuração - Campos",
@@ -381,39 +381,39 @@
         "id": "arquivos-lista",
         "language": "pt-br",
         "modulo": "admin-arquivos",
-        "html": "<div class=\"ui medium header\">#categoria#<\/div>\r\n<div class=\"ui four doubling cards\" id=\"#id#\">\r\n    <!-- card < -->\r\n    <div class=\"ui fluid raised card fileCont\" data-id=\"#file-id#\">\r\n        <div class=\"image fileImage\">\r\n            <img>\r\n            <div class=\"fileImage\">\r\n                <img src=\"#img-src#\">\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"content\">\r\n            <div class=\"ui small header\">#nome#<\/div>\r\n            <div class=\"description\">\r\n                <div class=\"ui list\">\r\n                    <div class=\"item\">\r\n                        <i class=\"calendar alternate outline icon\"><\/i>\r\n                        #data#\r\n                    <\/div>\r\n                    <div class=\"item\">\r\n                        <i class=\"info circle icon\"><\/i>\r\n                        #tipo#\r\n                    <\/div>\r\n                <\/div>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"extra content center aligned\">\r\n            <!-- btn-select < --><button class=\"ui blue button fileSelect\" data-id=\"#file-id#\" data-dados=\"#file-data#\"\r\n                data-tooltip=\"@[[list-button-select-tooltip]]@\"\r\n                data-inverted=\"\">@[[list-button-select]]@<\/button><!-- btn-select > -->\r\n            <!-- btn-copy < --><button class=\"ui blue button fileCopyUrl\" data-id=\"#file-id#\" data-url=\"#file-url#\"\r\n                data-tooltip=\"@[[list-button-copy-tooltip]]@\"\r\n                data-inverted=\"\">@[[list-button-copy]]@<\/button><!-- btn-copy > -->\r\n            <button class=\"ui red button fileDelete\" data-id=\"#file-id#\" data-tooltip=\"@[[list-button-del-tooltip]]@\"\r\n                data-inverted=\"\">@[[list-button-del]]@<\/button>\r\n        <\/div>\r\n    <\/div><!-- card > -->\r\n<\/div>",
+        "html": "<div class=\"ui medium header\">#categoria#<\/div>\n<div class=\"ui four doubling cards\" id=\"#id#\">\n    <!-- card < -->\n    <div class=\"ui fluid raised card fileCont\" data-id=\"#file-id#\">\n        <div class=\"image fileImage\">\n            <img>\n            <div class=\"fileImage\">\n                <img src=\"#img-src#\">\n            <\/div>\n        <\/div>\n        <div class=\"content\">\n            <div class=\"ui small header\">#nome#<\/div>\n            <div class=\"description\">\n                <div class=\"ui list\">\n                    <div class=\"item\">\n                        <i class=\"calendar alternate outline icon\"><\/i>\n                        #data#\n                    <\/div>\n                    <div class=\"item\">\n                        <i class=\"info circle icon\"><\/i>\n                        #tipo#\n                    <\/div>\n                <\/div>\n            <\/div>\n        <\/div>\n        <div class=\"extra content center aligned\">\n            <!-- btn-select < --><button class=\"ui blue button fileSelect\" data-id=\"#file-id#\" data-dados=\"#file-data#\"\n                data-tooltip=\"@[[list-button-select-tooltip]]@\"\n                data-inverted=\"\">@[[list-button-select]]@<\/button><!-- btn-select > -->\n            <!-- btn-copy < --><button class=\"ui blue button fileCopyUrl\" data-id=\"#file-id#\" data-url=\"#file-url#\"\n                data-tooltip=\"@[[list-button-copy-tooltip]]@\"\n                data-inverted=\"\">@[[list-button-copy]]@<\/button><!-- btn-copy > -->\n            <button class=\"ui red button fileDelete\" data-id=\"#file-id#\" data-tooltip=\"@[[list-button-del-tooltip]]@\"\n                data-inverted=\"\">@[[list-button-del]]@<\/button>\n        <\/div>\n    <\/div><!-- card > -->\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 2,
-        "file_version": "1.3",
-        "checksum": "{\"html\":\"7fb861d588aebb98b48ff04511e06943\",\"css\":\"\",\"combined\":\"7fb861d588aebb98b48ff04511e06943\"}"
+        "versao": 3,
+        "file_version": "1.4",
+        "checksum": "{\"html\":\"194dd3e01babbb9da63521ece47f08a7\",\"css\":\"\",\"combined\":\"194dd3e01babbb9da63521ece47f08a7\"}"
     },
     {
         "nome": "Atualizações - Lista",
         "id": "atualizacoes-lista",
         "language": "pt-br",
         "modulo": "admin-atualizacoes",
-        "html": "<div class=\"ui segment\" id=\"admin-atualizacoes-root\"\r\n    data-endpoint=\"?ajax=1&modulo=admin-atualizacoes&ajax-opcao=update\">\r\n    <div style=\"margin-bottom:0.75em;\">\r\n        <a class=\"ui small button\" href=\"disparar\/\">@[[updates-go-disparar]]@<\/a>\r\n    <\/div>\r\n    <div class=\"ui small header\" style=\"margin:0 0 .5em;\">1) Escolha o modo &nbsp; 2) Ajuste opções &nbsp; 3) Clique\r\n        Iniciar: <span id=\"atualizacoes-mode-label\">(modo não selecionado)<\/span><\/div>\r\n    <div class=\"ui buttons\" id=\"atualizacoes-buttons\" style=\"margin-bottom:1em;\">\r\n        <button class=\"ui button upd-mode-btn\" data-modo=\"full\">@[[updates-mode-full]]@<\/button>\r\n        <button class=\"ui button upd-mode-btn\" data-modo=\"only-files\">@[[updates-mode-files]]@<\/button>\r\n        <button class=\"ui button upd-mode-btn\" data-modo=\"only-db\">@[[updates-mode-db]]@<\/button>\r\n    <\/div>\r\n    <div class=\"ui segment\" style=\"margin-top:1em;\">\r\n        <h4 class=\"ui header\">Opções Avançadas<\/h4>\r\n        <div class=\"ui stackable three column grid\">\r\n            <div class=\"column\">\r\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"local\"\r\n                        id=\"flag-local\"><label for=\"flag-local\">--local-artifact<\/label><\/div><br>\r\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"debug\" id=\"flag-debug\"\r\n                        checked><label for=\"flag-debug\">--debug<\/label><\/div><br>\r\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"dry_run\"\r\n                        id=\"flag-dry-run\"><label for=\"flag-dry-run\">--dry-run<\/label><\/div><br>\r\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"download_only\"\r\n                        id=\"flag-download-only\"><label for=\"flag-download-only\">--download-only<\/label><\/div><br>\r\n            <\/div>\r\n            <div class=\"column\">\r\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"no_db\"\r\n                        id=\"flag-no-db\"><label for=\"flag-no-db\">--no-db<\/label><\/div><br>\r\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"no_verify\"\r\n                        id=\"flag-no-verify\"><label for=\"flag-no-verify\">--no-verify<\/label><\/div><br>\r\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"force_all\"\r\n                        id=\"flag-force-all\"><label for=\"flag-force-all\">--force-all<\/label><\/div><br>\r\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"log_diff\"\r\n                        id=\"flag-log-diff\"><label for=\"flag-log-diff\">--log-diff<\/label><\/div><br>\r\n            <\/div>\r\n            <div class=\"column\">\r\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"backup\"\r\n                        id=\"flag-backup\"><label for=\"flag-backup\">--backup<\/label><\/div><br>\r\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"skip_download\"\r\n                        id=\"flag-skip-download\"><label for=\"flag-skip-download\">--skip-download<\/label><\/div><br>\r\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"clean_temp\"\r\n                        id=\"flag-clean-temp\"><label for=\"flag-clean-temp\">--clean-temp<\/label><\/div><br>\r\n                <div class=\"field\" style=\"margin-top:0.5em;\">\r\n                    <label style=\"font-weight:bold;\">--tables=<\/label>\r\n                    <input type=\"text\" id=\"upd-tables\" placeholder=\"paginas,variaveis\" style=\"width:100%;\">\r\n                <\/div>\r\n                <div class=\"field\" style=\"margin-top:0.5em;\">\r\n                    <label style=\"font-weight:bold;\">--logs-retention-days=<\/label>\r\n                    <input type=\"number\" id=\"upd-logs-retention-days\" min=\"0\" placeholder=\"14\" style=\"width:100%;\">\r\n                <\/div>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"field\" style=\"margin-top:0.5em;\">\r\n            <label style=\"font-weight:bold;\">Tag (--tag)<\/label>\r\n            <input type=\"text\" id=\"upd-tag\" placeholder=\"gestor-v1.14.0\" style=\"width:300px;\">\r\n        <\/div>\r\n        <div class=\"field\" style=\"margin-top:0.5em;\">\r\n            <label style=\"font-weight:bold;\">Domain (--domain)<\/label>\r\n            <input type=\"text\" id=\"upd-domain\" placeholder=\"localhost\" style=\"width:300px;\">\r\n        <\/div>\r\n    <\/div>\r\n    <div style=\"margin-bottom:1em;margin-top:1em;\">\r\n        <button class=\"ui primary button\" id=\"atualizacoes-start-btn\">@[[updates-run-button]]@<\/button>\r\n        <button class=\"ui red button\" id=\"atualizacoes-cancel-btn\" data-action=\"cancel\"\r\n            style=\"display:none;\">@[[updates-cancel]]@<\/button>\r\n        <div class=\"ui small indicating progress\" id=\"atualizacoes-progress-bar\" data-percent=\"0\"\r\n            style=\"display:none;min-width:200px;margin-top:1em;margin-bottom:2em;vertical-align:middle;\">\r\n            <div class=\"bar\">\r\n                <div class=\"progress\"><\/div>\r\n            <\/div>\r\n            <div class=\"label\">@[[updates-progress]]@<\/div>\r\n        <\/div>\r\n        <!-- loader inline será injetado via JS -->\r\n    <\/div>\r\n    <!-- Área de log unificada (CodeMirror vivo) -->\r\n    <textarea id=\"atualizacoes-log-textarea\" class=\"codemirror-log\" data-mode=\"text\" data-live=\"1\" style=\"display:none;\"\r\n        rows=\"14\"><\/textarea>\r\n    <pre class=\"fallback-log\" style=\"max-height:40vh;overflow:auto;display:none;\"><\/pre>\r\n    <div style=\"margin-top:1em;\">#plano-link#<\/div>\r\n    <h3 class=\"ui header\" style=\"margin-top:2em;\">@[[updates-history-title]]@<\/h3>\r\n    <table class=\"ui very basic compact table\" id=\"atualizacoes-historico-table\">\r\n        <thead>\r\n            <tr>\r\n                <th>@[[updates-history-started]]@<\/th>\r\n                <th>@[[updates-history-tag]]@<\/th>\r\n                <th>@[[updates-history-mode]]@<\/th>\r\n                <th>@[[updates-history-status]]@<\/th>\r\n                <th>@[[updates-history-removed]]@<\/th>\r\n                <th>@[[updates-history-copied]]@<\/th>\r\n                <th>@[[updates-history-finished]]@<\/th>\r\n                <th>@[[updates-actions]]@<\/th>\r\n            <\/tr>\r\n        <\/thead>\r\n        <tbody>\r\n            #historico_linhas#\r\n        <\/tbody>\r\n    <\/table>\r\n    <h3 class=\"ui header\" style=\"margin-top:2em;\">@[[updates-recent-logs]]@<\/h3>\r\n    <table class=\"ui celled table compact\" style=\"margin-top:1em;\">\r\n        <thead>\r\n            <tr>\r\n                <th>@[[updates-date]]@<\/th>\r\n                <th>@[[updates-log]]@<\/th>\r\n                <th>@[[updates-actions]]@<\/th>\r\n            <\/tr>\r\n        <\/thead>\r\n        <tbody>\r\n            #linhas#\r\n        <\/tbody>\r\n    <\/table>\r\n<\/div>",
+        "html": "<div class=\"ui segment\" id=\"admin-atualizacoes-root\"\n    data-endpoint=\"?ajax=1&modulo=admin-atualizacoes&ajax-opcao=update\">\n    <div style=\"margin-bottom:0.75em;\">\n        <a class=\"ui small button\" href=\"disparar\/\">@[[updates-go-disparar]]@<\/a>\n    <\/div>\n    <div class=\"ui small header\" style=\"margin:0 0 .5em;\">1) Escolha o modo &nbsp; 2) Ajuste opções &nbsp; 3) Clique\n        Iniciar: <span id=\"atualizacoes-mode-label\">(modo não selecionado)<\/span><\/div>\n    <div class=\"ui buttons\" id=\"atualizacoes-buttons\" style=\"margin-bottom:1em;\">\n        <button class=\"ui button upd-mode-btn\" data-modo=\"full\">@[[updates-mode-full]]@<\/button>\n        <button class=\"ui button upd-mode-btn\" data-modo=\"only-files\">@[[updates-mode-files]]@<\/button>\n        <button class=\"ui button upd-mode-btn\" data-modo=\"only-db\">@[[updates-mode-db]]@<\/button>\n    <\/div>\n    <div class=\"ui segment\" style=\"margin-top:1em;\">\n        <h4 class=\"ui header\">Opções Avançadas<\/h4>\n        <div class=\"ui stackable three column grid\">\n            <div class=\"column\">\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"local\"\n                        id=\"flag-local\"><label for=\"flag-local\">--local-artifact<\/label><\/div><br>\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"debug\" id=\"flag-debug\"\n                        checked><label for=\"flag-debug\">--debug<\/label><\/div><br>\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"dry_run\"\n                        id=\"flag-dry-run\"><label for=\"flag-dry-run\">--dry-run<\/label><\/div><br>\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"download_only\"\n                        id=\"flag-download-only\"><label for=\"flag-download-only\">--download-only<\/label><\/div><br>\n            <\/div>\n            <div class=\"column\">\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"no_db\"\n                        id=\"flag-no-db\"><label for=\"flag-no-db\">--no-db<\/label><\/div><br>\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"no_verify\"\n                        id=\"flag-no-verify\"><label for=\"flag-no-verify\">--no-verify<\/label><\/div><br>\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"force_all\"\n                        id=\"flag-force-all\"><label for=\"flag-force-all\">--force-all<\/label><\/div><br>\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"log_diff\"\n                        id=\"flag-log-diff\"><label for=\"flag-log-diff\">--log-diff<\/label><\/div><br>\n            <\/div>\n            <div class=\"column\">\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"backup\"\n                        id=\"flag-backup\"><label for=\"flag-backup\">--backup<\/label><\/div><br>\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"skip_download\"\n                        id=\"flag-skip-download\"><label for=\"flag-skip-download\">--skip-download<\/label><\/div><br>\n                <div class=\"ui checkbox\"><input type=\"checkbox\" class=\"upd-flag\" data-flag=\"clean_temp\"\n                        id=\"flag-clean-temp\"><label for=\"flag-clean-temp\">--clean-temp<\/label><\/div><br>\n                <div class=\"field\" style=\"margin-top:0.5em;\">\n                    <label style=\"font-weight:bold;\">--tables=<\/label>\n                    <input type=\"text\" id=\"upd-tables\" placeholder=\"paginas,variaveis\" style=\"width:100%;\">\n                <\/div>\n                <div class=\"field\" style=\"margin-top:0.5em;\">\n                    <label style=\"font-weight:bold;\">--logs-retention-days=<\/label>\n                    <input type=\"number\" id=\"upd-logs-retention-days\" min=\"0\" placeholder=\"14\" style=\"width:100%;\">\n                <\/div>\n            <\/div>\n        <\/div>\n        <div class=\"field\" style=\"margin-top:0.5em;\">\n            <label style=\"font-weight:bold;\">Tag (--tag)<\/label>\n            <input type=\"text\" id=\"upd-tag\" placeholder=\"gestor-v1.14.0\" style=\"width:300px;\">\n        <\/div>\n        <div class=\"field\" style=\"margin-top:0.5em;\">\n            <label style=\"font-weight:bold;\">Domain (--domain)<\/label>\n            <input type=\"text\" id=\"upd-domain\" placeholder=\"localhost\" style=\"width:300px;\">\n        <\/div>\n    <\/div>\n    <div style=\"margin-bottom:1em;margin-top:1em;\">\n        <button class=\"ui primary button\" id=\"atualizacoes-start-btn\">@[[updates-run-button]]@<\/button>\n        <button class=\"ui red button\" id=\"atualizacoes-cancel-btn\" data-action=\"cancel\"\n            style=\"display:none;\">@[[updates-cancel]]@<\/button>\n        <div class=\"ui small indicating progress\" id=\"atualizacoes-progress-bar\" data-percent=\"0\"\n            style=\"display:none;min-width:200px;margin-top:1em;margin-bottom:2em;vertical-align:middle;\">\n            <div class=\"bar\">\n                <div class=\"progress\"><\/div>\n            <\/div>\n            <div class=\"label\">@[[updates-progress]]@<\/div>\n        <\/div>\n        <!-- loader inline será injetado via JS -->\n    <\/div>\n    <!-- Área de log unificada (CodeMirror vivo) -->\n    <textarea id=\"atualizacoes-log-textarea\" class=\"codemirror-log\" data-mode=\"text\" data-live=\"1\" style=\"display:none;\"\n        rows=\"14\"><\/textarea>\n    <pre class=\"fallback-log\" style=\"max-height:40vh;overflow:auto;display:none;\"><\/pre>\n    <div style=\"margin-top:1em;\">#plano-link#<\/div>\n    <h3 class=\"ui header\" style=\"margin-top:2em;\">@[[updates-history-title]]@<\/h3>\n    <table class=\"ui very basic compact table\" id=\"atualizacoes-historico-table\">\n        <thead>\n            <tr>\n                <th>@[[updates-history-started]]@<\/th>\n                <th>@[[updates-history-tag]]@<\/th>\n                <th>@[[updates-history-mode]]@<\/th>\n                <th>@[[updates-history-status]]@<\/th>\n                <th>@[[updates-history-removed]]@<\/th>\n                <th>@[[updates-history-copied]]@<\/th>\n                <th>@[[updates-history-finished]]@<\/th>\n                <th>@[[updates-actions]]@<\/th>\n            <\/tr>\n        <\/thead>\n        <tbody>\n            #historico_linhas#\n        <\/tbody>\n    <\/table>\n    <h3 class=\"ui header\" style=\"margin-top:2em;\">@[[updates-recent-logs]]@<\/h3>\n    <table class=\"ui celled table compact\" style=\"margin-top:1em;\">\n        <thead>\n            <tr>\n                <th>@[[updates-date]]@<\/th>\n                <th>@[[updates-log]]@<\/th>\n                <th>@[[updates-actions]]@<\/th>\n            <\/tr>\n        <\/thead>\n        <tbody>\n            #linhas#\n        <\/tbody>\n    <\/table>\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.13",
-        "checksum": "{\"html\":\"49f985d7f385bc65c554db83a925e8b8\",\"css\":\"\",\"combined\":\"49f985d7f385bc65c554db83a925e8b8\"}"
+        "versao": 2,
+        "file_version": "1.14",
+        "checksum": "{\"html\":\"e007e7b6b9725f54b3d1d050343728f6\",\"css\":\"\",\"combined\":\"e007e7b6b9725f54b3d1d050343728f6\"}"
     },
     {
         "nome": "Atualizações - Detalhe",
         "id": "atualizacoes-detalhe-comp",
         "language": "pt-br",
         "modulo": "admin-atualizacoes",
-        "html": "<div class=\"ui segment\">\r\n    <div class=\"ui header\">@[[updates-detail-title]]@<\/div>\r\n    #conteudo#\r\n    <p><a class=\"ui button\" href=\"..\" style=\"margin-top: 1rem;\">@[[updates-back-button]]@<\/a><\/p>\r\n<\/div>",
+        "html": "<div class=\"ui segment\">\n    <div class=\"ui header\">@[[updates-detail-title]]@<\/div>\n    #conteudo#\n    <p><a class=\"ui button\" href=\"..\" style=\"margin-top: 1rem;\">@[[updates-back-button]]@<\/a><\/p>\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.3",
-        "checksum": "{\"html\":\"2165f501c194d36a1b7944cf7901805b\",\"css\":\"\",\"combined\":\"2165f501c194d36a1b7944cf7901805b\"}"
+        "versao": 2,
+        "file_version": "1.4",
+        "checksum": "{\"html\":\"d15a8a39cceb60aed8b27527b750cac2\",\"css\":\"\",\"combined\":\"d15a8a39cceb60aed8b27527b750cac2\"}"
     },
     {
         "nome": "Teste Componente Módulo",
@@ -433,51 +433,51 @@
         "id": "modal-componente",
         "language": "pt-br",
         "modulo": "admin-componentes",
-        "html": "<div class=\"ui modal fullscreen previsualizar\">\r\n    <div class=\"header\">#title#<\/div>\r\n    <div class=\"scrolling content\">\r\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\r\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\r\n                <i class=\"desktop icon\"><\/i> #desktop#\r\n            <\/button>\r\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\r\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\r\n            <\/button>\r\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\r\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\r\n            <\/button>\r\n        <\/div>\r\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:800px;border:1px solid #ccc;\"><\/iframe>\r\n    <\/div>\r\n    <div class=\"actions\">\r\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\r\n            data-position=\"top right\">\r\n            #button-back-value#\r\n            <i class=\"angle left icon\"><\/i>\r\n        <\/div>\r\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\r\n            data-inverted=\"\" data-position=\"top right\">\r\n            #button-value#\r\n            <i class=\"check circle icon\"><\/i>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "html": "<div class=\"ui modal fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:800px;border:1px solid #ccc;\"><\/iframe>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\n            data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.2",
-        "checksum": "{\"html\":\"4aa7451af32a9fbaaf8d10baf08b847d\",\"css\":\"\",\"combined\":\"4aa7451af32a9fbaaf8d10baf08b847d\"}"
+        "versao": 2,
+        "file_version": "1.3",
+        "checksum": "{\"html\":\"a67b32353b2471c080e7d8c0996fb700\",\"css\":\"\",\"combined\":\"a67b32353b2471c080e7d8c0996fb700\"}"
     },
     {
         "nome": "modal-layout",
         "id": "modal-layout",
         "language": "pt-br",
         "modulo": "admin-layouts",
-        "html": "<div class=\"ui modal fullscreen previsualizar\">\r\n    <div class=\"header\">#title#<\/div>\r\n    <div class=\"scrolling content\">\r\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\r\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\r\n                <i class=\"desktop icon\"><\/i> #desktop#\r\n            <\/button>\r\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\r\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\r\n            <\/button>\r\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\r\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\r\n            <\/button>\r\n        <\/div>\r\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:800px;border:1px solid #ccc;\"><\/iframe>\r\n    <\/div>\r\n    <div class=\"actions\">\r\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\r\n            data-position=\"top right\">\r\n            #button-back-value#\r\n            <i class=\"angle left icon\"><\/i>\r\n        <\/div>\r\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\r\n            data-inverted=\"\" data-position=\"top right\">\r\n            #button-value#\r\n            <i class=\"check circle icon\"><\/i>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "html": "<div class=\"ui modal fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:800px;border:1px solid #ccc;\"><\/iframe>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\n            data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.2",
-        "checksum": "{\"html\":\"4aa7451af32a9fbaaf8d10baf08b847d\",\"css\":\"\",\"combined\":\"4aa7451af32a9fbaaf8d10baf08b847d\"}"
+        "versao": 2,
+        "file_version": "1.3",
+        "checksum": "{\"html\":\"a67b32353b2471c080e7d8c0996fb700\",\"css\":\"\",\"combined\":\"a67b32353b2471c080e7d8c0996fb700\"}"
     },
     {
         "nome": "modal-pagina",
         "id": "modal-pagina",
         "language": "pt-br",
         "modulo": "admin-paginas",
-        "html": "<div class=\"ui modal fullscreen previsualizar\">\r\n    <div class=\"header\">#title#<\/div>\r\n    <div class=\"scrolling content\">\r\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\r\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\r\n                <i class=\"desktop icon\"><\/i> #desktop#\r\n            <\/button>\r\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\r\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\r\n            <\/button>\r\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\r\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\r\n            <\/button>\r\n        <\/div>\r\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:700px;border:1px solid #ccc;\"><\/iframe>\r\n    <\/div>\r\n    <div class=\"actions\">\r\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\r\n            data-position=\"top right\">\r\n            #button-back-value#\r\n            <i class=\"angle left icon\"><\/i>\r\n        <\/div>\r\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\r\n            data-inverted=\"\" data-position=\"top right\">\r\n            #button-value#\r\n            <i class=\"check circle icon\"><\/i>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "html": "<div class=\"ui modal fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:700px;border:1px solid #ccc;\"><\/iframe>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\n            data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.9",
-        "checksum": "{\"html\":\"d815fb0545793072b1072303f7c61c6d\",\"css\":\"\",\"combined\":\"d815fb0545793072b1072303f7c61c6d\"}"
+        "versao": 2,
+        "file_version": "1.10",
+        "checksum": "{\"html\":\"0bc84361f1eafaff98aae09157422e26\",\"css\":\"\",\"combined\":\"0bc84361f1eafaff98aae09157422e26\"}"
     },
     {
         "nome": "lista-pagina-ou-sistema",
         "id": "lista-pagina-ou-sistema",
         "language": "pt-br",
         "modulo": "admin-paginas",
-        "html": "<div class=\"ui form\">\r\n    <div class=\"inline fields\">\r\n        <label>#tipo#<\/label>\r\n        <div class=\"field\">\r\n            <div class=\"ui radio checkbox\">\r\n                <input type=\"radio\" name=\"tipo\" tabindex=\"1\" value=\"pagina\" #checked_pagina#>\r\n                <label>#pagina#<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"field\">\r\n            <div class=\"ui radio checkbox\">\r\n                <input type=\"radio\" name=\"tipo\" tabindex=\"2\" value=\"sistema\" #checked_sistema#>\r\n                <label>#sistema#<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"field\">\r\n            <div class=\"ui radio checkbox\">\r\n                <input type=\"radio\" name=\"tipo\" value=\"ambos\" tabindex=\"0\" #checked_ambos#>\r\n                <label>#ambos#<\/label>\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "html": "<div class=\"ui form\">\n    <div class=\"inline fields\">\n        <label>#tipo#<\/label>\n        <div class=\"field\">\n            <div class=\"ui radio checkbox\">\n                <input type=\"radio\" name=\"tipo\" tabindex=\"1\" value=\"pagina\" #checked_pagina#>\n                <label>#pagina#<\/label>\n            <\/div>\n        <\/div>\n        <div class=\"field\">\n            <div class=\"ui radio checkbox\">\n                <input type=\"radio\" name=\"tipo\" tabindex=\"2\" value=\"sistema\" #checked_sistema#>\n                <label>#sistema#<\/label>\n            <\/div>\n        <\/div>\n        <div class=\"field\">\n            <div class=\"ui radio checkbox\">\n                <input type=\"radio\" name=\"tipo\" value=\"ambos\" tabindex=\"0\" #checked_ambos#>\n                <label>#ambos#<\/label>\n            <\/div>\n        <\/div>\n    <\/div>\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 3,
-        "file_version": "1.3",
-        "checksum": "{\"html\":\"ae10f7fb5803c7ccc488b8dc552dd0ce\",\"css\":\"\",\"combined\":\"ae10f7fb5803c7ccc488b8dc552dd0ce\"}"
+        "versao": 4,
+        "file_version": "1.4",
+        "checksum": "{\"html\":\"d0e62efa4ab45262de04a3304cde584a\",\"css\":\"\",\"combined\":\"d0e62efa4ab45262de04a3304cde584a\"}"
     }
 ]

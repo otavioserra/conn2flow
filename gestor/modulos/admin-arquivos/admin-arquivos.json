@@ -69,11 +69,11 @@
                 {
                     "name": "Arquivos Lista",
                     "id": "arquivos-lista",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "7fb861d588aebb98b48ff04511e06943",
+                        "html": "194dd3e01babbb9da63521ece47f08a7",
                         "css": "",
-                        "combined": "7fb861d588aebb98b48ff04511e06943"
+                        "combined": "194dd3e01babbb9da63521ece47f08a7"
                     }
                 }
             ],

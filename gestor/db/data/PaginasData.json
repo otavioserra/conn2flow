@@ -181,13 +181,13 @@
         "opcao": "listar-atualizacoes",
         "raiz": true,
         "sem_permissao": null,
-        "html": "<h1 class=\"ui header\">@[[updates-title]]@<\/h1>\r\n<div>#dynamic-content#<\/div>",
+        "html": "<h1 class=\"ui header\">@[[updates-title]]@<\/h1>\n<div>#dynamic-content#<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"59f177cb2724589cb275a5f5e8b2f202\",\"css\":\"\",\"combined\":\"59f177cb2724589cb275a5f5e8b2f202\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"3b4111f3cd39194b7053bfbffa69ba62\",\"css\":\"\",\"combined\":\"3b4111f3cd39194b7053bfbffa69ba62\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",
@@ -200,13 +200,13 @@
         "opcao": "detalhe-atualizacao",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<h1 class=\"ui header\">@[[updates-detail-title]]@<\/h1>\r\n<div>#dynamic-content#<\/div>",
+        "html": "<h1 class=\"ui header\">@[[updates-detail-title]]@<\/h1>\n<div>#dynamic-content#<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"8666d7429a44a9827ac8e21bebfa839d\",\"css\":\"\",\"combined\":\"8666d7429a44a9827ac8e21bebfa839d\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"57671f489f494af3ded385b978e857a9\",\"css\":\"\",\"combined\":\"57671f489f494af3ded385b978e857a9\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",

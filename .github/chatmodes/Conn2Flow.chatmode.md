@@ -109,13 +109,15 @@ Carefully read the issue and think hard about a plan to solve it before coding.
 - Revisit your assumptions if unexpected behavior occurs.
 
 ## 8. Frequent Testing Oriented Development
-- Before run tests, is needed to sinchronize the gestor with the updated checksum using: `docker/utils/sincroniza-gestor.sh checksum`. Never RUN tests in the gestor without doing this first.
+- Before run tests, is needed to sinchronize the gestor with the updated checksum using: `ai-workspace\scripts\dev-environment\sincroniza-gestor.sh checksum`. Never RUN tests in the gestor without doing this first.
 - Use `docker exec conn2flow-app bash -c "php <seu-script>.php <parametros>"` to run PHP scripts inside the docker environment.
 - Use `docker logs conn2flow-app --tail 50` to check the last 50 lines of Apache logs.
 - Use `docker exec conn2flow-app bash -c "tail -50 /var/log/php_errors.log"` to check the last 50 lines of PHP error logs.
-- Docker local files is at `docker\dados\sites` that is mapped to `/var/www/sites` inside the docker container.
+- Docker local files is at `dev-environment\data\sites` that is mapped to `/var/www/sites` inside the docker container.
 - The gestor is located at `/var/www/sites/localhost/conn2flow-gestor/` inside the docker container. But is mapped to `./gestor/` in the repository machine.
-- The gestor plugins is located at `/var/www/sites/localhost/conn2flow-gestor/plugins/` inside the docker container. But is mapped to `./gestor/plugins/` in the repository machine.
+- We have two types of plugins: private and public.
+- The gestor plugins is located at `/var/www/sites/localhost/conn2flow-gestor/plugins/<plugin-id>/` inside the docker container. But is mapped to `dev-plugins\plugins\private\<plugin-id>\` or `dev-plugins\plugins\public\<plugin-id>\` in the repository machine.
+- You can find more information about any plugin by checking `dev-plugins\plugins\private\environment.json` or `dev-plugins\plugins\public\environment.json`.
 
 # How to create a Todo List
 Use the following format to create a todo list:

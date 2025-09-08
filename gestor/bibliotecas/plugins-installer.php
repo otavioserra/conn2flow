@@ -21,11 +21,11 @@ function plugin_read_json(string $path, array &$errors): ?array {
 }
 
 function plugin_validate_manifest(array $manifest, array &$errors): bool {
-    $required = ['id','nome','versao'];
-    foreach($required as $r){ if(empty($manifest[$r])) $errors[] = "Campo obrigatório ausente: $r"; }
-    if(!empty($manifest['versao']) && !preg_match('/^\d+\.\d+\.\d+$/',$manifest['versao'])) { $errors[] = 'Versão inválida (use semântica x.y.z)'; }
-    // Prefixo de IDs (orientação – não bloqueia Fase 1)
-    if(isset($manifest['id']) && !preg_match('/^[a-z0-9][a-z0-9_-]*$/',$manifest['id'])) { $errors[] = 'ID do plugin inválido (use minúsculas, números, hífen ou underscore)'; }
+    $required = ['id','name','version'];
+    foreach($required as $r){ if(empty($manifest[$r])) $errors[] = "Missing required field: $r"; }
+    if(!empty($manifest['version']) && !preg_match('/^\d+\.\d+\.\d+$/',$manifest['version'])) { $errors[] = 'Invalid version (use semantic x.y.z)'; }
+    // ID prefix (guidance – does not block Phase 1)
+    if(isset($manifest['id']) && !preg_match('/^[a-z0-9][a-z0-9_-]*$/',$manifest['id'])) { $errors[] = 'Invalid plugin ID (use lowercase, numbers, hyphen or underscore)'; }
     return empty($errors);
 }
 
@@ -179,24 +179,24 @@ function plugin_move_to_final(string $staging, string $final, array &$log): bool
 function plugin_persist_metadata(string $slug, array $manifest, ?string $checksum, string $origemTipo, array $opcoes, array &$log): void {
     $dados = [
         'id' => $slug,
-        'nome' => $manifest['nome'] ?? $slug,
+        'name' => $manifest['name'] ?? $slug,
         'origem_tipo' => $origemTipo,
         'origem_referencia' => $opcoes['referencia'] ?? null,
         'origem_branch_tag' => $opcoes['ref'] ?? null,
         'origem_credencial_ref' => $opcoes['cred_ref'] ?? null,
-        'versao_instalada' => $manifest['versao'] ?? null,
+        'installed_version' => $manifest['version'] ?? null,
         'checksum_pacote' => $checksum,
         'manifest_json' => json_encode($manifest, JSON_UNESCAPED_UNICODE),
     'status_execucao' => PLG_STATUS_OK,
         'data_instalacao' => date('Y-m-d H:i:s'),
         'data_ultima_atualizacao' => date('Y-m-d H:i:s'),
     ];
-    // Upsert manual via banco_insert_update sem tipagem especial
+    // Manual upsert via banco_insert_update without special typing
     banco_insert_update([
         'tabela' => ['nome' => 'plugins','id' => 'id'],
         'dados' => $dados,
     ]);
-    $log[] = '[ok] metadados persistidos na tabela plugins';
+    $log[] = '[ok] metadata persisted in plugins table';
 }
 
 function plugin_backup_existing(string $finalPath, array &$log): void {
