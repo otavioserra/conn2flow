@@ -20,7 +20,7 @@ Este documento consolida o planejamento para evoluir o módulo `admin-plugins` (
         echo "Resource updates generated successfully"
 ```
 **Ambiente de Testes**:
-- Tem um ambiente completo de testes feitos em docker. Paths: `docker`, `docker\dados\docker-compose.yml` e `docker\dados\Dockerfile`.
+- Tem um ambiente completo de testes feitos em docker. Paths: `docker`, `dev-environment\data\docker-compose.yml` e `dev-environment\data\Dockerfile`.
 - `ai-workspace\scripts\atualizacoes\build-local-gestor.sh` - script de simulação de release similar ao `release-gestor.yml`, usado para gerar o zip e o hash e enviar para o ambiente de testes local do docker. Ou seja, ele cria o artefato para este ambiente.
 **Atualização do Sistema**:
 - `atualizacoes-banco-de-dados.php` (sincroniza *Data.json* → banco) - Path: `gestor/controladores/atualizacoes/`
@@ -470,7 +470,7 @@ Confirmação destes 3 pontos libera início da implementação.
 
 ## ✅ Progresso da Implementação (Checklist F1)
  - [x] Migração novos campos `plugins`
- - [ ] Branch orphan `plugin-development` (adiado para final conforme estratégia)
+ - [x] Branch orphan `plugin-development` (adiado para final conforme estratégia) - Abandonada estratégia, usando pasta `dev-plugins` dentro do mesmo repositório.
  - [x] Skeleton base plugin (estrutura inicial + manifest)
  - [x] Workflow release plugin e `build-local-gestor-plugin.sh`
  - [x] Plugin exemplo (example-plugin básico)
