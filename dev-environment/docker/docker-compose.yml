@@ -49,6 +49,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
     networks:
       - conn2flow-network
   # phpMyAdmin para administração do banco

@@ -2,6 +2,7 @@
 // Helpers para instalação/atualização de plugins (Fase 1)
 
 require_once __DIR__ . '/banco.php';
+require_once __DIR__ . '/plugins-consts.php';
 
 function plugin_normalize_slug(string $slug): string { return strtolower(preg_replace('/[^a-zA-Z0-9_-]+/','-', $slug)); }
 function plugin_base_root(): string { return dirname(__DIR__) . '/'; }
@@ -11,6 +12,21 @@ function plugin_datajson_dest_dir(string $slug): string { return plugin_base_roo
 function plugin_safe_mkdir(string $path): void { if(!is_dir($path)) mkdir($path, 0777, true); }
 function plugin_remove_dir(string $dir): void { if(!is_dir($dir)) return; $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST); foreach($it as $f){ $f->isDir()? rmdir($f->getPathname()):unlink($f->getPathname()); } rmdir($dir); }
 function plugin_compute_checksum(string $file): ?string { return file_exists($file)? hash_file('sha256',$file): null; }
+
+/**
+ * Converte nome de arquivo *Data.json para nome de tabela snake_case
+ * Ex: ModulosData.json => modulos, HostsConfiguracoesData.json => hosts_configuracoes
+ */
+function tabelaFromDataFile(string $file): string {
+    $base = preg_replace('/Data\.json$/', '', basename($file));
+    if ($base === '') return '';
+    if (strpos($base, '_') !== false) {
+        return strtolower($base);
+    }
+    // Inserir underscore antes de cada letra maiúscula que não é inicial
+    $snake = preg_replace('/(?<!^)([A-Z])/', '_$1', $base);
+    return strtolower($snake);
+}
 
 function plugin_read_json(string $path, array &$errors): ?array {
     if(!file_exists($path)){ $errors[] = "Arquivo não encontrado: $path"; return null; }
@@ -179,15 +195,16 @@ function plugin_move_to_final(string $staging, string $final, array &$log): bool
 function plugin_persist_metadata(string $slug, array $manifest, ?string $checksum, string $origemTipo, array $opcoes, array &$log): void {
     $dados = [
         'id' => $slug,
-        'name' => $manifest['name'] ?? $slug,
+        'nome' => $manifest['name'] ?? $slug,
         'origem_tipo' => $origemTipo,
         'origem_referencia' => $opcoes['referencia'] ?? null,
         'origem_branch_tag' => $opcoes['ref'] ?? null,
         'origem_credencial_ref' => $opcoes['cred_ref'] ?? null,
-        'installed_version' => $manifest['version'] ?? null,
+        'versao_instalada' => $manifest['version'] ?? '0.1.0',
+        'versao' => intval(str_replace('.', '', $manifest['version'] ?? '010')) ?? 10,
         'checksum_pacote' => $checksum,
         'manifest_json' => json_encode($manifest, JSON_UNESCAPED_UNICODE),
-    'status_execucao' => PLG_STATUS_OK,
+        'status_execucao' => PLG_STATUS_OK,
         'data_instalacao' => date('Y-m-d H:i:s'),
         'data_ultima_atualizacao' => date('Y-m-d H:i:s'),
     ];
@@ -215,26 +232,27 @@ function plugin_backup_existing(string $finalPath, array &$log): void {
 }
 
 function plugin_sync_datajson(string $staging, string $slug, array &$log): void {
-    // NOVO SUPORTE: Multi-arquivos (LayoutsData.json, PaginasData.json, ComponentesData.json, VariaveisData.json)
+    // SUPORTE DINÂMICO: Detecta automaticamente todos os arquivos *Data.json
     $finalBase = plugin_final_path($slug); // já movido
     $dataDirCandidateRoots = [];
     // Preferir diretório final (já movido), fallback staging (legado Data.json)
     if(is_dir($finalBase.'/db/data')) $dataDirCandidateRoots[] = $finalBase.'/db/data';
     if(is_dir($staging.'/db/data')) $dataDirCandidateRoots[] = $staging.'/db/data';
-    // Detecta se existem arquivos individuais
-    $multiFiles = ['layouts'=>'LayoutsData.json','paginas'=>'PaginasData.json','componentes'=>'ComponentesData.json','variaveis'=>'VariaveisData.json'];
-    $multiFound = [];
+    
+    $allDataFiles = [];
     foreach($dataDirCandidateRoots as $root){
-        foreach($multiFiles as $k=>$f){
-            $p = $root.'/'.$f;
-            if(is_file($p)) $multiFound[$k] = $p;
+        $files = glob($root.'/*Data.json');
+        foreach($files as $file){
+            $baseName = basename($file);
+            $tableName = tabelaFromDataFile($file);
+            $allDataFiles[$tableName] = $file;
         }
-        if(count($multiFound) > 0) break; // primeira raiz válida
+        if(count($allDataFiles) > 0) break; // primeira raiz válida
     }
 
-    if($multiFound){
-        $log[]='[ok] Detectado modo multi-arquivos de dados ('.implode(', ', array_keys($multiFound)).')';
-        plugin_sync_datajson_multi($multiFound,$slug,$log,$finalBase);
+    if($allDataFiles){
+        $log[]='[ok] Detectado modo multi-arquivos de dados ('.implode(', ', array_keys($allDataFiles)).')';
+        plugin_sync_datajson_multi($allDataFiles,$slug,$log,$finalBase);
         return;
     }
 
@@ -268,13 +286,13 @@ function plugin_sync_datajson(string $staging, string $slug, array &$log): void 
 }
 
 /**
- * Sincroniza dados a partir de arquivos separados *Data.json.
+ * Sincroniza dados a partir de arquivos *Data.json detectados dinamicamente.
  * Copia arquivos para diretório central gestor/db/data/plugins/<slug>/ e realiza upsert nas tabelas.
  */
 function plugin_sync_datajson_multi(array $filesMap, string $slug, array &$log, string $finalBase): void {
     $destDir = plugin_datajson_dest_dir($slug);
     plugin_safe_mkdir($destDir);
-    $tot=['inserts'=>0,'updates'=>0,'skipped'=>0,'layouts'=>0,'pages'=>0,'components'=>0,'variables'=>0];
+    $tot=['inserts'=>0,'updates'=>0,'skipped'=>0];
     $loadJson = function(string $file, array &$log): array {
         if(!is_file($file)) return [];
         $raw = file_get_contents($file);
@@ -282,31 +300,21 @@ function plugin_sync_datajson_multi(array $filesMap, string $slug, array &$log, 
         if(json_last_error()!==JSON_ERROR_NONE){ $log[]='[erro] JSON inválido: '.$file.' -> '.json_last_error_msg(); return []; }
         return is_array($d)?$d:[];
     };
-    // Copiar e processar cada tipo
-    foreach($filesMap as $tipo=>$path){
+    
+    // Copiar e processar cada arquivo Data.json
+    foreach($filesMap as $tableName=>$path){
         @copy($path, $destDir.'/'.basename($path));
         $rows = $loadJson($path,$log);
+        if(empty($rows)) continue;
+        
+        // Processar cada linha do arquivo
         foreach($rows as $row){
-            // Normaliza nomes de campos esperados pelos upserts
-            if($tipo==='layouts'){
-                $lang = $row['language'] ?? $row['linguagem_codigo'] ?? null; $id = $row['id'] ?? null; if(!$lang||!$id) continue;
-                plugin_upsert_layout($slug,$lang,$id,$row,$tot);
-            } elseif($tipo==='paginas') {
-                $lang = $row['language'] ?? null; $id = $row['id'] ?? null; if(!$lang||!$id) continue;
-                // Ajusta chave 'caminho' para 'path' no array fonte se necessário (upsert usa caminho/ c.
-                if(isset($row['caminho']) && !isset($row['path'])) $row['path']=$row['caminho'];
-                plugin_upsert_page($slug,$lang,$id,$row,$tot);
-            } elseif($tipo==='componentes') {
-                $lang = $row['language'] ?? null; $id = $row['id'] ?? null; if(!$lang||!$id) continue;
-                plugin_upsert_component($slug,$lang,$id,$row,$tot);
-            } elseif($tipo==='variaveis') {
-                $lang = $row['linguagem_codigo'] ?? $row['language'] ?? null; $id = $row['id'] ?? null; if(!$lang||!$id) continue;
-                plugin_upsert_variable($slug,$lang,$id,$row,$tot);
-            }
+            plugin_upsert_generic($tableName, $slug, $row, $tot, $log);
         }
     }
+    
     plugin_sync_modules_resources($finalBase,$slug,$log); // inclui módulos se existirem
-    $log[]='[ok] multi-data sincronizado plugin='.$slug.' layouts='.$tot['layouts'].' pages='.$tot['pages'].' components='.$tot['components'].' variables='.$tot['variables'].' inserts='.$tot['inserts'].' updates='.$tot['updates'].' skipped='.$tot['skipped'];
+    $log[]='[ok] multi-data sincronizado plugin='.$slug.' inserts='.$tot['inserts'].' updates='.$tot['updates'].' skipped='.$tot['skipped'];
 }
 
 /**
@@ -513,6 +521,69 @@ function plugin_sync_modules_resources(string $staging, string $pluginId, array 
 function plugin_db_fetch_one(string $sql){
     $res = banco_query($sql); if(!$res) return null; $row = banco_fetch_assoc($res); return $row?:null; }
 
+function plugin_upsert_generic(string $tableName, string $pluginSlug, array $row, array &$tot, array &$log): void {
+    // Adicionar campo plugin se não existir e a tabela suportá-lo
+    if(!isset($row['plugin'])) {
+        try {
+            $pdo = new PDO("mysql:host=localhost;dbname=conn2flow", "conn2flow_user", "conn2flow_pass");
+            $stmt = $pdo->prepare("SHOW COLUMNS FROM `$tableName` LIKE 'plugin'");
+            $stmt->execute();
+            if($stmt->fetch()) {
+                $row['plugin'] = $pluginSlug;
+            }
+        } catch(Exception $e) {
+            // Ignorar erro se não conseguir verificar
+        }
+    }
+    
+    // Determinar chave primária
+    $pkField = null;
+    $pkValue = null;
+    
+    // Tentar campos comuns de PK
+    $possiblePks = ['id', 'id_' . $tableName, $tableName . '_id'];
+    foreach($possiblePks as $pk) {
+        if(isset($row[$pk])) {
+            $pkField = $pk;
+            $pkValue = $row[$pk];
+            break;
+        }
+    }
+    
+    if(!$pkField) {
+        $log[] = "[erro] Não foi possível determinar chave primária para tabela $tableName";
+        $tot['skipped']++;
+        return;
+    }
+    
+    // Verificar se registro já existe
+    $exists = plugin_db_fetch_one("SELECT `$pkField` FROM `$tableName` WHERE `$pkField` = '" . banco_escape_field($pkValue) . "'");
+    
+    if($exists) {
+        // Update: apenas campos que mudaram
+        $updateFields = [];
+        foreach($row as $field => $value) {
+            if($field !== $pkField) {
+                $updateFields[] = "`$field` = '" . banco_escape_field($value) . "'";
+            }
+        }
+        if(!empty($updateFields)) {
+            $sql = "UPDATE `$tableName` SET " . implode(', ', $updateFields) . " WHERE `$pkField` = '" . banco_escape_field($pkValue) . "'";
+            banco_query($sql);
+            $tot['updates']++;
+        } else {
+            $tot['skipped']++;
+        }
+    } else {
+        // Insert
+        $fields = array_keys($row);
+        $values = array_map(function($v) { return "'" . banco_escape_field($v) . "'"; }, array_values($row));
+        $sql = "INSERT INTO `$tableName` (`" . implode('`, `', $fields) . "`) VALUES (" . implode(', ', $values) . ")";
+        banco_query($sql);
+        $tot['inserts']++;
+    }
+}
+
 function plugin_upsert_layout(string $plugin,string $lang,string $id,array $src,array &$tot): void {
     $nome = banco_escape_field($src['name']??($src['nome']??$id));
     $checksum = isset($src['checksum'])? (is_array($src['checksum'])?json_encode($src['checksum'],JSON_UNESCAPED_UNICODE):$src['checksum']) : null;
@@ -525,7 +596,7 @@ function plugin_upsert_layout(string $plugin,string $lang,string $id,array $src,
             banco_update_campo('nome',$nome);
             if($file_version) banco_update_campo('file_version',$file_version);
             if($checksum) banco_update_campo('checksum',$checksum);
-            banco_update_campo('data_modificacao','NOW()',true);
+            // banco_update_campo('data_modificacao','NOW()',true);
             banco_update_executar('layouts',"WHERE id_layouts='".$orfao['id_layouts']."'");
             $tot['updates']++;
             $tot['layouts']++;
@@ -537,9 +608,10 @@ function plugin_upsert_layout(string $plugin,string $lang,string $id,array $src,
             banco_update_campo('nome',$nome);
             if($file_version) banco_update_campo('file_version',$file_version);
             if($checksum) banco_update_campo('checksum',$checksum);
-            // Incrementa versao
-            banco_update_set_expr('versao','versao+1');
-            banco_update_campo('data_modificacao','NOW()',true);
+            // Incrementar versão manualmente ao invés de usar banco_update_set_expr
+            $novaVersao = (int)($exists['versao'] ?? 1) + 1;
+            banco_update_campo('versao', $novaVersao, true);
+            // banco_update_campo('data_modificacao','NOW()',true);
             banco_update_executar('layouts',"WHERE id_layouts='".$exists['id_layouts']."'");
             $tot['updates']++;
         } else { $tot['skipped']++; }
@@ -552,7 +624,7 @@ function plugin_upsert_layout(string $plugin,string $lang,string $id,array $src,
         if($checksum) banco_insert_name_campo('checksum',$checksum,false,true);
         banco_insert_name_campo('versao','1',true,true);
         banco_insert_name_campo('data_criacao','NOW()',true,true);
-        banco_insert_name_campo('data_modificacao','NOW()',true,true);
+        // banco_insert_name_campo('data_modificacao','NOW()',true,true);
         banco_insert_name(banco_insert_name_campos(),'layouts');
         $tot['inserts']++;
     }
@@ -574,7 +646,7 @@ function plugin_upsert_page(string $plugin,string $lang,string $id,array $src,ar
         if($fallback){
             if($fallback['modulo']!==$modulo){
                 banco_update_campo('modulo',$modulo);
-                banco_update_campo('data_modificacao','NOW()',true);
+                // banco_update_campo('data_modificacao','NOW()',true);
                 banco_update_executar('paginas',"WHERE id_paginas='".$fallback['id_paginas']."'");
             }
             $exists=$fallback;
@@ -586,8 +658,11 @@ function plugin_upsert_page(string $plugin,string $lang,string $id,array $src,ar
             banco_update_campo('caminho',$caminho);
             if($file_version) banco_update_campo('file_version',$file_version);
             banco_update_campo('checksum',$checksum,false,true);
-            banco_update_set_expr('versao','versao+1');
-            banco_update_campo('data_modificacao','NOW()',true);
+            // Incrementar versão manualmente ao invés de usar banco_update_set_expr
+            $novaVersao = (int)($exists['versao'] ?? 1) + 1;
+            banco_update_campo('versao', $novaVersao, true);
+            // Remover data_modificacao se a coluna não existir
+            // banco_update_campo('data_modificacao','NOW()',true);
             banco_update_executar('paginas',"WHERE id_paginas='".$exists['id_paginas']."'");
             $tot['updates']++;
         } else { $tot['skipped']++; }
@@ -602,7 +677,8 @@ function plugin_upsert_page(string $plugin,string $lang,string $id,array $src,ar
         if($checksum) banco_insert_name_campo('checksum',$checksum,false,true);
         banco_insert_name_campo('versao','1',true,true);
         banco_insert_name_campo('data_criacao','NOW()',true,true);
-        banco_insert_name_campo('data_modificacao','NOW()',true,true);
+        // Remover data_modificacao se a coluna não existir
+        // banco_insert_name_campo('data_modificacao','NOW()',true,true);
         banco_insert_name(banco_insert_name_campos(),'paginas');
         $tot['inserts']++;
     }
@@ -621,7 +697,7 @@ function plugin_upsert_component(string $plugin,string $lang,string $id,array $s
         if($fallback){
             if($fallback['modulo']!==$modulo){
                 banco_update_campo('modulo',$modulo);
-                banco_update_campo('data_modificacao','NOW()',true);
+                // banco_update_campo('data_modificacao','NOW()',true);
                 banco_update_executar('componentes',"WHERE id_componentes='".$fallback['id_componentes']."'");
             }
             $exists=$fallback;
@@ -632,8 +708,11 @@ function plugin_upsert_component(string $plugin,string $lang,string $id,array $s
             banco_update_campo('nome',$nome);
             if($file_version) banco_update_campo('file_version',$file_version);
             banco_update_campo('checksum',$checksum,false,true);
-            banco_update_set_expr('versao','versao+1');
-            banco_update_campo('data_modificacao','NOW()',true);
+            // Incrementar versão manualmente ao invés de usar banco_update_set_expr
+            $novaVersao = (int)($exists['versao'] ?? 1) + 1;
+            banco_update_campo('versao', $novaVersao, true);
+            // Remover data_modificacao se a coluna não existir
+            // banco_update_campo('data_modificacao','NOW()',true);
             banco_update_executar('componentes',"WHERE id_componentes='".$exists['id_componentes']."'");
             $tot['updates']++;
         } else { $tot['skipped']++; }
@@ -647,7 +726,8 @@ function plugin_upsert_component(string $plugin,string $lang,string $id,array $s
         if($checksum) banco_insert_name_campo('checksum',$checksum,false,true);
         banco_insert_name_campo('versao','1',true,true);
         banco_insert_name_campo('data_criacao','NOW()',true,true);
-        banco_insert_name_campo('data_modificacao','NOW()',true,true);
+        // Remover data_modificacao se a coluna não existir
+        // banco_insert_name_campo('data_modificacao','NOW()',true,true);
         banco_insert_name(banco_insert_name_campos(),'componentes');
         $tot['inserts']++;
     }
@@ -667,7 +747,7 @@ function plugin_upsert_variable(string $plugin,string $lang,string $id,array $sr
         if($fallback){
             if($modulo!=='' && ($fallback['modulo']??'')!==$modulo) banco_update_campo('modulo',$modulo);
             if($grupo!=='' && ($fallback['grupo']??'')!==$grupo) banco_update_campo('grupo',$grupo);
-            banco_update_campo('data_modificacao','NOW()',true);
+            // banco_update_campo('data_modificacao','NOW()',true);
             banco_update_executar('variaveis',"WHERE id_variaveis='".$fallback['id_variaveis']."'");
             $exists=$fallback;
         }
@@ -690,6 +770,52 @@ function plugin_upsert_variable(string $plugin,string $lang,string $id,array $sr
         $tot['inserts']++;
     }
     $tot['variables']++;
+}
+
+function plugin_upsert_module(string $plugin,string $id,array $src,array &$tot): void {
+    $nome = banco_escape_field($src['name']??($src['nome']??$id));
+    $modulo_grupo_id = banco_escape_field($src['modulo_grupo_id']??'');
+    $titulo = $src['titulo'];
+    $icone = banco_escape_field($src['icone']??'');
+    $icone2 = $src['icone2'];
+    $nao_menu_principal = isset($src['nao_menu_principal']) ? (int)$src['nao_menu_principal'] : null;
+    $host = $src['host'];
+    $status = banco_escape_field($src['status']??'A');
+    $versao = (int)($src['versao']??1);
+    $exists = plugin_db_fetch_one("SELECT id_modulos FROM modulos WHERE plugin='".banco_escape_field($plugin)."' AND id='".banco_escape_field($id)."'");
+    if($exists){
+        // Update
+        banco_update_campo('nome',$nome);
+        if($modulo_grupo_id!=='') banco_update_campo('modulo_grupo_id',$modulo_grupo_id);
+        if($titulo !== null) banco_update_campo('titulo',$titulo);
+        if($icone!=='') banco_update_campo('icone',$icone);
+        if($icone2 !== null) banco_update_campo('icone2',$icone2);
+        if($nao_menu_principal!==null) banco_update_campo('nao_menu_principal',$nao_menu_principal,true);
+        if($host !== null) banco_update_campo('host',$host,true);
+        if($status!=='') banco_update_campo('status',$status);
+        banco_update_campo('versao',$versao,true);
+        // banco_update_campo('data_modificacao','NOW()',true);
+        banco_update_executar('modulos',"WHERE id_modulos='".$exists['id_modulos']."'");
+        $tot['updates']++;
+    } else {
+        // Insert
+        banco_insert_name_campo('plugin',$plugin);
+        banco_insert_name_campo('id',$id);
+        banco_insert_name_campo('nome',$nome);
+        if($modulo_grupo_id!=='') banco_insert_name_campo('modulo_grupo_id',$modulo_grupo_id);
+        if($titulo !== null) banco_insert_name_campo('titulo',$titulo);
+        if($icone!=='') banco_insert_name_campo('icone',$icone);
+        if($icone2 !== null) banco_insert_name_campo('icone2',$icone2);
+        if($nao_menu_principal!==null) banco_insert_name_campo('nao_menu_principal',$nao_menu_principal,true);
+        if($host !== null) banco_insert_name_campo('host',$host,true);
+        banco_insert_name_campo('status',$status);
+        banco_insert_name_campo('versao',$versao,true);
+        banco_insert_name_campo('data_criacao','NOW()',true,true);
+        // banco_insert_name_campo('data_modificacao','NOW()',true,true);
+        banco_insert_name(banco_insert_name_campos(),'modulos');
+        $tot['inserts']++;
+    }
+    $tot['modules']++;
 }
 
 function plugin_checksum_changed(string $slug, ?string $newChecksum): bool {
@@ -715,6 +841,39 @@ function plugin_log_block(array $logLines, string $slug): void {
     if(!is_dir($dir)) mkdir($dir, 0777, true);
     $file = $dir.'/installer.log';
     foreach($logLines as $l){ file_put_contents($file, '['.date('c')."] [PLUGIN:$slug] $l\n", FILE_APPEND); }
+}
+
+/**
+ * Limpa pasta DB e corrige permissões após instalação
+ */
+function plugin_cleanup_after_install(string $finalPath, array &$log): void {
+    $dbDir = $finalPath . '/db';
+    
+    // Remover pasta DB se existir
+    if(is_dir($dbDir)) {
+        plugin_remove_dir($dbDir);
+        $log[] = '[ok] pasta db/ removida do plugin instalado';
+    }
+    
+    // Corrigir permissões (pegar dono/grupo da pasta pai)
+    $parentDir = dirname($finalPath);
+    if(is_dir($parentDir)) {
+        $stat = stat($parentDir);
+        if($stat) {
+            $owner = posix_getpwuid($stat['uid'])['name'] ?? 'www-data';
+            $group = posix_getgrgid($stat['gid'])['name'] ?? 'www-data';
+            
+            // Executar chown recursivo
+            $cmd = "chown -R $owner:$group " . escapeshellarg($finalPath);
+            exec($cmd, $output, $returnCode);
+            
+            if($returnCode === 0) {
+                $log[] = "[ok] permissões corrigidas para $owner:$group";
+            } else {
+                $log[] = "[aviso] falha ao corrigir permissões (código $returnCode)";
+            }
+        }
+    }
 }
 
 function plugin_process(array $params): int {
@@ -791,7 +950,9 @@ function plugin_process(array $params): int {
             // Apenas varrer para estatísticas
             $tmpLog=[]; $prevCount = count($tmpLog);
             // Reaproveita função mas intercepta upserts? Simples: não chamar plugin_sync_datajson, apenas detectar presença
-            $hasMulti=false; foreach(['LayoutsData.json','PaginasData.json','ComponentesData.json','VariaveisData.json'] as $f){ if(is_file($staging.'/db/data/'.$f)) $hasMulti=true; }
+            $hasMulti=false; 
+            $files = glob($staging.'/db/data/*Data.json');
+            if(count($files) > 0) $hasMulti=true;
             if($hasMulti){ $log[]='[info] multi-arquivos detectados (dry-run)'; }
             elseif(is_file($staging.'/db/data/Data.json')){ $log[]='[info] Data.json legado detectado (dry-run)'; }
         } else {
@@ -801,6 +962,12 @@ function plugin_process(array $params): int {
         if($onlyMigrations) $log[]='[info] modo only-migrations: recursos não sincronizados';
         if($noResources) $log[]='[info] --no-resources: sincronização de recursos desativada';
     }
+    
+    // Limpeza da pasta DB e correção de permissões (após processamento)
+    if(!$dryRun){
+        plugin_cleanup_after_install($finalPath, $log);
+    }
+    
     // persistir
     plugin_persist_metadata($slug, $manifest, $checksum, $origem, [
         'referencia' => $params['referencia'] ?? ($params['owner'] ?? '').'/'.($params['repo'] ?? ''),

@@ -21,7 +21,7 @@
 # This allows each developer to configure their own paths without editing the script.
 
 # Load variables from environment.json
-ENV_JSON="$(dirname "$0")/../../dev-environment/data/environment.json"
+ENV_JSON="$(dirname "$0")/../../../dev-environment/data/environment.json"
 if [ ! -f "$ENV_JSON" ]; then
   echo "Error: environment.json not found at $ENV_JSON"
   exit 1

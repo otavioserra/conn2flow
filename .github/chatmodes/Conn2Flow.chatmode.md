@@ -109,7 +109,7 @@ Carefully read the issue and think hard about a plan to solve it before coding.
 - Revisit your assumptions if unexpected behavior occurs.
 
 ## 8. Frequent Testing Oriented Development
-- Before run tests, is needed to sinchronize the gestor with the updated checksum using: `ai-workspace\scripts\dev-environment\sincroniza-gestor.sh checksum`. Never RUN tests in the gestor without doing this first.
+- Before run tests, is needed to sinchronize the gestor with the updated checksum using: `ai-workspace\scripts\dev-environment\sincroniza-gestor.sh checksum`. IMPORTANT: verify if terminal is at root of the repo to execute this command. Use: `pwd` always after to analise it. Never RUN tests in the gestor without doing this first.
 - Use `docker exec conn2flow-app bash -c "php <seu-script>.php <parametros>"` to run PHP scripts inside the docker environment.
 - Use `docker logs conn2flow-app --tail 50` to check the last 50 lines of Apache logs.
 - Use `docker exec conn2flow-app bash -c "tail -50 /var/log/php_errors.log"` to check the last 50 lines of PHP error logs.
@@ -118,6 +118,7 @@ Carefully read the issue and think hard about a plan to solve it before coding.
 - We have two types of plugins: private and public.
 - The gestor plugins is located at `/var/www/sites/localhost/conn2flow-gestor/plugins/<plugin-id>/` inside the docker container. But is mapped to `dev-plugins\plugins\private\<plugin-id>\` or `dev-plugins\plugins\public\<plugin-id>\` in the repository machine.
 - You can find more information about any plugin by checking `dev-plugins\plugins\private\environment.json` or `dev-plugins\plugins\public\environment.json`.
+- For tests direct on MySQL, you can use `docker exec conn2flow-app bash -c "mysql -h mysql -u conn2flow_user -pconn2flow_pass conn2flow -e \"SQL_COMMAND\""` to access the MySQL CLI inside the docker container.
 
 # How to create a Todo List
 Use the following format to create a todo list:

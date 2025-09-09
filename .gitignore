@@ -4,6 +4,7 @@ dev-environment/tests/build/*
 *.tar.gz
 
 # Desenvolvimento de Plugins
+dev-plugins/deploys/*
 dev-plugins/plugins/*
 
 # Logs

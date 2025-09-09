@@ -69,8 +69,11 @@ Itens avançados movidos para documento `modificar-plugins-v2.md`.
     4. Caminho local (dev) opcional
 - Extração, validação e registro de pacote.
 - Padronização mínima de estrutura (manifest + pastas esperadas).
-- Consumo de Data.json gerado no release (instalador não gera).
+- **Detecção automática de todos os arquivos `*Data.json`** no diretório `db/data/`.
+- **Suporte a qualquer tabela via arquivos `*Data.json`** (não limitado a lista hardcoded).
 - Sincronização seletiva com banco (recursos do plugin).
+- **Limpeza automática da pasta `db/` após processamento**.
+- **Correção automática de permissões de arquivos**.
 - Logging básico por arquivo + status de execução.
 - Interface: listar / instalar / atualizar / reprocessar / detalhes (remoção somente Fase 2 como soft delete).
 - Controle de versão Git no skeleton de plugin (scripts commit/release/version). 
@@ -348,18 +351,21 @@ Validações:
 
 ## 🔄 Pipeline (InstALAÇÃO / Atualização)
 1. Selecionar plugin (novo / existente)
-2. Definir origem (upload / github_publico / local_path)
+2. Definir origem (upload / github_publico / github_privado / local_path)
 3. Obter pacote (upload → temp, github → download ZIP, local → copiar/zipar)
 4. Calcular checksum + validar com .sha256 se existir
 5. Extrair para staging: `gestor/temp/plugins/<slug>/`
 6. Validar manifest + estrutura mínima
 7. Copiar diretório final (overwrite seguro) para destino de plugins.
     - Usar diretório de novo path `gestor/plugins/<slug>/`.
-    - Recomendação inicial: reutilizar `gestor-plugins/` para evitar nova raiz. Não, porque a ideia é os plugins ficarem dentro da instalação do sistema. Que são os arquivos filhos do `gestor/`. Por isso o correto é usar `gestor/plugins/`.
-8. Consumir Data.json do plugin (gerado no release) e sincronizar banco (inserir/atualizar)
-9. Persistir metadados (versão, checksum, datas)
-10. Limpar staging (salvo modo debug)
-11. Registrar log final
+8. **Executar migrações (se habilitadas)**
+9. **Detectar automaticamente todos os `*Data.json`** no diretório `db/data/`
+10. **Sincronizar recursos para cada arquivo detectado (layouts, pages, components, variables, modules, custom tables)**
+11. **Limpeza da pasta `db/` do plugin instalado**
+12. **Correção de permissões (chown recursivo)**
+13. Persistir metadados (versão, checksum, datas)
+14. Limpar staging (salvo modo debug)
+15. Registrar log final
 
 ### Fluxos por Origem
 | Origem | Ação Download | Observações |
@@ -473,23 +479,35 @@ Confirmação destes 3 pontos libera início da implementação.
  - [x] Branch orphan `plugin-development` (adiado para final conforme estratégia) - Abandonada estratégia, usando pasta `dev-plugins` dentro do mesmo repositório.
  - [x] Skeleton base plugin (estrutura inicial + manifest)
  - [x] Workflow release plugin e `build-local-gestor-plugin.sh`
- - [x] Plugin exemplo (example-plugin básico)
+ - [x] Plugin exemplo (test-plugin básico)
  - [x] Script update-data-resources-plugin.php (stub)
- - [x] Script atualizacao-plugin.php (stub orchestrator expandido)
+ - [x] Script atualizacao-plugin.php (orchestrator completo)
  - [x] Upload ZIP (pipeline + UI campos)
- - [x] Download GitHub público
+ - [x] Download GitHub público/privado
  - [x] Extração segura (implementada)
  - [x] Manifest validação (com erros básicos)
  - [x] Checksum cálculo/compare
  - [x] Copiar assets/módulos/resources (overwrite final directory)
- - [x] Sincronização banco (granular inicial layouts/pages/components/variables via plugin)
- - [x] Persistir metadados
+ - [x] **Detecção automática de `*Data.json`** com `glob()`
+ - [x] **Função `tabelaFromDataFile()`** para conversão dinâmica
+ - [x] **Suporte a qualquer tabela** via `*Data.json`
+ - [x] Sincronização banco granular (layouts/pages/components/variables/modules + custom tables)
+ - [x] **Limpeza automática da pasta `db/`**
+ - [x] **Correção automática de permissões** com `chown -R`
+ - [x] Persistir metadados (versão instalada, checksum, datas)
  - [x] Logs & códigos saída (constantes centralizadas)
- - [x] Interface instalar
- - [x] Interface atualizar
- - [x] Interface detalhes (manifest + metadados + tail log)
- - [ ] Testes manuais
- - [ ] Documentação final
+ - [x] Interface instalar/atualizar/detalhes
+ - [x] Testes manuais completos
+ - [x] Documentação atualizada
+ - [ ] Testes manuais adicionais
+
+**Implementações Realizadas:**
+- Sistema de detecção dinâmica: `glob('*Data.json')` substitui lista hardcoded
+- Função `tabelaFromDataFile()`: Converte `ExampleTableData.json` → `example_table`
+- Limpeza pós-instalação: Remove pasta `db/` automaticamente
+- Correção de permissões: `chown -R` usando dono/grupo da pasta pai
+- Suporte ilimitado: Qualquer plugin pode atualizar qualquer tabela via `*Data.json`
+- Logs aprimorados: `[ok] pasta db/ removida`, `[ok] permissões corrigidas`
 
 Nota: constantes de saída centralizadas em `gestor/bibliotecas/plugins-consts.php` e usadas no orchestrator/installer.
 

@@ -67,6 +67,9 @@ fi
 # Monta o caminho do plugin ativo
 PLUGIN_ROOT="$PLUGIN_ROOT_BASE$ACTIVE_PLUGIN_PATH"
 
+# Define o caminho da pasta de deploys (onde os arquivos processados são gerados)
+DEPLOY_PLUGIN_ROOT="$(dirname "$(dirname "$PLUGIN_ROOT_BASE")")/deploys/$ACTIVE_PLUGIN_ID"
+
 # Descobre a raiz do environment.json do plugin
 PLUGIN_ENV_ROOT=$(dirname "$PLUGIN_ENV_PATH")
 DATA_SCRIPT="$PLUGIN_ENV_ROOT/scripts/resources/update-data-resources-plugin.php"
@@ -75,8 +78,6 @@ KEEP_RESOURCES=false
 GEN_HASH=true
 
 # Flags podem sobrescrever variáveis
-
-
 for arg in "$@"; do
   case "$arg" in
     --test-plugin) PLUGIN_ROOT="$TEST_PLUGIN_ROOT" ;;
@@ -99,29 +100,43 @@ EOF
   esac
 done
 
+# Define a pasta fonte inicial (sempre começa com plugin original)
+SOURCE_ROOT="$PLUGIN_ROOT"
+echo "[build-plugin] Pasta fonte inicial: $SOURCE_ROOT" >&2
 
-if [[ ! -d "$PLUGIN_ROOT" ]]; then
-  echo "[build-plugin] ERRO: Plugin root inexistente: $PLUGIN_ROOT" >&2
+if [[ ! -d "$SOURCE_ROOT" ]]; then
+  echo "[build-plugin] ERRO: Pasta fonte inexistente: $SOURCE_ROOT" >&2
   exit 1
 fi
 
 mkdir -p "$OUT_DIR"
 
 echo "[build-plugin] Plugin root: $PLUGIN_ROOT" >&2
+echo "[build-plugin] Deploy root: $DEPLOY_PLUGIN_ROOT" >&2
 echo "[build-plugin] Out dir: $OUT_DIR" >&2
 
-# 1. Gerar múltiplos Data.json (usa script skeleton com override explicito de plugin-root)
+# 1. Gerar múltiplos Data.json (sempre usa plugin original como fonte, gera na pasta deploys)
 if [[ -f "$DATA_SCRIPT" ]]; then
   echo "[build-plugin] Gerando Data JSON (Layouts/Paginas/Componentes/Variaveis)" >&2
-  php "$DATA_SCRIPT" --plugin-root="$PLUGIN_ROOT" || { echo '[build-plugin] WARN: geração falhou'; }
+  echo "[build-plugin] Fonte: $PLUGIN_ROOT" >&2
+  echo "[build-plugin] Destino: $DEPLOY_PLUGIN_ROOT" >&2
+  php "$DATA_SCRIPT" --plugin-root="$PLUGIN_ROOT" --deploy-plugin-root="$DEPLOY_PLUGIN_ROOT" || { echo '[build-plugin] WARN: geração falhou'; }
+
+  # Se a geração foi bem-sucedida e a pasta deploys foi criada, usa ela como fonte
+  if [[ -d "$DEPLOY_PLUGIN_ROOT" ]]; then
+    SOURCE_ROOT="$DEPLOY_PLUGIN_ROOT"
+    echo "[build-plugin] Usando pasta deploys processada como fonte: $SOURCE_ROOT" >&2
+  else
+    echo "[build-plugin] Mantendo pasta original como fonte: $SOURCE_ROOT" >&2
+  fi
 else
   echo "[build-plugin] AVISO: Script de geração não encontrado: $DATA_SCRIPT" >&2
 fi
 
-# 2. Copiar para diretório temporário (para remover resources sem afetar workspace)
+# 2. Copiar para diretório temporário (usa SOURCE_ROOT que pode ser deploys ou plugin original)
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR" || true' EXIT
-cp -a "$PLUGIN_ROOT" "$TMP_DIR/plugin"
+cp -a "$SOURCE_ROOT" "$TMP_DIR/plugin"
 
 cd "$TMP_DIR/plugin"
 
