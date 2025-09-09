@@ -1,10 +1,10 @@
 #!/bin/bash
 # Safe synchronization script for the gestor to the Docker environment
 # Copies only new or modified files, never deletes anything from the source
-# Usage: bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor.sh checksum
+# Usage: bash ./dev-plugins/plugins/<private|public>/scripts/dev/synchronizes.sh checksum
 #
-# Source:   gestor/
-# Target:   dev-environment/data/sites/localhost/conn2flow-gestor/
+# Source:   dev-plugins/plugins/<private|public>/
+# Target:   dev-environment/data/sites/localhost/conn2flow-gestor/plugins/
 
 
 # Load variables from environment.json
@@ -14,10 +14,18 @@ if [ ! -f "$ENV_JSON" ]; then
   exit 1
 fi
 
-# Extract values using jq (must be installed)
-SOURCE=$(jq -r '.devEnvironment.source' "$ENV_JSON")
-TARGET=$(jq -r '.devEnvironment.target' "$ENV_JSON")
-DOCKER_PATH=$(jq -r '.devEnvironment.dockerPath' "$ENV_JSON")
+
+# Try to use jq, fallback to grep/sed if not available
+if command -v jq >/dev/null 2>&1; then
+  SOURCE=$(jq -r '.devEnvironment.source' "$ENV_JSON")
+  TARGET=$(jq -r '.devEnvironment.target' "$ENV_JSON")
+  DOCKER_PATH=$(jq -r '.devEnvironment.dockerPath' "$ENV_JSON")
+else
+  # Fallback: extract values with grep/sed (works for simple JSON only)
+  SOURCE=$(grep '"source"' "$ENV_JSON" | sed -E 's/.*"source" *: *"([^"]*)".*/\1/')
+  TARGET=$(grep '"target"' "$ENV_JSON" | sed -E 's/.*"target" *: *"([^"]*)".*/\1/')
+  DOCKER_PATH=$(grep '"dockerPath"' "$ENV_JSON" | sed -E 's/.*"dockerPath" *: *"([^"]*)".*/\1/')
+fi
 
 # Validate variables
 if [ -z "$SOURCE" ] || [ "$SOURCE" = "null" ]; then

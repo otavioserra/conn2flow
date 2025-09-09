@@ -7,7 +7,6 @@ GESTOR_DIR="$REPO_ROOT/gestor"
 DOCKER_ENV_ROOT="$REPO_ROOT/dev-environment/data"
 OUT_DIR="$DOCKER_ENV_ROOT/sites/localhost/conn2flow-github"
 mkdir -p "$OUT_DIR"
-mkdir -p "$OUT_DIR"
 TMP_DIR="$(mktemp -d)"
 cleanup(){ rm -rf "$TMP_DIR" || true; }
 trap cleanup EXIT

@@ -93,6 +93,21 @@
             "label": "♻️ Sincronização - Build Local Gestor",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/updates/build-local-gestor.sh"
+        },
+        {
+            "label": "♻️ Sincronização - Sincronizar Plugin Ativo - Privado",
+            "type": "shell",
+            "command": "bash ./dev-plugins/plugins/private/scripts/dev/synchronizes.sh checksum"
+        },
+        {
+            "label": "♻️ Sincronização - Sincronizar Plugin Ativo - Público",
+            "type": "shell",
+            "command": "bash ./dev-plugins/plugins/public/scripts/dev/synchronizes.sh checksum"
+        },
+        {
+            "label": "♻️ Sincronização - Build Local Plugin Ativo",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/updates/build-local-gestor-plugin.sh"
         }
     ],
     "inputs": [

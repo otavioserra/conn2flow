@@ -31,21 +31,36 @@
  * The manifest must have a 'version' field in the format 'X.Y.Z'.
  */
 
-function get_env_json($baseDir) {
-    $envPath = $baseDir . '/environment.json';
-    if (!file_exists($envPath)) {
-        fwrite(STDERR, "environment.json not found: $envPath\n");
-        exit(1);
-    }
-    $env = json_decode(file_get_contents($envPath), true);
-    if (!$env) {
-        fwrite(STDERR, "Failed to parse environment.json\n");
-        exit(1);
-    }
-    return $env;
-}
+echo $new;
 
-$baseDir = dirname(__DIR__, 1); // environment.json is one level up
+// ================= Path Resolution (PLUGIN ENV ONLY) =================
+// Busca o environment.json do plugin sempre 2 níveis acima deste script
+$pluginEnvPath = dirname(dirname(__DIR__)) . '/environment.json';
+if (!is_file($pluginEnvPath)) {
+    fwrite(STDERR, "Plugin environment.json not found at $pluginEnvPath\n");
+    exit(1);
+}
+$pluginEnvJson = json_decode(file_get_contents($pluginEnvPath), true);
+if (!is_array($pluginEnvJson) || empty($pluginEnvJson['activePlugin']['id']) || empty($pluginEnvJson['plugins'])) {
+    fwrite(STDERR, "Invalid or missing activePlugin/plugins in plugin environment.json\n");
+    exit(1);
+}
+$activePluginId = $pluginEnvJson['activePlugin']['id'];
+$plugins = $pluginEnvJson['plugins'];
+$activePluginPath = null;
+foreach ($plugins as $p) {
+    if (isset($p['id']) && $p['id'] === $activePluginId) {
+        $activePluginPath = $p['path'];
+        break;
+    }
+}
+if (!$activePluginPath) {
+    fwrite(STDERR, "Active plugin path not found for id $activePluginId\n");
+    exit(1);
+}
+$pluginRoot = dirname($pluginEnvPath) . '/' . ltrim($activePluginPath, '/\\');
+
+// ================= Argument Parsing =================
 $type = $argv[1] ?? 'patch';
 $pluginPathArg = $argv[2] ?? null;
 $manifestPathArg = $argv[3] ?? null;
@@ -56,24 +71,7 @@ if ($manifestPathArg) {
     if ($pluginPathArg) {
         $pluginPath = $pluginPathArg;
     } else {
-        $env = get_env_json($baseDir);
-        $activeId = $env['activePlugin']['id'] ?? null;
-        if (!$activeId) {
-            fwrite(STDERR, "activePlugin.id not set in environment.json\n");
-            exit(1);
-        }
-        $plugin = null;
-        foreach ($env['plugins'] as $p) {
-            if ($p['id'] === $activeId) {
-                $plugin = $p;
-                break;
-            }
-        }
-        if (!$plugin) {
-            fwrite(STDERR, "Plugin with id '$activeId' not found in environment.json\n");
-            exit(1);
-        }
-        $pluginPath = $baseDir . '/' . $plugin['path'];
+        $pluginPath = $pluginRoot;
     }
     $manifestPath = rtrim($pluginPath, '/\\') . '/manifest.json';
 }

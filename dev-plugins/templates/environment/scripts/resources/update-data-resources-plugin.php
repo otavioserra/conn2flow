@@ -44,30 +44,42 @@
 declare(strict_types=1);
 
 
-// ================= Path Resolution =================
-$repoRoot = dirname(__DIR__, 3); // points to plugin-skeleton/
-// The plugin directory inside the skeleton is 'plugin-skeleton/plugin' relative to the repo root (one level up):
-$rootParent = dirname($repoRoot); // main repository root
 
 
-// Load environment.json for dynamic paths
-$envJsonPath = $repoRoot . '/environment/environment.json';
-if (!is_file($envJsonPath)) {
-    fwrite(STDERR, "environment.json not found at $envJsonPath\n");
+// ================= Path Resolution (PLUGIN ENV ONLY) =================
+// Busca o environment.json do plugin sempre 2 níveis acima deste script
+$pluginEnvPath = dirname(dirname(__DIR__)) . '/environment.json';
+if (!is_file($pluginEnvPath)) {
+    fwrite(STDERR, "Plugin environment.json not found at $pluginEnvPath\n");
     exit(1);
 }
-$envJson = json_decode(file_get_contents($envJsonPath), true);
-if (!is_array($envJson) || empty($envJson['devEnvironment'])) {
-    fwrite(STDERR, "Invalid or missing devEnvironment in environment.json\n");
+$pluginEnvJson = json_decode(file_get_contents($pluginEnvPath), true);
+if (!is_array($pluginEnvJson) || empty($pluginEnvJson['devEnvironment']) || empty($pluginEnvJson['activePlugin']['id']) || empty($pluginEnvJson['plugins'])) {
+    fwrite(STDERR, "Invalid or missing devEnvironment/activePlugin/plugins in plugin environment.json\n");
     exit(1);
 }
-$devEnv = $envJson['devEnvironment'];
+$devEnv = $pluginEnvJson['devEnvironment'];
+$activePluginId = $pluginEnvJson['activePlugin']['id'];
+$plugins = $pluginEnvJson['plugins'];
+$pluginRootBase = $devEnv['source'];
+$activePluginPath = null;
+foreach ($plugins as $p) {
+    if (isset($p['id']) && $p['id'] === $activePluginId) {
+        $activePluginPath = $p['path'];
+        break;
+    }
+}
+if (!$activePluginPath) {
+    fwrite(STDERR, "Active plugin path not found for id $activePluginId\n");
+    exit(1);
+}
+$pluginRoot = rtrim($pluginRootBase, '/\\') . '/' . ltrim($activePluginPath, '/\\');
 $testsPath = $devEnv['tests'] ?? 'tests';
 $testsBuildPath = $devEnv['testsBuild'] ?? 'tests/build';
 
-# Default roots from environment.json
-$defaultPluginRoot = $repoRoot . '/plugin';
-$defaultDeployPluginRoot = $repoRoot . '/' . $testsBuildPath . '/plugin';
+# Default roots from environment.json (agora dinâmico)
+$defaultPluginRoot = $pluginRoot;
+$defaultDeployPluginRoot = $pluginRootBase . ($testsBuildPath ? '/' . trim($testsBuildPath, '/\\') . '/' . trim($activePluginPath, '/\\') : '');
 
 # Capture CLI arguments
 $CLI_ARGS = [];

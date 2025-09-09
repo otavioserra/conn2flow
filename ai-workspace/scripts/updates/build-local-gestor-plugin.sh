@@ -1,32 +1,81 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+
 # =====================================================================================
-# Build Local do Plugin (skeleton)
-# Espelha estratégia do build do gestor: gera Data.json (múltiplos), copia para TMP,
-# remove resources e empacota.
+# Build Local do Plugin (dinâmico via environment.json)
+#
+# Este script lê o arquivo fixo dev-environment/data/environment.json,
+# extrai o caminho do config de plugins (devPluginEnvironmentConfig.path),
+# lê esse config e usa os caminhos dinâmicos para buildar o plugin.
 #
 # Flags:
 #   --test-plugin           Usa pasta de testes (tests/build/plugin)
 #   --plugin-root=/caminho  Define raiz do plugin (sobrescreve qualquer outro)
 #   --keep-resources        Não remove diretórios resources antes do zip
-#   --out-dir=/caminho      Diretório destino dos artefatos (default: ai-workspace/scripts/build)
+#   --out-dir=/caminho      Diretório destino dos artefatos (default: conforme config)
 #   --name=arquivo.zip      Nome base do zip (default: gestor-plugin.zip)
 #   --no-hash               Não gera arquivo .sha256
 # =====================================================================================
 
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-SKELETON_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"   # plugin-skeleton
-REPO_ROOT="$(cd "$SKELETON_ROOT/.." && pwd)"          # raiz do monorepo
-DEFAULT_PLUGIN_ROOT="$SKELETON_ROOT/plugin"
-TEST_PLUGIN_ROOT="$SKELETON_ROOT/tests/build/plugin"
-DATA_SCRIPT="$SKELETON_ROOT/utils/controllers/agents/update-data-resources-plugin.php"
-OUT_DIR_DEFAULT="$SKELETON_ROOT/ai-workspace/scripts/build"
+# Caminho fixo do environment.json principal
+ENV_MAIN_JSON="$SCRIPT_DIR/../../../dev-environment/data/environment.json"
+
+if [[ ! -f "$ENV_MAIN_JSON" ]]; then
+  echo "[build-plugin] ERRO: environment.json principal não encontrado: $ENV_MAIN_JSON" >&2
+  exit 1
+fi
+
+# Extrai caminho do config de plugin
+if command -v jq >/dev/null 2>&1; then
+  PLUGIN_ENV_PATH=$(jq -r '.devPluginEnvironmentConfig.path' "$ENV_MAIN_JSON")
+else
+  PLUGIN_ENV_PATH=$(grep '"devPluginEnvironmentConfig"' -A 3 "$ENV_MAIN_JSON" | grep '"path"' | sed -E 's/.*"path" *: *"([^"]*)".*/\1/')
+fi
+
+if [[ -z "$PLUGIN_ENV_PATH" || "$PLUGIN_ENV_PATH" == "null" ]]; then
+  echo "[build-plugin] ERRO: devPluginEnvironmentConfig.path não definido em $ENV_MAIN_JSON" >&2
+  exit 1
+fi
+if [[ ! -f "$PLUGIN_ENV_PATH" ]]; then
+  echo "[build-plugin] ERRO: Arquivo de config de plugin não encontrado: $PLUGIN_ENV_PATH" >&2
+  exit 1
+fi
+
+
+
+# Extrai caminhos do config de plugin e monta o caminho do plugin ativo
+if command -v jq >/dev/null 2>&1; then
+  PLUGIN_ROOT_BASE=$(jq -r '.devEnvironment.source' "$PLUGIN_ENV_PATH")
+  OUT_DIR=$(jq -r '.devEnvironment.target' "$PLUGIN_ENV_PATH")
+  DOCKER_PATH=$(jq -r '.devEnvironment.dockerPath' "$PLUGIN_ENV_PATH")
+  TEST_PLUGIN_ROOT=$(jq -r '.devEnvironment.testsBuild' "$PLUGIN_ENV_PATH")
+  ACTIVE_PLUGIN_ID=$(jq -r '.activePlugin.id' "$PLUGIN_ENV_PATH")
+  ACTIVE_PLUGIN_PATH=$(jq -r --arg id "$ACTIVE_PLUGIN_ID" '.plugins[] | select(.id==$id) | .path' "$PLUGIN_ENV_PATH")
+else
+  PLUGIN_ROOT_BASE=$(grep '"source"' "$PLUGIN_ENV_PATH" | sed -E 's/.*"source" *: *"([^"]*)".*/\1/')
+  OUT_DIR=$(grep '"target"' "$PLUGIN_ENV_PATH" | sed -E 's/.*"target" *: *"([^"]*)".*/\1/')
+  DOCKER_PATH=$(grep '"dockerPath"' "$PLUGIN_ENV_PATH" | sed -E 's/.*"dockerPath" *: *"([^"]*)".*/\1/')
+  TEST_PLUGIN_ROOT=$(grep '"testsBuild"' "$PLUGIN_ENV_PATH" | sed -E 's/.*"testsBuild" *: *"([^"]*)".*/\1/')
+  ACTIVE_PLUGIN_ID=$(grep '"activePlugin"' -A 2 "$PLUGIN_ENV_PATH" | grep '"id"' | sed -E 's/.*"id" *: *"([^"]*)".*/\1/')
+  # Busca o path do plugin ativo na lista plugins
+  ACTIVE_PLUGIN_PATH=$(awk -v id="$ACTIVE_PLUGIN_ID" 'BEGIN{p=0} /"plugins" *:/ {p=1} p && /"id"/ {if ($0 ~ id) f=1} f && /"path"/ {match($0, /"path" *: *"([^"]*)"/, a); print a[1]; exit}' "$PLUGIN_ENV_PATH")
+fi
+
+# Monta o caminho do plugin ativo
+PLUGIN_ROOT="$PLUGIN_ROOT_BASE$ACTIVE_PLUGIN_PATH"
+
+# Descobre a raiz do environment.json do plugin
+PLUGIN_ENV_ROOT=$(dirname "$PLUGIN_ENV_PATH")
+DATA_SCRIPT="$PLUGIN_ENV_ROOT/scripts/resources/update-data-resources-plugin.php"
 ZIP_NAME="gestor-plugin.zip"
 KEEP_RESOURCES=false
 GEN_HASH=true
-PLUGIN_ROOT="$DEFAULT_PLUGIN_ROOT"
-OUT_DIR="$OUT_DIR_DEFAULT"
+
+# Flags podem sobrescrever variáveis
+
 
 for arg in "$@"; do
   case "$arg" in
@@ -39,7 +88,7 @@ for arg in "$@"; do
     --help|-h)
       cat <<EOF
 Uso: $(basename "$0") [opções]
-  --test-plugin             Usa gestor/tests/build/plugin
+  --test-plugin             Usa tests/build/plugin
   --plugin-root=/path       Define raiz do plugin
   --keep-resources          Mantém diretórios resources no pacote
   --out-dir=/path           Altera diretório de saída
@@ -49,6 +98,7 @@ EOF
       exit 0;;
   esac
 done
+
 
 if [[ ! -d "$PLUGIN_ROOT" ]]; then
   echo "[build-plugin] ERRO: Plugin root inexistente: $PLUGIN_ROOT" >&2
@@ -108,6 +158,7 @@ else
     -x "vendor/composer/tmp-*" \
     -x "tests/*"
 fi
+
 
 # 5. Hash
 if [[ "$GEN_HASH" = true ]]; then

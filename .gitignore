@@ -1,6 +1,10 @@
 # Docker - Ambiente de desenvolvimento local
 dev-environment/data/
+dev-environment/tests/build/*
 *.tar.gz
+
+# Desenvolvimento de Plugins
+dev-plugins/plugins/tests/build/*
 
 # Logs
 *.log
@@ -26,6 +30,8 @@ cache/
 # Uploads
 uploads/
 files/
+# Ignore plugin submodule folders (user-specific)
+dev-plugins/plugins/*
 
 # Sistema
 .DS_Store
