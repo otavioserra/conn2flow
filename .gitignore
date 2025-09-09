@@ -4,7 +4,7 @@ dev-environment/tests/build/*
 *.tar.gz
 
 # Desenvolvimento de Plugins
-dev-plugins/plugins/tests/build/*
+dev-plugins/plugins/*
 
 # Logs
 *.log
@@ -30,8 +30,6 @@ cache/
 # Uploads
 uploads/
 files/
-# Ignore plugin submodule folders (user-specific)
-dev-plugins/plugins/*
 
 # Sistema
 .DS_Store
