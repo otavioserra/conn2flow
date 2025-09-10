@@ -324,7 +324,24 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     ];
     $pkDeclarada = pkPorTabela($tabela) ?? descobrirPK($tabela, $registros[0]);
     $primeiroTemPk = array_key_exists($pkDeclarada, $registros[0]);
-    $usarChaveNatural = in_array($tabela, $tabelasChaveNatural, true) && !$primeiroTemPk; // se JSON não possui mais a PK numérica
+    $usarChaveNatural = in_array($tabela, $tabelasChaveNatural, true) && !$primeiroTemPk;
+
+    // Para tabelas não listadas, tentar detectar se deve usar chave natural baseada em campos únicos
+    if (!$usarChaveNatural && !$primeiroTemPk) {
+        // Verificar se tem campos que podem formar uma chave natural (id, name, etc.)
+        $camposCandidatos = ['id', 'name', 'nome', 'codigo', 'slug'];
+        $temCamposUnicos = false;
+        foreach ($camposCandidatos as $campo) {
+            if (array_key_exists($campo, $registros[0])) {
+                $temCamposUnicos = true;
+                break;
+            }
+        }
+        if ($temCamposUnicos) {
+            $usarChaveNatural = true;
+            if ($debug) log_disco("DETECTADO_MODO_NATURAL_AUTO tabela=$tabela (campos únicos detectados)", $GLOBALS['LOG_FILE_DB']);
+        }
+    }
 
     if ($debug) {
         log_disco("SYNC_INI tabela=$tabela modo=".($usarChaveNatural?'natural':'pk')." qtdJson=".count($registros), $GLOBALS['LOG_FILE_DB']);
@@ -362,7 +379,10 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             case 'modulos_operacoes':
                 // Preferir campo 'operacao' se existir, senão 'id'
                 $op = $row['operacao'] ?? ($row['id'] ?? null); if ($op===null) return null; return $pluginPart.'|'.$op;
-            default: return null;
+            default:
+                // Caso padrão: usar campo 'id' se existir
+                if (isset($row['id'])) return $pluginPart.'|'.$row['id'];
+                return null;
         }
     };
 

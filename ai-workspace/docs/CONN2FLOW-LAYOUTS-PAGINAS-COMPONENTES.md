@@ -53,9 +53,9 @@ Tabelas principais: `layouts`, `paginas`, `componentes`.
 ## 🚀 Exportação e Versionamento
 
 - Exportação automatizada dos recursos para estrutura de arquivos:
-  - `gestor-cliente/resources/layouts/{id}/`
-  - `gestor-cliente/resources/paginas/{id}/`
-  - `gestor-cliente/resources/componentes/{id}/`
+  - `gestor/resources/layouts/{id}/`
+  - `gestor/resources/paginas/{id}/`
+  - `gestor/resources/componentes/{id}/`
 - Layouts e componentes sempre globais.
 - Páginas exportadas para módulos reais ou global.
 - Versionamento via Git.

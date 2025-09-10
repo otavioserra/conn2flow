@@ -116,6 +116,11 @@ echo "[build-plugin] Deploy root: $DEPLOY_PLUGIN_ROOT" >&2
 echo "[build-plugin] Out dir: $OUT_DIR" >&2
 
 # 1. Gerar múltiplos Data.json (sempre usa plugin original como fonte, gera na pasta deploys)
+if [[ -d "$DEPLOY_PLUGIN_ROOT" ]]; then
+  echo "[build-plugin] Limpando pasta deploys anterior: $DEPLOY_PLUGIN_ROOT" >&2
+  rm -rf "$DEPLOY_PLUGIN_ROOT"/* 2>/dev/null || true
+fi
+
 if [[ -f "$DATA_SCRIPT" ]]; then
   echo "[build-plugin] Gerando Data JSON (Layouts/Paginas/Componentes/Variaveis)" >&2
   echo "[build-plugin] Fonte: $PLUGIN_ROOT" >&2

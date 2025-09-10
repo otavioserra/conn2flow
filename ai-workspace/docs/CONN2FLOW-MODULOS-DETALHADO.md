@@ -23,6 +23,26 @@ Módulos são responsáveis pela lógica específica de páginas no Conn2Flow. C
 - Assets: CSS, JS, imagens, etc.
 - Funções específicas: inicialização, menu, toasts, etc.
 
+```
+modulo-nome/
+├── modulo-nome.php       # Lógica backend (PHP)
+├── modulo-nome.js        # Lógica frontend (JavaScript)
+├── modulo-nome.json      # Configurações, metadados e mapeamento dos recursos.
+└── resources/            # Recursos visuais por idioma
+    └── pt-br/
+        ├── layouts/      # Layouts específicos
+        ├── pages/        # Páginas HTML
+        ├── components/   # Componentes reutilizáveis
+```
+
+### 🎛️ **Sistema de Configuração JSON**
+Cada módulo possui um arquivo JSON com:
+- **versao**: Versionamento do módulo
+- **bibliotecas**: Dependências de bibliotecas
+- **tabela**: Configuração de banco de dados
+- **resources**: Recursos por idioma (páginas, componentes, variáveis)
+- **Configurações específicas**: Parâmetros únicos do módulo
+
 ---
 
 ## 🔗 Vinculação Página-Módulo
