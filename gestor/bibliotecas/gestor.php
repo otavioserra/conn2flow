@@ -450,7 +450,7 @@ function gestor_variaveis($params = false){
 	
 	// ===== Parâmetros
 	
-	// modulo - String - Obrigatório - Módulo do sistema do valor.
+	// modulo - String - Opcional - Módulo do sistema do valor.
 	// id - String - Obrigatório - Identificador único do valor.
 	// conjunto - Bool - Opcional - Se definido retornar todos os valores do módulo.
 	// padrao - String - Opcional - Só funciona se conjunto for definido. Se informado filtrar com esse valor que contêm nos ids das linguagens.
@@ -462,6 +462,12 @@ function gestor_variaveis($params = false){
 	
 	if(!isset($_GESTOR['variaveis'])){
 		$_GESTOR['variaveis'] = Array();
+	}
+
+	// ===== Definir módulo padrão se não informado para global.
+
+	if(!isset($modulo)){
+		$modulo = '_global_';
 	}
 	
 	// ===== Buscar no banco de dados caso não tenha sido ainda lido na sessão.
@@ -475,8 +481,8 @@ function gestor_variaveis($params = false){
 			))
 			,
 			"variaveis",
-			"WHERE modulo='".$modulo."'"
-			." AND linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
+			"WHERE linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
+			.($modulo == '_global_' ? " AND modulo IS NULL" : " AND modulo='".$modulo."'")
 		);
 		
 		if($variaveis){
@@ -510,6 +516,48 @@ function gestor_variaveis($params = false){
 	} else {
 		return (isset($_GESTOR['variaveis'][$modulo][$id]) ? $_GESTOR['variaveis'][$modulo][$id] : '' );
 	}
+}
+
+function gestor_variaveis_globais($params = false){
+	global $_GESTOR;
+
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// id - String - Obrigatório - Identificador único do valor.
+	// reset - Bool - Opcional - Reler banco de dados.
+	
+	// ===== 
+	
+	// ===== Procedimentos de inicialização
+	
+	if(!isset($_GESTOR['variaveis'])){
+		$_GESTOR['variaveis'] = Array();
+	}
+	
+	// ===== Buscar no banco de dados caso não tenha sido ainda lido na sessão.
+	
+	if(!isset($_GESTOR['variaveis']['_global_'][$id]) || isset($reset)){
+		$variaveis = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'valor',
+			))
+			,
+			"variaveis",
+			"WHERE linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
+			." AND id='".$id."'"
+		);
+		
+		if($variaveis){
+			$_GESTOR['variaveis']['_global_'][$id] = $variaveis[0]['valor'];
+		}
+	}
+	
+	// ===== Retornar valor pontual.
+
+	return (isset($_GESTOR['variaveis']['_global_'][$id]) ? $_GESTOR['variaveis']['_global_'][$id] : NULL );
 }
 
 function gestor_variaveis_alterar($params = false){

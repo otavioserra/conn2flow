@@ -39,11 +39,11 @@
                     "path": "admin-plugins\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "55c3133cf00c68a151f7d2800643cd95",
+                        "html": "7b0772e2740c56573bebd1d1153e9bdb",
                         "css": "",
-                        "combined": "55c3133cf00c68a151f7d2800643cd95"
+                        "combined": "7b0772e2740c56573bebd1d1153e9bdb"
                     }
                 },
                 {
@@ -53,15 +53,54 @@
                     "path": "admin-plugins\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "d66253a4a5d9465d318b737cc32456f4",
+                        "html": "316faac7c0f858ba8c831e325d8723d8",
                         "css": "",
-                        "combined": "d66253a4a5d9465d318b737cc32456f4"
+                        "combined": "316faac7c0f858ba8c831e325d8723d8"
+                    }
+                },
+                {
+                    "name": "Admin Plugins - Executar",
+                    "id": "admin-plugins-executar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-plugins\/executar\/",
+                    "type": "system",
+                    "option": "executar",
+                    "version": "1.3",
+                    "checksum": {
+                        "html": "df67f246a2967f4a4b04515c092b0074",
+                        "css": "",
+                        "combined": "df67f246a2967f4a4b04515c092b0074"
+                    }
+                },
+                {
+                    "name": "Admin Plugins - Teste",
+                    "id": "admin-plugins-teste",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-plugins\/teste\/",
+                    "type": "system",
+                    "option": "teste",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "61240bb5944afe8581f3f26fcb396e04",
+                        "css": "",
+                        "combined": "61240bb5944afe8581f3f26fcb396e04"
                     }
                 }
             ],
-            "components": [],
+            "components": [
+                {
+                    "name": "Plugins - Exec",
+                    "id": "plugins-exec",
+                    "version": "1.3",
+                    "checksum": {
+                        "html": "f6508ffae8dc0b4970eacb81034f1e51",
+                        "css": "",
+                        "combined": "f6508ffae8dc0b4970eacb81034f1e51"
+                    }
+                }
+            ],
             "variables": [
                 {
                     "id": "form-name-label",
@@ -71,6 +110,11 @@
                 {
                     "id": "form-name-placeholder",
                     "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "pagina-teste",
+                    "value": "Teste do Sistema de Descoberta Automática",
                     "type": "string"
                 }
             ]

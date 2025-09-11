@@ -51,8 +51,7 @@ MANIFEST_PATH=${4:-}
 
 # Diretório do script
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-# Caminho do environment.json do plugin sempre 2 níveis acima
-ENV_PATH="$(dirname \"$(dirname \"$SCRIPT_DIR\")\")/environment.json"
+ENV_PATH="$(dirname "$(dirname "$SCRIPT_DIR")")/environment.json"
 VERSION_SCRIPT="$SCRIPT_DIR/../releases/version.php"
 
 # Determine manifest path for version bump
@@ -116,23 +115,20 @@ echo "New plugin $PLUGIN_NAME ($PLUGIN_ID) version is: $NEW_VERSION"
 
 
 # 2. Add and commit the changes in Git (only for the plugin directory)
-if [ -n "$MANIFEST_PATH" ]; then
-  PLUGIN_DIR=$(dirname "$MANIFEST_PATH")
-elif [ -n "$PLUGIN_PATH" ]; then
-  PLUGIN_DIR="$PLUGIN_PATH"
-else
-  if [ ! -f "$ENV_PATH" ]; then
-    echo "environment.json not found: $ENV_PATH"; exit 1;
-  fi
-  ACTIVE_ID=$(jq -r '.activePlugin.id' "$ENV_PATH")
-  PLUGIN_DIR=$(jq -r --arg id "$ACTIVE_ID" '.plugins[] | select(.id==$id) | .path' "$ENV_PATH")
-  PLUGIN_DIR="$(dirname \"$(dirname \"$SCRIPT_DIR\")\")/$PLUGIN_DIR"
-fi
+
+# Sempre define o diretório do plugin como dois níveis acima do commit.sh
+PLUGIN_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
 echo "Creating commit for version plugin-${PLUGIN_ID}-v$NEW_VERSION..."
-git add "$PLUGIN_DIR/" "$VERSION_SCRIPT"
+# Salva diretório atual
+ORIGINAL_DIR="$(pwd)"
+# Entra no diretório do plugin para garantir contexto git correto
+cd "$PLUGIN_DIR"
+# Adiciona todas as alterações do plugin
+git add .
 git commit -m "[$PLUGIN_ID][$PLUGIN_NAME] $COMMIT_DETAILS (v$NEW_VERSION)"
-
 echo "Commit plugin-${PLUGIN_ID}-v$NEW_VERSION created successfully!"
 echo "Pushing to remote repository..."
 git push
+# Volta para o diretório original
+cd "$ORIGINAL_DIR"

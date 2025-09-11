@@ -1,0 +1,71 @@
+<div class="ui segment" id="admin-plugins-exec-root" data-endpoint="?ajax=1&modulo=admin-plugins&ajax-opcao=update">
+    <div class="ui small header" style="margin:0 0 .5em;">Execução de Plugin</div>
+
+    <div class="ui segment">
+        <h4 class="ui header">Informações do Plugin</h4>
+        <div class="ui list">
+            <div class="item">
+                <div class="header">ID:</div>
+                <div class="description" id="plugin-id-display">#id#</div>
+            </div>
+            <div class="item">
+                <div class="header">Nome:</div>
+                <div class="description" id="plugin-name-display">#nome#</div>
+            </div>
+            <div class="item">
+                <div class="header">Origem:</div>
+                <div class="description" id="plugin-origem-display">#origem_tipo#</div>
+            </div>
+            <div class="item">
+                <div class="header">Status Atual:</div>
+                <div class="description">
+                    <span class="ui label" id="plugin-status-display">#status#</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui segment">
+        <h4 class="ui header">Ações Disponíveis</h4>
+        <div class="ui three column grid">
+            <div class="column">
+                <button class="ui fluid teal button" id="plugin-install-btn" data-action="instalar">
+                    <i class="download icon"></i>
+                    Instalar
+                </button>
+            </div>
+            <div class="column">
+                <button class="ui fluid olive button" id="plugin-update-btn" data-action="atualizar">
+                    <i class="sync icon"></i>
+                    Atualizar
+                </button>
+            </div>
+            <div class="column">
+                <button class="ui fluid brown button" id="plugin-reprocess-btn" data-action="reprocessar">
+                    <i class="redo icon"></i>
+                    Reprocessar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui segment">
+        <h4 class="ui header">Log de Execução</h4>
+        <div class="ui indicating progress" id="plugin-progress-bar" data-percent="0" style="display:none;">
+            <div class="bar">
+                <div class="progress"></div>
+            </div>
+            <div class="label">Progresso</div>
+        </div>
+        <textarea id="plugin-log-textarea" class="codemirror-log" data-mode="text" data-live="1" style="display:none;"
+            rows="14"></textarea>
+        <pre class="fallback-log" style="max-height:40vh;overflow:auto;display:none;"></pre>
+    </div>
+
+    <div class="ui center aligned segment">
+        <a class="ui button" href="../editar/?id=#id#">
+            <i class="arrow left icon"></i>
+            Voltar para Edição
+        </a>
+    </div>
+</div>

@@ -537,12 +537,36 @@ function gestor_pagina_variaveis($params = false){
 	if(isset($_GESTOR['modulo-id'])) $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#modulo-id'.$close,$_GESTOR['modulo-id']);
 	if(isset($_GESTOR['modulo-registro-id'])) $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#registro-id'.$close,$_GESTOR['modulo-registro-id']);
 	
+
+	$variaveisEncontradas = Array();
+
+	// ===== Variáveis globais.
+
+	$pattern = "/".preg_quote($open)."(.+?)".preg_quote($close)."/i";
+	preg_match_all($pattern, $_GESTOR['pagina'], $matches);
+	
+	if($matches)
+	foreach($matches[1] as $match){
+		// ===== Pegar o valor da variável
+		$valor = gestor_variaveis_globais(Array('id' => $match));
+
+		if(isset($valor)){
+			$variaveisEncontradas[] = $match;
+			$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.$match.$close,existe($valor) ? $valor : '');
+		}
+	}
+
+	// ===== Variáveis do módulo atual.
+
 	if(isset($_GESTOR['modulo-id'])){
 		$pattern = "/".preg_quote($open)."(.+?)".preg_quote($close)."/i";
 		preg_match_all($pattern, $_GESTOR['pagina'], $matches);
 		
 		if($matches)
 		foreach($matches[1] as $match){
+			if(in_array($match,$variaveisEncontradas)) continue;
+			$variaveisEncontradas[] = $match;
+			// ===== Pegar o valor da variável
 			$valor = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => $match));
 			
 			if(existe($valor)){
@@ -562,6 +586,9 @@ function gestor_pagina_variaveis($params = false){
 			
 			if($matches)
 			foreach($matches[1] as $match){
+				if(in_array($match,$variaveisEncontradas)) continue;
+				$variaveisEncontradas[] = $match;
+				// ===== Pegar o valor da variável
 				$valor = gestor_variaveis(Array('modulo' => $modulo,'id' => $match));
 				
 				if(existe($valor)){

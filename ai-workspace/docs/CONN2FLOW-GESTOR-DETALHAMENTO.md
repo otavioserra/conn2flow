@@ -84,7 +84,7 @@ O **`gestor.php`** é o **CORAÇÃO** absoluto do sistema Conn2Flow:
 - **🚀 Iniciador de Processo**: Ponto de entrada da aplicação web
 - **🔗 Conectador de Componentes**: Liga layouts, páginas, módulos e componentes
 - **🔐 Sistema de Sessões**: Gerencia autenticação e estado do usuário
-- **🔄 Processador de Variáveis**: Substitui `@[[variavel]]@` dinamicamente
+- **🔄 Processador de Variáveis**: Substitui `@[[variavel-id]]@` dinamicamente
 
 #### ⚡ Processo de Inicialização:
 1. **Carrega configurações** (`config.php`)
@@ -526,10 +526,10 @@ plugins/
 
 #### 🔄 Formato:
 ```html
-@[[categoria#variavel]]@
+@[[variavel-id]]@
 ```
 
-#### 📋 Exemplos Comuns:
+#### 📋 Exemplos Globais Principais:
 ```html
 @[[pagina#url-raiz]]@        <!-- URL base do sistema -->
 @[[pagina#corpo]]@           <!-- CONTEÚDO DA PÁGINA (CRÍTICO!) -->
@@ -741,6 +741,34 @@ $_GESTOR = [...]                        // Variáveis globais
 $_GESTOR['modulo-id'] = 'dashboard';
 function dashboard_start() { ... }       // Inicialização
 function dashboard_pagina_inicial() { ... } // Lógica específica
+```
+
+#### 📋 Ler Componente de Módulo:
+```php
+$componenteHTML = gestor_componente(Array(
+  'id' => 'id',
+  'modulo' => $_GESTOR['modulo-id'],
+));
+```
+
+#### 📋 Trocar Variável de um HTML:
+```php
+// Exemplo de troca de variável em um HTML
+$html = modelo_var_troca_tudo($html,'#variavel#',$valor);
+// Exemplo de troca de variável na página atual:
+$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#variavel#',$valor);
+```
+- Exemplo prático:
+  - Antes:
+```html
+<p>Olá, #nome#!</p>
+```
+```php
+$html = modelo_var_troca_tudo($html,'#nome#','João');
+```
+  - Depois:
+```html
+<p>Olá, João!</p>
 ```
 
 ---

@@ -52,6 +52,16 @@
             "command": "bash ./ai-workspace/scripts/commits/commit.sh \"${input:commitMsg}\""
         },
         {
+            "label": "🌐 GIT - Commit Gestor Plugin - Privado",
+            "type": "shell",
+            "command": "bash ./dev-plugins/plugins/private/scripts/commits/commit.sh \"${input:commitMsg}\""
+        },
+        {
+            "label": "🌐 GIT - Release Gestor Plugin - Privado",
+            "type": "shell",
+            "command": "bash ./dev-plugins/plugins/private/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+        },
+        {
             "label": "🖥️ Atualização - Recursos",
             "type": "shell",
             "command": "php ./gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php"
@@ -78,6 +88,11 @@
             ],
             // Esta é a propriedade mágica que garante a execução em sequência!
             "dependsOrder": "sequence"
+        },
+        {
+            "label": "🖥️ Atualização - Recursos Plugin - Privado",
+            "type": "shell",
+            "command": "php ./dev-plugins/plugins/private/scripts/resources/update-data-resources-plugin.php"
         },
         {
             "label": "♻️ Sincronização - Sincronizar Gestor",
@@ -113,17 +128,17 @@
     "inputs": [
         {
             "id": "tipo",
-            "description": "✔️ Tipo de Release (patch, minor, major) ✔️",
+            "description": "✔️ Tipo de Release (patch, minor, major) ❔",
             "type": "promptString"
         },
         {
             "id": "tagMsg",
-            "description": "❔ Mensagem da TAG ❔",
+            "description": "🔖 Mensagem da TAG ❔",
             "type": "promptString"
         },
         {
             "id": "commitMsg",
-            "description": "❔ Mensagem do Commit ❔",
+            "description": "📦 Mensagem do Commit ❔",
             "type": "promptString"
         }
     ]

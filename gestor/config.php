@@ -5,7 +5,7 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR['versao']								=	'2.0.9'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'2.0.10'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
 
@@ -171,6 +171,8 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'widgets' => Array('widgets.php'),
 	'formulario' => Array('formulario.php'),
 	'geral' => Array('geral.php'),
+	'plugins-consts' => Array('plugins-consts.php'),
+	'plugins-installer' => Array('plugins-installer.php'),
 );
 
 if(isset($_GESTOR['bibliotecas']))

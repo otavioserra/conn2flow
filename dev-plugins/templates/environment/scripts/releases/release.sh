@@ -103,23 +103,36 @@ fi
 
 echo "New plugin $PLUGIN_NAME ($PLUGIN_ID) version is: $NEW_VERSION"
 
+# Sempre define o diretório do plugin como dois níveis acima do release.sh
+PLUGIN_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
-# Find plugin dir for git add (from manifest path or plugin path or env.json dinâmico)
-if [ -n "$MANIFEST_PATH" ]; then
-  PLUGIN_DIR=$(dirname "$MANIFEST_PATH")
-elif [ -n "$PLUGIN_PATH" ]; then
-  PLUGIN_DIR="$PLUGIN_PATH"
-else
-  if [ ! -f "$ENV_PATH" ]; then
-    echo "environment.json not found: $ENV_PATH"; exit 1;
-  fi
-  ACTIVE_ID=$(jq -r '.activePlugin.id' "$ENV_PATH")
-  PLUGIN_DIR=$(jq -r --arg id "$ACTIVE_ID" '.plugins[] | select(.id==$id) | .path' "$ENV_PATH")
-  PLUGIN_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")/$PLUGIN_DIR"
+# Salva diretório atual
+ORIGINAL_DIR="$(pwd)"
+# Entra no diretório do plugin para garantir contexto git correto
+cd "$PLUGIN_DIR"
+
+## Remove todas as tags antigas do padrão plugin-${PLUGIN_ID}-v* localmente e remotamente
+set +e
+OLD_TAGS=$(git tag | grep "^plugin-${PLUGIN_ID}-v")
+if [ -n "$OLD_TAGS" ]; then
+  echo "Removendo todas as tags antigas do padrão plugin-${PLUGIN_ID}-v*: $OLD_TAGS"
+  for tag in $OLD_TAGS; do
+    if [ -n "$tag" ]; then
+      git tag -d "$tag"
+      git push --delete origin "$tag"
+      if command -v gh >/dev/null 2>&1; then
+        gh release delete "$tag" --yes
+      fi
+    fi
+  done
 fi
+set -e
 
-git add "$PLUGIN_DIR/" "$VERSION_SCRIPT"
+# Adiciona todas as alterações do plugin
+git add .
 git commit -m "[$PLUGIN_ID][$PLUGIN_NAME] $COMMIT_MSG (v$NEW_VERSION)"
 git tag -a "plugin-${PLUGIN_ID}-v$NEW_VERSION" -m "[$PLUGIN_ID][$PLUGIN_NAME] $TAG_SUM (v$NEW_VERSION)"
 git push
 git push --tags
+# Volta para o diretório original
+cd "$ORIGINAL_DIR"

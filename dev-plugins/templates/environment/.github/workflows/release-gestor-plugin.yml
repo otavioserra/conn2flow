@@ -33,7 +33,7 @@ jobs:
         id: plugininfo
         run: |
           PLUGIN_ID="${{ steps.taginfo.outputs.PLUGIN_ID }}"
-          ENV_PATH="../../environment.json"
+          ENV_PATH="environment.json"
           PLUGIN_PATH=$(jq -r --arg id "$PLUGIN_ID" '.plugins[] | select(.id==$id) | .path' "$ENV_PATH")
           PLUGIN_NAME=$(jq -r --arg id "$PLUGIN_ID" '.plugins[] | select(.id==$id) | .name' "$ENV_PATH")
           if [ -z "$PLUGIN_PATH" ] || [ "$PLUGIN_PATH" = "null" ]; then
@@ -45,38 +45,46 @@ jobs:
 
       - name: Generate Plugin Resources Data (Data.json)
         run: |
-          PHP_SCRIPT="../../scripts/resources/update-data-resources-plugin.php --plugin-root=$PLUGIN_PATH  --deploy-plugin-root=../../deploys/${{ steps.taginfo.outputs.PLUGIN_ID }}"
+          PHP_SCRIPT="scripts/resources/update-data-resources-plugin.php"
           if [ ! -f "$PHP_SCRIPT" ]; then
             echo "Script not found: $PHP_SCRIPT" >&2
             exit 1
           fi
-          php "$PHP_SCRIPT"
-          echo "Plugin Data.json generated"
-        env:
-          PLUGIN_PATH: ${{ steps.plugininfo.outputs.PLUGIN_PATH }}
+          php "$PHP_SCRIPT" --plugin-root="${{ steps.plugininfo.outputs.PLUGIN_PATH }}"
+          echo "Plugins resources data generated/updated successfully."
 
       - name: Commit Generated Data.json
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          DATA_JSON="../../${{ steps.plugininfo.outputs.PLUGIN_PATH }}/db/data/Data.json"
-          if [ -f "$DATA_JSON" ]; then
-            git add "$DATA_JSON"
+          DATA_JSON_GLOB="${{ steps.plugininfo.outputs.PLUGIN_PATH }}/db/data/*Data.json"
+          if compgen -G "$DATA_JSON_GLOB" > /dev/null; then
+            git add $DATA_JSON_GLOB
             git diff --cached --quiet || git commit -m "Auto-update plugin Data.json ${{ github.ref_name }}"
           fi
+      - name: Remove resource files
+        run: |
+          PLUGIN_DIR="${{ steps.plugininfo.outputs.PLUGIN_PATH }}"
+          # Remove all resource files and directory to make installation lighter
+          rm -rf "$PLUGIN_DIR/resources/" && rmdir "$PLUGIN_DIR/resources/" 2>/dev/null || true
+
+          # Remove module resource files recursively
+          find "$PLUGIN_DIR/modules" -type d -name "resources" -exec rm -rf {} + || true
+          
+          echo "All resource files removed from release"
 
       - name: Prepare plugin artifact (remove dev-only dirs)
         run: |
-          PLUGIN_DIR="../../${{ steps.plugininfo.outputs.PLUGIN_PATH }}"
+          PLUGIN_DIR="${{ steps.plugininfo.outputs.PLUGIN_PATH }}"
           rm -rf "$PLUGIN_DIR/.git*" || true
           cd "$PLUGIN_DIR"
-          zip -r ../../gestor-plugin.zip . \
+          zip -r ../gestor-plugin.zip . \
             -x "*.git*" \
             -x "vendor/composer/tmp-*" \
             -x "node_modules/*" \
             -x "*.DS_Store*" \
             -x "tests/*"
-          cd ../../
+          cd -
           sha256sum gestor-plugin.zip | awk '{print $1}' > gestor-plugin.zip.sha256
 
       - name: Create Release

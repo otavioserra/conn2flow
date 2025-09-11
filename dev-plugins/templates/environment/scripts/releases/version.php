@@ -31,8 +31,6 @@
  * The manifest must have a 'version' field in the format 'X.Y.Z'.
  */
 
-echo $new;
-
 // ================= Path Resolution (PLUGIN ENV ONLY) =================
 // Busca o environment.json do plugin sempre 2 níveis acima deste script
 $pluginEnvPath = dirname(dirname(__DIR__)) . '/environment.json';

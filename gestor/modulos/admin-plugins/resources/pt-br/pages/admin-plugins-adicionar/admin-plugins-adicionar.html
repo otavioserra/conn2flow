@@ -2,3 +2,54 @@
     <label>@[[form-name-label]]@</label>
     <input type="text" name="nome" placeholder="@[[form-name-placeholder]]@">
 </div>
+
+<input type="hidden" name="origem_selecionada" id="origem_selecionada" value="arquivo">
+
+<div class="field">
+    <label>Origem do Plugin</label>
+    <div class="ui top attached tabular menu">
+        <a class="item active" data-tab="arquivo"
+            onclick="document.getElementById('origem_selecionada').value='arquivo'">Arquivo ZIP</a>
+        <a class="item" data-tab="publico"
+            onclick="document.getElementById('origem_selecionada').value='publico'">Repositório Público</a>
+        <a class="item" data-tab="privado"
+            onclick="document.getElementById('origem_selecionada').value='privado'">Repositório Privado</a>
+    </div>
+
+    <!-- Tab Arquivo ZIP -->
+    <div class="ui bottom attached tab segment active" data-tab="arquivo">
+        <div class="field">
+            <label>Arquivo ZIP do Plugin</label>
+            <input type="file" name="arquivo_zip" accept=".zip">
+            <small>Selecione o arquivo .zip contendo o plugin</small>
+        </div>
+    </div>
+
+    <!-- Tab Repositório Público -->
+    <div class="ui bottom attached tab segment" data-tab="publico">
+        <div class="field">
+            <label>URL do Repositório GitHub</label>
+            <input type="url" name="repo_publico_url" placeholder="https://github.com/usuario/repo">
+            <small>Informe a URL do repositório GitHub. O sistema irá automaticamente descobrir a última versão de
+                release do plugin.</small>
+        </div>
+    </div>
+
+    <!-- Tab Repositório Privado -->
+    <div class="ui bottom attached tab segment" data-tab="privado">
+        <div class="field">
+            <label>URL do Repositório GitHub</label>
+            <input type="url" name="repo_privado_url" placeholder="https://github.com/usuario/repo">
+        </div>
+        <div class="field">
+            <label>Token de Autenticação</label>
+            <input type="password" name="repo_privado_token" placeholder="Seu token de acesso">
+        </div>
+        <small>Para repositórios privados, forneça um token de acesso válido. O sistema irá automaticamente descobrir a
+            última versão de release.</small>
+    </div>
+</div>
+
+<script>
+    $('.menu .item').tab();
+</script>
