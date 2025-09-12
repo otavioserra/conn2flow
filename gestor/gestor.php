@@ -1634,12 +1634,16 @@ function gestor_roteador(){
 					$id = $paginas[0]['id'];
 
 					if(existe($modulo)){
-						$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
+						if($modulos['plugin']){
+							$html_path = $_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
+						} else {
+							$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
+						}
 					} else {
 						$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
 					}
 
-					$html = (file_exists($html_path)) ? file_get_contents($html_path) : '';
+					$html = (file_exists($html_path)) ? file_get_contents($html_path) : (existe($paginas[0]['html']) ? $paginas[0]['html'] : '');
 				} else {
 					$html = $paginas[0]['html'];
 				}
@@ -1651,7 +1655,7 @@ function gestor_roteador(){
 			
 			if(existe($modulo)){
 				if($modulos['plugin']){
-					// require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
+					require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/'.$modulo.'.php');
 				} else {
 					require_once($_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php');
 				}
@@ -1686,7 +1690,7 @@ function gestor_roteador(){
 			if($_GESTOR['opcao']){
 				if(existe($modulo)){
 					if($modulos['plugin']){
-						// require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
+						require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/'.$modulo.'.php');
 					} else {
 						require_once($_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php');
 					}
@@ -1703,15 +1707,20 @@ function gestor_roteador(){
 				$id = $paginas[0]['id'];
 
 				if(existe($modulo)){
-					$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
-					$css_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.css';
+					if($modulos['plugin']){
+						$html_path = $_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
+						$css_path = $_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.css';
+					} else {
+						$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
+						$css_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.css';
+					}
 				} else {
 					$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
 					$css_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.css';
 				}
 
-				$html = (file_exists($html_path)) ? file_get_contents($html_path) : '';
-				$css = (file_exists($css_path)) ? file_get_contents($css_path) : '';
+				$html = (file_exists($html_path)) ? file_get_contents($html_path) : (existe($paginas[0]['html']) ? $paginas[0]['html'] : '');
+				$css = (file_exists($css_path)) ? file_get_contents($css_path) : (existe($paginas[0]['css']) ? $paginas[0]['css'] : '');
 			} else {
 				$html = $paginas[0]['html'];
 				$css = $paginas[0]['css'];
@@ -1731,7 +1740,7 @@ function gestor_roteador(){
 			
 			if(existe($modulo)){
 				if($modulos['plugin']){
-					// require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/local/modulos/'.$modulo.'/'.$modulo.'.php');
+					require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/'.$modulo.'.php');
 				} else {
 					require_once($_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php');
 				}

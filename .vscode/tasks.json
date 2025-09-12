@@ -57,9 +57,19 @@
             "command": "bash ./dev-plugins/plugins/private/scripts/commits/commit.sh \"${input:commitMsg}\""
         },
         {
+            "label": "🌐 GIT - Commit Gestor Plugin - Público",
+            "type": "shell",
+            "command": "bash ./dev-plugins/plugins/public/scripts/commits/commit.sh \"${input:commitMsg}\""
+        },
+        {
             "label": "🌐 GIT - Release Gestor Plugin - Privado",
             "type": "shell",
             "command": "bash ./dev-plugins/plugins/private/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+        },
+        {
+            "label": "🌐 GIT - Release Gestor Plugin - Público",
+            "type": "shell",
+            "command": "bash ./dev-plugins/plugins/public/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
         },
         {
             "label": "🖥️ Atualização - Recursos",
@@ -93,6 +103,11 @@
             "label": "🖥️ Atualização - Recursos Plugin - Privado",
             "type": "shell",
             "command": "php ./dev-plugins/plugins/private/scripts/resources/update-data-resources-plugin.php"
+        },
+        {
+            "label": "🖥️ Atualização - Recursos Plugin - Público",
+            "type": "shell",
+            "command": "php ./dev-plugins/plugins/public/scripts/resources/update-data-resources-plugin.php"
         },
         {
             "label": "♻️ Sincronização - Sincronizar Gestor",

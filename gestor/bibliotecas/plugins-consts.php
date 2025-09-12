@@ -8,6 +8,7 @@ if(!defined('PLG_EXIT_VALIDATE')) define('PLG_EXIT_VALIDATE', 11);
 if(!defined('PLG_EXIT_MOVE')) define('PLG_EXIT_MOVE', 12);
 if(!defined('PLG_EXIT_DOWNLOAD')) define('PLG_EXIT_DOWNLOAD', 20);
 if(!defined('PLG_EXIT_ZIP_INVALID')) define('PLG_EXIT_ZIP_INVALID', 21);
+if(!defined('PLG_EXIT_CHECKSUM')) define('PLG_EXIT_CHECKSUM', 22);
 
 // Status_execucao possíveis
 if(!defined('PLG_STATUS_IDLE')) define('PLG_STATUS_IDLE','idle');
@@ -26,6 +27,7 @@ if(!function_exists('plg_exit_code_label')){
             case PLG_EXIT_MOVE: return 'MOVE';
             case PLG_EXIT_DOWNLOAD: return 'DOWNLOAD';
             case PLG_EXIT_ZIP_INVALID: return 'ZIP_INVALID';
+            case PLG_EXIT_CHECKSUM: return 'CHECKSUM';
         }
         return 'UNKNOWN';
     }

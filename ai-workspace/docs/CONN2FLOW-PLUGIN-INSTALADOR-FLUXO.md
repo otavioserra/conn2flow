@@ -93,9 +93,71 @@ Exemplos:
 4. Relatórios detalhados de diff (similar aos scripts de atualização de sistema).
 5. Suporte a dependências entre plugins.
 
-## Referências Internas
-- Scripts de atualização: `gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php` serviram como inspiração.
-- Função `tabelaFromDataFile()` reutilizada dos scripts de atualização do sistema.
+## Download de Releases do GitHub (Atualizado)
+
+### Suporte a Repositórios Privados
+O sistema agora suporta download de releases de repositórios GitHub privados através de autenticação via token.
+
+#### Fluxo de Download Atualizado
+1. **Descoberta de Release**: Busca a tag mais recente do plugin no repositório GitHub
+2. **Detecção de Assets**: Procura pelo arquivo `gestor-plugin.zip` nos assets da release
+3. **Download Seguro**: 
+   - **Público**: Usa URL direta de download (`/releases/download/`)
+   - **Privado**: Usa API REST de assets (`/releases/assets/{id}`) com `Accept: application/octet-stream`
+
+#### Verificação de Integridade SHA256 (Corrigido)
+O sistema agora suporta **verificação obrigatória de integridade** para downloads de repositórios privados através de arquivos SHA256.
+
+##### Arquivos Baixados para Repositórios Privados
+- **`gestor-plugin.zip`** - Arquivo ZIP principal do plugin
+- **`gestor-plugin.zip.sha256`** - Arquivo de checksum SHA256 para verificação de integridade
+
+##### Processo de Verificação
+1. **Download do ZIP**: Usa API REST de assets (`/releases/assets/{id}`) com autenticação
+2. **Download do SHA256**: Constrói URL baseada no asset do ZIP
+3. **Cálculo de Checksum**: Computa SHA256 do arquivo baixado
+4. **Comparação**: Verifica se o checksum calculado confere com o esperado
+5. **Validação**: Só prossegue se checksums conferem, caso contrário aborta
+
+##### URLs de Download Corrigidas
+- **Asset API (Privado)**: `https://api.github.com/repos/{owner}/{repo}/releases/assets/{asset_id}`
+- **Download Direto (Privado)**: `https://github.com/{owner}/{repo}/releases/download/{tag}/gestor-plugin.zip.sha256`
+- **Público**: `https://github.com/{owner}/{repo}/releases/download/{tag}/gestor-plugin.zip`
+
+##### Headers para Assets Privados
+```http
+Authorization: token YOUR_TOKEN
+Accept: application/octet-stream
+User-Agent: Conn2Flow-Plugin-Manager/1.0
+```
+
+##### Logs de Verificação
+```
+[DOWNLOAD] Repositório privado detectado - baixando ambos os arquivos (ZIP + SHA256)
+[DOWNLOAD] URLs baseadas no asset da API: ZIP e SHA256
+[DOWNLOAD] Baixando arquivo ZIP...
+[DOWNLOAD] Baixando arquivo SHA256...
+[CHECKSUM] Checksum esperado: [hash]
+[CHECKSUM] Checksum calculado: [hash]
+[CHECKSUM] ✓ Checksums conferem
+[DOWNLOAD] ✓ Checksum verificado com sucesso
+```
+
+##### Segurança Implementada
+- **Proteção contra Man-in-the-Middle**: Verificação obrigatória de integridade
+- **Aborto Automático**: Download cancelado se checksum não conferir
+- **Logs Detalhados**: Rastreamento completo do processo de verificação
+- **Compatibilidade**: Mantém funcionamento para repositórios públicos
+
+### Logs de Download
+```
+[PLUGIN:plugin-id] [DISCOVERY] Buscando releases em https://github.com/owner/repo
+[PLUGIN:plugin-id] [DISCOVERY] Tag encontrada: plugin-name-v1.0.0
+[PLUGIN:plugin-id] [DISCOVERY] Asset encontrado: gestor-plugin.zip (ID: 123456)
+[PLUGIN:plugin-id] [DOWNLOAD] Iniciando download via API assets
+[PLUGIN:plugin-id] [DOWNLOAD] Download concluído: 2.5 MB
+[PLUGIN:plugin-id] [DOWNLOAD] Arquivo salvo em: /temp/plugin.zip
+```
 
 ## Testes
 Script utilitário: `gestor/tests/plugin-counts.php` para contagem de recursos por plugin.

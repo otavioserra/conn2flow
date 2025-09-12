@@ -1756,6 +1756,78 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "metadata-origin-type",
+        "valor": "Origem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "metadata-origin-reference",
+        "valor": "Referência",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "metadata-origin-branch-tag",
+        "valor": "Branch\/Tag",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "metadata-origin-credential-ref",
+        "valor": "Credencial Ref",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "metadata-installed-version",
+        "valor": "Versão Instalada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "metadata-package-checksum",
+        "valor": "Checksum",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "metadata-execution-status",
+        "valor": "Status Execução",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "metadata-last-update",
+        "valor": "Última Atualização",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "dashboard",
         "id": "logout-grup",
         "valor": "Sair",

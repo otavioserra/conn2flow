@@ -39,11 +39,11 @@
                     "path": "admin-plugins\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "7b0772e2740c56573bebd1d1153e9bdb",
+                        "html": "837287aff77dd4902c69b07fdca23894",
                         "css": "",
-                        "combined": "7b0772e2740c56573bebd1d1153e9bdb"
+                        "combined": "837287aff77dd4902c69b07fdca23894"
                     }
                 },
                 {
@@ -53,11 +53,11 @@
                     "path": "admin-plugins\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "316faac7c0f858ba8c831e325d8723d8",
+                        "html": "87d7a12ec912c2d6346bff70e85c65ca",
                         "css": "",
-                        "combined": "316faac7c0f858ba8c831e325d8723d8"
+                        "combined": "87d7a12ec912c2d6346bff70e85c65ca"
                     }
                 },
                 {
@@ -115,6 +115,46 @@
                 {
                     "id": "pagina-teste",
                     "value": "Teste do Sistema de Descoberta Automática",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-origin-type",
+                    "value": "Origem",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-origin-reference",
+                    "value": "Referência",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-origin-branch-tag",
+                    "value": "Branch\/Tag",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-origin-credential-ref",
+                    "value": "Credencial Ref",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-installed-version",
+                    "value": "Versão Instalada",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-package-checksum",
+                    "value": "Checksum",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-execution-status",
+                    "value": "Status Execução",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-last-update",
+                    "value": "Última Atualização",
                     "type": "string"
                 }
             ]

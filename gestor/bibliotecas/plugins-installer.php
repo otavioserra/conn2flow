@@ -3,6 +3,7 @@
 
 require_once __DIR__ . '/banco.php';
 require_once __DIR__ . '/plugins-consts.php';
+require_once __DIR__ . '/../modulos/admin-plugins/admin-plugins.php';
 
 function plugin_normalize_slug(string $slug): string { return strtolower(preg_replace('/[^a-zA-Z0-9_-]+/','-', $slug)); }
 function plugin_base_root(): string { return dirname(__DIR__) . '/'; }
@@ -47,6 +48,14 @@ function plugin_validate_manifest(array $manifest, array &$errors): bool {
 
 function plugin_credentials_lookup(?string $credRef): ?string {
     if(!$credRef) return null;
+
+    // Verificar se é um token real (não uma referência)
+    // Tokens GitHub começam com ghp_, github_pat_, etc.
+    if(preg_match('/^(ghp_|github_pat_|gho_|ghu_|ghs_)/', $credRef)) {
+        return $credRef; // Retornar o token diretamente
+    }
+
+    // Caso contrário, tratar como referência a variável de ambiente
     $envKey = 'PLUGIN_TOKEN_' . strtoupper($credRef);
     return $_ENV[$envKey] ?? null; // Fase 1: apenas via ENV
 }
@@ -97,6 +106,8 @@ function plugin_http_download(string $url, string $dest, array $headers, array &
     if($ok){
         if(file_put_contents($dest, $data) === false){ $log[]='[erro] falha gravar zip'; return false; }
         $log[] = '[ok] download concluído ('.strlen($data).' bytes)';
+        // Corrigir permissões do arquivo temporário
+        plugin_fix_temp_file_permissions($dest, $log);
         return true;
     }
     return false;
@@ -109,8 +120,47 @@ function plugin_github_zip_url(string $owner,string $repo,string $ref): string {
 
 function plugin_download_github_public(string $owner,string $repo,string $ref,string $destZip, array &$log): bool {
     if(!$owner || !$repo){ $log[]='[erro] owner/repo ausentes'; return false; }
+
+    // Para repositórios públicos, tentar descobrir assets primeiro (como fazem os privados)
+    $download_url = null;
+    if ($ref && $ref !== 'main' && $ref !== 'master') {
+        // Se foi fornecida uma tag específica, tentar descobrir assets dessa tag
+        try {
+            $release_info = admin_plugins_descobrir_tag_especifica_plugin("https://github.com/{$owner}/{$repo}", $ref);
+            $download_url = $release_info['download_url'];
+            $log[] = '[info] Asset descoberto para tag específica: ' . $ref;
+        } catch (Exception $e) {
+            $log[] = '[aviso] Falha ao descobrir assets da tag ' . $ref . ': ' . $e->getMessage();
+            $log[] = '[info] Usando zipball como fallback';
+        }
+    } else {
+        // Para branch main/master, tentar descobrir a última release
+        try {
+            $release_info = admin_plugins_descobrir_ultima_tag_plugin("https://github.com/{$owner}/{$repo}");
+            $download_url = $release_info['download_url'];
+            $log[] = '[info] Asset descoberto da última release';
+        } catch (Exception $e) {
+            $log[] = '[aviso] Falha ao descobrir assets da última release: ' . $e->getMessage();
+            $log[] = '[info] Usando zipball como fallback';
+        }
+    }
+
+    // Se conseguiu descobrir um asset, usar ele
+    if ($download_url) {
+        $log[] = '[info] Baixando asset do release: ' . $download_url;
+        return plugin_http_download($download_url, $destZip, [
+            'Accept' => 'application/octet-stream',
+            'User-Agent' => 'Conn2Flow-Plugin-Manager/1.0'
+        ], $log);
+    }
+
+    // Fallback: usar zipball (comportamento antigo)
+    $log[] = '[info] Usando zipball (repositório completo) como fallback';
     $url = plugin_github_zip_url($owner,$repo,$ref ?: 'main');
-    return plugin_http_download($url,$destZip,[ 'Accept' => 'application/vnd.github+json' ],$log);
+    return plugin_http_download($url,$destZip,[
+        'Accept' => 'application/vnd.github+json',
+        'User-Agent' => 'Conn2Flow-Plugin-Manager/1.0'
+    ],$log);
 }
 
 function plugin_download_github_private(string $owner,string $repo,string $ref,string $destZip,string $token, array &$log): bool {
@@ -121,7 +171,7 @@ function plugin_download_github_private(string $owner,string $repo,string $ref,s
     $log[]='[info] utilizando token privado (***'.substr($token,-4).')';
     return plugin_http_download($url,$destZip,[
         'Accept' => 'application/vnd.github+json',
-        'Authorization' => 'Bearer '.$token
+        'Authorization' => 'token '.$token
     ],$log);
 }
 
@@ -134,11 +184,15 @@ function plugin_copy_local_path(string $sourcePath, string $destZip, array &$log
         foreach($it as $file){ $fp = $file->getPathname(); $rel = substr($fp, strlen($sourcePath)+1); if(!$file->isDir()) $zip->addFile($fp, $rel); }
         $zip->close();
         $log[] = "[ok] pacote local zipado";
+        // Corrigir permissões do arquivo temporário
+        plugin_fix_temp_file_permissions($destZip, $log);
         return true;
     } elseif(is_file($sourcePath)) {
         // Copiar arquivo diretamente (caso seja um ZIP já pronto)
         if(copy($sourcePath, $destZip)) {
             $log[] = "[ok] arquivo local copiado";
+            // Corrigir permissões do arquivo temporário
+            plugin_fix_temp_file_permissions($destZip, $log);
             return true;
         } else {
             $log[] = "[erro] falha ao copiar arquivo local";
@@ -179,6 +233,17 @@ function plugin_locate_manifest(string $staging, array &$log): ?string {
     // Manifest pode estar na raiz do pacote ou em subdir "plugin" (caso futuro)
     $candidates = [ $staging.'/manifest.json', $staging.'/plugin/manifest.json' ];
     foreach($candidates as $c){ if(file_exists($c)) return $c; }
+    
+    // Para zipballs do GitHub que criam subdiretórios, procurar recursivamente
+    $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($staging, FilesystemIterator::SKIP_DOTS));
+    foreach($rii as $file){
+        if($file->isFile() && strcasecmp($file->getFilename(), 'manifest.json') === 0){
+            $manifestPath = $file->getPathname();
+            $log[] = '[info] manifest.json encontrado em: ' . str_replace($staging.'/', '', $manifestPath);
+            return $manifestPath;
+        }
+    }
+    
     $log[] = '[erro] manifest.json não encontrado';
     return null;
 }
@@ -191,10 +256,38 @@ function plugin_move_to_final(string $staging, string $final, array &$log): bool
         try { plugin_backup_existing($final,$log); } catch(Throwable $e){ $log[]='[warn] backup falhou: '.$e->getMessage(); }
         plugin_remove_dir($final);
     }
+
+    // Verificar se o diretório staging existe
+    if (!is_dir($staging)) {
+        $log[] = '[erro] diretório staging não existe: ' . $staging;
+        return false;
+    }
+
+    // Encontrar o manifest.json para determinar a estrutura correta
+    $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($staging, FilesystemIterator::SKIP_DOTS));
+    $manifestPath = null;
+    foreach($rii as $file){
+        if($file->isFile() && strcasecmp($file->getFilename(), 'manifest.json') === 0){
+            $manifestPath = $file->getPathname();
+            break;
+        }
+    }
+
+    if (!$manifestPath) {
+        $log[] = '[erro] manifest.json não encontrado no staging';
+        return false;
+    }
+
+    // O diretório que contém manifest.json é o diretório raiz do plugin
+    $pluginRootDir = dirname($manifestPath);
+    $sourcePath = $pluginRootDir;
+
+    $log[] = '[info] diretório raiz do plugin identificado: ' . basename($pluginRootDir);
+
     // mover copiando
-    $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($staging, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+    $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($sourcePath, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     foreach($it as $item){
-        $targetPath = $final . DIRECTORY_SEPARATOR . substr($item->getPathname(), strlen($staging)+1);
+        $targetPath = $final . DIRECTORY_SEPARATOR . substr($item->getPathname(), strlen($sourcePath)+1);
         if($item->isDir()){
             if(!is_dir($targetPath)) mkdir($targetPath,0777,true);
         } else {
@@ -203,9 +296,7 @@ function plugin_move_to_final(string $staging, string $final, array &$log): bool
     }
     $log[] = "[ok] diretório final atualizado: $final";
     return true;
-}
-
-function plugin_persist_metadata(string $slug, array $manifest, ?string $checksum, string $origemTipo, array $opcoes, array &$log): void {
+}function plugin_persist_metadata(string $slug, array $manifest, ?string $checksum, string $origemTipo, array $opcoes, array &$log): void {
     $dados = [
         'id' => $slug,
         'nome' => $manifest['name'] ?? $slug,
@@ -912,6 +1003,20 @@ function plugin_cleanup_after_install(string $finalPath, array &$log): void {
     }
 }
 
+function plugin_fix_temp_file_permissions(string $filePath, array &$log): void {
+    if(!file_exists($filePath)) return;
+    
+    // Executar chown para www-data:www-data
+    $cmd = "chown www-data:www-data " . escapeshellarg($filePath);
+    exec($cmd, $output, $returnCode);
+    
+    if($returnCode === 0) {
+        $log[] = "[ok] permissões corrigidas para www-data:www-data: $filePath";
+    } else {
+        $log[] = "[aviso] falha ao corrigir permissões (código $returnCode): $filePath";
+    }
+}
+
 function plugin_process(array $params): int {
     $log = [];
     $slug = plugin_normalize_slug($params['slug']);
@@ -924,16 +1029,50 @@ function plugin_process(array $params): int {
     $downloadOk = false;
     switch($origem){
         case 'upload':
-            if(!isset($params['arquivo']) || !file_exists($params['arquivo'])){ $log[]='[erro] arquivo upload não encontrado'; plugin_log_block($log,$slug); return PLG_EXIT_PARAMS_OR_FILE; }
+            if(!isset($params['arquivo']) || !file_exists($params['arquivo'])){ $log[]='[erro] arquivo upload não encontrado. file_path: '.$params['arquivo']; plugin_log_block($log,$slug); return PLG_EXIT_PARAMS_OR_FILE; }
             copy($params['arquivo'], $zipTmp); $downloadOk = true; $log[]='[ok] arquivo upload copiado';
+            // Corrigir permissões do arquivo temporário
+            plugin_fix_temp_file_permissions($zipTmp, $log);
         break;
         case 'github_publico':
-            $downloadOk = plugin_download_github_public($params['owner'],$params['repo'],$params['ref'] ?? 'main',$zipTmp,$log);
+            // Se download_url foi fornecido diretamente (ex: de descoberta anterior), usar ele
+            if(!empty($params['download_url'])){
+                $log[]='[info] usando URL de download fornecida diretamente';
+                $downloadOk = plugin_http_download($params['download_url'], $zipTmp, [ 'Accept' => 'application/octet-stream' ], $log);
+                // Tentar baixar SHA256 se disponível
+                if(!empty($params['sha256_url'])){
+                    $sha256Tmp = sys_get_temp_dir() . "/plg_$slug.zip.sha256";
+                    $log[]='[info] baixando arquivo SHA256';
+                    plugin_http_download($params['sha256_url'], $sha256Tmp, [ 'Accept' => 'application/octet-stream' ], $log);
+                }
+            } else {
+                $downloadOk = plugin_download_github_public($params['owner'],$params['repo'],$params['ref'] ?? 'main',$zipTmp,$log);
+            }
         break;
         case 'github_privado':
             $token = plugin_credentials_lookup($params['cred_ref'] ?? null);
             if(!$token){ $log[]='[erro] credencial não resolvida'; plugin_log_block($log,$slug); return PLG_EXIT_PARAMS_OR_FILE; }
-            $downloadOk = plugin_download_github_private($params['owner'],$params['repo'],$params['ref'] ?? 'main',$zipTmp,$token,$log);
+            
+            // Se download_url foi fornecido diretamente (ex: de descoberta anterior), usar ele
+            if(!empty($params['download_url'])){
+                $log[]='[info] utilizando token privado (***'.substr($token,-4).')';
+                $log[]='[info] usando URL de download fornecida diretamente';
+                $downloadOk = plugin_http_download($params['download_url'], $zipTmp, [
+                    'Accept' => 'application/octet-stream',
+                    'Authorization' => 'token '.$token
+                ], $log);
+                // Tentar baixar SHA256 se disponível
+                if(!empty($params['sha256_url'])){
+                    $sha256Tmp = sys_get_temp_dir() . "/plg_$slug.zip.sha256";
+                    $log[]='[info] baixando arquivo SHA256';
+                    plugin_http_download($params['sha256_url'], $sha256Tmp, [
+                        'Accept' => 'application/octet-stream',
+                        'Authorization' => 'token '.$token
+                    ], $log);
+                }
+            } else {
+                $downloadOk = plugin_download_github_private($params['owner'],$params['repo'],$params['ref'] ?? 'main',$zipTmp,$token,$log);
+            }
         break;
         case 'local_path':
             $downloadOk = plugin_copy_local_path($params['local_path'],$zipTmp,$log);
@@ -947,6 +1086,21 @@ function plugin_process(array $params): int {
     }
     if(!file_exists($zipTmp) || filesize($zipTmp) < 128){ // 128 bytes sanity
         $log[]='[erro] zip não disponível ou muito pequeno'; plugin_log_block($log,$slug); return PLG_EXIT_ZIP_INVALID; }
+    
+    // Verificar checksum se arquivo SHA256 foi baixado
+    $sha256Tmp = sys_get_temp_dir() . "/plg_$slug.zip.sha256";
+    if(file_exists($sha256Tmp) && filesize($sha256Tmp) > 0){
+        $log[]='[info] verificando checksum SHA256';
+        $checksum = plugin_compute_checksum($zipTmp);
+        $expectedChecksum = trim(file_get_contents($sha256Tmp));
+        if(!hash_equals($expectedChecksum, $checksum)){
+            $log[]='[erro] checksum SHA256 não confere';
+            plugin_log_block($log,$slug); return PLG_EXIT_CHECKSUM;
+        }
+        $log[]='[ok] checksum SHA256 verificado';
+        unlink($sha256Tmp); // Remover arquivo temporário
+    }
+    
     $checksum = plugin_compute_checksum($zipTmp);
     if(!plugin_checksum_changed($slug,$checksum) && empty($params['reprocessar'])){
         $log[] = '[info] checksum inalterado – nenhum processamento adicional';

@@ -15,7 +15,10 @@ function plg_log($slug, $level, $msg){
   if(!is_dir($dir)) mkdir($dir, 0777, true);
   $line = sprintf("[%s] [%s] [PLUGIN:%s] %s\n", date('c'), strtoupper($level), $slug ?: '-', $msg);
   file_put_contents($dir.'/installer.log', $line, FILE_APPEND);
-  echo $line;
+  // Só faz echo quando executado via CLI, não via web
+  if (defined('STDIN') || php_sapi_name() === 'cli') {
+    echo $line;
+  }
 }
 
 // ===== FUNÇÃO PARA EXECUÇÃO DIRETA (sem CLI)
