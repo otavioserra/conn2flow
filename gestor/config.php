@@ -132,7 +132,7 @@ $_GESTOR['logs-path']							=	$_GESTOR['ROOT_PATH'].'logs/';
 // ===== Carrega as configurações de ambiente do .env =====
 
 $_GESTOR['url-raiz'] = $_ENV['URL_RAIZ'] ?? '/';
-$_GESTOR['development-env'] = $_ENV['DEVELOPMENT_ENV'] ?? false;
+$_GESTOR['development-env'] = filter_var($_ENV['DEVELOPMENT_ENV'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
 // ===== Definições de variáveis padrões do sistema que dependem de host 
 
