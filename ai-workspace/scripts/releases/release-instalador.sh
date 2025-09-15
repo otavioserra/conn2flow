@@ -23,7 +23,7 @@ RELEASE_TYPE=$1
 TAG_SUMMARY=$2
 COMMIT_DETAILS=$3
 CONFIG_FILE="gestor-instalador/index.php"
-VERSION_SCRIPT="ai-workspace/scripts/version-instalador.php"
+VERSION_SCRIPT="ai-workspace/scripts/releases/version-instalador.php"
 
 # 1. Roda o script PHP para atualizar a versão no index.php
 echo "Atualizando a versão do instalador ($RELEASE_TYPE)..."

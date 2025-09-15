@@ -234,6 +234,20 @@ function gestor_layout($params = false){
 	// modulosExtra - Array - Se definido, incluir módulos extras para procura automática de variáveis nestes módulos.
 	
 	// ===== 
+
+	$layoutHTMLIfNoExists = '<!DOCTYPE html>
+<html>
+<head>
+    <!-- pagina#titulo -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- pagina#css -->
+    <!-- pagina#js -->
+</head>
+<body>
+    @[[pagina#corpo]]@
+</body>
+</html>';
 	
 	if(isset($modulosExtra)){
 		gestor_pagina_variaveis_modulos(Array(
@@ -380,7 +394,14 @@ function gestor_layout($params = false){
 				return $html;
 			}
 		} else {
-			return '';
+			if(isset($return_css)){
+				return Array(
+					'html' => $layoutHTMLIfNoExists,
+					'css' => '',
+				);
+			} else {
+				return $layoutHTMLIfNoExists;
+			}
 		}
 	}
 }

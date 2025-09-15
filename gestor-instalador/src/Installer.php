@@ -991,8 +991,13 @@ body {
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Conn2Flow-Installer/1.0');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // Habilitar verificação SSL
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);   // Verificar hostname
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Conn2Flow-Installer/1.0 (PHP/' . PHP_VERSION . ')');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Accept: application/vnd.github.v3+json',
+            'X-GitHub-Api-Version: 2022-11-28'
+        ]);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         
@@ -1029,13 +1034,69 @@ body {
             } else {
                 $this->log("Resposta da API inválida - não é um array", 'WARNING');
             }
+        } elseif ($httpCode === 403) {
+            $this->log("❌ Rate limit ou bloqueio detectado (403). Tentando fallback...", 'WARNING');
+            $fallbackUrl = $this->getFallbackReleaseUrl();
+            if ($fallbackUrl) {
+                return $fallbackUrl;
+            }
         } else {
             $this->log("Falha na requisição da API: HTTP {$httpCode}", 'WARNING');
         }
         
-        // Se chegou até aqui, a API falhou ou não encontrou releases
-        $this->log("❌ Falha ao buscar releases via API do GitHub", 'ERROR');
+        // Última tentativa: fallback
+        $this->log("Tentando método de fallback como última opção...", 'WARNING');
+        $fallbackUrl = $this->getFallbackReleaseUrl();
+        if ($fallbackUrl) {
+            return $fallbackUrl;
+        }
+        
+        // Se chegou até aqui, tudo falhou
+        $this->log("❌ Falha ao buscar releases via API do GitHub e fallback", 'ERROR');
         throw new Exception(__('error_github_api_failed', 'Não foi possível acessar os releases do GitHub. Verifique sua conexão com a internet e tente novamente.'));
+    }
+
+    /**
+     * Método de fallback para buscar URL do release quando a API falha
+     */
+    private function getFallbackReleaseUrl()
+    {
+        $this->log("Tentando método de fallback para obter URL do release...");
+        
+        // Lista de releases conhecidos em ordem de prioridade (mais recente primeiro)
+        $knownReleases = [
+            'gestor-v2.0.14' => 'https://github.com/otavioserra/conn2flow/releases/download/gestor-v2.0.14/gestor.zip',
+            'gestor-v1.16.0' => 'https://github.com/otavioserra/conn2flow/releases/download/gestor-v1.16.0/gestor.zip',
+        ];
+        
+        // Tenta verificar qual release está disponível fazendo HEAD requests
+        foreach ($knownReleases as $tag => $url) {
+            $this->log("Testando disponibilidade do release: {$tag}");
+            
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_NOBODY, true); // HEAD request
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Conn2Flow-Installer/1.0 (PHP/' . PHP_VERSION . ')');
+            
+            curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            
+            if ($httpCode === 200) {
+                $this->log("✅ Release encontrado via fallback: {$tag}");
+                return $url;
+            } else {
+                $this->log("Release {$tag} não disponível (HTTP {$httpCode})", 'WARNING');
+            }
+        }
+        
+        $this->log("❌ Nenhum release conhecido disponível via fallback", 'ERROR');
+        return null;
     }
 
     // Métodos de seeders removidos.
