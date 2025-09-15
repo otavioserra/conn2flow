@@ -182,9 +182,11 @@ Conn2Flow fornece um **ambiente de desenvolvimento completo** que vai além de a
 - ✅ **Ambiente de Testes** - Stack de desenvolvimento baseado em Docker
 
 **Framework de Desenvolvimento de Plugins:**
-- ✅ **Templates de Plugins** - Templates automatizados para criar novos plugins
-- ✅ **Scripts de Desenvolvimento** - Scripts para commit, release e deployment
-- ✅ **Ambiente de Testes** - Testes e validação isolados de plugins
+- ✅ **Diretório de Templates** (`dev-plugins/templates/`) - Templates prontos para desenvolvimento e arquivos de ambiente
+- ✅ **Desenvolvimento Ativo** (`dev-plugins/plugins/`) - Onde os plugins são realmente desenvolvidos (repositórios private/public)
+- ✅ **Configuração de Ambiente** - Copie arquivos de `templates/environment/` para `plugins/private/` ou `plugins/public/`
+- ✅ **Scripts Automatizados** - Scripts pré-construídos para desenvolvimento, commits, releases e sincronização de plugins
+- ✅ **Integração VS Code** - Tarefas em `.vscode/tasks.json` para automação de desenvolvimento
 - ✅ **Documentação** - Guias completos para desenvolvimento de plugins
 
 **Desenvolvimento Assistido por IA:**
@@ -201,7 +203,11 @@ Conn2Flow fornece um **ambiente de desenvolvimento completo** que vai além de a
    cd conn2flow
    ```
 
-2. **Configure Ambiente de Desenvolvimento**
+2. **Instale Extensões do VS Code** (Recomendado)
+   - **Task Explorer**: `https://github.com/spmeesseman/vscode-taskexplorer` - Para acesso fácil às tarefas de desenvolvimento
+   - Esta extensão fornece uma interface visual para as tarefas pré-configuradas em `.vscode/tasks.json`
+
+3. **Configure Ambiente de Desenvolvimento**
    ```bash
    # Copie e configure configurações de ambiente
    cp dev-environment/templates/environment/environment.json dev-environment/data/environment.json
@@ -210,6 +216,16 @@ Conn2Flow fornece um **ambiente de desenvolvimento completo** que vai além de a
    # - source: Caminho para sua instalação local Conn2Flow
    # - target: Caminho onde Docker irá montar os arquivos
    # - dockerPath: Caminho interno do container Docker
+   ```
+
+4. **Configure Desenvolvimento de Plugins** (se desenvolvendo plugins)
+   ```bash
+   # Copie arquivos de ambiente para diretórios de plugin
+   cp -r dev-plugins/templates/environment/* dev-plugins/plugins/private/
+   cp -r dev-plugins/templates/environment/* dev-plugins/plugins/public/
+   
+   # Configure arquivos environment.json em ambos os diretórios com caminhos corretos
+   # Esses arquivos são essenciais para que os scripts de desenvolvimento de plugins funcionem corretamente
    ```
 
 3. **Inicie Ambiente de Desenvolvimento**
@@ -318,9 +334,20 @@ ai-workspace/          # Ambiente de desenvolvimento
 └── utils/            # Utilitários de desenvolvimento
 
 dev-plugins/           # Framework de desenvolvimento de plugins
-├── plugins/          # Templates e exemplos de plugins
-├── scripts/          # Scripts de automação de plugins
+├── templates/        # Templates prontos para desenvolvimento
+│   ├── environment/  # Arquivos de ambiente para copiar para pastas de plugin
+│   │   ├── .github/  # Workflows de release automatizado
+│   │   ├── scripts/  # Scripts de desenvolvimento para plugins
+│   │   └── environment.json # Mapeamento de plugins e configuração de desenvolvimento
+│   ├── plugin/       # Template básico de plugin para copiar
+│   └── plugin-skeleton/ # Template avançado de plugin com exemplos
+├── plugins/          # Ambiente ativo de desenvolvimento de plugins
+│   ├── private/      # Plugins de repositório privado (requer token)
+│   └── public/       # Plugins de repositório público (sem token necessário)
 └── tests/            # Ambiente de testes de plugins
+
+.vscode/              # Configuração de desenvolvimento VS Code
+└── tasks.json        # Tarefas pré-configuradas para automação de desenvolvimento
 
 dev-environment/       # Stack de desenvolvimento Docker
 ├── docker/           # Configurações Docker
@@ -366,6 +393,8 @@ dev-environment/       # Stack de desenvolvimento Docker
 - **PHP Local**: 8.4.8 CLI para scripts utilitários e ferramentas de desenvolvimento
 - **Banco de Dados**: Schema verificado com 75 tabelas e seeders abrangentes
 - **Testes**: Scripts de verificação de migração e seeder incluídos
+- **Integração VS Code**: Tarefas pré-configuradas em `.vscode/tasks.json` para automação de desenvolvimento
+- **Arquivos de Ambiente**: Arquivos `environment.json` devidamente configurados para desenvolvimento do core e plugins
 
 ## Documentação & Desenvolvimento
 

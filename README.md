@@ -2,7 +2,7 @@
 
 > 📖 **Available in multiple languages**: [🇧🇷 Portuguese](README-PT-BR.md) | 🇺🇸 English (this file)
 
-Conn2Flow is a complete, open-source Content Management System (CMS) built with modern PHP, featuring a revolutionary plugin architecture and comprehensive development tools. This repository contains everything needed to develop, test, and deploy both the core CMS and custom plugins.- Complete Development Environment for Modern CMS
+Conn2Flow is a complete, open-source Content Management System (CMS) built with modern PHP, featuring a revolutionary plugin architecture and comprehensive development tools. This repository contains everything needed to develop, test, and deploy both the core CMS and custom plugins.
 
 **Welcome to Conn2Flow - Complete Open Source CMS Development Environment!**
 
@@ -184,9 +184,11 @@ Conn2Flow provides a **complete development environment** that goes beyond just 
 - ✅ **Testing Environment** - Docker-based development stack
 
 **Plugin Development Framework:**
-- ✅ **Plugin Templates** - Automated templates for creating new plugins
-- ✅ **Development Scripts** - Scripts for commit, release, and deployment
-- ✅ **Testing Environment** - Isolated plugin testing and validation
+- ✅ **Templates Directory** (`dev-plugins/templates/`) - Ready-to-use development templates and environment files
+- ✅ **Active Development** (`dev-plugins/plugins/`) - Where plugins are actually developed (private/public repos)
+- ✅ **Environment Setup** - Copy `templates/environment/` files to `plugins/private/` or `plugins/public/`
+- ✅ **Automated Scripts** - Pre-built scripts for plugin development, commits, releases, and synchronization
+- ✅ **VS Code Integration** - Tasks in `.vscode/tasks.json` for development automation
 - ✅ **Documentation** - Complete guides for plugin development
 
 **AI-Assisted Development:**
@@ -203,7 +205,11 @@ Conn2Flow provides a **complete development environment** that goes beyond just 
    cd conn2flow
    ```
 
-2. **Configure Development Environment**
+2. **Install VS Code Extensions** (Recommended)
+   - **Task Explorer**: `https://github.com/spmeesseman/vscode-taskexplorer` - For easy access to development tasks
+   - This extension provides a visual interface for the pre-configured tasks in `.vscode/tasks.json`
+
+3. **Configure Development Environment**
    ```bash
    # Copy and configure environment settings
    cp dev-environment/templates/environment/environment.json dev-environment/data/environment.json
@@ -214,7 +220,17 @@ Conn2Flow provides a **complete development environment** that goes beyond just 
    # - dockerPath: Internal Docker container path
    ```
 
-3. **Start Development Environment**
+4. **Set Up Plugin Development** (if developing plugins)
+   ```bash
+   # Copy environment files to plugin directories
+   cp -r dev-plugins/templates/environment/* dev-plugins/plugins/private/
+   cp -r dev-plugins/templates/environment/* dev-plugins/plugins/public/
+   
+   # Configure environment.json files in both directories with correct paths
+   # These files are essential for plugin development scripts to work properly
+   ```
+
+4. **Start Development Environment**
    ```bash
    # Using Docker (recommended)
    cd dev-environment
@@ -224,7 +240,7 @@ Conn2Flow provides a **complete development environment** that goes beyond just 
    bash ai-workspace/scripts/dev-environment/setup.sh
    ```
 
-4. **Develop Plugins**
+5. **Develop Plugins**
    ```bash
    # Use automated templates
    bash dev-plugins/scripts/create-plugin.sh my-plugin
@@ -234,7 +250,7 @@ Conn2Flow provides a **complete development environment** that goes beyond just 
    bash scripts/dev/synchronizes.sh checksum
    ```
 
-5. **Contribute to Core**
+6. **Contribute to Core**
    ```bash
    # Use AI-assisted development
    # Check ai-workspace/prompts/ for standardized templates
@@ -320,9 +336,20 @@ ai-workspace/          # Development environment
 └── utils/            # Development utilities
 
 dev-plugins/           # Plugin development framework
-├── plugins/          # Plugin templates and examples
-├── scripts/          # Plugin automation scripts
+├── templates/        # Ready-to-use development templates
+│   ├── environment/  # Environment files to copy to plugin folders
+│   │   ├── .github/  # Automated release workflows
+│   │   ├── scripts/  # Development scripts for plugins
+│   │   └── environment.json # Plugin mapping and development config
+│   ├── plugin/       # Basic plugin template to copy
+│   └── plugin-skeleton/ # Advanced plugin template with examples
+├── plugins/          # Active plugin development environment
+│   ├── private/      # Private repository plugins (require token)
+│   └── public/       # Public repository plugins (no token needed)
 └── tests/            # Plugin testing environment
+
+.vscode/              # VS Code development configuration
+└── tasks.json        # Pre-configured tasks for development automation
 
 dev-environment/       # Docker development stack
 ├── docker/           # Docker configurations
@@ -368,6 +395,8 @@ dev-environment/       # Docker development stack
 - **Local PHP**: 8.4.8 CLI for utility scripts and development tools
 - **Database**: Verified schema with 75 tables and comprehensive seeders
 - **Testing**: Migration and seeder verification scripts included
+- **VS Code Integration**: Pre-configured tasks in `.vscode/tasks.json` for development automation
+- **Environment Files**: Properly configured `environment.json` files for core and plugin development
 
 ## Documentation & Development
 
