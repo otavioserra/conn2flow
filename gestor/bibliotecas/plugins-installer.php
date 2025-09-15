@@ -15,6 +15,13 @@ function plugin_remove_dir(string $dir): void { if(!is_dir($dir)) return; $it = 
 function plugin_compute_checksum(string $file): ?string { return file_exists($file)? hash_file('sha256',$file): null; }
 
 /**
+ * Detecta se o script está sendo executado via CLI ou web
+ */
+function plugin_is_cli_context(): bool {
+    return php_sapi_name() === 'cli';
+}
+
+/**
  * Converte nome de arquivo *Data.json para nome de tabela snake_case
  * Ex: ModulosData.json => modulos, HostsConfiguracoesData.json => hosts_configuracoes
  */
@@ -675,26 +682,56 @@ function plugin_delegate_database_operations(string $pluginSlug, array $dataFile
         $args[] = '--tables=' . escapeshellarg(implode(',', $tableNames));
     }
 
-    $cmd = 'php ' . escapeshellarg($scriptPath) . ' ' . implode(' ', $args);
+    if (plugin_is_cli_context()) {
+        // Em contexto CLI, usar exec() como antes
+        $cmd = 'php ' . escapeshellarg($scriptPath) . ' ' . implode(' ', $args);
+        $log[] = '[info] Executando comando: ' . $cmd;
 
-    $log[] = '[info] Executando comando: ' . $cmd;
+        // Executar o comando
+        $output = [];
+        $returnCode = 0;
+        exec($cmd, $output, $returnCode);
 
-    // Executar o comando
-    $output = [];
-    $returnCode = 0;
-    exec($cmd, $output, $returnCode);
+        // Processar saída
+        foreach ($output as $line) {
+            $log[] = '[db-system] ' . $line;
+        }
 
-    // Processar saída
-    foreach ($output as $line) {
-        $log[] = '[db-system] ' . $line;
-    }
-
-    if ($returnCode === 0) {
-        $log[] = '[ok] Operações de banco de dados delegadas com sucesso';
-        return true;
+        if ($returnCode === 0) {
+            $log[] = '[ok] Operações de banco de dados delegadas com sucesso';
+            return true;
+        } else {
+            $log[] = '[erro] Falha ao delegar operações de banco de dados (código: ' . $returnCode . ')';
+            return false;
+        }
     } else {
-        $log[] = '[erro] Falha ao delegar operações de banco de dados (código: ' . $returnCode . ')';
-        return false;
+        // Em contexto web, usar include/require para evitar exec()
+        $log[] = '[info] Contexto web - incluindo script diretamente: ' . $scriptPath;
+
+        // Preparar variáveis globais que o script pode precisar
+        global $argv;
+        $originalArgv = $argv ?? [];
+        $argv = array_merge(['php'], $args); // Simular argumentos da linha de comando
+
+        try {
+            // Incluir o script diretamente
+            $result = require $scriptPath;
+
+            // Verificar se o script retornou um código de saída
+            if (is_int($result) && $result === 0) {
+                $log[] = '[ok] Operações de banco de dados delegadas com sucesso';
+                return true;
+            } else {
+                $log[] = '[erro] Falha ao delegar operações de banco de dados (código: ' . ($result ?? 'desconhecido') . ')';
+                return false;
+            }
+        } catch (\Throwable $e) {
+            $log[] = '[erro] Exceção ao incluir script de banco de dados: ' . $e->getMessage();
+            return false;
+        } finally {
+            // Restaurar argv original
+            $argv = $originalArgv;
+        }
     }
 }
 
@@ -982,38 +1019,47 @@ function plugin_cleanup_after_install(string $finalPath, array &$log): void {
         $log[] = '[ok] pasta db/ removida do plugin instalado';
     }
     
-    // Corrigir permissões (pegar dono/grupo da pasta pai)
-    $parentDir = dirname($finalPath);
-    if(is_dir($parentDir)) {
-        $stat = stat($parentDir);
-        if($stat) {
-            $owner = posix_getpwuid($stat['uid'])['name'] ?? 'www-data';
-            $group = posix_getgrgid($stat['gid'])['name'] ?? 'www-data';
-            
-            // Executar chown recursivo
-            $cmd = "chown -R $owner:$group " . escapeshellarg($finalPath);
-            exec($cmd, $output, $returnCode);
-            
-            if($returnCode === 0) {
-                $log[] = "[ok] permissões corrigidas para $owner:$group";
-            } else {
-                $log[] = "[aviso] falha ao corrigir permissões (código $returnCode)";
+    // Corrigir permissões apenas em contexto CLI
+    if(plugin_is_cli_context()) {
+        $parentDir = dirname($finalPath);
+        if(is_dir($parentDir)) {
+            $stat = stat($parentDir);
+            if($stat) {
+                $owner = posix_getpwuid($stat['uid'])['name'] ?? 'www-data';
+                $group = posix_getgrgid($stat['gid'])['name'] ?? 'www-data';
+                
+                // Executar chown recursivo
+                $cmd = "chown -R $owner:$group " . escapeshellarg($finalPath);
+                exec($cmd, $output, $returnCode);
+                
+                if($returnCode === 0) {
+                    $log[] = "[ok] permissões corrigidas para $owner:$group";
+                } else {
+                    $log[] = "[aviso] falha ao corrigir permissões (código $returnCode)";
+                }
             }
         }
+    } else {
+        $log[] = '[info] contexto web - pulando correção de permissões (gerenciado automaticamente pelo servidor)';
     }
 }
 
 function plugin_fix_temp_file_permissions(string $filePath, array &$log): void {
     if(!file_exists($filePath)) return;
     
-    // Executar chown para www-data:www-data
-    $cmd = "chown www-data:www-data " . escapeshellarg($filePath);
-    exec($cmd, $output, $returnCode);
-    
-    if($returnCode === 0) {
-        $log[] = "[ok] permissões corrigidas para www-data:www-data: $filePath";
+    // Corrigir permissões apenas em contexto CLI
+    if(plugin_is_cli_context()) {
+        // Executar chown para www-data:www-data
+        $cmd = "chown www-data:www-data " . escapeshellarg($filePath);
+        exec($cmd, $output, $returnCode);
+        
+        if($returnCode === 0) {
+            $log[] = "[ok] permissões corrigidas para www-data:www-data: $filePath";
+        } else {
+            $log[] = "[aviso] falha ao corrigir permissões (código $returnCode): $filePath";
+        }
     } else {
-        $log[] = "[aviso] falha ao corrigir permissões (código $returnCode): $filePath";
+        $log[] = "[info] contexto web - pulando correção de permissões para arquivo temporário (gerenciado automaticamente pelo servidor): $filePath";
     }
 }
 
