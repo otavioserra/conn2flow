@@ -74,6 +74,11 @@ case "$MODO" in
     ;;
 esac
 
+# Show source and target paths
+echo "📤 Origem: $ORIGEM"
+echo "📥 Destino: $DESTINO"
+echo "🐳 Caminho no Docker: $PATH_DOCKER"
+
 # Executa o comando escolhido
 "${CMD[@]}"
 

@@ -307,8 +307,8 @@ function admin_plugins_editar(){
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#privado_segment#',($origem_tipo == 'github_privado' ? 'active' : ''));
 		
 		// Substituir valores dos campos de origem
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#repo_publico_url#',(isset($retorno_bd['origem_referencia']) && $retorno_bd['origem_tipo'] == 'github_publico' ? $retorno_bd['origem_referencia'] : ''));
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#repo_privado_url#',(isset($retorno_bd['origem_referencia']) && $retorno_bd['origem_tipo'] == 'github_privado' ? $retorno_bd['origem_referencia'] : ''));
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#repo_publico_url#',(isset($retorno_bd['origem_referencia']) && $retorno_bd['origem_tipo'] == 'github_publico' ? 'https://github.com/' . $retorno_bd['origem_referencia'] : ''));
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#repo_privado_url#',(isset($retorno_bd['origem_referencia']) && $retorno_bd['origem_tipo'] == 'github_privado' ? 'https://github.com/' . $retorno_bd['origem_referencia'] : ''));
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#repo_privado_token#',(isset($retorno_bd['origem_credencial_ref']) ? $retorno_bd['origem_credencial_ref'] : ''));
 		
 		// ===== Popular os metaDados
@@ -906,23 +906,33 @@ function admin_plugins_descobrir_ultima_tag_plugin(string $repo_url, string $plu
         }
         
         error_log("{$log_prefix} [DISCOVERY] Encontrados " . count($data) . " releases");
-        
+
         // Procurar pela tag mais recente do plugin
-        $prefix = 'plugin-';
+        // Tentar múltiplos padrões de prefixo para maior flexibilidade
+        $prefixes = ['plugin-'];
         if ($plugin_id) {
-            $prefix = 'plugin-' . $plugin_id . '-';
+            // Adicionar padrões mais específicos primeiro
+            $prefixes = array_merge([
+                'plugin-' . $plugin_id . '-v',  // plugin-plugin_id-v
+            ], $prefixes);
         }
-        
+
         $latest_release = null;
-        foreach ($data as $release) {
-            if (!empty($release['tag_name']) && strpos($release['tag_name'], $prefix) === 0) {
-                if (!$latest_release || strtotime($release['published_at']) > strtotime($latest_release['published_at'])) {
-                    $latest_release = $release;
+        foreach ($prefixes as $prefix) {
+            error_log("{$log_prefix} [DISCOVERY] Tentando prefixo: '{$prefix}'");
+            foreach ($data as $release) {
+                if (!empty($release['tag_name']) && strpos($release['tag_name'], $prefix) === 0) {
+                    if (!$latest_release || strtotime($release['published_at']) > strtotime($latest_release['published_at'])) {
+                        $latest_release = $release;
+                        error_log("{$log_prefix} [DISCOVERY] Tag candidata encontrada: {$release['tag_name']} com prefixo '{$prefix}'");
+                    }
                 }
             }
-        }
-        
-        if ($latest_release) {
+            // Se encontrou uma tag com este prefixo, parar de tentar outros
+            if ($latest_release) {
+                break;
+            }
+        }        if ($latest_release) {
             error_log("{$log_prefix} [DISCOVERY] Tag encontrada: {$latest_release['tag_name']} ({$latest_release['published_at']})");
             
             // Procurar pelos assets gestor-plugin.zip e gestor-plugin.zip.sha256

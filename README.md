@@ -1,27 +1,30 @@
-# Conn2Flow - Modern Open Source CMS
+# # Conn2Flow - Complete CMS Development Environment
 
-**Welcome to Conn2Flow CMS!**
+> 📖 **Available in multiple languages**: [🇧🇷 Portuguese](README-PT-BR.md) | 🇺🇸 English (this file)
 
-Conn2Flow is a modern, lightweight and flexible open-source Content Management System (CMS) built using LAMP technology (Linux, Apache, MySQL, and PHP). Originally developed as a proprietary CMS named B2make, Conn2Flow is now being released to the open-source community to foster collaboration and innovation.
+Conn2Flow is a complete, open-source Content Management System (CMS) built with modern PHP, featuring a revolutionary plugin architecture and comprehensive development tools. This repository contains everything needed to develop, test, and deploy both the core CMS and custom plugins.- Complete Development Environment for Modern CMS
 
-**Online Demos**
+**Welcome to Conn2Flow - Complete Open Source CMS Development Environment!**
 
-You will be able to experience Conn2Flow in demo versions (**coming soon**):
+Conn2Flow is a modern, lightweight and flexible open-source Content Management System (CMS) built using LAMP technology (Linux, Apache, MySQL, and PHP). This repository provides a **complete development environment** that includes:
 
-* Latest Version (app.conn2flow.com): [app.conn2flow.com](http://app.conn2flow.com) (coming soon) - This will showcase the current version of Conn2Flow with all modern features.
-* Legacy Showcase (v1.conn2flow.com): [v1.conn2flow.com](http://v1.conn2flow.com) (coming soon) - Historical reference of the B2make legacy system.
+- ✅ **Full CMS System** (gestor/) - Core CMS with all management features
+- ✅ **Automated Web Installer** (gestor-instalador/) - One-click installation with multilingual support
+- ✅ **Development Tools** (ai-workspace/) - Complete development environment with AI-assisted workflows
+- ✅ **Plugin Development Framework** (dev-plugins/) - Full plugin creation and testing environment
+
+Originally developed as a proprietary CMS named B2make, Conn2Flow is now being released to the open-source community to foster collaboration and innovation.
 
 ## Repository Structure
 
-This repository contains the modern Conn2Flow system with automated installation and management:
+This repository provides a **complete development environment** for Conn2Flow CMS:
 
-* **gestor/**: The main server system - core CMS with all management features
-* **gestor-cliente/**: Distributed client system for multi-site management  
-* **gestor-cliente-update/**: Automated update system for distributed clients
-* **gestor-instalador/**: Web-based automated installer with multilingual support
-* **gestor-plugins/**: Plugin ecosystem for extending functionality
-* **cpanel/**: cPanel integration libraries (optional - system also works via FTP)
-* **ai-workspace/**: Development environment and comprehensive technical documentation
+* **gestor/**: The main CMS system - core with all management features, plugins V2, and automated updates
+* **gestor-instalador/**: Web-based automated installer with multilingual support (Portuguese/English)
+* **ai-workspace/**: Complete development environment with AI-assisted workflows, documentation, and automation tools
+* **dev-plugins/**: Full plugin development framework with templates, scripts, and testing environment
+* **dev-environment/**: Docker-based development environment with PHP 8.3 + Apache + MySQL 8.0
+* **.github/**: GitHub Actions workflows for automated releases and CI/CD
 
 ### Documentation
 
@@ -32,6 +35,7 @@ For detailed technical information and development guides, see:
 - **[📊 Full Development History](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Detailed commit-by-commit evolution
 
 ### Legacy Branches
+* **gestor-v1.16**: Latest stable release before v2.0.0
 * **b2make-legacy**: Complete legacy system preserved for reference
 * **v0-legacy**: Original 2012 version
 * **v1-legacy**: 2015 version
@@ -55,12 +59,12 @@ Conn2Flow features a modern **automated web installer** that simplifies the inst
    
 **Linux/macOS:**
 ```bash
-curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.0.10/instalador.zip
+curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.0/instalador.zip
 ```
 
 **Windows PowerShell:**
 ```powershell
-Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.0.10/instalador.zip" -OutFile "instalador.zip"
+Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.0/instalador.zip" -OutFile "instalador.zip"
 ```   **Option 2 - Always Latest Installer:**
    ```bash
    # Linux/macOS
@@ -133,8 +137,7 @@ For advanced users who prefer manual installation or need custom configurations:
    - Generate OpenSSL keys for security
 
 4. **Database Setup**
-   - Import schema from `gestor/db/conn2flow-schema.sql`
-   - Or use Phinx migrations: `vendor/bin/phinx migrate`
+   - Run the unified update script: `php controladores/atualizacoes/atualizacoes-banco-de-dados.php --env-dir=your-domain`
 
 5. **Web Server Configuration**
    - Point your web server to the `public-access` files
@@ -146,20 +149,20 @@ For advanced users who prefer manual installation or need custom configurations:
 - **Content Management**: Full-featured content creation and editing with TailwindCSS preview
 - **Multi-Framework CSS**: Choose between TailwindCSS and FomanticUI per resource
 - **Advanced Admin Modules**: Modern interface with real-time preview capabilities
+- **Plugin System V2**: Revolutionary plugin architecture with dynamic detection and automated templates
 - **User Management**: Role-based access control and user authentication
 - **Multi-site Support**: Manage multiple domains from single installation
-- **Plugin System**: Extensible architecture with custom plugins
 - **Security**: OpenSSL encryption, secure authentication, and access controls
 
-### Technical Features
-- **Modern PHP**: Built for PHP 8.0+ with modern coding standards
-- **Database**: MySQL/MariaDB with migration system and framework_css support
-- **Automated Updates**: Built-in system update mechanism with integrity verification
-- **Preview System**: Real-time TailwindCSS/FomanticUI preview for visual resources
-- **Modal Components**: Advanced modal system with CodeMirror integration
-- **Distributed Architecture**: Support for client-server configurations
-- **FTP Integration**: Direct file management capabilities
-- **cPanel Integration**: Optional cPanel API integration (not required)
+### Development Environment Features
+- **Complete Development Stack**: Docker environment with PHP 8.3 + Apache + MySQL 8.0
+- **AI-Assisted Development**: Comprehensive ai-workspace with 15 technical docs and 50+ agent conversations
+- **Plugin Development Framework**: Full dev-plugins environment with automated templates and scripts
+- **Automated Workflows**: GitHub Actions for releases, testing, and deployment
+- **Technical Documentation**: 15+ detailed guides covering all system aspects
+- **Testing & Validation**: Automated scripts for migration and seeder verification
+- **VS Code Integration**: Pre-configured tasks for Docker, Git operations, and development workflows
+- **Ready-to-Use Scripts**: Functional automation scripts for commits, releases, and synchronization
 
 ### Installation Benefits
 - **One-Click Installation**: Web-based installer with guided setup
@@ -168,45 +171,122 @@ For advanced users who prefer manual installation or need custom configurations:
 - **Automatic Configuration**: All security keys and settings generated automatically
 - **Clean Installation**: Self-removing installer leaves no traces
 
-## Development & Architecture
+## Complete Development Environment
+
+Conn2Flow provides a **complete development environment** that goes beyond just the CMS - it's a full development ecosystem designed for both the core system and plugin development.
+
+### 🎯 What's Included
+
+**Core System Development:**
+- ✅ **Full CMS Source Code** - Complete gestor/ system with all features
+- ✅ **Automated Installer** - Production-ready web installer
+- ✅ **Database Migrations** - Complete schema and data migration system
+- ✅ **Testing Environment** - Docker-based development stack
+
+**Plugin Development Framework:**
+- ✅ **Plugin Templates** - Automated templates for creating new plugins
+- ✅ **Development Scripts** - Scripts for commit, release, and deployment
+- ✅ **Testing Environment** - Isolated plugin testing and validation
+- ✅ **Documentation** - Complete guides for plugin development
+
+**AI-Assisted Development:**
+- ✅ **Knowledge Base** - 15 technical documents preserving system knowledge
+- ✅ **Agent Conversations** - 50+ documented AI development sessions
+- ✅ **Automation Scripts** - AI-created tools for development workflow
+- ✅ **Standardized Templates** - Consistent prompts for quality AI interactions
+
+### 🚀 Quick Start for Developers
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/otavioserra/conn2flow.git
+   cd conn2flow
+   ```
+
+2. **Configure Development Environment**
+   ```bash
+   # Copy and configure environment settings
+   cp dev-environment/templates/environment/environment.json dev-environment/data/environment.json
+   
+   # Edit the file with your local paths:
+   # - source: Path to your local Conn2Flow installation
+   # - target: Path where Docker will mount the files
+   # - dockerPath: Internal Docker container path
+   ```
+
+3. **Start Development Environment**
+   ```bash
+   # Using Docker (recommended)
+   cd dev-environment
+   docker-compose up -d
+   
+   # Or use local development scripts
+   bash ai-workspace/scripts/dev-environment/setup.sh
+   ```
+
+4. **Develop Plugins**
+   ```bash
+   # Use automated templates
+   bash dev-plugins/scripts/create-plugin.sh my-plugin
+   
+   # Development workflow
+   cd dev-plugins/plugins/private/my-plugin
+   bash scripts/dev/synchronizes.sh checksum
+   ```
+
+5. **Contribute to Core**
+   ```bash
+   # Use AI-assisted development
+   # Check ai-workspace/prompts/ for standardized templates
+   # Follow documented workflows in ai-workspace/docs/
+   ```
+
+### 📚 Learning Resources
+
+- **[AI Development Methodology](ai-workspace/README.md)** - How we built this with AI assistance
+- **[Plugin Development Guide](ai-workspace/docs/CONN2FLOW-PLUGIN-ARCHITECTURE.md)** - Complete plugin creation guide
+- **[System Architecture](ai-workspace/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Deep technical knowledge
+- **[Development Workflows](ai-workspace/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - CI/CD and automation
+- **[Complete System Documentation](ai-workspace/docs/CONN2FLOW-GESTOR-DETALHAMENTO.md)** - Detailed system architecture and components
+- **[GitHub Copilot Agent](.github/chatmodes/Conn2Flow-v2.0.chatmode.md)** - Specialized AI agent for Conn2Flow development
 
 ### System Update Mechanism (Automated Updates)
 
-Conn2Flow inclui um orquestrador de atualização do núcleo em `gestor/controladores/atualizacoes/atualizacoes-sistema.php` com suporte CLI e execução incremental via web (AJAX). Principais características:
+Conn2Flow includes a core update orchestrator in `gestor/controladores/atualizacoes/atualizacoes-sistema.php` with CLI and incremental web (AJAX) support. Main features:
 
-- Download de artefato `gestor.zip` por tag (ex: `gestor-v1.15.0`) ou uso de artefato local (`--local-artifact`)
-- Verificação opcional de integridade SHA256 (`--no-verify` para ignorar)
-- Wipe seletivo preservando diretórios críticos: `contents/`, `logs/`, `backups/`, `temp/`, `autenticacoes/`
-- Deploy otimizado (rename fallback para copy) com estatísticas de arquivos removidos / movidos
-- Merge aditivo de `.env` (novas variáveis adicionadas com bloco `# added-by-update`, variáveis deprecadas apenas logadas)
-- Script unificado de banco: `atualizacoes-banco-de-dados.php` (aplica migrações/dados e remove pasta `gestor/db/` após sucesso para reduzir superfície)
-- Exportação de plano JSON + logs estruturados em `logs/atualizacoes/`
-- Persistência das execuções na tabela `atualizacoes_execucoes` (status, stats, links de log/plano)
-- Housekeeping (retenção configurável, padrão 14 dias) de logs e diretórios temporários
+- Artifact download `gestor.zip` by tag (e.g.: `gestor-v1.15.0`) or local artifact usage (`--local-artifact`)
+- Optional SHA256 integrity verification (`--no-verify` to skip)
+- Selective wipe preserving critical directories: `contents/`, `logs/`, `backups/`, `temp/`, `autenticacoes/`
+- Optimized deployment (rename fallback to copy) with statistics of removed/moved files
+- Additive merge of `.env` (new variables added with `# added-by-update` block, deprecated variables only logged)
+- Unified database script: `atualizacoes-banco-de-dados.php` (applies migrations/data and removes `gestor/db/` folder after success to reduce attack surface)
+- JSON plan export + structured logs in `logs/atualizacoes/`
+- Execution persistence in `atualizacoes_execucoes` table (status, stats, log/plan links)
+- Housekeeping (configurable retention, default 14 days) of logs and temporary directories
 
-Flags principais (CLI):
+Main CLI flags:
 ```
 --tag=gestor-vX.Y.Z  --local-artifact  --only-files  --only-db  --no-db  \
 --dry-run  --backup  --download-only  --no-verify  --force-all  --tables=... \
 --log-diff  --logs-retention-days=N  --debug
 ```
 
-Execução Web (incremental):
+Web execution (incremental):
 ```
-?action=start -> deploy -> db -> finalize (status para polling, cancel para cancelar)
+?action=start -> deploy -> db -> finalize (status for polling, cancel to cancel)
 ```
-Estado de sessão: `temp/atualizacoes/sessions/<sid>.json` + `<sid>.log`.
+Session state: `temp/atualizacoes/sessions/<sid>.json` + `<sid>.log`.
 
-Documentação completa: `ai-workspace/docs/CONN2FLOW-ATUALIZACOES-SISTEMA.md`.
+Complete documentation: `ai-workspace/docs/CONN2FLOW-ATUALIZACOES-SISTEMA.md`.
 
 ### File Ownership & Permissions
 
-Para evitar falhas silenciosas de `rename()`/`unlink()` durante deploy (principalmente em containers), garanta que o owner dos diretórios da instalação e artefatos seja o mesmo usuário do processo PHP (ex: `www-data`). Exemplo pós extração / antes de executar atualização:
+To avoid silent failures of `rename()`/`unlink()` during deployment (especially in containers), ensure that the owner of installation directories and artifacts is the same user as the PHP process (e.g.: `www-data`). Example after extraction / before running update:
 ```bash
 chown -R www-data:www-data /var/www/sites/localhost/conn2flow-gestor
 chown -R www-data:www-data /var/www/sites/localhost/conn2flow-github
 ```
-Falhas de permissão resultarão em avisos de não remoção de pastas antigas e arquivos não atualizados.
+Permission failures will result in warnings about not removing old folders and files not being updated.
 
 ### Modern Development Stack
 - **PHP 8.0+**: Modern PHP features and performance
@@ -232,47 +312,62 @@ gestor-instalador/     # Web installer
 ├── lang/             # Multilingual support
 └── assets/           # CSS, JS, images
 
-cpanel/               # cPanel integration (optional)
-gestor-cliente/       # Distributed client system
+ai-workspace/          # Development environment
+├── docs/             # Technical documentation (15+ guides)
+├── scripts/          # Automation scripts
+├── prompts/          # AI development templates
+├── agents-history/   # 50+ AI agent conversations
+└── utils/            # Development utilities
+
+dev-plugins/           # Plugin development framework
+├── plugins/          # Plugin templates and examples
+├── scripts/          # Plugin automation scripts
+└── tests/            # Plugin testing environment
+
+dev-environment/       # Docker development stack
+├── docker/           # Docker configurations
+├── data/             # Sample data and configurations
+└── tests/            # Integration tests
+
+.github/               # GitHub Actions workflows
+└── workflows/        # CI/CD automation
 ```
 
 ## Current Versions
 
 ### Latest Stable Releases
 
-**Gestor (Core System)**: `v1.16.0` *(Latest)*
-- ✅ **Sistema de Preview TailwindCSS**: Pré-visualização em tempo real para recursos visuais
-- ✅ **Suporte Multi-Framework CSS**: Escolha entre TailwindCSS e FomanticUI por recurso
-- ✅ **Módulos Admin Modernizados**: admin-layouts, admin-paginas e admin-componentes atualizados
-- ✅ **Sistema Modal Avançado**: Modals responsivos com CodeMirror integrado
-- ✅ **Padrões Técnicos Otimizados**: gestor_componente() e modelo_var_troca() corrigidos
-- ✅ **Documentação Técnica Completa**: Guias e templates para desenvolvedores
+**Gestor (Core System)**: `v2.0.0` *(Latest)*
+- ✅ **Plugin System V2**: Completely refactored architecture with dynamic detection
+- ✅ **Development Templates**: Automated scripts for plugin creation
+- ✅ **Complete Data Tracking**: Automatic slug injection in tables with plugin column
+- ✅ **Dynamic Resolution**: Dynamic environment.json in all automation scripts
+- ✅ **Textual IDs**: Complete migration to textual format in reference fields
+- ✅ **Broad Cleanup**: Disabling of legacy tools and simplified structure
 
 **Instalador (Installer)**: `v1.4.0` *(Latest)*
-- ✅ **Suporte Framework CSS**: Instalação preparada para novos recursos v1.16.0
-- ✅ **Charset UTF-8 Robusto**: Compatibilidade total com caracteres especiais
-- ✅ **getPdo() Unificado**: Método único para todas conexões de banco
-- ✅ **Detecção URL Robusta**: Funcionamento garantido em subpasta ou raiz
-- ✅ **Auto-login Aprimorado**: Configuração automática pós-instalação
-- ✅ **Logs Detalhados**: Rastreamento completo do processo
+- ✅ **CSS Framework Support**: Installation prepared for new v2.0.0 features
+- ✅ **Robust UTF-8 Charset**: Full compatibility with special characters
+- ✅ **Unified getPdo()**: Single method for all database connections
+- ✅ **Robust URL Detection**: Guaranteed operation in subfolder or root
+- ✅ **Enhanced Auto-login**: Automatic configuration after installation
+- ✅ **Detailed Logs**: Complete tracking of the process
 
 ### Version History
-- **Gestor v1.16.0**: Sistema de preview TailwindCSS, suporte multi-framework CSS, módulos admin modernizados, padrões técnicos otimizados.
-- **Gestor v1.15.0**: Sistema de atualização automática consolidado, correção de permissões, documentação técnica.
-- **Gestor v1.11.0**: Versionamento automático recursos módulos/plugins; melhorias checksum e remoção definitiva de seeders na atualização.
-- **Gestor v1.10.x**: Correções de duplicidade, internacionalização, unificação geração de recursos, campos de controle *updated*.
-- **Instalador v1.4.0**: Suporte framework CSS, charset UTF-8 robusto, getPdo() unificado, preparação para preview system.
-- **Instalador v1.3.3**: Refatoração robusta com charset utf8mb4, correção de acentuação, instalação em ambientes diversos.
-- **Instalador v1.1.0**: Refatoração para usar script de atualização central; ajustes RewriteBase e criação admin.
+- **Gestor v2.0.0**: Plugin System V2 with refactored architecture, automated templates, complete data tracking, textual IDs, broad system cleanup.
+- **Gestor v1.16.0**: TailwindCSS preview system, multi-framework CSS support, modernized admin modules, optimized technical standards.
+- **Gestor v1.15.0**: Consolidated automatic update system, permission fixes, technical documentation.
+- **Gestor v1.11.0**: Automatic versioning of modules/plugins resources; checksum improvements and definitive removal of seeders in update.
+- **Gestor v1.10.x**: Duplicity fixes, internationalization, unified resource generation, *updated* control fields.
+- **Instalador v1.4.0**: CSS framework support, robust UTF-8 charset, unified getPdo(), preparation for preview system.
+- **Instalador v1.3.3**: Robust refactoring with utf8mb4 charset, accent correction, installation in diverse environments.
+- **Instalador v1.1.0**: Refactoring to use central update script; RewriteBase adjustments and admin creation.
 
 ### Development Environment
 - **Docker**: Complete development stack with PHP 8.3 + Apache + MySQL 8.0
 - **Local PHP**: 8.4.8 CLI for utility scripts and development tools
 - **Database**: Verified schema with 75 tables and comprehensive seeders
 - **Testing**: Migration and seeder verification scripts included
-
-# Plugin ecosystem
-gestor-plugins/
 
 ## Documentation & Development
 
@@ -370,18 +465,25 @@ Conn2Flow is released under an open-source license to ensure freedom of use, mod
 
 ## Roadmap
 
+### ✅ Recently Completed
+- **Plugin System V2**: Revolutionary plugin architecture with dynamic detection and automated templates
+- **Complete Development Environment**: Full-stack development tools with AI assistance
+- **Automated Workflows**: GitHub Actions for releases, testing, and deployment
+- **Technical Documentation**: 15+ comprehensive guides and knowledge base
+
 ### Upcoming Features
-- **Enhanced Plugin System**: More powerful plugin architecture
-- **REST API**: Full API for headless CMS usage
-- **Mobile App**: React Native companion app (future release)
-- **Multi-language Content**: Built-in translation management
-- **Performance Optimization**: Caching and optimization features
+- **Enhanced Plugin Marketplace**: Plugin discovery and installation system
+- **REST API**: Full API for headless CMS usage and integrations
+- **Mobile App**: React Native companion app for content management
+- **Advanced Multi-language**: Built-in translation management and workflows
+- **Performance Optimization**: Advanced caching and optimization features
+- **Online Demos**: Live demonstration environments for all features
 
 ### Migration from Legacy
 Users of the legacy B2make system can find migration tools and documentation in the `b2make-legacy` branch.
 
 ---
 
-**Conn2Flow - Modern CMS. Simple Installation. Powerful Features.**
+**Conn2Flow - Complete CMS Development Environment. One Repository, Full Stack.**
 
-*Transforming the legacy B2make system into a modern, community-driven open-source CMS.*
+*From legacy B2make to modern open-source CMS with revolutionary plugin system and AI-assisted development methodology.*

@@ -12,7 +12,25 @@
 
 ## 🏷️ Releases Atuais
 
-### **gestor-v1.16.0** (31 Agosto 2025) - `6febb893`
+### **gestor-v2.0.0** (15 Setembro 2025) - `3ea10a5e`
+**🎯 Tema:** Sistema de Plugins V2 + Arquitetura Refatorada**
+
+**Principais Melhorias:**
+- ✅ **Sistema de Plugins Aprimorado**: Correções críticas e novas funcionalidades para plugins
+- ✅ **Arquitetura de Plugins V2**: Detecção dinâmica de Data.json e rastreio completo de origem
+- ✅ **Templates de Desenvolvimento**: Padronização e automação completa para criação de plugins
+- ✅ **Sistema de Rastreio de Dados**: Injeção automática de slug em tabelas com coluna plugin
+- ✅ **Resolução Dinâmica de Ambiente**: Environment.json dinâmico em todos os scripts de automação
+- ✅ **Estrutura de Plugins Refatorada**: Nova arquitetura para desenvolvimento de plugins Conn2Flow
+- ✅ **Documentação Abrangente**: Sistema completo de documentação para módulos e plugins
+- ✅ **Limpeza Ampla do Sistema**: Desabilitação de ferramentas legadas e simplificação da estrutura
+
+**Breaking Changes:**
+- Migração para IDs textuais em campos de referência de módulos
+- Scripts de automação padronizados com resolução dinâmica
+- Arquitetura de plugins modernizada (V2)
+
+### **instalador-v1.4.0** (31 Agosto 2025) - `7f242fe9`
 **🎯 Tema:** Sistema de Preview TailwindCSS/FomanticUI + Multi-Framework CSS
 
 **Principais Melhorias:**
@@ -70,6 +88,24 @@
 ---
 
 ## 📈 Histórico Completo (120 Commits)
+
+### **🔌 SETEMBRO 2025: Sistema de Plugins V2 (15 Setembro 2025)**
+```
+3ea10a5e - 15 Sep 2025 : feat: Sistema de plugins aprimorado com correções críticas e novas funcionalidades  🔧 Correções Críticas: - Fix: Corrige erro origem_tipo
+5c326c73 - 15 Sep 2025 : [infra][plugins] Padronização e automação dos templates/scripts para desenvolvimento de plugins Conn2Flow  - Adicionados e atualizados templates de scripts de release, commit e workflows 
+para plugins em dev-plugins/plugins/templates - Padronização dos caminhos relativos e contexto de execução para garantir funcionamento em qualquer repositório de plugin - Inclusão de lógica automática para remoção de tags antigas e limpeza de recursos desnecessários nos releases - Correção de comandos para remoção de pastas resources em modules (fix: modules/resources) - Documentação e exemplos prontos para facilitar a criação de novos plugins a partir dos templates - Estrutura pronta para ser clonada e utilizada como base em qualquer novo repositório de plugin Conn2Flow
+bbc663a6 - 15 Sep 2025 : feat: Add comprehensive Conn2Flow Gestor overview to chatmode and update plugin architecture documentation
+9c81fa45 - 15 Sep 2025 : Atualiza documentação: corrige paths e marca checklist de plugin-development
+e2a28b70 - 15 Sep 2025 : Remove rastros de submódulo dev-plugins/plugins/private e garante ignorado
+36d62b1a - 15 Sep 2025 : Padroniza resolução dinâmica do environment.json e plugin ativo em todos os scripts de automação  - Todos os scripts (commit.sh, release.sh, version.php, update-data-resources-plugin.php)
+ agora buscam o environment.json sempre dois níveis acima do script, garantindo portabilidade e robustez. - Resolução do plugin ativo e do manifest.json feita sempre via activePlugin.id e array plugins do environment.json. - Mantida a possibilidade de sobrescrever caminhos via argumentos, mas o padrão é sempre o environment.json dinâmico. - Comentários e mensagens de erro revisados para clareza e manutenção. - Scripts prontos para uso em qualquer template de plugin, CI/CD ou ambiente de desenvolvimento.
+fe12f89a - 15 Sep 2025 : Definição de nova estrutura para desenvolvimento de plugins 2.
+5b4c377d - 15 Sep 2025 : Definição de nova estrutura para desenvolvimento de plugins.
+c8042bfe - 15 Sep 2025 : Principais atividades:
+355fff6a - 15 Sep 2025 : docs(docker): atualizar referencia para repositório externo chore: remover diretorios docker/utils e plugin-skeleton migrados para repos dedicados chore(scripts): paths dinamicos e build-
+local ajustado refactor(update): fallback artefato local e tasks ajustadas
+```
+**Foco:** Release major v2.0.0 com sistema de plugins V2 completo.
 
 ### **🎨 PERÍODO ATUAL: Sistema de Preview (31 Agosto 2025)**
 ```
@@ -304,7 +340,13 @@ d1a43ea8 - Fevereiro 2025 : Add 'b2make-gestor-plugins/escalas/' from commit '4c
 
 ## 📊 Evolução por Períodos
 
-### **🎯 SETEMBRO 2025 (Atual)**
+### **🔌 SETEMBRO 2025 (Atual - Plugins V2)**
+- **Commits:** 11 commits (release v2.0.0)
+- **Foco Principal:** Sistema de Plugins V2 + Arquitetura Refatorada
+- **Tecnologias:** Templates automatizados, detecção dinâmica, rastreio de dados
+- **Status:** Release major v2.0.0 concluído
+
+### **🎯 SETEMBRO 2025 (Sistema de Preview)**
 - **Commits:** 2 commits (releases v1.16.0/v1.4.0)
 - **Foco Principal:** Sistema de Preview TailwindCSS/FomanticUI
 - **Tecnologias:** CodeMirror, Framework CSS multi-suporte, Modal responsivo
@@ -344,11 +386,11 @@ d1a43ea8 - Fevereiro 2025 : Add 'b2make-gestor-plugins/escalas/' from commit '4c
 ## 📊 Estatísticas de Desenvolvimento
 
 ### **Atividade Geral (Últimos 6 meses)**
-- **Total de Commits:** 120+ commits analisados
-- **Features Implementadas:** 24 grandes funcionalidades
+- **Total de Commits:** 131+ commits analisados
+- **Features Implementadas:** 25 grandes funcionalidades
 - **Bugs Corrigidos:** 38 correções críticas
-- **Refatorações:** 18 melhorias estruturais
-- **Releases:** 12 versões lançadas
+- **Refatorações:** 19 melhorias estruturais
+- **Releases:** 13 versões lançadas
 
 ### **Velocidade de Desenvolvimento**
 ```
@@ -371,27 +413,27 @@ d1a43ea8 - Fevereiro 2025 : Add 'b2make-gestor-plugins/escalas/' from commit '4c
 ✅ TESTES MENCIONADOS: 90% dos commits críticos
 ```
 
-### **Categorização Avançada (120 commits)**
+### **Categorização Avançada (131 commits)**
 ```
-🏆 FEATURES (feat:): 32 commits (27%)
-   └── Sistema de preview, instalador automático, versionamento
+🏆 FEATURES (feat:): 35 commits (27%)
+   └── Sistema de plugins V2, templates automatizados, arquitetura refatorada
 
-🔧 FIXES (fix:): 28 commits (23%)
-   └── Charset, URLs, autenticação, migrações
+🔧 FIXES (fix:): 28 commits (21%)
+   └── Charset, URLs, autenticação, migrações, origem_tipo
 
-📚 REFACTOR: 22 commits (18%)
-   └── Sincronização dados, getPdo(), estrutura core
+📚 REFACTOR: 23 commits (18%)
+   └── Sincronização dados, getPdo(), estrutura core, IDs textuais
 
-📖 DOCS: 15 commits (13%)
-   └── README, documentação técnica, releases
+📖 DOCS: 18 commits (14%)
+   └── README, documentação técnica, releases, arquitetura plugins
 
-🔄 CHORE: 12 commits (10%)
-   └── Configuração ambiente, limpeza, tags
+🔄 CHORE: 15 commits (11%)
+   └── Configuração ambiente, limpeza, tags, automação
 
-⚙️ CONFIG: 8 commits (7%)
-   └── Workflows, .env, Docker, VS Code
+⚙️ CONFIG: 10 commits (8%)
+   └── Workflows, .env, Docker, VS Code, environment.json
 
-🎯 RELEASES: 3 commits (2%)
+🎯 RELEASES: 2 commits (1%)
    └── Tags oficiais e releases
 ```
 
@@ -479,11 +521,11 @@ TOTAL: ~7-13 dias por feature major
 
 ## 🎯 Próximos Releases (Baseado em Padrões e Roadmap)
 
-### **gestor-v1.17.0** (Previsão: Outubro 2025)
+### **gestor-v2.1.0** (Previsão: Outubro 2025)
 **Tendências Identificadas Baseadas no Histórico:**
 - **API REST Completa** (seguindo padrão de expansão modular)
 - **Cache System Inteligente** (extensão do trabalho de checksums)
-- **Plugin Architecture V2** (evolução do sistema de módulos)
+- **Plugin Architecture V2.1** (evolução do sistema de módulos)
 - **Performance Dashboard** (baseado nos logs estruturados implementados)
 
 **Probabilidade:** 85% (baseado no ciclo de 4-6 semanas entre releases major)
@@ -667,11 +709,11 @@ PREDITIVA:
 ## 🏆 Destaques e Conquistas
 
 ### **🥇 Maiores Conquistas Técnicas (2025)**
-1. **Sistema de Instalação 100% Automático** (28 commits, 2 meses)
-2. **Arquitetura de Updates Zero-Downtime** (18 commits, 1 mês)  
-3. **Versionamento Inteligente de Recursos** (12 commits, 2 semanas)
-4. **Sistema de Preview em Tempo Real** (estimado 25+ commits)
-5. **Charset UTF-8 Universal** (15 commits, 3 semanas)
+1. **Sistema de Plugins V2 Completo** (11 commits, 1 semana) - Arquitetura revolucionária
+2. **Sistema de Instalação 100% Automático** (28 commits, 2 meses)
+3. **Arquitetura de Updates Zero-Downtime** (18 commits, 1 mês)  
+4. **Versionamento Inteligente de Recursos** (12 commits, 2 semanas)
+5. **Sistema de Preview em Tempo Real** (estimado 25+ commits)
 
 ### **🏅 Marcos de Qualidade**
 - **Zero Reverts** em 120+ commits
@@ -689,7 +731,7 @@ PREDITIVA:
 
 ---
 
-**Documento expandido:** 31 de Agosto de 2025  
-**Análise baseada em:** 120 commits + 2 tags + tendências  
-**Próxima atualização:** Após release v1.17.0  
+**Documento expandido:** 15 de Setembro de 2025  
+**Análise baseada em:** 131 commits + 3 tags + tendências  
+**Próxima atualização:** Após release v2.1.0  
 **Profundidade:** 6 meses de histórico detalhado

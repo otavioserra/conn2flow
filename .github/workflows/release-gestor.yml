@@ -96,70 +96,89 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🚀 Conn2Flow Gestor Release v2.0.X (Sistema de Preview + Framework CSS)
+          ## 🚀 Conn2Flow Gestor Release v2.0.0 (Sistema de Plugins V2 + Arquitetura Refatorada)
           
-          Esta release traz **grandes melhorias nos módulos administrativos** com sistema de preview TailwindCSS e suporte multi-framework CSS.
+          Esta release traz uma **revolução completa no sistema de plugins** com arquitetura V2, templates automatizados e rastreio completo de dados.
           
           ### 🎯 Novidades Principais desta Versão:
-          - ✅ **Sistema de Preview TailwindCSS**: Pré-visualização em tempo real para layouts, páginas e componentes
-          - ✅ **Suporte Multi-Framework CSS**: Escolha entre TailwindCSS e FomanticUI por recurso
-          - ✅ **Módulos Admin Modernizados**: admin-layouts, admin-paginas e admin-componentes com interface melhorada
-          - ✅ **Sistema de Modal Avançado**: Modals responsivos com CodeMirror integrado
-          - ✅ **Ordem de Dependências Otimizada**: Resolução de problemas de inicialização DOM
-          - ✅ **Validação de Framework CSS**: Campo obrigatório para recursos visuais
+          - ✅ **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica
+          - ✅ **Templates de Desenvolvimento Automatizados**: Scripts padronizados para criação de plugins
+          - ✅ **Rastreio Completo de Origem**: Injeção automática de slug em tabelas com coluna plugin
+          - ✅ **Resolução Dinâmica de Ambiente**: Environment.json dinâmico em todos os scripts
+          - ✅ **Estrutura de Plugins Modernizada**: Nova arquitetura para desenvolvimento Conn2Flow
+          - ✅ **Sistema de Correções Críticas**: Correções importantes no sistema de plugins
           
           ### 🔧 Melhorias Técnicas:
-          - ✅ **gestor_componente() Corrigido**: Uso adequado sem parâmetro 'variaveis'
-          - ✅ **modelo_var_troca() Individual**: Substituições precisas de placeholders
-          - ✅ **Endpoints de Preview**: Sistema robusto para geração de HTML em tempo real
-          - ✅ **JavaScript Otimizado**: Funções de callback para botões personalizados
-          - ✅ **Padrões Documentados**: Template atualizado para novos módulos
+          - ✅ **Migração para IDs Textuais**: Campos de referência convertidos para formato textual
+          - ✅ **Scripts de Automação Padronizados**: Resolução dinâmica em todos os scripts
+          - ✅ **Arquitetura de Plugins Refatorada**: Sistema V2 com detecção automática
+          - ✅ **Timezone Corrigido**: Ajuste para America/Sao_Paulo no Docker
+          - ✅ **Compatibilidade Cross-Platform**: Scripts funcionam em qualquer repositório
+          - ✅ **Limpeza Ampla do Sistema**: Desabilitação de ferramentas legadas
           
           ### 📦 Conteúdo:
           - Sistema gestor completo com arquitetura híbrida multilíngue
-          - Migrations para suporte framework_css (campo VARCHAR(50))
+          - Sistema de plugins V2 com templates automatizados
+          - Migrations para rastreio completo de dados (coluna plugin)
           - Sistema de atualização automática consolidado (v1.15.0)
-          - 264 recursos organizados por idioma (pt-br base)
+          - 264+ recursos organizados por idioma (pt-br base)
           - Dependências do Composer otimizadas
           - Documentação técnica completa
           
-          ### 🔧 Módulos Administrativos Atualizados:
-          - **admin-layouts**: Preview TailwindCSS + validação framework_css
-          - **admin-componentes**: Sistema modal otimizado + CodeMirror
-          - **admin-paginas**: Referência de padrões corretos implementados
+          ### 🔧 Sistema de Plugins V2:
+          - **Detecção Dinâmica**: Sistema automático de descoberta de Data.json
+          - **Templates Automatizados**: Scripts prontos para desenvolvimento de plugins
+          - **Rastreio de Origem**: Injeção automática de slug em todas as tabelas
+          - **Resolução Dinâmica**: Environment.json dinâmico em todos os scripts
+          - **Estrutura Moderna**: Arquitetura V2 para desenvolvimento Conn2Flow
+          - **Correções Críticas**: Sistema robusto com correções importantes
           
-          ### 🎯 Sistema de Preview:
-          - Modal de pré-visualização responsivo
-          - Suporte TailwindCSS via CDN
-          - Fallback FomanticUI automático
-          - Iframe isolado para renderização
-          - Callback JavaScript personalizado
+          ### 🎯 Recursos de Desenvolvimento:
+          - Templates completos em `dev-plugins/plugins/templates/`
+          - Scripts automatizados de commit, release e workflows
+          - Resolução dinâmica do environment.json
+          - Compatibilidade com qualquer repositório de plugin
+          - Documentação abrangente para desenvolvimento
           
           ### 🔧 Como usar:
           1. Use o [Conn2Flow Installer v1.4.0+](https://github.com/otavioserra/conn2flow/releases) para instalação automática
-          2. Ou extraia manualmente e execute: `php phinx.php migrate && php phinx.php seed:run`
-          3. Aproveite os novos recursos de preview nos módulos administrativos
+          2. Para instalação manual, use o instalador web em `gestor-instalador/index.php`
+          3. Utilize os templates em `dev-plugins/plugins/templates/` para criar novos plugins
           
           ### 📋 Requisitos:
           - PHP 8.1+
           - MySQL 5.7+ ou MariaDB 10.2+
           - Extensões: zip, curl, mbstring, openssl, pdo_mysql
-          - Acesso à internet (para TailwindCSS CDN no preview)
+          - Git (para desenvolvimento de plugins)
           
           ### 🌟 Padrões Aprendidos e Implementados:
-          - ✅ **Ordem Crítica**: Modal ANTES do CodeMirror nas dependências
-          - ✅ **Componentes**: gestor_componente() retorna HTML que precisa de modelo_var_troca()
-          - ✅ **Frameworks**: Campo framework_css obrigatório para recursos visuais
-          - ✅ **Preview**: Endpoints PHP + JavaScript para pré-visualização
-          - ✅ **Validação**: Formulários com validação de framework CSS
+          - ✅ **Plugins V2**: Arquitetura moderna com detecção dinâmica
+          - ✅ **Templates Automatizados**: Scripts padronizados para desenvolvimento
+          - ✅ **Rastreio Completo**: Injeção automática de origem em tabelas
+          - ✅ **Resolução Dinâmica**: Environment.json dinâmico e robusto
+          - ✅ **IDs Textuais**: Migração completa para formato textual
+          - ✅ **Cross-Platform**: Compatibilidade universal de scripts
           
           ### 🎉 Melhorias desta versão:
-          - ✅ **Interface moderna**: Sistema de preview intuitivo e responsivo
-          - ✅ **Flexibilidade CSS**: Escolha livre entre frameworks por recurso
-          - ✅ **Desenvolvimento facilitado**: Padrões claros para novos módulos
-          - ✅ **Administração melhorada**: Interface mais rica e funcional
-          - ✅ **Documentação completa**: Guias técnicos para desenvolvedores
-          - ✅ **Compatibilidade preservada**: Zero breaking changes para usuários finais
+          - ✅ **Sistema de Plugins Revolucionário**: Arquitetura V2 completa e moderna
+          - ✅ **Desenvolvimento Facilitado**: Templates automatizados e documentação
+          - ✅ **Rastreabilidade Total**: Sistema completo de origem de dados
+          - ✅ **Automação Completa**: Scripts dinâmicos e robustos
+          - ✅ **Arquitetura Moderna**: IDs textuais e estrutura refatorada
+          - ✅ **Compatibilidade Preservada**: Zero breaking changes para usuários finais
+          
+          ### ⚠️ Breaking Changes (Migration Guide):
+          - Campos de referência de módulos migrados para formato textual
+          - Scripts de automação padronizados com resolução dinâmica
+          - Arquitetura de plugins modernizada (V2)
+          - Timezone ajustado para America/Sao_Paulo
+          
+          ### 🔄 Migration Path:
+          1. Use o instalador web para atualização automática
+          2. Ou execute: `php controladores/atualizacoes/atualizacoes-banco-de-dados.php --env-dir=seu-dominio`
+          3. Atualize scripts de plugins para usar resolução dinâmica
+          4. Utilize os novos templates para desenvolvimento
+          5. Aproveite a arquitetura V2 de plugins
         draft: false
         prerelease: false
         files: |
