@@ -77,7 +77,7 @@ function tr(string $key, array $vars = []): string { return __t($key, $vars); }
 
 /** Conexão PDO reutilizável */
 function db(): PDO {
-    global $BASE_PATH_DB, $_BANCO, $CLI_OPTS, $_ENV;
+    global $BASE_PATH_DB, $_BANCO, $CLI_OPTS, $_ENV, $GLOBALS;
 
     static $pdo = null; if ($pdo) return $pdo;
 
@@ -102,10 +102,12 @@ function db(): PDO {
         $pass = $_BANCO['senha'] ?? '';
     }
 
+    log_disco('DEBUG_DB_CONNECT host=' . $host . ' db=' . $name . ' user=' . $user, $GLOBALS['LOG_FILE_DB']);
     $dsn = "mysql:host=$host;dbname=$name;charset=utf8mb4";
     $pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     // Força charset para todas operações
     $pdo->exec("SET NAMES utf8mb4");
+    log_disco('DEBUG_DB_CONNECTED', $GLOBALS['LOG_FILE_DB']);
     return $pdo;
 }
 
@@ -233,7 +235,7 @@ function cleanDataRow(array $row): array {
  *  PaginasData.json            => paginas
  *  hosts_configuracoesData.json (legado) => hosts_configuracoes
  */
-function tabelaFromDataFile(string $file): string {
+function tableFromDataFile(string $file): string {
     $base = preg_replace('/Data\.json$/', '', basename($file));
     if ($base === '') return '';
     if (strpos($base, '_') !== false) {
@@ -278,6 +280,7 @@ function descobrirPK(string $tabela, array $row): string {
  * v1.10.16: parâmetro $simulate para permitir dry-run exibindo diffs sem persistir.
  */
 function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $logDiffs = true, bool $simulate = false): array {
+    global $CLI_OPTS, $GLOBALS;
     if (empty($registros)) return ['inserted'=>0,'updated'=>0,'same'=>0];
     $debug = !empty($GLOBALS['CLI_OPTS']['debug']);
 
@@ -687,18 +690,22 @@ function comparacaoDados(): array {
     global $DB_DATA_DIR, $LOG_FILE_DB, $CLI_OPTS, $CHECKSUM_CHANGED_TABLES;
     log_disco(tr('_compare_start'), $LOG_FILE_DB);
     $arquivos = glob($DB_DATA_DIR . '*Data.json');
+    log_disco('DEBUG_COMPARACAO_DADOS arquivos_count=' . count($arquivos) . ' dataDir=' . $DB_DATA_DIR, $LOG_FILE_DB);
+    foreach ($arquivos as $f) {
+        log_disco('DEBUG_ARQUIVO ' . basename($f), $LOG_FILE_DB);
+    }
     // Filtro --tables opcional
     if (!empty($CLI_OPTS['tables'])) {
         $filter = array_map('strtolower', array_map('trim', explode(',', $CLI_OPTS['tables'])));
         $arquivos = array_values(array_filter($arquivos, function($f) use ($filter){
-            $t = tabelaFromDataFile($f); return in_array(strtolower($t), $filter, true);
+            $t = tableFromDataFile($f); return in_array(strtolower($t), $filter, true);
         }));
-        log_disco(tr('_filter_tables',[ 'lista'=>implode(',', array_map(fn($f)=>tabelaFromDataFile($f), $arquivos))]), $LOG_FILE_DB);
+        log_disco(tr('_filter_tables',[ 'lista'=>implode(',', array_map(fn($f)=>tableFromDataFile($f), $arquivos))]), $LOG_FILE_DB);
     }
     $pdo = db();
     $resumo = [];
     foreach ($arquivos as $file) {
-        $tabela = tabelaFromDataFile($file);
+        $tabela = tableFromDataFile($file);
         if (is_array($CHECKSUM_CHANGED_TABLES) && !in_array($tabela, $CHECKSUM_CHANGED_TABLES, true)) {
             log_disco("SKIP_NO_CHECKSUM_CHANGE tabela=$tabela", $LOG_FILE_DB);
             continue;
@@ -839,13 +846,15 @@ function relatorioFinal(array $resumo): void {
 }
 
 function main() {
-    global $LOG_FILE_DB, $CLI_OPTS, $BACKUP_DIR_BASE, $DB_DATA_DIR, $CHECKSUM_CHANGED_TABLES, $PLUGIN_SLUG, $PLUGIN_BASE_DIR, $PLUGIN_MIGRATIONS_DIR, $BASE_PATH_DB;
+    global $LOG_FILE_DB, $CLI_OPTS, $BACKUP_DIR_BASE, $DB_DATA_DIR, $CHECKSUM_CHANGED_TABLES, $PLUGIN_SLUG, $PLUGIN_BASE_DIR, $PLUGIN_MIGRATIONS_DIR, $BASE_PATH_DB, $GLOBALS;
 
     // Recalcula BASE_PATH_DB de forma segura (absoluto) independente de escopo global anterior
     $calcBase = realpath(__DIR__ . '/../../');
     if ($calcBase && is_dir($calcBase)) {
         $BASE_PATH_DB = rtrim($calcBase, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
     }
+
+    log_disco('DEBUG_PLUGIN_MAIN_INI slug=' . ($PLUGIN_SLUG ?? 'null') . ' baseDir=' . ($PLUGIN_BASE_DIR ?? 'null') . ' dataDir=' . ($DB_DATA_DIR ?? 'null'), $LOG_FILE_DB);
 
     try {
         log_disco(tr('_process_start'), $LOG_FILE_DB);
@@ -861,14 +870,14 @@ function main() {
             $pdo = db();
             $arquivos = glob($DB_DATA_DIR . '*Data.json');
             $tabelas = [];
-            foreach ($arquivos as $f) { $tabelas[] = tabelaFromDataFile($f); }
+            foreach ($arquivos as $f) { $tabelas[] = tableFromDataFile($f); }
             if (!empty($CLI_OPTS['tables'])) {
                 $filter = array_map('strtolower', array_map('trim', explode(',', $CLI_OPTS['tables'])));
                 $tabelas = array_values(array_filter($tabelas, fn($t)=>in_array(strtolower($t), $filter, true)));
             }
             reverseExport($pdo, $tabelas, $DB_DATA_DIR);
             log_disco(tr('_process_end_success'), $LOG_FILE_DB);
-            return;
+            return 0; // Sucesso no modo reverso
         }
         // ========= Adaptação Plugin =========
         $PLUGIN_SLUG = $CLI_OPTS['plugin'] ?? null;
@@ -934,7 +943,7 @@ function main() {
         if ($previousMap && !$forceAll) {
             $changed = [];
             foreach ($checksums as $file=>$sum) {
-                if (!isset($previousMap[$file]) || $previousMap[$file] !== $sum) { $changed[] = tabelaFromDataFile($file); }
+                if (!isset($previousMap[$file]) || $previousMap[$file] !== $sum) { $changed[] = tableFromDataFile($file); }
             }
             if ($changed) {
                 $CHECKSUM_CHANGED_TABLES = $changed;
@@ -951,7 +960,7 @@ function main() {
         if (!empty($CLI_OPTS['backup'])) {
             $arquivos = glob($DB_DATA_DIR . '*Data.json');
             $tabelas = [];
-            foreach ($arquivos as $f) { $tabelas[] = tabelaFromDataFile($f); }
+            foreach ($arquivos as $f) { $tabelas[] = tableFromDataFile($f); }
             if (!empty($CLI_OPTS['tables'])) {
                 $filter = array_map('strtolower', array_map('trim', explode(',', $CLI_OPTS['tables'])));
                 $tabelas = array_values(array_filter($tabelas, fn($t)=>in_array(strtolower($t), $filter, true)));
@@ -962,6 +971,7 @@ function main() {
             log_disco('SEM_MUDANCAS_DADOS -> pulando sincronizacao', $LOG_FILE_DB);
             $resumo = [];
         } else {
+            log_disco('INICIANDO_SINCRONIZACAO_DADOS', $LOG_FILE_DB);
             $resumo = comparacaoDados();
         }
         // Registrar manager_updates
@@ -976,9 +986,11 @@ function main() {
         relatorioFinal($resumo);
         gestor_sessao_del_all(); // limpa cache de sessão do gestor (se houver)
         log_disco(tr('_process_end_success'), $LOG_FILE_DB);
+        return 0; // Sucesso
     } catch (Throwable $e) {
         log_disco(tr('_process_error',['msg'=>$e->getMessage()]), $LOG_FILE_DB);
         if (PHP_SAPI === 'cli') echo 'Erro: ' . $e->getMessage() . PHP_EOL;
+        return 1; // Erro
     }
 }
 
@@ -995,7 +1007,11 @@ function parseArgs(array $argv): array {
 }
 
 // Permite execução via require/include (web) usando $GLOBALS['CLI_OPTS'] (opcional), ou via CLI.
-if (PHP_SAPI !== 'cli') {
+// Verifica se este arquivo é o ponto de entrada principal (executado diretamente)
+$isMainScript = (realpath($_SERVER['SCRIPT_FILENAME'] ?? __FILE__) === __FILE__);
+
+if (!$isMainScript) {
+    // Executado via require/include - usar $GLOBALS['CLI_OPTS']
     global $CLI_OPTS, $GLOBALS;
     if (isset($GLOBALS['CLI_OPTS']) && is_array($GLOBALS['CLI_OPTS'])) {
         $CLI_OPTS = $GLOBALS['CLI_OPTS'];
@@ -1003,6 +1019,7 @@ if (PHP_SAPI !== 'cli') {
         $CLI_OPTS = [];
     }
 } else {
+    // Executado diretamente via CLI
     global $CLI_OPTS; $CLI_OPTS = parseArgs($argv);
     if (isset($CLI_OPTS['help']) || isset($CLI_OPTS['h'])) { echo tr('_args_usage') . PHP_EOL; exit(0); }
 }

@@ -37,107 +37,107 @@
             "command": "docker exec conn2flow-app bash -c \"tail -f /var/log/php_errors.log\""
         },
         {
-            "label": "🌐 GIT - Release Gestor",
-            "type": "shell",
-            "command": "bash ./ai-workspace/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
-        },
-        {
-            "label": "🌐 GIT - Release Instalador",
+            "label": "🔧 Instalador - GIT Release",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/releases/release-instalador.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
         },
         {
-            "label": "🌐 GIT - Commit Gestor",
+            "label": "🔧 Instalador - Sincronizar",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor-instalador.sh checksum"
+        },
+        {
+            "label": "🛠️ Gestor - GIT Release",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+        },
+        {
+            "label": "🛠️ Gestor - GIT Commit",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/commits/commit.sh \"${input:commitMsg}\""
         },
         {
-            "label": "🌐 GIT - Commit Gestor Plugin - Privado",
-            "type": "shell",
-            "command": "bash ./dev-plugins/plugins/private/scripts/commits/commit.sh \"${input:commitMsg}\""
-        },
-        {
-            "label": "🌐 GIT - Commit Gestor Plugin - Público",
-            "type": "shell",
-            "command": "bash ./dev-plugins/plugins/public/scripts/commits/commit.sh \"${input:commitMsg}\""
-        },
-        {
-            "label": "🌐 GIT - Release Gestor Plugin - Privado",
-            "type": "shell",
-            "command": "bash ./dev-plugins/plugins/private/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
-        },
-        {
-            "label": "🌐 GIT - Release Gestor Plugin - Público",
-            "type": "shell",
-            "command": "bash ./dev-plugins/plugins/public/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
-        },
-        {
-            "label": "🖥️ Atualização - Recursos",
+            "label": "🛠️ Gestor - Recursos",
             "type": "shell",
             "command": "php ./gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php"
         },
         {
-            "label": "🖥️ Atualização - Sincronizar Gestor",
-            "type": "shell",
-            "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor.sh checksum"
-        },
-        {
-            "label": "🖥️ Atualização - Dados",
+            "label": "🛠️ Gestor - Dados",
             "type": "shell",
             "command": "docker exec conn2flow-app bash -c \"php /var/www/sites/localhost/conn2flow-gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php --debug --log-diff\""
         },
         {
-            "label": "🖥️ Atualização - COMPLETA 🚀",
+            "label": "🛠️ Gestor - Sincronizar",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor.sh checksum"
+        },
+        {
+            "label": "🛠️ Gestor - Build Local",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/updates/build-local-gestor.sh"
+        },
+        {
+            "label": "🛠️ Gestor - Atualização Completa 🚀",
             // Note que esta tarefa NÃO tem a propriedade "command".
             // Ela serve apenas para orquestrar as outras.
             "dependsOn": [
                 // Coloque aqui os "labels" EXATOS das tarefas que você quer executar, na ordem.
-                "🖥️ Atualização - Recursos",
-                "🖥️ Atualização - Sincronizar Gestor",
-                "🖥️ Atualização - Dados"
+                "🛠️ Gestor - Recursos",
+                "🛠️ Gestor - Sincronizar",
+                "🛠️ Gestor - Dados"
             ],
             // Esta é a propriedade mágica que garante a execução em sequência!
             "dependsOrder": "sequence"
         },
         {
-            "label": "🖥️ Atualização - Recursos Plugin - Privado",
-            "type": "shell",
-            "command": "php ./dev-plugins/plugins/private/scripts/resources/update-data-resources-plugin.php"
-        },
-        {
-            "label": "🖥️ Atualização - Recursos Plugin - Público",
-            "type": "shell",
-            "command": "php ./dev-plugins/plugins/public/scripts/resources/update-data-resources-plugin.php"
-        },
-        {
-            "label": "♻️ Sincronização - Sincronizar Gestor",
-            "type": "shell",
-            "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor.sh checksum"
-        },
-        {
-            "label": "♻️ Sincronização - Sincronizar Gestor Instalador",
-            "type": "shell",
-            "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor-instalador.sh checksum"
-        },
-        {
-            "label": "♻️ Sincronização - Build Local Gestor",
-            "type": "shell",
-            "command": "bash ./ai-workspace/scripts/updates/build-local-gestor.sh"
-        },
-        {
-            "label": "♻️ Sincronização - Sincronizar Plugin Ativo - Privado",
+            "label": "🧩 Plugins Privado - Sincronizar Plugin Ativo",
             "type": "shell",
             "command": "bash ./dev-plugins/plugins/private/scripts/dev/synchronizes.sh checksum"
         },
         {
-            "label": "♻️ Sincronização - Sincronizar Plugin Ativo - Público",
+            "label": "🧩 Plugins Privado - Build Local Plugin Ativo",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/updates/build-local-gestor-plugin.sh"
+        },
+        {
+            "label": "🧩 Plugins Privado - Recursos Plugin",
+            "type": "shell",
+            "command": "php ./dev-plugins/plugins/private/scripts/resources/update-data-resources-plugin.php"
+        },
+        {
+            "label": "🧩 Plugins Privado - GIT Release",
+            "type": "shell",
+            "command": "bash ./dev-plugins/plugins/private/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+        },
+        {
+            "label": "🧩 Plugins Privado - GIT Commit",
+            "type": "shell",
+            "command": "bash ./dev-plugins/plugins/private/scripts/commits/commit.sh \"${input:commitMsg}\""
+        },
+        {
+            "label": "🧩 Plugins Público - Sincronizar Plugin Ativo",
             "type": "shell",
             "command": "bash ./dev-plugins/plugins/public/scripts/dev/synchronizes.sh checksum"
         },
         {
-            "label": "♻️ Sincronização - Build Local Plugin Ativo",
+            "label": "🧩 Plugins Público - Build Local Plugin Ativo",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/updates/build-local-gestor-plugin.sh"
+        },
+        {
+            "label": "🧩 Plugins Público - Recursos Plugin",
+            "type": "shell",
+            "command": "php ./dev-plugins/plugins/public/scripts/resources/update-data-resources-plugin.php"
+        },
+        {
+            "label": "🧩 Plugins Público - GIT Release",
+            "type": "shell",
+            "command": "bash ./dev-plugins/plugins/public/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+        },
+        {
+            "label": "🧩 Plugins Público - GIT Commit",
+            "type": "shell",
+            "command": "bash ./dev-plugins/plugins/public/scripts/commits/commit.sh \"${input:commitMsg}\""
         }
     ],
     "inputs": [

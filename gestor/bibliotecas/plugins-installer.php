@@ -714,8 +714,15 @@ function plugin_delegate_database_operations(string $pluginSlug, array $dataFile
         $argv = array_merge(['php'], $args); // Simular argumentos da linha de comando
 
         try {
-            // Incluir o script diretamente
+            // Incluir o script diretamente (ele já chama main() no final)
+            ob_start();
             $result = require $scriptPath;
+            $output = ob_get_clean();
+
+            // Adicionar saída aos logs se houver
+            if (!empty(trim($output))) {
+                $log[] = '[db-system] ' . trim($output);
+            }
 
             // Verificar se o script retornou um código de saída
             if (is_int($result) && $result === 0) {
