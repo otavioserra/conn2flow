@@ -677,6 +677,10 @@ function admin_plugins_executar_acao($acao,$id,$retornarArray=false){
 	]);
 
 	// ===== INCLUIR SCRIPT DIRETAMENTE (em vez de shell_exec por questões de segurança)
+	// Preparar parâmetros para o script de banco de dados
+	$GLOBALS['CLI_OPTS'] = [
+		'plugin' => $row['id']
+	];
 	require_once __DIR__.'/../../controladores/plugins/atualizacao-plugin.php';
 
         // Preparar parâmetros para chamada direta
