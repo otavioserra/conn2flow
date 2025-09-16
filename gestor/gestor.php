@@ -527,6 +527,7 @@ function gestor_pagina_variaveis($params = false){
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#url-caminho'.$close,$caminho);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#titulo'.$close,$_GESTOR['pagina#titulo']);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#contato-url'.$close,$_GESTOR['pagina#contato-url']);
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'gestor#versao'.$close,$_GESTOR['versao']);
 	
 	// ===== Dados do usuário
 	

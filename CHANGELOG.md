@@ -12,7 +12,24 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
 - CHANGELOG.md padrão da indústria seguindo Keep a Changelog
 
-## [2.0.0] - 2025-09-15
+## [2.0.19] - 2025-09-15
+
+### Added
+- **Sistema de Logging Unificado de Plugins**: Unificação completa dos logs de operações de banco de dados de plugins com prefixo `[db-internal]` para identificação clara
+- **Componente de Exibição de Versão**: Novo componente elegante para exibir versão do gestor no layout administrativo usando Semantic UI
+- **Correções Críticas na Instalação de Plugins**: Resolução de conflitos de função e compatibilidade web/CLI para instalação robusta
+
+### Changed
+- **Refatoração do Sistema de Logs**: Substituição de 25+ chamadas `log_disco()` por `log_unificado()` em scripts de atualização de plugins
+- **Melhoria na Arquitetura de Plugins**: Detecção automática de logger externo e prefixação inteligente de logs
+
+### Fixed
+- **Correção de Conflitos de Função**: Resolução de "Cannot redeclare function" em contexto web durante instalação de plugins
+- **Compatibilidade Web/CLI**: Adição de declarações globais adequadas para execução web de scripts de instalação
+- **Namespace Conflicts**: Correção de conflitos de nomes em scripts de atualização de banco de dados de plugins
+
+### Security
+- **Rastreabilidade Aprimorada**: Logs unificados facilitam auditoria e debugging de operações de plugins
 
 ### Added
 - **Sistema de Plugins Aprimorado**: Correções críticas e novas funcionalidades para plugins
@@ -262,7 +279,8 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## Links de Comparação
 
-[Unreleased]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.0.0...HEAD
+[Unreleased]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.0.19...HEAD
+[2.0.19]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.0.0...gestor-v2.0.19
 [2.0.0]: https://github.com/conecta2me/conn2flow/compare/gestor-v1.16.0...gestor-v2.0.0
 [1.16.0]: https://github.com/conecta2me/conn2flow/compare/v1.15.0...gestor-v1.16.0
 [1.15.0]: https://github.com/conecta2me/conn2flow/compare/v1.14.0...v1.15.0

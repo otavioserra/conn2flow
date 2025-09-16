@@ -669,7 +669,7 @@ function plugin_delegate_database_operations(string $pluginSlug, array $dataFile
         return false;
     }
 
-    // Preparar argumentos para o script
+        // Preparar argumentos para o script
     $args = [
         '--plugin=' . escapeshellarg($pluginSlug),
         '--debug',
@@ -709,9 +709,35 @@ function plugin_delegate_database_operations(string $pluginSlug, array $dataFile
         $log[] = '[info] Contexto web - incluindo script diretamente: ' . $scriptPath;
 
         // Preparar variáveis globais que o script pode precisar
-        global $argv;
+        global $argv, $GLOBALS;
         $originalArgv = $argv ?? [];
-        $argv = array_merge(['php'], $args); // Simular argumentos da linha de comando
+        $originalCliOpts = $GLOBALS['CLI_OPTS'] ?? null;
+        
+        // Simular argumentos da linha de comando
+        $argv = array_merge(['php'], $args);
+        
+        // Parsear argumentos e definir $GLOBALS['CLI_OPTS'] para o script incluído
+        $parsedArgs = [];
+        foreach ($args as $arg) {
+            if (preg_match('/^--([^=]+)=(.+)$/', $arg, $matches)) {
+                $value = $matches[2];
+                // Remover aspas simples ou duplas se estiverem presentes no início e fim
+                if ((substr($value, 0, 1) === "'" && substr($value, -1) === "'") ||
+                    (substr($value, 0, 1) === '"' && substr($value, -1) === '"')) {
+                    $value = substr($value, 1, -1);
+                }
+                $parsedArgs[$matches[1]] = $value;
+            } elseif (substr($arg, 0, 2) === '--') {
+                $parsedArgs[substr($arg, 2)] = true;
+            }
+        }
+        $GLOBALS['CLI_OPTS'] = $parsedArgs;
+        // Também definir como variável global para compatibilidade
+        global $CLI_OPTS;
+        $CLI_OPTS = $parsedArgs;
+
+        // Passar referência ao logger para unificar logs
+        $GLOBALS['EXTERNAL_LOGGER'] = &$log;
 
         try {
             // Incluir o script diretamente (ele já chama main() no final)
@@ -736,8 +762,19 @@ function plugin_delegate_database_operations(string $pluginSlug, array $dataFile
             $log[] = '[erro] Exceção ao incluir script de banco de dados: ' . $e->getMessage();
             return false;
         } finally {
-            // Restaurar argv original
+            // Restaurar valores originais
             $argv = $originalArgv;
+            if ($originalCliOpts !== null) {
+                $GLOBALS['CLI_OPTS'] = $originalCliOpts;
+                global $CLI_OPTS;
+                $CLI_OPTS = $originalCliOpts;
+            } else {
+                unset($GLOBALS['CLI_OPTS']);
+                global $CLI_OPTS;
+                unset($CLI_OPTS);
+            }
+            // Limpar logger externo
+            unset($GLOBALS['EXTERNAL_LOGGER']);
         }
     }
 }

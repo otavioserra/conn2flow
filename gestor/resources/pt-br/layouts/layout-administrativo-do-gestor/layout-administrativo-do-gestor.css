@@ -18,6 +18,12 @@
 	box-shadow: 4px 0 5px 0 rgba(30,30,30,0.2);
     overflow-y: auto!important;
 }
+.menuConteiner{
+    margin-bottom: 0px !important;
+}
+.gestorVersao{
+    margin: 0px 14px 10px 14px !important;
+}
 .paginaCont{
     margin-left: 250px;
 }

@@ -437,10 +437,8 @@ function admin_plugins_executar(){
 		));
 		gestor_redirecionar($_GESTOR['modulo-id'].'/');
 	}
-	
+
 	$plugin_data = $retorno_bd;
-	
-	// ===== Incluir CodeMirror assets
 	
 	// ===== Inclusão do CodeMirror
 	
@@ -657,7 +655,7 @@ function admin_plugins_ajax_update(){
 }
 
 function admin_plugins_executar_acao($acao,$id,$retornarArray=false){
-	global $_GESTOR;
+	global $_GESTOR,$GLOBALS;
 
 	$permitidas = ['instalar','atualizar','reprocessar'];
 	if(!in_array($acao,$permitidas,true)) return ['status'=>'erro','msg'=>'Ação inválida'];
@@ -681,26 +679,26 @@ function admin_plugins_executar_acao($acao,$id,$retornarArray=false){
 	$GLOBALS['CLI_OPTS'] = [
 		'plugin' => $row['id']
 	];
-	require_once __DIR__.'/../../controladores/plugins/atualizacao-plugin.php';
 
-        // Preparar parâmetros para chamada direta
-        $params = [
-                'slug' => $row['id'],
-                'origem_tipo' => $row['origem_tipo'] === 'arquivo' ? 'upload' : $row['origem_tipo'], // Mapear "arquivo" para "upload"
-                'referencia' => $row['origem_referencia'], // Preservar a referencia original
-                'arquivo' => null,
-                'owner' => null,
-                'repo' => null,
-                'ref' => null,
-                'cred_ref' => null,
-                'local_path' => null,
-                'reprocessar' => ($acao === 'reprocessar'),
-                'dry_run' => false,
-                'no_resources' => false,
-                'no_migrations' => false,
-                'only_migrations' => false,
-                'only_resources' => false,
-        ];	// Para plugins adicionados via arquivo ZIP, definir o caminho do arquivo
+	// Preparar parâmetros para chamada direta
+	$params = [
+		'slug' => $row['id'],
+		'origem_tipo' => $row['origem_tipo'] === 'arquivo' ? 'upload' : $row['origem_tipo'], // Mapear "arquivo" para "upload"
+		'referencia' => $row['origem_referencia'], // Preservar a referencia original
+		'arquivo' => null,
+		'owner' => null,
+		'repo' => null,
+		'ref' => null,
+		'cred_ref' => null,
+		'local_path' => null,
+		'reprocessar' => ($acao === 'reprocessar'),
+		'dry_run' => false,
+		'no_resources' => false,
+		'no_migrations' => false,
+		'only_migrations' => false,
+		'only_resources' => false,
+	];	// Para plugins adicionados via arquivo ZIP, definir o caminho do arquivo
+
 	if(!empty($row['origem_referencia']) && strpos($row['origem_referencia'], '.zip') !== false) {
 			$plugins_dir = $_GESTOR['ROOT_PATH'] . 'contents/plugins/';
 			$params['arquivo'] = $plugins_dir . $row['origem_referencia'];
@@ -825,6 +823,7 @@ function admin_plugins_executar_acao($acao,$id,$retornarArray=false){
 	if(function_exists('plugin_mark_status')) plugin_mark_status($row['id'], $existe?PLG_STATUS_ATUALIZANDO:PLG_STATUS_INSTALANDO);
 
 	// Executar processamento diretamente
+	require_once $_GESTOR['ROOT_PATH'].'controladores/plugins/atualizacao-plugin.php';
 	$code = plugin_process_cli($params);
 
 	// Ajustar status final

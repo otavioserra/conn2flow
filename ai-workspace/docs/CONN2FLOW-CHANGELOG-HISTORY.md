@@ -12,6 +12,20 @@
 
 ## 🏷️ Releases Atuais
 
+### **gestor-v2.0.19** (15 Setembro 2025) - `HEAD`
+**🎯 Tema:** Sistema de Logging Unificado + Correções Críticas de Plugins**
+
+**Principais Melhorias:**
+- ✅ **Sistema de Logging Unificado de Plugins**: Unificação completa dos logs de operações de banco de dados com prefixo `[db-internal]`
+- ✅ **Componente de Exibição de Versão**: Novo componente elegante para layout administrativo usando Semantic UI
+- ✅ **Correções Críticas na Instalação de Plugins**: Resolução de conflitos de função e compatibilidade web/CLI
+- ✅ **Refatoração de Logs**: Substituição de 25+ chamadas `log_disco()` por `log_unificado()`
+- ✅ **Compatibilidade Web/CLI Aprimorada**: Declarações globais adequadas para execução web
+
+**Breaking Changes:**
+- Sistema de logs unificado com nova função `log_unificado()`
+- Prefixação automática `[db-internal]` em logs de plugins
+
 ### **gestor-v2.0.0** (15 Setembro 2025) - `3ea10a5e`
 **🎯 Tema:** Sistema de Plugins V2 + Arquitetura Refatorada**
 
@@ -88,6 +102,16 @@
 ---
 
 ## 📈 Histórico Completo (120 Commits)
+
+### **🔌 SETEMBRO 2025: Sistema de Logging Unificado (15 Setembro 2025)**
+```
+HEAD - 15 Sep 2025 : feat: Sistema de logging unificado de plugins com prefixo [db-internal]
+HEAD - 15 Sep 2025 : fix: Correções críticas na instalação de plugins (conflitos de função, compatibilidade web)
+HEAD - 15 Sep 2025 : feat: Componente de exibição de versão no layout administrativo
+HEAD - 15 Sep 2025 : refactor: Substituição de 25+ chamadas log_disco() por log_unificado()
+HEAD - 15 Sep 2025 : fix: Resolução de conflitos de namespace em scripts de atualização de plugins
+```
+**Foco:** Release patch v2.0.19 com sistema de logging unificado e correções críticas.
 
 ### **🔌 SETEMBRO 2025: Sistema de Plugins V2 (15 Setembro 2025)**
 ```
@@ -340,13 +364,13 @@ d1a43ea8 - Fevereiro 2025 : Add 'b2make-gestor-plugins/escalas/' from commit '4c
 
 ## 📊 Evolução por Períodos
 
-### **🔌 SETEMBRO 2025 (Atual - Plugins V2)**
-- **Commits:** 11 commits (release v2.0.0)
-- **Foco Principal:** Sistema de Plugins V2 + Arquitetura Refatorada
-- **Tecnologias:** Templates automatizados, detecção dinâmica, rastreio de dados
-- **Status:** Release major v2.0.0 concluído
+### **🔌 SETEMBRO 2025 (Atual - Plugins V2 + Logging Unificado)**
+- **Commits:** 16 commits (releases v2.0.19 + v2.0.0)
+- **Foco Principal:** Sistema de Plugins V2 + Logging Unificado + Correções Críticas
+- **Tecnologias:** Templates automatizados, detecção dinâmica, rastreio de dados, logging unificado
+- **Status:** Releases v2.0.19 e v2.0.0 concluídos
 
-### **🎯 SETEMBRO 2025 (Sistema de Preview)**
+### **🔌 SETEMBRO 2025 (Sistema de Preview)**
 - **Commits:** 2 commits (releases v1.16.0/v1.4.0)
 - **Foco Principal:** Sistema de Preview TailwindCSS/FomanticUI
 - **Tecnologias:** CodeMirror, Framework CSS multi-suporte, Modal responsivo
@@ -386,11 +410,11 @@ d1a43ea8 - Fevereiro 2025 : Add 'b2make-gestor-plugins/escalas/' from commit '4c
 ## 📊 Estatísticas de Desenvolvimento
 
 ### **Atividade Geral (Últimos 6 meses)**
-- **Total de Commits:** 131+ commits analisados
-- **Features Implementadas:** 25 grandes funcionalidades
-- **Bugs Corrigidos:** 38 correções críticas
-- **Refatorações:** 19 melhorias estruturais
-- **Releases:** 13 versões lançadas
+- **Total de Commits:** 136+ commits analisados
+- **Features Implementadas:** 26 grandes funcionalidades
+- **Bugs Corrigidos:** 41 correções críticas
+- **Refatorações:** 20 melhorias estruturais
+- **Releases:** 14 versões lançadas
 
 ### **Velocidade de Desenvolvimento**
 ```
@@ -413,24 +437,24 @@ d1a43ea8 - Fevereiro 2025 : Add 'b2make-gestor-plugins/escalas/' from commit '4c
 ✅ TESTES MENCIONADOS: 90% dos commits críticos
 ```
 
-### **Categorização Avançada (131 commits)**
+### **Categorização Avançada (136 commits)**
 ```
-🏆 FEATURES (feat:): 35 commits (27%)
-   └── Sistema de plugins V2, templates automatizados, arquitetura refatorada
+🏆 FEATURES (feat:): 37 commits (27%)
+   └── Sistema de plugins V2, templates automatizados, arquitetura refatorada, logging unificado
 
-🔧 FIXES (fix:): 28 commits (21%)
-   └── Charset, URLs, autenticação, migrações, origem_tipo
+🔧 FIXES (fix:): 31 commits (23%)
+   └── Charset, URLs, autenticação, migrações, origem_tipo, conflitos de função
 
-📚 REFACTOR: 23 commits (18%)
-   └── Sincronização dados, getPdo(), estrutura core, IDs textuais
+📚 REFACTOR: 24 commits (18%)
+   └── Sincronização dados, getPdo(), estrutura core, IDs textuais, logs unificados
 
-📖 DOCS: 18 commits (14%)
+📖 DOCS: 18 commits (13%)
    └── README, documentação técnica, releases, arquitetura plugins
 
 🔄 CHORE: 15 commits (11%)
    └── Configuração ambiente, limpeza, tags, automação
 
-⚙️ CONFIG: 10 commits (8%)
+⚙️ CONFIG: 10 commits (7%)
    └── Workflows, .env, Docker, VS Code, environment.json
 
 🎯 RELEASES: 2 commits (1%)
@@ -732,6 +756,6 @@ PREDITIVA:
 ---
 
 **Documento expandido:** 15 de Setembro de 2025  
-**Análise baseada em:** 131 commits + 3 tags + tendências  
+**Análise baseada em:** 136 commits + 4 tags + tendências  
 **Próxima atualização:** Após release v2.1.0  
 **Profundidade:** 6 meses de histórico detalhado
