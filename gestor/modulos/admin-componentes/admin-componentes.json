@@ -49,11 +49,11 @@
                     "path": "admin-componentes\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.2",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "ec41cd7e1977ec81df548731920cb326",
+                        "html": "b830727701a43d721aceda32271fe0d0",
                         "css": "bdb85de7c6afcf6a3fdca44a2b25b9ff",
-                        "combined": "d5565e8187cedd59663866a307518d3c"
+                        "combined": "e2a6084a3f6ee88ea81e8f5d12632e7c"
                     }
                 },
                 {
@@ -63,11 +63,11 @@
                     "path": "admin-componentes\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.2",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "9b95def84d3bff4a2a2463a0203a5014",
+                        "html": "802c10ff7980df982e5c6fd0c308e661",
                         "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
-                        "combined": "14fec7f47aee84999baa8dbdb7ac49d3"
+                        "combined": "23250f9ccef86543f68a6a8cfc57c681"
                     }
                 }
             ],
@@ -96,12 +96,12 @@
                 },
                 {
                     "id": "form-html-tooltip",
-                    "value": "Clique para abrir o Código HTML",
+                    "value": "Clique para abrir o HTML > Corpo. Parte visível do componente dentro da tag <body>",
                     "type": "string"
                 },
                 {
                     "id": "form-html-label",
-                    "value": "Código HTML",
+                    "value": "HTML > Corpo",
                     "type": "string"
                 },
                 {
@@ -167,6 +167,26 @@
                 {
                     "id": "button-back-value",
                     "value": "Voltar",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-compiled-tooltip",
+                    "value": "Clique para abrir o CSS automático gerado pelo sistema.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-compiled-label",
+                    "value": "CSS Automático",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-extra-head-tooltip",
+                    "value": "Clique para abrir o HTML extra para o Cabeçalho da página. Parte dentro da tag <head>",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-extra-head-label",
+                    "value": "HTML > Cabeçalho",
                     "type": "string"
                 }
             ]

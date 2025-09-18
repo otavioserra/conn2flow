@@ -32,6 +32,29 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 - **[📋 Changelog](CHANGELOG.md)** - Changelog padrão da indústria seguindo o formato Keep a Changelog
 - **[📊 Histórico Completo de Desenvolvimento](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Evolução completa commit-por-commit
 
+### Última Versão: v2.1.0 (18 Setembro 2025)
+
+**🎯 Novas Funcionalidades:**
+- **Campo html_extra_head**: Permite incluir HTML extra na seção HEAD de páginas e componentes
+- **Campo css_compiled**: Suporte a CSS compilado para páginas, componentes e layouts
+- **Editor CodeMirror**: Interface avançada para edição de HTML e CSS com syntax highlighting
+- **Funcionalidade de Backup**: Sistema de backup automático para novos campos
+- **Migrações de Banco**: Scripts automáticos para adicionar novos campos às tabelas existentes
+
+**🔧 Melhorias Técnicas:**
+- Arquivos do núcleo do sistema (gestor.php) atualizados para processar novos campos
+- Módulos admin aprimorados (admin-paginas, admin-componentes) com suporte aos novos campos
+- Novas abas e controles na interface do usuário para edição dos campos adicionais
+- Suporte completo ao processamento de templates para variáveis @[[html_extra_head]]@ e @[[css_compiled]]@
+- Função formatar_url corrigida para sempre adicionar barra final
+
+**📦 O Que Há de Novo:**
+- Campo html_extra_head para páginas e componentes
+- Campo css_compiled para páginas, componentes e layouts
+- Integração CodeMirror para edição avançada de código
+- Sistema de backup automático para novos campos
+- Scripts de migração de banco de dados para atualizações seamless
+
 ### Branches Legadas
 * **gestor-v1.16**: Última versão estável antes da v2.0.0
 * **b2make-legacy**: Sistema legado completo preservado para referência

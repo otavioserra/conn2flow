@@ -96,7 +96,7 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🚀 Conn2Flow Gestor Release v2.0.0 (Sistema de Plugins V2 + Arquitetura Refatorada)
+          ## 🚀 Conn2Flow Gestor Release v2.1.0 (Sistema de Plugins V2 + Arquitetura Refatorada)
           
           Esta release traz uma **revolução completa no sistema de plugins** com arquitetura V2, templates automatizados e rastreio completo de dados.
           
@@ -141,7 +141,7 @@ jobs:
           - Documentação abrangente para desenvolvimento
           
           ### 🔧 Como usar:
-          1. Use o [Conn2Flow Installer v1.4.0+](https://github.com/otavioserra/conn2flow/releases) para instalação automática
+          1. Use o [Conn2Flow Installer v1.4.1+](https://github.com/otavioserra/conn2flow/releases) para instalação automática
           2. Para instalação manual, use o instalador web em `gestor-instalador/index.php`
           3. Utilize os templates em `dev-plugins/plugins/templates/` para criar novos plugins
           

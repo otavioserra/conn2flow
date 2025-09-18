@@ -33,6 +33,34 @@ $(document).ready(function () {
 			}
 		}
 
+		var codemirror_css_compiled = document.getElementsByClassName("codemirror-css-compiled");
+
+		if (codemirror_css_compiled.length > 0) {
+			for (var i = 0; i < codemirror_css_compiled.length; i++) {
+				var codeMirrorCssCompiled = CodeMirror.fromTextArea(codemirror_css_compiled[i], {
+					lineNumbers: true,
+					lineWrapping: true,
+					styleActiveLine: true,
+					matchBrackets: true,
+					mode: "css",
+					htmlMode: true,
+					indentUnit: 4,
+					theme: "tomorrow-night-bright",
+					extraKeys: {
+						"F11": function (cm) {
+							cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+						},
+						"Esc": function (cm) {
+							if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+						}
+					}
+				});
+
+				codeMirrorCssCompiled.setSize('100%', 500);
+				codemirrors_instances.push(codeMirrorCssCompiled);
+			}
+		}
+
 		var codemirror_html = document.getElementsByClassName("codemirror-html");
 
 		if (codemirror_html.length > 0) {
@@ -61,6 +89,34 @@ $(document).ready(function () {
 			}
 		}
 
+		var codemirror_html_extra_head = document.getElementsByClassName("codemirror-html-extra-head");
+
+		if (codemirror_html_extra_head.length > 0) {
+			for (var i = 0; i < codemirror_html_extra_head.length; i++) {
+				var CodeMirrorHtmlExtraHead = CodeMirror.fromTextArea(codemirror_html_extra_head[i], {
+					lineNumbers: true,
+					lineWrapping: true,
+					styleActiveLine: true,
+					matchBrackets: true,
+					mode: "htmlmixed",
+					htmlMode: true,
+					indentUnit: 4,
+					theme: "tomorrow-night-bright",
+					extraKeys: {
+						"F11": function (cm) {
+							cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+						},
+						"Esc": function (cm) {
+							if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+						}
+					}
+				});
+
+				CodeMirrorHtmlExtraHead.setSize('100%', 500);
+				codemirrors_instances.push(CodeMirrorHtmlExtraHead);
+			}
+		}
+
 		// ===== Semantic UI
 
 		$('.menu .item').tab({
@@ -71,6 +127,12 @@ $(document).ready(function () {
 						break;
 					case 'css':
 						codeMirrorCss.refresh();
+						break;
+					case 'css-compiled':
+						codeMirrorCssCompiled.refresh();
+						break;
+					case 'html-extra-head':
+						CodeMirrorHtmlExtraHead.refresh();
 						break;
 				}
 
@@ -100,6 +162,14 @@ $(document).ready(function () {
 				case 'css':
 					codeMirrorCss.getDoc().setValue(valor);
 					codeMirrorCss.refresh();
+					break;
+				case 'css_compiled':
+					codeMirrorCssCompiled.getDoc().setValue(valor);
+					codeMirrorCssCompiled.refresh();
+					break;
+				case 'html_extra_head':
+					CodeMirrorHtmlExtraHead.getDoc().setValue(valor);
+					CodeMirrorHtmlExtraHead.refresh();
 					break;
 			}
 		});
@@ -205,7 +275,7 @@ $(document).ready(function () {
 				if (tailwindStyleElement) {
 					const generatedCss = tailwindStyleElement.innerHTML;
 
-					codeMirrorCss.getDoc().setValue(generatedCss);
+					codeMirrorCssCompiled.getDoc().setValue(generatedCss);
 				}
 			}
 

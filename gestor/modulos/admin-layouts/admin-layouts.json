@@ -50,11 +50,11 @@
                     "path": "admin-layouts\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.4",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "47ca7d0ed67cf9c76712a2c045953b0c",
+                        "html": "306776e643710f4994afc457cce91df6",
                         "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
-                        "combined": "db279c4620d8a5ea1b1892922e6f2d68"
+                        "combined": "4fa55f2a17ef5089f2500231cda6c1cb"
                     }
                 },
                 {
@@ -64,11 +64,11 @@
                     "path": "admin-layouts\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.4",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "4cd4e0ef51678016bd153e021ece1f80",
+                        "html": "e787fb286da93b3144a76ae9ba4208f1",
                         "css": "bdb85de7c6afcf6a3fdca44a2b25b9ff",
-                        "combined": "3a6f4fcebb21fc6cb3486f48f70a41b7"
+                        "combined": "a2c7e36f93a851f1bfe93fe673ef8d96"
                     }
                 }
             ],
@@ -173,6 +173,16 @@
                 {
                     "id": "button-back-value",
                     "value": "Voltar",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-compiled-tooltip",
+                    "value": "Clique para abrir o CSS automático gerado pelo sistema.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-compiled-label",
+                    "value": "CSS Automático",
                     "type": "string"
                 }
             ]

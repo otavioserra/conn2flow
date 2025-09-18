@@ -1047,7 +1047,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-componentes",
         "id": "form-html-tooltip",
-        "valor": "Clique para abrir o Código HTML",
+        "valor": "Clique para abrir o HTML > Corpo. Parte visível do componente dentro da tag <body>",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1056,7 +1056,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-componentes",
         "id": "form-html-label",
-        "valor": "Código HTML",
+        "valor": "HTML > Corpo",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1174,6 +1174,42 @@
         "modulo": "admin-componentes",
         "id": "button-back-value",
         "valor": "Voltar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "form-css-compiled-tooltip",
+        "valor": "Clique para abrir o CSS automático gerado pelo sistema.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "form-css-compiled-label",
+        "valor": "CSS Automático",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "form-html-extra-head-tooltip",
+        "valor": "Clique para abrir o HTML extra para o Cabeçalho da página. Parte dentro da tag <head>",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-componentes",
+        "id": "form-html-extra-head-label",
+        "valor": "HTML > Cabeçalho",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1342,6 +1378,24 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "admin-layouts",
+        "id": "form-css-compiled-tooltip",
+        "valor": "Clique para abrir o CSS automático gerado pelo sistema.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-layouts",
+        "id": "form-css-compiled-label",
+        "valor": "CSS Automático",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-name-label",
         "valor": "Nome da Página",
@@ -1380,7 +1434,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-html-tooltip",
-        "valor": "Clique para abrir o Código HTML",
+        "valor": "Clique para abrir o HTML > Corpo. Parte visível da página dentro da tag <body>",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1389,7 +1443,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-html-label",
-        "valor": "Código HTML",
+        "valor": "HTML > Corpo",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1723,6 +1777,42 @@
         "modulo": "admin-paginas",
         "id": "lista-tipo-label",
         "valor": "Tipo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-css-compiled-tooltip",
+        "valor": "Clique para abrir o CSS automático gerado pelo sistema.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-css-compiled-label",
+        "valor": "CSS Automático",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-html-extra-head-tooltip",
+        "valor": "Clique para abrir o HTML extra para o Cabeçalho da página. Parte dentro da tag <head>",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-html-extra-head-label",
+        "valor": "HTML > Cabeçalho",
         "tipo": "string",
         "grupo": null,
         "descricao": null

@@ -1,6 +1,42 @@
 # Changelog
 
-Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
+T## [2.1.0] - 2025-09-18
+
+### Added
+- **Campo html_extra_head**: Permite incluir HTML extra na seção HEAD de páginas e componentes
+- **Campo css_compiled**: Suporte a CSS compilado para páginas, componentes e layouts
+- **Editor CodeMirror**: Interface avançada para edição de HTML e CSS com syntax highlighting
+- **Funcionalidade de Backup**: Sistema de backup automático para novos campos
+- **Migrações de Banco**: Scripts automáticos para adicionar novos campos às tabelas existentes
+
+### Changed
+- **Núcleo do Sistema**: Arquivos gestor.php e bibliotecas atualizados para processar novos campos
+- **Módulos Admin**: admin-paginas e admin-componentes totalmente compatíveis com novos campos
+- **Interface de Usuário**: Novas abas e controles para edição dos campos adicionais
+- **Processamento de Templates**: Suporte completo a variáveis @[[html_extra_head]]@ e @[[css_compiled]]@
+
+### Fixed
+- **Função formatar_url**: Sempre adiciona barra no final da URL formatada
+- **Tratamento de String Vazia**: Retorna "/" quando a entrada está vazia
+- **Consistência de URLs**: Todas as URLs geradas terminam com "/" conforme esperado
+
+### Technical Details
+- **Database Migrations**:
+  - 20250918120000_add_css_compiled_to_tables.php
+  - 20250918130000_add_html_extra_head_to_tables.php
+- **New Fields**: html_extra_head (mediumtext), css_compiled (mediumtext)
+- **Affected Tables**: paginas, componentes, layouts
+- **New Variables**: @[[pagina#html_extra_head]]@, @[[componente#html_extra_head]]@, @[[pagina#css_compiled]]@, @[[componente#css_compiled]]@, @[[layout#css_compiled]]@
+
+## [2.0.21] - 2025-09-18
+
+### Fixed
+- **Função formatar_url Corrigida**: Sempre adiciona barra no final da URL
+- **Tratamento de String Vazia**: Retorna "/" quando entrada vazia
+- **Consistência de URLs**: Todas as URLs terminam com "/" conforme esperado
+
+### Changed
+- **Módulo admin-paginas**: Função `formatar_url()` modificada para garantir barra finaludanças notáveis neste projeto serão documentadas neste arquivo.
 
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
@@ -12,7 +48,15 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
 - CHANGELOG.md padrão da indústria seguindo Keep a Changelog
 
-## [2.0.20] - 2025-09-18
+## [2.0.21] - 2025-09-18
+
+### Fixed
+- **Função formatar_url Corrigida**: Sempre adiciona barra no final da URL formatada
+- **Tratamento de String Vazia**: Retorna "/" quando a entrada está vazia
+- **Consistência de URLs**: Todas as URLs geradas terminam com "/" conforme esperado
+
+### Changed
+- **Módulo admin-paginas**: Função `formatar_url()` modificada para garantir barra final
 
 ### Added
 - **Função de Preview HTML Aprimorada**: Filtragem automática de conteúdo dentro da tag `<body>` em previews

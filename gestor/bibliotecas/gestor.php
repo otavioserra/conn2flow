@@ -70,6 +70,8 @@ function gestor_componente($params = false){
 				'id',
 				'html',
 				'css',
+				'css_compiled',
+				'html_extra_head',
 				'modulo',
 			))
 			,
@@ -95,6 +97,8 @@ function gestor_componente($params = false){
 							'id',
 							'html',
 							'css',
+							'css_compiled',
+							'html_extra_head',
 							'modulo',
 						))
 						,
@@ -111,6 +115,8 @@ function gestor_componente($params = false){
 						'id',
 						'html',
 						'css',
+						'css_compiled',
+						'html_extra_head',
 						'modulo',
 					))
 					,
@@ -147,18 +153,37 @@ function gestor_componente($params = false){
 					$css = $componente['css'];
 				}
 				
+				$html_extra_head = $componente['html_extra_head'];
+				$css_compiled = $componente['css_compiled'];
+				
 				if(isset($return_css)){
 					$return[$id] = Array(
 						'html' => $html,
+						'html_extra_head' => $html_extra_head,
 						'css' => $css,
+						'css_compiled' => $css_compiled,
 					);
 				} else {
+					if(existe($html_extra_head)){
+						$html_extra_head = preg_replace("/(^|\n)/m", "\n    ", $html_extra_head);
+						
+						$_GESTOR['html-extra-head'][] = $html_extra_head."\n";
+					}
+
 					if(existe($css)){
 						$css = preg_replace("/(^|\n)/m", "\n        ", $css);
 						
 						$_GESTOR['css'][] = '<style>'."\n";
 						$_GESTOR['css'][] = $css."\n";
 						$_GESTOR['css'][] = '</style>'."\n";
+					}
+
+					if(existe($css_compiled)){
+						$css_compiled = preg_replace("/(^|\n)/m", "\n        ", $css_compiled);
+						
+						$_GESTOR['css-compiled'][] = '<style>'."\n";
+						$_GESTOR['css-compiled'][] = $css_compiled."\n";
+						$_GESTOR['css-compiled'][] = '</style>'."\n";
 					}
 					
 					$return[$id] = Array(
@@ -194,18 +219,37 @@ function gestor_componente($params = false){
 				$css = $componentes[0]['css'];
 			}
 			
+			$css_compiled = $componentes[0]['css_compiled'];
+			$html_extra_head = $componentes[0]['html_extra_head'];
+
 			if(isset($return_css)){
 				return Array(
 					'html' => $html,
 					'css' => $css,
+					'html_extra_head' => $html_extra_head,
+					'css_compiled' => $css_compiled,
 				);
 			} else {
+				if(existe($html_extra_head)){
+					$html_extra_head = preg_replace("/(^|\n)/m", "\n    ", $html_extra_head);
+					
+					$_GESTOR['html-extra-head'][] = $html_extra_head."\n";
+				}
+
 				if(existe($css)){
 					$css = preg_replace("/(^|\n)/m", "\n        ", $css);
 					
 					$_GESTOR['css'][] = '<style>'."\n";
 					$_GESTOR['css'][] = $css."\n";
 					$_GESTOR['css'][] = '</style>'."\n";
+				}
+
+				if(existe($css_compiled)){
+					$css_compiled = preg_replace("/(^|\n)/m", "\n        ", $css_compiled);
+					
+					$_GESTOR['css-compiled'][] = '<style>'."\n";
+					$_GESTOR['css-compiled'][] = $css_compiled."\n";
+					$_GESTOR['css-compiled'][] = '</style>'."\n";
 				}
 				
 				return $html;
@@ -264,6 +308,7 @@ function gestor_layout($params = false){
 				'id',
 				'html',
 				'css',
+				'css_compiled',
 				'framework_css',
 			))
 			,
@@ -288,6 +333,7 @@ function gestor_layout($params = false){
 							'id',
 							'html',
 							'css',
+							'css_compiled',
 							'framework_css',
 						))
 						,
@@ -303,6 +349,7 @@ function gestor_layout($params = false){
 						'id',
 						'html',
 						'css',
+						'css_compiled',
 						'framework_css',
 					))
 					,
@@ -331,13 +378,23 @@ function gestor_layout($params = false){
 					$html = $layout['html'];
 					$css = $layout['css'];
 				}
+				
+				$css_compiled = $layout['css_compiled'];
 
 				if(isset($return_css)){
 					$return[$id] = Array(
 						'html' => $html,
 						'css' => $css,
+						'css_compiled' => $css_compiled,
 					);
 				} else {
+					if(existe($css_compiled)){
+						$css_compiled = preg_replace("/(^|\n)/m", "\n        ", $css_compiled);
+						
+						$_GESTOR['css-compiled'][] = '<style>'."\n";
+						$_GESTOR['css-compiled'][] = $css_compiled."\n";
+						$_GESTOR['css-compiled'][] = '</style>'."\n";
+					}
 					if(existe($css)){
 						$css = preg_replace("/(^|\n)/m", "\n        ", $css);
 						
@@ -372,7 +429,8 @@ function gestor_layout($params = false){
 				$html = $layouts[0]['html'];
 				$css = $layouts[0]['css'];
 			}
-
+			
+			$css_compiled = $layouts[0]['css_compiled'];
 			$framework_css = $layouts[0]['framework_css'];
 
 			$_GESTOR['layout#framework_css'] = $framework_css;
@@ -381,8 +439,17 @@ function gestor_layout($params = false){
 				return Array(
 					'html' => $html,
 					'css' => $css,
+					'css_compiled' => $css_compiled,
 				);
 			} else {
+				if(existe($css_compiled)){
+					$css_compiled = preg_replace("/(^|\n)/m", "\n        ", $css_compiled);
+					
+					$_GESTOR['css-compiled'][] = '<style>'."\n";
+					$_GESTOR['css-compiled'][] = $css_compiled."\n";
+					$_GESTOR['css-compiled'][] = '</style>'."\n";
+				}
+				
 				if(existe($css)){
 					$css = preg_replace("/(^|\n)/m", "\n        ", $css);
 					

@@ -256,6 +256,16 @@ function comunicacao_email($params = false){
 					$mailCSS .= "    ".$layoutCSS."\n";
 					$mailCSS .= "    ".'</style>';
 				}
+
+				$layoutCSSCompiled = $mailHTML['css_compiled'];
+
+				if(existe($layoutCSSCompiled)){
+					$layoutCSSCompiled = preg_replace("/(^|\n)/m", "\n        ", $layoutCSSCompiled);
+
+					$mailCSS .= '<style>'."\n";
+					$mailCSS .= $layoutCSSCompiled."\n";
+					$mailCSS .= '</style>'."\n";
+				}
 				
 				$mailCorpo = $message['body'];
 				

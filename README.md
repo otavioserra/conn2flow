@@ -34,6 +34,29 @@ For detailed technical information and development guides, see:
 - **[📋 Changelog](CHANGELOG.md)** - Industry-standard changelog following Keep a Changelog format
 - **[📊 Full Development History](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Detailed commit-by-commit evolution
 
+### Latest Release: v2.1.0 (September 18, 2025)
+
+**🎯 New Features:**
+- **html_extra_head Field**: Include extra HTML in the HEAD section of pages and components
+- **css_compiled Field**: Support for compiled CSS in pages, components, and layouts
+- **CodeMirror Editor**: Advanced HTML and CSS editing interface with syntax highlighting
+- **Backup Functionality**: Automatic backup system for new fields
+- **Database Migrations**: Automated scripts to add new fields to existing tables
+
+**🔧 Technical Improvements:**
+- Updated core system files (gestor.php) to process new fields
+- Enhanced admin modules (admin-paginas, admin-componentes) with new field support
+- New tabs and controls in user interface for additional field editing
+- Complete template processing support for @[[html_extra_head]]@ and @[[css_compiled]]@ variables
+- Fixed formatar_url function to always add trailing slash
+
+**📦 What's New:**
+- html_extra_head field for pages and components
+- css_compiled field for pages, components, and layouts
+- CodeMirror integration for advanced code editing
+- Automatic backup system for new fields
+- Database migration scripts for seamless updates
+
 ### Legacy Branches
 * **gestor-v1.16**: Latest stable release before v2.0.0
 * **b2make-legacy**: Complete legacy system preserved for reference

@@ -13,13 +13,23 @@
 <div class="ui top attached tabular menu">
     <a class="active item" data-tab="codigo-html" data-tooltip="#form-html-tooltip#" data-position="top left"
         data-inverted="">#form-html-label#</a>
+    <a class="item" data-tab="html-extra-head" data-tooltip="@[[form-html-extra-head-tooltip]]@"
+        data-position="top left" data-inverted="">@[[form-html-extra-head-label]]@</a>
     <a class="item" data-tab="css" data-tooltip="#form-css-tooltip#" data-position="top left"
         data-inverted="">#form-css-label#</a>
+    <a class="item" data-tab="css-compiled" data-tooltip="@[[form-css-compiled-tooltip]]@" data-position="top left"
+        data-inverted="">@[[form-css-compiled-label]]@</a>
 </div>
 <div class="ui bottom attached active tab segment" data-tab="codigo-html">
     <textarea class="codemirror-html" name="html"></textarea>
 </div>
+<div class="ui bottom attached tab segment" data-tab="html-extra-head">
+    <textarea class="codemirror-html-extra-head" name="html_extra_head"></textarea>
+</div>
 <div class="ui bottom attached tab segment" data-tab="css">
     <textarea class="codemirror-css" name="css"></textarea>
+</div>
+<div class="ui bottom attached tab segment" data-tab="css-compiled">
+    <textarea class="codemirror-css-compiled" name="css_compiled"></textarea>
 </div>
 #modal-preview#

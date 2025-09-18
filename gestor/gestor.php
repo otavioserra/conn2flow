@@ -606,11 +606,12 @@ function gestor_pagina_css(){
 	$css_global = '';
 	$css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css" />';
 	
+	if(!isset($_GESTOR['css-compiled'])) $_GESTOR['css-compiled'] = Array();
 	if(!isset($_GESTOR['css'])) $_GESTOR['css'] = Array();
 	if(!isset($_GESTOR['css-fim'])) $_GESTOR['css-fim'] = Array();
-	
-	$csss = array_merge($css_padrao,$_GESTOR['css'],$_GESTOR['css-fim']);
-	
+
+	$csss = array_merge($css_padrao,$_GESTOR['css-compiled'],$_GESTOR['css'],$_GESTOR['css-fim']);
+
 	if($csss)
 	foreach($csss as $css){
 		if(existe($css_global)){
@@ -633,7 +634,7 @@ function gestor_pagina_css_incluir($css = false){
 	}
 }
 
-function gestor_pagina_javascript(){
+function gestor_pagina_extra_head_e_javascript(){
 	global $_GESTOR;
 	
 	// ===== Inclusão de bibliotecas javascript
@@ -643,10 +644,11 @@ function gestor_pagina_javascript(){
 	$js_padrao[] = '<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>'; // Semantic-UI
 	$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].'global/global.js?v='.$_GESTOR['versao'].'"></script>'; // Global JS
 	
+	if(!isset($_GESTOR['html-extra-head'])) $_GESTOR['html-extra-head'] = Array();
 	if(!isset($_GESTOR['javascript'])) $_GESTOR['javascript'] = Array();
 	if(!isset($_GESTOR['javascript-fim'])) $_GESTOR['javascript-fim'] = Array();
 	
-	$jss = array_merge($js_padrao,$_GESTOR['javascript'],$_GESTOR['javascript-fim']);
+	$jss = array_merge($js_padrao,$_GESTOR['html-extra-head'],$_GESTOR['javascript'],$_GESTOR['javascript-fim']);
 	
 	if($jss)
 	foreach($jss as $js){
@@ -1569,7 +1571,9 @@ function gestor_roteador(){
 		$campos = Array(
 			'layout_id',
 			'html',
+			'html_extra_head',
 			'css',
+			'css_compiled',
 			'modulo',
 			'opcao',
 			'sem_permissao',
@@ -1727,6 +1731,8 @@ function gestor_roteador(){
 				$css = $paginas[0]['css'];
 			}
 
+			$html_extra_head = $paginas[0]['html_extra_head'];
+			$css_compiled = $paginas[0]['css_compiled'];
 			$framework_css = $paginas[0]['framework_css'];
 
 			if(!$_GESTOR['opcao']) $_GESTOR['opcao'] = $paginas[0]['opcao'];
@@ -1769,9 +1775,11 @@ function gestor_roteador(){
 				
 				$layout = $layouts['html'];
 				$layout_css = $layouts['css'];
+				$layout_css_compiled = $layouts['css_compiled'];
 			} else {
 				$layout = '';
 				$layout_css = '';
+				$layout_css_compiled = '';
 			}
 			
 			// ===== Montar página html final depois das mudanças pelo módulo.
@@ -1791,6 +1799,28 @@ function gestor_roteador(){
 				$_GESTOR['css'][] = $css."\n";
 				$_GESTOR['css'][] = '</style>'."\n";
 			}
+
+			if(existe($html_extra_head)){
+				$html_extra_head = preg_replace("/(^|\n)/m", "\n    ", $html_extra_head);
+				
+				$_GESTOR['html-extra-head'][] = $html_extra_head."\n";
+			}
+
+			if(existe($layout_css_compiled)){
+				$layout_css_compiled = preg_replace("/(^|\n)/m", "\n        ", $layout_css_compiled);
+
+				$_GESTOR['css-compiled'][] = '<style>'."\n";
+				$_GESTOR['css-compiled'][] = $layout_css_compiled."\n";
+				$_GESTOR['css-compiled'][] = '</style>'."\n";
+			}
+
+			if(existe($css_compiled)){
+				$css_compiled = preg_replace("/(^|\n)/m", "\n        ", $css_compiled);
+				
+				$_GESTOR['css-compiled'][] = '<style>'."\n";
+				$_GESTOR['css-compiled'][] = $css_compiled."\n";
+				$_GESTOR['css-compiled'][] = '</style>'."\n";
+			}
 			
 			// ===== Inclusão de variáveis globais de uma página
 			
@@ -1801,7 +1831,7 @@ function gestor_roteador(){
 			// ===== Inclusão de bibliotecas globais de uma página
 			
 			gestor_pagina_css();
-			gestor_pagina_javascript();
+			gestor_pagina_extra_head_e_javascript();
 			gestor_pagina_ultimas_operacoes();
 			
 			// ===== Retornar a página formatada para o cliente

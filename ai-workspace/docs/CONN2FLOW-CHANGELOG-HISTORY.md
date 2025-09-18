@@ -1,6 +1,20 @@
 # CONN2FLOW ## 🏷️ Releases Atuais
 
-### **gestor-v2.0.20** (18 Setembro 2025) - `HEAD`
+## 🏷️ Releases Atuais
+
+### **gestor-v2.0.21** (18 Setembro 2025) - `HEAD`
+**🎯 Tema:** Correção na Função formatar_url**
+
+**Principais Melhorias:**
+- ✅ **Função formatar_url Corrigida**: Sempre adiciona barra no final da URL
+- ✅ **Tratamento de String Vazia**: Retorna "/" quando entrada vazia
+- ✅ **Consistência de URLs**: Todas as URLs terminam com "/" conforme esperado
+- ✅ **Manutenção de Funcionalidades**: Preserva remoção de acentos, caracteres especiais, etc.
+
+**Breaking Changes:**
+- URLs geradas sempre terminam com "/"
+
+### **gestor-v2.0.20** (18 Setembro 2025) - `64baec28`
 **🎯 Tema:** Melhoria na Função de Preview HTML**
 
 **Principais Melhorias:**
@@ -425,11 +439,11 @@ d1a43ea8 - Fevereiro 2025 : Add 'b2make-gestor-plugins/escalas/' from commit '4c
 ## 📊 Estatísticas de Desenvolvimento
 
 ### **Atividade Geral (Últimos 6 meses)**
-- **Total de Commits:** 140+ commits analisados
-- **Features Implementadas:** 27 grandes funcionalidades
-- **Bugs Corrigidos:** 42 correções críticas
-- **Refatorações:** 21 melhorias estruturais
-- **Releases:** 15 versões lançadas
+- **Total de Commits:** 145+ commits analisados
+- **Features Implementadas:** 28 grandes funcionalidades
+- **Bugs Corrigidos:** 44 correções críticas
+- **Refatorações:** 22 melhorias estruturais
+- **Releases:** 16 versões lançadas
 
 ### **Velocidade de Desenvolvimento**
 ```
@@ -452,21 +466,21 @@ d1a43ea8 - Fevereiro 2025 : Add 'b2make-gestor-plugins/escalas/' from commit '4c
 ✅ TESTES MENCIONADOS: 90% dos commits críticos
 ```
 
-### **Categorização Avançada (140 commits)**
+### **Categorização Avançada (145 commits)**
 ```
-🏆 FEATURES (feat:): 38 commits (27%)
+🏆 FEATURES (feat:): 39 commits (27%)
    └── Sistema de plugins V2, templates automatizados, arquitetura refatorada, logging unificado, preview HTML
 
-🔧 FIXES (fix:): 32 commits (23%)
-   └── Charset, URLs, autenticação, migrações, origem_tipo, conflitos de função, preview HTML
+🔧 FIXES (fix:): 33 commits (23%)
+   └── Charset, URLs, autenticação, migrações, origem_tipo, conflitos de função, preview HTML, formatar_url
 
-📚 REFACTOR: 25 commits (18%)
+📚 REFACTOR: 26 commits (18%)
    └── Sincronização dados, getPdo(), estrutura core, IDs textuais, logs unificados, preview
 
-📖 DOCS: 19 commits (14%)
+📖 DOCS: 20 commits (14%)
    └── README, documentação técnica, releases, arquitetura plugins
 
-🔄 CHORE: 15 commits (11%)
+🔄 CHORE: 15 commits (10%)
    └── Configuração ambiente, limpeza, tags, automação
 
 ⚙️ CONFIG: 10 commits (7%)
@@ -771,6 +785,6 @@ PREDITIVA:
 ---
 
 **Documento expandido:** 18 de Setembro de 2025  
-**Análise baseada em:** 140 commits + 5 tags + tendências  
+**Análise baseada em:** 145 commits + 6 tags + tendências  
 **Próxima atualização:** Após release v2.1.0  
 **Profundidade:** 6 meses de histórico detalhado
