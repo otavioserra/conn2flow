@@ -264,6 +264,12 @@ $(document).ready(function () {
 
 		// ===== Pré-visualização
 
+		// Função para filtrar o HTML e apenas devolver o que tah dentro do <body>, caso o <body> exista. Senão retornar o HTML completo.
+		function filtrarHtmlBody(html) {
+			const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+			return bodyMatch ? bodyMatch[1] : html;
+		}
+
 		// Função para gerar o conteúdo da página de preview com Tailwind CSS
 		function gerarPreviewHtmlTailwind(htmlDoUsuario) {
 			return `
@@ -277,7 +283,7 @@ $(document).ready(function () {
 				<script src="https://cdn.tailwindcss.com"></script>
 			</head>
 			<body>
-				${htmlDoUsuario}
+				${filtrarHtmlBody(htmlDoUsuario)}
 			</body>
 			</html>
 		`;
@@ -298,7 +304,7 @@ $(document).ready(function () {
 				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
 			</head>
 			<body>
-				${htmlDoUsuario}
+				${filtrarHtmlBody(htmlDoUsuario)}
 			</body>
 			</html>
 		`;
