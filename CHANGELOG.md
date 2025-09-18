@@ -12,7 +12,19 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
 - CHANGELOG.md padrão da indústria seguindo Keep a Changelog
 
-## [2.0.19] - 2025-09-15
+## [2.0.20] - 2025-09-18
+
+### Added
+- **Função de Preview HTML Aprimorada**: Filtragem automática de conteúdo dentro da tag `<body>` em previews
+- **Compatibilidade com HTML Estruturado**: Suporte a HTML completo ou apenas conteúdo do body
+- **Melhoria na Experiência de Preview**: Remoção automática de tags desnecessárias do head nos previews
+
+### Changed
+- **Preview Tailwind CSS e Fomantic UI**: Aplicação da função `filtrarHtmlBody()` em ambos os frameworks
+- **Módulos admin-componentes e admin-paginas**: Implementação consistente da filtragem HTML
+
+### Fixed
+- **Preview de HTML Estruturado**: Correção na exibição de previews com tags `<html>`, `<head>` e `<body>`
 
 ### Added
 - **Sistema de Logging Unificado de Plugins**: Unificação completa dos logs de operações de banco de dados de plugins com prefixo `[db-internal]` para identificação clara

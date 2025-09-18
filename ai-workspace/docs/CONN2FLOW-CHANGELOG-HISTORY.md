@@ -1,4 +1,19 @@
-# CONN2FLOW - Changelog & Release History Completo
+# CONN2FLOW ## 🏷️ Releases Atuais
+
+### **gestor-v2.0.20** (18 Setembro 2025) - `HEAD`
+**🎯 Tema:** Melhoria na Função de Preview HTML**
+
+**Principais Melhorias:**
+- ✅ **Função de Preview HTML Aprimorada**: Filtragem automática de conteúdo dentro da tag `<body>`
+- ✅ **Compatibilidade com HTML Estruturado**: Suporte a HTML completo ou apenas conteúdo do body
+- ✅ **Melhoria na Experiência de Preview**: Remoção automática de tags desnecessárias do head
+- ✅ **Implementação Consistente**: Aplicado em admin-componentes e admin-paginas
+- ✅ **Frameworks Suportados**: Tailwind CSS e Fomantic UI
+
+**Breaking Changes:**
+- Preview agora filtra automaticamente conteúdo do body quando presente
+
+### **gestor-v2.0.19** (15 Setembro 2025) - `46d858fb`hangelog & Release History Completo
 
 ## 📋 Índice
 - [Releases Atuais](#releases-atuais)
@@ -410,11 +425,11 @@ d1a43ea8 - Fevereiro 2025 : Add 'b2make-gestor-plugins/escalas/' from commit '4c
 ## 📊 Estatísticas de Desenvolvimento
 
 ### **Atividade Geral (Últimos 6 meses)**
-- **Total de Commits:** 136+ commits analisados
-- **Features Implementadas:** 26 grandes funcionalidades
-- **Bugs Corrigidos:** 41 correções críticas
-- **Refatorações:** 20 melhorias estruturais
-- **Releases:** 14 versões lançadas
+- **Total de Commits:** 140+ commits analisados
+- **Features Implementadas:** 27 grandes funcionalidades
+- **Bugs Corrigidos:** 42 correções críticas
+- **Refatorações:** 21 melhorias estruturais
+- **Releases:** 15 versões lançadas
 
 ### **Velocidade de Desenvolvimento**
 ```
@@ -437,18 +452,18 @@ d1a43ea8 - Fevereiro 2025 : Add 'b2make-gestor-plugins/escalas/' from commit '4c
 ✅ TESTES MENCIONADOS: 90% dos commits críticos
 ```
 
-### **Categorização Avançada (136 commits)**
+### **Categorização Avançada (140 commits)**
 ```
-🏆 FEATURES (feat:): 37 commits (27%)
-   └── Sistema de plugins V2, templates automatizados, arquitetura refatorada, logging unificado
+🏆 FEATURES (feat:): 38 commits (27%)
+   └── Sistema de plugins V2, templates automatizados, arquitetura refatorada, logging unificado, preview HTML
 
-🔧 FIXES (fix:): 31 commits (23%)
-   └── Charset, URLs, autenticação, migrações, origem_tipo, conflitos de função
+🔧 FIXES (fix:): 32 commits (23%)
+   └── Charset, URLs, autenticação, migrações, origem_tipo, conflitos de função, preview HTML
 
-📚 REFACTOR: 24 commits (18%)
-   └── Sincronização dados, getPdo(), estrutura core, IDs textuais, logs unificados
+📚 REFACTOR: 25 commits (18%)
+   └── Sincronização dados, getPdo(), estrutura core, IDs textuais, logs unificados, preview
 
-📖 DOCS: 18 commits (13%)
+📖 DOCS: 19 commits (14%)
    └── README, documentação técnica, releases, arquitetura plugins
 
 🔄 CHORE: 15 commits (11%)
@@ -755,7 +770,7 @@ PREDITIVA:
 
 ---
 
-**Documento expandido:** 15 de Setembro de 2025  
-**Análise baseada em:** 136 commits + 4 tags + tendências  
+**Documento expandido:** 18 de Setembro de 2025  
+**Análise baseada em:** 140 commits + 5 tags + tendências  
 **Próxima atualização:** Após release v2.1.0  
 **Profundidade:** 6 meses de histórico detalhado

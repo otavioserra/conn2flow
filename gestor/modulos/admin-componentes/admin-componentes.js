@@ -125,7 +125,7 @@ $(document).ready(function () {
 				<script src="https://cdn.tailwindcss.com"></script>
 			</head>
 			<body>
-				${filtrarHtmlBody(htmlDoUsuario)}
+				${htmlDoUsuario}
 			</body>
 			</html>
 		`;
@@ -146,7 +146,7 @@ $(document).ready(function () {
 				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
 			</head>
 			<body>
-				${filtrarHtmlBody(htmlDoUsuario)}
+				${htmlDoUsuario}
 			</body>
 			</html>
 		`;
@@ -155,7 +155,11 @@ $(document).ready(function () {
 		$(document.body).on('mouseup tap', '.previsualizar.button', function (e) {
 			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
-			const htmlDoUsuario = CodeMirrorHtml.getDoc().getValue();
+			// Pegar o HTML do usuário e filtrar o que está dentro do <body>
+			const htmlDoUsuario = filtrarHtmlBody(CodeMirrorHtml.getDoc().getValue()).trim();
+
+			// Atualizar o CodeMirror com o HTML filtrado.
+			CodeMirrorHtml.getDoc().setValue(htmlDoUsuario);
 
 			const idFramework = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
 

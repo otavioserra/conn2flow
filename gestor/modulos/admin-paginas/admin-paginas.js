@@ -191,10 +191,12 @@ $(document).ready(function () {
 			$('input[name="pagina-opcao"]').val(value);
 		});
 
-		$(document.body).on('keyup', 'input[name="paginaCaminho"]', function (e) {
+		$(document.body).on('keyup', 'input[name="pagina-nome"]', function (e) {
 			if (e.which == 9) return false;
 
 			var value = $(this).val();
+
+			console.log(value);
 
 			$.input_delay_to_change({
 				trigger_selector: '#gestor-listener',
@@ -218,7 +220,8 @@ $(document).ready(function () {
 			url = url.replace(/\-{2,}/g, '-'); // Remover a repetição de traços para um único traço.
 			url = url.replace(/\/{2,}/g, '/'); // Remover a repetição de barras para uma única barra.
 
-			return url;
+			// Sempre adicionar uma barra no final, ou retornar apenas "/" se estiver vazio
+			return url.length > 0 ? url + '/' : '/';
 		}
 
 		function formatar_caminho(modulo, opcao) {
@@ -283,7 +286,7 @@ $(document).ready(function () {
 				<script src="https://cdn.tailwindcss.com"></script>
 			</head>
 			<body>
-				${filtrarHtmlBody(htmlDoUsuario)}
+				${htmlDoUsuario}
 			</body>
 			</html>
 		`;
@@ -304,7 +307,7 @@ $(document).ready(function () {
 				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
 			</head>
 			<body>
-				${filtrarHtmlBody(htmlDoUsuario)}
+				${htmlDoUsuario}
 			</body>
 			</html>
 		`;
@@ -313,7 +316,11 @@ $(document).ready(function () {
 		$(document.body).on('mouseup tap', '.previsualizar.button', function (e) {
 			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
-			const htmlDoUsuario = CodeMirrorHtml.getDoc().getValue();
+			// Pegar o HTML do usuário e filtrar o que está dentro do <body>
+			const htmlDoUsuario = filtrarHtmlBody(CodeMirrorHtml.getDoc().getValue()).trim();
+
+			// Atualizar o CodeMirror com o HTML filtrado.
+			CodeMirrorHtml.getDoc().setValue(htmlDoUsuario);
 
 			const idFramework = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
 
