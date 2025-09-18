@@ -337,6 +337,13 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         // Novas tabelas com rastreamento de plugin
         'modulos_grupos','modulos_operacoes'
     ];
+    
+    // Tabelas que devem apenas inserir registros, nunca atualizar (proteção de dados sensíveis)
+    $tabelasInsertOnly = [
+        'usuarios', // Protege dados de usuários (senhas, emails, etc.)
+    ];
+    
+    $insertOnly = in_array($tabela, $tabelasInsertOnly, true);
     $pkDeclarada = pkPorTabela($tabela) ?? descobrirPK($tabela, $registros[0]);
     $primeiroTemPk = array_key_exists($pkDeclarada, $registros[0]);
     $usarChaveNatural = in_array($tabela, $tabelasChaveNatural, true) && !$primeiroTemPk;
@@ -428,6 +435,13 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             }
             $row = $jsonByPk[$pkVal];
             $matched[$pkVal]=true; $diff=[]; $oldVals=[];
+
+            // Se tabela é insert-only, pular atualização
+            if ($insertOnly) {
+                if ($debug) log_unificado("SKIP_UPDATE_INSERT_ONLY tabela=$tabela pk=$pkVal");
+                $same++;
+                continue;
+            }
             foreach ($row as $c=>$vNew) {
                 if ($c === $pkDeclarada) continue;
                 // Filtrar colunas inexistentes no schema (exceto map de linguagem)
@@ -533,6 +547,13 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         if (isset($dbIndex[$k])) {
             $exist = $dbIndex[$k];
             $diff=[]; $oldVals=[];
+
+            // Se tabela é insert-only, pular atualização
+            if ($insertOnly) {
+                if ($debug) log_unificado("SKIP_UPDATE_INSERT_ONLY tabela=$tabela chave=$k");
+                $same++;
+                continue;
+            }
             foreach ($row as $c=>$vNew) {
                 // Ignorar campos de controle que não fazem parte do JSON natural
                 if ($c === 'user_modified' && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (int)$vNew!==1) continue;
@@ -596,6 +617,13 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             if ($existFallback) {
                 // Atualiza registro existente preenchendo linguagem faltante (auto-correção de bug histórico)
                 $exist = $existFallback; $diff=[]; $oldVals=[];
+
+                // Se tabela é insert-only, pular atualização
+                if ($insertOnly) {
+                    if ($debug) log_unificado("SKIP_UPDATE_INSERT_ONLY_FALLBACK tabela=$tabela fallback=$fallbackKey");
+                    $same++;
+                    continue;
+                }
                 $normalizeLangRow($row);
                 foreach ($row as $c=>$vNew) {
                     $vOld = $exist[$c] ?? null;
