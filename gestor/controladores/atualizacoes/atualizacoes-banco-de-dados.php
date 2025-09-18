@@ -88,10 +88,6 @@ function db(): PDO {
             throw new RuntimeException("Configurações de banco não definidas para instalação. Verifique as variáveis CLI_OPTS");
         }
     } else {
-        // Reaproveita lógica do phinx.php para config
-        $configPath = $BASE_PATH_DB . 'config.php';
-        if (!file_exists($configPath)) throw new RuntimeException('config.php não encontrado para conectar banco.');
-        require $configPath; // define $_BANCO
         $host = $_BANCO['host'] ?? 'localhost';
         $name = $_BANCO['nome'] ?? '';
         $user = $_BANCO['usuario'] ?? '';
@@ -744,14 +740,6 @@ function main() {
 
     try {
         log_disco(tr('_process_start'), $LOG_FILE_DB);
-        // Verificar .env para ambiente de testes (parametrizado)
-        $envFolder = $CLI_OPTS['env-dir'] ?? 'localhost';
-        $envDir = __DIR__ . '/../../autenticacoes/' . $envFolder . '/';
-        if (!file_exists($envDir . '.env')) {
-            log_disco(tr('_env_missing'), $LOG_FILE_DB);
-            log_disco(tr('_hint_sync'), $LOG_FILE_DB);
-            throw new RuntimeException('Ambiente não sincronizado (.env ausente).');
-        }
         if (!empty($CLI_OPTS['reverse'])) {
             // Modo reverso exporta dados e encerra
             $pdo = db();
