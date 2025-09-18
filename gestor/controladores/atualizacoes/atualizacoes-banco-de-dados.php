@@ -8,7 +8,24 @@
  * - Compara dados atuais das tabelas com arquivos JSON em gestor/db/data (inserindo/atualizando conforme necessário)
  * - Segrega e exporta registros órfãos conforme regras de unicidade
  * - Gera relatório final consolidado
- * - Multilíngue via __t() e logs via log_disco()
+ * - Multilíngue via __t        $matched = [];
+        foreach ($dbRows as $exist) {
+            $nkVal = (string)($exist[$nkDeclarada] ?? ''); if ($nkVal==='') continue;
+            if (!isset($jsonByNk[$nkVal])) {
+                if ($debug) log_disco("ORPHAN_DB_ROW tabela=$tabela nk=$nkVal", $GLOBALS['LOG_FILE_DB']);
+                if ($orphansMode !== 'ignore') { $orphans[] = $exist; }
+                $same++;
+                continue;
+            }
+            $row = $jsonByNk[$nkVal];
+            $matched[$nkVal]=true; $diff=[]; $oldVals=[];
+
+            // Se tabela é insert-only, pular atualização
+            if ($insertOnly) {
+                if ($debug) log_disco("SKIP_UPDATE_INSERT_ONLY tabela=$tabela nk=$nkVal", $GLOBALS['LOG_FILE_DB']);
+                $same++;
+                continue;
+            }ia log_disco()
  *
  * Argumentos de linha de comando suportados:
  *
@@ -295,9 +312,17 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         // Permissões de perfis: combinação única por (perfil,modulo) e (perfil,operacao)
         'usuarios_perfis_modulos','usuarios_perfis_modulos_operacoes'
     ];
+
+    // Tabelas que só fazem INSERT (não fazem UPDATE) - previnem sobrescrever dados do usuário
+    // Útil para tabelas como usuários onde os dados devem ser preservados após a criação inicial
+    $tabelasInsertOnly = [
+        'usuarios'  // Não atualizar dados de usuários existentes (senha, email, etc.)
+    ];
+
     $pkDeclarada = pkPorTabela($tabela) ?? descobrirPK($tabela, $registros[0]);
     $primeiroTemPk = array_key_exists($pkDeclarada, $registros[0]);
     $usarChaveNatural = in_array($tabela, $tabelasChaveNatural, true) && !$primeiroTemPk; // se JSON não possui mais a PK numérica
+    $insertOnly = in_array($tabela, $tabelasInsertOnly, true); // se tabela só faz INSERT
 
     if ($debug) {
         log_disco("SYNC_INI tabela=$tabela modo=".($usarChaveNatural?'natural':'pk')." qtdJson=".count($registros), $GLOBALS['LOG_FILE_DB']);
@@ -351,14 +376,21 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         $matched = [];
         foreach ($dbRows as $exist) {
             $pkVal = (string)($exist[$pkDeclarada] ?? ''); if ($pkVal==='') continue;
-            if (!isset($jsonByPk[$pkVal])) { 
+            if (!isset($jsonByPk[$pkVal])) {
                 if ($debug) log_disco("ORPHAN_DB_ROW tabela=$tabela pk=$pkVal", $GLOBALS['LOG_FILE_DB']);
                 if ($orphansMode !== 'ignore') { $orphans[] = $exist; }
-                $same++; 
-                continue; 
+                $same++;
+                continue;
             }
             $row = $jsonByPk[$pkVal];
             $matched[$pkVal]=true; $diff=[]; $oldVals=[];
+
+            // Se tabela é insert-only, pular atualização
+            if ($insertOnly) {
+                if ($debug) log_disco("SKIP_UPDATE_INSERT_ONLY tabela=$tabela pk=$pkVal", $GLOBALS['LOG_FILE_DB']);
+                $same++;
+                continue;
+            }
             foreach ($row as $c=>$vNew) {
                 if ($c === $pkDeclarada) continue;
                 // Filtrar colunas inexistentes no schema (exceto map de linguagem)
