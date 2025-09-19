@@ -77,43 +77,51 @@ Conn2Flow apresenta um **instalador web automatizado moderno** que simplifica o 
 ### Passos de Instalação
 
 1. **Baixe o Instalador**
-   
-**Linux/macOS:**
-```bash
-curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.1/instalador.zip
-```
 
-**Windows PowerShell:**
-```powershell
-Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.1/instalador.zip" -OutFile "instalador.zip"
-```   **Opção 2 - Sempre o Último Instalador:**
+   **Download Direto:**
+   - Clique no próximo link para baixar o `instalador.zip`: [Download Instalador v1.4.1](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.1/instalador.zip)
+
+      
+   **Linux/macOS:**
+   ```bash
+   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.1/instalador.zip
+   ```
+
+   **Windows PowerShell:**
+   ```powershell
+   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.1/instalador.zip" -OutFile "instalador.zip"
+   ```
+
+   **Sempre o Último Instalador:**
    ```bash
    # Linux/macOS
    LATEST=$(gh release list --repo otavioserra/conn2flow | grep "instalador-v" | head -n1 | awk '{print $3}')
    wget "https://github.com/otavioserra/conn2flow/releases/download/${LATEST}/instalador.zip
-   
+
    # Windows PowerShell
    $latest = (gh release list --json tagName | ConvertFrom-Json | Where-Object { $_.tagName -like "instalador-v*" } | Select-Object -First 1).tagName
    Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/$latest/instalador.zip" -OutFile "instalador.zip"
    ```
-   
-   **Opção 3 - Download Manual:**
-   Vá para a [página de releases](https://github.com/otavioserra/conn2flow/releases) e baixe a última release do **Instalador** (procure por tags `instalador-v*`, não o badge "Latest" que aponta para o sistema Gestor).
+
+   **Página de Lançamentos:**
+   - Vá para a [página de releases](https://github.com/otavioserra/conn2flow/releases) e baixe a última release do **Instalador** (procure por tags `instalador-v*`, não o badge "Latest" que aponta para o sistema Gestor).
 
 2. **Extraia para Seu Diretório Web**
    ```bash
+   unzip instalador.zip -d /path/to/your/webroot/gestor-instalador/
+   # Ou instale diretamente no webroot. O instalador é inteligente o suficiente para detectar se está na raiz ou sub-pastas.
    unzip instalador.zip -d /path/to/your/webroot/
    ```
 
 3. **Execute o Instalador Web**
-   - Abra seu navegador e navegue para: `http://yourdomain.com/gestor-instalador/`
+   - Abra seu navegador e navegue para: `http://yourdomain.com/gestor-instalador/` ou `http://yourdomain.com/`
    - O instalador suporta **Português (BR)** e **Inglês (US)**
    - Siga a instalação guiada passo-a-passo
 
 4. **Configure Sua Instalação**
    O instalador web irá perguntar por:
    - **Credenciais do banco de dados** (host, nome, usuário, senha)
-   - **Caminho de instalação** (pode ser fora da pasta pública por segurança)
+   - **Caminho de instalação** (tem que ser fora da pasta pública por segurança)
    - **Nome do domínio** para seu site
    - **Detalhes da conta administrador**
 
