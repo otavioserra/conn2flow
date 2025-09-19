@@ -552,7 +552,7 @@ function admin_arquivos_upload(){
 	// ===== Inclusão Módulo JS
 	
 	// ===== The jQuery UI widget factory, can be omitted if jQuery UI is already included
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.32.0/js/vendor/jquery.ui.widget.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.32.0/js/jquery.ui.widget.js"></script>');
 	// ===== The Iframe Transport is required for browsers without support for XHR file uploads
 	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-File-Upload-10.32.0/js/jquery.iframe-transport.js"></script>');
 	// ===== The basic File Upload plugin
