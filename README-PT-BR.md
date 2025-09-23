@@ -79,17 +79,17 @@ Conn2Flow apresenta um **instalador web automatizado moderno** que simplifica o 
 1. **Baixe o Instalador**
 
    **Download Direto:**
-   - Clique no próximo link para baixar o `instalador.zip`: [Download Instalador v1.4.1](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.1/instalador.zip)
+   - Clique no próximo link para baixar o `instalador.zip`: [Download Instalador v1.4.2](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.2/instalador.zip)
 
       
    **Linux/macOS:**
    ```bash
-   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.1/instalador.zip
+   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.2/instalador.zip
    ```
 
    **Windows PowerShell:**
    ```powershell
-   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.1/instalador.zip" -OutFile "instalador.zip"
+   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.4.2/instalador.zip" -OutFile "instalador.zip"
    ```
 
    **Sempre o Último Instalador:**
