@@ -203,7 +203,7 @@ class Installer
         return [
             'status' => 'finished',
             'message' => __('progress_configuring'),
-            'redirect_url' => './instalacao-sucesso?lang=' . ($this->data['lang'] ?? 'pt-br')
+            'redirect_url' => './instalacao-sucesso/?lang=' . ($this->data['lang'] ?? 'pt-br')
         ];
     }
 

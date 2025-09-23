@@ -47,6 +47,16 @@
             "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor-instalador.sh checksum"
         },
         {
+            "label": "🔧 Instalador - Build Local",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/updates/build-local-gestor-instalador.sh"
+        },
+        {
+            "label": "🔧 Instalador - Nova Instalação Local",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/dev-environment/criar-nova-instalacao.sh"
+        },
+        {
             "label": "🛠️ Gestor - GIT Release",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
