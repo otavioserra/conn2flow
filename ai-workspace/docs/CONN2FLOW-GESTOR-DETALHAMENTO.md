@@ -578,11 +578,11 @@ plugins/
 
 #### 📋 Estrutura Típica:
 ```
-modulo-nome/
-├── modulo-nome.php           # 🔧 Lógica backend (PHP)
-├── modulo-nome.js            # 🎨 Lógica frontend (JavaScript)
-├── modulo-nome.json          # ⚙️ Configurações e metadados
-└── resources/                # 📚 Recursos visuais
+modulo-id/
+├── modulo-id.php           # 🔧 Lógica backend (PHP)
+├── modulo-id.js            # 🎨 Lógica frontend (JavaScript)
+├── modulo-id.json          # ⚙️ Configurações e metadados
+└── resources/              # 📚 Recursos visuais
 ```
 
 #### 🔄 Processo:
