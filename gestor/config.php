@@ -5,7 +5,7 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR['versao']								=	'2.1.7'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'2.1.8'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 $_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
 
@@ -110,6 +110,22 @@ $_CONFIG = [
     'acessos-maximo-cadastros-simples'  => [
         'signup' => (int)($_ENV['ACESSOS_MAXIMO_CADASTROS_SIMPLES_SIGNUP'] ?? 1),
         'formulario-contato' => (int)($_ENV['ACESSOS_MAXIMO_CADASTROS_SIMPLES_FORMULARIO_CONTATO'] ?? 3),
+    ],
+    'email' => [
+        'ativo' => filter_var($_ENV['EMAIL_ACTIVE'] ?? false, FILTER_VALIDATE_BOOLEAN),
+        'server' => [
+            'host' => $_ENV['EMAIL_HOST'] ?? '',
+            'user' => $_ENV['EMAIL_USER'] ?? '',
+            'pass' => $_ENV['EMAIL_PASS'] ?? '',
+            'secure' => filter_var($_ENV['EMAIL_SECURE'] ?? false, FILTER_VALIDATE_BOOLEAN),
+            'port' => (int)($_ENV['EMAIL_PORT'] ?? 587),
+        ],
+        'sender' => [
+            'from' => $_ENV['EMAIL_FROM'] ?? '',
+            'fromName' => $_ENV['EMAIL_FROM_NAME'] ?? '',
+            'replyTo' => $_ENV['EMAIL_REPLY_TO'] ?? '',
+            'replyToName' => $_ENV['EMAIL_REPLY_TO_NAME'] ?? '',
+        ]
     ],
 ];
 

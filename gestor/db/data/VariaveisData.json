@@ -1216,6 +1216,141 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-tests-head-title",
+        "valor": "MODO DE DEBUG",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-tests-head-status",
+        "valor": "STATUS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-tests-head-bottom",
+        "valor": "FIM DO DEBUG",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-tests-success-msg",
+        "valor": "Sucesso!!!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-tests-error-msg",
+        "valor": "Erro!!!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-tests-success-description",
+        "valor": "Email de teste enviado com sucesso!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "email-tests-error-description",
+        "valor": "Erro ao enviar email de teste!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "recaptcha-test-success",
+        "valor": "reCAPTCHA testado com sucesso! Score: {score}",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "recaptcha-test-low-score",
+        "valor": "Score do reCAPTCHA muito baixo: {score}. Possível bot detectado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "recaptcha-error-generic",
+        "valor": "Erro na verificação do reCAPTCHA.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "recaptcha-error-missing-secret",
+        "valor": "Server Key (secret) está ausente ou inválida.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "recaptcha-error-invalid-secret",
+        "valor": "Server Key (secret) é inválida.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "recaptcha-error-missing-response",
+        "valor": "Token de resposta está ausente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "recaptcha-error-invalid-response",
+        "valor": "Token e\/ou Server Key (secret) de resposta é inválido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "recaptcha-error-timeout-duplicate",
+        "valor": "Token expirou ou já foi usado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "admin-layouts",
         "id": "form-name-label",
         "valor": "Nome",

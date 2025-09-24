@@ -96,11 +96,22 @@ function comunicacao_email($params = false){
 			// nome - String - Opcional - Nome do arquivo.
 			// caminho - String - Opcional - Caminho do anexo.
 			// tmpCaminho - String - Opcional - Se o arquivo incluído é temporária, passar o caminho dele para ser removida no fim do processo.
-	
+	// EMAIL_TESTS - Bool - Opcional - Se definido como true, irá usar as configurações de email definidas em tempo de execução e não as do sistema.
+		// EMAIL_DEBUG - Bool - Opcional - Ativa o debug do envio de email.
+		// EMAIL_HOST - String - Opcional - Host do servidor de emails SMTP.
+		// EMAIL_USER - String - Opcional - Usuário do servidor de emails SMTP.
+		// EMAIL_PASS - String - Opcional - Senha do usuário do servidor de emails SMTP.
+		// EMAIL_SECURE - Bool - Opcional - Ativar uso de SSL em conexões com servidor de emails SMTP.
+		// EMAIL_PORT - Int - Opcional - Porta de acesso ao servidor de emails SMTP.
+		// EMAIL_FROM - String - Opcional - Endereço de email de origem da mensagem.
+		// EMAIL_FROM_NAME - String - Opcional - Nome pessoal do endereço de email de origem da mensagem.
+		// EMAIL_REPLY_TO - String - Opcional - Endereço de email que será usado quando o destinatário responder a mensagem.
+		// EMAIL_REPLY_TO_NAME - String - Opcional - Nome pessoal do endereço de email que será usado quando o destinatário responder a mensagem.
+
 	// ===== 
-	
-	if(isset($_CONFIG['email'])){
-		if($_CONFIG['email']['ativo']){
+
+	if(isset($_CONFIG['email']) || isset($EMAIL_TESTS)){
+		if($_CONFIG['email']['ativo'] || isset($EMAIL_TESTS)){
 			// ===== Definição se é ou não uma comunicação para um host.
 			
 			if(isset($_GESTOR['host-id']) && !isset($id_hosts)){
@@ -231,6 +242,21 @@ function comunicacao_email($params = false){
 				if(isset($mensagem['htmlTitulo'])){ $message['title'] = $mensagem['htmlTitulo']; } else if(isset($mensagem['assunto'])){ $message['title'] = $mensagem['assunto']; }
 				if(isset($mensagem['imagens'])){ $message['embeddedImgs'] = $mensagem['imagens']; }
 				if(isset($mensagem['anexos'])){ $message['attachments'] = $mensagem['anexos']; }
+			}
+
+			// ===== Variáveis definidas em tempo de execução, para testes.
+
+			if(isset($EMAIL_TESTS)){
+				if(isset($EMAIL_DEBUG)){$server['debug'] = $EMAIL_DEBUG;}
+				if(isset($EMAIL_HOST)){$server['host'] = $EMAIL_HOST;}
+				if(isset($EMAIL_USER)){$server['user'] = $EMAIL_USER;}
+				if(isset($EMAIL_PASS)){$server['pass'] = $EMAIL_PASS;}
+				if(isset($EMAIL_SECURE)){if($EMAIL_SECURE){$server['secure'] = PHPMailer::ENCRYPTION_SMTPS;}}
+				if(isset($EMAIL_PORT)){$server['port'] = $EMAIL_PORT;}
+				if(isset($EMAIL_FROM)){$sender['from'] = $EMAIL_FROM;}
+				if(isset($EMAIL_FROM_NAME)){$sender['fromName'] = $EMAIL_FROM_NAME;}
+				if(isset($EMAIL_REPLY_TO)){$sender['replyTo'] = $EMAIL_REPLY_TO;}
+				if(isset($EMAIL_REPLY_TO_NAME)){$sender['replyToName'] = $EMAIL_REPLY_TO_NAME;}
 			}
 			
 			// ===== Inserir o layout HTML caso exista.

@@ -60,9 +60,9 @@ create_structure() {
     mkdir -p "gestor/modulos/$MODULO_ID"
 
     # Recursos
-    mkdir -p "gestor/modulos/$MODULO_ID/resources/lang/$LANG/components"
-    mkdir -p "gestor/modulos/$MODULO_ID/resources/lang/$LANG/layouts"
-    mkdir -p "gestor/modulos/$MODULO_ID/resources/lang/$LANG/pages"
+    mkdir -p "gestor/modulos/$MODULO_ID/resources/$LANG/components"
+    mkdir -p "gestor/modulos/$MODULO_ID/resources/$LANG/layouts"
+    mkdir -p "gestor/modulos/$MODULO_ID/resources/$LANG/pages"
 
     log "Estrutura de pastas criada com sucesso!"
 }
@@ -124,8 +124,8 @@ create_php_module() {
 
 global \$_GESTOR;
 
-\$_GESTOR['$MODULO_ID'] = '$MODULO_ID';
-\$_GESTOR['modulo#'.\$_GESTOR['$MODULO_ID']] = json_decode(file_get_contents(__DIR__ . '/$MODULO_ID.json'), true);
+\$_GESTOR['modulo-id'] = '$MODULO_ID';
+\$_GESTOR['modulo#'.\$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/$MODULO_ID.json'), true);
 
 // ===== Interfaces Auxiliares
 
@@ -136,7 +136,11 @@ global \$_GESTOR;
 function ${FUNCTION_NAME}_raiz(){
     global \$_GESTOR;
 
-    \$modulo = \$_GESTOR['modulo#'.\$_GESTOR['$MODULO_ID']];
+    \$modulo = \$_GESTOR['modulo#'.\$_GESTOR['modulo-id']];
+
+    // ===== Inclusão Módulo JS
+	
+	gestor_pagina_javascript_incluir();
 
     // ===== Lógica
 
@@ -144,12 +148,24 @@ function ${FUNCTION_NAME}_raiz(){
 
 }
 
+function ${FUNCTION_NAME}_interfaces_padroes(){
+	global \$_GESTOR;
+	
+	\$modulo = \$_GESTOR['modulo#'.\$_GESTOR['modulo-id']];
+	
+	switch(\$_GESTOR['opcao']){
+		case 'listar':
+			
+		break;
+	}
+}
+
 // ==== Ajax
 
 function ${FUNCTION_NAME}_ajax_opcao(){
     global \$_GESTOR;
 
-    \$modulo = \$_GESTOR['modulo#'.\$_GESTOR['$MODULO_ID']];
+    \$modulo = \$_GESTOR['modulo#'.\$_GESTOR['modulo-id']];
 
     // ===== Lógica
 
@@ -222,9 +238,9 @@ EOF
 create_html_page() {
     log "Criando arquivo HTML da página inicial..."
 
-    mkdir -p "gestor/modulos/$MODULO_ID/resources/lang/$LANG/pages/pagina-inicial-id"
+    mkdir -p "gestor/modulos/$MODULO_ID/resources/$LANG/pages/pagina-inicial-id"
 
-    cat > "gestor/modulos/$MODULO_ID/resources/lang/$LANG/pages/pagina-inicial-id/pagina-inicial-id.html" << EOF
+    cat > "gestor/modulos/$MODULO_ID/resources/$LANG/pages/pagina-inicial-id/pagina-inicial-id.html" << EOF
 <!-- Página Inicial do Módulo $MODULO_ID -->
 
 <div class="container-fluid">
@@ -245,35 +261,41 @@ EOF
 
 # Abre arquivos no VS Code
 open_in_vscode() {
-    log "Pulando abertura no VS Code (não disponível neste ambiente)..."
+    log "Abrindo arquivos no VS Code..."
 
-    # Em um ambiente com VS Code, descomente as linhas abaixo:
-    # Arquivos a abrir
-    # files=(
-    #     "gestor/modulos/$MODULO_ID/$MODULO_ID.php"
-    #     "gestor/modulos/$MODULO_ID/$MODULO_ID.js"
-    #     "gestor/modulos/$MODULO_ID/$MODULO_ID.json"
-    #     "gestor/modulos/$MODULO_ID/resources/lang/$LANG/pages/pagina-inicial-id/pagina-inicial-id.html"
-    # )
+    # Verificar se o comando 'code' está disponível
+    if command -v code &> /dev/null; then
+        # Arquivos a abrir
+        files=(
+            "gestor/modulos/$MODULO_ID/$MODULO_ID.php"
+            "gestor/modulos/$MODULO_ID/$MODULO_ID.js"
+            "gestor/modulos/$MODULO_ID/$MODULO_ID.json"
+            "gestor/modulos/$MODULO_ID/resources/$LANG/pages/pagina-inicial-id/pagina-inicial-id.html"
+        )
 
-    # Abrir cada arquivo no VS Code
-    # for file in "${files[@]}"; do
-    #     if [[ -f "$file" ]]; then
-    #         code "$file"
-    #         log "Aberto: $file"
-    #     else
-    #         warn "Arquivo não encontrado: $file"
-    #     fi
-    # done
+        # Abrir cada arquivo no VS Code
+        for file in "${files[@]}"; do
+            if [[ -f "$file" ]]; then
+                code "$file"
+                log "Aberto: $file"
+            else
+                warn "Arquivo não encontrado: $file"
+            fi
+        done
+    else
+        log "VS Code não encontrado. Pulando abertura automática dos arquivos."
+        log "Arquivos criados:"
+        log "  - gestor/modulos/$MODULO_ID/$MODULO_ID.php"
+        log "  - gestor/modulos/$MODULO_ID/$MODULO_ID.js"
+        log "  - gestor/modulos/$MODULO_ID/$MODULO_ID.json"
+        log "  - gestor/modulos/$MODULO_ID/resources/$LANG/pages/pagina-inicial-id/pagina-inicial-id.html"
+    fi
 }
 
 # ===== EXECUÇÃO =====
 
-log "🚀 Iniciando criação do módulo skeleton..."
-log "📦 ID do módulo: $MODULO_ID"
-log "🌍 Linguagem: $LANG"
+log "🚀 Iniciando criação do módulo skeleton '$MODULO_ID'..."
 
-# Executar todas as funções
 create_structure
 create_json_config
 create_php_module

@@ -87,6 +87,11 @@
             "command": "bash ./ai-workspace/scripts/updates/build-local-gestor.sh"
         },
         {
+            "label": "🛠️ Gestor - Criar Módulo",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/dev-environment/criar-novo-modulo.sh \"${input:moduloID}\""
+        },
+        {
             "label": "🛠️ Gestor - Atualização Completa 🚀",
             // Note que esta tarefa NÃO tem a propriedade "command".
             // Ela serve apenas para orquestrar as outras.
@@ -164,6 +169,11 @@
         {
             "id": "commitMsg",
             "description": "📦 Mensagem do Commit ❔",
+            "type": "promptString"
+        },
+        {
+            "id": "moduloID",
+            "description": "📦 ID do Módulo ❔",
             "type": "promptString"
         }
     ]

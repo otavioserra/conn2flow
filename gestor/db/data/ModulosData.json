@@ -206,5 +206,18 @@
         "host": null,
         "status": "A",
         "versao": "1"
+    },
+    {
+        "modulo_grupo_id": "administracao-sistema",
+        "nome": "Admin Environment",
+        "id": "admin-environment",
+        "titulo": "Ambiente Config",
+        "icone": "tools",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1"
     }
 ]

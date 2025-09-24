@@ -684,6 +684,193 @@ usuario_gerar_token_autorizacao()  // JWT
 
 ## 📖 Referências Rápidas
 
+### Requisições AJAX e JavaScript
+
+#### 🎯 **Variável Global `gestor`**
+O objeto `gestor` é criado dinamicamente pelo `gestor.php` e contém informações essenciais:
+
+```javascript
+// Criado automaticamente pelo sistema:
+var gestor = {
+    raiz: '/instalador/',           // URL raiz do sistema ($_GESTOR['url-raiz'])
+    moduloId: 'admin-arquivos',     // ID do módulo atual ($_GESTOR['modulo-id'])
+    moduloOpcao: 'listar-arquivos', // Opção atual ($_GESTOR['opcao'])
+    moduloCaminho: 'admin-arquivos/' // Caminho do módulo
+};
+```
+
+#### 📡 **Estrutura de Requisição AJAX**
+**PADRÃO OBRIGATÓRIO** para todas as requisições AJAX no Gestor:
+
+```javascript
+$.ajax({
+    type: 'POST',
+    url: gestor.raiz + gestor.moduloId + '/',  // URL dinâmica
+    data: {
+        ajax: 'sim',                           // Sempre 'sim' para AJAX
+        ajaxOpcao: 'nome-da-funcao',           // ⚠️ NÃO usar 'ajax-opcao'
+        // ... outros parâmetros específicos
+    },
+    dataType: 'json',
+    beforeSend: function(){
+        $('#gestor-listener').trigger('carregar_abrir');  // Loading
+    },
+    success: function(dados){
+        switch(dados.status){
+            case 'Ok':
+                // Sucesso
+                break;
+            case 'success':
+                // Sucesso alternativo
+                break;
+            case 'error':
+                // Erro específico
+                break;
+            default:
+                console.log('ERROR - ajaxOpcao - '+dados.status);
+        }
+        $('#gestor-listener').trigger('carregar_fechar');  // Fecha loading
+    },
+    error: function(txt){
+        switch(txt.status){
+            case 401: 
+                // Não autorizado - redirecionar para login
+                window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"),"_self"); 
+                break;
+            default:
+                console.log('ERROR AJAX - ajaxOpcao - Dados:');
+                console.log(txt);
+                $('#gestor-listener').trigger('carregar_fechar');
+        }
+    }
+});
+```
+
+#### ⚠️ **ERROS COMUNS a EVITAR**:
+```javascript
+// ❌ ERRADO - Não usar FormData para dados simples
+var formData = new FormData();
+formData.append('ajax', 'true');  // ❌ 'true' ao invés de 'sim'
+formData.append('ajax-opcao', 'funcao');  // ❌ 'ajax-opcao' ao invés de 'ajaxOpcao'
+
+// ❌ ERRADO - Não usar window.location.href
+url: window.location.href,  // ❌ URL incorreta
+
+// ❌ ERRADO - Não tratar erros adequadamente
+error: function() {
+    showMessage('error', 'Erro');  // ❌ Tratamento genérico
+}
+```
+
+#### 🎨 **Tratamento de Respostas**
+```javascript
+// ✅ CORRETO - Tratamento completo
+success: function(dados){
+    switch(dados.status){
+        case 'Ok':      // Padrão para operações de sucesso
+        case 'success': // Alternativo para operações específicas
+            // Processar dados
+            break;
+        case 'error':
+            // Mostrar erro específico
+            break;
+        default:
+            // Log para debug
+            console.log('Status desconhecido:', dados.status);
+    }
+}
+```
+
+#### 🌐 **Mapeamento de URLs**
+- **URL Física**: `http://localhost/instalador/admin-environment/`
+- **URL Lógica**: `/instalador/` (definida no `.env` como `URL_RAIZ`)
+- **Módulo**: `admin-environment`
+- **Arquivo PHP**: `gestor/modulos/admin-environment/admin-environment.php`
+
+#### 📂 **Estrutura de Módulo Completa**
+```
+gestor/modulos/{modulo-id}/
+├── {modulo-id}.php              # 🔧 Lógica backend (PHP)
+├── {modulo-id}.js               # 🎨 Lógica frontend (JavaScript)
+├── {modulo-id}.json             # ⚙️ Configurações e metadados
+└── resources/                   # 📚 Recursos visuais
+    ├── {modulo-id}.html         # 📄 Template da página
+    └── lang/
+        └── pt-br/
+            └── pages/
+                └── {modulo-id}/
+                    └── {modulo-id}.html
+```
+
+#### 🔧 **Função Start do Módulo**
+```php
+function {modulo-id}_start(){
+    global $_GESTOR;
+    
+    gestor_incluir_bibliotecas();  // ⚠️ SEMPRE incluir primeiro
+    
+    if($_GESTOR['ajax']){
+        interface_ajax_iniciar();
+        
+        switch($_GESTOR['ajax-opcao']){  // ⚠️ 'ajax-opcao' (com hífen)
+            case 'salvar': {modulo-id}_ajax_salvar(); break;
+            case 'testar': {modulo-id}_ajax_testar(); break;
+        }
+        
+        interface_ajax_finalizar();
+    } else {
+        {modulo-id}_interfaces_padroes();
+        
+        interface_iniciar();
+        
+        switch($_GESTOR['opcao']){
+            case 'raiz': {modulo-id}_raiz(); break;
+        }
+        
+        interface_finalizar();
+    }
+}
+```
+
+### Sistema de Variáveis JavaScript
+
+#### 🌐 **Como Funciona**
+O sistema cria dinamicamente um objeto `gestor` global com todas as variáveis necessárias:
+
+```php
+// Em gestor.php, criação automática:
+$variaveis_js = Array(
+    'raiz' => $_GESTOR['url-raiz'],           // '/instalador/'
+    'moduloId' => $_GESTOR['modulo-id'],      // 'admin-environment'
+    'moduloOpcao' => $_GESTOR['opcao'],       // 'raiz'
+    'moduloCaminho' => $caminho,              // 'admin-environment/'
+    // + variáveis customizadas do módulo
+);
+
+$js_global_vars = '<script>
+    var gestor = '.json_encode($variaveis_js, JSON_UNESCAPED_UNICODE).';
+</script>';
+```
+
+#### 🎯 **Variáveis Essenciais**
+```javascript
+gestor.raiz           // URL raiz: '/instalador/'
+gestor.moduloId       // ID módulo: 'admin-arquivos'
+gestor.moduloOpcao    // Opção atual: 'upload'
+gestor.moduloCaminho  // Caminho: 'admin-arquivos/'
+```
+
+#### 📦 **Variáveis Customizadas por Módulo**
+```php
+// No módulo, adicionar variáveis específicas:
+$_GESTOR['javascript-vars']['arquivosCel'] = gestor_pagina_variaveis_globais(Array('html'=>$filesCel));
+$_GESTOR['javascript-vars']['totalPaginas'] = 5;
+$_GESTOR['javascript-vars']['config'] = Array(
+    'maxSize' => '10MB',
+    'allowedTypes' => ['jpg', 'png', 'pdf']
+);
+```
+
 ### Funções Importantes
 
 #### 👤 Autenticação:
@@ -773,6 +960,122 @@ $html = modelo_var_troca_tudo($html,'#nome#','João');
 
 ---
 
+## ⚠️ Problemas Conhecidos e Soluções
+
+### Parsing de Arquivo .env com Valores que Contêm Espaços
+
+#### 📋 **Descrição do Problema**
+Quando valores de variáveis de ambiente contêm espaços (como nomes de sistemas), eles **DEVEM** ser envolvidos por aspas duplas no arquivo `.env`. Caso contrário, o parser Dotenv falhará.
+
+#### ❌ **Sintomas do Erro**
+- **Erro 500** ao acessar qualquer página do sistema
+- **Log de erro**: `Dotenv\Exception\InvalidFileException: Failed to parse dotenv file. Encountered unexpected whitespace at [...]`
+
+#### 🔍 **Causa Raiz**
+```bash
+# ❌ ERRADO - Causará erro de parsing
+EMAIL_FROM_NAME=Conn2Flow Gestor
+EMAIL_REPLY_TO_NAME=Conn2Flow Gestor
+```
+
+#### ✅ **Solução Correta**
+```bash
+# ✅ CORRETO - Aspas duplas obrigatórias
+EMAIL_FROM_NAME="Conn2Flow Gestor"
+EMAIL_REPLY_TO_NAME="Conn2Flow Gestor"
+```
+
+#### 🛠️ **Solução Automática Implementada**
+O módulo `admin-environment` detecta automaticamente valores com espaços/caracteres especiais e adiciona aspas duplas ao salvar:
+
+```php
+function admin_environment_env_format_value($value){
+    // Detecta espaços, aspas ou caracteres especiais
+    if (preg_match('/[\s\'"\\\\]/', $value)) {
+        $value = str_replace('"', '\\"', $value);  // Escapa aspas internas
+        return '"' . $value . '"';                  // Envolve em aspas
+    }
+    return $value;
+}
+```
+
+#### �️ **Solução Automática Implementada**
+O módulo `admin-environment` detecta automaticamente valores com espaços/caracteres especiais e adiciona aspas duplas ao salvar:
+
+```php
+function admin_environment_env_format_value($value){
+    // Detecta espaços, aspas ou caracteres especiais
+    if (preg_match('/[\s\'"\\\\]/', $value)) {
+        $value = str_replace('"', '\\"', $value);  // Escapa aspas internas
+        return '"' . $value . '"';                  // Envolve em aspas
+    }
+    return $value;
+}
+```
+
+#### �🚨 **Prevenção**
+- Sempre use o módulo `admin-environment` para editar configurações
+- Evite editar o arquivo `.env` manualmente
+- Se editar manualmente, verifique se valores com espaços estão entre aspas
+
+---
+
+## ⚠️ Problemas Conhecidos e Soluções
+
+### Checkboxes Booleanos no Fomantic-UI
+
+#### 📋 **Descrição do Problema**
+Os checkboxes do Fomantic-UI não estavam respondendo aos cliques do usuário, permanecendo sempre no mesmo estado.
+
+#### ❌ **Sintomas do Erro**
+- Checkboxes não mudam de estado ao clicar
+- Valores booleanos não são enviados corretamente no AJAX
+- Interface não responde às interações do usuário
+
+#### 🔍 **Causa Raiz**
+```html
+<!-- ❌ HTML com value hardcoded (problema) -->
+<input type="checkbox" value="true" checked>
+```
+
+```javascript
+// ❌ JavaScript sem inicialização correta
+$('.ui.checkbox').checkbox(); // Sem configuração adequada
+```
+
+#### ✅ **Solução Correta**
+```html
+<!-- ✅ HTML sem value hardcoded -->
+<input type="checkbox" checked>
+```
+
+```javascript
+// ✅ JavaScript com inicialização correta
+$('.ui.checkbox').checkbox({
+    onChecked: function () {
+        $(this).find('input').val('true');
+    },
+    onUnchecked: function () {
+        $(this).find('input').val('false');
+    }
+});
+
+// Inicializar valores baseado no estado checked
+$('.ui.checkbox').each(function() {
+    var $checkbox = $(this);
+    var $input = $checkbox.find('input');
+    var isChecked = $input.is(':checked');
+    $input.val(isChecked ? 'true' : 'false');
+});
+```
+
+#### 🛠️ **Correção Implementada**
+- Removido `value="true"` hardcoded dos inputs HTML
+- Melhorada inicialização dos checkboxes no JavaScript
+- Adicionada lógica para definir valores corretos baseado no estado visual
+
+---
+
 ## 🎯 Conclusão da Arquitetura
 
 O **Conn2Flow Gestor** é um sistema **extremamente bem arquiteturado** que combina:
@@ -798,7 +1101,7 @@ Sistema **production-ready** com foco em **manutenibilidade** e **escalabilidade
 ---
 
 **📋 Documento mantido por**: GitHub Copilot IA  
-**📅 Última atualização**: Setembro 2025  
-**🏷️ Versão**: 2.0.0  
+**📅 Última atualização**: Outubro 2024  
+**🏷️ Versão**: 2.3.0  
 
-> Base de conhecimento completa do sistema Conn2Flow Gestor, atualizada com todas as descobertas da análise técnica profunda.
+> Base de conhecimento completa do sistema Conn2Flow Gestor, atualizada com todas as descobertas da análise técnica profunda, incluindo padrões AJAX, sistema de variáveis JavaScript, arquitetura de módulos, soluções para problemas conhecidos de parsing .env e checkboxes booleanos.
