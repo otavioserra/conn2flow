@@ -1,0 +1,90 @@
+<div class="ui container">
+    <h2 class="ui header">
+        <i class="flask icon"></i>
+        <div class="content">
+            Test of Automatic Discovery System
+            <div class="sub header">Test the automatic plugin release discovery functions</div>
+        </div>
+    </h2>
+
+    <div class="ui segment">
+        <h3 class="ui header">
+            <i class="search icon"></i>
+            Release Discovery Test
+        </h3>
+
+        <form class="ui form" method="post" action="?pagina=admin-plugins-teste">
+            <div class="field">
+                <label>GitHub Repository URL</label>
+                <input type="text" name="teste_repo_url" placeholder="https://github.com/usuario/repo"
+                    value="https://github.com/octocat/Hello-World">
+            </div>
+
+            <button class="ui primary button" type="submit" name="acao" value="testar_descoberta">
+                <i class="search icon"></i>
+                Test Discovery
+            </button>
+        </form>
+
+        #resultado_descoberta#
+    </div>
+
+    <div class="ui segment">
+        <h3 class="ui header">
+            <i class="download icon"></i>
+            Release Download Test
+        </h3>
+
+        <form class="ui form" method="post" action="?pagina=admin-plugins-teste">
+            <div class="field">
+                <label>ZIP URL for Download</label>
+                <input type="text" name="teste_zip_url"
+                    placeholder="https://github.com/usuario/repo/releases/download/tag/plugin.zip">
+            </div>
+
+            <div class="field">
+                <label>Authentication Token (optional)</label>
+                <input type="password" name="teste_token" placeholder="GitHub Token (for private repositories)">
+            </div>
+
+            <button class="ui primary button" type="submit" name="acao" value="testar_download">
+                <i class="download icon"></i>
+                Test Download
+            </button>
+        </form>
+
+        #resultado_download#
+    </div>
+
+    <div class="ui segment">
+        <h3 class="ui header">
+            <i class="cogs icon"></i>
+            Source Processing Test
+        </h3>
+
+        <form class="ui form" method="post" action="?pagina=admin-plugins-teste">
+            <div class="field">
+                <label>Source URL</label>
+                <input type="text" name="teste_origem_url" placeholder="Direct URL or repository URL"
+                    value="https://github.com/octocat/Hello-World">
+            </div>
+
+            <button class="ui primary button" type="submit" name="acao" value="testar_processamento">
+                <i class="cogs icon"></i>
+                Test Processing
+            </button>
+        </form>
+
+        #resultado_processamento#
+    </div>
+
+    <div class="ui info message">
+        <div class="header">About the Tests</div>
+        <ul class="list">
+            <li><strong>Release Discovery:</strong> Tests the function that automatically searches for the latest plugin
+                tag in a GitHub repository</li>
+            <li><strong>Release Download:</strong> Tests downloading a ZIP file from GitHub release</li>
+            <li><strong>Source Processing:</strong> Tests the complete logic of processing a source URL</li>
+        </ul>
+    </div>
+</div>

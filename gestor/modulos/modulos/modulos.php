@@ -122,9 +122,9 @@ function modulos_buscar_ids_duplicados(){
 	// ===== Definir origem 1 / destino 2
 	
 	$servers = Array(
-		'origem' => 'beta.entrey.com.br',
+		'origem' => 'beta.conn2flow.com',
 		//'destino' => 'localhost',
-		'destino' => 'entrey.com.br',
+		'destino' => 'conn2flow.com',
 	);
 	
 	$serverOrigem = $servers['origem'];

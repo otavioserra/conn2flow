@@ -18,6 +18,16 @@ $resources = [
             ],
             'version' => '1',
         ],
+        'en' => [
+            'name' => 'English',
+            'data' => [
+                'layouts' => 'layouts.json',
+                'pages' => 'pages.json',
+                'components' => 'components.json',
+                'variables' => 'variables.json',
+            ],
+            'version' => '1',
+        ],
     ],
 ];
 

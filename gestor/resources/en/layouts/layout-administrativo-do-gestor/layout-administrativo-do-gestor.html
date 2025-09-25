@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- pagina#titulo -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="@[[pagina#url-raiz]]@favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="@[[pagina#url-raiz]]@favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="@[[pagina#url-raiz]]@favicon/favicon-16x16.png">
+    <link rel="manifest" href="@[[pagina#url-raiz]]@favicon/site.webmanifest">
+    <!-- pagina#css -->
+    <!-- pagina#js -->
+</head>
+
+<body>
+    <div class="ui left sidebar" id="conn2flow-menu-principal">
+        @[[pagina#menu]]@
+        <div class="ui blue tiny secondary inverted segment gestorVersao">
+            <i class="yellow certificate icon"></i>
+            <span style="font-weight: bold;">Manager Version: v@[[gestor#versao]]@</span>
+        </div>
+    </div>
+    <div class="pusher layoutPusher">
+        <div class="menuComputerCont">
+            @[[pagina#menu]]@
+            <div class="ui blue tiny secondary inverted segment gestorVersao">
+                <i class="yellow certificate icon"></i>
+                <span style="font-weight: bold;">Manager Version: v@[[gestor#versao]]@</span>
+            </div>
+        </div>
+        <div class="paginaCont">
+            <!-- Topo -->
+            <div class="desktopcode">
+                <div class="ui three column padded stackable grid">
+                    <!-- Logo -->
+                    <div class="row">
+                        <div class="eight wide column">
+                            <div class="menubarlogomargin">
+                                <div class="logo">
+                                    <a class="item" href="@[[pagina#url-raiz]]@dashboard/">
+                                        <img class="ui bottom aligned small image" id="conn2flow-logo-principal"
+                                            src="@[[pagina#url-raiz]]@images/logo-principal.png">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Name Usuário -->
+                        <div class="usuario eight wide column right aligned">
+                            <div class="menubarperfilmargin">
+                                <i class="user icon"></i>
+                                <span style="color:#000000DE;">@[[usuario#nome]]@</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mobilecode">
+                <div class="ui two column padded grid">
+                    <div class="row">
+                        <div class="column">
+                            <a class="item" href="@[[pagina#url-raiz]]@dashboard/">
+                                <img class="ui bottom aligned small image" id="conn2flow-logo-principal"
+                                    src="@[[pagina#url-raiz]]@images/logo-principal.png">
+                            </a>
+                        </div>
+                        <div class="right aligned column">
+                            <div class="menumobilemargin _gestor-menuPrincipalMobile">
+                                <i class="big grey bars icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui divider"></div>
+            <div class="ui main container">
+                @[[pagina#corpo]]@
+            </div>
+            <!-- Rodapé -->
+            <div class="mobilecode">
+                <div class="ui two column padded grid">
+                    <div class="row">
+                        <div class="column">
+                            <i class="user icon"></i>
+                            <span style="color:#000000DE;">@[[usuario#nome]]@</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="gestor-listener"></div>
+    <div class="ui dimmer paginaCarregando">
+        <div class="ui huge text loader">Loading</div>
+    </div>
+</body>
+
+</html>

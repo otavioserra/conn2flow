@@ -1,0 +1,71 @@
+<div class="field">
+    <label>#form-name-label#</label>
+    <input type="text" name="pagina-nome" placeholder="#form-name-placeholder#">
+</div>
+<div class="field">
+    <label>#form-layout-label#</label>
+    <span>#select-layout#</span>
+</div>
+<div class="field">
+    <label>#form-framework-css-label#</label>
+    <span>#select-framework-css#</span>
+</div>
+<div class="ui top attached tabular menu">
+    <a class="active item" data-tab="codigo-html" data-tooltip="#form-html-tooltip#" data-position="top left"
+        data-inverted="">#form-html-label#</a>
+    <a class="item" data-tab="html-extra-head" data-tooltip="@[[form-html-extra-head-tooltip]]@"
+        data-position="top left" data-inverted="">@[[form-html-extra-head-label]]@</a>
+    <a class="item" data-tab="css" data-tooltip="#form-css-tooltip#" data-position="top left"
+        data-inverted="">#form-css-label#</a>
+    <a class="item" data-tab="css-compiled" data-tooltip="@[[form-css-compiled-tooltip]]@" data-position="top left"
+        data-inverted="">@[[form-css-compiled-label]]@</a>
+</div>
+<div class="ui bottom attached tab segment" data-tab="codigo-html">
+    <textarea class="codemirror-html" name="html"></textarea>
+</div>
+<div class="ui bottom attached tab segment" data-tab="html-extra-head">
+    <textarea class="codemirror-html-extra-head" name="html_extra_head"></textarea>
+</div>
+<div class="ui bottom attached tab segment" data-tab="css">
+    <textarea class="codemirror-css" name="css"></textarea>
+</div>
+<div class="ui bottom attached tab segment" data-tab="css-compiled">
+    <textarea class="codemirror-css-compiled" name="css_compiled"></textarea>
+</div>
+<div class="ui dividing header">#form-config-divider#</div>
+<div class="three fields">
+    <div class="field">
+        <label>#form-type-label#</label>
+        <span>#select-type#</span>
+    </div>
+    <div class="field">
+        <label>#form-module-label#</label>
+        <span>#select-module#</span>
+    </div>
+    <div class="field">
+        <label>#form-option-label#</label>
+        <input type="text" name="pagina-opcao" placeholder="#form-option-placeholder#">
+    </div>
+</div>
+<div class="field">
+    <label>#form-path-label#</label>
+    <input type="text" name="paginaCaminho" placeholder="#form-path-placeholder#">
+</div>
+<div class="fields">
+    <div class="field">
+        <label>#form-root-label#</label>
+        <div class="ui toggle checkbox">
+            <input type="checkbox" name="raiz" data-checked="">
+            <label>&nbsp;</label>
+        </div>
+    </div>
+    <!-- permissao-pagina < -->
+    <div class="field">
+        <label>#form-permission-label#</label>
+        <div class="ui toggle checkbox">
+            <input type="checkbox" name="sem_permissao" data-checked="">
+            <label>&nbsp;</label>
+        </div>
+    </div><!-- permissao-pagina > -->
+</div>
+#modal-pagina#

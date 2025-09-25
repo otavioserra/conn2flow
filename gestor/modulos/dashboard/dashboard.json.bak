@@ -1,0 +1,109 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "toasts": {
+        "troca_time": 5000,
+        "updateNotShowToastTime": 10080,
+        "opcoes_padroes": {
+            "displayTime": 10000,
+            "class": "black"
+        }
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Dashboard",
+                    "id": "dashboard",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "dashboard\/",
+                    "type": "system",
+                    "option": "inicio",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "4f7ffb0c6d3475781fb93034eda548f5",
+                        "css": "",
+                        "combined": "4f7ffb0c6d3475781fb93034eda548f5"
+                    }
+                },
+                {
+                    "name": "Dashboard Testes",
+                    "id": "dashboard-testes",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "dashboard-testes\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "cf8d79dae48be6e8f5399b9c6ca4d71c",
+                        "css": "",
+                        "combined": "cf8d79dae48be6e8f5399b9c6ca4d71c"
+                    }
+                },
+                {
+                    "name": "Dashboard Pré Publicação",
+                    "id": "testes-do-dashboard",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "cf8d79dae48be6e8f5399b9c6ca4d71c",
+                        "css": "",
+                        "combined": "cf8d79dae48be6e8f5399b9c6ca4d71c"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "octavio-pagina\/",
+                    "type": "system",
+                    "option": "dashboard-teste"
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "logout-grup",
+                    "value": "Sair",
+                    "type": "string"
+                },
+                {
+                    "id": "logout-label",
+                    "value": "Sair",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-title",
+                    "value": "Atualização Disponível",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-message",
+                    "value": "Há uma atualização disponível. Deseja atualizar agora?",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-button-positive-label",
+                    "value": "Atualizar Agora",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-button-positive-message",
+                    "value": "Você será redirecionado para a tela de atualizações...",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-button-negative-label",
+                    "value": "Não Atualizar",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-button-negative-message",
+                    "value": "O sistema armazenará sua escolha. Se mudar de ideia acesse: <b>#url#<\/b>.",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

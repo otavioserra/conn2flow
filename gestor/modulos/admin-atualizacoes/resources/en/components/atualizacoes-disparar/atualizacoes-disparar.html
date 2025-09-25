@@ -1,0 +1,79 @@
+<div class="ui segment" id="admin-atualizacoes-root"
+    data-endpoint="?ajax=1&modulo=admin-atualizacoes&ajax-opcao=update">
+    <h2 class="ui header">Execution (<span id="atualizacoes-mode-label">(mode not selected)</span>)</h2>
+    <div class="ui small header" style="margin-top:0;">1) Choose mode &nbsp; 2) Adjust options &nbsp; 3) Click
+        Start</div>
+    <div class="ui buttons" id="atualizacoes-buttons" style="margin-bottom:.75em;">
+        <button class="ui button upd-mode-btn" data-modo="full">@[[updates-mode-full]]@</button>
+        <button class="ui button upd-mode-btn" data-modo="only-files">@[[updates-mode-files]]@</button>
+        <button class="ui button upd-mode-btn" data-modo="only-db">@[[updates-mode-db]]@</button>
+    </div>
+    <div class="ui segment" style="margin-top:1em;">
+        <h4 class="ui header">Advanced Options</h4>
+        <div class="ui stackable three column grid">
+            <div class="column">
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="local"
+                        id="flag-local-d"><label for="flag-local-d">--local-artifact</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="debug" id="flag-debug-d"
+                        checked><label for="flag-debug-d">--debug</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="dry_run"
+                        id="flag-dry-run-d"><label for="flag-dry-run-d">--dry-run</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="download_only"
+                        id="flag-download-only-d"><label for="flag-download-only-d">--download-only</label></div><br>
+            </div>
+            <div class="column">
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="no_db"
+                        id="flag-no-db-d"><label for="flag-no-db-d">--no-db</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="no_verify"
+                        id="flag-no-verify-d"><label for="flag-no-verify-d">--no-verify</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="force_all"
+                        id="flag-force-all-d"><label for="flag-force-all-d">--force-all</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="log_diff"
+                        id="flag-log-diff-d"><label for="flag-log-diff-d">--log-diff</label></div><br>
+            </div>
+            <div class="column">
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="backup"
+                        id="flag-backup-d"><label for="flag-backup-d">--backup</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="skip_download"
+                        id="flag-skip-download-d"><label for="flag-skip-download-d">--skip-download</label></div><br>
+                <div class="ui checkbox"><input type="checkbox" class="upd-flag" data-flag="clean_temp"
+                        id="flag-clean-temp-d"><label for="flag-clean-temp-d">--clean-temp</label></div><br>
+                <div class="field" style="margin-top:0.5em;">
+                    <label style="font-weight:bold;">--tables=</label>
+                    <input type="text" id="upd-tables-d" placeholder="paginas,variaveis" style="width:100%;">
+                </div>
+                <div class="field" style="margin-top:0.5em;">
+                    <label style="font-weight:bold;">--logs-retention-days=</label>
+                    <input type="number" id="upd-logs-retention-days-d" min="0" placeholder="14" style="width:100%;">
+                </div>
+            </div>
+        </div>
+        <div class="field" style="margin-top:0.5em;">
+            <label style="font-weight:bold;">Tag (--tag)</label>
+            <input type="text" id="upd-tag-d" placeholder="gestor-v1.14.0" style="width:300px;">
+        </div>
+        <div class="field" style="margin-top:0.5em;">
+            <label style="font-weight:bold;">Domain (--domain)</label>
+            <input type="text" id="upd-domain-d" placeholder="localhost" style="width:300px;">
+        </div>
+    </div>
+    <div style="margin-bottom:1em;">
+        <button class="ui primary button" id="atualizacoes-start-btn">@[[updates-run-button]]@</button>
+        <button class="ui red button" id="atualizacoes-cancel-btn" data-action="cancel"
+            style="display:none;">@[[updates-cancel]]@</button>
+        <div class="ui small indicating progress" id="atualizacoes-progress-bar" data-percent="0"
+            style="display:none;min-width:220px;margin-top:1em;margin-bottom:2em;vertical-align:middle;">
+            <div class="bar">
+                <div class="progress"></div>
+            </div>
+            <div class="label">@[[updates-progress]]@</div>
+        </div>
+    </div>
+    <!-- Unified log area: CodeMirror only (or fallback <pre>) -->
+    <div id="atualizacoes-status" style="display:none;"> <!-- kept for compatibility, but hidden --> </div>
+    <!-- CodeMirror Log (initially hidden; JS activates). data-live prevents double global init -->
+    <textarea id="atualizacoes-log-textarea" class="codemirror-log" data-mode="text" data-live="1" style="display:none;"
+        rows="20"></textarea>
+    <pre class="fallback-log" style="max-height:50vh;overflow:auto;display:none;"></pre>
+    <p><a class="ui button" href=".." style="margin-top: 1rem;">Back</a></p>
+</div>

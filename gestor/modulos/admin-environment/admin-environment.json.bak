@@ -1,0 +1,108 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": [],
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Environment",
+                    "id": "admin-environment",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-environment\/",
+                    "type": "system",
+                    "option": "raiz",
+                    "root": true,
+                    "version": "1.11",
+                    "checksum": {
+                        "html": "eaa84889c51223f6c12460231cd6511d",
+                        "css": "2da516bd3fe2d7ca2b7381cd159bffd8",
+                        "combined": "7560dc2d2e5a775fbf5f45eb210a6951"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "email-tests-head-title",
+                    "value": "MODO DE DEBUG",
+                    "type": "string"
+                },
+                {
+                    "id": "email-tests-head-status",
+                    "value": "STATUS",
+                    "type": "string"
+                },
+                {
+                    "id": "email-tests-head-bottom",
+                    "value": "FIM DO DEBUG",
+                    "type": "string"
+                },
+                {
+                    "id": "email-tests-success-msg",
+                    "value": "Sucesso!!!",
+                    "type": "string"
+                },
+                {
+                    "id": "email-tests-error-msg",
+                    "value": "Erro!!!",
+                    "type": "string"
+                },
+                {
+                    "id": "email-tests-success-description",
+                    "value": "Email de teste enviado com sucesso!",
+                    "type": "string"
+                },
+                {
+                    "id": "email-tests-error-description",
+                    "value": "Erro ao enviar email de teste!",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-test-success",
+                    "value": "reCAPTCHA testado com sucesso! Score: {score}",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-test-low-score",
+                    "value": "Score do reCAPTCHA muito baixo: {score}. Possível bot detectado.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-error-generic",
+                    "value": "Erro na verificação do reCAPTCHA.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-error-missing-secret",
+                    "value": "Server Key (secret) está ausente ou inválida.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-error-invalid-secret",
+                    "value": "Server Key (secret) é inválida.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-error-missing-response",
+                    "value": "Token de resposta está ausente.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-error-invalid-response",
+                    "value": "Token e/ou Server Key (secret) de resposta é inválido.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-error-timeout-duplicate",
+                    "value": "Token expirou ou já foi usado.",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

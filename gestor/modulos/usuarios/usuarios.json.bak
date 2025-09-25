@@ -1,0 +1,303 @@
+{
+    "versao": "1.0.1",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "usuario"
+    ],
+    "tabela": {
+        "nome": "usuarios",
+        "id": "id",
+        "id_numerico": "id_usuarios",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "historico": {
+        "moduloIdExtra": "perfil-usuario"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Usuários",
+                    "id": "usuarios",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Usuários - Adicionar",
+                    "id": "usuarios-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "bfb28ecfa1a9418ee071b77a9a6a8f1f",
+                        "css": "",
+                        "combined": "bfb28ecfa1a9418ee071b77a9a6a8f1f"
+                    }
+                },
+                {
+                    "name": "Usuários - Editar",
+                    "id": "usuarios-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "974db95525781cd2f294d17e81d0b944",
+                        "css": "",
+                        "combined": "974db95525781cd2f294d17e81d0b944"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "middle-name",
+                    "value": "Nome do Meio",
+                    "type": "string"
+                },
+                {
+                    "id": "first-name",
+                    "value": "Primeiro Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "last-name",
+                    "value": "Último Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-email-label",
+                    "value": "Email",
+                    "type": "string"
+                },
+                {
+                    "id": "form-email-placeholder",
+                    "value": "Email",
+                    "type": "string"
+                },
+                {
+                    "id": "form-email-2-label",
+                    "value": "Confirme o Email",
+                    "type": "string"
+                },
+                {
+                    "id": "form-email-2-placeholder",
+                    "value": "Confirme o Email",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-label",
+                    "value": "Usuário",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-placeholder",
+                    "value": "Usuário",
+                    "type": "string"
+                },
+                {
+                    "id": "form-password-label",
+                    "value": "Senha",
+                    "type": "string"
+                },
+                {
+                    "id": "form-password-placeholder",
+                    "value": "Senha",
+                    "type": "string"
+                },
+                {
+                    "id": "form-password-2-label",
+                    "value": "Confirme a Senha",
+                    "type": "string"
+                },
+                {
+                    "id": "form-password-2-placeholder",
+                    "value": "Confirme a Senha",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-profile-label",
+                    "value": "Usuário Perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-profile-placeholder",
+                    "value": "Selecione um perfil...",
+                    "type": "string"
+                },
+                {
+                    "id": "login-titulo",
+                    "value": "LOGIN",
+                    "type": "string"
+                },
+                {
+                    "id": "login-user-label",
+                    "value": "Usuário",
+                    "type": "string"
+                },
+                {
+                    "id": "login-password-label",
+                    "value": "Senha",
+                    "type": "string"
+                },
+                {
+                    "id": "login-button-label",
+                    "value": "Entrar",
+                    "type": "string"
+                },
+                {
+                    "id": "login-forgot-password-label",
+                    "value": "Esqueceu sua senha? Clique",
+                    "type": "string"
+                },
+                {
+                    "id": "login-forgot-password-button",
+                    "value": "aqui",
+                    "type": "string"
+                },
+                {
+                    "id": "login-keep-logged-in-label",
+                    "value": "Manter minha conta ativa neste navegador",
+                    "type": "string"
+                },
+                {
+                    "id": "login-new-register-label",
+                    "value": "Não possui uma conta?",
+                    "type": "string"
+                },
+                {
+                    "id": "login-new-register-button",
+                    "value": "Faça seu cadastro",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-user-or-password-invalid",
+                    "value": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-user-inactive",
+                    "value": "Usuário inativo no sistema, favor entrar em contato com o suporte para restabelecer sua conta.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-without-permission",
+                    "value": "Você não tem permissão para acessar este local.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-there-is-a-field",
+                    "value": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-password-button",
+                    "value": "Mudar Senha",
+                    "type": "string"
+                },
+                {
+                    "id": "user-permited-chars",
+                    "value": "letras, números, '.' e apenas um '@'",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-account-label",
+                    "value": "Nome da Conta",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-user-label",
+                    "value": "Nome do Usuário",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-account-placeholder",
+                    "value": "Nome da Conta",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-user-placeholder",
+                    "value": "Nome do Usuário",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-authorization-provisory-not-defined",
+                    "value": "Não é permitido alterar nenhum dado do usuário sem autorização provisória.",
+                    "type": "string"
+                },
+                {
+                    "id": "restrict-area-info",
+                    "value": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar<\/b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
+                    "type": "string"
+                },
+                {
+                    "id": "restrict-area-info-title",
+                    "value": "Autorização Provisória de Alteração",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-password-invalid",
+                    "value": "Senha incorreta! Você tem mais <b>#tentativas#<\/b> tentativas, senão será desconectado automaticamente!",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-password-invalid-finish",
+                    "value": "Senha Incorreta! Você foi desconectado do sistema automaticamente pelo excesso de fornecimento de senhas incorretas. Será necessário informar usuário e senha para ter acesso novamente.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-plan-label",
+                    "value": "Usuário Plano",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-manager-profile-label",
+                    "value": "Usuário Gestor Perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-manager-profile-placeholder",
+                    "value": "Selecione um perfil...",
+                    "type": "string"
+                },
+                {
+                    "id": "list-host-label",
+                    "value": "Hospedeiro",
+                    "type": "string"
+                },
+                {
+                    "id": "list-user-parent-label",
+                    "value": "Usuário Pai",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

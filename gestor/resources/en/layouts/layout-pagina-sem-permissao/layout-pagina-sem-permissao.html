@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- pagina#titulo -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="@[[pagina#url-raiz]]@favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="@[[pagina#url-raiz]]@favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="@[[pagina#url-raiz]]@favicon/favicon-16x16.png">
+    <link rel="manifest" href="@[[pagina#url-raiz]]@favicon/site.webmanifest">
+    <!-- pagina#css -->
+    <!-- pagina#js -->
+</head>
+
+<body>
+    <!-- Topo -->
+    <div class="desktopcode">
+        <div class="ui three column padded stackable grid">
+            <!-- Logo -->
+            <div class="row">
+                <div class="three wide column">
+                    <div class="menubarlogomargin">
+                        <div class="logo">
+                            <a class="item" href="@[[pagina#url-raiz]]@dashboard/">
+                                <img class="ui bottom aligned small image" id="conn2flow-logo-principal"
+                                    src="@[[pagina#url-raiz]]@images/logo-principal.png">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="seven wide column">
+                    <div class="ui grid">
+                        <div class="two column row">
+                            <div class="column left aligned">
+                            </div>
+                            <div class="column">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Name Usuário -->
+                <div class="usuario six wide column right aligned">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mobilecode">
+        <div class="ui two column padded grid">
+            <div class="row">
+                <div class="column">
+                    <a class="item" href="@[[pagina#url-raiz]]@dashboard/">
+                        <img class="ui bottom aligned small image" id="conn2flow-logo-principal"
+                            src="@[[pagina#url-raiz]]@images/logo-principal.png">
+                    </a>
+                </div>
+                <div class="right aligned column">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Miolo -->
+    <div class="ui divider"></div>
+    <div class="ui one column padded stackable grid">
+        <div class="row">
+            <div class="column">
+                @[[pagina#corpo]]@
+            </div>
+        </div>
+    </div>
+    <!-- Rodapé -->
+    <div class="mobilecode">
+        <div class="ui two column padded grid">
+            <div class="row">
+                <div class="column">
+                </div>
+                <div class="right aligned column">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="gestor-listener"></div>
+</body>
+
+</html>

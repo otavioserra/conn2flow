@@ -1,0 +1,11 @@
+.iframe-container{
+    position: absolute;
+    width:calc(100% - 2rem);
+    height:calc(100% - 12rem);
+}
+.iframe-container iframe{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border:none;
+}

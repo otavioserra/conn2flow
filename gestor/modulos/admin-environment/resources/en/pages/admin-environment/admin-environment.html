@@ -1,0 +1,159 @@
+<!-- Admin Environment - Environment Settings -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1><i class="cogs icon"></i> Admin Environment</h1>
+            <p>Manage environment settings through the .env file</p>
+
+            <div class="ui top attached tabular menu">
+                <a class="item active" data-tab="usuario">
+                    <i class="user icon"></i> User Settings
+                </a>
+                <a class="item" data-tab="email">
+                    <i class="mail icon"></i> Email Settings
+                </a>
+            </div>
+
+            <!-- Tab: User Settings -->
+            <div class="ui bottom attached tab segment active" data-tab="usuario">
+                <h3><i class="user icon"></i> User Settings</h3>
+
+                <form class="ui form" id="form-usuario">
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="usuario_recaptcha_active" name="usuario_recaptcha_active"
+                                #usuario-recaptcha-active-checked#>
+                            <label>Enable Google reCAPTCHA v3</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>reCAPTCHA Site Key</label>
+                        <input type="text" id="usuario_recaptcha_site" name="usuario_recaptcha_site"
+                            value="#usuario-recaptcha-site#" placeholder="Ex: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI">
+                    </div>
+
+                    <div class="field">
+                        <label>reCAPTCHA Server Key</label>
+                        <input type="password" id="usuario_recaptcha_server" name="usuario_recaptcha_server"
+                            value="#usuario-recaptcha-server#"
+                            placeholder="Ex: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe">
+                    </div>
+
+                    <div class="field">
+                        <button type="button" class="ui blue button" id="btn-testar-recaptcha">
+                            <i class="shield icon"></i> Test reCAPTCHA
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab: Email Settings -->
+            <div class="ui bottom attached tab segment" data-tab="email">
+                <h3><i class="mail icon"></i> Email Settings</h3>
+
+                <form class="ui form" id="form-email">
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="email_active" name="email_active" #email-active-checked#>
+                            <label>Enable email sending</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <labelSMTP Host</label>
+                            <input type="text" id="email_host" name="email_host" value="#email-host#"
+                                placeholder="Ex: smtp.gmail.com">
+                    </div>
+
+                    <div class="field">
+                        <label>SMTP User</label>
+                        <input type="text" id="email_user" name="email_user" value="#email-user#"
+                            placeholder="Ex: your-email@gmail.com">
+                    </div>
+
+                    <div class="field">
+                        <label>SMTP Password</label>
+                        <input type="password" id="email_pass" name="email_pass" value="#email-pass#"
+                            placeholder="Enter password">
+                    </div>
+
+                    <div class="two fields">
+                        <div class="field">
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" id="email_secure" name="email_secure" #email-secure-checked#>
+                                <label>Secure Connection (SSL/TLS)</label>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>SMTP Port</label>
+                            <input type="number" id="email_port" name="email_port" value="#email-port#"
+                                placeholder="587">
+                        </div>
+                    </div>
+
+                    <div class="two fields">
+                        <div class="field">
+                            <label>From Email</label>
+                            <input type="email" id="email_from" name="email_from" value="#email-from#"
+                                placeholder="Ex: noreply@yourdomain.com">
+                        </div>
+
+                        <div class="field">
+                            <label>From Name</label>
+                            <input type="text" id="email_from_name" name="email_from_name" value="#email-from-name#"
+                                placeholder="Ex: Conn2Flow System">
+                        </div>
+                    </div>
+
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Reply-To Email</label>
+                            <input type="email" id="email_reply_to" name="email_reply_to" value="#email-reply-to#"
+                                placeholder="Ex: support@yourdomain.com">
+                        </div>
+
+                        <div class="field">
+                            <label>Reply-To Name</label>
+                            <input type="text" id="email_reply_to_name" name="email_reply_to_name"
+                                value="#email-reply-to-name#" placeholder="Ex: Support">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <button type="button" class="ui blue button" id="btn-testar-email">
+                            <i class="send icon"></i> Send Test Email
+                        </button>
+
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="testar-email-debug" name="testar-email-debug">
+                            <label>Debug Mode</label>
+                        </div>
+                    </div>
+
+                    <div class="field hidden debug-logs">
+                        <label>Debug Output</label>
+                        <textarea class="codemirror-logs" name="logs"> </textarea>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="ui divider"></div>
+
+            <div class="field">
+                <button type="button" class="ui primary button" id="btn-salvar">
+                    <i class="save icon"></i> Save Settings
+                </button>
+                <button type="button" class="ui grey button" onclick="location.reload()">
+                    <i class="refresh icon"></i> Reload
+                </button>
+            </div>
+
+            <!-- Status Messages -->
+            <div id="status-message" style="display: none;"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="field">
+    <label>@[[form-name-label]]@</label>
+    <input type="text" name="nome" placeholder="@[[form-name-placeholder]]@" value="#nome#">
+</div>
+
+<input type="hidden" name="origem_selecionada" id="origem_selecionada" value="#origem_tipo#">
+
+<div class="field">
+    <label>Plugin Source</label>
+    <div class="ui top attached tabular menu">
+        <a class="item #arquivo_active#" data-tab="arquivo"
+            onclick="document.getElementById('origem_selecionada').value='arquivo'">ZIP File</a>
+        <a class="item #publico_active#" data-tab="publico"
+            onclick="document.getElementById('origem_selecionada').value='publico'">Public Repository</a>
+        <a class="item #privado_active#" data-tab="privado"
+            onclick="document.getElementById('origem_selecionada').value='privado'">Private Repository</a>
+    </div>
+
+    <!-- Tab File ZIP -->
+    <div class="ui bottom attached tab segment #arquivo_segment#" data-tab="arquivo">
+        <div class="field">
+            <label>Plugin ZIP File</label>
+            <input type="file" name="arquivo_zip" accept=".zip">
+            <small>Select the .zip file containing the plugin</small>
+        </div>
+    </div>
+
+    <!-- Tab Repositório Público -->
+    <div class="ui bottom attached tab segment #publico_segment#" data-tab="publico">
+        <div class="field">
+            <label>GitHub Repository URL</label>
+            <input type="url" name="repo_publico_url" placeholder="https://github.com/usuario/repo"
+                value="#repo_publico_url#">
+            <small>Enter the GitHub repository URL. The system will automatically discover the latest release version of
+                the plugin.</small>
+        </div>
+    </div>
+
+    <!-- Tab Repositório Privado -->
+    <div class="ui bottom attached tab segment #privado_segment#" data-tab="privado">
+        <div class="field">
+            <label>GitHub Repository URL</label>
+            <input type="url" name="repo_privado_url" placeholder="https://github.com/usuario/repo"
+                value="#repo_privado_url#">
+        </div>
+        <div class="field">
+            <label>Authentication Token</label>
+            <input type="password" name="repo_privado_token" placeholder="Your access token"
+                value="#repo_privado_token#">
+        </div>
+        <small>For private repositories, provide a valid access token. The system will automatically discover the latest
+            release version.</small>
+    </div>
+</div>
+
+<script>
+    $('.menu .item').tab();
+
+    // Definir tab ativa baseada no tipo de origem
+    var origemType = '#origem_tipo#';
+    if (origemType === 'github_publico') {
+        $('.menu .item[data-tab="publico"]').click();
+    } else if (origemType === 'github_privado') {
+        $('.menu .item[data-tab="privado"]').click();
+    } else {
+        $('.menu .item[data-tab="arquivo"]').click();
+    }
+</script>

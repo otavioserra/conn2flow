@@ -1,0 +1,9 @@
+#_gestor-interface-visualizar-dados{
+    margin-bottom:15px;
+}
+.first-letter-uppercase::first-letter {
+    text-transform: uppercase;
+}
+.segment > .button {
+    margin-bottom: 0.75em;
+}

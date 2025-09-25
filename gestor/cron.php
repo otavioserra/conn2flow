@@ -10,7 +10,7 @@ $_GESTOR['bibliotecas']							=	Array('banco','gestor');
 // ===== Configurações pré-inclusão do config.
 
 $debug = false;
-$server = 'beta.entrey.com.br';
+$server = 'beta.conn2flow.com';
 $plataforma_id = 'beta';
 
 // ===== Parâmetros passados no command line.

@@ -18,6 +18,12 @@
         "mini_width": 200
     },
     "resources": {
+        "en": {
+            "layouts": [],
+            "pages": [],
+            "components": [],
+            "variables": []
+        },
         "pt-br": {
             "layouts": [],
             "pages": [

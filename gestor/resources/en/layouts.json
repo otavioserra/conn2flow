@@ -1,0 +1,72 @@
+[
+    {
+        "name": "Layout Administrativo do Gestor",
+        "id": "layout-administrativo-do-gestor",
+        "version": "1.18",
+        "checksum": {
+            "html": "21b9c06198d496380ce998f3e669e575",
+            "css": "32e82961163b5f9627f1873a2e783b8b",
+            "combined": "a01d85e71bdc19ae762a304666eec4d1"
+        }
+    },
+    {
+        "name": "Layout Página Sem Permissão",
+        "id": "layout-pagina-sem-permissao",
+        "version": "1.3",
+        "checksum": {
+            "html": "474e067290ce9318c978ab463c3ed895",
+            "css": "c3fd0dfa321e5a4f032ff574cc07a4fb",
+            "combined": "1406ab702ddefb4fd6ae89fbaabdbf18"
+        }
+    },
+    {
+        "name": "Layout Emails",
+        "id": "layout-emails",
+        "version": "1.2",
+        "checksum": {
+            "html": "b9246cdd3db37c3e1e558b3fc846c368",
+            "css": "9454a802af5d3febf83ff9c503544b36",
+            "combined": "c332742920e013627280ff66b3180c84"
+        }
+    },
+    {
+        "name": "Layout Iframes",
+        "id": "layout-iframes",
+        "version": "1.2",
+        "checksum": {
+            "html": "0bf6b9ed25e76568e4accab429285052",
+            "css": "",
+            "combined": "0bf6b9ed25e76568e4accab429285052"
+        }
+    },
+    {
+        "name": "Layout Página Simples",
+        "id": "layout-pagina-simples",
+        "version": "1.2",
+        "checksum": {
+            "html": "0bf6b9ed25e76568e4accab429285052",
+            "css": "",
+            "combined": "0bf6b9ed25e76568e4accab429285052"
+        }
+    },
+    {
+        "name": "Layout Página Padrão",
+        "id": "layout-pagina-padrao",
+        "version": "1.3",
+        "checksum": {
+            "html": "1dc7daac46c20ff2d657f15480c7101b",
+            "css": "b37dfd1ae99d8fbc8fec01de439345aa",
+            "combined": "3c5baa890bd03274e8120f47bdcfe850"
+        }
+    },
+    {
+        "name": "Layout Impressão",
+        "id": "layout-impressao",
+        "version": "1.3",
+        "checksum": {
+            "html": "929243be3d2f1b611e572978c2a98367",
+            "css": "3cb92b2858b7f058956f6b632a804f6a",
+            "combined": "8f215768f26c873c7f5db3998ec26fea"
+        }
+    }
+]

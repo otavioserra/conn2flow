@@ -1,0 +1,68 @@
+<div class="ui stackable two column centered grid">
+    <div class="column">
+        <div class="ui segment">
+            <div class="ui center aligned header large">@[[forgot-password-title]]@</div>
+            <!-- bloqueado-mensagem < -->
+            <div class="ui hidden divider">&nbsp;</div>
+            <div class="ui icon negative message visible">
+                <i class="exclamation triangle icon"></i>
+                <div class="content">
+                    <div class="header">
+                        Your device's IP address is BLOCKED!
+                    </div>
+                    <p>Unfortunately, it is not possible to change your password on this current device due to excessive
+                        failures when trying to enter invalid emails. Please try again later on this device or on
+                        another one on a different network.</p>
+                </div>
+            </div>
+            <div class="ui hidden divider">&nbsp;</div>
+            <div class="ui hidden divider">&nbsp;</div>
+            <div class="field">
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui basic segment center aligned">
+                    <div class="">@[[forgot-password-login-label]]@ <a
+                            href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a>
+                    </div>
+                    <div>@[[forgot-password-new-register-label]]@ <a
+                            href="@[[pagina#url-raiz]]@signup/">@[[forgot-password-new-register-button]]@</a>
+                    </div>
+                </div>
+            </div><!-- bloqueado-mensagem > -->
+            <!-- formulario < -->
+            <form id="_gestor-form-forgot-password" action="@[[pagina#url-raiz]]@forgot-password/" method="post"
+                name="_gestor-form-forgot-password" class="ui form">
+                <div class="ui icon message">
+                    <i class="user lock icon"></i>
+                    <div class="content">
+                        <div class="header"> @[[forgot-password-message-header]]@ </div>
+                        <p>@[[forgot-password-message-content]]@</p>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>@[[forgot-password-email-label]]@</label>
+                    <input type="text" name="email" placeholder="@[[forgot-password-email-placeholder]]@">
+                </div>
+                <div class="field">
+                    <label>@[[forgot-password-email-2-label]]@</label>
+                    <input type="text" name="email-2" placeholder="@[[forgot-password-email-2-placeholder]]@">
+                </div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui error message">&nbsp;</div>
+                <div class="field">
+                    <button class="fluid ui button blue">@[[forgot-password-button]]@</button>
+                    <div class="ui hidden divider">&nbsp;</div>
+                    <div class="ui basic segment center aligned">
+                        <div class="">@[[forgot-password-login-label]]@ <a
+                                href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a>
+                        </div>
+                        <div>@[[forgot-password-new-register-label]]@ <a
+                                href="@[[pagina#url-raiz]]@signup/">@[[forgot-password-new-register-button]]@</a>
+                        </div>
+                    </div>
+                </div>
+                <input id="_gestor-forgot-password" name="_gestor-forgot-password" type="hidden" value="1">
+            </form>
+            <!-- formulario > -->
+        </div>
+    </div>
+</div>

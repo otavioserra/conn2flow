@@ -3684,7 +3684,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "perfil-usuario",
         "id": "forgot-password-mail-subject",
-        "valor": "Redefinição da sua Senha da Conta Entrey nº #numero#",
+        "valor": "Redefinição da sua Senha da Conta Conn2Flow nº #numero#",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3954,7 +3954,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "perfil-usuario",
         "id": "signup-mail-subject",
-        "valor": "Nova Conta Entrey nº #numero#",
+        "valor": "Nova Conta Conn2Flow nº #numero#",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4008,7 +4008,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "perfil-usuario",
         "id": "password-redefined-mail-subject",
-        "valor": "Senha da Conta Entrey redefinida com sucesso nº #numero#",
+        "valor": "Senha da Conta Conn2Flow redefinida com sucesso nº #numero#",
         "tipo": "string",
         "grupo": null,
         "descricao": null
