@@ -10,7 +10,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-sistema",
+        "nome": "Modules",
+        "id": "modulos",
+        "titulo": null,
+        "icone": "cog",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-sistema",
@@ -23,7 +38,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-sistema",
+        "nome": "Modules Groups",
+        "id": "modulos-grupos",
+        "titulo": null,
+        "icone": "cogs",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-gestor",
@@ -36,7 +66,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Admin Layouts",
+        "id": "admin-layouts",
+        "titulo": "Layouts",
+        "icone": "object ungroup outline",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-gestor",
@@ -49,7 +94,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Admin Pages",
+        "id": "admin-paginas",
+        "titulo": "Páginas",
+        "icone": "file image outline",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-usuarios",
@@ -62,7 +122,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-usuarios",
+        "nome": "Users Profiles",
+        "id": "usuarios-perfis",
+        "titulo": null,
+        "icone": "users",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "bibliotecas",
@@ -75,7 +150,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "bibliotecas",
+        "nome": "Interface",
+        "id": "interface",
+        "titulo": null,
+        "icone": null,
+        "icone2": "",
+        "nao_menu_principal": " 1",
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-usuarios",
@@ -88,7 +178,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-usuarios",
+        "nome": "Users",
+        "id": "usuarios",
+        "titulo": null,
+        "icone": "user",
+        "icone2": "",
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-gestor",
@@ -101,7 +206,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Dashboard",
+        "id": "dashboard",
+        "titulo": null,
+        "icone": "home",
+        "icone2": "",
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "geral",
@@ -114,7 +234,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "geral",
+        "nome": "User Profile",
+        "id": "perfil-usuario",
+        "titulo": null,
+        "icone": "id card",
+        "icone2": "",
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-gestor",
@@ -127,7 +262,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Admin Files",
+        "id": "admin-arquivos",
+        "titulo": "Arquivos",
+        "icone": "folder open outline",
+        "icone2": "",
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-gestor",
@@ -140,7 +290,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Admin Categories",
+        "id": "admin-categorias",
+        "titulo": "Categorias",
+        "icone": "project diagram",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-sistema",
@@ -153,7 +318,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-sistema",
+        "nome": "Modules Operations",
+        "id": "modulos-operacoes",
+        "titulo": null,
+        "icone": "cog",
+        "icone2": "corner code branch",
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "bibliotecas",
@@ -166,7 +346,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "bibliotecas",
+        "nome": "FTP",
+        "id": "ftp",
+        "titulo": null,
+        "icone": null,
+        "icone2": null,
+        "nao_menu_principal": "1",
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-gestor",
@@ -179,7 +374,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Admin Components",
+        "id": "admin-componentes",
+        "titulo": "Componentes",
+        "icone": "shapes",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-sistema",
@@ -192,7 +402,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-sistema",
+        "nome": "Admin Plugins",
+        "id": "admin-plugins",
+        "titulo": "Plugins",
+        "icone": "plug",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-sistema",
@@ -205,7 +430,22 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-sistema",
+        "nome": "Admin Updates",
+        "id": "admin-atualizacoes",
+        "titulo": "Atualizações",
+        "icone": "sync",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "modulo_grupo_id": "administracao-sistema",
@@ -218,6 +458,21 @@
         "plugin": null,
         "host": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-sistema",
+        "nome": "Admin Environment",
+        "id": "admin-environment",
+        "titulo": "Ambiente Config",
+        "icone": "tools",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     }
 ]

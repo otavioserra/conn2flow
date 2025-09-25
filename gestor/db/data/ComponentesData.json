@@ -871,7 +871,7 @@
         "checksum": "{\"html\":\"a67b32353b2471c080e7d8c0996fb700\",\"css\":\"\",\"combined\":\"a67b32353b2471c080e7d8c0996fb700\"}"
     },
     {
-        "nome": "modal-componente",
+        "nome": "Component Modal",
         "id": "modal-componente",
         "language": "en",
         "modulo": "admin-componentes",
@@ -897,7 +897,7 @@
         "checksum": "{\"html\":\"a67b32353b2471c080e7d8c0996fb700\",\"css\":\"\",\"combined\":\"a67b32353b2471c080e7d8c0996fb700\"}"
     },
     {
-        "nome": "modal-layout",
+        "nome": "Layout Modal",
         "id": "modal-layout",
         "language": "en",
         "modulo": "admin-layouts",
@@ -926,6 +926,32 @@
         "nome": "lista-pagina-ou-sistema",
         "id": "lista-pagina-ou-sistema",
         "language": "pt-br",
+        "modulo": "admin-paginas",
+        "html": "<div class=\"ui form\">\n    <div class=\"inline fields\">\n        <label>#tipo#<\/label>\n        <div class=\"field\">\n            <div class=\"ui radio checkbox\">\n                <input type=\"radio\" name=\"tipo\" tabindex=\"1\" value=\"pagina\" #checked_pagina#>\n                <label>#pagina#<\/label>\n            <\/div>\n        <\/div>\n        <div class=\"field\">\n            <div class=\"ui radio checkbox\">\n                <input type=\"radio\" name=\"tipo\" tabindex=\"2\" value=\"sistema\" #checked_sistema#>\n                <label>#sistema#<\/label>\n            <\/div>\n        <\/div>\n        <div class=\"field\">\n            <div class=\"ui radio checkbox\">\n                <input type=\"radio\" name=\"tipo\" value=\"ambos\" tabindex=\"0\" #checked_ambos#>\n                <label>#ambos#<\/label>\n            <\/div>\n        <\/div>\n    <\/div>\n<\/div>",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.4",
+        "checksum": "{\"html\":\"d0e62efa4ab45262de04a3304cde584a\",\"css\":\"\",\"combined\":\"d0e62efa4ab45262de04a3304cde584a\"}"
+    },
+    {
+        "nome": "Page Modal",
+        "id": "modal-pagina",
+        "language": "en",
+        "modulo": "admin-paginas",
+        "html": "<div class=\"ui modal fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:700px;border:1px solid #ccc;\"><\/iframe>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\n            data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.10",
+        "checksum": "{\"html\":\"0bc84361f1eafaff98aae09157422e26\",\"css\":\"\",\"combined\":\"0bc84361f1eafaff98aae09157422e26\"}"
+    },
+    {
+        "nome": "Page or System List",
+        "id": "lista-pagina-ou-sistema",
+        "language": "en",
         "modulo": "admin-paginas",
         "html": "<div class=\"ui form\">\n    <div class=\"inline fields\">\n        <label>#tipo#<\/label>\n        <div class=\"field\">\n            <div class=\"ui radio checkbox\">\n                <input type=\"radio\" name=\"tipo\" tabindex=\"1\" value=\"pagina\" #checked_pagina#>\n                <label>#pagina#<\/label>\n            <\/div>\n        <\/div>\n        <div class=\"field\">\n            <div class=\"ui radio checkbox\">\n                <input type=\"radio\" name=\"tipo\" tabindex=\"2\" value=\"sistema\" #checked_sistema#>\n                <label>#sistema#<\/label>\n            <\/div>\n        <\/div>\n        <div class=\"field\">\n            <div class=\"ui radio checkbox\">\n                <input type=\"radio\" name=\"tipo\" value=\"ambos\" tabindex=\"0\" #checked_ambos#>\n                <label>#ambos#<\/label>\n            <\/div>\n        <\/div>\n    <\/div>\n<\/div>",
         "css": null,

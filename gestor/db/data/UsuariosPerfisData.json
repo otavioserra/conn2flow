@@ -4,13 +4,31 @@
         "id": "administradores",
         "padrao": null,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "nome": "Administrators",
+        "id": "administradores",
+        "padrao": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     },
     {
         "nome": "Consumidores",
         "id": "consumidores",
         "padrao": true,
         "status": "A",
-        "versao": "1"
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "nome": "Consumers",
+        "id": "consumidores",
+        "padrao": true,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     }
 ]

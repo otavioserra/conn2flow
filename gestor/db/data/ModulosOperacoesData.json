@@ -5,6 +5,16 @@
         "id": "modificar-permissao-da-pagina",
         "operacao": "permissao-pagina",
         "status": "A",
-        "versao": " 1"
+        "versao": " 1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_id": "admin-paginas",
+        "nome": "Modify Page Permission",
+        "id": "modificar-permissao-da-pagina",
+        "operacao": "permissao-pagina",
+        "status": "A",
+        "versao": " 1",
+        "language": "en"
     }
 ]

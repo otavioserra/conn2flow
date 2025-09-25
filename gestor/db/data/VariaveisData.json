@@ -1695,7 +1695,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-atualizacoes",
         "id": "updates-history-mode",
-        "valor": "Modo",
+        "valor": "Mode",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1713,7 +1713,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-atualizacoes",
         "id": "updates-history-removed",
-        "valor": "Remov.",
+        "valor": "Removed",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1749,7 +1749,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-atualizacoes",
         "id": "updates-recent-logs",
-        "valor": "Logs Recentes",
+        "valor": "Recent Logs",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1947,7 +1947,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-categorias",
         "id": "form-module-placeholder",
-        "valor": "Todos os módulos",
+        "valor": "All modules",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1956,7 +1956,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-categorias",
         "id": "form-categories-child-label",
-        "valor": "Categorias Filho",
+        "valor": "Child Categories",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1965,7 +1965,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-categorias",
         "id": "info-categories-child-empty",
-        "valor": "Nenhuma categoria filho definida!",
+        "valor": "No child categories defined!",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1974,7 +1974,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-categorias",
         "id": "category-child-placeholder",
-        "valor": "Clique para Adicionar Categoria Filho.",
+        "valor": "Click to Add Child Category.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1992,7 +1992,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-categorias",
         "id": "form-name-parent-label",
-        "valor": "Categoria Pai",
+        "valor": "Parent Category",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -2001,7 +2001,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-categorias",
         "id": "category-child-parent-not-found",
-        "valor": "Categoria Pai não encontrada. Não é possível adicionar categoria filho sem um pai referente.",
+        "valor": "Parent Category not found. It is not possible to add child category without a corresponding parent.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -2010,7 +2010,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-categorias",
         "id": "form-name-parent-empy",
-        "valor": "Nenhum(a)",
+        "valor": "None",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -2019,7 +2019,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-categorias",
         "id": "form-categories-parent-label",
-        "valor": "Categoria Localização",
+        "valor": "Category Location",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -2028,7 +2028,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-categorias",
         "id": "root-category",
-        "valor": "Raiz",
+        "valor": "Root",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3447,6 +3447,429 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-name-label",
+        "valor": "Page Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-name-placeholder",
+        "valor": "Page Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-html-editor-tooltip",
+        "valor": "Click to open HTML Editor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-html-editor-label",
+        "valor": "HTML Editor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-html-tooltip",
+        "valor": "Click to open HTML > Body. Visible part of the page within the <body> tag",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-html-label",
+        "valor": "HTML > Body",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-css-tooltip",
+        "valor": "Click to open CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-css-label",
+        "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-id-label",
+        "valor": "Identifier",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-id-placeholder",
+        "valor": "Identifier",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-path-label",
+        "valor": "Path",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-path-placeholder",
+        "valor": "Path",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-layout-label",
+        "valor": "Layout",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-layout-placeholder",
+        "valor": "Choose a layout",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-type-label",
+        "valor": "Type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-type-placeholder",
+        "valor": "Select a type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-module-label",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-module-placeholder",
+        "valor": "Select a module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-option-label",
+        "valor": "Option",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-option-placeholder",
+        "valor": "Option",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-root-label",
+        "valor": "Root",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-permission-label",
+        "valor": "No Permission",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-config-divider",
+        "valor": "Page Settings",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-editor-html-switch-label",
+        "valor": "Enable HTML Editor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "editor-html-switch",
+        "valor": null,
+        "tipo": "bool",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "path-necessary-chars",
+        "valor": "at least one '\/' at the end",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-url-label",
+        "valor": "Current Page URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-type-page",
+        "valor": "Page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-type-system",
+        "valor": "System",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-framework-css-label",
+        "valor": "Framework CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-button-preview",
+        "valor": "Preview",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "tooltip-button-preview",
+        "valor": "Click to preview the page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "modal-title-preview",
+        "valor": "Page Preview",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "modal-button-preview",
+        "valor": "Save",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "modal-desktop-preview",
+        "valor": "Computer",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "modal-tablet-preview",
+        "valor": "Tablet",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "modal-mobile-preview",
+        "valor": "Smartphone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "button-back-tooltip",
+        "valor": "Click the button to go back.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "button-back-value",
+        "valor": "Back",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "lista-ambos-label",
+        "valor": "Both",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "lista-pagina-label",
+        "valor": "Page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "lista-sistema-label",
+        "valor": "System",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "lista-tipo-label",
+        "valor": "Type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-css-compiled-tooltip",
+        "valor": "Click to open the automatic CSS generated by the system.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-css-compiled-label",
+        "valor": "Automatic CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-html-extra-head-tooltip",
+        "valor": "Click to open extra HTML for the page Header. Part within the <head> tag",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-html-extra-head-label",
+        "valor": "HTML > Header",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-plugins",
         "id": "form-name-label",
@@ -3567,7 +3990,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-plugins",
         "id": "pagina-teste",
-        "valor": "Teste do Sistema de Descoberta Automática",
+        "valor": "Automatic Discovery System Test",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3576,7 +3999,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-plugins",
         "id": "metadata-origin-type",
-        "valor": "Origem",
+        "valor": "Origin",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3603,7 +4026,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-plugins",
         "id": "metadata-origin-credential-ref",
-        "valor": "Credencial Ref",
+        "valor": "Credential Ref",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3612,7 +4035,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-plugins",
         "id": "metadata-installed-version",
-        "valor": "Versão Instalada",
+        "valor": "Installed Version",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3630,7 +4053,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-plugins",
         "id": "metadata-execution-status",
-        "valor": "Status Execução",
+        "valor": "Execution Status",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3639,7 +4062,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-plugins",
         "id": "metadata-last-update",
-        "valor": "Última Atualização",
+        "valor": "Last Update",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3720,7 +4143,7 @@
         "linguagem_codigo": "en",
         "modulo": "dashboard",
         "id": "logout-grup",
-        "valor": "Sair",
+        "valor": "Logout",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3729,7 +4152,7 @@
         "linguagem_codigo": "en",
         "modulo": "dashboard",
         "id": "logout-label",
-        "valor": "Sair",
+        "valor": "Logout",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3738,7 +4161,7 @@
         "linguagem_codigo": "en",
         "modulo": "dashboard",
         "id": "toast-update-title",
-        "valor": "Atualização Disponível",
+        "valor": "Update Available",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3747,7 +4170,7 @@
         "linguagem_codigo": "en",
         "modulo": "dashboard",
         "id": "toast-update-message",
-        "valor": "Há uma atualização disponível. Deseja atualizar agora?",
+        "valor": "There is an update available. Do you want to update now?",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3756,7 +4179,7 @@
         "linguagem_codigo": "en",
         "modulo": "dashboard",
         "id": "toast-update-button-positive-label",
-        "valor": "Atualizar Agora",
+        "valor": "Update Now",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3765,7 +4188,7 @@
         "linguagem_codigo": "en",
         "modulo": "dashboard",
         "id": "toast-update-button-positive-message",
-        "valor": "Você será redirecionado para a tela de atualizações...",
+        "valor": "You will be redirected to the updates screen...",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3774,7 +4197,7 @@
         "linguagem_codigo": "en",
         "modulo": "dashboard",
         "id": "toast-update-button-negative-label",
-        "valor": "Não Atualizar",
+        "valor": "Don't Update",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3783,7 +4206,7 @@
         "linguagem_codigo": "en",
         "modulo": "dashboard",
         "id": "toast-update-button-negative-message",
-        "valor": "O sistema armazenará sua escolha. Se mudar de ideia acesse: <b>#url#<\/b>.",
+        "valor": "The system will store your choice. If you change your mind, access: <b>#url#<\/b>.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4512,7 +4935,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "field-url-path",
-        "valor": "Caminho",
+        "valor": "Path",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4521,7 +4944,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "form-button-title",
-        "valor": "Clique nesse botão para GRAVAR as alterações.",
+        "valor": "Click this button to SAVE the changes.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4530,7 +4953,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "form-button-value",
-        "valor": "Enviar",
+        "valor": "Send",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4539,7 +4962,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "list-column-options",
-        "valor": "Opções",
+        "valor": "Options",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4557,7 +4980,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "field-date-start",
-        "valor": "Data Criação",
+        "valor": "Creation Date",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4566,7 +4989,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "field-date-modification",
-        "valor": "Data Modificação",
+        "valor": "Modification Date",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4575,7 +4998,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "tooltip-button-edit",
-        "valor": "Clique para Editar",
+        "valor": "Click to Edit",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4584,7 +5007,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "tooltip-button-active",
-        "valor": "Clique para Ativar",
+        "valor": "Click to Activate",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4593,7 +5016,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "tooltip-button-desactive",
-        "valor": "Clique para Desativar",
+        "valor": "Click to Deactivate",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4602,7 +5025,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "tooltip-button-delete",
-        "valor": "Clique para Excluir",
+        "valor": "Click to Delete",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4611,7 +5034,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "tooltip-button-insert",
-        "valor": "Clique para Adicionar.",
+        "valor": "Click to Add.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4629,7 +5052,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "label-button-desactive",
-        "valor": "Desativar",
+        "valor": "Deactivate",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4638,7 +5061,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "label-button-active",
-        "valor": "Ativar",
+        "valor": "Activate",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4692,7 +5115,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "delete-confirm-title",
-        "valor": "Confirmação de Deleção",
+        "valor": "Deletion Confirmation",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4701,7 +5124,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "delete-confirm-menssage",
-        "valor": "Você tem certeza que quer excluir este ítem?",
+        "valor": "Are you sure you want to delete this item?",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4746,7 +5169,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "historic-change-field-after-before",
-        "valor": "alterou <b>#campo#<\/b> de <b>#valor_antes#<\/b> para <b>#valor_depois#<\/b>",
+        "valor": "changed <b>#campo#<\/b> from <b>#valor_antes#<\/b> to <b>#valor_depois#<\/b>",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4755,7 +5178,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "historic-change-field-only",
-        "valor": "alterou <b>#campo#<\/b>",
+        "valor": "changed <b>#campo#<\/b>",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4764,7 +5187,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "historic-button-load-more",
-        "valor": "Carregar Mais",
+        "valor": "Load More",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4791,7 +5214,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "ajax-timeout-message",
-        "valor": "A tentativa de conexão com o servidor chegou no seu limite de tempo. Houve alguma falha na sua conexão com o mesmo ou então algum erro de programação não detectável automaticamente. Tente novamente, se o problema persistir, favor entrar em contato com o suporte técnico.",
+        "valor": "The connection attempt to the server has reached its time limit. There was a failure in your connection or a programming error that cannot be automatically detected. Try again, if the problem persists, please contact technical support.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4800,7 +5223,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "historic-change-status",
-        "valor": "alterou <b>#campo#<\/b> para <b>#valor_depois#<\/b>",
+        "valor": "changed <b>#campo#<\/b> to <b>#valor_depois#<\/b>",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4809,7 +5232,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "historic-delete",
-        "valor": "removeu o registro do sistema",
+        "valor": "removed the record from the system",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4818,7 +5241,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-empty",
-        "valor": "É obrigatório preencher o campo <b>#label#<\/b>.",
+        "valor": "It is mandatory to fill in the field <b>#label#<\/b>.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4827,7 +5250,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-min-length",
-        "valor": "O campo <b>#label#<\/b> deve ter no mínimo 3 caracteres.",
+        "valor": "The field <b>#label#<\/b> must have at least 3 characters.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4836,7 +5259,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-max-length",
-        "valor": "O campo <b>#label#<\/b> deve ter no máximo 100 caracteres.",
+        "valor": "The field <b>#label#<\/b> must have a maximum of 100 characters.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4845,7 +5268,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-min-max-length",
-        "valor": "O campo <b>#label#<\/b> é obrigatório. Deve ter no mínimo <b>#min#<\/b> e no máximo <b>#max#<\/b> caracteres.",
+        "valor": "The field <b>#label#<\/b> is mandatory. It must have a minimum of <b>#min#<\/b> and a maximum of <b>#max#<\/b> characters.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4854,7 +5277,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "problem-get-variable",
-        "valor": "Ocorreu um erro na obtenção de uma variável.",
+        "valor": "An error occurred in obtaining a variable.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4872,7 +5295,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "tooltip-button-variable",
-        "valor": "Clique para alterar as Variáveis",
+        "valor": "Click to change the Variables",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4890,7 +5313,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "no-occurrence",
-        "valor": "Nenhum(a)",
+        "valor": "None",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4899,7 +5322,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-email",
-        "valor": "É obrigatório definir um email válido no campo <b>#label#<\/b>.",
+        "valor": "It is mandatory to define a valid email in the field <b>#label#<\/b>.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4908,7 +5331,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-email-compare",
-        "valor": "O campo <b>#campo-1#<\/b> é diferente do campo <b>#campo-2#<\/b>. É obrigatório que ambos tenham o mesmo valor.",
+        "valor": "The field <b>#campo-1#<\/b> is different from the field <b>#campo-2#<\/b>. It is mandatory that both have the same value.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4917,7 +5340,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-min-length-password",
-        "valor": "O campo <b>#label#<\/b> deve ter no mínimo 12 caracteres.",
+        "valor": "The field <b>#label#<\/b> must have at least 12 characters.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4926,7 +5349,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-password-chars",
-        "valor": "O campo  <b>#label#<\/b> precisa ter no mínimo <b>um caracter minúsculo<\/b>,  no mínimo <b>um caracter maiúsculo<\/b>,  no mínimo <b>um número<\/b> e pelo menos um caracter especial igual a <b>!@#$%^&*<\/b>.",
+        "valor": "The field <b>#label#<\/b> needs to have at least <b>one lowercase character<\/b>, at least <b>one uppercase character<\/b>, at least <b>one number<\/b> and at least one special character equal to <b>!@#$%^&*<\/b>.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4935,7 +5358,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-select",
-        "valor": "É obrigatório selecionar pelo menos uma opção do campo <b>#label#<\/b>.",
+        "valor": "It is mandatory to select at least one option from the field <b>#label#<\/b>.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4944,7 +5367,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "form-nao-alterar-id-label",
-        "valor": "Não alterar o identificador único se modificar o campo Nome.",
+        "valor": "Do not change the unique identifier if you modify the Name field.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4953,7 +5376,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "field-id",
-        "valor": "Identificador",
+        "valor": "Identifier",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4962,7 +5385,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-verify-field",
-        "valor": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor preenchido. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+        "valor": "There is already a registration for the field <b>#label#<\/b> with the same value filled. Please choose another <b>#label#<\/b> and try again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4971,7 +5394,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-regex-permited-chars",
-        "valor": "Só é permitido no campo <b>#label#<\/b> os seguintes caracteres : <b>#permited-chars#<\/b>. Favor remover os caracteres  inválidos e tentar novamente.",
+        "valor": "Only the following characters are allowed in the field <b>#label#<\/b>: <b>#permited-chars#<\/b>. Please remove the invalid characters and try again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4980,7 +5403,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "alert-there-is-a-field",
-        "valor": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+        "valor": "There is already a registration for the field <b>#label#<\/b> with the same value: <b>#value#<\/b>. Please choose another <b>#label#<\/b> and try again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4989,7 +5412,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-regex-necessary-chars",
-        "valor": "É necessário definir no campo <b>#label#<\/b> os seguintes caracteres : <b>#necessary-chars#<\/b>. Favor incluir os caracteres  e tentar novamente.",
+        "valor": "It is necessary to define the following characters in the field <b>#label#<\/b>: <b>#necessary-chars#<\/b>. Please include the characters and try again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5007,7 +5430,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "user-authorization-message",
-        "valor": "Este local tem dados importantes sensíveis. Portanto, por segurança,  é necessário fornecer novamente a sua senha.",
+        "valor": "This location has important sensitive data. Therefore, for security, it is necessary to provide your password again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5025,7 +5448,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "user-authorization-confirm",
-        "valor": "Fornecer Senha",
+        "valor": "Provide Password",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5034,7 +5457,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "alert-database-field-before-error",
-        "valor": "Houve um erro na recuperação dos dados do registro que se quer alterar. É possível que o mesmo possa ter sido excluído. ",
+        "valor": "There was an error in retrieving the data of the record you want to change. It is possible that it may have been deleted.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5043,7 +5466,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "historic-empty-value",
-        "valor": "Nenhum(a)",
+        "valor": "None",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5061,7 +5484,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-image-button-del",
-        "valor": "Remover",
+        "valor": "Remove",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5070,7 +5493,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-image-default-name",
-        "valor": "Nenhum(a)",
+        "valor": "None",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5079,7 +5502,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-image-default-date",
-        "valor": "Nenhum(a)",
+        "valor": "None",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5088,7 +5511,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-image-default-type",
-        "valor": "imagem",
+        "valor": "image",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5097,7 +5520,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-image-modal-head",
-        "valor": "Selecione uma imagem abaixo...",
+        "valor": "Select an image below...",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5115,7 +5538,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-image-alert-not-image",
-        "valor": "O arquivo selecionado <b>NÃO<\/b> é uma imagem. ",
+        "valor": "The selected file <b>is NOT<\/b> an image.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5124,7 +5547,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "historic-change-users-profiles",
-        "valor": "alterou <b>#campo#<\/b> removendo <b>#valor_antes#<\/b> e incluindo <b>#valor_depois#<\/b>",
+        "valor": "changed <b>#campo#<\/b> removing <b>#valor_antes#<\/b> and including <b>#valor_depois#<\/b>",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5133,7 +5556,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "alert-api-client-error",
-        "valor": "<h3>Houve um <span class=\"ui error text\">erro<\/span> na comunicação com o seu hospedeiro!<\/h3><p>A API do cliente retornou o seguinte erro: #error-msg#<\/p>",
+        "valor": "<h3>There was an <span class=\"ui error text\">error<\/span> in communication with your host!<\/h3><p>The client API returned the following error: #error-msg#<\/p>",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5142,7 +5565,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-template-button-change",
-        "valor": "Trocar",
+        "valor": "Change",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5151,7 +5574,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-template-modal-head",
-        "valor": "Selecione uma template abaixo...",
+        "valor": "Select a template below...",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5169,7 +5592,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-error-load",
-        "valor": "Não foi possível carregar o widget: <span class=\"ui error text\">#msg#<\/span>",
+        "valor": "Could not load the widget: <span class=\"ui error text\">#msg#<\/span>",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5178,7 +5601,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-template-error-category",
-        "valor": "categoria padrão não encontrada",
+        "valor": "default category not found",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5187,7 +5610,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-template-button-change-tooltip",
-        "valor": "Clique para trocar o template atual.",
+        "valor": "Click to change the current template.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5196,7 +5619,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-image-button-add-tooltip",
-        "valor": "Clique para adicionar uma imagem.",
+        "valor": "Click to add an image.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5205,7 +5628,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "widget-image-button-del-tooltip",
-        "valor": "Clique para remover esta imagem.",
+        "valor": "Click to remove this image.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5214,7 +5637,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-greater-than-zero",
-        "valor": "O campo <b>#campo-1#<\/b> tem que ser maior ou igual a zero.",
+        "valor": "The field <b>#campo-1#<\/b> must be greater than or equal to zero.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5223,7 +5646,7 @@
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "validation-domain",
-        "valor": "O campo <b>#label#<\/b> não é um domínio válido.",
+        "valor": "The field <b>#label#<\/b> is not a valid domain.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5457,7 +5880,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-add-field-label",
-        "valor": "Adicionar Variável",
+        "valor": "Add Variable",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5466,7 +5889,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-language-label",
-        "valor": "Linguagem",
+        "valor": "Language",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5475,7 +5898,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-icon-label",
-        "valor": "Ícone",
+        "valor": "Icon",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5484,7 +5907,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-icon-placeholder",
-        "valor": "Ícone",
+        "valor": "Icon",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5493,7 +5916,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-grup-placeholder",
-        "valor": "Selecione um grupo",
+        "valor": "Select a group",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5511,7 +5934,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-icon-2-label",
-        "valor": "Ícone Ancorado",
+        "valor": "Anchored Icon",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5520,7 +5943,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-icon-2-placeholder",
-        "valor": "Ícone Ancorado",
+        "valor": "Anchored Icon",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5529,7 +5952,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-menu-label",
-        "valor": "Visualizar no Menu Principal",
+        "valor": "View in Main Menu",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5538,7 +5961,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-menu-placeholder",
-        "valor": "Selecione para visualizar no menu principal",
+        "valor": "Select to view in main menu",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5547,7 +5970,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-title-label",
-        "valor": "Título",
+        "valor": "Title",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5556,7 +5979,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-title-placeholder",
-        "valor": "Título",
+        "valor": "Title",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5565,7 +5988,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-id-placeholder",
-        "valor": "Identificador",
+        "valor": "Identifier",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5592,7 +6015,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-plugin-placeholder",
-        "valor": "Selecione um plugin",
+        "valor": "Select a plugin",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5772,7 +6195,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos-operacoes",
         "id": "form-operation-label",
-        "valor": "Operação ID",
+        "valor": "Operation ID",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5781,7 +6204,7 @@
         "linguagem_codigo": "en",
         "modulo": "modulos-operacoes",
         "id": "form-operation-placeholder",
-        "valor": "Operação ID",
+        "valor": "Operation ID",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6681,7 +7104,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-authorization-provisory-not-defined",
-        "valor": "Não é permitido alterar nenhum dado do usuário sem autorização provisória.",
+        "valor": "It is not allowed to change any user data without provisional authorization.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6690,7 +7113,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-password-invalid",
-        "valor": "Senha incorreta! Você tem mais <b>#tentativas#<\/b> tentativas, senão será desconectado automaticamente!",
+        "valor": "Incorrect password! You have <b>#tentativas#<\/b> more attempts, otherwise you will be automatically disconnected!",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6699,7 +7122,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-password-invalid-finish",
-        "valor": "Senha Incorreta! Você foi desconectado do sistema automaticamente pelo excesso de fornecimento de senhas incorretas. Será necessário informar usuário e senha para ter acesso novamente.",
+        "valor": "Incorrect Password! You have been automatically disconnected from the system due to excessive incorrect password attempts. You will need to provide username and password to access again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6708,7 +7131,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-there-is-a-field",
-        "valor": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+        "valor": "There is already a registration for the field <b>#label#<\/b> with the same value: <b>#value#<\/b>. Please choose another <b>#label#<\/b> and try again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6717,7 +7140,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-user-inactive",
-        "valor": "Usuário inativo no sistema, favor entrar em contato com o suporte para restabelecer sua conta.",
+        "valor": "User inactive in the system, please contact support to restore your account.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6726,7 +7149,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-user-or-password-invalid",
-        "valor": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
+        "valor": "Invalid username and\/or password. Please try again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6735,7 +7158,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-without-permission",
-        "valor": "Você não tem permissão para acessar este local.",
+        "valor": "You do not have permission to access this location.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6744,7 +7167,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "first-name",
-        "valor": "Primeiro Nome",
+        "valor": "First Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6753,7 +7176,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "form-email-2-label",
-        "valor": "Confirme o Email",
+        "valor": "Confirm Email",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6762,7 +7185,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "form-email-2-placeholder",
-        "valor": "Confirme o Email",
+        "valor": "Confirm Email",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6789,7 +7212,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "form-name-account-label",
-        "valor": "Nome da Conta",
+        "valor": "Account Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6798,7 +7221,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "form-name-account-placeholder",
-        "valor": "Nome da Conta",
+        "valor": "Account Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6825,7 +7248,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "form-name-user-label",
-        "valor": "Nome do Usuário",
+        "valor": "User Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6834,7 +7257,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "form-name-user-placeholder",
-        "valor": "Nome do Usuário",
+        "valor": "User Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6843,7 +7266,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "form-password-2-label",
-        "valor": "Confirme a Senha",
+        "valor": "Confirm Password",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6852,7 +7275,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "form-password-2-placeholder",
-        "valor": "Confirme a Senha",
+        "valor": "Confirm Password",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6861,7 +7284,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "form-password-button",
-        "valor": "Mudar Senha",
+        "valor": "Change Password",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6906,7 +7329,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "form-user-profile-label",
-        "valor": "Usuário Perfil",
+        "valor": "User Profile",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6915,7 +7338,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "form-user-profile-placeholder",
-        "valor": "Selecione um perfil",
+        "valor": "Select a profile",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6924,7 +7347,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "last-name",
-        "valor": "Último Nome",
+        "valor": "Last Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6933,7 +7356,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "middle-name",
-        "valor": "Nome do Meio",
+        "valor": "Middle Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6942,7 +7365,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "restrict-area-info",
-        "valor": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar<\/b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
+        "valor": "Please enter your password below and then click the <b>Send<\/b> button to provisionally authorize the modification of any sensitive data in your account.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6951,7 +7374,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "restrict-area-info-title",
-        "valor": "Autorização Provisória de Alteração",
+        "valor": "Provisional Change Authorization",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6960,7 +7383,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "user-permited-chars",
-        "valor": "letras, números, '.' e apenas um '@'",
+        "valor": "letters, numbers, '.' and only one '@'",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6969,7 +7392,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "login-button-label",
-        "valor": "Entrar",
+        "valor": "Login",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6978,7 +7401,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "login-forgot-password-button",
-        "valor": "aqui",
+        "valor": "here",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6987,7 +7410,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "login-forgot-password-label",
-        "valor": "Esqueceu sua senha? Clique",
+        "valor": "Forgot your password? Click",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6996,7 +7419,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "login-keep-logged-in-label",
-        "valor": "Manter minha conta ativa neste navegador",
+        "valor": "Keep my account active in this browser",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7005,7 +7428,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "login-new-register-button",
-        "valor": "Faça seu cadastro",
+        "valor": "Create your account",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7014,7 +7437,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "login-new-register-label",
-        "valor": "Não possui uma conta?",
+        "valor": "Don't have an account?",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7050,7 +7473,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "button-change-email",
-        "valor": "Mudar Email",
+        "valor": "Change Email",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7059,7 +7482,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "button-change-name",
-        "valor": "Mudar Nome",
+        "valor": "Change Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7068,7 +7491,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "button-change-password",
-        "valor": "Mudar Senha",
+        "valor": "Change Password",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7077,7 +7500,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "button-change-user",
-        "valor": "Mudar Usuário",
+        "valor": "Change User",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7086,7 +7509,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "form-changes-label",
-        "valor": "Alterações",
+        "valor": "Changes",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7095,7 +7518,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-title",
-        "valor": "Esqueceu a Senha",
+        "valor": "Forgot Password",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7122,7 +7545,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-email-2-label",
-        "valor": "Confirme o Email",
+        "valor": "Confirm Email",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7131,7 +7554,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-email-2-placeholder",
-        "valor": "Confirme o Email",
+        "valor": "Confirm Email",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7140,7 +7563,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-button",
-        "valor": "Enviar",
+        "valor": "Send",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7149,7 +7572,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-login-label",
-        "valor": "Já tem cadastro? Clique",
+        "valor": "Already have an account? Click",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7158,7 +7581,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-login-button",
-        "valor": "aqui",
+        "valor": "here",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7167,7 +7590,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-new-register-label",
-        "valor": "Não possui uma conta?",
+        "valor": "Don't have an account?",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7176,7 +7599,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-new-register-button",
-        "valor": "Faça seu cadastro",
+        "valor": "Create your account",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7185,7 +7608,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-message-header",
-        "valor": "Você Esqueceu Sua Senha?",
+        "valor": "Did You Forget Your Password?",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7194,7 +7617,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-message-content",
-        "valor": "Se sim, preencha o campo <b>Email<\/b> e depois o campo <b>Confirme o Email<\/b>. Em seguida o sistema irá enviar uma mensagem no endereço de email informado. Siga as orientações desta mensagem afim de criar uma nova senha.",
+        "valor": "If yes, fill in the <b>Email<\/b> field and then the <b>Confirm Email<\/b> field. Then the system will send a message to the email address provided. Follow the instructions in this message to create a new password.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7203,7 +7626,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-user-email-invalid",
-        "valor": "Não existe nenhum cadastro no sistema com o email informado: <b>#email#<\/b> . Verifique se o email enviado foi informado corretamente e tente denovo.",
+        "valor": "There is no registration in the system with the email provided: <b>#email#<\/b>. Please check if the email sent was entered correctly and try again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7212,7 +7635,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-confirmation-title",
-        "valor": "Esqueceu a Senha Email Enviado",
+        "valor": "Forgot Password Email Sent",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7221,7 +7644,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-confirmation-message-header",
-        "valor": "Email de Confirmação Enviado com Sucesso!",
+        "valor": "Confirmation Email Sent Successfully!",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7230,7 +7653,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-confirmation-message-content",
-        "valor": "Foi enviado uma mensagem com instruções para alterar a sua senha no seguinte email: <b>#email#<\/b> . Favor acessar o seu cliente de emails e seguir as orientações enviadas.",
+        "valor": "A message with instructions to change your password was sent to the following email: <b>#email#<\/b>. Please access your email client and follow the instructions sent.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7239,7 +7662,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-mail-subject",
-        "valor": "Redefinição da sua Senha da Conta Conn2Flow nº #numero#",
+        "valor": "Reset Your Conn2Flow Account Password nº #numero#",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7248,7 +7671,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-redefine-password-expiration-or-invalid",
-        "valor": "O token enviado perdeu o prazo de validade. É necessário refazer o processo e tentar novamente.",
+        "valor": "The token sent has expired. It is necessary to redo the process and try again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7266,7 +7689,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "redefine-password-message-header",
-        "valor": "Você Quer Redefinir sua Senha?",
+        "valor": "Do You Want to Reset Your Password?",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7275,7 +7698,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "redefine-password-message-content",
-        "valor": "Se sim, preencha o campo <b>Senha<\/b> e depois o campo <b>Confirme a Senha<\/b>. Então, clique no botão <b>Redefinir<\/b> para alterar a sua senha.",
+        "valor": "If yes, fill in the <b>Password<\/b> field and then the <b>Confirm Password<\/b> field. Then, click the <b>Reset<\/b> button to change your password.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7302,7 +7725,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "redefine-password-pass-2-label",
-        "valor": "Confirme a Senha",
+        "valor": "Confirm Password",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7311,7 +7734,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "redefine-password-pass-2-placeholder",
-        "valor": "Confirme a Senha",
+        "valor": "Confirm Password",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7320,7 +7743,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "redefine-password-button",
-        "valor": "Redefinir",
+        "valor": "Reset",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7329,7 +7752,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "redefine-password-confirmation-title",
-        "valor": "Redefinir Senha Confirmação",
+        "valor": "Reset Password Confirmation",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7338,7 +7761,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "redefine-password-confirmation-message-header",
-        "valor": "Redefinição de Senha Concluída com Sucesso!",
+        "valor": "Password Reset Completed Successfully!",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7347,7 +7770,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "redefine-password-confirmation-message-content",
-        "valor": "Agora você pode acessar o sistema com o seu usuário e senha. Para isso acesse clicando #url# .",
+        "valor": "Now you can access the system with your username and password. To do this, click #url#.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7356,7 +7779,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "signup-login-label",
-        "valor": "Já tem cadastro? Clique",
+        "valor": "Already have an account? Click",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7365,7 +7788,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "signup-login-button",
-        "valor": "aqui",
+        "valor": "here",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7374,7 +7797,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "signup-button",
-        "valor": "Cadastrar",
+        "valor": "Register",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7383,7 +7806,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "signup-title",
-        "valor": "CADASTRO",
+        "valor": "REGISTRATION",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7428,7 +7851,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "signup-email-2-label",
-        "valor": "Confirmação de email",
+        "valor": "Email confirmation",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7437,7 +7860,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "signup-email-2-placeholder",
-        "valor": "Confirmação de email",
+        "valor": "Email confirmation",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7464,7 +7887,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "signup-senha-2-label",
-        "valor": "Confirmação de senha",
+        "valor": "Password confirmation",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7473,7 +7896,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "signup-senha-2-placeholder",
-        "valor": "Confirmação de senha",
+        "valor": "Password confirmation",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7491,7 +7914,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-recaptcha-invalid",
-        "valor": "A sua requisição <b>não<\/b> foi aceita pois nosso sistema automático de segurança considerou a mesma sendo feita por um <b>robô<\/b>. Favor tentar novamente, mas caso o problema persista, favor entrar em contato clicando <b>#url#<\/b>.",
+        "valor": "Your request <b>was not<\/b> accepted because our automatic security system considered it to be made by a <b>robot<\/b>. Please try again, but if the problem persists, please contact us by clicking <b>#url#<\/b>.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7500,7 +7923,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-recaptcha-invalid-btn",
-        "valor": "aqui",
+        "valor": "here",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7509,7 +7932,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "signup-mail-subject",
-        "valor": "Nova Conta Conn2Flow nº #numero#",
+        "valor": "New Conn2Flow Account nº #numero#",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7536,7 +7959,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-already-exists-email",
-        "valor": "O email informado já está em uso! Escolha outro e tente novamente.",
+        "valor": "The email provided is already in use! Choose another one and try again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7545,7 +7968,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "alert-email-not-sent",
-        "valor": "Houve um problema e não foi possível enviar o email. Tente novamente, mas caso o problema persista, entre em contato com o suporte técnico.",
+        "valor": "There was a problem and it was not possible to send the email. Try again, but if the problem persists, contact technical support.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7554,7 +7977,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "reset-password",
-        "valor": "senha redefinida com sucesso! <b>IP: #ip# | USER_AGENT: #user-agent#<\/b>",
+        "valor": "password reset successfully! <b>IP: #ip# | USER_AGENT: #user-agent#<\/b>",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7563,7 +7986,7 @@
         "linguagem_codigo": "en",
         "modulo": "perfil-usuario",
         "id": "password-redefined-mail-subject",
-        "valor": "Senha da Conta Conn2Flow redefinida com sucesso nº #numero#",
+        "valor": "Conn2Flow Account Password Reset Successfully nº #numero#",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8004,7 +8427,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "middle-name",
-        "valor": "Nome do Meio",
+        "valor": "Middle Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8013,7 +8436,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "first-name",
-        "valor": "Primeiro Nome",
+        "valor": "First Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8022,7 +8445,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "last-name",
-        "valor": "Último Nome",
+        "valor": "Last Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8049,7 +8472,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-email-2-label",
-        "valor": "Confirme o Email",
+        "valor": "Confirm Email",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8058,7 +8481,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-email-2-placeholder",
-        "valor": "Confirme o Email",
+        "valor": "Confirm Email",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8103,7 +8526,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-password-2-label",
-        "valor": "Confirme a Senha",
+        "valor": "Confirm Password",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8112,7 +8535,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-password-2-placeholder",
-        "valor": "Confirme a Senha",
+        "valor": "Confirm Password",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8121,7 +8544,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-user-profile-label",
-        "valor": "Usuário Perfil",
+        "valor": "User Profile",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8130,7 +8553,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-user-profile-placeholder",
-        "valor": "Selecione um perfil...",
+        "valor": "Select a profile...",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8166,7 +8589,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "login-button-label",
-        "valor": "Entrar",
+        "valor": "Login",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8175,7 +8598,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "login-forgot-password-label",
-        "valor": "Esqueceu sua senha? Clique",
+        "valor": "Forgot your password? Click",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8184,7 +8607,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "login-forgot-password-button",
-        "valor": "aqui",
+        "valor": "here",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8193,7 +8616,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "login-keep-logged-in-label",
-        "valor": "Manter minha conta ativa neste navegador",
+        "valor": "Keep my account active in this browser",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8202,7 +8625,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "login-new-register-label",
-        "valor": "Não possui uma conta?",
+        "valor": "Don't have an account?",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8211,7 +8634,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "login-new-register-button",
-        "valor": "Faça seu cadastro",
+        "valor": "Create your account",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8220,7 +8643,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "alert-user-or-password-invalid",
-        "valor": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
+        "valor": "Invalid username and\/or password. Please try again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8229,7 +8652,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "alert-user-inactive",
-        "valor": "Usuário inativo no sistema, favor entrar em contato com o suporte para restabelecer sua conta.",
+        "valor": "User inactive in the system, please contact support to restore your account.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8238,7 +8661,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "alert-without-permission",
-        "valor": "Você não tem permissão para acessar este local.",
+        "valor": "You do not have permission to access this location.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8247,7 +8670,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "alert-there-is-a-field",
-        "valor": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+        "valor": "There is already a registration for the field <b>#label#<\/b> with the same value: <b>#value#<\/b>. Please choose another <b>#label#<\/b> and try again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8256,7 +8679,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-password-button",
-        "valor": "Mudar Senha",
+        "valor": "Change Password",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8265,7 +8688,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "user-permited-chars",
-        "valor": "letras, números, '.' e apenas um '@'",
+        "valor": "letters, numbers, '.' and only one '@'",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8274,7 +8697,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-name-account-label",
-        "valor": "Nome da Conta",
+        "valor": "Account Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8283,7 +8706,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-name-user-label",
-        "valor": "Nome do Usuário",
+        "valor": "User Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8292,7 +8715,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-name-account-placeholder",
-        "valor": "Nome da Conta",
+        "valor": "Account Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8301,7 +8724,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-name-user-placeholder",
-        "valor": "Nome do Usuário",
+        "valor": "User Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8310,7 +8733,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "alert-authorization-provisory-not-defined",
-        "valor": "Não é permitido alterar nenhum dado do usuário sem autorização provisória.",
+        "valor": "It is not allowed to change any user data without provisional authorization.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8319,7 +8742,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "restrict-area-info",
-        "valor": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar<\/b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
+        "valor": "Please enter your password below and then click the <b>Send<\/b> button to provisionally authorize the modification of any sensitive data in your account.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8328,7 +8751,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "restrict-area-info-title",
-        "valor": "Autorização Provisória de Alteração",
+        "valor": "Provisional Change Authorization",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8337,7 +8760,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "alert-password-invalid",
-        "valor": "Senha incorreta! Você tem mais <b>#tentativas#<\/b> tentativas, senão será desconectado automaticamente!",
+        "valor": "Incorrect password! You have <b>#tentativas#<\/b> more attempts, otherwise you will be automatically disconnected!",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8346,7 +8769,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "alert-password-invalid-finish",
-        "valor": "Senha Incorreta! Você foi desconectado do sistema automaticamente pelo excesso de fornecimento de senhas incorretas. Será necessário informar usuário e senha para ter acesso novamente.",
+        "valor": "Incorrect password! You have been automatically disconnected from the system due to excessive incorrect password entries. You will need to enter username and password to access again.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8355,7 +8778,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-user-plan-label",
-        "valor": "Usuário Plano",
+        "valor": "User Plan",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8364,7 +8787,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-user-manager-profile-label",
-        "valor": "Usuário Gestor Perfil",
+        "valor": "User Manager Profile",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8373,7 +8796,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "form-user-manager-profile-placeholder",
-        "valor": "Selecione um perfil...",
+        "valor": "Select a profile...",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8382,7 +8805,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "list-host-label",
-        "valor": "Hospedeiro",
+        "valor": "Host",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8391,7 +8814,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios",
         "id": "list-user-parent-label",
-        "valor": "Usuário Pai",
+        "valor": "Parent User",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8508,7 +8931,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios-perfis",
         "id": "module-select-all",
-        "valor": "Selecionar Todos",
+        "valor": "Select All",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8517,7 +8940,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios-perfis",
         "id": "module-unselect-all",
-        "valor": "Deselecionar Todos",
+        "valor": "Unselect All",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8526,7 +8949,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios-perfis",
         "id": "operations-modules-name",
-        "valor": "Operações",
+        "valor": "Operations",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8535,7 +8958,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios-perfis",
         "id": "historic-change-operations",
-        "valor": "[operação(ões): #operacoes#]",
+        "valor": "[operation(s): #operacoes#]",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8544,7 +8967,7 @@
         "linguagem_codigo": "en",
         "modulo": "usuarios-perfis",
         "id": "historic-change-modules-layout",
-        "valor": "Módulo(s): #modulos# ; Módulo(s) Operação(ões): #modulos-operacoes#",
+        "valor": "Module(s): #modulos# ; Module(s) Operation(s): #modulos-operacoes#",
         "tipo": "string",
         "grupo": null,
         "descricao": null

@@ -9,23 +9,6 @@
  * - Segrega e exporta registros órfãos conforme regras de unicidade
  * - Gera relatório final consolidado
  * - Multilíngue via __t        $matched = [];
-        foreach ($dbRows as $exist) {
-            $nkVal = (string)($exist[$nkDeclarada] ?? ''); if ($nkVal==='') continue;
-            if (!isset($jsonByNk[$nkVal])) {
-                if ($debug) log_disco("ORPHAN_DB_ROW tabela=$tabela nk=$nkVal", $GLOBALS['LOG_FILE_DB']);
-                if ($orphansMode !== 'ignore') { $orphans[] = $exist; }
-                $same++;
-                continue;
-            }
-            $row = $jsonByNk[$nkVal];
-            $matched[$nkVal]=true; $diff=[]; $oldVals=[];
-
-            // Se tabela é insert-only, pular atualização
-            if ($insertOnly) {
-                if ($debug) log_disco("SKIP_UPDATE_INSERT_ONLY tabela=$tabela nk=$nkVal", $GLOBALS['LOG_FILE_DB']);
-                $same++;
-                continue;
-            }ia log_disco()
  *
  * Argumentos de linha de comando suportados:
  *
@@ -306,11 +289,13 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     };
 
     // Tabelas que usam chaves naturais nos Data.json (sem PK numérica nos arquivos)
-    // Recursos principais + tabelas de permissões (perfis x módulos x operações)
+    // Recursos principais + tabelas de permissões (perfis x módulos x operações) + tabelas de módulos multilíngue
     $tabelasChaveNatural = [
         'paginas','layouts','componentes','variaveis',
         // Permissões de perfis: combinação única por (perfil,modulo) e (perfil,operacao)
-        'usuarios_perfis_modulos','usuarios_perfis_modulos_operacoes'
+        'usuarios_perfis_modulos','usuarios_perfis_modulos_operacoes',
+        // Tabelas de módulos com suporte multilíngue
+        'modulos','modulos_grupos','modulos_operacoes','usuarios_perfis'
     ];
 
     // Tabelas que só fazem INSERT (não fazem UPDATE) - previnem sobrescrever dados do usuário
@@ -353,6 +338,12 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 if (!isset($row['perfil'],$row['modulo'])) return null; return strtolower($row['perfil']).'|'.strtolower($row['modulo']);
             case 'usuarios_perfis_modulos_operacoes':
                 if (!isset($row['perfil'],$row['operacao'])) return null; return strtolower($row['perfil']).'|'.strtolower($row['operacao']);
+            case 'modulos':
+            case 'modulos_grupos':
+            case 'modulos_operacoes':
+            case 'usuarios_perfis':
+                // id + language para tabelas de módulos multilíngue
+                $lang = $row['language'] ?? null; if (!isset($lang,$row['id'])) return null; return strtolower($lang).'|'.$row['id'];
             default: return null;
         }
     };

@@ -5,7 +5,17 @@
         "host": null,
         "status": "A",
         "versao": "1",
-        "ordemMenu": null
+        "ordemMenu": null,
+        "language": "pt-br"
+    },
+    {
+        "nome": "Libraries",
+        "id": "bibliotecas",
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "ordemMenu": null,
+        "language": "en"
     },
     {
         "nome": "Administração Gestor",
@@ -13,7 +23,17 @@
         "host": null,
         "status": "A",
         "versao": "1",
-        "ordemMenu": null
+        "ordemMenu": null,
+        "language": "pt-br"
+    },
+    {
+        "nome": "Manager Administration",
+        "id": "administracao-gestor",
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "ordemMenu": null,
+        "language": "en"
     },
     {
         "nome": "Geral",
@@ -21,7 +41,17 @@
         "host": null,
         "status": "A",
         "versao": "1",
-        "ordemMenu": null
+        "ordemMenu": null,
+        "language": "pt-br"
+    },
+    {
+        "nome": "General",
+        "id": "geral",
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "ordemMenu": null,
+        "language": "en"
     },
     {
         "nome": "Administração Usuários",
@@ -29,7 +59,17 @@
         "host": null,
         "status": "A",
         "versao": "1",
-        "ordemMenu": null
+        "ordemMenu": null,
+        "language": "pt-br"
+    },
+    {
+        "nome": "Users Administration",
+        "id": "administracao-usuarios",
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "ordemMenu": null,
+        "language": "en"
     },
     {
         "nome": "Administração Sistema",
@@ -37,6 +77,16 @@
         "host": null,
         "status": "A",
         "versao": "1",
-        "ordemMenu": null
+        "ordemMenu": null,
+        "language": "pt-br"
+    },
+    {
+        "nome": "System Administration",
+        "id": "administracao-sistema",
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "ordemMenu": null,
+        "language": "en"
     }
 ]
