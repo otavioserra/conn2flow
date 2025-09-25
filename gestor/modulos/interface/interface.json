@@ -403,6 +403,413 @@
                     "type": "string"
                 }
             ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [],
+            "components": [],
+            "variables": [
+                {
+                    "id": "field-url-path",
+                    "value": "Path",
+                    "type": "string"
+                },
+                {
+                    "id": "form-button-title",
+                    "value": "Click this button to SAVE the changes.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-button-value",
+                    "value": "Send",
+                    "type": "string"
+                },
+                {
+                    "id": "list-column-options",
+                    "value": "Options",
+                    "type": "string"
+                },
+                {
+                    "id": "field-name",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "field-date-start",
+                    "value": "Creation Date",
+                    "type": "string"
+                },
+                {
+                    "id": "field-date-modification",
+                    "value": "Modification Date",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-edit",
+                    "value": "Click to Edit",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-active",
+                    "value": "Click to Activate",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-desactive",
+                    "value": "Click to Deactivate",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-delete",
+                    "value": "Click to Delete",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-insert",
+                    "value": "Click to Add.",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-insert",
+                    "value": "Add",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-desactive",
+                    "value": "Deactivate",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-active",
+                    "value": "Activate",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-delete",
+                    "value": "Delete",
+                    "type": "string"
+                },
+                {
+                    "id": "field-version",
+                    "value": "Version",
+                    "type": "string"
+                },
+                {
+                    "id": "field-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "field-status-active",
+                    "value": "Active",
+                    "type": "string"
+                },
+                {
+                    "id": "field-status-inactive",
+                    "value": "Inactive",
+                    "type": "string"
+                },
+                {
+                    "id": "delete-confirm-title",
+                    "value": "Deletion Confirmation",
+                    "type": "string"
+                },
+                {
+                    "id": "delete-confirm-menssage",
+                    "value": "Are you sure you want to delete this item?",
+                    "type": "string"
+                },
+                {
+                    "id": "delete-confirm-button-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "delete-confirm-button-confirm",
+                    "value": "Confirm",
+                    "type": "string"
+                },
+                {
+                    "id": "historic-checkbox-active",
+                    "value": "Active",
+                    "type": "string"
+                },
+                {
+                    "id": "historic-checkbox-inactive",
+                    "value": "Inactive",
+                    "type": "string"
+                },
+                {
+                    "id": "historic-change-field-after-before",
+                    "value": "changed <b>#campo#<\/b> from <b>#valor_antes#<\/b> to <b>#valor_depois#<\/b>",
+                    "type": "string"
+                },
+                {
+                    "id": "historic-change-field-only",
+                    "value": "changed <b>#campo#<\/b>",
+                    "type": "string"
+                },
+                {
+                    "id": "historic-button-load-more",
+                    "value": "Load More",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-title",
+                    "value": "Alert",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-button-ok",
+                    "value": "Ok",
+                    "type": "string"
+                },
+                {
+                    "id": "ajax-timeout-message",
+                    "value": "The connection attempt to the server has reached its time limit. There was a failure in your connection or a programming error that cannot be automatically detected. Try again, if the problem persists, please contact technical support.",
+                    "type": "string"
+                },
+                {
+                    "id": "historic-change-status",
+                    "value": "changed <b>#campo#<\/b> to <b>#valor_depois#<\/b>",
+                    "type": "string"
+                },
+                {
+                    "id": "historic-delete",
+                    "value": "removed the record from the system",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-empty",
+                    "value": "It is mandatory to fill in the field <b>#label#<\/b>.",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-min-length",
+                    "value": "The field <b>#label#<\/b> must have at least 3 characters.",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-max-length",
+                    "value": "The field <b>#label#<\/b> must have a maximum of 100 characters.",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-min-max-length",
+                    "value": "The field <b>#label#<\/b> is mandatory. It must have a minimum of <b>#min#<\/b> and a maximum of <b>#max#<\/b> characters.",
+                    "type": "string"
+                },
+                {
+                    "id": "problem-get-variable",
+                    "value": "An error occurred in obtaining a variable.",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-variable",
+                    "value": "Variables",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-variable",
+                    "value": "Click to change the Variables",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-edit",
+                    "value": "Edit",
+                    "type": "string"
+                },
+                {
+                    "id": "no-occurrence",
+                    "value": "None",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-email",
+                    "value": "It is mandatory to define a valid email in the field <b>#label#<\/b>.",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-email-compare",
+                    "value": "The field <b>#campo-1#<\/b> is different from the field <b>#campo-2#<\/b>. It is mandatory that both have the same value.",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-min-length-password",
+                    "value": "The field <b>#label#<\/b> must have at least 12 characters.",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-password-chars",
+                    "value": "The field <b>#label#<\/b> needs to have at least <b>one lowercase character<\/b>, at least <b>one uppercase character<\/b>, at least <b>one number<\/b> and at least one special character equal to <b>!@#$%^&*<\/b>.",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-select",
+                    "value": "It is mandatory to select at least one option from the field <b>#label#<\/b>.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-nao-alterar-id-label",
+                    "value": "Do not change the unique identifier if you modify the Name field.",
+                    "type": "string"
+                },
+                {
+                    "id": "field-id",
+                    "value": "Identifier",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-verify-field",
+                    "value": "There is already a registration for the field <b>#label#<\/b> with the same value filled. Please choose another <b>#label#<\/b> and try again.",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-regex-permited-chars",
+                    "value": "Only the following characters are allowed in the field <b>#label#<\/b>: <b>#permited-chars#<\/b>. Please remove the invalid characters and try again.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-there-is-a-field",
+                    "value": "There is already a registration for the field <b>#label#<\/b> with the same value: <b>#value#<\/b>. Please choose another <b>#label#<\/b> and try again.",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-regex-necessary-chars",
+                    "value": "It is necessary to define the following characters in the field <b>#label#<\/b>: <b>#necessary-chars#<\/b>. Please include the characters and try again.",
+                    "type": "string"
+                },
+                {
+                    "id": "user-authorization-title",
+                    "value": "Restricted Area",
+                    "type": "string"
+                },
+                {
+                    "id": "user-authorization-message",
+                    "value": "This location has important sensitive data. Therefore, for security, it is necessary to provide your password again.",
+                    "type": "string"
+                },
+                {
+                    "id": "user-authorization-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "user-authorization-confirm",
+                    "value": "Provide Password",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-database-field-before-error",
+                    "value": "There was an error in retrieving the data of the record you want to change. It is possible that it may have been deleted.",
+                    "type": "string"
+                },
+                {
+                    "id": "historic-empty-value",
+                    "value": "None",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-image-button-add",
+                    "value": "Add",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-image-button-del",
+                    "value": "Remove",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-image-default-name",
+                    "value": "None",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-image-default-date",
+                    "value": "None",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-image-default-type",
+                    "value": "image",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-image-modal-head",
+                    "value": "Select an image below...",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-image-modal-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-image-alert-not-image",
+                    "value": "The selected file <b>is NOT<\/b> an image.",
+                    "type": "string"
+                },
+                {
+                    "id": "historic-change-users-profiles",
+                    "value": "changed <b>#campo#<\/b> removing <b>#valor_antes#<\/b> and including <b>#valor_depois#<\/b>",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-api-client-error",
+                    "value": "<h3>There was an <span class=\"ui error text\">error<\/span> in communication with your host!<\/h3><p>The client API returned the following error: #error-msg#<\/p>",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-template-button-change",
+                    "value": "Change",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-template-modal-head",
+                    "value": "Select a template below...",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-template-modal-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-error-load",
+                    "value": "Could not load the widget: <span class=\"ui error text\">#msg#<\/span>",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-template-error-category",
+                    "value": "default category not found",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-template-button-change-tooltip",
+                    "value": "Click to change the current template.",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-image-button-add-tooltip",
+                    "value": "Click to add an image.",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-image-button-del-tooltip",
+                    "value": "Click to remove this image.",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-greater-than-zero",
+                    "value": "The field <b>#campo-1#<\/b> must be greater than or equal to zero.",
+                    "type": "string"
+                },
+                {
+                    "id": "validation-domain",
+                    "value": "The field <b>#label#<\/b> is not a valid domain.",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

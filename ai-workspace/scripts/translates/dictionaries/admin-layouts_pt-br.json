@@ -1,0 +1,28 @@
+{
+    "module": "admin-layouts",
+    "language": "pt-br",
+    "variables": {
+        "form-name-label": "Nome",
+        "form-name-placeholder": "Nome",
+        "form-html-tooltip": "Clique para abrir o Código HTML",
+        "form-html-label": "Código HTML",
+        "form-css-tooltip": "Clique para abrir o CSS",
+        "form-css-label": "CSS",
+        "form-fullpage-label": "Página Completa",
+        "form-category-label": "Categoria",
+        "form-category-placeholder": "Selecione uma categoria caso necessário.",
+        "form-framework-css-label": "Framework CSS",
+        "form-button-preview": "Pré-Visualizar",
+        "tooltip-button-preview": "Clique para pré-visualizar o layout",
+        "modal-title-preview": "Pré-Visualização do Layout",
+        "modal-desktop-preview": "Computador",
+        "modal-tablet-preview": "Tablet",
+        "modal-mobile-preview": "Smartphone",
+        "button-back-tooltip": "Clique no botão para voltar.",
+        "button-back-value": "Voltar",
+        "form-css-compiled-tooltip": "Clique para abrir o CSS automático gerado pelo sistema.",
+        "form-css-compiled-label": "CSS Automático"
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/admin-layouts\/admin-layouts.json",
+    "generated_at": "2025-09-25 19:36:40"
+}

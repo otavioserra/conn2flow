@@ -231,6 +231,224 @@
                     "type": "string"
                 }
             ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Updates",
+                    "id": "admin-atualizacoes",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-atualizacoes\/",
+                    "type": "system",
+                    "option": "listar-atualizacoes",
+                    "root": true,
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "3b4111f3cd39194b7053bfbffa69ba62",
+                        "css": "",
+                        "combined": "3b4111f3cd39194b7053bfbffa69ba62"
+                    }
+                },
+                {
+                    "name": "Admin Updates - Detail",
+                    "id": "admin-atualizacoes-detalhe",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-atualizacoes\/detalhe\/",
+                    "type": "system",
+                    "option": "detalhe-atualizacao",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "57671f489f494af3ded385b978e857a9",
+                        "css": "",
+                        "combined": "57671f489f494af3ded385b978e857a9"
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Updates - List",
+                    "id": "atualizacoes-lista",
+                    "version": "1.15",
+                    "checksum": {
+                        "html": "52702e74d568a7723ff45f2be184baef",
+                        "css": "",
+                        "combined": "52702e74d568a7723ff45f2be184baef"
+                    }
+                },
+                {
+                    "name": "Updates - Detail",
+                    "id": "atualizacoes-detalhe-comp",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "d15a8a39cceb60aed8b27527b750cac2",
+                        "css": "",
+                        "combined": "d15a8a39cceb60aed8b27527b750cac2"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "updates-title",
+                    "value": "System Updates",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-run-button",
+                    "value": "Run Update",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-view-log-button",
+                    "value": "View Log",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-last-run",
+                    "value": "Last Execution",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-actions",
+                    "value": "Actions",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-detail-title",
+                    "value": "Update Details",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-log-title",
+                    "value": "Execution Log",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-date",
+                    "value": "Date",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-log",
+                    "value": "Log",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-plan-json",
+                    "value": "JSON Plan",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-full",
+                    "value": "Full",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-files",
+                    "value": "Files",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-db",
+                    "value": "Database",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-back-button",
+                    "value": "Back",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-select-log-plan",
+                    "value": "Select a log or plan.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-invalid-log",
+                    "value": "Invalid Log",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-invalid-plan",
+                    "value": "Invalid Plan",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-no-records",
+                    "value": "No updates recorded.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-title",
+                    "value": "Execution History",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-started",
+                    "value": "Start",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-tag",
+                    "value": "Tag",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-mode",
+                    "value": "Mode",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-removed",
+                    "value": "Removed",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-copied",
+                    "value": "Copied",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-history-finished",
+                    "value": "End",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-recent-logs",
+                    "value": "Recent Logs",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-progress",
+                    "value": "Progress",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-go-disparar",
+                    "value": "Trigger Page",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-advanced-options",
+                    "value": "Advanced Options",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

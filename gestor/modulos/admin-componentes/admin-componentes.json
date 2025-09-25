@@ -190,6 +190,129 @@
                     "type": "string"
                 }
             ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [],
+            "components": [
+                {
+                    "name": "Component Modal",
+                    "id": "modal-componente",
+                    "version": "1.3",
+                    "checksum": {
+                        "html": "a67b32353b2471c080e7d8c0996fb700",
+                        "css": "",
+                        "combined": "a67b32353b2471c080e7d8c0996fb700"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-tooltip",
+                    "value": "Click to open HTML > Body. Visible part of the component within the <body> tag",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-label",
+                    "value": "HTML > Body",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-tooltip",
+                    "value": "Click to open CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-label",
+                    "value": "CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Select an optional module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-framework-css-label",
+                    "value": "Framework CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-button-preview",
+                    "value": "Preview",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-preview",
+                    "value": "Click to preview the component",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-title-preview",
+                    "value": "Component Preview",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-desktop-preview",
+                    "value": "Desktop",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-tablet-preview",
+                    "value": "Tablet",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-mobile-preview",
+                    "value": "Smartphone",
+                    "type": "string"
+                },
+                {
+                    "id": "button-back-tooltip",
+                    "value": "Click the button to go back.",
+                    "type": "string"
+                },
+                {
+                    "id": "button-back-value",
+                    "value": "Back",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-compiled-tooltip",
+                    "value": "Click to open the automatically generated CSS.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-compiled-label",
+                    "value": "Automatic CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-extra-head-tooltip",
+                    "value": "Click to open the extra HTML for the page Header. Part within the <head> tag",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-extra-head-label",
+                    "value": "HTML > Header",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

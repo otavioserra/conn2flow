@@ -1,0 +1,16 @@
+{
+    "module": "dashboard",
+    "language": "en",
+    "variables": {
+        "logout-grup": "Logout",
+        "logout-label": "Logout",
+        "toast-update-title": "Update Available",
+        "toast-update-message": "There is an update available. Do you want to update now?",
+        "toast-update-button-positive-label": "Update Now",
+        "toast-update-button-positive-message": "You will be redirected to the updates screen...",
+        "toast-update-button-negative-label": "Don't Update",
+        "toast-update-button-negative-message": "The system will store your choice. If you change your mind, access: <b>#url#<\/b>."
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/dashboard\/dashboard.json",
+    "generated_at": "2025-09-25 19:36:40"
+}

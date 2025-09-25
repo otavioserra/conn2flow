@@ -6,6 +6,104 @@
     ],
     "tabela": [],
     "resources": {
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Environment",
+                    "id": "admin-environment",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-environment\/",
+                    "type": "system",
+                    "option": "raiz",
+                    "root": true,
+                    "version": "1.12",
+                    "checksum": {
+                        "html": "91bb577e76c1e73b29af17ded3ad0ee6",
+                        "css": "2da516bd3fe2d7ca2b7381cd159bffd8",
+                        "combined": "2ce07ea1af843fc1d463ec63ecd5eef1"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "email-tests-head-title",
+                    "value": "DEBUG MODE",
+                    "type": "string"
+                },
+                {
+                    "id": "email-tests-head-status",
+                    "value": "STATUS",
+                    "type": "string"
+                },
+                {
+                    "id": "email-tests-head-bottom",
+                    "value": "END OF DEBUG",
+                    "type": "string"
+                },
+                {
+                    "id": "email-tests-success-msg",
+                    "value": "Success!!!",
+                    "type": "string"
+                },
+                {
+                    "id": "email-tests-error-msg",
+                    "value": "Error!!!",
+                    "type": "string"
+                },
+                {
+                    "id": "email-tests-success-description",
+                    "value": "Email test sent successfully!",
+                    "type": "string"
+                },
+                {
+                    "id": "email-tests-error-description",
+                    "value": "Error sending email test!",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-test-success",
+                    "value": "reCAPTCHA test successful! Score: {score}",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-test-low-score",
+                    "value": "reCAPTCHA score too low: {score}. Possible bot detected.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-error-generic",
+                    "value": "Error verifying reCAPTCHA.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-error-missing-secret",
+                    "value": "Server Key (secret) is missing or invalid.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-error-invalid-secret",
+                    "value": "Server Key (secret) is invalid.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-error-missing-response",
+                    "value": "Response token is missing.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-error-invalid-response",
+                    "value": "Token and\/or Server Key (secret) is invalid.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-error-timeout-duplicate",
+                    "value": "Token expired or has already been used.",
+                    "type": "string"
+                }
+            ]
+        },
         "pt-br": {
             "layouts": [],
             "pages": [
@@ -94,7 +192,7 @@
                 },
                 {
                     "id": "recaptcha-error-invalid-response",
-                    "value": "Token e/ou Server Key (secret) de resposta é inválido.",
+                    "value": "Token e\/ou Server Key (secret) de resposta é inválido.",
                     "type": "string"
                 },
                 {

@@ -1,0 +1,16 @@
+{
+    "module": "dashboard",
+    "language": "pt-br",
+    "variables": {
+        "logout-grup": "Sair",
+        "logout-label": "Sair",
+        "toast-update-title": "Atualização Disponível",
+        "toast-update-message": "Há uma atualização disponível. Deseja atualizar agora?",
+        "toast-update-button-positive-label": "Atualizar Agora",
+        "toast-update-button-positive-message": "Você será redirecionado para a tela de atualizações...",
+        "toast-update-button-negative-label": "Não Atualizar",
+        "toast-update-button-negative-message": "O sistema armazenará sua escolha. Se mudar de ideia acesse: <b>#url#<\/b>."
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/dashboard\/dashboard.json",
+    "generated_at": "2025-09-25 19:36:40"
+}

@@ -1,0 +1,19 @@
+{
+    "module": "admin-plugins",
+    "language": "en",
+    "variables": {
+        "form-name-label": "Name",
+        "form-name-placeholder": "Name",
+        "pagina-teste": "Automatic Discovery System Test",
+        "metadata-origin-type": "Origin",
+        "metadata-origin-reference": "Reference",
+        "metadata-origin-branch-tag": "Branch\/Tag",
+        "metadata-origin-credential-ref": "Credential Ref",
+        "metadata-installed-version": "Installed Version",
+        "metadata-package-checksum": "Checksum",
+        "metadata-execution-status": "Execution Status",
+        "metadata-last-update": "Last Update"
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/admin-plugins\/admin-plugins.json",
+    "generated_at": "2025-09-25 19:36:40"
+}

@@ -94,6 +94,87 @@
                     "type": "string"
                 }
             ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Module Operations",
+                    "id": "modulos-operacoes",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "modulos-operacoes/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Module Operations - Add",
+                    "id": "modulos-operacoes-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "modulos-operacoes/adicionar/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "e69634998ed937fe89cab5d0bc5912be",
+                        "css": "",
+                        "combined": "e69634998ed937fe89cab5d0bc5912be"
+                    }
+                },
+                {
+                    "name": "Module Operations - Edit",
+                    "id": "modulos-operacoes-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "modulos-operacoes/editar/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "225a0ca6b6f949986285b32d7fa180f2",
+                        "css": "",
+                        "combined": "225a0ca6b6f949986285b32d7fa180f2"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-operation-label",
+                    "value": "Operation ID",
+                    "type": "string"
+                },
+                {
+                    "id": "form-operation-placeholder",
+                    "value": "Operation ID",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

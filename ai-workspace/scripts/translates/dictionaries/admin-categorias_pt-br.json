@@ -1,0 +1,23 @@
+{
+    "module": "admin-categorias",
+    "language": "pt-br",
+    "variables": {
+        "form-name-label": "Nome",
+        "form-name-placeholder": "Nome",
+        "form-module-label": "Módulo",
+        "form-module-placeholder": "Todos os módulos",
+        "form-categories-child-label": "Categorias Filho",
+        "info-categories-child-empty": "Nenhuma categoria filho definida!",
+        "category-child-placeholder": "Clique para Adicionar Categoria Filho.",
+        "category-child-label": "Adicionar",
+        "form-name-parent-label": "Categoria Pai",
+        "category-child-parent-not-found": "Categoria Pai não encontrada. Não é possível adicionar categoria filho sem um pai referente.",
+        "form-name-parent-empy": "Nenhum(a)",
+        "form-categories-parent-label": "Categoria Localização",
+        "root-category": "Raiz",
+        "form-plugin-placeholder": "Plugin",
+        "form-plugin-label": "Plugin"
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/admin-categorias\/admin-categorias.json",
+    "generated_at": "2025-09-25 19:36:40"
+}

@@ -1,0 +1,14 @@
+{
+    "module": "modulos-operacoes",
+    "language": "pt-br",
+    "variables": {
+        "form-name-label": "Nome",
+        "form-name-placeholder": "Nome",
+        "form-module-label": "Módulo",
+        "form-module-placeholder": "Módulo",
+        "form-operation-label": "Operação ID",
+        "form-operation-placeholder": "Operação ID"
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/modulos-operacoes\/modulos-operacoes.json",
+    "generated_at": "2025-09-25 19:36:40"
+}

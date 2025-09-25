@@ -298,6 +298,287 @@
                     "type": "string"
                 }
             ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Users",
+                    "id": "usuarios",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Users - Add",
+                    "id": "usuarios-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "bfb28ecfa1a9418ee071b77a9a6a8f1f",
+                        "css": "",
+                        "combined": "bfb28ecfa1a9418ee071b77a9a6a8f1f"
+                    }
+                },
+                {
+                    "name": "Users - Edit",
+                    "id": "usuarios-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "8ee5f573058a1238c704e9c7f5dcd9e7",
+                        "css": "",
+                        "combined": "8ee5f573058a1238c704e9c7f5dcd9e7"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "middle-name",
+                    "value": "Middle Name",
+                    "type": "string"
+                },
+                {
+                    "id": "first-name",
+                    "value": "First Name",
+                    "type": "string"
+                },
+                {
+                    "id": "last-name",
+                    "value": "Last Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-email-label",
+                    "value": "Email",
+                    "type": "string"
+                },
+                {
+                    "id": "form-email-placeholder",
+                    "value": "Email",
+                    "type": "string"
+                },
+                {
+                    "id": "form-email-2-label",
+                    "value": "Confirm Email",
+                    "type": "string"
+                },
+                {
+                    "id": "form-email-2-placeholder",
+                    "value": "Confirm Email",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-label",
+                    "value": "User",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-placeholder",
+                    "value": "User",
+                    "type": "string"
+                },
+                {
+                    "id": "form-password-label",
+                    "value": "Password",
+                    "type": "string"
+                },
+                {
+                    "id": "form-password-placeholder",
+                    "value": "Password",
+                    "type": "string"
+                },
+                {
+                    "id": "form-password-2-label",
+                    "value": "Confirm Password",
+                    "type": "string"
+                },
+                {
+                    "id": "form-password-2-placeholder",
+                    "value": "Confirm Password",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-profile-label",
+                    "value": "User Profile",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-profile-placeholder",
+                    "value": "Select a profile...",
+                    "type": "string"
+                },
+                {
+                    "id": "login-titulo",
+                    "value": "LOGIN",
+                    "type": "string"
+                },
+                {
+                    "id": "login-user-label",
+                    "value": "User",
+                    "type": "string"
+                },
+                {
+                    "id": "login-password-label",
+                    "value": "Password",
+                    "type": "string"
+                },
+                {
+                    "id": "login-button-label",
+                    "value": "Login",
+                    "type": "string"
+                },
+                {
+                    "id": "login-forgot-password-label",
+                    "value": "Forgot your password? Click",
+                    "type": "string"
+                },
+                {
+                    "id": "login-forgot-password-button",
+                    "value": "here",
+                    "type": "string"
+                },
+                {
+                    "id": "login-keep-logged-in-label",
+                    "value": "Keep my account active in this browser",
+                    "type": "string"
+                },
+                {
+                    "id": "login-new-register-label",
+                    "value": "Don't have an account?",
+                    "type": "string"
+                },
+                {
+                    "id": "login-new-register-button",
+                    "value": "Create your account",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-user-or-password-invalid",
+                    "value": "Invalid username and\/or password. Please try again.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-user-inactive",
+                    "value": "User inactive in the system, please contact support to restore your account.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-without-permission",
+                    "value": "You do not have permission to access this location.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-there-is-a-field",
+                    "value": "There is already a registration for the field <b>#label#<\/b> with the same value: <b>#value#<\/b>. Please choose another <b>#label#<\/b> and try again.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-password-button",
+                    "value": "Change Password",
+                    "type": "string"
+                },
+                {
+                    "id": "user-permited-chars",
+                    "value": "letters, numbers, '.' and only one '@'",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-account-label",
+                    "value": "Account Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-user-label",
+                    "value": "User Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-account-placeholder",
+                    "value": "Account Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-user-placeholder",
+                    "value": "User Name",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-authorization-provisory-not-defined",
+                    "value": "It is not allowed to change any user data without provisional authorization.",
+                    "type": "string"
+                },
+                {
+                    "id": "restrict-area-info",
+                    "value": "Please enter your password below and then click the <b>Send<\/b> button to provisionally authorize the modification of any sensitive data in your account.",
+                    "type": "string"
+                },
+                {
+                    "id": "restrict-area-info-title",
+                    "value": "Provisional Change Authorization",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-password-invalid",
+                    "value": "Incorrect password! You have <b>#tentativas#<\/b> more attempts, otherwise you will be automatically disconnected!",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-password-invalid-finish",
+                    "value": "Incorrect password! You have been automatically disconnected from the system due to excessive incorrect password entries. You will need to enter username and password to access again.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-plan-label",
+                    "value": "User Plan",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-manager-profile-label",
+                    "value": "User Manager Profile",
+                    "type": "string"
+                },
+                {
+                    "id": "form-user-manager-profile-placeholder",
+                    "value": "Select a profile...",
+                    "type": "string"
+                },
+                {
+                    "id": "list-host-label",
+                    "value": "Host",
+                    "type": "string"
+                },
+                {
+                    "id": "list-user-parent-label",
+                    "value": "Parent User",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

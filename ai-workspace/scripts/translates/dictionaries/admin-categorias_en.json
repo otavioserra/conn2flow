@@ -1,0 +1,23 @@
+{
+    "module": "admin-categorias",
+    "language": "en",
+    "variables": {
+        "form-name-label": "Name",
+        "form-name-placeholder": "Name",
+        "form-module-label": "Module",
+        "form-module-placeholder": "All modules",
+        "form-categories-child-label": "Child Categories",
+        "info-categories-child-empty": "No child categories defined!",
+        "category-child-placeholder": "Click to Add Child Category.",
+        "category-child-label": "Add",
+        "form-name-parent-label": "Parent Category",
+        "category-child-parent-not-found": "Parent Category not found. It is not possible to add child category without a corresponding parent.",
+        "form-name-parent-empy": "None",
+        "form-categories-parent-label": "Category Location",
+        "root-category": "Root",
+        "form-plugin-placeholder": "Plugin",
+        "form-plugin-label": "Plugin"
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/admin-categorias\/admin-categorias.json",
+    "generated_at": "2025-09-25 19:36:40"
+}

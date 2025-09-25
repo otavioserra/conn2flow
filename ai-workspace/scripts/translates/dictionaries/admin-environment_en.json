@@ -1,0 +1,23 @@
+{
+    "module": "admin-environment",
+    "language": "en",
+    "variables": {
+        "email-tests-head-title": "DEBUG MODE",
+        "email-tests-head-status": "STATUS",
+        "email-tests-head-bottom": "END OF DEBUG",
+        "email-tests-success-msg": "Success!!!",
+        "email-tests-error-msg": "Error!!!",
+        "email-tests-success-description": "Email test sent successfully!",
+        "email-tests-error-description": "Error sending email test!",
+        "recaptcha-test-success": "reCAPTCHA test successful! Score: {score}",
+        "recaptcha-test-low-score": "reCAPTCHA score too low: {score}. Possible bot detected.",
+        "recaptcha-error-generic": "Error verifying reCAPTCHA.",
+        "recaptcha-error-missing-secret": "Server Key (secret) is missing or invalid.",
+        "recaptcha-error-invalid-secret": "Server Key (secret) is invalid.",
+        "recaptcha-error-missing-response": "Response token is missing.",
+        "recaptcha-error-invalid-response": "Token and\/or Server Key (secret) is invalid.",
+        "recaptcha-error-timeout-duplicate": "Token expired or has already been used."
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/admin-environment\/admin-environment.json",
+    "generated_at": "2025-09-25 19:36:40"
+}

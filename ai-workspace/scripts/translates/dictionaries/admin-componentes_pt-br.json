@@ -1,0 +1,29 @@
+{
+    "module": "admin-componentes",
+    "language": "pt-br",
+    "variables": {
+        "form-name-label": "Nome",
+        "form-name-placeholder": "Nome",
+        "form-html-tooltip": "Clique para abrir o HTML > Corpo. Parte visível do componente dentro da tag <body>",
+        "form-html-label": "HTML > Corpo",
+        "form-css-tooltip": "Clique para abrir o CSS",
+        "form-css-label": "CSS",
+        "form-module-label": "Módulo",
+        "form-module-placeholder": "Selecione opcionalmente um módulo",
+        "form-framework-css-label": "Framework CSS",
+        "form-button-preview": "Pré-Visualizar",
+        "tooltip-button-preview": "Clique para pré-visualizar o componente",
+        "modal-title-preview": "Pré-Visualização do Componente",
+        "modal-desktop-preview": "Computador",
+        "modal-tablet-preview": "Tablet",
+        "modal-mobile-preview": "Smartphone",
+        "button-back-tooltip": "Clique no botão para voltar.",
+        "button-back-value": "Voltar",
+        "form-css-compiled-tooltip": "Clique para abrir o CSS automático gerado pelo sistema.",
+        "form-css-compiled-label": "CSS Automático",
+        "form-html-extra-head-tooltip": "Clique para abrir o HTML extra para o Cabeçalho da página. Parte dentro da tag <head>",
+        "form-html-extra-head-label": "HTML > Cabeçalho"
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/admin-componentes\/admin-componentes.json",
+    "generated_at": "2025-09-25 19:36:40"
+}

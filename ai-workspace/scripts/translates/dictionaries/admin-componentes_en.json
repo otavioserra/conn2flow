@@ -1,0 +1,43 @@
+{
+    "module": "admin-componentes",
+    "language": "en",
+    "layouts": [],
+    "pages": [],
+    "components": [
+        {
+            "name": "Component Modal",
+            "id": "modal-componente",
+            "version": "1.3",
+            "checksum": {
+                "html": "a67b32353b2471c080e7d8c0996fb700",
+                "css": "",
+                "combined": "a67b32353b2471c080e7d8c0996fb700"
+            }
+        }
+    ],
+    "variables": {
+        "form-name-label": "Name",
+        "form-name-placeholder": "Name",
+        "form-html-tooltip": "Click to open HTML > Body. Visible part of the component within the <body> tag",
+        "form-html-label": "HTML > Body",
+        "form-css-tooltip": "Click to open CSS",
+        "form-css-label": "CSS",
+        "form-module-label": "Module",
+        "form-module-placeholder": "Select an optional module",
+        "form-framework-css-label": "Framework CSS",
+        "form-button-preview": "Preview",
+        "tooltip-button-preview": "Click to preview the component",
+        "modal-title-preview": "Component Preview",
+        "modal-desktop-preview": "Desktop",
+        "modal-tablet-preview": "Tablet",
+        "modal-mobile-preview": "Smartphone",
+        "button-back-tooltip": "Click the button to go back.",
+        "button-back-value": "Back",
+        "form-css-compiled-tooltip": "Click to open the automatically generated CSS.",
+        "form-css-compiled-label": "Automatic CSS",
+        "form-html-extra-head-tooltip": "Click to open the extra HTML for the page Header. Part within the <head> tag",
+        "form-html-extra-head-label": "HTML > Header"
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/admin-componentes\/admin-componentes.json",
+    "generated_at": "2025-09-25 19:36:40"
+}

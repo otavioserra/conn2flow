@@ -158,6 +158,151 @@
                     "type": "string"
                 }
             ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Plugins",
+                    "id": "admin-plugins",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-plugins\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin Plugins - Add",
+                    "id": "admin-plugins-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-plugins\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.6",
+                    "checksum": {
+                        "html": "60f120c7de069e8a7c610d03abe599fe",
+                        "css": "",
+                        "combined": "60f120c7de069e8a7c610d03abe599fe"
+                    }
+                },
+                {
+                    "name": "Admin Plugins - Edit",
+                    "id": "admin-plugins-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-plugins\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.6",
+                    "checksum": {
+                        "html": "0bdcd5958a7cc461b89fd8f08def1a99",
+                        "css": "",
+                        "combined": "0bdcd5958a7cc461b89fd8f08def1a99"
+                    }
+                },
+                {
+                    "name": "Admin Plugins - Execute",
+                    "id": "admin-plugins-executar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-plugins\/executar\/",
+                    "type": "system",
+                    "option": "executar",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "1bd712d3141cec128e97ad7ecc86615d",
+                        "css": "",
+                        "combined": "1bd712d3141cec128e97ad7ecc86615d"
+                    }
+                },
+                {
+                    "name": "Admin Plugins - Test",
+                    "id": "admin-plugins-teste",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-plugins\/teste\/",
+                    "type": "system",
+                    "option": "teste",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "a13313078bc873ce64e79a612fdf894a",
+                        "css": "",
+                        "combined": "a13313078bc873ce64e79a612fdf894a"
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Plugins - Exec",
+                    "id": "plugins-exec",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "fdadfd1f10966eac979356e355d7746d",
+                        "css": "",
+                        "combined": "fdadfd1f10966eac979356e355d7746d"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "pagina-teste",
+                    "value": "Automatic Discovery System Test",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-origin-type",
+                    "value": "Origin",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-origin-reference",
+                    "value": "Reference",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-origin-branch-tag",
+                    "value": "Branch\/Tag",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-origin-credential-ref",
+                    "value": "Credential Ref",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-installed-version",
+                    "value": "Installed Version",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-package-checksum",
+                    "value": "Checksum",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-execution-status",
+                    "value": "Execution Status",
+                    "type": "string"
+                },
+                {
+                    "id": "metadata-last-update",
+                    "value": "Last Update",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

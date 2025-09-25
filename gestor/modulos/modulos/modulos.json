@@ -220,6 +220,209 @@
                     "type": "string"
                 }
             ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Modules",
+                    "id": "modulos",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "modulos\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Modules - Add",
+                    "id": "modulos-adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "9d81f949dae0fcb93847661ae0b4feea",
+                        "css": "",
+                        "combined": "9d81f949dae0fcb93847661ae0b4feea"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "modulos\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar"
+                },
+                {
+                    "name": "Modules - Edit",
+                    "id": "modulos-editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "d704c8f82c733a8fc4455ffd72f0c079",
+                        "css": "",
+                        "combined": "d704c8f82c733a8fc4455ffd72f0c079"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "modulos\/editar\/",
+                    "type": "system",
+                    "option": "editar"
+                },
+                {
+                    "name": "Modules - Variables",
+                    "id": "modulos-variaveis",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "229f25c85cc00d8c13811055da5edbcd",
+                        "css": "a67c7f7ada890bdeca6f064ce2ace341",
+                        "combined": "fbc864037d8b31d32fa5633e52daa214"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "modulos\/variaveis\/",
+                    "type": "system",
+                    "option": "variaveis"
+                },
+                {
+                    "name": "System Administration Modules - Synchronize Databases",
+                    "id": "modulos-administracao-de-sistema-sincronizar-bancos",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "modulos\/sincronizar-bancos\/",
+                    "type": "system",
+                    "option": "sincronizar-bancos"
+                },
+                {
+                    "name": "System Administration Modules - Copy Variables",
+                    "id": "modulos-administracao-de-sistema-copiar-variaveis",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "modulos\/copiar-variaveis\/",
+                    "type": "system",
+                    "option": "copiar-variaveis"
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-grup-label",
+                    "value": "Group",
+                    "type": "string"
+                },
+                {
+                    "id": "form-add-field-label",
+                    "value": "Add Variable",
+                    "type": "string"
+                },
+                {
+                    "id": "form-language-label",
+                    "value": "Language",
+                    "type": "string"
+                },
+                {
+                    "id": "form-icon-label",
+                    "value": "Icon",
+                    "type": "string"
+                },
+                {
+                    "id": "form-icon-placeholder",
+                    "value": "Icon",
+                    "type": "string"
+                },
+                {
+                    "id": "form-grup-placeholder",
+                    "value": "Select a group",
+                    "type": "string"
+                },
+                {
+                    "id": "module-name",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-icon-2-label",
+                    "value": "Anchored Icon",
+                    "type": "string"
+                },
+                {
+                    "id": "form-icon-2-placeholder",
+                    "value": "Anchored Icon",
+                    "type": "string"
+                },
+                {
+                    "id": "form-menu-label",
+                    "value": "View in Main Menu",
+                    "type": "string"
+                },
+                {
+                    "id": "form-menu-placeholder",
+                    "value": "Select to view in main menu",
+                    "type": "string"
+                },
+                {
+                    "id": "form-title-label",
+                    "value": "Title",
+                    "type": "string"
+                },
+                {
+                    "id": "form-title-placeholder",
+                    "value": "Title",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-placeholder",
+                    "value": "Identifier",
+                    "type": "string"
+                },
+                {
+                    "id": "form-value-placeholder",
+                    "value": "Value",
+                    "type": "string"
+                },
+                {
+                    "id": "form-plugin-label",
+                    "value": "Plugin",
+                    "type": "string"
+                },
+                {
+                    "id": "form-plugin-placeholder",
+                    "value": "Select a plugin",
+                    "type": "string"
+                },
+                {
+                    "id": "form-plugin-empty",
+                    "value": "None",
+                    "type": "string"
+                },
+                {
+                    "id": "module-variables",
+                    "value": "Variables",
+                    "type": "string"
+                },
+                {
+                    "id": "form-host-label",
+                    "value": "Host",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

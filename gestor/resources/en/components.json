@@ -1,36 +1,36 @@
 [
     {
-        "name": "Interface Formulário Configurações",
+        "name": "Settings Form Interface",
         "id": "interface-formulario-configuracoes",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "86075406b67435166d945cba5df56ff1",
+            "html": "3199b5729d98894749ed80159b589829",
             "css": "87e1823d50f899396806b9b566ac6185",
-            "combined": "9ee2293b64b881f1d9ceb43df096744b"
+            "combined": "87deaded13c8c1d42ea9099220fdbb2d"
         }
     },
     {
         "name": "Widget Template",
         "id": "widget-template",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "9d003fd56bb000e1c9525245cd5106c4",
+            "html": "f172c23c8b4e32e0b58b02e36f477ec1",
             "css": "ba0557b0e23e65afcce0a8da039e4a9b",
-            "combined": "8271f0187a3cdebbd8196eb8633b3884"
+            "combined": "3c8a1ea1e7bc4b23aa2b2427d5ab3151"
         }
     },
     {
-        "name": "Interface Formulário Edição Incomum",
+        "name": "Uncommon Edit Form Interface",
         "id": "interface-formulario-edicao-incomum",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "66d0b2b64a3b00263c2a8eaa193867a3",
+            "html": "e6b7dde3afb34325a5444ecc2a5d85c9",
             "css": "a1c884e20814045be6503eec311e42e4",
-            "combined": "a51ad8061d307a4097e7362a6b4e7b53"
+            "combined": "4a89b31995370463199f8202692331eb"
         }
     },
     {
-        "name": "Interface Formulário Inclusão Incomum",
+        "name": "Uncommon Inclusion Form Interface",
         "id": "interface-formulario-inclusao-incomum",
         "version": "1.2",
         "checksum": {
@@ -40,7 +40,7 @@
         }
     },
     {
-        "name": "Modal Simples",
+        "name": "Simple Modal",
         "id": "modal-simples",
         "version": "1.2",
         "checksum": {
@@ -50,17 +50,17 @@
         }
     },
     {
-        "name": "Interface Formulário Visualização",
+        "name": "Visualization Form Interface",
         "id": "interface-formulario-visualizacao",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "8093f6b4f62afda1a9defa36b885e615",
+            "html": "a65e4072aa789b09dc73d08c560fb164",
             "css": "e1507d655c9c10e868884f3333705a88",
-            "combined": "b6b5fcc39fb612dbaa1ab3a88d9a16d3"
+            "combined": "c62bca625999d62ad3ed93337d5c836d"
         }
     },
     {
-        "name": "Interface Modal Genérico",
+        "name": "Generic Modal Interface",
         "id": "interface-modal-generico",
         "version": "1.2",
         "checksum": {
@@ -70,7 +70,7 @@
         }
     },
     {
-        "name": "Botão Superior Interface",
+        "name": "Top Button Interface",
         "id": "botao-superior-interface",
         "version": "1.7",
         "checksum": {
@@ -80,7 +80,7 @@
         }
     },
     {
-        "name": "Interface Alerta Modal",
+        "name": "Alert Modal Interface",
         "id": "interface-alerta-modal",
         "version": "1.2",
         "checksum": {
@@ -90,17 +90,17 @@
         }
     },
     {
-        "name": "Interface Carregando Modal",
+        "name": "Loading Modal Interface",
         "id": "interface-carregando-modal",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "c1574712e986563972da0ccb3938846a",
+            "html": "1d16c13c587473483b214ec3e89ebd37",
             "css": "",
-            "combined": "c1574712e986563972da0ccb3938846a"
+            "combined": "1d16c13c587473483b214ec3e89ebd37"
         }
     },
     {
-        "name": "Interface Deleção Modal",
+        "name": "Deletion Modal Interface",
         "id": "interface-delecao-modal",
         "version": "1.2",
         "checksum": {
@@ -110,7 +110,7 @@
         }
     },
     {
-        "name": "Interface Formulário Inclusão",
+        "name": "Inclusion Form Interface",
         "id": "interface-formulario-inclusao",
         "version": "1.6",
         "checksum": {
@@ -120,17 +120,17 @@
         }
     },
     {
-        "name": "Interface Listar Sem Registros",
+        "name": "List Without Records Interface",
         "id": "interface-listar-sem-registros",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "7f4c7b58497756f22ea6245dbdecef88",
+            "html": "e2858f73a3111c956cc7a1e133101c71",
             "css": "",
-            "combined": "7f4c7b58497756f22ea6245dbdecef88"
+            "combined": "e2858f73a3111c956cc7a1e133101c71"
         }
     },
     {
-        "name": "Interface Listar",
+        "name": "List Interface",
         "id": "interface-listar",
         "version": "1.3",
         "checksum": {
@@ -140,27 +140,27 @@
         }
     },
     {
-        "name": "Interface Listar Arquivos Sem Registros",
+        "name": "List Files Without Records Interface",
         "id": "interface-listar-arquivos-sem-registros",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "d7133d08f38fbed13fc78114ce5580e6",
+            "html": "7d70490316138921e6e6a3b4745ae9e8",
             "css": "",
-            "combined": "d7133d08f38fbed13fc78114ce5580e6"
+            "combined": "7d70490316138921e6e6a3b4745ae9e8"
         }
     },
     {
-        "name": "Layout Email Novo Cadastro",
+        "name": "New Registration Email Layout",
         "id": "layout-email-novo-cadastro",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "50218450aeebb8ca3f114c5abe30fd18",
+            "html": "2d34df7b576664dfa9d6cc07556857bf",
             "css": "",
-            "combined": "50218450aeebb8ca3f114c5abe30fd18"
+            "combined": "2d34df7b576664dfa9d6cc07556857bf"
         }
     },
     {
-        "name": "Interface Iframe Modal",
+        "name": "Iframe Modal Interface",
         "id": "interface-iframe-modal",
         "version": "1.2",
         "checksum": {
@@ -170,7 +170,7 @@
         }
     },
     {
-        "name": "Widget Imagem",
+        "name": "Image Widget",
         "id": "widget-imagem",
         "version": "1.2",
         "checksum": {
@@ -180,27 +180,27 @@
         }
     },
     {
-        "name": "Menu Principal Sistema",
+        "name": "Main System Menu",
         "id": "menu-principal-sistema",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
             "html": "708d6c3eab26e3bd0473f87bac06d8ff",
-            "css": "dc8ada26a5c0c9580e7a0e75648eae47",
-            "combined": "fee5ddcf40f2110aa7ae0bed854105ea"
+            "css": "65f8cb8d07537f63b7a7441edd3be9a7",
+            "combined": "d7f4c60e63db95d1bb04157810bde076"
         }
     },
     {
-        "name": "Interface Formulário Edição",
+        "name": "Edit Form Interface",
         "id": "interface-formulario-edicao",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "af8439f7214770123bd7edbbf2c93c52",
+            "html": "d6bcb1b60eff05294d6621332f5ecfc7",
             "css": "a1c884e20814045be6503eec311e42e4",
-            "combined": "6fa7b6c0b8aa4ebe8112d74aef2463f3"
+            "combined": "da5b735d609f7f0b93e77c7f355b1942"
         }
     },
     {
-        "name": "Interface Formulário Autorização Provisória",
+        "name": "Temporary Authorization Form Interface",
         "id": "interface-formulario-autorizacao-provisoria",
         "version": "1.2",
         "checksum": {
@@ -210,27 +210,27 @@
         }
     },
     {
-        "name": "Layout Emails Assinatura",
+        "name": "Email Signature Layout",
         "id": "layout-emails-assinatura",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "6411590a438bb1b96dae7bfb0fe89dc2",
+            "html": "6fb70793f76c0e284407ba7976d09f0c",
             "css": "",
-            "combined": "6411590a438bb1b96dae7bfb0fe89dc2"
+            "combined": "6fb70793f76c0e284407ba7976d09f0c"
         }
     },
     {
-        "name": "Layout Email Esqueceu Senha",
+        "name": "Forgot Password Email Layout",
         "id": "layout-email-esqueceu-senha",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "0dfd41316fd9355ef67b10cc6b1e04ad",
+            "html": "3b1eec6166f6e1238f8e9fe4ea896670",
             "css": "2f40d13cf61ff32dcb801f3fec1d211f",
-            "combined": "67e9a5119e68ec38f6cd816ad7b3aaa0"
+            "combined": "70fce18474154cbd1414bb0ca9e38e30"
         }
     },
     {
-        "name": "Interface Backup Dropdown",
+        "name": "Backup Dropdown Interface",
         "id": "interface-backup-dropdown",
         "version": "1.2",
         "checksum": {
@@ -240,53 +240,53 @@
         }
     },
     {
-        "name": "Layout Email Senha Redefinida",
+        "name": "Password Reset Email Layout",
         "id": "layout-email-senha-redefinida",
+        "version": "1.4",
+        "checksum": {
+            "html": "7388f7d12d41517c3e1ebf26e86e6104",
+            "css": "",
+            "combined": "7388f7d12d41517c3e1ebf26e86e6104"
+        }
+    },
+    {
+        "name": "Configuration - Fields",
+        "id": "configuracao-campos",
         "version": "1.3",
         "checksum": {
-            "html": "a733b0e5baa367661d0636c0bab45c5b",
-            "css": "",
-            "combined": "a733b0e5baa367661d0636c0bab45c5b"
-        }
-    },
-    {
-        "name": "Configuração - Campos",
-        "id": "configuracao-campos",
-        "version": "1.2",
-        "checksum": {
-            "html": "4a31ee642af5a1f3a198bdd44380d201",
+            "html": "45a915e84a76338ed115f59736b25d04",
             "css": "4183f8ca0236bdb2a6b7d5fd983eba86",
-            "combined": "94726b42f4fc448c6d394ee3efe4f0e5"
+            "combined": "5fd7d67ea8f61cf5ed8c08c1e9c5c075"
         }
     },
     {
-        "name": "Configuração - Widget",
+        "name": "Configuration - Widget",
         "id": "configuracao-widget",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "20d42343ba08a767a53e0b622cc8579f",
+            "html": "1bff4325d030f0e0ed803b34164e5122",
             "css": "e76c325ef114d06f7eaa79aaa025fe38",
-            "combined": "d6c04b6680ab2488c3d36fc1cc045ba8"
+            "combined": "c56d66e45a15bd2d1e41fb4b21a87c60"
         }
     },
     {
-        "name": "Interface Simples",
+        "name": "Simple Interface",
         "id": "interface-simples",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "b323c939a51b60054f34b0b5ba58c414",
+            "html": "c72a3014205057d167c44d5446e04c63",
             "css": "87e1823d50f899396806b9b566ac6185",
-            "combined": "9ef891f70868d898d23757590acb5307"
+            "combined": "88719ccde04fdaf208484442cb848d2f"
         }
     },
     {
-        "name": "Impressão Sem Dados",
+        "name": "Print Without Data",
         "id": "impressao-sem-dados",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "b5f8004dc420d0a6792e77a8738e11df",
+            "html": "b15a5de4c0e6c5da3141020822e0482e",
             "css": "",
-            "combined": "b5f8004dc420d0a6792e77a8738e11df"
+            "combined": "b15a5de4c0e6c5da3141020822e0482e"
         }
     }
 ]

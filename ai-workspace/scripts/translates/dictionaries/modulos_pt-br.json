@@ -1,0 +1,30 @@
+{
+    "module": "modulos",
+    "language": "pt-br",
+    "variables": {
+        "form-name-label": "Nome",
+        "form-name-placeholder": "Nome",
+        "form-grup-label": "Grupo",
+        "form-add-field-label": "Adicionar Variável",
+        "form-language-label": "Linguagem",
+        "form-icon-label": "Ícone",
+        "form-icon-placeholder": "Ícone",
+        "form-grup-placeholder": "Selecione um grupo",
+        "module-name": "Módulo",
+        "form-icon-2-label": "Ícone Ancorado",
+        "form-icon-2-placeholder": "Ícone Ancorado",
+        "form-menu-label": "Visualizar no Menu Principal",
+        "form-menu-placeholder": "Selecione para visualizar no menu principal",
+        "form-title-label": "Título",
+        "form-title-placeholder": "Título",
+        "form-id-placeholder": "Identificador",
+        "form-value-placeholder": "Valor",
+        "form-plugin-label": "Plugin",
+        "form-plugin-placeholder": "Selecione um plugin",
+        "form-plugin-empty": "Nenhum",
+        "module-variables": "Variáveis",
+        "form-host-label": "Host"
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/modulos\/modulos.json",
+    "generated_at": "2025-09-25 19:36:40"
+}

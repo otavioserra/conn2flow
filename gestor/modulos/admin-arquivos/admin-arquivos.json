@@ -18,12 +18,6 @@
         "mini_width": 200
     },
     "resources": {
-        "en": {
-            "layouts": [],
-            "pages": [],
-            "components": [],
-            "variables": []
-        },
         "pt-br": {
             "layouts": [],
             "pages": [
@@ -347,6 +341,333 @@
                 {
                     "id": "list-button-copy-tooltip",
                     "value": "Clique para Copiar URL deste arquivo.",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Files",
+                    "id": "admin-arquivos",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-arquivos\/",
+                    "type": "system",
+                    "option": "listar-arquivos",
+                    "root": true,
+                    "version": "1.9",
+                    "checksum": {
+                        "html": "8f33d8113e655162a32f7a7213409e19",
+                        "css": "da65a7d1abba118408353e14d6102779",
+                        "combined": "ddb032331dd7e8da25416f3ac40a104a"
+                    }
+                },
+                {
+                    "name": "Admin Files - Add",
+                    "id": "admin-arquivos-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-arquivos\/adicionar\/",
+                    "type": "system",
+                    "option": "upload",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "e92d605fe333091027237714997c2779",
+                        "css": "938b9feb7d3d8dffbb915b2adbf06978",
+                        "combined": "458ba40cf7e64309e86198f1766e1da8"
+                    }
+                },
+                {
+                    "name": "Test Emission",
+                    "id": "emissao-teste",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-arquivos\/emissao-teste\/",
+                    "type": "system",
+                    "without_permission": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Files List",
+                    "id": "arquivos-lista",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "194dd3e01babbb9da63521ece47f08a7",
+                        "css": "",
+                        "combined": "194dd3e01babbb9da63521ece47f08a7"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "add-button-label",
+                    "value": "Add Files - Test",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-last-modified",
+                    "value": "Modification Date",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-name",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-type",
+                    "value": "Type",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-size",
+                    "value": "Size",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-progress",
+                    "value": "Sending File",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-progress-waiting",
+                    "value": "Ready to Send",
+                    "type": "string"
+                },
+                {
+                    "id": "add-categories-label",
+                    "value": "Categories",
+                    "type": "string"
+                },
+                {
+                    "id": "add-categories-placeholder",
+                    "value": "Select one or more categories",
+                    "type": "string"
+                },
+                {
+                    "id": "add-files-label",
+                    "value": "Files",
+                    "type": "string"
+                },
+                {
+                    "id": "add-categories-info",
+                    "value": "Select one or more categories if you want to link to the file(s)",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-buton-send",
+                    "value": "Send",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-buton-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-progress-finish",
+                    "value": "Completed",
+                    "type": "string"
+                },
+                {
+                    "id": "add-files-copy-clipboard",
+                    "value": "Copy File URL",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-progress-processing",
+                    "value": "Processing...",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-progress-error-head",
+                    "value": "Error in Sending Process",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-progress-error",
+                    "value": "Error",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-progress-all",
+                    "value": "Sending Files",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-buton-all-send",
+                    "value": "Send All",
+                    "type": "string"
+                },
+                {
+                    "id": "add-file-buton-all-cancel",
+                    "value": "Cancel All",
+                    "type": "string"
+                },
+                {
+                    "id": "add-buttons-header",
+                    "value": "Controls",
+                    "type": "string"
+                },
+                {
+                    "id": "add-status-header",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "add-files-header",
+                    "value": "File List",
+                    "type": "string"
+                },
+                {
+                    "id": "upload-error-size",
+                    "value": "File size not allowed (max: 10 MB)",
+                    "type": "string"
+                },
+                {
+                    "id": "categories-label",
+                    "value": "Categories",
+                    "type": "string"
+                },
+                {
+                    "id": "date-label",
+                    "value": "Period",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-label",
+                    "value": "Filter List",
+                    "type": "string"
+                },
+                {
+                    "id": "date-start-label",
+                    "value": "Date From",
+                    "type": "string"
+                },
+                {
+                    "id": "date-end-label",
+                    "value": "Date To",
+                    "type": "string"
+                },
+                {
+                    "id": "categories-placeholder",
+                    "value": "Select one or more categories",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-button",
+                    "value": "Filter",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-info",
+                    "value": "Select a period and/or one or more categories if you want to filter the result by this data. Then, click the <b>Filter</b> button to see the results.",
+                    "type": "string"
+                },
+                {
+                    "id": "clear-button",
+                    "value": "Clear",
+                    "type": "string"
+                },
+                {
+                    "id": "button-add-tooltip",
+                    "value": "Click to Add",
+                    "type": "string"
+                },
+                {
+                    "id": "button-add-label",
+                    "value": "Add",
+                    "type": "string"
+                },
+                {
+                    "id": "more-results-button",
+                    "value": "More Results",
+                    "type": "string"
+                },
+                {
+                    "id": "add-files-options-header",
+                    "value": "Options",
+                    "type": "string"
+                },
+                {
+                    "id": "files-list-label",
+                    "value": "File List",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-copy",
+                    "value": "Copy URL",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-del",
+                    "value": "Delete",
+                    "type": "string"
+                },
+                {
+                    "id": "list-not-categorised",
+                    "value": "Uncategorized Files",
+                    "type": "string"
+                },
+                {
+                    "id": "order-label",
+                    "value": "Sorting",
+                    "type": "string"
+                },
+                {
+                    "id": "order-placeholder",
+                    "value": "Select the sorting type",
+                    "type": "string"
+                },
+                {
+                    "id": "order-alphabetical-asc",
+                    "value": "Alphabetical Ascending",
+                    "type": "string"
+                },
+                {
+                    "id": "order-alphabetical-desc",
+                    "value": "Alphabetical Descending",
+                    "type": "string"
+                },
+                {
+                    "id": "order-date-asc",
+                    "value": "Date Ascending",
+                    "type": "string"
+                },
+                {
+                    "id": "order-date-desc",
+                    "value": "Date Descending",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-select",
+                    "value": "Select",
+                    "type": "string"
+                },
+                {
+                    "id": "add-files-select",
+                    "value": "Select File",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-del-tooltip",
+                    "value": "Click to delete this file.",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-select-tooltip",
+                    "value": "Click to select this file.",
+                    "type": "string"
+                },
+                {
+                    "id": "list-button-copy-tooltip",
+                    "value": "Click to Copy URL of this file.",
                     "type": "string"
                 }
             ]

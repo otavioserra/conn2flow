@@ -165,6 +165,157 @@
                     "type": "string"
                 }
             ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Categories",
+                    "id": "admin-categorias",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-categorias\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin Categories - Add",
+                    "id": "admin-categorias-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-categorias\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "26d51b73e6f66aca1ec7ccc951074be9",
+                        "css": "",
+                        "combined": "26d51b73e6f66aca1ec7ccc951074be9"
+                    }
+                },
+                {
+                    "name": "Admin Categories - Edit",
+                    "id": "admin-categorias-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-categorias\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "09eaa76323c04d08fafb7aafe45a8e24",
+                        "css": "",
+                        "combined": "09eaa76323c04d08fafb7aafe45a8e24"
+                    }
+                },
+                {
+                    "name": "Admin Categories - Add Child",
+                    "id": "admin-categorias-adicionar-filho",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-categorias\/adicionar-filho\/",
+                    "type": "system",
+                    "option": "adicionar-filho",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "a077ab99e801977830ffe957c68ef3ed",
+                        "css": "",
+                        "combined": "a077ab99e801977830ffe957c68ef3ed"
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Component Module Test",
+                    "id": "teste-componente-modulo",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "All modules",
+                    "type": "string"
+                },
+                {
+                    "id": "form-categories-child-label",
+                    "value": "Child Categories",
+                    "type": "string"
+                },
+                {
+                    "id": "info-categories-child-empty",
+                    "value": "No child categories defined!",
+                    "type": "string"
+                },
+                {
+                    "id": "category-child-placeholder",
+                    "value": "Click to Add Child Category.",
+                    "type": "string"
+                },
+                {
+                    "id": "category-child-label",
+                    "value": "Add",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-parent-label",
+                    "value": "Parent Category",
+                    "type": "string"
+                },
+                {
+                    "id": "category-child-parent-not-found",
+                    "value": "Parent Category not found. It is not possible to add child category without a corresponding parent.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-parent-empy",
+                    "value": "None",
+                    "type": "string"
+                },
+                {
+                    "id": "form-categories-parent-label",
+                    "value": "Category Location",
+                    "type": "string"
+                },
+                {
+                    "id": "root-category",
+                    "value": "Root",
+                    "type": "string"
+                },
+                {
+                    "id": "form-plugin-placeholder",
+                    "value": "Plugin",
+                    "type": "string"
+                },
+                {
+                    "id": "form-plugin-label",
+                    "value": "Plugin",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

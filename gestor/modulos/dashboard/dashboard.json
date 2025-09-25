@@ -104,6 +104,98 @@
                     "type": "string"
                 }
             ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Dashboard",
+                    "id": "dashboard",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "dashboard\/",
+                    "type": "system",
+                    "option": "inicio",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "4f7ffb0c6d3475781fb93034eda548f5",
+                        "css": "",
+                        "combined": "4f7ffb0c6d3475781fb93034eda548f5"
+                    }
+                },
+                {
+                    "name": "Dashboard Tests",
+                    "id": "dashboard-testes",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "dashboard-testes\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "003ea280632102497e37f9ec148286d7",
+                        "css": "",
+                        "combined": "003ea280632102497e37f9ec148286d7"
+                    }
+                },
+                {
+                    "name": "Dashboard Preview",
+                    "id": "testes-do-dashboard",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "90d84f327b1487c1fea03855a3ad0c36",
+                        "css": "",
+                        "combined": "90d84f327b1487c1fea03855a3ad0c36"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "octavio-pagina\/",
+                    "type": "system",
+                    "option": "dashboard-teste"
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "logout-grup",
+                    "value": "Logout",
+                    "type": "string"
+                },
+                {
+                    "id": "logout-label",
+                    "value": "Logout",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-title",
+                    "value": "Update Available",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-message",
+                    "value": "There is an update available. Do you want to update now?",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-button-positive-label",
+                    "value": "Update Now",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-button-positive-message",
+                    "value": "You will be redirected to the updates screen...",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-button-negative-label",
+                    "value": "Don't Update",
+                    "type": "string"
+                },
+                {
+                    "id": "toast-update-button-negative-message",
+                    "value": "The system will store your choice. If you change your mind, access: <b>#url#<\/b>.",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

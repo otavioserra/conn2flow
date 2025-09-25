@@ -1,87 +1,87 @@
 [
     {
         "id": "variavel-id-label",
-        "value": "Variável",
+        "value": "Variable",
         "type": "string",
         "modulo": "configuracao"
     },
     {
         "id": "variavel-id-placeholder",
-        "value": "Identificador da Variável",
+        "value": "Variable Identifier",
         "type": "string",
         "modulo": "configuracao"
     },
     {
         "id": "variavel-group-label",
-        "value": "Grupo",
+        "value": "Group",
         "type": "string",
         "modulo": "configuracao"
     },
     {
         "id": "variavel-group-placeholder",
-        "value": "Grupo da variável (opcional)",
+        "value": "Variable group (optional)",
         "type": "string",
         "modulo": "configuracao"
     },
     {
         "id": "variavel-tipo-label",
-        "value": "Tipo",
+        "value": "Type",
         "type": "string",
         "modulo": "configuracao"
     },
     {
         "id": "variavel-tipo-placeholder",
-        "value": "Selecione o tipo...",
+        "value": "Select the type...",
         "type": "string",
         "modulo": "configuracao"
     },
     {
         "id": "variavel-valor-label",
-        "value": "Valor",
+        "value": "Value",
         "type": "string",
         "modulo": "configuracao"
     },
     {
         "id": "variavel-add-btn",
-        "value": "Adicionar Variável",
+        "value": "Add Variable",
         "type": "string",
         "modulo": "configuracao"
     },
     {
         "id": "variavel-description-label",
-        "value": "Descrição",
+        "value": "Description",
         "type": "string",
         "modulo": "configuracao"
     },
     {
         "id": "variavel-description-placeholder",
-        "value": "Descrição da variável (opcional)",
+        "value": "Variable description (optional)",
         "type": "string",
         "modulo": "configuracao"
     },
     {
         "id": "teste",
-        "value": "Nome 2",
+        "value": "Name 2",
         "type": "string",
         "modulo": "configuracao"
     },
     {
         "id": "historic-change",
-        "value": "Alterou ",
+        "value": "Changed ",
         "type": "string",
         "description": "Padrão de inclusão no histórico",
         "modulo": "configuracao"
     },
     {
         "id": "default-value-change",
-        "value": "Clique para subistituir pelo valor padrão desta variável.",
+        "value": "Click to replace with the default value of this variable.",
         "type": "string",
         "description": "Tooltip do botão resetar para o valor padrão",
         "modulo": "configuracao"
     },
     {
         "id": "form-value-placeholder",
-        "value": "Valor",
+        "value": "Value",
         "type": "string",
         "modulo": "configuracao"
     }

@@ -126,6 +126,132 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variavel-id-label",
+        "valor": "Variable",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variavel-id-placeholder",
+        "valor": "Variable Identifier",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variavel-group-label",
+        "valor": "Group",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variavel-group-placeholder",
+        "valor": "Variable group (optional)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variavel-tipo-label",
+        "valor": "Type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variavel-tipo-placeholder",
+        "valor": "Select the type...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variavel-valor-label",
+        "valor": "Value",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variavel-add-btn",
+        "valor": "Add Variable",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variavel-description-label",
+        "valor": "Description",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variavel-description-placeholder",
+        "valor": "Variable description (optional)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "teste",
+        "valor": "Name 2",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "historic-change",
+        "valor": "Changed ",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Padrão de inclusão no histórico"
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "default-value-change",
+        "valor": "Click to replace with the default value of this variable.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Tooltip do botão resetar para o valor padrão"
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "form-value-placeholder",
+        "valor": "Value",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-arquivos",
         "id": "add-button-label",
@@ -603,6 +729,483 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-button-label",
+        "valor": "Add Files - Test",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-last-modified",
+        "valor": "Modification Date",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-name",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-type",
+        "valor": "Type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-size",
+        "valor": "Size",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-progress",
+        "valor": "Sending File",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-progress-waiting",
+        "valor": "Ready to Send",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-categories-label",
+        "valor": "Categories",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-categories-placeholder",
+        "valor": "Select one or more categories",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-files-label",
+        "valor": "Files",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-categories-info",
+        "valor": "Select one or more categories if you want to link to the file(s)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-buton-send",
+        "valor": "Send",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-buton-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-progress-finish",
+        "valor": "Completed",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-files-copy-clipboard",
+        "valor": "Copy File URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-progress-processing",
+        "valor": "Processing...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-progress-error-head",
+        "valor": "Error in Sending Process",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-progress-error",
+        "valor": "Error",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-progress-all",
+        "valor": "Sending Files",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-buton-all-send",
+        "valor": "Send All",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-file-buton-all-cancel",
+        "valor": "Cancel All",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-buttons-header",
+        "valor": "Controls",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-status-header",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-files-header",
+        "valor": "File List",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "upload-error-size",
+        "valor": "File size not allowed (max: 10 MB)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "categories-label",
+        "valor": "Categories",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "date-label",
+        "valor": "Period",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "filter-label",
+        "valor": "Filter List",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "date-start-label",
+        "valor": "Date From",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "date-end-label",
+        "valor": "Date To",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "categories-placeholder",
+        "valor": "Select one or more categories",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "filter-button",
+        "valor": "Filter",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "filter-info",
+        "valor": "Select a period and\/or one or more categories if you want to filter the result by this data. Then, click the <b>Filter<\/b> button to see the results.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "clear-button",
+        "valor": "Clear",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "button-add-tooltip",
+        "valor": "Click to Add",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "button-add-label",
+        "valor": "Add",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "more-results-button",
+        "valor": "More Results",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-files-options-header",
+        "valor": "Options",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "files-list-label",
+        "valor": "File List",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "list-button-copy",
+        "valor": "Copy URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "list-button-del",
+        "valor": "Delete",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "list-not-categorised",
+        "valor": "Uncategorized Files",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "order-label",
+        "valor": "Sorting",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "order-placeholder",
+        "valor": "Select the sorting type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "order-alphabetical-asc",
+        "valor": "Alphabetical Ascending",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "order-alphabetical-desc",
+        "valor": "Alphabetical Descending",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "order-date-asc",
+        "valor": "Date Ascending",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "order-date-desc",
+        "valor": "Date Descending",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "list-button-select",
+        "valor": "Select",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "add-files-select",
+        "valor": "Select File",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "list-button-del-tooltip",
+        "valor": "Click to delete this file.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "list-button-select-tooltip",
+        "valor": "Click to select this file.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-arquivos",
+        "id": "list-button-copy-tooltip",
+        "valor": "Click to Copy URL of this file.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-atualizacoes",
         "id": "updates-title",
@@ -891,6 +1494,294 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-title",
+        "valor": "System Updates",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-run-button",
+        "valor": "Run Update",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-view-log-button",
+        "valor": "View Log",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-last-run",
+        "valor": "Last Execution",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-actions",
+        "valor": "Actions",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-detail-title",
+        "valor": "Update Details",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-log-title",
+        "valor": "Execution Log",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-date",
+        "valor": "Date",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-log",
+        "valor": "Log",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-plan-json",
+        "valor": "JSON Plan",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-full",
+        "valor": "Full",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-files",
+        "valor": "Files",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-db",
+        "valor": "Database",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-back-button",
+        "valor": "Back",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-select-log-plan",
+        "valor": "Select a log or plan.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-invalid-log",
+        "valor": "Invalid Log",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-invalid-plan",
+        "valor": "Invalid Plan",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-no-records",
+        "valor": "No updates recorded.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-title",
+        "valor": "Execution History",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-started",
+        "valor": "Start",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-tag",
+        "valor": "Tag",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-mode",
+        "valor": "Modo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-removed",
+        "valor": "Remov.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-copied",
+        "valor": "Copied",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-history-finished",
+        "valor": "End",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-recent-logs",
+        "valor": "Logs Recentes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-progress",
+        "valor": "Progress",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-go-disparar",
+        "valor": "Trigger Page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-advanced-options",
+        "valor": "Advanced Options",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-categorias",
         "id": "form-name-label",
@@ -1018,6 +1909,141 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "admin-categorias",
+        "id": "form-plugin-label",
+        "valor": "Plugin",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "form-name-placeholder",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "form-module-label",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "form-module-placeholder",
+        "valor": "Todos os módulos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "form-categories-child-label",
+        "valor": "Categorias Filho",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "info-categories-child-empty",
+        "valor": "Nenhuma categoria filho definida!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "category-child-placeholder",
+        "valor": "Clique para Adicionar Categoria Filho.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "category-child-label",
+        "valor": "Add",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "form-name-parent-label",
+        "valor": "Categoria Pai",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "category-child-parent-not-found",
+        "valor": "Categoria Pai não encontrada. Não é possível adicionar categoria filho sem um pai referente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "form-name-parent-empy",
+        "valor": "Nenhum(a)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "form-categories-parent-label",
+        "valor": "Categoria Localização",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "root-category",
+        "valor": "Raiz",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-categorias",
+        "id": "form-plugin-placeholder",
+        "valor": "Plugin",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
         "modulo": "admin-categorias",
         "id": "form-plugin-label",
         "valor": "Plugin",
@@ -1215,6 +2241,195 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-name-placeholder",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-html-tooltip",
+        "valor": "Click to open HTML > Body. Visible part of the component within the <body> tag",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-html-label",
+        "valor": "HTML > Body",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-css-tooltip",
+        "valor": "Click to open CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-css-label",
+        "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-module-label",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-module-placeholder",
+        "valor": "Select an optional module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-framework-css-label",
+        "valor": "Framework CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-button-preview",
+        "valor": "Preview",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "tooltip-button-preview",
+        "valor": "Click to preview the component",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "modal-title-preview",
+        "valor": "Component Preview",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "modal-desktop-preview",
+        "valor": "Desktop",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "modal-tablet-preview",
+        "valor": "Tablet",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "modal-mobile-preview",
+        "valor": "Smartphone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "button-back-tooltip",
+        "valor": "Click the button to go back.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "button-back-value",
+        "valor": "Back",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-css-compiled-tooltip",
+        "valor": "Click to open the automatically generated CSS.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-css-compiled-label",
+        "valor": "Automatic CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-html-extra-head-tooltip",
+        "valor": "Click to open the extra HTML for the page Header. Part within the <head> tag",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-componentes",
+        "id": "form-html-extra-head-label",
+        "valor": "HTML > Header",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-environment",
         "id": "email-tests-head-title",
@@ -1345,6 +2560,141 @@
         "modulo": "admin-environment",
         "id": "recaptcha-error-timeout-duplicate",
         "valor": "Token expirou ou já foi usado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "email-tests-head-title",
+        "valor": "DEBUG MODE",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "email-tests-head-status",
+        "valor": "STATUS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "email-tests-head-bottom",
+        "valor": "END OF DEBUG",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "email-tests-success-msg",
+        "valor": "Success!!!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "email-tests-error-msg",
+        "valor": "Error!!!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "email-tests-success-description",
+        "valor": "Email test sent successfully!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "email-tests-error-description",
+        "valor": "Error sending email test!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "recaptcha-test-success",
+        "valor": "reCAPTCHA test successful! Score: {score}",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "recaptcha-test-low-score",
+        "valor": "reCAPTCHA score too low: {score}. Possible bot detected.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "recaptcha-error-generic",
+        "valor": "Error verifying reCAPTCHA.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "recaptcha-error-missing-secret",
+        "valor": "Server Key (secret) is missing or invalid.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "recaptcha-error-invalid-secret",
+        "valor": "Server Key (secret) is invalid.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "recaptcha-error-missing-response",
+        "valor": "Response token is missing.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "recaptcha-error-invalid-response",
+        "valor": "Token and\/or Server Key (secret) is invalid.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "recaptcha-error-timeout-duplicate",
+        "valor": "Token expired or has already been used.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1530,6 +2880,186 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-name-placeholder",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-html-tooltip",
+        "valor": "Click to open the HTML Code",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-html-label",
+        "valor": "HTML Code",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-css-tooltip",
+        "valor": "Click to open the CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-css-label",
+        "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-fullpage-label",
+        "valor": "Full Page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-category-label",
+        "valor": "Category",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-category-placeholder",
+        "valor": "Select a category if necessary.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-framework-css-label",
+        "valor": "Framework CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-button-preview",
+        "valor": "Preview",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "tooltip-button-preview",
+        "valor": "Click to preview the layout",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "modal-title-preview",
+        "valor": "Layout Preview",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "modal-desktop-preview",
+        "valor": "Computer",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "modal-tablet-preview",
+        "valor": "Tablet",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "modal-mobile-preview",
+        "valor": "Smartphone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "button-back-tooltip",
+        "valor": "Click the button to go back.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "button-back-value",
+        "valor": "Back",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-css-compiled-tooltip",
+        "valor": "Click to open the automatic CSS generated by the system.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-layouts",
+        "id": "form-css-compiled-label",
+        "valor": "Automatic CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-name-label",
@@ -1569,7 +3099,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-html-tooltip",
-        "valor": "Clique para abrir o HTML > Corpo. Parte visível da página dentro da tag <body>",
+        "valor": "Click to open the HTML Code",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1578,7 +3108,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-html-label",
-        "valor": "HTML > Corpo",
+        "valor": "HTML Code",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1677,7 +3207,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-module-label",
-        "valor": "Módulo",
+        "valor": "Module",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1686,7 +3216,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-module-placeholder",
-        "valor": "Selecione um módulo",
+        "valor": "Select a module",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1695,7 +3225,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-option-label",
-        "valor": "Opção",
+        "valor": "Option",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1704,7 +3234,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-option-placeholder",
-        "valor": "Opção",
+        "valor": "Option",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1758,7 +3288,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "path-necessary-chars",
-        "valor": "pelo menos uma '\/' no final",
+        "valor": "at least one '\/' at the end",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1767,7 +3297,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-url-label",
-        "valor": "URL Atual da Página",
+        "valor": "Current Page URL",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1776,7 +3306,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-type-page",
-        "valor": "Página",
+        "valor": "Page",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1785,7 +3315,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-type-system",
-        "valor": "Sistema",
+        "valor": "System",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1918,42 +3448,6 @@
     },
     {
         "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-css-compiled-tooltip",
-        "valor": "Clique para abrir o CSS automático gerado pelo sistema.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-css-compiled-label",
-        "valor": "CSS Automático",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-html-extra-head-tooltip",
-        "valor": "Clique para abrir o HTML extra para o Cabeçalho da página. Parte dentro da tag <head>",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-html-extra-head-label",
-        "valor": "HTML > Cabeçalho",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
         "modulo": "admin-plugins",
         "id": "form-name-label",
         "valor": "Nome",
@@ -2052,6 +3546,105 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "admin-plugins",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-plugins",
+        "id": "form-name-placeholder",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-plugins",
+        "id": "pagina-teste",
+        "valor": "Teste do Sistema de Descoberta Automática",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-plugins",
+        "id": "metadata-origin-type",
+        "valor": "Origem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-plugins",
+        "id": "metadata-origin-reference",
+        "valor": "Reference",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-plugins",
+        "id": "metadata-origin-branch-tag",
+        "valor": "Branch\/Tag",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-plugins",
+        "id": "metadata-origin-credential-ref",
+        "valor": "Credencial Ref",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-plugins",
+        "id": "metadata-installed-version",
+        "valor": "Versão Instalada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-plugins",
+        "id": "metadata-package-checksum",
+        "valor": "Checksum",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-plugins",
+        "id": "metadata-execution-status",
+        "valor": "Status Execução",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-plugins",
+        "id": "metadata-last-update",
+        "valor": "Última Atualização",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "dashboard",
         "id": "logout-grup",
@@ -2116,6 +3709,78 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "toast-update-button-negative-message",
+        "valor": "O sistema armazenará sua escolha. Se mudar de ideia acesse: <b>#url#<\/b>.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "logout-grup",
+        "valor": "Sair",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "logout-label",
+        "valor": "Sair",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "toast-update-title",
+        "valor": "Atualização Disponível",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "toast-update-message",
+        "valor": "Há uma atualização disponível. Deseja atualizar agora?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "toast-update-button-positive-label",
+        "valor": "Atualizar Agora",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "toast-update-button-positive-message",
+        "valor": "Você será redirecionado para a tela de atualizações...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "toast-update-button-negative-label",
+        "valor": "Não Atualizar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
         "modulo": "dashboard",
         "id": "toast-update-button-negative-message",
         "valor": "O sistema armazenará sua escolha. Se mudar de ideia acesse: <b>#url#<\/b>.",
@@ -2844,6 +4509,726 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-url-path",
+        "valor": "Caminho",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "form-button-title",
+        "valor": "Clique nesse botão para GRAVAR as alterações.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "form-button-value",
+        "valor": "Enviar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "list-column-options",
+        "valor": "Opções",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-name",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-date-start",
+        "valor": "Data Criação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-date-modification",
+        "valor": "Data Modificação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "tooltip-button-edit",
+        "valor": "Clique para Editar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "tooltip-button-active",
+        "valor": "Clique para Ativar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "tooltip-button-desactive",
+        "valor": "Clique para Desativar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "tooltip-button-delete",
+        "valor": "Clique para Excluir",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "tooltip-button-insert",
+        "valor": "Clique para Adicionar.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "label-button-insert",
+        "valor": "Add",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "label-button-desactive",
+        "valor": "Desativar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "label-button-active",
+        "valor": "Ativar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "label-button-delete",
+        "valor": "Delete",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-version",
+        "valor": "Version",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-status-active",
+        "valor": "Active",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-status-inactive",
+        "valor": "Inactive",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "delete-confirm-title",
+        "valor": "Confirmação de Deleção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "delete-confirm-menssage",
+        "valor": "Você tem certeza que quer excluir este ítem?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "delete-confirm-button-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "delete-confirm-button-confirm",
+        "valor": "Confirm",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "historic-checkbox-active",
+        "valor": "Active",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "historic-checkbox-inactive",
+        "valor": "Inactive",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "historic-change-field-after-before",
+        "valor": "alterou <b>#campo#<\/b> de <b>#valor_antes#<\/b> para <b>#valor_depois#<\/b>",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "historic-change-field-only",
+        "valor": "alterou <b>#campo#<\/b>",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "historic-button-load-more",
+        "valor": "Carregar Mais",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "alert-title",
+        "valor": "Alert",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "alert-button-ok",
+        "valor": "Ok",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "ajax-timeout-message",
+        "valor": "A tentativa de conexão com o servidor chegou no seu limite de tempo. Houve alguma falha na sua conexão com o mesmo ou então algum erro de programação não detectável automaticamente. Tente novamente, se o problema persistir, favor entrar em contato com o suporte técnico.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "historic-change-status",
+        "valor": "alterou <b>#campo#<\/b> para <b>#valor_depois#<\/b>",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "historic-delete",
+        "valor": "removeu o registro do sistema",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-empty",
+        "valor": "É obrigatório preencher o campo <b>#label#<\/b>.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-min-length",
+        "valor": "O campo <b>#label#<\/b> deve ter no mínimo 3 caracteres.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-max-length",
+        "valor": "O campo <b>#label#<\/b> deve ter no máximo 100 caracteres.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-min-max-length",
+        "valor": "O campo <b>#label#<\/b> é obrigatório. Deve ter no mínimo <b>#min#<\/b> e no máximo <b>#max#<\/b> caracteres.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "problem-get-variable",
+        "valor": "Ocorreu um erro na obtenção de uma variável.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "label-button-variable",
+        "valor": "Variables",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "tooltip-button-variable",
+        "valor": "Clique para alterar as Variáveis",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "label-button-edit",
+        "valor": "Edit",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "no-occurrence",
+        "valor": "Nenhum(a)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-email",
+        "valor": "É obrigatório definir um email válido no campo <b>#label#<\/b>.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-email-compare",
+        "valor": "O campo <b>#campo-1#<\/b> é diferente do campo <b>#campo-2#<\/b>. É obrigatório que ambos tenham o mesmo valor.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-min-length-password",
+        "valor": "O campo <b>#label#<\/b> deve ter no mínimo 12 caracteres.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-password-chars",
+        "valor": "O campo  <b>#label#<\/b> precisa ter no mínimo <b>um caracter minúsculo<\/b>,  no mínimo <b>um caracter maiúsculo<\/b>,  no mínimo <b>um número<\/b> e pelo menos um caracter especial igual a <b>!@#$%^&*<\/b>.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-select",
+        "valor": "É obrigatório selecionar pelo menos uma opção do campo <b>#label#<\/b>.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "form-nao-alterar-id-label",
+        "valor": "Não alterar o identificador único se modificar o campo Nome.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-id",
+        "valor": "Identificador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-verify-field",
+        "valor": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor preenchido. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-regex-permited-chars",
+        "valor": "Só é permitido no campo <b>#label#<\/b> os seguintes caracteres : <b>#permited-chars#<\/b>. Favor remover os caracteres  inválidos e tentar novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "alert-there-is-a-field",
+        "valor": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-regex-necessary-chars",
+        "valor": "É necessário definir no campo <b>#label#<\/b> os seguintes caracteres : <b>#necessary-chars#<\/b>. Favor incluir os caracteres  e tentar novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "user-authorization-title",
+        "valor": "Restricted Area",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "user-authorization-message",
+        "valor": "Este local tem dados importantes sensíveis. Portanto, por segurança,  é necessário fornecer novamente a sua senha.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "user-authorization-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "user-authorization-confirm",
+        "valor": "Fornecer Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "alert-database-field-before-error",
+        "valor": "Houve um erro na recuperação dos dados do registro que se quer alterar. É possível que o mesmo possa ter sido excluído. ",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "historic-empty-value",
+        "valor": "Nenhum(a)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-image-button-add",
+        "valor": "Add",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-image-button-del",
+        "valor": "Remover",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-image-default-name",
+        "valor": "Nenhum(a)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-image-default-date",
+        "valor": "Nenhum(a)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-image-default-type",
+        "valor": "imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-image-modal-head",
+        "valor": "Selecione uma imagem abaixo...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-image-modal-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-image-alert-not-image",
+        "valor": "O arquivo selecionado <b>NÃO<\/b> é uma imagem. ",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "historic-change-users-profiles",
+        "valor": "alterou <b>#campo#<\/b> removendo <b>#valor_antes#<\/b> e incluindo <b>#valor_depois#<\/b>",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "alert-api-client-error",
+        "valor": "<h3>Houve um <span class=\"ui error text\">erro<\/span> na comunicação com o seu hospedeiro!<\/h3><p>A API do cliente retornou o seguinte erro: #error-msg#<\/p>",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-template-button-change",
+        "valor": "Trocar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-template-modal-head",
+        "valor": "Selecione uma template abaixo...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-template-modal-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-error-load",
+        "valor": "Não foi possível carregar o widget: <span class=\"ui error text\">#msg#<\/span>",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-template-error-category",
+        "valor": "categoria padrão não encontrada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-template-button-change-tooltip",
+        "valor": "Clique para trocar o template atual.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-image-button-add-tooltip",
+        "valor": "Clique para adicionar uma imagem.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "widget-image-button-del-tooltip",
+        "valor": "Clique para remover esta imagem.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-greater-than-zero",
+        "valor": "O campo <b>#campo-1#<\/b> tem que ser maior ou igual a zero.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "validation-domain",
+        "valor": "O campo <b>#label#<\/b> não é um domínio válido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "modulos",
         "id": "form-name-label",
@@ -3042,6 +5427,204 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-name-placeholder",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-grup-label",
+        "valor": "Group",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-add-field-label",
+        "valor": "Adicionar Variável",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-language-label",
+        "valor": "Linguagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-icon-label",
+        "valor": "Ícone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-icon-placeholder",
+        "valor": "Ícone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-grup-placeholder",
+        "valor": "Selecione um grupo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "module-name",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-icon-2-label",
+        "valor": "Ícone Ancorado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-icon-2-placeholder",
+        "valor": "Ícone Ancorado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-menu-label",
+        "valor": "Visualizar no Menu Principal",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-menu-placeholder",
+        "valor": "Selecione para visualizar no menu principal",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-title-label",
+        "valor": "Título",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-title-placeholder",
+        "valor": "Título",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-id-placeholder",
+        "valor": "Identificador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-value-placeholder",
+        "valor": "Value",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-plugin-label",
+        "valor": "Plugin",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-plugin-placeholder",
+        "valor": "Selecione um plugin",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-plugin-empty",
+        "valor": "None",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "module-variables",
+        "valor": "Variables",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-host-label",
+        "valor": "Host",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "modulos-grupos",
         "id": "form-name-label",
@@ -3061,6 +5644,33 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "modulos-grupos",
+        "id": "form-host-label",
+        "valor": "Host",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos-grupos",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos-grupos",
+        "id": "form-name-placeholder",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
         "modulo": "modulos-grupos",
         "id": "form-host-label",
         "valor": "Host",
@@ -3115,6 +5725,60 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "modulos-operacoes",
+        "id": "form-operation-placeholder",
+        "valor": "Operação ID",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos-operacoes",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos-operacoes",
+        "id": "form-name-placeholder",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos-operacoes",
+        "id": "form-module-label",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos-operacoes",
+        "id": "form-module-placeholder",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos-operacoes",
+        "id": "form-operation-label",
+        "valor": "Operação ID",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
         "modulo": "modulos-operacoes",
         "id": "form-operation-placeholder",
         "valor": "Operação ID",
@@ -4014,6 +6678,897 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-authorization-provisory-not-defined",
+        "valor": "Não é permitido alterar nenhum dado do usuário sem autorização provisória.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-password-invalid",
+        "valor": "Senha incorreta! Você tem mais <b>#tentativas#<\/b> tentativas, senão será desconectado automaticamente!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-password-invalid-finish",
+        "valor": "Senha Incorreta! Você foi desconectado do sistema automaticamente pelo excesso de fornecimento de senhas incorretas. Será necessário informar usuário e senha para ter acesso novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-there-is-a-field",
+        "valor": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-user-inactive",
+        "valor": "Usuário inativo no sistema, favor entrar em contato com o suporte para restabelecer sua conta.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-user-or-password-invalid",
+        "valor": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-without-permission",
+        "valor": "Você não tem permissão para acessar este local.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "first-name",
+        "valor": "Primeiro Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-email-2-label",
+        "valor": "Confirme o Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-email-2-placeholder",
+        "valor": "Confirme o Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-email-label",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-email-placeholder",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-name-account-label",
+        "valor": "Nome da Conta",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-name-account-placeholder",
+        "valor": "Nome da Conta",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-name-placeholder",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-name-user-label",
+        "valor": "Nome do Usuário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-name-user-placeholder",
+        "valor": "Nome do Usuário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-password-2-label",
+        "valor": "Confirme a Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-password-2-placeholder",
+        "valor": "Confirme a Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-password-button",
+        "valor": "Mudar Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-password-label",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-password-placeholder",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-user-label",
+        "valor": "User",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-user-placeholder",
+        "valor": "User",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-user-profile-label",
+        "valor": "Usuário Perfil",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-user-profile-placeholder",
+        "valor": "Selecione um perfil",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "last-name",
+        "valor": "Último Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "middle-name",
+        "valor": "Nome do Meio",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "restrict-area-info",
+        "valor": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar<\/b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "restrict-area-info-title",
+        "valor": "Autorização Provisória de Alteração",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "user-permited-chars",
+        "valor": "letras, números, '.' e apenas um '@'",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-button-label",
+        "valor": "Entrar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-forgot-password-button",
+        "valor": "aqui",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-forgot-password-label",
+        "valor": "Esqueceu sua senha? Clique",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-keep-logged-in-label",
+        "valor": "Manter minha conta ativa neste navegador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-new-register-button",
+        "valor": "Faça seu cadastro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-new-register-label",
+        "valor": "Não possui uma conta?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-password-label",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-titulo",
+        "valor": "LOGIN",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-user-label",
+        "valor": "User",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "button-change-email",
+        "valor": "Mudar Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "button-change-name",
+        "valor": "Mudar Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "button-change-password",
+        "valor": "Mudar Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "button-change-user",
+        "valor": "Mudar Usuário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "form-changes-label",
+        "valor": "Alterações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-title",
+        "valor": "Esqueceu a Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-email-label",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-email-placeholder",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-email-2-label",
+        "valor": "Confirme o Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-email-2-placeholder",
+        "valor": "Confirme o Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-button",
+        "valor": "Enviar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-login-label",
+        "valor": "Já tem cadastro? Clique",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-login-button",
+        "valor": "aqui",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-new-register-label",
+        "valor": "Não possui uma conta?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-new-register-button",
+        "valor": "Faça seu cadastro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-message-header",
+        "valor": "Você Esqueceu Sua Senha?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-message-content",
+        "valor": "Se sim, preencha o campo <b>Email<\/b> e depois o campo <b>Confirme o Email<\/b>. Em seguida o sistema irá enviar uma mensagem no endereço de email informado. Siga as orientações desta mensagem afim de criar uma nova senha.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-user-email-invalid",
+        "valor": "Não existe nenhum cadastro no sistema com o email informado: <b>#email#<\/b> . Verifique se o email enviado foi informado corretamente e tente denovo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-confirmation-title",
+        "valor": "Esqueceu a Senha Email Enviado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-confirmation-message-header",
+        "valor": "Email de Confirmação Enviado com Sucesso!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-confirmation-message-content",
+        "valor": "Foi enviado uma mensagem com instruções para alterar a sua senha no seguinte email: <b>#email#<\/b> . Favor acessar o seu cliente de emails e seguir as orientações enviadas.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-mail-subject",
+        "valor": "Redefinição da sua Senha da Conta Conn2Flow nº #numero#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-redefine-password-expiration-or-invalid",
+        "valor": "O token enviado perdeu o prazo de validade. É necessário refazer o processo e tentar novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "redefine-password-title",
+        "valor": "Reset Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "redefine-password-message-header",
+        "valor": "Você Quer Redefinir sua Senha?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "redefine-password-message-content",
+        "valor": "Se sim, preencha o campo <b>Senha<\/b> e depois o campo <b>Confirme a Senha<\/b>. Então, clique no botão <b>Redefinir<\/b> para alterar a sua senha.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "redefine-password-pass-label",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "redefine-password-pass-placeholder",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "redefine-password-pass-2-label",
+        "valor": "Confirme a Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "redefine-password-pass-2-placeholder",
+        "valor": "Confirme a Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "redefine-password-button",
+        "valor": "Redefinir",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "redefine-password-confirmation-title",
+        "valor": "Redefinir Senha Confirmação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "redefine-password-confirmation-message-header",
+        "valor": "Redefinição de Senha Concluída com Sucesso!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "redefine-password-confirmation-message-content",
+        "valor": "Agora você pode acessar o sistema com o seu usuário e senha. Para isso acesse clicando #url# .",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-login-label",
+        "valor": "Já tem cadastro? Clique",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-login-button",
+        "valor": "aqui",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-button",
+        "valor": "Cadastrar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-title",
+        "valor": "CADASTRO",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-name-placeholder",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-email-label",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-email-placeholder",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-email-2-label",
+        "valor": "Confirmação de email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-email-2-placeholder",
+        "valor": "Confirmação de email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-senha-label",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-senha-placeholder",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-senha-2-label",
+        "valor": "Confirmação de senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-senha-2-placeholder",
+        "valor": "Confirmação de senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-plan",
+        "valor": "Plan",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-recaptcha-invalid",
+        "valor": "A sua requisição <b>não<\/b> foi aceita pois nosso sistema automático de segurança considerou a mesma sendo feita por um <b>robô<\/b>. Favor tentar novamente, mas caso o problema persista, favor entrar em contato clicando <b>#url#<\/b>.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-recaptcha-invalid-btn",
+        "valor": "aqui",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-mail-subject",
+        "valor": "Nova Conta Conn2Flow nº #numero#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-user-placeholder",
+        "valor": "User",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-password-placeholder",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-already-exists-email",
+        "valor": "O email informado já está em uso! Escolha outro e tente novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-email-not-sent",
+        "valor": "Houve um problema e não foi possível enviar o email. Tente novamente, mas caso o problema persista, entre em contato com o suporte técnico.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "reset-password",
+        "valor": "senha redefinida com sucesso! <b>IP: #ip# | USER_AGENT: #user-agent#<\/b>",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "password-redefined-mail-subject",
+        "valor": "Senha da Conta Conn2Flow redefinida com sucesso nº #numero#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "usuarios",
         "id": "form-name-label",
@@ -4428,6 +7983,420 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-name-placeholder",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "middle-name",
+        "valor": "Nome do Meio",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "first-name",
+        "valor": "Primeiro Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "last-name",
+        "valor": "Último Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-email-label",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-email-placeholder",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-email-2-label",
+        "valor": "Confirme o Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-email-2-placeholder",
+        "valor": "Confirme o Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-user-label",
+        "valor": "User",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-user-placeholder",
+        "valor": "User",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-password-label",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-password-placeholder",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-password-2-label",
+        "valor": "Confirme a Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-password-2-placeholder",
+        "valor": "Confirme a Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-user-profile-label",
+        "valor": "Usuário Perfil",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-user-profile-placeholder",
+        "valor": "Selecione um perfil...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "login-titulo",
+        "valor": "LOGIN",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "login-user-label",
+        "valor": "User",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "login-password-label",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "login-button-label",
+        "valor": "Entrar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "login-forgot-password-label",
+        "valor": "Esqueceu sua senha? Clique",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "login-forgot-password-button",
+        "valor": "aqui",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "login-keep-logged-in-label",
+        "valor": "Manter minha conta ativa neste navegador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "login-new-register-label",
+        "valor": "Não possui uma conta?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "login-new-register-button",
+        "valor": "Faça seu cadastro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "alert-user-or-password-invalid",
+        "valor": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "alert-user-inactive",
+        "valor": "Usuário inativo no sistema, favor entrar em contato com o suporte para restabelecer sua conta.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "alert-without-permission",
+        "valor": "Você não tem permissão para acessar este local.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "alert-there-is-a-field",
+        "valor": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-password-button",
+        "valor": "Mudar Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "user-permited-chars",
+        "valor": "letras, números, '.' e apenas um '@'",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-name-account-label",
+        "valor": "Nome da Conta",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-name-user-label",
+        "valor": "Nome do Usuário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-name-account-placeholder",
+        "valor": "Nome da Conta",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-name-user-placeholder",
+        "valor": "Nome do Usuário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "alert-authorization-provisory-not-defined",
+        "valor": "Não é permitido alterar nenhum dado do usuário sem autorização provisória.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "restrict-area-info",
+        "valor": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar<\/b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "restrict-area-info-title",
+        "valor": "Autorização Provisória de Alteração",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "alert-password-invalid",
+        "valor": "Senha incorreta! Você tem mais <b>#tentativas#<\/b> tentativas, senão será desconectado automaticamente!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "alert-password-invalid-finish",
+        "valor": "Senha Incorreta! Você foi desconectado do sistema automaticamente pelo excesso de fornecimento de senhas incorretas. Será necessário informar usuário e senha para ter acesso novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-user-plan-label",
+        "valor": "Usuário Plano",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-user-manager-profile-label",
+        "valor": "Usuário Gestor Perfil",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "form-user-manager-profile-placeholder",
+        "valor": "Selecione um perfil...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "list-host-label",
+        "valor": "Hospedeiro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios",
+        "id": "list-user-parent-label",
+        "valor": "Usuário Pai",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "usuarios-perfis",
         "id": "form-name-label",
@@ -4504,6 +8473,87 @@
         "modulo": "usuarios-perfis",
         "id": "form-default-label",
         "valor": "Padrão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios-perfis",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios-perfis",
+        "id": "form-name-placeholder",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios-perfis",
+        "id": "modules-name",
+        "valor": "Modules",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios-perfis",
+        "id": "module-select-all",
+        "valor": "Selecionar Todos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios-perfis",
+        "id": "module-unselect-all",
+        "valor": "Deselecionar Todos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios-perfis",
+        "id": "operations-modules-name",
+        "valor": "Operações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios-perfis",
+        "id": "historic-change-operations",
+        "valor": "[operação(ões): #operacoes#]",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios-perfis",
+        "id": "historic-change-modules-layout",
+        "valor": "Módulo(s): #modulos# ; Módulo(s) Operação(ões): #modulos-operacoes#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "usuarios-perfis",
+        "id": "form-default-label",
+        "valor": "Default",
         "tipo": "string",
         "grupo": null,
         "descricao": null

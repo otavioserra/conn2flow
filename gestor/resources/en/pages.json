@@ -1,58 +1,58 @@
 [
     {
-        "name": "Contato",
+        "name": "Contact",
         "id": "contato",
         "layout": "layout-pagina-sem-permissao",
         "path": "contato\/",
         "type": "page",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "31a1fd53b1e27d8140ff384192307174",
+            "html": "486e8e92c4bb994b684e0627029e9c55",
             "css": "",
-            "combined": "31a1fd53b1e27d8140ff384192307174"
+            "combined": "486e8e92c4bb994b684e0627029e9c55"
         }
     },
     {
-        "name": "404 - Página Não Encontrada",
+        "name": "404 - Page Not Found",
         "id": "404-pagina-nao-encontrada",
         "layout": "layout-pagina-sem-permissao",
         "path": "404\/",
         "type": "page",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "ee70befa061dea94472dbfc017b9e996",
+            "html": "6c644be04d6ba9320f7ebc2fff7b8af6",
             "css": "",
-            "combined": "ee70befa061dea94472dbfc017b9e996"
+            "combined": "6c644be04d6ba9320f7ebc2fff7b8af6"
         }
     },
     {
-        "name": "Página Raiz do Sistema",
+        "name": "System Root Page",
         "id": "pagina-raiz-do-sistema",
         "layout": "layout-pagina-sem-permissao",
         "path": "\/",
         "type": "page",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "d56e60c53f59564951210b0d2dc6d7c7",
+            "html": "973224b40744bd096516207f4d0c3927",
             "css": "",
-            "combined": "d56e60c53f59564951210b0d2dc6d7c7"
+            "combined": "973224b40744bd096516207f4d0c3927"
         }
     },
     {
-        "name": "Cookies Devem Estar Ativados no Seu Navegador",
+        "name": "Cookies Must Be Enabled in Your Browser",
         "id": "cookies-devem-estar-ativados-no-seu-navegador",
         "layout": "layout-pagina-sem-permissao",
         "path": "cookies-is-mandatory\/",
         "type": "page",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "fd3b2522d023d539b43cc506e178c54b",
+            "html": "c03f2e935909d370c11a119664f705fa",
             "css": "",
-            "combined": "fd3b2522d023d539b43cc506e178c54b"
+            "combined": "c03f2e935909d370c11a119664f705fa"
         }
     },
     {
-        "name": "Página de Impressão",
+        "name": "Print Page",
         "id": "pagina-de-impressao",
         "layout": "layout-impressao",
         "path": "pagina-de-impressao\/",
@@ -67,17 +67,17 @@
         }
     },
     {
-        "name": "Instalação Concluída",
+        "name": "Installation Completed",
         "id": "instalacao-sucesso",
         "layout": "layout-pagina-sem-permissao",
         "path": "instalacao-sucesso\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "7c11257dbc730a0971d5876f9e0e983b",
+            "html": "9dab414883633527c6784c45313e6122",
             "css": "d66e854af0c522ca96e846dc7add5a36",
-            "combined": "790aca5c2c8168c8cabc8237fbd029a1"
+            "combined": "a834e949b7b94858ef45347fb5b4ff75"
         }
     }
 ]

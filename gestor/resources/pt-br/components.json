@@ -182,11 +182,11 @@
     {
         "name": "Menu Principal Sistema",
         "id": "menu-principal-sistema",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
             "html": "708d6c3eab26e3bd0473f87bac06d8ff",
-            "css": "dc8ada26a5c0c9580e7a0e75648eae47",
-            "combined": "fee5ddcf40f2110aa7ae0bed854105ea"
+            "css": "65f8cb8d07537f63b7a7441edd3be9a7",
+            "combined": "d7f4c60e63db95d1bb04157810bde076"
         }
     },
     {
@@ -212,11 +212,11 @@
     {
         "name": "Layout Emails Assinatura",
         "id": "layout-emails-assinatura",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "6411590a438bb1b96dae7bfb0fe89dc2",
+            "html": "ee4db6b80bcc2cc328d3d0e48017e815",
             "css": "",
-            "combined": "6411590a438bb1b96dae7bfb0fe89dc2"
+            "combined": "ee4db6b80bcc2cc328d3d0e48017e815"
         }
     },
     {

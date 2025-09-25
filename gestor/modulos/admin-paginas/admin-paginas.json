@@ -76,7 +76,7 @@
                 {
                     "name": "Admin Páginas - Editar",
                     "id": "admin-paginas-editar",
-                    "version": "1.7",
+                    "version": "1.4",
                     "checksum": {
                         "html": "606e12705a894a1fc98c49ab6db98931",
                         "css": "",
@@ -90,7 +90,7 @@
                 {
                     "name": "Admin Páginas - Adicionar",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.7",
+                    "version": "1.4",
                     "checksum": {
                         "html": "8d5b86219d17c88ad6479ea3b863198b",
                         "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
@@ -125,12 +125,12 @@
                 },
                 {
                     "id": "form-html-tooltip",
-                    "value": "Clique para abrir o HTML > Corpo. Parte visível da página dentro da tag <body>",
+                    "value": "Click to open the HTML Code",
                     "type": "string"
                 },
                 {
                     "id": "form-html-label",
-                    "value": "HTML > Corpo",
+                    "value": "HTML Code",
                     "type": "string"
                 },
                 {
@@ -185,22 +185,22 @@
                 },
                 {
                     "id": "form-module-label",
-                    "value": "Módulo",
+                    "value": "Module",
                     "type": "string"
                 },
                 {
                     "id": "form-module-placeholder",
-                    "value": "Selecione um módulo",
+                    "value": "Select a module",
                     "type": "string"
                 },
                 {
                     "id": "form-option-label",
-                    "value": "Opção",
+                    "value": "Option",
                     "type": "string"
                 },
                 {
                     "id": "form-option-placeholder",
-                    "value": "Opção",
+                    "value": "Option",
                     "type": "string"
                 },
                 {
@@ -230,22 +230,22 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "pelo menos uma '\/' no final",
+                    "value": "at least one '\/' at the end",
                     "type": "string"
                 },
                 {
                     "id": "form-url-label",
-                    "value": "URL Atual da Página",
+                    "value": "Current Page URL",
                     "type": "string"
                 },
                 {
                     "id": "form-type-page",
-                    "value": "Página",
+                    "value": "Page",
                     "type": "string"
                 },
                 {
                     "id": "form-type-system",
-                    "value": "Sistema",
+                    "value": "System",
                     "type": "string"
                 },
                 {
@@ -317,25 +317,312 @@
                     "id": "lista-tipo-label",
                     "value": "Tipo",
                     "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Pages",
+                    "id": "admin-paginas",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "68b329da9893e34099c7d8ad5cb9c940",
+                        "css": "",
+                        "combined": "68b329da9893e34099c7d8ad5cb9c940"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Admin Pages - Edit",
+                    "id": "admin-paginas-editar",
+                    "version": "1.7",
+                    "checksum": {
+                        "html": "606e12705a894a1fc98c49ab6db98931",
+                        "css": "",
+                        "combined": "606e12705a894a1fc98c49ab6db98931"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas\/editar\/",
+                    "type": "system",
+                    "option": "editar"
+                },
+                {
+                    "name": "Admin Pages - Add",
+                    "id": "admin-paginas-adicionar",
+                    "version": "1.7",
+                    "checksum": {
+                        "html": "8d5b86219d17c88ad6479ea3b863198b",
+                        "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
+                        "combined": "eb4893c3fe8b95bbf2de75182afd8c4a"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar"
+                }
+            ],
+            "components": [
+                {
+                    "name": "Page Modal",
+                    "id": "modal-pagina",
+                    "version": "1.10",
+                    "checksum": {
+                        "html": "0bc84361f1eafaff98aae09157422e26",
+                        "css": "",
+                        "combined": "0bc84361f1eafaff98aae09157422e26"
+                    }
+                },
+                {
+                    "name": "Page or System List",
+                    "id": "lista-pagina-ou-sistema",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "d0e62efa4ab45262de04a3304cde584a",
+                        "css": "",
+                        "combined": "d0e62efa4ab45262de04a3304cde584a"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Page Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Page Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-editor-tooltip",
+                    "value": "Click to open HTML Editor",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-editor-label",
+                    "value": "HTML Editor",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-tooltip",
+                    "value": "Click to open HTML > Body. Visible part of the page within the <body> tag",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-label",
+                    "value": "HTML > Body",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-tooltip",
+                    "value": "Click to open CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-label",
+                    "value": "CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-label",
+                    "value": "Identifier",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-placeholder",
+                    "value": "Identifier",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-label",
+                    "value": "Path",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-placeholder",
+                    "value": "Path",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-label",
+                    "value": "Layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-placeholder",
+                    "value": "Choose a layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-label",
+                    "value": "Type",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-placeholder",
+                    "value": "Select a type",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Select a module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-option-label",
+                    "value": "Option",
+                    "type": "string"
+                },
+                {
+                    "id": "form-option-placeholder",
+                    "value": "Option",
+                    "type": "string"
+                },
+                {
+                    "id": "form-root-label",
+                    "value": "Root",
+                    "type": "string"
+                },
+                {
+                    "id": "form-permission-label",
+                    "value": "No Permission",
+                    "type": "string"
+                },
+                {
+                    "id": "form-config-divider",
+                    "value": "Page Settings",
+                    "type": "string"
+                },
+                {
+                    "id": "form-editor-html-switch-label",
+                    "value": "Enable HTML Editor",
+                    "type": "string"
+                },
+                {
+                    "id": "editor-html-switch",
+                    "value": null,
+                    "type": "bool"
+                },
+                {
+                    "id": "path-necessary-chars",
+                    "value": "at least one '\/' at the end",
+                    "type": "string"
+                },
+                {
+                    "id": "form-url-label",
+                    "value": "Current Page URL",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-page",
+                    "value": "Page",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-system",
+                    "value": "System",
+                    "type": "string"
+                },
+                {
+                    "id": "form-framework-css-label",
+                    "value": "Framework CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-button-preview",
+                    "value": "Preview",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-preview",
+                    "value": "Click to preview the page",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-title-preview",
+                    "value": "Page Preview",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-button-preview",
+                    "value": "Save",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-desktop-preview",
+                    "value": "Computer",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-tablet-preview",
+                    "value": "Tablet",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-mobile-preview",
+                    "value": "Smartphone",
+                    "type": "string"
+                },
+                {
+                    "id": "button-back-tooltip",
+                    "value": "Click the button to go back.",
+                    "type": "string"
+                },
+                {
+                    "id": "button-back-value",
+                    "value": "Back",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-ambos-label",
+                    "value": "Both",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-pagina-label",
+                    "value": "Page",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-sistema-label",
+                    "value": "System",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-tipo-label",
+                    "value": "Type",
+                    "type": "string"
                 },
                 {
                     "id": "form-css-compiled-tooltip",
-                    "value": "Clique para abrir o CSS automático gerado pelo sistema.",
+                    "value": "Click to open the automatic CSS generated by the system.",
                     "type": "string"
                 },
                 {
                     "id": "form-css-compiled-label",
-                    "value": "CSS Automático",
+                    "value": "Automatic CSS",
                     "type": "string"
                 },
                 {
                     "id": "form-html-extra-head-tooltip",
-                    "value": "Clique para abrir o HTML extra para o Cabeçalho da página. Parte dentro da tag <head>",
+                    "value": "Click to open extra HTML for the page Header. Part within the <head> tag",
                     "type": "string"
                 },
                 {
                     "id": "form-html-extra-head-label",
-                    "value": "HTML > Cabeçalho",
+                    "value": "HTML > Header",
                     "type": "string"
                 }
             ]

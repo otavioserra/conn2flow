@@ -108,6 +108,102 @@
                     "type": "string"
                 }
             ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "User Profiles",
+                    "id": "usuarios-perfis",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-perfis/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "User Profiles - Add",
+                    "id": "usuarios-perfis-adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "7c4ceb5911b832310b04ccdc267707a4",
+                        "css": "",
+                        "combined": "7c4ceb5911b832310b04ccdc267707a4"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-perfis/adicionar/",
+                    "type": "system",
+                    "option": "adicionar"
+                },
+                {
+                    "name": "User Profiles - Edit",
+                    "id": "usuarios-perfis-editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "886ad1f0a721251fceb0b87516dbf9eb",
+                        "css": "",
+                        "combined": "886ad1f0a721251fceb0b87516dbf9eb"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "usuarios-perfis/editar/",
+                    "type": "system",
+                    "option": "editar"
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "modules-name",
+                    "value": "Modules",
+                    "type": "string"
+                },
+                {
+                    "id": "module-select-all",
+                    "value": "Select All",
+                    "type": "string"
+                },
+                {
+                    "id": "module-unselect-all",
+                    "value": "Unselect All",
+                    "type": "string"
+                },
+                {
+                    "id": "operations-modules-name",
+                    "value": "Operations",
+                    "type": "string"
+                },
+                {
+                    "id": "historic-change-operations",
+                    "value": "[operation(s): #operacoes#]",
+                    "type": "string"
+                },
+                {
+                    "id": "historic-change-modules-layout",
+                    "value": "Module(s): #modulos# ; Module(s) Operation(s): #modulos-operacoes#",
+                    "type": "string"
+                },
+                {
+                    "id": "form-default-label",
+                    "value": "Default",
+                    "type": "string"
+                }
+            ]
         }
     }
 }

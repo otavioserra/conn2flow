@@ -1,0 +1,17 @@
+{
+    "module": "usuarios-perfis",
+    "language": "en",
+    "variables": {
+        "form-name-label": "Name",
+        "form-name-placeholder": "Name",
+        "modules-name": "Modules",
+        "module-select-all": "Select All",
+        "module-unselect-all": "Unselect All",
+        "operations-modules-name": "Operations",
+        "historic-change-operations": "[operation(s): #operacoes#]",
+        "historic-change-modules-layout": "Module(s): #modulos# ; Module(s) Operation(s): #modulos-operacoes#",
+        "form-default-label": "Default"
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/usuarios-perfis\/usuarios-perfis.json",
+    "generated_at": "2025-09-25 19:36:40"
+}

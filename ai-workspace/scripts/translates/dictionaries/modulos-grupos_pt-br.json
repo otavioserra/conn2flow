@@ -1,0 +1,11 @@
+{
+    "module": "modulos-grupos",
+    "language": "pt-br",
+    "variables": {
+        "form-name-label": "Nome",
+        "form-name-placeholder": "Nome",
+        "form-host-label": "Host"
+    },
+    "source_file": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow\\ai-workspace\\scripts\\translates\/..\/..\/..\/gestor\/modulos\/modulos-grupos\/modulos-grupos.json",
+    "generated_at": "2025-09-25 19:36:40"
+}
