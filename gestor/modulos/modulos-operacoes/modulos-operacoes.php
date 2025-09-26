@@ -67,6 +67,7 @@ function modulos_operacoes_adicionar(){
 		
 		// ===== Campos comuns
 		
+		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
@@ -108,11 +109,13 @@ function modulos_operacoes_adicionar(){
 					'nome' => 'modulo',
 					'procurar' => true,
 					'limpar' => true,
+					'selectClass' => 'three column',
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
 					'tabela' => Array(
 						'nome' => 'modulos',
 						'campo' => 'nome',
 						'id_numerico' => 'id',
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
 				),
 			),
@@ -350,12 +353,14 @@ function modulos_operacoes_editar(){
 					'nome' => 'modulo',
 					'procurar' => true,
 					'limpar' => true,
+					'selectClass' => 'three column',
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
 					'tabela' => Array(
 						'nome' => 'modulos',
 						'campo' => 'nome',
 						'id_numerico' => 'id',
 						'id_selecionado' => $modulo_id,
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
 				),
 			),
@@ -382,6 +387,7 @@ function modulos_operacoes_interfaces_padroes(){
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
+					'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 				),
 				'tabela' => Array(
 					'rodape' => true,
@@ -400,6 +406,7 @@ function modulos_operacoes_interfaces_padroes(){
 									'nome' => 'modulos',
 									'campo_trocar' => 'nome',
 									'campo_referencia' => 'id',
+									'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 								),
 							),
 							'ordenar' => 'asc',

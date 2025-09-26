@@ -262,11 +262,11 @@
     {
         "name": "Configuration - Widget",
         "id": "configuracao-widget",
-        "version": "1.3",
+        "version": "1.5",
         "checksum": {
-            "html": "1bff4325d030f0e0ed803b34164e5122",
+            "html": "f900ffdfaefae2457b829ca45ebcac69",
             "css": "e76c325ef114d06f7eaa79aaa025fe38",
-            "combined": "c56d66e45a15bd2d1e41fb4b21a87c60"
+            "combined": "69f7000296c3e5e099a0cfc6dc00a355"
         }
     },
     {

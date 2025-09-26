@@ -50,6 +50,7 @@ function modulos_grupos_adicionar(){
 		
 		// ===== Campos comuns
 		
+		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
@@ -302,6 +303,7 @@ function modulos_grupos_interfaces_padroes(){
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
+					'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 				),
 				'tabela' => Array(
 					'rodape' => true,
@@ -318,10 +320,10 @@ function modulos_grupos_interfaces_padroes(){
 								'valor_substituir_por_rotulo' => Array(
 									Array(
 										'valor' => '1',
-										'rotulo' => '<b><span class="ui text blue">Sim</span></b>',
+										'rotulo' => '<b><span class="ui text blue">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-positive-label')).'</span></b>',
 									),
 								),
-								'valor_senao_existe' => '<b><span class="ui text grey">Não</span></b>',
+								'valor_senao_existe' => '<b><span class="ui text grey">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-negative-label')).'</span></b>',	
 							)
 						),
 						Array(

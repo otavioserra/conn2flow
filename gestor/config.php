@@ -5,9 +5,8 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR['versao']								=	'2.1.12'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'2.2.0'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
-$_GESTOR['linguagem-codigo']					=	'pt-br'; // Linguagem padrão do gestor
 
 // ===== Definição dos marcadores de abertura e fechamento de varíaveis globais.
 
@@ -74,6 +73,9 @@ $_BANCO = [
     'usuario' => $_ENV['DB_USERNAME'] ?? '',
     'senha'   => $_ENV['DB_PASSWORD'] ?? '',
 ];
+
+// Linguagem padrão do gestor
+$_GESTOR['linguagem-codigo']			=	$_ENV['LANGUAGE_DEFAULT'] ?? 'pt-br'; 
 
 // Configurações Gerais
 $_CONFIG = [

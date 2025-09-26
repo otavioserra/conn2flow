@@ -13,16 +13,6 @@
         "data_criacao": "data_criacao",
         "data_modificacao": "data_modificacao"
     },
-    "selectDadosTipo": [
-        {
-            "texto": "Sistema",
-            "valor": "sistema"
-        },
-        {
-            "texto": "Página",
-            "valor": "pagina"
-        }
-    ],
     "selectDadosFrameworkCSS": [
         {
             "texto": "Fomantic-UI",
@@ -35,6 +25,16 @@
     ],
     "resources": {
         "pt-br": {
+            "selectDadosTipo": [
+                {
+                    "texto": "Sistema",
+                    "valor": "sistema"
+                },
+                {
+                    "texto": "Página",
+                    "valor": "pagina"
+                }
+            ],
             "components": [
                 {
                     "nome": "Modal Página",
@@ -125,12 +125,12 @@
                 },
                 {
                     "id": "form-html-tooltip",
-                    "value": "Click to open the HTML Code",
+                    "value": "Clique para abrir o código HTML > Body. Parte visível da página dentro da tag <body>",
                     "type": "string"
                 },
                 {
                     "id": "form-html-label",
-                    "value": "HTML Code",
+                    "value": "HTML > Body",
                     "type": "string"
                 },
                 {
@@ -190,17 +190,17 @@
                 },
                 {
                     "id": "form-module-placeholder",
-                    "value": "Select a module",
+                    "value": "Selecione um módulo",
                     "type": "string"
                 },
                 {
                     "id": "form-option-label",
-                    "value": "Option",
+                    "value": "Opção",
                     "type": "string"
                 },
                 {
                     "id": "form-option-placeholder",
-                    "value": "Option",
+                    "value": "Opção",
                     "type": "string"
                 },
                 {
@@ -230,22 +230,22 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "at least one '\/' at the end",
+                    "value": "pelo menos uma '\/' no final",
                     "type": "string"
                 },
                 {
                     "id": "form-url-label",
-                    "value": "Current Page URL",
+                    "value": "URL da Página Atual",
                     "type": "string"
                 },
                 {
                     "id": "form-type-page",
-                    "value": "Page",
+                    "value": "Página",
                     "type": "string"
                 },
                 {
                     "id": "form-type-system",
-                    "value": "System",
+                    "value": "Sistema",
                     "type": "string"
                 },
                 {
@@ -321,6 +321,16 @@
             ]
         },
         "en": {
+            "selectDadosTipo": [
+                {
+                    "texto": "System",
+                    "valor": "sistema"
+                },
+                {
+                    "texto": "Page",
+                    "valor": "pagina"
+                }
+            ],
             "layouts": [],
             "pages": [
                 {

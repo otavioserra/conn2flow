@@ -189,7 +189,51 @@
         },
         "en": {
             "layouts": [],
-            "pages": [],
+            "pages": [
+                {
+                    "name": "Admin Layouts",
+                    "id": "admin-layouts",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-layouts\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin Layouts - Edit",
+                    "id": "admin-layouts-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-layouts\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.6",
+                    "checksum": {
+                        "html": "306776e643710f4994afc457cce91df6",
+                        "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
+                        "combined": "4fa55f2a17ef5089f2500231cda6c1cb"
+                    }
+                },
+                {
+                    "name": "Admin Layouts - Add",
+                    "id": "admin-layouts-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-layouts\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.6",
+                    "checksum": {
+                        "html": "e787fb286da93b3144a76ae9ba4208f1",
+                        "css": "bdb85de7c6afcf6a3fdca44a2b25b9ff",
+                        "combined": "a2c7e36f93a851f1bfe93fe673ef8d96"
+                    }
+                }
+            ],
             "components": [
                 {
                     "name": "Layout Modal",

@@ -322,6 +322,7 @@ function modulos_variaveis(){
 		$modulo['tabela']['nome'],
 		"WHERE ".$modulo['tabela']['id']."='".$id."'"
 		." AND ".$modulo['tabela']['status']."!='D'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 	);
 	
 	if($_GESTOR['banco-resultado']){
@@ -394,33 +395,11 @@ function modulos_variaveis(){
 		'formulario' => Array(
 			'validacao' => Array(
 				Array(
-					'regra' => 'selecao-obrigatorio',
-					'campo' => 'linguagem',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-language-label')),
-				),
-				Array(
 					'regra' => 'nao-vazio',
 					'campo' => 'ids-obrigatorios',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-id-label')),
 				),
-				Array(
-					'regra' => 'nao-vazio',
-					'campo' => 'valores-obrigatorios',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-value-label')),
-				)
 			),
-			'campos' => Array(
-				Array(
-					'tipo' => 'select',
-					'id' => 'language',
-					'nome' => 'linguagem',
-					'procurar' => true,
-					//'limpar' => true,
-					'valor_selecionado' => $_GESTOR['linguagem-codigo'],
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-language-placeholder')),
-					'dados' => $modulo['selectDadosLinguagem'],
-				)
-			)
 		)
 	);
 }
@@ -476,6 +455,7 @@ function modulos_adicionar(){
 		
 		// ===== Campos comuns
 		
+		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
@@ -522,6 +502,7 @@ function modulos_adicionar(){
 						'nome' => 'modulos_grupos',
 						'campo' => 'nome',
 						'id_numerico' => 'id',
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
 				),
 				Array(
@@ -533,12 +514,12 @@ function modulos_adicionar(){
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-menu-placeholder')),
 					'dados' => Array(
 						Array(
-							'texto' => 'Sim',
-							'valor' => 'sim',
+							'texto' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-positive-label')),
+							'valor' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-positive-value')),
 						),
 						Array(
-							'texto' => 'Não',
-							'valor' => 'nao',
+							'texto' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-negative-label')),
+							'valor' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-negative-value')),
 						),
 					),
 				),
@@ -815,6 +796,7 @@ function modulos_editar(){
 						'campo' => 'nome',
 						'id_numerico' => 'id',
 						'id_selecionado' => $modulo_grupo_id,
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
 				),
 				Array(
@@ -841,12 +823,12 @@ function modulos_editar(){
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-menu-placeholder')),
 					'dados' => Array(
 						Array(
-							'texto' => 'Sim',
-							'valor' => 'sim',
+							'texto' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-positive-label')),
+							'valor' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-positive-value')),
 						),
 						Array(
-							'texto' => 'Não',
-							'valor' => 'nao',
+							'texto' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-negative-label')),
+							'valor' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-negative-value')),
 						),
 					),
 				)
@@ -880,6 +862,7 @@ function modulos_interfaces_padroes(){
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
+					'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 				),
 				'tabela' => Array(
 					'rodape' => true,
@@ -898,6 +881,7 @@ function modulos_interfaces_padroes(){
 									'nome' => 'modulos_grupos',
 									'campo_trocar' => 'nome',
 									'campo_referencia' => 'id',
+									'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 								),
 							)
 						),
@@ -921,10 +905,10 @@ function modulos_interfaces_padroes(){
 								'valor_substituir_por_rotulo' => Array(
 									Array(
 										'valor' => '1',
-										'rotulo' => '<b><span class="ui text blue">Sim</span></b>',
+										'rotulo' => '<b><span class="ui text blue">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-positive-label')).'</span></b>',
 									),
 								),
-								'valor_senao_existe' => '<b><span class="ui text grey">Não</span></b>',
+								'valor_senao_existe' => '<b><span class="ui text grey">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-negative-label')).'</span></b>',
 							)
 						),
 						Array(

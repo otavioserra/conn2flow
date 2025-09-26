@@ -5,6 +5,10 @@
         "html"
     ],
     "tabela": [],
+    "systemLanguages": [
+        "pt-br",
+        "en"
+    ],
     "resources": {
         "en": {
             "layouts": [],
@@ -17,16 +21,26 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "91bb577e76c1e73b29af17ded3ad0ee6",
+                        "html": "9cd6d83969b37b98945662433ec0939c",
                         "css": "2da516bd3fe2d7ca2b7381cd159bffd8",
-                        "combined": "2ce07ea1af843fc1d463ec63ecd5eef1"
+                        "combined": "b432f75e10e0e39f9c2474d48bcc85a6"
                     }
                 }
             ],
             "components": [],
             "variables": [
+                {
+                    "id": "language-label-pt-br",
+                    "value": "Portuguese (Brazil)",
+                    "type": "string"
+                },
+                {
+                    "id": "language-label-en",
+                    "value": "English",
+                    "type": "string"
+                },
                 {
                     "id": "email-tests-head-title",
                     "value": "DEBUG MODE",
@@ -115,16 +129,26 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "eaa84889c51223f6c12460231cd6511d",
+                        "html": "447b9e129a0b8735dbf63662e20ff432",
                         "css": "2da516bd3fe2d7ca2b7381cd159bffd8",
-                        "combined": "7560dc2d2e5a775fbf5f45eb210a6951"
+                        "combined": "dd2f4dc1c5185d1ec185cfcdc27c7df2"
                     }
                 }
             ],
             "components": [],
             "variables": [
+                {
+                    "id": "language-label-pt-br",
+                    "value": "Português (Brasil)",
+                    "type": "string"
+                },
+                {
+                    "id": "language-label-en",
+                    "value": "Inglês",
+                    "type": "string"
+                },
                 {
                     "id": "email-tests-head-title",
                     "value": "MODO DE DEBUG",

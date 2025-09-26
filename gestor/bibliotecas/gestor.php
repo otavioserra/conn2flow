@@ -77,6 +77,7 @@ function gestor_componente($params = false){
 			,
 			"componentes",
 			"WHERE id_componentes='".$id_componentes."'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
 			.(isset($modulo) ? " AND modulo='".$modulo."'" : "")
 		);
 	}
@@ -104,6 +105,7 @@ function gestor_componente($params = false){
 						,
 						"componentes",
 						"WHERE ".$ids
+						." AND language='".$_GESTOR['linguagem-codigo']."'"
 						.(isset($modulo) ? " AND modulo='".$modulo."'" : "")
 					);
 				}
@@ -122,6 +124,7 @@ function gestor_componente($params = false){
 					,
 					"componentes",
 					"WHERE id='".$id."'"
+					." AND language='".$_GESTOR['linguagem-codigo']."'"
 					.(isset($modulo) ? " AND modulo='".$modulo."'" : "")
 				);
 		}
@@ -699,6 +702,7 @@ function gestor_redirecionar_raiz(){
 		,
 		"paginas",
 		"WHERE modulo='".$_GESTOR['modulo']."'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 		." AND raiz IS NOT NULL"
 	);
 	

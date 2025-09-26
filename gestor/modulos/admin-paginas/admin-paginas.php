@@ -114,6 +114,7 @@ function admin_paginas_adicionar(){
 		
 		// ===== Campos comuns
 		
+		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
@@ -245,6 +246,7 @@ function admin_paginas_adicionar(){
 						'nome' => 'layouts',
 						'campo' => 'nome',
 						'id_numerico' => 'id_layouts',
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
 				),
 				Array(
@@ -259,7 +261,7 @@ function admin_paginas_adicionar(){
 						'nome' => 'modulos',
 						'campo' => 'nome',
 						'id_numerico' => 'id',
-						'where' => "modulo_grupo_id!='bibliotecas'",
+						'where' => "modulo_grupo_id!='bibliotecas' AND language='".$_GESTOR['linguagem-codigo']."'",
 					),
 				),
 				Array(
@@ -269,7 +271,7 @@ function admin_paginas_adicionar(){
 					'procurar' => true,
 					'limpar' => true,
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-placeholder')),
-					'dados' => $modulo['selectDadosTipo'],
+					'dados' => $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosTipo'],
 				),
 				Array(
 					'tipo' => 'select',
@@ -781,6 +783,7 @@ function admin_paginas_editar(){
 						'campo' => 'nome',
 						'id_numerico' => 'id_layouts',
 						'id_selecionado' => $id_layouts,
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
 				),
 				Array(
@@ -796,7 +799,7 @@ function admin_paginas_editar(){
 						'campo' => 'nome',
 						'id_numerico' => 'id',
 						'id_selecionado' => $bd_modulo,
-						'where' => "modulo_grupo_id!='bibliotecas'",
+						'where' => "modulo_grupo_id!='bibliotecas' AND language='".$_GESTOR['linguagem-codigo']."'",
 					),
 				),
 				Array(
@@ -807,7 +810,7 @@ function admin_paginas_editar(){
 					'limpar' => true,
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-placeholder')),
 					'valor_selecionado' => $tipo,
-					'dados' => $modulo['selectDadosTipo'],
+					'dados' => $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosTipo'],
 				),
 				Array(
 					'tipo' => 'select',
@@ -879,7 +882,7 @@ function admin_paginas_interfaces_padroes(){
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
-					'where' => $dados['tipo'] != 'ambos' && $dados['tipo'] != '' ? "tipo='{$dados['tipo']}'" : null,
+					'where' => "language='".$_GESTOR['linguagem-codigo']."'" . ($dados['tipo'] != 'ambos' && $dados['tipo'] != '' ? " AND tipo='{$dados['tipo']}'" : ''),
 				),
 				'tabela' => Array(
 					'cabecalho' => $dados['cabecalho'],
@@ -918,6 +921,7 @@ function admin_paginas_interfaces_padroes(){
 									'nome' => 'modulos',
 									'campo_trocar' => 'nome',
 									'campo_referencia' => 'id',
+									'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 								),
 							)
 						),

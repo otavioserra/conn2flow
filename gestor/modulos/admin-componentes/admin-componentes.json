@@ -193,7 +193,51 @@
         },
         "en": {
             "layouts": [],
-            "pages": [],
+            "pages": [
+                {
+                    "name": "Admin Components",
+                    "id": "admin-componentes",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-componentes\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin Components - Add",
+                    "id": "admin-componentes-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-componentes\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.6",
+                    "checksum": {
+                        "html": "b830727701a43d721aceda32271fe0d0",
+                        "css": "bdb85de7c6afcf6a3fdca44a2b25b9ff",
+                        "combined": "e2a6084a3f6ee88ea81e8f5d12632e7c"
+                    }
+                },
+                {
+                    "name": "Admin Components - Edit",
+                    "id": "admin-componentes-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-componentes\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.6",
+                    "checksum": {
+                        "html": "802c10ff7980df982e5c6fd0c308e661",
+                        "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
+                        "combined": "23250f9ccef86543f68a6a8cfc57c681"
+                    }
+                }
+            ],
             "components": [
                 {
                     "name": "Component Modal",

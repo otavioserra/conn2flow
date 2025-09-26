@@ -13,6 +13,9 @@
                 <a class="item" data-tab="email">
                     <i class="mail icon"></i> Email Settings
                 </a>
+                <a class="item" data-tab="linguagem">
+                    <i class="language icon"></i> Language Settings
+                </a>
             </div>
 
             <!-- Tab: User Settings -->
@@ -136,6 +139,20 @@
                     <div class="field hidden debug-logs">
                         <label>Debug Output</label>
                         <textarea class="codemirror-logs" name="logs"> </textarea>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab: Language Settings -->
+            <div class="ui bottom attached tab segment" data-tab="linguagem">
+                <h3><i class="language icon"></i> Language Settings</h3>
+
+                <form class="ui form" id="form-linguagem">
+                    <div class="field">
+                        <label>System Default Language</label>
+                        <select class="ui dropdown" id="language_default" name="language_default">
+                            #language-options#
+                        </select>
                     </div>
                 </form>
             </div>

@@ -80,7 +80,7 @@
             "variables": [
                 {
                     "id": "add-button-label",
-                    "value": "Adicionar Arquivos - Teste",
+                    "value": "Adicionar Arquivos",
                     "type": "string"
                 },
                 {
@@ -407,7 +407,7 @@
             "variables": [
                 {
                     "id": "add-button-label",
-                    "value": "Add Files - Test",
+                    "value": "Add Files",
                     "type": "string"
                 },
                 {

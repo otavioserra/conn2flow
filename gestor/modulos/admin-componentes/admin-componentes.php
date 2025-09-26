@@ -67,6 +67,7 @@ function admin_componentes_adicionar(){
 		
 		// ===== Campos comuns
 		
+		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
@@ -164,6 +165,7 @@ function admin_componentes_adicionar(){
 						'nome' => 'modulos',
 						'campo' => 'nome',
 						'id_numerico' => 'id',
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
 				),
 				Array(
@@ -529,6 +531,7 @@ function admin_componentes_editar(){
 						'campo' => 'nome',
 						'id_numerico' => 'id',
 						'id_selecionado' => $bd_modulo,
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
 				),
 				Array(
@@ -562,6 +565,7 @@ function admin_componentes_interfaces_padroes(){
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
+					'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 				),
 				'tabela' => Array(
 					'rodape' => true,
@@ -581,6 +585,7 @@ function admin_componentes_interfaces_padroes(){
 									'nome' => 'modulos',
 									'campo_trocar' => 'nome',
 									'campo_referencia' => 'id',
+									'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 								),
 							)
 						),

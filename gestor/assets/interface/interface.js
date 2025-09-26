@@ -917,6 +917,14 @@ $(document).ready(function () {
 				var lista = gestor.interface.lista;
 				var dataTableName = '_gestor-interface-lista-tabela';
 
+				var language = null;
+
+				if (gestor.language == 'pt-br') {
+					language = {
+						url: gestor.raiz + 'datatables/1.10.23/pt_br.json'
+					}
+				}
+
 				var dtableInstance = $('#' + dataTableName).DataTable({
 					"processing": true,
 					"serverSide": true,
@@ -995,9 +1003,7 @@ $(document).ready(function () {
 							}
 						},
 					],
-					language: {
-						url: gestor.raiz + 'datatables/1.10.23/pt_br.json'
-					},
+					language,
 					initComplete: function () {
 						var api = this.api();
 						var searchWait = 0;

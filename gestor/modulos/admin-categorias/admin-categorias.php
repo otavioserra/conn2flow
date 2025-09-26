@@ -390,11 +390,13 @@ function admin_categorias_adicionar(){
 					'nome' => 'modulo',
 					'procurar' => true,
 					'limpar' => true,
+					'selectClass' => 'three column',
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
 					'tabela' => Array(
 						'nome' => 'modulos',
 						'campo' => 'nome',
 						'id_numerico' => 'id_modulos',
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
 				),
 				Array(
@@ -691,12 +693,14 @@ function admin_categorias_editar(){
 					'nome' => 'modulo',
 					'procurar' => true,
 					'limpar' => true,
+					'selectClass' => 'three column',
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
 					'tabela' => Array(
 						'nome' => 'modulos',
 						'campo' => 'nome',
 						'id_numerico' => 'id_modulos',
 						'id_selecionado' => $id_modulos,
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
 				),
 				Array(

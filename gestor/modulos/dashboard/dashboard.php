@@ -248,6 +248,7 @@ function dashboard_menu(){
 		,
 		"paginas",
 		"WHERE raiz IS NOT NULL"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 	);
 	
 		$modulos = banco_select_name
@@ -263,7 +264,8 @@ function dashboard_menu(){
 			))
 			,
 			"modulos",
-			"ORDER BY nome ASC"
+			"WHERE language='".$_GESTOR['linguagem-codigo']."'"
+			." ORDER BY nome ASC"
 		);
     
 		$modulos_grupos = banco_select_name
@@ -274,8 +276,9 @@ function dashboard_menu(){
 			))
 			,
 			"modulos_grupos",
-			"WHERE id!='bibliotecas'".
-			"ORDER BY nome ASC"
+			"WHERE id!='bibliotecas'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
+			." ORDER BY nome ASC"
 		);
 	
 	$cel_nome = 'menu-item'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
@@ -425,7 +428,6 @@ function dashboard_remover_pagina_instalacao_sucesso(){
 		// ===== Verificar se existe a página de instalação-sucesso
 		
 		$paginas = banco_select(Array(
-			'unico' => true,
 			'tabela' => 'paginas',
 			'campos' => Array(
 				'id_paginas',
@@ -434,24 +436,11 @@ function dashboard_remover_pagina_instalacao_sucesso(){
 			'extra' => "WHERE caminho = 'instalacao-sucesso/' AND status = 'A'"
 		));
 		
-		if($paginas && isset($paginas['id_paginas'])){
+		if($paginas){
 			// ===== Remover a página da base de dados
-			
-			banco_delete('paginas',"WHERE id_paginas = '".$paginas['id_paginas']."'");
-			
-			// ===== Exibir toast informativo
-			
-			dashboard_toast(Array(
-				'id' => 'instalacao-sucesso-removida',
-				'opcoes' => Array(
-					'title' => 'Página de Instalação Removida',
-					'message' => 'A página de instalação foi removida automaticamente após o primeiro acesso ao painel.',
-					'class' => 'success',
-					'displayTime' => 8000,
-					'showProgress' => 'bottom'
-				),
-				'botoes' => Array()
-			));
+			foreach($paginas as $pagina){
+				banco_delete('paginas',"WHERE id_paginas = '".$pagina['id_paginas']."'");
+			}
 		}
 		
 	} catch (Exception $e) {

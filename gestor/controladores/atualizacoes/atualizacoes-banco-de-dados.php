@@ -306,7 +306,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
 
     $pkDeclarada = pkPorTabela($tabela) ?? descobrirPK($tabela, $registros[0]);
     $primeiroTemPk = array_key_exists($pkDeclarada, $registros[0]);
-    $usarChaveNatural = in_array($tabela, $tabelasChaveNatural, true) && !$primeiroTemPk; // se JSON não possui mais a PK numérica
+    $usarChaveNatural = in_array($tabela, $tabelasChaveNatural, true); // sempre usar chave natural para tabelas na lista
     $insertOnly = in_array($tabela, $tabelasInsertOnly, true); // se tabela só faz INSERT
 
     if ($debug) {
@@ -343,7 +343,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             case 'modulos_operacoes':
             case 'usuarios_perfis':
                 // id + language para tabelas de módulos multilíngue
-                $lang = $row['language'] ?? null; if (!isset($lang,$row['id'])) return null; return strtolower($lang).'|'.$row['id'];
+                $lang = $row['language'] ?? $row['linguagem_codigo'] ?? null; if (!isset($lang,$row['id'])) return null; return strtolower($lang).'|'.$row['id'];
             default: return null;
         }
     };
@@ -444,7 +444,11 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         'layouts' => [],          // id
         'componentes' => [],      // id
         'paginas' => [],          // modulo|id
-        'variaveis' => []         // modulo|grupo|id
+        'variaveis' => [],        // modulo|grupo|id
+        'modulos' => [],          // id
+        'modulos_grupos' => [],   // id
+        'modulos_operacoes' => [], // id
+        'usuarios_perfis' => []   // id
     ];
     foreach ($dbRows as $exist) {
         $k = $naturalKeyFn($tabela, $exist); if ($k===null) continue; $dbIndex[$k] = $exist; // última ocorrência prevalece
@@ -461,6 +465,11 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                     $mod = $exist['modulo'] ?? ''; if (isset($exist['id'])) $fallbackIndex[$tabela][$mod.'|'.$exist['id']] = $exist; break;
                 case 'variaveis':
                     $mod = $exist['modulo'] ?? ''; $grp = $exist['grupo'] ?? ''; if (isset($exist['id'])) $fallbackIndex[$tabela][$mod.'|'.$grp.'|'.$exist['id']] = $exist; break;
+                case 'modulos':
+                case 'modulos_grupos':
+                case 'modulos_operacoes':
+                case 'usuarios_perfis':
+                    if (isset($exist['id'])) $fallbackIndex[$tabela][$exist['id']] = $exist; break;
             }
         }
     }
@@ -517,6 +526,13 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                                 $whereSql = "WHERE `$colLang` = :__lang AND id = :__id AND modulo = :__mod AND (grupo <=> :__grp)";
                                 $params['__lang']=$langVal; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??''; $params['__grp']=$exist['grupo']??null;
                                 break;
+                            case 'modulos':
+                            case 'modulos_grupos':
+                            case 'modulos_operacoes':
+                            case 'usuarios_perfis':
+                                $whereSql = "WHERE `$colLang` = :__lang AND id = :__id";
+                                $params['__lang']=$langVal; $params['__id']=$exist['id'];
+                                break;
                         }
                     }
                     $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff)));
@@ -532,6 +548,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 case 'layouts': case 'componentes': $fallbackKey = $row['id'] ?? null; $existFallback = $fallbackKey!==null ? ($fallbackIndex[$tabela][$fallbackKey] ?? null) : null; break;
                 case 'paginas': $fallbackKey = ($row['modulo'] ?? '').'|'.($row['id'] ?? ''); $existFallback = $fallbackIndex[$tabela][$fallbackKey] ?? null; break;
                 case 'variaveis': $fallbackKey = ($row['modulo'] ?? '').'|'.(($row['grupo'] ?? '')).'|'.($row['id'] ?? ''); $existFallback = $fallbackIndex[$tabela][$fallbackKey] ?? null; break;
+                case 'modulos': case 'modulos_grupos': case 'modulos_operacoes': case 'usuarios_perfis': $fallbackKey = $row['id'] ?? null; $existFallback = $fallbackKey!==null ? ($fallbackIndex[$tabela][$fallbackKey] ?? null) : null; break;
             }
             if ($existFallback) {
                 // Atualiza registro existente preenchendo linguagem faltante (auto-correção de bug histórico)
@@ -564,6 +581,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                                 case 'layouts': case 'componentes': $whereSql="WHERE id = :__id AND (`language` IS NULL OR `linguagem_codigo` IS NULL)"; $params['__id']=$exist['id']; break;
                                 case 'paginas': $whereSql="WHERE id = :__id AND modulo = :__mod AND (`language` IS NULL OR `linguagem_codigo` IS NULL)"; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??''; break;
                                 case 'variaveis': $whereSql="WHERE id = :__id AND modulo = :__mod AND (grupo <=> :__grp) AND (`language` IS NULL OR `linguagem_codigo` IS NULL)"; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??''; $params['__grp']=$exist['grupo']??null; break;
+                                case 'modulos': case 'modulos_grupos': case 'modulos_operacoes': case 'usuarios_perfis': $whereSql="WHERE id = :__id AND (`language` IS NULL OR `linguagem_codigo` IS NULL)"; $params['__id']=$exist['id']; break;
                             }
                         }
                         $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff)));

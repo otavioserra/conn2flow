@@ -2,6 +2,123 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "configuracao",
+        "id": "variable-type-string-label",
+        "valor": "String",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
+        "id": "variable-type-text-label",
+        "valor": "Texto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
+        "id": "variable-type-bool-label",
+        "valor": "Booleano",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
+        "id": "variable-type-number-label",
+        "valor": "Número",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
+        "id": "variable-type-quantidade-label",
+        "valor": "Quantidade",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
+        "id": "variable-type-dinheiro-label",
+        "valor": "Dinheiro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
+        "id": "variable-type-css-label",
+        "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
+        "id": "variable-type-js-label",
+        "valor": "JS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
+        "id": "variable-type-html-label",
+        "valor": "HTML",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
+        "id": "variable-type-tinymce-label",
+        "valor": "TinyMCE",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
+        "id": "variable-type-datas-multiplas-label",
+        "valor": "Datas Multiplas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
+        "id": "variable-type-data-label",
+        "valor": "Data",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
+        "id": "variable-type-data-hora-label",
+        "valor": "Data e Hora",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "configuracao",
         "id": "variavel-id-label",
         "valor": "Variável",
         "tipo": "string",
@@ -121,6 +238,123 @@
         "modulo": "configuracao",
         "id": "form-value-placeholder",
         "valor": "Valor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-string-label",
+        "valor": "String",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-text-label",
+        "valor": "Text",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-bool-label",
+        "valor": "Boolean",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-number-label",
+        "valor": "Number",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-quantidade-label",
+        "valor": "Quantity",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-dinheiro-label",
+        "valor": "Money",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-css-label",
+        "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-js-label",
+        "valor": "JS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-html-label",
+        "valor": "HTML",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-tinymce-label",
+        "valor": "TinyMCE",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-datas-multiplas-label",
+        "valor": "Multiple Dates",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-data-label",
+        "valor": "Date",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "configuracao",
+        "id": "variable-type-data-hora-label",
+        "valor": "Date and Time",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -255,7 +489,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-arquivos",
         "id": "add-button-label",
-        "valor": "Adicionar Arquivos - Teste",
+        "valor": "Adicionar Arquivos",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -732,7 +966,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-arquivos",
         "id": "add-button-label",
-        "valor": "Add Files - Test",
+        "valor": "Add Files",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -2432,6 +2666,24 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-environment",
+        "id": "language-label-pt-br",
+        "valor": "Português (Brasil)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "language-label-en",
+        "valor": "Inglês",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
         "id": "email-tests-head-title",
         "valor": "MODO DE DEBUG",
         "tipo": "string",
@@ -2560,6 +2812,24 @@
         "modulo": "admin-environment",
         "id": "recaptcha-error-timeout-duplicate",
         "valor": "Token expirou ou já foi usado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "language-label-pt-br",
+        "valor": "Portuguese (Brazil)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "language-label-en",
+        "valor": "English",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3099,7 +3369,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-html-tooltip",
-        "valor": "Click to open the HTML Code",
+        "valor": "Clique para abrir o código HTML > Body. Parte visível da página dentro da tag <body>",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3108,7 +3378,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-html-label",
-        "valor": "HTML Code",
+        "valor": "HTML > Body",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3216,7 +3486,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-module-placeholder",
-        "valor": "Select a module",
+        "valor": "Selecione um módulo",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3225,7 +3495,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-option-label",
-        "valor": "Option",
+        "valor": "Opção",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3234,7 +3504,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-option-placeholder",
-        "valor": "Option",
+        "valor": "Opção",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3288,7 +3558,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "path-necessary-chars",
-        "valor": "at least one '\/' at the end",
+        "valor": "pelo menos uma '\/' no final",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3297,7 +3567,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-url-label",
-        "valor": "Current Page URL",
+        "valor": "URL da Página Atual",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3306,7 +3576,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-type-page",
-        "valor": "Page",
+        "valor": "Página",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3315,7 +3585,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-type-system",
-        "valor": "System",
+        "valor": "Sistema",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4214,6 +4484,42 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "interface",
+        "id": "field-positive-value",
+        "valor": "sim",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "interface",
+        "id": "field-positive-label",
+        "valor": "Sim",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "interface",
+        "id": "field-negative-value",
+        "valor": "nao",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "interface",
+        "id": "field-negative-label",
+        "valor": "Não",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "interface",
         "id": "field-url-path",
         "valor": "Caminho",
         "tipo": "string",
@@ -4927,6 +5233,42 @@
         "modulo": "interface",
         "id": "validation-domain",
         "valor": "O campo <b>#label#<\/b> não é um domínio válido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-positive-value",
+        "valor": "sim",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-positive-label",
+        "valor": "Yes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-negative-value",
+        "valor": "nao",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-negative-label",
+        "valor": "No",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5850,6 +6192,15 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "modulos",
+        "id": "form-id-label",
+        "valor": "Variável",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "modulos",
         "id": "form-name-label",
@@ -6043,6 +6394,15 @@
         "modulo": "modulos",
         "id": "form-host-label",
         "valor": "Host",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "modulos",
+        "id": "form-id-label",
+        "valor": "Variable",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8977,6 +9337,60 @@
         "modulo": "usuarios-perfis",
         "id": "form-default-label",
         "valor": "Default",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "variables",
+        "id": "form-id-label",
+        "valor": "Variável",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "variables",
+        "id": "form-module-placeholder",
+        "valor": "Selecione um módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "variables",
+        "id": "form-module-label",
+        "valor": "Módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "variables",
+        "id": "form-id-label",
+        "valor": "Variable",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "variables",
+        "id": "form-module-placeholder",
+        "valor": "Select a module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "variables",
+        "id": "form-module-label",
+        "valor": "Module",
         "tipo": "string",
         "grupo": null,
         "descricao": null

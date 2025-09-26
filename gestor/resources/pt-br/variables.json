@@ -1,5 +1,83 @@
 [
     {
+        "id": "variable-type-string-label",
+        "value": "String",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variable-type-text-label",
+        "value": "Texto",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variable-type-bool-label",
+        "value": "Booleano",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variable-type-number-label",
+        "value": "Número",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variable-type-quantidade-label",
+        "value": "Quantidade",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variable-type-dinheiro-label",
+        "value": "Dinheiro",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variable-type-css-label",
+        "value": "CSS",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variable-type-js-label",
+        "value": "JS",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variable-type-html-label",
+        "value": "HTML",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variable-type-tinymce-label",
+        "value": "TinyMCE",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variable-type-datas-multiplas-label",
+        "value": "Datas Multiplas",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variable-type-data-label",
+        "value": "Data",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
+        "id": "variable-type-data-hora-label",
+        "value": "Data e Hora",
+        "type": "string",
+        "modulo": "configuracao"
+    },
+    {
         "id": "variavel-id-label",
         "value": "Variável",
         "type": "string",

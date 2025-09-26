@@ -197,37 +197,39 @@ function gestor_pagina_menu($params = false){
 		,
 		"paginas",
 		"WHERE raiz IS NOT NULL"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 	);
 	
-		$modulos = banco_select_name
-		(
-			banco_campos_virgulas(Array(
-				'id_modulos',
-				'modulo_grupo_id', // campo textual
-				'id',
-				'nome',
-				'icone',
-				'icone2',
-				'titulo',
-				'plugin',
-			))
-			,
-			"modulos",
-			"WHERE nao_menu_principal IS NULL"
-			." AND status='A'"
-			." ORDER BY nome ASC"
-		);
-    
-		$modulos_grupos = banco_select(Array(
-			'tabela' => 'modulos_grupos',
-			'campos' => Array(
-				'id', // campo textual
-				'nome',
-				'ordemMenu',
-			),
-			'extra' => 
-				" ORDER BY ordemMenu ASC, nome ASC"
-		));
+	$modulos = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'id_modulos',
+			'modulo_grupo_id', // campo textual
+			'id',
+			'nome',
+			'icone',
+			'icone2',
+			'titulo',
+			'plugin',
+		))
+		,
+		"modulos",
+		"WHERE nao_menu_principal IS NULL"
+		." AND status='A'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
+		." ORDER BY nome ASC"
+	);
+
+	$modulos_grupos = banco_select(Array(
+		'tabela' => 'modulos_grupos',
+		'campos' => Array(
+			'id', // campo textual
+			'nome',
+			'ordemMenu',
+		),
+		'extra' => 
+			"WHERE language='".$_GESTOR['linguagem-codigo']."' ORDER BY ordemMenu ASC, nome ASC"
+	));
 	
 	// ===== Verifica se o usuário é admin do host para mostrar no menu o Host Configurações ou não.
 	
@@ -662,6 +664,7 @@ function gestor_pagina_extra_head_e_javascript(){
 	
 	$variaveis_js = Array(
 		'raiz' => $_GESTOR['url-raiz'],
+		'language' => $_GESTOR['linguagem-codigo'],
 		'moduloId' => (isset($_GESTOR['modulo-id']) ? $_GESTOR['modulo-id'] : false ),
 		'moduloOpcao' => (isset($_GESTOR['opcao']) ? $_GESTOR['opcao'] : false ),
 		'moduloCaminho' => $caminho,
@@ -1061,6 +1064,7 @@ function gestor_permissao_modulo(){
 		"modulos",
 		"WHERE id='".$modulo."'"
 		." AND status='A'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 	);
 	
 	if($modulos){
@@ -1326,6 +1330,7 @@ function gestor_acesso($operacao = false,$modulo = false){
 		"modulos",
 		"WHERE id='".$modulo."'"
 		." AND status='A'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 	);
 	
 	if($modulos){
@@ -1337,6 +1342,7 @@ function gestor_acesso($operacao = false,$modulo = false){
 			,
 			"modulos_operacoes",
 			"WHERE operacao='".$operacao."'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
 			." AND modulo_id='".$modulo."'"
 			." AND status='A'"
 		);
@@ -1409,6 +1415,7 @@ function gestor_roteador_301_ou_404($params = false){
 				,
 				"paginas",
 				"WHERE id_paginas='".$paginas_301[0]['id_paginas']."'"
+				." AND language='".$_GESTOR['linguagem-codigo']."'"
 				." AND status='A'"
 			);
 			
@@ -1596,6 +1603,7 @@ function gestor_roteador(){
 		,
 		"paginas",
 		"WHERE caminho='".banco_escape_field($caminho)."'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 		." AND (tipo='sistema' OR tipo='pagina')"
 		." AND status='A'"
 	);

@@ -1,4 +1,9 @@
 $(document).ready(function () {
+
+    $('.ui.dropdown')
+        .dropdown()
+        ;
+
     // Codmirror para logs de tests de envio de emails em modo debug
 
     var codemirrors_instances = new Array();
@@ -74,7 +79,8 @@ $(document).ready(function () {
             email_from: $('#email_from').val(),
             email_from_name: $('#email_from_name').val(),
             email_reply_to: $('#email_reply_to').val(),
-            email_reply_to_name: $('#email_reply_to_name').val()
+            email_reply_to_name: $('#email_reply_to_name').val(),
+            language_default: $('#language_default').val()
         };
 
         $.ajax({

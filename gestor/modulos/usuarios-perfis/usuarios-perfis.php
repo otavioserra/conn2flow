@@ -49,6 +49,7 @@ function usuarios_perfis_adicionar(){
 		
 		// ===== Campos comuns
 		
+		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
@@ -79,6 +80,7 @@ function usuarios_perfis_adicionar(){
 			"modulos",
 			"WHERE status='A'"
 			." AND modulo_grupo_id!='bibliotecas'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
 			." AND host IS NULL"
 		);
 		
@@ -90,6 +92,7 @@ function usuarios_perfis_adicionar(){
 			,
 			"modulos_operacoes",
 			"WHERE status='A'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
 		);
 		
 		// ===== Módulos
@@ -210,6 +213,7 @@ function usuarios_perfis_adicionar(){
 		"modulos_grupos",
 		"WHERE status='A'"
 		." AND id!='bibliotecas'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 		." ORDER BY nome ASC"
 	);
     
@@ -225,6 +229,7 @@ function usuarios_perfis_adicionar(){
 		"WHERE status='A'"
 		." AND modulo_grupo_id!='bibliotecas'"
 		." AND host IS NULL"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 		." ORDER BY nome ASC"
 	);
 	
@@ -238,6 +243,7 @@ function usuarios_perfis_adicionar(){
 		,
 		"modulos_operacoes",
 		"WHERE status='A'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 		." ORDER BY nome ASC"
 	);
 	
@@ -481,6 +487,7 @@ function usuarios_perfis_editar(){
 			"WHERE status='A'"
 			." AND modulo_grupo_id!='bibliotecas'"
 			." AND host IS NULL"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
 		);
 		
 		$modulos_operacoes = banco_select_name
@@ -493,6 +500,7 @@ function usuarios_perfis_editar(){
 			,
 			"modulos_operacoes",
 			"WHERE status='A'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
 		);
 		
 		// ===== Varrer todos os inputs enviados
@@ -1000,6 +1008,7 @@ function usuarios_perfis_editar(){
 					"modulos_grupos",
 					"WHERE status='A'"
 					." AND id!='bibliotecas'"
+					." AND language='".$_GESTOR['linguagem-codigo']."'"
 					." ORDER BY nome ASC"
 				);
         
@@ -1015,6 +1024,7 @@ function usuarios_perfis_editar(){
 					"WHERE status='A'"
 					." AND modulo_grupo_id!='bibliotecas'"
 					." AND host IS NULL"
+					." AND language='".$_GESTOR['linguagem-codigo']."'"
 					." ORDER BY nome ASC"
 				);
 		
@@ -1028,6 +1038,7 @@ function usuarios_perfis_editar(){
 			,
 			"modulos_operacoes",
 			"WHERE status='A'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
 			." ORDER BY nome ASC"
 		);
 		
@@ -1223,6 +1234,7 @@ function usuarios_perfis_interfaces_padroes(){
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
+					'where' => "language='".$_GESTOR['linguagem-codigo']."'",
 				),
 				'tabela' => Array(
 					'rodape' => true,

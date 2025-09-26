@@ -3839,6 +3839,10 @@ function interface_alteracoes_iniciar($params = false){
 		$_GESTOR['modulo-registro-id'] = banco_escape_field($_REQUEST['id']);
 	}
 	
+	if(isset($_GESTOR['modulo-registro-padrao-id']) && !isset($_GESTOR['modulo-registro-id'])){
+		$_GESTOR['modulo-registro-id'] = $_GESTOR['modulo-registro-padrao-id'];
+	}
+	
 	if(!isset($_GESTOR['modulo-registro-id'])){
 		gestor_redirecionar_raiz();
 	}

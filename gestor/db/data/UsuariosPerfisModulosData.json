@@ -76,6 +76,10 @@
         "modulo": "admin-environment"
     },
     {
+        "perfil": "administradores",
+        "modulo": "variables"
+    },
+    {
         "perfil": "consumidores",
         "modulo": "dashboard"
     },

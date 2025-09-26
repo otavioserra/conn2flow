@@ -3,6 +3,26 @@
         "pt-br": {
             "variables": [
                 {
+                    "id": "field-positive-value",
+                    "value": "sim",
+                    "type": "string"
+                },
+                {
+                    "id": "field-positive-label",
+                    "value": "Sim",
+                    "type": "string"
+                },
+                {
+                    "id": "field-negative-value",
+                    "value": "nao",
+                    "type": "string"
+                },
+                {
+                    "id": "field-negative-label",
+                    "value": "Não",
+                    "type": "string"
+                },
+                {
                     "id": "field-url-path",
                     "value": "Caminho",
                     "type": "string"
@@ -409,6 +429,26 @@
             "pages": [],
             "components": [],
             "variables": [
+                {
+                    "id": "field-positive-value",
+                    "value": "sim",
+                    "type": "string"
+                },
+                {
+                    "id": "field-positive-label",
+                    "value": "Yes",
+                    "type": "string"
+                },
+                {
+                    "id": "field-negative-value",
+                    "value": "nao",
+                    "type": "string"
+                },
+                {
+                    "id": "field-negative-label",
+                    "value": "No",
+                    "type": "string"
+                },
                 {
                     "id": "field-url-path",
                     "value": "Path",

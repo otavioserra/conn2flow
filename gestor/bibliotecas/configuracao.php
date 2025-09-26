@@ -3,21 +3,21 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-configuracao']							=	Array(
-	'versao' => '1.1.25',
+	'versao' => '1.2.0',
 	'camposTipos' => Array(
-		Array(	'texto' => 'String',				'valor' => 'string',			),
-		Array(	'texto' => 'Texto',					'valor' => 'text',				),
-		Array(	'texto' => 'Booleano',				'valor' => 'bool',				),
-		Array(	'texto' => 'Número',				'valor' => 'number',			),
-		Array(	'texto' => 'Quantidade',			'valor' => 'quantidade',		),
-		Array(	'texto' => 'Dinheiro',				'valor' => 'dinheiro',			),
-		Array(	'texto' => 'CSS',					'valor' => 'css',				),
-		Array(	'texto' => 'JS',					'valor' => 'js',				),
-		Array(	'texto' => 'HTML',					'valor' => 'html',				),
-		Array(	'texto' => 'TinyMCE',				'valor' => 'tinymce',			),
-		Array(	'texto' => 'Datas Multiplas',		'valor' => 'datas-multiplas',	),
-		Array(	'texto' => 'Data',					'valor' => 'data',				),
-		Array(	'texto' => 'Data e Hora',			'valor' => 'data-hora',			),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-string-label')),				'valor' => 'string',			),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-text-label')),					'valor' => 'text',				),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-bool-label')),					'valor' => 'bool',				),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-number-label')),				'valor' => 'number',			),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-quantidade-label')),			'valor' => 'quantidade',		),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-dinheiro-label')),				'valor' => 'dinheiro',			),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-css-label')),					'valor' => 'css',				),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-js-label')),					'valor' => 'js',				),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-html-label')),					'valor' => 'html',				),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-tinymce-label')),				'valor' => 'tinymce',			),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-datas-multiplas-label')),		'valor' => 'datas-multiplas',	),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-data-label')),					'valor' => 'data',				),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-data-hora-label')),				'valor' => 'data-hora',			),
 	),
 );
 
@@ -417,25 +417,25 @@ function configuracao_administracao($params = false){
 		
 		// ===== Inclusão do CodeMirror
 		
-		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/lib/codemirror.css" />';
-		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/theme/tomorrow-night-bright.css" />';
-		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/dialog/dialog.css" />';
-		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/display/fullscreen.css" />';
-		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/search/matchesonscrollbar.css" />';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/lib/codemirror.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/selection/active-line.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/dialog/dialog.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/search/searchcursor.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/search/search.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/scroll/annotatescrollbar.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/search/matchesonscrollbar.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/search/jump-to-line.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/edit/matchbrackets.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/addon/display/fullscreen.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/mode/xml/xml.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/mode/css/css.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/mode/javascript/javascript.js"></script>';
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'codemirror-5.59.1/mode/htmlmixed/htmlmixed.js"></script>';
+		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.css" />';
+		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/theme/tomorrow-night-bright.css" />';
+		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.css" />';
+		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.css" />';
+		$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.css" />';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/selection/active-line.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/searchcursor.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/search.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/scroll/annotatescrollbar.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/jump-to-line.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/edit/matchbrackets.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/xml/xml.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/css/css.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/javascript/javascript.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/htmlmixed/htmlmixed.js"></script>';
 		
 		// ===== Inclusão configuracao javascript
 		

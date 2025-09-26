@@ -1,0 +1,94 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "tabela": {
+        "nome": "modulos",
+        "id": "id",
+        "id_numerico": "id_modulos",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Variáveis",
+                    "id": "variables",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "variables\/",
+                    "type": "system",
+                    "option": "variables",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "b556ad0972daea18da9c78243129dffc",
+                        "css": "a67c7f7ada890bdeca6f064ce2ace341",
+                        "combined": "ffb779a00cb3279e9e752434b5df54f0"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-id-label",
+                    "value": "Variável",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Selecione um módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Módulo",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Variables",
+                    "id": "variables",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "variables\/",
+                    "type": "system",
+                    "option": "variables",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "fe08845f8d42c7581ffe727dda36f137",
+                        "css": "a67c7f7ada890bdeca6f064ce2ace341",
+                        "combined": "145b1deb6007389db34e7f3ced9b466a"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-id-label",
+                    "value": "Variable",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Select a module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Module",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}
