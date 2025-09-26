@@ -203,7 +203,7 @@ class Installer
         return [
             'status' => 'finished',
             'message' => __('progress_configuring'),
-            'redirect_url' => './instalacao-sucesso/?lang=' . ($this->data['lang'] ?? 'pt-br')
+            'redirect_url' => './instalacao-sucesso/'
         ];
     }
 
@@ -526,6 +526,11 @@ class Installer
             $urlRaiz = $this->detectUrlRaiz();
             $this->log("Configurando URL_RAIZ detectada: {$urlRaiz}");
             $envContent = preg_replace('/^URL_RAIZ=.*$/m', 'URL_RAIZ=' . $urlRaiz, $envContent);
+            
+            // Configura a linguagem padrão selecionada na instalação
+            $defaultLanguage = $this->data['lang'] ?? 'pt-br';
+            $this->log("Configurando LANGUAGE_DEFAULT: {$defaultLanguage}");
+            $envContent = preg_replace('/^LANGUAGE_DEFAULT=.*$/m', 'LANGUAGE_DEFAULT=' . $defaultLanguage, $envContent);
             
             // Salva o arquivo modificado
             if (file_put_contents($envPath, $envContent) === false) {
@@ -852,26 +857,33 @@ class Installer
         try {
             $this->log("Iniciando criação/atualização da página de sucesso...");
             $pdo = $this->getPdo();
+            
+            // Determina a linguagem baseada na seleção da instalação
+            $language = $this->data['lang'] ?? 'pt-br';
+            $this->log("Criando página de sucesso na linguagem: {$language}");
+            
             // Verifica existência
             $stmt = $pdo->query("SELECT COUNT(*) as c FROM paginas WHERE id='instalacao-sucesso'");
             $exists = (int)$stmt->fetch()['c'] > 0;
 
             if ($exists) {
                 $this->log('Página existente, sobrescrevendo HTML/CSS...');
-                $sql = "UPDATE paginas SET html=:html, css=:css, data_modificacao=NOW() WHERE id='instalacao-sucesso'";
+                $sql = "UPDATE paginas SET html=:html, css=:css, language=:language, data_modificacao=NOW() WHERE id='instalacao-sucesso'";
                 $up = $pdo->prepare($sql);
                 $up->execute([
-                    'html' => $this->getSuccessPageHtml(),
-                    'css'  => $this->getSuccessPageCss()
+                    'html' => $this->getSuccessPageHtml($language),
+                    'css'  => $this->getSuccessPageCss(),
+                    'language' => $language
                 ]);
                 $this->log('Página de sucesso atualizada.');
             } else {
                 $this->log('Criando nova página de sucesso...');
-                $sql = "INSERT INTO paginas (id, html, css, data_criacao, data_modificacao) VALUES ('instalacao-sucesso', :html, :css, NOW(), NOW())";
+                $sql = "INSERT INTO paginas (id, html, css, language, data_criacao, data_modificacao) VALUES ('instalacao-sucesso', :html, :css, :language, NOW(), NOW())";
                 $ins = $pdo->prepare($sql);
                 $ins->execute([
-                    'html' => $this->getSuccessPageHtml(),
-                    'css'  => $this->getSuccessPageCss()
+                    'html' => $this->getSuccessPageHtml($language),
+                    'css'  => $this->getSuccessPageCss(),
+                    'language' => $language
                 ]);
                 $this->log('Página de sucesso criada.');
             }
@@ -883,9 +895,86 @@ class Installer
     /**
      * Retorna o HTML da página de sucesso
      */
-     private function getSuccessPageHtml()
+     private function getSuccessPageHtml($language = 'pt-br')
      {
-         return '
+         if ($language === 'en') {
+             return '
+<div class="ui main container">
+    <div class="ui centered grid">
+        <div class="twelve wide column">
+            <!-- Success Message -->
+            <div class="ui positive message">
+                <div class="header">
+                    <i class="exclamation triangle icon"></i>
+                    Installation Completed Successfully!
+                </div>
+                <p>Conn2Flow has been successfully installed and configured on your server.</p>
+            </div>
+            
+            <!-- Next Steps -->
+            <div class="ui segment">
+                <div class="ui header">
+                    <i class="list icon"></i>
+                    <div class="content">
+                        Next Steps
+                        <div class="sub header">Follow these steps to start using Conn2Flow</div>
+                    </div>
+                </div>
+                
+                <div class="ui ordered steps">
+                    <div class="step">
+                        <i class="user icon"></i>
+                        <div class="content">
+                            <div class="title">Access Dashboard</div>
+                            <div class="description">Log into your site\'s administrative panel</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="settings icon"></i>
+                        <div class="content">
+                            <div class="title">Configure System</div>
+                            <div class="description">Adjust your system preferences</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="paint brush icon"></i>
+                        <div class="content">
+                            <div class="title">Customize Design</div>
+                            <div class="description">Customize the visual and content</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="rocket icon"></i>
+                        <div class="content">
+                            <div class="title">Start Using</div>
+                            <div class="description">Enjoy all the features!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Access Button -->
+            <div class="ui center aligned segment">
+                <a href="@[[pagina#url-raiz]]@dashboard" class="ui huge primary button">
+                    <i class="sign in icon"></i>
+                    Access Administrative Panel
+                </a>
+            </div>
+            
+            <!-- Final Note -->
+            <div class="ui info message">
+                <div class="header">
+                    <i class="info circle icon"></i>
+                    Note
+                </div>
+                <p>This page will be automatically removed when you access the administrative panel for the first time.</p>
+            </div>
+        </div>
+    </div>
+</div>';
+         } else {
+             // Default: Portuguese (pt-br)
+             return '
 <div class="ui main container">
     <div class="ui centered grid">
         <div class="twelve wide column">
@@ -959,6 +1048,7 @@ class Installer
         </div>
     </div>
 </div>';
+         }
      }
 
     /**
