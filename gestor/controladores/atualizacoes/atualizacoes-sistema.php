@@ -459,6 +459,13 @@ function parseEnvLines(array $lines): array {
 
 function mergeEnv(string $envAtualPath, string $envTemplatePath, array &$context, bool $dryRun): void {
     if(!file_exists($envAtualPath) || !file_exists($envTemplatePath)) { logAtualizacao('Merge .env ignorado (arquivos ausentes)','WARNING'); return; }
+
+    // Antes do merge, substituir LANGUAGE_DEFAULT=LANG por LANGUAGE_DEFAULT=pt-br no template
+    $templateContent = file_get_contents($envTemplatePath);
+    $templateContent = preg_replace('/^LANGUAGE_DEFAULT=LANG$/m', 'LANGUAGE_DEFAULT=pt-br', $templateContent);
+    file_put_contents($envTemplatePath, $templateContent);
+    logAtualizacao('Template .env atualizado: LANGUAGE_DEFAULT=LANG -> LANGUAGE_DEFAULT=pt-br','DEBUG');
+
     $curLines = file($envAtualPath, FILE_IGNORE_NEW_LINES);
     $tplLines = file($envTemplatePath, FILE_IGNORE_NEW_LINES);
     $curMap = parseEnvLines($curLines); $tplMap=parseEnvLines($tplLines);
