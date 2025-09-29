@@ -96,18 +96,20 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🚀 Conn2Flow Gestor Release v2.2.2 (Sistema de Plugins V2 + Arquitetura Refatorada + Seletor de Idioma)
+          ## 🚀 Conn2Flow Gestor Release v2.2.3 (Sistema Multilíngue Completo + Plugins V2 Finalizado)
           
-          Esta release traz uma **revolução completa no sistema de plugins** com arquitetura V2, templates automatizados, rastreio completo de dados e **novo seletor de idioma padrão** para administração intuitiva, além de correções críticas no sistema de atualização.
+          Esta release traz a **implementação completa do sistema multilíngue** com seletor de idioma administrativo, arquitetura de plugins V2 totalmente funcional, melhorias no instalador e correções críticas no sistema de atualização automática.
           
           ### 🎯 Novidades Principais desta Versão:
+          - ✅ **Sistema Multilíngue Completo**: Suporte total pt-br/en com interface administrativa
+          - ✅ **Seletor de Idioma Administrativo**: Nova aba no admin-environment para mudança dinâmica de idioma
           - ✅ **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica
           - ✅ **Templates de Desenvolvimento Automatizados**: Scripts padronizados para criação de plugins
           - ✅ **Rastreio Completo de Origem**: Injeção automática de slug em tabelas com coluna plugin
           - ✅ **Resolução Dinâmica de Ambiente**: Environment.json dinâmico em todos os scripts
           - ✅ **Estrutura de Plugins Modernizada**: Nova arquitetura para desenvolvimento Conn2Flow
-          - ✅ **Sistema de Correções Críticas**: Correções importantes no sistema de plugins
-          - ✅ **Seletor de Idioma Padrão**: Nova aba no painel administrativo para alterar o idioma padrão do sistema
+          - ✅ **Instalador Multilíngue**: Suporte à seleção de idioma durante instalação
+          - ✅ **Página de Sucesso Bilíngue**: Interface de conclusão em português e inglês
           
           ### 🔧 Melhorias Técnicas:
           - ✅ **Migração para IDs Textuais**: Campos de referência convertidos para formato textual
@@ -119,6 +121,7 @@ jobs:
           - ✅ **Configuração Multilíngue**: Interface intuitiva para mudança dinâmica de idioma (pt-br/en)
           - ✅ **Persistência de Configurações**: Salvamento automático no arquivo .env
           - ✅ **Correção Template .env**: LANGUAGE_DEFAULT agora usa pt-br como padrão nas atualizações
+          - ✅ **Merge .env Inteligente**: Sistema automático de correção durante atualizações
           
           ### 📦 Conteúdo:
           - Sistema gestor completo com arquitetura híbrida multilíngue
@@ -127,8 +130,17 @@ jobs:
           - Sistema de atualização automática consolidado (v1.15.0)
           - 264+ recursos organizados por idioma (pt-br base)
           - Seletor de idioma padrão no módulo admin-environment
+          - Instalador multilíngue com seleção de idioma
+          - Página de sucesso bilíngue (pt-br/en)
           - Dependências do Composer otimizadas
           - Documentação técnica completa
+          
+          ### 🌐 Sistema Multilíngue:
+          - **Interface Administrativa**: Seletor de idioma no painel admin-environment
+          - **Persistência Automática**: Salvamento em LANGUAGE_DEFAULT no .env
+          - **Instalação Bilíngue**: Seleção de idioma durante setup
+          - **Página de Sucesso**: Interface de conclusão em português e inglês
+          - **Correção Automática**: Template .env corrigido durante atualizações
           
           ### 🔧 Sistema de Plugins V2:
           - **Detecção Dinâmica**: Sistema automático de descoberta de Data.json
@@ -146,9 +158,11 @@ jobs:
           - Documentação abrangente para desenvolvimento
           
           ### 🔧 Como usar:
-          1. Use o [Conn2Flow Installer v1.4.1+](https://github.com/otavioserra/conn2flow/releases) para instalação automática
+          1. Use o [Conn2Flow Installer v1.5.0+](https://github.com/otavioserra/conn2flow/releases) para instalação automática
           2. Para instalação manual, use o instalador web em `gestor-instalador/index.php`
-          3. Utilize os templates em `dev-plugins/plugins/templates/` para criar novos plugins
+          3. Selecione o idioma desejado durante a instalação (pt-br/en)
+          4. Utilize os novos templates em `dev-plugins/plugins/templates/` para criar novos plugins
+          5. Acesse o admin-environment para alterar o idioma do sistema
           
           ### 📋 Requisitos:
           - PHP 8.1+
@@ -157,6 +171,7 @@ jobs:
           - Git (para desenvolvimento de plugins)
           
           ### 🌟 Padrões Aprendidos e Implementados:
+          - ✅ **Sistema Multilíngue**: Implementação completa pt-br/en com seletor administrativo
           - ✅ **Plugins V2**: Arquitetura moderna com detecção dinâmica
           - ✅ **Templates Automatizados**: Scripts padronizados para desenvolvimento
           - ✅ **Rastreio Completo**: Injeção automática de origem em tabelas
@@ -165,8 +180,10 @@ jobs:
           - ✅ **Cross-Platform**: Compatibilidade universal de scripts
           - ✅ **Seletor de Idioma**: Interface administrativa para configuração multilíngue
           - ✅ **Template .env Corrigido**: Valor padrão pt-br para LANGUAGE_DEFAULT
+          - ✅ **Instalador Bilíngue**: Suporte completo à seleção de idioma
           
           ### 🎉 Melhorias desta versão:
+          - ✅ **Sistema Multilíngue Revolucionário**: Interface completa pt-br/en com seletor administrativo
           - ✅ **Sistema de Plugins Revolucionário**: Arquitetura V2 completa e moderna
           - ✅ **Desenvolvimento Facilitado**: Templates automatizados e documentação
           - ✅ **Rastreabilidade Total**: Sistema completo de origem de dados
@@ -174,7 +191,8 @@ jobs:
           - ✅ **Arquitetura Moderna**: IDs textuais e estrutura refatorada
           - ✅ **Compatibilidade Preservada**: Zero breaking changes para usuários finais
           - ✅ **Administração Multilíngue**: Seletor de idioma intuitivo no painel administrativo
-          - ✅ **Correções Críticas**: Template .env corrigido para LANGUAGE_DEFAULT=pt-br
+          - ✅ **Instalação Inteligente**: Processo bilíngue com seleção de idioma
+          - ✅ **Correções Críticas**: Template .env e sistema de merge corrigidos
           
           ### ⚠️ Breaking Changes (Migration Guide):
           - Campos de referência de módulos migrados para formato textual
@@ -182,14 +200,16 @@ jobs:
           - Arquitetura de plugins modernizada (V2)
           - Timezone ajustado para America/Sao_Paulo
           - Template .env corrigido: LANGUAGE_DEFAULT agora usa pt-br como padrão
+          - Sistema multilíngue implementado com interface administrativa
           
           ### 🔄 Migration Path:
           1. Use o instalador web para atualização automática
-          2. Ou execute: `php controladores/atualizacoes/atualizacoes-banco-de-dados.php --env-dir=seu-dominio`
+          2. Ou execute: `php controladores/atualizacoes/atualizacoes-sistema.php --env-dir=seu-dominio`
           3. Atualize scripts de plugins para usar resolução dinâmica
           4. Utilize os novos templates para desenvolvimento
           5. Aproveite a arquitetura V2 de plugins
           6. Template .env será automaticamente corrigido com LANGUAGE_DEFAULT=pt-br
+          7. Configure o idioma do sistema via admin-environment
         draft: false
         prerelease: false
         files: |

@@ -12,7 +12,7 @@ if (function_exists('mb_internal_encoding')) {
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR_INSTALADOR['versao']								=	'1.5.0'; // Versão do gestor instalador.
+$_GESTOR_INSTALADOR['versao']								=	'1.5.1'; // Versão do gestor instalador.
 
 // Função para enviar erros em formato JSON
 function send_json_error($message, $statusCode = 400, $logContent = null)
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     } else {
         // Modo normal: exibe formulário
         $lang = 'pt-br';
-        if (isset($_GET['lang']) && in_array($_GET['lang'], ['pt-br', 'en-us'])) {
+        if (isset($_GET['lang']) && in_array($_GET['lang'], ['pt-br', 'en'])) {
             $lang = $_GET['lang'];
         }
         $translator = Translator::getInstance();
@@ -91,7 +91,7 @@ require_once __DIR__ . '/src/Installer.php';
 
 // Para requisições POST (AJAX), carrega o idioma enviado no corpo da requisição
 $lang = 'pt-br';
-if (isset($_POST['lang']) && in_array($_POST['lang'], ['pt-br', 'en-us'])) {
+if (isset($_POST['lang']) && in_array($_POST['lang'], ['pt-br', 'en'])) {
     $lang = $_POST['lang'];
 }
 $translator = Translator::getInstance();

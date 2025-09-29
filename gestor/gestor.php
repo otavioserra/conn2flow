@@ -1613,24 +1613,22 @@ function gestor_roteador(){
 	if(isset($paginas)){
 		$_GESTOR['modulo'] = $paginas[0]['modulo'];
 		
-		if(existe($_GESTOR['modulo'])){
-			if(!existe($paginas[0]['sem_permissao'])){
-				gestor_permissao();
-			}
-			
-			// ===== Verificar se o módulo faz parte de um plugin ou não. Caso faça parte, acessar o local do módulo dentro da pasta do plugin específico, senão no diretório padrão de módulos.
-			
-			$modulos = banco_select(Array(
-				'unico' => true,
-				'tabela' => 'modulos',
-				'campos' => Array(
-					'plugin',
-				),
-				'extra' => 
-					"WHERE id='".$_GESTOR['modulo']."'"
-					." AND status='A'"
-			));
+		if(!existe($paginas[0]['sem_permissao'])){
+			gestor_permissao();
 		}
+		
+		// ===== Verificar se o módulo faz parte de um plugin ou não. Caso faça parte, acessar o local do módulo dentro da pasta do plugin específico, senão no diretório padrão de módulos.
+		
+		$modulos = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'modulos',
+			'campos' => Array(
+				'plugin',
+			),
+			'extra' => 
+				"WHERE id='".$_GESTOR['modulo']."'"
+				." AND status='A'"
+		));
 	}
 	
 	// ===== Disparar o módulo caso houver e devolver a página ou dados ajax ou alterar opções e redirecionar para a raiz do módulo.

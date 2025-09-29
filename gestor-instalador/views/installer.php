@@ -19,7 +19,7 @@
                 <button data-lang="pt-br" class="lang-select-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
                     Português (Brasil)
                 </button>
-                <button data-lang="en-us" class="lang-select-btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded">
+                <button data-lang="en" class="lang-select-btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded">
                     English (US)
                 </button>
             </div>

@@ -40,17 +40,20 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Instalador ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🛠️ Conn2Flow Instalador Release v1.4.0 (Suporte Framework CSS + Melhorias)
+          ## 🛠️ Conn2Flow Instalador Release v1.5.1 (Sistema Multilíngue Completo + Gestor v2.2.x)
           
-          Instalador automático do sistema Conn2Flow com **suporte aos novos recursos v1.16.0** incluindo sistema de preview e framework CSS.
+          Instalador automático do sistema Conn2Flow com **suporte aos novos recursos v2.2.x** incluindo sistema multilíngue completo, seletor de idioma administrativo e arquitetura de plugins V2.
           
           ### ✨ Novidades desta Versão:
-          - ✅ **Suporte Framework CSS**: Instalação preparada para TailwindCSS + FomanticUI
-          - ✅ **Migrations Atualizadas**: Campo framework_css automaticamente configurado
-          - ✅ **Validação Aprimorada**: Verificação de recursos visuais pós-instalação
-          - ✅ **Preview System Ready**: Instalação preparada para sistema de preview
-          - ✅ **Charset UTF-8 Robusto**: Compatibilidade total com caracteres especiais
-          - ✅ **Logs Detalhados**: Rastreamento completo do processo de instalação
+          - ✅ **Sistema Multilíngue Completo**: Suporte total pt-br/en com interface administrativa
+          - ✅ **Seletor de Idioma Administrativo**: Nova aba no admin-environment para mudança dinâmica de idioma
+          - ✅ **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica
+          - ✅ **Templates de Desenvolvimento Automatizados**: Scripts padronizados para criação de plugins
+          - ✅ **Rastreio Completo de Origem**: Injeção automática de slug em tabelas com coluna plugin
+          - ✅ **Resolução Dinâmica de Ambiente**: Environment.json dinâmico em todos os scripts
+          - ✅ **Estrutura de Plugins Modernizada**: Nova arquitetura para desenvolvimento Conn2Flow
+          - ✅ **Instalador Multilíngue**: Suporte à seleção de idioma durante instalação
+          - ✅ **Página de Sucesso Bilíngue**: Interface de conclusão em português e inglês
           
           ### 🔧 Melhorias Técnicas:
           - ✅ **getPdo() Unificado**: Método único para todas conexões de banco
@@ -58,6 +61,10 @@ jobs:
           - ✅ **Usuário Admin Otimizado**: Criação robusta com nomes dinâmicos
           - ✅ **Auto-login Aprimorado**: Configuração automática pós-instalação
           - ✅ **Limpeza Inteligente**: Remoção automática após sucesso
+          - ✅ **Configuração Multilíngue**: Interface intuitiva para mudança dinâmica de idioma (pt-br/en)
+          - ✅ **Persistência de Configurações**: Salvamento automático no arquivo .env
+          - ✅ **Correção Template .env**: LANGUAGE_DEFAULT agora usa pt-br como padrão nas atualizações
+          - ✅ **Merge .env Inteligente**: Sistema automático de correção durante atualizações
           
           ### ✨ Funcionalidades:
           - Instalação totalmente automatizada
@@ -82,7 +89,7 @@ jobs:
           
           ### 🎯 Funcionalidades do Instalador:
           - ✅ Validação de requisitos do sistema
-          - ✅ Download automático do gestor v1.16.0+
+          - ✅ Download automático do gestor v2.2.x+
           - ✅ Configuração automática do banco de dados
           - ✅ Migrations framework_css aplicadas automaticamente
           - ✅ Geração de chaves de segurança
@@ -96,12 +103,17 @@ jobs:
           - Desenvolvimento local (XAMPP/WAMP/MAMP)
           - Containers Docker
           
-          ### 🚀 Compatibilidade com Gestor v1.16.0:
-          - ✅ **Módulos Admin**: Instalação preparada para admin-layouts, admin-componentes
-          - ✅ **Framework CSS**: Campo framework_css configurado automaticamente
-          - ✅ **Sistema Preview**: Estrutura preparada para modals e CodeMirror
-          - ✅ **Endpoints Preview**: Configuração automática de controladores
-          - ✅ **Dependências Assets**: Ordem correta de inclusão garantida
+          ### 🚀 Compatibilidade com Gestor v2.2.x:
+          - ✅ **Sistema Multilíngue**: Interface completa pt-br/en com seletor administrativo
+          - ✅ **Plugins V2**: Arquitetura moderna com detecção dinâmica
+          - ✅ **Templates Automatizados**: Scripts padronizados para desenvolvimento
+          - ✅ **Rastreio de Origem**: Injeção automática de slug em tabelas
+          - ✅ **Resolução Dinâmica**: Environment.json dinâmico e robusto
+          - ✅ **IDs Textuais**: Migração completa para formato textual
+          - ✅ **Cross-Platform**: Compatibilidade universal de scripts
+          - ✅ **Seletor de Idioma**: Interface administrativa para configuração multilíngue
+          - ✅ **Template .env Corrigido**: Valor padrão pt-br para LANGUAGE_DEFAULT
+          - ✅ **Instalador Bilíngue**: Suporte completo à seleção de idioma
           
           ### 📊 Melhorias de Robustez:
           - ✅ **Charset Universal**: UTF-8/utf8mb4 em todas operações

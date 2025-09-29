@@ -5,6 +5,7 @@
         "layout": "layout-pagina-sem-permissao",
         "path": "contato\/",
         "type": "page",
+        "without_permission": true,
         "version": "1.5",
         "checksum": {
             "html": "486e8e92c4bb994b684e0627029e9c55",
@@ -18,6 +19,7 @@
         "layout": "layout-pagina-sem-permissao",
         "path": "404\/",
         "type": "page",
+        "without_permission": true,
         "version": "1.3",
         "checksum": {
             "html": "6c644be04d6ba9320f7ebc2fff7b8af6",
@@ -31,6 +33,7 @@
         "layout": "layout-pagina-sem-permissao",
         "path": "\/",
         "type": "page",
+        "without_permission": true,
         "version": "1.3",
         "checksum": {
             "html": "973224b40744bd096516207f4d0c3927",
@@ -44,6 +47,7 @@
         "layout": "layout-pagina-sem-permissao",
         "path": "cookies-is-mandatory\/",
         "type": "page",
+        "without_permission": true,
         "version": "1.3",
         "checksum": {
             "html": "c03f2e935909d370c11a119664f705fa",

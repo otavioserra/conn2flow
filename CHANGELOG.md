@@ -1,6 +1,54 @@
 # Changelog
 
-T## [2.1.0] - 2025-09-18
+O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
+e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
+
+## [Unreleased]
+
+### Added
+- Documentação técnica detalhada em `ai-workspace/docs/`
+- Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
+- CHANGELOG.md padrão da indústria seguindo Keep a Changelog
+
+## [2.2.2] - 2025-09-26
+
+### Added
+- **Sistema Multilíngue Completo**: Suporte total pt-br/en com interface administrativa
+- **Seletor de Idioma Administrativo**: Nova aba no admin-environment para mudança dinâmica de idioma
+- **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica
+- **Templates de Desenvolvimento Automatizados**: Scripts padronizados para criação de plugins
+- **Rastreio Completo de Origem**: Injeção automática de slug em tabelas com coluna plugin
+- **Resolução Dinâmica de Ambiente**: Environment.json dinâmico em todos os scripts
+- **Estrutura de Plugins Modernizada**: Nova arquitetura para desenvolvimento Conn2Flow
+- **Instalador Multilíngue**: Suporte à seleção de idioma durante instalação
+- **Página de Sucesso Bilíngue**: Interface de conclusão em português e inglês
+
+### Changed
+- **Configuração Multilíngue**: Interface intuitiva para mudança dinâmica de idioma (pt-br/en)
+- **Persistência de Configurações**: Salvamento automático no arquivo .env
+- **Correção Template .env**: LANGUAGE_DEFAULT agora usa pt-br como padrão nas atualizações
+- **Merge .env Inteligente**: Sistema automático de correção durante atualizações
+
+### Fixed
+- **Correção Template .env**: Valor padrão pt-br para LANGUAGE_DEFAULT
+- **Merge .env Inteligente**: Sistema automático de correção durante atualizações
+
+## [instalador-v1.5.0] - 2025-09-26
+
+### Added
+- **Suporte ao Sistema Multilíngue**: Instalação preparada para recursos v2.2.x
+- **Seleção de Idioma na Instalação**: Interface para escolher idioma durante setup
+- **Página de Sucesso Bilíngue**: Conclusão da instalação em português e inglês
+- **Compatibilidade com Plugins V2**: Preparação para arquitetura moderna de plugins
+
+### Changed
+- **Workflow de Release Atualizado**: Documentação completa para sistema multilíngue
+- **Compatibilidade com Gestor v2.2.x**: Suporte aos novos recursos implementados
+
+### Fixed
+- **Correções de Robustez**: Melhorias no processo de instalação
+
+## [2.1.0] - 2025-09-18
 
 ### Added
 - **Campo html_extra_head**: Permite incluir HTML extra na seção HEAD de páginas e componentes
@@ -34,26 +82,6 @@ T## [2.1.0] - 2025-09-18
 - **Função formatar_url Corrigida**: Sempre adiciona barra no final da URL
 - **Tratamento de String Vazia**: Retorna "/" quando entrada vazia
 - **Consistência de URLs**: Todas as URLs terminam com "/" conforme esperado
-
-### Changed
-- **Módulo admin-paginas**: Função `formatar_url()` modificada para garantir barra finaludanças notáveis neste projeto serão documentadas neste arquivo.
-
-O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
-e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
-
-## [Unreleased]
-
-### Added
-- Documentação técnica detalhada em `ai-workspace/docs/`
-- Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
-- CHANGELOG.md padrão da indústria seguindo Keep a Changelog
-
-## [2.0.21] - 2025-09-18
-
-### Fixed
-- **Função formatar_url Corrigida**: Sempre adiciona barra no final da URL formatada
-- **Tratamento de String Vazia**: Retorna "/" quando a entrada está vazia
-- **Consistência de URLs**: Todas as URLs geradas terminam com "/" conforme esperado
 
 ### Changed
 - **Módulo admin-paginas**: Função `formatar_url()` modificada para garantir barra final
@@ -335,7 +363,11 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## Links de Comparação
 
-[Unreleased]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.0.19...HEAD
+[Unreleased]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.2.2...HEAD
+[2.2.2]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.1.0...gestor-v2.2.2
+[instalador-v1.5.0]: https://github.com/conecta2me/conn2flow/compare/instalador-v1.4.0...instalador-v1.5.0
+[2.1.0]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.0.21...gestor-v2.1.0
+[2.0.21]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.0.19...gestor-v2.0.21
 [2.0.19]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.0.0...gestor-v2.0.19
 [2.0.0]: https://github.com/conecta2me/conn2flow/compare/gestor-v1.16.0...gestor-v2.0.0
 [1.16.0]: https://github.com/conecta2me/conn2flow/compare/v1.15.0...gestor-v1.16.0

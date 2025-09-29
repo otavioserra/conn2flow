@@ -2,6 +2,43 @@
 
 ## 🏷️ Releases Atuais
 
+### **gestor-v2.2.2** (26 Setembro 2025) - `HEAD`
+**🎯 Tema:** Sistema Multilíngue Completo + Plugins V2 Finalizado**
+
+**Principais Melhorias:**
+- ✅ **Sistema Multilíngue Completo**: Suporte total pt-br/en com interface administrativa
+- ✅ **Seletor de Idioma Administrativo**: Nova aba no admin-environment para mudança dinâmica de idioma
+- ✅ **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica
+- ✅ **Templates de Desenvolvimento Automatizados**: Scripts padronizados para criação de plugins
+- ✅ **Rastreio Completo de Origem**: Injeção automática de slug em tabelas com coluna plugin
+- ✅ **Resolução Dinâmica de Ambiente**: Environment.json dinâmico em todos os scripts
+- ✅ **Estrutura de Plugins Modernizada**: Nova arquitetura para desenvolvimento Conn2Flow
+- ✅ **Instalador Multilíngue**: Suporte à seleção de idioma durante instalação
+- ✅ **Página de Sucesso Bilíngue**: Interface de conclusão em português e inglês
+- ✅ **Configuração Multilíngue**: Interface intuitiva para mudança dinâmica de idioma (pt-br/en)
+- ✅ **Persistência de Configurações**: Salvamento automático no arquivo .env
+- ✅ **Correção Template .env**: LANGUAGE_DEFAULT agora usa pt-br como padrão nas atualizações
+- ✅ **Merge .env Inteligente**: Sistema automático de correção durante atualizações
+
+**Breaking Changes:**
+- Sistema multilíngue implementado com interface administrativa
+- Arquitetura de plugins modernizada (V2)
+- Template .env corrigido: LANGUAGE_DEFAULT agora usa pt-br como padrão
+
+### **instalador-v1.5.0** (26 Setembro 2025) - `aa1bf5db`
+**🎯 Tema:** Sistema Multilíngue Completo + Gestor v2.2.x**
+
+**Principais Melhorias:**
+- ✅ **Suporte ao Sistema Multilíngue**: Instalação preparada para recursos v2.2.x
+- ✅ **Seleção de Idioma na Instalação**: Interface para escolher idioma durante setup
+- ✅ **Página de Sucesso Bilíngue**: Conclusão da instalação em português e inglês
+- ✅ **Compatibilidade com Plugins V2**: Preparação para arquitetura moderna de plugins
+- ✅ **Workflow de Release Atualizado**: Documentação completa para sistema multilíngue
+- ✅ **Compatibilidade com Gestor v2.2.x**: Suporte aos novos recursos implementados
+
+**Breaking Changes:**
+- Workflow atualizado para refletir versão v2.2.x do Gestor
+
 ### **gestor-v2.0.21** (18 Setembro 2025) - `HEAD`
 **🎯 Tema:** Correção na Função formatar_url**
 
