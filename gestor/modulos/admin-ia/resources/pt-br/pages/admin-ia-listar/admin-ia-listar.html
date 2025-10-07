@@ -1,0 +1,84 @@
+<!-- Admin IA - Listar Servidores -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i class="robot icon"></i> Servidores de IA</h1>
+                <a href="@[[pagina#url-raiz]]@admin-ia/adicionar/" class="ui button primary">
+                    <i class="plus icon"></i> Adicionar Servidor
+                </a>
+            </div>
+
+            <div class="ui segment">
+                <!-- com-servidores < -->
+                <table class="ui table selectable">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Tipo</th>
+                            <th>Status</th>
+                            <th>Último Teste</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- servidores < -->
+                        <tr>
+                            <td>#nome#</td>
+                            <td>
+                                <!-- tipo-gemini < -->
+                                <i class="google icon"></i> Google Gemini
+                                <!-- tipo-gemini > -->
+                                <!-- tipo-outro < -->
+                                #tipo#
+                                <!-- tipo-outro > -->
+                            </td>
+                            <td>
+                                <!-- status-ativo < -->
+                                <div class="ui green label">Ativo</div>
+                                <!-- status-ativo > -->
+                                <!-- status-inativo < -->
+                                <div class="ui red label">Inativo</div>
+                                <!-- status-inativo > -->
+                            </td>
+                            <td>
+                                #data-criacao#
+                            </td>
+                            <td>
+                                <div class="ui buttons">
+                                    <a href="@[[pagina#url-raiz]]@admin-ia/editar/?id=#id#" class="ui button small">
+                                        <i class="edit icon"></i> Editar
+                                    </a>
+                                    <button class="ui button small blue testar-conexao" data-id="#id#">
+                                        <i class="plug icon"></i> Testar
+                                    </button>
+                                    <button class="ui button small red excluir-servidor" data-id="#id#">
+                                        <i class="trash icon"></i> Excluir
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- servidores > -->
+                    </tbody>
+                </table><!-- com-servidores > -->
+
+                <!-- sem-servidores < -->
+                <div class="ui placeholder segment">
+                    <div class="ui icon header">
+                        <i class="robot icon"></i>
+                        Nenhum servidor configurado
+                    </div>
+                    <div class="inline">
+                        <div class="ui primary button">
+                            <a href="@[[pagina#url-raiz]]@admin-ia/adicionar/" style="color: white;">
+                                <i class="plus icon"></i> Adicionar Primeiro Servidor
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- sem-servidores > -->
+            </div>
+        </div>
+    </div>
+</div>

@@ -958,6 +958,130 @@ $html = modelo_var_troca_tudo($html,'#nome#','João');
 <p>Olá, João!</p>
 ```
 
+#### 📋 Células de repetição em HTML:
+```html
+<div class="ui celled list">
+    <!-- cel-id < -->
+    <div class="item">
+        <div class="content">
+            <div class="header">#nome#</div>
+            <div class="description">#tipo# - #url#</div>
+        </div>
+    </div>
+    <!-- cel-id > -->
+</div>
+```
+```php
+// Exemplo de uso
+$cel_nome = 'cel-id'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+
+$resultado = [
+    ['nome'=>'Google','tipo'=>'Search Engine','url'=>'https://www.google.com'],
+    ['nome'=>'Facebook','tipo'=>'Social Media','url'=>'https://www.facebook.com'],
+    ['nome'=>'Twitter','tipo'=>'Social Media','url'=>'https://www.twitter.com'],
+];
+
+foreach($resultado as $res){
+    $cel_aux = $cel[$cel_nome];
+
+    $html = modelo_var_troca_tudo($html,'#nome#',$res['nome']);
+    $html = modelo_var_troca_tudo($html,'#tipo#',$res['tipo']);
+    $html = modelo_var_troca_tudo($html,'#url#',$res['url']);
+
+    $_GESTOR['pagina'] = modelo_var_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->',$cel_aux);
+}
+
+$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->','');
+```
+
+```js
+var data = { 
+					opcao : opcao,
+					ajax : 'sim',
+					ajaxOpcao : ajaxOpcao,
+					pagina : pagina,
+					filtros : JSON.stringify(filtros)
+				};
+				
+				if('paginaIframe' in gestor){
+					data.paginaIframe = true;
+				}
+				
+				$.ajax({
+					type: 'POST',
+					url: gestor.raiz + gestor.moduloId + '/',
+					data: data,
+					dataType: 'json',
+					beforeSend: function(){
+						$('#gestor-listener').trigger('carregar_abrir');
+					},
+					success: function(dados){
+						switch(dados.status){
+							case 'Ok':
+							// ===== Atualizar o conteiner da lista de arquivos
+								if(listaPaginaAtual == 0){
+									$('#files-list-cont').html('');
+								}
+								
+								$('#files-list-cont').append(dados.pagina);
+								
+								// ===== Mostrar ou Ocultar os conteiners
+								
+								if(parseInt(dados.totalArquivosSemFiltrar) == 0){
+									$('.withoutResultsCont').removeClass('hidden');
+									$('.withoutFilesCont').addClass('hidden');
+									$('.listFilesCont').addClass('hidden');
+									$('.filesFilterCont').addClass('hidden');
+								} else {
+									$('.withoutResultsCont').addClass('hidden');
+									
+									if(parseInt(dados.total) > 0){
+										$('.listFilesCont').removeClass('hidden');
+										$('.withoutFilesCont').addClass('hidden');
+										
+										if(parseInt(dados.totalPaginas) > 1){
+											$('.listMoreResultsCont').removeClass('hidden');
+										}
+									} else {
+										$('.listFilesCont').addClass('hidden');
+										$('.withoutFilesCont').removeClass('hidden');
+									}
+								}
+								
+								// ===== Mostrar ou Ocultar o botão mais dados
+								
+								totalPaginas = parseInt(dados.totalPaginas);
+								
+								if(listaPaginaAtual >= totalPaginas - 1){
+									$('#'+button_id).hide();
+								} else {
+									$('#'+button_id).show();
+								}
+								
+								if(clear){
+									clear = false;
+									filtrado = false;
+								}
+							break;
+							default:
+								console.log('ERROR - '+ajaxOpcao+' - '+dados.status);
+							
+						}
+						
+						$('#gestor-listener').trigger('carregar_fechar');
+					},
+					error: function(txt){
+						switch(txt.status){
+							case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"),"_self"); break;
+							default:
+								console.log('ERROR AJAX - '+ajaxOpcao+' - Dados:');
+								console.log(txt);
+								$('#gestor-listener').trigger('carregar_fechar');
+						}
+					}
+				});
+```
+
 ---
 
 ## ⚠️ Problemas Conhecidos e Soluções

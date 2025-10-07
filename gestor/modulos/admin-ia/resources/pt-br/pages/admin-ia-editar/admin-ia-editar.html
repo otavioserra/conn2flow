@@ -1,0 +1,62 @@
+<!-- Admin IA - Editar Servidor -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1><i class="edit icon"></i> Editar Servidor IA</h1>
+
+            <div class="ui segment">
+                <form id="form-servidor-ia-edit" class="ui form">
+                    <input type="hidden" name="id" value="[[id]]">
+
+                    <div class="field required">
+                        <label>Nome do Servidor</label>
+                        <input type="text" name="nome" value="[[nome]]" placeholder="Ex: Gemini Produção" required>
+                    </div>
+
+                    <div class="field required">
+                        <label>Tipo de Servidor</label>
+                        <select name="tipo" class="ui dropdown" required>
+                            <option value="gemini" selected>Google Gemini</option>
+                        </select>
+                    </div>
+
+                    <div class="field required">
+                        <label>Chave API</label>
+                        <input type="password" name="chave_api" value="[[chave-api]]"
+                            placeholder="Deixe em branco para manter a atual" required>
+                        <small class="text-muted">Digite uma nova chave para alterar, ou deixe *** para manter a
+                            atual</small>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="testar_conexao" checked>
+                            <label>Testar conexão após salvar</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <button type="submit" class="ui button primary">
+                            <i class="save icon"></i> Atualizar Servidor
+                        </button>
+                        <button type="button" class="ui button blue testar-conexao" data-id="[[id]]">
+                            <i class="plug icon"></i> Testar Conexão
+                        </button>
+                        <a href="@[[pagina#url-raiz]]@admin-ia/listar/" class="ui button">
+                            <i class="arrow left icon"></i> Voltar
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Histórico de Testes -->
+            <div class="ui segment">
+                <h3><i class="history icon"></i> Histórico de Testes</h3>
+                <div id="historico-testes">
+                    <div class="ui active inline loader"></div> Carregando...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

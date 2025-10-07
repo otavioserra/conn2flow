@@ -1,19 +1,5 @@
 [
     {
-        "name": "Contato",
-        "id": "contato",
-        "layout": "layout-pagina-sem-permissao",
-        "path": "contato\/",
-        "type": "page",
-        "without_permission": true,
-        "version": "1.4",
-        "checksum": {
-            "html": "31a1fd53b1e27d8140ff384192307174",
-            "css": "",
-            "combined": "31a1fd53b1e27d8140ff384192307174"
-        }
-    },
-    {
         "name": "404 - Página Não Encontrada",
         "id": "404-pagina-nao-encontrada",
         "layout": "layout-pagina-sem-permissao",

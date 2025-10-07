@@ -1,0 +1,90 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "banco"
+    ],
+    "tabela": {
+        "nome": "servidores_ia",
+        "id": "id_servidores_ia",
+        "id_numerico": "id_servidores_ia"
+    },
+    "apis": {
+        "gemini": {
+            "urlGenerateContent": "https:\/\/generativelanguage.googleapis.com\/v1beta\/{MODEL}:generateContent?key={API_KEY}",
+            "defaultModel": "models\/gemini-2.5-flash"
+        }
+    },
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin IA - Listar",
+                    "id": "admin-ia-listar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-ia\/listar\/",
+                    "type": "system",
+                    "option": "listar-servidores",
+                    "root": true,
+                    "version": "1.11",
+                    "checksum": {
+                        "html": "76f569590d7950a54dfaffaf3bdbf3bf",
+                        "css": "",
+                        "combined": "76f569590d7950a54dfaffaf3bdbf3bf"
+                    }
+                },
+                {
+                    "name": "Admin IA - Adicionar",
+                    "id": "admin-ia-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-ia\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar-servidor",
+                    "root": null,
+                    "version": "1.7",
+                    "checksum": {
+                        "html": "9375885298f1c9412c50c87a6b0a4414",
+                        "css": "",
+                        "combined": "9375885298f1c9412c50c87a6b0a4414"
+                    }
+                },
+                {
+                    "name": "Admin IA - Editar",
+                    "id": "admin-ia-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-ia\/editar\/",
+                    "type": "system",
+                    "option": "editar-servidor",
+                    "root": null,
+                    "version": "1.7",
+                    "checksum": {
+                        "html": "e2805c490baca7245ba9aed6d5e2720e",
+                        "css": "",
+                        "combined": "e2805c490baca7245ba9aed6d5e2720e"
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Formulário Servidor IA",
+                    "id": "form-servidor-ia",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "name": "Tipos de Servidor IA",
+                    "id": "tipos-servidor-ia",
+                    "value": "{\"gemini\":\"Google Gemini\",\"openai\":\"OpenAI\"}"
+                }
+            ]
+        }
+    }
+}

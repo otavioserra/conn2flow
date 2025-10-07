@@ -806,7 +806,7 @@ function gestor_cookie_verificacao(){
 	
 	// ===== Verifica se cookie no navegador está ativo.
 	
-	if(!isset($_COOKIE[$_CONFIG['cookie-verify']])){
+	if(!isset($_COOKIE[$_CONFIG['cookie-verify']]) && !isset($_COOKIE[$_CONFIG['cookie-authname']])){
 		// ===== Criar um cookie de verificação
 		
 		$cookieId = md5(uniqid(rand(), true));

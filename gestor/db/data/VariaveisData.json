@@ -2971,6 +2971,15 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "admin-ia",
+        "id": "tipos-servidor-ia",
+        "valor": "{\"gemini\":\"Google Gemini\",\"openai\":\"OpenAI\"}",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "admin-layouts",
         "id": "form-name-label",
         "valor": "Nome",

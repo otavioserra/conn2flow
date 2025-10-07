@@ -1,0 +1,47 @@
+<!-- Admin IA - Adicionar Servidor -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1><i class="plus icon"></i> Adicionar Servidor IA</h1>
+
+            <div class="ui segment">
+                <form id="form-servidor-ia" class="ui form">
+                    <div class="field required">
+                        <label>Nome do Servidor</label>
+                        <input type="text" name="nome" placeholder="Ex: Gemini Produção" required>
+                    </div>
+
+                    <div class="field required">
+                        <label>Tipo de Servidor</label>
+                        <select name="tipo" class="ui dropdown" required>
+                            <option value="gemini" checked>Google Gemini</option>
+                        </select>
+                    </div>
+
+                    <div class="field required">
+                        <label>Chave API</label>
+                        <input type="password" name="chave_api" placeholder="Cole sua chave API aqui" required>
+                        <small class="text-muted">A chave será encriptada e armazenada com segurança</small>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="testar_conexao" checked>
+                            <label>Testar conexão após salvar</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <button type="submit" class="ui button primary">
+                            <i class="save icon"></i> Salvar Servidor
+                        </button>
+                        <a href="@[[pagina#url-raiz]]@admin-ia/listar/" class="ui button">
+                            <i class="arrow left icon"></i> Voltar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

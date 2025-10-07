@@ -1013,4 +1013,206 @@ function autenticacao_acessos_limpeza($params = false){
 	
 }
 
+function autenticacao_encriptar_chave_publica($params = false){
+	$cryptMaxCharsValue = 245; // There are char limitations on openssl_private_encrypt() and in the url below are explained how define this value based on openssl key format: https://www.php.net/manual/en/function.openssl-private-encrypt.php#119810
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+
+	// valor - String - Obrigatório - Valor que será encriptado.
+	// chavePublica - String - Obrigatório - Chave pública para assinar o JWT.
+
+	// =====
+
+	if(isset($valor) && isset($chavePublica)){
+		try {
+			// ===== Valor base64 encode
+
+			$valor = base64_encode($valor);
+
+			// ===== Valor a ser encriptado
+
+			$rawDataSource = $valor;
+			
+			// ===== Assinar usando RSA SSL
+			
+			$resPublicKey = openssl_get_publickey($chavePublica);
+
+			$partialData = '';
+			$encodedData = '';
+			$split = str_split($rawDataSource , $cryptMaxCharsValue);
+			foreach($split as $part){
+				openssl_public_encrypt($part, $partialData, $resPublicKey);
+				$encodedData .= (strlen($encodedData) > 0 ? '.':'') . base64_encode($partialData);
+			}
+			
+			$encodedData = base64_encode($encodedData);
+
+			// ===== Retornar o valor encriptado
+			
+			return $encodedData;
+		} catch (Exception $e) {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+function autenticacao_encriptar_chave_privada($params = false){
+	$cryptMaxCharsValue = 245; // There are char limitations on openssl_private_encrypt() and in the url below are explained how define this value based on openssl key format: https://www.php.net/manual/en/function.openssl-private-encrypt.php#119810
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// valor - String - Obrigatório - Valor que será encriptado.
+	// chavePrivada - String - Obrigatório - Chave privada para gerar a assinatura do token.
+	// chavePrivadaSenha - String - Obrigatório - Senha da chave privada.
+	
+	// =====
+
+	if(isset($valor) && isset($chavePrivada) && isset($chavePrivadaSenha)){
+		try {
+			// ===== Valor base64 encode
+
+			$valor = base64_encode($valor);
+
+			// ===== Valor a ser encriptado
+
+			$rawDataSource = $valor;
+			
+			// ===== Assinar usando RSA SSL
+			
+			$resPrivateKey = openssl_get_privatekey($chavePrivada,$chavePrivadaSenha);
+			
+			$partialData = '';
+			$encodedData = '';
+			$split = str_split($rawDataSource , $cryptMaxCharsValue);
+			foreach($split as $part){
+				openssl_private_encrypt($part, $partialData, $resPrivateKey);
+				$encodedData .= (strlen($encodedData) > 0 ? '.':'') . base64_encode($partialData);
+			}
+			
+			$encodedData = base64_encode($encodedData);
+
+			// ===== Retornar o valor encriptado
+
+			return $encodedData;
+		} catch (Exception $e) {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+function autenticacao_decriptar_chave_publica($params = false){
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+
+	// criptografia - String - Obrigatório - Criptografia a ser decifrada.
+	// chavePublica - String - Obrigatório - Chave pública para conferir a assinatura do token.
+	
+	// ===== 
+	
+	if(isset($criptografia) && isset($chavePublica)){
+		try {
+			// ===== Criptografia a ser decifrada
+
+			$encodedData = $criptografia;
+			
+			// ===== Abrir chave privada com a senha
+			
+			$resPublicKey = openssl_get_publickey($chavePublica);
+			
+			// ===== Decode base64 to reaveal dots (Dots are used in JWT syntaxe)
+
+			$encodedData = base64_decode($encodedData);
+
+			// ===== Decrypt data in parts if necessary. Using dots as split separator.
+
+			$rawEncodedData = $encodedData;
+
+			$countCrypt = 0;
+			$partialDecodedData = '';
+			$decodedData = '';
+			$split2 = explode('.',$rawEncodedData);
+			foreach($split2 as $part2){
+				$part2 = base64_decode($part2);
+				
+				openssl_public_decrypt($part2, $partialDecodedData, $resPublicKey);
+				$decodedData .= $partialDecodedData;
+			}
+
+			// ===== Retornar valor decifrado
+		
+			$decodedData = base64_decode($decodedData);
+
+			return $decodedData;
+		} catch (Exception $e) {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+function autenticacao_decriptar_chave_privada($params = false){
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// criptografia - String - Obrigatório - Criptografia a ser decifrada.
+	// chavePrivada - String - Obrigatório - Chave privada para conferir a assinatura do token.
+	// chavePrivadaSenha - String - Obrigatório - Senha da chave privada.
+	
+	// ===== 
+	
+	if(isset($criptografia) && isset($chavePrivada) && isset($chavePrivadaSenha)){
+		try {
+			// ===== Criptografia a ser decifrada
+
+			$encodedData = $criptografia;
+			
+			// ===== Abrir chave privada com a senha
+			
+			$resPrivateKey = openssl_get_privatekey($chavePrivada,$chavePrivadaSenha);
+			
+			// ===== Decode base64 to reaveal dots (Dots are used in JWT syntaxe)
+
+			$encodedData = base64_decode($encodedData);
+
+			// ===== Decrypt data in parts if necessary. Using dots as split separator.
+
+			$rawEncodedData = $encodedData;
+
+			$countCrypt = 0;
+			$partialDecodedData = '';
+			$decodedData = '';
+			$split2 = explode('.',$rawEncodedData);
+			foreach($split2 as $part2){
+				$part2 = base64_decode($part2);
+				
+				openssl_private_decrypt($part2, $partialDecodedData, $resPrivateKey);
+				$decodedData .= $partialDecodedData;
+			}
+
+			// ===== Retornar valor decifrado
+		
+			$decodedData = base64_decode($decodedData);
+
+			return $decodedData;
+		} catch (Exception $e) {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
 ?>

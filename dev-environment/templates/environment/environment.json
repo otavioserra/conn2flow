@@ -15,5 +15,8 @@
     },
     "devPluginEnvironmentConfig": {
         "path": ""
+    },
+    "gemini": {
+        "apiKey": ""
     }
 }

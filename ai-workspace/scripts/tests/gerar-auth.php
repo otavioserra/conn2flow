@@ -44,6 +44,7 @@ try {
 // Verificar se existe usuário administrador (ID 1)
 try {
     $usuario = banco_select([
+        'unico' => true,
         'tabela' => 'usuarios',
         'campos' => ['id_usuarios', 'nome'],
         'extra' => "WHERE id_usuarios = 1"
@@ -52,46 +53,63 @@ try {
     if ($usuario) {
         echo "Usuário encontrado: " . $usuario['nome'] . " (ID: " . $usuario['id_usuarios'] . ")\n";
 
-        // Gerar token de autenticação
-        echo "Gerando token de autenticação...\n";
+        $tokenFile = __DIR__ . '/.envAITestsToken';
+        if (file_exists($tokenFile)) {
+            $tokenJWT = trim(file_get_contents($tokenFile));
+            echo "Token já existe, carregando do arquivo...\n";
+        } else {
+            // Gerar token de autenticação
+            echo "Gerando token de autenticação...\n";
+
+            // Deletar tokens antigos do usuário 1
+            banco_delete
+            (
+                "usuarios_tokens",
+                "WHERE user_agent='".$_SERVER['HTTP_USER_AGENT']."' AND id_usuarios='".$usuario['id_usuarios']."'"
+            );
+            
+            // Simular a geração do token JWT como na função usuario_gerar_token_autorizacao
+            $expiration = time() + $_CONFIG['cookie-lifetime'];
+            $keyPublicPath = $_GESTOR['openssl-path'] . 'publica.key';
+            
+            $fp = fopen($keyPublicPath,"r");
+            $chavePublica = fread($fp,8192);
+            fclose($fp);
+            
+            $tokenPubId = md5(uniqid(rand(), true));
+            $pubIDValidation = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
+            
+            $tokenJWT = usuario_gerar_jwt(Array(
+                'host' => $_SERVER['SERVER_NAME'],
+                'expiration' => $expiration,
+                'chavePublica' => $chavePublica,
+                'pubID' => $tokenPubId,
+            ));
+            
+            // Salvar no arquivo
+            file_put_contents($tokenFile, $tokenJWT);
+            
+            // Salvar no banco como na função original
+            gestor_incluir_biblioteca('ip');
+            $ip = ip_get();
+            
+            $campos = null; $campo_sem_aspas_simples = null;
+            $campo_nome = "id_usuarios"; $campo_valor = 1; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+            $campo_nome = "pubID"; $campo_valor = $tokenPubId; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+            $campo_nome = "pubIDValidation"; $campo_valor = $pubIDValidation; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+            $campo_nome = "expiration"; $campo_valor = $expiration; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+            $campo_nome = "ip"; $campo_valor = $ip; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+            $campo_nome = "user_agent"; $campo_valor = $_SERVER['HTTP_USER_AGENT']; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+            $campo_nome = "data_criacao"; $campo_valor = 'NOW()'; $campos[] = Array($campo_nome,$campo_valor,true);
+            
+            banco_insert_name($campos, "usuarios_tokens");
+        }
         
-        // Simular a geração do token JWT como na função usuario_gerar_token_autorizacao
-        $expiration = time() + $_CONFIG['cookie-lifetime'];
-        $keyPublicPath = $_GESTOR['openssl-path'] . 'publica.key';
-        
-        $fp = fopen($keyPublicPath,"r");
-        $chavePublica = fread($fp,8192);
-        fclose($fp);
-        
-        $tokenPubId = md5(uniqid(rand(), true));
-        $pubIDValidation = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
-        
-        $tokenJWT = usuario_gerar_jwt(Array(
-            'host' => $_SERVER['SERVER_NAME'],
-            'expiration' => $expiration,
-            'chavePublica' => $chavePublica,
-            'pubID' => $tokenPubId,
-        ));
-        
-        // Salvar no banco como na função original
-        gestor_incluir_biblioteca('ip');
-        $ip = ip_get();
-        
-        $campos = null; $campo_sem_aspas_simples = null;
-        $campo_nome = "id_usuarios"; $campo_valor = 1; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-        $campo_nome = "pubID"; $campo_valor = $tokenPubId; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-        $campo_nome = "pubIDValidation"; $campo_valor = $pubIDValidation; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-        $campo_nome = "expiration"; $campo_valor = $expiration; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-        $campo_nome = "ip"; $campo_valor = $ip; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-        $campo_nome = "user_agent"; $campo_valor = $_SERVER['HTTP_USER_AGENT']; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-        $campo_nome = "data_criacao"; $campo_valor = 'NOW()'; $campos[] = Array($campo_nome,$campo_valor,true);
-        
-        banco_insert_name($campos, "usuarios_tokens");
-        
-        echo "✅ Token de autenticação gerado com sucesso!\n";
+        echo "🌎 Server Name: ".$_SERVER['SERVER_NAME']."!\n";
+        echo "✅ Token de autenticação gerado/carregado com sucesso!\n";
         echo "🍪 Cookie definido para: " . $_CONFIG['cookie-authname'] . "\n";
         echo "🔑 Valor do token JWT: " . $tokenJWT . "\n";
-        echo "Agora você pode acessar: http://localhost/instalador/admin-environment/\n";
+        echo "Agora você pode acessar: http://localhost/instalador/\n";
     } else {
         echo "❌ Usuário administrador (ID 1) não encontrado no banco\n";
         echo "Verifique se o banco foi inicializado corretamente\n";

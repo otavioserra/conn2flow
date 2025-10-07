@@ -884,6 +884,19 @@
         "checksum": "{\"html\":\"a67b32353b2471c080e7d8c0996fb700\",\"css\":\"\",\"combined\":\"a67b32353b2471c080e7d8c0996fb700\"}"
     },
     {
+        "nome": "Formulário Servidor IA",
+        "id": "form-servidor-ia",
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "html": null,
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+    },
+    {
         "nome": "modal-layout",
         "id": "modal-layout",
         "language": "pt-br",

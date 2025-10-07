@@ -575,19 +575,7 @@ function admin_paginas_editar(){
 	if($_GESTOR['banco-resultado']){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
 		$caminho = (isset($retorno_bd['caminho']) ? $retorno_bd['caminho'] : '');
-		// Recuperar layout_id textual e mapear para id_layouts numérico para o select
 		$layout_id = (isset($retorno_bd['layout_id']) ? $retorno_bd['layout_id'] : '');
-		$id_layouts = '';
-		if($layout_id){
-			$layoutRowSel = banco_select_name(
-				banco_campos_virgulas(Array('id_layouts')),
-				'layouts',
-				"WHERE id='".banco_escape_field($layout_id)."'"
-			);
-			if($layoutRowSel){
-				$id_layouts = $layoutRowSel[0]['id_layouts'];
-			}
-		}
 		$bd_modulo = (isset($retorno_bd['modulo']) ? $retorno_bd['modulo'] : '');
 		$tipo = (isset($retorno_bd['tipo']) ? $retorno_bd['tipo'] : '');
 		$framework_css = (isset($retorno_bd['framework_css']) ? $retorno_bd['framework_css'] : '');
@@ -613,7 +601,7 @@ function admin_paginas_editar(){
 		
 		// ===== Alterar demais variáveis.
 		
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#url#','http'.(isset($_SERVER['HTTPS']) ? 's':'').'://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].$caminho);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#url#','http'.(isset($_SERVER['HTTPS']) ? 's':'').'://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].($caminho == '/' ? '' : $caminho));
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-nome#',$nome);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#caminho#',$caminho);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id#',$id);
@@ -781,8 +769,8 @@ function admin_paginas_editar(){
 					'tabela' => Array(
 						'nome' => 'layouts',
 						'campo' => 'nome',
-						'id_numerico' => 'id_layouts',
-						'id_selecionado' => $id_layouts,
+						'id_numerico' => 'id',
+						'id_selecionado' => $layout_id,
 						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
 				),

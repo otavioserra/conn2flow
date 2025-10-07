@@ -80,6 +80,10 @@
         "modulo": "variables"
     },
     {
+        "perfil": "administradores",
+        "modulo": "admin-ia"
+    },
+    {
         "perfil": "consumidores",
         "modulo": "dashboard"
     },

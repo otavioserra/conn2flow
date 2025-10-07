@@ -118,8 +118,9 @@ function modelo_tag_del($modelo,$tag_in,$tag_out){
 	$posFinal = strpos($modelo, $tag_out);
 	
 	$notFound = false;
-	if($posInicial === false || $posFinal === false)
+	if($posInicial === false || $posFinal === false){
 		$notFound = true;
+	}
 	
 	if(!$notFound){
 		$posFinal = $posFinal+strlen($tag_out);

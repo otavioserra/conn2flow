@@ -502,5 +502,33 @@
         "status": "A",
         "versao": "1",
         "language": "en"
+    },
+    {
+        "modulo_grupo_id": "administracao-sistema",
+        "nome": "Admin IA",
+        "id": "admin-ia",
+        "titulo": "Servidores IA",
+        "icone": "robot",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-sistema",
+        "nome": "Admin IA",
+        "id": "admin-ia",
+        "titulo": "AI Servers",
+        "icone": "robot",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     }
 ]
