@@ -256,7 +256,7 @@ function admin_paginas_adicionar(){
 					'procurar' => true,
 					'limpar' => true,
 					'selectClass' => 'gestorModule',
-					'placeholder' => gestor_variaveis(Array('restart' => $_GESTOR['modulo-id'],'modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
 					'tabela' => Array(
 						'nome' => 'modulos',
 						'campo' => 'nome',

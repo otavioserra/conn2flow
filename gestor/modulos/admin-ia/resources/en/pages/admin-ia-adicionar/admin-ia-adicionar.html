@@ -1,0 +1,47 @@
+<!-- Admin IA - Add Server -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1><i class="plus icon"></i> Add AI Server</h1>
+
+            <div class="ui segment">
+                <form id="form-servidor-ia" class="ui form">
+                    <div class="field required">
+                        <label>Server Name</label>
+                        <input type="text" name="nome" placeholder="Ex: Gemini Production" required>
+                    </div>
+
+                    <div class="field required">
+                        <label>Server Type</label>
+                        <select name="tipo" class="ui dropdown" required>
+                            <option value="gemini" checked>Google Gemini</option>
+                        </select>
+                    </div>
+
+                    <div class="field required">
+                        <label>API Key</label>
+                        <input type="password" name="chave_api" placeholder="Paste your API key here" required>
+                        <small class="text-muted">The key will be encrypted and stored securely</small>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="testar_conexao" checked>
+                            <label>Test connection after saving</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <button type="submit" class="ui button primary">
+                            <i class="save icon"></i> Save Server
+                        </button>
+                        <a href="@[[pagina#url-raiz]]@admin-ia/listar/" class="ui button">
+                            <i class="arrow left icon"></i> Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

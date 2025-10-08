@@ -35,6 +35,24 @@
                     "valor": "pagina"
                 }
             ],
+            "prompts_targets": [
+                {
+                    "id": "paginas",
+                    "name": "Páginas"
+                }
+            ],
+            "prompts": [
+                {
+                    "id": "paginas",
+                    "name": "Páginas",
+                    "target": "paginas",
+                    "default": true,
+                    "version": "1.2",
+                    "checksum": {
+                        "md": "f46d272c361f52f77f7033eaf3780cd7"
+                    }
+                }
+            ],
             "components": [
                 {
                     "nome": "Modal Página",
@@ -329,6 +347,24 @@
                 {
                     "texto": "Page",
                     "valor": "pagina"
+                }
+            ],
+            "prompts_targets": [
+                {
+                    "id": "paginas",
+                    "name": "Pages"
+                }
+            ],
+            "prompts": [
+                {
+                    "id": "paginas",
+                    "name": "Pages",
+                    "target": "paginas",
+                    "default": true,
+                    "version": "1.2",
+                    "checksum": {
+                        "md": "4ae5d519b7e53af69e374a96ff1ba05c"
+                    }
                 }
             ],
             "layouts": [],

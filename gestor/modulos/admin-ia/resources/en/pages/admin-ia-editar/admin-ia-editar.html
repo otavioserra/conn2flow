@@ -1,0 +1,61 @@
+<!-- Admin IA - Edit Server -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1><i class="edit icon"></i> Edit AI Server</h1>
+
+            <div class="ui segment">
+                <form id="form-servidor-ia-edit" class="ui form">
+                    <input type="hidden" name="id" value="[[id]]">
+
+                    <div class="field required">
+                        <label>Server Name</label>
+                        <input type="text" name="nome" value="[[nome]]" placeholder="Ex: Gemini Production" required>
+                    </div>
+
+                    <div class="field required">
+                        <label>Server Type</label>
+                        <select name="tipo" class="ui dropdown" required>
+                            <option value="gemini" selected>Google Gemini</option>
+                        </select>
+                    </div>
+
+                    <div class="field required">
+                        <label>API Key</label>
+                        <input type="password" name="chave_api" value="[[chave-api]]"
+                            placeholder="Leave blank to keep current" required>
+                        <small class="text-muted">Enter a new key to change, or leave *** to keep current</small>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="testar_conexao" checked>
+                            <label>Test connection after saving</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <button type="submit" class="ui button primary">
+                            <i class="save icon"></i> Update Server
+                        </button>
+                        <button type="button" class="ui button blue testar-conexao" data-id="[[id]]">
+                            <i class="plug icon"></i> Test Connection
+                        </button>
+                        <a href="@[[pagina#url-raiz]]@admin-ia/listar/" class="ui button">
+                            <i class="arrow left icon"></i> Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Test History -->
+            <div class="ui segment">
+                <h3><i class="history icon"></i> Test History</h3>
+                <div id="historico-testes">
+                    <div class="ui active inline loader"></div> Loading...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

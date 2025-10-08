@@ -2979,6 +2979,15 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "admin-ia",
+        "id": "tipos-servidor-ia",
+        "valor": "{\"gemini\":\"Google Gemini\",\"openai\":\"OpenAI\"}",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-layouts",
         "id": "form-name-label",
@@ -4343,6 +4352,168 @@
         "id": "metadata-last-update",
         "valor": "Last Update",
         "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-prompts-ia",
+        "id": "form-name-label",
+        "valor": "Nome do Prompt",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-prompts-ia",
+        "id": "form-name-placeholder",
+        "valor": "Digite o nome do prompt",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-prompts-ia",
+        "id": "form-target-label",
+        "valor": "Alvo",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-prompts-ia",
+        "id": "form-target-placeholder",
+        "valor": "Selecione o alvo do prompt",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-prompts-ia",
+        "id": "form-prompt-label",
+        "valor": "Prompt",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-prompts-ia",
+        "id": "form-prompt-placeholder",
+        "valor": "Digite o conteúdo do prompt",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-prompts-ia",
+        "id": "form-default-label",
+        "valor": "Padrão",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-prompts-ia",
+        "id": "field-target",
+        "valor": "Alvo",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-prompts-ia",
+        "id": "field-default",
+        "valor": "Padrão",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-prompts-ia",
+        "id": "form-name-label",
+        "valor": "Prompt Name",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-prompts-ia",
+        "id": "form-name-placeholder",
+        "valor": "Enter the prompt name",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-prompts-ia",
+        "id": "form-target-label",
+        "valor": "Target",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-prompts-ia",
+        "id": "form-target-placeholder",
+        "valor": "Select the prompt target",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-prompts-ia",
+        "id": "form-prompt-label",
+        "valor": "Prompt",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-prompts-ia",
+        "id": "form-prompt-placeholder",
+        "valor": "Enter the prompt content",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-prompts-ia",
+        "id": "form-default-label",
+        "valor": "Default",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-prompts-ia",
+        "id": "field-target",
+        "valor": "Target",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-prompts-ia",
+        "id": "field-default",
+        "valor": "Default",
+        "tipo": null,
         "grupo": null,
         "descricao": null
     },

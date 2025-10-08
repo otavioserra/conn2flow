@@ -134,7 +134,19 @@ Implementar um sistema de chat integrado com IA como um campo reutilizável em m
 - [x] Criar permissões e validações de segurança
 - [x] Testar CRUD completo e testes de conexão com Gemini
 
-### Fase 3: Implementação do Backend IA
+### Fase 3: Sistema de Prompts Técnicos (Pré-Prompts)
+- [x] Criar módulo admin-prompts-ia para gerenciamento de prompts pré-configurados
+- [x] Implementar estrutura de banco de dados (tabela prompts_ia com campos: nome, alvo, padrao, prompt)
+- [x] Desenvolver interface CRUD completa (adicionar/editar/listar prompts)
+- [x] Implementar lógica de prompt padrão por alvo (paginas, layouts, componentes)
+- [x] Criar sistema de validação para evitar múltiplos prompts padrão no mesmo alvo
+- [x] Desenvolver templates de prompts técnicos específicos por tipo de conteúdo
+- [x] Implementar internacionalização completa (português/inglês) para todas as interfaces
+- [x] Criar sistema de versionamento e histórico de alterações nos prompts
+- [x] Integrar com sistema de permissões do Conn2Flow
+- [x] Testar funcionalidades CRUD e validações de negócio
+
+### Fase 4: Implementação do Backend IA
 - [ ] Criar biblioteca IA em `gestor/bibliotecas/ia.php`
 - [ ] Implementar função `enviarPrompt()` com união pré-prompt + input
 - [ ] Criar métodos para pré-prompts estáticos por tipo de conteúdo
@@ -144,7 +156,7 @@ Implementar um sistema de chat integrado com IA como um campo reutilizável em m
 - [ ] Criar controlador para webhook
 - [ ] Implementar validação e processamento de respostas IA
 
-### Fase 4: Integração no Admin-Páginas
+### Fase 5: Integração no Admin-Páginas
 - [ ] Analisar estrutura atual do admin-paginas (formulários adicionar/editar)
 - [ ] Adicionar campo de chat IA no formulário de páginas via @[[componente#chat-ia]]@
 - [ ] Implementar componente JS para interação do chat (envio via AJAX para controlador)
@@ -152,7 +164,7 @@ Implementar um sistema de chat integrado com IA como um campo reutilizável em m
 - [ ] Adicionar preview da página gerada antes de salvar
 - [ ] Testar fluxo completo: descrição → IA → código → preview → salvar
 
-### Fase 5: Expansão e Testes
+### Fase 6: Expansão e Testes
 - [ ] Expandir para outros módulos (layouts, componentes)
 - [ ] Implementar múltiplos modelos de pré-prompt dinâmicos
 - [ ] Testar comunicação com servidores IA (usar mocks inicialmente)
@@ -161,22 +173,92 @@ Implementar um sistema de chat integrado com IA como um campo reutilizável em m
 - [ ] Validar segurança e performance
 - [ ] Documentação de uso por módulo
 
-## Modelos de Pré-Prompt
+## Modelos de Pré-Prompt Técnicos (Sistema Implementado)
 
-### Página (Inicial)
+### Sistema de Gestão de Prompts
+- **Módulo admin-prompts-ia**: Sistema completo para gerenciamento de prompts pré-configurados
+- **Estrutura de Banco**: Tabela `prompts_ia` com campos para nome, alvo, padrão e conteúdo do prompt
+- **Validação de Negócio**: Apenas um prompt padrão por alvo (páginas, layouts, componentes)
+- **Internacionalização**: Suporte completo para português e inglês
+- **Versionamento**: Controle de alterações e histórico de modificações
+
+### Templates de Prompts por Alvo
+
+#### Páginas (Implementado)
 ```
-Informações Principais dessa comunicação. Você irá criar uma página usando o estilizador [Fomantic-UI|TailwindCSS]. Esta página não precisa dos dados da head do HTML. Apenas o que vai no body. Use classes responsivas e acessíveis. Foque em semântica HTML5. Evite JavaScript inline, prefira integração com frameworks do sistema. À seguir o usuário descreveu a seguinte necessidade dele: [INPUT_USUARIO]
+Você é um especialista em desenvolvimento web e irá criar uma página HTML usando o framework Fomantic-UI. 
+
+IMPORTANTE: Esta página será integrada no sistema Conn2Flow, então:
+- Use apenas o conteúdo que vai dentro da tag <body>
+- NÃO inclua <html>, <head>, <body> ou qualquer tag estrutural
+- Use classes do Fomantic-UI para estilização
+- Mantenha a responsividade e acessibilidade
+- Foque em semântica HTML5 adequada
+- Evite JavaScript inline - prefira integração com frameworks do sistema
+- Use variáveis dinâmicas do Conn2Flow quando necessário: @[[variavel#valor]]@
+
+O usuário solicitou: [INPUT_USUARIO]
+
+Gere apenas o código HTML da página, sem explicações adicionais.
 ```
 
-### Layout (Futuro)
+#### Layouts (Implementado)
 ```
-Você é um especialista em layouts responsivos. Crie um layout usando [Fomantic-UI|TailwindCSS] com as seguintes características: header fixo, navegação lateral, área de conteúdo principal, footer. Integre com o sistema de variáveis dinâmicas @[[...]]@ do Conn2Flow. Necessidade do usuário: [INPUT_USUARIO]
+Você é um especialista em design de layouts responsivos e irá criar um layout usando Fomantic-UI para o sistema Conn2Flow.
+
+REGRAS IMPORTANTES:
+- Use apenas o conteúdo que vai dentro da tag <body>
+- NÃO inclua tags <html>, <head> ou <body>
+- Crie um layout estrutural com header, navegação, conteúdo principal e footer
+- Use classes responsivas do Fomantic-UI
+- Inclua variáveis dinâmicas do Conn2Flow: @[[pagina#corpo]]@ para conteúdo dinâmico
+- Mantenha acessibilidade e usabilidade
+- Evite JavaScript inline
+
+O usuário precisa de: [INPUT_USUARIO]
+
+Gere apenas o código HTML do layout, sem explicações.
 ```
 
-### Componente (Futuro)
+#### Componentes (Implementado)
 ```
-Crie um componente reutilizável em HTML/CSS/JS usando [Fomantic-UI|TailwindCSS]. Deve ser modular e integrar com o sistema de componentes do Conn2Flow. Foco em acessibilidade e performance. Necessidade do usuário: [INPUT_USUARIO]
+Você é um especialista em componentes reutilizáveis e irá criar um componente usando Fomantic-UI para o Conn2Flow.
+
+DIRETRIZES:
+- Crie um componente modular e reutilizável
+- Use apenas HTML e classes Fomantic-UI
+- Mantenha foco em acessibilidade e performance
+- Evite JavaScript inline - use apenas HTML/CSS
+- Considere integração com variáveis dinâmicas: @[[componente#parametro]]@
+- Mantenha semântica HTML5 adequada
+
+O componente deve: [INPUT_USUARIO]
+
+Gere apenas o código HTML do componente, sem explicações adicionais.
 ```
+
+### Funcionalidades do Sistema de Prompts
+
+#### Gerenciamento CRUD Completo
+- ✅ Adicionar novos prompts com nome descritivo
+- ✅ Editar prompts existentes com versionamento
+- ✅ Listar todos os prompts com filtros
+- ✅ Definir prompt padrão por alvo
+- ✅ Validação automática de unicidade de padrão
+
+#### Validações de Negócio
+- ✅ Apenas um prompt padrão por alvo
+- ✅ Verificação automática de conflitos
+- ✅ Alerta visual para usuário sobre limitações
+- ✅ Manutenção da integridade dos dados
+
+#### Internacionalização
+- ✅ Interface completamente traduzida (PT-BR/EN)
+- ✅ Variáveis dinâmicas para todos os textos
+- ✅ Suporte a expansão para novos idiomas
+- ✅ Consistência terminológica
+
+## Modelos de Pré-Prompt (Conceituais - Futuro)
 
 ## Exemplos de Uso da Biblioteca
 
@@ -205,8 +287,11 @@ Crie um componente reutilizável em HTML/CSS/JS usando [Fomantic-UI|TailwindCSS]
 - **Performance**: Otimizar para alta concorrência
 
 ## Próximos Passos
-- Criar módulo admin-ia via script
-- Implementar suporte para Gemini (primeiro servidor IA)
-- Criar CRUD de integrações com teste de conexão
-- Depois, criar biblioteca IA e componente chat
-- Integrar no admin-paginas
+- ✅ Criar módulo admin-ia via script (COMPLETADO)
+- ✅ Implementar suporte para Gemini (primeiro servidor IA) (COMPLETADO)
+- ✅ Criar CRUD de integrações com teste de conexão (COMPLETADO)
+- ✅ Desenvolver sistema de prompts técnicos pré-configurados (COMPLETADO)
+- [ ] Criar biblioteca IA em `gestor/bibliotecas/ia.php`
+- [ ] Implementar integração entre prompts pré-configurados e servidores IA
+- [ ] Criar componente chat IA reutilizável
+- [ ] Integrar no admin-paginas para geração assistida de código

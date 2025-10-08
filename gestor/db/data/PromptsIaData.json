@@ -1,0 +1,26 @@
+[
+    {
+        "nome": "Páginas",
+        "id": "paginas",
+        "language": "pt-br",
+        "alvo": "paginas",
+        "padrao": true,
+        "prompt": "Gerar uma página HTML apenas a parte interna do <body>. Devolver o código HTML usando markdown ```html ``` e caso precise de css extra, devolve o mesmo com markdown ```css ```\r\nEssa página irá usar o framework CSS TailwindCSS\r\nNão precisa explicar como fazer a página uma vez que o seu retorno será aproveitado apenas o código HTML e CSS gerados.\r\nTodas as sessões geradas que não existam antes devem ter um marcador incremental <NUMBER> da sessão atual. Caso seja uma modificação, manter o valor da incrementação e modificar o conteúdo:\r\nAntes da sessão:\r\n<!-- session-<NUMBER> < -->\r\nDepois da sessão:\r\n<!-- session-<NUMBER> > -->\r\nHTML gerado numa interação anterior: \r\n```html\r\n<!-- html -->\r\n```\r\nA seguir um usuário sem ou com entendimento de HTML descreveu a seguinte necessidade dele:",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.2",
+        "checksum": "{\"md\":\"f46d272c361f52f77f7033eaf3780cd7\"}"
+    },
+    {
+        "nome": "Pages",
+        "id": "paginas",
+        "language": "en",
+        "alvo": "paginas",
+        "padrao": true,
+        "prompt": "Generate an HTML page with just the inner part of the <body>. Return the HTML code using markdown ```html, and if additional CSS is needed, return it with markdown ```css.\r\nThis page will use the TailwindCSS CSS framework.\r\nThere's no need to explain how to create the page, as its return will only use the generated HTML and CSS code.\r\nAll generated sessions that didn't previously exist must have an incremental <NUMBER> marker for the current session. If it's a modification, keep the increment value and modify the content:\r\nBefore the session:\r\n<!-- session-<NUMBER> < -->\r\nAfter the session:\r\n<!-- session-<NUMBER> > -->\r\nHTML generated in a previous interaction:\r\n```html\r\n<!-- html -->\r\n```\r\nBelow, a user with or without HTML knowledge described the following need:\r\nIn the last session, change the background color to hot pink and include a new section saying welcome to my website.\r\n",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.2",
+        "checksum": "{\"md\":\"4ae5d519b7e53af69e374a96ff1ba05c\"}"
+    }
+]

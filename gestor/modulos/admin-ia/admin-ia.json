@@ -85,6 +85,75 @@
                     "value": "{\"gemini\":\"Google Gemini\",\"openai\":\"OpenAI\"}"
                 }
             ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin AI - List",
+                    "id": "admin-ia-listar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-ia\/listar\/",
+                    "type": "system",
+                    "option": "listar-servidores",
+                    "root": true,
+                    "version": "1.12",
+                    "checksum": {
+                        "html": "b2284585860c9eebdc3ad3fdd5ed5eb4",
+                        "css": "",
+                        "combined": "b2284585860c9eebdc3ad3fdd5ed5eb4"
+                    }
+                },
+                {
+                    "name": "Admin AI - Add",
+                    "id": "admin-ia-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-ia\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar-servidor",
+                    "root": null,
+                    "version": "1.8",
+                    "checksum": {
+                        "html": "194f40f36565e252baa600d088c27a68",
+                        "css": "",
+                        "combined": "194f40f36565e252baa600d088c27a68"
+                    }
+                },
+                {
+                    "name": "Admin AI - Edit",
+                    "id": "admin-ia-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-ia\/editar\/",
+                    "type": "system",
+                    "option": "editar-servidor",
+                    "root": null,
+                    "version": "1.8",
+                    "checksum": {
+                        "html": "164894d265b5ef22dc548b5740e74762",
+                        "css": "",
+                        "combined": "164894d265b5ef22dc548b5740e74762"
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "AI Server Form",
+                    "id": "form-servidor-ia",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "name": "AI Server Types",
+                    "id": "tipos-servidor-ia",
+                    "value": "{\"gemini\":\"Google Gemini\",\"openai\":\"OpenAI\"}"
+                }
+            ]
         }
     }
 }

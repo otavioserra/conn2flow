@@ -530,5 +530,33 @@
         "status": "A",
         "versao": "1",
         "language": "en"
+    },
+    {
+        "modulo_grupo_id": "administracao-sistema",
+        "nome": "Admin Prompts IA",
+        "id": "admin-prompts-ia",
+        "titulo": "Prompts IA",
+        "icone": "stream",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-sistema",
+        "nome": "Admin Prompts AI",
+        "id": "admin-prompts-ia",
+        "titulo": "AI Prompts",
+        "icone": "stream",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     }
 ]

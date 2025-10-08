@@ -897,6 +897,19 @@
         "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
     },
     {
+        "nome": "AI Server Form",
+        "id": "form-servidor-ia",
+        "language": "en",
+        "modulo": "admin-ia",
+        "html": null,
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+    },
+    {
         "nome": "modal-layout",
         "id": "modal-layout",
         "language": "pt-br",

@@ -1,0 +1,16 @@
+[
+    {
+        "nome": "Páginas",
+        "id": "paginas",
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1
+    },
+    {
+        "nome": "Pages",
+        "id": "paginas",
+        "language": "en",
+        "status": "A",
+        "versao": 1
+    }
+]

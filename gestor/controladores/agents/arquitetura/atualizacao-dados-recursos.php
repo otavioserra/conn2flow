@@ -121,6 +121,14 @@ function buildChecksum(?string $html, ?string $css): array {
 }
 
 /**
+ * Calcula checksums individual do Markdown.
+ */
+function buildChecksumMD(?string $md): array {
+    $m = ($md === null || $md === '') ? '' : md5($md);
+    return ['md' => $m];
+}
+
+/**
  * Atualiza arquivos de origem (layouts.json, pages.json, components.json) incrementando
  * version e checksum quando HTML/CSS associados mudaram. Isso garante que:
  *  - O campo 'version' de origem reflita mudanças de conteúdo.
@@ -196,6 +204,25 @@ function atualizarArquivosOrigem(array $map): void {
                     }
                     unset($item);
                 }
+                foreach (['prompts'] as $tipo) {
+                    if (empty($data['resources'][$lang][$tipo]) || !is_array($data['resources'][$lang][$tipo])) continue;
+                    foreach ($data['resources'][$lang][$tipo] as &$item) {
+                        $id = $item['id'] ?? null; if(!$id) continue;
+                        $paths = resourcePaths($modPath,$lang,$tipo,$id); // base modulo
+                        $md = readFileIfExists($paths['md']);
+                        $newChecksum = buildChecksumMD($md);
+                        $oldChecksum = $item['checksum'] ?? ['md'=>''];
+                        if (!is_array($oldChecksum)) { $dec=json_decode((string)$oldChecksum,true); if(is_array($dec)) $oldChecksum=$dec; }
+                        if (!checksumsEqualMD($oldChecksum,$newChecksum)) {
+                            $oldVersion = $item['version'] ?? null;
+                            $item['version'] = incrementVersionStr($oldVersion);
+                            $item['checksum'] = $newChecksum;
+                            $changedModule = true;
+                            log_disco("ORIGIN_UPDATE_MODULE modulo=$modId tipo=$tipo id=$id lang=$lang version {$oldVersion}=>{$item['version']}", $LOG_FILE);
+                        }
+                    }
+                    unset($item);
+                }
             }
             if ($changedModule) {
                 jsonWrite($jsonFile,$data);
@@ -212,6 +239,13 @@ function checksumsEqual(array $a, array $b): bool {
     return ($a['html'] ?? null) === ($b['html'] ?? null)
         && ($a['css'] ?? null) === ($b['css'] ?? null)
         && ($a['combined'] ?? null) === ($b['combined'] ?? null);
+}
+
+/**
+ * Compara checksums MD.
+ */
+function checksumsEqualMD(array $a, array $b): bool {
+    return ($a['md'] ?? null) === ($b['md'] ?? null);
 }
 
 /**
@@ -255,6 +289,7 @@ function resourcePaths(string $base, string $language, string $typeKey, string $
         'dir'  => $dir,
         'html' => $dir . DIRECTORY_SEPARATOR . $resId . '.html',
         'css'  => $dir . DIRECTORY_SEPARATOR . $resId . '.css',
+        'md'   => $dir . DIRECTORY_SEPARATOR . $resId . '.md',
     ];
 }
 
@@ -289,10 +324,12 @@ function carregarMapeamentoGlobal(): array {
 function carregarDadosExistentes(): array {
     global $DB_DATA_DIR, $LOG_FILE;
     $arquivos = [
-        'layouts'     => $DB_DATA_DIR . 'LayoutsData.json',
-        'paginas'     => $DB_DATA_DIR . 'PaginasData.json',
-        'componentes' => $DB_DATA_DIR . 'ComponentesData.json',
-        'variaveis'   => $DB_DATA_DIR . 'VariaveisData.json',
+        'layouts'             => $DB_DATA_DIR . 'LayoutsData.json',
+        'paginas'             => $DB_DATA_DIR . 'PaginasData.json',
+        'componentes'         => $DB_DATA_DIR . 'ComponentesData.json',
+        'variaveis'           => $DB_DATA_DIR . 'VariaveisData.json',
+        'prompts_ia'          => $DB_DATA_DIR . 'PromptsIaData.json',
+        'prompts_alvos_ia'    => $DB_DATA_DIR . 'PromptsAlvosIaData.json',
     ];
     $exist = [];
     foreach ($arquivos as $tipo => $file) {
@@ -302,6 +339,8 @@ function carregarDadosExistentes(): array {
             switch ($tipo) {
                 case 'layouts':
                 case 'componentes':
+                case 'prompts_ia':
+                case 'prompts_alvos_ia':
                     if (!isset($r['language'],$r['id'])) continue 2;
                     $k = $r['language'].'|'.$r['id'];
                     break;
@@ -331,12 +370,14 @@ function coletarRecursos(array $existentes, array $map): array {
     global $RESOURCES_DIR, $MODULES_DIR, $LOG_FILE;
     $languages = array_keys($map['languages']);
 
-    $layouts = $paginas = $componentes = $variaveis = [];
-    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[] ];
+    $layouts = $paginas = $componentes = $variaveis = $prompts_ia = $prompts_alvos_ia = [];
+    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[], 'prompts_ia'=>[], 'prompts_alvos_ia'=>[] ];
 
     // Índices de unicidade
     $idxLayouts = [];              // lang|id
     $idxComponentes = [];          // lang|id
+    $idxPromptsIa = [];            // lang|id
+    $idxPromptsAlvosIa = [];       // lang|id
     $idxPaginasId = [];            // lang|mod|id
     $idxPaginasPath = [];          // lang|caminho
     $idxVariaveis = [];            // lang|mod|id => groups[]
@@ -344,6 +385,22 @@ function coletarRecursos(array $existentes, array $map): array {
     // Helper versão + checksum reutilizando existente
     $versaoChecksum = function(string $tipo, string $chave, ?string $html, ?string $css) use (&$existentes) : array {
         $cks = buildChecksum($html,$css);
+        $versao = 1;
+        if (isset($existentes[$tipo][$chave])) {
+            $old = $existentes[$tipo][$chave];
+            $oldChecksum = $old['checksum'] ?? null;
+            if (is_string($oldChecksum)) { $dec = json_decode($oldChecksum,true); if ($dec) $oldChecksum=$dec; }
+            if (is_array($oldChecksum) && checksumsEqual($oldChecksum,$cks)) {
+                $versao = (int)($old['versao'] ?? 1);
+            } else {
+                $versao = (int)($old['versao'] ?? 1)+1;
+            }
+        }
+        return [$versao,$cks];
+    };
+
+    $versaoChecksumPrompt = function(string $tipo, string $chave, ?string $md) use (&$existentes) : array {
+        $cks = buildChecksumMD($md);
         $versao = 1;
         if (isset($existentes[$tipo][$chave])) {
             $old = $existentes[$tipo][$chave];
@@ -493,7 +550,7 @@ function coletarRecursos(array $existentes, array $map): array {
             foreach ($languages as $lang) {
                 if(empty($data['resources'][$lang])) continue;
                 $res = $data['resources'][$lang];
-                foreach (['layouts','components','pages'] as $tipo) {
+                foreach (['layouts','components','pages','prompts','prompts_targets'] as $tipo) {
                     $arr = $res[$tipo] ?? [];
                     foreach ($arr as $item) {
                         $id = $item['id'] ?? null; if(!$id) continue;
@@ -507,6 +564,15 @@ function coletarRecursos(array $existentes, array $map): array {
                             $key = $lang.'|'.$id; if(isset($idxComponentes[$key])) { $orphans['componentes'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
                             $idxComponentes[$key]=true; [$versao,$cks]=$versaoChecksum('componentes',$key,$html,$css);
                             $componentes[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                        } elseif ($tipo==='prompts') {
+                            $md = readFileIfExists($paths['md']);
+                            $key = $lang.'|'.$id; if(isset($idxPromptsIa[$key])) { $orphans['prompts_ia'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
+                            $idxPromptsIa[$key]=true; [$versao,$cks]=$versaoChecksumPrompt('prompts_ia',$key,$md);
+                            $prompts_ia[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'alvo'=>$item['target'] ?? null,'padrao'=>$item['default'] ?? null,'prompt'=>$md,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                        } elseif ($tipo==='prompts_targets') {
+                            $key = $lang.'|'.$id; if(isset($idxPromptsAlvosIa[$key])) { $orphans['prompts_alvos_ia'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
+                            $idxPromptsAlvosIa[$key]=true;
+                            $prompts_alvos_ia[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'status'=>$item['status'] ?? 'A','versao'=>$versao ];
                         } else { // pages
                             $path = $item['path'] ?? ($id.'/');
                             $kId = $lang.'|'.$modId.'|'.$id; if(isset($idxPaginasId[$kId])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
@@ -533,7 +599,7 @@ function coletarRecursos(array $existentes, array $map): array {
     }
 
     log_disco(__t('_collected_summary', [
-        'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'variables'=>count($variaveis)
+        'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'variables'=>count($variaveis), 'prompts_ia'=>count($prompts_ia), 'prompts_alvos_ia'=>count($prompts_alvos_ia)
     ]), $LOG_FILE);
 
     return [
@@ -541,6 +607,8 @@ function coletarRecursos(array $existentes, array $map): array {
         'pagesData'=>$paginas,
         'componentsData'=>$componentes,
         'variablesData'=>$variaveis,
+        'promptsData'=>$prompts_ia,
+        'promptsTargetsData'=>$prompts_alvos_ia,
         'orphans'=>$orphans,
     ];
 }
@@ -556,9 +624,11 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
     jsonWrite($DB_DATA_DIR.'PaginasData.json', $recursos['pagesData']);
     jsonWrite($DB_DATA_DIR.'ComponentesData.json', $recursos['componentsData']);
     jsonWrite($DB_DATA_DIR.'VariaveisData.json', $recursos['variablesData']);
+    jsonWrite($DB_DATA_DIR.'PromptsIaData.json', $recursos['promptsData']);
+    jsonWrite($DB_DATA_DIR.'PromptsAlvosIaData.json', $recursos['promptsTargetsData']);
     $orphDir = $GESTOR_DIR.'db'.DIRECTORY_SEPARATOR.'orphans'.DIRECTORY_SEPARATOR;
     if(!is_dir($orphDir)) @mkdir($orphDir,0775,true);
-    foreach (['Layouts','Paginas','Componentes','Variaveis'] as $T) {
+    foreach (['Layouts','Paginas','Componentes','Variaveis','PromptsIa','PromptsAlvosIa'] as $T) {
         $k = strtolower($T);
         jsonWrite($orphDir.$T.'Data.json', $recursos['orphans'][$k] ?? []);
     }
@@ -569,7 +639,7 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
 
 function validarDuplicidades(array $recursos): array {
     $erros = [];
-    foreach (['layouts','paginas','componentes','variaveis'] as $t) {
+    foreach (['layouts','paginas','componentes','variaveis','prompts_ia','prompts_alvos_ia'] as $t) {
         $q = count($recursos['orphans'][$t] ?? []); if($q>0) $erros[] = "$t: $q órfãos";
     }
     return $erros;
@@ -583,13 +653,15 @@ function aplicarErrosOrigem(array $dupsMeta, array $originsIndex): void { /* V2:
 
 function reporteFinal(array $recursos, array $erros): void {
     global $LOG_FILE;
-    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['variablesData']);
+    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['variablesData']) + count($recursos['promptsData']) + count($recursos['promptsTargetsData']);
     $totalOrphans = 0; foreach ($recursos['orphans'] as $lst) { $totalOrphans += count($lst); }
     $msg = "📝 Relatório Final".PHP_EOL.
            "📦 Layouts: ".count($recursos['layoutsData']).PHP_EOL.
            "📄 Páginas: ".count($recursos['pagesData']).PHP_EOL.
            "🧩 Componentes: ".count($recursos['componentsData']).PHP_EOL.
            "🔧 Variáveis: ".count($recursos['variablesData']).PHP_EOL.
+           "💬 Prompts IA: ".count($recursos['promptsData']).PHP_EOL.
+           "🎯 Prompts Alvos IA: ".count($recursos['promptsTargetsData']).PHP_EOL.
            "Σ TOTAL: $total".PHP_EOL.
            "🗃️ Órfãos: $totalOrphans".PHP_EOL;
     if (!empty($erros)) { $msg .= "⚠️ Problemas: ".implode('; ',$erros).PHP_EOL; }

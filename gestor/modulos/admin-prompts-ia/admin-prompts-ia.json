@@ -1,0 +1,192 @@
+{
+    "nome": "Admin Prompts IA",
+    "tabela": {
+        "nome": "prompts_ia",
+        "id": "id",
+        "id_numerico": "id_prompts_ia",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Prompts IA - Listar",
+                    "id": "admin-prompts-ia-listar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-prompts-ia\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin Prompts IA - Adicionar",
+                    "id": "admin-prompts-ia-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-prompts-ia\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "92adca37350da0f9566a9619ef16e318",
+                        "css": "",
+                        "combined": "92adca37350da0f9566a9619ef16e318"
+                    }
+                },
+                {
+                    "name": "Admin Prompts IA - Editar",
+                    "id": "admin-prompts-ia-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-prompts-ia\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "3ffa97aef816cedca88243d9ed19ab48",
+                        "css": "",
+                        "combined": "3ffa97aef816cedca88243d9ed19ab48"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome do Prompt"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Digite o nome do prompt"
+                },
+                {
+                    "id": "form-target-label",
+                    "value": "Alvo"
+                },
+                {
+                    "id": "form-target-placeholder",
+                    "value": "Selecione o alvo do prompt"
+                },
+                {
+                    "id": "form-prompt-label",
+                    "value": "Prompt"
+                },
+                {
+                    "id": "form-prompt-placeholder",
+                    "value": "Digite o conteúdo do prompt"
+                },
+                {
+                    "id": "form-default-label",
+                    "value": "Padrão"
+                },
+                {
+                    "id": "field-target",
+                    "value": "Alvo"
+                },
+                {
+                    "id": "field-default",
+                    "value": "Padrão"
+                }
+            ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin AI Prompts - List",
+                    "id": "admin-prompts-ia-listar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-prompts-ia\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin AI Prompts - Add",
+                    "id": "admin-prompts-ia-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-prompts-ia\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "92adca37350da0f9566a9619ef16e318",
+                        "css": "",
+                        "combined": "92adca37350da0f9566a9619ef16e318"
+                    }
+                },
+                {
+                    "name": "Admin AI Prompts - Edit",
+                    "id": "admin-prompts-ia-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-prompts-ia\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "3ffa97aef816cedca88243d9ed19ab48",
+                        "css": "",
+                        "combined": "3ffa97aef816cedca88243d9ed19ab48"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Prompt Name"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Enter the prompt name"
+                },
+                {
+                    "id": "form-target-label",
+                    "value": "Target"
+                },
+                {
+                    "id": "form-target-placeholder",
+                    "value": "Select the prompt target"
+                },
+                {
+                    "id": "form-prompt-label",
+                    "value": "Prompt"
+                },
+                {
+                    "id": "form-prompt-placeholder",
+                    "value": "Enter the prompt content"
+                },
+                {
+                    "id": "form-default-label",
+                    "value": "Default"
+                },
+                {
+                    "id": "field-target",
+                    "value": "Target"
+                },
+                {
+                    "id": "field-default",
+                    "value": "Default"
+                }
+            ]
+        }
+    }
+}
