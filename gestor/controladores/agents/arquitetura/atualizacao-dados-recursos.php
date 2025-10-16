@@ -329,7 +329,8 @@ function carregarDadosExistentes(): array {
         'componentes'         => $DB_DATA_DIR . 'ComponentesData.json',
         'variaveis'           => $DB_DATA_DIR . 'VariaveisData.json',
         'prompts_ia'          => $DB_DATA_DIR . 'PromptsIaData.json',
-        'prompts_alvos_ia'    => $DB_DATA_DIR . 'PromptsAlvosIaData.json',
+        'modos_ia'            => $DB_DATA_DIR . 'ModosIaData.json',
+        'alvos_ia'            => $DB_DATA_DIR . 'AlvosIaData.json',
     ];
     $exist = [];
     foreach ($arquivos as $tipo => $file) {
@@ -340,7 +341,8 @@ function carregarDadosExistentes(): array {
                 case 'layouts':
                 case 'componentes':
                 case 'prompts_ia':
-                case 'prompts_alvos_ia':
+                case 'modos_ia':
+                case 'alvos_ia':
                     if (!isset($r['language'],$r['id'])) continue 2;
                     $k = $r['language'].'|'.$r['id'];
                     break;
@@ -370,14 +372,15 @@ function coletarRecursos(array $existentes, array $map): array {
     global $RESOURCES_DIR, $MODULES_DIR, $LOG_FILE;
     $languages = array_keys($map['languages']);
 
-    $layouts = $paginas = $componentes = $variaveis = $prompts_ia = $prompts_alvos_ia = [];
-    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[], 'prompts_ia'=>[], 'prompts_alvos_ia'=>[] ];
+    $layouts = $paginas = $componentes = $variaveis = $prompts_ia = $alvos_ia = $modos_ia = [];
+    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[], 'prompts_ia'=>[], 'alvos_ia'=>[], 'modos_ia'=>[] ];
 
     // Índices de unicidade
     $idxLayouts = [];              // lang|id
     $idxComponentes = [];          // lang|id
     $idxPromptsIa = [];            // lang|id
     $idxPromptsAlvosIa = [];       // lang|id
+    $idxModosIa = [];              // lang|id
     $idxPaginasId = [];            // lang|mod|id
     $idxPaginasPath = [];          // lang|caminho
     $idxVariaveis = [];            // lang|mod|id => groups[]
@@ -550,7 +553,7 @@ function coletarRecursos(array $existentes, array $map): array {
             foreach ($languages as $lang) {
                 if(empty($data['resources'][$lang])) continue;
                 $res = $data['resources'][$lang];
-                foreach (['layouts','components','pages','prompts','prompts_targets'] as $tipo) {
+                foreach (['layouts','components','pages','ai_prompts','ai_prompts_targets','ai_modes'] as $tipo) {
                     $arr = $res[$tipo] ?? [];
                     foreach ($arr as $item) {
                         $id = $item['id'] ?? null; if(!$id) continue;
@@ -564,15 +567,20 @@ function coletarRecursos(array $existentes, array $map): array {
                             $key = $lang.'|'.$id; if(isset($idxComponentes[$key])) { $orphans['componentes'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
                             $idxComponentes[$key]=true; [$versao,$cks]=$versaoChecksum('componentes',$key,$html,$css);
                             $componentes[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
-                        } elseif ($tipo==='prompts') {
+                        } elseif ($tipo==='ai_prompts') {
                             $md = readFileIfExists($paths['md']);
-                            $key = $lang.'|'.$id; if(isset($idxPromptsIa[$key])) { $orphans['prompts_ia'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
-                            $idxPromptsIa[$key]=true; [$versao,$cks]=$versaoChecksumPrompt('prompts_ia',$key,$md);
+                            $key = $lang.'|'.$id; if(isset($idxPromptsIa[$key])) { $orphans['ai_prompts'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
+                            $idxPromptsIa[$key]=true; [$versao,$cks]=$versaoChecksumPrompt('ai_prompts',$key,$md);
                             $prompts_ia[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'alvo'=>$item['target'] ?? null,'padrao'=>$item['default'] ?? null,'prompt'=>$md,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
-                        } elseif ($tipo==='prompts_targets') {
-                            $key = $lang.'|'.$id; if(isset($idxPromptsAlvosIa[$key])) { $orphans['prompts_alvos_ia'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
+                        } elseif ($tipo==='ai_modes') {
+                            $md = readFileIfExists($paths['md']);
+                            $key = $lang.'|'.$id; if(isset($idxModosIa[$key])) { $orphans['ai_modes'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
+                            $idxModosIa[$key]=true; [$versao,$cks]=$versaoChecksumPrompt('ai_modes',$key,$md);
+                            $modos_ia[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'alvo'=>$item['target'] ?? null,'padrao'=>$item['default'] ?? null,'prompt'=>$md,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                        } elseif ($tipo==='ai_prompts_targets') {
+                            $key = $lang.'|'.$id; if(isset($idxPromptsAlvosIa[$key])) { $orphans['alvos_ia'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
                             $idxPromptsAlvosIa[$key]=true;
-                            $prompts_alvos_ia[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'status'=>$item['status'] ?? 'A','versao'=>$versao ];
+                            $alvos_ia[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'status'=>$item['status'] ?? 'A','versao'=>$versao ];
                         } else { // pages
                             $path = $item['path'] ?? ($id.'/');
                             $kId = $lang.'|'.$modId.'|'.$id; if(isset($idxPaginasId[$kId])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
@@ -599,7 +607,7 @@ function coletarRecursos(array $existentes, array $map): array {
     }
 
     log_disco(__t('_collected_summary', [
-        'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'variables'=>count($variaveis), 'prompts_ia'=>count($prompts_ia), 'prompts_alvos_ia'=>count($prompts_alvos_ia)
+        'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'variables'=>count($variaveis), 'prompts_ia'=>count($prompts_ia), 'alvos_ia'=>count($alvos_ia), 'modos_ia'=>count($modos_ia)
     ]), $LOG_FILE);
 
     return [
@@ -608,7 +616,8 @@ function coletarRecursos(array $existentes, array $map): array {
         'componentsData'=>$componentes,
         'variablesData'=>$variaveis,
         'promptsData'=>$prompts_ia,
-        'promptsTargetsData'=>$prompts_alvos_ia,
+        'modesData'=>$modos_ia,
+        'targetsData'=>$alvos_ia,
         'orphans'=>$orphans,
     ];
 }
@@ -625,10 +634,11 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
     jsonWrite($DB_DATA_DIR.'ComponentesData.json', $recursos['componentsData']);
     jsonWrite($DB_DATA_DIR.'VariaveisData.json', $recursos['variablesData']);
     jsonWrite($DB_DATA_DIR.'PromptsIaData.json', $recursos['promptsData']);
-    jsonWrite($DB_DATA_DIR.'PromptsAlvosIaData.json', $recursos['promptsTargetsData']);
+    jsonWrite($DB_DATA_DIR.'AlvosIaData.json', $recursos['targetsData']);
+    jsonWrite($DB_DATA_DIR.'ModosIaData.json', $recursos['modesData']);
     $orphDir = $GESTOR_DIR.'db'.DIRECTORY_SEPARATOR.'orphans'.DIRECTORY_SEPARATOR;
     if(!is_dir($orphDir)) @mkdir($orphDir,0775,true);
-    foreach (['Layouts','Paginas','Componentes','Variaveis','PromptsIa','PromptsAlvosIa'] as $T) {
+    foreach (['Layouts','Paginas','Componentes','Variaveis','PromptsIa','AlvosIa','ModosIa'] as $T) {
         $k = strtolower($T);
         jsonWrite($orphDir.$T.'Data.json', $recursos['orphans'][$k] ?? []);
     }
@@ -639,7 +649,7 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
 
 function validarDuplicidades(array $recursos): array {
     $erros = [];
-    foreach (['layouts','paginas','componentes','variaveis','prompts_ia','prompts_alvos_ia'] as $t) {
+    foreach (['layouts','paginas','componentes','variaveis','prompts_ia','alvos_ia','modos_ia'] as $t) {
         $q = count($recursos['orphans'][$t] ?? []); if($q>0) $erros[] = "$t: $q órfãos";
     }
     return $erros;
@@ -653,15 +663,16 @@ function aplicarErrosOrigem(array $dupsMeta, array $originsIndex): void { /* V2:
 
 function reporteFinal(array $recursos, array $erros): void {
     global $LOG_FILE;
-    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['variablesData']) + count($recursos['promptsData']) + count($recursos['promptsTargetsData']);
+    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['variablesData']) + count($recursos['promptsData']) + count($recursos['modesData']) + count($recursos['targetsData']);
     $totalOrphans = 0; foreach ($recursos['orphans'] as $lst) { $totalOrphans += count($lst); }
     $msg = "📝 Relatório Final".PHP_EOL.
            "📦 Layouts: ".count($recursos['layoutsData']).PHP_EOL.
            "📄 Páginas: ".count($recursos['pagesData']).PHP_EOL.
            "🧩 Componentes: ".count($recursos['componentsData']).PHP_EOL.
            "🔧 Variáveis: ".count($recursos['variablesData']).PHP_EOL.
+           "🤖 Modos IA: ".count($recursos['modesData']).PHP_EOL.
            "💬 Prompts IA: ".count($recursos['promptsData']).PHP_EOL.
-           "🎯 Prompts Alvos IA: ".count($recursos['promptsTargetsData']).PHP_EOL.
+           "🎯 Alvos IA: ".count($recursos['targetsData']).PHP_EOL.
            "Σ TOTAL: $total".PHP_EOL.
            "🗃️ Órfãos: $totalOrphans".PHP_EOL;
     if (!empty($erros)) { $msg .= "⚠️ Problemas: ".implode('; ',$erros).PHP_EOL; }

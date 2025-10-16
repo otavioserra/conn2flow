@@ -246,6 +246,7 @@ function usuarios_adicionar(){
 						'nome' => 'usuarios_perfis',
 						'campo' => 'nome',
 						'id_numerico' => 'id_usuarios_perfis',
+						'where' => "language='".$_GESTOR['linguagem-codigo']."'",
 					),
 				)
 			)
@@ -510,128 +511,134 @@ function usuarios_editar(){
 			// ===== Se alterar o usuário perfil, filtrar todos os perfis dos usuários gestores filhos desse perfil.
 			
 			if(isset($alterouUsuarioPerfil)){
-				// ===== Verificar se o usuário é proprietário de um host.
+				// ===== Desativar hosts
 				
-				$hosts = banco_select(Array(
-					'unico' => true,
-					'tabela' => 'hosts',
-					'campos' => Array(
-						'id_hosts',
-					),
-					'extra' => 
-						"WHERE id_usuarios='".$id_usuarios."'"
-				));
+				$desativado_hosts = true;
 				
-				// ===== Se sim, atualizar todos os perfis de gestores do host e remover as permissões não autorizadas. Bem como atualizar o perfil principal de todos os usuários filhos.
-				
-				if($hosts){
-					$id_hosts = $hosts['id_hosts'];
+				if(!$desativado_hosts){
+					// ===== Verificar se o usuário é proprietário de um host.
 					
-					// ===== Pegar as tabelas com as permissões do perfil selecionado.
-					
-					$usuarios_perfis = banco_select(Array(
+					$hosts = banco_select(Array(
 						'unico' => true,
-						'tabela' => 'usuarios_perfis',
+						'tabela' => 'hosts',
 						'campos' => Array(
-							'id',
+							'id_hosts',
 						),
 						'extra' => 
-							"WHERE id_usuarios_perfis='".$usuarioPerfilDepois."'"
+							"WHERE id_usuarios='".$id_usuarios."'"
 					));
 					
-					$perfil = $usuarios_perfis['id'];
+					// ===== Se sim, atualizar todos os perfis de gestores do host e remover as permissões não autorizadas. Bem como atualizar o perfil principal de todos os usuários filhos.
 					
-					// ===== Pegar as tabelas com as permissões de módulo e operações do perfil.
-					
-					$usuarios_perfis_modulos = banco_select(Array(
-						'tabela' => 'usuarios_perfis_modulos',
-						'campos' => Array(
-							'modulo',
-						),
-						'extra' => 
-							"WHERE perfil='".$perfil."'"
-					));
-					
-					$usuarios_perfis_modulos_operacoes = banco_select(Array(
-						'tabela' => 'usuarios_perfis_modulos_operacoes',
-						'campos' => Array(
-							'operacao',
-						),
-						'extra' => 
-							"WHERE perfil='".$perfil."'"
-					));
-					
-					// ===== Pegar as tabelas com as permissões dos módulos e operações dos perfis de gestores.
-					
-					$usuarios_gestores_perfis_modulos = banco_select(Array(
-						'tabela' => 'usuarios_gestores_perfis_modulos',
-						'campos' => Array(
-							'id_usuarios_gestores_perfis_modulos',
-							'modulo',
-						),
-						'extra' => 
-							"WHERE id_hosts='".$id_hosts."'"
-					));
-					
-					$usuarios_gestores_perfis_modulos_operacoes = banco_select(Array(
-						'tabela' => 'usuarios_gestores_perfis_modulos_operacoes',
-						'campos' => Array(
-							'id_usuarios_gestores_perfis_modulos_operacoes',
-							'operacao',
-						),
-						'extra' => 
-							"WHERE id_hosts='".$id_hosts."'"
-					));
-					
-					// ===== Comprar os registros de 'usuarios_perfis_modulos' com 'usuarios_gestores_perfis_modulos' e remover as permissões não autorizadas.
-					
-					if($usuarios_gestores_perfis_modulos)
-					foreach($usuarios_gestores_perfis_modulos as $ugpm){
-						$moduloFound = false;
-						if($usuarios_perfis_modulos)
-						foreach($usuarios_perfis_modulos as $upm){
-							if($ugpm['modulo'] == $upm['modulo']){
-								$moduloFound = true;
-								break;
+					if($hosts){
+						$id_hosts = $hosts['id_hosts'];
+						
+						// ===== Pegar as tabelas com as permissões do perfil selecionado.
+						
+						$usuarios_perfis = banco_select(Array(
+							'unico' => true,
+							'tabela' => 'usuarios_perfis',
+							'campos' => Array(
+								'id',
+							),
+							'extra' => 
+								"WHERE id_usuarios_perfis='".$usuarioPerfilDepois."'"
+						));
+						
+						$perfil = $usuarios_perfis['id'];
+						
+						// ===== Pegar as tabelas com as permissões de módulo e operações do perfil.
+						
+						$usuarios_perfis_modulos = banco_select(Array(
+							'tabela' => 'usuarios_perfis_modulos',
+							'campos' => Array(
+								'modulo',
+							),
+							'extra' => 
+								"WHERE perfil='".$perfil."'"
+						));
+						
+						$usuarios_perfis_modulos_operacoes = banco_select(Array(
+							'tabela' => 'usuarios_perfis_modulos_operacoes',
+							'campos' => Array(
+								'operacao',
+							),
+							'extra' => 
+								"WHERE perfil='".$perfil."'"
+						));
+						
+						// ===== Pegar as tabelas com as permissões dos módulos e operações dos perfis de gestores.
+						
+						$usuarios_gestores_perfis_modulos = banco_select(Array(
+							'tabela' => 'usuarios_gestores_perfis_modulos',
+							'campos' => Array(
+								'id_usuarios_gestores_perfis_modulos',
+								'modulo',
+							),
+							'extra' => 
+								"WHERE id_hosts='".$id_hosts."'"
+						));
+						
+						$usuarios_gestores_perfis_modulos_operacoes = banco_select(Array(
+							'tabela' => 'usuarios_gestores_perfis_modulos_operacoes',
+							'campos' => Array(
+								'id_usuarios_gestores_perfis_modulos_operacoes',
+								'operacao',
+							),
+							'extra' => 
+								"WHERE id_hosts='".$id_hosts."'"
+						));
+						
+						// ===== Comprar os registros de 'usuarios_perfis_modulos' com 'usuarios_gestores_perfis_modulos' e remover as permissões não autorizadas.
+						
+						if($usuarios_gestores_perfis_modulos)
+						foreach($usuarios_gestores_perfis_modulos as $ugpm){
+							$moduloFound = false;
+							if($usuarios_perfis_modulos)
+							foreach($usuarios_perfis_modulos as $upm){
+								if($ugpm['modulo'] == $upm['modulo']){
+									$moduloFound = true;
+									break;
+								}
+							}
+							
+							if(!$moduloFound){
+								banco_delete
+								(
+									"usuarios_gestores_perfis_modulos",
+									"WHERE id_usuarios_gestores_perfis_modulos='".$ugpm['id_usuarios_gestores_perfis_modulos']."'"
+								);
 							}
 						}
 						
-						if(!$moduloFound){
-							banco_delete
-							(
-								"usuarios_gestores_perfis_modulos",
-								"WHERE id_usuarios_gestores_perfis_modulos='".$ugpm['id_usuarios_gestores_perfis_modulos']."'"
-							);
-						}
-					}
-					
-					// ===== Comprar os registros de 'usuarios_perfis_modulos_operacoes' com 'usuarios_gestores_perfis_modulos_operacoes' e remover as permissões não autorizadas.
-					
-					if($usuarios_gestores_perfis_modulos_operacoes)
-					foreach($usuarios_gestores_perfis_modulos_operacoes as $ugpmo){
-						$operacaoFound = false;
-						if($usuarios_perfis_modulos_operacoes)
-						foreach($usuarios_perfis_modulos_operacoes as $upmo){
-							if($ugpmo['operacao'] == $upmo['operacao']){
-								$operacaoFound = true;
-								break;
+						// ===== Comprar os registros de 'usuarios_perfis_modulos_operacoes' com 'usuarios_gestores_perfis_modulos_operacoes' e remover as permissões não autorizadas.
+						
+						if($usuarios_gestores_perfis_modulos_operacoes)
+						foreach($usuarios_gestores_perfis_modulos_operacoes as $ugpmo){
+							$operacaoFound = false;
+							if($usuarios_perfis_modulos_operacoes)
+							foreach($usuarios_perfis_modulos_operacoes as $upmo){
+								if($ugpmo['operacao'] == $upmo['operacao']){
+									$operacaoFound = true;
+									break;
+								}
+							}
+							
+							if(!$operacaoFound){
+								banco_delete
+								(
+									"usuarios_gestores_perfis_modulos_operacoes",
+									"WHERE id_usuarios_gestores_perfis_modulos_operacoes='".$ugpmo['id_usuarios_gestores_perfis_modulos_operacoes']."'"
+								);
 							}
 						}
 						
-						if(!$operacaoFound){
-							banco_delete
-							(
-								"usuarios_gestores_perfis_modulos_operacoes",
-								"WHERE id_usuarios_gestores_perfis_modulos_operacoes='".$ugpmo['id_usuarios_gestores_perfis_modulos_operacoes']."'"
-							);
-						}
+						// ===== Atualizar todos os filhos com o perfil atual.
+						
+						banco_update_campo('id_usuarios_perfis',$usuarioPerfilDepois);
+						
+						banco_update_executar('usuarios',"WHERE id_hosts='".$id_hosts."' AND gestor IS NOT NULL");
 					}
-					
-					// ===== Atualizar todos os filhos com o perfil atual.
-					
-					banco_update_campo('id_usuarios_perfis',$usuarioPerfilDepois);
-					
-					banco_update_executar('usuarios',"WHERE id_hosts='".$id_hosts."' AND gestor IS NOT NULL");
 				}
 			}
 		}
@@ -832,6 +839,7 @@ function usuarios_editar(){
 						'campo' => 'nome',
 						'id_numerico' => 'id_usuarios_perfis',
 						'id_selecionado' => $id_usuarios_perfis,
+						'where' => "language='".$_GESTOR['linguagem-codigo']."'",
 					),
 				)
 			)

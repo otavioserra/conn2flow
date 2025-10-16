@@ -1084,7 +1084,12 @@ function perfil_usuario_signin(){
 function perfil_usuario_signup(){
 	global $_GESTOR;
 	global $_CONFIG;
-	
+
+	// ===== Desativar planos e hosts
+
+	$desativado_planos = true;
+	$desativado_hosts = true;
+
 	// ===== Verificar a permissão do acesso.
 	
 	gestor_incluir_biblioteca('autenticacao');
@@ -1266,53 +1271,57 @@ function perfil_usuario_signup(){
 			$id_usuarios = banco_last_id();
 			
 			// ===== Criar um plano de usuário para o usuário em questão.
+
+			if(!$desativado_planos){
+				if(isset($_REQUEST['plano'])){
+					$id_usuarios_planos = banco_escape_field($_REQUEST['plano']);
+					
+					$campos = null; $campo_sem_aspas_simples = null;
+					
+					$campo_nome = "id_usuarios"; $campo_valor = $id_usuarios; 						$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+					$campo_nome = "id_usuarios_planos"; $campo_valor = $id_usuarios_planos; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+					$campo_nome = "status"; $campo_valor = 'P';					 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples); // P - Pendente
+					$campo_nome = "data_criacao"; $campo_valor = 'NOW()';					 		$campos[] = Array($campo_nome,$campo_valor,true);
+					
+					banco_insert_name
+					(
+						$campos,
+						"usuarios_planos_usuarios"
+					);
+				}
+			}
 			
-			if(isset($_REQUEST['plano'])){
-				$id_usuarios_planos = banco_escape_field($_REQUEST['plano']);
-				
+			if(!$desativado_hosts){
+				// ===== Criar pré host e vincular o usuário ao mesmo, bem como indicar o status 'I' que necessita de instalação
+
 				$campos = null; $campo_sem_aspas_simples = null;
 				
-				$campo_nome = "id_usuarios"; $campo_valor = $id_usuarios; 						$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "id_usuarios_planos"; $campo_valor = $id_usuarios_planos; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "status"; $campo_valor = 'P';					 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples); // P - Pendente
-				$campo_nome = "data_criacao"; $campo_valor = 'NOW()';					 		$campos[] = Array($campo_nome,$campo_valor,true);
+				$campo_nome = "id_usuarios"; $campo_valor = $id_usuarios; 							$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+				$campo_nome = "status"; $campo_valor = 'I';					 						$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples); // I - Pendente de Instalação
+				$campo_nome = "data_criacao"; $campo_valor = 'NOW()';						 		$campos[] = Array($campo_nome,$campo_valor,true);
 				
 				banco_insert_name
 				(
 					$campos,
-					"usuarios_planos_usuarios"
+					"hosts"
+				);
+				
+				$id_hosts = banco_last_id();
+				
+				// ===== Vincular host aos usuários admins do host do mesmo
+				
+				$campos = null; $campo_sem_aspas_simples = null;
+				
+				$campo_nome = "id_usuarios"; $campo_valor = $id_usuarios; 							$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+				$campo_nome = "id_hosts"; $campo_valor = $id_hosts; 								$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+				$campo_nome = "privilegios_admin"; $campo_valor = '1'; 								$campos[] = Array($campo_nome,$campo_valor,true);
+				
+				banco_insert_name
+				(
+					$campos,
+					"usuarios_gestores_hosts"
 				);
 			}
-			
-			// ===== Criar pré host e vincular o usuário ao mesmo, bem como indicar o status 'I' que necessita de instalação
-			
-			$campos = null; $campo_sem_aspas_simples = null;
-			
-			$campo_nome = "id_usuarios"; $campo_valor = $id_usuarios; 							$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-			$campo_nome = "status"; $campo_valor = 'I';					 						$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples); // I - Pendente de Instalação
-			$campo_nome = "data_criacao"; $campo_valor = 'NOW()';						 		$campos[] = Array($campo_nome,$campo_valor,true);
-			
-			banco_insert_name
-			(
-				$campos,
-				"hosts"
-			);
-			
-			$id_hosts = banco_last_id();
-			
-			// ===== Vincular host aos usuários admins do host do mesmo
-			
-			$campos = null; $campo_sem_aspas_simples = null;
-			
-			$campo_nome = "id_usuarios"; $campo_valor = $id_usuarios; 							$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-			$campo_nome = "id_hosts"; $campo_valor = $id_hosts; 								$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-			$campo_nome = "privilegios_admin"; $campo_valor = '1'; 								$campos[] = Array($campo_nome,$campo_valor,true);
-			
-			banco_insert_name
-			(
-				$campos,
-				"usuarios_gestores_hosts"
-			);
 			
 			// ===== Logar o usuário 
 			
@@ -1449,42 +1458,46 @@ function perfil_usuario_signup(){
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Planos
-	
-	$cel_nome = 'plano-cel'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
-	
-	$resultado = banco_select_name
-	(
-		banco_campos_virgulas(Array(
-			'id_usuarios_planos',
-			'nome',
-		))
-		,
-		"usuarios_planos",
-		"WHERE status='A'"
-		." AND publico IS NOT NULL"
-		." ORDER BY ordem ASC"
-	);
-	
-	if($resultado){
-		$checked = true;
+
+	if(!$desativado_planos){
+		$cel_nome = 'plano-cel'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 		
-		foreach($resultado as $res){
-			$val = $res['id_usuarios_planos'];
-			$nome = $res['nome'];
+		$resultado = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'id_usuarios_planos',
+				'nome',
+			))
+			,
+			"usuarios_planos",
+			"WHERE status='A'"
+			." AND publico IS NOT NULL"
+			." ORDER BY ordem ASC"
+		);
+		
+		if($resultado){
+			$checked = true;
 			
-			$cel_aux = $cel[$cel_nome];
-			
-			$cel_aux = modelo_var_troca($cel_aux,' #checked#=""',($checked ? ' checked="checked"':''));
-			$cel_aux = modelo_var_troca($cel_aux,"#val#",$val);
-			$cel_aux = modelo_var_troca($cel_aux,"#nome#",$nome);
-			
-			$_GESTOR['pagina'] = modelo_var_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->',$cel_aux);
-			
-			$checked = false;
+			foreach($resultado as $res){
+				$val = $res['id_usuarios_planos'];
+				$nome = $res['nome'];
+				
+				$cel_aux = $cel[$cel_nome];
+				
+				$cel_aux = modelo_var_troca($cel_aux,' #checked#=""',($checked ? ' checked="checked"':''));
+				$cel_aux = modelo_var_troca($cel_aux,"#val#",$val);
+				$cel_aux = modelo_var_troca($cel_aux,"#nome#",$nome);
+				
+				$_GESTOR['pagina'] = modelo_var_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->',$cel_aux);
+				
+				$checked = false;
+			}
 		}
+		
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->','');
+	} else {
+		$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- plano-cont < -->','<!-- plano-cont > -->','');
 	}
-	
-	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->','');
 	
 	// ===== Interface finalizar opções
 	

@@ -163,7 +163,7 @@ $(document).ready(function () {
 				}
 			}
 
-			function validarCampo(value, id, campo = false) {
+			function validarCampo(language = false, value, id, campo = false) {
 				var ajaxOpcao = 'verificar-campo';
 
 				$.ajax({
@@ -174,6 +174,7 @@ $(document).ready(function () {
 						ajax: 'sim',
 						ajaxOpcao: ajaxOpcao,
 						ajaxRegistroId: gestor.moduloRegistroId,
+						language: language === false ? false : true,
 						campo: (campo ? campo : id),
 						valor: value
 					},
@@ -240,9 +241,9 @@ $(document).ready(function () {
 									validarCampos[field].valor = fields[field];
 
 									if (typeof validarCampos[field].campo !== typeof undefined) {
-										validarCampo(fields[field], field, validarCampos[field].campo);
+										validarCampo(validarCampos[field].language ?? false, validarCampos[field].valor, field, validarCampos[field].campo);
 									} else {
-										validarCampo(fields[field], field);
+										validarCampo(validarCampos[field].language ?? false, fields[field], field);
 									}
 								}
 							}

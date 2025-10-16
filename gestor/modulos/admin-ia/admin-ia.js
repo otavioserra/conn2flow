@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    // ===== UI Dropdown =====
+    // ===== Fomantic UI =====
     $('.ui.dropdown').dropdown();
 
     // ===== Página Listar =====
@@ -61,6 +61,134 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('.ativar-conexao').click(function () {
+        var id = $(this).data('id');
+        var button = $(this);
+
+        var data = {
+            ajax: 'sim',
+            ajaxOpcao: 'ativar',
+            id: id
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: gestor.raiz + gestor.moduloCaminho + '/',
+            data: data,
+            dataType: 'json',
+            beforeSend: function () {
+                button.addClass('loading').prop('disabled', true);
+                $('#gestor-listener').trigger('carregar_abrir');
+            },
+            success: function (dados) {
+                button.removeClass('loading').prop('disabled', false);
+
+                switch (dados.status) {
+                    case 'success':
+                        $.toast({
+                            class: 'success',
+                            message: dados.message
+                        });
+                        // Reload da página após 1.5 segundos
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1500);
+                        break;
+                    case 'error':
+                        $.toast({
+                            class: 'error',
+                            message: dados.message
+                        });
+                        break;
+                    default:
+                        console.log('ERROR - ativar - ' + dados.status);
+                }
+
+                $('#gestor-listener').trigger('carregar_fechar');
+            },
+            error: function (txt) {
+                button.removeClass('loading').prop('disabled', false);
+
+                switch (txt.status) {
+                    case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
+                    default:
+                        console.log('ERROR AJAX - ativar - Dados:');
+                        console.log(txt);
+                        $.toast({
+                            class: 'error',
+                            message: 'Erro na comunicação com o servidor'
+                        });
+                        $('#gestor-listener').trigger('carregar_fechar');
+                }
+            }
+        });
+    });
+
+
+    $('.desativar-conexao').click(function () {
+        var id = $(this).data('id');
+        var button = $(this);
+
+        var data = {
+            ajax: 'sim',
+            ajaxOpcao: 'desativar',
+            id: id
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: gestor.raiz + gestor.moduloCaminho + '/',
+            data: data,
+            dataType: 'json',
+            beforeSend: function () {
+                button.addClass('loading').prop('disabled', true);
+                $('#gestor-listener').trigger('carregar_abrir');
+            },
+            success: function (dados) {
+                button.removeClass('loading').prop('disabled', false);
+
+                switch (dados.status) {
+                    case 'success':
+                        $.toast({
+                            class: 'success',
+                            message: dados.message
+                        });
+                        // Reload da página após 1.5 segundos
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1500);
+                        break;
+                    case 'error':
+                        $.toast({
+                            class: 'error',
+                            message: dados.message
+                        });
+                        break;
+                    default:
+                        console.log('ERROR - ativar - ' + dados.status);
+                }
+
+                $('#gestor-listener').trigger('carregar_fechar');
+            },
+            error: function (txt) {
+                button.removeClass('loading').prop('disabled', false);
+
+                switch (txt.status) {
+                    case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
+                    default:
+                        console.log('ERROR AJAX - ativar - Dados:');
+                        console.log(txt);
+                        $.toast({
+                            class: 'error',
+                            message: 'Erro na comunicação com o servidor'
+                        });
+                        $('#gestor-listener').trigger('carregar_fechar');
+                }
+            }
+        });
+    });
+
 
     $('.excluir-servidor').click(function () {
         var id = $(this).data('id');
@@ -137,15 +265,13 @@ $(document).ready(function () {
         var formData = $(this).serializeArray();
         var testarConexao = $('input[name="testar_conexao"]').is(':checked');
 
-        console.log(formData);
-        console.log(testarConexao);
-
         var data = {
             ajax: 'sim',
             ajaxOpcao: 'salvar',
             nome: formData.find(item => item.name === 'nome').value,
             tipo: formData.find(item => item.name === 'tipo').value,
-            chave_api: formData.find(item => item.name === 'chave_api').value
+            chave_api: formData.find(item => item.name === 'chave_api').value,
+            padrao: formData.find(item => item.name === 'padrao') ? 'on' : 'off'
         };
 
         $.ajax({
@@ -226,7 +352,8 @@ $(document).ready(function () {
             id: formData.find(item => item.name === 'id').value,
             nome: formData.find(item => item.name === 'nome').value,
             tipo: formData.find(item => item.name === 'tipo').value,
-            chave_api: formData.find(item => item.name === 'chave_api').value
+            chave_api: formData.find(item => item.name === 'chave_api').value,
+            padrao: formData.find(item => item.name === 'padrao').value ? 'on' : 'off'
         };
 
         $.ajax({
@@ -283,10 +410,6 @@ $(document).ready(function () {
                 }
             }
         });
-    });
-
-    $('.testar-conexao').click(function () {
-        testarConexaoAtual($(this).data('id'));
     });
 
     function testarConexaoAtual(id = null) {

@@ -88,5 +88,23 @@
         "versao": "1",
         "ordemMenu": null,
         "language": "en"
+    },
+    {
+        "nome": "Administração Assistentes IA",
+        "id": "administracao-assistentes-ia",
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "ordemMenu": null,
+        "language": "pt-br"
+    },
+    {
+        "nome": "AI Assistants Administration",
+        "id": "administracao-assistentes-ia",
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "ordemMenu": null,
+        "language": "en"
     }
 ]

@@ -67,17 +67,17 @@
             "command": "bash ./ai-workspace/scripts/commits/commit.sh \"${input:commitMsg}\""
         },
         {
-            "label": "🛠️ Gestor - Recursos",
+            "label": "🛠️ Gestor - Sincronizar => Recursos - Local",
             "type": "shell",
             "command": "php ./gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php"
         },
         {
-            "label": "🛠️ Gestor - Dados",
+            "label": "🛠️ Gestor - Sincronizar => Banco de Dados - Ambiente de Testes",
             "type": "shell",
             "command": "docker exec conn2flow-app bash -c \"php /var/www/sites/localhost/conn2flow-gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php --debug --log-diff\""
         },
         {
-            "label": "🛠️ Gestor - Sincronizar",
+            "label": "🛠️ Gestor - Sincronizar => Arquivos - Ambiente de Testes",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor.sh checksum"
         },
@@ -92,14 +92,14 @@
             "command": "bash ./ai-workspace/scripts/dev-environment/criar-novo-modulo.sh \"${input:moduloID}\""
         },
         {
-            "label": "🛠️ Gestor - Atualização Completa 🚀",
+            "label": "🛠️ Gestor - Atualizar => Tudo - Ambiente de Testes",
             // Note que esta tarefa NÃO tem a propriedade "command".
             // Ela serve apenas para orquestrar as outras.
             "dependsOn": [
                 // Coloque aqui os "labels" EXATOS das tarefas que você quer executar, na ordem.
-                "🛠️ Gestor - Recursos",
-                "🛠️ Gestor - Sincronizar",
-                "🛠️ Gestor - Dados"
+                "🛠️ Gestor - Sincronizar => Recursos - Local",
+                "🛠️ Gestor - Sincronizar => Arquivos - Ambiente de Testes",
+                "🛠️ Gestor - Sincronizar => Banco de Dados - Ambiente de Testes"
             ],
             // Esta é a propriedade mágica que garante a execução em sequência!
             "dependsOrder": "sequence"

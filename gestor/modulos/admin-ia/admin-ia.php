@@ -50,6 +50,7 @@ function admin_ia_listar(){
             $cel_servidores = modelo_var_troca_tudo($cel_servidores,'#id#',$servidor['id_servidores_ia']);
             $cel_servidores = modelo_var_troca($cel_servidores,'#nome#',$servidor['nome']);
             $cel_servidores = modelo_var_troca($cel_servidores,'#tipo#',$servidor['tipo']);
+            $cel_servidores = modelo_var_troca($cel_servidores,'#padrao#',($servidor['padrao'] == '1' ? '<span class="ui green text">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-positive-label')).'</span>' : '<span class="ui red text">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-negative-label')).'</span>'));
             $cel_servidores = modelo_var_troca($cel_servidores,'#status#',$servidor['status'] == 'A' ? 'Ativo' : 'Inativo');
             $cel_servidores = modelo_var_troca($cel_servidores,'#data-criacao#',date('d/m/Y H:i', strtotime($servidor['data_criacao'])));
             
@@ -142,10 +143,18 @@ function admin_ia_editar(){
     
     $chave_api_mascarada = str_repeat('*', strlen($chave_api_descriptografada));
     
-    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '[[id]]', $servidor['id_servidores_ia']);
-    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '[[nome]]', $servidor['nome']);
-    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '[[tipo]]', $servidor['tipo']);
-    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '[[chave-api]]', $chave_api_mascarada);
+    $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[[id]]', $servidor['id_servidores_ia']);
+    $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[[nome]]', $servidor['nome']);
+    $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[[tipo]]', $servidor['tipo']);
+    $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[[padrao]]', $servidor['padrao'] == '1' ? 'checked="checked"' : '');
+    $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[[chave-api]]', $chave_api_mascarada);
+
+    // ===== Processar células condicionais de status
+    if($servidor['status'] == 'A'){
+        $cel_nome = 'ativar-cel';$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+    } else {
+        $cel_nome = 'desativar-cel';$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+    }
 }
 
 // ===== Interfaces Principais
@@ -189,6 +198,7 @@ function admin_ia_ajax_salvar(){
     $nome = $_REQUEST['nome'] ?? '';
     $tipo = $_REQUEST['tipo'] ?? '';
     $chave_api = $_REQUEST['chave_api'] ?? '';
+    $padrao = isset($_REQUEST['padrao']) && $_REQUEST['padrao'] == 'on' ? 1 : 0;
     
     if(empty($nome) || empty($tipo) || empty($chave_api)){
         $_GESTOR['ajax-json'] = Array(
@@ -196,6 +206,13 @@ function admin_ia_ajax_salvar(){
             'message' => 'Nome, tipo e chave API são obrigatórios.'
         );
         return;
+    }
+
+    // ===== Verificar se há outro servidor padrão para o mesmo tipo
+    
+    if($_REQUEST['padrao'] == 'on'){
+        banco_update_campo('padrao', 0);
+        banco_update_executar('servidores_ia', "WHERE tipo = '" . banco_escape_field($_REQUEST['tipo']) . "'");
     }
     
     // ===== Abrir chave privada e a senha da chave
@@ -220,6 +237,7 @@ function admin_ia_ajax_salvar(){
     
     banco_insert_name_campo('nome',$nome);
     banco_insert_name_campo('tipo',$tipo);
+    banco_insert_name_campo('padrao',$padrao,true);
     banco_insert_name_campo('chave_api',$chave_api_encriptada);
     banco_insert_name_campo('status','A');
     
@@ -262,6 +280,7 @@ function admin_ia_ajax_editar(){
     $nome = $_REQUEST['nome'] ?? '';
     $tipo = $_REQUEST['tipo'] ?? '';
     $chave_api = $_REQUEST['chave_api'] ?? '';
+    $padrao = isset($_REQUEST['padrao']) && $_REQUEST['padrao'] == 'on' ? 1 : 0;
     
     if(empty($nome) || empty($tipo)){
         $_GESTOR['ajax-json'] = Array(
@@ -270,11 +289,19 @@ function admin_ia_ajax_editar(){
         );
         return;
     }
+
+    // ===== Verificar se há outro servidor padrão para o mesmo tipo
+		
+    if($_REQUEST['padrao'] == 'on' && banco_select_campos_antes('padrao') != '1'){
+        banco_update_campo('padrao', '0');
+        banco_update_executar('servidores_ia', "WHERE tipo = '" . banco_escape_field($_REQUEST['tipo']) . "'");
+    }
     
     // ===== Preparar dados para atualização
     
     banco_update_campo('nome',$nome);
     banco_update_campo('tipo',$tipo);
+    banco_update_campo('padrao',$padrao,true);
     
     // ===== Encriptar chave API apenas se foi alterada
     
@@ -561,27 +588,60 @@ function admin_ia_testar_gemini($url_api, &$mensagem_erro){
     return true;
 }
 
-function admin_ia_ajax_opcao(){
+function admin_ia_ajax_ativar(){
     global $_GESTOR;
 
     $modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
-    // ===== Lógica
+    // Param ID
+    $id = $_REQUEST['id'] ?? null;
 
-    $payload = [];
+    if(!$id){
+        $_GESTOR['ajax-json'] = Array(
+            'status' => 'error',
+            'message' => 'ID do servidor não informado.'
+        );
+        return;
+    }
+
+    // Ativar no banco
+    banco_update_campo('status', 'A');
+    banco_update_executar('servidores_ia', "WHERE id_servidores_ia = '" . banco_escape_field($id) . "'");
 
     // ===== Dados de Retorno
 
-    if(true){
+    $_GESTOR['ajax-json'] = Array(
+        'status' => 'success',
+        'message' => 'Servidor IA ativado com sucesso!',
+    );
+}
+
+function admin_ia_ajax_desativar(){
+    global $_GESTOR;
+
+    $modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+
+    // Param ID
+    $id = $_REQUEST['id'] ?? null;
+
+    if(!$id){
         $_GESTOR['ajax-json'] = Array(
-            'payload' => $payload,
-            'status' => 'Ok',
+            'status' => 'error',
+            'message' => 'ID do servidor não informado.'
         );
-    } else {
-        $_GESTOR['ajax-json'] = Array(
-            'error' => 'Error msg'
-        );
+        return;
     }
+
+    // Desativar no banco
+    banco_update_campo('status', 'I');
+    banco_update_executar('servidores_ia', "WHERE id_servidores_ia = '" . banco_escape_field($id) . "'");
+
+    // ===== Dados de Retorno
+
+    $_GESTOR['ajax-json'] = Array(
+        'status' => 'success',
+        'message' => 'Servidor IA desativado com sucesso!',
+    );
 }
 
 // ==== Start
@@ -598,7 +658,8 @@ function admin_ia_start(){
             case 'testar_conexao': admin_ia_ajax_testar_conexao(); break;
             case 'historico_testes': admin_ia_ajax_historico_testes(); break;
             case 'excluir': admin_ia_ajax_excluir(); break;
-            case 'opcao': admin_ia_ajax_opcao(); break;
+            case 'ativar': admin_ia_ajax_ativar(); break;
+            case 'desativar': admin_ia_ajax_desativar(); break;
         }
 
         interface_ajax_finalizar();

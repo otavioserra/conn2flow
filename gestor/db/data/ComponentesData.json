@@ -377,6 +377,32 @@
         "checksum": "{\"html\":\"b5f8004dc420d0a6792e77a8738e11df\",\"css\":\"\",\"combined\":\"b5f8004dc420d0a6792e77a8738e11df\"}"
     },
     {
+        "nome": "IA Prompt",
+        "id": "ia-prompt",
+        "language": "pt-br",
+        "modulo": null,
+        "html": "<div class=\"field\">\r\n    <label>#ia-form-title#<\/label>\r\n    <div class=\"ui segment ai-conteiner\">\r\n        <div class=\"ui top attached tabular menu AIMenu\">\r\n            <a class=\"item\" data-tab=\"prompt\" data-tooltip=\"@[[ia-form-prompt-tooltip]]@\" data-position=\"top left\"\r\n                data-inverted=\"\"><i class=\"stream icon\"><\/i>@[[ia-form-prompt-label]]@<\/a>\r\n            <a class=\"item\" data-tab=\"mode\" data-tooltip=\"@[[ia-form-mode-tooltip]]@\" data-position=\"top left\"\r\n                data-inverted=\"\"><i class=\"robot icon\"><\/i>@[[ia-form-mode-label]]@<\/a>\r\n            <a class=\"item\" data-tab=\"config\" data-tooltip=\"@[[ia-form-config-tooltip]]@\" data-position=\"top left\"\r\n                data-inverted=\"\"><i class=\"server icon\"><\/i>@[[ia-form-config-label]]@<\/a>\r\n        <\/div>\r\n        <div class=\"ui bottom attached tab segment\" data-tab=\"prompt\">\r\n            <div class=\"ui grid menuMode\">\r\n                <div class=\"eight wide column\">\r\n                    <div class=\"field\">\r\n                        <label>Selecionar Modelo:<\/label>\r\n                        <select class=\"ui dropdown ai-prompt-select\">\r\n                            #select-prompt#\r\n                        <\/select>\r\n                    <\/div>\r\n                <\/div>\r\n                <div class=\"eight wide column\">\r\n                    <div class=\"field\">\r\n                        <label>Opções:<\/label>\r\n                        <div>\r\n                            <div class=\"ui button disabled ai-prompt-clear\"><i class=\"clipboard icon\"><\/i>Limpar<\/div>\r\n                            <div class=\"ui button blue disabled ai-prompt-edit\"><i class=\"edit icon\"><\/i>Salvar Atual\r\n                            <\/div>\r\n                            <div class=\"ui button red disabled ai-prompt-del\"><i class=\"edit icon\"><\/i>Excluir Atual\r\n                            <\/div>\r\n                            <div class=\"ui button green disabled ai-prompt-new\"><i class=\"clone icon\"><\/i>Criar Novo\r\n                            <\/div>\r\n                        <\/div>\r\n                    <\/div>\r\n                <\/div>\r\n            <\/div>\r\n            <!-- prompt-extra-controls -->\r\n            <div class=\"field\">\r\n                <label>Descrição da sua necessidade:<\/label>\r\n                <textarea rows=\"6\" placeholder=\"Descreva o que você precisa...\" class=\"ai-prompt-textarea\"><\/textarea>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"ui bottom attached tab segment\" data-tab=\"mode\">\r\n            <div class=\"ui grid menuMode\">\r\n                <div class=\"eight wide column\">\r\n                    <div class=\"field\">\r\n                        <label>Selecionar Modo:<\/label>\r\n                        <select class=\"ui dropdown ai-mode-select\">\r\n                            #select-mode#\r\n                        <\/select>\r\n                    <\/div>\r\n                <\/div>\r\n                <div class=\"eight wide column\">\r\n                    &nbsp;\r\n                <\/div>\r\n            <\/div>\r\n            <textarea rows=\"6\" class=\"ai-mode-textarea\">#modo-padrao#<\/textarea>\r\n        <\/div>\r\n        <div class=\"ui bottom attached tab segment\" data-tab=\"config\">\r\n            <div class=\"ui grid menuMode\">\r\n                <div class=\"eight wide column\">\r\n                    <div class=\"field\">\r\n                        <label>Conexão IA:<\/label>\r\n                        <select class=\"ui dropdown ai-connection-select\">\r\n                            #select-connection#\r\n                        <\/select>\r\n                    <\/div>\r\n                <\/div>\r\n                <div class=\"eight wide column\">\r\n                    &nbsp;\r\n                <\/div>\r\n            <\/div>\r\n            <div class=\"field\">\r\n                <label>Modelo IA:<\/label>\r\n                <div class=\"ui floating labeled icon dropdown button ai-model-select\">\r\n                    <i class=\"tachometer alternate icon\"><\/i>\r\n                    #selected-model#\r\n                    <div class=\"menu\">\r\n                        #select-model#\r\n                    <\/div>\r\n                <\/div>\r\n            <\/div>\r\n            <div class=\"field hidden ai-return-raw\">\r\n                <label>Dados Completos Retornados:<\/label>\r\n                <textarea rows=\"6\" class=\"ai-return-textarea\"><\/textarea>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"ui negative message hidden\">\r\n            <i class=\"close icon\"><\/i>\r\n            <div class=\"header\">\r\n                Erro na Requisição\r\n            <\/div>\r\n            <span class=\"ai-error-message\"><\/span>\r\n        <\/div>\r\n        <div class=\"ui center aligned basic segment\">\r\n            <div class=\"ui primary button ai-send-prompt\">Processar Requisição<\/div>\r\n        <\/div>\r\n        <div class=\"ui dimmer\">\r\n            <div class=\"ui text loader\">Processando requisição...<\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "css": ".menuMode{\r\n    margin-bottom: 1em !important;\r\n}\r\n.buttons, .button {\r\n    margin-bottom: 0.75em !important;\r\n}",
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 4,
+        "file_version": "1.4",
+        "checksum": "{\"html\":\"96156c8e91c99b5c5e24ef9e9608d4d3\",\"css\":\"1221e34b060bf1cdcd78f39f9e9738dc\",\"combined\":\"7bf75868608acba346691958c380f9a0\"}"
+    },
+    {
+        "nome": "IA Prompt Modais",
+        "id": "ia-prompt-modais",
+        "language": "pt-br",
+        "modulo": null,
+        "html": "<div class=\"ui mini modal ai-prompt-save-modal\">\r\n    <i class=\"close icon\"><\/i>\r\n    <div class=\"header\">\r\n        Criar Novo Prompt\r\n    <\/div>\r\n    <div class=\"content\">\r\n        <form class=\"ui form ai-prompt-save-form\">\r\n            <div class=\"field\">\r\n                <label>Nome<\/label>\r\n                <input type=\"text\" name=\"prompt-nome\" placeholder=\"Nome do prompt...\" data-validate=\"name\">\r\n            <\/div>\r\n        <\/form>\r\n    <\/div>\r\n    <div class=\" actions\">\r\n        <div class=\"ui deny button\">Cancelar<\/div>\r\n        <div class=\"ui approve green button\">Enviar<\/div>\r\n    <\/div>\r\n<\/div>\r\n<div class=\"ui mini modal confirm ai-prompt-del-modal\">\r\n    <div class=\"ui header\">Remover Prompt<\/div>\r\n    <div class=\"content\">\r\n        <p>Tem certeza que deseja remover este prompt?<\/p>\r\n    <\/div>\r\n    <div class=\"actions\">\r\n        <div class=\"ui deny button\">\r\n            Cancelar\r\n        <\/div>\r\n        <div class=\"ui approve right labeled icon button red\">\r\n            Confirmar\r\n            <i class=\"share icon\"><\/i>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 8,
+        "file_version": "1.8",
+        "checksum": "{\"html\":\"b033001c135072b0b6786512d20e63e5\",\"css\":\"\",\"combined\":\"b033001c135072b0b6786512d20e63e5\"}"
+    },
+    {
         "nome": "Settings Form Interface",
         "id": "interface-formulario-configuracoes",
         "language": "en",
@@ -754,6 +780,32 @@
         "checksum": "{\"html\":\"b15a5de4c0e6c5da3141020822e0482e\",\"css\":\"\",\"combined\":\"b15a5de4c0e6c5da3141020822e0482e\"}"
     },
     {
+        "nome": "AI Prompt",
+        "id": "ia-prompt",
+        "language": "en",
+        "modulo": null,
+        "html": "<div class=\"field\">\r\n    <label>#ia-form-title#<\/label>\r\n    <div class=\"ui segment ai-conteiner\">\r\n        <div class=\"ui grid\">\r\n            <div class=\"eight wide column\">\r\n                <h3 class=\"ui header\">#titulo#<\/h3>\r\n            <\/div>\r\n            <div class=\"eight wide column right aligned\">\r\n                <div class=\"field\">\r\n                    <label>Select Prompt:<\/label>\r\n                    <select class=\"ui dropdown ai-prompt-select\">\r\n                        #select-options#\r\n                    <\/select>\r\n                <\/div>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"field\">\r\n            <label>Describe your need:<\/label>\r\n            <textarea rows=\"6\" placeholder=\"Describe what you need...\" class=\"ai-prompt-textarea\"><\/textarea>\r\n        <\/div>\r\n        <div class=\"ui center aligned basic segment\">\r\n            <div class=\"ui primary button ai-send-prompt\">Process Request<\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"a03a17be3ee19a8a041829aae6f77117\",\"css\":\"\",\"combined\":\"a03a17be3ee19a8a041829aae6f77117\"}"
+    },
+    {
+        "nome": "IA Prompt Modais",
+        "id": "ia-prompt-modais",
+        "language": "en",
+        "modulo": null,
+        "html": "",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+    },
+    {
         "nome": "Arquivos Lista",
         "id": "arquivos-lista",
         "language": "pt-br",
@@ -936,20 +988,20 @@
         "checksum": "{\"html\":\"a67b32353b2471c080e7d8c0996fb700\",\"css\":\"\",\"combined\":\"a67b32353b2471c080e7d8c0996fb700\"}"
     },
     {
-        "nome": "modal-pagina",
+        "nome": "Modal Página",
         "id": "modal-pagina",
         "language": "pt-br",
         "modulo": "admin-paginas",
-        "html": "<div class=\"ui modal fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:700px;border:1px solid #ccc;\"><\/iframe>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\n            data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
+        "html": "<div class=\"ui modal overlay fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:900px;border:1px solid #ccc;\"><\/iframe>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\n            data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.10",
-        "checksum": "{\"html\":\"0bc84361f1eafaff98aae09157422e26\",\"css\":\"\",\"combined\":\"0bc84361f1eafaff98aae09157422e26\"}"
+        "versao": 3,
+        "file_version": "1.12",
+        "checksum": "{\"html\":\"b4c154020a9ecf03e6e98f11d6e741c6\",\"css\":\"\",\"combined\":\"b4c154020a9ecf03e6e98f11d6e741c6\"}"
     },
     {
-        "nome": "lista-pagina-ou-sistema",
+        "nome": "Lista Página ou Sistema",
         "id": "lista-pagina-ou-sistema",
         "language": "pt-br",
         "modulo": "admin-paginas",
@@ -962,17 +1014,30 @@
         "checksum": "{\"html\":\"d0e62efa4ab45262de04a3304cde584a\",\"css\":\"\",\"combined\":\"d0e62efa4ab45262de04a3304cde584a\"}"
     },
     {
+        "nome": "Página Prompts Controles",
+        "id": "pagina-prompts-controles",
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "html": "<div class=\"ui grid menuMode\">\r\n    <div class=\"six wide column\">\r\n        <div class=\"field\">\r\n            <label>Página Conteúdo:<\/label>\r\n            <select class=\"ui dropdown ai-prompt-page-select\">\r\n                #select-prompt-page#\r\n            <\/select>\r\n        <\/div>\r\n    <\/div>\r\n    <div class=\"six wide column hidden ai-prompt-session-container\">\r\n        <div class=\"field\">\r\n            <label>Sessão Alvo:<\/label>\r\n            <select class=\"ui dropdown ai-prompt-session-select\">\r\n\r\n            <\/select>\r\n        <\/div>\r\n    <\/div>\r\n    <div class=\"four wide column hidden ai-prompt-session-container\">\r\n        <div class=\"grouped fields\">\r\n            <label>Sessão Opção<\/label>\r\n            <div class=\"field\">\r\n                <div class=\"ui radio checkbox\">\r\n                    <input type=\"radio\" name=\"ai-prompt-session-option\" value=\"new-before\">\r\n                    <label>Adicionar Nova Antes<\/label>\r\n                <\/div>\r\n            <\/div>\r\n            <div class=\"field\">\r\n                <div class=\"ui radio checkbox\">\r\n                    <input type=\"radio\" name=\"ai-prompt-session-option\" value=\"target\" checked=\"checked\">\r\n                    <label>Alterar Sessão Alvo<\/label>\r\n                <\/div>\r\n            <\/div>\r\n            <div class=\"field\">\r\n                <div class=\"ui radio checkbox\">\r\n                    <input type=\"radio\" name=\"ai-prompt-session-option\" value=\"new-after\">\r\n                    <label>Adicionar Nova Depois<\/label>\r\n                <\/div>\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 9,
+        "file_version": "1.9",
+        "checksum": "{\"html\":\"08ef6e2bdc8ef9ea1a96947039d3e54b\",\"css\":\"\",\"combined\":\"08ef6e2bdc8ef9ea1a96947039d3e54b\"}"
+    },
+    {
         "nome": "Page Modal",
         "id": "modal-pagina",
         "language": "en",
         "modulo": "admin-paginas",
-        "html": "<div class=\"ui modal fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:700px;border:1px solid #ccc;\"><\/iframe>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\n            data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
+        "html": "<div class=\"ui modal overlay fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:900px;border:1px solid #ccc;\"><\/iframe>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\n            data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.10",
-        "checksum": "{\"html\":\"0bc84361f1eafaff98aae09157422e26\",\"css\":\"\",\"combined\":\"0bc84361f1eafaff98aae09157422e26\"}"
+        "versao": 3,
+        "file_version": "1.12",
+        "checksum": "{\"html\":\"b4c154020a9ecf03e6e98f11d6e741c6\",\"css\":\"\",\"combined\":\"b4c154020a9ecf03e6e98f11d6e741c6\"}"
     },
     {
         "nome": "Page or System List",
@@ -986,6 +1051,19 @@
         "versao": 1,
         "file_version": "1.4",
         "checksum": "{\"html\":\"d0e62efa4ab45262de04a3304cde584a\",\"css\":\"\",\"combined\":\"d0e62efa4ab45262de04a3304cde584a\"}"
+    },
+    {
+        "nome": "Page Prompts Controls",
+        "id": "pagina-prompts-controles",
+        "language": "en",
+        "modulo": "admin-paginas",
+        "html": "<div class=\"ui grid menuMode\">\r\n    <div class=\"eight wide column\">\r\n        <div class=\"field\">\r\n            <label>Page Content:<\/label>\r\n            <select class=\"ui dropdown ai-prompt-page-select\">\r\n                #select-prompt-page#\r\n            <\/select>\r\n        <\/div>\r\n    <\/div>\r\n    <div class=\"eight wide column\">\r\n        <div class=\"field\">\r\n            <label>Opções:<\/label>\r\n            <div>\r\n                <div class=\"ui button disabled ai-prompt-clear\"><i class=\"clipboard icon\"><\/i>Limpar<\/div>\r\n                <div class=\"ui button blue disabled ai-prompt-edit\"><i class=\"edit icon\"><\/i>Salvar Atual\r\n                <\/div>\r\n                <div class=\"ui button red disabled ai-prompt-del\"><i class=\"edit icon\"><\/i>Excluir Atual\r\n                <\/div>\r\n                <div class=\"ui button green disabled ai-prompt-new\"><i class=\"clone icon\"><\/i>Criar Novo\r\n                <\/div>\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 4,
+        "file_version": "1.4",
+        "checksum": "{\"html\":\"c1c6b49c8743f11641e334d67e51a02d\",\"css\":\"\",\"combined\":\"c1c6b49c8743f11641e334d67e51a02d\"}"
     },
     {
         "nome": "Plugins - Exec",

@@ -44,6 +44,7 @@ function admin_paginas_adicionar(){
 				'nome' => $modulo['tabela']['nome'],
 				'campo' => $modulo['tabela']['id'],
 				'id_nome' => $modulo['tabela']['id_numerico'],
+				'where' => "language='".$_GESTOR['linguagem-codigo']."'",
 			),
 		));
 		
@@ -52,6 +53,7 @@ function admin_paginas_adicionar(){
 		$exiteCampo = interface_verificar_campos(Array(
 			'campo' => 'caminho',
 			'valor' => banco_escape_field($_REQUEST['paginaCaminho']),
+			'language' => true,
 		));
 		
 		if($exiteCampo){
@@ -147,6 +149,31 @@ function admin_paginas_adicionar(){
 
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#modal-pagina#',$modalPagina);
 
+	// ===== Prompt IA
+
+	$pagina_prompt_controles = gestor_componente(Array(
+		'id' => 'pagina-prompts-controles',
+		'modulo' => $_GESTOR['modulo-id'],
+	));
+
+	$selectDadosConteudo = $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosConteudo'];
+
+	$select_prompt_page = '';
+	if($selectDadosConteudo){
+		foreach($selectDadosConteudo as $option){
+			$select_prompt_page .= '<option value="'.$option['valor'].'"'.($option['valor'] == 'tudo'? ' selected="selected"':'').'>'.htmlspecialchars($option['texto']).'</option>';
+		}
+	}
+
+	$pagina_prompt_controles = modelo_var_troca_tudo($pagina_prompt_controles,'#select-prompt-page#',$select_prompt_page);
+
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- ia-componente -->',ia_renderizar_prompt(
+		Array(
+			'alvo' => 'paginas',
+			'prompt_controls' => $pagina_prompt_controles
+		)
+	));
+
 	// ===== Permissão de páginas
 	
 	if(!gestor_acesso('permissao-pagina')){
@@ -154,26 +181,34 @@ function admin_paginas_adicionar(){
 	}	
 	
 	// ===== Inclusão do CodeMirror
-	
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.css" />';
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/theme/tomorrow-night-bright.css" />';
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.css" />';
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.css" />';
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.css" />';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/selection/active-line.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/searchcursor.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/search.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/scroll/annotatescrollbar.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/jump-to-line.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/edit/matchbrackets.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/xml/xml.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/css/css.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/htmlmixed/htmlmixed.js"></script>';
-	
+
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.css" />');
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/theme/tomorrow-night-bright.css" />');
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.css" />');
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.css" />');
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.css" />');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/selection/active-line.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/searchcursor.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/search.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/scroll/annotatescrollbar.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/jump-to-line.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/edit/matchbrackets.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/xml/xml.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/css/css.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/htmlmixed/htmlmixed.js"></script>');
+
+	// ===== Inclusão Componentes
+
+	interface_componentes_incluir(Array(
+		'componente' => Array(
+			'modal-alerta',
+		)
+	));
+
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
@@ -204,6 +239,7 @@ function admin_paginas_adicionar(){
 					'campo' => 'caminho',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-path-label')),
 					'identificador' => 'paginaCaminho',
+					'language' => true,
 					'regrasExtra' => Array(
 						Array(
 							'regra' => 'regexNecessary',
@@ -268,10 +304,10 @@ function admin_paginas_adicionar(){
 					'tipo' => 'select',
 					'id' => 'type',
 					'nome' => 'tipo',
-					'procurar' => true,
-					'limpar' => true,
+					'selectClass' => 'pagina-tipo',
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-placeholder')),
 					'dados' => $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosTipo'],
+					'valor_selecionado' => 'pagina',
 				),
 				Array(
 					'tipo' => 'select',
@@ -334,6 +370,7 @@ function admin_paginas_editar(){
 			$modulo['tabela']['nome'],
 			"WHERE ".$modulo['tabela']['id']."='".$id."'"
 			." AND ".$modulo['tabela']['status']."!='D'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
 		)){
 			interface_alerta(Array(
 				'redirect' => true,
@@ -366,6 +403,7 @@ function admin_paginas_editar(){
 		$exiteCampo = interface_verificar_campos(Array(
 			'campo' => 'caminho',
 			'valor' => banco_escape_field($_REQUEST['paginaCaminho']),
+			'language' => true,
 		));
 		
 		if($exiteCampo){
@@ -385,7 +423,7 @@ function admin_paginas_editar(){
 		
 		$editar = Array(
 			'tabela' => $modulo['tabela']['nome'],
-			'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D'",
+			'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D' AND language='".$_GESTOR['linguagem-codigo']."'",
 		);
 		
 		$campo_nome = "nome"; $request_name = 'pagina-nome'; $alteracoes_name = 'name'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; if(!isset($_REQUEST['_gestor-nao-alterar-id'])){$alterar_id = true;} $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
@@ -411,6 +449,7 @@ function admin_paginas_editar(){
 						'campo' => $modulo['tabela']['id'],
 						'id_nome' => $modulo['tabela']['id_numerico'],
 						'id_valor' => $layouts[0][$modulo['tabela']['id_numerico']],
+						'where' => "language='".$_GESTOR['linguagem-codigo']."'",
 					),
 				));
 				
@@ -537,30 +576,26 @@ function admin_paginas_editar(){
 	}	
 	
 	// ===== Inclusão do CodeMirror
-	
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.css" />';
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/theme/tomorrow-night-bright.css" />';
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.css" />';
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.css" />';
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.css" />';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/selection/active-line.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/searchcursor.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/search.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/scroll/annotatescrollbar.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/jump-to-line.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/edit/matchbrackets.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/xml/xml.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/css/css.js"></script>';
-	$_GESTOR['javascript'][] = '<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/htmlmixed/htmlmixed.js"></script>';
-	
-	// ===== Inclusão Módulo JS
-	
-	gestor_pagina_javascript_incluir();
-	
+
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.css" />');
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/theme/tomorrow-night-bright.css" />');
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.css" />');
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.css" />');
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.css" />');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/selection/active-line.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/searchcursor.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/search.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/scroll/annotatescrollbar.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/jump-to-line.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/edit/matchbrackets.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/xml/xml.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/css/css.js"></script>');
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/htmlmixed/htmlmixed.js"></script>');
+
 	// ===== Selecionar dados do banco de dados
 	
 	$retorno_bd = banco_select_editar
@@ -570,6 +605,7 @@ function admin_paginas_editar(){
 		$modulo['tabela']['nome'],
 		"WHERE ".$modulo['tabela']['id']."='".$id."'"
 		." AND ".$modulo['tabela']['status']."!='D'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 	);
 	
 	if($_GESTOR['banco-resultado']){
@@ -614,6 +650,31 @@ function admin_paginas_editar(){
 		$variaveisTrocarDepois['pagina-css-compiled'] = $css_compiled;
 		$variaveisTrocarDepois['pagina-html'] = $html;
 		$variaveisTrocarDepois['pagina-html-extra-head'] = $html_extra_head;
+
+		// ===== Prompt IA
+
+		$pagina_prompt_controles = gestor_componente(Array(
+			'id' => 'pagina-prompts-controles',
+			'modulo' => $_GESTOR['modulo-id'],
+		));
+
+		$selectDadosConteudo = $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosConteudo'];
+
+		$select_prompt_page = '';
+		if($selectDadosConteudo){
+			foreach($selectDadosConteudo as $option){
+				$select_prompt_page .= '<option value="'.$option['valor'].'"'.($option['valor'] == 'tudo'? ' selected="selected"':'').'>'.htmlspecialchars($option['texto']).'</option>';
+			}
+		}
+
+		$pagina_prompt_controles = modelo_var_troca_tudo($pagina_prompt_controles,'#select-prompt-page#',$select_prompt_page);
+
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- ia-componente -->',ia_renderizar_prompt(
+			Array(
+				'alvo' => 'paginas',
+				'prompt_controls' => $pagina_prompt_controles
+			)
+		));
 
 		// ===== Pré-Visualização
 
@@ -677,6 +738,10 @@ function admin_paginas_editar(){
 		gestor_redirecionar_raiz();
 	}
 	
+	// ===== Inclusão Módulo JS
+	
+	gestor_pagina_javascript_incluir();
+	
 	// ===== Interface editar finalizar opções
 	
 	$_GESTOR['interface']['editar']['finalizar'] = Array(
@@ -734,6 +799,7 @@ function admin_paginas_editar(){
 					'campo' => 'caminho',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-path-label')),
 					'identificador' => 'paginaCaminho',
+					'language' => true,
 					'regrasExtra' => Array(
 						Array(
 							'regra' => 'regexNecessary',
@@ -794,11 +860,18 @@ function admin_paginas_editar(){
 					'tipo' => 'select',
 					'id' => 'type',
 					'nome' => 'tipo',
-					'procurar' => true,
-					'limpar' => true,
+					'selectClass' => 'pagina-tipo',
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-placeholder')),
 					'valor_selecionado' => $tipo,
 					'dados' => $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosTipo'],
+				),
+				Array(
+					'tipo' => 'select',
+					'id' => 'prompt-page',
+					'nome' => 'prompt-page',
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-placeholder')),
+					'dados' => $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosConteudo'],
+					'valor_selecionado' => 'tudo',
 				),
 				Array(
 					'tipo' => 'select',
@@ -970,7 +1043,7 @@ function admin_paginas_interfaces_padroes(){
 	}
 }
 
-// ==== Start
+// ==== Ajax
 
 function admin_paginas_ajax_editor_html_switch(){
 	global $_GESTOR;
@@ -993,6 +1066,69 @@ function admin_paginas_ajax_editor_html_switch(){
 	);
 }
 
+function admin_paginas_ajax_ia_requests(){
+	global $_GESTOR;
+
+	// Pegar dados anterior da página
+	$html = $_REQUEST['data']['html'] ?? '';
+	$css = $_REQUEST['data']['css'] ?? '';
+	$framework_css = $_REQUEST['data']['framework_css'] ?? '';
+	$sessao_id = $_REQUEST['data']['sessao_id'] ?? '';
+	$sessao_opcao = $_REQUEST['data']['sessao_opcao'] ?? '';
+
+	// Modificar o modo IA antes de enviar
+	$modo = $_REQUEST['mode'] ?? '';
+
+	$modo = modelo_var_troca_tudo($modo,'{{html}}',$html);
+	$modo = modelo_var_troca_tudo($modo,'{{css}}',$css);
+	$modo = modelo_var_troca_tudo($modo,'{{framework_css}}',$framework_css);
+
+	// Preparar prompt completo
+	$prompt = $_REQUEST['prompt'] ?? '';
+	$prompt = $modo . "\n\n" . $prompt;
+
+	// Pegar o modelo e servidor id
+	$server_id = $_REQUEST['server_id'] ?? '';
+	$model = $_REQUEST['model'] ?? null;
+
+	// Enviar request para o servidor de IA
+	$retorno = ia_enviar_prompt([
+		'servidor_id' => $server_id,
+		'prompt' => $prompt,
+		'modelo' => $model,
+	]);
+
+	// Pegar HTML e CSS do retorno
+	$html_gerado = '';
+	$css_gerado = '';
+	
+	if($retorno['status'] === 'success' && isset($retorno['data']['texto_gerado'])){
+		$texto_resposta = $retorno['data']['texto_gerado'];
+		
+		// Extrair HTML entre ```html e ```
+		if(preg_match('/```html\s*(.*?)\s*```/s', $texto_resposta, $matches_html)){
+			$html_gerado = trim($matches_html[1]);
+		}
+		
+		// Extrair CSS entre ```css e ```
+		if(preg_match('/```css\s*(.*?)\s*```/s', $texto_resposta, $matches_css)){
+			$css_gerado = trim($matches_css[1]);
+		}
+	}
+
+	// Incluir HTML e CSS gerado no retorno
+	$retorno['data']['html_gerado'] = $html_gerado;
+	$retorno['data']['css_gerado'] = $css_gerado;
+	$retorno['data']['sessao_id'] = $sessao_id;
+	$retorno['data']['sessao_opcao'] = $sessao_opcao;
+
+	// Retorno do AJAX
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'data' => $retorno['data'],
+	);
+}
+
 // ==== Start
 
 function admin_paginas_start(){
@@ -1002,9 +1138,12 @@ function admin_paginas_start(){
 	
 	if($_GESTOR['ajax']){
 		interface_ajax_iniciar();
+
+		ia_ajax_interface();
 		
 		switch($_GESTOR['ajax-opcao']){
 			case 'editor-html-switch': admin_paginas_ajax_editor_html_switch(); break;
+			case 'ia-requests': admin_paginas_ajax_ia_requests(); break;
 		}
 		
 		interface_ajax_finalizar();

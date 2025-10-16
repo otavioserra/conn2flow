@@ -162,5 +162,100 @@
         "value": "Valor",
         "type": "string",
         "modulo": "configuracao"
+    },
+    {
+        "id": "ia-component-title",
+        "value": "Prompt IA",
+        "type": "string"
+    },
+    {
+        "id": "ia-component-without-prompt",
+        "value": "Nenhum prompt disponível",
+        "type": "string"
+    },
+    {
+        "id": "ia-component-without-mode",
+        "value": "Nenhum modo disponível",
+        "type": "string"
+    },
+    {
+        "id": "ia-component-without-servidor",
+        "value": "Nenhum servidor disponível",
+        "type": "string"
+    },
+    {
+        "id": "ia-component-without-model",
+        "value": "Nenhum modelo disponível",
+        "type": "string"
+    },
+    {
+        "id": "ia-form-title",
+        "value": "Assistente de IA",
+        "type": "string"
+    },
+    {
+        "id": "ia-form-prompt-tooltip",
+        "value": "Clique para abrir o Prompt IA",
+        "type": "string"
+    },
+    {
+        "id": "ia-form-prompt-label",
+        "value": "Prompt",
+        "type": "string"
+    },
+    {
+        "id": "ia-form-prompt-start-option",
+        "value": "Selecione um modelo de prompt...",
+        "type": "string"
+    },
+    {
+        "id": "ia-form-mode-tooltip",
+        "value": "Clique para abrir o Modo IA",
+        "type": "string"
+    },
+    {
+        "id": "ia-form-mode-label",
+        "value": "Modo",
+        "type": "string"
+    },
+    {
+        "id": "ia-form-config-tooltip",
+        "value": "Clique para abrir as Configurações do Servidor IA",
+        "type": "string"
+    },
+    {
+        "id": "ia-form-config-label",
+        "value": "Servidor",
+        "type": "string"
+    },
+    {
+        "id": "ia-ajax-error-param-missing",
+        "value": "Parâmetro \"params\" não fornecido.",
+        "type": "string"
+    },
+    {
+        "id": "ia-ajax-error-target-or-id-missing",
+        "value": "Parâmetro \"target\" ou \"id\" não fornecido.",
+        "type": "string"
+    },
+    {
+        "id": "ia-ajax-error-target-or-name-missing",
+        "value": "Parâmetro \"target\" ou \"nome\" não fornecido.",
+        "type": "string"
+    },
+    {
+        "id": "ia-ajax-error-prompt-not-found",
+        "value": "Prompt não encontrado.",
+        "type": "string"
+    },
+    {
+        "id": "ia-ajax-error-mode-not-found",
+        "value": "Modo não encontrado.",
+        "type": "string"
+    },
+    {
+        "id": "ia-ajax-msg-prompt-name-empty",
+        "value": "Defina um nome para o prompt",
+        "type": "string"
     }
 ]

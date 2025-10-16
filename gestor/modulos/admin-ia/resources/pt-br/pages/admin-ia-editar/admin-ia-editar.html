@@ -21,6 +21,14 @@
                         </select>
                     </div>
 
+                    <div class="field">
+                        <label>Padrão</label>
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="padrao" [[padrao]]>
+                            <label>&nbsp;</label>
+                        </div>
+                    </div>
+
                     <div class="field required">
                         <label>Chave API</label>
                         <input type="password" name="chave_api" value="[[chave-api]]"
@@ -43,6 +51,14 @@
                         <button type="button" class="ui button blue testar-conexao" data-id="[[id]]">
                             <i class="plug icon"></i> Testar Conexão
                         </button>
+                        <!-- ativar-cel < --><button type="button" class="ui button green ativar-conexao"
+                            data-id="[[id]]">
+                            <i class="eye icon"></i> Ativar
+                        </button><!-- ativar-cel > -->
+                        <!-- desativar-cel < --><button type="button" class="ui button brown desativar-conexao"
+                            data-id="[[id]]">
+                            <i class="eye slash icon"></i> Desativar
+                        </button><!-- desativar-cel > -->
                         <a href="@[[pagina#url-raiz]]@admin-ia/listar/" class="ui button">
                             <i class="arrow left icon"></i> Voltar
                         </a>

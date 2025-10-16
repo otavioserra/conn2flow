@@ -28,11 +28,11 @@
                     "type": "system",
                     "option": "listar-servidores",
                     "root": true,
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "76f569590d7950a54dfaffaf3bdbf3bf",
+                        "html": "7474c36e467e2be6c148558f0240f2ba",
                         "css": "",
-                        "combined": "76f569590d7950a54dfaffaf3bdbf3bf"
+                        "combined": "7474c36e467e2be6c148558f0240f2ba"
                     }
                 },
                 {
@@ -43,11 +43,11 @@
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.7",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "9375885298f1c9412c50c87a6b0a4414",
+                        "html": "49da0295dc4e769f59512f7157c94a78",
                         "css": "",
-                        "combined": "9375885298f1c9412c50c87a6b0a4414"
+                        "combined": "49da0295dc4e769f59512f7157c94a78"
                     }
                 },
                 {
@@ -58,11 +58,11 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.7",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "e2805c490baca7245ba9aed6d5e2720e",
+                        "html": "cd443a7ea57ce6b79b13866e587c4922",
                         "css": "",
-                        "combined": "e2805c490baca7245ba9aed6d5e2720e"
+                        "combined": "cd443a7ea57ce6b79b13866e587c4922"
                     }
                 }
             ],
@@ -83,6 +83,10 @@
                     "name": "Tipos de Servidor IA",
                     "id": "tipos-servidor-ia",
                     "value": "{\"gemini\":\"Google Gemini\",\"openai\":\"OpenAI\"}"
+                },
+                {
+                    "id": "field-default",
+                    "value": "Padrão"
                 }
             ]
         },
@@ -97,11 +101,11 @@
                     "type": "system",
                     "option": "listar-servidores",
                     "root": true,
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "b2284585860c9eebdc3ad3fdd5ed5eb4",
+                        "html": "3da310d99ee98190d1b3ef338e2a6958",
                         "css": "",
-                        "combined": "b2284585860c9eebdc3ad3fdd5ed5eb4"
+                        "combined": "3da310d99ee98190d1b3ef338e2a6958"
                     }
                 },
                 {
@@ -112,11 +116,11 @@
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.8",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "194f40f36565e252baa600d088c27a68",
+                        "html": "065689e6f907924314cc9248c3df388d",
                         "css": "",
-                        "combined": "194f40f36565e252baa600d088c27a68"
+                        "combined": "065689e6f907924314cc9248c3df388d"
                     }
                 },
                 {
@@ -127,11 +131,11 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.8",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "164894d265b5ef22dc548b5740e74762",
+                        "html": "0b23df2b17606f8c8f8467ce8afc4874",
                         "css": "",
-                        "combined": "164894d265b5ef22dc548b5740e74762"
+                        "combined": "0b23df2b17606f8c8f8467ce8afc4874"
                     }
                 }
             ],
@@ -152,6 +156,10 @@
                     "name": "AI Server Types",
                     "id": "tipos-servidor-ia",
                     "value": "{\"gemini\":\"Google Gemini\",\"openai\":\"OpenAI\"}"
+                },
+                {
+                    "id": "field-default",
+                    "value": "Default"
                 }
             ]
         }

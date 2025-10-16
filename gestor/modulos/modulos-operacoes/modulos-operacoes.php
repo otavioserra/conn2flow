@@ -43,6 +43,7 @@ function modulos_operacoes_adicionar(){
 				'nome' => $modulo['tabela']['nome'],
 				'campo' => $modulo['tabela']['id'],
 				'id_nome' => $modulo['tabela']['id_numerico'],
+				'where' => "language='".$_GESTOR['linguagem-codigo']."'",
 			),
 		));
 		
@@ -201,6 +202,7 @@ function modulos_operacoes_editar(){
 					'campo' => $modulo['tabela']['id'],
 					'id_nome' => $modulo['tabela']['id_numerico'],
 					'id_valor' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
+					'where' => "language='".$_GESTOR['linguagem-codigo']."'",
 				),
 			));
 			

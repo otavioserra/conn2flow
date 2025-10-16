@@ -157,11 +157,11 @@
                 {
                     "name": "Cadastrar no Sistema",
                     "id": "cadastrar-no-sistema",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "62ae3b0260aed09055dbd0cd3ff7f33e",
+                        "html": "6950f9bcbb6f17372e8d431feb1b55cb",
                         "css": "",
-                        "combined": "62ae3b0260aed09055dbd0cd3ff7f33e"
+                        "combined": "6950f9bcbb6f17372e8d431feb1b55cb"
                     },
                     "layout": "layout-pagina-sem-permissao",
                     "path": "signup\/",
@@ -822,11 +822,11 @@
                 {
                     "name": "Register in System",
                     "id": "cadastrar-no-sistema",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "43d4460c4ed987340d24fdf90d9cfc29",
+                        "html": "f5210119479465a5fbbe90ecf2610dd9",
                         "css": "",
-                        "combined": "43d4460c4ed987340d24fdf90d9cfc29"
+                        "combined": "f5210119479465a5fbbe90ecf2610dd9"
                     },
                     "layout": "layout-pagina-sem-permissao",
                     "path": "signup\/",

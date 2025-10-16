@@ -504,10 +504,38 @@
         "language": "en"
     },
     {
-        "modulo_grupo_id": "administracao-sistema",
+        "modulo_grupo_id": "administracao-assistentes-ia",
         "nome": "Admin IA",
         "id": "admin-ia",
         "titulo": "Servidores IA",
+        "icone": "server",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-assistentes-ia",
+        "nome": "Admin IA",
+        "id": "admin-ia",
+        "titulo": "AI Servers",
+        "icone": "server",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
+    },
+    {
+        "modulo_grupo_id": "administracao-assistentes-ia",
+        "nome": "Admin Modos IA",
+        "id": "admin-modos-ia",
+        "titulo": "Modos IA",
         "icone": "robot",
         "icone2": null,
         "nao_menu_principal": null,
@@ -518,10 +546,10 @@
         "language": "pt-br"
     },
     {
-        "modulo_grupo_id": "administracao-sistema",
-        "nome": "Admin IA",
-        "id": "admin-ia",
-        "titulo": "AI Servers",
+        "modulo_grupo_id": "administracao-assistentes-ia",
+        "nome": "AI Modes Admin",
+        "id": "admin-modos-ia",
+        "titulo": "AI Modes",
         "icone": "robot",
         "icone2": null,
         "nao_menu_principal": null,
@@ -532,7 +560,7 @@
         "language": "en"
     },
     {
-        "modulo_grupo_id": "administracao-sistema",
+        "modulo_grupo_id": "administracao-assistentes-ia",
         "nome": "Admin Prompts IA",
         "id": "admin-prompts-ia",
         "titulo": "Prompts IA",
@@ -546,7 +574,7 @@
         "language": "pt-br"
     },
     {
-        "modulo_grupo_id": "administracao-sistema",
+        "modulo_grupo_id": "administracao-assistentes-ia",
         "nome": "Admin Prompts AI",
         "id": "admin-prompts-ia",
         "titulo": "AI Prompts",

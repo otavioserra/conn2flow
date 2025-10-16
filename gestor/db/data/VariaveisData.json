@@ -243,6 +243,177 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-component-title",
+        "valor": "Prompt IA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-component-without-prompt",
+        "valor": "Nenhum prompt disponível",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-component-without-mode",
+        "valor": "Nenhum modo disponível",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-component-without-servidor",
+        "valor": "Nenhum servidor disponível",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-component-without-model",
+        "valor": "Nenhum modelo disponível",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-form-title",
+        "valor": "Assistente de IA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-form-prompt-tooltip",
+        "valor": "Clique para abrir o Prompt IA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-form-prompt-label",
+        "valor": "Prompt",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-form-prompt-start-option",
+        "valor": "Selecione um modelo de prompt...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-form-mode-tooltip",
+        "valor": "Clique para abrir o Modo IA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-form-mode-label",
+        "valor": "Modo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-form-config-tooltip",
+        "valor": "Clique para abrir as Configurações do Servidor IA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-form-config-label",
+        "valor": "Servidor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-ajax-error-param-missing",
+        "valor": "Parâmetro \"params\" não fornecido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-ajax-error-target-or-id-missing",
+        "valor": "Parâmetro \"target\" ou \"id\" não fornecido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-ajax-error-target-or-name-missing",
+        "valor": "Parâmetro \"target\" ou \"nome\" não fornecido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-ajax-error-prompt-not-found",
+        "valor": "Prompt não encontrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-ajax-error-mode-not-found",
+        "valor": "Modo não encontrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "ia-ajax-msg-prompt-name-empty",
+        "valor": "Defina um nome para o prompt",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -2979,10 +3150,28 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-ia",
+        "id": "field-default",
+        "valor": "Padrão",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "admin-ia",
         "id": "tipos-servidor-ia",
         "valor": "{\"gemini\":\"Google Gemini\",\"openai\":\"OpenAI\"}",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-ia",
+        "id": "field-default",
+        "valor": "Default",
         "tipo": null,
         "grupo": null,
         "descricao": null
@@ -3349,6 +3538,168 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "admin-modos-ia",
+        "id": "form-name-label",
+        "valor": "Nome do Modo",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-modos-ia",
+        "id": "form-name-placeholder",
+        "valor": "Digite o nome do prompt",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-modos-ia",
+        "id": "form-target-label",
+        "valor": "Alvo",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-modos-ia",
+        "id": "form-target-placeholder",
+        "valor": "Selecione o alvo do prompt",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-modos-ia",
+        "id": "form-mode-label",
+        "valor": "Modo",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-modos-ia",
+        "id": "form-mode-placeholder",
+        "valor": "Digite o conteúdo do prompt",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-modos-ia",
+        "id": "form-default-label",
+        "valor": "Padrão",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-modos-ia",
+        "id": "field-target",
+        "valor": "Alvo",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-modos-ia",
+        "id": "field-default",
+        "valor": "Padrão",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-modos-ia",
+        "id": "form-name-label",
+        "valor": "Mode Name",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-modos-ia",
+        "id": "form-name-placeholder",
+        "valor": "Enter the mode name",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-modos-ia",
+        "id": "form-target-label",
+        "valor": "Target",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-modos-ia",
+        "id": "form-target-placeholder",
+        "valor": "Select the mode target",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-modos-ia",
+        "id": "form-mode-label",
+        "valor": "Mode",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-modos-ia",
+        "id": "form-mode-placeholder",
+        "valor": "Enter the mode content",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-modos-ia",
+        "id": "form-default-label",
+        "valor": "Default",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-modos-ia",
+        "id": "field-target",
+        "valor": "Target",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-modos-ia",
+        "id": "field-default",
+        "valor": "Default",
+        "tipo": null,
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-name-label",
         "valor": "Nome da Página",
@@ -3379,6 +3730,15 @@
         "modulo": "admin-paginas",
         "id": "form-html-editor-label",
         "valor": "Editor HTML",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-page-content-label",
+        "valor": "Conteúdo da Página",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3531,7 +3891,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-root-label",
-        "valor": "Raiz",
+        "valor": "Raiz do Módulo",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3540,7 +3900,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
         "id": "form-permission-label",
-        "valor": "Sem Permissão",
+        "valor": "Sem Permissão \/ Acesso Público",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3773,6 +4133,15 @@
     {
         "linguagem_codigo": "en",
         "modulo": "admin-paginas",
+        "id": "form-page-content-label",
+        "valor": "Page Content",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
         "id": "form-html-tooltip",
         "valor": "Click to open HTML > Body. Visible part of the page within the <body> tag",
         "tipo": "string",
@@ -3918,7 +4287,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-paginas",
         "id": "form-root-label",
-        "valor": "Root",
+        "valor": "Root of Module",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3927,7 +4296,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-paginas",
         "id": "form-permission-label",
-        "valor": "No Permission",
+        "valor": "No Permission \/ Public Access",
         "tipo": "string",
         "grupo": null,
         "descricao": null

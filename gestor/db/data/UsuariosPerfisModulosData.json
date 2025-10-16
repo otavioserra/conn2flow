@@ -88,6 +88,10 @@
         "modulo": "admin-prompts-ia"
     },
     {
+        "perfil": "administradores",
+        "modulo": "admin-modos-ia"
+    },
+    {
         "perfil": "consumidores",
         "modulo": "dashboard"
     },

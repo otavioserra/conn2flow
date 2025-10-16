@@ -1,39 +1,50 @@
 <div class="ui two column centered grid stackable">
     <div class="column">
         <div class="ui segment">
-            <form id="_gestor-form-signup" action="@[[pagina#url-raiz]]@signup/" method="post" name="_gestor-form-signup" class="ui form interfaceFormPadrao">
+            <form id="_gestor-form-signup" action="@[[pagina#url-raiz]]@signup/" method="post"
+                name="_gestor-form-signup" class="ui form interfaceFormPadrao">
                 <div class="ui center aligned header large">@[[signup-title]]@</div>
                 <div class="ui hidden divider"></div>
-                <!-- bloqueado-mensagem < --><div class="ui icon negative message visible">
+                <!-- bloqueado-mensagem < -->
+                <div class="ui icon negative message visible">
                     <i class="exclamation triangle icon"></i>
                     <div class="content">
                         <div class="header">
                             Quantidade Máxima de Cadastros Permitidos Alcançada!
                         </div>
-                        <p>Infelizmente não é possível cadastrar uma nova conta no nosso sistema uma vez que o limite máximo de cadastros por dia na sua rede foram alcançadas. Favor tentar novamente dentro de 24h.</p>
+                        <p>Infelizmente não é possível cadastrar uma nova conta no nosso sistema uma vez que o limite
+                            máximo de cadastros por dia na sua rede foram alcançadas. Favor tentar novamente dentro de
+                            24h.</p>
                     </div>
                 </div><!-- bloqueado-mensagem > -->
-            	<!-- formulario < --><div class="ui hidden divider"></div>
+                <!-- formulario < -->
+                <div class="ui hidden divider"></div>
                 <div class="field">
                     <label>@[[signup-name-label]]@</label>
-                    <input type="text" name="nome" placeholder="@[[signup-name-placeholder]]@" autocomplete="new-password">
+                    <input type="text" name="nome" placeholder="@[[signup-name-placeholder]]@"
+                        autocomplete="new-password">
                 </div>
                 <div class="field">
                     <label>@[[signup-email-label]]@</label>
-                    <input type="text" name="email" placeholder="@[[signup-email-placeholder]]@" maxlength="100" autocomplete="new-password">
+                    <input type="text" name="email" placeholder="@[[signup-email-placeholder]]@" maxlength="100"
+                        autocomplete="new-password">
                 </div>
                 <div class="field">
                     <label>@[[signup-email-2-label]]@</label>
-                    <input type="text" name="email-2" placeholder="@[[signup-email-2-placeholder]]@" maxlength="100" autocomplete="new-password">
+                    <input type="text" name="email-2" placeholder="@[[signup-email-2-placeholder]]@" maxlength="100"
+                        autocomplete="new-password">
                 </div>
                 <div class="field">
                     <label>@[[signup-senha-label]]@</label>
-                    <input type="password" name="senha" placeholder="@[[signup-senha-placeholder]]@" maxlength="100" autocomplete="new-password">
+                    <input type="password" name="senha" placeholder="@[[signup-senha-placeholder]]@" maxlength="100"
+                        autocomplete="new-password">
                 </div>
                 <div class="field">
                     <label>@[[signup-senha-2-label]]@</label>
-                    <input type="password" name="senha-2" placeholder="@[[signup-senha-2-placeholder]]@" maxlength="100" autocomplete="new-password">
+                    <input type="password" name="senha-2" placeholder="@[[signup-senha-2-placeholder]]@" maxlength="100"
+                        autocomplete="new-password">
                 </div>
+                <!-- plano-cont < -->
                 <div class="ui hidden divider"></div>
                 <div class="inline fields">
                     <label for="plano">@[[signup-plan]]@:</label>
@@ -45,17 +56,19 @@
                         </div>
                     </div><!-- plano-cel > -->
                 </div>
+                <!-- plano-cont > -->
                 <div class="ui hidden divider"></div>
                 <div class="ui hidden divider"></div>
                 <div class="ui error message">&nbsp;</div>
                 <div class="field">
                     <button class="fluid ui button blue">@[[signup-button]]@</button>
                 </div>
-            	<!-- formulario > -->
+                <!-- formulario > -->
                 <div class="field">
                     <div class="ui hidden divider">&nbsp;</div>
                     <div class="ui basic segment center aligned">
-                        <div class="">@[[signup-login-label]]@ <a href="@[[pagina#url-raiz]]@signin/">@[[signup-login-button]]@</a>
+                        <div class="">@[[signup-login-label]]@ <a
+                                href="@[[pagina#url-raiz]]@signin/">@[[signup-login-button]]@</a>
                         </div>
                     </div>
                 </div>

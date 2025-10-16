@@ -122,7 +122,7 @@ $(document).ready(function () {
 		var tabActive = localStorage.getItem(gestor.moduloId + 'tabActive');
 
 		if (tabActive !== null) {
-			$('.menu .item').tab('change tab', tabActive);
+			$('.menuPaginas .item').tab('change tab', tabActive);
 
 			switch (tabActive) {
 				case 'codigo-html':
@@ -141,7 +141,7 @@ $(document).ready(function () {
 		}
 
 
-		$('.menu .item').tab({
+		$('.menuPaginas .item').tab({
 			onLoad: function (tabPath, parameterArray, historyEvent) {
 				switch (tabPath) {
 					case 'codigo-html':
@@ -355,7 +355,13 @@ $(document).ready(function () {
 		}
 
 		// Função para gerar o conteúdo da página de preview com Tailwind CSS
-		function gerarPreviewHtmlTailwind(htmlDoUsuario) {
+		function gerarPreviewHtmlTailwind(htmlDoUsuario, cssDoUsuario) {
+			if (cssDoUsuario && cssDoUsuario.length > 0) {
+				cssDoUsuario = `<style>${cssDoUsuario}</style>`;
+			} else {
+				cssDoUsuario = '';
+			}
+
 			return `
 			<!DOCTYPE html>
 			<html lang="pt-br">
@@ -365,6 +371,7 @@ $(document).ready(function () {
 				<title>Preview Tailwind</title>
 				<!-- CDN do TailwindCSS -->
 				<script src="https://cdn.tailwindcss.com"></script>
+				${cssDoUsuario}
 			</head>
 			<body>
 				${htmlDoUsuario}
@@ -374,7 +381,13 @@ $(document).ready(function () {
 		}
 
 		// Função para gerar o conteúdo da página de preview com Fomantic UI
-		function gerarPreviewHtmlFomantic(htmlDoUsuario) {
+		function gerarPreviewHtmlFomantic(htmlDoUsuario, cssDoUsuario) {
+			if (cssDoUsuario && cssDoUsuario.length > 0) {
+				cssDoUsuario = `<style>${cssDoUsuario}</style>`;
+			} else {
+				cssDoUsuario = '';
+			}
+
 			return `
 			<!DOCTYPE html>
 			<html lang="pt-br">
@@ -386,6 +399,7 @@ $(document).ready(function () {
 				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">
 				<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
+				${cssDoUsuario}
 			</head>
 			<body>
 				${htmlDoUsuario}
@@ -397,8 +411,13 @@ $(document).ready(function () {
 		$(document.body).on('mouseup tap', '.previsualizar.button', function (e) {
 			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
+			previsualizarPagina();
+		});
+
+		function previsualizarPagina() {
 			// Pegar o HTML do usuário e filtrar o que está dentro do <body>
 			const htmlDoUsuario = filtrarHtmlBody(CodeMirrorHtml.getDoc().getValue()).trim();
+			const cssDoUsuario = filtrarHtmlBody(codeMirrorCss.getDoc().getValue()).trim();
 
 			// Atualizar o CodeMirror com o HTML filtrado.
 			CodeMirrorHtml.getDoc().setValue(htmlDoUsuario);
@@ -407,12 +426,12 @@ $(document).ready(function () {
 
 			const gerarPreviewHtml = idFramework === 'fomantic-ui' ? gerarPreviewHtmlFomantic : gerarPreviewHtmlTailwind;
 
-			$('#iframe-preview').attr('srcdoc', gerarPreviewHtml(htmlDoUsuario));
+			$('#iframe-preview').attr('srcdoc', gerarPreviewHtml(htmlDoUsuario, cssDoUsuario));
 
 			$('.previsualizar.modal')
 				.modal('show')
 				;
-		});
+		}
 
 		$(document.body).on('mouseup tap', '.screenPagina', function (e) {
 			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
@@ -452,6 +471,270 @@ $(document).ready(function () {
 			}
 
 			$.formSubmitNormal();
+		});
+
+		// ===== Módulos
+
+		function visibilidadeModulos() {
+			const pagina_tipo = $('.ui.dropdown.pagina-tipo').dropdown('get value');
+
+			if (pagina_tipo === 'sistema') {
+				$('.pagina-modulos-container').removeClass('hidden');
+			} else {
+				$('.pagina-modulos-container').addClass('hidden');
+			}
+		}
+
+		visibilidadeModulos();
+
+		$('.ui.dropdown.pagina-tipo')
+			.dropdown({
+				onChange: function (value, text, $choice) {
+					visibilidadeModulos();
+				}
+			});
+
+		// ===== IA
+
+		let total_sessoes = 0;
+
+		function totalDeSessoes() {
+			let total = 0;
+			const html = CodeMirrorHtml.getDoc().getValue();
+
+			// Contar a quantidade total de tag sessions no HTML e retornar esse valor.
+			const regex = /<session\b[^>]*>([\s\S]*?)<\/session>/gi;
+			let match;
+			while ((match = regex.exec(html)) !== null) {
+				total++;
+			}
+
+			return total;
+		}
+
+		function menuDeSessoes() {
+			const html = CodeMirrorHtml.getDoc().getValue();
+
+			const regex = /<session\b[^>]*>([\s\S]*?)<\/session>/gi;
+			let match;
+
+			let sessoes = [];
+
+			while ((match = regex.exec(html)) !== null) {
+				const sessionTag = match[0];
+				const idMatch = sessionTag.match(/data-id=["']([^"']+)["']/i);
+				const nomeMatch = sessionTag.match(/data-title=["']([^"']+)["']/i);
+
+				const id = idMatch ? idMatch[1] : null;
+				const nome = nomeMatch ? nomeMatch[1] : 'Sem nome';
+
+				if (id) {
+					sessoes.push({ id: id, nome: nome });
+				}
+			}
+
+			const select = $('.ui.dropdown.ai-prompt-session-select');
+			const currentValue = select.dropdown('get value');
+
+			select.find('select').find('option').remove();
+
+			if (sessoes.length > 0) {
+				sessoes.forEach(function (sessao) {
+					const option = $('<option></option>').attr('value', sessao.id).text(sessao.nome);
+					select.find('select').append(option);
+				});
+
+				select.dropdown('refresh');
+
+				if (sessoes.find(sessao => sessao.id === currentValue)) {
+					select.dropdown('set selected', currentValue, true);
+				} else {
+					select.dropdown('set selected', sessoes[0].id, true);
+				}
+
+				select.parent().removeClass('disabled');
+			}
+		}
+
+		function menuPages(opcao, alertar = false) {
+			total_sessoes = totalDeSessoes();
+
+			if (opcao === 'sessao') {
+				if (total_sessoes > 0) {
+					menuDeSessoes();
+					$('.ai-prompt-session-container').removeClass('hidden');
+				} else {
+					if (alertar) $('#gestor-listener').trigger('alerta', { msg: 'Não foram detectadas sessões. Crie uma página nova e adicione sessões para utilizar esse recurso.' });
+					$('.ai-prompt-session-container').addClass('hidden');
+					setTimeout(function () {
+						$('.ui.dropdown.ai-prompt-page-select').dropdown('set selected', 'tudo', true);
+					});
+				}
+			} else {
+				$('.ai-prompt-session-container').addClass('hidden');
+			}
+		}
+
+		CodeMirrorHtml.on("change", function (instance, changeObj) {
+			//var newContent = instance.getValue();
+
+			const total_atual = totalDeSessoes();
+
+			if (total_atual != total_sessoes) {
+				total_sessoes = total_atual;
+				menuDeSessoes();
+
+				const tipo_prompt = $('.ui.dropdown.ai-prompt-page-select').dropdown('get value');
+				menuPages(tipo_prompt);
+			}
+		});
+
+		$('.ui.dropdown.ai-prompt-page-select')
+			.dropdown({
+				onChange: function (value, text, $selectedItem) {
+					menuPages(value, true);
+				}
+			});
+
+		function iaRequestsCallback(p = {}) {
+			var html_gerado = p.data.html_gerado ? p.data.html_gerado : '';
+			var css_gerado = p.data.css_gerado ? p.data.css_gerado : '';
+			var sessao_id = p.data.sessao_id ? p.data.sessao_id : '';
+			var sessao_opcao = p.data.sessao_opcao ? p.data.sessao_opcao : '';
+
+			if (sessao_id && sessao_id.length > 0 && sessao_opcao && sessao_opcao.length > 0) {
+				// Pegar o HTML completo atual
+				let html_completo = CodeMirrorHtml.getDoc().getValue();
+
+				// Marcar sessão alvo com data-menu-alvo="true" para manter a seleção
+				html_completo = html_completo.replace(new RegExp(`(<session\\b[^>]*data-id=["']${sessao_id}["'][^>]*)>`, 'i'), '$1 data-menu-alvo="true">');
+
+				switch (sessao_opcao) {
+					case 'target':
+						// Extrair o outerHTML da sessão.
+						const regex = new RegExp(`<session\\b[^>]*data-id=["']${sessao_id}["'][^>]*>([\\s\\S]*?)<\\/session>`, 'i');
+						const match = html_completo.match(regex);
+
+						if (match && match[0]) {
+							// Substituir a sessão no HTML completo
+							const novo_html_completo = html_completo.replace(regex, html_gerado);
+
+							html_gerado = novo_html_completo;
+						}
+						break;
+					case 'new-before':
+						// Colocar o html_gerado logo antes da sessão alvo
+						const regexBefore = new RegExp(`(<session\\b[^>]*data-id=["']${sessao_id}["'][^>]*>([\\s\\S]*?)<\\/session>)`, 'i');
+						html_gerado = html_completo.replace(regexBefore, html_gerado + '\n$1');
+						break;
+					case 'new-after':
+						// Colocar o html_gerado logo depois da sessão alvo
+						const regexAfter = new RegExp(`(<session\\b[^>]*data-id=["']${sessao_id}["'][^>]*>([\\s\\S]*?)<\\/session>)`, 'i');
+						html_gerado = html_completo.replace(regexAfter, '$1\n' + html_gerado);
+						break;
+				}
+			}
+
+			// Remover linhas em branco no início e fim do código.
+			// E também remover linhas que estejam completamente em branco no meio do código.
+			html_gerado = html_gerado.split('\n').filter(line => line.trim() !== '').join('\n').trim();
+			css_gerado = css_gerado.split('\n').filter(line => line.trim() !== '').join('\n').trim();
+
+			// Atualizar os `data-id` das sessões para evitar duplicidade. Começar sempre no `1` e ir somando.
+			let sessionCounter = 1;
+			let oldIds = [];
+			html_gerado = html_gerado.replace(/<session\b[^>]*>/gi, function (match) {
+				const idMatch = match.match(/data-id=["']([^"']+)["']/i);
+				const oldId = idMatch ? idMatch[1] : null;
+				oldIds.push(oldId);
+				// Substituir ou adicionar data-id
+				if (match.includes('data-id=')) {
+					return match.replace(/data-id=["'][^"']*["']/i, 'data-id="' + sessionCounter++ + '"');
+				} else {
+					return match.replace('<session', '<session data-id="' + sessionCounter++ + '"');
+				}
+			});
+
+			// Atualizar os CodeMirror com o código gerado.
+			CodeMirrorHtml.getDoc().setValue(html_gerado);
+			codeMirrorCss.getDoc().setValue(css_gerado);
+
+			CodeMirrorHtml.refresh();
+			codeMirrorCss.refresh();
+
+			// Agora, após o menu ser atualizado pelo evento change, selecionar a sessão alvo e remover o atributo
+			const htmlAtual = CodeMirrorHtml.getDoc().getValue();
+			const alvoMatch = htmlAtual.match(/<session\b[^>]*data-menu-alvo="true"[^>]*>/i);
+			if (alvoMatch) {
+				const alvoTag = alvoMatch[0];
+				const idMatch = alvoTag.match(/data-id=["']([^"']+)["']/i);
+				if (idMatch) {
+					const alvoId = idMatch[1];
+					$('.ui.dropdown.ai-prompt-session-select').dropdown('set selected', alvoId, true);
+					// Remover o atributo data-menu-alvo
+					const htmlSemAlvo = htmlAtual.replace(/ data-menu-alvo="true"/gi, '');
+					CodeMirrorHtml.getDoc().setValue(htmlSemAlvo);
+					CodeMirrorHtml.refresh();
+				}
+			}
+
+			// Abrir o preview da página.
+			previsualizarPagina();
+		}
+
+		function iaRequestsData(p = {}) {
+			const tipo_prompt = $('.ui.dropdown.ai-prompt-page-select').dropdown('get value');
+
+			let html = '';
+			let css = codeMirrorCss.getDoc().getValue();
+			let sessao_id = '';
+			let sessao_opcao = '';
+
+			// Se for sessão, validar se uma sessão foi selecionada.
+			if (tipo_prompt === 'sessao') {
+				const id_sessao = $('.ui.dropdown.ai-prompt-session-select').dropdown('get value');
+				const sessao_options = ['target', 'new-before', 'new-after'];
+
+				sessao_options.forEach(function (opcao) {
+					const checkbox = $('input[name="ai-prompt-session-option"][value="' + opcao + '"]').parent();
+					if (checkbox.checkbox('is checked')) {
+						sessao_opcao = opcao;
+						return false;
+					}
+				});
+
+				// Se não tiver sessão selecionada, retornar sem enviar a request.
+				if (id_sessao && id_sessao.length > 0) {
+					sessao_id = id_sessao;
+					if (sessao_opcao == 'target') {
+						const html_completo = CodeMirrorHtml.getDoc().getValue();
+						// Extrair o outerHTML da sessão.
+						const regex = new RegExp(`<session\\b[^>]*data-id=["']${id_sessao}["'][^>]*>([\\s\\S]*?)<\\/session>`, 'i');
+						const match = html_completo.match(regex);
+
+						if (match && match[0]) {
+							html = match[0].trim();
+						}
+					}
+				}
+			} else {
+				html = CodeMirrorHtml.getDoc().getValue();
+			}
+
+			return {
+				ajaxOpcao: 'ia-requests', data: {
+					html: html,
+					css: css,
+					framework_css: $('#framework-css').dropdown('get value'),
+					sessao_id,
+					sessao_opcao
+				}
+			};
+		}
+
+		$('#gestor-listener').trigger('ia-data', {
+			requestsCallback: iaRequestsCallback,
+			requestsData: iaRequestsData
 		});
 	}
 

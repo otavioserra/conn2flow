@@ -1841,10 +1841,18 @@ function interface_formulario_validacao($params = false){
 							'prompt' => $prompt[4],
 							'campo' => $regra['campo'],
 						);
+
+						if(isset($regra['language'])){
+							$validarCampos[$regra['identificador']]['language'] = true;
+						}
 					} else {
 						$validarCampos[$regra['campo']] = Array(
 							'prompt' => $prompt[4],
 						);
+
+						if(isset($regra['language'])){
+							$validarCampos[$regra['campo']]['language'] = true;
+						}
 					}
 				break;
 				case 'selecao-obrigatorio':
@@ -2064,10 +2072,18 @@ function interface_formulario_validacao($params = false){
 									'prompt' => $prompt[4],
 									'campo' => $regra['campo'],
 								);
+
+								if(isset($regra['language'])){
+									$validarCampos[$regra['identificador']]['language'] = true;
+								}
 							} else {
 								$validarCampos[$regra['campo']] = Array(
 									'prompt' => $prompt[4],
 								);
+
+								if(isset($regra['language'])){
+									$validarCampos[$regra['campo']]['language'] = true;
+								}
 							}
 						}
 					}
@@ -2482,6 +2498,7 @@ function interface_verificar_campos($params = false){
 	
 	// campo - String - Obrigatório - Nome do campo do banco de dados.
 	// valor - String - Obrigatório - Valor do campo do banco de dados.
+	// language - Boolean - Opcional - Indica se a verificação deve considerar o idioma.
 	
 	// ===== 
 	
@@ -2511,6 +2528,7 @@ function interface_verificar_campos($params = false){
 			$tabela['nome'],
 			"WHERE ".$campo."='".banco_escape_field($valor)."'"
 			.(isset($tabela['where']) ? " AND ".$tabela['where'] : "" )
+			.(isset($language) ? " AND language='".$_GESTOR['linguagem-codigo']."'" : "" )
 			." AND ".$tabela['status']."!='D'"
 			.($_GESTOR['opcao'] == 'editar' ? ' AND '.$tabela['id']."!='".$_GESTOR['modulo-registro-id']."'" : '')
 		);
@@ -2714,6 +2732,7 @@ function interface_ajax_verificar_campo(){
 	$campoExiste = interface_verificar_campos(Array(
 		'campo' => banco_escape_field($_REQUEST['campo']),
 		'valor' => banco_escape_field($_REQUEST['valor']),
+		'language' => $_REQUEST['language'] === 'true' ? true : null,
 	));
 	
 	$_GESTOR['ajax-json'] = Array(

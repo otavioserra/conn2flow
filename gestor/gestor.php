@@ -630,9 +630,33 @@ function gestor_pagina_css_incluir($css = false){
 	global $_GESTOR;
 	
 	if(!$css){
-		$_GESTOR['css-fim'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/css.css?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'">';
+		$_GESTOR['css-fim'][] = $css = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/css.css?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'">';
+		
+		// ===== Verifica se já foi adicionado este css, se sim, remover o último que foi adicionado.
+		if(!isset($_GESTOR['css-fim-adicionados'])){
+			$_GESTOR['css-fim-adicionados'] = Array();
+		} else {
+			if(in_array($css,$_GESTOR['css-fim-adicionados'])){
+				array_pop($_GESTOR['css-fim']);
+				return;
+			}
+		}
+	
+		$_GESTOR['css-fim-adicionados'][] = $css;
 	} else {
 		$_GESTOR['javascript-fim'][] = $css;
+		
+		// ===== Verifica se já foi adicionado este css, se sim, remover o último que foi adicionado.
+		if(!isset($_GESTOR['javascript-fim-adicionados'])){
+			$_GESTOR['javascript-fim-adicionados'] = Array();
+		} else {
+			if(in_array($css,$_GESTOR['javascript-fim-adicionados'])){
+				array_pop($_GESTOR['javascript-fim']);
+				return;
+			}
+		}
+	
+		$_GESTOR['javascript-fim-adicionados'][] = $css;
 	}
 }
 
@@ -699,6 +723,18 @@ function gestor_pagina_javascript_incluir($js = false,$id = false){
 		
 		$_GESTOR['javascript-fim'][] = $js;
 	}
+
+	// ===== Verifica se já foi adicionado este javascript, se sim, remover o último que foi adicionado.
+	if(!isset($_GESTOR['javascript-fim-adicionados'])){
+		$_GESTOR['javascript-fim-adicionados'] = Array();
+	} else {
+		if(in_array($js,$_GESTOR['javascript-fim-adicionados'])){
+			array_pop($_GESTOR['javascript-fim']);
+			return;
+		}
+	}
+
+	$_GESTOR['javascript-fim-adicionados'][] = $js;
 }
 
 function gestor_pagina_ultimas_operacoes(){
@@ -1760,6 +1796,10 @@ function gestor_roteador(){
 			} else if($_GESTOR['opcao']){
 				require_once($_GESTOR['modulos-path'].'global.php');
 			}
+
+			// ===== Incluir componentes na página.
+
+			gestor_componentes_incluir_pagina();
 			
 			// ===== Incluir um layout específico, ou padrão ou nenhum.
 			

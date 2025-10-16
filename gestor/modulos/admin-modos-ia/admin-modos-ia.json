@@ -1,0 +1,192 @@
+{
+    "nome": "Admin Modos IA",
+    "tabela": {
+        "nome": "modos_ia",
+        "id": "id",
+        "id_numerico": "id_modos_ia",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "resources": {
+        "pt-br": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Modos IA - Listar",
+                    "id": "admin-modos-ia-listar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-modos-ia\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin Modos IA - Adicionar",
+                    "id": "admin-modos-ia-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-modos-ia\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.6",
+                    "checksum": {
+                        "html": "70ee08a2fd86b252995dbde2a49c63e8",
+                        "css": "",
+                        "combined": "70ee08a2fd86b252995dbde2a49c63e8"
+                    }
+                },
+                {
+                    "name": "Admin Modos IA - Editar",
+                    "id": "admin-modos-ia-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-modos-ia\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.6",
+                    "checksum": {
+                        "html": "620749ce4757f0a9a43773348da9bed2",
+                        "css": "",
+                        "combined": "620749ce4757f0a9a43773348da9bed2"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome do Modo"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Digite o nome do prompt"
+                },
+                {
+                    "id": "form-target-label",
+                    "value": "Alvo"
+                },
+                {
+                    "id": "form-target-placeholder",
+                    "value": "Selecione o alvo do prompt"
+                },
+                {
+                    "id": "form-mode-label",
+                    "value": "Modo"
+                },
+                {
+                    "id": "form-mode-placeholder",
+                    "value": "Digite o conteúdo do prompt"
+                },
+                {
+                    "id": "form-default-label",
+                    "value": "Padrão"
+                },
+                {
+                    "id": "field-target",
+                    "value": "Alvo"
+                },
+                {
+                    "id": "field-default",
+                    "value": "Padrão"
+                }
+            ]
+        },
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin AI Modos - List",
+                    "id": "admin-modos-ia-listar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-modos-ia\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin AI Modos - Add",
+                    "id": "admin-modos-ia-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-modos-ia\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.6",
+                    "checksum": {
+                        "html": "70ee08a2fd86b252995dbde2a49c63e8",
+                        "css": "",
+                        "combined": "70ee08a2fd86b252995dbde2a49c63e8"
+                    }
+                },
+                {
+                    "name": "Admin AI Modos - Edit",
+                    "id": "admin-modos-ia-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-modos-ia\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.6",
+                    "checksum": {
+                        "html": "620749ce4757f0a9a43773348da9bed2",
+                        "css": "",
+                        "combined": "620749ce4757f0a9a43773348da9bed2"
+                    }
+                }
+            ],
+            "components": [],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Mode Name"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Enter the mode name"
+                },
+                {
+                    "id": "form-target-label",
+                    "value": "Target"
+                },
+                {
+                    "id": "form-target-placeholder",
+                    "value": "Select the mode target"
+                },
+                {
+                    "id": "form-mode-label",
+                    "value": "Mode"
+                },
+                {
+                    "id": "form-mode-placeholder",
+                    "value": "Enter the mode content"
+                },
+                {
+                    "id": "form-default-label",
+                    "value": "Default"
+                },
+                {
+                    "id": "field-target",
+                    "value": "Target"
+                },
+                {
+                    "id": "field-default",
+                    "value": "Default"
+                }
+            ]
+        }
+    }
+}

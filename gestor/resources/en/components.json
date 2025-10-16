@@ -288,5 +288,25 @@
             "css": "",
             "combined": "b15a5de4c0e6c5da3141020822e0482e"
         }
+    },
+    {
+        "name": "AI Prompt",
+        "id": "ia-prompt",
+        "version": "1.1",
+        "checksum": {
+            "html": "a03a17be3ee19a8a041829aae6f77117",
+            "css": "",
+            "combined": "a03a17be3ee19a8a041829aae6f77117"
+        }
+    },
+    {
+        "name": "IA Prompt Modais",
+        "id": "ia-prompt-modais",
+        "version": "1.0",
+        "checksum": {
+            "html": "",
+            "css": "",
+            "combined": ""
+        }
     }
 ]

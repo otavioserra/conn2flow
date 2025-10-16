@@ -147,10 +147,17 @@ Implementar um sistema de chat integrado com IA como um campo reutilizável em m
 - [x] Testar funcionalidades CRUD e validações de negócio
 
 ### Fase 4: Implementação do Backend IA
-- [ ] Criar biblioteca IA em `gestor/bibliotecas/ia.php`
-- [ ] Implementar função `enviarPrompt()` com união pré-prompt + input
+- [x] Criar biblioteca IA em `gestor/bibliotecas/ia.php`
+- [x] Implementar função `ia_renderizar_prompt()` que irá pegar o componente de prompt e substituir variáveis
+- [x] Criar infraestrutura de API em `gestor/controladores/api/api.php`
+- [x] Implementar roteamento de endpoints (_api/ia/*)
+- [x] Implementar controle básico de rate limiting
+- [x] Testar todos os endpoints da API (status, health, ia/*)
+- [x] Verificar autenticação e tratamento de erros
+- [ ] Implementar autenticação JWT para endpoints privados
+- [ ] Implementar função `ia_enviar_prompt()` com união pré-prompt + input
 - [ ] Criar métodos para pré-prompts estáticos por tipo de conteúdo
-- [ ] Implementar função `processarRetorno()` com lógica dinâmica por módulo
+- [ ] Implementar função `ia_processar_retorno()` com lógica dinâmica por módulo
 - [ ] Criar controladores para processamento de prompts IA
 - [ ] Implementar envio para servidores IA (HTTP requests com autenticação)
 - [ ] Criar controlador para webhook
@@ -274,24 +281,50 @@ Gere apenas o código HTML do componente, sem explicações adicionais.
 - **Envio**: `IA::enviarPrompt('layout', $input_usuario, $servidor)`
 - **Retorno**: `IA::processarRetorno('layouts', $dados_ia)` → Gera layout com variáveis @[[...]]@
 
-## Considerações Técnicas
-- **Integração**: Seguir padrões do Conn2Flow (variáveis dinâmicas @[[...]]@, estrutura de módulos)
-- **Performance**: Cache de respostas, otimização de queries
-- **Escalabilidade**: Suporte a múltiplos provedores de IA (OpenAI, Anthropic, etc.)
-- **Segurança**: Encriptação de tokens, validação de inputs, rate limiting
+### Infraestrutura da API
 
-## Riscos e Mitigações
-- **Dependência de Terceiros**: Implementar fallbacks e circuit breakers
-- **Custos**: Monitorar uso de APIs pagas
-- **Privacidade**: Conformidade com LGPD/GDPR para dados de conversas
-- **Performance**: Otimizar para alta concorrência
+#### ✅ Controlador API Implementado e Testado
+- **Arquivo**: `gestor/controladores/api/api.php`
+- **Endpoint Base**: `/_api/` - Todas as requisições API são roteadas através deste endpoint
+- **Acesso**: `http://localhost/instalador/_api/*`
+- **Métodos Suportados**: GET, POST, PUT, DELETE, OPTIONS
+- **Headers CORS**: Configurados para permitir requisições cross-origin
+- **Rate Limiting**: Controle básico de 100 requisições por hora por IP
+- **Autenticação**: Suporte a tokens JWT e API keys (placeholder para implementação futura)
+- **Respostas**: Padronizadas em JSON com status, message, timestamp e dados
 
-## Próximos Passos
-- ✅ Criar módulo admin-ia via script (COMPLETADO)
-- ✅ Implementar suporte para Gemini (primeiro servidor IA) (COMPLETADO)
-- ✅ Criar CRUD de integrações com teste de conexão (COMPLETADO)
-- ✅ Desenvolver sistema de prompts técnicos pré-configurados (COMPLETADO)
-- [ ] Criar biblioteca IA em `gestor/bibliotecas/ia.php`
-- [ ] Implementar integração entre prompts pré-configurados e servidores IA
-- [ ] Criar componente chat IA reutilizável
-- [ ] Integrar no admin-paginas para geração assistida de código
+#### ✅ Endpoints Implementados e Testados
+- **GET `/_api/status`**: Status geral da API (público) ✅ Testado
+- **GET `/_api/health`**: Health check da API (público) ✅ Testado
+- **POST `/_api/ia/generate`**: Geração de conteúdo via IA (privado) ✅ Testado
+- **GET `/_api/ia/status?id={id}`**: Status de uma requisição IA (privado) ✅ Testado
+- **GET `/_api/ia/models`**: Lista de modelos IA disponíveis (privado) ✅ Testado
+
+#### ✅ Funcionalidades Verificadas
+- **Roteamento**: Funcionamento correto baseado no caminho da URL
+- **Autenticação**: Validação de tokens com erro apropriado quando não fornecido
+- **Tratamento de Erros**: Respostas padronizadas para endpoints inexistentes (404)
+- **Parse JSON**: Processamento correto de corpos de requisição POST
+- **Rate Limiting**: Implementado (não testado em profundidade devido ao limite alto)
+- **CORS**: Headers configurados para desenvolvimento
+
+#### Estrutura de Resposta
+```json
+{
+  "status": "success|error",
+  "message": "Mensagem descritiva",
+  "timestamp": "2025-10-09T12:00:00Z",
+  "data": { ... } // opcional
+}
+```
+
+#### Rate Limiting
+- **Limite**: 100 requisições por hora por IP
+- **Implementação**: Cache em arquivo (para desenvolvimento)
+- **Resposta de Erro**: HTTP 429 com mensagem explicativa
+
+#### Autenticação (Próxima Fase)
+- **Tokens JWT**: Para usuários autenticados
+- **API Keys**: Para integrações de terceiros
+- **Validação**: Verificação de assinatura e expiração
+- **Controle de Abusos**: Rate limiting por token + IP

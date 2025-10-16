@@ -2,7 +2,8 @@
     "versao": "1.1.1",
     "bibliotecas": [
         "interface",
-        "html"
+        "html",
+        "ia"
     ],
     "tabela": {
         "nome": "paginas",
@@ -35,13 +36,35 @@
                     "valor": "pagina"
                 }
             ],
-            "prompts_targets": [
+            "selectDadosConteudo": [
+                {
+                    "texto": "Tudo",
+                    "valor": "tudo"
+                },
+                {
+                    "texto": "Sessão",
+                    "valor": "sessao"
+                }
+            ],
+            "ai_prompts_targets": [
                 {
                     "id": "paginas",
                     "name": "Páginas"
                 }
             ],
-            "prompts": [
+            "ai_modes": [
+                {
+                    "id": "paginas",
+                    "name": "Páginas",
+                    "target": "paginas",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "ai_prompts": [
                 {
                     "id": "paginas",
                     "name": "Páginas",
@@ -55,23 +78,33 @@
             ],
             "components": [
                 {
-                    "nome": "Modal Página",
+                    "name": "Modal Página",
                     "id": "modal-pagina",
-                    "version": "1.10",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "0bc84361f1eafaff98aae09157422e26",
+                        "html": "b4c154020a9ecf03e6e98f11d6e741c6",
                         "css": "",
-                        "combined": "0bc84361f1eafaff98aae09157422e26"
+                        "combined": "b4c154020a9ecf03e6e98f11d6e741c6"
                     }
                 },
                 {
-                    "nome": "Lista Página ou Sistema",
+                    "name": "Lista Página ou Sistema",
                     "id": "lista-pagina-ou-sistema",
                     "version": "1.4",
                     "checksum": {
                         "html": "d0e62efa4ab45262de04a3304cde584a",
                         "css": "",
                         "combined": "d0e62efa4ab45262de04a3304cde584a"
+                    }
+                },
+                {
+                    "name": "Página Prompts Controles",
+                    "id": "pagina-prompts-controles",
+                    "version": "1.9",
+                    "checksum": {
+                        "html": "08ef6e2bdc8ef9ea1a96947039d3e54b",
+                        "css": "",
+                        "combined": "08ef6e2bdc8ef9ea1a96947039d3e54b"
                     }
                 }
             ],
@@ -94,11 +127,11 @@
                 {
                     "name": "Admin Páginas - Editar",
                     "id": "admin-paginas-editar",
-                    "version": "1.4",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "606e12705a894a1fc98c49ab6db98931",
-                        "css": "",
-                        "combined": "606e12705a894a1fc98c49ab6db98931"
+                        "html": "729544de1545659515031f7532d61692",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "039865d11457325cad37179cbc20e6c8"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/editar\/",
@@ -108,11 +141,11 @@
                 {
                     "name": "Admin Páginas - Adicionar",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.4",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "8d5b86219d17c88ad6479ea3b863198b",
-                        "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
-                        "combined": "eb4893c3fe8b95bbf2de75182afd8c4a"
+                        "html": "fe2e48edc6f4e9a6715018d4c2a9320b",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "03e9d20bd7fa3de8f2b64547cc2729d8"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/adicionar\/",
@@ -139,6 +172,11 @@
                 {
                     "id": "form-html-editor-label",
                     "value": "Editor HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-content-label",
+                    "value": "Conteúdo da Página",
                     "type": "string"
                 },
                 {
@@ -223,12 +261,12 @@
                 },
                 {
                     "id": "form-root-label",
-                    "value": "Raiz",
+                    "value": "Raiz do Módulo",
                     "type": "string"
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "Sem Permissão",
+                    "value": "Sem Permissão \/ Acesso Público",
                     "type": "string"
                 },
                 {
@@ -349,13 +387,35 @@
                     "valor": "pagina"
                 }
             ],
-            "prompts_targets": [
+            "selectDadosConteudo": [
+                {
+                    "texto": "All",
+                    "valor": "tudo"
+                },
+                {
+                    "texto": "Session",
+                    "valor": "sessao"
+                }
+            ],
+            "ai_prompts_targets": [
                 {
                     "id": "paginas",
                     "name": "Pages"
                 }
             ],
-            "prompts": [
+            "ai_modes": [
+                {
+                    "id": "paginas",
+                    "name": "Pages",
+                    "target": "paginas",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "ai_prompts": [
                 {
                     "id": "paginas",
                     "name": "Pages",
@@ -387,11 +447,11 @@
                 {
                     "name": "Admin Pages - Edit",
                     "id": "admin-paginas-editar",
-                    "version": "1.7",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "606e12705a894a1fc98c49ab6db98931",
-                        "css": "",
-                        "combined": "606e12705a894a1fc98c49ab6db98931"
+                        "html": "729544de1545659515031f7532d61692",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "039865d11457325cad37179cbc20e6c8"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/editar\/",
@@ -401,11 +461,11 @@
                 {
                     "name": "Admin Pages - Add",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.7",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "8d5b86219d17c88ad6479ea3b863198b",
-                        "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
-                        "combined": "eb4893c3fe8b95bbf2de75182afd8c4a"
+                        "html": "fe2e48edc6f4e9a6715018d4c2a9320b",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "03e9d20bd7fa3de8f2b64547cc2729d8"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/adicionar\/",
@@ -417,11 +477,11 @@
                 {
                     "name": "Page Modal",
                     "id": "modal-pagina",
-                    "version": "1.10",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "0bc84361f1eafaff98aae09157422e26",
+                        "html": "b4c154020a9ecf03e6e98f11d6e741c6",
                         "css": "",
-                        "combined": "0bc84361f1eafaff98aae09157422e26"
+                        "combined": "b4c154020a9ecf03e6e98f11d6e741c6"
                     }
                 },
                 {
@@ -432,6 +492,16 @@
                         "html": "d0e62efa4ab45262de04a3304cde584a",
                         "css": "",
                         "combined": "d0e62efa4ab45262de04a3304cde584a"
+                    }
+                },
+                {
+                    "name": "Page Prompts Controls",
+                    "id": "pagina-prompts-controles",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "c1c6b49c8743f11641e334d67e51a02d",
+                        "css": "",
+                        "combined": "c1c6b49c8743f11641e334d67e51a02d"
                     }
                 }
             ],
@@ -454,6 +524,11 @@
                 {
                     "id": "form-html-editor-label",
                     "value": "HTML Editor",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-content-label",
+                    "value": "Page Content",
                     "type": "string"
                 },
                 {
@@ -538,12 +613,12 @@
                 },
                 {
                     "id": "form-root-label",
-                    "value": "Root",
+                    "value": "Root of Module",
                     "type": "string"
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "No Permission",
+                    "value": "No Permission \/ Public Access",
                     "type": "string"
                 },
                 {

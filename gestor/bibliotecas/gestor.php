@@ -883,6 +883,75 @@ function gestor_pagina_variaveis_globais($params = false){
 	}
 }
 
+function gestor_js_variavel_incluir($variavel,$valor){
+	global $_GESTOR;
+
+	if(!isset($variavel) || !isset($valor)){
+		return;
+	}
+
+	$_GESTOR['javascript-vars'][$variavel] = $valor;
+}
+
+
+function gestor_componentes_incluir($params = false){
+	global $_GESTOR;
+
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// id - String - Opcional - ID do componente que será incluso no gestor.
+	// componentes - Array - Opcional - IDs dos componentes que serão incluidos no gestor.
+	
+	// ===== 
+	
+	if(isset($componentes)){
+		switch(gettype($componentes)){
+			case 'array':
+				if(count($componentes) > 0){
+					foreach($componentes as $com){
+						$_GESTOR['componentes'][$com] = true;
+					}
+				}
+			break;
+		}
+	}
+
+	if(isset($id)){
+		$_GESTOR['componentes'][$id] = true;
+	}
+}
+
+
+function gestor_componentes_incluir_pagina($params = false){
+	global $_GESTOR;
+
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	
+	// ===== 
+	
+	if(isset($_GESTOR['componentes'])){
+		$componentes = $_GESTOR['componentes'];
+		
+		foreach($componentes as $componente => $valor){
+			if(!$valor) continue;
+			
+			$componente_html = gestor_componente(Array(
+				'id' => $componente,
+			));
+			
+			if(existe($componente_html)){
+				$_GESTOR['pagina'] .= $componente_html;
+			}
+		}
+		
+	}
+}
+
 // =========================== Funções de Sessões e Cookies
 
 function gestor_sessao_iniciar(){
