@@ -34,29 +34,6 @@ For detailed technical information and development guides, see:
 - **[📋 Changelog](CHANGELOG.md)** - Industry-standard changelog following Keep a Changelog format
 - **[📊 Full Development History](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Detailed commit-by-commit evolution
 
-### Latest Release: v2.1.0 (September 18, 2025)
-
-**🎯 New Features:**
-- **html_extra_head Field**: Include extra HTML in the HEAD section of pages and components
-- **css_compiled Field**: Support for compiled CSS in pages, components, and layouts
-- **CodeMirror Editor**: Advanced HTML and CSS editing interface with syntax highlighting
-- **Backup Functionality**: Automatic backup system for new fields
-- **Database Migrations**: Automated scripts to add new fields to existing tables
-
-**🔧 Technical Improvements:**
-- Updated core system files (gestor.php) to process new fields
-- Enhanced admin modules (admin-paginas, admin-componentes) with new field support
-- New tabs and controls in user interface for additional field editing
-- Complete template processing support for @[[html_extra_head]]@ and @[[css_compiled]]@ variables
-- Fixed formatar_url function to always add trailing slash
-
-**📦 What's New:**
-- html_extra_head field for pages and components
-- css_compiled field for pages, components, and layouts
-- CodeMirror integration for advanced code editing
-- Automatic backup system for new fields
-- Database migration scripts for seamless updates
-
 ### Latest Release: v2.3.0 (October 17, 2025)
 
 **🎯 New Features:**
@@ -83,6 +60,29 @@ For detailed technical information and development guides, see:
 - Advanced AI interface with CodeMirror integration
 - Session-based content generation and management
 - Comprehensive AI documentation (chat-ia.md)
+
+### Release: v2.1.0 (September 18, 2025)
+
+**🎯 New Features:**
+- **html_extra_head Field**: Include extra HTML in the HEAD section of pages and components
+- **css_compiled Field**: Support for compiled CSS in pages, components, and layouts
+- **CodeMirror Editor**: Advanced HTML and CSS editing interface with syntax highlighting
+- **Backup Functionality**: Automatic backup system for new fields
+- **Database Migrations**: Automated scripts to add new fields to existing tables
+
+**🔧 Technical Improvements:**
+- Updated core system files (gestor.php) to process new fields
+- Enhanced admin modules (admin-paginas, admin-componentes) with new field support
+- New tabs and controls in user interface for additional field editing
+- Complete template processing support for @[[html_extra_head]]@ and @[[css_compiled]]@ variables
+- Fixed formatar_url function to always add trailing slash
+
+**📦 What's New:**
+- html_extra_head field for pages and components
+- css_compiled field for pages, components, and layouts
+- CodeMirror integration for advanced code editing
+- Automatic backup system for new fields
+- Database migration scripts for seamless updates
 
 ### Legacy Branches
 * **gestor-v1.16**: Latest stable release before v2.0.0
@@ -419,7 +419,13 @@ dev-environment/       # Docker development stack
 
 ### Latest Stable Releases
 
-**Gestor (Core System)**: `v2.0.0` *(Latest)*
+**Gestor (Core System)**: `v2.3.0` *(Latest)*
+- ✅ **Complete AI System Integration**: Full AI system integrated into admin-paginas for assisted content generation
+- ✅ **Gemini API Integration**: Content generation via Gemini API with robust error handling
+- ✅ **Dual Prompt System**: Technical modes (structured templates) + User prompts (flexible needs)
+- ✅ **Advanced Interface**: CodeMirror-based content editing with session management
+- ✅ **Multiple AI Models**: Support for multiple AI servers and model configurations
+- ✅ **Session Management**: Content generation tracking and positional insertion
 - ✅ **Plugin System V2**: Completely refactored architecture with dynamic detection
 - ✅ **Development Templates**: Automated scripts for plugin creation
 - ✅ **Complete Data Tracking**: Automatic slug injection in tables with plugin column
@@ -427,7 +433,8 @@ dev-environment/       # Docker development stack
 - ✅ **Textual IDs**: Complete migration to textual format in reference fields
 - ✅ **Broad Cleanup**: Disabling of legacy tools and simplified structure
 
-**Instalador (Installer)**: `v1.4.0` *(Latest)*
+**Instalador (Installer)**: `v1.5.1` *(Latest)*
+- ✅ **AI System Support**: Installation prepared for new v2.3.0 AI features
 - ✅ **CSS Framework Support**: Installation prepared for new v2.0.0 features
 - ✅ **Robust UTF-8 Charset**: Full compatibility with special characters
 - ✅ **Unified getPdo()**: Single method for all database connections
@@ -436,11 +443,13 @@ dev-environment/       # Docker development stack
 - ✅ **Detailed Logs**: Complete tracking of the process
 
 ### Version History
+- **Gestor v2.3.0**: Complete AI system integration with Gemini API, dual prompt system, advanced CodeMirror interface, session management for content generation, multiple AI model support.
 - **Gestor v2.0.0**: Plugin System V2 with refactored architecture, automated templates, complete data tracking, textual IDs, broad system cleanup.
 - **Gestor v1.16.0**: TailwindCSS preview system, multi-framework CSS support, modernized admin modules, optimized technical standards.
 - **Gestor v1.15.0**: Consolidated automatic update system, permission fixes, technical documentation.
 - **Gestor v1.11.0**: Automatic versioning of modules/plugins resources; checksum improvements and definitive removal of seeders in update.
 - **Gestor v1.10.x**: Duplicity fixes, internationalization, unified resource generation, *updated* control fields.
+- **Instalador v1.5.1**: AI system support for v2.3.0 features, enhanced compatibility and installation robustness.
 - **Instalador v1.4.0**: CSS framework support, robust UTF-8 charset, unified getPdo(), preparation for preview system.
 - **Instalador v1.3.3**: Robust refactoring with utf8mb4 charset, accent correction, installation in diverse environments.
 - **Instalador v1.1.0**: Refactoring to use central update script; RewriteBase adjustments and admin creation.

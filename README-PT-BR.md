@@ -32,29 +32,6 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 - **[📋 Changelog](CHANGELOG.md)** - Changelog padrão da indústria seguindo o formato Keep a Changelog
 - **[📊 Histórico Completo de Desenvolvimento](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Evolução completa commit-por-commit
 
-### Última Versão: v2.1.0 (18 Setembro 2025)
-
-**🎯 Novas Funcionalidades:**
-- **Campo html_extra_head**: Permite incluir HTML extra na seção HEAD de páginas e componentes
-- **Campo css_compiled**: Suporte a CSS compilado para páginas, componentes e layouts
-- **Editor CodeMirror**: Interface avançada para edição de HTML e CSS com syntax highlighting
-- **Funcionalidade de Backup**: Sistema de backup automático para novos campos
-- **Migrações de Banco**: Scripts automáticos para adicionar novos campos às tabelas existentes
-
-**🔧 Melhorias Técnicas:**
-- Arquivos do núcleo do sistema (gestor.php) atualizados para processar novos campos
-- Módulos admin aprimorados (admin-paginas, admin-componentes) com suporte aos novos campos
-- Novas abas e controles na interface do usuário para edição dos campos adicionais
-- Suporte completo ao processamento de templates para variáveis @[[html_extra_head]]@ e @[[css_compiled]]@
-- Função formatar_url corrigida para sempre adicionar barra final
-
-**📦 O Que Há de Novo:**
-- Campo html_extra_head para páginas e componentes
-- Campo css_compiled para páginas, componentes e layouts
-- Integração CodeMirror para edição avançada de código
-- Sistema de backup automático para novos campos
-- Scripts de migração de banco de dados para atualizações seamless
-
 ### Última Versão: v2.3.0 (17 Outubro 2025)
 
 **🎯 Novas Funcionalidades:**
@@ -81,6 +58,29 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 - Interface avançada de IA com integração CodeMirror
 - Geração e gerenciamento de conteúdo baseado em sessão
 - Documentação abrangente de IA (chat-ia.md)
+
+### Versão: v2.1.0 (18 Setembro 2025)
+
+**🎯 Novas Funcionalidades:**
+- **Campo html_extra_head**: Permite incluir HTML extra na seção HEAD de páginas e componentes
+- **Campo css_compiled**: Suporte a CSS compilado para páginas, componentes e layouts
+- **Editor CodeMirror**: Interface avançada para edição de HTML e CSS com syntax highlighting
+- **Funcionalidade de Backup**: Sistema de backup automático para novos campos
+- **Migrações de Banco**: Scripts automáticos para adicionar novos campos às tabelas existentes
+
+**🔧 Melhorias Técnicas:**
+- Arquivos do núcleo do sistema (gestor.php) atualizados para processar novos campos
+- Módulos admin aprimorados (admin-paginas, admin-componentes) com suporte aos novos campos
+- Novas abas e controles na interface do usuário para edição dos campos adicionais
+- Suporte completo ao processamento de templates para variáveis @[[html_extra_head]]@ e @[[css_compiled]]@
+- Função formatar_url corrigida para sempre adicionar barra final
+
+**📦 O Que Há de Novo:**
+- Campo html_extra_head para páginas e componentes
+- Campo css_compiled para páginas, componentes e layouts
+- Integração CodeMirror para edição avançada de código
+- Sistema de backup automático para novos campos
+- Scripts de migração de banco de dados para atualizações seamless
 
 ### Branches Legadas
 * **gestor-v1.16**: Última versão estável antes da v2.0.0
@@ -420,7 +420,13 @@ dev-environment/       # Stack de desenvolvimento Docker
 
 ### Últimas Versões Estáveis
 
-**Gestor (Sistema Core)**: `v2.0.0` *(Mais Recente)*
+**Gestor (Sistema Core)**: `v2.3.0` *(Mais Recente)*
+- ✅ **Sistema de IA Integrado Completo**: Sistema completo de IA integrado ao admin-paginas para geração assistida de conteúdo
+- ✅ **Integração API Gemini**: Geração de conteúdo via API Gemini com tratamento robusto de erros
+- ✅ **Sistema Dual de Prompts**: Modos técnicos (templates estruturados) + Prompts de usuário (necessidades flexíveis)
+- ✅ **Interface Avançada**: Edição de conteúdo baseada em CodeMirror com gerenciamento de sessão
+- ✅ **Múltiplos Modelos de IA**: Suporte para múltiplos servidores e configurações de modelos de IA
+- ✅ **Gerenciamento de Sessão**: Rastreamento de geração de conteúdo e inserção posicional
 - ✅ **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica
 - ✅ **Templates de Desenvolvimento**: Scripts automatizados para criação de plugins
 - ✅ **Rastreio Completo de Dados**: Injeção automática de slug em tabelas com coluna plugin
@@ -428,7 +434,8 @@ dev-environment/       # Stack de desenvolvimento Docker
 - ✅ **IDs Textuais**: Migração completa para formato textual em campos de referência
 - ✅ **Limpeza Ampla**: Desabilitação de ferramentas legadas e estrutura simplificada
 
-**Instalador (Installer)**: `v1.4.0` *(Mais Recente)*
+**Instalador (Installer)**: `v1.5.1` *(Mais Recente)*
+- ✅ **Suporte ao Sistema de IA**: Instalação preparada para novos recursos de IA v2.3.0
 - ✅ **Suporte Framework CSS**: Instalação preparada para novos recursos v2.0.0
 - ✅ **Charset UTF-8 Robusto**: Compatibilidade total com caracteres especiais
 - ✅ **getPdo() Unificado**: Método único para todas conexões de banco
@@ -437,11 +444,13 @@ dev-environment/       # Stack de desenvolvimento Docker
 - ✅ **Logs Detalhados**: Rastreamento completo do processo
 
 ### Histórico de Versões
+- **Gestor v2.3.0**: Sistema de IA integrado completo com API Gemini, sistema dual de prompts, interface avançada CodeMirror, gerenciamento de sessão para geração de conteúdo, suporte a múltiplos modelos de IA.
 - **Gestor v2.0.0**: Sistema de plugins V2 com arquitetura refatorada, templates automatizados, rastreio completo de dados, IDs textuais, limpeza ampla do sistema.
 - **Gestor v1.16.0**: Sistema de preview TailwindCSS, suporte multi-framework CSS, módulos admin modernizados, padrões técnicos otimizados.
 - **Gestor v1.15.0**: Sistema de atualização automática consolidado, correção de permissões, documentação técnica.
 - **Gestor v1.11.0**: Versionamento automático recursos módulos/plugins; melhorias checksum e remoção definitiva de seeders na atualização.
 - **Gestor v1.10.x**: Correções de duplicidade, internacionalização, unificação geração de recursos, campos de controle *updated*.
+- **Instalador v1.5.1**: Suporte ao sistema de IA para recursos v2.3.0, compatibilidade aprimorada e robustez de instalação.
 - **Instalador v1.4.0**: Suporte framework CSS, charset UTF-8 robusto, getPdo() unificado, preparação para preview system.
 - **Instalador v1.3.3**: Refatoração robusta com charset utf8mb4, correção de acentuação, instalação em ambientes diversos.
 - **Instalador v1.1.0**: Refatoração para usar script de atualização central; ajustes RewriteBase e criação admin.
