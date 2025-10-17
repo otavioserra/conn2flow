@@ -1,5 +1,5 @@
 <div class="ui grid menuMode">
-    <div class="eight wide column">
+    <div class="six wide column">
         <div class="field">
             <label>Page Content:</label>
             <select class="ui dropdown ai-prompt-page-select">
@@ -7,16 +7,33 @@
             </select>
         </div>
     </div>
-    <div class="eight wide column">
+    <div class="six wide column hidden ai-prompt-session-container">
         <div class="field">
-            <label>Opções:</label>
-            <div>
-                <div class="ui button disabled ai-prompt-clear"><i class="clipboard icon"></i>Limpar</div>
-                <div class="ui button blue disabled ai-prompt-edit"><i class="edit icon"></i>Salvar Atual
+            <label>Target Session:</label>
+            <select class="ui dropdown ai-prompt-session-select">
+
+            </select>
+        </div>
+    </div>
+    <div class="four wide column hidden ai-prompt-session-container">
+        <div class="grouped fields">
+            <label>Session Option</label>
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="ai-prompt-session-option" value="new-before">
+                    <label>Add New Before</label>
                 </div>
-                <div class="ui button red disabled ai-prompt-del"><i class="edit icon"></i>Excluir Atual
+            </div>
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="ai-prompt-session-option" value="target" checked="checked">
+                    <label>Change Target Session</label>
                 </div>
-                <div class="ui button green disabled ai-prompt-new"><i class="clone icon"></i>Criar Novo
+            </div>
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="ai-prompt-session-option" value="new-after">
+                    <label>Add New After</label>
                 </div>
             </div>
         </div>

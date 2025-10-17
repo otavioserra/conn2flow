@@ -35,7 +35,7 @@ function variables_raiz(){
 		
 		// ===== Reler URL.
 		
-		gestor_redirecionar($_GESTOR['modulo-id'].'/variaveis/?'.$modulo['tabela']['id'].'='.(isset($id_novo) ? $id_novo : $id));
+		gestor_redirecionar($_GESTOR['modulo-id'].'/?'.$modulo['tabela']['id'].'='.(isset($id_novo) ? $id_novo : $id));
 	}
 	
 	// ===== Inclusão Módulo JS

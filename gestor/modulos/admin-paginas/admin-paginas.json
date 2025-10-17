@@ -373,6 +373,26 @@
                     "id": "lista-tipo-label",
                     "value": "Tipo",
                     "type": "string"
+                },
+                {
+                    "id": "form-css-compiled-tooltip",
+                    "value": "Clique para abrir o CSS automático gerado pelo sistema.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-compiled-label",
+                    "value": "CSS Automático",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-extra-head-tooltip",
+                    "value": "Clique para abrir HTML extra para o cabeçalho da página. Parte dentro da tag <head>",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-extra-head-label",
+                    "value": "HTML > Cabeçalho",
+                    "type": "string"
                 }
             ]
         },
@@ -497,11 +517,11 @@
                 {
                     "name": "Page Prompts Controls",
                     "id": "pagina-prompts-controles",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "c1c6b49c8743f11641e334d67e51a02d",
+                        "html": "0481e186c31533ca9d44e7a9a1d89bad",
                         "css": "",
-                        "combined": "c1c6b49c8743f11641e334d67e51a02d"
+                        "combined": "0481e186c31533ca9d44e7a9a1d89bad"
                     }
                 }
             ],

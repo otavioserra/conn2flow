@@ -2,6 +2,28 @@
 
 ## 🏷️ Releases Atuais
 
+### **gestor-v2.3.0** (17 Outubro 2025) - `HEAD`
+**🎯 Tema:** Sistema de IA Integrado Completo**
+
+**Principais Melhorias:**
+- ✅ **Sistema de IA Completo Integrado**: Geração assistida de conteúdo no admin-paginas via API Gemini
+- ✅ **Sistema Dual de Prompts**: Modos técnicos estruturados + prompts de usuário flexíveis
+- ✅ **Interface CodeMirror Avançada**: Edição aprimorada com inserção de conteúdo gerado por IA
+- ✅ **Gerenciamento de Sessão Inteligente**: Manipulação de conteúdo gerado e inserção posicional
+- ✅ **Suporte a Múltiplos Modelos IA**: Configuração dinâmica de servidores e modelos
+- ✅ **Validação Robusta de Erros**: Tratamento completo de erros para comunicação com API externa
+- ✅ **Nova Biblioteca ia.php**: Funções completas para renderização de prompts e comunicação com API Gemini
+- ✅ **Novas Tabelas de Banco**: servidores_ia, modos_ia, prompts_ia para gerenciamento do sistema IA
+- ✅ **Interface JavaScript Avançada**: Controles de IA e geração de conteúdo com CodeMirror
+- ✅ **Sistema de Sessão Robusto**: Gerenciamento de conteúdo gerado por IA
+- ✅ **Inserção Posicional**: Capacidades avançadas de inserção de conteúdo
+- ✅ **Compatibilidade Total**: Integração seamless com arquitetura existente do Conn2Flow
+
+**Breaking Changes:**
+- Novas tabelas de banco para sistema IA: servidores_ia, modos_ia, prompts_ia
+- Sistema dual de prompts implementado
+- Interface CodeMirror aprimorada com controles de IA
+
 ### **gestor-v2.2.2** (26 Setembro 2025) - `HEAD`
 **🎯 Tema:** Sistema Multilíngue Completo + Plugins V2 Finalizado**
 
@@ -168,6 +190,15 @@
 ---
 
 ## 📈 Histórico Completo (120 Commits)
+
+### **🤖 OUTUBRO 2025: Sistema de IA Integrado Completo (17 Outubro 2025)**
+```
+HEAD - 17 Oct 2025 : feat: Implementação completa do sistema de IA integrado ao admin-paginas
+HEAD - 17 Oct 2025 : feat: Implementação completa dos módulos Admin IA e Prompts IA com internacionalização
+HEAD - 17 Oct 2025 : feat: Implementar módulo admin-ia com CRUD completo de servidores IA
+HEAD - 17 Oct 2025 : feat: Implementar e corrigir sistema de IA para geração de HTML/CSS
+```
+**Foco:** Release v2.3.0 com sistema de IA completo integrado ao admin-paginas.
 
 ### **🔌 SETEMBRO 2025: Sistema de Logging Unificado (15 Setembro 2025)**
 ```
@@ -476,11 +507,11 @@ d1a43ea8 - Fevereiro 2025 : Add 'b2make-gestor-plugins/escalas/' from commit '4c
 ## 📊 Estatísticas de Desenvolvimento
 
 ### **Atividade Geral (Últimos 6 meses)**
-- **Total de Commits:** 145+ commits analisados
-- **Features Implementadas:** 28 grandes funcionalidades
+- **Total de Commits:** 150+ commits analisados
+- **Features Implementadas:** 29 grandes funcionalidades
 - **Bugs Corrigidos:** 44 correções críticas
 - **Refatorações:** 22 melhorias estruturais
-- **Releases:** 16 versões lançadas
+- **Releases:** 17 versões lançadas
 
 ### **Velocidade de Desenvolvimento**
 ```
@@ -821,7 +852,7 @@ PREDITIVA:
 
 ---
 
-**Documento expandido:** 18 de Setembro de 2025  
-**Análise baseada em:** 145 commits + 6 tags + tendências  
-**Próxima atualização:** Após release v2.1.0  
-**Profundidade:** 6 meses de histórico detalhado
+**Documento expandido:** 17 de Outubro de 2025  
+**Análise baseada em:** 150 commits + 7 tags + tendências  
+**Próxima atualização:** Após release v2.4.0  
+**Profundidade:** 7 meses de histórico detalhado

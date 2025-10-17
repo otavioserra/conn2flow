@@ -55,6 +55,33 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 - Sistema de backup automático para novos campos
 - Scripts de migração de banco de dados para atualizações seamless
 
+### Última Versão: v2.3.0 (17 Outubro 2025)
+
+**🎯 Novas Funcionalidades:**
+- **Sistema de IA Completo Integrado**: Geração completa de conteúdo assistida por IA integrada ao módulo admin-paginas
+- **Integração com API Gemini**: Integração direta com IA Gemini do Google para criação inteligente de conteúdo
+- **Sistema Dual de Prompts**: Modos técnicos (templates estruturados) + Prompts de usuário (necessidades flexíveis) combinados para geração inteligente de conteúdo
+- **Interface CodeMirror Avançada**: Edição aprimorada de conteúdo com inserção de conteúdo gerado por IA
+- **Gerenciamento de Conteúdo Baseado em Sessão**: Manipulação inteligente de sessão para conteúdo gerado e inserção posicional
+- **Suporte a Múltiplos Modelos de IA**: Suporte para vários modelos de IA e configuração dinâmica de servidores
+- **Tratamento Robusto de Erros**: Validação abrangente e tratamento de erros para comunicação com API externa
+
+**🔧 Melhorias Técnicas:**
+- Nova biblioteca ia.php com funções completas de IA para renderização de prompts e comunicação com API
+- Novas tabelas de banco de dados: servidores_ia, modos_ia, prompts_ia para gerenciamento do sistema de IA
+- Interface JavaScript avançada para controles de IA e geração de conteúdo
+- Sistema de gerenciamento de sessão para manipulação de conteúdo gerado por IA
+- Capacidades de inserção posicional de conteúdo
+- Compatibilidade total com arquitetura existente do Conn2Flow
+
+**📦 O Que Há de Novo:**
+- Sistema de IA completo integrado ao admin-paginas
+- Biblioteca ia.php para operações de IA
+- Novas tabelas de banco de dados para gerenciamento de IA
+- Interface avançada de IA com integração CodeMirror
+- Geração e gerenciamento de conteúdo baseado em sessão
+- Documentação abrangente de IA (chat-ia.md)
+
 ### Branches Legadas
 * **gestor-v1.16**: Última versão estável antes da v2.0.0
 * **b2make-legacy**: Sistema legado completo preservado para referência

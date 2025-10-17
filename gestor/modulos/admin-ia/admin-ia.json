@@ -80,13 +80,14 @@
             ],
             "variables": [
                 {
-                    "name": "Tipos de Servidor IA",
                     "id": "tipos-servidor-ia",
-                    "value": "{\"gemini\":\"Google Gemini\",\"openai\":\"OpenAI\"}"
+                    "value": "{\"gemini\":\"Google Gemini\",\"openai\":\"OpenAI\"}",
+                    "type": "string"
                 },
                 {
                     "id": "field-default",
-                    "value": "Padrão"
+                    "value": "Padrão",
+                    "type": "string"
                 }
             ]
         },
@@ -153,13 +154,14 @@
             ],
             "variables": [
                 {
-                    "name": "AI Server Types",
                     "id": "tipos-servidor-ia",
-                    "value": "{\"gemini\":\"Google Gemini\",\"openai\":\"OpenAI\"}"
+                    "value": "{\"gemini\":\"Google Gemini\",\"openai\":\"OpenAI\"}",
+                    "type": "string"
                 },
                 {
                     "id": "field-default",
-                    "value": "Default"
+                    "value": "Default",
+                    "type": "string"
                 }
             ]
         }

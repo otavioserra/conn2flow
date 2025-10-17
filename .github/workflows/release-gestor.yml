@@ -96,11 +96,16 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🚀 Conn2Flow Gestor Release v2.2.3 (Sistema Multilíngue Completo + Plugins V2 Finalizado)
+          ## 🚀 Conn2Flow Gestor Release v2.3.0 (Sistema de IA Integrado Completo)
           
-          Esta release traz a **implementação completa do sistema multilíngue** com seletor de idioma administrativo, arquitetura de plugins V2 totalmente funcional, melhorias no instalador e correções críticas no sistema de atualização automática.
+          Esta versão traz a **implementação completa do sistema de IA integrado** ao módulo admin-paginas, permitindo geração assistida de conteúdo através da API Gemini, além de manter todas as funcionalidades revolucionárias do sistema multilíngue e plugins V2.
           
           ### 🎯 Novidades Principais desta Versão:
+          - ✅ **Sistema de IA Completo Integrado**: Geração assistida de conteúdo no admin-paginas via API Gemini
+          - ✅ **Sistema Dual de Prompts**: Modos técnicos estruturados + prompts de usuário flexíveis
+          - ✅ **Interface CodeMirror Avançada**: Edição aprimorada com inserção de conteúdo gerado por IA
+          - ✅ **Gerenciamento de Sessão Inteligente**: Manipulação de conteúdo gerado e inserção posicional
+          - ✅ **Suporte a Múltiplos Modelos IA**: Configuração dinâmica de servidores e modelos
           - ✅ **Sistema Multilíngue Completo**: Suporte total pt-br/en com interface administrativa
           - ✅ **Seletor de Idioma Administrativo**: Nova aba no admin-environment para mudança dinâmica de idioma
           - ✅ **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica
@@ -112,6 +117,12 @@ jobs:
           - ✅ **Página de Sucesso Bilíngue**: Interface de conclusão em português e inglês
           
           ### 🔧 Melhorias Técnicas:
+          - ✅ **Nova Biblioteca ia.php**: Funções completas para renderização de prompts e comunicação com API Gemini
+          - ✅ **Novas Tabelas de Banco**: servidores_ia, modos_ia, prompts_ia para gerenciamento do sistema IA
+          - ✅ **Interface JavaScript Avançada**: Controles de IA e geração de conteúdo com CodeMirror
+          - ✅ **Sistema de Sessão Robusto**: Gerenciamento de conteúdo gerado por IA
+          - ✅ **Inserção Posicional**: Capacidades avançadas de inserção de conteúdo
+          - ✅ **Tratamento de Erros Completo**: Validação e tratamento robusto para comunicação com API externa
           - ✅ **Migração para IDs Textuais**: Campos de referência convertidos para formato textual
           - ✅ **Scripts de Automação Padronizados**: Resolução dinâmica em todos os scripts
           - ✅ **Arquitetura de Plugins Refatorada**: Sistema V2 com detecção automática
@@ -124,16 +135,25 @@ jobs:
           - ✅ **Merge .env Inteligente**: Sistema automático de correção durante atualizações
           
           ### 📦 Conteúdo:
-          - Sistema gestor completo com arquitetura híbrida multilíngue
+          - Sistema gestor completo com IA integrada e arquitetura híbrida multilíngue
+          - Biblioteca ia.php funcional para operações de IA
           - Sistema de plugins V2 com templates automatizados
-          - Migrations para rastreio completo de dados (coluna plugin)
+          - Migrations para rastreio completo de dados (coluna plugin) + tabelas IA
           - Sistema de atualização automática consolidado (v1.15.0)
           - 264+ recursos organizados por idioma (pt-br base)
           - Seletor de idioma padrão no módulo admin-environment
           - Instalador multilíngue com seleção de idioma
           - Página de sucesso bilíngue (pt-br/en)
           - Dependências do Composer otimizadas
-          - Documentação técnica completa
+          - Documentação técnica completa incluindo chat-ia.md
+          
+          ### 🤖 Sistema de IA:
+          - **Integração Gemini API**: Comunicação direta com IA do Google para geração de conteúdo
+          - **Sistema Dual de Prompts**: Combinação inteligente de modos técnicos e necessidades do usuário
+          - **Interface Avançada**: CodeMirror com inserção posicional de conteúdo gerado
+          - **Gerenciamento de Sessão**: Sistema inteligente para manipulação de conteúdo IA
+          - **Suporte Multi-Modelo**: Configuração flexível de servidores e modelos de IA
+          - **Validação Robusta**: Tratamento completo de erros e validação de API
           
           ### 🌐 Sistema Multilíngue:
           - **Interface Administrativa**: Seletor de idioma no painel admin-environment
@@ -155,7 +175,7 @@ jobs:
           - Scripts automatizados de commit, release e workflows
           - Resolução dinâmica do environment.json
           - Compatibilidade com qualquer repositório de plugin
-          - Documentação abrangente para desenvolvimento
+          - Documentação abrangente para desenvolvimento incluindo IA
           
           ### 🔧 Como usar:
           1. Use o [Conn2Flow Installer v1.5.0+](https://github.com/otavioserra/conn2flow/releases) para instalação automática
@@ -163,6 +183,7 @@ jobs:
           3. Selecione o idioma desejado durante a instalação (pt-br/en)
           4. Utilize os novos templates em `dev-plugins/plugins/templates/` para criar novos plugins
           5. Acesse o admin-environment para alterar o idioma do sistema
+          6. Explore o novo sistema de IA integrado no admin-paginas para geração assistida de conteúdo
           
           ### 📋 Requisitos:
           - PHP 8.1+
@@ -171,6 +192,9 @@ jobs:
           - Git (para desenvolvimento de plugins)
           
           ### 🌟 Padrões Aprendidos e Implementados:
+          - ✅ **Sistema de IA Revolucionário**: Integração completa com API Gemini e geração assistida
+          - ✅ **Sistema Dual de Prompts**: Arquitetura híbrida técnica + flexível
+          - ✅ **Interface CodeMirror Avançada**: Edição inteligente com inserção posicional
           - ✅ **Sistema Multilíngue**: Implementação completa pt-br/en com seletor administrativo
           - ✅ **Plugins V2**: Arquitetura moderna com detecção dinâmica
           - ✅ **Templates Automatizados**: Scripts padronizados para desenvolvimento
@@ -183,6 +207,9 @@ jobs:
           - ✅ **Instalador Bilíngue**: Suporte completo à seleção de idioma
           
           ### 🎉 Melhorias desta versão:
+          - ✅ **Sistema de IA Revolucionário**: Integração completa com geração assistida de conteúdo
+          - ✅ **Interface Inteligente**: CodeMirror avançado com inserção posicional de IA
+          - ✅ **Sistema Dual Inovador**: Combinação perfeita de modos técnicos e prompts flexíveis
           - ✅ **Sistema Multilíngue Revolucionário**: Interface completa pt-br/en com seletor administrativo
           - ✅ **Sistema de Plugins Revolucionário**: Arquitetura V2 completa e moderna
           - ✅ **Desenvolvimento Facilitado**: Templates automatizados e documentação
@@ -195,6 +222,7 @@ jobs:
           - ✅ **Correções Críticas**: Template .env e sistema de merge corrigidos
           
           ### ⚠️ Breaking Changes (Migration Guide):
+          - Novas tabelas de banco para sistema IA: servidores_ia, modos_ia, prompts_ia
           - Campos de referência de módulos migrados para formato textual
           - Scripts de automação padronizados com resolução dinâmica
           - Arquitetura de plugins modernizada (V2)
@@ -205,11 +233,13 @@ jobs:
           ### 🔄 Migration Path:
           1. Use o instalador web para atualização automática
           2. Ou execute: `php controladores/atualizacoes/atualizacoes-sistema.php --env-dir=seu-dominio`
-          3. Atualize scripts de plugins para usar resolução dinâmica
-          4. Utilize os novos templates para desenvolvimento
-          5. Aproveite a arquitetura V2 de plugins
-          6. Template .env será automaticamente corrigido com LANGUAGE_DEFAULT=pt-br
-          7. Configure o idioma do sistema via admin-environment
+          3. Execute migrações de banco para adicionar tabelas IA: `php controladores/atualizacoes/atualizacoes-banco-de-dados.php --env-dir=seu-dominio`
+          4. Atualize scripts de plugins para usar resolução dinâmica
+          5. Utilize os novos templates para desenvolvimento
+          6. Aproveite a arquitetura V2 de plugins
+          7. Template .env será automaticamente corrigido com LANGUAGE_DEFAULT=pt-br
+          8. Configure o idioma do sistema via admin-environment
+          9. Explore o novo sistema de IA no admin-paginas
         draft: false
         prerelease: false
         files: |

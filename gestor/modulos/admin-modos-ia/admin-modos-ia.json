@@ -65,39 +65,48 @@
             "variables": [
                 {
                     "id": "form-name-label",
-                    "value": "Nome do Modo"
+                    "value": "Nome do Modo",
+                    "type": "string"
                 },
                 {
                     "id": "form-name-placeholder",
-                    "value": "Digite o nome do prompt"
+                    "value": "Digite o nome do prompt",
+                    "type": "string"
                 },
                 {
                     "id": "form-target-label",
-                    "value": "Alvo"
+                    "value": "Alvo",
+                    "type": "string"
                 },
                 {
                     "id": "form-target-placeholder",
-                    "value": "Selecione o alvo do prompt"
+                    "value": "Selecione o alvo do prompt",
+                    "type": "string"
                 },
                 {
                     "id": "form-mode-label",
-                    "value": "Modo"
+                    "value": "Modo",
+                    "type": "string"
                 },
                 {
                     "id": "form-mode-placeholder",
-                    "value": "Digite o conteúdo do prompt"
+                    "value": "Digite o conteúdo do prompt",
+                    "type": "string"
                 },
                 {
                     "id": "form-default-label",
-                    "value": "Padrão"
+                    "value": "Padrão",
+                    "type": "string"
                 },
                 {
                     "id": "field-target",
-                    "value": "Alvo"
+                    "value": "Alvo",
+                    "type": "string"
                 },
                 {
                     "id": "field-default",
-                    "value": "Padrão"
+                    "value": "Padrão",
+                    "type": "string"
                 }
             ]
         },
@@ -152,39 +161,48 @@
             "variables": [
                 {
                     "id": "form-name-label",
-                    "value": "Mode Name"
+                    "value": "Mode Name",
+                    "type": "string"
                 },
                 {
                     "id": "form-name-placeholder",
-                    "value": "Enter the mode name"
+                    "value": "Enter the mode name",
+                    "type": "string"
                 },
                 {
                     "id": "form-target-label",
-                    "value": "Target"
+                    "value": "Target",
+                    "type": "string"
                 },
                 {
                     "id": "form-target-placeholder",
-                    "value": "Select the mode target"
+                    "value": "Select the mode target",
+                    "type": "string"
                 },
                 {
                     "id": "form-mode-label",
-                    "value": "Mode"
+                    "value": "Mode",
+                    "type": "string"
                 },
                 {
                     "id": "form-mode-placeholder",
-                    "value": "Enter the mode content"
+                    "value": "Enter the mode content",
+                    "type": "string"
                 },
                 {
                     "id": "form-default-label",
-                    "value": "Default"
+                    "value": "Default",
+                    "type": "string"
                 },
                 {
                     "id": "field-target",
-                    "value": "Target"
+                    "value": "Target",
+                    "type": "string"
                 },
                 {
                     "id": "field-default",
-                    "value": "Default"
+                    "value": "Default",
+                    "type": "string"
                 }
             ]
         }

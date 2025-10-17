@@ -65,15 +65,18 @@
             "variables": [
                 {
                     "id": "form-name-label",
-                    "value": "Nome do Prompt"
+                    "value": "Nome do Prompt",
+                    "type": "string"
                 },
                 {
                     "id": "form-name-placeholder",
-                    "value": "Digite o nome do prompt"
+                    "value": "Digite o nome do prompt",
+                    "type": "string"
                 },
                 {
                     "id": "form-target-label",
-                    "value": "Alvo"
+                    "value": "Alvo",
+                    "type": "string"
                 },
                 {
                     "id": "form-target-placeholder",
@@ -81,23 +84,28 @@
                 },
                 {
                     "id": "form-prompt-label",
-                    "value": "Prompt"
+                    "value": "Prompt",
+                    "type": "string"
                 },
                 {
                     "id": "form-prompt-placeholder",
-                    "value": "Digite o conteúdo do prompt"
+                    "value": "Digite o conteúdo do prompt",
+                    "type": "string"
                 },
                 {
                     "id": "form-default-label",
-                    "value": "Padrão"
+                    "value": "Padrão",
+                    "type": "string"
                 },
                 {
                     "id": "field-target",
-                    "value": "Alvo"
+                    "value": "Alvo",
+                    "type": "string"
                 },
                 {
                     "id": "field-default",
-                    "value": "Padrão"
+                    "value": "Padrão",
+                    "type": "string"
                 }
             ]
         },
@@ -152,39 +160,48 @@
             "variables": [
                 {
                     "id": "form-name-label",
-                    "value": "Prompt Name"
+                    "value": "Prompt Name",
+                    "type": "string"
                 },
                 {
                     "id": "form-name-placeholder",
-                    "value": "Enter the prompt name"
+                    "value": "Enter the prompt name",
+                    "type": "string"
                 },
                 {
                     "id": "form-target-label",
-                    "value": "Target"
+                    "value": "Target",
+                    "type": "string"
                 },
                 {
                     "id": "form-target-placeholder",
-                    "value": "Select the prompt target"
+                    "value": "Select the prompt target",
+                    "type": "string"
                 },
                 {
                     "id": "form-prompt-label",
-                    "value": "Prompt"
+                    "value": "Prompt",
+                    "type": "string"
                 },
                 {
                     "id": "form-prompt-placeholder",
-                    "value": "Enter the prompt content"
+                    "value": "Enter the prompt content",
+                    "type": "string"
                 },
                 {
                     "id": "form-default-label",
-                    "value": "Default"
+                    "value": "Default",
+                    "type": "string"
                 },
                 {
                     "id": "field-target",
-                    "value": "Target"
+                    "value": "Target",
+                    "type": "string"
                 },
                 {
                     "id": "field-default",
-                    "value": "Default"
+                    "value": "Default",
+                    "type": "string"
                 }
             ]
         }

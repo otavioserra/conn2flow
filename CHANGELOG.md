@@ -10,6 +10,36 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
 - CHANGELOG.md padrão da indústria seguindo Keep a Changelog
 
+## [2.3.0] - 2025-10-17
+
+### Added
+- **Sistema de IA Completo Integrado**: Geração assistida de conteúdo no admin-paginas via API Gemini
+- **Sistema Dual de Prompts**: Modos técnicos estruturados + prompts de usuário flexíveis
+- **Interface CodeMirror Avançada**: Edição aprimorada com inserção de conteúdo gerado por IA
+- **Gerenciamento de Sessão Inteligente**: Manipulação de conteúdo gerado e inserção posicional
+- **Suporte a Múltiplos Modelos IA**: Configuração dinâmica de servidores e modelos
+- **Validação Robusta de Erros**: Tratamento completo de erros para comunicação com API externa
+- **Nova Biblioteca ia.php**: Funções completas para renderização de prompts e comunicação com API Gemini
+- **Novas Tabelas de Banco**: servidores_ia, modos_ia, prompts_ia para gerenciamento do sistema IA
+- **Interface JavaScript Avançada**: Controles de IA e geração de conteúdo com CodeMirror
+- **Sistema de Sessão Robusto**: Gerenciamento de conteúdo gerado por IA
+- **Inserção Posicional**: Capacidades avançadas de inserção de conteúdo
+- **Compatibilidade Total**: Integração seamless com arquitetura existente do Conn2Flow
+
+### Changed
+- **Módulo admin-paginas**: Integração completa com sistema de IA para geração assistida
+- **Arquitetura de IA**: Sistema dual de prompts (técnico + flexível) implementado
+- **Interface de Edição**: CodeMirror aprimorado com inserção posicional de conteúdo IA
+- **Sistema de Sessão**: Gerenciamento inteligente de conteúdo gerado
+- **Validações de API**: Tratamento robusto de erros e comunicação externa
+
+### Technical Details
+- **New Tables**: servidores_ia, modos_ia, prompts_ia
+- **New Library**: ia.php with complete AI functions
+- **New Features**: AI-powered content generation, session management, positional insertion
+- **API Integration**: Google Gemini API with error handling and validation
+- **UI Enhancements**: Advanced CodeMirror interface with AI controls
+
 ## [2.2.2] - 2025-09-26
 
 ### Added
@@ -363,7 +393,8 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## Links de Comparação
 
-[Unreleased]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.2.2...HEAD
+[Unreleased]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.3.0...HEAD
+[2.3.0]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.2.2...gestor-v2.3.0
 [2.2.2]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.1.0...gestor-v2.2.2
 [instalador-v1.5.0]: https://github.com/conecta2me/conn2flow/compare/instalador-v1.4.0...instalador-v1.5.0
 [2.1.0]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.0.21...gestor-v2.1.0

@@ -262,11 +262,11 @@
     {
         "name": "Configuration - Widget",
         "id": "configuracao-widget",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "f900ffdfaefae2457b829ca45ebcac69",
+            "html": "2cde8ebb8df19f322c63502b52b680c0",
             "css": "e76c325ef114d06f7eaa79aaa025fe38",
-            "combined": "69f7000296c3e5e099a0cfc6dc00a355"
+            "combined": "28f8b14ad793bbf24fc3a8bd83d71987"
         }
     },
     {
@@ -292,21 +292,21 @@
     {
         "name": "AI Prompt",
         "id": "ia-prompt",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "a03a17be3ee19a8a041829aae6f77117",
-            "css": "",
-            "combined": "a03a17be3ee19a8a041829aae6f77117"
+            "html": "3344a7c73c1e6545b3228231e873cba1",
+            "css": "1221e34b060bf1cdcd78f39f9e9738dc",
+            "combined": "cbe6b9aeb745bc824567f2d2652dcb04"
         }
     },
     {
         "name": "IA Prompt Modais",
         "id": "ia-prompt-modais",
-        "version": "1.0",
+        "version": "1.1",
         "checksum": {
-            "html": "",
+            "html": "6fec31d9b3dc8f3f727e823c8bb870de",
             "css": "",
-            "combined": ""
+            "combined": "6fec31d9b3dc8f3f727e823c8bb870de"
         }
     }
 ]

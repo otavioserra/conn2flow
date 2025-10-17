@@ -57,6 +57,33 @@ For detailed technical information and development guides, see:
 - Automatic backup system for new fields
 - Database migration scripts for seamless updates
 
+### Latest Release: v2.3.0 (October 17, 2025)
+
+**🎯 New Features:**
+- **Complete AI System Integration**: Full AI-powered content generation integrated into admin-paginas module
+- **Gemini API Integration**: Direct integration with Google's Gemini AI for intelligent content creation
+- **Dual Prompt System**: Technical modes (structured templates) + User prompts (flexible needs) combined for smart content generation
+- **Advanced CodeMirror Interface**: Enhanced content editing with AI-generated content insertion
+- **Session-Based Content Management**: Intelligent session handling for generated content and positional insertion
+- **Multiple AI Models Support**: Support for various AI models and dynamic server configuration
+- **Robust Error Handling**: Comprehensive validation and error handling for external API communication
+
+**🔧 Technical Improvements:**
+- New ia.php library with complete AI functions for prompt rendering and API communication
+- New database tables: servidores_ia, modos_ia, prompts_ia for AI system management
+- Advanced JavaScript interface for AI controls and content generation
+- Session management system for AI-generated content handling
+- Positional content insertion capabilities
+- Full compatibility with existing Conn2Flow architecture
+
+**📦 What's New:**
+- Complete AI system integrated into admin-paginas
+- ia.php library for AI operations
+- New database tables for AI management
+- Advanced AI interface with CodeMirror integration
+- Session-based content generation and management
+- Comprehensive AI documentation (chat-ia.md)
+
 ### Legacy Branches
 * **gestor-v1.16**: Latest stable release before v2.0.0
 * **b2make-legacy**: Complete legacy system preserved for reference

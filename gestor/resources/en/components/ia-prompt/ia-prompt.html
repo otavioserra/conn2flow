@@ -1,25 +1,102 @@
 <div class="field">
     <label>#ia-form-title#</label>
     <div class="ui segment ai-conteiner">
-        <div class="ui grid">
-            <div class="eight wide column">
-                <h3 class="ui header">#titulo#</h3>
-            </div>
-            <div class="eight wide column right aligned">
-                <div class="field">
-                    <label>Select Prompt:</label>
-                    <select class="ui dropdown ai-prompt-select">
-                        #select-options#
-                    </select>
+        <div class="ui top attached tabular menu AIMenu">
+            <a class="item" data-tab="prompt" data-tooltip="@[[ia-form-prompt-tooltip]]@" data-position="top left"
+                data-inverted=""><i class="stream icon"></i>@[[ia-form-prompt-label]]@</a>
+            <a class="item" data-tab="mode" data-tooltip="@[[ia-form-mode-tooltip]]@" data-position="top left"
+                data-inverted=""><i class="robot icon"></i>@[[ia-form-mode-label]]@</a>
+            <a class="item" data-tab="config" data-tooltip="@[[ia-form-config-tooltip]]@" data-position="top left"
+                data-inverted=""><i class="server icon"></i>@[[ia-form-config-label]]@</a>
+        </div>
+        <div class="ui bottom attached tab segment" data-tab="prompt">
+            <div class="ui grid menuMode">
+                <div class="eight wide column">
+                    <div class="field">
+                        <label>Select Model:</label>
+                        <select class="ui dropdown ai-prompt-select">
+                            #select-prompt#
+                        </select>
+                    </div>
+                </div>
+                <div class="eight wide column">
+                    <div class="field">
+                        <label>Options:</label>
+                        <div>
+                            <div class="ui button disabled ai-prompt-clear"><i class="clipboard icon"></i>Clear</div>
+                            <div class="ui button blue disabled ai-prompt-edit"><i class="edit icon"></i>Save Current
+                            </div>
+                            <div class="ui button red disabled ai-prompt-del"><i class="edit icon"></i>Delete Current
+                            </div>
+                            <div class="ui button green disabled ai-prompt-new"><i class="clone icon"></i>Create New
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <!-- prompt-extra-controls -->
+            <div class="field">
+                <label>Description of your need:</label>
+                <textarea rows="6" placeholder="Describe what you need..." class="ai-prompt-textarea"></textarea>
+            </div>
         </div>
-        <div class="field">
-            <label>Describe your need:</label>
-            <textarea rows="6" placeholder="Describe what you need..." class="ai-prompt-textarea"></textarea>
+        <div class="ui bottom attached tab segment" data-tab="mode">
+            <div class="ui grid menuMode">
+                <div class="eight wide column">
+                    <div class="field">
+                        <label>Select Mode:</label>
+                        <select class="ui dropdown ai-mode-select">
+                            #select-mode#
+                        </select>
+                    </div>
+                </div>
+                <div class="eight wide column">
+                    &nbsp;
+                </div>
+            </div>
+            <textarea rows="6" class="ai-mode-textarea">#modo-padrao#</textarea>
+        </div>
+        <div class="ui bottom attached tab segment" data-tab="config">
+            <div class="ui grid menuMode">
+                <div class="eight wide column">
+                    <div class="field">
+                        <label>AI Connection:</label>
+                        <select class="ui dropdown ai-connection-select">
+                            #select-connection#
+                        </select>
+                    </div>
+                </div>
+                <div class="eight wide column">
+                    &nbsp;
+                </div>
+            </div>
+            <div class="field">
+                <label>AI Model:</label>
+                <div class="ui floating labeled icon dropdown button ai-model-select">
+                    <i class="tachometer alternate icon"></i>
+                    #selected-model#
+                    <div class="menu">
+                        #select-model#
+                    </div>
+                </div>
+            </div>
+            <div class="field hidden ai-return-raw">
+                <label>Complete Returned Data:</label>
+                <textarea rows="6" class="ai-return-textarea"></textarea>
+            </div>
+        </div>
+        <div class="ui negative message hidden">
+            <i class="close icon"></i>
+            <div class="header">
+                Request Error
+            </div>
+            <span class="ai-error-message"></span>
         </div>
         <div class="ui center aligned basic segment">
             <div class="ui primary button ai-send-prompt">Process Request</div>
+        </div>
+        <div class="ui dimmer">
+            <div class="ui text loader">Processing request...</div>
         </div>
     </div>
 </div>
