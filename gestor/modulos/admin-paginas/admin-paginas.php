@@ -1114,6 +1114,13 @@ function admin_paginas_ajax_ia_requests(){
 		if(preg_match('/```css\s*(.*?)\s*```/s', $texto_resposta, $matches_css)){
 			$css_gerado = trim($matches_css[1]);
 		}
+	} else {
+		// Em caso de erro, retornar mensagem
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'error',
+			'message' => $retorno['message'] ?? gestor_variaveis(Array('modulo' => 'admin-ia','id' => 'requests-error-message')),
+		);
+		return;
 	}
 
 	// Incluir HTML e CSS gerado no retorno

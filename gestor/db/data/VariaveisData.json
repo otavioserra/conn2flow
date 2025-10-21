@@ -3330,6 +3330,15 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-ia",
+        "id": "requests-error-message",
+        "valor": "Erro ao processar a requisição de IA.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "admin-ia",
         "id": "tipos-servidor-ia",
@@ -3343,6 +3352,15 @@
         "modulo": "admin-ia",
         "id": "field-default",
         "valor": "Default",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-ia",
+        "id": "requests-error-message",
+        "valor": "Error processing AI request.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

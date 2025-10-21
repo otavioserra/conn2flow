@@ -346,6 +346,7 @@ function admin_layouts_editar(){
 		$modulo['tabela']['nome'],
 		"WHERE ".$modulo['tabela']['id']."='".$id."'"
 		." AND ".$modulo['tabela']['status']."!='D'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 	);
 	
 	if($_GESTOR['banco-resultado']){

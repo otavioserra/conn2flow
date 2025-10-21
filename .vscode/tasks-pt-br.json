@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "📦 Docker - Container Status",
+            "label": "📦 Docker - Status dos Containers",
             "type": "shell",
             "command": "docker ps"
         },
@@ -12,141 +12,141 @@
             "command": "docker exec conn2flow-app bash -c \"php -v\""
         },
         {
-            "label": "📦 Docker - Apache Logs > 50 Lines",
+            "label": "📦 Docker - Logs Apache > 50 Linhas",
             "type": "shell",
             "command": "docker logs conn2flow-app --tail 50"
         },
         {
-            "label": "📦 Docker - Apache Logs > Real Time",
+            "label": "📦 Docker - Logs Apache > Tempo Real",
             "type": "shell",
             "command": "docker logs conn2flow-app --tail 50 --follow"
         },
         {
-            "label": "📦 Docker - PHP Logs Truncate",
+            "label": "📦 Docker - Logs PHP Truncate",
             "type": "shell",
             "command": "docker exec conn2flow-app bash -c \"truncate -s 0 /var/log/php_errors.log\""
         },
         {
-            "label": "📦 Docker - PHP Logs > 50 Lines",
+            "label": "📦 Docker - Logs PHP > 50 Linhas",
             "type": "shell",
             "command": "docker exec conn2flow-app bash -c \"tail -50 /var/log/php_errors.log\""
         },
         {
-            "label": "📦 Docker - PHP Logs > Real Time",
+            "label": "📦 Docker - Logs PHP > Tempo Real",
             "type": "shell",
             "command": "docker exec conn2flow-app bash -c \"tail -f /var/log/php_errors.log\""
         },
         {
-            "label": "🔧 Installer - GIT Release",
+            "label": "🔧 Instalador - GIT Release",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/releases/release-instalador.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
         },
         {
-            "label": "🔧 Installer - Synchronize",
+            "label": "🔧 Instalador - Sincronizar",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor-instalador.sh checksum"
         },
         {
-            "label": "🔧 Installer - Build Local",
+            "label": "🔧 Instalador - Build Local",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/updates/build-local-gestor-instalador.sh"
         },
         {
-            "label": "🔧 Installer - New Local Installation",
+            "label": "🔧 Instalador - Nova Instalação Local",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/dev-environment/criar-nova-instalacao.sh"
         },
         {
-            "label": "🛠️ Manager - GIT Release",
+            "label": "🛠️ Gestor - GIT Release",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
         },
         {
-            "label": "🛠️ Manager - GIT Commit",
+            "label": "🛠️ Gestor - GIT Commit",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/commits/commit.sh \"${input:commitMsg}\""
         },
         {
-            "label": "🛠️ Manager - Synchronize => Resources - Local",
+            "label": "🛠️ Gestor - Sincronizar => Recursos - Local",
             "type": "shell",
             "command": "php ./gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php"
         },
         {
-            "label": "🛠️ Manager - Synchronize => Database - Test Environment",
+            "label": "🛠️ Gestor - Sincronizar => Banco de Dados - Ambiente de Testes",
             "type": "shell",
             "command": "docker exec conn2flow-app bash -c \"php /var/www/sites/localhost/conn2flow-gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php --debug --log-diff\""
         },
         {
-            "label": "🛠️ Manager - Synchronize => Files - Test Environment",
+            "label": "🛠️ Gestor - Sincronizar => Arquivos - Ambiente de Testes",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor.sh checksum"
         },
         {
-            "label": "🛠️ Manager - Build Local",
+            "label": "🛠️ Gestor - Build Local",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/updates/build-local-gestor.sh"
         },
         {
-            "label": "🛠️ Manager - Create Module",
+            "label": "🛠️ Gestor - Criar Módulo",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/dev-environment/criar-novo-modulo.sh \"${input:moduloID}\""
         },
         {
-            "label": "🛠️ Manager - Update => All - Test Environment",
+            "label": "🛠️ Gestor - Atualizar => Tudo - Ambiente de Testes",
             "dependsOn": [
-                "🛠️ Manager - Synchronize => Resources - Local",
-                "🛠️ Manager - Synchronize => Files - Test Environment",
-                "🛠️ Manager - Synchronize => Database - Test Environment"
+                "🛠️ Gestor - Sincronizar => Recursos - Local",
+                "🛠️ Gestor - Sincronizar => Arquivos - Ambiente de Testes",
+                "🛠️ Gestor - Sincronizar => Banco de Dados - Ambiente de Testes"
             ],
             "dependsOrder": "sequence"
         },
         {
-            "label": "🧩 Private Plugins - Synchronize Active Plugin",
+            "label": "🧩 Plugins Privado - Sincronizar Plugin Ativo",
             "type": "shell",
             "command": "bash ./dev-plugins/plugins/private/scripts/dev/synchronizes.sh checksum"
         },
         {
-            "label": "🧩 Private Plugins - Build Local Active Plugin",
+            "label": "🧩 Plugins Privado - Build Local Plugin Ativo",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/updates/build-local-gestor-plugin.sh"
         },
         {
-            "label": "🧩 Private Plugins - Plugin Resources",
+            "label": "🧩 Plugins Privado - Recursos Plugin",
             "type": "shell",
             "command": "php ./dev-plugins/plugins/private/scripts/resources/update-data-resources-plugin.php"
         },
         {
-            "label": "🧩 Private Plugins - GIT Release",
+            "label": "🧩 Plugins Privado - GIT Release",
             "type": "shell",
             "command": "bash ./dev-plugins/plugins/private/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
         },
         {
-            "label": "🧩 Private Plugins - GIT Commit",
+            "label": "🧩 Plugins Privado - GIT Commit",
             "type": "shell",
             "command": "bash ./dev-plugins/plugins/private/scripts/commits/commit.sh \"${input:commitMsg}\""
         },
         {
-            "label": "🧩 Public Plugins - Synchronize Active Plugin",
+            "label": "🧩 Plugins Público - Sincronizar Plugin Ativo",
             "type": "shell",
             "command": "bash ./dev-plugins/plugins/public/scripts/dev/synchronizes.sh checksum"
         },
         {
-            "label": "🧩 Public Plugins - Build Local Active Plugin",
+            "label": "🧩 Plugins Público - Build Local Plugin Ativo",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/updates/build-local-gestor-plugin.sh"
         },
         {
-            "label": "🧩 Public Plugins - Plugin Resources",
+            "label": "🧩 Plugins Público - Recursos Plugin",
             "type": "shell",
             "command": "php ./dev-plugins/plugins/public/scripts/resources/update-data-resources-plugin.php"
         },
         {
-            "label": "🧩 Public Plugins - GIT Release",
+            "label": "🧩 Plugins Público - GIT Release",
             "type": "shell",
             "command": "bash ./dev-plugins/plugins/public/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
         },
         {
-            "label": "🧩 Public Plugins - GIT Commit",
+            "label": "🧩 Plugins Público - GIT Commit",
             "type": "shell",
             "command": "bash ./dev-plugins/plugins/public/scripts/commits/commit.sh \"${input:commitMsg}\""
         }
@@ -154,22 +154,22 @@
     "inputs": [
         {
             "id": "tipo",
-            "description": "✔️ Release Type (patch, minor, major) ❔",
+            "description": "✔️ Tipo de Release (patch, minor, major) ❔",
             "type": "promptString"
         },
         {
             "id": "tagMsg",
-            "description": "🔖 TAG Message ❔",
+            "description": "🔖 Mensagem da TAG ❔",
             "type": "promptString"
         },
         {
             "id": "commitMsg",
-            "description": "📦 Commit Message ❔",
+            "description": "📦 Mensagem do Commit ❔",
             "type": "promptString"
         },
         {
             "id": "moduloID",
-            "description": "📦 Module ID ❔",
+            "description": "📦 ID do Módulo ❔",
             "type": "promptString"
         }
     ]

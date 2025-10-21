@@ -2,7 +2,7 @@
     {
         "name": "Manager Administrative Layout",
         "id": "layout-administrativo-do-gestor",
-        "version": "1.19",
+        "version": "1.23",
         "checksum": {
             "html": "7515bf945de6488253310fd9173f22d4",
             "css": "12fb2f83a0f84e241984eae41ca925af",

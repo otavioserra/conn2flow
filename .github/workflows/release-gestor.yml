@@ -96,7 +96,7 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🚀 Conn2Flow Gestor Release v2.3.0 (Sistema de IA Integrado Completo)
+          ## 🚀 Conn2Flow Gestor Release v2.3.1 (Sistema de IA Integrado Completo)
           
           Esta versão traz a **implementação completa do sistema de IA integrado** ao módulo admin-paginas, permitindo geração assistida de conteúdo através da API Gemini, além de manter todas as funcionalidades revolucionárias do sistema multilíngue e plugins V2.
           

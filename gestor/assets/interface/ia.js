@@ -423,8 +423,6 @@ $(document).ready(function () {
         const model = $('.ui.ai-model-select').dropdown('get value');
         const requestsData = dataRequest.requestsData();
 
-        console.log('Dados da requisição', requestsData);
-
         const ajax = ajaxDefault;
 
         ajax.ajaxOpcao = ('ajaxOpcao' in requestsData ? requestsData.ajaxOpcao : '');
@@ -466,6 +464,12 @@ $(document).ready(function () {
                 status: 'success',
                 data: response.data
             });
+        };
+        ajax.successNotOkCallback = function (response) {
+            if (response !== undefined && 'status' in response)
+                if (response.status === 'error') {
+                    msg_erro_mostrar(response.message);
+                }
         };
 
         $.ajax(ajax);
