@@ -6,16 +6,16 @@ set -euo pipefail
 # Build Local do Plugin (dinâmico via environment.json)
 #
 # Este script lê o arquivo fixo dev-environment/data/environment.json,
-# extrai o caminho do config de plugins (devPluginEnvironmentConfig.path),
+# extrai o caminho do config de plugins baseado no tipo (devPluginEnvironmentConfig.public.path ou devPluginEnvironmentConfig.private.path),
 # lê esse config e usa os caminhos dinâmicos para buildar o plugin.
 #
 # Flags:
-#   --test-plugin           Usa pasta de testes (tests/build/plugin)
 #   --plugin-root=/caminho  Define raiz do plugin (sobrescreve qualquer outro)
 #   --keep-resources        Não remove diretórios resources antes do zip
 #   --out-dir=/caminho      Diretório destino dos artefatos (default: conforme config)
 #   --name=arquivo.zip      Nome base do zip (default: gestor-plugin.zip)
 #   --no-hash               Não gera arquivo .sha256
+#   --type=public|private   Tipo do plugin (public ou private, default: public)
 # =====================================================================================
 
 
@@ -28,15 +28,44 @@ if [[ ! -f "$ENV_MAIN_JSON" ]]; then
   exit 1
 fi
 
-# Extrai caminho do config de plugin
+# Define tipo padrão do plugin
+PLUGIN_TYPE="public"
+
+# Flags podem sobrescrever variáveis (processa primeiro para definir PLUGIN_TYPE)
+for arg in "$@"; do
+  case "$arg" in
+    --type=*) PLUGIN_TYPE="${arg#*=}" ;;
+    --help|-h)
+      cat <<EOF
+Uso: $(basename "$0") [opções]
+  --plugin-root=/path       Define raiz do plugin
+  --keep-resources          Mantém diretórios resources no pacote
+  --out-dir=/path           Altera diretório de saída
+  --name=arquivo.zip        Nome do zip (default gestor-plugin.zip)
+  --no-hash                 Não gerar hash SHA256
+  --type=public|private     Tipo do plugin (default: public)
+EOF
+      exit 0;;
+  esac
+done
+
+# Valida o tipo do plugin
+if [[ "$PLUGIN_TYPE" != "public" && "$PLUGIN_TYPE" != "private" ]]; then
+  echo "[build-plugin] ERRO: Tipo de plugin inválido: $PLUGIN_TYPE. Use 'public' ou 'private'." >&2
+  exit 1
+fi
+
+echo "[build-plugin] Tipo de plugin: $PLUGIN_TYPE" >&2
+
+# Extrai caminho do config de plugin baseado no tipo
 if command -v jq >/dev/null 2>&1; then
-  PLUGIN_ENV_PATH=$(jq -r '.devPluginEnvironmentConfig.path' "$ENV_MAIN_JSON")
+  PLUGIN_ENV_PATH=$(jq -r ".devPluginEnvironmentConfig.${PLUGIN_TYPE}.path" "$ENV_MAIN_JSON")
 else
-  PLUGIN_ENV_PATH=$(grep '"devPluginEnvironmentConfig"' -A 3 "$ENV_MAIN_JSON" | grep '"path"' | sed -E 's/.*"path" *: *"([^"]*)".*/\1/')
+  PLUGIN_ENV_PATH=$(grep "\"devPluginEnvironmentConfig\"" -A 10 "$ENV_MAIN_JSON" | grep "\"${PLUGIN_TYPE}\"" -A 3 | grep '"path"' | sed -E 's/.*"path" *: *"([^"]*)".*/\1/' | head -1)
 fi
 
 if [[ -z "$PLUGIN_ENV_PATH" || "$PLUGIN_ENV_PATH" == "null" ]]; then
-  echo "[build-plugin] ERRO: devPluginEnvironmentConfig.path não definido em $ENV_MAIN_JSON" >&2
+  echo "[build-plugin] ERRO: devPluginEnvironmentConfig.${PLUGIN_TYPE}.path não definido em $ENV_MAIN_JSON" >&2
   exit 1
 fi
 if [[ ! -f "$PLUGIN_ENV_PATH" ]]; then
@@ -49,26 +78,25 @@ fi
 # Extrai caminhos do config de plugin e monta o caminho do plugin ativo
 if command -v jq >/dev/null 2>&1; then
   PLUGIN_ROOT_BASE=$(jq -r '.devEnvironment.source' "$PLUGIN_ENV_PATH")
-  OUT_DIR=$(jq -r '.devEnvironment.target' "$PLUGIN_ENV_PATH")
-  DOCKER_PATH=$(jq -r '.devEnvironment.dockerPath' "$PLUGIN_ENV_PATH")
-  TEST_PLUGIN_ROOT=$(jq -r '.devEnvironment.testsBuild' "$PLUGIN_ENV_PATH")
+  OUT_DIR_BASE=$(jq -r '.devEnvironment.deploys' "$PLUGIN_ENV_PATH")
   ACTIVE_PLUGIN_ID=$(jq -r '.activePlugin.id' "$PLUGIN_ENV_PATH")
   ACTIVE_PLUGIN_PATH=$(jq -r --arg id "$ACTIVE_PLUGIN_ID" '.plugins[] | select(.id==$id) | .path' "$PLUGIN_ENV_PATH")
 else
   PLUGIN_ROOT_BASE=$(grep '"source"' "$PLUGIN_ENV_PATH" | sed -E 's/.*"source" *: *"([^"]*)".*/\1/')
-  OUT_DIR=$(grep '"target"' "$PLUGIN_ENV_PATH" | sed -E 's/.*"target" *: *"([^"]*)".*/\1/')
-  DOCKER_PATH=$(grep '"dockerPath"' "$PLUGIN_ENV_PATH" | sed -E 's/.*"dockerPath" *: *"([^"]*)".*/\1/')
-  TEST_PLUGIN_ROOT=$(grep '"testsBuild"' "$PLUGIN_ENV_PATH" | sed -E 's/.*"testsBuild" *: *"([^"]*)".*/\1/')
+  OUT_DIR_BASE=$(grep '"deploys"' "$PLUGIN_ENV_PATH" | sed -E 's/.*"deploys" *: *"([^"]*)".*/\1/')
   ACTIVE_PLUGIN_ID=$(grep '"activePlugin"' -A 2 "$PLUGIN_ENV_PATH" | grep '"id"' | sed -E 's/.*"id" *: *"([^"]*)".*/\1/')
   # Busca o path do plugin ativo na lista plugins
-  ACTIVE_PLUGIN_PATH=$(awk -v id="$ACTIVE_PLUGIN_ID" 'BEGIN{p=0} /"plugins" *:/ {p=1} p && /"id"/ {if ($0 ~ id) f=1} f && /"path"/ {match($0, /"path" *: *"([^"]*)"/, a); print a[1]; exit}' "$PLUGIN_ENV_PATH")
+  ACTIVE_PLUGIN_PATH=$(awk -v id="$ACTIVE_PLUGIN_ID" 'BEGIN{p=0} /"plugins" *:/ {p=1} p && /"id"/ {if ($0 ~ id) f==1} f && /"path"/ {match($0, /"path" *: *"([^"]*)"/, a); print a[1]; exit}' "$PLUGIN_ENV_PATH")
 fi
 
 # Monta o caminho do plugin ativo
 PLUGIN_ROOT="$PLUGIN_ROOT_BASE$ACTIVE_PLUGIN_PATH"
 
+# Define o diretório de saída final (subpasta com ID do plugin)
+OUT_DIR="${OUT_DIR_BASE%/}/$ACTIVE_PLUGIN_ID"
+
 # Define o caminho da pasta de deploys (onde os arquivos processados são gerados)
-DEPLOY_PLUGIN_ROOT="$(dirname "$(dirname "$PLUGIN_ROOT_BASE")")/deploys/$ACTIVE_PLUGIN_ID"
+DEPLOY_PLUGIN_ROOT="$OUT_DIR/temp"
 
 # Descobre a raiz do environment.json do plugin
 PLUGIN_ENV_ROOT=$(dirname "$PLUGIN_ENV_PATH")
@@ -77,26 +105,15 @@ ZIP_NAME="gestor-plugin.zip"
 KEEP_RESOURCES=false
 GEN_HASH=true
 
-# Flags podem sobrescrever variáveis
+# Flags podem sobrescrever outras variáveis
 for arg in "$@"; do
   case "$arg" in
-    --test-plugin) PLUGIN_ROOT="$TEST_PLUGIN_ROOT" ;;
     --plugin-root=*) PLUGIN_ROOT="${arg#*=}" ;;
     --keep-resources) KEEP_RESOURCES=true ;;
     --out-dir=*) OUT_DIR="${arg#*=}" ;;
     --name=*) ZIP_NAME="${arg#*=}" ;;
     --no-hash) GEN_HASH=false ;;
-    --help|-h)
-      cat <<EOF
-Uso: $(basename "$0") [opções]
-  --test-plugin             Usa tests/build/plugin
-  --plugin-root=/path       Define raiz do plugin
-  --keep-resources          Mantém diretórios resources no pacote
-  --out-dir=/path           Altera diretório de saída
-  --name=arquivo.zip        Nome do zip (default gestor-plugin.zip)
-  --no-hash                 Não gerar hash SHA256
-EOF
-      exit 0;;
+    --type=*) ;; # Já processado acima
   esac
 done
 
@@ -126,14 +143,6 @@ if [[ -f "$DATA_SCRIPT" ]]; then
   echo "[build-plugin] Fonte: $PLUGIN_ROOT" >&2
   echo "[build-plugin] Destino: $DEPLOY_PLUGIN_ROOT" >&2
   php "$DATA_SCRIPT" --plugin-root="$PLUGIN_ROOT" --deploy-plugin-root="$DEPLOY_PLUGIN_ROOT" || { echo '[build-plugin] WARN: geração falhou'; }
-
-  # Se a geração foi bem-sucedida e a pasta deploys foi criada, usa ela como fonte
-  if [[ -d "$DEPLOY_PLUGIN_ROOT" ]]; then
-    SOURCE_ROOT="$DEPLOY_PLUGIN_ROOT"
-    echo "[build-plugin] Usando pasta deploys processada como fonte: $SOURCE_ROOT" >&2
-  else
-    echo "[build-plugin] Mantendo pasta original como fonte: $SOURCE_ROOT" >&2
-  fi
 else
   echo "[build-plugin] AVISO: Script de geração não encontrado: $DATA_SCRIPT" >&2
 fi

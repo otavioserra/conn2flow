@@ -108,7 +108,7 @@
         {
             "label": "🧩 Private Plugins - Build Local Active Plugin",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/updates/build-local-gestor-plugin.sh"
+            "command": "bash ./ai-workspace/scripts/updates/build-local-gestor-plugin.sh --type=private"
         },
         {
             "label": "🧩 Private Plugins - Plugin Resources",

@@ -14,7 +14,12 @@
         "dockerPath": "/var/www/sites/localhost/public_html/instalador/"
     },
     "devPluginEnvironmentConfig": {
-        "path": ""
+        "public": {
+            "path": ""
+        },
+        "private": {
+            "path": ""
+        }
     },
     "gemini": {
         "apiKey": ""
