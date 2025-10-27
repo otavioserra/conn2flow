@@ -72,7 +72,9 @@ Este diretório contém a documentação detalhada de todas as bibliotecas (libr
 ## Estatísticas
 
 - **Total de Bibliotecas**: 26
+- **Bibliotecas Documentadas**: 10 (38%)
 - **Total de Funções**: 269
+- **Funções Documentadas**: ~72 (27%)
 - **Biblioteca com Mais Funções**: interface.php (52 funções)
 - **Versão do Sistema**: v2.3.0
 
