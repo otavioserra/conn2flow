@@ -5,8 +5,8 @@
 ## Status Atual
 
 **Última Atualização**: Outubro 2025  
-**Bibliotecas Documentadas**: 10 de 26 (38%)  
-**Funções Documentadas**: 72 de 269 (27%)
+**Bibliotecas Documentadas**: 12 de 26 (46%)  
+**Funções Documentadas**: 79 de 269 (29%)
 
 ## Bibliotecas Completamente Documentadas
 
@@ -64,11 +64,17 @@
 - **Qualidade**: Alta - Validação e detecção de IPs
 - **Highlights**: Suporte a proxies, IPv6, segurança
 
-### ✅ 10. BIBLIOTECA-HOST.md
+### ✅ 11. BIBLIOTECA-FTP.md
+- **Funções**: 4
+- **Status**: ✅ Completo
+- **Qualidade**: Alta - Operações FTP com exemplos
+- **Highlights**: Upload, download, conexão SSL, casos de uso práticos
+
+### ✅ 12. BIBLIOTECA-VARIAVEIS.md
 - **Funções**: 3
 - **Status**: ✅ Completo
-- **Qualidade**: Alta - Gerenciamento de hosts/domínios
-- **Highlights**: URLs, identificadores públicos, multi-tenancy
+- **Qualidade**: Alta - Gerenciamento de variáveis de sistema
+- **Highlights**: CRUD de variáveis, organização por grupos, cache
 
 ---
 
