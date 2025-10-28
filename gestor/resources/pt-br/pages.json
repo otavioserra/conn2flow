@@ -6,7 +6,7 @@
         "path": "404\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.2",
+        "version": "1.4",
         "checksum": {
             "html": "ee70befa061dea94472dbfc017b9e996",
             "css": "",

@@ -264,13 +264,18 @@ function pkPorTabela(string $tabela): ?string {
         'paginas' => 'id_paginas',
         'layouts' => 'id_layouts',
         'componentes' => 'id_componentes',
-    'variaveis' => 'id_variaveis',
-    // Permissões
-    'usuarios_perfis_modulos' => 'id_usuarios_perfis_modulos',
-    'usuarios_perfis_modulos_operacoes' => 'id_usuarios_perfis_modulos_operacoes',
-    // Grupos e operações de módulos
-    'modulos_grupos' => 'id_modulos_grupos',
-    'modulos_operacoes' => 'id_modulos_operacoes'
+        'variaveis' => 'id_variaveis',
+        // Permissões
+        'usuarios_perfis_modulos' => 'id_usuarios_perfis_modulos',
+        'usuarios_perfis_modulos_operacoes' => 'id_usuarios_perfis_modulos_operacoes',
+        // Operações de módulos
+        'modulos' => 'id_modulos',
+        'modulos_operacoes' => 'id_modulos_operacoes',
+        'modulos_grupos' => 'id_modulos_grupos',
+        'usuarios_perfis' => 'id_usuarios_perfis',
+        'prompts_ia' => 'id_prompts_ia',
+        'alvos_ia' => 'id_alvos_ia',
+        'modos_ia' => 'id_modos_ia',
     ];
     return $map[$tabela] ?? null;
 }
@@ -335,7 +340,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         // Permissões de perfis
         'usuarios_perfis_modulos','usuarios_perfis_modulos_operacoes',
         // Novas tabelas com rastreamento de plugin
-        'modulos_grupos','modulos_operacoes'
+        'modulos','modulos_grupos','modulos_operacoes','usuarios_perfis','prompts_ia','alvos_ia','modos_ia'
     ];
     
     // Tabelas que devem apenas inserir registros, nunca atualizar (proteção de dados sensíveis)
@@ -396,11 +401,15 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 if (!isset($row['perfil'],$row['modulo'])) return null; return strtolower($row['perfil']).'|'.strtolower($row['modulo']);
             case 'usuarios_perfis_modulos_operacoes':
                 if (!isset($row['perfil'],$row['operacao'])) return null; return strtolower($row['perfil']).'|'.strtolower($row['operacao']);
+            case 'modulos':
             case 'modulos_grupos':
-                if (!isset($row['id'])) return null; return $pluginPart.'|'.$row['id'];
             case 'modulos_operacoes':
-                // Preferir campo 'operacao' se existir, senão 'id'
-                $op = $row['operacao'] ?? ($row['id'] ?? null); if ($op===null) return null; return $pluginPart.'|'.$op;
+            case 'usuarios_perfis':
+            case 'prompts_ia':
+            case 'alvos_ia':
+            case 'modos_ia':
+                // id + language para tabelas de módulos multilíngue
+                $lang = $row['language'] ?? $row['linguagem_codigo'] ?? null; if (!isset($lang,$row['id'])) return null; return $pluginPart.'|'.strtolower($lang).'|'.$row['id'];
             default:
                 // Caso padrão: usar campo 'id' se existir
                 if (isset($row['id'])) return $pluginPart.'|'.$row['id'];
@@ -523,6 +532,14 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                     $mod = $exist['modulo'] ?? ''; if (isset($exist['id'])) $fallbackIndex[$tabela][$mod.'|'.$exist['id']] = $exist; break;
                 case 'variaveis':
                     $mod = $exist['modulo'] ?? ''; $grp = $exist['grupo'] ?? ''; if (isset($exist['id'])) $fallbackIndex[$tabela][$mod.'|'.$grp.'|'.$exist['id']] = $exist; break;
+                case 'modulos':
+                case 'modulos_grupos':
+                case 'modulos_operacoes':
+                case 'usuarios_perfis':
+                case 'prompts_ia':
+                case 'alvos_ia':
+                case 'modos_ia':
+                    if (isset($exist['id'])) $fallbackIndex[$tabela][$exist['id']] = $exist; break;
             }
         }
     }
@@ -597,6 +614,16 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                             case 'variaveis':
                                 $whereSql = "WHERE `$colLang` = :__lang AND id = :__id AND modulo = :__mod AND (grupo <=> :__grp)";
                                 $params['__lang']=$langVal; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??''; $params['__grp']=$exist['grupo']??null;
+                                break;
+                            case 'modulos':
+                            case 'modulos_grupos':
+                            case 'modulos_operacoes':
+                            case 'usuarios_perfis':
+                            case 'prompts_ia':
+                            case 'alvos_ia':
+                            case 'modos_ia':
+                                $whereSql = "WHERE `$colLang` = :__lang AND id = :__id";
+                                $params['__lang']=$langVal; $params['__id']=$exist['id'];
                                 break;
                         }
                     }
@@ -788,7 +815,7 @@ function comparacaoDados(): array {
                 $r['plugin'] = $pluginSlug;
                 $r += ['user_modified'=>0,'system_updated'=>0,'value_updated'=>null];
             } unset($r);
-        } elseif (in_array($tabela, ['modulos_grupos','modulos_operacoes'], true) && $registros) {
+        } elseif (in_array($tabela, ['modulos','modulos_grupos','modulos_operacoes','usuarios_perfis','prompts_ia','alvos_ia','modos_ia'], true) && $registros) {
             foreach ($registros as &$r) {
                 $r['plugin'] = $pluginSlug;
             } unset($r);

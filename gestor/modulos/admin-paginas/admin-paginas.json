@@ -74,6 +74,51 @@
                     "checksum": {
                         "md": "f46d272c361f52f77f7033eaf3780cd7"
                     }
+                },
+                {
+                    "id": "pagina-simples-uma-sessao",
+                    "name": "Página Simples - Uma Sessão",
+                    "target": "paginas",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": "a1b2c3d4e5f67890123456789012345"
+                    }
+                },
+                {
+                    "id": "pagina-tres-sessoes",
+                    "name": "Página com 3 Sessões",
+                    "target": "paginas",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": "b2c3d4e5f6789012345678901234567"
+                    }
+                },
+                {
+                    "id": "pagina-colunas-tres",
+                    "name": "Página com 3 Colunas",
+                    "target": "paginas",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": "c3d4e5f67890123456789012345678"
+                    }
+                },
+                {
+                    "id": "pagina-contato",
+                    "name": "Página de Contato",
+                    "target": "paginas",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": "d4e5f6789012345678901234567890"
+                    }
+                },
+                {
+                    "id": "pagina-servicos",
+                    "name": "Página de Serviços",
+                    "target": "paginas",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": "e5f678901234567890123456789012"
+                    }
                 }
             ],
             "components": [
@@ -444,6 +489,51 @@
                     "version": "1.2",
                     "checksum": {
                         "md": "4ae5d519b7e53af69e374a96ff1ba05c"
+                    }
+                },
+                {
+                    "id": "pagina-simples-uma-sessao",
+                    "name": "Simple Page - One Session",
+                    "target": "paginas",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": "a1b2c3d4e5f67890123456789012345"
+                    }
+                },
+                {
+                    "id": "pagina-tres-sessoes",
+                    "name": "Page with 3 Sessions",
+                    "target": "paginas",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": "b2c3d4e5f6789012345678901234567"
+                    }
+                },
+                {
+                    "id": "pagina-colunas-tres",
+                    "name": "Page with 3 Columns",
+                    "target": "paginas",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": "c3d4e5f67890123456789012345678"
+                    }
+                },
+                {
+                    "id": "pagina-contato",
+                    "name": "Contact Page",
+                    "target": "paginas",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": "d4e5f6789012345678901234567890"
+                    }
+                },
+                {
+                    "id": "pagina-servicos",
+                    "name": "Services Page",
+                    "target": "paginas",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": "e5f678901234567890123456789012"
                     }
                 }
             ],

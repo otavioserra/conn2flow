@@ -571,12 +571,16 @@ function coletarRecursos(array $existentes, array $map): array {
                             $md = readFileIfExists($paths['md']);
                             $key = $lang.'|'.$id; if(isset($idxPromptsIa[$key])) { $orphans['ai_prompts'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
                             $idxPromptsIa[$key]=true; [$versao,$cks]=$versaoChecksumPrompt('ai_prompts',$key,$md);
-                            $prompts_ia[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'alvo'=>$item['target'] ?? null,'padrao'=>$item['default'] ?? null,'prompt'=>$md,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            $prompts_ia_aux = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'alvo'=>$item['target'] ?? null,'prompt'=>$md,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            if(isset($item['default']) && $item['default']) $prompts_ia_aux['padrao']=1;
+                            $prompts_ia[] = $prompts_ia_aux;
                         } elseif ($tipo==='ai_modes') {
                             $md = readFileIfExists($paths['md']);
                             $key = $lang.'|'.$id; if(isset($idxModosIa[$key])) { $orphans['ai_modes'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
                             $idxModosIa[$key]=true; [$versao,$cks]=$versaoChecksumPrompt('ai_modes',$key,$md);
-                            $modos_ia[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'alvo'=>$item['target'] ?? null,'padrao'=>$item['default'] ?? null,'prompt'=>$md,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            $modos_ia_aux = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'alvo'=>$item['target'] ?? null,'prompt'=>$md,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            if(isset($item['default']) && $item['default']) $modos_ia_aux['padrao']=1;
+                            $modos_ia[] = $modos_ia_aux;
                         } elseif ($tipo==='ai_prompts_targets') {
                             $key = $lang.'|'.$id; if(isset($idxPromptsAlvosIa[$key])) { $orphans['alvos_ia'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
                             $idxPromptsAlvosIa[$key]=true;
