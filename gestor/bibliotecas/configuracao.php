@@ -107,7 +107,7 @@ function configuracao_administracao_salvar($params = false){
 			$grupo = (isset($_REQUEST['grupo-'.$i]) ? $_REQUEST['grupo-'.$i] : '');
 			$descricao = (isset($_REQUEST['descricao-'.$i]) ? $_REQUEST['descricao-'.$i] : '');
 			$tipo = (isset($_REQUEST['tipo-'.$i]) ? $_REQUEST['tipo-'.$i] : '');
-			$valor = $_REQUEST['valor-'.$i'];
+			$valor = $_REQUEST['valor-'.$i];
 			$ref = $_REQUEST['ref-'.$i];
 			
 			// Verificar se a variável já existe no banco
