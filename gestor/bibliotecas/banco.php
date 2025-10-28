@@ -206,7 +206,6 @@ function banco_num_rows($result){
 	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_num_rows($result);
 }
-}
 
 /**
  * Retorna o número de campos/colunas em um resultado de query.
