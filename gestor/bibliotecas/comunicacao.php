@@ -1,7 +1,19 @@
 <?php
+/**
+ * Biblioteca de comunicação do sistema.
+ *
+ * Gerencia envio de emails via SMTP (PHPMailer) e impressão de páginas.
+ * Suporta configurações personalizadas por host, templates HTML, anexos,
+ * imagens embarcadas e múltiplos destinatários.
+ *
+ * @package Conn2Flow
+ * @subpackage Bibliotecas
+ * @version 1.1.0
+ */
 
 global $_GESTOR;
 
+// Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-comunicacao']							=	Array(
 	'versao' => '1.1.0',
 );
@@ -20,19 +32,29 @@ require_once $_GESTOR['bibliotecas-path'].'PHPMailer/src/SMTP.php';
 
 // ===== Funções principais
 
+/**
+ * Prepara página para impressão armazenando dados na sessão.
+ *
+ * Armazena o conteúdo HTML e título da página que será impressa,
+ * salvando em variável de sessão para posterior recuperação.
+ *
+ * @global array $_GESTOR Sistema global com configurações.
+ * @global array $_CRON Dados de execução cron.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['pagina'] Conteúdo HTML da página a ser impressa (obrigatório).
+ * @param string $params['titulo'] Título da página de impressão (opcional).
+ * 
+ * @return void
+ */
 function comunicacao_impressao($params = false){
 	global $_GESTOR;
 	global $_CRON;
 	
+	// Extrai parâmetros
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// pagina - String - Obrigatório - Página que será impressa.
-	// titulo - String - Opcional - Título da página que será impressa.
-	
-	// ===== 
-	
+	// Valida parâmetro obrigatório e armazena dados de impressão
 	if(isset($pagina)){
 		$impressao = Array(
 			'pagina' => $pagina,
@@ -42,73 +64,82 @@ function comunicacao_impressao($params = false){
 			$impressao['titulo'] = $titulo;
 		}
 		
-		// ===== Guardar na sessão os dados da impressão.
-		
+		// Salva dados de impressão na sessão
 		gestor_sessao_variavel('impressao',$impressao);
 	}
 }
 
+/**
+ * Envia emails via SMTP usando PHPMailer.
+ *
+ * Função completa de envio de emails com suporte a:
+ * - Configurações SMTP personalizadas por host
+ * - Templates HTML com variáveis substituíveis
+ * - Múltiplos destinatários (TO, CC, BCC)
+ * - Anexos de arquivos
+ * - Imagens embarcadas (inline)
+ * - Assinatura HTML automática
+ * - Modo de teste com configurações em runtime
+ *
+ * @global array $_GESTOR Sistema global com configurações.
+ * @global array $_CONFIG Configurações do sistema.
+ * @global array $_CRON Dados de execução cron.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * 
+ * @param bool $params['hostPersonalizacao'] Permite configuração via módulo Comunicação (opcional).
+ * @param int $params['id_hosts'] ID do host para comunicação (opcional).
+ * 
+ * @param array $params['servidor'] Configurações do servidor SMTP (opcional).
+ * @param bool $params['servidor']['debug'] Ativar debug PHPMailer (opcional).
+ * @param string $params['servidor']['hospedeiro'] Host SMTP (opcional).
+ * @param string $params['servidor']['usuario'] Usuário SMTP (opcional).
+ * @param string $params['servidor']['senha'] Senha SMTP (opcional).
+ * @param bool $params['servidor']['seguro'] Usar SSL/TLS (opcional).
+ * @param int $params['servidor']['porta'] Porta SMTP (opcional).
+ * 
+ * @param array $params['remetente'] Dados do remetente (opcional).
+ * @param string $params['remetente']['de'] Email de origem (opcional).
+ * @param string $params['remetente']['deNome'] Nome do remetente (opcional).
+ * @param string $params['remetente']['responderPara'] Email para respostas (opcional).
+ * @param string $params['remetente']['responderParaNome'] Nome para respostas (opcional).
+ * 
+ * @param array $params['destinatarios'] Array de destinatários (opcional).
+ * @param string $params['destinatarios'][]['email'] Email do destinatário (opcional).
+ * @param string $params['destinatarios'][]['nome'] Nome do destinatário (opcional).
+ * @param string $params['destinatarios'][]['tipo'] Tipo: 'cc' ou 'bcc' (opcional, padrão TO).
+ * 
+ * @param array $params['mensagem'] Conteúdo da mensagem (opcional).
+ * @param string $params['mensagem']['assunto'] Assunto do email (opcional).
+ * @param string $params['mensagem']['html'] Corpo HTML da mensagem (opcional).
+ * @param bool $params['mensagem']['htmlAssinaturaAutomatica'] Incluir assinatura automática (opcional).
+ * @param string $params['mensagem']['htmlLayoutID'] ID do layout HTML (opcional).
+ * @param string $params['mensagem']['htmlTitulo'] Título HTML (opcional, usa assunto se omitido).
+ * @param array $params['mensagem']['htmlVariaveis'] Variáveis para substituição no HTML (opcional).
+ * @param array $params['mensagem']['imagens'] Imagens embarcadas (opcional).
+ * @param array $params['mensagem']['anexos'] Arquivos anexos (opcional).
+ * 
+ * @param bool $params['EMAIL_TESTS'] Modo teste com configs em runtime (opcional).
+ * @param bool $params['EMAIL_DEBUG'] Debug em modo teste (opcional).
+ * @param string $params['EMAIL_HOST'] Host SMTP em modo teste (opcional).
+ * @param string $params['EMAIL_USER'] Usuário SMTP em modo teste (opcional).
+ * @param string $params['EMAIL_PASS'] Senha SMTP em modo teste (opcional).
+ * @param bool $params['EMAIL_SECURE'] SSL em modo teste (opcional).
+ * @param int $params['EMAIL_PORT'] Porta em modo teste (opcional).
+ * @param string $params['EMAIL_FROM'] Email origem em modo teste (opcional).
+ * @param string $params['EMAIL_FROM_NAME'] Nome origem em modo teste (opcional).
+ * @param string $params['EMAIL_REPLY_TO'] Email resposta em modo teste (opcional).
+ * @param string $params['EMAIL_REPLY_TO_NAME'] Nome resposta em modo teste (opcional).
+ * 
+ * @return bool|string True se enviado com sucesso, string com erro se falhar, false se email desativado.
+ */
 function comunicacao_email($params = false){
 	global $_GESTOR;
 	global $_CONFIG;
 	global $_CRON;
 	
-	if($params)foreach($params as $var => $val)$$var = $val;
-	
-	// ===== Parâmetros
-	
-	// hostPersonalizacao - Bool - Opcional - Permitir que a comunicação de email seja configurável pelo módulo Comunicação Configurações.
-	// id_hosts - Int - Opcional - Caso definido, obriga o uso do host na comunicação.
-	// servidor - Array - Opcional - Conjunto com todas as variáveis do servidor de emails. Caso não definido, irá usar o padrão do sistema.
-		// debug - Bool - Opcional - Debugar para encontrar erros.
-		// hospedeiro - String - Opcional - Host do servidor de emails SMTP.
-		// usuario - String - Opcional - Usuário do servidor de emails SMTP.
-		// senha - String - Opcional - Senha do usuário do servidor de emails SMTP.
-		// seguro - Bool - Opcional - Ativar uso de SSL em conexões com servidor de emails SMTP.
-		// porta - Int - Opcional - Porta de acesso ao servidor de emails SMTP.
-		
-	// remetente - Array - Opcional - Conjunto com todas as variáveis do remetente de emails. Caso não definido, irá usar o padrão do sistema.
-		// de - String - Opcional - Endereço de email de origem da mensagem.
-		// deNome - String - Opcional - Nome pessoal do endereço de email de origem da mensagem.
-		// responderPara - String - Opcional - Endereço de email que será usado quando o destinatário responder a mensagem.
-		// responderParaNome - String - Opcional - Nome pessoal do endereço de email que será usado quando o destinatário responder a mensagem.
-		
-	// destinatarios - Array de Arrays - Opcional - Conjunto com todas as variáveis dos destinatários de emails.
-		// email - String - Opcional - Endereço de email do(s) destinatário(s).
-		// nome - String - Opcional - Nome do endereço de email do(s) destinatário(s).
-		// tipo - String - Opcional - Tipo(s) do(s) destinatário(s). Senão definido, usar destinatário comum. Valores possíveis: 'cc' e 'bcc'.
-	
-	// mensagem - Array - Opcional - Conjunto com todas as variáveis da mensagem enviada.
-		// assunto - String - Opcional - Assunto da mensagem.
-		// html - String - Opcional - Código HTML da mensagem.
-		// htmlAssinaturaAutomatica - Bool - Opcional - Inclusão automatiza de HTML da assinatura no final da mensagem.
-		// htmlLayoutID - String - Opcional - ID do layout do código HTML que será usado ao invés do código HTML diretamente.
-		// htmlTitulo - String - Opcional - Título do HTML da mensagem, senão informado coolocar o assunto.
-		// htmlVariaveis - Array de Arrays - Opcional - Conjunto com todas as variáveis com seus valores que serão embutidas no código HTML.
-			// variavel - String - Opcional - Nome da variável.
-			// valor - String - Opcional - Valor da variável.
-		// imagens - Array de Arrays - Opcional - Conjunto com todas as imagens que serão embutidas no código HTML.
-			// caminho - String - Opcional - Caminho da imagem.
-			// cid - String - Opcional - CID da imagem, referência dentro do HTML para a imagem.
-			// nome - String - Opcional - Nome da imagem.
-			// imagemTmpCaminho - String - Opcional - Se a imagem incluída é temporária, passar o caminho dela para ser removida no fim do processo.
-		// anexos - Array de Arrays - Opcional - Conjunto com todos os anexos.
-			// nome - String - Opcional - Nome do arquivo.
-			// caminho - String - Opcional - Caminho do anexo.
-			// tmpCaminho - String - Opcional - Se o arquivo incluído é temporária, passar o caminho dele para ser removida no fim do processo.
-	// EMAIL_TESTS - Bool - Opcional - Se definido como true, irá usar as configurações de email definidas em tempo de execução e não as do sistema.
-		// EMAIL_DEBUG - Bool - Opcional - Ativa o debug do envio de email.
-		// EMAIL_HOST - String - Opcional - Host do servidor de emails SMTP.
-		// EMAIL_USER - String - Opcional - Usuário do servidor de emails SMTP.
-		// EMAIL_PASS - String - Opcional - Senha do usuário do servidor de emails SMTP.
-		// EMAIL_SECURE - Bool - Opcional - Ativar uso de SSL em conexões com servidor de emails SMTP.
-		// EMAIL_PORT - Int - Opcional - Porta de acesso ao servidor de emails SMTP.
-		// EMAIL_FROM - String - Opcional - Endereço de email de origem da mensagem.
-		// EMAIL_FROM_NAME - String - Opcional - Nome pessoal do endereço de email de origem da mensagem.
-		// EMAIL_REPLY_TO - String - Opcional - Endereço de email que será usado quando o destinatário responder a mensagem.
-		// EMAIL_REPLY_TO_NAME - String - Opcional - Nome pessoal do endereço de email que será usado quando o destinatário responder a mensagem.
-
-	// ===== 
+	// Extrai parâmetros
+	if($params)foreach($params as $var => $val)$$var = $val; 
 
 	if(isset($_CONFIG['email']) || isset($EMAIL_TESTS)){
 		if($_CONFIG['email']['ativo'] || isset($EMAIL_TESTS)){
