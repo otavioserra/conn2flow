@@ -1,16 +1,39 @@
 <?php
+/**
+ * Biblioteca de validação e processamento de formulários.
+ *
+ * Fornece funções para validação client-side e server-side de formulários,
+ * incluindo regras personalizadas, campos obrigatórios, validação de email,
+ * integração com Google reCAPTCHA v2 e v3.
+ *
+ * @package Conn2Flow
+ * @subpackage Bibliotecas
+ * @version 1.0.4
+ */
 
 global $_GESTOR;
 
+// Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-formulario']							=	Array(
 	'versao' => '1.0.4',
 );
 
 // ===== Funções auxiliares
 
+/**
+ * Inclui JavaScript da biblioteca de formulários na página.
+ *
+ * Carrega o arquivo JavaScript necessário para validações client-side.
+ * Usa controle para incluir apenas uma vez por requisição.
+ *
+ * @global array $_FORMULARIO Controle de inclusão de scripts.
+ * 
+ * @return void
+ */
 function formulario_incluir_js(){
 	global $_FORMULARIO;
 	
+	// Inclui JavaScript apenas uma vez
 	if(!isset($_FORMULARIO['javascript-incluiu'])){
 		gestor_pagina_javascript_incluir('biblioteca','formulario');
 		
@@ -21,33 +44,33 @@ function formulario_incluir_js(){
 
 // ===== Funções principais
 
+/**
+ * Configura validação de formulário com regras personalizadas.
+ *
+ * Sistema completo de validação client-side usando JavaScript.
+ * Suporta múltiplas regras (email, CPF, CNPJ, telefone, comparação, regex, etc).
+ * Gera código JavaScript inline com configurações de validação.
+ *
+ * @global array $_GESTOR Sistema global com configurações.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['formId'] ID do formulário HTML (obrigatório).
+ * @param array $params['validacao'] Array de regras de validação (opcional).
+ * @param string $params['validacao'][]['regra'] Nome da regra: 'email', 'cpf', 'cnpj', 'telefone', 'email-comparacao', etc (obrigatório).
+ * @param string $params['validacao'][]['campo'] Nome do campo HTML a validar (obrigatório).
+ * @param string $params['validacao'][]['label'] Label do campo para mensagens de erro (obrigatório).
+ * @param string $params['validacao'][]['identificador'] ID alternativo do campo (opcional).
+ * @param array $params['validacao'][]['removerRegra'] Regras padrão a remover (opcional).
+ * @param array $params['validacao'][]['comparacao'] Dados para regra 'email-comparacao' (opcional).
+ * @param array $params['regrasExtra'] Regras adicionais além das padrões (opcional).
+ * 
+ * @return void
+ */
 function formulario_validacao($params = false){
 	global $_GESTOR;
 
+	// Extrai parâmetros
 	if($params)foreach($params as $var => $val)$$var = $val;
-	
-	// ===== Parâmetros
-	
-	// formId - String - Obrigatório - Identificador do formulário.
-	// validacao - Array - Opcional - Conjunto de todas as validações com o campo e regra necessária para aplicação.
-		// regra - String - Obrigatório - Identificador da regra que será implementada na validação do formulário.
-		// campo - String - Obrigatório - Nome do campo do formulário onde a regra será aplicada.
-		// label - String - Obrigatório - Label do campo do formulário onde a regra será aplicada.
-		// identificador - String - Opcional - Identificador do campo caso seja necessário referenciar o nome diferente do campo.
-		// removerRegra - Array - Opcional - Conjunto de todas as regras que deseja remover das regras padrões.
-		
-	// Se regra = 'email-comparacao'
-		
-		// comparcao - Array - Obrigatório - Conjunto de todos os dados de comparação.
-			// id - String - Obrigatório - Identificador do alvo da comparação.
-			// campo-1 - String - Obrigatório - Label do campo 1 para mostrar o erro caso houver.
-			// campo-2 - String - Obrigatório - Label do campo 2 para mostrar o erro caso houver.
-		
-	// regrasExtra - Array - Opcional - Conjunto de todas as regras extras além das padrões.
-		// regra - String - Obrigatório - Identificador da regra que será implementada na validação do formulário.
-	
-	// Se regra = 'regexPermited'	
-		
 		// regex - String - Obrigatório - Regex que será usado pelo validador de formulário.
 		// regexPermitedChars - String - Obrigatório - Caracteres permitidos que será mostrado junto com a mensagem de erro.
 	
@@ -424,29 +447,38 @@ function formulario_validacao($params = false){
 	}
 }
 
+/**
+ * Valida campos obrigatórios no servidor (server-side).
+ *
+ * Executa validação de campos após submissão do formulário.
+ * Suporta validação de texto (min/max caracteres), seleção e email.
+ * Exibe alertas e redireciona se validação falhar.
+ *
+ * @global array $_GESTOR Sistema global com configurações.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['redirect'] URL de redirecionamento em caso de erro (opcional, usa reload se omitido).
+ * @param array $params['campos'] Array de campos a validar (opcional).
+ * @param string $params['campos'][]['regra'] Tipo de validação: 'texto-obrigatorio', 'selecao-obrigatorio', 'email-obrigatorio' (obrigatório).
+ * @param string $params['campos'][]['campo'] Nome do campo no $_REQUEST (obrigatório).
+ * @param string $params['campos'][]['label'] Label do campo para mensagens (obrigatório).
+ * @param int $params['campos'][]['min'] Tamanho mínimo para 'texto-obrigatorio' (opcional, padrão 3).
+ * @param int $params['campos'][]['max'] Tamanho máximo para 'texto-obrigatorio' (opcional, padrão 100).
+ * 
+ * @return void Exibe alerta e redireciona se validação falhar.
+ */
 function formulario_validacao_campos_obrigatorios($params = false){
 	global $_GESTOR;
 
-	if($params)foreach($params as $var => $val)$$var = $val;
+	// Extrai parâmetros
+	if($params)foreach($params as $var => $val)$$var = $val; 
 	
-	// ===== Parâmetros
-	
-	// redirect - String - Opcional - URL que será redirecionada caso necessário alterar a forma padrão de redirecionamento.
-	// campos - Array - Opcional - Conjunto de todos os campos obrigatórios.
-		// regra - String - Obrigatório - Identificador da regra que será implementada na validação do campo.
-		// campo - String - Obrigatório - Nome do campo do onde a regra será aplicada.
-		// label - String - Obrigatório - Label do campo do onde a regra será aplicada.
-		
-	// Se regra = 'texto-obrigatorio'
-		// min - Int - Opcional - Mínimo de caracteres.
-		// max - Int - Opcional - Máximo de caracteres.
-	
-	// ===== 
-	
+	// Valida cada campo conforme regra especificada
 	if(isset($campos)){
 		foreach($campos as $campo){
 			switch($campo['regra']){
 				case 'texto-obrigatorio':
+					// Valida tamanho mínimo e máximo do texto
 					$min = (isset($campo['min']) ? $campo['min'] : 3);
 					$max = (isset($campo['max']) ? $campo['max'] : 100);
 					
@@ -467,6 +499,7 @@ function formulario_validacao_campos_obrigatorios($params = false){
 					}
 				break;
 				case 'selecao-obrigatorio':
+					// Valida se campo de seleção tem valor
 					if(!existe($_REQUEST[$campo['campo']])){
 						$naoValidouMsgAlerta = gestor_variaveis(Array('modulo' => 'formulario','id' => 'validation-select'));
 						
@@ -476,6 +509,7 @@ function formulario_validacao_campos_obrigatorios($params = false){
 					}
 				break;
 				case 'email-obrigatorio':
+					// Valida formato de email usando regex
 					$email = $_REQUEST[$campo['campo']];
 					$regex = '/^[^0-9][_a-z0-9-]+(\.[_a-z0-9-]+)*@([a-z0-9-]{2,})+(\.[a-z0-9-]{2,})*$/';
 					
@@ -489,16 +523,19 @@ function formulario_validacao_campos_obrigatorios($params = false){
 				break;
 			}
 			
+			// Para na primeira validação que falhar
 			if(isset($naoValidou)){
 				break;
 			}
 		}
 	}
 	
+	// Exibe alerta se validação falhou
 	if(isset($naoValidouMsgAlerta)){
 		interface_alerta(Array('msg' => $naoValidouMsgAlerta));
 	}
 	
+	// Redireciona se validação falhou
 	if(isset($naoValidou)){
 		if(isset($redirect)){
 			gestor_redirecionar($redirect);
@@ -508,13 +545,20 @@ function formulario_validacao_campos_obrigatorios($params = false){
 	}
 }
 
+/**
+ * Obtém chave do site Google reCAPTCHA.
+ *
+ * Busca configuração de reCAPTCHA (v2 ou v3) no banco de dados.
+ * Retorna chave pública do site se ativo, null caso contrário.
+ *
+ * @global array $_GESTOR Sistema global com configurações.
+ * 
+ * @return string|null Chave pública do site reCAPTCHA ou null se desativado.
+ */
 function formulario_google_recaptcha(){
-	/**********
-		Descrição: Verifica se existe google recaptcha definido para essa conta e devolve a chave do site.
-	**********/
-	
 	global $_GESTOR;
 	
+	// Busca configurações de reCAPTCHA no banco
 	$variaveis = banco_select(Array(
 		'tabela' => 'variaveis',
 		'campos' => Array(
@@ -525,11 +569,13 @@ function formulario_google_recaptcha(){
 			"WHERE modulo='google-recaptcha'"
 	));
 	
+	// Processa configurações encontradas
 	if($variaveis){
 		foreach($variaveis as $variavel){
 			$googleRecaptcha[$variavel['id']] = $variavel['valor'];
 		}
 		
+		// Determina tipo e chave conforme versão ativa
 		if(isset($googleRecaptcha['tipo'])){
 			switch($googleRecaptcha['tipo']){
 				case 'recaptcha-v3':
@@ -560,6 +606,7 @@ function formulario_google_recaptcha(){
 		}
 	}
 	
+	// Retorna chave se ativo, null caso contrário
 	if(isset($ativo) && isset($chave)){
 		return $chave;
 	} else {
@@ -567,11 +614,17 @@ function formulario_google_recaptcha(){
 	}
 }
 
+/**
+ * Obtém tipo de Google reCAPTCHA configurado.
+ *
+ * Verifica qual versão do reCAPTCHA está ativa (v2 ou v3).
+ * Retorna string com tipo ou null se desativado.
+ *
+ * @global array $_GESTOR Sistema global com configurações.
+ * 
+ * @return string|null 'recaptcha-v2' ou 'recaptcha-v3', ou null se desativado.
+ */
 function formulario_google_recaptcha_tipo(){
-	/**********
-		Descrição: Verifica se existe google recaptcha definido para essa conta e devolve o tipo ativo.
-	**********/
-	
 	global $_GESTOR;
 	
 	$variaveis = banco_select(Array(
