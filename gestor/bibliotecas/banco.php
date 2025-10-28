@@ -917,50 +917,52 @@ function banco_insert_name_campos(){
 	}
 }
 
+/**
+ * Insere múltiplos registros de uma única vez.
+ *
+ * Executa INSERT em massa com múltiplos VALUES em uma única query.
+ * Otimizado para inserção de grande volume de dados com mesma estrutura.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['tabela'] Nome da tabela (obrigatório).
+ * @param array $params['campos'] Configuração dos campos (obrigatório).
+ * @param string $params['campos'][]['nome'] Nome do campo (obrigatório).
+ * @param array $params['campos'][]['valores'] Array de valores para este campo (obrigatório).
+ * @param bool $params['campos'][]['sem_aspas_simples'] Se true, não usa aspas (opcional).
+ * 
+ * @return void
+ */
 function banco_insert_name_varios($params = false){
-	/**********
-		Descrição: Insere vários registros de uma única vez.
-	**********/
-
+	// Extrai parâmetros
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// tabela - String - Obrigatório - Nome da tabela do banco de dados.
-	// campos - Array - Obrigatório - Conjunto com todos os campos, valores e opções.
-		// nome - String - Obrigatório - Nome do campo.
-		// valores - Array - Obrigatório - Conjunto com todos os valores.
-		// sem_aspas_simples - String - Opcional - Se o campo não usa aspas simples.
-	
-	// ===== 
-	
+	// Valida parâmetros obrigatórios
 	if(isset($campos) && isset($tabela)){
 		$coluna = 0;
 		
+		// ===== Processa cada campo
 		foreach($campos as $campo){
 			
-			
-			// ===== Montar o campo nomes
-			
+			// ===== Monta lista de nomes de campos
 			if(!isset($nomes)){
 				$nomes = '';
 			}
 			
 			$nomes .= (existe($nomes) ? ',' : '') . $campo['nome'];
 			
-			// ===== Se houver a opção 'sem_aspas_simples'
-			
+			// ===== Verifica se campo usa aspas
 			if(isset($campo['sem_aspas_simples'])){ $sem_aspas_simples = true; } else { $sem_aspas_simples = false; }
 			
-			// ===== Montar o conjunto dos valores
-			
+			// ===== Monta conjunto de valores para este campo
 			if(isset($campo['valores'])){
 				$linha = 0;
 				foreach($campo['valores'] as $valor){
+					// Inicializa linha se não existir
 					if(!isset($camposProcessados[$linha])){
 						$camposProcessados[$linha] = '';
 					}
 					
+					// Adiciona valor à linha com formatação apropriada
 					$camposProcessados[$linha] .= ($coluna > 0 ? ',' : '(')
 						.( isset($valor) ? ($sem_aspas_simples ? '' : "'") . $valor . ($sem_aspas_simples ? '' : "'") : 'NULL' )
 						.($coluna < count($campos) - 1 ? '' : ')');
@@ -971,6 +973,7 @@ function banco_insert_name_varios($params = false){
 			$coluna++;
 		}
 		
+		// ===== Monta string final com todos os VALUES
 		if(isset($camposProcessados))
 		foreach($camposProcessados as $campo){
 			if(!isset($conjunto_campos)){
@@ -980,6 +983,7 @@ function banco_insert_name_varios($params = false){
 			$conjunto_campos .= (existe($conjunto_campos) ? ",\n" : '') . $campo;
 		}
 		
+		// ===== Executa INSERT se há dados
 		if(isset($conjunto_campos)){
 			$sql = "INSERT INTO " . $tabela . " (" . $nomes . ") VALUES \n" . $conjunto_campos;
 			$res = banco_query($sql);
@@ -988,10 +992,21 @@ function banco_insert_name_varios($params = false){
 	
 }
 
+/**
+ * Insere vários registros com ID auto-increment.
+ *
+ * Versão em lote de banco_insert para múltiplos registros.
+ *
+ * @param array $campos Array de strings com valores para cada registro.
+ * @param string $tabela Nome da tabela.
+ * 
+ * @return void
+ */
 function banco_insert_varios($campos,$tabela){
 	$total = count($campos);
 	$ultimo = $total - 1;
 	
+	// Monta VALUES separados por vírgula
 	for($i=0;$i<$total;$i++){
 		if($i < $ultimo)
 			$conjunto_campos .= "('0'," . $campos[$i] . "),";
@@ -999,14 +1014,26 @@ function banco_insert_varios($campos,$tabela){
 			$conjunto_campos .= "('0'," . $campos[$i] . ")";
 	}
 	
+	// Executa INSERT em massa
 	$sql = "INSERT INTO " . $tabela . " VALUES " . $conjunto_campos;
 	$res = banco_query($sql);
 }
 
+/**
+ * Insere vários registros com todos os valores especificados.
+ *
+ * Similar a banco_insert_varios mas sem adicionar '0' para ID.
+ *
+ * @param array $campos Array de strings com valores para cada registro.
+ * @param string $tabela Nome da tabela.
+ * 
+ * @return void
+ */
 function banco_insert_varios_tudo($campos,$tabela){
 	$total = count($campos);
 	$ultimo = $total - 1;
 	
+	// Monta VALUES separados por vírgula
 	for($i=0;$i<$total;$i++){
 		if($i < $ultimo)
 			$conjunto_campos .= "(" . $campos[$i] . "),";
@@ -1014,20 +1041,50 @@ function banco_insert_varios_tudo($campos,$tabela){
 			$conjunto_campos .= "(" . $campos[$i] . ")";
 	}
 	
+	// Executa INSERT em massa
 	$sql = "INSERT INTO " . $tabela . " VALUES " . $conjunto_campos;
 	$res = banco_query($sql);
 }
 
+/**
+ * Insere registro com ID especificado.
+ *
+ * Função legada similar a banco_insert_tudo.
+ *
+ * @param string $campos Valores separados por vírgula.
+ * @param string $tabela Nome da tabela.
+ * 
+ * @return void
+ */
 function banco_insert_id($campos,$tabela){
 	$sql = "INSERT INTO " . $tabela . " VALUES(" . $campos . ")";
 	$res = banco_query($sql);
 }
 
+/**
+ * Insere registro com todos os valores especificados.
+ *
+ * INSERT simples sem adicionar ID automático.
+ *
+ * @param string $campos Valores separados por vírgula.
+ * @param string $tabela Nome da tabela.
+ * 
+ * @return void
+ */
 function banco_insert_tudo($campos,$tabela){
 	$sql = "INSERT INTO " . $tabela . " VALUES(" . $campos . ")";
 	$res = banco_query($sql);
 }
 
+/**
+ * Retorna o último ID inserido.
+ *
+ * Obtém o ID auto-increment gerado pela última inserção.
+ *
+ * @global array $_BANCO Conexão do banco.
+ * 
+ * @return int|null O último ID inserido ou NULL.
+ */
 function banco_last_id(){
 	global $_BANCO;
 
@@ -1035,12 +1092,33 @@ function banco_last_id(){
 		return mysqli_insert_id($_BANCO['conexao']);
 }
 
+/**
+ * Executa DELETE no banco de dados.
+ *
+ * @param string $tabela Nome da tabela.
+ * @param string $extra Condições WHERE e outras cláusulas.
+ * 
+ * @return void
+ */
 function banco_delete($tabela,$extra){
 	$sql = "DELETE FROM " . $tabela . " " . $extra;
 	$res = banco_query($sql);
 }
 
+/**
+ * Deleta múltiplos registros usando IN.
+ *
+ * Executa DELETE em massa usando cláusula IN com múltiplos IDs.
+ * Suporta múltiplos campos de ID combinados com AND.
+ *
+ * @param string $tabela Nome da tabela.
+ * @param array|string $campo_ids Nome(s) do(s) campo(s) ID.
+ * @param array $array_ids Array de IDs para deletar.
+ * 
+ * @return void
+ */
 function banco_delete_varios($tabela,$campo_ids,$array_ids){
+	// Se múltiplos campos ID
 	if(count($campo_ids)>1){
 		if($campo_ids)
 		foreach($campo_ids as $campo){
@@ -1069,10 +1147,20 @@ function banco_delete_varios($tabela,$campo_ids,$array_ids){
 	}
 }
 
+/**
+ * Converte array de campos em string separada por vírgulas.
+ *
+ * Função utilitária para juntar campos de array em string SQL.
+ *
+ * @param array $campos Array de nomes de campos.
+ * 
+ * @return string Campos separados por vírgulas.
+ */
 function banco_campos_virgulas($campos){
 	$count = 0;
 	$string = '';
 	
+	// Concatena cada campo com vírgula
 	if($campos)
 	foreach($campos as $campo){
 		$count++;
@@ -1086,7 +1174,18 @@ function banco_campos_virgulas($campos){
 	return $string;
 }
 
+/**
+ * Retorna total de linhas em uma tabela.
+ *
+ * Executa COUNT(*) para contar registros.
+ *
+ * @param string $tabela Nome da tabela.
+ * @param string|null $extra Condições WHERE opcionais (padrão: null).
+ * 
+ * @return int Número total de registros.
+ */
 function banco_total_rows($tabela,$extra = null){
+	// Monta query com ou sem WHERE
 	if(isset($extra)){
 		$sql = "SELECT count(*) as total_record FROM " . $tabela . " " . $extra;
 	} else {
@@ -1098,13 +1197,24 @@ function banco_total_rows($tabela,$extra = null){
 	return $resultado[0][0];
 }
 
+/**
+ * Retorna informações sobre colunas de uma tabela.
+ *
+ * Executa SHOW COLUMNS e retorna metadados das colunas.
+ *
+ * @param string $tabela Nome da tabela.
+ * 
+ * @return array Array com informações de cada coluna.
+ */
 function banco_campos_nomes($tabela){
 	$rows = banco_sql("SHOW COLUMNS FROM ".$tabela);
 
+	// Processa resultados removendo chaves numéricas
 	if($rows){
 		foreach($rows as $row){
 			$campos_params = false;
 			foreach($row as $chave => $valor){
+				// Mantém apenas chaves não-numéricas
 				if(!is_numeric($chave)){
 					$campos_params[$chave] = $valor;
 				}
@@ -1116,9 +1226,22 @@ function banco_campos_nomes($tabela){
 	return $campos;
 }
 
+/**
+ * Remove acentos e caracteres especiais de uma string.
+ *
+ * Normaliza strings para uso em URLs, IDs, etc. Converte para minúsculas,
+ * remove acentos, caracteres especiais e opcionalmente espaços.
+ *
+ * @param string $var String a ser processada.
+ * @param bool $retirar_espaco Se true, substitui espaços por hífens (padrão: true).
+ * 
+ * @return string String normalizada.
+ */
 function banco_retirar_acentos($var,$retirar_espaco = true) {
+	// Converte para minúsculas
 	$var = strtolower($var);
 	
+	// Mapa de caracteres acentuados para ASCII
 	$unwanted_array = array(    
 		'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
 		'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
@@ -1126,21 +1249,43 @@ function banco_retirar_acentos($var,$retirar_espaco = true) {
 		'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'º'=>'o',
 		'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y'
 	);
+	// Substitui acentos por ASCII
 	$var = strtr( $var, $unwanted_array );
 	
+	// Remove caracteres especiais e normaliza hífens
 	$var = preg_replace("/[\.\\\\,:;<>\/:\?\|_!`~@#\$%\^&\*\"'\+=]/","",$var);
 	$var = preg_replace("/[\(\)\{\}\[\]]/","-",$var);
+	// Substitui espaços por hífens se solicitado
 	if($retirar_espaco)$var = str_replace(" ","-",$var);
+	// Normaliza múltiplos hífens em um único
 	$var = preg_replace('/\-+/','-', $var);
+	// Remove caracteres que não sejam letras, números ou hífens
 	$var = preg_replace("/[^a-z^A-Z^0-9^-]/","",$var);
+	// Remove hífens duplicados
 	$var = preg_replace("/\-{2,}/","-",$var);
 	
 	return $var;
 }
 
+/**
+ * Gera identificador único recursivamente.
+ *
+ * Função recursiva auxiliar para banco_identificador que verifica
+ * unicidade e adiciona sufixo numérico se necessário.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['id'] ID base.
+ * @param int $params['num'] Número do sufixo atual.
+ * @param array $params['tabela'] Configuração da tabela.
+ * @param bool $params['sem_traco'] Se true, remove hífens do resultado.
+ * 
+ * @return string ID único gerado.
+ */
 function banco_identificador_unico($params = false){
+	// Extrai parâmetros
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
+	// Verifica se ID já existe no banco
 	if($tabela){
 		$resultado = banco_select(Array(
 			'tabela' => $tabela['nome'],
@@ -1155,6 +1300,7 @@ function banco_identificador_unico($params = false){
 		));
 	}
 	
+	// Se ID já existe, tenta próximo número recursivamente
 	if($resultado){
 		return banco_identificador_unico(Array(
 			'id' => $id,
@@ -1163,18 +1309,36 @@ function banco_identificador_unico($params = false){
 			'sem_traco' => (isset($sem_traco) ? $sem_traco : null ),
 		));
 	} else {
+		// Retorna ID único, com ou sem hífens
 		return ( isset($sem_traco) ? str_replace("-","",($num > 0 ? $id.'-'.$num : $id)) : ($num > 0 ? $id.'-'.$num : $id) );
 	}
 }
 
+/**
+ * Gera identificador único a partir de string.
+ *
+ * Cria ID único normalizado, verificando existência no banco e
+ * adicionando sufixo numérico se necessário. Limita tamanho a 90 caracteres.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['id'] String base para gerar ID.
+ * @param array $params['tabela'] Configuração da tabela.
+ * @param bool $params['sem_traco'] Se true, remove hífens do resultado.
+ * 
+ * @return string ID único gerado e validado.
+ */
 function banco_identificador($params = false){
+	// Extrai parâmetros
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
 	$count = 0;
 	$pre_id = '';
 	$tam_max_id = 90;
+	
+	// Normaliza ID removendo acentos
 	$id = banco_retirar_acentos(trim($id));
 	
+	// Limita tamanho do ID a 90 caracteres
 	$pre_id_aux = explode('-',$id);
 	
 	if($pre_id_aux)
@@ -1193,9 +1357,11 @@ function banco_identificador($params = false){
 	
 	$id = $pre_id;
 	
+	// Verifica se ID já termina com número (sufixo)
 	$id_aux = explode('-',$id);
 	$count = 0;
 	if(count($id_aux) > 1 && is_numeric($id_aux[count($id_aux)-1])){
+		// ID já tem sufixo numérico, separa base do número
 		$id = false;
 		foreach($id_aux as $id2){
 			if($count < count($id_aux)-1){
@@ -1206,6 +1372,7 @@ function banco_identificador($params = false){
 			$count++;
 		}
 		
+		// Verifica unicidade começando do número existente
 		return banco_identificador_unico(Array(
 			'id' => $id,
 			'num' => $num,
@@ -1213,6 +1380,7 @@ function banco_identificador($params = false){
 			'sem_traco' => (isset($sem_traco) ? $sem_traco : null ),
 		));
 	} else {
+		// ID não tem sufixo, verifica unicidade começando do zero
 		return banco_identificador_unico(Array(
 			'id' => $id,
 			'num' => 0,
@@ -1222,29 +1390,31 @@ function banco_identificador($params = false){
 	}
 }
 
+/**
+ * Insere ou atualiza registro baseado em existência.
+ *
+ * Verifica se registro existe baseado em ID. Se existe, atualiza;
+ * se não existe, insere. Suporta tipagem de dados (bool, int, string).
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['tabela'] Configuração da tabela (obrigatório).
+ * @param string $params['tabela']['nome'] Nome da tabela (obrigatório).
+ * @param string $params['tabela']['id'] Nome do campo ID (obrigatório).
+ * @param string $params['tabela']['extra'] Condições extras para UPDATE (opcional).
+ * @param array $params['dados'] Dados a inserir/atualizar (obrigatório).
+ * @param array $params['dadosTipo'] Tipos dos campos (opcional).
+ * 
+ * @return void
+ */
 function banco_insert_update($params = false){
-	/**********
-		Descrição: inserir ou atualizar um registro.
-	**********/
-	
 	global $_PADRAO;
 	
+	// Extrai parâmetros
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// dados - Array - Obrigatório - Dados a serem inseridos ou atualizados na tabela alvo.
-	// tabela - Array - Obrigatório - Valores referenciais da tabela alvo.
-		// nome - String - Obrigatório - Nome da tabela alvo.
-		// id - String - Obrigatório - Identificador da tabela alvo.
-		// extra - String - Opcional - Identificador da tabela alvo.
-	// dadosTipo - Array - Opcional - Dados que tem tipo espcífico na tabela alvo.
-	
-	// ===== 
-	
+	// Valida parâmetros obrigatórios
 	if(isset($tabela) && isset($dados)){
-		// ===== Busca no banco de dados o ID referido.
-		
+		// ===== Busca registro existente pelo ID
 		$id_ref = banco_escape_field($dados[$tabela['id']]);
 		
 		$resultado = banco_select_name
@@ -1257,14 +1427,15 @@ function banco_insert_update($params = false){
 			"WHERE ".$tabela['id']."='".$id_ref."'"
 		);
 		
-		// ===== Se existir atualiza a tabela com os dados enviados, senão cria um novo registro com os dados enviados.
-		
+		// ===== Se registro existe, atualiza; senão, insere
 		if($resultado){
+			// Registro existe: UPDATE
 			unset($dados[$tabela['id']]);
 			
 			$campo_tabela = $tabela['nome'];
 			$campo_tabela_extra = "WHERE ".$tabela['id']."='".$id_ref."'" .(isset($tabela['extra']) ? ' '.$tabela['extra'] : '');
 			
+			// Monta campos para UPDATE baseado no tipo
 			foreach($dados as $chave => $dado){
 				if(isset($dadosTipo)){
 					switch($dadosTipo[$chave]){
@@ -1283,6 +1454,7 @@ function banco_insert_update($params = false){
 				
 			}
 			
+			// Executa UPDATE
 			$editar_sql[$campo_tabela] = banco_campos_virgulas($editar[$campo_tabela]);
 			
 			if($editar_sql[$campo_tabela]){
@@ -1295,8 +1467,10 @@ function banco_insert_update($params = false){
 			}
 			$editar = false;$editar_sql = false;
 		} else {
+			// Registro não existe: INSERT
 			$campos = null; $campo_sem_aspas_simples = null;
 			
+			// Monta campos para INSERT baseado no tipo
 			foreach($dados as $chave => $dado){
 				if(isset($dadosTipo)){
 					switch($dadosTipo[$chave]){
@@ -1314,6 +1488,7 @@ function banco_insert_update($params = false){
 				}
 			}
 			
+			// Executa INSERT
 			banco_insert_name
 			(
 				$campos,
@@ -1323,14 +1498,25 @@ function banco_insert_update($params = false){
 	}
 }
 
+/**
+ * Retorna lista de todas as tabelas do banco de dados.
+ *
+ * Executa SHOW TABLES e retorna array com nomes de todas as tabelas.
+ *
+ * @global array $_BANCO Conexão do banco.
+ * 
+ * @return array Array com nomes das tabelas.
+ */
 function banco_tabelas_lista(){
 	global $_BANCO;
 	
 	if($_BANCO['tipo'] == "mysqli"){
 		$tabelaLista = Array();
 		
+		// Executa SHOW TABLES
 		$res = banco_query("SHOW TABLES");
 		
+		// Processa cada tabela
 		while($cRow = mysqli_fetch_array($res)){
 			$tabelaLista[] = $cRow[0];
 		}
