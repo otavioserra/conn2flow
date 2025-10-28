@@ -208,6 +208,15 @@ function banco_num_rows($result){
 }
 }
 
+/**
+ * Retorna o número de campos/colunas em um resultado de query.
+ *
+ * @global array $_BANCO Configurações de conexão do banco.
+ * 
+ * @param mysqli_result $result O resultado da query.
+ * 
+ * @return int O número de campos no resultado.
+ */
 function banco_num_fields($result){
 	global $_BANCO;
 	
@@ -215,6 +224,16 @@ function banco_num_fields($result){
 		return mysqli_num_fields($result);
 }
 
+/**
+ * Retorna o nome de um campo específico do resultado.
+ *
+ * @global array $_BANCO Configurações de conexão do banco.
+ * 
+ * @param mysqli_result $result O resultado da query.
+ * @param int $num_field O índice do campo (começando em 0).
+ * 
+ * @return string O nome do campo.
+ */
 function banco_field_name($result,$num_field){
 	global $_BANCO;
 	
@@ -222,12 +241,26 @@ function banco_field_name($result,$num_field){
 		return mysqli_fetch_field_direct($result,$num_field)->name;
 }
 
+/**
+ * Retorna um array com os nomes de todos os campos de uma tabela.
+ *
+ * Executa uma query SELECT limitada e extrai os nomes de todos
+ * os campos da tabela especificada.
+ *
+ * @global array $_BANCO Configurações de conexão do banco.
+ * 
+ * @param string $table Nome da tabela.
+ * 
+ * @return array|null Array com os nomes dos campos ou NULL se a tabela estiver vazia.
+ */
 function banco_fields_names($table){
 	global $_BANCO;
 	
 	if($_BANCO['tipo'] == "mysqli"){
+		// Busca um registro para obter os nomes dos campos
 		$res = banco_query("select * from ".$table." limit 1");
 		
+		// Extrai os nomes de todos os campos
 		if(banco_num_fields($res)){
 			$max = banco_num_fields($res);
 			
@@ -242,6 +275,15 @@ function banco_fields_names($table){
 	}
 }
 
+/**
+ * Retorna uma linha do resultado como array indexado.
+ *
+ * @global array $_BANCO Configurações de conexão do banco.
+ * 
+ * @param mysqli_result $result O resultado da query.
+ * 
+ * @return array|null Array com os valores da linha ou NULL se não houver mais linhas.
+ */
 function banco_row($result){
 	global $_BANCO;
 	
@@ -249,6 +291,15 @@ function banco_row($result){
 		return mysqli_fetch_row($result);
 }
 
+/**
+ * Retorna uma linha do resultado como array associativo e indexado.
+ *
+ * @global array $_BANCO Configurações de conexão do banco.
+ * 
+ * @param mysqli_result $result O resultado da query.
+ * 
+ * @return array|null Array com os valores da linha ou NULL se não houver mais linhas.
+ */
 function banco_row_array($result){
 	global $_BANCO;
 	
@@ -256,6 +307,15 @@ function banco_row_array($result){
 		return mysqli_fetch_array($result);
 }
 
+/**
+ * Retorna a próxima linha como array associativo.
+ *
+ * @global array $_BANCO Configurações de conexão do banco.
+ * 
+ * @param mysqli_result $result O resultado da query.
+ * 
+ * @return array|null Array associativo com os valores da linha ou NULL.
+ */
 function banco_fetch_assoc($result){
 	global $_BANCO;
 	// Retorna próxima linha como array associativo ou null.
@@ -265,9 +325,17 @@ function banco_fetch_assoc($result){
 	return null;
 }
 
+/**
+ * Executa uma query SQL e retorna todos os resultados.
+ *
+ * @param string $sql A query SQL a ser executada.
+ * 
+ * @return array|null Array com todas as linhas do resultado ou NULL se não houver resultados.
+ */
 function banco_sql($sql){
 	$res = banco_query($sql);
 	
+	// Processa todos os resultados se houver linhas
 	if(banco_num_rows($res))
 	{
 		$max = banco_num_rows($res);
@@ -281,10 +349,23 @@ function banco_sql($sql){
 		return NULL;
 }
 
+/**
+ * Executa uma query SQL e retorna resultados com nomes de campos.
+ *
+ * Similar a banco_sql, mas processa os resultados para retornar arrays
+ * associativos com os nomes dos campos especificados.
+ *
+ * @param string $sql A query SQL a ser executada.
+ * @param string $campos Lista de campos separados por vírgula ou '*' para todos.
+ * 
+ * @return array|null Array de arrays associativos ou NULL se não houver resultados.
+ */
 function banco_sql_names($sql,$campos){
 	$res = banco_query($sql);
 	
+	// Processa resultados com nomes de campos
 	if(banco_num_rows($res)){
+		// Determina os nomes dos campos
 		if($campos != '*'){
 			$campos_name = explode(',',$campos);
 		} else {
@@ -295,12 +376,14 @@ function banco_sql_names($sql,$campos){
 			}
 		}
 		
+		// Processa cada linha do resultado
 		$max = banco_num_rows($res);
 		
 		for($i=0;$i<$max;$i++){
 			$rows_aux = banco_row_array($res);
 			$count=0;
 			
+			// Monta array associativo para cada campo
 			foreach($campos_name as $campo_name){
 				$rows_out[$campo_name] = ( !is_numeric($rows_aux[$count]) ? banco_smartstripslashes($rows_aux[$count]) : $rows_aux[$count]);
 				$count++;
@@ -314,44 +397,43 @@ function banco_sql_names($sql,$campos){
 		return NULL;
 }
 
+/**
+ * Seleciona dados do banco de dados de forma estruturada.
+ *
+ * Função principal para seleção de dados que aceita parâmetros em array,
+ * monta a query SQL automaticamente e retorna resultados formatados.
+ * Suporta seleção de campos específicos, condições WHERE e retorno único.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['campos'] Lista com todos os campos a serem selecionados (obrigatório).
+ * @param string $params['tabela'] Nome da tabela do banco (obrigatório).
+ * @param string $params['extra'] Valores extras (WHERE, ORDER BY, LIMIT, etc.) (opcional).
+ * @param bool $params['unico'] Se true, retorna array unidimensional ao invés de bidimensional (opcional).
+ * 
+ * @return array|null Array com os resultados ou NULL se não houver dados.
+ */
 function banco_select($params = false){
-	/**********
-		Descrição: selecionar dados do banco.
-	**********/
-	
+	// Extrai parâmetros do array
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// campos - Array - Obrigatório - Lista com todos os campos que deve ser selecionado no banco.
-	// tabela - String - Obrigatório - Nome da tabela do banco.
-	// extra - String - Opcional - Valores extras a serem incluídos no final do SQL da consulta.
-	// unico - Bool - Opcional - Retornar array unidimensional como resultado.
-	
-	// ===== 
-	
+	// Valida parâmetros obrigatórios
 	if(isset($campos) && isset($tabela)){
 		// ===== Montar os campos com separação em vírgula.
-		
 		$camposVirgulas = ($campos == '*' ? $campos : banco_campos_virgulas($campos));
 		
-		// ===== Se houver extra, montar SQL com este valor, senão sem.
-		
+		// ===== Montar SQL com ou sem condições extras
 		if(isset($extra)){
 			$sql = "SELECT " . $camposVirgulas . " FROM " . $tabela . " " . $extra;
 		} else {
 			$sql = "SELECT " . $camposVirgulas . " FROM " . $tabela;
 		}
 		
-		// ===== Fazer a consulta no banco de dados.
-		
+		// ===== Executar a query no banco de dados
 		$res = banco_query($sql);
 		
-		// ===== Caso exista resultados, montar o array de retorno.
-		
+		// ===== Processar resultados se existirem
 		if(banco_num_rows($res)){
-			// ===== lista com todos os nomes dos campos.
-			
+			// ===== Obter lista com todos os nomes dos campos
 			if($camposVirgulas != '*'){
 				$campos_name = explode(',',$camposVirgulas);
 			} else {
@@ -362,19 +444,20 @@ function banco_select($params = false){
 				}
 			}
 			
-			// ===== Montar e retornar todos os resultados.
-			
+			// ===== Processar e retornar todos os resultados
 			$max = banco_num_rows($res);
 			
 			for($i=0;$i<$max;$i++){
 				$rows_aux = banco_row_array($res);
 				$count = 0;
 				
+				// Montar array associativo com nomes dos campos
 				foreach($campos_name as $campo_name){
 					$rows_out[$campo_name] = $rows_aux[$count];
 					$count++;
 				}
 				
+				// Retorna único registro se solicitado
 				if(!isset($unico)){
 					$rows[] = $rows_out;
 				} else {
@@ -389,7 +472,20 @@ function banco_select($params = false){
 	return NULL;
 }
 
+/**
+ * Seleciona dados do banco retornando arrays associativos com stripslashes.
+ *
+ * Função legada para seleção de dados. Similar a banco_select mas
+ * aplica banco_smartstripslashes aos valores não-numéricos.
+ *
+ * @param string $campos Lista de campos separados por vírgula ou '*'.
+ * @param string $tabela Nome da tabela.
+ * @param string $extra Condições extras da query (WHERE, ORDER BY, etc.).
+ * 
+ * @return array|null Array com os resultados ou NULL se não houver dados.
+ */
 function banco_select_name($campos,$tabela,$extra){
+	// Monta a query SQL
 	if($extra)
 		$sql = "SELECT " . $campos . " FROM " . $tabela . " " . $extra;
 	else
@@ -397,7 +493,9 @@ function banco_select_name($campos,$tabela,$extra){
 		
 	$res = banco_query($sql);
 	
+	// Processa resultados se existirem
 	if(banco_num_rows($res)){
+		// Determina nomes dos campos
 		if($campos != '*'){
 			$campos_name = explode(',',$campos);
 		} else {
@@ -408,6 +506,7 @@ function banco_select_name($campos,$tabela,$extra){
 			}
 		}
 		
+		// Processa cada linha aplicando stripslashes
 		$max = banco_num_rows($res);
 		
 		for($i=0;$i<$max;$i++){
@@ -415,6 +514,7 @@ function banco_select_name($campos,$tabela,$extra){
 			$count=0;
 			
 			foreach($campos_name as $campo_name){
+				// Aplica stripslashes apenas para valores não-numéricos
 				$rows_out[$campo_name] = ( !is_numeric($rows_aux[$count]) ? banco_smartstripslashes($rows_aux[$count]) : $rows_aux[$count]);
 				$count++;
 			}
@@ -427,9 +527,24 @@ function banco_select_name($campos,$tabela,$extra){
 		return NULL;
 }
 
+/**
+ * Seleciona um único registro para edição.
+ *
+ * Similar a banco_select_name mas retorna apenas o primeiro registro
+ * e define uma flag global indicando se houve resultado.
+ *
+ * @global array $_GESTOR Sistema global onde $_GESTOR['banco-resultado'] é definido.
+ * 
+ * @param string $campos Lista de campos separados por vírgula ou '*'.
+ * @param string $tabela Nome da tabela.
+ * @param string $extra Condições extras da query (WHERE, ORDER BY, etc.).
+ * 
+ * @return array|null Array associativo com o registro ou NULL se não houver dados.
+ */
 function banco_select_editar($campos,$tabela,$extra){
 	global $_GESTOR;
 	
+	// Monta a query SQL
 	if($extra)
 		$sql = "SELECT " . $campos . " FROM " . $tabela . " " . $extra;
 	else
@@ -437,7 +552,9 @@ function banco_select_editar($campos,$tabela,$extra){
 	
 	$res = banco_query($sql);
 	
+	// Processa apenas o primeiro registro
 	if(banco_num_rows($res)){
+		// Determina nomes dos campos
 		if($campos != '*'){
 			$campos_name = explode(',',$campos);
 		} else {
@@ -448,6 +565,7 @@ function banco_select_editar($campos,$tabela,$extra){
 			}
 		}
 		
+		// Processa primeira linha
 		$rows_aux = banco_row_array($res);
 		$count=0;
 		
@@ -461,10 +579,12 @@ function banco_select_editar($campos,$tabela,$extra){
 		
 		$rows_out = (isset($rows_out) ? $rows_out : null);
 		
+		// Define flag de sucesso
 		$_GESTOR['banco-resultado'] = true;
 		
 		return $rows_out;
 	} else {
+		// Define flag de falha
 		$_GESTOR['banco-resultado'] = false;
 		
 		return NULL;
