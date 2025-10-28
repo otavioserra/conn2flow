@@ -1,21 +1,55 @@
 <?php
+/**
+ * Biblioteca de operações com banco de dados.
+ *
+ * Fornece funções para manipulação de dados no banco de dados MySQL
+ * usando MySQLi, incluindo operações de SELECT, INSERT, UPDATE e DELETE,
+ * além de utilitários para escape de dados e gerenciamento de conexões.
+ *
+ * @package Conn2Flow
+ * @subpackage Bibliotecas
+ * @version 1.2.0
+ */
 
+// Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-banco']							=	Array(
 	'versao' => '1.2.0',
 );
 
+/**
+ * Escapa um valor para uso seguro em queries SQL.
+ *
+ * Utiliza mysqli_real_escape_string para prevenir SQL injection,
+ * garantindo que valores inseridos em queries sejam seguros.
+ *
+ * @param string $field O valor a ser escapado.
+ * 
+ * @return string O valor escapado e seguro para uso em queries SQL.
+ */
 function banco_escape_field($field){
 	global $_BANCO;
 	
+	// Verifica se precisa conectar ao banco
 	$connect_db = false;
 	if(!isset($_BANCO['conexao']))$connect_db = true;
 	if($connect_db)banco_conectar();
 	
+	// Escapa o valor usando mysqli
 	if($_BANCO['tipo'] == "mysqli"){
 		return mysqli_real_escape_string($_BANCO['conexao'],$field);
 	}
 }
 
+/**
+ * Remove barras de escape de uma string de forma inteligente.
+ *
+ * Esta função retorna a string convertida para string sem processar
+ * a remoção de barras invertidas, apenas garantindo que seja uma string.
+ *
+ * @param mixed $str O valor a ser processado.
+ * 
+ * @return string A string processada.
+ */
 function banco_smartstripslashes($str){
 	/* $cd1 = substr_count($str, "\"");
 	$cd2 = substr_count($str, "\\\"");
@@ -32,9 +66,19 @@ function banco_smartstripslashes($str){
 	return (string)$str;
 }
 
+/**
+ * Gera informações de debug do backtrace para erros de banco.
+ *
+ * Retorna uma string HTML formatada com informações sobre a pilha
+ * de chamadas, útil para debugging de erros de banco de dados.
+ *
+ * @return string HTML formatado com informações de debug.
+ */
 function banco_erro_debug(){
+	// Obtém a pilha de chamadas
 	$bt = debug_backtrace();
 	
+	// Monta o HTML de retorno com informações de debug
 	if($bt){
 		$ret = '<br><br><b>Debug:</b><br>';
 		foreach($bt as $in){
@@ -45,58 +89,123 @@ function banco_erro_debug(){
 	return $ret;
 }
 
+/**
+ * Estabelece conexão com o banco de dados MySQL.
+ *
+ * Cria uma nova conexão MySQLi usando as credenciais armazenadas
+ * na variável global $_BANCO. Configura o charset para UTF-8 e
+ * habilita relatórios de erro estritos.
+ *
+ * @global array $_BANCO Configurações de conexão do banco.
+ * 
+ * @return void
+ */
 function banco_conectar(){
 	global $_BANCO;
 	
+	// Configura conexão MySQLi
  	if($_BANCO['tipo'] == "mysqli"){
+		// Habilita relatórios de erro estritos
 		mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+		
+		// Estabelece a conexão com o banco
  		$_BANCO['conexao'] = mysqli_connect($_BANCO['host'],$_BANCO['usuario'],$_BANCO['senha'],$_BANCO['nome']) or die("<p><b>ERRO BANCO:</b> Conexão com o banco de dados não realizada!</p><p><b>Erro MySQL:</b> ".mysqli_error($_BANCO['conexao']).'</p>'.banco_erro_debug());
+		
+		// Define charset UTF-8 para a conexão
 		mysqli_set_charset($_BANCO['conexao'], "utf8");
 	}
 }
 
+/**
+ * Verifica se a conexão com o banco está ativa.
+ *
+ * Usa mysqli_ping para testar a conexão. Se a conexão estiver
+ * inativa, incrementa o contador de reconexões.
+ *
+ * @global array $_BANCO Configurações de conexão do banco.
+ * 
+ * @return void
+ */
 function banco_ping(){
 	global $_BANCO;
 	
  	if($_BANCO['tipo'] == "mysqli"){
+		// Testa a conexão e incrementa contador se inativa
 		if(!mysqli_ping($_BANCO['conexao'])){
 			$_BANCO['RECONECT']++;
 		}
 	}
 }
 
+/**
+ * Fecha a conexão ativa com o banco de dados.
+ *
+ * Encerra a conexão MySQLi ativa e limpa a variável de conexão
+ * da variável global $_BANCO.
+ *
+ * @global array $_BANCO Configurações de conexão do banco.
+ * 
+ * @return void
+ */
 function banco_fechar_conexao(){
 	global $_BANCO;
 	
+	// Fecha a conexão MySQLi
 	if($_BANCO['tipo'] == "mysqli")
  		$_BANCO['conexao'] = mysqli_close($_BANCO['conexao']) or die("<p><b>ERRO BANCO:</b> Impossível fechar conexão com o banco de dados!</p><p><b>Erro MySQL:</b> ".mysqli_error($_BANCO['conexao']).'</p>'.banco_erro_debug());
 	
+	// Remove a variável de conexão
 	unset($_BANCO['conexao']);
 }
 
+/**
+ * Executa uma query SQL no banco de dados.
+ *
+ * Executa uma query SQL usando MySQLi. Conecta automaticamente ao
+ * banco se não houver conexão ativa. Trata exceções e registra erros.
+ *
+ * @global array $_BANCO Configurações de conexão do banco.
+ * 
+ * @param string $query A query SQL a ser executada.
+ * 
+ * @return mysqli_result|bool O resultado da query ou false em caso de erro.
+ */
 function banco_query($query){
     global $_BANCO;
 
+    // Conecta ao banco se necessário
     $connect_db = false;
     if(!isset($_BANCO['conexao']))$connect_db = true;
     if($connect_db)banco_conectar();
 
+    // Executa a query com tratamento de exceções
     if($_BANCO['tipo'] == "mysqli"){
         try {
             $result = mysqli_query($_BANCO['conexao'],$query);
             return $result;
         } catch (mysqli_sql_exception $e) {
+            // Registra o erro no log
             error_log("ERRO BANCO: Consulta Inválida!\nConsulta: $query\nErro Mysql: " . $e->getMessage());
             return false;
         }
     }
 }
 
+/**
+ * Retorna o número de linhas de um resultado de query.
+ *
+ * @global array $_BANCO Configurações de conexão do banco.
+ * 
+ * @param mysqli_result $result O resultado da query.
+ * 
+ * @return int O número de linhas no resultado.
+ */
 function banco_num_rows($result){
 	global $_BANCO;
 	
 	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_num_rows($result);
+}
 }
 
 function banco_num_fields($result){
