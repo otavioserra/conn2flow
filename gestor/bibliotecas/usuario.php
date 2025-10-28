@@ -1,7 +1,19 @@
 <?php
+/**
+ * Biblioteca de gerenciamento de usuários e autenticação.
+ *
+ * Fornece funções para geração de chaves OpenSSL, tokens JWT,
+ * autorização de usuários e gerenciamento de sessões. Suporta
+ * autenticação via cookies, tokens provisórios e dados de hosts.
+ *
+ * @package Conn2Flow
+ * @subpackage Bibliotecas
+ * @version 1.1.0
+ */
 
 global $_GESTOR;
 
+// Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-usuario']							=	Array(
 	'versao' => '1.1.0',
 );
@@ -10,36 +22,47 @@ $_GESTOR['biblioteca-usuario']							=	Array(
 
 // ===== Funções principais
 
+/**
+ * Gera par de chaves pública/privada OpenSSL.
+ *
+ * Cria chaves criptográficas usando algoritmos OpenSSL para
+ * assinatura e validação de tokens JWT.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['tipo'] Tipo de chave: 'RSA' (obrigatório).
+ * @param string $params['senha'] Senha para proteger chave privada (opcional).
+ * 
+ * @return array|false Array com 'publica' e 'privada' ou false.
+ */
 function usuario_openssl_gerar_chaves($params = false){
 	
+	// Extrai parâmetros
 	if($params)foreach($params as $var => $val)$$var = $val;
-	
-	// ===== Parâmetros
-	
-	// tipo - String - Obrigatório - Tipo da chave openssl que será gerada usando o algoritmo correto.
-	// senha - String - Opcional - Senha para encriptar a chave privada.
-	
-	// ===== 
 	
 	$chaves = false;
 	
+	// Gera chaves conforme tipo especificado
 	if(isset($tipo)){
 		switch($tipo){
 			case 'RSA':
+				// Configuração RSA com SHA-512 e 2048 bits
 				$config = array(
 					"digest_alg" => "sha512",
 					"private_key_bits" => 2048,
 					"private_key_type" => OPENSSL_KEYTYPE_RSA,
 				);
 				
+				// Gera novo par de chaves
 				$res = openssl_pkey_new($config);
 				
+				// Exporta chave privada com ou sem senha
 				if(isset($senha)){
 					openssl_pkey_export($res, $chavePrivada,$senha);
 				} else {
 					openssl_pkey_export($res, $chavePrivada);
 				}
 				
+				// Extrai chave pública
 				$chavePrivadaDetalhes = openssl_pkey_get_details($res);
 				$chavePublica = $chavePrivadaDetalhes["key"];
 				
@@ -54,23 +77,30 @@ function usuario_openssl_gerar_chaves($params = false){
 	return $chaves;
 }
 
+/**
+ * Gera token JWT assinado com RSA.
+ *
+ * Cria JSON Web Token com header, payload e assinatura RSA.
+ * Suporta payloads grandes dividindo em chunks de 245 caracteres.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['host'] Host emissor do token (obrigatório).
+ * @param int $params['expiration'] Unix timestamp de expiração (obrigatório).
+ * @param string $params['pubID'] ID público do token (obrigatório).
+ * @param string $params['chavePublica'] Chave pública RSA para assinar (obrigatório).
+ * 
+ * @return string|false Token JWT ou false se inválido.
+ */
 function usuario_gerar_jwt($params = false){
-	$cryptMaxCharsValue = 245; // There are char limitations on openssl_private_encrypt() and in the url below are explained how define this value based on openssl key format: https://www.php.net/manual/en/function.openssl-private-encrypt.php#119810
+	// Limite de caracteres para openssl_private_encrypt
+	$cryptMaxCharsValue = 245;
 	
+	// Extrai parâmetros
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// host - String - Obrigatório - Host de acesso do JWT.
-	// expiration - Int - Obrigatório - Expiração do JWT.
-	// pubID - String - Obrigatório - ID público do token para referência.
-	// chavePublica - String - Obrigatório - Chave pública para assinar o JWT.
-	
-	// ===== 
-	
+	// Valida parâmetros obrigatórios
 	if(isset($host) && isset($expiration) && isset($pubID) && isset($chavePublica)){
-		// ===== Header
-
+		// ===== Monta header do JWT
 		$header = [
 		   'alg' => 'RSA',
 		   'typ' => 'JWT'
@@ -79,27 +109,25 @@ function usuario_gerar_jwt($params = false){
 		$header = json_encode($header);
 		$header = base64_encode($header);
 
-		// ===== Payload
-
+		// ===== Monta payload do JWT
 		$payload = [
-			'iss' => $host, // The issuer of the token
-			'exp' => $expiration, // This will define the expiration in NumericDate value. The expiration MUST be after the current date/time.
-			'sub' => $pubID, // ID público do totken
+			'iss' => $host, // Emissor do token
+			'exp' => $expiration, // Expiração em NumericDate
+			'sub' => $pubID, // ID público do token
 		];
 
 		$payload = json_encode($payload);
 		$payload = base64_encode($payload);
 
-		// ===== Unir header com payload para gerar assinatura
-
+		// ===== Une header com payload para assinatura
 		$rawDataSource = $header.".".$payload;
 		
-		// ===== Assinar usando RSA SSL
-		
+		// ===== Assina usando RSA SSL dividindo em chunks
 		$resPublicKey = openssl_get_publickey($chavePublica);
 
 		$partialData = '';
 		$encodedData = '';
+		// Divide em chunks de 245 caracteres
 		$split = str_split($rawDataSource , $cryptMaxCharsValue);
 		foreach($split as $part){
 			openssl_public_encrypt($part, $partialData, $resPublicKey);
@@ -110,8 +138,7 @@ function usuario_gerar_jwt($params = false){
 		
 		$signature = $encodedData;
 		
-		// ===== Finalizar e devolver o JWT token
-
+		// ===== Retorna JWT completo
 		$JWTToken = $header.".".$payload.".".$signature;
 		
 		return $JWTToken;
