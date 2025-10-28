@@ -89,36 +89,41 @@ function log_debugar($params = false){
 	}
 }
 
+/**
+ * Registra log de alterações realizadas por controladores.
+ *
+ * Cria registros de histórico vinculados a controladores específicos,
+ * incluindo versionamento automático e rastreamento de alterações.
+ * Utilizado principalmente para auditoria de operações de controladores.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param int $params['id_hosts'] ID do host (obrigatório).
+ * @param string $params['controlador'] ID do controlador (obrigatório).
+ * @param int $params['id'] ID numérico do registro (obrigatório).
+ * @param array $params['alteracoes'] Conjunto de alterações (obrigatório).
+ * @param string $params['alteracoes'][]['alteracao'] ID da alteração (obrigatório).
+ * @param string $params['alteracoes'][]['alteracao_txt'] Texto da alteração (obrigatório).
+ * @param string $params['alteracoes'][]['modulo'] Módulo de origem (opcional).
+ * @param array $params['tabela'] Configuração da tabela (obrigatório).
+ * @param string $params['tabela']['nome'] Nome da tabela (obrigatório).
+ * @param string $params['tabela']['versao'] Campo de versão (obrigatório).
+ * @param string $params['tabela']['id_numerico'] Campo ID numérico (obrigatório).
+ * @param bool $params['sem_id'] Se true, não vincula ID ao histórico (opcional).
+ * @param int $params['versao'] Versão manual do registro (opcional).
+ * 
+ * @return void
+ */
 function log_controladores($params = false){
-	/**********
-		Descrição: log dos controladores.
-	**********/
-	
 	global $_GESTOR;
 
+	// Extrai parâmetros do array
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// id_hosts - Int - Obrigatório - Identificador do host que disparou o registro de histórico.
-	// controlador - String - Obrigatório - Identificador do controlador que disparou o registro de histórico.
-	// id - Int - Obrigatório - ID númerico do registro que será manualmente definido.
-	// alteracoes - Array - Obrigatório - Conjunto de dados relativos a alteração que foi feita num dados registro.
-		// alteracao - String - Obrigatório - Identificador da alteração. Sistema buscará o valor na linguagem: interface/id do campo.
-		// alteracao_txt - String - Obrigatório - Caso necessário completar uma alteração, este campo pode ser passado com o valor literal da alteração.
-		// modulo - String - Opcional - Caso necessário, incluir o módulo de onde veio a requisição.
-	// tabela - Array - Obrigatório - Tabela que será usada ao invés da tabela principal do módulo.
-		// nome - String - Obrigatório - nome da tabela do banco de dados.
-		// versao - String - Obrigatório - Campo versao da tabela do banco de dados.
-		// id_numerico - String - Obrigatório - identificador numérico dos dados da tabela.
-	// sem_id - Bool - Opcional - Caso definido, não vinculará nenhum ID ao histórico.
-		// versao - Int - Opcional - Definir manualmente a versão do registro.
-	
-	// =====
-	
+	// Valida parâmetros obrigatórios
 	if(isset($id_hosts) && isset($controlador) && isset($id) && isset($alteracoes) && isset($tabela)){
-		// ===== Pegar versão.
-		
+		// ===== Buscar versão do registro no banco de dados
 		if(!isset($sem_id)){
 			$resultado = banco_select_name
 			(
@@ -130,23 +135,30 @@ function log_controladores($params = false){
 				"WHERE ".$tabela['id_numerico']."='".$id."'"
 			);
 			
+			// Versão vem do banco
 			$versao_bd = $resultado[0][$tabela['versao']];
 		} else {
+			// Versão manual ou padrão
 			$versao_bd = (isset($versao) ? $versao : '1');
 		}
 		
-		// ===== Incluir histórico no banco de dados.
-		
+		// ===== Registrar cada alteração no histórico
 		foreach($alteracoes as $alteracao){
+			// Campos obrigatórios
 			banco_insert_name_campo('id_hosts',$id_hosts);
 			banco_insert_name_campo('controlador',$controlador);
 			banco_insert_name_campo('versao',$versao_bd);
+			
+			// Campos condicionais
 			if(!isset($sem_id)){ banco_insert_name_campo('id',$id); }
 			if(isset($alteracao['modulo'])){ banco_insert_name_campo('modulo',$alteracao['modulo']); }
 			if(isset($alteracao['alteracao'])){ banco_insert_name_campo('alteracao',$alteracao['alteracao']); }
 			if(isset($alteracao['alteracao_txt'])){ banco_insert_name_campo('alteracao_txt',$alteracao['alteracao_txt']); }
+			
+			// Timestamp da alteração
 			banco_insert_name_campo('data','NOW()',true);
 			
+			// Insere registro no histórico
 			banco_insert_name
 			(
 				banco_insert_name_campos(),
@@ -156,36 +168,41 @@ function log_controladores($params = false){
 	}
 }
 
+/**
+ * Registra log de alterações realizadas por usuários do sistema.
+ *
+ * Cria registros de histórico vinculados a usuários específicos do sistema,
+ * incluindo versionamento automático e rastreamento de alterações.
+ * Similar a log_controladores mas focado em ações de usuários.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param int $params['id_hosts'] ID do host (obrigatório).
+ * @param int $params['id_usuarios'] ID do usuário do sistema (obrigatório).
+ * @param int $params['id'] ID numérico do registro (obrigatório).
+ * @param array $params['alteracoes'] Conjunto de alterações (obrigatório).
+ * @param string $params['alteracoes'][]['alteracao'] ID da alteração (obrigatório).
+ * @param string $params['alteracoes'][]['alteracao_txt'] Texto da alteração (obrigatório).
+ * @param string $params['alteracoes'][]['modulo'] Módulo de origem (opcional).
+ * @param array $params['tabela'] Configuração da tabela (obrigatório).
+ * @param string $params['tabela']['nome'] Nome da tabela (obrigatório).
+ * @param string $params['tabela']['versao'] Campo de versão (obrigatório).
+ * @param string $params['tabela']['id_numerico'] Campo ID numérico (obrigatório).
+ * @param bool $params['sem_id'] Se true, não vincula ID ao histórico (opcional).
+ * @param int $params['versao'] Versão manual do registro (opcional).
+ * 
+ * @return void
+ */
 function log_usuarios($params = false){
-	/**********
-		Descrição: log dos usuários.
-	**********/
-	
 	global $_GESTOR;
 
+	// Extrai parâmetros do array
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// id_hosts - Int - Obrigatório - Identificador do host que disparou o registro de histórico.
-	// id_usuarios - Int - Obrigatório - Identificador do usuário que disparou o registro de histórico.
-	// id - Int - Obrigatório - ID númerico do registro que será manualmente definido.
-	// alteracoes - Array - Obrigatório - Conjunto de dados relativos a alteração que foi feita num dados registro.
-		// alteracao - String - Obrigatório - Identificador da alteração. Sistema buscará o valor na linguagem: interface/id do campo.
-		// alteracao_txt - String - Obrigatório - Caso necessário completar uma alteração, este campo pode ser passado com o valor literal da alteração.
-		// modulo - String - Opcional - Caso necessário, incluir o módulo de onde veio a requisição.
-	// tabela - Array - Obrigatório - Tabela que será usada ao invés da tabela principal do módulo.
-		// nome - String - Obrigatório - nome da tabela do banco de dados.
-		// versao - String - Obrigatório - Campo versao da tabela do banco de dados.
-		// id_numerico - String - Obrigatório - identificador numérico dos dados da tabela.
-	// sem_id - Bool - Opcional - Caso definido, não vinculará nenhum ID ao histórico.
-		// versao - Int - Opcional - Definir manualmente a versão do registro.
-	
-	// =====
-	
+	// Valida parâmetros obrigatórios
 	if(isset($id_hosts) && isset($id_usuarios) && isset($id) && isset($alteracoes) && isset($tabela)){
-		// ===== Pegar versão.
-		
+		// ===== Buscar versão do registro no banco de dados
 		if(!isset($sem_id)){
 			$resultado = banco_select_name
 			(
@@ -197,23 +214,30 @@ function log_usuarios($params = false){
 				"WHERE ".$tabela['id_numerico']."='".$id."'"
 			);
 			
+			// Versão vem do banco
 			$versao_bd = $resultado[0][$tabela['versao']];
 		} else {
+			// Versão manual ou padrão
 			$versao_bd = (isset($versao) ? $versao : '1');
 		}
 		
-		// ===== Incluir histórico no banco de dados.
-		
+		// ===== Registrar cada alteração no histórico
 		foreach($alteracoes as $alteracao){
+			// Campos obrigatórios
 			banco_insert_name_campo('id_hosts',$id_hosts);
 			banco_insert_name_campo('id_usuarios',$id_usuarios);
 			banco_insert_name_campo('versao',$versao_bd);
+			
+			// Campos condicionais
 			if(!isset($sem_id)){ banco_insert_name_campo('id',$id); }
 			if(isset($alteracao['modulo'])){ banco_insert_name_campo('modulo',$alteracao['modulo']); }
 			if(isset($alteracao['alteracao'])){ banco_insert_name_campo('alteracao',$alteracao['alteracao']); }
 			if(isset($alteracao['alteracao_txt'])){ banco_insert_name_campo('alteracao_txt',$alteracao['alteracao_txt']); }
+			
+			// Timestamp da alteração
 			banco_insert_name_campo('data','NOW()',true);
 			
+			// Insere registro no histórico
 			banco_insert_name
 			(
 				banco_insert_name_campos(),
@@ -223,36 +247,41 @@ function log_usuarios($params = false){
 	}
 }
 
+/**
+ * Registra log de alterações realizadas por usuários de hosts.
+ *
+ * Cria registros de histórico vinculados a usuários específicos de hosts,
+ * incluindo versionamento automático e rastreamento de alterações.
+ * Usado para rastrear ações de usuários vinculados a hosts específicos.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param int $params['id_hosts'] ID do host (obrigatório).
+ * @param int $params['id_hosts_usuarios'] ID do usuário do host (obrigatório).
+ * @param int $params['id'] ID numérico do registro (obrigatório).
+ * @param array $params['alteracoes'] Conjunto de alterações (obrigatório).
+ * @param string $params['alteracoes'][]['alteracao'] ID da alteração (obrigatório).
+ * @param string $params['alteracoes'][]['alteracao_txt'] Texto da alteração (obrigatório).
+ * @param string $params['alteracoes'][]['modulo'] Módulo de origem (opcional).
+ * @param array $params['tabela'] Configuração da tabela (obrigatório).
+ * @param string $params['tabela']['nome'] Nome da tabela (obrigatório).
+ * @param string $params['tabela']['versao'] Campo de versão (obrigatório).
+ * @param string $params['tabela']['id_numerico'] Campo ID numérico (obrigatório).
+ * @param bool $params['sem_id'] Se true, não vincula ID ao histórico (opcional).
+ * @param int $params['versao'] Versão manual do registro (opcional).
+ * 
+ * @return void
+ */
 function log_hosts_usuarios($params = false){
-	/**********
-		Descrição: log dos hosts usuários.
-	**********/
-	
 	global $_GESTOR;
 
+	// Extrai parâmetros do array
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// id_hosts - Int - Obrigatório - Identificador do host que disparou o registro de histórico.
-	// id_hosts_usuarios - Int - Obrigatório - Identificador do usuário do host que disparou o registro de histórico.
-	// id - Int - Obrigatório - ID númerico do registro que será manualmente definido.
-	// alteracoes - Array - Obrigatório - Conjunto de dados relativos a alteração que foi feita num dados registro.
-		// alteracao - String - Obrigatório - Identificador da alteração. Sistema buscará o valor na linguagem: interface/id do campo.
-		// alteracao_txt - String - Obrigatório - Caso necessário completar uma alteração, este campo pode ser passado com o valor literal da alteração.
-		// modulo - String - Opcional - Caso necessário, incluir o módulo de onde veio a requisição.
-	// tabela - Array - Obrigatório - Tabela que será usada ao invés da tabela principal do módulo.
-		// nome - String - Obrigatório - nome da tabela do banco de dados.
-		// versao - String - Obrigatório - Campo versao da tabela do banco de dados.
-		// id_numerico - String - Obrigatório - identificador numérico dos dados da tabela.
-	// sem_id - Bool - Opcional - Caso definido, não vinculará nenhum ID ao histórico.
-		// versao - Int - Opcional - Definir manualmente a versão do registro.
-	
-	// =====
-	
+	// Valida parâmetros obrigatórios
 	if(isset($id_hosts) && isset($id_hosts_usuarios) && isset($id) && isset($alteracoes) && isset($tabela)){
-		// ===== Pegar versão.
-		
+		// ===== Buscar versão do registro no banco de dados
 		if(!isset($sem_id)){
 			$resultado = banco_select_name
 			(
@@ -264,23 +293,30 @@ function log_hosts_usuarios($params = false){
 				"WHERE ".$tabela['id_numerico']."='".$id."'"
 			);
 			
+			// Versão vem do banco
 			$versao_bd = $resultado[0][$tabela['versao']];
 		} else {
+			// Versão manual ou padrão
 			$versao_bd = (isset($versao) ? $versao : '1');
 		}
 		
-		// ===== Incluir histórico no banco de dados.
-		
+		// ===== Registrar cada alteração no histórico
 		foreach($alteracoes as $alteracao){
+			// Campos obrigatórios
 			banco_insert_name_campo('id_hosts',$id_hosts);
 			banco_insert_name_campo('id_hosts_usuarios',$id_hosts_usuarios);
 			banco_insert_name_campo('versao',$versao_bd);
+			
+			// Campos condicionais
 			if(!isset($sem_id)){ banco_insert_name_campo('id',$id); }
 			if(isset($alteracao['modulo'])){ banco_insert_name_campo('modulo',$alteracao['modulo']); }
 			if(isset($alteracao['alteracao'])){ banco_insert_name_campo('alteracao',$alteracao['alteracao']); }
 			if(isset($alteracao['alteracao_txt'])){ banco_insert_name_campo('alteracao_txt',$alteracao['alteracao_txt']); }
+			
+			// Timestamp da alteração
 			banco_insert_name_campo('data','NOW()',true);
 			
+			// Insere registro no histórico
 			banco_insert_name
 			(
 				banco_insert_name_campos(),

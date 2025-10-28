@@ -590,9 +590,25 @@ function banco_select_editar($campos,$tabela,$extra){
 	}
 }
 
+/**
+ * Seleciona e armazena campos anteriores para comparação.
+ *
+ * Função utilitária para guardar estado anterior de registros antes de
+ * atualizações. Armazena os valores em $_GESTOR['banco-antes'] para
+ * posterior comparação ou auditoria.
+ *
+ * @global array $_GESTOR Sistema global onde os dados anteriores são armazenados.
+ * 
+ * @param string $campos Lista de campos separados por vírgula ou '*'.
+ * @param string $tabela Nome da tabela.
+ * @param string $extra Condições extras da query (WHERE, etc.).
+ * 
+ * @return bool True se encontrou e armazenou dados, false caso contrário.
+ */
 function banco_select_campos_antes_iniciar($campos,$tabela,$extra){
 	global $_GESTOR;
 	
+	// Monta query SQL
 	if($extra)
 		$sql = "SELECT " . $campos . " FROM " . $tabela . " " . $extra;
 	else
@@ -600,7 +616,9 @@ function banco_select_campos_antes_iniciar($campos,$tabela,$extra){
 	
 	$res = banco_query($sql);
 	
+	// Processa resultado se houver
 	if(banco_num_rows($res)){
+		// Determina nomes dos campos
 		if($campos != '*'){
 			$campos_name = explode(',',$campos);
 		} else {
@@ -611,9 +629,11 @@ function banco_select_campos_antes_iniciar($campos,$tabela,$extra){
 			}
 		}
 		
+		// Processa primeira linha
 		$rows_aux = banco_row_array($res);
 		$count=0;
 		
+		// Monta array associativo
 		foreach($campos_name as $campo_name){
 			if(isset($rows_aux[$count])){
 				$rows_out[$campo_name] = (!is_numeric($rows_aux[$count]) ? banco_smartstripslashes($rows_aux[$count]) : $rows_aux[$count]);
@@ -624,6 +644,7 @@ function banco_select_campos_antes_iniciar($campos,$tabela,$extra){
 		
 		$rows_out = (isset($rows_out) ? $rows_out : null);
 		
+		// Armazena em global para acesso posterior
 		$_GESTOR['banco-antes'] = $rows_out;
 		
 		return true;
@@ -632,9 +653,22 @@ function banco_select_campos_antes_iniciar($campos,$tabela,$extra){
 	}
 }
 
+/**
+ * Retorna valor anterior de um campo específico.
+ *
+ * Recupera valor de campo armazenado por banco_select_campos_antes_iniciar.
+ * Útil para comparar valores antes e depois de atualizações.
+ *
+ * @global array $_GESTOR Sistema global onde os dados anteriores estão armazenados.
+ * 
+ * @param string $campo Nome do campo a recuperar.
+ * 
+ * @return mixed|null Valor do campo ou NULL se não encontrado.
+ */
 function banco_select_campos_antes($campo){
 	global $_GESTOR;
 	
+	// Verifica se há dados anteriores armazenados
 	if(isset($_GESTOR['banco-antes'])){
 		if(isset($_GESTOR['banco-antes'][$campo])){
 			return $_GESTOR['banco-antes'][$campo];
@@ -646,49 +680,86 @@ function banco_select_campos_antes($campo){
 	}
 }
 
+/**
+ * Executa query UPDATE no banco de dados.
+ *
+ * Função simples para executar atualizações SQL.
+ *
+ * @param string $campos Lista de campos e valores no formato "campo='valor'".
+ * @param string $tabela Nome da tabela.
+ * @param string $extra Condições extras (WHERE, etc.).
+ * 
+ * @return void
+ */
 function banco_update($campos,$tabela,$extra){
+	// Monta SQL UPDATE
 	if($extra)
 		$sql = "UPDATE " . $tabela . " SET " . $campos . " " . $extra;
 	else
 		$sql = "UPDATE " . $tabela . " SET " . $campos;
 	
+	// Executa a query
 	$res = banco_query($sql);
 }
 
+/**
+ * Adiciona campo para atualização em lote.
+ *
+ * Acumula campos para posterior execução em batch via banco_update_executar.
+ * Permite construir updates complexos de forma incremental.
+ *
+ * @global array $_BANCO Armazena campos acumulados em $_BANCO['update-campos'].
+ * 
+ * @param string $nome Nome do campo.
+ * @param string $valor Valor a ser atribuído.
+ * @param bool $sem_aspas_simples Se true, não envolve valor em aspas (padrão: false).
+ * @param bool $escape_field Se true, escapa o valor (padrão: true).
+ * 
+ * @return void
+ */
 function banco_update_campo($nome,$valor,$sem_aspas_simples = false,$escape_field = true){
 	global $_BANCO;
 	
-	// ===== Criar campos caso não exista.
-	
+	// ===== Inicializa array se não existir
 	if(!isset($_BANCO['update-campos'])){
 		$_BANCO['update-campos'] = Array();
 	}
 	
-	// ===== Escapar campo.
-	
+	// ===== Escapa valor se solicitado
 	if($escape_field){
 		$valor = banco_escape_field($valor);
 	}
 	
-	// ===== Adicionar campo ao array.
-	
+	// ===== Adiciona campo ao array de updates
 	$_BANCO['update-campos'][] = $nome.($sem_aspas_simples ? "=" . $valor : "='" . $valor . "'");
 }
 
+/**
+ * Executa update em lote com campos acumulados.
+ *
+ * Executa UPDATE usando campos adicionados via banco_update_campo.
+ * Limpa o array de campos após execução.
+ *
+ * @global array $_BANCO Contém campos acumulados em $_BANCO['update-campos'].
+ * 
+ * @param string $tabela Nome da tabela.
+ * @param string $extra Condições extras como WHERE (padrão: '').
+ * 
+ * @return void
+ */
 function banco_update_executar($tabela,$extra = ''){
 	global $_BANCO;
 	
-	// ===== Pegar os campos.
-	
+	// ===== Recupera campos acumulados
 	if(isset($_BANCO['update-campos'])){
 		$campos = $_BANCO['update-campos'];
+		// Limpa array após pegar
 		unset($_BANCO['update-campos']);
 	} else {
 		$campos = Array();
 	}
 	
-	// ===== Executar a atualização.
-	
+	// ===== Monta SQL e executa atualização
 	$editar_sql = banco_campos_virgulas($campos);
 	
 	if($editar_sql){
@@ -701,16 +772,33 @@ function banco_update_executar($tabela,$extra = ''){
 	}
 }
 
+/**
+ * Atualiza múltiplos registros em massa usando CASE.
+ *
+ * Executa UPDATE em batch para múltiplos registros de forma eficiente
+ * usando cláusula CASE. Divide automaticamente em múltiplas queries se
+ * SQL ficar muito grande (>1MB).
+ *
+ * @param array $campos Array de arrays [id, valor] para atualizar.
+ * @param string $tabela Nome da tabela.
+ * @param string $campo_nome Nome do campo a ser atualizado.
+ * @param string $id_nome Nome do campo ID usado na cláusula CASE.
+ * 
+ * @return void
+ */
 function banco_update_varios($campos,$tabela,$campo_nome,$id_nome){
 	if($campos){
+		// ===== Inicia SQL com cláusula CASE
 		$sql = "UPDATE `".$tabela."` SET `".$campo_nome."` = CASE `".$id_nome."`\n";
 		$sql_fechar .= "ELSE `".$campo_nome."`\n";
 		$sql_fechar .= "END";
 		
+		// ===== Adiciona cada WHEN/THEN
 		foreach($campos as $campo){
 			$sql .= "WHEN '".$campo[0]."' THEN '".$campo[1]."'\n";
 			$flag = false;
 			
+			// Se SQL ficou muito grande (>1MB), executa e reinicia
 			if(strlen($sql)+strlen($sql_fechar) > 1000000){
 				$flag = true;
 				$res = banco_query($sql.$sql_fechar);
@@ -718,55 +806,105 @@ function banco_update_varios($campos,$tabela,$campo_nome,$id_nome){
 			}
 		}
 		
+		// Executa SQL final se não foi executado no loop
 		if(!$flag)
 			$res = banco_query($sql.$sql_fechar);
 	}
 }
 
+/**
+ * Insere registro com ID auto-incrementado.
+ *
+ * Função legada para INSERT simples. Adiciona '0' como primeiro valor
+ * para ID auto-increment.
+ *
+ * @param string $campos Valores separados por vírgula.
+ * @param string $tabela Nome da tabela.
+ * 
+ * @return void
+ */
 function banco_insert($campos,$tabela){
 	$sql = "INSERT INTO " . $tabela . " VALUES('0'," . $campos . ")";
 	$res = banco_query($sql);
 }
 
+/**
+ * Insere registro com nomes de campos especificados.
+ *
+ * Insere dados usando array de [nome, valor, sem_aspas] para cada campo.
+ * Permite controle preciso sobre quais campos inserir.
+ *
+ * @param array $dados Array de arrays [nome, valor, sem_aspas_simples].
+ * @param string $tabela Nome da tabela.
+ * 
+ * @return void
+ */
 function banco_insert_name($dados,$tabela){
 	$nomes = '';
 	$campos = '';
 
+	// ===== Monta strings de nomes e valores
 	foreach($dados as $dado){
 		if(isset($dado[1])){
+			// Define padrão para sem_aspas se não especificado
 			if(!isset($dado[2])){
 				$dado[2] = false;
 			}
 			
+			// Adiciona nome do campo
 			$nomes .= (strlen($nomes) > 0 ? ',' : '') . $dado[0];
+			// Adiciona valor com ou sem aspas
 			$campos .= (strlen($campos) > 0 ? ',' : '') . ( $dado[2] ? $dado[1] : "'" . $dado[1] . "'" );
 		}
 	}
 	
+	// Executa INSERT
 	$sql = "INSERT INTO " . $tabela . " (" . $nomes . ") VALUES (" . $campos . ")";
 	$res = banco_query($sql);
 }
 
+/**
+ * Adiciona campo para inserção em lote.
+ *
+ * Acumula campos para posterior execução via banco_insert_name.
+ * Permite construir inserts complexos incrementalmente.
+ *
+ * @global array $_BANCO Armazena campos em $_BANCO['insert-name-campos'].
+ * 
+ * @param string $nome Nome do campo.
+ * @param string $valor Valor do campo.
+ * @param bool $sem_aspas_simples Se true, não envolve em aspas (padrão: false).
+ * @param bool $escape_field Se true, escapa o valor (padrão: true).
+ * 
+ * @return void
+ */
 function banco_insert_name_campo($nome,$valor,$sem_aspas_simples = false,$escape_field = true){
 	global $_BANCO;
 	
-	// ===== Criar campos caso não exista.
-	
+	// ===== Inicializa array se não existir
 	if(!isset($_BANCO['insert-name-campos'])){
 		$_BANCO['insert-name-campos'] = Array();
 	}
 	
-	// ===== Escapar campo.
-	
+	// ===== Escapa valor se solicitado
 	if($escape_field){
 		$valor = banco_escape_field($valor);
 	}
 	
-	// ===== Adicionar campo ao array.
-	
+	// ===== Adiciona ao array de campos
 	$_BANCO['insert-name-campos'][] = Array($nome,$valor,$sem_aspas_simples);
 }
 
+/**
+ * Retorna e limpa campos acumulados para inserção.
+ *
+ * Recupera campos adicionados via banco_insert_name_campo e limpa o array.
+ * Usado em conjunto com banco_insert_name.
+ *
+ * @global array $_BANCO Contém campos em $_BANCO['insert-name-campos'].
+ * 
+ * @return array Array de campos ou array vazio.
+ */
 function banco_insert_name_campos(){
 	global $_BANCO;
 	
