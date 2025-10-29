@@ -705,14 +705,16 @@ function gestor_pagina_extra_head_e_javascript(){
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- pagina#js -->',$js_global_vars.$js_global_includes);
 }
 
-function gestor_pagina_javascript_incluir($js = false,$id = false){
+function gestor_pagina_javascript_incluir($js = false,$id = false, $retornar = false){
 	global $_GESTOR;
+
+	$js_script = '';
 	
 	if(!$js){
 		if(isset($_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'])){
-			$_GESTOR['javascript-fim'][] = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'].'/'.$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
+			$js_script = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'].'/'.$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
 		} else {
-			$_GESTOR['javascript-fim'][] = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
+			$js_script = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
 		}
 	} else {
 		switch($js){
@@ -721,7 +723,14 @@ function gestor_pagina_javascript_incluir($js = false,$id = false){
 			break;
 		}
 		
-		$_GESTOR['javascript-fim'][] = $js;
+		$js_script = $js;
+	}
+
+	// ===== Se for para retornar o javascript, retornar.
+	if($retornar){
+		return $js_script;
+	} else {
+		$_GESTOR['javascript-fim'][] = $js_script;
 	}
 
 	// ===== Verifica se já foi adicionado este javascript, se sim, remover o último que foi adicionado.

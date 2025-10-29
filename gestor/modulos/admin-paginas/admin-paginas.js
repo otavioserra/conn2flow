@@ -119,27 +119,30 @@ $(document).ready(function () {
 
 		// ===== Semantic UI
 
-		var tabActive = localStorage.getItem(gestor.moduloId + 'tabActive');
+		function activeTabRefreshCodeMirror() {
+			var tabActive = localStorage.getItem(gestor.moduloId + 'tabActive');
 
-		if (tabActive !== null) {
-			$('.menuPaginas .item').tab('change tab', tabActive);
+			if (tabActive !== null) {
+				$('.menuPaginas .item').tab('change tab', tabActive);
 
-			switch (tabActive) {
-				case 'codigo-html':
-					CodeMirrorHtml.refresh();
-					break;
-				case 'html-extra-head':
-					CodeMirrorHtmlExtraHead.refresh();
-					break;
-				case 'css':
-					codeMirrorCss.refresh();
-					break;
-				case 'css-compiled':
-					codeMirrorCssCompiled.refresh();
-					break;
+				switch (tabActive) {
+					case 'codigo-html':
+						CodeMirrorHtml.refresh();
+						break;
+					case 'html-extra-head':
+						CodeMirrorHtmlExtraHead.refresh();
+						break;
+					case 'css':
+						codeMirrorCss.refresh();
+						break;
+					case 'css-compiled':
+						codeMirrorCssCompiled.refresh();
+						break;
+				}
 			}
 		}
 
+		activeTabRefreshCodeMirror();
 
 		$('.menuPaginas .item').tab({
 			onLoad: function (tabPath, parameterArray, historyEvent) {
@@ -354,12 +357,37 @@ $(document).ready(function () {
 			return bodyMatch ? bodyMatch[1] : html;
 		}
 
-		// Função para gerar o conteúdo da página de preview com Tailwind CSS
-		function gerarPreviewHtmlTailwind(htmlDoUsuario, cssDoUsuario) {
+		// Função para gerar o conteúdo da página de preview
+		function gerarPreviewHtml(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui') {
+			// Clonar o modal de edição
+			const modalHtml = $('#html-editor-modal').clone().wrap('<div/>').parent().html();
+
+			// Incluir o script do editor HTML e variáveis
+			let js_vars = '';
+			let js_script = '';
+			if ('html_editor' in gestor) {
+				if ('script' in gestor.html_editor) {
+					js_script = gestor.html_editor.script;
+				}
+				if ('overlay_title' in gestor.html_editor) {
+					js_vars += '<script>\n';
+					js_vars += `	const html_editor = { overlay_title: '${gestor.html_editor.overlay_title}' };\n`;
+					js_vars += '</script>\n';
+				}
+			}
+
+			// Incluir o CSS do usuário, se existir
 			if (cssDoUsuario && cssDoUsuario.length > 0) {
 				cssDoUsuario = `<style>${cssDoUsuario}</style>`;
 			} else {
 				cssDoUsuario = '';
+			}
+
+			let tailwindConfigScript = '';
+
+			if (framework === 'tailwindcss') {
+				tailwindConfigScript = `<!-- CDN do TailwindCSS -->
+				<script src="https://cdn.tailwindcss.com"></script>`;
 			}
 
 			return `
@@ -369,40 +397,17 @@ $(document).ready(function () {
 				<meta charset="UTF-8">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<title>Preview Tailwind</title>
-				<!-- CDN do TailwindCSS -->
-				<script src="https://cdn.tailwindcss.com"></script>
-				${cssDoUsuario}
-			</head>
-			<body>
-				${htmlDoUsuario}
-			</body>
-			</html>
-		`;
-		}
-
-		// Função para gerar o conteúdo da página de preview com Fomantic UI
-		function gerarPreviewHtmlFomantic(htmlDoUsuario, cssDoUsuario) {
-			if (cssDoUsuario && cssDoUsuario.length > 0) {
-				cssDoUsuario = `<style>${cssDoUsuario}</style>`;
-			} else {
-				cssDoUsuario = '';
-			}
-
-			return `
-			<!DOCTYPE html>
-			<html lang="pt-br">
-			<head>
-				<meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Preview Fomantic UI</title>
-				<!-- CDN do Fomantic UI -->
+				${tailwindConfigScript}
 				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">
 				<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
+				${js_vars}
+				${js_script}
 				${cssDoUsuario}
 			</head>
 			<body>
 				${htmlDoUsuario}
+				${modalHtml}
 			</body>
 			</html>
 		`;
@@ -424,9 +429,7 @@ $(document).ready(function () {
 
 			const idFramework = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
 
-			const gerarPreviewHtml = idFramework === 'fomantic-ui' ? gerarPreviewHtmlFomantic : gerarPreviewHtmlTailwind;
-
-			$('#iframe-preview').attr('srcdoc', gerarPreviewHtml(htmlDoUsuario, cssDoUsuario));
+			$('#iframe-preview').attr('srcdoc', gerarPreviewHtml(htmlDoUsuario, cssDoUsuario, idFramework));
 
 			$('.previsualizar.modal')
 				.modal('show')
@@ -451,14 +454,15 @@ $(document).ready(function () {
 			}
 		});
 
-		$(document.body).on('mouseup tap', '.previsualizarConfirmar', function (e) {
+		$(document.body).on('mouseup tap', '.previsualizarConfirmar, .previsualizarVoltar', function (e) {
 			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
 			const idFramework = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
+			const iframe = $('#iframe-preview')[0];
+			const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
+			// Atualizar o código CSS no conteúdo do CodeMirror
 			if (idFramework === 'tailwindcss') {
-				const iframe = $('#iframe-preview')[0];
-				const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 				const allStyleTags = $(iframeDoc).find('head > style');
 
 				const tailwindStyleElement = allStyleTags[allStyleTags.length - 1];
@@ -470,7 +474,61 @@ $(document).ready(function () {
 				}
 			}
 
+			// Remover elementos de sistema adicionados pelo Fomantic UI ou Tailwind CSS ou Editor HTML
+			// Garantir que todas as ocorrências sejam removidas
+			while ($(iframeDoc).find('#html-editor-modal').length > 0) {
+				$(iframeDoc).find('#html-editor-modal').remove();
+			}
+			while ($(iframeDoc).find('#html-editor-overlay').length > 0) {
+				$(iframeDoc).find('#html-editor-overlay').remove();
+			}
+			while ($(iframeDoc).find('.ui.dimmer.modals').length > 0) {
+				$(iframeDoc).find('.ui.dimmer.modals').remove();
+			}
+
+			// Atualizar o código HTML no conteúdo do CodeMirror
+			const body = $(iframeDoc).find('body');
+			const bodyElement = body[0];
+
+			let updatedHtml = bodyElement.innerHTML;
+
+			// Remover linhas em branco no início e fim do código.
+			// E também remover linhas que estejam completamente em branco no meio do código.
+			updatedHtml = updatedHtml.split('\n').filter(line => line.trim() !== '').join('\n').trim();
+
+			// Atualizar o CodeMirror com o HTML atualizado.
+			CodeMirrorHtml.getDoc().setValue(updatedHtml);
+
+			// Fechar o modal de pré-visualização se o botão clicado for o de voltar.
+			if ($(this).hasClass('previsualizarVoltar')) {
+				return;
+			}
+
 			$.formSubmitNormal();
+		});
+
+		// ===== Editor de Código
+
+		$(document.body).on('mouseup tap', '.editorCodigoMostrar, .editorCodigoOcultar', function (e) {
+			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+			if ($(this).hasClass('editorCodigoMostrar')) {
+				$(this).addClass('hidden');
+				$('.editorCodigoOcultar').removeClass('hidden');
+				$('.editor-codigo-container').removeClass('hidden');
+				activeTabRefreshCodeMirror();
+				const editorContainer = document.querySelector('.editor-codigo-container');
+				if (editorContainer) {
+					editorContainer.scrollIntoView({
+						behavior: 'smooth',
+						block: 'start'
+					});
+				}
+			} else {
+				$(this).addClass('hidden');
+				$('.editorCodigoMostrar').removeClass('hidden');
+				$('.editor-codigo-container').addClass('hidden');
+			}
 		});
 
 		// ===== Módulos

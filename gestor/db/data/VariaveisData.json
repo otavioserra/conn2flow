@@ -414,6 +414,15 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-overlay-title",
+        "valor": "Clique para editar este elemento",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -823,6 +832,15 @@
         "modulo": null,
         "id": "ia-ajax-msg-prompt-name-empty",
         "valor": "Set a name for the prompt",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-overlay-title",
+        "valor": "Click to edit this element",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4187,6 +4205,42 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
+        "id": "form-button-show-editor",
+        "valor": "Mostrar Editor de Código",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "tooltip-button-show-editor",
+        "valor": "Clique para Mostrar o Editor de Código",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-button-hide-editor",
+        "valor": "Ocultar Editor de Código",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "tooltip-button-hide-editor",
+        "valor": "Clique para Ocultar o Editor de Código",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
         "id": "modal-title-preview",
         "valor": "Pré-Visualização da Página",
         "tipo": "string",
@@ -4612,6 +4666,42 @@
         "modulo": "admin-paginas",
         "id": "tooltip-button-preview",
         "valor": "Click to preview the page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-button-show-editor",
+        "valor": "Show Code Editor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "tooltip-button-show-editor",
+        "valor": "Click to Show the Code Editor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-button-hide-editor",
+        "valor": "Hide Code Editor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "tooltip-button-hide-editor",
+        "valor": "Click to Hide the Code Editor",
         "tipo": "string",
         "grupo": null,
         "descricao": null

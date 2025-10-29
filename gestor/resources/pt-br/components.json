@@ -308,5 +308,15 @@
             "css": "",
             "combined": "b033001c135072b0b6786512d20e63e5"
         }
+    },
+    {
+        "name": "HTML Editor Modal",
+        "id": "html-editor-modal",
+        "version": "1.1",
+        "checksum": {
+            "html": "4bbee0c14a07df2d670808fb6155edde",
+            "css": "",
+            "combined": "4bbee0c14a07df2d670808fb6155edde"
+        }
     }
 ]

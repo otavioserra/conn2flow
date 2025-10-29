@@ -403,6 +403,19 @@
         "checksum": "{\"html\":\"b033001c135072b0b6786512d20e63e5\",\"css\":\"\",\"combined\":\"b033001c135072b0b6786512d20e63e5\"}"
     },
     {
+        "nome": "HTML Editor Modal",
+        "id": "html-editor-modal",
+        "language": "pt-br",
+        "modulo": null,
+        "html": "<div class=\"ui modal small\" id=\"html-editor-modal\">\r\n    <div class=\"header\">\r\n        <i class=\"edit icon\"><\/i>\r\n        Editar Elemento\r\n    <\/div>\r\n    <div class=\"content\">\r\n        <div class=\"ui form\">\r\n            <div class=\"field\" id=\"text-field\">\r\n                <label>Conteúdo HTML:<\/label>\r\n                <textarea id=\"element-text\" rows=\"12\"\r\n                    placeholder=\"Digite o conteúdo HTML... (suporta &lt;strong&gt;, &lt;em&gt;, etc.)\"><\/textarea>\r\n            <\/div>\r\n            <div class=\"field\" id=\"image-field\" style=\"display: none;\">\r\n                <label>URL da Imagem:<\/label>\r\n                <input type=\"text\" id=\"element-src\" placeholder=\"https:\/\/exemplo.com\/imagem.jpg\">\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n    <div class=\"actions\">\r\n        <div class=\"ui button cancel\">\r\n            <i class=\"remove icon\"><\/i>\r\n            Cancelar\r\n        <\/div>\r\n        <div class=\"ui button primary approve\">\r\n            <i class=\"checkmark icon\"><\/i>\r\n            Salvar\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"4bbee0c14a07df2d670808fb6155edde\",\"css\":\"\",\"combined\":\"4bbee0c14a07df2d670808fb6155edde\"}"
+    },
+    {
         "nome": "Settings Form Interface",
         "id": "interface-formulario-configuracoes",
         "language": "en",
@@ -806,6 +819,19 @@
         "checksum": "{\"html\":\"6fec31d9b3dc8f3f727e823c8bb870de\",\"css\":\"\",\"combined\":\"6fec31d9b3dc8f3f727e823c8bb870de\"}"
     },
     {
+        "nome": "HTML Editor Modal",
+        "id": "html-editor-modal",
+        "language": "en",
+        "modulo": null,
+        "html": "<div class=\"ui modal small\" id=\"html-editor-modal\">\r\n    <div class=\"header\">\r\n        <i class=\"edit icon\"><\/i>\r\n        Edit Element\r\n    <\/div>\r\n    <div class=\"content\">\r\n        <div class=\"ui form\">\r\n            <div class=\"field\" id=\"text-field\">\r\n                <label>HTML Content:<\/label>\r\n                <textarea id=\"element-text\" rows=\"12\"\r\n                    placeholder=\"Enter HTML content... (supports &lt;strong&gt;, &lt;em&gt;, etc.)\"><\/textarea>\r\n            <\/div>\r\n            <div class=\"field\" id=\"image-field\" style=\"display: none;\">\r\n                <label>Image URL:<\/label>\r\n                <input type=\"text\" id=\"element-src\" placeholder=\"https:\/\/example.com\/image.jpg\">\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n    <div class=\"actions\">\r\n        <div class=\"ui button cancel\">\r\n            <i class=\"remove icon\"><\/i>\r\n            Cancel\r\n        <\/div>\r\n        <div class=\"ui button primary approve\">\r\n            <i class=\"checkmark icon\"><\/i>\r\n            Save\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"40ba53551e01fbf67a9b11f7d786ed94\",\"css\":\"\",\"combined\":\"40ba53551e01fbf67a9b11f7d786ed94\"}"
+    },
+    {
         "nome": "Arquivos Lista",
         "id": "arquivos-lista",
         "language": "pt-br",
@@ -992,13 +1018,13 @@
         "id": "modal-pagina",
         "language": "pt-br",
         "modulo": "admin-paginas",
-        "html": "<div class=\"ui modal overlay fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:900px;border:1px solid #ccc;\"><\/iframe>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\n            data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
+        "html": "<div class=\"ui modal overlay fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:900px;border:1px solid #ccc;\"><\/iframe>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button previsualizarVoltar\" data-tooltip=\"#button-back-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 3,
-        "file_version": "1.12",
-        "checksum": "{\"html\":\"b4c154020a9ecf03e6e98f11d6e741c6\",\"css\":\"\",\"combined\":\"b4c154020a9ecf03e6e98f11d6e741c6\"}"
+        "versao": 4,
+        "file_version": "1.13",
+        "checksum": "{\"html\":\"28ae9696b14f3a487de3a974c8f5a6a2\",\"css\":\"\",\"combined\":\"28ae9696b14f3a487de3a974c8f5a6a2\"}"
     },
     {
         "nome": "Lista Página ou Sistema",
@@ -1031,13 +1057,13 @@
         "id": "modal-pagina",
         "language": "en",
         "modulo": "admin-paginas",
-        "html": "<div class=\"ui modal overlay fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:900px;border:1px solid #ccc;\"><\/iframe>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button\" data-tooltip=\"#button-back-tooltip#\" data-inverted=\"\"\n            data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
+        "html": "<div class=\"ui modal overlay fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <iframe id=\"iframe-preview\" style=\"width:100%;height:900px;border:1px solid #ccc;\"><\/iframe>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button previsualizarVoltar\" data-tooltip=\"#button-back-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 3,
-        "file_version": "1.12",
-        "checksum": "{\"html\":\"b4c154020a9ecf03e6e98f11d6e741c6\",\"css\":\"\",\"combined\":\"b4c154020a9ecf03e6e98f11d6e741c6\"}"
+        "versao": 4,
+        "file_version": "1.13",
+        "checksum": "{\"html\":\"28ae9696b14f3a487de3a974c8f5a6a2\",\"css\":\"\",\"combined\":\"28ae9696b14f3a487de3a974c8f5a6a2\"}"
     },
     {
         "nome": "Page or System List",

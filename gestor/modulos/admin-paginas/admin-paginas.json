@@ -3,7 +3,8 @@
     "bibliotecas": [
         "interface",
         "html",
-        "ia"
+        "ia",
+        "html-editor"
     ],
     "tabela": {
         "nome": "paginas",
@@ -125,11 +126,11 @@
                 {
                     "name": "Modal Página",
                     "id": "modal-pagina",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "b4c154020a9ecf03e6e98f11d6e741c6",
+                        "html": "28ae9696b14f3a487de3a974c8f5a6a2",
                         "css": "",
-                        "combined": "b4c154020a9ecf03e6e98f11d6e741c6"
+                        "combined": "28ae9696b14f3a487de3a974c8f5a6a2"
                     }
                 },
                 {
@@ -172,11 +173,11 @@
                 {
                     "name": "Admin Páginas - Editar",
                     "id": "admin-paginas-editar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "729544de1545659515031f7532d61692",
+                        "html": "b2068cfa21d079a90c54da1534777527",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "039865d11457325cad37179cbc20e6c8"
+                        "combined": "6a432ea589b689434127972237a2e247"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/editar\/",
@@ -186,11 +187,11 @@
                 {
                     "name": "Admin Páginas - Adicionar",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "fe2e48edc6f4e9a6715018d4c2a9320b",
+                        "html": "07f5d98c5a1cb278166add6036ebb177",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "03e9d20bd7fa3de8f2b64547cc2729d8"
+                        "combined": "9563b992ec9eb0ee8a03230fd071682d"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/adicionar\/",
@@ -362,6 +363,26 @@
                 {
                     "id": "tooltip-button-preview",
                     "value": "Clique para pré-visualizar a página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-button-show-editor",
+                    "value": "Mostrar Editor de Código",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-show-editor",
+                    "value": "Clique para Mostrar o Editor de Código",
+                    "type": "string"
+                },
+                {
+                    "id": "form-button-hide-editor",
+                    "value": "Ocultar Editor de Código",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-hide-editor",
+                    "value": "Clique para Ocultar o Editor de Código",
                     "type": "string"
                 },
                 {
@@ -557,11 +578,11 @@
                 {
                     "name": "Admin Pages - Edit",
                     "id": "admin-paginas-editar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "729544de1545659515031f7532d61692",
+                        "html": "b2068cfa21d079a90c54da1534777527",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "039865d11457325cad37179cbc20e6c8"
+                        "combined": "6a432ea589b689434127972237a2e247"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/editar\/",
@@ -571,11 +592,11 @@
                 {
                     "name": "Admin Pages - Add",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "fe2e48edc6f4e9a6715018d4c2a9320b",
+                        "html": "07f5d98c5a1cb278166add6036ebb177",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "03e9d20bd7fa3de8f2b64547cc2729d8"
+                        "combined": "9563b992ec9eb0ee8a03230fd071682d"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/adicionar\/",
@@ -587,11 +608,11 @@
                 {
                     "name": "Page Modal",
                     "id": "modal-pagina",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "b4c154020a9ecf03e6e98f11d6e741c6",
+                        "html": "28ae9696b14f3a487de3a974c8f5a6a2",
                         "css": "",
-                        "combined": "b4c154020a9ecf03e6e98f11d6e741c6"
+                        "combined": "28ae9696b14f3a487de3a974c8f5a6a2"
                     }
                 },
                 {
@@ -779,6 +800,26 @@
                 {
                     "id": "tooltip-button-preview",
                     "value": "Click to preview the page",
+                    "type": "string"
+                },
+                {
+                    "id": "form-button-show-editor",
+                    "value": "Show Code Editor",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-show-editor",
+                    "value": "Click to Show the Code Editor",
+                    "type": "string"
+                },
+                {
+                    "id": "form-button-hide-editor",
+                    "value": "Hide Code Editor",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-hide-editor",
+                    "value": "Click to Hide the Code Editor",
                     "type": "string"
                 },
                 {

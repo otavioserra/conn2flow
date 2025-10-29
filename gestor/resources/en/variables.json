@@ -257,5 +257,10 @@
         "id": "ia-ajax-msg-prompt-name-empty",
         "value": "Set a name for the prompt",
         "type": "string"
+    },
+    {
+        "id": "html-editor-overlay-title",
+        "value": "Click to edit this element",
+        "type": "string"
     }
 ]

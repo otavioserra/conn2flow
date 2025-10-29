@@ -201,6 +201,10 @@ function admin_paginas_adicionar(){
 	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/css/css.js"></script>');
 	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/htmlmixed/htmlmixed.js"></script>');
 
+	// Incluir Editor HTML
+	
+	html_editor_include();
+
 	// ===== Inclusão Componentes
 
 	interface_componentes_incluir(Array(
@@ -218,6 +222,20 @@ function admin_paginas_adicionar(){
 	$_GESTOR['interface']['adicionar']['finalizar'] = Array(
 		'sem_botao_padrao' => true,
 		'botoes_rodape' => [
+			'editorCodigoMostrar' => [
+				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-show-editor')),
+				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-show-editor')),
+				'icon' => 'edit',
+				'cor' => 'blue',
+				'callback' => 'editorCodigoMostrar',
+			],
+			'editorCodigoOcultar' => [
+				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-hide-editor')),
+				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-hide-editor')),
+				'icon' => 'minus square',
+				'cor' => 'red',
+				'callback' => 'editorCodigoOcultar hidden',
+			],
 			'previsualizar' => [
 				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-preview')),
 				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-preview')),
@@ -596,6 +614,10 @@ function admin_paginas_editar(){
 	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/css/css.js"></script>');
 	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/htmlmixed/htmlmixed.js"></script>');
 
+	// Incluir Editor HTML
+	
+	html_editor_include();
+
 	// ===== Selecionar dados do banco de dados
 	
 	$retorno_bd = banco_select_editar
@@ -747,6 +769,20 @@ function admin_paginas_editar(){
 	$_GESTOR['interface']['editar']['finalizar'] = Array(
 		'sem_botao_padrao' => true,
 		'botoes_rodape' => [
+			'editorCodigoMostrar' => [
+				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-show-editor')),
+				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-show-editor')),
+				'icon' => 'edit',
+				'cor' => 'blue',
+				'callback' => 'editorCodigoMostrar',
+			],
+			'editorCodigoOcultar' => [
+				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-hide-editor')),
+				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-hide-editor')),
+				'icon' => 'minus square',
+				'cor' => 'red',
+				'callback' => 'editorCodigoOcultar hidden',
+			],
 			'previsualizar' => [
 				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-preview')),
 				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-preview')),

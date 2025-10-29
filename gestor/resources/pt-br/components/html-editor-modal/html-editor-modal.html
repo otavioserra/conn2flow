@@ -1,0 +1,29 @@
+<div class="ui modal small" id="html-editor-modal">
+    <div class="header">
+        <i class="edit icon"></i>
+        Editar Elemento
+    </div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field" id="text-field">
+                <label>Conteúdo HTML:</label>
+                <textarea id="element-text" rows="12"
+                    placeholder="Digite o conteúdo HTML... (suporta &lt;strong&gt;, &lt;em&gt;, etc.)"></textarea>
+            </div>
+            <div class="field" id="image-field" style="display: none;">
+                <label>URL da Imagem:</label>
+                <input type="text" id="element-src" placeholder="https://exemplo.com/imagem.jpg">
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui button cancel">
+            <i class="remove icon"></i>
+            Cancelar
+        </div>
+        <div class="ui button primary approve">
+            <i class="checkmark icon"></i>
+            Salvar
+        </div>
+    </div>
+</div>
