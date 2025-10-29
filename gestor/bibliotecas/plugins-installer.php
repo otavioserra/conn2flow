@@ -473,6 +473,20 @@ function plugin_locate_manifest(string $staging, array &$log): ?string {
     return null;
 }
 
+/**
+ * Move diretório do plugin de staging para localização final.
+ *
+ * Processo:
+ * 1. Faz backup do plugin existente (se houver)
+ * 2. Localiza o diretório raiz do plugin (onde está manifest.json)
+ * 3. Copia recursivamente para localização final
+ * 4. Remove diretório antigo se existir
+ *
+ * @param string $staging Diretório de staging.
+ * @param string $final Diretório final de instalação.
+ * @param array &$log Array de log (passado por referência).
+ * @return bool True se sucesso, false em caso de erro.
+ */
 function plugin_move_to_final(string $staging, string $final, array &$log): bool {
     $rootPlugins = dirname($final);
     if(!is_dir($rootPlugins)) mkdir($rootPlugins,0777,true);
@@ -521,7 +535,24 @@ function plugin_move_to_final(string $staging, string $final, array &$log): bool
     }
     $log[] = "[ok] diretório final atualizado: $final";
     return true;
-}function plugin_persist_metadata(string $slug, array $manifest, ?string $checksum, string $origemTipo, array $opcoes, array &$log): void {
+}
+
+/**
+ * Persiste metadados do plugin na tabela plugins do banco de dados.
+ *
+ * Realiza upsert (insert ou update) dos dados do plugin preservando:
+ * - data_instalacao (se já existir)
+ * - status (ativo/inativo)
+ *
+ * @param string $slug ID único do plugin.
+ * @param array $manifest Dados do manifest.json.
+ * @param string|null $checksum Hash SHA-256 do pacote.
+ * @param string $origemTipo Tipo de origem (github_public, github_private, local).
+ * @param array $opcoes Opções de instalação (referencia, ref, cred_ref).
+ * @param array &$log Array de log (passado por referência).
+ * @return void
+ */
+function plugin_persist_metadata(string $slug, array $manifest, ?string $checksum, string $origemTipo, array $opcoes, array &$log): void {
     $dados = [
         'id' => $slug,
         'nome' => $manifest['name'] ?? $slug,
@@ -566,6 +597,16 @@ function plugin_move_to_final(string $staging, string $final, array &$log): bool
     $log[] = '[ok] metadata persisted in plugins table';
 }
 
+/**
+ * Cria backup em ZIP da instalação existente do plugin.
+ *
+ * Armazena backups no diretório plugins/_backups/ com timestamp.
+ *
+ * @param string $finalPath Caminho do plugin instalado.
+ * @param array &$log Array de log (passado por referência).
+ * @return void
+ * @throws RuntimeException Se falhar ao criar arquivo ZIP.
+ */
 function plugin_backup_existing(string $finalPath, array &$log): void {
     if(!is_dir($finalPath)) return; // nada a fazer
     $parent = dirname($finalPath);
