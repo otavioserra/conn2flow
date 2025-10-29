@@ -1,41 +1,136 @@
 <?php
-// Helpers para instalação/atualização de plugins (Fase 1)
+/**
+ * Biblioteca de Instalação e Atualização de Plugins
+ *
+ * Sistema completo para gerenciamento de plugins com suporte a:
+ * - Download de repositórios GitHub (públicos e privados)
+ * - Instalação local via arquivo ou diretório
+ * - Validação de manifesto e dependências
+ * - Migração de banco de dados e arquivos de dados
+ * - Versionamento e atualização automática
+ *
+ * @package Conn2Flow
+ * @subpackage Plugins
+ * @version 1.0 (Fase 1)
+ */
 
 require_once __DIR__ . '/banco.php';
 require_once __DIR__ . '/plugins-consts.php';
 require_once __DIR__ . '/../modulos/admin-plugins/admin-plugins.php';
 
+/**
+ * Normaliza um slug de plugin para formato seguro.
+ *
+ * Remove caracteres especiais e converte para minúsculas,
+ * mantendo apenas letras, números, hífens e underscores.
+ *
+ * @param string $slug Slug original do plugin.
+ * @return string Slug normalizado (ex: "My-Plugin_123" → "my-plugin_123").
+ */
 function plugin_normalize_slug(string $slug): string { return strtolower(preg_replace('/[^a-zA-Z0-9_-]+/','-', $slug)); }
+
+/**
+ * Retorna o caminho raiz do diretório do gestor.
+ *
+ * @return string Caminho absoluto para o diretório raiz.
+ */
 function plugin_base_root(): string { return dirname(__DIR__) . '/'; }
+
+/**
+ * Retorna o caminho de staging temporário para um plugin.
+ *
+ * @param string $slug Slug do plugin.
+ * @return string Caminho completo para temp/plugins/{slug}.
+ */
 function plugin_staging_path(string $slug): string { return plugin_base_root() . 'temp/plugins/' . $slug; }
+
+/**
+ * Retorna o caminho final de instalação de um plugin.
+ *
+ * @param string $slug Slug do plugin.
+ * @return string Caminho completo para plugins/{slug}.
+ */
 function plugin_final_path(string $slug): string { return plugin_base_root() . 'plugins/' . $slug; }
+
+/**
+ * Retorna o diretório de destino para arquivos *Data.json do plugin.
+ *
+ * @param string $slug Slug do plugin.
+ * @return string Caminho completo para db/data/plugins/{slug}.
+ */
 function plugin_datajson_dest_dir(string $slug): string { return plugin_base_root() . 'db/data/plugins/' . $slug; }
+
+/**
+ * Cria um diretório recursivamente se não existir.
+ *
+ * @param string $path Caminho do diretório a criar.
+ * @return void
+ */
 function plugin_safe_mkdir(string $path): void { if(!is_dir($path)) mkdir($path, 0777, true); }
+
+/**
+ * Remove um diretório recursivamente incluindo todo seu conteúdo.
+ *
+ * @param string $dir Caminho do diretório a remover.
+ * @return void
+ */
 function plugin_remove_dir(string $dir): void { if(!is_dir($dir)) return; $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST); foreach($it as $f){ $f->isDir()? rmdir($f->getPathname()):unlink($f->getPathname()); } rmdir($dir); }
+
+/**
+ * Calcula o checksum SHA-256 de um arquivo.
+ *
+ * @param string $file Caminho do arquivo.
+ * @return string|null Hash SHA-256 ou null se o arquivo não existir.
+ */
 function plugin_compute_checksum(string $file): ?string { return file_exists($file)? hash_file('sha256',$file): null; }
 
 /**
- * Detecta se o script está sendo executado via CLI ou web
+ * Detecta se o script está sendo executado via CLI ou web.
+ *
+ * Verifica o PHP SAPI para determinar o contexto de execução,
+ * útil para adaptar comportamento de output e logging.
+ *
+ * @return bool True se CLI, false se web.
  */
 function plugin_is_cli_context(): bool {
     return php_sapi_name() === 'cli';
 }
 
 /**
- * Converte nome de arquivo *Data.json para nome de tabela snake_case
- * Ex: ModulosData.json => modulos, HostsConfiguracoesData.json => hosts_configuracoes
+ * Converte nome de arquivo *Data.json para nome de tabela snake_case.
+ *
+ * Transforma nomes em CamelCase para snake_case seguindo convenções SQL.
+ * Exemplos:
+ * - ModulosData.json → modulos
+ * - HostsConfiguracoesData.json → hosts_configuracoes
+ *
+ * @param string $file Nome do arquivo *Data.json.
+ * @return string Nome da tabela em snake_case.
  */
 function tabelaFromDataFile(string $file): string {
+    // Remove sufixo "Data.json" para obter nome base
     $base = preg_replace('/Data\.json$/', '', basename($file));
     if ($base === '') return '';
+    
+    // Se já contém underscore, apenas converte para minúsculas
     if (strpos($base, '_') !== false) {
         return strtolower($base);
     }
+    
     // Inserir underscore antes de cada letra maiúscula que não é inicial
     $snake = preg_replace('/(?<!^)([A-Z])/', '_$1', $base);
     return strtolower($snake);
 }
 
+/**
+ * Lê e decodifica um arquivo JSON.
+ *
+ * Realiza validação do JSON e adiciona erros ao array de erros se houver falhas.
+ *
+ * @param string $path Caminho do arquivo JSON.
+ * @param array &$errors Array de erros (passado por referência).
+ * @return array|null Dados decodificados ou null em caso de erro.
+ */
 function plugin_read_json(string $path, array &$errors): ?array {
     if(!file_exists($path)){ $errors[] = "Arquivo não encontrado: $path"; return null; }
     $raw = file_get_contents($path);
@@ -44,6 +139,18 @@ function plugin_read_json(string $path, array &$errors): ?array {
     return $data;
 }
 
+/**
+ * Valida campos obrigatórios e formato do manifest.json do plugin.
+ *
+ * Verifica:
+ * - Campos obrigatórios: id, name, version
+ * - Formato da versão: semantic versioning (x.y.z)
+ * - Formato do ID: lowercase, números, hífen ou underscore
+ *
+ * @param array $manifest Dados do manifest.json decodificados.
+ * @param array &$errors Array de erros (passado por referência).
+ * @return bool True se válido, false caso contrário.
+ */
 function plugin_validate_manifest(array $manifest, array &$errors): bool {
     $required = ['id','name','version'];
     foreach($required as $r){ if(empty($manifest[$r])) $errors[] = "Missing required field: $r"; }
@@ -53,6 +160,16 @@ function plugin_validate_manifest(array $manifest, array &$errors): bool {
     return empty($errors);
 }
 
+/**
+ * Busca credenciais de token para acesso a repositórios privados.
+ *
+ * Aceita dois formatos:
+ * 1. Token direto do GitHub (ghp_, github_pat_, gho_, ghu_, ghs_)
+ * 2. Nome de referência para buscar em variável de ambiente PLUGIN_TOKEN_{REF}
+ *
+ * @param string|null $credRef Referência ou token direto.
+ * @return string|null Token encontrado ou null.
+ */
 function plugin_credentials_lookup(?string $credRef): ?string {
     if(!$credRef) return null;
 
@@ -69,11 +186,30 @@ function plugin_credentials_lookup(?string $credRef): ?string {
 
 // === Download Helpers (GitHub) ===
 
+/**
+ * Realiza download HTTP de arquivo com suporte a cURL e fallback para streams.
+ *
+ * Faz o download de uma URL para um arquivo local, com:
+ * - Preferência por cURL quando disponível
+ * - Fallback para file_get_contents com stream context
+ * - Suporte a headers customizados (autenticação, accept types)
+ * - Timeout de 120 segundos
+ * - Até 5 redirecionamentos
+ * - Log detalhado de cada etapa
+ *
+ * @param string $url URL para download.
+ * @param string $dest Caminho do arquivo de destino.
+ * @param array $headers Headers HTTP a enviar (formato: ['Header-Name' => 'value']).
+ * @param array &$log Array de log (passado por referência).
+ * @return bool True se sucesso, false em caso de erro.
+ */
 function plugin_http_download(string $url, string $dest, array $headers, array &$log): bool {
     $log[] = '[http] GET ' . $url;
+    
     // Remover arquivo antigo se existir
     if(file_exists($dest)) unlink($dest);
     $ok = false; $data = '';
+    
     // Preferir cURL se disponível
     if(function_exists('curl_init')){
         $ch = curl_init($url);
@@ -82,14 +218,20 @@ function plugin_http_download(string $url, string $dest, array $headers, array &
         curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
         curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+        
+        // Preparar headers
         $hdrs = [];
         foreach($headers as $hK => $hV){ $hdrs[] = $hK.': '.$hV; }
         if($hdrs) curl_setopt($ch, CURLOPT_HTTPHEADER, $hdrs);
         curl_setopt($ch, CURLOPT_USERAGENT, 'conn2flow-plugin-installer/1.0');
+        
+        // Executar request
         $response = curl_exec($ch);
         $errno = curl_errno($ch); $err = curl_error($ch);
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+        
+        // Validar resposta
         if($errno){ $log[] = '[erro] cURL erro='.$errno.' msg='.$err; return false; }
         if($status >= 400){ $log[]='[erro] HTTP status '.$status; return false; }
         if($response === false || $response === ''){ $log[]='[erro] resposta vazia'; return false; }
