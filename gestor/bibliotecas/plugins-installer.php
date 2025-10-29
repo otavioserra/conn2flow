@@ -262,11 +262,37 @@ function plugin_http_download(string $url, string $dest, array $headers, array &
     return false;
 }
 
+/**
+ * Gera URL para download do zipball de um repositório GitHub.
+ *
+ * Usa a API do GitHub para gerar URL zipball que aceita
+ * branch, tag ou commit SHA como referência.
+ *
+ * @param string $owner Proprietário do repositório (usuário ou organização).
+ * @param string $repo Nome do repositório.
+ * @param string $ref Referência (branch, tag ou commit SHA).
+ * @return string URL completa para download do zipball.
+ */
 function plugin_github_zip_url(string $owner,string $repo,string $ref): string {
     // Usar API zipball (retorna zip) – aceita branch, tag ou commit.
     return "https://api.github.com/repos/$owner/$repo/zipball/" . rawurlencode($ref);
 }
 
+/**
+ * Baixa plugin de repositório público do GitHub.
+ *
+ * Estratégia de download em ordem de preferência:
+ * 1. Asset de release específica (se tag fornecida)
+ * 2. Asset da última release (se branch main/master)
+ * 3. Zipball completo via API (fallback)
+ *
+ * @param string $owner Proprietário do repositório.
+ * @param string $repo Nome do repositório.
+ * @param string $ref Referência (branch/tag/commit).
+ * @param string $destZip Caminho do arquivo ZIP de destino.
+ * @param array &$log Array de log (passado por referência).
+ * @return bool True se sucesso, false em caso de erro.
+ */
 function plugin_download_github_public(string $owner,string $repo,string $ref,string $destZip, array &$log): bool {
     if(!$owner || !$repo){ $log[]='[erro] owner/repo ausentes'; return false; }
 
@@ -312,6 +338,20 @@ function plugin_download_github_public(string $owner,string $repo,string $ref,st
     ],$log);
 }
 
+/**
+ * Baixa plugin de repositório privado do GitHub usando token de autenticação.
+ *
+ * Requer token de acesso pessoal (PAT) ou token de app com permissões
+ * de leitura do repositório.
+ *
+ * @param string $owner Proprietário do repositório.
+ * @param string $repo Nome do repositório.
+ * @param string $ref Referência (branch/tag/commit).
+ * @param string $destZip Caminho do arquivo ZIP de destino.
+ * @param string $token Token de autenticação do GitHub.
+ * @param array &$log Array de log (passado por referência).
+ * @return bool True se sucesso, false em caso de erro.
+ */
 function plugin_download_github_private(string $owner,string $repo,string $ref,string $destZip,string $token, array &$log): bool {
     if(!$token){ $log[]='[erro] token vazio'; return false; }
     if(!$owner || !$repo){ $log[]='[erro] owner/repo ausentes'; return false; }
@@ -324,6 +364,18 @@ function plugin_download_github_private(string $owner,string $repo,string $ref,s
     ],$log);
 }
 
+/**
+ * Copia plugin de caminho local (diretório ou arquivo ZIP).
+ *
+ * Suporta dois modos:
+ * 1. Diretório: cria ZIP temporário com todo o conteúdo
+ * 2. Arquivo: copia ZIP existente diretamente
+ *
+ * @param string $sourcePath Caminho local do plugin (diretório ou arquivo ZIP).
+ * @param string $destZip Caminho do arquivo ZIP de destino.
+ * @param array &$log Array de log (passado por referência).
+ * @return bool True se sucesso, false em caso de erro.
+ */
 function plugin_copy_local_path(string $sourcePath, string $destZip, array &$log): bool {
     if(is_dir($sourcePath)) {
         // Criar zip temporário do diretório (simplificado)
@@ -353,6 +405,17 @@ function plugin_copy_local_path(string $sourcePath, string $destZip, array &$log
     }
 }
 
+/**
+ * Extrai arquivo ZIP para diretório de destino.
+ *
+ * Realiza extração completa e normaliza caminhos criados em Windows
+ * (converte backslashes em slashes).
+ *
+ * @param string $zipFile Caminho do arquivo ZIP.
+ * @param string $destDir Diretório de destino para extração.
+ * @param array &$log Array de log (passado por referência).
+ * @return bool True se sucesso, false em caso de erro.
+ */
 function plugin_extract_zip(string $zipFile, string $destDir, array &$log): bool {
     if(!file_exists($zipFile)){ $log[] = "[erro] zip inexistente: $zipFile"; return false; }
     plugin_safe_mkdir($destDir);
@@ -360,6 +423,7 @@ function plugin_extract_zip(string $zipFile, string $destDir, array &$log): bool
     if($zip->open($zipFile)!==true){ $log[] = "[erro] abrir zip"; return false; }
     $zip->extractTo($destDir);
     $zip->close();
+    
     // Normalizar diretórios com backslashes literais (artefato de zips criados em Windows)
     $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($destDir, FilesystemIterator::SKIP_DOTS));
     foreach($rii as $f){
@@ -378,6 +442,18 @@ function plugin_extract_zip(string $zipFile, string $destDir, array &$log): bool
     return true;
 }
 
+/**
+ * Localiza o arquivo manifest.json dentro do diretório de staging.
+ *
+ * Estratégia de busca:
+ * 1. Raiz do staging
+ * 2. Subdiretório "plugin"
+ * 3. Busca recursiva (para zipballs do GitHub que criam subdir)
+ *
+ * @param string $staging Diretório de staging extraído.
+ * @param array &$log Array de log (passado por referência).
+ * @return string|null Caminho completo do manifest.json ou null se não encontrado.
+ */
 function plugin_locate_manifest(string $staging, array &$log): ?string {
     // Manifest pode estar na raiz do pacote ou em subdir "plugin" (caso futuro)
     $candidates = [ $staging.'/manifest.json', $staging.'/plugin/manifest.json' ];
