@@ -1,4 +1,18 @@
 <?php
+/**
+ * Biblioteca Central do Gestor Conn2Flow
+ *
+ * Sistema de gerenciamento central que coordena:
+ * - Componentes e layouts dinâmicos
+ * - Variáveis globais do sistema
+ * - Sessões e autenticação
+ * - Redirecionamentos e navegação
+ * - Inclusão de bibliotecas e módulos
+ *
+ * @package Conn2Flow
+ * @subpackage Gestor
+ * @version 1.0.0
+ */
 
 global $_GESTOR;
 
@@ -8,6 +22,17 @@ $_GESTOR['biblioteca-gestor']							=	Array(
 
 // =========================== Funções Auxiliares
 
+/**
+ * Verifica se um dado existe e não está vazio.
+ *
+ * Testa diferentes tipos de dados:
+ * - Array: verifica se tem elementos (count > 0)
+ * - String: verifica se tem caracteres (strlen > 0)
+ * - Outros tipos: verifica se é truthy
+ *
+ * @param mixed $dado Dado a ser verificado.
+ * @return bool True se existe e não está vazio, false caso contrário.
+ */
 function existe($dado = false){
 	switch(gettype($dado)){
 		case 'array':
@@ -35,6 +60,27 @@ function existe($dado = false){
 
 // =========================== Funções do Gestor
 
+/**
+ * Renderiza um componente HTML/CSS dinâmico.
+ *
+ * Busca e processa componentes do banco de dados com suporte a:
+ * - Substituição de variáveis do sistema
+ * - CSS compilado e inline
+ * - HTML extra para <head>
+ * - Componentes únicos ou múltiplos (array de IDs)
+ * - Módulos extras para variáveis
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['id'] ID descritivo do componente (ou array de IDs).
+ * @param int $params['id_componentes'] ID numérico do componente (alternativa ao 'id').
+ * @param string $params['modulo'] Módulo específico (opcional).
+ * @param bool $params['return_css'] Se true, retorna array ['html' => ..., 'css' => ...], senão string HTML.
+ * @param array $params['modulosExtra'] Módulos extras para busca de variáveis.
+ *
+ * @return string|array|false HTML do componente ou array com HTML+CSS, ou false se não encontrado.
+ */
 function gestor_componente($params = false){
 	global $_GESTOR;
 
@@ -263,6 +309,26 @@ function gestor_componente($params = false){
 	}
 }
 
+/**
+ * Renderiza um layout HTML/CSS completo da página.
+ *
+ * Busca e processa layouts do banco de dados com suporte a:
+ * - Estrutura HTML completa (<!DOCTYPE>, <html>, <head>, <body>)
+ * - CSS compilado e frameworks CSS
+ * - Substituição de variáveis do sistema
+ * - Layout padrão se não encontrado
+ * - Layouts únicos ou múltiplos (array de IDs)
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['id'] ID descritivo do layout (ou array de IDs).
+ * @param int $params['id_layouts'] ID numérico do layout (alternativa ao 'id').
+ * @param bool $params['return_css'] Se true, retorna array ['html' => ..., 'css' => ...], senão string HTML.
+ * @param array $params['modulosExtra'] Módulos extras para busca de variáveis.
+ *
+ * @return string|array|false HTML do layout ou array com HTML+CSS, ou false se não encontrado.
+ */
 function gestor_layout($params = false){
 	global $_GESTOR;
 
@@ -476,6 +542,15 @@ function gestor_layout($params = false){
 	}
 }
 
+/**
+ * Inclui todas as bibliotecas do sistema.
+ *
+ * Carrega automaticamente todos os arquivos PHP da pasta bibliotecas,
+ * exceto o próprio arquivo gestor.php para evitar recursão.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * @return void
+ */
 function gestor_incluir_bibliotecas(){
 	global $_GESTOR;
 	
@@ -494,6 +569,15 @@ function gestor_incluir_bibliotecas(){
 	}
 }
 
+/**
+ * Inclui uma biblioteca específica do sistema.
+ *
+ * Carrega arquivo PHP da pasta bibliotecas usando require_once
+ * para evitar inclusões duplicadas.
+ *
+ * @param string $biblioteca Nome do arquivo da biblioteca (sem .php).
+ * @return void
+ */
 function gestor_incluir_biblioteca($biblioteca){
 	global $_GESTOR;
 	
