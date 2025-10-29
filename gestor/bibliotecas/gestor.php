@@ -618,6 +618,23 @@ function gestor_incluir_biblioteca($biblioteca){
 	}
 }
 
+/**
+ * Obtém variáveis do sistema por módulo e idioma.
+ *
+ * Busca variáveis armazenadas no banco de dados com cache em memória.
+ * Suporta busca individual ou conjunto completo de variáveis de um módulo.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['modulo'] Módulo do sistema (padrão: '_global_').
+ * @param string $params['id'] Identificador único da variável (obrigatório se não usar 'conjunto').
+ * @param bool $params['conjunto'] Se true, retorna todas as variáveis do módulo.
+ * @param string $params['padrao'] Filtro de padrão regex para IDs (requer 'conjunto').
+ * @param bool $params['reset'] Se true, força releitura do banco de dados.
+ *
+ * @return string|array Valor da variável, array de variáveis (se conjunto), ou string vazia.
+ */
 function gestor_variaveis($params = false){
 	global $_GESTOR;
 
@@ -693,6 +710,20 @@ function gestor_variaveis($params = false){
 	}
 }
 
+/**
+ * Obtém uma variável global específica do sistema.
+ *
+ * Busca rápida de variável global por ID com cache em memória.
+ * Otimizado para variáveis frequentemente acessadas.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['id'] Identificador único da variável (obrigatório).
+ * @param bool $params['reset'] Se true, força releitura do banco de dados.
+ *
+ * @return string|null Valor da variável ou NULL se não encontrada.
+ */
 function gestor_variaveis_globais($params = false){
 	global $_GESTOR;
 
@@ -735,6 +766,23 @@ function gestor_variaveis_globais($params = false){
 	return (isset($_GESTOR['variaveis']['_global_'][$id]) ? $_GESTOR['variaveis']['_global_'][$id] : NULL );
 }
 
+/**
+ * Altera o valor de uma variável no banco de dados.
+ *
+ * Atualiza variável existente com suporte a diferentes tipos de dados.
+ * Usado principalmente para configurações dinâmicas do sistema.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['modulo'] Módulo do sistema da variável (obrigatório).
+ * @param string $params['id'] Identificador único da variável (obrigatório).
+ * @param string $params['tipo'] Tipo da variável: 'bool' ou outros (obrigatório).
+ * @param string|null $params['valor'] Valor que deverá ser alterado.
+ * @param string $params['linguagem'] Código do idioma (padrão: idioma atual).
+ *
+ * @return void
+ */
 function gestor_variaveis_alterar($params = false){
 	global $_GESTOR;
 
@@ -775,6 +823,15 @@ function gestor_variaveis_alterar($params = false){
 	}
 }
 
+/**
+ * Redireciona para a página raiz do módulo atual.
+ *
+ * Busca a página marcada como raiz no banco e redireciona.
+ * Útil para retornar à página inicial do módulo após operações.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * @return void
+ */
 function gestor_redirecionar_raiz(){
 	global $_GESTOR;
 	
@@ -797,12 +854,31 @@ function gestor_redirecionar_raiz(){
 	}
 }
 
+/**
+ * Recarrega a URL atual.
+ *
+ * Redireciona para o caminho atual, útil para atualizar a página
+ * após operações que modificam o estado.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * @return void
+ */
 function gestor_reload_url(){
 	global $_GESTOR;
 	
 	gestor_redirecionar($_GESTOR['caminho-total']);
 }
 
+/**
+ * Remove uma variável específica da query string.
+ *
+ * Filtra uma query string removendo uma variável específica,
+ * mantendo as demais.
+ *
+ * @param string $queryString Query string completa (formato: var1=val1&var2=val2).
+ * @param string $removerVariavel Nome da variável a ser removida.
+ * @return string Query string processada sem a variável removida.
+ */
 function gestor_querystring_remover_variavel($queryString,$removerVariavel = ''){
 	if(existe($queryString) && existe($removerVariavel)){
 		parse_str($queryString, $variaveis);
@@ -823,6 +899,15 @@ function gestor_querystring_remover_variavel($queryString,$removerVariavel = '')
 	}
 }
 
+/**
+ * Obtém o valor de uma variável específica da query string.
+ *
+ * Extrai e retorna o valor de uma variável da query string.
+ *
+ * @param string $queryString Query string completa.
+ * @param string $variavel Nome da variável a buscar.
+ * @return string Valor da variável ou string vazia se não encontrada.
+ */
 function gestor_querystring_variavel($queryString,$variavel = ''){
 	if(existe($queryString) && existe($variavel)){
 		parse_str($queryString, $variaveis);
@@ -841,6 +926,15 @@ function gestor_querystring_variavel($queryString,$variavel = ''){
 	return '';
 }
 
+/**
+ * Obtém a query string atual da requisição.
+ *
+ * Retorna a query string removendo parâmetros internos do gestor
+ * (_gestor-caminho) e opcionalmente outras variáveis.
+ *
+ * @param string $removerVariavel Nome da variável adicional a remover (opcional).
+ * @return string Query string processada.
+ */
 function gestor_querystring($removerVariavel = ''){
 	if(!isset($_SERVER['QUERY_STRING'])){
 		return '';
@@ -856,6 +950,23 @@ function gestor_querystring($removerVariavel = ''){
 	return (existe($queryString) ? $queryString : '');
 }
 
+/**
+ * Redireciona para um local específico.
+ *
+ * Realiza redirecionamento HTTP com suporte a:
+ * - URLs internas (relativas à raiz do sistema)
+ * - URLs externas (absolutas)
+ * - Query strings personalizadas
+ * - Alertas de sessão (mantidos após redirecionamento)
+ * - Local armazenado em sessão
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ *
+ * @param string|false $local Caminho de destino (false = usar sessão ou raiz).
+ * @param string $queryString Query string adicional.
+ * @param bool $externo Se true, trata como URL externa (não adiciona url-raiz).
+ * @return void (executa exit após redirecionar)
+ */
 function gestor_redirecionar($local = false,$queryString = '',$externo = false){
 	global $_GESTOR;
 	
@@ -884,6 +995,22 @@ function gestor_redirecionar($local = false,$queryString = '',$externo = false){
 	
 }
 
+/**
+ * Substitui variáveis globais em HTML.
+ *
+ * Processa template HTML substituindo variáveis delimitadas por marcadores
+ * especiais. Suporta:
+ * - Variáveis do módulo atual
+ * - Variáveis de módulos extras
+ * - Variáveis do sistema (pagina#titulo, pagina#url-raiz, etc.)
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['html'] HTML que será processado (obrigatório).
+ *
+ * @return string HTML com variáveis substituídas.
+ */
 function gestor_pagina_variaveis_globais($params = false){
 	global $_GESTOR;
 	
@@ -967,6 +1094,18 @@ function gestor_pagina_variaveis_globais($params = false){
 	}
 }
 
+/**
+ * Inclui uma variável JavaScript global na página.
+ *
+ * Adiciona variável ao array de variáveis JS que serão renderizadas
+ * no HTML como objeto JavaScript acessível globalmente.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ *
+ * @param string $variavel Nome da variável JavaScript.
+ * @param mixed $valor Valor da variável (será convertido para JSON).
+ * @return void
+ */
 function gestor_js_variavel_incluir($variavel,$valor){
 	global $_GESTOR;
 
@@ -978,6 +1117,19 @@ function gestor_js_variavel_incluir($variavel,$valor){
 }
 
 
+/**
+ * Marca componentes para inclusão na página.
+ *
+ * Adiciona componente(s) à lista de componentes que serão renderizados.
+ * Suporta inclusão individual ou em lote via array.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['id'] ID do componente individual.
+ * @param array $params['componentes'] Array de IDs de componentes.
+ * @return void
+ */
 function gestor_componentes_incluir($params = false){
 	global $_GESTOR;
 
@@ -1008,6 +1160,17 @@ function gestor_componentes_incluir($params = false){
 }
 
 
+/**
+ * Renderiza componentes marcados na página.
+ *
+ * Processa todos os componentes marcados para inclusão e adiciona
+ * seu HTML ao conteúdo da página.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ *
+ * @param array|false $params Parâmetros da função (atualmente não utilizados).
+ * @return void
+ */
 function gestor_componentes_incluir_pagina($params = false){
 	global $_GESTOR;
 
@@ -1038,6 +1201,18 @@ function gestor_componentes_incluir_pagina($params = false){
 
 // =========================== Funções de Sessões e Cookies
 
+/**
+ * Inicia uma nova sessão ou recupera sessão existente.
+ *
+ * Cria cookie seguro com ID de sessão usando:
+ * - HttpOnly (proteção contra XSS)
+ * - Secure (apenas HTTPS)
+ * - SameSite=Lax (proteção CSRF)
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * @global array $_CONFIG Configurações do sistema.
+ * @return void
+ */
 function gestor_sessao_iniciar(){
 	global $_GESTOR;
 	global $_CONFIG;
@@ -1060,6 +1235,17 @@ function gestor_sessao_iniciar(){
 	}
 }
 
+/**
+ * Obtém ou cria o ID numérico da sessão no banco de dados.
+ *
+ * Busca sessão existente pelo ID do cookie ou cria nova entrada.
+ * Realiza limpeza aleatória de sessões expiradas (1/50 requisições).
+ * Atualiza timestamp de acesso automaticamente.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * @global array $_CONFIG Configurações do sistema.
+ * @return int ID numérico da sessão no banco de dados.
+ */
 function gestor_sessao_id(){
 	global $_GESTOR;
 	global $_CONFIG;
@@ -1125,6 +1311,17 @@ function gestor_sessao_id(){
 	return $id_sessoes;
 }
 
+/**
+ * Deleta a sessão atual do usuário.
+ *
+ * Remove todos os dados da sessão:
+ * - Variáveis de sessão do banco
+ * - Registro de sessão do banco
+ * - Cookie do navegador
+ *
+ * @global array $_CONFIG Configurações do sistema.
+ * @return void
+ */
 function gestor_sessao_del(){
 	global $_CONFIG;
 	
@@ -1164,6 +1361,18 @@ function gestor_sessao_del(){
 	]);
 }
 
+/**
+ * Obtém ou define uma variável de sessão.
+ *
+ * Gerencia variáveis de sessão armazenadas no banco de dados.
+ * Dados são serializados em JSON para suportar tipos complexos.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ *
+ * @param string $variavel Nome da variável de sessão.
+ * @param mixed $valor Valor a ser armazenado (NULL para apenas leitura).
+ * @return mixed Valor da variável (em modo leitura) ou void (em modo escrita).
+ */
 function gestor_sessao_variavel($variavel,$valor = NULL){
 	global $_GESTOR;
 	
@@ -1222,6 +1431,16 @@ function gestor_sessao_variavel($variavel,$valor = NULL){
 	}
 }
 
+/**
+ * Remove uma variável específica da sessão.
+ *
+ * Deleta permanentemente uma variável de sessão do banco de dados.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ *
+ * @param string $variavel Nome da variável a ser removida.
+ * @return void
+ */
 function gestor_sessao_variavel_del($variavel){
 	global $_GESTOR;
 	
@@ -1247,6 +1466,14 @@ function gestor_sessao_variavel_del($variavel){
 	}
 }
 
+/**
+ * Remove TODAS as sessões do sistema.
+ *
+ * **ATENÇÃO**: Deleta todas as sessões e variáveis de todos os usuários.
+ * Usar apenas para manutenção ou reset completo do sistema.
+ *
+ * @return void
+ */
 function gestor_sessao_del_all(){
 	banco_delete
 	(
