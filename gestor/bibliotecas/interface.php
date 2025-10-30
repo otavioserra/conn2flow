@@ -1,4 +1,15 @@
 <?php
+/**
+ * Biblioteca de Interface Administrativa
+ * 
+ * Fornece funções para construção e manipulação de interfaces administrativas,
+ * incluindo formatação de dados, troca de valores entre tabelas, renderização
+ * de campos de formulário, geração de tabelas, menus, e outros componentes UI.
+ * 
+ * @package Conn2Flow
+ * @subpackage Bibliotecas
+ * @version 1.1.5
+ */
 
 global $_GESTOR;
 
@@ -8,15 +19,29 @@ $_GESTOR['biblioteca-interface']							=	Array(
 
 // ===== Funções formatação
 
+/**
+ * Converte data/hora do formato datetime (YYYY-MM-DD HH:MM:SS) para texto formatado.
+ * 
+ * Permite formatação personalizada usando marcadores: D (dia), ME (mês), A (ano),
+ * H (hora), MI (minutos), S (segundos). Formato padrão: "D/ME/A HhMI".
+ *
+ * @param string $data_hora Data/hora no formato datetime (YYYY-MM-DD HH:MM:SS)
+ * @param string|false $format Formato personalizado usando marcadores ou false para formato padrão
+ * @return string Data/hora formatada ou string vazia se não houver data
+ */
 function interface_data_hora_from_datetime_to_text($data_hora, $format = false){
 	$formato_padrao = 'D/ME/A HhMI';
 	
+	// Verifica se há data/hora válida
 	if($data_hora){
+		// Separa data e hora
 		$data_hora = explode(" ",$data_hora);
 		$data_aux = explode("-",$data_hora[0]);
 		
+		// Aplica formato personalizado se fornecido
 		if($format){
 			$hora_aux = explode(":",$data_hora[1]);
+			// Substitui marcadores pelos valores correspondentes
 			$format = preg_replace('/D/', $data_aux[2], $format);
 			$format = preg_replace('/ME/', $data_aux[1], $format);
 			$format = preg_replace('/A/', $data_aux[0], $format);
@@ -26,6 +51,7 @@ function interface_data_hora_from_datetime_to_text($data_hora, $format = false){
 			
 			return $format;
 		} else if($formato_padrao){
+			// Usa formato padrão (D/ME/A HhMI)
 			$format = $formato_padrao;
 			$hora_aux = explode(":",$data_hora[1]);
 			$format = preg_replace('/D/', $data_aux[2], $format);
@@ -37,6 +63,7 @@ function interface_data_hora_from_datetime_to_text($data_hora, $format = false){
 			
 			return $format;
 		} else {
+			// Formato brasileiro básico (DD/MM/YYYY HH:MM:SS)
 			$data = $data_aux[2] . "/" . $data_aux[1] . "/" .$data_aux[0];
 			$hora = $data_hora[1];
 			
@@ -47,7 +74,16 @@ function interface_data_hora_from_datetime_to_text($data_hora, $format = false){
 	}
 }
 
+/**
+ * Converte data do formato datetime (YYYY-MM-DD) para texto no formato brasileiro (DD/MM/YYYY).
+ * 
+ * Extrai apenas a parte da data ignorando o horário.
+ *
+ * @param string $data_hora Data/hora no formato datetime (YYYY-MM-DD HH:MM:SS)
+ * @return string Data formatada (DD/MM/YYYY)
+ */
 function interface_data_from_datetime_to_text($data_hora){
+	// Separa data e hora, extrai apenas a data
 	$data_hora = explode(" ",$data_hora);
 	$data_aux = explode("-",$data_hora[0]);
 	$data = $data_aux[2] . "/" . $data_aux[1] . "/" .$data_aux[0];
@@ -55,6 +91,28 @@ function interface_data_from_datetime_to_text($data_hora){
 	return $data;
 }
 
+/**
+ * Busca e substitui valores de um campo usando referência de outra tabela.
+ * 
+ * Realiza lookup em uma tabela secundária para trocar valores de referência
+ * por valores descritivos. Suporta cache de consultas, campos extras e 
+ * encapsulamento de resultados em templates.
+ *
+ * @global array $_GESTOR Sistema global de configurações e cache
+ * 
+ * @param array|false $params Parâmetros da função:
+ * @param array $params['tabela'] Configuração da tabela principal (obrigatório):
+ * @param string $params['tabela']['nome'] Nome da tabela
+ * @param string $params['tabela']['campo_referencia'] Campo usado como chave de busca
+ * @param string $params['tabela']['campo_trocar'] Campo cujo valor será retornado
+ * @param array $params['tabela']['camposExtras'] Campos adicionais a retornar (opcional)
+ * @param string $params['tabela']['where'] Condição WHERE adicional (opcional)
+ * @param array $params['tabela2'] Configuração de tabela secundária (opcional)
+ * @param mixed $params['dado'] Valor a ser buscado
+ * @param string $params['encapsular'] Template para encapsular resultado (opcional)
+ * 
+ * @return string|array Valor trocado, array de valores (se camposExtras) ou resultado encapsulado
+ */
 function interface_trocar_valor_outra_tabela($params = false){
 	global $_GESTOR;
 	
