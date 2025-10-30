@@ -1014,15 +1014,15 @@
         "checksum": "{\"html\":\"a67b32353b2471c080e7d8c0996fb700\",\"css\":\"\",\"combined\":\"a67b32353b2471c080e7d8c0996fb700\"}"
     },
     {
-        "nome": "Modal Página",
-        "id": "modal-pagina",
+        "nome": "Modal Editor HTML Visual",
+        "id": "modal-editor-html-visual",
         "language": "pt-br",
         "modulo": "admin-paginas",
         "html": "<div class=\"ui modal overlay fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <div style=\"position: relative;\">\n            <iframe id=\"iframe-preview\" style=\"width:100%;height:900px;border:1px solid #ccc;\"><\/iframe>\n            <div class=\"ui active dimmer\">\n                <div class=\"ui loader\"><\/div>\n            <\/div>\n        <\/div>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button previsualizarVoltar\" data-tooltip=\"#button-back-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 5,
+        "versao": 1,
         "file_version": "1.14",
         "checksum": "{\"html\":\"95e3802f5909d038fd2748e9360f9326\",\"css\":\"\",\"combined\":\"95e3802f5909d038fd2748e9360f9326\"}"
     },
@@ -1048,20 +1048,20 @@
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 12,
+        "versao": 1,
         "file_version": "1.12",
         "checksum": "{\"html\":\"44f2eeeb3cd666994cec0e1aa342c93e\",\"css\":\"\",\"combined\":\"44f2eeeb3cd666994cec0e1aa342c93e\"}"
     },
     {
-        "nome": "Page Modal",
-        "id": "modal-pagina",
+        "nome": "Visual HTML Modal Editor",
+        "id": "modal-editor-html-visual",
         "language": "en",
         "modulo": "admin-paginas",
         "html": "<div class=\"ui modal overlay fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <div style=\"position: relative;\">\n            <iframe id=\"iframe-preview\" style=\"width:100%;height:900px;border:1px solid #ccc;\"><\/iframe>\n            <div class=\"ui active dimmer\">\n                <div class=\"ui loader\"><\/div>\n            <\/div>\n        <\/div>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button previsualizarVoltar\" data-tooltip=\"#button-back-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 5,
+        "versao": 1,
         "file_version": "1.14",
         "checksum": "{\"html\":\"95e3802f5909d038fd2748e9360f9326\",\"css\":\"\",\"combined\":\"95e3802f5909d038fd2748e9360f9326\"}"
     },
@@ -1087,7 +1087,7 @@
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 7,
+        "versao": 1,
         "file_version": "1.7",
         "checksum": "{\"html\":\"5d9e51dd8fc2fdbac03369c65c700e39\",\"css\":\"\",\"combined\":\"5d9e51dd8fc2fdbac03369c65c700e39\"}"
     },
@@ -1116,5 +1116,57 @@
         "versao": 1,
         "file_version": "1.4",
         "checksum": "{\"html\":\"fdadfd1f10966eac979356e355d7746d\",\"css\":\"\",\"combined\":\"fdadfd1f10966eac979356e355d7746d\"}"
+    },
+    {
+        "nome": "Modal Editor HTML Visual",
+        "id": "modal-editor-html-visual",
+        "language": "pt-br",
+        "modulo": "admin-templates",
+        "html": "<div class=\"ui modal overlay fullscreen previsualizar\">\n    <div class=\"header\">#title#<\/div>\n    <div class=\"scrolling content\">\n        <div class=\"ui buttons\" style=\"margin-bottom: 1rem;\">\n            <button class=\"ui button screenPagina\" data-option=\"desktop\">\n                <i class=\"desktop icon\"><\/i> #desktop#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"tablet\">\n                <i class=\"tablet alternate icon\"><\/i> #tablet#\n            <\/button>\n            <button class=\"ui button screenPagina\" data-option=\"mobile\">\n                <i class=\"mobile alternate icon\"><\/i> #mobile#\n            <\/button>\n        <\/div>\n        <div style=\"position: relative;\">\n            <iframe id=\"iframe-preview\" style=\"width:100%;height:900px;border:1px solid #ccc;\"><\/iframe>\n            <div class=\"ui active dimmer\">\n                <div class=\"ui loader\"><\/div>\n            <\/div>\n        <\/div>\n    <\/div>\n    <div class=\"actions\">\n        <div class=\"ui approve right labeled icon button previsualizarVoltar\" data-tooltip=\"#button-back-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-back-value#\n            <i class=\"angle left icon\"><\/i>\n        <\/div>\n        <div class=\"ui approve right labeled icon button green previsualizarConfirmar\" data-tooltip=\"#button-tooltip#\"\n            data-inverted=\"\" data-position=\"top right\">\n            #button-value#\n            <i class=\"check circle icon\"><\/i>\n        <\/div>\n    <\/div>\n<\/div>",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"95e3802f5909d038fd2748e9360f9326\",\"css\":\"\",\"combined\":\"95e3802f5909d038fd2748e9360f9326\"}"
+    },
+    {
+        "nome": "Template Prompts Controles",
+        "id": "template-prompts-controles",
+        "language": "pt-br",
+        "modulo": "admin-templates",
+        "html": "<div class=\"ui grid menuMode\">\r\n    <div class=\"six wide column\">\r\n        <div class=\"field\">\r\n            <label>Sessões da Página:<\/label>\r\n            <select class=\"ui dropdown ai-prompt-page-select\">\r\n                #select-prompt-page#\r\n            <\/select>\r\n        <\/div>\r\n    <\/div>\r\n    <div class=\"six wide column hidden ai-prompt-session-container\">\r\n        <div class=\"field\">\r\n            <label>Sessão Alvo:<\/label>\r\n            <select class=\"ui dropdown ai-prompt-session-select\">\r\n\r\n            <\/select>\r\n        <\/div>\r\n    <\/div>\r\n    <div class=\"four wide column hidden ai-prompt-session-container\">\r\n        <div class=\"grouped fields\">\r\n            <label>Sessão Opção<\/label>\r\n            <div class=\"field\">\r\n                <div class=\"ui radio checkbox\">\r\n                    <input type=\"radio\" name=\"ai-prompt-session-option\" value=\"new-before\">\r\n                    <label>Adicionar Nova Antes<\/label>\r\n                <\/div>\r\n            <\/div>\r\n            <div class=\"field\">\r\n                <div class=\"ui radio checkbox\">\r\n                    <input type=\"radio\" name=\"ai-prompt-session-option\" value=\"target\" checked=\"checked\">\r\n                    <label>Alterar Sessão Alvo<\/label>\r\n                <\/div>\r\n            <\/div>\r\n            <div class=\"field\">\r\n                <div class=\"ui radio checkbox\">\r\n                    <input type=\"radio\" name=\"ai-prompt-session-option\" value=\"new-after\">\r\n                    <label>Adicionar Nova Depois<\/label>\r\n                <\/div>\r\n            <\/div>\r\n        <\/div>\r\n        <div class=\"ui tiny button red ai-prompt-session-delete\" style=\"margin-bottom:10px;\"\r\n            data-tooltip=\"Clique para deletar a sessão alvo\" data-position=\"top left\" data-inverted=\"\">\r\n            Deletar Sessão Alvo\r\n        <\/div>\r\n    <\/div>\r\n<\/div>",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"44f2eeeb3cd666994cec0e1aa342c93e\",\"css\":\"\",\"combined\":\"44f2eeeb3cd666994cec0e1aa342c93e\"}"
+    },
+    {
+        "nome": "Visual HTML Modal Editor",
+        "id": "modal-editor-html-visual",
+        "language": "en",
+        "modulo": "admin-templates",
+        "html": null,
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+    },
+    {
+        "nome": "Template Prompts Controls",
+        "id": "template-prompts-controles",
+        "language": "en",
+        "modulo": "admin-templates",
+        "html": null,
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
     }
 ]

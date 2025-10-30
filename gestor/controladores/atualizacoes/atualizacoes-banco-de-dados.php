@@ -328,7 +328,6 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         switch ($tabela) {
             case 'layouts':
             case 'componentes':
-                $lang = $row['language'] ?? $row['linguagem_codigo'] ?? null; if (!isset($lang,$row['id'])) return null; return strtolower($lang).'|'.$row['id'];
             case 'paginas':
                 // id + language + modulo (permitindo mesmo id em módulos distintos)
                 $lang = $row['language'] ?? $row['linguagem_codigo'] ?? null; if (!isset($lang,$row['id'])) return null; $mod = $row['modulo'] ?? ''; return strtolower($lang).'|'.$mod.'|'.$row['id'];
@@ -444,8 +443,8 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     $dbPkIndex = []; // chaveNatural => pk numérico
     // Índices secundários (fallback) para registros que perderam a linguagem (bug histórico) a fim de evitar duplicações
     $fallbackIndex = [
-        'layouts' => [],          // id
-        'componentes' => [],      // id
+        'layouts' => [],          // modulo|id
+        'componentes' => [],      // modulo|id
         'paginas' => [],          // modulo|id
         'variaveis' => [],        // modulo|grupo|id
         'modulos' => [],          // id
@@ -466,7 +465,6 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             switch ($tabela) {
                 case 'layouts':
                 case 'componentes':
-                    if (isset($exist['id'])) $fallbackIndex[$tabela][$exist['id']] = $exist; break;
                 case 'paginas':
                     $mod = $exist['modulo'] ?? ''; if (isset($exist['id'])) $fallbackIndex[$tabela][$mod.'|'.$exist['id']] = $exist; break;
                 case 'variaveis':
@@ -524,9 +522,6 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                         switch ($tabela) {
                             case 'layouts':
                             case 'componentes':
-                                $whereSql = "WHERE `$colLang` = :__lang AND id = :__id";
-                                $params['__lang']=$langVal; $params['__id']=$exist['id'];
-                                break;
                             case 'paginas':
                                 $whereSql = "WHERE `$colLang` = :__lang AND id = :__id AND modulo = :__mod";
                                 $params['__lang']=$langVal; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??'';
@@ -557,8 +552,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             // Tentar fallback de recuperação (linha existente sem linguagem)
             $fallbackKey = null; $existFallback = null;
             switch ($tabela) {
-                case 'layouts': case 'componentes': $fallbackKey = $row['id'] ?? null; $existFallback = $fallbackKey!==null ? ($fallbackIndex[$tabela][$fallbackKey] ?? null) : null; break;
-                case 'paginas': $fallbackKey = ($row['modulo'] ?? '').'|'.($row['id'] ?? ''); $existFallback = $fallbackIndex[$tabela][$fallbackKey] ?? null; break;
+                case 'paginas': case 'layouts': case 'componentes': $fallbackKey = ($row['modulo'] ?? '').'|'.($row['id'] ?? ''); $existFallback = $fallbackIndex[$tabela][$fallbackKey] ?? null; break;
                 case 'variaveis': $fallbackKey = ($row['modulo'] ?? '').'|'.(($row['grupo'] ?? '')).'|'.($row['id'] ?? ''); $existFallback = $fallbackIndex[$tabela][$fallbackKey] ?? null; break;
                 case 'modulos': case 'modulos_grupos': case 'modulos_operacoes': case 'usuarios_perfis': case 'prompts_ia': case 'alvos_ia': case 'modos_ia': $fallbackKey = $row['id'] ?? null; $existFallback = $fallbackKey!==null ? ($fallbackIndex[$tabela][$fallbackKey] ?? null) : null; break;
             }
@@ -590,8 +584,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                         if ($pkDeclarada && isset($exist[$pkDeclarada])) { $whereSql="WHERE `$pkDeclarada`=:__pk"; $params['__pk']=$exist[$pkDeclarada]; }
                         else {
                             switch ($tabela) {
-                                case 'layouts': case 'componentes': $whereSql="WHERE id = :__id AND (`language` IS NULL OR `linguagem_codigo` IS NULL)"; $params['__id']=$exist['id']; break;
-                                case 'paginas': $whereSql="WHERE id = :__id AND modulo = :__mod AND (`language` IS NULL OR `linguagem_codigo` IS NULL)"; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??''; break;
+                                case 'paginas': case 'layouts': case 'componentes': $whereSql="WHERE id = :__id AND modulo = :__mod AND (`language` IS NULL OR `linguagem_codigo` IS NULL)"; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??''; break;
                                 case 'variaveis': $whereSql="WHERE id = :__id AND modulo = :__mod AND (grupo <=> :__grp) AND (`language` IS NULL OR `linguagem_codigo` IS NULL)"; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??''; $params['__grp']=$exist['grupo']??null; break;
                                 case 'modulos': case 'modulos_grupos': case 'modulos_operacoes': case 'usuarios_perfis': case 'prompts_ia': case 'alvos_ia': case 'modos_ia': $whereSql="WHERE id = :__id AND (`language` IS NULL OR `linguagem_codigo` IS NULL)"; $params['__id']=$exist['id']; break;
                             }

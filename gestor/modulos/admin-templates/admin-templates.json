@@ -1,0 +1,364 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "ia",
+        "html-editor"
+    ],
+    "tabela": {
+        "nome": "templates",
+        "id": "id",
+        "id_numerico": "id_templates",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "selectDadosFrameworkCSS": [
+        {
+            "texto": "Fomantic-UI",
+            "valor": "fomantic-ui"
+        },
+        {
+            "texto": "TailwindCSS",
+            "valor": "tailwindcss"
+        }
+    ],
+    "resources": {
+        "pt-br": {
+            "selectDadosConteudo": [
+                {
+                    "texto": "Todas",
+                    "valor": "tudo"
+                },
+                {
+                    "texto": "Por Sessão",
+                    "valor": "sessao"
+                }
+            ],
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Templates",
+                    "id": "admin-templates",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-templates\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin Templates - Adicionar",
+                    "id": "admin-templates-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-templates\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.3",
+                    "checksum": {
+                        "html": "f193a735c75f22a987ceefdc14d36a3f",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "1d207e28436779e1d4d74d2fa6e3ab57"
+                    }
+                },
+                {
+                    "name": "Admin Templates - Editar",
+                    "id": "admin-templates-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-templates\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.3",
+                    "checksum": {
+                        "html": "ae8f0d91d6430a0f8ee532cf1f32e09c",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "de0f38e12d2d5dbc0a3b531a81a30837"
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Modal Editor HTML Visual",
+                    "id": "modal-editor-html-visual",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "95e3802f5909d038fd2748e9360f9326",
+                        "css": "",
+                        "combined": "95e3802f5909d038fd2748e9360f9326"
+                    }
+                },
+                {
+                    "name": "Template Prompts Controles",
+                    "id": "template-prompts-controles",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "44f2eeeb3cd666994cec0e1aa342c93e",
+                        "css": "",
+                        "combined": "44f2eeeb3cd666994cec0e1aa342c93e"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome do Template",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome do Template",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-title-preview",
+                    "value": "Pré-Visualização da Template",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-button-preview",
+                    "value": "Salvar",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-desktop-preview",
+                    "value": "Computador",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-tablet-preview",
+                    "value": "Tablet",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-mobile-preview",
+                    "value": "Smartphone",
+                    "type": "string"
+                },
+                {
+                    "id": "button-back-tooltip",
+                    "value": "Clique no botão para voltar.",
+                    "type": "string"
+                },
+                {
+                    "id": "button-back-value",
+                    "value": "Voltar",
+                    "type": "string"
+                },
+                {
+                    "id": "form-target-label",
+                    "value": "Alvo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-framework-css-label",
+                    "value": "Framework CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-target-placeholder",
+                    "value": "Selecione um alvo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template-content-label",
+                    "value": "Conteúdo do Template",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-tooltip",
+                    "value": "Clique para abrir o CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-label",
+                    "value": "CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-tooltip",
+                    "value": "Clique para abrir o código HTML > Body. Parte visível da página dentro da tag <body>",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-label",
+                    "value": "HTML > Body",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "selectDadosConteudo": [
+                {
+                    "texto": "All",
+                    "valor": "tudo"
+                },
+                {
+                    "texto": "Per Session",
+                    "valor": "sessao"
+                }
+            ],
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Templates",
+                    "id": "admin-templates",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-templates\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin Templates - Add",
+                    "id": "admin-templates-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-templates\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Admin Templates - Edit",
+                    "id": "admin-templates-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-templates\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Visual HTML Modal Editor",
+                    "id": "modal-editor-html-visual",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Template Prompts Controls",
+                    "id": "template-prompts-controles",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Template Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Template Name",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-title-preview",
+                    "value": "Template Preview",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-button-preview",
+                    "value": "Save",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-desktop-preview",
+                    "value": "Computer",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-tablet-preview",
+                    "value": "Tablet",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-mobile-preview",
+                    "value": "Smartphone",
+                    "type": "string"
+                },
+                {
+                    "id": "button-back-tooltip",
+                    "value": "Click the button to go back.",
+                    "type": "string"
+                },
+                {
+                    "id": "button-back-value",
+                    "value": "Back",
+                    "type": "string"
+                },
+                {
+                    "id": "form-target-label",
+                    "value": "Target",
+                    "type": "string"
+                },
+                {
+                    "id": "form-framework-css-label",
+                    "value": "Framework CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-target-placeholder",
+                    "value": "Choose a target",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template-content-label",
+                    "value": "Template Content",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-tooltip",
+                    "value": "Click to open CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-label",
+                    "value": "CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-tooltip",
+                    "value": "Click to open HTML > Body. Visible part of the page within the <body> tag",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-label",
+                    "value": "HTML > Body",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

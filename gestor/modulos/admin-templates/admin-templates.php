@@ -2,10 +2,16 @@
 
 global $_GESTOR;
 
-$_GESTOR['modulo-id']							=	'admin-paginas';
-$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/admin-paginas.json'), true);
+$_GESTOR['modulo-id'] = 'admin-templates';
+$_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/admin-templates.json'), true);
 
-function admin_paginas_adicionar(){
+// ===== Interfaces Auxiliares
+
+
+
+// ===== Interfaces Principais
+
+function admin_templates_adicionar(){
 	global $_GESTOR;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
@@ -21,14 +27,8 @@ function admin_paginas_adicionar(){
 			'campos' => Array(
 				Array(
 					'regra' => 'texto-obrigatorio',
-					'campo' => 'pagina-nome',
+					'campo' => 'template-nome',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
-				),
-				Array(
-					'regra' => 'texto-obrigatorio',
-					'campo' => 'paginaCaminho',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-path-label')),
-					'min' => 1,
 				)
 			)
 		));
@@ -39,7 +39,7 @@ function admin_paginas_adicionar(){
 		$campo_sem_aspas_simples = false;
 		
 		$id = banco_identificador(Array(
-			'id' => banco_escape_field($_REQUEST["pagina-nome"]),
+			'id' => banco_escape_field($_REQUEST["template-nome"]),
 			'tabela' => Array(
 				'nome' => $modulo['tabela']['nome'],
 				'campo' => $modulo['tabela']['id'],
@@ -47,27 +47,6 @@ function admin_paginas_adicionar(){
 				'where' => "language='".$_GESTOR['linguagem-codigo']."'",
 			),
 		));
-		
-		// ===== Verificar se os campos enviados não existem no banco de dados
-		
-		$exiteCampo = interface_verificar_campos(Array(
-			'campo' => 'caminho',
-			'valor' => banco_escape_field($_REQUEST['paginaCaminho']),
-			'language' => true,
-		));
-		
-		if($exiteCampo){
-			$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-there-is-a-field'));
-			$alerta = modelo_var_troca_tudo($alerta,"#label#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-path-label')));
-			$alerta = modelo_var_troca($alerta,"#value#",banco_escape_field($_REQUEST['paginaCaminho']));
-			
-			interface_alerta(Array(
-				'redirect' => true,
-				'msg' => $alerta
-			));
-			
-			gestor_redirecionar($_GESTOR['modulo-id'].'/adicionar/');
-		}
 		
 		// ===== Variaveis globais alterar.
 		
@@ -84,35 +63,15 @@ function admin_paginas_adicionar(){
 		// ===== Campos gerais
 		
 		$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = "nome"; $post_nome = "pagina-nome"; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "nome"; $post_nome = "template-nome"; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		// ===== Layout: armazenar agora layout_id (string) em paginas.layout_id
-		if(isset($_REQUEST['layout']) && $_REQUEST['layout']){
-			$layoutNumerico = banco_escape_field($_REQUEST['layout']);
-			$layoutRow = banco_select_name(
-				banco_campos_virgulas(Array('id','id_layouts')),
-				'layouts',
-				"WHERE id_layouts='".$layoutNumerico."'"
-			);
-			$layoutIdStr = ($layoutRow ? $layoutRow[0]['id'] : null);
-			if($layoutIdStr){
-				$campo_nome = "layout_id"; $campos[] = Array($campo_nome,$layoutIdStr);
-			}
-		}
-		$campo_nome = "tipo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "target"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "framework_css"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "modulo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "opcao"; $post_nome = 'pagina-opcao'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "caminho"; $post_nome = 'paginaCaminho'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "html"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css"; $post_nome = $campo_nome; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css_compiled"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "html_extra_head"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
-		
-		if(gestor_acesso('permissao-pagina')){
-			$campo_nome = "sem_permissao"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
-		}
 		
 		// ===== Campos comuns
 		
@@ -151,8 +110,8 @@ function admin_paginas_adicionar(){
 
 	// ===== Prompt IA
 
-	$pagina_prompt_controles = gestor_componente(Array(
-		'id' => 'pagina-prompts-controles',
+	$template_prompt_controles = gestor_componente(Array(
+		'id' => 'template-prompts-controles',
 		'modulo' => $_GESTOR['modulo-id'],
 	));
 
@@ -165,20 +124,14 @@ function admin_paginas_adicionar(){
 		}
 	}
 
-	$pagina_prompt_controles = modelo_var_troca_tudo($pagina_prompt_controles,'#select-prompt-page#',$select_prompt_page);
+	$template_prompt_controles = modelo_var_troca_tudo($template_prompt_controles,'#select-prompt-page#',$select_prompt_page);
 
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- ia-componente -->',ia_renderizar_prompt(
 		Array(
 			'alvo' => 'paginas',
-			'prompt_controls' => $pagina_prompt_controles
+			'prompt_controls' => $template_prompt_controles
 		)
-	));
-
-	// ===== Permissão de páginas
-	
-	if(!gestor_acesso('permissao-pagina')){
-		$cel_nome = 'permissao-pagina'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
-	}	
+	));	
 	
 	// ===== Inclusão do CodeMirror
 
@@ -226,36 +179,13 @@ function admin_paginas_adicionar(){
 					'regra' => 'texto-obrigatorio',
 					'campo' => 'nome',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
-					'identificador' => 'pagina-nome',
-				),
-				Array(
-					'regra' => 'texto-obrigatorio-verificar-campo',
-					'campo' => 'caminho',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-path-label')),
-					'identificador' => 'paginaCaminho',
-					'language' => true,
-					'regrasExtra' => Array(
-						Array(
-							'regra' => 'regexNecessary',
-							'regex' => '/^.*\/$/gi',
-							'regexNecessaryChars' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'path-necessary-chars')),
-						)
-					),
-					'removerRegra' => Array(
-						'minLength[3]'
-					),
+					'identificador' => 'template-nome',
 				),
 				Array(
 					'regra' => 'selecao-obrigatorio',
-					'campo' => 'layout',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-layout-label')),
-					'identificador' => 'layout',
-				),
-				Array(
-					'regra' => 'selecao-obrigatorio',
-					'campo' => 'tipo',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-label')),
-					'identificador' => 'tipo',
+					'campo' => 'target',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-target-label')),
+					'identificador' => 'target',
 				),
 				Array(
 					'regra' => 'selecao-obrigatorio',
@@ -267,41 +197,17 @@ function admin_paginas_adicionar(){
 			'campos' => Array(
 				Array(
 					'tipo' => 'select',
-					'id' => 'layout',
-					'nome' => 'layout',
+					'id' => 'target',
+					'nome' => 'target',
 					'procurar' => true,
 					'limpar' => true,
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-layout-placeholder')),
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-target-placeholder')),
 					'tabela' => Array(
-						'nome' => 'layouts',
-						'campo' => 'nome',
-						'id_numerico' => 'id_layouts',
-						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
-					),
-				),
-				Array(
-					'tipo' => 'select',
-					'id' => 'module',
-					'nome' => 'modulo',
-					'procurar' => true,
-					'limpar' => true,
-					'selectClass' => 'gestorModule',
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
-					'tabela' => Array(
-						'nome' => 'modulos',
+						'nome' => 'alvos_ia',
 						'campo' => 'nome',
 						'id_numerico' => 'id',
-						'where' => "modulo_grupo_id!='bibliotecas' AND language='".$_GESTOR['linguagem-codigo']."'",
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
-				),
-				Array(
-					'tipo' => 'select',
-					'id' => 'type',
-					'nome' => 'tipo',
-					'selectClass' => 'pagina-tipo',
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-placeholder')),
-					'dados' => $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosTipo'],
-					'valor_selecionado' => 'pagina',
 				),
 				Array(
 					'tipo' => 'select',
@@ -316,7 +222,7 @@ function admin_paginas_adicionar(){
 	);
 }
 
-function admin_paginas_editar(){
+function admin_templates_editar(){
 	global $_GESTOR;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
@@ -329,17 +235,11 @@ function admin_paginas_editar(){
 	
 	$camposBanco = Array(
 		'nome',
-		'caminho',
-		'layout_id', // substitui id_layouts
-		'modulo',
-		'tipo',
-		'opcao',
-		'raiz',
-		'sem_permissao',
+		'target',
 		'html',
 		'css',
-		'css_compiled', // Novo campo
-		'html_extra_head', // Novo campo
+		'css_compiled',
+		'html_extra_head',
 		'framework_css',
 	);
 	
@@ -380,38 +280,11 @@ function admin_paginas_editar(){
 			'campos' => Array(
 				Array(
 					'regra' => 'texto-obrigatorio',
-					'campo' => 'pagina-nome',
+					'campo' => 'template-nome',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
-				),
-				Array(
-					'regra' => 'texto-obrigatorio',
-					'campo' => 'paginaCaminho',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-path-label')),
-					'min' => 1,
 				)
 			)
 		));
-		
-		// ===== Verificar se os campos enviados não existem no banco de dados
-		
-		$exiteCampo = interface_verificar_campos(Array(
-			'campo' => 'caminho',
-			'valor' => banco_escape_field($_REQUEST['paginaCaminho']),
-			'language' => true,
-		));
-		
-		if($exiteCampo){
-			$alerta = gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-there-is-a-field'));
-			$alerta = modelo_var_troca_tudo($alerta,"#label#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-path-label')));
-			$alerta = modelo_var_troca($alerta,"#value#",banco_escape_field($_REQUEST['paginaCaminho']));
-			
-			interface_alerta(Array(
-				'redirect' => true,
-				'msg' => $alerta
-			));
-			
-			gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
-		}
 		
 		// ===== Valores padrões da tabela e regras para o campo nome
 		
@@ -420,7 +293,7 @@ function admin_paginas_editar(){
 			'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D' AND language='".$_GESTOR['linguagem-codigo']."'",
 		);
 		
-		$campo_nome = "nome"; $request_name = 'pagina-nome'; $alteracoes_name = 'name'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; if(!isset($_REQUEST['_gestor-nao-alterar-id'])){$alterar_id = true;} $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
+		$campo_nome = "nome"; $request_name = 'template-nome'; $alteracoes_name = 'name'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; if(!isset($_REQUEST['_gestor-nao-alterar-id'])){$alterar_id = true;} $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		
 		// ===== Se mudar o nome, mudar o identificador do registro
 		
@@ -437,7 +310,7 @@ function admin_paginas_editar(){
 			
 			if($layouts){
 				$id_novo = banco_identificador(Array(
-					'id' => banco_escape_field($_REQUEST["pagina-nome"]),
+					'id' => banco_escape_field($_REQUEST["template-nome"]),
 					'tabela' => Array(
 						'nome' => $modulo['tabela']['nome'],
 						'campo' => $modulo['tabela']['id'],
@@ -467,31 +340,8 @@ function admin_paginas_editar(){
 		
 		// ===== Atualização dos demais campos.
 		
-		// ===== Layout: mapear numérico enviado para id textual e salvar em layout_id
-		if(isset($_REQUEST['layout']) && $_REQUEST['layout'] !== ''){
-			$layoutNumericoNovo = banco_escape_field($_REQUEST['layout']);
-			$layoutRowNovo = banco_select_name(
-				banco_campos_virgulas(Array('id','id_layouts')),
-				'layouts',
-				"WHERE id_layouts='".$layoutNumericoNovo."'"
-			);
-			$layoutIdNovo = ($layoutRowNovo ? $layoutRowNovo[0]['id'] : null);
-			if($layoutIdNovo && banco_select_campos_antes('layout_id') != $layoutIdNovo){
-				$editar['dados'][] = "layout_id='".$layoutIdNovo."'";
-				$alteracoes[] = Array('campo' => 'form-layout-label', 'valor_antes' => banco_select_campos_antes('layout_id'),'valor_depois' => $layoutIdNovo);
-			}
-		}
-		$campo_nome = "tipo"; $request_name = $campo_nome; $alteracoes_name = 'type'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
+		$campo_nome = "target"; $request_name = $campo_nome; $alteracoes_name = 'target'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "framework_css"; $request_name = $campo_nome; $alteracoes_name = 'framework-css'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
-		$campo_nome = "modulo"; $request_name = $campo_nome; $alteracoes_name = 'module'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
-		$campo_nome = "opcao"; $request_name = 'pagina-opcao'; $alteracoes_name = 'option'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
-		$campo_nome = "caminho"; $request_name = 'paginaCaminho'; $alteracoes_name = 'path'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name])); $caminhoMudou = banco_select_campos_antes($campo_nome);}
-		
-		$campo_nome = "raiz"; $request_name = $campo_nome; $alteracoes_name = 'root'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? '1' : NULL)){$editar['dados'][] = $campo_nome."=" . (isset($_REQUEST[$request_name]) ? '1' : 'NULL'); $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'filtro' => 'checkbox','valor_antes' => (banco_select_campos_antes($campo_nome) ? '1' : '0'),'valor_depois' => (isset($_REQUEST[$request_name]) ? '1' : '0'));}
-		
-		if(gestor_acesso('permissao-pagina')){
-			$campo_nome = "sem_permissao"; $request_name = $campo_nome; $alteracoes_name = 'permission'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? '1' : NULL)){$editar['dados'][] = $campo_nome."=" . (isset($_REQUEST[$request_name]) ? '1' : 'NULL'); $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'filtro' => 'checkbox','valor_antes' => (banco_select_campos_antes($campo_nome) ? '1' : '0'),'valor_depois' => (isset($_REQUEST[$request_name]) ? '1' : '0'));}
-		}
 		
 		$campo_nome = "html"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
 		$campo_nome = "css"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
@@ -540,34 +390,12 @@ function admin_paginas_editar(){
 				),
 				'alteracoes' => $alteracoes,
 			));
-			
-			// ===== Se mudou o caminho, criar página 301 do caminho
-			
-			if(isset($caminhoMudou)){
-				$campos = null; $campo_sem_aspas_simples = null;
-				
-				$campo_nome = "id_paginas"; $campo_valor = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])); 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "caminho"; $campo_valor = $caminhoMudou; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "data_criacao"; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
-				
-				banco_insert_name
-				(
-					$campos,
-					"paginas_301"
-				);
-			}
 		}
 		
 		// ===== Reler URL.
 		
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.(isset($id_novo) ? $id_novo : $id));
 	}
-	
-	// ===== Permissão de páginas
-	
-	if(!gestor_acesso('permissao-pagina')){
-		$cel_nome = 'permissao-pagina'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
-	}	
 	
 	// ===== Inclusão do CodeMirror
 
@@ -608,18 +436,12 @@ function admin_paginas_editar(){
 	
 	if($_GESTOR['banco-resultado']){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
-		$caminho = (isset($retorno_bd['caminho']) ? $retorno_bd['caminho'] : '');
-		$layout_id = (isset($retorno_bd['layout_id']) ? $retorno_bd['layout_id'] : '');
-		$bd_modulo = (isset($retorno_bd['modulo']) ? $retorno_bd['modulo'] : '');
-		$tipo = (isset($retorno_bd['tipo']) ? $retorno_bd['tipo'] : '');
+		$target = (isset($retorno_bd['target']) ? $retorno_bd['target'] : '');
 		$framework_css = (isset($retorno_bd['framework_css']) ? $retorno_bd['framework_css'] : '');
-		$opcao = (isset($retorno_bd['opcao']) ? $retorno_bd['opcao'] : '');
 		$html = (isset($retorno_bd['html']) ? htmlentities($retorno_bd['html']) : '');
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
 		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
 		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
-		$raiz = (isset($retorno_bd['raiz']) ? true : false);
-		$sem_permissao = (isset($retorno_bd['sem_permissao']) ? true : false);
 		
 		// ===== Variaveis globais alterar.
 		
@@ -635,15 +457,9 @@ function admin_paginas_editar(){
 		
 		// ===== Alterar demais variáveis.
 		
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#url#','http'.(isset($_SERVER['HTTPS']) ? 's':'').'://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].($caminho == '/' ? '' : $caminho));
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-nome#',$nome);
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#caminho#',$caminho);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#template-nome#',$nome);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id#',$id);
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#opcao#',$opcao);
 		
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#raiz#',($raiz ? 'checked' : ''));
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#sem_permissao#',($sem_permissao ? 'checked' : ''));
-
 		$variaveisTrocarDepois['pagina-css'] = $css;
 		$variaveisTrocarDepois['pagina-css-compiled'] = $css_compiled;
 		$variaveisTrocarDepois['pagina-html'] = $html;
@@ -651,8 +467,8 @@ function admin_paginas_editar(){
 
 		// ===== Prompt IA
 
-		$pagina_prompt_controles = gestor_componente(Array(
-			'id' => 'pagina-prompts-controles',
+		$template_prompt_controles = gestor_componente(Array(
+			'id' => 'template-prompts-controles',
 			'modulo' => $_GESTOR['modulo-id'],
 		));
 
@@ -665,12 +481,12 @@ function admin_paginas_editar(){
 			}
 		}
 
-		$pagina_prompt_controles = modelo_var_troca_tudo($pagina_prompt_controles,'#select-prompt-page#',$select_prompt_page);
+		$template_prompt_controles = modelo_var_troca_tudo($template_prompt_controles,'#select-prompt-page#',$select_prompt_page);
 
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- ia-componente -->',ia_renderizar_prompt(
 			Array(
 				'alvo' => 'paginas',
-				'prompt_controls' => $pagina_prompt_controles
+				'prompt_controls' => $template_prompt_controles
 			)
 		));
 
@@ -780,78 +596,30 @@ function admin_paginas_editar(){
 					'regra' => 'texto-obrigatorio',
 					'campo' => 'nome',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
-					'identificador' => 'pagina-nome',
-				),
-				Array(
-					'regra' => 'texto-obrigatorio-verificar-campo',
-					'campo' => 'caminho',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-path-label')),
-					'identificador' => 'paginaCaminho',
-					'language' => true,
-					'regrasExtra' => Array(
-						Array(
-							'regra' => 'regexNecessary',
-							'regex' => '/^.*\/$/gi',
-							'regexNecessaryChars' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'path-necessary-chars')),
-						)
-					),
-					'removerRegra' => Array(
-						'minLength[3]'
-					),
+					'identificador' => 'template-nome',
 				),
 				Array(
 					'regra' => 'selecao-obrigatorio',
-					'campo' => 'layout',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-layout-label')),
-					'identificador' => 'layout',
-				),
-				Array(
-					'regra' => 'selecao-obrigatorio',
-					'campo' => 'tipo',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-label')),
-					'identificador' => 'tipo',
+					'campo' => 'target',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-target-label')),
+					'identificador' => 'target',
 				)
 			),
 			'campos' => Array(
 				Array(
 					'tipo' => 'select',
-					'id' => 'layout',
-					'nome' => 'layout',
+					'id' => 'target',
+					'nome' => 'target',
 					'procurar' => true,
 					'limpar' => true,
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-layout-placeholder')),
+					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-target-placeholder')),
 					'tabela' => Array(
-						'nome' => 'layouts',
+						'nome' => 'alvos_ia',
 						'campo' => 'nome',
 						'id_numerico' => 'id',
-						'id_selecionado' => $layout_id,
+						'id_selecionado' => $target,
 						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
-				),
-				Array(
-					'tipo' => 'select',
-					'id' => 'module',
-					'nome' => 'modulo',
-					'procurar' => true,
-					'limpar' => true,
-					'selectClass' => 'gestorModule',
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
-					'tabela' => Array(
-						'nome' => 'modulos',
-						'campo' => 'nome',
-						'id_numerico' => 'id',
-						'id_selecionado' => $bd_modulo,
-						'where' => "modulo_grupo_id!='bibliotecas' AND language='".$_GESTOR['linguagem-codigo']."'",
-					),
-				),
-				Array(
-					'tipo' => 'select',
-					'id' => 'type',
-					'nome' => 'tipo',
-					'selectClass' => 'pagina-tipo',
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-placeholder')),
-					'valor_selecionado' => $tipo,
-					'dados' => $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosTipo'],
 				),
 				Array(
 					'tipo' => 'select',
@@ -866,49 +634,11 @@ function admin_paginas_editar(){
 	);
 }
 
-function admin_paginas_listar_cabecalho(){
-	global $_GESTOR;
-
-	// ===== Inclusão Módulo JS
-
-	if ($_GESTOR['opcao'] == 'listar') {
-		gestor_pagina_javascript_incluir();
-	}
-
-	// ===== Pegar o componente.
-
-	$tipo = $_REQUEST['tipo'] ?? 'pagina';
-	$checked = ' checked="checked"';
-
-	$lista_pagina_ou_sistema = gestor_componente(Array(
-		'id' => 'lista-pagina-ou-sistema',
-		'modulo' => $_GESTOR['modulo-id'],
-	));
-
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#ambos#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-ambos-label')));
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#pagina#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-pagina-label')));
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#sistema#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-sistema-label')));
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#tipo#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-tipo-label')));
-
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#checked_ambos#',$tipo == 'ambos' ? $checked : '');
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#checked_pagina#',$tipo == 'pagina' ? $checked : '');
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#checked_sistema#',$tipo == 'sistema' ? $checked : '');
-
-	return [
-		'cabecalho' => $lista_pagina_ou_sistema,
-		'tipo' => $tipo,
-	];
-}
-
-function admin_paginas_interfaces_padroes(){
+function admin_templates_interfaces_padroes(){
 	global $_GESTOR;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
-
-	$dados = admin_paginas_listar_cabecalho();
-
-	$tipo_nao_visivel = $dados['tipo'] != 'ambos' ? true : null;
-
+	
 	switch($_GESTOR['opcao']){
 		case 'listar':
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
@@ -916,14 +646,12 @@ function admin_paginas_interfaces_padroes(){
 					'nome' => $modulo['tabela']['nome'],
 					'campos' => Array(
 						'nome',
-						'tipo',
-						'modulo',
-						'caminho',
+						'target',
 						$modulo['tabela']['data_modificacao'],
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
-					'where' => "language='".$_GESTOR['linguagem-codigo']."'" . ($dados['tipo'] != 'ambos' && $dados['tipo'] != '' ? " AND tipo='{$dados['tipo']}'" : ''),
+					'where' => "language='".$_GESTOR['linguagem-codigo']."'",
 				),
 				'tabela' => Array(
 					'cabecalho' => $dados['cabecalho'],
@@ -935,41 +663,18 @@ function admin_paginas_interfaces_padroes(){
 							'ordenar' => 'asc',
 						),
 						Array(
-							'id' => 'tipo',
-							'nao_visivel' => $tipo_nao_visivel,
-							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-label')),
-							'formatar' => Array(
-								'id' => 'outroConjunto',
-								'conjunto' => [
-									[
-										'alvo' => 'sistema',
-										'troca' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-system')),
-									],
-									[
-										'alvo' => 'pagina',
-										'troca' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-page')),
-									],
-								],
-							)
-						),
-						Array(
-							'id' => 'modulo',
-							'nome' => gestor_variaveis(Array('modulo' => 'modulos','id' => 'module-name')),
+							'id' => 'target',
+							'nome' => gestor_variaveis(Array('modulo' => 'admin-prompts-ia','id' => 'field-target')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
 								'valor_senao_existe' => '<span class="ui info text">N/A</span>',
 								'tabela' => Array(
-									'nome' => 'modulos',
+									'nome' => 'alvos_ia',
 									'campo_trocar' => 'nome',
 									'campo_referencia' => 'id',
 									'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 								),
 							)
-						),
-						Array(
-							'id' => 'caminho',
-							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-url-path')),
-							'ordenar' => 'asc',
 						),
 						Array(
 							'id' => $modulo['tabela']['data_modificacao'],
@@ -1025,28 +730,7 @@ function admin_paginas_interfaces_padroes(){
 
 // ==== Ajax
 
-function admin_paginas_ajax_editor_html_switch(){
-	global $_GESTOR;
-	
-	if($_REQUEST['editor_checked'] == 'sim'){
-		$valor = true;
-	} else {
-		$valor = false;
-	}
-	
-	gestor_variaveis_alterar(Array(
-		'modulo' => $_GESTOR['modulo-id'],
-		'id' => 'editor-html-switch',
-		'tipo' => 'bool',
-		'valor' => $valor,
-	));
-	
-	$_GESTOR['ajax-json'] = Array(
-		'status' => 'Ok',
-	);
-}
-
-function admin_paginas_ajax_ia_requests(){
+function admin_templates_ajax_ia_requests(){
 	global $_GESTOR;
 
 	// Pegar dados anterior da página
@@ -1118,36 +802,33 @@ function admin_paginas_ajax_ia_requests(){
 
 // ==== Start
 
-function admin_paginas_start(){
-	global $_GESTOR;
-	
-	gestor_incluir_bibliotecas();
-	
-	if($_GESTOR['ajax']){
-		interface_ajax_iniciar();
+function admin_templates_start(){
+    global $_GESTOR;
 
-		ia_ajax_interface();
-		
-		switch($_GESTOR['ajax-opcao']){
-			case 'editor-html-switch': admin_paginas_ajax_editor_html_switch(); break;
-			case 'ia-requests': admin_paginas_ajax_ia_requests(); break;
-		}
-		
-		interface_ajax_finalizar();
-	} else {
-		admin_paginas_interfaces_padroes();
-		
-		interface_iniciar();
-		
-		switch($_GESTOR['opcao']){
-			case 'adicionar': admin_paginas_adicionar(); break;
-			case 'editar': admin_paginas_editar(); break;
-		}
-		
-		interface_finalizar();
-	}
+    gestor_incluir_bibliotecas();
+
+    if($_GESTOR['ajax']){
+        interface_ajax_iniciar();
+
+        switch($_GESTOR['ajax-opcao']){
+            case 'ia-requests': admin_templates_ajax_ia_requests(); break;
+        }
+
+        interface_ajax_finalizar();
+    } else {
+        admin_templates_interfaces_padroes();
+
+        interface_iniciar();
+
+        switch($_GESTOR['opcao']){
+            case 'adicionar': admin_templates_adicionar(); break;
+			case 'editar': admin_templates_editar(); break;
+        }
+
+        interface_finalizar();
+    }
 }
 
-admin_paginas_start();
+admin_templates_start();
 
 ?>

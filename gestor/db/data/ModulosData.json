@@ -586,5 +586,33 @@
         "status": "A",
         "versao": "1",
         "language": "en"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Admin Templates",
+        "id": "admin-templates",
+        "titulo": "Modelos",
+        "icone": "drafting compass",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Admin Templates",
+        "id": "admin-templates",
+        "titulo": "Templates",
+        "icone": "drafting compass",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     }
 ]

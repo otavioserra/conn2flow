@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.1",
+    "versao": "1.2.0",
     "bibliotecas": [
         "interface",
         "html",
@@ -124,8 +124,8 @@
             ],
             "components": [
                 {
-                    "name": "Modal Página",
-                    "id": "modal-pagina",
+                    "name": "Modal Editor HTML Visual",
+                    "id": "modal-editor-html-visual",
                     "version": "1.14",
                     "checksum": {
                         "html": "95e3802f5909d038fd2748e9360f9326",
@@ -173,11 +173,11 @@
                 {
                     "name": "Admin Páginas - Editar",
                     "id": "admin-paginas-editar",
-                    "version": "1.16",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "6f1fbc05d05cbb06245b885dc645236c",
+                        "html": "62c5e4ef78be8a368b1db28ba17c0efa",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "eb61a87585bdb2224f3609882137bf1a"
+                        "combined": "d3eea74b950c18f2fad4511ac5007929"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/editar\/",
@@ -187,11 +187,11 @@
                 {
                     "name": "Admin Páginas - Adicionar",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "5d6fe87ec002c03596bdaf6580c52c0d",
+                        "html": "259c558cfdcfdf04a93f304b61fab211",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "2890de0bb432694f13fba8fbb474b8f6"
+                        "combined": "e5cf045f31f5ca2e7226425c03ba9eeb"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/adicionar\/",
@@ -618,11 +618,11 @@
                 {
                     "name": "Admin Pages - Edit",
                     "id": "admin-paginas-editar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "6f1fbc05d05cbb06245b885dc645236c",
+                        "html": "62c5e4ef78be8a368b1db28ba17c0efa",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "eb61a87585bdb2224f3609882137bf1a"
+                        "combined": "d3eea74b950c18f2fad4511ac5007929"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/editar\/",
@@ -632,11 +632,11 @@
                 {
                     "name": "Admin Pages - Add",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "5d6fe87ec002c03596bdaf6580c52c0d",
+                        "html": "259c558cfdcfdf04a93f304b61fab211",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "2890de0bb432694f13fba8fbb474b8f6"
+                        "combined": "e5cf045f31f5ca2e7226425c03ba9eeb"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/adicionar\/",
@@ -646,8 +646,8 @@
             ],
             "components": [
                 {
-                    "name": "Page Modal",
-                    "id": "modal-pagina",
+                    "name": "Visual HTML Modal Editor",
+                    "id": "modal-editor-html-visual",
                     "version": "1.14",
                     "checksum": {
                         "html": "95e3802f5909d038fd2748e9360f9326",

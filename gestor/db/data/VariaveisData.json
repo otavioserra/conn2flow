@@ -5347,6 +5347,312 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "form-name-label",
+        "valor": "Nome do Template",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "form-name-placeholder",
+        "valor": "Nome do Template",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "modal-title-preview",
+        "valor": "Pré-Visualização da Template",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "modal-button-preview",
+        "valor": "Salvar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "modal-desktop-preview",
+        "valor": "Computador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "modal-tablet-preview",
+        "valor": "Tablet",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "modal-mobile-preview",
+        "valor": "Smartphone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "button-back-tooltip",
+        "valor": "Clique no botão para voltar.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "button-back-value",
+        "valor": "Voltar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "form-target-label",
+        "valor": "Alvo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "form-framework-css-label",
+        "valor": "Framework CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "form-target-placeholder",
+        "valor": "Selecione um alvo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "form-template-content-label",
+        "valor": "Conteúdo do Template",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "form-css-tooltip",
+        "valor": "Clique para abrir o CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "form-css-label",
+        "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "form-html-tooltip",
+        "valor": "Clique para abrir o código HTML > Body. Parte visível da página dentro da tag <body>",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
+        "id": "form-html-label",
+        "valor": "HTML > Body",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "form-name-label",
+        "valor": "Template Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "form-name-placeholder",
+        "valor": "Template Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "modal-title-preview",
+        "valor": "Template Preview",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "modal-button-preview",
+        "valor": "Save",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "modal-desktop-preview",
+        "valor": "Computer",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "modal-tablet-preview",
+        "valor": "Tablet",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "modal-mobile-preview",
+        "valor": "Smartphone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "button-back-tooltip",
+        "valor": "Click the button to go back.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "button-back-value",
+        "valor": "Back",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "form-target-label",
+        "valor": "Target",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "form-framework-css-label",
+        "valor": "Framework CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "form-target-placeholder",
+        "valor": "Choose a target",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "form-template-content-label",
+        "valor": "Template Content",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "form-css-tooltip",
+        "valor": "Click to open CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "form-css-label",
+        "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "form-html-tooltip",
+        "valor": "Click to open HTML > Body. Visible part of the page within the <body> tag",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "form-html-label",
+        "valor": "HTML > Body",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "dashboard",
         "id": "logout-grup",
         "valor": "Sair",
