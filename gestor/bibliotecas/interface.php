@@ -3299,6 +3299,21 @@ function interface_excluir_finalizar($params = false){
 	}
 }
 
+/**
+ * Inicializa a interface de alteração de status de registro.
+ * 
+ * Prepara o sistema para alterar o status de um registro (ativar/desativar),
+ * validando o ID e status fornecidos via GET e armazenando em variáveis globais.
+ * Redireciona para raiz se ID ou status não fornecidos.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ *                        Recebe: $_REQUEST['id'], $_REQUEST['status'].
+ *                        Define: $_GESTOR['modulo-registro-id'], $_GESTOR['modulo-registro-status'].
+ * 
+ * @param array|false $params Parâmetros da função (não utilizado nesta função).
+ * 
+ * @return void Prepara $_GESTOR para alteração de status ou redireciona.
+ */
 function interface_status_iniciar($params = false){
 	global $_GESTOR;
 
@@ -3317,6 +3332,23 @@ function interface_status_iniciar($params = false){
 	}
 }
 
+/**
+ * Finaliza a interface de alteração de status de registro.
+ * 
+ * Executa a alteração de status do registro (ex: A=Ativo, I=Inativo) no banco
+ * de dados. Suporta personalização da tabela, inclusão de histórico, e callback
+ * após alteração. Redireciona para listagem após sucesso.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ *                        Usa: $_GESTOR['modulo-registro-id'], $_GESTOR['modulo-registro-status'].
+ *                        
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['banco'] Dados da tabela customizada (nome, id, status, where).
+ * @param bool $params['historico'] Se false, desativa inclusão no histórico (padrão: ativa).
+ * @param string $params['callbackFunction'] Função callback a executar após alteração.
+ * 
+ * @return void Executa alteração de status e redireciona para listagem.
+ */
 function interface_status_finalizar($params = false){
 	global $_GESTOR;
 
