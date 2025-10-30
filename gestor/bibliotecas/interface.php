@@ -2920,6 +2920,19 @@ function interface_botoes_cabecalho($params = false){
 	return $botoes_html;
 }
 
+/**
+ * Renderiza botões de ação no rodapé da interface administrativa.
+ * 
+ * Gera HTML para botões de ações (excluir, salvar, cancelar, etc.) que aparecem
+ * no rodapé das páginas de edição/visualização. Estrutura e funcionalidade
+ * similares aos botões do cabeçalho.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['botoes_rodape'] Array de botões a renderizar no rodapé (obrigatório).
+ *                                        Cada botão contém: cor, icon, rotulo, tooltip, url, callback.
+ * 
+ * @return string HTML dos botões do rodapé.
+ */
 function interface_botoes_rodape($params = false){
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -2956,6 +2969,22 @@ function interface_botoes_rodape($params = false){
 
 // ===== Interfaces ajax
 
+/**
+ * Processa requisição AJAX para restaurar backup de campo.
+ * 
+ * Retorna o valor de um campo a partir de um backup específico (se ID fornecido)
+ * ou o valor atual do campo (se ID não fornecido). Usado para restaurar
+ * versões anteriores de campos via interface administrativa.
+ *
+ * @global array $_GESTOR Configurações globais do sistema e resposta AJAX.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['campo'] Nome do campo (via $_REQUEST ou parâmetro).
+ * @param int $params['id_numerico'] ID numérico do registro (via $_REQUEST ou parâmetro).
+ * @param string $params['modulo'] Nome do módulo (opcional, usa módulo atual se não fornecido).
+ * 
+ * @return void Define $_GESTOR['ajax-json'] com o valor do campo.
+ */
 function interface_ajax_backup_campo($params = false){
 	global $_GESTOR;
 	
@@ -3044,6 +3073,19 @@ function interface_ajax_backup_campo($params = false){
 	}
 }
 
+/**
+ * Processa requisição AJAX para carregar mais resultados do histórico.
+ * 
+ * Retorna uma nova página de resultados do histórico de alterações,
+ * usado para paginação infinita ou "carregar mais" na interface.
+ * Delega para interface_historico() com parâmetros de paginação.
+ *
+ * @global array $_GESTOR Configurações globais do sistema e resposta AJAX.
+ *                        Recebe: $_REQUEST['id'], $_REQUEST['sem_id'].
+ *                        Define: $_GESTOR['ajax-json'] com status e HTML da página.
+ * 
+ * @return void Define $_GESTOR['ajax-json'] com a próxima página do histórico.
+ */
 function interface_ajax_historico_mais_resultados(){
 	global $_GESTOR;
 	
@@ -3058,12 +3100,38 @@ function interface_ajax_historico_mais_resultados(){
 	);
 }
 
+/**
+ * Processa requisição AJAX para listagem dinâmica de registros.
+ * 
+ * Retorna HTML de uma listagem de registros baseado em filtros, ordenação
+ * e paginação via AJAX. Usado para atualizar tabelas de listagem sem
+ * recarregar a página completa.
+ *
+ * @global array $_GESTOR Configurações globais do sistema e resposta AJAX.
+ *                        Recebe parâmetros via $_REQUEST (filtros, ordem, página).
+ *                        Define: $_GESTOR['ajax-json'] com status e HTML da listagem.
+ * 
+ * @return void Define $_GESTOR['ajax-json'] com o HTML da listagem atualizada.
+ */
 function interface_ajax_listar(){
 	global $_GESTOR;
 	
 	$_GESTOR['ajax-json'] = interface_listar_ajax();
 }
 
+/**
+ * Processa requisição AJAX para verificar existência de valor em campo.
+ * 
+ * Verifica se um determinado valor já existe em um campo específico da
+ * tabela, útil para validações de unicidade (ex: email, CPF) em tempo
+ * real durante preenchimento de formulários.
+ *
+ * @global array $_GESTOR Configurações globais do sistema e resposta AJAX.
+ *                        Recebe: $_REQUEST['campo'], $_REQUEST['valor'], $_REQUEST['language'].
+ *                        Define: $_GESTOR['ajax-json'] com status e resultado da verificação.
+ * 
+ * @return void Define $_GESTOR['ajax-json'] indicando se campo existe (true/false).
+ */
 function interface_ajax_verificar_campo(){
 	global $_GESTOR;
 	
@@ -3088,6 +3156,21 @@ function interface_ajax_verificar_campo(){
 
 // ===== Interfaces principais
 
+/**
+ * Inicializa a interface de exclusão de registro.
+ * 
+ * Prepara o sistema para a exclusão de um registro, validando o ID
+ * fornecido via GET e armazenando em $_GESTOR['modulo-registro-id'].
+ * Redireciona para raiz se ID não fornecido.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ *                        Recebe: $_REQUEST['id'].
+ *                        Define: $_GESTOR['modulo-registro-id'].
+ * 
+ * @param array|false $params Parâmetros da função (não utilizado nesta função).
+ * 
+ * @return void Prepara $_GESTOR para exclusão ou redireciona.
+ */
 function interface_excluir_iniciar($params = false){
 	global $_GESTOR;
 	
@@ -3102,6 +3185,23 @@ function interface_excluir_iniciar($params = false){
 	}
 }
 
+/**
+ * Finaliza a interface de exclusão de registro (exclusão lógica).
+ * 
+ * Executa a exclusão lógica do registro (marca status como 'D' - deletado)
+ * no banco de dados. Suporta personalização da tabela, inclusão de histórico,
+ * e callback após exclusão. Redireciona para listagem após sucesso.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ *                        Usa: $_GESTOR['modulo-registro-id'], $_GESTOR['modulo-id'].
+ *                        
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['banco'] Dados da tabela customizada (nome, id, status, where).
+ * @param bool $params['historico'] Se false, desativa inclusão no histórico (padrão: ativa).
+ * @param string $params['callbackFunction'] Função callback a executar após exclusão.
+ * 
+ * @return void Executa exclusão e redireciona para listagem.
+ */
 function interface_excluir_finalizar($params = false){
 	global $_GESTOR;
 	
