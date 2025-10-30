@@ -1043,6 +1043,21 @@ function interface_historico($params = false){
 	return $pagina;
 }
 
+/**
+ * Marca componentes para inclusão na interface.
+ *
+ * Registra um ou mais componentes para serem incluídos posteriormente
+ * na interface através da função interface_componentes(). Os componentes
+ * são armazenados globalmente e renderizados quando necessário.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string|array $params['componente'] Componente ou array de componentes a incluir
+ *                                           (ex: 'modal-carregamento', 'modal-delecao', 'modal-alerta', 'modal-iframe').
+ * 
+ * @return void
+ */
 function interface_componentes_incluir($params = false){
 	global $_GESTOR;
 
@@ -1054,9 +1069,11 @@ function interface_componentes_incluir($params = false){
 	
 	// ===== 
 	
+	// Verifica se há componentes para incluir
 	if(isset($componente)){
 		switch(gettype($componente)){
 			case 'array':
+				// Se for array, percorre e marca cada componente
 				if(count($componente) > 0){
 					foreach($componente as $com){
 						$_GESTOR['interface']['componentes'][$com] = true;
@@ -1064,11 +1081,25 @@ function interface_componentes_incluir($params = false){
 				}
 			break;
 			default:
+				// Se for string, marca componente único
 				$_GESTOR['interface']['componentes'][$componente] = true;
 		}
 	}
 }
 
+/**
+ * Renderiza componentes marcados para inclusão na interface.
+ *
+ * Processa todos os componentes previamente marcados via interface_componentes_incluir(),
+ * carrega seus layouts, substitui variáveis e adiciona à página global. Suporta
+ * modais de carregamento, deleção, alerta e iframe.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento e página.
+ * 
+ * @param array|false $params Parâmetros da função (não utilizado).
+ * 
+ * @return void
+ */
 function interface_componentes($params = false){
 	global $_GESTOR;
 
