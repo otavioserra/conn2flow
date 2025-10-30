@@ -622,6 +622,19 @@ function plugin_backup_existing(string $finalPath, array &$log): void {
     $log[]='[ok] backup criado em '.$zipName;
 }
 
+/**
+ * Sincroniza arquivos Data.json do plugin com o banco de dados.
+ * 
+ * Detecta automaticamente arquivos *Data.json (multi-arquivos) ou Data.json legado
+ * e delega a sincronização para as funções apropriadas. Suporta dois modos:
+ * - Multi-arquivos: Múltiplos arquivos *Data.json em db/data/
+ * - Legado: Único arquivo Data.json
+ *
+ * @param string $staging Diretório de staging do plugin
+ * @param string $slug Identificador único do plugin
+ * @param array $log Referência ao array de log (passado por referência)
+ * @return void
+ */
 function plugin_sync_datajson(string $staging, string $slug, array &$log): void {
     // SUPORTE DINÂMICO: Detecta automaticamente todos os arquivos *Data.json
     $finalBase = plugin_final_path($slug); // já movido
@@ -710,7 +723,19 @@ function plugin_sync_datajson_multi(array $filesMap, string $slug, array &$log, 
 }
 
 /**
- * Executa migrações específicas do plugin caso exista diretório db/migrations no pacote final.
+ * Executa migrações de banco de dados específicas do plugin usando Phinx.
+ * 
+ * Verifica se existem arquivos PHP de migração em db/migrations/ do plugin
+ * e executa usando Phinx. Carrega configuração principal (phinx.php) e
+ * sobrescreve apenas o caminho de migrações para o diretório do plugin.
+ *
+ * @param string $slug Identificador único do plugin
+ * @param string $finalPath Caminho final do plugin instalado
+ * @param array $log Referência ao array de log (passado por referência)
+ * @param array $opts Opções de execução:
+ *   - 'no_migrations' (bool): Desativa migrações
+ *   - 'only_resources' (bool): Pula migrações (modo somente recursos)
+ * @return void
  */
 function plugin_run_migrations(string $slug, string $finalPath, array &$log, array $opts = []): void {
     if(!empty($opts['no_migrations'])) { $log[]='[info] migrações desativadas (--no-migrations)'; return; }
@@ -746,6 +771,18 @@ function plugin_run_migrations(string $slug, string $finalPath, array &$log, arr
     }
 }
 
+/**
+ * Sincroniza recursos (layouts, pages, components, variables) de forma granular.
+ * 
+ * Processa estrutura resources[<lang>]['layouts'|'pages'|'components'|'variables']
+ * e realiza upsert no banco de dados, enriquecendo com checksums quando disponível.
+ *
+ * @param array $resources Array de recursos organizados por idioma
+ * @param string $pluginId Identificador único do plugin
+ * @param string|null $baseDir Diretório base para buscar arquivos HTML/CSS (opcional)
+ * @param array $log Referência ao array de log (passado por referência)
+ * @return void
+ */
 function plugin_sync_resources_granular(array $resources, string $pluginId, ?string $baseDir, array &$log): void {
     // Estrutura esperada: resources[<lang>]['layouts'|'pages'|'components'|'variables'] => arrays
     $tot=['layouts'=>0,'pages'=>0,'components'=>0,'variables'=>0,'updates'=>0,'inserts'=>0,'skipped'=>0];
@@ -787,6 +824,19 @@ function plugin_sync_resources_granular(array $resources, string $pluginId, ?str
     $log[]='[ok] sync granular plugin='.$pluginId.' inserts='.$tot['inserts'].' updates='.$tot['updates'].' skipped='.$tot['skipped'];
 }
 
+/**
+ * Enriquece recursos com checksums calculados a partir de arquivos HTML e CSS.
+ * 
+ * Calcula hashes SHA-256 para arquivos HTML e CSS do recurso e adiciona
+ * ao array 'checksum' com as chaves: html, css, combined.
+ *
+ * @param string|null $baseDir Diretório base para buscar arquivos
+ * @param string $tipo Tipo de recurso: 'layouts', 'pages', ou 'components'
+ * @param string $id Identificador do recurso
+ * @param array $item Referência ao array do item (modificado com checksums)
+ * @param array $log Referência ao array de log (passado por referência)
+ * @return void
+ */
 function plugin_enrich_resource_checksums(?string $baseDir,string $tipo,string $id,array &$item,array &$log): void {
     if(!$baseDir || isset($item['checksum'])) return; // já fornecido
     $paths = plugin_guess_resource_files($baseDir,$tipo,$id);
@@ -800,6 +850,18 @@ function plugin_enrich_resource_checksums(?string $baseDir,string $tipo,string $
     }
 }
 
+/**
+ * Tenta localizar automaticamente arquivos HTML e CSS de um recurso.
+ * 
+ * Busca por padrões comuns de organização:
+ * - <id>.html / <id>.css
+ * - <id>/index.html / <id>/index.css
+ *
+ * @param string $baseDir Diretório base do plugin
+ * @param string $tipo Tipo de recurso: 'layouts', 'pages', ou 'components'
+ * @param string $id Identificador do recurso
+ * @return array|null Array com chaves 'html' e/ou 'css', ou null se não encontrado
+ */
 function plugin_guess_resource_files(string $baseDir,string $tipo,string $id): ?array {
     $dirMap = [ 'layouts'=>'layouts', 'pages'=>'pages', 'components'=>'components' ];
     if(!isset($dirMap[$tipo])) return null;
