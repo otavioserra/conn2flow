@@ -2678,6 +2678,24 @@ function interface_backup_campo_incluir($params = false){
 	}
 }
 
+/**
+ * Renderiza dropdown de seleção de versões de backup de um campo.
+ * 
+ * Gera um elemento select HTML com todas as versões de backup disponíveis
+ * para um campo específico, permitindo restaurar valores anteriores.
+ * Dispara callback JavaScript após seleção.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['campo'] Nome do campo no banco de dados (obrigatório).
+ * @param string $params['campo_form'] Nome do campo no formulário (opcional, usa 'campo' se não fornecido).
+ * @param string $params['callback'] Nome do evento callback JavaScript para sucesso (obrigatório).
+ * @param int $params['id_numerico'] Identificador numérico do registro (obrigatório).
+ * @param string $params['modulo'] Nome do módulo (opcional, usa módulo atual se não fornecido).
+ * 
+ * @return void Renderiza HTML do dropdown diretamente.
+ */
 function interface_backup_campo_select($params = false){
 	global $_GESTOR;
 	
@@ -2785,6 +2803,22 @@ function interface_backup_campo_select($params = false){
 	}
 }
 
+/**
+ * Verifica alterações em campos comparando valores atuais com valores anteriores.
+ * 
+ * Compara os valores de campos específicos entre o estado atual e um backup
+ * anterior, retornando quais campos foram modificados. Útil para detectar
+ * mudanças antes de salvar formulários.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['campos'] Lista de campos a verificar (obrigatório).
+ * @param array $params['valores_atuais'] Valores atuais dos campos (obrigatório).
+ * @param array $params['valores_anteriores'] Valores anteriores dos campos para comparação (obrigatório).
+ * 
+ * @return array Lista de campos que foram alterados.
+ */
 function interface_verificar_campos($params = false){
 	global $_GESTOR;
 	
@@ -2839,6 +2873,19 @@ function interface_verificar_campos($params = false){
 	return false;
 }
 
+/**
+ * Renderiza botões de ação no cabeçalho da interface administrativa.
+ * 
+ * Gera HTML para botões de ações (excluir, salvar, etc.) que aparecem
+ * no cabeçalho das páginas de edição/visualização. Suporta tooltips,
+ * ícones, cores e callbacks personalizados.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['botoes'] Array de botões a renderizar (obrigatório).
+ *                                Cada botão contém: cor, icon, rotulo, tooltip, url, callback.
+ * 
+ * @return void Renderiza HTML dos botões diretamente.
+ */
 function interface_botoes_cabecalho($params = false){
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
