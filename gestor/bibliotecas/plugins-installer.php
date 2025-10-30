@@ -989,7 +989,16 @@ function plugin_db_fetch_one(string $sql){
 
 /**
  * Delega operações de banco de dados para o sistema robusto de atualizações.
- * Esta função substitui todas as operações manuais de upsert por delegação.
+ * 
+ * Esta função substitui todas as operações manuais de upsert por delegação ao
+ * script controlador de atualização de banco de dados, garantindo consistência
+ * e reaproveitando lógica robusta já existente.
+ * 
+ * @param string $pluginSlug Slug normalizado do plugin
+ * @param array $dataFiles Lista de arquivos Data.json para processar (vazio = todos)
+ * @param array &$log Array de log passado por referência para registrar mensagens
+ * 
+ * @return bool True se a delegação foi bem-sucedida, false em caso de erro
  */
 function plugin_delegate_database_operations(string $pluginSlug, array $dataFiles, array &$log): bool {
     $log[] = '[info] Delegando operações de banco de dados para sistema robusto';
