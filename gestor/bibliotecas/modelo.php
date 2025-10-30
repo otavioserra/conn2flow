@@ -1,5 +1,19 @@
 <?php
+/**
+ * Biblioteca de manipulação de modelos/templates.
+ *
+ * Fornece funções para trabalhar com templates HTML, incluindo substituição
+ * de variáveis, manipulação de blocos delimitados por tags, e carregamento
+ * de arquivos de template.
+ *
+ * @package Conn2Flow
+ * @subpackage Bibliotecas
+ * @version 1.0.0
+ */
 
+global $_GESTOR;
+
+// Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-modelo']							=	Array(
 	'versao' => '1.0.0',
 );

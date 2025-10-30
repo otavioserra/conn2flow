@@ -1,4 +1,15 @@
 <?php
+/**
+ * Biblioteca de Interface Administrativa
+ * 
+ * Fornece funções para construção e manipulação de interfaces administrativas,
+ * incluindo formatação de dados, troca de valores entre tabelas, renderização
+ * de campos de formulário, geração de tabelas, menus, e outros componentes UI.
+ * 
+ * @package Conn2Flow
+ * @subpackage Bibliotecas
+ * @version 1.1.5
+ */
 
 global $_GESTOR;
 
@@ -8,15 +19,29 @@ $_GESTOR['biblioteca-interface']							=	Array(
 
 // ===== Funções formatação
 
+/**
+ * Converte data/hora do formato datetime (YYYY-MM-DD HH:MM:SS) para texto formatado.
+ * 
+ * Permite formatação personalizada usando marcadores: D (dia), ME (mês), A (ano),
+ * H (hora), MI (minutos), S (segundos). Formato padrão: "D/ME/A HhMI".
+ *
+ * @param string $data_hora Data/hora no formato datetime (YYYY-MM-DD HH:MM:SS)
+ * @param string|false $format Formato personalizado usando marcadores ou false para formato padrão
+ * @return string Data/hora formatada ou string vazia se não houver data
+ */
 function interface_data_hora_from_datetime_to_text($data_hora, $format = false){
 	$formato_padrao = 'D/ME/A HhMI';
 	
+	// Verifica se há data/hora válida
 	if($data_hora){
+		// Separa data e hora
 		$data_hora = explode(" ",$data_hora);
 		$data_aux = explode("-",$data_hora[0]);
 		
+		// Aplica formato personalizado se fornecido
 		if($format){
 			$hora_aux = explode(":",$data_hora[1]);
+			// Substitui marcadores pelos valores correspondentes
 			$format = preg_replace('/D/', $data_aux[2], $format);
 			$format = preg_replace('/ME/', $data_aux[1], $format);
 			$format = preg_replace('/A/', $data_aux[0], $format);
@@ -26,6 +51,7 @@ function interface_data_hora_from_datetime_to_text($data_hora, $format = false){
 			
 			return $format;
 		} else if($formato_padrao){
+			// Usa formato padrão (D/ME/A HhMI)
 			$format = $formato_padrao;
 			$hora_aux = explode(":",$data_hora[1]);
 			$format = preg_replace('/D/', $data_aux[2], $format);
@@ -37,6 +63,7 @@ function interface_data_hora_from_datetime_to_text($data_hora, $format = false){
 			
 			return $format;
 		} else {
+			// Formato brasileiro básico (DD/MM/YYYY HH:MM:SS)
 			$data = $data_aux[2] . "/" . $data_aux[1] . "/" .$data_aux[0];
 			$hora = $data_hora[1];
 			
@@ -47,7 +74,16 @@ function interface_data_hora_from_datetime_to_text($data_hora, $format = false){
 	}
 }
 
+/**
+ * Converte data do formato datetime (YYYY-MM-DD) para texto no formato brasileiro (DD/MM/YYYY).
+ * 
+ * Extrai apenas a parte da data ignorando o horário.
+ *
+ * @param string $data_hora Data/hora no formato datetime (YYYY-MM-DD HH:MM:SS)
+ * @return string Data formatada (DD/MM/YYYY)
+ */
 function interface_data_from_datetime_to_text($data_hora){
+	// Separa data e hora, extrai apenas a data
 	$data_hora = explode(" ",$data_hora);
 	$data_aux = explode("-",$data_hora[0]);
 	$data = $data_aux[2] . "/" . $data_aux[1] . "/" .$data_aux[0];
@@ -55,6 +91,28 @@ function interface_data_from_datetime_to_text($data_hora){
 	return $data;
 }
 
+/**
+ * Busca e substitui valores de um campo usando referência de outra tabela.
+ * 
+ * Realiza lookup em uma tabela secundária para trocar valores de referência
+ * por valores descritivos. Suporta cache de consultas, campos extras e 
+ * encapsulamento de resultados em templates.
+ *
+ * @global array $_GESTOR Sistema global de configurações e cache
+ * 
+ * @param array|false $params Parâmetros da função:
+ * @param array $params['tabela'] Configuração da tabela principal (obrigatório):
+ * @param string $params['tabela']['nome'] Nome da tabela
+ * @param string $params['tabela']['campo_referencia'] Campo usado como chave de busca
+ * @param string $params['tabela']['campo_trocar'] Campo cujo valor será retornado
+ * @param array $params['tabela']['camposExtras'] Campos adicionais a retornar (opcional)
+ * @param string $params['tabela']['where'] Condição WHERE adicional (opcional)
+ * @param array $params['tabela2'] Configuração de tabela secundária (opcional)
+ * @param mixed $params['dado'] Valor a ser buscado
+ * @param string $params['encapsular'] Template para encapsular resultado (opcional)
+ * 
+ * @return string|array Valor trocado, array de valores (se camposExtras) ou resultado encapsulado
+ */
 function interface_trocar_valor_outra_tabela($params = false){
 	global $_GESTOR;
 	
@@ -179,6 +237,20 @@ function interface_trocar_valor_outra_tabela($params = false){
 	return $dado;
 }
 
+/**
+ * Troca um valor por outro baseado em um conjunto de mapeamentos.
+ *
+ * Percorre um conjunto de mapeamentos alvo/troca e retorna o valor de troca
+ * quando encontra correspondência com o dado fornecido.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['dado'] Dado que será verificado e potencialmente trocado.
+ * @param array $params['conjunto'] Conjunto de mapeamentos com estrutura [['alvo' => 'valor1', 'troca' => 'novoValor1'], ...].
+ *
+ * @return string O valor trocado se encontrado no conjunto, ou o dado original caso contrário.
+ */
 function interface_trocar_valor_outro_conjunto($params = false){
 	global $_GESTOR;
 	
@@ -199,6 +271,22 @@ function interface_trocar_valor_outro_conjunto($params = false){
 	return $dado;
 }
 
+/**
+ * Troca um valor por outro baseado em array de valores com campos específicos.
+ *
+ * Busca em um array de valores e retorna o valor do campo alvo quando
+ * encontra correspondência no campo de troca.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['dado'] Dado que será verificado e potencialmente trocado.
+ * @param array $params['valores'] Array de valores onde cada elemento contém os campos de troca e alvo.
+ * @param string $params['campo_troca'] Nome do campo usado para comparação com o dado.
+ * @param string $params['campo_alvo'] Nome do campo cujo valor será retornado em caso de correspondência.
+ *
+ * @return string O valor do campo alvo se encontrado, ou o dado original caso contrário.
+ */
 function interface_trocar_valor_outro_array($params = false){
 	global $_GESTOR;
 	
@@ -220,6 +308,31 @@ function interface_trocar_valor_outro_array($params = false){
 	return $dado;
 }
 
+/**
+ * Formata um dado de acordo com o formato especificado.
+ *
+ * Aplica diferentes tipos de formatação aos dados, incluindo conversão de datas,
+ * formatação monetária, troca por valores de outras tabelas ou arrays, e substituição
+ * por rótulos customizados.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['dado'] Dado que será formatado.
+ * @param string|array $params['formato'] Formato a ser aplicado. Pode ser string ('dinheiroReais', 'data', 'dataHora')
+ *                                        ou array com 'id' e parâmetros específicos ('outraTabela', 'outroConjunto', 'outroArray').
+ * @param string $params['formato']['id'] Identificador do formato (quando formato é array).
+ * @param array $params['formato']['tabela'] Dados da tabela para formato 'outraTabela'.
+ * @param array $params['formato']['tabela2'] Segunda tabela opcional para formato 'outraTabela'.
+ * @param array $params['formato']['conjunto'] Conjunto de mapeamentos para formato 'outroConjunto'.
+ * @param array $params['formato']['valores'] Array de valores para formato 'outroArray'.
+ * @param string $params['formato']['campo_troca'] Campo de troca para formato 'outroArray'.
+ * @param string $params['formato']['campo_alvo'] Campo alvo para formato 'outroArray'.
+ * @param array $params['formato']['valor_substituir_por_rotulo'] Array de substituições [['valor' => '1', 'rotulo' => 'Sim'], ...].
+ * @param string $params['formato']['valor_senao_existe'] Valor a retornar quando dado está vazio.
+ *
+ * @return string O dado formatado de acordo com as especificações, ou valor padrão se dado estiver vazio.
+ */
 function interface_formatar_dado($params = false){
 	global $_GESTOR;
 	
@@ -304,8 +417,21 @@ function interface_formatar_dado($params = false){
 	}
 }
 
-// ===== Funções auxiliares
-
+/**
+ * Gerencia alertas de mensagens para o usuário na interface.
+ *
+ * Permite definir e exibir mensagens de alerta na interface do usuário.
+ * Suporta alertas imediatos ou pós-redirecionamento via sessão.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['msg'] Mensagem a ser exibida como alerta.
+ * @param bool $params['redirect'] Se true, salva o alerta na sessão para exibição após redirecionamento.
+ * @param bool $params['imprimir'] Se true, imprime o HTML do alerta na tela.
+ *
+ * @return void|string Retorna HTML do alerta se $imprimir for true, caso contrário não retorna nada.
+ */
 function interface_alerta($params = false){
 	global $_GESTOR;
 
@@ -363,6 +489,40 @@ function interface_alerta($params = false){
 	}
 }
 
+/**
+ * Inclui registros no histórico de alterações do sistema.
+ *
+ * Registra alterações feitas em registros do banco de dados no histórico,
+ * incluindo informações sobre campo alterado, valores antes e depois,
+ * usuário responsável e versionamento.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['alteracoes'] Conjunto de alterações a serem registradas no histórico.
+ * @param string $params['alteracoes'][]['campo'] Identificador do campo alterado (código do módulo/id do campo).
+ * @param string $params['alteracoes'][]['opcao'] Opção extra para hacks específicos de histórico.
+ * @param string $params['alteracoes'][]['filtro'] Filtro para formatação dos dados.
+ * @param string $params['alteracoes'][]['alteracao'] Identificador da alteração (interface/id do campo).
+ * @param string $params['alteracoes'][]['alteracao_txt'] Valor literal da alteração.
+ * @param string $params['alteracoes'][]['valor_antes'] Valor antes da alteração.
+ * @param string $params['alteracoes'][]['valor_depois'] Valor após a alteração.
+ * @param array $params['alteracoes'][]['tabela'] Tabela para conversão de IDs em nomes textuais.
+ * @param bool $params['deletar'] Se true, incrementa versão para registro de deleção.
+ * @param int $params['id_numerico_manual'] ID numérico manual do registro.
+ * @param int $params['id_usuarios_manual'] ID do usuário manual.
+ * @param int $params['id_hosts_manual'] ID do host manual.
+ * @param string $params['modulo_id'] ID do módulo a vincular manualmente.
+ * @param bool $params['sem_id'] Se true, não vincula ID ao histórico.
+ * @param int $params['sem_id']['versao'] Versão manual do registro quando sem_id está definido.
+ * @param array $params['tabela'] Tabela personalizada ao invés da tabela principal do módulo.
+ * @param string $params['tabela']['nome'] Nome da tabela do banco de dados.
+ * @param string $params['tabela']['versao'] Campo versão da tabela.
+ * @param string $params['tabela']['id_numerico'] Identificador numérico da tabela.
+ * @param bool $params['tabela']['id'] Se true, usa campo id ao invés de id_numerico.
+ *
+ * @return void
+ */
 function interface_historico_incluir($params = false){
 	global $_GESTOR;
 
@@ -472,6 +632,25 @@ function interface_historico_incluir($params = false){
 	}
 }
 
+/**
+ * Exibe o histórico de alterações de um registro do sistema.
+ *
+ * Renderiza uma lista paginada com todas as alterações registradas em um determinado
+ * registro, incluindo informações sobre quem fez a alteração, quando e quais valores
+ * foram modificados.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['id'] Identificador do registro a consultar o histórico.
+ * @param string $params['modulo'] Identificador do módulo do registro.
+ * @param string $params['pagina'] Página onde o histórico será implementado.
+ * @param bool $params['sem_id'] Se true, não filtra por ID no histórico.
+ * @param array $params['moduloVars']['historico'] Configurações adicionais do histórico.
+ * @param string $params['moduloVars']['historico']['moduloIdExtra'] Módulo ID extra para trocar labels.
+ *
+ * @return void Exibe o HTML do histórico diretamente.
+ */
 function interface_historico($params = false){
 	global $_GESTOR;
 
@@ -864,6 +1043,21 @@ function interface_historico($params = false){
 	return $pagina;
 }
 
+/**
+ * Marca componentes para inclusão na interface.
+ *
+ * Registra um ou mais componentes para serem incluídos posteriormente
+ * na interface através da função interface_componentes(). Os componentes
+ * são armazenados globalmente e renderizados quando necessário.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string|array $params['componente'] Componente ou array de componentes a incluir
+ *                                           (ex: 'modal-carregamento', 'modal-delecao', 'modal-alerta', 'modal-iframe').
+ * 
+ * @return void
+ */
 function interface_componentes_incluir($params = false){
 	global $_GESTOR;
 
@@ -875,9 +1069,11 @@ function interface_componentes_incluir($params = false){
 	
 	// ===== 
 	
+	// Verifica se há componentes para incluir
 	if(isset($componente)){
 		switch(gettype($componente)){
 			case 'array':
+				// Se for array, percorre e marca cada componente
 				if(count($componente) > 0){
 					foreach($componente as $com){
 						$_GESTOR['interface']['componentes'][$com] = true;
@@ -885,11 +1081,25 @@ function interface_componentes_incluir($params = false){
 				}
 			break;
 			default:
+				// Se for string, marca componente único
 				$_GESTOR['interface']['componentes'][$componente] = true;
 		}
 	}
 }
 
+/**
+ * Renderiza componentes marcados para inclusão na interface.
+ *
+ * Processa todos os componentes previamente marcados via interface_componentes_incluir(),
+ * carrega seus layouts, substitui variáveis e adiciona à página global. Suporta
+ * modais de carregamento, deleção, alerta e iframe.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento e página.
+ * 
+ * @param array|false $params Parâmetros da função (não utilizado).
+ * 
+ * @return void
+ */
 function interface_componentes($params = false){
 	global $_GESTOR;
 
@@ -980,6 +1190,24 @@ function interface_componentes($params = false){
 	}
 }
 
+/**
+ * Gera campos de formulário dinamicamente para a interface.
+ *
+ * Cria campos de formulário completos com suporte a diversos tipos (select, imagepick,
+ * templates, etc.). Processa configurações, carrega dados de tabelas do banco,
+ * aplica estilos e validações. Suporta integração com Semantic UI e funcionalidades
+ * avançadas como múltipla seleção, busca, ícones e placeholders.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento e variáveis.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['pagina'] Página onde será incluído o campo (opcional).
+ * @param array $params['campos'] Array de configurações de campos a serem gerados.
+ *                                Cada campo pode ter: tipo, id, nome, disabled, menu, procurar,
+ *                                limpar, multiple, fluid, placeholder, tabela, dados, valor_selecionado, etc.
+ * 
+ * @return void
+ */
 function interface_formulario_campos($params = false){
 	global $_GESTOR;
 
@@ -1714,6 +1942,24 @@ function interface_formulario_campos($params = false){
 	}
 }
 
+/**
+ * Configura validações de formulário usando Semantic UI.
+ *
+ * Define regras de validação client-side para campos de formulário, incluindo
+ * validações de obrigatoriedade, email, número, vazio, etc. Integra com o
+ * sistema de validação do Semantic UI e permite configurações personalizadas
+ * por campo.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['pagina'] Página onde aplicar a validação (opcional).
+ * @param array $params['campos'] Array de campos com suas regras de validação.
+ *                                Cada campo pode ter: type (empty, email, number, etc.),
+ *                                identifier (ID do campo), rules (regras personalizadas).
+ * 
+ * @return void
+ */
 function interface_formulario_validacao($params = false){
 	global $_GESTOR;
 
@@ -2166,6 +2412,22 @@ function interface_formulario_validacao($params = false){
 	}
 }
 
+/**
+ * Valida campos obrigatórios server-side.
+ *
+ * Executa validação server-side de campos obrigatórios conforme regras definidas
+ * (texto, seleção, email). Se houver falha na validação, exibe alerta e
+ * redireciona o usuário. Complementa a validação client-side.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['redirect'] URL de redirecionamento em caso de erro (opcional).
+ * @param array $params['campos'] Array de campos a validar com suas regras
+ *                                (texto-obrigatorio, selecao-obrigatorio, email-obrigatorio).
+ * 
+ * @return void
+ */
 function interface_validacao_campos_obrigatorios($params = false){
 	global $_GESTOR;
 
@@ -2185,6 +2447,7 @@ function interface_validacao_campos_obrigatorios($params = false){
 	
 	// ===== 
 	
+	// Valida cada campo conforme suas regras
 	if(isset($campos)){
 		foreach($campos as $campo){
 			switch($campo['regra']){
@@ -2237,10 +2500,12 @@ function interface_validacao_campos_obrigatorios($params = false){
 		}
 	}
 	
+	// Exibe alerta se houver erro de validação
 	if(isset($naoValidouMsgAlerta)){
 		interface_alerta(Array('msg' => $naoValidouMsgAlerta));
 	}
 	
+	// Redireciona em caso de falha na validação
 	if(isset($naoValidou)){
 		if(isset($redirect)){
 			gestor_redirecionar($redirect);
@@ -2250,6 +2515,20 @@ function interface_validacao_campos_obrigatorios($params = false){
 	}
 }
 
+/**
+ * Obtém valor de variável do registro atual do módulo.
+ *
+ * Recupera o valor de uma variável/campo do registro que está sendo
+ * visualizado/editado no módulo atual. Consulta o banco de dados se
+ * necessário e armazena em cache para performance.
+ *
+ * @global array $_GESTOR Sistema global com dados do módulo e registro.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['variavel'] Nome da variável/campo a obter (obrigatório).
+ * 
+ * @return mixed Valor da variável solicitada.
+ */
 function interface_modulo_variavel_valor($params = false){
 	global $_GESTOR;
 
@@ -2306,6 +2585,25 @@ function interface_modulo_variavel_valor($params = false){
 	}
 }
 
+/**
+ * Registra backup de campo no banco de dados.
+ *
+ * Armazena versões antigas de valores de campos para permitir recuperação.
+ * Mantém histórico limitado conforme parâmetro maxCopias, removendo backups
+ * mais antigos automaticamente.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['campo'] Nome do campo a fazer backup (obrigatório).
+ * @param int $params['id_numerico'] ID numérico do registro (obrigatório).
+ * @param int $params['versao'] Número da versão do backup (obrigatório).
+ * @param string $params['valor'] Valor do campo a ser guardado (obrigatório).
+ * @param string $params['modulo'] Nome do módulo (opcional, usa módulo atual se não fornecido).
+ * @param int $params['maxCopias'] Máximo de cópias a manter (opcional, padrão 20).
+ * 
+ * @return void
+ */
 function interface_backup_campo_incluir($params = false){
 	global $_GESTOR;
 	
@@ -2380,6 +2678,24 @@ function interface_backup_campo_incluir($params = false){
 	}
 }
 
+/**
+ * Renderiza dropdown de seleção de versões de backup de um campo.
+ * 
+ * Gera um elemento select HTML com todas as versões de backup disponíveis
+ * para um campo específico, permitindo restaurar valores anteriores.
+ * Dispara callback JavaScript após seleção.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['campo'] Nome do campo no banco de dados (obrigatório).
+ * @param string $params['campo_form'] Nome do campo no formulário (opcional, usa 'campo' se não fornecido).
+ * @param string $params['callback'] Nome do evento callback JavaScript para sucesso (obrigatório).
+ * @param int $params['id_numerico'] Identificador numérico do registro (obrigatório).
+ * @param string $params['modulo'] Nome do módulo (opcional, usa módulo atual se não fornecido).
+ * 
+ * @return void Renderiza HTML do dropdown diretamente.
+ */
 function interface_backup_campo_select($params = false){
 	global $_GESTOR;
 	
@@ -2487,6 +2803,22 @@ function interface_backup_campo_select($params = false){
 	}
 }
 
+/**
+ * Verifica alterações em campos comparando valores atuais com valores anteriores.
+ * 
+ * Compara os valores de campos específicos entre o estado atual e um backup
+ * anterior, retornando quais campos foram modificados. Útil para detectar
+ * mudanças antes de salvar formulários.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['campos'] Lista de campos a verificar (obrigatório).
+ * @param array $params['valores_atuais'] Valores atuais dos campos (obrigatório).
+ * @param array $params['valores_anteriores'] Valores anteriores dos campos para comparação (obrigatório).
+ * 
+ * @return array Lista de campos que foram alterados.
+ */
 function interface_verificar_campos($params = false){
 	global $_GESTOR;
 	
@@ -2541,6 +2873,19 @@ function interface_verificar_campos($params = false){
 	return false;
 }
 
+/**
+ * Renderiza botões de ação no cabeçalho da interface administrativa.
+ * 
+ * Gera HTML para botões de ações (excluir, salvar, etc.) que aparecem
+ * no cabeçalho das páginas de edição/visualização. Suporta tooltips,
+ * ícones, cores e callbacks personalizados.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['botoes'] Array de botões a renderizar (obrigatório).
+ *                                Cada botão contém: cor, icon, rotulo, tooltip, url, callback.
+ * 
+ * @return void Renderiza HTML dos botões diretamente.
+ */
 function interface_botoes_cabecalho($params = false){
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -2575,6 +2920,19 @@ function interface_botoes_cabecalho($params = false){
 	return $botoes_html;
 }
 
+/**
+ * Renderiza botões de ação no rodapé da interface administrativa.
+ * 
+ * Gera HTML para botões de ações (excluir, salvar, cancelar, etc.) que aparecem
+ * no rodapé das páginas de edição/visualização. Estrutura e funcionalidade
+ * similares aos botões do cabeçalho.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['botoes_rodape'] Array de botões a renderizar no rodapé (obrigatório).
+ *                                        Cada botão contém: cor, icon, rotulo, tooltip, url, callback.
+ * 
+ * @return string HTML dos botões do rodapé.
+ */
 function interface_botoes_rodape($params = false){
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
@@ -2611,6 +2969,22 @@ function interface_botoes_rodape($params = false){
 
 // ===== Interfaces ajax
 
+/**
+ * Processa requisição AJAX para restaurar backup de campo.
+ * 
+ * Retorna o valor de um campo a partir de um backup específico (se ID fornecido)
+ * ou o valor atual do campo (se ID não fornecido). Usado para restaurar
+ * versões anteriores de campos via interface administrativa.
+ *
+ * @global array $_GESTOR Configurações globais do sistema e resposta AJAX.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['campo'] Nome do campo (via $_REQUEST ou parâmetro).
+ * @param int $params['id_numerico'] ID numérico do registro (via $_REQUEST ou parâmetro).
+ * @param string $params['modulo'] Nome do módulo (opcional, usa módulo atual se não fornecido).
+ * 
+ * @return void Define $_GESTOR['ajax-json'] com o valor do campo.
+ */
 function interface_ajax_backup_campo($params = false){
 	global $_GESTOR;
 	
@@ -2699,6 +3073,19 @@ function interface_ajax_backup_campo($params = false){
 	}
 }
 
+/**
+ * Processa requisição AJAX para carregar mais resultados do histórico.
+ * 
+ * Retorna uma nova página de resultados do histórico de alterações,
+ * usado para paginação infinita ou "carregar mais" na interface.
+ * Delega para interface_historico() com parâmetros de paginação.
+ *
+ * @global array $_GESTOR Configurações globais do sistema e resposta AJAX.
+ *                        Recebe: $_REQUEST['id'], $_REQUEST['sem_id'].
+ *                        Define: $_GESTOR['ajax-json'] com status e HTML da página.
+ * 
+ * @return void Define $_GESTOR['ajax-json'] com a próxima página do histórico.
+ */
 function interface_ajax_historico_mais_resultados(){
 	global $_GESTOR;
 	
@@ -2713,12 +3100,38 @@ function interface_ajax_historico_mais_resultados(){
 	);
 }
 
+/**
+ * Processa requisição AJAX para listagem dinâmica de registros.
+ * 
+ * Retorna HTML de uma listagem de registros baseado em filtros, ordenação
+ * e paginação via AJAX. Usado para atualizar tabelas de listagem sem
+ * recarregar a página completa.
+ *
+ * @global array $_GESTOR Configurações globais do sistema e resposta AJAX.
+ *                        Recebe parâmetros via $_REQUEST (filtros, ordem, página).
+ *                        Define: $_GESTOR['ajax-json'] com status e HTML da listagem.
+ * 
+ * @return void Define $_GESTOR['ajax-json'] com o HTML da listagem atualizada.
+ */
 function interface_ajax_listar(){
 	global $_GESTOR;
 	
 	$_GESTOR['ajax-json'] = interface_listar_ajax();
 }
 
+/**
+ * Processa requisição AJAX para verificar existência de valor em campo.
+ * 
+ * Verifica se um determinado valor já existe em um campo específico da
+ * tabela, útil para validações de unicidade (ex: email, CPF) em tempo
+ * real durante preenchimento de formulários.
+ *
+ * @global array $_GESTOR Configurações globais do sistema e resposta AJAX.
+ *                        Recebe: $_REQUEST['campo'], $_REQUEST['valor'], $_REQUEST['language'].
+ *                        Define: $_GESTOR['ajax-json'] com status e resultado da verificação.
+ * 
+ * @return void Define $_GESTOR['ajax-json'] indicando se campo existe (true/false).
+ */
 function interface_ajax_verificar_campo(){
 	global $_GESTOR;
 	
@@ -2743,6 +3156,21 @@ function interface_ajax_verificar_campo(){
 
 // ===== Interfaces principais
 
+/**
+ * Inicializa a interface de exclusão de registro.
+ * 
+ * Prepara o sistema para a exclusão de um registro, validando o ID
+ * fornecido via GET e armazenando em $_GESTOR['modulo-registro-id'].
+ * Redireciona para raiz se ID não fornecido.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ *                        Recebe: $_REQUEST['id'].
+ *                        Define: $_GESTOR['modulo-registro-id'].
+ * 
+ * @param array|false $params Parâmetros da função (não utilizado nesta função).
+ * 
+ * @return void Prepara $_GESTOR para exclusão ou redireciona.
+ */
 function interface_excluir_iniciar($params = false){
 	global $_GESTOR;
 	
@@ -2757,6 +3185,23 @@ function interface_excluir_iniciar($params = false){
 	}
 }
 
+/**
+ * Finaliza a interface de exclusão de registro (exclusão lógica).
+ * 
+ * Executa a exclusão lógica do registro (marca status como 'D' - deletado)
+ * no banco de dados. Suporta personalização da tabela, inclusão de histórico,
+ * e callback após exclusão. Redireciona para listagem após sucesso.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ *                        Usa: $_GESTOR['modulo-registro-id'], $_GESTOR['modulo-id'].
+ *                        
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['banco'] Dados da tabela customizada (nome, id, status, where).
+ * @param bool $params['historico'] Se false, desativa inclusão no histórico (padrão: ativa).
+ * @param string $params['callbackFunction'] Função callback a executar após exclusão.
+ * 
+ * @return void Executa exclusão e redireciona para listagem.
+ */
 function interface_excluir_finalizar($params = false){
 	global $_GESTOR;
 	
@@ -2854,6 +3299,21 @@ function interface_excluir_finalizar($params = false){
 	}
 }
 
+/**
+ * Inicializa a interface de alteração de status de registro.
+ * 
+ * Prepara o sistema para alterar o status de um registro (ativar/desativar),
+ * validando o ID e status fornecidos via GET e armazenando em variáveis globais.
+ * Redireciona para raiz se ID ou status não fornecidos.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ *                        Recebe: $_REQUEST['id'], $_REQUEST['status'].
+ *                        Define: $_GESTOR['modulo-registro-id'], $_GESTOR['modulo-registro-status'].
+ * 
+ * @param array|false $params Parâmetros da função (não utilizado nesta função).
+ * 
+ * @return void Prepara $_GESTOR para alteração de status ou redireciona.
+ */
 function interface_status_iniciar($params = false){
 	global $_GESTOR;
 
@@ -2872,6 +3332,23 @@ function interface_status_iniciar($params = false){
 	}
 }
 
+/**
+ * Finaliza a interface de alteração de status de registro.
+ * 
+ * Executa a alteração de status do registro (ex: A=Ativo, I=Inativo) no banco
+ * de dados. Suporta personalização da tabela, inclusão de histórico, e callback
+ * após alteração. Redireciona para listagem após sucesso.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ *                        Usa: $_GESTOR['modulo-registro-id'], $_GESTOR['modulo-registro-status'].
+ *                        
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['banco'] Dados da tabela customizada (nome, id, status, where).
+ * @param bool $params['historico'] Se false, desativa inclusão no histórico (padrão: ativa).
+ * @param string $params['callbackFunction'] Função callback a executar após alteração.
+ * 
+ * @return void Executa alteração de status e redireciona para listagem.
+ */
 function interface_status_finalizar($params = false){
 	global $_GESTOR;
 

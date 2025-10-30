@@ -1,41 +1,136 @@
 <?php
-// Helpers para instalação/atualização de plugins (Fase 1)
+/**
+ * Biblioteca de Instalação e Atualização de Plugins
+ *
+ * Sistema completo para gerenciamento de plugins com suporte a:
+ * - Download de repositórios GitHub (públicos e privados)
+ * - Instalação local via arquivo ou diretório
+ * - Validação de manifesto e dependências
+ * - Migração de banco de dados e arquivos de dados
+ * - Versionamento e atualização automática
+ *
+ * @package Conn2Flow
+ * @subpackage Plugins
+ * @version 1.0 (Fase 1)
+ */
 
 require_once __DIR__ . '/banco.php';
 require_once __DIR__ . '/plugins-consts.php';
 require_once __DIR__ . '/../modulos/admin-plugins/admin-plugins.php';
 
+/**
+ * Normaliza um slug de plugin para formato seguro.
+ *
+ * Remove caracteres especiais e converte para minúsculas,
+ * mantendo apenas letras, números, hífens e underscores.
+ *
+ * @param string $slug Slug original do plugin.
+ * @return string Slug normalizado (ex: "My-Plugin_123" → "my-plugin_123").
+ */
 function plugin_normalize_slug(string $slug): string { return strtolower(preg_replace('/[^a-zA-Z0-9_-]+/','-', $slug)); }
+
+/**
+ * Retorna o caminho raiz do diretório do gestor.
+ *
+ * @return string Caminho absoluto para o diretório raiz.
+ */
 function plugin_base_root(): string { return dirname(__DIR__) . '/'; }
+
+/**
+ * Retorna o caminho de staging temporário para um plugin.
+ *
+ * @param string $slug Slug do plugin.
+ * @return string Caminho completo para temp/plugins/{slug}.
+ */
 function plugin_staging_path(string $slug): string { return plugin_base_root() . 'temp/plugins/' . $slug; }
+
+/**
+ * Retorna o caminho final de instalação de um plugin.
+ *
+ * @param string $slug Slug do plugin.
+ * @return string Caminho completo para plugins/{slug}.
+ */
 function plugin_final_path(string $slug): string { return plugin_base_root() . 'plugins/' . $slug; }
+
+/**
+ * Retorna o diretório de destino para arquivos *Data.json do plugin.
+ *
+ * @param string $slug Slug do plugin.
+ * @return string Caminho completo para db/data/plugins/{slug}.
+ */
 function plugin_datajson_dest_dir(string $slug): string { return plugin_base_root() . 'db/data/plugins/' . $slug; }
+
+/**
+ * Cria um diretório recursivamente se não existir.
+ *
+ * @param string $path Caminho do diretório a criar.
+ * @return void
+ */
 function plugin_safe_mkdir(string $path): void { if(!is_dir($path)) mkdir($path, 0777, true); }
+
+/**
+ * Remove um diretório recursivamente incluindo todo seu conteúdo.
+ *
+ * @param string $dir Caminho do diretório a remover.
+ * @return void
+ */
 function plugin_remove_dir(string $dir): void { if(!is_dir($dir)) return; $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST); foreach($it as $f){ $f->isDir()? rmdir($f->getPathname()):unlink($f->getPathname()); } rmdir($dir); }
+
+/**
+ * Calcula o checksum SHA-256 de um arquivo.
+ *
+ * @param string $file Caminho do arquivo.
+ * @return string|null Hash SHA-256 ou null se o arquivo não existir.
+ */
 function plugin_compute_checksum(string $file): ?string { return file_exists($file)? hash_file('sha256',$file): null; }
 
 /**
- * Detecta se o script está sendo executado via CLI ou web
+ * Detecta se o script está sendo executado via CLI ou web.
+ *
+ * Verifica o PHP SAPI para determinar o contexto de execução,
+ * útil para adaptar comportamento de output e logging.
+ *
+ * @return bool True se CLI, false se web.
  */
 function plugin_is_cli_context(): bool {
     return php_sapi_name() === 'cli';
 }
 
 /**
- * Converte nome de arquivo *Data.json para nome de tabela snake_case
- * Ex: ModulosData.json => modulos, HostsConfiguracoesData.json => hosts_configuracoes
+ * Converte nome de arquivo *Data.json para nome de tabela snake_case.
+ *
+ * Transforma nomes em CamelCase para snake_case seguindo convenções SQL.
+ * Exemplos:
+ * - ModulosData.json → modulos
+ * - HostsConfiguracoesData.json → hosts_configuracoes
+ *
+ * @param string $file Nome do arquivo *Data.json.
+ * @return string Nome da tabela em snake_case.
  */
 function tabelaFromDataFile(string $file): string {
+    // Remove sufixo "Data.json" para obter nome base
     $base = preg_replace('/Data\.json$/', '', basename($file));
     if ($base === '') return '';
+    
+    // Se já contém underscore, apenas converte para minúsculas
     if (strpos($base, '_') !== false) {
         return strtolower($base);
     }
+    
     // Inserir underscore antes de cada letra maiúscula que não é inicial
     $snake = preg_replace('/(?<!^)([A-Z])/', '_$1', $base);
     return strtolower($snake);
 }
 
+/**
+ * Lê e decodifica um arquivo JSON.
+ *
+ * Realiza validação do JSON e adiciona erros ao array de erros se houver falhas.
+ *
+ * @param string $path Caminho do arquivo JSON.
+ * @param array &$errors Array de erros (passado por referência).
+ * @return array|null Dados decodificados ou null em caso de erro.
+ */
 function plugin_read_json(string $path, array &$errors): ?array {
     if(!file_exists($path)){ $errors[] = "Arquivo não encontrado: $path"; return null; }
     $raw = file_get_contents($path);
@@ -44,6 +139,18 @@ function plugin_read_json(string $path, array &$errors): ?array {
     return $data;
 }
 
+/**
+ * Valida campos obrigatórios e formato do manifest.json do plugin.
+ *
+ * Verifica:
+ * - Campos obrigatórios: id, name, version
+ * - Formato da versão: semantic versioning (x.y.z)
+ * - Formato do ID: lowercase, números, hífen ou underscore
+ *
+ * @param array $manifest Dados do manifest.json decodificados.
+ * @param array &$errors Array de erros (passado por referência).
+ * @return bool True se válido, false caso contrário.
+ */
 function plugin_validate_manifest(array $manifest, array &$errors): bool {
     $required = ['id','name','version'];
     foreach($required as $r){ if(empty($manifest[$r])) $errors[] = "Missing required field: $r"; }
@@ -53,6 +160,16 @@ function plugin_validate_manifest(array $manifest, array &$errors): bool {
     return empty($errors);
 }
 
+/**
+ * Busca credenciais de token para acesso a repositórios privados.
+ *
+ * Aceita dois formatos:
+ * 1. Token direto do GitHub (ghp_, github_pat_, gho_, ghu_, ghs_)
+ * 2. Nome de referência para buscar em variável de ambiente PLUGIN_TOKEN_{REF}
+ *
+ * @param string|null $credRef Referência ou token direto.
+ * @return string|null Token encontrado ou null.
+ */
 function plugin_credentials_lookup(?string $credRef): ?string {
     if(!$credRef) return null;
 
@@ -69,11 +186,30 @@ function plugin_credentials_lookup(?string $credRef): ?string {
 
 // === Download Helpers (GitHub) ===
 
+/**
+ * Realiza download HTTP de arquivo com suporte a cURL e fallback para streams.
+ *
+ * Faz o download de uma URL para um arquivo local, com:
+ * - Preferência por cURL quando disponível
+ * - Fallback para file_get_contents com stream context
+ * - Suporte a headers customizados (autenticação, accept types)
+ * - Timeout de 120 segundos
+ * - Até 5 redirecionamentos
+ * - Log detalhado de cada etapa
+ *
+ * @param string $url URL para download.
+ * @param string $dest Caminho do arquivo de destino.
+ * @param array $headers Headers HTTP a enviar (formato: ['Header-Name' => 'value']).
+ * @param array &$log Array de log (passado por referência).
+ * @return bool True se sucesso, false em caso de erro.
+ */
 function plugin_http_download(string $url, string $dest, array $headers, array &$log): bool {
     $log[] = '[http] GET ' . $url;
+    
     // Remover arquivo antigo se existir
     if(file_exists($dest)) unlink($dest);
     $ok = false; $data = '';
+    
     // Preferir cURL se disponível
     if(function_exists('curl_init')){
         $ch = curl_init($url);
@@ -82,14 +218,20 @@ function plugin_http_download(string $url, string $dest, array $headers, array &
         curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
         curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+        
+        // Preparar headers
         $hdrs = [];
         foreach($headers as $hK => $hV){ $hdrs[] = $hK.': '.$hV; }
         if($hdrs) curl_setopt($ch, CURLOPT_HTTPHEADER, $hdrs);
         curl_setopt($ch, CURLOPT_USERAGENT, 'conn2flow-plugin-installer/1.0');
+        
+        // Executar request
         $response = curl_exec($ch);
         $errno = curl_errno($ch); $err = curl_error($ch);
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+        
+        // Validar resposta
         if($errno){ $log[] = '[erro] cURL erro='.$errno.' msg='.$err; return false; }
         if($status >= 400){ $log[]='[erro] HTTP status '.$status; return false; }
         if($response === false || $response === ''){ $log[]='[erro] resposta vazia'; return false; }
@@ -120,11 +262,37 @@ function plugin_http_download(string $url, string $dest, array $headers, array &
     return false;
 }
 
+/**
+ * Gera URL para download do zipball de um repositório GitHub.
+ *
+ * Usa a API do GitHub para gerar URL zipball que aceita
+ * branch, tag ou commit SHA como referência.
+ *
+ * @param string $owner Proprietário do repositório (usuário ou organização).
+ * @param string $repo Nome do repositório.
+ * @param string $ref Referência (branch, tag ou commit SHA).
+ * @return string URL completa para download do zipball.
+ */
 function plugin_github_zip_url(string $owner,string $repo,string $ref): string {
     // Usar API zipball (retorna zip) – aceita branch, tag ou commit.
     return "https://api.github.com/repos/$owner/$repo/zipball/" . rawurlencode($ref);
 }
 
+/**
+ * Baixa plugin de repositório público do GitHub.
+ *
+ * Estratégia de download em ordem de preferência:
+ * 1. Asset de release específica (se tag fornecida)
+ * 2. Asset da última release (se branch main/master)
+ * 3. Zipball completo via API (fallback)
+ *
+ * @param string $owner Proprietário do repositório.
+ * @param string $repo Nome do repositório.
+ * @param string $ref Referência (branch/tag/commit).
+ * @param string $destZip Caminho do arquivo ZIP de destino.
+ * @param array &$log Array de log (passado por referência).
+ * @return bool True se sucesso, false em caso de erro.
+ */
 function plugin_download_github_public(string $owner,string $repo,string $ref,string $destZip, array &$log): bool {
     if(!$owner || !$repo){ $log[]='[erro] owner/repo ausentes'; return false; }
 
@@ -170,6 +338,20 @@ function plugin_download_github_public(string $owner,string $repo,string $ref,st
     ],$log);
 }
 
+/**
+ * Baixa plugin de repositório privado do GitHub usando token de autenticação.
+ *
+ * Requer token de acesso pessoal (PAT) ou token de app com permissões
+ * de leitura do repositório.
+ *
+ * @param string $owner Proprietário do repositório.
+ * @param string $repo Nome do repositório.
+ * @param string $ref Referência (branch/tag/commit).
+ * @param string $destZip Caminho do arquivo ZIP de destino.
+ * @param string $token Token de autenticação do GitHub.
+ * @param array &$log Array de log (passado por referência).
+ * @return bool True se sucesso, false em caso de erro.
+ */
 function plugin_download_github_private(string $owner,string $repo,string $ref,string $destZip,string $token, array &$log): bool {
     if(!$token){ $log[]='[erro] token vazio'; return false; }
     if(!$owner || !$repo){ $log[]='[erro] owner/repo ausentes'; return false; }
@@ -182,6 +364,18 @@ function plugin_download_github_private(string $owner,string $repo,string $ref,s
     ],$log);
 }
 
+/**
+ * Copia plugin de caminho local (diretório ou arquivo ZIP).
+ *
+ * Suporta dois modos:
+ * 1. Diretório: cria ZIP temporário com todo o conteúdo
+ * 2. Arquivo: copia ZIP existente diretamente
+ *
+ * @param string $sourcePath Caminho local do plugin (diretório ou arquivo ZIP).
+ * @param string $destZip Caminho do arquivo ZIP de destino.
+ * @param array &$log Array de log (passado por referência).
+ * @return bool True se sucesso, false em caso de erro.
+ */
 function plugin_copy_local_path(string $sourcePath, string $destZip, array &$log): bool {
     if(is_dir($sourcePath)) {
         // Criar zip temporário do diretório (simplificado)
@@ -211,6 +405,17 @@ function plugin_copy_local_path(string $sourcePath, string $destZip, array &$log
     }
 }
 
+/**
+ * Extrai arquivo ZIP para diretório de destino.
+ *
+ * Realiza extração completa e normaliza caminhos criados em Windows
+ * (converte backslashes em slashes).
+ *
+ * @param string $zipFile Caminho do arquivo ZIP.
+ * @param string $destDir Diretório de destino para extração.
+ * @param array &$log Array de log (passado por referência).
+ * @return bool True se sucesso, false em caso de erro.
+ */
 function plugin_extract_zip(string $zipFile, string $destDir, array &$log): bool {
     if(!file_exists($zipFile)){ $log[] = "[erro] zip inexistente: $zipFile"; return false; }
     plugin_safe_mkdir($destDir);
@@ -218,6 +423,7 @@ function plugin_extract_zip(string $zipFile, string $destDir, array &$log): bool
     if($zip->open($zipFile)!==true){ $log[] = "[erro] abrir zip"; return false; }
     $zip->extractTo($destDir);
     $zip->close();
+    
     // Normalizar diretórios com backslashes literais (artefato de zips criados em Windows)
     $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($destDir, FilesystemIterator::SKIP_DOTS));
     foreach($rii as $f){
@@ -236,6 +442,18 @@ function plugin_extract_zip(string $zipFile, string $destDir, array &$log): bool
     return true;
 }
 
+/**
+ * Localiza o arquivo manifest.json dentro do diretório de staging.
+ *
+ * Estratégia de busca:
+ * 1. Raiz do staging
+ * 2. Subdiretório "plugin"
+ * 3. Busca recursiva (para zipballs do GitHub que criam subdir)
+ *
+ * @param string $staging Diretório de staging extraído.
+ * @param array &$log Array de log (passado por referência).
+ * @return string|null Caminho completo do manifest.json ou null se não encontrado.
+ */
 function plugin_locate_manifest(string $staging, array &$log): ?string {
     // Manifest pode estar na raiz do pacote ou em subdir "plugin" (caso futuro)
     $candidates = [ $staging.'/manifest.json', $staging.'/plugin/manifest.json' ];
@@ -255,6 +473,20 @@ function plugin_locate_manifest(string $staging, array &$log): ?string {
     return null;
 }
 
+/**
+ * Move diretório do plugin de staging para localização final.
+ *
+ * Processo:
+ * 1. Faz backup do plugin existente (se houver)
+ * 2. Localiza o diretório raiz do plugin (onde está manifest.json)
+ * 3. Copia recursivamente para localização final
+ * 4. Remove diretório antigo se existir
+ *
+ * @param string $staging Diretório de staging.
+ * @param string $final Diretório final de instalação.
+ * @param array &$log Array de log (passado por referência).
+ * @return bool True se sucesso, false em caso de erro.
+ */
 function plugin_move_to_final(string $staging, string $final, array &$log): bool {
     $rootPlugins = dirname($final);
     if(!is_dir($rootPlugins)) mkdir($rootPlugins,0777,true);
@@ -303,7 +535,24 @@ function plugin_move_to_final(string $staging, string $final, array &$log): bool
     }
     $log[] = "[ok] diretório final atualizado: $final";
     return true;
-}function plugin_persist_metadata(string $slug, array $manifest, ?string $checksum, string $origemTipo, array $opcoes, array &$log): void {
+}
+
+/**
+ * Persiste metadados do plugin na tabela plugins do banco de dados.
+ *
+ * Realiza upsert (insert ou update) dos dados do plugin preservando:
+ * - data_instalacao (se já existir)
+ * - status (ativo/inativo)
+ *
+ * @param string $slug ID único do plugin.
+ * @param array $manifest Dados do manifest.json.
+ * @param string|null $checksum Hash SHA-256 do pacote.
+ * @param string $origemTipo Tipo de origem (github_public, github_private, local).
+ * @param array $opcoes Opções de instalação (referencia, ref, cred_ref).
+ * @param array &$log Array de log (passado por referência).
+ * @return void
+ */
+function plugin_persist_metadata(string $slug, array $manifest, ?string $checksum, string $origemTipo, array $opcoes, array &$log): void {
     $dados = [
         'id' => $slug,
         'nome' => $manifest['name'] ?? $slug,
@@ -348,6 +597,16 @@ function plugin_move_to_final(string $staging, string $final, array &$log): bool
     $log[] = '[ok] metadata persisted in plugins table';
 }
 
+/**
+ * Cria backup em ZIP da instalação existente do plugin.
+ *
+ * Armazena backups no diretório plugins/_backups/ com timestamp.
+ *
+ * @param string $finalPath Caminho do plugin instalado.
+ * @param array &$log Array de log (passado por referência).
+ * @return void
+ * @throws RuntimeException Se falhar ao criar arquivo ZIP.
+ */
 function plugin_backup_existing(string $finalPath, array &$log): void {
     if(!is_dir($finalPath)) return; // nada a fazer
     $parent = dirname($finalPath);
@@ -363,6 +622,19 @@ function plugin_backup_existing(string $finalPath, array &$log): void {
     $log[]='[ok] backup criado em '.$zipName;
 }
 
+/**
+ * Sincroniza arquivos Data.json do plugin com o banco de dados.
+ * 
+ * Detecta automaticamente arquivos *Data.json (multi-arquivos) ou Data.json legado
+ * e delega a sincronização para as funções apropriadas. Suporta dois modos:
+ * - Multi-arquivos: Múltiplos arquivos *Data.json em db/data/
+ * - Legado: Único arquivo Data.json
+ *
+ * @param string $staging Diretório de staging do plugin
+ * @param string $slug Identificador único do plugin
+ * @param array $log Referência ao array de log (passado por referência)
+ * @return void
+ */
 function plugin_sync_datajson(string $staging, string $slug, array &$log): void {
     // SUPORTE DINÂMICO: Detecta automaticamente todos os arquivos *Data.json
     $finalBase = plugin_final_path($slug); // já movido
@@ -419,8 +691,16 @@ function plugin_sync_datajson(string $staging, string $slug, array &$log): void 
 
 /**
  * Sincroniza dados a partir de arquivos *Data.json detectados dinamicamente.
- * Copia arquivos para diretório central gestor/db/data/plugins/<slug>/ e realiza upsert nas tabelas.
- * AGORA USA DELEGAÇÃO PARA SISTEMA ROBUSTO DE BANCO DE DADOS
+ * 
+ * Copia arquivos para diretório central gestor/db/data/plugins/<slug>/ e delega
+ * operações de banco de dados para o sistema robusto. Substitui upserts manuais
+ * por chamada ao sistema de integração de dados.
+ *
+ * @param array $filesMap Mapeamento de nome da tabela para caminho do arquivo Data.json
+ * @param string $slug Identificador único do plugin
+ * @param array $log Referência ao array de log (passado por referência)
+ * @param string $finalBase Caminho base do plugin instalado
+ * @return void
  */
 function plugin_sync_datajson_multi(array $filesMap, string $slug, array &$log, string $finalBase): void {
     $destDir = plugin_datajson_dest_dir($slug);
@@ -451,7 +731,19 @@ function plugin_sync_datajson_multi(array $filesMap, string $slug, array &$log, 
 }
 
 /**
- * Executa migrações específicas do plugin caso exista diretório db/migrations no pacote final.
+ * Executa migrações de banco de dados específicas do plugin usando Phinx.
+ * 
+ * Verifica se existem arquivos PHP de migração em db/migrations/ do plugin
+ * e executa usando Phinx. Carrega configuração principal (phinx.php) e
+ * sobrescreve apenas o caminho de migrações para o diretório do plugin.
+ *
+ * @param string $slug Identificador único do plugin
+ * @param string $finalPath Caminho final do plugin instalado
+ * @param array $log Referência ao array de log (passado por referência)
+ * @param array $opts Opções de execução:
+ *   - 'no_migrations' (bool): Desativa migrações
+ *   - 'only_resources' (bool): Pula migrações (modo somente recursos)
+ * @return void
  */
 function plugin_run_migrations(string $slug, string $finalPath, array &$log, array $opts = []): void {
     if(!empty($opts['no_migrations'])) { $log[]='[info] migrações desativadas (--no-migrations)'; return; }
@@ -487,6 +779,18 @@ function plugin_run_migrations(string $slug, string $finalPath, array &$log, arr
     }
 }
 
+/**
+ * Sincroniza recursos (layouts, pages, components, variables) de forma granular.
+ * 
+ * Processa estrutura resources[<lang>]['layouts'|'pages'|'components'|'variables']
+ * e realiza upsert no banco de dados, enriquecendo com checksums quando disponível.
+ *
+ * @param array $resources Array de recursos organizados por idioma
+ * @param string $pluginId Identificador único do plugin
+ * @param string|null $baseDir Diretório base para buscar arquivos HTML/CSS (opcional)
+ * @param array $log Referência ao array de log (passado por referência)
+ * @return void
+ */
 function plugin_sync_resources_granular(array $resources, string $pluginId, ?string $baseDir, array &$log): void {
     // Estrutura esperada: resources[<lang>]['layouts'|'pages'|'components'|'variables'] => arrays
     $tot=['layouts'=>0,'pages'=>0,'components'=>0,'variables'=>0,'updates'=>0,'inserts'=>0,'skipped'=>0];
@@ -528,6 +832,19 @@ function plugin_sync_resources_granular(array $resources, string $pluginId, ?str
     $log[]='[ok] sync granular plugin='.$pluginId.' inserts='.$tot['inserts'].' updates='.$tot['updates'].' skipped='.$tot['skipped'];
 }
 
+/**
+ * Enriquece recursos com checksums calculados a partir de arquivos HTML e CSS.
+ * 
+ * Calcula hashes SHA-256 para arquivos HTML e CSS do recurso e adiciona
+ * ao array 'checksum' com as chaves: html, css, combined.
+ *
+ * @param string|null $baseDir Diretório base para buscar arquivos
+ * @param string $tipo Tipo de recurso: 'layouts', 'pages', ou 'components'
+ * @param string $id Identificador do recurso
+ * @param array $item Referência ao array do item (modificado com checksums)
+ * @param array $log Referência ao array de log (passado por referência)
+ * @return void
+ */
 function plugin_enrich_resource_checksums(?string $baseDir,string $tipo,string $id,array &$item,array &$log): void {
     if(!$baseDir || isset($item['checksum'])) return; // já fornecido
     $paths = plugin_guess_resource_files($baseDir,$tipo,$id);
@@ -541,6 +858,18 @@ function plugin_enrich_resource_checksums(?string $baseDir,string $tipo,string $
     }
 }
 
+/**
+ * Tenta localizar automaticamente arquivos HTML e CSS de um recurso.
+ * 
+ * Busca por padrões comuns de organização:
+ * - <id>.html / <id>.css
+ * - <id>/index.html / <id>/index.css
+ *
+ * @param string $baseDir Diretório base do plugin
+ * @param string $tipo Tipo de recurso: 'layouts', 'pages', ou 'components'
+ * @param string $id Identificador do recurso
+ * @return array|null Array com chaves 'html' e/ou 'css', ou null se não encontrado
+ */
 function plugin_guess_resource_files(string $baseDir,string $tipo,string $id): ?array {
     $dirMap = [ 'layouts'=>'layouts', 'pages'=>'pages', 'components'=>'components' ];
     if(!isset($dirMap[$tipo])) return null;
@@ -557,19 +886,22 @@ function plugin_guess_resource_files(string $baseDir,string $tipo,string $id): ?
     return $files?:null;
 }
 
-// === Sincronização de Recursos por Módulos ===
-// Estrutura esperada dentro do pacote extraído:
-//   modules/<modulo>/module-id.json OU modulos/<modulo>/module-id.json
-// Cada arquivo module-id.json pode conter chave "resources" similar ao Data.json (por idioma)
-// Exemplo mínimo:
-// {
-//   "id": "crm",
-//   "resources": { "pt-br": { "pages": [ {"id": "dashboard", "name": "Dashboard"} ] } }
-// }
-// Regras:
-// - Campo module/modulo é forçado com o nome da pasta se não presente no item
-// - Reaproveita as funções plugin_upsert_* existentes (que já aceitam campo module/modulo dentro do array fonte)
-// - Agregamos estatísticas globais por módulos para log
+/**
+ * Sincroniza recursos de módulos a partir de arquivos module-id.json.
+ * 
+ * Procura por diretórios modules/ ou modulos/ no pacote do plugin e processa
+ * arquivos module-id.json ou modulo-id.json que contenham recursos (layouts, pages,
+ * components, variables). Força o campo module/modulo nos itens se não presente.
+ *
+ * Estrutura esperada:
+ * - modules/<modulo>/module-id.json
+ * - modulos/<modulo>/modulo-id.json
+ *
+ * @param string $staging Diretório de staging do plugin
+ * @param string $pluginId Identificador único do plugin
+ * @param array $log Referência ao array de log (passado por referência)
+ * @return void
+ */
 function plugin_sync_modules_resources(string $staging, string $pluginId, array &$log): void {
     $roots = [];
     foreach(['modules','modulos'] as $dir){
@@ -651,12 +983,30 @@ function plugin_sync_modules_resources(string $staging, string $pluginId, array 
     $log[]='[ok] sync módulos plugin='.$pluginId.' modules='.$tot['modules'].' inserts='.$tot['inserts'].' updates='.$tot['updates'].' skipped='.$tot['skipped'].' layouts='.$tot['layouts'].' pages='.$tot['pages'].' components='.$tot['components'].' variables='.$tot['variables'];
 }
 
+/**
+ * Busca e retorna um único registro do banco de dados.
+ * 
+ * Helper simples que executa uma query SQL e retorna a primeira linha
+ * como array associativo, ou null se não encontrado.
+ *
+ * @param string $sql Consulta SQL completa
+ * @return array|null Array associativo com os dados ou null se não encontrado
+ */
 function plugin_db_fetch_one(string $sql){
     $res = banco_query($sql); if(!$res) return null; $row = banco_fetch_assoc($res); return $row?:null; }
 
 /**
  * Delega operações de banco de dados para o sistema robusto de atualizações.
- * Esta função substitui todas as operações manuais de upsert por delegação.
+ * 
+ * Esta função substitui todas as operações manuais de upsert por delegação ao
+ * script controlador de atualização de banco de dados, garantindo consistência
+ * e reaproveitando lógica robusta já existente.
+ * 
+ * @param string $pluginSlug Slug normalizado do plugin
+ * @param array $dataFiles Lista de arquivos Data.json para processar (vazio = todos)
+ * @param array &$log Array de log passado por referência para registrar mensagens
+ * 
+ * @return bool True se a delegação foi bem-sucedida, false em caso de erro
  */
 function plugin_delegate_database_operations(string $pluginSlug, array $dataFiles, array &$log): bool {
     $log[] = '[info] Delegando operações de banco de dados para sistema robusto';
@@ -781,7 +1131,16 @@ function plugin_delegate_database_operations(string $pluginSlug, array $dataFile
 
 /**
  * Função genérica de upsert que delega para o sistema robusto de banco de dados.
- * Esta função substitui todas as operações manuais de upsert por delegação.
+ * 
+ * Esta função substitui operações manuais de upsert por delegação ao sistema robusto.
+ * Mantém contadores zerados pois a delegação é feita em lote posteriormente.
+ *
+ * @param string $tableName Nome da tabela
+ * @param string $pluginSlug Identificador único do plugin
+ * @param array $row Dados da linha a ser inserida/atualizada
+ * @param array $tot Referência ao array de totalizadores (passado por referência)
+ * @param array $log Referência ao array de log (passado por referência)
+ * @return void
  */
 function plugin_upsert_generic(string $tableName, string $pluginSlug, array $row, array &$tot, array &$log): void {
     // Para compatibilidade, manter contadores zerados já que a delegação será feita em lote
@@ -792,6 +1151,20 @@ function plugin_upsert_generic(string $tableName, string $pluginSlug, array $row
     $log[] = "[info] Operação de banco delegada para sistema robusto: tabela=$tableName plugin=$pluginSlug";
 }
 
+/**
+ * Insere ou atualiza um layout no banco de dados.
+ * 
+ * Verifica se layout já existe (por plugin+id+lang) e atualiza se checksum mudou,
+ * ou insere novo registro. Também trata layouts órfãos (sem plugin) associando
+ * ao plugin correto. Incrementa versão automaticamente em atualizações.
+ *
+ * @param string $plugin Identificador do plugin
+ * @param string $lang Código do idioma (ex: 'pt-br')
+ * @param string $id Identificador único do layout
+ * @param array $src Dados source com chaves: name/nome, checksum, version
+ * @param array $tot Referência ao array de totalizadores (passado por referência)
+ * @return void
+ */
 function plugin_upsert_layout(string $plugin,string $lang,string $id,array $src,array &$tot): void {
     $nome = banco_escape_field($src['name']??($src['nome']??$id));
     $checksum = isset($src['checksum'])? (is_array($src['checksum'])?json_encode($src['checksum'],JSON_UNESCAPED_UNICODE):$src['checksum']) : null;
@@ -839,6 +1212,20 @@ function plugin_upsert_layout(string $plugin,string $lang,string $id,array $src,
     $tot['layouts']++;
 }
 
+/**
+ * Insere ou atualiza uma página no banco de dados.
+ * 
+ * Verifica se página já existe (por plugin+id+lang+modulo) e atualiza se checksum mudou,
+ * ou insere novo registro. Suporta campo module/modulo, com fallback para registros
+ * antigos sem módulo. Incrementa versão automaticamente em atualizações.
+ *
+ * @param string $plugin Identificador do plugin
+ * @param string $lang Código do idioma (ex: 'pt-br')
+ * @param string $id Identificador único da página
+ * @param array $src Dados source com chaves: name/nome, path/caminho, module/modulo, checksum, version
+ * @param array $tot Referência ao array de totalizadores (passado por referência)
+ * @return void
+ */
 function plugin_upsert_page(string $plugin,string $lang,string $id,array $src,array &$tot): void {
     $nome = banco_escape_field($src['name']??($src['nome']??$id));
     $checksum = isset($src['checksum'])? (is_array($src['checksum'])?json_encode($src['checksum'],JSON_UNESCAPED_UNICODE):$src['checksum']) : null;
@@ -893,6 +1280,20 @@ function plugin_upsert_page(string $plugin,string $lang,string $id,array $src,ar
     $tot['pages']++;
 }
 
+/**
+ * Insere ou atualiza um componente no banco de dados.
+ * 
+ * Verifica se componente já existe (por plugin+id+lang) e atualiza se checksum mudou,
+ * ou insere novo registro. Suporta campo module/modulo com fallback para registros
+ * antigos. Incrementa versão automaticamente em atualizações.
+ *
+ * @param string $plugin Identificador do plugin
+ * @param string $lang Código do idioma (ex: 'pt-br')
+ * @param string $id Identificador único do componente
+ * @param array $src Dados source com chaves: name/nome, module/modulo, checksum, version
+ * @param array $tot Referência ao array de totalizadores (passado por referência)
+ * @return void
+ */
 function plugin_upsert_component(string $plugin,string $lang,string $id,array $src,array &$tot): void {
     $nome = banco_escape_field($src['name']??($src['nome']??$id));
     $checksum = isset($src['checksum'])? (is_array($src['checksum'])?json_encode($src['checksum'],JSON_UNESCAPED_UNICODE):$src['checksum']) : null;
@@ -942,6 +1343,20 @@ function plugin_upsert_component(string $plugin,string $lang,string $id,array $s
     $tot['components']++;
 }
 
+/**
+ * Insere ou atualiza uma variável no banco de dados.
+ * 
+ * Verifica se variável já existe (por plugin+id+lang+modulo+grupo) e atualiza
+ * ou insere novo registro. Suporta campos group/grupo e module/modulo com
+ * fallback para registros antigos sem esses campos.
+ *
+ * @param string $plugin Identificador do plugin
+ * @param string $lang Código do idioma (ex: 'pt-br')
+ * @param string $id Identificador único da variável
+ * @param array $src Dados source com chaves: value/valor, type/tipo, group/grupo, module/modulo
+ * @param array $tot Referência ao array de totalizadores (passado por referência)
+ * @return void
+ */
 function plugin_upsert_variable(string $plugin,string $lang,string $id,array $src,array &$tot): void {
     $valor = banco_escape_field($src['value']??($src['valor']??''));
     $tipo = banco_escape_field($src['type']??($src['tipo']??''));
@@ -980,6 +1395,19 @@ function plugin_upsert_variable(string $plugin,string $lang,string $id,array $sr
     $tot['variables']++;
 }
 
+/**
+ * Insere ou atualiza um módulo no banco de dados.
+ * 
+ * Verifica se módulo já existe (por plugin+id) e atualiza ou insere novo registro.
+ * Suporta múltiplos campos: nome, grupo, título, ícones, status, versão, etc.
+ *
+ * @param string $plugin Identificador do plugin
+ * @param string $id Identificador único do módulo
+ * @param array $src Dados source com chaves: name/nome, modulo_grupo_id, titulo, icone, icone2, 
+ *                    nao_menu_principal, host, status, versao
+ * @param array $tot Referência ao array de totalizadores (passado por referência)
+ * @return void
+ */
 function plugin_upsert_module(string $plugin,string $id,array $src,array &$tot): void {
     $nome = banco_escape_field($src['name']??($src['nome']??$id));
     $modulo_grupo_id = banco_escape_field($src['modulo_grupo_id']??'');
@@ -1026,6 +1454,16 @@ function plugin_upsert_module(string $plugin,string $id,array $src,array &$tot):
     $tot['modules']++;
 }
 
+/**
+ * Verifica se o checksum do pacote mudou desde a última instalação.
+ * 
+ * Compara o novo checksum com o armazenado no banco de dados para determinar
+ * se o plugin foi modificado e precisa ser reprocessado.
+ *
+ * @param string $slug Identificador único do plugin
+ * @param string|null $newChecksum Novo checksum calculado (SHA-256)
+ * @return bool True se mudou ou se não há checksum anterior, false se inalterado
+ */
 function plugin_checksum_changed(string $slug, ?string $newChecksum): bool {
     if(!$newChecksum) return true;
     $res = banco_select([
@@ -1038,12 +1476,32 @@ function plugin_checksum_changed(string $slug, ?string $newChecksum): bool {
     return $old !== $newChecksum;
 }
 
+/**
+ * Marca o status de execução do plugin no banco de dados.
+ * 
+ * Atualiza campos status_execucao e data_ultima_atualizacao na tabela plugins.
+ * Usado para rastrear o estado do processo de instalação/atualização.
+ *
+ * @param string $slug Identificador único do plugin
+ * @param string $status Status a ser registrado (ex: 'instalando', 'erro', 'concluído')
+ * @return void
+ */
 function plugin_mark_status(string $slug, string $status): void {
     banco_update_campo('status_execucao', $status);
     banco_update_campo('data_ultima_atualizacao', 'NOW()', true);
     banco_update_executar('plugins', "WHERE id='".banco_escape_field($slug)."'");
 }
 
+/**
+ * Registra mensagens de log em arquivo com timestamp.
+ * 
+ * Grava cada linha do log em gestor/logs/plugins/installer.log com timestamp
+ * e identificação do plugin. Cria o diretório automaticamente se não existir.
+ *
+ * @param array $logLines Array de mensagens de log
+ * @param string $slug Identificador único do plugin
+ * @return void
+ */
 function plugin_log_block(array $logLines, string $slug): void {
     $dir = plugin_base_root() . 'logs/plugins';
     if(!is_dir($dir)) mkdir($dir, 0777, true);
@@ -1052,7 +1510,15 @@ function plugin_log_block(array $logLines, string $slug): void {
 }
 
 /**
- * Limpa pasta DB e corrige permissões após instalação
+ * Limpa pasta DB e corrige permissões após instalação do plugin.
+ * 
+ * Remove o diretório db/ do plugin instalado (dados já sincronizados) e
+ * corrige permissões de propriedade recursivamente em contexto CLI.
+ * Em contexto web, o servidor gerencia permissões automaticamente.
+ *
+ * @param string $finalPath Caminho do plugin instalado
+ * @param array $log Referência ao array de log (passado por referência)
+ * @return void
  */
 function plugin_cleanup_after_install(string $finalPath, array &$log): void {
     $dbDir = $finalPath . '/db';
@@ -1088,6 +1554,17 @@ function plugin_cleanup_after_install(string $finalPath, array &$log): void {
     }
 }
 
+/**
+ * Corrige permissões de arquivo temporário via chown.
+ * 
+ * Altera propriedade para www-data:www-data em contexto CLI.
+ * Em contexto web, as permissões são gerenciadas automaticamente.
+ * Usado para garantir que o servidor web possa acessar arquivos criados via CLI.
+ *
+ * @param string $filePath Caminho completo do arquivo
+ * @param array $log Referência ao array de log (passado por referência)
+ * @return void
+ */
 function plugin_fix_temp_file_permissions(string $filePath, array &$log): void {
     if(!file_exists($filePath)) return;
     
@@ -1107,6 +1584,62 @@ function plugin_fix_temp_file_permissions(string $filePath, array &$log): void {
     }
 }
 
+/**
+ * Função principal do instalador de plugins - orquestra todo o processo.
+ * 
+ * Executa o fluxo completo de instalação/atualização de plugin:
+ * 1. Download ou cópia do pacote (upload, GitHub público/privado, caminho local)
+ * 2. Verificação de checksum SHA-256 (se disponível)
+ * 3. Extração do ZIP para staging
+ * 4. Validação do manifest.json
+ * 5. Movimentação para diretório final
+ * 6. Execução de migrações SQL (Phinx)
+ * 7. Sincronização de dados (Data.json)
+ * 8. Limpeza e correção de permissões
+ * 9. Persistência de metadados no banco
+ *
+ * Suporta múltiplas origens:
+ * - 'upload': Arquivo enviado via formulário
+ * - 'github_publico': Repositório GitHub público
+ * - 'github_privado': Repositório GitHub privado (requer token)
+ * - 'local_path': Diretório ou arquivo local
+ *
+ * Opções especiais:
+ * - dry_run: Simula sem aplicar mudanças
+ * - no_migrations: Pula migrações
+ * - only_migrations: Executa apenas migrações
+ * - only_resources: Executa apenas sincronização de recursos
+ * - no_resources: Pula sincronização de recursos
+ * - reprocessar: Força reprocessamento mesmo com checksum inalterado
+ *
+ * @param array $params Parâmetros da instalação:
+ *   - 'slug' (string): Identificador único do plugin
+ *   - 'origem_tipo' (string): Tipo de origem (upload|github_publico|github_privado|local_path)
+ *   - 'arquivo' (string): Caminho do arquivo (para upload)
+ *   - 'owner' (string): Proprietário do repositório (para GitHub)
+ *   - 'repo' (string): Nome do repositório (para GitHub)
+ *   - 'ref' (string): Branch/tag/commit (opcional, padrão: 'main')
+ *   - 'cred_ref' (string): Referência de credencial (para GitHub privado)
+ *   - 'download_url' (string): URL direta de download (opcional)
+ *   - 'sha256_url' (string): URL do arquivo SHA256 (opcional)
+ *   - 'local_path' (string): Caminho local (para local_path)
+ *   - 'dry_run' (bool): Modo simulação
+ *   - 'no_migrations' (bool): Desativar migrações
+ *   - 'only_migrations' (bool): Apenas migrações
+ *   - 'only_resources' (bool): Apenas recursos
+ *   - 'no_resources' (bool): Pular recursos
+ *   - 'reprocessar' (bool): Forçar reprocessamento
+ *   - 'referencia' (string): Referência para metadados (opcional)
+ *
+ * @return int Código de saída:
+ *   - PLG_EXIT_OK (0): Sucesso
+ *   - PLG_EXIT_PARAMS_OR_FILE: Erro de parâmetros ou arquivo
+ *   - PLG_EXIT_DOWNLOAD: Erro no download
+ *   - PLG_EXIT_ZIP_INVALID: ZIP inválido
+ *   - PLG_EXIT_CHECKSUM: Checksum não confere
+ *   - PLG_EXIT_VALIDATE: Erro de validação (manifest)
+ *   - PLG_EXIT_MOVE: Erro ao mover para diretório final
+ */
 function plugin_process(array $params): int {
     $log = [];
     $slug = plugin_normalize_slug($params['slug']);

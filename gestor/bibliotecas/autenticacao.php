@@ -1,4 +1,15 @@
 <?php
+/**
+ * Biblioteca de Autenticação
+ *
+ * Gerencia autenticação segura com JWT (JSON Web Tokens), criptografia RSA,
+ * controle de acesso, geração de tokens, validação de credenciais e
+ * proteção contra ataques de força bruta.
+ *
+ * @package Conn2Flow
+ * @subpackage Bibliotecas
+ * @version 1.2.0
+ */
 
 global $_GESTOR;
 
@@ -8,40 +19,64 @@ $_GESTOR['biblioteca-autenticacao']							=	Array(
 
 // ===== Funções auxiliares
 
+/**
+ * Gera um número aleatório criptograficamente seguro.
+ *
+ * Utiliza openssl_random_pseudo_bytes() para gerar números verdadeiramente
+ * aleatórios, adequados para uso em criptografia e segurança.
+ *
+ * @param int $min Valor mínimo (inclusivo).
+ * @param int $max Valor máximo (inclusivo).
+ * 
+ * @return int Número aleatório seguro entre $min e $max.
+ */
 function autenticacao_crypto_rand_secure($min, $max) {
-	/**********
-		Descrição: gerador de número realmente aleatório
-	**********/
 	
+	// Calcular range e validar
 	$range = $max - $min;
-	if ($range < 0) return $min; // not so random...
+	if ($range < 0) return $min; // Range inválido, retorna mínimo
+	
+	// Calcular bytes necessários baseado no range
 	$log = log($range, 2);
-	$bytes = (int) ($log / 8) + 1; // length in bytes
-	$bits = (int) $log + 1; // length in bits
-	$filter = (int) (1 << $bits) - 1; // set all lower bits to 1
+	$bytes = (int) ($log / 8) + 1; // comprimento em bytes
+	$bits = (int) $log + 1; // comprimento em bits
+	$filter = (int) (1 << $bits) - 1; // máscara de bits
+	
+	// Gerar número aleatório dentro do range
 	do {
 		$rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
-		$rnd = $rnd & $filter; // discard irrelevant bits
+		$rnd = $rnd & $filter; // descartar bits irrelevantes
 	} while ($rnd >= $range);
+	
 	return $min + $rnd;
 }
 
+/**
+ * Gera um token JWT assinado com chave RSA para autenticação de cliente.
+ *
+ * Cria um JSON Web Token com header, payload e assinatura RSA. O token
+ * contém informações do host, expiração e ID público, sendo assinado
+ * com chave pública RSA. Suporta fragmentação para payloads grandes.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['host'] Host de acesso do JWT (obrigatório).
+ * @param int $params['expiration'] Timestamp de expiração do JWT (obrigatório).
+ * @param string $params['pubID'] ID público do token para referência (obrigatório).
+ * @param string $params['chavePublica'] Chave pública RSA para assinar (obrigatório).
+ * 
+ * @return string|false Token JWT completo ou false em caso de erro.
+ */
 function autenticacao_cliente_gerar_jwt($params = false){
-	$cryptMaxCharsValue = 245; // There are char limitations on openssl_private_encrypt() and in the url below are explained how define this value based on openssl key format: https://www.php.net/manual/en/function.openssl-private-encrypt.php#119810
+	// Limite de caracteres para criptografia RSA
+	$cryptMaxCharsValue = 245; // Limitação do openssl_private_encrypt()
 	
+	// Extrair parâmetros
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// host - String - Obrigatório - Host de acesso do JWT.
-	// expiration - Int - Obrigatório - Expiração do JWT.
-	// pubID - String - Obrigatório - ID público do token para referência.
-	// chavePublica - String - Obrigatório - Chave pública para assinar o JWT.
-	
-	// ===== 
+	// ===== Validar parâmetros obrigatórios
 	
 	if(isset($host) && isset($expiration) && isset($pubID) && isset($chavePublica)){
-		// ===== Header
+		// ===== Montar Header do JWT
 
 		$header = [
 		   'alg' => 'RSA',
@@ -94,19 +129,24 @@ function autenticacao_cliente_gerar_jwt($params = false){
 
 // ===== Funções principais
 
+/**
+ * Gera par de chaves pública e privada OpenSSL com algoritmo RSA.
+ *
+ * Cria um par de chaves RSA com fallback automático para diferentes
+ * configurações (SHA512/SHA256, 2048/1024 bits) para compatibilidade
+ * com diferentes ambientes. Suporta criptografia da chave privada com senha.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['tipo'] Tipo da chave (RSA obrigatório).
+ * @param string $params['senha'] Senha para encriptar a chave privada (opcional).
+ * 
+ * @return array|false Array com 'publica' e 'privada', ou false em erro.
+ */
 function autenticacao_openssl_gerar_chaves($params = false){
-	/**********
-		Descrição: gerador de par chave pública e privada SSL
-	**********/
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// tipo - String - Obrigatório - Tipo da chave openssl que será gerada usando o algoritmo correto.
-	// senha - String - Opcional - Senha para encriptar a chave privada.
-	
-	// ===== 
+	// ===== Inicializar variável de retorno
 	
 	$chaves = false;
 	
@@ -237,10 +277,17 @@ function autenticacao_openssl_gerar_chaves($params = false){
 	return $chaves;
 }
 
+/**
+ * Gera uma senha aleatória segura com caracteres variados.
+ *
+ * Cria senhas fortes combinando letras maiúsculas, minúsculas, números
+ * e caracteres especiais usando geração criptograficamente segura.
+ *
+ * @param int $length Comprimento da senha (padrão: 32 caracteres).
+ * 
+ * @return string Senha aleatória gerada.
+ */
 function autenticacao_gerar_senha($length=32){
-    /**********
-		Descrição: gerador de senhas aleatórias
-	**********/
 	
 	$senha = "";$codeAlphabet = "";
 	$count = 0;
@@ -279,19 +326,18 @@ function autenticacao_gerar_senha($length=32){
     return $senha;
 }
 
+/**
+ * Gera JWT assinado com chave pública RSA.
+ *
+ * @param array|false $params Parâmetros (host, expiration, pubID, chavePublica obrigatórios).
+ * @return string|false Token JWT ou false em erro.
+ */
 function autenticacao_gerar_jwt_chave_publica($params = false){
-	$cryptMaxCharsValue = 245; // There are char limitations on openssl_private_encrypt() and in the url below are explained how define this value based on openssl key format: https://www.php.net/manual/en/function.openssl-private-encrypt.php#119810
+	$cryptMaxCharsValue = 245;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// host - String - Obrigatório - Host de acesso do JWT.
-	// expiration - Int - Obrigatório - Expiração do JWT.
-	// pubID - String - Obrigatório - ID público do token para referência.
-	// chavePublica - String - Obrigatório - Chave pública para assinar o JWT.
-	
-	// ===== 
+	// ===== Validar parâmetros obrigatórios
 	
 	if(isset($host) && isset($expiration) && isset($pubID) && isset($chavePublica)){
 		// ===== Header
@@ -345,20 +391,18 @@ function autenticacao_gerar_jwt_chave_publica($params = false){
 	}
 }
 
+/**
+ * Gera JWT assinado com chave privada RSA.
+ *
+ * @param array|false $params Parâmetros (host, expiration, pubID, chavePrivada, chavePrivadaSenha obrigatórios).
+ * @return string|false Token JWT ou false em erro.
+ */
 function autenticacao_gerar_jwt_chave_privada($params = false){
-	$cryptMaxCharsValue = 245; // There are char limitations on openssl_private_encrypt() and in the url below are explained how define this value based on openssl key format: https://www.php.net/manual/en/function.openssl-private-encrypt.php#119810
+	$cryptMaxCharsValue = 245;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// host - String - Obrigatório - Host de acesso do JWT.
-	// expiration - Int - Obrigatório - Expiração do JWT.
-	// pubID - String - Obrigatório - ID público do token para referência.
-	// chavePrivada - String - Obrigatório - Chave privada para gerar a assinatura do token.
-	// chavePrivadaSenha - String - Obrigatório - Senha da chave privada.
-	
-	// ===== 
+	// ===== Validar parâmetros obrigatórios
 	
 	if(isset($host) && isset($expiration) && isset($pubID) && isset($chavePrivada) && isset($chavePrivadaSenha)){
 		// ===== Header
@@ -412,16 +456,17 @@ function autenticacao_gerar_jwt_chave_privada($params = false){
 	}
 }
 
+/**
+ * Valida JWT usando chave pública RSA.
+ *
+ * @param array|false $params Parâmetros (token, chavePublica obrigatórios).
+ * @return array|false Payload decodificado ou false se inválido.
+ */
 function autenticacao_validar_jwt_chave_publica($params = false){
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// token - String - Obrigatório - Token JWT de verificação.
-	// chavePublica - String - Obrigatório - Chave pública para conferir a assinatura do token.
-	
-	// ===== 
+	// ===== Validar parâmetros obrigatórios
 	
 	if(isset($token) && isset($chavePublica)){
 		// ===== Quebra o token em header, payload e signature
@@ -496,17 +541,17 @@ function autenticacao_validar_jwt_chave_publica($params = false){
 	}
 }
 
+/**
+ * Valida JWT usando chave privada RSA.
+ *
+ * @param array|false $params Parâmetros (token, chavePrivada, chavePrivadaSenha obrigatórios).
+ * @return array|false Payload decodificado ou false se inválido.
+ */
 function autenticacao_validar_jwt_chave_privada($params = false){
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// token - String - Obrigatório - Token JWT de verificação.
-	// chavePrivada - String - Obrigatório - Chave privada para conferir a assinatura do token.
-	// chavePrivadaSenha - String - Obrigatório - Senha da chave privada.
-	
-	// ===== 
+	// ===== Validar parâmetros obrigatórios
 	
 	if(isset($token) && isset($chavePrivada) && isset($chavePrivadaSenha)){
 		// ===== Quebra o token em header, payload e signature
@@ -581,6 +626,15 @@ function autenticacao_validar_jwt_chave_privada($params = false){
 	}
 }
 
+/**
+ * Gera token JWT de validação para cliente.
+ *
+ * @global array $_GESTOR Sistema global.
+ * @global array $_CONFIG Configurações.
+ * @global array $_CRON Sistema de cron.
+ * @param array|false $params Parâmetros (id_hosts obrigatório, pubID opcional).
+ * @return array Token gerado ou array vazio em erro.
+ */
 function autenticacao_cliente_gerar_token_validacao($params = false){
 	global $_GESTOR;
 	global $_CONFIG;
@@ -588,12 +642,7 @@ function autenticacao_cliente_gerar_token_validacao($params = false){
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// id_hosts - String - Obrigatório - ID do host do cliente.
-	// pubID - String - Opcional - Pub ID do dado.
-	
-	// ===== 
+	// ===== Validar parâmetros obrigatórios
 	
 	if(isset($id_hosts)){
 	
@@ -643,20 +692,22 @@ function autenticacao_cliente_gerar_token_validacao($params = false){
 	return Array();
 }
 
+/**
+ * Verifica estado de acesso do usuário com proteção anti-spam.
+ *
+ * Retorna se o acesso é permitido baseado em tentativas anteriores e bloqueios por IP.
+ * Previne ataques de força bruta limitando tentativas de acesso.
+ *
+ * @global array $_GESTOR Sistema global.
+ * @param array|false $params Parâmetros (tipo obrigatório).
+ * @return array Estado do acesso com 'permitido', 'status' e 'mensagem' opcional.
+ */
 function autenticacao_acesso_verificar($params = false){
-	/**********
-		Descrição: Função responsável por verificar o acesso de usuários e retornar o estado do acesso atual bem como mensagem de alerta caso necessário.
-	**********/
-	
 	global $_GESTOR;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// tipo - String - Obrigatório - Identificador único do tipo de acesso.
-	
-	// ===== 
+	// ===== Inicializar resposta padrão
 	
 	$retorno = [
 		'permitido' => false,
@@ -705,22 +756,24 @@ function autenticacao_acesso_verificar($params = false){
 	return $retorno;
 }
 
+/**
+ * Cadastra tentativa de acesso do usuário para controle anti-spam.
+ *
+ * Registra acessos em locais do sistema para rastreamento e prevenção de abuso.
+ * Suporta limitação automática de tentativas por IP.
+ *
+ * @global array $_GESTOR Sistema global.
+ * @global array $_CONFIG Configurações.
+ * @param array|false $params Parâmetros (tipo obrigatório, antispam opcional).
+ * @return void
+ */
 function autenticacao_acesso_cadastrar($params = false){
-	/**********
-		Descrição: Função responsável por cadastrar acessos de usuários em locais do sistema.
-	**********/
-	
 	global $_GESTOR;
 	global $_CONFIG;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// tipo - String - Obrigatório - Identificador único do tipo de acesso.
-	// antispam - Bool - Opcional - Caso queira ativar o antispam entre a qauntidade de acessos e limite máximo de acessos.
-	
-	// ===== 
+	// ===== Validar parâmetros obrigatórios
 	
 	if(isset($tipo)){
 		// ===== Quantidade total de cadastros do tipo informado e quantidade de bloqueios de um IP.
@@ -823,19 +876,23 @@ function autenticacao_acesso_cadastrar($params = false){
 	}
 }
 
+/**
+ * Confirma acesso bem-sucedido do usuário.
+ *
+ * Atualiza registro de acesso marcando como confirmado ('C') e resetando contador de tentativas.
+ *
+ * @global array $_GESTOR Sistema global.
+ * @global array $_CONFIG Configurações.
+ * @param array|false $params Parâmetros (tipo obrigatório).
+ * @return void
+ */
 function autenticacao_acesso_confirmar($params = false){
-	/**********
-		Descrição: Função responsável por incluir confirmação de acesso de usuários.
-	**********/
-	
 	global $_GESTOR;
 	global $_CONFIG;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// tipo - String - Obrigatório - Identificador único do tipo de acesso.
+	// ===== Validar parâmetros obrigatórios
 	
 	// ===== 
 	
@@ -876,19 +933,24 @@ function autenticacao_acesso_confirmar($params = false){
 	}
 }
 
+/**
+ * Registra falha de acesso do usuário.
+ *
+ * Incrementa contador de tentativas falhas e bloqueia IP após limite excedido.
+ * Parte do sistema anti-spam e proteção contra força bruta.
+ *
+ * @global array $_GESTOR Sistema global.
+ * @global array $_CONFIG Configurações.
+ * @param array|false $params Parâmetros (tipo obrigatório).
+ * @return void
+ */
 function autenticacao_acesso_falha($params = false){
-	/**********
-		Descrição: Função responsável por incluir falha de acesso de usuários.
-	**********/
-	
 	global $_GESTOR;
 	global $_CONFIG;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// tipo - String - Obrigatório - Identificador único do tipo de acesso.
+	// ===== Validar parâmetros obrigatórios
 	
 	// ===== 
 	
@@ -985,11 +1047,18 @@ function autenticacao_acesso_falha($params = false){
 	}
 }
 
+/**
+ * Limpa registros antigos da tabela de acessos.
+ *
+ * Remove registros de acessos expirados para manter banco otimizado.
+ * Executado periodicamente pelo sistema de cron.
+ *
+ * @global array $_GESTOR Sistema global.
+ * @global array $_CONFIG Configurações.
+ * @param array|false $params Parâmetros da função.
+ * @return void
+ */
 function autenticacao_acessos_limpeza($params = false){
-	/**********
-		Descrição: Função responsável por limpar a tabela de acessos e remover registros antigos.
-	**********/
-	
 	global $_GESTOR;
 	global $_CONFIG;
 	
@@ -1013,17 +1082,18 @@ function autenticacao_acessos_limpeza($params = false){
 	
 }
 
+/**
+ * Encripta valor usando chave pública RSA.
+ *
+ * @param array|false $params Parâmetros (valor, chavePublica obrigatórios).
+ * @return string|false Valor encriptado em base64 ou false em erro.
+ */
 function autenticacao_encriptar_chave_publica($params = false){
-	$cryptMaxCharsValue = 245; // There are char limitations on openssl_private_encrypt() and in the url below are explained how define this value based on openssl key format: https://www.php.net/manual/en/function.openssl-private-encrypt.php#119810
+	$cryptMaxCharsValue = 245;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
-	
-	// ===== Parâmetros
 
-	// valor - String - Obrigatório - Valor que será encriptado.
-	// chavePublica - String - Obrigatório - Chave pública para assinar o JWT.
-
-	// =====
+	// ===== Validar parâmetros obrigatórios
 
 	if(isset($valor) && isset($chavePublica)){
 		try {
@@ -1060,18 +1130,18 @@ function autenticacao_encriptar_chave_publica($params = false){
 	}
 }
 
+/**
+ * Encripta valor usando chave privada RSA.
+ *
+ * @param array|false $params Parâmetros (valor, chavePrivada, chavePrivadaSenha obrigatórios).
+ * @return string|false Valor encriptado em base64 ou false em erro.
+ */
 function autenticacao_encriptar_chave_privada($params = false){
-	$cryptMaxCharsValue = 245; // There are char limitations on openssl_private_encrypt() and in the url below are explained how define this value based on openssl key format: https://www.php.net/manual/en/function.openssl-private-encrypt.php#119810
+	$cryptMaxCharsValue = 245;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// valor - String - Obrigatório - Valor que será encriptado.
-	// chavePrivada - String - Obrigatório - Chave privada para gerar a assinatura do token.
-	// chavePrivadaSenha - String - Obrigatório - Senha da chave privada.
-	
-	// =====
+	// ===== Validar parâmetros obrigatórios
 
 	if(isset($valor) && isset($chavePrivada) && isset($chavePrivadaSenha)){
 		try {
@@ -1108,16 +1178,17 @@ function autenticacao_encriptar_chave_privada($params = false){
 	}
 }
 
+/**
+ * Decripta valor usando chave pública RSA.
+ *
+ * @param array|false $params Parâmetros (criptografia, chavePublica obrigatórios).
+ * @return string|false Valor decriptado ou false em erro.
+ */
 function autenticacao_decriptar_chave_publica($params = false){
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-
-	// criptografia - String - Obrigatório - Criptografia a ser decifrada.
-	// chavePublica - String - Obrigatório - Chave pública para conferir a assinatura do token.
-	
-	// ===== 
+	// ===== Validar parâmetros obrigatórios
 	
 	if(isset($criptografia) && isset($chavePublica)){
 		try {
@@ -1161,17 +1232,17 @@ function autenticacao_decriptar_chave_publica($params = false){
 	}
 }
 
+/**
+ * Decripta valor usando chave privada RSA.
+ *
+ * @param array|false $params Parâmetros (criptografia, chavePrivada, chavePrivadaSenha obrigatórios).
+ * @return string|false Valor decriptado ou false em erro.
+ */
 function autenticacao_decriptar_chave_privada($params = false){
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// criptografia - String - Obrigatório - Criptografia a ser decifrada.
-	// chavePrivada - String - Obrigatório - Chave privada para conferir a assinatura do token.
-	// chavePrivadaSenha - String - Obrigatório - Senha da chave privada.
-	
-	// ===== 
+	// ===== Validar parâmetros obrigatórios
 	
 	if(isset($criptografia) && isset($chavePrivada) && isset($chavePrivadaSenha)){
 		try {

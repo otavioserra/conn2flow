@@ -1,15 +1,27 @@
 <?php
+/**
+ * Biblioteca de widgets do sistema.
+ *
+ * Gerencia widgets reutilizáveis do Conn2Flow, incluindo componentes
+ * como formulários de contato. Fornece sistema de registro, busca e
+ * renderização de widgets com suporte a CSS, JavaScript e módulos extras.
+ *
+ * @package Conn2Flow
+ * @subpackage Bibliotecas
+ * @version 1.0.1
+ */
 
 global $_GESTOR;
 
+// Registro da versão da biblioteca e configurações de widgets
 $_GESTOR['biblioteca-widgets']							=	Array(
 	'versao' => '1.0.1',
 	'widgets' => Array(
 		'formulario-contato' => Array(
-			'versao' => '1.0.2', // Versão do widget.
-			'componenteID' => 'widgets-formulario-contato', // Identificador único do componente do widget.
-			'jsCaminho' => 'widgets.js', // Caminho do JS controlador desse widget para ser inserido junto com o mesmo.
-			'modulosExtras' => 'contatos', // Identificadores dos módulos separados por ',' que devem ser usados para trocar o valor das variáveis globais.
+			'versao' => '1.0.2', // Versão do widget
+			'componenteID' => 'widgets-formulario-contato', // ID único do componente
+			'jsCaminho' => 'widgets.js', // Caminho do JS controlador
+			'modulosExtras' => 'contatos', // Módulos para variáveis globais (separados por vírgula)
 		),
 	),
 );
@@ -18,30 +30,35 @@ $_GESTOR['biblioteca-widgets']							=	Array(
 
 // ===== Funções controladoras dos widgets
 
+/**
+ * Controlador do widget de formulário de contato.
+ *
+ * Processa o widget de formulário de contato incluindo validação de campos,
+ * verificação de acesso (bloqueio de IP), integração com reCAPTCHA e
+ * inclusão de bibliotecas necessárias (jQuery Mask Plugin).
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ * @global array $_CONFIG Configurações específicas do sistema.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['html'] HTML do widget (obrigatório).
+ * 
+ * @return string HTML processado do widget ou string vazia se inválido.
+ */
 function widgets_formulario_contato($params = false){
-	/**********
-		Descrição: controlador dos widgets 'formulário contato'.
-	**********/
-	
 	global $_GESTOR;
 	global $_CONFIG;
 	
+	// Extrai parâmetros do array
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// html - String - Obrigatório - Identificador único do widget.
-	
-	// ===== .
-	
+	// Valida HTML fornecido
 	if(isset($html)){
 		
-		// ===== Incluir a biblioteca formulario.
-		
+		// ===== Incluir biblioteca de formulário para validação
 		gestor_incluir_biblioteca('formulario');
 		
-		// ===== Disparar regras de validação do formulário.
-		
+		// ===== Definir regras de validação do formulário
 		$validacao = Array(
 			Array(
 				'regra' => 'texto-obrigatorio',
@@ -65,38 +82,39 @@ function widgets_formulario_contato($params = false){
 			),
 		);
 		
+		// Aplicar validação ao formulário
 		formulario_validacao(Array(
 			'formId' => '_widgets-form-contato',
 			'validacao' => $validacao,
 		));
 		
-		// ===== Verificar a permissão do acesso.
-		
+		// ===== Verificar permissão de acesso (bloqueio por IP)
 		gestor_incluir_biblioteca('autenticacao');
 		
 		$acesso = autenticacao_acesso_verificar(['tipo' => 'formulario-contato']);
 		
-		// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
-		
+		// ===== Mostrar/ocultar conteúdo baseado no status de bloqueio
 		if($acesso['permitido']){	
+			// Acesso permitido: oculta mensagem de bloqueio
 			$cel_nome = 'bloqueado-mensagem'; $html = modelo_tag_in($html,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 		} else {
+			// Acesso bloqueado: oculta formulário
 			$cel_nome = 'formulario'; $html = modelo_tag_in($html,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 		}
 		
-		// ===== Incluir google reCAPTCHA caso ativo
-		
+		// ===== Incluir Google reCAPTCHA se ativo
 		if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
 			if($_CONFIG['usuario-recaptcha-active']){
+				// Define variáveis JavaScript para reCAPTCHA
 				$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
 				$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
 				
+				// Inclui script do Google reCAPTCHA
 				gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_CONFIG['usuario-recaptcha-site'].'"></script>');
 			}
 		}
 		
-		// ===== Inclusão do jQuery-Mask-Plugin
-		
+		// ===== Incluir jQuery Mask Plugin para máscaras de input
 		gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'jQuery-Mask-Plugin-v1.14.16/jquery.mask.min.js"></script>');
 		
 		return $html;
@@ -105,23 +123,29 @@ function widgets_formulario_contato($params = false){
 	}
 }
 
+/**
+ * Controlador programático central de todos os widgets.
+ *
+ * Função despachadora que roteia chamadas de widgets para seus
+ * controladores específicos baseado no ID fornecido.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['id'] Identificador único do widget (obrigatório).
+ * @param string $params['html'] HTML do widget (obrigatório).
+ * 
+ * @return string HTML processado do widget ou string vazia se parâmetros inválidos.
+ */
 function widgets_controller($params = false){
-	/**********
-		Descrição: controlador programático de todos os widgets.
-	**********/
-	
 	global $_GESTOR;
 	
+	// Extrai parâmetros do array
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// id - String - Obrigatório - Identificador único do widget.
-	// html - String - Obrigatório - Html do widget.
-	
-	// ===== 
-	
+	// Valida parâmetros obrigatórios
 	if(isset($id) && isset($html)){
+		// Despacha para controlador específico baseado no ID
 		switch($id){
 			case 'formulario-contato': $html = widgets_formulario_contato(Array(
 				'html' => $html,
@@ -136,26 +160,32 @@ function widgets_controller($params = false){
 
 // ===== Funções principais
 
+/**
+ * Busca um widget por ID e retorna seus dados de configuração.
+ *
+ * Procura no registro de widgets e retorna o objeto de configuração
+ * completo do widget incluindo versão, ID do componente, caminho JS
+ * e módulos extras.
+ *
+ * @global array $_GESTOR Configurações globais, incluindo registro de widgets.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['id'] Identificador único do widget (obrigatório).
+ * 
+ * @return array|null Objeto de dados do widget ou null se não encontrado.
+ */
 function widgets_search($params = false){
-	/**********
-		Descrição: busca por um widget e retorna o objeto de dados do mesmo.
-	**********/
-	
 	global $_GESTOR;
 	
+	// Extrai parâmetros do array
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// id - String - Obrigatório - Identificador único do widget.
-	
-	// ===== 
-	
+	// Valida ID fornecido
 	if(isset($id)){
-		// ===== Pegar todos os dados da variável principal de widgets.
-		
+		// ===== Obtém todos os widgets registrados
 		$widgets = $_GESTOR['biblioteca-widgets']['widgets'];
 		
+		// Busca widget pelo ID
 		if($widgets)
 		foreach($widgets as $widgetID => $objeto){
 			if($widgetID == $id){
@@ -167,49 +197,53 @@ function widgets_search($params = false){
 	return null;
 }
 
+/**
+ * Processa e renderiza um widget completo por ID.
+ *
+ * Função principal para obter widgets. Busca o widget, carrega seu componente,
+ * executa seu controlador, inclui CSS e JavaScript necessários, e configura
+ * módulos extras para substituição de variáveis.
+ *
+ * @global array $_GESTOR Configurações globais do sistema.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['id'] Identificador único do widget (obrigatório).
+ * 
+ * @return string HTML processado e completo do widget ou string vazia se não encontrado.
+ */
 function widgets_get($params = false){
-	/**********
-		Descrição: processa um widget por ID e retorna o mesmo.
-	**********/
-	
 	global $_GESTOR;
 	
+	// Extrai parâmetros do array
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// id - String - Obrigatório - Identificador único do widget.
-	
-	// ===== 
-	
+	// Valida ID fornecido
 	if(isset($id)){
-		// ===== procurar o widget, caso não encontre, retornar vazio.
-		
+		// ===== Procura widget no registro
 		$widget = widgets_search(Array(
 			'id' => $id,
 		));
 		
+		// Processa widget se encontrado
 		if(isset($widget)){
-			// ===== pegar o componente do widget alvo.
-			
+			// ===== Carrega componente do widget com CSS
 			$widgetComponente = gestor_componente(Array(
 				'id' => $widget['componenteID'],
 				'return_css' => true,
 			));
 			
-			// ===== Disparar o controlador do widget caso haja.
-			
+			// ===== Executa controlador do widget
 			$html = widgets_controller(Array(
 				'id' => $id,
 				'html' => (isset($widgetComponente['html']) ? $widgetComponente['html'] : ''),
 			));
 			
-			// ===== Incluir o CSS do widget.
-			
+			// ===== Inclui CSS do widget (apenas uma vez por widget)
 			if(isset($widgetComponente['css']))
 			if(existe($widgetComponente['css'])){
 				$incluirCSS = false;
 				
+				// Verifica se CSS já foi incluído
 				if(!isset($_GESTOR['widgets-css'])){
 					$_GESTOR['widgets-css'][$id] = true;
 					$incluirCSS = true;
@@ -218,6 +252,7 @@ function widgets_get($params = false){
 					$incluirCSS = true;
 				}
 				
+				// Formata e inclui CSS se necessário
 				if($incluirCSS){
 					$css = preg_replace("/(^|\n)/m", "\n        ", $widgetComponente['css']);
 					
@@ -229,10 +264,10 @@ function widgets_get($params = false){
 				}
 			}
 			
-			// ===== incluir o JS do widget.
-			
+			// ===== Inclui JavaScript do widget (apenas uma vez por arquivo)
 			$incluirJS = false;
 			
+			// Verifica se JS já foi incluído
 			if(!isset($_GESTOR['widgets-js'])){
 				$_GESTOR['widgets-js'][$widget['jsCaminho']] = true;
 				$incluirJS = true;
@@ -241,23 +276,23 @@ function widgets_get($params = false){
 				$incluirJS = true;
 			}
 			
+			// Inclui script se necessário
 			if($incluirJS){
 				gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'widgets/'.$widget['jsCaminho'].'?v='.$widget['versao'].'"></script>');
 			}
 			
-			// ===== Módulos extras para trocar variáveis.
-			
+			// ===== Configura módulos extras para substituição de variáveis
 			if(isset($widget['modulosExtras'])){
 				$modulosExtras = explode(',',$widget['modulosExtras']);
 				
+				// Marca cada módulo extra como ativo para processamento
 				if($modulosExtras)
 				foreach($modulosExtras as $modulo){
 					$_GESTOR['paginas-variaveis'][$modulo] = true;
 				}
 			}
 			
-			// ===== retornar o widget componente.
-			
+			// ===== Retorna HTML processado do widget
 			return $html;
 		}
 		

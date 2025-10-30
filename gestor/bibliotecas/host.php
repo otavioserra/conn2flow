@@ -1,7 +1,19 @@
 <?php
+/**
+ * Biblioteca de gerenciamento de hosts.
+ *
+ * Fornece funções para manipulação de informações de hosts/domínios
+ * no sistema Conn2Flow, incluindo URLs, identificadores públicos e
+ * configurações específicas de cada host.
+ *
+ * @package Conn2Flow
+ * @subpackage Bibliotecas
+ * @version 1.0.2
+ */
 
 global $_GESTOR;
 
+// Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-host']							=	Array(
 	'versao' => '1.0.2',
 );
@@ -10,25 +22,28 @@ $_GESTOR['biblioteca-host']							=	Array(
 
 // ===== Funções principais
 
+/**
+ * Retorna a URL do host.
+ *
+ * Busca e retorna a URL do host baseado no identificador fornecido
+ * ou no host atual do sistema. Pode retornar a URL completa com
+ * protocolo HTTPS ou apenas o domínio.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['opcao'] Opção de retorno de URL ('full' para URL completa com https://).
+ * @param int $params['id_hosts'] Identificador do host (opcional, usa o host atual se não fornecido).
+ * 
+ * @return string|false A URL do host no formato solicitado, ou false se o host não for encontrado.
+ */
 function host_url($params = false){
-	/**********
-		Descrição: devolver URL do host
-	**********/
-	
 	global $_GESTOR;
 	global $_HOST;
 	
+	// Extrair parâmetros do array para variáveis locais
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// opcao - String - Opcional - Opção de retorno de URL.
-	// id_hosts - Int - Opcional - Identificador do host manual.
-	
-	// ===== 
-	
 	// ===== Identificador do host.
-	
+	// Se não foi fornecido um ID de host, usa o host atual do sistema
 	if(!isset($id_hosts)){
 		if(!isset($_GESTOR['host-id'])){
 			return false;
@@ -37,8 +52,7 @@ function host_url($params = false){
 		$id_hosts = $_GESTOR['host-id'];
 	}
 	
-	// ===== Opção escolhida.
-	
+	// ===== Buscar domínio do banco de dados se ainda não estiver em cache
 	if(!isset($_HOST['dominio'])){
 		$hosts = banco_select_name
 		(
@@ -50,40 +64,46 @@ function host_url($params = false){
 			"WHERE id_hosts='".$id_hosts."'"
 		);
 		
+		// Armazena o domínio em cache global para reutilização
 		$_HOST['dominio'] = $hosts[0]['dominio'];
 	}
 	
 	$dominio = $_HOST['dominio'];
 	
+	// ===== Formatar URL de acordo com a opção escolhida
 	switch($opcao){
 		case 'full':
+			// Retorna URL completa com protocolo HTTPS
 			$url = 'https://'.$dominio.'/';
 		break;
 		default:
+			// Retorna apenas o domínio
 			$url = $dominio;
 	}
 	
 	return $url;
 }
 
+/**
+ * Retorna o identificador público (pubID) do host.
+ *
+ * Busca e retorna o identificador público do host, que é usado
+ * para identificação externa e integração com outros sistemas.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param int $params['id_hosts'] Identificador do host (opcional, usa o host atual se não fornecido).
+ * 
+ * @return string|false O identificador público do host, ou false se o host não for encontrado.
+ */
 function host_pub_id($params = false){
-	/**********
-		Descrição: devolver pubID do host
-	**********/
-	
 	global $_GESTOR;
 	global $_HOST;
 	
+	// Extrair parâmetros do array para variáveis locais
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// id_hosts - Int - Opcional - Identificador do host manual.
-	
-	// ===== 
-	
 	// ===== Identificador do host.
-	
+	// Se não foi fornecido um ID de host, usa o host atual do sistema
 	if(!isset($id_hosts)){
 		if(!isset($_GESTOR['host-id'])){
 			return false;
@@ -92,8 +112,7 @@ function host_pub_id($params = false){
 		$id_hosts = $_GESTOR['host-id'];
 	}
 	
-	// ===== Senão existe pubID, pegar do banco de dados.
-	
+	// ===== Buscar pubID do banco de dados se ainda não estiver em cache
 	if(!isset($_HOST['pubID'])){
 		$hosts = banco_select_name
 		(
@@ -105,6 +124,7 @@ function host_pub_id($params = false){
 			"WHERE id_hosts='".$_GESTOR['host-id']."'"
 		);
 		
+		// Armazena o pubID em cache global para reutilização
 		$_HOST['pubID'] = $hosts[0]['pub_id'];
 	}
 	
@@ -113,24 +133,27 @@ function host_pub_id($params = false){
 	return $pubID;
 }
 
+/**
+ * Retorna o nome da loja configurado para o host.
+ *
+ * Busca e retorna o nome da loja configurado nas variáveis do host.
+ * Se não houver um nome configurado, retorna um nome padrão baseado
+ * no ID do host.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param int $params['id_hosts'] Identificador do host (opcional, usa o host atual se não fornecido).
+ * 
+ * @return string|false O nome da loja ou false se o host não for encontrado.
+ */
 function host_loja_nome($params = false){
-	/**********
-		Descrição: devolver Loja Nome do host
-	**********/
-	
 	global $_GESTOR;
 	global $_HOST;
 	
+	// Extrair parâmetros do array para variáveis locais
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	// ===== Parâmetros
-	
-	// id_hosts - Int - Opcional - Identificador do host manual.
-	
-	// ===== 
-	
 	// ===== Identificador do host.
-	
+	// Se não foi fornecido um ID de host, usa o host atual do sistema
 	if(!isset($id_hosts)){
 		if(!isset($_GESTOR['host-id'])){
 			return false;
@@ -139,8 +162,7 @@ function host_loja_nome($params = false){
 		$id_hosts = $_GESTOR['host-id'];
 	}
 	
-	// ===== Senão existe pubID, pegar do banco de dados.
-	
+	// ===== Buscar nome da loja do banco de dados se ainda não estiver em cache
 	if(!isset($_HOST['lojaNome'])){
 		$hosts_variaveis = banco_select(Array(
 			'unico' => true,
@@ -154,6 +176,7 @@ function host_loja_nome($params = false){
 				." AND modulo='loja-configuracoes'"
 		));
 		
+		// Se encontrou configuração, armazena; senão, cria nome padrão
 		if($hosts_variaveis){
 			$_HOST['lojaNome'] = $hosts_variaveis['valor'];
 		} else {
