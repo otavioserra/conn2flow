@@ -691,8 +691,16 @@ function plugin_sync_datajson(string $staging, string $slug, array &$log): void 
 
 /**
  * Sincroniza dados a partir de arquivos *Data.json detectados dinamicamente.
- * Copia arquivos para diretório central gestor/db/data/plugins/<slug>/ e realiza upsert nas tabelas.
- * AGORA USA DELEGAÇÃO PARA SISTEMA ROBUSTO DE BANCO DE DADOS
+ * 
+ * Copia arquivos para diretório central gestor/db/data/plugins/<slug>/ e delega
+ * operações de banco de dados para o sistema robusto. Substitui upserts manuais
+ * por chamada ao sistema de integração de dados.
+ *
+ * @param array $filesMap Mapeamento de nome da tabela para caminho do arquivo Data.json
+ * @param string $slug Identificador único do plugin
+ * @param array $log Referência ao array de log (passado por referência)
+ * @param string $finalBase Caminho base do plugin instalado
+ * @return void
  */
 function plugin_sync_datajson_multi(array $filesMap, string $slug, array &$log, string $finalBase): void {
     $destDir = plugin_datajson_dest_dir($slug);
