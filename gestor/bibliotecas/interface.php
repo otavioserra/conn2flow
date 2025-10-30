@@ -1190,6 +1190,24 @@ function interface_componentes($params = false){
 	}
 }
 
+/**
+ * Gera campos de formulário dinamicamente para a interface.
+ *
+ * Cria campos de formulário completos com suporte a diversos tipos (select, imagepick,
+ * templates, etc.). Processa configurações, carrega dados de tabelas do banco,
+ * aplica estilos e validações. Suporta integração com Semantic UI e funcionalidades
+ * avançadas como múltipla seleção, busca, ícones e placeholders.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento e variáveis.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['pagina'] Página onde será incluído o campo (opcional).
+ * @param array $params['campos'] Array de configurações de campos a serem gerados.
+ *                                Cada campo pode ter: tipo, id, nome, disabled, menu, procurar,
+ *                                limpar, multiple, fluid, placeholder, tabela, dados, valor_selecionado, etc.
+ * 
+ * @return void
+ */
 function interface_formulario_campos($params = false){
 	global $_GESTOR;
 
@@ -1924,6 +1942,24 @@ function interface_formulario_campos($params = false){
 	}
 }
 
+/**
+ * Configura validações de formulário usando Semantic UI.
+ *
+ * Define regras de validação client-side para campos de formulário, incluindo
+ * validações de obrigatoriedade, email, número, vazio, etc. Integra com o
+ * sistema de validação do Semantic UI e permite configurações personalizadas
+ * por campo.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['pagina'] Página onde aplicar a validação (opcional).
+ * @param array $params['campos'] Array de campos com suas regras de validação.
+ *                                Cada campo pode ter: type (empty, email, number, etc.),
+ *                                identifier (ID do campo), rules (regras personalizadas).
+ * 
+ * @return void
+ */
 function interface_formulario_validacao($params = false){
 	global $_GESTOR;
 
@@ -2376,6 +2412,22 @@ function interface_formulario_validacao($params = false){
 	}
 }
 
+/**
+ * Valida campos obrigatórios server-side.
+ *
+ * Executa validação server-side de campos obrigatórios conforme regras definidas
+ * (texto, seleção, email). Se houver falha na validação, exibe alerta e
+ * redireciona o usuário. Complementa a validação client-side.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['redirect'] URL de redirecionamento em caso de erro (opcional).
+ * @param array $params['campos'] Array de campos a validar com suas regras
+ *                                (texto-obrigatorio, selecao-obrigatorio, email-obrigatorio).
+ * 
+ * @return void
+ */
 function interface_validacao_campos_obrigatorios($params = false){
 	global $_GESTOR;
 
