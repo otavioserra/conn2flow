@@ -489,6 +489,40 @@ function interface_alerta($params = false){
 	}
 }
 
+/**
+ * Inclui registros no histórico de alterações do sistema.
+ *
+ * Registra alterações feitas em registros do banco de dados no histórico,
+ * incluindo informações sobre campo alterado, valores antes e depois,
+ * usuário responsável e versionamento.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param array $params['alteracoes'] Conjunto de alterações a serem registradas no histórico.
+ * @param string $params['alteracoes'][]['campo'] Identificador do campo alterado (código do módulo/id do campo).
+ * @param string $params['alteracoes'][]['opcao'] Opção extra para hacks específicos de histórico.
+ * @param string $params['alteracoes'][]['filtro'] Filtro para formatação dos dados.
+ * @param string $params['alteracoes'][]['alteracao'] Identificador da alteração (interface/id do campo).
+ * @param string $params['alteracoes'][]['alteracao_txt'] Valor literal da alteração.
+ * @param string $params['alteracoes'][]['valor_antes'] Valor antes da alteração.
+ * @param string $params['alteracoes'][]['valor_depois'] Valor após a alteração.
+ * @param array $params['alteracoes'][]['tabela'] Tabela para conversão de IDs em nomes textuais.
+ * @param bool $params['deletar'] Se true, incrementa versão para registro de deleção.
+ * @param int $params['id_numerico_manual'] ID numérico manual do registro.
+ * @param int $params['id_usuarios_manual'] ID do usuário manual.
+ * @param int $params['id_hosts_manual'] ID do host manual.
+ * @param string $params['modulo_id'] ID do módulo a vincular manualmente.
+ * @param bool $params['sem_id'] Se true, não vincula ID ao histórico.
+ * @param int $params['sem_id']['versao'] Versão manual do registro quando sem_id está definido.
+ * @param array $params['tabela'] Tabela personalizada ao invés da tabela principal do módulo.
+ * @param string $params['tabela']['nome'] Nome da tabela do banco de dados.
+ * @param string $params['tabela']['versao'] Campo versão da tabela.
+ * @param string $params['tabela']['id_numerico'] Identificador numérico da tabela.
+ * @param bool $params['tabela']['id'] Se true, usa campo id ao invés de id_numerico.
+ *
+ * @return void
+ */
 function interface_historico_incluir($params = false){
 	global $_GESTOR;
 
@@ -598,6 +632,25 @@ function interface_historico_incluir($params = false){
 	}
 }
 
+/**
+ * Exibe o histórico de alterações de um registro do sistema.
+ *
+ * Renderiza uma lista paginada com todas as alterações registradas em um determinado
+ * registro, incluindo informações sobre quem fez a alteração, quando e quais valores
+ * foram modificados.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['id'] Identificador do registro a consultar o histórico.
+ * @param string $params['modulo'] Identificador do módulo do registro.
+ * @param string $params['pagina'] Página onde o histórico será implementado.
+ * @param bool $params['sem_id'] Se true, não filtra por ID no histórico.
+ * @param array $params['moduloVars']['historico'] Configurações adicionais do histórico.
+ * @param string $params['moduloVars']['historico']['moduloIdExtra'] Módulo ID extra para trocar labels.
+ *
+ * @return void Exibe o HTML do histórico diretamente.
+ */
 function interface_historico($params = false){
 	global $_GESTOR;
 
