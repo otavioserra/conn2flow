@@ -2447,6 +2447,7 @@ function interface_validacao_campos_obrigatorios($params = false){
 	
 	// ===== 
 	
+	// Valida cada campo conforme suas regras
 	if(isset($campos)){
 		foreach($campos as $campo){
 			switch($campo['regra']){
@@ -2499,10 +2500,12 @@ function interface_validacao_campos_obrigatorios($params = false){
 		}
 	}
 	
+	// Exibe alerta se houver erro de validação
 	if(isset($naoValidouMsgAlerta)){
 		interface_alerta(Array('msg' => $naoValidouMsgAlerta));
 	}
 	
+	// Redireciona em caso de falha na validação
 	if(isset($naoValidou)){
 		if(isset($redirect)){
 			gestor_redirecionar($redirect);
@@ -2512,6 +2515,20 @@ function interface_validacao_campos_obrigatorios($params = false){
 	}
 }
 
+/**
+ * Obtém valor de variável do registro atual do módulo.
+ *
+ * Recupera o valor de uma variável/campo do registro que está sendo
+ * visualizado/editado no módulo atual. Consulta o banco de dados se
+ * necessário e armazena em cache para performance.
+ *
+ * @global array $_GESTOR Sistema global com dados do módulo e registro.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['variavel'] Nome da variável/campo a obter (obrigatório).
+ * 
+ * @return mixed Valor da variável solicitada.
+ */
 function interface_modulo_variavel_valor($params = false){
 	global $_GESTOR;
 
@@ -2568,6 +2585,25 @@ function interface_modulo_variavel_valor($params = false){
 	}
 }
 
+/**
+ * Registra backup de campo no banco de dados.
+ *
+ * Armazena versões antigas de valores de campos para permitir recuperação.
+ * Mantém histórico limitado conforme parâmetro maxCopias, removendo backups
+ * mais antigos automaticamente.
+ *
+ * @global array $_GESTOR Sistema global de gerenciamento.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['campo'] Nome do campo a fazer backup (obrigatório).
+ * @param int $params['id_numerico'] ID numérico do registro (obrigatório).
+ * @param int $params['versao'] Número da versão do backup (obrigatório).
+ * @param string $params['valor'] Valor do campo a ser guardado (obrigatório).
+ * @param string $params['modulo'] Nome do módulo (opcional, usa módulo atual se não fornecido).
+ * @param int $params['maxCopias'] Máximo de cópias a manter (opcional, padrão 20).
+ * 
+ * @return void
+ */
 function interface_backup_campo_incluir($params = false){
 	global $_GESTOR;
 	
