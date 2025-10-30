@@ -9,7 +9,7 @@ $(document).ready(function () {
 
 		if (codemirror_css.length > 0) {
 			for (var i = 0; i < codemirror_css.length; i++) {
-				var codeMirrorCss = CodeMirror.fromTextArea(codemirror_css[i], {
+				var CodeMirrorCss = CodeMirror.fromTextArea(codemirror_css[i], {
 					lineNumbers: true,
 					lineWrapping: true,
 					styleActiveLine: true,
@@ -28,8 +28,8 @@ $(document).ready(function () {
 					}
 				});
 
-				codeMirrorCss.setSize('100%', 500);
-				codemirrors_instances.push(codeMirrorCss);
+				CodeMirrorCss.setSize('100%', 500);
+				codemirrors_instances.push(CodeMirrorCss);
 			}
 		}
 
@@ -37,7 +37,7 @@ $(document).ready(function () {
 
 		if (codemirror_css_compiled.length > 0) {
 			for (var i = 0; i < codemirror_css_compiled.length; i++) {
-				var codeMirrorCssCompiled = CodeMirror.fromTextArea(codemirror_css_compiled[i], {
+				var CodeMirrorCssCompiled = CodeMirror.fromTextArea(codemirror_css_compiled[i], {
 					lineNumbers: true,
 					lineWrapping: true,
 					styleActiveLine: true,
@@ -56,8 +56,8 @@ $(document).ready(function () {
 					}
 				});
 
-				codeMirrorCssCompiled.setSize('100%', 500);
-				codemirrors_instances.push(codeMirrorCssCompiled);
+				CodeMirrorCssCompiled.setSize('100%', 500);
+				codemirrors_instances.push(CodeMirrorCssCompiled);
 			}
 		}
 
@@ -119,8 +119,10 @@ $(document).ready(function () {
 
 		// ===== Semantic UI
 
-		function activeTabRefreshCodeMirror() {
-			var tabActive = localStorage.getItem(gestor.moduloId + 'tabActive');
+		const tabIdCode = 'tabCodeActive';
+
+		function codeTabHandler() {
+			const tabActive = localStorage.getItem(gestor.moduloId + tabIdCode);
 
 			if (tabActive !== null) {
 				$('.menuPaginas .item').tab('change tab', tabActive);
@@ -133,16 +135,14 @@ $(document).ready(function () {
 						CodeMirrorHtmlExtraHead.refresh();
 						break;
 					case 'css':
-						codeMirrorCss.refresh();
+						CodeMirrorCss.refresh();
 						break;
 					case 'css-compiled':
-						codeMirrorCssCompiled.refresh();
+						CodeMirrorCssCompiled.refresh();
 						break;
 				}
 			}
 		}
-
-		activeTabRefreshCodeMirror();
 
 		$('.menuPaginas .item').tab({
 			onLoad: function (tabPath, parameterArray, historyEvent) {
@@ -154,14 +154,56 @@ $(document).ready(function () {
 						CodeMirrorHtmlExtraHead.refresh();
 						break;
 					case 'css':
-						codeMirrorCss.refresh();
+						CodeMirrorCss.refresh();
 						break;
 					case 'css-compiled':
-						codeMirrorCssCompiled.refresh();
+						CodeMirrorCssCompiled.refresh();
 						break;
 				}
 
-				localStorage.setItem(gestor.moduloId + 'tabActive', tabPath);
+				localStorage.setItem(gestor.moduloId + tabIdCode, tabPath);
+			}
+		});
+
+		const tabIdContent = 'tabContentPageActive';
+
+		function contentPageTabHandler() {
+			const tabActive = localStorage.getItem(gestor.moduloId + tabIdContent);
+
+			if (tabActive !== null) {
+				$('.menuContainerPagina .item').tab('change tab', tabActive);
+
+				switch (tabActive) {
+					case 'visualizacao-pagina':
+						previewHtml();
+						break;
+					case 'assistente-ia':
+
+						break;
+					case 'visualizacao-codigo':
+						codeTabHandler();
+						break;
+				}
+			}
+		}
+
+		contentPageTabHandler();
+
+		$('.menuContainerPagina .item').tab({
+			onLoad: function (tabPath, parameterArray, historyEvent) {
+				switch (tabPath) {
+					case 'visualizacao-pagina':
+						previewHtml();
+						break;
+					case 'assistente-ia':
+
+						break;
+					case 'visualizacao-codigo':
+						codeTabHandler();
+						break;
+				}
+
+				localStorage.setItem(gestor.moduloId + tabIdContent, tabPath);
 			}
 		});
 
@@ -194,12 +236,12 @@ $(document).ready(function () {
 					CodeMirrorHtmlExtraHead.refresh();
 					break;
 				case 'css':
-					codeMirrorCss.getDoc().setValue(valor);
-					codeMirrorCss.refresh();
+					CodeMirrorCss.getDoc().setValue(valor);
+					CodeMirrorCss.refresh();
 					break;
 				case 'css_compiled':
-					codeMirrorCssCompiled.getDoc().setValue(valor);
-					codeMirrorCssCompiled.refresh();
+					CodeMirrorCssCompiled.getDoc().setValue(valor);
+					CodeMirrorCssCompiled.refresh();
 					break;
 			}
 		});
@@ -349,7 +391,7 @@ $(document).ready(function () {
 				}
 			});
 
-		// ===== Pré-visualização
+		// ===== Editor HTML Visual e Pré-visualização.
 
 		// Função para filtrar o HTML e apenas devolver o que tah dentro do <body>, caso o <body> exista. Senão retornar o HTML completo.
 		function filtrarHtmlBody(html) {
@@ -357,24 +399,10 @@ $(document).ready(function () {
 			return bodyMatch ? bodyMatch[1] : html;
 		}
 
-		// Função para gerar o conteúdo da página de preview
-		function gerarPreviewHtml(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui') {
-			// Clonar o modal de edição
-			const modalHtml = $('#html-editor-modal').clone().wrap('<div/>').parent().html();
-
-			// Incluir o script do editor HTML e variáveis
-			let js_vars = '';
-			let js_script = '';
-			if ('html_editor' in gestor) {
-				if ('script' in gestor.html_editor) {
-					js_script = gestor.html_editor.script;
-				}
-				if ('overlay_title' in gestor.html_editor) {
-					js_vars += '<script>\n';
-					js_vars += `	const html_editor = { overlay_title: '${gestor.html_editor.overlay_title}' };\n`;
-					js_vars += '</script>\n';
-				}
-			}
+		// Função para gerar o conteúdo da página do editor HTML visual.
+		function editorHtmlVisualConteudo(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui') {
+			// Incluir o script e variáveis do editor HTML
+			const { htmlEditorModalHtml, htmlEditorVars, htmlEditorScriptPath } = window.HtmlEditorHelper.variablesEnvironment();
 
 			// Incluir o CSS do usuário, se existir
 			if (cssDoUsuario && cssDoUsuario.length > 0) {
@@ -383,11 +411,13 @@ $(document).ready(function () {
 				cssDoUsuario = '';
 			}
 
+			let iframeTitle = 'Fomantic UI Preview';
 			let tailwindConfigScript = '';
 
 			if (framework === 'tailwindcss') {
 				tailwindConfigScript = `<!-- CDN do TailwindCSS -->
 				<script src="https://cdn.tailwindcss.com"></script>`;
+				iframeTitle = 'Tailwind CSS Preview';
 			}
 
 			return `
@@ -396,45 +426,53 @@ $(document).ready(function () {
 			<head>
 				<meta charset="UTF-8">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Preview Tailwind</title>
+				<title>${iframeTitle}</title>
 				${tailwindConfigScript}
 				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">
 				<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
-				${js_vars}
-				${js_script}
+				${htmlEditorVars}
+				${htmlEditorScriptPath}
 				${cssDoUsuario}
 			</head>
 			<body>
 				${htmlDoUsuario}
-				${modalHtml}
+				${htmlEditorModalHtml}
 			</body>
 			</html>
 		`;
 		}
 
-		$(document.body).on('mouseup tap', '.previsualizar.button', function (e) {
-			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+		function editorHtmlVisual() {
+			const iframe = $('#iframe-preview');
 
-			previsualizarPagina();
-		});
+			iframe.parent().find('.ui.dimmer').addClass('active');
 
-		function previsualizarPagina() {
+			// Remover o dimmer quando o iframe terminar de carregar
+			iframe.on('load', function () {
+				iframe.parent().find('.ui.dimmer').removeClass('active');
+			});
 			// Pegar o HTML do usuário e filtrar o que está dentro do <body>
 			const htmlDoUsuario = filtrarHtmlBody(CodeMirrorHtml.getDoc().getValue()).trim();
-			const cssDoUsuario = filtrarHtmlBody(codeMirrorCss.getDoc().getValue()).trim();
+			const cssDoUsuario = filtrarHtmlBody(CodeMirrorCss.getDoc().getValue()).trim();
 
 			// Atualizar o CodeMirror com o HTML filtrado.
 			CodeMirrorHtml.getDoc().setValue(htmlDoUsuario);
 
 			const idFramework = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
 
-			$('#iframe-preview').attr('srcdoc', gerarPreviewHtml(htmlDoUsuario, cssDoUsuario, idFramework));
+			iframe.attr('srcdoc', editorHtmlVisualConteudo(htmlDoUsuario, cssDoUsuario, idFramework));
 
 			$('.previsualizar.modal')
 				.modal('show')
 				;
 		}
+
+		$(document.body).on('mouseup tap', '.editorHtmlVisual.button', function (e) {
+			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+			editorHtmlVisual();
+		});
 
 		$(document.body).on('mouseup tap', '.screenPagina', function (e) {
 			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
@@ -470,7 +508,7 @@ $(document).ready(function () {
 				if (tailwindStyleElement) {
 					const generatedCss = tailwindStyleElement.innerHTML;
 
-					codeMirrorCssCompiled.getDoc().setValue(generatedCss);
+					CodeMirrorCssCompiled.getDoc().setValue(generatedCss);
 				}
 			}
 
@@ -501,35 +539,69 @@ $(document).ready(function () {
 
 			// Fechar o modal de pré-visualização se o botão clicado for o de voltar.
 			if ($(this).hasClass('previsualizarVoltar')) {
+				previewHtml();
 				return;
 			}
 
 			$.formSubmitNormal();
 		});
 
-		// ===== Editor de Código
-
-		$(document.body).on('mouseup tap', '.editorCodigoMostrar, .editorCodigoOcultar', function (e) {
-			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
-
-			if ($(this).hasClass('editorCodigoMostrar')) {
-				$(this).addClass('hidden');
-				$('.editorCodigoOcultar').removeClass('hidden');
-				$('.editor-codigo-container').removeClass('hidden');
-				activeTabRefreshCodeMirror();
-				const editorContainer = document.querySelector('.editor-codigo-container');
-				if (editorContainer) {
-					editorContainer.scrollIntoView({
-						behavior: 'smooth',
-						block: 'start'
-					});
-				}
+		// Função para gerar o conteúdo da página do pré-visualizador.
+		function previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui') {
+			// Incluir o CSS do usuário, se existir
+			if (cssDoUsuario && cssDoUsuario.length > 0) {
+				cssDoUsuario = `<style>${cssDoUsuario}</style>`;
 			} else {
-				$(this).addClass('hidden');
-				$('.editorCodigoMostrar').removeClass('hidden');
-				$('.editor-codigo-container').addClass('hidden');
+				cssDoUsuario = '';
 			}
-		});
+
+			let iframeTitle = 'Fomantic UI Preview';
+			let tailwindConfigScript = '';
+
+			if (framework === 'tailwindcss') {
+				tailwindConfigScript = `<!-- CDN do TailwindCSS -->
+				<script src="https://cdn.tailwindcss.com"></script>`;
+				iframeTitle = 'Tailwind CSS Preview';
+			}
+
+			return `
+			<!DOCTYPE html>
+			<html lang="pt-br">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>${iframeTitle}</title>
+				${tailwindConfigScript}
+				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">
+				<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
+				${cssDoUsuario}
+			</head>
+			<body>
+				${htmlDoUsuario}
+			</body>
+			</html>
+		`;
+		}
+
+		function previewHtml() {
+			const iframe = $('#iframe-visualizacao-pagina');
+
+			iframe.parent().find('.ui.dimmer').addClass('active');
+
+			// Remover o dimmer quando o iframe terminar de carregar
+			iframe.on('load', function () {
+				iframe.parent().find('.ui.dimmer').removeClass('active');
+			});
+
+			// Pegar o HTML do usuário e filtrar o que está dentro do <body>
+			const htmlDoUsuario = CodeMirrorHtml.getDoc().getValue();
+			const cssDoUsuario = CodeMirrorCss.getDoc().getValue();
+
+			const idFramework = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
+
+			iframe.attr('srcdoc', previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, idFramework));
+		}
 
 		// ===== Módulos
 
@@ -552,7 +624,9 @@ $(document).ready(function () {
 				}
 			});
 
-		// ===== IA
+		// ===== IA Interface
+
+		// Controles extras do prompt de IA
 
 		let total_sessoes = 0;
 
@@ -647,12 +721,36 @@ $(document).ready(function () {
 			}
 		});
 
+		$(document.body).on('mouseup tap', '.ai-prompt-session-delete', function (e) {
+			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+			const sessionId = $('.ui.dropdown.ai-prompt-session-select').dropdown('get value');
+
+			if (sessionId && sessionId.length > 0) {
+				let html = CodeMirrorHtml.getDoc().getValue();
+
+				// Remover a sessão do HTML
+				const regex = new RegExp(`<session\\b[^>]*data-id=["']${sessionId}["'][^>]*>[\\s\\S]*?<\\/session>`, 'i');
+				html = html.replace(regex, '');
+
+				// Remover linhas em branco no início e fim do código.
+				// E também remover linhas que estejam completamente em branco no meio do código.
+				html = html.split('\n').filter(line => line.trim() !== '').join('\n').trim();
+
+				// Atualizar o CodeMirror com o HTML atualizado.
+				CodeMirrorHtml.getDoc().setValue(html);
+				CodeMirrorHtml.refresh();
+			}
+		});
+
 		$('.ui.dropdown.ai-prompt-page-select')
 			.dropdown({
 				onChange: function (value, text, $selectedItem) {
 					menuPages(value, true);
 				}
 			});
+
+		// Configurar o callback e data para as requests de IA
 
 		function iaRequestsCallback(p = {}) {
 			var html_gerado = p.data.html_gerado ? p.data.html_gerado : '';
@@ -715,10 +813,10 @@ $(document).ready(function () {
 
 			// Atualizar os CodeMirror com o código gerado.
 			CodeMirrorHtml.getDoc().setValue(html_gerado);
-			codeMirrorCss.getDoc().setValue(css_gerado);
+			CodeMirrorCss.getDoc().setValue(css_gerado);
 
 			CodeMirrorHtml.refresh();
-			codeMirrorCss.refresh();
+			CodeMirrorCss.refresh();
 
 			// Agora, após o menu ser atualizado pelo evento change, selecionar a sessão alvo e remover o atributo
 			const htmlAtual = CodeMirrorHtml.getDoc().getValue();
@@ -737,14 +835,15 @@ $(document).ready(function () {
 			}
 
 			// Abrir o preview da página.
-			previsualizarPagina();
+			editorHtmlVisual();
+			previewHtml();
 		}
 
 		function iaRequestsData(p = {}) {
 			const tipo_prompt = $('.ui.dropdown.ai-prompt-page-select').dropdown('get value');
 
 			let html = '';
-			let css = codeMirrorCss.getDoc().getValue();
+			let css = CodeMirrorCss.getDoc().getValue();
 			let sessao_id = '';
 			let sessao_opcao = '';
 

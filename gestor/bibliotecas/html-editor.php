@@ -13,7 +13,7 @@ $_GESTOR['biblioteca-html-editor']							=	Array(
 /**
  * Incluir o editor HTML.
  *
- * Renderiza o componente de editor HTML.
+ * Renderiza o componente de editor HTML e suas dependências.
  *
  */
 function html_editor_include($params = false){
@@ -21,10 +21,10 @@ function html_editor_include($params = false){
 
 	if($params)foreach($params as $var => $val)$$var = $val;
 
-    // Incluir variáveis
+    // Incluir variáveis no HTML Editor
     $overlay_title = gestor_variaveis(Array('id' => 'html-editor-overlay-title'));
 
-	// Incluir script JS
+	// Configurar ambiente JS do HTML Editor
 	$js_script = gestor_pagina_javascript_incluir('biblioteca','html-editor',true);
 
     gestor_js_variavel_incluir('html_editor',Array(
@@ -32,7 +32,10 @@ function html_editor_include($params = false){
         'overlay_title' => $overlay_title,
     ));
 
-    // Incluir componentes
+    // Incluir script JS Helper do HTML Editor que conecta o mesmo com o Gestor/Modulos
+	gestor_pagina_javascript_incluir('biblioteca','html-editor-helper');
+
+    // Incluir componentes do HTML Editor
     $html_editor_modal = gestor_componente(Array(
 		'id' => 'html-editor-modal'
 	));

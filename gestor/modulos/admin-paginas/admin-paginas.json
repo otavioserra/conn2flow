@@ -39,11 +39,11 @@
             ],
             "selectDadosConteudo": [
                 {
-                    "texto": "Tudo",
+                    "texto": "Todas",
                     "valor": "tudo"
                 },
                 {
-                    "texto": "Sessão",
+                    "texto": "Por Sessão",
                     "valor": "sessao"
                 }
             ],
@@ -126,11 +126,11 @@
                 {
                     "name": "Modal Página",
                     "id": "modal-pagina",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "28ae9696b14f3a487de3a974c8f5a6a2",
+                        "html": "95e3802f5909d038fd2748e9360f9326",
                         "css": "",
-                        "combined": "28ae9696b14f3a487de3a974c8f5a6a2"
+                        "combined": "95e3802f5909d038fd2748e9360f9326"
                     }
                 },
                 {
@@ -146,11 +146,11 @@
                 {
                     "name": "Página Prompts Controles",
                     "id": "pagina-prompts-controles",
-                    "version": "1.9",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "08ef6e2bdc8ef9ea1a96947039d3e54b",
+                        "html": "44f2eeeb3cd666994cec0e1aa342c93e",
                         "css": "",
-                        "combined": "08ef6e2bdc8ef9ea1a96947039d3e54b"
+                        "combined": "44f2eeeb3cd666994cec0e1aa342c93e"
                     }
                 }
             ],
@@ -173,11 +173,11 @@
                 {
                     "name": "Admin Páginas - Editar",
                     "id": "admin-paginas-editar",
-                    "version": "1.8",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "b2068cfa21d079a90c54da1534777527",
+                        "html": "6f1fbc05d05cbb06245b885dc645236c",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "6a432ea589b689434127972237a2e247"
+                        "combined": "eb61a87585bdb2224f3609882137bf1a"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/editar\/",
@@ -187,11 +187,11 @@
                 {
                     "name": "Admin Páginas - Adicionar",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.12",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "07f5d98c5a1cb278166add6036ebb177",
+                        "html": "5d6fe87ec002c03596bdaf6580c52c0d",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "9563b992ec9eb0ee8a03230fd071682d"
+                        "combined": "2890de0bb432694f13fba8fbb474b8f6"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/adicionar\/",
@@ -459,6 +459,46 @@
                     "id": "form-html-extra-head-label",
                     "value": "HTML > Cabeçalho",
                     "type": "string"
+                },
+                {
+                    "id": "form-page-view-tooltip",
+                    "value": "Clique para abrir a visualização da página.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-view-label",
+                    "value": "Visualização",
+                    "type": "string"
+                },
+                {
+                    "id": "form-ai-assistent-tooltip",
+                    "value": "Clique para abrir o assistente IA.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-ai-assistent-label",
+                    "value": "Assistente IA",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-code-tooltip",
+                    "value": "Clique para abrir o editor de código da página.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-code-label",
+                    "value": "Código",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-visual-editor-tooltip",
+                    "value": "Clique para abrir o editor visual da página.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-visual-editor-label",
+                    "value": "Editor Visual",
+                    "type": "string"
                 }
             ]
         },
@@ -479,7 +519,7 @@
                     "valor": "tudo"
                 },
                 {
-                    "texto": "Session",
+                    "texto": "Per Session",
                     "valor": "sessao"
                 }
             ],
@@ -578,11 +618,11 @@
                 {
                     "name": "Admin Pages - Edit",
                     "id": "admin-paginas-editar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "b2068cfa21d079a90c54da1534777527",
+                        "html": "6f1fbc05d05cbb06245b885dc645236c",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "6a432ea589b689434127972237a2e247"
+                        "combined": "eb61a87585bdb2224f3609882137bf1a"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/editar\/",
@@ -592,11 +632,11 @@
                 {
                     "name": "Admin Pages - Add",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "07f5d98c5a1cb278166add6036ebb177",
+                        "html": "5d6fe87ec002c03596bdaf6580c52c0d",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "9563b992ec9eb0ee8a03230fd071682d"
+                        "combined": "2890de0bb432694f13fba8fbb474b8f6"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/adicionar\/",
@@ -608,11 +648,11 @@
                 {
                     "name": "Page Modal",
                     "id": "modal-pagina",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "28ae9696b14f3a487de3a974c8f5a6a2",
+                        "html": "95e3802f5909d038fd2748e9360f9326",
                         "css": "",
-                        "combined": "28ae9696b14f3a487de3a974c8f5a6a2"
+                        "combined": "95e3802f5909d038fd2748e9360f9326"
                     }
                 },
                 {
@@ -628,11 +668,11 @@
                 {
                     "name": "Page Prompts Controls",
                     "id": "pagina-prompts-controles",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "0481e186c31533ca9d44e7a9a1d89bad",
+                        "html": "5d9e51dd8fc2fdbac03369c65c700e39",
                         "css": "",
-                        "combined": "0481e186c31533ca9d44e7a9a1d89bad"
+                        "combined": "5d9e51dd8fc2fdbac03369c65c700e39"
                     }
                 }
             ],
@@ -895,6 +935,46 @@
                 {
                     "id": "form-html-extra-head-label",
                     "value": "HTML > Header",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-view-tooltip",
+                    "value": "Click to open the page preview.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-view-label",
+                    "value": "Preview",
+                    "type": "string"
+                },
+                {
+                    "id": "form-ai-assistent-tooltip",
+                    "value": "Click to open the AI assistant.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-ai-assistent-label",
+                    "value": "AI Assistant",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-code-tooltip",
+                    "value": "Click to open the page code editor.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-code-label",
+                    "value": "Code",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-visual-editor-tooltip",
+                    "value": "Click to open the page visual editor.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-visual-editor-label",
+                    "value": "Visual Editor",
                     "type": "string"
                 }
             ]

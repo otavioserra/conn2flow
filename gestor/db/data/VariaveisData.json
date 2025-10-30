@@ -4374,6 +4374,78 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-page-view-tooltip",
+        "valor": "Clique para abrir a visualização da página.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-page-view-label",
+        "valor": "Visualização",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-ai-assistent-tooltip",
+        "valor": "Clique para abrir o assistente IA.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-ai-assistent-label",
+        "valor": "Assistente IA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-page-code-tooltip",
+        "valor": "Clique para abrir o editor de código da página.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-page-code-label",
+        "valor": "Código",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-page-visual-editor-tooltip",
+        "valor": "Clique para abrir o editor visual da página.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "form-page-visual-editor-label",
+        "valor": "Editor Visual",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "admin-paginas",
         "id": "form-name-label",
@@ -4837,6 +4909,78 @@
         "modulo": "admin-paginas",
         "id": "form-html-extra-head-label",
         "valor": "HTML > Header",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-page-view-tooltip",
+        "valor": "Click to open the page preview.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-page-view-label",
+        "valor": "Preview",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-ai-assistent-tooltip",
+        "valor": "Click to open the AI assistant.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-ai-assistent-label",
+        "valor": "AI Assistant",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-page-code-tooltip",
+        "valor": "Click to open the page code editor.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-page-code-label",
+        "valor": "Code",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-page-visual-editor-tooltip",
+        "valor": "Click to open the page visual editor.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas",
+        "id": "form-page-visual-editor-label",
+        "valor": "Visual Editor",
         "tipo": "string",
         "grupo": null,
         "descricao": null

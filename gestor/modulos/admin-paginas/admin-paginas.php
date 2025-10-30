@@ -220,30 +220,6 @@ function admin_paginas_adicionar(){
 	// ===== Interface adicionar finalizar opções
 	
 	$_GESTOR['interface']['adicionar']['finalizar'] = Array(
-		'sem_botao_padrao' => true,
-		'botoes_rodape' => [
-			'editorCodigoMostrar' => [
-				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-show-editor')),
-				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-show-editor')),
-				'icon' => 'edit',
-				'cor' => 'blue',
-				'callback' => 'editorCodigoMostrar',
-			],
-			'editorCodigoOcultar' => [
-				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-hide-editor')),
-				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-hide-editor')),
-				'icon' => 'minus square',
-				'cor' => 'red',
-				'callback' => 'editorCodigoOcultar hidden',
-			],
-			'previsualizar' => [
-				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-preview')),
-				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-preview')),
-				'icon' => 'plus circle',
-				'cor' => 'positive',
-				'callback' => 'previsualizar',
-			],
-		],
 		'formulario' => Array(
 			'validacao' => Array(
 				Array(
@@ -767,30 +743,6 @@ function admin_paginas_editar(){
 	// ===== Interface editar finalizar opções
 	
 	$_GESTOR['interface']['editar']['finalizar'] = Array(
-		'sem_botao_padrao' => true,
-		'botoes_rodape' => [
-			'editorCodigoMostrar' => [
-				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-show-editor')),
-				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-show-editor')),
-				'icon' => 'edit',
-				'cor' => 'blue',
-				'callback' => 'editorCodigoMostrar',
-			],
-			'editorCodigoOcultar' => [
-				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-hide-editor')),
-				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-hide-editor')),
-				'icon' => 'minus square',
-				'cor' => 'red',
-				'callback' => 'editorCodigoOcultar hidden',
-			],
-			'previsualizar' => [
-				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-preview')),
-				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-preview')),
-				'icon' => 'plus circle',
-				'cor' => 'positive',
-				'callback' => 'previsualizar',
-			],
-		],
 		'id' => $id,
 		'metaDados' => $metaDados,
 		'variaveisTrocarDepois' => $variaveisTrocarDepois,

@@ -342,6 +342,7 @@ function gestor_layout($params = false){
 						,
 						"layouts",
 						"WHERE ".$ids
+						." AND language='".$_GESTOR['linguagem-codigo']."'"
 					);
 				}
 			break;
@@ -358,6 +359,7 @@ function gestor_layout($params = false){
 					,
 					"layouts",
 					"WHERE id='".$id."'"
+					." AND language='".$_GESTOR['linguagem-codigo']."'"
 				);
 		}
 	}

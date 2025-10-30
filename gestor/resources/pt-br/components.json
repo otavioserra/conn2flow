@@ -292,11 +292,11 @@
     {
         "name": "IA Prompt",
         "id": "ia-prompt",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "96156c8e91c99b5c5e24ef9e9608d4d3",
+            "html": "7eb05262d25a583fe98695eb1e549a04",
             "css": "1221e34b060bf1cdcd78f39f9e9738dc",
-            "combined": "7bf75868608acba346691958c380f9a0"
+            "combined": "52ead042ab33269dc5555602086e4aa7"
         }
     },
     {
