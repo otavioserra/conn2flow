@@ -237,6 +237,20 @@ function interface_trocar_valor_outra_tabela($params = false){
 	return $dado;
 }
 
+/**
+ * Troca um valor por outro baseado em um conjunto de mapeamentos.
+ *
+ * Percorre um conjunto de mapeamentos alvo/troca e retorna o valor de troca
+ * quando encontra correspondência com o dado fornecido.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['dado'] Dado que será verificado e potencialmente trocado.
+ * @param array $params['conjunto'] Conjunto de mapeamentos com estrutura [['alvo' => 'valor1', 'troca' => 'novoValor1'], ...].
+ *
+ * @return string O valor trocado se encontrado no conjunto, ou o dado original caso contrário.
+ */
 function interface_trocar_valor_outro_conjunto($params = false){
 	global $_GESTOR;
 	
@@ -257,6 +271,22 @@ function interface_trocar_valor_outro_conjunto($params = false){
 	return $dado;
 }
 
+/**
+ * Troca um valor por outro baseado em array de valores com campos específicos.
+ *
+ * Busca em um array de valores e retorna o valor do campo alvo quando
+ * encontra correspondência no campo de troca.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['dado'] Dado que será verificado e potencialmente trocado.
+ * @param array $params['valores'] Array de valores onde cada elemento contém os campos de troca e alvo.
+ * @param string $params['campo_troca'] Nome do campo usado para comparação com o dado.
+ * @param string $params['campo_alvo'] Nome do campo cujo valor será retornado em caso de correspondência.
+ *
+ * @return string O valor do campo alvo se encontrado, ou o dado original caso contrário.
+ */
 function interface_trocar_valor_outro_array($params = false){
 	global $_GESTOR;
 	
@@ -278,6 +308,31 @@ function interface_trocar_valor_outro_array($params = false){
 	return $dado;
 }
 
+/**
+ * Formata um dado de acordo com o formato especificado.
+ *
+ * Aplica diferentes tipos de formatação aos dados, incluindo conversão de datas,
+ * formatação monetária, troca por valores de outras tabelas ou arrays, e substituição
+ * por rótulos customizados.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['dado'] Dado que será formatado.
+ * @param string|array $params['formato'] Formato a ser aplicado. Pode ser string ('dinheiroReais', 'data', 'dataHora')
+ *                                        ou array com 'id' e parâmetros específicos ('outraTabela', 'outroConjunto', 'outroArray').
+ * @param string $params['formato']['id'] Identificador do formato (quando formato é array).
+ * @param array $params['formato']['tabela'] Dados da tabela para formato 'outraTabela'.
+ * @param array $params['formato']['tabela2'] Segunda tabela opcional para formato 'outraTabela'.
+ * @param array $params['formato']['conjunto'] Conjunto de mapeamentos para formato 'outroConjunto'.
+ * @param array $params['formato']['valores'] Array de valores para formato 'outroArray'.
+ * @param string $params['formato']['campo_troca'] Campo de troca para formato 'outroArray'.
+ * @param string $params['formato']['campo_alvo'] Campo alvo para formato 'outroArray'.
+ * @param array $params['formato']['valor_substituir_por_rotulo'] Array de substituições [['valor' => '1', 'rotulo' => 'Sim'], ...].
+ * @param string $params['formato']['valor_senao_existe'] Valor a retornar quando dado está vazio.
+ *
+ * @return string O dado formatado de acordo com as especificações, ou valor padrão se dado estiver vazio.
+ */
 function interface_formatar_dado($params = false){
 	global $_GESTOR;
 	
@@ -362,8 +417,21 @@ function interface_formatar_dado($params = false){
 	}
 }
 
-// ===== Funções auxiliares
-
+/**
+ * Gerencia alertas de mensagens para o usuário na interface.
+ *
+ * Permite definir e exibir mensagens de alerta na interface do usuário.
+ * Suporta alertas imediatos ou pós-redirecionamento via sessão.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['msg'] Mensagem a ser exibida como alerta.
+ * @param bool $params['redirect'] Se true, salva o alerta na sessão para exibição após redirecionamento.
+ * @param bool $params['imprimir'] Se true, imprime o HTML do alerta na tela.
+ *
+ * @return void|string Retorna HTML do alerta se $imprimir for true, caso contrário não retorna nada.
+ */
 function interface_alerta($params = false){
 	global $_GESTOR;
 
