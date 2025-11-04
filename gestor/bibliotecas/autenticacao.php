@@ -394,7 +394,7 @@ function autenticacao_gerar_jwt_chave_publica($params = false){
 /**
  * Gera JWT assinado com chave privada RSA.
  *
- * @param array|false $params Parâmetros (host, expiration, pubID, chavePrivada, chavePrivadaSenha obrigatórios).
+ * @param array|false $params Parâmetros (host, expiration, pubID, chavePrivada, chavePrivadaSenha obrigatórios; payload opcional).
  * @return string|false Token JWT ou false em erro.
  */
 function autenticacao_gerar_jwt_chave_privada($params = false){
@@ -415,15 +415,21 @@ function autenticacao_gerar_jwt_chave_privada($params = false){
 		$header = json_encode($header);
 		$header = base64_encode($header);
 
-		// ===== Payload
+		// ===== Payload (usar payload customizado se fornecido, senão usar padrão)
 
-		$payload = [
-			'iss' => $host, // The issuer of the token
-			'exp' => $expiration, // This will define the expiration in NumericDate value. The expiration MUST be after the current date/time.
-			'sub' => $pubID, // ID público do totken
-		];
+		if(isset($payload) && is_array($payload)){
+			// Usar payload customizado fornecido
+			$payloadData = $payload;
+		} else {
+			// Payload padrão
+			$payloadData = [
+				'iss' => $host, // The issuer of the token
+				'exp' => $expiration, // This will define the expiration in NumericDate value. The expiration MUST be after the current date/time.
+				'sub' => $pubID, // ID público do totken
+			];
+		}
 
-		$payload = json_encode($payload);
+		$payload = json_encode($payloadData);
 		$payload = base64_encode($payload);
 
 		// ===== Unir header com payload para gerar assinatura
@@ -459,8 +465,9 @@ function autenticacao_gerar_jwt_chave_privada($params = false){
 /**
  * Valida JWT usando chave pública RSA.
  *
- * @param array|false $params Parâmetros (token, chavePublica obrigatórios).
- * @return array|false Payload decodificado ou false se inválido.
+ * @param array|false $params Parâmetros (token, chavePublica obrigatórios; retornarPayloadCompleto opcional).
+ * @param bool $params['retornarPayloadCompleto'] Se true, retorna o payload completo em vez de apenas o pubID.
+ * @return array|string|false Payload decodificado, pubID ou false se inválido.
  */
 function autenticacao_validar_jwt_chave_publica($params = false){
 	
@@ -527,9 +534,13 @@ function autenticacao_validar_jwt_chave_publica($params = false){
 			}
 			
 			if($expiracao_ok){
-				// Se tudo estiver válido, retorna o pubID do token.
+				// Se tudo estiver válido, retorna o pubID do token ou o payload completo conforme solicitado.
 				
-				return $payload['sub'];
+				if(isset($retornarPayloadCompleto) && $retornarPayloadCompleto === true){
+					return $payload;
+				} else {
+					return $payload['sub'];
+				}
 			} else {
 				return false;
 			}

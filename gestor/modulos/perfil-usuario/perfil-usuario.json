@@ -22,6 +22,21 @@
         "pt-br": {
             "pages": [
                 {
+                    "name": "OAuth 2.0 Authenticação",
+                    "id": "oauth-authenticate",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "oauth-authenticate\/",
+                    "type": "system",
+                    "option": "oauth-authenticate",
+                    "without_permission": true,
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "98dbb61c83088148e66e121b84be7ee2",
+                        "css": "",
+                        "combined": "98dbb61c83088148e66e121b84be7ee2"
+                    }
+                },
+                {
                     "name": "Acessar Sistema",
                     "id": "acessar-sistema",
                     "version": "1.1",
@@ -686,6 +701,21 @@
         "en": {
             "layouts": [],
             "pages": [
+                {
+                    "name": "OAuth 2.0 Authentication",
+                    "id": "oauth-authenticate",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "oauth-authenticate\/",
+                    "type": "system",
+                    "option": "oauth-authenticate",
+                    "without_permission": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
                 {
                     "name": "Access System",
                     "id": "acessar-sistema",

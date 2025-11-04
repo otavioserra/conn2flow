@@ -1,0 +1,43 @@
+<div class="ui stackable two column centered grid">
+    <div class="column">
+        <div class="ui segment">
+            <form id="_gestor-form-autenticar" action="#form-action#" method="post" name="_gestor-form-autenticar"
+                class="ui form">
+                <div class="ui center aligned header large">#titulo#</div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui info message">
+                    <div class="header">
+                        Autenticação OAuth 2.0
+                    </div>
+                    <p>Forneça suas credenciais para obter tokens de acesso à API.</p>
+                </div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <!-- formulario < -->
+                <div class="field">
+                    <label>Usuário</label>
+                    <input type="text" name="usuario" placeholder="Digite seu usuário" required>
+                </div>
+                <div class="field">
+                    <label>Senha</label>
+                    <input type="password" name="senha" placeholder="Digite sua senha" required>
+                </div>
+                <div class="field">
+                    <label>Escopo (opcional)</label>
+                    <input type="text" name="scope" placeholder="read,write" value="read">
+                </div>
+                <div class="field">
+                    <label>URL de Redirecionamento (opcional)</label>
+                    <input type="url" name="url_redirect" placeholder="https://sua-app.com/callback">
+                </div>
+                <input type="hidden" name="grant_type" value="client_credentials">
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui error message">&nbsp;</div>
+                <div class="field">
+                    <button class="fluid ui button blue">Autenticar e Obter Tokens</button>
+                </div>
+                <input id="_gestor-autenticate" name="_gestor-autenticate" type="hidden" value="1">
+                <!-- formulario > -->
+            </form>
+        </div>
+    </div>
+</div>

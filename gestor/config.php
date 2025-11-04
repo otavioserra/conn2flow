@@ -5,7 +5,7 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR['versao']								=	'2.3.6'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'2.3.7'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 
 // ===== Definição dos marcadores de abertura e fechamento de varíaveis globais.
@@ -99,7 +99,14 @@ $_CONFIG = [
     'token-lifetime'                    => (int)($_ENV['TOKEN_LIFETIME'] ?? 3600),
     'plano-teste-id-usuario-perfil'     => $_ENV['PLANO_TESTE_ID_USUARIO_PERFIL'] ?? '2',
     'autenticacao-token-lifetime'       => (int)($_ENV['AUTENTICACAO_TOKEN_LIFETIME'] ?? 15552000),
-    
+
+    // Configurações OAuth 2.0
+    'oauth2'  => [
+        'token-expiration'            => (int)($_ENV['OAUTH2_TOKEN_EXPIRATION'] ?? 3600),
+        'refresh-token-expiration'    => (int)($_ENV['OAUTH2_REFRESH_TOKEN_EXPIRATION'] ?? 2592000),
+        'maximo-tokens-usuario'       => (int)($_ENV['OAUTH2_MAXIMO_TOKENS_USUARIO'] ?? 5),
+    ],
+
     // Controle de Acessos
     'acessos-maximo-falhas-logins'      => (int)($_ENV['ACESSOS_MAXIMO_FALHAS_LOGINS'] ?? 10),
     'acessos-maximo-logins-simples'     => (int)($_ENV['ACESSOS_MAXIMO_LOGINS_SIMPLES'] ?? 3),
@@ -193,6 +200,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'plugins-installer' => Array('plugins-installer.php'),
 	'ia' => Array('ia.php'),
     'html-editor' => Array('html-editor.php'),
+    'oauth2' => Array('oauth2.php'),
 );
 
 if(isset($_GESTOR['bibliotecas']))

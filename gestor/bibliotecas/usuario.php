@@ -211,11 +211,13 @@ function usuario_gerar_token_autorizacao($params = false){
 		]);
 		
 		// ===== Obtém IP do usuário para auditoria
+
 		gestor_incluir_biblioteca('ip');
 		
 		$ip = ip_get();
 		
 		// ===== Salva token no banco de dados
+		
 		$campos = null; $campo_sem_aspas_simples = null;
 		
 		$campo_nome = "id_usuarios"; $campo_valor = $id_usuarios; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);

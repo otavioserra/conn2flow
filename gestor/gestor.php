@@ -52,6 +52,9 @@ switch($_GESTOR['caminho'][0]){
 	case '_gateways':
 		require_once($_GESTOR['controladores-path'].'plataforma-gateways/plataforma-gateways.php'); exit;
 	break;
+	case '_api':
+		require_once($_GESTOR['controladores-path'].'api/api.php'); exit;
+	break;
 }
 
 // =========================== Funções de Montagem da Página

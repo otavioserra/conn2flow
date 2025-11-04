@@ -93,16 +93,11 @@ function api_authenticate($require_auth = false) {
         api_response_error('Token de autenticação não fornecido', 401);
     }
 
-    // Validar token (placeholder - implementar validação real)
-    // Por enquanto, aceitar qualquer token não vazio
-    if (empty($token) || strlen($token) < 10) {
-        api_response_error('Token de autenticação inválido', 401);
-    }
+    // Validação real do token OAuth 2.0
+    gestor_incluir_biblioteca('oauth2');
 
-    // Validação real do token JWT
-    gestor_incluir_biblioteca('autenticacao');
-
-    if(!autenticacao_api_validar_token(Array('token' => $token))){
+    $token_validacao = oauth2_validar_token(Array('token' => $token));
+    if(!$token_validacao || !is_array($token_validacao)){
         api_response_error('Token de autenticação inválido ou expirado', 401);
     }
 
@@ -363,6 +358,44 @@ function api_ia_models() {
     api_response_success(['models' => $models_response]);
 }
 
+// =========================== Handler OAuth Refresh
+
+function api_oauth_refresh() {
+    $method = $_SERVER['REQUEST_METHOD'];
+
+    if ($method !== 'POST') {
+        api_response_error('Método não permitido. Use POST.', 405);
+    }
+
+    $data = api_get_request_body();
+
+    // Validar refresh_token
+    if (!isset($data['refresh_token']) || empty($data['refresh_token'])) {
+        api_response_error('Campo "refresh_token" é obrigatório', 400);
+    }
+
+    // Incluir biblioteca OAuth2
+    gestor_incluir_biblioteca('oauth2');
+
+    // Tentar renovar tokens
+    $novos_tokens = oauth2_renovar_token(Array(
+        'refresh_token' => $data['refresh_token']
+    ));
+
+    if (!$novos_tokens) {
+        api_response_error('Refresh token inválido ou expirado', 401);
+    }
+
+    // Retornar novos tokens
+    api_response_success([
+        'access_token' => $novos_tokens['access_token'],
+        'token_type' => $novos_tokens['token_type'],
+        'expires_in' => $novos_tokens['expires_in'],
+        'refresh_token' => $novos_tokens['refresh_token'],
+        'scope' => $novos_tokens['scope']
+    ], 'Tokens renovados com sucesso');
+}
+
 // =========================== Roteamento da API
 
 function api_route_request() {
@@ -383,6 +416,21 @@ function api_route_request() {
 
     // Roteamento baseado no endpoint
     switch ($endpoint) {
+        case 'oauth':
+            // Verificar sub-endpoint OAuth
+            $sub_endpoint = isset($_GESTOR['caminho'][2]) ? $_GESTOR['caminho'][2] : null;
+
+            switch ($sub_endpoint) {
+                case 'refresh':
+                    api_oauth_refresh();
+                    break;
+                default:
+                    // Redirecionar para o endpoint OAuth existente
+                    header('Location: ' . $_GESTOR['url-raiz'] . 'oauth-authenticate/');
+                    exit;
+            }
+            break;
+
         case 'ia':
             api_handle_ia();
             break;
@@ -393,6 +441,27 @@ function api_route_request() {
 
         case 'health':
             api_response_success(['status' => 'healthy', 'timestamp' => time()]);
+            break;
+
+        case 'project-update':
+            // Requer autenticação
+            api_authenticate(true);
+
+            $method = $_SERVER['REQUEST_METHOD'];
+
+            if ($method !== 'POST') {
+                api_response_error('Método não permitido. Use POST.', 405);
+            }
+
+            // Simulação de atualização de projeto
+            $response_data = [
+                'project' => 'Conn2Flow Gestor',
+                'version' => '2.3.6',
+                'updated_at' => date('c'),
+                'status' => 'updated'
+            ];
+
+            api_response_success($response_data, 'Projeto atualizado com sucesso');
             break;
 
         default:
