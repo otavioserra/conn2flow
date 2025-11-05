@@ -149,6 +149,16 @@
             "label": "🧩 Plugins Público - GIT Commit",
             "type": "shell",
             "command": "bash ./dev-plugins/plugins/public/scripts/commits/commit.sh \"${input:commitMsg}\""
+        },
+        {
+            "label": "🗃️ Projetos - Sincronizar => Recursos - Local",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/projects/atualizacao-dados-recursos.sh"
+        },
+        {
+            "label": "🗃️ Projetos - Deploy Projeto",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/projects/deploy-projeto.sh"
         }
     ],
     "inputs": [

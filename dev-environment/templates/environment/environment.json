@@ -2,6 +2,7 @@
     "name": "Conn2Flow Development Environment",
     "description": "Configuration file for the Conn2Flow development environment. Defines global variables and paths to be use on the tasks. Copy this file to `dev-environment/data` and modify it to your needs.",
     "devEnvironment": {
+        "projectTarget": "project_ID",
         "source": "",
         "target": "",
         "dockerPath": "/var/www/sites/localhost/conn2flow-gestor/",
@@ -31,5 +32,12 @@
         "token_type": "Bearer",
         "expires_in": 3600,
         "scope": "write read"
+    },
+    "devProjects": {
+        "project_ID": {
+            "name": "Conn2Flow Project",
+            "path": "",
+            "url": ""
+        }
     }
 }

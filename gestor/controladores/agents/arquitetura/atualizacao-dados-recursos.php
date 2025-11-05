@@ -1,6 +1,6 @@
 <?php
 /**
- * Atualização de Dados de Recursos (Layouts, Páginas, Componentes e Variáveis) - Versão 2.0
+ * Atualização de Dados de Recursos (Layouts, Páginas, Componentes e Variáveis) - Versão 2.1
  * ------------------------------------------------------------------------------------------
  * Esta versão remove COMPLETAMENTE o controle manual de identificadores numéricos (id_layouts,
  * id_paginas, id_componentes, id_variaveis). O banco (auto increment) será o único responsável
@@ -33,43 +33,61 @@
  *  - reporteFinal
  *  - main
  *
- * @version 2.0.0
- * @date 2025-08-15
+ * @version 2.1.0
+ * @date 2025-11-05
  */
-
-declare(strict_types=1);
-
-// Framework CSS default (fase 1 – somente propagação de dados)
-const DEFAULT_FRAMEWORK_CSS = 'fomantic-ui';
-
-/**
- * Retorna framework_css do item ou fallback padrão.
- */
-function getFrameworkCss(?array $src): string {
-    if (!$src) return DEFAULT_FRAMEWORK_CSS;
-    $v = $src['framework_css'] ?? null;
-    if (is_string($v) && $v !== '') return $v; // aceitamos valor informado
-    return DEFAULT_FRAMEWORK_CSS;
-}
 
 // ========================= CONFIGURAÇÃO BÁSICA =========================
 
-$BASE_PATH = realpath(__DIR__ . '/../../../../') . DIRECTORY_SEPARATOR; // raiz do repositório
+declare(strict_types=1);
 
-require_once $BASE_PATH . 'gestor/bibliotecas/lang.php';
+// Definir globais
+global $SYSTEM_PATH, $BASE_PATH, $GESTOR_DIR, $RESOURCES_DIR, $MODULES_DIR, $DB_DATA_DIR, $LOG_DIR, $LOG_FILE;
+
+$SYSTEM_PATH = realpath(__DIR__ . '/../../../../') . DIRECTORY_SEPARATOR; // raiz do repositório
+
+require_once $SYSTEM_PATH . 'gestor/bibliotecas/lang.php';
 // Biblioteca de logs (pode ser adaptada futuramente). Se não existir função, definimos fallback simples.
 // Carregar biblioteca de log original
-@require_once $BASE_PATH . 'gestor/bibliotecas/log.php';
+@require_once $SYSTEM_PATH . 'gestor/bibliotecas/log.php';
 // Usaremos diretamente log_disco() da biblioteca
 
-// Diretórios centrais
-$GESTOR_DIR      = $BASE_PATH . 'gestor' . DIRECTORY_SEPARATOR;
-$RESOURCES_DIR   = $GESTOR_DIR . 'resources' . DIRECTORY_SEPARATOR;
-$MODULES_DIR     = $GESTOR_DIR . 'modulos' . DIRECTORY_SEPARATOR;
-$DB_DATA_DIR     = $GESTOR_DIR . 'db' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
-$LOG_DIR         = $GESTOR_DIR . 'logs' . DIRECTORY_SEPARATOR . 'arquitetura' . DIRECTORY_SEPARATOR;
+// Parsing de argumentos CLI
+$GLOBALS['CLI_ARGS'] = [];
+if (PHP_SAPI === 'cli') {
+    foreach ($argv as $a) {
+        if (preg_match('/^--([^=]+)=(.+)$/',$a,$m)) { $GLOBALS['CLI_ARGS'][$m[1]] = $m[2]; }
+        elseif (substr($a,0,2)==='--') { $GLOBALS['CLI_ARGS'][substr($a,2)] = true; }
+    }
+}
+
+// Verificar se é execução para projeto específico
+$projectPath = $GLOBALS['CLI_ARGS']['project-path'] ?? null;
+$isProjectMode = false;
+if ($projectPath) {
+    $BASE_PATH = realpath($projectPath) . DIRECTORY_SEPARATOR;
+    // Para projetos: diretórios diretamente na raiz do projeto
+    $GESTOR_DIR      = $BASE_PATH;
+    $RESOURCES_DIR   = $BASE_PATH . 'resources' . DIRECTORY_SEPARATOR;
+    $MODULES_DIR     = $BASE_PATH . 'modulos' . DIRECTORY_SEPARATOR;
+    $DB_DATA_DIR     = $BASE_PATH . 'db' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
+    $LOG_DIR         = $BASE_PATH . 'logs' . DIRECTORY_SEPARATOR . 'arquitetura' . DIRECTORY_SEPARATOR;
+    $isProjectMode = true;
+} else {
+    $BASE_PATH = $SYSTEM_PATH;
+    // Para sistema: diretórios dentro de gestor/
+    $GESTOR_DIR      = $BASE_PATH . 'gestor' . DIRECTORY_SEPARATOR;
+    $RESOURCES_DIR   = $GESTOR_DIR . 'resources' . DIRECTORY_SEPARATOR;
+    $MODULES_DIR     = $GESTOR_DIR . 'modulos' . DIRECTORY_SEPARATOR;
+    $DB_DATA_DIR     = $GESTOR_DIR . 'db' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
+    $LOG_DIR         = $GESTOR_DIR . 'logs' . DIRECTORY_SEPARATOR . 'arquitetura' . DIRECTORY_SEPARATOR;
+}
 $LOG_FILE        = 'atualizacao-dados-recursos';
 
+// Framework CSS default
+const DEFAULT_FRAMEWORK_CSS = 'fomantic-ui';
+
+// Garantir existência dos diretórios
 if (!is_dir($LOG_DIR)) @mkdir($LOG_DIR, 0775, true);
 if (!is_dir($DB_DATA_DIR)) @mkdir($DB_DATA_DIR, 0775, true);
 
@@ -82,7 +100,24 @@ if (!array_key_exists('logs-path', $_GESTOR)) { $_GESTOR['logs-path'] = $LOG_DIR
 // Definir linguagem padrão (pode ser parametrizado futuramente)
 set_lang('pt-br');
 
+// Log do modo de execução
+if ($isProjectMode) {
+    log_disco("MODO PROJETO: Processando projeto em $BASE_PATH", $LOG_FILE);
+} else {
+    log_disco("MODO SISTEMA: Processando sistema em $BASE_PATH", $LOG_FILE);
+}
+
 // ========================= UTILIDADES GENÉRICAS =========================
+
+/**
+ * Retorna framework_css do item ou fallback padrão.
+ */
+function getFrameworkCss(?array $src): string {
+    if (!$src) return DEFAULT_FRAMEWORK_CSS;
+    $v = $src['framework_css'] ?? null;
+    if (is_string($v) && $v !== '') return $v; // aceitamos valor informado
+    return DEFAULT_FRAMEWORK_CSS;
+}
 
 /**
  * Lê JSON retornando array associativo ou null.
@@ -327,6 +362,7 @@ function carregarDadosExistentes(): array {
         'layouts'             => $DB_DATA_DIR . 'LayoutsData.json',
         'paginas'             => $DB_DATA_DIR . 'PaginasData.json',
         'componentes'         => $DB_DATA_DIR . 'ComponentesData.json',
+        'templates'           => $DB_DATA_DIR . 'TemplatesData.json',
         'variaveis'           => $DB_DATA_DIR . 'VariaveisData.json',
         'prompts_ia'          => $DB_DATA_DIR . 'PromptsIaData.json',
         'modos_ia'            => $DB_DATA_DIR . 'ModosIaData.json',
@@ -340,6 +376,7 @@ function carregarDadosExistentes(): array {
             switch ($tipo) {
                 case 'layouts':
                 case 'componentes':
+                case 'templates':
                 case 'prompts_ia':
                 case 'modos_ia':
                 case 'alvos_ia':
@@ -372,12 +409,13 @@ function coletarRecursos(array $existentes, array $map): array {
     global $RESOURCES_DIR, $MODULES_DIR, $LOG_FILE;
     $languages = array_keys($map['languages']);
 
-    $layouts = $paginas = $componentes = $variaveis = $prompts_ia = $alvos_ia = $modos_ia = [];
-    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[], 'prompts_ia'=>[], 'alvos_ia'=>[], 'modos_ia'=>[] ];
+    $layouts = $paginas = $componentes = $variaveis = $prompts_ia = $alvos_ia = $modos_ia = $templates = [];
+    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[], 'prompts_ia'=>[], 'alvos_ia'=>[], 'modos_ia'=>[], 'templates'=>[] ];
 
     // Índices de unicidade
     $idxLayouts = [];              // lang|id
     $idxComponentes = [];          // lang|id
+    $idxTemplates = [];            // lang|id
     $idxPromptsIa = [];            // lang|id
     $idxPromptsAlvosIa = [];       // lang|id
     $idxModosIa = [];              // lang|id
@@ -513,6 +551,35 @@ function coletarRecursos(array $existentes, array $map): array {
             }
         }
 
+        // Templates
+        if (!empty($dataFiles['templates'])) {
+            $file = $RESOURCES_DIR.$lang.DIRECTORY_SEPARATOR.$dataFiles['templates'];
+            $lista = jsonRead($file) ?? [];
+            foreach ($lista as $p) {
+                $id = $p['id'] ?? null; if(!$id){$orphans['templates'][]=$p+['_motivo'=>'sem id','language'=>$lang];continue;}
+                $target = $p['target'] ?? ($p['target'] ?? null);
+                $kId = $lang.'|'.($target??'').'|'.$id; if(isset($idxTemplates[$kId])){$orphans['templates'][]=$p+['_motivo'=>'duplicidade id','language'=>$lang];continue;}
+                $idxTemplates[$kId]=true;
+                $paths = resourcePaths($RESOURCES_DIR,$lang,'templates',$id,true);
+                $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
+                [$versao,$cks] = $versaoChecksum('templates',$kId,$html,$css);
+                $templates[] = [
+                    'nome' => $p['name'] ?? ($p['nome'] ?? $id),
+                    'id' => $id,
+                    'target' => $target,
+                    'thumbnail' => $p['thumbnail'] ?? null,
+                    'language' => $lang,
+                    'html' => $html,
+                    'css' => $css,
+                    'framework_css' => getFrameworkCss($p),
+                    'status' => $p['status'] ?? 'A',
+                    'versao' => $versao,
+                    'file_version' => $p['version'] ?? null,
+                    'checksum' => json_encode($cks,JSON_UNESCAPED_UNICODE)
+                ];
+            }
+        }
+
         // Variáveis globais
         if (!empty($dataFiles['variables'])) {
             $file = $RESOURCES_DIR.$lang.DIRECTORY_SEPARATOR.$dataFiles['variables'];
@@ -553,7 +620,7 @@ function coletarRecursos(array $existentes, array $map): array {
             foreach ($languages as $lang) {
                 if(empty($data['resources'][$lang])) continue;
                 $res = $data['resources'][$lang];
-                foreach (['layouts','components','pages','ai_prompts','ai_prompts_targets','ai_modes'] as $tipo) {
+                foreach (['layouts','components','templates','pages','ai_prompts','ai_prompts_targets','ai_modes'] as $tipo) {
                     $arr = $res[$tipo] ?? [];
                     foreach ($arr as $item) {
                         $id = $item['id'] ?? null; if(!$id) continue;
@@ -567,6 +634,11 @@ function coletarRecursos(array $existentes, array $map): array {
                             $key = $lang.'|'.$modId.'|'.$id; if(isset($idxComponentes[$key])) { $orphans['componentes'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
                             $idxComponentes[$key]=true; [$versao,$cks]=$versaoChecksum('componentes',$key,$html,$css);
                             $componentes[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                        } elseif ($tipo==='templates') {
+                            $target = $item['target'] ?? ($item['target'] ?? null);
+                            $key = $lang.'|'.$target.'|'.$id; if(isset($idxTemplates[$key])) { $orphans['templates'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'target'=>$target]; continue; }
+                            $idxTemplates[$key]=true; [$versao,$cks]=$versaoChecksum('templates',$key,$html,$css);
+                            $templates[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'target'=>$target,'thumbnail'=>$item['thumbnail'] ?? null,'language'=>$lang,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
                         } elseif ($tipo==='ai_prompts') {
                             $md = readFileIfExists($paths['md']);
                             $key = $lang.'|'.$id; if(isset($idxPromptsIa[$key])) { $orphans['ai_prompts'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
@@ -611,13 +683,14 @@ function coletarRecursos(array $existentes, array $map): array {
     }
 
     log_disco(__t('_collected_summary', [
-        'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'variables'=>count($variaveis), 'prompts_ia'=>count($prompts_ia), 'alvos_ia'=>count($alvos_ia), 'modos_ia'=>count($modos_ia)
+        'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'templates'=>count($templates), 'variables'=>count($variaveis), 'prompts_ia'=>count($prompts_ia), 'alvos_ia'=>count($alvos_ia), 'modos_ia'=>count($modos_ia)
     ]), $LOG_FILE);
 
     return [
         'layoutsData'=>$layouts,
         'pagesData'=>$paginas,
         'componentsData'=>$componentes,
+        'templatesData'=>$templates,
         'variablesData'=>$variaveis,
         'promptsData'=>$prompts_ia,
         'modesData'=>$modos_ia,
@@ -636,13 +709,14 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
     jsonWrite($DB_DATA_DIR.'LayoutsData.json', $recursos['layoutsData']);
     jsonWrite($DB_DATA_DIR.'PaginasData.json', $recursos['pagesData']);
     jsonWrite($DB_DATA_DIR.'ComponentesData.json', $recursos['componentsData']);
+    jsonWrite($DB_DATA_DIR.'TemplatesData.json', $recursos['templatesData']);
     jsonWrite($DB_DATA_DIR.'VariaveisData.json', $recursos['variablesData']);
     jsonWrite($DB_DATA_DIR.'PromptsIaData.json', $recursos['promptsData']);
     jsonWrite($DB_DATA_DIR.'AlvosIaData.json', $recursos['targetsData']);
     jsonWrite($DB_DATA_DIR.'ModosIaData.json', $recursos['modesData']);
     $orphDir = $GESTOR_DIR.'db'.DIRECTORY_SEPARATOR.'orphans'.DIRECTORY_SEPARATOR;
     if(!is_dir($orphDir)) @mkdir($orphDir,0775,true);
-    foreach (['Layouts','Paginas','Componentes','Variaveis','PromptsIa','AlvosIa','ModosIa'] as $T) {
+    foreach (['Layouts','Paginas','Componentes','Templates','Variaveis','PromptsIa','AlvosIa','ModosIa'] as $T) {
         $k = strtolower($T);
         jsonWrite($orphDir.$T.'Data.json', $recursos['orphans'][$k] ?? []);
     }
@@ -653,7 +727,7 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
 
 function validarDuplicidades(array $recursos): array {
     $erros = [];
-    foreach (['layouts','paginas','componentes','variaveis','prompts_ia','alvos_ia','modos_ia'] as $t) {
+    foreach (['layouts','paginas','componentes','templates','variaveis','prompts_ia','alvos_ia','modos_ia'] as $t) {
         $q = count($recursos['orphans'][$t] ?? []); if($q>0) $erros[] = "$t: $q órfãos";
     }
     return $erros;
@@ -667,12 +741,13 @@ function aplicarErrosOrigem(array $dupsMeta, array $originsIndex): void { /* V2:
 
 function reporteFinal(array $recursos, array $erros): void {
     global $LOG_FILE;
-    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['variablesData']) + count($recursos['promptsData']) + count($recursos['modesData']) + count($recursos['targetsData']);
+    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['templatesData']) + count($recursos['variablesData']) + count($recursos['promptsData']) + count($recursos['modesData']) + count($recursos['targetsData']);
     $totalOrphans = 0; foreach ($recursos['orphans'] as $lst) { $totalOrphans += count($lst); }
     $msg = "📝 Relatório Final".PHP_EOL.
            "📦 Layouts: ".count($recursos['layoutsData']).PHP_EOL.
            "📄 Páginas: ".count($recursos['pagesData']).PHP_EOL.
            "🧩 Componentes: ".count($recursos['componentsData']).PHP_EOL.
+           "📚 Templates: ".count($recursos['templatesData']).PHP_EOL.
            "🔧 Variáveis: ".count($recursos['variablesData']).PHP_EOL.
            "🤖 Modos IA: ".count($recursos['modesData']).PHP_EOL.
            "💬 Prompts IA: ".count($recursos['promptsData']).PHP_EOL.
@@ -709,14 +784,6 @@ function main(): void {
 }
 
 // Executa
-// Captura argumentos simples (--chave ou --chave=valor)
-$GLOBALS['CLI_ARGS'] = [];
-if (PHP_SAPI === 'cli') {
-    foreach ($argv as $a) {
-        if (preg_match('/^--([^=]+)=(.+)$/',$a,$m)) { $GLOBALS['CLI_ARGS'][$m[1]] = $m[2]; }
-        elseif (substr($a,0,2)==='--') { $GLOBALS['CLI_ARGS'][substr($a,2)] = true; }
-    }
-}
 main();
 
 ?>

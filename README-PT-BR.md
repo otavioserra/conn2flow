@@ -478,6 +478,7 @@ Conn2Flow inclui documentação técnica abrangente para desenvolvedores e admin
 - **[🎨 Frameworks CSS](ai-workspace/docs/CONN2FLOW-FRAMEWORK-CSS.md)** - Integração TailwindCSS e FomanticUI
 - **[📱 Sistema Preview](ai-workspace/docs/CONN2FLOW-SISTEMA-PREVIEW-MODALS.md)** - Sistema modal de preview com CodeMirror
 - **[🔄 Atualizações do Sistema](ai-workspace/docs/CONN2FLOW-ATUALIZACOES-SISTEMA.md)** - Mecanismo de atualização automatizada
+- **[🚀 Sistema de Deploy de Projetos](ai-workspace/docs/CONN2FLOW-SISTEMA-PROJETOS.md)** - Deploy de projetos via API OAuth
 - **[🐳 Ambiente Docker](ai-workspace/docs/CONN2FLOW-AMBIENTE-DOCKER.md)** - Ambiente completo de desenvolvimento e testes
 - **[⚙️ GitHub Actions](ai-workspace/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - Automação completa CI/CD via GitHub Actions
 - **[🌐 Sistema Multilíngue](ai-workspace/docs/CONN2FLOW-SISTEMA-HIBRIDO-MULTILANGUE-CONCLUIDO.md)** - Suporte multilíngue

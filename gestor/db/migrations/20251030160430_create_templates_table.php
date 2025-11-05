@@ -16,6 +16,7 @@ final class CreateTemplatesTable extends AbstractMigration
         ->addColumn('nome', 'string', ['limit' => 255, 'null' => false])
         ->addColumn('id', 'string', ['limit' => 255, 'null' => false])
         ->addColumn('target', 'string', ['limit' => 255, 'null' => false])
+        ->addColumn('thumbnail', 'text', ['null' => true])
         ->addColumn('plugin', 'string', ['limit' => 255, 'null' => true])
         ->addColumn('language', 'string', ['limit' => 10, 'null' => false, 'default' => 'pt-br'])
         ->addColumn('html', 'text', ['limit' => Phinx\Db\Adapter\MysqlAdapter::TEXT_MEDIUM, 'null' => true])

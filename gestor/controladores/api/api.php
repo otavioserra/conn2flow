@@ -156,33 +156,27 @@ function api_get_request_body() {
     return $data;
 }
 
-// =========================== Handlers de Endpoint
+// =========================== Handlers de Endpoint PROJECT
 
-function api_handle_ia() {
+function api_handle_project() {
     global $_GESTOR;
 
     // Verificar sub-endpoint
     $sub_endpoint = isset($_GESTOR['caminho'][2]) ? $_GESTOR['caminho'][2] : null;
 
     switch ($sub_endpoint) {
-        case 'generate':
-            api_ia_generate();
-            break;
-
-        case 'status':
-            api_ia_status();
-            break;
-
-        case 'models':
-            api_ia_models();
+        case 'update':
+            api_project_update();
             break;
 
         default:
-            api_response_error('Sub-endpoint IA não encontrado: ' . $sub_endpoint, 404);
+            api_response_error('Sub-endpoint PROJECT não encontrado: ' . $sub_endpoint, 404);
     }
 }
 
-function api_ia_generate() {
+function api_project_update() {
+    global $_GESTOR;
+
     // Requer autenticação
     api_authenticate(true);
 
@@ -192,170 +186,181 @@ function api_ia_generate() {
         api_response_error('Método não permitido. Use POST.', 405);
     }
 
-    $data = api_get_request_body();
-
-    // Validar dados obrigatórios
-    if (!isset($data['prompt_id']) && !isset($data['prompt_custom'])) {
-        api_response_error('Campo "prompt_id" ou "prompt_custom" é obrigatório', 400);
+    // Verificar se é multipart/form-data
+    $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
+    if (strpos($content_type, 'multipart/form-data') === false) {
+        api_response_error('Content-Type deve ser multipart/form-data', 400);
     }
 
-    if (!isset($data['alvo']) || empty($data['alvo'])) {
-        api_response_error('Campo "alvo" é obrigatório', 400);
+    // Verificar se arquivo foi enviado
+    if (!isset($_FILES['project_zip']) || $_FILES['project_zip']['error'] !== UPLOAD_ERR_OK) {
+        api_response_error('Arquivo project_zip não foi enviado ou houve erro no upload', 400);
     }
 
-    // Preparar prompt final
-    $prompt_final = '';
+    $uploaded_file = $_FILES['project_zip'];
+    $temp_path = $uploaded_file['tmp_name'];
+    $original_name = $uploaded_file['name'];
 
-    // Se foi fornecido prompt_id, buscar na tabela
-    if (isset($data['prompt_id']) && !empty($data['prompt_id'])) {
-        // Buscar prompt na tabela prompts_ia
-        $prompt_db = banco_select(Array(
-            'unico' => true,
-            'tabela' => 'prompts_ia',
-            'campos' => Array('prompt'),
-            'extra' => "WHERE id = '".banco_escape_field($data['prompt_id'])."' AND alvo = '".banco_escape_field($data['alvo'])."' AND status = 'A'"
-        ));
+    // Validar extensão do arquivo
+    $file_extension = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+    if ($file_extension !== 'zip') {
+        api_response_error('Apenas arquivos ZIP são permitidos', 400);
+    }
 
-        if ($prompt_db) {
-            $prompt_final = $prompt_db['prompt'];
-        } else {
-            api_response_error('Prompt não encontrado ou inativo', 404);
+    // Verificar tamanho do arquivo (máximo 100MB)
+    $max_size = 100 * 1024 * 1024; // 100MB
+    if ($uploaded_file['size'] > $max_size) {
+        api_response_error('Arquivo muito grande. Máximo permitido: 100MB', 400);
+    }
+
+    // Criar diretório temporário para processamento
+    $temp_dir = $_GESTOR['logs-path'] . 'temp_projects/';
+    if (!is_dir($temp_dir)) {
+        mkdir($temp_dir, 0755, true);
+    }
+
+    // Diretório temporário único para este upload
+    $extract_dir = $temp_dir . 'upload_' . time() . '_' . uniqid() . '/';
+    mkdir($extract_dir, 0755, true);
+
+    try {
+        // Mover arquivo para local temporário seguro
+        $zip_path = $extract_dir . 'project.zip';
+        if (!move_uploaded_file($temp_path, $zip_path)) {
+            throw new Exception('Falha ao salvar arquivo temporário');
         }
-    }
 
-    // Se foi fornecido prompt_custom, usar diretamente
-    if (isset($data['prompt_custom']) && !empty($data['prompt_custom'])) {
-        if (!empty($prompt_final)) {
-            $prompt_final .= "\n\n"; // Separar se já havia prompt do banco
+        // Descompactar ZIP
+        $zip = new ZipArchive();
+        if ($zip->open($zip_path) !== true) {
+            throw new Exception('Falha ao abrir arquivo ZIP');
         }
-        $prompt_final .= $data['prompt_custom'];
-    }
 
-    // Verificar se temos um prompt final
-    if (empty($prompt_final)) {
-        api_response_error('Prompt final está vazio', 400);
-    }
+        $zip->extractTo($extract_dir);
+        $zip->close();
 
-    // Pegar servidor e modelo dos dados
-    $servidor_id = isset($data['servidor_id']) ? $data['servidor_id'] : null;
-    $modelo = isset($data['modelo']) ? $data['modelo'] : null;
+        // Usar a raiz do sistema como destino
+        $project_path = $_GESTOR['ROOT_PATH'];
 
-    // Se não foi fornecido servidor_id, tentar pegar o padrão
-    if (!$servidor_id) {
-        $servidor_padrao = banco_select(Array(
-            'unico' => true,
-            'tabela' => 'servidores_ia',
-            'campos' => Array('id_servidores_ia'),
-            'extra' => "WHERE status = 'A' AND padrao = '1'"
-        ));
-
-        if ($servidor_padrao) {
-            $servidor_id = $servidor_padrao['id_servidores_ia'];
-        } else {
-            api_response_error('Nenhum servidor IA padrão configurado', 500);
+        // Encontrar o diretório do conteúdo do projeto (pode ser diretamente no extract_dir ou em um subdiretório)
+        $project_content_dir = $extract_dir;
+        
+        // Verificar se há um único diretório dentro do extract_dir (caso comum de ZIP com diretório raiz)
+        $extracted_items = array_diff(scandir($extract_dir), ['.', '..']);
+        if (count($extracted_items) === 1 && is_dir($extract_dir . DIRECTORY_SEPARATOR . $extracted_items[0])) {
+            $project_content_dir = $extract_dir . DIRECTORY_SEPARATOR . $extracted_items[0];
         }
-    }
 
-    // Incluir biblioteca IA e enviar prompt
-    gestor_incluir_biblioteca('ia');
+        // Copiar arquivos do projeto (sobrescrever existentes na raiz)
+        api_copy_directory($project_content_dir, $project_path);
 
-    $resultado_ia = ia_enviar_prompt(Array(
-        'servidor_id' => $servidor_id,
-        'modelo' => $modelo,
-        'prompt' => $prompt_final
-    ));
+        // Executar atualização de banco de dados do projeto (inline, sem shell_exec)
+        api_executar_atualizacao_banco($project_path);
 
-    // Verificar se houve erro
-    if ($resultado_ia['status'] !== 'success') {
-        api_response_error('Erro na geração IA: ' . $resultado_ia['message'], 500);
-    }
+        // Limpar arquivos temporários
+        api_remove_directory($extract_dir);
 
-    // Preparar resposta de sucesso
-    $response_data = [
-        'id' => uniqid('ia_'),
-        'alvo' => $data['alvo'],
-        'prompt_id' => $data['prompt_id'] ?? null,
-        'prompt_custom' => $data['prompt_custom'] ?? null,
-        'servidor_id' => $servidor_id,
-        'modelo' => $modelo,
-        'status' => 'completed',
-        'result' => $resultado_ia['data']['texto_gerado'],
-        'tokens_entrada' => $resultado_ia['data']['tokens_entrada'],
-        'tokens_saida' => $resultado_ia['data']['tokens_saida'],
-        'tokens_total' => $resultado_ia['data']['tokens_total'],
-        'completed_at' => date('c')
-    ];
-
-    api_response_success($response_data, 'Geração IA concluída com sucesso');
-}
-
-function api_ia_status() {
-    // Pode ser público ou privado dependendo da implementação futura
-    api_authenticate(false);
-
-    $method = $_SERVER['REQUEST_METHOD'];
-
-    if ($method !== 'GET') {
-        api_response_error('Método não permitido. Use GET.', 405);
-    }
-
-    // Verificar se há ID de requisição
-    if (!isset($_GET['id']) || empty($_GET['id'])) {
-        api_response_error('Parâmetro "id" é obrigatório', 400);
-    }
-
-    $request_id = $_GET['id'];
-
-    // TODO: Verificar status real da requisição
-    // Por enquanto, resposta mock
-    $response_data = [
-        'id' => $request_id,
-        'status' => 'completed',
-        'result' => 'Resultado mock da IA',
-        'completed_at' => date('c')
-    ];
-
-    api_response_success($response_data);
-}
-
-function api_ia_models() {
-    // Requer autenticação
-    api_authenticate(true);
-
-    $method = $_SERVER['REQUEST_METHOD'];
-
-    if ($method !== 'GET') {
-        api_response_error('Método não permitido. Use GET.', 405);
-    }
-
-    // Buscar modelos disponíveis do arquivo JSON
-    $modelos_path = $_GESTOR['ROOT_PATH'] . '/modulos/admin-ia/gemini/' . $_GESTOR['linguagem-codigo'] . '/data.json';
-
-    if (!file_exists($modelos_path)) {
-        api_response_error('Arquivo de modelos não encontrado', 500);
-    }
-
-    $modelos_data = json_decode(file_get_contents($modelos_path), true);
-
-    if (!$modelos_data || !isset($modelos_data['models'])) {
-        api_response_error('Dados de modelos inválidos', 500);
-    }
-
-    // Formatar resposta
-    $models_response = [];
-    foreach ($modelos_data['models'] as $modelo) {
-        $models_response[] = [
-            'id' => $modelo['name'],
-            'name' => $modelo['displayName'],
-            'description' => $modelo['description'],
-            'version' => $modelo['version'],
-            'input_token_limit' => $modelo['inputTokenLimit'],
-            'output_token_limit' => $modelo['outputTokenLimit'],
-            'thinking' => isset($modelo['thinking']) ? $modelo['thinking'] : false
+        // Resposta de sucesso
+        $response_data = [
+            'file_size' => $uploaded_file['size'],
+            'updated_at' => date('c'),
+            'status' => 'updated'
         ];
+
+        api_response_success($response_data, 'Projeto atualizado com sucesso');
+
+    } catch (Exception $e) {
+        // Limpar arquivos temporários em caso de erro
+        if (isset($extract_dir) && is_dir($extract_dir)) {
+            api_remove_directory($extract_dir);
+        }
+
+        api_response_error('Erro durante atualização do projeto: ' . $e->getMessage(), 500);
+    }
+}
+
+// =========================== Funções Auxiliares para Manipulação de Arquivos
+
+function api_executar_atualizacao_banco($project_path) {
+    global $_GESTOR, $_BANCO;
+
+    // Caminho para o script de atualização de banco
+    $script = $_GESTOR['ROOT_PATH'] . 'controladores/atualizacoes/atualizacoes-banco-de-dados.php';
+
+    if (!file_exists($script)) {
+        throw new Exception('Script de atualização de banco não encontrado: ' . $script);
     }
 
-    api_response_success(['models' => $models_response]);
+    // Configurar opções CLI para execução inline
+    $cli = [
+        'env-dir' => $_SERVER['SERVER_NAME'] ?? 'localhost', // domínio padrão
+        'db' => [
+            'host' => $_BANCO['host'],
+            'name' => $_BANCO['nome'],
+            'user' => $_BANCO['usuario'],
+            'pass' => $_BANCO['senha'] ?? '',
+        ],
+        'debug' => false,
+        'force-all' => false,
+        'tables' => null,
+        'log-diff' => false,
+        'dry-run' => false
+    ];
+
+    // Definir opções globais para o script
+    $GLOBALS['CLI_OPTS'] = $cli;
+
+    // Executar o script inline (sem processo externo)
+    try {
+        require $script;
+    } catch (Throwable $e) {
+        throw new Exception('Falha na atualização de banco de dados: ' . $e->getMessage());
+    }
+}
+
+function api_copy_directory($source, $destination) {
+    if (!is_dir($source)) {
+        return false;
+    }
+
+    if (!is_dir($destination)) {
+        mkdir($destination, 0755, true);
+    }
+
+    $dir = opendir($source);
+    while (($file = readdir($dir)) !== false) {
+        if ($file === '.' || $file === '..') {
+            continue;
+        }
+
+        $sourcePath = $source . DIRECTORY_SEPARATOR . $file;
+        $destinationPath = $destination . DIRECTORY_SEPARATOR . $file;
+
+        if (is_dir($sourcePath)) {
+            api_copy_directory($sourcePath, $destinationPath);
+        } else {
+            copy($sourcePath, $destinationPath);
+        }
+    }
+    closedir($dir);
+    return true;
+}
+
+function api_remove_directory($dir) {
+    if (!is_dir($dir)) {
+        return false;
+    }
+
+    $files = array_diff(scandir($dir), ['.', '..']);
+    foreach ($files as $file) {
+        $path = $dir . DIRECTORY_SEPARATOR . $file;
+        if (is_dir($path)) {
+            api_remove_directory($path);
+        } else {
+            unlink($path);
+        }
+    }
+    return rmdir($dir);
 }
 
 // =========================== Handler OAuth Refresh
@@ -431,10 +436,6 @@ function api_route_request() {
             }
             break;
 
-        case 'ia':
-            api_handle_ia();
-            break;
-
         case 'status':
             api_response_success(['status' => 'API operacional', 'version' => '1.0.0']);
             break;
@@ -443,25 +444,8 @@ function api_route_request() {
             api_response_success(['status' => 'healthy', 'timestamp' => time()]);
             break;
 
-        case 'project-update':
-            // Requer autenticação
-            api_authenticate(true);
-
-            $method = $_SERVER['REQUEST_METHOD'];
-
-            if ($method !== 'POST') {
-                api_response_error('Método não permitido. Use POST.', 405);
-            }
-
-            // Simulação de atualização de projeto
-            $response_data = [
-                'project' => 'Conn2Flow Gestor',
-                'version' => '2.3.6',
-                'updated_at' => date('c'),
-                'status' => 'updated'
-            ];
-
-            api_response_success($response_data, 'Projeto atualizado com sucesso');
+        case 'project':
+            api_handle_project();
             break;
 
         default:

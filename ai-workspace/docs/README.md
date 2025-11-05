@@ -21,6 +21,7 @@ Esta pasta contém toda a documentação técnica detalhada do projeto Conn2Flow
 ### 🔧 Sistemas Específicos
 - **`CONN2FLOW-ADAPTACAO-POS-INSTALACAO.md`** - Adaptações necessárias após instalação
 - **`CONN2FLOW-ATUALIZACOES-SISTEMA.md`** - Sistema de atualizações automáticas
+- **`CONN2FLOW-SISTEMA-PROJETOS.md`** - Sistema de deploy de projetos via API OAuth
 - **`CONN2FLOW-AMBIENTE-DOCKER.md`** - Ambiente Docker completo de desenvolvimento e testes
 - **`CONN2FLOW-GITHUB-ACTIONS.md`** - Sistema completo de automação CI/CD via GitHub Actions
 - **`CONN2FLOW-SISTEMA-HIBRIDO-MULTILANGUE-CONCLUIDO.md`** - Sistema multilíngue híbrido finalizado

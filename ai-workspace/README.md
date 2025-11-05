@@ -41,6 +41,7 @@ ai-workspace/
 - `CONN2FLOW-FRAMEWORK-CSS.md` - Sistema TailwindCSS/FomanticUI
 - `CONN2FLOW-SISTEMA-PREVIEW-MODALS.md` - Modals responsivos com CodeMirror
 - `CONN2FLOW-ATUALIZACOES-SISTEMA.md` - Sistema de updates automáticos
+- `CONN2FLOW-SISTEMA-PROJETOS.md` - Sistema de deploy de projetos via API OAuth
 - `CONN2FLOW-INSTALADOR-DETALHADO.md` - Instalador web multilíngue
 - E mais 9 documentos especializados por área
 

@@ -945,18 +945,6 @@ function perfil_usuario_oauth_authenticate(){
 				$senha_hash = $usuarios[0]['senha'];
 				
 				if(password_verify($senha, $senha_hash)){
-					// ===== Verificar se o usuário já está logado, caso esteja, deletar token anterior no banco.
-					
-					if(gestor_permissao_token()){
-						if(isset($_GESTOR['usuario-token-id'])){
-							banco_delete
-							(
-								"usuarios_tokens",
-								"WHERE pubID='".$_GESTOR['usuario-token-id']."'"
-							);
-						}
-					}
-					
 					// ===== Pegar dados do usuário.
 					
 					$status = $usuarios[0]['status'];
