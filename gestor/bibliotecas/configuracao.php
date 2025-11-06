@@ -128,6 +128,7 @@ function configuracao_administracao_salvar($params = false){
 						banco_update_campo('descricao',$descricao);
 						banco_update_campo('tipo',$tipo);
 						banco_update_campo('valor',$valor);
+						banco_update_campo('user_modified','1',true);
 						
 						banco_update_executar('variaveis',"WHERE id_variaveis='".$ref."'");
 						
@@ -139,6 +140,7 @@ function configuracao_administracao_salvar($params = false){
 						$banco_antes[$ref]['valor'] != $valor
 					){
 						banco_update_campo('valor',$valor);
+						banco_update_campo('user_modified','1',true);
 						
 						banco_update_executar('variaveis',"WHERE id_variaveis='".$ref."'");
 						
@@ -151,6 +153,7 @@ function configuracao_administracao_salvar($params = false){
 				banco_insert_name_campo('modulo',$modulo);
 				banco_insert_name_campo('id',$id);
 				banco_insert_name_campo('tipo',$tipo);
+				banco_insert_name_campo('user_modified','1',true);
 				
 				if(existe($grupo))banco_insert_name_campo('grupo',$grupo);
 				if(existe($descricao))banco_insert_name_campo('descricao',$descricao);
@@ -213,6 +216,7 @@ function configuracao_administracao_salvar($params = false){
 			
 			interface_historico_incluir(Array(
 				'alteracoes' => $alteracoes,
+				'modulo_id' => $modulo,
 			));
 		}
 	}

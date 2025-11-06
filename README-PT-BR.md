@@ -32,32 +32,30 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 - **[📋 Changelog](CHANGELOG.md)** - Changelog padrão da indústria seguindo o formato Keep a Changelog
 - **[📊 Histórico Completo de Desenvolvimento](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Evolução completa commit-por-commit
 
-### Última Versão: v2.3.0 (17 Outubro 2025)
+### Última Versão: v2.4.0 (6 Novembro 2025)
 
 **🎯 Novas Funcionalidades:**
-- **Sistema de IA Completo Integrado**: Geração completa de conteúdo assistida por IA integrada ao módulo admin-paginas
-- **Integração com API Gemini**: Integração direta com IA Gemini do Google para criação inteligente de conteúdo
-- **Sistema Dual de Prompts**: Modos técnicos (templates estruturados) + Prompts de usuário (necessidades flexíveis) combinados para geração inteligente de conteúdo
-- **Interface CodeMirror Avançada**: Edição aprimorada de conteúdo com inserção de conteúdo gerado por IA
-- **Gerenciamento de Conteúdo Baseado em Sessão**: Manipulação inteligente de sessão para conteúdo gerado e inserção posicional
-- **Suporte a Múltiplos Modelos de IA**: Suporte para vários modelos de IA e configuração dinâmica de servidores
-- **Tratamento Robusto de Erros**: Validação abrangente e tratamento de erros para comunicação com API externa
+- **Sistema Completo de Deploy de Projetos via API OAuth**: Sistema completo de deploy automatizado de projetos com autenticação OAuth 2.0 e renovação automática de tokens
+- **Implementação de Servidor OAuth 2.0**: Servidor OAuth 2.0 completo com validação JWT, renovação de tokens e endpoints de API seguros
+- **Deploy One-Click de Projetos**: Workflow automatizado para atualizações de projetos, compressão e deploy com integração de API
+- **Gerenciamento Avançado de Projetos**: Deploy direto na raiz do sistema com atualizações automáticas de recursos e sincronização de banco
+- **Tratamento Robusto de Erros**: Tratamento abrangente de erros com rollback automático e mecanismos de retry
+- **Melhorias de Segurança**: Autenticação OAuth 2.0 obrigatória, validação segura de ZIP e execução inline para ambientes de produção
 
 **🔧 Melhorias Técnicas:**
-- Nova biblioteca ia.php com funções completas de IA para renderização de prompts e comunicação com API
-- Novas tabelas de banco de dados: servidores_ia, modos_ia, prompts_ia para gerenciamento do sistema de IA
-- Interface JavaScript avançada para controles de IA e geração de conteúdo
-- Sistema de gerenciamento de sessão para manipulação de conteúdo gerado por IA
-- Capacidades de inserção posicional de conteúdo
-- Compatibilidade total com arquitetura existente do Conn2Flow
+- Novo sistema de autenticação OAuth 2.0 com renovação automática de tokens
+- Endpoint completo de API de deploy de projetos (`/_api/project/update`)
+- Sincronização automática de recursos antes do deploy
+- Atualizações de banco inline (sem shell_exec para segurança de produção)
+- Detecção e validação de estrutura ZIP (máx. 100MB, verificações de segurança)
+- Suite completa de testes (6/6 testes passando)
 
 **📦 O Que Há de Novo:**
-- Sistema de IA completo integrado ao admin-paginas
-- Biblioteca ia.php para operações de IA
-- Novas tabelas de banco de dados para gerenciamento de IA
-- Interface avançada de IA com integração CodeMirror
-- Geração e gerenciamento de conteúdo baseado em sessão
-- Documentação abrangente de IA (chat-ia.md)
+- Implementação de servidor OAuth 2.0 com validação JWT
+- Sistema completo de deploy de projetos com integração de API
+- Renovação automática de tokens e recuperação de erros
+- Segurança aprimorada com execução inline e validação
+- Documentação abrangente para sistema de deploy
 
 ### Versão: v2.1.0 (18 Setembro 2025)
 

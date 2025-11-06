@@ -314,12 +314,12 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         log_disco("SYNC_INI tabela=$tabela modo=".($usarChaveNatural?'natural':'pk')." qtdJson=".count($registros), $GLOBALS['LOG_FILE_DB']);
     }
 
-    // Mapa de preservação para user_modified=1
+    // Mapa de preservação para user_modified=1 para não sobrescrever alterações manuais dos usuários/projetos.
     $preserveMap = [
-        'paginas'      => ['html','css'],
-        'layouts'      => ['html','css'],
-        'componentes'  => ['html','css'],
-        'templates'  => ['html','css'],
+        'paginas'      => ['nome','layout_id','caminho','framework_css','sem_permissao','html','css'],
+        'layouts'      => ['nome','framework_css','html','css'],
+        'componentes'  => ['nome','modulo','framework_css','html','css'],
+        'templates'  => ['nome','target','framework_css','html','css'],
         'variaveis'    => ['valor']
     ];
 

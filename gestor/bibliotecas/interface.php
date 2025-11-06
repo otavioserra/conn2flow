@@ -598,7 +598,6 @@ function interface_historico_incluir($params = false){
 			$versao_bd = (isset($versao) ? $versao : '1');
 		}
 		
-		
 		foreach($alteracoes as $alteracao){
 			if(isset($id_hosts_manual)){ 
 				banco_insert_name_campo('id_hosts',$id_hosts_manual);

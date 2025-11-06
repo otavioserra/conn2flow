@@ -351,6 +351,7 @@ function admin_templates_editar(){
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
 		if(isset($editar['dados'])){
+			$campo_nome = 'user_modified'; $editar['dados'][] = $campo_nome." = 1";
 			$campo_nome = $modulo['tabela']['versao']; $editar['dados'][] = $campo_nome." = ".$campo_nome." + 1";
 			$campo_nome = $modulo['tabela']['data_modificacao']; $editar['dados'][] = $campo_nome."=NOW()";
 			

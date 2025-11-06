@@ -1490,4 +1490,25 @@ function gestor_sessao_del_all(){
 	);
 }
 
+
+/**
+ * Pega os dados de um módulo.
+ *
+ * Lê o arquivo JSON do módulo e retorna os dados como array.
+ * 
+ * @param string $modulo_id ID do módulo.
+ * @return array|null Dados do módulo ou null se não encontrado.
+ */
+function gestor_modulos_dados($modulo_id = ''){
+	global $_GESTOR;
+	
+	$modulo_dados = json_decode(file_get_contents($_GESTOR['modulos-path'] .$modulo_id. '/'.$modulo_id.'.json'), true);
+
+	if($modulo_dados) {
+		return $modulo_dados;
+	} else {
+		return null;
+	}
+}
+
 ?>

@@ -34,32 +34,30 @@ For detailed technical information and development guides, see:
 - **[📋 Changelog](CHANGELOG.md)** - Industry-standard changelog following Keep a Changelog format
 - **[📊 Full Development History](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Detailed commit-by-commit evolution
 
-### Latest Release: v2.3.0 (October 17, 2025)
+### Latest Release: v2.4.0 (November 6, 2025)
 
 **🎯 New Features:**
-- **Complete AI System Integration**: Full AI-powered content generation integrated into admin-paginas module
-- **Gemini API Integration**: Direct integration with Google's Gemini AI for intelligent content creation
-- **Dual Prompt System**: Technical modes (structured templates) + User prompts (flexible needs) combined for smart content generation
-- **Advanced CodeMirror Interface**: Enhanced content editing with AI-generated content insertion
-- **Session-Based Content Management**: Intelligent session handling for generated content and positional insertion
-- **Multiple AI Models Support**: Support for various AI models and dynamic server configuration
-- **Robust Error Handling**: Comprehensive validation and error handling for external API communication
+- **Complete Project Deployment System via API OAuth**: Full automated project deployment system with OAuth 2.0 authentication and automatic token renewal
+- **OAuth 2.0 Server Implementation**: Complete OAuth 2.0 server with JWT validation, token renewal, and secure API endpoints
+- **One-Click Project Deployment**: Automated workflow for project updates, compression, and deployment with API integration
+- **Advanced Project Management**: Direct deployment to system root with automatic resource updates and database synchronization
+- **Robust Error Handling**: Comprehensive error handling with automatic rollback and retry mechanisms
+- **Security Enhancements**: OAuth 2.0 mandatory authentication, secure ZIP validation, and inline execution for production environments
 
 **🔧 Technical Improvements:**
-- New ia.php library with complete AI functions for prompt rendering and API communication
-- New database tables: servidores_ia, modos_ia, prompts_ia for AI system management
-- Advanced JavaScript interface for AI controls and content generation
-- Session management system for AI-generated content handling
-- Positional content insertion capabilities
-- Full compatibility with existing Conn2Flow architecture
+- New OAuth 2.0 authentication system with automatic token renewal
+- Complete project deployment API endpoint (`/_api/project/update`)
+- Automated resource synchronization before deployment
+- Inline database updates (no shell_exec for production security)
+- ZIP structure detection and validation (100MB max, security checks)
+- Comprehensive test suite (6/6 tests passing)
 
 **📦 What's New:**
-- Complete AI system integrated into admin-paginas
-- ia.php library for AI operations
-- New database tables for AI management
-- Advanced AI interface with CodeMirror integration
-- Session-based content generation and management
-- Comprehensive AI documentation (chat-ia.md)
+- OAuth 2.0 server implementation with JWT validation
+- Complete project deployment system with API integration
+- Automated token renewal and error recovery
+- Enhanced security with inline execution and validation
+- Comprehensive documentation for deployment system
 
 ### Release: v2.1.0 (September 18, 2025)
 

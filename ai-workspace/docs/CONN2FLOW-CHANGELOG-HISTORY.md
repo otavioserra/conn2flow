@@ -2,6 +2,29 @@
 
 ## 🏷️ Releases Atuais
 
+### **gestor-v2.4.0** (6 Novembro 2025) - `HEAD`
+**🎯 Tema:** Sistema Completo de Deploy de Projetos via API OAuth**
+
+**Principais Melhorias:**
+- ✅ **Sistema Completo de Deploy de Projetos via API OAuth**: Sistema automatizado completo para deploy de projetos com autenticação OAuth 2.0 e renovação automática de tokens
+- ✅ **Servidor OAuth 2.0 Completo**: Implementação completa de servidor OAuth 2.0 com validação JWT, renovação automática de tokens e endpoints seguros
+- ✅ **API de Deploy de Projetos**: Endpoint `/_api/project/update` para deploy automatizado via API com autenticação obrigatória
+- ✅ **Sistema de Renovação Automática de Tokens**: Detecção automática de erro 401 e retry transparente com atualização automática do environment.json
+- ✅ **Deploy One-Click**: Workflow automatizado completo (atualização de recursos → compressão → deploy → processamento) com um único comando
+- ✅ **Validação Robusta de ZIP**: Verificação completa de tamanho (100MB máx.), tipo de arquivo, segurança e estrutura do projeto
+- ✅ **Execução Inline para Produção**: Atualização de banco de dados sem shell_exec, ideal para ambientes de produção seguros
+- ✅ **Detecção Automática de Estrutura ZIP**: Suporte inteligente a projetos com ou sem diretório raiz
+- ✅ **Script de Testes de Integração Completo**: Suite automatizada com 6/6 testes passando (configuração, recursos, deploy, OAuth, API)
+- ✅ **Documentação Abrangente**: Sistema completo documentado em `CONN2FLOW-SISTEMA-PROJETOS.md` com arquitetura e uso detalhado
+- ✅ **Arquitetura Segura e Escalável**: Separação clara de responsabilidades, tratamento robusto de erros com rollback automático
+- ✅ **Performance Otimizada**: Redução significativa de tamanho do ZIP (28KB→25KB) através da exclusão automática da pasta resources
+- ✅ **Compatibilidade Total**: Zero breaking changes, integração seamless com arquitetura existente do Conn2Flow
+
+**Breaking Changes:**
+- Autenticação OAuth 2.0 agora obrigatória para endpoints de API de projeto
+- Execução inline de atualizações de banco (mais segura para produção)
+- Estrutura de deploy otimizada com exclusão automática de dados dinâmicos
+
 ### **gestor-v2.3.0** (17 Outubro 2025) - `HEAD`
 **🎯 Tema:** Sistema de IA Integrado Completo**
 

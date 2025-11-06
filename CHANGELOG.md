@@ -10,6 +10,34 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
 - CHANGELOG.md padrão da indústria seguindo Keep a Changelog
 
+## [2.4.0] - 2025-11-06
+
+### Added
+- **Sistema Completo de Deploy de Projetos via API OAuth**: Sistema automatizado completo para deploy de projetos com autenticação OAuth 2.0
+- **Servidor OAuth 2.0 Completo**: Implementação completa de servidor OAuth 2.0 com validação JWT e renovação automática de tokens
+- **API de Deploy de Projetos**: Endpoint `/_api/project/update` para deploy automatizado via API
+- **Sistema de Renovação Automática de Tokens**: Detecção automática de erro 401 e retry transparente com tokens renovados
+- **Deploy One-Click**: Workflow automatizado (atualização → compressão → deploy) com um único comando
+- **Validação Robusta de ZIP**: Verificação de tamanho (100MB máx.), tipo e segurança de arquivos ZIP
+- **Execução Inline**: Atualização de banco de dados sem shell_exec para ambientes de produção
+- **Detecção Automática de Estrutura ZIP**: Suporte a projetos com/sem diretório raiz
+- **Script de Testes de Integração**: Suite completa com 6/6 testes passando (config, recursos, deploy, OAuth, API)
+- **Documentação Abrangente**: Sistema completo documentado em `CONN2FLOW-SISTEMA-PROJETOS.md`
+
+### Changed
+- **Segurança Aprimorada**: Autenticação OAuth obrigatória em endpoints de API
+- **Arquitetura de Deploy**: Separação clara de responsabilidades e fluxo one-click
+- **Performance Otimizada**: Redução de 28KB→25KB no ZIP (exclusão automática da pasta resources)
+- **Compatibilidade de Produção**: Execução inline para ambientes seguros
+
+### Technical Details
+- **New Scripts**: `deploy-projeto.sh`, `renovar-token.sh`, `teste-integracao.sh`
+- **New API Endpoint**: `POST /_api/project/update` com autenticação OAuth obrigatória
+- **New Tables**: Nenhuma nova tabela (reutilização de infraestrutura existente)
+- **New Libraries**: Nenhuma nova biblioteca (extensões do sistema existente)
+- **Database Migrations**: Nenhuma migração necessária (compatibilidade backward)
+- **Security Features**: OAuth 2.0, validação ZIP, execução inline, rollback automático
+
 ## [2.3.0] - 2025-10-17
 
 ### Added
