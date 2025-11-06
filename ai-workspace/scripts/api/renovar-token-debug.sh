@@ -12,58 +12,27 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Verificar se deve executar em modo silencioso e processar argumentos
+# Verificar se deve executar em modo silencioso
 QUIET_MODE=false
-PROJECT_TARGET_ARG=""
-ENV_FILE_ARG=""
+if [ "$1" = "--quiet" ] || [ "$1" = "--silent" ]; then
+    QUIET_MODE=true
+fi
 
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        --quiet|--silent)
-            QUIET_MODE=true
-            shift
-            ;;
-        --project=*)
-            PROJECT_TARGET_ARG="${1#*=}"
-            shift
-            ;;
-        --env-file=*)
-            ENV_FILE_ARG="${1#*=}"
-            shift
-            ;;
-        *)
-            # Ignorar argumentos desconhecidos
-            shift
-            ;;
-    esac
-done
-
-# Flag de sucesso da renovação
-RENEW_SUCCESS=1
-
-# Função de log condicional
+# Função de log condicional (DEBUG: sempre mostra logs)
 log() {
-    if [ "$QUIET_MODE" = false ]; then
-        echo -e "${BLUE}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} $1" >&2
-    fi
+    echo -e "${BLUE}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} $1"
 }
 
 success() {
-    if [ "$QUIET_MODE" = false ]; then
-        echo -e "${GREEN}✅ $1${NC}" >&2
-    fi
+    echo -e "${GREEN}✅ $1${NC}"
 }
 
 error() {
-    if [ "$QUIET_MODE" = false ]; then
-        echo -e "${RED}❌ $1${NC}" >&2
-    fi
+    echo -e "${RED}❌ $1${NC}"
 }
 
 warning() {
-    if [ "$QUIET_MODE" = false ]; then
-        echo -e "${YELLOW}⚠️  $1${NC}" >&2
-    fi
+    echo -e "${YELLOW}⚠️  $1${NC}"
 }
 
 # Função para normalizar URL (remover barras duplas)
@@ -92,16 +61,10 @@ if ! command -v curl &> /dev/null; then
     exit 1
 fi
 
-# Caminho para o arquivo de ambiente
-if [ -n "$ENV_FILE_ARG" ]; then
-    # Usar caminho passado por parâmetro (para integração com outros scripts)
-    ENV_FILE="$ENV_FILE_ARG"
-else
-    # Calcular automaticamente baseado na localização do script
-    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-    ENV_FILE="$PROJECT_ROOT/dev-environment/data/environment.json"
-fi
+# Caminho para o arquivo de ambiente (relativo à raiz do projeto)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+ENV_FILE="$PROJECT_ROOT/dev-environment/data/environment.json"
 
 # Verificar se arquivo existe
 if [ ! -f "$ENV_FILE" ]; then
@@ -112,14 +75,7 @@ fi
 log "🔄 Iniciando renovação de tokens OAuth..."
 
 # Extrair configurações atuais
-if [ -n "$PROJECT_TARGET_ARG" ]; then
-    # Usar projeto passado por parâmetro
-    PROJECT_TARGET="$PROJECT_TARGET_ARG"
-else
-    # Ler do environment.json
-    PROJECT_TARGET=$(jq -r '.devEnvironment.projectTarget' "$ENV_FILE")
-fi
-
+PROJECT_TARGET=$(jq -r '.devEnvironment.projectTarget' "$ENV_FILE")
 PROJECT_URL=$(jq -r ".devProjects.\"$PROJECT_TARGET\".url" "$ENV_FILE")
 REFRESH_TOKEN=$(jq -r ".devProjects.\"$PROJECT_TARGET\".api.refresh_token" "$ENV_FILE")
 
@@ -164,10 +120,9 @@ if [ "$STATUS" != "success" ]; then
     ERROR_MSG=$(echo "$RESPONSE" | jq -r '.message')
     error "Falha na renovação: $ERROR_MSG"
 
-    # AVISO: Não limpar tokens automaticamente para evitar perda de tokens válidos
-    # em caso de falhas temporárias de rede ou API
-    warning "Mantendo tokens existentes. Execute renovação manual se necessário."
-    warning "Possível causa: $ERROR_MSG"
+    # Limpar tokens se refresh token também estiver expirado
+    warning "Limpando tokens expirados do environment.json..."
+    jq ".devProjects.\"$PROJECT_TARGET\".api.access_token = null | .devProjects.\"$PROJECT_TARGET\".api.refresh_token = null" "$ENV_FILE" > "${ENV_FILE}.tmp" && mv "${ENV_FILE}.tmp" "$ENV_FILE"
 
     exit 1
 fi
@@ -196,20 +151,9 @@ jq --arg access "$NEW_ACCESS_TOKEN" --arg refresh "$NEW_REFRESH_TOKEN" --arg pro
 success "Tokens atualizados no environment.json"
 success "Access token renovado com sucesso"
 
-# Marcar como sucesso
-RENEW_SUCCESS=0
-
 # Se estiver em modo quiet, retornar o novo access_token para integração com outros scripts
 if [ "$QUIET_MODE" = true ]; then
-    if [ $RENEW_SUCCESS -eq 0 ]; then
-        echo "$NEW_ACCESS_TOKEN"
-    fi
-    # Em modo quiet, não retornar nada em caso de falha (exit code já indica falha)
-else
-    # Modo normal: sempre retornar o token se renovação foi bem-sucedida
-    if [ $RENEW_SUCCESS -eq 0 ]; then
-        echo "$NEW_ACCESS_TOKEN"
-    fi
+    echo "$NEW_ACCESS_TOKEN"
 fi
 
 exit 0

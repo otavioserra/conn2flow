@@ -55,7 +55,7 @@ fi
 PROJECT_TARGET=$(jq -r '.devEnvironment.projectTarget' dev-environment/data/environment.json)
 PROJECT_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".path" dev-environment/data/environment.json)
 PROJECT_URL=$(jq -r ".devProjects.\"$PROJECT_TARGET\".url" dev-environment/data/environment.json)
-ACCESS_TOKEN=$(jq -r '.devAPI.access_token' dev-environment/data/environment.json)
+ACCESS_TOKEN=$(jq -r ".devProjects.\"$PROJECT_TARGET\".api.access_token" dev-environment/data/environment.json)
 
 if [ "$PROJECT_TARGET" = "null" ] || [ -z "$PROJECT_TARGET" ]; then
     error "projectTarget não definido no environment.json"
@@ -135,7 +135,7 @@ fi
 # Executar deploy (modo dry-run se não houver token)
 if [ "$ACCESS_TOKEN" = "null" ] || [ -z "$ACCESS_TOKEN" ]; then
     warning "Token de acesso não configurado. Pulando upload real."
-    warning "Para testar upload completo, configure devAPI.access_token no environment.json"
+    warning "Para testar upload completo, configure devProjects.$PROJECT_TARGET.api.access_token no environment.json"
 
     # Simular deploy apenas
     log "Simulando deploy..."

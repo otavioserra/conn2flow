@@ -83,6 +83,21 @@ if [ ! -d "$PROJECT_PATH" ]; then
     mkdir -p "$PROJECT_PATH"
 fi
 
+# Verificar e executar TailwindCSS CLI se configurado
+TAILWIND_CLI=$(jq -r ".devProjects.\"$PROJECT_TARGET\".\"tailwindcss/cli\"" "$ENV_FILE" 2>/dev/null)
+
+if [ -n "$TAILWIND_CLI" ] && [ "$TAILWIND_CLI" != "null" ]; then
+    log "Executando TailwindCSS CLI para o projeto..."
+    cd "$PROJECT_PATH"
+    eval "$TAILWIND_CLI"
+    if [ $? -eq 0 ]; then
+        log_success "TailwindCSS CLI executado com sucesso!"
+    else
+        log_error "Falha na execução do TailwindCSS CLI"
+        exit 1
+    fi
+fi
+
 # Executar o script PHP com o caminho do projeto
 log "Executando atualização de recursos para o projeto..."
 log "Comando: php \"$PHP_SCRIPT\" --project-path=\"$PROJECT_PATH\""

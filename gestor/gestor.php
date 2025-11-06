@@ -607,10 +607,19 @@ function gestor_pagina_variaveis($params = false){
 
 function gestor_pagina_css(){
 	global $_GESTOR;
+
+	// ===== Inclusão de bibliotecas CSS Fomantic-UI
+
+	$fomantic_ui_included = false;
+	if($_GESTOR['layout#framework_css'] == 'fomantic-ui' || $_GESTOR['pagina#framework_css'] == 'fomantic-ui'){
+		$fomantic_ui_included = true;
+	}
 	
 	$css_global = '';
-	$css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css" />';
-	
+
+	$css_padrao = Array();
+	if($fomantic_ui_included) $css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css" />';
+
 	if(!isset($_GESTOR['css-compiled'])) $_GESTOR['css-compiled'] = Array();
 	if(!isset($_GESTOR['css'])) $_GESTOR['css'] = Array();
 	if(!isset($_GESTOR['css-fim'])) $_GESTOR['css-fim'] = Array();
@@ -665,12 +674,21 @@ function gestor_pagina_css_incluir($css = false){
 
 function gestor_pagina_extra_head_e_javascript(){
 	global $_GESTOR;
+
+	// ===== Inclusão de bibliotecas CSS Fomantic-UI
+
+	$fomantic_ui_included = false;
+	if($_GESTOR['layout#framework_css'] == 'fomantic-ui' || $_GESTOR['pagina#framework_css'] == 'fomantic-ui'){
+		$fomantic_ui_included = true;
+	}
 	
 	// ===== Inclusão de bibliotecas javascript
 	
 	$js_global_includes = '';
 	$js_padrao[] = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>'; // jQuery
-	$js_padrao[] = '<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>'; // Semantic-UI
+
+	if($fomantic_ui_included) $js_padrao[] = '<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>'; // Semantic-UI
+
 	$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].'global/global.js?v='.$_GESTOR['versao'].'"></script>'; // Global JS
 	
 	if(!isset($_GESTOR['html-extra-head'])) $_GESTOR['html-extra-head'] = Array();

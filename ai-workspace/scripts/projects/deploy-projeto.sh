@@ -36,23 +36,38 @@ log_warning() {
     echo -e "${YELLOW}[WARNING]${NC} $1"
 }
 
-# Função para obter token OAuth
+# Função para obter token OAuth do projeto específico
 get_oauth_token() {
     local token_file="$PROJECT_ROOT/dev-environment/data/environment.json"
+    local project_target="$1"
 
     if [ ! -f "$token_file" ]; then
         log_error "Arquivo de tokens não encontrado: $token_file"
         return 1
     fi
 
-    ACCESS_TOKEN=$(jq -r '.devAPI.access_token' "$token_file" 2>/dev/null)
+    ACCESS_TOKEN=$(jq -r ".devProjects.\"$project_target\".api.access_token" "$token_file" 2>/dev/null)
     if [ -z "$ACCESS_TOKEN" ] || [ "$ACCESS_TOKEN" = "null" ]; then
-        log_error "Access token não encontrado no environment.json"
+        log_error "Access token não encontrado para o projeto $project_target"
         return 1
     fi
 
     echo "$ACCESS_TOKEN"
     return 0
+}
+
+# Função para normalizar URL (remover barras duplas)
+normalize_url() {
+    local url="$1"
+    local endpoint="$2"
+
+    # Remover todas as barras finais da URL base
+    while [[ "$url" == */ ]]; do
+        url="${url%/}"
+    done
+
+    # Concatenar com endpoint (sempre começa com /)
+    echo "${url}${endpoint}"
 }
 
 # Função para fazer upload do ZIP
@@ -183,7 +198,7 @@ log_success "Pacote ZIP criado com sucesso: $(basename "$ZIP_FILE")"
 
 # Obter token OAuth
 log "Obtendo token de autenticação..."
-ACCESS_TOKEN=$(get_oauth_token)
+ACCESS_TOKEN=$(get_oauth_token "$PROJECT_TARGET")
 
 if [ $? -ne 0 ]; then
     log_error "Falha ao obter token de autenticação"
@@ -203,8 +218,8 @@ fi
 
 log "URL do projeto: $PROJECT_URL"
 
-# URL da API baseada na URL do projeto
-API_URL="$PROJECT_URL/_api/project/update"
+# URL da API baseada na URL do projeto (normalizada para evitar barras duplas)
+API_URL=$(normalize_url "$PROJECT_URL" "/_api/project/update")
 
 log "Iniciando deploy via API..."
 
@@ -226,11 +241,14 @@ else
             log "Executando script de renovação: $RENEW_SCRIPT"
 
             # Tentar renovar token
-            if NEW_TOKEN=$("$RENEW_SCRIPT" 2>&1); then
+            NEW_TOKEN=$("$RENEW_SCRIPT" --project="$PROJECT_TARGET" --env-file="$ENV_FILE")
+            RENEW_EXIT_CODE=$?
+
+            if [ $RENEW_EXIT_CODE -eq 0 ] && [ -n "$NEW_TOKEN" ] && [ "$NEW_TOKEN" != "null" ]; then
                 log_success "Token renovado com sucesso!"
 
                 # Recarregar ACCESS_TOKEN do environment.json
-                ACCESS_TOKEN=$(jq -r '.devAPI.access_token' "$ENV_FILE")
+                ACCESS_TOKEN=$(jq -r ".devProjects.\"$PROJECT_TARGET\".api.access_token" "$ENV_FILE")
 
                 if [ "$ACCESS_TOKEN" = "null" ] || [ -z "$ACCESS_TOKEN" ]; then
                     log_error "Falha ao obter novo token do environment.json"
@@ -266,4 +284,5 @@ else
         log_warning "Pacote temporário mantido para análise: $ZIP_FILE"
         exit 1
     fi
+
 fi

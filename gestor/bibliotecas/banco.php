@@ -1227,6 +1227,35 @@ function banco_campos_nomes($tabela){
 }
 
 /**
+ * Verifica se um campo específico existe em uma tabela.
+ *
+ * Consulta a estrutura da tabela usando SHOW COLUMNS e verifica se o campo
+ * especificado existe entre os campos retornados. Retorna true se o campo
+ * existir, false caso contrário.
+ *
+ * @param string $campo Nome do campo a ser verificado.
+ * @param string $tabela Nome da tabela onde verificar o campo.
+ *
+ * @return bool True se o campo existir na tabela, false caso contrário.
+ */
+function banco_campo_existe($campo, $tabela){
+	// Obtém todos os campos da tabela
+	$campos = banco_campos_nomes($tabela);
+
+	// Verifica se encontrou campos na tabela
+	if($campos && is_array($campos)){
+		// Percorre os campos procurando pelo campo especificado
+		foreach($campos as $campo_info){
+			if(isset($campo_info['Field']) && $campo_info['Field'] === $campo){
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+/**
  * Remove acentos e caracteres especiais de uma string.
  *
  * Normaliza strings para uso em URLs, IDs, etc. Converte para minúsculas,

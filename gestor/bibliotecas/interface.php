@@ -2560,6 +2560,15 @@ function interface_modulo_variavel_valor($params = false){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
+	// Verifica se o campo `language` existe na tabela alvo
+	if(banco_campo_existe('language', $modulo['tabela']['nome'])){
+		// Define filtro de idioma se o campo existir
+		$filtro_idioma = " AND language='".$_GESTOR['linguagem-codigo']."'";
+	} else {
+		$filtro_idioma = "";
+	}
+
+	// Obtém o valor da variável
 	$resultado = banco_select_name
 	(
 		banco_campos_virgulas(Array(
@@ -2568,6 +2577,7 @@ function interface_modulo_variavel_valor($params = false){
 		,
 		$modulo['tabela']['nome'],
 		"WHERE ".$modulo['tabela']['id']."='".$_GESTOR['modulo-registro-id']."'"
+		.$filtro_idioma
 		." AND ".(isset($modulo['tabela']['status'])?$modulo['tabela']['status']:'status')."!='D'"
 		.(isset($_GESTOR['host-id']) && !isset($modulo['interfaceNaoAplicarIdHost']) ? " AND id_hosts='".$_GESTOR['host-id']."'":'')
 	);

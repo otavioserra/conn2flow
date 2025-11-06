@@ -383,6 +383,7 @@ function gestor_layout($params = false){
 			,
 			"layouts",
 			"WHERE id_layouts='".$id_layouts."'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
 		);
 	}
 	

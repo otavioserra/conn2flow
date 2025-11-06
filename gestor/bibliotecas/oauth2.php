@@ -256,6 +256,24 @@ function oauth2_validar_token($params = false){
         return false;
     }
 
+    // ===== Verificar se o token está na tabela oauth2_tokens
+
+    $tokens = banco_select_name(
+        banco_campos_virgulas(Array(
+            'id_oauth2_tokens',
+            'pubID',
+            'pubIDValidation',
+            'id_usuarios'
+        )),
+        "oauth2_tokens",
+        "WHERE pubID='".banco_escape_field($validacao['pubID'])."'"
+        ." AND tipo='access'"
+    );
+
+    if(!$tokens){
+        return false;
+    }
+
     // ===== Verificar se é access_token
 
     if(!isset($validacao['token_type']) || $validacao['token_type'] !== 'access'){
