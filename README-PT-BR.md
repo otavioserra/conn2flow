@@ -395,19 +395,13 @@ dev-environment/       # Stack de desenvolvimento Docker
 
 ### Últimas Versões Estáveis
 
-**Gestor (Sistema Core)**: `v2.3.0` *(Mais Recente)*
-- ✅ **Sistema de IA Integrado Completo**: Sistema completo de IA integrado ao admin-paginas para geração assistida de conteúdo
-- ✅ **Integração API Gemini**: Geração de conteúdo via API Gemini com tratamento robusto de erros
-- ✅ **Sistema Dual de Prompts**: Modos técnicos (templates estruturados) + Prompts de usuário (necessidades flexíveis)
-- ✅ **Interface Avançada**: Edição de conteúdo baseada em CodeMirror com gerenciamento de sessão
-- ✅ **Múltiplos Modelos de IA**: Suporte para múltiplos servidores e configurações de modelos de IA
-- ✅ **Gerenciamento de Sessão**: Rastreamento de geração de conteúdo e inserção posicional
-- ✅ **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica
-- ✅ **Templates de Desenvolvimento**: Scripts automatizados para criação de plugins
-- ✅ **Rastreio Completo de Dados**: Injeção automática de slug em tabelas com coluna plugin
-- ✅ **Resolução Dinâmica**: Environment.json dinâmico em todos os scripts de automação
-- ✅ **IDs Textuais**: Migração completa para formato textual em campos de referência
-- ✅ **Limpeza Ampla**: Desabilitação de ferramentas legadas e estrutura simplificada
+**Gestor (Sistema Core)**: `v2.4.0` *(Mais Recente)*
+- ✅ **Sistema Completo de Deploy de Projetos via API OAuth**: Sistema completo de deploy automatizado de projetos com autenticação OAuth 2.0 e renovação automática de tokens
+- ✅ **Implementação de Servidor OAuth 2.0**: Servidor OAuth 2.0 completo com validação JWT, renovação de tokens e endpoints de API seguros
+- ✅ **Deploy One-Click de Projetos**: Workflow automatizado para atualizações de projetos, compressão e deploy com integração de API
+- ✅ **Gerenciamento Avançado de Projetos**: Deploy direto na raiz do sistema com atualizações automáticas de recursos e sincronização de banco
+- ✅ **Tratamento Robusto de Erros**: Tratamento abrangente de erros com rollback automático e mecanismos de retry
+- ✅ **Melhorias de Segurança**: Autenticação OAuth 2.0 obrigatória, validação segura de ZIP e execução inline para ambientes de produção
 
 **Instalador (Installer)**: `v1.5.1` *(Mais Recente)*
 - ✅ **Suporte ao Sistema de IA**: Instalação preparada para novos recursos de IA v2.3.0
@@ -419,6 +413,7 @@ dev-environment/       # Stack de desenvolvimento Docker
 - ✅ **Logs Detalhados**: Rastreamento completo do processo
 
 ### Histórico de Versões
+- **Gestor v2.4.0**: Sistema completo de deploy de projetos via API OAuth com autenticação OAuth 2.0, renovação automática de tokens, workflow de deploy one-click, gerenciamento avançado de projetos com deploy direto na raiz, tratamento robusto de erros com rollback, e melhorias de segurança incluindo autenticação OAuth obrigatória e validação segura de ZIP.
 - **Gestor v2.3.0**: Sistema de IA integrado completo com API Gemini, sistema dual de prompts, interface avançada CodeMirror, gerenciamento de sessão para geração de conteúdo, suporte a múltiplos modelos de IA.
 - **Gestor v2.0.0**: Sistema de plugins V2 com arquitetura refatorada, templates automatizados, rastreio completo de dados, IDs textuais, limpeza ampla do sistema.
 - **Gestor v1.16.0**: Sistema de preview TailwindCSS, suporte multi-framework CSS, módulos admin modernizados, padrões técnicos otimizados.

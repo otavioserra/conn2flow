@@ -394,19 +394,13 @@ dev-environment/       # Docker development stack
 
 ### Latest Stable Releases
 
-**Gestor (Core System)**: `v2.3.0` *(Latest)*
-- ✅ **Complete AI System Integration**: Full AI system integrated into admin-paginas for assisted content generation
-- ✅ **Gemini API Integration**: Content generation via Gemini API with robust error handling
-- ✅ **Dual Prompt System**: Technical modes (structured templates) + User prompts (flexible needs)
-- ✅ **Advanced Interface**: CodeMirror-based content editing with session management
-- ✅ **Multiple AI Models**: Support for multiple AI servers and model configurations
-- ✅ **Session Management**: Content generation tracking and positional insertion
-- ✅ **Plugin System V2**: Completely refactored architecture with dynamic detection
-- ✅ **Development Templates**: Automated scripts for plugin creation
-- ✅ **Complete Data Tracking**: Automatic slug injection in tables with plugin column
-- ✅ **Dynamic Resolution**: Dynamic environment.json in all automation scripts
-- ✅ **Textual IDs**: Complete migration to textual format in reference fields
-- ✅ **Broad Cleanup**: Disabling of legacy tools and simplified structure
+**Gestor (Core System)**: `v2.4.0` *(Latest)*
+- ✅ **Complete Project Deployment System via API OAuth**: Full automated project deployment system with OAuth 2.0 authentication and automatic token renewal
+- ✅ **OAuth 2.0 Server Implementation**: Complete OAuth 2.0 server with JWT validation, token renewal, and secure API endpoints
+- ✅ **One-Click Project Deployment**: Automated workflow for project updates, compression, and deployment with API integration
+- ✅ **Advanced Project Management**: Direct deployment to system root with automatic resource updates and database synchronization
+- ✅ **Robust Error Handling**: Comprehensive error handling with automatic rollback and retry mechanisms
+- ✅ **Security Enhancements**: OAuth 2.0 mandatory authentication, secure ZIP validation, and inline execution for production environments
 
 **Instalador (Installer)**: `v1.5.1` *(Latest)*
 - ✅ **AI System Support**: Installation prepared for new v2.3.0 AI features
@@ -418,6 +412,7 @@ dev-environment/       # Docker development stack
 - ✅ **Detailed Logs**: Complete tracking of the process
 
 ### Version History
+- **Gestor v2.4.0**: Complete project deployment system via API OAuth with OAuth 2.0 authentication, automatic token renewal, one-click deployment workflow, advanced project management with direct root deployment, robust error handling with rollback, and security enhancements including mandatory OAuth authentication and secure ZIP validation.
 - **Gestor v2.3.0**: Complete AI system integration with Gemini API, dual prompt system, advanced CodeMirror interface, session management for content generation, multiple AI model support.
 - **Gestor v2.0.0**: Plugin System V2 with refactored architecture, automated templates, complete data tracking, textual IDs, broad system cleanup.
 - **Gestor v1.16.0**: TailwindCSS preview system, multi-framework CSS support, modernized admin modules, optimized technical standards.
