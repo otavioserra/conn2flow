@@ -1,4 +1,4 @@
-# Prompt Interactive Programming - Criar Lançamento - v1.11.0
+# Prompt Interactive Programming - Criar Lançamento - v2.4.0
 
 ## 📝 Orientações para o Agente
 1. Analise a documentação para você ter o contexto geral do sistema atualmente: `ai-workspace\docs`.
