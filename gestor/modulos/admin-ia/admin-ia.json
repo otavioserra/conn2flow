@@ -28,11 +28,11 @@
                     "type": "system",
                     "option": "listar-servidores",
                     "root": true,
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "7474c36e467e2be6c148558f0240f2ba",
+                        "html": "4b67e70a9a585543398bb2cd4a20ca78",
                         "css": "",
-                        "combined": "7474c36e467e2be6c148558f0240f2ba"
+                        "combined": "4b67e70a9a585543398bb2cd4a20ca78"
                     }
                 },
                 {
@@ -43,11 +43,11 @@
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "49da0295dc4e769f59512f7157c94a78",
+                        "html": "787e9254ce70098a6147add2ae951898",
                         "css": "",
-                        "combined": "49da0295dc4e769f59512f7157c94a78"
+                        "combined": "787e9254ce70098a6147add2ae951898"
                     }
                 },
                 {
@@ -58,11 +58,11 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "cd443a7ea57ce6b79b13866e587c4922",
+                        "html": "89176e3bc2a781b816e9f757727978a5",
                         "css": "",
-                        "combined": "cd443a7ea57ce6b79b13866e587c4922"
+                        "combined": "89176e3bc2a781b816e9f757727978a5"
                     }
                 }
             ],
@@ -107,11 +107,11 @@
                     "type": "system",
                     "option": "listar-servidores",
                     "root": true,
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "3da310d99ee98190d1b3ef338e2a6958",
+                        "html": "59c7db67bb4af406f2476e54ea47152f",
                         "css": "",
-                        "combined": "3da310d99ee98190d1b3ef338e2a6958"
+                        "combined": "59c7db67bb4af406f2476e54ea47152f"
                     }
                 },
                 {
@@ -122,11 +122,11 @@
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "065689e6f907924314cc9248c3df388d",
+                        "html": "8a8921038641a9bcab1d3020e39e579a",
                         "css": "",
-                        "combined": "065689e6f907924314cc9248c3df388d"
+                        "combined": "8a8921038641a9bcab1d3020e39e579a"
                     }
                 },
                 {
@@ -137,11 +137,11 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "0b23df2b17606f8c8f8467ce8afc4874",
+                        "html": "ac998c9aafedad0c90acfee58bfc80d6",
                         "css": "",
-                        "combined": "0b23df2b17606f8c8f8467ce8afc4874"
+                        "combined": "ac998c9aafedad0c90acfee58bfc80d6"
                     }
                 }
             ],

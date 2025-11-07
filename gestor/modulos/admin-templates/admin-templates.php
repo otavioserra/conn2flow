@@ -66,6 +66,7 @@ function admin_templates_adicionar(){
 		$campo_nome = "nome"; $post_nome = "template-nome"; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "target"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "thumbnail"; $post_nome = 'imagem-caminho'; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "framework_css"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "modulo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "html"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
@@ -217,6 +218,11 @@ function admin_templates_adicionar(){
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 					'dados' => $modulo['selectDadosFrameworkCSS'],
 				),
+				Array(
+					'tipo' => 'imagepick',
+					'id' => 'thumbnail',
+					'nome' => 'imagem',
+				)
 			)
 		)
 	);
@@ -241,6 +247,7 @@ function admin_templates_editar(){
 		'css_compiled',
 		'html_extra_head',
 		'framework_css',
+		'thumbnail',
 	);
 	
 	$camposBancoPadrao = Array(
@@ -339,7 +346,8 @@ function admin_templates_editar(){
 		$_REQUEST['html_extra_head'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['html_extra_head']);
 		
 		// ===== Atualização dos demais campos.
-		
+
+		$campo_nome = "thumbnail"; $request_name = 'imagem-caminho'; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
 		$campo_nome = "target"; $request_name = $campo_nome; $alteracoes_name = 'target'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "framework_css"; $request_name = $campo_nome; $alteracoes_name = 'framework-css'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		
@@ -439,6 +447,7 @@ function admin_templates_editar(){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
 		$target = (isset($retorno_bd['target']) ? $retorno_bd['target'] : '');
 		$framework_css = (isset($retorno_bd['framework_css']) ? $retorno_bd['framework_css'] : '');
+		$thumbnail = (isset($retorno_bd['thumbnail']) ? $retorno_bd['thumbnail'] : '');
 		$html = (isset($retorno_bd['html']) ? htmlentities($retorno_bd['html']) : '');
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
 		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
@@ -630,6 +639,12 @@ function admin_templates_editar(){
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 					'dados' => $modulo['selectDadosFrameworkCSS'],
 				),
+				Array(
+					'tipo' => 'imagepick',
+					'id' => 'thumbnail',
+					'nome' => 'imagem',
+					'caminho' => $thumbnail,
+				)
 			)
 		)
 	);

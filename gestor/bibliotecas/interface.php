@@ -1470,6 +1470,7 @@ function interface_formulario_campos($params = false){
 						'data' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-default-date')),
 						'tipo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-default-type')),
 						'imgSrc' => $_GESTOR['url-full'] . 'images/imagem-padrao.png',
+						'caminho' => '',
 					);
 					
 					$imagepickJS['modal'] = Array(
@@ -1516,7 +1517,65 @@ function interface_formulario_campos($params = false){
 							$tipo = $arquivos[0]['tipo'];
 							
 							$fileId = $id_arquivos;
+							$caminho = $arquivos[0]['caminho'] ?? '';
 						}
+					}
+
+					if(isset($campo['caminho']) && existe($campo['caminho']) && !$found){
+						$arquivos = banco_select_name
+						(
+							banco_campos_virgulas(Array(
+								'id_arquivos',
+								'tipo',
+								'nome',
+								'data_criacao',
+								'caminho',
+								'caminho_mini',
+							))
+							,
+							"arquivos",
+							"WHERE caminho='".$campo['caminho']."'"
+						);
+						
+						if($arquivos){
+							if($arquivos[0]['caminho_mini']){
+								$imgSrc = $_GESTOR['url-full'] . $arquivos[0]['caminho_mini'];
+							} else {
+								$imgSrc = $_GESTOR['url-full'] . 'images/imagem-padrao.png';
+							}
+							
+							$data = interface_formatar_dado(Array('dado' => $arquivos[0]['data_criacao'], 'formato' => 'dataHora'));
+							$nome = $arquivos[0]['nome'];
+							$tipo = $arquivos[0]['tipo'];
+							
+							$fileId = $arquivos[0]['id_arquivos'];
+						} else {
+							$imgSrc = $_GESTOR['url-full'] . $campo['caminho'];
+
+							// TODO: Verificar se o arquivo existe no sistema de arquivos e pegar a data de criação correta.
+							$file_path = $_GESTOR['contents-path'] . $campo['caminho'];
+							if (file_exists($file_path)) {
+								$file_mod_time = filemtime($file_path);
+								$file = [
+									'data_modificacao' => date('Y-m-d H:i:s', $file_mod_time),
+									'nome' => basename($file_path),
+									'mime_type' => mime_content_type($file_path),
+								];
+							} else {
+								$file = [
+									'data_modificacao' => date('Y-m-d H:i:s', time()),
+									'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'file-name-unknown')),
+									'mime_type' => gestor_variaveis(Array('modulo' => 'interface','id' => 'file-mime-type-unknown')),
+								];
+							}
+
+							$data = interface_formatar_dado(Array('dado' => $file['data_modificacao'], 'formato' => 'dataHora'));
+							$nome = $file['nome'];
+							$tipo = $file['mime_type'];
+						}
+
+						$caminho = $campo['caminho'];
+						$found = true;
 					}
 					
 					if(!$found){
@@ -1525,14 +1584,16 @@ function interface_formulario_campos($params = false){
 						$data = $imagepickJS['padroes']['data'];
 						$tipo = $imagepickJS['padroes']['tipo'];
 						$imgSrc = $imagepickJS['padroes']['imgSrc'];
+						$caminho = $imagepickJS['padroes']['caminho'];
 					}
 					
 					// ===== Alterar os dados do widget
 					
 					$imagepick = modelo_var_troca($imagepick,"#cont-id#",$campo['id']);
-					$imagepick = modelo_var_troca($imagepick,"#campo-nome#",$campo['nome']);
+					$imagepick = modelo_var_troca_tudo($imagepick,"#campo-nome#",$campo['nome']);
 					
 					$imagepick = modelo_var_troca_tudo($imagepick,"#file-id#",$fileId);
+					$imagepick = modelo_var_troca_tudo($imagepick,"#file-caminho#",$caminho);
 					$imagepick = modelo_var_troca($imagepick,"#nome#",$nome);
 					$imagepick = modelo_var_troca($imagepick,"#tipo#",$tipo);
 					$imagepick = modelo_var_troca($imagepick,"#data#",$data);

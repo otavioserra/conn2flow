@@ -53,11 +53,11 @@
                     "path": "admin-prompts-ia\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "3ffa97aef816cedca88243d9ed19ab48",
+                        "html": "c2114766117c6f5fde9c02e0b02514ff",
                         "css": "",
-                        "combined": "3ffa97aef816cedca88243d9ed19ab48"
+                        "combined": "c2114766117c6f5fde9c02e0b02514ff"
                     }
                 }
             ],
@@ -148,11 +148,11 @@
                     "path": "admin-prompts-ia\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "3ffa97aef816cedca88243d9ed19ab48",
+                        "html": "c2114766117c6f5fde9c02e0b02514ff",
                         "css": "",
-                        "combined": "3ffa97aef816cedca88243d9ed19ab48"
+                        "combined": "c2114766117c6f5fde9c02e0b02514ff"
                     }
                 }
             ],

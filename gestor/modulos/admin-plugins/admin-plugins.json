@@ -67,11 +67,11 @@
                     "path": "admin-plugins\/executar\/",
                     "type": "system",
                     "option": "executar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "df67f246a2967f4a4b04515c092b0074",
+                        "html": "e04a892a2fe7a463149b40a00fbb3960",
                         "css": "",
-                        "combined": "df67f246a2967f4a4b04515c092b0074"
+                        "combined": "e04a892a2fe7a463149b40a00fbb3960"
                     }
                 },
                 {
@@ -81,11 +81,11 @@
                     "path": "admin-plugins\/teste\/",
                     "type": "system",
                     "option": "teste",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "61240bb5944afe8581f3f26fcb396e04",
+                        "html": "8a072b8b1f9310d5da2366b4cde743ad",
                         "css": "",
-                        "combined": "61240bb5944afe8581f3f26fcb396e04"
+                        "combined": "8a072b8b1f9310d5da2366b4cde743ad"
                     }
                 }
             ],
@@ -93,11 +93,11 @@
                 {
                     "name": "Plugins - Exec",
                     "id": "plugins-exec",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "f6508ffae8dc0b4970eacb81034f1e51",
+                        "html": "23671934cd24d3fba1fae2dde6a044cb",
                         "css": "",
-                        "combined": "f6508ffae8dc0b4970eacb81034f1e51"
+                        "combined": "23671934cd24d3fba1fae2dde6a044cb"
                     }
                 }
             ],

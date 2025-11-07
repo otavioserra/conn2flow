@@ -379,7 +379,8 @@ $(document).ready(function () {
 
 				var objPai = $(this).closest('._gestor-widgetImage-cont');
 
-				objPai.find('input').val(gestor.interface.imagepick.padroes.fileId);
+				objPai.find('input._gestor-widgetImage-file-id').val(gestor.interface.imagepick.padroes.fileId);
+				objPai.find('input._gestor-widgetImage-file-caminho').val(gestor.interface.imagepick.padroes.caminho);
 				objPai.find('.widgetImage-image').attr('src', gestor.interface.imagepick.padroes.imgSrc);
 				objPai.find('.widgetImage-nome').html(gestor.interface.imagepick.padroes.nome);
 				objPai.find('.widgetImage-data').find('.icon').get(0).nextSibling.remove();
@@ -400,7 +401,8 @@ $(document).ready(function () {
 							if (dados.tipo.match(/image\//) == 'image/') {
 								var objPai = gestor.interface.imagepick.objPai;
 
-								objPai.find('input').val(dados.id);
+								objPai.find('input._gestor-widgetImage-file-id').val(dados.id);
+								objPai.find('input._gestor-widgetImage-file-caminho').val(dados.caminho);
 								objPai.find('.widgetImage-image').attr('src', dados.imgSrc);
 								objPai.find('.widgetImage-nome').html(dados.nome);
 								objPai.find('.widgetImage-data').find('.icon').get(0).nextSibling.remove();

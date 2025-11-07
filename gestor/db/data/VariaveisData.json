@@ -5366,6 +5366,15 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-templates",
+        "id": "form-thumbnail-label",
+        "valor": "Thumbnail",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-templates",
         "id": "modal-title-preview",
         "valor": "Pré-Visualização da Template",
         "tipo": "string",
@@ -5512,6 +5521,15 @@
         "modulo": "admin-templates",
         "id": "form-name-placeholder",
         "valor": "Template Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-templates",
+        "id": "form-thumbnail-label",
+        "valor": "Thumbnail",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6552,6 +6570,24 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "interface",
+        "id": "file-name-unknown",
+        "valor": "Indefinido",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "interface",
+        "id": "file-mime-type-unknown",
+        "valor": "indefinido\/indefinido",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "interface",
         "id": "field-positive-value",
@@ -7303,6 +7339,24 @@
         "modulo": "interface",
         "id": "validation-domain",
         "valor": "The field <b>#label#<\/b> is not a valid domain.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "file-name-unknown",
+        "valor": "Unknown",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "file-mime-type-unknown",
+        "valor": "unknown\/unknown",
         "tipo": "string",
         "grupo": null,
         "descricao": null

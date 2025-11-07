@@ -146,11 +146,11 @@
                 {
                     "name": "Página Prompts Controles",
                     "id": "pagina-prompts-controles",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "44f2eeeb3cd666994cec0e1aa342c93e",
+                        "html": "89881a10d7836bf380833bf38e160f67",
                         "css": "",
-                        "combined": "44f2eeeb3cd666994cec0e1aa342c93e"
+                        "combined": "89881a10d7836bf380833bf38e160f67"
                     }
                 }
             ],
@@ -668,11 +668,11 @@
                 {
                     "name": "Page Prompts Controls",
                     "id": "pagina-prompts-controles",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "5d9e51dd8fc2fdbac03369c65c700e39",
+                        "html": "f3b7f06c557b364064453abf426db4bc",
                         "css": "",
-                        "combined": "5d9e51dd8fc2fdbac03369c65c700e39"
+                        "combined": "f3b7f06c557b364064453abf426db4bc"
                     }
                 }
             ],

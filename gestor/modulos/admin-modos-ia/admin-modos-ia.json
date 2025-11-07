@@ -53,11 +53,11 @@
                     "path": "admin-modos-ia\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "620749ce4757f0a9a43773348da9bed2",
+                        "html": "98f3a3f2a04095da176e48eda64ff466",
                         "css": "",
-                        "combined": "620749ce4757f0a9a43773348da9bed2"
+                        "combined": "98f3a3f2a04095da176e48eda64ff466"
                     }
                 }
             ],
@@ -149,11 +149,11 @@
                     "path": "admin-modos-ia\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "620749ce4757f0a9a43773348da9bed2",
+                        "html": "98f3a3f2a04095da176e48eda64ff466",
                         "css": "",
-                        "combined": "620749ce4757f0a9a43773348da9bed2"
+                        "combined": "98f3a3f2a04095da176e48eda64ff466"
                     }
                 }
             ],

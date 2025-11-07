@@ -172,11 +172,11 @@
     {
         "name": "Widget Imagem",
         "id": "widget-imagem",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "53ae2df5b19777bbe6b8ab98529a80d5",
+            "html": "2a5bcc1bef0cf237c1c6c68dea8c4fc0",
             "css": "ba0557b0e23e65afcce0a8da039e4a9b",
-            "combined": "c8b5857c48f0eb1122ca4efef54ccb5f"
+            "combined": "a5fb5159f4d72e07013009b953fd8bcc"
         }
     },
     {
@@ -292,31 +292,31 @@
     {
         "name": "IA Prompt",
         "id": "ia-prompt",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "7eb05262d25a583fe98695eb1e549a04",
-            "css": "1221e34b060bf1cdcd78f39f9e9738dc",
-            "combined": "52ead042ab33269dc5555602086e4aa7"
+            "html": "c3344f5d41add06a8dd61522e5738ef2",
+            "css": "c0e38fffa143bbb5fcd30ca4541d5179",
+            "combined": "0025f8f9635e3ca25ebe89ae870ae8a8"
         }
     },
     {
         "name": "IA Prompt Modais",
         "id": "ia-prompt-modais",
-        "version": "1.8",
+        "version": "1.9",
         "checksum": {
-            "html": "b033001c135072b0b6786512d20e63e5",
+            "html": "c5026485208f332d8d445395c5b5f8f8",
             "css": "",
-            "combined": "b033001c135072b0b6786512d20e63e5"
+            "combined": "c5026485208f332d8d445395c5b5f8f8"
         }
     },
     {
         "name": "HTML Editor Modal",
         "id": "html-editor-modal",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "4bbee0c14a07df2d670808fb6155edde",
+            "html": "e6ae773bf2ca9d701714729e63a4f525",
             "css": "",
-            "combined": "4bbee0c14a07df2d670808fb6155edde"
+            "combined": "e6ae773bf2ca9d701714729e63a4f525"
         }
     }
 ]

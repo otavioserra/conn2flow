@@ -336,6 +336,7 @@ function admin_arquivos_lista($params = false){
 				$cel_aux = modelo_var_troca($cel_aux,"#file-data#",htmlentities(json_encode(Array(
 					'id' => $id_arquivos,
 					'imgSrc' => $imgSrc,
+					'caminho' => $caminho ?? '',
 					'nome' => $nome,
 					'data' => $data,
 					'tipo' => $tipo,

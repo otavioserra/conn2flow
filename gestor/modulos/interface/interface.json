@@ -421,6 +421,16 @@
                     "id": "validation-domain",
                     "value": "O campo <b>#label#<\/b> não é um domínio válido.",
                     "type": "string"
+                },
+                {
+                    "id": "file-name-unknown",
+                    "value": "Indefinido",
+                    "type": "string"
+                },
+                {
+                    "id": "file-mime-type-unknown",
+                    "value": "indefinido/indefinido",
+                    "type": "string"
                 }
             ]
         },
@@ -847,6 +857,16 @@
                 {
                     "id": "validation-domain",
                     "value": "The field <b>#label#<\/b> is not a valid domain.",
+                    "type": "string"
+                },
+                {
+                    "id": "file-name-unknown",
+                    "value": "Unknown",
+                    "type": "string"
+                },
+                {
+                    "id": "file-mime-type-unknown",
+                    "value": "unknown/unknown",
                     "type": "string"
                 }
             ]
