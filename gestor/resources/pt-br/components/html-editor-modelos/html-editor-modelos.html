@@ -1,0 +1,47 @@
+<div class="modelos-container">
+    <div class="menu-pagina-conteudo" data-id="modelos"></div>
+    <div class="ui cards modelos-cards" id="modelos-cards">
+        <!-- Modelos serão carregados dinamicamente aqui -->
+    </div>
+
+    <div class="ui center aligned basic segment" id="modelos-loading" style="display: none;">
+        <div class="ui active inline loader"></div>
+        <div class="ui text">Carregando modelos...</div>
+    </div>
+
+    <div class="ui center aligned basic segment" id="modelos-empty" style="display: none;">
+        <div class="ui icon message">
+            <i class="file outline icon"></i>
+            <div class="content">
+                <div class="header">Nenhum modelo encontrado</div>
+                <p>Não há modelos de página disponíveis no momento.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui center aligned basic segment" id="modelos-load-more" style="display: none;">
+        <button class="ui primary button" id="btn-load-more">
+            <i class="plus icon"></i>
+            Carregar Mais Modelos
+        </button>
+    </div>
+</div>
+<div id="modelo-card-template">
+    <div class="card modelo-card" data-modelo-id="{{id}}">
+        <div class="image">
+            <img src="{{thumbnail}}" alt="{{nome}}">
+        </div>
+        <div class="content">
+            <div class="header">{{nome}}</div>
+            <div class="meta">
+                <span>{{target}}</span> • <span>{{language}}</span>
+            </div>
+        </div>
+        <div class="extra content">
+            <div class="ui primary button modeloSelecionar" data-modelo-id="{{id}}">
+                <i class="check icon"></i>
+                Selecionar Modelo
+            </div>
+        </div>
+    </div>
+</div>

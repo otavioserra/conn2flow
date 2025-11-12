@@ -2,6 +2,28 @@
 
 ## 🏷️ Releases Atuais
 
+### **gestor-v2.5.0** (12 Novembro 2025) - `HEAD`
+**🎯 Tema:** Biblioteca Editor HTML Centralizada e Sistema de Templates Visual**
+
+**Principais Melhorias:**
+- ✅ **Biblioteca Editor HTML Centralizada**: Nova biblioteca `html-editor.php` com funcionalidade de edição HTML reutilizável entre módulos admin
+- ✅ **Sistema de Seleção de Templates Visual**: Interface moderna com cards Fomantic UI para seleção intuitiva de templates de página
+- ✅ **Editor HTML Modular Unificado**: Sistema de edição consistente para páginas, templates e componentes com integração IA
+- ✅ **Sistema de Templates Multilíngue**: Suporte avançado a templates com priorização de idioma e filtragem baseada em alvo
+- ✅ **Gerenciamento Avançado de Templates**: Templates enriquecidos com miniaturas, metadados completos e integração CodeMirror profissional
+- ✅ **Componentes Reutilizáveis**: Arquitetura de componentes compartilhados entre módulos admin-paginas e admin-templates
+- ✅ **Integração IA Aprimorada**: Sistema de prompts inteligente com gerenciamento de sessão e inserção posicional precisa
+- ✅ **Arquitetura Baseada em Componentes**: Design modular para melhor manutenção, reutilização e escalabilidade
+- ✅ **Interface de Usuário Moderna**: Migração de accordion para cards Fomantic UI com melhor experiência visual
+- ✅ **Performance Otimizada**: Carregamento AJAX com paginação para templates, reduzindo tempo de resposta
+- ✅ **Compatibilidade Total**: Zero breaking changes, integração perfeita com arquitetura existente do Conn2Flow
+- ✅ **Documentação Completa**: Sistema documentado com exemplos de uso e arquitetura técnica detalhada
+
+**Breaking Changes:**
+- Interface de seleção de templates migrada para cards (melhor UX)
+- Centralização da funcionalidade de edição em biblioteca compartilhada
+- Componentes traduzidos para inglês mantendo parâmetros em português
+
 ### **gestor-v2.4.0** (6 Novembro 2025) - `HEAD`
 **🎯 Tema:** Sistema Completo de Deploy de Projetos via API OAuth**
 

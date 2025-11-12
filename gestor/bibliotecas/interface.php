@@ -5291,6 +5291,24 @@ function interface_ajax_finalizar($params = false){
 			case 'listar': interface_ajax_listar(); break;
 			case 'verificar-campo': interface_ajax_verificar_campo(); break;
 		}
+
+		// ===== Incluir AJAX interface de bibliotecas
+
+		$bibliotecas = Array();
+
+		if(isset($_GESTOR['bibliotecas'])){
+			$bibliotecas = array_merge($bibliotecas,$_GESTOR['bibliotecas']);
+		}
+
+		if(isset($_GESTOR['modulo#'.$_GESTOR['modulo-id']]['bibliotecas'])){
+			$bibliotecas = array_merge($bibliotecas,$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['bibliotecas']);
+		}
+
+		foreach($bibliotecas as $biblioteca){
+			switch($biblioteca){
+				case 'html-editor': html_editor_ajax_interface(); break;
+			}
+		}
 	}
 }
 

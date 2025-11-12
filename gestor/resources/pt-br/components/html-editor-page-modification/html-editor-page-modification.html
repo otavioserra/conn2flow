@@ -1,43 +1,43 @@
-<div class="ui grid menuMode">
+<div class="ui grid menuMode page-modification-wrapper">
     <div class="six wide column">
         <div class="field">
-            <label>Sessões da Página:</label>
-            <select class="ui dropdown ai-prompt-page-select">
-                #select-prompt-page#
+            <label>Alvo da Modificação da Página:</label>
+            <select class="ui dropdown page-modification-target-select">
+                #select-modification-page#
             </select>
         </div>
     </div>
-    <div class="six wide column hidden ai-prompt-session-container">
+    <div class="six wide column hidden page-modification-container">
         <div class="field">
             <label>Sessão Alvo:</label>
-            <select class="ui dropdown ai-prompt-session-select">
+            <select class="ui dropdown page-modification-session-select">
 
             </select>
         </div>
     </div>
-    <div class="four wide column hidden ai-prompt-session-container">
+    <div class="four wide column hidden page-modification-container">
         <div class="grouped fields">
             <label>Sessão Opção</label>
             <div class="field">
                 <div class="ui radio checkbox">
-                    <input type="radio" name="ai-prompt-session-option" value="new-before">
+                    <input type="radio" name="page-modification-session-option" value="new-before">
                     <label>Adicionar Nova Antes</label>
                 </div>
             </div>
             <div class="field">
                 <div class="ui radio checkbox">
-                    <input type="radio" name="ai-prompt-session-option" value="target" checked="checked">
+                    <input type="radio" name="page-modification-session-option" value="target" checked="checked">
                     <label>Alterar Sessão Alvo</label>
                 </div>
             </div>
             <div class="field">
                 <div class="ui radio checkbox">
-                    <input type="radio" name="ai-prompt-session-option" value="new-after">
+                    <input type="radio" name="page-modification-session-option" value="new-after">
                     <label>Adicionar Nova Depois</label>
                 </div>
             </div>
         </div>
-        <div class="ui tiny button red ai-prompt-session-delete" style="margin-bottom:10px;"
+        <div class="ui tiny button red page-modification-session-delete" style="margin-bottom:10px;"
             data-tooltip="Clique para deletar a sessão alvo" data-position="top left" data-inverted="">
             Deletar Sessão Alvo
         </div>

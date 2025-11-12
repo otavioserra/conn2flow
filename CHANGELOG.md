@@ -10,6 +10,30 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
 - CHANGELOG.md padrão da indústria seguindo Keep a Changelog
 
+## [2.5.0] - 2025-11-12
+
+### Added
+- **Biblioteca Editor HTML Centralizada**: Nova biblioteca `html-editor.php` com funcionalidade de edição reutilizável entre módulos
+- **Sistema de Seleção de Templates Visual**: Interface de cards Fomantic UI para seleção de templates de página
+- **Editor HTML Modular**: Sistema unificado de edição para páginas, templates e componentes
+- **Sistema de Templates Multilíngue**: Suporte a templates com priorização de idioma e filtragem por alvo
+- **Gerenciamento Avançado de Templates**: Templates com miniaturas, metadados e integração CodeMirror
+- **Componentes Reutilizáveis**: Componentes de editor HTML compartilhados entre admin-paginas e admin-templates
+- **Integração IA Aprimorada**: Sistema de prompts com gerenciamento de sessão e inserção posicional
+- **Arquitetura Baseada em Componentes**: Melhor manutenção e reutilização de código
+
+### Changed
+- **Interface de Seleção de Templates**: Migração de accordion para cards Fomantic UI para melhor visualização
+- **Arquitetura de Edição**: Centralização da funcionalidade de edição em biblioteca compartilhada
+- **Experiência do Usuário**: Interface unificada de edição em todos os módulos admin
+- **Performance de Templates**: Carregamento AJAX com paginação para melhor performance
+
+### Technical
+- Nova função `html_editor_componente()` para renderização de componentes de edição
+- Integração CodeMirror unificada com configuração consistente
+- Sistema de templates com suporte a múltiplos alvos e idiomas
+- Componentes traduzidos para inglês mantendo compatibilidade
+
 ## [2.4.0] - 2025-11-06
 
 ### Added

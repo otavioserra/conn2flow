@@ -96,55 +96,63 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🚀 Conn2Flow Gestor Release v2.4.0 (Sistema Completo de Deploy de Projetos via API OAuth)
+          ## 🚀 Conn2Flow Gestor Release v2.5.0 (Biblioteca Editor HTML Centralizada e Sistema de Templates Visual)
 
-          Esta versão traz a **implementação completa do sistema de deploy automatizado de projetos** com autenticação OAuth 2.0, renovação automática de tokens e processamento inline, além de manter todas as funcionalidades revolucionárias do sistema de IA integrado e arquitetura multilíngue.
+          Esta versão traz a **implementação completa da biblioteca editor HTML centralizada** com sistema de templates visual usando cards Fomantic UI, além de manter todas as funcionalidades revolucionárias do sistema de IA integrado, deploy OAuth e arquitetura multilíngue.
 
           ### 🎯 Novidades Principais desta Versão:
-          - ✅ **Sistema Completo de Deploy de Projetos via API OAuth**: Deploy automatizado completo com autenticação OAuth 2.0
-          - ✅ **Servidor OAuth 2.0 Completo**: Implementação completa com validação JWT e renovação automática de tokens
-          - ✅ **API de Deploy de Projetos**: Endpoint `/_api/project/update` para deploy automatizado via API
-          - ✅ **Sistema de Renovação Automática de Tokens**: Detecção automática de erro 401 e retry transparente
-          - ✅ **Deploy One-Click**: Workflow automatizado (atualização → compressão → deploy) com um único comando
-          - ✅ **Validação Robusta de ZIP**: Verificação de tamanho (100MB máx.), tipo e segurança de arquivos
-          - ✅ **Execução Inline para Produção**: Atualização de banco sem shell_exec para ambientes seguros
-          - ✅ **Detecção Automática de Estrutura ZIP**: Suporte a projetos com/sem diretório raiz
-          - ✅ **Sistema de IA Completo Integrado**: Geração assistida de conteúdo no admin-paginas via API Gemini
-          - ✅ **Sistema Dual de Prompts**: Modos técnicos estruturados + prompts de usuário flexíveis
-          - ✅ **Interface CodeMirror Avançada**: Edição aprimorada com inserção de conteúdo gerado por IA
-          - ✅ **Sistema Multilíngue Completo**: Suporte total pt-br/en com interface administrativa
-          - ✅ **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica
+          - ✅ **Biblioteca Editor HTML Centralizada**: Nova biblioteca `html-editor.php` com funcionalidade de edição reutilizável entre módulos
+          - ✅ **Sistema de Seleção de Templates Visual**: Interface moderna com cards Fomantic UI para seleção intuitiva de templates de página
+          - ✅ **Editor HTML Modular Unificado**: Sistema de edição consistente para páginas, templates e componentes
+          - ✅ **Sistema de Templates Multilíngue**: Suporte avançado a templates com priorização de idioma e filtragem por alvo
+          - ✅ **Gerenciamento Avançado de Templates**: Templates enriquecidos com miniaturas, metadados completos e integração CodeMirror profissional
+          - ✅ **Componentes Reutilizáveis**: Arquitetura de componentes compartilhados entre módulos admin-paginas e admin-templates
+          - ✅ **Integração IA Aprimorada**: Sistema de prompts inteligente com gerenciamento de sessão e inserção posicional precisa
+          - ✅ **Arquitetura Baseada em Componentes**: Design modular para melhor manutenção, reutilização e escalabilidade
+          - ✅ **Sistema Completo de Deploy de Projetos via API OAuth**: Deploy automatizado completo com autenticação OAuth 2.0 (mantido da v2.4.0)
+          - ✅ **Servidor OAuth 2.0 Completo**: Implementação completa com validação JWT e renovação automática de tokens (mantido da v2.4.0)
+          - ✅ **Sistema de IA Completo Integrado**: Geração assistida de conteúdo no admin-paginas via API Gemini (mantido da v2.4.0)
+          - ✅ **Sistema Multilíngue Completo**: Suporte total pt-br/en com interface administrativa (mantido da v2.4.0)
+          - ✅ **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica (mantido da v2.4.0)
 
           ### 🔧 Melhorias Técnicas:
-          - ✅ **Scripts Core de Deploy**: `deploy-projeto.sh`, `renovar-token.sh`, `teste-integracao.sh`
-          - ✅ **API Endpoint Seguro**: `POST /_api/project/update` com autenticação OAuth obrigatória
-          - ✅ **Validação de ZIP Robusta**: 100MB máx., tipo, segurança e estrutura automática
-          - ✅ **Execução Inline**: Atualização de banco sem shell_exec (produção-ready)
-          - ✅ **Renovação Automática de Tokens**: Detecção 401 → renovação → retry transparente
-          - ✅ **Nova Biblioteca ia.php**: Funções completas para renderização de prompts e comunicação com API Gemini
-          - ✅ **Novas Tabelas de Banco**: servidores_ia, modos_ia, prompts_ia para gerenciamento do sistema IA
-          - ✅ **Interface JavaScript Avançada**: Controles de IA e geração de conteúdo com CodeMirror
-          - ✅ **Sistema de Sessão Robusto**: Gerenciamento de conteúdo gerado por IA
-          - ✅ **Inserção Posicional**: Capacidades avançadas de inserção de conteúdo
-          - ✅ **Arquitetura de Plugins Refatorada**: Sistema V2 com detecção automática
-          - ✅ **Timezone Corrigido**: Ajuste para America/Sao_Paulo no Docker
-          - ✅ **Compatibilidade Cross-Platform**: Scripts funcionam em qualquer repositório
-          - ✅ **Configuração Multilíngue**: Interface intuitiva para mudança dinâmica de idioma (pt-br/en)
+          - ✅ **Nova Biblioteca html-editor.php**: Funções completas para renderização de componentes de edição e gerenciamento de templates
+          - ✅ **Sistema de Templates com Cards Fomantic UI**: Interface visual moderna para seleção de templates com paginação AJAX
+          - ✅ **Integração CodeMirror Unificada**: Configuração consistente de editor em todos os módulos admin
+          - ✅ **Sistema de Templates Multilíngue**: Filtragem inteligente por idioma e alvo com metadados completos
+          - ✅ **Componentes Reutilizáveis**: Arquitetura de componentes compartilhados entre admin-paginas e admin-templates
+          - ✅ **Gerenciamento de Sessão IA Aprimorado**: Sistema inteligente para inserção posicional de conteúdo gerado
+          - ✅ **Scripts Core de Deploy**: `deploy-projeto.sh`, `renovar-token.sh`, `teste-integracao.sh` (mantido da v2.4.0)
+          - ✅ **API Endpoint Seguro**: `POST /_api/project/update` com autenticação OAuth obrigatória (mantido da v2.4.0)
+          - ✅ **Nova Biblioteca ia.php**: Funções completas para renderização de prompts e comunicação com API Gemini (mantido da v2.4.0)
+          - ✅ **Novas Tabelas de Banco**: servidores_ia, modos_ia, prompts_ia para gerenciamento do sistema IA (mantido da v2.4.0)
+          - ✅ **Arquitetura de Plugins Refatorada**: Sistema V2 com detecção automática (mantido da v2.4.0)
+          - ✅ **Configuração Multilíngue**: Interface intuitiva para mudança dinâmica de idioma (pt-br/en) (mantido da v2.4.0)
 
           ### 📦 Conteúdo:
-          - Sistema gestor completo com deploy de projetos via API OAuth e IA integrada
-          - Scripts de deploy automatizado: deploy-projeto.sh, renovar-token.sh, teste-integracao.sh
-          - Biblioteca ia.php funcional para operações de IA e OAuth
-          - Sistema de plugins V2 com templates automatizados
-          - API endpoint seguro para deploy de projetos
-          - Migrations para tabelas IA e sistema OAuth
+          - Sistema gestor completo com biblioteca editor HTML centralizada e sistema de templates visual
+          - Nova biblioteca `html-editor.php` com componentes reutilizáveis
+          - Sistema de seleção de templates com interface de cards Fomantic UI
+          - Scripts de deploy automatizado: deploy-projeto.sh, renovar-token.sh, teste-integracao.sh (mantido da v2.4.0)
+          - Biblioteca ia.php funcional para operações de IA e OAuth (mantido da v2.4.0)
+          - Sistema de plugins V2 com templates automatizados (mantido da v2.4.0)
+          - API endpoint seguro para deploy de projetos (mantido da v2.4.0)
+          - Migrations para tabelas IA, OAuth e templates
           - Sistema de atualização automática consolidado
-          - 264+ recursos organizados por idioma (pt-br base)
+          - Recursos organizados por idioma (pt-br base)
           - Seletor de idioma padrão no módulo admin-environment
           - Instalador multilíngue com seleção de idioma
           - Página de sucesso bilíngue (pt-br/en)
           - Dependências do Composer otimizadas
-          - Documentação técnica completa incluindo sistema de projetos
+          - Documentação técnica completa incluindo sistema de templates
+
+          ### 🎨 Sistema de Templates Visual:
+          - **Biblioteca Editor HTML Centralizada**: Componentes reutilizáveis em `html-editor.php`
+          - **Interface de Cards Fomantic UI**: Seleção visual intuitiva de templates com miniaturas
+          - **Sistema Multilíngue**: Priorização de idioma e filtragem por alvo
+          - **Integração CodeMirror**: Editor profissional unificado em todos os módulos
+          - **Gerenciamento de Metadados**: Templates com informações completas e categorização
+          - **Arquitetura Modular**: Componentes compartilhados entre admin-paginas e admin-templates
 
           ### 🚀 Sistema de Deploy de Projetos:
           - **API OAuth 2.0**: Autenticação obrigatória com renovação automática de tokens
@@ -188,183 +196,16 @@ jobs:
           1. Use o [Conn2Flow Installer v1.5.0+](https://github.com/otavioserra/conn2flow/releases) para instalação automática
           2. Para instalação manual, use o instalador web em `gestor-instalador/index.php`
           3. Selecione o idioma desejado durante a instalação (pt-br/en)
-          4. Utilize os novos scripts de deploy em `ai-workspace/scripts/projects/` para deploy automatizado
-          5. Configure tokens OAuth no environment.json para API de deploy
-          6. Explore o sistema de IA integrado no admin-paginas para geração assistida de conteúdo
+          4. Explore o novo sistema de templates visual no admin-paginas e admin-templates com interface de cards
+          5. Utilize a biblioteca editor HTML centralizada para edição unificada em todos os módulos
+          6. Configure tokens OAuth no environment.json para API de deploy (mantido da v2.4.0)
+          7. Explore o sistema de IA integrado no admin-paginas para geração assistida de conteúdo (mantido da v2.4.0)
 
           ### 📋 Requisitos:
           - PHP 8.1+
           - MySQL 5.7+ ou MariaDB 10.2+
           - Extensões: zip, curl, mbstring, openssl, pdo_mysql
           - Git (para desenvolvimento de plugins e deploy)
-
-          ### 🌟 Padrões Aprendidos e Implementados:
-          - ✅ **Sistema de Deploy Revolucionário**: API OAuth completa com renovação automática
-          - ✅ **Arquitetura One-Click**: Deploy completo com um único comando
-          - ✅ **Segurança Máxima**: Execução inline e validação robusta
-          - ✅ **Sistema de IA Revolucionário**: Integração completa com API Gemini
-          - ✅ **Sistema Dual de Prompts**: Arquitetura híbrida técnica + flexível
-          - ✅ **Interface CodeMirror Avançada**: Edição inteligente com inserção posicional
-          - ✅ **Sistema Multilíngue**: Implementação completa pt-br/en com seletor administrativo
-          - ✅ **Plugins V2**: Arquitetura moderna com detecção dinâmica
-          - ✅ **Templates Automatizados**: Scripts padronizados para desenvolvimento
-          - ✅ **Rastreio Completo**: Injeção automática de origem em tabelas
-          - ✅ **Resolução Dinâmica**: Environment.json dinâmico e robusto
-          - ✅ **IDs Textuais**: Migração completa para formato textual
-          - ✅ **Cross-Platform**: Compatibilidade universal de scripts
-
-          ### 🎉 Melhorias desta versão:
-          - ✅ **Sistema de Deploy Revolucionário**: API OAuth 2.0 completa com renovação automática
-          - ✅ **Deploy One-Click**: Workflow automatizado completo e inteligente
-          - ✅ **Segurança Máxima**: Execução inline e validação robusta de ZIP
-          - ✅ **Sistema de IA Revolucionário**: Integração completa com geração assistida
-          - ✅ **Interface Inteligente**: CodeMirror avançado com inserção posicional
-          - ✅ **Sistema Dual Inovador**: Combinação perfeita de modos técnicos e prompts
-          - ✅ **Sistema Multilíngue Revolucionário**: Interface completa pt-br/en
-          - ✅ **Sistema de Plugins Revolucionário**: Arquitetura V2 moderna
-          - ✅ **Desenvolvimento Facilitado**: Templates e scripts automatizados
-          - ✅ **Rastreabilidade Total**: Sistema completo de origem de dados
-          - ✅ **Automação Completa**: Scripts dinâmicos e robustos
-          - ✅ **Arquitetura Moderna**: Estrutura refatorada e otimizada
-          - ✅ **Compatibilidade Preservada**: Zero breaking changes
-
-          ### ⚠️ Breaking Changes (Migration Guide):
-          - Autenticação OAuth 2.0 obrigatória para endpoints de API de projeto
-          - Execução inline de atualizações de banco (mais segura para produção)
-          - Novas tabelas de banco para sistema IA: servidores_ia, modos_ia, prompts_ia
-          - Campos de referência de módulos migrados para formato textual
-          - Scripts de automação padronizados com resolução dinâmica
-          - Arquitetura de plugins modernizada (V2)
-          - Timezone ajustado para America/Sao_Paulo
-          - Template .env corrigido: LANGUAGE_DEFAULT usa pt-br como padrão          ### 🎯 Novidades Principais desta Versão:
-          - ✅ **Sistema de IA Completo Integrado**: Geração assistida de conteúdo no admin-paginas via API Gemini
-          - ✅ **Sistema Dual de Prompts**: Modos técnicos estruturados + prompts de usuário flexíveis
-          - ✅ **Interface CodeMirror Avançada**: Edição aprimorada com inserção de conteúdo gerado por IA
-          - ✅ **Gerenciamento de Sessão Inteligente**: Manipulação de conteúdo gerado e inserção posicional
-          - ✅ **Suporte a Múltiplos Modelos IA**: Configuração dinâmica de servidores e modelos
-          - ✅ **Sistema Multilíngue Completo**: Suporte total pt-br/en com interface administrativa
-          - ✅ **Seletor de Idioma Administrativo**: Nova aba no admin-environment para mudança dinâmica de idioma
-          - ✅ **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica
-          - ✅ **Templates de Desenvolvimento Automatizados**: Scripts padronizados para criação de plugins
-          - ✅ **Rastreio Completo de Origem**: Injeção automática de slug em tabelas com coluna plugin
-          - ✅ **Resolução Dinâmica de Ambiente**: Environment.json dinâmico em todos os scripts
-          - ✅ **Estrutura de Plugins Modernizada**: Nova arquitetura para desenvolvimento Conn2Flow
-          - ✅ **Instalador Multilíngue**: Suporte à seleção de idioma durante instalação
-          - ✅ **Página de Sucesso Bilíngue**: Interface de conclusão em português e inglês
-          
-          ### 🔧 Melhorias Técnicas:
-          - ✅ **Nova Biblioteca ia.php**: Funções completas para renderização de prompts e comunicação com API Gemini
-          - ✅ **Novas Tabelas de Banco**: servidores_ia, modos_ia, prompts_ia para gerenciamento do sistema IA
-          - ✅ **Interface JavaScript Avançada**: Controles de IA e geração de conteúdo com CodeMirror
-          - ✅ **Sistema de Sessão Robusto**: Gerenciamento de conteúdo gerado por IA
-          - ✅ **Inserção Posicional**: Capacidades avançadas de inserção de conteúdo
-          - ✅ **Tratamento de Erros Completo**: Validação e tratamento robusto para comunicação com API externa
-          - ✅ **Migração para IDs Textuais**: Campos de referência convertidos para formato textual
-          - ✅ **Scripts de Automação Padronizados**: Resolução dinâmica em todos os scripts
-          - ✅ **Arquitetura de Plugins Refatorada**: Sistema V2 com detecção automática
-          - ✅ **Timezone Corrigido**: Ajuste para America/Sao_Paulo no Docker
-          - ✅ **Compatibilidade Cross-Platform**: Scripts funcionam em qualquer repositório
-          - ✅ **Limpeza Ampla do Sistema**: Desabilitação de ferramentas legadas
-          - ✅ **Configuração Multilíngue**: Interface intuitiva para mudança dinâmica de idioma (pt-br/en)
-          - ✅ **Persistência de Configurações**: Salvamento automático no arquivo .env
-          - ✅ **Correção Template .env**: LANGUAGE_DEFAULT agora usa pt-br como padrão nas atualizações
-          - ✅ **Merge .env Inteligente**: Sistema automático de correção durante atualizações
-          
-          ### 📦 Conteúdo:
-          - Sistema gestor completo com IA integrada e arquitetura híbrida multilíngue
-          - Biblioteca ia.php funcional para operações de IA
-          - Sistema de plugins V2 com templates automatizados
-          - Migrations para rastreio completo de dados (coluna plugin) + tabelas IA
-          - Sistema de atualização automática consolidado (v1.15.0)
-          - 264+ recursos organizados por idioma (pt-br base)
-          - Seletor de idioma padrão no módulo admin-environment
-          - Instalador multilíngue com seleção de idioma
-          - Página de sucesso bilíngue (pt-br/en)
-          - Dependências do Composer otimizadas
-          - Documentação técnica completa incluindo chat-ia.md
-          
-          ### 🤖 Sistema de IA:
-          - **Integração Gemini API**: Comunicação direta com IA do Google para geração de conteúdo
-          - **Sistema Dual de Prompts**: Combinação inteligente de modos técnicos e necessidades do usuário
-          - **Interface Avançada**: CodeMirror com inserção posicional de conteúdo gerado
-          - **Gerenciamento de Sessão**: Sistema inteligente para manipulação de conteúdo IA
-          - **Suporte Multi-Modelo**: Configuração flexível de servidores e modelos de IA
-          - **Validação Robusta**: Tratamento completo de erros e validação de API
-          
-          ### 🌐 Sistema Multilíngue:
-          - **Interface Administrativa**: Seletor de idioma no painel admin-environment
-          - **Persistência Automática**: Salvamento em LANGUAGE_DEFAULT no .env
-          - **Instalação Bilíngue**: Seleção de idioma durante setup
-          - **Página de Sucesso**: Interface de conclusão em português e inglês
-          - **Correção Automática**: Template .env corrigido durante atualizações
-          
-          ### 🔧 Sistema de Plugins V2:
-          - **Detecção Dinâmica**: Sistema automático de descoberta de Data.json
-          - **Templates Automatizados**: Scripts prontos para desenvolvimento de plugins
-          - **Rastreio de Origem**: Injeção automática de slug em todas as tabelas
-          - **Resolução Dinâmica**: Environment.json dinâmico em todos os scripts
-          - **Estrutura Moderna**: Arquitetura V2 para desenvolvimento Conn2Flow
-          - **Correções Críticas**: Sistema robusto com correções importantes
-          
-          ### 🎯 Recursos de Desenvolvimento:
-          - Templates completos em `dev-plugins/plugins/templates/`
-          - Scripts automatizados de commit, release e workflows
-          - Resolução dinâmica do environment.json
-          - Compatibilidade com qualquer repositório de plugin
-          - Documentação abrangente para desenvolvimento incluindo IA
-          
-          ### 🔧 Como usar:
-          1. Use o [Conn2Flow Installer v1.5.0+](https://github.com/otavioserra/conn2flow/releases) para instalação automática
-          2. Para instalação manual, use o instalador web em `gestor-instalador/index.php`
-          3. Selecione o idioma desejado durante a instalação (pt-br/en)
-          4. Utilize os novos templates em `dev-plugins/plugins/templates/` para criar novos plugins
-          5. Acesse o admin-environment para alterar o idioma do sistema
-          6. Explore o novo sistema de IA integrado no admin-paginas para geração assistida de conteúdo
-          
-          ### 📋 Requisitos:
-          - PHP 8.1+
-          - MySQL 5.7+ ou MariaDB 10.2+
-          - Extensões: zip, curl, mbstring, openssl, pdo_mysql
-          - Git (para desenvolvimento de plugins)
-          
-          ### 🌟 Padrões Aprendidos e Implementados:
-          - ✅ **Sistema de IA Revolucionário**: Integração completa com API Gemini e geração assistida
-          - ✅ **Sistema Dual de Prompts**: Arquitetura híbrida técnica + flexível
-          - ✅ **Interface CodeMirror Avançada**: Edição inteligente com inserção posicional
-          - ✅ **Sistema Multilíngue**: Implementação completa pt-br/en com seletor administrativo
-          - ✅ **Plugins V2**: Arquitetura moderna com detecção dinâmica
-          - ✅ **Templates Automatizados**: Scripts padronizados para desenvolvimento
-          - ✅ **Rastreio Completo**: Injeção automática de origem em tabelas
-          - ✅ **Resolução Dinâmica**: Environment.json dinâmico e robusto
-          - ✅ **IDs Textuais**: Migração completa para formato textual
-          - ✅ **Cross-Platform**: Compatibilidade universal de scripts
-          - ✅ **Seletor de Idioma**: Interface administrativa para configuração multilíngue
-          - ✅ **Template .env Corrigido**: Valor padrão pt-br para LANGUAGE_DEFAULT
-          - ✅ **Instalador Bilíngue**: Suporte completo à seleção de idioma
-          
-          ### 🎉 Melhorias desta versão:
-          - ✅ **Sistema de IA Revolucionário**: Integração completa com geração assistida de conteúdo
-          - ✅ **Interface Inteligente**: CodeMirror avançado com inserção posicional de IA
-          - ✅ **Sistema Dual Inovador**: Combinação perfeita de modos técnicos e prompts flexíveis
-          - ✅ **Sistema Multilíngue Revolucionário**: Interface completa pt-br/en com seletor administrativo
-          - ✅ **Sistema de Plugins Revolucionário**: Arquitetura V2 completa e moderna
-          - ✅ **Desenvolvimento Facilitado**: Templates automatizados e documentação
-          - ✅ **Rastreabilidade Total**: Sistema completo de origem de dados
-          - ✅ **Automação Completa**: Scripts dinâmicos e robustos
-          - ✅ **Arquitetura Moderna**: IDs textuais e estrutura refatorada
-          - ✅ **Compatibilidade Preservada**: Zero breaking changes para usuários finais
-          - ✅ **Administração Multilíngue**: Seletor de idioma intuitivo no painel administrativo
-          - ✅ **Instalação Inteligente**: Processo bilíngue com seleção de idioma
-          - ✅ **Correções Críticas**: Template .env e sistema de merge corrigidos
-          
-          ### ⚠️ Breaking Changes (Migration Guide):
-          - Novas tabelas de banco para sistema IA: servidores_ia, modos_ia, prompts_ia
-          - Campos de referência de módulos migrados para formato textual
-          - Scripts de automação padronizados com resolução dinâmica
-          - Arquitetura de plugins modernizada (V2)
-          - Timezone ajustado para America/Sao_Paulo
-          - Template .env corrigido: LANGUAGE_DEFAULT agora usa pt-br como padrão
-          - Sistema multilíngue implementado com interface administrativa
         draft: false
         prerelease: false
         files: |

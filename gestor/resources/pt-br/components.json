@@ -292,11 +292,11 @@
     {
         "name": "IA Prompt",
         "id": "ia-prompt",
-        "version": "1.6",
+        "version": "1.7",
         "checksum": {
-            "html": "c3344f5d41add06a8dd61522e5738ef2",
+            "html": "d5fceeb4604c3ce1b9107922434b301b",
             "css": "c0e38fffa143bbb5fcd30ca4541d5179",
-            "combined": "0025f8f9635e3ca25ebe89ae870ae8a8"
+            "combined": "191557baff9dd8b23af2e75948958c88"
         }
     },
     {
@@ -310,13 +310,53 @@
         }
     },
     {
+        "name": "HTML Editor",
+        "id": "html-editor",
+        "version": "1.4",
+        "checksum": {
+            "html": "2fcfecbb05a474bda930a32b2513ec16",
+            "css": "",
+            "combined": "2fcfecbb05a474bda930a32b2513ec16"
+        }
+    },
+    {
         "name": "HTML Editor Modal",
         "id": "html-editor-modal",
-        "version": "1.2",
+        "version": "1.1",
         "checksum": {
-            "html": "e6ae773bf2ca9d701714729e63a4f525",
+            "html": "4bbee0c14a07df2d670808fb6155edde",
             "css": "",
-            "combined": "e6ae773bf2ca9d701714729e63a4f525"
+            "combined": "4bbee0c14a07df2d670808fb6155edde"
+        }
+    },
+    {
+        "name": "HTML Editor Página Modificação",
+        "id": "html-editor-page-modification",
+        "version": "1.1",
+        "checksum": {
+            "html": "cb7c53bf3a0d0d17ed1456fa6424f1fc",
+            "css": "",
+            "combined": "cb7c53bf3a0d0d17ed1456fa6424f1fc"
+        }
+    },
+    {
+        "name": "HTML Editor Visual Modal",
+        "id": "html-editor-visual-modal",
+        "version": "1.1",
+        "checksum": {
+            "html": "95e3802f5909d038fd2748e9360f9326",
+            "css": "",
+            "combined": "95e3802f5909d038fd2748e9360f9326"
+        }
+    },
+    {
+        "name": "HTML Editor Modelos",
+        "id": "html-editor-modelos",
+        "version": "1.1",
+        "checksum": {
+            "html": "b0647fb70e8be085b3b02e360912f829",
+            "css": "5006dea1658dc2acdfc8501d7af4ae45",
+            "combined": "69978ce699474099d78c931219cc93f2"
         }
     }
 ]

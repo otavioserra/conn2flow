@@ -18,52 +18,5 @@
 </div>
 <div class="field">
     <label>#form-template-content-label#</label>
-    <div class="ui top attached tabular menu menuContainerPagina">
-        <a class="active item" data-tab="visualizacao-pagina" data-tooltip="@[[form-page-view-tooltip]]@"
-            data-position="top left" data-inverted="">@[[form-page-view-label]]@</a>
-        <a class="item" data-tab="assistente-ia" data-tooltip="@[[form-ai-assistent-tooltip]]@" data-position="top left"
-            data-inverted="">@[[form-ai-assistent-label]]@</a>
-        <a class="item" data-tab="visualizacao-codigo" data-tooltip="@[[form-page-code-tooltip]]@"
-            data-position="top left" data-inverted="">@[[form-page-code-label]]@</a>
-    </div>
-    <div class="ui bottom attached tab segment" data-tab="visualizacao-pagina">
-        <div class="ui button blue editorHtmlVisual" style="margin-bottom:10px;"
-            data-tooltip="@[[form-page-visual-editor-tooltip]]@" data-position="top left" data-inverted="">
-            @[[form-page-visual-editor-label]]@
-        </div>
-        <div style="position: relative;">
-            <iframe id="iframe-visualizacao-pagina" style="width:100%;height:900px;border:1px solid #ccc;"></iframe>
-            <div class="ui active dimmer">
-                <div class="ui loader"></div>
-            </div>
-        </div>
-    </div>
-    <div class="ui bottom attached tab segment" data-tab="assistente-ia">
-        <!-- ia-componente -->
-    </div>
-    <div class="ui bottom attached tab segment" data-tab="visualizacao-codigo">
-        <div class="ui top attached tabular menu menuPaginas">
-            <a class="active item" data-tab="codigo-html" data-tooltip="#form-html-tooltip#" data-position="top left"
-                data-inverted="">#form-html-label#</a>
-            <a class="item" data-tab="html-extra-head" data-tooltip="@[[form-html-extra-head-tooltip]]@"
-                data-position="top left" data-inverted="">@[[form-html-extra-head-label]]@</a>
-            <a class="item" data-tab="css" data-tooltip="#form-css-tooltip#" data-position="top left"
-                data-inverted="">#form-css-label#</a>
-            <a class="item" data-tab="css-compiled" data-tooltip="@[[form-css-compiled-tooltip]]@"
-                data-position="top left" data-inverted="">@[[form-css-compiled-label]]@</a>
-        </div>
-        <div class="ui bottom attached tab segment" data-tab="codigo-html">
-            <textarea class="codemirror-html" name="html"></textarea>
-        </div>
-        <div class="ui bottom attached tab segment" data-tab="html-extra-head">
-            <textarea class="codemirror-html-extra-head" name="html_extra_head"></textarea>
-        </div>
-        <div class="ui bottom attached tab segment" data-tab="css">
-            <textarea class="codemirror-css" name="css"></textarea>
-        </div>
-        <div class="ui bottom attached tab segment" data-tab="css-compiled">
-            <textarea class="codemirror-css-compiled" name="css_compiled"></textarea>
-        </div>
-    </div>
+    #html-editor#
 </div>
-#modal-editor-html-visual#

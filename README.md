@@ -34,30 +34,30 @@ For detailed technical information and development guides, see:
 - **[📋 Changelog](CHANGELOG.md)** - Industry-standard changelog following Keep a Changelog format
 - **[📊 Full Development History](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Detailed commit-by-commit evolution
 
-### Latest Release: v2.4.0 (November 6, 2025)
+### Latest Release: v2.5.0 (November 12, 2025)
 
 **🎯 New Features:**
-- **Complete Project Deployment System via API OAuth**: Full automated project deployment system with OAuth 2.0 authentication and automatic token renewal
-- **OAuth 2.0 Server Implementation**: Complete OAuth 2.0 server with JWT validation, token renewal, and secure API endpoints
-- **One-Click Project Deployment**: Automated workflow for project updates, compression, and deployment with API integration
-- **Advanced Project Management**: Direct deployment to system root with automatic resource updates and database synchronization
-- **Robust Error Handling**: Comprehensive error handling with automatic rollback and retry mechanisms
-- **Security Enhancements**: OAuth 2.0 mandatory authentication, secure ZIP validation, and inline execution for production environments
+- **HTML Editor Library**: Centralized HTML editing functionality with reusable components across modules
+- **Template Selection System**: Complete page template selection with Fomantic UI cards interface
+- **Modular HTML Editor**: Unified editor system for pages, templates, and components with AI integration
+- **Multilingual Template System**: Template selection with language prioritization and target-based filtering
+- **Advanced Template Management**: Template system with thumbnails, metadata, and CodeMirror integration
+- **Component Reusability**: HTML editor components shared across admin-paginas and admin-templates modules
 
 **🔧 Technical Improvements:**
-- New OAuth 2.0 authentication system with automatic token renewal
-- Complete project deployment API endpoint (`/_api/project/update`)
-- Automated resource synchronization before deployment
-- Inline database updates (no shell_exec for production security)
-- ZIP structure detection and validation (100MB max, security checks)
-- Comprehensive test suite (6/6 tests passing)
+- New `html-editor.php` library with centralized editing functionality
+- Template selection with AJAX pagination and language filtering
+- Fomantic UI cards interface for improved template visualization
+- Unified CodeMirror integration across all editing modules
+- AI prompt integration with session management and positional insertion
+- Component-based architecture for better maintainability
 
 **📦 What's New:**
-- OAuth 2.0 server implementation with JWT validation
-- Complete project deployment system with API integration
-- Automated token renewal and error recovery
-- Enhanced security with inline execution and validation
-- Comprehensive documentation for deployment system
+- Centralized HTML editor library for cross-module reusability
+- Template selection system with visual cards interface
+- Enhanced AI integration with session-based content generation
+- Improved template management with metadata and thumbnails
+- Unified editing experience across admin modules
 
 ### Legacy Branches
 * **gestor-v1.16**: Latest stable release before v2.0.0
@@ -394,13 +394,13 @@ dev-environment/       # Docker development stack
 
 ### Latest Stable Releases
 
-**Gestor (Core System)**: `v2.4.0` *(Latest)*
-- ✅ **Complete Project Deployment System via API OAuth**: Full automated project deployment system with OAuth 2.0 authentication and automatic token renewal
-- ✅ **OAuth 2.0 Server Implementation**: Complete OAuth 2.0 server with JWT validation, token renewal, and secure API endpoints
-- ✅ **One-Click Project Deployment**: Automated workflow for project updates, compression, and deployment with API integration
-- ✅ **Advanced Project Management**: Direct deployment to system root with automatic resource updates and database synchronization
-- ✅ **Robust Error Handling**: Comprehensive error handling with automatic rollback and retry mechanisms
-- ✅ **Security Enhancements**: OAuth 2.0 mandatory authentication, secure ZIP validation, and inline execution for production environments
+**Gestor (Core System)**: `v2.5.0` *(Latest)*
+- ✅ **Centralized HTML Editor Library**: Centralized HTML editing functionality with reusable components across modules
+- ✅ **Visual Template Selection System**: Complete page template selection with Fomantic UI cards interface
+- ✅ **Modular HTML Editor**: Unified editor system for pages, templates, and components with AI integration
+- ✅ **Multilingual Template System**: Template selection with language prioritization and target-based filtering
+- ✅ **Advanced Template Management**: Template system with thumbnails, metadata, and CodeMirror integration
+- ✅ **Component Reusability**: HTML editor components shared across admin-paginas and admin-templates modules
 
 **Instalador (Installer)**: `v1.5.1` *(Latest)*
 - ✅ **AI System Support**: Installation prepared for new v2.3.0 AI features
@@ -412,6 +412,7 @@ dev-environment/       # Docker development stack
 - ✅ **Detailed Logs**: Complete tracking of the process
 
 ### Version History
+- **Gestor v2.5.0**: Centralized HTML editor library and visual template system with Fomantic UI cards interface, modular editor for pages/templates/components, multilingual template management with AI integration, component reusability across admin modules.
 - **Gestor v2.4.0**: Complete project deployment system via API OAuth with OAuth 2.0 authentication, automatic token renewal, one-click deployment workflow, advanced project management with direct root deployment, robust error handling with rollback, and security enhancements including mandatory OAuth authentication and secure ZIP validation.
 - **Gestor v2.3.0**: Complete AI system integration with Gemini API, dual prompt system, advanced CodeMirror interface, session management for content generation, multiple AI model support.
 - **Gestor v2.0.0**: Plugin System V2 with refactored architecture, automated templates, complete data tracking, textual IDs, broad system cleanup.

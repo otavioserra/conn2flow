@@ -32,30 +32,30 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 - **[📋 Changelog](CHANGELOG.md)** - Changelog padrão da indústria seguindo o formato Keep a Changelog
 - **[📊 Histórico Completo de Desenvolvimento](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Evolução completa commit-por-commit
 
-### Última Versão: v2.4.0 (6 Novembro 2025)
+### Última Versão: v2.5.0 (12 Novembro 2025)
 
 **🎯 Novas Funcionalidades:**
-- **Sistema Completo de Deploy de Projetos via API OAuth**: Sistema completo de deploy automatizado de projetos com autenticação OAuth 2.0 e renovação automática de tokens
-- **Implementação de Servidor OAuth 2.0**: Servidor OAuth 2.0 completo com validação JWT, renovação de tokens e endpoints de API seguros
-- **Deploy One-Click de Projetos**: Workflow automatizado para atualizações de projetos, compressão e deploy com integração de API
-- **Gerenciamento Avançado de Projetos**: Deploy direto na raiz do sistema com atualizações automáticas de recursos e sincronização de banco
-- **Tratamento Robusto de Erros**: Tratamento abrangente de erros com rollback automático e mecanismos de retry
-- **Melhorias de Segurança**: Autenticação OAuth 2.0 obrigatória, validação segura de ZIP e execução inline para ambientes de produção
+- **Biblioteca Editor HTML**: Funcionalidade centralizada de edição HTML com componentes reutilizáveis entre módulos
+- **Sistema de Seleção de Templates**: Seleção completa de templates de página com interface de cards Fomantic UI
+- **Editor HTML Modular**: Sistema unificado de edição para páginas, templates e componentes com integração IA
+- **Sistema de Templates Multilíngue**: Seleção de templates com priorização de idioma e filtragem baseada em alvo
+- **Gerenciamento Avançado de Templates**: Sistema de templates com miniaturas, metadados e integração CodeMirror
+- **Reutilização de Componentes**: Componentes de editor HTML compartilhados entre módulos admin-paginas e admin-templates
 
 **🔧 Melhorias Técnicas:**
-- Novo sistema de autenticação OAuth 2.0 com renovação automática de tokens
-- Endpoint completo de API de deploy de projetos (`/_api/project/update`)
-- Sincronização automática de recursos antes do deploy
-- Atualizações de banco inline (sem shell_exec para segurança de produção)
-- Detecção e validação de estrutura ZIP (máx. 100MB, verificações de segurança)
-- Suite completa de testes (6/6 testes passando)
+- Nova biblioteca `html-editor.php` com funcionalidade centralizada de edição
+- Seleção de templates com paginação AJAX e filtragem de idioma
+- Interface de cards Fomantic UI para melhor visualização de templates
+- Integração CodeMirror unificada em todos os módulos de edição
+- Integração IA com gerenciamento de sessão e inserção posicional
+- Arquitetura baseada em componentes para melhor manutenção
 
 **📦 O Que Há de Novo:**
-- Implementação de servidor OAuth 2.0 com validação JWT
-- Sistema completo de deploy de projetos com integração de API
-- Renovação automática de tokens e recuperação de erros
-- Segurança aprimorada com execução inline e validação
-- Documentação abrangente para sistema de deploy
+- Biblioteca centralizada de editor HTML para reutilização entre módulos
+- Sistema de seleção de templates com interface visual de cards
+- Integração IA aprimorada com geração de conteúdo baseada em sessão
+- Gerenciamento de templates aprimorado com metadados e miniaturas
+- Experiência de edição unificada entre módulos admin
 
 ### Branches Legadas
 * **gestor-v1.16**: Última versão estável antes da v2.0.0
@@ -395,13 +395,13 @@ dev-environment/       # Stack de desenvolvimento Docker
 
 ### Últimas Versões Estáveis
 
-**Gestor (Sistema Core)**: `v2.4.0` *(Mais Recente)*
-- ✅ **Sistema Completo de Deploy de Projetos via API OAuth**: Sistema completo de deploy automatizado de projetos com autenticação OAuth 2.0 e renovação automática de tokens
-- ✅ **Implementação de Servidor OAuth 2.0**: Servidor OAuth 2.0 completo com validação JWT, renovação de tokens e endpoints de API seguros
-- ✅ **Deploy One-Click de Projetos**: Workflow automatizado para atualizações de projetos, compressão e deploy com integração de API
-- ✅ **Gerenciamento Avançado de Projetos**: Deploy direto na raiz do sistema com atualizações automáticas de recursos e sincronização de banco
-- ✅ **Tratamento Robusto de Erros**: Tratamento abrangente de erros com rollback automático e mecanismos de retry
-- ✅ **Melhorias de Segurança**: Autenticação OAuth 2.0 obrigatória, validação segura de ZIP e execução inline para ambientes de produção
+**Gestor (Sistema Core)**: `v2.5.0` *(Mais Recente)*
+- ✅ **Biblioteca Editor HTML Centralizada**: Funcionalidade centralizada de edição HTML com componentes reutilizáveis entre módulos
+- ✅ **Sistema de Seleção de Templates Visual**: Seleção completa de templates de página com interface de cards Fomantic UI
+- ✅ **Editor HTML Modular**: Sistema unificado de edição para páginas, templates e componentes com integração IA
+- ✅ **Sistema de Templates Multilíngue**: Seleção de templates com priorização de idioma e filtragem baseada em alvo
+- ✅ **Gerenciamento Avançado de Templates**: Sistema de templates com miniaturas, metadados e integração CodeMirror
+- ✅ **Reutilização de Componentes**: Componentes de editor HTML compartilhados entre módulos admin-paginas e admin-templates
 
 **Instalador (Installer)**: `v1.5.1` *(Mais Recente)*
 - ✅ **Suporte ao Sistema de IA**: Instalação preparada para novos recursos de IA v2.3.0
@@ -413,6 +413,7 @@ dev-environment/       # Stack de desenvolvimento Docker
 - ✅ **Logs Detalhados**: Rastreamento completo do processo
 
 ### Histórico de Versões
+- **Gestor v2.5.0**: Biblioteca editor HTML centralizada e sistema de templates visual com interface de cards Fomantic UI, editor modular para páginas/templates/componentes, gerenciamento de templates multilíngue com integração IA, reutilização de componentes entre módulos admin.
 - **Gestor v2.4.0**: Sistema completo de deploy de projetos via API OAuth com autenticação OAuth 2.0, renovação automática de tokens, workflow de deploy one-click, gerenciamento avançado de projetos com deploy direto na raiz, tratamento robusto de erros com rollback, e melhorias de segurança incluindo autenticação OAuth obrigatória e validação segura de ZIP.
 - **Gestor v2.3.0**: Sistema de IA integrado completo com API Gemini, sistema dual de prompts, interface avançada CodeMirror, gerenciamento de sessão para geração de conteúdo, suporte a múltiplos modelos de IA.
 - **Gestor v2.0.0**: Sistema de plugins V2 com arquitetura refatorada, templates automatizados, rastreio completo de dados, IDs textuais, limpeza ampla do sistema.

@@ -1,9 +1,8 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.0.1",
     "bibliotecas": [
         "interface",
         "html",
-        "ia",
         "html-editor"
     ],
     "tabela": {
@@ -27,16 +26,6 @@
     ],
     "resources": {
         "pt-br": {
-            "selectDadosConteudo": [
-                {
-                    "texto": "Todas",
-                    "valor": "tudo"
-                },
-                {
-                    "texto": "Por Sessão",
-                    "valor": "sessao"
-                }
-            ],
             "layouts": [],
             "pages": [
                 {
@@ -61,11 +50,11 @@
                     "path": "admin-templates\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "3ae0ce9a69883b9af28458bc03d15186",
+                        "html": "a8b35939c1649423067756ccdf7ec545",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "8eb2039e36cb9d12a424a59a647a98c3"
+                        "combined": "35082516ae9330f0eca7eb86761e2339"
                     }
                 },
                 {
@@ -75,36 +64,15 @@
                     "path": "admin-templates\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "9c8876801a691d74e94852caa51bd541",
+                        "html": "76c0e32d1f4e0e3ed7b32423e72695f8",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "0cf9cd82f85ef2ad12d526d567a17b60"
+                        "combined": "703783f19b15b3299d13582cc224a647"
                     }
                 }
             ],
-            "components": [
-                {
-                    "name": "Modal Editor HTML Visual",
-                    "id": "modal-editor-html-visual",
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "95e3802f5909d038fd2748e9360f9326",
-                        "css": "",
-                        "combined": "95e3802f5909d038fd2748e9360f9326"
-                    }
-                },
-                {
-                    "name": "Template Prompts Controles",
-                    "id": "template-prompts-controles",
-                    "version": "1.2",
-                    "checksum": {
-                        "html": "89881a10d7836bf380833bf38e160f67",
-                        "css": "",
-                        "combined": "89881a10d7836bf380833bf38e160f67"
-                    }
-                }
-            ],
+            "components": [],
             "variables": [
                 {
                     "id": "form-name-label",
@@ -119,41 +87,6 @@
                 {
                     "id": "form-thumbnail-label",
                     "value": "Thumbnail",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-title-preview",
-                    "value": "Pré-Visualização da Template",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-button-preview",
-                    "value": "Salvar",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-desktop-preview",
-                    "value": "Computador",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-tablet-preview",
-                    "value": "Tablet",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-mobile-preview",
-                    "value": "Smartphone",
-                    "type": "string"
-                },
-                {
-                    "id": "button-back-tooltip",
-                    "value": "Clique no botão para voltar.",
-                    "type": "string"
-                },
-                {
-                    "id": "button-back-value",
-                    "value": "Voltar",
                     "type": "string"
                 },
                 {
@@ -175,40 +108,10 @@
                     "id": "form-template-content-label",
                     "value": "Conteúdo do Template",
                     "type": "string"
-                },
-                {
-                    "id": "form-css-tooltip",
-                    "value": "Clique para abrir o CSS",
-                    "type": "string"
-                },
-                {
-                    "id": "form-css-label",
-                    "value": "CSS",
-                    "type": "string"
-                },
-                {
-                    "id": "form-html-tooltip",
-                    "value": "Clique para abrir o código HTML > Body. Parte visível da página dentro da tag <body>",
-                    "type": "string"
-                },
-                {
-                    "id": "form-html-label",
-                    "value": "HTML > Body",
-                    "type": "string"
                 }
             ]
         },
         "en": {
-            "selectDadosConteudo": [
-                {
-                    "texto": "All",
-                    "valor": "tudo"
-                },
-                {
-                    "texto": "Per Session",
-                    "valor": "sessao"
-                }
-            ],
             "layouts": [],
             "pages": [
                 {
@@ -233,11 +136,11 @@
                     "path": "admin-templates\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "3ae0ce9a69883b9af28458bc03d15186",
+                        "html": "a8b35939c1649423067756ccdf7ec545",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "8eb2039e36cb9d12a424a59a647a98c3"
+                        "combined": "35082516ae9330f0eca7eb86761e2339"
                     }
                 },
                 {
@@ -247,36 +150,15 @@
                     "path": "admin-templates\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "9c8876801a691d74e94852caa51bd541",
+                        "html": "76c0e32d1f4e0e3ed7b32423e72695f8",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "0cf9cd82f85ef2ad12d526d567a17b60"
+                        "combined": "703783f19b15b3299d13582cc224a647"
                     }
                 }
             ],
-            "components": [
-                {
-                    "name": "Visual HTML Modal Editor",
-                    "id": "modal-editor-html-visual",
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "95e3802f5909d038fd2748e9360f9326",
-                        "css": "",
-                        "combined": "95e3802f5909d038fd2748e9360f9326"
-                    }
-                },
-                {
-                    "name": "Template Prompts Controls",
-                    "id": "template-prompts-controles",
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "f1972b1524b0d784fd0cad70914685a6",
-                        "css": "",
-                        "combined": "f1972b1524b0d784fd0cad70914685a6"
-                    }
-                }
-            ],
+            "components": [],
             "variables": [
                 {
                     "id": "form-name-label",
@@ -291,41 +173,6 @@
                 {
                     "id": "form-thumbnail-label",
                     "value": "Thumbnail",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-title-preview",
-                    "value": "Template Preview",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-button-preview",
-                    "value": "Save",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-desktop-preview",
-                    "value": "Computer",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-tablet-preview",
-                    "value": "Tablet",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-mobile-preview",
-                    "value": "Smartphone",
-                    "type": "string"
-                },
-                {
-                    "id": "button-back-tooltip",
-                    "value": "Click the button to go back.",
-                    "type": "string"
-                },
-                {
-                    "id": "button-back-value",
-                    "value": "Back",
                     "type": "string"
                 },
                 {
@@ -346,26 +193,6 @@
                 {
                     "id": "form-template-content-label",
                     "value": "Template Content",
-                    "type": "string"
-                },
-                {
-                    "id": "form-css-tooltip",
-                    "value": "Click to open CSS",
-                    "type": "string"
-                },
-                {
-                    "id": "form-css-label",
-                    "value": "CSS",
-                    "type": "string"
-                },
-                {
-                    "id": "form-html-tooltip",
-                    "value": "Click to open HTML > Body. Visible part of the page within the <body> tag",
-                    "type": "string"
-                },
-                {
-                    "id": "form-html-label",
-                    "value": "HTML > Body",
                     "type": "string"
                 }
             ]

@@ -236,7 +236,7 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "configuracao",
-        "id": "form-value-placeholder",
+        "id": "html-editor-form-value-placeholder",
         "valor": "Valor",
         "tipo": "string",
         "grupo": null,
@@ -418,6 +418,249 @@
         "modulo": null,
         "id": "html-editor-overlay-title",
         "valor": "Clique para editar este elemento",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-select-all",
+        "valor": "Página Inteira",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-select-session",
+        "valor": "Uma Sessão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-modal-title-preview",
+        "valor": "Pré-Visualização da Página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-modal-button-preview",
+        "valor": "Salvar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-modal-desktop-preview",
+        "valor": "Computador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-modal-tablet-preview",
+        "valor": "Tablet",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-modal-mobile-preview",
+        "valor": "Smartphone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-button-back-tooltip",
+        "valor": "Clique no botão para voltar.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-button-back-value",
+        "valor": "Voltar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-css-compiled-tooltip",
+        "valor": "Clique para abrir o CSS automático gerado pelo sistema.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-css-compiled-label",
+        "valor": "CSS Automático",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-html-extra-head-tooltip",
+        "valor": "Clique para abrir HTML extra para o cabeçalho da página. Parte dentro da tag <head>",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-html-extra-head-label",
+        "valor": "HTML > Cabeçalho",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-page-view-tooltip",
+        "valor": "Clique para abrir a visualização da página.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-page-view-label",
+        "valor": "Visualização",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-ai-assistent-tooltip",
+        "valor": "Clique para abrir o assistente IA.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-ai-assistent-label",
+        "valor": "Assistente IA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-templates-label",
+        "valor": "Modelos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-templates-tooltip",
+        "valor": "Clique para abrir os modelos disponíveis.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-page-code-tooltip",
+        "valor": "Clique para abrir o editor de código da página.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-page-code-label",
+        "valor": "Código",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-page-visual-editor-tooltip",
+        "valor": "Clique para abrir o editor visual da página.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-page-visual-editor-label",
+        "valor": "Editor Visual",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-html-tooltip",
+        "valor": "Clique para abrir o código HTML > Body. Parte visível da página dentro da tag <body>",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-html-label",
+        "valor": "HTML > Body",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-css-tooltip",
+        "valor": "Clique para abrir o CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-form-css-label",
+        "valor": "CSS",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -659,7 +902,7 @@
     {
         "linguagem_codigo": "en",
         "modulo": "configuracao",
-        "id": "form-value-placeholder",
+        "id": "html-editor-form-value-placeholder",
         "valor": "Value",
         "tipo": "string",
         "grupo": null,
@@ -841,6 +1084,249 @@
         "modulo": null,
         "id": "html-editor-overlay-title",
         "valor": "Click to edit this element",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-select-all",
+        "valor": "All Page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-select-session",
+        "valor": "One Session",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-modal-title-preview",
+        "valor": "Page Preview",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-modal-button-preview",
+        "valor": "Save",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-modal-desktop-preview",
+        "valor": "Computer",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-modal-tablet-preview",
+        "valor": "Tablet",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-modal-mobile-preview",
+        "valor": "Smartphone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-button-back-tooltip",
+        "valor": "Click the button to go back.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-button-back-value",
+        "valor": "Back",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-css-compiled-tooltip",
+        "valor": "Click to open the automatic CSS generated by the system.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-css-compiled-label",
+        "valor": "Automatic CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-html-extra-head-tooltip",
+        "valor": "Click to open extra HTML for the page Header. Part within the <head> tag",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-html-extra-head-label",
+        "valor": "HTML > Header",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-page-view-tooltip",
+        "valor": "Click to open the page Visualization.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-page-view-label",
+        "valor": "Visualization",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-ai-assistent-tooltip",
+        "valor": "Click to open the AI assistant.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-ai-assistent-label",
+        "valor": "AI Assistant",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-templates-tooltip",
+        "valor": "Click to open the available templates.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-templates-label",
+        "valor": "Templates",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-page-code-tooltip",
+        "valor": "Click to open the page code editor.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-page-code-label",
+        "valor": "Code",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-page-visual-editor-tooltip",
+        "valor": "Click to open the page visual editor.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-page-visual-editor-label",
+        "valor": "Visual Editor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-html-tooltip",
+        "valor": "Click to open HTML > Body. Visible part of the page within the <body> tag",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-html-label",
+        "valor": "HTML > Body",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-css-tooltip",
+        "valor": "Click to open CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-form-css-label",
+        "valor": "CSS",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3926,15 +4412,6 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
-        "id": "form-html-editor-tooltip",
-        "valor": "Clique para abrir o Editor HTML",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
         "id": "form-html-editor-label",
         "valor": "Editor HTML",
         "tipo": "string",
@@ -3946,42 +4423,6 @@
         "modulo": "admin-paginas",
         "id": "form-page-content-label",
         "valor": "Conteúdo da Página",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-html-tooltip",
-        "valor": "Clique para abrir o código HTML > Body. Parte visível da página dentro da tag <body>",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-html-label",
-        "valor": "HTML > Body",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-css-tooltip",
-        "valor": "Clique para abrir o CSS",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-css-label",
-        "valor": "CSS",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4124,15 +4565,6 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
-        "id": "form-editor-html-switch-label",
-        "valor": "Editor HTML Habilitar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
         "id": "editor-html-switch",
         "valor": null,
         "tipo": "bool",
@@ -4187,123 +4619,6 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-paginas",
-        "id": "form-button-preview",
-        "valor": "Pré-Visualizar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "tooltip-button-preview",
-        "valor": "Clique para pré-visualizar a página",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-button-show-editor",
-        "valor": "Mostrar Editor de Código",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "tooltip-button-show-editor",
-        "valor": "Clique para Mostrar o Editor de Código",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-button-hide-editor",
-        "valor": "Ocultar Editor de Código",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "tooltip-button-hide-editor",
-        "valor": "Clique para Ocultar o Editor de Código",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "modal-title-preview",
-        "valor": "Pré-Visualização da Página",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "modal-button-preview",
-        "valor": "Salvar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "modal-desktop-preview",
-        "valor": "Computador",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "modal-tablet-preview",
-        "valor": "Tablet",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "modal-mobile-preview",
-        "valor": "Smartphone",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "button-back-tooltip",
-        "valor": "Clique no botão para voltar.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "button-back-value",
-        "valor": "Voltar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
         "id": "lista-ambos-label",
         "valor": "Ambos",
         "tipo": "string",
@@ -4338,114 +4653,6 @@
         "descricao": null
     },
     {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-css-compiled-tooltip",
-        "valor": "Clique para abrir o CSS automático gerado pelo sistema.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-css-compiled-label",
-        "valor": "CSS Automático",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-html-extra-head-tooltip",
-        "valor": "Clique para abrir HTML extra para o cabeçalho da página. Parte dentro da tag <head>",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-html-extra-head-label",
-        "valor": "HTML > Cabeçalho",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-page-view-tooltip",
-        "valor": "Clique para abrir a visualização da página.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-page-view-label",
-        "valor": "Visualização",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-ai-assistent-tooltip",
-        "valor": "Clique para abrir o assistente IA.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-ai-assistent-label",
-        "valor": "Assistente IA",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-page-code-tooltip",
-        "valor": "Clique para abrir o editor de código da página.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-page-code-label",
-        "valor": "Código",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-page-visual-editor-tooltip",
-        "valor": "Clique para abrir o editor visual da página.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-paginas",
-        "id": "form-page-visual-editor-label",
-        "valor": "Editor Visual",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
         "linguagem_codigo": "en",
         "modulo": "admin-paginas",
         "id": "form-name-label",
@@ -4466,15 +4673,6 @@
     {
         "linguagem_codigo": "en",
         "modulo": "admin-paginas",
-        "id": "form-html-editor-tooltip",
-        "valor": "Click to open HTML Editor",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
         "id": "form-html-editor-label",
         "valor": "HTML Editor",
         "tipo": "string",
@@ -4486,42 +4684,6 @@
         "modulo": "admin-paginas",
         "id": "form-page-content-label",
         "valor": "Page Content",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-html-tooltip",
-        "valor": "Click to open HTML > Body. Visible part of the page within the <body> tag",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-html-label",
-        "valor": "HTML > Body",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-css-tooltip",
-        "valor": "Click to open CSS",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-css-label",
-        "valor": "CSS",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4664,15 +4826,6 @@
     {
         "linguagem_codigo": "en",
         "modulo": "admin-paginas",
-        "id": "form-editor-html-switch-label",
-        "valor": "Enable HTML Editor",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
         "id": "editor-html-switch",
         "valor": null,
         "tipo": "bool",
@@ -4727,123 +4880,6 @@
     {
         "linguagem_codigo": "en",
         "modulo": "admin-paginas",
-        "id": "form-button-preview",
-        "valor": "Preview",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "tooltip-button-preview",
-        "valor": "Click to preview the page",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-button-show-editor",
-        "valor": "Show Code Editor",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "tooltip-button-show-editor",
-        "valor": "Click to Show the Code Editor",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-button-hide-editor",
-        "valor": "Hide Code Editor",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "tooltip-button-hide-editor",
-        "valor": "Click to Hide the Code Editor",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "modal-title-preview",
-        "valor": "Page Preview",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "modal-button-preview",
-        "valor": "Save",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "modal-desktop-preview",
-        "valor": "Computer",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "modal-tablet-preview",
-        "valor": "Tablet",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "modal-mobile-preview",
-        "valor": "Smartphone",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "button-back-tooltip",
-        "valor": "Click the button to go back.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "button-back-value",
-        "valor": "Back",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
         "id": "lista-ambos-label",
         "valor": "Both",
         "tipo": "string",
@@ -4873,114 +4909,6 @@
         "modulo": "admin-paginas",
         "id": "lista-tipo-label",
         "valor": "Type",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-css-compiled-tooltip",
-        "valor": "Click to open the automatic CSS generated by the system.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-css-compiled-label",
-        "valor": "Automatic CSS",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-html-extra-head-tooltip",
-        "valor": "Click to open extra HTML for the page Header. Part within the <head> tag",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-html-extra-head-label",
-        "valor": "HTML > Header",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-page-view-tooltip",
-        "valor": "Click to open the page preview.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-page-view-label",
-        "valor": "Preview",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-ai-assistent-tooltip",
-        "valor": "Click to open the AI assistant.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-ai-assistent-label",
-        "valor": "AI Assistant",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-page-code-tooltip",
-        "valor": "Click to open the page code editor.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-page-code-label",
-        "valor": "Code",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-page-visual-editor-tooltip",
-        "valor": "Click to open the page visual editor.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-paginas",
-        "id": "form-page-visual-editor-label",
-        "valor": "Visual Editor",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5375,69 +5303,6 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-templates",
-        "id": "modal-title-preview",
-        "valor": "Pré-Visualização da Template",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-templates",
-        "id": "modal-button-preview",
-        "valor": "Salvar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-templates",
-        "id": "modal-desktop-preview",
-        "valor": "Computador",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-templates",
-        "id": "modal-tablet-preview",
-        "valor": "Tablet",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-templates",
-        "id": "modal-mobile-preview",
-        "valor": "Smartphone",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-templates",
-        "id": "button-back-tooltip",
-        "valor": "Clique no botão para voltar.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-templates",
-        "id": "button-back-value",
-        "valor": "Voltar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-templates",
         "id": "form-target-label",
         "valor": "Alvo",
         "tipo": "string",
@@ -5472,42 +5337,6 @@
         "descricao": null
     },
     {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-templates",
-        "id": "form-css-tooltip",
-        "valor": "Clique para abrir o CSS",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-templates",
-        "id": "form-css-label",
-        "valor": "CSS",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-templates",
-        "id": "form-html-tooltip",
-        "valor": "Clique para abrir o código HTML > Body. Parte visível da página dentro da tag <body>",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-templates",
-        "id": "form-html-label",
-        "valor": "HTML > Body",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
         "linguagem_codigo": "en",
         "modulo": "admin-templates",
         "id": "form-name-label",
@@ -5530,69 +5359,6 @@
         "modulo": "admin-templates",
         "id": "form-thumbnail-label",
         "valor": "Thumbnail",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-templates",
-        "id": "modal-title-preview",
-        "valor": "Template Preview",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-templates",
-        "id": "modal-button-preview",
-        "valor": "Save",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-templates",
-        "id": "modal-desktop-preview",
-        "valor": "Computer",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-templates",
-        "id": "modal-tablet-preview",
-        "valor": "Tablet",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-templates",
-        "id": "modal-mobile-preview",
-        "valor": "Smartphone",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-templates",
-        "id": "button-back-tooltip",
-        "valor": "Click the button to go back.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-templates",
-        "id": "button-back-value",
-        "valor": "Back",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5629,42 +5395,6 @@
         "modulo": "admin-templates",
         "id": "form-template-content-label",
         "valor": "Template Content",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-templates",
-        "id": "form-css-tooltip",
-        "valor": "Click to open CSS",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-templates",
-        "id": "form-css-label",
-        "valor": "CSS",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-templates",
-        "id": "form-html-tooltip",
-        "valor": "Click to open HTML > Body. Visible part of the page within the <body> tag",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-templates",
-        "id": "form-html-label",
-        "valor": "HTML > Body",
         "tipo": "string",
         "grupo": null,
         "descricao": null

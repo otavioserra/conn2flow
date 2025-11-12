@@ -1,9 +1,8 @@
 {
-    "versao": "1.2.0",
+    "versao": "1.2.2",
     "bibliotecas": [
         "interface",
         "html",
-        "ia",
         "html-editor"
     ],
     "tabela": {
@@ -35,16 +34,6 @@
                 {
                     "texto": "Página",
                     "valor": "pagina"
-                }
-            ],
-            "selectDadosConteudo": [
-                {
-                    "texto": "Todas",
-                    "valor": "tudo"
-                },
-                {
-                    "texto": "Por Sessão",
-                    "valor": "sessao"
                 }
             ],
             "ai_prompts_targets": [
@@ -124,16 +113,6 @@
             ],
             "components": [
                 {
-                    "name": "Modal Editor HTML Visual",
-                    "id": "modal-editor-html-visual",
-                    "version": "1.14",
-                    "checksum": {
-                        "html": "95e3802f5909d038fd2748e9360f9326",
-                        "css": "",
-                        "combined": "95e3802f5909d038fd2748e9360f9326"
-                    }
-                },
-                {
                     "name": "Lista Página ou Sistema",
                     "id": "lista-pagina-ou-sistema",
                     "version": "1.4",
@@ -141,16 +120,6 @@
                         "html": "d0e62efa4ab45262de04a3304cde584a",
                         "css": "",
                         "combined": "d0e62efa4ab45262de04a3304cde584a"
-                    }
-                },
-                {
-                    "name": "Página Prompts Controles",
-                    "id": "pagina-prompts-controles",
-                    "version": "1.13",
-                    "checksum": {
-                        "html": "89881a10d7836bf380833bf38e160f67",
-                        "css": "",
-                        "combined": "89881a10d7836bf380833bf38e160f67"
                     }
                 }
             ],
@@ -173,11 +142,11 @@
                 {
                     "name": "Admin Páginas - Editar",
                     "id": "admin-paginas-editar",
-                    "version": "1.17",
+                    "version": "1.22",
                     "checksum": {
-                        "html": "62c5e4ef78be8a368b1db28ba17c0efa",
+                        "html": "2260ea647e5801389491427add84c002",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "d3eea74b950c18f2fad4511ac5007929"
+                        "combined": "233066a0b7ddd1b4e4ea3023b114f979"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/editar\/",
@@ -187,11 +156,11 @@
                 {
                     "name": "Admin Páginas - Adicionar",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.16",
+                    "version": "1.20",
                     "checksum": {
-                        "html": "259c558cfdcfdf04a93f304b61fab211",
+                        "html": "0b9f4533a2812f6b36fce41b04627752",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "e5cf045f31f5ca2e7226425c03ba9eeb"
+                        "combined": "c7bd6fa61446f35d629d19cd07721b71"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/adicionar\/",
@@ -211,11 +180,6 @@
                     "type": "string"
                 },
                 {
-                    "id": "form-html-editor-tooltip",
-                    "value": "Clique para abrir o Editor HTML",
-                    "type": "string"
-                },
-                {
                     "id": "form-html-editor-label",
                     "value": "Editor HTML",
                     "type": "string"
@@ -223,26 +187,6 @@
                 {
                     "id": "form-page-content-label",
                     "value": "Conteúdo da Página",
-                    "type": "string"
-                },
-                {
-                    "id": "form-html-tooltip",
-                    "value": "Clique para abrir o código HTML > Body. Parte visível da página dentro da tag <body>",
-                    "type": "string"
-                },
-                {
-                    "id": "form-html-label",
-                    "value": "HTML > Body",
-                    "type": "string"
-                },
-                {
-                    "id": "form-css-tooltip",
-                    "value": "Clique para abrir o CSS",
-                    "type": "string"
-                },
-                {
-                    "id": "form-css-label",
-                    "value": "CSS",
                     "type": "string"
                 },
                 {
@@ -321,11 +265,6 @@
                     "type": "string"
                 },
                 {
-                    "id": "form-editor-html-switch-label",
-                    "value": "Editor HTML Habilitar",
-                    "type": "string"
-                },
-                {
                     "id": "editor-html-switch",
                     "value": null,
                     "type": "bool"
@@ -356,71 +295,6 @@
                     "type": "string"
                 },
                 {
-                    "id": "form-button-preview",
-                    "value": "Pré-Visualizar",
-                    "type": "string"
-                },
-                {
-                    "id": "tooltip-button-preview",
-                    "value": "Clique para pré-visualizar a página",
-                    "type": "string"
-                },
-                {
-                    "id": "form-button-show-editor",
-                    "value": "Mostrar Editor de Código",
-                    "type": "string"
-                },
-                {
-                    "id": "tooltip-button-show-editor",
-                    "value": "Clique para Mostrar o Editor de Código",
-                    "type": "string"
-                },
-                {
-                    "id": "form-button-hide-editor",
-                    "value": "Ocultar Editor de Código",
-                    "type": "string"
-                },
-                {
-                    "id": "tooltip-button-hide-editor",
-                    "value": "Clique para Ocultar o Editor de Código",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-title-preview",
-                    "value": "Pré-Visualização da Página",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-button-preview",
-                    "value": "Salvar",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-desktop-preview",
-                    "value": "Computador",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-tablet-preview",
-                    "value": "Tablet",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-mobile-preview",
-                    "value": "Smartphone",
-                    "type": "string"
-                },
-                {
-                    "id": "button-back-tooltip",
-                    "value": "Clique no botão para voltar.",
-                    "type": "string"
-                },
-                {
-                    "id": "button-back-value",
-                    "value": "Voltar",
-                    "type": "string"
-                },
-                {
                     "id": "lista-ambos-label",
                     "value": "Ambos",
                     "type": "string"
@@ -439,66 +313,6 @@
                     "id": "lista-tipo-label",
                     "value": "Tipo",
                     "type": "string"
-                },
-                {
-                    "id": "form-css-compiled-tooltip",
-                    "value": "Clique para abrir o CSS automático gerado pelo sistema.",
-                    "type": "string"
-                },
-                {
-                    "id": "form-css-compiled-label",
-                    "value": "CSS Automático",
-                    "type": "string"
-                },
-                {
-                    "id": "form-html-extra-head-tooltip",
-                    "value": "Clique para abrir HTML extra para o cabeçalho da página. Parte dentro da tag <head>",
-                    "type": "string"
-                },
-                {
-                    "id": "form-html-extra-head-label",
-                    "value": "HTML > Cabeçalho",
-                    "type": "string"
-                },
-                {
-                    "id": "form-page-view-tooltip",
-                    "value": "Clique para abrir a visualização da página.",
-                    "type": "string"
-                },
-                {
-                    "id": "form-page-view-label",
-                    "value": "Visualização",
-                    "type": "string"
-                },
-                {
-                    "id": "form-ai-assistent-tooltip",
-                    "value": "Clique para abrir o assistente IA.",
-                    "type": "string"
-                },
-                {
-                    "id": "form-ai-assistent-label",
-                    "value": "Assistente IA",
-                    "type": "string"
-                },
-                {
-                    "id": "form-page-code-tooltip",
-                    "value": "Clique para abrir o editor de código da página.",
-                    "type": "string"
-                },
-                {
-                    "id": "form-page-code-label",
-                    "value": "Código",
-                    "type": "string"
-                },
-                {
-                    "id": "form-page-visual-editor-tooltip",
-                    "value": "Clique para abrir o editor visual da página.",
-                    "type": "string"
-                },
-                {
-                    "id": "form-page-visual-editor-label",
-                    "value": "Editor Visual",
-                    "type": "string"
                 }
             ]
         },
@@ -511,16 +325,6 @@
                 {
                     "texto": "Page",
                     "valor": "pagina"
-                }
-            ],
-            "selectDadosConteudo": [
-                {
-                    "texto": "All",
-                    "valor": "tudo"
-                },
-                {
-                    "texto": "Per Session",
-                    "valor": "sessao"
                 }
             ],
             "ai_prompts_targets": [
@@ -618,11 +422,11 @@
                 {
                     "name": "Admin Pages - Edit",
                     "id": "admin-paginas-editar",
-                    "version": "1.13",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "62c5e4ef78be8a368b1db28ba17c0efa",
+                        "html": "2260ea647e5801389491427add84c002",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "d3eea74b950c18f2fad4511ac5007929"
+                        "combined": "233066a0b7ddd1b4e4ea3023b114f979"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/editar\/",
@@ -632,11 +436,11 @@
                 {
                     "name": "Admin Pages - Add",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.14",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "259c558cfdcfdf04a93f304b61fab211",
+                        "html": "0b9f4533a2812f6b36fce41b04627752",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "e5cf045f31f5ca2e7226425c03ba9eeb"
+                        "combined": "c7bd6fa61446f35d629d19cd07721b71"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas\/adicionar\/",
@@ -646,16 +450,6 @@
             ],
             "components": [
                 {
-                    "name": "Visual HTML Modal Editor",
-                    "id": "modal-editor-html-visual",
-                    "version": "1.14",
-                    "checksum": {
-                        "html": "95e3802f5909d038fd2748e9360f9326",
-                        "css": "",
-                        "combined": "95e3802f5909d038fd2748e9360f9326"
-                    }
-                },
-                {
                     "name": "Page or System List",
                     "id": "lista-pagina-ou-sistema",
                     "version": "1.4",
@@ -663,16 +457,6 @@
                         "html": "d0e62efa4ab45262de04a3304cde584a",
                         "css": "",
                         "combined": "d0e62efa4ab45262de04a3304cde584a"
-                    }
-                },
-                {
-                    "name": "Page Prompts Controls",
-                    "id": "pagina-prompts-controles",
-                    "version": "1.8",
-                    "checksum": {
-                        "html": "f3b7f06c557b364064453abf426db4bc",
-                        "css": "",
-                        "combined": "f3b7f06c557b364064453abf426db4bc"
                     }
                 }
             ],
@@ -688,11 +472,6 @@
                     "type": "string"
                 },
                 {
-                    "id": "form-html-editor-tooltip",
-                    "value": "Click to open HTML Editor",
-                    "type": "string"
-                },
-                {
                     "id": "form-html-editor-label",
                     "value": "HTML Editor",
                     "type": "string"
@@ -700,26 +479,6 @@
                 {
                     "id": "form-page-content-label",
                     "value": "Page Content",
-                    "type": "string"
-                },
-                {
-                    "id": "form-html-tooltip",
-                    "value": "Click to open HTML > Body. Visible part of the page within the <body> tag",
-                    "type": "string"
-                },
-                {
-                    "id": "form-html-label",
-                    "value": "HTML > Body",
-                    "type": "string"
-                },
-                {
-                    "id": "form-css-tooltip",
-                    "value": "Click to open CSS",
-                    "type": "string"
-                },
-                {
-                    "id": "form-css-label",
-                    "value": "CSS",
                     "type": "string"
                 },
                 {
@@ -798,11 +557,6 @@
                     "type": "string"
                 },
                 {
-                    "id": "form-editor-html-switch-label",
-                    "value": "Enable HTML Editor",
-                    "type": "string"
-                },
-                {
                     "id": "editor-html-switch",
                     "value": null,
                     "type": "bool"
@@ -833,71 +587,6 @@
                     "type": "string"
                 },
                 {
-                    "id": "form-button-preview",
-                    "value": "Preview",
-                    "type": "string"
-                },
-                {
-                    "id": "tooltip-button-preview",
-                    "value": "Click to preview the page",
-                    "type": "string"
-                },
-                {
-                    "id": "form-button-show-editor",
-                    "value": "Show Code Editor",
-                    "type": "string"
-                },
-                {
-                    "id": "tooltip-button-show-editor",
-                    "value": "Click to Show the Code Editor",
-                    "type": "string"
-                },
-                {
-                    "id": "form-button-hide-editor",
-                    "value": "Hide Code Editor",
-                    "type": "string"
-                },
-                {
-                    "id": "tooltip-button-hide-editor",
-                    "value": "Click to Hide the Code Editor",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-title-preview",
-                    "value": "Page Preview",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-button-preview",
-                    "value": "Save",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-desktop-preview",
-                    "value": "Computer",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-tablet-preview",
-                    "value": "Tablet",
-                    "type": "string"
-                },
-                {
-                    "id": "modal-mobile-preview",
-                    "value": "Smartphone",
-                    "type": "string"
-                },
-                {
-                    "id": "button-back-tooltip",
-                    "value": "Click the button to go back.",
-                    "type": "string"
-                },
-                {
-                    "id": "button-back-value",
-                    "value": "Back",
-                    "type": "string"
-                },
-                {
                     "id": "lista-ambos-label",
                     "value": "Both",
                     "type": "string"
@@ -915,66 +604,6 @@
                 {
                     "id": "lista-tipo-label",
                     "value": "Type",
-                    "type": "string"
-                },
-                {
-                    "id": "form-css-compiled-tooltip",
-                    "value": "Click to open the automatic CSS generated by the system.",
-                    "type": "string"
-                },
-                {
-                    "id": "form-css-compiled-label",
-                    "value": "Automatic CSS",
-                    "type": "string"
-                },
-                {
-                    "id": "form-html-extra-head-tooltip",
-                    "value": "Click to open extra HTML for the page Header. Part within the <head> tag",
-                    "type": "string"
-                },
-                {
-                    "id": "form-html-extra-head-label",
-                    "value": "HTML > Header",
-                    "type": "string"
-                },
-                {
-                    "id": "form-page-view-tooltip",
-                    "value": "Click to open the page preview.",
-                    "type": "string"
-                },
-                {
-                    "id": "form-page-view-label",
-                    "value": "Preview",
-                    "type": "string"
-                },
-                {
-                    "id": "form-ai-assistent-tooltip",
-                    "value": "Click to open the AI assistant.",
-                    "type": "string"
-                },
-                {
-                    "id": "form-ai-assistent-label",
-                    "value": "AI Assistant",
-                    "type": "string"
-                },
-                {
-                    "id": "form-page-code-tooltip",
-                    "value": "Click to open the page code editor.",
-                    "type": "string"
-                },
-                {
-                    "id": "form-page-code-label",
-                    "value": "Code",
-                    "type": "string"
-                },
-                {
-                    "id": "form-page-visual-editor-tooltip",
-                    "value": "Click to open the page visual editor.",
-                    "type": "string"
-                },
-                {
-                    "id": "form-page-visual-editor-label",
-                    "value": "Visual Editor",
                     "type": "string"
                 }
             ]

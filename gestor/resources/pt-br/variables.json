@@ -158,7 +158,7 @@
         "modulo": "configuracao"
     },
     {
-        "id": "form-value-placeholder",
+        "id": "html-editor-form-value-placeholder",
         "value": "Valor",
         "type": "string",
         "modulo": "configuracao"
@@ -261,6 +261,141 @@
     {
         "id": "html-editor-overlay-title",
         "value": "Clique para editar este elemento",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-select-all",
+        "value": "Página Inteira",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-select-session",
+        "value": "Uma Sessão",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-modal-title-preview",
+        "value": "Pré-Visualização da Página",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-modal-button-preview",
+        "value": "Salvar",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-modal-desktop-preview",
+        "value": "Computador",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-modal-tablet-preview",
+        "value": "Tablet",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-modal-mobile-preview",
+        "value": "Smartphone",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-button-back-tooltip",
+        "value": "Clique no botão para voltar.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-button-back-value",
+        "value": "Voltar",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-css-compiled-tooltip",
+        "value": "Clique para abrir o CSS automático gerado pelo sistema.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-css-compiled-label",
+        "value": "CSS Automático",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-html-extra-head-tooltip",
+        "value": "Clique para abrir HTML extra para o cabeçalho da página. Parte dentro da tag <head>",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-html-extra-head-label",
+        "value": "HTML > Cabeçalho",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-page-view-tooltip",
+        "value": "Clique para abrir a visualização da página.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-page-view-label",
+        "value": "Visualização",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-ai-assistent-tooltip",
+        "value": "Clique para abrir o assistente IA.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-ai-assistent-label",
+        "value": "Assistente IA",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-templates-label",
+        "value": "Modelos",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-templates-tooltip",
+        "value": "Clique para abrir os modelos disponíveis.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-page-code-tooltip",
+        "value": "Clique para abrir o editor de código da página.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-page-code-label",
+        "value": "Código",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-page-visual-editor-tooltip",
+        "value": "Clique para abrir o editor visual da página.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-page-visual-editor-label",
+        "value": "Editor Visual",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-html-tooltip",
+        "value": "Clique para abrir o código HTML > Body. Parte visível da página dentro da tag <body>",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-html-label",
+        "value": "HTML > Body",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-css-tooltip",
+        "value": "Clique para abrir o CSS",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-form-css-label",
+        "value": "CSS",
         "type": "string"
     }
 ]

@@ -1,0 +1,6 @@
+.modelos-container{
+    min-height: 930px;
+}
+.modelo-card{
+    display: none;
+}

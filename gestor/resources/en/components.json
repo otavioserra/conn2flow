@@ -292,11 +292,11 @@
     {
         "name": "AI Prompt",
         "id": "ia-prompt",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "788c7beb58694a0ccae126aafe874b0c",
+            "html": "5806b935ecb5ef6950479dda494497f9",
             "css": "c0e38fffa143bbb5fcd30ca4541d5179",
-            "combined": "1d4b5aaea015d600129b738f3036d08f"
+            "combined": "928298f2ada71f828696b5b6e9b13e4b"
         }
     },
     {
@@ -310,13 +310,53 @@
         }
     },
     {
+        "name": "HTML Editor",
+        "id": "html-editor",
+        "version": "1.2",
+        "checksum": {
+            "html": "2fcfecbb05a474bda930a32b2513ec16",
+            "css": "",
+            "combined": "2fcfecbb05a474bda930a32b2513ec16"
+        }
+    },
+    {
         "name": "HTML Editor Modal",
         "id": "html-editor-modal",
-        "version": "1.2",
+        "version": "1.1",
         "checksum": {
             "html": "852ddfd4a90198962338af5fb8d22243",
             "css": "",
             "combined": "852ddfd4a90198962338af5fb8d22243"
+        }
+    },
+    {
+        "name": "HTML Editor Page Modification",
+        "id": "html-editor-page-modification",
+        "version": "1.1",
+        "checksum": {
+            "html": "6b7c5bd9e82944aa32d3c70c4149f62e",
+            "css": "",
+            "combined": "6b7c5bd9e82944aa32d3c70c4149f62e"
+        }
+    },
+    {
+        "name": "HTML Editor Visual Modal",
+        "id": "html-editor-visual-modal",
+        "version": "1.1",
+        "checksum": {
+            "html": "95e3802f5909d038fd2748e9360f9326",
+            "css": "",
+            "combined": "95e3802f5909d038fd2748e9360f9326"
+        }
+    },
+    {
+        "name": "HTML Editor Templates",
+        "id": "html-editor-modelos",
+        "version": "1.1",
+        "checksum": {
+            "html": "9b71d0738e82fdf93d30159c9b000489",
+            "css": "5006dea1658dc2acdfc8501d7af4ae45",
+            "combined": "470b4a0d33439ec2ed5fd47a554c6778"
         }
     }
 ]

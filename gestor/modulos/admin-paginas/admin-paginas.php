@@ -120,87 +120,17 @@ function admin_paginas_adicionar(){
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
 	}
 
-	// ===== Pré-Visualização
-
-	$modalPagina = gestor_componente(Array(
-		'id' => 'modal-editor-html-visual',
-		'modulo' => $_GESTOR['modulo-id'],
-	));
-
-	$modalPagina = modelo_var_troca($modalPagina,'#title#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-title-preview')));
-	$modalPagina = modelo_var_troca($modalPagina,'#desktop#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-desktop-preview')));
-	$modalPagina = modelo_var_troca($modalPagina,'#tablet#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-tablet-preview')));
-	$modalPagina = modelo_var_troca($modalPagina,'#mobile#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-mobile-preview')));
-	$modalPagina = modelo_var_troca($modalPagina,'#button-tooltip#',gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-title')));
-	$modalPagina = modelo_var_troca($modalPagina,'#button-value#',gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-value')));
-	$modalPagina = modelo_var_troca($modalPagina,'#button-back-tooltip#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'button-back-tooltip')));
-	$modalPagina = modelo_var_troca($modalPagina,'#button-back-value#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'button-back-value')));
-
-	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#modal-editor-html-visual#',$modalPagina);
-
-	// ===== Prompt IA
-
-	$pagina_prompt_controles = gestor_componente(Array(
-		'id' => 'pagina-prompts-controles',
-		'modulo' => $_GESTOR['modulo-id'],
-	));
-
-	$selectDadosConteudo = $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosConteudo'];
-
-	$select_prompt_page = '';
-	if($selectDadosConteudo){
-		foreach($selectDadosConteudo as $option){
-			$select_prompt_page .= '<option value="'.$option['valor'].'"'.($option['valor'] == 'tudo'? ' selected="selected"':'').'>'.htmlspecialchars($option['texto']).'</option>';
-		}
-	}
-
-	$pagina_prompt_controles = modelo_var_troca_tudo($pagina_prompt_controles,'#select-prompt-page#',$select_prompt_page);
-
-	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- ia-componente -->',ia_renderizar_prompt(
-		Array(
-			'alvo' => 'paginas',
-			'prompt_controls' => $pagina_prompt_controles
-		)
-	));
-
 	// ===== Permissão de páginas
 	
 	if(!gestor_acesso('permissao-pagina')){
 		$cel_nome = 'permissao-pagina'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 	}	
 	
-	// ===== Inclusão do CodeMirror
+	// Incluir o Componente Editor HTML na página
 
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/theme/tomorrow-night-bright.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.css" />');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/selection/active-line.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/searchcursor.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/search.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/scroll/annotatescrollbar.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/jump-to-line.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/edit/matchbrackets.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/xml/xml.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/css/css.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/htmlmixed/htmlmixed.js"></script>');
-
-	// Incluir Editor HTML
-	
-	html_editor_include();
-
-	// ===== Inclusão Componentes
-
-	interface_componentes_incluir(Array(
-		'componente' => Array(
-			'modal-alerta',
-		)
-	));
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
+		'alvos' => 'paginas',
+	]));
 
 	// ===== Inclusão Módulo JS
 	
@@ -296,6 +226,7 @@ function admin_paginas_adicionar(){
 					'tipo' => 'select',
 					'id' => 'framework-css',
 					'nome' => 'framework_css',
+					'selectClass' => 'frameworkCSS',
 					'valor_selecionado' => 'fomantic-ui',
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 					'dados' => $modulo['selectDadosFrameworkCSS'],
@@ -546,31 +477,6 @@ function admin_paginas_editar(){
 		$cel_nome = 'permissao-pagina'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 	}	
 	
-	// ===== Inclusão do CodeMirror
-
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/theme/tomorrow-night-bright.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.css" />');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/selection/active-line.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/searchcursor.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/search.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/scroll/annotatescrollbar.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/jump-to-line.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/edit/matchbrackets.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/xml/xml.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/css/css.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/htmlmixed/htmlmixed.js"></script>');
-
-	// Incluir Editor HTML
-	
-	html_editor_include();
-
 	// ===== Selecionar dados do banco de dados
 	
 	$retorno_bd = banco_select_editar
@@ -626,81 +532,14 @@ function admin_paginas_editar(){
 		$variaveisTrocarDepois['pagina-html'] = $html;
 		$variaveisTrocarDepois['pagina-html-extra-head'] = $html_extra_head;
 
-		// ===== Prompt IA
+		// Incluir o Componente Editor HTML na página
 
-		$pagina_prompt_controles = gestor_componente(Array(
-			'id' => 'pagina-prompts-controles',
-			'modulo' => $_GESTOR['modulo-id'],
-		));
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
+			'editar' => true,
+			'modulo' => $modulo,
+			'alvos' => 'paginas',
+		]));
 
-		$selectDadosConteudo = $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosConteudo'];
-
-		$select_prompt_page = '';
-		if($selectDadosConteudo){
-			foreach($selectDadosConteudo as $option){
-				$select_prompt_page .= '<option value="'.$option['valor'].'"'.($option['valor'] == 'tudo'? ' selected="selected"':'').'>'.htmlspecialchars($option['texto']).'</option>';
-			}
-		}
-
-		$pagina_prompt_controles = modelo_var_troca_tudo($pagina_prompt_controles,'#select-prompt-page#',$select_prompt_page);
-
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- ia-componente -->',ia_renderizar_prompt(
-			Array(
-				'alvo' => 'paginas',
-				'prompt_controls' => $pagina_prompt_controles
-			)
-		));
-
-		// ===== Pré-Visualização
-
-		$modalPagina = gestor_componente(Array(
-			'id' => 'modal-editor-html-visual',
-			'modulo' => $_GESTOR['modulo-id'],
-		));
-
-		$modalPagina = modelo_var_troca($modalPagina,'#title#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-title-preview')));
-		$modalPagina = modelo_var_troca($modalPagina,'#desktop#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-desktop-preview')));
-		$modalPagina = modelo_var_troca($modalPagina,'#tablet#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-tablet-preview')));
-		$modalPagina = modelo_var_troca($modalPagina,'#mobile#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-mobile-preview')));
-		$modalPagina = modelo_var_troca($modalPagina,'#button-tooltip#',gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-title')));
-		$modalPagina = modelo_var_troca($modalPagina,'#button-value#',gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-value')));
-		$modalPagina = modelo_var_troca($modalPagina,'#button-back-tooltip#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'button-back-tooltip')));
-		$modalPagina = modelo_var_troca($modalPagina,'#button-back-value#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'button-back-value')));
-
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#modal-editor-html-visual#',$modalPagina);
-
-		// ===== Dropdown com todos os backups
-		
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-editor-html-backup#',interface_backup_campo_select(Array(
-			'campo' => 'html',
-			'callback' => 'adminPaginasBackupCampo',
-			'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-		)));
-		
-		$_GESTOR['pagina'] = modelo_var_troca_fim($_GESTOR['pagina'],'#pagina-html-backup#',interface_backup_campo_select(Array(
-			'campo' => 'html',
-			'callback' => 'adminPaginasBackupCampo',
-			'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-		)));
-		
-		$_GESTOR['pagina'] = modelo_var_troca_fim($_GESTOR['pagina'],'#pagina-css-backup#',interface_backup_campo_select(Array(
-			'campo' => 'css',
-			'callback' => 'adminPaginasBackupCampo',
-			'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-		)));
-		
-		$_GESTOR['pagina'] = modelo_var_troca_fim($_GESTOR['pagina'],'#pagina-css-compiled-backup#',interface_backup_campo_select(Array(
-			'campo' => 'css_compiled',
-			'callback' => 'adminPaginasBackupCampo',
-			'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-		)));
-		
-		$_GESTOR['pagina'] = modelo_var_troca_fim($_GESTOR['pagina'],'#pagina-html-extra-head-backup#',interface_backup_campo_select(Array(
-			'campo' => 'html_extra_head',
-			'callback' => 'adminPaginasBackupCampo',
-			'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-		)));
-		
 		// ===== Popular os metaDados
 		
 		$status_atual = (isset($retorno_bd[$modulo['tabela']['status']]) ? $retorno_bd[$modulo['tabela']['status']] : '');
@@ -834,6 +673,7 @@ function admin_paginas_editar(){
 					'tipo' => 'select',
 					'id' => 'framework-css',
 					'nome' => 'framework_css',
+					'selectClass' => 'frameworkCSS',
 					'valor_selecionado' => $framework_css,
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 					'dados' => $modulo['selectDadosFrameworkCSS'],
@@ -1023,76 +863,6 @@ function admin_paginas_ajax_editor_html_switch(){
 	);
 }
 
-function admin_paginas_ajax_ia_requests(){
-	global $_GESTOR;
-
-	// Pegar dados anterior da página
-	$html = $_REQUEST['data']['html'] ?? '';
-	$css = $_REQUEST['data']['css'] ?? '';
-	$framework_css = $_REQUEST['data']['framework_css'] ?? '';
-	$sessao_id = $_REQUEST['data']['sessao_id'] ?? '';
-	$sessao_opcao = $_REQUEST['data']['sessao_opcao'] ?? '';
-
-	// Modificar o modo IA antes de enviar
-	$modo = $_REQUEST['mode'] ?? '';
-
-	$modo = modelo_var_troca_tudo($modo,'{{html}}',$html);
-	$modo = modelo_var_troca_tudo($modo,'{{css}}',$css);
-	$modo = modelo_var_troca_tudo($modo,'{{framework_css}}',$framework_css);
-
-	// Preparar prompt completo
-	$prompt = $_REQUEST['prompt'] ?? '';
-	$prompt = $modo . "\n\n" . $prompt;
-
-	// Pegar o modelo e servidor id
-	$server_id = $_REQUEST['server_id'] ?? '';
-	$model = $_REQUEST['model'] ?? null;
-
-	// Enviar request para o servidor de IA
-	$retorno = ia_enviar_prompt([
-		'servidor_id' => $server_id,
-		'prompt' => $prompt,
-		'modelo' => $model,
-	]);
-
-	// Pegar HTML e CSS do retorno
-	$html_gerado = '';
-	$css_gerado = '';
-	
-	if($retorno['status'] === 'success' && isset($retorno['data']['texto_gerado'])){
-		$texto_resposta = $retorno['data']['texto_gerado'];
-		
-		// Extrair HTML entre ```html e ```
-		if(preg_match('/```html\s*(.*?)\s*```/s', $texto_resposta, $matches_html)){
-			$html_gerado = trim($matches_html[1]);
-		}
-		
-		// Extrair CSS entre ```css e ```
-		if(preg_match('/```css\s*(.*?)\s*```/s', $texto_resposta, $matches_css)){
-			$css_gerado = trim($matches_css[1]);
-		}
-	} else {
-		// Em caso de erro, retornar mensagem
-		$_GESTOR['ajax-json'] = Array(
-			'status' => 'error',
-			'message' => $retorno['message'] ?? gestor_variaveis(Array('modulo' => 'admin-ia','id' => 'requests-error-message')),
-		);
-		return;
-	}
-
-	// Incluir HTML e CSS gerado no retorno
-	$retorno['data']['html_gerado'] = $html_gerado;
-	$retorno['data']['css_gerado'] = $css_gerado;
-	$retorno['data']['sessao_id'] = $sessao_id;
-	$retorno['data']['sessao_opcao'] = $sessao_opcao;
-
-	// Retorno do AJAX
-	$_GESTOR['ajax-json'] = Array(
-		'status' => 'Ok',
-		'data' => $retorno['data'],
-	);
-}
-
 // ==== Start
 
 function admin_paginas_start(){
@@ -1102,12 +872,9 @@ function admin_paginas_start(){
 	
 	if($_GESTOR['ajax']){
 		interface_ajax_iniciar();
-
-		ia_ajax_interface();
 		
 		switch($_GESTOR['ajax-opcao']){
 			case 'editor-html-switch': admin_paginas_ajax_editor_html_switch(); break;
-			case 'ia-requests': admin_paginas_ajax_ia_requests(); break;
 		}
 		
 		interface_ajax_finalizar();
