@@ -75,6 +75,7 @@ upload_zip() {
     local zip_file="$1"
     local api_url="$2"
     local token="$3"
+    local project_target="$4"
 
     if [ ! -f "$zip_file" ]; then
         log_error "Arquivo ZIP não encontrado: $zip_file"
@@ -88,6 +89,7 @@ upload_zip() {
     # Usar curl para fazer upload multipart/form-data
     response=$(curl -s -w "\n%{http_code}" \
         -H "Authorization: Bearer $token" \
+        -H "X-Project-ID: $project_target" \
         -F "project_zip=@$zip_file" \
         "$api_url")
 
@@ -224,7 +226,7 @@ API_URL=$(normalize_url "$PROJECT_URL" "/_api/project/update")
 log "Iniciando deploy via API..."
 
 # Fazer upload com tentativa de renovação de token
-if upload_zip "$ZIP_FILE" "$API_URL" "$ACCESS_TOKEN"; then
+if upload_zip "$ZIP_FILE" "$API_URL" "$ACCESS_TOKEN" "$PROJECT_TARGET"; then
     log_success "Deploy concluído com sucesso!"
     # Limpar arquivo temporário
     rm -f "$ZIP_FILE"
@@ -258,7 +260,7 @@ else
                 log "Tentando deploy novamente com token renovado..."
 
                 # Tentar upload novamente
-                if upload_zip "$ZIP_FILE" "$API_URL" "$ACCESS_TOKEN"; then
+                if upload_zip "$ZIP_FILE" "$API_URL" "$ACCESS_TOKEN" "$PROJECT_TARGET"; then
                     log_success "Deploy realizado com sucesso após renovação!"
                     # Limpar arquivo temporário
                     rm -f "$ZIP_FILE"

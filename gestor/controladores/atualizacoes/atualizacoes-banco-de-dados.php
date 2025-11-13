@@ -12,6 +12,7 @@
  *
  * Argumentos de linha de comando suportados:
  *
+ * --project         : Define o ID do projeto para atualizações feitas via deploy de projeto.
  * --debug           : Ativa modo detalhado de logs e exibe operações passo a passo.
  * --log-diff        : Exibe detalhes das diferenças encontradas entre banco e JSON.
  * --dry-run         : Simula operações sem alterar o banco (apenas exibe o que seria feito).
@@ -254,6 +255,7 @@ function descobrirPK(string $tabela, array $row): string {
 function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $logDiffs = true, bool $simulate = false): array {
     if (empty($registros)) return ['inserted'=>0,'updated'=>0,'same'=>0];
     $debug = !empty($GLOBALS['CLI_OPTS']['debug']);
+    $project = $GLOBALS['CLI_OPTS']['project'] ?? null;
 
     // Descobrir colunas existentes na tabela para filtrar campos inexistentes vindos do JSON
     static $schemaCache = [];
@@ -387,6 +389,16 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 $same++;
                 continue;
             }
+
+            // Proteção de projeto para tabelas específicas
+            if (isset($preserveMap[$tabela])) {
+                if (!$project && !empty($exist['project'])) {
+                    if (empty($exist['user_modified']) || (int)$exist['user_modified'] !== 1) {
+                        $same++;
+                        continue;
+                    }
+                }
+            }
             foreach ($row as $c=>$vNew) {
                 if ($c === $pkDeclarada) continue;
                 // Filtrar colunas inexistentes no schema (exceto map de linguagem)
@@ -412,6 +424,10 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 if ($changedPreserved) { if (isset($exist['system_updated'])||isset($row['system_updated'])) $diff['system_updated']=1; if ($debug) log_disco("USER_MODIFIED_PRESERVADO $tabela pk=$pkVal", $GLOBALS['LOG_FILE_DB']); }
             }
             if ($diff) {
+                // Marcar projeto se deploy de projeto para tabelas específicas
+                if (isset($preserveMap[$tabela]) && $project) {
+                    $diff['project'] = $project;
+                }
                 if ($simulate) { log_disco("SIMULATE_UPDATE $tabela pk=$pkVal campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE_DB']); }
                 else { $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff))); $sql="UPDATE `$tabela` SET $sets WHERE `$pkDeclarada`=:pk"; $stmt=$pdo->prepare($sql); $params=$diff; $params['pk']=$pkVal; $stmt->execute($params);}            
                 if ($logDiffs) { $pairs=[];$lim=0; foreach ($diff as $c=>$v){$pairs[]=$c.' ['.encLog($oldVals[$c]??null).' => '.encLog($v).']'; if(++$lim>=10){$pairs[]='...';break;}} log_disco(tr('_diff_update_detail',['tabela'=>$tabela,'pk'=>$pkVal,'campos'=>implode(', ',$pairs)]),$GLOBALS['LOG_FILE_DB']); }
@@ -422,6 +438,11 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             $normalizeLangRow($row);
             if (is_array($allowedCols)) { $row = array_intersect_key($row, $allowedCols); }
             $cols=array_keys($row); if(!$cols){ $same++; continue; }
+            // Marcar projeto se deploy de projeto para tabelas específicas
+            if (isset($preserveMap[$tabela]) && $project) {
+                $row['project'] = $project;
+                $cols[] = 'project';
+            }
             $placeholders=':'.implode(',:',$cols); $sql="INSERT INTO `$tabela`(".implode(',',array_map(fn($c)=>"`$c`",$cols)).") VALUES ($placeholders)";
             if ($simulate) { log_disco("SIMULATE_INSERT $tabela pk=$pkVal",$GLOBALS['LOG_FILE_DB']); $inserted++; continue; }
             $stmt=$pdo->prepare($sql); $params=[]; foreach ($row as $c=>$v){$params[':'.$c]=$v;} try { $stmt->execute($params); $inserted++; } catch (PDOException $e){ if (stripos($e->getMessage(),'Duplicate entry')!==false){ log_disco("DUP_SKIP $tabela pk=$pkVal msg=".encLog($e->getMessage()),$GLOBALS['LOG_FILE_DB']); $same++; } else { log_disco("ERROR_INSERT $tabela pk=$pkVal ex=".encLog($e->getMessage()),$GLOBALS['LOG_FILE_DB']); throw $e; } }
@@ -494,6 +515,16 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         if (isset($dbIndex[$k])) {
             $exist = $dbIndex[$k];
             $diff=[]; $oldVals=[];
+
+            // Proteção de projeto para tabelas específicas
+            if (isset($preserveMap[$tabela])) {
+                if (!$project && !empty($exist['project'])) {
+                    if (empty($exist['user_modified']) || (int)$exist['user_modified'] !== 1) {
+                        $same++;
+                        continue;
+                    }
+                }
+            }
             foreach ($row as $c=>$vNew) {
                 // Ignorar campos de controle que não fazem parte do JSON natural
                 if ($c === 'user_modified' && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (int)$vNew!==1) continue;
@@ -511,6 +542,10 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             if (isset($exist['user_modified']) && (int)$exist['user_modified']===1 && isset($preserveMap[$tabela])) {
                 $changedPreserved=false; foreach ($preserveMap[$tabela] as $campo){ if(array_key_exists($campo,$diff)){ if($tabela==='variaveis' && $campo==='valor'){ if(isset($exist['value_updated'])||isset($row['value_updated'])) $diff['value_updated']=$diff[$campo]; } else { $dest=$campo.'_updated'; if(isset($exist[$dest])||isset($row[$dest])) $diff[$dest]=$diff[$campo]; } unset($diff[$campo]); $changedPreserved=true; }} if($changedPreserved){ if(isset($exist['system_updated'])||isset($row['system_updated'])) $diff['system_updated']=1; if ($debug) log_disco("USER_MODIFIED_PRESERVADO_NAT tabela=$tabela chave=$k", $GLOBALS['LOG_FILE_DB']); }}
             if ($diff) {
+                // Marcar projeto se deploy de projeto para tabelas específicas
+                if (isset($preserveMap[$tabela]) && $project) {
+                    $diff['project'] = $project;
+                }
                 if ($simulate) { log_disco("SIMULATE_UPDATE_NAT tabela=$tabela chave=$k campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE_DB']); }
                 else {
                     // Atualiza via chave natural (WHERE pelos campos da chave) ou via PK se disponível
@@ -568,6 +603,16 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             if ($existFallback) {
                 // Atualiza registro existente preenchendo linguagem faltante (auto-correção de bug histórico)
                 $exist = $existFallback; $diff=[]; $oldVals=[];
+
+                // Proteção de projeto para tabelas específicas
+                if (isset($preserveMap[$tabela])) {
+                    if (!$project && !empty($exist['project'])) {
+                        if (empty($exist['user_modified']) || (int)$exist['user_modified'] !== 1) {
+                            $same++;
+                            continue;
+                        }
+                    }
+                }
                 $normalizeLangRow($row);
                 foreach ($row as $c=>$vNew) {
                     $vOld = $exist[$c] ?? null;
@@ -586,6 +631,10 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                     $diff['linguagem_codigo'] = $diff['language']; unset($diff['language']);
                 }
                 if ($diff) {
+                    // Marcar projeto se deploy de projeto para tabelas específicas
+                    if (isset($preserveMap[$tabela]) && $project) {
+                        $diff['project'] = $project;
+                    }
                     if ($simulate) { log_disco("SIMULATE_UPDATE_FALLBACK_NAT tabela=$tabela fallback=$fallbackKey campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE_DB']); }
                     else {
                         // WHERE por PK numérica se existir senão por combinação fallback + language IS NULL
@@ -610,6 +659,11 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 if (is_array($allowedCols)) { $row = array_intersect_key($row, $allowedCols); }
                 $cols = array_keys($row);
                 $colsFiltradas = array_filter($cols, fn($c)=>!preg_match('/^id_/', $c)); // evitar enviar id_paginas etc caso apareça
+                // Marcar projeto se deploy de projeto para tabelas específicas
+                if (isset($preserveMap[$tabela]) && $project) {
+                    $row['project'] = $project;
+                    $colsFiltradas[] = 'project';
+                }
                 $placeholders = ':'.implode(',:',$colsFiltradas);
                 $sql = "INSERT INTO `$tabela` (".implode(',',array_map(fn($c)=>"`$c`",$colsFiltradas)).") VALUES ($placeholders)";
                 if ($simulate) { log_disco("SIMULATE_INSERT_NAT tabela=$tabela chave=$k", $GLOBALS['LOG_FILE_DB']); $inserted++; }

@@ -180,6 +180,9 @@ function api_project_update() {
     // Requer autenticação
     api_authenticate(true);
 
+    // Obter project ID do header
+    $project_id = $_SERVER['HTTP_X_PROJECT_ID'] ?? null;
+
     $method = $_SERVER['REQUEST_METHOD'];
 
     if ($method !== 'POST') {
@@ -255,7 +258,7 @@ function api_project_update() {
         api_copy_directory($project_content_dir, $project_path);
 
         // Executar atualização de banco de dados do projeto (inline, sem shell_exec)
-        api_executar_atualizacao_banco($project_path);
+        api_executar_atualizacao_banco($project_path, $project_id);
 
         // Limpar arquivos temporários
         api_remove_directory($extract_dir);
@@ -281,7 +284,7 @@ function api_project_update() {
 
 // =========================== Funções Auxiliares para Manipulação de Arquivos
 
-function api_executar_atualizacao_banco($project_path) {
+function api_executar_atualizacao_banco($project_path, $project_id = null) {
     global $_GESTOR, $_BANCO;
 
     // Caminho para o script de atualização de banco
@@ -304,7 +307,8 @@ function api_executar_atualizacao_banco($project_path) {
         'force-all' => false,
         'tables' => null,
         'log-diff' => false,
-        'dry-run' => false
+        'dry-run' => false,
+        'project' => $project_id ?? null,
     ];
 
     // Definir opções globais para o script

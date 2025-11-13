@@ -178,7 +178,7 @@ function atualizarArquivosOrigem(array $map): void {
     foreach ($languages as $lang) {
         $langInfo = $map['languages'][$lang] ?? null; if(!$langInfo||!isset($langInfo['data'])) continue;
         $dataFiles = $langInfo['data'];
-        foreach ([ 'layouts'=>'layouts', 'components'=>'components', 'pages'=>'pages' ] as $tipoKey=>$dirName) {
+        foreach ([ 'layouts'=>'layouts', 'components'=>'components', 'pages'=>'pages', 'templates'=>'templates' ] as $tipoKey=>$dirName) {
             if (empty($dataFiles[$tipoKey])) continue; // sem arquivo
             $jsonPath = $RESOURCES_DIR.$lang.DIRECTORY_SEPARATOR.$dataFiles[$tipoKey];
             $lista = jsonRead($jsonPath); if(!is_array($lista)) continue;
@@ -219,7 +219,7 @@ function atualizarArquivosOrigem(array $map): void {
             $changedModule = false;
             foreach ($languages as $lang) {
                 if (empty($data['resources'][$lang])) continue; // idioma não presente
-                foreach (['layouts','components','pages'] as $tipo) {
+                foreach (['layouts','components','pages','templates'] as $tipo) {
                     if (empty($data['resources'][$lang][$tipo]) || !is_array($data['resources'][$lang][$tipo])) continue;
                     foreach ($data['resources'][$lang][$tipo] as &$item) {
                         $id = $item['id'] ?? null; if(!$id) continue;
