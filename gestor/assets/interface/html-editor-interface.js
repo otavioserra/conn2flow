@@ -716,8 +716,8 @@ $(document).ready(function () {
         let total = 0;
         const html = CodeMirrorHtml.getDoc().getValue();
 
-        // Contar a quantidade total de tag sessions no HTML e retornar esse valor.
-        const regex = /<session\b[^>]*>([\s\S]*?)<\/session>/gi;
+        // Contar a quantidade total de tag sections no HTML e retornar esse valor.
+        const regex = /<section\b[^>]*>([\s\S]*?)<\/section>/gi;
         let match;
         while ((match = regex.exec(html)) !== null) {
             total++;
@@ -729,7 +729,7 @@ $(document).ready(function () {
     function menuDeSessoes() {
         const html = CodeMirrorHtml.getDoc().getValue();
 
-        const regex = /<session\b[^>]*>([\s\S]*?)<\/session>/gi;
+        const regex = /<section\b[^>]*>([\s\S]*?)<\/section>/gi;
         let match;
 
         let sessoes = [];
@@ -833,12 +833,12 @@ $(document).ready(function () {
             let html_completo = CodeMirrorHtml.getDoc().getValue();
 
             // Marcar sessão alvo com data-menu-alvo="true" para manter a seleção
-            html_completo = html_completo.replace(new RegExp(`(<session\\b[^>]*data-id=["']${sessao_id}["'][^>]*)>`, 'i'), '$1 data-menu-alvo="true">');
+            html_completo = html_completo.replace(new RegExp(`(<section\\b[^>]*data-id=["']${sessao_id}["'][^>]*)>`, 'i'), '$1 data-menu-alvo="true">');
 
             switch (sessao_opcao) {
                 case 'target':
                     // Extrair o outerHTML da sessão.
-                    const regex = new RegExp(`<session\\b[^>]*data-id=["']${sessao_id}["'][^>]*>([\\s\\S]*?)<\\/session>`, 'i');
+                    const regex = new RegExp(`<section\\b[^>]*data-id=["']${sessao_id}["'][^>]*>([\\s\\S]*?)<\\/section>`, 'i');
                     const match = html_completo.match(regex);
 
                     if (match && match[0]) {
@@ -850,12 +850,12 @@ $(document).ready(function () {
                     break;
                 case 'new-before':
                     // Colocar o html_gerado logo antes da sessão alvo
-                    const regexBefore = new RegExp(`(<session\\b[^>]*data-id=["']${sessao_id}["'][^>]*>([\\s\\S]*?)<\\/session>)`, 'i');
+                    const regexBefore = new RegExp(`(<section\\b[^>]*data-id=["']${sessao_id}["'][^>]*>([\\s\\S]*?)<\\/section>)`, 'i');
                     html_gerado = html_completo.replace(regexBefore, html_gerado + '\n$1');
                     break;
                 case 'new-after':
                     // Colocar o html_gerado logo depois da sessão alvo
-                    const regexAfter = new RegExp(`(<session\\b[^>]*data-id=["']${sessao_id}["'][^>]*>([\\s\\S]*?)<\\/session>)`, 'i');
+                    const regexAfter = new RegExp(`(<section\\b[^>]*data-id=["']${sessao_id}["'][^>]*>([\\s\\S]*?)<\\/section>)`, 'i');
                     html_gerado = html_completo.replace(regexAfter, '$1\n' + html_gerado);
                     break;
             }
@@ -869,7 +869,7 @@ $(document).ready(function () {
         // Atualizar os `data-id` das sessões para evitar duplicidade. Começar sempre no `1` e ir somando.
         let sessionCounter = 1;
         let oldIds = [];
-        html_gerado = html_gerado.replace(/<session\b[^>]*>/gi, function (match) {
+        html_gerado = html_gerado.replace(/<section\b[^>]*>/gi, function (match) {
             const idMatch = match.match(/data-id=["']([^"']+)["']/i);
             const oldId = idMatch ? idMatch[1] : null;
             oldIds.push(oldId);
@@ -877,7 +877,7 @@ $(document).ready(function () {
             if (match.includes('data-id=')) {
                 return match.replace(/data-id=["'][^"']*["']/i, 'data-id="' + sessionCounter++ + '"');
             } else {
-                return match.replace('<session', '<session data-id="' + sessionCounter++ + '"');
+                return match.replace('<section', '<section data-id="' + sessionCounter++ + '"');
             }
         });
 
@@ -890,7 +890,7 @@ $(document).ready(function () {
 
         // Agora, após o menu ser atualizado pelo evento change, selecionar a sessão alvo e remover o atributo
         const htmlAtual = CodeMirrorHtml.getDoc().getValue();
-        const alvoMatch = htmlAtual.match(/<session\b[^>]*data-menu-alvo="true"[^>]*>/i);
+        const alvoMatch = htmlAtual.match(/<section\b[^>]*data-menu-alvo="true"[^>]*>/i);
         if (alvoMatch) {
             const alvoTag = alvoMatch[0];
             const idMatch = alvoTag.match(/data-id=["']([^"']+)["']/i);
@@ -929,7 +929,7 @@ $(document).ready(function () {
             let html = CodeMirrorHtml.getDoc().getValue();
 
             // Remover a sessão do HTML
-            const regex = new RegExp(`<session\\b[^>]*data-id=["']${sessionId}["'][^>]*>[\\s\\S]*?<\\/session>`, 'i');
+            const regex = new RegExp(`<section\\b[^>]*data-id=["']${sessionId}["'][^>]*>[\\s\\S]*?<\\/section>`, 'i');
             html = html.replace(regex, '');
 
             // Remover linhas em branco no início e fim do código.
@@ -991,7 +991,7 @@ $(document).ready(function () {
                 if (sessao_opcao == 'target') {
                     const html_completo = CodeMirrorHtml.getDoc().getValue();
                     // Extrair o outerHTML da sessão.
-                    const regex = new RegExp(`<session\\b[^>]*data-id=["']${id_sessao}["'][^>]*>([\\s\\S]*?)<\\/session>`, 'i');
+                    const regex = new RegExp(`<section\\b[^>]*data-id=["']${id_sessao}["'][^>]*>([\\s\\S]*?)<\\/section>`, 'i');
                     const match = html_completo.match(regex);
 
                     if (match && match[0]) {
