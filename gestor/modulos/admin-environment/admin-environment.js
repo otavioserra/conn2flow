@@ -80,7 +80,9 @@ $(document).ready(function () {
             email_from_name: $('#email_from_name').val(),
             email_reply_to: $('#email_reply_to').val(),
             email_reply_to_name: $('#email_reply_to_name').val(),
-            language_default: $('#language_default').val()
+            language_default: $('#language_default').val(),
+            language_widget_active: $('#language_widget_active').parent().checkbox('is checked') ? 'true' : 'false',
+            language_auto_detect: $('#language_auto_detect').parent().checkbox('is checked') ? 'true' : 'false'
         };
 
         $.ajax({

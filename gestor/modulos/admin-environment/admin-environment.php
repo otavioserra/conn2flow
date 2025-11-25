@@ -26,7 +26,9 @@ function admin_environment_env_read(){
         'EMAIL_FROM_NAME' => $_ENV['EMAIL_FROM_NAME'] ?? '',
         'EMAIL_REPLY_TO' => $_ENV['EMAIL_REPLY_TO'] ?? '',
         'EMAIL_REPLY_TO_NAME' => $_ENV['EMAIL_REPLY_TO_NAME'] ?? '',
-        'LANGUAGE_DEFAULT' => $_ENV['LANGUAGE_DEFAULT'] ?? ''
+        'LANGUAGE_DEFAULT' => $_ENV['LANGUAGE_DEFAULT'] ?? '',
+        'LANGUAGE_WIDGET_ACTIVE' => $_ENV['LANGUAGE_WIDGET_ACTIVE'] ?? 'false',
+        'LANGUAGE_AUTO_DETECT' => $_ENV['LANGUAGE_AUTO_DETECT'] ?? 'false'
     ];
     
     return $envData;
@@ -215,14 +217,18 @@ function admin_environment_raiz(){
         'email_from_name' => $envData['EMAIL_FROM_NAME'] ?? '',
         'email_reply_to' => $envData['EMAIL_REPLY_TO'] ?? '',
         'email_reply_to_name' => $envData['EMAIL_REPLY_TO_NAME'] ?? '',
-        'language_default' => $envData['LANGUAGE_DEFAULT'] ?? 'pt-br'
+        'language_default' => $envData['LANGUAGE_DEFAULT'] ?? 'pt-br',
+        'language_widget_active' => $envData['LANGUAGE_WIDGET_ACTIVE'] ?? 'false',
+        'language_auto_detect' => $envData['LANGUAGE_AUTO_DETECT'] ?? 'false'
     ];
 
     // ===== Gerar opções de idioma
+
+    $languages = $_GESTOR['languages'] ?? [];
     
     $languageOptions = '';
-    foreach ($modulo['systemLanguages'] as $lang) {
-        $label = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'language-label-' . $lang));
+    foreach ($languages as $lang) {
+        $label = gestor_variaveis(Array('id' => 'language-label-' . $lang));
         $selected = ($dados['language_default'] == $lang) ? ' selected' : '';
         $languageOptions .= '<option value="' . $lang . '"' . $selected . '>' . $label . '</option>';
     }
@@ -269,6 +275,8 @@ function admin_environment_raiz(){
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-from-name#', $dados['email_from_name']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-reply-to#', $dados['email_reply_to']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-reply-to-name#', $dados['email_reply_to_name']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#language-widget-active-checked#', $dados['language_widget_active'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#language-auto-detect-checked#', $dados['language_auto_detect'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#language-options#', $dados['language-options']);
 }
 
@@ -329,6 +337,8 @@ function admin_environment_ajax_salvar(){
     if(isset($_REQUEST['email_reply_to'])) $data['EMAIL_REPLY_TO'] = $_REQUEST['email_reply_to'];
     if(isset($_REQUEST['email_reply_to_name'])) $data['EMAIL_REPLY_TO_NAME'] = $_REQUEST['email_reply_to_name'];
     if(isset($_REQUEST['language_default'])) $data['LANGUAGE_DEFAULT'] = $_REQUEST['language_default'];
+    if(isset($_REQUEST['language_widget_active'])) $data['LANGUAGE_WIDGET_ACTIVE'] = $_REQUEST['language_widget_active'];
+    if(isset($_REQUEST['language_auto_detect'])) $data['LANGUAGE_AUTO_DETECT'] = $_REQUEST['language_auto_detect'];
     
     // Salvar no .env
     $success = admin_environment_env_write($data);

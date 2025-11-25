@@ -269,8 +269,8 @@
         "type": "string"
     },
     {
-        "id": "html-editor-select-session",
-        "value": "One Session",
+        "id": "html-editor-select-section",
+        "value": "One Section",
         "type": "string"
     },
     {
@@ -396,6 +396,16 @@
     {
         "id": "html-editor-form-css-label",
         "value": "CSS",
+        "type": "string"
+    },
+    {
+        "id": "language-label-pt-br",
+        "value": "Portuguese (Brazil)",
+        "type": "string"
+    },
+    {
+        "id": "language-label-en",
+        "value": "English",
         "type": "string"
     }
 ]

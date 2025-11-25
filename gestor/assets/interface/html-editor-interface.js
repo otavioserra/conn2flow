@@ -735,9 +735,9 @@ $(document).ready(function () {
         let sessoes = [];
 
         while ((match = regex.exec(html)) !== null) {
-            const sessionTag = match[0];
-            const idMatch = sessionTag.match(/data-id=["']([^"']+)["']/i);
-            const nomeMatch = sessionTag.match(/data-title=["']([^"']+)["']/i);
+            const sectionTag = match[0];
+            const idMatch = sectionTag.match(/data-id=["']([^"']+)["']/i);
+            const nomeMatch = sectionTag.match(/data-title=["']([^"']+)["']/i);
 
             const id = idMatch ? idMatch[1] : null;
             const nome = nomeMatch ? nomeMatch[1] : 'Sem nome';
@@ -747,7 +747,7 @@ $(document).ready(function () {
             }
         }
 
-        const select = $('.ui.dropdown.page-modification-session-select');
+        const select = $('.ui.dropdown.page-modification-section-select');
         const currentValue = select.dropdown('get value');
 
         select.find('select').find('option').remove();
@@ -796,8 +796,8 @@ $(document).ready(function () {
     }
 
     function pageSessionID() {
-        const sessionId = $('.ui.dropdown.page-modification-session-select').dropdown('get value');
-        return sessionId ?? null;
+        const sectionId = $('.ui.dropdown.page-modification-section-select').dropdown('get value');
+        return sectionId ?? null;
     }
 
     function pageModificationContainerMove(target) {
@@ -812,7 +812,7 @@ $(document).ready(function () {
         const sessao_options = ['target', 'new-before', 'new-after'];
 
         sessao_options.forEach(function (opcao) {
-            const checkbox = $('input[name="page-modification-session-option"][value="' + opcao + '"]').parent();
+            const checkbox = $('input[name="page-modification-section-option"][value="' + opcao + '"]').parent();
             if (checkbox.checkbox('is checked')) {
                 sessao_opcao = opcao;
                 return false;
@@ -833,7 +833,7 @@ $(document).ready(function () {
             let html_completo = CodeMirrorHtml.getDoc().getValue();
 
             // Marcar sessão alvo com data-menu-alvo="true" para manter a seleção
-            html_completo = html_completo.replace(new RegExp(`(<section\\b[^>]*data-id=["']${sessao_id}["'][^>]*)>`, 'i'), '$1 data-menu-alvo="true">');
+            html_completo = html_completo.replace(new RegExp(`(<section\\b[^>]*data-id=["']${sessao_id}["'][^>]*)>`, 'i'), (match, p1) => p1 + ' data-menu-alvo="true">');
 
             switch (sessao_opcao) {
                 case 'target':
@@ -851,12 +851,12 @@ $(document).ready(function () {
                 case 'new-before':
                     // Colocar o html_gerado logo antes da sessão alvo
                     const regexBefore = new RegExp(`(<section\\b[^>]*data-id=["']${sessao_id}["'][^>]*>([\\s\\S]*?)<\\/section>)`, 'i');
-                    html_gerado = html_completo.replace(regexBefore, html_gerado + '\n$1');
+                    html_gerado = html_completo.replace(regexBefore, (match, p1) => html_gerado + '\n' + p1);
                     break;
                 case 'new-after':
                     // Colocar o html_gerado logo depois da sessão alvo
                     const regexAfter = new RegExp(`(<section\\b[^>]*data-id=["']${sessao_id}["'][^>]*>([\\s\\S]*?)<\\/section>)`, 'i');
-                    html_gerado = html_completo.replace(regexAfter, '$1\n' + html_gerado);
+                    html_gerado = html_completo.replace(regexAfter, (match, p1) => p1 + '\n' + html_gerado);
                     break;
             }
         }
@@ -867,7 +867,7 @@ $(document).ready(function () {
         css_gerado = css_gerado.split('\n').filter(line => line.trim() !== '').join('\n').trim();
 
         // Atualizar os `data-id` das sessões para evitar duplicidade. Começar sempre no `1` e ir somando.
-        let sessionCounter = 1;
+        let sectionCounter = 1;
         let oldIds = [];
         html_gerado = html_gerado.replace(/<section\b[^>]*>/gi, function (match) {
             const idMatch = match.match(/data-id=["']([^"']+)["']/i);
@@ -875,9 +875,9 @@ $(document).ready(function () {
             oldIds.push(oldId);
             // Substituir ou adicionar data-id
             if (match.includes('data-id=')) {
-                return match.replace(/data-id=["'][^"']*["']/i, 'data-id="' + sessionCounter++ + '"');
+                return match.replace(/data-id=["'][^"']*["']/i, 'data-id="' + sectionCounter++ + '"');
             } else {
-                return match.replace('<section', '<section data-id="' + sessionCounter++ + '"');
+                return match.replace('<section', '<section data-id="' + sectionCounter++ + '"');
             }
         });
 
@@ -896,7 +896,7 @@ $(document).ready(function () {
             const idMatch = alvoTag.match(/data-id=["']([^"']+)["']/i);
             if (idMatch) {
                 const alvoId = idMatch[1];
-                $('.ui.dropdown.page-modification-session-select').dropdown('set selected', alvoId, true);
+                $('.ui.dropdown.page-modification-section-select').dropdown('set selected', alvoId, true);
                 // Remover o atributo data-menu-alvo
                 const htmlSemAlvo = htmlAtual.replace(/ data-menu-alvo="true"/gi, '');
                 CodeMirrorHtml.getDoc().setValue(htmlSemAlvo);
@@ -920,16 +920,16 @@ $(document).ready(function () {
         }
     });
 
-    $(document.body).on('mouseup tap', '.page-modification-session-delete', function (e) {
+    $(document.body).on('mouseup tap', '.page-modification-section-delete', function (e) {
         if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
-        const sessionId = pageSessionID();
+        const sectionId = pageSessionID();
 
-        if (sessionId && sessionId.length > 0) {
+        if (sectionId && sectionId.length > 0) {
             let html = CodeMirrorHtml.getDoc().getValue();
 
             // Remover a sessão do HTML
-            const regex = new RegExp(`<section\\b[^>]*data-id=["']${sessionId}["'][^>]*>[\\s\\S]*?<\\/section>`, 'i');
+            const regex = new RegExp(`<section\\b[^>]*data-id=["']${sectionId}["'][^>]*>[\\s\\S]*?<\\/section>`, 'i');
             html = html.replace(regex, '');
 
             // Remover linhas em branco no início e fim do código.

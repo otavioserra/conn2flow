@@ -115,7 +115,7 @@ function html_editor_componente($params = false){
             "valor" => "tudo"
         ],
         [
-            "texto" => gestor_variaveis(Array('id' => 'html-editor-select-session')),
+            "texto" => gestor_variaveis(Array('id' => 'html-editor-select-section')),
             "valor" => "sessao"
         ]
     ];

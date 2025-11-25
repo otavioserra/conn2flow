@@ -5,7 +5,9 @@
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR['versao']								=	'2.5.3'; // Versão do gestor como um todo.
+$_GESTOR										=	Array();
+
+$_GESTOR['versao']								=	'2.5.4'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 
 // ===== Definição dos marcadores de abertura e fechamento de varíaveis globais.
@@ -74,8 +76,9 @@ $_BANCO = [
     'senha'   => $_ENV['DB_PASSWORD'] ?? '',
 ];
 
-// Linguagem padrão do gestor
-$_GESTOR['linguagem-codigo']			=	$_ENV['LANGUAGE_DEFAULT'] ?? 'pt-br'; 
+// Linguagem padrão do gestor e listagem de códigos de linguagens.
+$_GESTOR['linguagem-codigo']			=	$_ENV['LANGUAGE_DEFAULT'] ?? 'pt-br';
+$_GESTOR['languages']		        	=	$_ENV['LANGUAGES'] ? explode(',', $_ENV['LANGUAGES']) : [];
 
 // Configurações Gerais
 $_CONFIG = [
@@ -135,6 +138,10 @@ $_CONFIG = [
             'replyTo' => $_ENV['EMAIL_REPLY_TO'] ?? '',
             'replyToName' => $_ENV['EMAIL_REPLY_TO_NAME'] ?? '',
         ]
+    ],
+    'language' => [
+        'widget-active' => filter_var($_ENV['LANGUAGE_WIDGET_ACTIVE'] ?? false, FILTER_VALIDATE_BOOLEAN),
+        'auto-detect' => filter_var($_ENV['LANGUAGE_AUTO_DETECT'] ?? false, FILTER_VALIDATE_BOOLEAN),
     ],
 ];
 
@@ -203,13 +210,17 @@ $_GESTOR['bibliotecas-dados'] = Array(
     'oauth2' => Array('oauth2.php'),
 );
 
+// Bibliotecas principais do sistema
+
+$_GESTOR['bibliotecas']							=	Array('banco','gestor','modelo');
+
 if(isset($_GESTOR['bibliotecas']))
 foreach($_GESTOR['bibliotecas'] as $_biblioteca){
 	$_caminhos = $_GESTOR['bibliotecas-dados'][$_biblioteca];
 	
 	if($_caminhos)
 	foreach($_caminhos as $_caminho){
-		include($_GESTOR['modulos-bibliotecas'].$_caminho);
+		require_once($_GESTOR['modulos-bibliotecas'].$_caminho);
 	}
 }
 

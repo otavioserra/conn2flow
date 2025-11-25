@@ -149,6 +149,22 @@
 
                 <form class="ui form" id="form-linguagem">
                     <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="language_widget_active" name="language_widget_active"
+                                #language-widget-active-checked#>
+                            <label>Ativar Widget de Seleção de Linguagem</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="language_auto_detect" name="language_auto_detect"
+                                #language-auto-detect-checked#>
+                            <label>Ativar Detecção Automática de Linguagem</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
                         <label>Idioma Padrão do Sistema</label>
                         <select class="ui dropdown" id="language_default" name="language_default">
                             #language-options#

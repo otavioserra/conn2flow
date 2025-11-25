@@ -434,7 +434,7 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": null,
-        "id": "html-editor-select-session",
+        "id": "html-editor-select-section",
         "valor": "Uma Sessão",
         "tipo": "string",
         "grupo": null,
@@ -661,6 +661,24 @@
         "modulo": null,
         "id": "html-editor-form-css-label",
         "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "language-label-pt-br",
+        "valor": "Português (Brasil)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "language-label-en",
+        "valor": "Inglês",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1100,8 +1118,8 @@
     {
         "linguagem_codigo": "en",
         "modulo": null,
-        "id": "html-editor-select-session",
-        "valor": "One Session",
+        "id": "html-editor-select-section",
+        "valor": "One Section",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1327,6 +1345,24 @@
         "modulo": null,
         "id": "html-editor-form-css-label",
         "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "language-label-pt-br",
+        "valor": "Portuguese (Brazil)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "language-label-en",
+        "valor": "English",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3512,24 +3548,6 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "admin-environment",
-        "id": "language-label-pt-br",
-        "valor": "Português (Brasil)",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-environment",
-        "id": "language-label-en",
-        "valor": "Inglês",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "pt-br",
-        "modulo": "admin-environment",
         "id": "email-tests-head-title",
         "valor": "MODO DE DEBUG",
         "tipo": "string",
@@ -3658,24 +3676,6 @@
         "modulo": "admin-environment",
         "id": "recaptcha-error-timeout-duplicate",
         "valor": "Token expirou ou já foi usado.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-environment",
-        "id": "language-label-pt-br",
-        "valor": "Portuguese (Brazil)",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "linguagem_codigo": "en",
-        "modulo": "admin-environment",
-        "id": "language-label-en",
-        "valor": "English",
         "tipo": "string",
         "grupo": null,
         "descricao": null

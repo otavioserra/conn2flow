@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Carregar dependências isoladas para o Widget -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
+    <style>
+        html,
+        body {
+            background: transparent !important;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #widget-container {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 5px;
+            /* Espaço para sombra/bordas */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .ui.label {
+            cursor: pointer;
+            margin: 0 !important;
+            white-space: nowrap;
+        }
+
+        /* Ajustes para o Popup dentro do Iframe */
+        .ui.popup {
+            margin: 0 0 10px 0 !important;
+            /* Espaço entre popup e botão */
+            width: auto !important;
+            min-width: max-content !important;
+        }
+
+        .ui.popup .item {
+            white-space: nowrap !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="widget-container">
+        <!-- O conteúdo será injetado via JS após receber configuração -->
+    </div>
+
+    <script>
+        var isPopupOpen = false;
+
+        // Escutar mensagens do Pai (global.js)
+        window.addEventListener('message', function (event) {
+            var data = event.data;
+
+            if (data.type === 'init') {
+                initWidget(data.config, data.currentLang);
+            }
+        });
+
+        function initWidget(languagesConfig, currentLang) {
+            var container = $('#widget-container');
+            container.empty();
+
+            // 1. Criar o Botão (Label)
+            var btnHtml = '<div class="ui bottom right attached label" id="gestor-language-btn">';
+            btnHtml += '<i class="world icon"></i> ' + currentLang.toUpperCase();
+            btnHtml += '</div>';
+
+            // 2. Criar o Popup (Lista)
+            var popupHtml = '<div class="ui popup bottom right transition hidden" id="gestor-language-popup">';
+            popupHtml += '<div class="ui link list">';
+
+            if (languagesConfig.codigos) {
+                for (var i = 0; i < languagesConfig.codigos.length; i++) {
+                    var lang = languagesConfig.codigos[i];
+                    var active = (lang.codigo == currentLang ? 'active' : '');
+                    popupHtml += '<a class="item ' + active + '" data-lang="' + lang.codigo + '">' + lang.nome + '</a>';
+                }
+            }
+
+            popupHtml += '</div></div>';
+
+            container.append(popupHtml); // Popup primeiro (para ficar "em cima" visualmente se usarmos flex-col-reverse, mas o popup do semantic é absoluto)
+            container.append(btnHtml);
+
+            // Inicializar Popup do Semantic UI (Modo Manual)
+            $('#gestor-language-btn').popup({
+                popup: $('#gestor-language-popup'),
+                on: 'manual', // Controle manual para gerenciar o redimensionamento antes
+                position: 'top right',
+                lastResort: 'top right', // Tenta forçar a posição mesmo se achar que não cabe
+                inline: true,
+                hoverable: true, // Permite mover o mouse para o popup sem fechar
+                onHidden: function () {
+                    isPopupOpen = false;
+                    updateSize(false); // Reduzir para tamanho apenas do botão
+                }
+            });
+
+            // Evento de Clique no Botão (Controle Manual)
+            $('#gestor-language-btn').on('click', function () {
+                if (isPopupOpen) {
+                    $('#gestor-language-btn').popup('hide');
+                } else {
+                    // 1. Calcular tamanho necessário COM o popup
+                    var popupSize = getHiddenSize($('#gestor-language-popup'));
+                    var btn = $('#gestor-language-btn');
+
+                    var totalWidth = Math.max(btn.outerWidth(true), popupSize.width) + 20;
+                    var totalHeight = btn.outerHeight(true) + popupSize.height + 20;
+
+                    // 2. Enviar redimensionamento para o pai
+                    window.parent.postMessage({
+                        type: 'resize',
+                        width: totalWidth,
+                        height: totalHeight
+                    }, '*');
+
+                    // 3. Aguardar redimensionamento e mostrar popup
+                    isPopupOpen = true;
+                    setTimeout(function () {
+                        $('#gestor-language-btn').popup('show');
+                    }, 50);
+                }
+            });
+
+            // Evento de Clique no Item
+            $('#gestor-language-popup .item').click(function () {
+                var lang = $(this).data('lang');
+                window.parent.postMessage({
+                    type: 'changeLang',
+                    lang: lang
+                }, '*');
+
+                $('#gestor-language-btn').popup('hide');
+            });
+
+            // Tamanho inicial (apenas botão)
+            updateSize(false);
+        }
+
+        // Função auxiliar para medir elementos ocultos
+        function getHiddenSize(element) {
+            var clone = element.clone();
+            clone.css({
+                visibility: 'hidden',
+                display: 'block',
+                position: 'absolute',
+                top: '-9999px',
+                left: '-9999px',
+                width: 'auto',
+                height: 'auto',
+                whiteSpace: 'nowrap' // Forçar não-quebra de linha para cálculo correto
+            });
+            $('body').append(clone);
+            var width = clone.outerWidth(true);
+            var height = clone.outerHeight(true);
+            clone.remove();
+            return { width: width, height: height };
+        }
+
+        function updateSize(withPopup) {
+            var width = 0;
+            var height = 0;
+            var btn = $('#gestor-language-btn');
+
+            if (withPopup) {
+                // Lógica já tratada no click, mas mantida aqui para consistência se necessário
+                var popupSize = getHiddenSize($('#gestor-language-popup'));
+                width = Math.max(btn.outerWidth(true), popupSize.width) + 20;
+                height = btn.outerHeight(true) + popupSize.height + 20;
+            } else {
+                width = btn.outerWidth(true) + 10;
+                height = btn.outerHeight(true) + 10;
+            }
+
+            window.parent.postMessage({
+                type: 'resize',
+                width: width,
+                height: height
+            }, '*');
+        }
+    </script>
+</body>
+
+</html>

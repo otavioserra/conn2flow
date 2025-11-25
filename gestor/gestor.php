@@ -9,53 +9,7 @@ if (function_exists('mb_internal_encoding')) {
 
 // =========================== Configuração Inicial
 
-$_GESTOR										=	Array();
-
-$_GESTOR['bibliotecas']							=	Array('banco','gestor','modelo');
-
 require_once(__DIR__ . '/config.php');
-
-// =========================== Definição do Caminho da Página
-
-if(isset($_REQUEST['_gestor-caminho'])){
-	$_GESTOR['caminho-total'] = $_REQUEST['_gestor-caminho'];
-	$_GESTOR['caminho'] = explode('/',strtolower($_GESTOR['caminho-total']));
-	
-	if($_GESTOR['caminho'][count($_GESTOR['caminho'])-1] == NULL){
-		array_pop($_GESTOR['caminho']);
-	}
-	
-	$_GESTOR['caminho-extensao'] = pathinfo($_GESTOR['caminho-total'], PATHINFO_EXTENSION);
-}
-
-// =========================== Retornar arquivo estático caso exista e finalizar gestor
-
-$_GESTOR['arquivo-estatico'] = false;
-
-if((isset($_GESTOR['caminho-extensao']) ? $_GESTOR['caminho-extensao'] : null)){
-	$_GESTOR['arquivo-estatico'] = Array(
-		'alvo' => (isset($_GESTOR['caminho'][0]) ? $_GESTOR['caminho'][0] : null),
-		'alvo2' => (isset($_GESTOR['caminho'][1]) ? $_GESTOR['caminho'][1] : null),
-		'ext' => $_GESTOR['caminho-extensao'],
-	);
-}
-
-if($_GESTOR['arquivo-estatico']){
-	require_once($_GESTOR['controladores-path'].'arquivo-estatico/arquivo-estatico.php');
-	exit;
-}
-
-// =========================== Controladores
-
-if(isset($_GESTOR['caminho']))
-switch($_GESTOR['caminho'][0]){
-	case '_gateways':
-		require_once($_GESTOR['controladores-path'].'plataforma-gateways/plataforma-gateways.php'); exit;
-	break;
-	case '_api':
-		require_once($_GESTOR['controladores-path'].'api/api.php'); exit;
-	break;
-}
 
 // =========================== Funções de Montagem da Página
 
@@ -340,14 +294,14 @@ function gestor_pagina_menu($params = false){
 		if($paginas)
 		foreach($paginas as $pagina){
 			if($modulo['id'] == $pagina['modulo']){
-				$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].$pagina['caminho']);
+				$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].($_GESTOR['language-in-url'] ? $_GESTOR['linguagem-codigo'].'/' : '').$pagina['caminho']);
 				$pagina_found = true;
 				break;
 			}
 		}
 		
 		if(!$pagina_found){
-			$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].'dashboard/');
+			$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].($_GESTOR['language-in-url'] ? $_GESTOR['linguagem-codigo'].'/' : '').'dashboard/');
 		}
 		
 		// ===== Caso seja dashboard incluir depois primeiro, senão colocar em ordem alfabética
@@ -433,7 +387,7 @@ function gestor_pagina_menu($params = false){
 	
 	$cel_aux = modelo_var_troca($cel_aux,"<!-- icon -->",$cel_icon);
 	
-	$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].'signout/');
+	$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].($_GESTOR['language-in-url'] ? $_GESTOR['linguagem-codigo'].'/' : '').'signout/');
 	
 	// ===== Incluir sair no conteiner
 	
@@ -1898,6 +1852,34 @@ function gestor_roteador(){
 				$_GESTOR['css-compiled'][] = '</style>'."\n";
 			}
 			
+			// ===== Inclusão de variáveis de linguagem para o widget e detecção automática
+
+			$widgetActive = (isset($_CONFIG['language']['widget-active']) && $_CONFIG['language']['widget-active'] ? true : false);
+			$autoDetect = (isset($_CONFIG['language']['auto-detect']) && $_CONFIG['language']['auto-detect'] ? true : false);
+
+			if($widgetActive || $autoDetect){
+				gestor_incluir_biblioteca('variaveis');
+				
+				$languages = Array();
+				foreach($_GESTOR['languages'] as $lang){
+					$label = gestor_variaveis(Array('id' => 'language-label-' . $lang));
+					$languages[] = Array(
+						'codigo' => $lang,
+						'nome' => ($label ? $label : $lang),
+					);
+				}
+
+				if(!isset($_GESTOR['javascript-vars'])){
+					$_GESTOR['javascript-vars'] = Array();
+				}
+
+				$_GESTOR['javascript-vars']['languages'] = Array(
+					'codigos' => $languages,
+					'widgetActive' => $widgetActive,
+					'autoDetect' => $autoDetect
+				);
+			}
+
 			// ===== Inclusão de variáveis globais de uma página
 			
 			gestor_pagina_variaveis(Array(
@@ -1923,7 +1905,64 @@ function gestor_roteador(){
 	}
 }
 
+function gestor_config(){
+	global $_GESTOR;
+	
+	// =========================== Definição do Caminho da Página
+
+	if(isset($_REQUEST['_gestor-caminho'])){
+		$_GESTOR['caminho-total'] = $_REQUEST['_gestor-caminho'];
+		$_GESTOR['caminho'] = explode('/',strtolower($_GESTOR['caminho-total']));
+
+		// Verificar se o primeiro segmento é uma linguagem válida, se sim definir a linguagem e remover do array de caminho.
+		if(!empty($_GESTOR['caminho'][0]) && in_array($_GESTOR['caminho'][0], $_GESTOR['languages'])){
+			$_GESTOR['linguagem-codigo'] = $_GESTOR['caminho'][0];
+			array_shift($_GESTOR['caminho']);
+			$_GESTOR['caminho-total'] = substr($_GESTOR['caminho-total'], strlen($_GESTOR['linguagem-codigo']) + 1);
+			$_GESTOR['language-in-url'] = true;
+		}
+		
+		// Remover último segmento caso seja nulo (barra no final da URL)
+		if($_GESTOR['caminho'][count($_GESTOR['caminho'])-1] == NULL){
+			array_pop($_GESTOR['caminho']);
+		}
+		
+		$_GESTOR['caminho-extensao'] = pathinfo($_GESTOR['caminho-total'], PATHINFO_EXTENSION);
+	}
+
+	// =========================== Retornar arquivo estático caso exista e finalizar gestor
+
+	$_GESTOR['arquivo-estatico'] = false;
+
+	if((isset($_GESTOR['caminho-extensao']) ? $_GESTOR['caminho-extensao'] : null)){
+		$_GESTOR['arquivo-estatico'] = Array(
+			'alvo' => (isset($_GESTOR['caminho'][0]) ? $_GESTOR['caminho'][0] : null),
+			'alvo2' => (isset($_GESTOR['caminho'][1]) ? $_GESTOR['caminho'][1] : null),
+			'ext' => $_GESTOR['caminho-extensao'],
+		);
+	}
+
+	if($_GESTOR['arquivo-estatico']){
+		require_once($_GESTOR['controladores-path'].'arquivo-estatico/arquivo-estatico.php');
+		exit;
+	}
+
+	// =========================== Controladores
+
+	if(isset($_GESTOR['caminho']))
+	switch($_GESTOR['caminho'][0]){
+		case '_gateways':
+			require_once($_GESTOR['controladores-path'].'plataforma-gateways/plataforma-gateways.php'); exit;
+		break;
+		case '_api':
+			require_once($_GESTOR['controladores-path'].'api/api.php'); exit;
+		break;
+	}
+
+}
+
 function gestor_start(){
+	gestor_config();
 	gestor_sessao_iniciar();
 	gestor_roteador();
 }

@@ -332,11 +332,11 @@
     {
         "name": "HTML Editor Page Modification",
         "id": "html-editor-page-modification",
-        "version": "1.1",
+        "version": "1.3",
         "checksum": {
-            "html": "6b7c5bd9e82944aa32d3c70c4149f62e",
+            "html": "dfda98ffe804bbb3a0efe62a8020f4e3",
             "css": "",
-            "combined": "6b7c5bd9e82944aa32d3c70c4149f62e"
+            "combined": "dfda98ffe804bbb3a0efe62a8020f4e3"
         }
     },
     {
