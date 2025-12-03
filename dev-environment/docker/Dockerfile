@@ -18,12 +18,9 @@ RUN apt-get update && apt-get install -y \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar cliente oficial MySQL 8
+# Instalar cliente MySQL
 RUN apt-get update \
-    && apt-get install -y wget lsb-release gnupg \
-    && wget http://ftp.br.debian.org/debian/pool/main/m/mysql-8.0/mysql-client-core-8.0_8.0.43-3_amd64.deb \
-    && dpkg -i mysql-client-core-8.0_8.0.43-3_amd64.deb || apt-get install -f -y \
-    && rm mysql-client-core-8.0_8.0.43-3_amd64.deb \
+    && apt-get install -y default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Configurar extensões GD
@@ -50,6 +47,9 @@ COPY php.ini /usr/local/etc/php/conf.d/custom.ini
 
 # Configurar Apache - Multi-domínio
 COPY sites.conf /etc/apache2/sites-available/000-default.conf
+
+# Configurar limites do Apache
+COPY apache-limits.conf /etc/apache2/conf-enabled/apache-limits.conf
 
 # Configurar diretório de trabalho e criar estrutura multi-domínio
 WORKDIR /var/www

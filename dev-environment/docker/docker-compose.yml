@@ -7,8 +7,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ../data/sites/localhost/public_html:/var/www/html
-      - ../data/sites:/var/www/sites
+      - ../data/sites/localhost/public_html:/var/www/html:cached
+      - ../data/sites:/var/www/sites:cached
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html
       - PHP_INI_SCAN_DIR=/usr/local/etc/php/conf.d
@@ -64,6 +64,9 @@ services:
       PMA_PASSWORD: root123
     ports:
       - "8081:80"
+    volumes:
+      - ./phpmyadmin.ini:/usr/local/etc/php/conf.d/phpmyadmin.ini
+      - ./apache-limits.conf:/etc/apache2/conf-enabled/apache-limits.conf
     depends_on:
       - mysql
     networks:
