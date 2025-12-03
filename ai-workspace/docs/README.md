@@ -11,6 +11,7 @@ Esta pasta contém toda a documentação técnica detalhada do projeto Conn2Flow
 ### 🛠️ Por Área/Módulo
 - **`CONN2FLOW-INSTALADOR-DETALHADO.md`** - Sistema de instalação completo
 - **`CONN2FLOW-LAYOUTS-PAGINAS-COMPONENTES.md`** - Layouts, páginas e componentes (estrutura, exportação, versionamento)
+- **`CONN2FLOW-SISTEMA-RECURSOS.md`** - Guia completo sobre o Sistema de Recursos (Global, Módulos, Ferramentas)
 - **`CONN2FLOW-MODULOS-DETALHADO.md`** - Desenvolvimento e estrutura de módulos
 - **`CONN2FLOW-ROTEAMENTO-DETALHADO.md`** - Sistema de roteamento detalhado
 - **`CONN2FLOW-AUTOMACAO-EXPORTACAO.md`** - Automação e validação da exportação de recursos

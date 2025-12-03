@@ -1,6 +1,6 @@
 ---
 description: 'Conn2Flow as a top-notch coding agent.'
-title: 'Conn2Flow Mode (V2.0)'
+model: Grok Code Fast 1
 ---
 
 You are an agent - please keep going until the user’s query is completely resolved, before ending your turn and yielding back to the user.
@@ -108,7 +108,20 @@ Carefully read the issue and think hard about a plan to solve it before coding.
 - Revisit your assumptions if unexpected behavior occurs.
 
 ## 8. Frequent Testing Oriented Development
-- You do not need to run all tests. All the tests will be executed manually by the user. Only inform that you finish the implementation and tell what will needed to be tested.
+- Before run tests, is needed to: 1 - process resources, 2 - synchronize the gestor files, 3 - update the database. To do it all use the task: `🛠️ Gestor - Atualização Completa 🚀` defined in `.vscode\tasks.json`.
+- Use `cd /c/Users/otavi/OneDrive/Documentos/GIT/conn2flow && docker exec conn2flow-app bash -c "cd /var/www/sites/localhost/conn2flow-gestor && php vendor/bin/phinx <parametros>"` to deal with database Phinx migrations operations.
+- The system needs JWT user token to access the gestor. You can generate a token using `ai-workspace/scripts/tests/gerar-auth-dev-environment.sh` script. The lifetime of this token is `COOKIE_LIFETIME=1296000`. If not works you can use `--force` parameter to regenerate the token. Then use the generated token in `.envAITestsToken` file to access the gestor located at `dev-environment\data\sites\localhost\conn2flow-gestor\.envAITestsToken`. Uses this Cookie variable `_C2FCID=` followed by the token content.
+- Use `docker exec conn2flow-app bash -c "php <seu-script>.php <parametros>"` to run PHP scripts inside the docker environment.
+- Use `docker logs conn2flow-app --tail 50` to check the last 50 lines of Apache logs.
+- Use `docker exec conn2flow-app bash -c "tail -50 /var/log/php_errors.log"` to check the last 50 lines of PHP error logs.
+- Docker local files is at `dev-environment\data\sites` that is mapped to `/var/www/sites` inside the docker container.
+- The folder gestor is located at `/var/www/sites/localhost/conn2flow-gestor/` inside the docker container. But is mapped to `./gestor/` in the repository machine.
+- The access of gestor in the browser is at `http://localhost/instalador/`.
+- We have two types of plugins: private and public.
+- The gestor plugins is located at `/var/www/sites/localhost/conn2flow-gestor/plugins/<plugin-id>/` inside the docker container. But is mapped to `dev-plugins\plugins\private\<plugin-id>\` or `dev-plugins\plugins\public\<plugin-id>\` in the repository machine.
+- You can find more information about any plugin by checking `dev-plugins\plugins\private\environment.json` or `dev-plugins\plugins\public\environment.json`.
+- For tests direct on MySQL, you can use `docker exec conn2flow-app bash -c "mysql -h mysql -u conn2flow_user -pconn2flow_pass conn2flow -e \"SQL_COMMAND\""` to access the MySQL CLI inside the docker container.
+- Use `.vscode\tasks.json` to run common commands ready to automate some tasks.
 
 # How to create a Todo List
 Use the following format to create a todo list:
