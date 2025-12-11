@@ -119,6 +119,31 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 ENV_FILE="$PROJECT_ROOT/dev-environment/data/environment.json"
 TEMP_DIR="$PROJECT_ROOT/temp"
 
+# Parsing de argumentos
+PROJECT_TARGET_OVERRIDE=""
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --project|-p)
+            PROJECT_TARGET_OVERRIDE="$2"
+            shift 2
+            ;;
+        --help|-h)
+            echo "Uso: $0 [--project|-p PROJECT_ID]"
+            echo ""
+            echo "Opções:"
+            echo "  --project, -p PROJECT_ID    Identificador do projeto para deploy (opcional)"
+            echo "                              Se não informado, usa o valor de devEnvironment.projectTarget do environment.json"
+            echo "  --help, -h                  Mostra esta ajuda"
+            exit 0
+            ;;
+        *)
+            log_error "Opção desconhecida: $1"
+            echo "Use --help para ver as opções disponíveis."
+            exit 1
+            ;;
+    esac
+done
+
 # Verificar se arquivos existem
 if [ ! -f "$ENV_FILE" ]; then
     log_error "Arquivo environment.json não encontrado: $ENV_FILE"
@@ -128,15 +153,31 @@ fi
 log "Iniciando deploy de projeto..."
 log "Arquivo de ambiente: $ENV_FILE"
 
-# Ler o projectTarget do environment.json
-PROJECT_TARGET=$(jq -r '.devEnvironment.projectTarget' "$ENV_FILE" 2>/dev/null)
+# Determinar o projeto alvo
+if [ -n "$PROJECT_TARGET_OVERRIDE" ]; then
+    PROJECT_TARGET="$PROJECT_TARGET_OVERRIDE"
+    log "Projeto alvo especificado via argumento: $PROJECT_TARGET"
+else
+    # Ler o projectTarget do environment.json
+    PROJECT_TARGET=$(jq -r '.devEnvironment.projectTarget' "$ENV_FILE" 2>/dev/null)
 
-if [ -z "$PROJECT_TARGET" ] || [ "$PROJECT_TARGET" = "null" ]; then
-    log_error "Não foi possível encontrar devEnvironment.projectTarget no arquivo de ambiente"
-    exit 1
+    if [ -z "$PROJECT_TARGET" ] || [ "$PROJECT_TARGET" = "null" ]; then
+        log_error "Não foi possível encontrar devEnvironment.projectTarget no arquivo de ambiente"
+        log_error "Use --project para especificar o identificador do projeto"
+        exit 1
+    fi
+
+    log "Projeto alvo identificado no environment.json: $PROJECT_TARGET"
 fi
 
-log "Projeto alvo identificado: $PROJECT_TARGET"
+# Verificar se o projeto existe no environment.json
+PROJECT_EXISTS=$(jq -r ".devProjects.\"$PROJECT_TARGET\" | length" "$ENV_FILE" 2>/dev/null)
+
+if [ "$PROJECT_EXISTS" = "0" ] || [ -z "$PROJECT_EXISTS" ]; then
+    log_error "Projeto '$PROJECT_TARGET' não encontrado no environment.json"
+    log_error "Verifique se o identificador está correto e se o projeto está configurado"
+    exit 1
+fi
 
 # Ler o caminho do projeto
 PROJECT_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".path" "$ENV_FILE" 2>/dev/null)
