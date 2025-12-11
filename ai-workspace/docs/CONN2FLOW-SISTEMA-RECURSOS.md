@@ -276,3 +276,27 @@ O sistema suporta múltiplos idiomas através da estrutura de pastas `lang/{idio
 Cada alteração em arquivos físicos gera um novo **Checksum**.
 - Se o checksum mudar, a versão do recurso é incrementada (v1.0 -> v1.1).
 - Isso garante que caches sejam invalidados e atualizações sejam aplicadas corretamente.
+
+---
+
+## 🎨 Convenções de Desenvolvimento HTML
+
+### Atributos de Seção em Páginas
+Sempre que criar ou editar arquivos HTML para páginas (em `resources/*/pages/`), adicione os seguintes atributos às tags `<section>` principais:
+
+- **`data-id`**: Valor numérico incremental começando do 1, sequencial por página (ex.: `data-id="1"`, `data-id="2"`).
+- **`data-title`**: Nome semântico da seção em texto simples, sem formatação especial (ex.: `data-title="hero"`, `data-title="conn2flow-starter"`).
+
+**Exemplo**:
+```html
+<section class="text-center mb-16" data-id="1" data-title="hero">
+    <!-- Conteúdo da seção -->
+</section>
+```
+
+**Propósito**:
+- Facilita a identificação e manipulação de seções via JavaScript ou CSS.
+- Padroniza a estrutura para agentes de IA e desenvolvedores.
+- Melhora a semântica e acessibilidade do código.
+
+Essa convenção deve ser seguida em todas as páginas criadas no sistema de recursos.
