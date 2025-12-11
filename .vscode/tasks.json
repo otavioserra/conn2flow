@@ -156,9 +156,14 @@
             "command": "bash ./ai-workspace/scripts/projects/atualizacao-dados-recursos.sh"
         },
         {
-            "label": "🗃️ Projects - Deploy Project",
+            "label": "🗃️ Projects - Deploy Current Project",
             "type": "shell",
             "command": "bash ./ai-workspace/scripts/projects/deploy-projeto.sh"
+        },
+        {
+            "label": "🗃️ Projects - Deploy Project -> ID",
+            "type": "shell",
+            "command": "bash ./ai-workspace/scripts/projects/deploy-projeto.sh --project ${input:projectID}"
         }
     ],
     "inputs": [
@@ -180,6 +185,11 @@
         {
             "id": "moduloID",
             "description": "📦 Module ID ❔",
+            "type": "promptString"
+        },
+        {
+            "id": "projectID",
+            "description": "📦 Project ID ❔",
             "type": "promptString"
         }
     ]
