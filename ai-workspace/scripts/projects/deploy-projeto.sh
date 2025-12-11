@@ -200,9 +200,9 @@ log "Atualizando dados e recursos do projeto..."
 UPDATE_SCRIPT="$SCRIPT_DIR/atualizacao-dados-recursos.sh"
 
 if [ -f "$UPDATE_SCRIPT" ]; then
-    log "Executando atualização de recursos: $UPDATE_SCRIPT"
+    log "Executando atualização de recursos: $UPDATE_SCRIPT --project $PROJECT_TARGET"
     
-    if "$UPDATE_SCRIPT"; then
+    if "$UPDATE_SCRIPT" --project "$PROJECT_TARGET"; then
         log_success "Dados e recursos atualizados com sucesso!"
     else
         log_error "Falha na atualização de dados e recursos"
