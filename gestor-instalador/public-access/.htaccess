@@ -4,5 +4,5 @@
 	RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 	RewriteCond %{SCRIPT_FILENAME} !-f
 	RewriteCond %{SCRIPT_FILENAME} !-d
-	RewriteRule ^(.*)$ index.php?_gestor-caminho=$1&%{QUERY_STRING}
+	RewriteRule ^(.*)$ index.php?_gestor-caminho=$1&%{QUERY_STRING} [B,L,QSA]
 </IfModule>

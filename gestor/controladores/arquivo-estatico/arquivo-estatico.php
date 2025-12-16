@@ -78,7 +78,14 @@ function arquivo_estatico_start(){
 			$lastModified = filemtime($file);
 			header("Last-Modified: ".gmdate("D, d M Y H:i:s", $lastModified)." GMT");
 			header('Cache-Control: private');
-			header("Content-Type:" . mime_content_type($file)."; charset: UTF-8");
+			
+			switch($ext){
+				case 'js': header("Content-Type: application/javascript; charset: UTF-8"); break;
+				case 'css': header("Content-Type: text/css; charset: UTF-8"); break;
+				case 'svg': header("Content-Type: image/svg+xml; charset: UTF-8"); break;
+				default: 
+					header("Content-Type:" . mime_content_type($file)."; charset: UTF-8");
+			}
 			
 			readfile($file);
 			exit;

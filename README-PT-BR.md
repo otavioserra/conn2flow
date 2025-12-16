@@ -403,7 +403,7 @@ dev-environment/       # Stack de desenvolvimento Docker
 - ✅ **Gerenciamento Avançado de Templates**: Sistema de templates com miniaturas, metadados e integração CodeMirror
 - ✅ **Reutilização de Componentes**: Componentes de editor HTML compartilhados entre módulos admin-paginas e admin-templates
 
-**Instalador (Installer)**: `v1.5.1` *(Mais Recente)*
+**Instalador (Installer)**: `v1.5.2` *(Mais Recente)*
 - ✅ **Suporte ao Sistema de IA**: Instalação preparada para novos recursos de IA v2.3.0
 - ✅ **Suporte Framework CSS**: Instalação preparada para novos recursos v2.0.0
 - ✅ **Charset UTF-8 Robusto**: Compatibilidade total com caracteres especiais
