@@ -81,17 +81,17 @@ Conn2Flow apresenta um **instalador web automatizado moderno** que simplifica o 
 1. **Baixe o Instalador**
 
    **Download Direto:**
-   - Clique no próximo link para baixar o `instalador.zip`: [Download Instalador v1.5.1](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.1/instalador.zip)
+   - Clique no próximo link para baixar o `instalador.zip`: [Download Instalador v1.5.2](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip)
 
       
    **Linux/macOS:**
    ```bash
-   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.1/instalador.zip
+   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip
    ```
 
    **Windows PowerShell:**
    ```powershell
-   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.1/instalador.zip" -OutFile "instalador.zip"
+   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip" -OutFile "instalador.zip"
    ```
 
    **Sempre o Último Instalador:**
@@ -421,6 +421,7 @@ dev-environment/       # Stack de desenvolvimento Docker
 - **Gestor v1.15.0**: Sistema de atualização automática consolidado, correção de permissões, documentação técnica.
 - **Gestor v1.11.0**: Versionamento automático recursos módulos/plugins; melhorias checksum e remoção definitiva de seeders na atualização.
 - **Gestor v1.10.x**: Correções de duplicidade, internacionalização, unificação geração de recursos, campos de controle *updated*.
+- **Instalador v1.5.2**: Correções de roteamento, ajustes de headers estáticos, atualizações de documentação.
 - **Instalador v1.5.1**: Suporte ao sistema de IA para recursos v2.3.0, compatibilidade aprimorada e robustez de instalação.
 - **Instalador v1.4.0**: Suporte framework CSS, charset UTF-8 robusto, getPdo() unificado, preparação para preview system.
 - **Instalador v1.3.3**: Refatoração robusta com charset utf8mb4, correção de acentuação, instalação em ambientes diversos.

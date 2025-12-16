@@ -83,16 +83,16 @@ Conn2Flow features a modern **automated web installer** that simplifies the inst
 1. **Download the Installer**
 
    **Direct Download:**
-   - Click in the next link to download the `instalador.zip`: [Download Installer v1.5.1](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.1/instalador.zip)
+   - Click in the next link to download the `instalador.zip`: [Download Installer v1.5.2](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip)
 
    **Linux/macOS:**
    ```bash
-   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.1/instalador.zip
+   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip
    ```
 
    **Windows PowerShell:**
    ```powershell
-   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.1/instalador.zip" -OutFile "instalador.zip"
+   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip" -OutFile "instalador.zip"
    ```
    **Always Latest Installer:**
    ```bash
@@ -420,6 +420,7 @@ dev-environment/       # Docker development stack
 - **Gestor v1.15.0**: Consolidated automatic update system, permission fixes, technical documentation.
 - **Gestor v1.11.0**: Automatic versioning of modules/plugins resources; checksum improvements and definitive removal of seeders in update.
 - **Gestor v1.10.x**: Duplicity fixes, internationalization, unified resource generation, *updated* control fields.
+- **Instalador v1.5.2**: Routing corrections, static file headers adjustments, documentation updates.
 - **Instalador v1.5.1**: AI system support for v2.3.0 features, enhanced compatibility and installation robustness.
 - **Instalador v1.4.0**: CSS framework support, robust UTF-8 charset, unified getPdo(), preparation for preview system.
 - **Instalador v1.3.3**: Robust refactoring with utf8mb4 charset, accent correction, installation in diverse environments.
