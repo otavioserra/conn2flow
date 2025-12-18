@@ -16,6 +16,8 @@
 4. Salvar o arquivo traduzido.
 5. Marcar o item como concluído nesta lista.
 
+**Nota sobre Scripts:** Para arquivos na pasta `scripts`, traduza apenas os comentários e mensagens de saída. Não altere a lógica do script ou mapeamentos de dados (ex: dicionários Português-Inglês).
+
 ## 🤔 Dúvidas e 📝 Sugestões
 
 ## ✅ Progresso da Implementação
@@ -28,15 +30,15 @@
 - [x] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 10.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 10.md`
 - [x] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 11.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 11.md`
 - [x] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 12.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 12.md`
-- [ ] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 2.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 2.md`
-- [ ] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 3.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 3.md`
-- [ ] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 4.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 4.md`
-- [ ] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 5.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 5.md`
-- [ ] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 6.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 6.md`
-- [ ] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 7.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 7.md`
-- [ ] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 8.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 8.md`
-- [ ] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 9.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 9.md`
-- [ ] `ai-workspace/agents-history/Gestor Docker - Antigo 1.md` -> `ai-workspace/en/agents-history/Manager Docker - Legacy 1.md`
+- [x] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 2.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 2.md`
+- [x] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 3.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 3.md`
+- [x] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 4.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 4.md`
+- [x] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 5.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 5.md`
+- [x] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 6.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 6.md`
+- [x] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 7.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 7.md`
+- [x] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 8.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 8.md`
+- [x] `ai-workspace/agents-history/Gestor Desenvolvimento - Antigo 9.md` -> `ai-workspace/en/agents-history/Manager Development - Legacy 9.md`
+- [x] `ai-workspace/agents-history/Gestor Docker - Antigo 1.md` -> `ai-workspace/en/agents-history/Manager Docker - Legacy 1.md`
 - [x] `limpeza-estrutura-html-css.md` -> `ai-workspace/en/agents-history/cleanup-html-css-structure.md`
 
 ### docs
@@ -100,28 +102,28 @@
 - [x] `ai-workspace/docs/bibliotecas/BIBLIOTECA-WIDGETS.md` -> `ai-workspace/en/docs/libraries/LIBRARY-WIDGETS.md`
 
 ### docs/modulos (modules)
-- [ ] `ai-workspace/docs/modulos/README.md` -> `ai-workspace/en/docs/modules/README.md`
-- [ ] `ai-workspace/docs/modulos/admin-arquivos.md` -> `ai-workspace/en/docs/modules/admin-files.md`
-- [ ] `ai-workspace/docs/modulos/admin-paginas.md` -> `ai-workspace/en/docs/modules/admin-pages.md`
-- [ ] `ai-workspace/docs/modulos/dashboard.md` -> `ai-workspace/en/docs/modules/dashboard.md`
+- [x] `ai-workspace/docs/modulos/README.md` -> `ai-workspace/en/docs/modules/README.md`
+- [x] `ai-workspace/docs/modulos/admin-arquivos.md` -> `ai-workspace/en/docs/modules/admin-files.md`
+- [x] `ai-workspace/docs/modulos/admin-paginas.md` -> `ai-workspace/en/docs/modules/admin-pages.md`
+- [x] `ai-workspace/docs/modulos/dashboard.md` -> `ai-workspace/en/docs/modules/dashboard.md`
 
 ### prompts
-- [ ] `ai-workspace/prompts/README.md` -> `ai-workspace/en/prompts/README.md`
+- [x] `ai-workspace/prompts/README.md` -> `ai-workspace/en/prompts/README.md`
 
 ### prompts/antigo (legacy)
-- [ ] `ai-workspace/prompts/antigo/prompt-bugfix.md` -> `ai-workspace/en/prompts/legacy/prompt-bugfix.md`
-- [ ] `ai-workspace/prompts/antigo/prompt-desenvolvimento.md` -> `ai-workspace/en/prompts/legacy/prompt-development.md`
-- [ ] `ai-workspace/prompts/antigo/prompt-docker-debug-errors.md` -> `ai-workspace/en/prompts/legacy/prompt-docker-debug-errors.md`
-- [ ] `ai-workspace/prompts/antigo/prompt-docker.md` -> `ai-workspace/en/prompts/legacy/prompt-docker.md`
-- [ ] `ai-workspace/prompts/antigo/prompt-git.md` -> `ai-workspace/en/prompts/legacy/prompt-git.md`
-- [ ] `ai-workspace/prompts/antigo/template-nova-conversa.md` -> `ai-workspace/en/prompts/legacy/template-new-conversation.md`
+- [x] `ai-workspace/prompts/antigo/prompt-bugfix.md` -> `ai-workspace/en/prompts/legacy/prompt-bugfix.md`
+- [x] `ai-workspace/prompts/antigo/prompt-desenvolvimento.md` -> `ai-workspace/en/prompts/legacy/prompt-development.md`
+- [x] `ai-workspace/prompts/antigo/prompt-docker-debug-errors.md` -> `ai-workspace/en/prompts/legacy/prompt-docker-debug-errors.md`
+- [x] `ai-workspace/prompts/antigo/prompt-docker.md` -> `ai-workspace/en/prompts/legacy/prompt-docker.md`
+- [x] `ai-workspace/prompts/antigo/prompt-git.md` -> `ai-workspace/en/prompts/legacy/prompt-git.md`
+- [x] `ai-workspace/prompts/antigo/template-nova-conversa.md` -> `ai-workspace/en/prompts/legacy/template-new-conversation.md`
 
 ### prompts/api
-- [ ] `ai-workspace/prompts/api/api-project-updates.md` -> `ai-workspace/en/prompts/api/api-project-updates.md`
-- [ ] `ai-workspace/prompts/api/api-script-consumo.md` -> `ai-workspace/en/prompts/api/api-consumption-script.md`
+- [x] `ai-workspace/prompts/api/api-project-updates.md` -> `ai-workspace/en/prompts/api/api-project-updates.md`
+- [x] `ai-workspace/prompts/api/api-script-consumo.md` -> `ai-workspace/en/prompts/api/api-consumption-script.md`
 
 ### prompts/arquitetura (architecture)
-- [ ] `ai-workspace/prompts/arquitetura/alterar-migrações-criar-campos-v2.md` -> `ai-workspace/en/prompts/architecture/alter-migrations-create-fields-v2.md`
+- [x] `ai-workspace/prompts/arquitetura/alterar-migrações-criar-campos-v2.md` -> `ai-workspace/en/prompts/architecture/alter-migrations-create-fields-v2.md`
 - [ ] `ai-workspace/prompts/arquitetura/alterar-migrações-criar-campos.md` -> `ai-workspace/en/prompts/architecture/alter-migrations-create-fields.md`
 - [ ] `ai-workspace/prompts/arquitetura/atualização-dados-recursos-v2.md` -> `ai-workspace/en/prompts/architecture/update-resource-data-v2.md`
 - [ ] `ai-workspace/prompts/arquitetura/atualização-dados-recursos-v3.md` -> `ai-workspace/en/prompts/architecture/update-resource-data-v3.md`
