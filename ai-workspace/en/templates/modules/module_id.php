@@ -1,4 +1,3 @@
-```php
 <?php
 
 global $_GESTOR;
@@ -540,4 +539,3 @@ function module_id_start(){
 }
 
 module_id_start(); // Start module automatically when manager.php identifies a page that references this module.
-```

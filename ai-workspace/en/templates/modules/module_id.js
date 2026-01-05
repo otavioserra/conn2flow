@@ -1,4 +1,3 @@
-```javascript
 $(document).ready(function () {
     function exampleCalls() {
         // When making an AJAX request, use the following model.
@@ -55,4 +54,3 @@ $(document).ready(function () {
 
     start();
 });
-```
