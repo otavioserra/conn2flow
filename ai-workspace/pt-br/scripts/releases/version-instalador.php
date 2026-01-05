@@ -1,7 +1,7 @@
 <?php
 
 // O caminho agora aponta para o index.php do gestor-instalador.
-$configPath = __DIR__ . '/../../../gestor-instalador/index.php';
+$configPath = __DIR__ . '/../../../../gestor-instalador/index.php';
 $lines = file($configPath); // Lê o arquivo como um array de linhas, preservando a formatação
 
 if ($lines === false) {

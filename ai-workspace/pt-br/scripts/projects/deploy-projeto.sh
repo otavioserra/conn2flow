@@ -115,7 +115,7 @@ upload_zip() {
 
 # Caminhos
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 ENV_FILE="$PROJECT_ROOT/dev-environment/data/environment.json"
 TEMP_DIR="$PROJECT_ROOT/temp"
 
@@ -278,7 +278,7 @@ else
         log_warning "Token expirado. Tentando renovar..."
 
         # Caminho para o script de renovação
-        RENEW_SCRIPT="$PROJECT_ROOT/ai-workspace/scripts/api/renovar-token.sh"
+        RENEW_SCRIPT="$PROJECT_ROOT/ai-workspace/pt-br/scripts/api/renovar-token.sh"
 
         if [ -f "$RENEW_SCRIPT" ]; then
             log "Executando script de renovação: $RENEW_SCRIPT"

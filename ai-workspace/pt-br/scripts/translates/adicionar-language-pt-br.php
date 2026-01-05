@@ -2,10 +2,10 @@
 
 // Script para adicionar campo language aos arquivos de dados
 $files = [
-    __DIR__ . '/../../../gestor/db/data/ModulosData.json',
-    __DIR__ . '/../../../gestor/db/data/ModulosGruposData.json',
-    __DIR__ . '/../../../gestor/db/data/ModulosOperacoesData.json',
-    __DIR__ . '/../../../gestor/db/data/UsuariosPerfisData.json'
+    __DIR__ . '/../../../../gestor/db/data/ModulosData.json',
+    __DIR__ . '/../../../../gestor/db/data/ModulosGruposData.json',
+    __DIR__ . '/../../../../gestor/db/data/ModulosOperacoesData.json',
+    __DIR__ . '/../../../../gestor/db/data/UsuariosPerfisData.json'
 ];
 
 foreach ($files as $file) {

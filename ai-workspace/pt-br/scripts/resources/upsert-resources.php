@@ -44,7 +44,7 @@ declare(strict_types=1);
 // ===============================================================================================
 
 // Definir caminhos base
-$WORKSPACE_ROOT = realpath(__DIR__ . '/../../../'); // ai-workspace/scripts/resources/ -> raiz
+$WORKSPACE_ROOT = realpath(__DIR__ . '/../../../../'); // ai-workspace/scripts/resources/ -> raiz
 $ENV_FILE = $WORKSPACE_ROOT . '/dev-environment/data/environment.json';
 
 const TYPE_MAP = [

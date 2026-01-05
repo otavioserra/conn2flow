@@ -2,10 +2,10 @@
 
 // Script to duplicate records and create English versions
 $files = [
-    __DIR__ . '/../../../gestor/db/data/ModulosData.json',
-    __DIR__ . '/../../../gestor/db/data/ModulosGruposData.json',
-    __DIR__ . '/../../../gestor/db/data/ModulosOperacoesData.json',
-    __DIR__ . '/../../../gestor/db/data/UsuariosPerfisData.json'
+    __DIR__ . '/../../../../gestor/db/data/ModulosData.json',
+    __DIR__ . '/../../../../gestor/db/data/ModulosGruposData.json',
+    __DIR__ . '/../../../../gestor/db/data/ModulosOperacoesData.json',
+    __DIR__ . '/../../../../gestor/db/data/UsuariosPerfisData.json'
 ];
 
 // Translations for names

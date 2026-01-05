@@ -99,7 +99,7 @@ if [ -n "$ENV_FILE_ARG" ]; then
 else
     # Calculate automatically based on script location
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+    PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
     ENV_FILE="$PROJECT_ROOT/dev-environment/data/environment.json"
 fi
 

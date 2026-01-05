@@ -1,7 +1,7 @@
 <?php
 
 // O caminho agora sobe um nível ('..') para encontrar o config.php na raiz do gestor.
-$configPath = __DIR__ . '/../../../gestor/config.php';
+$configPath = __DIR__ . '/../../../../gestor/config.php';
 $lines = file($configPath); // Lê o arquivo como um array de linhas, preservando a formatação
 
 if ($lines === false) {

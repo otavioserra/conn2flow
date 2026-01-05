@@ -6,7 +6,7 @@
  */
 
 // Settings
-$modulosPath = __DIR__ . '/../../../gestor/modulos/';
+$modulosPath = __DIR__ . '/../../../../gestor/modulos/';
 $dictionariesPath = __DIR__ . '/dictionaries/';
 $analiseFile = __DIR__ . '/../../prompts/translates/dictionaries/dictionaries-to-analyze.md';
 
@@ -29,7 +29,7 @@ $jsonCount = 0;
 // Iterate modules
 $modulos = scandir($modulosPath);
 $modulos = array_filter($modulos, function($item) {
-    return $item !== '.' && $item !== '..' && is_dir(__DIR__ . '/../../../gestor/modulos/' . $item);
+    return $item !== '.' && $item !== '..' && is_dir(__DIR__ . '/../../../../gestor/modulos/' . $item);
 });
 
 foreach ($modulos as $modulo) {

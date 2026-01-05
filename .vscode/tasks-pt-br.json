@@ -39,32 +39,32 @@
         {
             "label": "🔧 Instalador - GIT Release",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/releases/release-instalador.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+            "command": "bash ./ai-workspace/pt-br/scripts/releases/release-instalador.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
         },
         {
             "label": "🔧 Instalador - Sincronizar",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor-instalador.sh checksum"
+            "command": "bash ./ai-workspace/pt-br/scripts/dev-environment/sincroniza-gestor-instalador.sh checksum"
         },
         {
             "label": "🔧 Instalador - Build Local",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/updates/build-local-gestor-instalador.sh"
+            "command": "bash ./ai-workspace/pt-br/scripts/updates/build-local-gestor-instalador.sh"
         },
         {
             "label": "🔧 Instalador - Nova Instalação Local",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/dev-environment/criar-nova-instalacao.sh"
+            "command": "bash ./ai-workspace/pt-br/scripts/dev-environment/criar-nova-instalacao.sh"
         },
         {
             "label": "🛠️ Gestor - GIT Release",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+            "command": "bash ./ai-workspace/pt-br/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
         },
         {
             "label": "🛠️ Gestor - GIT Commit",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/commits/commit.sh \"${input:commitMsg}\""
+            "command": "bash ./ai-workspace/pt-br/scripts/commits/commit.sh \"${input:commitMsg}\""
         },
         {
             "label": "🛠️ Gestor - Sincronizar => Recursos - Local",
@@ -79,17 +79,17 @@
         {
             "label": "🛠️ Gestor - Sincronizar => Arquivos - Ambiente de Testes",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/dev-environment/sincroniza-gestor.sh checksum"
+            "command": "bash ./ai-workspace/pt-br/scripts/dev-environment/sincroniza-gestor.sh checksum"
         },
         {
             "label": "🛠️ Gestor - Build Local",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/updates/build-local-gestor.sh"
+            "command": "bash ./ai-workspace/pt-br/scripts/updates/build-local-gestor.sh"
         },
         {
             "label": "🛠️ Gestor - Criar Módulo",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/dev-environment/criar-novo-modulo.sh \"${input:moduloID}\""
+            "command": "bash ./ai-workspace/pt-br/scripts/dev-environment/criar-novo-modulo.sh \"${input:moduloID}\""
         },
         {
             "label": "🛠️ Gestor - Atualizar => Tudo - Ambiente de Testes",
@@ -108,7 +108,7 @@
         {
             "label": "🧩 Plugins Privado - Build Local Plugin Ativo",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/updates/build-local-gestor-plugin.sh --type=private"
+            "command": "bash ./ai-workspace/pt-br/scripts/updates/build-local-gestor-plugin.sh --type=private"
         },
         {
             "label": "🧩 Plugins Privado - Recursos Plugin",
@@ -133,7 +133,7 @@
         {
             "label": "🧩 Plugins Público - Build Local Plugin Ativo",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/updates/build-local-gestor-plugin.sh"
+            "command": "bash ./ai-workspace/pt-br/scripts/updates/build-local-gestor-plugin.sh"
         },
         {
             "label": "🧩 Plugins Público - Recursos Plugin",
@@ -153,12 +153,12 @@
         {
             "label": "🗃️ Projetos - Sincronizar => Recursos - Local",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/projects/atualizacao-dados-recursos.sh"
+            "command": "bash ./ai-workspace/pt-br/scripts/projects/atualizacao-dados-recursos.sh"
         },
         {
             "label": "🗃️ Projetos - Deploy Projeto",
             "type": "shell",
-            "command": "bash ./ai-workspace/scripts/projects/deploy-projeto.sh"
+            "command": "bash ./ai-workspace/pt-br/scripts/projects/deploy-projeto.sh"
         }
     ],
     "inputs": [

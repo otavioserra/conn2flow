@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 INSTALADOR_DIR="$REPO_ROOT/gestor-instalador"
 # Output directory now points to external docker-test repository
 DOCKER_ENV_ROOT="$REPO_ROOT/dev-environment/data"

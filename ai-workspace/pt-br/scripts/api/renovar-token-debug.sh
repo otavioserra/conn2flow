@@ -63,7 +63,7 @@ fi
 
 # Caminho para o arquivo de ambiente (relativo à raiz do projeto)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 ENV_FILE="$PROJECT_ROOT/dev-environment/data/environment.json"
 
 # Verificar se arquivo existe

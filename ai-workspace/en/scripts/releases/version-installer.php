@@ -1,7 +1,7 @@
 <?php
 
 // The path now points to index.php of gestor-installer.
-$configPath = __DIR__ . '/../../../gestor-instalador/index.php';
+$configPath = __DIR__ . '/../../../../gestor-instalador/index.php';
 $lines = file($configPath); // Reads the file as an array of lines, preserving formatting
 
 if ($lines === false) {

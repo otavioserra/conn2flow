@@ -46,7 +46,7 @@ log_action() {
 
 # Variables
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 GESTOR_DIR="$PROJECT_ROOT/gestor"
 LISTA_RECURSOS_FILE="$PROJECT_ROOT/ai-workspace/prompts/translates/pt-br/lista-recursos.md"
 TRADUCAO_MAIN_FILE="$PROJECT_ROOT/ai-workspace/prompts/translates/traducao-pt-br-para-en.md"

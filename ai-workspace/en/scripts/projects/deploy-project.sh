@@ -115,7 +115,7 @@ upload_zip() {
 
 # Paths
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 ENV_FILE="$PROJECT_ROOT/dev-environment/data/environment.json"
 TEMP_DIR="$PROJECT_ROOT/temp"
 

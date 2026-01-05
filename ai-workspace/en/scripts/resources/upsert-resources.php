@@ -15,7 +15,7 @@
 // ===============================================================================================
 
 // Adjusts to find the root and the .env file
-$WORKSPACE_ROOT = __DIR__ . '/../../../..'; // Assuming scripts/resources/upsert-resources.php
+$WORKSPACE_ROOT = __DIR__ . '/../../../../..'; // Assuming scripts/resources/upsert-resources.php
 $ENV_FILE = $WORKSPACE_ROOT . '/.env';
 
 // Map of Resource Types -> Subfolders / File Structures

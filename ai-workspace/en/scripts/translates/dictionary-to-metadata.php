@@ -5,7 +5,7 @@
  */
 
 // Paths
-$modulosPath = __DIR__ . '/../../../gestor/modulos/';
+$modulosPath = __DIR__ . '/../../../../gestor/modulos/';
 $dictionariesPath = __DIR__ . '/dictionaries/';
 
 echo "🔄 Applying dictionary translations to modules...\n\n";
@@ -13,7 +13,7 @@ echo "🔄 Applying dictionary translations to modules...\n\n";
 // Iterate modules
 $modulos = scandir($modulosPath);
 $modulos = array_filter($modulos, function($item) {
-    return $item !== '.' && $item !== '..' && is_dir(__DIR__ . '/../../../gestor/modulos/' . $item);
+    return $item !== '.' && $item !== '..' && is_dir(__DIR__ . '/../../../../gestor/modulos/' . $item);
 });
 
 foreach ($modulos as $modulo) {
