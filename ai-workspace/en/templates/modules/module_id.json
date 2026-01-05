@@ -1,0 +1,49 @@
+```json
+{
+    "version": "1.0.0",
+    "libraries": [
+        "interface",
+        "html"
+    ],
+    "table": {
+        "name": "database_table_name",
+        "id": "id",
+        "numeric_id": "id_database_table_name",
+        "status": "status",
+        "version": "version",
+        "creation_date": "creation_date",
+        "modification_date": "modification_date"
+    },
+    "resources": {
+        "en": {
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Free Name",
+                    "id": "module-id-option",
+                    "layout": "layout-id",
+                    "path": "module-id/option/",
+                    "type": "system|page",
+                    "option": "option",
+                    "root": true,
+                    "version": "1.0"
+                }
+            ],
+            "components": [
+                {
+                    "name": "Free Name",
+                    "id": "unique-identifier-of-the-component-inside-the-module",
+                    "version": "1.0"
+                }
+            ],
+            "variables": [
+                {
+                    "id": "unique-identifier-of-the-variable-inside-the-module",
+                    "value": "variable value",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}
+```
