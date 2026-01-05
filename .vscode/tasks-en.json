@@ -39,22 +39,22 @@
         {
             "label": "🔧 Installer - GIT Release",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/releases/release-instalador.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+            "command": "bash ./ai-workspace/en/scripts/releases/release-installer.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
         },
         {
             "label": "🔧 Installer - Synchronize",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/dev-environment/sincroniza-gestor-instalador.sh checksum"
+            "command": "bash ./ai-workspace/en/scripts/dev-environment/synchronize-manager-installer.sh checksum"
         },
         {
             "label": "🔧 Installer - Build Local",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/updates/build-local-gestor-instalador.sh"
+            "command": "bash ./ai-workspace/en/scripts/updates/build-local-manager-installer.sh"
         },
         {
             "label": "🔧 Installer - New Local Installation",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/dev-environment/criar-nova-instalacao.sh"
+            "command": "bash ./ai-workspace/en/scripts/dev-environment/create-new-installation.sh"
         },
         {
             "label": "🛠️ Manager - GIT Release",
@@ -79,17 +79,17 @@
         {
             "label": "🛠️ Manager - Synchronize => Files - Test Environment",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/dev-environment/sincroniza-gestor.sh checksum"
+            "command": "bash ./ai-workspace/en/scripts/dev-environment/synchronize-manager.sh checksum"
         },
         {
             "label": "🛠️ Manager - Build Local",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/updates/build-local-gestor.sh"
+            "command": "bash ./ai-workspace/en/scripts/updates/build-local-manager.sh"
         },
         {
             "label": "🛠️ Manager - Create Module",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/dev-environment/criar-novo-modulo.sh \"${input:moduloID}\""
+            "command": "bash ./ai-workspace/en/scripts/dev-environment/create-new-module.sh \"${input:moduloID}\""
         },
         {
             "label": "🛠️ Manager - Update => All - Test Environment",
@@ -108,7 +108,7 @@
         {
             "label": "🧩 Private Plugins - Build Local Active Plugin",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/updates/build-local-gestor-plugin.sh --type=private"
+            "command": "bash ./ai-workspace/en/scripts/updates/build-local-manager-plugin.sh --type=private"
         },
         {
             "label": "🧩 Private Plugins - Plugin Resources",
@@ -133,7 +133,7 @@
         {
             "label": "🧩 Public Plugins - Build Local Active Plugin",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/updates/build-local-gestor-plugin.sh"
+            "command": "bash ./ai-workspace/en/scripts/updates/build-local-manager-plugin.sh"
         },
         {
             "label": "🧩 Public Plugins - Plugin Resources",
@@ -153,12 +153,12 @@
         {
             "label": "🗃️ Projects - Synchronize => Resources - Local",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/projects/atualizacao-dados-recursos.sh"
+            "command": "bash ./ai-workspace/en/scripts/projects/update-resource-data.sh"
         },
         {
             "label": "🗃️ Projects - Deploy Project",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/projects/deploy-projeto.sh"
+            "command": "bash ./ai-workspace/en/scripts/projects/deploy-project.sh"
         }
     ],
     "inputs": [
