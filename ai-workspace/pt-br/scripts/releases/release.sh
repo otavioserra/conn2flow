@@ -14,8 +14,8 @@ set -e
 # Verifica se o tipo de release (patch, minor, major) foi passado como argumento
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
   echo "Erro: Argumentos insuficientes."
-  echo "Uso:   ./ai-workspace/git/scripts/release.sh [tipo] \"Resumo para a Tag\" \"Mensagem detalhada para o Commit\""
-  echo "Exemplo: ./ai-workspace/git/scripts/release.sh patch \"Corrige validação de senha\" \"fix(login): Corrige bug que impedia o uso de caracteres especiais na senha.\""
+  echo "Uso:   ./ai-workspace/pt-br/scripts/releases/release.sh [tipo] \"Resumo para a Tag\" \"Mensagem detalhada para o Commit\""
+  echo "Exemplo: ./ai-workspace/pt-br/scripts/releases/release.sh patch \"Corrige validação de senha\" \"fix(login): Corrige bug que impedia o uso de caracteres especiais na senha.\""
   exit 1
 fi
 
@@ -23,7 +23,7 @@ RELEASE_TYPE=$1
 TAG_SUMMARY=$2
 COMMIT_DETAILS=$3
 CONFIG_FILE="gestor/config.php"
-VERSION_SCRIPT="ai-workspace/scripts/releases/version.php"
+VERSION_SCRIPT="ai-workspace/pt-br/scripts/releases/version.php"
 
 # 1. Roda o script PHP para atualizar a versão no config.php
 echo "Atualizando a versão ($RELEASE_TYPE)..."

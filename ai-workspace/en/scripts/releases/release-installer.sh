@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Run: bash ./ai-workspace/git/scripts/release-installer.sh TYPE "TAG_MSG" "COMMIT_MSG"
+# Run: bash ./ai-workspace/en/scripts/releases/release-installer.sh TYPE "TAG_MSG" "COMMIT_MSG"
 
 # Script to automate the GESTOR-INSTALLER release process:
 # 1. Updates the version in index.php
@@ -14,8 +14,8 @@ set -e
 # Checks if the release type (patch, minor, major) was passed as an argument
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
   echo "Error: Insufficient arguments."
-  echo "Usage:   ./ai-workspace/scripts/release-installer.sh [type] \"Tag Summary\" \"Detailed Commit Message\""
-  echo "Example: ./ai-workspace/scripts/release-installer.sh patch \"Fix .env path\" \"fix(install): Fix .env path during autologin creation.\""
+  echo "Usage:   ./ai-workspace/en/scripts/releases/release-installer.sh [type] \"Tag Summary\" \"Detailed Commit Message\""
+  echo "Example: ./ai-workspace/en/scripts/releases/release-installer.sh patch \"Fix .env path\" \"fix(install): Fix .env path during autologin creation.\""
   exit 1
 fi
 
@@ -23,7 +23,7 @@ RELEASE_TYPE=$1
 TAG_SUMMARY=$2
 COMMIT_DETAILS=$3
 CONFIG_FILE="gestor-instalador/index.php"
-VERSION_SCRIPT="ai-workspace/scripts/releases/version-installer.php"
+VERSION_SCRIPT="ai-workspace/en/scripts/releases/version-installer.php"
 
 # 1. Runs the PHP script to update the version in index.php
 echo "Updating installer version ($RELEASE_TYPE)..."

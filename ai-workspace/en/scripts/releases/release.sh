@@ -14,8 +14,8 @@ set -e
 # Checks if the release type (patch, minor, major) was passed as an argument
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
   echo "Error: Insufficient arguments."
-  echo "Usage:   ./ai-workspace/git/scripts/release.sh [type] \"Tag Summary\" \"Detailed Commit Message\""
-  echo "Example: ./ai-workspace/git/scripts/release.sh patch \"Fix password validation\" \"fix(login): Fix bug preventing special characters in password.\""
+  echo "Usage:   ./ai-workspace/en/scripts/releases/release.sh [type] \"Tag Summary\" \"Detailed Commit Message\""
+  echo "Example: ./ai-workspace/en/scripts/releases/release.sh patch \"Fix password validation\" \"fix(login): Fix bug preventing special characters in password.\""
   exit 1
 fi
 
@@ -23,7 +23,7 @@ RELEASE_TYPE=$1
 TAG_SUMMARY=$2
 COMMIT_DETAILS=$3
 CONFIG_FILE="gestor/config.php"
-VERSION_SCRIPT="ai-workspace/scripts/releases/version.php"
+VERSION_SCRIPT="ai-workspace/en/scripts/releases/version.php"
 
 # 1. Runs the PHP script to update the version in config.php
 echo "Updating version ($RELEASE_TYPE)..."
