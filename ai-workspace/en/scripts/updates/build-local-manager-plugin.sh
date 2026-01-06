@@ -21,7 +21,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # Fixed path of main environment.json
-ENV_MAIN_JSON="$SCRIPT_DIR/../../../dev-environment/data/environment.json"
+ENV_MAIN_JSON="$SCRIPT_DIR/../../../../dev-environment/data/environment.json"
 
 if [[ ! -f "$ENV_MAIN_JSON" ]]; then
   echo "[build-plugin] ERROR: main environment.json not found: $ENV_MAIN_JSON" >&2

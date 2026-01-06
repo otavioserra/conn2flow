@@ -11,14 +11,14 @@ set -e
 # Verifica se a mensagem do commit foi passada como argumento
 if [ -z "$1" ]; then
   echo "Erro: Argumentos insuficientes."
-  echo "Uso:   ./ai-workspace/git/scripts/commit.sh \"Mensagem detalhada para o Commit\""
-  echo "Exemplo: ./ai-workspace/git/scripts/commit.sh \"Corrige validação de senha\""
+  echo "Uso:   ./ai-workspace/pt-br/scripts/commits/commit.sh \"Mensagem detalhada para o Commit\""
+  echo "Exemplo: ./ai-workspace/pt-br/scripts/commits/commit.sh \"Corrige validação de senha\""
   exit 1
 fi
 
 RELEASE_TYPE='patch'
 COMMIT_DETAILS=$1
-VERSION_SCRIPT="ai-workspace/scripts/releases/version.php"
+VERSION_SCRIPT="ai-workspace/pt-br/scripts/releases/version.php"
 
 # 1. Roda o script PHP para atualizar a versão no config.php
 echo "Atualizando a versão ($RELEASE_TYPE)..."

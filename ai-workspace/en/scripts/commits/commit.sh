@@ -11,14 +11,14 @@ set -e
 # Checks if the commit message was passed as an argument
 if [ -z "$1" ]; then
   echo "Error: Insufficient arguments."
-  echo "Usage:   ./ai-workspace/git/scripts/commit.sh \"Detailed message for the Commit\""
-  echo "Example: ./ai-workspace/git/scripts/commit.sh \"Fixes password validation\""
+  echo "Usage:   ./ai-workspace/en/scripts/commits/commit.sh \"Detailed message for the Commit\""
+  echo "Example: ./ai-workspace/en/scripts/commits/commit.sh \"Fixes password validation\""
   exit 1
 fi
 
 RELEASE_TYPE='patch'
 COMMIT_DETAILS=$1
-VERSION_SCRIPT="ai-workspace/scripts/releases/version.php"
+VERSION_SCRIPT="ai-workspace/en/scripts/releases/version.php"
 
 # 1. Runs the PHP script to update the version in config.php
 echo "Updating version ($RELEASE_TYPE)..."

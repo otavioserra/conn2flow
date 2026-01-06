@@ -8,7 +8,7 @@ echo "[new-installation] Starting creation of new installation..."
 
 # 1. Execute installer build
 echo "[new-installation] Generating installer..."
-"$SCRIPT_DIR/../updates/build-local-gestor-instalador.sh"
+"$SCRIPT_DIR/../updates/build-local-manager-installer.sh"
 
 # 2. Read environment.json configuration
 ENV_FILE="$REPO_ROOT/dev-environment/data/environment.json"
