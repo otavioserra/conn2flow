@@ -1,0 +1,51 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "banco"
+    ],
+    "id_numerico": "id_publisher",
+    "tabela": {
+        "nome": "publisher",
+        "id": "id",
+        "id_numerico": "id_publisher",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "id": "publisher",
+                    "nome": "Publisher - Listar",
+                    "caminho": "publisher"
+                },
+                {
+                    "id": "publisher-adicionar",
+                    "nome": "Publisher - Adicionar",
+                    "caminho": "publisher\/adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "dcffb815c10fe67f708368f3a92ee749",
+                        "css": "",
+                        "combined": "dcffb815c10fe67f708368f3a92ee749"
+                    }
+                },
+                {
+                    "id": "publisher-editar",
+                    "nome": "Publisher - Editar",
+                    "caminho": "publisher\/editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "a86b6cb52f7cecdf879fff7a685e1c53",
+                        "css": "",
+                        "combined": "a86b6cb52f7cecdf879fff7a685e1c53"
+                    }
+                }
+            ]
+        }
+    }
+}

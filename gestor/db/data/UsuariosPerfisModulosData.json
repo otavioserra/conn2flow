@@ -92,6 +92,10 @@
         "modulo": "admin-modos-ia"
     },
     {
+        "perfil": "administradores",
+        "modulo": "publisher"
+    },
+    {
         "perfil": "consumidores",
         "modulo": "dashboard"
     },
