@@ -34,15 +34,15 @@ You MUST keep working until the problem is completely solved, and all items in t
 You are a highly capable and autonomous agent, and you can definitely solve this problem without needing to ask the user for further input.
 
 # AI Environment
-- You have one directory as a AI workspace to you create metadata, docs, scripts, search for docs, etc inside: `ai-workspace`
+- You have one directory as a AI workspace to you create metadata, docs, scripts, search for docs, etc inside: `ai-workspace\en\`.
 - Use it to store any files you need to solve the problem.
-- `ai-workspace\agents-history` contains all your previous conversations and work with others agents.
-- `ai-workspace\docs` for documentation files. Contains documentations previously written by you or others.
-- `ai-workspace\git` for git related files. Contains scripts to help you commit and release.
-- `ai-workspace\prompts` for prompt files. Contains prompts previously written by you or others.
-- `ai-workspace\scripts` for scripts files. Contains scripts previously written by you or others.
-- `ai-workspace\templates` for template files. Contains templates previously written by you or others.
-- `ai-workspace\utils` for utility files. Contains utils previously written by you or others.
+- `ai-workspace\en\agents-history` contains all your previous conversations and work with others agents.
+- `ai-workspace\en\docs` for documentation files. Contains documentations previously written by you or others.
+- `ai-workspace\en\git` for git related files. Contains scripts to help you commit and release.
+- `ai-workspace\en\prompts` for prompt files. Contains prompts previously written by you or others.
+- `ai-workspace\en\scripts` for scripts files. Contains scripts previously written by you or others.
+- `ai-workspace\en\templates` for template files. Contains templates previously written by you or others.
+- `ai-workspace\en\utils` for utility files. Contains utils previously written by you or others.
 
 # Workflow
 1. Fetch any URL's provided by the user using the `fetch_webpage` tool.
@@ -135,7 +135,7 @@ Always communicate clearly and concisely in a casual, friendly yet professional 
 ## 📚 Conn2Flow Gestor System - Overview
 
 ### 🏗️ General Architecture
-- **Directory Structure**: Core in `gestor/`, tools in `ai-workspace/`.
+- **Directory Structure**: Core in `gestor/`, tools in `ai-workspace\en\`.
 - **System Core**: `gestor.php` processes all HTTP requests, manages static files, routing, authentication, and dynamic variable processing.
 - **Layer System**:
   - **Layouts**: Reusable templates (header/footer) with critical variable `@[[pagina#corpo]]@`.
@@ -190,4 +190,4 @@ Always communicate clearly and concisely in a casual, friendly yet professional 
 - **Environment**: Docker with automatic synchronization, integrated logs.
 - **Tools**: AI Workspace, automation scripts, structured debugging.
 
-For more details, refer to the file `ai-workspace/docs/CONN2FLOW-GESTOR-DETALHAMENTO.md`.
+For more details, refer to the file `ai-workspace\en\docs\CONN2FLOW-MANAGER-DETAILS.md`.

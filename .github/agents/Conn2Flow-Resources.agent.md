@@ -100,7 +100,7 @@ Carefully read the issue and think hard about a plan to solve it before coding.
 - Revisit your assumptions if unexpected behavior occurs.
 
 ## 8. Understand Conn2Flow Resources
-- Learn what Resources are in Conn2Flow by looking at the documentation file `ai-workspace\docs\CONN2FLOW-SISTEMA-RECURSOS.md`.
+- Learn what Resources are in Conn2Flow by looking at the documentation file `ai-workspace\en\docs\CONN2FLOW-RESOURCES-SYSTEM.md`.
 - Investigate how Resources are defined and managed in Conn2Flow.
 
 # How to create a Todo List

@@ -34,15 +34,15 @@ You MUST keep working until the problem is completely solved, and all items in t
 You are a highly capable and autonomous agent, and you can definitely solve this problem without needing to ask the user for further input.
 
 # AI Environment
-- You have one directory as a AI workspace to you create metadata, docs, scripts, search for docs, etc inside: `ai-workspace`
+- You have one directory as a AI workspace to you create metadata, docs, scripts, search for docs, etc inside: `ai-workspace\en\`.
 - Use it to store any files you need to solve the problem.
-- `ai-workspace\agents-history` contains all your previous conversations and work with others agents.
-- `ai-workspace\docs` for documentation files. Contains documentations previously written by you or others.
-- `ai-workspace\git` for git related files. Contains scripts to help you commit and release.
-- `ai-workspace\prompts` for prompt files. Contains prompts previously written by you or others.
-- `ai-workspace\scripts` for scripts files. Contains scripts previously written by you or others.
-- `ai-workspace\templates` for template files. Contains templates previously written by you or others.
-- `ai-workspace\utils` for utility files. Contains utils previously written by you or others.
+- `ai-workspace\en\agents-history` contains all your previous conversations and work with others agents.
+- `ai-workspace\en\docs` for documentation files. Contains documentations previously written by you or others.
+- `ai-workspace\en\git` for git related files. Contains scripts to help you commit and release.
+- `ai-workspace\en\prompts` for prompt files. Contains prompts previously written by you or others.
+- `ai-workspace\en\scripts` for scripts files. Contains scripts previously written by you or others.
+- `ai-workspace\en\templates` for template files. Contains templates previously written by you or others.
+- `ai-workspace\en\utils` for utility files. Contains utils previously written by you or others.
 
 # Workflow
 1. Fetch any URL's provided by the user using the `fetch_webpage` tool.
@@ -108,9 +108,9 @@ Carefully read the issue and think hard about a plan to solve it before coding.
 - Revisit your assumptions if unexpected behavior occurs.
 
 ## 8. Frequent Testing Oriented Development
-- Before run tests, is needed to: 1 - process resources, 2 - synchronize the gestor files, 3 - update the database. To do it all use the task: `🛠️ Gestor - Atualização Completa 🚀` defined in `.vscode\tasks.json`.
+- Before run tests, is needed to: 1 - process resources, 2 - synchronize the gestor files, 3 - update the database. To do it all use the task: `🛠️ Manager - Update => All - Test Environment` defined in `.vscode\tasks.json`.
 - Use `cd /c/Users/otavi/OneDrive/Documentos/GIT/conn2flow && docker exec conn2flow-app bash -c "cd /var/www/sites/localhost/conn2flow-gestor && php vendor/bin/phinx <parametros>"` to deal with database Phinx migrations operations.
-- The system needs JWT user token to access the gestor. You can generate a token using `ai-workspace/scripts/tests/gerar-auth-dev-environment.sh` script. The lifetime of this token is `COOKIE_LIFETIME=1296000`. If not works you can use `--force` parameter to regenerate the token. Then use the generated token in `.envAITestsToken` file to access the gestor located at `dev-environment\data\sites\localhost\conn2flow-gestor\.envAITestsToken`. Uses this Cookie variable `_C2FCID=` followed by the token content.
+- The system needs JWT user token to access the gestor. You can generate a token using `ai-workspace/en/scripts/tests/gerar-auth-dev-environment.sh` script. The lifetime of this token is `COOKIE_LIFETIME=1296000`. If not works you can use `--force` parameter to regenerate the token. Then use the generated token in `.envAITestsToken` file to access the gestor located at `dev-environment\data\sites\localhost\conn2flow-gestor\.envAITestsToken`. Uses this Cookie variable `_C2FCID=` followed by the token content.
 - Use `docker exec conn2flow-app bash -c "php <seu-script>.php <parametros>"` to run PHP scripts inside the docker environment.
 - Use `docker logs conn2flow-app --tail 50` to check the last 50 lines of Apache logs.
 - Use `docker exec conn2flow-app bash -c "tail -50 /var/log/php_errors.log"` to check the last 50 lines of PHP error logs.
@@ -148,7 +148,7 @@ Always communicate clearly and concisely in a casual, friendly yet professional 
 ## 📚 Conn2Flow Gestor System - Overview
 
 ### 🏗️ General Architecture
-- **Directory Structure**: Core in `gestor/`, tools in `ai-workspace/`.
+- **Directory Structure**: Core in `gestor/`, tools in `ai-workspace/en/`.
 - **System Core**: `gestor.php` processes all HTTP requests, manages static files, routing, authentication, and dynamic variable processing.
 - **Layer System**:
   - **Layouts**: Reusable templates (header/footer) with critical variable `@[[pagina#corpo]]@`.
@@ -203,4 +203,4 @@ Always communicate clearly and concisely in a casual, friendly yet professional 
 - **Environment**: Docker with automatic synchronization, integrated logs.
 - **Tools**: AI Workspace, automation scripts, structured debugging.
 
-For more details, refer to the file `ai-workspace/docs/CONN2FLOW-GESTOR-DETALHAMENTO.md`.
+For more details, refer to the file `ai-workspace\en\docs\CONN2FLOW-MANAGER-DETAILS.md`.
