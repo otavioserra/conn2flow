@@ -294,7 +294,7 @@ function gestor_pagina_menu($params = false){
 		if($paginas)
 		foreach($paginas as $pagina){
 			if($modulo['id'] == $pagina['modulo']){
-				$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].($_GESTOR['language-in-url'] ? $_GESTOR['linguagem-codigo'].'/' : '').$pagina['caminho']);
+				$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].(isset($_GESTOR['language-in-url']) ? $_GESTOR['linguagem-codigo'].'/' : '').$pagina['caminho']);
 				$pagina_found = true;
 				break;
 			}
@@ -387,7 +387,7 @@ function gestor_pagina_menu($params = false){
 	
 	$cel_aux = modelo_var_troca($cel_aux,"<!-- icon -->",$cel_icon);
 	
-	$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].($_GESTOR['language-in-url'] ? $_GESTOR['linguagem-codigo'].'/' : '').'signout/');
+	$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].(isset($_GESTOR['language-in-url']) ? $_GESTOR['linguagem-codigo'].'/' : '').'signout/');
 	
 	// ===== Incluir sair no conteiner
 	
@@ -565,6 +565,7 @@ function gestor_pagina_css(){
 	// ===== Inclusão de bibliotecas CSS Fomantic-UI
 
 	$fomantic_ui_included = false;
+	if(isset($_GESTOR['layout#framework_css']))
 	if($_GESTOR['layout#framework_css'] == 'fomantic-ui' || $_GESTOR['pagina#framework_css'] == 'fomantic-ui'){
 		$fomantic_ui_included = true;
 	}
@@ -632,6 +633,7 @@ function gestor_pagina_extra_head_e_javascript(){
 	// ===== Inclusão de bibliotecas CSS Fomantic-UI
 
 	$fomantic_ui_included = false;
+	if(isset($_GESTOR['layout#framework_css']))
 	if($_GESTOR['layout#framework_css'] == 'fomantic-ui' || $_GESTOR['pagina#framework_css'] == 'fomantic-ui'){
 		$fomantic_ui_included = true;
 	}

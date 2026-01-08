@@ -614,5 +614,33 @@
         "status": "A",
         "versao": "1",
         "language": "en"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Publicador Definições",
+        "id": "publisher",
+        "titulo": "Publicador Definições",
+        "icone": "file alternate outline",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Publisher Definitions",
+        "id": "publisher",
+        "titulo": "Publisher Definitions",
+        "icone": "file alternate outline",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     }
 ]

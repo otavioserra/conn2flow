@@ -82,38 +82,46 @@ function publisher_adicionar(){
 		gestor_redirecionar($_GESTOR['modulo-id']);
 	}
 	
-	// ===== Interface adicionar iniciar
-	
-	interface_adicionar_iniciar();
-	
-	// ===== Carregar Templates disponíveis (Páginas)
-    // Busca páginas globais ou de módulos que podem servir de template.
-    // Assumindo que qualquer página pode ser um template.
-    
-    $paginas = banco_select(Array(
-        'tabela' => 'paginas',
-        'campos' => Array('id', 'nome'),
-        'extra' => "WHERE status!='D' ORDER BY nome ASC"
-    ));
-    
-    $select_templates = '<select name="template_id" class="ui dropdown fluid search selection">';
-    $select_templates .= '<option value="">Selecione um Template</option>';
-    if($paginas){
-        foreach($paginas as $p){
-            $select_templates .= '<option value="'.$p['id'].'">'.$p['nome'].' ('.$p['id'].')</option>';
-        }
-    }
-    $select_templates .= '</select>';
-    
-    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#select-templates#', $select_templates);
-	
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
 	
-	// ===== Interface adicionar finalizar
+	// ===== Interface adicionar finalizar opções
 	
-	interface_adicionar_finalizar();
+	$_GESTOR['interface']['adicionar']['finalizar'] = Array(
+		'formulario' => Array(
+			'validacao' => Array(
+				Array(
+					'regra' => 'texto-obrigatorio',
+					'campo' => 'name',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
+					'identificador' => 'name',
+				),
+				Array(
+					'regra' => 'selecao-obrigatorio',
+					'campo' => 'template_id',
+					'label' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
+					'identificador' => 'template_id',
+				),
+			),
+			'campos' => Array(
+				Array(
+					'tipo' => 'select',
+					'id' => 'template_id',
+					'nome' => 'template_id',
+					'procurar' => true,
+					'limpar' => true,
+					'placeholder' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
+					'tabela' => Array(
+						'nome' => 'templates',
+						'campo' => 'nome',
+						'id_numerico' => 'id',
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'" AND target="publisher"',
+					),
+				),
+			)
+		)
+	);
 }
 
 function publisher_editar(){
@@ -264,56 +272,120 @@ function publisher_interfaces_padroes(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
-	$_GESTOR['interface'] = Array(
-		'listar' => Array(
-			'id_numerico' => 'id_publisher',
-			'campos' => Array(
-				Array(
-					'id' => 'id',
-					'nome' => 'ID',
-					'ordenar' => 'asc'
+    switch($_GESTOR['opcao']){
+		case 'listar':
+			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
+				'banco' => Array(
+					'nome' => $modulo['tabela']['nome'],
+					'campos' => Array(
+						'name',
+						'template_id',
+						$modulo['tabela']['data_modificacao'],
+					),
+					'id' => $modulo['tabela']['id'],
+					'status' => $modulo['tabela']['status'],
+					'where' => "language='".$_GESTOR['linguagem-codigo']."'",
 				),
-				Array(
-					'id' => 'name',
-					'nome' => 'Nome',
-					'ordenar' => 'asc'
+				'tabela' => Array(
+					'colunas' => Array(
+						Array(
+							'id' => 'name',
+							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-name')),
+							'ordenar' => 'asc',
+						),
+						Array(
+							'id' => 'template_id',
+							'nome' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
+							'formatar' => Array(
+								'id' => 'outraTabela',
+								'valor_senao_existe' => '<span class="ui info text">N/A</span>',
+								'tabela' => Array(
+									'nome' => 'templates',
+									'campo_trocar' => 'nome',
+									'campo_referencia' => 'id',
+									'where' => 'language="'.$_GESTOR['linguagem-codigo'].'" AND target="publisher"',
+								),
+							)
+						),
+						Array(
+							'id' => $modulo['tabela']['data_modificacao'],
+							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),
+							'formatar' => 'dataHora',
+							'nao_procurar' => true,
+						),
+					),
 				),
-                Array(
-                    'id' => 'template_id',
-                    'nome' => 'Template',
-                ),
-				Array(
-					'id' => 'data_criacao',
-					'nome' => 'Data Criação',
-					'formatar' => 'dataHora',
-					'ordenar' => 'desc'
+				'opcoes' => Array(
+					'editar' => Array(
+						'url' => 'editar/',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-edit')),
+						'icon' => 'edit',
+						'cor' => 'basic blue',
+					),
+					'ativar' => Array(
+						'opcao' => 'status',
+						'status_atual' => 'I',
+						'status_mudar' => 'A',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-active')),
+						'icon' => 'eye slash',
+						'cor' => 'basic brown',
+					),
+					'desativar' => Array(
+						'opcao' => 'status',
+						'status_atual' => 'A',
+						'status_mudar' => 'I',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-desactive')),
+						'icon' => 'eye',
+						'cor' => 'basic green',
+					),
+					'excluir' => Array(
+						'opcao' => 'excluir',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-delete')),
+						'icon' => 'trash alternate',
+						'cor' => 'basic red',
+					),
 				),
-				Array(
-					'id' => 'data_modificacao',
-					'nome' => 'Data Modificação',
-					'formatar' => 'dataHora',
-					'ordenar' => 'desc'
-				)
-			),
-			'excluir_tipo' => 'status', // Default exclusion by status='D'
-		)
-	);
+				'botoes' => Array(
+					'adicionar' => Array(
+						'url' => 'adicionar/',
+						'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-insert')),
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-insert')),
+						'icon' => 'plus circle',
+						'cor' => 'blue',
+					),
+				),
+			);
+		break;
+	}
 }
 
 function publisher_start(){
-	global $_GESTOR;
+    global $_GESTOR;
 	
-	publisher_interfaces_padroes();
+	gestor_incluir_bibliotecas();
 	
-	interface_iniciar();
-	
-	switch($_GESTOR['opcao']){
-		case 'adicionar': publisher_adicionar(); break;
-		case 'editar': publisher_editar(); break;
+	if($_GESTOR['ajax']){
+		interface_ajax_iniciar();
+		
+		switch($_GESTOR['ajax-opcao']){
+			//case 'opcao': publisher_ajax_opcao(); break;
+		}
+		
+		interface_ajax_finalizar();
+	} else {
+		publisher_interfaces_padroes();
+		
+		interface_iniciar();
+		
+		switch($_GESTOR['opcao']){
+			case 'adicionar': publisher_adicionar(); break;
+		    case 'editar': publisher_editar(); break;
+		}
+		
+		interface_finalizar();
 	}
-	
-	interface_finalizar();
 }
 
 publisher_start();
+
 ?>

@@ -22,5 +22,17 @@
         "file_version": "1.0",
         "checksum": "{\"md\":\"67319760276662e23eb47c73ae167bdb\"}",
         "padrao": 1
+    },
+    {
+        "nome": "Publisher",
+        "id": "publisher",
+        "language": "pt-br",
+        "alvo": "publisher",
+        "prompt": "Será desenvolvido em breve.",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"md\":\"e940271dbb8952de0f5b33f292f58d75\"}",
+        "padrao": 1
     }
 ]

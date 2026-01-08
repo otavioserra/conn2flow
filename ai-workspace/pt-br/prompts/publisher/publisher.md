@@ -20,7 +20,7 @@ O módulo permitirá que administradores definam estruturas de dados (schemas) p
 
 ### 1. Definição do Módulo
 - **ID do Módulo:** `publisher`
-- **Nome:** Publisher
+- **Nome:** Publisher Definições
 - **Tabela Principal:** `publisher`
 
 ### 2. Estrutura de Dados (Banco de Dados)
@@ -28,23 +28,35 @@ A tabela `publisher` armazenará a **definição** do tipo de publicação.
 
 | Coluna | Tipo | Descrição |
 | :--- | :--- | :--- |
-| `id` | VARCHAR | Identificador único do tipo (ex: `noticias`, `blog-posts`). Primary Key. |
-| `name` | VARCHAR | Nome legível (ex: "Notícias"). |
-| `template_id` | VARCHAR | ID do Recurso (Página/Template) vinculado em `resources` (ex: `modelo-noticia`). |
+| `id` | VARCHAR(100) | Identificador único do tipo (ex: `noticias`, `blog-posts`). Primary Key. |
+| `id_publisher` | INT | ID numérico auto-incremento. |
+| `name` | VARCHAR(255) | Nome legível (ex: "Notícias"). |
+| `template_id` | VARCHAR(255) | ID do Recurso (Página/Template) vinculado em `resources` (ex: `modelo-noticia`). |
 | `fields_schema` | JSON | Definição da estrutura dos campos personalizados via JSON. |
-| `status` | CHAR(1) | 'A' (Ativo), 'D' (Deletado). |
+| `plugin` | VARCHAR(255) | Plugin associado (opcional). |
+| `language` | VARCHAR(10) | Idioma (padrão: 'pt-br'). |
+| `status` | CHAR(1) | 'A' (Ativo), 'I' (Inativo), 'D' (Deletado). |
+| `versao` | INT | Controle de versão do registro. |
 | `data_criacao` | DATETIME | Data de criação. |
 | `data_modificacao` | DATETIME | Data de modificação. |
-| `versao` | INT | Controle de versão do registro. |
+| `user_modified` | TINYINT | Flag de modificação por usuário. |
+| `system_updated` | TINYINT | Flag de atualização por sistema. |
+
+**Índices:**
+- UNIQUE: `id` + `language`
+- `plugin`
+- `language`
 
 ### 3. Arquivo de Configuração (`publisher.json`)
-Deve seguir o padrão de `admin-layouts.json` mas adaptado:
-- **Tabela:** Mapeamento das colunas acima.
+Configuração completa do módulo:
+- **Versão:** 1.0.0
+- **Bibliotecas:** `interface`, `html`
+- **Tabela:** Mapeamento completo das colunas.
 - **Páginas (Resources):**
-    - `publisher` (Listagem)
-    - `publisher-adicionar` (Adicionar)
-    - `publisher-editar` (Editar)
-- **Bibliotecas:** `interface`, `html`, `banco`.
+    - `publisher` (Listagem): layout-administrativo-do-gestor, tipo system, opção listar, raiz true, versão 1.0
+    - `publisher-adicionar` (Adicionar): layout-administrativo-do-gestor, tipo system, opção adicionar, versão 1.1
+    - `publisher-editar` (Editar): layout-administrativo-do-gestor, tipo system, opção editar, versão 1.1
+- **Checksums:** Calculados para cada página.
 
 ### 4. Gerenciador de Campos (Schema Builder) - Frontend (`publisher.js`)
 O campo `fields_schema` (JSON) será manipulado por uma interface JS dinâmica que permitirá adicionar/remover campos.
@@ -68,39 +80,47 @@ Tipos de campos iniciais suportados:
 ```
 
 ### 5. Backend (`publisher.php`)
-Seguindo o padrão de `admin-layouts.php`:
+Implementação completa seguindo o padrão do sistema:
 
-- **Funções Padrão:** Não é necessário reimplementar `listar`, `excluir`, `ativar`/`desativar`. Usar `interface_padroes`.
-- **Funções a Implementar:**
-    - `publisher_adicionar()`: Validação, criação do ID (slug) a partir do nome, processamento do JSON do schema, `banco_insert_name`.
-    - `publisher_editar()`: Carregamento dos dados, validação, `interface_historico_incluir`, `banco_update`.
-    - `publisher_interfaces_padroes()`: Configuração dos campos da listagem e filtros.
+- **Funções Implementadas:**
+    - `publisher_adicionar()`: Validação de campos obrigatórios (name, template_id), geração de ID slug, verificação de unicidade, inserção no banco com fields_schema JSON.
+    - `publisher_editar()`: Carregamento do registro, validação, atualização, inclusão no histórico.
+    - `publisher_interfaces_padroes()`: Configuração da listagem com colunas name, template_id, data_modificacao; opções editar, ativar/desativar, excluir; botão adicionar.
+    - `publisher_start()`: Estrutura padrão com suporte a AJAX (futuro).
+
+- **Integrações:**
+    - Select de templates: Busca páginas ativas da tabela `paginas`.
+    - Histórico: Registra alterações em name, template_id, fields_schema.
+    - Validação: Usa `interface_validacao_campos_obrigatorios`.
 
 ### 6. Integração com Recursos (Templates)
-- O formulário deve ter um dropdown listando os **Templates** disponíveis (filtrados por contexto, se aplicável, ou todos os templates de páginas).
+- O formulário tem um dropdown listando os **Templates** disponíveis (páginas ativas).
 - Sistema de placeholders `@[[publisher#id]]@` deve ser explicado na interface do usuário (tooltip ou help text).
 
-## 🧭 Estrutura de Arquivos Prevista
+## 🧭 Estrutura de Arquivos Implementada
 
 ```
 gestor/
   modulos/
     publisher/
-      publisher.json          # Configuração e Mapeamento
-      publisher.php           # Lógica Backend (Add/Edit)
-      publisher.js            # Lógica Frontend (Schema Builder)
+      publisher.json          # Configuração completa
+      publisher.php           # Lógica Backend completa (Add/Edit/List)
+      publisher.js            # Lógica Frontend (Schema Builder) - Pendente implementação detalhada
       resources/
         pt-br/
           pages/
             publisher/
               publisher.html           # Listagem (Placeholders da tabela)
             publisher-adicionar/
-              publisher-adicionar.html # Form Adicionar Names/Template + Schema Builder Container
+              publisher-adicionar.html # Form Adicionar com Schema Builder Container
             publisher-editar/
-              publisher-editar.html    # Form Editar + Schema Builder Container
+              publisher-editar.html    # Form Editar com Schema Builder Container
   db/
     migrations/
-      ..._create_publisher_table.php
+      20260106180000_create_publisher_table.php  # Migração completa
+    data/
+      ModulosData.json        # Adicionado módulo publisher (pt-br/en)
+      PaginasData.json        # Atualizadas páginas do módulo com layouts e tipos
 ```
 
 ## 🧠 Lógica de Negócio (Fluxo)
@@ -112,13 +132,14 @@ gestor/
     - Ao salvar, o JS serializa o array de objetos dos campos em uma string JSON e coloca num input hidden `fields_schema` para o PHP salvar.
 
 ## ✅ Progresso da Implementação
-- [x] **Passo 1:** Criar a migration (Phinx) para a tabela `publisher`.
+- [x] **Passo 1:** Criar a migration (Phinx) para a tabela `publisher` com todos os campos e índices.
 - [x] **Passo 2:** Criar estrutura de diretórios e arquivos base (`publisher.json`, `publisher.php`, `publisher.js`).
-- [x] **Passo 3:** Configurar `publisher.json` com mapeamento da tabela e páginas.
+- [x] **Passo 3:** Configurar `publisher.json` com mapeamento completo da tabela e páginas detalhadas.
 - [x] **Passo 4:** Criar os arquivos de resources HTML (`publisher.html`, `publisher-adicionar.html`, `publisher-editar.html`).
-- [x] **Passo 5:** Implementar `publisher.php` (Funções `adicionar`, `editar`, `start`).
-- [x] **Passo 6:** Implementar `publisher.js` (Lógica do Schema Builder visual).
-- [ ] **Passo 7:** Testar fluxo completo (Criar, Editar, Listar).
+- [x] **Passo 5:** Implementar `publisher.php` completo (Funções `adicionar`, `editar`, `interfaces_padroes`, `start`).
+- [x] **Passo 6:** Implementar `publisher.js` (Lógica do Schema Builder visual) - Estrutura base criada, implementação detalhada pendente.
+- [x] **Passo 7:** Integrar módulo no sistema (ModulosData.json, PaginasData.json atualizados).
+- [ ] **Passo 8:** Testar fluxo completo (Criar, Editar, Listar) e finalizar Schema Builder JS.
 
 ## 🤔 Dúvidas e 📝 Sugestões
 - **Sugestão:** A coluna `fields_schema` em JSON facilita muito a evolução (adicionar widgets como Chat/Galeria no futuro).

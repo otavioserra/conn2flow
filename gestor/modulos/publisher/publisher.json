@@ -2,8 +2,7 @@
     "versao": "1.0.0",
     "bibliotecas": [
         "interface",
-        "html",
-        "banco"
+        "html"
     ],
     "id_numerico": "id_publisher",
     "tabela": {
@@ -17,27 +16,87 @@
     },
     "resources": {
         "pt-br": {
-            "pages": [
+            "ai_prompts_targets": [
                 {
                     "id": "publisher",
-                    "nome": "Publisher - Listar",
-                    "caminho": "publisher"
-                },
+                    "name": "Publisher"
+                }
+            ],
+            "ai_modes": [
                 {
-                    "id": "publisher-adicionar",
-                    "nome": "Publisher - Adicionar",
-                    "caminho": "publisher\/adicionar",
+                    "id": "publisher",
+                    "name": "Publisher",
+                    "target": "publisher",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Notícias - Simples",
+                    "id": "noticias-simples",
+                    "target": "publisher",
+                    "framework_css": "tailwindcss",
                     "version": "1.1",
                     "checksum": {
-                        "html": "dcffb815c10fe67f708368f3a92ee749",
+                        "html": "d48d55ca5130a2630eec1d28059f0ea8",
                         "css": "",
-                        "combined": "dcffb815c10fe67f708368f3a92ee749"
+                        "combined": "d48d55ca5130a2630eec1d28059f0ea8"
                     }
                 },
                 {
+                    "name": "Notícias - Imagem em Destaque",
+                    "id": "noticias-imagem-destaque",
+                    "target": "publisher",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "5e07c5ffc0e08428fb3223e5b5633d91",
+                        "css": "",
+                        "combined": "5e07c5ffc0e08428fb3223e5b5633d91"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Publisher Definições - Listar",
+                    "id": "publisher",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publisher Definições - Adicionar",
+                    "id": "publisher-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "de1853203685a4f236a27f38304ebc11",
+                        "css": "",
+                        "combined": "de1853203685a4f236a27f38304ebc11"
+                    }
+                },
+                {
+                    "name": "Publisher Definições - Editar",
                     "id": "publisher-editar",
-                    "nome": "Publisher - Editar",
-                    "caminho": "publisher\/editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher\/editar\/",
+                    "type": "system",
+                    "option": "editar",
                     "version": "1.1",
                     "checksum": {
                         "html": "a86b6cb52f7cecdf879fff7a685e1c53",

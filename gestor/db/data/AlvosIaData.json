@@ -12,5 +12,12 @@
         "language": "en",
         "status": "A",
         "versao": 1
+    },
+    {
+        "nome": "Publisher",
+        "id": "publisher",
+        "language": "pt-br",
+        "status": "A",
+        "versao": 2
     }
 ]
