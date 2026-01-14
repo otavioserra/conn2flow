@@ -22,64 +22,54 @@ function publisher_adicionar(){
 				Array(
 					'regra' => 'texto-obrigatorio',
 					'campo' => 'name',
-					'label' => 'Nome do Tipo',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
 				),
 				Array(
 					'regra' => 'selecao-obrigatorio',
 					'campo' => 'template_id',
-					'label' => 'Template'
+					'label' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
 				)
 			)
 		));
 		
-		// ===== Definição do ID (Slug)
-		
-		$name = trim($_REQUEST['name']);
-		$id = modelo_fazer_slug($name); // Helper function assumed, or use lowercase replace
-        if(!$id) $id = strtolower(preg_replace('/[^a-zA-Z0-9-]/', '', str_replace(' ', '-', $name)));
-		
-        // Validar unicidade do ID
-        $existe = banco_select(Array(
-            'unico' => true,
-            'tabela' => $modulo['tabela']['nome'],
-            'campos' => Array('id'),
-            'extra' => "WHERE id='".banco_escape_field($id)."'"
-        ));
-        
-        if($existe){
-            interface_alerta(Array(
-				'redirect' => true,
-				'msg' => 'O identificador gerado ja existe. Tente outro nome.'
-			));
-			gestor_redirecionar($_GESTOR['modulo-id'].'/adicionar');
-        }
-
-		// ===== Campos para salvar
+		// ===== Definição do identificador
 		
 		$campos = null;
 		$campo_sem_aspas_simples = false;
 		
-		$campos[] = Array('id',banco_escape_field($id));
-		$campos[] = Array('name',banco_escape_field($name));
-		$campos[] = Array('template_id',banco_escape_field($_REQUEST['template_id']));
-		$campos[] = Array('fields_schema',banco_escape_field($_REQUEST['fields_schema'])); // JSON String from frontend
+		$id = banco_identificador(Array(
+			'id' => banco_escape_field($_REQUEST["name"]),
+			'tabela' => Array(
+				'nome' => $modulo['tabela']['nome'],
+				'campo' => $modulo['tabela']['id'],
+				'id_nome' => $modulo['tabela']['id_numerico'],
+				'where' => "language='".$_GESTOR['linguagem-codigo']."'",
+			),
+		));
+
+        // ===== Campos gerais
 		
-		$campos[] = Array('status','A');
-		$campos[] = Array('versao','1');
-		$campos[] = Array('data_criacao','NOW()',$campo_sem_aspas_simples);
-		$campos[] = Array('data_modificacao','NOW()',$campo_sem_aspas_simples);
+		$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "name"; $post_nome = $campo_nome;      							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "template_id"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "fields_schema"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		
-		banco_insert_name(
+		// ===== Campos comuns
+		
+		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
+		$campo_nome = $modulo['tabela']['data_modificacao']; $campo_valor = 'NOW()'; 	$campos[] = Array($campo_nome,$campo_valor,true);
+	
+		banco_insert_name
+		(
 			$campos,
 			$modulo['tabela']['nome']
 		);
 		
-		interface_alerta(Array(
-			'redirect' => true,
-			'msg' => 'Registro incluído com sucesso!'
-		));
-		
-		gestor_redirecionar($_GESTOR['modulo-id']);
+		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
 	}
 	
 	// ===== Inclusão Módulo JS
@@ -133,9 +123,9 @@ function publisher_editar(){
 	
 	$id = $_GESTOR['id'];
 	
-	// ===== Definição dos campos do banco de dados
+	// ===== Definição dos campos do banco de dados para editar.
 	
-	$campos = Array(
+	$camposBanco = Array(
 		'id',
         'id_publisher',
 		'name',
@@ -144,21 +134,36 @@ function publisher_editar(){
 		'status'
 	);
 	
-	$registro = banco_select(Array(
-		'unico' => true,
-		'tabela' => $modulo['tabela']['nome'],
-		'campos' => $campos,
-		'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."'"
-	));
+	$camposBancoPadrao = Array(
+		$modulo['tabela']['status'],
+		$modulo['tabela']['versao'],
+		$modulo['tabela']['data_criacao'],
+		$modulo['tabela']['data_modificacao'],
+	);
 	
-	if(!$registro){
-		gestor_redirecionar($_GESTOR['modulo-id']);
-	}
+	$camposBancoEditar = array_merge($camposBanco,$camposBancoPadrao);
+	$camposBancoAntes = $camposBanco;
 	
 	// ===== Gravar Atualizações no Banco
 	
 	if(isset($_GESTOR['atualizar-banco'])){
-		$usuario = gestor_usuario();
+		// ===== Recuperar o estado dos dados do banco de dados antes de editar.
+		
+		if(!banco_select_campos_antes_iniciar(
+			banco_campos_virgulas($camposBancoAntes)
+			,
+			$modulo['tabela']['nome'],
+			"WHERE ".$modulo['tabela']['id']."='".$id."'"
+			." AND ".$modulo['tabela']['status']."!='D'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
+		)){
+			interface_alerta(Array(
+				'redirect' => true,
+				'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-database-field-before-error'))
+			));
+			
+			gestor_redirecionar_raiz();
+		}
 		
 		// ===== Validação de campos obrigatórios
 		
@@ -167,104 +172,215 @@ function publisher_editar(){
 				Array(
 					'regra' => 'texto-obrigatorio',
 					'campo' => 'name',
-					'label' => 'Nome',
-				),
-				Array(
-					'regra' => 'selecao-obrigatorio',
-					'campo' => 'template_id',
-					'label' => 'Template'
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
 				)
 			)
 		));
 		
-		// ===== Campos para salvar
+		// ===== Valores padrões da tabela e regras para o campo nome
 		
-		$campos = null;
-		$campo_sem_aspas_simples = null;
-		
-		// ID e ID Publisher não mudam
-		$campos[] = Array('name',banco_escape_field($_REQUEST['name']));
-		$campos[] = Array('template_id',banco_escape_field($_REQUEST['template_id']));
-		$campos[] = Array('fields_schema',banco_escape_field($_REQUEST['fields_schema']));
-		
-		$campos[] = Array('versao','versao+1',$campo_sem_aspas_simples);
-		$campos[] = Array('data_modificacao','NOW()',$campo_sem_aspas_simples);
-		
-		banco_update
-		(
-			$campos,
-			$modulo['tabela']['nome'],
-			"WHERE ".$modulo['tabela']['id']."='".$id."'"
+		$editar = Array(
+			'tabela' => $modulo['tabela']['nome'],
+			'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D' AND language='".$_GESTOR['linguagem-codigo']."'",
 		);
 		
-		// ===== Incluir no Histórico
+		$campo_nome = "name"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; if(!isset($_REQUEST['_gestor-nao-alterar-id'])){$alterar_id = true;} $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		
-		interface_historico_incluir(Array(
-			'alteracoes' => Array(
-				Array(
-					'campo' => 'name',
-					'valor_antes' => $registro['name'],
-					'valor_depois' => $_REQUEST['name']
+		// ===== Se mudar o nome, mudar o identificador do registro
+		
+		if(isset($alterar_id)){
+			$layouts = banco_select_name
+			(
+				banco_campos_virgulas(Array(
+					$modulo['tabela']['id_numerico'],
+				))
+				,
+				$modulo['tabela']['nome'],
+				"WHERE ".$modulo['tabela']['id']."='".$id."'"
+			);
+			
+			if($layouts){
+				$id_novo = banco_identificador(Array(
+					'id' => banco_escape_field($_REQUEST["name"]),
+					'tabela' => Array(
+						'nome' => $modulo['tabela']['nome'],
+						'campo' => $modulo['tabela']['id'],
+						'id_nome' => $modulo['tabela']['id_numerico'],
+						'id_valor' => $layouts[0][$modulo['tabela']['id_numerico']],
+						'where' => "language='".$_GESTOR['linguagem-codigo']."'",
+					),
+				));
+				
+				$alteracoes_name = 'id'; $alteracoes[] = Array('campo' => 'field-id', 'valor_antes' => $id,'valor_depois' => $id_novo);
+				$campo_nome = $modulo['tabela']['id']; $editar['dados'][] = $campo_nome."='" . $id_novo . "'";
+				$_GESTOR['modulo-registro-id'] = $id_novo;
+			}
+		}
+		
+		// ===== Atualização dos demais campos.
+
+		$campo_nome = "template_id"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
+		$campo_nome = "fields_schema"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
+		
+		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
+		
+		if(isset($editar['dados'])){
+			$campo_nome = 'user_modified'; $editar['dados'][] = $campo_nome." = 1";
+			$campo_nome = $modulo['tabela']['versao']; $editar['dados'][] = $campo_nome." = ".$campo_nome." + 1";
+			$campo_nome = $modulo['tabela']['data_modificacao']; $editar['dados'][] = $campo_nome."=NOW()";
+			
+			$editar['sql'] = banco_campos_virgulas($editar['dados']);
+			
+			if($editar['sql']){
+				banco_update
+				(
+					$editar['sql'],
+					$editar['tabela'],
+					$editar['extra']
+				);
+			}
+			$editar = false;
+			
+			// ===== Incluir no backup os campos.
+			
+			if(isset($backups)){
+				foreach($backups as $backup){
+					interface_backup_campo_incluir(Array(
+						'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
+						'versao' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['versao'])),
+						'campo' => $backup['campo'],
+						'valor' => $backup['valor'],
+					));
+				}
+			}
+			
+			// ===== Incluir no histórico as alterações.
+			
+			interface_historico_incluir(Array(
+				'id' => $id,
+				'tabela' => Array(
+					'nome' => $modulo['tabela']['nome'],
+					'id_numerico' => $modulo['tabela']['id_numerico'],
+					'versao' => $modulo['tabela']['versao'],
 				),
-				Array(
-					'campo' => 'template_id',
-					'valor_antes' => $registro['template_id'],
-					'valor_depois' => $_REQUEST['template_id']
-				),
-				Array(
-					'campo' => 'fields_schema',
-					'valor_antes' => $registro['fields_schema'],
-					'valor_depois' => $_REQUEST['fields_schema']
-				)
-			)
-		));
+				'alteracoes' => $alteracoes,
+			));
+		}
 		
-		interface_alerta(Array(
-			'redirect' => true,
-			'msg' => 'Registro atualizado com sucesso!'
-		));
+		// ===== Reler URL.
 		
-		gestor_redirecionar($_GESTOR['modulo-id']);
+		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.(isset($id_novo) ? $id_novo : $id));
 	}
+
+    // ===== Selecionar dados do banco de dados
 	
-	// ===== Interface editar iniciar
+	$retorno_bd = banco_select_editar
+	(
+		banco_campos_virgulas($camposBancoEditar)
+		,
+		$modulo['tabela']['nome'],
+		"WHERE ".$modulo['tabela']['id']."='".$id."'"
+		." AND ".$modulo['tabela']['status']."!='D'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
+	);
 	
-	interface_editar_iniciar();
-	
-	// ===== Preencher Variáveis
-	
-	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#name#', $registro['name']);
-    
-    // Select Templates com Selected value
-    $paginas = banco_select(Array(
-        'tabela' => 'paginas',
-        'campos' => Array('id', 'nome'),
-        'extra' => "WHERE status!='D' ORDER BY nome ASC"
-    ));
-    
-    $select_templates = '<select name="template_id" class="ui dropdown fluid search selection">';
-    $select_templates .= '<option value="">Selecione um Template</option>';
-    if($paginas){
-        foreach($paginas as $p){
-            $selected = ($p['id'] == $registro['template_id']) ? 'selected' : '';
-            $select_templates .= '<option value="'.$p['id'].'" '.$selected.'>'.$p['nome'].' ('.$p['id'].')</option>';
-        }
-    }
-    $select_templates .= '</select>';
-    
-    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#select-templates#', $select_templates);
-    
-    // Injetar o schema existente para o JS carregar
-    $schema_json = $registro['fields_schema'] ? $registro['fields_schema'] : '[]';
-    $_GESTOR['pagina'] .= '<script>var publisher_initial_schema = '.$schema_json.';</script>';
+	if($_GESTOR['banco-resultado']){
+		$name = (isset($retorno_bd['name']) ? $retorno_bd['name'] : '');
+		$template_id = (isset($retorno_bd['template_id']) ? $retorno_bd['template_id'] : '');
+		$fields_schema = (isset($retorno_bd['fields_schema']) ? $retorno_bd['fields_schema'] : '');
+		
+		// ===== Alterar demais variáveis.
+		
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#name#',$name);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id#',$id);
+        
+        // Injetar o schema existente para o JS carregar
+        $schema_json = ! empty($fields_schema) ? $fields_schema : '[]';
+        $_GESTOR['pagina'] .= '<script>var publisher_initial_schema = '.$schema_json.';</script>';
+		
+		// ===== Popular os metaDados
+		
+		$status_atual = (isset($retorno_bd[$modulo['tabela']['status']]) ? $retorno_bd[$modulo['tabela']['status']] : '');
+		
+		if(isset($retorno_bd[$modulo['tabela']['data_criacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_criacao']], 'formato' => 'dataHora'))); }
+		if(isset($retorno_bd[$modulo['tabela']['data_modificacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_modificacao']], 'formato' => 'dataHora'))); }
+		if(isset($retorno_bd[$modulo['tabela']['versao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-version')),'dado' => $retorno_bd[$modulo['tabela']['versao']]); }
+		if(isset($retorno_bd[$modulo['tabela']['status']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status')),'dado' => ($retorno_bd[$modulo['tabela']['status']] == 'A' ? '<div class="ui center aligned green message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-active')).'</b></div>' : '').($retorno_bd[$modulo['tabela']['status']] == 'I' ? '<div class="ui center aligned brown message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-inactive')).'</b></div>' : '')); }
+	} else {
+		gestor_redirecionar_raiz();
+	}
 	
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
 	
-	// ===== Interface editar finalizar
+	// ===== Interface editar finalizar opções
 	
-	interface_editar_finalizar();
+	$_GESTOR['interface']['editar']['finalizar'] = Array(
+		'id' => $id,
+		'metaDados' => $metaDados,
+		'banco' => Array(
+			'nome' => $modulo['tabela']['nome'],
+			'id' => $modulo['tabela']['id'],
+			'status' => $modulo['tabela']['status'],
+		),
+		'botoes' => Array(
+			'adicionar' => Array(
+				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/adicionar/',
+				'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-insert')),
+				'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-insert')),
+				'icon' => 'plus circle',
+				'cor' => 'blue',
+			),
+			'status' => Array(
+				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=status&'.$modulo['tabela']['status'].'='.($status_atual == 'A' ? 'I' : 'A' ).'&'.$modulo['tabela']['id'].'='.$id.'&redirect='.urlencode($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id),
+				'rotulo' => ($status_atual == 'A' ? gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-desactive')) : gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-active')) ),
+				'tooltip' => ($status_atual == 'A' ? gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-desactive')) : gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-active'))),
+				'icon' => ($status_atual == 'A' ? 'eye' : 'eye slash' ),
+				'cor' => ($status_atual == 'A' ? 'green' : 'brown' ),
+			),
+			'excluir' => Array(
+				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=excluir&'.$modulo['tabela']['id'].'='.$id,
+				'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-delete')),
+				'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-delete')),
+				'icon' => 'trash alternate',
+				'cor' => 'red',
+			),
+		),
+		'formulario' => Array(
+			'validacao' => Array(
+				Array(
+					'regra' => 'texto-obrigatorio',
+					'campo' => 'name',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
+					'identificador' => 'name',
+				),
+				Array(
+					'regra' => 'selecao-obrigatorio',
+					'campo' => 'template_id',
+					'label' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
+					'identificador' => 'template_id',
+				)
+			),
+			'campos' => Array(
+				Array(
+					'tipo' => 'select',
+					'id' => 'template_id',
+					'nome' => 'template_id',
+					'procurar' => true,
+					'limpar' => true,
+					'placeholder' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
+					'tabela' => Array(
+						'nome' => 'templates',
+						'campo' => 'nome',
+						'id_numerico' => 'id',
+						'id_selecionado' => $template_id,
+						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'" AND target="publisher"',
+					),
+				)
+			)
+		)
+	);
 }
 
 function publisher_interfaces_padroes(){

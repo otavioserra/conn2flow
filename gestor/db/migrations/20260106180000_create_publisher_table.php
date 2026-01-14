@@ -9,8 +9,9 @@ final class CreatePublisherTable extends AbstractMigration
     public function change(): void
     {
         $table = $this->table('publisher', ['id' => 'id_publisher']);
-        $table->addColumn('id', 'string', ['limit' => 100, 'null' => false])
+        $table->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => 1])
             ->addColumn('name', 'string', ['limit' => 255, 'null' => false])
+            ->addColumn('id', 'string', ['limit' => 100, 'null' => false])
             ->addColumn('template_id', 'string', ['limit' => 255, 'null' => true])
             ->addColumn('fields_schema', 'json', ['null' => true])
             ->addColumn('plugin', 'string', ['limit' => 255, 'null' => true])

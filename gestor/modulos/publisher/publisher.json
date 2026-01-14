@@ -104,6 +104,13 @@
                         "combined": "a86b6cb52f7cecdf879fff7a685e1c53"
                     }
                 }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                }
             ]
         }
     }
