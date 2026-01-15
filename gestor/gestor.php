@@ -294,14 +294,14 @@ function gestor_pagina_menu($params = false){
 		if($paginas)
 		foreach($paginas as $pagina){
 			if($modulo['id'] == $pagina['modulo']){
-				$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].(isset($_GESTOR['language-in-url']) ? $_GESTOR['linguagem-codigo'].'/' : '').$pagina['caminho']);
+				$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].$pagina['caminho']);
 				$pagina_found = true;
 				break;
 			}
 		}
 		
 		if(!$pagina_found){
-			$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].($_GESTOR['language-in-url'] ? $_GESTOR['linguagem-codigo'].'/' : '').'dashboard/');
+			$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].'dashboard/');
 		}
 		
 		// ===== Caso seja dashboard incluir depois primeiro, senão colocar em ordem alfabética
@@ -387,7 +387,7 @@ function gestor_pagina_menu($params = false){
 	
 	$cel_aux = modelo_var_troca($cel_aux,"<!-- icon -->",$cel_icon);
 	
-	$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].(isset($_GESTOR['language-in-url']) ? $_GESTOR['linguagem-codigo'].'/' : '').'signout/');
+	$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].'signout/');
 	
 	// ===== Incluir sair no conteiner
 	
@@ -629,6 +629,7 @@ function gestor_pagina_css_incluir($css = false){
 
 function gestor_pagina_extra_head_e_javascript(){
 	global $_GESTOR;
+	global $_CONFIG;
 
 	// ===== Inclusão de bibliotecas CSS Fomantic-UI
 
@@ -665,7 +666,10 @@ function gestor_pagina_extra_head_e_javascript(){
 	
 	$variaveis_js = Array(
 		'raiz' => $_GESTOR['url-raiz'],
+		'raizSemLang' => $_GESTOR['url-raiz-sem-lang'],
 		'language' => $_GESTOR['linguagem-codigo'],
+		'languageSystem' => $_GESTOR['linguagem-padrao'],
+		'languageCookie' => $_CONFIG['cookie-language'],
 		'moduloId' => (isset($_GESTOR['modulo-id']) ? $_GESTOR['modulo-id'] : false ),
 		'moduloOpcao' => (isset($_GESTOR['opcao']) ? $_GESTOR['opcao'] : false ),
 		'moduloCaminho' => $caminho,
@@ -1909,6 +1913,7 @@ function gestor_roteador(){
 
 function gestor_config(){
 	global $_GESTOR;
+	global $_CONFIG;
 	
 	// =========================== Definição do Caminho da Página
 
@@ -1922,6 +1927,11 @@ function gestor_config(){
 			array_shift($_GESTOR['caminho']);
 			$_GESTOR['caminho-total'] = substr($_GESTOR['caminho-total'], strlen($_GESTOR['linguagem-codigo']) + 1);
 			$_GESTOR['language-in-url'] = true;
+
+			// Ajustar URL Raiz para incluir a linguagem
+			$_GESTOR['url-raiz'] = $_GESTOR['url-raiz'] . $_GESTOR['linguagem-codigo'].'/';
+			$_GESTOR['url-full'] =	$_GESTOR['url-full'] . $_GESTOR['linguagem-codigo'].'/';
+			$_GESTOR['url-full-http'] =	$_GESTOR['url-full-http'] . $_GESTOR['linguagem-codigo'].'/';
 		}
 		
 		// Remover último segmento caso seja nulo (barra no final da URL)
@@ -1930,6 +1940,14 @@ function gestor_config(){
 		}
 		
 		$_GESTOR['caminho-extensao'] = pathinfo($_GESTOR['caminho-total'], PATHINFO_EXTENSION);
+	}
+
+	// Se não tem linguagem na URL verifique o cookie '$_CONFIG['cookie-language']' e defina $_GESTOR['linguagem-codigo'] se válido
+	if(isset($_COOKIE[$_CONFIG['cookie-language']]) && !isset($_GESTOR['language-in-url'])){
+		$cookieLang = $_COOKIE[$_CONFIG['cookie-language']];
+		if(in_array($cookieLang, $_GESTOR['languages'])){
+			$_GESTOR['linguagem-codigo'] = $cookieLang;
+		}
 	}
 
 	// =========================== Retornar arquivo estático caso exista e finalizar gestor
@@ -1960,7 +1978,6 @@ function gestor_config(){
 			require_once($_GESTOR['controladores-path'].'api/api.php'); exit;
 		break;
 	}
-
 }
 
 function gestor_start(){

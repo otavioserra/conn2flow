@@ -77,17 +77,19 @@ $_BANCO = [
 ];
 
 // Linguagem padrão do gestor e listagem de códigos de linguagens.
-$_GESTOR['linguagem-codigo']			=	$_ENV['LANGUAGE_DEFAULT'] ?? 'pt-br';
+$_GESTOR['linguagem-padrao']			=	$_ENV['LANGUAGE_DEFAULT'] ?? 'pt-br';
+$_GESTOR['linguagem-codigo']			=	$_GESTOR['linguagem-padrao'];
 $_GESTOR['languages']		        	=	$_ENV['LANGUAGES'] ? explode(',', $_ENV['LANGUAGES']) : [];
 
 // Configurações Gerais
 $_CONFIG = [
-    'session-authname'                  => $_ENV['SESSION_AUTHNAME'] ?? '_BSID',
+    'session-authname'                  => $_ENV['SESSION_AUTHNAME'] ?? '_C2FSID',
     'session-lifetime'                  => (int)($_ENV['SESSION_LIFETIME'] ?? 10800),
     'session-garbagetime'               => (int)($_ENV['SESSION_GARBAGETIME'] ?? 86400),
     'session-garbage-colector-time'     => (int)($_ENV['SESSION_GARBAGE_COLECTOR_TIME'] ?? 3600),
-    'cookie-authname'                   => $_ENV['COOKIE_AUTHNAME'] ?? '_BUSID',
-    'cookie-verify'                     => $_ENV['COOKIE_VERIFY'] ?? '_BCVID',
+    'cookie-authname'                   => $_ENV['COOKIE_AUTHNAME'] ?? '_C2FCID',
+    'cookie-verify'                     => $_ENV['COOKIE_VERIFY'] ?? '_C2FCVID',
+    'cookie-language'                   => $_ENV['LANGUAGE_COOKIE'] ?? '_C2FCL',
     'cookie-lifetime'                   => (int)($_ENV['COOKIE_LIFETIME'] ?? 1296000),
     'cookie-renewtime'                  => (int)($_ENV['COOKIE_RENEWTIME'] ?? 86400),
     'cookie-secure'                     => filter_var($_ENV['COOKIE_SECURE'] ?? false, FILTER_VALIDATE_BOOLEAN),
@@ -164,6 +166,7 @@ $_GESTOR['logs-path']							=	$_GESTOR['ROOT_PATH'].'logs/';
 // ===== Carrega as configurações de ambiente do .env =====
 
 $_GESTOR['url-raiz'] = $_ENV['URL_RAIZ'] ?? '/';
+$_GESTOR['url-raiz-sem-lang'] = $_GESTOR['url-raiz'];
 $_GESTOR['development-env'] = filter_var($_ENV['DEVELOPMENT_ENV'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
 // ===== Definições de variáveis padrões do sistema que dependem de host 

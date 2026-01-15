@@ -40,6 +40,43 @@ $(document).ready(function () {
 	}
 
 	if ('languages' in gestor) {
+		// ===== Funções Auxiliares de Cookie
+
+		function setCookie(cname, cvalue, exdays) {
+			var d = new Date();
+			d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+			var expires = "expires=" + d.toUTCString();
+			var sameSite = "SameSite=Lax";
+			var secure = (location.protocol === 'https:') ? "; Secure" : "";
+			document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;" + sameSite + secure;
+		}
+
+		function getCookie(cname) {
+			var name = cname + "=";
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) === 0) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return "";
+		}
+
+		function areCookiesEnabled() {
+			// Tentar definir um cookie de teste
+			setCookie('testCookie', 'test', 1);
+			// Tentar lê-lo
+			var testValue = getCookie('testCookie');
+			// Remover o cookie de teste
+			document.cookie = 'testCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+			// Retornar se conseguiu ler
+			return testValue === 'test';
+		}
+
 		// ===== Widget de Seleção de Linguagem (Via Iframe)
 
 		if (gestor.languages.widgetActive) {
@@ -78,11 +115,8 @@ $(document).ready(function () {
 				if (data.type === 'changeLang') {
 					var lang = data.lang;
 					if (lang != gestor.language) {
-						// Salvar preferência
-						localStorage.setItem('gestor-language-preference', lang);
-
 						// Redirecionar (Lógica Centralizada)
-						var rootUrl = gestor.raiz;
+						var rootUrl = gestor.raizSemLang;
 						var pathname = window.location.pathname;
 						var relativePath = pathname;
 
@@ -97,6 +131,7 @@ $(document).ready(function () {
 
 						// Montar nova URL
 						var newUrl = rootUrl + lang + '/' + relativePath + window.location.search + window.location.hash;
+
 						window.location.href = newUrl;
 					}
 				}
@@ -115,76 +150,98 @@ $(document).ready(function () {
 		// ===== Detecção Automática
 
 		if (gestor.languages.autoDetect) {
-			var savedLang = localStorage.getItem('gestor-language-preference');
-			var currentLang = gestor.language;
+			var cookieName = gestor.languageCookie;
+			var cookieDays = 30;
+			var savedLang = '';
+			let cookieEnabled = false;
 
-			// 1. Prioridade: URL Atual (Manual Override)
-			// Se o usuário já tem uma preferência salva, mas está acessando uma URL de outro idioma,
-			// assumimos que ele mudou intencionalmente (digitou ou clicou).
-			// Atualizamos a preferência para evitar o "loop" de redirecionamento.
-			if (savedLang && savedLang !== currentLang) {
-				localStorage.setItem('gestor-language-preference', currentLang);
-				savedLang = currentLang; // Atualiza para evitar processamento desnecessário abaixo
-			}
+			// Pegar o cookie se existe
+			savedLang = getCookie(cookieName);
 
-			// Se não tem preferência salva (primeira visita ou cache limpo), tentamos detectar pelo navegador.
+			// Fallback para localStorage caso cookies não estejam disponíveis.
 			if (!savedLang) {
-				var browserLang = navigator.language || navigator.userLanguage;
-				browserLang = browserLang.toLowerCase();
-				var targetLang = browserLang;
+				try {
+					if (!areCookiesEnabled()) {
+						savedLang = localStorage.getItem(cookieName);
+					} else { cookieEnabled = true; }
+				} catch (e) { }
+			} else { cookieEnabled = true; }
 
-				// Verificar se a linguagem alvo é suportada
-				var isSupported = false;
-				var supportedLang = '';
+			// Detectar linguagem do navegador
+			var browserLang = navigator.language || navigator.userLanguage;
+			browserLang = browserLang.toLowerCase();
+			var targetLang = browserLang;
 
+			// Se ainda não tem preferência salva (primeira visita ou navegador não suportado), tentar detectar. Ou se a preferência salva é diferente do navegador (mudança de linguagem do navegador).
+			if (!savedLang || savedLang != targetLang) {
+				// Linguagem padrão do sistema no servidor
+				var systemLang = gestor.languageSystem;
+
+				// Verificar se a linguagem do navegador é suportada
+				var isBrowserSupported = false;
+				var supportedBrowserLang = '';
+
+				// Verificação se a linguagem do navegador está na lista de linguagens suportadas
 				if (gestor.languages.codigos) {
 					for (var i = 0; i < gestor.languages.codigos.length; i++) {
 						if (gestor.languages.codigos[i].codigo == targetLang) {
-							isSupported = true;
-							supportedLang = targetLang;
+							isBrowserSupported = true;
+							supportedBrowserLang = targetLang;
 							break;
 						}
 					}
 
 					// Tentar matching parcial se não encontrou exato (ex: pt-BR -> pt)
-					if (!isSupported) {
+					if (!isBrowserSupported) {
 						var shortLang = targetLang.split('-')[0];
 						for (var i = 0; i < gestor.languages.codigos.length; i++) {
 							if (gestor.languages.codigos[i].codigo == shortLang) {
-								isSupported = true;
-								supportedLang = shortLang;
+								isBrowserSupported = true;
+								supportedBrowserLang = shortLang;
 								break;
 							}
 						}
 					}
 				}
 
-				// Se suportada e diferente da atual, redirecionar
-				if (isSupported) {
-					if (supportedLang != currentLang) {
-						var rootUrl = gestor.raiz;
-						var pathname = window.location.pathname;
-						var relativePath = pathname;
+				// Se a linguagem do navegador é suportada, avaliar redirecionamento
+				if (isBrowserSupported) {
+					var rootUrl = gestor.raiz;
+					var pathname = window.location.pathname;
+					var relativePath = pathname;
 
-						if (pathname.indexOf(rootUrl) === 0) {
-							relativePath = pathname.substring(rootUrl.length);
-						}
+					if (pathname.indexOf(rootUrl) === 0) {
+						relativePath = pathname.substring(rootUrl.length);
+					}
 
-						// Verificação de segurança: se a URL já começa com a linguagem suportada, não redirecionar.
-						if (relativePath.startsWith(supportedLang + '/')) {
-							return;
-						}
+					// Verificação de segurança: se a URL já começa com a linguagem suportada, não redirecionar (usuário escolheu manualmente URL em outra linguagem).
+					if (relativePath.startsWith(supportedBrowserLang + '/')) {
+						return;
+					}
 
-						// Se a URL atual começa com a linguagem atual, removemos para trocar
-						if (relativePath.startsWith(currentLang + '/')) {
-							relativePath = relativePath.substring(currentLang.length + 1);
-						}
-
-						var newUrl = rootUrl + supportedLang + '/' + relativePath + window.location.search + window.location.hash;
-						window.location.href = newUrl;
+					// Salvar cookie para enviar na próxima requisição para o servidor a linguagem do navegador.
+					if (cookieEnabled) {
+						setCookie(cookieName, supportedBrowserLang, cookieDays);
 					} else {
-						// Se já estamos na linguagem do navegador, salvamos como preferência para visitas futuras.
-						localStorage.setItem('gestor-language-preference', currentLang);
+						try { localStorage.setItem(cookieName, supportedBrowserLang); } catch (e) { }
+					}
+
+					// Reler página se diferente da linguagem do navegador salva para trocar a linguagem automaticamente.
+					if (supportedBrowserLang != systemLang) {
+						// Reload na nova linguagem
+						window.location.reload();
+					}
+				} else {
+					if (savedLang != systemLang) {
+						// Linguagem do navegador não suportada, salvar a linguagem padrão do sistema.
+						if (cookieEnabled) {
+							setCookie(cookieName, systemLang, cookieDays);
+						} else {
+							try { localStorage.setItem(cookieName, systemLang); } catch (e) { }
+						}
+
+						// Reler página se diferente da linguagem do navegador salva para trocar a linguagem automaticamente.
+						window.location.reload();
 					}
 				}
 			}

@@ -40,11 +40,11 @@
                     "id": "noticias-simples",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "d48d55ca5130a2630eec1d28059f0ea8",
+                        "html": "d80a63639faf8c60dfa30f16f5b9407b",
                         "css": "",
-                        "combined": "d48d55ca5130a2630eec1d28059f0ea8"
+                        "combined": "d80a63639faf8c60dfa30f16f5b9407b"
                     }
                 },
                 {
@@ -52,11 +52,11 @@
                     "id": "noticias-imagem-destaque",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "5e07c5ffc0e08428fb3223e5b5633d91",
+                        "html": "db0518c36bf7fbac28a2acc9bca24765",
                         "css": "",
-                        "combined": "5e07c5ffc0e08428fb3223e5b5633d91"
+                        "combined": "db0518c36bf7fbac28a2acc9bca24765"
                     }
                 }
             ],

@@ -9451,6 +9451,15 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "publisher",
+        "id": "form-name-label",
+        "valor": "Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "usuarios",
         "id": "form-name-label",
         "valor": "Nome",
