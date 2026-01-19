@@ -588,7 +588,7 @@ function modulos_editar(){
 		)){
 			interface_alerta(Array(
 				'redirect' => true,
-				'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-database-field-before-error'))
+				'msg' => gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-database-field-before-error'))
 			));
 			
 			gestor_redirecionar_raiz();

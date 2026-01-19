@@ -40,11 +40,11 @@
                     "id": "noticias-simples",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "d80a63639faf8c60dfa30f16f5b9407b",
+                        "html": "a3a9c3e569b3c1088f65632e660257a8",
                         "css": "",
-                        "combined": "d80a63639faf8c60dfa30f16f5b9407b"
+                        "combined": "a3a9c3e569b3c1088f65632e660257a8"
                     }
                 },
                 {
@@ -52,11 +52,11 @@
                     "id": "noticias-imagem-destaque",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "db0518c36bf7fbac28a2acc9bca24765",
+                        "html": "9e582ae21524387b309978c2b20bb6ec",
                         "css": "",
-                        "combined": "db0518c36bf7fbac28a2acc9bca24765"
+                        "combined": "9e582ae21524387b309978c2b20bb6ec"
                     }
                 }
             ],
@@ -83,11 +83,11 @@
                     "path": "publisher\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.2",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "de1853203685a4f236a27f38304ebc11",
-                        "css": "",
-                        "combined": "de1853203685a4f236a27f38304ebc11"
+                        "html": "3e3c0a481d105d034d8d8eb4549a10d6",
+                        "css": "591f6755d71ca921c99fda79cf91cd75",
+                        "combined": "a6ac925c9100abe98e117839c62246ab"
                     }
                 },
                 {
@@ -97,11 +97,11 @@
                     "path": "publisher\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "a86b6cb52f7cecdf879fff7a685e1c53",
-                        "css": "",
-                        "combined": "a86b6cb52f7cecdf879fff7a685e1c53"
+                        "html": "3f4195b0165ef5f9bea5609721ff61b1",
+                        "css": "9eebb6ee33e52b7df56f070e9aec71fe",
+                        "combined": "c98a59d90b1c210beb96cc76486eb47b"
                     }
                 }
             ],

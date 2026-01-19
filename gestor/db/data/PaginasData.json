@@ -2613,13 +2613,13 @@
         "opcao": "adicionar",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<div class=\"field\">\r\n    <label>Nome do Tipo de Publicação<\/label>\r\n    <input type=\"text\" name=\"name\" placeholder=\"Ex: Notícias\">\r\n<\/div>\r\n\r\n<div class=\"field\">\r\n    <label>Template (Recurso)<\/label>\r\n    <span>#select-template_id#<\/span>\r\n<\/div>\r\n\r\n<h4 class=\"ui dividing header\">Campos Personalizados (Schema)<\/h4>\r\n<input type=\"hidden\" name=\"fields_schema\">\r\n<div id=\"fields-schema-container\"><\/div>\r\n\r\n<button id=\"add-field-btn\" class=\"ui button green\">\r\n    <i class=\"plus icon\"><\/i> Adicionar Campo\r\n<\/button>",
-        "css": null,
+        "html": "<div class=\"field\">\n    <label>Nome do Tipo de Publicação<\/label>\n    <input type=\"text\" name=\"name\" placeholder=\"Ex: Notícias\">\n<\/div>\n\n<div class=\"field\">\n    <label><span>Caminho Pré-fixo<\/span>\n        <div class=\"ui label\">\n            <i class=\"file alternate outline icon\"><\/i>\n            Caminho pré preenchido quando criar uma publicação. Exemplo: 'noticias\/' - criando publicação de nome\n            'teste-publicacao', gera\n            caminho\n            final 'noticias\/teste-publicacao\/'.\n        <\/div>\n    <\/label>\n    <input type=\"text\" name=\"path_prefix\" placeholder=\"Ex: noticias\/\">\n<\/div>\n\n<div class=\"field\">\n    <label>Template (Recurso)<\/label>\n    <span>#select-template_id#<\/span>\n<\/div>\n\n<div class=\"ui segment template-options-wrapper\">\n\n    <div class=\"ui active medium dimmer template-loading\">\n        <div class=\"ui text loader\">Carregando modelo...<\/div>\n    <\/div>\n\n    <p>Skeleton<\/p>\n<\/div>\n\n<h4 class=\"ui dividing header\">Campos Personalizados (Schema)<\/h4>\n<input type=\"hidden\" name=\"fields_schema\">\n<div id=\"fields-schema-container\"><\/div>\n\n<button id=\"add-field-btn\" class=\"ui button green\">\n    <i class=\"plus icon\"><\/i> Adicionar Campo\n<\/button>",
+        "css": ".template-options-wrapper{\r\n    min-height: 50px;\r\n}\r\n.hidden{\r\n    display: none !important;\r\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 3,
-        "file_version": "1.2",
-        "checksum": "{\"html\":\"de1853203685a4f236a27f38304ebc11\",\"css\":\"\",\"combined\":\"de1853203685a4f236a27f38304ebc11\"}"
+        "versao": 10,
+        "file_version": "1.9",
+        "checksum": "{\"html\":\"3e3c0a481d105d034d8d8eb4549a10d6\",\"css\":\"591f6755d71ca921c99fda79cf91cd75\",\"combined\":\"a6ac925c9100abe98e117839c62246ab\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",
@@ -2632,13 +2632,13 @@
         "opcao": "editar",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<div class=\"field\">\r\n    <label>Nome do Tipo de Publicação<\/label>\r\n    <input type=\"text\" name=\"name\" value=\"#name#\" placeholder=\"Ex: Notícias\">\r\n<\/div>\r\n\r\n<div class=\"field\">\r\n    <label>Template (Recurso)<\/label>\r\n    #select-templates#\r\n<\/div>\r\n\r\n<h4 class=\"ui dividing header\">Campos Personalizados (Schema)<\/h4>\r\n<input type=\"hidden\" name=\"fields_schema\">\r\n<div id=\"fields-schema-container\"><\/div>\r\n\r\n<button id=\"add-field-btn\" class=\"ui button green\">\r\n    <i class=\"plus icon\"><\/i> Adicionar Campo\r\n<\/button>",
-        "css": null,
+        "html": "<div class=\"field\">\n    <label>Nome do Tipo de Publicação<\/label>\n    <input type=\"text\" name=\"name\" value=\"#name#\" placeholder=\"Ex: Notícias\">\n<\/div>\n\n<div class=\"field\">\n    <label>Template (Recurso)<\/label>\n    #select-templates#\n<\/div>\n\n<h4 class=\"ui dividing header\">Campos Personalizados (Schema)<\/h4>\n<input type=\"hidden\" name=\"fields_schema\">\n<div id=\"fields-schema-container\"><\/div>\n\n<button id=\"add-field-btn\" class=\"ui button green\">\n    <i class=\"plus icon\"><\/i> Adicionar Campo\n<\/button>",
+        "css": ".hidden{\r\n    display: none !important;\r\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 2,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"a86b6cb52f7cecdf879fff7a685e1c53\",\"css\":\"\",\"combined\":\"a86b6cb52f7cecdf879fff7a685e1c53\"}"
+        "versao": 3,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"3f4195b0165ef5f9bea5609721ff61b1\",\"css\":\"9eebb6ee33e52b7df56f070e9aec71fe\",\"combined\":\"c98a59d90b1c210beb96cc76486eb47b\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",

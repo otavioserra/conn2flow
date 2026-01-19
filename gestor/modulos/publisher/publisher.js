@@ -1,5 +1,188 @@
 $(document).ready(function () {
     if ($('#_gestor-interface-edit-dados').length > 0 || $('#_gestor-interface-insert-dados').length > 0) {
+        // ===== Ajax Default
+
+        var ajaxDefault = {
+            type: 'POST',
+            url: gestor.raiz + gestor.moduloCaminho + '/',
+            ajaxOpcao: 'ajaxOpcao',
+            data: {
+                opcao: gestor.moduloOpcao,
+                ajax: 'sim'
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                loadDimmer(true);
+                msg_erro_resetar();
+            },
+            success: function (dados) {
+                switch (dados.status) {
+                    case 'Ok':
+                        this.successCallback(dados);
+                        break;
+                    default:
+                        this.successNotOkCallback(dados);
+                        console.log('ERROR - ' + this.ajaxOpcao + ' - ' + dados.status);
+
+                }
+
+                loadDimmer(false);
+            },
+            error: function (txt) {
+                switch (txt.status) {
+                    case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
+                    default:
+                        console.log('ERROR AJAX - ' + this.ajaxOpcao + ' - Dados:');
+                        console.log(txt);
+                        loadDimmer(false);
+                }
+            },
+            successCallback: function (response) { },
+            successNotOkCallback: function (response) { }
+        };
+
+        function loadDimmer(show = true) {
+            if (show) {
+                $('.template-options-wrapper .dimmer').addClass('active');
+            } else {
+                $('.template-options-wrapper .dimmer').removeClass('active');
+            }
+        }
+
+        // ===== Dropdown de Templates
+
+        $('.dropdown')
+            .dropdown({
+                onChange: function (value, text, $choice) {
+                    setTimeout(function () {
+                        templateLoading();
+                    }, 100);
+                }
+            });
+
+        function templateLoading() {
+            loadDimmer(true);
+
+            setTimeout(function () {
+                loadDimmer(false);
+            }, 500);
+
+            return true;
+
+            const ajax = ajaxDefault;
+            ajax.ajaxOpcao = 'html-editor-templates-load';
+            ajax.data.ajaxOpcao = ajax.ajaxOpcao;
+            ajax.data.params = {
+                pagina: modelos_pagina,
+                limite: 20,
+                alvo: ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas'),
+                framework_css
+            };
+
+            ajax.successCallback = function (response) {
+                if (response.data && response.data.modelos) {
+                    modelosRenderizar(response.data.modelos, response.data.tem_mais);
+
+                    if (response.data.tem_mais) {
+                        $('#modelos-load-more').show();
+                    } else {
+                        $('#modelos-load-more').hide();
+                    }
+                }
+            };
+
+            ajax.successNotOkCallback = function (response) {
+                $('#modelos-loading').hide();
+
+                if (response !== undefined && 'status' in response && response.status === 'error') {
+                    msg_erro_mostrar(response.message);
+                } else {
+                    msg_erro_mostrar('Erro ao carregar modelos de página.');
+                }
+            };
+
+            $.ajax(ajax);
+        }
+
+        // ===== Input delay
+
+        $.input_delay_to_change = function (p) {
+            if (!gestor.input_delay) {
+                gestor.input_delay = new Array();
+                gestor.input_delay_count = 0;
+            }
+
+            gestor.input_delay_count++;
+
+            var valor = gestor.input_delay_count;
+
+            gestor.input_delay.push(valor);
+            gestor.input_value = p.value;
+
+            setTimeout(function () {
+                if (gestor.input_delay[gestor.input_delay.length - 1] == valor) {
+                    input_change_after_delay({ value: gestor.input_value, trigger_selector: p.trigger_selector, trigger_event: p.trigger_event });
+                }
+            }, gestor.input_delay_timeout);
+        }
+
+        function input_change_after_delay(p) {
+            $(p.trigger_selector).trigger(p.trigger_event, [p.value, gestor.input_delay_params]);
+
+            gestor.input_delay = false;
+        }
+
+        function input_delay() {
+            if (!gestor.input_delay_timeout) gestor.input_delay_timeout = 400;
+
+        }
+
+        input_delay();
+
+        // ===== Format caminho pré-fixo
+
+        $(document.body).on('opcao-change', '#gestor-listener', function (e, value, p) {
+            if (!p) p = {};
+
+            if (value.length > 0) {
+                $('input[name="path_prefix"]').val(formatar_url(value));
+            } else {
+                $('input[name="path_prefix"]').val(formatar_url($('input[name="name"]').val()));
+            }
+        });
+
+        $(document.body).on('keyup', 'input[name="name"]', function (e) {
+            if (e.which == 9) return false;
+
+            var value = $(this).val();
+
+            $.input_delay_to_change({
+                trigger_selector: '#gestor-listener',
+                trigger_event: 'caminho-change',
+                value: value
+            });
+        });
+
+        $(document.body).on('caminho-change', '#gestor-listener', function (e, value, p) {
+            if (!p) p = {};
+
+            $('input[name="path_prefix"]').val(formatar_url(value));
+        });
+
+        function formatar_url(url) {
+            url = url.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Trocar todos os caracteres com acentos pelos seus similares sem acento.
+            url = url.replace(/[^a-zA-Z0-9 \-\/]/g, ''); // Remover todos os caracteres que não são alfanuméricos ou espaço ou traço ou barra.
+            url = url.toLowerCase(); // Passar para letras minúsculas
+            url = url.trim(); // Remover espaço do início e fim.
+            url = url.replace(/\s/g, '-'); // Trocar todos os espaços por traço.
+            url = url.replace(/\-{2,}/g, '-'); // Remover a repetição de traços para um único traço.
+            url = url.replace(/\/{2,}/g, '/'); // Remover a repetição de barras para uma única barra.
+
+            // Sempre adicionar uma barra no final, ou retornar apenas "/" se estiver vazio
+            return url.length > 0 ? url + '/' : '/';
+        }
+
+        // ===== Publisher Fields Schema Management
 
         var schemaContainer = $('#fields-schema-container');
         var addFieldBtn = $('#add-field-btn');

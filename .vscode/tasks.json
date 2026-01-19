@@ -79,7 +79,8 @@
         {
             "label": "🛠️ Manager - Synchronize => Files - Test Environment",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/dev-environment/synchronize-manager.sh checksum"
+            "command": "bash ./ai-workspace/en/scripts/dev-environment/synchronize-manager.sh checksum",
+            "problemMatcher": []
         },
         {
             "label": "🛠️ Manager - Build Local",
@@ -98,7 +99,8 @@
                 "🛠️ Manager - Synchronize => Files - Test Environment",
                 "🛠️ Manager - Synchronize => Database - Test Environment"
             ],
-            "dependsOrder": "sequence"
+            "dependsOrder": "sequence",
+            "problemMatcher": []
         },
         {
             "label": "🧩 Private Plugins - Synchronize Active Plugin",

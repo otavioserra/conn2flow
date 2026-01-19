@@ -159,7 +159,7 @@ function publisher_editar(){
 		)){
 			interface_alerta(Array(
 				'redirect' => true,
-				'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-database-field-before-error'))
+				'msg' => gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-database-field-before-error'))
 			));
 			
 			gestor_redirecionar_raiz();
@@ -475,6 +475,20 @@ function publisher_interfaces_padroes(){
 	}
 }
 
+// ==== Ajax
+
+function publisher_ajax_template_load(){
+	global $_GESTOR;
+	
+	// ===== Carregar o template selecionado
+	
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+	);
+}
+
+// ==== Start
+
 function publisher_start(){
     global $_GESTOR;
 	
@@ -484,7 +498,7 @@ function publisher_start(){
 		interface_ajax_iniciar();
 		
 		switch($_GESTOR['ajax-opcao']){
-			//case 'opcao': publisher_ajax_opcao(); break;
+			case 'opcao': publisher_ajax_template_load(); break;
 		}
 		
 		interface_ajax_finalizar();

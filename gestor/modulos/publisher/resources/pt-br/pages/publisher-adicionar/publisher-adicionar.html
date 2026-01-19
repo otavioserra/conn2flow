@@ -4,8 +4,30 @@
 </div>
 
 <div class="field">
+    <label><span>Caminho Pré-fixo</span>
+        <div class="ui label">
+            <i class="file alternate outline icon"></i>
+            Caminho pré preenchido quando criar uma publicação. Exemplo: 'noticias/' - criando publicação de nome
+            'teste-publicacao', gera
+            caminho
+            final 'noticias/teste-publicacao/'.
+        </div>
+    </label>
+    <input type="text" name="path_prefix" placeholder="Ex: noticias/">
+</div>
+
+<div class="field">
     <label>Template (Recurso)</label>
     <span>#select-template_id#</span>
+</div>
+
+<div class="ui segment template-options-wrapper">
+
+    <div class="ui medium dimmer template-loading">
+        <div class="ui text loader">Carregando modelo...</div>
+    </div>
+
+    <p>Skeleton</p>
 </div>
 
 <h4 class="ui dividing header">Campos Personalizados (Schema)</h4>
