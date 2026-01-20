@@ -18,4 +18,5 @@ Variáveis disponíveis para uso no template (nome_da_variavel | tipo_de_dado | 
 ```variables
 {{variables}}
 ```
+As variáveis enviadas acima devem ser usadas no template conforme o tipo de dado. Assim, analise o tipo de dado e escolha elementos HTML condizentes com o tipo. Bem como a ordem é importante para organização do template. As que aparecem primeiro na lista, devem ser usadas primeiro no template e subsequentemente as demais variáveis. Caso receba algum HTML já existente nessa interação, deve manter a ordem das variáveis conforme explicado ou se o usuário abaixo pedir outra ordem, seguir a ordem definida pelo usuário.
 A seguir um usuário sem ou com entendimento de HTML descreveu a seguinte necessidade dele:

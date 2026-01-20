@@ -21,7 +21,8 @@ $(document).ready(function () {
             dataType: 'json',
             beforeSend: function () {
                 loadDimmer(true);
-                msg_erro_resetar();
+                templateWrapper(true, false);
+                msg_erro_resetar(false);
             },
             success: function (dados) {
                 switch (dados.status) {
@@ -56,13 +57,35 @@ $(document).ready(function () {
             }
         }
 
-        function msg_erro_resetar() {
-            $('#error-message').hide();
+        function msg_erro_resetar(show = true) {
+            if (show) {
+                $('#error-message').removeClass('hidden');
+            } else {
+                $('#error-message').addClass('hidden');
+            }
         }
 
         function msg_erro_mostrar(mensagem) {
             $('#error-message-content').text(mensagem);
-            $('#error-message').show();
+            msg_erro_resetar(true);
+        }
+
+        function templateWrapper(show = true, subwrapper = false) {
+            if (show) {
+                $('.template-options-wrapper').removeClass('hidden');
+
+                if (subwrapper) {
+                    $('#edit-template').removeClass('hidden');
+                    $('.template-options-subwrapper').removeClass('hidden');
+                } else {
+                    $('#edit-template').addClass('hidden');
+                    $('.template-options-subwrapper').addClass('hidden');
+                }
+            } else {
+                $('.template-options-wrapper').addClass('hidden');
+                $('#edit-template').addClass('hidden');
+                $('.template-options-subwrapper').addClass('hidden');
+            }
         }
 
         // ===== Dropdown de Templates
@@ -82,20 +105,12 @@ $(document).ready(function () {
             templateLoading(initialValue);
         }
 
-        $('#add-new-template').on('click', function () {
-            $('.template-options-wrapper').show();
-            var defaultName = $('#template-skeletons .msg-novo-template').text();
-            $('#template-name').val(defaultName);
-            // Carregar template padrão para mostrar campos disponíveis
-            templateLoading('noticias-simples');
-        });
-
         function templateLoading(template_id) {
             // Mostrar/esconder template-options-wrapper baseado na seleção
-            if (template_id) {
-                $('.template-options-wrapper').show();
-            } else {
-                $('.template-options-wrapper').hide();
+            if (!template_id) {
+                templateWrapper(true, false);
+                msg_erro_resetar(false);
+                $('#edit-template').prop('href', false);
                 return;
             }
 
@@ -110,6 +125,7 @@ $(document).ready(function () {
 
             ajax.successCallback = function (response) {
                 if (response.modelo) {
+                    templateWrapper(true, true);
                     // Atualizar nome do template
                     $('#template-name').val(response.modelo.name || '');
 
@@ -118,6 +134,9 @@ $(document).ready(function () {
 
                     // Atualizar listas e searches
                     recalculateFieldSets();
+                    updateFieldOrderButtons();
+
+                    $('#edit-template').prop('href', gestor.raiz + 'admin-templates/editar/?id=' + template_id);
                 }
             };
 
@@ -238,6 +257,10 @@ $(document).ready(function () {
         $(document.body).on('slug-change', '#gestor-listener', function (e, value, p) {
             if (!p) p = {};
 
+            if (value.value.length == 0) {
+                value.value = value.parentRow.attr('data-id');
+            }
+
             var slug = formatar_slug(value.value);
             value.parentRow.find('.field-id').val(slug);
             value.parentRow.find('.field-id-display').text(slug);
@@ -261,15 +284,21 @@ $(document).ready(function () {
         var schemaContainer = $('#fields-schema-container');
         var addFieldBtn = $('#add-field-btn');
         var hiddenInput = $('input[name="fields_schema"]');
+        var fieldIDCounter = 0;
 
         function addFieldRow(data = {}) {
-            var id = data.id || '';
+            fieldIDCounter++;
+
+            var id = data.id || 'id-' + fieldIDCounter;
             var name = data.name || data.label || '';
             var type = data.type || 'text';
             var mandatory = data.mandatory ? true : false;
             var template_field_id = data.template_field_id || '';
 
+
             const rowClone = $('#template-skeletons .field-row-skeleton').clone();
+
+            rowClone.attr('data-id', id);
             rowClone.find('.field-label').val(name);
             rowClone.find('.field-id').val(id);
             rowClone.find('.field-type').val(type);
@@ -277,7 +306,7 @@ $(document).ready(function () {
                 rowClone.find('.field-mandatory').prop('checked', true);
             }
             rowClone.find('.field-template-id').val(template_field_id);
-            rowClone.find('.field-id-display').text(formatar_slug(name));
+            rowClone.find('.field-id-display').text(formatar_slug(name.length > 0 ? name : id));
 
             schemaContainer.append(rowClone);
 
@@ -287,25 +316,11 @@ $(document).ready(function () {
                     recalculateFieldSets();
                 }
             });
-            rowClone.find('.field-template').closest('.ui.search').search({
-                highlightMatches: true,
-                source: gestor.template.currentTemplateFields.map(f => ({ title: `@[[publisher#${f.type}#${f.id}]]@`, value: f.id })),
-                onSelect: function (result, response) {
-                    $(this).closest('.field-row').find('.field-template-id').val(result.value);
-                    $(this).val(result.title);
-                    recalculateFieldSets();
-                }
-            });
-            rowClone.find('.field-template').closest('.ui.search').find('.remove.icon').on('mouseup tap', function (e) {
-                if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
-
-                $(this).closest('.field-row').find('.field-template-id').val('');
-                recalculateFieldSets();
-            });
             rowClone.find('.ui.checkbox').checkbox();
 
             // Atualizar searches e recalcular
             recalculateFieldSets();
+            updateFieldOrderButtons();
         }
 
         function updateFieldLists() {
@@ -313,8 +328,47 @@ $(document).ready(function () {
             $('#available-fields-list').html(gestor.template.fieldSets.available.map(f => `<div class="item"><kbd class="ui label">@[[publisher#${f.type}#${f.id}]]@</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-template').text()}</div>`);
             // Campos Ausentes: mostrar variável do publisher sem vinculação
             $('#missing-fields-list').html(gestor.template.fieldSets.missing.map(pf => `<div class="item"><kbd class="ui label">@[[publisher#${pf.type}#${pf.id}]]@</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-publisher').text()}</div>`);
-            // Campos Vinculados: mostrar variável do publisher com vinculação
-            $('#linked-fields-list').html(gestor.template.fieldSets.linked.map(pf => `<div class="item"><kbd class="ui label">@[[publisher#${pf.type}#${pf.id}]]@</kbd><kbd class="ui teal icon label"><i class="exchange alternate icon"></i></kbd><kbd class="ui label">@[[publisher#${pf.type}#${pf.id}]]@</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-vinculado').text()}</div>`);
+            // Campos Vinculados: mostrar variável do template => publisher
+            $('#linked-fields-list').html(gestor.template.fieldSets.linked.map(pf => {
+                const templateField = gestor.template.currentTemplateFields.find(tf => tf.id === pf.template_field_id);
+                if (templateField) {
+                    return `<div class="item"><kbd class="ui label">@[[publisher#${templateField.type}#${templateField.id}]]@</kbd><kbd class="ui teal icon label"><i class="exchange alternate icon"></i></kbd><kbd class="ui label">@[[publisher#${pf.type}#${pf.id}]]@</kbd></div>`;
+                }
+                return '';
+            }).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-vinculado').text()}</div>`);
+        }
+
+        function updateFieldTemplateSearches() {
+            const container = $('#fields-schema-container');
+
+            container.find('.field-template').closest('.ui.search').each(function () {
+                $(this).search('destroy');
+                $(this).search({
+                    minCharacters: 0,
+                    cache: false,
+                    source: gestor.template.fieldSets.available.map(f => ({ title: `@[[publisher#${f.type}#${f.id}]]@`, value: f.id })),
+                    onSelect: function (result, response) {
+                        $(this).closest('.field-row').find('.field-template-id').val(result.value);
+                        $(this).val(result.title);
+
+                        // Atualizar o tipo do campo com o tipo do template selecionado
+                        const templateField = gestor.template.currentTemplateFields.find(tf => tf.id === result.value);
+                        if (templateField) {
+                            $(this).closest('.field-row').find('.field-type').dropdown('set selected', templateField.type);
+                        }
+
+                        recalculateFieldSets();
+                    }
+                });
+
+                $(this).find('.remove.icon').off('mouseup tap');
+                $(this).find('.remove.icon').on('mouseup tap', function (e) {
+                    if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+                    $(this).closest('.field-row').find('.field-template-id').val('');
+                    recalculateFieldSets();
+                });
+            });
         }
 
         function recalculateFieldSets() {
@@ -344,6 +398,30 @@ $(document).ready(function () {
             gestor.template.fieldSets.linked = linkedPublisherFields;
 
             updateFieldLists();
+            updateFieldTemplateSearches();
+        }
+
+        function updateFieldOrderButtons() {
+            const container = $('#fields-schema-container');
+            container.find('.field-row').each(function () {
+                const row = $(this);
+                const upBtn = row.find('.move-up-btn');
+                const downBtn = row.find('.move-down-btn');
+
+                // Verificar se há field-row anterior
+                if (row.prev('.field-row').length > 0) {
+                    upBtn.removeClass('hidden');
+                } else {
+                    upBtn.addClass('hidden');
+                }
+
+                // Verificar se há field-row posterior
+                if (row.next('.field-row').length > 0) {
+                    downBtn.removeClass('hidden');
+                } else {
+                    downBtn.addClass('hidden');
+                }
+            });
         }
 
         // Add Button
@@ -356,6 +434,29 @@ $(document).ready(function () {
         $(document).on('click', '.remove-field-btn', function () {
             $(this).closest('.field-row').remove();
             recalculateFieldSets();
+            updateFieldOrderButtons();
+        });
+
+        // Move Up Button
+        $(document).on('click', '.move-up-btn', function () {
+            const row = $(this).closest('.field-row');
+            const prevRow = row.prev('.field-row');
+            if (prevRow.length > 0) {
+                prevRow.before(row);
+                recalculateFieldSets();
+                updateFieldOrderButtons();
+            }
+        });
+
+        // Move Down Button
+        $(document).on('click', '.move-down-btn', function () {
+            const row = $(this).closest('.field-row');
+            const nextRow = row.next('.field-row');
+            if (nextRow.length > 0) {
+                nextRow.after(row);
+                recalculateFieldSets();
+                updateFieldOrderButtons();
+            }
         });
 
         // Load Initial Data
@@ -365,6 +466,7 @@ $(document).ready(function () {
                 addFieldRow(field);
             });
             recalculateFieldSets();
+            updateFieldOrderButtons();
         }
 
         // Intercept Form Submit
@@ -388,31 +490,10 @@ $(document).ready(function () {
                 }
             });
             hiddenInput.val(JSON.stringify(schema));
-            return true;
+
+            console.log('Submitting schema:', schema);
+            return false;
         });
 
-        // ===== Event listeners para botões do template
-        $('#save-template').on('click', function () {
-            alert('Funcionalidade de salvar template ainda não implementada.');
-        });
-
-        $('#edit-template').on('click', function () {
-            alert('Funcionalidade de editar template ainda não implementada.');
-        });
-
-        $('#duplicate-template').on('click', function () {
-            alert('Funcionalidade de duplicar template ainda não implementada.');
-        });
-
-        $('#delete-template').on('click', function () {
-            if (confirm('Tem certeza que deseja excluir este template?')) {
-                alert('Funcionalidade de excluir template ainda não implementada.');
-            }
-        });
-
-        // Atualizar status dos campos quando mapeamento muda
-        $(document).on('change', '.field-mapping', function () {
-            checkFieldStatus(currentPublisherFields, currentTemplateFields);
-        });
     }
 });

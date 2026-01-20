@@ -309,7 +309,7 @@ $(document).ready(function () {
                     identifier: 'name',
                     rules: [
                         {
-                            type: 'empty',
+                            type: 'notEmpty',
                             prompt: gestor.ia.msgs.prompt_name_empty
                         }
                     ]

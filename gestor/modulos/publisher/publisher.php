@@ -488,37 +488,52 @@ function publisher_ajax_template_load(){
 	$fields_schema_json = $_REQUEST['params']['fields_schema'] ?? '[]';
 	$fields_schema = json_decode($fields_schema_json, true) ?: [];
 	
-	// Placeholder: buscar dados do template (mockado por enquanto)
+	// ===== Buscar template no banco de dados
+	
+	$template = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'templates',
+		'campos' => Array(
+			'nome',
+			'html'
+		),
+		'extra' => 
+			"WHERE id='".banco_escape_field($template_id)."' AND target='publisher' AND language='".$_GESTOR['linguagem-codigo']."' AND status='A'"
+	));
+	
+	if(!$template){
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'Erro',
+			'message' => 'Template não encontrado.'
+		);
+		return;
+	}
+	
 	$modelo = [
-		'name' => 'Template Exemplo',
+		'name' => $template['nome'],
 		'id' => $template_id
 	];
 	
-	// Placeholder: campos do template (mockado baseado no template_id)
+	// ===== Extrair campos do HTML
+	
 	$fields = [];
-	if ($template_id === 'noticias-simples') {
-		$modelo['name'] = 'Notícias Simples';
-		$fields = [
-			['id' => 'titulo', 'name' => 'Título', 'type' => 'text'],
-			['id' => 'conteudo', 'name' => 'Conteúdo', 'type' => 'textarea'],
-			['id' => 'data', 'name' => 'Data', 'type' => 'date']
-		];
-	} elseif ($template_id === 'noticias-imagem-destaque') {
-		$modelo['name'] = 'Notícias com Imagem Destaque';
-		$fields = [
-			['id' => 'titulo', 'name' => 'Título', 'type' => 'text'],
-			['id' => 'conteudo', 'name' => 'Conteúdo', 'type' => 'textarea'],
-			['id' => 'imagem_destaque', 'name' => 'Imagem Destaque', 'type' => 'image'],
-			['id' => 'resumo', 'name' => 'Resumo', 'type' => 'text']
-		];
-	} else {
-		$fields = [
-			['id' => 'titulo', 'name' => 'Título', 'type' => 'text'],
-			['id' => 'conteudo', 'name' => 'Conteúdo', 'type' => 'textarea']
-		];
+	if($template['html']){
+		preg_match_all('/@\[\[publisher#([^#\]]+)#([^\]]+)\]\]@/', $template['html'], $matches);
+		if(isset($matches[1]) && isset($matches[2])){
+			$uniqueFields = [];
+			foreach($matches[1] as $index => $type){
+				$id = $matches[2][$index];
+				if(empty($type) || empty($id)) continue;
+				$key = $type . '#' . $id;
+				if(!isset($uniqueFields[$key])){
+					$uniqueFields[$key] = ['id' => $id, 'type' => $type];
+				}
+			}
+			$fields = array_values($uniqueFields);
+		}
 	}
 	
-	// Placeholder: campos do publisher (usar fields_schema se existir, senão vazio para adicionar)
+	// ===== Campos do publisher (usar fields_schema se existir, senão vazio para adicionar)
 	if (count($fields_schema) > 0) {
 		$publisherFields = array_map(function($f) {
 			return [

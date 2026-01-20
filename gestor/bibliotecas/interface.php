@@ -2066,7 +2066,7 @@ function interface_formulario_validacao($params = false){
 					$regras_validacao[$regra['campo']] = Array(
 						'rules' => Array(
 							Array(
-								'type' => 'empty',
+								'type' => 'notEmpty',
 								'prompt' => $prompt[1],
 							),
 						)
@@ -2079,7 +2079,7 @@ function interface_formulario_validacao($params = false){
 					$regras_validacao[$regra['campo']] = Array(
 						'rules' => Array(
 							Array(
-								'type' => 'empty',
+								'type' => 'notEmpty',
 								'prompt' => $prompt[1],
 							),
 						)
@@ -2098,7 +2098,7 @@ function interface_formulario_validacao($params = false){
 					$regras_validacao[$regra['campo']] = Array(
 						'rules' => Array(
 							Array(
-								'type' => 'empty',
+								'type' => 'notEmpty',
 								'prompt' => $prompt[1],
 							),
 							Array(
@@ -2128,7 +2128,7 @@ function interface_formulario_validacao($params = false){
 					$regras_validacao[$regra['campo']] = Array(
 						'rules' => Array(
 							Array(
-								'type' => 'empty',
+								'type' => 'notEmpty',
 								'prompt' => $prompt[1],
 							),
 							Array(
@@ -2168,7 +2168,7 @@ function interface_formulario_validacao($params = false){
 					$regras_validacao[$regra['campo']] = Array(
 						'rules' => Array(
 							Array(
-								'type' => 'empty',
+								'type' => 'notEmpty',
 								'prompt' => $prompt[1],
 							),
 						)
@@ -2184,7 +2184,7 @@ function interface_formulario_validacao($params = false){
 					$regras_validacao[$regra['campo']] = Array(
 						'rules' => Array(
 							Array(
-								'type' => 'empty',
+								'type' => 'notEmpty',
 								'prompt' => $prompt[1],
 							),
 							Array(
@@ -2210,7 +2210,7 @@ function interface_formulario_validacao($params = false){
 					$regras_validacao[$regra['campo']] = Array(
 						'rules' => Array(
 							Array(
-								'type' => 'empty',
+								'type' => 'notEmpty',
 								'prompt' => $prompt[1],
 							),
 							Array(
@@ -2244,7 +2244,7 @@ function interface_formulario_validacao($params = false){
 					$regras_validacao[$regra['campo']] = Array(
 						'rules' => Array(
 							Array(
-								'type' => 'empty',
+								'type' => 'notEmpty',
 								'prompt' => $prompt[1],
 							),
 							Array(
@@ -2278,7 +2278,7 @@ function interface_formulario_validacao($params = false){
 							$regras_validacao[$regra['campo']] = Array(
 								'rules' => Array(
 									Array(
-										'type' => 'empty',
+										'type' => 'notEmpty',
 										'prompt' => $prompt[1],
 									),
 									Array(
@@ -2316,7 +2316,7 @@ function interface_formulario_validacao($params = false){
 							$regras_validacao[$regra['campo']] = Array(
 								'rules' => Array(
 									Array(
-										'type' => 'empty',
+										'type' => 'notEmpty',
 										'prompt' => $prompt[1],
 									),
 									Array(
@@ -2359,7 +2359,7 @@ function interface_formulario_validacao($params = false){
 							$regras_validacao[$regra['campo']] = Array(
 								'rules' => Array(
 									Array(
-										'type' => 'empty',
+										'type' => 'notEmpty',
 										'prompt' => $prompt[1],
 									),
 									Array(
