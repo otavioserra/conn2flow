@@ -55,6 +55,10 @@ function loadDimmer(show = true) {
     }
 }
 
+function msg_erro_resetar() {
+    
+}
+
 // [2] AJAX Call
 function ajaxCall() {
     const ajax = ajaxDefault;

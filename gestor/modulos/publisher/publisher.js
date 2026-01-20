@@ -1,5 +1,13 @@
 $(document).ready(function () {
     if ($('#_gestor-interface-edit-dados').length > 0 || $('#_gestor-interface-insert-dados').length > 0) {
+        // Inicializar gestor.template se não existir
+        if (!gestor.template) {
+            gestor.template = {
+                fieldSets: { available: [], missing: [], linked: [] },
+                currentPublisherFields: [],
+                currentTemplateFields: []
+            };
+        }
         // ===== Ajax Default
 
         var ajaxDefault = {
@@ -22,7 +30,6 @@ $(document).ready(function () {
                         break;
                     default:
                         this.successNotOkCallback(dados);
-                        console.log('ERROR - ' + this.ajaxOpcao + ' - ' + dados.status);
 
                 }
 
@@ -49,59 +56,100 @@ $(document).ready(function () {
             }
         }
 
+        function msg_erro_resetar() {
+            $('#error-message').hide();
+        }
+
+        function msg_erro_mostrar(mensagem) {
+            $('#error-message-content').text(mensagem);
+            $('#error-message').show();
+        }
+
         // ===== Dropdown de Templates
 
-        $('.dropdown')
+        $('.templateDropdown')
             .dropdown({
                 onChange: function (value, text, $choice) {
                     setTimeout(function () {
-                        templateLoading();
+                        templateLoading(value);
                     }, 100);
                 }
             });
 
-        function templateLoading() {
-            loadDimmer(true);
+        // Carregar template inicial se houver
+        var initialValue = $('.templateDropdown').dropdown('get value');
+        if (initialValue) {
+            templateLoading(initialValue);
+        }
 
-            setTimeout(function () {
-                loadDimmer(false);
-            }, 500);
+        $('#add-new-template').on('click', function () {
+            $('.template-options-wrapper').show();
+            var defaultName = $('#template-skeletons .msg-novo-template').text();
+            $('#template-name').val(defaultName);
+            // Carregar template padrão para mostrar campos disponíveis
+            templateLoading('noticias-simples');
+        });
 
-            return true;
+        function templateLoading(template_id) {
+            // Mostrar/esconder template-options-wrapper baseado na seleção
+            if (template_id) {
+                $('.template-options-wrapper').show();
+            } else {
+                $('.template-options-wrapper').hide();
+                return;
+            }
 
             const ajax = ajaxDefault;
-            ajax.ajaxOpcao = 'html-editor-templates-load';
+
+            ajax.ajaxOpcao = 'template-load';
             ajax.data.ajaxOpcao = ajax.ajaxOpcao;
             ajax.data.params = {
-                pagina: modelos_pagina,
-                limite: 20,
-                alvo: ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas'),
-                framework_css
+                template_id,
+                fields_schema: $('input[name="fields_schema"]').val() || '[]'
             };
 
             ajax.successCallback = function (response) {
-                if (response.data && response.data.modelos) {
-                    modelosRenderizar(response.data.modelos, response.data.tem_mais);
+                if (response.modelo) {
+                    // Atualizar nome do template
+                    $('#template-name').val(response.modelo.name || '');
 
-                    if (response.data.tem_mais) {
-                        $('#modelos-load-more').show();
-                    } else {
-                        $('#modelos-load-more').hide();
-                    }
+                    // Atualizar variáveis globais - apenas campos do template
+                    gestor.template.currentTemplateFields = response.campos || [];
+
+                    // Atualizar listas e searches
+                    recalculateFieldSets();
                 }
             };
 
             ajax.successNotOkCallback = function (response) {
-                $('#modelos-loading').hide();
-
-                if (response !== undefined && 'status' in response && response.status === 'error') {
-                    msg_erro_mostrar(response.message);
-                } else {
-                    msg_erro_mostrar('Erro ao carregar modelos de página.');
-                }
+                var msgPrefix = $('#template-skeletons .msg-erro-carregar-template').text();
+                var msgUnknown = $('#template-skeletons .msg-erro-desconhecido').text();
+                msg_erro_mostrar(msgPrefix + (response.message || msgUnknown));
             };
 
             $.ajax(ajax);
+        }
+
+        function checkFieldStatus(publisherFields, templateFields) {
+            if (!publisherFields || !templateFields) {
+                $('#field-status-message').hide();
+                $('#field-status-ok').hide();
+                return;
+            }
+
+            const templateFieldIds = templateFields.map(f => f.id);
+            const allMapped = publisherFields.every(pf => {
+                const selected = $(`.field-mapping[data-publisher-field="${pf.id}"]`).val();
+                return selected && templateFieldIds.includes(selected);
+            });
+
+            if (allMapped) {
+                $('#field-status-ok').show();
+                $('#field-status-message').hide();
+            } else {
+                $('#field-status-message').show();
+                $('#field-status-ok').hide();
+            }
         }
 
         // ===== Input delay
@@ -141,16 +189,6 @@ $(document).ready(function () {
 
         // ===== Format caminho pré-fixo
 
-        $(document.body).on('opcao-change', '#gestor-listener', function (e, value, p) {
-            if (!p) p = {};
-
-            if (value.length > 0) {
-                $('input[name="path_prefix"]').val(formatar_url(value));
-            } else {
-                $('input[name="path_prefix"]').val(formatar_url($('input[name="name"]').val()));
-            }
-        });
-
         $(document.body).on('keyup', 'input[name="name"]', function (e) {
             if (e.which == 9) return false;
 
@@ -182,6 +220,42 @@ $(document).ready(function () {
             return url.length > 0 ? url + '/' : '/';
         }
 
+        // ===== Format slug ID
+
+        $(document.body).on('keyup', '.field-label', function (e) {
+            if (e.which == 9) return false;
+
+            var parentRow = $(this).closest('.field-row');
+            var value = $(this).val();
+
+            $.input_delay_to_change({
+                trigger_selector: '#gestor-listener',
+                trigger_event: 'slug-change',
+                value: { value, parentRow }
+            });
+        });
+
+        $(document.body).on('slug-change', '#gestor-listener', function (e, value, p) {
+            if (!p) p = {};
+
+            var slug = formatar_slug(value.value);
+            value.parentRow.find('.field-id').val(slug);
+            value.parentRow.find('.field-id-display').text(slug);
+
+            recalculateFieldSets();
+        });
+
+        function formatar_slug(slug) {
+            slug = slug.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Trocar todos os caracteres com acentos pelos seus similares sem acento.
+            slug = slug.replace(/[^a-zA-Z0-9 \-]/g, ''); // Remover todos os caracteres que não são alfanuméricos ou espaço ou traço.
+            slug = slug.toLowerCase(); // Passar para letras minúsculas
+            slug = slug.trim(); // Remover espaço do início e fim.
+            slug = slug.replace(/\s/g, '-'); // Trocar todos os espaços por traço.
+            slug = slug.replace(/\-{2,}/g, '-'); // Remover a repetição de traços para um único traço.
+
+            return slug.length > 0 ? slug : '';
+        }
+
         // ===== Publisher Fields Schema Management
 
         var schemaContainer = $('#fields-schema-container');
@@ -190,81 +264,87 @@ $(document).ready(function () {
 
         function addFieldRow(data = {}) {
             var id = data.id || '';
-            var label = data.label || '';
+            var name = data.name || data.label || '';
             var type = data.type || 'text';
-            var mandatory = data.mandatory ? 'checked' : '';
-            var placeholder = data.placeholder || '';
+            var mandatory = data.mandatory ? true : false;
+            var template_field_id = data.template_field_id || '';
 
-            // Fix for dropdown value retrieval if passed via data
-            // Semantic UI dropdown handling is needed after append.
+            const rowClone = $('#template-skeletons .field-row-skeleton').clone();
+            rowClone.find('.field-label').val(name);
+            rowClone.find('.field-id').val(id);
+            rowClone.find('.field-type').val(type);
+            if (mandatory) {
+                rowClone.find('.field-mandatory').prop('checked', true);
+            }
+            rowClone.find('.field-template-id').val(template_field_id);
+            rowClone.find('.field-id-display').text(formatar_slug(name));
 
-            var rowHtml = `
-                <div class="ui segment field-row" style="margin-bottom: 10px;">
-                    <div class="fields">
-                        <div class="four wide field">
-                            <label>Label</label>
-                            <input type="text" class="field-label" value="${label}" placeholder="Ex: Título">
-                        </div>
-                        <div class="four wide field">
-                            <label>ID (Slug)</label>
-                            <div class="ui right labeled input">
-                                <input type="text" class="field-id" value="${id}" placeholder="Ex: titulo">
-                                <div class="ui label help-popup" data-content="Use este ID no template: @[[publisher#${id}]]@">?</div>
-                            </div>
-                        </div>
-                        <div class="four wide field">
-                            <label>Tipo</label>
-                            <select class="ui dropdown field-type">
-                                <option value="text">Texto Curto</option>
-                                <option value="textarea">Texto Longo</option>
-                                <option value="html">HTML (Rich Text)</option>
-                                <option value="image">Imagem</option>
-                            </select>
-                        </div>
-                        <div class="three wide field">
-                            <label>Obrigatório</label>
-                            <div class="ui checkbox">
-                                <input type="checkbox" class="field-mandatory" ${mandatory}>
-                                <label>Sim</label>
-                            </div>
-                        </div>
-                        <div class="one wide field" style="display: flex; align-items: flex-end;">
-                            <button type="button" class="ui icon red button remove-field-btn"><i class="trash icon"></i></button>
-                        </div>
-                    </div>
-                </div>
-            `;
+            schemaContainer.append(rowClone);
 
-            var $row = $(rowHtml);
-            schemaContainer.append($row);
+            // Inicializar dropdowns, search e checkbox.
+            rowClone.find('.dropdownTemplate').removeClass('dropdownTemplate').addClass('ui dropdown').dropdown({
+                onChange: function (value, text, $choice) {
+                    recalculateFieldSets();
+                }
+            });
+            rowClone.find('.field-template').closest('.ui.search').search({
+                highlightMatches: true,
+                source: gestor.template.currentTemplateFields.map(f => ({ title: `@[[publisher#${f.type}#${f.id}]]@`, value: f.id })),
+                onSelect: function (result, response) {
+                    $(this).closest('.field-row').find('.field-template-id').val(result.value);
+                    $(this).val(result.title);
+                    recalculateFieldSets();
+                }
+            });
+            rowClone.find('.field-template').closest('.ui.search').find('.remove.icon').on('mouseup tap', function (e) {
+                if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
-            // Set dropdown value
-            $row.find('.field-type').val(type);
-            $row.find('.ui.dropdown').dropdown();
-            $row.find('.ui.checkbox').checkbox();
-            $row.find('.help-popup').popup();
+                $(this).closest('.field-row').find('.field-template-id').val('');
+                recalculateFieldSets();
+            });
+            rowClone.find('.ui.checkbox').checkbox();
+
+            // Atualizar searches e recalcular
+            recalculateFieldSets();
         }
 
-        // Auto-slug ID from Label
-        $(document).on('keyup', '.field-label', function () {
-            var row = $(this).closest('.field-row');
-            var idInput = row.find('.field-id');
-            var helpLabel = row.find('.help-popup');
+        function updateFieldLists() {
+            // Campos Disponíveis: mostrar nome do campo do template
+            $('#available-fields-list').html(gestor.template.fieldSets.available.map(f => `<div class="item"><kbd class="ui label">@[[publisher#${f.type}#${f.id}]]@</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-template').text()}</div>`);
+            // Campos Ausentes: mostrar variável do publisher sem vinculação
+            $('#missing-fields-list').html(gestor.template.fieldSets.missing.map(pf => `<div class="item"><kbd class="ui label">@[[publisher#${pf.type}#${pf.id}]]@</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-publisher').text()}</div>`);
+            // Campos Vinculados: mostrar variável do publisher com vinculação
+            $('#linked-fields-list').html(gestor.template.fieldSets.linked.map(pf => `<div class="item"><kbd class="ui label">@[[publisher#${pf.type}#${pf.id}]]@</kbd><kbd class="ui teal icon label"><i class="exchange alternate icon"></i></kbd><kbd class="ui label">@[[publisher#${pf.type}#${pf.id}]]@</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-vinculado').text()}</div>`);
+        }
 
-            // Only auto-update if ID is empty or was auto-generated (we can track this roughly)
-            // Or just check if ID matches a slugified version of previous label... let's keep it simple: if ID is empty, update.
-            if (idInput.val() === '') {
-                var slug = $(this).val().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-                idInput.val(slug);
-                helpLabel.attr('data-content', 'Use este ID no template: @[[publisher#' + slug + ']]@');
-            }
-        });
+        function recalculateFieldSets() {
+            const container = $('#fields-schema-container');
+            // Ler campos do publisher diretamente do DOM
+            var publisherFields = [];
+            container.find('.field-row').each(function () {
+                var id = $(this).find('.field-id').val();
+                var type = $(this).find('.field-type').dropdown('get value');
+                var template_field_id = $(this).find('.field-template-id').val();
+                if (id) {
+                    publisherFields.push({ id: id, type: type, template_field_id: template_field_id });
+                }
+            });
 
-        $(document).on('keyup', '.field-id', function () {
-            var slug = $(this).val();
-            var helpLabel = $(this).siblings('.help-popup');
-            helpLabel.attr('data-content', 'Use este ID no template: @[[publisher#' + slug + ']]@');
-        });
+            // Campos vinculados: campos do publisher que têm template_field_id
+            var linkedPublisherFields = publisherFields.filter(pf => pf.template_field_id);
+            var linkedTemplateIds = linkedPublisherFields.map(pf => pf.template_field_id);
+
+            // Campos Disponíveis: campos do template que NÃO estão vinculados
+            gestor.template.fieldSets.available = gestor.template.currentTemplateFields.filter(f => !linkedTemplateIds.includes(f.id));
+
+            // Campos Ausentes: campos do publisher que NÃO têm vinculação
+            gestor.template.fieldSets.missing = publisherFields.filter(pf => !pf.template_field_id);
+
+            // Campos Vinculados: campos do publisher que TÊM vinculação
+            gestor.template.fieldSets.linked = linkedPublisherFields;
+
+            updateFieldLists();
+        }
 
         // Add Button
         addFieldBtn.on('click', function (e) {
@@ -275,6 +355,7 @@ $(document).ready(function () {
         // Remove Button
         $(document).on('click', '.remove-field-btn', function () {
             $(this).closest('.field-row').remove();
+            recalculateFieldSets();
         });
 
         // Load Initial Data
@@ -283,6 +364,7 @@ $(document).ready(function () {
             publisher_initial_schema.forEach(function (field) {
                 addFieldRow(field);
             });
+            recalculateFieldSets();
         }
 
         // Intercept Form Submit
@@ -292,13 +374,14 @@ $(document).ready(function () {
             $('.field-row').each(function () {
                 var row = $(this);
                 // Get dropdown value correctly from select or semantic ui 
-                var typeVal = row.find('.field-type').val();
+                var typeVal = row.find('.field-type').dropdown('get value');
 
                 var field = {
                     id: row.find('.field-id').val(),
                     label: row.find('.field-label').val(),
                     type: typeVal,
-                    mandatory: row.find('.field-mandatory').is(':checked')
+                    mandatory: row.find('.field-mandatory').is(':checked'),
+                    template_field_id: row.find('.field-template-id').val()
                 };
                 if (field.id && field.label) {
                     schema.push(field);
@@ -306,6 +389,30 @@ $(document).ready(function () {
             });
             hiddenInput.val(JSON.stringify(schema));
             return true;
+        });
+
+        // ===== Event listeners para botões do template
+        $('#save-template').on('click', function () {
+            alert('Funcionalidade de salvar template ainda não implementada.');
+        });
+
+        $('#edit-template').on('click', function () {
+            alert('Funcionalidade de editar template ainda não implementada.');
+        });
+
+        $('#duplicate-template').on('click', function () {
+            alert('Funcionalidade de duplicar template ainda não implementada.');
+        });
+
+        $('#delete-template').on('click', function () {
+            if (confirm('Tem certeza que deseja excluir este template?')) {
+                alert('Funcionalidade de excluir template ainda não implementada.');
+            }
+        });
+
+        // Atualizar status dos campos quando mapeamento muda
+        $(document).on('change', '.field-mapping', function () {
+            checkFieldStatus(currentPublisherFields, currentTemplateFields);
         });
     }
 });

@@ -1,6 +1,10 @@
 .template-options-wrapper{
     min-height: 100px;
+    display: none;
 }
 .hidden{
     display: none !important;
+}
+.template-fields-list .item{
+    margin-bottom: 5px;
 }

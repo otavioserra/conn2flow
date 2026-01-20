@@ -211,9 +211,9 @@ $(document).ready(function () {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<title>Preview Fomantic UI</title>
 				<!-- CDN do Fomantic UI -->
-				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">
+				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">
 				<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
+				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"></script>
 			</head>
 			<body>
 				${htmlDoUsuario}

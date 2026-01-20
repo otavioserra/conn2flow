@@ -145,7 +145,7 @@ $(document).ready(function () {
 		function inserirBibliotecasNoLayout(html, tipo) {
 			let bibliotecas = '';
 			if (tipo === 'fomantic-ui') {
-				bibliotecas = `\n<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">\n<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>\n`;
+				bibliotecas = `\n<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">\n<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"></script>\n`;
 			} else {
 				bibliotecas = `\n<script src="https://cdn.tailwindcss.com"></script>\n`;
 			}

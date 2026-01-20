@@ -24,12 +24,14 @@
         {
             "label": "📦 Docker - PHP Logs Truncate",
             "type": "shell",
-            "command": "docker exec conn2flow-app bash -c \"truncate -s 0 /var/log/php_errors.log\""
+            "command": "docker exec conn2flow-app bash -c \"truncate -s 0 /var/log/php_errors.log\"",
+            "problemMatcher": []
         },
         {
             "label": "📦 Docker - PHP Logs > 50 Lines",
             "type": "shell",
-            "command": "docker exec conn2flow-app bash -c \"tail -50 /var/log/php_errors.log\""
+            "command": "docker exec conn2flow-app bash -c \"tail -50 /var/log/php_errors.log\"",
+            "problemMatcher": []
         },
         {
             "label": "📦 Docker - PHP Logs > Real Time",

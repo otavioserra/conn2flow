@@ -101,6 +101,7 @@ function publisher_adicionar(){
 					'nome' => 'template_id',
 					'procurar' => true,
 					'limpar' => true,
+					'selectClass' => 'templateDropdown',
 					'placeholder' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
 					'tabela' => Array(
 						'nome' => 'templates',
@@ -369,6 +370,7 @@ function publisher_editar(){
 					'nome' => 'template_id',
 					'procurar' => true,
 					'limpar' => true,
+					'selectClass' => 'templateDropdown',
 					'placeholder' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
 					'tabela' => Array(
 						'nome' => 'templates',
@@ -482,8 +484,59 @@ function publisher_ajax_template_load(){
 	
 	// ===== Carregar o template selecionado
 	
+	$template_id = $_REQUEST['params']['template_id'];
+	$fields_schema_json = $_REQUEST['params']['fields_schema'] ?? '[]';
+	$fields_schema = json_decode($fields_schema_json, true) ?: [];
+	
+	// Placeholder: buscar dados do template (mockado por enquanto)
+	$modelo = [
+		'name' => 'Template Exemplo',
+		'id' => $template_id
+	];
+	
+	// Placeholder: campos do template (mockado baseado no template_id)
+	$fields = [];
+	if ($template_id === 'noticias-simples') {
+		$modelo['name'] = 'Notícias Simples';
+		$fields = [
+			['id' => 'titulo', 'name' => 'Título', 'type' => 'text'],
+			['id' => 'conteudo', 'name' => 'Conteúdo', 'type' => 'textarea'],
+			['id' => 'data', 'name' => 'Data', 'type' => 'date']
+		];
+	} elseif ($template_id === 'noticias-imagem-destaque') {
+		$modelo['name'] = 'Notícias com Imagem Destaque';
+		$fields = [
+			['id' => 'titulo', 'name' => 'Título', 'type' => 'text'],
+			['id' => 'conteudo', 'name' => 'Conteúdo', 'type' => 'textarea'],
+			['id' => 'imagem_destaque', 'name' => 'Imagem Destaque', 'type' => 'image'],
+			['id' => 'resumo', 'name' => 'Resumo', 'type' => 'text']
+		];
+	} else {
+		$fields = [
+			['id' => 'titulo', 'name' => 'Título', 'type' => 'text'],
+			['id' => 'conteudo', 'name' => 'Conteúdo', 'type' => 'textarea']
+		];
+	}
+	
+	// Placeholder: campos do publisher (usar fields_schema se existir, senão vazio para adicionar)
+	if (count($fields_schema) > 0) {
+		$publisherFields = array_map(function($f) {
+			return [
+				'id' => $f['id'],
+				'name' => $f['label'],
+				'type' => $f['type'],
+				'template_field_id' => $f['template_field_id'] ?? null
+			];
+		}, $fields_schema);
+	} else {
+		$publisherFields = [];
+	}
+	
 	$_GESTOR['ajax-json'] = Array(
 		'status' => 'Ok',
+		'modelo' => $modelo,
+		'campos' => $fields,
+		'publisherFields' => $publisherFields
 	);
 }
 
@@ -498,7 +551,7 @@ function publisher_start(){
 		interface_ajax_iniciar();
 		
 		switch($_GESTOR['ajax-opcao']){
-			case 'opcao': publisher_ajax_template_load(); break;
+			case 'template-load': publisher_ajax_template_load(); break;
 		}
 		
 		interface_ajax_finalizar();

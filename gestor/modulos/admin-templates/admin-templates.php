@@ -93,8 +93,27 @@ function admin_templates_adicionar(){
 
 	// Incluir o Componente Editor HTML na página
 
+	$alvos_ia = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'id',
+		))
+		,
+		'alvos_ia',
+		"WHERE language='".$_GESTOR['linguagem-codigo']."'"
+	);
+
+	if($alvos_ia){
+		foreach($alvos_ia as $alvo_item){
+			if($alvo_item['id'] == $_REQUEST['target']){
+				$alvo = $alvo_item['id'];
+				break;
+			}
+		}
+	}
+
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
-		'alvos' => 'paginas',
+		'alvo' => isset($alvo)? $alvo : 'paginas',
 	]));
 
 	// ===== Inclusão Módulo JS
@@ -132,12 +151,13 @@ function admin_templates_adicionar(){
 					'nome' => 'target',
 					'procurar' => true,
 					'limpar' => true,
+					'selectClass' => 'targetDropdown',
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-target-placeholder')),
 					'tabela' => Array(
 						'nome' => 'alvos_ia',
 						'campo' => 'nome',
 						'id_numerico' => 'id',
-						'id_selecionado' => 'paginas',
+						'id_selecionado' => isset($alvo)? $alvo : 'paginas',
 						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
 					),
 				),
@@ -462,6 +482,7 @@ function admin_templates_editar(){
 					'nome' => 'target',
 					'procurar' => true,
 					'limpar' => true,
+					'selectClass' => 'targetDropdown',
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-target-placeholder')),
 					'tabela' => Array(
 						'nome' => 'alvos_ia',

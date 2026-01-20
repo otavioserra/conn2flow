@@ -21,13 +21,93 @@
     <span>#select-template_id#</span>
 </div>
 
-<div class="ui segment template-options-wrapper">
+<div class="ui button blue" id="add-new-template">
+    <i class="plus icon"></i> Adicionar Novo Template
+</div>
+
+<div class="ui segment basic fitted template-options-wrapper">
 
     <div class="ui medium dimmer template-loading">
         <div class="ui text loader">Carregando modelo...</div>
     </div>
 
-    <p>Skeleton</p>
+    <h4 class="ui dividing header">Template Opções</h4>
+    <div class="ui segment template-controls">
+        <div class="ui grid">
+            <!-- Primeira linha: Controles de modificação do modelo -->
+            <div class="two column row">
+                <div class="column">
+                    <div class="field">
+                        <label>Nome do Template</label>
+                        <input type="text" id="template-name" placeholder="Digite o nome do template">
+                    </div>
+                </div>
+                <div class="right aligned column">
+                    <button class="ui button blue" id="save-template">
+                        <i class="save icon"></i> Salvar
+                    </button>
+                    <button class="ui button green" id="edit-template">
+                        <i class="edit icon"></i> Editar
+                    </button>
+                    <button class="ui button orange" id="duplicate-template">
+                        <i class="copy icon"></i> Duplicar
+                    </button>
+                    <button class="ui button red" id="delete-template">
+                        <i class="trash icon"></i> Excluir
+                    </button>
+                </div>
+            </div>
+
+            <!-- Segunda linha: Notificação de estado de existência de campos -->
+            <div class="row">
+                <div class="sixteen wide column">
+                    <div class="ui message" id="field-status-message" style="display: none;">
+                        <div class="header">Atenção!</div>
+                        <p>O template não possui todos os campos correspondentes definidos no Publisher. Verifique a
+                            vinculação abaixo.</p>
+                    </div>
+                    <div class="ui positive message" id="field-status-ok" style="display: none;">
+                        <div class="header">Tudo certo!</div>
+                        <p>O template possui todos os campos correspondentes definidos no Publisher.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="ui dividing header">Vinculação de Campos: <kbd class="ui label">Template</kbd><kbd
+            class="ui teal icon label"><i class="exchange alternate icon"></i></kbd><kbd
+            class="ui label">Publisher</kbd></h4>
+    <div class="ui segment template-link-publisher-fields">
+        <div class="ui grid">
+            <!-- Terceira linha: Vinculação de Campos -->
+            <div class="row">
+                <div class="sixteen wide column">
+                    <div class="ui grid template-fields-list">
+                        <div class="four wide column">
+                            <h5>Campos Template</h5>
+                            <div id="available-fields-list"></div>
+                        </div>
+                        <div class="four wide column">
+                            <h5>Campos Publisher</h5>
+                            <div id="missing-fields-list"></div>
+                        </div>
+                        <div class="eight wide column">
+                            <h5>Campos Vinculados: Template <kbd class="ui teal icon label"><i
+                                        class="exchange alternate icon"></i></kbd> Publisher</h5>
+                            <div id="linked-fields-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui negative message" id="error-message" style="display: none;">
+        <div class="header">Erro!</div>
+        <p id="error-message-content"></p>
+    </div>
+
 </div>
 
 <h4 class="ui dividing header">Campos Personalizados (Schema)</h4>
@@ -37,3 +117,59 @@
 <button id="add-field-btn" class="ui button green">
     <i class="plus icon"></i> Adicionar Campo
 </button>
+
+<!-- Skeletons para elementos dinâmicos -->
+<div id="template-skeletons" style="display: none;">
+    <!-- Mensagens -->
+    <span class="msg-novo-template" style="display:none">Novo Template</span>
+    <span class="msg-erro-carregar-template" style="display:none">Erro ao carregar template: </span>
+    <span class="msg-erro-desconhecido" style="display:none">Erro desconhecido</span>
+    <span class="msg-nenhum-campo-template" style="display:none">Nenhum campo do template</span>
+    <span class="msg-nenhum-campo-publisher" style="display:none">Nenhum campo do publisher</span>
+    <span class="msg-nenhum-campo-vinculado" style="display:none">Nenhum campo vinculado</span>
+
+    <div class="field-row-skeleton ui segment field-row" style="margin-bottom: 10px;">
+        <div class="fields">
+            <div class="four wide field">
+                <label>Label</label>
+                <input type="text" class="field-label" placeholder="Ex: Título">
+            </div>
+            <div class="four wide field">
+                <label>Campo Template</label>
+                <div class="ui search">
+                    <div class="ui icon input">
+                        <input class="prompt field-template" type="text" placeholder="Buscar campo do template...">
+                        <i class="search icon"></i>
+                        <i class="remove icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+                <input type="hidden" class="field-template-id">
+            </div>
+            <div class="four wide field">
+                <label>Tipo</label>
+                <select class="dropdownTemplate field-type">
+                    <option value="text">Texto Curto</option>
+                    <option value="textarea">Texto Longo</option>
+                    <option value="html">HTML (Rich Text)</option>
+                    <option value="image">Imagem</option>
+                </select>
+            </div>
+            <div class="three wide field">
+                <label>Obrigatório</label>
+                <div class="ui checkbox">
+                    <input type="checkbox" class="field-mandatory">
+                    <label>Sim</label>
+                </div>
+            </div>
+            <div class="one wide field" style="display: flex; align-items: flex-end;">
+                <button type="button" class="ui icon red button remove-field-btn"><i class="trash icon"></i></button>
+            </div>
+        </div>
+        <div class="field">
+            <label>Slug Gerado</label>
+            <div class="ui label field-id-display">slug</div>
+            <input type="hidden" class="field-id">
+        </div>
+    </div>
+</div>

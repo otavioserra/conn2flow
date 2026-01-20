@@ -156,16 +156,20 @@ $(document).ready(function () {
     if (AITabActive !== null) {
         $('.AIMenu .item').tab('change tab', AITabActive);
 
-        switch (AITabActive) {
-            case 'prompt':
-                codeMirrorPrompt.refresh();
-                break;
-            case 'mode':
-                codeMirrorMode.refresh();
-                break;
-        }
+        setTimeout(function () {
+            switch (AITabActive) {
+                case 'prompt':
+                    codeMirrorPrompt.refresh();
+                    break;
+                case 'mode':
+                    codeMirrorMode.refresh();
+                    break;
+                case 'config':
+                    codeMirrorReturn.refresh();
+                    break;
+            }
+        }, 100);
     }
-
 
     $('.AIMenu .item').tab({
         onLoad: function (tabPath, parameterArray, historyEvent) {

@@ -83,11 +83,11 @@
                     "path": "publisher\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.9",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "3e3c0a481d105d034d8d8eb4549a10d6",
-                        "css": "591f6755d71ca921c99fda79cf91cd75",
-                        "combined": "a6ac925c9100abe98e117839c62246ab"
+                        "html": "da9ab0da2b43b0f9e014f49fe26572df",
+                        "css": "073e0ecf5ba149d9b5cfd6db84a130da",
+                        "combined": "a9110abbf58f9e362e62becd0de03146"
                     }
                 },
                 {
@@ -97,11 +97,11 @@
                     "path": "publisher\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
                         "html": "3f4195b0165ef5f9bea5609721ff61b1",
-                        "css": "9eebb6ee33e52b7df56f070e9aec71fe",
-                        "combined": "c98a59d90b1c210beb96cc76486eb47b"
+                        "css": "707faf84a5c54571880fd06aed338ca7",
+                        "combined": "b557085cc0d2921cc0b67d89ed7b5658"
                     }
                 }
             ],
