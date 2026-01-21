@@ -76,14 +76,17 @@ $(document).ready(function () {
 
                 if (subwrapper) {
                     $('#edit-template').removeClass('hidden');
+                    $('#clone-template').removeClass('hidden');
                     $('.template-options-subwrapper').removeClass('hidden');
                 } else {
                     $('#edit-template').addClass('hidden');
+                    $('#clone-template').addClass('hidden');
                     $('.template-options-subwrapper').addClass('hidden');
                 }
             } else {
                 $('.template-options-wrapper').addClass('hidden');
                 $('#edit-template').addClass('hidden');
+                $('#clone-template').addClass('hidden');
                 $('.template-options-subwrapper').addClass('hidden');
             }
         }
@@ -111,6 +114,7 @@ $(document).ready(function () {
                 templateWrapper(true, false);
                 msg_erro_resetar(false);
                 $('#edit-template').prop('href', false);
+                $('#clone-template').prop('href', false);
                 return;
             }
 
@@ -137,6 +141,7 @@ $(document).ready(function () {
                     updateFieldOrderButtons();
 
                     $('#edit-template').prop('href', gestor.raiz + 'admin-templates/editar/?id=' + template_id);
+                    $('#clone-template').prop('href', gestor.raiz + 'admin-templates/clonar/?id=' + template_id);
                 }
             };
 

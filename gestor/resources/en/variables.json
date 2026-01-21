@@ -432,5 +432,15 @@
         "id": "html-editor-publisher-simulation-tooltip",
         "value": "Show Simulation values instead of Publisher Variables",
         "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-variables-menu-label",
+        "value": "Variables",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-variables-menu-tooltip",
+        "value": "Click to modify the template Variables",
+        "type": "string"
     }
 ]

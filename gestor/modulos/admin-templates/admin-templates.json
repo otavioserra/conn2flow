@@ -70,6 +70,20 @@
                         "css": "14e7439759ad508b0915cc266b0d22e9",
                         "combined": "703783f19b15b3299d13582cc224a647"
                     }
+                },
+                {
+                    "name": "Admin Templates - Clonar",
+                    "id": "admin-templates-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-templates\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "a8b35939c1649423067756ccdf7ec545",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "35082516ae9330f0eca7eb86761e2339"
+                    }
                 }
             ],
             "components": [],
@@ -155,6 +169,20 @@
                         "html": "76c0e32d1f4e0e3ed7b32423e72695f8",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
                         "combined": "703783f19b15b3299d13582cc224a647"
+                    }
+                },
+                {
+                    "name": "Admin Templates - Clone",
+                    "id": "admin-templates-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-templates\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "a8b35939c1649423067756ccdf7ec545",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "35082516ae9330f0eca7eb86761e2339"
                     }
                 }
             ],

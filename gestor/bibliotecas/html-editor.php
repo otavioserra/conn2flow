@@ -76,6 +76,8 @@ function html_editor_componente($params = false){
 		break;
 		default:
 			$cel_nome = 'publisher-html-editor-btns'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+			$cel_nome = 'publisher-html-editor-variables-menu'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+			$cel_nome = 'publisher-html-editor-variables-tab'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
 			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#','');
 	}
 

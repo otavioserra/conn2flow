@@ -3517,6 +3517,34 @@ function interface_adicionar_iniciar($params = false){
 	}
 }
 
+function interface_clonar_iniciar($params = false){
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	if(isset($_REQUEST['_gestor-adicionar'])){
+		$_GESTOR['adicionar-banco'] = true;
+	} else {
+		// ===== Parâmetros
+	
+		// forcarId - String - Opcional - Caso queira usar a opção editar diretamente passando o id do dado.
+		
+		// ===== 
+		
+		if(isset($_REQUEST['id']) && $_SERVER['REQUEST_METHOD'] === 'GET'){
+			$_GESTOR['modulo-registro-id'] = banco_escape_field($_REQUEST['id']);
+		}
+		
+		if(isset($forcarId) && $_SERVER['REQUEST_METHOD'] === 'GET'){
+			$_GESTOR['modulo-registro-id'] = $forcarId;
+		}
+		
+		if(!isset($_GESTOR['modulo-registro-id'])){
+			gestor_redirecionar_raiz();
+		}
+	}
+}
+
 function interface_adicionar_finalizar($params = false){
 	global $_GESTOR;
 	
@@ -5333,6 +5361,7 @@ function interface_iniciar($params = false){
 	
 	switch($_GESTOR['opcao']){
 		case 'adicionar': interface_adicionar_iniciar($parametros); break;
+		case 'clonar': interface_clonar_iniciar($parametros); break;
 		case 'editar': interface_editar_iniciar($parametros); break;
 		case 'status': interface_status_iniciar($parametros); break;
 		case 'excluir': interface_excluir_iniciar($parametros); break;
@@ -5381,7 +5410,10 @@ function interface_finalizar($params = false){
 	}
 	
 	switch($_GESTOR['opcao']){
-		case 'adicionar': interface_adicionar_finalizar($parametros); break;
+		case 'adicionar':
+		case 'clonar':
+			interface_adicionar_finalizar($parametros);
+		break;
 		case 'editar': interface_editar_finalizar($parametros); break;
 		case 'status': interface_status_finalizar($parametros); break;
 		case 'excluir': interface_excluir_finalizar($parametros); break;

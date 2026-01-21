@@ -1,0 +1,6 @@
+.CodeMirror{
+    border: 1px solid #ccc;
+}
+.hidden{
+    display: none !important;
+}

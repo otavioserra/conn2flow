@@ -729,6 +729,24 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-publisher-variables-menu-label",
+        "valor": "Variáveis",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-publisher-variables-menu-tooltip",
+        "valor": "Clique para modificar as Variáveis do template",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -1408,6 +1426,69 @@
         "modulo": null,
         "id": "language-label-en",
         "valor": "English",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-publisher-or-btn",
+        "valor": "or",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-publisher-variables-btn",
+        "valor": "Variables",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-publisher-simulation-btn",
+        "valor": "Simulation",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-publisher-variables-tooltip",
+        "valor": "Show the original Publisher Variables",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-publisher-simulation-tooltip",
+        "valor": "Show Simulation values instead of Publisher Variables",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-publisher-variables-menu-label",
+        "valor": "Variables",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-publisher-variables-menu-tooltip",
+        "valor": "Click to modify the template Variables",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5735,6 +5816,15 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "interface",
+        "id": "tooltip-button-clone",
+        "valor": "Clique para Clonar.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "interface",
         "id": "label-button-insert",
         "valor": "Adicionar",
         "tipo": "string",
@@ -5764,6 +5854,15 @@
         "modulo": "interface",
         "id": "label-button-delete",
         "valor": "Excluir",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "interface",
+        "id": "label-button-clone",
+        "valor": "Clonar",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6509,6 +6608,15 @@
     {
         "linguagem_codigo": "en",
         "modulo": "interface",
+        "id": "tooltip-button-clone",
+        "valor": "Click to Clone.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
         "id": "label-button-insert",
         "valor": "Add",
         "tipo": "string",
@@ -6538,6 +6646,15 @@
         "modulo": "interface",
         "id": "label-button-delete",
         "valor": "Delete",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "label-button-clone",
+        "valor": "Clone",
         "tipo": "string",
         "grupo": null,
         "descricao": null

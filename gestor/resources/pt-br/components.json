@@ -312,11 +312,11 @@
     {
         "name": "HTML Editor",
         "id": "html-editor",
-        "version": "1.10",
+        "version": "1.11",
         "checksum": {
-            "html": "21c5162485871bfaaddd7b619d6e6bf7",
+            "html": "586bcdbad55f318fe55d5ae563f2cac2",
             "css": "",
-            "combined": "21c5162485871bfaaddd7b619d6e6bf7"
+            "combined": "586bcdbad55f318fe55d5ae563f2cac2"
         }
     },
     {

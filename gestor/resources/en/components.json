@@ -312,11 +312,11 @@
     {
         "name": "HTML Editor",
         "id": "html-editor",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "3130b4ddf459ea77940dc202493383c5",
+            "html": "21c5162485871bfaaddd7b619d6e6bf7",
             "css": "",
-            "combined": "3130b4ddf459ea77940dc202493383c5"
+            "combined": "21c5162485871bfaaddd7b619d6e6bf7"
         }
     },
     {
@@ -357,6 +357,16 @@
             "html": "554e814574c6eb0f46912f96a0b9ef3a",
             "css": "dea9254a7fff284b390256e4fbc84984",
             "combined": "4e5811af0ca959f69ace10fdb8773bfe"
+        }
+    },
+    {
+        "name": "HTML Editor Publisher Simulation",
+        "id": "html-editor-publisher-simulation",
+        "version": "1.1",
+        "checksum": {
+            "html": "ca39b3bf3459ec14cb4cf70c05897fd3",
+            "css": "",
+            "combined": "ca39b3bf3459ec14cb4cf70c05897fd3"
         }
     }
 ]

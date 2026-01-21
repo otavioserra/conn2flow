@@ -83,6 +83,11 @@
                     "type": "string"
                 },
                 {
+                    "id": "tooltip-button-clone",
+                    "value": "Clique para Clonar.",
+                    "type": "string"
+                },
+                {
                     "id": "label-button-insert",
                     "value": "Adicionar",
                     "type": "string"
@@ -100,6 +105,11 @@
                 {
                     "id": "label-button-delete",
                     "value": "Excluir",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-clone",
+                    "value": "Clonar",
                     "type": "string"
                 },
                 {
@@ -520,6 +530,11 @@
                     "type": "string"
                 },
                 {
+                    "id": "tooltip-button-clone",
+                    "value": "Click to Clone.",
+                    "type": "string"
+                },
+                {
                     "id": "label-button-insert",
                     "value": "Add",
                     "type": "string"
@@ -537,6 +552,11 @@
                 {
                     "id": "label-button-delete",
                     "value": "Delete",
+                    "type": "string"
+                },
+                {
+                    "id": "label-button-clone",
+                    "value": "Clone",
                     "type": "string"
                 },
                 {

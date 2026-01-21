@@ -18,13 +18,13 @@
         "id": "publisher",
         "language": "pt-br",
         "status": "A",
-        "versao": 7
+        "versao": 9
     },
     {
         "nome": "Publisher",
         "id": "publisher",
         "language": "en",
         "status": "A",
-        "versao": 1
+        "versao": 3
     }
 ]
