@@ -154,11 +154,11 @@
                     "id": "noticias-simples",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "8d73d203b00e4ee4b70f7a81526d46ac",
+                        "html": "74f42533bf53de28d49e9781ee014113",
                         "css": "",
-                        "combined": "8d73d203b00e4ee4b70f7a81526d46ac"
+                        "combined": "74f42533bf53de28d49e9781ee014113"
                     }
                 },
                 {
@@ -166,11 +166,11 @@
                     "id": "noticias-imagem-destaque",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "597e1228d1af3241d491d1a0f3387783",
+                        "html": "1c98c5a0705340741aef7864e4fbbf77",
                         "css": "",
-                        "combined": "597e1228d1af3241d491d1a0f3387783"
+                        "combined": "1c98c5a0705340741aef7864e4fbbf77"
                     }
                 }
             ],
@@ -197,11 +197,11 @@
                     "path": "publisher\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.21",
+                    "version": "1.22",
                     "checksum": {
-                        "html": "6e5567fe6413ba166179621167679191",
+                        "html": "523ec2fb06e210561dd3798835056fe8",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "722f32e49ffb6a11e3b0800010f4a239"
+                        "combined": "f2db1df8f267ec985e98ec3153be72ed"
                     }
                 },
                 {
@@ -211,11 +211,11 @@
                     "path": "publisher\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "36911e7080c896693bfe4d7686625a57",
+                        "html": "71df6aaa611f5395fc20c2caacdc714e",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "ae1a76a4ce5194faa765cbae3041c21f"
+                        "combined": "6c4796f9189dd8cb876db5ac8226219f"
                     }
                 }
             ],

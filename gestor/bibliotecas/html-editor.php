@@ -25,6 +25,10 @@ function html_editor_componente($params = false){
 
 	if($params)foreach($params as $var => $val)$$var = $val;
 
+	// ===== Verificar parâmetros
+
+	$alvo = isset($alvo)? $alvo : 'paginas';
+
     // ===== Inclusão do CodeMirror
 
 	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.css" />');
@@ -60,10 +64,25 @@ function html_editor_componente($params = false){
 		'id' => 'html-editor',
 	));
 
-     // ===== Editor HTML visual
+	// ===== Modificações do Editor HTML
+
+	switch($alvo){
+		case 'publisher':
+			$html_editor_publisher_simulation = gestor_componente(Array(
+				'id' => 'html-editor-publisher-simulation',
+			));
+
+			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#',$html_editor_publisher_simulation);
+		break;
+		default:
+			$cel_nome = 'publisher-html-editor-btns'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#','');
+	}
+
+    // ===== Editor HTML visual
     $html_editor = modelo_var_troca($html_editor,'#html-editor-modal#',html_editor_include([
         'js_vars' => Array(
-            'alvo' => isset($alvo)? $alvo : 'paginas',
+            'alvo' => $alvo,
         )
     ]));
 
@@ -98,7 +117,7 @@ function html_editor_componente($params = false){
 
 	$html_editor = modelo_var_troca($html_editor,'<!-- ia-componente -->',ia_renderizar_prompt(
 		Array(
-			'alvo' => isset($alvo)? $alvo : 'paginas',
+			'alvo' => $alvo,
 			'prompt_controls' => '<div class="menu-pagina-conteudo" data-id="assistente-ia"></div>'
 		)
 	));

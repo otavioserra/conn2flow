@@ -40,6 +40,22 @@ $(document).ready(function () {
         successNotOkCallback: function (response) { }
     };
 
+    // ===== Toggle Active Button
+
+    function toggleActiveButton(obj = null) {
+        if (typeof obj !== 'object' || obj === null) return false;
+        if (!obj.hasClass('active')) {
+            obj.parent().find('.button').removeClass('active');
+            obj.addClass('active');
+
+            return true;
+        }
+
+        return false;
+    }
+
+    // ===== Dimmer Loading
+
     function loadDimmer(show = true) {
         if (show) {
             $('#modelos-loading .dimmer').addClass('active');
@@ -415,6 +431,7 @@ $(document).ready(function () {
                     break;
                 case 'assistente-ia':
                     pageModificationContainerMove(tabPath);
+                    window.AITabActiveHandler();
                     break;
                 case 'visualizacao-codigo':
                     codeTabHandler();
@@ -557,12 +574,21 @@ $(document).ready(function () {
         }
     }
 
+    // Botões da Pré-visualização.
     $(document.body).on('mouseup tap', '.editorHtmlVisual.button', function (e) {
         if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
         editorHtmlVisual();
     });
 
+    $(document.body).on('mouseup tap', '.publisherVariablesOrSimulation', function (e) {
+        if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+        toggleActiveButton($(this));
+        previewHtml();
+    });
+
+    // Botões de mudança do Editor HTML Visual.
     $(document.body).on('mouseup tap', '.screenPagina', function (e) {
         if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
@@ -693,11 +719,15 @@ $(document).ready(function () {
         });
 
         // Pegar o HTML do usuário e filtrar o que está dentro do <body>
-        const htmlDoUsuario = CodeMirrorHtml.getDoc().getValue();
+        let htmlDoUsuario = CodeMirrorHtml.getDoc().getValue();
         const cssDoUsuario = CodeMirrorCss.getDoc().getValue();
 
         const idFramework = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
 
+        // Substituir as variáveis do publisher ou simulação, se necessário
+        htmlDoUsuario = publisherVariablesOrSimulation(htmlDoUsuario);
+
+        // Incluir o HTML e CSS do usuário no conteúdo do iframe
         iframe.attr('srcdoc', previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, idFramework));
 
         // Atualizar o código CSS no conteúdo do CodeMirror
@@ -706,6 +736,36 @@ $(document).ready(function () {
         } else {
             updateCSSCompiled(iframe, true);
         }
+    }
+
+    function publisherVariablesOrSimulation(html = '') {
+        const alvo = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
+
+        if (alvo == 'publisher') {
+            const simulacao = $('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active');
+
+            if (simulacao) {
+                // Regex para encontrar variáveis no formato [[publisher#TIPO#ID]] ou @[[publisher#TIPO#ID]]@
+                const regex = /@?\[\[publisher#(.+?)#(.+?)\]\]@?/g;
+
+                html = html.replace(regex, function (match, tipo, id) {
+                    // Buscar valores de simulação para o tipo
+                    const simulationItems = $(`.hep-simulation-${tipo} .item`);
+
+                    if (simulationItems.length > 0) {
+                        // Sortear um valor aleatório
+                        const randomIndex = Math.floor(Math.random() * simulationItems.length);
+                        // Usar html() para pegar o conteúdo exato (incluindo entidades HTML) e inserir de volta no HTML
+                        const randomValue = simulationItems.eq(randomIndex).html().trim();
+                        return randomValue;
+                    }
+                    // Se não encontrar valores, retornar a variável original
+                    return match;
+                });
+            }
+        }
+
+        return html;
     }
 
     // ===== Controles de modificação de página toda ou por sessão

@@ -684,6 +684,51 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-publisher-or-btn",
+        "valor": "ou",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-publisher-variables-btn",
+        "valor": "Variáveis",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-publisher-simulation-btn",
+        "valor": "Simulação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-publisher-variables-tooltip",
+        "valor": "Mostrar as Variáveis originais do Publisher",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-publisher-simulation-tooltip",
+        "valor": "Mostrar valores de Simulação no lugar das Variáveis do Publisher",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -9481,6 +9526,42 @@
         "modulo": "publisher",
         "id": "form-fields_schema-label",
         "valor": "Campos Personalizados (Schema)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher",
+        "id": "form-path_prefix-label",
+        "valor": "Path Prefix",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher",
+        "id": "form-template_id-label",
+        "valor": "Template (Resource)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher",
+        "id": "form-fields_schema-label",
+        "valor": "Custom Fields (Schema)",
         "tipo": "string",
         "grupo": null,
         "descricao": null

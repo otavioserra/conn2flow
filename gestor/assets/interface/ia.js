@@ -151,6 +151,32 @@ $(document).ready(function () {
 
     // ===== Fomantic UI
 
+    function AITabActiveHandler() {
+        var activeTab = localStorage.getItem(gestor.moduloId + 'AITabActive');
+
+        if (activeTab === null) {
+            activeTab = 'prompt';
+        }
+
+        $('.AIMenu .item').tab('change tab', activeTab);
+
+        setTimeout(function () {
+            switch (activeTab) {
+                case 'prompt':
+                    codeMirrorPrompt.refresh();
+                    break;
+                case 'mode':
+                    codeMirrorMode.refresh();
+                    break;
+                case 'config':
+                    codeMirrorReturn.refresh();
+                    break;
+            }
+        }, 1);
+    }
+
+    window.AITabActiveHandler = AITabActiveHandler;
+
     var AITabActive = localStorage.getItem(gestor.moduloId + 'AITabActive');
 
     if (AITabActive !== null) {
@@ -168,7 +194,7 @@ $(document).ready(function () {
                     codeMirrorReturn.refresh();
                     break;
             }
-        }, 100);
+        }, 1);
     }
 
     $('.AIMenu .item').tab({

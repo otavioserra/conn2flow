@@ -8,14 +8,14 @@
  *
  * @package Conn2Flow
  * @subpackage Bibliotecas
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 global $_GESTOR;
 
 // Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-modelo']							=	Array(
-	'versao' => '1.0.0',
+	'versao' => '1.1.0',
 );
 
 /**
@@ -46,33 +46,45 @@ function modelo_input_in($modelo,$name_input_in,$name_input_out,$valor){
  *
  * Busca e substitui a primeira ocorrência de uma variável/placeholder no template.
  * Se a variável não for encontrada, o modelo é retornado sem alterações.
+ * Pode receber um array associativo onde as chaves são os nomes das variáveis (sem #)
+ * e os valores são as substituições, aplicando a cada par chave-valor.
  *
  * @param string $modelo O template onde a substituição será feita.
- * @param string $var A variável/placeholder a ser substituída.
- * @param string $valor O valor que substituirá a variável.
+ * @param string|array $var A variável/placeholder a ser substituída, ou array de variáveis.
+ * @param string $valor O valor que substituirá a variável (ignorado se $var for array).
  * @return string Retorna o modelo com a primeira ocorrência da variável substituída.
  */
-function modelo_var_troca($modelo,$var,$valor){
-	// Localiza a posição inicial da variável no modelo
-	$posInicial = strpos($modelo, $var);
-	
-	$notFound = false;
-	if($posInicial === false)
-		$notFound = true;
-	
-	// Se a variável foi encontrada, realiza a substituição
-	if(!$notFound){
-		$posFinal = $posInicial+strlen($var);
+function modelo_var_troca($modelo,$var,$valor = null){
+	if(is_array($var)){
+		// Se $var for um array, processa cada par chave-valor
+		foreach($var as $key => $val){
+			$placeholder = '#' . $key . '#';
+			$modelo = modelo_var_troca($modelo, $placeholder, $val);
+		}
+		return $modelo;
+	} else {
+		// Comportamento original: substitui uma única variável
+		// Localiza a posição inicial da variável no modelo
+		$posInicial = strpos($modelo, $var);
 		
-		// Divide o modelo em duas partes: antes e depois da variável
-		$parteAnterior = substr($modelo,0,$posInicial);
-		$partePosterior = substr($modelo,$posFinal,(strlen($modelo)-$posFinal));
+		$notFound = false;
+		if($posInicial === false)
+			$notFound = true;
 		
-		// Reconstrói o modelo com o valor substituído
-		$modelo = $parteAnterior . $valor . $partePosterior;
+		// Se a variável foi encontrada, realiza a substituição
+		if(!$notFound){
+			$posFinal = $posInicial+strlen($var);
+			
+			// Divide o modelo em duas partes: antes e depois da variável
+			$parteAnterior = substr($modelo,0,$posInicial);
+			$partePosterior = substr($modelo,$posFinal,(strlen($modelo)-$posFinal));
+			
+			// Reconstrói o modelo com o valor substituído
+			$modelo = $parteAnterior . $valor . $partePosterior;
+		}
+		
+		return $modelo;
 	}
-	
-	return $modelo;
 }
 
 /**
@@ -114,15 +126,27 @@ function modelo_var_troca_fim($modelo,$var,$valor){
  *
  * Busca e substitui todas as ocorrências de uma variável/placeholder no template
  * usando expressão regular (case-insensitive).
+ * Pode receber um array associativo onde as chaves são os nomes das variáveis (sem #)
+ * e os valores são as substituições, aplicando a cada par chave-valor.
  *
  * @param string $modelo O template onde as substituições serão feitas.
- * @param string $var A variável/placeholder a ser substituída.
- * @param string $valor O valor que substituirá todas as ocorrências da variável.
+ * @param string|array $var A variável/placeholder a ser substituída, ou array de variáveis.
+ * @param string $valor O valor que substituirá todas as ocorrências da variável (ignorado se $var for array).
  * @return string Retorna o modelo com todas as ocorrências da variável substituídas.
  */
-function modelo_var_troca_tudo($modelo,$var,$valor){
-	// Utiliza regex para substituir todas as ocorrências (case-insensitive)
-	return preg_replace('/'.preg_quote($var).'/i',$valor,$modelo);
+function modelo_var_troca_tudo($modelo,$var,$valor = null){
+	if(is_array($var)){
+		// Se $var for um array, processa cada par chave-valor
+		foreach($var as $key => $val){
+			$placeholder = '#' . $key . '#';
+			$modelo = modelo_var_troca_tudo($modelo, $placeholder, $val);
+		}
+		return $modelo;
+	} else {
+		// Comportamento original: substitui uma única variável
+		// Utiliza regex para substituir todas as ocorrências (case-insensitive)
+		return preg_replace('/'.preg_quote($var).'/i',$valor,$modelo);
+	}
 }
 
 /**

@@ -409,8 +409,28 @@
         "type": "string"
     },
     {
-        "id": "html-editor-publisher-btn-variables",
+        "id": "html-editor-publisher-or-btn",
+        "value": "ou",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-variables-btn",
         "value": "Variáveis",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-simulation-btn",
+        "value": "Simulação",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-variables-tooltip",
+        "value": "Mostrar as Variáveis originais do Publisher",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-simulation-tooltip",
+        "value": "Mostrar valores de Simulação no lugar das Variáveis do Publisher",
         "type": "string"
     }
 ]
