@@ -9460,6 +9460,33 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "publisher",
+        "id": "form-path_prefix-label",
+        "valor": "Caminho Pré-fixo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher",
+        "id": "form-template_id-label",
+        "valor": "Template (Recurso)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher",
+        "id": "form-fields_schema-label",
+        "valor": "Campos Personalizados (Schema)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "usuarios",
         "id": "form-name-label",
         "valor": "Nome",

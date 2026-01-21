@@ -7,6 +7,7 @@
     "id_numerico": "id_publisher",
     "tabela": {
         "nome": "publisher",
+        "nome_especifico": "name",
         "id": "id",
         "id_numerico": "id_publisher",
         "status": "status",
@@ -97,11 +98,11 @@
                     "path": "publisher\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.3",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "3f4195b0165ef5f9bea5609721ff61b1",
-                        "css": "707faf84a5c54571880fd06aed338ca7",
-                        "combined": "b557085cc0d2921cc0b67d89ed7b5658"
+                        "html": "656df55dd336ae1b41c9ed3fa828beb3",
+                        "css": "ee78dc667c0cf13cad7e0ecaa98d7ec0",
+                        "combined": "f2932c43b7bfd6bf2a3f7b78f79dc0a8"
                     }
                 }
             ],
@@ -109,6 +110,21 @@
                 {
                     "id": "form-name-label",
                     "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path_prefix-label",
+                    "value": "Caminho Pré-fixo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Template (Recurso)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Campos Personalizados (Schema)",
                     "type": "string"
                 }
             ]

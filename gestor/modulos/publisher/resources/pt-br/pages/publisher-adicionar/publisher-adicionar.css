@@ -7,3 +7,6 @@
 .template-fields-list .item{
     margin-bottom: 5px;
 }
+.ui.search>.results{
+    width: 30em;
+}

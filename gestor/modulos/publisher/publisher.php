@@ -5,6 +5,20 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'publisher';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/publisher.json'), true);
 
+// ===== Funções Auxiliares
+
+function publisher_normalize_array($array) {
+    if (is_array($array)) {
+        ksort($array); // Ordena chaves
+        foreach ($array as $key => $value) {
+            $array[$key] = publisher_normalize_array($value); // Recursivo para subarrays
+        }
+    }
+    return $array;
+}
+
+// ===== Funções Principais
+
 function publisher_adicionar(){
 	global $_GESTOR;
 	
@@ -52,6 +66,7 @@ function publisher_adicionar(){
 		$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "name"; $post_nome = $campo_nome;      							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "path_prefix"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "template_id"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "fields_schema"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		
@@ -122,7 +137,7 @@ function publisher_editar(){
 	
 	// ===== Identificador do registro
 	
-	$id = $_GESTOR['id'];
+	$id = $_GESTOR['modulo-registro-id'];
 	
 	// ===== Definição dos campos do banco de dados para editar.
 	
@@ -130,6 +145,7 @@ function publisher_editar(){
 		'id',
         'id_publisher',
 		'name',
+		'path_prefix',
 		'template_id',
 		'fields_schema',
 		'status'
@@ -220,8 +236,19 @@ function publisher_editar(){
 		
 		// ===== Atualização dos demais campos.
 
+		$campo_nome = "path_prefix"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
 		$campo_nome = "template_id"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
-		$campo_nome = "fields_schema"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
+		
+		// ===== Normalizar e comparar o schema de campos personalizados
+
+		$campo_nome = "fields_schema"; $request_name = $campo_nome; $alteracoes_name = $campo_nome;
+		$valor_banco = publisher_normalize_array(json_decode(banco_select_campos_antes($campo_nome), true));
+		$valor_request = isset($_REQUEST[$request_name]) ? publisher_normalize_array(json_decode($_REQUEST[$request_name], true)) : null;
+		if ($valor_banco !== $valor_request) {
+			// Lógica de atualização
+			$editar['dados'][] = $campo_nome . "='" . banco_escape_field($_REQUEST[$request_name]) . "'";
+			$alteracoes[] = Array('campo' => 'form-' . $alteracoes_name . '-label');
+		}
 		
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
@@ -287,6 +314,7 @@ function publisher_editar(){
 	
 	if($_GESTOR['banco-resultado']){
 		$name = (isset($retorno_bd['name']) ? $retorno_bd['name'] : '');
+		$path_prefix = (isset($retorno_bd['path_prefix']) ? $retorno_bd['path_prefix'] : '');
 		$template_id = (isset($retorno_bd['template_id']) ? $retorno_bd['template_id'] : '');
 		$fields_schema = (isset($retorno_bd['fields_schema']) ? $retorno_bd['fields_schema'] : '');
 		
@@ -294,9 +322,11 @@ function publisher_editar(){
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#name#',$name);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id#',$id);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#path_prefix#',$path_prefix);
         
         // Injetar o schema existente para o JS carregar
-        $schema_json = ! empty($fields_schema) ? $fields_schema : '[]';
+        $fields_schema_decoded = json_decode($fields_schema, true) ?: ['fields' => [], 'template_map' => []];
+        $schema_json = json_encode($fields_schema_decoded['fields']);
         $_GESTOR['pagina'] .= '<script>var publisher_initial_schema = '.$schema_json.';</script>';
 		
 		// ===== Popular os metaDados
@@ -534,7 +564,8 @@ function publisher_ajax_template_load(){
 	}
 	
 	// ===== Campos do publisher (usar fields_schema se existir, senão vazio para adicionar)
-	if (count($fields_schema) > 0) {
+	$fields_schema_decoded = json_decode($fields_schema_json, true) ?: ['fields' => [], 'template_map' => []];
+	if (count($fields_schema_decoded['fields']) > 0) {
 		$publisherFields = array_map(function($f) {
 			return [
 				'id' => $f['id'],
@@ -542,7 +573,7 @@ function publisher_ajax_template_load(){
 				'type' => $f['type'],
 				'template_field_id' => $f['template_field_id'] ?? null
 			];
-		}, $fields_schema);
+		}, $fields_schema_decoded['fields']);
 	} else {
 		$publisherFields = [];
 	}

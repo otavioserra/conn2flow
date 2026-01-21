@@ -149,28 +149,6 @@ $(document).ready(function () {
             $.ajax(ajax);
         }
 
-        function checkFieldStatus(publisherFields, templateFields) {
-            if (!publisherFields || !templateFields) {
-                $('#field-status-message').hide();
-                $('#field-status-ok').hide();
-                return;
-            }
-
-            const templateFieldIds = templateFields.map(f => f.id);
-            const allMapped = publisherFields.every(pf => {
-                const selected = $(`.field-mapping[data-publisher-field="${pf.id}"]`).val();
-                return selected && templateFieldIds.includes(selected);
-            });
-
-            if (allMapped) {
-                $('#field-status-ok').show();
-                $('#field-status-message').hide();
-            } else {
-                $('#field-status-message').show();
-                $('#field-status-ok').hide();
-            }
-        }
-
         // ===== Input delay
 
         $.input_delay_to_change = function (p) {
@@ -346,6 +324,10 @@ $(document).ready(function () {
                 $(this).search({
                     minCharacters: 0,
                     cache: false,
+                    error: {
+                        noResults: 'Nenhum resultado encontrado',
+                        noResultsHeader: 'Sem Resultados'
+                    },
                     source: gestor.template.fieldSets.available.map(f => ({ title: `@[[publisher#${f.type}#${f.id}]]@`, value: f.id })),
                     onSelect: function (result, response) {
                         $(this).closest('.field-row').find('.field-template-id').val(result.value);
@@ -368,6 +350,15 @@ $(document).ready(function () {
                     $(this).closest('.field-row').find('.field-template-id').val('');
                     recalculateFieldSets();
                 });
+
+                // Preencher o prompt se já houver um template_field_id definido
+                var currentTemplateId = $(this).closest('.field-row').find('.field-template-id').val();
+                if (currentTemplateId) {
+                    var templateField = gestor.template.currentTemplateFields.find(tf => tf.id === currentTemplateId);
+                    if (templateField) {
+                        $(this).find('.prompt').val(`@[[publisher#${templateField.type}#${templateField.id}]]@`);
+                    }
+                }
             });
         }
 
@@ -472,7 +463,10 @@ $(document).ready(function () {
         // Intercept Form Submit
         // We use a general listener on the form submit
         $('.ui.form').on('submit', function () {
-            var schema = [];
+            var schema = {
+                fields: [],
+                template_map: []
+            };
             $('.field-row').each(function () {
                 var row = $(this);
                 // Get dropdown value correctly from select or semantic ui 
@@ -486,13 +480,27 @@ $(document).ready(function () {
                     template_field_id: row.find('.field-template-id').val()
                 };
                 if (field.id && field.label) {
-                    schema.push(field);
+                    schema.fields.push(field);
+
+                    // Se há template_field_id, adicionar ao template_map
+                    if (field.template_field_id) {
+                        var templateField = gestor.template.currentTemplateFields.find(tf => tf.id === field.template_field_id);
+                        if (templateField) {
+                            schema.template_map.push({
+                                template_id: templateField.id,
+                                publisher_id: field.id,
+                                template_type: templateField.type,
+                                publisher_type: field.type,
+                                template_var: `@[[publisher#${templateField.type}#${templateField.id}]]@`,
+                                publisher_var: `@[[publisher#${field.type}#${field.id}]]@`
+                            });
+                        }
+                    }
                 }
             });
             hiddenInput.val(JSON.stringify(schema));
 
-            console.log('Submitting schema:', schema);
-            return false;
+            return true;
         });
 
     }

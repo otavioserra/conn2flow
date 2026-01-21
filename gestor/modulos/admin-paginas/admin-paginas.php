@@ -241,7 +241,7 @@ function admin_paginas_editar(){
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
-	// ===== Identificador do 
+	// ===== Identificador do registro
 	
 	$id = $_GESTOR['modulo-registro-id'];
 	
