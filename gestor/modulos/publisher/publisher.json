@@ -84,11 +84,11 @@
                     "path": "publisher\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.20",
+                    "version": "1.21",
                     "checksum": {
-                        "html": "af1b2e1f071925cd91845b46ce2ff56a",
-                        "css": "ee78dc667c0cf13cad7e0ecaa98d7ec0",
-                        "combined": "e3c84d99db613b0e3e400aee67b13c72"
+                        "html": "6e5567fe6413ba166179621167679191",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "722f32e49ffb6a11e3b0800010f4a239"
                     }
                 },
                 {
@@ -98,11 +98,11 @@
                     "path": "publisher\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "656df55dd336ae1b41c9ed3fa828beb3",
-                        "css": "ee78dc667c0cf13cad7e0ecaa98d7ec0",
-                        "combined": "f2932c43b7bfd6bf2a3f7b78f79dc0a8"
+                        "html": "36911e7080c896693bfe4d7686625a57",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "ae1a76a4ce5194faa765cbae3041c21f"
                     }
                 }
             ],
@@ -125,6 +125,119 @@
                 {
                     "id": "form-fields_schema-label",
                     "value": "Campos Personalizados (Schema)",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "ai_prompts_targets": [
+                {
+                    "id": "publisher",
+                    "name": "Publisher"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "publisher",
+                    "name": "Publisher",
+                    "target": "publisher",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "News - Simple",
+                    "id": "noticias-simples",
+                    "target": "publisher",
+                    "framework_css": "tailwindcss",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "8d73d203b00e4ee4b70f7a81526d46ac",
+                        "css": "",
+                        "combined": "8d73d203b00e4ee4b70f7a81526d46ac"
+                    }
+                },
+                {
+                    "name": "News - Featured Image",
+                    "id": "noticias-imagem-destaque",
+                    "target": "publisher",
+                    "framework_css": "tailwindcss",
+                    "version": "1.6",
+                    "checksum": {
+                        "html": "597e1228d1af3241d491d1a0f3387783",
+                        "css": "",
+                        "combined": "597e1228d1af3241d491d1a0f3387783"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Publisher Definitions - List",
+                    "id": "publisher",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publisher Definitions - Add",
+                    "id": "publisher-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.21",
+                    "checksum": {
+                        "html": "6e5567fe6413ba166179621167679191",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "722f32e49ffb6a11e3b0800010f4a239"
+                    }
+                },
+                {
+                    "name": "Publisher Definitions - Edit",
+                    "id": "publisher-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.6",
+                    "checksum": {
+                        "html": "36911e7080c896693bfe4d7686625a57",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "ae1a76a4ce5194faa765cbae3041c21f"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path_prefix-label",
+                    "value": "Path Prefix",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Template (Resource)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Custom Fields (Schema)",
                     "type": "string"
                 }
             ]

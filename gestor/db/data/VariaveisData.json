@@ -5133,7 +5133,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-prompts-ia",
         "id": "form-target-label",
-        "valor": "Alvo",
+        "valor": "Alvo IA",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5178,7 +5178,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-prompts-ia",
         "id": "field-target",
-        "valor": "Alvo",
+        "valor": "Alvo IA",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5214,7 +5214,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-prompts-ia",
         "id": "form-target-label",
-        "valor": "Target",
+        "valor": "AI Target",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5259,7 +5259,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-prompts-ia",
         "id": "field-target",
-        "valor": "Target",
+        "valor": "AI Target",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5304,7 +5304,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": "admin-templates",
         "id": "form-target-label",
-        "valor": "Alvo",
+        "valor": "Alvo IA",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5367,7 +5367,7 @@
         "linguagem_codigo": "en",
         "modulo": "admin-templates",
         "id": "form-target-label",
-        "valor": "Target",
+        "valor": "AI Target",
         "tipo": "string",
         "grupo": null,
         "descricao": null

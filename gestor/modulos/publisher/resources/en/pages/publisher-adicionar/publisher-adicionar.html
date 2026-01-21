@@ -1,0 +1,139 @@
+<div class="field">
+    <label>Publication Type Name</label>
+    <input type="text" name="name" placeholder="Ex: News">
+</div>
+
+<div class="field">
+    <label><span>Path Prefix</span>
+        <div class="ui label">
+            <i class="file alternate outline icon"></i>
+            Pre-filled path when creating a publication. Example: 'news/' - creating publication named
+            'test-publication', generates
+            final path 'news/test-publication/'.
+        </div>
+    </label>
+    <input type="text" name="path_prefix" placeholder="Ex: news/">
+</div>
+
+<div class="field">
+    <label>Template (Resource)</label>
+    <span>#select-template_id#</span>
+</div>
+
+<a class="ui button blue" id="add-new-template" href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=publisher">
+    <i class="plus icon"></i> Add New Template
+</a>
+
+<a class="ui button brown hidden" id="edit-template"
+    href="@[[pagina#url-raiz]]@admin-templates/editar/?id=noticias-imagem-destaque">
+    <i class="edit icon"></i> Edit Template
+</a>
+
+<div class="ui segment basic fitted hidden template-options-wrapper">
+
+    <div class="ui medium dimmer template-loading">
+        <div class="ui text loader">Loading template...</div>
+    </div>
+
+    <div class="ui negative message hidden" id="error-message">
+        <div class="header">Error!</div>
+        <p id="error-message-content"></p>
+    </div>
+
+    <div class="hidden template-options-subwrapper">
+        <h4 class="ui dividing header">Field Linking: <kbd class="ui label">Template</kbd><kbd
+                class="ui teal icon label"><i class="exchange alternate icon"></i></kbd><kbd
+                class="ui label">Publisher</kbd></h4>
+        <div class="ui segment template-link-publisher-fields">
+            <div class="ui grid">
+                <div class="row">
+                    <div class="sixteen wide column">
+                        <div class="ui grid template-fields-list">
+                            <div class="four wide column">
+                                <h5>Template Fields</h5>
+                                <div id="available-fields-list"></div>
+                            </div>
+                            <div class="four wide column">
+                                <h5>Publisher Fields</h5>
+                                <div id="missing-fields-list"></div>
+                            </div>
+                            <div class="eight wide column">
+                                <h5>Linked Fields: Template <kbd class="ui teal icon label"><i
+                                            class="exchange alternate icon"></i></kbd> Publisher</h5>
+                                <div id="linked-fields-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<h4 class="ui dividing header">Custom Fields (Schema)</h4>
+<input type="hidden" name="fields_schema">
+<div id="fields-schema-container"></div>
+
+<div id="add-field-btn" class="ui button green">
+    <i class="plus icon"></i> Add Field
+</div>
+
+<!-- Skeletons para elementos dinâmicos -->
+<div id="template-skeletons" style="display: none;">
+    <!-- Mensagens -->
+    <span class="msg-novo-template" style="display:none">New Template</span>
+    <span class="msg-erro-carregar-template" style="display:none">Error loading template: </span>
+    <span class="msg-erro-desconhecido" style="display:none">Unknown error</span>
+    <span class="msg-nenhum-campo-template" style="display:none">No template fields</span>
+    <span class="msg-nenhum-campo-publisher" style="display:none">No publisher fields</span>
+    <span class="msg-nenhum-campo-vinculado" style="display:none">No linked fields</span>
+
+    <div class="field-row-skeleton ui segment field-row" data-id="" style="margin-bottom: 10px;">
+        <div class="fields">
+            <div class="four wide field">
+                <label>Label</label>
+                <input type="text" class="field-label" placeholder="Ex: Title" data-validate="skip">
+            </div>
+            <div class="five wide field">
+                <label>Template Field</label>
+                <div class="ui search">
+                    <div class="ui icon input">
+                        <input class="prompt field-template" type="text" placeholder="Search template field..."
+                            data-validate="skip">
+                        <i class="search icon"></i>
+                        <i class="remove icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+                <input type="hidden" class="field-template-id" data-validate="skip">
+            </div>
+            <div class="four wide field">
+                <label>Type</label>
+                <select class="dropdownTemplate field-type" data-validate="skip">
+                    <option value="text">Short Text</option>
+                    <option value="textarea">Long Text</option>
+                    <option value="html">HTML (Rich Text)</option>
+                    <option value="image">Image</option>
+                </select>
+            </div>
+            <div class="one wide field">
+                <label>Required</label>
+                <div class="ui checkbox">
+                    <input type="checkbox" class="field-mandatory" data-validate="skip">
+                    <label>Yes</label>
+                </div>
+            </div>
+            <div class="two wide field">
+                <div class="ui icon right floated red button remove-field-btn"><i class="trash icon"></i></div>
+                <div class="ui icon right floated button move-down-btn hidden"><i class="arrow down icon"></i></div>
+                <div class="ui icon right floated button move-up-btn hidden"><i class="arrow up icon"></i></div>
+            </div>
+        </div>
+        <div class="field">
+            <label>Identifier</label>
+            <div class="ui label field-id-display">N / A</div>
+            <input type="hidden" class="field-id" data-validate="skip">
+        </div>
+    </div>
+</div>

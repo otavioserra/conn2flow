@@ -91,7 +91,7 @@
                 },
                 {
                     "id": "form-target-label",
-                    "value": "Alvo",
+                    "value": "Alvo IA",
                     "type": "string"
                 },
                 {
@@ -177,7 +177,7 @@
                 },
                 {
                     "id": "form-target-label",
-                    "value": "Target",
+                    "value": "AI Target",
                     "type": "string"
                 },
                 {

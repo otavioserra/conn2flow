@@ -407,5 +407,10 @@
         "id": "language-label-en",
         "value": "Inglês",
         "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-btn-variables",
+        "value": "Variáveis",
+        "type": "string"
     }
 ]

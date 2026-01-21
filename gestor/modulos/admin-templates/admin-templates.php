@@ -7,7 +7,49 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR_
 
 // ===== Interfaces Auxiliares
 
+function admin_templates_alvo_ia($template_id = null){
+	global $_GESTOR;
 
+	if(isset($template_id)){
+		$alvo_item = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'target',
+			))
+			,
+			'templates',
+			"WHERE id='".$template_id."'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
+		);
+
+		if($alvo_item){
+			gestor_js_variavel_incluir('current_target_ai',$alvo_item[0]['target']);
+			return $alvo_item[0]['target'];
+		}
+	} else {
+		$alvos_ia = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'id',
+			))
+			,
+			'alvos_ia',
+			"WHERE language='".$_GESTOR['linguagem-codigo']."'"
+		);
+
+		if($alvos_ia){
+			foreach($alvos_ia as $alvo_item){
+				if($alvo_item['id'] == $_REQUEST['target']){
+					$alvo = $alvo_item['id'];
+					gestor_js_variavel_incluir('current_target_ai',$alvo);
+					break;
+				}
+			}
+		}
+	}
+
+	return isset($alvo)? $alvo : null;
+}
 
 // ===== Interfaces Principais
 
@@ -93,24 +135,7 @@ function admin_templates_adicionar(){
 
 	// Incluir o Componente Editor HTML na página
 
-	$alvos_ia = banco_select_name
-	(
-		banco_campos_virgulas(Array(
-			'id',
-		))
-		,
-		'alvos_ia',
-		"WHERE language='".$_GESTOR['linguagem-codigo']."'"
-	);
-
-	if($alvos_ia){
-		foreach($alvos_ia as $alvo_item){
-			if($alvo_item['id'] == $_REQUEST['target']){
-				$alvo = $alvo_item['id'];
-				break;
-			}
-		}
-	}
+	$alvo = admin_templates_alvo_ia();
 
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
 		'alvo' => isset($alvo)? $alvo : 'paginas',
@@ -372,7 +397,7 @@ function admin_templates_editar(){
 	
 	if($_GESTOR['banco-resultado']){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
-		$target = (isset($retorno_bd['target']) ? $retorno_bd['target'] : '');
+		$target = (isset($retorno_bd['target']) ? $retorno_bd['target'] : 'paginas');
 		$framework_css = (isset($retorno_bd['framework_css']) ? $retorno_bd['framework_css'] : '');
 		$thumbnail = (isset($retorno_bd['thumbnail']) ? $retorno_bd['thumbnail'] : '');
 		$html = (isset($retorno_bd['html']) ? htmlentities($retorno_bd['html']) : '');
@@ -407,7 +432,7 @@ function admin_templates_editar(){
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
 			'editar' => true,
 			'modulo' => $modulo,
-			'alvos' => 'paginas',
+			'alvo' => $target,
 		]));
 
 		// ===== Popular os metaDados
@@ -482,7 +507,7 @@ function admin_templates_editar(){
 					'nome' => 'target',
 					'procurar' => true,
 					'limpar' => true,
-					'selectClass' => 'targetDropdown',
+					'selectClass' => 'disabled targetDropdown',
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-target-placeholder')),
 					'tabela' => Array(
 						'nome' => 'alvos_ia',
