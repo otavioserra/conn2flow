@@ -98,11 +98,11 @@
                     "path": "publisher\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "89fb11237b6ea7fd708f157c9fcc9728",
+                        "html": "b9f8e98356f41da5118fe688703659c1",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "378d16cefa2daf1d3e169b048684de6d"
+                        "combined": "5632328b915d74dd1be6df5b8b1ae4fa"
                     }
                 }
             ],
@@ -202,11 +202,11 @@
                     "path": "publisher\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.24",
+                    "version": "1.25",
                     "checksum": {
-                        "html": "2a9314dad11a66bde3ecca33bfeda22c",
+                        "html": "790bbfcbaeb3a071298c6f93bd4984f2",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "d84bdb32b35c113726e5b98725e19a39"
+                        "combined": "1eb3b1cc7ad9d1979ee99c3923118be0"
                     }
                 },
                 {
@@ -216,11 +216,11 @@
                     "path": "publisher\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "fc1787e962ad104bd621c6bc7a4899bd",
+                        "html": "e36b7e079caf58d962aab87222182804",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "2dc92cf4d398b37fdf55b9969b7a4a70"
+                        "combined": "8b329a388d91df979a182f8cc3c539b1"
                     }
                 }
             ],

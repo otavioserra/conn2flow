@@ -9648,6 +9648,15 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher",
+        "id": "form-field-label-label",
+        "valor": "Label dos Campos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "publisher",
         "id": "form-name-label",
@@ -9679,6 +9688,15 @@
         "modulo": "publisher",
         "id": "form-fields_schema-label",
         "valor": "Custom Fields (Schema)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher",
+        "id": "form-field-label-label",
+        "valor": "Label of the Fields",
         "tipo": "string",
         "grupo": null,
         "descricao": null

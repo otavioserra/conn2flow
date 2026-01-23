@@ -102,11 +102,11 @@
     {
         "name": "Interface Deleção Modal",
         "id": "interface-delecao-modal",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "3b93f234f2a307b5c30157ff1514cb05",
+            "html": "287f5889ff37648f8c8199fa33171957",
             "css": "",
-            "combined": "3b93f234f2a307b5c30157ff1514cb05"
+            "combined": "287f5889ff37648f8c8199fa33171957"
         }
     },
     {
@@ -312,11 +312,11 @@
     {
         "name": "HTML Editor",
         "id": "html-editor",
-        "version": "1.18",
+        "version": "1.19",
         "checksum": {
-            "html": "207b7180cb6d07926c08b4437c8877d7",
+            "html": "f5f87a3472914306fff3e455f1ea14aa",
             "css": "",
-            "combined": "207b7180cb6d07926c08b4437c8877d7"
+            "combined": "f5f87a3472914306fff3e455f1ea14aa"
         }
     },
     {
@@ -362,21 +362,21 @@
     {
         "name": "HTML Editor Publisher Simulação",
         "id": "html-editor-publisher-simulation",
-        "version": "1.7",
+        "version": "1.8",
         "checksum": {
-            "html": "ce18fcac2f08a1f54f7239fa6d5ca44f",
+            "html": "7c054fc98d60acef5ac2fe111d9230c1",
             "css": "",
-            "combined": "ce18fcac2f08a1f54f7239fa6d5ca44f"
+            "combined": "7c054fc98d60acef5ac2fe111d9230c1"
         }
     },
     {
         "name": "HTML Editor Publisher Controles",
         "id": "html-editor-publisher-controls",
-        "version": "1.6",
+        "version": "1.7",
         "checksum": {
-            "html": "86e50a2364f791ab3eebd3550229ba37",
+            "html": "9e61ba1e7da0888acf97acfdda8adcc3",
             "css": "dbbb4cd4d53f57501359b47c85548800",
-            "combined": "6d1f014af48af589001990201bb65c49"
+            "combined": "ba52f34edbb64e1e607929b270380d52"
         }
     }
 ]

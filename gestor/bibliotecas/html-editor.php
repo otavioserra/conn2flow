@@ -368,9 +368,20 @@ function html_editor_ajax_templates_load(){
 			." LIMIT " . $limite . " OFFSET " . $offset
 	]);
 
+	// ===== Variaveis globais alterar.
+	
+	$open = $_GESTOR['variavel-global']['open'];
+	$close = $_GESTOR['variavel-global']['close'];
+	$openText = $_GESTOR['variavel-global']['openText'];
+	$closeText = $_GESTOR['variavel-global']['closeText'];
+
+	// Processar modelos
 	$modelos = [];
 	if($retorno_bd){
 		foreach($retorno_bd as $modelo){
+			$modelo['html'] = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $modelo['html']);
+			$modelo['css'] = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $modelo['css']);
+			
 			$modelos[] = [
 				'id' => $modelo['id'],
 				'nome' => $modelo['nome'],
