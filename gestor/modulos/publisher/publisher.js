@@ -95,6 +95,9 @@ $(document).ready(function () {
 
         $('.templateDropdown')
             .dropdown({
+                message: {
+                    noResults: $('#template-skeletons .msg-nenhum-resultado-dropdown').text()
+                },
                 onChange: function (value, text, $choice) {
                     setTimeout(function () {
                         templateLoading(value);
@@ -240,15 +243,14 @@ $(document).ready(function () {
         $(document.body).on('slug-change', '#gestor-listener', function (e, value, p) {
             if (!p) p = {};
 
-            if (value.value.length == 0) {
-                value.value = value.parentRow.attr('data-id');
+            var parentRow = value.parentRow;
+            var templateId = parentRow.find('.field-template-id').val();
+            if (!templateId) {
+                var slug = formatar_slug(value.value);
+                parentRow.find('.field-id').val(slug);
+                parentRow.find('.field-id-display').text(slug);
+                recalculateFieldSets();
             }
-
-            var slug = formatar_slug(value.value);
-            value.parentRow.find('.field-id').val(slug);
-            value.parentRow.find('.field-id-display').text(slug);
-
-            recalculateFieldSets();
         });
 
         function formatar_slug(slug) {
@@ -268,6 +270,7 @@ $(document).ready(function () {
         var addFieldBtn = $('#add-field-btn');
         var hiddenInput = $('input[name="fields_schema"]');
         var fieldIDCounter = 0;
+        var initialTemplateMap = (typeof publisher_initial_schema !== 'undefined' && publisher_initial_schema.template_map) ? publisher_initial_schema.template_map : [];
 
         function addFieldRow(data = {}) {
             fieldIDCounter++;
@@ -278,23 +281,52 @@ $(document).ready(function () {
             var mandatory = data.mandatory ? true : false;
             var template_field_id = data.template_field_id || '';
 
-
             const rowClone = $('#template-skeletons .field-row-skeleton').clone();
 
             rowClone.attr('data-id', id);
             rowClone.find('.field-label').val(name);
+
+            // Atualizar validação dinâmica
+            const fieldID = 'fieldLabel' + fieldIDCounter;
+
+            rowClone.find('.field-label').attr('data-validate', null);
+            rowClone.find('.field-label').attr('name', fieldID);
+
+            const label = rowClone.find('.field-label').parent().find('label').html();
+
+            const formLabelRules = JSON.parse(JSON.stringify(gestor.formLabelRules));
+
+            formLabelRules.rules[0].prompt = formLabelRules.rules[0].prompt.replace(/#label#/g, label + ' - ' + fieldIDCounter);
+            formLabelRules.rules[1].prompt = formLabelRules.rules[1].prompt.replace(/#label#/g, label + ' - ' + fieldIDCounter);
+            formLabelRules.rules[2].prompt = formLabelRules.rules[2].prompt.replace(/#label#/g, label + ' - ' + fieldIDCounter);
+
+            // Preencher dados
             rowClone.find('.field-id').val(id);
             rowClone.find('.field-type').val(type);
             if (mandatory) {
                 rowClone.find('.field-mandatory').prop('checked', true);
             }
             rowClone.find('.field-template-id').val(template_field_id);
-            rowClone.find('.field-id-display').text(formatar_slug(name.length > 0 ? name : id));
+            if (template_field_id) {
+                rowClone.find('.field-id').val(template_field_id);
+                rowClone.find('.field-id-display').text(template_field_id).addClass('teal');
+            } else {
+                rowClone.find('.field-id-display').text(formatar_slug(name.length > 0 ? name : id));
+            }
 
             schemaContainer.append(rowClone);
 
             // Inicializar dropdowns, search e checkbox.
-            rowClone.find('.dropdownTemplate').removeClass('dropdownTemplate').addClass('ui dropdown').dropdown({
+
+            $('.ui.form.interfaceFormPadrao').form('add rule', fieldID, formLabelRules);
+
+            rowClone.find('.dropdownTemplate').removeClass('dropdownTemplate').addClass('ui dropdown');
+
+            if (template_field_id) {
+                rowClone.find('.ui.dropdown').addClass('disabled');
+            }
+
+            rowClone.find('.ui.dropdown').dropdown({
                 onChange: function (value, text, $choice) {
                     recalculateFieldSets();
                 }
@@ -308,16 +340,12 @@ $(document).ready(function () {
 
         function updateFieldLists() {
             // Campos Disponíveis: mostrar nome do campo do template
-            $('#available-fields-list').html(gestor.template.fieldSets.available.map(f => `<div class="item"><kbd class="ui label">@[[publisher#${f.type}#${f.id}]]@</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-template').text()}</div>`);
+            $('#available-fields-list').html(gestor.template.fieldSets.available.map(f => `<div class="item"><kbd class="ui label">[[publisher#${f.type}#${f.id}]]</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-template').text()}</div>`);
             // Campos Ausentes: mostrar variável do publisher sem vinculação
-            $('#missing-fields-list').html(gestor.template.fieldSets.missing.map(pf => `<div class="item"><kbd class="ui label">@[[publisher#${pf.type}#${pf.id}]]@</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-publisher').text()}</div>`);
+            $('#missing-fields-list').html(gestor.template.fieldSets.missing.map(pf => `<div class="item"><kbd class="ui label">[[publisher#${pf.type}#${pf.id}]]</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-publisher').text()}</div>`);
             // Campos Vinculados: mostrar variável do template => publisher
             $('#linked-fields-list').html(gestor.template.fieldSets.linked.map(pf => {
-                const templateField = gestor.template.currentTemplateFields.find(tf => tf.id === pf.template_field_id);
-                if (templateField) {
-                    return `<div class="item"><kbd class="ui label">@[[publisher#${templateField.type}#${templateField.id}]]@</kbd><kbd class="ui teal icon label"><i class="exchange alternate icon"></i></kbd><kbd class="ui label">@[[publisher#${pf.type}#${pf.id}]]@</kbd></div>`;
-                }
-                return '';
+                return `<div class="item"><kbd class="ui teal label">[[publisher#${pf.type}#${pf.id}]]</kbd></div>`;
             }).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-vinculado').text()}</div>`);
         }
 
@@ -330,17 +358,23 @@ $(document).ready(function () {
                     minCharacters: 0,
                     cache: false,
                     error: {
-                        noResults: 'Nenhum resultado encontrado',
-                        noResultsHeader: 'Sem Resultados'
+                        noResults: $('#template-skeletons .msg-nenhum-resultado-dropdown').text(),
+                        noResultsHeader: $('#template-skeletons .msg-sem-resultados').text()
                     },
-                    source: gestor.template.fieldSets.available.map(f => ({ title: `@[[publisher#${f.type}#${f.id}]]@`, value: f.id })),
+                    source: gestor.template.fieldSets.available.map(f => ({ title: `[[publisher#${f.type}#${f.id}]]`, value: f.id })),
                     onSelect: function (result, response) {
                         $(this).closest('.field-row').find('.field-template-id').val(result.value);
                         $(this).val(result.title);
 
+                        // Setar ID do publisher = ID do template
+                        $(this).closest('.field-row').find('.field-id').val(result.value);
+                        $(this).closest('.field-row').find('.field-id-display').text(result.value).addClass('teal');
+
                         // Atualizar o tipo do campo com o tipo do template selecionado
                         const templateField = gestor.template.currentTemplateFields.find(tf => tf.id === result.value);
                         if (templateField) {
+                            $(this).closest('.field-row').find('.field-type').addClass('disabled');
+                            $(this).closest('.field-row').find('.field-type').dropdown('refresh');
                             $(this).closest('.field-row').find('.field-type').dropdown('set selected', templateField.type);
                         }
 
@@ -352,16 +386,24 @@ $(document).ready(function () {
                 $(this).find('.remove.icon').on('mouseup tap', function (e) {
                     if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
-                    $(this).closest('.field-row').find('.field-template-id').val('');
+                    var parentRow = $(this).closest('.field-row');
+                    parentRow.find('.field-template-id').val('');
+                    // Voltar a usar Label para ID
+                    var label = parentRow.find('.field-label').val();
+                    var slug = formatar_slug(label || parentRow.attr('data-id'));
+                    parentRow.find('.field-id').val(slug);
+                    parentRow.find('.field-id-display').text(slug).removeClass('teal');
+                    parentRow.find('.field-type').removeClass('disabled');
+                    parentRow.find('.field-type').dropdown('refresh');
                     recalculateFieldSets();
                 });
 
                 // Preencher o prompt se já houver um template_field_id definido
                 var currentTemplateId = $(this).closest('.field-row').find('.field-template-id').val();
                 if (currentTemplateId) {
-                    var templateField = gestor.template.currentTemplateFields.find(tf => tf.id === currentTemplateId);
-                    if (templateField) {
-                        $(this).find('.prompt').val(`@[[publisher#${templateField.type}#${templateField.id}]]@`);
+                    var tm = initialTemplateMap.find(tm => tm.id === currentTemplateId);
+                    if (tm) {
+                        $(this).find('.prompt').val(tm.variable);
                     }
                 }
             });
@@ -428,7 +470,12 @@ $(document).ready(function () {
 
         // Remove Button
         $(document).on('click', '.remove-field-btn', function () {
-            $(this).closest('.field-row').remove();
+            const row = $(this).closest('.field-row');
+
+            const fieldID = row.find('.field-label').attr('name');
+            $('.ui.form.interfaceFormPadrao').form('remove fields', fieldID);
+
+            row.remove();
             recalculateFieldSets();
             updateFieldOrderButtons();
         });
@@ -456,9 +503,14 @@ $(document).ready(function () {
         });
 
         // Load Initial Data
-        if (typeof publisher_initial_schema !== 'undefined' && Array.isArray(publisher_initial_schema)) {
+        if (typeof publisher_initial_schema !== 'undefined' && Array.isArray(publisher_initial_schema.fields)) {
             // Wait for DOM slightly or just run
-            publisher_initial_schema.forEach(function (field) {
+            publisher_initial_schema.fields.forEach(function (field) {
+                // Verificar se está mapeado no template_map
+                var isMapped = publisher_initial_schema.template_map.some(tm => tm.id === field.id && tm.linked_template);
+                if (isMapped) {
+                    field.template_field_id = field.id; // Como ID é compartilhado
+                }
                 addFieldRow(field);
             });
             recalculateFieldSets();
@@ -481,28 +533,37 @@ $(document).ready(function () {
                     id: row.find('.field-id').val(),
                     label: row.find('.field-label').val(),
                     type: typeVal,
-                    mandatory: row.find('.field-mandatory').is(':checked'),
-                    template_field_id: row.find('.field-template-id').val()
+                    mandatory: row.find('.field-mandatory').is(':checked')
                 };
                 if (field.id && field.label) {
                     schema.fields.push(field);
 
-                    // Se há template_field_id, adicionar ao template_map
-                    if (field.template_field_id) {
-                        var templateField = gestor.template.currentTemplateFields.find(tf => tf.id === field.template_field_id);
-                        if (templateField) {
-                            schema.template_map.push({
-                                template_id: templateField.id,
-                                publisher_id: field.id,
-                                template_type: templateField.type,
-                                publisher_type: field.type,
-                                template_var: `@[[publisher#${templateField.type}#${templateField.id}]]@`,
-                                publisher_var: `@[[publisher#${field.type}#${field.id}]]@`
-                            });
-                        }
-                    }
+                    const template_field_id = row.find('.field-template-id').val()
+
+                    // Adicionar ao template_map
+                    schema.template_map.push({
+                        id: field.id,
+                        variable: `[[publisher#${field.type}#${field.id}]]`,
+                        found_template: gestor.template.currentTemplateFields ? gestor.template.currentTemplateFields.some(tf => tf.id === field.id) : false,
+                        linked_template: (template_field_id ? true : false)
+                    });
                 }
             });
+
+            // Adicionar campos do template não vinculados
+            if (gestor.template.currentTemplateFields) {
+                gestor.template.currentTemplateFields.forEach(f => {
+                    if (!schema.template_map.some(tm => tm.id === f.id)) {
+                        schema.template_map.push({
+                            id: f.id,
+                            variable: `[[publisher#${f.type}#${f.id}]]`,
+                            found_template: true,
+                            linked_template: false
+                        });
+                    }
+                });
+            }
+
             hiddenInput.val(JSON.stringify(schema));
 
             return true;

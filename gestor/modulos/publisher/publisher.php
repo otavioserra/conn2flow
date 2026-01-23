@@ -68,7 +68,23 @@ function publisher_adicionar(){
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "path_prefix"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "template_id"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "fields_schema"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		
+		// ===== Pré-processar fields_schema para converter variáveis de frontend [[...]] para backend @[[...]]@
+		
+		$open = $_GESTOR['variavel-global']['open'];
+		$close = $_GESTOR['variavel-global']['close'];
+		$openText = $_GESTOR['variavel-global']['openText'];
+		$closeText = $_GESTOR['variavel-global']['closeText'];
+		
+		$fields_schema_str = $_REQUEST['fields_schema'] ?? '[]';
+		
+		// Substituição global simples na string JSON antes de salvar
+		// Substitui [[publisher#...]] por @[[publisher#...]]@
+		// A regex busca por openText + (conteudo) + closeText e substitui por open + conteudo + close
+		
+		$fields_schema_str = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $fields_schema_str);
+		
+		$campo_nome = "fields_schema"; $campo_valor = $fields_schema_str;				if($_REQUEST['fields_schema'])	$campos[] = Array($campo_nome,banco_escape_field($campo_valor));
 		
 		// ===== Campos comuns
 		
@@ -87,9 +103,94 @@ function publisher_adicionar(){
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
 	}
 	
+	// ===== Templates para seleção
+
+	$templates = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'nome',
+			'id'
+		))
+		,
+		'templates',
+		"WHERE status='A'"
+		.' AND language="'.$_GESTOR['linguagem-codigo'].'" AND target="publisher"'
+		." ORDER BY nome ASC"
+	);
+
+	$templates_linked_publisher = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			't.nome',
+			't.id',
+			'p.name',
+		))
+		,
+		'templates AS t, publisher AS p',
+		"WHERE t.status='A' AND t.id=p.template_id"
+		.' AND t.language="'.$_GESTOR['linguagem-codigo'].'" AND p.language="'.$_GESTOR['linguagem-codigo'].'" AND t.target="publisher"'
+		." ORDER BY t.nome ASC"
+	);
+
+	$countTemplates = 0;
+	$countTemplatesLinked = 0;
+	foreach($templates as $template){
+		$disabled = '';
+		$countTemplates++;
+		foreach($templates_linked_publisher as $linked){
+			if($template['id'] == $linked['t.id']){
+				$template['nome'] = '<kbd class="ui basic label">' . $template['nome'] . '</kbd><kbd class="ui teal icon label"><i class="exchange alternate small icon"></i></kbd><kbd class="ui basic label">' . $linked['p.name'] . '</kbd>';
+				$disabled = ' disabled';
+				$countTemplatesLinked++;
+				break;
+			}
+		}
+
+		$template_id_options .= '<option value="'.$template['id'].'"'.$disabled.'>'.$template['nome'].'</option>';
+	}
+
+	if($countTemplatesLinked == 0){
+		$cel_nome = 'templates-alguns-linkados-msg'; $_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		$cel_nome = 'templates-todos-linkados-msg'; $_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+	} else if($countTemplates == $countTemplatesLinked){
+		$cel_nome = 'templates-alguns-linkados-msg'; $_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+	} else {
+		$cel_nome = 'templates-todos-linkados-msg'; $_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+	}
+
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#template_placeholder_option#',gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')));
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#template_id_options#',$template_id_options);
+
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
+
+	// Incluir regra dinâmica para os campos Labels:
+
+	$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-empty'));
+	
+	$prompt[2] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-min-length'));
+	
+	$prompt[3] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-max-length'));
+
+	$formLabelRules = [
+		'rules' => [
+			Array(
+				'type' => 'notEmpty',
+				'prompt' => $prompt[1],
+			),
+			Array(
+				'type' => 'minLength[3]',
+				'prompt' => $prompt[2],
+			),
+			Array(
+				'type' => 'maxLength[100]',
+				'prompt' => $prompt[3],
+			),
+		]
+	];
+
+	gestor_js_variavel_incluir('formLabelRules',$formLabelRules);
 	
 	// ===== Interface adicionar finalizar opções
 	
@@ -107,23 +208,6 @@ function publisher_adicionar(){
 					'campo' => 'template_id',
 					'label' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
 					'identificador' => 'template_id',
-				),
-			),
-			'campos' => Array(
-				Array(
-					'tipo' => 'select',
-					'id' => 'template_id',
-					'nome' => 'template_id',
-					'procurar' => true,
-					'limpar' => true,
-					'selectClass' => 'templateDropdown',
-					'placeholder' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
-					'tabela' => Array(
-						'nome' => 'templates',
-						'campo' => 'nome',
-						'id_numerico' => 'id',
-						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'" AND target="publisher"',
-					),
 				),
 			)
 		)
@@ -239,17 +323,29 @@ function publisher_editar(){
 		$campo_nome = "path_prefix"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
 		$campo_nome = "template_id"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
 		
-		// ===== Normalizar e comparar o schema de campos personalizados
-
 		$campo_nome = "fields_schema"; $request_name = $campo_nome; $alteracoes_name = $campo_nome;
-		$valor_banco = publisher_normalize_array(json_decode(banco_select_campos_antes($campo_nome), true));
-		$valor_request = isset($_REQUEST[$request_name]) ? publisher_normalize_array(json_decode($_REQUEST[$request_name], true)) : null;
-		if ($valor_banco !== $valor_request) {
-			// Lógica de atualização
-			$editar['dados'][] = $campo_nome . "='" . banco_escape_field($_REQUEST[$request_name]) . "'";
-			$alteracoes[] = Array('campo' => 'form-' . $alteracoes_name . '-label');
+		if(isset($_REQUEST[$request_name])){
+			// ===== Processar fields_schema para converter variáveis de frontend [[...]] para backend @[[...]]@
+
+			$open = $_GESTOR['variavel-global']['open'];
+			$close = $_GESTOR['variavel-global']['close'];
+			$openText = $_GESTOR['variavel-global']['openText'];
+			$closeText = $_GESTOR['variavel-global']['closeText'];
+			
+			$request_formatado = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), ($_REQUEST[$request_name] ? $_REQUEST[$request_name] : ''));
+
+			// ===== Normalizar e comparar o schema de campos personalizados
+			
+			$valor_request = publisher_normalize_array(json_decode($request_formatado, true));
+			$valor_banco = publisher_normalize_array(json_decode(banco_select_campos_antes($campo_nome), true));
+			
+			if ($valor_banco !== $valor_request) {
+				// Lógica de atualização
+				$editar['dados'][] = $campo_nome . "='" . banco_escape_field($request_formatado) . "'";
+				$alteracoes[] = Array('campo' => 'form-' . $alteracoes_name . '-label');
+			}
 		}
-		
+
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
 		if(isset($editar['dados'])){
@@ -318,6 +414,15 @@ function publisher_editar(){
 		$template_id = (isset($retorno_bd['template_id']) ? $retorno_bd['template_id'] : '');
 		$fields_schema = (isset($retorno_bd['fields_schema']) ? $retorno_bd['fields_schema'] : '');
 		
+		// ===== Processar fields_schema para converter variáveis de backend @[[...]]@ para frontend [[...]]
+		
+		$open = $_GESTOR['variavel-global']['open'];
+		$close = $_GESTOR['variavel-global']['close'];
+		$openText = $_GESTOR['variavel-global']['openText'];
+		$closeText = $_GESTOR['variavel-global']['closeText'];
+		
+		$fields_schema = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $fields_schema);
+		
 		// ===== Alterar demais variáveis.
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#name#',$name);
@@ -326,9 +431,103 @@ function publisher_editar(){
         
         // Injetar o schema existente para o JS carregar
         $fields_schema_decoded = json_decode($fields_schema, true) ?: ['fields' => [], 'template_map' => []];
-        $schema_json = json_encode($fields_schema_decoded['fields']);
+        $schema_json = json_encode($fields_schema_decoded);
         $_GESTOR['pagina'] .= '<script>var publisher_initial_schema = '.$schema_json.';</script>';
+
+		// ===== Templates para seleção
+
+		$templates = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'nome',
+				'id'
+			))
+			,
+			'templates',
+			"WHERE status='A'"
+			.' AND language="'.$_GESTOR['linguagem-codigo'].'" AND target="publisher"'
+			." ORDER BY nome ASC"
+		);
+
+		$templates_linked_publisher = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				't.nome',
+				't.id',
+				'p.name',
+			))
+			,
+			'templates AS t, publisher AS p',
+			"WHERE t.status='A' AND t.id=p.template_id"
+			.' AND t.language="'.$_GESTOR['linguagem-codigo'].'" AND p.language="'.$_GESTOR['linguagem-codigo'].'" AND t.target="publisher"'
+			." ORDER BY t.nome ASC"
+		);
+
+		$countTemplates = 0;
+		$countTemplatesLinked = 0;
+		if($templates)
+		foreach($templates as $template){
+			$disabled = '';
+			$selected = '';
+			$countTemplates++;
+
+			if($template['id'] != $template_id)
+			if($templates_linked_publisher)
+			foreach($templates_linked_publisher as $linked){
+				if($template['id'] == $linked['t.id']){
+					$template['nome'] = '<kbd class="ui basic label">' . $template['nome'] . '</kbd><kbd class="ui teal icon label"><i class="exchange alternate small icon"></i></kbd><kbd class="ui basic label">' . $linked['p.name'] . '</kbd>';
+					$disabled = ' disabled';
+					$countTemplatesLinked++;
+					break;
+				}
+			}
+
+			if($template['id'] == $template_id){
+				$selected = ' selected';
+			}
+
+			$template_id_options .= '<option value="'.$template['id'].'"'.$disabled.$selected.'>'.$template['nome'].'</option>';
+		}
+
+		if($countTemplatesLinked == 0){
+			$cel_nome = 'templates-alguns-linkados-msg'; $_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+			$cel_nome = 'templates-todos-linkados-msg'; $_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		} else if($countTemplates == $countTemplatesLinked){
+			$cel_nome = 'templates-alguns-linkados-msg'; $_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		} else {
+			$cel_nome = 'templates-todos-linkados-msg'; $_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		}
+
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#template_placeholder_option#',gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')));
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#template_id_options#',$template_id_options);
 		
+		// Incluir regra dinâmica para os campos Labels:
+
+		$prompt[1] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-empty'));
+		
+		$prompt[2] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-min-length'));
+		
+		$prompt[3] = gestor_variaveis(Array('modulo' => 'interface','id' => 'validation-max-length'));
+
+		$formLabelRules = [
+			'rules' => [
+				Array(
+					'type' => 'notEmpty',
+					'prompt' => $prompt[1],
+				),
+				Array(
+					'type' => 'minLength[3]',
+					'prompt' => $prompt[2],
+				),
+				Array(
+					'type' => 'maxLength[100]',
+					'prompt' => $prompt[3],
+				),
+			]
+		];
+
+		gestor_js_variavel_incluir('formLabelRules',$formLabelRules);
+
 		// ===== Popular os metaDados
 		
 		$status_atual = (isset($retorno_bd[$modulo['tabela']['status']]) ? $retorno_bd[$modulo['tabela']['status']] : '');
@@ -391,7 +590,7 @@ function publisher_editar(){
 					'campo' => 'template_id',
 					'label' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
 					'identificador' => 'template_id',
-				)
+				),
 			),
 			'campos' => Array(
 				Array(

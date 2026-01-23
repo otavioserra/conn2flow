@@ -312,11 +312,11 @@
     {
         "name": "HTML Editor",
         "id": "html-editor",
-        "version": "1.11",
+        "version": "1.18",
         "checksum": {
-            "html": "586bcdbad55f318fe55d5ae563f2cac2",
+            "html": "207b7180cb6d07926c08b4437c8877d7",
             "css": "",
-            "combined": "586bcdbad55f318fe55d5ae563f2cac2"
+            "combined": "207b7180cb6d07926c08b4437c8877d7"
         }
     },
     {
@@ -362,11 +362,21 @@
     {
         "name": "HTML Editor Publisher Simulação",
         "id": "html-editor-publisher-simulation",
-        "version": "1.3",
+        "version": "1.7",
         "checksum": {
-            "html": "d05f9c3896085987b79cc7db003edde8",
+            "html": "ce18fcac2f08a1f54f7239fa6d5ca44f",
             "css": "",
-            "combined": "d05f9c3896085987b79cc7db003edde8"
+            "combined": "ce18fcac2f08a1f54f7239fa6d5ca44f"
+        }
+    },
+    {
+        "name": "HTML Editor Publisher Controles",
+        "id": "html-editor-publisher-controls",
+        "version": "1.6",
+        "checksum": {
+            "html": "86e50a2364f791ab3eebd3550229ba37",
+            "css": "dbbb4cd4d53f57501359b47c85548800",
+            "combined": "6d1f014af48af589001990201bb65c49"
         }
     }
 ]

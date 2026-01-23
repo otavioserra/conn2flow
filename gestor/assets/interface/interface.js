@@ -285,7 +285,7 @@ $(document).ready(function () {
 	}
 
 	function deletar_confirmacao() {
-		$('.ui.modal.confirm').modal({
+		$('.ui.modal.confirm._interfaceDelecaoModal').modal({
 			onApprove: function () {
 				window.open(gestor.interface.excluir_url, "_self");
 
@@ -293,7 +293,7 @@ $(document).ready(function () {
 			}
 		});
 
-		$('.ui.modal.confirm').modal('show');
+		$('.ui.modal.confirm._interfaceDelecaoModal').modal('show');
 	}
 
 	function carregar_abrir() {

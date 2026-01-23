@@ -17,8 +17,8 @@ A biblioteca de modelos do Conn2Flow está localizada em `gestor\bibliotecas\mod
 $modelo_texto = "Olá, #nome#! Bem-vindo ao #local#.";
 
 $variaveis = array(
-    'nome' => 'João',
-    'local' => 'Conn2Flow'
+    '#nome#' => 'João',
+    '#local#' => 'Conn2Flow'
 );
 
 // Para substituir a primeira ocorrência de múltiplas variáveis (usando array)
@@ -45,16 +45,16 @@ $modelo_texto = "<!-- cel < -->
 // Inicializar array para armazenar células extraídas
 $pessoas = [
     [
-        'nome' => 'Ana',
-        'local' => 'São Paulo'
+        '#nome#' => 'Ana',
+        '#local#' => 'São Paulo'
     ],
     [
-        'nome' => 'Bruno',
-        'local' => 'Rio de Janeiro'
+        '#nome#' => 'Bruno',
+        '#local#' => 'Rio de Janeiro'
     ],
     [
-        'nome' => 'Carla',
-        'local' => 'Belo Horizonte'
+        '#nome#' => 'Carla',
+        '#local#' => 'Belo Horizonte'
     ],
 ];
 

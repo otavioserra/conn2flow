@@ -8,6 +8,10 @@
             data-position="top left" data-inverted="">@[[html-editor-form-ai-assistent-label]]@</a>
         <a class="item" data-tab="visualizacao-codigo" data-tooltip="@[[html-editor-form-page-code-tooltip]]@"
             data-position="top left" data-inverted="">@[[html-editor-form-page-code-label]]@</a>
+        <!-- publisher-html-editor-variables-menu < -->
+        <a class="item" data-tab="publisher-variables" data-tooltip="@[[html-editor-publisher-variables-menu-tooltip]]@"
+            data-position="top left"
+            data-inverted="">@[[html-editor-publisher-variables-menu-label]]@</a><!-- publisher-html-editor-variables-menu > -->
     </div>
     <div class="ui bottom attached tab segment" data-tab="visualizacao-pagina">
         <div class="ui button blue editorHtmlVisual" style="margin-bottom:10px;"
@@ -28,7 +32,19 @@
                 <i class="file alternate icon"></i>
                 @[[html-editor-publisher-simulation-btn]]@
             </div>
-        </div><!-- publisher-html-editor-btns > -->
+        </div>
+        <div class="ui floating dropdown icon button basic teal publisher-design-mode-simulation"
+            style="margin-left: 5px;" data-tooltip="Change Simulation Style" data-position="top left"
+            data-inverted="">
+            <i class="paint brush icon"></i>
+            <div class="text" style="display: none;">Sophisticated</div>
+            <div class="menu">
+                <div class="header">Data Style</div>
+                <div class="item active selected" data-value="sophisticated">Sophisticated</div>
+                <div class="item" data-value="simple">Simple</div>
+            </div>
+        </div>
+        <!-- publisher-html-editor-btns > -->
         <div style="position: relative;">
             <iframe id="iframe-visualizacao-pagina" style="width:100%;height:900px;border:1px solid #ccc;"></iframe>
             <div class="ui active dimmer">
@@ -66,6 +82,10 @@
                 class="codemirror-css-compiled" name="css_compiled">#pagina-css-compiled#</textarea>
         </div>
     </div>
+    <!-- publisher-html-editor-variables-tab < -->
+    <div class="ui bottom attached tab segment" data-tab="publisher-variables">
+        #html-editor-publisher-controls#
+    </div><!-- publisher-html-editor-variables-tab > -->
     #html-editor-modal#
     #html-editor-visual-modal#
     <div class="hidden">

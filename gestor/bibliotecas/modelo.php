@@ -58,7 +58,7 @@ function modelo_var_troca($modelo,$var,$valor = null){
 	if(is_array($var)){
 		// Se $var for um array, processa cada par chave-valor
 		foreach($var as $key => $val){
-			$placeholder = '#' . $key . '#';
+			$placeholder = $key;
 			$modelo = modelo_var_troca($modelo, $placeholder, $val);
 		}
 		return $modelo;
@@ -138,7 +138,7 @@ function modelo_var_troca_tudo($modelo,$var,$valor = null){
 	if(is_array($var)){
 		// Se $var for um array, processa cada par chave-valor
 		foreach($var as $key => $val){
-			$placeholder = '#' . $key . '#';
+			$placeholder = $key;
 			$modelo = modelo_var_troca_tudo($modelo, $placeholder, $val);
 		}
 		return $modelo;

@@ -40,6 +40,142 @@ $(document).ready(function () {
         successNotOkCallback: function (response) { }
     };
 
+    // ===== Variáveis Globais
+    let publisher_fields_schema = gestor.html_editor.publisher_fields_schema ?? {};
+    let publisher_table_tr_skeleton = null;
+
+    // ===== Utilitários
+
+    function cleanCodeString(str, type = 'html') {
+        if (!str) return '';
+
+        let lines = str.split('\n').filter(line => line.trim() !== '').map(l => l.trim());
+        if (lines.length === 0) return '';
+
+        const indentUnit = '    ';
+        let formatted = '';
+        let indentLevel = 0;
+
+
+
+        if (type === 'html') {
+            const voidTags = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr', '!doctype'];
+            let inTagDefinition = false;
+            let currentDefinitionTagName = '';
+
+            lines.forEach(line => {
+                let contentOnly = line.replace(/<!--[\s\S]*?-->/g, '');
+                let safeLine = contentOnly.replace(/"[^"]*"/g, '""').replace(/'[^']*'/g, "''");
+
+                let isClosingTagStart = contentOnly.trim().startsWith('</');
+
+
+                let printIndent = indentLevel;
+                if (isClosingTagStart) {
+                    printIndent = Math.max(0, indentLevel - 1);
+                } else if (inTagDefinition) {
+                    // If the tag definition is split across lines:
+                    // - For non-void tags (e.g. <div>), indentLevel was already incremented when <div was found.
+                    //   Attributes should align with that new level (or just be indented once relative to parent).
+                    //   Current indentLevel is parent+1. So we print at indentLevel.
+                    // - For void tags (e.g. <img>), indentLevel was NOT incremented.
+                    //   We want attributes indented relative to the tag. So indentLevel+1.
+
+                    if (currentDefinitionTagName && !voidTags.includes(currentDefinitionTagName)) {
+                        printIndent = indentLevel;
+                    } else {
+                        printIndent = indentLevel + 1;
+                    }
+                }
+
+                formatted += indentUnit.repeat(printIndent) + line + '\n';
+
+                // Logic Processing
+
+                let processLine = safeLine;
+
+                // If we were inside a definition, look for the closing >
+                if (inTagDefinition) {
+                    const closeIndex = safeLine.indexOf('>');
+                    if (closeIndex > -1) {
+                        inTagDefinition = false;
+
+                        // Check if it was self-closing />
+                        // We check safeLine at closeIndex-1
+                        if (closeIndex > 0 && safeLine[closeIndex - 1] === '/') {
+                            if (currentDefinitionTagName && !voidTags.includes(currentDefinitionTagName)) {
+                                indentLevel = Math.max(0, indentLevel - 1);
+                            }
+                        }
+                        currentDefinitionTagName = '';
+                        // Process remaining content on this line
+                        processLine = safeLine.substring(closeIndex + 1);
+                    } else {
+                        processLine = ''; // Still inside definition
+                    }
+                }
+
+                // Scan processLine for new tags if any content is left
+                if (processLine.length > 0) {
+                    // 1. Open tags <tag
+                    const openTagRegex = /<([a-zA-Z0-9-!]+)/g;
+                    let match;
+                    while ((match = openTagRegex.exec(processLine)) !== null) {
+                        let tagName = match[1].toLowerCase();
+                        if (!voidTags.includes(tagName) && !tagName.startsWith('!')) {
+                            indentLevel++;
+                        }
+                    }
+
+                    // 2. Closing tags </tag
+                    const closeTagRegex = /<\/([a-zA-Z0-9-]+)/g;
+                    let closeMatches = processLine.match(closeTagRegex) || [];
+                    indentLevel -= closeMatches.length;
+
+                    // 3. Self-closing correction <tag ... /> on same line
+                    const selfClosingRegex = /<([a-zA-Z0-9-!]+)(?:[^>]*?)\/>/g;
+                    while ((match = selfClosingRegex.exec(processLine)) !== null) {
+                        let tagName = match[1].toLowerCase();
+                        if (!voidTags.includes(tagName) && !tagName.startsWith('!')) {
+                            indentLevel--;
+                        }
+                    }
+
+                    // 4. Update inTagDefinition for next line
+                    let lastOpen = processLine.lastIndexOf('<');
+                    let lastClose = processLine.lastIndexOf('>');
+
+                    if (lastOpen > lastClose) {
+                        inTagDefinition = true;
+                        let lastTagMatch = processLine.match(/<([a-zA-Z0-9-!]+)[^>]*$/);
+                        if (lastTagMatch) {
+                            currentDefinitionTagName = lastTagMatch[1].toLowerCase();
+                        }
+                    }
+                }
+
+                if (indentLevel < 0) indentLevel = 0;
+            });
+
+        } else if (type === 'css') {
+            lines.forEach(line => {
+                let printIndent = indentLevel;
+                if (line.startsWith('}')) {
+                    printIndent = Math.max(0, indentLevel - 1);
+                }
+
+                formatted += indentUnit.repeat(printIndent) + line + '\n';
+
+                const openBraces = (line.match(/\{/g) || []).length;
+                const closeBraces = (line.match(/\}/g) || []).length;
+
+                indentLevel = Math.max(0, indentLevel + openBraces - closeBraces);
+            });
+        }
+
+        return formatted.trim();
+    }
+
     // ===== Toggle Active Button
 
     function toggleActiveButton(obj = null) {
@@ -71,6 +207,12 @@ $(document).ready(function () {
     let modelos_carregando = false;
     let modelos_tem_mais = false;
 
+    function frameworkCSS() {
+        const framework_css = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
+
+        return framework_css ?? 'fomantic-ui';
+    }
+
     function modelosCarregar(forcar = false) {
         if (modelos_carregando && !forcar) return;
 
@@ -80,7 +222,7 @@ $(document).ready(function () {
         $('#modelos-cards').hide();
         $('#modelos-loading').show();
 
-        const framework_css = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
+        const framework_css = frameworkCSS();
 
         const ajax = ajaxDefault;
         ajax.ajaxOpcao = 'html-editor-templates-load';
@@ -407,6 +549,9 @@ $(document).ready(function () {
                 case 'visualizacao-codigo':
                     codeTabHandler();
                     break;
+                case 'publisher-variables':
+                    publisherVariablesSearch();
+                    break;
             }
         }
     }
@@ -435,6 +580,9 @@ $(document).ready(function () {
                     break;
                 case 'visualizacao-codigo':
                     codeTabHandler();
+                    break;
+                case 'publisher-variables':
+                    publisherVariablesSearch();
                     break;
             }
 
@@ -489,6 +637,19 @@ $(document).ready(function () {
                 }, 100);
             }
         });
+
+    $('.publisher-design-mode-simulation')
+        .dropdown({
+            onChange: function (value, text, $choice) {
+                // Ao mudar o modo de simulação, atualizar o preview se a simulação estiver ativa
+                if ($('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active')) {
+                    previewHtml();
+                }
+            }
+        });
+
+    $('.publisher-design-mode-variables')
+        .dropdown();
 
     // ===== Editor HTML Visual e Pré-visualização.
 
@@ -558,7 +719,7 @@ $(document).ready(function () {
         // Atualizar o CodeMirror com o HTML filtrado.
         CodeMirrorHtml.getDoc().setValue(htmlDoUsuario);
 
-        const idFramework = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
+        const idFramework = frameworkCSS();
 
         iframe.attr('srcdoc', editorHtmlVisualConteudo(htmlDoUsuario, cssDoUsuario, idFramework));
 
@@ -610,7 +771,6 @@ $(document).ready(function () {
     $(document.body).on('mouseup tap', '.previsualizarConfirmar, .previsualizarVoltar', function (e) {
         if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
-        const idFramework = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
         const iframe = $('#iframe-preview')[0];
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
@@ -634,7 +794,7 @@ $(document).ready(function () {
 
         // Remover linhas em branco no início e fim do código.
         // E também remover linhas que estejam completamente em branco no meio do código.
-        updatedHtml = updatedHtml.split('\n').filter(line => line.trim() !== '').join('\n').trim();
+        updatedHtml = cleanCodeString(updatedHtml);
 
         // Atualizar o CodeMirror com o HTML atualizado.
         CodeMirrorHtml.getDoc().setValue(updatedHtml);
@@ -722,7 +882,7 @@ $(document).ready(function () {
         let htmlDoUsuario = CodeMirrorHtml.getDoc().getValue();
         const cssDoUsuario = CodeMirrorCss.getDoc().getValue();
 
-        const idFramework = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
+        const idFramework = frameworkCSS();
 
         // Substituir as variáveis do publisher ou simulação, se necessário
         htmlDoUsuario = publisherVariablesOrSimulation(htmlDoUsuario);
@@ -738,6 +898,10 @@ $(document).ready(function () {
         }
     }
 
+    // ===== Publisher Options
+
+    // Substituição de Variáveis do Publisher ou Simulação no Preview
+
     function publisherVariablesOrSimulation(html = '') {
         const alvo = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
 
@@ -745,12 +909,49 @@ $(document).ready(function () {
             const simulacao = $('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active');
 
             if (simulacao) {
-                // Regex para encontrar variáveis no formato [[publisher#TIPO#ID]] ou @[[publisher#TIPO#ID]]@
-                const regex = /@?\[\[publisher#(.+?)#(.+?)\]\]@?/g;
+                const framework = frameworkCSS();
+                const designMode = $('.publisher-design-mode-simulation').length > 0 ? $('.publisher-design-mode-simulation').dropdown('get value') : 'simple';
 
-                html = html.replace(regex, function (match, tipo, id) {
-                    // Buscar valores de simulação para o tipo
-                    const simulationItems = $(`.hep-simulation-${tipo} .item`);
+                // Regex para encontrar variáveis no formato [[publisher#TIPO#ID]]
+                const regex = /\[\[publisher#(.+?)#(.+?)\]\]/g;
+
+                html = html.replace(regex, function (match, tipo, id, offset, fullString) {
+                    // Check context: Are we inside an HTML tag attribute?
+                    let isInsideTag = false;
+
+                    // Look backwards for the nearest opening '<' or closing '>'
+                    let i = offset - 1;
+                    while (i >= 0) {
+                        if (fullString[i] === '>') {
+                            // We found a closing tag before an opening one, so we are OUTSIDE a tag
+                            isInsideTag = false;
+                            break;
+                        }
+                        if (fullString[i] === '<') {
+                            // We found an opening tag without a closing one in between, so we are INSIDE a tag
+                            isInsideTag = true;
+                            break;
+                        }
+                        i--;
+                    }
+
+                    // Buscar valores de simulação baseados no modo de design
+                    let simulationItems;
+
+                    // Force simple mode if inside a tag (to avoid breaking attributes like alt="", src="")
+                    const effectiveMode = isInsideTag ? 'simple' : designMode;
+
+                    if (effectiveMode === 'sophisticated') {
+                        simulationItems = $(`.hep-simulation-${tipo}.hep-sophisticated.${framework} .item`);
+                    } else {
+                        // Modo simples: buscar genéricos explicitamente
+                        simulationItems = $(`.hep-simulation-${tipo}.hep-simple .item`);
+                    }
+
+                    // Fallback: Tenta pegar qualquer um do tipo se a busca específica falhar
+                    if (simulationItems.length === 0) {
+                        simulationItems = $(`.hep-simulation-${tipo} .item`);
+                    }
 
                     if (simulationItems.length > 0) {
                         // Sortear um valor aleatório
@@ -767,6 +968,296 @@ $(document).ready(function () {
 
         return html;
     }
+
+    // Variáveis controles.
+
+    function publisherVariablesSearch() {
+        if (!publisher_fields_schema.template_map) return;
+
+        setTimeout(function () {
+            let html = CodeMirrorHtml.getDoc().getValue();
+
+            // Regex para encontrar variáveis no formato [[publisher#TIPO#ID]]
+            const regex = /\[\[publisher#([^#]+)#([^\]]+)\]\]/g;
+            let foundVariables = new Set();
+            let match;
+
+            while ((match = regex.exec(html)) !== null) {
+                foundVariables.add(match[0]);
+            }
+
+            // Mapear dados para a tabela
+            let tableData = publisher_fields_schema.template_map.map(item => {
+                // Encontrar definição do campo se existir
+                let fieldDef = publisher_fields_schema.fields ? publisher_fields_schema.fields.find(f => f.id === item.id) : null;
+
+                // Extrair tipo do variable se não tiver fieldDef (caso variables do template não linkadas)
+                let type = fieldDef ? fieldDef.type : 'text';
+                if (!fieldDef) {
+                    let parts = item.variable.split('#');
+                    if (parts.length >= 2) type = parts[1];
+                }
+
+                return {
+                    id: item.id,
+                    variable: item.variable,
+                    type: type,
+                    label: fieldDef ? fieldDef.label : item.id,
+                    found: foundVariables.has(item.variable)
+                };
+            });
+
+            publisherTableVariables(tableData);
+        }, 100);
+    }
+
+    function publisherTableVariables(data) {
+        let table = $('.hep-variables-table');
+        let tableBody = table.find('tbody');
+
+        // Guardar skeleton inicial se ainda não tiver
+        if (!publisher_table_tr_skeleton) {
+            let tr = tableBody.find('tr').first();
+            if (tr.length > 0) {
+                publisher_table_tr_skeleton = tr.clone();
+            }
+        }
+
+        if (!publisher_table_tr_skeleton) return;
+
+        tableBody.empty();
+
+        let countFound = 0;
+        let countTotal = data.length;
+
+        data.forEach(item => {
+            let row = publisher_table_tr_skeleton.clone();
+
+            // Substituir placeholders no HTML do row
+            let html = row.html();
+            html = html.replace(/#val-label#/g, item.label);
+            html = html.replace(/#val-type#/g, item.type);
+            html = html.replace(/#val-id#/g, item.id);
+            row.html(html);
+
+            // Controle de visibilidade dos ícones
+            if (item.found) {
+                countFound++;
+                row.find('.hep-val-found-check').removeClass('hep-initially-hidden');
+                row.find('.hep-val-found-times').addClass('hep-initially-hidden');
+
+                row.find('.hep-val-options-buttons').addClass('hep-initially-hidden');
+                row.find('.hep-val-options-ok').removeClass('hep-initially-hidden');
+            } else {
+                row.find('.hep-val-found-check').addClass('hep-initially-hidden');
+                row.find('.hep-val-found-times').removeClass('hep-initially-hidden');
+
+                row.find('.hep-val-options-buttons').removeClass('hep-initially-hidden');
+                row.find('.hep-val-options-ok').addClass('hep-initially-hidden');
+            }
+
+            tableBody.append(row);
+        });
+
+        // Mensagens de Status
+        $('.hep-all-found-msg, .hep-some-missing-msg, .hep-all-missing-msg').addClass('hep-initially-hidden');
+        $('.remove-all-variables').addClass('hep-initially-hidden');
+
+        if (countTotal === 0) {
+            $('.hep-all-missing-msg').removeClass('hep-initially-hidden');
+        } else if (countFound === countTotal) {
+            $('.hep-all-found-msg').removeClass('hep-initially-hidden');
+            $('.remove-all-variables').removeClass('hep-initially-hidden');
+        } else {
+            $('.hep-some-missing-msg').removeClass('hep-initially-hidden');
+            if (countFound > 0) {
+                $('.remove-all-variables').removeClass('hep-initially-hidden');
+            }
+        }
+
+        // Mostrar Tabela
+        if (countTotal > 0) {
+            table.removeClass('hep-initially-hidden');
+        } else {
+            table.addClass('hep-initially-hidden');
+        }
+    }
+
+    function addVariableSkeleton(type, id, label) {
+        const framework = frameworkCSS();
+        const designMode = $('.publisher-design-mode-variables').length > 0 ? $('.publisher-design-mode-variables').dropdown('get value') : 'simple';
+
+        // Encontrar wrapper de skeletons
+        let wrapper = $('.hep-skeletons-wrapper');
+        let typeContainer;
+
+        if (designMode === 'sophisticated') {
+            typeContainer = wrapper.find(`.hep-skeletons-${type}.hep-sophisticated.${framework}`);
+        } else {
+            typeContainer = wrapper.find(`.hep-skeletons-${type}.hep-simple`);
+        }
+
+        if (typeContainer.length === 0) {
+            // Fallback Genérico: tenta o simpes se falhou o sofisticado, ou qualquer um se falhou o simples
+            typeContainer = wrapper.find(`.hep-skeletons-${type}.hep-simple`);
+
+            if (typeContainer.length === 0) {
+                typeContainer = wrapper.find(`.hep-skeletons-${type}`);
+            }
+        }
+
+        // Fallback especial para texto se for genericamente "text" e não achou
+        if (typeContainer.length === 0 && type === 'text') {
+            typeContainer = wrapper.find('.hep-skeletons-text');
+        }
+
+        // Pegar item aleatorio
+        let items = typeContainer.find('.item');
+        if (items.length > 0) {
+            let randomItem = items.eq(Math.floor(Math.random() * items.length));
+            let htmlSkeleton = randomItem.html();
+
+            // Substituir variável
+            let variable = `[[publisher#${type}#${id}]]`;
+            htmlSkeleton = htmlSkeleton.replace(/#variavel#/g, variable);
+
+            // Criar nova ID de seção
+            let total = totalDeSessoes() + 1;
+
+            // Wrapper de Section
+            // Se for sophisticated, usa padding, se for simples, section limpa ou com container minimo?
+            // Manter consistencia com o framework escolhido para o wrapper outer
+            let sectionContentClass = (framework === 'tailwindcss') ? 'container mx-auto px-4' : 'ui container';
+
+            let sectionHtml = `<section data-id="${total}" data-title="${label}">
+    <div class="${sectionContentClass}">
+${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
+    </div>
+</section>`;
+
+            // Inserir no CodeMirror
+            let currentHtml = CodeMirrorHtml.getDoc().getValue();
+
+            // Se tiver </body>, inserir antes. Se não, no final.
+            if (currentHtml.indexOf('</body>') > -1) {
+                currentHtml = currentHtml.replace('</body>', sectionHtml + '\n</body>');
+            } else {
+                currentHtml += '\n' + sectionHtml;
+            }
+
+            currentHtml = cleanCodeString(currentHtml);
+
+            CodeMirrorHtml.getDoc().setValue(currentHtml);
+
+            // Atualizar lista de variáveis e sessões
+            publisherVariablesSearch();
+            menuDeSessoes();
+
+            // Mudar para a aba de visualização da página
+            contentPageTabChange('visualizacao-pagina');
+
+            msg_sucesso_mostrar('Variável adicionada com sucesso!');
+        }
+    }
+
+    // Listeners para botões de adicionar variáveis
+    $(document.body).on('mouseup tap', '.add-variable-skeleton', function (e) {
+        if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+        let type = $(this).data('type');
+        let id = $(this).data('id');
+        let label = $(this).closest('tr').find('strong').text().trim();
+
+        addVariableSkeleton(type, id, label);
+    });
+
+    $(document.body).on('mouseup tap', '#add-all-variables-skeleton', function (e) {
+        if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+        let missingRows = $('.hep-variables-table tbody tr').filter(function () {
+            return !$(this).find('.hep-val-found-times').hasClass('hep-initially-hidden');
+        });
+
+        missingRows.each(function (index) {
+            let btn = $(this).find('.add-variable-skeleton');
+            let type = btn.data('type');
+            let id = btn.data('id');
+            let label = $(this).find('strong').text().trim();
+
+            addVariableSkeleton(type, id, label);
+        });
+
+        msg_sucesso_mostrar('Todas as variáveis ausentes foram adicionadas!');
+    });
+
+    $(document.body).on('mouseup tap', '.remove-variable-skeleton', function (e) {
+        if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+        let type = $(this).data('type');
+        let id = $(this).data('id');
+
+        let html = CodeMirrorHtml.getDoc().getValue();
+
+        // Regex para variable: [[publisher#TIPO#ID]]
+        const regexStr = `\\[\\[publisher#${type}#${id}\\]\\]`;
+        const regex = new RegExp(regexStr, 'g');
+
+        html = html.replace(regex, ' ');
+
+        html = cleanCodeString(html);
+
+        CodeMirrorHtml.getDoc().setValue(html);
+
+        publisherVariablesSearch();
+        contentPageTabChange('visualizacao-pagina');
+
+        msg_sucesso_mostrar('Variável removida com sucesso!');
+    });
+
+    $(document.body).on('mouseup tap', '.remove-all-variables', function (e) {
+        if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+        if (!confirm('Tem certeza que deseja remover TODAS as variáveis do template?')) return false;
+
+        let html = CodeMirrorHtml.getDoc().getValue();
+
+        // Regex para todas as variáveis: [[publisher#TIPO#ID]]
+        const regex = /\[\[publisher#[^#]+#[^\]]+\]\]/g;
+
+        html = html.replace(regex, ' ');
+        html = cleanCodeString(html);
+
+        CodeMirrorHtml.getDoc().setValue(html);
+
+        publisherVariablesSearch();
+        contentPageTabChange('visualizacao-pagina');
+
+        msg_sucesso_mostrar('Todas as variáveis foram removidas do template!');
+    });
+
+    $(document.body).on('mouseup tap', '.copy-to-clipboard', function (e) {
+        if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+        const text = $(this).text().trim();
+        navigator.clipboard.writeText(text).then(() => {
+            // Flash effect or toast
+            let originalColor = $(this).css('background-color');
+            $(this).css('background-color', '#21ba45').css('color', 'white'); // green
+
+            setTimeout(() => {
+                $(this).css('background-color', '').css('color', '');
+            }, 1000);
+
+            if (typeof msg_sucesso_mostrar === 'function') {
+                msg_sucesso_mostrar('Variável copiada para a área de transferência!');
+            }
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+            if (typeof msg_erro_mostrar === 'function') {
+                msg_erro_mostrar('Erro ao copiar variável.');
+            }
+        });
+    });
 
     // ===== Controles de modificação de página toda ou por sessão
 
@@ -923,8 +1414,8 @@ $(document).ready(function () {
 
         // Remover linhas em branco no início e fim do código.
         // E também remover linhas que estejam completamente em branco no meio do código.
-        html_gerado = html_gerado.split('\n').filter(line => line.trim() !== '').join('\n').trim();
-        css_gerado = css_gerado.split('\n').filter(line => line.trim() !== '').join('\n').trim();
+        html_gerado = cleanCodeString(html_gerado, 'html');
+        css_gerado = cleanCodeString(css_gerado, 'css');
 
         // Atualizar os `data-id` das sessões para evitar duplicidade. Começar sempre no `1` e ir somando.
         let sectionCounter = 1;
@@ -994,7 +1485,7 @@ $(document).ready(function () {
 
             // Remover linhas em branco no início e fim do código.
             // E também remover linhas que estejam completamente em branco no meio do código.
-            html = html.split('\n').filter(line => line.trim() !== '').join('\n').trim();
+            html = cleanCodeString(html);
 
             // Atualizar o CodeMirror com o HTML atualizado.
             CodeMirrorHtml.getDoc().setValue(html);

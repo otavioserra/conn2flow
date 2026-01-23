@@ -8,6 +8,62 @@ $_GESTOR['biblioteca-html-editor']							=	Array(
 
 // ===== Funções auxiliares
 
+/**
+ * Publisher controles.
+ *
+ * Controles específicos do Publisher para o Editor HTML. Lida com a interface de variáveis.
+ *
+ * @param array $params Parâmetros da função.
+ * @param array $params['publisher'] variáveis do publisher.
+ */
+function html_editor_publisher_controls($params = false){
+	global $_GESTOR;
+
+	if($params)foreach($params as $var => $val)$$var = $val;
+
+	// ===== HTML Editor Publisher Controles
+    $html_editor_publisher_controls = gestor_componente(Array(
+		'id' => 'html-editor-publisher-controls',
+	));
+
+	// ===== Publisher vinculado
+	if(isset($publisher) && is_array($publisher)){
+		// Variaveis globais alterar.
+		
+		$open = $_GESTOR['variavel-global']['open'];
+		$close = $_GESTOR['variavel-global']['close'];
+		$openText = $_GESTOR['variavel-global']['openText'];
+		$closeText = $_GESTOR['variavel-global']['closeText'];
+		
+		// Filtrar campos do schema para remover formatação de variáveis do backend @[[...]]@ para frontend [[...]]
+		$publisher_fields_schema = json_decode($publisher['fields_schema'] ?? '[]', true);
+		
+		if(isset($publisher_fields_schema['template_map'])){
+			foreach($publisher_fields_schema['template_map'] as $key => $val){
+				$publisher_fields_schema['template_map'][$key]['variable'] = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $val['variable']);
+			}
+		}
+
+		// Incluir variáveis JS do HTML Editor
+    	gestor_js_variavel_incluir('html_editor',[
+			'publisher_fields_schema' => $publisher_fields_schema,
+		]);
+
+		// Remover blocos desnecessários
+		$cel_nome = 'publisher-no-link'; $html_editor_publisher_controls = modelo_tag_del($html_editor_publisher_controls,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+
+		// Preencher dados do publisher
+		$html_editor_publisher_controls = modelo_var_troca($html_editor_publisher_controls, [
+			'#publisher-name#' => $publisher['name'],
+			'#publisher-id#' => '?id='.$publisher['id'],
+		]);
+	} else {
+		$cel_nome = 'publisher-has-link'; $html_editor_publisher_controls = modelo_tag_del($html_editor_publisher_controls,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+	}
+
+	return $html_editor_publisher_controls;
+}
+
 // ===== Funções principais
 
 /**
@@ -18,6 +74,7 @@ $_GESTOR['biblioteca-html-editor']							=	Array(
  * @param string $params['editar'] caso seja edição.
  * @param array $params['modulo'] dados do módulo atual.
  * @param array $params['alvo'] alvo de modelos e ia.
+ * @param array $params['publisher'] variáveis do publisher.
  * 
  */
 function html_editor_componente($params = false){
@@ -73,6 +130,7 @@ function html_editor_componente($params = false){
 			));
 
 			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#',$html_editor_publisher_simulation);
+			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-controls#',html_editor_publisher_controls(['publisher' => isset($publisher)? $publisher : null]));
 		break;
 		default:
 			$cel_nome = 'publisher-html-editor-btns'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
@@ -246,11 +304,12 @@ function html_editor_include($params = false){
     return '<div class="html-editor-container hidden">'.$html_editor_modal.'</div>';
 }
 
+// ==== Ajax
 
 /**
  * AJAX Interface.
  *
- * Descrição
+ * Orquestra as chamadas AJAX do Editor HTML.
  *
  * @param array $params Parâmetros da função.
  */

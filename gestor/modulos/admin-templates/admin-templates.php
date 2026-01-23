@@ -427,12 +427,27 @@ function admin_templates_editar(){
 		$variaveisTrocarDepois['pagina-html'] = $html;
 		$variaveisTrocarDepois['pagina-html-extra-head'] = $html_extra_head;
 
+		// Pegar dados para o Editor HTML
+
+		$publisher = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'name',
+				'id',
+				'fields_schema',
+			))
+			,
+			'publisher',
+			"WHERE template_id='".$id."' AND language='".$_GESTOR['linguagem-codigo']."' AND status!='D'"
+		);
+
 		// Incluir o Componente Editor HTML na página
 
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
 			'editar' => true,
 			'modulo' => $modulo,
 			'alvo' => $target,
+			'publisher' => isset($publisher) ? $publisher[0] : null,
 		]));
 
 		// ===== Popular os metaDados

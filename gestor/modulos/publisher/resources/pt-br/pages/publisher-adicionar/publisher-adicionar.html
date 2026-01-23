@@ -18,7 +18,66 @@
 
 <div class="field">
     <label>Template (Recurso)</label>
-    <span>#select-template_id#</span>
+    <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
+        <option value="">#template_placeholder_option#</option>
+        #template_id_options#
+    </select>
+    <!-- templates-alguns-linkados-msg < -->
+    <div class="ui icon message visible info">
+        <i class="bell icon"></i>
+        <div class="content">
+            <div class="header">Templates Vinculados ao Publisher</div>
+            <p>Foram encontrados alguns templates vinculados a alguns registros publisher no selecionador acima e
+                marcados assim: <kbd class="ui basic label">Template</kbd><kbd class="ui teal icon label"><i
+                        class="exchange alternate small icon"></i></kbd><kbd
+                    class="ui basic label">Publisher</kbd>.<br>Só
+                é permitido um template ser vinculado a um único registro de publisher.</p>
+        </div>
+    </div>
+    <!-- templates-alguns-linkados-msg > -->
+    <!-- templates-todos-linkados-msg < -->
+    <div class="ui icon message visible negative">
+        <i class="ban icon"></i>
+        <div class="content">
+            <div class="header">Templates Vinculados ao Publisher</div>
+            <p>Todos os templates encontrados estão vinculados a um registro de publisher no selecionador acima e
+                marcados assim: <kbd class="ui basic label">Template</kbd><kbd class="ui teal icon label"><i
+                        class="exchange alternate small icon"></i></kbd><kbd
+                    class="ui basic label">Publisher</kbd>.<br>Só
+                é permitido um template ser vinculado a um único registro de publisher.</p>
+            <div class="ui list">
+                <div class="item">
+                    <i class="chevron right icon"></i>
+                    <div class="content">
+                        Você pode adicionar um novo
+                        template clicando no botão abaixo <b>Adicionar Novo Template</b>. Lá no módulo de templates,
+                        você poderá escolher um modelo pronto em: <span class="ui breadcrumb">
+                            <div class="section"><b>Conteúdo do Template</b></div>
+                            <i class="right angle icon divider"></i>
+                            <div class="section"><b>Modelos</b></div>
+                        </span>
+                    </div>
+                </div>
+                <div class="item">
+                    <i class="chevron right icon"></i>
+                    <div class="content">
+                        Você pode clonar um template existente. Acesse a listagem dos
+                        templates clicando <a href="@[[pagina#url-raiz]]@admin-templates/">aqui</a>, escolha um
+                        template e clique no botão: <kbd class="ui teal icon label"><i class="clone icon"></i></kbd>
+                        para criar um novo template clonado.
+                    </div>
+                </div>
+                <div class="item">
+                    <i class="chevron right icon"></i>
+                    <div class="content">
+                        Então, depois de criar um novo registro, ou clonar um existente, você pode
+                        retornar aqui para dar prosseguimento.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- templates-todos-linkados-msg > -->
 </div>
 
 <a class="ui button blue" id="add-new-template" href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=publisher">
@@ -94,6 +153,8 @@
     <span class="msg-nenhum-campo-template" style="display:none">Nenhum campo do template</span>
     <span class="msg-nenhum-campo-publisher" style="display:none">Nenhum campo do publisher</span>
     <span class="msg-nenhum-campo-vinculado" style="display:none">Nenhum campo vinculado</span>
+    <span class="msg-nenhum-resultado-dropdown" style="display:none">Nenhum resultado encontrado</span>
+    <span class="msg-sem-resultados" style="display:none">Sem Resultados</span>
 
     <div class="field-row-skeleton ui segment field-row" data-id="" style="margin-bottom: 10px;">
         <div class="fields">

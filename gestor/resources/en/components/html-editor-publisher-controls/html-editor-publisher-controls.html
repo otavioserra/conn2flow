@@ -1,0 +1,134 @@
+<!-- publisher-no-link < -->
+<div class="ui icon message visible info">
+    <i class="info circle icon"></i>
+    <div class="content">
+        <div class="header">
+            No Linked Publisher
+        </div>
+        <p>This record is not linked to any publisher. Link it through the Publisher module to see
+            the
+            available variables.</p>
+        <br>
+        <a class="ui button blue" href="@[[pagina#url-raiz]]@publisher/adicionar">
+            <i class="plus icon"></i>
+            Create New Publisher
+        </a>
+    </div>
+</div>
+<!-- publisher-no-link > -->
+
+<!-- publisher-has-link < -->
+<h3 class="ui header">
+    <i class="bullhorn icon"></i>
+    <div class="content">
+        #publisher-name#
+        <div class="sub header">Linked Publisher</div>
+    </div>
+</h3>
+
+<a class="ui button brown" href="@[[pagina#url-raiz]]@publisher/editar/#publisher-id#"
+    data-tooltip="Click to edit the publisher" data-position="top left" data-inverted="">
+    <i class="edit icon"></i>
+    Edit Publisher
+</a>
+
+<div class="ui icon message visible positive hep-all-found-msg hep-initially-hidden">
+    <i class="check circle icon"></i>
+    <div class="content">
+        <div class="header">All Variables Detected</div>
+        <p>All Publisher variables were found in the template.</p>
+    </div>
+</div>
+
+<div class="ui icon message visible warning hep-some-missing-msg hep-initially-hidden">
+    <i class="exclamation triangle icon"></i>
+    <div class="content">
+        <div class="header">Variables Not Found</div>
+        <p>Some Publisher variables were not found in the template.</p>
+        <div class="ui buttons">
+            <div class="ui button green" id="add-all-variables-skeleton">
+                <i class="plus icon"></i>
+                Include All (Skeleton)
+            </div>
+            <div class="ui button blue" id="add-all-variables-ai">
+                <i class="magic icon"></i>
+                Generate with AI
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui icon message visible negative hep-all-missing-msg hep-initially-hidden">
+    <i class="exclamation triangle icon"></i>
+    <div class="content">
+        <div class="header">No Variables Found</div>
+        <p>No Publisher variable was found nor in the template. Define the variables first in the Publisher
+            so they can be used in the template. Or choose a different template.</p>
+    </div>
+</div>
+
+<div class="ui button icon red remove-all-variables hep-initially-hidden"
+    data-tooltip="Remove All Variables from Template" data-position="top left" data-inverted="">
+    <i class="trash icon"></i>
+</div>
+
+<div class="ui dropdown icon button basic teal publisher-design-mode-variables"
+    data-tooltip="Change Skeleton Insertion Style" data-position="top left" data-inverted="">
+    <i class="paint brush icon"></i>
+    <div class="text" style="display: none;">Sophisticated</div>
+    <div class="menu">
+        <div class="header">Insertion Style</div>
+        <div class="item active selected" data-value="sophisticated">Sophisticated</div>
+        <div class="item" data-value="simple">Simple</div>
+    </div>
+</div>
+
+<table class="ui celled striped table hep-variables-table hep-initially-hidden">
+    <thead>
+        <tr>
+            <th>Variable</th>
+            <th>Label</th>
+            <th>Type</th>
+            <th class="center aligned">Found</th>
+            <th class="center aligned">Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <div class="ui label teal copy-to-clipboard" style="cursor: pointer;"
+                    data-tooltip="Click to copy this variable" data-position="top left" data-inverted="">
+                    [[publisher&#35;#val-type#&#35;#val-id#]]
+                </div>
+            </td>
+            <td>
+                <strong>#val-label#</strong>
+            </td>
+            <td>
+                <div class="ui basic label">#val-type#</div>
+            </td>
+            <td class="center aligned">
+                <i class="green check circle icon hep-val-found-check hep-initially-hidden"></i>
+                <i class="red times circle icon hep-val-found-times hep-initially-hidden"></i>
+            </td>
+            <td class="center aligned">
+                <div class="ui buttons mini hep-val-options-buttons hep-initially-hidden">
+                    <div class="ui button green add-variable-skeleton" data-type="#val-type#" data-id="#val-id#"
+                        data-tooltip="Add variable using Skeleton" data-position="top right" data-inverted="">
+                        <i class="plus icon"></i>
+                    </div>
+                    <div class="ui button blue add-variable-ai" data-type="#val-type#" data-id="#val-id#"
+                        data-tooltip="Add variable using AI" data-position="top right" data-inverted="">
+                        <i class="magic icon"></i>
+                    </div>
+                </div>
+                <div class="ui button icon red remove-variable-skeleton hep-val-options-ok hep-initially-hidden"
+                    data-type="#val-type#" data-id="#val-id#" data-tooltip="Remove Variable from Template"
+                    data-position="top right" data-inverted="">
+                    <i class="trash icon"></i>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<!-- publisher-has-link > -->

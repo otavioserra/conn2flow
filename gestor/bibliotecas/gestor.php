@@ -1116,7 +1116,13 @@ function gestor_js_variavel_incluir($variavel,$valor){
 		return;
 	}
 
-	$_GESTOR['javascript-vars'][$variavel] = $valor;
+	// Se a variável já existe e ambos são arrays, faça merge
+    if (isset($_GESTOR['javascript-vars'][$variavel]) && is_array($_GESTOR['javascript-vars'][$variavel]) && is_array($valor)) {
+        $_GESTOR['javascript-vars'][$variavel] = array_merge_recursive($_GESTOR['javascript-vars'][$variavel], $valor);
+    } else {
+        // Caso contrário, sobrescreve normalmente
+        $_GESTOR['javascript-vars'][$variavel] = $valor;
+    }
 }
 
 

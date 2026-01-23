@@ -41,11 +41,11 @@
                     "id": "noticias-simples",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "8d73d203b00e4ee4b70f7a81526d46ac",
+                        "html": "36bba1fb09a6219ef6ea4de55021bf87",
                         "css": "",
-                        "combined": "8d73d203b00e4ee4b70f7a81526d46ac"
+                        "combined": "36bba1fb09a6219ef6ea4de55021bf87"
                     }
                 },
                 {
@@ -53,11 +53,11 @@
                     "id": "noticias-imagem-destaque",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "597e1228d1af3241d491d1a0f3387783",
+                        "html": "2a811d1b95e7aeb7385d22e2320a17af",
                         "css": "",
-                        "combined": "597e1228d1af3241d491d1a0f3387783"
+                        "combined": "2a811d1b95e7aeb7385d22e2320a17af"
                     }
                 }
             ],
@@ -84,11 +84,11 @@
                     "path": "publisher\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.23",
+                    "version": "1.24",
                     "checksum": {
-                        "html": "fc849fa9dc8c5219c0df4a633de4a2de",
+                        "html": "2586ac2c80f14a59b7f906e8d91d1a37",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "19a27a0dbcf6b000c79d80a188e16c90"
+                        "combined": "38ec4f76d5a1dd700c93780845113c71"
                     }
                 },
                 {
@@ -98,11 +98,11 @@
                     "path": "publisher\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "c10ddb8b1ebb2bd805aeb37317703b68",
+                        "html": "89fb11237b6ea7fd708f157c9fcc9728",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "b0f671c520d3beb0a8db8b5941731d80"
+                        "combined": "378d16cefa2daf1d3e169b048684de6d"
                     }
                 }
             ],
@@ -125,6 +125,11 @@
                 {
                     "id": "form-fields_schema-label",
                     "value": "Campos Personalizados (Schema)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-label-label",
+                    "value": "Label dos Campos",
                     "type": "string"
                 }
             ]
@@ -154,11 +159,11 @@
                     "id": "noticias-simples",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "aac13b53855e0b8e6c414cc7d28520f4",
+                        "html": "8c301d2279cfed152757a09ccce6d276",
                         "css": "",
-                        "combined": "aac13b53855e0b8e6c414cc7d28520f4"
+                        "combined": "8c301d2279cfed152757a09ccce6d276"
                     }
                 },
                 {
@@ -166,11 +171,11 @@
                     "id": "noticias-imagem-destaque",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "d3511aa2dbead3c530b0dbf3cd64677f",
+                        "html": "f83a8a5585ecd70ec3ef4337ac76fcbf",
                         "css": "",
-                        "combined": "d3511aa2dbead3c530b0dbf3cd64677f"
+                        "combined": "f83a8a5585ecd70ec3ef4337ac76fcbf"
                     }
                 }
             ],
@@ -238,6 +243,11 @@
                 {
                     "id": "form-fields_schema-label",
                     "value": "Custom Fields (Schema)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-label-label",
+                    "value": "Label of the Fields",
                     "type": "string"
                 }
             ]
