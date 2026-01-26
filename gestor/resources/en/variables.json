@@ -442,5 +442,25 @@
         "id": "html-editor-publisher-variables-menu-tooltip",
         "value": "Click to modify the template Variables",
         "type": "string"
+    },
+    {
+        "id": "hep-variable-type-text-description",
+        "value": "Short text content",
+        "type": "string"
+    },
+    {
+        "id": "hep-variable-type-textarea-description",
+        "value": "Long text content",
+        "type": "string"
+    },
+    {
+        "id": "hep-variable-type-html-description",
+        "value": "HTML formatted content",
+        "type": "string"
+    },
+    {
+        "id": "hep-variable-type-image-description",
+        "value": "Image URL source",
+        "type": "string"
     }
 ]

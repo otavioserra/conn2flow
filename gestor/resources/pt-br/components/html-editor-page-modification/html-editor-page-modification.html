@@ -37,9 +37,40 @@
                 </div>
             </div>
         </div>
-        <div class="ui tiny button red page-modification-section-delete" style="margin-bottom:10px;"
-            data-tooltip="Clique para deletar a sessão alvo" data-position="top left" data-inverted="">
-            Deletar Sessão Alvo
+        <div class="ui tiny button icon page-modification-section-rename" style="margin-bottom:10px;"
+            data-tooltip="Clique para renomear a sessão alvo" data-position="top center" data-inverted="">
+            <i class="edit icon"></i>
+        </div>
+        <div class="ui tiny button icon red page-modification-section-delete" style="margin-bottom:10px;"
+            data-tooltip="Clique para deletar a sessão alvo" data-position="top right" data-inverted="">
+            <i class="trash icon"></i>
         </div>
     </div>
 </div>
+<div class="page-modification-section-modal page-modification-wrapper">
+    <div class="ui tiny modal page-modification-rename-modal">
+        <div class="header">Renomear Sessão</div>
+        <div class="content">
+            <div class="ui form">
+                <div class="field">
+                    <label>Novo Nome:</label>
+                    <input type="text" name="new-session-name" placeholder="Digite o novo nome da sessão">
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui cancel button">Cancelar</div>
+            <div class="ui approve primary button">Salvar</div>
+        </div>
+    </div>
+</div>
+<!-- publisher < -->
+<div class="publisher hidden page-modification-publisher page-modification-wrapper">
+    <div class="ui labels">
+        <div class="ui label">
+            #name#
+            <div class="detail">#type#</div>
+            <i class="delete icon" data-index="#index#"></i>
+        </div>
+    </div>
+</div><!-- publisher > -->

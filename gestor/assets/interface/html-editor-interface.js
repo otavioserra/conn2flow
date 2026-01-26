@@ -576,7 +576,9 @@ $(document).ready(function () {
                     break;
                 case 'assistente-ia':
                     pageModificationContainerMove(tabPath);
-                    window.AITabActiveHandler();
+                    if (gestor.ai.activated) {
+                        window.AITabActiveHandler();
+                    }
                     break;
                 case 'visualizacao-codigo':
                     codeTabHandler();
@@ -1259,6 +1261,89 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         });
     });
 
+    // ===== IA Variables Control
+
+    if (!gestor.html_editor.publisher_variables) gestor.html_editor.publisher_variables = [];
+
+    // Validar se existe o template no HTML, se sim, guardar e remover do DOM.
+    let publisherVariableTemplate = '';
+    const publisherContainer = $('.page-modification-publisher .ui.labels');
+    if (publisherContainer.find('.ui.label').length > 0) {
+        publisherVariableTemplate = publisherContainer.find('.ui.label')[0].outerHTML;
+        publisherContainer.empty();
+    }
+
+    function updatePublisherVariablesUI() {
+        var container = $('.page-modification-publisher .ui.labels');
+        container.empty();
+
+        if (gestor.html_editor.publisher_variables && gestor.html_editor.publisher_variables.length > 0) {
+
+            if (publisherVariableTemplate) {
+                gestor.html_editor.publisher_variables.forEach(function (v, index) {
+                    let html = publisherVariableTemplate;
+                    html = html.replace(/#name#/g, v.name);
+                    html = html.replace(/#type#/g, v.type);
+                    html = html.replace(/#index#/g, index);
+
+                    container.append(html);
+                });
+            }
+
+            $('.page-modification-publisher').removeClass('hidden');
+        } else {
+            $('.page-modification-publisher').addClass('hidden');
+        }
+    }
+
+    $(document.body).on('mouseup tap', '.page-modification-publisher .delete.icon', function (e) {
+        var index = $(this).data('index');
+        gestor.html_editor.publisher_variables.splice(index, 1);
+        updatePublisherVariablesUI();
+    });
+
+    $(document.body).on('mouseup tap', '.add-variable-ai', function (e) {
+        if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+        var variavel = $(this).attr('data-id');
+        var tipo = $(this).attr('data-type');
+
+        if (variavel && tipo) {
+            var exists = gestor.html_editor.publisher_variables.find(v => v.name === variavel && v.type === tipo);
+            if (!exists) {
+                gestor.html_editor.publisher_variables.push({
+                    name: variavel,
+                    type: tipo
+                });
+                updatePublisherVariablesUI();
+            }
+
+            contentPageTabChange('assistente-ia');
+        }
+    });
+
+    $(document.body).on('mouseup tap', '#add-all-variables-ai', function (e) {
+        if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+        $('.add-variable-ai').each(function () {
+            var variavel = $(this).attr('data-id');
+            var tipo = $(this).attr('data-type');
+
+            if (variavel && tipo) {
+                var exists = gestor.html_editor.publisher_variables.find(v => v.name === variavel && v.type === tipo);
+                if (!exists) {
+                    gestor.html_editor.publisher_variables.push({
+                        name: variavel,
+                        type: tipo
+                    });
+                }
+            }
+        });
+
+        updatePublisherVariablesUI();
+        contentPageTabChange('assistente-ia');
+    });
+
     // ===== Controles de modificação de página toda ou por sessão
 
     let total_sessoes = 0;
@@ -1471,6 +1556,47 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         }
     });
 
+    $(document.body).on('mouseup tap', '.page-modification-section-rename', function (e) {
+        if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+        const sectionId = pageSessionID();
+
+        if (sectionId && sectionId.length > 0) {
+            // Get current title
+            const html = CodeMirrorHtml.getDoc().getValue();
+            const regex = new RegExp(`<section\\b[^>]*data-id=["']${sectionId}["'][^>]*data-title=["']([^"']*)["'][^>]*>`, 'i');
+            const match = html.match(regex);
+            let currentTitle = '';
+            if (match && match[1]) {
+                currentTitle = match[1];
+            }
+
+            // Set value in modal
+            $('.page-modification-rename-modal input[name="new-session-name"]').val(currentTitle);
+
+            $('.page-modification-rename-modal').modal({
+                closable: false,
+                onApprove: function () {
+                    const newName = $('.page-modification-rename-modal input[name="new-session-name"]').val();
+
+                    if (newName && newName.trim() !== '') {
+                        let html = CodeMirrorHtml.getDoc().getValue();
+                        // Update Title using robust regex replacement
+                        const regexReplace = new RegExp(`(<section\\b[^>]*data-id=["']${sectionId}["'][^>]*data-title=["'])([^"']*)(["'][^>]*>)`, 'i');
+
+                        if (regexReplace.test(html)) {
+                            html = html.replace(regexReplace, `$1${newName}$3`);
+                            CodeMirrorHtml.getDoc().setValue(html);
+
+                            // Force menu update
+                            menuDeSessoes();
+                        }
+                    }
+                }
+            }).modal('show');
+        }
+    });
+
     $(document.body).on('mouseup tap', '.page-modification-section-delete', function (e) {
         if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
@@ -1530,6 +1656,7 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         let css = CodeMirrorCss.getDoc().getValue();
         let sessao_id = '';
         let sessao_opcao = '';
+        let publisher_variables = null;
 
         // Se for sessão, validar se uma sessão foi selecionada.
         if (tipo_modificacao === 'sessao') {
@@ -1554,12 +1681,22 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
             html = CodeMirrorHtml.getDoc().getValue();
         }
 
+        // Coletar variáveis do publisher, se houver
+        const alvo = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
+
+        switch (alvo) {
+            case 'publisher':
+                publisher_variables = gestor.html_editor.publisher_variables ? gestor.html_editor.publisher_variables : null;
+                break;
+        }
+
         return {
             ajaxOpcao: 'html-editor-ia-requests', data: {
                 html: html,
                 css: css,
                 framework_css: $('#framework-css').dropdown('get value'),
                 sessao_id,
+                publisher_variables,
                 sessao_opcao
             }
         };

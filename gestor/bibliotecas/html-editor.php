@@ -437,6 +437,7 @@ function html_editor_ajax_ia_requests(){
 	$framework_css = $_REQUEST['data']['framework_css'] ?? '';
 	$sessao_id = $_REQUEST['data']['sessao_id'] ?? '';
 	$sessao_opcao = $_REQUEST['data']['sessao_opcao'] ?? '';
+	$target = $_REQUEST['data']['target'] ?? '';
 
 	// Modificar o modo IA antes de enviar
 	$modo = $_REQUEST['mode'] ?? '';
@@ -444,6 +445,44 @@ function html_editor_ajax_ia_requests(){
 	$modo = modelo_var_troca_tudo($modo,'{{html}}',$html);
 	$modo = modelo_var_troca_tudo($modo,'{{css}}',$css);
 	$modo = modelo_var_troca_tudo($modo,'{{framework_css}}',$framework_css);
+
+	// Modificar o modo por target
+	switch($target){
+		case 'publisher':
+			$publisher_variables = $_REQUEST['data']['publisher_variables'] ?? '';
+
+            // Definição dos tipos e descrições
+            $types_skeleton = [
+                'text' => gestor_variaveis(Array('id' => 'hep-variable-type-text-description')),
+                'textarea' => gestor_variaveis(Array('id' => 'hep-variable-type-textarea-description')),
+                'html' => gestor_variaveis(Array('id' => 'hep-variable-type-html-description')),
+                'image' => gestor_variaveis(Array('id' => 'hep-variable-type-image-description'))
+            ];
+
+			$variables = '';
+
+            if($publisher_variables && is_array($publisher_variables)){
+                foreach($publisher_variables as $variable){
+                    $var_name = $variable['name'] ?? '';
+                    $var_type = $variable['type'] ?? '';
+                    
+                    if($var_name && $var_type){
+                        $variables .= $var_name . ' | ' . $var_type . "\n";
+                    }
+                }
+            }
+
+            // Adicionar descrições dos tipos
+            foreach($types_skeleton as $type => $desc){
+                $variables .= $type . ' | ' . $desc . "\n";
+            }
+
+			$modo = modelo_var_troca_tudo($modo,'{{variables}}',$variables);
+		break;
+		default:
+			$cel_nome = 'publisher'; $modelo_texto = modelo_tag_del($modelo_texto,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+			
+	}
 
 	// Preparar prompt completo
 	$prompt = $_REQUEST['prompt'] ?? '';

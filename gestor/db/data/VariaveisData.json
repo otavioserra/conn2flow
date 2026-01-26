@@ -747,6 +747,42 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "hep-variable-type-text-description",
+        "valor": "Conteúdo de texto simples",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "hep-variable-type-textarea-description",
+        "valor": "Conteúdo de texto longo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "hep-variable-type-html-description",
+        "valor": "Conteúdo formatado em HTML",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "hep-variable-type-image-description",
+        "valor": "URL de fonte de imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -1489,6 +1525,42 @@
         "modulo": null,
         "id": "html-editor-publisher-variables-menu-tooltip",
         "valor": "Click to modify the template Variables",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "hep-variable-type-text-description",
+        "valor": "Short text content",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "hep-variable-type-textarea-description",
+        "valor": "Long text content",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "hep-variable-type-html-description",
+        "valor": "HTML formatted content",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "hep-variable-type-image-description",
+        "valor": "Image URL source",
         "tipo": "string",
         "grupo": null,
         "descricao": null

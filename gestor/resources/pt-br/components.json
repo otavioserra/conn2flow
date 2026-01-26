@@ -312,11 +312,11 @@
     {
         "name": "HTML Editor",
         "id": "html-editor",
-        "version": "1.19",
+        "version": "1.20",
         "checksum": {
-            "html": "f5f87a3472914306fff3e455f1ea14aa",
-            "css": "",
-            "combined": "f5f87a3472914306fff3e455f1ea14aa"
+            "html": "2d685868e4f99635c09dae2f787a0762",
+            "css": "c5e062186c9aab5dd11f355a9f4c50e6",
+            "combined": "955e403c08e86181cf12554858be5a05"
         }
     },
     {
@@ -332,11 +332,11 @@
     {
         "name": "HTML Editor Página Modificação",
         "id": "html-editor-page-modification",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "a1cd3cf65af174ceb02897b4a6c4de16",
+            "html": "9ed1d82505c15c36fc87a38bc1d29a65",
             "css": "",
-            "combined": "a1cd3cf65af174ceb02897b4a6c4de16"
+            "combined": "9ed1d82505c15c36fc87a38bc1d29a65"
         }
     },
     {
@@ -382,11 +382,11 @@
     {
         "name": "IA Sem Servidor",
         "id": "ia-sem-servidor",
-        "version": "1.0",
+        "version": "1.1",
         "checksum": {
-            "html": "69546a308b90be5ef23fd58ea6b1b0a5",
+            "html": "e9cea13934578a964a0d23e53a7ebdd1",
             "css": "",
-            "combined": "69546a308b90be5ef23fd58ea6b1b0a5"
+            "combined": "e9cea13934578a964a0d23e53a7ebdd1"
         }
     }
 ]

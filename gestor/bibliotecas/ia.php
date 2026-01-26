@@ -48,8 +48,16 @@ function ia_renderizar_prompt($params = false){
 		$ia_sem_servidor = gestor_componente(Array(
 			'id' => 'ia-sem-servidor',
 		));
+
+		gestor_js_variavel_incluir('ai',[
+			'activated' => false,
+		]);
 		
 		return $ia_sem_servidor;
+	} else {
+		gestor_js_variavel_incluir('ai',[
+			'activated' => true,
+		]);
 	}
 
 	// Incluir script JS
