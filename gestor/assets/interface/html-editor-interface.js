@@ -366,6 +366,7 @@ $(document).ready(function () {
     // ===== Codemirror 
 
     var codemirrors_instances = new Array();
+    const codermirrorHeight = 800;
 
     var codemirror_css = document.getElementsByClassName("codemirror-css");
 
@@ -390,7 +391,7 @@ $(document).ready(function () {
                 }
             });
 
-            CodeMirrorCss.setSize('100%', 500);
+            CodeMirrorCss.setSize('100%', codermirrorHeight);
             codemirrors_instances.push(CodeMirrorCss);
         }
     }
@@ -418,7 +419,7 @@ $(document).ready(function () {
                 }
             });
 
-            CodeMirrorCssCompiled.setSize('100%', 500);
+            CodeMirrorCssCompiled.setSize('100%', codermirrorHeight);
             codemirrors_instances.push(CodeMirrorCssCompiled);
         }
     }
@@ -446,7 +447,7 @@ $(document).ready(function () {
                 }
             });
 
-            CodeMirrorHtml.setSize('100%', 500);
+            CodeMirrorHtml.setSize('100%', codermirrorHeight);
             codemirrors_instances.push(CodeMirrorHtml);
         }
     }
@@ -474,7 +475,7 @@ $(document).ready(function () {
                 }
             });
 
-            CodeMirrorHtmlExtraHead.setSize('100%', 500);
+            CodeMirrorHtmlExtraHead.setSize('100%', codermirrorHeight);
             codemirrors_instances.push(CodeMirrorHtmlExtraHead);
         }
     }
@@ -537,6 +538,7 @@ $(document).ready(function () {
 
             switch (tabActive) {
                 case 'visualizacao-pagina':
+                    pageModificationContainerMove(tabActive);
                     previewHtml();
                     break;
                 case 'modelos':
@@ -568,6 +570,7 @@ $(document).ready(function () {
         onLoad: function (tabPath, parameterArray, historyEvent) {
             switch (tabPath) {
                 case 'visualizacao-pagina':
+                    pageModificationContainerMove(tabPath);
                     previewHtml();
                     break;
                 case 'modelos':
@@ -1370,6 +1373,20 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         return total;
     }
 
+    function gestorPageModificationSectionUp(index, total) {
+        if (index > 0) {
+            $('.page-modification-section-up').removeClass('disabled');
+        } else {
+            $('.page-modification-section-up').addClass('disabled');
+        }
+
+        if (index < total - 1) {
+            $('.page-modification-section-down').removeClass('disabled');
+        } else {
+            $('.page-modification-section-down').addClass('disabled');
+        }
+    }
+
     function menuDeSessoes() {
         const html = CodeMirrorHtml.getDoc().getValue();
 
@@ -1404,15 +1421,40 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
 
             select.dropdown('refresh');
 
+            let selectedIndex = 0;
+
             if (sessoes.find(sessao => sessao.id === currentValue)) {
                 select.dropdown('set selected', currentValue, true);
+                selectedIndex = sessoes.findIndex(sessao => sessao.id === currentValue);
             } else {
                 select.dropdown('set selected', sessoes[0].id, true);
+                selectedIndex = 0;
             }
 
-            select.parent().removeClass('disabled');
+            gestorPageModificationSectionUp(selectedIndex, sessoes.length);
+        } else {
+            select.dropdown('refresh');
+            select.parent().addClass('disabled');
         }
     }
+
+    $('.ui.dropdown.page-modification-section-select').dropdown({
+        onChange: function (value, text, $selectedItem) {
+            // Update buttons state based on new selection
+            const select = $('.ui.dropdown.page-modification-section-select');
+            const options = select.find('select option');
+            let index = 0;
+
+            options.each(function (i) {
+                if ($(this).val() === value) {
+                    index = i;
+                    return false;
+                }
+            });
+
+            gestorPageModificationSectionUp(index, options.length);
+        }
+    });
 
     function menuPages(opcao, params = {}) {
         total_sessoes = totalDeSessoes();
@@ -1457,6 +1499,49 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         var pageModificationContainer = $('.page-modification-wrapper');
 
         $('.menu-pagina-conteudo[data-id="' + target + '"]').prepend(pageModificationContainer);
+
+        if (gestor.html_editor.page_modification_auto_preview === undefined) {
+            gestor.html_editor.page_modification_auto_preview = {};
+        }
+
+        switch (target) {
+            case 'visualizacao-pagina':
+                setTimeout(function () {
+                    total_sessoes = totalDeSessoes();
+
+                    if (total_sessoes > 0) {
+                        pageModificationContainer.find('.page-modification-target-select').dropdown('set selected', 'sessao');
+                    }
+
+                    pageModificationContainer.find('.page-modification-target-select').addClass('disabled');
+                    pageModificationContainer.find('.page-modification-section-options').addClass('hidden');
+                    pageModificationContainer.find('.page-modification-auto-preview').addClass('hidden');
+
+                    if (gestor.html_editor.page_modification_auto_preview[target] === undefined) {
+                        gestor.html_editor.page_modification_auto_preview[target] = true;
+                    }
+
+                    pageModificationContainer.find('.page-modification-auto-preview').checkbox('check');
+
+                }, 1);
+                break;
+            default:
+                pageModificationContainer.find('.page-modification-target-select').removeClass('disabled');
+                pageModificationContainer.find('.page-modification-section-options').removeClass('hidden');
+                pageModificationContainer.find('.page-modification-auto-preview').removeClass('hidden');
+
+                if (gestor.html_editor.page_modification_auto_preview[target] === undefined) {
+                    gestor.html_editor.page_modification_auto_preview[target] = false;
+                }
+
+                if (gestor.html_editor.page_modification_auto_preview[target]) {
+                    pageModificationContainer.find('.page-modification-auto-preview').checkbox('check');
+                } else {
+                    pageModificationContainer.find('.page-modification-auto-preview').checkbox('uncheck');
+                }
+        }
+
+        gestor.html_editor.page_modification_current_target = target;
     }
 
     function sessaoOpcao() {
@@ -1619,7 +1704,9 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
 
         const sectionId = pageSessionID();
 
-        if (sectionId && sectionId.length > 0) {
+        if (!sectionId || sectionId.length === 0) return false;
+
+        if (confirm('Tem certeza que deseja deletar permanentemente esta sessão?')) {
             let html = CodeMirrorHtml.getDoc().getValue();
 
             // Remover a sessão do HTML
@@ -1634,8 +1721,93 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
             CodeMirrorHtml.getDoc().setValue(html);
 
             // Mudar para a aba de visualização da página
-            contentPageTabChange('visualizacao-pagina');
+            const autoPreview = $('.page-modification-auto-preview').checkbox('is checked');
+            if (autoPreview) {
+                contentPageTabChange('visualizacao-pagina');
+            }
         }
+    });
+
+    // Funcao generica para mover sessao
+
+    function moverSessao(direcao) {
+        const sectionId = pageSessionID();
+        if (!sectionId) return;
+
+        let html = CodeMirrorHtml.getDoc().getValue();
+
+        // Encontrar todas as sessoes com seus IDs
+        const regex = /<section\b[^>]*data-id=["']([^"']+)["'][^>]*>([\s\S]*?)<\/section>/gi;
+        let matches = [];
+        let match;
+        while ((match = regex.exec(html)) !== null) {
+            matches.push({
+                full: match[0],
+                id: match[1],
+                index: match.index,
+                length: match[0].length
+            });
+        }
+
+        const currentIndex = matches.findIndex(m => m.id === sectionId);
+        if (currentIndex === -1) return;
+
+        let targetIndex = -1;
+        if (direcao === 'up') {
+            if (currentIndex > 0) targetIndex = currentIndex - 1;
+        } else {
+            if (currentIndex < matches.length - 1) targetIndex = currentIndex + 1;
+        }
+
+        if (targetIndex !== -1) {
+            // Precisamos dos indices de inicio e fim de Current e Target
+            const current = matches[currentIndex];
+            const target = matches[targetIndex];
+
+            // Garantir ordem (primeiro bloco, segundo bloco)
+            const firstBlock = (direcao === 'up') ? target : current;
+            const secondBlock = (direcao === 'up') ? current : target;
+
+            // Texto entre eles (se houver)
+            const middleStart = firstBlock.index + firstBlock.length;
+            const middleEnd = secondBlock.index;
+            const middleText = html.substring(middleStart, middleEnd);
+
+            // Texto antes do primeiro
+            const beforeText = html.substring(0, firstBlock.index);
+
+            // Texto depois do segundo
+            const afterText = html.substring(secondBlock.index + secondBlock.length);
+
+            // Reconstroi invertendo first e second
+            const newHtml = beforeText + secondBlock.full + middleText + firstBlock.full + afterText;
+
+            CodeMirrorHtml.getDoc().setValue(newHtml);
+
+            // Atualizar menu (IDs podem mudar? Nao o data-id)
+            // Mas a ordem muda.
+            menuDeSessoes();
+
+            // Manter selecao
+            $('.ui.dropdown.page-modification-section-select').dropdown('set selected', sectionId);
+
+            const autoPreview = $('.page-modification-auto-preview').checkbox('is checked');
+            if (autoPreview) {
+                contentPageTabChange('visualizacao-pagina');
+            }
+        }
+    }
+
+    $(document.body).on('mouseup tap', '.page-modification-section-up', function (e) {
+        if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+        if ($(this).hasClass('disabled')) return false;
+        moverSessao('up');
+    });
+
+    $(document.body).on('mouseup tap', '.page-modification-section-down', function (e) {
+        if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+        if ($(this).hasClass('disabled')) return false;
+        moverSessao('down');
     });
 
     $('.ui.dropdown.page-modification-target-select')
@@ -1644,6 +1816,15 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
                 menuPages(value, { alertar: true });
             }
         });
+
+    $('.page-modification-auto-preview').checkbox({
+        onChecked: function () {
+            gestor.html_editor.page_modification_auto_preview[gestor.html_editor.page_modification_current_target ?? 'default'] = true;
+        },
+        onUnchecked: function () {
+            gestor.html_editor.page_modification_auto_preview[gestor.html_editor.page_modification_current_target ?? 'default'] = false;
+        }
+    });
 
     // ===== IA Interface
 

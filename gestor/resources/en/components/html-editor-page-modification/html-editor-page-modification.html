@@ -18,28 +18,76 @@
     <div class="four wide column hidden page-modification-container">
         <div class="grouped fields">
             <label>Section Option</label>
-            <div class="field">
+            <div class="field page-modification-section-options">
                 <div class="ui radio checkbox">
                     <input type="radio" name="page-modification-section-option" value="new-before">
                     <label>Add New Before</label>
                 </div>
             </div>
-            <div class="field">
+            <div class="field page-modification-section-options">
                 <div class="ui radio checkbox">
                     <input type="radio" name="page-modification-section-option" value="target" checked="checked">
                     <label>Change Target Section</label>
                 </div>
             </div>
-            <div class="field">
+            <div class="field page-modification-section-options">
                 <div class="ui radio checkbox">
                     <input type="radio" name="page-modification-section-option" value="new-after">
                     <label>Add New After</label>
                 </div>
             </div>
         </div>
-        <div class="ui tiny button red page-modification-section-delete" style="margin-bottom:10px;"
-            data-tooltip="Click to delete the target section" data-position="top left" data-inverted="">
-            Delete Target Section
+        <div class="ui tiny button icon page-modification-section-rename" style="margin-bottom:10px;"
+            data-tooltip="Click to rename the target section" data-position="top center" data-inverted="">
+            <i class="edit icon"></i>
+        </div>
+        <div class="ui tiny button icon blue page-modification-section-up" style="margin-bottom:10px;"
+            data-tooltip="Move section up" data-position="top center" data-inverted="">
+            <i class="arrow up icon"></i>
+        </div>
+        <div class="ui tiny button icon blue page-modification-section-down" style="margin-bottom:10px;"
+            data-tooltip="Move section down" data-position="top center" data-inverted="">
+            <i class="arrow down icon"></i>
+        </div>
+        <div class="ui tiny button icon red page-modification-section-delete" style="margin-bottom:10px;"
+            data-tooltip="Click to delete the target section" data-position="top right" data-inverted="">
+            <i class="trash icon"></i>
+        </div>
+        <div class="field" style="margin-top: 5px;">
+            <div class="ui checkbox page-modification-auto-preview">
+                <input type="checkbox" name="page-modification-auto-preview">
+                <label>Automatically preview</label>
+            </div>
         </div>
     </div>
 </div>
+<div class="page-modification-section-modal page-modification-wrapper">
+    <div class="ui tiny modal page-modification-rename-modal">
+        <div class="header">Rename Section</div>
+        <div class="content">
+            <div class="ui form">
+                <div class="field">
+                    <label>New Name:</label>
+                    <input type="text" name="new-session-name" placeholder="Enter the new section name">
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui cancel button">Cancel</div>
+            <div class="ui approve primary button">Save</div>
+        </div>
+    </div>
+</div>
+<!-- publisher < -->
+<div class="publisher hidden page-modification-publisher page-modification-wrapper">
+    <div class="field">
+        <label>Publisher Variables:</label>
+        <div class="ui labels">
+            <div class="ui teal label">
+                #name#
+                <div class="detail">#type#</div>
+                <i class="delete icon" data-index="#index#"></i>
+            </div>
+        </div>
+    </div>
+</div><!-- publisher > -->

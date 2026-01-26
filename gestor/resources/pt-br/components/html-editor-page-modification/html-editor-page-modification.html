@@ -18,19 +18,19 @@
     <div class="four wide column hidden page-modification-container">
         <div class="grouped fields">
             <label>Sessão Opção</label>
-            <div class="field">
+            <div class="field page-modification-section-options">
                 <div class="ui radio checkbox">
                     <input type="radio" name="page-modification-section-option" value="new-before">
                     <label>Adicionar Nova Antes</label>
                 </div>
             </div>
-            <div class="field">
+            <div class="field page-modification-section-options">
                 <div class="ui radio checkbox">
                     <input type="radio" name="page-modification-section-option" value="target" checked="checked">
                     <label>Alterar Sessão Alvo</label>
                 </div>
             </div>
-            <div class="field">
+            <div class="field page-modification-section-options">
                 <div class="ui radio checkbox">
                     <input type="radio" name="page-modification-section-option" value="new-after">
                     <label>Adicionar Nova Depois</label>
@@ -41,9 +41,23 @@
             data-tooltip="Clique para renomear a sessão alvo" data-position="top center" data-inverted="">
             <i class="edit icon"></i>
         </div>
+        <div class="ui tiny button icon blue page-modification-section-up" style="margin-bottom:10px;"
+            data-tooltip="Mover sessão para cima" data-position="top center" data-inverted="">
+            <i class="arrow up icon"></i>
+        </div>
+        <div class="ui tiny button icon blue page-modification-section-down" style="margin-bottom:10px;"
+            data-tooltip="Mover sessão para baixo" data-position="top center" data-inverted="">
+            <i class="arrow down icon"></i>
+        </div>
         <div class="ui tiny button icon red page-modification-section-delete" style="margin-bottom:10px;"
             data-tooltip="Clique para deletar a sessão alvo" data-position="top right" data-inverted="">
             <i class="trash icon"></i>
+        </div>
+        <div class="field" style="margin-top: 5px;">
+            <div class="ui checkbox page-modification-auto-preview">
+                <input type="checkbox" name="page-modification-auto-preview">
+                <label>Visualizar automaticamente</label>
+            </div>
         </div>
     </div>
 </div>
