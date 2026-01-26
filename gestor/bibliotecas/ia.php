@@ -42,9 +42,14 @@ function ia_renderizar_prompt($params = false){
 			." ORDER BY padrao DESC, nome ASC"
 	));
 
-	// Se não houver conexões, retornar string vazia
+	// Se não houver conexões, retornar componente de aviso
 	if(!$servidores){
-		return '';
+		// Carregar componente
+		$ia_sem_servidor = gestor_componente(Array(
+			'id' => 'ia-sem-servidor',
+		));
+		
+		return $ia_sem_servidor;
 	}
 
 	// Incluir script JS

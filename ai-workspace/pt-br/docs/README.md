@@ -14,6 +14,7 @@ Esta pasta contém toda a documentação técnica detalhada do projeto Conn2Flow
 - **`CONN2FLOW-SISTEMA-RECURSOS.md`** - Guia completo sobre o Sistema de Recursos (Global, Módulos, Ferramentas)
 - **`CONN2FLOW-MODULOS-DETALHADO.md`** - Desenvolvimento e estrutura de módulos
 - **`CONN2FLOW-ROTEAMENTO-DETALHADO.md`** - Sistema de roteamento detalhado
+- **`CONN2FLOW-VARIAVEIS-GLOBAIS.md`** - Glossário completo de variáveis globais do sistema (@[[FUNCAO#VARIAVEL]]@)
 - **`CONN2FLOW-AUTOMACAO-EXPORTACAO.md`** - Automação e validação da exportação de recursos
 - **`CONN2FLOW-HISTORICO-EXPORTACAO.md`** - Histórico de decisões e aprendizados do ciclo de exportação
 - **`CONN2FLOW-FRAMEWORK-CSS.md`** - Sistema de frameworks CSS (TailwindCSS e FomanticUI)

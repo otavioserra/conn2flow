@@ -292,11 +292,11 @@
     {
         "name": "IA Prompt",
         "id": "ia-prompt",
-        "version": "1.7",
+        "version": "1.8",
         "checksum": {
-            "html": "d5fceeb4604c3ce1b9107922434b301b",
+            "html": "d0e47f43ac76a591c1f2dcad697f96d3",
             "css": "c0e38fffa143bbb5fcd30ca4541d5179",
-            "combined": "191557baff9dd8b23af2e75948958c88"
+            "combined": "d58a3c8e8e632c6100dd5b8284924e1c"
         }
     },
     {
@@ -372,11 +372,21 @@
     {
         "name": "HTML Editor Publisher Controles",
         "id": "html-editor-publisher-controls",
-        "version": "1.7",
+        "version": "1.8",
         "checksum": {
-            "html": "9e61ba1e7da0888acf97acfdda8adcc3",
+            "html": "8e8e6055a75d4552811b9dede5dca4d7",
             "css": "dbbb4cd4d53f57501359b47c85548800",
-            "combined": "ba52f34edbb64e1e607929b270380d52"
+            "combined": "466a53017f20e8549b06077cc91b8356"
+        }
+    },
+    {
+        "name": "IA Sem Servidor",
+        "id": "ia-sem-servidor",
+        "version": "1.0",
+        "checksum": {
+            "html": "69546a308b90be5ef23fd58ea6b1b0a5",
+            "css": "",
+            "combined": "69546a308b90be5ef23fd58ea6b1b0a5"
         }
     }
 ]

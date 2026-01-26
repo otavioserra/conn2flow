@@ -14,6 +14,7 @@ This folder contains all detailed technical documentation of the Conn2Flow proje
 - **`CONN2FLOW-RESOURCES-SYSTEM.md`** - Complete guide on the Resources System (Global, Modules, Tools)
 - **`CONN2FLOW-MODULES-DETAILED.md`** - Module development and structure
 - **`CONN2FLOW-ROUTING-DETAILED.md`** - Detailed routing system
+- **`CONN2FLOW-GLOBAL-VARIABLES.md`** - Complete glossary of system global variables (@[[FUNCTION#VARIABLE]]@)
 - **`CONN2FLOW-EXPORT-AUTOMATION.md`** - Automation and validation of resource export
 - **`CONN2FLOW-EXPORT-HISTORY.md`** - History of decisions and learnings from the export cycle
 - **`CONN2FLOW-CSS-FRAMEWORK.md`** - CSS Framework System (TailwindCSS and FomanticUI)

@@ -378,5 +378,15 @@
             "css": "dbbb4cd4d53f57501359b47c85548800",
             "combined": "2c29227d3b3369cc073555823cdb8f20"
         }
+    },
+    {
+        "name": "AI Without Server",
+        "id": "ia-sem-servidor",
+        "version": "1.0",
+        "checksum": {
+            "html": "e9e9ff57284ea55ed987d6ada66cd35c",
+            "css": "",
+            "combined": "e9e9ff57284ea55ed987d6ada66cd35c"
+        }
     }
 ]

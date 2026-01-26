@@ -524,10 +524,30 @@ plugins/
 
 ### Dynamic Variables
 
-#### 🔄 Format:
+#### 🔄 Storage Format (Backend):
 ```html
 @[[variable-id]]@
 ```
+
+**Important**: This format `@[[...]]@` is used internally by the system:
+- ✅ Database
+- ✅ Resource files (`.html`, `.css`)
+- ✅ Processing by `gestor.php`
+
+#### ✏️ Editing Format (Frontend):
+```html
+[[variable-id]]
+```
+
+**Important**: This format `[[...]]` (without `@`) is used for editing:
+- ✅ User interface
+- ✅ Edit forms
+- ✅ Visual HTML editor
+
+#### 🔄 Automatic Conversion:
+- **Load**: `@[[variable]]@` → `[[variable]]` (Backend → Frontend)
+- **Save**: `[[variable]]` → `@[[variable]]@` (Frontend → Backend)
+- **Implementation**: Middleware in modules (e.g., `admin-templates.php`)
 
 #### 📋 Main Global Examples:
 ```html
@@ -537,6 +557,8 @@ plugins/
 @[[page#title]]@             <!-- Page title -->
 @[[component#menu]]@         <!-- System menu -->
 ```
+
+**Note**: Complete documentation in [`CONN2FLOW-GLOBAL-VARIABLES.md`](CONN2FLOW-GLOBAL-VARIABLES.md)
 
 #### ⚠️ CRITICAL Variable:
 **`@[[page#body]]@`** - This is the most important one!

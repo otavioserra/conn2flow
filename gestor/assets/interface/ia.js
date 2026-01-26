@@ -226,12 +226,10 @@ $(document).ready(function () {
             $('.ai-prompt-clear').removeClass('disabled');
             if (actualPromptId !== null) $('.ai-prompt-edit').removeClass('disabled');
             if (actualPromptId !== null) $('.ai-prompt-del').removeClass('disabled');
-            $('.ai-prompt-new').removeClass('disabled');
         } else {
             $('.ai-prompt-clear').addClass('disabled');
             if (actualPromptId !== null) $('.ai-prompt-edit').addClass('disabled');
             if (actualPromptId !== null) $('.ai-prompt-del').addClass('disabled');
-            $('.ai-prompt-new').addClass('disabled');
         }
     });
 

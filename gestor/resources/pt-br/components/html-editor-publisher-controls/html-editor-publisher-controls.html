@@ -46,11 +46,15 @@
         <div class="header">Variáveis Não Encontradas</div>
         <p>Algumas variáveis do Publisher não foram encontradas no template.</p>
         <div class="ui buttons">
-            <div class="ui button green" id="add-all-variables-skeleton">
+            <div class="ui button green" id="add-all-variables-skeleton"
+                data-tooltip="Clique para Incluir todas as variáveis no Template usando Skeleton (modelos prontos)"
+                data-position="top left" data-inverted="">
                 <i class="plus icon"></i>
                 Incluir Todas (Skeleton)
             </div>
-            <div class="ui button blue" id="add-all-variables-ai">
+            <div class="ui button blue" id="add-all-variables-ai"
+                data-tooltip="Clique para Gerar todas as variáveis no Template usando Assistente de IA"
+                data-position="top left" data-inverted="">
                 <i class="magic icon"></i>
                 Gerar com IA
             </div>
@@ -114,16 +118,18 @@
             <td class="center aligned">
                 <div class="ui buttons mini hep-val-options-buttons hep-initially-hidden">
                     <div class="ui button green add-variable-skeleton" data-type="#val-type#" data-id="#val-id#"
-                        data-tooltip="Adicionar variável usando Skeleton" data-position="top right" data-inverted="">
+                        data-tooltip="Clique para Adicionar esta variável no Template usando Skeleton (modelos prontos)"
+                        data-position="top right" data-inverted="">
                         <i class="plus icon"></i>
                     </div>
                     <div class="ui button blue add-variable-ai" data-type="#val-type#" data-id="#val-id#"
-                        data-tooltip="Adicionar variável usando IA" data-position="top right" data-inverted="">
+                        data-tooltip="Clique para Adicionar esta variável no Template usando Assistente de IA"
+                        data-position="top right" data-inverted="">
                         <i class="magic icon"></i>
                     </div>
                 </div>
                 <div class="ui button icon red remove-variable-skeleton hep-val-options-ok hep-initially-hidden"
-                    data-type="#val-type#" data-id="#val-id#" data-tooltip="Remover Variável do Template"
+                    data-type="#val-type#" data-id="#val-id#" data-tooltip="Remover esta Variável do Template"
                     data-position="top right" data-inverted="">
                     <i class="trash icon"></i>
                 </div>
