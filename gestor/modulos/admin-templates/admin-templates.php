@@ -441,6 +441,18 @@ function admin_templates_editar(){
 			"WHERE template_id='".$id."' AND language='".$_GESTOR['linguagem-codigo']."' AND status!='D'"
 		);
 
+		// Preencher dados do publisher
+		if(isset($publisher)){
+			$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], [
+				'#publisher-name#' => $publisher[0]['name'],
+				'#publisher-id#' => '?id='.$publisher[0]['id'],
+			]);
+
+			$cel_nome = 'publisher-no-link'; $_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		} else {
+			$cel_nome = 'publisher-has-link'; $_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		}
+
 		// Incluir o Componente Editor HTML na página
 
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([

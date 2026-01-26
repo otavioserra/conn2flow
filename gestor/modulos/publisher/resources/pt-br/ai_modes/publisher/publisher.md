@@ -14,8 +14,13 @@ CSS gerado numa interação anterior:
 ```css
 {{css}}
 ```
-Variáveis disponíveis para incluir no template (nome_da_variavel | tipo_de_dado).
-Explicação breve de cada tipo de dado (tipo_de_dado | descrição):
+Variáveis disponíveis para incluir no template formatação:
+[variables] // Lista de variáveis abaixo uma por linha (1-n)
+nome_da_variavel | tipo_de_dado
+[description] // Descrição breve de cada uma por linha (1-m)
+tipo_de_dado | descrição
+
+Variáveis disponíveis para inclusão:
 ```variables
 {{variables}}
 ```

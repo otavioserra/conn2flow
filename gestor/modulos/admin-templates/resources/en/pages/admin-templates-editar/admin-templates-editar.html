@@ -17,6 +17,39 @@
     </div>
 </div>
 <div class="field">
+    <label>Linked Publisher</label>
+    <span>
+        <!-- publisher-has-link < -->
+        <h3 class="ui header">
+            <i class="bullhorn icon"></i>
+            <div class="content">
+                #publisher-name#
+            </div>
+        </h3>
+        <a class="ui button brown" href="@[[pagina#url-raiz]]@publisher/editar/#publisher-id#"
+            data-tooltip="Click to edit the publisher" data-position="top left" data-inverted="">
+            <i class="edit icon"></i>
+            Edit Publisher
+        </a><!-- publisher-has-link > -->
+        <!-- publisher-no-link < -->
+        <div class="ui icon message visible info">
+            <i class="info circle icon"></i>
+            <div class="content">
+                <div class="header">
+                    No Linked Publisher
+                </div>
+                <p>This record is not linked to any publisher.</p>
+                <br>
+                <a class="ui button blue" href="@[[pagina#url-raiz]]@publisher/adicionar">
+                    <i class="plus icon"></i>
+                    Create New Publisher
+                </a>
+            </div>
+        </div>
+        <!-- publisher-no-link > -->
+    </span>
+</div>
+<div class="field">
     <label>#form-template-content-label#</label>
     #html-editor#
 </div>

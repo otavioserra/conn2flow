@@ -14,8 +14,13 @@ CSS generated in a previous interaction:
 ```css
 {{css}}
 ```
-Available variables for use in the template (variable_name | type_of_data).
-Brief description of each data type (type_of_data | description):
+Available variables to include in the template formatting:
+[variables] // List of variables below one per line (1-n)
+variable_name | type_of_data
+[description] // Brief description of each per line (1-m)
+type_of_data | description
+
+Variables available for inclusion:
 ```variables
 {{variables}}
 ```

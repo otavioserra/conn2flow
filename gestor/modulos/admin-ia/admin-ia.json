@@ -13,7 +13,7 @@
     "apis": {
         "gemini": {
             "urlGenerateContent": "https:\/\/generativelanguage.googleapis.com\/v1beta\/{MODEL}:generateContent?key={API_KEY}",
-            "defaultModel": "models\/gemini-2.5-flash"
+            "defaultModel": "models\/gemini-3-flash-preview"
         }
     },
     "resources": {

@@ -51,12 +51,6 @@ function html_editor_publisher_controls($params = false){
 
 		// Remover blocos desnecessários
 		$cel_nome = 'publisher-no-link'; $html_editor_publisher_controls = modelo_tag_del($html_editor_publisher_controls,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
-
-		// Preencher dados do publisher
-		$html_editor_publisher_controls = modelo_var_troca($html_editor_publisher_controls, [
-			'#publisher-name#' => $publisher['name'],
-			'#publisher-id#' => '?id='.$publisher['id'],
-		]);
 	} else {
 		$cel_nome = 'publisher-has-link'; $html_editor_publisher_controls = modelo_tag_del($html_editor_publisher_controls,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
 	}
@@ -437,7 +431,7 @@ function html_editor_ajax_ia_requests(){
 	$framework_css = $_REQUEST['data']['framework_css'] ?? '';
 	$sessao_id = $_REQUEST['data']['sessao_id'] ?? '';
 	$sessao_opcao = $_REQUEST['data']['sessao_opcao'] ?? '';
-	$target = $_REQUEST['data']['target'] ?? '';
+	
 
 	// Modificar o modo IA antes de enviar
 	$modo = $_REQUEST['mode'] ?? '';
@@ -447,6 +441,8 @@ function html_editor_ajax_ia_requests(){
 	$modo = modelo_var_troca_tudo($modo,'{{framework_css}}',$framework_css);
 
 	// Modificar o modo por target
+	$target = $_REQUEST['target'] ?? '';
+
 	switch($target){
 		case 'publisher':
 			$publisher_variables = $_REQUEST['data']['publisher_variables'] ?? '';
@@ -459,21 +455,30 @@ function html_editor_ajax_ia_requests(){
                 'image' => gestor_variaveis(Array('id' => 'hep-variable-type-image-description'))
             ];
 
-			$variables = '';
+			$types_skeleton_found = [];
+
+			$variables = "[variables]\n";
 
             if($publisher_variables && is_array($publisher_variables)){
                 foreach($publisher_variables as $variable){
                     $var_name = $variable['name'] ?? '';
                     $var_type = $variable['type'] ?? '';
+
+					// Formatar variável no formato [[publisher#type#name]]
+					$var_name = '[[publisher#' . $var_type . '#' . $var_name . ']]';
                     
                     if($var_name && $var_type){
                         $variables .= $var_name . ' | ' . $var_type . "\n";
+						$types_skeleton_found[$var_type] = true;
                     }
                 }
             }
 
+			$variables .= "[description]\n";
+
             // Adicionar descrições dos tipos
             foreach($types_skeleton as $type => $desc){
+				if(!isset($types_skeleton_found[$type]))continue;
                 $variables .= $type . ' | ' . $desc . "\n";
             }
 

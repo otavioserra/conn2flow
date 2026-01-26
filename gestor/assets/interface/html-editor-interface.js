@@ -1294,6 +1294,9 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         } else {
             $('.page-modification-publisher').addClass('hidden');
         }
+
+        // Atualizar menu de sessões.
+        menuPages('sessao', { add_after: true, alertar: true });
     }
 
     $(document.body).on('mouseup tap', '.page-modification-publisher .delete.icon', function (e) {
@@ -1325,9 +1328,14 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
     $(document.body).on('mouseup tap', '#add-all-variables-ai', function (e) {
         if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
-        $('.add-variable-ai').each(function () {
-            var variavel = $(this).attr('data-id');
-            var tipo = $(this).attr('data-type');
+        let missingRows = $('.hep-variables-table tbody tr').filter(function () {
+            return !$(this).find('.hep-val-found-times').hasClass('hep-initially-hidden');
+        });
+
+        missingRows.each(function () {
+            let btn = $(this).find('.add-variable-ai');
+            var variavel = btn.attr('data-id');
+            var tipo = btn.attr('data-type');
 
             if (variavel && tipo) {
                 var exists = gestor.html_editor.publisher_variables.find(v => v.name === variavel && v.type === tipo);
@@ -1406,15 +1414,24 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         }
     }
 
-    function menuPages(opcao, alertar = false) {
+    function menuPages(opcao, params = {}) {
         total_sessoes = totalDeSessoes();
 
         if (opcao === 'sessao') {
             if (total_sessoes > 0) {
                 menuDeSessoes();
                 $('.page-modification-container').removeClass('hidden');
+
+                if (params.add_after) {
+                    setTimeout(function () {
+                        $('.ui.dropdown.page-modification-target-select').dropdown('set selected', 'sessao', true);
+
+                        const checkbox = $('input[name="page-modification-section-option"][value="new-after"]').parent();
+                        checkbox.checkbox('check');
+                    }, 1);
+                }
             } else {
-                if (alertar) $('#gestor-listener').trigger('alerta', { msg: 'Não foram detectadas sessões. Crie uma página nova e adicione sessões para utilizar esse recurso.' });
+                if (params.alertar) $('#gestor-listener').trigger('alerta', { msg: 'Não foram detectadas sessões. Crie uma página nova e adicione sessões para utilizar esse recurso.' });
                 $('.page-modification-container').addClass('hidden');
                 setTimeout(function () {
                     $('.ui.dropdown.page-modification-target-select').dropdown('set selected', 'tudo', true);
@@ -1624,7 +1641,7 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
     $('.ui.dropdown.page-modification-target-select')
         .dropdown({
             onChange: function (value, text, $selectedItem) {
-                menuPages(value, true);
+                menuPages(value, { alertar: true });
             }
         });
 
@@ -1644,6 +1661,17 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
             sessao_id,
             sessao_opcao
         });
+
+        // Resetar variáveis do publisher após a modificação
+        const alvo = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
+
+        switch (alvo) {
+            case 'publisher':
+                gestor.html_editor.publisher_variables = [];
+                $('.page-modification-publisher .ui.labels').empty();
+                $('.page-modification-publisher').addClass('hidden');
+                break;
+        }
 
         // Abrir o preview da página.
         contentPageTabChange('visualizacao-pagina');

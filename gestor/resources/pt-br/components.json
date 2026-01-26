@@ -292,11 +292,11 @@
     {
         "name": "IA Prompt",
         "id": "ia-prompt",
-        "version": "1.8",
+        "version": "1.9",
         "checksum": {
             "html": "d0e47f43ac76a591c1f2dcad697f96d3",
-            "css": "c0e38fffa143bbb5fcd30ca4541d5179",
-            "combined": "d58a3c8e8e632c6100dd5b8284924e1c"
+            "css": "24e13cebf149f7586770fa2d5bfcbbcd",
+            "combined": "3deac24dc74834cac70aea153d7318bc"
         }
     },
     {
@@ -332,11 +332,11 @@
     {
         "name": "HTML Editor Página Modificação",
         "id": "html-editor-page-modification",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "9ed1d82505c15c36fc87a38bc1d29a65",
+            "html": "1b0cc789caebe5f775edfa8917a24bc9",
             "css": "",
-            "combined": "9ed1d82505c15c36fc87a38bc1d29a65"
+            "combined": "1b0cc789caebe5f775edfa8917a24bc9"
         }
     },
     {
