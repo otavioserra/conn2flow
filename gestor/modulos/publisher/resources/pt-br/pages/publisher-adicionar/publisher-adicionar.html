@@ -80,17 +80,20 @@
     <!-- templates-todos-linkados-msg > -->
 </div>
 
-<a class="ui button blue" id="add-new-template" href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=publisher">
+<a class="ui button blue" id="add-new-template" href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=publisher"
+    data-tooltip="Clique para adicionar um novo template" data-position="top center" data-inverted="">
     <i class="plus icon"></i> Adicionar Novo Template
 </a>
 
 <a class="ui button brown hidden" id="edit-template"
-    href="@[[pagina#url-raiz]]@admin-templates/editar/?id=noticias-imagem-destaque">
+    href="@[[pagina#url-raiz]]@admin-templates/editar/?id=noticias-imagem-destaque"
+    data-tooltip="Clique para editar este template" data-position="top center" data-inverted="">
     <i class="edit icon"></i> Editar Template
 </a>
 
 <a class="ui button teal hidden" id="clone-template"
-    href="@[[pagina#url-raiz]]@admin-templates/clonar/?id=noticias-imagem-destaque">
+    href="@[[pagina#url-raiz]]@admin-templates/clonar/?id=noticias-imagem-destaque"
+    data-tooltip="Clique para clonar este template" data-position="top center" data-inverted="">
     <i class="clone icon"></i> Clonar Template
 </a>
 
@@ -140,7 +143,8 @@
 <input type="hidden" name="fields_schema">
 <div id="fields-schema-container"></div>
 
-<div id="add-field-btn" class="ui button green">
+<div id="add-field-btn" class="ui button green" data-tooltip="Clique para adicionar um novo campo"
+    data-position="top center" data-inverted="">
     <i class="plus icon"></i> Adicionar Campo
 </div>
 
@@ -192,9 +196,12 @@
                 </div>
             </div>
             <div class="two wide field">
-                <div class="ui icon right floated red button remove-field-btn"><i class="trash icon"></i></div>
-                <div class="ui icon right floated button move-down-btn hidden"><i class="arrow down icon"></i></div>
-                <div class="ui icon right floated button move-up-btn hidden"><i class="arrow up icon"></i></div>
+                <div class="ui icon right floated red button remove-field-btn" data-tooltip="Remover este campo"
+                    data-position="top center" data-inverted=""><i class="trash icon"></i></div>
+                <div class="ui icon right floated button move-down-btn hidden" data-tooltip="Mover para baixo"
+                    data-position="top center" data-inverted=""><i class="arrow down icon"></i></div>
+                <div class="ui icon right floated button move-up-btn hidden" data-tooltip="Mover para cima"
+                    data-position="top center" data-inverted=""><i class="arrow up icon"></i></div>
             </div>
         </div>
         <div class="field">
