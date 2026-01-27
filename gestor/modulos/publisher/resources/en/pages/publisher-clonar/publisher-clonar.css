@@ -1,0 +1,12 @@
+.template-options-wrapper{
+    min-height: 100px;
+}
+.hidden{
+    display: none !important;
+}
+.template-fields-list .item{
+    margin-bottom: 5px;
+}
+.ui.search>.results{
+    width: 30em;
+}

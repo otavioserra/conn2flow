@@ -2,5 +2,9 @@
     {
         "perfil": "administradores",
         "operacao": "modificar-permissao-da-pagina"
+    },
+    {
+        "perfil": "administradores",
+        "operacao": "modificar-permissao-do-publicador-da-pagina"
     }
 ]

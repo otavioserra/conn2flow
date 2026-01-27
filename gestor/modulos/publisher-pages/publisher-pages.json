@@ -47,7 +47,7 @@
                         "combined": "68b329da9893e34099c7d8ad5cb9c940"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/",
+                    "path": "publisher-pages\/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -55,30 +55,44 @@
                 {
                     "name": "Publicador Páginas - Editar",
                     "id": "publisher-pages-editar",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "2260ea647e5801389491427add84c002",
+                        "html": "ca26410d0e1ae02eab5d04365c1dbe65",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "233066a0b7ddd1b4e4ea3023b114f979"
+                        "combined": "f1c50c7638091d7641765a9cf7698332"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/editar/",
+                    "path": "publisher-pages\/editar\/",
                     "type": "system",
                     "option": "editar"
                 },
                 {
                     "name": "Publicador Páginas - Adicionar",
                     "id": "publisher-pages-adicionar",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "0b9f4533a2812f6b36fce41b04627752",
+                        "html": "b8d6f9dc48840b772b004dfdb29d1525",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "c7bd6fa61446f35d629d19cd07721b71"
+                        "combined": "f6da6bd55c7ae55b2799ecb308784848"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/adicionar/",
+                    "path": "publisher-pages\/adicionar\/",
                     "type": "system",
                     "option": "adicionar"
+                },
+                {
+                    "name": "Publisher Pages - Clone",
+                    "id": "publisher-pages-clonar",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "619a9c6e052756bd7c0df206ded0d07b",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "6dbf8060b1268b8e1f55f85575bd46e9"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-pages\/clonar\/",
+                    "type": "system",
+                    "option": "clonar"
                 }
             ],
             "variables": [
@@ -169,7 +183,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "Sem Permissão / Acesso Público",
+                    "value": "Sem Permissão \/ Acesso Público",
                     "type": "string"
                 },
                 {
@@ -184,7 +198,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "pelo menos uma '/' no final",
+                    "value": "pelo menos uma '\/' no final",
                     "type": "string"
                 },
                 {
@@ -226,6 +240,16 @@
                     "id": "lista-tipo-label",
                     "value": "Tipo",
                     "type": "string"
+                },
+                {
+                    "id": "form-publisher-label",
+                    "value": "Publicador",
+                    "type": "string"
+                },
+                {
+                    "id": "form-publisher-placeholder",
+                    "value": "Selecione um publicador",
+                    "type": "string"
                 }
             ]
         },
@@ -251,7 +275,7 @@
                         "combined": "68b329da9893e34099c7d8ad5cb9c940"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/",
+                    "path": "publisher-pages\/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -259,30 +283,44 @@
                 {
                     "name": "Publisher Pages - Edit",
                     "id": "publisher-pages-editar",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "2260ea647e5801389491427add84c002",
+                        "html": "ca26410d0e1ae02eab5d04365c1dbe65",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "233066a0b7ddd1b4e4ea3023b114f979"
+                        "combined": "f1c50c7638091d7641765a9cf7698332"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/editar/",
+                    "path": "publisher-pages\/editar\/",
                     "type": "system",
                     "option": "editar"
                 },
                 {
                     "name": "Publisher Pages - Add",
                     "id": "publisher-pages-adicionar",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "0b9f4533a2812f6b36fce41b04627752",
+                        "html": "b8d6f9dc48840b772b004dfdb29d1525",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "c7bd6fa61446f35d629d19cd07721b71"
+                        "combined": "f6da6bd55c7ae55b2799ecb308784848"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/adicionar/",
+                    "path": "publisher-pages\/adicionar\/",
                     "type": "system",
                     "option": "adicionar"
+                },
+                {
+                    "name": "Publisher Pages - Clone",
+                    "id": "publisher-pages-clonar",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "619a9c6e052756bd7c0df206ded0d07b",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "6dbf8060b1268b8e1f55f85575bd46e9"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-pages\/clonar\/",
+                    "type": "system",
+                    "option": "clonar"
                 }
             ],
             "variables": [
@@ -373,7 +411,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "No Permission / Public Access",
+                    "value": "No Permission \/ Public Access",
                     "type": "string"
                 },
                 {
@@ -388,7 +426,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "at least one '/' at the end",
+                    "value": "at least one '\/' at the end",
                     "type": "string"
                 },
                 {
@@ -429,6 +467,16 @@
                 {
                     "id": "lista-tipo-label",
                     "value": "Type",
+                    "type": "string"
+                },
+                {
+                    "id": "form-publisher-label",
+                    "value": "Publisher",
+                    "type": "string"
+                },
+                {
+                    "id": "form-publisher-placeholder",
+                    "value": "Select a publisher",
                     "type": "string"
                 }
             ]

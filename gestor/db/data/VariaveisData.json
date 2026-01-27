@@ -10035,6 +10035,24 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-publisher-label",
+        "valor": "Publicador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-publisher-placeholder",
+        "valor": "Selecione um publicador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "publisher-pages",
         "id": "form-name-label",
@@ -10291,6 +10309,24 @@
         "modulo": "publisher-pages",
         "id": "lista-tipo-label",
         "valor": "Type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-pages",
+        "id": "form-publisher-label",
+        "valor": "Publisher",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-pages",
+        "id": "form-publisher-placeholder",
+        "valor": "Select a publisher",
         "tipo": "string",
         "grupo": null,
         "descricao": null

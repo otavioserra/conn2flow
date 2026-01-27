@@ -16,5 +16,23 @@
         "status": "A",
         "versao": " 1",
         "language": "en"
+    },
+    {
+        "modulo_id": "publisher-pages",
+        "nome": "Modificar Permissão do Publicador da Página",
+        "id": "modificar-permissao-do-publicador-da-pagina",
+        "operacao": "permissao-pagina",
+        "status": "A",
+        "versao": " 1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_id": "publisher-pages",
+        "nome": "Modify Page Publisher Permission",
+        "id": "modificar-permissao-do-publicador-da-pagina",
+        "operacao": "permissao-pagina",
+        "status": "A",
+        "versao": " 1",
+        "language": "en"
     }
 ]

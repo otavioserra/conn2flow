@@ -104,6 +104,20 @@
                         "css": "e56c0a44bba60df651f14858fd9a541d",
                         "combined": "c518b6335432976e605c552bfe77b495"
                     }
+                },
+                {
+                    "name": "Publicador Definições - Clonar",
+                    "id": "publisher-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "1e770f09eeaa43b90cc5f04dfebb8e00",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "b0cc33d34faa42c3fa48e2c856915735"
+                    }
                 }
             ],
             "variables": [
@@ -221,6 +235,20 @@
                         "html": "eac0ddf3376218acb321b8619b1acf22",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
                         "combined": "9d5c6647674d467de3f838c1f4dccb2d"
+                    }
+                },
+                {
+                    "name": "Publisher Definitions - Clone",
+                    "id": "publisher-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "3912b92c3f0ee4c70275bc4d9f3705f0",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "a1746e7468d9383dd13da076486e8883"
                     }
                 }
             ],

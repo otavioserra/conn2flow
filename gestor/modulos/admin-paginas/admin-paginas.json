@@ -134,7 +134,7 @@
                         "combined": "68b329da9893e34099c7d8ad5cb9c940"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas/",
+                    "path": "admin-paginas\/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -149,7 +149,7 @@
                         "combined": "233066a0b7ddd1b4e4ea3023b114f979"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas/editar/",
+                    "path": "admin-paginas\/editar\/",
                     "type": "system",
                     "option": "editar"
                 },
@@ -163,9 +163,23 @@
                         "combined": "c7bd6fa61446f35d629d19cd07721b71"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas/adicionar/",
+                    "path": "admin-paginas\/adicionar\/",
                     "type": "system",
                     "option": "adicionar"
+                },
+                {
+                    "name": "Admin Páginas - Clonar",
+                    "id": "admin-paginas-clonar",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "970acbda332614be28f3ad3e1f6ee90d",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "5d35b650710c8e8278e2f6bd386a85fe"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas\/clonar\/",
+                    "type": "system",
+                    "option": "clonar"
                 }
             ],
             "variables": [
@@ -256,7 +270,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "Sem Permissão / Acesso Público",
+                    "value": "Sem Permissão \/ Acesso Público",
                     "type": "string"
                 },
                 {
@@ -271,7 +285,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "pelo menos uma '/' no final",
+                    "value": "pelo menos uma '\/' no final",
                     "type": "string"
                 },
                 {
@@ -414,7 +428,7 @@
                         "combined": "68b329da9893e34099c7d8ad5cb9c940"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas/",
+                    "path": "admin-paginas\/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -429,7 +443,7 @@
                         "combined": "233066a0b7ddd1b4e4ea3023b114f979"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas/editar/",
+                    "path": "admin-paginas\/editar\/",
                     "type": "system",
                     "option": "editar"
                 },
@@ -443,9 +457,23 @@
                         "combined": "c7bd6fa61446f35d629d19cd07721b71"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas/adicionar/",
+                    "path": "admin-paginas\/adicionar\/",
                     "type": "system",
                     "option": "adicionar"
+                },
+                {
+                    "name": "Admin Pages - Clone",
+                    "id": "admin-paginas-clonar",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "970acbda332614be28f3ad3e1f6ee90d",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "5d35b650710c8e8278e2f6bd386a85fe"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas\/clonar\/",
+                    "type": "system",
+                    "option": "clonar"
                 }
             ],
             "components": [
@@ -548,7 +576,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "No Permission / Public Access",
+                    "value": "No Permission \/ Public Access",
                     "type": "string"
                 },
                 {
@@ -563,7 +591,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "at least one '/' at the end",
+                    "value": "at least one '\/' at the end",
                     "type": "string"
                 },
                 {
