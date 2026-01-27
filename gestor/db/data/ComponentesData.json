@@ -1246,5 +1246,31 @@
         "versao": 1,
         "file_version": "1.4",
         "checksum": "{\"html\":\"fdadfd1f10966eac979356e355d7746d\",\"css\":\"\",\"combined\":\"fdadfd1f10966eac979356e355d7746d\"}"
+    },
+    {
+        "nome": "Publicador Campos",
+        "id": "publisher-fields",
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "html": "<div class=\"publisher-fields-controller-skeletons-wrapper\" style=\"display: none;\">\r\n    <!-- publisher-field < -->\r\n    <div class=\"field\">\r\n        <label>[[field-label]]<\/label>\r\n        [[field-type-controller]]\r\n    <\/div><!-- publisher-field > -->\r\n\r\n    <!-- publisher-field-controller-text < --><input type=\"text\" name=\"[[field-name]]\"\r\n        placeholder=\"[[field-placeholder]]\" value=\"[[field-value]]\"><!-- publisher-field-controller-text > -->\r\n\r\n    <!-- publisher-field-controller-textarea < --><textarea name=\"[[field-name]]\" placeholder=\"[[field-placeholder]]\"\r\n        rows=\"4\">[[field-value]]<\/textarea><!-- publisher-field-controller-textarea > -->\r\n\r\n    <!-- publisher-field-controller-html < --><span>\r\n        <div class=\"ui segment quill-editor-container\">\r\n            <div class=\"quill-editor\">\r\n                [[field-value]]\r\n            <\/div>\r\n        <\/div>\r\n        <input type=\"hidden\" name=\"[[field-name]]\" value=\"[[field-value]]\">\r\n    <\/span><!-- publisher-field-controller-html > -->\r\n\r\n    <!-- publisher-field-controller-image < --><span>[[field-name]]<\/span><!-- publisher-field-controller-image > -->\r\n<\/div>\r\n\r\n<div class=\"publisher-fields-show-skeletons-wrapper\" style=\"display: none;\">\r\n    <!-- publisher-field-show-html < -->\r\n    <div class=\"ql-container ql-snow\">\r\n        <div class=\"ql-editor\">\r\n            [[field-value]]\r\n        <\/div>\r\n    <\/div><!-- publisher-field-show-html > -->\r\n<\/div>",
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"26d0fa5780d7d9e194e0e1a70d2157b9\",\"css\":\"\",\"combined\":\"26d0fa5780d7d9e194e0e1a70d2157b9\"}"
+    },
+    {
+        "nome": "Publisher Fields",
+        "id": "publisher-fields",
+        "language": "en",
+        "modulo": "publisher-pages",
+        "html": null,
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
     }
 ]

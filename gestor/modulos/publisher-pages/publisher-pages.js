@@ -1,5 +1,60 @@
 $(document).ready(function () {
 	if ($('#_gestor-interface-edit-dados').length > 0 || $('#_gestor-interface-insert-dados').length > 0) {
+		// ===== Quill editor
+		const quillEditors = {};
+		let quillEditorsCount = 0;
+
+		$('.quill-editor').each(function () {
+			quillEditorsCount++;
+
+			const quill = new Quill(this, {
+				theme: "snow",
+				modules: {
+					toolbar: {
+						container: [
+							[{ 'header': [1, 2, 3, 4, false] }],
+							['bold', 'italic', 'underline', 'strike'],
+							[{ 'color': [] }, { 'background': [] }],
+							['blockquote', 'code-block'],
+							[{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
+							['link'],
+							[{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+							[{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+							[{ 'align': [] }],
+							[{ 'direction': 'rtl' }],                         // text direction
+							['custom-fullscreen'] // Botão customizado
+						],
+						handlers: {
+							'custom-fullscreen': function () {
+								const editor = quill.root; // Referência ao root do Quill
+								const toolbar = quill.container.previousElementSibling; // Toolbar
+								editor.classList.toggle('fullscreen');
+								toolbar.classList.toggle('fullscreen');
+							}
+						}
+					}
+				}
+			});
+
+			document.addEventListener('keydown', function (e) {
+				if (e.key === 'Escape') {
+					const editor = quill.root;
+					const toolbar = quill.container.previousElementSibling;
+					editor.classList.remove('fullscreen');
+					toolbar.classList.remove('fullscreen');
+				}
+			});
+
+			quillEditors[quillEditorsCount] = quill;
+		});
+
+		$(document.body).on('mouseup tap', '.quill-get-html', function (e) {
+			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+			const html = $('.quill-editor-container').find('.ql-editor').html();
+			$('.quill-drop-html').find('.ql-editor').html(html);
+		});
+
 		// ===== Input delay
 
 		$.input_delay_to_change = function (p) {

@@ -26,7 +26,7 @@ function publisher_pages_publisher($publisher_id = null){
 			gestor_js_variavel_incluir('current_publisher_id',$publisher_item[0]['id']);
 			return $publisher_item[0]['id'];
 		}
-	} else {
+	} else if(isset($_REQUEST['publisher_id'])){
 		$publisher = banco_select_name
 		(
 			banco_campos_virgulas(Array(
@@ -180,13 +180,164 @@ function publisher_pages_adicionar(){
 		'alvos' => 'paginas',
 	]));
 
-	// Publisher ID
+	// ===== Publisher
+
 	$publisher_id = publisher_pages_publisher();
+
+	if($publisher_id){
+		$publisher = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'publisher',
+			'campos' => Array(
+				'fields_schema',
+			),
+			'extra' => 
+				"WHERE status='A' AND id='".$publisher_id."'"
+				.' AND language="'.$_GESTOR['linguagem-codigo'].'"'
+		));
+
+		if($publisher){
+			$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#publisher-id#', '?id='.$publisher_id);
+
+			$fields_schema = $publisher['fields_schema'];
+
+			$fields_schema_decoded = json_decode($fields_schema, true) ?: null;
+
+			if($fields_schema_decoded && isset($fields_schema_decoded['fields'])){
+				$fields = isset($fields_schema_decoded['fields']) ? $fields_schema_decoded['fields'] : null;
+				$template_map = isset($fields_schema_decoded['template_map']) ? $fields_schema_decoded['template_map'] : null;
+
+				if($fields){
+					$publisher_fields = gestor_componente(Array(
+						'id' => 'publisher-fields',
+						'modulo' => $_GESTOR['modulo-id'],
+					));
+
+					// Pegar as células do template de fields
+					$cel_nome = 'publisher-field'; $cel[$cel_nome] = modelo_tag_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $publisher_fields = modelo_tag_troca_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					$cel_nome = 'publisher-field-controller-text'; $cel[$cel_nome] = modelo_tag_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $publisher_fields = modelo_tag_troca_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					$cel_nome = 'publisher-field-controller-textarea'; $cel[$cel_nome] = modelo_tag_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $publisher_fields = modelo_tag_troca_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					$cel_nome = 'publisher-field-controller-html'; $cel[$cel_nome] = modelo_tag_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $publisher_fields = modelo_tag_troca_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+					$cel_nome = 'publisher-field-controller-image'; $cel[$cel_nome] = modelo_tag_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $publisher_fields = modelo_tag_troca_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+
+					foreach($fields as $field){
+						$cel_nome = 'publisher-field-controller-'.$field['type']; 
+						$cel_field_type = $cel[$cel_nome];
+
+						$cel_field = $cel['publisher-field'];
+						
+						// Campos específicos por tipo
+						
+						switch($field['type']){
+							case 'image':
+								$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', '#imagepick-field_'.$field['id'].'#');
+
+								$camposInterfacePersonalizado[] = Array(
+									'tipo' => 'imagepick',
+									'id' => 'field_'.$field['id'],
+									'nome' => 'field_'.$field['id'],
+								);
+
+								break;
+							default:
+								$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', 'field_'.$field['id']);
+						}
+						
+						$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', '');
+
+						$cel_field = modelo_var_troca($cel_field, '[[field-type-controller]]', $cel_field_type);
+						// Campos padrão para todos os tipos
+						$cel_field = modelo_var_troca($cel_field, '[[field-label]]', $field['label']);
+
+						$_GESTOR['pagina'] = modelo_var_in($_GESTOR['pagina'],'<!-- publisher-fields -->',$cel_field);
+					}
+				}
+			}
+		}
+	} else {
+		// Remover a seção de campos do publicador
+		$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- publisher-fields-container < -->','<!-- publisher-fields-container > -->');
+	}
+
+	// ===== Inclusão Quill
+
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" />');
+	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.min.js"></script>');
 
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
 	
+	// ===== Campos da Interface
+
+	$camposInterfacePadrao = Array(
+		Array(
+			'tipo' => 'select',
+			'id' => 'layout',
+			'nome' => 'layout',
+			'procurar' => true,
+			'limpar' => true,
+			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-layout-placeholder')),
+			'tabela' => Array(
+				'nome' => 'layouts',
+				'campo' => 'nome',
+				'id_numerico' => 'id',
+				'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
+			),
+		),
+		Array(
+			'tipo' => 'select',
+			'id' => 'module',
+			'nome' => 'modulo',
+			'procurar' => true,
+			'limpar' => true,
+			'selectClass' => 'gestorModule',
+			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
+			'tabela' => Array(
+				'nome' => 'modulos',
+				'campo' => 'nome',
+				'id_numerico' => 'id',
+				'where' => "modulo_grupo_id!='bibliotecas' AND language='".$_GESTOR['linguagem-codigo']."'",
+			),
+		),
+		Array(
+			'tipo' => 'select',
+			'id' => 'type',
+			'nome' => 'tipo',
+			'selectClass' => 'pagina-tipo',
+			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-placeholder')),
+			'dados' => $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosTipo'],
+			'valor_selecionado' => 'pagina',
+		),
+		Array(
+			'tipo' => 'select',
+			'id' => 'framework-css',
+			'nome' => 'framework_css',
+			'selectClass' => 'frameworkCSS',
+			'valor_selecionado' => 'fomantic-ui',
+			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
+			'dados' => $modulo['selectDadosFrameworkCSS'],
+		),
+		Array(
+			'tipo' => 'select',
+			'id' => 'publisher',
+			'nome' => 'publisher',
+			'procurar' => true,
+			'limpar' => true,
+			'selectClass' => 'publisherDropdown',
+			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-publisher-placeholder')),
+			'tabela' => Array(
+				'nome' => 'publisher',
+				'campo' => 'name',
+				'id_numerico' => 'id',
+				'id_selecionado' => isset($publisher_id)? $publisher_id : null,
+				'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
+			),
+		),
+	);
+
+	$camposInterface = array_merge($camposInterfacePadrao, $camposInterfacePersonalizado ?? Array());
+
 	// ===== Interface adicionar finalizar opções
 	
 	$_GESTOR['interface']['adicionar']['finalizar'] = Array(
@@ -234,71 +385,7 @@ function publisher_pages_adicionar(){
 					'identificador' => 'framework_css',
 				)
 			),
-			'campos' => Array(
-				Array(
-					'tipo' => 'select',
-					'id' => 'layout',
-					'nome' => 'layout',
-					'procurar' => true,
-					'limpar' => true,
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-layout-placeholder')),
-					'tabela' => Array(
-						'nome' => 'layouts',
-						'campo' => 'nome',
-						'id_numerico' => 'id',
-						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
-					),
-				),
-				Array(
-					'tipo' => 'select',
-					'id' => 'module',
-					'nome' => 'modulo',
-					'procurar' => true,
-					'limpar' => true,
-					'selectClass' => 'gestorModule',
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
-					'tabela' => Array(
-						'nome' => 'modulos',
-						'campo' => 'nome',
-						'id_numerico' => 'id',
-						'where' => "modulo_grupo_id!='bibliotecas' AND language='".$_GESTOR['linguagem-codigo']."'",
-					),
-				),
-				Array(
-					'tipo' => 'select',
-					'id' => 'type',
-					'nome' => 'tipo',
-					'selectClass' => 'pagina-tipo',
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-placeholder')),
-					'dados' => $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosTipo'],
-					'valor_selecionado' => 'pagina',
-				),
-				Array(
-					'tipo' => 'select',
-					'id' => 'framework-css',
-					'nome' => 'framework_css',
-					'selectClass' => 'frameworkCSS',
-					'valor_selecionado' => 'fomantic-ui',
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
-					'dados' => $modulo['selectDadosFrameworkCSS'],
-				),
-				Array(
-					'tipo' => 'select',
-					'id' => 'publisher',
-					'nome' => 'publisher',
-					'procurar' => true,
-					'limpar' => true,
-					'selectClass' => 'publisherDropdown',
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-publisher-placeholder')),
-					'tabela' => Array(
-						'nome' => 'publisher',
-						'campo' => 'name',
-						'id_numerico' => 'id',
-						'id_selecionado' => isset($publisher_id)? $publisher_id : null,
-						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
-					),
-				),
-			)
+			'campos' => $camposInterface
 		)
 	);
 }

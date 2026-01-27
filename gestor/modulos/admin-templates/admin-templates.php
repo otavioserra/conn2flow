@@ -26,7 +26,7 @@ function admin_templates_alvo_ia($template_id = null){
 			gestor_js_variavel_incluir('current_target_ai',$alvo_item[0]['target']);
 			return $alvo_item[0]['target'];
 		}
-	} else {
+	} else if(isset($_REQUEST['target'])){
 		$alvos_ia = banco_select_name
 		(
 			banco_campos_virgulas(Array(

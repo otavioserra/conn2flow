@@ -36,6 +36,18 @@
                     "valor": "pagina"
                 }
             ],
+            "components": [
+                {
+                    "name": "Publicador Campos",
+                    "id": "publisher-fields",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "26d0fa5780d7d9e194e0e1a70d2157b9",
+                        "css": "",
+                        "combined": "26d0fa5780d7d9e194e0e1a70d2157b9"
+                    }
+                }
+            ],
             "pages": [
                 {
                     "name": "Publicador Páginas",
@@ -69,11 +81,11 @@
                 {
                     "name": "Publicador Páginas - Adicionar",
                     "id": "publisher-pages-adicionar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "b8d6f9dc48840b772b004dfdb29d1525",
-                        "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "f6da6bd55c7ae55b2799ecb308784848"
+                        "html": "09b166589e932aa4161b5cd125b818b2",
+                        "css": "742db9dbae5440ca575804b601e754cd",
+                        "combined": "7b3337487fc1ab531413df6880c9c4c8"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages\/adicionar\/",
@@ -262,6 +274,18 @@
                 {
                     "texto": "Page",
                     "valor": "pagina"
+                }
+            ],
+            "components": [
+                {
+                    "name": "Publisher Fields",
+                    "id": "publisher-fields",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
                 }
             ],
             "pages": [

@@ -1,0 +1,33 @@
+<div class="publisher-fields-controller-skeletons-wrapper" style="display: none;">
+    <!-- publisher-field < -->
+    <div class="field">
+        <label>[[field-label]]</label>
+        [[field-type-controller]]
+    </div><!-- publisher-field > -->
+
+    <!-- publisher-field-controller-text < --><input type="text" name="[[field-name]]"
+        placeholder="[[field-placeholder]]" value="[[field-value]]"><!-- publisher-field-controller-text > -->
+
+    <!-- publisher-field-controller-textarea < --><textarea name="[[field-name]]" placeholder="[[field-placeholder]]"
+        rows="4">[[field-value]]</textarea><!-- publisher-field-controller-textarea > -->
+
+    <!-- publisher-field-controller-html < --><span>
+        <div class="ui segment quill-editor-container">
+            <div class="quill-editor">
+                [[field-value]]
+            </div>
+        </div>
+        <input type="hidden" name="[[field-name]]" value="[[field-value]]">
+    </span><!-- publisher-field-controller-html > -->
+
+    <!-- publisher-field-controller-image < --><span>[[field-name]]</span><!-- publisher-field-controller-image > -->
+</div>
+
+<div class="publisher-fields-show-skeletons-wrapper" style="display: none;">
+    <!-- publisher-field-show-html < -->
+    <div class="ql-container ql-snow">
+        <div class="ql-editor">
+            [[field-value]]
+        </div>
+    </div><!-- publisher-field-show-html > -->
+</div>
