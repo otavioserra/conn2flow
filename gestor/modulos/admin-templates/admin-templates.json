@@ -64,11 +64,11 @@
                     "path": "admin-templates\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "76c0e32d1f4e0e3ed7b32423e72695f8",
+                        "html": "7f6fea575833b80412de500c4fd5c322",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "703783f19b15b3299d13582cc224a647"
+                        "combined": "f70fbe5883cd98cb4d9f972137b71c6c"
                     }
                 },
                 {
@@ -164,11 +164,11 @@
                     "path": "admin-templates\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "76c0e32d1f4e0e3ed7b32423e72695f8",
+                        "html": "748d64934f0314875b4338f98e85d55f",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "703783f19b15b3299d13582cc224a647"
+                        "combined": "4abf580191ee17d5d1e63e7fe79bf938"
                     }
                 },
                 {

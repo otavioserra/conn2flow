@@ -312,11 +312,11 @@
     {
         "name": "HTML Editor",
         "id": "html-editor",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "0596ba32e1189f9a81ff39c2f10cd7cd",
+            "html": "f82952fae102ae83e832da7daedd3665",
             "css": "",
-            "combined": "0596ba32e1189f9a81ff39c2f10cd7cd"
+            "combined": "f82952fae102ae83e832da7daedd3665"
         }
     },
     {
@@ -332,11 +332,11 @@
     {
         "name": "HTML Editor Page Modification",
         "id": "html-editor-page-modification",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "7d7b43a1ab70dc71c9cd34dd5344b750",
+            "html": "c98d9ed016acefeb0f182527df53aaba",
             "css": "",
-            "combined": "7d7b43a1ab70dc71c9cd34dd5344b750"
+            "combined": "c98d9ed016acefeb0f182527df53aaba"
         }
     },
     {
@@ -352,11 +352,11 @@
     {
         "name": "HTML Editor Templates",
         "id": "html-editor-modelos",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "554e814574c6eb0f46912f96a0b9ef3a",
+            "html": "498abecc3f758f62f022c1d0df654935",
             "css": "dea9254a7fff284b390256e4fbc84984",
-            "combined": "4e5811af0ca959f69ace10fdb8773bfe"
+            "combined": "a248543bc362690c3c54159ec7a47495"
         }
     },
     {
@@ -372,11 +372,11 @@
     {
         "name": "HTML Editor Publisher Controls",
         "id": "html-editor-publisher-controls",
-        "version": "1.8",
+        "version": "1.9",
         "checksum": {
-            "html": "5db890703c01cb3cd5d6e191cadcca40",
+            "html": "ae3e163d4667a00dcf4d939c320978e3",
             "css": "dbbb4cd4d53f57501359b47c85548800",
-            "combined": "2c29227d3b3369cc073555823cdb8f20"
+            "combined": "be6459488aa75b6f987d4bbb09665d51"
         }
     },
     {

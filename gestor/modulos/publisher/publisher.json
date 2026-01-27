@@ -84,11 +84,11 @@
                     "path": "publisher\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.24",
+                    "version": "1.25",
                     "checksum": {
-                        "html": "2586ac2c80f14a59b7f906e8d91d1a37",
+                        "html": "40c0d02615ac1063f7201b3642c69360",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "38ec4f76d5a1dd700c93780845113c71"
+                        "combined": "a4ea8c760365824e072d7e5140808b87"
                     }
                 },
                 {
@@ -98,11 +98,11 @@
                     "path": "publisher\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "b9f8e98356f41da5118fe688703659c1",
+                        "html": "a9f8cecde6fd5c2b9740f6dc29614c69",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "5632328b915d74dd1be6df5b8b1ae4fa"
+                        "combined": "f315ab67c2f14b9a3a62b98af83b2889"
                     }
                 }
             ],
@@ -202,11 +202,11 @@
                     "path": "publisher\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.25",
+                    "version": "1.26",
                     "checksum": {
-                        "html": "790bbfcbaeb3a071298c6f93bd4984f2",
+                        "html": "34e7c843a2c690705f01150c56fa3d7e",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "1eb3b1cc7ad9d1979ee99c3923118be0"
+                        "combined": "ff720a664dc6ce7699101d8880370724"
                     }
                 },
                 {
@@ -216,11 +216,11 @@
                     "path": "publisher\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "e36b7e079caf58d962aab87222182804",
+                        "html": "eac0ddf3376218acb321b8619b1acf22",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "8b329a388d91df979a182f8cc3c539b1"
+                        "combined": "9d5c6647674d467de3f838c1f4dccb2d"
                     }
                 }
             ],

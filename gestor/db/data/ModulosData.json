@@ -196,7 +196,7 @@
         "language": "en"
     },
     {
-        "modulo_grupo_id": "administracao-gestor",
+        "modulo_grupo_id": "geral",
         "nome": "Dashboard",
         "id": "dashboard",
         "titulo": null,
@@ -210,7 +210,7 @@
         "language": "pt-br"
     },
     {
-        "modulo_grupo_id": "administracao-gestor",
+        "modulo_grupo_id": "geral",
         "nome": "Dashboard",
         "id": "dashboard",
         "titulo": null,

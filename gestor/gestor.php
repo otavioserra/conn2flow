@@ -1688,16 +1688,21 @@ function gestor_roteador(){
 				$_GESTOR['pagina'] = $html;
 			}
 			
-			// ===== Módulo alvo quando houver executar
-			
+			// ===== Módulo alvo quando houver no backend, executar.
+			$module_path = '';
+
 			if(existe($modulo)){
 				if($modulos['plugin']){
-					require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/'.$modulo.'.php');
+					$module_path = $_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/'.$modulo.'.php';
 				} else {
-					require_once($_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php');
+					$module_path = $_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php';
 				}
 			} else if($_GESTOR['opcao']){
-				require_once($_GESTOR['modulos-path'].'global.php');
+				$module_path = $_GESTOR['modulos-path'].'global.php';
+			}
+
+			if(is_file($module_path)){
+				require_once($module_path);
 			}
 			
 			// ===== Retornar a página formatada para o cliente
@@ -1723,14 +1728,19 @@ function gestor_roteador(){
 			$modulo = $_GESTOR['modulo'];
 			
 			// ===== Caso haja necessidade, alterar opção no módulo e redirecionar para a raiz do módulo
-			
 			if($_GESTOR['opcao']){
+				$module_path = '';
+
 				if(existe($modulo)){
 					if($modulos['plugin']){
-						require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/'.$modulo.'.php');
+						$module_path = $_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/'.$modulo.'.php';
 					} else {
-						require_once($_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php');
+						$module_path = $_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php';
 					}
+				}
+
+				if(is_file($module_path)){
+					require_once($module_path);
 				}
 				
 				gestor_redirecionar_raiz();
@@ -1776,15 +1786,20 @@ function gestor_roteador(){
 			$_GESTOR['pagina#framework_css'] = $framework_css;
 
 			// ===== Módulo alvo quando houver executar
-			
+			$module_path = '';
+
 			if(existe($modulo)){
 				if($modulos['plugin']){
-					require_once($_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/'.$modulo.'.php');
+					$module_path = $_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/'.$modulo.'.php';
 				} else {
-					require_once($_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php');
+					$module_path = $_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php';
 				}
 			} else if($_GESTOR['opcao']){
-				require_once($_GESTOR['modulos-path'].'global.php');
+				$module_path = $_GESTOR['modulos-path'].'global.php';
+			}
+
+			if(is_file($module_path)){
+				require_once($module_path);
 			}
 
 			// ===== Incluir componentes na página.
