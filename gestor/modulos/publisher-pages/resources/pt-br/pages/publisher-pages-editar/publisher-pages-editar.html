@@ -1,0 +1,56 @@
+<div class="ui blue message"> @[[form-url-label]]@: <b>
+        <a href="#url#">#url#</a>
+    </b>. </div>
+<div class="field">
+    <label>#form-name-label#</label>
+    <input type="text" name="pagina-nome" placeholder="#form-name-placeholder#" value="#pagina-nome#">
+</div>
+<div class="field">
+    <label>#form-path-label#</label>
+    <input type="text" name="paginaCaminho" placeholder="#form-path-placeholder#" value="#caminho#">
+</div>
+<div class="two fields">
+    <div class="field">
+        <label>#form-layout-label#</label>
+        <span>#select-layout#</span>
+    </div>
+    <div class="field">
+        <label>#form-framework-css-label#</label>
+        <span>#select-framework-css#</span>
+    </div>
+</div>
+<div class="two fields">
+    <div class="field">
+        <label>#form-type-label#</label>
+        <span>#select-type#</span>
+    </div>
+    <!-- permissao-pagina < -->
+    <div class="field">
+        <label>#form-permission-label#</label>
+        <div class="ui toggle checkbox">
+            <input type="checkbox" name="sem_permissao" data-checked="#sem_permissao#">
+            <label>&nbsp;</label>
+        </div>
+    </div><!-- permissao-pagina > -->
+</div>
+<div class="three fields hidden pagina-modulos-container">
+    <div class="field">
+        <label>#form-module-label#</label>
+        <span>#select-module#</span>
+    </div>
+    <div class="field">
+        <label>#form-option-label#</label>
+        <input type="text" name="pagina-opcao" placeholder="#form-option-placeholder#" value="#opcao#">
+    </div>
+    <div class="field">
+        <label>#form-root-label#</label>
+        <div class="ui toggle checkbox">
+            <input type="checkbox" name="raiz" data-checked="#raiz#">
+            <label>&nbsp;</label>
+        </div>
+    </div>
+</div>
+<div class="field">
+    <label>#form-page-content-label#</label>
+    #html-editor#
+</div>

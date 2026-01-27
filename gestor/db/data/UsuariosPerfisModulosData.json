@@ -96,6 +96,10 @@
         "modulo": "publisher"
     },
     {
+        "perfil": "administradores",
+        "modulo": "publisher-pages"
+    },
+    {
         "perfil": "consumidores",
         "modulo": "dashboard"
     },

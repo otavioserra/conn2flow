@@ -17,7 +17,7 @@
 </div>
 
 <div class="field">
-    <label>Template (Recurso)</label>
+    <label>Modelo (Recurso)</label>
     <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
@@ -26,12 +26,12 @@
     <div class="ui icon message visible info">
         <i class="bell icon"></i>
         <div class="content">
-            <div class="header">Templates Vinculados ao Publisher</div>
-            <p>Foram encontrados alguns templates vinculados a alguns registros publisher no selecionador acima e
-                marcados assim: <kbd class="ui basic label">Template</kbd><kbd class="ui teal icon label"><i
+            <div class="header">Modelos Vinculados ao Publicador</div>
+            <p>Foram encontrados alguns modelos vinculados a alguns registros publicador no selecionador acima e
+                marcados assim: <kbd class="ui basic label">Modelo</kbd><kbd class="ui teal icon label"><i
                         class="exchange alternate small icon"></i></kbd><kbd
-                    class="ui basic label">Publisher</kbd>.<br>Só
-                é permitido um template ser vinculado a um único registro de publisher.</p>
+                    class="ui basic label">Publicador</kbd>.<br>Só
+                é permitido um modelo ser vinculado a um único registro de publicador.</p>
         </div>
     </div>
     <!-- templates-alguns-linkados-msg > -->
@@ -39,20 +39,20 @@
     <div class="ui icon message visible negative">
         <i class="ban icon"></i>
         <div class="content">
-            <div class="header">Templates Vinculados ao Publisher</div>
-            <p>Todos os templates encontrados estão vinculados a um registro de publisher no selecionador acima e
-                marcados assim: <kbd class="ui basic label">Template</kbd><kbd class="ui teal icon label"><i
+            <div class="header">Modelos Vinculados ao Publicador</div>
+            <p>Todos os modelos encontrados estão vinculados a um registro de publicador no selecionador acima e
+                marcados assim: <kbd class="ui basic label">Modelo</kbd><kbd class="ui teal icon label"><i
                         class="exchange alternate small icon"></i></kbd><kbd
-                    class="ui basic label">Publisher</kbd>.<br>Só
-                é permitido um template ser vinculado a um único registro de publisher.</p>
+                    class="ui basic label">Publicador</kbd>.<br>Só
+                é permitido um modelo ser vinculado a um único registro de publicador.</p>
             <div class="ui list">
                 <div class="item">
                     <i class="chevron right icon"></i>
                     <div class="content">
                         Você pode adicionar um novo
-                        template clicando no botão abaixo <b>Adicionar Novo Template</b>. Lá no módulo de templates,
+                        modelo clicando no botão abaixo <b>Adicionar Novo Modelo</b>. Lá no módulo de modelos,
                         você poderá escolher um modelo pronto em: <span class="ui breadcrumb">
-                            <div class="section"><b>Conteúdo do Template</b></div>
+                            <div class="section"><b>Conteúdo do Modelo</b></div>
                             <i class="right angle icon divider"></i>
                             <div class="section"><b>Modelos</b></div>
                         </span>
@@ -61,10 +61,10 @@
                 <div class="item">
                     <i class="chevron right icon"></i>
                     <div class="content">
-                        Você pode clonar um template existente. Acesse a listagem dos
-                        templates clicando <a href="@[[pagina#url-raiz]]@admin-templates/">aqui</a>, escolha um
-                        template e clique no botão: <kbd class="ui teal icon label"><i class="clone icon"></i></kbd>
-                        para criar um novo template clonado.
+                        Você pode clonar um modelo existente. Acesse a listagem dos
+                        modelos clicando <a href="@[[pagina#url-raiz]]@admin-templates/">aqui</a>, escolha um
+                        modelo e clique no botão: <kbd class="ui teal icon label"><i class="clone icon"></i></kbd>
+                        para criar um novo modelo clonado.
                     </div>
                 </div>
                 <div class="item">
@@ -81,20 +81,20 @@
 </div>
 
 <a class="ui button blue" id="add-new-template" href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=publisher"
-    data-tooltip="Clique para adicionar um novo template" data-position="top center" data-inverted="">
-    <i class="plus icon"></i> Adicionar Novo Template
+    data-tooltip="Clique para adicionar um novo modelo" data-position="top center" data-inverted="">
+    <i class="plus icon"></i> Adicionar Novo Modelo
 </a>
 
 <a class="ui button brown hidden" id="edit-template"
     href="@[[pagina#url-raiz]]@admin-templates/editar/?id=noticias-imagem-destaque"
-    data-tooltip="Clique para editar este template" data-position="top center" data-inverted="">
-    <i class="edit icon"></i> Editar Template
+    data-tooltip="Clique para editar este modelo" data-position="top center" data-inverted="">
+    <i class="edit icon"></i> Editar Modelo
 </a>
 
 <a class="ui button teal hidden" id="clone-template"
     href="@[[pagina#url-raiz]]@admin-templates/clonar/?id=noticias-imagem-destaque"
-    data-tooltip="Clique para clonar este template" data-position="top center" data-inverted="">
-    <i class="clone icon"></i> Clonar Template
+    data-tooltip="Clique para clonar este modelo" data-position="top center" data-inverted="">
+    <i class="clone icon"></i> Clonar Modelo
 </a>
 
 <div class="ui segment basic fitted hidden template-options-wrapper">
@@ -109,25 +109,25 @@
     </div>
 
     <div class="hidden template-options-subwrapper">
-        <h4 class="ui dividing header">Vinculação de Campos: <kbd class="ui label">Template</kbd><kbd
+        <h4 class="ui dividing header">Vinculação de Campos: <kbd class="ui label">Modelo</kbd><kbd
                 class="ui teal icon label"><i class="exchange alternate icon"></i></kbd><kbd
-                class="ui label">Publisher</kbd></h4>
+                class="ui label">Publicador</kbd></h4>
         <div class="ui segment template-link-publisher-fields">
             <div class="ui grid">
                 <div class="row">
                     <div class="sixteen wide column">
                         <div class="ui grid template-fields-list">
                             <div class="four wide column">
-                                <h5>Campos Template</h5>
+                                <h5>Campos Modelo</h5>
                                 <div id="available-fields-list"></div>
                             </div>
                             <div class="four wide column">
-                                <h5>Campos Publisher</h5>
+                                <h5>Campos Publicador</h5>
                                 <div id="missing-fields-list"></div>
                             </div>
                             <div class="eight wide column">
-                                <h5>Campos Vinculados: Template <kbd class="ui teal icon label"><i
-                                            class="exchange alternate icon"></i></kbd> Publisher</h5>
+                                <h5>Campos Vinculados: Modelo <kbd class="ui teal icon label"><i
+                                            class="exchange alternate icon"></i></kbd> Publicador</h5>
                                 <div id="linked-fields-list"></div>
                             </div>
                         </div>
@@ -151,11 +151,11 @@
 <!-- Skeletons para elementos dinâmicos -->
 <div id="template-skeletons" style="display: none;">
     <!-- Mensagens -->
-    <span class="msg-novo-template" style="display:none">Novo Template</span>
-    <span class="msg-erro-carregar-template" style="display:none">Erro ao carregar template: </span>
+    <span class="msg-novo-template" style="display:none">Novo Modelo</span>
+    <span class="msg-erro-carregar-template" style="display:none">Erro ao carregar modelo: </span>
     <span class="msg-erro-desconhecido" style="display:none">Erro desconhecido</span>
-    <span class="msg-nenhum-campo-template" style="display:none">Nenhum campo do template</span>
-    <span class="msg-nenhum-campo-publisher" style="display:none">Nenhum campo do publisher</span>
+    <span class="msg-nenhum-campo-template" style="display:none">Nenhum campo do modelo</span>
+    <span class="msg-nenhum-campo-publisher" style="display:none">Nenhum campo do publicador</span>
     <span class="msg-nenhum-campo-vinculado" style="display:none">Nenhum campo vinculado</span>
     <span class="msg-nenhum-resultado-dropdown" style="display:none">Nenhum resultado encontrado</span>
     <span class="msg-sem-resultados" style="display:none">Sem Resultados</span>
@@ -167,10 +167,10 @@
                 <input type="text" class="field-label" placeholder="Ex: Título" data-validate="skip">
             </div>
             <div class="five wide field">
-                <label>Campo Template</label>
+                <label>Campo Modelo</label>
                 <div class="ui search">
                     <div class="ui icon input">
-                        <input class="prompt field-template" type="text" placeholder="Buscar campo do template..."
+                        <input class="prompt field-template" type="text" placeholder="Buscar campo do modelo..."
                             data-validate="skip">
                         <i class="search icon"></i>
                         <i class="remove icon"></i>

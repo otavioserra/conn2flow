@@ -29,7 +29,7 @@
             "layouts": [],
             "pages": [
                 {
-                    "name": "Admin Templates",
+                    "name": "Admin Modelos",
                     "id": "admin-templates",
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-templates\/",
@@ -44,7 +44,7 @@
                     }
                 },
                 {
-                    "name": "Admin Templates - Adicionar",
+                    "name": "Admin Modelos - Adicionar",
                     "id": "admin-templates-adicionar",
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-templates\/adicionar\/",
@@ -58,21 +58,21 @@
                     }
                 },
                 {
-                    "name": "Admin Templates - Editar",
+                    "name": "Admin Modelos - Editar",
                     "id": "admin-templates-editar",
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-templates\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "7f6fea575833b80412de500c4fd5c322",
+                        "html": "c2e8d20e487532c5ab98b00a2048bbf6",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "f70fbe5883cd98cb4d9f972137b71c6c"
+                        "combined": "da1caadcbaf5a3660661fe346c3e968c"
                     }
                 },
                 {
-                    "name": "Admin Templates - Clonar",
+                    "name": "Admin Modelos - Clonar",
                     "id": "admin-templates-clonar",
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-templates\/clonar\/",
@@ -90,12 +90,12 @@
             "variables": [
                 {
                     "id": "form-name-label",
-                    "value": "Nome do Template",
+                    "value": "Nome do Modelo",
                     "type": "string"
                 },
                 {
                     "id": "form-name-placeholder",
-                    "value": "Nome do Template",
+                    "value": "Nome do Modelo",
                     "type": "string"
                 },
                 {
@@ -120,7 +120,7 @@
                 },
                 {
                     "id": "form-template-content-label",
-                    "value": "Conteúdo do Template",
+                    "value": "Conteúdo do Modelo",
                     "type": "string"
                 }
             ]

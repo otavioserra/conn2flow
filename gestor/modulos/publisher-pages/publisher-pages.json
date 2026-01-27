@@ -1,0 +1,437 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "html-editor"
+    ],
+    "tabela": {
+        "nome": "paginas",
+        "id": "id",
+        "id_numerico": "id_paginas",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "selectDadosFrameworkCSS": [
+        {
+            "texto": "Fomantic-UI",
+            "valor": "fomantic-ui"
+        },
+        {
+            "texto": "TailwindCSS",
+            "valor": "tailwindcss"
+        }
+    ],
+    "resources": {
+        "pt-br": {
+            "selectDadosTipo": [
+                {
+                    "texto": "Sistema",
+                    "valor": "sistema"
+                },
+                {
+                    "texto": "Página",
+                    "valor": "pagina"
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Publicador Páginas",
+                    "id": "publisher-pages",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "68b329da9893e34099c7d8ad5cb9c940",
+                        "css": "",
+                        "combined": "68b329da9893e34099c7d8ad5cb9c940"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-pages/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Publicador Páginas - Editar",
+                    "id": "publisher-pages-editar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "2260ea647e5801389491427add84c002",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "233066a0b7ddd1b4e4ea3023b114f979"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-pages/editar/",
+                    "type": "system",
+                    "option": "editar"
+                },
+                {
+                    "name": "Publicador Páginas - Adicionar",
+                    "id": "publisher-pages-adicionar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "0b9f4533a2812f6b36fce41b04627752",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "c7bd6fa61446f35d629d19cd07721b71"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-pages/adicionar/",
+                    "type": "system",
+                    "option": "adicionar"
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-editor-label",
+                    "value": "Editor HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-content-label",
+                    "value": "Conteúdo da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-label",
+                    "value": "Identificador",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-placeholder",
+                    "value": "Identificador",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-label",
+                    "value": "Caminho",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-placeholder",
+                    "value": "Caminho",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-label",
+                    "value": "Layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-placeholder",
+                    "value": "Escolha um layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-label",
+                    "value": "Tipo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-placeholder",
+                    "value": "Selecione um tipo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Selecione um módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-option-label",
+                    "value": "Opção",
+                    "type": "string"
+                },
+                {
+                    "id": "form-option-placeholder",
+                    "value": "Opção",
+                    "type": "string"
+                },
+                {
+                    "id": "form-root-label",
+                    "value": "Raiz do Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-permission-label",
+                    "value": "Sem Permissão / Acesso Público",
+                    "type": "string"
+                },
+                {
+                    "id": "form-config-divider",
+                    "value": "Configurações da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "editor-html-switch",
+                    "value": null,
+                    "type": "bool"
+                },
+                {
+                    "id": "path-necessary-chars",
+                    "value": "pelo menos uma '/' no final",
+                    "type": "string"
+                },
+                {
+                    "id": "form-url-label",
+                    "value": "URL da Página Atual",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-page",
+                    "value": "Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-system",
+                    "value": "Sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "form-framework-css-label",
+                    "value": "Framework CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-ambos-label",
+                    "value": "Ambos",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-pagina-label",
+                    "value": "Página",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-sistema-label",
+                    "value": "Sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-tipo-label",
+                    "value": "Tipo",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "selectDadosTipo": [
+                {
+                    "texto": "System",
+                    "valor": "sistema"
+                },
+                {
+                    "texto": "Page",
+                    "valor": "pagina"
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Publisher Pages",
+                    "id": "publisher-pages",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "68b329da9893e34099c7d8ad5cb9c940",
+                        "css": "",
+                        "combined": "68b329da9893e34099c7d8ad5cb9c940"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-pages/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Publisher Pages - Edit",
+                    "id": "publisher-pages-editar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "2260ea647e5801389491427add84c002",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "233066a0b7ddd1b4e4ea3023b114f979"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-pages/editar/",
+                    "type": "system",
+                    "option": "editar"
+                },
+                {
+                    "name": "Publisher Pages - Add",
+                    "id": "publisher-pages-adicionar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "0b9f4533a2812f6b36fce41b04627752",
+                        "css": "14e7439759ad508b0915cc266b0d22e9",
+                        "combined": "c7bd6fa61446f35d629d19cd07721b71"
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-pages/adicionar/",
+                    "type": "system",
+                    "option": "adicionar"
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Page Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Page Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-editor-label",
+                    "value": "HTML Editor",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-content-label",
+                    "value": "Page Content",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-label",
+                    "value": "Identifier",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-placeholder",
+                    "value": "Identifier",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-label",
+                    "value": "Path",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-placeholder",
+                    "value": "Path",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-label",
+                    "value": "Layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-placeholder",
+                    "value": "Choose a layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-label",
+                    "value": "Type",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-placeholder",
+                    "value": "Select a type",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Select a module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-option-label",
+                    "value": "Option",
+                    "type": "string"
+                },
+                {
+                    "id": "form-option-placeholder",
+                    "value": "Option",
+                    "type": "string"
+                },
+                {
+                    "id": "form-root-label",
+                    "value": "Root of Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-permission-label",
+                    "value": "No Permission / Public Access",
+                    "type": "string"
+                },
+                {
+                    "id": "form-config-divider",
+                    "value": "Page Settings",
+                    "type": "string"
+                },
+                {
+                    "id": "editor-html-switch",
+                    "value": null,
+                    "type": "bool"
+                },
+                {
+                    "id": "path-necessary-chars",
+                    "value": "at least one '/' at the end",
+                    "type": "string"
+                },
+                {
+                    "id": "form-url-label",
+                    "value": "Current Page URL",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-page",
+                    "value": "Page",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-system",
+                    "value": "System",
+                    "type": "string"
+                },
+                {
+                    "id": "form-framework-css-label",
+                    "value": "Framework CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-ambos-label",
+                    "value": "Both",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-pagina-label",
+                    "value": "Page",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-sistema-label",
+                    "value": "System",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-tipo-label",
+                    "value": "Type",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

@@ -63,7 +63,7 @@
             ],
             "pages": [
                 {
-                    "name": "Publisher Definições - Listar",
+                    "name": "Publicador Definições - Listar",
                     "id": "publisher",
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher\/",
@@ -78,31 +78,31 @@
                     }
                 },
                 {
-                    "name": "Publisher Definições - Adicionar",
+                    "name": "Publicador Definições - Adicionar",
                     "id": "publisher-adicionar",
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.25",
+                    "version": "1.26",
                     "checksum": {
-                        "html": "40c0d02615ac1063f7201b3642c69360",
+                        "html": "6536c65c520befb7239115e33e709573",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "a4ea8c760365824e072d7e5140808b87"
+                        "combined": "318210052bba482fe545badba86515cf"
                     }
                 },
                 {
-                    "name": "Publisher Definições - Editar",
+                    "name": "Publicador Definições - Editar",
                     "id": "publisher-editar",
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "a9f8cecde6fd5c2b9740f6dc29614c69",
+                        "html": "24f76b4a887a8d4a8b1a083c8eb7d31b",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "f315ab67c2f14b9a3a62b98af83b2889"
+                        "combined": "c518b6335432976e605c552bfe77b495"
                     }
                 }
             ],

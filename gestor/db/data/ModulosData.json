@@ -642,5 +642,33 @@
         "status": "A",
         "versao": "1",
         "language": "en"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Publicador Páginas",
+        "id": "publisher-pages",
+        "titulo": "Publicador Páginas",
+        "icone": "file image outline",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Publisher Pages",
+        "id": "publisher-pages",
+        "titulo": "Publisher Pages",
+        "icone": "file image outline",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     }
 ]
