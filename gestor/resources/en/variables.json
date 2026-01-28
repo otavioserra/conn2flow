@@ -425,12 +425,12 @@
     },
     {
         "id": "html-editor-publisher-variables-tooltip",
-        "value": "Show the original Publisher Variables",
+        "value": "Show the original Template Variables",
         "type": "string"
     },
     {
         "id": "html-editor-publisher-simulation-tooltip",
-        "value": "Show Simulation values instead of Publisher Variables",
+        "value": "Show Simulation values instead of Template Variables",
         "type": "string"
     },
     {
@@ -461,6 +461,26 @@
     {
         "id": "hep-variable-type-image-description",
         "value": "Image URL source",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-page-values-tooltip",
+        "value": "Show the real Values instead of the original Template Variables",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-page-values-btn",
+        "value": "Values",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-page-variables-tooltip",
+        "value": "Show the original Template Variables",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-page-variables-btn",
+        "value": "Variables",
         "type": "string"
     }
 ]

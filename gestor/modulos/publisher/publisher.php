@@ -128,7 +128,7 @@ function publisher_adicionar(){
 		,
 		'templates AS t, publisher AS p',
 		"WHERE t.status='A' AND t.id=p.template_id"
-		.' AND t.language="'.$_GESTOR['linguagem-codigo'].'" AND p.language="'.$_GESTOR['linguagem-codigo'].'" AND t.target="publisher"'
+		.' AND t.language="'.$_GESTOR['linguagem-codigo'].'" AND p.language="'.$_GESTOR['linguagem-codigo'].'" AND t.target="publisher" AND p.status!="D"'
 		." ORDER BY t.nome ASC"
 	);
 
@@ -459,7 +459,7 @@ function publisher_editar(){
 			,
 			'templates AS t, publisher AS p',
 			"WHERE t.status='A' AND t.id=p.template_id"
-			.' AND t.language="'.$_GESTOR['linguagem-codigo'].'" AND p.language="'.$_GESTOR['linguagem-codigo'].'" AND t.target="publisher"'
+			.' AND t.language="'.$_GESTOR['linguagem-codigo'].'" AND p.language="'.$_GESTOR['linguagem-codigo'].'" AND t.target="publisher" AND p.status!="D"'
 			." ORDER BY t.nome ASC"
 		);
 
@@ -790,7 +790,7 @@ function publisher_clonar(){
 			,
 			'templates AS t, publisher AS p',
 			"WHERE t.status='A' AND t.id=p.template_id"
-			.' AND t.language="'.$_GESTOR['linguagem-codigo'].'" AND p.language="'.$_GESTOR['linguagem-codigo'].'" AND t.target="publisher"'
+			.' AND t.language="'.$_GESTOR['linguagem-codigo'].'" AND p.language="'.$_GESTOR['linguagem-codigo'].'" AND t.target="publisher" AND p.status!="D"'
 			." ORDER BY t.nome ASC"
 		);
 
@@ -1060,6 +1060,7 @@ function publisher_ajax_template_load(){
 			return [
 				'id' => $f['id'],
 				'name' => $f['label'],
+				'description' => $f['description'] ?? '',
 				'type' => $f['type'],
 				'template_field_id' => $f['template_field_id'] ?? null
 			];

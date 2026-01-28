@@ -40,11 +40,11 @@
                 {
                     "name": "Publicador Campos",
                     "id": "publisher-fields",
-                    "version": "1.1",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "26d0fa5780d7d9e194e0e1a70d2157b9",
-                        "css": "",
-                        "combined": "26d0fa5780d7d9e194e0e1a70d2157b9"
+                        "html": "0de30a7d23cef88613c0f0c473819249",
+                        "css": "9acffdf2939d187ad3826b68f6b31004",
+                        "combined": "e9756252e3872c3eb8c4387e92597caf"
                     }
                 }
             ],
@@ -81,11 +81,11 @@
                 {
                     "name": "Publicador Páginas - Adicionar",
                     "id": "publisher-pages-adicionar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "09b166589e932aa4161b5cd125b818b2",
-                        "css": "742db9dbae5440ca575804b601e754cd",
-                        "combined": "7b3337487fc1ab531413df6880c9c4c8"
+                        "html": "0451888f7a1b98fbcd956559677cd1b2",
+                        "css": "85e5bf7f6524ee8af78adcdc72ba04e5",
+                        "combined": "52426c023b084a4db243710c17eab6b3"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages\/adicionar\/",
@@ -261,6 +261,26 @@
                 {
                     "id": "form-publisher-placeholder",
                     "value": "Selecione um publicador",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-description-text",
+                    "value": "Preencha o campo #label#",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-description-textarea",
+                    "value": "Preencha o campo #label#",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-description-html",
+                    "value": "Preencha o campo \"#label#\" no editor abaixo.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-description-image",
+                    "value": "Clique no botão Adicionar para incluir um(a) \"#label#\".",
                     "type": "string"
                 }
             ]
@@ -501,6 +521,26 @@
                 {
                     "id": "form-publisher-placeholder",
                     "value": "Select a publisher",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-description-text",
+                    "value": "Fill in the #label# field",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-description-textarea",
+                    "value": "Fill in the #label# field",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-description-html",
+                    "value": "Fill in the \"#label#\" in the editor below.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-description-image",
+                    "value": "Click the Add button to include a \"#label#\".",
                     "type": "string"
                 }
             ]

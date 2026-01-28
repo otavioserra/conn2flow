@@ -277,6 +277,7 @@ $(document).ready(function () {
 
             var id = data.id || 'id-' + fieldIDCounter;
             var name = data.name || data.label || '';
+            var description = data.description || '';
             var type = data.type || 'text';
             var mandatory = data.mandatory ? true : false;
             var template_field_id = data.template_field_id || '';
@@ -285,6 +286,7 @@ $(document).ready(function () {
 
             rowClone.attr('data-id', id);
             rowClone.find('.field-label').val(name);
+            rowClone.find('.field-description').val(description);
 
             // Atualizar validação dinâmica
             const fieldID = 'fieldLabel' + fieldIDCounter;
@@ -532,6 +534,7 @@ $(document).ready(function () {
                 var field = {
                     id: row.find('.field-id').val(),
                     label: row.find('.field-label').val(),
+                    description: row.find('.field-description').val(),
                     type: typeVal,
                     mandatory: row.find('.field-mandatory').is(':checked')
                 };

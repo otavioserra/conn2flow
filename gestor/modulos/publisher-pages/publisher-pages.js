@@ -1,8 +1,11 @@
 $(document).ready(function () {
 	if ($('#_gestor-interface-edit-dados').length > 0 || $('#_gestor-interface-insert-dados').length > 0) {
+
 		// ===== Quill editor
+
 		const quillEditors = {};
 		let quillEditorsCount = 0;
+		let activeQuill = null;
 
 		$('.quill-editor').each(function () {
 			quillEditorsCount++;
@@ -36,24 +39,56 @@ $(document).ready(function () {
 				}
 			});
 
-			document.addEventListener('keydown', function (e) {
-				if (e.key === 'Escape') {
-					const editor = quill.root;
-					const toolbar = quill.container.previousElementSibling;
-					editor.classList.remove('fullscreen');
-					toolbar.classList.remove('fullscreen');
-				}
+			// Rastrear foco no editor
+			quill.root.addEventListener('focus', function () {
+				activeQuill = quill; // Define o editor ativo
+			});
+
+			// Limpar activeQuill no unfocus
+			quill.root.addEventListener('blur', function () {
+				activeQuill = null;
 			});
 
 			quillEditors[quillEditorsCount] = quill;
 		});
 
-		$(document.body).on('mouseup tap', '.quill-get-html', function (e) {
-			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+		if (quillEditorsCount > 0) {
+			// Traduzir tooltips após inicialização
+			if (gestor.language != 'en' && gestor.quillTranslation !== undefined) {
+				setTimeout(() => {
+					// Traduzir mensagens via CSS dinâmico
+					const style = document.createElement('style');
+					style.textContent = gestor.quillTranslation;
+					document.head.appendChild(style);
+				}, 100); // Pequeno delay para garantir que os editores sejam renderizados
+			}
 
-			const html = $('.quill-editor-container').find('.ql-editor').html();
-			$('.quill-drop-html').find('.ql-editor').html(html);
-		});
+			document.addEventListener('keydown', function (e) {
+				if (e.key === 'Escape') {
+					const editor = activeQuill.root;
+					const toolbar = activeQuill.container.previousElementSibling;
+					editor.classList.remove('fullscreen');
+					toolbar.classList.remove('fullscreen');
+				}
+
+				if (e.key === 'F11') {
+					if (activeQuill) {
+						e.preventDefault(); // Previne fullscreen do navegador
+						const editor = activeQuill.root;
+						const toolbar = activeQuill.container.previousElementSibling;
+						editor.classList.toggle('fullscreen');
+						toolbar.classList.toggle('fullscreen');
+					}
+				}
+			});
+
+			$(document.body).on('mouseup tap', '.quill-get-html', function (e) {
+				if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+				const html = $('.quill-editor-container').find('.ql-editor').html();
+				$('.quill-drop-html').find('.ql-editor').html(html);
+			});
+		}
 
 		// ===== Input delay
 

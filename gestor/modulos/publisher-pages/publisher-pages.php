@@ -177,10 +177,17 @@ function publisher_pages_adicionar(){
 	// Incluir o Componente Editor HTML na página
 
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
+		'adicionarEditar' => true,
+		'publisherPage' => true,
 		'alvos' => 'paginas',
 	]));
 
 	// ===== Publisher
+
+	$variaveisTrocarDepois['pagina-css'] = '';
+	$variaveisTrocarDepois['pagina-css-compiled'] = '';
+	$variaveisTrocarDepois['pagina-html'] = '';
+	$variaveisTrocarDepois['pagina-html-extra-head'] = '';
 
 	$publisher_id = publisher_pages_publisher();
 
@@ -190,6 +197,7 @@ function publisher_pages_adicionar(){
 			'tabela' => 'publisher',
 			'campos' => Array(
 				'fields_schema',
+				'template_id',
 			),
 			'extra' => 
 				"WHERE status='A' AND id='".$publisher_id."'"
@@ -197,6 +205,11 @@ function publisher_pages_adicionar(){
 		));
 
 		if($publisher){
+			$open = $_GESTOR['variavel-global']['open'];
+			$close = $_GESTOR['variavel-global']['close'];
+			$openText = $_GESTOR['variavel-global']['openText'];
+			$closeText = $_GESTOR['variavel-global']['closeText'];
+			
 			$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#publisher-id#', '?id='.$publisher_id);
 
 			$fields_schema = $publisher['fields_schema'];
@@ -213,6 +226,9 @@ function publisher_pages_adicionar(){
 						'modulo' => $_GESTOR['modulo-id'],
 					));
 
+					// Incluir traduções do Quill no JS
+					$cel_nome = 'publisher-quill-translation'; gestor_js_variavel_incluir('quillTranslation',modelo_tag_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'));
+
 					// Pegar as células do template de fields
 					$cel_nome = 'publisher-field'; $cel[$cel_nome] = modelo_tag_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $publisher_fields = modelo_tag_troca_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 					$cel_nome = 'publisher-field-controller-text'; $cel[$cel_nome] = modelo_tag_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $publisher_fields = modelo_tag_troca_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
@@ -221,13 +237,25 @@ function publisher_pages_adicionar(){
 					$cel_nome = 'publisher-field-controller-image'; $cel[$cel_nome] = modelo_tag_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $publisher_fields = modelo_tag_troca_val($publisher_fields,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 
 					foreach($fields as $field){
+						foreach($template_map as $field_map){
+							if($field_map['id'] == $field['id']){
+								$field['variable'] = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $field_map['variable']);
+
+								break;
+							}
+						}
+
+						if(!isset($field['variable'])){
+							$field['variable'] = '[[publisher#'.$field['type'].'#'.$field['id'].']]';
+						}
+
 						$cel_nome = 'publisher-field-controller-'.$field['type']; 
 						$cel_field_type = $cel[$cel_nome];
 
 						$cel_field = $cel['publisher-field'];
 						
 						// Campos específicos por tipo
-						
+
 						switch($field['type']){
 							case 'image':
 								$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', '#imagepick-field_'.$field['id'].'#');
@@ -243,14 +271,64 @@ function publisher_pages_adicionar(){
 								$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', 'field_'.$field['id']);
 						}
 						
+						if(isset($field['description']) && $field['description'] != ''){
+							$cel_field_type = modelo_var_troca($cel_field_type, '[[field-description]]', $field['description']);
+						} else {
+							$labelPadrao = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-field-description-'.$field['type']));
+
+							$labelPadrao = modelo_var_troca($labelPadrao, '#label#', $field['label']);
+							
+							$cel_field_type = modelo_var_troca($cel_field_type, '[[field-description]]', $labelPadrao);
+						}
+					
 						$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', '');
 
 						$cel_field = modelo_var_troca($cel_field, '[[field-type-controller]]', $cel_field_type);
 						// Campos padrão para todos os tipos
 						$cel_field = modelo_var_troca($cel_field, '[[field-label]]', $field['label']);
+						$cel_field = modelo_var_troca($cel_field, '[[field-variable]]', $field['variable']);
 
 						$_GESTOR['pagina'] = modelo_var_in($_GESTOR['pagina'],'<!-- publisher-fields -->',$cel_field);
 					}
+				}
+			}
+
+			// Pegar os dados de HTML/CSS do template e substituir na página.
+
+			if($publisher['template_id']){
+				$template = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'templates',
+					'campos' => Array(
+						'html',
+						'css',
+						'css_compiled',
+						'html_extra_head',
+						'framework_css',
+					),
+					'extra' => 
+						"WHERE status='A' AND id='".$publisher['template_id']."'"
+						.' AND language="'.$_GESTOR['linguagem-codigo'].'"'
+				));
+
+				if($template){
+					$html = (isset($template['html']) ? htmlentities($template['html']) : '');
+					$css = (isset($template['css']) ? $template['css'] : '');
+					$css_compiled = (isset($template['css_compiled']) ? $template['css_compiled'] : '');
+					$html_extra_head = (isset($template['html_extra_head']) ? $template['html_extra_head'] : '');
+					$framework_css = (isset($template['framework_css']) ? $template['framework_css'] : '');
+					
+					// ===== Variaveis globais alterar.
+		
+					$html = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $html);
+					$css = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css);
+					$css_compiled = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css_compiled);
+					$html_extra_head = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $html_extra_head);
+
+					$variaveisTrocarDepois['pagina-css'] = $css;
+					$variaveisTrocarDepois['pagina-css-compiled'] = $css_compiled;
+					$variaveisTrocarDepois['pagina-html'] = $html;
+					$variaveisTrocarDepois['pagina-html-extra-head'] = $html_extra_head;
 				}
 			}
 		}
@@ -314,7 +392,7 @@ function publisher_pages_adicionar(){
 			'id' => 'framework-css',
 			'nome' => 'framework_css',
 			'selectClass' => 'frameworkCSS',
-			'valor_selecionado' => 'fomantic-ui',
+			'valor_selecionado' => isset($framework_css)? $framework_css : 'fomantic-ui',
 			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 			'dados' => $modulo['selectDadosFrameworkCSS'],
 		),
@@ -341,6 +419,7 @@ function publisher_pages_adicionar(){
 	// ===== Interface adicionar finalizar opções
 	
 	$_GESTOR['interface']['adicionar']['finalizar'] = Array(
+		'variaveisTrocarDepois' => $variaveisTrocarDepois,
 		'formulario' => Array(
 			'validacao' => Array(
 				Array(

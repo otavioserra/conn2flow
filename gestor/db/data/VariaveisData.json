@@ -714,7 +714,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": null,
         "id": "html-editor-publisher-variables-tooltip",
-        "valor": "Mostrar as Variáveis originais do Publisher",
+        "valor": "Mostrar as Variáveis originais do Modelo",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -723,7 +723,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": null,
         "id": "html-editor-publisher-simulation-tooltip",
-        "valor": "Mostrar valores de Simulação no lugar das Variáveis do Publisher",
+        "valor": "Mostrar valores de Simulação no lugar das Variáveis do Modelo",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -741,7 +741,7 @@
         "linguagem_codigo": "pt-br",
         "modulo": null,
         "id": "html-editor-publisher-variables-menu-tooltip",
-        "valor": "Clique para modificar as Variáveis do template",
+        "valor": "Clique para modificar as Variáveis do Modelo",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -778,6 +778,42 @@
         "modulo": null,
         "id": "hep-variable-type-image-description",
         "valor": "URL de fonte de imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-publisher-page-values-tooltip",
+        "valor": "Mostrar os Valores reais no lugar das Variáveis originais do Modelo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-publisher-page-values-btn",
+        "valor": "Valores",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-publisher-page-variables-tooltip",
+        "valor": "Mostrar as Variáveis originais do Modelo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "html-editor-publisher-page-variables-btn",
+        "valor": "Variáveis",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1497,7 +1533,7 @@
         "linguagem_codigo": "en",
         "modulo": null,
         "id": "html-editor-publisher-variables-tooltip",
-        "valor": "Show the original Publisher Variables",
+        "valor": "Show the original Template Variables",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1506,7 +1542,7 @@
         "linguagem_codigo": "en",
         "modulo": null,
         "id": "html-editor-publisher-simulation-tooltip",
-        "valor": "Show Simulation values instead of Publisher Variables",
+        "valor": "Show Simulation values instead of Template Variables",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1561,6 +1597,42 @@
         "modulo": null,
         "id": "hep-variable-type-image-description",
         "valor": "Image URL source",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-publisher-page-values-tooltip",
+        "valor": "Show the real Values instead of the original Template Variables",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-publisher-page-values-btn",
+        "valor": "Values",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-publisher-page-variables-tooltip",
+        "valor": "Show the original Template Variables",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "html-editor-publisher-page-variables-btn",
+        "valor": "Variables",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -10053,6 +10125,42 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-field-description-text",
+        "valor": "Preencha o campo #label#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-field-description-textarea",
+        "valor": "Preencha o campo #label#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-field-description-html",
+        "valor": "Preencha o campo \"#label#\" no editor abaixo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-field-description-image",
+        "valor": "Clique no botão Adicionar para incluir um(a) \"#label#\".",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "publisher-pages",
         "id": "form-name-label",
@@ -10327,6 +10435,42 @@
         "modulo": "publisher-pages",
         "id": "form-publisher-placeholder",
         "valor": "Select a publisher",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-pages",
+        "id": "form-field-description-text",
+        "valor": "Fill in the #label# field",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-pages",
+        "id": "form-field-description-textarea",
+        "valor": "Fill in the #label# field",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-pages",
+        "id": "form-field-description-html",
+        "valor": "Fill in the \"#label#\" in the editor below.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-pages",
+        "id": "form-field-description-image",
+        "valor": "Click the Add button to include a \"#label#\".",
         "tipo": "string",
         "grupo": null,
         "descricao": null

@@ -425,12 +425,12 @@
     },
     {
         "id": "html-editor-publisher-variables-tooltip",
-        "value": "Mostrar as Variáveis originais do Publisher",
+        "value": "Mostrar as Variáveis originais do Modelo",
         "type": "string"
     },
     {
         "id": "html-editor-publisher-simulation-tooltip",
-        "value": "Mostrar valores de Simulação no lugar das Variáveis do Publisher",
+        "value": "Mostrar valores de Simulação no lugar das Variáveis do Modelo",
         "type": "string"
     },
     {
@@ -440,7 +440,7 @@
     },
     {
         "id": "html-editor-publisher-variables-menu-tooltip",
-        "value": "Clique para modificar as Variáveis do template",
+        "value": "Clique para modificar as Variáveis do Modelo",
         "type": "string"
     },
     {
@@ -461,6 +461,26 @@
     {
         "id": "hep-variable-type-image-description",
         "value": "URL de fonte de imagem",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-page-values-tooltip",
+        "value": "Mostrar os Valores reais no lugar das Variáveis originais do Modelo",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-page-values-btn",
+        "value": "Valores",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-page-variables-tooltip",
+        "value": "Mostrar as Variáveis originais do Modelo",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-publisher-page-variables-btn",
+        "value": "Variáveis",
         "type": "string"
     }
 ]

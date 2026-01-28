@@ -5,22 +5,102 @@
         [[field-type-controller]]
     </div><!-- publisher-field > -->
 
-    <!-- publisher-field-controller-text < --><input type="text" name="[[field-name]]"
-        placeholder="[[field-placeholder]]" value="[[field-value]]"><!-- publisher-field-controller-text > -->
+    <!-- publisher-field-controller-text < --><span>
+        <div class="ui segment">
+            <input type="text" name="[[field-name]]" placeholder="[[field-description]]" value="[[field-value]]">
+            <a class="ui teal label label-margin-top-10 copy-to-clipboard"
+                data-tooltip="Clique para copiar esta variável" data-position="top left" data-inverted="">
+                <i class="code icon"></i>[[field-variable]]
+            </a>
+        </div>
+    </span><!-- publisher-field-controller-text > -->
 
-    <!-- publisher-field-controller-textarea < --><textarea name="[[field-name]]" placeholder="[[field-placeholder]]"
-        rows="4">[[field-value]]</textarea><!-- publisher-field-controller-textarea > -->
+
+    <!-- publisher-field-controller-textarea < --><span>
+        <div class="ui segment">
+            <textarea name="[[field-name]]" placeholder="[[field-description]]" rows="4">[[field-value]]</textarea>
+            <a class="ui teal label label-margin-top-10 copy-to-clipboard"
+                data-tooltip="Clique para copiar esta variável" data-position="top left" data-inverted="">
+                <i class="code icon"></i>[[field-variable]]
+            </a>
+        </div>
+    </span><!-- publisher-field-controller-textarea > -->
 
     <!-- publisher-field-controller-html < --><span>
         <div class="ui segment quill-editor-container">
+            <div class="ui label" style="margin-bottom: 10px;">
+                <i class="info circle icon"></i>
+                [[field-description]]
+            </div>
             <div class="quill-editor">
                 [[field-value]]
             </div>
+            <a class="ui teal label label-margin-top-10 copy-to-clipboard"
+                data-tooltip="Clique para copiar esta variável" data-position="top left" data-inverted="">
+                <i class="code icon"></i>[[field-variable]]
+            </a>
         </div>
         <input type="hidden" name="[[field-name]]" value="[[field-value]]">
     </span><!-- publisher-field-controller-html > -->
 
-    <!-- publisher-field-controller-image < --><span>[[field-name]]</span><!-- publisher-field-controller-image > -->
+    <!-- publisher-field-controller-image < --><span>
+        <div class="ui segment">
+            <div class="ui label">
+                <i class="info circle icon"></i>
+                [[field-description]]
+            </div>
+            <span>[[field-name]]</span>
+            <a class="ui teal label copy-to-clipboard" data-tooltip="Clique para copiar esta variável"
+                data-position="top left" data-inverted="">
+                <i class="code icon"></i>[[field-variable]]
+            </a>
+        </div>
+    </span><!-- publisher-field-controller-image > -->
+</div>
+
+<div class="publisher-quill-translation" style="display: none;">
+    <!-- publisher-quill-translation < -->
+    /* Traduções para tooltips e ações */
+    .ql-snow .ql-tooltip a.ql-action::after { content: 'Editar'; }
+    .ql-snow .ql-tooltip.ql-editing a.ql-action::after { content: 'Salvar'; }
+    .ql-snow .ql-tooltip a.ql-remove::before { content: 'Remover'; }
+    .ql-snow .ql-tooltip::before { content: "Visitar URL:"; }
+    .ql-snow .ql-tooltip[data-mode=link]::before { content: "Inserir link:"; }
+    .ql-snow .ql-tooltip[data-mode=formula]::before { content: "Inserir fórmula:"; }
+    .ql-snow .ql-tooltip[data-mode=video]::before { content: "Inserir vídeo:"; }
+
+    /* Traduções para pickers */
+    .ql-snow .ql-picker.ql-header .ql-picker-label::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item::before { content: 'Normal'; }
+    .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before { content: 'Cabeçalho 1'; }
+    .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before { content: 'Cabeçalho 2'; }
+    .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before { content: 'Cabeçalho 3'; }
+    .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before { content: 'Cabeçalho 4'; }
+    .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="5"]::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="5"]::before { content: 'Cabeçalho 5'; }
+    .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="6"]::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before { content: 'Cabeçalho 6'; }
+
+    .ql-snow .ql-picker.ql-font .ql-picker-label::before,
+    .ql-snow .ql-picker.ql-font .ql-picker-item::before { content: 'Sans Serif'; }
+    .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=serif]::before,
+    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=serif]::before { content: 'Serif'; }
+    .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=monospace]::before,
+    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=monospace]::before { content: 'Monospace'; }
+
+    .ql-snow .ql-picker.ql-size .ql-picker-label::before,
+    .ql-snow .ql-picker.ql-size .ql-picker-item::before { content: 'Normal'; }
+    .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before,
+    .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before { content: 'Pequeno'; }
+    .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=large]::before,
+    .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=large]::before { content: 'Grande'; }
+    .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=huge]::before,
+    .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=huge]::before { content: 'Enorme'; }
+    <!-- publisher-quill-translation > -->
 </div>
 
 <div class="publisher-fields-show-skeletons-wrapper" style="display: none;">

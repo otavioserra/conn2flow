@@ -66,9 +66,11 @@ function html_editor_publisher_controls($params = false){
  * Renderiza o componente Editor HTML e suas dependências.
  *
  * @param string $params['editar'] caso seja edição.
+ * @param string $params['adicionarEditar'] caso seja adição mas queira modificar HTML e CSS.
  * @param array $params['modulo'] dados do módulo atual.
  * @param array $params['alvo'] alvo de modelos e ia.
  * @param array $params['publisher'] variáveis do publisher.
+ * @param array $params['publisherPage'] controles específicos do publisher page.
  * 
  */
 function html_editor_componente($params = false){
@@ -131,6 +133,14 @@ function html_editor_componente($params = false){
 			$cel_nome = 'publisher-html-editor-variables-menu'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
 			$cel_nome = 'publisher-html-editor-variables-tab'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
 			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#','');
+	}
+
+	if(isset($publisherPage) && $publisherPage === true){
+		gestor_js_variavel_incluir('html_editor',[
+			'publisherPage' => true,
+		]);
+	} else {
+		$cel_nome = 'publisher-page-html-editor-btns'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
 	}
 
     // ===== Editor HTML visual
@@ -205,7 +215,13 @@ function html_editor_componente($params = false){
 	$html_editor = modelo_var_troca($html_editor,'#html-editor-page-modification#',$html_editor_page_modification);
 
 	// ===== Dropdown com todos os backups e conteúdo HTML/CSS
-    if(isset($editar)){
+    if(isset($adicionarEditar)){
+        $html_editor = modelo_var_troca_tudo($html_editor,'#pagina-editor-html-backup#','');
+        $html_editor = modelo_var_troca_tudo($html_editor,'#pagina-html-backup#','');
+        $html_editor = modelo_var_troca_tudo($html_editor,'#pagina-css-backup#','');
+        $html_editor = modelo_var_troca_tudo($html_editor,'#pagina-css-compiled-backup#','');
+        $html_editor = modelo_var_troca_tudo($html_editor,'#pagina-html-extra-head-backup#','');
+    } else if(isset($editar)){
         $html_editor = modelo_var_troca($html_editor,'#pagina-editor-html-backup#',interface_backup_campo_select(Array(
             'campo' => 'html',
             'callback' => 'adminPaginasBackupCampo',

@@ -747,7 +747,7 @@ $(document).ready(function () {
         editorHtmlVisual();
     });
 
-    $(document.body).on('mouseup tap', '.publisherVariablesOrSimulation', function (e) {
+    $(document.body).on('mouseup tap', '.publisherVariablesOrSimulation,.publisherVariablesOrValues', function (e) {
         if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
         toggleActiveButton($(this));
@@ -889,8 +889,11 @@ $(document).ready(function () {
 
         const idFramework = frameworkCSS();
 
-        // Substituir as variáveis do publisher ou simulação, se necessário
+        // Substituir as variáveis do template ou simulação, se necessário
         htmlDoUsuario = publisherVariablesOrSimulation(htmlDoUsuario);
+
+        // Substituir as variáveis do template ou valores, se necessário
+        htmlDoUsuario = publisherVariablesOrValues(htmlDoUsuario);
 
         // Incluir o HTML e CSS do usuário no conteúdo do iframe
         iframe.attr('srcdoc', previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, idFramework));
@@ -905,7 +908,7 @@ $(document).ready(function () {
 
     // ===== Publisher Options
 
-    // Substituição de Variáveis do Publisher ou Simulação no Preview
+    // Substituição de Variáveis do Template ou Simulação no Preview
 
     function publisherVariablesOrSimulation(html = '') {
         const alvo = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
@@ -914,6 +917,75 @@ $(document).ready(function () {
             const simulacao = $('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active');
 
             if (simulacao) {
+                const framework = frameworkCSS();
+                const designMode = $('.publisher-design-mode-simulation').length > 0 ? $('.publisher-design-mode-simulation').dropdown('get value') : 'simple';
+
+                // Regex para encontrar variáveis no formato [[publisher#TIPO#ID]]
+                const regex = /\[\[publisher#(.+?)#(.+?)\]\]/g;
+
+                html = html.replace(regex, function (match, tipo, id, offset, fullString) {
+                    // Check context: Are we inside an HTML tag attribute?
+                    let isInsideTag = false;
+
+                    // Look backwards for the nearest opening '<' or closing '>'
+                    let i = offset - 1;
+                    while (i >= 0) {
+                        if (fullString[i] === '>') {
+                            // We found a closing tag before an opening one, so we are OUTSIDE a tag
+                            isInsideTag = false;
+                            break;
+                        }
+                        if (fullString[i] === '<') {
+                            // We found an opening tag without a closing one in between, so we are INSIDE a tag
+                            isInsideTag = true;
+                            break;
+                        }
+                        i--;
+                    }
+
+                    // Buscar valores de simulação baseados no modo de design
+                    let simulationItems;
+
+                    // Force simple mode if inside a tag (to avoid breaking attributes like alt="", src="")
+                    const effectiveMode = isInsideTag ? 'simple' : designMode;
+
+                    if (effectiveMode === 'sophisticated') {
+                        simulationItems = $(`.hep-simulation-${tipo}.hep-sophisticated.${framework} .item`);
+                    } else {
+                        // Modo simples: buscar genéricos explicitamente
+                        simulationItems = $(`.hep-simulation-${tipo}.hep-simple .item`);
+                    }
+
+                    // Fallback: Tenta pegar qualquer um do tipo se a busca específica falhar
+                    if (simulationItems.length === 0) {
+                        simulationItems = $(`.hep-simulation-${tipo} .item`);
+                    }
+
+                    if (simulationItems.length > 0) {
+                        // Sortear um valor aleatório
+                        const randomIndex = Math.floor(Math.random() * simulationItems.length);
+                        // Usar html() para pegar o conteúdo exato (incluindo entidades HTML) e inserir de volta no HTML
+                        const randomValue = simulationItems.eq(randomIndex).html().trim();
+                        return randomValue;
+                    }
+                    // Se não encontrar valores, retornar a variável original
+                    return match;
+                });
+            }
+        }
+
+        return html;
+    }
+
+    // Substituição de Variáveis do Template ou Valores no Preview
+
+    function publisherVariablesOrValues(html = '') {
+        const publisherPage = ('publisherPage' in gestor.html_editor ? true : false);
+
+        if (publisherPage) {
+            const values = $('.publisherVariablesOrValues[data-id="values"]').hasClass('active');
+
+            if (values) {
                 const framework = frameworkCSS();
                 const designMode = $('.publisher-design-mode-simulation').length > 0 ? $('.publisher-design-mode-simulation').dropdown('get value') : 'simple';
 
