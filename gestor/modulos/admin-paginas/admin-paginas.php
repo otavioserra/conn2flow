@@ -515,6 +515,12 @@ function admin_paginas_editar(){
 		$css = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css);
 		$css_compiled = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css_compiled);
 		$html_extra_head = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $html_extra_head);
+
+		// ===== Detectar classe do editor Quill
+
+		if (strpos($html, 'ql-container ql-snow') !== false) {
+			gestor_js_variavel_incluir('publisherQuillClassDetected',true);
+		}
 		
 		// ===== Alterar demais variáveis.
 		
@@ -878,6 +884,12 @@ function admin_paginas_clonar(){
 		$css = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css);
 		$css_compiled = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css_compiled);
 		$html_extra_head = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $html_extra_head);
+
+		// ===== Detectar classe do editor Quill
+
+		if (strpos($html, 'ql-container ql-snow') !== false) {
+			gestor_js_variavel_incluir('publisherQuillClassDetected',true);
+		}
 		
 		// ===== Alterar demais variáveis.
 		

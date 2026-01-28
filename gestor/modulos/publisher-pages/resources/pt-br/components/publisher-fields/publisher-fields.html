@@ -5,28 +5,33 @@
         [[field-type-controller]]
     </div><!-- publisher-field > -->
 
-    <!-- publisher-field-controller-text < --><span>
+    <!-- publisher-field-controller-text < --><span data-id="[[field-id]]" data-type="text"
+        class="pfc-field pfc-field-text">
         <div class="ui segment">
             <input type="text" name="[[field-name]]" placeholder="[[field-description]]" value="[[field-value]]">
-            <a class="ui teal label label-margin-top-10 copy-to-clipboard"
-                data-tooltip="Clique para copiar esta variável" data-position="top left" data-inverted="">
-                <i class="code icon"></i>[[field-variable]]
+            <a class="ui teal bottom ribbon label label-margin-top-10 copy-to-clipboard field-variable">
+                <span data-tooltip="Clique para copiar esta variável" data-position="top left" data-inverted="">
+                    <i class="code icon"></i>[[field-variable]]
+                </span>
             </a>
         </div>
     </span><!-- publisher-field-controller-text > -->
 
 
-    <!-- publisher-field-controller-textarea < --><span>
+    <!-- publisher-field-controller-textarea < --><span data-id="[[field-id]]" data-type="textarea"
+        class="pfc-field pfc-field-textarea">
         <div class="ui segment">
             <textarea name="[[field-name]]" placeholder="[[field-description]]" rows="4">[[field-value]]</textarea>
-            <a class="ui teal label label-margin-top-10 copy-to-clipboard"
-                data-tooltip="Clique para copiar esta variável" data-position="top left" data-inverted="">
-                <i class="code icon"></i>[[field-variable]]
+            <a class="ui teal bottom ribbon label label-margin-top-10 copy-to-clipboard field-variable">
+                <span data-tooltip="Clique para copiar esta variável" data-position="top left" data-inverted="">
+                    <i class="code icon"></i>[[field-variable]]
+                </span>
             </a>
         </div>
     </span><!-- publisher-field-controller-textarea > -->
 
-    <!-- publisher-field-controller-html < --><span>
+    <!-- publisher-field-controller-html < --><span data-id="[[field-id]]" data-type="html"
+        class="pfc-field pfc-field-html">
         <div class="ui segment quill-editor-container">
             <div class="ui label" style="margin-bottom: 10px;">
                 <i class="info circle icon"></i>
@@ -35,24 +40,27 @@
             <div class="quill-editor">
                 [[field-value]]
             </div>
-            <a class="ui teal label label-margin-top-10 copy-to-clipboard"
-                data-tooltip="Clique para copiar esta variável" data-position="top left" data-inverted="">
-                <i class="code icon"></i>[[field-variable]]
+            <a class="ui teal bottom ribbon label label-margin-top-10 copy-to-clipboard field-variable">
+                <span data-tooltip="Clique para copiar esta variável" data-position="top left" data-inverted="">
+                    <i class="code icon"></i>[[field-variable]]
+                </span>
             </a>
         </div>
-        <input type="hidden" name="[[field-name]]" value="[[field-value]]">
+        <input type="hidden" name="[[field-name]]">
     </span><!-- publisher-field-controller-html > -->
 
-    <!-- publisher-field-controller-image < --><span>
+    <!-- publisher-field-controller-image < --><span data-id="[[field-id]]" data-type="image"
+        class="pfc-field pfc-field-image">
         <div class="ui segment">
             <div class="ui label">
                 <i class="info circle icon"></i>
                 [[field-description]]
             </div>
             <span>[[field-name]]</span>
-            <a class="ui teal label copy-to-clipboard" data-tooltip="Clique para copiar esta variável"
-                data-position="top left" data-inverted="">
-                <i class="code icon"></i>[[field-variable]]
+            <a class="ui teal bottom ribbon label copy-to-clipboard field-variable">
+                <span data-tooltip="Clique para copiar esta variável" data-position="top left" data-inverted="">
+                    <i class="code icon"></i>[[field-variable]]
+                </span>
             </a>
         </div>
     </span><!-- publisher-field-controller-image > -->

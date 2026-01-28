@@ -12,6 +12,7 @@ final class CreatePublisherPagesTable extends AbstractMigration
         $table->addColumn('id_usuarios', 'integer', ['null' => true, 'default' => 1])
             ->addColumn('name', 'string', ['limit' => 255, 'null' => false])
             ->addColumn('id', 'string', ['limit' => 100, 'null' => false])
+            ->addColumn('publisher_id', 'string', ['limit' => 100, 'null' => false])
             ->addColumn('fields_values', 'json', ['null' => true])
             ->addColumn('plugin', 'string', ['limit' => 255, 'null' => true])
             ->addColumn('language', 'string', ['limit' => 10, 'null' => false, 'default' => 'pt-br'])

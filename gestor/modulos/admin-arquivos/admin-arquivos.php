@@ -881,6 +881,7 @@ function admin_arquivos_ajax_upload_file(){
 			'tipo' => $tipo,
 			'imgSrc' => $imgSrc,
 			'url' => $_GESTOR['url-full'] . $url_arquivo,
+			'caminho' => $url_arquivo,
 			'files' => $_FILES['files'],
 			'status' => 'Ok',
 		);

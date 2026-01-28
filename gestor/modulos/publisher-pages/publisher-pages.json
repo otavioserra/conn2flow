@@ -40,11 +40,11 @@
                 {
                     "name": "Publicador Campos",
                     "id": "publisher-fields",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "0de30a7d23cef88613c0f0c473819249",
+                        "html": "caaf7e9f28e99084f59267a0c405951a",
                         "css": "9acffdf2939d187ad3826b68f6b31004",
-                        "combined": "e9756252e3872c3eb8c4387e92597caf"
+                        "combined": "a9b3bb6661907949809c9e122d982388"
                     }
                 }
             ],
@@ -81,11 +81,11 @@
                 {
                     "name": "Publicador Páginas - Adicionar",
                     "id": "publisher-pages-adicionar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "0451888f7a1b98fbcd956559677cd1b2",
-                        "css": "85e5bf7f6524ee8af78adcdc72ba04e5",
-                        "combined": "52426c023b084a4db243710c17eab6b3"
+                        "html": "43edfadb187d65438b047abaa25be660",
+                        "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
+                        "combined": "e9f1cf9485c8aef47d68677f90e9f292"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages\/adicionar\/",

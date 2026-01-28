@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     // ===== Ajax Default
 
     var ajaxDefault = {
@@ -681,8 +682,41 @@ $(document).ready(function () {
 
         if (framework === 'tailwindcss') {
             tailwindConfigScript = `<!-- CDN do TailwindCSS -->
+                <script>
+                    // Remove Tailwind CDN warnings
+                    const originalWarn = console.warn;
+                    console.warn = function (...args) {
+                        if (args[0] && args[0].includes('cdn.tailwindcss.com')) return;
+                        originalWarn.apply(console, args);
+                    };
+                </script>
 				<script src="https://cdn.tailwindcss.com"></script>`;
             iframeTitle = 'Tailwind CSS Preview';
+        }
+
+        const publisherPage = ('publisherPage' in gestor.html_editor ? true : false);
+        const publisherQuillClassDetected = ('publisherQuillClassDetected' in gestor && gestor.publisherQuillClassDetected ? true : false);
+
+        if (publisherPage || publisherQuillClassDetected) {
+            tailwindConfigScript += `
+                <link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" />
+                <style>
+                    .ql-editor {
+                        font-family: Lato, system-ui, -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                        font-size: 16px !important;
+                        line-height: 1.5rem !important;
+                        overflow-y: hidden !important;
+                        color: rgba(0, 0, 0, 0.8);
+                        border: none !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                    }
+                    .ql-container.ql-snow{
+                        border: none !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                    }
+                </style>`;
         }
 
         return `
@@ -849,8 +883,41 @@ $(document).ready(function () {
 
         if (framework === 'tailwindcss') {
             tailwindConfigScript = `<!-- CDN do TailwindCSS -->
+                <script>
+                    // Remove Tailwind CDN warnings
+                    const originalWarn = console.warn;
+                    console.warn = function (...args) {
+                        if (args[0] && args[0].includes('cdn.tailwindcss.com')) return;
+                        originalWarn.apply(console, args);
+                    };
+                </script>
 				<script src="https://cdn.tailwindcss.com"></script>`;
             iframeTitle = 'Tailwind CSS Preview';
+        }
+
+        const publisherPage = ('publisherPage' in gestor.html_editor ? true : false);
+        const publisherQuillClassDetected = ('publisherQuillClassDetected' in gestor && gestor.publisherQuillClassDetected ? true : false);
+
+        if (publisherPage || publisherQuillClassDetected) {
+            tailwindConfigScript += `
+                <link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" />
+                <style>
+                    .ql-editor {
+                        font-family: Lato, system-ui, -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                        font-size: 16px !important;
+                        line-height: 1.5rem !important;
+                        overflow-y: hidden !important;
+                        color: rgba(0, 0, 0, 0.8);
+                        border: none !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                    }
+                    .ql-container.ql-snow{
+                        border: none !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                    }
+                </style>`;
         }
 
         return `
@@ -986,58 +1053,21 @@ $(document).ready(function () {
             const values = $('.publisherVariablesOrValues[data-id="values"]').hasClass('active');
 
             if (values) {
-                const framework = frameworkCSS();
-                const designMode = $('.publisher-design-mode-simulation').length > 0 ? $('.publisher-design-mode-simulation').dropdown('get value') : 'simple';
+                // Pegar os valores atualizados do Publisher Página.
+                let valoresAtualizadosDoPublisherPagina = {};
+                if ('pegarValoresAtualizadosDoPublisherPagina' in window) {
+                    valoresAtualizadosDoPublisherPagina = window.pegarValoresAtualizadosDoPublisherPagina();
+                }
 
                 // Regex para encontrar variáveis no formato [[publisher#TIPO#ID]]
                 const regex = /\[\[publisher#(.+?)#(.+?)\]\]/g;
 
                 html = html.replace(regex, function (match, tipo, id, offset, fullString) {
-                    // Check context: Are we inside an HTML tag attribute?
-                    let isInsideTag = false;
-
-                    // Look backwards for the nearest opening '<' or closing '>'
-                    let i = offset - 1;
-                    while (i >= 0) {
-                        if (fullString[i] === '>') {
-                            // We found a closing tag before an opening one, so we are OUTSIDE a tag
-                            isInsideTag = false;
-                            break;
-                        }
-                        if (fullString[i] === '<') {
-                            // We found an opening tag without a closing one in between, so we are INSIDE a tag
-                            isInsideTag = true;
-                            break;
-                        }
-                        i--;
+                    // Tentar obter valor do publisher page
+                    if (valoresAtualizadosDoPublisherPagina && valoresAtualizadosDoPublisherPagina[id] && valoresAtualizadosDoPublisherPagina[id].fieldValue !== undefined && valoresAtualizadosDoPublisherPagina[id].fieldValue !== '') {
+                        return valoresAtualizadosDoPublisherPagina[id].fieldValue;
                     }
 
-                    // Buscar valores de simulação baseados no modo de design
-                    let simulationItems;
-
-                    // Force simple mode if inside a tag (to avoid breaking attributes like alt="", src="")
-                    const effectiveMode = isInsideTag ? 'simple' : designMode;
-
-                    if (effectiveMode === 'sophisticated') {
-                        simulationItems = $(`.hep-simulation-${tipo}.hep-sophisticated.${framework} .item`);
-                    } else {
-                        // Modo simples: buscar genéricos explicitamente
-                        simulationItems = $(`.hep-simulation-${tipo}.hep-simple .item`);
-                    }
-
-                    // Fallback: Tenta pegar qualquer um do tipo se a busca específica falhar
-                    if (simulationItems.length === 0) {
-                        simulationItems = $(`.hep-simulation-${tipo} .item`);
-                    }
-
-                    if (simulationItems.length > 0) {
-                        // Sortear um valor aleatório
-                        const randomIndex = Math.floor(Math.random() * simulationItems.length);
-                        // Usar html() para pegar o conteúdo exato (incluindo entidades HTML) e inserir de volta no HTML
-                        const randomValue = simulationItems.eq(randomIndex).html().trim();
-                        return randomValue;
-                    }
-                    // Se não encontrar valores, retornar a variável original
                     return match;
                 });
             }
@@ -1045,6 +1075,35 @@ $(document).ready(function () {
 
         return html;
     }
+
+    function publisherValuesUpdate() {
+        const values = $('.publisherVariablesOrValues[data-id="values"]').hasClass('active');
+
+        if (values) {
+            previewHtml();
+        }
+    }
+
+    window.publisherValuesUpdate = publisherValuesUpdate;
+
+    // Buscar por todas as variáveis do template no HTML.
+
+    function publisherGetAllVariables() {
+        let html = CodeMirrorHtml.getDoc().getValue();
+
+        // Regex para encontrar variáveis no formato [[publisher#TIPO#ID]]
+        const regex = /\[\[publisher#([^#]+)#([^\]]+)\]\]/g;
+        let foundVariables = new Set();
+        let match;
+
+        while ((match = regex.exec(html)) !== null) {
+            foundVariables.add(match[0]);
+        }
+
+        return Array.from(foundVariables);
+    }
+
+    window.publisherGetAllVariables = publisherGetAllVariables;
 
     // Variáveis controles.
 
@@ -1728,7 +1787,15 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
 
             menuPages(tipo_modificacao);
         }
+
+        updatedCodeMirrorHtml();
     });
+
+    function updatedCodeMirrorHtml() {
+        if ('updatedCodeMirrorHtml' in window && typeof window.updatedCodeMirrorHtml === 'function') {
+            window.updatedCodeMirrorHtml();
+        }
+    }
 
     $(document.body).on('mouseup tap', '.page-modification-section-rename', function (e) {
         if (e.which != 1 && e.which != 0 && e.which != undefined) return false;

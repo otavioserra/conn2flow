@@ -7,16 +7,6 @@
 .publisher-fields-header{
     margin-top: 10px !important;
 }
-.quill-drop-html{
-    border: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-.quill-drop-html .ql-editor{
-    border: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
 .ql-editor {
     font-family: Lato, system-ui, -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 16px !important; /* Tamanho da fonte */

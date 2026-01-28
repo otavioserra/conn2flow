@@ -8,6 +8,8 @@ $(document).ready(function () {
 		let activeQuill = null;
 
 		$('.quill-editor').each(function () {
+			const obj = this;
+
 			quillEditorsCount++;
 
 			const quill = new Quill(this, {
@@ -39,6 +41,19 @@ $(document).ready(function () {
 				}
 			});
 
+			quill.on('text-change', function (delta, oldDelta, source) {
+				// Disparar atualização apenas se a mudança veio do usuário (não de API)
+				if (source === 'user') {
+					$.input_delay_to_change({
+						trigger_selector: '#gestor-listener',
+						trigger_event: 'htmlfield-change',
+						value: {
+							parent: $(obj).parents('.pfc-field-html') // Ou usar a referência armazenada
+						}
+					});
+				}
+			});
+
 			// Rastrear foco no editor
 			quill.root.addEventListener('focus', function () {
 				activeQuill = quill; // Define o editor ativo
@@ -49,7 +64,10 @@ $(document).ready(function () {
 				activeQuill = null;
 			});
 
-			quillEditors[quillEditorsCount] = quill;
+			quillEditors[quillEditorsCount] = {
+				quill,
+				parent: $(obj).parents('.pfc-field-html')
+			};
 		});
 
 		if (quillEditorsCount > 0) {
@@ -81,13 +99,27 @@ $(document).ready(function () {
 					}
 				}
 			});
+		}
 
-			$(document.body).on('mouseup tap', '.quill-get-html', function (e) {
-				if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+		function valorAtualizadoQuillEditor(id) {
+			if (!id) return '';
+			if (Object.keys(quillEditors).length == 0) return '';
 
-				const html = $('.quill-editor-container').find('.ql-editor').html();
-				$('.quill-drop-html').find('.ql-editor').html(html);
-			});
+			for (let key in quillEditors) {
+				const editorObj = quillEditors[key];
+
+				if (editorObj && editorObj.parent)
+					if (editorObj.parent.data('id') == id) {
+						let html = editorObj.quill.root.innerHTML;
+						html = html === '<p><br></p>' ? '' : html;
+
+						const htmlProcessed = html != '' ? gestor.quillShowContainer.replace(/\[\[field-value\]\]/g, html) : '';
+
+						return htmlProcessed;
+					}
+			}
+
+			return '';
 		}
 
 		// ===== Input delay
@@ -177,6 +209,10 @@ $(document).ready(function () {
 
 		$(document.body).on('caminho-change', '#gestor-listener', function (e, value, p) {
 			if (!p) p = {};
+
+			if ('publisherPathPrefix' in gestor && gestor.publisherPathPrefix.length > 0) {
+				value = gestor.publisherPathPrefix + '/' + value;
+			}
 
 			$('input[name="paginaCaminho"]').val(formatar_url(value));
 		});
@@ -280,6 +316,151 @@ $(document).ready(function () {
 				return uri + separator + key + "=" + value;
 			}
 		}
+
+		// ===== Atualização dos valores atualizar automaticamente o Editor HTML
+
+		// Changing images fields
+
+		window.addEventListener('message', function (e) {
+			try {
+				var data = JSON.parse(e.data);
+
+				switch (data.moduloId) {
+					case 'admin-arquivos':
+					case 'arquivos':
+						var dados = JSON.parse(decodeURI(data.data));
+
+						if (dados.tipo.match(/image\//) == 'image/') {
+							publisherValuesUpdate();
+						}
+						break;
+				}
+			} catch (error) {
+				return;
+			}
+		});
+
+		$(document.body).on('mouseup tap', '._gestor-widgetImage-btn-del', function (e, value, p) {
+			setTimeout(() => {
+				publisherValuesUpdate();
+			}, 100);
+		});
+
+		// Changing text & textarea fields
+
+		$(document.body).on('keyup', '.pfc-field input[type="text"], .pfc-field textarea', function (e) {
+			if (e.which == 9) return false;
+
+			var value = $(this).val();
+
+			$.input_delay_to_change({
+				trigger_selector: '#gestor-listener',
+				trigger_event: 'textfield-change',
+				value: value
+			});
+		});
+
+		$(document.body).on('textfield-change', '#gestor-listener', function (e, value, p) {
+			if (!p) p = {};
+
+			publisherValuesUpdate();
+		});
+
+		// Changing HTML fields
+
+		$(document.body).on('htmlfield-change', '#gestor-listener', function (e, value, p) {
+			if (!p) p = {};
+
+			const parent = value.parent;
+			const id = parent.data('id');
+			const html = valorAtualizadoQuillEditor(id);
+
+			parent.find('input[type="hidden"]').val(html);
+
+			publisherValuesUpdate();
+		});
+
+		// ===== Atualização dos valores pelo ou no Editor HTML
+
+		function publisherValuesUpdate() {
+			if ('publisherValuesUpdate' in window) {
+				window.publisherValuesUpdate();
+			}
+
+			publisherVariablesUpdate();
+		}
+
+		function publisherVariablesUpdate() {
+			if ('publisherGetAllVariables' in window) {
+				const variables = window.publisherGetAllVariables();
+
+				$('.field-variable').each(function () {
+					const variableName = $(this).text().trim();
+
+					if (variables.includes(variableName)) {
+						$(this).addClass('teal');
+					} else {
+						$(this).removeClass('teal');
+					}
+				});
+			}
+		}
+
+		publisherVariablesUpdate();
+
+		function updatedCodeMirrorHtml() {
+			setTimeout(() => {
+				publisherVariablesUpdate();
+			}, 200);
+		}
+
+		window.updatedCodeMirrorHtml = updatedCodeMirrorHtml;
+
+		function pegarValoresAtualizadosDoPublisherPagina(params = {}) {
+			values = {};
+
+			// Pegar os valores atualizados das variaveis do Publisher Página.
+			$('.pfc-field').each(function () {
+				const fieldId = $(this).data('id');
+				const fieldType = $(this).data('type');
+				const fieldVariable = $(this).find('.field-variable').text().trim() || '';
+
+				let fieldValue = '';
+
+				switch (fieldType) {
+					case 'image':
+						const inputHidden = $(this).find('._gestor-widgetImage-file-caminho');
+						if (inputHidden.length > 0) {
+							fieldValue = gestor.raiz + inputHidden.val();
+						}
+						break;
+					case 'textarea':
+						const textarea = $(this).find('textarea');
+						if (textarea.length > 0) {
+							fieldValue = textarea.val().replace(/\n/g, '<br>');
+						}
+						break;
+					case 'html':
+						fieldValue = valorAtualizadoQuillEditor(fieldId);
+						break;
+					default:
+						const inputElement = $(this).find('input[type="text"]');
+						if (inputElement.length > 0) {
+							fieldValue = inputElement.val();
+						}
+				}
+
+				values[fieldId] = {
+					fieldValue,
+					fieldType,
+					fieldVariable
+				};
+			});
+
+			return values;
+		}
+
+		window.pegarValoresAtualizadosDoPublisherPagina = pegarValoresAtualizadosDoPublisherPagina;
 	}
 
 	if ($('#_gestor-interface-listar').length > 0) {
