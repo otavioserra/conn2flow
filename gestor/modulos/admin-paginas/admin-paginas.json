@@ -115,11 +115,11 @@
                 {
                     "name": "Lista Página ou Sistema",
                     "id": "lista-pagina-ou-sistema",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "d0e62efa4ab45262de04a3304cde584a",
+                        "html": "839f0ad72ee1fb7559f79aa1fd0b2f53",
                         "css": "",
-                        "combined": "d0e62efa4ab45262de04a3304cde584a"
+                        "combined": "839f0ad72ee1fb7559f79aa1fd0b2f53"
                     }
                 }
             ],
@@ -480,11 +480,11 @@
                 {
                     "name": "Page or System List",
                     "id": "lista-pagina-ou-sistema",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "d0e62efa4ab45262de04a3304cde584a",
+                        "html": "d0dae208d0c9c46f4041e52bb5e503df",
                         "css": "",
-                        "combined": "d0e62efa4ab45262de04a3304cde584a"
+                        "combined": "d0dae208d0c9c46f4041e52bb5e503df"
                     }
                 }
             ],

@@ -10161,6 +10161,15 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-fields_values-label",
+        "valor": "Campos do Publicador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "publisher-pages",
         "id": "form-name-label",
@@ -10471,6 +10480,15 @@
         "modulo": "publisher-pages",
         "id": "form-field-description-image",
         "valor": "Click the Add button to include a \"#label#\".",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-pages",
+        "id": "form-fields_values-label",
+        "valor": "Publisher Fields",
         "tipo": "string",
         "grupo": null,
         "descricao": null

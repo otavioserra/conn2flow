@@ -11,14 +11,16 @@
         <div class="field">
             <div class="ui radio checkbox" data-tooltip="Clique para mostrar tipo Sistema" data-position="top left"
                 data-inverted="">
-                <input type="radio" name="tipo" tabindex="2" value="sistema" #checked_sistema#>
+                <input type="radio" name="tipo" tabindex="2" value="sistema" #checked_sistema#
+                    data-tooltip="Clique para mostrar os sistemas" data-position="top left" data-inverted="">
                 <label>#sistema#</label>
             </div>
         </div>
         <div class="field">
             <div class="ui radio checkbox" data-tooltip="Clique para mostrar ambos" data-position="top left"
                 data-inverted="">
-                <input type="radio" name="tipo" value="ambos" tabindex="0" #checked_ambos#>
+                <input type="radio" name="tipo" value="ambos" tabindex="0" #checked_ambos#
+                    data-tooltip="Clique para mostrar ambos" data-position="top left" data-inverted="">
                 <label>#ambos#</label>
             </div>
         </div>
@@ -31,5 +33,15 @@
                 <!-- modulos-opcoes -->
             </select>
         </div><!-- modulos-cel > -->
+        <!-- publisher-cel < -->
+        <label>Publicador</label>
+        <div class="field"
+            data-tooltip="Clique para filtrar publicador e mostrar apenas páginas do publicador selecionado"
+            data-position="top left" data-inverted="">
+            <select id="publisher" class="ui search clearable dropdown publisherDropdown" name="publisher">
+                <option value="">Selecione um publicador</option>
+                <!-- publisher-opcoes -->
+            </select>
+        </div><!-- publisher-cel > -->
     </div>
 </div>

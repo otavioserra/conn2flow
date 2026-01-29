@@ -51,6 +51,27 @@
     <label>#form-publisher-label#</label>
     <span>#select-publisher#</span>
 </div>
+
+<!-- publisher-fields-container < -->
+<div class="publisher-fields-container">
+    <a class="ui button brown" href="@[[pagina#url-raiz]]@publisher/editar/#publisher-id#"
+        data-tooltip="Click to edit publisher" data-position="top left" data-inverted="">
+        <i class="edit icon"></i>
+        Edit Publisher
+    </a>
+
+    <h4 class="ui horizontal divider header publisher-fields-header">
+        <i class="file alternate outline icon"></i>
+        Publisher Fields
+    </h4>
+
+    <!-- publisher-fields -->
+
+    <input type="hidden" name="publisher_fields_schema" value='#publisher-fields-schema#'>
+
+    <div class="ui divider"></div>
+</div><!-- publisher-fields-container > -->
+
 <div class="field">
     <label>#form-page-content-label#</label>
     #html-editor#

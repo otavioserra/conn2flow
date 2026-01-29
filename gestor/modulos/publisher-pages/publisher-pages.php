@@ -51,6 +51,16 @@ function publisher_pages_publisher($publisher_id = null){
 	return isset($publisher)? $publisher : null;
 }
 
+function publisher_pages_normalize_array($array) {
+    if (is_array($array)) {
+        ksort($array); // Ordena chaves
+        foreach ($array as $key => $value) {
+            $array[$key] = publisher_pages_normalize_array($value); // Recursivo para subarrays
+        }
+    }
+    return $array;
+}
+
 // ===== Interfaces Principais
 
 function publisher_pages_adicionar(){
@@ -77,6 +87,11 @@ function publisher_pages_adicionar(){
 					'campo' => 'paginaCaminho',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-path-label')),
 					'min' => 1,
+				),
+				Array(
+					'regra' => 'selecao-obrigatorio',
+					'campo' => 'publisher',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-publisher-label')),
 				)
 			)
 		));
@@ -95,6 +110,8 @@ function publisher_pages_adicionar(){
 				'where' => "language='".$_GESTOR['linguagem-codigo']."'",
 			),
 		));
+
+		$page_id = $id;
 		
 		// ===== Verificar se os campos enviados não existem no banco de dados
 		
@@ -129,13 +146,17 @@ function publisher_pages_adicionar(){
 		$_REQUEST['css_compiled'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['css_compiled']);
 		$_REQUEST['html_extra_head'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['html_extra_head']);
 		
+		// ===== Definir o publisher_id
+
+		$publisher_id = $_REQUEST['publisher'];
+
 		// ===== Campos gerais
 		
 		$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "nome"; $post_nome = "pagina-nome"; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "id"; $campo_valor = $page_id; 									$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "publisher_id"; $campo_valor = $publisher_id;						$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 
-		$campo_nome = "publisher_id"; $post_nome = 'publisher';		 					if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "layout_id"; $post_nome = 'layout';		 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "tipo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "framework_css"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
@@ -198,19 +219,12 @@ function publisher_pages_adicionar(){
 			}
 		}
 
-		$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = "name"; $post_nome = "pagina-nome"; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-
-		$campo_nome = "publisher_id"; $post_nome = 'publisher';		 					if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "page_id"; $campo_valor = $page_id; 								$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "publisher_id"; $campo_valor = $publisher_id; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 
 		// ===== Campos comuns
 		
 		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
-		$campo_nome = $modulo['tabela']['data_modificacao']; $campo_valor = 'NOW()'; 	$campos[] = Array($campo_nome,$campo_valor,true);
 		
 		banco_insert_name
 		(
@@ -218,7 +232,7 @@ function publisher_pages_adicionar(){
 			'publisher_pages'
 		);
 
-		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
+		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$page_id);
 	}
 
 	// ===== Permissão de páginas
@@ -569,6 +583,10 @@ function publisher_pages_editar(){
 	
 	$camposBancoEditar = array_merge($camposBanco,$camposBancoPadrao);
 	$camposBancoAntes = $camposBanco;
+
+	$camposBancoAntesPublisherPage = Array(
+		'fields_values',
+	);
 	
 	// ===== Gravar Atualizações no Banco
 	
@@ -605,6 +623,11 @@ function publisher_pages_editar(){
 					'campo' => 'paginaCaminho',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-path-label')),
 					'min' => 1,
+				),
+				Array(
+					'regra' => 'selecao-obrigatorio',
+					'campo' => 'publisher',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-publisher-label')),
 				)
 			)
 		));
@@ -668,8 +691,16 @@ function publisher_pages_editar(){
 				$campo_nome = $modulo['tabela']['id']; $editar['dados'][] = $campo_nome."='" . $id_novo . "'";
 				$_GESTOR['modulo-registro-id'] = $id_novo;
 			}
+
+			$pager_id_novo = $id_novo;
 		}
 		
+		$pager_id = $id;
+
+		// ===== Definir o publisher_id
+
+		$publisher_id = $_REQUEST['publisher'];
+
 		// ===== Variaveis globais alterar.
 		
 		$open = $_GESTOR['variavel-global']['open'];
@@ -721,31 +752,6 @@ function publisher_pages_editar(){
 			}
 			$editar = false;
 			
-			// ===== Incluir no backup os campos.
-			
-			if(isset($backups)){
-				foreach($backups as $backup){
-					interface_backup_campo_incluir(Array(
-						'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-						'versao' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['versao'])),
-						'campo' => $backup['campo'],
-						'valor' => $backup['valor'],
-					));
-				}
-			}
-			
-			// ===== Incluir no histórico as alterações.
-			
-			interface_historico_incluir(Array(
-				'id' => $id,
-				'tabela' => Array(
-					'nome' => $modulo['tabela']['nome'],
-					'id_numerico' => $modulo['tabela']['id_numerico'],
-					'versao' => $modulo['tabela']['versao'],
-				),
-				'alteracoes' => $alteracoes,
-			));
-			
 			// ===== Se mudou o caminho, criar página 301 do caminho
 			
 			if(isset($caminhoMudou)){
@@ -762,10 +768,137 @@ function publisher_pages_editar(){
 				);
 			}
 		}
+
+		// ===== Atualizar campos do publisher pages
+
+		$fields_schema_decoded = json_decode($_REQUEST['publisher_fields_schema'] ?? '', true) ?: null;
+
+		if($fields_schema_decoded && isset($fields_schema_decoded['fields'])){
+			$fields = isset($fields_schema_decoded['fields']) ? $fields_schema_decoded['fields'] : null;
+			$template_map = isset($fields_schema_decoded['template_map']) ? $fields_schema_decoded['template_map'] : null;
+
+			if($fields){
+				// ===== Definição dos campos do banco de dados para editar.
+
+				$editar_publisher_pages = Array(
+					'tabela' => 'publisher_pages',
+					'extra' => "WHERE pager_id='".$pager_id."' AND publisher_id='".$publisher_id."' AND language='".$_GESTOR['linguagem-codigo']."'",
+				);
+
+				// ===== Recuperar o estado dos dados do banco de dados antes de editar.
+				
+				if(!banco_select_campos_antes_iniciar(
+					banco_campos_virgulas($camposBancoAntesPublisherPage)
+					,
+					'publisher_pages',
+					"WHERE pager_id='".$pager_id."'"
+					." AND publisher_id='".$publisher_id."'"
+					." AND language='".$_GESTOR['linguagem-codigo']."'"
+				)){
+					interface_alerta(Array(
+						'redirect' => true,
+						'msg' => gestor_variaveis(Array('modulo' => 'interface','id' => 'alert-database-field-before-error'))
+					));
+					
+					gestor_redirecionar_raiz();
+				}
+				
+				foreach($fields as $field){
+					
+					$id = $field['id'];
+					$post_nome = 'field_'.$id; 
+
+					if($_REQUEST[$post_nome]){
+						$fields_values[] = Array(
+							'id' => $id,
+							'value' => banco_escape_field($_REQUEST[$post_nome])
+						);
+					}
+				}
+
+				if(isset($fields_values)){
+					$request_json = json_encode($fields_values);
+				}
+
+				// ===== Processar fields_schema para converter variáveis de frontend [[...]] para backend @[[...]]@
+
+				$open = $_GESTOR['variavel-global']['open'];
+				$close = $_GESTOR['variavel-global']['close'];
+				$openText = $_GESTOR['variavel-global']['openText'];
+				$closeText = $_GESTOR['variavel-global']['closeText'];
+				
+				$request_formatado = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), (isset($request_json) ? $request_json : ''));
+
+				// ===== Normalizar e comparar o schema de campos personalizados
+
+				$alteracoes_name = $campo_nome = 'fields_values';
+				
+				$valor_request = publisher_normalize_array(json_decode($request_formatado, true));
+				$valor_banco = publisher_normalize_array(json_decode(banco_select_campos_antes($campo_nome), true));
+				
+				if ($valor_banco !== $valor_request) {
+					// Lógica de atualização
+					$editar_publisher_pages['dados'][] = $campo_nome . "='" . banco_escape_field($request_formatado) . "'";
+					$alteracoes[] = Array('campo' => 'form-' . $alteracoes_name . '-label');
+				}
+			}
+		}
+
+		// ===== Se alterou o id, atualizar também no publisher pages
+
+		if(isset($pager_id_novo)){
+			$editar_publisher_pages['dados'][] = "pager_id='" . $pager_id_novo . "'";
+		}
+
+		// ===== Se houve alterações no publisher pages, modificar no banco de dados junto com campos padrões de atualização
+		
+		if(isset($editar_publisher_pages['dados'])){
+			$editar_publisher_pages['sql'] = banco_campos_virgulas($editar_publisher_pages['dados']);
+			
+			if($editar_publisher_pages['sql']){
+				banco_update
+				(
+					$editar_publisher_pages['sql'],
+					$editar_publisher_pages['tabela'],
+					$editar_publisher_pages['extra']
+				);
+			}
+			$editar_publisher_pages = false;
+		}
+
+		// ===== Incluir no histórico as alterações e backup dos campos
+
+		if(isset($editar['dados']) || isset($editar_publisher_pages['dados'])){
+			
+			// ===== Incluir no backup os campos.
+			
+			if(isset($backups)){
+				foreach($backups as $backup){
+					interface_backup_campo_incluir(Array(
+						'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
+						'versao' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['versao'])),
+						'campo' => $backup['campo'],
+						'valor' => $backup['valor'],
+					));
+				}
+			}
+			
+			// ===== Incluir no histórico as alterações.
+			
+			interface_historico_incluir(Array(
+				'id' => $pager_id,
+				'tabela' => Array(
+					'nome' => $modulo['tabela']['nome'],
+					'id_numerico' => $modulo['tabela']['id_numerico'],
+					'versao' => $modulo['tabela']['versao'],
+				),
+				'alteracoes' => $alteracoes,
+			));
+		}
 		
 		// ===== Reler URL.
 		
-		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.(isset($id_novo) ? $id_novo : $id));
+		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.(isset($pager_id_novo) ? $pager_id_novo : $pager_id));
 	}
 	
 	// ===== Permissão de páginas
@@ -826,12 +959,19 @@ function publisher_pages_editar(){
 			));
 
 			if($publisher){
+				$open = $_GESTOR['variavel-global']['open'];
+				$close = $_GESTOR['variavel-global']['close'];
+				$openText = $_GESTOR['variavel-global']['openText'];
+				$closeText = $_GESTOR['variavel-global']['closeText'];
+				
 				$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#publisher-id#', '?id='.$publisher_id);
 
 				$fields_schema = $publisher['fields_schema'];
 				$path_prefix = $publisher['path_prefix'] ?? '';
 
 				gestor_js_variavel_incluir('publisherPathPrefix',$path_prefix);
+
+				$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#publisher-fields-schema#', $fields_schema);
 
 				$fields_schema_decoded = json_decode($fields_schema, true) ?: null;
 
@@ -1494,28 +1634,94 @@ function publisher_pages_listar_cabecalho(){
 		gestor_pagina_javascript_incluir();
 	}
 
-	// ===== Pegar o componente.
+	// Requests recebidos
 
 	$tipo = $_REQUEST['tipo'] ?? 'pagina';
+	$module_id = $_REQUEST['module_id'] ?? '';
+	$publisher_id = $_REQUEST['publisher_id'] ?? '';
+
+	// Escapar inputs
+
+	$tipo = banco_escape_field($tipo);
+	$module_id = banco_escape_field($module_id);
+	$publisher_id = banco_escape_field($publisher_id);
+
+	// ===== Pegar o componente.
+
 	$checked = ' checked="checked"';
 
-	$lista_pagina_ou_sistema = gestor_componente(Array(
-		'id' => 'lista-pagina-ou-sistema',
-		'modulo' => 'admin-paginas',
+	$componente_cabecalho = gestor_componente(Array(
+		'id' => 'lista-pagina-ou-sistema-ou-publisher',
+		'modulo' => $_GESTOR['modulo-id'],
 	));
 
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#ambos#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-ambos-label')));
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#pagina#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-pagina-label')));
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#sistema#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-sistema-label')));
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#tipo#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-tipo-label')));
+	// ===== Trocar variáveis do input de tipo.
 
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#checked_ambos#',$tipo == 'ambos' ? $checked : '');
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#checked_pagina#',$tipo == 'pagina' ? $checked : '');
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#checked_sistema#',$tipo == 'sistema' ? $checked : '');
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#ambos#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-ambos-label')));
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#pagina#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-pagina-label')));
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#sistema#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-sistema-label')));
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#tipo#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-tipo-label')));
+
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#checked_ambos#',$tipo == 'ambos' ? $checked : '');
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#checked_pagina#',$tipo == 'pagina' ? $checked : '');
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#checked_sistema#',$tipo == 'sistema' ? $checked : '');
+
+	// ===== Trocar variáveis do input de módulo.
+
+	if($tipo != 'pagina'){
+		$modulos = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'nome',
+				'id',
+			))
+			,
+			'modulos',
+			"WHERE language='".$_GESTOR['linguagem-codigo']."' AND status!='D'"
+		);
+
+		if($modulos){
+			$selected = ' selected="selected"';
+
+			foreach($modulos as $modulo){
+				$componente_cabecalho = modelo_var_in($componente_cabecalho,'<!-- modulos-opcoes -->','<option value="'.$modulo['id'].'"'.($modulo['id'] == $module_id ? $selected : '').'>'.$modulo['nome'].'</option>');
+			}
+		} else {
+			$cel_nome = 'modulos-cel'; $componente_cabecalho = modelo_tag_del($componente_cabecalho,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		}
+	} else {
+		$module_id = '';
+		$cel_nome = 'modulos-cel'; $componente_cabecalho = modelo_tag_del($componente_cabecalho,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+	}
+
+	// ===== Trocar variáveis do input de publisher.
+
+	$publisher = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'name',
+			'id',
+		))
+		,
+		'publisher',
+		"WHERE language='".$_GESTOR['linguagem-codigo']."' AND status!='D'"
+	);
+
+	if($publisher){
+		$selected = ' selected="selected"';
+
+		foreach($publisher as $publisher_item){
+			$componente_cabecalho = modelo_var_in($componente_cabecalho,'<!-- publisher-opcoes -->','<option value="'.$publisher_item['id'].'"'.($publisher_item['id'] == $publisher_id ? $selected : '').'>'.$publisher_item['name'].'</option>');
+		}
+	} else {
+		$cel_nome = 'publisher-cel'; $componente_cabecalho = modelo_tag_del($componente_cabecalho,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+	}
 
 	return [
-		'cabecalho' => $lista_pagina_ou_sistema,
+		'cabecalho' => $componente_cabecalho,
 		'tipo' => $tipo,
+		'module_id' => $module_id,
+		'publisher_id' => $publisher_id,
 	];
 }
 
@@ -1542,7 +1748,7 @@ function publisher_pages_interfaces_padroes(){
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
-					'where' => "language='".$_GESTOR['linguagem-codigo']."'" . ($dados['tipo'] != 'ambos' && $dados['tipo'] != '' ? " AND tipo='{$dados['tipo']}'" : ''),
+					'where' => "language='".$_GESTOR['linguagem-codigo']."' AND publisher_id IS NOT NULL" . ($dados['tipo'] != 'ambos' && $dados['tipo'] != '' ? " AND tipo='{$dados['tipo']}'" : '') . ($dados['module_id'] != '' ? " AND modulo='{$dados['module_id']}'" : '') . ($dados['publisher_id'] != '' ? " AND publisher_id='{$dados['publisher_id']}'" : ''),
 				),
 				'tabela' => Array(
 					'cabecalho' => $dados['cabecalho'],

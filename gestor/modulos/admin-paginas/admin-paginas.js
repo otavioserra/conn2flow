@@ -169,10 +169,36 @@ $(document).ready(function () {
 	}
 
 	if ($('#_gestor-interface-listar').length > 0) {
+		function updateQueryStringParameter(uri, key, value) {
+			var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+			var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+			if (value === '') {
+				// Remover o parâmetro e limpar & ou ? no final se necessário
+				return uri.replace(re, '$1').replace(/[?&]$/, '');
+			} else if (uri.match(re)) {
+				return uri.replace(re, '$1' + key + "=" + value + '$2');
+			} else {
+				return uri + separator + key + "=" + value;
+			}
+		}
+
 		$('.ui.radio.checkbox').checkbox({
 			onChange: function () {
-				window.open(gestor.raiz + gestor.moduloCaminho + '?tipo=' + $(this).val(), '_self');
+				const tipo = $(this).val();
+
+				var currentUrl = window.location.href;
+				var newUrl = updateQueryStringParameter(currentUrl, 'tipo', tipo);
+				window.location.href = newUrl;
 			}
 		});
+
+		$('.gestorModule')
+			.dropdown({
+				onChange: function (value, text, $choice) {
+					var currentUrl = window.location.href;
+					var newUrl = updateQueryStringParameter(currentUrl, 'module_id', value);
+					window.location.href = newUrl;
+				}
+			});
 	}
 });

@@ -1025,28 +1025,68 @@ function admin_paginas_listar_cabecalho(){
 		gestor_pagina_javascript_incluir();
 	}
 
-	// ===== Pegar o componente.
+	// Requests recebidos
 
 	$tipo = $_REQUEST['tipo'] ?? 'pagina';
+	$module_id = $_REQUEST['module_id'] ?? '';
+
+	// Escapar inputs
+
+	$tipo = banco_escape_field($tipo);
+	$module_id = banco_escape_field($module_id);
+
+	// ===== Pegar o componente.
+
 	$checked = ' checked="checked"';
 
-	$lista_pagina_ou_sistema = gestor_componente(Array(
+	$componente_cabecalho = gestor_componente(Array(
 		'id' => 'lista-pagina-ou-sistema',
 		'modulo' => $_GESTOR['modulo-id'],
 	));
 
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#ambos#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-ambos-label')));
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#pagina#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-pagina-label')));
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#sistema#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-sistema-label')));
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#tipo#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-tipo-label')));
+	// ===== Trocar variáveis do input de tipo.
 
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#checked_ambos#',$tipo == 'ambos' ? $checked : '');
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#checked_pagina#',$tipo == 'pagina' ? $checked : '');
-	$lista_pagina_ou_sistema = modelo_var_troca($lista_pagina_ou_sistema,'#checked_sistema#',$tipo == 'sistema' ? $checked : '');
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#ambos#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-ambos-label')));
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#pagina#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-pagina-label')));
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#sistema#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-sistema-label')));
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#tipo#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'lista-tipo-label')));
+
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#checked_ambos#',$tipo == 'ambos' ? $checked : '');
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#checked_pagina#',$tipo == 'pagina' ? $checked : '');
+	$componente_cabecalho = modelo_var_troca($componente_cabecalho,'#checked_sistema#',$tipo == 'sistema' ? $checked : '');
+
+	// ===== Trocar variáveis do input de módulo.
+
+	if($tipo != 'pagina'){
+		$modulos = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'nome',
+				'id',
+			))
+			,
+			'modulos',
+			"WHERE language='".$_GESTOR['linguagem-codigo']."' AND status!='D'"
+		);
+
+		if($modulos){
+			$selected = ' selected="selected"';
+
+			foreach($modulos as $modulo){
+				$componente_cabecalho = modelo_var_in($componente_cabecalho,'<!-- modulos-opcoes -->','<option value="'.$modulo['id'].'"'.($modulo['id'] == $module_id ? $selected : '').'>'.$modulo['nome'].'</option>');
+			}
+		} else {
+			$cel_nome = 'modulos-cel'; $componente_cabecalho = modelo_tag_del($componente_cabecalho,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		}
+	} else {
+		$module_id = '';
+		$cel_nome = 'modulos-cel'; $componente_cabecalho = modelo_tag_del($componente_cabecalho,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+	}
 
 	return [
-		'cabecalho' => $lista_pagina_ou_sistema,
+		'cabecalho' => $componente_cabecalho,
 		'tipo' => $tipo,
+		'module_id' => $module_id,
 	];
 }
 
@@ -1073,7 +1113,7 @@ function admin_paginas_interfaces_padroes(){
 					),
 					'id' => $modulo['tabela']['id'],
 					'status' => $modulo['tabela']['status'],
-					'where' => "language='".$_GESTOR['linguagem-codigo']."'" . ($dados['tipo'] != 'ambos' && $dados['tipo'] != '' ? " AND tipo='{$dados['tipo']}'" : ''),
+					'where' => "language='".$_GESTOR['linguagem-codigo']."'" . ($dados['tipo'] != 'ambos' && $dados['tipo'] != '' ? " AND tipo='{$dados['tipo']}'" : '') . ($dados['module_id'] != '' ? " AND modulo='{$dados['module_id']}'" : ''),
 				),
 				'tabela' => Array(
 					'cabecalho' => $dados['cabecalho'],
