@@ -1,0 +1,124 @@
+<div class="ui vertical segment" style="padding: 6rem 0; background: white;" id="gallery-masonry" data-id="1"
+    data-title="sessao-galeria-masonry-fomantic-ui">
+    <div class="ui container">
+        <div class="ui text container center aligned" style="margin-bottom: 4rem;">
+            <h2 class="ui header" style="font-size: 2.5rem; font-weight: 800; color: #111827; margin-bottom: 1.5rem;">
+                Our <span
+                    style="background: linear-gradient(to right, #9333ea, #db2777); -webkit-background-clip: text; color: transparent;">Gallery</span>
+            </h2>
+            <p style="font-size: 1.125rem; color: #4b5563;">
+                Explore moments, projects, and details that make the difference.
+            </p>
+        </div>
+
+        <!-- Masonry Grid with CSS Columns -->
+        <div style="column-count: 3; column-gap: 2rem;">
+            <style>
+                @media (max-width: 768px) {
+                    #gallery-masonry .ui.container>div:last-child {
+                        column-count: 1 !important;
+                    }
+                }
+
+                @media (min-width: 769px) and (max-width: 1024px) {
+                    #gallery-masonry .ui.container>div:last-child {
+                        column-count: 2 !important;
+                    }
+                }
+            </style>
+
+            <!-- Item 1 -->
+            <div class="ui segment"
+                style="padding: 0; border: none; break-inside: avoid; margin-bottom: 2rem; border-radius: 1rem; overflow: hidden; position: relative; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); cursor: pointer;"
+                onmouseover="this.querySelector('.overlay').style.opacity='1'; this.querySelector('img').style.transform='scale(1.1)';"
+                onmouseout="this.querySelector('.overlay').style.opacity='0'; this.querySelector('img').style.transform='scale(1)';">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=600"
+                    alt="Office" style="width: 100%; display: block; transition: transform 0.7s;">
+                <div class="overlay"
+                    style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2), transparent); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem;">
+                    <span
+                        style="color: #d8b4fe; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Corporate</span>
+                    <h3 style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0;">Modern Environment</h3>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="ui segment"
+                style="padding: 0; border: none; break-inside: avoid; margin-bottom: 2rem; border-radius: 1rem; overflow: hidden; position: relative; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); cursor: pointer;"
+                onmouseover="this.querySelector('.overlay').style.opacity='1'; this.querySelector('img').style.transform='scale(1.1)';"
+                onmouseout="this.querySelector('.overlay').style.opacity='0'; this.querySelector('img').style.transform='scale(1)';">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=600"
+                    alt="Team" style="width: 100%; display: block; transition: transform 0.7s;">
+                <div class="overlay"
+                    style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2), transparent); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem;">
+                    <span
+                        style="color: #d8b4fe; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Team</span>
+                    <h3 style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0;">Collaboration & Focus
+                    </h3>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="ui segment"
+                style="padding: 0; border: none; break-inside: avoid; margin-bottom: 2rem; border-radius: 1rem; overflow: hidden; position: relative; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); cursor: pointer;"
+                onmouseover="this.querySelector('.overlay').style.opacity='1'; this.querySelector('img').style.transform='scale(1.1)';"
+                onmouseout="this.querySelector('.overlay').style.opacity='0'; this.querySelector('img').style.transform='scale(1)';">
+                <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=600"
+                    alt="Meeting" style="width: 100%; display: block; transition: transform 0.7s;">
+                <div class="overlay"
+                    style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2), transparent); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem;">
+                    <span
+                        style="color: #d8b4fe; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Meetings</span>
+                    <h3 style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0;">Strategic Decisions</h3>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="ui segment"
+                style="padding: 0; border: none; break-inside: avoid; margin-bottom: 2rem; border-radius: 1rem; overflow: hidden; position: relative; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); cursor: pointer;"
+                onmouseover="this.querySelector('.overlay').style.opacity='1'; this.querySelector('img').style.transform='scale(1.1)';"
+                onmouseout="this.querySelector('.overlay').style.opacity='0'; this.querySelector('img').style.transform='scale(1)';">
+                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=600"
+                    alt="Analysis" style="width: 100%; display: block; transition: transform 0.7s;">
+                <div class="overlay"
+                    style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2), transparent); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem;">
+                    <span
+                        style="color: #d8b4fe; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Data</span>
+                    <h3 style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0;">Performance Analysis</h3>
+                </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="ui segment"
+                style="padding: 0; border: none; break-inside: avoid; margin-bottom: 2rem; border-radius: 1rem; overflow: hidden; position: relative; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); cursor: pointer;"
+                onmouseover="this.querySelector('.overlay').style.opacity='1'; this.querySelector('img').style.transform='scale(1.1)';"
+                onmouseout="this.querySelector('.overlay').style.opacity='0'; this.querySelector('img').style.transform='scale(1)';">
+                <img src="https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&q=80&w=600"
+                    alt="Workspace" style="width: 100%; display: block; transition: transform 0.7s;">
+                <div class="overlay"
+                    style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2), transparent); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem;">
+                    <span
+                        style="color: #d8b4fe; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Workspace</span>
+                    <h3 style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0;">Comfort & Productivity
+                    </h3>
+                </div>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="ui segment"
+                style="padding: 0; border: none; break-inside: avoid; margin-bottom: 2rem; border-radius: 1rem; overflow: hidden; position: relative; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); cursor: pointer;"
+                onmouseover="this.querySelector('.overlay').style.opacity='1'; this.querySelector('img').style.transform='scale(1.1)';"
+                onmouseout="this.querySelector('.overlay').style.opacity='0'; this.querySelector('img').style.transform='scale(1)';">
+                <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=600"
+                    alt="Tech" style="width: 100%; display: block; transition: transform 0.7s;">
+                <div class="overlay"
+                    style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2), transparent); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem;">
+                    <span
+                        style="color: #d8b4fe; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Technology</span>
+                    <h3 style="color: white; font-size: 1.25rem; font-weight: 700; margin: 0;">Continuous Innovation
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,256 @@
+<section class="py-20 bg-[rgb(25,42,70)]" id="sessao-abas-alternativo" data-id="1"
+    data-title="sessao-com-abas-alternativo">
+    <div class="container mx-auto px-4">
+        <!-- Header da Seção -->
+        <div class="text-center mb-16 max-w-3xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                Ecossistema Completo
+            </h2>
+            <p class="text-lg text-gray-300">
+                Uma plataforma unificada que evolui com sua empresa. Descubra os pilares da nossa tecnologia.
+            </p>
+        </div>
+
+        <!-- Container das Abas -->
+        <div
+            class="max-w-5xl mx-auto bg-white/5 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-white/10">
+            <!-- Cabeçalho das Abas -->
+            <div class="flex flex-wrap border-b border-white/10">
+                <button onclick="openTabAlt(event, 'tabAlt1')"
+                    class="tab-btn-alt flex-1 py-5 px-6 text-center font-semibold text-white bg-white/10 focus:outline-none transition-all duration-300 border-b-2 border-[rgb(255,215,0)]">
+                    Integração
+                </button>
+                <button onclick="openTabAlt(event, 'tabAlt2')"
+                    class="tab-btn-alt flex-1 py-5 px-6 text-center font-semibold text-gray-400 hover:text-white hover:bg-white/5 focus:outline-none transition-all duration-300 border-b-2 border-transparent">
+                    Segurança
+                </button>
+                <button onclick="openTabAlt(event, 'tabAlt3')"
+                    class="tab-btn-alt flex-1 py-5 px-6 text-center font-semibold text-gray-400 hover:text-white hover:bg-white/5 focus:outline-none transition-all duration-300 border-b-2 border-transparent">
+                    Escalabilidade
+                </button>
+            </div>
+
+            <!-- Conteúdo das Abas -->
+            <div class="p-8 md:p-12">
+                <!-- Aba 1 -->
+                <div id="tabAlt1" class="tab-content-alt block animate-fade-in">
+                    <div class="flex flex-col md:flex-row items-center gap-10">
+                        <div class="w-full md:w-1/2">
+                            <div class="bg-[rgb(255,215,0)]/20 p-4 rounded-full mb-6 inline-block">
+                                <svg class="w-10 h-10 text-[rgb(255,215,0)]" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-4">Conectividade Sem Fronteiras</h3>
+                            <p class="text-gray-300 mb-6">
+                                Nossa API robusta permite que você conecte o Conn2Flow a qualquer sistema legado ou
+                                moderno. Sincronize dados em tempo real e elimine silos de informação.
+                            </p>
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-start text-gray-300">
+                                    <svg class="w-6 h-6 text-[rgb(29,170,198)] mr-3 mt-0.5" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>APIs RESTful e GraphQL documentadas</span>
+                                </li>
+                                <li class="flex items-start text-gray-300">
+                                    <svg class="w-6 h-6 text-[rgb(29,170,198)] mr-3 mt-0.5" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Webhooks para eventos em tempo real</span>
+                                </li>
+                                <li class="flex items-start text-gray-300">
+                                    <svg class="w-6 h-6 text-[rgb(29,170,198)] mr-3 mt-0.5" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>SDKs disponíveis para principais linguagens</span>
+                                </li>
+                            </ul>
+                            <a href="#"
+                                class="inline-block bg-[rgb(29,170,198)] text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-[rgb(255,215,0)] transition-colors duration-300 shadow-lg shadow-[rgb(29,170,198)]/30">
+                                Ver Documentação da API
+                            </a>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <div class="relative rounded-xl overflow-hidden shadow-2xl border border-white/10 group">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-tr from-[rgb(29,170,198)]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div class="bg-gray-900 h-64 w-full flex items-center justify-center text-gray-600">
+                                    <span>Diagrama de Integração</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aba 2 -->
+                <div id="tabAlt2" class="tab-content-alt hidden animate-fade-in">
+                    <div class="flex flex-col md:flex-row items-center gap-10">
+                        <div class="w-full md:w-1/2 order-2 md:order-1">
+                            <div class="relative rounded-xl overflow-hidden shadow-2xl border border-white/10">
+                                <div class="bg-gray-900 h-64 w-full flex items-center justify-center text-gray-600">
+                                    <span>Ilustração de Segurança</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 order-1 md:order-2">
+                            <div class="bg-[rgb(255,215,0)]/20 p-4 rounded-full mb-6 inline-block">
+                                <svg class="w-10 h-10 text-[rgb(255,215,0)]" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-4">Proteção de Dados Enterprise</h3>
+                            <p class="text-gray-300 mb-6">
+                                A segurança é a base de tudo o que construímos. Utilizamos criptografia de ponta a ponta
+                                e conformidade rigorosa com padrões internacionais para manter seus dados seguros.
+                            </p>
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-start text-gray-300">
+                                    <svg class="w-6 h-6 text-[rgb(29,170,198)] mr-3 mt-0.5" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Criptografia AES-256 em repouso</span>
+                                </li>
+                                <li class="flex items-start text-gray-300">
+                                    <svg class="w-6 h-6 text-[rgb(29,170,198)] mr-3 mt-0.5" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Conformidade com LGPD e GDPR</span>
+                                </li>
+                                <li class="flex items-start text-gray-300">
+                                    <svg class="w-6 h-6 text-[rgb(29,170,198)] mr-3 mt-0.5" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Autenticação de Dois Fatores (2FA)</span>
+                                </li>
+                            </ul>
+                            <a href="#"
+                                class="inline-block bg-[rgb(29,170,198)] text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-[rgb(255,215,0)] transition-colors duration-300 shadow-lg shadow-[rgb(29,170,198)]/30">
+                                Conhecer Protocolos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aba 3 -->
+                <div id="tabAlt3" class="tab-content-alt hidden animate-fade-in">
+                    <div class="flex flex-col md:flex-row items-center gap-10">
+                        <div class="w-full md:w-1/2">
+                            <div class="bg-[rgb(255,215,0)]/20 p-4 rounded-full mb-6 inline-block">
+                                <svg class="w-10 h-10 text-[rgb(255,215,0)]" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-4">Crescimento sem Limites</h3>
+                            <p class="text-gray-300 mb-6">
+                                Nossa infraestrutura em nuvem elástica se adapta automaticamente à demanda do seu
+                                negócio. Comece pequeno e cresça globalmente sem se preocupar com servidores.
+                            </p>
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-start text-gray-300">
+                                    <svg class="w-6 h-6 text-[rgb(29,170,198)] mr-3 mt-0.5" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Auto-scaling inteligente</span>
+                                </li>
+                                <li class="flex items-start text-gray-300">
+                                    <svg class="w-6 h-6 text-[rgb(29,170,198)] mr-3 mt-0.5" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>99.99% de Uptime garantido</span>
+                                </li>
+                                <li class="flex items-start text-gray-300">
+                                    <svg class="w-6 h-6 text-[rgb(29,170,198)] mr-3 mt-0.5" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>CDN Global para baixa latência</span>
+                                </li>
+                            </ul>
+                            <a href="#"
+                                class="inline-block bg-[rgb(29,170,198)] text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-[rgb(255,215,0)] transition-colors duration-300 shadow-lg shadow-[rgb(29,170,198)]/30">
+                                Ver Planos Enterprise
+                            </a>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <div class="relative rounded-xl overflow-hidden shadow-2xl border border-white/10">
+                                <div class="bg-gray-900 h-64 w-full flex items-center justify-center text-gray-600">
+                                    <span>Gráfico de Escalabilidade</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTabAlt(evt, tabName) {
+            // Esconder todo o conteúdo das abas
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content-alt");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.add("hidden");
+                tabcontent[i].classList.remove("block");
+            }
+
+            // Remover a classe ativa de todos os botões
+            tablinks = document.getElementsByClassName("tab-btn-alt");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("text-white", "bg-white/10", "border-[rgb(255,215,0)]");
+                tablinks[i].classList.add("text-gray-400", "border-transparent");
+            }
+
+            // Mostrar a aba atual e adicionar a classe ativa ao botão clicado
+            document.getElementById(tabName).classList.remove("hidden");
+            document.getElementById(tabName).classList.add("block");
+            evt.currentTarget.classList.remove("text-gray-400", "border-transparent");
+            evt.currentTarget.classList.add("text-white", "bg-white/10", "border-[rgb(255,215,0)]");
+        }
+    </script>
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</section>

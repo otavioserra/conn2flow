@@ -484,7 +484,7 @@ function publisher_pages_adicionar(){
 			'id' => 'framework-css',
 			'nome' => 'framework_css',
 			'selectClass' => 'frameworkCSS',
-			'valor_selecionado' => isset($framework_css)? $framework_css : 'fomantic-ui',
+			'valor_selecionado' => isset($framework_css)? $framework_css : 'tailwindcss',
 			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 			'dados' => $modulo['selectDadosFrameworkCSS'],
 		),
@@ -769,7 +769,6 @@ function publisher_pages_editar(){
 					$editar['extra']
 				);
 			}
-			$editar = false;
 			
 			// ===== Se mudou o caminho, criar página 301 do caminho
 			
@@ -873,7 +872,7 @@ function publisher_pages_editar(){
 
 		$_REQUEST['html'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['html']);
 
-		$campo_nome = "html_template"; $request_name = 'html'; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar_publisher_pages['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; }
+		$campo_nome = "html_template"; $request_name = 'html'; $alteracoes_name = $request_name; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar_publisher_pages['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'";}
 
 		// ===== Se alterou o id, atualizar também no publisher pages
 
@@ -894,7 +893,6 @@ function publisher_pages_editar(){
 					$editar_publisher_pages['extra']
 				);
 			}
-			$editar_publisher_pages = false;
 		}
 
 		// ===== Incluir no histórico as alterações e backup dos campos

@@ -1,1 +1,626 @@
-[]
+[
+    {
+        "name": "Sessão com 2 Colunas",
+        "id": "sessao-com-2-colunas",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.16",
+        "checksum": {
+            "html": "4bedcc6eb6c2a0256736ae6b6d36bd06",
+            "css": "",
+            "combined": "4bedcc6eb6c2a0256736ae6b6d36bd06"
+        }
+    },
+    {
+        "name": "Sessão com 2 Colunas Alternativo",
+        "id": "sessao-com-2-colunas-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.18",
+        "checksum": {
+            "html": "d1429b8d292dfbc06b6e8aa85f6eb390",
+            "css": "",
+            "combined": "d1429b8d292dfbc06b6e8aa85f6eb390"
+        }
+    },
+    {
+        "name": "Sessão de Destaque",
+        "id": "sessao-destaque",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.8",
+        "checksum": {
+            "html": "187d290a8f1a1e7462caf7a65d213811",
+            "css": "",
+            "combined": "187d290a8f1a1e7462caf7a65d213811"
+        }
+    },
+    {
+        "name": "Sessão de Destaque Alternativo",
+        "id": "sessao-destaque-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "d8113ec76c0840e0dd7f663dd46f2dcb",
+            "css": "",
+            "combined": "d8113ec76c0840e0dd7f663dd46f2dcb"
+        }
+    },
+    {
+        "name": "Sessão com 3 Colunas",
+        "id": "sessao-com-3-colunas",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.7",
+        "checksum": {
+            "html": "cd024a7295c23454fba53c9c70c21c60",
+            "css": "",
+            "combined": "cd024a7295c23454fba53c9c70c21c60"
+        }
+    },
+    {
+        "name": "Sessão com 3 Colunas Alternativo",
+        "id": "sessao-com-3-colunas-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.7",
+        "checksum": {
+            "html": "260bf163fa78053071c33cc0684c57c7",
+            "css": "",
+            "combined": "260bf163fa78053071c33cc0684c57c7"
+        }
+    },
+    {
+        "name": "Sessão com Abas",
+        "id": "sessao-com-abas",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.4",
+        "checksum": {
+            "html": "58a46879717d764c855527f30650b49f",
+            "css": "",
+            "combined": "58a46879717d764c855527f30650b49f"
+        }
+    },
+    {
+        "name": "Sessão com Abas Alternativo",
+        "id": "sessao-com-abas-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.5",
+        "checksum": {
+            "html": "bba57ec25a1a3c89a8e91cfb52f7ac44",
+            "css": "",
+            "combined": "bba57ec25a1a3c89a8e91cfb52f7ac44"
+        }
+    },
+    {
+        "name": "Sessão Hero Moderno",
+        "id": "sessao-hero-moderno",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.2",
+        "checksum": {
+            "html": "fcb46a9dfcf2c317f8105238aa569d09",
+            "css": "",
+            "combined": "fcb46a9dfcf2c317f8105238aa569d09"
+        }
+    },
+    {
+        "name": "Sessão Hero Moderno Alternativo",
+        "id": "sessao-hero-moderno-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "193d269e7d996f1f53b46a90d8ab4518",
+            "css": "",
+            "combined": "193d269e7d996f1f53b46a90d8ab4518"
+        }
+    },
+    {
+        "name": "Sessão Recursos Grid",
+        "id": "sessao-recursos-grid",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.2",
+        "checksum": {
+            "html": "83c772bc05082a091531822af730908b",
+            "css": "",
+            "combined": "83c772bc05082a091531822af730908b"
+        }
+    },
+    {
+        "name": "Sessão Recursos Grid Alternativo",
+        "id": "sessao-recursos-grid-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "bafc5aba34ee07142e988ef42b87b7e9",
+            "css": "",
+            "combined": "bafc5aba34ee07142e988ef42b87b7e9"
+        }
+    },
+    {
+        "name": "Sessão Estatísticas Moderno",
+        "id": "sessao-stats-moderno",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.2",
+        "checksum": {
+            "html": "7781855b0b2339f3efa8274781378002",
+            "css": "",
+            "combined": "7781855b0b2339f3efa8274781378002"
+        }
+    },
+    {
+        "name": "Sessão Estatísticas Moderno Alternativo",
+        "id": "sessao-stats-moderno-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "2c0576a11479f6b3d71225789db3a4b5",
+            "css": "",
+            "combined": "2c0576a11479f6b3d71225789db3a4b5"
+        }
+    },
+    {
+        "name": "Sessão CTA Gradiente",
+        "id": "sessao-cta-gradiente",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.2",
+        "checksum": {
+            "html": "9119d108a72b67ffc84e529a94bf29e9",
+            "css": "",
+            "combined": "9119d108a72b67ffc84e529a94bf29e9"
+        }
+    },
+    {
+        "name": "Sessão CTA Gradiente Alternativo",
+        "id": "sessao-cta-gradiente-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "beb8177db5c532a1242dff00d73867f9",
+            "css": "",
+            "combined": "beb8177db5c532a1242dff00d73867f9"
+        }
+    },
+    {
+        "name": "Sessão Depoimentos Cards",
+        "id": "sessao-depoimentos-cards",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.2",
+        "checksum": {
+            "html": "425bd01d86f620ed0f9f5a5c6026d77e",
+            "css": "",
+            "combined": "425bd01d86f620ed0f9f5a5c6026d77e"
+        }
+    },
+    {
+        "name": "Sessão Depoimentos Cards Alternativo",
+        "id": "sessao-depoimentos-cards-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "c824d47a952d1f9cf40c9b184ada7655",
+            "css": "",
+            "combined": "c824d47a952d1f9cf40c9b184ada7655"
+        }
+    },
+    {
+        "name": "Sessão FAQ Acordeão",
+        "id": "sessao-faq-acordeao",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.2",
+        "checksum": {
+            "html": "37898dcefc5ed900045fa73dd86b0f9a",
+            "css": "",
+            "combined": "37898dcefc5ed900045fa73dd86b0f9a"
+        }
+    },
+    {
+        "name": "Sessão FAQ Acordeão Alternativo",
+        "id": "sessao-faq-acordeao-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "c075ba3651e55b4cd04cd830a8c0969e",
+            "css": "",
+            "combined": "c075ba3651e55b4cd04cd830a8c0969e"
+        }
+    },
+    {
+        "name": "Contato com Mapa Interativo",
+        "id": "sessao-contato-mapa",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.2",
+        "checksum": {
+            "html": "a56f8d8794cc8f2c8c5f85631a3ea2e3",
+            "css": "",
+            "combined": "a56f8d8794cc8f2c8c5f85631a3ea2e3"
+        }
+    },
+    {
+        "name": "Contato com Mapa Interativo Alternativo",
+        "id": "sessao-contato-mapa-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "9fa91272a8c998c54b94e83c8a0cec81",
+            "css": "",
+            "combined": "9fa91272a8c998c54b94e83c8a0cec81"
+        }
+    },
+    {
+        "name": "Galeria Masonry",
+        "id": "sessao-galeria-masonry",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.2",
+        "checksum": {
+            "html": "164359b61505295416b8eb4b6ed51b30",
+            "css": "",
+            "combined": "164359b61505295416b8eb4b6ed51b30"
+        }
+    },
+    {
+        "name": "Galeria Masonry Alternativo",
+        "id": "sessao-galeria-masonry-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "164eb0d3d498089a80fb358c6dfa5cf8",
+            "css": "",
+            "combined": "164eb0d3d498089a80fb358c6dfa5cf8"
+        }
+    },
+    {
+        "name": "Newsletter Minimalista",
+        "id": "sessao-newsletter-minimalista",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.2",
+        "checksum": {
+            "html": "28bfee98e7281da90a55f39918a6093c",
+            "css": "",
+            "combined": "28bfee98e7281da90a55f39918a6093c"
+        }
+    },
+    {
+        "name": "Newsletter Minimalista Alternativo",
+        "id": "sessao-newsletter-minimalista-alternativo",
+        "target": "paginas",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "c899cfd7f0797bb79d079c895e7c1fd6",
+            "css": "",
+            "combined": "c899cfd7f0797bb79d079c895e7c1fd6"
+        }
+    },
+    {
+        "name": "Sessão com 2 Colunas",
+        "id": "sessao-com-2-colunas-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.18",
+        "checksum": {
+            "html": "54b3ecda282582fa48a1b1fb937c8153",
+            "css": "",
+            "combined": "54b3ecda282582fa48a1b1fb937c8153"
+        }
+    },
+    {
+        "name": "Sessão com 2 Colunas Alternativo",
+        "id": "sessao-com-2-colunas-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.20",
+        "checksum": {
+            "html": "bab69e42cc9c5e3fef13995f58d9d926",
+            "css": "",
+            "combined": "bab69e42cc9c5e3fef13995f58d9d926"
+        }
+    },
+    {
+        "name": "Sessão de Destaque",
+        "id": "sessao-destaque-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.10",
+        "checksum": {
+            "html": "3a76d114832838c2abfe2076aaad637d",
+            "css": "",
+            "combined": "3a76d114832838c2abfe2076aaad637d"
+        }
+    },
+    {
+        "name": "Sessão de Destaque Alternativo",
+        "id": "sessao-destaque-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.1",
+        "checksum": {
+            "html": "7cd050ac72a71f45b3523f021a67a9ef",
+            "css": "",
+            "combined": "7cd050ac72a71f45b3523f021a67a9ef"
+        }
+    },
+    {
+        "name": "Sessão com 3 Colunas",
+        "id": "sessao-com-3-colunas-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "874989e59536e3a37d704c0b1e3b37dc",
+            "css": "",
+            "combined": "874989e59536e3a37d704c0b1e3b37dc"
+        }
+    },
+    {
+        "name": "Sessão com 3 Colunas Alternativo",
+        "id": "sessao-com-3-colunas-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "d09f9708d28eea5609dd1ab2fcd336af",
+            "css": "",
+            "combined": "d09f9708d28eea5609dd1ab2fcd336af"
+        }
+    },
+    {
+        "name": "Sessão com Abas",
+        "id": "sessao-com-abas-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "60f38640b66ff07393041a5bf61ac12f",
+            "css": "",
+            "combined": "60f38640b66ff07393041a5bf61ac12f"
+        }
+    },
+    {
+        "name": "Sessão com Abas Alternativo",
+        "id": "sessao-com-abas-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "92c2fe8b8692426288b98bfaf935657d",
+            "css": "",
+            "combined": "92c2fe8b8692426288b98bfaf935657d"
+        }
+    },
+    {
+        "name": "Sessão Hero Moderno",
+        "id": "sessao-hero-moderno-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "c3cde8d82981c97c3c9520482bf0107e",
+            "css": "",
+            "combined": "c3cde8d82981c97c3c9520482bf0107e"
+        }
+    },
+    {
+        "name": "Sessão Hero Moderno Alternativo",
+        "id": "sessao-hero-moderno-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.1",
+        "checksum": {
+            "html": "409af7a79a650ee4f5848dcf24d37289",
+            "css": "",
+            "combined": "409af7a79a650ee4f5848dcf24d37289"
+        }
+    },
+    {
+        "name": "Sessão Recursos Grid",
+        "id": "sessao-recursos-grid-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "8a8b9d9f5ffb5a1e640520964584a3e5",
+            "css": "",
+            "combined": "8a8b9d9f5ffb5a1e640520964584a3e5"
+        }
+    },
+    {
+        "name": "Sessão Recursos Grid Alternativo",
+        "id": "sessao-recursos-grid-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.1",
+        "checksum": {
+            "html": "97dff8f01ad5dcbc62527f4c0b74ad1a",
+            "css": "",
+            "combined": "97dff8f01ad5dcbc62527f4c0b74ad1a"
+        }
+    },
+    {
+        "name": "Sessão Estatísticas Moderno",
+        "id": "sessao-stats-moderno-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "476b4b612480d71f615bfbc58940d17a",
+            "css": "",
+            "combined": "476b4b612480d71f615bfbc58940d17a"
+        }
+    },
+    {
+        "name": "Sessão Estatísticas Moderno Alternativo",
+        "id": "sessao-stats-moderno-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.1",
+        "checksum": {
+            "html": "b43042919172b009e47aff476009a7b5",
+            "css": "",
+            "combined": "b43042919172b009e47aff476009a7b5"
+        }
+    },
+    {
+        "name": "Sessão CTA Gradiente",
+        "id": "sessao-cta-gradiente-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "6055876acd8dc7d99dc6699a319bf4cc",
+            "css": "",
+            "combined": "6055876acd8dc7d99dc6699a319bf4cc"
+        }
+    },
+    {
+        "name": "Sessão CTA Gradiente Alternativo",
+        "id": "sessao-cta-gradiente-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.1",
+        "checksum": {
+            "html": "eb2a4d36ebde9b616f79aac0d4e0a33d",
+            "css": "",
+            "combined": "eb2a4d36ebde9b616f79aac0d4e0a33d"
+        }
+    },
+    {
+        "name": "Sessão Depoimentos Cards",
+        "id": "sessao-depoimentos-cards-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "ae652058adc1c7e0b12a30eaa2532955",
+            "css": "",
+            "combined": "ae652058adc1c7e0b12a30eaa2532955"
+        }
+    },
+    {
+        "name": "Sessão Depoimentos Cards Alternativo",
+        "id": "sessao-depoimentos-cards-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.1",
+        "checksum": {
+            "html": "3893622baf85710581bedabc8627028c",
+            "css": "",
+            "combined": "3893622baf85710581bedabc8627028c"
+        }
+    },
+    {
+        "name": "Sessão FAQ Acordeão",
+        "id": "sessao-faq-acordeao-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "7a1412a6bde95bd3340ee1eefc957be2",
+            "css": "",
+            "combined": "7a1412a6bde95bd3340ee1eefc957be2"
+        }
+    },
+    {
+        "name": "Sessão FAQ Acordeão Alternativo",
+        "id": "sessao-faq-acordeao-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.1",
+        "checksum": {
+            "html": "84ad4f2331c2e8dd544046cf8b57e2cf",
+            "css": "",
+            "combined": "84ad4f2331c2e8dd544046cf8b57e2cf"
+        }
+    },
+    {
+        "name": "Contato com Mapa Interativo",
+        "id": "sessao-contato-mapa-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "41b1019ddc0c4e9144e22028258d0458",
+            "css": "",
+            "combined": "41b1019ddc0c4e9144e22028258d0458"
+        }
+    },
+    {
+        "name": "Contato com Mapa Interativo Alternativo",
+        "id": "sessao-contato-mapa-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.1",
+        "checksum": {
+            "html": "293eab7877ddd7182065cdef60f3e2cd",
+            "css": "",
+            "combined": "293eab7877ddd7182065cdef60f3e2cd"
+        }
+    },
+    {
+        "name": "Galeria Masonry",
+        "id": "sessao-galeria-masonry-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "12bd81e75cfcf4ac3254fb9727643a50",
+            "css": "",
+            "combined": "12bd81e75cfcf4ac3254fb9727643a50"
+        }
+    },
+    {
+        "name": "Galeria Masonry Alternativo",
+        "id": "sessao-galeria-masonry-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.1",
+        "checksum": {
+            "html": "911d03ed887a5ba3d63cfb82eb7f5f3b",
+            "css": "",
+            "combined": "911d03ed887a5ba3d63cfb82eb7f5f3b"
+        }
+    },
+    {
+        "name": "Newsletter Minimalista",
+        "id": "sessao-newsletter-minimalista-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.2",
+        "checksum": {
+            "html": "558681892c3872f68455c00dbe303ea2",
+            "css": "",
+            "combined": "558681892c3872f68455c00dbe303ea2"
+        }
+    },
+    {
+        "name": "Newsletter Minimalista Alternativo",
+        "id": "sessao-newsletter-minimalista-alternativo-fomantic-ui",
+        "target": "paginas",
+        "framework_css": "fomantic-ui",
+        "version": "1.1",
+        "checksum": {
+            "html": "1c8ea16b39ca65419321bb4d86c5e3fd",
+            "css": "",
+            "combined": "1c8ea16b39ca65419321bb4d86c5e3fd"
+        }
+    }
+]

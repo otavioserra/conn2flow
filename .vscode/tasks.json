@@ -71,7 +71,8 @@
         {
             "label": "🛠️ Manager - Synchronize => Resources - Local",
             "type": "shell",
-            "command": "php ./gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php"
+            "command": "php ./gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php",
+            "problemMatcher": []
         },
         {
             "label": "🛠️ Manager - Synchronize => Database - Test Environment",

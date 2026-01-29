@@ -297,6 +297,11 @@
                     "id": "form-fields_values-label",
                     "value": "Campos do Publicador",
                     "type": "string"
+                },
+                {
+                    "id": "form-html-label",
+                    "value": "HTML",
+                    "type": "string"
                 }
             ]
         },
@@ -561,6 +566,11 @@
                 {
                     "id": "form-fields_values-label",
                     "value": "Publisher Fields",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-label",
+                    "value": "HTML",
                     "type": "string"
                 }
             ]

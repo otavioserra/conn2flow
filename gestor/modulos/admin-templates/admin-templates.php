@@ -191,7 +191,7 @@ function admin_templates_adicionar(){
 					'id' => 'framework-css',
 					'nome' => 'framework_css',
 					'selectClass' => 'frameworkCSS',
-					'valor_selecionado' => 'fomantic-ui',
+					'valor_selecionado' => 'tailwindcss',
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 					'dados' => $modulo['selectDadosFrameworkCSS'],
 				),
