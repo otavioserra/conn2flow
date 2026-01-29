@@ -1046,13 +1046,13 @@ $(document).ready(function () {
 
     // Substituição de Variáveis do Template ou Valores no Preview
 
-    function publisherVariablesOrValues(html = '') {
+    function publisherVariablesOrValues(html = '', salvar_html = false) {
         const publisherPage = ('publisherPage' in gestor.html_editor ? true : false);
 
         if (publisherPage) {
             const values = $('.publisherVariablesOrValues[data-id="values"]').hasClass('active');
 
-            if (values) {
+            if (values || salvar_html) {
                 // Pegar os valores atualizados do Publisher Página.
                 let valoresAtualizadosDoPublisherPagina = {};
                 if ('pegarValoresAtualizadosDoPublisherPagina' in window) {
@@ -1068,6 +1068,10 @@ $(document).ready(function () {
                         return valoresAtualizadosDoPublisherPagina[id].fieldValue;
                     }
 
+                    if (salvar_html) {
+                        return '';
+                    }
+                    // Se não encontrar valor, retornar a variável original
                     return match;
                 });
             }
@@ -1075,6 +1079,18 @@ $(document).ready(function () {
 
         return html;
     }
+
+    function getUpdatedHtmlWithValues() {
+        // Pegar o HTML do usuário.
+        let htmlDoUsuario = CodeMirrorHtml.getDoc().getValue();
+
+        // Substituir as variáveis do template ou valores, se necessário
+        htmlDoUsuario = publisherVariablesOrValues(htmlDoUsuario, true);
+
+        return htmlDoUsuario;
+    }
+
+    window.getUpdatedHtmlWithValues = getUpdatedHtmlWithValues;
 
     function publisherValuesUpdate() {
         const values = $('.publisherVariablesOrValues[data-id="values"]').hasClass('active');

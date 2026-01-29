@@ -1,4 +1,21 @@
 <div class="field">
+    <label>#form-publisher-label#</label>
+    <span>#select-publisher#</span>
+</div>
+
+<!-- publisher-options < -->
+<a class="ui button brown" href="@[[pagina#url-raiz]]@publisher/editar/#publisher-id#"
+    data-tooltip="Clique para editar o publicador" data-position="top left" data-inverted="">
+    <i class="edit icon"></i>
+    Editar Publicador
+</a><!-- publisher-options > -->
+
+<h4 class="ui horizontal divider header publisher-fields-header">
+    <i class="file image outline icon"></i>
+    Campos da Página
+</h4>
+
+<div class="field">
     <label>#form-name-label#</label>
     <input type="text" name="pagina-nome" placeholder="#form-name-placeholder#">
 </div>
@@ -47,18 +64,9 @@
         </div>
     </div>
 </div>
-<div class="field">
-    <label>#form-publisher-label#</label>
-    <span>#select-publisher#</span>
-</div>
 
 <!-- publisher-fields-container < -->
 <div class="publisher-fields-container">
-    <a class="ui button brown" href="@[[pagina#url-raiz]]@publisher/editar/#publisher-id#"
-        data-tooltip="Clique para editar o publicador" data-position="top left" data-inverted="">
-        <i class="edit icon"></i>
-        Editar Publicador
-    </a>
 
     <h4 class="ui horizontal divider header publisher-fields-header">
         <i class="file alternate outline icon"></i>

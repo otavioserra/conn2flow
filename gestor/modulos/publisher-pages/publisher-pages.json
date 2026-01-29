@@ -77,11 +77,11 @@
                 {
                     "name": "Publicador Páginas - Editar",
                     "id": "publisher-pages-editar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "817b9314df178eb30780b90bc561ca8c",
+                        "html": "bcfeeb83db97477f21c6885e410686c1",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
-                        "combined": "54e64156c643db61a19af5f52286f1d7"
+                        "combined": "5d840d3d83d97a0097f9762f34ab58f0"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages\/editar\/",
@@ -91,11 +91,11 @@
                 {
                     "name": "Publicador Páginas - Adicionar",
                     "id": "publisher-pages-adicionar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "43edfadb187d65438b047abaa25be660",
+                        "html": "68e34df8929db0a2153b6cfe889ac4bc",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
-                        "combined": "e9f1cf9485c8aef47d68677f90e9f292"
+                        "combined": "be825e4d9da57948e871b0c3830152a7"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages\/adicionar\/",
@@ -105,11 +105,11 @@
                 {
                     "name": "Publisher Pages - Clone",
                     "id": "publisher-pages-clonar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "82eede616ea7b844d607df08121c05e0",
+                        "html": "aaeaf02b67368b722cdbe811bf505b5d",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
-                        "combined": "99a2b7a3cf7a3fc1db0d7a95d68756ba"
+                        "combined": "49aaba21774f485e752d01ea156f5a8c"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages\/clonar\/",
@@ -342,11 +342,11 @@
                 {
                     "name": "Publisher Pages - Edit",
                     "id": "publisher-pages-editar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "494fef1b24aa48791a2793aa9e359e62",
+                        "html": "0d8e0ee0da26fec51df45e0841f63184",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
-                        "combined": "bb858b9883f0ed0e448b576ae83b58aa"
+                        "combined": "a31124e71543fea24088befd1049da34"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages\/editar\/",
@@ -356,11 +356,11 @@
                 {
                     "name": "Publisher Pages - Add",
                     "id": "publisher-pages-adicionar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "c8b7e339c19a3c3aeace27ed977145c6",
+                        "html": "688c92bae50464c9cc39f94e330a61ed",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
-                        "combined": "e8c6439dbe8fc0a8f3884d72a1853a9e"
+                        "combined": "7cf58bbb69e24c17784b558c88494b9d"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages\/adicionar\/",
@@ -370,11 +370,11 @@
                 {
                     "name": "Publisher Pages - Clone",
                     "id": "publisher-pages-clonar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "b586d12c6b7deb7e0e3771e590d6e50e",
+                        "html": "ffa63377e23e537d65ec3508d88d9a39",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
-                        "combined": "abe71b9bc02f27229a7464725145d55f"
+                        "combined": "46f195f1e583a2500799c170d2fbf34c"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages\/clonar\/",

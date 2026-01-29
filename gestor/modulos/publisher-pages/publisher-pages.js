@@ -269,6 +269,11 @@ $(document).ready(function () {
 			return opcao;
 		}
 
+		// Converter <br> para \n nos textareas para exibir quebras de linha
+		$('textarea').each(function () {
+			this.value = this.value.replace(/<br>/g, '\n');
+		});
+
 		// ===== Dropdown
 
 		$('.gestorModule')
@@ -409,7 +414,9 @@ $(document).ready(function () {
 			}
 		}
 
-		publisherVariablesUpdate();
+		setTimeout(() => {
+			publisherValuesUpdate();
+		}, 100);
 
 		function updatedCodeMirrorHtml() {
 			setTimeout(() => {
@@ -464,6 +471,23 @@ $(document).ready(function () {
 		}
 
 		window.pegarValoresAtualizadosDoPublisherPagina = pegarValoresAtualizadosDoPublisherPagina;
+
+		// Preparar dados para envio no formulário
+		$('.ui.form').on('submit', function () {
+			if ('getUpdatedHtmlWithValues' in window) {
+				const form = $(this);
+
+				const html = window.getUpdatedHtmlWithValues();
+
+				if (!$('#htmlWithValues').length) {
+					form.append('<input type="hidden" name="htmlWithValues" id="htmlWithValues">');
+				}
+
+				$('#htmlWithValues').val(html);
+			}
+
+			return true;
+		});
 	}
 
 	if ($('#_gestor-interface-listar').length > 0) {

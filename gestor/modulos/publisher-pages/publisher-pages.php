@@ -141,7 +141,10 @@ function publisher_pages_adicionar(){
 		$openText = $_GESTOR['variavel-global']['openText'];
 		$closeText = $_GESTOR['variavel-global']['closeText'];
 		
-		$_REQUEST['html'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['html']);
+		// Pegar HTML com valores das variáveis já preenchidos
+		$_REQUEST['htmlWithValues'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['htmlWithValues']);
+
+		// Demais.
 		$_REQUEST['css'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['css']);
 		$_REQUEST['css_compiled'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['css_compiled']);
 		$_REQUEST['html_extra_head'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['html_extra_head']);
@@ -163,10 +166,12 @@ function publisher_pages_adicionar(){
 		$campo_nome = "modulo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "opcao"; $post_nome = 'pagina-opcao'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "caminho"; $post_nome = 'paginaCaminho'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "html"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		
+		$campo_nome = "html"; $post_nome = 'htmlWithValues'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css"; $post_nome = $campo_nome; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css_compiled"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "html_extra_head"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		
 		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
 		
 		if(gestor_acesso('permissao-pagina')){
@@ -203,17 +208,23 @@ function publisher_pages_adicionar(){
 					$id = $field['id'];
 					$post_nome = 'field_'.$id; 
 
+					switch($field['type']){
+						case 'image':
+							$post_nome .= '-caminho';
+							break;
+					}
+
 					if($_REQUEST[$post_nome]){
 						$fields_values[] = Array(
 							'id' => $id,
-							'value' => banco_escape_field($_REQUEST[$post_nome])
+							'value' => $_REQUEST[$post_nome]
 						);
 					}
 				}
 
 				if(isset($fields_values)){
 					$campo_nome = "fields_values"; 
-					$campo_valor = json_encode($fields_values);
+					$campo_valor = banco_escape_field(json_encode($fields_values, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 					$campos[] = Array($campo_nome,$campo_valor);
 				}
 			}
@@ -222,6 +233,10 @@ function publisher_pages_adicionar(){
 		$campo_nome = "page_id"; $campo_valor = $page_id; 								$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "publisher_id"; $campo_valor = $publisher_id; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 
+		$_REQUEST['html'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['html']);
+		
+		$campo_nome = "html_template"; $post_nome = 'html'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		
 		// ===== Campos comuns
 		
 		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
@@ -246,7 +261,7 @@ function publisher_pages_adicionar(){
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
 		'adicionarEditar' => true,
 		'publisherPage' => true,
-		'alvos' => 'paginas',
+		'alvo' => 'paginas',
 	]));
 
 	// ===== Publisher
@@ -316,7 +331,6 @@ function publisher_pages_adicionar(){
 						foreach($template_map as $field_map){
 							if($field_map['id'] == $field['id']){
 								$field['variable'] = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $field_map['variable']);
-
 								break;
 							}
 						}
@@ -411,6 +425,7 @@ function publisher_pages_adicionar(){
 		}
 	} else {
 		// Remover a seção de campos do publicador
+		$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- publisher-options < -->','<!-- publisher-options > -->');
 		$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- publisher-fields-container < -->','<!-- publisher-fields-container > -->');
 	}
 
@@ -586,6 +601,7 @@ function publisher_pages_editar(){
 
 	$camposBancoAntesPublisherPage = Array(
 		'fields_values',
+		'html_template',
 	);
 	
 	// ===== Gravar Atualizações no Banco
@@ -692,10 +708,10 @@ function publisher_pages_editar(){
 				$_GESTOR['modulo-registro-id'] = $id_novo;
 			}
 
-			$pager_id_novo = $id_novo;
+			$page_id_novo = $id_novo;
 		}
 		
-		$pager_id = $id;
+		$page_id = $id;
 
 		// ===== Definir o publisher_id
 
@@ -708,7 +724,10 @@ function publisher_pages_editar(){
 		$openText = $_GESTOR['variavel-global']['openText'];
 		$closeText = $_GESTOR['variavel-global']['closeText'];
 		
-		$_REQUEST['html'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['html']);
+		// Pegar HTML com valores das variáveis já preenchidos
+		$_REQUEST['htmlWithValues'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['htmlWithValues']);
+
+		// Demais.
 		$_REQUEST['css'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['css']);
 		$_REQUEST['css_compiled'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['css_compiled']);
 		$_REQUEST['html_extra_head'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['html_extra_head']);
@@ -728,7 +747,7 @@ function publisher_pages_editar(){
 			$campo_nome = "sem_permissao"; $request_name = $campo_nome; $alteracoes_name = 'permission'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? '1' : NULL)){$editar['dados'][] = $campo_nome."=" . (isset($_REQUEST[$request_name]) ? '1' : 'NULL'); $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'filtro' => 'checkbox','valor_antes' => (banco_select_campos_antes($campo_nome) ? '1' : '0'),'valor_depois' => (isset($_REQUEST[$request_name]) ? '1' : '0'));}
 		}
 		
-		$campo_nome = "html"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
+		$campo_nome = "html"; $request_name = 'htmlWithValues'; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
 		$campo_nome = "css"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
 		$campo_nome = "css_compiled"; $request_name = $campo_nome; $alteracoes_name = 'css-compiled'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}} // Novo campo
 		$campo_nome = "html_extra_head"; $request_name = $campo_nome; $alteracoes_name = 'html-extra-head'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}} // Novo campo
@@ -782,7 +801,7 @@ function publisher_pages_editar(){
 
 				$editar_publisher_pages = Array(
 					'tabela' => 'publisher_pages',
-					'extra' => "WHERE pager_id='".$pager_id."' AND publisher_id='".$publisher_id."' AND language='".$_GESTOR['linguagem-codigo']."'",
+					'extra' => "WHERE page_id='".$page_id."' AND publisher_id='".$publisher_id."' AND language='".$_GESTOR['linguagem-codigo']."'",
 				);
 
 				// ===== Recuperar o estado dos dados do banco de dados antes de editar.
@@ -791,7 +810,7 @@ function publisher_pages_editar(){
 					banco_campos_virgulas($camposBancoAntesPublisherPage)
 					,
 					'publisher_pages',
-					"WHERE pager_id='".$pager_id."'"
+					"WHERE page_id='".$page_id."'"
 					." AND publisher_id='".$publisher_id."'"
 					." AND language='".$_GESTOR['linguagem-codigo']."'"
 				)){
@@ -808,16 +827,22 @@ function publisher_pages_editar(){
 					$id = $field['id'];
 					$post_nome = 'field_'.$id; 
 
+					switch($field['type']){
+						case 'image':
+							$post_nome .= '-caminho';
+							break;
+					}
+
 					if($_REQUEST[$post_nome]){
 						$fields_values[] = Array(
 							'id' => $id,
-							'value' => banco_escape_field($_REQUEST[$post_nome])
+							'value' => $_REQUEST[$post_nome]
 						);
 					}
 				}
 
 				if(isset($fields_values)){
-					$request_json = json_encode($fields_values);
+					$request_json = json_encode($fields_values, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 				}
 
 				// ===== Processar fields_schema para converter variáveis de frontend [[...]] para backend @[[...]]@
@@ -826,15 +851,15 @@ function publisher_pages_editar(){
 				$close = $_GESTOR['variavel-global']['close'];
 				$openText = $_GESTOR['variavel-global']['openText'];
 				$closeText = $_GESTOR['variavel-global']['closeText'];
-				
+
 				$request_formatado = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), (isset($request_json) ? $request_json : ''));
 
 				// ===== Normalizar e comparar o schema de campos personalizados
 
 				$alteracoes_name = $campo_nome = 'fields_values';
 				
-				$valor_request = publisher_normalize_array(json_decode($request_formatado, true));
-				$valor_banco = publisher_normalize_array(json_decode(banco_select_campos_antes($campo_nome), true));
+				$valor_request = publisher_pages_normalize_array(json_decode($request_formatado, true));
+				$valor_banco = publisher_pages_normalize_array(json_decode(banco_select_campos_antes($campo_nome), true));
 				
 				if ($valor_banco !== $valor_request) {
 					// Lógica de atualização
@@ -844,10 +869,16 @@ function publisher_pages_editar(){
 			}
 		}
 
+		// ===== Html do template
+
+		$_REQUEST['html'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['html']);
+
+		$campo_nome = "html_template"; $request_name = 'html'; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar_publisher_pages['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; }
+
 		// ===== Se alterou o id, atualizar também no publisher pages
 
-		if(isset($pager_id_novo)){
-			$editar_publisher_pages['dados'][] = "pager_id='" . $pager_id_novo . "'";
+		if(isset($page_id_novo)){
+			$editar_publisher_pages['dados'][] = "page_id='" . $page_id_novo . "'";
 		}
 
 		// ===== Se houve alterações no publisher pages, modificar no banco de dados junto com campos padrões de atualização
@@ -886,7 +917,7 @@ function publisher_pages_editar(){
 			// ===== Incluir no histórico as alterações.
 			
 			interface_historico_incluir(Array(
-				'id' => $pager_id,
+				'id' => $page_id,
 				'tabela' => Array(
 					'nome' => $modulo['tabela']['nome'],
 					'id_numerico' => $modulo['tabela']['id_numerico'],
@@ -898,15 +929,15 @@ function publisher_pages_editar(){
 		
 		// ===== Reler URL.
 		
-		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.(isset($pager_id_novo) ? $pager_id_novo : $pager_id));
+		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.(isset($page_id_novo) ? $page_id_novo : $page_id));
 	}
 	
 	// ===== Permissão de páginas
 	
 	if(!gestor_acesso('permissao-pagina')){
 		$cel_nome = 'permissao-pagina'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
-	}	
-	
+	}
+
 	// ===== Selecionar dados do banco de dados
 	
 	$retorno_bd = banco_select_editar
@@ -928,12 +959,15 @@ function publisher_pages_editar(){
 		$tipo = (isset($retorno_bd['tipo']) ? $retorno_bd['tipo'] : '');
 		$framework_css = (isset($retorno_bd['framework_css']) ? $retorno_bd['framework_css'] : '');
 		$opcao = (isset($retorno_bd['opcao']) ? $retorno_bd['opcao'] : '');
-		$html = (isset($retorno_bd['html']) ? htmlentities($retorno_bd['html']) : '');
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
 		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
 		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
 		$raiz = (isset($retorno_bd['raiz']) ? true : false);
 		$sem_permissao = (isset($retorno_bd['sem_permissao']) ? true : false);
+
+		// ===== Page ID
+
+		$page_id = $id;
 
 		// ===== Variaveis globais alterar.
 		
@@ -980,6 +1014,26 @@ function publisher_pages_editar(){
 					$template_map = isset($fields_schema_decoded['template_map']) ? $fields_schema_decoded['template_map'] : null;
 
 					if($fields){
+						// Pegar os valores dos campos no Publihser Pages
+						$publisher_pages = banco_select(Array(
+							'unico' => true,
+							'tabela' => 'publisher_pages',
+							'campos' => Array(
+								'fields_values',
+								'html_template',
+							),
+							'extra' => 
+								"WHERE page_id='".$page_id."'"
+								." AND publisher_id='".$publisher_id."'"
+								." AND language='".$_GESTOR['linguagem-codigo']."'"
+						));
+
+						if($publisher_pages && $publisher_pages['fields_values']){
+							$fields_values_decoded = json_decode($publisher_pages['fields_values'], true) ?: null;
+							$html_template = $publisher_pages['html_template'];
+						}
+
+						// Componente de fields do publisher
 						$publisher_fields = gestor_componente(Array(
 							'id' => 'publisher-fields',
 							'modulo' => $_GESTOR['modulo-id'],
@@ -1002,7 +1056,6 @@ function publisher_pages_editar(){
 							foreach($template_map as $field_map){
 								if($field_map['id'] == $field['id']){
 									$field['variable'] = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $field_map['variable']);
-
 									break;
 								}
 							}
@@ -1016,23 +1069,6 @@ function publisher_pages_editar(){
 
 							$cel_field = $cel['publisher-field'];
 							
-							// Campos específicos por tipo
-
-							switch($field['type']){
-								case 'image':
-									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', '#imagepick-field_'.$field['id'].'#');
-
-									$camposInterfacePersonalizado[] = Array(
-										'tipo' => 'imagepick',
-										'id' => 'field_'.$field['id'],
-										'nome' => 'field_'.$field['id'],
-									);
-
-									break;
-								default:
-									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', 'field_'.$field['id']);
-							}
-							
 							if(isset($field['description']) && $field['description'] != ''){
 								$cel_field_type = modelo_var_troca($cel_field_type, '[[field-description]]', $field['description']);
 							} else {
@@ -1043,7 +1079,43 @@ function publisher_pages_editar(){
 								$cel_field_type = modelo_var_troca($cel_field_type, '[[field-description]]', $labelPadrao);
 							}
 						
-							$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', '');
+							// Pegar o valor do campo
+							$value_field = '';
+							if(isset($fields_values_decoded)){
+								foreach($fields_values_decoded as $field_value){
+									if($field_value['id'] == $field['id']){
+										$value_field = $field_value['value'];
+										break;
+									}
+								}
+							}
+
+							// Campos específicos por tipo
+
+							switch($field['type']){
+								case 'image':
+									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', '#imagepick-field_'.$field['id'].'#');
+
+									$camposInterfacePersonalizado[] = Array(
+										'tipo' => 'imagepick',
+										'id' => 'field_'.$field['id'],
+										'nome' => 'field_'.$field['id'],
+										'caminho' => existe($value_field) ? $value_field : null,
+									);
+
+									break;
+								case 'textarea':
+									$value_field = str_replace("\r\n", "<br>", $value_field);
+									$value_field = str_replace("\r", "", $value_field);
+									$value_field = preg_replace('/\n{2,}/', "\n\n", $value_field);
+
+									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', 'field_'.$field['id']);
+									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', $value_field);
+									break;
+								default:
+									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-name]]', 'field_'.$field['id']);
+									$cel_field_type = modelo_var_troca($cel_field_type, '[[field-value]]', $value_field);
+							}
 
 							$cel_field = modelo_var_troca($cel_field, '[[field-type-controller]]', $cel_field_type);
 							// Campos padrão para todos os tipos
@@ -1055,50 +1127,15 @@ function publisher_pages_editar(){
 						}
 					}
 				}
-
-				// Pegar os dados de HTML/CSS do template e substituir na página.
-
-				if($publisher['template_id']){
-					$template = banco_select(Array(
-						'unico' => true,
-						'tabela' => 'templates',
-						'campos' => Array(
-							'html',
-							'css',
-							'css_compiled',
-							'html_extra_head',
-							'framework_css',
-						),
-						'extra' => 
-							"WHERE status='A' AND id='".$publisher['template_id']."'"
-							.' AND language="'.$_GESTOR['linguagem-codigo'].'"'
-					));
-
-					if($template){
-						$html = (isset($template['html']) ? htmlentities($template['html']) : '');
-						$css = (isset($template['css']) ? $template['css'] : '');
-						$css_compiled = (isset($template['css_compiled']) ? $template['css_compiled'] : '');
-						$html_extra_head = (isset($template['html_extra_head']) ? $template['html_extra_head'] : '');
-						$framework_css = (isset($template['framework_css']) ? $template['framework_css'] : '');
-						
-						// ===== Variaveis globais alterar.
-			
-						$html = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $html);
-						$css = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css);
-						$css_compiled = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css_compiled);
-						$html_extra_head = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $html_extra_head);
-
-						$variaveisTrocarDepois['pagina-css'] = $css;
-						$variaveisTrocarDepois['pagina-css-compiled'] = $css_compiled;
-						$variaveisTrocarDepois['pagina-html'] = $html;
-						$variaveisTrocarDepois['pagina-html-extra-head'] = $html_extra_head;
-					}
-				}
 			}
 		} else {
 			// Remover a seção de campos do publicador
+			$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- publisher-options < -->','<!-- publisher-options > -->');
 			$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- publisher-fields-container < -->','<!-- publisher-fields-container > -->');
 		}
+
+		// Html do template
+		$html = (isset($html_template) ? $html_template : '');
 		
 		$html = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $html);
 		$css = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css);
@@ -1126,7 +1163,8 @@ function publisher_pages_editar(){
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
 			'editar' => true,
 			'modulo' => $modulo,
-			'alvos' => 'paginas',
+			'alvo' => 'paginas',
+			'publisherPage' => true,
 		]));
 
 		// ===== Popular os metaDados
@@ -1140,10 +1178,87 @@ function publisher_pages_editar(){
 	} else {
 		gestor_redirecionar_raiz();
 	}
+
+	// ===== Inclusão Quill
+
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" />');
+	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.min.js"></script>');
 	
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
+	
+	// ===== Campos da Interface
+
+	$camposInterfacePadrao = Array(
+		Array(
+			'tipo' => 'select',
+			'id' => 'layout',
+			'nome' => 'layout',
+			'procurar' => true,
+			'limpar' => true,
+			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-layout-placeholder')),
+			'tabela' => Array(
+				'nome' => 'layouts',
+				'campo' => 'nome',
+				'id_numerico' => 'id',
+				'id_selecionado' => $layout_id,
+				'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
+			),
+		),
+		Array(
+			'tipo' => 'select',
+			'id' => 'module',
+			'nome' => 'modulo',
+			'procurar' => true,
+			'limpar' => true,
+			'selectClass' => 'gestorModule',
+			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
+			'tabela' => Array(
+				'nome' => 'modulos',
+				'campo' => 'nome',
+				'id_numerico' => 'id',
+				'id_selecionado' => $bd_modulo,
+				'where' => "modulo_grupo_id!='bibliotecas' AND language='".$_GESTOR['linguagem-codigo']."'",
+			),
+		),
+		Array(
+			'tipo' => 'select',
+			'id' => 'type',
+			'nome' => 'tipo',
+			'selectClass' => 'pagina-tipo',
+			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-placeholder')),
+			'valor_selecionado' => $tipo,
+			'dados' => $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosTipo'],
+		),
+		Array(
+			'tipo' => 'select',
+			'id' => 'framework-css',
+			'nome' => 'framework_css',
+			'selectClass' => 'frameworkCSS',
+			'valor_selecionado' => $framework_css,
+			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
+			'dados' => $modulo['selectDadosFrameworkCSS'],
+		),
+		Array(
+			'tipo' => 'select',
+			'id' => 'publisher',
+			'nome' => 'publisher',
+			'procurar' => true,
+			'limpar' => true,
+			'selectClass' => 'disabled publisherDropdown',
+			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-publisher-placeholder')),
+			'tabela' => Array(
+				'nome' => 'publisher',
+				'campo' => 'name',
+				'id_numerico' => 'id',
+				'id_selecionado' => isset($publisher_id)? $publisher_id : null,
+				'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
+			),
+		),
+	);
+
+	$camposInterface = array_merge($camposInterfacePadrao, $camposInterfacePersonalizado ?? Array());
 	
 	// ===== Interface editar finalizar opções
 	
@@ -1224,73 +1339,7 @@ function publisher_pages_editar(){
 					'identificador' => 'tipo',
 				)
 			),
-			'campos' => Array(
-				Array(
-					'tipo' => 'select',
-					'id' => 'layout',
-					'nome' => 'layout',
-					'procurar' => true,
-					'limpar' => true,
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-layout-placeholder')),
-					'tabela' => Array(
-						'nome' => 'layouts',
-						'campo' => 'nome',
-						'id_numerico' => 'id',
-						'id_selecionado' => $layout_id,
-						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
-					),
-				),
-				Array(
-					'tipo' => 'select',
-					'id' => 'module',
-					'nome' => 'modulo',
-					'procurar' => true,
-					'limpar' => true,
-					'selectClass' => 'gestorModule',
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
-					'tabela' => Array(
-						'nome' => 'modulos',
-						'campo' => 'nome',
-						'id_numerico' => 'id',
-						'id_selecionado' => $bd_modulo,
-						'where' => "modulo_grupo_id!='bibliotecas' AND language='".$_GESTOR['linguagem-codigo']."'",
-					),
-				),
-				Array(
-					'tipo' => 'select',
-					'id' => 'type',
-					'nome' => 'tipo',
-					'selectClass' => 'pagina-tipo',
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-type-placeholder')),
-					'valor_selecionado' => $tipo,
-					'dados' => $modulo['resources'][$_GESTOR['linguagem-codigo']]['selectDadosTipo'],
-				),
-				Array(
-					'tipo' => 'select',
-					'id' => 'framework-css',
-					'nome' => 'framework_css',
-					'selectClass' => 'frameworkCSS',
-					'valor_selecionado' => $framework_css,
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
-					'dados' => $modulo['selectDadosFrameworkCSS'],
-				),
-				Array(
-					'tipo' => 'select',
-					'id' => 'publisher',
-					'nome' => 'publisher',
-					'procurar' => true,
-					'limpar' => true,
-					'selectClass' => 'disabled publisherDropdown',
-					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-publisher-placeholder')),
-					'tabela' => Array(
-						'nome' => 'publisher',
-						'campo' => 'name',
-						'id_numerico' => 'id',
-						'id_selecionado' => isset($publisher_id)? $publisher_id : null,
-						'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
-					),
-				),
-			)
+			'campos' => $camposInterface,
 		)
 	);
 }
@@ -1507,6 +1556,11 @@ function publisher_pages_clonar(){
 	} else {
 		gestor_redirecionar_raiz();
 	}
+	
+	// ===== Inclusão Quill
+
+	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" />');
+	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.min.js"></script>');
 	
 	// ===== Inclusão Módulo JS
 	
