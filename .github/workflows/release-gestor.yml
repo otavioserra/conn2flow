@@ -96,110 +96,99 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🚀 Conn2Flow Gestor Release v2.5.0 (Biblioteca Editor HTML Centralizada e Sistema de Templates Visual)
+          ## 🚀 Conn2Flow Gestor Release v2.6.0 (Módulo Publisher + Editor Quill + Clonagem + Image Picker)
 
-          Esta versão traz a **implementação completa da biblioteca editor HTML centralizada** com sistema de templates visual usando cards Fomantic UI, além de manter todas as funcionalidades revolucionárias do sistema de IA integrado, deploy OAuth e arquitetura multilíngue.
+          Esta versão traz o **novo módulo Publisher completo** com editor Quill WYSIWYG, sistema de campos dinâmicos, funcionalidade de clonagem e seletor visual de imagens no editor HTML, além de manter todas as funcionalidades do sistema de IA integrado, deploy OAuth e arquitetura multilíngue.
 
           ### 🎯 Novidades Principais desta Versão:
-          - ✅ **Biblioteca Editor HTML Centralizada**: Nova biblioteca `html-editor.php` com funcionalidade de edição reutilizável entre módulos
-          - ✅ **Sistema de Seleção de Templates Visual**: Interface moderna com cards Fomantic UI para seleção intuitiva de templates de página
-          - ✅ **Editor HTML Modular Unificado**: Sistema de edição consistente para páginas, templates e componentes
-          - ✅ **Sistema de Templates Multilíngue**: Suporte avançado a templates com priorização de idioma e filtragem por alvo
-          - ✅ **Gerenciamento Avançado de Templates**: Templates enriquecidos com miniaturas, metadados completos e integração CodeMirror profissional
-          - ✅ **Componentes Reutilizáveis**: Arquitetura de componentes compartilhados entre módulos admin-paginas e admin-templates
-          - ✅ **Integração IA Aprimorada**: Sistema de prompts inteligente com gerenciamento de sessão e inserção posicional precisa
-          - ✅ **Arquitetura Baseada em Componentes**: Design modular para melhor manutenção, reutilização e escalabilidade
-          - ✅ **Sistema Completo de Deploy de Projetos via API OAuth**: Deploy automatizado completo com autenticação OAuth 2.0 (mantido da v2.4.0)
-          - ✅ **Servidor OAuth 2.0 Completo**: Implementação completa com validação JWT e renovação automática de tokens (mantido da v2.4.0)
-          - ✅ **Sistema de IA Completo Integrado**: Geração assistida de conteúdo no admin-paginas via API Gemini (mantido da v2.4.0)
-          - ✅ **Sistema Multilíngue Completo**: Suporte total pt-br/en com interface administrativa (mantido da v2.4.0)
-          - ✅ **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica (mantido da v2.4.0)
+          - ✅ **Módulo Publisher Completo**: Novo módulo de publicação de conteúdo com CRUD completo para publishers e páginas
+          - ✅ **Editor Quill WYSIWYG**: Integração profissional do editor Quill para edição rica de conteúdo
+          - ✅ **Sistema de Campos Dinâmicos**: Campos configuráveis para templates de publisher com tipos variados
+          - ✅ **Templates Abstratos de Notícias**: Templates prontos para uso gerados por IA e revisados
+          - ✅ **Funcionalidade de Clonagem**: Clone rápido de páginas admin, templates admin e páginas do publisher
+          - ✅ **Image Picker no Editor HTML**: Seletor visual de imagens integrado ao editor com preview em grid
+          - ✅ **Modo de Simulação de Design**: Dropdown para simular diferentes modos de design no editor HTML
+          - ✅ **Tooltips nos Botões do Editor**: Tooltips informativos nos botões de template e campos
+          - ✅ **Modificação de Seções no Editor**: Funcionalidades avançadas de modificação de seção visual
+          - ✅ **Fomantic-UI v2.9.4**: Atualização para a última versão do framework CSS
+          - ✅ **Modelos Gemini Atualizados**: Atualização das versões dos modelos nos prompts de IA
+          - ✅ **Detecção de Linguagem Aprimorada**: Prioridade para detecção do browser sobre padrão do sistema
+          - ✅ **Sistema de Múltiplos Modais**: Suporte a modais empilhados com `allowMultiple: true`
+          - ✅ **Biblioteca Editor HTML Centralizada**: Nova biblioteca `html-editor.php` (mantido da v2.5.0)
+          - ✅ **Sistema de Templates Visual**: Interface com cards Fomantic UI (mantido da v2.5.0)
+          - ✅ **Sistema Completo de Deploy via OAuth**: Deploy automatizado com OAuth 2.0 (mantido da v2.4.0)
+          - ✅ **Sistema de IA Integrado**: Geração de conteúdo via API Gemini (mantido da v2.4.0)
+          - ✅ **Sistema Multilíngue Completo**: Suporte pt-br/en (mantido da v2.4.0)
+          - ✅ **Sistema de Plugins V2**: Arquitetura refatorada (mantido da v2.4.0)
 
           ### 🔧 Melhorias Técnicas:
-          - ✅ **Nova Biblioteca html-editor.php**: Funções completas para renderização de componentes de edição e gerenciamento de templates
-          - ✅ **Sistema de Templates com Cards Fomantic UI**: Interface visual moderna para seleção de templates com paginação AJAX
-          - ✅ **Integração CodeMirror Unificada**: Configuração consistente de editor em todos os módulos admin
-          - ✅ **Sistema de Templates Multilíngue**: Filtragem inteligente por idioma e alvo com metadados completos
-          - ✅ **Componentes Reutilizáveis**: Arquitetura de componentes compartilhados entre admin-paginas e admin-templates
-          - ✅ **Gerenciamento de Sessão IA Aprimorado**: Sistema inteligente para inserção posicional de conteúdo gerado
-          - ✅ **Scripts Core de Deploy**: `deploy-projeto.sh`, `renovar-token.sh`, `teste-integracao.sh` (mantido da v2.4.0)
-          - ✅ **API Endpoint Seguro**: `POST /_api/project/update` com autenticação OAuth obrigatória (mantido da v2.4.0)
-          - ✅ **Nova Biblioteca ia.php**: Funções completas para renderização de prompts e comunicação com API Gemini (mantido da v2.4.0)
-          - ✅ **Novas Tabelas de Banco**: servidores_ia, modos_ia, prompts_ia para gerenciamento do sistema IA (mantido da v2.4.0)
-          - ✅ **Arquitetura de Plugins Refatorada**: Sistema V2 com detecção automática (mantido da v2.4.0)
-          - ✅ **Configuração Multilíngue**: Interface intuitiva para mudança dinâmica de idioma (pt-br/en) (mantido da v2.4.0)
+          - ✅ **Novo Módulo Publisher**: CRUD completo com definições, páginas e templates
+          - ✅ **Editor Quill Integrado**: Edição rica de conteúdo com formatação avançada
+          - ✅ **Sistema de Campos Dinâmicos**: Vinculação de campos com templates de publisher
+          - ✅ **Funcionalidade de Clonagem**: Clone para admin-paginas, admin-templates e publisher-paginas
+          - ✅ **Image Picker com postMessage**: Comunicação iframe ↔ parent para seleção de imagens
+          - ✅ **Suporte a Múltiplos Modais**: `allowMultiple: true` no Fomantic-UI
+          - ✅ **Módulos Virtuais**: Módulos sem backend para controle de acesso simplificado
+          - ✅ **Snippets AJAX**: Integração de contextos de agentes para chat
+          - ✅ **Glossário de Variáveis Globais**: Documentação para componentes IA
+          - ✅ **Campos 'notEmpty'**: Migração de 'empty' para futura descontinuação Fomantic-UI
 
           ### 📦 Conteúdo:
-          - Sistema gestor completo com biblioteca editor HTML centralizada e sistema de templates visual
-          - Nova biblioteca `html-editor.php` com componentes reutilizáveis
-          - Sistema de seleção de templates com interface de cards Fomantic UI
-          - Scripts de deploy automatizado: deploy-projeto.sh, renovar-token.sh, teste-integracao.sh (mantido da v2.4.0)
-          - Biblioteca ia.php funcional para operações de IA e OAuth (mantido da v2.4.0)
-          - Sistema de plugins V2 com templates automatizados (mantido da v2.4.0)
-          - API endpoint seguro para deploy de projetos (mantido da v2.4.0)
-          - Migrations para tabelas IA, OAuth e templates
+          - Sistema gestor completo com módulo Publisher e editor Quill
+          - Funcionalidade de clonagem para páginas e templates
+          - Image picker integrado ao editor HTML visual
+          - Biblioteca `html-editor.php` com componentes reutilizáveis
+          - Sistema de seleção de templates com interface de cards
+          - Scripts de deploy automatizado
+          - Biblioteca ia.php para operações de IA e OAuth
+          - Sistema de plugins V2 com templates automatizados
+          - Migrations para módulo publisher e campos dinâmicos
           - Sistema de atualização automática consolidado
           - Recursos organizados por idioma (pt-br base)
-          - Seletor de idioma padrão no módulo admin-environment
           - Instalador multilíngue com seleção de idioma
-          - Página de sucesso bilíngue (pt-br/en)
           - Dependências do Composer otimizadas
-          - Documentação técnica completa incluindo sistema de templates
+          - Documentação técnica completa
 
-          ### 🎨 Sistema de Templates Visual:
-          - **Biblioteca Editor HTML Centralizada**: Componentes reutilizáveis em `html-editor.php`
-          - **Interface de Cards Fomantic UI**: Seleção visual intuitiva de templates com miniaturas
-          - **Sistema Multilíngue**: Priorização de idioma e filtragem por alvo
-          - **Integração CodeMirror**: Editor profissional unificado em todos os módulos
-          - **Gerenciamento de Metadados**: Templates com informações completas e categorização
-          - **Arquitetura Modular**: Componentes compartilhados entre admin-paginas e admin-templates
+          ### 📰 Módulo Publisher:
+          - **CRUD Completo**: Gerenciamento de publishers (definições) e páginas
+          - **Editor Quill WYSIWYG**: Edição rica com formatação avançada
+          - **Sistema de Campos Dinâmicos**: Campos configuráveis por template
+          - **Templates Abstratos**: Templates prontos (ex: notícias) gerados por IA
+          - **Clonagem de Páginas**: Duplicação rápida de conteúdo existente
+          - **Integração com Sistema IA**: Geração assistida de conteúdo
+
+          ### 🎨 Editor HTML Visual:
+          - **Image Picker Integrado**: Seletor visual de imagens com preview em grid
+          - **Múltiplos Modais**: Suporte a modais empilhados (preview + imagepick)
+          - **Modo de Simulação**: Dropdown para simular diferentes designs
+          - **Tooltips Informativos**: Dicas nos botões de template e campos
+          - **Modificação de Seções**: Funcionalidades avançadas de edição de seção
 
           ### 🚀 Sistema de Deploy de Projetos:
-          - **API OAuth 2.0**: Autenticação obrigatória com renovação automática de tokens
-          - **Deploy One-Click**: Atualização automática → compressão → upload → processamento
-          - **Validação Robusta**: ZIP seguro com detecção automática de estrutura
-          - **Execução Inline**: Banco atualizado sem shell_exec para produção
-          - **Tratamento de Erros**: Rollback automático e retry inteligente
-          - **Performance Otimizada**: Redução de 28KB→25KB no ZIP (exclusão resources)
+          - **API OAuth 2.0**: Autenticação obrigatória com renovação automática
+          - **Deploy One-Click**: Atualização → compressão → upload → processamento
+          - **Validação Robusta**: ZIP seguro com detecção de estrutura
+          - **Execução Inline**: Banco atualizado sem shell_exec
 
           ### 🤖 Sistema de IA:
-          - **Integração Gemini API**: Comunicação direta com IA do Google para geração de conteúdo
-          - **Sistema Dual de Prompts**: Combinação inteligente de modos técnicos e necessidades do usuário
-          - **Interface Avançada**: CodeMirror com inserção posicional de conteúdo gerado
-          - **Gerenciamento de Sessão**: Sistema inteligente para manipulação de conteúdo IA
-          - **Suporte Multi-Modelo**: Configuração flexível de servidores e modelos de IA
-          - **Validação Robusta**: Tratamento completo de erros e validação de API
+          - **Integração Gemini API**: Comunicação com IA do Google
+          - **Sistema Dual de Prompts**: Modos técnicos + necessidades do usuário
+          - **Interface Avançada**: CodeMirror com inserção posicional
+          - **Modelos Atualizados**: Versões recentes do Gemini
 
           ### 🌐 Sistema Multilíngue:
-          - **Interface Administrativa**: Seletor de idioma no painel admin-environment
-          - **Persistência Automática**: Salvamento em LANGUAGE_DEFAULT no .env
+          - **Interface Administrativa**: Seletor de idioma no admin-environment
+          - **Detecção de Browser**: Prioridade para idioma do navegador
           - **Instalação Bilíngue**: Seleção de idioma durante setup
-          - **Página de Sucesso**: Interface de conclusão em português e inglês
-          - **Correção Automática**: Template .env corrigido durante atualizações
-
-          ### 🔧 Sistema de Plugins V2:
-          - **Detecção Dinâmica**: Sistema automático de descoberta de Data.json
-          - **Templates Automatizados**: Scripts prontos para desenvolvimento de plugins
-          - **Rastreio de Origem**: Injeção automática de slug em todas as tabelas
-          - **Resolução Dinâmica**: Environment.json dinâmico em todos os scripts
-          - **Estrutura Moderna**: Arquitetura V2 para desenvolvimento Conn2Flow
-
-          ### 🎯 Recursos de Desenvolvimento:
-          - Scripts de deploy automatizado em `ai-workspace/scripts/projects/`
-          - Templates completos em `dev-plugins/plugins/templates/`
-          - Scripts automatizados de commit, release e workflows
-          - Resolução dinâmica do environment.json
-          - Compatibilidade com qualquer repositório de plugin
-          - Documentação abrangente incluindo sistema de deploy
 
           ### 🔧 Como usar:
-          1. Use o [Conn2Flow Installer v1.5.0+](https://github.com/otavioserra/conn2flow/releases) para instalação automática
-          2. Para instalação manual, use o instalador web em `gestor-instalador/index.php`
-          3. Selecione o idioma desejado durante a instalação (pt-br/en)
-          4. Explore o novo sistema de templates visual no admin-paginas e admin-templates com interface de cards
-          5. Utilize a biblioteca editor HTML centralizada para edição unificada em todos os módulos
-          6. Configure tokens OAuth no environment.json para API de deploy (mantido da v2.4.0)
-          7. Explore o sistema de IA integrado no admin-paginas para geração assistida de conteúdo (mantido da v2.4.0)
+          1. Use o [Conn2Flow Installer v1.5.0+](https://github.com/otavioserra/conn2flow/releases)
+          2. Para instalação manual, use `gestor-instalador/index.php`
+          3. Selecione o idioma desejado (pt-br/en)
+          4. Explore o novo módulo Publisher para publicação de conteúdo
+          5. Use o editor Quill para edição rica de conteúdo
+          6. Utilize a funcionalidade de clonagem para duplicar páginas e templates
+          7. Experimente o image picker no editor HTML visual
 
           ### 📋 Requisitos:
           - PHP 8.1+

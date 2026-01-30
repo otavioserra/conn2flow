@@ -2,6 +2,30 @@
 
 ## 🏷️ Releases Atuais
 
+### **gestor-v2.6.0** (18 Dezembro 2025) - `HEAD`
+**🎯 Tema:** Módulo Publisher + Editor Quill + Clonagem + Image Picker**
+
+**Principais Melhorias:**
+- ✅ **Módulo Publisher Completo**: Novo módulo de publicação de conteúdo com CRUD completo para publishers e páginas
+- ✅ **Editor Quill WYSIWYG**: Integração profissional do editor Quill para edição rica de conteúdo
+- ✅ **Sistema de Campos Dinâmicos**: Campos dinâmicos configuráveis para templates com tipos variados (texto, textarea, imagem, etc.)
+- ✅ **Templates Abstratos de Notícias**: Templates prontos para uso gerados por IA e revisados
+- ✅ **Funcionalidade de Clonagem**: Clone rápido de páginas admin, templates admin e páginas do publisher
+- ✅ **Image Picker no Editor HTML**: Seletor visual de imagens integrado ao editor com preview em grid
+- ✅ **Modo de Simulação de Design**: Dropdown para simular diferentes modos de design no editor HTML
+- ✅ **Tooltips nos Botões do Editor**: Tooltips informativos nos botões de template e campos
+- ✅ **Modificação de Seções no Editor**: Funcionalidades avançadas de modificação de seção visual
+- ✅ **Fomantic-UI v2.9.4**: Atualização para a última versão do framework CSS
+- ✅ **Modelos Gemini Atualizados**: Atualização das versões dos modelos nos prompts de IA
+- ✅ **Detecção de Linguagem Aprimorada**: Prioridade para detecção do browser sobre padrão do sistema
+- ✅ **Sistema de Múltiplos Modais**: Suporte a modais empilhados com `allowMultiple: true`
+- ✅ **Glossário de Variáveis Globais**: Documentação de variáveis para componentes IA
+
+**Breaking Changes:**
+- Novo módulo publisher requer migrations de banco de dados
+- Campos Fomantic-UI 'empty' migrados para 'notEmpty'
+- Sistema de múltiplos modais implementado
+
 ### **gestor-v2.5.0** (12 Novembro 2025) - `HEAD`
 **🎯 Tema:** Biblioteca Editor HTML Centralizada e Sistema de Templates Visual**
 

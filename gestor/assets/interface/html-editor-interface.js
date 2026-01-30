@@ -177,6 +177,9 @@ $(document).ready(function () {
         return formatted.trim();
     }
 
+    // Expor globalmente para uso em iframes e outros contextos
+    window.cleanCodeString = cleanCodeString;
+
     // ===== Toggle Active Button
 
     function toggleActiveButton(obj = null) {
@@ -336,7 +339,35 @@ $(document).ready(function () {
         }
 
         // Mudar para a aba de visualização da página
-        contentPageTabChange('visualizacao-pagina');
+        const autoPreview = $('.page-modification-auto-preview').checkbox('is checked');
+        if (tipo_modificacao == 'sessao') {
+            // Alterar a ordem do menu de sessões conforme opção selecionada
+            setTimeout(() => {
+                const select = $('.ui.dropdown.page-modification-section-select');
+                const options = select.find('select option');
+                let index = 0;
+
+                switch (sessao_opcao) {
+                    case 'new-before':
+                        index = 0; // Selecionar a primeira sessão (recém incluída acima)
+                        break;
+                    case 'new-after':
+                        index = options.length - 1; // Selecionar a última sessão (recém incluída abaixo)
+                        break;
+                }
+
+                // Definir a seleção baseada no index
+                if (options.length > 0 && index >= 0 && index < options.length) {
+                    select.dropdown('set selected', options.eq(index).val(), true);
+                }
+            }, 100);
+
+            if (autoPreview) {
+                contentPageTabChange('visualizacao-pagina');
+            }
+        } else {
+            contentPageTabChange('visualizacao-pagina');
+        }
     }
 
     function msg_sucesso_mostrar(mensagem) {
@@ -719,6 +750,237 @@ $(document).ready(function () {
                 </style>`;
         }
 
+        // CodeMirror CDN - mesma versão usada em html-editor.php
+        const codemirrorVersion = '5.65.20';
+        const codemirrorIncludes = `
+            <!-- CodeMirror CSS -->
+            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/codemirror.min.css" />
+            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/theme/tomorrow-night-bright.css" />
+            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/dialog/dialog.css" />
+            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/display/fullscreen.css" />
+            <!-- CodeMirror JS -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/codemirror.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/selection/active-line.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/edit/matchbrackets.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/edit/closetag.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/edit/closebrackets.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/display/fullscreen.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/mode/xml/xml.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/mode/css/css.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/mode/javascript/javascript.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/mode/htmlmixed/htmlmixed.js"></script>
+        `;
+
+        // Altura do CodeMirror no modal do editor HTML visual (pode ser ajustada)
+        const codermirrorHtmlEditorHeight = 600;
+
+        // Script para inicializar o CodeMirror e utilitários dentro do iframe
+        const codemirrorInitScript = `
+            <script>
+                // Função para formatar código HTML/CSS (copiada do pai)
+                window.cleanCodeString = function(str, type) {
+                    type = type || 'html';
+                    if (!str) return '';
+
+                    var lines = str.split('\\n').filter(function(line) { return line.trim() !== ''; }).map(function(l) { return l.trim(); });
+                    if (lines.length === 0) return '';
+
+                    var indentUnit = '    ';
+                    var formatted = '';
+                    var indentLevel = 0;
+
+                    if (type === 'html') {
+                        var voidTags = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr', '!doctype'];
+                        var inTagDefinition = false;
+                        var currentDefinitionTagName = '';
+
+                        lines.forEach(function(line) {
+                            var contentOnly = line.replace(/<!--[\\s\\S]*?-->/g, '');
+                            var safeLine = contentOnly.replace(/"[^"]*"/g, '""').replace(/'[^']*'/g, "''");
+                            var isClosingTagStart = contentOnly.trim().startsWith('</');
+
+                            var printIndent = indentLevel;
+                            if (isClosingTagStart) {
+                                printIndent = Math.max(0, indentLevel - 1);
+                            } else if (inTagDefinition) {
+                                if (currentDefinitionTagName && !voidTags.includes(currentDefinitionTagName)) {
+                                    printIndent = indentLevel;
+                                } else {
+                                    printIndent = indentLevel + 1;
+                                }
+                            }
+
+                            formatted += indentUnit.repeat(printIndent) + line + '\\n';
+
+                            var processLine = safeLine;
+
+                            if (inTagDefinition) {
+                                var closeIndex = safeLine.indexOf('>');
+                                if (closeIndex > -1) {
+                                    inTagDefinition = false;
+                                    if (closeIndex > 0 && safeLine[closeIndex - 1] === '/') {
+                                        if (currentDefinitionTagName && !voidTags.includes(currentDefinitionTagName)) {
+                                            indentLevel = Math.max(0, indentLevel - 1);
+                                        }
+                                    }
+                                    currentDefinitionTagName = '';
+                                    processLine = safeLine.substring(closeIndex + 1);
+                                } else {
+                                    processLine = '';
+                                }
+                            }
+
+                            if (processLine.length > 0) {
+                                var openTagRegex = /<([a-zA-Z0-9-!]+)/g;
+                                var match;
+                                while ((match = openTagRegex.exec(processLine)) !== null) {
+                                    var tagName = match[1].toLowerCase();
+                                    if (!voidTags.includes(tagName) && !tagName.startsWith('!')) {
+                                        indentLevel++;
+                                    }
+                                }
+
+                                var closeTagRegex = /<\\/([a-zA-Z0-9-]+)/g;
+                                var closeMatches = processLine.match(closeTagRegex) || [];
+                                indentLevel -= closeMatches.length;
+
+                                var selfClosingRegex = /<([a-zA-Z0-9-!]+)(?:[^>]*?)\\/>/g;
+                                while ((match = selfClosingRegex.exec(processLine)) !== null) {
+                                    var tagName = match[1].toLowerCase();
+                                    if (!voidTags.includes(tagName) && !tagName.startsWith('!')) {
+                                        indentLevel--;
+                                    }
+                                }
+
+                                var lastOpen = processLine.lastIndexOf('<');
+                                var lastClose = processLine.lastIndexOf('>');
+
+                                if (lastOpen > lastClose) {
+                                    inTagDefinition = true;
+                                    var lastTagMatch = processLine.match(/<([a-zA-Z0-9-!]+)[^>]*$/);
+                                    if (lastTagMatch) {
+                                        currentDefinitionTagName = lastTagMatch[1].toLowerCase();
+                                    }
+                                }
+                            }
+
+                            if (indentLevel < 0) indentLevel = 0;
+                        });
+
+                    } else if (type === 'css') {
+                        lines.forEach(function(line) {
+                            var printIndent = indentLevel;
+                            if (line.startsWith('}')) {
+                                printIndent = Math.max(0, indentLevel - 1);
+                            }
+
+                            formatted += indentUnit.repeat(printIndent) + line + '\\n';
+
+                            var openBraces = (line.match(/\\{/g) || []).length;
+                            var closeBraces = (line.match(/\\}/g) || []).length;
+
+                            indentLevel = Math.max(0, indentLevel + openBraces - closeBraces);
+                        });
+                    }
+
+                    return formatted.trim();
+                };
+
+                $(document).ready(function() {
+                    // Configuração do CodeMirror (mesmas opções do editor principal)
+                    var codermirrorHtmlEditorHeight = ${codermirrorHtmlEditorHeight};
+                    var codemirrorHtmlEditorElement = document.getElementById("element-code");
+                    
+                    if (codemirrorHtmlEditorElement) {
+                        window.CodeMirrorHtmlEditor = CodeMirror.fromTextArea(codemirrorHtmlEditorElement, {
+                            lineNumbers: true,
+                            lineWrapping: true,
+                            styleActiveLine: true,
+                            matchBrackets: true,
+                            mode: "htmlmixed",
+                            htmlMode: true,
+                            indentUnit: 4,
+                            theme: "tomorrow-night-bright",
+                            extraKeys: {
+                                "F11": function(cm) {
+                                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                                },
+                                "Esc": function(cm) {
+                                    if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                                }
+                            }
+                        });
+                        
+                        window.CodeMirrorHtmlEditor.setSize('100%', codermirrorHtmlEditorHeight);
+                    }
+
+                    // ===== ImagePick - Seletor de imagem do servidor =====
+                    
+                    if (typeof html_editor !== 'undefined' && html_editor.imagepick) {
+                        var imagepickConfig = html_editor.imagepick;
+                        
+                        // Handler para o botão de seleção de imagem
+                        $('._html-editor-imagepick-btn').on('click', function(e) {
+                            e.preventDefault();
+                            
+                            // Comunicar com o pai para abrir o modal de seleção
+                            window.parent.postMessage(JSON.stringify({
+                                action: 'html-editor-imagepick-open',
+                                config: imagepickConfig
+                            }), '*');
+                        });
+                        
+                        // Handler para limpar a seleção
+                        $('._html-editor-imagepick-clear').on('click', function(e) {
+                            e.preventDefault();
+                            
+                            // Limpar campo de URL
+                            $('#element-src').val('');
+                            
+                            // Esconder preview
+                            $('._html-editor-imagepick-preview').hide();
+                            
+                            // Limpar dados do imagepicker armazenados
+                            window._imagepickerData = null;
+                        });
+                        
+                        // Listener para receber a imagem selecionada do pai
+                        window.addEventListener('message', function(e) {
+                            try {
+                                var data = JSON.parse(e.data);
+                                
+                                if (data.action === 'html-editor-imagepick-selected') {
+                                    var imageData = data.imageData;
+                                    
+                                    // Construir URL completa com a raiz do gestor
+                                    var raiz = (typeof html_editor !== 'undefined' && html_editor.raiz) ? html_editor.raiz : '/';
+                                    var caminhoCompleto = raiz + imageData.caminho;
+                                    
+                                    // Atualizar campo de URL com caminho completo
+                                    $('#element-src').val(caminhoCompleto);
+                                    
+                                    // Mostrar preview
+                                    $('._html-editor-imagepick-preview').show();
+                                    $('._html-editor-imagepick-image').attr('src', imageData.imgSrc);
+                                    $('._html-editor-imagepick-nome .content').text(imageData.nome);
+                                    $('._html-editor-imagepick-tipo .content').text(imageData.tipo);
+                                    
+                                    // Armazenar dados do imagepicker para uso posterior no saveChanges
+                                    window._imagepickerData = {
+                                        url: imageData.imgSrc,
+                                        nome: imageData.nome,
+                                        tipo: imageData.tipo
+                                    };
+                                }
+                            } catch (error) {
+                                // Ignorar mensagens não JSON
+                            }
+                        });
+                    }
+                });
+            </script>
+        `;
+
         return `
 			<!DOCTYPE html>
 			<html lang="pt-br">
@@ -730,6 +992,7 @@ $(document).ready(function () {
 				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">
 				<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"></script>
+				${codemirrorIncludes}
 				${htmlEditorVars}
 				${htmlEditorScriptPath}
 				${cssDoUsuario}
@@ -737,6 +1000,7 @@ $(document).ready(function () {
 			<body>
 				${htmlDoUsuario}
 				${htmlEditorModalHtml}
+				${codemirrorInitScript}
 			</body>
 			</html>
 		`;
@@ -762,9 +1026,13 @@ $(document).ready(function () {
 
         iframe.attr('srcdoc', editorHtmlVisualConteudo(htmlDoUsuario, cssDoUsuario, idFramework));
 
+        // Configurar e mostrar modal com suporte a múltiplos modais (para o imagepick)
         $('.previsualizar.modal')
-            .modal('show')
-            ;
+            .modal({
+                allowMultiple: true,
+                observeChanges: true
+            })
+            .modal('show');
 
         // Atualizar o código CSS no conteúdo do CodeMirror
         if (idFramework === 'tailwindcss') {
@@ -2070,4 +2338,111 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         requestsCallback: iaRequestsCallback,
         requestsData: iaRequestsData
     });
+
+    // ===== ImagePick - Comunicação com o iframe do editor visual =====
+
+    (function initImagePickHandler() {
+        // Variável para armazenar a configuração atual do imagepick
+        let imagepickConfig = null;
+        let imagepickModalInitialized = false;
+
+        // Listener para receber mensagens do iframe
+        window.addEventListener('message', function (e) {
+            try {
+                const data = JSON.parse(e.data);
+
+                // Mensagem do iframe pedindo para abrir o modal de seleção de imagem
+                if (data.action === 'html-editor-imagepick-open') {
+                    imagepickConfig = data.config;
+                    openImagePickModal(imagepickConfig);
+                }
+
+                // Mensagem do iframe de arquivos com a imagem selecionada
+                if (data.moduloId === 'admin-arquivos' || data.moduloId === 'arquivos') {
+                    // Verificar se temos uma configuração ativa do imagepick do html-editor
+                    if (!imagepickConfig) return;
+
+                    const dados = JSON.parse(decodeURI(data.data));
+
+                    // Corrigido: match retorna array, usar test() ou verificar se match não é null
+                    if (dados.tipo && /^image\//.test(dados.tipo)) {
+                        // Preparar dados da imagem selecionada
+                        const imageData = {
+                            id: dados.id,
+                            caminho: dados.caminho,
+                            imgSrc: dados.imgSrc,
+                            nome: dados.nome,
+                            tipo: dados.tipo,
+                            data: dados.data
+                        };
+
+                        // Enviar para o iframe do editor visual
+                        const previewIframe = document.getElementById('iframe-preview');
+                        if (previewIframe && previewIframe.contentWindow) {
+                            previewIframe.contentWindow.postMessage(JSON.stringify({
+                                action: 'html-editor-imagepick-selected',
+                                imageData: imageData
+                            }), '*');
+                        }
+
+                        // Fechar modal de seleção de arquivos
+                        $('.ui.modal.iframePagina').modal('hide');
+
+                        // Limpar configuração após uso
+                        imagepickConfig = null;
+                    } else if (imagepickConfig && imagepickConfig.alertas) {
+                        // Usar o sistema de alerta do gestor se disponível
+                        if (typeof alerta === 'function') {
+                            alerta({ msg: imagepickConfig.alertas.naoImagem });
+                        } else {
+                            $('#gestor-listener').trigger('alerta', { msg: imagepickConfig.alertas.naoImagem });
+                        }
+                    }
+                }
+            } catch (error) {
+                // Ignorar mensagens não JSON
+            }
+        });
+
+        // Função para abrir o modal de seleção de imagem
+        function openImagePickModal(config) {
+            if (!config || !config.modal) return;
+
+            // Configurar o modal para permitir múltiplos modais
+            const modal = $('.ui.modal.iframePagina');
+
+            // Inicializar o modal com allowMultiple apenas uma vez
+            if (!imagepickModalInitialized) {
+                modal.modal({
+                    allowMultiple: true,
+                    observeChanges: true,
+                    onHidden: function () {
+                        // Limpar configuração quando o modal for fechado manualmente
+                        // (mas manter se foi fechado por seleção de imagem)
+                    }
+                });
+                imagepickModalInitialized = true;
+            }
+
+            modal.find('.header').html(config.modal.head);
+            modal.find('.cancel.button').html(config.modal.cancel);
+
+            // Limpar e configurar o iframe
+            const iframe = modal.find('iframe');
+            try {
+                iframe.get(0).contentWindow.document.write('<body></body>');
+            } catch (e) {
+                // Ignorar erro de cross-origin se ocorrer
+            }
+            iframe.attr('src', config.modal.url);
+
+            // Mostrar loader e abrir modal
+            iframe.off('load').on('load', function () {
+                modal.dimmer('hide');
+            });
+
+            modal.dimmer('show');
+            modal.modal('show');
+        }
+    })();
 });

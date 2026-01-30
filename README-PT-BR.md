@@ -32,30 +32,30 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 - **[📋 Changelog](CHANGELOG.md)** - Changelog padrão da indústria seguindo o formato Keep a Changelog
 - **[📊 Histórico Completo de Desenvolvimento](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Evolução completa commit-por-commit
 
-### Última Versão: v2.5.0 (12 Novembro 2025)
+### Última Versão: v2.6.0 (18 Dezembro 2025)
 
 **🎯 Novas Funcionalidades:**
-- **Biblioteca Editor HTML**: Funcionalidade centralizada de edição HTML com componentes reutilizáveis entre módulos
-- **Sistema de Seleção de Templates**: Seleção completa de templates de página com interface de cards Fomantic UI
-- **Editor HTML Modular**: Sistema unificado de edição para páginas, templates e componentes com integração IA
-- **Sistema de Templates Multilíngue**: Seleção de templates com priorização de idioma e filtragem baseada em alvo
-- **Gerenciamento Avançado de Templates**: Sistema de templates com miniaturas, metadados e integração CodeMirror
-- **Reutilização de Componentes**: Componentes de editor HTML compartilhados entre módulos admin-paginas e admin-templates
+- **Módulo Publisher**: Novo módulo completo de publicação de conteúdo com CRUD para publishers e páginas
+- **Editor Quill WYSIWYG**: Integração profissional do editor Quill para edição rica de conteúdo
+- **Sistema de Campos Dinâmicos**: Campos configuráveis para templates de publisher com tipos variados
+- **Funcionalidade de Clonagem**: Clone rápido de páginas admin, templates admin e páginas do publisher
+- **Image Picker no Editor HTML**: Seletor visual de imagens integrado ao editor HTML com preview em grid
+- **Modo de Simulação de Design**: Dropdown para simular diferentes modos de design no editor HTML
 
 **🔧 Melhorias Técnicas:**
-- Nova biblioteca `html-editor.php` com funcionalidade centralizada de edição
-- Seleção de templates com paginação AJAX e filtragem de idioma
-- Interface de cards Fomantic UI para melhor visualização de templates
-- Integração CodeMirror unificada em todos os módulos de edição
-- Integração IA com gerenciamento de sessão e inserção posicional
-- Arquitetura baseada em componentes para melhor manutenção
+- Fomantic-UI atualizado para v2.9.4
+- Modelos Gemini atualizados nos prompts de IA
+- Detecção de linguagem aprimorada com prioridade para browser
+- Sistema de múltiplos modais com `allowMultiple: true`
+- Tooltips informativos nos botões do editor
+- Funcionalidades de modificação de seção no editor visual
 
 **📦 O Que Há de Novo:**
-- Biblioteca centralizada de editor HTML para reutilização entre módulos
-- Sistema de seleção de templates com interface visual de cards
-- Integração IA aprimorada com geração de conteúdo baseada em sessão
-- Gerenciamento de templates aprimorado com metadados e miniaturas
-- Experiência de edição unificada entre módulos admin
+- Módulo publisher completo com editor Quill integrado
+- Sistema de campos dinâmicos para templates
+- Funcionalidade de clonagem para páginas e templates
+- Seletor visual de imagens no editor HTML
+- Interface aprimorada com tooltips e simulação de design
 
 ### Branches Legadas
 * **gestor-v1.16**: Última versão estável antes da v2.0.0

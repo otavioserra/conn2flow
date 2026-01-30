@@ -290,10 +290,33 @@ function html_editor_include($params = false){
 	// Configurar ambiente JS do HTML Editor
 	$js_script = gestor_pagina_javascript_incluir('biblioteca','html-editor',true);
 
+    // ===== Configurar ImagePick para o Editor Visual
+    $imagepickJS = Array();
+
+    $imagepickJS['padroes'] = Array(
+        'fileId' => '-1',
+        'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-default-name')),
+        'data' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-default-date')),
+        'tipo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-default-type')),
+        'imgSrc' => $_GESTOR['url-full'] . 'images/imagem-padrao.png',
+        'caminho' => '',
+    );
+
+    $imagepickJS['modal'] = Array(
+        'head' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-modal-head')),
+        'cancel' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-modal-cancel')),
+        'url' => $_GESTOR['url-full'] . 'admin-arquivos/?paginaIframe=sim',
+    );
+
+    $imagepickJS['alertas'] = Array(
+        'naoImagem' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-alert-not-image')),
+    );
+
     // Definir variáveis JS padrão do HTML Editor e demais passadas por parâmetro
     $js_vars_default = Array(
         'script' => $js_script,
         'overlay_title' => $overlay_title,
+        'imagepick' => $imagepickJS,
     );
 
     // Mesclar variáveis padrão com as passadas por parâmetro
@@ -310,6 +333,14 @@ function html_editor_include($params = false){
     $html_editor_modal = gestor_componente(Array(
 		'id' => 'html-editor-modal'
 	));
+
+    // Incluir modal-iframe para o ImagePick
+    interface_componentes_incluir(Array(
+        'componente' => Array(
+            'modal-iframe',
+            'modal-alerta',
+        )
+    ));
 
     return '<div class="html-editor-container hidden">'.$html_editor_modal.'</div>';
 }

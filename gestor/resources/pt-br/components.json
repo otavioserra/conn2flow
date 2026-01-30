@@ -322,11 +322,11 @@
     {
         "name": "HTML Editor Modal",
         "id": "html-editor-modal",
-        "version": "1.2",
+        "version": "1.4",
         "checksum": {
-            "html": "e6ae773bf2ca9d701714729e63a4f525",
+            "html": "a785d83ca2276ad226eec95432e21609",
             "css": "",
-            "combined": "e6ae773bf2ca9d701714729e63a4f525"
+            "combined": "a785d83ca2276ad226eec95432e21609"
         }
     },
     {
@@ -342,11 +342,11 @@
     {
         "name": "HTML Editor Visual Modal",
         "id": "html-editor-visual-modal",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "95e3802f5909d038fd2748e9360f9326",
+            "html": "1d256a5a36fc011657f22d3812e55b1f",
             "css": "",
-            "combined": "95e3802f5909d038fd2748e9360f9326"
+            "combined": "1d256a5a36fc011657f22d3812e55b1f"
         }
     },
     {

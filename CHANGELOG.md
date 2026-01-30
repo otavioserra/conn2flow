@@ -10,6 +10,37 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
 - CHANGELOG.md padrão da indústria seguindo Keep a Changelog
 
+## [2.6.0] - 2025-12-18
+
+### Added
+- **Módulo Publisher Completo**: Novo módulo de publicação de conteúdo com CRUD completo para publishers e páginas
+- **Editor Quill WYSIWYG**: Integração do editor Quill para edição rica de conteúdo no módulo publisher
+- **Sistema de Campos Dinâmicos**: Campos dinâmicos configuráveis para templates de publisher com tipos variados
+- **Templates Abstratos de Notícias**: Templates prontos para uso no módulo publisher
+- **Funcionalidade de Clonagem**: Clone de páginas admin, templates admin e páginas do publisher
+- **Image Picker no Editor HTML**: Seletor visual de imagens integrado ao editor HTML com preview
+- **Modo de Simulação de Design**: Dropdown para simular diferentes modos de design no editor HTML
+- **Tooltips nos Botões do Editor**: Tooltips informativos nos botões de template e campos do editor
+- **Modificação de Seções**: Funcionalidades avançadas de modificação de seção no editor HTML visual
+- **Glossário de Variáveis Globais**: Documentação de variáveis globais para componentes IA
+
+### Changed
+- **Fomantic-UI v2.9.4**: Atualização para a última versão do Fomantic-UI
+- **Modelos Gemini Atualizados**: Atualização das versões dos modelos Gemini nos prompts de IA
+- **Detecção de Linguagem Aprimorada**: Correção da lógica de preferência de idioma para priorizar detecção do browser
+- **Sistema de Múltiplos Modais**: Suporte a modais empilhados com `allowMultiple: true`
+- **Prompts de IA Refinados**: Atualização dos prompts de geração de templates HTML e descrições de variáveis
+- **Campos Fomantic-UI Modernizados**: Migração de campos 'empty' para 'notEmpty' (descontinuação futura)
+
+### Technical
+- Nova estrutura de campos publisher vinculados com templates
+- Snippets AJAX criadas para integração de contextos de agentes
+- Módulos virtuais sem backend para controle de acesso simplificado
+- Labels de campos de formulário para publisher em pt-br e en
+- Componentes de servidor IA e templates de glossário de variáveis globais
+- Integração postMessage para comunicação iframe ↔ parent (image picker)
+- CSS aspect-ratio para miniaturas de imagem no editor
+
 ## [2.5.0] - 2025-11-12
 
 ### Added

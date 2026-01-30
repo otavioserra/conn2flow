@@ -34,30 +34,30 @@ For detailed technical information and development guides, see:
 - **[📋 Changelog](CHANGELOG.md)** - Industry-standard changelog following Keep a Changelog format
 - **[📊 Full Development History](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Detailed commit-by-commit evolution
 
-### Latest Release: v2.5.0 (November 12, 2025)
+### Latest Release: v2.6.0 (December 18, 2025)
 
 **🎯 New Features:**
-- **HTML Editor Library**: Centralized HTML editing functionality with reusable components across modules
-- **Template Selection System**: Complete page template selection with Fomantic UI cards interface
-- **Modular HTML Editor**: Unified editor system for pages, templates, and components with AI integration
-- **Multilingual Template System**: Template selection with language prioritization and target-based filtering
-- **Advanced Template Management**: Template system with thumbnails, metadata, and CodeMirror integration
-- **Component Reusability**: HTML editor components shared across admin-paginas and admin-templates modules
+- **Publisher Module**: Complete new content publishing module with CRUD for publishers and pages
+- **Quill WYSIWYG Editor**: Professional Quill editor integration for rich content editing
+- **Dynamic Fields System**: Configurable fields for publisher templates with various types
+- **Cloning Functionality**: Quick clone for admin pages, admin templates, and publisher pages
+- **Image Picker in HTML Editor**: Visual image selector integrated with HTML editor with grid preview
+- **Design Simulation Mode**: Dropdown to simulate different design modes in HTML editor
 
 **🔧 Technical Improvements:**
-- New `html-editor.php` library with centralized editing functionality
-- Template selection with AJAX pagination and language filtering
-- Fomantic UI cards interface for improved template visualization
-- Unified CodeMirror integration across all editing modules
-- AI prompt integration with session management and positional insertion
-- Component-based architecture for better maintainability
+- Fomantic-UI updated to v2.9.4
+- Updated Gemini models in AI prompts
+- Enhanced language detection with browser priority
+- Multiple modal system with `allowMultiple: true`
+- Informative tooltips on editor buttons
+- Section modification capabilities in visual editor
 
 **📦 What's New:**
-- Centralized HTML editor library for cross-module reusability
-- Template selection system with visual cards interface
-- Enhanced AI integration with session-based content generation
-- Improved template management with metadata and thumbnails
-- Unified editing experience across admin modules
+- Complete publisher module with integrated Quill editor
+- Dynamic fields system for templates
+- Cloning functionality for pages and templates
+- Visual image selector in HTML editor
+- Enhanced interface with tooltips and design simulation
 
 ### Legacy Branches
 * **gestor-v1.16**: Latest stable release before v2.0.0

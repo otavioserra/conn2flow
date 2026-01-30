@@ -312,21 +312,21 @@
     {
         "name": "HTML Editor",
         "id": "html-editor",
-        "version": "1.6",
+        "version": "1.7",
         "checksum": {
-            "html": "f82952fae102ae83e832da7daedd3665",
+            "html": "28f6501a51039f3280409ec7c3c491fb",
             "css": "",
-            "combined": "f82952fae102ae83e832da7daedd3665"
+            "combined": "28f6501a51039f3280409ec7c3c491fb"
         }
     },
     {
         "name": "HTML Editor Modal",
         "id": "html-editor-modal",
-        "version": "1.1",
+        "version": "1.3",
         "checksum": {
-            "html": "852ddfd4a90198962338af5fb8d22243",
+            "html": "0cca5b1d463a26d14fffe6f0c4c1b1a0",
             "css": "",
-            "combined": "852ddfd4a90198962338af5fb8d22243"
+            "combined": "0cca5b1d463a26d14fffe6f0c4c1b1a0"
         }
     },
     {
@@ -342,11 +342,11 @@
     {
         "name": "HTML Editor Visual Modal",
         "id": "html-editor-visual-modal",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "95e3802f5909d038fd2748e9360f9326",
+            "html": "1d256a5a36fc011657f22d3812e55b1f",
             "css": "",
-            "combined": "95e3802f5909d038fd2748e9360f9326"
+            "combined": "1d256a5a36fc011657f22d3812e55b1f"
         }
     },
     {

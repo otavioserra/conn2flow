@@ -1,4 +1,4 @@
-<div class="ui modal small" id="html-editor-modal">
+<div class="ui modal large" id="html-editor-modal">
     <div class="header">
         <i class="edit icon"></i>
         Editar Elemento
@@ -12,7 +12,56 @@
             </div>
             <div class="field" id="image-field" style="display: none;">
                 <label>URL da Imagem:</label>
-                <input type="text" id="element-src" placeholder="https://exemplo.com/imagem.jpg">
+                <div class="ui action input">
+                    <input type="text" id="element-src" placeholder="https://exemplo.com/imagem.jpg">
+                    <button class="ui icon button _html-editor-imagepick-btn" type="button"
+                        data-tooltip="Selecionar imagem do servidor" data-inverted="">
+                        <i class="folder open icon"></i>
+                    </button>
+                </div>
+                <div class="ui segment _html-editor-imagepick-preview" style="display: none; margin-top: 0.5em;">
+                    <div class="ui stackable grid">
+                        <div class="five wide column">
+                            <div class="ui fluid image" style="border-radius: 4px; overflow: hidden;">
+                                <img class="_html-editor-imagepick-image" src=""
+                                    style="width: 100%; height: auto; object-fit: cover; aspect-ratio: 4/3;">
+                            </div>
+                        </div>
+                        <div class="eleven wide column">
+                            <div class="ui small header" style="margin-bottom: 0.5em; margin-top: 0;">
+                                <i class="image icon"></i>
+                                Preview da Imagem
+                            </div>
+                            <div class="ui list" style="margin-bottom: 1em;">
+                                <div class="item _html-editor-imagepick-nome">
+                                    <i class="file icon"></i>
+                                    <span class="content"></span>
+                                </div>
+                                <div class="item _html-editor-imagepick-tipo">
+                                    <i class="info circle icon"></i>
+                                    <span class="content"></span>
+                                </div>
+                            </div>
+                            <button class="ui red mini button _html-editor-imagepick-clear" type="button">
+                                <i class="trash icon"></i>
+                                Limpar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field" id="code-field" style="display: none;">
+                <label>
+                    <i class="code icon"></i>
+                    Código HTML:
+                </label>
+                <div id="element-code-container" style="border: 1px solid #ddd; border-radius: 4px; overflow: hidden;">
+                    <textarea id="element-code" class="codemirror-html-editor"></textarea>
+                </div>
+                <div class="ui info message" style="margin-top: 0.5em;">
+                    <i class="info circle icon"></i>
+                    Você está editando o código HTML completo deste elemento.
+                </div>
             </div>
         </div>
     </div>
