@@ -4,11 +4,12 @@
         "id": "sessao-com-2-colunas",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.15",
+        "thumbnail": "templates\/images\/en\/sessao-com-2-colunas.webp",
+        "version": "1.16",
         "checksum": {
-            "html": "dc859f22eaeba90046d10acd7487d0ca",
+            "html": "0972774e63b3932367636a4a825f9879",
             "css": "",
-            "combined": "dc859f22eaeba90046d10acd7487d0ca"
+            "combined": "0972774e63b3932367636a4a825f9879"
         }
     },
     {
@@ -16,11 +17,12 @@
         "id": "sessao-com-2-colunas-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.18",
+        "thumbnail": "templates\/images\/en\/sessao-com-2-colunas-alternativo.webp",
+        "version": "1.19",
         "checksum": {
-            "html": "454615520ee46f5dc6269f6a58902982",
+            "html": "6a7d9e272eb17619e579eb8ec272aaa4",
             "css": "",
-            "combined": "454615520ee46f5dc6269f6a58902982"
+            "combined": "6a7d9e272eb17619e579eb8ec272aaa4"
         }
     },
     {
@@ -28,11 +30,12 @@
         "id": "sessao-destaque",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.9",
+        "thumbnail": "templates\/images\/en\/sessao-destaque.webp",
+        "version": "1.10",
         "checksum": {
-            "html": "452fc0612628a0c153e31d596ff3ffbe",
+            "html": "c284f0841cfd39fc3aeced3a7980bbb0",
             "css": "",
-            "combined": "452fc0612628a0c153e31d596ff3ffbe"
+            "combined": "c284f0841cfd39fc3aeced3a7980bbb0"
         }
     },
     {
@@ -40,11 +43,12 @@
         "id": "sessao-destaque-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-destaque-alternativo.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "514de2b216676a1e3fa3bf03afb7f469",
+            "html": "7f362a266c9f8dadb6e3d79ce8a8366c",
             "css": "",
-            "combined": "514de2b216676a1e3fa3bf03afb7f469"
+            "combined": "7f362a266c9f8dadb6e3d79ce8a8366c"
         }
     },
     {
@@ -52,11 +56,12 @@
         "id": "sessao-com-3-colunas",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.7",
+        "thumbnail": "templates\/images\/en\/sessao-com-3-colunas.webp",
+        "version": "1.8",
         "checksum": {
-            "html": "d8120145b2c333e52761ee33da16d8e7",
+            "html": "c70445984df9d49093b7d2814ed33ae5",
             "css": "",
-            "combined": "d8120145b2c333e52761ee33da16d8e7"
+            "combined": "c70445984df9d49093b7d2814ed33ae5"
         }
     },
     {
@@ -64,11 +69,12 @@
         "id": "sessao-com-3-colunas-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.6",
+        "thumbnail": "templates\/images\/en\/sessao-com-3-colunas-alternativo.webp",
+        "version": "1.9",
         "checksum": {
-            "html": "27a88cc656bef3f2f3fa275d0eb63c89",
+            "html": "2162b99e0f765e568caf739e7817fb07",
             "css": "",
-            "combined": "27a88cc656bef3f2f3fa275d0eb63c89"
+            "combined": "2162b99e0f765e568caf739e7817fb07"
         }
     },
     {
@@ -76,11 +82,12 @@
         "id": "sessao-com-abas",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.4",
+        "thumbnail": "templates\/images\/en\/sessao-com-abas.webp",
+        "version": "1.5",
         "checksum": {
-            "html": "352dde3b1905816c5c49adbf65382e36",
+            "html": "46a767aa4c2af9bd20588084f3f35018",
             "css": "",
-            "combined": "352dde3b1905816c5c49adbf65382e36"
+            "combined": "46a767aa4c2af9bd20588084f3f35018"
         }
     },
     {
@@ -88,11 +95,12 @@
         "id": "sessao-com-abas-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.5",
+        "thumbnail": "templates\/images\/en\/sessao-com-abas-alternativo.webp",
+        "version": "1.6",
         "checksum": {
-            "html": "5ceba91455730a4bf811febbbcb11cac",
+            "html": "f561b707a7a6f241e1eb181eec91d111",
             "css": "",
-            "combined": "5ceba91455730a4bf811febbbcb11cac"
+            "combined": "f561b707a7a6f241e1eb181eec91d111"
         }
     },
     {
@@ -100,11 +108,12 @@
         "id": "sessao-hero-moderno",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-hero-moderno.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "07acdfd837487f67aa96cfe4cacf671a",
+            "html": "de6fa6a84b7e94522b2919a5de0efcbd",
             "css": "",
-            "combined": "07acdfd837487f67aa96cfe4cacf671a"
+            "combined": "de6fa6a84b7e94522b2919a5de0efcbd"
         }
     },
     {
@@ -112,11 +121,12 @@
         "id": "sessao-hero-moderno-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-hero-moderno-alternativo.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "801d1990dc27a8eec6cebba69d105d5a",
+            "html": "546a3f415decb916b49b5c91d5fdb6e9",
             "css": "",
-            "combined": "801d1990dc27a8eec6cebba69d105d5a"
+            "combined": "546a3f415decb916b49b5c91d5fdb6e9"
         }
     },
     {
@@ -124,11 +134,12 @@
         "id": "sessao-recursos-grid",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-recursos-grid.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "8ba73fa182ab03cd419b99ef1e72570b",
+            "html": "5fdef5feff0897654b555d49158f68be",
             "css": "",
-            "combined": "8ba73fa182ab03cd419b99ef1e72570b"
+            "combined": "5fdef5feff0897654b555d49158f68be"
         }
     },
     {
@@ -136,11 +147,12 @@
         "id": "sessao-recursos-grid-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-recursos-grid-alternativo.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "79394c3644fc7f140e099d406db3fe66",
+            "html": "731af472087d6ab263c139deddbe27e1",
             "css": "",
-            "combined": "79394c3644fc7f140e099d406db3fe66"
+            "combined": "731af472087d6ab263c139deddbe27e1"
         }
     },
     {
@@ -148,11 +160,12 @@
         "id": "sessao-stats-moderno",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-stats-moderno.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "c1c355a2c3a9d4287d7605a1544c9fe6",
+            "html": "2110f59cd70c209dcb88a14464077b60",
             "css": "",
-            "combined": "c1c355a2c3a9d4287d7605a1544c9fe6"
+            "combined": "2110f59cd70c209dcb88a14464077b60"
         }
     },
     {
@@ -160,11 +173,12 @@
         "id": "sessao-stats-moderno-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-stats-moderno-alternativo.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "aba1c82d0b7caefcdff141dee765c9a9",
+            "html": "bfe3c2c3f48282f7b581152c3a41cf44",
             "css": "",
-            "combined": "aba1c82d0b7caefcdff141dee765c9a9"
+            "combined": "bfe3c2c3f48282f7b581152c3a41cf44"
         }
     },
     {
@@ -172,11 +186,12 @@
         "id": "sessao-cta-gradiente",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-cta-gradiente.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "20b5f3f0f409989719b59868a00a8fe1",
+            "html": "2ab3067c12c86d398f189bb1f9915bbe",
             "css": "",
-            "combined": "20b5f3f0f409989719b59868a00a8fe1"
+            "combined": "2ab3067c12c86d398f189bb1f9915bbe"
         }
     },
     {
@@ -184,11 +199,12 @@
         "id": "sessao-cta-gradiente-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-cta-gradiente-alternativo.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "0721d6814a7bc4a978920b53ed88292d",
+            "html": "beee449d5d180adaf8951d4ccf39682c",
             "css": "",
-            "combined": "0721d6814a7bc4a978920b53ed88292d"
+            "combined": "beee449d5d180adaf8951d4ccf39682c"
         }
     },
     {
@@ -196,11 +212,12 @@
         "id": "sessao-depoimentos-cards",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-depoimentos-cards.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "341a9308afaae906fc27bc83bebfeb1e",
+            "html": "bf1705bda296595084aceb7f75c130f5",
             "css": "",
-            "combined": "341a9308afaae906fc27bc83bebfeb1e"
+            "combined": "bf1705bda296595084aceb7f75c130f5"
         }
     },
     {
@@ -208,11 +225,12 @@
         "id": "sessao-depoimentos-cards-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-depoimentos-cards-alternativo.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "1c27d56f56d0d2c4e601840eedce889c",
+            "html": "8c3198d09b51d8d714fb58dc45572bb8",
             "css": "",
-            "combined": "1c27d56f56d0d2c4e601840eedce889c"
+            "combined": "8c3198d09b51d8d714fb58dc45572bb8"
         }
     },
     {
@@ -220,11 +238,12 @@
         "id": "sessao-faq-acordeao",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-faq-acordeao.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "939096d01c3356d3f978ab1faa2c6d3b",
+            "html": "cfee664a4a715d485f07f4c9cea008f4",
             "css": "",
-            "combined": "939096d01c3356d3f978ab1faa2c6d3b"
+            "combined": "cfee664a4a715d485f07f4c9cea008f4"
         }
     },
     {
@@ -232,11 +251,12 @@
         "id": "sessao-faq-acordeao-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-faq-acordeao-alternativo.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "e5b8892b0d92bd0fc6145f86303e105a",
+            "html": "e4fc320335278463afd8edea32c19c49",
             "css": "",
-            "combined": "e5b8892b0d92bd0fc6145f86303e105a"
+            "combined": "e4fc320335278463afd8edea32c19c49"
         }
     },
     {
@@ -244,11 +264,12 @@
         "id": "sessao-contato-mapa",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-contato-mapa.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "968f226ed210ad02f4db741ded94335b",
+            "html": "3b23d32567bfb2d0aa92515060f9b078",
             "css": "",
-            "combined": "968f226ed210ad02f4db741ded94335b"
+            "combined": "3b23d32567bfb2d0aa92515060f9b078"
         }
     },
     {
@@ -256,11 +277,12 @@
         "id": "sessao-contato-mapa-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-contato-mapa-alternativo.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "ea96ccab8b926f069d4c2e41152d318b",
+            "html": "86bc27e27aca42dc839ee7951d9ecfb3",
             "css": "",
-            "combined": "ea96ccab8b926f069d4c2e41152d318b"
+            "combined": "86bc27e27aca42dc839ee7951d9ecfb3"
         }
     },
     {
@@ -268,11 +290,12 @@
         "id": "sessao-galeria-masonry",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-galeria-masonry.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "d51168cedec80f110df4932a74dd2e10",
+            "html": "ed6b1b5d1839aae159fbf989503d2fde",
             "css": "",
-            "combined": "d51168cedec80f110df4932a74dd2e10"
+            "combined": "ed6b1b5d1839aae159fbf989503d2fde"
         }
     },
     {
@@ -280,11 +303,12 @@
         "id": "sessao-galeria-masonry-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-galeria-masonry-alternativo.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "8e95effe980700edb94936b4a1dbcf41",
+            "html": "d002db5957d31a1a933c1bea564dfcb9",
             "css": "",
-            "combined": "8e95effe980700edb94936b4a1dbcf41"
+            "combined": "d002db5957d31a1a933c1bea564dfcb9"
         }
     },
     {
@@ -292,11 +316,12 @@
         "id": "sessao-newsletter-minimalista",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-newsletter-minimalista.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "2e33026f86c838f2aef0b70695a523d4",
+            "html": "57411e97a7fc1a7d876fce6882226764",
             "css": "",
-            "combined": "2e33026f86c838f2aef0b70695a523d4"
+            "combined": "57411e97a7fc1a7d876fce6882226764"
         }
     },
     {
@@ -304,11 +329,12 @@
         "id": "sessao-newsletter-minimalista-alternativo",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-newsletter-minimalista-alternativo.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "51e7023ca3e367b764ccd314835d188a",
+            "html": "4e43312a4eb052b24865ccae32d302de",
             "css": "",
-            "combined": "51e7023ca3e367b764ccd314835d188a"
+            "combined": "4e43312a4eb052b24865ccae32d302de"
         }
     },
     {
@@ -316,11 +342,12 @@
         "id": "sessao-com-2-colunas-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.18",
+        "thumbnail": "templates\/images\/en\/sessao-com-2-colunas-fomantic-ui.webp",
+        "version": "1.20",
         "checksum": {
-            "html": "31ae1ddea0fdd4a58fc7d490d0833369",
+            "html": "a99dca43b0cd5c0823b1c4b0d4a88a26",
             "css": "",
-            "combined": "31ae1ddea0fdd4a58fc7d490d0833369"
+            "combined": "a99dca43b0cd5c0823b1c4b0d4a88a26"
         }
     },
     {
@@ -328,11 +355,12 @@
         "id": "sessao-com-2-colunas-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.20",
+        "thumbnail": "templates\/images\/en\/sessao-com-2-colunas-alternativo-fomantic-ui.webp",
+        "version": "1.22",
         "checksum": {
-            "html": "3fd1cf7dac73cc837396affb0d1d459b",
+            "html": "6b20153b66d0135a70e017f50db3e153",
             "css": "",
-            "combined": "3fd1cf7dac73cc837396affb0d1d459b"
+            "combined": "6b20153b66d0135a70e017f50db3e153"
         }
     },
     {
@@ -340,11 +368,12 @@
         "id": "sessao-destaque-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.10",
+        "thumbnail": "templates\/images\/en\/sessao-destaque-fomantic-ui.webp",
+        "version": "1.12",
         "checksum": {
-            "html": "b3bcbf60519d25b6ec6d6e4fae0f710c",
+            "html": "f46de3b7403bf181a90c267fc1d9eadd",
             "css": "",
-            "combined": "b3bcbf60519d25b6ec6d6e4fae0f710c"
+            "combined": "f46de3b7403bf181a90c267fc1d9eadd"
         }
     },
     {
@@ -352,11 +381,12 @@
         "id": "sessao-destaque-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-destaque-alternativo-fomantic-ui.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "2bbb1a34dffb80e97659de5113a770bc",
+            "html": "d13a80b52143fd971e36c5cd6090d985",
             "css": "",
-            "combined": "2bbb1a34dffb80e97659de5113a770bc"
+            "combined": "d13a80b52143fd971e36c5cd6090d985"
         }
     },
     {
@@ -364,11 +394,12 @@
         "id": "sessao-com-3-colunas-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-com-3-colunas-fomantic-ui.webp",
+        "version": "1.4",
         "checksum": {
-            "html": "e8c24ce933c5a486a300e922bcd1f73f",
+            "html": "819f1414c70b5b5ccb5d2169d0073a8f",
             "css": "",
-            "combined": "e8c24ce933c5a486a300e922bcd1f73f"
+            "combined": "819f1414c70b5b5ccb5d2169d0073a8f"
         }
     },
     {
@@ -376,11 +407,12 @@
         "id": "sessao-com-3-colunas-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-com-3-colunas-alternativo-fomantic-ui.webp",
+        "version": "1.4",
         "checksum": {
-            "html": "005eefdde000a60bcec578188f8acf53",
+            "html": "7430f6defaa536ab69fcd8f8415ad3c1",
             "css": "",
-            "combined": "005eefdde000a60bcec578188f8acf53"
+            "combined": "7430f6defaa536ab69fcd8f8415ad3c1"
         }
     },
     {
@@ -388,11 +420,12 @@
         "id": "sessao-com-abas-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-com-abas-fomantic-ui.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "ad0f99d0a045e6250427e009b277ab83",
+            "html": "93b5a048743b4b5a1c636f15a327fdab",
             "css": "",
-            "combined": "ad0f99d0a045e6250427e009b277ab83"
+            "combined": "93b5a048743b4b5a1c636f15a327fdab"
         }
     },
     {
@@ -400,11 +433,12 @@
         "id": "sessao-com-abas-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-com-abas-alternativo-fomantic-ui.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "55e86933a1657de6f0e6e917dbbe411f",
+            "html": "5f76d6655c9ded122313537452643e28",
             "css": "",
-            "combined": "55e86933a1657de6f0e6e917dbbe411f"
+            "combined": "5f76d6655c9ded122313537452643e28"
         }
     },
     {
@@ -412,11 +446,12 @@
         "id": "sessao-hero-moderno-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-hero-moderno-fomantic-ui.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "159ec9c63bd6d0179002de1da7990016",
+            "html": "2d31364b25617e9bf0ba3b16461af78a",
             "css": "",
-            "combined": "159ec9c63bd6d0179002de1da7990016"
+            "combined": "2d31364b25617e9bf0ba3b16461af78a"
         }
     },
     {
@@ -424,11 +459,12 @@
         "id": "sessao-hero-moderno-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-hero-moderno-alternativo-fomantic-ui.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "f1687a6a39c5d402deeb44c4c547fe0c",
+            "html": "3d9e1e0df8cddb88dbc411d65254924f",
             "css": "",
-            "combined": "f1687a6a39c5d402deeb44c4c547fe0c"
+            "combined": "3d9e1e0df8cddb88dbc411d65254924f"
         }
     },
     {
@@ -436,11 +472,12 @@
         "id": "sessao-recursos-grid-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-recursos-grid-fomantic-ui.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "304502de5905b54f37552c493e1d0772",
+            "html": "098d16f2e1350fa3f51d37ed28ee6947",
             "css": "",
-            "combined": "304502de5905b54f37552c493e1d0772"
+            "combined": "098d16f2e1350fa3f51d37ed28ee6947"
         }
     },
     {
@@ -448,11 +485,12 @@
         "id": "sessao-recursos-grid-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-recursos-grid-alternativo-fomantic-ui.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "a1c102709e50fe8e329bf80dd1f816b6",
+            "html": "cf1a4474d8827781d486abf7bfe75408",
             "css": "",
-            "combined": "a1c102709e50fe8e329bf80dd1f816b6"
+            "combined": "cf1a4474d8827781d486abf7bfe75408"
         }
     },
     {
@@ -460,11 +498,12 @@
         "id": "sessao-stats-moderno-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-stats-moderno-fomantic-ui.webp",
+        "version": "1.5",
         "checksum": {
-            "html": "0cda49a3d16219961e35dbecf3c9e097",
+            "html": "89cb2c02f6734d482b6a32ae85adc7ac",
             "css": "",
-            "combined": "0cda49a3d16219961e35dbecf3c9e097"
+            "combined": "89cb2c02f6734d482b6a32ae85adc7ac"
         }
     },
     {
@@ -472,11 +511,12 @@
         "id": "sessao-stats-moderno-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-stats-moderno-alternativo-fomantic-ui.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "d531ec67aa24e219c22fc52cdeab84a0",
+            "html": "6a93990325aa115ce47e030892f2a818",
             "css": "",
-            "combined": "d531ec67aa24e219c22fc52cdeab84a0"
+            "combined": "6a93990325aa115ce47e030892f2a818"
         }
     },
     {
@@ -484,11 +524,12 @@
         "id": "sessao-cta-gradiente-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-cta-gradiente-fomantic-ui.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "3368effe4264f1e7140a12a70df04098",
+            "html": "57ff2a8f0fe817b65be988d75ef34c47",
             "css": "",
-            "combined": "3368effe4264f1e7140a12a70df04098"
+            "combined": "57ff2a8f0fe817b65be988d75ef34c47"
         }
     },
     {
@@ -496,11 +537,12 @@
         "id": "sessao-cta-gradiente-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-cta-gradiente-alternativo-fomantic-ui.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "8bad01d03648cc5f6f9dcedd04570203",
+            "html": "d6fb418f0fe88c0247336881c9d3ff47",
             "css": "",
-            "combined": "8bad01d03648cc5f6f9dcedd04570203"
+            "combined": "d6fb418f0fe88c0247336881c9d3ff47"
         }
     },
     {
@@ -508,11 +550,12 @@
         "id": "sessao-depoimentos-cards-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-depoimentos-cards-fomantic-ui.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "04db6222d454a82ed5d0840609bb1072",
+            "html": "f870f0a1b17f9d37288d68ef58719673",
             "css": "",
-            "combined": "04db6222d454a82ed5d0840609bb1072"
+            "combined": "f870f0a1b17f9d37288d68ef58719673"
         }
     },
     {
@@ -520,11 +563,12 @@
         "id": "sessao-depoimentos-cards-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-depoimentos-cards-alternativo-fomantic-ui.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "3d6168d148bcb967341412e0c872c703",
+            "html": "083775a5b5b4775dbd644f02a7e632ba",
             "css": "",
-            "combined": "3d6168d148bcb967341412e0c872c703"
+            "combined": "083775a5b5b4775dbd644f02a7e632ba"
         }
     },
     {
@@ -532,11 +576,12 @@
         "id": "sessao-faq-acordeao-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-faq-acordeao-fomantic-ui.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "8c833ec0f6e1cd4ba35dc3ffd71e20b9",
+            "html": "f0454c427026481c3923977d752f464d",
             "css": "",
-            "combined": "8c833ec0f6e1cd4ba35dc3ffd71e20b9"
+            "combined": "f0454c427026481c3923977d752f464d"
         }
     },
     {
@@ -544,11 +589,12 @@
         "id": "sessao-faq-acordeao-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-faq-acordeao-alternativo-fomantic-ui.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "fdd254a239bc3c8f9edb1d35bf2b7fcb",
+            "html": "959fa42afaa478bb8581454d8a300b80",
             "css": "",
-            "combined": "fdd254a239bc3c8f9edb1d35bf2b7fcb"
+            "combined": "959fa42afaa478bb8581454d8a300b80"
         }
     },
     {
@@ -556,11 +602,12 @@
         "id": "sessao-contato-mapa-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-contato-mapa-fomantic-ui.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "f6eb1845bd8fd0bfae819c01a45f69c0",
+            "html": "7a38bd0d1fcc48fc3b3a93b446c5d16c",
             "css": "",
-            "combined": "f6eb1845bd8fd0bfae819c01a45f69c0"
+            "combined": "7a38bd0d1fcc48fc3b3a93b446c5d16c"
         }
     },
     {
@@ -568,11 +615,12 @@
         "id": "sessao-contato-mapa-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-contato-mapa-alternativo-fomantic-ui.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "9a6b7620cfc836a8c4238c592f46e264",
+            "html": "ed7f6cb1a73d49677ea3c25481edc2f8",
             "css": "",
-            "combined": "9a6b7620cfc836a8c4238c592f46e264"
+            "combined": "ed7f6cb1a73d49677ea3c25481edc2f8"
         }
     },
     {
@@ -580,11 +628,12 @@
         "id": "sessao-galeria-masonry-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-galeria-masonry-fomantic-ui.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "7ad4ba9e4632b48a7f800dac78f7b34a",
+            "html": "a4aeff4721c8334c089b4a0883b99b8b",
             "css": "",
-            "combined": "7ad4ba9e4632b48a7f800dac78f7b34a"
+            "combined": "a4aeff4721c8334c089b4a0883b99b8b"
         }
     },
     {
@@ -592,11 +641,12 @@
         "id": "sessao-galeria-masonry-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-galeria-masonry-alternativo-fomantic-ui.webp",
+        "version": "1.4",
         "checksum": {
-            "html": "352d7df5d57aa7dde76248633ce83eb7",
+            "html": "4edc070fcc757320764da446440215b5",
             "css": "",
-            "combined": "352d7df5d57aa7dde76248633ce83eb7"
+            "combined": "4edc070fcc757320764da446440215b5"
         }
     },
     {
@@ -604,11 +654,12 @@
         "id": "sessao-newsletter-minimalista-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.2",
+        "thumbnail": "templates\/images\/en\/sessao-newsletter-minimalista-fomantic-ui.webp",
+        "version": "1.3",
         "checksum": {
-            "html": "9062cb264433657f470d415c2e685718",
+            "html": "166268da0d15ba879d33f61892edd1d3",
             "css": "",
-            "combined": "9062cb264433657f470d415c2e685718"
+            "combined": "166268da0d15ba879d33f61892edd1d3"
         }
     },
     {
@@ -616,11 +667,12 @@
         "id": "sessao-newsletter-minimalista-alternativo-fomantic-ui",
         "target": "paginas",
         "framework_css": "fomantic-ui",
-        "version": "1.1",
+        "thumbnail": "templates\/images\/en\/sessao-newsletter-minimalista-alternativo-fomantic-ui.webp",
+        "version": "1.2",
         "checksum": {
-            "html": "43599ba89888e01cd3443b61061d484a",
+            "html": "873f63b301f96670090c372317a1b732",
             "css": "",
-            "combined": "43599ba89888e01cd3443b61061d484a"
+            "combined": "873f63b301f96670090c372317a1b732"
         }
     }
 ]
