@@ -86,3 +86,10 @@ body {
     margin-right: 13px;
     margin-left: 13px;
 }
+table.dataTable thead th:hover{
+    filter: brightness(0.96) !important;
+}
+table.dataTable tbody tr:hover {
+    background-color: #FFFFFF !important;
+    filter: brightness(0.96) !important;
+}

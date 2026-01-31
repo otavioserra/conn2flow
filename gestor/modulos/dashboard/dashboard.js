@@ -491,4 +491,111 @@ $(document).ready(function () {
 
 	// ===== Dashboard Cards Sortable > =====
 
+	// ===== Dashboard Search < =====
+
+	/**
+	 * Inicializa o sistema de busca para filtrar os cards do dashboard
+	 */
+	function initDashboardSearch() {
+		var searchInput = document.getElementById('dashboard-search-input');
+		var resetBtn = document.getElementById('dashboard-search-reset');
+		var cardsContainer = document.getElementById('dashboard-sortable-cards');
+
+		if (!searchInput || !cardsContainer) {
+			return;
+		}
+
+		var noResultsId = 'dashboard-no-results-message';
+		var noResultsMessage = gestor.lang && gestor.lang.search_no_results 
+			? gestor.lang.search_no_results 
+			: 'Nenhum módulo encontrado';
+
+		/**
+		 * Filtra os cards baseado na query de busca
+		 * @param {string} query - Texto de busca
+		 */
+		function filterCards(query) {
+			var cards = cardsContainer.querySelectorAll('.dashboard-module-card');
+			var normalizedQuery = query.toLowerCase().trim();
+			var visibleCount = 0;
+
+			cards.forEach(function(card) {
+				var title = card.querySelector('.dashboard-card-title');
+				var description = card.querySelector('.dashboard-card-description');
+				var category = card.querySelector('.dashboard-card-meta .category');
+				var moduleId = card.getAttribute('data-module-id') || '';
+
+				var titleText = title ? title.textContent.toLowerCase() : '';
+				var descText = description ? description.textContent.toLowerCase() : '';
+				var categoryText = category ? category.textContent.toLowerCase() : '';
+
+				var matches = normalizedQuery === '' || 
+					titleText.includes(normalizedQuery) || 
+					descText.includes(normalizedQuery) || 
+					categoryText.includes(normalizedQuery) ||
+					moduleId.toLowerCase().includes(normalizedQuery);
+
+				if (matches) {
+					card.classList.remove('search-hidden');
+					visibleCount++;
+				} else {
+					card.classList.add('search-hidden');
+				}
+			});
+
+			// Mostrar/ocultar mensagem de nenhum resultado
+			var existingNoResults = document.getElementById(noResultsId);
+			
+			if (visibleCount === 0 && normalizedQuery !== '') {
+				if (!existingNoResults) {
+					var noResults = document.createElement('div');
+					noResults.id = noResultsId;
+					noResults.className = 'dashboard-no-results';
+					noResults.innerHTML = '<i class="search icon"></i>' + noResultsMessage;
+					cardsContainer.appendChild(noResults);
+				}
+			} else if (existingNoResults) {
+				existingNoResults.remove();
+			}
+		}
+
+		/**
+		 * Reseta a busca
+		 */
+		function resetSearch() {
+			searchInput.value = '';
+			filterCards('');
+			searchInput.focus();
+		}
+
+		// Event listener para input de busca (debounced)
+		var debounceTimer;
+		searchInput.addEventListener('input', function() {
+			clearTimeout(debounceTimer);
+			debounceTimer = setTimeout(function() {
+				filterCards(searchInput.value);
+			}, 150);
+		});
+
+		// Event listener para tecla Enter e Escape
+		searchInput.addEventListener('keydown', function(e) {
+			if (e.key === 'Escape') {
+				resetSearch();
+			}
+		});
+
+		// Event listener para botão de reset
+		if (resetBtn) {
+			resetBtn.addEventListener('click', function(e) {
+				e.preventDefault();
+				resetSearch();
+			});
+		}
+	}
+
+	// Inicializa a busca do dashboard
+	initDashboardSearch();
+
+	// ===== Dashboard Search > =====
+
 });

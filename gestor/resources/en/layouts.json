@@ -2,21 +2,21 @@
     {
         "name": "Manager Administrative Layout",
         "id": "layout-administrativo-do-gestor",
-        "version": "1.24",
+        "version": "1.25",
         "checksum": {
             "html": "7515bf945de6488253310fd9173f22d4",
-            "css": "c86bf0212da6d5eefef8e59173509d5d",
-            "combined": "6d275db82ae5a52642ab80fd877d13d2"
+            "css": "0dfc4de68dbab3be4fd7f0d2d8d0e592",
+            "combined": "410676cffae8871cdbce3ad6a40a0559"
         }
     },
     {
         "name": "Page Without Permission Layout",
         "id": "layout-pagina-sem-permissao",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
             "html": "de1b7f78996835de28a672b6463c1384",
-            "css": "0a09e6858ffe627a2da3849799838f7c",
-            "combined": "ab78db5a6d7bfd4f66b65fdff34bdf4b"
+            "css": "4952e5053d5eebf5a31bf1a8c6812a98",
+            "combined": "56f4f3cd2a223a0acf60ba20d328c1f5"
         }
     },
     {

@@ -65,11 +65,11 @@
                 {
                     "name": "Dashboard Cards",
                     "id": "dashboard-cards",
-                    "version": "1.4",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "813a1f315c0d774c833cb6314c05acb1",
-                        "css": "3f2e7adbc1972057bce1a940d28db3f5",
-                        "combined": "c66963f0b24e448bbba1da1d23bdd8df"
+                        "html": "46cb5510bdd0008b89ecba4e07e156c7",
+                        "css": "ff157b375a05180a579be689f28caef8",
+                        "combined": "4279cc1c966aad1c9fa55743b35d572f"
                     }
                 }
             ],
@@ -163,6 +163,26 @@
                     "id": "update-notification-btn-later",
                     "value": "Lembrar Depois",
                     "type": "string"
+                },
+                {
+                    "id": "search-placeholder",
+                    "value": "Buscar módulo...",
+                    "type": "string"
+                },
+                {
+                    "id": "search-reset-tooltip",
+                    "value": "Limpar busca",
+                    "type": "string"
+                },
+                {
+                    "id": "search-no-results",
+                    "value": "Nenhum módulo encontrado",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-tooltip-manual",
+                    "value": "Ver manual do usuário",
+                    "type": "string"
                 }
             ]
         },
@@ -218,11 +238,11 @@
                 {
                     "name": "Dashboard Cards",
                     "id": "dashboard-cards",
-                    "version": "1.4",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "813a1f315c0d774c833cb6314c05acb1",
-                        "css": "5e2ee0f567581ea1066c79cc08758493",
-                        "combined": "79eaa0cd0012fdbc921d223b5e0506dd"
+                        "html": "3b9e5379d0a88708d890684b2e134736",
+                        "css": "6abde848c94db3281f577dad323991a1",
+                        "combined": "84725e3c55032b98671f7f38fc73be48"
                     }
                 }
             ],
@@ -315,6 +335,26 @@
                 {
                     "id": "update-notification-btn-later",
                     "value": "Remind Later",
+                    "type": "string"
+                },
+                {
+                    "id": "search-placeholder",
+                    "value": "Search module...",
+                    "type": "string"
+                },
+                {
+                    "id": "search-reset-tooltip",
+                    "value": "Clear search",
+                    "type": "string"
+                },
+                {
+                    "id": "search-no-results",
+                    "value": "No module found",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-tooltip-manual",
+                    "value": "View user manual",
                     "type": "string"
                 }
             ]

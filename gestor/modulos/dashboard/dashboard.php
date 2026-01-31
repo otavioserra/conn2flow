@@ -640,6 +640,9 @@ function dashboard_cards(){
 	// URL base para documentação
 	$docs_base_url = 'https://github.com/otavioserra/conn2flow/blob/main/ai-workspace/' . $_GESTOR['linguagem-codigo'] . '/docs/modulos/';
 	
+	// URL base para manual do usuário
+	$manual_base_url = 'https://github.com/otavioserra/conn2flow/blob/main/ai-workspace/' . $_GESTOR['linguagem-codigo'] . '/docs/manual/modulos/';
+	
 	if($modulos)
 	foreach($modulos as $modulo){
 		$modulo_perfil = false;
@@ -727,6 +730,10 @@ function dashboard_cards(){
 		// Link da documentação
 		$docs_link = $docs_base_url . $modulo['id'] . '.md';
 		$cel_aux = modelo_var_troca($cel_aux, "#modulo-docs-link#", $docs_link);
+		
+		// Link do manual do usuário
+		$manual_link = $manual_base_url . $modulo['id'] . '.md';
+		$cel_aux = modelo_var_troca($cel_aux, "#modulo-manual-link#", $manual_link);
 		
 		$cards_html .= $cel_aux;
 		$cards_order[] = $modulo['id'];

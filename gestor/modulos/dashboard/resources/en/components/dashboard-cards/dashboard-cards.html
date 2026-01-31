@@ -19,7 +19,18 @@
     </div>
     <!-- update-notification > -->
 
-    <h1 class="ui header dashboard-cards-title">#titulo#</h1>
+    <!-- header-with-search < -->
+    <div class="dashboard-header-row">
+        <h1 class="ui header dashboard-cards-title">#titulo#</h1>
+        <div class="ui action input dashboard-search-container">
+            <input type="text" id="dashboard-search-input" placeholder="@[[search-placeholder]]@">
+            <button id="dashboard-search-reset" class="ui icon button" data-tooltip="@[[search-reset-tooltip]]@"
+                data-position="top right" data-inverted="">
+                <i class="times icon"></i>
+            </button>
+        </div>
+    </div>
+    <!-- header-with-search > -->
 
     <!-- cards-container < -->
     <div id="dashboard-sortable-cards" class="ui four doubling stackable cards dashboard-sortable-cards">
@@ -49,10 +60,18 @@
                     data-position="top left" data-inverted="">
                     <i class="arrow right icon"></i> @[[cards-btn-acessar]]@
                 </a>
-                <a class="ui basic button dashboard-btn-docs" href="#modulo-docs-link#" target="_blank"
-                    data-tooltip="@[[cards-tooltip-docs]]@" data-position="top right" data-inverted="">
-                    <i class="book icon"></i>
-                </a>
+                <div class="dashboard-card-actions-right">
+                    <div class="ui big icon buttons">
+                        <a class="ui teal button dashboard-btn-manual" href="#modulo-manual-link#" target="_blank"
+                            data-tooltip="@[[cards-tooltip-manual]]@" data-position="top center" data-inverted="">
+                            <i class="info circle icon"></i>
+                        </a>
+                        <a class="ui brown button dashboard-btn-docs" href="#modulo-docs-link#" target="_blank"
+                            data-tooltip="@[[cards-tooltip-docs]]@" data-position="top right" data-inverted="">
+                            <i class="book icon"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- card > -->

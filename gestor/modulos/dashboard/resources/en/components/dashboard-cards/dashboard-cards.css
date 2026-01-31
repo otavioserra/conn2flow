@@ -32,6 +32,60 @@
     flex-wrap: wrap;
 }
 
+/* Header Row with Search */
+.dashboard-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin-bottom: 1.5em;
+}
+
+.dashboard-header-row .dashboard-cards-title {
+    margin-bottom: 0 !important;
+}
+
+.dashboard-search-container {
+    min-width: 250px;
+    max-width: 350px;
+}
+
+.dashboard-search-container input {
+    border-radius: 4px 0 0 4px !important;
+}
+
+#dashboard-search-reset {
+    background: rgb(17, 36, 64) !important;
+    color: #fff !important;
+}
+
+#dashboard-search-reset:hover {
+    background: rgb(20, 163, 197) !important;
+}
+
+/* Card hidden by search */
+.dashboard-module-card.search-hidden {
+    display: none !important;
+}
+
+/* No results message */
+.dashboard-no-results {
+    text-align: center;
+    padding: 3em 1em;
+    color: #7f8c8d;
+    font-size: 1.1em;
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
+.dashboard-no-results i {
+    display: block;
+    font-size: 3em;
+    margin-bottom: 0.5em;
+    color: #bdc3c7;
+}
+
 .dashboard-cards-title {
     margin-bottom: 1.5em !important;
     color: #2c3e50 !important;
@@ -51,8 +105,11 @@
 
 .dashboard-module-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(17, 36, 64, 0.35) !important;
-    filter: brightness(0.92);
+    box-shadow: 0 8px 25px rgba(20, 163, 197, 0.35) !important;
+    filter: brightness(0.98);
+}
+.dashboard-module-card:hover .dashboard-card-header {
+    background: rgba(20, 163, 197, 0.35) !important;
 }
 
 /* Drag Handle */
@@ -103,7 +160,7 @@
 
 /* Card Title */
 .dashboard-card-title {
-    font-size: 1.1em !important;
+    font-size: 1.5em !important;
     color: #2c3e50 !important;
     transition: color 0.2s ease;
 }
@@ -127,7 +184,7 @@
 /* Card Description */
 .dashboard-card-description {
     margin-top: 1em !important;
-    font-size: 0.9em;
+    font-size: 1.2em;
     color: #7f8c8d;
     line-height: 1.5;
     min-height: 3em;
@@ -144,9 +201,21 @@
     background: #f8f9fa !important;
 }
 
-/* Documentation button aligned to the right */
+/* Container for right-side buttons (manual and docs) */
+.dashboard-card-actions-right {
+    display: flex;
+    gap: 0.3em;
+    margin-left: auto;
+}
+
+/* Manual button */
+.dashboard-btn-manual {
+    padding: 0.5em 0.7em !important;
+}
+
+/* Documentation button */
 .dashboard-btn-docs {
-    margin-left: auto !important;
+    padding: 0.5em 0.7em !important;
 }
 
 /* SortableJS Classes */
@@ -197,23 +266,23 @@
 
 /* Module Group Colors */
 .dashboard-module-card[data-module-group="administrativo"] .dashboard-card-header {
-    background: rgb(17, 36, 64);
+    background: rgb(20, 163, 197);
 }
 
 .dashboard-module-card[data-module-group="usuarios"] .dashboard-card-header {
-    background: rgb(17, 36, 64);
+    background: rgb(20, 163, 197);
 }
 
 .dashboard-module-card[data-module-group="conteudo"] .dashboard-card-header {
-    background: rgb(17, 36, 64);
+    background: rgb(20, 163, 197);
 }
 
 .dashboard-module-card[data-module-group="configuracao"] .dashboard-card-header {
-    background: rgb(17, 36, 64);
+    background: rgb(20, 163, 197);
 }
 
 .dashboard-module-card[data-module-group="ecommerce"] .dashboard-card-header {
-    background: rgb(17, 36, 64);
+    background: rgb(20, 163, 197);
 }
 
 /* Responsive Adjustments */
@@ -251,7 +320,7 @@
    SVG Theme Colors
    ======================================== */
 
-/* Dark Theme (Default) */
+/* Tema Escuro (Padrão) */
 .dashboard-card-svg svg,
 .dashboard-card-svg.svg-theme-dark svg {
     fill: #2c3e50;
@@ -263,7 +332,7 @@
     fill: #2c3e50;
 }
 
-/* Light Theme */
+/* Tema Claro */
 .dashboard-card-svg.svg-theme-light svg {
     fill: #ffffff;
     stroke: #ffffff;
@@ -273,7 +342,7 @@
     fill: #ffffff;
 }
 
-/* Blue Theme */
+/* Tema Azul */
 .dashboard-card-svg.svg-theme-blue svg {
     fill: #667eea;
     stroke: #667eea;
@@ -283,7 +352,7 @@
     fill: #667eea;
 }
 
-/* Override for SVGs inside colored header - Feather Icons uses stroke */
+/* Override para SVGs dentro do header com fundo colorido - Feather Icons usa stroke */
 .dashboard-card-header .dashboard-card-svg svg {
     stroke: rgb(20, 163, 197);
 }
@@ -292,7 +361,7 @@
    Drag-and-Drop Enhancements
    ======================================== */
 
-/* Disable text selection during drag */
+/* Desabilitar seleção de texto durante arraste */
 .is-dragging,
 .is-dragging * {
     user-select: none !important;
@@ -307,7 +376,7 @@
     -webkit-user-select: none !important;
 }
 
-/* Prevent selection on handle */
+/* Impedir seleção no handle */
 .dashboard-card-drag-handle {
     user-select: none;
     -webkit-user-select: none;

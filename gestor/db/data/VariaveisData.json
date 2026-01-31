@@ -5832,6 +5832,42 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "search-placeholder",
+        "valor": "Buscar módulo...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "search-reset-tooltip",
+        "valor": "Limpar busca",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "search-no-results",
+        "valor": "Nenhum módulo encontrado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "cards-tooltip-manual",
+        "valor": "Ver manual do usuário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "dashboard",
         "id": "logout-grup",
@@ -5989,6 +6025,42 @@
         "modulo": "dashboard",
         "id": "update-notification-btn-later",
         "valor": "Remind Later",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "search-placeholder",
+        "valor": "Search module...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "search-reset-tooltip",
+        "valor": "Clear search",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "search-no-results",
+        "valor": "No module found",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "cards-tooltip-manual",
+        "valor": "View user manual",
         "tipo": "string",
         "grupo": null,
         "descricao": null
