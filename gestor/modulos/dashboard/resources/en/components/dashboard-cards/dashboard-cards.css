@@ -105,11 +105,11 @@
 
 .dashboard-module-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(20, 163, 197, 0.35) !important;
+    box-shadow: 0 8px 25px rgba(21, 39, 64, 0.7) !important;
     filter: brightness(0.98);
 }
 .dashboard-module-card:hover .dashboard-card-header {
-    background: rgba(20, 163, 197, 0.35) !important;
+    background: rgba(20, 163, 197, 0.2) !important;
 }
 
 /* Drag Handle */
