@@ -90,7 +90,7 @@ function dashboard_toast_atualizacoes(){
 		if($_GESTOR['gestor-cliente']['versao_num'] > (int)$gestor_cliente_versao_num){
 			$botaoNegativeMessageLayout = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'toast-update-button-negative-message'));
 			
-			$botaoNegativeMessageLayout = modelo_var_troca($botaoNegativeMessageLayout,"#url#",'<a href="'.$_GESTOR['url-raiz'].'host-update/">'.$_GESTOR['url-raiz'].'host-update/</a>');
+			$botaoNegativeMessageLayout = modelo_var_troca($botaoNegativeMessageLayout,"#url#",'<a href="'.$_GESTOR['url-raiz'].'admin-atualizacoes/">'.$_GESTOR['url-raiz'].'admin-atualizacoes/</a>');
 			
 			dashboard_toast(Array(
 				'id' => 'update',
@@ -128,6 +128,80 @@ function dashboard_toast_atualizacoes(){
 }
 
 /**
+ * Verifica se há atualização disponível para o gestor.
+ * Utiliza a função descobrirUltimaTagGestor() para buscar a última versão no GitHub.
+ * Armazena o resultado na sessão com tempo de expiração.
+ * 
+ * @return bool True se há atualização disponível
+ */
+function dashboard_verificar_atualizacao(){
+	global $_GESTOR;
+	
+	// Verificar se o usuário é admin do host
+	$host_verificacao = gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id']);
+	
+	if(!isset($host_verificacao['privilegios_admin'])){
+		$_GESTOR['javascript-vars']['update_available'] = false;
+		return false;
+	}
+	
+	// Chave para armazenar a última verificação na sessão
+	$chave_verificacao = 'dashboard_update_check_'.$_GESTOR['usuario-id'];
+	$tempo_expiracao_minutos = 60; // Verificar a cada 1 hora
+	
+	// Verificar se já existe uma verificação recente na sessão
+	$cache = gestor_sessao_variavel($chave_verificacao);
+	
+	if($cache && isset($cache['timestamp']) && isset($cache['update_available'])){
+		$agora = time();
+		$tempo_expiracao_segundos = $tempo_expiracao_minutos * 60;
+		
+		if(($agora - $cache['timestamp']) < $tempo_expiracao_segundos){
+			$_GESTOR['javascript-vars']['update_available'] = $cache['update_available'];
+			return $cache['update_available'];
+		}
+	}
+	
+	// Fazer nova verificação
+	try {
+		// Incluir o arquivo de atualizações se necessário
+		$arquivo_atualizacoes = $_GESTOR['gestor-raiz'] . 'controladores/atualizacoes/atualizacoes-sistema.php';
+		if(file_exists($arquivo_atualizacoes) && !function_exists('descobrirUltimaTagGestor')){
+			require_once $arquivo_atualizacoes;
+		}
+		
+		if(function_exists('descobrirUltimaTagGestor')){
+			$info_release = descobrirUltimaTagGestor();
+			
+			// Extrair número da versão da tag (gestor-v1.0.0 -> 1.0.0)
+			$tag = $info_release['tag'] ?? '';
+			$versao_remota = str_replace('gestor-v', '', $tag);
+			$versao_local = $_GESTOR['gestor-cliente']['versao'] ?? '0.0.0';
+			
+			// Comparar versões
+			$update_disponivel = version_compare($versao_remota, $versao_local, '>');
+			
+			// Armazenar resultado na sessão
+			gestor_sessao_variavel($chave_verificacao, Array(
+				'timestamp' => time(),
+				'update_available' => $update_disponivel,
+				'remote_version' => $versao_remota,
+				'local_version' => $versao_local
+			));
+			
+			$_GESTOR['javascript-vars']['update_available'] = $update_disponivel;
+			return $update_disponivel;
+		}
+	} catch(Exception $e) {
+		// Falha silenciosa - não mostrar erro ao usuário
+		error_log('Dashboard: Erro ao verificar atualização: ' . $e->getMessage());
+	}
+	
+	$_GESTOR['javascript-vars']['update_available'] = false;
+	return false;
+}
+
+/**
  * Gera os SVGs decorativos baseados nos ícones dos módulos.
  * 
  * @param string $icon Nome do ícone principal do Fomantic-UI
@@ -135,133 +209,167 @@ function dashboard_toast_atualizacoes(){
  * @return string SVG gerado
  */
 function dashboard_gerar_svg_modulo($icon, $icon2 = null){
-	// Mapeamento de ícones Fomantic-UI para paths SVG
+	// Mapeamento de ícones Feather Icons para paths SVG
+	// ViewBox: 0 0 24 24 | Stroke-based | Stroke-width: 2
+	// Referência: https://feathericons.com/
 	$svg_paths = array(
-		'cog' => '<path d="M50 35a15 15 0 1 0 0 30 15 15 0 0 0 0-30zm0 25a10 10 0 1 1 0-20 10 10 0 0 1 0 20z"/><path d="M90 45h-7.5c-.8-3.2-2-6.2-3.6-9l5.3-5.3a5 5 0 0 0 0-7.1l-7.8-7.8a5 5 0 0 0-7.1 0l-5.3 5.3c-2.8-1.6-5.8-2.8-9-3.6V10a5 5 0 0 0-5-5h-11a5 5 0 0 0-5 5v7.5c-3.2.8-6.2 2-9 3.6l-5.3-5.3a5 5 0 0 0-7.1 0l-7.8 7.8a5 5 0 0 0 0 7.1l5.3 5.3c-1.6 2.8-2.8 5.8-3.6 9H10a5 5 0 0 0-5 5v11a5 5 0 0 0 5 5h7.5c.8 3.2 2 6.2 3.6 9l-5.3 5.3a5 5 0 0 0 0 7.1l7.8 7.8a5 5 0 0 0 7.1 0l5.3-5.3c2.8 1.6 5.8 2.8 9 3.6V90a5 5 0 0 0 5 5h11a5 5 0 0 0 5-5v-7.5c3.2-.8 6.2-2 9-3.6l5.3 5.3a5 5 0 0 0 7.1 0l7.8-7.8a5 5 0 0 0 0-7.1l-5.3-5.3c1.6-2.8 2.8-5.8 3.6-9H90a5 5 0 0 0 5-5V50a5 5 0 0 0-5-5z"/>',
-		'cogs' => '<path d="M25 20a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M47 27h-5c-.5-2-1.3-4-2.4-5.8l3.5-3.5a3 3 0 0 0 0-4.2l-5-5a3 3 0 0 0-4.2 0l-3.5 3.5c-1.8-1.1-3.8-1.9-5.8-2.4V5a3 3 0 0 0-3-3h-7a3 3 0 0 0-3 3v4.6c-2 .5-4 1.3-5.8 2.4l-3.5-3.5a3 3 0 0 0-4.2 0l-5 5a3 3 0 0 0 0 4.2l3.5 3.5c-1.1 1.8-1.9 3.8-2.4 5.8H3a3 3 0 0 0-3 3v7a3 3 0 0 0 3 3h4.6c.5 2 1.3 4 2.4 5.8l-3.5 3.5a3 3 0 0 0 0 4.2l5 5a3 3 0 0 0 4.2 0l3.5-3.5c1.8 1.1 3.8 1.9 5.8 2.4V67a3 3 0 0 0 3 3h7a3 3 0 0 0 3-3v-4.6c2-.5 4-1.3 5.8-2.4l3.5 3.5a3 3 0 0 0 4.2 0l5-5a3 3 0 0 0 0-4.2l-3.5-3.5c1.1-1.8 1.9-3.8 2.4-5.8H47a3 3 0 0 0 3-3v-7a3 3 0 0 0-3-3z"/><path d="M75 55a10 10 0 1 0 0 20 10 10 0 0 0 0-20z" opacity=".7"/><path d="M97 62h-5c-.5-2-1.3-4-2.4-5.8l3.5-3.5a3 3 0 0 0 0-4.2l-5-5a3 3 0 0 0-4.2 0l-3.5 3.5c-1.8-1.1-3.8-1.9-5.8-2.4V40a3 3 0 0 0-3-3h-7a3 3 0 0 0-3 3v4.6c-2 .5-4 1.3-5.8 2.4l-3.5-3.5a3 3 0 0 0-4.2 0l-5 5a3 3 0 0 0 0 4.2l3.5 3.5c-1.1 1.8-1.9 3.8-2.4 5.8H53a3 3 0 0 0-3 3v7a3 3 0 0 0 3 3h4.6c.5 2 1.3 4 2.4 5.8l-3.5 3.5a3 3 0 0 0 0 4.2l5 5a3 3 0 0 0 4.2 0l3.5-3.5c1.8 1.1 3.8 1.9 5.8 2.4V97a3 3 0 0 0 3 3h7a3 3 0 0 0 3-3v-4.6c2-.5 4-1.3 5.8-2.4l3.5 3.5a3 3 0 0 0 4.2 0l5-5a3 3 0 0 0 0-4.2l-3.5-3.5c1.1-1.8 1.9-3.8 2.4-5.8H97a3 3 0 0 0 3-3v-7a3 3 0 0 0-3-3z" opacity=".7"/>',
-		'file' => '<path d="M80 30H60V10L80 30z"/><path d="M55 10H20a5 5 0 0 0-5 5v70a5 5 0 0 0 5 5h60a5 5 0 0 0 5-5V35H60a5 5 0 0 1-5-5V10z"/>',
-		'file image outline' => '<path d="M80 30H60V10L80 30z"/><path d="M55 10H20a5 5 0 0 0-5 5v70a5 5 0 0 0 5 5h60a5 5 0 0 0 5-5V35H60a5 5 0 0 1-5-5V10z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="35" cy="50" r="8"/><path d="M25 75l15-15 10 10 15-20 15 25H25z"/>',
-		'object ungroup outline' => '<rect x="5" y="5" width="50" height="50" rx="5" fill="none" stroke="currentColor" stroke-width="3"/><rect x="45" y="45" width="50" height="50" rx="5" fill="none" stroke="currentColor" stroke-width="3"/>',
-		'users' => '<circle cx="50" cy="25" r="15"/><path d="M50 45c-20 0-35 12-35 27v8h70v-8c0-15-15-27-35-27z"/><circle cx="25" cy="30" r="10" opacity=".6"/><circle cx="75" cy="30" r="10" opacity=".6"/>',
-		'user' => '<circle cx="50" cy="30" r="20"/><path d="M50 55c-25 0-40 15-40 30v10h80v-10c0-15-15-30-40-30z"/>',
-		'folder' => '<path d="M90 30H50l-10-15H10a5 5 0 0 0-5 5v60a5 5 0 0 0 5 5h80a5 5 0 0 0 5-5V35a5 5 0 0 0-5-5z"/>',
-		'folder open' => '<path d="M10 20h25l10 10h45a5 5 0 0 1 5 5v5H5v-15a5 5 0 0 1 5-5z"/><path d="M5 45h85l10 40H15L5 45z"/>',
-		'shopping cart' => '<circle cx="35" cy="85" r="8"/><circle cx="70" cy="85" r="8"/><path d="M10 10h10l5 10h70l-15 40H30L15 10z"/>',
-		'box' => '<path d="M50 5L5 25v50l45 20 45-20V25L50 5z"/><path d="M50 55v40M5 25l45 30 45-30" fill="none" stroke="currentColor" stroke-width="2"/>',
-		'database' => '<ellipse cx="50" cy="20" rx="40" ry="15"/><path d="M10 20v60c0 8.3 17.9 15 40 15s40-6.7 40-15V20" fill="none" stroke="currentColor" stroke-width="3"/><path d="M10 50c0 8.3 17.9 15 40 15s40-6.7 40-15" fill="none" stroke="currentColor" stroke-width="3"/>',
-		'globe' => '<circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="3"/><ellipse cx="50" cy="50" rx="20" ry="40" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 50h80M15 30h70M15 70h70" fill="none" stroke="currentColor" stroke-width="2"/>',
-		'home' => '<path d="M50 10L10 45h15v40h20V60h10v25h20V45h15L50 10z"/>',
-		'dashboard' => '<path d="M5 5h40v40H5zM55 5h40v25H55zM5 55h40v40H5zM55 40h40v55H55z"/>',
-		'chart bar' => '<rect x="10" y="60" width="15" height="30"/><rect x="30" y="40" width="15" height="50"/><rect x="50" y="20" width="15" height="70"/><rect x="70" y="50" width="15" height="40"/>',
-		'chart line' => '<path d="M10 80l25-30 20 20 35-55" fill="none" stroke="currentColor" stroke-width="4"/>',
-		'envelope' => '<rect x="5" y="20" width="90" height="60" rx="5"/><path d="M5 25l45 30 45-30" fill="none" stroke="currentColor" stroke-width="2"/>',
-		'bell' => '<path d="M50 95c5.5 0 10-4.5 10-10H40c0 5.5 4.5 10 10 10z"/><path d="M80 70c-5-5-10-10-10-30 0-15-10-25-20-25s-20 10-20 25c0 20-5 25-10 30v10h60V70z"/>',
-		'lock' => '<rect x="20" y="40" width="60" height="50" rx="5"/><path d="M30 40V30a20 20 0 0 1 40 0v10" fill="none" stroke="currentColor" stroke-width="5"/>',
-		'key' => '<circle cx="30" cy="30" r="20" fill="none" stroke="currentColor" stroke-width="5"/><path d="M45 45l45 45M70 70l15 15M80 60l15 15"/>',
-		'plug' => '<path d="M35 5v30M65 5v30M25 35h50v20c0 25-20 40-25 40s-25-15-25-40V35z"/>',
-		'code' => '<path d="M35 25L10 50l25 25M65 25l25 25-25 25M55 15l-10 70" fill="none" stroke="currentColor" stroke-width="5"/>',
-		'terminal' => '<rect x="5" y="10" width="90" height="80" rx="5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M20 40l20 15-20 15M50 70h30" fill="none" stroke="currentColor" stroke-width="4"/>',
-		'paint brush' => '<path d="M15 60c-10 10-10 35 0 35 15 0 20-15 35-30l35-45c5-5 5-10 0-15s-10-5-15 0L25 40c-15 15-30 20-10 20z"/>',
-		'image' => '<rect x="5" y="15" width="90" height="70" rx="5"/><circle cx="30" cy="40" r="10"/><path d="M5 75l25-25 20 20 20-30 25 35"/>',
-		'video' => '<rect x="5" y="20" width="60" height="60" rx="5"/><path d="M70 35l25-15v60l-25-15V35z"/>',
-		'music' => '<circle cx="25" cy="75" r="15"/><circle cx="75" cy="75" r="15"/><path d="M40 75V15l50-10v70"/>',
-		'calendar' => '<rect x="10" y="15" width="80" height="75" rx="5"/><path d="M10 35h80M30 5v20M70 5v20"/>',
-		'clock' => '<circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="4"/><path d="M50 25v25l20 15" fill="none" stroke="currentColor" stroke-width="4"/>',
-		'map' => '<path d="M5 15l30 10 30-10 30 10v70l-30-10-30 10-30-10V15z"/><path d="M35 25v60M65 15v60" fill="none" stroke="currentColor" stroke-width="2"/>',
-		'star' => '<path d="M50 5l12 36h38l-31 22 12 36-31-22-31 22 12-36L0 41h38z"/>',
-		'heart' => '<path d="M50 90C20 65 5 45 5 30 5 15 20 5 35 5c10 0 15 5 15 10 0-5 5-10 15-10 15 0 30 10 30 25 0 15-15 35-45 60z"/>',
-		'bookmark' => '<path d="M20 5h60v90l-30-20-30 20V5z"/>',
-		'tag' => '<path d="M5 5h40l50 50-40 40L5 45V5z"/><circle cx="30" cy="30" r="10"/>',
-		'tags' => '<path d="M15 5h35l45 45-35 35L15 40V5z"/><circle cx="35" cy="25" r="8"/><path d="M5 15h35l45 45-35 35" fill="none" stroke="currentColor" stroke-width="3"/>',
-		'comment' => '<path d="M10 10h80a5 5 0 0 1 5 5v50a5 5 0 0 1-5 5H30l-20 20V70H10a5 5 0 0 1-5-5V15a5 5 0 0 1 5-5z"/>',
-		'comments' => '<path d="M15 5h50a5 5 0 0 1 5 5v30a5 5 0 0 1-5 5H35l-15 15V45H15a5 5 0 0 1-5-5V10a5 5 0 0 1 5-5z"/><path d="M75 30h10a5 5 0 0 1 5 5v30a5 5 0 0 1-5 5h-5v15l-15-15H40" fill="none" stroke="currentColor" stroke-width="3"/>',
-		'question circle outline' => '<circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="4"/><path d="M35 35c0-10 8-15 15-15s15 5 15 15c0 10-10 12-15 20v5" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="50" cy="75" r="4"/>',
-		'info circle' => '<circle cx="50" cy="50" r="40"/><circle cx="50" cy="30" r="5" fill="#fff"/><rect x="45" y="40" width="10" height="35" fill="#fff"/>',
-		'exclamation triangle' => '<path d="M50 5L5 90h90L50 5z"/><rect x="45" y="35" width="10" height="30" fill="#fff"/><circle cx="50" cy="75" r="5" fill="#fff"/>',
-		'check circle' => '<circle cx="50" cy="50" r="40"/><path d="M30 50l15 15 25-30" fill="none" stroke="#fff" stroke-width="6"/>',
-		'times circle' => '<circle cx="50" cy="50" r="40"/><path d="M35 35l30 30M65 35l-30 30" fill="none" stroke="#fff" stroke-width="6"/>',
-		'plus' => '<path d="M45 10v80M10 50h80" stroke="currentColor" stroke-width="10"/>',
-		'minus' => '<path d="M10 50h80" stroke="currentColor" stroke-width="10"/>',
-		'edit' => '<path d="M70 10l20 20-50 50H20V60L70 10z"/><path d="M60 20l20 20"/>',
-		'trash' => '<path d="M20 30h60v60a5 5 0 0 1-5 5H25a5 5 0 0 1-5-5V30z"/><path d="M10 30h80M40 10h20v20H40z"/><path d="M40 45v30M50 45v30M60 45v30"/>',
-		'download' => '<path d="M50 5v60M30 45l20 20 20-20"/><path d="M10 75v15h80V75"/>',
-		'upload' => '<path d="M50 65V5M30 25l20-20 20 20"/><path d="M10 75v15h80V75"/>',
-		'sync' => '<path d="M15 50c0-20 15-35 35-35v15l25-20-25-20v15C25 5 5 25 5 50h10z"/><path d="M85 50c0 20-15 35-35 35v-15l-25 20 25 20v-15c25 0 45-20 45-45h-10z"/>',
-		'refresh' => '<path d="M85 50c0-20-15-35-35-35-15 0-27 9-33 22" fill="none" stroke="currentColor" stroke-width="6"/><path d="M15 50c0 20 15 35 35 35 15 0 27-9 33-22" fill="none" stroke="currentColor" stroke-width="6"/><path d="M5 25l15 15 15-15M95 75l-15-15-15 15"/>',
-		'search' => '<circle cx="40" cy="40" r="30" fill="none" stroke="currentColor" stroke-width="6"/><path d="M60 60l30 30" stroke="currentColor" stroke-width="8"/>',
-		'filter' => '<path d="M10 10h80l-30 40v35l-20 10V50L10 10z"/>',
-		'sort' => '<path d="M25 20v60l-15-15M75 80V20l15 15"/>',
-		'list' => '<path d="M5 20h10v10H5zM25 20h70v10H25zM5 45h10v10H5zM25 45h70v10H25zM5 70h10v10H5zM25 70h70v10H25z"/>',
-		'grid' => '<rect x="5" y="5" width="40" height="40"/><rect x="55" y="5" width="40" height="40"/><rect x="5" y="55" width="40" height="40"/><rect x="55" y="55" width="40" height="40"/>',
-		'th' => '<rect x="5" y="5" width="25" height="25"/><rect x="37" y="5" width="25" height="25"/><rect x="70" y="5" width="25" height="25"/><rect x="5" y="37" width="25" height="25"/><rect x="37" y="37" width="25" height="25"/><rect x="70" y="37" width="25" height="25"/><rect x="5" y="70" width="25" height="25"/><rect x="37" y="70" width="25" height="25"/><rect x="70" y="70" width="25" height="25"/>',
-		'sign out alternate' => '<path d="M60 20V10H20v80h40V80"/><path d="M40 50h50M75 35l15 15-15 15"/>',
-		'arrow right' => '<path d="M10 50h70M60 30l20 20-20 20"/>',
-		'arrow left' => '<path d="M90 50H20M40 30L20 50l20 20"/>',
-		'external alternate' => '<path d="M70 10h20v20M55 45l35-35M80 45v35a5 5 0 0 1-5 5H20a5 5 0 0 1-5-5V20a5 5 0 0 1 5-5h35"/>',
-		'book' => '<path d="M50 10C35 10 25 15 25 15v70s10-5 25-5 25 5 25 5V15s-10-5-25-5z"/><path d="M10 15v70c15 0 25 5 25 5V20s-10-5-25-5zM90 15v70c-15 0-25 5-25 5V20s10-5 25-5z"/>',
-		'graduation cap' => '<path d="M50 15L5 35l45 20 45-20-45-20z"/><path d="M25 45v25c0 10 11.2 15 25 15s25-5 25-15V45"/><path d="M85 35v30l5 15-5 15"/>',
-		'briefcase' => '<rect x="10" y="30" width="80" height="55" rx="5"/><path d="M35 30V20a5 5 0 0 1 5-5h20a5 5 0 0 1 5 5v10"/><path d="M10 55h80"/>',
-		'building' => '<rect x="15" y="10" width="70" height="80" rx="3"/><rect x="25" y="20" width="15" height="15"/><rect x="60" y="20" width="15" height="15"/><rect x="25" y="45" width="15" height="15"/><rect x="60" y="45" width="15" height="15"/><rect x="40" y="70" width="20" height="20"/>',
-		'industry' => '<path d="M5 90V50l30-20v20l30-20v20l30-20v60H5z"/>',
-		'truck' => '<rect x="5" y="35" width="55" height="40" rx="3"/><path d="M60 50h25l10 25H60z"/><circle cx="25" cy="80" r="10"/><circle cx="80" cy="80" r="10"/>',
-		'plane' => '<path d="M90 50L60 35V20L50 10 40 20v15L10 50l10 5 25-5v20l-10 10v10l25-10 25 10V70l-10-10V45l25 5 10-5z"/>',
-		'rocket' => '<path d="M50 5c-15 25-15 60 0 70 15-10 15-45 0-70z"/><path d="M35 75l-15 20 20-5-5-15zM65 75l15 20-20-5 5-15z"/><circle cx="50" cy="40" r="10"/>',
-		'magic' => '<path d="M5 90l60-60 25 25-60 60L5 90z"/><path d="M60 35l15-15M75 20l10-5-5 10 10 5-10-5-5 10 5-10-10-5z"/>',
-		'wand' => '<path d="M10 85l55-55 25 25-55 55-25-25z"/><circle cx="75" cy="20" r="3"/><circle cx="85" cy="30" r="2"/><circle cx="90" cy="15" r="2"/><circle cx="70" cy="10" r="2"/>',
-		'puzzle' => '<path d="M45 10h10c5 0 10 5 10 10s-5 10-10 10v15h15c0-5 5-10 10-10s10 5 10 10H75v15c5 0 10 5 10 10s-5 10-10 10v15H60c0-5-5-10-10-10s-10 5-10 10H25V80c-5 0-10-5-10-10s5-10 10-10V45H40c0 5 5 10 10 10s10-5 10-10H45V10z"/>',
-		'shield' => '<path d="M50 5L10 20v30c0 25 20 40 40 45 20-5 40-20 40-45V20L50 5z"/>',
-		'certificate' => '<circle cx="50" cy="40" r="30" fill="none" stroke="currentColor" stroke-width="5"/><path d="M35 65v30l15-10 15 10V65"/>',
-		'trophy' => '<path d="M25 10h50v30c0 15-12.5 25-25 25s-25-10-25-25V10z"/><path d="M25 25H10c0 15 7.5 25 15 25M75 25h15c0 15-7.5 25-15 25"/><path d="M40 65h20v10H40zM35 75h30v10H35z"/>',
-		'flag' => '<path d="M20 5v90"/><path d="M20 10h60l-15 20 15 20H20V10z"/>',
-		'bolt' => '<path d="M55 5L25 55h25L40 95l40-55H55L70 5H55z"/>',
-		'fire' => '<path d="M50 5c-5 15 5 25 0 40-10-5-20-20-15-40C20 20 10 45 10 60c0 25 20 35 40 35s40-10 40-35c0-20-15-35-30-45-5 10-15 0-10-15z"/>',
-		'leaf' => '<path d="M90 10C60 10 20 30 10 90c30-20 50-30 80-30V10z"/><path d="M10 90c20-30 40-50 80-80" fill="none" stroke="currentColor" stroke-width="3"/>',
-		'sun' => '<circle cx="50" cy="50" r="20"/><path d="M50 5v15M50 80v15M5 50h15M80 50h15M18 18l10 10M72 72l10 10M82 18l-10 10M28 72l-10 10"/>',
-		'moon' => '<path d="M70 15c-25 0-45 20-45 45s20 45 45 45c5 0 10-.8 15-2-10 5-22 7-35 2-20-8-35-30-30-55 3-15 15-30 35-37-5 0-10 2-15 2z"/>',
-		'cloud' => '<circle cx="35" cy="60" r="25"/><circle cx="60" cy="45" r="30"/><circle cx="80" cy="60" r="20"/><rect x="10" y="60" width="80" height="30"/>',
-		'umbrella' => '<path d="M50 10c-35 0-45 40-45 40h40v40c0 5-5 5-5 5s-5 0-5-5M95 50s-10-40-45-40"/>',
-		'anchor' => '<circle cx="50" cy="20" r="10" fill="none" stroke="currentColor" stroke-width="4"/><path d="M50 30v60M20 60c0 20 13.4 30 30 30s30-10 30-30" fill="none" stroke="currentColor" stroke-width="4"/><path d="M50 50H30l20 10 20-10H50z"/>',
-		'life ring' => '<circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="10"/><circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="4"/>',
-		'compass' => '<circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="4"/><path d="M50 20l10 30-10 10-10-10zM50 80l-10-30 10-10 10 10z"/>',
-		'sitemap' => '<rect x="40" y="5" width="20" height="15"/><rect x="10" y="40" width="20" height="15"/><rect x="40" y="40" width="20" height="15"/><rect x="70" y="40" width="20" height="15"/><rect x="10" y="75" width="20" height="15"/><rect x="40" y="75" width="20" height="15"/><rect x="70" y="75" width="20" height="15"/><path d="M50 20v20M20 40v-10h60v10M20 55v20M50 55v20M80 55v20" fill="none" stroke="currentColor" stroke-width="2"/>',
-		'microphone' => '<rect x="35" y="5" width="30" height="50" rx="15"/><path d="M20 45c0 20 13.4 30 30 30s30-10 30-30" fill="none" stroke="currentColor" stroke-width="5"/><path d="M50 75v20"/>',
-		'headphones' => '<path d="M15 50c0-20 15.7-35 35-35s35 15 35 35" fill="none" stroke="currentColor" stroke-width="6"/><rect x="10" y="50" width="15" height="35" rx="5"/><rect x="75" y="50" width="15" height="35" rx="5"/>',
-		'volume up' => '<path d="M10 35h20l25-20v70l-25-20H10V35z"/><path d="M65 30c10 10 10 30 0 40M75 20c15 15 15 45 0 60" fill="none" stroke="currentColor" stroke-width="4"/>',
-		'wifi' => '<circle cx="50" cy="80" r="5"/><path d="M30 65c10-10 30-10 40 0M20 55c15-15 45-15 60 0M10 45c20-20 60-20 80 0" fill="none" stroke="currentColor" stroke-width="4"/>',
-		'bluetooth' => '<path d="M35 30l30 20-30 20M50 10v80l25-30-25-20 25-20z" fill="none" stroke="currentColor" stroke-width="4"/>',
-		'battery full' => '<rect x="5" y="25" width="80" height="50" rx="5"/><rect x="85" y="35" width="10" height="30"/><rect x="15" y="35" width="60" height="30"/>',
-		'battery half' => '<rect x="5" y="25" width="80" height="50" rx="5"/><rect x="85" y="35" width="10" height="30"/><rect x="15" y="35" width="30" height="30"/>',
-		'battery empty' => '<rect x="5" y="25" width="80" height="50" rx="5" fill="none" stroke="currentColor" stroke-width="4"/><rect x="85" y="35" width="10" height="30"/>',
-		'signal' => '<rect x="5" y="70" width="15" height="20"/><rect x="25" y="55" width="15" height="35"/><rect x="45" y="40" width="15" height="50"/><rect x="65" y="25" width="15" height="65"/><rect x="85" y="10" width="10" height="80"/>',
-		'qrcode' => '<rect x="10" y="10" width="30" height="30"/><rect x="60" y="10" width="30" height="30"/><rect x="10" y="60" width="30" height="30"/><rect x="18" y="18" width="14" height="14" fill="#fff"/><rect x="68" y="18" width="14" height="14" fill="#fff"/><rect x="18" y="68" width="14" height="14" fill="#fff"/><rect x="60" y="60" width="10" height="10"/><rect x="80" y="60" width="10" height="10"/><rect x="60" y="80" width="10" height="10"/><rect x="80" y="80" width="10" height="10"/><rect x="70" y="70" width="10" height="10"/>',
-		'barcode' => '<rect x="10" y="20" width="5" height="60"/><rect x="20" y="20" width="10" height="60"/><rect x="35" y="20" width="5" height="60"/><rect x="45" y="20" width="15" height="60"/><rect x="65" y="20" width="5" height="60"/><rect x="75" y="20" width="10" height="60"/><rect x="90" y="20" width="5" height="60"/>',
-		'credit card' => '<rect x="5" y="20" width="90" height="60" rx="5"/><rect x="5" y="35" width="90" height="15"/>',
-		'money' => '<rect x="5" y="20" width="90" height="60" rx="5"/><circle cx="50" cy="50" r="15"/><circle cx="20" cy="50" r="5"/><circle cx="80" cy="50" r="5"/>',
-		'percent' => '<circle cx="30" cy="30" r="15" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="70" cy="70" r="15" fill="none" stroke="currentColor" stroke-width="5"/><path d="M80 20L20 80" stroke="currentColor" stroke-width="5"/>',
-		'hashtag' => '<path d="M25 5v90M45 5v90M5 30h60M5 60h60" stroke="currentColor" stroke-width="8"/>',
-		'at' => '<circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="4"/><path d="M65 35v25c0 10 15 10 15 0" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="4"/>',
-		'link' => '<path d="M45 55L55 45M35 65c-10-10-10-25 0-35l15-15c10-10 25-10 35 0s10 25 0 35l-7.5 7.5" fill="none" stroke="currentColor" stroke-width="6"/><path d="M65 35c10 10 10 25 0 35L50 85c-10 10-25 10-35 0s-10-25 0-35l7.5-7.5" fill="none" stroke="currentColor" stroke-width="6"/>',
-		'unlink' => '<path d="M35 65c-10-10-10-25 0-35l15-15c10-10 25-10 35 0" fill="none" stroke="currentColor" stroke-width="6"/><path d="M65 35c10 10 10 25 0 35L50 85c-10 10-25 10-35 0" fill="none" stroke="currentColor" stroke-width="6"/><path d="M20 80l15 15M80 20L65 5"/>',
-		'paperclip' => '<path d="M75 35L35 75c-10 10-25 10-35 0s-10-25 0-35l50-50c7-7 17-7 24 0s7 17 0 24L34 54c-3 3-8 3-11 0s-3-8 0-11l30-30" fill="none" stroke="currentColor" stroke-width="4"/>',
-		'copy' => '<rect x="25" y="25" width="50" height="65" rx="3"/><path d="M25 25V15a5 5 0 0 1 5-5h40a5 5 0 0 1 5 5v50a5 5 0 0 1-5 5H65" fill="none" stroke="currentColor" stroke-width="3"/>',
-		'clipboard' => '<rect x="20" y="15" width="60" height="75" rx="5"/><rect x="35" y="5" width="30" height="20" rx="3"/><path d="M35 45h30M35 60h30M35 75h20"/>',
-		'save' => '<rect x="10" y="10" width="80" height="80" rx="5"/><rect x="25" y="10" width="50" height="30"/><rect x="55" y="15" width="10" height="20"/><rect x="25" y="55" width="50" height="30"/>',
-		'print' => '<rect x="20" y="40" width="60" height="35" rx="3"/><path d="M30 40V20h40v20"/><rect x="30" y="55" width="40" height="25" rx="2"/><circle cx="70" cy="50" r="3"/>',
-		'share' => '<circle cx="75" cy="25" r="12"/><circle cx="75" cy="75" r="12"/><circle cx="25" cy="50" r="12"/><path d="M37 44l26-13M37 56l26 13" stroke="currentColor" stroke-width="3"/>',
-		'expand' => '<path d="M5 35V5h30M65 5h30v30M95 65v30H65M35 95H5V65" fill="none" stroke="currentColor" stroke-width="5"/>',
-		'compress' => '<path d="M35 5v30H5M65 35h30V5M95 65H65v30M5 65h30v30" fill="none" stroke="currentColor" stroke-width="5"/>',
-		'eye' => '<path d="M50 25C25 25 5 50 5 50s20 25 45 25 45-25 45-25-20-25-45-25z"/><circle cx="50" cy="50" r="15" fill="#fff"/>',
-		'eye slash' => '<path d="M50 25C25 25 5 50 5 50s20 25 45 25 45-25 45-25-20-25-45-25z"/><circle cx="50" cy="50" r="15" fill="#fff"/><path d="M15 85L85 15" stroke="currentColor" stroke-width="5"/>',
-		'thumbs up' => '<path d="M35 45V85H20V45zM35 45c0-15 5-35 20-35 10 0 10 15 5 25h25c5 0 10 5 10 10L80 85H35"/>',
-		'thumbs down' => '<path d="M65 55V15h15v40zM65 55c0 15-5 35-20 35-10 0-10-15-5-25H15c-5 0-10-5-10-10L20 15h45"/>',
-		'hand point right' => '<rect x="5" y="35" width="60" height="30" rx="15"/><path d="M65 50h25c5 0 5 10 0 10H75M65 40v-10c0-5 10-5 10 0v10M75 30v-10c0-5 10-5 10 0v20M85 40v-15c0-5 10-5 10 0v25"/>',
-		'hand paper' => '<rect x="25" y="40" width="50" height="50" rx="10"/><path d="M35 40V15c0-5 10-5 10 0v25M50 40V10c0-5 10-5 10 0v30M65 40V15c0-5 10-5 10 0v25M25 60H10c-5 0-5-10 0-10h15"/>',
-		'spinner' => '<path d="M50 10v15M50 75v15M90 50H75M25 50H10M78 22L67 33M33 67L22 78M78 78L67 67M33 33L22 22"/>',
-		'circle notch' => '<circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="8" stroke-dasharray="165" stroke-dashoffset="40"/>',
+		// CONFIGURAÇÕES
+		'cog' => '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>',
+		'cogs' => '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>',
+		// ARQUIVOS
+		'file' => '<path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>',
+		'file image outline' => '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline>',
+		'file alternate outline' => '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>',
+		'file alternate' => '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>',
+		// USUÁRIOS
+		'users' => '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>',
+		'user' => '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>',
+		// PASTAS
+		'folder' => '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>',
+		'folder open' => '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>',
+		'folder open outline' => '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>',
+		// E-COMMERCE
+		'shopping cart' => '<circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>',
+		'box' => '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>',
+		// DATABASE & SERVER
+		'database' => '<ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>',
+		'server' => '<rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line>',
+		// NAVEGAÇÃO
+		'home' => '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>',
+		'globe' => '<circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>',
+		// DASHBOARD & GRÁFICOS
+		'dashboard' => '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>',
+		'chart bar' => '<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>',
+		'chart line' => '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>',
+		// COMUNICAÇÃO
+		'envelope' => '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>',
+		'bell' => '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>',
+		'comment' => '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>',
+		'comments' => '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>',
+		// SEGURANÇA
+		'lock' => '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>',
+		'key' => '<path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>',
+		'shield' => '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>',
+		// AÇÕES
+		'edit' => '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>',
+		'trash' => '<polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>',
+		'download' => '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line>',
+		'upload' => '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line>',
+		'search' => '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>',
+		'filter' => '<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>',
+		'plus' => '<line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>',
+		'minus' => '<line x1="5" y1="12" x2="19" y2="12"></line>',
+		'check circle' => '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>',
+		'times circle' => '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>',
+		// INTERFACE
+		'eye' => '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>',
+		'eye slash' => '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>',
+		'external alternate' => '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>',
+		'sign out alternate' => '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line>',
+		// MÍDIA
+		'image' => '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline>',
+		'video' => '<polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>',
+		'music' => '<path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>',
+		// TEMPO
+		'calendar' => '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>',
+		'clock' => '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>',
+		// OBJETOS
+		'book' => '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>',
+		'bookmark' => '<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>',
+		'tag' => '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>',
+		'tags' => '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>',
+		'star' => '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>',
+		'heart' => '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>',
+		'flag' => '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line>',
+		// INFORMAÇÃO
+		'info circle' => '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>',
+		'question circle outline' => '<circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line>',
+		'exclamation triangle' => '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>',
+		// FERRAMENTAS & TRABALHO
+		'briefcase' => '<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>',
+		'tools' => '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>',
+		'code' => '<polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline>',
+		'terminal' => '<polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line>',
+		// FORMAS & LAYOUT
+		'grid' => '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>',
+		'list' => '<line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>',
+		'shapes' => '<polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline>',
+		'object ungroup outline' => '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect>',
+		// ROBÔ & IA
+		'robot' => '<rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line>',
+		// OUTROS
+		'map' => '<polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line>',
+		'plug' => '<path d="M12 22v-5"></path><path d="M9 8V2"></path><path d="M15 8V2"></path><path d="M18 8v5a6 6 0 0 1-12 0V8z"></path>',
+		'bolt' => '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>',
+		'sync' => '<polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>',
+		'refresh' => '<polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>',
+		'copy' => '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>',
+		'clipboard' => '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>',
+		'save' => '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline>',
+		'print' => '<polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect>',
+		'share' => '<circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>',
+		'link' => '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>',
+		'arrow right' => '<line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>',
+		'arrow left' => '<line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline>',
+		'grip vertical' => '<circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="19" r="1"></circle>',
+		'id card' => '<rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line>',
+		'id card outline' => '<rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line>',
+		'project diagram' => '<polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline>',
+		'sitemap' => '<polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline>',
+		'stream' => '<line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>',
+		'graduation cap' => '<path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>',
+		'building' => '<rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"></path>',
+		'industry' => '<path d="M2 20h20"></path><path d="M5 20V8l5 4V8l5 4V4l5 4v12"></path>',
+		'truck' => '<rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle>',
+		'plane' => '<path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"></path>',
+		'rocket' => '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>',
+		'magic' => '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>',
+		'wand' => '<path d="M15 4V2"></path><path d="M15 16v-2"></path><path d="M8 9h2"></path><path d="M20 9h2"></path><path d="M17.8 11.8L19 13"></path><path d="M15 9h0"></path><path d="M17.8 6.2L19 5"></path><path d="m3 21 9-9"></path><path d="M12.2 6.2L11 5"></path>',
+		'puzzle' => '<path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"></path>',
+		'certificate' => '<circle cx="12" cy="8" r="6"></circle><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>',
+		'trophy' => '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>',
+		'fire' => '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>',
+		'leaf' => '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>',
+		'sun' => '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>',
+		'moon' => '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>',
+		'cloud' => '<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>',
+		'umbrella' => '<path d="M23 12a11.05 11.05 0 0 0-22 0zm-5 7a3 3 0 0 1-6 0v-7"></path>',
+		'anchor' => '<circle cx="12" cy="5" r="3"></circle><line x1="12" y1="22" x2="12" y2="8"></line><path d="M5 12H2a10 10 0 0 0 20 0h-3"></path>',
+		'life ring' => '<circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line><line x1="14.83" y1="9.17" x2="18.36" y2="5.64"></line><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>',
+		'compass' => '<circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>',
+		'microphone' => '<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line>',
+		'headphones' => '<path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>',
+		'volume up' => '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>',
+		'wifi' => '<path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line>',
+		'bluetooth' => '<polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"></polyline>',
+		'battery full' => '<rect x="1" y="6" width="18" height="12" rx="2" ry="2"></rect><line x1="23" y1="13" x2="23" y2="11"></line>',
+		'battery half' => '<rect x="1" y="6" width="18" height="12" rx="2" ry="2"></rect><line x1="23" y1="13" x2="23" y2="11"></line>',
+		'battery empty' => '<rect x="1" y="6" width="18" height="12" rx="2" ry="2"></rect><line x1="23" y1="13" x2="23" y2="11"></line>',
+		'signal' => '<path d="M2 20h.01"></path><path d="M7 20v-4"></path><path d="M12 20v-8"></path><path d="M17 20V8"></path>',
+		'qrcode' => '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>',
+		'credit card' => '<rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line>',
+		'money' => '<line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>',
+		'percent' => '<line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle>',
+		'hashtag' => '<line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line>',
+		'at' => '<circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path>',
+		'unlink' => '<path d="m18.84 12.25 1.72-1.71h-.02a5.004 5.004 0 0 0-.12-7.07 5.006 5.006 0 0 0-6.95 0l-1.72 1.71"></path><path d="m5.17 11.75-1.71 1.71a5.004 5.004 0 0 0 .12 7.07 5.006 5.006 0 0 0 6.95 0l1.71-1.71"></path><line x1="8" y1="2" x2="8" y2="5"></line><line x1="2" y1="8" x2="5" y2="8"></line><line x1="16" y1="19" x2="16" y2="22"></line><line x1="19" y1="16" x2="22" y2="16"></line>',
+		'paperclip' => '<path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>',
+		'expand' => '<polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line>',
+		'compress' => '<polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="3" y1="21" x2="10" y2="14"></line>',
+		'thumbs up' => '<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>',
+		'thumbs down' => '<path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>',
+		'hand point right' => '<path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>',
+		'hand paper' => '<path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>',
+		'spinner' => '<line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>',
+		'circle notch' => '<circle cx="12" cy="12" r="10"></circle>',
+		'paint brush' => '<path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"></path><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"></path>',
+		'drafting compass' => '<circle cx="12" cy="5" r="2"></circle><path d="M12 7l-2.5 12.5"></path><path d="M12 7l2.5 12.5"></path><path d="M3 19c1-1.2 2.5-2 4-2s3 .8 4 2"></path><path d="M13 19c1-1.2 2.5-2 4-2s3 .8 4 2"></path>',
+		'sort' => '<line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline>',
+		'th' => '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>',
 	);
 	
-	// Ícone padrão se não encontrado
-	$default_svg = '<circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="4"/><path d="M35 35c0-10 8-15 15-15s15 5 15 15c0 10-10 12-15 20v5" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="50" cy="75" r="4"/>';
+	// Ícone padrão se não encontrado (ponto de interrogação)
+	$default_svg = '<circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line>';
 	
 	// Normalizar o nome do ícone
 	$icon_key = str_replace(' icon', '', $icon);
@@ -272,8 +380,8 @@ function dashboard_gerar_svg_modulo($icon, $icon2 = null){
 	// Buscar o path do SVG
 	$svg_path = isset($svg_paths[$icon_key]) ? $svg_paths[$icon_key] : $default_svg;
 	
-	// Montar o SVG completo
-	$svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="currentColor">' . $svg_path . '</svg>';
+	// Montar o SVG completo - Feather Icons usa viewBox 0 0 24 24 e stroke-based
+	$svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' . $svg_path . '</svg>';
 	
 	return $svg;
 }
@@ -995,6 +1103,10 @@ function dashboard_pagina_inicial(){
 	// ===== Cards do Dashboard com drag-and-drop
 	
 	dashboard_cards();
+	
+	// ===== Verificar atualizações disponíveis
+	
+	dashboard_verificar_atualizacao();
 	
 	// ===== Toasts
 	

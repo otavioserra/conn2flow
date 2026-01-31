@@ -5742,6 +5742,96 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "cards-btn-acessar",
+        "valor": "Acessar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "cards-tooltip-acessar",
+        "valor": "Clique para acessar o módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "cards-tooltip-docs",
+        "valor": "Ver documentação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "cards-tooltip-drag",
+        "valor": "Arraste para reorganizar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "cards-btn-reset-order",
+        "valor": "Restaurar ordem padrão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "cards-order-reset-message",
+        "valor": "Ordem dos cards restaurada!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "update-notification-title",
+        "valor": "Atualização Disponível",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "update-notification-message",
+        "valor": "Uma nova versão do sistema está disponível. Atualize para ter acesso às últimas melhorias e correções.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "update-notification-btn-update",
+        "valor": "Atualizar Agora",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "dashboard",
+        "id": "update-notification-btn-later",
+        "valor": "Lembrar Depois",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "dashboard",
         "id": "logout-grup",
@@ -5809,6 +5899,96 @@
         "modulo": "dashboard",
         "id": "toast-update-button-negative-message",
         "valor": "The system will store your choice. If you change your mind, access: <b>#url#<\/b>.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "cards-btn-acessar",
+        "valor": "Access",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "cards-tooltip-acessar",
+        "valor": "Click to access the module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "cards-tooltip-docs",
+        "valor": "View documentation",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "cards-tooltip-drag",
+        "valor": "Drag to rearrange",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "cards-btn-reset-order",
+        "valor": "Reset default order",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "cards-order-reset-message",
+        "valor": "Cards order restored!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "update-notification-title",
+        "valor": "Update Available",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "update-notification-message",
+        "valor": "A new version of the system is available. Update to get the latest improvements and fixes.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "update-notification-btn-update",
+        "valor": "Update Now",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "dashboard",
+        "id": "update-notification-btn-later",
+        "valor": "Remind Later",
         "tipo": "string",
         "grupo": null,
         "descricao": null

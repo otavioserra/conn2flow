@@ -144,7 +144,7 @@
     background: #f8f9fa !important;
 }
 
-/* Botão de documentação alinhado à direita */
+/* Documentation button aligned to the right */
 .dashboard-btn-docs {
     margin-left: auto !important;
 }
@@ -251,7 +251,7 @@
    SVG Theme Colors
    ======================================== */
 
-/* Tema Escuro (Padrão) */
+/* Dark Theme (Default) */
 .dashboard-card-svg svg,
 .dashboard-card-svg.svg-theme-dark svg {
     fill: #2c3e50;
@@ -263,7 +263,7 @@
     fill: #2c3e50;
 }
 
-/* Tema Claro */
+/* Light Theme */
 .dashboard-card-svg.svg-theme-light svg {
     fill: #ffffff;
     stroke: #ffffff;
@@ -273,7 +273,7 @@
     fill: #ffffff;
 }
 
-/* Tema Azul */
+/* Blue Theme */
 .dashboard-card-svg.svg-theme-blue svg {
     fill: #667eea;
     stroke: #667eea;
@@ -283,7 +283,7 @@
     fill: #667eea;
 }
 
-/* Override para SVGs dentro do header com fundo colorido - Feather Icons usa stroke */
+/* Override for SVGs inside colored header - Feather Icons uses stroke */
 .dashboard-card-header .dashboard-card-svg svg {
     stroke: rgb(20, 163, 197);
 }
@@ -292,7 +292,7 @@
    Drag-and-Drop Enhancements
    ======================================== */
 
-/* Desabilitar seleção de texto durante arraste */
+/* Disable text selection during drag */
 .is-dragging,
 .is-dragging * {
     user-select: none !important;
@@ -307,7 +307,7 @@
     -webkit-user-select: none !important;
 }
 
-/* Impedir seleção no handle */
+/* Prevent selection on handle */
 .dashboard-card-drag-handle {
     user-select: none;
     -webkit-user-select: none;

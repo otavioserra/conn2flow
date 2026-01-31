@@ -1644,13 +1644,13 @@
         "opcao": "inicio",
         "raiz": true,
         "sem_permissao": null,
-        "html": "<h1 class=\"ui header\">#titulo#<\/h1>\n<div class=\"ui segment\">\n    <!-- menu-item < -->\n    <div class=\"ui dividing header\">#grupo#<\/div>\n    <div class=\"ui three stackable cards\">\n        <!-- card < -->\n        <div class=\"ui card\">\n            <div class=\"content\">\n                <a class=\"header\" href=\"#link#\">\n                    <div class=\"center aligned header\">\n                        <!-- icon < --><i class=\"#icon# huge icon\"><\/i><!-- icon > -->\n                        <!-- icon-2 < --><i class=\"large huge icons\">\n                            <i class=\"#icon# icon\"><\/i>\n                            <i class=\"#icon-2# icon\"><\/i>\n                        <\/i><!-- icon-2 > -->\n                    <\/div>\n                <\/a>\n            <\/div>\n            <div class=\"content\">\n                <a class=\"header\" href=\"#link#\">\n                    <div class=\"center aligned header\">#nome#<\/div>\n                <\/a>\n            <\/div>\n        <\/div><!-- card > -->\n    <\/div><!-- menu-item > -->\n    <div class=\"ui dividing header\">@[[logout-grup]]@<\/div>\n    <div class=\"ui three stackable cards\">\n        <div class=\"ui card\">\n            <div class=\"content\">\n                <a class=\"header\" href=\"@[[pagina#url-raiz]]@signout\/\">\n                    <div class=\"center aligned header\">\n                        <i class=\"sign out alternate huge icon\"><\/i>\n                    <\/div>\n                <\/a>\n            <\/div>\n            <div class=\"content\">\n                <a class=\"header\" href=\"@[[pagina#url-raiz]]@signout\/\">\n                    <div class=\"center aligned header\">@[[logout-label]]@<\/div>\n                <\/a>\n            <\/div>\n        <\/div>\n    <\/div>\n<\/div>",
+        "html": "<!-- Dashboard Cards Container -->\n<!-- dashboard-cards -->",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"4f7ffb0c6d3475781fb93034eda548f5\",\"css\":\"\",\"combined\":\"4f7ffb0c6d3475781fb93034eda548f5\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"c19d30a48ea2e80f18c4243d0067cad2\",\"css\":\"\",\"combined\":\"c19d30a48ea2e80f18c4243d0067cad2\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",
@@ -1701,13 +1701,13 @@
         "opcao": "inicio",
         "raiz": true,
         "sem_permissao": null,
-        "html": "<h1 class=\"ui header\">#titulo#<\/h1>\n<div class=\"ui segment\">\n    <!-- menu-item < -->\n    <div class=\"ui dividing header\">#grupo#<\/div>\n    <div class=\"ui three stackable cards\">\n        <!-- card < -->\n        <div class=\"ui card\">\n            <div class=\"content\">\n                <a class=\"header\" href=\"#link#\">\n                    <div class=\"center aligned header\">\n                        <!-- icon < --><i class=\"#icon# huge icon\"><\/i><!-- icon > -->\n                        <!-- icon-2 < --><i class=\"large huge icons\">\n                            <i class=\"#icon# icon\"><\/i>\n                            <i class=\"#icon-2# icon\"><\/i>\n                        <\/i><!-- icon-2 > -->\n                    <\/div>\n                <\/a>\n            <\/div>\n            <div class=\"content\">\n                <a class=\"header\" href=\"#link#\">\n                    <div class=\"center aligned header\">#nome#<\/div>\n                <\/a>\n            <\/div>\n        <\/div><!-- card > -->\n    <\/div><!-- menu-item > -->\n    <div class=\"ui dividing header\">@[[logout-grup]]@<\/div>\n    <div class=\"ui three stackable cards\">\n        <div class=\"ui card\">\n            <div class=\"content\">\n                <a class=\"header\" href=\"@[[pagina#url-raiz]]@signout\/\">\n                    <div class=\"center aligned header\">\n                        <i class=\"sign out alternate huge icon\"><\/i>\n                    <\/div>\n                <\/a>\n            <\/div>\n            <div class=\"content\">\n                <a class=\"header\" href=\"@[[pagina#url-raiz]]@signout\/\">\n                    <div class=\"center aligned header\">@[[logout-label]]@<\/div>\n                <\/a>\n            <\/div>\n        <\/div>\n    <\/div>\n<\/div>",
+        "html": "<!-- Dashboard Cards Container -->\n<!-- dashboard-cards -->",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"4f7ffb0c6d3475781fb93034eda548f5\",\"css\":\"\",\"combined\":\"4f7ffb0c6d3475781fb93034eda548f5\"}"
+        "versao": 3,
+        "file_version": "1.3",
+        "checksum": "{\"html\":\"c19d30a48ea2e80f18c4243d0067cad2\",\"css\":\"\",\"combined\":\"c19d30a48ea2e80f18c4243d0067cad2\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",

@@ -44,6 +44,31 @@ O módulo **dashboard** é o **centro de controle principal** do sistema Conn2Fl
 - **Pré-publicação**: Área de staging
 - **Validação de recursos**: Testes antes do deploy
 
+### 🃏 **Sistema de Cards com Drag-and-Drop**
+- **Cards de módulos**: Cada módulo é representado por um card interativo
+- **Drag-and-drop livre**: Usuário pode reorganizar os cards na ordem desejada
+- **Persistência de ordem**: A ordem personalizada é salva no localStorage por 30 dias
+- **SVG customizados**: Ícones SVG únicos para cada módulo (~100x100px)
+- **Links para documentação**: Cada card possui link para docs no GitHub
+- **Multilíngue**: Suporte completo para pt-br e en
+- **Fomantic-UI**: Interface responsiva usando o framework CSS Fomantic-UI
+- **SortableJS**: Biblioteca leve para drag-and-drop
+
+#### Estrutura do Card
+Cada card exibe:
+- **Título**: Nome do módulo
+- **Descrição**: Breve explicação da funcionalidade
+- **Ícone SVG**: Representação visual do módulo
+- **Botão de acesso**: Link direto para o módulo
+- **Botão de documentação**: Link para GitHub docs
+- **Alça de arraste**: Para reorganização via drag
+
+#### Persistência de Ordem
+A ordem dos cards é persistida via `localStorage` com:
+- **Chave**: `dashboard_cards_user_order`
+- **Expiração**: 30 dias (43200 minutos)
+- **Fallback**: Ordem padrão definida pelo sistema
+
 ## 📊 Interface de Usuário
 
 ### 🏠 **Layout Principal**

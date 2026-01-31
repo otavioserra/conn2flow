@@ -24,11 +24,11 @@
                     "type": "system",
                     "option": "inicio",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "4f7ffb0c6d3475781fb93034eda548f5",
+                        "html": "c19d30a48ea2e80f18c4243d0067cad2",
                         "css": "",
-                        "combined": "4f7ffb0c6d3475781fb93034eda548f5"
+                        "combined": "c19d30a48ea2e80f18c4243d0067cad2"
                     }
                 },
                 {
@@ -65,11 +65,11 @@
                 {
                     "name": "Dashboard Cards",
                     "id": "dashboard-cards",
-                    "version": "1.0",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "",
-                        "css": "",
-                        "combined": ""
+                        "html": "813a1f315c0d774c833cb6314c05acb1",
+                        "css": "3f2e7adbc1972057bce1a940d28db3f5",
+                        "combined": "c66963f0b24e448bbba1da1d23bdd8df"
                     }
                 }
             ],
@@ -113,6 +113,56 @@
                     "id": "toast-update-button-negative-message",
                     "value": "O sistema armazenará sua escolha. Se mudar de ideia acesse: <b>#url#<\/b>.",
                     "type": "string"
+                },
+                {
+                    "id": "cards-btn-acessar",
+                    "value": "Acessar",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-tooltip-acessar",
+                    "value": "Clique para acessar o módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-tooltip-docs",
+                    "value": "Ver documentação",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-tooltip-drag",
+                    "value": "Arraste para reorganizar",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-btn-reset-order",
+                    "value": "Restaurar ordem padrão",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-order-reset-message",
+                    "value": "Ordem dos cards restaurada!",
+                    "type": "string"
+                },
+                {
+                    "id": "update-notification-title",
+                    "value": "Atualização Disponível",
+                    "type": "string"
+                },
+                {
+                    "id": "update-notification-message",
+                    "value": "Uma nova versão do sistema está disponível. Atualize para ter acesso às últimas melhorias e correções.",
+                    "type": "string"
+                },
+                {
+                    "id": "update-notification-btn-update",
+                    "value": "Atualizar Agora",
+                    "type": "string"
+                },
+                {
+                    "id": "update-notification-btn-later",
+                    "value": "Lembrar Depois",
+                    "type": "string"
                 }
             ]
         },
@@ -127,11 +177,11 @@
                     "type": "system",
                     "option": "inicio",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "4f7ffb0c6d3475781fb93034eda548f5",
+                        "html": "c19d30a48ea2e80f18c4243d0067cad2",
                         "css": "",
-                        "combined": "4f7ffb0c6d3475781fb93034eda548f5"
+                        "combined": "c19d30a48ea2e80f18c4243d0067cad2"
                     }
                 },
                 {
@@ -164,7 +214,18 @@
                     "option": "dashboard-teste"
                 }
             ],
-            "components": [],
+            "components": [
+                {
+                    "name": "Dashboard Cards",
+                    "id": "dashboard-cards",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "813a1f315c0d774c833cb6314c05acb1",
+                        "css": "5e2ee0f567581ea1066c79cc08758493",
+                        "combined": "79eaa0cd0012fdbc921d223b5e0506dd"
+                    }
+                }
+            ],
             "variables": [
                 {
                     "id": "logout-grup",
@@ -204,6 +265,56 @@
                 {
                     "id": "toast-update-button-negative-message",
                     "value": "The system will store your choice. If you change your mind, access: <b>#url#<\/b>.",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-btn-acessar",
+                    "value": "Access",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-tooltip-acessar",
+                    "value": "Click to access the module",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-tooltip-docs",
+                    "value": "View documentation",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-tooltip-drag",
+                    "value": "Drag to rearrange",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-btn-reset-order",
+                    "value": "Reset default order",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-order-reset-message",
+                    "value": "Cards order restored!",
+                    "type": "string"
+                },
+                {
+                    "id": "update-notification-title",
+                    "value": "Update Available",
+                    "type": "string"
+                },
+                {
+                    "id": "update-notification-message",
+                    "value": "A new version of the system is available. Update to get the latest improvements and fixes.",
+                    "type": "string"
+                },
+                {
+                    "id": "update-notification-btn-update",
+                    "value": "Update Now",
+                    "type": "string"
+                },
+                {
+                    "id": "update-notification-btn-later",
+                    "value": "Remind Later",
                     "type": "string"
                 }
             ]

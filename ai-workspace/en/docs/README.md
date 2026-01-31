@@ -29,6 +29,9 @@ This folder contains all detailed technical documentation of the Conn2Flow proje
 - **`CONN2FLOW-HYBRID-MULTILANGUAGE-SYSTEM-COMPLETED.md`** - Finished hybrid multilingual system
 - **`CONN2FLOW-HYBRID-MULTILANGUAGE-SYSTEM.md`** - Documentation of the hybrid multilingual system
 
+### 💳 Payment Integrations
+- **`PAYPAL-LIBRARY-V2.md`** - Complete PayPal APIs v2 integration (Orders, Subscriptions, Invoicing, etc)
+
 ## 🎯 How to Use
 
 ### For AI Agents
@@ -52,8 +55,9 @@ Always read first:
 - **Functional Modules**: Installer, modules, routing, layouts
 - **Automation**: Export, updates, preview, GitHub Actions CI/CD
 - **Specialized**: Multilingual, CSS frameworks, adaptations, Docker environment
+- **Integrations**: PayPal, payment gateways
 
 ---
-**Last update:** August 31, 2025  
+**Last update:** January 31, 2026  
 **Structure:** ai-workspace/docs/  
-**Total files:** 16 technical documents
+**Total files:** 17 technical documents

@@ -45,6 +45,31 @@ The **dashboard** module is the **main control center** of the Conn2Flow CMS sys
 - **Pre-publication**: Staging area
 - **Resource validation**: Tests before deployment
 
+### 🃏 **Card System with Drag-and-Drop**
+- **Module cards**: Each module is represented by an interactive card
+- **Free drag-and-drop**: User can rearrange cards in desired order
+- **Order persistence**: Custom order is saved in localStorage for 30 days
+- **Custom SVGs**: Unique SVG icons for each module (~100x100px)
+- **Documentation links**: Each card has a link to GitHub docs
+- **Multilingual**: Full support for pt-br and en
+- **Fomantic-UI**: Responsive interface using Fomantic-UI CSS framework
+- **SortableJS**: Lightweight drag-and-drop library
+
+#### Card Structure
+Each card displays:
+- **Title**: Module name
+- **Description**: Brief explanation of functionality
+- **SVG Icon**: Visual representation of the module
+- **Access button**: Direct link to the module
+- **Documentation button**: Link to GitHub docs
+- **Drag handle**: For rearrangement via drag
+
+#### Order Persistence
+Card order is persisted via `localStorage` with:
+- **Key**: `dashboard_cards_user_order`
+- **Expiration**: 30 days (43200 minutes)
+- **Fallback**: Default order defined by the system
+
 ## 📊 User Interface
 
 ### 🏠 **Main Layout**

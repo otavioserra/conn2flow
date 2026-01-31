@@ -29,6 +29,9 @@ Esta pasta contém toda a documentação técnica detalhada do projeto Conn2Flow
 - **`CONN2FLOW-SISTEMA-HIBRIDO-MULTILANGUE-CONCLUIDO.md`** - Sistema multilíngue híbrido finalizado
 - **`CONN2FLOW-SISTEMA-MULTILÍNGUE-HIBRIDO.md`** - Documentação do sistema multilíngue híbrido
 
+### 💳 Integrações de Pagamento
+- **`bibliotecas/BIBLIOTECA-PAYPAL.md`** - Integração completa com PayPal APIs v2 (Orders, Subscriptions, Invoicing, etc)
+
 ## 🎯 Como Usar
 
 ### Para Agentes IA
@@ -52,8 +55,9 @@ Sempre leia primeiro:
 - **Módulos Funcionais**: Instalador, módulos, roteamento, layouts
 - **Automação**: Exportação, atualizações, preview, GitHub Actions CI/CD
 - **Especializados**: Multilíngue, frameworks CSS, adaptações, ambiente Docker
+- **Integrações**: PayPal, gateways de pagamento
 
 ---
-**Última atualização:** 31 de agosto, 2025  
+**Última atualização:** 31 de janeiro, 2026  
 **Estrutura:** ai-workspace/docs/  
-**Total de arquivos:** 16 documentos técnicos
+**Total de arquivos:** 17 documentos técnicos

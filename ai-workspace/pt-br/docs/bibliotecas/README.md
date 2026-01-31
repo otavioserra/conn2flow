@@ -55,6 +55,7 @@ Este diretório contém a documentação detalhada de todas as bibliotecas (libr
 
 | Biblioteca | Funções | Descrição | Documentação |
 |-----------|---------|-----------|--------------|
+| **paypal.php** | 54 | Integração completa com PayPal APIs | [📖 Docs](./BIBLIOTECA-PAYPAL.md) |
 | **ia.php** | 9 | Integração com IA (Gemini API) | [📖 Docs](./BIBLIOTECA-IA.md) |
 | **pdf.php** | 1 | Geração de PDFs | [📖 Docs](./BIBLIOTECA-PDF.md) |
 | **ftp.php** | 4 | Operações FTP | [📖 Docs](./BIBLIOTECA-FTP.md) |
@@ -71,14 +72,14 @@ Este diretório contém a documentação detalhada de todas as bibliotecas (libr
 
 ## Estatísticas
 
-- **Total de Bibliotecas**: 26
-- **Bibliotecas Documentadas**: 26 (100%) ✅
-- **Total de Funções**: 269
-- **Funções Documentadas**: 269 (100%) ✅
-- **Documentação**: ~330 páginas
-- **Exemplos**: 90+ exemplos práticos
-- **Casos de Uso**: 60+ cenários reais
-- **Versão do Sistema**: v2.3.0
+- **Total de Bibliotecas**: 27
+- **Bibliotecas Documentadas**: 27 (100%) ✅
+- **Total de Funções**: 323
+- **Funções Documentadas**: 323 (100%) ✅
+- **Documentação**: ~360 páginas
+- **Exemplos**: 100+ exemplos práticos
+- **Casos de Uso**: 70+ cenários reais
+- **Versão do Sistema**: v2.4.0
 - **STATUS**: COMPLETO 🎉
 
 ## Convenções de Nomenclatura
@@ -165,6 +166,6 @@ Esta documentação é parte do projeto Conn2Flow e está disponível sob a mesm
 
 ---
 
-**Última Atualização**: Outubro 2025  
-**Versão da Documentação**: 1.0.0  
+**Última Atualização**: Janeiro 2026  
+**Versão da Documentação**: 1.1.0  
 **Mantenedor**: Equipe Conn2Flow
