@@ -505,19 +505,58 @@ $(document).ready(function () {
 			return;
 		}
 
+		var STORAGE_KEY = 'dashboard-search-filter';
 		var noResultsId = 'dashboard-no-results-message';
 		var noResultsMessage = gestor.lang && gestor.lang.search_no_results
 			? gestor.lang.search_no_results
 			: 'Nenhum módulo encontrado';
 
 		/**
+		 * Salva o filtro no localStorage
+		 * @param {string} value - Valor do filtro
+		 */
+		function saveFilter(value) {
+			try {
+				if (value && value.trim() !== '') {
+					localStorage.setItem(STORAGE_KEY, value.trim());
+				} else {
+					localStorage.removeItem(STORAGE_KEY);
+				}
+			} catch (e) {
+				// localStorage indisponível
+			}
+		}
+
+		/**
+		 * Carrega o filtro do localStorage
+		 * @returns {string} Valor salvo ou string vazia
+		 */
+		function loadFilter() {
+			try {
+				return localStorage.getItem(STORAGE_KEY) || '';
+			} catch (e) {
+				return '';
+			}
+		}
+
+		/**
 		 * Filtra os cards baseado na query de busca
 		 * @param {string} query - Texto de busca
+		 * @param {boolean} saveToStorage - Se deve salvar no localStorage (default: true)
 		 */
-		function filterCards(query) {
+		function filterCards(query, saveToStorage) {
+			if (typeof saveToStorage === 'undefined') {
+				saveToStorage = true;
+			}
+
 			var cards = cardsContainer.querySelectorAll('.dashboard-module-card');
 			var normalizedQuery = query.toLowerCase().trim();
 			var visibleCount = 0;
+
+			// Salvar no localStorage
+			if (saveToStorage) {
+				saveFilter(query);
+			}
 
 			cards.forEach(function (card) {
 				var title = card.querySelector('.dashboard-card-title');
@@ -566,6 +605,13 @@ $(document).ready(function () {
 			searchInput.value = '';
 			filterCards('');
 			searchInput.focus();
+		}
+
+		// Carregar filtro salvo ao inicializar
+		var savedFilter = loadFilter();
+		if (savedFilter) {
+			searchInput.value = savedFilter;
+			filterCards(savedFilter, false);
 		}
 
 		// Event listener para input de busca (debounced)
