@@ -506,8 +506,8 @@ $(document).ready(function () {
 		}
 
 		var noResultsId = 'dashboard-no-results-message';
-		var noResultsMessage = gestor.lang && gestor.lang.search_no_results 
-			? gestor.lang.search_no_results 
+		var noResultsMessage = gestor.lang && gestor.lang.search_no_results
+			? gestor.lang.search_no_results
 			: 'Nenhum módulo encontrado';
 
 		/**
@@ -519,7 +519,7 @@ $(document).ready(function () {
 			var normalizedQuery = query.toLowerCase().trim();
 			var visibleCount = 0;
 
-			cards.forEach(function(card) {
+			cards.forEach(function (card) {
 				var title = card.querySelector('.dashboard-card-title');
 				var description = card.querySelector('.dashboard-card-description');
 				var category = card.querySelector('.dashboard-card-meta .category');
@@ -529,9 +529,9 @@ $(document).ready(function () {
 				var descText = description ? description.textContent.toLowerCase() : '';
 				var categoryText = category ? category.textContent.toLowerCase() : '';
 
-				var matches = normalizedQuery === '' || 
-					titleText.includes(normalizedQuery) || 
-					descText.includes(normalizedQuery) || 
+				var matches = normalizedQuery === '' ||
+					titleText.includes(normalizedQuery) ||
+					descText.includes(normalizedQuery) ||
 					categoryText.includes(normalizedQuery) ||
 					moduleId.toLowerCase().includes(normalizedQuery);
 
@@ -545,7 +545,7 @@ $(document).ready(function () {
 
 			// Mostrar/ocultar mensagem de nenhum resultado
 			var existingNoResults = document.getElementById(noResultsId);
-			
+
 			if (visibleCount === 0 && normalizedQuery !== '') {
 				if (!existingNoResults) {
 					var noResults = document.createElement('div');
@@ -570,15 +570,15 @@ $(document).ready(function () {
 
 		// Event listener para input de busca (debounced)
 		var debounceTimer;
-		searchInput.addEventListener('input', function() {
+		searchInput.addEventListener('input', function () {
 			clearTimeout(debounceTimer);
-			debounceTimer = setTimeout(function() {
+			debounceTimer = setTimeout(function () {
 				filterCards(searchInput.value);
 			}, 150);
 		});
 
 		// Event listener para tecla Enter e Escape
-		searchInput.addEventListener('keydown', function(e) {
+		searchInput.addEventListener('keydown', function (e) {
 			if (e.key === 'Escape') {
 				resetSearch();
 			}
@@ -586,7 +586,7 @@ $(document).ready(function () {
 
 		// Event listener para botão de reset
 		if (resetBtn) {
-			resetBtn.addEventListener('click', function(e) {
+			resetBtn.addEventListener('click', function (e) {
 				e.preventDefault();
 				resetSearch();
 			});
