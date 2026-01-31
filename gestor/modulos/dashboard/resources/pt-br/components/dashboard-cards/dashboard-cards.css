@@ -1,0 +1,216 @@
+/* Dashboard Cards Component Styles */
+
+.dashboard-cards-segment {
+    margin: 0 !important;
+    padding: 2em !important;
+}
+
+.dashboard-cards-title {
+    margin-bottom: 1.5em !important;
+    color: #2c3e50 !important;
+}
+
+/* Sortable Cards Container */
+.dashboard-sortable-cards {
+    min-height: 200px;
+}
+
+/* Module Card Styles */
+.dashboard-module-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    cursor: default;
+    position: relative;
+}
+
+.dashboard-module-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Drag Handle */
+.dashboard-card-drag-handle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: grab;
+    color: #bdc3c7;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+
+.dashboard-module-card:hover .dashboard-card-drag-handle {
+    opacity: 1;
+}
+
+.dashboard-card-drag-handle:hover {
+    color: #7f8c8d;
+}
+
+.dashboard-card-drag-handle:active {
+    cursor: grabbing;
+}
+
+/* Card Header with SVG */
+.dashboard-card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1.5em !important;
+    text-align: center;
+    position: relative;
+}
+
+.dashboard-card-svg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80px;
+}
+
+.dashboard-card-svg svg {
+    width: 80px;
+    height: 80px;
+    fill: #fff;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Card Title */
+.dashboard-card-title {
+    font-size: 1.1em !important;
+    color: #2c3e50 !important;
+    transition: color 0.2s ease;
+}
+
+.dashboard-card-title:hover {
+    color: #667eea !important;
+}
+
+/* Card Meta */
+.dashboard-card-meta {
+    margin-top: 0.5em !important;
+}
+
+.dashboard-card-meta .category {
+    font-size: 0.85em;
+    color: #95a5a6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Card Description */
+.dashboard-card-description {
+    margin-top: 1em !important;
+    font-size: 0.9em;
+    color: #7f8c8d;
+    line-height: 1.5;
+    min-height: 3em;
+    max-height: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Card Actions */
+.dashboard-card-actions {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa !important;
+}
+
+/* SortableJS Classes */
+.sortable-ghost {
+    opacity: 0.4;
+    background: #e8f4fd !important;
+    border: 2px dashed #667eea !important;
+}
+
+.sortable-chosen {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25) !important;
+    transform: rotate(2deg);
+}
+
+.sortable-drag {
+    opacity: 1 !important;
+    cursor: grabbing !important;
+}
+
+/* Drop Placeholder */
+.dashboard-card-placeholder {
+    background: linear-gradient(135deg, #e8f4fd 0%, #f3e8ff 100%) !important;
+    border: 2px dashed #667eea !important;
+    border-radius: 0.28571429rem;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashboard-card-placeholder::after {
+    content: '';
+    width: 50px;
+    height: 50px;
+    border: 3px dashed #667eea;
+    border-radius: 50%;
+}
+
+/* Logout Section */
+.dashboard-cards-divider {
+    margin: 2em 0 !important;
+    color: #95a5a6 !important;
+}
+
+.dashboard-logout-segment {
+    padding: 1em 0 !important;
+}
+
+/* Module Group Colors */
+.dashboard-module-card[data-module-group="administrativo"] .dashboard-card-header {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.dashboard-module-card[data-module-group="usuarios"] .dashboard-card-header {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
+
+.dashboard-module-card[data-module-group="conteudo"] .dashboard-card-header {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+}
+
+.dashboard-module-card[data-module-group="configuracao"] .dashboard-card-header {
+    background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+}
+
+.dashboard-module-card[data-module-group="ecommerce"] .dashboard-card-header {
+    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+}
+
+/* Responsive Adjustments */
+@media only screen and (max-width: 767px) {
+    .dashboard-card-drag-handle {
+        opacity: 0.5;
+    }
+    
+    .dashboard-card-svg svg {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .dashboard-card-description {
+        display: none;
+    }
+}
+
+/* Animation for card reordering */
+@keyframes cardDrop {
+    0% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.dashboard-module-card.just-dropped {
+    animation: cardDrop 0.3s ease-out;
+}

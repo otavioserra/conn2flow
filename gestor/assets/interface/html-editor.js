@@ -416,21 +416,21 @@ $(document).ready(function () {
                 case 'image':
                     imageField.style.display = 'block';
                     if (srcInput) srcInput.value = element.src || '';
-                    
+
                     // ===== ImagePicker State Management =====
                     // Limpar dados anteriores do imagepicker
                     window._imagepickerData = null;
-                    
+
                     // Verificar se a imagem tem atributos data-imagepicker-*
                     const imagepickerUrl = element.getAttribute('data-imagepicker-url');
                     const imagepickerNome = element.getAttribute('data-imagepicker-nome');
                     const imagepickerTipo = element.getAttribute('data-imagepicker-tipo');
-                    
+
                     const previewWidget = document.querySelector('._html-editor-imagepick-preview');
                     const previewImage = document.querySelector('._html-editor-imagepick-image');
                     const previewNome = document.querySelector('._html-editor-imagepick-nome .content');
                     const previewTipo = document.querySelector('._html-editor-imagepick-tipo .content');
-                    
+
                     if (imagepickerUrl && previewWidget) {
                         // A imagem foi selecionada via imagepicker - mostrar preview
                         if (previewImage) previewImage.src = imagepickerUrl;
@@ -519,7 +519,7 @@ $(document).ready(function () {
                     const srcInput = document.getElementById('element-src');
                     if (srcInput && srcInput.value) {
                         element.src = srcInput.value;
-                        
+
                         // ===== ImagePicker Data Persistence =====
                         // Se há dados do imagepicker armazenados, salvar como atributos data-*
                         if (window._imagepickerData) {

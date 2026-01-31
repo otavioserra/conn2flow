@@ -61,7 +61,18 @@
                     "option": "dashboard-teste"
                 }
             ],
-            "components": [],
+            "components": [
+                {
+                    "name": "Dashboard Cards",
+                    "id": "dashboard-cards",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
             "variables": [
                 {
                     "id": "logout-grup",

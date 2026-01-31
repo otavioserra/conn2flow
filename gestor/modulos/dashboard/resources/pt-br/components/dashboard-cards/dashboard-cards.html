@@ -1,0 +1,51 @@
+<div id="dashboard-cards-container" class="ui segment dashboard-cards-segment">
+    <h1 class="ui header dashboard-cards-title">#titulo#</h1>
+    
+    <!-- cards-container < -->
+    <div id="dashboard-sortable-cards" class="ui four doubling stackable cards dashboard-sortable-cards">
+        <!-- card < -->
+        <div class="ui card dashboard-module-card" data-module-id="#modulo-id#" data-module-order="#modulo-order#">
+            <div class="content dashboard-card-header">
+                <div class="dashboard-card-drag-handle">
+                    <i class="grip vertical icon"></i>
+                </div>
+                <!-- svg < -->
+                <div class="dashboard-card-svg">
+                    #modulo-svg#
+                </div>
+                <!-- svg > -->
+            </div>
+            <div class="content">
+                <a class="header dashboard-card-title" href="#modulo-link#">#modulo-nome#</a>
+                <div class="meta dashboard-card-meta">
+                    <span class="category">#modulo-grupo#</span>
+                </div>
+                <div class="description dashboard-card-description">
+                    #modulo-descricao#
+                </div>
+            </div>
+            <div class="extra content dashboard-card-actions">
+                <a class="ui mini primary button" href="#modulo-link#">
+                    <i class="arrow right icon"></i> @[[dashboard-cards-btn-acessar]]@
+                </a>
+                <a class="ui mini basic button" href="#modulo-docs-link#" target="_blank" data-tooltip="@[[dashboard-cards-tooltip-docs]]@" data-position="top right">
+                    <i class="book icon"></i>
+                </a>
+            </div>
+        </div>
+        <!-- card > -->
+    </div>
+    <!-- cards-container > -->
+    
+    <!-- logout-section < -->
+    <div class="ui horizontal divider dashboard-cards-divider">
+        <i class="sign out alternate icon"></i> @[[logout-grup]]@
+    </div>
+    <div class="ui center aligned basic segment dashboard-logout-segment">
+        <a class="ui labeled icon button red" href="@[[pagina#url-raiz]]@signout/">
+            <i class="sign out alternate icon"></i>
+            @[[logout-label]]@
+        </a>
+    </div>
+    <!-- logout-section > -->
+</div>
