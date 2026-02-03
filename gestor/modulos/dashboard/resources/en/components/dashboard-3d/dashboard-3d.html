@@ -1,0 +1,306 @@
+<!-- Dashboard 3D Container with A-Frame -->
+<div id="dashboard-3d-wrapper">
+
+    <!-- A-Frame Scene -->
+    <a-scene id="dashboard-3d-scene" embedded vr-mode-ui="enabled: false" loading-screen="enabled: false"
+        renderer="antialias: true; colorManagement: true; sortObjects: true" cursor="rayOrigin: mouse; fuse: false"
+        raycaster="objects: .clickable">
+
+        <!-- Camera with Orbit Controls (no wrapper - per official orbit-controls docs) -->
+        <a-entity id="main-camera" camera="fov: 50" look-controls="enabled: false" wasd-controls="enabled: false"
+            orbit-controls="
+                target: 0 6 0;
+                initialPosition: 0 3 -25;
+                minDistance: 10;
+                maxDistance: 100;
+                minPolarAngle: 10;
+                maxPolarAngle: 170;
+                rotateSpeed: 1.0;
+                panSpeed: 0;
+                enablePan: false;
+                enableZoom: true;
+                zoomSpeed: 10.0;
+                enableRotate: true;
+                autoRotate: false;
+                autoRotateSpeed: 0">
+        </a-entity>
+
+        <!-- Lighting -->
+        <a-entity light="type: ambient; color: #BBB; intensity: 0.6"></a-entity>
+        <a-entity light="type: directional; color: #FFF; intensity: 0.8" position="5 10 7"></a-entity>
+        <a-entity light="type: point; color: #4a9eff; intensity: 0.5; distance: 20" position="8 3 0"></a-entity>
+        <a-entity light="type: point; color: #6dd400; intensity: 0.5; distance: 20" position="-8 3 0"></a-entity>
+
+        <!-- Skybox / Background -->
+        <a-sky color="#0a0a1a"></a-sky>
+
+        <!-- Subtle Floor -->
+        <a-plane position="0 -0.1 0" rotation="-90 0 0" width="60" height="60"
+            material="color: #111122; opacity: 0.8; transparent: true" shadow="receive: true">
+        </a-plane>
+
+        <!-- Central Ring Container - populated by JS -->
+        <a-entity id="ring-container" position="0 1.5 0"></a-entity>
+
+        <!-- Cards Container - populated by JS -->
+        <a-entity id="cards-container"></a-entity>
+
+        <!-- Connections Container - populated by JS -->
+        <a-entity id="connections-container"></a-entity>
+
+        <!-- Background Particles -->
+        <a-entity id="particles-container"></a-entity>
+
+    </a-scene>
+
+    <!-- UI Overlay (outside A-Frame) -->
+    <div id="dashboard-3d-controls">
+        <!-- Pizza Menu Button -->
+        <button id="btn-menu-pizza" class="control-btn" title="Main Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="2" x2="12" y2="12"></line>
+                <line x1="12" y1="12" x2="20" y2="16"></line>
+                <line x1="12" y1="12" x2="4" y2="16"></line>
+            </svg>
+        </button>
+
+        <!-- Back to Dashboard 2D Button -->
+        <a id="btn-voltar-dashboard" class="control-btn control-btn-text" title="Back to Dashboard 2D"
+            href="@[[pagina#url-raiz]]@dashboard/">
+            <span class="btn-text-2d">2D</span>
+        </a>
+
+        <!-- Navigation Controls -->
+        <div id="nav-controls">
+            <button id="btn-zoom-in" class="control-btn" title="Zoom In">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <line x1="11" y1="8" x2="11" y2="14"></line>
+                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                </svg>
+            </button>
+            <button id="btn-zoom-out" class="control-btn" title="Zoom Out">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                </svg>
+            </button>
+            <button id="btn-reset-view" class="control-btn" title="Reset View">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
+            </button>
+            <button id="btn-toggle-rotation" class="control-btn" title="Auto-rotation">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"></path>
+                </svg>
+            </button>
+            <button id="btn-fullscreen" class="control-btn" title="Fullscreen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <polyline points="9 21 3 21 3 15"></polyline>
+                    <line x1="21" y1="3" x2="14" y2="10"></line>
+                    <line x1="3" y1="21" x2="10" y2="14"></line>
+                </svg>
+            </button>
+            <!-- Toggle Groups Menu -->
+            <button id="btn-toggle-groups" class="control-btn" title="Show/Hide Groups">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+            </button>
+            <!-- Toggle Keyboard Shortcuts -->
+            <button id="btn-toggle-shortcuts" class="control-btn" title="Keyboard Shortcuts">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                    <line x1="6" y1="8" x2="6" y2="8"></line>
+                    <line x1="10" y1="8" x2="10" y2="8"></line>
+                    <line x1="14" y1="8" x2="14" y2="8"></line>
+                    <line x1="18" y1="8" x2="18" y2="8"></line>
+                    <line x1="6" y1="12" x2="18" y2="12"></line>
+                    <line x1="6" y1="16" x2="6" y2="16"></line>
+                    <line x1="18" y1="16" x2="18" y2="16"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Zoom Indicator (bottom left) -->
+    <div id="zoom-indicator">
+        <span id="zoom-level">100%</span>
+    </div>
+
+    <!-- Card Tooltip -->
+    <div id="card-tooltip" class="hidden">
+        <div class="tooltip-header">
+            <span class="tooltip-icon"></span>
+            <span class="tooltip-title"></span>
+        </div>
+        <span class="tooltip-group"></span>
+        <p class="tooltip-description"></p>
+        <div class="tooltip-actions">
+            <span class="tooltip-hint">Click to access</span>
+        </div>
+    </div>
+
+    <!-- Module Action Modal -->
+    <div id="module-action-modal" class="hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon"></div>
+                <h3 id="modal-title"></h3>
+                <button id="btn-close-modal" class="close-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <p id="modal-description" class="modal-description"></p>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-primary" data-action="listar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                    <span>List</span>
+                </button>
+                <button class="modal-btn modal-btn-secondary" data-action="adicionar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    <span>Add New</span>
+                </button>
+            </div>
+            <div id="custom-actions" class="modal-custom-actions"></div>
+        </div>
+    </div>
+
+    <!-- Pizza Menu (Radial) -->
+    <div id="pizza-menu" class="hidden">
+        <div class="pizza-backdrop"></div>
+        <div class="pizza-container">
+            <div class="pizza-center">
+                <button id="btn-pizza-close" class="pizza-close-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="pizza-items">
+                <!-- Items will be generated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Module Container (iframe) -->
+    <div id="module-container" class="hidden">
+        <div class="module-header">
+            <button id="btn-module-back" class="module-back-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>Back</span>
+            </button>
+            <h3 id="module-title"></h3>
+            <button id="btn-module-expand" class="module-expand-btn" title="Open in new tab">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+            </button>
+        </div>
+        <iframe id="module-iframe" src="" frameborder="0"></iframe>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="loading-content">
+            <img src="@[[pagina#url-raiz]]@images/Logomarca.svg" alt="Logomarca" class="loading-logo">
+            <div class="loading-ring">
+                <div class="loading-segment" style="--i:0"></div>
+                <div class="loading-segment" style="--i:1"></div>
+                <div class="loading-segment" style="--i:2"></div>
+                <div class="loading-segment" style="--i:3"></div>
+                <div class="loading-segment" style="--i:4"></div>
+                <div class="loading-segment" style="--i:5"></div>
+            </div>
+            <span class="loading-text">Loading 3D Dashboard...</span>
+            <div class="loading-progress">
+                <div class="loading-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Groups Legend -->
+    <div id="groups-legend" class="hidden">
+        <h4>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="2" x2="12" y2="12"></line>
+                <line x1="12" y1="12" x2="20" y2="16"></line>
+            </svg>
+            Groups
+        </h4>
+        <div id="legend-items">
+            <!-- Items generated dynamically -->
+        </div>
+    </div>
+
+    <!-- Usage Hints -->
+    <div id="usage-hints">
+        <div class="hint"><kbd>Drag</kbd> to rotate</div>
+        <div class="hint"><kbd>Scroll</kbd> to zoom</div>
+        <div class="hint"><kbd>Click</kbd> on cards</div>
+    </div>
+
+    <!-- Keyboard Shortcuts -->
+    <div id="keyboard-shortcuts" class="hidden">
+        <h4>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                <line x1="6" y1="8" x2="6" y2="8"></line>
+                <line x1="10" y1="8" x2="10" y2="8"></line>
+                <line x1="14" y1="8" x2="14" y2="8"></line>
+                <line x1="18" y1="8" x2="18" y2="8"></line>
+                <line x1="6" y1="12" x2="18" y2="12"></line>
+            </svg>
+            Keyboard Shortcuts
+        </h4>
+        <div id="shortcuts-list">
+            <div class="shortcut"><kbd>R</kbd> Reset view</div>
+            <div class="shortcut"><kbd>+</kbd> Zoom in</div>
+            <div class="shortcut"><kbd>-</kbd> Zoom out</div>
+            <div class="shortcut"><kbd>1-6</kbd> Focus on group</div>
+            <div class="shortcut"><kbd>P</kbd> Debug prisms</div>
+            <div class="shortcut"><kbd>Esc</kbd> Close modal</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Internationalization texts -->
+<div id="i18n-texts" data-doc-text="Documentation" data-manual-text="Manual"
+    data-doc-unavailable="Documentation not available for this module."
+    data-manual-unavailable="Manual not available for this module." style="display:none;"></div>
+
+<!-- Module data template (generated by PHP) -->
+<script id="dashboard-3d-data" type="application/json">
+#dashboard-3d-data#
+</script>

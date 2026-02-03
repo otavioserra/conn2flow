@@ -1,7 +1,20 @@
 <div class="modelos-container">
     <div class="menu-pagina-conteudo" data-id="modelos"></div>
+    <div class="ui fluid icon input" style="margin-bottom: 1em;">
+        <input type="text" id="modelos-search-input" placeholder="Buscar modelos...">
+        <i class="search icon"></i>
+    </div>
     <div class="ui cards modelos-cards" id="modelos-cards">
         <!-- Modelos serão carregados dinamicamente aqui -->
+    </div>
+    <div class="ui center aligned basic segment" id="modelos-no-results" style="display: none;">
+        <div class="ui icon message">
+            <i class="search icon"></i>
+            <div class="content">
+                <div class="header">Nenhum modelo encontrado</div>
+                <p>Nenhum modelo corresponde à sua busca.</p>
+            </div>
+        </div>
     </div>
 
     <div class="ui center aligned basic segment" id="modelos-loading" style="display: none;">

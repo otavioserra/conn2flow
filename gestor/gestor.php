@@ -1539,8 +1539,6 @@ function gestor_roteador(){
 	global $_INDEX;
 	global $_CONFIG;
 	
-	$modulos = Array();
-	
 	// ===== Condições iniciais para definir o módulo e a página
 	
 	$caminho = (isset($_GESTOR['caminho-total']) ? $_GESTOR['caminho-total'] : '');
@@ -1586,6 +1584,7 @@ function gestor_roteador(){
 	if($_GESTOR['ajax']){
 		$campos = Array(
 			'modulo',
+			'plugin',
 			'sem_permissao',
 			'opcao',
 		);
@@ -1598,6 +1597,7 @@ function gestor_roteador(){
 	} else if($_GESTOR['opcao']){
 		$campos = Array(
 			'modulo',
+			'plugin',
 			'sem_permissao',
 		);
 	} else {
@@ -1608,6 +1608,7 @@ function gestor_roteador(){
 			'css',
 			'css_compiled',
 			'modulo',
+			'plugin',
 			'opcao',
 			'sem_permissao',
 			'nome',
@@ -1634,45 +1635,35 @@ function gestor_roteador(){
 		." AND status='A'"
 	);
 	
-	// ==== Verificar se a página tem permissão, se houver e o usuário não estiver logado, deve redirecionar para a página de login e finalizar a requisição.
-	
+	// ===== Verificar se a página existe. Se sim, montar a página, executar módulo se houver e imprimir. Senão gerar erro 404 ou redirecionar para página 404.
+
 	if(isset($paginas)){
-		$_GESTOR['modulo'] = $paginas[0]['modulo'];
-		
+		// ==== Verificar se a página tem permissão, se houver e o usuário não estiver logado, deve redirecionar para a página de login e finalizar a requisição.
 		if(!existe($paginas[0]['sem_permissao'])){
 			gestor_permissao();
 		}
-		
-		// ===== Verificar se o módulo faz parte de um plugin ou não. Caso faça parte, acessar o local do módulo dentro da pasta do plugin específico, senão no diretório padrão de módulos.
-		
-		$modulos = banco_select(Array(
-			'unico' => true,
-			'tabela' => 'modulos',
-			'campos' => Array(
-				'plugin',
-			),
-			'extra' => 
-				"WHERE id='".$_GESTOR['modulo']."'"
-				." AND status='A'"
-		));
-	}
-	
-	// ===== Disparar o módulo caso houver e devolver a página ou dados ajax ou alterar opções e redirecionar para a raiz do módulo.
-	
-	if($_GESTOR['ajax']){
-		if(isset($paginas)){
-			$modulo = $_GESTOR['modulo'];
+
+		// ===== Definir o módulo alvo da página.
+		$_GESTOR['modulo'] = $paginas[0]['modulo'];
+
+		// ====== Definir variáveis.
+		$modulo = $paginas[0]['modulo'];
+		$plugin = $paginas[0]['plugin'];
+		$id = $paginas[0]['id'];
+
+		// ===== Montar a página de acordo com o tipo de requisição (AJAX ou normal).
+		if($_GESTOR['ajax']){
+			// ===== Definir opção da página.
 			if(!$_GESTOR['opcao']) $_GESTOR['opcao'] = $paginas[0]['opcao'];
 			
 			// ===== Incluir html da página.
 			
 			if($_GESTOR['ajaxPagina']){
 				if($_GESTOR['development-env']){
-					$id = $paginas[0]['id'];
 
 					if(existe($modulo)){
-						if($modulos['plugin']){
-							$html_path = $_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
+						if(existe($plugin)){
+							$html_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
 						} else {
 							$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
 						}
@@ -1692,8 +1683,8 @@ function gestor_roteador(){
 			$module_path = '';
 
 			if(existe($modulo)){
-				if($modulos['plugin']){
-					$module_path = $_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/'.$modulo.'.php';
+				if(existe($plugin)){
+					$module_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/'.$modulo.'.php';
 				} else {
 					$module_path = $_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php';
 				}
@@ -1705,7 +1696,7 @@ function gestor_roteador(){
 				require_once($module_path);
 			}
 			
-			// ===== Retornar a página formatada para o cliente
+			// ===== Retornar a página formatada para o cliente. Ou erro caso haja.
 			
 			if(isset($_GESTOR['ajax-json'])){
 				header("Content-Type: application/json; charset: UTF-8");
@@ -1713,27 +1704,18 @@ function gestor_roteador(){
 				exit;				
 			} else {
 				gestor_roteador_erro(Array(
-					'codigo' => 404,
+					'codigo' => 500,
 					'ajax' => $_GESTOR['ajax'],
 				));
 			}
 		} else {
-			gestor_roteador_erro(Array(
-				'codigo' => 404,
-				'ajax' => $_GESTOR['ajax'],
-			));
-		}
-	} else {
-		if(isset($paginas)){
-			$modulo = $_GESTOR['modulo'];
-			
 			// ===== Caso haja necessidade, alterar opção no módulo e redirecionar para a raiz do módulo
 			if($_GESTOR['opcao']){
 				$module_path = '';
 
 				if(existe($modulo)){
-					if($modulos['plugin']){
-						$module_path = $_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/'.$modulo.'.php';
+					if(existe($plugin)){
+						$module_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/'.$modulo.'.php';
 					} else {
 						$module_path = $_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php';
 					}
@@ -1751,12 +1733,10 @@ function gestor_roteador(){
 			$nome = $paginas[0]['nome'];
 
 			if($_GESTOR['development-env']){
-				$id = $paginas[0]['id'];
-
 				if(existe($modulo)){
-					if($modulos['plugin']){
-						$html_path = $_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
-						$css_path = $_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.css';
+					if(existe($plugin)){
+						$html_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
+						$css_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.css';
 					} else {
 						$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
 						$css_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.css';
@@ -1779,7 +1759,7 @@ function gestor_roteador(){
 
 			if(!$_GESTOR['opcao']) $_GESTOR['opcao'] = $paginas[0]['opcao'];
 			
-			// ===== 
+			// ===== Definir a página, título e framework CSS.
 			
 			$_GESTOR['pagina'] = $html;
 			$_GESTOR['pagina#titulo'] = $nome;
@@ -1789,8 +1769,8 @@ function gestor_roteador(){
 			$module_path = '';
 
 			if(existe($modulo)){
-				if($modulos['plugin']){
-					$module_path = $_GESTOR['plugins-path'].$modulos['plugin'].'/modules/'.$modulo.'/'.$modulo.'.php';
+				if(existe($plugin)){
+					$module_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/'.$modulo.'.php';
 				} else {
 					$module_path = $_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php';
 				}
@@ -1918,6 +1898,14 @@ function gestor_roteador(){
 			header("Content-Type: text/html; charset: UTF-8");
 			echo $_GESTOR['pagina'];
 			exit;
+		}
+	} else {
+		// ===== Caso não exista a página, gerar erro 404.
+		if($_GESTOR['ajax']){
+			gestor_roteador_erro(Array(
+				'codigo' => 404,
+				'ajax' => $_GESTOR['ajax'],
+			));
 		} else {
 			gestor_roteador_301_ou_404(Array(
 				'caminho' => $caminho,

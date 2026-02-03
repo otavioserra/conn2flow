@@ -399,7 +399,7 @@ function dashboard_gerar_descricao_modulo($modulo_id, $linguagem = 'pt-br'){
 			'admin-layouts' => 'Gerencie os layouts do sistema, modelos visuais base para as páginas.',
 			'admin-paginas' => 'Administre páginas do sistema, conteúdo e estrutura do site.',
 			'admin-componentes' => 'Controle componentes reutilizáveis de interface.',
-			'admin-templates' => 'Gerencie templates para criação rápida de conteúdo.',
+			'admin-templates' => 'Gerencie modelos para criação rápida de conteúdo.',
 			'admin-arquivos' => 'Upload e gerenciamento de arquivos e mídias.',
 			'admin-categorias' => 'Organize conteúdo através de categorias hierárquicas.',
 			'admin-hosts' => 'Configure domínios e hosts do sistema.',
@@ -757,6 +757,270 @@ function dashboard_cards(){
 	// ===== Inserir componente na página
 	
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], "<!-- dashboard-cards -->", $componente);
+}
+
+/**
+ * Gera o dashboard 3D com visualização interativa dos módulos.
+ */
+function dashboard_3d(){
+	global $_GESTOR;
+	
+	// ===== Obter o componente dashboard-3d
+	
+	$componente = gestor_componente(Array(
+		'id' => 'dashboard-3d',
+		'modulo' => $_GESTOR['modulo-id'],
+	));
+
+	// URL base para documentação
+	$docs_base_url = 'https://github.com/otavioserra/conn2flow/blob/main/ai-workspace/' . $_GESTOR['linguagem-codigo'] . '/docs/modulos/';
+	
+	// URL base para manual do usuário
+	$manual_base_url = 'https://github.com/otavioserra/conn2flow/blob/main/ai-workspace/' . $_GESTOR['linguagem-codigo'] . '/docs/manual/modulos/';
+	
+	// ===== Obter usuário e permissões
+	$usuario = gestor_usuario();
+	
+	// Lógica de permissões (igual ao dashboard_cards)
+	$usuarios_perfis_modulos = array();
+	
+	if(existe($usuario['id_hosts'])){
+		if(existe($usuario['gestor_perfil'])){
+			$gestor_perfil = $usuario['gestor_perfil'];
+			
+			$usuarios_perfis_modulos = banco_select_name(
+				banco_campos_virgulas(Array('modulo')),
+				"usuarios_gestores_perfis_modulos",
+				"WHERE perfil='".$gestor_perfil."' AND id_hosts='".$usuario['id_hosts']."'"
+			);
+		} else {
+			$hosts = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'hosts',
+				'campos' => Array('id_usuarios'),
+				'extra' => "WHERE id_hosts='".$usuario['id_hosts']."'"
+			));
+			
+			$usuarios = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios',
+				'campos' => Array('id_usuarios_perfis'),
+				'extra' => "WHERE id_usuarios='".$hosts['id_usuarios']."'"
+			));
+			
+			$usuarios_perfis = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios_perfis',
+				'campos' => Array('id'),
+				'extra' => "WHERE id_usuarios_perfis='".$usuarios['id_usuarios_perfis']."'"
+			));
+			
+			$perfil = $usuarios_perfis['id'];
+			
+			$usuarios_perfis_modulos = banco_select_name(
+				banco_campos_virgulas(Array('modulo')),
+				"usuarios_perfis_modulos",
+				"WHERE perfil='".$perfil."'"
+			);
+		}
+	} else {
+		$usuarios_perfis = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_perfis',
+			'campos' => Array('id'),
+			'extra' => "WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
+		));
+		
+		$perfil = $usuarios_perfis['id'];
+		
+		$usuarios_perfis_modulos = banco_select_name(
+			banco_campos_virgulas(Array('modulo')),
+			"usuarios_perfis_modulos",
+			"WHERE perfil='".$perfil."'"
+		);
+	}
+	
+	// ===== Buscar dados
+	
+	$paginas = banco_select_name(
+		banco_campos_virgulas(Array('modulo', 'caminho')),
+		"paginas",
+		"WHERE raiz IS NOT NULL AND language='".$_GESTOR['linguagem-codigo']."' AND status='A'"
+	);
+	
+	$modulos = banco_select_name(
+		banco_campos_virgulas(Array(
+			'id_modulos', 'modulo_grupo_id', 'id', 'nome', 'icone', 'icone2', 'plugin'
+		)),
+		"modulos",
+		"WHERE language='".$_GESTOR['linguagem-codigo']."' AND status='A' ORDER BY nome ASC"
+	);
+	
+	$modulos_grupos = banco_select_name(
+		banco_campos_virgulas(Array('id', 'nome')),
+		"modulos_grupos",
+		"WHERE id!='bibliotecas' AND language='".$_GESTOR['linguagem-codigo']."' AND status='A' ORDER BY nome ASC"
+	);
+	
+	// ===== Verificar permissões e plugins
+	
+	$host_verificacao = gestor_sessao_variavel('host-verificacao-'.$_GESTOR['usuario-id']);
+	$privilegios_admin = isset($host_verificacao['privilegios_admin']);
+	
+	$hosts_plugins = array();
+	if(isset($_GESTOR['host-id'])){
+		$hosts_plugins = banco_select(Array(
+			'tabela' => 'hosts_plugins',
+			'campos' => Array('plugin', 'habilitado'),
+			'extra' => "WHERE id_hosts='".$_GESTOR['host-id']."'"
+		));
+	}
+	
+	// ===== Montar dados para JSON
+	
+	$grupos_data = array();
+	if($modulos_grupos){
+		foreach($modulos_grupos as $grupo){
+			$grupos_data[] = array(
+				'id' => $grupo['id'],
+				'nome' => $grupo['nome']
+			);
+		}
+	}
+	
+	$modules_data = array();
+	
+	if($modulos){
+		foreach($modulos as $modulo){
+			// Verificar permissão
+			$modulo_perfil = false;
+			if($usuarios_perfis_modulos){
+				foreach($usuarios_perfis_modulos as $upm){
+					if($upm['modulo'] == $modulo['id']){
+						$modulo_perfil = true;
+						break;
+					}
+				}
+			}
+			
+			// Pular dashboard e sem permissão
+			if($modulo['id'] == 'dashboard' || !$modulo_perfil){
+				continue;
+			}
+			
+			// Verificar plugins
+			if(isset($_GESTOR['host-id']) && $modulo['plugin']){
+				$habilitado = false;
+				if($hosts_plugins){
+					foreach($hosts_plugins as $hp){
+						if($hp['plugin'] == $modulo['plugin'] && $hp['habilitado']){
+							$habilitado = true;
+						}
+					}
+				}
+				if(!$habilitado) continue;
+			}
+			
+			// Verificar host-configuracao
+			if($modulo['id'] == 'host-configuracao' && !$privilegios_admin && isset($_GESTOR['host-id'])){
+				continue;
+			}
+			
+			// Buscar link do módulo
+			$link = $_GESTOR['url-raiz'].'dashboard/';
+			if($paginas){
+				foreach($paginas as $pagina){
+					if($modulo['id'] == $pagina['modulo']){
+						$link = $_GESTOR['url-raiz'].$pagina['caminho'];
+						break;
+					}
+				}
+			}
+			
+			// Buscar nome do grupo
+			$grupo_nome = '';
+			if($modulos_grupos){
+				foreach($modulos_grupos as $mg){
+					if($mg['id'] == $modulo['modulo_grupo_id']){
+						$grupo_nome = $mg['nome'];
+						break;
+					}
+				}
+			}
+			
+			// Descrição
+			$descricao = dashboard_gerar_descricao_modulo($modulo['id'], $_GESTOR['linguagem-codigo']);
+			
+			// Ações do módulo (ler do JSON se existir)
+			$adicionar = null;
+			$acoes = array();
+			$modulo_json_path = $_GESTOR['ROOT_PATH'] . 'modulos/' . $modulo['id'] . '/' . $modulo['id'] . '.json';
+			if(file_exists($modulo_json_path)){
+				$modulo_config = json_decode(file_get_contents($modulo_json_path), true);
+				if(isset($modulo_config['acoes']) && is_array($modulo_config['acoes'])){
+					$acoes = $modulo_config['acoes'];
+				}
+				if(isset($modulo_config['resources']) && is_array($modulo_config['resources'])){
+					if(isset($modulo_config['resources'][$_GESTOR['linguagem-codigo']]) && is_array($modulo_config['resources'][$_GESTOR['linguagem-codigo']])){
+						if(isset($modulo_config['resources'][$_GESTOR['linguagem-codigo']]['pages']) && is_array($modulo_config['resources'][$_GESTOR['linguagem-codigo']]['pages'])){
+							foreach($modulo_config['resources'][$_GESTOR['linguagem-codigo']]['pages'] as $page){
+								if(isset($page['option']) && $page['option'] == 'adicionar'){
+									$adicionar = true;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			// Link da documentação
+			$docs_link = $docs_base_url . $modulo['id'] . '.md';
+			
+			// Link do manual do usuário
+			$manual_link = $manual_base_url . $modulo['id'] . '.md';
+			
+			$modules_data[] = array(
+				'id' => $modulo['id'],
+				'nome' => $modulo['nome'],
+				'grupo' => $modulo['modulo_grupo_id'],
+				'grupoNome' => $grupo_nome,
+				'icon' => $modulo['icone'],
+				'icon2' => $modulo['icone2'],
+				'link' => $link,
+				'descricao' => $descricao,
+				'acoes' => $acoes,
+				'adicionar' => $adicionar,
+				'docsLink' => $docs_link,
+				'manualLink' => $manual_link
+			);
+		}
+	}
+	
+	// ===== Montar JSON final
+	
+	$dashboard_data = array(
+		'modules' => $modules_data,
+		'groups' => $grupos_data,
+		'urls' => array(
+			'root' => $_GESTOR['url-raiz'],
+			'logout' => $_GESTOR['url-raiz'] . 'logout/'
+		),
+		'lang' => $_GESTOR['linguagem-codigo']
+	);
+	
+	$json_data = json_encode($dashboard_data, JSON_UNESCAPED_UNICODE);
+	
+	// ===== Substituir no componente
+	
+	$componente = modelo_var_troca($componente, '#dashboard-3d-data#', $json_data);
+
+	// ===== Incluir JS
+
+	gestor_pagina_javascript_incluir();
+	
+	// ===== Inserir componente na página
+	
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], "<!-- dashboard-3d -->", $componente);
 }
 
 function dashboard_menu(){
@@ -1154,6 +1418,7 @@ function dashboard_start(){
 		
 		switch($_GESTOR['opcao']){
 			case 'inicio': dashboard_pagina_inicial(); break;
+			case 'dashboard-3d': dashboard_3d(); break;
 		}
 		
 		interface_finalizar();

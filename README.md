@@ -34,10 +34,15 @@ For detailed technical information and development guides, see:
 - **[📋 Changelog](CHANGELOG.md)** - Industry-standard changelog following Keep a Changelog format
 - **[📊 Full Development History](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Detailed commit-by-commit evolution
 
-### Latest Release: v2.6.0 (December 18, 2025)
+### Latest Release: v2.6.3 (February 3, 2026)
 
 **🎯 New Features:**
-- **Publisher Module**: Complete new content publishing module with CRUD for publishers and pages
+- **Responsive Admin Menu**: Complete redesign with toggle button, resizable width, and localStorage persistence
+- **Mobile/Tablet Sidebar Overlay**: Unified sidebar behavior for devices up to 1024px width
+- **Resizable Menu**: Drag handle to adjust menu width (200-450px) with real-time persistence
+- **Keyboard Shortcut**: Ctrl/Cmd+B to toggle menu visibility
+- **Dashboard Tablet Optimization**: 2-column card layout on tablets for better usability
+- **Publisher Module**: Complete content publishing module with CRUD for publishers and pages
 - **Quill WYSIWYG Editor**: Professional Quill editor integration for rich content editing
 - **Dynamic Fields System**: Configurable fields for publisher templates with various types
 - **Cloning Functionality**: Quick clone for admin pages, admin templates, and publisher pages
@@ -45,6 +50,9 @@ For detailed technical information and development guides, see:
 - **Design Simulation Mode**: Dropdown to simulate different design modes in HTML editor
 
 **🔧 Technical Improvements:**
+- Smooth CSS transitions with animation-free initialization
+- Mobile overlay with dark backdrop on menu open
+- Menu state persistence (width and closed state)
 - Fomantic-UI updated to v2.9.4
 - Updated Gemini models in AI prompts
 - Enhanced language detection with browser priority
@@ -53,6 +61,9 @@ For detailed technical information and development guides, see:
 - Section modification capabilities in visual editor
 
 **📦 What's New:**
+- Unified menu behavior across mobile and tablet devices
+- Toggle button appears when menu is closed
+- Double-click resize handle to reset default width
 - Complete publisher module with integrated Quill editor
 - Dynamic fields system for templates
 - Cloning functionality for pages and templates

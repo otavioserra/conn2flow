@@ -14,60 +14,61 @@
 </head>
 
 <body>
-    <div class="ui left sidebar" id="conn2flow-menu-principal">
-        @[[pagina#menu]]@
-        <div class="ui blue tiny secondary inverted segment gestorVersao">
-            <i class="yellow certificate icon"></i>
-            <span style="font-weight: bold;">Gestor Versão: v@[[gestor#versao]]@</span>
-        </div>
+    <!-- Botão Toggle Menu (visível quando menu fechado) -->
+    <div id="menu-toggle-btn" class="ui icon button" data-tooltip="Abrir Menu" data-position="right center"
+        data-inverted="">
+        <i class="bars icon"></i>
     </div>
+
+    <!-- Overlay para mobile -->
+    <div class="menu-mobile-overlay"></div>
+
     <div class="pusher layoutPusher">
         <div class="menuComputerCont">
+            <!-- Controles do Menu -->
+            <div class="menu-controls">
+                <div class="ui icon buttons">
+                    <button id="menu-dashboard3d-btn" class="ui blue button" data-tooltip="Dashboard 3D"
+                        data-position="bottom left" data-inverted="">
+                        <i class="cube icon"></i>
+                    </button>
+                    <button id="menu-close-btn" class="ui button" data-tooltip="Fechar Menu" data-position="bottom left"
+                        data-inverted="">
+                        <i class="times icon"></i>
+                    </button>
+                </div>
+            </div>
             @[[pagina#menu]]@
             <div class="ui blue tiny secondary inverted segment gestorVersao">
                 <i class="yellow certificate icon"></i>
                 <span style="font-weight: bold;">Gestor Versão: v@[[gestor#versao]]@</span>
             </div>
+            <!-- Handle para redimensionar -->
+            <div id="menu-resize-handle" data-tooltip="Arrastar para redimensionar" data-position="right center"
+                data-inverted="">
+                <i class="grip lines vertical large icon"></i>
+            </div>
         </div>
         <div class="paginaCont">
             <!-- Topo -->
-            <div class="desktopcode">
-                <div class="ui three column padded stackable grid">
-                    <!-- Logo -->
-                    <div class="row">
-                        <div class="eight wide column">
-                            <div class="menubarlogomargin">
-                                <div class="logo">
-                                    <a class="item" href="@[[pagina#url-raiz]]@dashboard/">
-                                        <img class="ui bottom aligned small image" id="conn2flow-logo-principal"
-                                            src="@[[pagina#url-raiz]]@images/logo-principal.png">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Nome Usuário -->
-                        <div class="usuario eight wide column right aligned">
-                            <div class="menubarperfilmargin">
-                                <i class="user icon"></i>
-                                <span style="color:#000000DE;">@[[usuario#nome]]@</span>
+            <div class="ui three column padded grid">
+                <!-- Logo -->
+                <div class="row">
+                    <div class="eight wide column">
+                        <div class="menubarlogomargin">
+                            <div class="logo">
+                                <a class="item" href="@[[pagina#url-raiz]]@dashboard/">
+                                    <img class="ui bottom aligned small image" id="conn2flow-logo-principal"
+                                        src="@[[pagina#url-raiz]]@images/logo-principal.png">
+                                </a>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="mobilecode">
-                <div class="ui two column padded grid">
-                    <div class="row">
-                        <div class="column">
-                            <a class="item" href="@[[pagina#url-raiz]]@dashboard/">
-                                <img class="ui bottom aligned small image" id="conn2flow-logo-principal"
-                                    src="@[[pagina#url-raiz]]@images/logo-principal.png">
-                            </a>
-                        </div>
-                        <div class="right aligned column">
-                            <div class="menumobilemargin _gestor-menuPrincipalMobile">
-                                <i class="big grey bars icon"></i>
-                            </div>
+                    <!-- Nome Usuário -->
+                    <div class="usuario eight wide column right aligned">
+                        <div class="menubarperfilmargin">
+                            <i class="user icon"></i>
+                            <span style="color:#000000DE;">@[[usuario#nome]]@</span>
                         </div>
                     </div>
                 </div>
@@ -75,17 +76,6 @@
             <div class="ui divider"></div>
             <div class="ui main container">
                 @[[pagina#corpo]]@
-            </div>
-            <!-- Rodapé -->
-            <div class="mobilecode">
-                <div class="ui two column padded grid">
-                    <div class="row">
-                        <div class="column">
-                            <i class="user icon"></i>
-                            <span style="color:#000000DE;">@[[usuario#nome]]@</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

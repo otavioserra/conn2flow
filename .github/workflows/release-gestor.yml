@@ -96,45 +96,43 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🚀 Conn2Flow Gestor Release v2.6.0 (Módulo Publisher + Editor Quill + Clonagem + Image Picker)
+          ## 🚀 Conn2Flow Gestor Release v2.6.3 (Menu Administrativo Responsivo + Dashboard Otimizado para Tablets)
 
-          Esta versão traz o **novo módulo Publisher completo** com editor Quill WYSIWYG, sistema de campos dinâmicos, funcionalidade de clonagem e seletor visual de imagens no editor HTML, além de manter todas as funcionalidades do sistema de IA integrado, deploy OAuth e arquitetura multilíngue.
+          Esta versão traz o **redesign completo do menu administrativo** com comportamento responsivo unificado para mobile e tablets, menu redimensionável, persistência de estado, e dashboard otimizado para tablets, além de manter todas as funcionalidades do módulo Publisher, sistema de IA integrado, deploy OAuth e arquitetura multilíngue.
 
           ### 🎯 Novidades Principais desta Versão:
-          - ✅ **Módulo Publisher Completo**: Novo módulo de publicação de conteúdo com CRUD completo para publishers e páginas
-          - ✅ **Editor Quill WYSIWYG**: Integração profissional do editor Quill para edição rica de conteúdo
-          - ✅ **Sistema de Campos Dinâmicos**: Campos configuráveis para templates de publisher com tipos variados
-          - ✅ **Templates Abstratos de Notícias**: Templates prontos para uso gerados por IA e revisados
-          - ✅ **Funcionalidade de Clonagem**: Clone rápido de páginas admin, templates admin e páginas do publisher
-          - ✅ **Image Picker no Editor HTML**: Seletor visual de imagens integrado ao editor com preview em grid
-          - ✅ **Modo de Simulação de Design**: Dropdown para simular diferentes modos de design no editor HTML
-          - ✅ **Tooltips nos Botões do Editor**: Tooltips informativos nos botões de template e campos
-          - ✅ **Modificação de Seções no Editor**: Funcionalidades avançadas de modificação de seção visual
-          - ✅ **Fomantic-UI v2.9.4**: Atualização para a última versão do framework CSS
-          - ✅ **Modelos Gemini Atualizados**: Atualização das versões dos modelos nos prompts de IA
-          - ✅ **Detecção de Linguagem Aprimorada**: Prioridade para detecção do browser sobre padrão do sistema
-          - ✅ **Sistema de Múltiplos Modais**: Suporte a modais empilhados com `allowMultiple: true`
-          - ✅ **Biblioteca Editor HTML Centralizada**: Nova biblioteca `html-editor.php` (mantido da v2.5.0)
-          - ✅ **Sistema de Templates Visual**: Interface com cards Fomantic UI (mantido da v2.5.0)
+          - ✅ **Menu Administrativo Responsivo**: Redesign completo com botão toggle flutuante, largura redimensionável e persistência em localStorage
+          - ✅ **Sidebar Overlay para Mobile/Tablet**: Comportamento unificado de sidebar overlay para dispositivos até 1024px de largura
+          - ✅ **Menu Redimensionável**: Handle de arraste para ajustar largura do menu (200-450px) com persistência em tempo real
+          - ✅ **Atalho de Teclado**: Ctrl/Cmd+B para alternar visibilidade do menu
+          - ✅ **Dashboard Otimizado para Tablet**: Layout de cards em 2 colunas em tablets para melhor usabilidade
+          - ✅ **Transições CSS Suaves**: Animações fluidas com inicialização sem animação para evitar flashes
+          - ✅ **Overlay Mobile com Backdrop**: Fundo escuro quando menu mobile/tablet está aberto
+          - ✅ **Persistência de Estado do Menu**: Largura e estado fechado salvos em localStorage
+          - ✅ **Duplo Clique para Reset**: Duplo clique no handle de resize reseta largura padrão (250px)
+          - ✅ **Módulo Publisher Completo**: Novo módulo de publicação de conteúdo (mantido da v2.6.0)
+          - ✅ **Editor Quill WYSIWYG**: Integração profissional do editor Quill (mantido da v2.6.0)
+          - ✅ **Sistema de Campos Dinâmicos**: Campos configuráveis para templates de publisher (mantido da v2.6.0)
+          - ✅ **Funcionalidade de Clonagem**: Clone rápido de páginas admin, templates admin e páginas do publisher (mantido da v2.6.0)
+          - ✅ **Image Picker no Editor HTML**: Seletor visual de imagens integrado ao editor (mantido da v2.6.0)
           - ✅ **Sistema Completo de Deploy via OAuth**: Deploy automatizado com OAuth 2.0 (mantido da v2.4.0)
           - ✅ **Sistema de IA Integrado**: Geração de conteúdo via API Gemini (mantido da v2.4.0)
           - ✅ **Sistema Multilíngue Completo**: Suporte pt-br/en (mantido da v2.4.0)
           - ✅ **Sistema de Plugins V2**: Arquitetura refatorada (mantido da v2.4.0)
 
           ### 🔧 Melhorias Técnicas:
-          - ✅ **Novo Módulo Publisher**: CRUD completo com definições, páginas e templates
-          - ✅ **Editor Quill Integrado**: Edição rica de conteúdo com formatação avançada
-          - ✅ **Sistema de Campos Dinâmicos**: Vinculação de campos com templates de publisher
-          - ✅ **Funcionalidade de Clonagem**: Clone para admin-paginas, admin-templates e publisher-paginas
-          - ✅ **Image Picker com postMessage**: Comunicação iframe ↔ parent para seleção de imagens
-          - ✅ **Suporte a Múltiplos Modais**: `allowMultiple: true` no Fomantic-UI
-          - ✅ **Módulos Virtuais**: Módulos sem backend para controle de acesso simplificado
-          - ✅ **Snippets AJAX**: Integração de contextos de agentes para chat
-          - ✅ **Glossário de Variáveis Globais**: Documentação para componentes IA
-          - ✅ **Campos 'notEmpty'**: Migração de 'empty' para futura descontinuação Fomantic-UI
+          - ✅ **Breakpoint Mobile/Tablet**: Alterado de 770px para 1024px para incluir tablets no comportamento de sidebar overlay
+          - ✅ **Nova Estrutura de Classes CSS**: `menu-closed`, `menu-mobile-open`, `menu-no-transition` para controle de estado
+          - ✅ **Botão Toggle Flutuante**: Aparece quando menu está fechado para fácil acesso
+          - ✅ **Handle de Redimensionamento**: Suporte a mouse e touch para ajuste de largura
+          - ✅ **Media Queries Reorganizadas**: mobile/tablet (≤1024px) e desktop (≥1025px)
+          - ✅ **Dashboard Cards Responsivos**: Grid adaptativo 1/2/4 colunas conforme tamanho da tela
+          - ✅ **Inicialização Sem Animação**: Classe `menu-no-transition` evita flashes visuais no carregamento
 
           ### 📦 Conteúdo:
-          - Sistema gestor completo com módulo Publisher e editor Quill
+          - Sistema gestor completo com menu administrativo responsivo
+          - Dashboard otimizado para tablets com layout de 2 colunas
+          - Módulo Publisher com editor Quill integrado
           - Funcionalidade de clonagem para páginas e templates
           - Image picker integrado ao editor HTML visual
           - Biblioteca `html-editor.php` com componentes reutilizáveis
@@ -149,6 +147,21 @@ jobs:
           - Dependências do Composer otimizadas
           - Documentação técnica completa
 
+          ### 📱 Menu Administrativo Responsivo:
+          - **Botão Toggle Flutuante**: Aparece quando menu está fechado
+          - **Menu Redimensionável**: Arraste o handle para ajustar largura (200-450px)
+          - **Sidebar Overlay em Mobile/Tablet**: Comportamento unificado até 1024px
+          - **Atalho de Teclado**: Ctrl/Cmd+B para toggle do menu
+          - **Persistência de Estado**: Largura e estado salvos em localStorage
+          - **Duplo Clique para Reset**: Restaura largura padrão de 250px
+          - **Transições Suaves**: Animações fluidas sem flashes na inicialização
+
+          ### 📊 Dashboard Otimizado:
+          - **Layout Responsivo**: Grid adaptativo conforme tamanho da tela
+          - **1 Coluna**: Dispositivos até 767px (mobile)
+          - **2 Colunas**: Dispositivos de 768px a 1024px (tablet)
+          - **4 Colunas**: Dispositivos acima de 1025px (desktop)
+
           ### 📰 Módulo Publisher:
           - **CRUD Completo**: Gerenciamento de publishers (definições) e páginas
           - **Editor Quill WYSIWYG**: Edição rica com formatação avançada
@@ -156,13 +169,6 @@ jobs:
           - **Templates Abstratos**: Templates prontos (ex: notícias) gerados por IA
           - **Clonagem de Páginas**: Duplicação rápida de conteúdo existente
           - **Integração com Sistema IA**: Geração assistida de conteúdo
-
-          ### 🎨 Editor HTML Visual:
-          - **Image Picker Integrado**: Seletor visual de imagens com preview em grid
-          - **Múltiplos Modais**: Suporte a modais empilhados (preview + imagepick)
-          - **Modo de Simulação**: Dropdown para simular diferentes designs
-          - **Tooltips Informativos**: Dicas nos botões de template e campos
-          - **Modificação de Seções**: Funcionalidades avançadas de edição de seção
 
           ### 🚀 Sistema de Deploy de Projetos:
           - **API OAuth 2.0**: Autenticação obrigatória com renovação automática
@@ -185,10 +191,10 @@ jobs:
           1. Use o [Conn2Flow Installer v1.5.0+](https://github.com/otavioserra/conn2flow/releases)
           2. Para instalação manual, use `gestor-instalador/index.php`
           3. Selecione o idioma desejado (pt-br/en)
-          4. Explore o novo módulo Publisher para publicação de conteúdo
-          5. Use o editor Quill para edição rica de conteúdo
-          6. Utilize a funcionalidade de clonagem para duplicar páginas e templates
-          7. Experimente o image picker no editor HTML visual
+          4. Explore o menu responsivo com suporte a tablets
+          5. Ajuste a largura do menu arrastando o handle
+          6. Use Ctrl/Cmd+B para toggle rápido do menu
+          7. Explore o dashboard otimizado para tablets
 
           ### 📋 Requisitos:
           - PHP 8.1+

@@ -1,500 +1,203 @@
 # Changelog
 
-O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
-e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
 ### Added
-- Documentação técnica detalhada em `ai-workspace/docs/`
-- Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
-- CHANGELOG.md padrão da indústria seguindo Keep a Changelog
+- Detailed technical documentation in `ai-workspace/docs/`
+- Complete change history in `CONN2FLOW-CHANGELOG-HISTORY.md`
+- Industry-standard CHANGELOG.md following Keep a Changelog format
+
+## [2.6.3] - 2026-02-03
+
+### Added
+- **Responsive Admin Menu**: Complete menu redesign with floating toggle button, resizable width, and localStorage persistence
+- **Mobile/Tablet Sidebar Overlay**: Unified sidebar overlay behavior for devices up to 1024px width
+- **Resizable Menu**: Drag handle to adjust menu width (200-450px) with real-time persistence
+- **Keyboard Shortcut**: Ctrl/Cmd+B to toggle menu visibility
+- **Tablet-Optimized Dashboard**: 2-column card layout on tablets for better usability
+- **Mobile Overlay with Backdrop**: Dark background when mobile/tablet menu is open
+- **Double-Click to Reset**: Double-click on resize handle resets default width (250px)
+
+### Changed
+- **Mobile/Tablet Breakpoint**: Changed from 770px to 1024px to include tablets in sidebar overlay behavior
+- **Smooth CSS Transitions**: Fluid animations with animation-free initialization to avoid visual flashes
+- **Menu State Persistence**: Width and closed state now saved in localStorage
+
+### Technical
+- New CSS class structure for menu state control: menu-closed, menu-mobile-open, menu-no-transition
+- Floating toggle button (#menu-toggle-btn) appears when menu is closed
+- Resize handle (#menu-resize-handle) with mouse and touch support
+- Dark overlay (.menu-mobile-overlay) for mobile/tablet
+- Reorganized media queries: mobile/tablet (<=1024px) and desktop (>=1025px)
+- Dashboard cards with responsive grid: 1 column (<=767px), 2 columns (768-1024px), 4 columns (>=1025px)
 
 ## [2.6.0] - 2025-12-18
 
 ### Added
-- **Módulo Publisher Completo**: Novo módulo de publicação de conteúdo com CRUD completo para publishers e páginas
-- **Editor Quill WYSIWYG**: Integração do editor Quill para edição rica de conteúdo no módulo publisher
-- **Sistema de Campos Dinâmicos**: Campos dinâmicos configuráveis para templates de publisher com tipos variados
-- **Templates Abstratos de Notícias**: Templates prontos para uso no módulo publisher
-- **Funcionalidade de Clonagem**: Clone de páginas admin, templates admin e páginas do publisher
-- **Image Picker no Editor HTML**: Seletor visual de imagens integrado ao editor HTML com preview
-- **Modo de Simulação de Design**: Dropdown para simular diferentes modos de design no editor HTML
-- **Tooltips nos Botões do Editor**: Tooltips informativos nos botões de template e campos do editor
-- **Modificação de Seções**: Funcionalidades avançadas de modificação de seção no editor HTML visual
-- **Glossário de Variáveis Globais**: Documentação de variáveis globais para componentes IA
+- **Complete Publisher Module**: New content publishing module with complete CRUD for publishers and pages
+- **Quill WYSIWYG Editor**: Quill editor integration for rich content editing in the publisher module
+- **Dynamic Fields System**: Configurable dynamic fields for publisher templates with various types
+- **News Abstract Templates**: Ready-to-use templates for the publisher module
+- **Cloning Functionality**: Clone for admin pages, admin templates, and publisher pages
+- **Image Picker in HTML Editor**: Visual image selector integrated with HTML editor with preview
+- **Design Simulation Mode**: Dropdown to simulate different design modes in the HTML editor
+- **Editor Button Tooltips**: Informative tooltips on editor template and field buttons
+- **Section Modification**: Advanced section modification features in the visual HTML editor
+- **Global Variables Glossary**: Global variable documentation for AI components
 
 ### Changed
-- **Fomantic-UI v2.9.4**: Atualização para a última versão do Fomantic-UI
-- **Modelos Gemini Atualizados**: Atualização das versões dos modelos Gemini nos prompts de IA
-- **Detecção de Linguagem Aprimorada**: Correção da lógica de preferência de idioma para priorizar detecção do browser
-- **Sistema de Múltiplos Modais**: Suporte a modais empilhados com `allowMultiple: true`
-- **Prompts de IA Refinados**: Atualização dos prompts de geração de templates HTML e descrições de variáveis
-- **Campos Fomantic-UI Modernizados**: Migração de campos 'empty' para 'notEmpty' (descontinuação futura)
+- **Fomantic-UI v2.9.4**: Update to the latest Fomantic-UI version
+- **Updated Gemini Models**: Updated Gemini model versions in AI prompts
+- **Enhanced Language Detection**: Fixed language preference logic to prioritize browser detection
+- **Multiple Modal System**: Stacked modals support with allowMultiple: true
+- **Refined AI Prompts**: Updated HTML template generation prompts and variable descriptions
+- **Modernized Fomantic-UI Fields**: Migration from empty to notEmpty fields (future deprecation)
 
 ### Technical
-- Nova estrutura de campos publisher vinculados com templates
-- Snippets AJAX criadas para integração de contextos de agentes
-- Módulos virtuais sem backend para controle de acesso simplificado
-- Labels de campos de formulário para publisher em pt-br e en
-- Componentes de servidor IA e templates de glossário de variáveis globais
-- Integração postMessage para comunicação iframe ↔ parent (image picker)
-- CSS aspect-ratio para miniaturas de imagem no editor
+- New publisher field structure linked with templates
+- AJAX snippets created for agent context integration
+- Virtual modules without backend for simplified access control
+- Form field labels for publisher in pt-br and en
+- AI server components and global variables glossary templates
+- postMessage integration for iframe - parent communication (image picker)
+- CSS aspect-ratio for image thumbnails in editor
 
 ## [2.5.0] - 2025-11-12
 
 ### Added
-- **Biblioteca Editor HTML Centralizada**: Nova biblioteca `html-editor.php` com funcionalidade de edição reutilizável entre módulos
-- **Sistema de Seleção de Templates Visual**: Interface de cards Fomantic UI para seleção de templates de página
-- **Editor HTML Modular**: Sistema unificado de edição para páginas, templates e componentes
-- **Sistema de Templates Multilíngue**: Suporte a templates com priorização de idioma e filtragem por alvo
-- **Gerenciamento Avançado de Templates**: Templates com miniaturas, metadados e integração CodeMirror
-- **Componentes Reutilizáveis**: Componentes de editor HTML compartilhados entre admin-paginas e admin-templates
-- **Integração IA Aprimorada**: Sistema de prompts com gerenciamento de sessão e inserção posicional
-- **Arquitetura Baseada em Componentes**: Melhor manutenção e reutilização de código
+- **Centralized HTML Editor Library**: New html-editor.php library with reusable editing functionality between modules
+- **Visual Template Selection System**: Fomantic UI cards interface for page template selection
+- **Modular HTML Editor**: Unified editing system for pages, templates, and components
+- **Multilingual Template System**: Templates with language prioritization and target filtering support
+- **Advanced Template Management**: Templates with thumbnails, metadata, and CodeMirror integration
+- **Reusable Components**: HTML editor components shared between admin-pages and admin-templates
+- **Enhanced AI Integration**: Prompts system with session management and positional insertion
+- **Component-Based Architecture**: Better maintenance and code reuse
 
 ### Changed
-- **Interface de Seleção de Templates**: Migração de accordion para cards Fomantic UI para melhor visualização
-- **Arquitetura de Edição**: Centralização da funcionalidade de edição em biblioteca compartilhada
-- **Experiência do Usuário**: Interface unificada de edição em todos os módulos admin
-- **Performance de Templates**: Carregamento AJAX com paginação para melhor performance
+- **Template Selection Interface**: Migration from accordion to Fomantic UI cards for better visualization
+- **Editing Architecture**: Centralization of editing functionality in shared library
+- **User Experience**: Unified editing interface in all admin modules
+- **Template Performance**: AJAX loading with pagination for better performance
 
 ### Technical
-- Nova função `html_editor_componente()` para renderização de componentes de edição
-- Integração CodeMirror unificada com configuração consistente
-- Sistema de templates com suporte a múltiplos alvos e idiomas
-- Componentes traduzidos para inglês mantendo compatibilidade
+- New html_editor_componente() function for editing component rendering
+- Unified CodeMirror integration with consistent configuration
+- Template system with multiple target and language support
+- Components translated to English maintaining compatibility
 
 ## [2.4.0] - 2025-11-06
 
 ### Added
-- **Sistema Completo de Deploy de Projetos via API OAuth**: Sistema automatizado completo para deploy de projetos com autenticação OAuth 2.0
-- **Servidor OAuth 2.0 Completo**: Implementação completa de servidor OAuth 2.0 com validação JWT e renovação automática de tokens
-- **API de Deploy de Projetos**: Endpoint `/_api/project/update` para deploy automatizado via API
-- **Sistema de Renovação Automática de Tokens**: Detecção automática de erro 401 e retry transparente com tokens renovados
-- **Deploy One-Click**: Workflow automatizado (atualização → compressão → deploy) com um único comando
-- **Validação Robusta de ZIP**: Verificação de tamanho (100MB máx.), tipo e segurança de arquivos ZIP
-- **Execução Inline**: Atualização de banco de dados sem shell_exec para ambientes de produção
-- **Detecção Automática de Estrutura ZIP**: Suporte a projetos com/sem diretório raiz
-- **Script de Testes de Integração**: Suite completa com 6/6 testes passando (config, recursos, deploy, OAuth, API)
-- **Documentação Abrangente**: Sistema completo documentado em `CONN2FLOW-SISTEMA-PROJETOS.md`
+- **Complete Project Deploy System via OAuth API**: Complete automated system for project deploy with OAuth 2.0 authentication
+- **Complete OAuth 2.0 Server**: Complete OAuth 2.0 server implementation with JWT validation and automatic token renewal
+- **Project Deploy API**: /_api/project/update endpoint for automated deploy via API
+- **Automatic Token Renewal System**: Automatic 401 error detection and transparent retry with renewed tokens
+- **One-Click Deploy**: Automated workflow (update - compression - deploy) with a single command
+- **Robust ZIP Validation**: Size (100MB max.), type, and ZIP file security verification
+- **Inline Execution**: Database update without shell_exec for production environments
+- **Automatic ZIP Structure Detection**: Support for projects with/without root directory
+- **Integration Test Script**: Complete suite with 6/6 passing tests (config, resources, deploy, OAuth, API)
+- **Comprehensive Documentation**: Complete system documented in CONN2FLOW-PROJECTS-SYSTEM.md
 
 ### Changed
-- **Segurança Aprimorada**: Autenticação OAuth obrigatória em endpoints de API
-- **Arquitetura de Deploy**: Separação clara de responsabilidades e fluxo one-click
-- **Performance Otimizada**: Redução de 28KB→25KB no ZIP (exclusão automática da pasta resources)
-- **Compatibilidade de Produção**: Execução inline para ambientes seguros
+- **Enhanced Security**: Mandatory OAuth authentication on API endpoints
+- **Deploy Architecture**: Clear separation of responsibilities and one-click flow
+- **Optimized Performance**: ZIP size reduction from 28KB to 25KB (automatic resources folder exclusion)
+- **Production Compatibility**: Inline execution for secure environments
 
 ### Technical Details
-- **New Scripts**: `deploy-projeto.sh`, `renovar-token.sh`, `teste-integracao.sh`
-- **New API Endpoint**: `POST /_api/project/update` com autenticação OAuth obrigatória
-- **New Tables**: Nenhuma nova tabela (reutilização de infraestrutura existente)
-- **New Libraries**: Nenhuma nova biblioteca (extensões do sistema existente)
-- **Database Migrations**: Nenhuma migração necessária (compatibilidade backward)
-- **Security Features**: OAuth 2.0, validação ZIP, execução inline, rollback automático
+- **New Scripts**: deploy-project.sh, renew-token.sh, integration-test.sh
+- **New API Endpoint**: POST /_api/project/update with mandatory OAuth authentication
+- **New Tables**: None (reuse of existing infrastructure)
+- **New Libraries**: None (existing system extensions)
+- **Database Migrations**: None required (backward compatibility)
+- **Security Features**: OAuth 2.0, ZIP validation, inline execution, automatic rollback
 
 ## [2.3.0] - 2025-10-17
 
 ### Added
-- **Sistema de IA Completo Integrado**: Geração assistida de conteúdo no admin-paginas via API Gemini
-- **Sistema Dual de Prompts**: Modos técnicos estruturados + prompts de usuário flexíveis
-- **Interface CodeMirror Avançada**: Edição aprimorada com inserção de conteúdo gerado por IA
-- **Gerenciamento de Sessão Inteligente**: Manipulação de conteúdo gerado e inserção posicional
-- **Suporte a Múltiplos Modelos IA**: Configuração dinâmica de servidores e modelos
-- **Validação Robusta de Erros**: Tratamento completo de erros para comunicação com API externa
-- **Nova Biblioteca ia.php**: Funções completas para renderização de prompts e comunicação com API Gemini
-- **Novas Tabelas de Banco**: servidores_ia, modos_ia, prompts_ia para gerenciamento do sistema IA
-- **Interface JavaScript Avançada**: Controles de IA e geração de conteúdo com CodeMirror
-- **Sistema de Sessão Robusto**: Gerenciamento de conteúdo gerado por IA
-- **Inserção Posicional**: Capacidades avançadas de inserção de conteúdo
-- **Compatibilidade Total**: Integração seamless com arquitetura existente do Conn2Flow
+- **Complete Integrated AI System**: Assisted content generation in admin-pages via Gemini API
+- **Dual Prompt System**: Structured technical modes + flexible user prompts
+- **Advanced CodeMirror Interface**: Enhanced editing with AI-generated content insertion
+- **Intelligent Session Management**: Generated content handling and positional insertion
+- **Multiple AI Model Support**: Dynamic server and model configuration
+- **Robust Error Validation**: Complete error handling for external API communication
+- **New ia.php Library**: Complete functions for prompt rendering and Gemini API communication
+- **New Database Tables**: ai_servers, ai_modes, ai_prompts for AI system management
+- **Advanced JavaScript Interface**: AI controls and content generation with CodeMirror
 
 ### Changed
-- **Módulo admin-paginas**: Integração completa com sistema de IA para geração assistida
-- **Arquitetura de IA**: Sistema dual de prompts (técnico + flexível) implementado
-- **Interface de Edição**: CodeMirror aprimorado com inserção posicional de conteúdo IA
-- **Sistema de Sessão**: Gerenciamento inteligente de conteúdo gerado
-- **Validações de API**: Tratamento robusto de erros e comunicação externa
+- **admin-pages Module**: Complete integration with AI system for assisted generation
+- **AI Architecture**: Dual prompt system (technical + flexible) implemented
+- **Editing Interface**: Enhanced CodeMirror with AI content positional insertion
 
 ### Technical Details
-- **New Tables**: servidores_ia, modos_ia, prompts_ia
+- **New Tables**: ai_servers, ai_modes, ai_prompts
 - **New Library**: ia.php with complete AI functions
-- **New Features**: AI-powered content generation, session management, positional insertion
 - **API Integration**: Google Gemini API with error handling and validation
-- **UI Enhancements**: Advanced CodeMirror interface with AI controls
 
 ## [2.2.2] - 2025-09-26
 
 ### Added
-- **Sistema Multilíngue Completo**: Suporte total pt-br/en com interface administrativa
-- **Seletor de Idioma Administrativo**: Nova aba no admin-environment para mudança dinâmica de idioma
-- **Sistema de Plugins V2**: Arquitetura completamente refatorada com detecção dinâmica
-- **Templates de Desenvolvimento Automatizados**: Scripts padronizados para criação de plugins
-- **Rastreio Completo de Origem**: Injeção automática de slug em tabelas com coluna plugin
-- **Resolução Dinâmica de Ambiente**: Environment.json dinâmico em todos os scripts
-- **Estrutura de Plugins Modernizada**: Nova arquitetura para desenvolvimento Conn2Flow
-- **Instalador Multilíngue**: Suporte à seleção de idioma durante instalação
-- **Página de Sucesso Bilíngue**: Interface de conclusão em português e inglês
+- **Complete Multilingual System**: Full pt-br/en support with administrative interface
+- **Administrative Language Selector**: New tab in admin-environment for dynamic language change
+- **Plugins V2 System**: Completely refactored architecture with dynamic detection
+- **Multilingual Installer**: Language selection support during installation
 
 ### Changed
-- **Configuração Multilíngue**: Interface intuitiva para mudança dinâmica de idioma (pt-br/en)
-- **Persistência de Configurações**: Salvamento automático no arquivo .env
-- **Correção Template .env**: LANGUAGE_DEFAULT agora usa pt-br como padrão nas atualizações
-- **Merge .env Inteligente**: Sistema automático de correção durante atualizações
+- **Multilingual Configuration**: Intuitive interface for dynamic language change (pt-br/en)
+- **Settings Persistence**: Automatic saving to .env file
 
 ### Fixed
-- **Correção Template .env**: Valor padrão pt-br para LANGUAGE_DEFAULT
-- **Merge .env Inteligente**: Sistema automático de correção durante atualizações
-
-## [instalador-v1.5.0] - 2025-09-26
-
-### Added
-- **Suporte ao Sistema Multilíngue**: Instalação preparada para recursos v2.2.x
-- **Seleção de Idioma na Instalação**: Interface para escolher idioma durante setup
-- **Página de Sucesso Bilíngue**: Conclusão da instalação em português e inglês
-- **Compatibilidade com Plugins V2**: Preparação para arquitetura moderna de plugins
-
-### Changed
-- **Workflow de Release Atualizado**: Documentação completa para sistema multilíngue
-- **Compatibilidade com Gestor v2.2.x**: Suporte aos novos recursos implementados
-
-### Fixed
-- **Correções de Robustez**: Melhorias no processo de instalação
+- **.env Template Fix**: Default pt-br value for LANGUAGE_DEFAULT
 
 ## [2.1.0] - 2025-09-18
 
 ### Added
-- **Campo html_extra_head**: Permite incluir HTML extra na seção HEAD de páginas e componentes
-- **Campo css_compiled**: Suporte a CSS compilado para páginas, componentes e layouts
-- **Editor CodeMirror**: Interface avançada para edição de HTML e CSS com syntax highlighting
-- **Funcionalidade de Backup**: Sistema de backup automático para novos campos
-- **Migrações de Banco**: Scripts automáticos para adicionar novos campos às tabelas existentes
+- **html_extra_head Field**: Allows including extra HTML in the HEAD section
+- **css_compiled Field**: CSS compiled support for pages, components, and layouts
+- **CodeMirror Editor**: Advanced interface for HTML and CSS editing
 
 ### Changed
-- **Núcleo do Sistema**: Arquivos gestor.php e bibliotecas atualizados para processar novos campos
-- **Módulos Admin**: admin-paginas e admin-componentes totalmente compatíveis com novos campos
-- **Interface de Usuário**: Novas abas e controles para edição dos campos adicionais
-- **Processamento de Templates**: Suporte completo a variáveis @[[html_extra_head]]@ e @[[css_compiled]]@
-
-### Fixed
-- **Função formatar_url**: Sempre adiciona barra no final da URL formatada
-- **Tratamento de String Vazia**: Retorna "/" quando a entrada está vazia
-- **Consistência de URLs**: Todas as URLs geradas terminam com "/" conforme esperado
-
-### Technical Details
-- **Database Migrations**:
-  - 20250918120000_add_css_compiled_to_tables.php
-  - 20250918130000_add_html_extra_head_to_tables.php
-- **New Fields**: html_extra_head (mediumtext), css_compiled (mediumtext)
-- **Affected Tables**: paginas, componentes, layouts
-- **New Variables**: @[[pagina#html_extra_head]]@, @[[componente#html_extra_head]]@, @[[pagina#css_compiled]]@, @[[componente#css_compiled]]@, @[[layout#css_compiled]]@
+- **System Core**: gestor.php files and libraries updated for new fields
+- **Admin Modules**: admin-pages and admin-components fully compatible
 
 ## [2.0.21] - 2025-09-18
 
 ### Fixed
-- **Função formatar_url Corrigida**: Sempre adiciona barra no final da URL
-- **Tratamento de String Vazia**: Retorna "/" quando entrada vazia
-- **Consistência de URLs**: Todas as URLs terminam com "/" conforme esperado
-
-### Changed
-- **Módulo admin-paginas**: Função `formatar_url()` modificada para garantir barra final
-
-### Added
-- **Função de Preview HTML Aprimorada**: Filtragem automática de conteúdo dentro da tag `<body>` em previews
-- **Compatibilidade com HTML Estruturado**: Suporte a HTML completo ou apenas conteúdo do body
-- **Melhoria na Experiência de Preview**: Remoção automática de tags desnecessárias do head nos previews
-
-### Changed
-- **Preview Tailwind CSS e Fomantic UI**: Aplicação da função `filtrarHtmlBody()` em ambos os frameworks
-- **Módulos admin-componentes e admin-paginas**: Implementação consistente da filtragem HTML
-
-### Fixed
-- **Preview de HTML Estruturado**: Correção na exibição de previews com tags `<html>`, `<head>` e `<body>`
-
-### Added
-- **Sistema de Logging Unificado de Plugins**: Unificação completa dos logs de operações de banco de dados de plugins com prefixo `[db-internal]` para identificação clara
-- **Componente de Exibição de Versão**: Novo componente elegante para exibir versão do gestor no layout administrativo usando Semantic UI
-- **Correções Críticas na Instalação de Plugins**: Resolução de conflitos de função e compatibilidade web/CLI para instalação robusta
-
-### Changed
-- **Refatoração do Sistema de Logs**: Substituição de 25+ chamadas `log_disco()` por `log_unificado()` em scripts de atualização de plugins
-- **Melhoria na Arquitetura de Plugins**: Detecção automática de logger externo e prefixação inteligente de logs
-
-### Fixed
-- **Correção de Conflitos de Função**: Resolução de "Cannot redeclare function" em contexto web durante instalação de plugins
-- **Compatibilidade Web/CLI**: Adição de declarações globais adequadas para execução web de scripts de instalação
-- **Namespace Conflicts**: Correção de conflitos de nomes em scripts de atualização de banco de dados de plugins
-
-### Security
-- **Rastreabilidade Aprimorada**: Logs unificados facilitam auditoria e debugging de operações de plugins
-
-### Added
-- **Sistema de Plugins Aprimorado**: Correções críticas e novas funcionalidades para plugins
-- **Arquitetura de Plugins V2**: Detecção dinâmica de Data.json e rastreio completo de origem
-- **Templates de Desenvolvimento**: Padronização e automação completa para criação de plugins
-- **Sistema de Rastreio de Dados**: Injeção automática de slug em tabelas com coluna plugin
-- **Resolução Dinâmica de Ambiente**: Environment.json dinâmico em todos os scripts de automação
-- **Estrutura de Plugins Refatorada**: Nova arquitetura para desenvolvimento de plugins Conn2Flow
-- **Documentação Abrangente**: Sistema completo de documentação para módulos e plugins
-- **Limpeza Ampla do Sistema**: Desabilitação de ferramentas legadas e simplificação da estrutura
-
-### Changed
-- **Migração para IDs Textuais**: Campos de referência de módulos convertidos para formato textual
-- **Scripts de Automação Padronizados**: Resolução dinâmica do environment.json em todos os scripts
-- **Arquitetura de Plugins Modernizada**: Estrutura V2 com detecção automática e templates
-
-### Fixed
-- **Correções Críticas em Plugins**: Sistema de plugins com detecção dinâmica e correções de origem
-- **Timezone Corrigido**: Ajuste para America/Sao_Paulo no ambiente Docker
-- **Compatibilidade de Scripts**: Todos os scripts agora funcionam em qualquer repositório de plugin
-
-### Security
-- **Rastreabilidade Completa**: Sistema de origem de dados para futura desinstalação limpa de plugins
+- **format_url Function Fixed**: Always adds slash at the end of URL
 
 ## [1.16.0] - 2025-09-02
 
 ### Added
-- Sistema de Preview TailwindCSS/FomanticUI com CodeMirror
-- Modal responsivo para preview de recursos CSS
-- Suporte a múltiplos frameworks CSS (TailwindCSS e FomanticUI)
-- Editor de código com syntax highlighting
-- Sistema de exportação de recursos CSS aprimorado
-
-### Changed
-- Melhorias na interface de preview
-- Otimização do sistema de modals
-
-### Fixed
-- Correções na renderização de preview CSS
-- Melhorias na compatibilidade com diferentes frameworks
-
-## [1.15.0] - 2025-08-31
-
-### Added
-- Sistema de arquitetura de recursos aprimorado
-- Melhorias no processo de exportação
-- Validação automática de recursos
-
-### Changed
-- Otimização da estrutura de dados de recursos
-- Melhoria na performance de exportação
-
-### Fixed
-- Correções críticas no sistema de exportação
-- Resolução de bugs na validação de recursos
-
-## [1.14.0] - 2025-08-30
-
-### Added
-- Sistema de limpeza e otimização HTML/CSS
-- Melhorias na estrutura de componentes
-- Validação automática de estrutura HTML
-
-### Changed
-- Reorganização da arquitetura de layout
-- Otimização do processo de limpeza
-
-### Fixed
-- Correções na estrutura HTML/CSS
-- Melhorias na validação de componentes
-
-## [1.13.0] - 2025-08-29
-
-### Added
-- Sistema de páginas e componentes aprimorado
-- Melhorias no gerenciamento de layouts
-- Validação de estrutura de páginas
-
-### Changed
-- Otimização do sistema de componentes
-- Melhoria na organização de layouts
-
-### Fixed
-- Correções no sistema de páginas
-- Resolução de problemas de estrutura
-
-## [1.12.0] - 2025-08-28
-
-### Added
-- Melhorias no sistema de instalação
-- Aprimoramento do instalador automático
-- Validação de ambiente pós-instalação
-
-### Changed
-- Otimização do processo de instalação
-- Melhoria na detecção de dependências
-
-### Fixed
-- Correções críticas no instalador
-- Resolução de problemas de compatibilidade
-
-## [1.11.0] - 2025-08-27
-
-### Added
-- Sistema de correções críticas
-- Melhorias na estabilidade do sistema
-- Validação automática de integridade
-
-### Changed
-- Otimização da performance geral
-- Melhoria na gestão de erros
-
-### Fixed
-- Correções críticas de bugs
-- Melhorias na estabilidade
-
-## [1.10.0] - 2025-08-26
-
-### Added
-- Sistema de preview com modals responsivos
-- Melhorias na interface de usuário
-- Validação de responsividade
-
-### Changed
-- Otimização do sistema de preview
-- Melhoria na experiência do usuário
-
-### Fixed
-- Correções na responsividade
-- Melhorias na compatibilidade
-
-## [1.9.0] - 2025-08-25
-
-### Added
-- Sistema de atualizações automáticas
-- Melhorias no gerenciamento de versões
-- Validação de atualizações
-
-### Changed
-- Otimização do processo de atualização
-- Melhoria na gestão de versões
-
-### Fixed
-- Correções no sistema de atualizações
-- Resolução de problemas de versionamento
-
-## [1.8.5] - 2025-07-31
-
-### Added
-- Preservação de logs durante instalação
-- Sistema de login automático aprimorado
-- Reorganização de configurações cPanel
-
-### Changed
-- Melhoria na experiência de instalação
-- Otimização da preservação de dados
-
-### Fixed
-- Correções críticas no sistema de logs
-- Melhorias na estabilidade do login automático
-
-## [1.8.4] - 2025-07-30
-
-### Added
-- Detecção automática de URL_RAIZ
-- Sistema de recuperação inteligente
-- Correções SQL automáticas
-
-### Changed
-- Melhoria na detecção de configurações
-- Otimização do sistema de recuperação
-
-### Fixed
-- Correções críticas em SQL
-- Melhorias na detecção de URLs
+- TailwindCSS/FomanticUI Preview System with CodeMirror
+- Multiple CSS framework support
 
 ## [1.8.0] - 2025-07-25
 
 ### Added
-- Sistema híbrido de migração com Phinx
-- Execução automática de migrações e seeders
-- Sistema de configuração por ambiente (.env)
-- Instalador automático completo
-
-### Changed
-- Migração de sistema SQL para Phinx
-- Melhoria na gestão de configurações
-
-### Fixed
-- Correções no sistema de migrações
-- Melhorias na estabilidade do instalador
-
-## [1.7.0] - 2025-07-20
-
-### Added
-- Sistema de releases automatizados
-- GitHub Actions para deploy contínuo
-- Workflows de automação
-- Tags automáticas de versionamento
-
-### Changed
-- Modernização do sistema de releases
-- Melhoria na documentação
-
-### Fixed
-- Correções nos workflows de release
-- Melhorias na automatização
-
-## [1.6.0] - 2025-07-15
-
-### Added
-- Sistema multilíngue híbrido completo
-- Suporte a múltiplos idiomas
-- Gestão dinâmica de traduções
-
-### Changed
-- Otimização do sistema multilíngue
-- Melhoria na performance de traduções
-
-### Fixed
-- Correções no sistema de idiomas
-- Melhorias na gestão de traduções
+- Hybrid migration system with Phinx
+- Complete automatic installer
 
 ## [1.0.0] - 2025-02-01
 
 ### Added
-- Versão inicial do sistema Conn2Flow
-- Sistema de gestão de conteúdo
-- Estrutura modular básica
-- Sistema de autenticação
-- Interface administrativa
-
-### Security
-- Implementação de autenticação segura
-- Proteção contra vulnerabilidades básicas
+- Initial Conn2Flow system version
+- Content management system
+- Basic modular structure
+- Authentication system
 
 ---
 
-## Tipos de Mudanças
+## Types of Changes
 
-- `Added` para novas funcionalidades
-- `Changed` para mudanças em funcionalidades existentes
-- `Deprecated` para funcionalidades que serão removidas em breve
-- `Removed` para funcionalidades removidas
-- `Fixed` para correções de bugs
-- `Security` para melhorias de segurança
-
-## Links de Comparação
-
-[Unreleased]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.3.0...HEAD
-[2.3.0]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.2.2...gestor-v2.3.0
-[2.2.2]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.1.0...gestor-v2.2.2
-[instalador-v1.5.0]: https://github.com/conecta2me/conn2flow/compare/instalador-v1.4.0...instalador-v1.5.0
-[2.1.0]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.0.21...gestor-v2.1.0
-[2.0.21]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.0.19...gestor-v2.0.21
-[2.0.19]: https://github.com/conecta2me/conn2flow/compare/gestor-v2.0.0...gestor-v2.0.19
-[2.0.0]: https://github.com/conecta2me/conn2flow/compare/gestor-v1.16.0...gestor-v2.0.0
-[1.16.0]: https://github.com/conecta2me/conn2flow/compare/v1.15.0...gestor-v1.16.0
-[1.15.0]: https://github.com/conecta2me/conn2flow/compare/v1.14.0...v1.15.0
-[1.14.0]: https://github.com/conecta2me/conn2flow/compare/v1.13.0...v1.14.0
-[1.13.0]: https://github.com/conecta2me/conn2flow/compare/v1.12.0...v1.13.0
-[1.12.0]: https://github.com/conecta2me/conn2flow/compare/v1.11.0...v1.12.0
-[1.11.0]: https://github.com/conecta2me/conn2flow/compare/v1.10.0...v1.11.0
-[1.10.0]: https://github.com/conecta2me/conn2flow/compare/v1.9.0...v1.10.0
-[1.9.0]: https://github.com/conecta2me/conn2flow/compare/v1.8.5...v1.9.0
-[1.8.5]: https://github.com/conecta2me/conn2flow/compare/v1.8.4...v1.8.5
-[1.8.4]: https://github.com/conecta2me/conn2flow/compare/v1.8.0...v1.8.4
-[1.8.0]: https://github.com/conecta2me/conn2flow/compare/v1.7.0...v1.8.0
-[1.7.0]: https://github.com/conecta2me/conn2flow/compare/v1.6.0...v1.7.0
-[1.6.0]: https://github.com/conecta2me/conn2flow/compare/v1.0.0...v1.6.0
-[1.0.0]: https://github.com/conecta2me/conn2flow/releases/tag/v1.0.0
+- Added for new features
+- Changed for changes in existing features
+- Deprecated for features that will be removed soon
+- Removed for removed features
+- Fixed for bug fixes
+- Security for security improvements

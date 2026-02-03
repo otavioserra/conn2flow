@@ -299,8 +299,91 @@ $(document).ready(function () {
 
         modelos_tem_mais = tem_mais;
 
-        // Não precisa de refresh para cards
+        // Aplicar filtro se houver busca ativa
+        modelosFiltrar();
     }
+
+    // ===== Filtro de Modelos de Páginas
+
+    /**
+     * Filtra os cards de modelos baseado na query de busca
+     * @param {string} query - Texto de busca (opcional, usa o valor do input se não fornecido)
+     */
+    function modelosFiltrar(query) {
+        var searchInput = document.getElementById('modelos-search-input');
+        var cardsContainer = document.getElementById('modelos-cards');
+        var noResultsMessage = document.getElementById('modelos-no-results');
+        var loadMoreBtn = document.getElementById('modelos-load-more');
+
+        if (!searchInput || !cardsContainer) return;
+
+        // Usar query fornecida ou valor do input
+        var searchQuery = (typeof query !== 'undefined') ? query : searchInput.value;
+        var normalizedQuery = searchQuery.toLowerCase().trim();
+
+        var cards = cardsContainer.querySelectorAll('.modelo-card');
+        var visibleCount = 0;
+
+        cards.forEach(function (card) {
+            var header = card.querySelector('.header');
+            var meta = card.querySelector('.meta');
+            var modeloId = card.getAttribute('data-modelo-id') || '';
+
+            var headerText = header ? header.textContent.toLowerCase() : '';
+            var metaText = meta ? meta.textContent.toLowerCase() : '';
+
+            var matches = normalizedQuery === '' ||
+                headerText.includes(normalizedQuery) ||
+                metaText.includes(normalizedQuery) ||
+                modeloId.toLowerCase().includes(normalizedQuery);
+
+            if (matches) {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Mostrar/ocultar mensagem de nenhum resultado
+        if (noResultsMessage) {
+            if (visibleCount === 0 && normalizedQuery !== '' && cards.length > 0) {
+                noResultsMessage.style.display = 'block';
+            } else {
+                noResultsMessage.style.display = 'none';
+            }
+        }
+
+        // Esconder botão "Carregar Mais" quando há filtro ativo
+        if (loadMoreBtn) {
+            if (normalizedQuery !== '' && modelos_tem_mais) {
+                // Se há filtro ativo e ainda tem mais para carregar, mostrar dica
+                loadMoreBtn.style.display = 'block';
+            } else if (normalizedQuery === '' && modelos_tem_mais) {
+                loadMoreBtn.style.display = 'block';
+            } else {
+                loadMoreBtn.style.display = 'none';
+            }
+        }
+    }
+
+    // Event listener para input de busca de modelos (debounced)
+    $(document).on('input', '#modelos-search-input', function () {
+        var input = this;
+        clearTimeout(input._debounceTimer);
+        input._debounceTimer = setTimeout(function () {
+            modelosFiltrar(input.value);
+        }, 150);
+    });
+
+    // Event listener para tecla Escape no campo de busca
+    $(document).on('keydown', '#modelos-search-input', function (e) {
+        if (e.key === 'Escape') {
+            this.value = '';
+            modelosFiltrar('');
+            this.blur();
+        }
+    });
 
     function modeloSelecionar(modelo_id) {
         if (!modelos[modelo_id]) {

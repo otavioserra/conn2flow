@@ -1,0 +1,1329 @@
+/**
+ * Dashboard 3D - Orquestrador Principal
+ * Coordena todos os módulos do Dashboard 3D
+ * 
+ * Módulos:
+ * - dashboard-3d-config.js - Configurações
+ * - dashboard-3d-camera.js - Controles de câmera
+ * - dashboard-3d-geometry.js - Geometria 3D
+ * - dashboard-3d-cards.js - Cards dos módulos
+ * - dashboard-3d-ui.js - Interface e interações
+ */
+
+(function (global) {
+    'use strict';
+
+    // =========================================
+    // Estado Global
+    // =========================================
+
+    let modulesData = [];
+    let groupsData = [];
+    let scene = null;
+    let mainCamera = null;
+
+    // Referências aos módulos
+    const CONFIG = global.Dashboard3DConfig;
+    const Camera = global.Dashboard3DCamera;
+    const Geometry = global.Dashboard3DGeometry;
+    const Cards = global.Dashboard3DCards;
+    const UI = global.Dashboard3DUI;
+
+    // =========================================
+    // Inicialização
+    // =========================================
+
+    function init() {
+        console.log('Dashboard 3D: Inicializando orquestrador...');
+
+        // Verificar se todos os módulos estão carregados
+        if (!CONFIG || !Camera || !Geometry || !Cards || !UI) {
+            console.error('Dashboard 3D: Um ou mais módulos não foram carregados');
+            console.log('Módulos:', { CONFIG: !!CONFIG, Camera: !!Camera, Geometry: !!Geometry, Cards: !!Cards, UI: !!UI });
+            hideLoading();
+            return;
+        }
+
+        scene = document.querySelector('a-scene');
+
+        if (!scene) {
+            console.error('Dashboard 3D: Cena A-Frame não encontrada');
+            hideLoading();
+            return;
+        }
+
+        console.log('Dashboard 3D: Cena encontrada, verificando se carregou...');
+
+        // Timeout de fallback caso o evento loaded nunca dispare
+        var fallbackTimeout = setTimeout(function () {
+            console.warn('Dashboard 3D: Timeout - forçando inicialização');
+            if (!scene._dashboard3dLoaded) {
+                onSceneLoaded();
+            }
+        }, 3000);
+
+        if (scene.hasLoaded) {
+            console.log('Dashboard 3D: Cena já estava carregada');
+            clearTimeout(fallbackTimeout);
+            onSceneLoaded();
+        } else {
+            console.log('Dashboard 3D: Aguardando evento loaded...');
+            scene.addEventListener('loaded', function () {
+                console.log('Dashboard 3D: Evento loaded recebido');
+                clearTimeout(fallbackTimeout);
+                onSceneLoaded();
+            });
+        }
+    }
+
+    function onSceneLoaded() {
+        // Evitar execução dupla
+        if (scene._dashboard3dLoaded) {
+            console.log('Dashboard 3D: Já foi carregado, ignorando');
+            return;
+        }
+        scene._dashboard3dLoaded = true;
+
+        console.log('Dashboard 3D: Cena A-Frame carregada, criando elementos...');
+
+        // Guardar referência da câmera
+        mainCamera = document.getElementById('main-camera');
+
+        try {
+            // Carregar dados dos módulos
+            loadModulesData();
+            console.log('Dashboard 3D: Dados carregados');
+
+            // Registrar componente custom-line
+            Geometry.registerCustomLineComponent();
+
+            // Inicializar módulo de câmera
+            Camera.init(mainCamera);
+            console.log('Dashboard 3D: Câmera inicializada');
+
+            // Criar geometria 3D
+            Geometry.createCentralSphere(groupsData);
+            console.log('Dashboard 3D: Esfera central criada');
+
+            Geometry.createRingSegments(groupsData);
+            console.log('Dashboard 3D: Anel criado');
+
+            // Criar cards dos módulos
+            Cards.createCards(modulesData, groupsData);
+            console.log('Dashboard 3D: Cards criados');
+
+            Cards.createConnections();
+            console.log('Dashboard 3D: Conexões criadas');
+
+            // Criar partículas de fundo
+            Geometry.createParticles();
+            console.log('Dashboard 3D: Partículas criadas');
+
+            // Inicializar UI com dados
+            UI.init(modulesData, groupsData);
+            UI.createLegend();
+            console.log('Dashboard 3D: Legenda criada');
+
+            // Configurar event listeners
+            UI.setupEventListeners();
+            console.log('Dashboard 3D: Event listeners configurados');
+
+            // Inicializar orbit-controls após tudo carregar
+            Camera.initializeOrbitControls();
+
+            setTimeout(function () {
+                UI.hideLoading();
+                console.log('Dashboard 3D: Loading escondido - PRONTO!');
+            }, 300);
+
+        } catch (error) {
+            console.error('Dashboard 3D: Erro durante inicialização:', error);
+            hideLoading();
+        }
+    }
+
+    /**
+     * Inicializa os orbit-controls e salva o estado inicial
+     */
+    function initializeOrbitControls() {
+        // Aguardar um pouco para garantir que o componente orbit-controls foi inicializado
+        setTimeout(() => {
+            const controls = getOrbitControls();
+            if (controls) {
+                // Configurar limites
+                controls.minDistance = CONFIG.camera.minDistance;
+                controls.maxDistance = CONFIG.camera.maxDistance;
+
+                // Salvar estado inicial para reset funcionar corretamente
+                controls.saveState();
+
+                // Listener para atualizar indicador de zoom quando scroll do mouse é usado
+                controls.addEventListener('change', updateZoomIndicator);
+
+                // Atualizar indicador inicial
+                updateZoomIndicator();
+
+                console.log('Dashboard 3D: OrbitControls inicializado e estado salvo');
+            } else {
+                console.warn('Dashboard 3D: OrbitControls não encontrado na inicialização');
+            }
+        }, 100);
+    }
+
+    // =========================================
+    // Carregar Dados
+    // =========================================
+
+    function loadModulesData() {
+        const dataEl = document.getElementById('dashboard-3d-data');
+        if (dataEl) {
+            try {
+                const data = JSON.parse(dataEl.textContent.trim());
+                modulesData = data.modules || [];
+                groupsData = data.groups || [];
+                console.log('Dashboard 3D: Dados carregados', { modules: modulesData.length, groups: groupsData.length });
+            } catch (e) {
+                console.error('Dashboard 3D: Erro ao carregar dados:', e);
+                createSampleData();
+            }
+        } else {
+            console.warn('Dashboard 3D: Elemento de dados não encontrado');
+            createSampleData();
+        }
+    }
+
+    function createSampleData() {
+        groupsData = [
+            { id: 'admin-sistema', nome: 'Administração de Sistema', descricao: 'Configurações globais' },
+            { id: 'admin-usuarios', nome: 'Administração de Usuários', descricao: 'Contas e permissões' },
+            { id: 'publicador', nome: 'Publicador', descricao: 'Gerenciar conteúdo' },
+            { id: 'relatorios', nome: 'Relatórios', descricao: 'Analytics e dashboards' },
+            { id: 'configuracoes', nome: 'Configurações', descricao: 'Parâmetros do sistema' },
+            { id: 'integracoes', nome: 'Integrações', descricao: 'APIs e webhooks' }
+        ];
+
+        modulesData = [
+            { id: 'arquivos', nome: 'Arquivos', grupo: 'admin-sistema', link: '#', icon: 'folder', descricao: 'Gerenciar arquivos' },
+            { id: 'plugins', nome: 'Plugins', grupo: 'admin-sistema', link: '#', icon: 'box', descricao: 'Instalar plugins' },
+            { id: 'usuarios', nome: 'Usuários', grupo: 'admin-usuarios', link: '#', icon: 'users', descricao: 'Gerenciar usuários' },
+            { id: 'perfis', nome: 'Perfis', grupo: 'admin-usuarios', link: '#', icon: 'user', descricao: 'Perfis de acesso' }
+        ];
+    }
+
+    // =========================================
+    // Criar Esfera Central
+    // =========================================
+
+    function createCentralSphere() {
+        const container = document.getElementById('ring-container');
+        if (!container) return;
+
+        // Posição Y da esfera: no topo dos tubos verticais
+        const sphereY = CONFIG.ring.height + 0.6; // Acima dos tubos
+
+        // Esfera central com gradiente de cores
+        const sphere = document.createElement('a-sphere');
+        sphere.setAttribute('radius', 1.2);
+        sphere.setAttribute('position', `0 ${sphereY} 0`);
+        sphere.setAttribute('material', `
+            color: #1a1a3e;
+            emissive: #4a9eff;
+            emissiveIntensity: 0.4;
+            metalness: 0.8;
+            roughness: 0.2;
+            opacity: 0.9;
+            transparent: true
+        `);
+        sphere.setAttribute('animation', `
+            property: rotation;
+            to: 0 360 0;
+            dur: 20000;
+            loop: true;
+            easing: linear
+        `);
+        sphere.setAttribute('id', 'central-sphere');
+        container.appendChild(sphere);
+
+        // Anel interno decorativo (ao redor da esfera)
+        const innerRing = document.createElement('a-torus');
+        innerRing.setAttribute('radius', 1.8);
+        innerRing.setAttribute('radius-tubular', 0.03);
+        innerRing.setAttribute('position', `0 ${sphereY} 0`);
+        innerRing.setAttribute('rotation', '90 0 0');
+        innerRing.setAttribute('material', 'color: #4a9eff; emissive: #4a9eff; emissiveIntensity: 0.8; opacity: 0.6');
+        innerRing.setAttribute('animation', `
+            property: rotation;
+            to: 90 360 0;
+            dur: 15000;
+            loop: true;
+            easing: linear
+        `);
+        container.appendChild(innerRing);
+
+        // Segundo anel perpendicular
+        const innerRing2 = document.createElement('a-torus');
+        innerRing2.setAttribute('radius', 2.0);
+        innerRing2.setAttribute('radius-tubular', 0.02);
+        innerRing2.setAttribute('position', `0 ${sphereY} 0`);
+        innerRing2.setAttribute('rotation', '0 0 0');
+        innerRing2.setAttribute('material', 'color: #6dd400; emissive: #6dd400; emissiveIntensity: 0.6; opacity: 0.4');
+        innerRing2.setAttribute('animation', `
+            property: rotation;
+            to: 360 0 0;
+            dur: 25000;
+            loop: true;
+            easing: linear
+        `);
+        container.appendChild(innerRing2);
+
+        // Criar tubos verticais conectando a esfera ao anel base
+        createVerticalTubes(container, sphereY);
+    }
+
+    /**
+     * Cria os tubos verticais que conectam a esfera central ao anel base
+     */
+    function createVerticalTubes(container, sphereY) {
+        const segmentCount = Math.min(groupsData.length, CONFIG.segmentColors.length);
+        const anglePerSegment = (Math.PI * 2) / segmentCount;
+
+        // Raio onde os tubos conectam (na borda da esfera)
+        const sphereRadius = 1.2;
+        const tubeConnectionRadius = sphereRadius * 0.8; // Conectar perto da esfera
+
+        for (let i = 0; i < segmentCount; i++) {
+            const color = CONFIG.segmentColors[i];
+            const angle = (i * anglePerSegment) - (Math.PI / 2) + (anglePerSegment / 2);
+
+            // Posição do tubo no anel base
+            const baseX = Math.cos(angle) * CONFIG.ring.radius;
+            const baseZ = Math.sin(angle) * CONFIG.ring.radius;
+
+            // Posição onde o tubo conecta na esfera
+            const topX = Math.cos(angle) * tubeConnectionRadius;
+            const topZ = Math.sin(angle) * tubeConnectionRadius;
+
+            // Calcular posição central e altura do tubo
+            const centerX = (baseX + topX) / 2;
+            const centerZ = (baseZ + topZ) / 2;
+            const tubeHeight = Math.sqrt(
+                Math.pow(baseX - topX, 2) +
+                Math.pow(sphereY, 2) +
+                Math.pow(baseZ - topZ, 2)
+            );
+
+            // Calcular rotação do tubo para apontar para a esfera
+            const dx = topX - baseX;
+            const dy = sphereY;
+            const dz = topZ - baseZ;
+
+            // Ângulo no plano XZ
+            const rotY = Math.atan2(dx, dz) * (180 / Math.PI);
+
+            // Ângulo de inclinação
+            const horizontalDist = Math.sqrt(dx * dx + dz * dz);
+            const rotX = Math.atan2(horizontalDist, dy) * (180 / Math.PI);
+
+            // Criar o tubo vertical (cilindro inclinado)
+            const tube = document.createElement('a-cylinder');
+            tube.setAttribute('radius', CONFIG.ring.tubeRadius * 0.6);
+            tube.setAttribute('height', tubeHeight);
+            tube.setAttribute('position', `${centerX} ${sphereY / 2} ${centerZ}`);
+            tube.setAttribute('rotation', `${rotX} ${rotY} 0`);
+            tube.setAttribute('material', `
+                color: ${color}; 
+                emissive: ${color}; 
+                emissiveIntensity: 0.4; 
+                metalness: 0.4; 
+                roughness: 0.6;
+                opacity: 0.85;
+                transparent: true
+            `);
+            tube.setAttribute('class', 'vertical-tube');
+            tube.setAttribute('data-group-index', i);
+
+            container.appendChild(tube);
+        }
+    }
+
+    // =========================================
+    // Criar Segmentos do Anel
+    // =========================================
+
+    function createRingSegments() {
+        const container = document.getElementById('ring-container');
+        if (!container) return;
+
+        const segmentCount = Math.min(groupsData.length, CONFIG.segmentColors.length);
+        const anglePerSegment = (Math.PI * 2) / segmentCount;
+
+        for (let i = 0; i < segmentCount; i++) {
+            const group = groupsData[i] || { id: `grupo-${i}`, nome: `Grupo ${i + 1}`, descricao: '' };
+            const color = CONFIG.segmentColors[i];
+            const arcDegrees = (360 / segmentCount) - 3;
+
+            // Segmento do anel
+            const segment = document.createElement('a-torus');
+            segment.setAttribute('radius', CONFIG.ring.radius);
+            segment.setAttribute('radius-tubular', CONFIG.ring.tubeRadius);
+            segment.setAttribute('segments-radial', 16);
+            segment.setAttribute('segments-tubular', 32);
+            segment.setAttribute('arc', arcDegrees);
+            segment.setAttribute('rotation', `0 ${(i * 360 / segmentCount) - 90} 0`);
+            segment.setAttribute('material', `color: ${color}; emissive: ${color}; emissiveIntensity: 0.3; metalness: 0.3; roughness: 0.7`);
+            segment.setAttribute('class', 'ring-segment');
+            segment.setAttribute('data-group', group.id);
+
+            container.appendChild(segment);
+
+            // Label do grupo
+            const labelAngle = (i * anglePerSegment) - (Math.PI / 2) + (anglePerSegment / 2);
+            const labelDistance = CONFIG.ring.radius + 1.8;
+            const labelX = Math.cos(labelAngle) * labelDistance;
+            const labelZ = Math.sin(labelAngle) * labelDistance;
+
+            const label = document.createElement('a-entity');
+            label.setAttribute('position', `${labelX} 0.5 ${labelZ}`);
+            label.setAttribute('text', `value: ${group.nome}; color: ${color}; align: center; width: 8; font: roboto`);
+            label.setAttribute('look-at', '[camera]');
+            container.appendChild(label);
+
+            if (group.descricao) {
+                const descLabel = document.createElement('a-entity');
+                descLabel.setAttribute('position', `${labelX} 0 ${labelZ}`);
+                descLabel.setAttribute('text', `value: ${group.descricao}; color: #888; align: center; width: 6; font: roboto`);
+                descLabel.setAttribute('look-at', '[camera]');
+                container.appendChild(descLabel);
+            }
+        }
+    }
+
+    // =========================================
+    // Criar Cards dos Módulos
+    // =========================================
+
+    function createCards() {
+        const container = document.getElementById('cards-container');
+        if (!container) return;
+
+        const modulesByGroup = {};
+        modulesData.forEach(module => {
+            const groupId = module.grupo || 'outros';
+            if (!modulesByGroup[groupId]) modulesByGroup[groupId] = [];
+            modulesByGroup[groupId].push(module);
+        });
+
+        const segmentCount = Math.min(groupsData.length, CONFIG.segmentColors.length);
+        const anglePerSegment = (Math.PI * 2) / segmentCount;
+
+        groupsData.forEach((group, groupIndex) => {
+            if (groupIndex >= segmentCount) return;
+
+            const modules = modulesByGroup[group.id] || [];
+            const color = CONFIG.segmentColors[groupIndex];
+            const groupCenterAngle = (groupIndex * anglePerSegment) - (Math.PI / 2) + (anglePerSegment / 2);
+
+            const cardDistance = CONFIG.ring.radius + CONFIG.cards.distanceFromRing;
+            const cardSpread = anglePerSegment * 0.7;
+
+            modules.forEach((module, moduleIndex) => {
+                const moduleCount = modules.length;
+                const cardAngle = groupCenterAngle - (cardSpread / 2) + (cardSpread * (moduleIndex + 0.5) / Math.max(moduleCount, 1));
+
+                const noise = CONFIG.cards.noiseAmount;
+                const noiseX = (Math.random() - 0.5) * noise;
+                const noiseY = (Math.random() - 0.5) * noise * 0.5;
+                const noiseZ = (Math.random() - 0.5) * noise;
+
+                const cardX = Math.cos(cardAngle) * cardDistance + noiseX;
+                const cardY = CONFIG.ring.height + noiseY + (moduleIndex % 2) * 0.3;
+                const cardZ = Math.sin(cardAngle) * cardDistance + noiseZ;
+
+                const card = document.createElement('a-entity');
+                card.setAttribute('class', 'module-card clickable');
+                card.setAttribute('position', `${cardX} ${cardY} ${cardZ}`);
+                // Billboard: sempre olhar para a câmera usando seletor [camera]
+                card.setAttribute('look-at', '[camera]');
+
+                card.setAttribute('data-module-id', module.id);
+                card.setAttribute('data-module-name', module.nome);
+                card.setAttribute('data-module-link', module.link || '#');
+                card.setAttribute('data-module-description', module.descricao || '');
+                card.setAttribute('data-module-icon', module.icon || 'box');
+                card.setAttribute('data-group-name', group.nome);
+                card.setAttribute('data-group-color', color);
+
+                // Background
+                const cardBg = document.createElement('a-box');
+                cardBg.setAttribute('width', CONFIG.cards.width);
+                cardBg.setAttribute('height', CONFIG.cards.height);
+                cardBg.setAttribute('depth', CONFIG.cards.depth);
+                cardBg.setAttribute('material', `color: #1a1a2e; opacity: 0.95; transparent: true`);
+                cardBg.setAttribute('class', 'card-bg clickable');
+                card.appendChild(cardBg);
+
+                // Borda colorida
+                const cardBorder = document.createElement('a-box');
+                cardBorder.setAttribute('width', CONFIG.cards.width + 0.05);
+                cardBorder.setAttribute('height', CONFIG.cards.height + 0.05);
+                cardBorder.setAttribute('depth', CONFIG.cards.depth - 0.02);
+                cardBorder.setAttribute('position', '0 0 -0.02');
+                cardBorder.setAttribute('material', `color: ${color}; emissive: ${color}; emissiveIntensity: 0.5; opacity: 0.8`);
+                card.appendChild(cardBorder);
+
+                // Ícone
+                const iconEmoji = getModuleIcon(module.icon);
+                const iconText = document.createElement('a-entity');
+                iconText.setAttribute('position', '0 0.35 0.05');
+                iconText.setAttribute('text', `value: ${iconEmoji}; align: center; width: 3; color: ${color}; font: roboto`);
+                card.appendChild(iconText);
+
+                // Nome
+                const nameText = document.createElement('a-entity');
+                nameText.setAttribute('position', '0 -0.1 0.05');
+                nameText.setAttribute('text', `value: ${module.nome}; align: center; width: 4; color: white; font: roboto`);
+                card.appendChild(nameText);
+
+                // Descrição
+                const descText = document.createElement('a-entity');
+                descText.setAttribute('position', '0 -0.4 0.05');
+                descText.setAttribute('text', `value: ${truncateText(module.descricao || '', 25)}; align: center; width: 3.5; color: #888; font: roboto`);
+                card.appendChild(descText);
+
+                // Barra de ações
+                const actionsBar = document.createElement('a-plane');
+                actionsBar.setAttribute('position', '0 -0.65 0.05');
+                actionsBar.setAttribute('width', CONFIG.cards.width - 0.2);
+                actionsBar.setAttribute('height', 0.15);
+                actionsBar.setAttribute('material', `color: ${color}; opacity: 0.3`);
+                card.appendChild(actionsBar);
+
+                container.appendChild(card);
+            });
+        });
+    }
+
+    // =========================================
+    // Criar Conexões
+    // =========================================
+
+    function createConnections() {
+        const container = document.getElementById('connections-container');
+        if (!container) return;
+
+        const cards = document.querySelectorAll('.module-card');
+
+        cards.forEach(card => {
+            const pos = card.getAttribute('position');
+            const color = card.getAttribute('data-group-color') || '#4a9eff';
+
+            if (!pos) return;
+
+            const cardPos = AFRAME.utils.coordinates.parse(pos);
+            const angle = Math.atan2(cardPos.z, cardPos.x);
+            const ringX = Math.cos(angle) * CONFIG.ring.radius;
+            const ringZ = Math.sin(angle) * CONFIG.ring.radius;
+
+            const line = document.createElement('a-entity');
+            line.setAttribute('custom-line', `start: ${ringX} ${CONFIG.ring.height} ${ringZ}; end: ${cardPos.x} ${cardPos.y} ${cardPos.z}; color: ${color}; opacity: 0.3`);
+            container.appendChild(line);
+        });
+    }
+
+    // =========================================
+    // Criar Partículas
+    // =========================================
+
+    function createParticles() {
+        const container = document.getElementById('particles-container');
+        if (!container) return;
+
+        for (let i = 0; i < 80; i++) {
+            const particle = document.createElement('a-sphere');
+            particle.setAttribute('radius', 0.02 + Math.random() * 0.03);
+            particle.setAttribute('position', `${(Math.random() - 0.5) * 40} ${Math.random() * 15} ${(Math.random() - 0.5) * 40}`);
+            particle.setAttribute('material', `color: #4a9eff; emissive: #4a9eff; emissiveIntensity: 0.5; opacity: ${0.3 + Math.random() * 0.4}`);
+            container.appendChild(particle);
+        }
+    }
+
+    // =========================================
+    // Criar Legenda
+    // =========================================
+
+    function createLegend() {
+        const legendItems = document.getElementById('legend-items');
+        if (!legendItems) return;
+
+        legendItems.innerHTML = '';
+        const segmentCount = Math.min(groupsData.length, CONFIG.segmentColors.length);
+
+        groupsData.slice(0, segmentCount).forEach((group, index) => {
+            const color = CONFIG.segmentColors[index];
+            const moduleCount = modulesData.filter(m => m.grupo === group.id).length;
+
+            const item = document.createElement('div');
+            item.className = 'legend-item';
+            item.setAttribute('data-group', group.id);
+            item.innerHTML = `
+                <div class="legend-color" style="background: ${color}"></div>
+                <span class="legend-name">${group.nome}</span>
+                <span class="legend-count">${moduleCount}</span>
+            `;
+
+            item.addEventListener('click', () => focusOnGroup(group.id, index));
+            legendItems.appendChild(item);
+        });
+    }
+
+    // =========================================
+    // Event Listeners
+    // =========================================
+
+    function setupEventListeners() {
+        // Cards
+        setTimeout(() => {
+            document.querySelectorAll('.module-card').forEach(card => {
+                card.addEventListener('mouseenter', onCardHover);
+                card.addEventListener('mouseleave', onCardLeave);
+                card.addEventListener('click', onCardClick);
+            });
+        }, 100);
+
+        // Controles
+        document.getElementById('btn-zoom-in')?.addEventListener('click', () => zoomCamera(3));
+        document.getElementById('btn-zoom-out')?.addEventListener('click', () => zoomCamera(-3));
+        document.getElementById('btn-reset-view')?.addEventListener('click', resetView);
+        document.getElementById('btn-fullscreen')?.addEventListener('click', toggleFullscreen);
+        document.getElementById('btn-toggle-rotation')?.addEventListener('click', toggleAutoRotation);
+
+        // Pizza Menu
+        document.getElementById('btn-menu-pizza')?.addEventListener('click', togglePizzaMenu);
+        document.getElementById('btn-pizza-close')?.addEventListener('click', closePizzaMenu);
+        document.querySelector('.pizza-backdrop')?.addEventListener('click', closePizzaMenu);
+
+        // Toggle Groups Legend
+        document.getElementById('btn-toggle-groups')?.addEventListener('click', toggleGroupsLegend);
+
+        // Toggle Shortcuts
+        document.getElementById('btn-toggle-shortcuts')?.addEventListener('click', toggleShortcuts);
+
+        // Modal
+        document.getElementById('btn-close-modal')?.addEventListener('click', closeActionModal);
+        document.querySelector('.modal-backdrop')?.addEventListener('click', closeActionModal);
+
+        document.querySelectorAll('.modal-btn[data-action]').forEach(btn => {
+            btn.addEventListener('click', (e) => executeAction(e.currentTarget.dataset.action));
+        });
+
+        // Module container
+        document.getElementById('btn-module-back')?.addEventListener('click', closeModuleView);
+        document.getElementById('btn-module-expand')?.addEventListener('click', expandModuleInNewTab);
+
+        // Keyboard
+        document.addEventListener('keydown', onKeyDown);
+
+        // Rastrear posição do mouse para o tooltip
+        document.addEventListener('mousemove', (e) => {
+            mousePosition.x = e.clientX;
+            mousePosition.y = e.clientY;
+
+            // Atualizar tooltip se visível
+            const tooltip = document.getElementById('card-tooltip');
+            if (tooltip && !tooltip.classList.contains('hidden')) {
+                tooltip.style.left = Math.min(e.clientX + 15, window.innerWidth - 300) + 'px';
+                tooltip.style.top = Math.min(e.clientY + 15, window.innerHeight - 150) + 'px';
+            }
+        });
+
+        // Zoom com scroll do mouse
+        document.addEventListener('wheel', (e) => {
+            // Prevenir comportamento padrão apenas se estiver sobre a cena 3D
+            const scene = document.getElementById('dashboard-3d-scene');
+            if (scene && scene.contains(e.target)) {
+                e.preventDefault();
+                // deltaY > 0 = scroll down = zoom out, deltaY < 0 = scroll up = zoom in
+                const zoomDirection = e.deltaY > 0 ? -CONFIG.camera.zoomStep : CONFIG.camera.zoomStep;
+
+                console.log('Dashboard 3D: Zoom com scroll do mouse:', zoomDirection);
+                zoomCamera(zoomDirection);
+            }
+        });
+    }
+
+    // =========================================
+    // Interação com Cards
+    // =========================================
+
+    function onCardHover(event) {
+        const card = event.target.closest('.module-card') || event.target;
+        if (!card || !card.classList.contains('module-card')) return;
+
+        card.setAttribute('animation__hover', {
+            property: 'scale',
+            to: `${CONFIG.cards.hoverScale} ${CONFIG.cards.hoverScale} ${CONFIG.cards.hoverScale}`,
+            dur: 200,
+            easing: 'easeOutQuad'
+        });
+
+        showTooltip(event, card);
+    }
+
+    function onCardLeave(event) {
+        const card = event.target.closest('.module-card') || event.target;
+        if (!card || !card.classList.contains('module-card') || card === selectedCard) return;
+
+        card.setAttribute('animation__hover', {
+            property: 'scale',
+            to: '1 1 1',
+            dur: 200,
+            easing: 'easeOutQuad'
+        });
+
+        hideTooltip();
+    }
+
+    function onCardClick(event) {
+        const card = event.target.closest('.module-card') || event.target;
+        if (!card || !card.classList.contains('module-card')) return;
+
+        selectedCard = card;
+        hideTooltip();
+        zoomToCard(card);
+        showActionModal(card);
+    }
+
+    // =========================================
+    // Tooltip
+    // =========================================
+
+    function showTooltip(event, card) {
+        const tooltip = document.getElementById('card-tooltip');
+        if (!tooltip) return;
+
+        const name = card.getAttribute('data-module-name') || '';
+        const group = card.getAttribute('data-group-name') || '';
+        const description = card.getAttribute('data-module-description') || '';
+        const icon = getModuleIcon(card.getAttribute('data-module-icon'));
+
+        tooltip.querySelector('.tooltip-icon').textContent = icon;
+        tooltip.querySelector('.tooltip-title').textContent = name;
+        tooltip.querySelector('.tooltip-group').textContent = group;
+        tooltip.querySelector('.tooltip-description').textContent = description;
+
+        // Usar posição do mouse rastreada globalmente
+        const x = event.clientX || mousePosition.x || 100;
+        const y = event.clientY || mousePosition.y || 100;
+
+        tooltip.style.left = Math.min(x + 15, window.innerWidth - 300) + 'px';
+        tooltip.style.top = Math.min(y + 15, window.innerHeight - 150) + 'px';
+
+        tooltip.classList.remove('hidden');
+    }
+
+    function hideTooltip() {
+        const tooltip = document.getElementById('card-tooltip');
+        if (tooltip) tooltip.classList.add('hidden');
+    }
+
+    // =========================================
+    // Modal de Ações
+    // =========================================
+
+    function showActionModal(card) {
+        const modal = document.getElementById('module-action-modal');
+        if (!modal) return;
+
+        const name = card.getAttribute('data-module-name') || '';
+        const description = card.getAttribute('data-module-description') || '';
+        const icon = getModuleIcon(card.getAttribute('data-module-icon'));
+        const color = card.getAttribute('data-group-color') || '#4a9eff';
+
+        document.getElementById('modal-title').textContent = name;
+        document.getElementById('modal-description').textContent = description;
+        document.querySelector('.modal-icon').textContent = icon;
+        document.querySelector('.modal-icon').style.background = color;
+
+        const customActions = document.getElementById('custom-actions');
+        customActions.innerHTML = '';
+
+        const moduleData = modulesData.find(m => m.id === card.getAttribute('data-module-id'));
+        if (moduleData?.acoes) {
+            moduleData.acoes.forEach(acao => {
+                const btn = document.createElement('button');
+                btn.className = 'modal-btn modal-btn-custom';
+                btn.textContent = acao.label;
+                btn.addEventListener('click', () => openModuleView(acao.link, name));
+                customActions.appendChild(btn);
+            });
+        }
+
+        modal.classList.remove('hidden');
+    }
+
+    function closeActionModal() {
+        const modal = document.getElementById('module-action-modal');
+        if (modal) modal.classList.add('hidden');
+        selectedCard = null;
+    }
+
+    function executeAction(action) {
+        if (!selectedCard) return;
+
+        const link = selectedCard.getAttribute('data-module-link') || '#';
+        const name = selectedCard.getAttribute('data-module-name') || '';
+
+        let url = link;
+        if (action === 'adicionar') {
+            url = link + (link.endsWith('/') ? '' : '/') + 'adicionar/';
+        }
+
+        closeActionModal();
+        openModuleView(url, name);
+    }
+
+    // =========================================
+    // Visualização do Módulo
+    // =========================================
+
+    function openModuleView(url, title) {
+        const container = document.getElementById('module-container');
+        const iframe = document.getElementById('module-iframe');
+        const moduleTitle = document.getElementById('module-title');
+
+        if (!container || !iframe) return;
+
+        iframe.src = url;
+        moduleTitle.textContent = title;
+        container.classList.remove('hidden');
+        container.setAttribute('data-current-url', url);
+    }
+
+    function closeModuleView() {
+        const container = document.getElementById('module-container');
+        const iframe = document.getElementById('module-iframe');
+
+        if (container) container.classList.add('hidden');
+        if (iframe) iframe.src = '';
+    }
+
+    function expandModuleInNewTab() {
+        const container = document.getElementById('module-container');
+        const url = container?.getAttribute('data-current-url');
+        if (url) window.open(url, '_blank');
+    }
+
+    // =========================================
+    // Menu Pizza
+    // =========================================
+
+    function togglePizzaMenu() {
+        const menu = document.getElementById('pizza-menu');
+        if (menu) {
+            if (menu.classList.contains('hidden')) {
+                createPizzaItems();
+                menu.classList.remove('hidden');
+            } else {
+                closePizzaMenu();
+            }
+        }
+    }
+
+    function closePizzaMenu() {
+        const menu = document.getElementById('pizza-menu');
+        if (menu) menu.classList.add('hidden');
+    }
+
+    // =========================================
+    // Toggle UI Elements
+    // =========================================
+
+    function toggleGroupsLegend() {
+        const legend = document.getElementById('groups-legend');
+        const btn = document.getElementById('btn-toggle-groups');
+
+        if (legend) {
+            legend.classList.toggle('hidden');
+            btn?.classList.toggle('active', !legend.classList.contains('hidden'));
+        }
+    }
+
+    function toggleShortcuts() {
+        const hints = document.getElementById('usage-hints');
+        const btn = document.getElementById('btn-toggle-shortcuts');
+
+        if (hints) {
+            hints.classList.toggle('hidden');
+            btn?.classList.toggle('active', !hints.classList.contains('hidden'));
+        }
+    }
+
+    function updateZoomIndicator() {
+        const controls = getOrbitControls();
+        if (!controls) return;
+
+        const indicator = document.getElementById('zoom-level');
+        if (!indicator) return;
+
+        const distance = controls.getDistance();
+        const minDist = CONFIG.camera.minDistance;
+        const maxDist = CONFIG.camera.maxDistance;
+
+        // Calcular percentual (invertido: mais perto = maior zoom)
+        const zoomPercent = Math.round(100 * (1 - (distance - minDist) / (maxDist - minDist)));
+        indicator.textContent = `${Math.max(10, Math.min(200, zoomPercent + 50))}%`;
+    }
+
+    function createPizzaItems() {
+        const container = document.querySelector('.pizza-items');
+        if (!container) return;
+
+        const baseUrl = (typeof gestor !== 'undefined' && gestor.urls?.root) ? gestor.urls.root : '/';
+
+        const menuItems = [
+            { icon: '🏠', label: 'Dashboard 2D', link: baseUrl + 'dashboard/' },
+            { icon: '👤', label: 'Meu Perfil', link: baseUrl + 'perfil-usuario/' },
+            { icon: '⚙️', label: 'Configurações', link: baseUrl + 'admin-configuracoes/' },
+            { icon: '❓', label: 'Ajuda', link: baseUrl + 'ajuda/' },
+            { icon: '🔍', label: 'Buscar', action: 'search' },
+            { icon: '📤', label: 'Sair', link: (typeof gestor !== 'undefined' && gestor.urls?.logout) ? gestor.urls.logout : '/logout/' }
+        ];
+
+        container.innerHTML = '';
+        const radius = 120;
+        const angleStep = (Math.PI * 2) / menuItems.length;
+
+        menuItems.forEach((item, index) => {
+            const angle = angleStep * index - Math.PI / 2;
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
+
+            const el = document.createElement('button');
+            el.className = 'pizza-item';
+            el.style.setProperty('--x', x + 'px');
+            el.style.setProperty('--y', y + 'px');
+            el.innerHTML = `<span class="pizza-icon">${item.icon}</span><span class="pizza-label">${item.label}</span>`;
+
+            el.addEventListener('click', () => {
+                closePizzaMenu();
+                if (item.link) window.location.href = item.link;
+            });
+
+            container.appendChild(el);
+        });
+    }
+
+    // =========================================
+    // Controles de Câmera
+    // =========================================
+
+    /**
+     * Obtém o componente orbit-controls da câmera
+     */
+    function getOrbitControls() {
+        if (!mainCamera) return null;
+        const component = mainCamera.components['orbit-controls'];
+        return component ? component.controls : null;
+    }
+
+    function zoomCamera(delta) {
+        const controls = getOrbitControls();
+        if (!controls || !mainCamera) {
+            console.warn('Dashboard 3D: orbit-controls ou câmera não encontrados');
+            return;
+        }
+
+        // Obter posição atual da câmera e target
+        const cameraPos = mainCamera.object3D.position;
+        const target = controls.target;
+
+        // Calcular distância atual
+        const currentDistance = cameraPos.distanceTo(target);
+
+        // Calcular nova distância com limites
+        const newDistance = Math.max(
+            CONFIG.camera.minDistance,
+            Math.min(CONFIG.camera.maxDistance, currentDistance - delta)
+        );
+
+        // Se a distância não mudou, sair
+        if (Math.abs(newDistance - currentDistance) < 0.0001) {
+            console.log('Dashboard 3D: Limite de zoom atingido');
+            return;
+        }
+
+        // Calcular direção da câmera para o target
+        const direction = new THREE.Vector3();
+        direction.subVectors(cameraPos, target).normalize();
+
+        // Definir nova posição da câmera
+        const newPos = new THREE.Vector3();
+        newPos.copy(target).add(direction.multiplyScalar(newDistance));
+
+        // Aplicar nova posição
+        cameraPos.copy(newPos);
+
+        // Atualizar controles
+        controls.update();
+
+        // Atualizar indicador de zoom
+        updateZoomIndicator();
+
+        console.log('Dashboard 3D: Zoom', delta > 0 ? 'in' : 'out', 'distance:', controls.getDistance().toFixed(2));
+    }
+
+    function resetView() {
+        const controls = getOrbitControls();
+
+        if (controls && mainCamera) {
+            // Desativar auto-rotação se estiver ativa ANTES da animação
+            if (autoRotate) {
+                toggleAutoRotation();
+            }
+
+            // Salvar os estados inicial target e posição para comparação
+            const initialTarget = { x: 0, y: 1.5, z: 0 };
+            const targetPos = CONFIG.camera.initialPosition;
+
+            if (typeof gsap !== 'undefined') {
+                // Animar posição da câmera
+                const currentCamPos = mainCamera.object3D.position.clone();
+                const currentTarget = controls.target.clone();
+
+                // Desabilitar temporariamente controles durante animação
+                controls.enabled = false;
+
+                // Timeline GSAP para coordenar animações
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        // Reativar controles após animação
+                        controls.enabled = true;
+
+                        // Salvar estado final como o novo estado padrão
+                        controls.saveState();
+
+                        console.log('Dashboard 3D: View resetada - controles reativados');
+                    }
+                });
+
+                // Animar câmera e target simultaneamente
+                tl.to(currentCamPos, {
+                    x: targetPos.x,
+                    y: targetPos.y,
+                    z: targetPos.z,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    onUpdate: () => {
+                        mainCamera.object3D.position.set(currentCamPos.x, currentCamPos.y, currentCamPos.z);
+                        controls.update();
+                    }
+                }, 0);
+
+                tl.to(currentTarget, {
+                    x: initialTarget.x,
+                    y: initialTarget.y,
+                    z: initialTarget.z,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    onUpdate: () => {
+                        controls.target.set(currentTarget.x, currentTarget.y, currentTarget.z);
+                    }
+                }, 0);
+
+            } else {
+                // Sem GSAP, aplicar diretamente
+                mainCamera.object3D.position.set(targetPos.x, targetPos.y, targetPos.z);
+                controls.target.set(initialTarget.x, initialTarget.y, initialTarget.z);
+                controls.update();
+                controls.saveState();
+            }
+        }
+
+        closeActionModal();
+        console.log('Dashboard 3D: Iniciando reset de view');
+    }
+
+    function zoomToCard(card) {
+        const controls = getOrbitControls();
+        if (!controls || !mainCamera) return;
+
+        const pos = card.getAttribute('position');
+        if (!pos) return;
+
+        const cardPos = AFRAME.utils.coordinates.parse(pos);
+
+        // Mover o target para o card
+        const targetPos = { x: cardPos.x * 0.5, y: cardPos.y, z: cardPos.z * 0.5 };
+
+        // Calcular nova posição da câmera (atrás e acima do card)
+        const distance = 10;
+        const angle = Math.atan2(cardPos.z, cardPos.x);
+
+        const newCamPos = {
+            x: cardPos.x + Math.cos(angle) * distance,
+            y: cardPos.y + 4,
+            z: cardPos.z + Math.sin(angle) * distance
+        };
+
+        if (typeof gsap !== 'undefined') {
+            const currentCamPos = mainCamera.object3D.position.clone();
+            const currentTarget = controls.target.clone();
+
+            // Desabilitar controles durante animação
+            controls.enabled = false;
+
+            // Timeline GSAP para coordenar animações
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    // Reativar controles após animação
+                    controls.enabled = true;
+                    controls.update();
+                    console.log('Dashboard 3D: Zoom to card completo - controles reativados');
+                }
+            });
+
+            // Animar câmera e target simultaneamente
+            tl.to(currentCamPos, {
+                x: newCamPos.x,
+                y: newCamPos.y,
+                z: newCamPos.z,
+                duration: 0.8,
+                ease: 'power2.out',
+                onUpdate: () => {
+                    mainCamera.object3D.position.set(currentCamPos.x, currentCamPos.y, currentCamPos.z);
+                    controls.update();
+                }
+            }, 0);
+
+            tl.to(currentTarget, {
+                x: targetPos.x,
+                y: targetPos.y,
+                z: targetPos.z,
+                duration: 0.8,
+                ease: 'power2.out',
+                onUpdate: () => {
+                    controls.target.set(currentTarget.x, currentTarget.y, currentTarget.z);
+                }
+            }, 0);
+        } else {
+            mainCamera.object3D.position.set(newCamPos.x, newCamPos.y, newCamPos.z);
+            controls.target.set(targetPos.x, targetPos.y, targetPos.z);
+            controls.update();
+        }
+
+        console.log('Dashboard 3D: Zoom to card', card.getAttribute('data-module-name'));
+    }
+
+    function focusOnGroup(groupId, groupIndex) {
+        const controls = getOrbitControls();
+        if (!controls || !mainCamera) return;
+
+        const segmentCount = Math.min(groupsData.length, CONFIG.segmentColors.length);
+        const anglePerSegment = (Math.PI * 2) / segmentCount;
+        const groupAngle = (groupIndex * anglePerSegment) - (Math.PI / 2) + (anglePerSegment / 2);
+
+        // Posição do grupo
+        const groupX = Math.cos(groupAngle) * (CONFIG.ring.radius + 2);
+        const groupZ = Math.sin(groupAngle) * (CONFIG.ring.radius + 2);
+
+        // Novo target (no grupo)
+        const targetPos = { x: groupX * 0.3, y: 1.5, z: groupZ * 0.3 };
+
+        // Posição da câmera (oposta ao grupo para olhar para ele)
+        const distance = 18;
+        const newCamPos = {
+            x: -Math.cos(groupAngle) * distance,
+            y: 8,
+            z: -Math.sin(groupAngle) * distance
+        };
+
+        if (typeof gsap !== 'undefined') {
+            const currentCamPos = mainCamera.object3D.position.clone();
+            const currentTarget = controls.target.clone();
+
+            // Desabilitar controles durante animação
+            controls.enabled = false;
+
+            // Timeline GSAP para coordenar animações
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    // Reativar controles após animação
+                    controls.enabled = true;
+                    controls.update();
+                    console.log('Dashboard 3D: Focus on group completo - controles reativados');
+                }
+            });
+
+            // Animar câmera e target simultaneamente
+            tl.to(currentCamPos, {
+                x: newCamPos.x,
+                y: newCamPos.y,
+                z: newCamPos.z,
+                duration: 0.8,
+                ease: 'power2.out',
+                onUpdate: () => {
+                    mainCamera.object3D.position.set(currentCamPos.x, currentCamPos.y, currentCamPos.z);
+                    controls.update();
+                }
+            }, 0);
+
+            tl.to(currentTarget, {
+                x: targetPos.x,
+                y: targetPos.y,
+                z: targetPos.z,
+                duration: 0.8,
+                ease: 'power2.out',
+                onUpdate: () => {
+                    controls.target.set(currentTarget.x, currentTarget.y, currentTarget.z);
+                }
+            }, 0);
+        } else {
+            mainCamera.object3D.position.set(newCamPos.x, newCamPos.y, newCamPos.z);
+            controls.target.set(targetPos.x, targetPos.y, targetPos.z);
+            controls.update();
+        }
+
+        console.log('Dashboard 3D: Focus on group', groupId);
+    }
+
+    function toggleAutoRotation() {
+        autoRotate = !autoRotate;
+
+        const controls = getOrbitControls();
+        if (controls) {
+            controls.autoRotate = autoRotate;
+        }
+
+        // Também atualizar via atributo do componente
+        if (mainCamera) {
+            mainCamera.setAttribute('orbit-controls', 'autoRotate', autoRotate);
+        }
+
+        const btn = document.getElementById('btn-toggle-rotation');
+        if (btn) btn.classList.toggle('active', autoRotate);
+
+        console.log('Dashboard 3D: Auto-rotação', autoRotate ? 'ON' : 'OFF');
+    }
+
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    // =========================================
+    // Keyboard
+    // =========================================
+
+    function onKeyDown(event) {
+        // Ignorar se estiver em input
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+            return;
+        }
+
+        switch (event.key) {
+            case 'Escape':
+                closeActionModal();
+                closePizzaMenu();
+                closeModuleView();
+                break;
+            case 'r':
+            case 'R':
+                if (!event.ctrlKey && !event.metaKey) resetView();
+                break;
+            case '+':
+            case '=':
+                zoomCamera(3);
+                break;
+            case '-':
+            case '_':
+                zoomCamera(-3);
+                break;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+                const groupIndex = parseInt(event.key) - 1;
+                if (groupIndex < groupsData.length) {
+                    focusOnGroup(groupsData[groupIndex].id, groupIndex);
+                }
+                break;
+        }
+    }
+
+    // =========================================
+    // Utilitários
+    // =========================================
+
+    function getModuleIcon(iconName) {
+        const icons = {
+            'file': '📄', 'users': '👥', 'user': '👤', 'cog': '⚙️', 'folder': '📁',
+            'database': '🗄️', 'globe': '🌐', 'lock': '🔒', 'envelope': '✉️', 'chart': '📊',
+            'box': '📦', 'code': '💻', 'image': '🖼️', 'video': '🎬', 'calendar': '📅',
+            'clock': '⏰', 'star': '⭐', 'heart': '❤️', 'flag': '🚩', 'tag': '🏷️',
+            'link': '🔗', 'upload': '📤', 'download': '📥', 'settings': '🔧', 'default': '📋'
+        };
+        return icons[iconName] || icons['default'];
+    }
+
+    function truncateText(text, maxLength) {
+        if (!text) return '';
+        return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+    }
+
+    function hideLoading() {
+        const overlay = document.getElementById('loading-overlay');
+        if (overlay) {
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.classList.add('hidden'), 500);
+        }
+    }
+
+    // =========================================
+    // Registrar componente A-Frame para linha (se não existir)
+    // =========================================
+
+    if (typeof AFRAME !== 'undefined' && !AFRAME.components['custom-line']) {
+        AFRAME.registerComponent('custom-line', {
+            schema: {
+                start: { type: 'vec3', default: { x: 0, y: 0, z: 0 } },
+                end: { type: 'vec3', default: { x: 0, y: 0, z: 0 } },
+                color: { type: 'color', default: '#ffffff' },
+                opacity: { type: 'number', default: 1 }
+            },
+
+            init: function () {
+                const data = this.data;
+                const geometry = new THREE.BufferGeometry();
+                const positions = new Float32Array([
+                    data.start.x, data.start.y, data.start.z,
+                    data.end.x, data.end.y, data.end.z
+                ]);
+                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+                const material = new THREE.LineBasicMaterial({
+                    color: new THREE.Color(data.color),
+                    transparent: true,
+                    opacity: data.opacity
+                });
+
+                this.el.setObject3D('line', new THREE.Line(geometry, material));
+            }
+        });
+    }
+
+    // =========================================
+    // Iniciar
+    // =========================================
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();

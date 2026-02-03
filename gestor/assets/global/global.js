@@ -2,41 +2,282 @@ $(document).ready(function () {
 	// ===== Menu Principal do gestor.
 
 	if ($('.menuComputerCont').length > 0) {
+		// ===== Configurações do Menu
+		var menuConfig = {
+			defaultWidth: 250,
+			minWidth: 200,
+			maxWidth: 450,
+			mobileBreakpoint: 1024, // Inclui tablets no comportamento mobile (sidebar overlay)
+			storageKeys: {
+				width: 'gestor-menu-width',
+				closed: 'gestor-menu-closed',
+				scroll: 'menuComputerContScroll',
+				scrollMobile: 'menuMobileContScroll'
+			}
+		};
+
+		// ===== Funções Auxiliares do Menu
+		function isMobile() {
+			return window.innerWidth <= menuConfig.mobileBreakpoint;
+		}
+
+		function getMenuState() {
+			return {
+				width: parseInt(localStorage.getItem(menuConfig.storageKeys.width)) || menuConfig.defaultWidth,
+				closed: localStorage.getItem(menuConfig.storageKeys.closed) === 'true'
+			};
+		}
+
+		function saveMenuState(state) {
+			if (state.width !== undefined) {
+				localStorage.setItem(menuConfig.storageKeys.width, state.width);
+			}
+			if (state.closed !== undefined) {
+				localStorage.setItem(menuConfig.storageKeys.closed, state.closed);
+			}
+		}
+
+		function setMenuWidth(width) {
+			width = Math.max(menuConfig.minWidth, Math.min(menuConfig.maxWidth, width));
+			$('.menuComputerCont').css('width', width + 'px');
+			if (!isMobile()) {
+				$('.paginaCont').css('margin-left', width + 'px');
+			}
+			return width;
+		}
+
+		function openMenu() {
+			if (isMobile()) {
+				// Mobile: usar comportamento de sidebar overlay
+				$('body').addClass('menu-mobile-open');
+			} else {
+				// Desktop: comportamento padrão
+				$('body').removeClass('menu-closed');
+				var state = getMenuState();
+				$('.paginaCont').css('margin-left', state.width + 'px');
+				saveMenuState({ closed: false });
+			}
+		}
+
+		function closeMenu() {
+			if (isMobile()) {
+				// Mobile: fechar sidebar overlay
+				$('body').removeClass('menu-mobile-open');
+			} else {
+				// Desktop: comportamento padrão
+				$('body').addClass('menu-closed');
+				$('.paginaCont').css('margin-left', '0');
+				saveMenuState({ closed: true });
+			}
+		}
+
+		function toggleMenu() {
+			if (isMobile()) {
+				if ($('body').hasClass('menu-mobile-open')) {
+					closeMenu();
+				} else {
+					openMenu();
+				}
+			} else {
+				if ($('body').hasClass('menu-closed')) {
+					openMenu();
+				} else {
+					closeMenu();
+				}
+			}
+		}
+
+		// ===== Inicialização do Menu (SEM animação)
+		
+		// Adicionar classe para desabilitar transições durante a inicialização
+		$('body').addClass('menu-no-transition');
+		
+		var menuState = getMenuState();
+
+		// Aplicar largura salva ao menu
+		$('.menuComputerCont').css('width', menuState.width + 'px');
+
+		// Aplicar estado aberto/fechado SEM animação
+		if (isMobile()) {
+			// Em mobile, sempre começa fechado (sidebar overlay)
+			$('.paginaCont').css('margin-left', '0');
+		} else {
+			// Desktop: aplicar estado salvo
+			if (menuState.closed) {
+				$('body').addClass('menu-closed');
+				$('.paginaCont').css('margin-left', '0');
+			} else {
+				$('.paginaCont').css('margin-left', menuState.width + 'px');
+			}
+		}
+
+		// Remover classe após um pequeno delay para reabilitar transições
+		requestAnimationFrame(function() {
+			requestAnimationFrame(function() {
+				$('body').removeClass('menu-no-transition');
+			});
+		});
+
+		// ===== Event Listeners dos Botões
+
+		// Botão Fechar Menu
+		$('#menu-close-btn').on('click', function () {
+			closeMenu();
+		});
+
+		// Botão Toggle (abrir menu quando fechado)
+		$('#menu-toggle-btn').on('click', function () {
+			openMenu();
+		});
+
+		// Overlay mobile (fechar menu ao clicar)
+		$('.menu-mobile-overlay').on('click', function () {
+			closeMenu();
+		});
+
+		// Botão Dashboard 3D
+		$('#menu-dashboard3d-btn').on('click', function () {
+			// Navegar para o dashboard 3D
+			var dashboard3dUrl = (typeof gestor !== 'undefined' && gestor.raiz)
+				? gestor.raiz + 'dashboard-3d/'
+				: '/dashboard-3d/';
+
+			// Adicionar parâmetro para ativar modo 3D
+			window.location.href = dashboard3dUrl;
+		});
+
+		// ===== Listener de Resize da Janela
+		var resizeTimeout;
+		$(window).on('resize', function() {
+			clearTimeout(resizeTimeout);
+			resizeTimeout = setTimeout(function() {
+				var state = getMenuState();
+				
+				if (isMobile()) {
+					// Em mobile, fechar menu e garantir margin-left 0
+					$('body').removeClass('menu-closed');
+					$('.paginaCont').css('margin-left', '0');
+				} else {
+					// Em desktop, restaurar estado salvo
+					$('body').removeClass('menu-mobile-open');
+					if (state.closed) {
+						$('body').addClass('menu-closed');
+						$('.paginaCont').css('margin-left', '0');
+					} else {
+						$('.paginaCont').css('margin-left', state.width + 'px');
+					}
+				}
+			}, 100);
+		});
+
+		// ===== Lógica de Redimensionamento do Menu (apenas desktop)
+		var isResizing = false;
+		var startX = 0;
+		var startWidth = 0;
+
+		$('#menu-resize-handle').on('mousedown', function (e) {
+			e.preventDefault();
+			isResizing = true;
+			startX = e.clientX;
+			startWidth = $('.menuComputerCont').width();
+			$('body').addClass('menu-resizing');
+
+			// Desabilitar transições durante o resize
+			$('.menuComputerCont').css('transition', 'none');
+			$('.paginaCont').css('transition', 'none');
+		});
+
+		$(document).on('mousemove', function (e) {
+			if (!isResizing) return;
+
+			var diff = e.clientX - startX;
+			var newWidth = startWidth + diff;
+			var finalWidth = setMenuWidth(newWidth);
+
+			// Salvar largura em tempo real para feedback visual
+			saveMenuState({ width: finalWidth });
+		});
+
+		$(document).on('mouseup', function () {
+			if (isResizing) {
+				isResizing = false;
+				$('body').removeClass('menu-resizing');
+
+				// Reabilitar transições
+				$('.menuComputerCont').css('transition', '');
+				$('.paginaCont').css('transition', '');
+
+				// Salvar estado final
+				var finalWidth = $('.menuComputerCont').width();
+				saveMenuState({ width: finalWidth });
+			}
+		});
+
+		// ===== Suporte a Touch para dispositivos móveis
+		$('#menu-resize-handle').on('touchstart', function (e) {
+			e.preventDefault();
+			isResizing = true;
+			startX = e.originalEvent.touches[0].clientX;
+			startWidth = $('.menuComputerCont').width();
+			$('body').addClass('menu-resizing');
+
+			$('.menuComputerCont').css('transition', 'none');
+			$('.paginaCont').css('transition', 'none');
+		});
+
+		$(document).on('touchmove', function (e) {
+			if (!isResizing) return;
+
+			var diff = e.originalEvent.touches[0].clientX - startX;
+			var newWidth = startWidth + diff;
+			var finalWidth = setMenuWidth(newWidth);
+			saveMenuState({ width: finalWidth });
+		});
+
+		$(document).on('touchend', function () {
+			if (isResizing) {
+				isResizing = false;
+				$('body').removeClass('menu-resizing');
+
+				$('.menuComputerCont').css('transition', '');
+				$('.paginaCont').css('transition', '');
+
+				var finalWidth = $('.menuComputerCont').width();
+				saveMenuState({ width: finalWidth });
+			}
+		});
+
+		// ===== Atalho de Teclado (Ctrl/Cmd + B para toggle menu)
+		$(document).on('keydown', function (e) {
+			if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+				e.preventDefault();
+				toggleMenu();
+			}
+		});
+
+		// ===== Double-click no handle para resetar largura padrão
+		$('#menu-resize-handle').on('dblclick', function () {
+			setMenuWidth(menuConfig.defaultWidth);
+			saveMenuState({ width: menuConfig.defaultWidth });
+		});
+
 		// ===== Manter a posição do scroll dos dois menus de maneira persistente entre páginas.
 
 		$('.menuComputerCont').on('scroll', function (e) {
-			sessionStorage.setItem('menuComputerContScroll', $(this).scrollTop());
+			sessionStorage.setItem(menuConfig.storageKeys.scroll, $(this).scrollTop());
 		});
 
-		if (sessionStorage.getItem("menuComputerContScroll")) {
-			$('.menuComputerCont').scrollTop(sessionStorage.getItem("menuComputerContScroll"));
+		if (sessionStorage.getItem(menuConfig.storageKeys.scroll)) {
+			$('.menuComputerCont').scrollTop(sessionStorage.getItem(menuConfig.storageKeys.scroll));
 		}
 
 		$('#conn2flow-menu-principal').on('scroll', function (e) {
-			sessionStorage.setItem('menuMobileContScroll', $(this).scrollTop());
+			sessionStorage.setItem(menuConfig.storageKeys.scrollMobile, $(this).scrollTop());
 		});
 
-		if (sessionStorage.getItem("menuMobileContScroll")) {
-			$('#conn2flow-menu-principal').scrollTop(sessionStorage.getItem("menuMobileContScroll"));
+		if (sessionStorage.getItem(menuConfig.storageKeys.scrollMobile)) {
+			$('#conn2flow-menu-principal').scrollTop(sessionStorage.getItem(menuConfig.storageKeys.scrollMobile));
 		}
-	}
-
-	if ($('._gestor-menuPrincipalMobile').length > 0) {
-		$('#conn2flow-menu-principal')
-			.sidebar({
-				dimPage: true,
-				transition: 'overlay',
-				mobileTransition: 'uncover'
-			})
-			;
-
-		$('._gestor-menuPrincipalMobile').css('cursor', 'pointer');
-
-		$('._gestor-menuPrincipalMobile').on('mouseup tap', function (e) {
-			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
-
-			$('#conn2flow-menu-principal').sidebar('toggle');
-		});
 	}
 
 	if ('languages' in gestor) {

@@ -644,4 +644,85 @@ $(document).ready(function () {
 
 	// ===== Dashboard Search > =====
 
+	// ===== Dashboard 3D < =====
+
+	/**
+	 * Inicializa o Dashboard 3D carregando os módulos dinamicamente na ordem correta
+	 * Os scripts só são carregados quando o container do dashboard-3d está presente
+	 */
+	function initDashboard3D() {
+		var dashboard3DWrapper = document.getElementById('dashboard-3d-wrapper');
+
+		if (!dashboard3DWrapper) {
+			return;
+		}
+
+		// Lista de módulos a carregar em ordem
+		var modules = [
+			'dashboard/dashboard-3d-config.js',      // 1. Configurações
+			'dashboard/dashboard-3d-camera.js',      // 2. Controles de câmera
+			'dashboard/dashboard-3d-geometry.js',    // 3. Geometria 3D
+			'dashboard/dashboard-3d-cards.js',       // 4. Cards dos módulos
+			'dashboard/dashboard-3d-ui.js',          // 5. Interface e interações
+			'dashboard/dashboard-3d-main.js'         // 6. Orquestrador principal (deve ser último)
+		];
+
+		var loadedCount = 0;
+
+		/**
+		 * Carrega um script e chama callback quando pronto
+		 */
+		function loadScript(src, callback) {
+			var script = document.createElement('script');
+			script.src = gestor.raiz + src;
+			script.async = false; // Garantir ordem de execução
+
+			script.onload = function () {
+				console.log('Dashboard 3D: Módulo carregado -', src);
+				callback();
+			};
+
+			script.onerror = function () {
+				console.error('Dashboard 3D: Erro ao carregar módulo -', src);
+				showLoadError();
+			};
+
+			document.head.appendChild(script);
+		}
+
+		/**
+		 * Mostra erro de carregamento
+		 */
+		function showLoadError() {
+			var loading = document.getElementById('loading-overlay');
+			if (loading) {
+				loading.innerHTML = '<div style="color: #ff4444; text-align: center;"><p>Erro ao carregar Dashboard 3D</p><a href="' + gestor.raiz + 'dashboard/" style="color: #4a9eff;">Voltar ao Dashboard 2D</a></div>';
+			}
+		}
+
+		/**
+		 * Carrega o próximo módulo da lista
+		 */
+		function loadNextModule() {
+			if (loadedCount >= modules.length) {
+				console.log('Dashboard 3D: Todos os módulos carregados');
+				return;
+			}
+
+			loadScript(modules[loadedCount], function () {
+				loadedCount++;
+				loadNextModule();
+			});
+		}
+
+		// Iniciar carregamento sequencial
+		console.log('Dashboard 3D: Iniciando carregamento de', modules.length, 'módulos...');
+		loadNextModule();
+	}
+
+	// Inicializa o Dashboard 3D se estiver na página correta
+	initDashboard3D();
+
+	// ===== Dashboard 3D > =====
+
 });

@@ -2,7 +2,26 @@
 
 ## 🏷️ Releases Atuais
 
-### **gestor-v2.6.0** (18 Dezembro 2025) - `HEAD`
+### **gestor-v2.6.3** (3 Fevereiro 2026) - `HEAD`
+**🎯 Tema:** Menu Administrativo Responsivo + Dashboard Otimizado para Tablets**
+
+**Principais Melhorias:**
+- ✅ **Menu Administrativo Responsivo**: Redesign completo do menu com botão toggle flutuante, largura redimensionável e persistência em localStorage
+- ✅ **Sidebar Overlay para Mobile/Tablet**: Comportamento unificado de sidebar overlay para dispositivos até 1024px de largura
+- ✅ **Menu Redimensionável**: Handle de arraste para ajustar largura do menu (200-450px) com persistência em tempo real
+- ✅ **Atalho de Teclado**: Ctrl/Cmd+B para alternar visibilidade do menu
+- ✅ **Dashboard Otimizado para Tablet**: Layout de cards em 2 colunas em tablets para melhor usabilidade
+- ✅ **Transições CSS Suaves**: Animações fluidas com inicialização sem animação para evitar flashes
+- ✅ **Overlay Mobile com Backdrop**: Fundo escuro quando menu mobile/tablet está aberto
+- ✅ **Persistência de Estado do Menu**: Largura e estado fechado salvos em localStorage
+- ✅ **Duplo Clique para Reset**: Duplo clique no handle de resize reseta largura padrão (250px)
+
+**Breaking Changes:**
+- Breakpoint para comportamento mobile/tablet alterado de 770px para 1024px
+- Menu agora usa sidebar overlay em tablets (antes usava menu fixo)
+- Nova estrutura de classes CSS para controle de estado do menu
+
+### **gestor-v2.6.0** (18 Dezembro 2025)
 **🎯 Tema:** Módulo Publisher + Editor Quill + Clonagem + Image Picker**
 
 **Principais Melhorias:**

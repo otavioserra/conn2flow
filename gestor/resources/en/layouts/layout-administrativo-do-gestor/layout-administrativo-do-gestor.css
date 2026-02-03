@@ -7,10 +7,40 @@
 .backupDropdown{
     margin-bottom: 10px;
 }
+
+/* ===== Desabilitar transições na inicialização ===== */
+body.menu-no-transition .menuComputerCont,
+body.menu-no-transition .paginaCont,
+body.menu-no-transition #menu-toggle-btn,
+body.menu-no-transition .menubarlogomargin {
+    transition: none !important;
+}
+
+/* ===== Botão Toggle Menu (quando fechado) ===== */
+#menu-toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    display: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+#menu-toggle-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+body.menu-closed #menu-toggle-btn {
+    display: block;
+}
+
+/* ===== Container do Menu ===== */
 .menuComputerCont{
 	position: fixed;
-    z-index: 1;
+    z-index: 102;
     width: 250px;
+    min-width: 200px;
+    max-width: 450px;
     background-color: #fff;
     height:100%;
     -webkit-box-flex: 0;
@@ -20,7 +50,70 @@
     -webkit-box-shadow: 4px 0 5px 0 rgba(30,30,30,0.2);
 	box-shadow: 4px 0 5px 0 rgba(30,30,30,0.2);
     overflow-y: auto!important;
+    transition: width 0.1s ease, transform 0.3s ease;
 }
+body.menu-closed .menuComputerCont {
+    transform: translateX(-100%);
+}
+
+/* ===== Controles do Menu (Topo) ===== */
+.menu-controls {
+    padding: 10px 14px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.menu-controls .ui.buttons {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.menu-controls .ui.button {
+    margin: 0;
+}
+.menu-controls #menu-dashboard3d-btn {
+    background: linear-gradient(135deg, #2185d0 0%, #1678c2 100%);
+}
+.menu-controls #menu-dashboard3d-btn:hover {
+    background: linear-gradient(135deg, #1678c2 0%, #1a69a4 100%);
+}
+
+/* ===== Handle de Redimensionamento ===== */
+#menu-resize-handle {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    width: 12px;
+    height: 100%;
+    cursor: ew-resize;
+    background: transparent;
+    z-index: 10;
+    transition: background 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#menu-resize-handle i {
+    color: #dee2e6;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s ease, color 0.2s ease;
+}
+#menu-resize-handle:hover {
+    background: rgba(33, 133, 208, 0.1);
+}
+#menu-resize-handle:hover i {
+    opacity: 1;
+    color: #2185d0;
+}
+body.menu-resizing {
+    cursor: ew-resize !important;
+    user-select: none !important;
+}
+body.menu-resizing * {
+    cursor: ew-resize !important;
+}
+
 .menuConteiner{
     margin-bottom: 0px !important;
 }
@@ -29,6 +122,17 @@
 }
 .paginaCont{
     margin-left: 250px;
+    transition: margin-left 0.3s ease;
+    padding-bottom: 50px;
+}
+body.menu-closed .paginaCont {
+    margin-left: 0;
+}
+
+/* ===== Ajuste do logo quando menu está fechado ===== */
+body.menu-closed .menubarlogomargin {
+    margin-left: 60px; /* Espaço para o botão toggle + 10px de margem */
+    transition: margin-left 0.3s ease;
 }
 #gestor-listener{
     display:none;
@@ -68,15 +172,49 @@ body.pushable>.pusher {
 .botoesMargem > .button {
     margin-bottom: 0.75em;
 }
-@media screen and (max-width: 770px) {
-    .desktopcode {
-        display: none;
+/* Mobile e Tablet: menu usa comportamento de sidebar overlay */
+@media screen and (max-width: 1024px) {
+    #conn2flow-logo-principal{
+        margin-left: 40px;
     }
+
+    /* Em mobile/tablet, menu usa comportamento de sidebar overlay */
     .menuComputerCont{
+        display: block;
+        transform: translateX(-100%);
+        z-index: 1001;
+    }
+    body.menu-mobile-open .menuComputerCont {
+        transform: translateX(0);
+    }
+    /* Overlay escuro quando menu mobile/tablet está aberto */
+    .menu-mobile-overlay {
         display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+    body.menu-mobile-open .menu-mobile-overlay {
+        display: block;
     }
     .paginaCont{
-        margin-left: 0px;
+        margin-left: 0px !important;
+    }
+    /* Esconder resize handle em mobile/tablet */
+    #menu-resize-handle {
+        display: none;
+    }
+    /* Botão toggle sempre visível em mobile/tablet */
+    #menu-toggle-btn {
+        display: block !important;
+        z-index: 999;
+    }
+    body.menu-mobile-open #menu-toggle-btn {
+        display: none !important;
     }
     #_gestor-interface-listar{
         padding: 1em 0px;
@@ -88,15 +226,31 @@ body.pushable>.pusher {
         width: calc(100% - 100px);
     }
     #_gestor-interface-lista-tabela_filter{
-        text-align:left;
+        text-align:right;
+    }
+    /* Logo não precisa de margem extra em mobile/tablet */
+    body.menu-closed .menubarlogomargin {
+        margin-left: 60px;
     }
 }
-@media screen and (min-width: 770px) {
+
+/* Apenas mobile: ajustes específicos */
+@media screen and (max-width: 770px) {
+    #_gestor-interface-lista-tabela_filter .input{
+        width: calc(100% - 100px);
+    }
+}
+
+/* Desktop: menu fixo com resize */
+@media screen and (min-width: 1025px) {
     .mobilecode {
         display: none;
     }
     .menuComputerCont{
         display: block;
+    }
+    .menu-mobile-overlay {
+        display: none !important;
     }
     #_gestor-interface-lista-tabela_filter .input{
         width: 250px;
@@ -109,3 +263,4 @@ table.dataTable tbody tr:hover {
     background-color: #FFFFFF !important;
     filter: brightness(0.96) !important;
 }
+

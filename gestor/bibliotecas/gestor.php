@@ -368,6 +368,7 @@ function gestor_layout($params = false){
 		));
 	}
 	
+	$lang = $_GESTOR['linguagem-codigo'];
 	$layouts = false;
 	
 	if(isset($id_layouts)){
@@ -379,6 +380,8 @@ function gestor_layout($params = false){
 				'css',
 				'css_compiled',
 				'framework_css',
+				'plugin',
+				'modulo',
 			))
 			,
 			"layouts",
@@ -405,6 +408,8 @@ function gestor_layout($params = false){
 							'css',
 							'css_compiled',
 							'framework_css',
+							'plugin',
+							'modulo',
 						))
 						,
 						"layouts",
@@ -422,6 +427,8 @@ function gestor_layout($params = false){
 						'css',
 						'css_compiled',
 						'framework_css',
+						'plugin',
+						'modulo',
 					))
 					,
 					"layouts",
@@ -437,12 +444,22 @@ function gestor_layout($params = false){
 			
 			foreach($layouts as $layout){
 				$id = $layout['id'];
+				$modulo = $layout['modulo'];
+				$plugin = $layout['plugin'];
 
 				if($_GESTOR['development-env']){
-					$lang = $_GESTOR['linguagem-codigo'];
-
-					$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
-					$css_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+					if(existe($modulo)){
+						if(existe($plugin)){
+							$html_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
+							$css_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+						} else {
+							$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
+							$css_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+						}
+					} else {
+						$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
+						$css_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+					}
 
 					$html = (file_exists($html_path)) ? file_get_contents($html_path) : '';
 					$css = (file_exists($css_path)) ? file_get_contents($css_path) : '';
@@ -488,12 +505,22 @@ function gestor_layout($params = false){
 	} else {
 		if($layouts){
 			$id = $layouts[0]['id'];
+			$modulo = $layouts[0]['modulo'];
+			$plugin = $layouts[0]['plugin'];
 
 			if($_GESTOR['development-env']){
-				$lang = $_GESTOR['linguagem-codigo'];
-
-				$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
-				$css_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+				if(existe($modulo)){
+					if(existe($plugin)){
+						$html_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
+						$css_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+					} else {
+						$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
+						$css_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+					}
+				} else {
+					$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
+					$css_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+				}
 
 				$html = (file_exists($html_path)) ? file_get_contents($html_path) : '';
 				$css = (file_exists($css_path)) ? file_get_contents($css_path) : '';

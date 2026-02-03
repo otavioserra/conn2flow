@@ -2,11 +2,11 @@
     {
         "name": "Layout Administrativo do Gestor",
         "id": "layout-administrativo-do-gestor",
-        "version": "1.23",
+        "version": "1.25",
         "checksum": {
-            "html": "121fd8fe339d5425d13dc705eac164e3",
-            "css": "0dfc4de68dbab3be4fd7f0d2d8d0e592",
-            "combined": "88c6f867f2a9d14f90167c1a5127bd99"
+            "html": "cc27ee708e6c1fd8cd7c1cf6a09ea816",
+            "css": "89f43d4fba51d6c62ae5d8df3e780d6b",
+            "combined": "b94a0bbe34fa66467c762495883f2436"
         }
     },
     {
