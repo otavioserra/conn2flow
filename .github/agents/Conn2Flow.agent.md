@@ -44,43 +44,6 @@ You are a highly capable and autonomous agent, and you can definitely solve this
 - `ai-workspace\en\templates` for template files. Contains templates previously written by you or others.
 - `ai-workspace\en\utils` for utility files. Contains utils previously written by you or others.
 
----
-## GitHub Copilot Native Capabilities
-Prioritize using GitHub Copilot's native capabilities in VS Code for local tasks:
-- Ask questions about files in your current workspace.
-- Explain how code in your active editor works.
-- Make changes to existing code.
-- Examine selected code in your active editor.
-- Generate unit tests for selected code.
-- Propose fixes for issues in selected code.
-- Scaffold code for a new file or project in the workspace.
-- Create a new Jupyter Notebook.
-- Ask questions about VS Code.
-- Generate query parameters for workspace search.
-- Ask how to do something in the terminal.
-- Explain what happened in the terminal.
-- Propose fixes for issues in selected code.
-- Explain how code in your active editor works.
-- Examine selected code in your active editor.
-- Generate unit tests for selected code.
-- Make changes to existing code.
-
-Use these capabilities to investigate local code before external tools like `fetch_webpage`.
-
-## Workflow
-1. **Understand the Problem**: Analyze the user's query and identify the core issue.
-2. **Investigate the Codebase**: Use GitHub Copilot native capabilities to open, explain, and examine files in the workspace. If needed, use `fetch_webpage` for external research.
-3. **Propose Solution**: Suggest code changes or fixes using native capabilities for local edits.
-4. **Test and Validate**: Generate unit tests or run commands via `run_in_terminal` if applicable.
-5. **Document Changes**: Ensure all changes are well-documented and follow best practices.
-
-## Tools
-- `fetch_webpage`: For gathering information from the web.
-- `run_in_terminal`: For executing commands.
-- `get_errors`: For debugging.
-- Prioritize native Copilot capabilities for workspace interactions.
----
-
 # Workflow
 1. Fetch any URL's provided by the user using the `fetch_webpage` tool.
 2. Understand the problem deeply. Carefully read the issue and think critically about what is required. Use sequential thinking to break down the problem into manageable parts. Consider the following:
