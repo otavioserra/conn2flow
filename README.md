@@ -17,19 +17,19 @@ Originally developed as a proprietary CMS named B2make, Conn2Flow is now being r
 
 ## Table of Contents
 
-- [📚 Documentation](#documentation)
-- [🆕 Latest Release](#latest-release-v263-february-3-2026)
-- [⚡ Quick Installation](#quick-installation)
-- [📖 Learning Resources](#learning-resources)
-- [🤖 GitHub Copilot Agents](#github-copilot-agents)
-- [📁 Repository Structure](#repository-structure)
-- [⚙️ System Features](#system-features)
-- [🛠️ Complete Development Environment](#complete-development-environment)
-- [📚 Documentation & Development](#documentation--development)
-- [🤖 AI-Powered Development Methodology](#ai-powered-development-methodology)
-- [👥 Community & Support](#community--support)
-- [📄 License](#license)
-- [🗺️ Roadmap](#roadmap)
+- [📚 Documentation](#📚-documentation)
+- [🆕 Latest Release](#🆕-latest-release-v263-february-3-2026)
+- [⚡ Quick Installation](#⚡-quick-installation)
+- [📖 Learning Resources](#📖-learning-resources)
+- [🤖 GitHub Copilot Agents](#🤖-github-copilot-agents)
+- [📁 Repository Structure](#📁-repository-structure)
+- [⚙️ System Features](#⚙️-system-features)
+- [🛠️ Complete Development Environment](#🛠️-complete-development-environment)
+- [📚 Documentation & Development](#📚-documentation--development)
+- [🤖 AI-Powered Development Methodology](#🤖-ai-powered-development-methodology)
+- [👥 Community & Support](#👥-community--support)
+- [📄 License](#📄-license)
+- [🗺️ Roadmap](#🗺️-roadmap)
 
 ## 📚 Documentation
 

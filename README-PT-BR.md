@@ -15,19 +15,19 @@ Originalmente desenvolvido como um CMS proprietário chamado B2make, Conn2Flow a
 
 ## Índice
 
-- [📚 Documentação](#documentação)
-- [🆕 Última Versão](#última-versão-v263-3-fevereiro-2026)
-- [⚡ Instalação Rápida](#instalação-rápida)
-- [📖 Recursos de Aprendizado](#recursos-de-aprendizado)
-- [🤖 Agentes GitHub Copilot](#agentes-github-copilot)
-- [📁 Estrutura do Repositório](#estrutura-do-repositório)
-- [⚙️ Recursos do Sistema](#recursos-do-sistema)
-- [🛠️ Ambiente Completo de Desenvolvimento](#ambiente-completo-de-desenvolvimento)
-- [📚 Documentação e Desenvolvimento](#documentação--desenvolvimento)
-- [🤖 Metodologia de Desenvolvimento com IA](#metodologia-de-desenvolvimento-com-ia)
-- [👥 Comunidade e Suporte](#comunidade--suporte)
-- [📄 Licença](#licença)
-- [🗺️ Roadmap](#roadmap)
+- [📚 Documentação](#📚-documentação)
+- [🆕 Última Versão](#🆕-última-versão-v263-3-fevereiro-2026)
+- [⚡ Instalação Rápida](#⚡-instalação-rápida)
+- [📖 Recursos de Aprendizado](#📖-recursos-de-aprendizado)
+- [🤖 Agentes GitHub Copilot](#🤖-agentes-github-copilot)
+- [📁 Estrutura do Repositório](#📁-estrutura-do-repositório)
+- [⚙️ Recursos do Sistema](#⚙️-recursos-do-sistema)
+- [🛠️ Ambiente Completo de Desenvolvimento](#🛠️-ambiente-completo-de-desenvolvimento)
+- [📚 Documentação e Desenvolvimento](#📚-documentação--desenvolvimento)
+- [🤖 Metodologia de Desenvolvimento com IA](#🤖-metodologia-de-desenvolvimento-com-ia)
+- [👥 Comunidade e Suporte](#👥-comunidade--suporte)
+- [📄 Licença](#📄-licença)
+- [🗺️ Roadmap](#🗺️-roadmap)
 
 ## 📚 Documentação
 
