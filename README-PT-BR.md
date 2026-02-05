@@ -13,26 +13,31 @@ Conn2Flow é um Sistema de Gerenciamento de Conteúdo (CMS) moderno, leve e flex
 
 Originalmente desenvolvido como um CMS proprietário chamado B2make, Conn2Flow agora está sendo lançado para a comunidade open-source para promover colaboração e inovação.
 
-## Estrutura do Repositório
+## Índice
 
-Este repositório fornece um **ambiente de desenvolvimento completo** para o CMS Conn2Flow:
+- [📚 Documentação](#documentação)
+- [🆕 Última Versão](#última-versão-v263-3-fevereiro-2026)
+- [⚡ Instalação Rápida](#instalação-rápida)
+- [📖 Recursos de Aprendizado](#recursos-de-aprendizado)
+- [🤖 Agentes GitHub Copilot](#agentes-github-copilot)
+- [📁 Estrutura do Repositório](#estrutura-do-repositório)
+- [⚙️ Recursos do Sistema](#recursos-do-sistema)
+- [🛠️ Ambiente Completo de Desenvolvimento](#ambiente-completo-de-desenvolvimento)
+- [📚 Documentação e Desenvolvimento](#documentação--desenvolvimento)
+- [🤖 Metodologia de Desenvolvimento com IA](#metodologia-de-desenvolvimento-com-ia)
+- [👥 Comunidade e Suporte](#comunidade--suporte)
+- [📄 Licença](#licença)
+- [🗺️ Roadmap](#roadmap)
 
-* **gestor/**: O sistema CMS principal - núcleo com todos os recursos de gerenciamento, plugins V2 e atualizações automatizadas
-* **gestor-instalador/**: Instalador web automatizado com suporte multilíngue (Português/Inglês)
-* **ai-workspace/**: Ambiente de desenvolvimento completo com fluxos de trabalho assistidos por IA, documentação e ferramentas de automação
-* **dev-plugins/**: Framework completo de desenvolvimento de plugins com templates, scripts e ambiente de testes
-* **dev-environment/**: Ambiente de desenvolvimento baseado em Docker com PHP 8.3 + Apache + MySQL 8.0
-* **.github/**: Workflows do GitHub Actions para releases automatizados e CI/CD
-
-### Documentação
+## Documentação
 
 Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 
 - **[📚 Documentação Técnica](ai-workspace/pt-br/docs/README.md)** - Documentação técnica completa organizada por área do sistema
-- **[📋 Changelog](CHANGELOG.md)** - Changelog padrão da indústria seguindo o formato Keep a Changelog
+- **[📋 Changelog](CHANGELOG-PT-BR.md)** - Changelog padrão da indústria seguindo o formato Keep a Changelog
 - **[📊 Histórico Completo de Desenvolvimento](ai-workspace/pt-br/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Evolução completa commit-por-commit
 
-### Última Versão: v2.6.3 (3 Fevereiro 2026)
+## Última Versão: v2.6.3 (3 Fevereiro 2026)
 
 **🎯 Novas Funcionalidades:**
 - **Menu Administrativo Responsivo**: Redesign completo com botão toggle, largura redimensionável e persistência em localStorage
@@ -68,13 +73,7 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 - Seletor visual de imagens no editor HTML
 - Interface aprimorada com tooltips e simulação de design
 
-### Branches Legadas
-* **gestor-v1.16**: Última versão estável antes da v2.0.0
-* **b2make-legacy**: Sistema legado completo preservado para referência
-* **v0-legacy**: Versão original de 2012
-* **v1-legacy**: Versão de 2015
-
-A estrutura de pastas legada b2make-* foi modernizada e agora está disponível na branch `b2make-legacy` para referência histórica. 
+Para o changelog completo, consulte [CHANGELOG-PT-BR.md](CHANGELOG-PT-BR.md).
 
 ## Instalação Rápida
 
@@ -93,7 +92,6 @@ Conn2Flow apresenta um **instalador web automatizado moderno** que simplifica o 
 
    **Download Direto:**
    - Clique no próximo link para baixar o `instalador.zip`: [Download Instalador v1.5.2](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip)
-
       
    **Linux/macOS:**
    ```bash
@@ -109,7 +107,7 @@ Conn2Flow apresenta um **instalador web automatizado moderno** que simplifica o 
    ```bash
    # Linux/macOS
    LATEST=$(gh release list --repo otavioserra/conn2flow | grep "instalador-v" | head -n1 | awk '{print $3}')
-   wget "https://github.com/otavioserra/conn2flow/releases/download/${LATEST}/instalador.zip
+   wget "https://github.com/otavioserra/conn2flow/releases/download/${LATEST}/instalador.zip"
 
    # Windows PowerShell
    $latest = (gh release list --json tagName | ConvertFrom-Json | Where-Object { $_.tagName -like "instalador-v*" } | Select-Object -First 1).tagName
@@ -184,6 +182,42 @@ Para usuários avançados que preferem instalação manual ou precisam de config
 5. **Configuração do Servidor Web**
    - Aponte seu servidor web para os arquivos `public-access`
    - Garanta permissões adequadas e extensões PHP
+
+## Recursos de Aprendizado
+
+- **[🤖 Metodologia de Desenvolvimento com IA](ai-workspace/README.md)** - Como construímos isso com assistência de IA
+- **[🛠️ Guia de Desenvolvimento de Plugins](ai-workspace/pt-br/docs/CONN2FLOW-PLUGIN-ARCHITECTURE.md)** - Guia completo para criação de plugins
+- **[🏗️ Arquitetura do Sistema](ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Conhecimento técnico profundo
+- **[⚙️ Fluxos de Trabalho de Desenvolvimento](ai-workspace/pt-br/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - CI/CD e automação
+- **[📚 Documentação Completa do Sistema](ai-workspace/pt-br/docs/CONN2FLOW-GESTOR-DETALHAMENTO.md)** - Arquitetura e componentes do sistema detalhados
+
+## Agentes GitHub Copilot
+
+Disponibilizamos agentes de IA especializados para auxiliar em diferentes aspectos do desenvolvimento. Utilize estes arquivos para configurar seu workspace do GitHub Copilot:
+
+- **[🤖 Agente Geral Conn2Flow](.github/agents/Conn2Flow.agent.md)** - Agente de codificação de alto nível para tarefas gerais
+- **[⚡ Conn2Flow Sem Testes](.github/agents/Conn2Flow-Without-Tests.agent.md)** - Focado em velocidade (pula criação de testes)
+- **[🔧 Gerador de Recursos](.github/agents/Conn2Flow-Resources.agent.md)** - Especializado na criação e gestão de recursos do sistema
+- **[🎨 Gerador de Imagens](.github/agents/Conn2Flow-Image-Generator.agent.md)** - Cria imagens usando Gemini 3 Pro (via script)
+
+## Estrutura do Repositório
+
+Este repositório fornece um **ambiente de desenvolvimento completo** para o CMS Conn2Flow:
+
+* **gestor/**: O sistema CMS principal - núcleo com todos os recursos de gerenciamento, plugins V2 e atualizações automatizadas
+* **gestor-instalador/**: Instalador web automatizado com suporte multilíngue (Português/Inglês)
+* **ai-workspace/**: Ambiente de desenvolvimento completo com fluxos de trabalho assistidos por IA, documentação e ferramentas de automação
+* **dev-plugins/**: Framework completo de desenvolvimento de plugins com templates, scripts e ambiente de testes
+* **dev-environment/**: Ambiente de desenvolvimento baseado em Docker com PHP 8.3 + Apache + MySQL 8.0
+* **.github/**: Workflows do GitHub Actions para releases automatizados e CI/CD
+
+### Branches Legadas
+* **gestor-v1.16**: Última versão estável antes da v2.0.0
+* **b2make-legacy**: Sistema legado completo preservado para referência
+* **v0-legacy**: Versão original de 2012
+* **v1-legacy**: Versão de 2015
+
+A estrutura de pastas legada b2make-* foi modernizada e agora está disponível na branch `b2make-legacy` para referência histórica.
 
 ## Recursos do Sistema
 
@@ -299,23 +333,6 @@ Conn2Flow fornece um **ambiente de desenvolvimento completo** que vai além de a
    # Siga fluxos de trabalho documentados em ai-workspace/pt-br/docs/
    ```
 
-### 📚 Recursos de Aprendizado
-
-- **[Metodologia de Desenvolvimento com IA](ai-workspace/README.md)** - Como construímos isso com assistência de IA
-- **[Guia de Desenvolvimento de Plugins](ai-workspace/pt-br/docs/CONN2FLOW-PLUGIN-ARCHITECTURE.md)** - Guia completo para criação de plugins
-- **[Arquitetura do Sistema](ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Conhecimento técnico profundo
-- **[Fluxos de Trabalho de Desenvolvimento](ai-workspace/pt-br/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - CI/CD e automação
-- **[Documentação Completa do Sistema](ai-workspace/pt-br/docs/CONN2FLOW-GESTOR-DETALHAMENTO.md)** - Arquitetura e componentes do sistema detalhados
-
-### 🤖 Agentes GitHub Copilot
-
-Disponibilizamos agentes de IA especializados para auxiliar em diferentes aspectos do desenvolvimento. Utilize estes arquivos para configurar seu workspace do GitHub Copilot:
-
-- **[Agente Geral Conn2Flow](.github/agents/Conn2Flow.agent.md)** - Agente de codificação de alto nível para tarefas gerais
-- **[Conn2Flow Sem Testes](.github/agents/Conn2Flow-Without-Tests.agent.md)** - Focado em velocidade (pula criação de testes)
-- **[Gerador de Recursos](.github/agents/Conn2Flow-Resources.agent.md)** - Especializado na criação e gestão de recursos do sistema
-- **[Gerador de Imagens](.github/agents/Conn2Flow-Image-Generator.agent.md)** - Cria imagens usando Gemini 3 Pro (via script)
-
 ### Mecanismo de Atualização do Sistema (Atualizações Automatizadas)
 
 Conn2Flow inclui um orquestrador de atualização do núcleo em `gestor/controladores/atualizacoes/atualizacoes-sistema.php` com suporte CLI e execução incremental via web (AJAX). Principais características:
@@ -410,50 +427,6 @@ dev-environment/       # Stack de desenvolvimento Docker
 └── workflows/        # Automação CI/CD
 ```
 
-## Versões Atuais
-
-### Últimas Versões Estáveis
-
-**Gestor (Sistema Core)**: `v2.5.0` *(Mais Recente)*
-- ✅ **Biblioteca Editor HTML Centralizada**: Funcionalidade centralizada de edição HTML com componentes reutilizáveis entre módulos
-- ✅ **Sistema de Seleção de Templates Visual**: Seleção completa de templates de página com interface de cards Fomantic UI
-- ✅ **Editor HTML Modular**: Sistema unificado de edição para páginas, templates e componentes com integração IA
-- ✅ **Sistema de Templates Multilíngue**: Seleção de templates com priorização de idioma e filtragem baseada em alvo
-- ✅ **Gerenciamento Avançado de Templates**: Sistema de templates com miniaturas, metadados e integração CodeMirror
-- ✅ **Reutilização de Componentes**: Componentes de editor HTML compartilhados entre módulos admin-paginas e admin-templates
-
-**Instalador (Installer)**: `v1.5.2` *(Mais Recente)*
-- ✅ **Suporte ao Sistema de IA**: Instalação preparada para novos recursos de IA v2.3.0
-- ✅ **Suporte Framework CSS**: Instalação preparada para novos recursos v2.0.0
-- ✅ **Charset UTF-8 Robusto**: Compatibilidade total com caracteres especiais
-- ✅ **getPdo() Unificado**: Método único para todas conexões de banco
-- ✅ **Detecção URL Robusta**: Funcionamento garantido em subpasta ou raiz
-- ✅ **Auto-login Aprimorado**: Configuração automática pós-instalação
-- ✅ **Logs Detalhados**: Rastreamento completo do processo
-
-### Histórico de Versões
-- **Gestor v2.5.0**: Biblioteca editor HTML centralizada e sistema de templates visual com interface de cards Fomantic UI, editor modular para páginas/templates/componentes, gerenciamento de templates multilíngue com integração IA, reutilização de componentes entre módulos admin.
-- **Gestor v2.4.0**: Sistema completo de deploy de projetos via API OAuth com autenticação OAuth 2.0, renovação automática de tokens, workflow de deploy one-click, gerenciamento avançado de projetos com deploy direto na raiz, tratamento robusto de erros com rollback, e melhorias de segurança incluindo autenticação OAuth obrigatória e validação segura de ZIP.
-- **Gestor v2.3.0**: Sistema de IA integrado completo com API Gemini, sistema dual de prompts, interface avançada CodeMirror, gerenciamento de sessão para geração de conteúdo, suporte a múltiplos modelos de IA.
-- **Gestor v2.0.0**: Sistema de plugins V2 com arquitetura refatorada, templates automatizados, rastreio completo de dados, IDs textuais, limpeza ampla do sistema.
-- **Gestor v1.16.0**: Sistema de preview TailwindCSS, suporte multi-framework CSS, módulos admin modernizados, padrões técnicos otimizados.
-- **Gestor v1.15.0**: Sistema de atualização automática consolidado, correção de permissões, documentação técnica.
-- **Gestor v1.11.0**: Versionamento automático recursos módulos/plugins; melhorias checksum e remoção definitiva de seeders na atualização.
-- **Gestor v1.10.x**: Correções de duplicidade, internacionalização, unificação geração de recursos, campos de controle *updated*.
-- **Instalador v1.5.2**: Correções de roteamento, ajustes de headers estáticos, atualizações de documentação.
-- **Instalador v1.5.1**: Suporte ao sistema de IA para recursos v2.3.0, compatibilidade aprimorada e robustez de instalação.
-- **Instalador v1.4.0**: Suporte framework CSS, charset UTF-8 robusto, getPdo() unificado, preparação para preview system.
-- **Instalador v1.3.3**: Refatoração robusta com charset utf8mb4, correção de acentuação, instalação em ambientes diversos.
-- **Instalador v1.1.0**: Refatoração para usar script de atualização central; ajustes RewriteBase e criação admin.
-
-### Ambiente de Desenvolvimento
-- **Docker**: Stack completo de desenvolvimento com PHP 8.3 + Apache + MySQL 8.0
-- **PHP Local**: 8.4.8 CLI para scripts utilitários e ferramentas de desenvolvimento
-- **Banco de Dados**: Schema verificado com 75 tabelas e seeders abrangentes
-- **Testes**: Scripts de verificação de migração e seeder incluídos
-- **Integração VS Code**: Tarefas pré-configuradas em `.vscode/tasks.json` para automação de desenvolvimento
-- **Arquivos de Ambiente**: Arquivos `environment.json` devidamente configurados para desenvolvimento do core e plugins
-
 ## Documentação & Desenvolvimento
 
 ### Documentação Técnica
@@ -474,11 +447,6 @@ Conn2Flow inclui documentação técnica abrangente para desenvolvedores e admin
 - **[⚙️ GitHub Actions](ai-workspace/pt-br/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - Automação completa CI/CD via GitHub Actions
 - **[🌐 Sistema Multilíngue](ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-HIBRIDO-MULTILANGUE-CONCLUIDO.md)** - Suporte multilíngue
 
-### Histórico de Mudanças
-
-- **[📋 Changelog Padrão](CHANGELOG.md)** - Changelog padrão da indústria seguindo versionamento semântico
-- **[📊 Histórico de Desenvolvimento](ai-workspace/pt-br/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Histórico completo de commits com contexto e insights
-
 ### Recursos de Desenvolvimento
 
 O diretório `ai-workspace/` contém todas as ferramentas de desenvolvimento e documentação:
@@ -490,7 +458,7 @@ O diretório `ai-workspace/` contém todas as ferramentas de desenvolvimento e d
 
 ### 🤖 Desenvolvimento Colaborativo com Agentes IA
 
-Conn2Flow pioneirou uma **metodologia abrangente de desenvolvimento assistido por IA** ao longo de 12 meses de colaboração ativa com agentes IA (GitHub Copilot, Claude, ChatGPT, Gemini). O diretório `ai-workspace/` representa uma framework madura para desenvolvimento colaborativo humano-IA.
+Conn2Flow pioneirou uma **metodologia abrangente de desenvolvimento assistido por IA** ao longo de 12 meses de colaboração ativa com agentes IA (GitHub Copilot, Claude, ChatGPT, Gemini). O diretório `ai-workspace/` representa uma estrutura madura para desenvolvimento colaborativo humano-IA.
 
 #### **O Que Torna Isso Especial**
 - **📚 15 Documentos Técnicos**: Conhecimento abrangente do sistema preservado entre sessões
