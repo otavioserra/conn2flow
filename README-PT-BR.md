@@ -306,7 +306,15 @@ Conn2Flow fornece um **ambiente de desenvolvimento completo** que vai além de a
 - **[Arquitetura do Sistema](ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Conhecimento técnico profundo
 - **[Fluxos de Trabalho de Desenvolvimento](ai-workspace/pt-br/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - CI/CD e automação
 - **[Documentação Completa do Sistema](ai-workspace/pt-br/docs/CONN2FLOW-GESTOR-DETALHAMENTO.md)** - Arquitetura e componentes do sistema detalhados
-- **[Agente GitHub Copilot](.github/chatmodes/Conn2Flow-v2.0.chatmode.md)** - Agente de IA especializado para desenvolvimento Conn2Flow
+
+### 🤖 Agentes GitHub Copilot
+
+Disponibilizamos agentes de IA especializados para auxiliar em diferentes aspectos do desenvolvimento. Utilize estes arquivos para configurar seu workspace do GitHub Copilot:
+
+- **[Agente Geral Conn2Flow](.github/agents/Conn2Flow.agent.md)** - Agente de codificação de alto nível para tarefas gerais
+- **[Conn2Flow Sem Testes](.github/agents/Conn2Flow-Without-Tests.agent.md)** - Focado em velocidade (pula criação de testes)
+- **[Gerador de Recursos](.github/agents/Conn2Flow-Resources.agent.md)** - Especializado na criação e gestão de recursos do sistema
+- **[Gerador de Imagens](.github/agents/Conn2Flow-Image-Generator.agent.md)** - Cria imagens usando Gemini 3 Pro (via script)
 
 ### Mecanismo de Atualização do Sistema (Atualizações Automatizadas)
 
