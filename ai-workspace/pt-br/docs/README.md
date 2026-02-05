@@ -32,7 +32,7 @@ Esta pasta contém toda a documentação técnica detalhada do projeto Conn2Flow
 - **[CONN2FLOW-SISTEMA-MULTILÍNGUE-HIBRIDO.md](CONN2FLOW-SISTEMA-MULTILÍNGUE-HIBRIDO.md)** - Documentação do sistema multilíngue híbrido
 
 ### 💳 Integrações de Pagamento
-- **[bibliotecas/BIBLIOTECA-PAYPAL.md](bibliotecas/BIBLIOTECA-PAYPAL.md)** - Integração completa com PayPal APIs v2 (Orders, Subscriptions, Invoicing, etc)
+- **[BIBLIOTECA-PAYPAL.md](bibliotecas/BIBLIOTECA-PAYPAL.md)** - Integração completa com PayPal APIs v2 (Orders, Subscriptions, Invoicing, etc)
 
 ## 🎯 Como Usar
 
