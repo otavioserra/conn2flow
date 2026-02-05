@@ -4,7 +4,7 @@
         "id": "sessao-com-2-colunas",
         "target": "paginas",
         "framework_css": "tailwindcss",
-        "thumbnail": "templates\/images\/pt-br\/sessao-com-2-colunas.png",
+        "thumbnail": "templates\/images\/pt-br\/sessao-com-2-colunas.webp",
         "version": "1.17",
         "checksum": {
             "html": "68d5e317a57edc6142d8ea50ca8a0f5b",
