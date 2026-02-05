@@ -31,7 +31,7 @@ Originally developed as a proprietary CMS named B2make, Conn2Flow is now being r
 - [📄 License](#license)
 - [🗺️ Roadmap](#roadmap)
 
-## 📚 Documentation {#documentation}
+## Documentation
 
 For detailed technical information and development guides, see:
 
@@ -39,7 +39,7 @@ For detailed technical information and development guides, see:
 - **[📋 Changelog](CHANGELOG.md)** - Industry-standard changelog following Keep a Changelog format
 - **[📊 Full Development History](ai-workspace/en/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Detailed commit-by-commit evolution
 
-## 🆕 Latest Release {#latest-release}
+## Latest Release
 
 **v2.6.3 (February 3, 2026)**
 
@@ -79,7 +79,7 @@ For detailed technical information and development guides, see:
 
 For full changelog, see [CHANGELOG.md](CHANGELOG.md).
 
-## ⚡ Quick Installation {#quick-installation}
+## Quick Installation
 
 Conn2Flow features a modern **automated web installer** that simplifies the installation process to just a few clicks. No complex manual configuration required!
 
@@ -185,7 +185,7 @@ For advanced users who prefer manual installation or need custom configurations:
    - Point your web server to the `public-access` files
    - Ensure proper permissions and PHP extensions
 
-## 📖 Learning Resources {#learning-resources}
+## Learning Resources
 
 - **[🤖 AI Development Methodology](ai-workspace/README.md)** - How we built this with AI assistance
 - **[🛠️ Plugin Development Guide](ai-workspace/en/docs/CONN2FLOW-PLUGIN-ARCHITECTURE.md)** - Complete plugin creation guide
@@ -193,7 +193,7 @@ For advanced users who prefer manual installation or need custom configurations:
 - **[⚙️ Development Workflows](ai-workspace/en/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - CI/CD and automation
 - **[📚 Complete System Documentation](ai-workspace/en/docs/CONN2FLOW-MANAGER-DETAILS.md)** - Detailed system architecture and components
 
-## 🤖 GitHub Copilot Agents {#github-copilot-agents}
+## GitHub Copilot Agents
 
 We provide specialized AI agents to assist with different aspects of development. Use these files to configure your GitHub Copilot workspace:
 
@@ -202,7 +202,7 @@ We provide specialized AI agents to assist with different aspects of development
 - **[🔧 Resources Generator](.github/agents/Conn2Flow-Resources.agent.md)** - Specialized in creating and managing system resources
 - **[🎨 Image Generator](.github/agents/Conn2Flow-Image-Generator.agent.md)** - Creates images using Gemini 3 Pro (via script)
 
-## 📁 Repository Structure {#repository-structure}
+## Repository Structure
 
 This repository provides a **complete development environment** for Conn2Flow CMS:
 
@@ -221,7 +221,7 @@ This repository provides a **complete development environment** for Conn2Flow CM
 
 The legacy b2make-* folder structure has been modernized and is now available in the `b2make-legacy` branch for historical reference.
 
-## ⚙️ System Features {#system-features}
+## System Features
 
 ### Core CMS Features
 - **Content Management**: Full-featured content creation and editing with TailwindCSS preview
@@ -249,7 +249,7 @@ The legacy b2make-* folder structure has been modernized and is now available in
 - **Automatic Configuration**: All security keys and settings generated automatically
 - **Clean Installation**: Self-removing installer leaves no traces
 
-## 🛠️ Complete Development Environment {#complete-development-environment}
+## Complete Development Environment
 
 Conn2Flow provides a **complete development environment** that goes beyond just the CMS - it's a full development ecosystem designed for both the core system and plugin development.
 
@@ -429,7 +429,7 @@ dev-environment/       # Docker development stack
 └── workflows/        # CI/CD automation
 ```
 
-## 📚 Documentation & Development {#documentation--development}
+## Documentation & Development
 
 ### Technical Documentation
 
@@ -456,7 +456,7 @@ The `ai-workspace/` directory contains all development tools and documentation:
 - Detailed prompts for AI-assisted development
 - Complete system knowledge base for contributors
 
-## 🤖 AI-Powered Development Methodology {#ai-powered-development-methodology}
+## AI-Powered Development Methodology
 
 ### 🤖 Collaborative Development with AI Agents
 
@@ -490,7 +490,7 @@ The `ai-workspace/` methodology demonstrates:
 
 *This represents one of the most comprehensive real-world applications of AI-assisted development methodology in an active production system.*
 
-## 👥 Community & Support {#community--support}
+## Community & Support
 
 ### Contributing
 
@@ -515,11 +515,11 @@ We welcome contributions! Here's how you can help:
 - **Discussions**: For general questions and community support
 - **LinkedIn**: Connect with the founder at [https://www.linkedin.com/in/otaviocserra/](https://www.linkedin.com/in/otaviocserra/)
 
-## 📄 License {#license}
+## License
 
 Conn2Flow is released under an open-source license to ensure freedom of use, modification, and distribution. License details will be finalized soon with community input.
 
-## 🗺️ Roadmap {#roadmap}
+## Roadmap
 
 ### ✅ Recently Completed
 - **Plugin System V2**: Revolutionary plugin architecture with dynamic detection and automated templates
