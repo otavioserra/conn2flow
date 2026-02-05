@@ -6,7 +6,7 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 ## [Unreleased]
 
 ### Added
-- Documentação técnica detalhada em `ai-workspace/docs/`
+- Documentação técnica detalhada em `ai-workspace/pt-br/docs/`
 - Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
 - CHANGELOG.md padrão da indústria seguindo Keep a Changelog
 

@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Added
-- Detailed technical documentation in `ai-workspace/docs/`
+- Detailed technical documentation in `ai-workspace/en/docs/`
 - Complete change history in `CONN2FLOW-CHANGELOG-HISTORY.md`
 - Industry-standard CHANGELOG.md following Keep a Changelog format
 

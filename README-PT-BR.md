@@ -28,9 +28,9 @@ Este repositório fornece um **ambiente de desenvolvimento completo** para o CMS
 
 Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 
-- **[📚 Documentação Técnica](ai-workspace/docs/README.md)** - Documentação técnica completa organizada por área do sistema
+- **[📚 Documentação Técnica](ai-workspace/pt-br/docs/README.md)** - Documentação técnica completa organizada por área do sistema
 - **[📋 Changelog](CHANGELOG.md)** - Changelog padrão da indústria seguindo o formato Keep a Changelog
-- **[📊 Histórico Completo de Desenvolvimento](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Evolução completa commit-por-commit
+- **[📊 Histórico Completo de Desenvolvimento](ai-workspace/pt-br/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Evolução completa commit-por-commit
 
 ### Última Versão: v2.6.3 (3 Fevereiro 2026)
 
@@ -296,16 +296,16 @@ Conn2Flow fornece um **ambiente de desenvolvimento completo** que vai além de a
    ```bash
    # Use desenvolvimento assistido por IA
    # Verifique ai-workspace/prompts/ para templates padronizados
-   # Siga fluxos de trabalho documentados em ai-workspace/docs/
+   # Siga fluxos de trabalho documentados em ai-workspace/pt-br/docs/
    ```
 
 ### 📚 Recursos de Aprendizado
 
 - **[Metodologia de Desenvolvimento com IA](ai-workspace/README.md)** - Como construímos isso com assistência de IA
-- **[Guia de Desenvolvimento de Plugins](ai-workspace/docs/CONN2FLOW-PLUGIN-ARCHITECTURE.md)** - Guia completo para criação de plugins
-- **[Arquitetura do Sistema](ai-workspace/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Conhecimento técnico profundo
-- **[Fluxos de Trabalho de Desenvolvimento](ai-workspace/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - CI/CD e automação
-- **[Documentação Completa do Sistema](ai-workspace/docs/CONN2FLOW-GESTOR-DETALHAMENTO.md)** - Arquitetura e componentes do sistema detalhados
+- **[Guia de Desenvolvimento de Plugins](ai-workspace/pt-br/docs/CONN2FLOW-PLUGIN-ARCHITECTURE.md)** - Guia completo para criação de plugins
+- **[Arquitetura do Sistema](ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Conhecimento técnico profundo
+- **[Fluxos de Trabalho de Desenvolvimento](ai-workspace/pt-br/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - CI/CD e automação
+- **[Documentação Completa do Sistema](ai-workspace/pt-br/docs/CONN2FLOW-GESTOR-DETALHAMENTO.md)** - Arquitetura e componentes do sistema detalhados
 - **[Agente GitHub Copilot](.github/chatmodes/Conn2Flow-v2.0.chatmode.md)** - Agente de IA especializado para desenvolvimento Conn2Flow
 
 ### Mecanismo de Atualização do Sistema (Atualizações Automatizadas)
@@ -335,7 +335,7 @@ Execução Web (incremental):
 ```
 Estado de sessão: `temp/atualizacoes/sessions/<sid>.json` + `<sid>.log`.
 
-Documentação completa: `ai-workspace/docs/CONN2FLOW-ATUALIZACOES-SISTEMA.md`.
+Documentação completa: `ai-workspace/pt-br/docs/CONN2FLOW-ATUALIZACOES-SISTEMA.md`.
 
 ### Propriedade de Arquivos & Permissões
 
@@ -452,24 +452,24 @@ dev-environment/       # Stack de desenvolvimento Docker
 
 Conn2Flow inclui documentação técnica abrangente para desenvolvedores e administradores de sistemas:
 
-- **[📚 Conhecimento do Sistema](ai-workspace/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Visão geral completa do sistema e arquitetura
-- **[🛠️ Guia de Instalação](ai-workspace/docs/CONN2FLOW-INSTALADOR-DETALHADO.md)** - Instalação e configuração detalhadas
-- **[🎨 Layouts & Componentes](ai-workspace/docs/CONN2FLOW-LAYOUTS-PAGINAS-COMPONENTES.md)** - Estrutura UI e sistema de componentes
-- **[🔧 Desenvolvimento de Módulos](ai-workspace/docs/CONN2FLOW-MODULOS-DETALHADO.md)** - Como desenvolver módulos personalizados
-- **[🔀 Sistema de Roteamento](ai-workspace/docs/CONN2FLOW-ROTEAMENTO-DETALHADO.md)** - Roteamento de URL e manipulação de requisições
-- **[⚡ Automação](ai-workspace/docs/CONN2FLOW-AUTOMACAO-EXPORTACAO.md)** - Automação de exportação de recursos
-- **[🎨 Frameworks CSS](ai-workspace/docs/CONN2FLOW-FRAMEWORK-CSS.md)** - Integração TailwindCSS e FomanticUI
-- **[📱 Sistema Preview](ai-workspace/docs/CONN2FLOW-SISTEMA-PREVIEW-MODALS.md)** - Sistema modal de preview com CodeMirror
-- **[🔄 Atualizações do Sistema](ai-workspace/docs/CONN2FLOW-ATUALIZACOES-SISTEMA.md)** - Mecanismo de atualização automatizada
-- **[🚀 Sistema de Deploy de Projetos](ai-workspace/docs/CONN2FLOW-SISTEMA-PROJETOS.md)** - Deploy de projetos via API OAuth
-- **[🐳 Ambiente Docker](ai-workspace/docs/CONN2FLOW-AMBIENTE-DOCKER.md)** - Ambiente completo de desenvolvimento e testes
-- **[⚙️ GitHub Actions](ai-workspace/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - Automação completa CI/CD via GitHub Actions
-- **[🌐 Sistema Multilíngue](ai-workspace/docs/CONN2FLOW-SISTEMA-HIBRIDO-MULTILANGUE-CONCLUIDO.md)** - Suporte multilíngue
+- **[📚 Conhecimento do Sistema](ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Visão geral completa do sistema e arquitetura
+- **[🛠️ Guia de Instalação](ai-workspace/pt-br/docs/CONN2FLOW-INSTALADOR-DETALHADO.md)** - Instalação e configuração detalhadas
+- **[🎨 Layouts & Componentes](ai-workspace/pt-br/docs/CONN2FLOW-LAYOUTS-PAGINAS-COMPONENTES.md)** - Estrutura UI e sistema de componentes
+- **[🔧 Desenvolvimento de Módulos](ai-workspace/pt-br/docs/CONN2FLOW-MODULOS-DETALHADO.md)** - Como desenvolver módulos personalizados
+- **[🔀 Sistema de Roteamento](ai-workspace/pt-br/docs/CONN2FLOW-ROTEAMENTO-DETALHADO.md)** - Roteamento de URL e manipulação de requisições
+- **[⚡ Automação](ai-workspace/pt-br/docs/CONN2FLOW-AUTOMACAO-EXPORTACAO.md)** - Automação de exportação de recursos
+- **[🎨 Frameworks CSS](ai-workspace/pt-br/docs/CONN2FLOW-FRAMEWORK-CSS.md)** - Integração TailwindCSS e FomanticUI
+- **[📱 Sistema Preview](ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-PREVIEW-MODALS.md)** - Sistema modal de preview com CodeMirror
+- **[🔄 Atualizações do Sistema](ai-workspace/pt-br/docs/CONN2FLOW-ATUALIZACOES-SISTEMA.md)** - Mecanismo de atualização automatizada
+- **[🚀 Sistema de Deploy de Projetos](ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-PROJETOS.md)** - Deploy de projetos via API OAuth
+- **[🐳 Ambiente Docker](ai-workspace/pt-br/docs/CONN2FLOW-AMBIENTE-DOCKER.md)** - Ambiente completo de desenvolvimento e testes
+- **[⚙️ GitHub Actions](ai-workspace/pt-br/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - Automação completa CI/CD via GitHub Actions
+- **[🌐 Sistema Multilíngue](ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-HIBRIDO-MULTILANGUE-CONCLUIDO.md)** - Suporte multilíngue
 
 ### Histórico de Mudanças
 
 - **[📋 Changelog Padrão](CHANGELOG.md)** - Changelog padrão da indústria seguindo versionamento semântico
-- **[📊 Histórico de Desenvolvimento](ai-workspace/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Histórico completo de commits com contexto e insights
+- **[📊 Histórico de Desenvolvimento](ai-workspace/pt-br/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Histórico completo de commits com contexto e insights
 
 ### Recursos de Desenvolvimento
 
