@@ -23,7 +23,7 @@ main()
 
 ## ☑️ Processo Pós-Implementação
 - [] Executar o script gerado para ver se funciona corretamente.
-- [] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
+- [] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/pt-br/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 
 ## ♻️ Alterações e Correções 1.0
 
@@ -31,7 +31,7 @@ main()
 
 ## ☑️ Processo Pós Alterações e Correções
 - [] Executar o script gerado para ver se funciona corretamente.
-- [] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
+- [] Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/pt-br/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 
 ---
 **Data:** dataAtual()

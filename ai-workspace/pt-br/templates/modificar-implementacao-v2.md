@@ -4,7 +4,7 @@
 - FUNDAMENTAL: Analise o contexto anterior antes de seguir com as orientações abaixo que foi registrado no arquivo : `CONTEXTO_ANTERIOR_PATH`.
 
 ## 📝 Orientações para o Agente
-X. Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/git/scripts/commit.sh "MensagemDetalhadaAqui"`
+X. Gerar mensagem detalhada, substituir "MensagemDetalhadaAqui" do script e executar o script do GIT à seguir: `./ai-workspace/pt-br/git/scripts/commit.sh "MensagemDetalhadaAqui"`
 
 ## 🤔 Dúvidas e 📝 Sugestões
 

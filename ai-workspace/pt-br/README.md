@@ -9,10 +9,10 @@ ai-workspace/
 ├── 📚 docs/              # Documentação técnica detalhada (15 arquivos)
 ├── 🤖 prompts/          # Templates e prompts organizados por categoria
 ├── 📋 agents-history/   # Histórico completo de conversas importantes com agentes
-├── � scripts/          # Utilitários e ferramentas criados pelos agentes
+├── 🔧 scripts/          # Utilitários e ferramentas criados pelos agentes
 ├── 📝 templates/        # Modelos para implementações e desenvolvimento
-├── 🌐 git/              # Scripts e workflows para automação Git
-└── �️ utils/           # Utilitários diversos de apoio
+├── 🌐 git/              # Scripts e workflows para automação Git (verifique ai-workspace/en/git)
+└── 🛠️ utils/           # Utilitários diversos de apoio
 ```
 
 ## 🎯 Propósito e Evolução
@@ -90,33 +90,33 @@ Ferramentas auxiliares organizadas por área:
 
 ### 1. **Início de Nova Sessão com IA**
 ```bash
-1. Vá para: ai-workspace/prompts/[categoria]/
+1. Vá para: ai-workspace/pt-br/prompts/[categoria]/
 2. Copie template apropriado (ex: template-nova-conversa.md)
 3. Personalize: [OBJETIVO], [AREA], [ARQUIVOS]
 4. Cole no chat do agente IA
-5. Instrua: "Leia ai-workspace/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md primeiro"
+5. Instrua: "Leia ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md primeiro"
 ```
 
 ### 2. **Consulta de Documentação Durante Desenvolvimento**
 ```bash
-Para agentes: "Leia todos os arquivos em ai-workspace/docs/ relevantes à [AREA]"
+Para agentes: "Leia todos os arquivos em ai-workspace/pt-br/docs/ relevantes à [AREA]"
 Para desenvolvedores: Consulte documentação específica da área trabalhada
-Para contexto histórico: Consulte agents-history/ para ver soluções anteriores
+Para contexto histórico: Consulte ai-workspace/pt-br/agents-history/ para ver soluções anteriores
 ```
 
 ### 3. **Desenvolvimento de Feature/Correção**
 ```bash
-1. Use template de ai-workspace/templates/criar-implementacao.md
+1. Use template de ai-workspace/pt-br/templates/criar-implementacao.md
 2. Consulte documentação técnica relevante
 3. Execute scripts de validação quando necessário
 4. Documente mudanças importantes em docs/
-5. Use scripts do git/ para versionamento
+5. Use scripts do ai-workspace/en/git/ para versionamento
 ```
 
 ### 4. **Criação de Release**
 ```bash
-1. Use: ai-workspace/git/RELEASE_PROMPT.md
-2. Execute: ai-workspace/git/scripts/release.sh ou release-instalador.sh
+1. Use: ai-workspace/en/git/RELEASE_PROMPT.md
+2. Execute: ai-workspace/en/git/scripts/release.sh ou release-instalador.sh
 3. Documente: mudanças em changelog
 4. Preserve: conhecimento crítico em agents-history/
 ```
@@ -126,9 +126,9 @@ Para contexto histórico: Consulte agents-history/ para ver soluções anteriore
 ### 🚀 **Desenvolvimento de Feature**
 1. **Planejamento:** Consulte docs/ e agents-history/ para contexto
 2. **Implementação:** Use agente IA com prompt específico
-3. **Validação:** Execute scripts/ de verificação
+3. **Validação:** Execute ai-workspace/pt-br/scripts/ de verificação
 4. **Documentação:** Atualize docs/ técnicas
-5. **Release:** Use git/scripts/ para versionamento
+5. **Release:** Use ai-workspace/en/git/scripts/ para versionamento
 6. **Preservação:** Documente aprendizados em agents-history/
 
 ### 🐛 **Correção de Bug**
@@ -142,7 +142,7 @@ Para contexto histórico: Consulte agents-history/ para ver soluções anteriore
 1. **Compilação:** Reúna todas as mudanças desde última versão
 2. **Documentação:** Crie release notes baseado em templates/
 3. **Validação:** Teste em ambiente completo usando scripts/
-4. **Deploy:** Use git/scripts/ automatizados
+4. **Deploy:** Use ai-workspace/en/git/scripts/ automatizados
 5. **Comunicação:** Atualize documentação principal
 
 ## 📊 Impacto e Resultados
@@ -171,27 +171,27 @@ Para contexto histórico: Consulte agents-history/ para ver soluções anteriore
 ```bash
 # Análise estrutural
 "Analise a estrutura da pasta gestor/ focando em [AREA]"
-"Liste arquivos em ai-workspace/docs/ relacionados a [FUNCIONALIDADE]"
+"Liste arquivos em ai-workspace/pt-br/docs/ relacionados a [FUNCIONALIDADE]"
 
 # Busca contextual
 "Busque por [TERMO] em todo o projeto e explique o contexto"
 "Mostre arquivos modificados no git nos últimos commits"
 
 # Documentação
-"Leia ai-workspace/docs/CONN2FLOW-[AREA]-DETALHADO.md"
-"Consulte ai-workspace/agents-history/ para ver soluções similares"
+"Leia ai-workspace/pt-br/docs/CONN2FLOW-[AREA]-DETALHADO.md"
+"Consulte ai-workspace/pt-br/agents-history/ para ver soluções similares"
 ```
 
 ### 🛠️ **Desenvolvimento**
 ```bash
 # Implementação
-"Implemente [FUNCIONALIDADE] baseado na documentação em ai-workspace/docs/"
+"Implemente [FUNCIONALIDADE] baseado na documentação em ai-workspace/pt-br/docs/"
 "Corrija [BUG] seguindo padrões documentados no projeto"
 "Refatore [CÓDIGO] mantendo compatibilidade conforme docs/"
 
 # Validação
-"Execute scripts em ai-workspace/scripts/ para validar [AREA]"
-"Verifique se implementação segue padrões em ai-workspace/templates/"
+"Execute scripts em ai-workspace/pt-br/scripts/ para validar [AREA]"
+"Verifique se implementação segue padrões em ai-workspace/pt-br/templates/"
 ```
 
 ---
@@ -207,7 +207,7 @@ Para contexto histórico: Consulte agents-history/ para ver soluções anteriore
 
 ### 1. Nova Conversa com IA
 ```
-1. Vá para: ai-workspace/prompts/
+1. Vá para: ai-workspace/pt-br/prompts/
 2. Copie: template-nova-conversa.md
 3. Personalize: [OBJETIVO], [AREA], [ARQUIVOS]
 4. Cole no chat do agente IA
@@ -215,20 +215,20 @@ Para contexto histórico: Consulte agents-history/ para ver soluções anteriore
 
 ### 2. Consulta de Documentação
 ```
-Para agentes: "Leia todos os arquivos em ai-workspace/docs/"
+Para agentes: "Leia todos os arquivos em ai-workspace/pt-br/docs/"
 Para você: Consulte documentação específica da área
 ```
 
 ### 3. Criação de Release
 ```
-1. Use: ai-workspace/releases/RELEASE_PROMPT.md
+1. Use: ai-workspace/en/git/RELEASE_PROMPT.md
 2. Documente: mudanças, correções, melhorias
 3. Gere: notas de versão
 ```
 
 ### 4. Scripts Utilitários
 ```
-Execute: php ai-workspace/scripts/[script].php
+Execute: php ai-workspace/pt-br/scripts/[script].php
 Teste: funcionalidades em desenvolvimento
 ```
 
@@ -237,7 +237,7 @@ Teste: funcionalidades em desenvolvimento
 ### Navegação
 ```
 - "Analise a estrutura da pasta gestor/"
-- "Leia todos os arquivos em ai-workspace/docs/"
+- "Leia todos os arquivos em ai-workspace/pt-br/docs/"
 - "Busque por [termo] em todo o projeto"
 - "Liste arquivos modificados no git"
 ```

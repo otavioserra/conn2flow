@@ -279,7 +279,7 @@ Conn2Flow fornece um **ambiente de desenvolvimento completo** que vai além de a
    docker-compose up -d
    
    # Ou use scripts de desenvolvimento local
-   bash ai-workspace/scripts/dev-environment/setup.sh
+   bash ai-workspace/pt-br/scripts/dev-environment/setup.sh
    ```
 
 4. **Desenvolva Plugins**
@@ -295,7 +295,7 @@ Conn2Flow fornece um **ambiente de desenvolvimento completo** que vai além de a
 5. **Contribua para o Core**
    ```bash
    # Use desenvolvimento assistido por IA
-   # Verifique ai-workspace/prompts/ para templates padronizados
+   # Verifique ai-workspace/pt-br/prompts/ para templates padronizados
    # Siga fluxos de trabalho documentados em ai-workspace/pt-br/docs/
    ```
 

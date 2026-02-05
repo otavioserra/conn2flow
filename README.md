@@ -278,7 +278,7 @@ Conn2Flow provides a **complete development environment** that goes beyond just 
    docker-compose up -d
    
    # Or use local development scripts
-   bash ai-workspace/scripts/dev-environment/setup.sh
+   bash ai-workspace/en/scripts/dev-environment/setup.sh
    ```
 
 5. **Develop Plugins**
@@ -294,7 +294,7 @@ Conn2Flow provides a **complete development environment** that goes beyond just 
 6. **Contribute to Core**
    ```bash
    # Use AI-assisted development
-   # Check ai-workspace/prompts/ for standardized templates
+   # Check ai-workspace/en/prompts/ for standardized templates
    # Follow documented workflows in ai-workspace/en/docs/
    ```
 
@@ -302,9 +302,9 @@ Conn2Flow provides a **complete development environment** that goes beyond just 
 
 - **[AI Development Methodology](ai-workspace/README.md)** - How we built this with AI assistance
 - **[Plugin Development Guide](ai-workspace/en/docs/CONN2FLOW-PLUGIN-ARCHITECTURE.md)** - Complete plugin creation guide
-- **[System Architecture](ai-workspace/en/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Deep technical knowledge
+- **[System Architecture](ai-workspace/en/docs/CONN2FLOW-KNOWLEDGE-SYSTEM.md)** - Deep technical knowledge
 - **[Development Workflows](ai-workspace/en/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - CI/CD and automation
-- **[Complete System Documentation](ai-workspace/en/docs/CONN2FLOW-GESTOR-DETALHAMENTO.md)** - Detailed system architecture and components
+- **[Complete System Documentation](ai-workspace/en/docs/CONN2FLOW-MANAGER-DETAILS.md)** - Detailed system architecture and components
 - **[GitHub Copilot Agent](.github/chatmodes/Conn2Flow-v2.0.chatmode.md)** - Specialized AI agent for Conn2Flow development
 
 ### System Update Mechanism (Automated Updates)
@@ -334,7 +334,7 @@ Web execution (incremental):
 ```
 Session state: `temp/atualizacoes/sessions/<sid>.json` + `<sid>.log`.
 
-Complete documentation: `ai-workspace/en/docs/CONN2FLOW-ATUALIZACOES-SISTEMA.md`.
+Complete documentation: `ai-workspace/en/docs/CONN2FLOW-SYSTEM-UPDATES.md`.
 
 ### File Ownership & Permissions
 
@@ -451,19 +451,19 @@ dev-environment/       # Docker development stack
 
 Conn2Flow includes comprehensive technical documentation for developers and system administrators:
 
-- **[📚 System Knowledge](ai-workspace/en/docs/CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Complete system overview and architecture
-- **[🛠️ Installation Guide](ai-workspace/en/docs/CONN2FLOW-INSTALADOR-DETALHADO.md)** - Detailed installation and configuration
-- **[🎨 Layouts & Components](ai-workspace/en/docs/CONN2FLOW-LAYOUTS-PAGINAS-COMPONENTES.md)** - UI structure and component system
-- **[🔧 Modules Development](ai-workspace/en/docs/CONN2FLOW-MODULOS-DETALHADO.md)** - How to develop custom modules
-- **[🔀 Routing System](ai-workspace/en/docs/CONN2FLOW-ROTEAMENTO-DETALHADO.md)** - URL routing and request handling
-- **[⚡ Automation](ai-workspace/en/docs/CONN2FLOW-AUTOMACAO-EXPORTACAO.md)** - Resource export automation
-- **[🎨 CSS Frameworks](ai-workspace/en/docs/CONN2FLOW-FRAMEWORK-CSS.md)** - TailwindCSS and FomanticUI integration
-- **[📱 Preview System](ai-workspace/en/docs/CONN2FLOW-SISTEMA-PREVIEW-MODALS.md)** - Modal preview system with CodeMirror
-- **[🔄 System Updates](ai-workspace/en/docs/CONN2FLOW-ATUALIZACOES-SISTEMA.md)** - Automated update mechanism
-- **[🚀 Project Deployment System](ai-workspace/en/docs/CONN2FLOW-SISTEMA-PROJETOS.md)** - OAuth-based project deployment via API
-- **[🐳 Docker Environment](ai-workspace/en/docs/CONN2FLOW-AMBIENTE-DOCKER.md)** - Complete development and testing environment
+- **[📚 System Knowledge](ai-workspace/en/docs/CONN2FLOW-KNOWLEDGE-SYSTEM.md)** - Complete system overview and architecture
+- **[🛠️ Installation Guide](ai-workspace/en/docs/CONN2FLOW-INSTALLER-DETAILED.md)** - Detailed installation and configuration
+- **[🎨 Layouts & Components](ai-workspace/en/docs/CONN2FLOW-LAYOUTS-PAGES-COMPONENTS.md)** - UI structure and component system
+- **[🔧 Modules Development](ai-workspace/en/docs/CONN2FLOW-MODULES-DETAILED.md)** - How to develop custom modules
+- **[🔀 Routing System](ai-workspace/en/docs/CONN2FLOW-ROUTING-DETAILED.md)** - URL routing and request handling
+- **[⚡ Automation](ai-workspace/en/docs/CONN2FLOW-EXPORT-AUTOMATION.md)** - Resource export automation
+- **[🎨 CSS Frameworks](ai-workspace/en/docs/CONN2FLOW-CSS-FRAMEWORK.md)** - TailwindCSS and FomanticUI integration
+- **[📱 Preview System](ai-workspace/en/docs/CONN2FLOW-PREVIEW-MODALS-SYSTEM.md)** - Modal preview system with CodeMirror
+- **[🔄 System Updates](ai-workspace/en/docs/CONN2FLOW-SYSTEM-UPDATES.md)** - Automated update mechanism
+- **[🚀 Project Deployment System](ai-workspace/en/docs/CONN2FLOW-PROJECTS-SYSTEM.md)** - OAuth-based project deployment via API
+- **[🐳 Docker Environment](ai-workspace/en/docs/CONN2FLOW-DOCKER-ENVIRONMENT.md)** - Complete development and testing environment
 - **[⚙️ GitHub Actions](ai-workspace/en/docs/CONN2FLOW-GITHUB-ACTIONS.md)** - Complete CI/CD automation via GitHub Actions
-- **[🌐 Multilingual System](ai-workspace/en/docs/CONN2FLOW-SISTEMA-HIBRIDO-MULTILANGUE-CONCLUIDO.md)** - Multi-language support
+- **[🌐 Multilingual System](ai-workspace/en/docs/CONN2FLOW-HYBRID-MULTILINGUAL-SYSTEM-COMPLETED.md)** - Multi-language support
 
 ### Change History
 
