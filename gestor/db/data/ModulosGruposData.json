@@ -106,5 +106,23 @@
         "versao": "1",
         "ordemMenu": null,
         "language": "en"
+    },
+    {
+        "nome": "Administração Comunicação",
+        "id": "administracao-comunicacao",
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "ordemMenu": null,
+        "language": "pt-br"
+    },
+    {
+        "nome": "Communication Administration",
+        "id": "administracao-comunicacao",
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "ordemMenu": null,
+        "language": "en"
     }
 ]

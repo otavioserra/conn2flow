@@ -1,0 +1,86 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html"
+    ],
+    "id_numerico": "id_forms",
+    "tabela": {
+        "nome": "forms",
+        "nome_especifico": "name",
+        "id": "id",
+        "id_numerico": "id_forms",
+        "status": "status",
+        "versao": "version",
+        "data_criacao": "created_at",
+        "data_modificacao": "updated_at"
+    },
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "name": "Formulários Processar",
+                    "id": "forms-process",
+                    "layout": "layout-pagina-simples",
+                    "path": "forms-process\/",
+                    "type": "system",
+                    "option": "forms-process",
+                    "without_permission": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Formulários Visualizar",
+                    "id": "forms-view",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-view\/",
+                    "type": "system",
+                    "option": "visualizar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ]
+        },
+        "en": {
+            "pages": [
+                {
+                    "name": "Forms Process",
+                    "id": "forms-process",
+                    "layout": "layout-pagina-simples",
+                    "path": "forms-process\/",
+                    "type": "system",
+                    "option": "forms-process",
+                    "without_permission": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Forms View",
+                    "id": "forms-view",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-view\/",
+                    "type": "system",
+                    "option": "visualizar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ]
+        }
+    }
+}

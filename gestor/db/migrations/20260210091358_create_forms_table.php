@@ -13,8 +13,6 @@ final class CreateFormsTable extends AbstractMigration
             ->addColumn('name', 'string', ['limit' => 255, 'null' => false])
             ->addColumn('id', 'string', ['limit' => 100, 'null' => false])
             ->addColumn('template_id', 'string', ['limit' => 255, 'null' => true])
-            ->addColumn('path_success', 'text', ['null' => true])
-            ->addColumn('path_error', 'text', ['null' => true])
             ->addColumn('fields_schema', 'json', ['null' => true])
             ->addColumn('plugin', 'string', ['limit' => 255, 'null' => true])
             ->addColumn('language', 'string', ['limit' => 10, 'null' => false, 'default' => 'pt-br'])

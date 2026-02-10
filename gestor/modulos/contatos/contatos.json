@@ -1,16 +1,17 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.1.0",
     "bibliotecas": [
         "interface",
         "html"
     ],
     "tabela": {
-        "nome": "formularios",
+        "nome": "forms",
+        "nome_especifico": "name",
         "id": "id",
-        "id_numerico": "id_formularios",
+        "id_numerico": "id_forms",
         "status": "status",
-        "versao": "versao",
-        "data_criacao": "data_criacao",
-        "data_modificacao": "data_modificacao"
+        "versao": "version",
+        "data_criacao": "created_at",
+        "data_modificacao": "updated_at"
     }
 }

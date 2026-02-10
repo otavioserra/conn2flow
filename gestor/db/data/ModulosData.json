@@ -670,5 +670,33 @@
         "status": "A",
         "versao": "1",
         "language": "en"
+    },
+    {
+        "modulo_grupo_id": "administracao-comunicacao",
+        "nome": "Formulários Definições",
+        "id": "forms",
+        "titulo": "Formulários Definições",
+        "icone": "clipboard list",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-comunicacao",
+        "nome": "Forms Definitions",
+        "id": "forms",
+        "titulo": "Forms Definitions",
+        "icone": "clipboard list",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     }
 ]
