@@ -1,0 +1,67 @@
+<div class="ui stackable two column centered grid">
+    <div class="column">
+        <div class="ui segment">
+            <form id="_gestor-form-autenticar" action="#form-action#" method="post" name="_gestor-form-autenticar"
+                class="ui form">
+                <div class="ui center aligned header large">#titulo#</div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <!-- bloqueado-mensagem < -->
+                <div class="ui icon negative message visible">
+                    <i class="exclamation triangle icon"></i>
+                    <div class="content">
+                        <div class="header">
+                            Your device's IP address is BLOCKED!
+                        </div>
+                        <p>Unfortunately, it is not possible to access your account from this current device due to excessive failed login attempts with invalid username and/or password. Please try again later on this device or on another device on a different network.</p>
+                    </div>
+                </div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="field">
+                    <div class="ui hidden divider">&nbsp;</div>
+                    <div class="ui basic segment center aligned">
+                        <div class="">@[[login-forgot-password-label]]@ <a
+                                href="@[[pagina#url-raiz]]@forgot-password/">@[[login-forgot-password-button]]@</a>
+                        </div>
+                        <div>@[[login-new-register-label]]@ <a
+                                href="@[[pagina#url-raiz]]@signup/">@[[login-new-register-button]]@</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- bloqueado-mensagem > -->
+                <!-- formulario < -->
+                <div class="ui info message">
+                    <div class="header">
+                        OAuth 2.0 Authentication
+                    </div>
+                    <p>Provide your credentials to obtain API access tokens.</p>
+                </div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="field">
+                    <label>Username</label>
+                    <input type="text" name="usuario" placeholder="Enter your username" required>
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" name="senha" placeholder="Enter your password" required>
+                </div>
+                <div class="field">
+                    <label>Scope (optional)</label>
+                    <input type="text" name="scope" placeholder="read,write" value="read">
+                </div>
+                <div class="field">
+                    <label>Redirect URL (optional)</label>
+                    <input type="url" name="url_redirect" placeholder="https://your-app.com/callback">
+                </div>
+                <input type="hidden" name="grant_type" value="client_credentials">
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui error message">&nbsp;</div>
+                <div class="field">
+                    <button class="fluid ui button blue">Authenticate and Obtain Tokens</button>
+                </div>
+                <input id="_gestor-autenticate" name="_gestor-autenticate" type="hidden" value="1">
+                <!-- formulario > -->
+            </form>
+        </div>
+    </div>
+</div>
