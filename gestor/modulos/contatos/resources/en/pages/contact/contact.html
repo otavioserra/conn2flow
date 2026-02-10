@@ -1,0 +1,36 @@
+<div class="ui container">
+    <div class="ui stackable grid">
+        <div class="sixteen wide column">
+            <h1 class="ui header">
+                <i class="envelope icon"></i>
+                <div class="content">
+                    Contact Form
+                    <div class="sub header">Default contact form with fields for name, email, and message.</div>
+                </div>
+            </h1>
+        </div>
+    </div>
+
+    <div class="ui stackable grid">
+        <div class="sixteen wide column">
+            <form class="ui form _forms-submissions-controller" action="" method="post" data-form-id="form-contact">
+                <div class="field">
+                    <label>Name</label>
+                    <input type="text" name="name" placeholder="Enter your name" required>
+                </div>
+                <div class="field">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="field">
+                    <label>Message</label>
+                    <textarea name="message" rows="4" placeholder="Enter your message" required></textarea>
+                </div>
+                <button class="ui primary button" type="submit">
+                    <i class="send icon"></i>
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

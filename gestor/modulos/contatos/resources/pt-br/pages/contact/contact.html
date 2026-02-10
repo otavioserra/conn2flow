@@ -1,0 +1,36 @@
+<div class="ui container">
+    <div class="ui stackable grid">
+        <div class="sixteen wide column">
+            <h1 class="ui header">
+                <i class="envelope icon"></i>
+                <div class="content">
+                    Formulário de Contato
+                    <div class="sub header">Formulário padrão para contato, com campos de nome, e-mail e mensagem.</div>
+                </div>
+            </h1>
+        </div>
+    </div>
+
+    <div class="ui stackable grid">
+        <div class="sixteen wide column">
+            <form class="ui form _forms-submissions-controller" action="" method="post" data-form-id="form-contact">
+                <div class="field">
+                    <label>Nome</label>
+                    <input type="text" name="name" placeholder="Digite seu nome" required>
+                </div>
+                <div class="field">
+                    <label>E-mail</label>
+                    <input type="email" name="email" placeholder="Digite seu e-mail" required>
+                </div>
+                <div class="field">
+                    <label>Mensagem</label>
+                    <textarea name="message" rows="4" placeholder="Digite sua mensagem" required></textarea>
+                </div>
+                <button class="ui primary button" type="submit">
+                    <i class="send icon"></i>
+                    Enviar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
