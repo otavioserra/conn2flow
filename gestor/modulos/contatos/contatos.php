@@ -210,7 +210,10 @@ function contatos_page(){
 	
 	gestor_incluir_biblioteca('formulario');
 
-	formulario_incluir_js();
+	// Incluir o controlador do formulário para processar o envio do contato.
+	formulario_controlador([
+		'formId' => 'form-contact',
+	]);
 }
 
 function contatos_start(){
