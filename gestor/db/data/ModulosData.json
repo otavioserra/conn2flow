@@ -698,5 +698,33 @@
         "status": "A",
         "versao": "1",
         "language": "en"
+    },
+    {
+        "modulo_grupo_id": "administracao-comunicacao",
+        "nome": "Formulários Envios",
+        "id": "forms-submissions",
+        "titulo": "Formulários Envios",
+        "icone": "clipboard check",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-comunicacao",
+        "nome": "Forms Submissions",
+        "id": "forms-submissions",
+        "titulo": "Forms Submissions",
+        "icone": "clipboard check",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     }
 ]

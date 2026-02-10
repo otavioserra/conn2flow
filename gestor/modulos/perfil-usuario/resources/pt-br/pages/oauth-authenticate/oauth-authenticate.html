@@ -5,6 +5,33 @@
                 class="ui form">
                 <div class="ui center aligned header large">#titulo#</div>
                 <div class="ui hidden divider">&nbsp;</div>
+                <!-- bloqueado-mensagem < -->
+                <div class="ui icon negative message visible">
+                    <i class="exclamation triangle icon"></i>
+                    <div class="content">
+                        <div class="header">
+                            Endereço de IP do seu dispositivo está BLOQUEADO!
+                        </div>
+                        <p>Infelizmente não é possível acessar sua conta deste dispositivo atual devido ao excesso de
+                            falhas de tentativa de acesso com usuário e/ou senha inválidos. Favor tentar novamente mais
+                            tarde neste dispositivo ou então em um outro numa outra rede.</p>
+                    </div>
+                </div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="field">
+                    <div class="ui hidden divider">&nbsp;</div>
+                    <div class="ui basic segment center aligned">
+                        <div class="">@[[login-forgot-password-label]]@ <a
+                                href="@[[pagina#url-raiz]]@forgot-password/">@[[login-forgot-password-button]]@</a>
+                        </div>
+                        <div>@[[login-new-register-label]]@ <a
+                                href="@[[pagina#url-raiz]]@signup/">@[[login-new-register-button]]@</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- bloqueado-mensagem > -->
+                <!-- formulario < -->
                 <div class="ui info message">
                     <div class="header">
                         Autenticação OAuth 2.0
@@ -12,7 +39,6 @@
                     <p>Forneça suas credenciais para obter tokens de acesso à API.</p>
                 </div>
                 <div class="ui hidden divider">&nbsp;</div>
-                <!-- formulario < -->
                 <div class="field">
                     <label>Usuário</label>
                     <input type="text" name="usuario" placeholder="Digite seu usuário" required>

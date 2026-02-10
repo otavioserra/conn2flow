@@ -1065,6 +1065,26 @@ function perfil_usuario_oauth_authenticate(){
 	
 	$queryString = gestor_querystring();
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], "#querystring#", $queryString);
+
+	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
+	
+	gestor_incluir_biblioteca('pagina');
+	if($acesso['permitido']){	
+		$cel_nome = 'bloqueado-mensagem'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	} else {
+		$cel_nome = 'formulario'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
+	}
+
+	// ===== Incluir google reCAPTCHA caso ativo
+	
+	if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
+		if($_CONFIG['usuario-recaptcha-active']){
+			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
+			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
+			
+			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_CONFIG['usuario-recaptcha-site'].'"></script>');
+		}
+	}
 	
 	// ===== Inclusão Módulo JS
 	

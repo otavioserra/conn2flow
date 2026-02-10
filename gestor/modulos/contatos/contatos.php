@@ -7,7 +7,7 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR_
 
 // ==== Start
 
-function contatos_start(){
+function contatos_submit(){
 	global $_GESTOR;
 	
 	// ===== Incluir as bibliotecas do módulo.
@@ -203,6 +203,30 @@ function contatos_start(){
 		}
 	}
 	
+}
+
+function contatos_page(){
+	global $_GESTOR;
+	
+	gestor_incluir_biblioteca('formulario');
+
+	formulario_incluir_js();
+}
+
+function contatos_start(){
+    global $_GESTOR;
+	
+	gestor_incluir_bibliotecas();
+	
+	if($_GESTOR['ajax']){
+		switch($_GESTOR['ajax-opcao']){
+			// case 'ajaxOption': forms_submissions_ajax_option(); break;
+		}
+	} else {
+		switch($_GESTOR['opcao']){
+		    case 'contact': contatos_page(); break;
+		}
+	}
 }
 
 contatos_start();

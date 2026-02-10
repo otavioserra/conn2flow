@@ -51,13 +51,13 @@
         "nome": "Layout Página Simples",
         "id": "layout-pagina-simples",
         "language": "pt-br",
-        "html": "<!DOCTYPE html>\n<html>\n<head>\n    <!-- pagina#titulo -->\n    <meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <!-- pagina#css -->\n    <!-- pagina#js -->\n<\/head>\n<body>\n    @[[pagina#corpo]]@\n<\/body>\n<\/html>",
+        "html": "<!DOCTYPE html>\n<html>\n\n<head>\n    <!-- pagina#titulo -->\n    <meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"@[[pagina#url-raiz]]@favicon\/apple-touch-icon.png\">\n    <link rel=\"icon\" type=\"image\/png\" sizes=\"32x32\" href=\"@[[pagina#url-raiz]]@favicon\/favicon-32x32.png\">\n    <link rel=\"icon\" type=\"image\/png\" sizes=\"16x16\" href=\"@[[pagina#url-raiz]]@favicon\/favicon-16x16.png\">\n    <link rel=\"manifest\" href=\"@[[pagina#url-raiz]]@favicon\/site.webmanifest\">\n    <!-- pagina#css -->\n    <!-- pagina#js -->\n<\/head>\n\n<body>\n    @[[pagina#corpo]]@\n<\/body>\n\n<\/html>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
         "versao": 1,
-        "file_version": "1.2",
-        "checksum": "{\"html\":\"0bf6b9ed25e76568e4accab429285052\",\"css\":\"\",\"combined\":\"0bf6b9ed25e76568e4accab429285052\"}"
+        "file_version": "1.3",
+        "checksum": "{\"html\":\"77250fa98d29779c3cd2414cd8c28c8f\",\"css\":\"\",\"combined\":\"77250fa98d29779c3cd2414cd8c28c8f\"}"
     },
     {
         "nome": "Layout Página Padrão",
@@ -135,13 +135,13 @@
         "nome": "Simple Page Layout",
         "id": "layout-pagina-simples",
         "language": "en",
-        "html": "<!DOCTYPE html>\n<html>\n<head>\n    <!-- pagina#titulo -->\n    <meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <!-- pagina#css -->\n    <!-- pagina#js -->\n<\/head>\n<body>\n    @[[pagina#corpo]]@\n<\/body>\n<\/html>",
+        "html": "<!DOCTYPE html>\n<html>\n\n<head>\n    <!-- pagina#titulo -->\n    <meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"@[[pagina#url-raiz]]@favicon\/apple-touch-icon.png\">\n    <link rel=\"icon\" type=\"image\/png\" sizes=\"32x32\" href=\"@[[pagina#url-raiz]]@favicon\/favicon-32x32.png\">\n    <link rel=\"icon\" type=\"image\/png\" sizes=\"16x16\" href=\"@[[pagina#url-raiz]]@favicon\/favicon-16x16.png\">\n    <link rel=\"manifest\" href=\"@[[pagina#url-raiz]]@favicon\/site.webmanifest\">\n    <!-- pagina#css -->\n    <!-- pagina#js -->\n<\/head>\n\n<body>\n    @[[pagina#corpo]]@\n<\/body>\n\n<\/html>",
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
         "versao": 1,
-        "file_version": "1.2",
-        "checksum": "{\"html\":\"0bf6b9ed25e76568e4accab429285052\",\"css\":\"\",\"combined\":\"0bf6b9ed25e76568e4accab429285052\"}"
+        "file_version": "1.3",
+        "checksum": "{\"html\":\"77250fa98d29779c3cd2414cd8c28c8f\",\"css\":\"\",\"combined\":\"77250fa98d29779c3cd2414cd8c28c8f\"}"
     },
     {
         "nome": "Default Page Layout",

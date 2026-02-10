@@ -782,10 +782,19 @@ function reporteFinal(array $recursos, array $erros): void {
            "➡️  Prompts IA: ".count($recursos['promptsData']).PHP_EOL.
            "➡️  Alvos IA: ".count($recursos['targetsData']).PHP_EOL.
            "➡️  Formulários: ".count($recursos['formsData']).PHP_EOL.
-           "Σ TOTAL: $total".PHP_EOL.
-           "⚠️  Órfãos: $totalOrphans".PHP_EOL;
-    if (!empty($erros)) { $msg .= "⚠️ Problemas: ".implode('; ',$erros).PHP_EOL; }
-    else { $msg .= "✅ Nenhum problema de unicidade adicional.".PHP_EOL; }
+           "Σ TOTAL: $total".PHP_EOL;
+
+    if($totalOrphans > 0) $msg .=
+           "⚠️  ⚠️  Órfãos Detectados: $totalOrphans ⚠️  ⚠️".PHP_EOL.
+           "⚙️  Detalhes dos órfãos foram salvos na pasta 'gestor/db/orphans/' para análise.".PHP_EOL;
+    if (!empty($erros)) { $msg .= "❌ ERROS: ".implode('; ',$erros).PHP_EOL; }
+
+    if($totalOrphans > 0 || !empty($erros)) {
+        $msg .= "❌ Problemas detectados necessitando análise.".PHP_EOL;
+    } else {
+        $msg .= "✅ Nenhum problema detectado.".PHP_EOL;
+    }
+
     log_disco_local($msg,$LOG_FILE); echo $msg;
 }
 

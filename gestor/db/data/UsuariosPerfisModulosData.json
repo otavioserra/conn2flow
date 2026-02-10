@@ -104,6 +104,10 @@
         "modulo": "forms"
     },
     {
+        "perfil": "administradores",
+        "modulo": "forms-submissions"
+    },
+    {
         "perfil": "consumidores",
         "modulo": "dashboard"
     },

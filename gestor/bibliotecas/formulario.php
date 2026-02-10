@@ -15,7 +15,7 @@ global $_GESTOR;
 
 // Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-formulario']							=	Array(
-	'versao' => '1.0.4',
+	'versao' => '1.0.0',
 );
 
 // ===== Funções auxiliares
@@ -25,21 +25,33 @@ $_GESTOR['biblioteca-formulario']							=	Array(
  *
  * Carrega o arquivo JavaScript necessário para validações client-side.
  * Usa controle para incluir apenas uma vez por requisição.
- *
- * @global array $_FORMULARIO Controle de inclusão de scripts.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * 
+ * @param array $params['js_vars'] Array de variáveis JavaScript a serem incluídas (opcional).
  * 
  * @return void
  */
-function formulario_incluir_js(){
-	global $_FORMULARIO;
-	
-	// Inclui JavaScript apenas uma vez
-	if(!isset($_FORMULARIO['javascript-incluiu'])){
-		gestor_pagina_javascript_incluir('biblioteca','formulario');
-		
-		$_FORMULARIO['javascript-incluiu'] = true;
+function formulario_incluir_js($params = false){
+	global $_GESTOR;
+
+	if($params)foreach($params as $var => $val)$$var = $val;
+
+	// Variáveis padrões 
+	$js_padroes = [
+		'teste' => '123',
+	];
+
+	// Mesclar variáveis personalizadas com as padrões
+	if(isset($js_vars) && is_array($js_vars)){
+		$js_padroes = array_merge($js_padroes, $js_vars);
 	}
-	
+
+	// Incluir variáveis JS para a página
+	gestor_js_variavel_incluir('form',$js_padroes);
+
+	// Incluir o JavaScript da biblioteca de formulários
+	gestor_pagina_javascript_incluir('biblioteca','formulario');
 }
 
 // ===== Funções principais
