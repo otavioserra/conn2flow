@@ -575,7 +575,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                                 break;
                             case 'forms':
                                 $whereSql = "WHERE `$colLang` = :__lang AND id = :__id AND module = :__mod";
-                                $params['__lang']=$langVal; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??'';
+                                $params['__lang']=$langVal; $params['__id']=$exist['id']; $params['__mod']=$exist['module']??'';
                                 break;
                             case 'templates':
                                 $whereSql = "WHERE `$colLang` = :__lang AND id = :__id AND target = :__target";
