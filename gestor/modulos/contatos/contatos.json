@@ -22,7 +22,7 @@
                     "id": "form-contact",
                     "description": "Formulário padrão para contato, com campos de nome, e-mail e mensagem.",
                     "fields_schema": {
-                        "redirects":{
+                        "redirects": {
                             "success": {
                                 "type": "url",
                                 "path": "contato\/sucesso\/"
@@ -32,6 +32,7 @@
                                 "path": "contato\/"
                             }
                         },
+                        "field_name": "name",
                         "fields": [
                             {
                                 "type": "text",
@@ -63,6 +64,17 @@
                     "id": "form-contact",
                     "description": "Default contact form with fields for name, email, and message.",
                     "fields_schema": {
+                        "redirects": {
+                            "success": {
+                                "type": "url",
+                                "path": "contato\/sucesso\/"
+                            },
+                            "error": {
+                                "type": "url",
+                                "path": "contato\/"
+                            }
+                        },
+                        "field_name": "name",
                         "fields": [
                             {
                                 "type": "text",
