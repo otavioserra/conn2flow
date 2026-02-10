@@ -58,6 +58,11 @@
                     "type": "string"
                 },
                 {
+                    "id": "tooltip-button-view",
+                    "value": "Clique para Visualizar",
+                    "type": "string"
+                },
+                {
                     "id": "tooltip-button-edit",
                     "value": "Clique para Editar",
                     "type": "string"
@@ -502,6 +507,11 @@
                 {
                     "id": "field-date-modification",
                     "value": "Modification Date",
+                    "type": "string"
+                },
+                {
+                    "id": "tooltip-button-view",
+                    "value": "Click to View",
                     "type": "string"
                 },
                 {

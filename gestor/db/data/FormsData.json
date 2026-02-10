@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Formulário Contato",
+        "id": "form-contact",
+        "description": "Formulário padrão para contato, com campos de nome, e-mail e mensagem.",
+        "template_id": null,
+        "fields_schema": "{\n    \"fields\": [\n        {\n            \"type\": \"text\",\n            \"name\": \"name\",\n            \"label\": \"Nome\",\n            \"required\": true\n        },\n        {\n            \"type\": \"email\",\n            \"name\": \"email\",\n            \"label\": \"E-mail\",\n            \"required\": true\n        },\n        {\n            \"type\": \"textarea\",\n            \"name\": \"message\",\n            \"label\": \"Mensagem\",\n            \"required\": true\n        }\n    ]\n}",
+        "module": "contatos",
+        "language": "pt-br"
+    },
+    {
+        "name": "Contact Form",
+        "id": "form-contact",
+        "description": "Default contact form with fields for name, email, and message.",
+        "template_id": null,
+        "fields_schema": "{\n    \"fields\": [\n        {\n            \"type\": \"text\",\n            \"name\": \"name\",\n            \"label\": \"Name\",\n            \"required\": true\n        },\n        {\n            \"type\": \"email\",\n            \"name\": \"email\",\n            \"label\": \"Email\",\n            \"required\": true\n        },\n        {\n            \"type\": \"textarea\",\n            \"name\": \"message\",\n            \"label\": \"Message\",\n            \"required\": true\n        }\n    ]\n}",
+        "module": "contatos",
+        "language": "en"
+    }
+]

@@ -359,14 +359,15 @@ function carregarMapeamentoGlobal(): array {
 function carregarDadosExistentes(): array {
     global $DB_DATA_DIR, $LOG_FILE;
     $arquivos = [
-        'layouts'             => $DB_DATA_DIR . 'LayoutsData.json',
-        'paginas'             => $DB_DATA_DIR . 'PaginasData.json',
-        'componentes'         => $DB_DATA_DIR . 'ComponentesData.json',
-        'templates'           => $DB_DATA_DIR . 'TemplatesData.json',
-        'variaveis'           => $DB_DATA_DIR . 'VariaveisData.json',
-        'prompts_ia'          => $DB_DATA_DIR . 'PromptsIaData.json',
-        'modos_ia'            => $DB_DATA_DIR . 'ModosIaData.json',
-        'alvos_ia'            => $DB_DATA_DIR . 'AlvosIaData.json',
+        'layouts'               => $DB_DATA_DIR . 'LayoutsData.json',
+        'paginas'               => $DB_DATA_DIR . 'PaginasData.json',
+        'componentes'           => $DB_DATA_DIR . 'ComponentesData.json',
+        'templates'             => $DB_DATA_DIR . 'TemplatesData.json',
+        'variaveis'             => $DB_DATA_DIR . 'VariaveisData.json',
+        'prompts_ia'            => $DB_DATA_DIR . 'PromptsIaData.json',
+        'modos_ia'              => $DB_DATA_DIR . 'ModosIaData.json',
+        'alvos_ia'              => $DB_DATA_DIR . 'AlvosIaData.json',
+        'forms'                 => $DB_DATA_DIR . 'FormsData.json',
     ];
     $exist = [];
     foreach ($arquivos as $tipo => $file) {
@@ -374,16 +375,17 @@ function carregarDadosExistentes(): array {
         $exist[$tipo] = [];
         foreach ($lista as $r) {
             switch ($tipo) {
-                case 'layouts':
-                case 'componentes':
-                case 'templates':
                 case 'prompts_ia':
                 case 'modos_ia':
                 case 'alvos_ia':
                     if (!isset($r['language'],$r['id'])) continue 2;
                     $k = $r['language'].'|'.$r['id'];
                     break;
+                case 'layouts':
+                case 'componentes':
                 case 'paginas':
+                case 'templates':
+                case 'forms':
                     if (!isset($r['language'],$r['id'])) continue 2;
                     $k = $r['language'].'|'.($r['modulo'] ?? '').'|'.$r['id'];
                     break;
@@ -409,8 +411,8 @@ function coletarRecursos(array $existentes, array $map): array {
     global $RESOURCES_DIR, $MODULES_DIR, $LOG_FILE;
     $languages = array_keys($map['languages']);
 
-    $layouts = $paginas = $componentes = $variaveis = $prompts_ia = $alvos_ia = $modos_ia = $templates = [];
-    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[], 'prompts_ia'=>[], 'alvos_ia'=>[], 'modos_ia'=>[], 'templates'=>[] ];
+    $layouts = $paginas = $componentes = $variaveis = $prompts_ia = $alvos_ia = $modos_ia = $templates = $forms = [];
+    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[], 'prompts_ia'=>[], 'alvos_ia'=>[], 'modos_ia'=>[], 'templates'=>[], 'forms'=>[] ];
 
     // Índices de unicidade
     $idxLayouts = [];              // lang|id
@@ -422,6 +424,7 @@ function coletarRecursos(array $existentes, array $map): array {
     $idxPaginasId = [];            // lang|mod|id
     $idxPaginasPath = [];          // lang|caminho
     $idxVariaveis = [];            // lang|mod|id => groups[]
+    $idxForms = [];               // lang|mod|id
 
     // Helper versão + checksum reutilizando existente
     $versaoChecksum = function(string $tipo, string $chave, ?string $html, ?string $css) use (&$existentes) : array {
@@ -666,16 +669,27 @@ function coletarRecursos(array $existentes, array $map): array {
                         }
                     }
                 }
-                if (!empty($res['variables'])) {
-                    foreach ($res['variables'] as $v) {
-                        $id = $v['id'] ?? null; if(!$id) continue;
-                        $grp = $v['group'] ?? null; $base = $lang.'|'.$modId.'|'.$id;
-                        if(!isset($idxVariaveis[$base])) $idxVariaveis[$base]=[];
-                        $groups = $idxVariaveis[$base];
-                        if($grp===null || $grp==='') { if(!empty($groups) || in_array('', $groups,true)){ $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade sem group','linguagem_codigo'=>$lang,'modulo'=>$modId]; continue; } }
-                        else { if(in_array($grp,$groups,true)){ $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade group repetido','linguagem_codigo'=>$lang,'modulo'=>$modId]; continue; } }
-                        $idxVariaveis[$base][] = ($grp ?? '');
-                        $variaveis[] = [ 'linguagem_codigo'=>$lang,'modulo'=>$modId,'id'=>$id,'valor'=>$v['value'] ?? null,'tipo'=>$v['type'] ?? null,'grupo'=>$grp,'descricao'=>$v['description'] ?? null ];
+                foreach (['variables','forms'] as $tipo) {
+                    $arr = $res[$tipo] ?? [];
+                    foreach ($arr as $item) {
+                        $id = $item['id'] ?? null; if(!$id) continue;
+
+                        if ($tipo==='variables') {
+                            $grp = $item['group'] ?? null; $base = $lang.'|'.$modId.'|'.$id;
+                            if(!isset($idxVariaveis[$base])) $idxVariaveis[$base]=[];
+                            $groups = $idxVariaveis[$base];
+                            if($grp===null || $grp==='') { if(!empty($groups) || in_array('', $groups,true)){ $orphans['variaveis'][]=$item+['_motivo'=>'duplicidade sem group','linguagem_codigo'=>$lang,'modulo'=>$modId]; continue; } }
+                            else { if(in_array($grp,$groups,true)){ $orphans['variaveis'][]=$item+['_motivo'=>'duplicidade group repetido','linguagem_codigo'=>$lang,'modulo'=>$modId]; continue; } }
+                            $idxVariaveis[$base][] = ($grp ?? '');
+                            $variaveis[] = [ 'linguagem_codigo'=>$lang,'modulo'=>$modId,'id'=>$id,'valor'=>$item['value'] ?? null,'tipo'=>$item['type'] ?? null,'grupo'=>$grp,'descricao'=>$item['description'] ?? null ];
+                        } elseif ($tipo==='forms') {
+                            $kId = $lang.'|'.$modId.'|'.$id; if(isset($idxForms[$kId])) { $orphans['forms'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
+                            $idxForms[$kId]=true;
+                            if(isset($item['fields_schema'])){
+                                $item['fields_schema'] = json_encode($item['fields_schema'], JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+                            }
+                            $forms[] = [ 'name'=>$item['name'] ?? null,'id'=>$id,'description'=>$item['description'] ?? null,'template_id'=>$item['template_id'] ?? null,'fields_schema'=>$item['fields_schema'] ?? null,'module'=>$modId,'language'=>$lang ];
+                        }
                     }
                 }
             }
@@ -683,7 +697,7 @@ function coletarRecursos(array $existentes, array $map): array {
     }
 
     log_disco(__t('_collected_summary', [
-        'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'templates'=>count($templates), 'variables'=>count($variaveis), 'prompts_ia'=>count($prompts_ia), 'alvos_ia'=>count($alvos_ia), 'modos_ia'=>count($modos_ia)
+        'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'templates'=>count($templates), 'variables'=>count($variaveis), 'prompts_ia'=>count($prompts_ia), 'alvos_ia'=>count($alvos_ia), 'modos_ia'=>count($modos_ia), 'forms'=>count($forms)
     ]), $LOG_FILE);
 
     return [
@@ -695,6 +709,7 @@ function coletarRecursos(array $existentes, array $map): array {
         'promptsData'=>$prompts_ia,
         'modesData'=>$modos_ia,
         'targetsData'=>$alvos_ia,
+        'formsData'=>$forms,
         'orphans'=>$orphans,
     ];
 }
@@ -713,10 +728,11 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
     jsonWrite($DB_DATA_DIR.'VariaveisData.json', $recursos['variablesData']);
     jsonWrite($DB_DATA_DIR.'PromptsIaData.json', $recursos['promptsData']);
     jsonWrite($DB_DATA_DIR.'AlvosIaData.json', $recursos['targetsData']);
+    jsonWrite($DB_DATA_DIR.'FormsData.json', $recursos['formsData']);
     jsonWrite($DB_DATA_DIR.'ModosIaData.json', $recursos['modesData']);
     $orphDir = $GESTOR_DIR.'db'.DIRECTORY_SEPARATOR.'orphans'.DIRECTORY_SEPARATOR;
     if(!is_dir($orphDir)) @mkdir($orphDir,0775,true);
-    foreach (['Layouts','Paginas','Componentes','Templates','Variaveis','PromptsIa','AlvosIa','ModosIa'] as $T) {
+    foreach (['Layouts','Paginas','Componentes','Templates','Variaveis','PromptsIa','AlvosIa','ModosIa','Forms'] as $T) {
         $k = strtolower($T);
         jsonWrite($orphDir.$T.'Data.json', $recursos['orphans'][$k] ?? []);
     }
@@ -727,7 +743,7 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
 
 function validarDuplicidades(array $recursos): array {
     $erros = [];
-    foreach (['layouts','paginas','componentes','templates','variaveis','prompts_ia','alvos_ia','modos_ia'] as $t) {
+    foreach (['layouts','paginas','componentes','templates','variaveis','prompts_ia','alvos_ia','modos_ia','forms'] as $t) {
         $q = count($recursos['orphans'][$t] ?? []); if($q>0) $erros[] = "$t: $q órfãos";
     }
     return $erros;
@@ -741,19 +757,21 @@ function aplicarErrosOrigem(array $dupsMeta, array $originsIndex): void { /* V2:
 
 function reporteFinal(array $recursos, array $erros): void {
     global $LOG_FILE;
-    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['templatesData']) + count($recursos['variablesData']) + count($recursos['promptsData']) + count($recursos['modesData']) + count($recursos['targetsData']);
+    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['templatesData']) + count($recursos['variablesData']) + count($recursos['promptsData']) + count($recursos['modesData']) + count($recursos['targetsData']) + count($recursos['formsData']);
     $totalOrphans = 0; foreach ($recursos['orphans'] as $lst) { $totalOrphans += count($lst); }
-    $msg = "📝 Relatório Final".PHP_EOL.
-           "📦 Layouts: ".count($recursos['layoutsData']).PHP_EOL.
-           "📄 Páginas: ".count($recursos['pagesData']).PHP_EOL.
-           "🧩 Componentes: ".count($recursos['componentsData']).PHP_EOL.
-           "📚 Templates: ".count($recursos['templatesData']).PHP_EOL.
-           "🔧 Variáveis: ".count($recursos['variablesData']).PHP_EOL.
-           "🤖 Modos IA: ".count($recursos['modesData']).PHP_EOL.
-           "💬 Prompts IA: ".count($recursos['promptsData']).PHP_EOL.
-           "🎯 Alvos IA: ".count($recursos['targetsData']).PHP_EOL.
+
+    $msg = "♻️  Relatório Final:".PHP_EOL.
+           "➡️  Layouts: ".count($recursos['layoutsData']).PHP_EOL.
+           "➡️  Páginas: ".count($recursos['pagesData']).PHP_EOL.
+           "➡️  Componentes: ".count($recursos['componentsData']).PHP_EOL.
+           "➡️  Templates: ".count($recursos['templatesData']).PHP_EOL.
+           "➡️  Variáveis: ".count($recursos['variablesData']).PHP_EOL.
+           "➡️  Modos IA: ".count($recursos['modesData']).PHP_EOL.
+           "➡️  Prompts IA: ".count($recursos['promptsData']).PHP_EOL.
+           "➡️  Alvos IA: ".count($recursos['targetsData']).PHP_EOL.
+           "➡️  Formulários: ".count($recursos['formsData']).PHP_EOL.
            "Σ TOTAL: $total".PHP_EOL.
-           "🗃️ Órfãos: $totalOrphans".PHP_EOL;
+           "⚠️  Órfãos: $totalOrphans".PHP_EOL;
     if (!empty($erros)) { $msg .= "⚠️ Problemas: ".implode('; ',$erros).PHP_EOL; }
     else { $msg .= "✅ Nenhum problema de unicidade adicional.".PHP_EOL; }
     log_disco($msg,$LOG_FILE); echo $msg;

@@ -13,5 +13,69 @@
         "versao": "version",
         "data_criacao": "created_at",
         "data_modificacao": "updated_at"
+    },
+    "resources": {
+        "pt-br": {
+            "forms": [
+                {
+                    "name": "Formulário Contato",
+                    "id": "form-contact",
+                    "description": "Formulário padrão para contato, com campos de nome, e-mail e mensagem.",
+                    "fields_schema": {
+                        "fields": [
+                            {
+                                "type": "text",
+                                "name": "name",
+                                "label": "Nome",
+                                "required": true
+                            },
+                            {
+                                "type": "email",
+                                "name": "email",
+                                "label": "E-mail",
+                                "required": true
+                            },
+                            {
+                                "type": "textarea",
+                                "name": "message",
+                                "label": "Mensagem",
+                                "required": true
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "en": {
+            "forms": [
+                {
+                    "name": "Contact Form",
+                    "id": "form-contact",
+                    "description": "Default contact form with fields for name, email, and message.",
+                    "fields_schema": {
+                        "fields": [
+                            {
+                                "type": "text",
+                                "name": "name",
+                                "label": "Name",
+                                "required": true
+                            },
+                            {
+                                "type": "email",
+                                "name": "email",
+                                "label": "Email",
+                                "required": true
+                            },
+                            {
+                                "type": "textarea",
+                                "name": "message",
+                                "label": "Message",
+                                "required": true
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
     }
 }

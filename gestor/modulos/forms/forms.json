@@ -19,13 +19,13 @@
         "pt-br": {
             "pages": [
                 {
-                    "name": "Formulários Processar",
-                    "id": "forms-process",
-                    "layout": "layout-pagina-simples",
-                    "path": "forms-process\/",
+                    "name": "Formulários Listar",
+                    "id": "forms-list",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-list\/",
                     "type": "system",
-                    "option": "forms-process",
-                    "without_permission": true,
+                    "option": "listar",
+                    "root": true,
                     "version": "1.0",
                     "checksum": {
                         "html": "",
@@ -46,19 +46,34 @@
                         "css": "",
                         "combined": ""
                     }
-                }
-            ]
-        },
-        "en": {
-            "pages": [
+                },
                 {
-                    "name": "Forms Process",
+                    "name": "Formulários Processar",
                     "id": "forms-process",
                     "layout": "layout-pagina-simples",
                     "path": "forms-process\/",
                     "type": "system",
                     "option": "forms-process",
                     "without_permission": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ]
+        },
+        "en": {
+            "pages": [
+                {
+                    "name": "Forms List",
+                    "id": "forms-list",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-list\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
                     "version": "1.0",
                     "checksum": {
                         "html": "",
@@ -73,6 +88,21 @@
                     "path": "forms-view\/",
                     "type": "system",
                     "option": "visualizar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Forms Process",
+                    "id": "forms-process",
+                    "layout": "layout-pagina-simples",
+                    "path": "forms-process\/",
+                    "type": "system",
+                    "option": "forms-process",
+                    "without_permission": true,
                     "version": "1.0",
                     "checksum": {
                         "html": "",

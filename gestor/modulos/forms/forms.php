@@ -26,7 +26,6 @@ function forms_visualizar(){
 		'id',
         'id_forms',
 		'name',
-		'template_id',
 		'fields_schema',
 		'status'
 	);
@@ -55,7 +54,6 @@ function forms_visualizar(){
 	
 	if($_GESTOR['banco-resultado']){
 		$name = (isset($retorno_bd['name']) ? $retorno_bd['name'] : '');
-		$template_id = (isset($retorno_bd['template_id']) ? $retorno_bd['template_id'] : '');
 		$fields_schema = (isset($retorno_bd['fields_schema']) ? $retorno_bd['fields_schema'] : '');
 		
 		// ===== Alterar demais variáveis.
@@ -104,7 +102,6 @@ function forms_interfaces_padroes(){
 					'nome' => $modulo['tabela']['nome'],
 					'campos' => Array(
 						'name',
-						'template_id',
 						$modulo['tabela']['data_modificacao'],
 					),
 					'id' => $modulo['tabela']['id'],
@@ -119,20 +116,6 @@ function forms_interfaces_padroes(){
 							'ordenar' => 'asc',
 						),
 						Array(
-							'id' => 'template_id',
-							'nome' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
-							'formatar' => Array(
-								'id' => 'outraTabela',
-								'valor_senao_existe' => '<span class="ui info text">N/A</span>',
-								'tabela' => Array(
-									'nome' => 'templates',
-									'campo_trocar' => 'nome',
-									'campo_referencia' => 'id',
-									'where' => 'language="'.$_GESTOR['linguagem-codigo'].'" AND target="forms"',
-								),
-							)
-						),
-						Array(
 							'id' => $modulo['tabela']['data_modificacao'],
 							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),
 							'formatar' => 'dataHora',
@@ -141,49 +124,15 @@ function forms_interfaces_padroes(){
 					),
 				),
 				'opcoes' => Array(
-					'editar' => Array(
-						'url' => 'editar/',
-						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-edit')),
-						'icon' => 'edit',
-						'cor' => 'basic blue',
-					),
-					'clonar' => Array(
-						'url' => 'clonar/',
-						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-clone')),
-						'icon' => 'clone',
-						'cor' => 'basic teal',
-					),
-					'ativar' => Array(
-						'opcao' => 'status',
-						'status_atual' => 'I',
-						'status_mudar' => 'A',
-						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-active')),
-						'icon' => 'eye slash',
-						'cor' => 'basic brown',
-					),
-					'desativar' => Array(
-						'opcao' => 'status',
-						'status_atual' => 'A',
-						'status_mudar' => 'I',
-						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-desactive')),
+					'visualizar' => Array(
+						'url' => 'forms-view/',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-view')),
 						'icon' => 'eye',
-						'cor' => 'basic green',
-					),
-					'excluir' => Array(
-						'opcao' => 'excluir',
-						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-delete')),
-						'icon' => 'trash alternate',
-						'cor' => 'basic red',
+						'cor' => 'basic blue',
 					),
 				),
 				'botoes' => Array(
-					'adicionar' => Array(
-						'url' => 'adicionar/',
-						'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-insert')),
-						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-insert')),
-						'icon' => 'plus circle',
-						'cor' => 'blue',
-					),
+					
 				),
 			);
 		break;
