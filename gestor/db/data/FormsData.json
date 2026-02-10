@@ -4,7 +4,7 @@
         "id": "form-contact",
         "description": "Formulário padrão para contato, com campos de nome, e-mail e mensagem.",
         "template_id": null,
-        "fields_schema": "{\n    \"fields\": [\n        {\n            \"type\": \"text\",\n            \"name\": \"name\",\n            \"label\": \"Nome\",\n            \"required\": true\n        },\n        {\n            \"type\": \"email\",\n            \"name\": \"email\",\n            \"label\": \"E-mail\",\n            \"required\": true\n        },\n        {\n            \"type\": \"textarea\",\n            \"name\": \"message\",\n            \"label\": \"Mensagem\",\n            \"required\": true\n        }\n    ]\n}",
+        "fields_schema": "{\n    \"redirects\": {\n        \"success\": {\n            \"type\": \"url\",\n            \"path\": \"contato\\\/sucesso\\\/\"\n        },\n        \"error\": {\n            \"type\": \"url\",\n            \"path\": \"contato\\\/\"\n        }\n    },\n    \"fields\": [\n        {\n            \"type\": \"text\",\n            \"name\": \"name\",\n            \"label\": \"Nome\",\n            \"required\": true\n        },\n        {\n            \"type\": \"email\",\n            \"name\": \"email\",\n            \"label\": \"E-mail\",\n            \"required\": true\n        },\n        {\n            \"type\": \"textarea\",\n            \"name\": \"message\",\n            \"label\": \"Mensagem\",\n            \"required\": true\n        }\n    ]\n}",
         "module": "contatos",
         "language": "pt-br"
     },

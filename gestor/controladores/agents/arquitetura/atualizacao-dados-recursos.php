@@ -42,7 +42,7 @@
 declare(strict_types=1);
 
 // Definir globais
-global $SYSTEM_PATH, $BASE_PATH, $GESTOR_DIR, $RESOURCES_DIR, $MODULES_DIR, $DB_DATA_DIR, $LOG_DIR, $LOG_FILE;
+global $SYSTEM_PATH, $BASE_PATH, $GESTOR_DIR, $RESOURCES_DIR, $MODULES_DIR, $DB_DATA_DIR, $LOG_DIR, $LOG_FILE, $LOG_DISCO;
 
 $SYSTEM_PATH = realpath(__DIR__ . '/../../../../') . DIRECTORY_SEPARATOR; // raiz do repositório
 
@@ -50,7 +50,7 @@ require_once $SYSTEM_PATH . 'gestor/bibliotecas/lang.php';
 // Biblioteca de logs (pode ser adaptada futuramente). Se não existir função, definimos fallback simples.
 // Carregar biblioteca de log original
 @require_once $SYSTEM_PATH . 'gestor/bibliotecas/log.php';
-// Usaremos diretamente log_disco() da biblioteca
+// Usaremos diretamente log_disco_local() da biblioteca
 
 // Parsing de argumentos CLI
 $GLOBALS['CLI_ARGS'] = [];
@@ -100,11 +100,23 @@ if (!array_key_exists('logs-path', $_GESTOR)) { $_GESTOR['logs-path'] = $LOG_DIR
 // Definir linguagem padrão (pode ser parametrizado futuramente)
 set_lang('pt-br');
 
+// Função de log local que respeita configuração de log-disco
+$LOG_DISCO = false;
+$LOG_DISCO = isset($GLOBALS['CLI_ARGS']['log-disco']) ? true : $LOG_DISCO;
+
+function log_disco_local(string $msg, string $file) {
+    global $LOG_DISCO;
+
+    if ($LOG_DISCO) {
+        log_disco($msg, $file);
+    }
+}
+
 // Log do modo de execução
 if ($isProjectMode) {
-    log_disco("MODO PROJETO: Processando projeto em $BASE_PATH", $LOG_FILE);
+    log_disco_local("MODO PROJETO: Processando projeto em $BASE_PATH", $LOG_FILE);
 } else {
-    log_disco("MODO SISTEMA: Processando sistema em $BASE_PATH", $LOG_FILE);
+    log_disco_local("MODO SISTEMA: Processando sistema em $BASE_PATH", $LOG_FILE);
 }
 
 // ========================= UTILIDADES GENÉRICAS =========================
@@ -197,13 +209,13 @@ function atualizarArquivosOrigem(array $map): void {
                     $item['version'] = incrementVersionStr($oldVersion);
                     $item['checksum'] = $newChecksum; // mantém formato objeto
                     $changed=true;
-                    log_disco("ORIGIN_UPDATE $tipoKey id=$id lang=$lang version {$oldVersion}=>{$item['version']}", $LOG_FILE);
+                    log_disco_local("ORIGIN_UPDATE $tipoKey id=$id lang=$lang version {$oldVersion}=>{$item['version']}", $LOG_FILE);
                 }
             }
             unset($item);
             if ($changed) {
                 jsonWrite($jsonPath,$lista);
-                log_disco("ORIGIN_FILE_SAVED $jsonPath", $LOG_FILE);
+                log_disco_local("ORIGIN_FILE_SAVED $jsonPath", $LOG_FILE);
             }
         }
     }
@@ -234,7 +246,7 @@ function atualizarArquivosOrigem(array $map): void {
                             $item['version'] = incrementVersionStr($oldVersion);
                             $item['checksum'] = $newChecksum;
                             $changedModule = true;
-                            log_disco("ORIGIN_UPDATE_MODULE modulo=$modId tipo=$tipo id=$id lang=$lang version {$oldVersion}=>{$item['version']}", $LOG_FILE);
+                            log_disco_local("ORIGIN_UPDATE_MODULE modulo=$modId tipo=$tipo id=$id lang=$lang version {$oldVersion}=>{$item['version']}", $LOG_FILE);
                         }
                     }
                     unset($item);
@@ -253,7 +265,7 @@ function atualizarArquivosOrigem(array $map): void {
                             $item['version'] = incrementVersionStr($oldVersion);
                             $item['checksum'] = $newChecksum;
                             $changedModule = true;
-                            log_disco("ORIGIN_UPDATE_MODULE modulo=$modId tipo=$tipo id=$id lang=$lang version {$oldVersion}=>{$item['version']}", $LOG_FILE);
+                            log_disco_local("ORIGIN_UPDATE_MODULE modulo=$modId tipo=$tipo id=$id lang=$lang version {$oldVersion}=>{$item['version']}", $LOG_FILE);
                         }
                     }
                     unset($item);
@@ -261,7 +273,7 @@ function atualizarArquivosOrigem(array $map): void {
             }
             if ($changedModule) {
                 jsonWrite($jsonFile,$data);
-                log_disco("ORIGIN_FILE_SAVED_MODULE $jsonFile", $LOG_FILE);
+                log_disco_local("ORIGIN_FILE_SAVED_MODULE $jsonFile", $LOG_FILE);
             }
         }
     }
@@ -338,15 +350,15 @@ function carregarMapeamentoGlobal(): array {
     global $RESOURCES_DIR, $LOG_FILE;
     $mapFile = $RESOURCES_DIR . 'resources.map.php';
     if (!file_exists($mapFile)) {
-    log_disco(__t('_map_file_not_found', ['file' => $mapFile]), $LOG_FILE);
+    log_disco_local(__t('_map_file_not_found', ['file' => $mapFile]), $LOG_FILE);
         throw new RuntimeException('resources.map.php não encontrado');
     }
     $map = include $mapFile; // retorna $resources
     if (!isset($map['languages']) || !is_array($map['languages'])) {
-    log_disco(__t('_map_invalid_structure'), $LOG_FILE);
+    log_disco_local(__t('_map_invalid_structure'), $LOG_FILE);
         throw new RuntimeException('Estrutura inválida em resources.map.php');
     }
-    log_disco(__t('_map_loaded', ['langs' => implode(',', array_keys($map['languages']))]), $LOG_FILE);
+    log_disco_local(__t('_map_loaded', ['langs' => implode(',', array_keys($map['languages']))]), $LOG_FILE);
     return $map;
 }
 
@@ -397,7 +409,7 @@ function carregarDadosExistentes(): array {
             }
             $exist[$tipo][$k] = $r;
         }
-        log_disco("Existentes ($tipo): ".count($exist[$tipo]), $LOG_FILE);
+        log_disco_local("Existentes ($tipo): ".count($exist[$tipo]), $LOG_FILE);
     }
     return $exist;
 }
@@ -696,7 +708,7 @@ function coletarRecursos(array $existentes, array $map): array {
         }
     }
 
-    log_disco(__t('_collected_summary', [
+    log_disco_local(__t('_collected_summary', [
         'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'templates'=>count($templates), 'variables'=>count($variaveis), 'prompts_ia'=>count($prompts_ia), 'alvos_ia'=>count($alvos_ia), 'modos_ia'=>count($modos_ia), 'forms'=>count($forms)
     ]), $LOG_FILE);
 
@@ -736,7 +748,7 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
         $k = strtolower($T);
         jsonWrite($orphDir.$T.'Data.json', $recursos['orphans'][$k] ?? []);
     }
-    log_disco('Dados persistidos + órfãos.', $LOG_FILE);
+    log_disco_local('Dados persistidos + órfãos.', $LOG_FILE);
 }
 
 // ========================= 5) REPORTE FINAL =========================
@@ -774,7 +786,7 @@ function reporteFinal(array $recursos, array $erros): void {
            "⚠️  Órfãos: $totalOrphans".PHP_EOL;
     if (!empty($erros)) { $msg .= "⚠️ Problemas: ".implode('; ',$erros).PHP_EOL; }
     else { $msg .= "✅ Nenhum problema de unicidade adicional.".PHP_EOL; }
-    log_disco($msg,$LOG_FILE); echo $msg;
+    log_disco_local($msg,$LOG_FILE); echo $msg;
 }
 
 // ========================= 6) MAIN =========================
@@ -782,22 +794,22 @@ function reporteFinal(array $recursos, array $erros): void {
 function main(): void {
     global $LOG_FILE;
     try {
-        log_disco('Início processo V2', $LOG_FILE);
+        log_disco_local('Início processo V2', $LOG_FILE);
         $map = carregarMapeamentoGlobal();
         if (empty($GLOBALS['CLI_ARGS']['no-origin-update'])) {
             atualizarArquivosOrigem($map);
         } else {
-            log_disco('PULANDO atualização de arquivos de origem (--no-origin-update)', $LOG_FILE);
+            log_disco_local('PULANDO atualização de arquivos de origem (--no-origin-update)', $LOG_FILE);
         }
         $exist = carregarDadosExistentes();
         $recursos = coletarRecursos($exist,$map);
         atualizarDados($exist,$recursos);
         $erros = validarDuplicidades($recursos);
         reporteFinal($recursos,$erros);
-        log_disco('Fim processo V2 OK', $LOG_FILE);
+        log_disco_local('Fim processo V2 OK', $LOG_FILE);
     } catch (Throwable $e) {
         $err = 'Erro fatal: '.$e->getMessage();
-        log_disco($err,$LOG_FILE); echo "❌ $err".PHP_EOL;
+        log_disco_local($err,$LOG_FILE); echo "❌ $err".PHP_EOL;
     }
 }
 
