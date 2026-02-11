@@ -81,24 +81,32 @@ $(document).ready(function () {
 				fieldContainer.find('.error-msg').remove(); // Remove erro anterior
 
 				if (!isValid) {
-					var errorElementKey = (framework === 'fomantic') ? 'errorElementFomantic' : 'errorElementTailwind';
+					var errorElementKey = (framework === 'fomantic-ui') ? 'errorElementFomantic' : 'errorElementTailwind';
 					var errorElement = data.ui.components[errorElementKey].replace('#message#', errorMsg);
 					var errorElementObj = $(errorElement);
+					errorElementObj.addClass('error-msg');
+					// Ajuste classes conforme framework
+					if (framework === 'fomantic-ui') {
+						input.addClass('error').removeClass('success');
+					} else if (framework === 'tailwindcss') {
+						input.addClass('border-red-500').removeClass('border-green-500');
+					}
 					fieldContainer.append(errorElementObj);
 				} else {
 					// Sucesso: remova erros e adicione classe positiva
 					input.removeClass('error').addClass('success');
-					if (framework === 'fomantic') {
+					input.parent().find('.error-msg').remove();
+					if (framework === 'fomantic-ui') {
 						input.addClass('valid');
-					} else if (framework === 'tailwind') {
+					} else if (framework === 'tailwindcss') {
 						input.addClass('border-green-500').removeClass('border-red-500');
 					}
 				}
 			}
 
 			function submitForm(form, data) {
-				// Gerar fingerprint (usando FingerprintJS)
-				import('https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js').then(FingerprintJS => {
+				// Gerar fingerprint (usando FingerprintJS v4)
+				import('https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@4/dist/fp.min.js').then(FingerprintJS => {
 					FingerprintJS.load().then(fp => {
 						fp.get().then(result => {
 							const currentTimestamp = data.serverTimestamp + (Date.now() / 1000 - data.serverTimestamp); // Ajuste com offset do cliente
@@ -124,11 +132,32 @@ $(document).ready(function () {
 							}
 						});
 					});
+				}).catch(error => {
+					// Fallback caso FingerprintJS falhe - continuar sem fingerprint
+					console.warn('FingerprintJS failed, continuing without fingerprint:', error);
+					const currentTimestamp = data.serverTimestamp + (Date.now() / 1000 - data.serverTimestamp);
+					form.append('<input type="hidden" name="timestamp" value="' + currentTimestamp + '">');
+					form.append('<input type="text" name="honeypot" style="display:none;" value="">');
+
+					if ('googleRecaptchaActive' in data && data.googleRecaptchaActive) {
+						var action = ('googleRecaptchaAction' in data && data.googleRecaptchaAction) ? data.googleRecaptchaAction : 'submit';
+						var googleSiteKey = data.googleRecaptchaSite;
+
+						grecaptcha.ready(function () {
+							grecaptcha.execute(googleSiteKey, { action: action }).then(function (token) {
+								form.append('<input type="hidden" name="token" value="' + token + '">');
+								form.append('<input type="hidden" name="action" value="' + action + '">');
+								performAjaxSubmit(form, data);
+							});
+						});
+					} else {
+						performAjaxSubmit(form, data);
+					}
 				});
 			}
 
 			function addDimmer(form, data) {
-				var dimmerKey = (data.framework === 'fomantic') ? 'dimmerFomantic' : 'dimmerTailwind';
+				var dimmerKey = (data.framework === 'fomantic-ui') ? 'dimmerFomantic' : 'dimmerTailwind';
 				var dimmerHtml = data.ui.components[dimmerKey].replace('#loadingText#', data.ui.texts.loading);
 				var dimmer = $(dimmerHtml);
 				form.addClass('relative').append(dimmer);
