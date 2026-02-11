@@ -105,36 +105,72 @@ $(document).ready(function () {
 			}
 
 			function submitForm(form, data) {
-				// Gerar fingerprint (usando FingerprintJS v4)
-				import('https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@4/dist/fp.min.js').then(FingerprintJS => {
-					FingerprintJS.load().then(fp => {
-						fp.get().then(result => {
-							const currentTimestamp = data.serverTimestamp + (Date.now() / 1000 - data.serverTimestamp); // Ajuste com offset do cliente
-							const fingerprint = result.visitorId;
-							form.append('<input type="hidden" name="fingerprint" value="' + fingerprint + '">');
-							form.append('<input type="hidden" name="timestamp" value="' + currentTimestamp + '">');
-							form.append('<input type="text" name="honeypot" style="display:none;" value="">');
-
-							// Sempre tentar v3 primeiro (se ativo)
-							if ('googleRecaptchaActive' in data && data.googleRecaptchaActive) {
-								var action = ('googleRecaptchaAction' in data && data.googleRecaptchaAction) ? data.googleRecaptchaAction : 'submit';
-								var googleSiteKey = data.googleRecaptchaSite;
-
-								grecaptcha.ready(function () {
-									grecaptcha.execute(googleSiteKey, { action: action }).then(function (token) {
-										form.append('<input type="hidden" name="token" value="' + token + '">');
-										form.append('<input type="hidden" name="action" value="' + action + '">');
-										performAjaxSubmit(form, data);
-									});
-								});
-							} else {
-								performAjaxSubmit(form, data);
-							}
-						});
+				// Gerar fingerprint usando uma abordagem mais simples e confiável
+				const generateFingerprint = () => {
+					return new Promise((resolve) => {
+						// Usar uma combinação de propriedades do navegador para criar um fingerprint simples
+						const canvas = document.createElement('canvas');
+						const ctx = canvas.getContext('2d');
+						ctx.textBaseline = 'top';
+						ctx.font = '14px Arial';
+						ctx.fillText('Fingerprint', 2, 2);
+						
+						const fingerprint = [
+							navigator.userAgent,
+							navigator.language,
+							screen.width + 'x' + screen.height,
+							new Date().getTimezoneOffset(),
+							!!window.sessionStorage,
+							!!window.localStorage,
+							!!window.indexedDB,
+							canvas.toDataURL()
+						].join('|');
+						
+						// Criar hash simples do fingerprint
+						let hash = 0;
+						for (let i = 0; i < fingerprint.length; i++) {
+							const char = fingerprint.charCodeAt(i);
+							hash = ((hash << 5) - hash) + char;
+							hash = hash & hash; // Converter para 32 bits
+						}
+						
+						resolve(Math.abs(hash).toString(36));
 					});
+				};
+
+				// Tentar FingerprintJS primeiro, fallback para método simples
+				const tryFingerprintJS = () => {
+					return import('https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@4/dist/fp.min.js')
+						.then(FingerprintJS => FingerprintJS.load())
+						.then(fp => fp.get())
+						.then(result => result.visitorId || result.requestId)
+						.catch(() => generateFingerprint());
+				};
+
+				tryFingerprintJS().then(fingerprint => {
+					const currentTimestamp = data.serverTimestamp + (Date.now() / 1000 - data.serverTimestamp);
+					form.append('<input type="hidden" name="fingerprint" value="' + fingerprint + '">');
+					form.append('<input type="hidden" name="timestamp" value="' + currentTimestamp + '">');
+					form.append('<input type="text" name="honeypot" style="display:none;" value="">');
+
+					// Sempre tentar v3 primeiro (se ativo)
+					if ('googleRecaptchaActive' in data && data.googleRecaptchaActive) {
+						var action = ('googleRecaptchaAction' in data && data.googleRecaptchaAction) ? data.googleRecaptchaAction : 'submit';
+						var googleSiteKey = data.googleRecaptchaSite;
+
+						grecaptcha.ready(function () {
+							grecaptcha.execute(googleSiteKey, { action: action }).then(function (token) {
+								form.append('<input type="hidden" name="token" value="' + token + '">');
+								form.append('<input type="hidden" name="action" value="' + action + '">');
+								performAjaxSubmit(form, data);
+							});
+						});
+					} else {
+						performAjaxSubmit(form, data);
+					}
 				}).catch(error => {
-					// Fallback caso FingerprintJS falhe - continuar sem fingerprint
-					console.warn('FingerprintJS failed, continuing without fingerprint:', error);
+					// Fallback final - continuar sem fingerprint
+					console.warn('All fingerprint methods failed, continuing without fingerprint:', error);
 					const currentTimestamp = data.serverTimestamp + (Date.now() / 1000 - data.serverTimestamp);
 					form.append('<input type="hidden" name="timestamp" value="' + currentTimestamp + '">');
 					form.append('<input type="text" name="honeypot" style="display:none;" value="">');
