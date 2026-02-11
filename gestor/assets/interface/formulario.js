@@ -7,13 +7,11 @@ $(document).ready(function () {
 
 			formObj.each(function () {
 				var form = $(this);
-
 				if (formDefinition) {
 					// Verifica se há um blockWrapper (ex.: mensagem de bloqueio do backend)
 					if ('blockWrapper' in formDefinition && formDefinition.blockWrapper) {
 						// Substitui o conteúdo do formulário pelo wrapper de bloqueio
-						const blockWrapperHtml = $(formDefinition.blockWrapper);
-						form.html(blockWrapperHtml);
+						form.html(formDefinition.blockWrapper);
 					} else {
 						// Caso não haja bloqueio, inicializa o controlador normalmente
 						initFormController(form, formDefinition);
@@ -76,16 +74,17 @@ $(document).ready(function () {
 				fieldContainer.find('.error-msg').remove(); // Remove erro anterior
 
 				if (!isValid) {
-					var errorElement = $('<div class="error-msg">').text(errorMsg);
+					var errorElement = data.ui.components.errorElement.replace('#message#', errorMsg);
+					var errorElementObj = $(errorElement);
 					// Ajuste classes conforme framework
 					if (framework === 'fomantic') {
-						errorElement.addClass('ui red pointing label'); // Fomantic: label vermelha
+						errorElementObj.addClass('ui red pointing label'); // Fomantic: label vermelha
 						input.addClass('error').removeClass('success');
 					} else if (framework === 'tailwind') {
-						errorElement.addClass('text-red-500 text-sm mt-1'); // Tailwind: texto vermelho pequeno
+						errorElementObj.addClass('text-red-500 text-sm mt-1'); // Tailwind: texto vermelho pequeno
 						input.addClass('border-red-500').removeClass('border-green-500');
 					}
-					fieldContainer.append(errorElement);
+					fieldContainer.append(errorElementObj);
 				} else {
 					// Sucesso: remova erros e adicione classe positiva
 					input.removeClass('error').addClass('success');
@@ -98,22 +97,107 @@ $(document).ready(function () {
 			}
 
 			function submitForm(form, data) {
-				// Para submissão normal (POST), simplesmente submeta o formulário
-				// Se houver reCAPTCHA, integre aqui antes de submeter
-				if ('googleRecaptchaActive' in formDefinition && formDefinition.googleRecaptchaActive) {
-					var action = ('googleRecaptchaAction' in formDefinition && formDefinition.googleRecaptchaAction) ? formDefinition.googleRecaptchaAction : 'submit'; // Action 
-					var googleSiteKey = formDefinition.googleRecaptchaSite; // Google Site Key
+				// Gerar fingerprint (usando FingerprintJS)
+				import('https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js').then(FingerprintJS => {
+					FingerprintJS.load().then(fp => {
+						fp.get().then(result => {
+							const currentTimestamp = data.serverTimestamp + (Date.now() / 1000 - data.serverTimestamp); // Ajuste com offset do cliente
+							const fingerprint = result.visitorId;
+							form.append('<input type="hidden" name="fingerprint" value="' + fingerprint + '">');
+							form.append('<input type="hidden" name="timestamp" value="' + currentTimestamp + '">');
+							form.append('<input type="text" name="honeypot" style="display:none;" value="">');
 
-					grecaptcha.ready(function () {
-						grecaptcha.execute(googleSiteKey, { action: action }).then(function (token) {
-							form.append('<input type="hidden" name="token" value="' + token + '">');
-							form.append('<input type="hidden" name="action" value="' + action + '">');
-							form[0].submit(); // Submete o formulário após reCAPTCHA
+							// Sempre tentar v3 primeiro (se ativo)
+							if ('googleRecaptchaActive' in data && data.googleRecaptchaActive) {
+								var action = ('googleRecaptchaAction' in data && data.googleRecaptchaAction) ? data.googleRecaptchaAction : 'submit';
+								var googleSiteKey = data.googleRecaptchaSite;
+
+								grecaptcha.ready(function () {
+									grecaptcha.execute(googleSiteKey, { action: action }).then(function (token) {
+										form.append('<input type="hidden" name="token" value="' + token + '">');
+										form.append('<input type="hidden" name="action" value="' + action + '">');
+										performAjaxSubmit(form, data);
+									});
+								});
+							} else {
+								performAjaxSubmit(form, data);
+							}
 						});
 					});
-				} else {
-					form[0].submit(); // Submete diretamente se não houver reCAPTCHA
+				});
+			}
+
+			function addDimmer(form, data) {
+				var dimmerKey = (data.framework === 'fomantic') ? 'dimmerFomantic' : 'dimmerTailwind';
+				var dimmerHtml = data.ui.components[dimmerKey].replace('#loadingText#', data.ui.texts.loading);
+				var dimmer = $(dimmerHtml);
+				form.addClass('relative').append(dimmer);
+				dimmer.addClass('active'); // Ativar dimmer
+			}
+
+			function removeDimmer(form) {
+				form.find('.dimmer, .fixed').remove();
+				form.removeClass('relative');
+			}
+
+			function performAjaxSubmit(form, data) {
+				addDimmer(form, data); // Adicionar dimmer
+
+				var formData = new FormData(form[0]);
+				formData.append('ajax', '1');
+				formData.append('ajaxOpcao', data.ajaxOpcao || 'forms-process');
+				formData.append('_formId', data.formId);
+
+				$.ajax({
+					url: data.formAction || form.attr('action') || window.location.href,
+					type: 'POST',
+					data: formData,
+					processData: false,
+					contentType: false,
+					timeout: 10000,
+					success: function (response) {
+						removeDimmer(form); // Remover dimmer
+						if (response.status === 'success') {
+							window.location.href = response.redirect;
+						} else if (response.status === 'require_v2') {
+							injectRecaptchaV2(form, data);
+						} else {
+							showError(response.message, data);
+						}
+					},
+					error: function (xhr, status, error) {
+						removeDimmer(form); // Remover dimmer
+						if (status === 'timeout') {
+							showError(data.ui.texts.timeoutError, data);
+						} else {
+							showError(data.ui.texts.generalError, data);
+						}
+					}
+				});
+			}
+
+			function injectRecaptchaV2(form, data) {
+				if (!form.find('.g-recaptcha').length) {
+					var recaptchaHtml = data.ui.components.recaptchaV2.replace('#siteKey#', data.googleRecaptchaV2Site);
+					var recaptchaDiv = $(recaptchaHtml);
+					form.append(recaptchaDiv);
+					grecaptcha.render(recaptchaDiv[0]);
+					// Mostrar mensagem para usuário completar v2
+					showError(data.ui.texts.requireV2Message, data);
+					// Re-bind submit para tentar novamente após v2
+					form.off('submit').on('submit', function (e) {
+						e.preventDefault();
+						if (validateAllFields(form, data.fields, data.prompts, data.framework)) {
+							performAjaxSubmit(form, data);
+						}
+					});
 				}
+			}
+
+			function showError(message, data) {
+				var errorElement = data.ui.components.errorElement.replace('#message#', message);
+				var errorDiv = $(errorElement);
+				$('._forms-submissions-controller').prepend(errorDiv);
 			}
 		}
 	}

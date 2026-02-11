@@ -65,6 +65,8 @@ function formulario_incluir_js($params = false){
  * 
  * @param array|false $params Parâmetros da função.
  * @param string $params['formId'] ID do formulário (obrigatório).
+ * @param string $params['formAction'] Ação do formulário (opcional).
+ * @param string $params['formAjaxOpcao'] Opção AJAX do formulário (opcional).
  * 
  * @return void
  */
@@ -76,57 +78,77 @@ function formulario_controlador($params = false){
 	if($params)foreach($params as $var => $val)$$var = $val;
 
 	if(isset($formId)){
-		// ===== Verificar a permissão do acesso.
-		
-		gestor_incluir_biblioteca('autenticacao');
-		
-		$acesso = autenticacao_acesso_verificar(['tipo' => $formId]);
+        // ===== Limpeza automática aleatória (~1% das requisições)
+        if(rand(0, 100) == 0){
+            formulario_acessos_limpeza();
+        }
 
-		// ===== Devolver mensagem de bloqueio caso o IP esteja bloqueado, senão incluir o formulário normalmente.
-		$acesso['permitido'] = false;
-		if(!$acesso['permitido']){
-			$blockWrapper = '<div class="ui warning visible message"><i class="exclamation triangle icon"></i><div class="content"><div class="header">Your device\'s IP address is BLOCKED!</div><p>Unfortunately, it is not possible to access your account from this current device due to excessive failed login attempts with invalid username and/or password. Please try again later on this device or on another device on a different network.</p></div></div>';
-		}
+        // ===== Verificar a permissão do acesso.
+        
+        $acesso = formulario_acesso_verificar(['tipo' => $formId]);
 
-		// ===== Incluir google reCAPTCHA caso ativo
-		
-		if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
-			if($_CONFIG['usuario-recaptcha-active']){
-				$googleRecaptchaActive = true;
-				$googleRecaptchaSite = $_CONFIG['usuario-recaptcha-site'];
-				$googleRecaptchaAction = $formId . '-action';
-				
-				gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$googleRecaptchaSite.'"></script>');
-			}
-		}
-		
-		// ===== Inclusão Módulo JS
-		
-		gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
-		gestor_pagina_javascript_incluir();
-		
-		// ===== Pegar dados do formulario
+        // ===== Devolver mensagem de bloqueio caso o IP esteja bloqueado, senão incluir o formulário normalmente.
+        if(!$acesso['permitido']){
+            $blockWrapper = '<div class="ui warning visible message"><i class="exclamation triangle icon"></i><div class="content"><div class="header">Your device\'s IP address is BLOCKED!</div><p>Unfortunately, it is not possible to access your account from this current device due to excessive failed login attempts with invalid username and/or password. Please try again later on this device or on another device on a different network.</p></div></div>';
+        }
 
-		$fieldsDoJson = Array();
-		
-		// ===== Incluir o JS
-		$js_vars = [
-			'formId' => $formId,
-			'blockWrapper' => $blockWrapper ?? null,
-			'googleRecaptchaActive' => $googleRecaptchaActive ?? null,
-			'googleRecaptchaSite' => $googleRecaptchaSite ?? null,
-			'googleRecaptchaAction' => $googleRecaptchaAction ?? null,
-			'framework' => $_GESTOR['pagina#framework_css'],
-			'fields' => $fieldsDoJson, // Array com name, label, required, type, etc.
-			'prompts' => [
-				'empty' => 'Campo obrigatório',
-				'email' => 'E-mail inválido',
-				// Outros prompts...
-			],
-			'redirects' => ['success' => '/sucesso/', 'error' => '/erro/']
-		];
-		formulario_incluir_js(['js_vars' => $js_vars]);
-	}
+        // ===== Flag para forçar reCAPTCHA v3 sempre (opcional por formId)
+        $forceRecaptchaV3 = isset($_CONFIG['formulario-force-recaptcha-v3'][$formId]) ? $_CONFIG['formulario-force-recaptcha-v3'][$formId] : false;
+
+        // ===== Incluir google reCAPTCHA caso ativo (v3 se status != 'livre' ou forçado)
+        if(isset($_CONFIG['usuario-recaptcha-active']) && ($acesso['status'] != 'livre' || $forceRecaptchaV3)){
+            if($_CONFIG['usuario-recaptcha-active']){
+                $googleRecaptchaActive = true;
+                $googleRecaptchaSite = $_CONFIG['usuario-recaptcha-site'];
+                $googleRecaptchaAction = $formId . '-action';
+                
+                gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$googleRecaptchaSite.'"></script>');
+            }
+        }
+        
+        // ===== Inclusão Módulo JS
+        
+        gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+        gestor_pagina_javascript_incluir();
+        
+        // ===== Pegar dados do formulario
+
+        $fieldsDoJson = Array(); // Carregar do JSON do módulo
+        
+        // ===== Incluir o JS
+        $js_vars = [
+            'formId' => $formId,
+            'formAction' => $formAction ?? $_GESTOR['url-raiz'] . 'forms-submissions-process/',
+            'ajaxOpcao' => $formAjaxOpcao ?? 'forms-process',
+			'serverTimestamp' => time(),
+            'blockWrapper' => $blockWrapper ?? null,
+            'googleRecaptchaActive' => $googleRecaptchaActive ?? null,
+            'googleRecaptchaSite' => $googleRecaptchaSite ?? null,
+            'googleRecaptchaAction' => $googleRecaptchaAction ?? null,
+            'framework' => $_GESTOR['pagina#framework_css'],
+            'fields' => $fieldsDoJson,
+            'prompts' => [
+                'empty' => 'Campo obrigatório',
+                'email' => 'E-mail inválido',
+            ],
+            'redirects' => ['success' => '/sucesso/', 'error' => '/erro/'],
+            'ui' => [
+                'texts' => [
+                    'loading' => 'Enviando...',
+                    'timeoutError' => 'Erro de conexão. Verifique sua internet e tente novamente.',
+                    'generalError' => 'Erro ao enviar. Tente novamente.',
+                    'requireV2Message' => 'Complete o desafio de segurança e tente novamente.',
+                ],
+                'components' => [
+                    'dimmerFomantic' => '<div class="ui dimmer"><div class="ui text loader">#loadingText#</div></div>',
+                    'dimmerTailwind' => '<div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center"><div class="text-white">#loadingText#</div></div>',
+                    'errorElement' => '<div class="error-msg">#message#</div>',
+                    'recaptchaV2' => '<div class="g-recaptcha" data-sitekey="#siteKey#"></div>',
+                ],
+            ],
+        ];
+        formulario_incluir_js(['js_vars' => $js_vars]);
+    }
 }
 
 /**
@@ -137,7 +159,6 @@ function formulario_controlador($params = false){
  * @global array $_GESTOR Sistema global com configurações.
  * 
  * @param array|false $params Parâmetros da função.
- * @param string $params['formId'] ID do formulário (obrigatório).
  * 
  * @return void
  */
@@ -148,210 +169,276 @@ function formulario_processador($params = false){
 	// Extrai parâmetros
 	if($params)foreach($params as $var => $val)$$var = $val;
 
-	if(isset($formId)){
-		// ===== Verificar a permissão do acesso.
+	$formId = $_REQUEST['_formId'] ?? null;
+	if(!$formId){
+		// Retorno do AJAX em caso de formId ausente
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'error',
+			'message' => 'Form ID missing.',
+		);
+		return;
+	}
+	
+	// ===== Validar honeypot (anti-bot)
+	if(!empty($_REQUEST['honeypot'])){
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'error',
+			'message' => 'Suspected bot activity.',
+		);
+		return;
+	}
+	
+	// ===== Validar timestamp (anti-replay, max 2 dias)
+	$timestamp = $_REQUEST['timestamp'] ?? 0;
+	$limite = 172800; // 2 dias
+	if(time() - $timestamp > $limite){
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'error',
+			'message' => 'Request expired.',
+		);
+		return;
+	}
+	
+	// ===== Verificar acesso e status
+	$acesso = formulario_acesso_verificar(['tipo' => $formId]);
+	
+	// ===== Rate limiting e CAPTCHA
+	$captchaV2Ativo = false;
+	
+	// Flag para forçar v3
+	$forceRecaptchaV3 = isset($_CONFIG['formulario-force-recaptcha-v3'][$formId]) ? $_CONFIG['formulario-force-recaptcha-v3'][$formId] : false;
+	
+	$recaptchaValido = false;
+	if(isset($_CONFIG['usuario-recaptcha-active']) && ($acesso['status'] != 'livre' || $forceRecaptchaV3)){
+		$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
+		$token = $_REQUEST['token'] ?? null;
+		$action = $_REQUEST['action'] ?? null;
 		
-		gestor_incluir_biblioteca('autenticacao');
+		// Chamada reCAPTCHA v3
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['secret' => $recaptchaSecretKey, 'response' => $token]));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($ch);
+		curl_close($ch);
+		$arrResponse = json_decode($response, true);
 		
-		$acesso = autenticacao_acesso_verificar(['tipo' => $formId]);
+		if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5){
+			$recaptchaValido = true;
+		} elseif($arrResponse["score"] < 0.5){
+			$captchaV2Ativo = true;
+		}
+	} else {
+		$recaptchaValido = true;
+	}
+	
+	if(!$recaptchaValido && !$captchaV2Ativo){
+		formulario_acesso_falha(['tipo' => $formId]);
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'error',
+			'message' => 'CAPTCHA validation failed.',
+		);
+		return;
+	}
+	
+	if($captchaV2Ativo){
+		// Verificar se v2 foi enviado
+		$recaptchaV2Response = $_REQUEST['g-recaptcha-response'] ?? null;
+		if(!$recaptchaV2Response){
+			formulario_acesso_falha(['tipo' => $formId]);
+			$_GESTOR['ajax-json'] = Array(
+				'status' => 'require_v2',
+			);
+			return;
+		}
 		
-		// ===== Tratar a função autenticate.
-
-		if(isset($_REQUEST['_gestor-autenticate']) && $acesso['permitido']){
-			// ===== Validação de campos obrigatórios
-			
-			interface_validacao_campos_obrigatorios(Array(
-				'campos' => Array(
-					Array(
-						'regra' => 'texto-obrigatorio',
-						'campo' => 'usuario',
-						'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-label')),
-					),
-					Array(
-						'regra' => 'texto-obrigatorio',
-						'campo' => 'senha',
-						'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-password-label')),
-					),
-				)
-			));
-			
-			// ===== Google reCAPTCHA v3
-			
-			$recaptchaValido = false;
-			
-			if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
-				if($_CONFIG['usuario-recaptcha-active']){
-					// ===== Variáveis de comparação do reCAPTCHA
-					
-					$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
-					
-					$token = $_REQUEST['token'];
-					$action = $_REQUEST['action'];
-					
-					// ===== Chamada ao servidor do Google reCAPTCHA para conferência se o token enviado no formulário é válido.
-					
-					$ch = curl_init();
-					curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
-					curl_setopt($ch, CURLOPT_POST, 1);
-					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('secret' => $recaptchaSecretKey, 'response' => $token)));
-					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-					$response = curl_exec($ch);
-					curl_close($ch);
-					$arrResponse = json_decode($response, true);
-					
-					// ===== Verificar se o retorno do servidor é válido, senão não validar o reCAPTCHA
-					
-					if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5) {
-						$recaptchaValido = true;
-					}
-				} else {
-					$recaptchaValido = true;
-				}
-			} else {
-				$recaptchaValido = true;
-			}
-			
-			$user_invalid = true;
-			
-			if($recaptchaValido){
-				// ===== Verificar se os dados enviados batem com algum usuário dentro do sistema
-				
-				$usuario = banco_escape_field($_REQUEST['usuario']);
-				$senha = banco_escape_field($_REQUEST['senha']);
-				$grant_type = isset($_REQUEST['grant_type']) ? $_REQUEST['grant_type'] : '';
-				$scope = isset($_REQUEST['scope']) ? $_REQUEST['scope'] : 'read';
-				$url_redirect = isset($_REQUEST['url_redirect']) ? $_REQUEST['url_redirect'] : '';
-				$user_inactive = false;
-				
-				$usuarios = banco_select_name
-				(
-					banco_campos_virgulas(Array(
-						'id_usuarios',
-						'senha',
-						'status',
-					))
-					,
-					"usuarios",
-					"WHERE usuario='".$usuario."'"
-					." AND status!='D'"
-				);
-				
-				// ===== Rotinas de validação de usuário
-				
-				if($usuarios){
-					$senha_hash = $usuarios[0]['senha'];
-					
-					if(password_verify($senha, $senha_hash)){
-						// ===== Pegar dados do usuário.
-						
-						$status = $usuarios[0]['status'];
-						$id_usuarios = $usuarios[0]['id_usuarios'];
-						
-						if($status == 'A'){
-							$user_invalid = false;
-							
-							// ===== Incluir a confirmação do acesso para poder remover qualquer limitação de acesso do tipo específico.
-							
-							autenticacao_acesso_cadastrar(['tipo' => $formId]);
-
-							// ===== Incluir biblioteca OAuth
-				
-							gestor_incluir_biblioteca('oauth2');
-							
-							// ===== Gerar tokens
-							
-							$tokens = oauth2_gerar_token_client_credentials(Array(
-								'id_usuarios' => $id_usuarios,
-								'grant_type' => $grant_type,
-								'scope' => $scope,
-								'url_redirect' => $url_redirect
-							));
-						} else {
-							$user_inactive = true;
-						}
-					}
-				}
-			} else {
-				// ===== Se o recaptcha for inválido, alertar o usuário.
-				
-				sleep(3);
-				
-				$botaoTxt = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-recaptcha-invalid-btn'));
-				
-				$alerta = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-recaptcha-invalid'));
-				
-				$alerta = modelo_var_troca_tudo($alerta,"#url#",'<a href="'.$_GESTOR['url-raiz'] . $_GESTOR['pagina#contato-url'].'">'.$botaoTxt.'</a>');
-				
-				interface_alerta(Array(
-					'redirect' => true,
-					'msg' => $alerta
-				));
-				
-				gestor_redirecionar('oauth-authenticate/');
-			}
+		// Validar v2
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['secret' => $_CONFIG['usuario-recaptcha-server-v2'], 'response' => $recaptchaV2Response]));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($ch);
+		curl_close($ch);
+		$arrResponse = json_decode($response, true);
 		
-			// ===== Se o usuário for inválido, redirecionar oauth-authenticate.
-			
-			if($user_invalid){
-				autenticacao_acesso_falha(['tipo' => $formId]);
-				
-				sleep(3);
-				
-				if($user_inactive){
-					interface_alerta(Array(
-						'redirect' => true,
-						'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-user-inactive'))
-					));
-				} else {
-					interface_alerta(Array(
-						'redirect' => true,
-						'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-user-or-password-invalid'))
-					));
-				}
-				
-				gestor_redirecionar('oauth-authenticate/');
-			}
-
-			// ===== Se o usuário for válido e gerou o token corretamente, redirecionar para o local pretendido se houver, senão retornar JSON.
-
-			if(isset($tokens) && $tokens){
-				// ===== Se há url_redirect, redirecionar com tokens como parâmetros
-				
-				if($url_redirect){
-					$query_params = http_build_query($tokens);
-					$redirect_url = $url_redirect . (strpos($url_redirect, '?') !== false ? '&' : '?') . $query_params;
-					header('Location: ' . $redirect_url);
-					exit;
-				} else {
-					// ===== Retornar JSON
-					
-					header('Content-Type: application/json');
-					echo json_encode($tokens);
-					exit;
-				}
-			} else {
-				// ===== Erro de autenticação
-				
-				$error_response = Array(
-					'error' => 'invalid_grant',
-					'error_description' => 'The provided authorization grant is invalid, expired, revoked, or was issued to another client.'
-				);
-				
-				if($url_redirect){
-					$query_params = http_build_query($error_response);
-					$redirect_url = $url_redirect . (strpos($url_redirect, '?') !== false ? '&' : '?') . $query_params;
-					header('Location: ' . $redirect_url);
-					exit;
-				} else {
-					header('Content-Type: application/json');
-					http_response_code(400);
-					echo json_encode($error_response);
-					exit;
-				}
-			}
+		if(!$arrResponse["success"]){
+			formulario_acesso_falha(['tipo' => $formId]);
+			$_GESTOR['ajax-json'] = Array(
+				'status' => 'error',
+				'message' => 'CAPTCHA v2 validation failed.',
+			);
+			return;
 		}
 	}
+	
+	// ===== Validar campos obrigatórios (exemplo básico, personalize conforme formId)
+	// Aqui você pode chamar formulario_validacao_campos_obrigatorios ou lógica customizada
+	// Exemplo: validar email se presente
+	if(isset($_REQUEST['email']) && !filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)){
+		formulario_acesso_falha(['tipo' => $formId]);
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'error',
+			'message' => 'Invalid email.',
+		);
+		return;
+	}
+	
+	// ===== Salvar em forms_submissions
+	$fieldsValues = [];
+	foreach($_REQUEST as $key => $value){
+		if(!in_array($key, ['_formId', 'ajax', 'ajaxOpcao', 'token', 'action', 'fingerprint', 'timestamp', 'honeypot', 'g-recaptcha-response'])){
+			$fieldsValues[$key] = $value;
+		}
+	}
+	
+	banco_insert_name([
+		'form_id' => $formId,
+		'name' => $formId . '-' . time(),
+		'id' => uniqid(),
+		'fields_values' => json_encode($fieldsValues),
+		'language' => 'pt-br',
+		'status' => 'A',
+		'version' => 1,
+		'created_at' => date('Y-m-d H:i:s'),
+		'updated_at' => date('Y-m-d H:i:s')
+	], 'forms_submissions');
+	
+	// ===== Logar sucesso
+	formulario_acesso_cadastrar(['tipo' => $formId]);
+	
+	// ===== Retornar sucesso
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'success',
+		'redirect' => '/sucesso/'
+	);
+	return;
 }
+
+/**
+ * Verifica acesso para formulários com fingerprinting.
+ *
+ * @param array|false $params Parâmetros (tipo obrigatório).
+ * @return array Estado do acesso.
+ */
+function formulario_acesso_verificar($params = false){
+    if($params)foreach($params as $var => $val)$$var = $val;
+    
+    $retorno = ['permitido' => false, 'status' => 'livre'];
+    
+    if(isset($tipo)){
+        gestor_incluir_biblioteca('ip');
+        $ip = ip_get();
+        $fingerprint = $_REQUEST['fingerprint'] ?? null;
+        
+        // Verificar bloqueio temporário
+        $bloqueio = banco_select_name(['id_forms_blocks'], 'forms_blocks', "WHERE ip='$ip' AND fingerprint='$fingerprint' AND unblock_at > NOW()");
+        if($bloqueio){
+            $retorno['permitido'] = false;
+            $retorno['status'] = 'bloqueado';
+            return $retorno;
+        }
+        
+        $retorno['permitido'] = true;
+    }
+    
+    return $retorno;
+}
+
+/**
+ * Cadastra tentativa para formulários com fingerprinting.
+ *
+ * @param array|false $params Parâmetros (tipo obrigatório).
+ * @return void
+ */
+function formulario_acesso_cadastrar($params = false){
+    if($params)foreach($params as $var => $val)$$var = $val;
+    
+    if(isset($tipo)){
+        gestor_incluir_biblioteca('ip');
+        $ip = ip_get();
+        $fingerprint = $_REQUEST['fingerprint'] ?? null;
+        
+        // Verificar status usando formulario_acesso_verificar
+        $acesso = formulario_acesso_verificar(['tipo' => $tipo]);
+        
+        if($acesso['status'] == 'bloqueado'){
+            // Bloquear por 24h se ainda não bloqueado
+            banco_insert_name(['ip' => $ip, 'fingerprint' => $fingerprint, 'unblock_at' => date('Y-m-d H:i:s', strtotime('+24 hours'))], 'forms_blocks');
+            return;
+        }
+        
+        // Logar tentativa de sucesso
+        banco_insert_name([
+            'form_id' => $tipo,
+            'ip' => $ip,
+            'fingerprint' => $fingerprint,
+            'created_at' => date('Y-m-d H:i:s'),
+            'success' => 1
+        ], 'forms_logs');
+    }
+}
+
+/**
+ * Registra falha para formulários com fingerprinting.
+ *
+ * @param array|false $params Parâmetros (tipo obrigatório).
+ * @return void
+ */
+function formulario_acesso_falha($params = false){
+    if($params)foreach($params as $var => $val)$$var = $val;
+    
+    if(isset($tipo)){
+        gestor_incluir_biblioteca('ip');
+        $ip = ip_get();
+        $fingerprint = $_REQUEST['fingerprint'] ?? null;
+        
+        // Logar falha
+        banco_insert_name([
+            'form_id' => $tipo,
+            'ip' => $ip,
+            'fingerprint' => $fingerprint,
+            'created_at' => date('Y-m-d H:i:s'),
+            'success' => 0
+        ], 'forms_logs');
+    }
+}
+
+/**
+ * Limpa registros antigos das tabelas de formulários.
+ *
+ * Remove logs expirados e desbloqueia IPs com tempo de bloqueio expirado.
+ * Executado periodicamente pelo sistema de cron.
+ *
+ * @global array $_GESTOR Sistema global.
+ * @global array $_CONFIG Configurações.
+ * @param array|false $params Parâmetros da função.
+ * @return void
+ */
+function formulario_acessos_limpeza($params = false){
+    global $_GESTOR;
+    global $_CONFIG;
+    
+    if($params)foreach($params as $var => $val)$$var = $val;
+    
+    // ===== Tempo padrão para limpeza (30 dias, ajuste via config se necessário)
+    $tempoLimpeza = isset($_CONFIG['forms-tempo-limpeza']) ? $_CONFIG['forms-tempo-limpeza'] : (30 * 24 * 60 * 60); // 30 dias em segundos
+    
+    // ===== Remover logs antigos de forms_logs
+    banco_delete(
+        "forms_logs",
+        "WHERE created_at < DATE_SUB(NOW(), INTERVAL " . ($tempoLimpeza / (24 * 60 * 60)) . " DAY)"
+    );
+    
+    // ===== Desbloquear IPs com tempo de bloqueio expirado em forms_blocks
+    banco_delete(
+        "forms_blocks",
+        "WHERE unblock_at < NOW()"
+    );
+}
+
+// ===== Funções legadas dos widgets
 
 /**
  * Configura validação de formulário com regras personalizadas.

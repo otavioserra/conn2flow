@@ -143,6 +143,15 @@ function forms_submissions_interfaces_padroes(){
 
 // ==== Ajax
 
+function forms_submissions_ajax_forms_process(){
+	global $_GESTOR;
+	
+	// ===== Incluir biblioteca de formulário para processar o envio do formulário.
+	gestor_incluir_biblioteca('formulario');
+	
+	// ===== Processar o formulário usando a biblioteca de formulário.
+	formulario_processador();
+}
 
 
 // ==== Start
@@ -156,7 +165,7 @@ function forms_submissions_start(){
 		interface_ajax_iniciar();
 		
 		switch($_GESTOR['ajax-opcao']){
-			// case 'ajaxOption': forms_submissions_ajax_option(); break;
+			case 'forms-process': forms_submissions_ajax_forms_process(); break;
 		}
 		
 		interface_ajax_finalizar();
