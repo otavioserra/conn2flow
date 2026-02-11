@@ -81,16 +81,9 @@ $(document).ready(function () {
 				fieldContainer.find('.error-msg').remove(); // Remove erro anterior
 
 				if (!isValid) {
-					var errorElement = data.ui.components.errorElement.replace('#message#', errorMsg);
+					var errorElementKey = (framework === 'fomantic') ? 'errorElementFomantic' : 'errorElementTailwind';
+					var errorElement = data.ui.components[errorElementKey].replace('#message#', errorMsg);
 					var errorElementObj = $(errorElement);
-					// Ajuste classes conforme framework
-					if (framework === 'fomantic') {
-						errorElementObj.addClass('ui red pointing label'); // Fomantic: label vermelha
-						input.addClass('error').removeClass('success');
-					} else if (framework === 'tailwind') {
-						errorElementObj.addClass('text-red-500 text-sm mt-1'); // Tailwind: texto vermelho pequeno
-						input.addClass('border-red-500').removeClass('border-green-500');
-					}
 					fieldContainer.append(errorElementObj);
 				} else {
 					// Sucesso: remova erros e adicione classe positiva

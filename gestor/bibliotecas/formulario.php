@@ -104,11 +104,6 @@ function formulario_controlador($params = false){
 		$form_ui_cel[$cel_nome] = modelo_tag_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
 		$form_ui = modelo_tag_troca_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 
-		// Extrair ajax-messages
-		$cel_nome = 'ajax-messages';
-		$form_ui_cel[$cel_nome] = modelo_tag_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
-		$form_ui = modelo_tag_troca_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
-
 		// Extrair block-wrapper
 		$cel_nome = 'block-wrapper';
 		$form_ui_cel[$cel_nome] = modelo_tag_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
@@ -136,22 +131,10 @@ function formulario_controlador($params = false){
 			$form_ui_components['dimmerFomantic'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- dimmerFomantic -->', '<!-- /dimmerFomantic -->');
 			$form_ui_components['dimmerTailwind'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- dimmerTailwind -->', '<!-- /dimmerTailwind -->');
 			$form_ui_components['errorElement'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- errorElement -->', '<!-- /errorElement -->');
+			$form_ui_components['errorElementFomantic'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- errorElementFomantic -->', '<!-- /errorElementFomantic -->');
+			$form_ui_components['errorElementTailwind'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- errorElementTailwind -->', '<!-- /errorElementTailwind -->');
 			$form_ui_components['recaptchaV2'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- recaptchaV2 -->', '<!-- /recaptchaV2 -->');
 			$form_ui_components['formDisabled'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- formDisabled -->', '<!-- /formDisabled -->');
-		}
-
-		// Processar valores individuais dos ajax-messages
-		$form_ui_ajax_messages = [];
-		if(isset($form_ui_cel['ajax-messages'])){
-			$form_ui_ajax_messages['formIdMissing'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-form-id-missing">', '</div>');
-			$form_ui_ajax_messages['suspectedBot'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-suspected-bot">', '</div>');
-			$form_ui_ajax_messages['requestExpired'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-request-expired">', '</div>');
-			$form_ui_ajax_messages['captchaFailed'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-captcha-failed">', '</div>');
-			$form_ui_ajax_messages['captchaV2Failed'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-captcha-v2-failed">', '</div>');
-			$form_ui_ajax_messages['formDisabled'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-form-disabled">', '</div>');
-			$form_ui_ajax_messages['requiredField'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-required-field">', '</div>');
-			$form_ui_ajax_messages['minLength'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-min-length">', '</div>');
-			$form_ui_ajax_messages['invalidEmail'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-invalid-email">', '</div>');
 		}
 
 		// Processar block-wrapper
@@ -241,7 +224,7 @@ function formulario_controlador($params = false){
             'googleRecaptchaAction' => $googleRecaptchaAction ?? null,
             'googleRecaptchaV2Active' => $googleRecaptchaV2Active ?? null,
             'googleRecaptchaV2Site' => $googleRecaptchaV2Site ?? null,
-            'framework' => $_GESTOR['pagina#framework_css'],
+            'framework' => str_replace(['fomantic-ui', 'tailwindcss'], ['fomantic', 'tailwind'], $_GESTOR['pagina#framework_css']),
             'fields' => $fieldsDoJson,
             'prompts' => $form_ui_prompts,
             'redirects' => $redirectsDoJson,
