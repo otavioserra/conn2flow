@@ -31,25 +31,25 @@ $(document).ready(function () {
 					var input = form.find('[name="' + field.name + '"]');
 					if (input.length) {
 						input.on('blur input', function () {
-							validateField(input, field, data.prompts, data.framework);
+							validateField(input, field, data.prompts, data.framework, data);
 						});
 					}
 				});
 				// Validação geral no submit
 				form.on('submit', function (e) {
 					e.preventDefault();
-					if (validateAllFields(form, data.fields, data.prompts, data.framework)) {
+					if (validateAllFields(form, data.fields, data.prompts, data.framework, data)) {
 						submitForm(form, data);
 					}
 				});
 			}
 
-			function validateAllFields(form, fields, prompts, framework) {
+			function validateAllFields(form, fields, prompts, framework, data) {
 				var allValid = true;
 				fields.forEach(function (field) {
 					var input = form.find('[name="' + field.name + '"]');
 					if (input.length) {
-						var isFieldValid = validateField(input, field, prompts, framework);
+						var isFieldValid = validateField(input, field, prompts, framework, data);
 						if (!isFieldValid) {
 							allValid = false;
 						}
@@ -58,7 +58,7 @@ $(document).ready(function () {
 				return allValid;
 			}
 
-			function validateField(input, field, prompts, framework) {
+			function validateField(input, field, prompts, framework, data) {
 				var value = input.val().trim();
 				var isValid = true;
 				var errorMsg = '';
@@ -72,11 +72,11 @@ $(document).ready(function () {
 				}
 				// Adicione mais regras (ex.: minLength, regex) baseadas em field.rules
 
-				updateFieldUI(input, isValid, errorMsg, framework);
+				updateFieldUI(input, isValid, errorMsg, framework, data);
 				return isValid;
 			}
 
-			function updateFieldUI(input, isValid, errorMsg, framework) {
+			function updateFieldUI(input, isValid, errorMsg, framework, data) {
 				var fieldContainer = input.closest('.field') || input.parent(); // Assume estrutura com .field (Fomantic) ou div pai
 				fieldContainer.find('.error-msg').remove(); // Remove erro anterior
 
