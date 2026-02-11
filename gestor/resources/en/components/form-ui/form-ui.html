@@ -14,12 +14,22 @@
 </div>
 <!-- ui-texts > -->
 
-<!-- ui-components < -->
-<div class="wrapper-ui-components">
-    <div class="ui-component-dimmer-fomantic"><!-- dimmerFomantic --><div class="ui dimmer"><div class="ui text loader">#loadingText#</div></div><!-- /dimmerFomantic --></div>
-    <div class="ui-component-dimmer-tailwind"><!-- dimmerTailwind --><div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center"><div class="text-white">#loadingText#</div></div><!-- /dimmerTailwind --></div>
-    <div class="ui-component-error-element"><!-- errorElement --><div class="error-msg">#message#</div><!-- /errorElement --></div>
-    <div class="ui-component-recaptcha-v2"><!-- recaptchaV2 --><div class="g-recaptcha" data-sitekey="#siteKey#"></div><!-- /recaptchaV2 --></div>
-    <div class="ui-component-form-disabled"><!-- formDisabled --><div class="ui warning message">This form is disabled.</div><!-- /formDisabled --></div>
+<!-- ajax-messages < -->
+<div class="wrapper-ajax-messages">
+    <div class="ajax-message-form-id-missing">Form ID missing.</div>
+    <div class="ajax-message-suspected-bot">Suspected bot activity.</div>
+    <div class="ajax-message-request-expired">Request expired.</div>
+    <div class="ajax-message-captcha-failed">CAPTCHA validation failed.</div>
+    <div class="ajax-message-captcha-v2-failed">CAPTCHA v2 validation failed.</div>
+    <div class="ajax-message-form-disabled">Form is disabled.</div>
+    <div class="ajax-message-required-field">Required field: #fieldLabel#.</div>
+    <div class="ajax-message-min-length">Field #fieldLabel# must have at least 3 characters.</div>
+    <div class="ajax-message-invalid-email">Invalid email.</div>
 </div>
-<!-- ui-components > -->
+<!-- ajax-messages > -->
+
+<!-- block-wrapper < -->
+<div class="wrapper-block-wrapper">
+    <!-- blockWrapper --><div class="ui warning visible message"><i class="exclamation triangle icon"></i><div class="content"><div class="header">Your device&#39;s IP address is BLOCKED!</div><p>Unfortunately, it is not possible to access your account from this current device due to excessive failed login attempts with invalid username and/or password. Please try again later on this device or on another device on a different network.</p></div></div><!-- /blockWrapper -->
+</div>
+<!-- block-wrapper > -->

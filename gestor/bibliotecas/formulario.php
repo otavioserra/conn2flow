@@ -104,6 +104,16 @@ function formulario_controlador($params = false){
 		$form_ui_cel[$cel_nome] = modelo_tag_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
 		$form_ui = modelo_tag_troca_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 
+		// Extrair ajax-messages
+		$cel_nome = 'ajax-messages';
+		$form_ui_cel[$cel_nome] = modelo_tag_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		$form_ui = modelo_tag_troca_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+
+		// Extrair block-wrapper
+		$cel_nome = 'block-wrapper';
+		$form_ui_cel[$cel_nome] = modelo_tag_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		$form_ui = modelo_tag_troca_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+
 		// Processar valores individuais dos prompts
 		$form_ui_prompts = [];
 		if(isset($form_ui_cel['prompts'])){
@@ -130,12 +140,32 @@ function formulario_controlador($params = false){
 			$form_ui_components['formDisabled'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- formDisabled -->', '<!-- /formDisabled -->');
 		}
 
+		// Processar valores individuais dos ajax-messages
+		$form_ui_ajax_messages = [];
+		if(isset($form_ui_cel['ajax-messages'])){
+			$form_ui_ajax_messages['formIdMissing'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-form-id-missing">', '</div>');
+			$form_ui_ajax_messages['suspectedBot'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-suspected-bot">', '</div>');
+			$form_ui_ajax_messages['requestExpired'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-request-expired">', '</div>');
+			$form_ui_ajax_messages['captchaFailed'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-captcha-failed">', '</div>');
+			$form_ui_ajax_messages['captchaV2Failed'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-captcha-v2-failed">', '</div>');
+			$form_ui_ajax_messages['formDisabled'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-form-disabled">', '</div>');
+			$form_ui_ajax_messages['requiredField'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-required-field">', '</div>');
+			$form_ui_ajax_messages['minLength'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-min-length">', '</div>');
+			$form_ui_ajax_messages['invalidEmail'] = modelo_tag_val($form_ui_cel['ajax-messages'], '<div class="ajax-message-invalid-email">', '</div>');
+		}
+
+		// Processar block-wrapper
+		$form_ui_block_wrapper = '';
+		if(isset($form_ui_cel['block-wrapper'])){
+			$form_ui_block_wrapper = modelo_tag_val($form_ui_cel['block-wrapper'], '<!-- blockWrapper -->', '<!-- /blockWrapper -->');
+		}
+
         // ===== Verificar a permissão do acesso.
         $acesso = formulario_acesso_verificar(['tipo' => $formId]);
 
         // ===== Devolver mensagem de bloqueio caso o IP esteja bloqueado, senão incluir o formulário normalmente.
         if(!$acesso['permitido']){
-            $blockWrapper = '<div class="ui warning visible message"><i class="exclamation triangle icon"></i><div class="content"><div class="header">Your device\'s IP address is BLOCKED!</div><p>Unfortunately, it is not possible to access your account from this current device due to excessive failed login attempts with invalid username and/or password. Please try again later on this device or on another device on a different network.</p></div></div>';
+            $blockWrapper = $form_ui_block_wrapper;
         }
 
 		// ===== Buscar definição do formulário na tabela forms
@@ -242,13 +272,33 @@ function formulario_processador($params = false){
 	// Extrai parâmetros
 	if($params)foreach($params as $var => $val)$$var = $val;
 
+	// ==== Extrair mensagens AJAX do componente HTML
+	$form_ui_ajax = gestor_componente([
+		'id' => 'form-ui'
+	]);
+
+	$form_ui_ajax_cel = modelo_tag_val($form_ui_ajax,'<!-- ajax-messages < -->','<!-- ajax-messages > -->');
+
+	$form_ui_ajax_messages = [];
+	if($form_ui_ajax_cel){
+		$form_ui_ajax_messages['formIdMissing'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-form-id-missing">', '</div>');
+		$form_ui_ajax_messages['suspectedBot'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-suspected-bot">', '</div>');
+		$form_ui_ajax_messages['requestExpired'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-request-expired">', '</div>');
+		$form_ui_ajax_messages['captchaFailed'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-captcha-failed">', '</div>');
+		$form_ui_ajax_messages['captchaV2Failed'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-captcha-v2-failed">', '</div>');
+		$form_ui_ajax_messages['formDisabled'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-form-disabled">', '</div>');
+		$form_ui_ajax_messages['requiredField'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-required-field">', '</div>');
+		$form_ui_ajax_messages['minLength'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-min-length">', '</div>');
+		$form_ui_ajax_messages['invalidEmail'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-invalid-email">', '</div>');
+	}
+
 	$formId = $_REQUEST['_formId'] ?? null;
 
 	if(!$formId){
 		// Retorno do AJAX em caso de formId ausente
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'error',
-			'message' => 'Form ID missing.',
+			'message' => $form_ui_ajax_messages['formIdMissing'] ?? 'Form ID missing.',
 		);
 		return;
 	}
@@ -260,7 +310,7 @@ function formulario_processador($params = false){
 	if(!empty($_REQUEST['honeypot'])){
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'error',
-			'message' => 'Suspected bot activity.',
+			'message' => $form_ui_ajax_messages['suspectedBot'] ?? 'Suspected bot activity.',
 		);
 		return;
 	}
@@ -271,7 +321,7 @@ function formulario_processador($params = false){
 	if(time() - $timestamp > $limite){
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'error',
-			'message' => 'Request expired.',
+			'message' => $form_ui_ajax_messages['requestExpired'] ?? 'Request expired.',
 		);
 		return;
 	}
@@ -332,7 +382,7 @@ function formulario_processador($params = false){
 		formulario_acesso_falha(['tipo' => $formId]);
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'error',
-			'message' => 'CAPTCHA validation failed.',
+			'message' => $form_ui_ajax_messages['captchaFailed'] ?? 'CAPTCHA validation failed.',
 		);
 		return;
 	}
@@ -362,7 +412,7 @@ function formulario_processador($params = false){
 			formulario_acesso_falha(['tipo' => $formId]);
 			$_GESTOR['ajax-json'] = Array(
 				'status' => 'error',
-				'message' => 'CAPTCHA v2 validation failed.',
+				'message' => $form_ui_ajax_messages['captchaV2Failed'] ?? 'CAPTCHA v2 validation failed.',
 			);
 			return;
 		}
@@ -377,7 +427,7 @@ function formulario_processador($params = false){
         if($formDefinition['status'] !== 'A'){
             $_GESTOR['ajax-json'] = Array(
                 'status' => 'error',
-                'message' => 'Form is disabled.',
+                'message' => $form_ui_ajax_messages['formDisabled'] ?? 'Form is disabled.',
             );
             return;
         }
@@ -402,7 +452,7 @@ function formulario_processador($params = false){
                     formulario_acesso_falha(['tipo' => $formId]);
                     $_GESTOR['ajax-json'] = Array(
                         'status' => 'error',
-                        'message' => 'Campo obrigatório: ' . ($field['label'] ?? $fieldName) . '.',
+                        'message' => modelo_var_troca($form_ui_ajax_messages['requiredField'] ?? 'Campo obrigatório: #fieldLabel#.', '#fieldLabel#', ($field['label'] ?? $fieldName)),
                     );
                     return;
                 }
@@ -412,7 +462,7 @@ function formulario_processador($params = false){
                     formulario_acesso_falha(['tipo' => $formId]);
                     $_GESTOR['ajax-json'] = Array(
                         'status' => 'error',
-                        'message' => 'Campo ' . ($field['label'] ?? $fieldName) . ' deve ter pelo menos 3 caracteres.',
+                        'message' => modelo_var_troca($form_ui_ajax_messages['minLength'] ?? 'Campo #fieldLabel# deve ter pelo menos 3 caracteres.', '#fieldLabel#', ($field['label'] ?? $fieldName)),
                     );
                     return;
                 }
@@ -426,7 +476,7 @@ function formulario_processador($params = false){
                 formulario_acesso_falha(['tipo' => $formId]);
                 $_GESTOR['ajax-json'] = Array(
                     'status' => 'error',
-                    'message' => 'Invalid email.',
+                    'message' => $form_ui_ajax_messages['invalidEmail'] ?? 'Invalid email.',
                 );
                 return;
             }
