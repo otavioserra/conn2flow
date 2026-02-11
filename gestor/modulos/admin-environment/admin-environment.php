@@ -16,6 +16,9 @@ function admin_environment_env_read(){
         'USUARIO_RECAPTCHA_ACTIVE' => $_ENV['USUARIO_RECAPTCHA_ACTIVE'] ?? 'false',
         'USUARIO_RECAPTCHA_SITE' => $_ENV['USUARIO_RECAPTCHA_SITE'] ?? '',
         'USUARIO_RECAPTCHA_SERVER' => $_ENV['USUARIO_RECAPTCHA_SERVER'] ?? '',
+        'USUARIO_RECAPTCHA_V2_ACTIVE' => $_ENV['USUARIO_RECAPTCHA_V2_ACTIVE'] ?? 'false',
+        'USUARIO_RECAPTCHA_V2_SITE' => $_ENV['USUARIO_RECAPTCHA_V2_SITE'] ?? '',
+        'USUARIO_RECAPTCHA_V2_SERVER' => $_ENV['USUARIO_RECAPTCHA_V2_SERVER'] ?? '',
         'EMAIL_ACTIVE' => $_ENV['EMAIL_ACTIVE'] ?? 'false',
         'EMAIL_HOST' => $_ENV['EMAIL_HOST'] ?? '',
         'EMAIL_USER' => $_ENV['EMAIL_USER'] ?? '',
@@ -149,6 +152,55 @@ function admin_environment_test_recaptcha($token, $serverKey){
     ];
 }
 
+function admin_environment_test_recaptcha_v2($token, $serverKey){
+    global $_GESTOR;
+
+    // Verificar o token com a API do Google reCAPTCHA v2
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'secret' => $serverKey,
+        'response' => $token
+    ]));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
+    $arrResponse = json_decode($response, true);
+    
+    // Verificar se a resposta foi bem-sucedida (V2 não possui score)
+    if ($arrResponse['success']) {
+        return [
+            'success' => true,
+            'hostname' => $arrResponse['hostname'] ?? '',
+            'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'recaptcha-v2-test-success'))
+        ];
+    }
+
+    // Se não foi sucesso, verificar códigos de erro
+    $errorCodes = $arrResponse['error-codes'] ?? [];
+    $errorMessage = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'recaptcha-error-generic'));
+    
+    if (in_array('missing-input-secret', $errorCodes)) {
+        $errorMessage = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'recaptcha-error-missing-secret'));
+    } elseif (in_array('invalid-input-secret', $errorCodes)) {
+        $errorMessage = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'recaptcha-error-invalid-secret'));
+    } elseif (in_array('missing-input-response', $errorCodes)) {
+        $errorMessage = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'recaptcha-error-missing-response'));
+    } elseif (in_array('invalid-input-response', $errorCodes)) {
+        $errorMessage = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'recaptcha-error-invalid-response'));
+    } elseif (in_array('timeout-or-duplicate', $errorCodes)) {
+        $errorMessage = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'recaptcha-error-timeout-duplicate'));
+    }
+    
+    return [
+        'success' => false,
+        'error_codes' => $errorCodes,
+        'message' => $errorMessage
+    ];
+}
+
 function admin_environment_test_email($config){
     global $_GESTOR;
     
@@ -207,6 +259,9 @@ function admin_environment_raiz(){
         'usuario_recaptcha_active' => $envData['USUARIO_RECAPTCHA_ACTIVE'] ?? 'false',
         'usuario_recaptcha_site' => $envData['USUARIO_RECAPTCHA_SITE'] ?? '',
         'usuario_recaptcha_server' => $envData['USUARIO_RECAPTCHA_SERVER'] ?? '',
+        'usuario_recaptcha_v2_active' => $envData['USUARIO_RECAPTCHA_V2_ACTIVE'] ?? 'false',
+        'usuario_recaptcha_v2_site' => $envData['USUARIO_RECAPTCHA_V2_SITE'] ?? '',
+        'usuario_recaptcha_v2_server' => $envData['USUARIO_RECAPTCHA_V2_SERVER'] ?? '',
         'email_active' => $envData['EMAIL_ACTIVE'] ?? 'false',
         'email_host' => $envData['EMAIL_HOST'] ?? '',
         'email_user' => $envData['EMAIL_USER'] ?? '',
@@ -263,6 +318,10 @@ function admin_environment_raiz(){
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-active-checked#', $dados['usuario_recaptcha_active'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-site#', $dados['usuario_recaptcha_site']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-server#', $dados['usuario_recaptcha_server']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-v2-active-checked#', $dados['usuario_recaptcha_v2_active'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-v2-site#', $dados['usuario_recaptcha_v2_site']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-v2-server#', $dados['usuario_recaptcha_v2_server']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#recaptcha-v2-section-class#', $dados['usuario_recaptcha_active'] === 'true' ? '' : 'hidden');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-active#', $dados['email_active']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-active-checked#', $dados['email_active'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-host#', $dados['email_host']);
@@ -326,6 +385,9 @@ function admin_environment_ajax_salvar(){
     if(isset($_REQUEST['usuario_recaptcha_active'])) $data['USUARIO_RECAPTCHA_ACTIVE'] = $_REQUEST['usuario_recaptcha_active'];
     if(isset($_REQUEST['usuario_recaptcha_site'])) $data['USUARIO_RECAPTCHA_SITE'] = $_REQUEST['usuario_recaptcha_site'];
     if(isset($_REQUEST['usuario_recaptcha_server'])) $data['USUARIO_RECAPTCHA_SERVER'] = $_REQUEST['usuario_recaptcha_server'];
+    if(isset($_REQUEST['usuario_recaptcha_v2_active'])) $data['USUARIO_RECAPTCHA_V2_ACTIVE'] = $_REQUEST['usuario_recaptcha_v2_active'];
+    if(isset($_REQUEST['usuario_recaptcha_v2_site'])) $data['USUARIO_RECAPTCHA_V2_SITE'] = $_REQUEST['usuario_recaptcha_v2_site'];
+    if(isset($_REQUEST['usuario_recaptcha_v2_server'])) $data['USUARIO_RECAPTCHA_V2_SERVER'] = $_REQUEST['usuario_recaptcha_v2_server'];
     if(isset($_REQUEST['email_active'])) $data['EMAIL_ACTIVE'] = $_REQUEST['email_active'];
     if(isset($_REQUEST['email_host'])) $data['EMAIL_HOST'] = $_REQUEST['email_host'];
     if(isset($_REQUEST['email_user'])) $data['EMAIL_USER'] = $_REQUEST['email_user'];
@@ -364,6 +426,28 @@ function admin_environment_ajax_testar_recaptcha(){
     }
     
     $result = admin_environment_test_recaptcha($token, $serverKey);
+    
+    $_GESTOR['ajax-json'] = [
+        'status' => $result['success'] ? 'success' : 'error',
+        'message' => $result['message']
+    ];
+}
+
+function admin_environment_ajax_testar_recaptcha_v2(){
+    global $_GESTOR;
+    
+    $token = $_REQUEST['recaptcha_token'] ?? '';
+    $serverKey = $_REQUEST['server_key'] ?? '';
+    
+    if (empty($token) || empty($serverKey)) {
+        $_GESTOR['ajax-json'] = [
+            'status' => 'error',
+            'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'recaptcha-error-missing-response'))
+        ];
+        return;
+    }
+    
+    $result = admin_environment_test_recaptcha_v2($token, $serverKey);
     
     $_GESTOR['ajax-json'] = [
         'status' => $result['success'] ? 'success' : 'error',
@@ -429,6 +513,7 @@ function admin_environment_start(){
             case 'opcao': admin_environment_ajax_opcao(); break;
             case 'salvar': admin_environment_ajax_salvar(); break;
             case 'testar-recaptcha': admin_environment_ajax_testar_recaptcha(); break;
+            case 'testar-recaptcha-v2': admin_environment_ajax_testar_recaptcha_v2(); break;
             case 'testar-email': admin_environment_ajax_testar_email(); break;
         }
 

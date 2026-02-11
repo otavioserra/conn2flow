@@ -709,11 +709,11 @@
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "",
+                        "html": "1eabdfeb8169f88947bf8493853c55ea",
                         "css": "",
-                        "combined": ""
+                        "combined": "1eabdfeb8169f88947bf8493853c55ea"
                     }
                 },
                 {

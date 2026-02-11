@@ -105,33 +105,63 @@ function formulario_controlador($params = false){
                 gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$googleRecaptchaSite.'"></script>');
             }
         }
+
+        // ===== Incluir google reCAPTCHA v2 caso ativo
+        if(isset($_CONFIG['usuario-recaptcha-v2-active']) && $_CONFIG['usuario-recaptcha-v2-active']){
+            $googleRecaptchaV2Active = true;
+            $googleRecaptchaV2Site = $_CONFIG['usuario-recaptcha-v2-site'];
+        }
         
         // ===== Inclusão Módulo JS
         
         gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
         gestor_pagina_javascript_incluir();
         
-        // ===== Pegar dados do formulario
-
-        $fieldsDoJson = Array(); // Carregar do JSON do módulo
+        
+        // ===== Buscar definição do formulário na tabela forms
+        $formDefinition = banco_select_name(['fields_schema', 'status'], 'forms', "WHERE id='$formId' AND language='".$_GESTOR['linguagem-codigo']."'");
+        $fieldsDoJson = [];
+        $redirectsDoJson = [];
+        $formStatus = 'A'; // Padrão ativo
+        if($formDefinition){
+            $schema = json_decode($formDefinition[0]['fields_schema'], true);
+            if(isset($schema['fields'])){
+                $fieldsDoJson = $schema['fields'];
+            }
+            if(isset($schema['redirects'])){
+                $redirectsDoJson = $schema['redirects'];
+            }
+            $formStatus = $formDefinition[0]['status'];
+        }
+        
+        // ===== Fallback para redirects padrão se não definidos
+        if(empty($redirectsDoJson)){
+            $redirectsDoJson = [
+                'success' => ['path' => '/sucesso/', 'type' => 'url'],
+                'error' => ['path' => '/erro/', 'type' => 'url']
+            ];
+        }
         
         // ===== Incluir o JS
         $js_vars = [
             'formId' => $formId,
             'formAction' => $formAction ?? $_GESTOR['url-raiz'] . 'forms-submissions-process/',
+            'formStatus' => $formStatus,
             'ajaxOpcao' => $formAjaxOpcao ?? 'forms-process',
 			'serverTimestamp' => time(),
             'blockWrapper' => $blockWrapper ?? null,
             'googleRecaptchaActive' => $googleRecaptchaActive ?? null,
             'googleRecaptchaSite' => $googleRecaptchaSite ?? null,
             'googleRecaptchaAction' => $googleRecaptchaAction ?? null,
+            'googleRecaptchaV2Active' => $googleRecaptchaV2Active ?? null,
+            'googleRecaptchaV2Site' => $googleRecaptchaV2Site ?? null,
             'framework' => $_GESTOR['pagina#framework_css'],
             'fields' => $fieldsDoJson,
             'prompts' => [
                 'empty' => 'Campo obrigatório',
                 'email' => 'E-mail inválido',
             ],
-            'redirects' => ['success' => '/sucesso/', 'error' => '/erro/'],
+            'redirects' => $redirectsDoJson,
             'ui' => [
                 'texts' => [
                     'loading' => 'Enviando...',
@@ -144,6 +174,7 @@ function formulario_controlador($params = false){
                     'dimmerTailwind' => '<div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center"><div class="text-white">#loadingText#</div></div>',
                     'errorElement' => '<div class="error-msg">#message#</div>',
                     'recaptchaV2' => '<div class="g-recaptcha" data-sitekey="#siteKey#"></div>',
+                    'formDisabled' => '<div class="ui warning message">Este formulário está desativado.</div>',
                 ],
             ],
         ];
@@ -170,6 +201,7 @@ function formulario_processador($params = false){
 	if($params)foreach($params as $var => $val)$$var = $val;
 
 	$formId = $_REQUEST['_formId'] ?? null;
+
 	if(!$formId){
 		// Retorno do AJAX em caso de formId ausente
 		$_GESTOR['ajax-json'] = Array(
@@ -178,6 +210,9 @@ function formulario_processador($params = false){
 		);
 		return;
 	}
+
+	// Sanitização do formId para evitar SQL Injection (mesmo que seja usado como parâmetro em funções seguras, é uma boa prática)
+	$formId = banco_escape_field($formId);
 	
 	// ===== Validar honeypot (anti-bot)
 	if(!empty($_REQUEST['honeypot'])){
@@ -226,7 +261,7 @@ function formulario_processador($params = false){
 		
 		if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5){
 			$recaptchaValido = true;
-		} elseif($arrResponse["score"] < 0.5){
+		} elseif($arrResponse["score"] < 0.5 && isset($_CONFIG['usuario-recaptcha-v2-active']) && $_CONFIG['usuario-recaptcha-v2-active']){
 			$captchaV2Ativo = true;
 		}
 	} else {
@@ -272,47 +307,112 @@ function formulario_processador($params = false){
 			return;
 		}
 	}
+
+	// ===== Buscar definição do formulário na tabela forms
+    $formDefinition = banco_select_name(['fields_schema', 'status'], 'forms', "WHERE id='$formId' AND language='".$_GESTOR['linguagem-codigo']."'");
+    $definedFields = [];
+    $fieldNameValue = $formId . '-' . time(); // Fallback
+    $redirectSuccess = '/sucesso/'; // Padrão
+    if($formDefinition){
+        // ===== Verificar se o formulário está ativo
+        if($formDefinition[0]['status'] !== 'A'){
+            $_GESTOR['ajax-json'] = Array(
+                'status' => 'error',
+                'message' => 'Form is disabled.',
+            );
+            return;
+        }
+        
+        $schema = json_decode($formDefinition[0]['fields_schema'], true);
+        if(isset($schema['fields'])){
+            $definedFields = array_column($schema['fields'], 'name');
+        }
+        if(isset($schema['field_name']) && isset($_REQUEST[$schema['field_name']])){
+            $fieldNameValue = $_REQUEST[$schema['field_name']];
+        }
+        if(isset($schema['redirects']['success'])){
+            $redirectSuccess = $schema['redirects']['success']['path'];
+        }
+        
+        // ===== Validar campos obrigatórios
+        foreach($schema['fields'] as $field){
+            $fieldName = $field['name'];
+            $fieldValue = trim($_REQUEST[$fieldName] ?? '');
+            
+            if(isset($field['required']) && $field['required']){
+                if(empty($fieldValue)){
+                    formulario_acesso_falha(['tipo' => $formId]);
+                    $_GESTOR['ajax-json'] = Array(
+                        'status' => 'error',
+                        'message' => 'Campo obrigatório: ' . ($field['label'] ?? $fieldName) . '.',
+                    );
+                    return;
+                }
+                
+                // Validação adicional para texto/textarea (mínimo 3 caracteres)
+                if(in_array($field['type'], ['text', 'textarea']) && strlen($fieldValue) < 3){
+                    formulario_acesso_falha(['tipo' => $formId]);
+                    $_GESTOR['ajax-json'] = Array(
+                        'status' => 'error',
+                        'message' => 'Campo ' . ($field['label'] ?? $fieldName) . ' deve ter pelo menos 3 caracteres.',
+                    );
+                    return;
+                }
+            }
+        }
+        
+        // ===== Validar campos obrigatórios (exemplo básico, personalize conforme formId)
+        // Validação dinâmica para campos do tipo 'email'
+        foreach($schema['fields'] as $field){
+            if($field['type'] === 'email' && isset($_REQUEST[$field['name']]) && !filter_var($_REQUEST[$field['name']], FILTER_VALIDATE_EMAIL)){
+                formulario_acesso_falha(['tipo' => $formId]);
+                $_GESTOR['ajax-json'] = Array(
+                    'status' => 'error',
+                    'message' => 'Invalid email.',
+                );
+                return;
+            }
+        }
+    }
 	
-	// ===== Validar campos obrigatórios (exemplo básico, personalize conforme formId)
-	// Aqui você pode chamar formulario_validacao_campos_obrigatorios ou lógica customizada
-	// Exemplo: validar email se presente
-	if(isset($_REQUEST['email']) && !filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)){
-		formulario_acesso_falha(['tipo' => $formId]);
-		$_GESTOR['ajax-json'] = Array(
-			'status' => 'error',
-			'message' => 'Invalid email.',
-		);
-		return;
-	}
-	
-	// ===== Salvar em forms_submissions
-	$fieldsValues = [];
-	foreach($_REQUEST as $key => $value){
-		if(!in_array($key, ['_formId', 'ajax', 'ajaxOpcao', 'token', 'action', 'fingerprint', 'timestamp', 'honeypot', 'g-recaptcha-response'])){
-			$fieldsValues[$key] = $value;
-		}
-	}
-	
-	banco_insert_name([
-		'form_id' => $formId,
-		'name' => $formId . '-' . time(),
-		'id' => uniqid(),
-		'fields_values' => json_encode($fieldsValues),
-		'language' => 'pt-br',
-		'status' => 'A',
-		'version' => 1,
-		'created_at' => date('Y-m-d H:i:s'),
-		'updated_at' => date('Y-m-d H:i:s')
-	], 'forms_submissions');
+	// ===== Salvar em forms_submissions com estrutura de campos
+    $fieldsValues = [];
+    foreach($_REQUEST as $key => $value){
+        if(!in_array($key, ['_formId', 'ajax', 'ajaxOpcao', 'token', 'action', 'fingerprint', 'timestamp', 'honeypot', 'g-recaptcha-response'])){
+            $field = ['name' => $key, 'value' => $value];
+            if(!in_array($key, $definedFields)){
+                $field['undefined'] = true;
+            }
+            $fieldsValues[] = $field;
+        }
+    }
+    
+    $submissionId = banco_identificador(Array(
+        'id' => banco_escape_field($fieldNameValue),
+        'tabela' => Array(
+            'nome' => 'forms_submissions',
+            'campo' => 'id',
+            'id_nome' => 'id',
+            'where' => "form_id='".$formId."' AND language='".$_GESTOR['linguagem-codigo']."'",
+        ),
+    ));
+    
+    banco_insert_name([
+        ['form_id', $formId, false],
+        ['name', banco_escape_field($fieldNameValue), false],
+        ['id', $submissionId, false],
+        ['fields_values', banco_escape_field(json_encode($fieldsValues)), false],
+        ['language', $_GESTOR['linguagem-codigo'], false],
+    ], 'forms_submissions');
 	
 	// ===== Logar sucesso
 	formulario_acesso_cadastrar(['tipo' => $formId]);
 	
 	// ===== Retornar sucesso
 	$_GESTOR['ajax-json'] = Array(
-		'status' => 'success',
-		'redirect' => '/sucesso/'
-	);
+        'status' => 'success',
+        'redirect' => $redirectSuccess
+    );
 	return;
 }
 
@@ -365,17 +465,21 @@ function formulario_acesso_cadastrar($params = false){
         
         if($acesso['status'] == 'bloqueado'){
             // Bloquear por 24h se ainda não bloqueado
-            banco_insert_name(['ip' => $ip, 'fingerprint' => $fingerprint, 'unblock_at' => date('Y-m-d H:i:s', strtotime('+24 hours'))], 'forms_blocks');
+            banco_insert_name([
+                ['ip', banco_escape_field($ip), false],
+                ['fingerprint', banco_escape_field($fingerprint), false],
+                ['unblock_at', date('Y-m-d H:i:s', strtotime('+24 hours')), true]
+            ], 'forms_blocks');
             return;
         }
         
         // Logar tentativa de sucesso
         banco_insert_name([
-            'form_id' => $tipo,
-            'ip' => $ip,
-            'fingerprint' => $fingerprint,
-            'created_at' => date('Y-m-d H:i:s'),
-            'success' => 1
+            ['form_id', banco_escape_field($tipo), false],
+            ['ip', banco_escape_field($ip), false],
+            ['fingerprint', banco_escape_field($fingerprint), false],
+            ['created_at', date('Y-m-d H:i:s'), true],
+            ['success', '1', true]
         ], 'forms_logs');
     }
 }
@@ -396,11 +500,11 @@ function formulario_acesso_falha($params = false){
         
         // Logar falha
         banco_insert_name([
-            'form_id' => $tipo,
-            'ip' => $ip,
-            'fingerprint' => $fingerprint,
-            'created_at' => date('Y-m-d H:i:s'),
-            'success' => 0
+            ['form_id', banco_escape_field($tipo), false],
+            ['ip', banco_escape_field($ip), false],
+            ['fingerprint', banco_escape_field($fingerprint), false],
+            ['created_at', date('Y-m-d H:i:s'), true],
+            ['success', '0', true]
         ], 'forms_logs');
     }
 }
@@ -438,7 +542,7 @@ function formulario_acessos_limpeza($params = false){
     );
 }
 
-// ===== Funções legadas dos widgets
+// ===== Funções dos widgets
 
 /**
  * Configura validação de formulário com regras personalizadas.

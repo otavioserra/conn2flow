@@ -20,6 +20,13 @@ $(document).ready(function () {
 			});
 
 			function initFormController(form, data) {
+				// Verificar se o formulário está ativo
+				if (data.formStatus !== 'A') {
+					form.find('input, textarea, select, button').prop('disabled', true);
+					form.html(data.ui.components.formDisabled);
+					return;
+				}
+
 				data.fields.forEach(function (field) {
 					var input = form.find('[name="' + field.name + '"]');
 					if (input.length) {
@@ -159,7 +166,7 @@ $(document).ready(function () {
 						removeDimmer(form); // Remover dimmer
 						if (response.status === 'success') {
 							window.location.href = response.redirect;
-						} else if (response.status === 'require_v2') {
+						} else if (response.status === 'require_v2' && 'googleRecaptchaV2Active' in data && data.googleRecaptchaV2Active) {
 							injectRecaptchaV2(form, data);
 						} else {
 							showError(response.message, data);
@@ -178,20 +185,36 @@ $(document).ready(function () {
 
 			function injectRecaptchaV2(form, data) {
 				if (!form.find('.g-recaptcha').length) {
-					var recaptchaHtml = data.ui.components.recaptchaV2.replace('#siteKey#', data.googleRecaptchaV2Site);
-					var recaptchaDiv = $(recaptchaHtml);
-					form.append(recaptchaDiv);
-					grecaptcha.render(recaptchaDiv[0]);
-					// Mostrar mensagem para usuário completar v2
-					showError(data.ui.texts.requireV2Message, data);
-					// Re-bind submit para tentar novamente após v2
-					form.off('submit').on('submit', function (e) {
-						e.preventDefault();
-						if (validateAllFields(form, data.fields, data.prompts, data.framework)) {
-							performAjaxSubmit(form, data);
-						}
-					});
+					// Carregar script do reCAPTCHA se necessário
+					if (typeof grecaptcha === 'undefined') {
+						var script = document.createElement('script');
+						script.src = 'https://www.google.com/recaptcha/api.js';
+						script.async = true;
+						script.defer = true;
+						document.head.appendChild(script);
+						script.onload = function () {
+							proceedWithRecaptchaV2(form, data);
+						};
+					} else {
+						proceedWithRecaptchaV2(form, data);
+					}
 				}
+			}
+
+			function proceedWithRecaptchaV2(form, data) {
+				var recaptchaHtml = data.ui.components.recaptchaV2.replace('#siteKey#', data.googleRecaptchaV2Site);
+				var recaptchaDiv = $(recaptchaHtml);
+				form.append(recaptchaDiv);
+				grecaptcha.render(recaptchaDiv[0]);
+				// Mostrar mensagem para usuário completar v2
+				showError(data.ui.texts.requireV2Message, data);
+				// Re-bind submit para tentar novamente após v2
+				form.off('submit').on('submit', function (e) {
+					e.preventDefault();
+					if (validateAllFields(form, data.fields, data.prompts, data.framework)) {
+						performAjaxSubmit(form, data);
+					}
+				});
 			}
 
 			function showError(message, data) {

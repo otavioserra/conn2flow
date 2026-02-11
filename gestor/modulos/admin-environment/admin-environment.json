@@ -17,11 +17,11 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "a041653f590321da10a3cf630baf4e46",
+                        "html": "e55c999d060923b6e4f9cade09b9120a",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
-                        "combined": "c1e0b923f317b1f89178de9a556bfbd4"
+                        "combined": "999d5b9c14beaa5a7b56e6001062f0e0"
                     }
                 }
             ],
@@ -101,6 +101,11 @@
                     "id": "recaptcha-error-timeout-duplicate",
                     "value": "Token expired or has already been used.",
                     "type": "string"
+                },
+                {
+                    "id": "recaptcha-v2-test-success",
+                    "value": "reCAPTCHA V2 test successful! Checkbox verification passed.",
+                    "type": "string"
                 }
             ]
         },
@@ -115,11 +120,11 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "885eb6630e1a0c4d566f9b755ceea6fa",
+                        "html": "2e334046b08459d0c4f1b0c7ff767d03",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
-                        "combined": "29369960c26ecebbac1012e9ec929b6d"
+                        "combined": "3acbe5f0b1bdb720524ec9ee73f7cabc"
                     }
                 }
             ],
@@ -198,6 +203,11 @@
                 {
                     "id": "recaptcha-error-timeout-duplicate",
                     "value": "Token expirou ou já foi usado.",
+                    "type": "string"
+                },
+                {
+                    "id": "recaptcha-v2-test-success",
+                    "value": "reCAPTCHA V2 testado com sucesso! Verificação do checkbox aprovada.",
                     "type": "string"
                 }
             ]

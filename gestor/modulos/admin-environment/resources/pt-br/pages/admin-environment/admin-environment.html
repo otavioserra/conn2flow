@@ -46,8 +46,46 @@
 
                     <div class="field">
                         <button type="button" class="ui blue button" id="btn-testar-recaptcha">
-                            <i class="shield icon"></i> Testar reCAPTCHA
+                            <i class="shield icon"></i> Testar reCAPTCHA V3
                         </button>
+                    </div>
+
+                    <!-- reCAPTCHA V2 Section - Visível apenas quando V3 está ativo -->
+                    <div id="recaptcha-v2-section" class="#recaptcha-v2-section-class#">
+                        <div class="ui divider"></div>
+                        <h4><i class="shield alternate icon"></i> reCAPTCHA V2 (Checkbox)</h4>
+
+                        <div class="field">
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" id="usuario_recaptcha_v2_active"
+                                    name="usuario_recaptcha_v2_active" #usuario-recaptcha-v2-active-checked#>
+                                <label>Ativar Google reCAPTCHA v2</label>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Site Key do reCAPTCHA V2</label>
+                            <input type="text" id="usuario_recaptcha_v2_site" name="usuario_recaptcha_v2_site"
+                                value="#usuario-recaptcha-v2-site#"
+                                placeholder="Ex: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI">
+                        </div>
+
+                        <div class="field">
+                            <label>Server Key do reCAPTCHA V2</label>
+                            <input type="password" id="usuario_recaptcha_v2_server" name="usuario_recaptcha_v2_server"
+                                value="#usuario-recaptcha-v2-server#"
+                                placeholder="Ex: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe">
+                        </div>
+
+                        <div class="field">
+                            <button type="button" class="ui blue button" id="btn-testar-recaptcha-v2">
+                                <i class="shield alternate icon"></i> Testar reCAPTCHA V2
+                            </button>
+                        </div>
+
+                        <div class="field hidden" id="recaptcha-v2-container-wrapper">
+                            <div id="recaptcha-v2-widget"></div>
+                        </div>
                     </div>
                 </form>
             </div>

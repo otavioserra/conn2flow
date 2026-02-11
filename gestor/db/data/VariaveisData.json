@@ -3951,6 +3951,15 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "recaptcha-v2-test-success",
+        "valor": "reCAPTCHA V2 testado com sucesso! Verificação do checkbox aprovada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "admin-environment",
         "id": "email-tests-head-title",
@@ -4081,6 +4090,15 @@
         "modulo": "admin-environment",
         "id": "recaptcha-error-timeout-duplicate",
         "valor": "Token expired or has already been used.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "recaptcha-v2-test-success",
+        "valor": "reCAPTCHA V2 test successful! Checkbox verification passed.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
