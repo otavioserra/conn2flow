@@ -38,9 +38,7 @@ function formulario_incluir_js($params = false){
 	if($params)foreach($params as $var => $val)$$var = $val;
 
 	// Variáveis padrões 
-	$js_padroes = [
-		'teste' => '123',
-	];
+	$js_padroes = [];
 
 	// Mesclar variáveis personalizadas com as padrões
 	if(isset($js_vars) && is_array($js_vars)){
@@ -92,8 +90,35 @@ function formulario_controlador($params = false){
             $blockWrapper = '<div class="ui warning visible message"><i class="exclamation triangle icon"></i><div class="content"><div class="header">Your device\'s IP address is BLOCKED!</div><p>Unfortunately, it is not possible to access your account from this current device due to excessive failed login attempts with invalid username and/or password. Please try again later on this device or on another device on a different network.</p></div></div>';
         }
 
-        // ===== Flag para forçar reCAPTCHA v3 sempre (opcional por formId)
-        $forceRecaptchaV3 = isset($_CONFIG['formulario-force-recaptcha-v3'][$formId]) ? $_CONFIG['formulario-force-recaptcha-v3'][$formId] : false;
+		// ===== Buscar definição do formulário na tabela forms
+        $formDefinition = banco_select(Array(
+            'unico' => true,
+            'tabela' => 'forms',
+            'campos' => Array(
+                'fields_schema',
+                'status',
+            ),
+            'extra' => "WHERE id='$formId' AND language='".$_GESTOR['linguagem-codigo']."'"
+        ));
+
+        // ==== Extrair campos e redirects do schema do formulário para passar para o JS
+        $fieldsDoJson = [];
+        $redirectsDoJson = [];
+        $formStatus = 'A'; // Padrão ativo
+        $forceRecaptchaV3 = false; // Padrão
+        if($formDefinition){
+            $schema = json_decode($formDefinition['fields_schema'], true);
+            if(isset($schema['fields'])){
+                $fieldsDoJson = $schema['fields'];
+            }
+            if(isset($schema['redirects'])){
+                $redirectsDoJson = $schema['redirects'];
+            }
+            if(isset($schema['force_recaptcha']) && $schema['force_recaptcha'] === true){
+                $forceRecaptchaV3 = true;
+            }
+            $formStatus = $formDefinition['status'];
+        }
 
         // ===== Incluir google reCAPTCHA caso ativo (v3 se status != 'livre' ou forçado)
         if(isset($_CONFIG['usuario-recaptcha-active']) && ($acesso['status'] != 'livre' || $forceRecaptchaV3)){
@@ -116,23 +141,6 @@ function formulario_controlador($params = false){
         
         gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
         gestor_pagina_javascript_incluir();
-        
-        
-        // ===== Buscar definição do formulário na tabela forms
-        $formDefinition = banco_select_name(['fields_schema', 'status'], 'forms', "WHERE id='$formId' AND language='".$_GESTOR['linguagem-codigo']."'");
-        $fieldsDoJson = [];
-        $redirectsDoJson = [];
-        $formStatus = 'A'; // Padrão ativo
-        if($formDefinition){
-            $schema = json_decode($formDefinition[0]['fields_schema'], true);
-            if(isset($schema['fields'])){
-                $fieldsDoJson = $schema['fields'];
-            }
-            if(isset($schema['redirects'])){
-                $redirectsDoJson = $schema['redirects'];
-            }
-            $formStatus = $formDefinition[0]['status'];
-        }
         
         // ===== Fallback para redirects padrão se não definidos
         if(empty($redirectsDoJson)){
@@ -239,9 +247,27 @@ function formulario_processador($params = false){
 	
 	// ===== Rate limiting e CAPTCHA
 	$captchaV2Ativo = false;
-	
-	// Flag para forçar v3
-	$forceRecaptchaV3 = isset($_CONFIG['formulario-force-recaptcha-v3'][$formId]) ? $_CONFIG['formulario-force-recaptcha-v3'][$formId] : false;
+
+	// ===== Buscar definição do formulário na tabela forms
+    $formDefinition = banco_select(Array(
+        'unico' => true,
+        'tabela' => 'forms',
+        'campos' => Array(
+            'fields_schema',
+            'status',
+        ),
+        'extra' => "WHERE id='$formId' AND language='".$_GESTOR['linguagem-codigo']."'"
+    ));
+
+	// Flag para forçar v3 (do schema)
+	$forceRecaptchaV3 = false; // Padrão
+	if($formDefinition){
+        $schema = json_decode($formDefinition['fields_schema'], true);
+
+		if(isset($schema['force_recaptcha']) && $schema['force_recaptcha'] === true){
+			$forceRecaptchaV3 = true;
+		}
+	}
 	
 	$recaptchaValido = false;
 	if(isset($_CONFIG['usuario-recaptcha-active']) && ($acesso['status'] != 'livre' || $forceRecaptchaV3)){
@@ -308,22 +334,20 @@ function formulario_processador($params = false){
 		}
 	}
 
-	// ===== Buscar definição do formulário na tabela forms
-    $formDefinition = banco_select_name(['fields_schema', 'status'], 'forms', "WHERE id='$formId' AND language='".$_GESTOR['linguagem-codigo']."'");
+	// ===== Verificar pegar dados do formulário para validação e armazenamento
     $definedFields = [];
     $fieldNameValue = $formId . '-' . time(); // Fallback
     $redirectSuccess = '/sucesso/'; // Padrão
     if($formDefinition){
         // ===== Verificar se o formulário está ativo
-        if($formDefinition[0]['status'] !== 'A'){
+        if($formDefinition['status'] !== 'A'){
             $_GESTOR['ajax-json'] = Array(
                 'status' => 'error',
                 'message' => 'Form is disabled.',
             );
             return;
         }
-        
-        $schema = json_decode($formDefinition[0]['fields_schema'], true);
+
         if(isset($schema['fields'])){
             $definedFields = array_column($schema['fields'], 'name');
         }
@@ -433,7 +457,12 @@ function formulario_acesso_verificar($params = false){
         $fingerprint = $_REQUEST['fingerprint'] ?? null;
         
         // Verificar bloqueio temporário
-        $bloqueio = banco_select_name(['id_forms_blocks'], 'forms_blocks', "WHERE ip='$ip' AND fingerprint='$fingerprint' AND unblock_at > NOW()");
+        $bloqueio = banco_select(Array(
+            'unico' => true,
+            'tabela' => 'forms_blocks',
+            'campos' => Array('id_forms_blocks'),
+            'extra' => "WHERE ip='$ip' AND fingerprint='$fingerprint' AND unblock_at > NOW()"
+        ));
         if($bloqueio){
             $retorno['permitido'] = false;
             $retorno['status'] = 'bloqueado';
