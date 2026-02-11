@@ -30,16 +30,43 @@
 
 <!-- block-wrapper < -->
 <div class="wrapper-block-wrapper">
-    <!-- blockWrapper --><div class="ui warning visible message"><i class="exclamation triangle icon"></i><div class="content"><div class="header">O endereço IP do seu dispositivo está BLOQUEADO!</div><p>Infelizmente, não é possível acessar sua conta a partir deste dispositivo atual devido a tentativas excessivas de login fracassadas com nome de usuário e/ou senha inválidos. Tente novamente mais tarde neste dispositivo ou em outro dispositivo em uma rede diferente.</p></div></div><!-- /blockWrapper -->
+    <!-- blockWrapper -->
+    <div class="ui warning visible message"><i class="exclamation triangle icon"></i>
+        <div class="content">
+            <div class="header">O endereço IP do seu dispositivo está BLOQUEADO!</div>
+            <p>Infelizmente, não é possível acessar sua conta a partir deste dispositivo atual devido a tentativas
+                excessivas de login fracassadas com nome de usuário e/ou senha inválidos. Tente novamente mais tarde
+                neste dispositivo ou em outro dispositivo em uma rede diferente.</p>
+        </div>
+    </div><!-- /blockWrapper -->
 </div>
 <!-- block-wrapper > -->
 
 <!-- components < -->
 <div class="wrapper-components">
-    <div class="component-dimmer-fomantic"><div class="ui dimmer"><div class="ui text loader">#loadingText#</div></div></div>
-    <div class="component-dimmer-tailwind"><div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center"><div class="text-white">#loadingText#</div></div></div>
-    <div class="component-error-element"><div class="error-msg">#message#</div></div>
-    <div class="component-recaptcha-v2"><div class="g-recaptcha" data-sitekey="#siteKey#"></div></div>
-    <div class="component-form-disabled"><div class="ui warning message">Este formulário está desativado.</div></div>
+    <!-- dimmerFomantic -->
+    <div class="component-dimmer-fomantic">
+        <div class="ui dimmer">
+            <div class="ui text loader">#loadingText#</div>
+        </div>
+    </div><!-- /dimmerFomantic -->
+    <!-- dimmerTailwind -->
+    <div class="component-dimmer-tailwind">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center">
+            <div class="text-white">#loadingText#</div>
+        </div>
+    </div><!-- /dimmerTailwind -->
+    <!-- errorElement -->
+    <div class="component-error-element">
+        <div class="error-msg">#message#</div>
+    </div><!-- /errorElement -->
+    <!-- recaptchaV2 -->
+    <div class="component-recaptcha-v2">
+        <div class="g-recaptcha" data-sitekey="#siteKey#"></div>
+    </div><!-- /recaptchaV2 -->
+    <!-- formDisabled -->
+    <div class="component-form-disabled">
+        <div class="ui warning message">Este formulário está desativado.</div>
+    </div><!-- /formDisabled -->
 </div>
 <!-- components > -->
