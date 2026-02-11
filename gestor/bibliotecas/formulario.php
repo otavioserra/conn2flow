@@ -81,8 +81,56 @@ function formulario_controlador($params = false){
             formulario_acessos_limpeza();
         }
 
+		// ==== Pegar o componente do formulário.
+		$form_ui = gestor_componente([
+			'id' => 'form-ui'
+		]);
+
+		// ==== Extrair valores do componente HTML
+		$form_ui_cel = [];
+
+		// Extrair prompts
+		$cel_nome = 'prompts';
+		$form_ui_cel[$cel_nome] = modelo_tag_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		$form_ui = modelo_tag_troca_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+
+		// Extrair ui-texts
+		$cel_nome = 'ui-texts';
+		$form_ui_cel[$cel_nome] = modelo_tag_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		$form_ui = modelo_tag_troca_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+
+		// Extrair ui-components
+		$cel_nome = 'ui-components';
+		$form_ui_cel[$cel_nome] = modelo_tag_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		$form_ui = modelo_tag_troca_val($form_ui,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+
+		// Processar valores individuais dos prompts
+		$form_ui_prompts = [];
+		if(isset($form_ui_cel['prompts'])){
+			$form_ui_prompts['empty'] = modelo_tag_val($form_ui_cel['prompts'], '<div class="prompt-empty">', '</div>');
+			$form_ui_prompts['email'] = modelo_tag_val($form_ui_cel['prompts'], '<div class="prompt-email">', '</div>');
+		}
+
+		// Processar valores individuais dos ui-texts
+		$form_ui_texts = [];
+		if(isset($form_ui_cel['ui-texts'])){
+			$form_ui_texts['loading'] = modelo_tag_val($form_ui_cel['ui-texts'], '<div class="ui-text-loading">', '</div>');
+			$form_ui_texts['timeoutError'] = modelo_tag_val($form_ui_cel['ui-texts'], '<div class="ui-text-timeout-error">', '</div>');
+			$form_ui_texts['generalError'] = modelo_tag_val($form_ui_cel['ui-texts'], '<div class="ui-text-general-error">', '</div>');
+			$form_ui_texts['requireV2Message'] = modelo_tag_val($form_ui_cel['ui-texts'], '<div class="ui-text-require-v2-message">', '</div>');
+		}
+
+		// Processar valores individuais dos ui-components
+		$form_ui_components = [];
+		if(isset($form_ui_cel['ui-components'])){
+			$form_ui_components['dimmerFomantic'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- dimmerFomantic -->', '<!-- /dimmerFomantic -->');
+			$form_ui_components['dimmerTailwind'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- dimmerTailwind -->', '<!-- /dimmerTailwind -->');
+			$form_ui_components['errorElement'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- errorElement -->', '<!-- /errorElement -->');
+			$form_ui_components['recaptchaV2'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- recaptchaV2 -->', '<!-- /recaptchaV2 -->');
+			$form_ui_components['formDisabled'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- formDisabled -->', '<!-- /formDisabled -->');
+		}
+
         // ===== Verificar a permissão do acesso.
-        
         $acesso = formulario_acesso_verificar(['tipo' => $formId]);
 
         // ===== Devolver mensagem de bloqueio caso o IP esteja bloqueado, senão incluir o formulário normalmente.
@@ -165,25 +213,11 @@ function formulario_controlador($params = false){
             'googleRecaptchaV2Site' => $googleRecaptchaV2Site ?? null,
             'framework' => $_GESTOR['pagina#framework_css'],
             'fields' => $fieldsDoJson,
-            'prompts' => [
-                'empty' => 'Campo obrigatório',
-                'email' => 'E-mail inválido',
-            ],
+            'prompts' => $form_ui_prompts,
             'redirects' => $redirectsDoJson,
             'ui' => [
-                'texts' => [
-                    'loading' => 'Enviando...',
-                    'timeoutError' => 'Erro de conexão. Verifique sua internet e tente novamente.',
-                    'generalError' => 'Erro ao enviar. Tente novamente.',
-                    'requireV2Message' => 'Complete o desafio de segurança e tente novamente.',
-                ],
-                'components' => [
-                    'dimmerFomantic' => '<div class="ui dimmer"><div class="ui text loader">#loadingText#</div></div>',
-                    'dimmerTailwind' => '<div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center"><div class="text-white">#loadingText#</div></div>',
-                    'errorElement' => '<div class="error-msg">#message#</div>',
-                    'recaptchaV2' => '<div class="g-recaptcha" data-sitekey="#siteKey#"></div>',
-                    'formDisabled' => '<div class="ui warning message">Este formulário está desativado.</div>',
-                ],
+                'texts' => $form_ui_texts,
+                'components' => $form_ui_components,
             ],
         ];
         formulario_incluir_js(['js_vars' => $js_vars]);
