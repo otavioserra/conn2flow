@@ -108,6 +108,10 @@
         "modulo": "forms-submissions"
     },
     {
+        "perfil": "administradores",
+        "modulo": "contatos"
+    },
+    {
         "perfil": "consumidores",
         "modulo": "dashboard"
     },

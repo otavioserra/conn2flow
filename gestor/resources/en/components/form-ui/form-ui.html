@@ -1,44 +1,60 @@
 <!-- prompts < -->
 <div class="wrapper-prompts">
-    <div class="prompt-empty">The field #label# is required</div>
+    <!-- prompt-empty < -->The field #label# is required<!-- prompt-empty > -->
     <!-- email < -->The field #label# is an invalid email<!-- email > -->
 </div>
 <!-- prompts > -->
 
 <!-- ui-texts < -->
 <div class="wrapper-ui-texts">
-    <div class="ui-text-loading">Sending...</div>
-    <div class="ui-text-timeout-error">Connection error. Check your internet and try again.</div>
-    <div class="ui-text-general-error">Error sending. Try again.</div>
-    <div class="ui-text-require-v2-message">Complete the security challenge and try again.</div>
+    <!-- ui-text-loading < -->Sending...<!-- ui-text-loading > -->
+    <!-- ui-text-timeout-error < -->Connection error. Check your internet and try again.<!-- ui-text-timeout-error > -->
+    <!-- text-general-error < -->Error sending. Try again.<!-- text-general-error > -->
+    <!-- text-require-v2-message < -->Complete the security challenge and try again.<!-- text-require-v2-message > -->
 </div>
 <!-- ui-texts > -->
 
 <!-- ajax-messages < -->
 <div class="wrapper-ajax-messages">
-    <div class="ajax-message-form-id-missing">Form ID missing.</div>
-    <div class="ajax-message-suspected-bot">Suspected bot activity.</div>
-    <div class="ajax-message-request-expired">Request expired.</div>
-    <div class="ajax-message-captcha-failed">CAPTCHA validation failed.</div>
-    <div class="ajax-message-captcha-v2-failed">CAPTCHA v2 validation failed.</div>
-    <div class="ajax-message-form-disabled">Form is disabled.</div>
-    <div class="ajax-message-required-field">Required field: #fieldLabel#.</div>
-    <div class="ajax-message-min-length">Field #fieldLabel# must have at least 3 characters.</div>
-    <div class="ajax-message-invalid-email">Invalid email.</div>
+    <!-- ajax-message-form-id-missing < -->Form ID missing.<!-- ajax-message-form-id-missing > -->
+    <!-- ajax-message-suspected-bot < -->Suspected bot activity.<!-- ajax-message-suspected-bot > -->
+    <!-- ajax-message-request-expired < -->Request expired.<!-- ajax-message-request-expired > -->
+    <!-- ajax-message-captcha-failed < -->CAPTCHA validation failed.<!-- ajax-message-captcha-failed > -->
+    <!-- ajax-message-captcha-v2-failed < -->CAPTCHA v2 validation failed.<!-- ajax-message-captcha-v2-failed > -->
+    <!-- ajax-message-form-disabled < -->Form is disabled.<!-- ajax-message-form-disabled > -->
+    <!-- ajax-message-required-field < -->Required field: #fieldLabel#.<!-- ajax-message-required-field > -->
+    <!-- ajax-message-min-length < -->Field #fieldLabel# must have at least 3 characters.<!-- ajax-message-min-length > -->
+    <!-- ajax-message-invalid-email < -->Invalid email.<!-- ajax-message-invalid-email > -->
+    <!-- ajax-message-blocked < -->Form blocked due to daily submission limit.<!-- ajax-message-blocked > -->
 </div>
 <!-- ajax-messages > -->
 
 <!-- block-wrapper < -->
 <div class="wrapper-block-wrapper">
-    <!-- blockWrapper -->
-    <div class="ui warning visible message"><i class="exclamation triangle icon"></i>
+    <!-- blockWrapperFomantic -->
+    <div class="ui warning visible icon message">
+        <i class="exclamation triangle icon"></i>
         <div class="content">
-            <div class="header">Your device&#39;s IP address is BLOCKED!</div>
-            <p>Unfortunately, it is not possible to access your account from this current device due to excessive failed
-                login attempts with invalid username and/or password. Please try again later on this device or on
-                another device on a different network.</p>
+            <div class="header">Daily submission quota reached!</div>
+            <p>You have reached the maximum number of submissions allowed for this form today. Try again tomorrow (24
+                hours after the first submission) or use another available form.</p>
         </div>
-    </div><!-- /blockWrapper -->
+    </div><!-- /blockWrapperFomantic -->
+    <!-- blockWrapperTailwind -->
+    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded" role="alert">
+        <div class="flex">
+            <div class="py-1"><svg class="fill-current h-6 w-6 text-yellow-500 mr-4" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20">
+                    <path
+                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                </svg></div>
+            <div>
+                <h3 class="font-bold">Daily submission quota reached!</h3>
+                <p>You have reached the maximum number of submissions allowed for this form today. Try again tomorrow
+                    (24 hours after the first submission) or use another available form.</p>
+            </div>
+        </div>
+    </div><!-- /blockWrapperTailwind -->
 </div>
 <!-- block-wrapper > -->
 
@@ -65,9 +81,7 @@
         <div class="text-red-500 text-sm mt-1">#message#</div>
     </div><!-- /errorElementTailwind -->
     <!-- recaptchaV2 -->
-    <div class="component-recaptcha-v2">
-        <div class="g-recaptcha" data-sitekey="#siteKey#"></div>
-    </div><!-- /recaptchaV2 -->
+    <div class="g-recaptcha"></div><!-- /recaptchaV2 -->
     <!-- formDisabled -->
     <div class="component-form-disabled">
         <div class="ui warning message">This form is disabled.</div>

@@ -128,6 +128,11 @@ $_CONFIG = [
         'signup' => (int)($_ENV['ACESSOS_MAXIMO_CADASTROS_SIMPLES_SIGNUP'] ?? 1),
         'formulario-contato' => (int)($_ENV['ACESSOS_MAXIMO_CADASTROS_SIMPLES_FORMULARIO_CONTATO'] ?? 3),
     ],
+    // Controle de Formulários
+    'formularios-tempo-limpeza'             => (int)($_ENV['FORMULARIOS_TEMPO_LIMPEZA'] ?? 2592000),
+    'formularios-tempo-bloqueio-ip'         => (int)($_ENV['FORMULARIOS_TEMPO_BLOQUEIO_IP'] ?? 86400),
+    'formularios-maximo-cadastros'          => (int)($_ENV['FORMULARIOS_MAXIMO_CADASTROS'] ?? 10),
+    'formularios-maximo-cadastros-simples'  => (int)($_ENV['FORMULARIOS_MAXIMO_CADASTROS_SIMPLES'] ?? 3),
     'email' => [
         'ativo' => filter_var($_ENV['EMAIL_ACTIVE'] ?? false, FILTER_VALIDATE_BOOLEAN),
         'server' => [

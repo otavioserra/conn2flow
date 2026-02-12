@@ -21,14 +21,16 @@
                     "id": "form-contact",
                     "description": "Formulário padrão para contato, com campos de nome, e-mail e mensagem.",
                     "fields_schema": {
+                        "access_max_simple": 2,
+                        "access_max": 4,
                         "redirects": {
                             "success": {
                                 "type": "url",
-                                "path": "contato\/sucesso\/"
+                                "path": "contact\/success\/"
                             },
                             "error": {
                                 "type": "url",
-                                "path": "contato\/"
+                                "path": "contact\/"
                             }
                         },
                         "field_name": "name",
@@ -70,6 +72,22 @@
                         "css": "",
                         "combined": "90f095ea0065138df436d299f86b7d7e"
                     }
+                },
+                {
+                    "name": "Contato Sucesso",
+                    "id": "contact-success",
+                    "layout": "layout-pagina-padrao",
+                    "path": "contact\/success\/",
+                    "type": "system",
+                    "option": "contact-success",
+                    "html_extra_head": "<meta name=\"robots\" content=\"noindex\">",
+                    "without_permission": true,
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "a73b4f70c6d3b68ad93481f98d554d93",
+                        "css": "",
+                        "combined": "a73b4f70c6d3b68ad93481f98d554d93"
+                    }
                 }
             ]
         },
@@ -83,11 +101,11 @@
                         "redirects": {
                             "success": {
                                 "type": "url",
-                                "path": "contato\/sucesso\/"
+                                "path": "contact\/success\/"
                             },
                             "error": {
                                 "type": "url",
-                                "path": "contato\/"
+                                "path": "contact\/"
                             }
                         },
                         "field_name": "name",
@@ -128,6 +146,22 @@
                         "html": "635c2d742d3daf349658f401c37c73f5",
                         "css": "",
                         "combined": "635c2d742d3daf349658f401c37c73f5"
+                    }
+                },
+                {
+                    "name": "Contact Success",
+                    "id": "contact-success",
+                    "layout": "layout-pagina-padrao",
+                    "path": "contact\/success\/",
+                    "type": "system",
+                    "option": "contact-success",
+                    "html_extra_head": "<meta name=\"robots\" content=\"noindex\">",
+                    "without_permission": true,
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "3a0212a663066e31acdb00e4b55650fa",
+                        "css": "",
+                        "combined": "3a0212a663066e31acdb00e4b55650fa"
                     }
                 }
             ]

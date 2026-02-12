@@ -1,44 +1,61 @@
 <!-- prompts < -->
 <div class="wrapper-prompts">
-    <div class="prompt-empty">O campo #label# é obrigatório</div>
+    <!-- prompt-empty < -->O campo #label# é obrigatório<!-- prompt-empty > -->
     <!-- email < -->O campo #label# é um e-mail inválido<!-- email > -->
 </div>
 <!-- prompts > -->
 
 <!-- ui-texts < -->
 <div class="wrapper-ui-texts">
-    <div class="ui-text-loading">Enviando...</div>
-    <div class="ui-text-timeout-error">Erro de conexão. Verifique sua internet e tente novamente.</div>
-    <div class="ui-text-general-error">Erro ao enviar. Tente novamente.</div>
-    <div class="ui-text-require-v2-message">Complete o desafio de segurança e tente novamente.</div>
+    <!-- ui-text-loading < -->Enviando...<!-- ui-text-loading > -->
+    <!-- ui-text-timeout-error < -->Erro de conexão. Verifique sua internet e tente novamente.<!-- ui-text-timeout-error > -->
+    <!-- text-general-error < -->Erro ao enviar. Tente novamente.<!-- text-general-error > -->
+    <!-- text-require-v2-message < -->Complete o desafio de segurança e tente
+    novamente.<!-- text-require-v2-message > -->
 </div>
 <!-- ui-texts > -->
 
 <!-- ajax-messages < -->
 <div class="wrapper-ajax-messages">
-    <div class="ajax-message-form-id-missing">ID do formulário ausente.</div>
-    <div class="ajax-message-suspected-bot">Atividade suspeita de bot.</div>
-    <div class="ajax-message-request-expired">Solicitação expirada.</div>
-    <div class="ajax-message-captcha-failed">Falha na validação do CAPTCHA.</div>
-    <div class="ajax-message-captcha-v2-failed">Falha na validação do CAPTCHA v2.</div>
-    <div class="ajax-message-form-disabled">O formulário está desabilitado.</div>
-    <div class="ajax-message-required-field">Campo obrigatório: #fieldLabel#.</div>
-    <div class="ajax-message-min-length">Campo #fieldLabel# deve ter pelo menos 3 caracteres.</div>
-    <div class="ajax-message-invalid-email">E-mail inválido.</div>
+    <!-- ajax-message-form-id-missing < -->ID do formulário ausente.<!-- ajax-message-form-id-missing > -->
+    <!-- ajax-message-suspected-bot < -->Atividade suspeita de bot.<!-- ajax-message-suspected-bot > -->
+    <!-- ajax-message-request-expired < -->Solicitação expirada.<!-- ajax-message-request-expired > -->
+    <!-- ajax-message-captcha-failed < -->Falha na validação do CAPTCHA.<!-- ajax-message-captcha-failed > -->
+    <!-- ajax-message-captcha-v2-failed < -->Falha na validação do CAPTCHA v2.<!-- ajax-message-captcha-v2-failed > -->
+    <!-- ajax-message-form-disabled < -->O formulário está desabilitado.<!-- ajax-message-form-disabled > -->
+    <!-- ajax-message-required-field < -->Campo obrigatório: #fieldLabel#.<!-- ajax-message-required-field > -->
+    <!-- ajax-message-min-length < -->Campo #fieldLabel# deve ter pelo menos 3 caracteres.<!-- ajax-message-min-length > -->
+    <!-- ajax-message-invalid-email < -->E-mail inválido.<!-- ajax-message-invalid-email > -->
+    <!-- ajax-message-blocked < -->Formulário bloqueado devido ao limite diário de envios.<!-- ajax-message-blocked > -->
 </div>
 <!-- ajax-messages > -->
 
 <!-- block-wrapper < -->
 <div class="wrapper-block-wrapper">
-    <!-- blockWrapper -->
-    <div class="ui warning visible message"><i class="exclamation triangle icon"></i>
+    <!-- blockWrapperFomantic -->
+    <div class="ui warning visible icon message">
+        <i class="exclamation triangle icon"></i>
         <div class="content">
-            <div class="header">O endereço IP do seu dispositivo está BLOQUEADO!</div>
-            <p>Infelizmente, não é possível acessar sua conta a partir deste dispositivo atual devido a tentativas
-                excessivas de login fracassadas com nome de usuário e/ou senha inválidos. Tente novamente mais tarde
-                neste dispositivo ou em outro dispositivo em uma rede diferente.</p>
+            <div class="header">Cota diária de envios atingida!</div>
+            <p>Você atingiu o limite máximo de envios permitidos para este formulário hoje. Tente novamente amanhã (24
+                horas após o primeiro envio) ou utilize outro formulário disponível.</p>
         </div>
-    </div><!-- /blockWrapper -->
+    </div><!-- /blockWrapperFomantic -->
+    <!-- blockWrapperTailwind -->
+    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded" role="alert">
+        <div class="flex">
+            <div class="py-1"><svg class="fill-current h-6 w-6 text-yellow-500 mr-4" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20">
+                    <path
+                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                </svg></div>
+            <div>
+                <h3 class="font-bold">Cota diária de envios atingida!</h3>
+                <p>Você atingiu o limite máximo de envios permitidos para este formulário hoje. Tente novamente amanhã
+                    (24 horas após o primeiro envio) ou utilize outro formulário disponível.</p>
+            </div>
+        </div>
+    </div><!-- /blockWrapperTailwind -->
 </div>
 <!-- block-wrapper > -->
 
@@ -65,9 +82,7 @@
         <div class="text-red-500 text-sm mt-1">#message#</div>
     </div><!-- /errorElementTailwind -->
     <!-- recaptchaV2 -->
-    <div class="component-recaptcha-v2">
-        <div class="g-recaptcha" data-sitekey="#siteKey#"></div>
-    </div><!-- /recaptchaV2 -->
+    <div class="g-recaptcha"></div><!-- /recaptchaV2 -->
     <!-- formDisabled -->
     <div class="component-form-disabled">
         <div class="ui warning message">Este formulário está desativado.</div>

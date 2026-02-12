@@ -726,5 +726,33 @@
         "status": "A",
         "versao": "1",
         "language": "en"
+    },
+    {
+        "modulo_grupo_id": "administracao-comunicacao",
+        "nome": "Contatos",
+        "id": "contatos",
+        "titulo": "Contatos",
+        "icone": "address book outline",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-comunicacao",
+        "nome": "Contacts",
+        "id": "contatos",
+        "titulo": "Contacts",
+        "icone": "address book outline",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
     }
 ]

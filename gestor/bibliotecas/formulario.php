@@ -57,14 +57,15 @@ function formulario_incluir_js($params = false){
 /**
  * Controlador de Formulários.
  *
- * Função controlado de formulários lida com controlador do backend e frontend, processamento de dados, integração com banco de dados, etc.
+ * Função controlador de formulários no backend, processamento de dados, integração com banco de dados, etc.
  *
  * @global array $_GESTOR Sistema global com configurações.
+ * @global array $_CONFIG Configurações.
  * 
  * @param array|false $params Parâmetros da função.
- * @param string $params['formId'] ID do formulário (obrigatório).
- * @param string $params['formAction'] Ação do formulário (opcional).
- * @param string $params['formAjaxOpcao'] Opção AJAX do formulário (opcional).
+ * @param string $params['formId'] ID do formulário HTML (obrigatório).
+ * @param string $params['formAction'] URL de ação do formulário (opcional).
+ * @param string $params['formAjaxOpcao'] Opção AJAX (opcional).
  * 
  * @return void
  */
@@ -112,17 +113,17 @@ function formulario_controlador($params = false){
 		// Processar valores individuais dos prompts
 		$form_ui_prompts = [];
 		if(isset($form_ui_cel['prompts'])){
-			$form_ui_prompts['empty'] = modelo_tag_val($form_ui_cel['prompts'], '<div class="prompt-empty">', '</div>');
+			$form_ui_prompts['empty'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-empty < -->', '<!-- prompt-empty > -->');
 			$form_ui_prompts['email'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- email < -->', '<!-- email > -->');
 		}
 
 		// Processar valores individuais dos ui-texts
 		$form_ui_texts = [];
 		if(isset($form_ui_cel['ui-texts'])){
-			$form_ui_texts['loading'] = modelo_tag_val($form_ui_cel['ui-texts'], '<div class="ui-text-loading">', '</div>');
-			$form_ui_texts['timeoutError'] = modelo_tag_val($form_ui_cel['ui-texts'], '<div class="ui-text-timeout-error">', '</div>');
-			$form_ui_texts['generalError'] = modelo_tag_val($form_ui_cel['ui-texts'], '<div class="ui-text-general-error">', '</div>');
-			$form_ui_texts['requireV2Message'] = modelo_tag_val($form_ui_cel['ui-texts'], '<div class="ui-text-require-v2-message">', '</div>');
+			$form_ui_texts['loading'] = modelo_tag_val($form_ui_cel['ui-texts'], '<!-- ui-text-loading < -->', '<!-- ui-text-loading > -->');
+			$form_ui_texts['timeoutError'] = modelo_tag_val($form_ui_cel['ui-texts'], '<!-- ui-text-timeout-error < -->', '<!-- ui-text-timeout-error > -->');
+			$form_ui_texts['generalError'] = modelo_tag_val($form_ui_cel['ui-texts'], '<!-- text-general-error < -->', '<!-- text-general-error > -->');
+			$form_ui_texts['requireV2Message'] = modelo_tag_val($form_ui_cel['ui-texts'], '<!-- text-require-v2-message < -->', '<!-- text-require-v2-message > -->');
 		}
 
 		// Processar valores individuais dos ui-components
@@ -139,18 +140,10 @@ function formulario_controlador($params = false){
 		}
 
 		// Processar block-wrapper
-		$form_ui_block_wrapper = '';
 		if(isset($form_ui_cel['block-wrapper'])){
-			$form_ui_block_wrapper = modelo_tag_val($form_ui_cel['block-wrapper'], '<!-- blockWrapper -->', '<!-- /blockWrapper -->');
+			$form_ui_components['blockWrapperFomantic'] = modelo_tag_val($form_ui_cel['block-wrapper'], '<!-- blockWrapperFomantic -->', '<!-- /blockWrapperFomantic -->');
+			$form_ui_components['blockWrapperTailwind'] = modelo_tag_val($form_ui_cel['block-wrapper'], '<!-- blockWrapperTailwind -->', '<!-- /blockWrapperTailwind -->');
 		}
-
-        // ===== Verificar a permissão do acesso.
-        $acesso = formulario_acesso_verificar(['tipo' => $formId]);
-
-        // ===== Devolver mensagem de bloqueio caso o IP esteja bloqueado, senão incluir o formulário normalmente.
-        if(!$acesso['permitido']){
-            $blockWrapper = $form_ui_block_wrapper;
-        }
 
 		// ===== Buscar definição do formulário na tabela forms
         $formDefinition = banco_select(Array(
@@ -162,6 +155,16 @@ function formulario_controlador($params = false){
             ),
             'extra' => "WHERE id='$formId' AND language='".$_GESTOR['linguagem-codigo']."'"
         ));
+
+        // ===== Verificar a permissão do acesso.
+        $acesso = formulario_acesso_verificar(['tipo' => $formId]);
+
+        // ===== Devolver mensagem de bloqueio caso o IP esteja bloqueado, senão incluir o formulário normalmente.
+        if(!$acesso['permitido']){
+            $framework = $_GESTOR['pagina#framework_css'];
+            $blockWrapperKey = 'blockWrapper' . ($framework === 'fomantic-ui' ? 'Fomantic' : 'Tailwind');
+            $blockWrapper = $form_ui_components[$blockWrapperKey] ?? '';
+        }
 
         // ==== Extrair campos e redirects do schema do formulário para passar para o JS
         $fieldsDoJson = [];
@@ -187,7 +190,7 @@ function formulario_controlador($params = false){
             if($_CONFIG['usuario-recaptcha-active']){
                 $googleRecaptchaActive = true;
                 $googleRecaptchaSite = $_CONFIG['usuario-recaptcha-site'];
-                $googleRecaptchaAction = $formId . '-action';
+                $googleRecaptchaAction = str_replace('-', '_', $formId) . '_action';
             }
         }
 
@@ -199,7 +202,8 @@ function formulario_controlador($params = false){
         
         // ===== Inclusão Módulo JS
         
-        gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+        $versao = isset($_GESTOR['biblioteca-formulario']['versao']) ? $_GESTOR['biblioteca-formulario']['versao'] : '1.0.0';
+        gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$versao.'"></script>');
         gestor_pagina_javascript_incluir();
         
         // ===== Fallback para redirects padrão se não definidos
@@ -242,6 +246,7 @@ function formulario_controlador($params = false){
  * Função processador de formulários no backend, processamento de dados, integração com banco de dados, etc.
  *
  * @global array $_GESTOR Sistema global com configurações.
+ * @global array $_CONFIG Configurações.
  * 
  * @param array|false $params Parâmetros da função.
  * 
@@ -263,15 +268,16 @@ function formulario_processador($params = false){
 
 	$form_ui_ajax_messages = [];
 	if($form_ui_ajax_cel){
-		$form_ui_ajax_messages['formIdMissing'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-form-id-missing">', '</div>');
-		$form_ui_ajax_messages['suspectedBot'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-suspected-bot">', '</div>');
-		$form_ui_ajax_messages['requestExpired'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-request-expired">', '</div>');
-		$form_ui_ajax_messages['captchaFailed'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-captcha-failed">', '</div>');
-		$form_ui_ajax_messages['captchaV2Failed'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-captcha-v2-failed">', '</div>');
-		$form_ui_ajax_messages['formDisabled'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-form-disabled">', '</div>');
-		$form_ui_ajax_messages['requiredField'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-required-field">', '</div>');
-		$form_ui_ajax_messages['minLength'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-min-length">', '</div>');
-		$form_ui_ajax_messages['invalidEmail'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-invalid-email">', '</div>');
+		$form_ui_ajax_messages['formIdMissing'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-form-id-missing < -->', '<!-- ajax-message-form-id-missing > -->');
+		$form_ui_ajax_messages['suspectedBot'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-suspected-bot < -->', '<!-- ajax-message-suspected-bot > -->');
+		$form_ui_ajax_messages['requestExpired'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-request-expired < -->', '<!-- ajax-message-request-expired > -->');
+		$form_ui_ajax_messages['captchaFailed'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-captcha-failed < -->', '<!-- ajax-message-captcha-failed > -->');
+		$form_ui_ajax_messages['captchaV2Failed'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-captcha-v2-failed < -->', '<!-- ajax-message-captcha-v2-failed > -->');
+		$form_ui_ajax_messages['formDisabled'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-form-disabled < -->', '<!-- ajax-message-form-disabled > -->');
+		$form_ui_ajax_messages['requiredField'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-required-field < -->', '<!-- ajax-message-required-field > -->');
+		$form_ui_ajax_messages['minLength'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-min-length < -->', '<!-- ajax-message-min-length > -->');
+		$form_ui_ajax_messages['invalidEmail'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-invalid-email < -->', '<!-- ajax-message-invalid-email > -->');
+		$form_ui_ajax_messages['blocked'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-blocked < -->', '<!-- ajax-message-blocked > -->');
 	}
 
 	$formId = $_POST['_formId'] ?? null;
@@ -308,20 +314,6 @@ function formulario_processador($params = false){
 		return;
 	}
 
-	
-	
-	$_GESTOR['ajax-json'] = Array(
-		'status' => 'error',
-		'message' => print_r($_POST, true), // Retorno para depuração (exibir dados recebidos)
-	);
-	return;
-
-	// ===== Verificar acesso e status
-	$acesso = formulario_acesso_verificar(['tipo' => $formId]);
-	
-	// ===== Rate limiting e CAPTCHA
-	$captchaV2Ativo = false;
-
 	// ===== Buscar definição do formulário na tabela forms
     $formDefinition = banco_select(Array(
         'unico' => true,
@@ -333,13 +325,35 @@ function formulario_processador($params = false){
         'extra' => "WHERE id='$formId' AND language='".$_GESTOR['linguagem-codigo']."'"
     ));
 
+	// ===== Verificar acesso e status
+	$acesso = formulario_acesso_verificar(['tipo' => $formId]);
+
+	if($acesso['status'] == 'bloqueado'){
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'error',
+			'message' => $form_ui_ajax_messages['blocked'] ?? 'Form is blocked.',
+		);
+		return;
+	}
+	
+	// ===== Rate limiting e CAPTCHA
+	$captchaV2Ativo = false;
+
 	// Flag para forçar v3 (do schema)
 	$forceRecaptchaV3 = false; // Padrão
+	$maxCadastros = $_CONFIG['formularios-maximo-cadastros'];
+	$maxCadastrosSimples = $_CONFIG['formularios-maximo-cadastros-simples'];
 	if($formDefinition){
         $schema = json_decode($formDefinition['fields_schema'], true);
 
 		if(isset($schema['force_recaptcha']) && $schema['force_recaptcha'] === true){
 			$forceRecaptchaV3 = true;
+		}
+		if(isset($schema['access_max'])){
+			$maxCadastros = (int)$schema['access_max'];
+		}
+		if(isset($schema['access_max_simple'])){
+			$maxCadastrosSimples = (int)$schema['access_max_simple'];
 		}
 	}
 	
@@ -358,7 +372,7 @@ function formulario_processador($params = false){
 		$response = curl_exec($ch);
 		curl_close($ch);
 		$arrResponse = json_decode($response, true);
-		
+
 		if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5){
 			$recaptchaValido = true;
 		} elseif($arrResponse["score"] < 0.5 && isset($_CONFIG['usuario-recaptcha-v2-active']) && $_CONFIG['usuario-recaptcha-v2-active']){
@@ -369,7 +383,7 @@ function formulario_processador($params = false){
 	}
 	
 	if(!$recaptchaValido && !$captchaV2Ativo){
-		formulario_acesso_falha(['tipo' => $formId]);
+		formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'error',
 			'message' => $form_ui_ajax_messages['captchaFailed'] ?? 'CAPTCHA validation failed.',
@@ -381,7 +395,7 @@ function formulario_processador($params = false){
 		// Verificar se v2 foi enviado
 		$recaptchaV2Response = $_POST['g-recaptcha-response'] ?? null;
 		if(!$recaptchaV2Response){
-			formulario_acesso_falha(['tipo' => $formId]);
+			formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
 			$_GESTOR['ajax-json'] = Array(
 				'status' => 'require_v2',
 			);
@@ -392,14 +406,14 @@ function formulario_processador($params = false){
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
 		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['secret' => $_CONFIG['usuario-recaptcha-server-v2'], 'response' => $recaptchaV2Response]));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['secret' => $_CONFIG['usuario-recaptcha-v2-server'], 'response' => $recaptchaV2Response]));
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$response = curl_exec($ch);
 		curl_close($ch);
 		$arrResponse = json_decode($response, true);
 		
 		if(!$arrResponse["success"]){
-			formulario_acesso_falha(['tipo' => $formId]);
+			formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
 			$_GESTOR['ajax-json'] = Array(
 				'status' => 'error',
 				'message' => $form_ui_ajax_messages['captchaV2Failed'] ?? 'CAPTCHA v2 validation failed.',
@@ -439,7 +453,7 @@ function formulario_processador($params = false){
             
             if(isset($field['required']) && $field['required']){
                 if(empty($fieldValue)){
-                    formulario_acesso_falha(['tipo' => $formId]);
+                    formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
                     $_GESTOR['ajax-json'] = Array(
                         'status' => 'error',
                         'message' => modelo_var_troca($form_ui_ajax_messages['requiredField'] ?? 'Campo obrigatório: #fieldLabel#.', '#fieldLabel#', ($field['label'] ?? $fieldName)),
@@ -449,7 +463,7 @@ function formulario_processador($params = false){
                 
                 // Validação adicional para texto/textarea (mínimo 3 caracteres)
                 if(in_array($field['type'], ['text', 'textarea']) && strlen($fieldValue) < 3){
-                    formulario_acesso_falha(['tipo' => $formId]);
+                    formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
                     $_GESTOR['ajax-json'] = Array(
                         'status' => 'error',
                         'message' => modelo_var_troca($form_ui_ajax_messages['minLength'] ?? 'Campo #fieldLabel# deve ter pelo menos 3 caracteres.', '#fieldLabel#', ($field['label'] ?? $fieldName)),
@@ -463,7 +477,7 @@ function formulario_processador($params = false){
         // Validação dinâmica para campos do tipo 'email'
         foreach($schema['fields'] as $field){
             if($field['type'] === 'email' && isset($_POST[$field['name']]) && !filter_var($_POST[$field['name']], FILTER_VALIDATE_EMAIL)){
-                formulario_acesso_falha(['tipo' => $formId]);
+                formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
                 $_GESTOR['ajax-json'] = Array(
                     'status' => 'error',
                     'message' => $form_ui_ajax_messages['invalidEmail'] ?? 'Invalid email.',
@@ -502,16 +516,16 @@ function formulario_processador($params = false){
         ['fields_values', banco_escape_field(json_encode($fieldsValues)), false],
         ['language', $_GESTOR['linguagem-codigo'], false],
     ], 'forms_submissions');
-
-	
-	$_GESTOR['ajax-json'] = Array(
-		'status' => 'error',
-		'message' => print_r($_POST, true), // Retorno para depuração (exibir dados recebidos)
-	);
-	return;
 	
 	// ===== Logar sucesso
-	formulario_acesso_cadastrar(['tipo' => $formId]);
+	formulario_acesso_cadastrar(['tipo' => $formId, 'antispam' => ($acesso['status'] == 'antispam'), 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+
+		
+	// $_GESTOR['ajax-json'] = Array(
+	// 	'status' => 'error',
+	// 	'message' => $redirectSuccess, // Retorno para depuração (exibir dados recebidos)
+	// );
+	// return;
 	
 	// ===== Retornar sucesso
 	$_GESTOR['ajax-json'] = Array(
@@ -522,10 +536,14 @@ function formulario_processador($params = false){
 }
 
 /**
- * Verifica acesso para formulários com fingerprinting.
+ * Verifica estado de acesso para formulários com proteção anti-spam.
  *
+ * Retorna se o acesso é permitido baseado em tentativas anteriores e bloqueios por IP.
+ * Previne ataques de força bruta limitando tentativas de acesso.
+ *
+ * @global array $_GESTOR Sistema global.
  * @param array|false $params Parâmetros (tipo obrigatório).
- * @return array Estado do acesso.
+ * @return array Estado do acesso com 'permitido' e 'status'.
  */
 function formulario_acesso_verificar($params = false){
     if($params)foreach($params as $var => $val)$$var = $val;
@@ -533,6 +551,9 @@ function formulario_acesso_verificar($params = false){
     $retorno = ['permitido' => false, 'status' => 'livre'];
     
     if(isset($tipo)){
+        // ===== Limpar os acessos antigos.
+        formulario_acessos_limpeza();
+        
         gestor_incluir_biblioteca('ip');
         $ip = ip_get();
         $fingerprint = !empty($_POST['fingerprint']) ? $_POST['fingerprint'] : null;
@@ -550,35 +571,164 @@ function formulario_acesso_verificar($params = false){
             return $retorno;
         }
         
-        $retorno['permitido'] = true;
+        // ===== Verificar se o limite de erros de acesso foram atingidos na tabela acessos e tratar cada caso baseado no máximo de erros de acesso.
+        $tipoAcesso = 'form-' . $tipo;
+        $acessos = banco_select(Array(
+            'unico' => true,
+            'tabela' => 'acessos',
+            'campos' => Array(
+                'status',
+            ),
+            'extra' => 
+                "WHERE tipo='".$tipoAcesso."'"
+                ." AND ip='".$ip."'"
+        ));
+        
+        if($acessos){
+            $retorno['status'] = $acessos['status'];
+            
+            switch($acessos['status']){
+                case 'bloqueado':
+                    $retorno['permitido'] = false;
+                break;
+                default:
+                    $retorno['permitido'] = true;
+            }
+        } else {
+            $retorno['permitido'] = true;
+        }
     }
     
     return $retorno;
 }
 
 /**
- * Cadastra tentativa para formulários com fingerprinting.
+ * Cadastra tentativa de acesso para formulários com controle anti-spam.
  *
- * @param array|false $params Parâmetros (tipo obrigatório).
+ * Registra acessos em locais do sistema para rastreamento e prevenção de abuso.
+ * Suporta limitação automática de tentativas por IP.
+ *
+ * @global array $_GESTOR Sistema global.
+ * @global array $_CONFIG Configurações.
+ * @param array|false $params Parâmetros (tipo obrigatório, antispam opcional, maximoCadastros opcional, maximoCadastrosSimples opcional).
  * @return void
  */
 function formulario_acesso_cadastrar($params = false){
+    global $_CONFIG;
+    
     if($params)foreach($params as $var => $val)$$var = $val;
     
     if(isset($tipo)){
+        // ===== Quantidade total de cadastros do tipo informado e quantidade de bloqueios de um IP.
+        
+        $quantidade = 0;
+        $bloqueios = 0;
+        
+        // ===== Pegar o IP do usuário.
+
         gestor_incluir_biblioteca('ip');
+
         $ip = ip_get();
         $fingerprint = !empty($_POST['fingerprint']) ? $_POST['fingerprint'] : null;
         
-        // Verificar status usando formulario_acesso_verificar
-        $acesso = formulario_acesso_verificar(['tipo' => $tipo]);
+        $tipoAcesso = 'form-' . $tipo;
         
-        if($acesso['status'] == 'bloqueado'){
+        // ===== Verificar se existe a tabela acessos para o ip atual.
+        
+        $acessos = banco_select(Array(
+            'unico' => true,
+            'tabela' => 'acessos',
+            'campos' => Array(
+                'quantidade',
+                'bloqueios',
+            ),
+            'extra' => 
+                "WHERE tipo='".$tipoAcesso."'"
+                ." AND ip='".$ip."'"
+        ));
+        
+        // ===== Pegar a quantidade atual e incrementar um.
+        
+        if($acessos){
+            $quantidade = ($acessos['quantidade'] ? (int)$acessos['quantidade'] : 0);
+            $bloqueios = ($acessos['bloqueios'] ? (int)$acessos['bloqueios'] : 0);
+        }
+        
+        $quantidade++;
+        
+        // ===== Definir os máximos
+        
+        $maximoCadastros = $maximoCadastros ?? $_CONFIG['formularios-maximo-cadastros'];
+        $maximoCadastrosSimples = $maximoCadastrosSimples ?? $_CONFIG['formularios-maximo-cadastros-simples'];
+        
+        // ===== Definir o estado do acesso.
+        
+        if(isset($antispam)){
+            if($quantidade < $maximoCadastrosSimples){
+                $status = 'livre';
+            } else if($quantidade < $maximoCadastros){
+                $status = 'antispam';
+            } else {
+                $status = 'bloqueado';
+            }
+        } else {
+            if($quantidade < $maximoCadastros){
+                $status = 'livre';
+            } else {
+                $status = 'bloqueado';
+            }
+        }
+        
+        // ===== Caso seja bloqueado, calcular tempo limite de bloqueio.
+        
+        if($status == 'bloqueado'){
+            $bloqueios++;
+            $tempo_bloqueio = $bloqueios * $_CONFIG['formularios-tempo-bloqueio-ip'] + time();
+        }
+        
+        // ===== Atualizar ou criar o registro de acesso com o cadastro no banco de dados.
+        
+        if($acessos){
+            banco_update_campo('status',$status);
+            banco_update_campo('tempo_modificacao',time());
+            
+            if(isset($tempo_bloqueio)){
+                banco_update_campo('bloqueios',$bloqueios);
+                banco_update_campo('tempo_bloqueio',$tempo_bloqueio);
+                banco_update_campo('quantidade','0');
+            } else {
+                banco_update_campo('quantidade',$quantidade);
+            }
+            
+            banco_update_executar('acessos',"WHERE tipo='".$tipoAcesso."' AND ip='".$ip."'");
+        } else {
+            banco_insert_name_campo('ip',$ip);
+            banco_insert_name_campo('tipo',$tipoAcesso);
+            banco_insert_name_campo('tempo_modificacao',time());
+            banco_insert_name_campo('status',$status);
+            
+            if(isset($tempo_bloqueio)){
+                banco_insert_name_campo('bloqueios',$bloqueios);
+                banco_insert_name_campo('tempo_bloqueio',$tempo_bloqueio);
+                banco_insert_name_campo('quantidade','0');
+            } else {
+                banco_insert_name_campo('quantidade',$quantidade);
+            }
+            
+            banco_insert_name
+            (
+                banco_insert_name_campos(),
+                "acessos"
+            );
+        }
+        
+        // Verificar se foi bloqueado para bloquear em forms_blocks
+        if($status == 'bloqueado'){
             // Bloquear por 24h se ainda não bloqueado
             banco_insert_name([
-                ['ip', banco_escape_field($ip), false],
-                $fingerprint ? ['fingerprint', banco_escape_field($fingerprint), false] : null,
-                ['unblock_at', date('Y-m-d H:i:s', strtotime('+24 hours')), true]
+                ['ip', banco_escape_field($ip)],
+                $fingerprint ? ['fingerprint', banco_escape_field($fingerprint)] : null,
+                ['unblock_at', date('Y-m-d H:i:s', strtotime('+24 hours'))]
             ], 'forms_blocks');
             return;
         }
@@ -588,32 +738,140 @@ function formulario_acesso_cadastrar($params = false){
             ['form_id', banco_escape_field($tipo), false],
             ['ip', banco_escape_field($ip), false],
             $fingerprint ? ['fingerprint', banco_escape_field($fingerprint), false] : null,
-            ['created_at', date('Y-m-d H:i:s'), true],
+            ['created_at', date('Y-m-d H:i:s'), false],
             ['success', '1', true]
         ], 'forms_logs');
     }
 }
 
 /**
- * Registra falha para formulários com fingerprinting.
+ * Registra falha de acesso para formulários.
  *
- * @param array|false $params Parâmetros (tipo obrigatório).
+ * Incrementa contador de tentativas falhas e bloqueia IP após limite excedido.
+ * Parte do sistema anti-spam e proteção contra força bruta.
+ *
+ * @global array $_GESTOR Sistema global.
+ * @global array $_CONFIG Configurações.
+ * @param array|false $params Parâmetros (tipo obrigatório, maximoCadastros opcional, maximoCadastrosSimples opcional).
  * @return void
  */
 function formulario_acesso_falha($params = false){
+    global $_CONFIG;
+    
     if($params)foreach($params as $var => $val)$$var = $val;
     
     if(isset($tipo)){
+        // ===== Quantidade total de falhas do tipo informado e quantidade de bloqueios de um IP.
+        
+        $quantidade = 0;
+        $bloqueios = 0;
+        
+        // ===== Pegar o IP do usuário.
+
         gestor_incluir_biblioteca('ip');
+
         $ip = ip_get();
         $fingerprint = !empty($_POST['fingerprint']) ? $_POST['fingerprint'] : null;
+        
+        $tipoAcesso = 'form-' . $tipo;
+        
+        // ===== Verificar se existe a tabela acessos para o ip atual.
+        
+        $acessos = banco_select(Array(
+            'unico' => true,
+            'tabela' => 'acessos',
+            'campos' => Array(
+                'quantidade',
+                'bloqueios',
+            ),
+            'extra' => 
+                "WHERE tipo='".$tipoAcesso."'"
+                ." AND ip='".$ip."'"
+        ));
+        
+        // ===== Pegar a quantidade atual e incrementar um.
+        
+        if($acessos){
+            $quantidade = ($acessos['quantidade'] ? (int)$acessos['quantidade'] : 0);
+            $bloqueios = ($acessos['bloqueios'] ? (int)$acessos['bloqueios'] : 0);
+        }
+        
+        $quantidade++;
+        
+        // ===== Definir os máximos
+        
+        $maximoCadastros = $maximoCadastros ?? $_CONFIG['formularios-maximo-cadastros'];
+        $maximoCadastrosSimples = $maximoCadastrosSimples ?? $_CONFIG['formularios-maximo-cadastros-simples'];
+        
+        // ===== Definir o estado do acesso.
+        
+        if($quantidade < $maximoCadastrosSimples){
+            $status = 'livre';
+        } else if($quantidade < $maximoCadastros){
+            $status = 'antispam';
+        } else {
+            $status = 'bloqueado';
+        }
+        
+        // ===== Caso seja bloqueado, calcular tempo limite de bloqueio.
+        
+        if($status == 'bloqueado'){
+            $bloqueios++;
+            $tempo_bloqueio = $bloqueios * $_CONFIG['formularios-tempo-bloqueio-ip'] + time();
+        }
+        
+        // ===== Atualizar ou criar o registro de acesso com falha no banco de dados.
+        
+        if($acessos){
+            banco_update_campo('status',$status);
+            banco_update_campo('tempo_modificacao',time());
+            
+            if(isset($tempo_bloqueio)){
+                banco_update_campo('bloqueios',$bloqueios);
+                banco_update_campo('tempo_bloqueio',$tempo_bloqueio);
+                banco_update_campo('quantidade','0');
+            } else {
+                banco_update_campo('quantidade',$quantidade);
+            }
+            
+            banco_update_executar('acessos',"WHERE tipo='".$tipoAcesso."' AND ip='".$ip."'");
+        } else {
+            banco_insert_name_campo('ip',$ip);
+            banco_insert_name_campo('tipo',$tipoAcesso);
+            banco_insert_name_campo('tempo_modificacao',time());
+            banco_insert_name_campo('status',$status);
+            
+            if(isset($tempo_bloqueio)){
+                banco_insert_name_campo('bloqueios',$bloqueios);
+                banco_insert_name_campo('tempo_bloqueio',$tempo_bloqueio);
+                banco_insert_name_campo('quantidade','0');
+            } else {
+                banco_insert_name_campo('quantidade',$quantidade);
+            }
+            
+            banco_insert_name
+            (
+                banco_insert_name_campos(),
+                "acessos"
+            );
+        }
+        
+        // Verificar se foi bloqueado para bloquear em forms_blocks
+        if($status == 'bloqueado'){
+            // Bloquear por 24h se ainda não bloqueado
+            banco_insert_name([
+                ['ip', banco_escape_field($ip)],
+                $fingerprint ? ['fingerprint', banco_escape_field($fingerprint)] : null,
+                ['unblock_at', date('Y-m-d H:i:s', strtotime('+24 hours'))]
+            ], 'forms_blocks');
+        }
         
         // Logar falha
         banco_insert_name([
             ['form_id', banco_escape_field($tipo), false],
             ['ip', banco_escape_field($ip), false],
             $fingerprint ? ['fingerprint', banco_escape_field($fingerprint), false] : null,
-            ['created_at', date('Y-m-d H:i:s'), true],
+            ['created_at', date('Y-m-d H:i:s'), false],
             ['success', '0', true]
         ], 'forms_logs');
     }
@@ -637,7 +895,7 @@ function formulario_acessos_limpeza($params = false){
     if($params)foreach($params as $var => $val)$$var = $val;
     
     // ===== Tempo padrão para limpeza (30 dias, ajuste via config se necessário)
-    $tempoLimpeza = isset($_CONFIG['forms-tempo-limpeza']) ? $_CONFIG['forms-tempo-limpeza'] : (30 * 24 * 60 * 60); // 30 dias em segundos
+    $tempoLimpeza = isset($_CONFIG['formularios-tempo-limpeza']) ? $_CONFIG['formularios-tempo-limpeza'] : (30 * 24 * 60 * 60); // 30 dias em segundos
     
     // ===== Remover logs antigos de forms_logs
     banco_delete(
@@ -650,6 +908,12 @@ function formulario_acessos_limpeza($params = false){
         "forms_blocks",
         "WHERE unblock_at < NOW()"
     );
+    
+    // ===== Desbloquear acessos com tempo_bloqueio expirado
+    banco_update_campo('status','livre');
+    banco_update_campo('quantidade','0');
+    banco_update_campo('tempo_bloqueio','NULL', true);
+    banco_update_executar('acessos',"WHERE status='bloqueado' AND tempo_bloqueio > 0 AND tempo_bloqueio < ".time());
 }
 
 // ===== Funções dos widgets

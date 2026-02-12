@@ -557,6 +557,7 @@ function coletarRecursos(array $existentes, array $map): array {
                     'sem_permissao' => $p['without_permission'] ?? ($p['sem_permissao'] ?? null),
                     'html' => $html,
                     'css' => $css,
+                    'html_extra_head' => $p['html_extra_head'] ?? null,
                     'framework_css' => getFrameworkCss($p),
                     'status' => $p['status'] ?? 'A',
                     'versao' => $versao,
@@ -677,7 +678,7 @@ function coletarRecursos(array $existentes, array $map): array {
                             $kId = $lang.'|'.$modId.'|'.$id; if(isset($idxPaginasId[$kId])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
                             $kPath = $lang.'|'.strtolower(trim($path,'/')); if(isset($idxPaginasPath[$kPath])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade caminho','language'=>$lang,'modulo'=>$modId]; continue; }
                             $idxPaginasId[$kId]=true; $idxPaginasPath[$kPath]=true; [$versao,$cks]=$versaoChecksum('paginas',$kId,$html,$css);
-                            $paginas[] = [ 'layout_id'=>$item['layout'] ?? null,'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'caminho'=>$path,'tipo'=>$item['type'] ?? null,'modulo'=>$modId,'opcao'=>$item['option'] ?? null,'raiz'=>$item['root'] ?? null,'sem_permissao'=>$item['without_permission'] ?? null,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            $paginas[] = [ 'layout_id'=>$item['layout'] ?? null,'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'caminho'=>$path,'tipo'=>$item['type'] ?? null,'modulo'=>$modId,'opcao'=>$item['option'] ?? null,'raiz'=>$item['root'] ?? null,'sem_permissao'=>$item['without_permission'] ?? null,'html'=>$html, 'html_extra_head' => $item['html_extra_head'] ?? null,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
                         }
                     }
                 }

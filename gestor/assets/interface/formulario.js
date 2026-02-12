@@ -39,6 +39,7 @@ $(document).ready(function () {
 				// Capturar botão clicado
 				form.find('button[type="submit"], input[type="submit"]').on('click', function() {
 					form.data('clickedButton', $(this));
+					clearError(data, form);
 				});
 
 				// Validação geral no submit
@@ -188,7 +189,7 @@ $(document).ready(function () {
 						script.defer = true;
 						document.head.appendChild(script);
 						script.onload = function () {
-							executeRecaptchaV3(form, data, googleSiteKey, action);
+							executeRecaptchaV3(form, data, googleSiteKey, action, clickedButton);
 						};
 						script.onerror = function () {
 							// Fallback se o script falhar - continuar sem reCAPTCHA
@@ -196,19 +197,19 @@ $(document).ready(function () {
 							performAjaxSubmit(form, data, clickedButton);
 						};
 					} else {
-						executeRecaptchaV3(form, data, googleSiteKey, action);
+						executeRecaptchaV3(form, data, googleSiteKey, action, clickedButton);
 					}
 				} else {
 					performAjaxSubmit(form, data, clickedButton);
 				}
 			}
 
-			function executeRecaptchaV3(form, data, googleSiteKey, action) {
+			function executeRecaptchaV3(form, data, googleSiteKey, action, clickedButton = null) {
 				grecaptcha.ready(function () {
 					grecaptcha.execute(googleSiteKey, { action: action }).then(function (token) {
 						form.append('<input type="hidden" name="token" value="' + token + '">');
 						form.append('<input type="hidden" name="action" value="' + action + '">');
-						performAjaxSubmit(form, data);
+						performAjaxSubmit(form, data, clickedButton);
 					}).catch(function (error) {
 						// Fallback se a execução falhar - continuar sem reCAPTCHA
 						console.warn('reCAPTCHA v3 execution failed, continuing without reCAPTCHA:', error);
@@ -253,7 +254,7 @@ $(document).ready(function () {
 					success: function (response) {
 						removeDimmer(form, data); // Remover dimmer
 						if (response.status === 'success') {
-							window.location.href = response.redirect;
+							window.location.href = gestor.raiz + response.redirect;
 						} else if (response.status === 'require_v2' && 'googleRecaptchaV2Active' in data && data.googleRecaptchaV2Active) {
 							injectRecaptchaV2(form, data, clickedButton);
 						} else {
@@ -290,12 +291,19 @@ $(document).ready(function () {
 			}
 
 			function proceedWithRecaptchaV2(form, data, clickedButton = null) {
-				var recaptchaHtml = data.ui.components.recaptchaV2.replace('#siteKey#', data.googleRecaptchaV2Site);
-				var recaptchaDiv = $(recaptchaHtml);
-				form.append(recaptchaDiv);
-				grecaptcha.render(recaptchaDiv[0]);
 				// Mostrar mensagem para usuário completar v2
 				showError(data.ui.texts.requireV2Message, data, clickedButton, form);
+
+				var recaptchaHtml = data.ui.components.recaptchaV2;
+				var recaptchaDiv = $(recaptchaHtml);
+				if (clickedButton && clickedButton.length) {
+					clickedButton.before(recaptchaDiv);
+				} else {
+					form.append(recaptchaDiv);
+				}
+				grecaptcha.render(recaptchaDiv[0], {
+					'sitekey': data.googleRecaptchaV2Site
+				});
 				// Re-bind submit para tentar novamente após v2
 				form.off('submit').on('submit', function (e) {
 					e.preventDefault();
@@ -306,12 +314,7 @@ $(document).ready(function () {
 			}
 
 			function showError(message, data, clickedButton = null, form) {
-				if (data.framework === 'fomantic-ui') {
-					form.find('.component-error-message-fomantic').remove();
-				} else {
-					form.find('.component-error-message-tailwind').remove();
-				}
-
+				clearError(data, form);
 				var errorMessageKey = (data.framework === 'fomantic-ui') ? 'errorMessageFomantic' : 'errorMessageTailwind';
 				var errorMessage = data.ui.components[errorMessageKey].replace('#message#', message);
 				var errorDiv = $(errorMessage);
@@ -319,6 +322,14 @@ $(document).ready(function () {
 					clickedButton.before(errorDiv);
 				} else {
 					$('._forms-submissions-controller').prepend(errorDiv);
+				}
+			}
+
+			function clearError(data, form) {
+				if (data.framework === 'fomantic-ui') {
+					form.find('.component-error-message-fomantic').remove();
+				} else {
+					form.find('.component-error-message-tailwind').remove();
 				}
 			}
 		}
