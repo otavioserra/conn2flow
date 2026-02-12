@@ -2000,6 +2000,26 @@
         "checksum": "{\"html\":\"1085d7aa29e01c774e12330600bf53a3\",\"css\":\"\",\"combined\":\"1085d7aa29e01c774e12330600bf53a3\"}"
     },
     {
+        "layout_id": "pagina-simples-tailwindcss",
+        "nome": "Forms Test Email Page",
+        "id": "forms-test-email-page",
+        "language": "pt-br",
+        "caminho": "forms\/test-email-page\/",
+        "tipo": "system",
+        "modulo": "forms",
+        "opcao": "test-email-page",
+        "raiz": null,
+        "sem_permissao": null,
+        "html": "#test-email-page#",
+        "html_extra_head": null,
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"752b731f15b5cb2b87db994b3599a35f\",\"css\":\"\",\"combined\":\"752b731f15b5cb2b87db994b3599a35f\"}"
+    },
+    {
         "layout_id": "layout-administrativo-do-gestor",
         "nome": "Forms List",
         "id": "forms-list",

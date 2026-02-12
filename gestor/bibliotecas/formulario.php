@@ -52,6 +52,77 @@ function formulario_incluir_js($params = false){
 	gestor_pagina_javascript_incluir('biblioteca','formulario');
 }
 
+/**
+ * Processa imagens locais no HTML do email para embedding automático.
+ *
+ * Identifica imagens que começam com @[[pagina#url-raiz]]@, converte para caminhos absolutos,
+ * gera CIDs únicos e substitui no HTML para embedding via PHPMailer.
+ *
+ * @global array $_GESTOR Sistema global.
+ * @param string $html HTML do email a ser processado.
+ * @return array Array com HTML processado e array de imagens para embedding.
+ */
+function formulario_email_processar_imagens($html) {
+    global $_GESTOR;
+    
+    $imagens = [];
+    $contador = 0;
+    
+    // Regex para encontrar todas as imagens locais
+    $pattern = '/src="(@\[\[pagina#url-raiz\]\]@[^"]+)"/i';
+    
+    // Debug: testar regex
+    preg_match_all($pattern, $html, $matches);
+    
+    // Substituir cada ocorrência
+    $html = preg_replace_callback($pattern, function($matches) use (&$imagens, &$contador, $_GESTOR) {
+        $contador++;
+        $caminhoOriginal = $matches[1];
+        
+        // Extrair o caminho relativo removendo @[[pagina#url-raiz]]@
+        $caminhoRelativo = str_replace('@[[pagina#url-raiz]]@', '', $caminhoOriginal);
+        
+        // Tentar encontrar o arquivo nos caminhos possíveis
+        $caminhoAbsoluto = null;
+        
+        // Primeiro tentar no assets-path (arquivos do gestor e módulos)
+        $caminhoTentativa1 = $_GESTOR['assets-path'] . $caminhoRelativo;
+        if(file_exists($caminhoTentativa1)){
+            $caminhoAbsoluto = $caminhoTentativa1;
+        } else {
+            // Segundo tentar no contents-path (arquivos gerenciados pelos usuários)
+            $caminhoTentativa2 = $_GESTOR['contents-path'] . $caminhoRelativo;
+            if(file_exists($caminhoTentativa2)){
+                $caminhoAbsoluto = $caminhoTentativa2;
+            }
+        }
+        
+        // Se encontrou o arquivo, adicionar ao array de imagens
+        if($caminhoAbsoluto){
+            // Gerar CID único
+            $cid = 'img-' . $contador;
+            
+            // Adicionar ao array de imagens
+            $imagens[] = [
+                'caminho' => $caminhoAbsoluto,
+                'cid' => $cid,
+                'nome' => basename($caminhoAbsoluto)
+            ];
+            
+            // Retornar o src com CID
+            return 'src="cid:' . $cid . '"';
+        } else {
+            // Se não encontrou, manter o src original (não processar)
+            return $matches[0];
+        }
+    }, $html);
+    
+    return [
+        'html' => $html ?? null,
+        'imagens' => $imagens ?? null
+    ];
+}
+
 // ===== Funções principais
 
 /**
@@ -426,6 +497,7 @@ function formulario_processador($params = false){
     $definedFields = [];
     $fieldNameValue = $formId . '-' . time(); // Fallback
     $redirectSuccess = '/sucesso/'; // Padrão
+    $emailData = [];
     if($formDefinition){
         // ===== Verificar se o formulário está ativo
         if($formDefinition['status'] !== 'A'){
@@ -444,6 +516,9 @@ function formulario_processador($params = false){
         }
         if(isset($schema['redirects']['success'])){
             $redirectSuccess = $schema['redirects']['success']['path'];
+        }
+        if(isset($schema['email']) && is_array($schema['email'])){
+            $emailData = $schema['email'];
         }
         
         // ===== Validar campos obrigatórios
@@ -491,7 +566,9 @@ function formulario_processador($params = false){
     $fieldsValues = [];
     foreach($_POST as $key => $value){
         if(!in_array($key, ['_formId', 'ajax', 'ajaxOpcao', 'token', 'action', 'fingerprint', 'timestamp', 'honeypot', 'g-recaptcha-response'])){
-            $field = ['name' => $key, 'value' => $value];
+            // Sanitizar valor para armazenamento seguro
+            $valueSanitized = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+            $field = ['name' => $key, 'value' => $valueSanitized];
             if(!in_array($key, $definedFields)){
                 $field['undefined'] = true;
             }
@@ -513,19 +590,147 @@ function formulario_processador($params = false){
         ['form_id', $formId, false],
         ['name', banco_escape_field($fieldNameValue), false],
         ['id', $submissionId, false],
-        ['fields_values', banco_escape_field(json_encode($fieldsValues)), false],
         ['language', $_GESTOR['linguagem-codigo'], false],
     ], 'forms_submissions');
+
+	$form_last_id = banco_last_id();
 	
-	// ===== Logar sucesso
+	// ===== Cadastrar o acesso para controle de bloqueios e rate limiting
 	formulario_acesso_cadastrar(['tipo' => $formId, 'antispam' => ($acesso['status'] == 'antispam'), 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
 
+	// ===== Remetentes e Destinatários dos emails.
+
+	if(!empty($_CONFIG['email']['sender']['from']) && !empty($_CONFIG['email']['sender']['fromName'])){
+		$defaultSender = $_CONFIG['email']['sender']['fromName'] . ' <' . $_CONFIG['email']['sender']['from'] . '>';
+	} else if(!empty($_CONFIG['email']['sender']['from'])){
+		$defaultSender = $_CONFIG['email']['sender']['from'];
+	} else {
+		$defaultSender = null;
+	}
+			
+	$destinatariosTXT = !empty($emailData) && isset($emailData['recipients']) ? $emailData['recipients'] : $defaultSender;
+	$responderPara = !empty($emailData) && isset($emailData['reply_to']) ? $emailData['reply_to'] : (!empty($_CONFIG['email']['sender']['replyTo']) ? $_CONFIG['email']['sender']['replyTo'] : null);
+	$responderParaNome = !empty($emailData) && isset($emailData['reply_to_name']) ? $emailData['reply_to_name'] : (!empty($_CONFIG['email']['sender']['replyToName']) ? $_CONFIG['email']['sender']['replyToName'] : null);
+	
+	$destinatarios = explode(';',trim($destinatariosTXT));
+
+	if($destinatarios)
+	foreach($destinatarios as $destinatario){
+		$destinatario = trim($destinatario);
 		
-	// $_GESTOR['ajax-json'] = Array(
-	// 	'status' => 'error',
-	// 	'message' => $redirectSuccess, // Retorno para depuração (exibir dados recebidos)
-	// );
-	// return;
+		if(preg_match('/</', $destinatario) > 0){
+			$arrAux = explode('<',trim($destinatario));
+			$nomeAux = $arrAux[0];
+			$emailAux = rtrim($arrAux[1], '>');
+			
+			$destinatatiosArr[] = Array(
+				'email' => $emailAux,
+				'nome' => $nomeAux,
+			);
+		} else {
+			$destinatatiosArr[] = Array(
+				'email' => $destinatario,
+			);
+		}
+	}
+	
+	// ===== Formatar o email.
+	
+	$numero = date('Ymd') . $form_last_id;
+
+	$assunto = !empty($emailData) && isset($emailData['subject']) ? $emailData['subject'] : gestor_variaveis(Array('id' => 'forms-subject-emails'));
+	
+	$assunto = modelo_var_troca($assunto,"#code#",$numero);
+
+	$mensagem = !empty($emailData) && isset($emailData['message_component']) ? gestor_componente(Array('id' => $emailData['message_component'])) : gestor_componente(Array('id' => 'forms-prepared-email'));
+	
+	// ===== Processar template de email com campos do formulário
+	
+	// Extrair a célula 'cel' do modelo
+	$cel_nome = 'cel';
+	$cel[$cel_nome] = modelo_tag_val($mensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+	$mensagem = modelo_tag_troca_val($mensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
+	
+	// Preparar array de campos com labels e valores
+	$camposProcessados = [];
+	if($formDefinition && isset($schema['fields'])){
+		foreach($schema['fields'] as $field){
+			$fieldName = $field['name'];
+			$fieldLabel = isset($field['label']) ? $field['label'] : ucfirst($fieldName); // Fallback para o nome se não houver label
+			$fieldValue = '';
+			
+			// Encontrar o valor do campo nos dados enviados (original para formatação)
+			$fieldValue = isset($_POST[$fieldName]) ? $_POST[$fieldName] : '';
+
+			// Sanitizar o valor para prevenir XSS e injeções
+			$fieldValue = htmlspecialchars($fieldValue, ENT_QUOTES, 'UTF-8');
+
+			// Formatações específicas por tipo
+			if($field['type'] === 'textarea'){
+				$fieldValue = nl2br($fieldValue);
+			} elseif($field['type'] === 'email' && filter_var($fieldValue, FILTER_VALIDATE_EMAIL)){
+				// Converter email em link clicável
+				$fieldValue = '<a href="mailto:' . $fieldValue . '">' . $fieldValue . '</a>';
+			}
+			
+			$camposProcessados[] = [
+				'#label#' => $fieldLabel,
+				'#valor#' => $fieldValue
+			];
+		}
+	}
+	
+	// Processar cada campo na célula
+	$celulasProcessadas = '';
+	foreach($camposProcessados as $campo){
+		$cel_aux = $cel[$cel_nome];
+		$cel_aux = modelo_var_troca($cel_aux, $campo);
+		$celulasProcessadas .= $cel_aux;
+	}
+	
+	// Inserir células processadas de volta no modelo
+	$mensagem = modelo_var_in($mensagem,'<!-- '.$cel_nome.' -->',$celulasProcessadas);
+	
+	// Remover a célula original
+	$mensagem = modelo_var_troca($mensagem,'<!-- '.$cel_nome.' -->','');
+
+	// ===== Processar imagens locais para embedding automático
+	$resultadoImagens = formulario_email_processar_imagens($mensagem);
+	$mensagem = $resultadoImagens['html'];
+	$imagens = $resultadoImagens['imagens'];
+	
+	// ===== Enviar o email.
+	
+	gestor_incluir_biblioteca('comunicacao');
+	
+	$emailEnviado = comunicacao_email(Array(
+		'destinatarios' => $destinatatiosArr ?? null,
+		'remetente' => Array(
+			'responderPara' => $responderPara ?? null,
+			'responderParaNome' => $responderParaNome ?? null,
+		),
+		'mensagem' => Array(
+			'assunto' => $assunto,
+			'htmlCompleto' => $mensagem,
+			'imagens' => $imagens ?? null,
+		),
+	));
+	
+	// ===== Atualizar status do envio de email no registro
+	if($emailEnviado){
+		$statusEmail = 'email-sent';
+	} else {
+		$statusEmail = 'email-not-sent';
+	}
+	
+	// Adicionar status ao fields_values
+	$fieldsValuesFinal = [];
+	$fieldsValuesFinal['fields'] = $fieldsValues;
+	$fieldsValuesFinal['email_status'] = $statusEmail;
+	
+	// Atualizar o registro na tabela forms_submissions
+	banco_update_campo('fields_values', json_encode($fieldsValuesFinal, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+	banco_update_executar('forms_submissions', "WHERE id_forms_submissions='" . $form_last_id . "'");
 	
 	// ===== Retornar sucesso
 	$_GESTOR['ajax-json'] = Array(

@@ -21,8 +21,13 @@
                     "id": "form-contact",
                     "description": "Formulário padrão para contato, com campos de nome, e-mail e mensagem.",
                     "fields_schema": {
-                        "access_max_simple": 2,
-                        "access_max": 4,
+                        "email": {
+                            "recipients": "Otávio Campos <otavioserra@gmail.com>",
+                            "reply_to": "contact@conn2flow.com",
+                            "reply_to_name": "Conn2Flow Contact",
+                            "subject": "Chegou um novo contato #code#",
+                            "message_component": "prepared-email"
+                        },
                         "redirects": {
                             "success": {
                                 "type": "url",
@@ -54,6 +59,29 @@
                                 "required": true
                             }
                         ]
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Base E-mail",
+                    "id": "base-email",
+                    "framework_css": "tailwindcss",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "edf9255fc596f65c874548be17d531f6",
+                        "css": "264aa703cd8ab87718946d4459f30d4a",
+                        "combined": "bb91f8ba32f9370c589cc70a553d74bb"
+                    }
+                },
+                {
+                    "name": "E-mail Preparado",
+                    "id": "prepared-email",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "adf8a3260c1027c96be7629aae2b4ba9",
+                        "css": "",
+                        "combined": "adf8a3260c1027c96be7629aae2b4ba9"
                     }
                 }
             ],
@@ -129,6 +157,18 @@
                                 "required": true
                             }
                         ]
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Prepared Email",
+                    "id": "prepared-email",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "fb283371d0b48ad684bbc0867c8d89b7",
+                        "css": "",
+                        "combined": "fb283371d0b48ad684bbc0867c8d89b7"
                     }
                 }
             ],

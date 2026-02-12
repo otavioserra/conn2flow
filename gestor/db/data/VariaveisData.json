@@ -819,6 +819,15 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": null,
+        "id": "forms-subject-emails",
+        "valor": "Você recebeu um novo contato no site - #code#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -1633,6 +1642,15 @@
         "modulo": null,
         "id": "html-editor-publisher-page-variables-btn",
         "valor": "Variables",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": null,
+        "id": "forms-subject-emails",
+        "valor": "You have received a new contact on the website - #code#",
         "tipo": "string",
         "grupo": null,
         "descricao": null

@@ -482,5 +482,10 @@
         "id": "html-editor-publisher-page-variables-btn",
         "value": "Variables",
         "type": "string"
+    },
+    {
+        "id": "forms-subject-emails",
+        "value": "You have received a new contact on the website - #code#",
+        "type": "string"
     }
 ]

@@ -398,5 +398,16 @@
             "css": "",
             "combined": "94c3dd7a913eff4431253570e9408242"
         }
+    },
+    {
+        "name": "Prepared Email Form",
+        "id": "forms-prepared-email",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "c4ba763b45562ade323c5211a9f75ee2",
+            "css": "",
+            "combined": "c4ba763b45562ade323c5211a9f75ee2"
+        }
     }
 ]

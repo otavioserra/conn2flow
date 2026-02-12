@@ -172,6 +172,19 @@ function forms_interfaces_padroes(){
 	}
 }
 
+function forms_test_email_page(){
+	global $_GESTOR;
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
+	$testEmailPage = gestor_componente(Array(
+		'id' => 'base-email',
+		'modulo' => 'contatos',
+	));
+
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#test-email-page#',$testEmailPage);
+}
+
 // ==== Ajax
 
 
@@ -198,6 +211,7 @@ function forms_start(){
 		
 		switch($_GESTOR['opcao']){
 		    case 'visualizar': forms_visualizar(); break;
+		    case 'test-email-page': forms_test_email_page(); break;
 		}
 		
 		interface_finalizar();

@@ -1,0 +1,36 @@
+<div class="max-w-2xl mx-auto p-6 bg-gray-900 rounded-lg shadow-lg border border-white/10">
+    <!-- Cabeçalho com Logo -->
+    <div class="text-center mb-6">
+        <img src="@[[pagina#url-raiz]]@images/logo-principal.png" alt="Conn2Flow Logo" class="w-36 h-auto mx-auto mb-4">
+        <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-c2f-blue">Novo
+            Contato Recebido</h1>
+    </div>
+
+    <!-- Mensagem Principal -->
+    <div class="mb-6">
+        <p class="text-gray-300 mb-4">
+            Olá! Você recebeu um novo contato através do seu site. Aqui estão os detalhes:
+        </p>
+    </div>
+
+    <!-- Área de Campos do Contato (Célula Repetível) -->
+    <!-- cel < -->
+    <div class="bg-gray-800 p-4 rounded-lg border border-white/10 mb-4">
+        <div class="flex flex-col">
+            <span class="font-semibold text-gray-200 mb-2">#label#:</span>
+            <span class="text-gray-400">#valor#</span>
+        </div>
+    </div>
+    <!-- cel > -->
+
+    <!-- Rodapé -->
+    <div class="text-center mt-6 pt-4 border-t border-white/10">
+        <p class="text-sm text-gray-500">
+            Esta é uma notificação automática do Conn2Flow. Para gerenciar seus contatos, acesse o painel
+            administrativo.
+        </p>
+        <p class="text-xs text-gray-600 mt-2">
+            Conn2Flow © 2026 • Open Source Foundation
+        </p>
+    </div>
+</div>

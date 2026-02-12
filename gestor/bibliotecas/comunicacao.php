@@ -116,6 +116,7 @@ function comunicacao_impressao($params = false){
  * @param string $params['mensagem']['htmlLayoutID'] ID do layout HTML (opcional).
  * @param string $params['mensagem']['htmlTitulo'] Título HTML (opcional, usa assunto se omitido).
  * @param array $params['mensagem']['htmlVariaveis'] Variáveis para substituição no HTML (opcional).
+ * @param array $params['mensagem']['htmlCompleto'] HTML completo com a página inteira (opcional).
  * @param array $params['mensagem']['imagens'] Imagens embarcadas (opcional).
  * @param array $params['mensagem']['anexos'] Arquivos anexos (opcional).
  * 
@@ -292,117 +293,123 @@ function comunicacao_email($params = false){
 			
 			// ===== Inserir o layout HTML caso exista.
 			
-			$mailHTML = gestor_layout(Array(
-				'id' => 'layout-emails',
-				'return_css' => true,
-			));
-			
-			$layoutHTML = $mailHTML['html'];
-			
-			if(existe($layoutHTML)){
-				$mailCSS = '';
-				$mailJS = '';
-				$mailCorpo = '';
+			if(!isset($mensagem['htmlCompleto']) || !$mensagem['htmlCompleto']){
+				$mailHTML = gestor_layout(Array(
+					'id' => 'layout-emails',
+					'return_css' => true,
+				));
 				
-				$layoutCSS = $mailHTML['css'];
+				$layoutHTML = $mailHTML['html'];
 				
-				if(existe($layoutCSS)){
-					$layoutCSS = preg_replace("/(^|\n)/m", "    ", $layoutCSS);
+				if(existe($layoutHTML)){
+					$mailCSS = '';
+					$mailJS = '';
+					$mailCorpo = '';
 					
-					$mailCSS .= '<style>'."\n";
-					$mailCSS .= "    ".$layoutCSS."\n";
-					$mailCSS .= "    ".'</style>';
-				}
-
-				$layoutCSSCompiled = $mailHTML['css_compiled'];
-
-				if(existe($layoutCSSCompiled)){
-					$layoutCSSCompiled = preg_replace("/(^|\n)/m", "\n        ", $layoutCSSCompiled);
-
-					$mailCSS .= '<style>'."\n";
-					$mailCSS .= $layoutCSSCompiled."\n";
-					$mailCSS .= '</style>'."\n";
-				}
-				
-				$mailCorpo = $message['body'];
-				
-				// ===== Caso passe o layout ID para essa instância, aplicar o layout ao corpo do HTML do email.
-				
-				if(isset($message['htmlLayoutID'])){
-					$mailBodyHTML = gestor_componente(Array(
-						'id' => $message['htmlLayoutID'],
-						'return_css' => true,
-					));
+					$layoutCSS = $mailHTML['css'];
 					
-					$layoutBodyHTML = $mailBodyHTML['html'];
-					
-					if(existe($layoutBodyHTML)){
-						$layoutBodyCSS = $mailBodyHTML['css'];
+					if(existe($layoutCSS)){
+						$layoutCSS = preg_replace("/(^|\n)/m", "    ", $layoutCSS);
 						
-						if(existe($layoutBodyCSS)){
-							$layoutBodyCSS = preg_replace("/(^|\n)/m", "    ", $layoutBodyCSS);
+						$mailCSS .= '<style>'."\n";
+						$mailCSS .= "    ".$layoutCSS."\n";
+						$mailCSS .= "    ".'</style>';
+					}
+
+					$layoutCSSCompiled = $mailHTML['css_compiled'];
+
+					if(existe($layoutCSSCompiled)){
+						$layoutCSSCompiled = preg_replace("/(^|\n)/m", "\n        ", $layoutCSSCompiled);
+
+						$mailCSS .= '<style>'."\n";
+						$mailCSS .= $layoutCSSCompiled."\n";
+						$mailCSS .= '</style>'."\n";
+					}
+					
+					$mailCorpo = $message['body'];
+					
+					// ===== Caso passe o layout ID para essa instância, aplicar o layout ao corpo do HTML do email.
+					
+					if(isset($message['htmlLayoutID'])){
+						$mailBodyHTML = gestor_componente(Array(
+							'id' => $message['htmlLayoutID'],
+							'return_css' => true,
+						));
+						
+						$layoutBodyHTML = $mailBodyHTML['html'];
+						
+						if(existe($layoutBodyHTML)){
+							$layoutBodyCSS = $mailBodyHTML['css'];
 							
-							$mailCSS .= "\n    ".'<style>'."\n";
-							$mailCSS .= "    ".$layoutBodyCSS."\n";
-							$mailCSS .= "    ".'</style>';
+							if(existe($layoutBodyCSS)){
+								$layoutBodyCSS = preg_replace("/(^|\n)/m", "    ", $layoutBodyCSS);
+								
+								$mailCSS .= "\n    ".'<style>'."\n";
+								$mailCSS .= "    ".$layoutBodyCSS."\n";
+								$mailCSS .= "    ".'</style>';
+							}
+							
+							$mailCorpo = $layoutBodyHTML;
+						}
+					}
+					
+					// ===== Incluir automaticamente assinatura caso a opção esteja ativada.
+					
+					if(isset($mensagem['htmlAssinaturaAutomatica'])){
+						$assinaturaPadrao = false;
+						
+						if(!isset($htmlAssinatura)){
+							$assinaturaPadrao = true;
+						} else {
+							if(!existe($htmlAssinatura)){
+								$assinaturaPadrao = true;
+							}
 						}
 						
-						$mailCorpo = $layoutBodyHTML;
+						if($assinaturaPadrao){
+							if(isset($id_hosts)){
+								$htmlAssinatura = gestor_componente(Array(
+									'id' => 'hosts-layout-emails-assinatura',
+								));
+							} else {
+								$htmlAssinatura = gestor_componente(Array(
+									'id' => 'layout-emails-assinatura',
+								));
+							}
+						}
+						
+						// ===== Incluir assinatura no final do corpo da mensagem.
+						
+						$mailCorpo .= $htmlAssinatura;
 					}
-				}
-				
-				// ===== Incluir automaticamente assinatura caso a opção esteja ativada.
-				
-				if(isset($mensagem['htmlAssinaturaAutomatica'])){
-					$assinaturaPadrao = false;
 					
-					if(!isset($htmlAssinatura)){
-						$assinaturaPadrao = true;
-					} else {
-						if(!existe($htmlAssinatura)){
-							$assinaturaPadrao = true;
+					// ===== Modificar as variáveis padrão do layout principal.
+					
+					$layoutHTML = modelo_var_troca_tudo($layoutHTML,"<!-- mail#titulo -->",'<title>'.$message['title'].'</title>');
+					$layoutHTML = modelo_var_troca_tudo($layoutHTML,"<!-- mail#css -->",$mailCSS);
+					$layoutHTML = modelo_var_troca_tudo($layoutHTML,"<!-- mail#js -->",$mailJS);
+					$layoutHTML = modelo_var_troca_tudo($layoutHTML,"<!-- mail#corpo -->",$mailCorpo);
+					
+					// ===== Alterar as variáveis auxiliares caso enviadas
+					
+					if(isset($message['htmlVariaveis'])){
+						foreach($message['htmlVariaveis'] as $htmlVar){
+							if(isset($htmlVar['variavel']) && isset($htmlVar['valor'])){
+								$layoutHTML = modelo_var_troca_tudo($layoutHTML,$htmlVar['variavel'],$htmlVar['valor']);
+							}
 						}
 					}
 					
-					if($assinaturaPadrao){
-						if(isset($id_hosts)){
-							$htmlAssinatura = gestor_componente(Array(
-								'id' => 'hosts-layout-emails-assinatura',
-							));
-						} else {
-							$htmlAssinatura = gestor_componente(Array(
-								'id' => 'layout-emails-assinatura',
-							));
-						}
-					}
+					// ===== Substituir variáveis globais no HTML e incluir no corpo da mensagem.
 					
-					// ===== Incluir assinatura no final do corpo da mensagem.
+					$layoutHTML = gestor_pagina_variaveis_globais(Array('html' => $layoutHTML));
 					
-					$mailCorpo .= $htmlAssinatura;
+					$message['body'] = $layoutHTML;
 				}
+			} else {
+				// ===== Caso o HTML completo tenha sido enviado, usar diretamente.
 				
-				// ===== Modificar as variáveis padrão do layout principal.
-				
-				$layoutHTML = modelo_var_troca_tudo($layoutHTML,"<!-- mail#titulo -->",'<title>'.$message['title'].'</title>');
-				$layoutHTML = modelo_var_troca_tudo($layoutHTML,"<!-- mail#css -->",$mailCSS);
-				$layoutHTML = modelo_var_troca_tudo($layoutHTML,"<!-- mail#js -->",$mailJS);
-				$layoutHTML = modelo_var_troca_tudo($layoutHTML,"<!-- mail#corpo -->",$mailCorpo);
-				
-				// ===== Alterar as variáveis auxiliares caso enviadas
-				
-				if(isset($message['htmlVariaveis'])){
-					foreach($message['htmlVariaveis'] as $htmlVar){
-						if(isset($htmlVar['variavel']) && isset($htmlVar['valor'])){
-							$layoutHTML = modelo_var_troca_tudo($layoutHTML,$htmlVar['variavel'],$htmlVar['valor']);
-						}
-					}
-				}
-				
-				// ===== Substituir variáveis globais no HTML e incluir no corpo da mensagem.
-				
-				$layoutHTML = gestor_pagina_variaveis_globais(Array('html' => $layoutHTML));
-				
-				$message['body'] = $layoutHTML;
+				$message['body'] = $mensagem['htmlCompleto'];
 			}
 			
 			//Instantiation and passing `true` enables exceptions

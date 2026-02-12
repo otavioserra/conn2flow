@@ -398,5 +398,16 @@
             "css": "",
             "combined": "cf84e4e5789b7b4215d7b045d46db2f3"
         }
+    },
+    {
+        "name": "Formulário Email Preparado",
+        "id": "forms-prepared-email",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "9091aed267bba0379c3d7a4a9b28ebd2",
+            "css": "",
+            "combined": "9091aed267bba0379c3d7a4a9b28ebd2"
+        }
     }
 ]
