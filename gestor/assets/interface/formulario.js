@@ -299,9 +299,9 @@ $(document).ready(function () {
 			}
 
 			function showError(message, data) {
-				var errorElementKey = (data.framework === 'fomantic-ui') ? 'errorElementFomantic' : 'errorElementTailwind';
-				var errorElement = data.ui.components[errorElementKey].replace('#message#', message);
-				var errorDiv = $(errorElement);
+				var errorMessageKey = (data.framework === 'fomantic-ui') ? 'errorMessageFomantic' : 'errorMessageTailwind';
+				var errorMessage = data.ui.components[errorMessageKey].replace('#message#', message);
+				var errorDiv = $(errorMessage);
 				$('._forms-submissions-controller').prepend(errorDiv);
 			}
 		}

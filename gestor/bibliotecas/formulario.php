@@ -130,11 +130,12 @@ function formulario_controlador($params = false){
 		if(isset($form_ui_cel['ui-components'])){
 			$form_ui_components['dimmerFomantic'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- dimmerFomantic -->', '<!-- /dimmerFomantic -->');
 			$form_ui_components['dimmerTailwind'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- dimmerTailwind -->', '<!-- /dimmerTailwind -->');
-			$form_ui_components['errorElement'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- errorElement -->', '<!-- /errorElement -->');
 			$form_ui_components['errorElementFomantic'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- errorElementFomantic -->', '<!-- /errorElementFomantic -->');
 			$form_ui_components['errorElementTailwind'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- errorElementTailwind -->', '<!-- /errorElementTailwind -->');
 			$form_ui_components['recaptchaV2'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- recaptchaV2 -->', '<!-- /recaptchaV2 -->');
 			$form_ui_components['formDisabled'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- formDisabled -->', '<!-- /formDisabled -->');
+			$form_ui_components['errorMessageFomantic'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- errorMessageFomantic -->', '<!-- /errorMessageFomantic -->');
+			$form_ui_components['errorMessageTailwind'] = modelo_tag_val($form_ui_cel['ui-components'], '<!-- errorMessageTailwind -->', '<!-- /errorMessageTailwind -->');
 		}
 
 		// Processar block-wrapper
