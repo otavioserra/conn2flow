@@ -114,7 +114,7 @@ $(document).ready(function () {
 						ctx.textBaseline = 'top';
 						ctx.font = '14px Arial';
 						ctx.fillText('Fingerprint', 2, 2);
-						
+
 						const fingerprint = [
 							navigator.userAgent,
 							navigator.language,
@@ -125,7 +125,7 @@ $(document).ready(function () {
 							!!window.indexedDB,
 							canvas.toDataURL()
 						].join('|');
-						
+
 						// Criar hash simples do fingerprint
 						let hash = 0;
 						for (let i = 0; i < fingerprint.length; i++) {
@@ -133,7 +133,7 @@ $(document).ready(function () {
 							hash = ((hash << 5) - hash) + char;
 							hash = hash & hash; // Converter para 32 bits
 						}
-						
+
 						resolve(Math.abs(hash).toString(36));
 					});
 				};
@@ -148,47 +148,63 @@ $(document).ready(function () {
 				};
 
 				tryFingerprintJS().then(fingerprint => {
-					const currentTimestamp = data.serverTimestamp + (Date.now() / 1000 - data.serverTimestamp);
-					form.append('<input type="hidden" name="fingerprint" value="' + fingerprint + '">');
-					form.append('<input type="hidden" name="timestamp" value="' + currentTimestamp + '">');
-					form.append('<input type="text" name="honeypot" style="display:none;" value="">');
-
-					// Sempre tentar v3 primeiro (se ativo)
-					if ('googleRecaptchaActive' in data && data.googleRecaptchaActive) {
-						var action = ('googleRecaptchaAction' in data && data.googleRecaptchaAction) ? data.googleRecaptchaAction : 'submit';
-						var googleSiteKey = data.googleRecaptchaSite;
-
-						grecaptcha.ready(function () {
-							grecaptcha.execute(googleSiteKey, { action: action }).then(function (token) {
-								form.append('<input type="hidden" name="token" value="' + token + '">');
-								form.append('<input type="hidden" name="action" value="' + action + '">');
-								performAjaxSubmit(form, data);
-							});
-						});
-					} else {
-						performAjaxSubmit(form, data);
-					}
+					performPreAjaxSubmit(form, data, fingerprint);
 				}).catch(error => {
 					// Fallback final - continuar sem fingerprint
 					console.warn('All fingerprint methods failed, continuing without fingerprint:', error);
-					const currentTimestamp = data.serverTimestamp + (Date.now() / 1000 - data.serverTimestamp);
-					form.append('<input type="hidden" name="timestamp" value="' + currentTimestamp + '">');
-					form.append('<input type="text" name="honeypot" style="display:none;" value="">');
 
-					if ('googleRecaptchaActive' in data && data.googleRecaptchaActive) {
-						var action = ('googleRecaptchaAction' in data && data.googleRecaptchaAction) ? data.googleRecaptchaAction : 'submit';
-						var googleSiteKey = data.googleRecaptchaSite;
+					performPreAjaxSubmit(form, data);
+				});
+			}
 
-						grecaptcha.ready(function () {
-							grecaptcha.execute(googleSiteKey, { action: action }).then(function (token) {
-								form.append('<input type="hidden" name="token" value="' + token + '">');
-								form.append('<input type="hidden" name="action" value="' + action + '">');
-								performAjaxSubmit(form, data);
-							});
-						});
+			function performPreAjaxSubmit(form, data, fingerprint = null) {
+				if (fingerprint) {
+					form.append('<input type="hidden" name="fingerprint" value="' + fingerprint + '">');
+				}
+
+				const currentTimestamp = data.serverTimestamp + (Date.now() / 1000 - data.serverTimestamp);
+				form.append('<input type="hidden" name="timestamp" value="' + currentTimestamp + '">');
+				form.append('<input type="text" name="honeypot" style="display:none;" value="">');
+
+				// Sempre tentar v3 primeiro (se ativo)
+				if ('googleRecaptchaActive' in data && data.googleRecaptchaActive) {
+					var action = ('googleRecaptchaAction' in data && data.googleRecaptchaAction) ? data.googleRecaptchaAction : 'submit';
+					var googleSiteKey = data.googleRecaptchaSite;
+
+					// Carregar script do reCAPTCHA v3 dinamicamente se necessário
+					if (typeof grecaptcha === 'undefined') {
+						var script = document.createElement('script');
+						script.src = 'https://www.google.com/recaptcha/api.js?render=' + googleSiteKey;
+						script.async = true;
+						script.defer = true;
+						document.head.appendChild(script);
+						script.onload = function () {
+							executeRecaptchaV3(form, data, googleSiteKey, action);
+						};
+						script.onerror = function () {
+							// Fallback se o script falhar - continuar sem reCAPTCHA
+							console.warn('reCAPTCHA v3 script failed to load, continuing without reCAPTCHA');
+							performAjaxSubmit(form, data);
+						};
 					} else {
-						performAjaxSubmit(form, data);
+						executeRecaptchaV3(form, data, googleSiteKey, action);
 					}
+				} else {
+					performAjaxSubmit(form, data);
+				}
+			}
+
+			function executeRecaptchaV3(form, data, googleSiteKey, action) {
+				grecaptcha.ready(function () {
+					grecaptcha.execute(googleSiteKey, { action: action }).then(function (token) {
+						form.append('<input type="hidden" name="token" value="' + token + '">');
+						form.append('<input type="hidden" name="action" value="' + action + '">');
+						performAjaxSubmit(form, data);
+					}).catch(function (error) {
+						// Fallback se a execução falhar - continuar sem reCAPTCHA
+						console.warn('reCAPTCHA v3 execution failed, continuing without reCAPTCHA:', error);
+						performAjaxSubmit(form, data);
+					});
 				});
 			}
 

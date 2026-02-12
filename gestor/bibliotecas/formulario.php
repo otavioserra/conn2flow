@@ -113,7 +113,7 @@ function formulario_controlador($params = false){
 		$form_ui_prompts = [];
 		if(isset($form_ui_cel['prompts'])){
 			$form_ui_prompts['empty'] = modelo_tag_val($form_ui_cel['prompts'], '<div class="prompt-empty">', '</div>');
-			$form_ui_prompts['email'] = modelo_tag_val($form_ui_cel['prompts'], '<div class="prompt-email">', '</div>');
+			$form_ui_prompts['email'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- email < -->', '<!-- email > -->');
 		}
 
 		// Processar valores individuais dos ui-texts
@@ -188,7 +188,7 @@ function formulario_controlador($params = false){
                 $googleRecaptchaSite = $_CONFIG['usuario-recaptcha-site'];
                 $googleRecaptchaAction = $formId . '-action';
                 
-                gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$googleRecaptchaSite.'"></script>');
+                // Removido: inclusão do script aqui - será carregado dinamicamente no frontend quando necessário
             }
         }
 
@@ -224,7 +224,7 @@ function formulario_controlador($params = false){
             'googleRecaptchaAction' => $googleRecaptchaAction ?? null,
             'googleRecaptchaV2Active' => $googleRecaptchaV2Active ?? null,
             'googleRecaptchaV2Site' => $googleRecaptchaV2Site ?? null,
-            'framework' => str_replace(['fomantic-ui', 'tailwindcss'], ['fomantic', 'tailwind'], $_GESTOR['pagina#framework_css']),
+            'framework' => $_GESTOR['pagina#framework_css'],
             'fields' => $fieldsDoJson,
             'prompts' => $form_ui_prompts,
             'redirects' => $redirectsDoJson,
@@ -275,7 +275,7 @@ function formulario_processador($params = false){
 		$form_ui_ajax_messages['invalidEmail'] = modelo_tag_val($form_ui_ajax_cel, '<div class="ajax-message-invalid-email">', '</div>');
 	}
 
-	$formId = $_REQUEST['_formId'] ?? null;
+	$formId = $_POST['_formId'] ?? null;
 
 	if(!$formId){
 		// Retorno do AJAX em caso de formId ausente
@@ -290,7 +290,7 @@ function formulario_processador($params = false){
 	$formId = banco_escape_field($formId);
 	
 	// ===== Validar honeypot (anti-bot)
-	if(!empty($_REQUEST['honeypot'])){
+	if(!empty($_POST['honeypot'])){
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'error',
 			'message' => $form_ui_ajax_messages['suspectedBot'] ?? 'Suspected bot activity.',
@@ -299,7 +299,7 @@ function formulario_processador($params = false){
 	}
 	
 	// ===== Validar timestamp (anti-replay, max 2 dias)
-	$timestamp = $_REQUEST['timestamp'] ?? 0;
+	$timestamp = $_POST['timestamp'] ?? 0;
 	$limite = 172800; // 2 dias
 	if(time() - $timestamp > $limite){
 		$_GESTOR['ajax-json'] = Array(
@@ -339,8 +339,8 @@ function formulario_processador($params = false){
 	$recaptchaValido = false;
 	if(isset($_CONFIG['usuario-recaptcha-active']) && ($acesso['status'] != 'livre' || $forceRecaptchaV3)){
 		$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
-		$token = $_REQUEST['token'] ?? null;
-		$action = $_REQUEST['action'] ?? null;
+		$token = $_POST['token'] ?? null;
+		$action = $_POST['action'] ?? null;
 		
 		// Chamada reCAPTCHA v3
 		$ch = curl_init();
@@ -372,7 +372,7 @@ function formulario_processador($params = false){
 	
 	if($captchaV2Ativo){
 		// Verificar se v2 foi enviado
-		$recaptchaV2Response = $_REQUEST['g-recaptcha-response'] ?? null;
+		$recaptchaV2Response = $_POST['g-recaptcha-response'] ?? null;
 		if(!$recaptchaV2Response){
 			formulario_acesso_falha(['tipo' => $formId]);
 			$_GESTOR['ajax-json'] = Array(
@@ -418,8 +418,8 @@ function formulario_processador($params = false){
         if(isset($schema['fields'])){
             $definedFields = array_column($schema['fields'], 'name');
         }
-        if(isset($schema['field_name']) && isset($_REQUEST[$schema['field_name']])){
-            $fieldNameValue = $_REQUEST[$schema['field_name']];
+        if(isset($schema['field_name']) && isset($_POST[$schema['field_name']])){
+            $fieldNameValue = $_POST[$schema['field_name']];
         }
         if(isset($schema['redirects']['success'])){
             $redirectSuccess = $schema['redirects']['success']['path'];
@@ -428,7 +428,7 @@ function formulario_processador($params = false){
         // ===== Validar campos obrigatórios
         foreach($schema['fields'] as $field){
             $fieldName = $field['name'];
-            $fieldValue = trim($_REQUEST[$fieldName] ?? '');
+            $fieldValue = trim($_POST[$fieldName] ?? '');
             
             if(isset($field['required']) && $field['required']){
                 if(empty($fieldValue)){
@@ -455,7 +455,7 @@ function formulario_processador($params = false){
         // ===== Validar campos obrigatórios (exemplo básico, personalize conforme formId)
         // Validação dinâmica para campos do tipo 'email'
         foreach($schema['fields'] as $field){
-            if($field['type'] === 'email' && isset($_REQUEST[$field['name']]) && !filter_var($_REQUEST[$field['name']], FILTER_VALIDATE_EMAIL)){
+            if($field['type'] === 'email' && isset($_POST[$field['name']]) && !filter_var($_POST[$field['name']], FILTER_VALIDATE_EMAIL)){
                 formulario_acesso_falha(['tipo' => $formId]);
                 $_GESTOR['ajax-json'] = Array(
                     'status' => 'error',
@@ -468,7 +468,7 @@ function formulario_processador($params = false){
 	
 	// ===== Salvar em forms_submissions com estrutura de campos
     $fieldsValues = [];
-    foreach($_REQUEST as $key => $value){
+    foreach($_POST as $key => $value){
         if(!in_array($key, ['_formId', 'ajax', 'ajaxOpcao', 'token', 'action', 'fingerprint', 'timestamp', 'honeypot', 'g-recaptcha-response'])){
             $field = ['name' => $key, 'value' => $value];
             if(!in_array($key, $definedFields)){
@@ -521,7 +521,7 @@ function formulario_acesso_verificar($params = false){
     if(isset($tipo)){
         gestor_incluir_biblioteca('ip');
         $ip = ip_get();
-        $fingerprint = $_REQUEST['fingerprint'] ?? null;
+        $fingerprint = $_POST['fingerprint'] ?? null;
         
         // Verificar bloqueio temporário
         $bloqueio = banco_select(Array(
@@ -554,7 +554,7 @@ function formulario_acesso_cadastrar($params = false){
     if(isset($tipo)){
         gestor_incluir_biblioteca('ip');
         $ip = ip_get();
-        $fingerprint = $_REQUEST['fingerprint'] ?? null;
+        $fingerprint = $_POST['fingerprint'] ?? null;
         
         // Verificar status usando formulario_acesso_verificar
         $acesso = formulario_acesso_verificar(['tipo' => $tipo]);
@@ -592,7 +592,7 @@ function formulario_acesso_falha($params = false){
     if(isset($tipo)){
         gestor_incluir_biblioteca('ip');
         $ip = ip_get();
-        $fingerprint = $_REQUEST['fingerprint'] ?? null;
+        $fingerprint = $_POST['fingerprint'] ?? null;
         
         // Logar falha
         banco_insert_name([
