@@ -35,11 +35,18 @@ $(document).ready(function () {
 						});
 					}
 				});
+
+				// Capturar botão clicado
+				form.find('button[type="submit"], input[type="submit"]').on('click', function() {
+					form.data('clickedButton', $(this));
+				});
+
 				// Validação geral no submit
 				form.on('submit', function (e) {
 					e.preventDefault();
+					var clickedButton = form.data('clickedButton');
 					if (validateAllFields(form, data.fields, data.prompts, data.framework, data)) {
-						submitForm(form, data);
+						submitForm(form, data, clickedButton);
 					}
 				});
 			}
@@ -104,7 +111,7 @@ $(document).ready(function () {
 				}
 			}
 
-			function submitForm(form, data) {
+			function submitForm(form, data, clickedButton = null) {
 				addDimmer(form, data); // Adicionar dimmer
 
 				// Gerar fingerprint usando uma abordagem mais simples e confiável
@@ -150,16 +157,16 @@ $(document).ready(function () {
 				};
 
 				tryFingerprintJS().then(fingerprint => {
-					performPreAjaxSubmit(form, data, fingerprint);
+					performPreAjaxSubmit(form, data, fingerprint, clickedButton);
 				}).catch(error => {
 					// Fallback final - continuar sem fingerprint
 					console.warn('All fingerprint methods failed, continuing without fingerprint:', error);
 
-					performPreAjaxSubmit(form, data);
+					performPreAjaxSubmit(form, data, null, clickedButton);
 				});
 			}
 
-			function performPreAjaxSubmit(form, data, fingerprint = null) {
+			function performPreAjaxSubmit(form, data, fingerprint = null, clickedButton = null) {
 				if (fingerprint) {
 					form.append('<input type="hidden" name="fingerprint" value="' + fingerprint + '">');
 				}
@@ -186,13 +193,13 @@ $(document).ready(function () {
 						script.onerror = function () {
 							// Fallback se o script falhar - continuar sem reCAPTCHA
 							console.warn('reCAPTCHA v3 script failed to load, continuing without reCAPTCHA');
-							performAjaxSubmit(form, data);
+							performAjaxSubmit(form, data, clickedButton);
 						};
 					} else {
 						executeRecaptchaV3(form, data, googleSiteKey, action);
 					}
 				} else {
-					performAjaxSubmit(form, data);
+					performAjaxSubmit(form, data, clickedButton);
 				}
 			}
 
@@ -205,7 +212,7 @@ $(document).ready(function () {
 					}).catch(function (error) {
 						// Fallback se a execução falhar - continuar sem reCAPTCHA
 						console.warn('reCAPTCHA v3 execution failed, continuing without reCAPTCHA:', error);
-						performAjaxSubmit(form, data);
+						performAjaxSubmit(form, data, clickedButton);
 					});
 				});
 			}
@@ -230,7 +237,7 @@ $(document).ready(function () {
 				}
 			}
 
-			function performAjaxSubmit(form, data) {
+			function performAjaxSubmit(form, data, clickedButton = null) {
 				var formData = new FormData(form[0]);
 				formData.append('ajax', '1');
 				formData.append('ajaxOpcao', data.ajaxOpcao || 'forms-process');
@@ -248,23 +255,23 @@ $(document).ready(function () {
 						if (response.status === 'success') {
 							window.location.href = response.redirect;
 						} else if (response.status === 'require_v2' && 'googleRecaptchaV2Active' in data && data.googleRecaptchaV2Active) {
-							injectRecaptchaV2(form, data);
+							injectRecaptchaV2(form, data, clickedButton);
 						} else {
-							showError(response.message, data);
+							showError(response.message, data, clickedButton);
 						}
 					},
 					error: function (xhr, status, error) {
 						removeDimmer(form, data); // Remover dimmer
 						if (status === 'timeout') {
-							showError(data.ui.texts.timeoutError, data);
+							showError(data.ui.texts.timeoutError, data, clickedButton);
 						} else {
-							showError(data.ui.texts.generalError, data);
+							showError(data.ui.texts.generalError, data, clickedButton);
 						}
 					}
 				});
 			}
 
-			function injectRecaptchaV2(form, data) {
+			function injectRecaptchaV2(form, data, clickedButton = null) {
 				if (!form.find('.g-recaptcha').length) {
 					// Carregar script do reCAPTCHA se necessário
 					if (typeof grecaptcha === 'undefined') {
@@ -274,35 +281,39 @@ $(document).ready(function () {
 						script.defer = true;
 						document.head.appendChild(script);
 						script.onload = function () {
-							proceedWithRecaptchaV2(form, data);
+							proceedWithRecaptchaV2(form, data, clickedButton);
 						};
 					} else {
-						proceedWithRecaptchaV2(form, data);
+						proceedWithRecaptchaV2(form, data, clickedButton);
 					}
 				}
 			}
 
-			function proceedWithRecaptchaV2(form, data) {
+			function proceedWithRecaptchaV2(form, data, clickedButton = null) {
 				var recaptchaHtml = data.ui.components.recaptchaV2.replace('#siteKey#', data.googleRecaptchaV2Site);
 				var recaptchaDiv = $(recaptchaHtml);
 				form.append(recaptchaDiv);
 				grecaptcha.render(recaptchaDiv[0]);
 				// Mostrar mensagem para usuário completar v2
-				showError(data.ui.texts.requireV2Message, data);
+				showError(data.ui.texts.requireV2Message, data, clickedButton);
 				// Re-bind submit para tentar novamente após v2
 				form.off('submit').on('submit', function (e) {
 					e.preventDefault();
 					if (validateAllFields(form, data.fields, data.prompts, data.framework)) {
-						performAjaxSubmit(form, data);
+						performAjaxSubmit(form, data, clickedButton);
 					}
 				});
 			}
 
-			function showError(message, data) {
+			function showError(message, data, clickedButton = null) {
 				var errorMessageKey = (data.framework === 'fomantic-ui') ? 'errorMessageFomantic' : 'errorMessageTailwind';
 				var errorMessage = data.ui.components[errorMessageKey].replace('#message#', message);
 				var errorDiv = $(errorMessage);
-				$('._forms-submissions-controller').prepend(errorDiv);
+				if (clickedButton && clickedButton.length) {
+					clickedButton.before(errorDiv);
+				} else {
+					$('._forms-submissions-controller').prepend(errorDiv);
+				}
 			}
 		}
 	}
