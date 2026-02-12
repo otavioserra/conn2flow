@@ -187,8 +187,6 @@ function formulario_controlador($params = false){
                 $googleRecaptchaActive = true;
                 $googleRecaptchaSite = $_CONFIG['usuario-recaptcha-site'];
                 $googleRecaptchaAction = $formId . '-action';
-                
-                // Removido: inclusão do script aqui - será carregado dinamicamente no frontend quando necessário
             }
         }
 
@@ -521,14 +519,14 @@ function formulario_acesso_verificar($params = false){
     if(isset($tipo)){
         gestor_incluir_biblioteca('ip');
         $ip = ip_get();
-        $fingerprint = $_POST['fingerprint'] ?? null;
+        $fingerprint = !empty($_POST['fingerprint']) ? $_POST['fingerprint'] : null;
         
         // Verificar bloqueio temporário
         $bloqueio = banco_select(Array(
             'unico' => true,
             'tabela' => 'forms_blocks',
             'campos' => Array('id_forms_blocks'),
-            'extra' => "WHERE ip='$ip' AND fingerprint='$fingerprint' AND unblock_at > NOW()"
+            'extra' => "WHERE ip='$ip'" . ($fingerprint ? " AND fingerprint='$fingerprint'" : "") . " AND unblock_at > NOW()"
         ));
         if($bloqueio){
             $retorno['permitido'] = false;
@@ -554,7 +552,7 @@ function formulario_acesso_cadastrar($params = false){
     if(isset($tipo)){
         gestor_incluir_biblioteca('ip');
         $ip = ip_get();
-        $fingerprint = $_POST['fingerprint'] ?? null;
+        $fingerprint = !empty($_POST['fingerprint']) ? $_POST['fingerprint'] : null;
         
         // Verificar status usando formulario_acesso_verificar
         $acesso = formulario_acesso_verificar(['tipo' => $tipo]);
@@ -563,7 +561,7 @@ function formulario_acesso_cadastrar($params = false){
             // Bloquear por 24h se ainda não bloqueado
             banco_insert_name([
                 ['ip', banco_escape_field($ip), false],
-                ['fingerprint', banco_escape_field($fingerprint), false],
+                $fingerprint ? ['fingerprint', banco_escape_field($fingerprint), false] : null,
                 ['unblock_at', date('Y-m-d H:i:s', strtotime('+24 hours')), true]
             ], 'forms_blocks');
             return;
@@ -573,7 +571,7 @@ function formulario_acesso_cadastrar($params = false){
         banco_insert_name([
             ['form_id', banco_escape_field($tipo), false],
             ['ip', banco_escape_field($ip), false],
-            ['fingerprint', banco_escape_field($fingerprint), false],
+            $fingerprint ? ['fingerprint', banco_escape_field($fingerprint), false] : null,
             ['created_at', date('Y-m-d H:i:s'), true],
             ['success', '1', true]
         ], 'forms_logs');
@@ -592,13 +590,13 @@ function formulario_acesso_falha($params = false){
     if(isset($tipo)){
         gestor_incluir_biblioteca('ip');
         $ip = ip_get();
-        $fingerprint = $_POST['fingerprint'] ?? null;
+        $fingerprint = !empty($_POST['fingerprint']) ? $_POST['fingerprint'] : null;
         
         // Logar falha
         banco_insert_name([
             ['form_id', banco_escape_field($tipo), false],
             ['ip', banco_escape_field($ip), false],
-            ['fingerprint', banco_escape_field($fingerprint), false],
+            $fingerprint ? ['fingerprint', banco_escape_field($fingerprint), false] : null,
             ['created_at', date('Y-m-d H:i:s'), true],
             ['success', '0', true]
         ], 'forms_logs');

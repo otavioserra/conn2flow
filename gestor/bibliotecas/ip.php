@@ -72,6 +72,11 @@ function ip_get($allow_private = false){
 	// Opções: HTTP_CLIENT_IP, HTTP_X_FORWARDED, HTTP_FORWARDED_FOR, HTTP_FORWARDED
 	$header = 'HTTP_X_FORWARDED_FOR';
 
+	// Caso seja 'localhost' o domínio do site, é uma máquina de testes local, então permitir o REMOTE_ADDR diretamente, pois não haverá proxy reverso.
+	if($_SERVER['SERVER_NAME'] === 'localhost'){
+		return $_SERVER['REMOTE_ADDR'];
+	}
+
 	// Se REMOTE_ADDR contém um IP válido de cliente, usa ele diretamente
 	if(ip_check($_SERVER['REMOTE_ADDR'], $allow_private, $proxy_ip)) return $_SERVER['REMOTE_ADDR'];
 

@@ -105,6 +105,8 @@ $(document).ready(function () {
 			}
 
 			function submitForm(form, data) {
+				addDimmer(form, data); // Adicionar dimmer
+
 				// Gerar fingerprint usando uma abordagem mais simples e confiável
 				const generateFingerprint = () => {
 					return new Promise((resolve) => {
@@ -213,17 +215,22 @@ $(document).ready(function () {
 				var dimmerHtml = data.ui.components[dimmerKey].replace('#loadingText#', data.ui.texts.loading);
 				var dimmer = $(dimmerHtml);
 				form.addClass('relative').append(dimmer);
-				dimmer.addClass('active'); // Ativar dimmer
+				if (data.framework === 'fomantic-ui') {
+					dimmer.find('.dimmer').addClass('active visible');
+				} else {
+					dimmer.addClass('active');
+				}
 			}
 
-			function removeDimmer(form) {
-				form.find('.dimmer, .fixed').remove();
-				form.removeClass('relative');
+			function removeDimmer(form, data) {
+				if (data.framework === 'fomantic-ui') {
+					form.find('.component-dimmer-fomantic').remove();
+				} else {
+					form.find('.component-dimmer-tailwind').remove();
+				}
 			}
 
 			function performAjaxSubmit(form, data) {
-				addDimmer(form, data); // Adicionar dimmer
-
 				var formData = new FormData(form[0]);
 				formData.append('ajax', '1');
 				formData.append('ajaxOpcao', data.ajaxOpcao || 'forms-process');
@@ -237,7 +244,7 @@ $(document).ready(function () {
 					contentType: false,
 					timeout: 10000,
 					success: function (response) {
-						removeDimmer(form); // Remover dimmer
+						removeDimmer(form, data); // Remover dimmer
 						if (response.status === 'success') {
 							window.location.href = response.redirect;
 						} else if (response.status === 'require_v2' && 'googleRecaptchaV2Active' in data && data.googleRecaptchaV2Active) {
@@ -247,7 +254,7 @@ $(document).ready(function () {
 						}
 					},
 					error: function (xhr, status, error) {
-						removeDimmer(form); // Remover dimmer
+						removeDimmer(form, data); // Remover dimmer
 						if (status === 'timeout') {
 							showError(data.ui.texts.timeoutError, data);
 						} else {

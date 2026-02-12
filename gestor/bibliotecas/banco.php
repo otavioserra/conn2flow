@@ -845,6 +845,9 @@ function banco_insert_name($dados,$tabela){
 
 	// ===== Monta strings de nomes e valores
 	foreach($dados as $dado){
+		if(!is_array($dado) || !isset($dado[0]) || !isset($dado[1])){
+			continue; // Pula se nome do campo não estiver definido ou se o dado não estiver definido
+		}
 		if(isset($dado[1])){
 			// Define padrão para sem_aspas se não especificado
 			if(!isset($dado[2])){
