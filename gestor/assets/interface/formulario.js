@@ -257,15 +257,15 @@ $(document).ready(function () {
 						} else if (response.status === 'require_v2' && 'googleRecaptchaV2Active' in data && data.googleRecaptchaV2Active) {
 							injectRecaptchaV2(form, data, clickedButton);
 						} else {
-							showError(response.message, data, clickedButton);
+							showError(response.message, data, clickedButton, form);
 						}
 					},
 					error: function (xhr, status, error) {
 						removeDimmer(form, data); // Remover dimmer
 						if (status === 'timeout') {
-							showError(data.ui.texts.timeoutError, data, clickedButton);
+							showError(data.ui.texts.timeoutError, data, clickedButton, form);
 						} else {
-							showError(data.ui.texts.generalError, data, clickedButton);
+							showError(data.ui.texts.generalError, data, clickedButton, form);
 						}
 					}
 				});
@@ -295,7 +295,7 @@ $(document).ready(function () {
 				form.append(recaptchaDiv);
 				grecaptcha.render(recaptchaDiv[0]);
 				// Mostrar mensagem para usuário completar v2
-				showError(data.ui.texts.requireV2Message, data, clickedButton);
+				showError(data.ui.texts.requireV2Message, data, clickedButton, form);
 				// Re-bind submit para tentar novamente após v2
 				form.off('submit').on('submit', function (e) {
 					e.preventDefault();
@@ -305,7 +305,13 @@ $(document).ready(function () {
 				});
 			}
 
-			function showError(message, data, clickedButton = null) {
+			function showError(message, data, clickedButton = null, form) {
+				if (data.framework === 'fomantic-ui') {
+					form.find('.component-error-message-fomantic').remove();
+				} else {
+					form.find('.component-error-message-tailwind').remove();
+				}
+
 				var errorMessageKey = (data.framework === 'fomantic-ui') ? 'errorMessageFomantic' : 'errorMessageTailwind';
 				var errorMessage = data.ui.components[errorMessageKey].replace('#message#', message);
 				var errorDiv = $(errorMessage);

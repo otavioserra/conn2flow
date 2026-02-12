@@ -308,12 +308,14 @@ function formulario_processador($params = false){
 		return;
 	}
 
+	
+	
 	$_GESTOR['ajax-json'] = Array(
 		'status' => 'error',
 		'message' => print_r($_POST, true), // Retorno para depuração (exibir dados recebidos)
 	);
 	return;
-	
+
 	// ===== Verificar acesso e status
 	$acesso = formulario_acesso_verificar(['tipo' => $formId]);
 	
@@ -500,6 +502,13 @@ function formulario_processador($params = false){
         ['fields_values', banco_escape_field(json_encode($fieldsValues)), false],
         ['language', $_GESTOR['linguagem-codigo'], false],
     ], 'forms_submissions');
+
+	
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'error',
+		'message' => print_r($_POST, true), // Retorno para depuração (exibir dados recebidos)
+	);
+	return;
 	
 	// ===== Logar sucesso
 	formulario_acesso_cadastrar(['tipo' => $formId]);
