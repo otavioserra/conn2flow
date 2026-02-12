@@ -306,6 +306,12 @@ function formulario_processador($params = false){
 		);
 		return;
 	}
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'error',
+		'message' => print_r($_POST, true), // Retorno para depuração (exibir dados recebidos)
+	);
+	return;
 	
 	// ===== Verificar acesso e status
 	$acesso = formulario_acesso_verificar(['tipo' => $formId]);

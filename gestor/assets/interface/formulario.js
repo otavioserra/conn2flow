@@ -299,7 +299,8 @@ $(document).ready(function () {
 			}
 
 			function showError(message, data) {
-				var errorElement = data.ui.components.errorElement.replace('#message#', message);
+				var errorElementKey = (data.framework === 'fomantic-ui') ? 'errorElementFomantic' : 'errorElementTailwind';
+				var errorElement = data.ui.components[errorElementKey].replace('#message#', message);
 				var errorDiv = $(errorElement);
 				$('._forms-submissions-controller').prepend(errorDiv);
 			}
