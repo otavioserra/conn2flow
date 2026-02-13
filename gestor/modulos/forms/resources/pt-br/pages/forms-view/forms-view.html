@@ -52,241 +52,211 @@
                     <div class="ui bottom attached tab segment containerForms" data-tab="info">
                         <div class="ui two column grid">
                             <div class="column">
+                                <div class="ui header">
+                                    <i class="book icon"></i>
+                                    <div class="content">
+                                        JSON de Todos os Parâmetros
+                                    </div>
+                                </div>
                                 <textarea class="codemirror-json-info">#form_info#</textarea>
                             </div>
                             <div class="column">
+                                <div class="ui header">
+                                    <i class="book icon"></i>
+                                    <div class="content">
+                                        Documentação dos Parâmetros
+                                    </div>
+                                </div>
                                 <div class="ui styled accordion">
+                                    <!-- Propriedades Básicas -->
                                     <div class="active title">
                                         <i class="dropdown icon"></i>
-                                        <i class="book icon"></i> Documentação dos Parâmetros
+                                        Propriedades Básicas
                                     </div>
                                     <div class="active content">
-                                        <div class="ui relaxed divided list">
-
-                                            <!-- Propriedades Básicas -->
+                                        <div class="ui list">
                                             <div class="item">
-                                                <i class="info circle icon"></i>
-                                                <div class="content">
-                                                    <div class="header">Propriedades Básicas</div>
-                                                    <div class="description">
-                                                        <div class="ui list">
-                                                            <div class="item">
-                                                                <code>name</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Nome
-                                                                descritivo do
-                                                                formulário
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>id</code> <i class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Identificador
-                                                                único do
-                                                                formulário
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>description</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Descrição
-                                                                opcional do
-                                                                formulário
-                                                            </div>
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>name </code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Nome descritivo do formulário</div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="small quote left icon"></i><code>id</code><i
+                                                    class="small quote right icon"></i> - Identificador
+                                                único do
+                                                formulário
+                                            </div>
+                                            <div class="item">
+                                                <i class="small quote left icon"></i><code>description</code><i
+                                                    class="small quote right icon"></i> - Descrição
+                                                opcional do
+                                                formulário
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Controle de Acesso -->
+                                    <div class="title">
+                                        <i class="dropdown icon"></i>
+                                        Controle de Acesso
+                                    </div>
+                                    <div class="content">
+                                        <div class="ui list">
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i class="hashtag icon"></i><code>access_max_simple</code></div>
+                                                <div class="ui label">Máximo de envios simples por IP (sem CAPTCHA)</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i class="hashtag icon"></i><code>access_max</code></div>
+                                                <div class="ui label">Máximo total de envios por IP</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i class="toggle on icon"></i><code>force_recaptcha</code></div>
+                                                <div class="ui label">Força uso de reCAPTCHA v3 sempre</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Configuração de Email -->
+                                    <div class="title">
+                                        <i class="dropdown icon"></i>
+                                        Configuração de Email
+                                    </div>
+                                    <div class="content">
+                                        <div class="ui list">
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>email.recipients</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Destinatários separados por ";"</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>email.reply_to</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Email para resposta</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>email.subject</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Assunto do email</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>email.template</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">ID do componente de template de email</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <!-- Controle de Acesso -->
+                                    <!-- Redirecionamentos -->
+                                    <div class="title">
+                                        <i class="dropdown icon"></i>
+                                        Redirecionamentos
+                                    </div>
+                                    <div class="content">
+                                        <div class="ui list">
                                             <div class="item">
-                                                <i class="shield icon"></i>
-                                                <div class="content">
-                                                    <div class="header">Controle de Acesso</div>
-                                                    <div class="description">
-                                                        <div class="ui list">
-                                                            <div class="item">
-                                                                <code>access_max_simple</code> <i
-                                                                    class="hashtag icon"></i> -
-                                                                Máximo de envios simples por IP (sem CAPTCHA)
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>access_max</code> <i class="hashtag icon"></i> -
-                                                                Máximo
-                                                                total de envios por IP
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>force_recaptcha</code> <i
-                                                                    class="toggle on icon"></i> -
-                                                                Força uso de reCAPTCHA v3 sempre
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>redirects.success.type</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Tipo: "url" ou "page"</div>
                                             </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>redirects.success.path</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Caminho para redirecionamento de sucesso</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>redirects.error.type</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Tipo de redirecionamento de erro</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>redirects.error.path</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Caminho para redirecionamento de erro</div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                            <!-- Configuração de Email -->
+                                    <!-- Campos do Formulário -->
+                                    <div class="title">
+                                        <i class="dropdown icon"></i>
+                                        Campos do Formulário
+                                    </div>
+                                    <div class="content">
+                                        <h5>Propriedades dos Campos:</h5>
+                                        <div class="ui list">
                                             <div class="item">
-                                                <i class="mail icon"></i>
-                                                <div class="content">
-                                                    <div class="header">Configuração de Email</div>
-                                                    <div class="description">
-                                                        <div class="ui list">
-                                                            <div class="item">
-                                                                <code>email.recipients</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Destinatários
-                                                                separados por ";"
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>email.reply_to</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Email para
-                                                                resposta
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>email.reply_to_name</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Nome do
-                                                                remetente para
-                                                                resposta
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>email.subject</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Assunto do
-                                                                email
-                                                                (#code# = número único)
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>email.message_component</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - ID do
-                                                                componente de
-                                                                template de email
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>name</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Nome do campo (identificador único)</div>
                                             </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>label</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Rótulo exibido para o usuário</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>type</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Tipo do campo (text, email, etc.)</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i class="toggle on icon"></i><code>required</code></div>
+                                                <div class="ui label">Campo obrigatório</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>placeholder</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Texto de placeholder</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="ui teal tag label"><i
+                                                        class="small quote left icon"></i><code>validation</code><i
+                                                        class="small quote right icon"></i></div>
+                                                <div class="ui label">Regras de validação</div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                            <!-- Redirecionamentos -->
-                                            <div class="item">
-                                                <i class="share icon"></i>
-                                                <div class="content">
-                                                    <div class="header">Redirecionamentos</div>
-                                                    <div class="description">
-                                                        <div class="ui list">
-                                                            <div class="item">
-                                                                <code>redirects.success.type</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Tipo: "url" ou
-                                                                "page"
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>redirects.success.path</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Caminho para
-                                                                redirecionamento de sucesso
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>redirects.error.type</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Tipo de
-                                                                redirecionamento de erro
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>redirects.error.path</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Caminho para
-                                                                redirecionamento de erro
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Campos do Formulário -->
-                                            <div class="item">
-                                                <i class="list icon"></i>
-                                                <div class="content">
-                                                    <div class="header">Campos do Formulário</div>
-                                                    <div class="description">
-                                                        <h5>Propriedades dos Campos:</h5>
-                                                        <div class="ui list">
-                                                            <div class="item">
-                                                                <code>type</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Tipo: "text",
-                                                                "email",
-                                                                "textarea", "select", etc.
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>name</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Nome único do
-                                                                campo
-                                                                (usado como chave)
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>label</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Rótulo exibido
-                                                                para o
-                                                                usuário
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>required</code> <i class="toggle on icon"></i> -
-                                                                Campo
-                                                                obrigatório (true/false)
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>placeholder</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Texto de dica
-                                                                no campo
-                                                            </div>
-                                                            <div class="item">
-                                                                <code>validation</code> <i
-                                                                    class="small quote left icon"></i><i
-                                                                    class="small quote right icon"></i> - Regras de
-                                                                validação
-                                                                adicionais
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Funções da Biblioteca -->
-                                            <div class="item">
-                                                <i class="cogs icon"></i>
-                                                <div class="content">
-                                                    <div class="header">Funções da Biblioteca</div>
-                                                    <div class="description">
-                                                        <h5>formulario_controlador():</h5>
-                                                        <div class="ui bulleted list">
-                                                            <div class="item">Prepara e configura formulários no
-                                                                frontend</div>
-                                                            <div class="item">Carrega componentes HTML e JavaScript
-                                                            </div>
-                                                            <div class="item">Configura validações client-side</div>
-                                                            <div class="item">Gerencia permissões de acesso</div>
-                                                            <div class="item">Integra reCAPTCHA v2/v3</div>
-                                                            <div class="item">Processa schema de campos e
-                                                                redirecionamentos
-                                                            </div>
-                                                        </div>
-                                                        <h5>formulario_processador():</h5>
-                                                        <div class="ui bulleted list">
-                                                            <div class="item">Processa envios de formulários no backend
-                                                            </div>
-                                                            <div class="item">Valida dados e CAPTCHA</div>
-                                                            <div class="item">Aplica rate limiting e anti-spam</div>
-                                                            <div class="item">Salva dados em forms_submissions</div>
-                                                            <div class="item">Envia emails de notificação</div>
-                                                            <div class="item">Gerencia redirecionamentos pós-envio</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <!-- Funções da Biblioteca -->
+                                    <div class="title">
+                                        <i class="dropdown icon"></i>
+                                        Funções da Biblioteca
+                                    </div>
+                                    <div class="content">
+                                        <h5>formulario_controlador():</h5>
+                                        <div class="ui bulleted list">
+                                            <div class="item">Prepara e configura formulários no frontend</div>
+                                            <div class="item">Carrega componentes HTML e JavaScript</div>
+                                            <div class="item">Configura validações client-side</div>
+                                            <div class="item">Gerencia permissões de acesso</div>
+                                            <div class="item">Integra reCAPTCHA v2/v3</div>
+                                            <div class="item">Processa schema de campos e opções</div>
+                                        </div>
+                                        <h5>formulario_processador():</h5>
+                                        <div class="ui bulleted list">
+                                            <div class="item">Processa envios de formulários no backend</div>
+                                            <div class="item">Valida dados e CAPTCHA</div>
+                                            <div class="item">Aplica rate limiting e anti-spam</div>
+                                            <div class="item">Salva dados em forms_submissions</div>
+                                            <div class="item">Envia emails de notificação</div>
+                                            <div class="item">Gerencia redirecionamentos pós-envio</div>
                                         </div>
                                     </div>
                                 </div>

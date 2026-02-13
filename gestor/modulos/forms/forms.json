@@ -102,11 +102,11 @@
                     "path": "forms\/view\/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "3fefed4307b41eccd4717acc7017bf50",
+                        "html": "03f798639d648b4607a9a0425c9888d5",
                         "css": "",
-                        "combined": "3fefed4307b41eccd4717acc7017bf50"
+                        "combined": "03f798639d648b4607a9a0425c9888d5"
                     }
                 },
                 {

@@ -67,20 +67,32 @@ $(document).ready(function () {
 
         const tabIdContent = 'tabFormsActive';
 
+        const tabActive = localStorage.getItem(gestor.moduloId + tabIdContent);
+
+        if (tabActive !== null) {
+            $('.menuForms .item').tab('change tab', tabActive);
+
+            tabsHandler(tabActive);
+        }
+
         $('.menuForms .item').tab({
             onLoad: function (tabPath, parameterArray, historyEvent) {
-                switch (tabPath) {
-                    case 'data':
-                        CodeMirrorJson.refresh();
-                        break;
-                    case 'info':
-                        CodeMirrorJsonInfo.refresh();
-                        break;
-                }
+                tabsHandler(tabPath);
 
                 localStorage.setItem(gestor.moduloId + tabIdContent, tabPath);
             }
         });
+
+        function tabsHandler(tabPath) {
+            switch (tabPath) {
+                case 'data':
+                    CodeMirrorJson.refresh();
+                    break;
+                case 'info':
+                    CodeMirrorJsonInfo.refresh();
+                    break;
+            }
+        }
 
         // ===== Accordion Fomantic UI
 
