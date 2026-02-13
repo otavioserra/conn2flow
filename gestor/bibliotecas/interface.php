@@ -309,6 +309,36 @@ function interface_trocar_valor_outro_array($params = false){
 }
 
 /**
+ * Encapsula um valor dentro de uma cápsula de texto.
+ *
+ * Substitui uma variável dentro de uma cápsula pelo valor fornecido.
+ *
+ * @global array $_GESTOR Sistema global do gestor.
+ *
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['dado'] Dado que será verificado e potencialmente trocado.
+ * @param string $params['capsula'] Cápsula de texto onde a variável será substituída.
+ * @param string $params['variavel'] Variável dentro da cápsula que será substituída pelo dado.
+ *
+ * @return string O valor encapsulado se encontrado, ou o dado original caso contrário.
+ */
+function interface_encapsular_valor($params = false){
+	global $_GESTOR;
+	
+	if($params)foreach($params as $var => $val)$$var = $val;
+	
+	// ===== Parâmetros
+	
+	// ===== 
+	
+	if(isset($capsula) && isset($variavel)){
+		return str_replace($variavel, $dado, $capsula);
+	}
+	
+	return $dado;
+}
+
+/**
  * Formata um dado de acordo com o formato especificado.
  *
  * Aplica diferentes tipos de formatação aos dados, incluindo conversão de datas,
@@ -369,6 +399,11 @@ function interface_formatar_dado($params = false){
 	// campo_troca - String - Obrigatório - Nome do campo que será usado para substituir o valor.
 	// campo_alvo - String - Obrigatório - Nome do campo que será usado como alvo da troca.
 		
+	// Se formato == 'encapsular'
+
+	// capsula - String - Obrigatório - String com o que o dado será encapsulado.
+	// variavel - String - Obrigatório - Marcador que será substituído pelo dado dentro da cápsula.
+		
 	// ===== 
 	
 	$formatoId = null;
@@ -395,6 +430,7 @@ function interface_formatar_dado($params = false){
 			case 'outraTabela': $dado = interface_trocar_valor_outra_tabela(Array('dado' => $dado,'tabela' => $formato['tabela'],'tabela2' => (isset($formato['tabela2']) ? $formato['tabela2'] : NULL),)); break;
 			case 'outroConjunto': $dado = interface_trocar_valor_outro_conjunto(Array('dado' => $dado,'conjunto' => $formato['conjunto'])); break;
 			case 'outroArray': $dado = interface_trocar_valor_outro_array(Array('dado' => $dado,'valores' => $formato['valores'],'campo_troca' => $formato['campo_troca'],'campo_alvo' => $formato['campo_alvo'])); break;
+			case 'encapsular': $dado = interface_encapsular_valor(Array('dado' => $dado,'capsula' => $formato['capsula'],'variavel' => $formato['variavel'])); break;
 		}
 		
 		// ===== Verificar se é necessário substituir valores por rótulos.
@@ -3324,8 +3360,8 @@ function interface_excluir_finalizar($params = false){
 	
 	$campo_nome = $banco['status']; $editar[$campo_tabela][] = $campo_nome."='D'";
 	
-	$campo_nome = "versao"; $editar[$campo_tabela][] = $campo_nome." = ".$campo_nome." + 1";
-	$campo_nome = "data_modificacao"; $editar[$campo_tabela][] = $campo_nome."=NOW()";
+	$campo_nome = $banco['versao']; $editar[$campo_tabela][] = $campo_nome." = ".$campo_nome." + 1";
+	$campo_nome = $banco['data_modificacao']; $editar[$campo_tabela][] = $campo_nome."=NOW()";
 	
 	$editar_sql[$campo_tabela] = banco_campos_virgulas($editar[$campo_tabela]);
 	
@@ -3452,8 +3488,8 @@ function interface_status_finalizar($params = false){
 	
 	$campo_nome = $banco['status']; $editar[$campo_tabela][] = $campo_nome."='" . $mudar_status . "'";
 	
-	$campo_nome = "versao"; $editar[$campo_tabela][] = $campo_nome." = ".$campo_nome." + 1";
-	$campo_nome = "data_modificacao"; $editar[$campo_tabela][] = $campo_nome."=NOW()";
+	$campo_nome = $banco['versao']; $editar[$campo_tabela][] = $campo_nome." = ".$campo_nome." + 1";
+	$campo_nome = $banco['data_modificacao']; $editar[$campo_tabela][] = $campo_nome."=NOW()";
 	
 	$editar_sql[$campo_tabela] = banco_campos_virgulas($editar[$campo_tabela]);
 	

@@ -11,6 +11,111 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR_
 
 // ===== Funções Principais
 
+function forms_adicionar(){
+	global $_GESTOR;
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
+	// ===== Gravar registro no Banco
+	
+	if(isset($_GESTOR['adicionar-banco'])){
+		$usuario = gestor_usuario();
+		
+		// ===== Validação de campos obrigatórios
+		
+		interface_validacao_campos_obrigatorios(Array(
+			'campos' => Array(
+				Array(
+					'regra' => 'texto-obrigatorio',
+					'campo' => 'name',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
+				),
+				Array(
+					'regra' => 'selecao-obrigatorio',
+					'campo' => 'template_id',
+					'label' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
+				)
+			)
+		));
+		
+		// ===== Definição do identificador
+		
+		$campos = null;
+		$campo_sem_aspas_simples = false;
+		
+		$id = banco_identificador(Array(
+			'id' => banco_escape_field($_REQUEST["name"]),
+			'tabela' => Array(
+				'nome' => $modulo['tabela']['nome'],
+				'campo' => $modulo['tabela']['id'],
+				'id_nome' => $modulo['tabela']['id_numerico'],
+				'where' => "language='".$_GESTOR['linguagem-codigo']."'",
+			),
+		));
+
+        // ===== Campos gerais
+		
+		$campo_nome = "id_users"; $campo_valor = $usuario['id_usuarios']; 				$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "name"; $post_nome = $campo_nome;      							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "description"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "module"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "template_id"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		
+		$fields_schema_str = $_REQUEST['fields_schema'] ?? '[]';
+		
+		$campo_nome = "fields_schema"; $campo_valor = $fields_schema_str;				if($_REQUEST['fields_schema'])	$campos[] = Array($campo_nome,banco_escape_field($campo_valor));
+		
+		// ===== Campos comuns
+		
+		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+	
+		banco_insert_name
+		(
+			$campos,
+			$modulo['tabela']['nome']
+		);
+		
+		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
+	}
+	
+	// ===== Inclusão Módulo JS
+	
+	gestor_pagina_javascript_incluir();
+	
+	// ===== Interface adicionar finalizar opções
+	
+	$_GESTOR['interface']['adicionar']['finalizar'] = Array(
+		'formulario' => Array(
+			'validacao' => Array(
+				Array(
+					'regra' => 'texto-obrigatorio',
+					'campo' => 'name',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
+					'identificador' => 'name',
+				),
+			)
+		),
+		'campos' => Array(
+			Array(
+				'tipo' => 'select',
+				'id' => 'module',
+				'nome' => 'module',
+				'procurar' => true,
+				'limpar' => true,
+				'selectClass' => 'three column',
+				'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-module-placeholder')),
+				'tabela' => Array(
+					'nome' => 'modulos',
+					'campo' => 'nome',
+					'id_numerico' => 'id',
+					'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
+				),
+			),
+		),
+	);
+}
+
 function forms_visualizar(){
 	global $_GESTOR;
 	
@@ -26,6 +131,8 @@ function forms_visualizar(){
 		'id',
         'id_forms',
 		'name',
+		'description',
+		'module',
 		'fields_schema',
 		'status'
 	);
@@ -54,6 +161,8 @@ function forms_visualizar(){
 	
 	if($_GESTOR['banco-resultado']){
 		$name = (isset($retorno_bd['name']) ? $retorno_bd['name'] : '');
+		$description = (isset($retorno_bd['description']) ? $retorno_bd['description'] : '');
+		$module = (isset($retorno_bd['module']) ? $retorno_bd['module'] : '');
 		$fields_schema = (isset($retorno_bd['fields_schema']) ? $retorno_bd['fields_schema'] : '');
 		
 		// ===== Formatar o JSON do fields_schema para exibição bonita
@@ -91,7 +200,10 @@ function forms_visualizar(){
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#name#',$name);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id#',$id);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#module#',$module);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#description#',$description);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#fields_schema#',$fields_schema);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#form_info#',json_encode($modulo['resources'][$_GESTOR['linguagem-codigo']]['form_info'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 		
 		// ===== Popular os metaDados
 		
@@ -135,6 +247,8 @@ function forms_interfaces_padroes(){
 					'nome' => $modulo['tabela']['nome'],
 					'campos' => Array(
 						'name',
+						'description',
+						'module',
 						$modulo['tabela']['data_modificacao'],
 					),
 					'id' => $modulo['tabela']['id'],
@@ -149,6 +263,25 @@ function forms_interfaces_padroes(){
 							'ordenar' => 'asc',
 						),
 						Array(
+							'id' => 'description',
+							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-description')),
+							'ordenar' => 'asc',
+						),
+						Array(
+							'id' => 'module',
+							'nome' => gestor_variaveis(Array('modulo' => 'modulos','id' => 'module-name')),
+							'formatar' => Array(
+								'id' => 'outraTabela',
+								'valor_senao_existe' => '<span class="ui info text">N/A</span>',
+								'tabela' => Array(
+									'nome' => 'modulos',
+									'campo_trocar' => 'nome',
+									'campo_referencia' => 'id',
+									'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
+								),
+							)
+						),
+						Array(
 							'id' => $modulo['tabela']['data_modificacao'],
 							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),
 							'formatar' => 'dataHora',
@@ -160,12 +293,52 @@ function forms_interfaces_padroes(){
 					'visualizar' => Array(
 						'url' => 'view/',
 						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-view')),
-						'icon' => 'eye',
+						'icon' => 'file alternate outline',
+						'cor' => 'basic brown',
+					),
+					'editar' => Array(
+						'url' => 'editar/',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-edit')),
+						'icon' => 'edit',
 						'cor' => 'basic blue',
+					),
+					'clonar' => Array(
+						'url' => 'clonar/',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-clone')),
+						'icon' => 'clone',
+						'cor' => 'basic teal',
+					),
+					'ativar' => Array(
+						'opcao' => 'status',
+						'status_atual' => 'I',
+						'status_mudar' => 'A',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-active')),
+						'icon' => 'eye slash',
+						'cor' => 'basic brown',
+					),
+					'desativar' => Array(
+						'opcao' => 'status',
+						'status_atual' => 'A',
+						'status_mudar' => 'I',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-desactive')),
+						'icon' => 'eye',
+						'cor' => 'basic green',
+					),
+					'excluir' => Array(
+						'opcao' => 'excluir',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-delete')),
+						'icon' => 'trash alternate',
+						'cor' => 'basic red',
 					),
 				),
 				'botoes' => Array(
-					
+					'adicionar' => Array(
+						'url' => 'adicionar/',
+						'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-insert')),
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-insert')),
+						'icon' => 'plus circle',
+						'cor' => 'blue',
+					),
 				),
 			);
 		break;
@@ -211,6 +384,9 @@ function forms_start(){
 		
 		switch($_GESTOR['opcao']){
 		    case 'visualizar': forms_visualizar(); break;
+			case 'adicionar': forms_adicionar(); break;
+		    // case 'editar': forms_editar(); break;
+		    // case 'clonar': forms_clonar(); break;
 		    case 'test-email-page': forms_test_email_page(); break;
 		}
 		

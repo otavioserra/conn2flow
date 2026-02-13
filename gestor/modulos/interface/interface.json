@@ -48,6 +48,11 @@
                     "type": "string"
                 },
                 {
+                    "id": "field-description",
+                    "value": "Descrição",
+                    "type": "string"
+                },
+                {
                     "id": "field-date-start",
                     "value": "Data Criação",
                     "type": "string"
@@ -497,6 +502,11 @@
                 {
                     "id": "field-name",
                     "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "field-description",
+                    "value": "Description",
                     "type": "string"
                 },
                 {

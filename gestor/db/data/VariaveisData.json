@@ -6103,6 +6103,15 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "forms",
+        "id": "form-module-placeholder",
+        "valor": "Selecione opcionalmente um módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "forms-submissions",
         "id": "error-msg-missing-fields",
         "valor": "Campos obrigatórios ausentes.",
@@ -6412,6 +6421,15 @@
         "modulo": "interface",
         "id": "field-name",
         "valor": "Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "interface",
+        "id": "field-description",
+        "valor": "Descrição",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7213,6 +7231,15 @@
         "modulo": "interface",
         "id": "field-name",
         "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "interface",
+        "id": "field-description",
+        "valor": "Description",
         "tipo": "string",
         "grupo": null,
         "descricao": null

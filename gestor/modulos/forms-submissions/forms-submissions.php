@@ -315,11 +315,22 @@ function forms_submissions_interfaces_padroes(){
 							'id' => 'form_id',
 							'nome' => gestor_variaveis(['id' => 'table-column-form', 'modulo' => $_GESTOR['modulo-id']]),
 							'ordenar' => 'asc',
+							'formatar' => Array(
+								'id' => 'encapsular',
+								'capsula' => '<div class="ui basic label">#id#</div>',
+								'variavel' => '#id#',
+							),
 						),
 						Array(
 							'id' => 'form_status',
 							'nome' => gestor_variaveis(['id' => 'table-column-status', 'modulo' => $_GESTOR['modulo-id']]),
 							'ordenar' => 'asc',
+							'formatar' => Array(
+								'id' => 'outroArray',
+								'campo_troca' => 'id',
+								'campo_alvo' => 'name',
+								'valores' => $modulo['resources'][$_GESTOR['linguagem-codigo']]['form_status'] ?? [],
+							)
 						),
 						Array(
 							'id' => $modulo['tabela']['data_modificacao'],
@@ -333,8 +344,8 @@ function forms_submissions_interfaces_padroes(){
 					'visualizar' => Array(
 						'url' => 'view/',
 						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-view')),
-						'icon' => 'eye',
-						'cor' => 'basic blue',
+						'icon' => 'file alternate outline',
+						'cor' => 'basic brown',
 					),
 				),
 				'botoes' => Array(

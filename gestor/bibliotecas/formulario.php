@@ -575,7 +575,7 @@ function formulario_processador($params = false){
     foreach($_POST as $key => $value){
         if(!in_array($key, ['_formId', 'ajax', 'ajaxOpcao', 'token', 'action', 'fingerprint', 'timestamp', 'honeypot', 'g-recaptcha-response'])){
             // Sanitizar valor para armazenamento seguro
-            $valueSanitized = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+            $valueSanitized = htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
             $field = ['name' => $key, 'value' => $valueSanitized];
             if(!in_array($key, $definedFields)){
                 $field['undefined'] = true;
@@ -669,7 +669,7 @@ function formulario_processador($params = false){
 			$fieldValue = isset($_POST[$fieldName]) ? $_POST[$fieldName] : '';
 
 			// Sanitizar o valor para prevenir XSS e injeções
-			$fieldValue = htmlspecialchars($fieldValue, ENT_QUOTES, 'UTF-8');
+			$fieldValue = htmlspecialchars($fieldValue, ENT_COMPAT, 'UTF-8');
 
 			// Formatações específicas por tipo
 			if($field['type'] === 'textarea'){
