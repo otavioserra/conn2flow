@@ -1,3 +1,4 @@
+<!-- ===== Basic Information ===== -->
 <table class="ui definition table">
     <thead>
         <tr>
@@ -7,27 +8,112 @@
     </thead>
     <tbody>
         <tr>
-            <td class="two wide">Name</td>
-            <td>#name#</td>
+            <td class="three wide">Name</td>
+            <td><strong>#name#</strong></td>
         </tr>
         <tr>
             <td>Submission ID</td>
-            <td>#id#</td>
+            <td><code>#id#</code></td>
         </tr>
-    </tbody>
-</table>
-
-<table class="ui table">
-    <thead>
         <tr>
-            <th><i class="code icon"></i> Fields Values</th>
+            <td>Form</td>
+            <td><div class="ui basic label">#form_id#</div></td>
         </tr>
-    </thead>
-    <tbody>
         <tr>
+            <td>Email Status</td>
+            <td>#email_status_badge#</td>
+        </tr>
+        <tr>
+            <td>Contact Status</td>
             <td>
-                <div class="ui segment"><textarea class="codemirror-json">#fields_values#</textarea></div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    #form_status_badge#
+                    <select id="form-status-select" class="ui dropdown" style="min-width: 160px;">
+                        <!-- status_option < -->
+                        <option value="#status_id#" #status_selected#>#status_name#</option>
+                        <!-- status_option > -->
+                    </select>
+                    <button id="btn-save-status" class="ui mini blue labeled icon button">
+                        <i class="save icon"></i> Save
+                    </button>
+                </div>
             </td>
         </tr>
     </tbody>
 </table>
+
+<!-- ===== Submitted Fields ===== -->
+<table class="ui celled table">
+    <thead>
+        <tr>
+            <th colspan="2"><i class="list alternate outline icon"></i> Submitted Fields</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- cel < -->
+        <tr>
+            <td class="three wide"><strong>#field_label#</strong></td>
+            <td>#field_value#</td>
+        </tr>
+        <!-- cel > -->
+    </tbody>
+</table>
+
+<!-- ===== Response History ===== -->
+<!-- response_history < -->
+<table class="ui celled table">
+    <thead>
+        <tr>
+            <th colspan="3"><i class="history icon"></i> Response History</th>
+        </tr>
+        <tr>
+            <th class="three wide">Date</th>
+            <th>Message</th>
+            <th class="two wide center aligned">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- response < -->
+        <tr>
+            <td class="three wide">#response_date#</td>
+            <td>#response_message#</td>
+            <td class="two wide center aligned">#response_status#</td>
+        </tr>
+        <!-- response > -->
+    </tbody>
+</table>
+<!-- response_history > -->
+
+<!-- ===== Reply Section ===== -->
+<!-- reply_section < -->
+<div class="ui blue segment">
+    <h4 class="ui dividing header"><i class="reply icon"></i> Reply to Contact</h4>
+    <div class="ui form" id="form-reply">
+        <div class="field">
+            <label>Recipient</label>
+            <div class="ui left icon input fluid">
+                <i class="envelope icon"></i>
+                <input type="text" id="reply-to-email" value="#reply_email#" readonly>
+            </div>
+        </div>
+        <div class="field">
+            <label>Message</label>
+            <textarea id="reply-message" rows="8" placeholder="Type your reply here..."></textarea>
+        </div>
+        <button id="btn-send-reply" class="ui blue labeled icon button">
+            <i class="paper plane icon"></i> Send Reply
+        </button>
+    </div>
+</div>
+<!-- reply_section > -->
+
+<!-- ===== Raw JSON Data ===== -->
+<div class="ui styled fluid accordion">
+    <div class="title">
+        <i class="dropdown icon"></i>
+        <i class="code icon"></i> Raw JSON Data
+    </div>
+    <div class="content">
+        <div class="ui segment"><textarea class="codemirror-json">#fields_values#</textarea></div>
+    </div>
+</div>
