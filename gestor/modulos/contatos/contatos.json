@@ -67,21 +67,21 @@
                     "name": "Base E-mail",
                     "id": "base-email",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "edf9255fc596f65c874548be17d531f6",
+                        "html": "a86c571994c13ad1d7195348876bde8f",
                         "css": "264aa703cd8ab87718946d4459f30d4a",
-                        "combined": "bb91f8ba32f9370c589cc70a553d74bb"
+                        "combined": "8f4129263d7a8dd56c470e61d6fae19d"
                     }
                 },
                 {
                     "name": "E-mail Preparado",
                     "id": "prepared-email",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "adf8a3260c1027c96be7629aae2b4ba9",
+                        "html": "f17a5684a66dc1fe6d82ad1049283e1f",
                         "css": "",
-                        "combined": "adf8a3260c1027c96be7629aae2b4ba9"
+                        "combined": "f17a5684a66dc1fe6d82ad1049283e1f"
                     }
                 }
             ],
@@ -164,11 +164,11 @@
                 {
                     "name": "Prepared Email",
                     "id": "prepared-email",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "fb283371d0b48ad684bbc0867c8d89b7",
+                        "html": "3197956958cb961e35a725634595df45",
                         "css": "",
-                        "combined": "fb283371d0b48ad684bbc0867c8d89b7"
+                        "combined": "3197956958cb961e35a725634595df45"
                     }
                 }
             ],

@@ -2090,14 +2090,14 @@
         "opcao": "visualizar",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<table class=\"ui definition table\">\r\n    <thead>\r\n        <tr>\r\n            <th><\/th>\r\n            <th><i class=\"info circle icon\"><\/i> Informações Básicas<\/th>\r\n        <\/tr>\r\n    <\/thead>\r\n    <tbody>\r\n        <tr>\r\n            <td class=\"two wide\">Nome<\/td>\r\n            <td>#name#<\/td>\r\n        <\/tr>\r\n        <tr>\r\n            <td>ID do Formulário<\/td>\r\n            <td>#id#<\/td>\r\n        <\/tr>\r\n    <\/tbody>\r\n<\/table>\r\n\r\n<table class=\"ui table\">\r\n    <thead>\r\n        <tr>\r\n            <th><i class=\"code icon\"><\/i> Esquema dos Campos<\/th>\r\n        <\/tr>\r\n    <\/thead>\r\n    <tbody>\r\n        <tr>\r\n            <td>\r\n                <div class=\"ui segment\"><textarea class=\"codemirror-json\">#fields_schema#<\/textarea><\/div>\r\n            <\/td>\r\n        <\/tr>\r\n    <\/tbody>\r\n<\/table>",
+        "html": "<table class=\"ui definition table\">\r\n    <thead>\r\n        <tr>\r\n            <th><\/th>\r\n            <th><i class=\"info circle icon\"><\/i> Informações Básicas<\/th>\r\n        <\/tr>\r\n    <\/thead>\r\n    <tbody>\r\n        <tr>\r\n            <td class=\"two wide\">Nome<\/td>\r\n            <td>#name#<\/td>\r\n        <\/tr>\r\n        <tr>\r\n            <td>ID do Envio<\/td>\r\n            <td>#id#<\/td>\r\n        <\/tr>\r\n    <\/tbody>\r\n<\/table>\r\n\r\n<table class=\"ui table\">\r\n    <thead>\r\n        <tr>\r\n            <th><i class=\"code icon\"><\/i> Valores dos Campos<\/th>\r\n        <\/tr>\r\n    <\/thead>\r\n    <tbody>\r\n        <tr>\r\n            <td>\r\n                <div class=\"ui segment\"><textarea class=\"codemirror-json\">#fields_values#<\/textarea><\/div>\r\n            <\/td>\r\n        <\/tr>\r\n    <\/tbody>\r\n<\/table>",
         "html_extra_head": null,
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"1085d7aa29e01c774e12330600bf53a3\",\"css\":\"\",\"combined\":\"1085d7aa29e01c774e12330600bf53a3\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"c4bb4a9f594afaedc84e6ef948fd3033\",\"css\":\"\",\"combined\":\"c4bb4a9f594afaedc84e6ef948fd3033\"}"
     },
     {
         "layout_id": "layout-pagina-simples",
@@ -2150,14 +2150,14 @@
         "opcao": "visualizar",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<table class=\"ui definition table\">\r\n    <thead>\r\n        <tr>\r\n            <th><\/th>\r\n            <th><i class=\"info circle icon\"><\/i> Basic Information<\/th>\r\n        <\/tr>\r\n    <\/thead>\r\n    <tbody>\r\n        <tr>\r\n            <td class=\"two wide\">Name<\/td>\r\n            <td>#name#<\/td>\r\n        <\/tr>\r\n        <tr>\r\n            <td>Form ID<\/td>\r\n            <td>#id#<\/td>\r\n        <\/tr>\r\n    <\/tbody>\r\n<\/table>\r\n\r\n<table class=\"ui table\">\r\n    <thead>\r\n        <tr>\r\n            <th><i class=\"code icon\"><\/i> Fields Schema<\/th>\r\n        <\/tr>\r\n    <\/thead>\r\n    <tbody>\r\n        <tr>\r\n            <td>\r\n                <div class=\"ui segment\"><textarea class=\"codemirror-json\">#fields_schema#<\/textarea><\/div>\r\n            <\/td>\r\n        <\/tr>\r\n    <\/tbody>\r\n<\/table>",
+        "html": "<table class=\"ui definition table\">\r\n    <thead>\r\n        <tr>\r\n            <th><\/th>\r\n            <th><i class=\"info circle icon\"><\/i> Basic Information<\/th>\r\n        <\/tr>\r\n    <\/thead>\r\n    <tbody>\r\n        <tr>\r\n            <td class=\"two wide\">Name<\/td>\r\n            <td>#name#<\/td>\r\n        <\/tr>\r\n        <tr>\r\n            <td>Submission ID<\/td>\r\n            <td>#id#<\/td>\r\n        <\/tr>\r\n    <\/tbody>\r\n<\/table>\r\n\r\n<table class=\"ui table\">\r\n    <thead>\r\n        <tr>\r\n            <th><i class=\"code icon\"><\/i> Fields Values<\/th>\r\n        <\/tr>\r\n    <\/thead>\r\n    <tbody>\r\n        <tr>\r\n            <td>\r\n                <div class=\"ui segment\"><textarea class=\"codemirror-json\">#fields_values#<\/textarea><\/div>\r\n            <\/td>\r\n        <\/tr>\r\n    <\/tbody>\r\n<\/table>",
         "html_extra_head": null,
         "css": null,
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.1",
-        "checksum": "{\"html\":\"e574550552a98a1b52345b00baac375b\",\"css\":\"\",\"combined\":\"e574550552a98a1b52345b00baac375b\"}"
+        "versao": 2,
+        "file_version": "1.2",
+        "checksum": "{\"html\":\"a304089d36cb95317180edc43880fd8a\",\"css\":\"\",\"combined\":\"a304089d36cb95317180edc43880fd8a\"}"
     },
     {
         "layout_id": "layout-pagina-simples",

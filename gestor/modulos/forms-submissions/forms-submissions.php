@@ -54,13 +54,13 @@ function forms_submissions_visualizar(){
 	
 	if($_GESTOR['banco-resultado']){
 		$name = (isset($retorno_bd['name']) ? $retorno_bd['name'] : '');
-		$fields_schema = (isset($retorno_bd['fields_schema']) ? $retorno_bd['fields_schema'] : '');
+		$fields_values = (isset($retorno_bd['fields_values']) ? $retorno_bd['fields_values'] : '');
 		
 		// ===== Alterar demais variáveis.
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#name#',$name);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id#',$id);
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#fields_schema#',$fields_schema);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#fields_values#',$fields_values);
 		
 		// ===== Popular os metaDados
 		
