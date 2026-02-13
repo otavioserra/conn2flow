@@ -1075,6 +1075,7 @@ $(document).ready(function () {
 				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">
 				<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"></script>
+				${codemirrorInitScript}
 				${codemirrorIncludes}
 				${htmlEditorVars}
 				${htmlEditorScriptPath}
@@ -1083,7 +1084,6 @@ $(document).ready(function () {
 			<body>
 				${htmlDoUsuario}
 				${htmlEditorModalHtml}
-				${codemirrorInitScript}
 			</body>
 			</html>
 		`;
