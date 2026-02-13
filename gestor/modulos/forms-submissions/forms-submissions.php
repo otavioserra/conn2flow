@@ -185,11 +185,11 @@ function forms_submissions_visualizar(){
 			
 			// Formatar valor por tipo
 			if($fieldType === 'textarea'){
-				$fieldValue = nl2br(htmlspecialchars($fieldValue, ENT_QUOTES, 'UTF-8'));
+				$fieldValue = nl2br(htmlspecialchars($fieldValue, ENT_COMPAT, 'UTF-8'));
 			} elseif($fieldType === 'email' && filter_var($fieldValue, FILTER_VALIDATE_EMAIL)){
 				$fieldValue = '<a href="mailto:' . htmlspecialchars($fieldValue, ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars($fieldValue, ENT_QUOTES, 'UTF-8') . '</a>';
 			} else {
-				$fieldValue = htmlspecialchars($fieldValue, ENT_QUOTES, 'UTF-8');
+				$fieldValue = htmlspecialchars($fieldValue, ENT_COMPAT, 'UTF-8');
 			}
 			
 			$cel_aux = modelo_var_troca($cel_aux, Array(
@@ -209,7 +209,7 @@ function forms_submissions_visualizar(){
 			
 			foreach($responses as $resp){
 				$cel_aux = $cel[$cel_nome];
-				$respMessage = nl2br(htmlspecialchars($resp['message'] ?? '', ENT_QUOTES, 'UTF-8'));
+				$respMessage = nl2br(htmlspecialchars($resp['message'] ?? '', ENT_COMPAT, 'UTF-8'));
 				$respDate = isset($resp['date']) ? interface_formatar_dado(Array('dado' => $resp['date'], 'formato' => 'dataHora')) : '';
 				$respStatusLabel = '';
 				if(isset($resp['status'])){
