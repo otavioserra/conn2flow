@@ -29,5 +29,60 @@
                 <div class="ui segment"><textarea class="codemirror-json">#fields_schema#</textarea></div>
             </td>
         </tr>
+        <tr>
+            <td>
+                <div class="ui segment"><textarea class="codemirror-json-info">
+                    {
+                        "name": "Nome do Formulário",
+                        "id": "id-do-formulario",
+                        "description": "Formulário padrão para contato, com campos de nome, e-mail e mensagem.",
+                        "fields_schema": {
+                            "field_name": "name",
+                            "field_email": "email",
+                            "access_max_simple": 5,
+                            "access_max": 10,
+                            "force_recaptcha": true,
+                            "email": {
+                                "recipients": "Otávio Campos <otavioserra@gmail.com>",
+                                "reply_to": "contact@conn2flow.com",
+                                "reply_to_name": "Conn2Flow Contact",
+                                "subject": "Chegou um novo contato #code#",
+                                "message_component": "prepared-email"
+                            },
+                            "redirects": {
+                                "success": {
+                                    "type": "url",
+                                    "path": "contact\/success\/"
+                                },
+                                "error": {
+                                    "type": "url",
+                                    "path": "contact\/"
+                                }
+                            },
+                            "fields": [
+                                {
+                                    "type": "text",
+                                    "name": "name",
+                                    "label": "Nome",
+                                    "required": true
+                                },
+                                {
+                                    "type": "email",
+                                    "name": "email",
+                                    "label": "E-mail",
+                                    "required": true
+                                },
+                                {
+                                    "type": "textarea",
+                                    "name": "message",
+                                    "label": "Mensagem",
+                                    "required": true
+                                }
+                            ]
+                        }
+                    }
+                </textarea></div>
+            </td>
+        </tr>
     </tbody>
 </table>

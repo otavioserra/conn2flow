@@ -127,10 +127,10 @@ function forms_submissions_visualizar(){
 		
 		$emailStatusBadge = '';
 		if($emailStatus === 'email-sent'){
-			$labelText = ($lang === 'pt-br') ? 'Enviado' : 'Sent';
+			$labelText = gestor_variaveis(['id' => 'sent-label', 'modulo' => $_GESTOR['modulo-id']]);
 			$emailStatusBadge = '<div class="ui green label"><i class="check icon"></i> '.$labelText.'</div>';
 		} elseif($emailStatus === 'email-not-sent'){
-			$labelText = ($lang === 'pt-br') ? 'Não Enviado' : 'Not Sent';
+			$labelText = gestor_variaveis(['id' => 'not-sent-label', 'modulo' => $_GESTOR['modulo-id']]);
 			$emailStatusBadge = '<div class="ui red label"><i class="times icon"></i> '.$labelText.'</div>';
 		} else {
 			$emailStatusBadge = '<div class="ui grey label">N/A</div>';
@@ -214,10 +214,10 @@ function forms_submissions_visualizar(){
 				$respStatusLabel = '';
 				if(isset($resp['status'])){
 					if($resp['status'] === 'sent'){
-						$sentLabel = ($lang === 'pt-br') ? 'Enviado' : 'Sent';
+						$sentLabel = gestor_variaveis(['id' => 'sent-label', 'modulo' => $_GESTOR['modulo-id']]);
 						$respStatusLabel = '<div class="ui mini green label"><i class="check icon"></i> '.$sentLabel.'</div>';
 					} else {
-						$failLabel = ($lang === 'pt-br') ? 'Falhou' : 'Failed';
+						$failLabel = gestor_variaveis(['id' => 'failed-label', 'modulo' => $_GESTOR['modulo-id']]);
 						$respStatusLabel = '<div class="ui mini red label"><i class="times icon"></i> '.$failLabel.'</div>';
 					}
 				}
@@ -313,11 +313,13 @@ function forms_submissions_interfaces_padroes(){
 						),
 						Array(
 							'id' => 'form_id',
-							'nome' => 'Form',
+							'nome' => gestor_variaveis(['id' => 'table-column-form', 'modulo' => $_GESTOR['modulo-id']]),
+							'ordenar' => 'asc',
 						),
 						Array(
 							'id' => 'form_status',
-							'nome' => 'Status',
+							'nome' => gestor_variaveis(['id' => 'table-column-status', 'modulo' => $_GESTOR['modulo-id']]),
+							'ordenar' => 'asc',
 						),
 						Array(
 							'id' => $modulo['tabela']['data_modificacao'],
@@ -370,7 +372,7 @@ function forms_submissions_ajax_update_status(){
 	if(!$id_numerico || !$form_status){
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'error',
-			'message' => ($lang === 'pt-br') ? 'Campos obrigatórios ausentes.' : 'Missing required fields.',
+			'message' => gestor_variaveis(Array('id' => 'error-msg-missing-fields','modulo' => $_GESTOR['modulo-id'])),
 		);
 		return;
 	}
@@ -380,7 +382,7 @@ function forms_submissions_ajax_update_status(){
 	if(!in_array($form_status, $allowedStatuses)){
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'error',
-			'message' => ($lang === 'pt-br') ? 'Valor de status inválido.' : 'Invalid status value.',
+			'message' => gestor_variaveis(['id' => 'error-msg-invalid-status', 'modulo' => $_GESTOR['modulo-id']]),
 		);
 		return;
 	}
@@ -390,7 +392,7 @@ function forms_submissions_ajax_update_status(){
 	
 	$_GESTOR['ajax-json'] = Array(
 		'status' => 'success',
-		'message' => ($lang === 'pt-br') ? 'Status atualizado com sucesso.' : 'Status updated successfully.',
+		'message' => gestor_variaveis(['id' => 'success-msg-status-updated', 'modulo' => $_GESTOR['modulo-id']]),
 		'form_status_label' => forms_submissions_get_status_label($form_status),
 	);
 }
@@ -411,7 +413,7 @@ function forms_submissions_ajax_reply(){
 	if(!$id_numerico || empty($reply_message) || empty($reply_email)){
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'error',
-			'message' => ($lang === 'pt-br') ? 'Campos obrigatórios ausentes.' : 'Missing required fields.',
+			'message' => gestor_variaveis(['id' => 'error-msg-missing-fields', 'modulo' => $_GESTOR['modulo-id']]),
 		);
 		return;
 	}
@@ -420,7 +422,7 @@ function forms_submissions_ajax_reply(){
 	if(!filter_var($reply_email, FILTER_VALIDATE_EMAIL)){
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'error',
-			'message' => ($lang === 'pt-br') ? 'Endereço de email inválido.' : 'Invalid email address.',
+			'message' => gestor_variaveis(['id' => 'error-msg-invalid-email', 'modulo' => $_GESTOR['modulo-id']]),
 		);
 		return;
 	}
@@ -436,7 +438,7 @@ function forms_submissions_ajax_reply(){
 	if(!$submission){
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'error',
-			'message' => ($lang === 'pt-br') ? 'Registro não encontrado.' : 'Submission not found.',
+			'message' => gestor_variaveis(['id' => 'error-msg-submission-not-found', 'modulo' => $_GESTOR['modulo-id']]),
 		);
 		return;
 	}
@@ -508,12 +510,16 @@ function forms_submissions_ajax_reply(){
 	$mensagem = $resultadoImagens['html'];
 	$imagens = $resultadoImagens['imagens'];
 	
-	// Configurar remetente
-	$responderPara = !empty($_CONFIG['email']['sender']['replyTo']) ? $_CONFIG['email']['sender']['replyTo'] : null;
-	$responderParaNome = !empty($_CONFIG['email']['sender']['replyToName']) ? $_CONFIG['email']['sender']['replyToName'] : null;
+	// Configurar remetente com 2 níveis: fields_schema -> $_CONFIG
+	$emailData = [];
+	if($formDefinition && isset($schema['email']) && is_array($schema['email'])){
+		$emailData = $schema['email'];
+	}
+	$responderPara = !empty($emailData) && isset($emailData['reply_to']) ? $emailData['reply_to'] : (!empty($_CONFIG['email']['sender']['replyTo']) ? $_CONFIG['email']['sender']['replyTo'] : null);
+	$responderParaNome = !empty($emailData) && isset($emailData['reply_to_name']) ? $emailData['reply_to_name'] : (!empty($_CONFIG['email']['sender']['replyToName']) ? $_CONFIG['email']['sender']['replyToName'] : null);
 	
 	// Assunto do email
-	$subjectPrefix = ($lang === 'pt-br') ? 'Re: Contato de ' : 'Re: Contact from ';
+	$subjectPrefix = gestor_variaveis(['id' => 'email-subject-prefix', 'modulo' => $_GESTOR['modulo-id']]);
 	$assunto = $subjectPrefix . $submission['name'];
 	
 	// Enviar email
@@ -553,12 +559,12 @@ function forms_submissions_ajax_reply(){
 	if($emailEnviado){
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'success',
-			'message' => ($lang === 'pt-br') ? 'Resposta enviada com sucesso!' : 'Reply sent successfully!',
+			'message' => gestor_variaveis(['id' => 'success-msg-reply-sent', 'modulo' => $_GESTOR['modulo-id']]),
 		);
 	} else {
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'warning',
-			'message' => ($lang === 'pt-br') ? 'Resposta registrada, mas houve um erro ao enviar o email.' : 'Reply recorded, but there was an error sending the email.',
+			'message' => gestor_variaveis(['id' => 'warning-msg-reply-recorded-email-error', 'modulo' => $_GESTOR['modulo-id']]),
 		);
 	}
 }

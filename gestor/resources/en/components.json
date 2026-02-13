@@ -403,11 +403,11 @@
         "name": "Prepared Email Form",
         "id": "forms-prepared-email",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "5c0f5b224517513f1e596dbfc87329a6",
+            "html": "0a60f73c73f7cd18c3d78835b6df4ca9",
             "css": "",
-            "combined": "5c0f5b224517513f1e596dbfc87329a6"
+            "combined": "0a60f73c73f7cd18c3d78835b6df4ca9"
         }
     }
 ]

@@ -496,6 +496,7 @@ function formulario_processador($params = false){
 	// ===== Verificar pegar dados do formulário para validação e armazenamento
     $definedFields = [];
     $fieldNameValue = $formId . '-' . time(); // Fallback
+    $fieldEmailValue = ''; // Fallback
     $redirectSuccess = '/sucesso/'; // Padrão
     $emailData = [];
     if($formDefinition){
@@ -511,15 +512,22 @@ function formulario_processador($params = false){
         if(isset($schema['fields'])){
             $definedFields = array_column($schema['fields'], 'name');
         }
-        if(isset($schema['field_name']) && isset($_POST[$schema['field_name']])){
-            $fieldNameValue = $_POST[$schema['field_name']];
-        }
         if(isset($schema['redirects']['success'])){
             $redirectSuccess = $schema['redirects']['success']['path'];
         }
         if(isset($schema['email']) && is_array($schema['email'])){
             $emailData = $schema['email'];
         }
+        if(isset($schema['field_name']) && isset($_POST[$schema['field_name']])){
+            $fieldNameValue = $_POST[$schema['field_name']];
+			$fieldNameValueFlag = true;
+        }
+        if(isset($schema['field_email']) && isset($_POST[$schema['field_email']])){
+            $fieldEmailValue = $_POST[$schema['field_email']];
+        }
+
+		$responderPara = !empty($fieldEmailValue) ? $fieldEmailValue : (!empty($emailData) && isset($emailData['reply_to']) ? $emailData['reply_to'] : (!empty($_CONFIG['email']['sender']['replyTo']) ? $_CONFIG['email']['sender']['replyTo'] : null));
+		$responderParaNome = isset($fieldNameValueFlag) ? $fieldNameValue : (!empty($emailData) && isset($emailData['reply_to_name']) ? $emailData['reply_to_name'] : (!empty($_CONFIG['email']['sender']['replyToName']) ? $_CONFIG['email']['sender']['replyToName'] : null));
         
         // ===== Validar campos obrigatórios
         foreach($schema['fields'] as $field){
@@ -609,8 +617,6 @@ function formulario_processador($params = false){
 	}
 			
 	$destinatariosTXT = !empty($emailData) && isset($emailData['recipients']) ? $emailData['recipients'] : $defaultSender;
-	$responderPara = !empty($emailData) && isset($emailData['reply_to']) ? $emailData['reply_to'] : (!empty($_CONFIG['email']['sender']['replyTo']) ? $_CONFIG['email']['sender']['replyTo'] : null);
-	$responderParaNome = !empty($emailData) && isset($emailData['reply_to_name']) ? $emailData['reply_to_name'] : (!empty($_CONFIG['email']['sender']['replyToName']) ? $_CONFIG['email']['sender']['replyToName'] : null);
 	
 	$destinatarios = explode(';',trim($destinatariosTXT));
 

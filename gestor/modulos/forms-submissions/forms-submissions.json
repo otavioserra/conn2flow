@@ -84,6 +84,73 @@
                         "combined": "8cc2569c243cc34a400dd1e823606b51"
                     }
                 }
+            ],
+            "variables": [
+                {
+                    "id": "error-msg-missing-fields",
+                    "value": "Campos obrigatórios ausentes.",
+                    "type": "string"
+                },
+                {
+                    "id": "sent-label",
+                    "value": "Enviado",
+                    "type": "string"
+                },
+                {
+                    "id": "not-sent-label",
+                    "value": "Não Enviado",
+                    "type": "string"
+                },
+                {
+                    "id": "failed-label",
+                    "value": "Falhou",
+                    "type": "string"
+                },
+                {
+                    "id": "error-msg-invalid-status",
+                    "value": "Valor de status inválido.",
+                    "type": "string"
+                },
+                {
+                    "id": "success-msg-status-updated",
+                    "value": "Status atualizado com sucesso.",
+                    "type": "string"
+                },
+                {
+                    "id": "error-msg-invalid-email",
+                    "value": "Endereço de email inválido.",
+                    "type": "string"
+                },
+                {
+                    "id": "error-msg-submission-not-found",
+                    "value": "Registro não encontrado.",
+                    "type": "string"
+                },
+                {
+                    "id": "email-subject-prefix",
+                    "value": "Re: Contato de ",
+                    "type": "string"
+                },
+                {
+                    "id": "success-msg-reply-sent",
+                    "value": "Resposta enviada com sucesso!",
+                    "type": "string"
+                },
+                {
+                    "id": "warning-msg-reply-recorded-email-error",
+                    "value": "Resposta registrada, mas houve um erro ao enviar o email.",
+                    "type": "string"
+                },
+                {
+                    "id": "table-column-form",
+                    "value": "Formulário",
+                    "type": "string"
+                },
+                {
+                    "id": "table-column-status",
+                    "value": "Status",
+                    "type": "string"
+                }
             ]
         },
         "en": {
@@ -153,6 +220,73 @@
                         "css": "",
                         "combined": ""
                     }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "error-msg-missing-fields",
+                    "value": "Missing required fields.",
+                    "type": "string"
+                },
+                {
+                    "id": "sent-label",
+                    "value": "Sent",
+                    "type": "string"
+                },
+                {
+                    "id": "not-sent-label",
+                    "value": "Not Sent",
+                    "type": "string"
+                },
+                {
+                    "id": "failed-label",
+                    "value": "Failed",
+                    "type": "string"
+                },
+                {
+                    "id": "error-msg-invalid-status",
+                    "value": "Invalid status value.",
+                    "type": "string"
+                },
+                {
+                    "id": "success-msg-status-updated",
+                    "value": "Status updated successfully.",
+                    "type": "string"
+                },
+                {
+                    "id": "error-msg-invalid-email",
+                    "value": "Invalid email address.",
+                    "type": "string"
+                },
+                {
+                    "id": "error-msg-submission-not-found",
+                    "value": "Submission not found.",
+                    "type": "string"
+                },
+                {
+                    "id": "email-subject-prefix",
+                    "value": "Re: Contact from ",
+                    "type": "string"
+                },
+                {
+                    "id": "success-msg-reply-sent",
+                    "value": "Reply sent successfully!",
+                    "type": "string"
+                },
+                {
+                    "id": "warning-msg-reply-recorded-email-error",
+                    "value": "Reply recorded, but there was an error sending the email.",
+                    "type": "string"
+                },
+                {
+                    "id": "table-column-form",
+                    "value": "Form",
+                    "type": "string"
+                },
+                {
+                    "id": "table-column-status",
+                    "value": "Status",
+                    "type": "string"
                 }
             ]
         }

@@ -6103,6 +6103,240 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "error-msg-missing-fields",
+        "valor": "Campos obrigatórios ausentes.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "sent-label",
+        "valor": "Enviado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "not-sent-label",
+        "valor": "Não Enviado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "failed-label",
+        "valor": "Falhou",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "error-msg-invalid-status",
+        "valor": "Valor de status inválido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "success-msg-status-updated",
+        "valor": "Status atualizado com sucesso.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "error-msg-invalid-email",
+        "valor": "Endereço de email inválido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "error-msg-submission-not-found",
+        "valor": "Registro não encontrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "email-subject-prefix",
+        "valor": "Re: Contato de ",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "success-msg-reply-sent",
+        "valor": "Resposta enviada com sucesso!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "warning-msg-reply-recorded-email-error",
+        "valor": "Resposta registrada, mas houve um erro ao enviar o email.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "table-column-form",
+        "valor": "Formulário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "table-column-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "error-msg-missing-fields",
+        "valor": "Missing required fields.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "sent-label",
+        "valor": "Sent",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "not-sent-label",
+        "valor": "Not Sent",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "failed-label",
+        "valor": "Failed",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "error-msg-invalid-status",
+        "valor": "Invalid status value.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "success-msg-status-updated",
+        "valor": "Status updated successfully.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "error-msg-invalid-email",
+        "valor": "Invalid email address.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "error-msg-submission-not-found",
+        "valor": "Submission not found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "email-subject-prefix",
+        "valor": "Re: Contact from ",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "success-msg-reply-sent",
+        "valor": "Reply sent successfully!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "warning-msg-reply-recorded-email-error",
+        "valor": "Reply recorded, but there was an error sending the email.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "table-column-form",
+        "valor": "Form",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms-submissions",
+        "id": "table-column-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "interface",
         "id": "field-positive-value",
         "valor": "sim",
