@@ -6112,6 +6112,42 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "forms",
+        "id": "form-module-label",
+        "valor": "Módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms",
+        "id": "form-template_id-label",
+        "valor": "Template (Recurso)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms",
+        "id": "form-fields_schema-label",
+        "valor": "Esquema dos Campos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "forms",
+        "id": "form-description-label",
+        "valor": "Descrição",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "forms-submissions",
         "id": "error-msg-missing-fields",
         "valor": "Campos obrigatórios ausentes.",

@@ -102,11 +102,11 @@
                     "path": "forms\/view\/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "03f798639d648b4607a9a0425c9888d5",
+                        "html": "04821cf9bc5b06ffe17a3a105133c337",
                         "css": "",
-                        "combined": "03f798639d648b4607a9a0425c9888d5"
+                        "combined": "04821cf9bc5b06ffe17a3a105133c337"
                     }
                 },
                 {
@@ -116,11 +116,39 @@
                     "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "c622b7d9cad181915f12f6939fe80861",
+                        "css": "",
+                        "combined": "c622b7d9cad181915f12f6939fe80861"
+                    }
+                },
+                {
+                    "name": "Formulários Editar",
+                    "id": "forms-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms\/editar\/",
+                    "type": "system",
+                    "option": "editar",
                     "version": "1.2",
                     "checksum": {
-                        "html": "78fc80ff934de45489e92c066da1cdba",
+                        "html": "a409e9b5da36b2899b9afba33632da6d",
                         "css": "",
-                        "combined": "78fc80ff934de45489e92c066da1cdba"
+                        "combined": "a409e9b5da36b2899b9afba33632da6d"
+                    }
+                },
+                {
+                    "name": "Formulários Clonar",
+                    "id": "forms-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "54041d657a911fabc56a41b2d2283669",
+                        "css": "",
+                        "combined": "54041d657a911fabc56a41b2d2283669"
                     }
                 },
                 {
@@ -143,6 +171,26 @@
                 {
                     "id": "form-module-placeholder",
                     "value": "Selecione opcionalmente um módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Template (Recurso)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Esquema dos Campos",
+                    "type": "string"
+                },
+                {
+                    "id": "form-description-label",
+                    "value": "Descrição",
                     "type": "string"
                 }
             ]

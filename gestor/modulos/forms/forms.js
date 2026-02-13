@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    if ($('#_gestor-interface-visualizar-dados').length > 0) {
+    if ($('#_gestor-interface-visualizar-dados').length > 0 || $('#_gestor-interface-edit-dados').length > 0 || $('#_gestor-interface-insert-dados').length > 0) {
 
 
         // ===== Codemirror 
