@@ -205,5 +205,18 @@
         "versao": 3,
         "file_version": "1.3",
         "checksum": "{\"html\":\"b3fd2c25e8096e1504fc57e546490642\",\"css\":\"\",\"combined\":\"b3fd2c25e8096e1504fc57e546490642\"}"
+    },
+    {
+        "nome": "Simple Page TailwindCSS",
+        "id": "pagina-simples-tailwindcss",
+        "language": "en",
+        "modulo": "forms",
+        "html": null,
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.4",
+        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
     }
 ]

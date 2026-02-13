@@ -1,31 +1,17 @@
-<table class="ui definition table">
-    <thead>
-        <tr>
-            <th></th>
-            <th><i class="info circle icon"></i> Basic Information</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Form ID</td>
-            <td>
-                <div class="ui basic label">#id#</div>
-            </td>
-        </tr>
-        <tr>
-            <td class="two wide">Name</td>
-            <td>#name#</td>
-        </tr>
-        <tr>
-            <td>Description</td>
-            <td>#description#</td>
-        </tr>
-        <tr>
-            <td>Module</td>
-            <td>#module#</td>
-        </tr>
-    </tbody>
-</table>
+<div class="field">
+    <label>Name</label>
+    <input type="text" name="name" placeholder="Ex: Form Name" value="#name#">
+</div>
+
+<div class="field">
+    <label>Description</label>
+    <input type="text" name="description" placeholder="Ex: Form Description" value="#description#">
+</div>
+
+<div class="field">
+    <label>#form-module-label#</label>
+    <span>#select-module#</span>
+</div>
 
 <table class="ui table">
     <thead>
@@ -36,7 +22,6 @@
     <tbody>
         <tr>
             <td>
-
                 <div class="fields-schema-component">
                     <div class="ui top attached tabular menu menuForms">
                         <a class="active item" data-tab="data"
@@ -47,7 +32,7 @@
                             data-position="top left" data-inverted="">Information</a>
                     </div>
                     <div class="ui bottom attached tab segment containerForms" data-tab="data">
-                        <textarea class="codemirror-json">#fields_schema#</textarea>
+                        <textarea class="codemirror-json" name="fields_schema">#fields_schema#</textarea>
                     </div>
                     <div class="ui bottom attached tab segment containerForms" data-tab="info">
                         <div class="ui two column grid">

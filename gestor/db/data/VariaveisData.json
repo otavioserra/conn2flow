@@ -6147,6 +6147,51 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "en",
+        "modulo": "forms",
+        "id": "form-module-placeholder",
+        "valor": "Optionally select a module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms",
+        "id": "form-module-label",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms",
+        "id": "form-template_id-label",
+        "valor": "Template (Resource)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms",
+        "id": "form-fields_schema-label",
+        "valor": "Fields Schema",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "forms",
+        "id": "form-description-label",
+        "valor": "Description",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "pt-br",
         "modulo": "forms-submissions",
         "id": "error-msg-missing-fields",

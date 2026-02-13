@@ -196,6 +196,68 @@
             ]
         },
         "en": {
+            "form_info": {
+                "name": "Form Name",
+                "id": "form-id",
+                "description": "Form description.",
+                "fields_schema": {
+                    "field_name": "name",
+                    "field_email": "email",
+                    "access_max_simple": 5,
+                    "access_max": 10,
+                    "force_recaptcha": true,
+                    "email": {
+                        "recipients": "Name <email@email.com>; Another Name <another@email.com>",
+                        "reply_to": "email@email.com",
+                        "reply_to_name": "Sender Name",
+                        "subject": "Subject nº #code#",
+                        "template": "template-component-id"
+                    },
+                    "redirects": {
+                        "success": {
+                            "type": "url",
+                            "path": "your-page\/success\/"
+                        },
+                        "error": {
+                            "type": "url",
+                            "path": "your-page\/error\/"
+                        }
+                    },
+                    "fields": [
+                        {
+                            "type": "text",
+                            "name": "name",
+                            "label": "Name",
+                            "required": true
+                        },
+                        {
+                            "type": "email",
+                            "name": "email",
+                            "label": "E-mail",
+                            "required": true
+                        },
+                        {
+                            "type": "textarea",
+                            "name": "message",
+                            "label": "Message",
+                            "required": false
+                        }
+                    ]
+                }
+            },
+            "layouts": [
+                {
+                    "name": "Simple Page TailwindCSS",
+                    "id": "pagina-simples-tailwindcss",
+                    "framework_css": "tailwindcss",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
             "pages": [
                 {
                     "name": "Forms List",
@@ -219,12 +281,96 @@
                     "path": "forms\/view\/",
                     "type": "system",
                     "option": "visualizar",
+                    "version": "1.11",
+                    "checksum": {
+                        "html": "7a74bf13f948a29605ca7c1ae362d3c1",
+                        "css": "",
+                        "combined": "7a74bf13f948a29605ca7c1ae362d3c1"
+                    }
+                },
+                {
+                    "name": "Forms Add",
+                    "id": "forms-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "a46c748c141c311ee68d2a0c90b91f43",
+                        "css": "",
+                        "combined": "a46c748c141c311ee68d2a0c90b91f43"
+                    }
+                },
+                {
+                    "name": "Forms Edit",
+                    "id": "forms-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.3",
+                    "checksum": {
+                        "html": "2cb9802dc66d9cbea403bf0d6965b4ee",
+                        "css": "",
+                        "combined": "2cb9802dc66d9cbea403bf0d6965b4ee"
+                    }
+                },
+                {
+                    "name": "Forms Clone",
+                    "id": "forms-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "8359d59df7b78eccc64b321cab03a1a4",
+                        "css": "",
+                        "combined": "8359d59df7b78eccc64b321cab03a1a4"
+                    }
+                },
+                {
+                    "name": "Forms Test Email Page",
+                    "id": "forms-test-email-page",
+                    "layout": "pagina-simples-tailwindcss",
+                    "path": "forms\/test-email-page\/",
+                    "type": "system",
+                    "option": "test-email-page",
+                    "framework_css": "tailwindcss",
                     "version": "1.1",
                     "checksum": {
-                        "html": "e574550552a98a1b52345b00baac375b",
+                        "html": "752b731f15b5cb2b87db994b3599a35f",
                         "css": "",
-                        "combined": "e574550552a98a1b52345b00baac375b"
+                        "combined": "752b731f15b5cb2b87db994b3599a35f"
                     }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Optionally select a module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Template (Resource)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Fields Schema",
+                    "type": "string"
+                },
+                {
+                    "id": "form-description-label",
+                    "value": "Description",
+                    "type": "string"
                 }
             ]
         }
