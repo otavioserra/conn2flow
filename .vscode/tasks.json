@@ -173,6 +173,18 @@
             "type": "shell",
             "command": "bash ./ai-workspace/en/scripts/projects/deploy-project.sh --project ${input:projectID}",
             "problemMatcher": []
+        },
+        {
+            "label": "🗃️ Projects - Update Current Project",
+            "type": "shell",
+            "command": "bash ./ai-workspace/en/scripts/projects/update-system.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "🗃️ Projects - Update Project -> ID",
+            "type": "shell",
+            "command": "bash ./ai-workspace/en/scripts/projects/update-system.sh --project ${input:projectID}",
+            "problemMatcher": []
         }
     ],
     "inputs": [

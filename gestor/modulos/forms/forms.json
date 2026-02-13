@@ -281,11 +281,11 @@
                     "path": "forms\/view\/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "7a74bf13f948a29605ca7c1ae362d3c1",
+                        "html": "961ea4c4f24d23bb85223ee680b2cf73",
                         "css": "",
-                        "combined": "7a74bf13f948a29605ca7c1ae362d3c1"
+                        "combined": "961ea4c4f24d23bb85223ee680b2cf73"
                     }
                 },
                 {
@@ -295,11 +295,11 @@
                     "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "a46c748c141c311ee68d2a0c90b91f43",
+                        "html": "f174373f96c82a081fef1ceb38e6db5c",
                         "css": "",
-                        "combined": "a46c748c141c311ee68d2a0c90b91f43"
+                        "combined": "f174373f96c82a081fef1ceb38e6db5c"
                     }
                 },
                 {
@@ -309,11 +309,11 @@
                     "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "2cb9802dc66d9cbea403bf0d6965b4ee",
+                        "html": "2216e3fcc898d3c00fb54ba1ebb47292",
                         "css": "",
-                        "combined": "2cb9802dc66d9cbea403bf0d6965b4ee"
+                        "combined": "2216e3fcc898d3c00fb54ba1ebb47292"
                     }
                 },
                 {
@@ -323,11 +323,11 @@
                     "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "8359d59df7b78eccc64b321cab03a1a4",
+                        "html": "7350c0cbaf586a78f2a7de49661b9d48",
                         "css": "",
-                        "combined": "8359d59df7b78eccc64b321cab03a1a4"
+                        "combined": "7350c0cbaf586a78f2a7de49661b9d48"
                     }
                 },
                 {

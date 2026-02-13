@@ -282,6 +282,141 @@ function api_project_update() {
     }
 }
 
+// =========================== Handlers de Endpoint SYSTEM
+
+function api_handle_system() {
+    global $_GESTOR;
+
+    $sub_endpoint = isset($_GESTOR['caminho'][2]) ? $_GESTOR['caminho'][2] : null;
+
+    switch ($sub_endpoint) {
+        case 'update':
+            api_system_update();
+            break;
+
+        default:
+            api_response_error('Sub-endpoint SYSTEM não encontrado: ' . $sub_endpoint, 404);
+    }
+}
+
+function api_system_update() {
+    global $_GESTOR;
+
+    // Requer autenticação
+    api_authenticate(true);
+
+    $method = $_SERVER['REQUEST_METHOD'];
+    if ($method !== 'POST') {
+        api_response_error('Método não permitido. Use POST.', 405);
+    }
+
+    // Obter ação do POST ou da query string
+    $action = $_POST['action'] ?? $_REQUEST['action'] ?? null;
+    if (!$action) {
+        api_response_error('Parâmetro "action" é obrigatório. Ações válidas: start, deploy, db, finalize, status, cancel', 400);
+    }
+
+    $valid_actions = ['start', 'deploy', 'db', 'finalize', 'status', 'cancel'];
+    if (!in_array($action, $valid_actions)) {
+        api_response_error('Ação inválida: ' . $action . '. Válidas: ' . implode(', ', $valid_actions), 400);
+    }
+
+    // Construir parâmetros para o sistema de atualização
+    $params = ['action' => $action];
+
+    // Para ação start, repassar configurações adicionais
+    if ($action === 'start') {
+        $param_keys = [
+            'domain', 'tag', 'only_files', 'only_db', 'dry_run', 'local',
+            'debug', 'no_db', 'force_all', 'log_diff', 'backup', 'no_verify',
+            'download_only', 'skip_download', 'tables', 'clean_temp', 'logs_retention_days'
+        ];
+        foreach ($param_keys as $key) {
+            $val = $_POST[$key] ?? $_REQUEST[$key] ?? null;
+            if ($val !== null) {
+                $params[$key] = $val;
+            }
+        }
+        // Domínio padrão
+        if (empty($params['domain'])) {
+            $params['domain'] = $_SERVER['SERVER_NAME'] ?? 'localhost';
+        }
+    }
+
+    // Para ações que operam em sessão, exigir sid
+    if (in_array($action, ['deploy', 'db', 'finalize', 'status', 'cancel'])) {
+        $sid = $_POST['sid'] ?? $_REQUEST['sid'] ?? null;
+        if (!$sid) {
+            api_response_error('Parâmetro "sid" (session ID) é obrigatório para a ação: ' . $action, 400);
+        }
+        $params['sid'] = $sid;
+    }
+
+    // Executar atualização via include do script (mesma abordagem de admin-atualizacoes)
+    $result = api_call_system_update($params);
+
+    if (isset($result['error'])) {
+        $http_code = 500;
+        // Erros de sessão são 400 (bad request)
+        if (strpos($result['error'], 'Sessão') !== false || strpos($result['error'], 'inválida') !== false) {
+            $http_code = 400;
+        }
+        api_response_error($result['error'], $http_code, $result);
+    }
+
+    api_response_success($result, 'Ação "' . $action . '" executada com sucesso');
+}
+
+/**
+ * Chama o script atualizacoes-sistema.php simulando uma requisição web.
+ * Mesma técnica utilizada por admin_atualizacoes_call_system().
+ */
+function api_call_system_update(array $params): array {
+    global $_GESTOR;
+
+    $script = $_GESTOR['ROOT_PATH'] . 'controladores/atualizacoes/atualizacoes-sistema.php';
+
+    if (!is_file($script)) {
+        return ['error' => 'Script de atualização não encontrado: ' . $script];
+    }
+
+    // Construir query string a partir dos parâmetros
+    $query = http_build_query($params);
+
+    // Salvar estado atual de $_GET e $_REQUEST
+    $saved_get = $_GET;
+    $saved_request = $_REQUEST;
+
+    // Simular requisição web (mesma abordagem de admin-atualizacoes)
+    $_GET = $_REQUEST = [];
+    parse_str($query, $_GET);
+    $_REQUEST = $_GET;
+
+    // Incluir script e capturar saída JSON
+    ob_start();
+    try {
+        include $script;
+    } catch (Throwable $e) {
+        ob_end_clean();
+        $_GET = $saved_get;
+        $_REQUEST = $saved_request;
+        return ['error' => 'Exceção durante atualização: ' . $e->getMessage()];
+    }
+    $raw = ob_get_clean();
+
+    // Restaurar estado
+    $_GET = $saved_get;
+    $_REQUEST = $saved_request;
+
+    // Decodificar resposta JSON
+    $json = json_decode($raw, true);
+    if ($json === null) {
+        return ['error' => 'Resposta inválida do sistema de atualização', 'raw' => substr($raw, 0, 2000)];
+    }
+
+    return $json;
+}
+
 // =========================== Funções Auxiliares para Manipulação de Arquivos
 
 function api_executar_atualizacao_banco($project_path, $project_id = null) {
@@ -450,6 +585,10 @@ function api_route_request() {
 
         case 'project':
             api_handle_project();
+            break;
+
+        case 'system':
+            api_handle_system();
             break;
 
         default:
