@@ -13,15 +13,15 @@
 ## 🤔 Dúvidas e 📝 Sugestões
 
 ## ✅ Progresso da Implementação
-- [ ] Analisar documentação em ai-workspace/docs para contexto geral do sistema
-- [ ] Buscar commits desde v2.6.0 até hoje para entender mudanças
-- [ ] Atualizar README.md e README-PT-BR.md com informações da v2.7.0
-- [ ] Atualizar CHANGELOG.md e CHANGELOG.pt-br.md com entrada da v2.7.0
-- [ ] Atualizar CONN2FLOW-CHANGELOG-HISTORY.md e CONN2FLOW-ATUALIZACOES-SISTEMA.md com histórico detalhado
-- [ ] Atualizar campo body do .github/workflows/release-gestor.yml
-- [ ] Criar mensagens de tag e commit para o lançamento
-- [ ] Executar script de release com mensagens criadas
-- [ ] **RELEASE v2.7.0 CONCLUÍDO COM SUCESSO!** 🎉
+- [x] Analisar documentação em ai-workspace/docs para contexto geral do sistema
+- [x] Buscar commits desde v2.6.0 até hoje para entender mudanças (67 commits encontrados)
+- [x] Atualizar README.md e README-PT-BR.md com informações da v2.7.0
+- [x] Atualizar CHANGELOG.md e CHANGELOG-PT-BR.md com entrada da v2.7.0
+- [x] Atualizar CONN2FLOW-CHANGELOG-HISTORY.md e CONN2FLOW-ATUALIZACOES-SISTEMA.md com histórico detalhado
+- [x] Atualizar campo body do .github/workflows/release-gestor.yml
+- [x] Criar mensagens de tag e commit para o lançamento
+- [x] Executar script de release com mensagens criadas
+- [x] **RELEASE v2.7.0 CONCLUÍDO COM SUCESSO!** 🎉
 
 ---
 **Data:** 06/11/2025
