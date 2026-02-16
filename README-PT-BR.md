@@ -39,41 +39,37 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 
 ## Última Versão
 
-**v2.6.3 (3 Fevereiro 2026)**
+**v2.7.0 (16 Fevereiro 2026)**
 
 **🎯 Novas Funcionalidades:**
-- **Menu Administrativo Responsivo**: Redesign completo com botão toggle, largura redimensionável e persistência em localStorage
-- **Sidebar Overlay para Mobile/Tablet**: Comportamento unificado de sidebar para dispositivos até 1024px
-- **Menu Redimensionável**: Handle de arraste para ajustar largura do menu (200-450px) com persistência em tempo real
-- **Atalho de Teclado**: Ctrl/Cmd+B para alternar visibilidade do menu
-- **Dashboard Otimizado para Tablet**: Layout de cards em 2 colunas em tablets para melhor usabilidade
-- **Módulo Publisher**: Novo módulo completo de publicação de conteúdo com CRUD para publishers e páginas
-- **Editor Quill WYSIWYG**: Integração profissional do editor Quill para edição rica de conteúdo
-- **Sistema de Campos Dinâmicos**: Campos configuráveis para templates de publisher com tipos variados
-- **Funcionalidade de Clonagem**: Clone rápido de páginas admin, templates admin e páginas do publisher
-- **Image Picker no Editor HTML**: Seletor visual de imagens integrado ao editor HTML com preview em grid
-- **Modo de Simulação de Design**: Dropdown para simular diferentes modos de design no editor HTML
+- **Módulo de Formulários**: Módulo completo de gerenciamento de formulários com CRUD, suporte multilíngue (pt-br/en) e visualizador de schema JSON via CodeMirror
+- **Módulo de Submissões de Formulários**: Sistema de processamento de submissões com segurança, logs, bloqueios e notificações por email
+- **Refatoração do Sistema de Formulários Dinâmicos**: Reescrita completa do `formulario.js` com componentes externalizados, localização e tratamento de erros por framework
+- **Integração Google reCAPTCHA**: Suporte a reCAPTCHA V2 no admin-environment + carregamento dinâmico V3
+- **FingerprintJS v4**: Sistema robusto de fingerprinting com múltiplas camadas de fallback
+- **Componente Form UI**: Novo componente frontend com suporte a localização e tratamento aprimorado de IP
+- **Atualização do Sistema via API**: Novo endpoint `/_api/system/update` para atualizações remotas com autenticação OAuth
+- **Módulo de Contatos**: Novas páginas de contato com redirecionamentos de sucesso/erro
 
 **🔧 Melhorias Técnicas:**
-- Transições CSS suaves com inicialização sem animação
-- Overlay mobile com fundo escuro ao abrir menu
-- Persistência de estado do menu (largura e estado fechado)
-- Fomantic-UI atualizado para v2.9.4
-- Modelos Gemini atualizados nos prompts de IA
-- Detecção de linguagem aprimorada com prioridade para browser
-- Sistema de múltiplos modais com `allowMultiple: true`
-- Tooltips informativos nos botões do editor
-- Funcionalidades de modificação de seção no editor visual
+- Componentes de erro específicos por framework (Fomantic UI, Bootstrap, etc.)
+- Mensagens AJAX e block wrappers externalizados para arquivos separados
+- Posicionamento de mensagens de erro antes do botão de submit
+- Correção da exibição de apóstrofos em campos de formulário
+- Correção de duplicação do CodeMirror no editor HTML
+- Correção da chave do parâmetro 'module' na `sincronizarTabela`
+- Tradução da página oauth-authenticate para inglês
+- Thumbnails WebP para templates de sessão
+- Documentação da biblioteca PayPal v2.0.0
+- Documentação de Agentes GitHub Copilot
+- Documentação da arquitetura de plugins (en + pt-br)
 
 **📦 O Que Há de Novo:**
-- Comportamento unificado do menu entre dispositivos móveis e tablets
-- Botão toggle aparece quando menu está fechado
-- Duplo clique no handle de resize para resetar largura padrão
-- Módulo publisher completo com editor Quill integrado
-- Sistema de campos dinâmicos para templates
-- Funcionalidade de clonagem para páginas e templates
-- Seletor visual de imagens no editor HTML
-- Interface aprimorada com tooltips e simulação de design
+- Ciclo completo de formulários: criação, listagem, visualização, edição, clonagem
+- Formulário de contato com Fomantic UI e notificações por email
+- Camada de segurança com reCAPTCHA, fingerprinting e bloqueio de submissões
+- Automação de atualização remota do sistema via API e script bash
+- Atualizações extensivas de documentação e reestruturação dos READMEs
 
 Para o changelog completo, consulte [CHANGELOG-PT-BR.md](CHANGELOG-PT-BR.md).
 

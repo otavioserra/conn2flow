@@ -140,10 +140,50 @@ Recomendação adicional no deploy: script/infra garantir `chown -R www-data:www
 - Rollback transacional (arquivos + dump diff banco)
 - Validação pós-deploy por checksum manifest
 - Atualizações incrementais (diff) para reduzir downtime
-- API REST para orquestração remota
+- ~~API REST para orquestração remota~~ ✅ Implementado na v2.7.0
 - Assinatura digital dos artefatos (além de SHA256)
 - Lock de execução distribuída (cluster)
 
+## API REST para Atualização Remota (v2.7.0)
+
+### Endpoint
+```
+POST /_api/system/update
+Authorization: Bearer <oauth_token>
+Content-Type: application/x-www-form-urlencoded
+```
+
+### Ações Disponíveis
+| Ação | Parâmetros | Descrição |
+|------|-----------|-----------|
+| `start` | `domain`, `tag`, `only_files`, `only_db`, `dry_run`, `local`, `debug`, `no_db`, `force_all`, `log_diff`, `backup` | Inicia sessão de atualização |
+| `deploy` | `sid` | Executa deploy de arquivos |
+| `db` | `sid` | Executa atualização de banco |
+| `finalize` | `sid` | Finaliza e limpa sessão |
+| `status` | `sid` | Consulta estado da sessão |
+| `cancel` | `sid` | Cancela execução em andamento |
+
+### Implementação
+- Rota adicionada em `api.php` via `api_handle_system()` → `api_system_update()`
+- Wrapper `api_call_system_update()` usa mesma técnica de `admin_atualizacoes_call_system()`
+- Simula `$_GET`/`$_REQUEST` e inclui `atualizacoes-sistema.php` com `ob_start()`/`ob_get_clean()`
+- Autenticação OAuth 2.0 obrigatória
+
+### Script de Automação
+```
+bash ./ai-workspace/en/scripts/projects/update-system.sh [OPTIONS]
+  --project, -p ID      Identificador do projeto
+  --mode, -m MODE       Modo: full, only-files, only-db
+  --tag, -t TAG         Tag específica (ex: gestor-v2.7.0)
+  --dry-run             Simulação sem aplicar mudanças
+  --local               Usar artefato local
+  --debug               Saída verbose
+```
+
+### Tasks VS Code
+- `🗃️ Projects - Update Current Project` — atualiza projeto padrão
+- `🗃️ Projects - Update Project -> ID` — atualiza projeto específico
+
 ---
 Documento mantido por GitHub Copilot IA
-Última atualização: 2025-08-27
+Última atualização: 2026-02-16

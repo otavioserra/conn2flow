@@ -2,7 +2,39 @@
 
 ## 🏷️ Releases Atuais
 
-### **gestor-v2.6.3** (3 Fevereiro 2026) - `HEAD`
+### **gestor-v2.7.0** (16 Fevereiro 2026) - `HEAD`
+**🎯 Tema:** Módulo de Formulários + Sistema de Formulários Dinâmicos + reCAPTCHA + API de Atualização do Sistema**
+
+**Principais Melhorias:**
+- ✅ **Módulo de Formulários Completo**: Novo módulo de gerenciamento de formulários com CRUD completo, suporte multilíngue (pt-br/en), visualizador de schema JSON via CodeMirror e interface Fomantic UI
+- ✅ **Módulo de Submissões de Formulários**: Sistema completo de processamento de submissões com logs de segurança, mecanismos de bloqueio e componentes de notificação por email
+- ✅ **Refatoração do Sistema de Formulários Dinâmicos**: Reescrita completa do `formulario.js` com componentes HTML externalizados, tratamento de erros por framework e suporte a localização (pt-br/en)
+- ✅ **Google reCAPTCHA V2 + V3**: Suporte a reCAPTCHA V2 no módulo admin-environment + carregamento dinâmico do script V3 sob demanda
+- ✅ **Integração FingerprintJS v4**: Sistema robusto de fingerprinting com múltiplas camadas de fallback para segurança aprimorada de formulários
+- ✅ **Componente Form UI**: Novo componente frontend com detecção de framework CSS, suporte a localização e tratamento aprimorado de endereço IP
+- ✅ **Atualização do Sistema via API**: Novo endpoint REST `/_api/system/update` para atualizações remotas com autenticação OAuth 2.0 e workflow multi-step baseado em sessão
+- ✅ **Script de Atualização do Sistema**: Script bash (`update-system.sh`) para atualizações automatizadas via API com barras de progresso, renovação de token e logging abrangente
+- ✅ **Módulo de Contatos**: Novas páginas de contato com formulários Fomantic UI e redirecionamentos de sucesso/erro
+- ✅ **Notificações por Email de Formulários**: Componentes e templates de email preparados para notificações de submissões
+- ✅ **Componentes de Erro por Framework**: Componentes de exibição de erro para Fomantic UI, Bootstrap e outros frameworks CSS
+- ✅ **Melhorias no Posicionamento de Erros**: Mensagens de erro agora posicionadas antes do botão de submit clicado
+- ✅ **Documentação de Agentes GitHub Copilot**: Documentação completa para integração de agentes GitHub Copilot
+- ✅ **Documentação da Arquitetura de Plugins**: Documentação abrangente da arquitetura de plugins em inglês e português
+- ✅ **Documentação da Biblioteca PayPal v2.0.0**: Documentação reestruturada com novas funcionalidades, exemplos e versão em inglês
+
+**Correções:**
+- Correção da exibição de apóstrofos em valores de campos de formulário
+- Correção da duplicação do script de inicialização do CodeMirror no editor HTML
+- Correção da chave do parâmetro 'module' para 'modulo' na sincronizarTabela
+- Correção do erro 'data is not defined' no sistema de formulários dinâmicos
+
+**Breaking Changes:**
+- Novas tabelas forms e forms_submissions requerem migrations de banco de dados
+- Novo módulo de contatos requer configuração de banco
+- Componentes do sistema de formulários dinâmicos agora carregados de arquivos externos
+- Assinatura da função showError alterada para incluir parâmetro form
+
+### **gestor-v2.6.3** (3 Fevereiro 2026)
 **🎯 Tema:** Menu Administrativo Responsivo + Dashboard Otimizado para Tablets**
 
 **Principais Melhorias:**

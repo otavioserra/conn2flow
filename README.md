@@ -41,41 +41,37 @@ For detailed technical information and development guides, see:
 
 ## Latest Release
 
-**v2.6.3 (February 3, 2026)**
+**v2.7.0 (February 16, 2026)**
 
 **🎯 New Features:**
-- **Responsive Admin Menu**: Complete redesign with toggle button, resizable width, and localStorage persistence
-- **Mobile/Tablet Sidebar Overlay**: Unified sidebar behavior for devices up to 1024px width
-- **Resizable Menu**: Drag handle to adjust menu width (200-450px) with real-time persistence
-- **Keyboard Shortcut**: Ctrl/Cmd+B to toggle menu visibility
-- **Dashboard Tablet Optimization**: 2-column card layout on tablets for better usability
-- **Publisher Module**: Complete content publishing module with CRUD for publishers and pages
-- **Quill WYSIWYG Editor**: Professional Quill editor integration for rich content editing
-- **Dynamic Fields System**: Configurable fields for publisher templates with various types
-- **Cloning Functionality**: Quick clone for admin pages, admin templates, and publisher pages
-- **Image Picker in HTML Editor**: Visual image selector integrated with HTML editor with grid preview
-- **Design Simulation Mode**: Dropdown to simulate different design modes in HTML editor
+- **Forms Module**: Complete form management module with CRUD, multilingual support (pt-br/en), and CodeMirror JSON schema viewer
+- **Forms Submissions Module**: Submission processing system with security, logging, blocking, and email notifications
+- **Dynamic Form System Refactoring**: Complete `formulario.js` rewrite with externalized components, localization, and framework-specific error handling
+- **Google reCAPTCHA Integration**: reCAPTCHA V2 support in admin-environment + dynamic V3 loading
+- **FingerprintJS v4**: Robust fingerprinting system with multi-layer fallback
+- **Form UI Component**: New frontend component with localization support and improved IP handling
+- **System Update via API**: New `/_api/system/update` endpoint for remote system updates with OAuth authentication
+- **Contacts Module**: New contact pages module with success/error redirects
 
 **🔧 Technical Improvements:**
-- Smooth CSS transitions with animation-free initialization
-- Mobile overlay with dark backdrop on menu open
-- Menu state persistence (width and closed state)
-- Fomantic-UI updated to v2.9.4
-- Updated Gemini models in AI prompts
-- Enhanced language detection with browser priority
-- Multiple modal system with `allowMultiple: true`
-- Informative tooltips on editor buttons
-- Section modification capabilities in visual editor
+- Framework-specific error components (Fomantic UI, Bootstrap, etc.)
+- Externalized AJAX messages and block wrappers to separate files
+- Error message positioning before submit button
+- Fix apostrophe display in form fields
+- Fix CodeMirror duplicate initialization in HTML editor
+- Fix `sincronizarTabela` module parameter key
+- OAuth-authenticate page translated to English
+- WebP thumbnails for session templates
+- PayPal library v2.0.0 documentation
+- GitHub Copilot agents documentation
+- Plugin architecture documentation (en + pt-br)
 
 **📦 What's New:**
-- Unified menu behavior across mobile and tablet devices
-- Toggle button appears when menu is closed
-- Double-click resize handle to reset default width
-- Complete publisher module with integrated Quill editor
-- Dynamic fields system for templates
-- Cloning functionality for pages and templates
-- Visual image selector in HTML editor
-- Enhanced interface with tooltips and design simulation
+- Complete forms lifecycle: creation, listing, viewing, editing, cloning
+- Contact form with Fomantic UI and email notifications
+- Security layer with reCAPTCHA, fingerprinting, and submission blocking
+- Remote system update automation via API and bash script
+- Extensive documentation updates and README restructuring
 
 For full changelog, see [CHANGELOG.md](CHANGELOG.md).
 

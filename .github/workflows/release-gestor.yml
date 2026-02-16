@@ -96,56 +96,82 @@ jobs:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         body: |
-          ## 🚀 Conn2Flow Gestor Release v2.6.3 (Menu Administrativo Responsivo + Dashboard Otimizado para Tablets)
+          ## 🚀 Conn2Flow Gestor Release v2.7.0 (Módulo de Formulários + Sistema Dinâmico + reCAPTCHA + API de Atualização)
 
-          Esta versão traz o **redesign completo do menu administrativo** com comportamento responsivo unificado para mobile e tablets, menu redimensionável, persistência de estado, e dashboard otimizado para tablets, além de manter todas as funcionalidades do módulo Publisher, sistema de IA integrado, deploy OAuth e arquitetura multilíngue.
+          Esta versão traz o **módulo completo de formulários** com CRUD, submissões, segurança via reCAPTCHA/FingerprintJS, sistema de formulários dinâmicos totalmente refatorado, e **atualização remota do sistema via API REST**, além de manter todas as funcionalidades anteriores como menu responsivo, Publisher, IA integrada, deploy OAuth e arquitetura multilíngue.
 
           ### 🎯 Novidades Principais desta Versão:
-          - ✅ **Menu Administrativo Responsivo**: Redesign completo com botão toggle flutuante, largura redimensionável e persistência em localStorage
-          - ✅ **Sidebar Overlay para Mobile/Tablet**: Comportamento unificado de sidebar overlay para dispositivos até 1024px de largura
-          - ✅ **Menu Redimensionável**: Handle de arraste para ajustar largura do menu (200-450px) com persistência em tempo real
-          - ✅ **Atalho de Teclado**: Ctrl/Cmd+B para alternar visibilidade do menu
-          - ✅ **Dashboard Otimizado para Tablet**: Layout de cards em 2 colunas em tablets para melhor usabilidade
-          - ✅ **Transições CSS Suaves**: Animações fluidas com inicialização sem animação para evitar flashes
-          - ✅ **Overlay Mobile com Backdrop**: Fundo escuro quando menu mobile/tablet está aberto
-          - ✅ **Persistência de Estado do Menu**: Largura e estado fechado salvos em localStorage
-          - ✅ **Duplo Clique para Reset**: Duplo clique no handle de resize reseta largura padrão (250px)
-          - ✅ **Módulo Publisher Completo**: Novo módulo de publicação de conteúdo (mantido da v2.6.0)
-          - ✅ **Editor Quill WYSIWYG**: Integração profissional do editor Quill (mantido da v2.6.0)
-          - ✅ **Sistema de Campos Dinâmicos**: Campos configuráveis para templates de publisher (mantido da v2.6.0)
-          - ✅ **Funcionalidade de Clonagem**: Clone rápido de páginas admin, templates admin e páginas do publisher (mantido da v2.6.0)
-          - ✅ **Image Picker no Editor HTML**: Seletor visual de imagens integrado ao editor (mantido da v2.6.0)
+          - ✅ **Módulo de Formulários Completo**: Gerenciamento de formulários com CRUD, suporte multilíngue (pt-br/en) e visualizador JSON via CodeMirror
+          - ✅ **Módulo de Submissões**: Processamento de submissões com segurança, logs, bloqueios e notificações por email
+          - ✅ **Sistema de Formulários Dinâmicos Refatorado**: Reescrita completa do `formulario.js` com componentes externalizados e localização
+          - ✅ **Google reCAPTCHA V2 + V3**: Suporte a V2 no admin-environment + carregamento dinâmico V3
+          - ✅ **FingerprintJS v4**: Fingerprinting robusto com múltiplas camadas de fallback
+          - ✅ **Componente Form UI**: Novo componente frontend com detecção de framework e localização
+          - ✅ **Atualização do Sistema via API**: Endpoint `/_api/system/update` para atualizações remotas com OAuth 2.0
+          - ✅ **Script de Atualização Automatizada**: Script bash com progresso, renovação de token e logging
+          - ✅ **Módulo de Contatos**: Páginas de contato com Fomantic UI e redirecionamentos
+          - ✅ **Componentes de Erro por Framework**: Fomantic UI, Bootstrap e outros
+          - ✅ **Menu Administrativo Responsivo**: Redesign completo com toggle e resize (mantido da v2.6.3)
+          - ✅ **Módulo Publisher Completo**: Publicação de conteúdo com editor Quill (mantido da v2.6.0)
           - ✅ **Sistema Completo de Deploy via OAuth**: Deploy automatizado com OAuth 2.0 (mantido da v2.4.0)
           - ✅ **Sistema de IA Integrado**: Geração de conteúdo via API Gemini (mantido da v2.4.0)
           - ✅ **Sistema Multilíngue Completo**: Suporte pt-br/en (mantido da v2.4.0)
           - ✅ **Sistema de Plugins V2**: Arquitetura refatorada (mantido da v2.4.0)
 
           ### 🔧 Melhorias Técnicas:
-          - ✅ **Breakpoint Mobile/Tablet**: Alterado de 770px para 1024px para incluir tablets no comportamento de sidebar overlay
-          - ✅ **Nova Estrutura de Classes CSS**: `menu-closed`, `menu-mobile-open`, `menu-no-transition` para controle de estado
-          - ✅ **Botão Toggle Flutuante**: Aparece quando menu está fechado para fácil acesso
-          - ✅ **Handle de Redimensionamento**: Suporte a mouse e touch para ajuste de largura
-          - ✅ **Media Queries Reorganizadas**: mobile/tablet (≤1024px) e desktop (≥1025px)
-          - ✅ **Dashboard Cards Responsivos**: Grid adaptativo 1/2/4 colunas conforme tamanho da tela
-          - ✅ **Inicialização Sem Animação**: Classe `menu-no-transition` evita flashes visuais no carregamento
+          - ✅ **Posicionamento de Erros**: Mensagens antes do botão de submit clicado
+          - ✅ **Componentes Externalizados**: AJAX messages e block wrappers em arquivos separados
+          - ✅ **Correção de Apóstrofos**: Renderização correta em campos de formulário
+          - ✅ **Correção CodeMirror**: Removida duplicação de inicialização no editor HTML
+          - ✅ **Correção sincronizarTabela**: Chave de parâmetro 'module' → 'modulo'
+          - ✅ **Traduções**: Página oauth-authenticate traduzida para inglês
+          - ✅ **WebP Thumbnails**: Templates de sessão atualizados para WebP
+          - ✅ **Documentação Extensa**: Agentes Copilot, arquitetura de plugins, PayPal v2.0.0
 
           ### 📦 Conteúdo:
-          - Sistema gestor completo com menu administrativo responsivo
+          - Sistema gestor completo com módulo de formulários
+          - Sistema de submissões com segurança reCAPTCHA + FingerprintJS
+          - Sistema de formulários dinâmicos refatorado com localização
+          - API REST para atualização remota do sistema
+          - Script de atualização automatizada via API
+          - Módulo de contatos com formulários Fomantic UI
+          - Menu administrativo responsivo com suporte a tablets
           - Dashboard otimizado para tablets com layout de 2 colunas
           - Módulo Publisher com editor Quill integrado
           - Funcionalidade de clonagem para páginas e templates
           - Image picker integrado ao editor HTML visual
           - Biblioteca `html-editor.php` com componentes reutilizáveis
-          - Sistema de seleção de templates com interface de cards
-          - Scripts de deploy automatizado
+          - Scripts de deploy e atualização automatizados
           - Biblioteca ia.php para operações de IA e OAuth
           - Sistema de plugins V2 com templates automatizados
-          - Migrations para módulo publisher e campos dinâmicos
+          - Migrations para formulários, submissões e contatos
           - Sistema de atualização automática consolidado
           - Recursos organizados por idioma (pt-br base)
           - Instalador multilíngue com seleção de idioma
           - Dependências do Composer otimizadas
           - Documentação técnica completa
+
+          ### 📋 Módulo de Formulários:
+          - **CRUD Completo**: Adicionar, listar, visualizar, editar e clonar formulários
+          - **Schema JSON**: Definição de campos via JSON com validação CodeMirror
+          - **Suporte Multilíngue**: Páginas e labels em pt-br e en
+          - **Fomantic UI Interface**: Interface moderna com cards e tabelas estilizadas
+          - **Submissões**: Processamento com validação, segurança e logging
+
+          ### 🔒 Segurança de Formulários:
+          - **reCAPTCHA V2**: Checkbox integration via admin-environment
+          - **reCAPTCHA V3**: Carregamento dinâmico com score-based validation
+          - **FingerprintJS v4**: Device fingerprinting com fallback robusto
+          - **Bloqueio de Submissões**: Rate limiting e detecção de spam
+          - **Logs de Segurança**: Registro detalhado de todas as submissões
+
+          ### 🔄 Atualização do Sistema via API:
+          - **Endpoint REST**: `/_api/system/update` com autenticação OAuth 2.0
+          - **Workflow Multi-Step**: start → deploy → db → finalize
+          - **Script Automatizado**: `update-system.sh` com barra de progresso
+          - **Modos de Atualização**: full, only-files, only-db
+          - **Dry-Run**: Simulação sem aplicar mudanças
+          - **Renovação Automática de Token**: Tratamento de 401 com retry
 
           ### 📱 Menu Administrativo Responsivo:
           - **Botão Toggle Flutuante**: Aparece quando menu está fechado
@@ -153,14 +179,6 @@ jobs:
           - **Sidebar Overlay em Mobile/Tablet**: Comportamento unificado até 1024px
           - **Atalho de Teclado**: Ctrl/Cmd+B para toggle do menu
           - **Persistência de Estado**: Largura e estado salvos em localStorage
-          - **Duplo Clique para Reset**: Restaura largura padrão de 250px
-          - **Transições Suaves**: Animações fluidas sem flashes na inicialização
-
-          ### 📊 Dashboard Otimizado:
-          - **Layout Responsivo**: Grid adaptativo conforme tamanho da tela
-          - **1 Coluna**: Dispositivos até 767px (mobile)
-          - **2 Colunas**: Dispositivos de 768px a 1024px (tablet)
-          - **4 Colunas**: Dispositivos acima de 1025px (desktop)
 
           ### 📰 Módulo Publisher:
           - **CRUD Completo**: Gerenciamento de publishers (definições) e páginas
@@ -168,7 +186,6 @@ jobs:
           - **Sistema de Campos Dinâmicos**: Campos configuráveis por template
           - **Templates Abstratos**: Templates prontos (ex: notícias) gerados por IA
           - **Clonagem de Páginas**: Duplicação rápida de conteúdo existente
-          - **Integração com Sistema IA**: Geração assistida de conteúdo
 
           ### 🚀 Sistema de Deploy de Projetos:
           - **API OAuth 2.0**: Autenticação obrigatória com renovação automática
@@ -191,10 +208,9 @@ jobs:
           1. Use o [Conn2Flow Installer v1.5.0+](https://github.com/otavioserra/conn2flow/releases)
           2. Para instalação manual, use `gestor-instalador/index.php`
           3. Selecione o idioma desejado (pt-br/en)
-          4. Explore o menu responsivo com suporte a tablets
-          5. Ajuste a largura do menu arrastando o handle
-          6. Use Ctrl/Cmd+B para toggle rápido do menu
-          7. Explore o dashboard otimizado para tablets
+          4. Configure reCAPTCHA no admin-environment
+          5. Crie formulários via módulo de formulários
+          6. Configure atualização remota via API
 
           ### 📋 Requisitos:
           - PHP 8.1+

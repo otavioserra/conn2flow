@@ -2,7 +2,39 @@
 
 ## 🏷️ Current Releases
 
-### **gestor-v2.6.3** (February 3, 2026) - `HEAD`
+### **gestor-v2.7.0** (February 16, 2026) - `HEAD`
+**🎯 Theme:** Forms Module + Dynamic Form System + reCAPTCHA + System Update API**
+
+**Main Improvements:**
+- ✅ **Complete Forms Module**: New form management module with full CRUD operations, multilingual support (pt-br/en), CodeMirror JSON schema viewer, and Fomantic UI interface
+- ✅ **Forms Submissions Module**: Complete submission processing system with security logging, blocking mechanisms, and prepared email notification components
+- ✅ **Dynamic Form System Refactoring**: Complete `formulario.js` rewrite with externalized HTML components, framework-specific error handling, and localization support (pt-br/en)
+- ✅ **Google reCAPTCHA V2 + V3**: reCAPTCHA V2 support in admin-environment module + dynamic V3 script loading on demand
+- ✅ **FingerprintJS v4 Integration**: Robust fingerprinting system with multi-layer fallback for enhanced form security
+- ✅ **Form UI Component**: New frontend component with CSS framework detection, localization support, and improved IP address handling
+- ✅ **System Update via API**: New `/_api/system/update` REST endpoint for remote system updates with OAuth 2.0 authentication and session-based multi-step workflow
+- ✅ **System Update Script**: Bash script (`update-system.sh`) for automated system updates via API with progress bars, token renewal, and comprehensive logging
+- ✅ **Contacts Module**: New contact pages module with Fomantic UI forms and success/error page redirects
+- ✅ **Contact Form Email Notifications**: Prepared email components and templates for form submission notifications
+- ✅ **Framework-Specific Error Components**: Error display components for Fomantic UI, Bootstrap, and other CSS frameworks
+- ✅ **Error Positioning Improvements**: Error messages now positioned before the clicked submit button instead of page top
+- ✅ **GitHub Copilot Agents Documentation**: Complete documentation for GitHub Copilot agent integration
+- ✅ **Plugin Architecture Documentation**: Comprehensive plugin architecture docs in English and Portuguese
+- ✅ **PayPal Library v2.0.0 Documentation**: Restructured documentation with new features, examples, and English version
+
+**Bug Fixes:**
+- Fix apostrophe display in form field values
+- Fix CodeMirror duplicate initialization script in HTML editor
+- Fix `sincronizarTabela` module parameter key ('module' → 'modulo')
+- Fix 'data is not defined' error in formulario.js dynamic form system
+
+**Breaking Changes:**
+- New forms and forms_submissions tables require database migrations
+- New contacts module requires database setup
+- Dynamic form system components now loaded from external files
+- showError function signature changed to include form parameter
+
+### **gestor-v2.6.3** (February 3, 2026)
 **🎯 Theme:** Responsive Admin Menu + Tablet-Optimized Dashboard**
 
 **Main Improvements:**

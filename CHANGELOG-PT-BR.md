@@ -10,6 +10,52 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
 - CHANGELOG.md padrão da indústria seguindo Keep a Changelog
 
+## [2.7.0] - 2026-02-16
+
+### Added
+- **Módulo de Formulários**: Módulo completo de gerenciamento de formulários com CRUD, suporte multilíngue (pt-br/en), visualizador de schema JSON via CodeMirror e interface Fomantic UI
+- **Módulo de Submissões de Formulários**: Sistema completo de processamento de submissões com segurança, logs, bloqueios e componentes de notificação por email
+- **Refatoração do Sistema de Formulários Dinâmicos**: Reescrita completa do `formulario.js` com componentes HTML externalizados, tratamento de erros por framework e suporte a localização
+- **Google reCAPTCHA V2**: Suporte na configuração do módulo admin-environment
+- **Carregamento Dinâmico reCAPTCHA V3**: Carregamento automático do script sob demanda
+- **Integração FingerprintJS v4**: Sistema robusto de fingerprinting com múltiplas camadas de fallback
+- **Componente Form UI**: Novo componente frontend com suporte a localização e tratamento aprimorado de endereço IP
+- **Atualização do Sistema via API**: Novo endpoint `/_api/system/update` para atualizações remotas com autenticação OAuth
+- **Script de Atualização do Sistema**: Script bash (`update-system.sh`) para atualizações automatizadas via API com acompanhamento de progresso
+- **Módulo de Contatos**: Novas páginas de contato com formulários Fomantic UI e redirecionamentos de sucesso/erro
+- **Notificações por Email de Formulários**: Componentes de email preparados para notificações de submissões
+- **Componentes de Erro por Framework**: Componentes de exibição de erro para Fomantic UI, Bootstrap e outros frameworks
+- **Documentação de Agentes GitHub Copilot**: Documentação para integração de agentes GitHub Copilot
+- **Documentação da Arquitetura de Plugins**: Documentação abrangente da arquitetura de plugins em inglês e português
+- **Documentação da Biblioteca PayPal v2.0.0**: Documentação reestruturada com novas funcionalidades e exemplos
+
+### Changed
+- **Posicionamento de Erros em Formulários**: Mensagens de erro agora posicionadas antes do botão de submit clicado
+- **Função showError**: Refatorada para usar errorElement específico por framework com encapsulamento de parâmetro form
+- **Mensagens AJAX**: Migradas para arquivos externos para melhor manutenibilidade
+- **Componentes Block Wrapper**: Externalizados para arquivos de template separados
+- **Página OAuth Authenticate**: Textos da interface traduzidos para inglês
+- **Thumbnails de Templates de Sessão**: Atualizados para formato WebP
+- **Estrutura dos READMEs**: Reestruturados com índice, ícones e seções de recursos de aprendizado
+- **Documentação Técnica**: Caminhos e links atualizados para estrutura de diretórios em português
+
+### Fixed
+- **Exibição de Apóstrofos**: Correção da renderização de apóstrofos em valores de campos de formulário
+- **Inicialização Duplicada do CodeMirror**: Removida duplicação do script de inicialização no editor HTML
+- **Parâmetro sincronizarTabela**: Correção da chave do parâmetro 'module' para 'modulo'
+- **Erro data no formulario.js**: Correção do erro 'data is not defined' no sistema de formulários dinâmicos
+
+### Technical
+- Migrations de banco para tabelas forms e forms_submissions (nomes de colunas em inglês)
+- Módulo forms com páginas: listagem, visualização, adição, edição, clonagem (pt-br + en)
+- Schema de formulário de contato com fields_schema JSON e configuração de redirecionamento
+- Controlador de submissão com validação e camadas de segurança
+- Roteamento de endpoint API via `api_handle_system()` com workflow multi-step baseado em sessão
+- Wrapper `api_call_system_update()` usando abordagem include+ob (mesmo que admin-atualizacoes)
+- Tasks do VS Code para operações de atualização do sistema
+- Extração de componentes HTML externos via tags de comentário
+- Componentes Form UI com detecção de framework CSS
+
 ## [2.6.3] - 2026-02-03
 
 ### Added

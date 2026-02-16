@@ -10,6 +10,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Complete change history in `CONN2FLOW-CHANGELOG-HISTORY.md`
 - Industry-standard CHANGELOG.md following Keep a Changelog format
 
+## [2.7.0] - 2026-02-16
+
+### Added
+- **Forms Module**: Complete form management module with CRUD operations, multilingual support (pt-br/en), CodeMirror JSON schema viewer, and Fomantic UI interface
+- **Forms Submissions Module**: Complete submission processing system with security, logging, blocking, and prepared email notification components
+- **Dynamic Form System Refactoring**: Complete `formulario.js` rewrite with externalized HTML components, framework-specific error handling, and localization support
+- **Google reCAPTCHA V2**: Support in admin-environment module configuration
+- **Dynamic reCAPTCHA V3 Loading**: Automatic script loading on demand
+- **FingerprintJS v4 Integration**: Robust fingerprinting system with multi-layer fallback
+- **Form UI Component**: New frontend component with localization support and improved IP address handling
+- **System Update via API**: New `/_api/system/update` endpoint for remote system updates with OAuth authentication
+- **System Update Script**: Bash script (`update-system.sh`) for automated system updates via API with progress tracking
+- **Contacts Module**: New contact pages module with Fomantic UI forms and success/error redirects
+- **Contact Form Email Notifications**: Prepared email components for form submission notifications
+- **Framework-Specific Error Components**: Error display components for Fomantic UI, Bootstrap, and other frameworks
+- **GitHub Copilot Agents Documentation**: Documentation for GitHub Copilot agent integration
+- **Plugin Architecture Documentation**: Comprehensive plugin architecture docs in English and Portuguese
+- **PayPal Library v2.0.0 Documentation**: Restructured documentation with new features and examples
+
+### Changed
+- **Form Error Positioning**: Error messages now positioned before the clicked submit button instead of page top
+- **showError Function**: Refactored to use framework-specific errorElement with form parameter encapsulation
+- **AJAX Messages**: Migrated to external files for better maintainability
+- **Block Wrapper Components**: Externalized to separate template files
+- **OAuth Authenticate Page**: Translated interface texts to English
+- **Session Template Thumbnails**: Updated to WebP format
+- **README Structure**: Restructured with table of contents, icons, and learning resources sections
+- **Technical Documentation**: Updated file paths and links for Portuguese directory structure
+
+### Fixed
+- **Apostrophe Display**: Fixed apostrophe rendering in form field values
+- **CodeMirror Duplicate Initialization**: Removed duplicate CodeMirror initialization script in HTML editor
+- **sincronizarTabela Parameter**: Fixed module parameter key from 'module' to 'modulo'
+- **formulario.js Data Error**: Fixed 'data is not defined' error in dynamic form system
+
+### Technical
+- Database migrations for forms and forms_submissions tables (English column names)
+- Forms module with pages: listing, viewing, adding, editing, cloning (pt-br + en)
+- Contact form schema with fields_schema JSON and redirect configuration
+- Form submission controller with validation and security layers
+- API endpoint routing via `api_handle_system()` with session-based multi-step workflow
+- `api_call_system_update()` wrapper using include+ob approach (same as admin-atualizacoes)
+- VS Code tasks for system update operations
+- External HTML component extraction via comment tags
+- Form UI components with CSS framework detection
+
 ## [2.6.3] - 2026-02-03
 
 ### Added
