@@ -44,11 +44,11 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-destaque-alternativo.webp",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "7f362a266c9f8dadb6e3d79ce8a8366c",
+            "html": "52e3afac73c101595bd672d57d339437",
             "css": "",
-            "combined": "7f362a266c9f8dadb6e3d79ce8a8366c"
+            "combined": "52e3afac73c101595bd672d57d339437"
         }
     },
     {
@@ -109,11 +109,11 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-hero-moderno.webp",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "de6fa6a84b7e94522b2919a5de0efcbd",
+            "html": "1f08e05bd9f6a169da4b6052bee64d58",
             "css": "",
-            "combined": "de6fa6a84b7e94522b2919a5de0efcbd"
+            "combined": "1f08e05bd9f6a169da4b6052bee64d58"
         }
     },
     {
@@ -122,11 +122,11 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-hero-moderno-alternativo.webp",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "546a3f415decb916b49b5c91d5fdb6e9",
+            "html": "d8b08a1f2c9561328d49cfa755cf0527",
             "css": "",
-            "combined": "546a3f415decb916b49b5c91d5fdb6e9"
+            "combined": "d8b08a1f2c9561328d49cfa755cf0527"
         }
     },
     {
@@ -161,11 +161,11 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-stats-moderno.webp",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "2110f59cd70c209dcb88a14464077b60",
+            "html": "b685feec3821566b739a28a5c3163003",
             "css": "",
-            "combined": "2110f59cd70c209dcb88a14464077b60"
+            "combined": "b685feec3821566b739a28a5c3163003"
         }
     },
     {
@@ -174,11 +174,11 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-stats-moderno-alternativo.webp",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "bfe3c2c3f48282f7b581152c3a41cf44",
+            "html": "ba8ef28f67bf8489d1cb34c473628318",
             "css": "",
-            "combined": "bfe3c2c3f48282f7b581152c3a41cf44"
+            "combined": "ba8ef28f67bf8489d1cb34c473628318"
         }
     },
     {
@@ -187,11 +187,11 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-cta-gradiente.webp",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "2ab3067c12c86d398f189bb1f9915bbe",
+            "html": "073ed02388af48fdd5f8715e5d3af959",
             "css": "",
-            "combined": "2ab3067c12c86d398f189bb1f9915bbe"
+            "combined": "073ed02388af48fdd5f8715e5d3af959"
         }
     },
     {
@@ -265,11 +265,11 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-contato-mapa.webp",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "3b23d32567bfb2d0aa92515060f9b078",
+            "html": "636fca686ae84dcf7d6c55ec713ebf7f",
             "css": "",
-            "combined": "3b23d32567bfb2d0aa92515060f9b078"
+            "combined": "636fca686ae84dcf7d6c55ec713ebf7f"
         }
     },
     {
@@ -278,11 +278,11 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-contato-mapa-alternativo.webp",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "86bc27e27aca42dc839ee7951d9ecfb3",
+            "html": "1a6d096e37022af8c0a9c9864e477c1d",
             "css": "",
-            "combined": "86bc27e27aca42dc839ee7951d9ecfb3"
+            "combined": "1a6d096e37022af8c0a9c9864e477c1d"
         }
     },
     {
@@ -291,11 +291,11 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-galeria-masonry.webp",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "ed6b1b5d1839aae159fbf989503d2fde",
+            "html": "36553de650db60dc25aef6c3fa6a2911",
             "css": "",
-            "combined": "ed6b1b5d1839aae159fbf989503d2fde"
+            "combined": "36553de650db60dc25aef6c3fa6a2911"
         }
     },
     {
@@ -304,11 +304,11 @@
         "target": "paginas",
         "framework_css": "tailwindcss",
         "thumbnail": "templates\/images\/en\/sessao-galeria-masonry-alternativo.webp",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "d002db5957d31a1a933c1bea564dfcb9",
+            "html": "32edbb9d415efa41fe407180f9772c52",
             "css": "",
-            "combined": "d002db5957d31a1a933c1bea564dfcb9"
+            "combined": "32edbb9d415efa41fe407180f9772c52"
         }
     },
     {

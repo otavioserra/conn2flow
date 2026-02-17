@@ -98,6 +98,12 @@
             "command": "bash ./ai-workspace/en/scripts/dev-environment/create-new-module.sh \"${input:moduloID}\""
         },
         {
+            "label": "Fix TailwindCSS suggestCanonicalClasses",
+            "type": "shell",
+            "command": "node ./ai-workspace/pt-br/scripts/utils/fix-tailwind-spacing.js --replace --apply-config --target ${input:target}",
+            "problemMatcher": []
+        },
+        {
             "label": "🛠️ Manager - Update => All - Test Environment",
             "dependsOn": [
                 "🛠️ Manager - Synchronize => Resources - Local",
@@ -212,6 +218,12 @@
             "id": "projectID",
             "description": "📦 Project ID ❔",
             "type": "promptString"
+        },
+        {
+            "id": "target",
+            "description": "Target folder for the fix script (relative to workspace root). Ex: ../conn2flow-site",
+            "type": "promptString",
+            "default": "../conn2flow-site"
         }
     ]
 }

@@ -185,11 +185,11 @@
                     "id": "noticias-imagem-destaque",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "f83a8a5585ecd70ec3ef4337ac76fcbf",
+                        "html": "43c95946acd29e9a7b4f061dde19816e",
                         "css": "",
-                        "combined": "f83a8a5585ecd70ec3ef4337ac76fcbf"
+                        "combined": "43c95946acd29e9a7b4f061dde19816e"
                     }
                 }
             ],

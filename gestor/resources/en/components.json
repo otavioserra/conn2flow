@@ -362,11 +362,11 @@
     {
         "name": "HTML Editor Publisher Simulation",
         "id": "html-editor-publisher-simulation",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "3809168da54aa7072080001225e0a0be",
+            "html": "e1c0b0c428ece84817a9a12971ceafd5",
             "css": "",
-            "combined": "3809168da54aa7072080001225e0a0be"
+            "combined": "e1c0b0c428ece84817a9a12971ceafd5"
         }
     },
     {

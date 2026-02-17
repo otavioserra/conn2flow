@@ -61,11 +61,11 @@
                     "name": "Base E-mail",
                     "id": "base-email",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "2a3a4ba8d6c7007c65ba27cfd61f73c3",
+                        "html": "6b607bac08f7fd2a232bdb7666549c91",
                         "css": "264aa703cd8ab87718946d4459f30d4a",
-                        "combined": "a29844c89ce6575a48ea48baad94586b"
+                        "combined": "5e752bad7892e224bdb1c5e1e35d460d"
                     }
                 },
                 {
