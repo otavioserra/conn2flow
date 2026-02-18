@@ -51,11 +51,11 @@
                 {
                     "name": "Atualizações - Lista",
                     "id": "atualizacoes-lista",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "e007e7b6b9725f54b3d1d050343728f6",
+                        "html": "f0ef8db462abf5d6ad84004055c93a2d",
                         "css": "",
-                        "combined": "e007e7b6b9725f54b3d1d050343728f6"
+                        "combined": "f0ef8db462abf5d6ad84004055c93a2d"
                     }
                 },
                 {
@@ -269,11 +269,11 @@
                 {
                     "name": "Updates - List",
                     "id": "atualizacoes-lista",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "52702e74d568a7723ff45f2be184baef",
+                        "html": "314d1a3e3dfdc9625e3fcf29d67f7a08",
                         "css": "",
-                        "combined": "52702e74d568a7723ff45f2be184baef"
+                        "combined": "314d1a3e3dfdc9625e3fcf29d67f7a08"
                     }
                 },
                 {

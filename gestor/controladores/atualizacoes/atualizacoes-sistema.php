@@ -1105,14 +1105,23 @@ function webDeployFiles(string $sid): array {
     if(!$envTpl) $envTpl=localizarEnvTemplate($BASE_PATH,'dominio',!empty($opts['debug'])) ?? localizarEnvTemplate($BASE_PATH,$opts['domain']??'localhost',!empty($opts['debug']));
     if($envTpl) mergeEnv($envAtual,$envTpl,$CONTEXT,$dry); else logAtualizacao('WebDeployFiles: template .env não encontrado','WARNING');
     $protegidos=['contents','logs','backups','temp','autenticacoes'];
+    $wipeEnabled = !empty($opts['wipe']); // respeita flag web --wipe (default = overwrite)
     if(!$dry){
         if(empty($BASE_PATH) || !is_dir($BASE_PATH)) {
             logAtualizacao('WebDeployFiles: BASE_PATH inválido antes de removerConteudoBase','ERROR');
             return ['error'=>'BASE_PATH inválido'];
         }
-        $removidos=removerConteudoBase($BASE_PATH,$protegidos);
-        $movidos=moverConteudoStaging($realRoot,$BASE_PATH,$protegidos);
-        $stats=['removed'=>$removidos,'copied'=>$movidos];
+        if($wipeEnabled){
+            logAtualizacao('WebDeployFiles: wipe habilitado — removendo conteúdos base...','DEBUG');
+            $removidos = removerConteudoBase($BASE_PATH,$protegidos);
+            logAtualizacao('WebDeployFiles: wipe concluído count='.$removidos,'DEBUG');
+        } else {
+            logAtualizacao('WebDeployFiles: wipe pulado (modo padrão = overwrite). Use --wipe para ativar wipe completo','INFO');
+            $removidos = 0;
+        }
+        $movidos = moverConteudoStaging($realRoot,$BASE_PATH,$protegidos);
+        logAtualizacao('WebDeployFiles: itens movidos count='.$movidos,'DEBUG');
+        $stats = ['removed'=>$removidos,'copied'=>$movidos];
     }
     else { $stats=['removed'=>0,'copied'=>0]; }
     $CONTEXT['plan']=['stats'=>$stats];
