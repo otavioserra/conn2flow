@@ -30,14 +30,29 @@ $(document).ready(function () {
 				data.fields.forEach(function (field) {
 					var input = form.find('[name="' + field.name + '"]');
 					if (input.length) {
-						input.on('blur input', function () {
-							validateField(input, field, data.prompts, data.framework, data);
-						});
+						// apply maxlength (schema override or defaults: text/email=254, textarea=10000)
+						var maxLength = field.max_length ? parseInt(field.max_length, 10) : (['text', 'email'].indexOf(field.type) !== -1 ? 254 : (field.type === 'textarea' ? 10000 : null));
+						if (maxLength) {
+							input.attr('maxlength', maxLength);
+							// try to find existing counter inside .field, fallback to siblings/parent
+							var counter = input.closest('.field').find('.char-counter');
+							if (!counter.length) {
+								input.after('<div class="field-counter"><small class="char-counter">0 / ' + maxLength + '</small></div>');
+								counter = input.closest('.field').find('.char-counter');
+								if (!counter.length) counter = input.siblings('.field-counter').find('.char-counter');
+								if (!counter.length) counter = input.nextAll('.field-counter').find('.char-counter');
+								if (!counter.length) counter = input.parent().find('.char-counter');
+							}
+							// initial update and live update
+							updateCharCounter(input, maxLength);
+							input.on('input', function () { updateCharCounter($(this), maxLength); });
+						}
+
 					}
 				});
 
 				// Capturar botão clicado
-				form.find('button[type="submit"], input[type="submit"]').on('click', function() {
+				form.find('button[type="submit"], input[type="submit"]').on('click', function () {
 					form.data('clickedButton', $(this));
 					clearError(data, form);
 				});
@@ -108,6 +123,24 @@ $(document).ready(function () {
 						input.addClass('valid');
 					} else if (framework === 'tailwindcss') {
 						input.addClass('border-green-500').removeClass('border-red-500');
+					}
+				}
+			}
+
+			function updateCharCounter(input, maxLength) {
+				var $input = (input instanceof jQuery) ? input : $(input);
+				var val = $input.val() || '';
+				var length = val.length;
+				var counter = $input.closest('.field').find('.char-counter');
+				if (!counter.length) counter = $input.siblings('.field-counter').find('.char-counter');
+				if (!counter.length) counter = $input.nextAll('.field-counter').find('.char-counter');
+				if (!counter.length) counter = $input.parent().find('.char-counter');
+				if (counter.length) {
+					counter.text(length + ' / ' + maxLength);
+					if (length > maxLength) {
+						counter.css('color', '#dc2626');
+					} else {
+						counter.css('color', '');
 					}
 				}
 			}
@@ -252,12 +285,13 @@ $(document).ready(function () {
 					contentType: false,
 					timeout: 10000,
 					success: function (response) {
-						removeDimmer(form, data); // Remover dimmer
 						if (response.status === 'success') {
 							window.location.href = gestor.raiz + response.redirect;
 						} else if (response.status === 'require_v2' && 'googleRecaptchaV2Active' in data && data.googleRecaptchaV2Active) {
+							removeDimmer(form, data);
 							injectRecaptchaV2(form, data, clickedButton);
 						} else {
+							removeDimmer(form, data);
 							showError(response.message, data, clickedButton, form);
 						}
 					},

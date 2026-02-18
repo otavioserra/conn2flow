@@ -244,7 +244,10 @@ function formulario_controlador($params = false){
         $forceRecaptchaV3 = false; // Padrão
         if($formDefinition){
             $schema = json_decode($formDefinition['fields_schema'], true);
-            if(isset($schema['fields'])){
+            if(isset($schema['form_action'])){
+                $formAction = $_GESTOR['url-raiz'] . $schema['form_action'];
+            }
+             if(isset($schema['fields'])){
                 $fieldsDoJson = $schema['fields'];
             }
             if(isset($schema['redirects'])){
@@ -347,6 +350,7 @@ function formulario_processador($params = false){
 		$form_ui_ajax_messages['formDisabled'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-form-disabled < -->', '<!-- ajax-message-form-disabled > -->');
 		$form_ui_ajax_messages['requiredField'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-required-field < -->', '<!-- ajax-message-required-field > -->');
 		$form_ui_ajax_messages['minLength'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-min-length < -->', '<!-- ajax-message-min-length > -->');
+		$form_ui_ajax_messages['maxLength'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-max-length < -->', '<!-- ajax-message-max-length > -->');
 		$form_ui_ajax_messages['invalidEmail'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-invalid-email < -->', '<!-- ajax-message-invalid-email > -->');
 		$form_ui_ajax_messages['blocked'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-blocked < -->', '<!-- ajax-message-blocked > -->');
 	}
@@ -550,11 +554,35 @@ function formulario_processador($params = false){
                 }
                 
                 // Validação adicional para texto/textarea (mínimo 3 caracteres)
-                if(in_array($field['type'], ['text', 'textarea']) && strlen($fieldValue) < 3){
+                if(in_array($field['type'], ['text', 'textarea']) && mb_strlen($fieldValue, 'UTF-8') < 3){
                     formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
                     $_GESTOR['ajax-json'] = Array(
                         'status' => 'error',
                         'message' => modelo_var_troca($form_ui_ajax_messages['minLength'] ?? 'Campo #fieldLabel# deve ter pelo menos 3 caracteres.', '#fieldLabel#', ($field['label'] ?? $fieldName)),
+                    );
+                    return false;
+                }
+
+                // ==== Máximo por tipo (padrões: text/email=254, textarea=10000) - pode ser sobrescrito por field.max_length
+                $maxLength = null;
+                if(isset($field['max_length'])){
+                    $maxLength = (int)$field['max_length'];
+                } else {
+                    if(in_array($field['type'], ['text','email'])){
+                        $maxLength = 254;
+                    } elseif($field['type'] === 'textarea'){
+                        $maxLength = 10000;
+                    }
+                }
+
+                if($maxLength && mb_strlen($fieldValue, 'UTF-8') > $maxLength){
+                    formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+                    $msg = $form_ui_ajax_messages['maxLength'] ?? 'Field #fieldLabel# exceeded maximum length of #max# characters.';
+                    $msg = modelo_var_troca($msg, '#fieldLabel#', ($field['label'] ?? $fieldName));
+                    $msg = modelo_var_troca($msg, '#max#', $maxLength);
+                    $_GESTOR['ajax-json'] = Array(
+                        'status' => 'error',
+                        'message' => $msg,
                     );
                     return false;
                 }
@@ -573,19 +601,34 @@ function formulario_processador($params = false){
                 return false;
             }
         }
-    }
-	
-	// ===== Salvar em forms_submissions com estrutura de campos
-    $fieldsValues = [];
-    foreach($_POST as $key => $value){
-        if(!in_array($key, ['_formId', 'ajax', 'ajaxOpcao', 'token', 'action', 'fingerprint', 'timestamp', 'honeypot', 'g-recaptcha-response'])){
-            // Sanitizar valor para armazenamento seguro
-            $valueSanitized = htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
-            $field = ['name' => $key, 'value' => $valueSanitized];
-            if(!in_array($key, $definedFields)){
-                $field['undefined'] = true;
-            }
-            $fieldsValues[] = $field;
+
+		// Validação de tamanho máximo para campos com valor (aplica também a campos opcionais)
+		foreach($schema['fields'] as $field){
+			$fieldName = $field['name'];
+			$fieldValue = trim($_POST[$fieldName] ?? '');
+
+			$maxLength = isset($field['max_length']) ? (int)$field['max_length'] : (
+				in_array($field['type'], ['text','email']) ? 254 : (
+					($field['type'] === 'textarea') ? 10000 : 1000
+				)
+			);
+
+			if($maxLength && mb_strlen($fieldValue, 'UTF-8') > $maxLength){
+				formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+				$msg = $form_ui_ajax_messages['maxLength'] ?? 'Field #fieldLabel# exceeded maximum length of #max# characters.';
+				$msg = modelo_var_troca($msg, '#fieldLabel#', ($field['label'] ?? $fieldName));
+				$msg = modelo_var_troca($msg, '#max#', $maxLength);
+				$_GESTOR['ajax-json'] = Array(
+					'status' => 'error',
+					'message' => $msg,
+				);
+				return false;
+			}
+			
+            $fieldsValues[] = [
+				'name' => $fieldName,
+				'value' => $fieldValue ?? '',
+			];
         }
     }
     
@@ -675,22 +718,33 @@ function formulario_processador($params = false){
 			$fieldValue = '';
 			
 			// Encontrar o valor do campo nos dados enviados (original para formatação)
-			$fieldValue = isset($_POST[$fieldName]) ? $_POST[$fieldName] : '';
-
-			// Sanitizar o valor para prevenir XSS e injeções
-			$fieldValue = htmlspecialchars($fieldValue, ENT_COMPAT, 'UTF-8');
+			$rawValue = isset($_POST[$fieldName]) ? $_POST[$fieldName] : '';
 
 			// Formatações específicas por tipo
-			if($field['type'] === 'textarea'){
-				$fieldValue = nl2br($fieldValue);
-			} elseif($field['type'] === 'email' && filter_var($fieldValue, FILTER_VALIDATE_EMAIL)){
-				// Converter email em link clicável
-				$fieldValue = '<a href="mailto:' . $fieldValue . '">' . $fieldValue . '</a>';
+			if($field['type'] === 'email' && filter_var($rawValue, FILTER_VALIDATE_EMAIL)){
+				// Converter email em link clicável (usar rawValue para preservar formatação limpa)
+				$fieldValueFormatted = '<a href="mailto:' . htmlspecialchars($rawValue, ENT_COMPAT, 'UTF-8') . '">' . htmlspecialchars($rawValue, ENT_COMPAT, 'UTF-8') . '</a>';
+			} else {
+				// Sanitizar o valor para prevenir XSS e injeções
+				$fieldValue = htmlspecialchars($rawValue, ENT_QUOTES, 'UTF-8');
+				
+				$fieldValueFormatted = $fieldValue;
 			}
-			
+
+			// Para textarea preserve quebras de linha (usar $fieldValue - já sanitizado). Para outros tipos, remova tags.
+			if(isset($field['type']) && $field['type'] === 'textarea'){
+				$plainForPreview = preg_replace("/\r\n|\r/", "\n", $fieldValue);
+			} else {
+				$plainForPreview = strip_tags($fieldValueFormatted);
+			}
+
+			// Se for textarea, converter quebras para <br> para o email HTML (preview), mantendo #valor_full# com formatação completa
+			$preview = (isset($field['type']) && $field['type'] === 'textarea') ? nl2br($plainForPreview) : $plainForPreview;
+
 			$camposProcessados[] = [
 				'#label#' => $fieldLabel,
-				'#valor#' => $fieldValue
+				'#valor#' => $preview,
+				'#valor_full#' => $fieldValueFormatted
 			];
 		}
 	}
@@ -749,9 +803,10 @@ function formulario_processador($params = false){
 	
 	// ===== Retornar sucesso
 	$_GESTOR['ajax-json'] = Array(
-        'status' => 'success',
-        'redirect' => $redirectSuccess
-    );
+		'status' => 'success',
+		'form_last_id' => $form_last_id,
+		'redirect' => $redirectSuccess
+	);
 	return true;
 }
 

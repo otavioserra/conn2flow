@@ -24,6 +24,7 @@
                 "fields_schema": {
                     "field_name": "name",
                     "field_email": "email",
+                    "form_action": "url-para-onde-enviar-o-formulario",
                     "access_max_simple": 5,
                     "access_max": 10,
                     "force_recaptcha": true,
@@ -79,6 +80,18 @@
                     }
                 }
             ],
+            "components": [
+                {
+                    "name": "Formulário Definições Informações",
+                    "id": "forms-info-definition",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "a66e09eff43a64bfc85bd492571469b5",
+                        "css": "",
+                        "combined": "a66e09eff43a64bfc85bd492571469b5"
+                    }
+                }
+            ],
             "pages": [
                 {
                     "name": "Formulários Listar",
@@ -102,11 +115,11 @@
                     "path": "forms\/view\/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "04821cf9bc5b06ffe17a3a105133c337",
+                        "html": "3dbdc176cdc7b3b133495589fcb996bd",
                         "css": "",
-                        "combined": "04821cf9bc5b06ffe17a3a105133c337"
+                        "combined": "3dbdc176cdc7b3b133495589fcb996bd"
                     }
                 },
                 {
@@ -116,11 +129,11 @@
                     "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "c622b7d9cad181915f12f6939fe80861",
+                        "html": "347b677acd73c3ae0fe6be51b7dbb42e",
                         "css": "",
-                        "combined": "c622b7d9cad181915f12f6939fe80861"
+                        "combined": "347b677acd73c3ae0fe6be51b7dbb42e"
                     }
                 },
                 {
@@ -130,11 +143,11 @@
                     "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "a409e9b5da36b2899b9afba33632da6d",
+                        "html": "feefaaaa7dee3f0e19678d0052aa1353",
                         "css": "",
-                        "combined": "a409e9b5da36b2899b9afba33632da6d"
+                        "combined": "feefaaaa7dee3f0e19678d0052aa1353"
                     }
                 },
                 {
@@ -144,11 +157,11 @@
                     "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "54041d657a911fabc56a41b2d2283669",
+                        "html": "eba7cb54924adffd7f8353c2991dd4e3",
                         "css": "",
-                        "combined": "54041d657a911fabc56a41b2d2283669"
+                        "combined": "eba7cb54924adffd7f8353c2991dd4e3"
                     }
                 },
                 {
@@ -203,6 +216,7 @@
                 "fields_schema": {
                     "field_name": "name",
                     "field_email": "email",
+                    "form_action": "url-for-where-to-send-form",
                     "access_max_simple": 5,
                     "access_max": 10,
                     "force_recaptcha": true,
@@ -258,6 +272,18 @@
                     }
                 }
             ],
+            "components": [
+                {
+                    "name": "Forms Info Definition",
+                    "id": "forms-info-definition",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "2db5cb9601ce1961567b1aa20cfaed94",
+                        "css": "",
+                        "combined": "2db5cb9601ce1961567b1aa20cfaed94"
+                    }
+                }
+            ],
             "pages": [
                 {
                     "name": "Forms List",
@@ -281,11 +307,11 @@
                     "path": "forms\/view\/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "961ea4c4f24d23bb85223ee680b2cf73",
+                        "html": "a62362020eafb15e85002e9a752419a1",
                         "css": "",
-                        "combined": "961ea4c4f24d23bb85223ee680b2cf73"
+                        "combined": "a62362020eafb15e85002e9a752419a1"
                     }
                 },
                 {
@@ -295,11 +321,11 @@
                     "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "f174373f96c82a081fef1ceb38e6db5c",
+                        "html": "6b5d1d6449c750afe9a060a42c74bd7f",
                         "css": "",
-                        "combined": "f174373f96c82a081fef1ceb38e6db5c"
+                        "combined": "6b5d1d6449c750afe9a060a42c74bd7f"
                     }
                 },
                 {
@@ -309,11 +335,11 @@
                     "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "2216e3fcc898d3c00fb54ba1ebb47292",
+                        "html": "7465508e91a0da93e6f16f826e3650a9",
                         "css": "",
-                        "combined": "2216e3fcc898d3c00fb54ba1ebb47292"
+                        "combined": "7465508e91a0da93e6f16f826e3650a9"
                     }
                 },
                 {
@@ -323,11 +349,11 @@
                     "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "7350c0cbaf586a78f2a7de49661b9d48",
+                        "html": "2fbf1b2f2df6c37bb035af7701512827",
                         "css": "",
-                        "combined": "7350c0cbaf586a78f2a7de49661b9d48"
+                        "combined": "2fbf1b2f2df6c37bb035af7701512827"
                     }
                 },
                 {

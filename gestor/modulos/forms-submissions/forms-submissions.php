@@ -120,7 +120,20 @@ function forms_submissions_visualizar(){
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id#',$id);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#form_id#',$form_id);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id_numerico#',$id_numerico);
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#fields_values#',$fields_values_raw);
+		// Apresentar fields_values de forma indentada (pretty-print JSON quando possível)
+		$fields_values_pretty = $fields_values_raw;
+		if(!empty($fields_values_raw)){
+			if(is_array($fieldsData)){
+				$fields_values_pretty = json_encode($fieldsData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+			} else {
+				$tmp = json_decode($fields_values_raw, true);
+				if(json_last_error() === JSON_ERROR_NONE && (is_array($tmp) || is_object($tmp))){
+					$fields_values_pretty = json_encode($tmp, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+				}
+			}
+		}
+
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#fields_values#',$fields_values_pretty);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#reply_email#',$replyEmail);
 		
 		// ===== Gerar badge de email status

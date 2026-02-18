@@ -84,6 +84,10 @@ function forms_adicionar(){
 
 	// ===== Alterar variáveis da página
 
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#forms-info-definition#', gestor_componente(Array(
+		'id' => 'forms-info-definition',
+		'modulo' => $_GESTOR['modulo-id'],
+	)));
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#form_info#',json_encode($modulo['resources'][$_GESTOR['linguagem-codigo']]['form_info'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 	
 	// ===== Inclusão do CodeMirror
@@ -347,8 +351,12 @@ function forms_editar(){
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#description#',$description);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#fields_schema#',json_encode(json_decode($fields_schema,true), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#forms-info-definition#', gestor_componente(Array(
+			'id' => 'forms-info-definition',
+			'modulo' => 	$_GESTOR['modulo-id'],
+		)));
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#form_info#',json_encode($modulo['resources'][$_GESTOR['linguagem-codigo']]['form_info'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-        
+		
         // ===== Popular os metaDados
 		
 		$status_atual = (isset($retorno_bd[$modulo['tabela']['status']]) ? $retorno_bd[$modulo['tabela']['status']] : '');
@@ -570,6 +578,10 @@ function forms_clonar(){
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#description#',$description);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#fields_schema#',json_encode(json_decode($fields_schema,true), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#forms-info-definition#', gestor_componente(Array(
+			'id' => 'forms-info-definition',
+			'modulo' => 	$_GESTOR['modulo-id'],
+		)));
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#form_info#',json_encode($modulo['resources'][$_GESTOR['linguagem-codigo']]['form_info'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         
         // ===== Popular os metaDados
@@ -768,6 +780,11 @@ function forms_visualizar(){
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#module#',$module);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#description#',$description);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#fields_schema#',$fields_schema);
+
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#forms-info-definition#', gestor_componente(Array(
+			'id' => 'forms-info-definition',
+			'modulo' => 	$_GESTOR['modulo-id'],
+		)));
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#form_info#',json_encode($modulo['resources'][$_GESTOR['linguagem-codigo']]['form_info'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 		
 		// ===== Popular os metaDados
