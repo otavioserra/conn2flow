@@ -1085,6 +1085,10 @@ function webStart(array $req): array {
 
 function webDeployFiles(string $sid): array {
     global $CONTEXT, $BASE_PATH, $_GESTOR; $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; if($st['finished']) return ['error'=>'Sessão já finalizada'];
+    // Recarregar flags da sessão (necessário para chamadas web separadas — preserva --debug)
+    $CONTEXT['opts'] = $st['opts'] ?? [];
+    $CONTEXT['debug'] = !empty($CONTEXT['opts']['debug']);
+
     if((empty($BASE_PATH) || !is_string($BASE_PATH)) && isset($_GESTOR['ROOT_PATH'])) {
         $BASE_PATH = rtrim($_GESTOR['ROOT_PATH'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         logAtualizacao('WebDeployFiles: BASE_PATH de $_GESTOR[ROOT_PATH]','DEBUG');
@@ -1149,7 +1153,12 @@ function webDeployFiles(string $sid): array {
     return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'next'=>$next,'stats'=>$stats];
 }
 
-function webDatabase(string $sid): array { global $CONTEXT, $BASE_PATH, $_GESTOR; $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; if($st['finished']) return ['error'=>'Sessão já finalizada']; $CONTEXT['session_id']=$sid; $CONTEXT['session_log']=webSessionLogPath($sid); $opts=$st['opts']; if(!empty($opts['only-files']) || !empty($opts['no-db'])) { return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'skipped'=>true,'next'=>'finalize']; }
+function webDatabase(string $sid): array { global $CONTEXT, $BASE_PATH, $_GESTOR; $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; if($st['finished']) return ['error'=>'Sessão já finalizada'];
+    // Recarregar flags da sessão (inclui debug)
+    $CONTEXT['opts'] = $st['opts'] ?? [];
+    $CONTEXT['debug'] = !empty($CONTEXT['opts']['debug']);
+
+    $CONTEXT['session_id']=$sid; $CONTEXT['session_log']=webSessionLogPath($sid); $opts=$st['opts']; if(!empty($opts['only-files']) || !empty($opts['no-db'])) { return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'skipped'=>true,'next'=>'finalize']; }
     if((empty($BASE_PATH) || !is_dir($BASE_PATH)) && isset($_GESTOR['ROOT_PATH'])) { $BASE_PATH = rtrim($_GESTOR['ROOT_PATH'], DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR; logAtualizacao('WebDatabase: BASE_PATH de $_GESTOR[ROOT_PATH]','DEBUG'); }
     if(empty($BASE_PATH) || !is_dir($BASE_PATH)) { $BASE_PATH = realpath(__DIR__.'/../../').DIRECTORY_SEPARATOR; logAtualizacao('WebDatabase: reconstruído BASE_PATH via realpath='.$BASE_PATH,'WARNING'); }
     // Verificar presença do script de banco
@@ -1170,14 +1179,24 @@ function webDatabase(string $sid): array { global $CONTEXT, $BASE_PATH, $_GESTOR
     catch(Throwable $e){ $st['errors'][]=$e->getMessage(); saveWebState($sid,$st); if(!empty($st['exec_id'])) persist_final_execucao((int)$st['exec_id'],$CONTEXT,1,$e->getMessage()); logErroCtx('WebDatabase erro: '.$e->getMessage()); return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'error'=>$e->getMessage(),'next'=>'finalize']; }
 }
 
-function webFinalize(string $sid): array { global $CONTEXT, $LOGS_DIR, $TEMP_DIR; $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; if($st['finished']) return ['sid'=>$sid,'already'=>true]; $CONTEXT['session_id']=$sid; $CONTEXT['session_log']=webSessionLogPath($sid); logAtualizacao('WebFinalize: iniciando');
+function webFinalize(string $sid): array { global $CONTEXT, $LOGS_DIR, $TEMP_DIR; $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; if($st['finished']) return ['sid'=>$sid,'already'=>true];
+    // Recarregar flags da sessão (inclui debug)
+    $CONTEXT['opts'] = $st['opts'] ?? [];
+    $CONTEXT['debug'] = !empty($CONTEXT['opts']['debug']);
+
+    $CONTEXT['session_id']=$sid; $CONTEXT['session_log']=webSessionLogPath($sid); logAtualizacao('WebFinalize: iniciando');
     try {
         // Limpeza staging (se ainda existir)
         if(!empty($CONTEXT['staging_dir']) && is_dir($CONTEXT['staging_dir'])) removeDirectoryRecursive($CONTEXT['staging_dir']);
     } catch(Throwable $e){ logAtualizacao('WebFinalize: falha limpeza staging '.$e->getMessage(),'WARNING'); }
     $st['finished']=true; $st['progress']['finalize']=['done'=>true,'ts'=>time()]; saveWebState($sid,$st); if(!empty($st['exec_id'])) persist_final_execucao((int)$st['exec_id'],$CONTEXT,0,null); logAtualizacao('WebFinalize: concluído'); return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'finished'=>true]; }
 
-function webStatus(string $sid): array { $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; $logPath=webSessionLogPath($sid); $tail=''; if(is_file($logPath)){ $tail=@file_get_contents($logPath); } $percent=calcularProgresso($st); return ['sid'=>$sid,'state'=>$st,'progress_percent'=>$percent,'log'=>$tail]; }
+function webStatus(string $sid): array { $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida'];
+    // Recarregar flags da sessão (inclui debug)
+    $GLOBALS['CONTEXT']['opts'] = $st['opts'] ?? [];
+    $GLOBALS['CONTEXT']['debug'] = !empty($GLOBALS['CONTEXT']['opts']['debug']);
+
+    $logPath=webSessionLogPath($sid); $tail=''; if(is_file($logPath)){ $tail=@file_get_contents($logPath); } $percent=calcularProgresso($st); return ['sid'=>$sid,'state'=>$st,'progress_percent'=>$percent,'log'=>$tail]; }
 
 function jsonResponse(array $data): void { header('Content-Type: application/json; charset=utf-8'); echo json_encode($data,JSON_UNESCAPED_UNICODE); }
 
@@ -1203,7 +1222,12 @@ if(PHP_SAPI!=='cli') {
 }
 
 // Cancelar execução (marca finished e persiste status canceled)
-function webCancel(string $sid): array { global $CONTEXT; $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; if($st['finished']) return ['sid'=>$sid,'already'=>true]; $CONTEXT['session_id']=$sid; $CONTEXT['session_log']=webSessionLogPath($sid); logAtualizacao('WebCancel: solicitando cancelamento','WARNING'); $st['finished']=true; $st['canceled']=true; $st['progress']['canceled']=['done'=>true,'ts'=>time()]; saveWebState($sid,$st); if(!empty($st['exec_id'])) persist_final_execucao((int)$st['exec_id'],$CONTEXT,1,'cancelado'); $percent=calcularProgresso($st); return ['sid'=>$sid,'canceled'=>true,'progress_percent'=>$percent]; }
+function webCancel(string $sid): array { global $CONTEXT; $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida']; if($st['finished']) return ['sid'=>$sid,'already'=>true];
+    // Recarregar flags da sessão (inclui debug)
+    $CONTEXT['opts'] = $st['opts'] ?? [];
+    $CONTEXT['debug'] = !empty($CONTEXT['opts']['debug']);
+
+    $CONTEXT['session_id']=$sid; $CONTEXT['session_log']=webSessionLogPath($sid); logAtualizacao('WebCancel: solicitando cancelamento','WARNING'); $st['finished']=true; $st['canceled']=true; $st['progress']['canceled']=['done'=>true,'ts'=>time()]; saveWebState($sid,$st); if(!empty($st['exec_id'])) persist_final_execucao((int)$st['exec_id'],$CONTEXT,1,'cancelado'); $percent=calcularProgresso($st); return ['sid'=>$sid,'canceled'=>true,'progress_percent'=>$percent]; }
 
 // Progresso percentual simples baseado em passos concluídos
 function calcularProgresso(array $st): int {
