@@ -234,9 +234,20 @@ function plataforma_gateways_log($params = Array()) {
         'data' => $data,
     );
     
-    $log_line = json_encode($log_entry, JSON_UNESCAPED_UNICODE) . "\n";
-    
-    file_put_contents($log_file, $log_line, FILE_APPEND | LOCK_EX);
+    // Preparar linha de log (JSON)
+    $log_line = json_encode($log_entry, JSON_UNESCAPED_UNICODE);
+
+    // Usar biblioteca de logs do sistema para gravar a linha
+    gestor_incluir_biblioteca('log');
+
+    // Garantir diretório (já criado acima, mas reafirmar)
+    if (!is_dir($log_dir)) {
+        mkdir($log_dir, 0755, true);
+    }
+
+    // Escrever usando log_disco — mantém histórico centralizado em `logs-path`
+    // Arquivo resultante: {logs-path}/gateways/{gateway}/{gateway}-YYYY-MM-DD.log
+    log_disco($log_line, 'gateways/' . $gateway . '/' . $gateway);
 }
 
 // =========================== FUNÇÕES DE RESPOSTA ===========================

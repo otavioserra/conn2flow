@@ -217,11 +217,12 @@ function help(): void {
     echo "  --log-diff              Log detalhado de diffs banco\n";
     echo "  --debug                 Verbosidade maior (DEBUG logs)\n";
     echo "  --clean-temp            Remove staging ao final mesmo em dry-run\n";
+    echo "  --wipe                  Ativa wipe completo antes do deploy (por padrão é overwrite — preserva arquivos customizados)\n";
     echo "  --logs-retention-days=N  Mantém somente N dias de logs de atualização e planos (default 14, 0 desativa)\n";
     echo "  --help                  Exibe esta ajuda\n";
     echo "\nFluxo Simplificado:\n";
     echo "  1. Bootstrap: baixa/usa artefato, extrai, atualiza este script e reexecuta nova versão.\n";
-    echo "  2. Deploy: wipe (remove tudo exceto pastas protegidas) + move novos arquivos.\n";
+    echo "  2. Deploy: overwrite por padrão (preserva arquivos customizados). Use --wipe para forçar wipe completo (remove tudo exceto pastas protegidas) antes do deploy.\n";
     echo "  3. Merge .env (aditivo) e atualização de banco (se não --no-db / não --only-files).\n";
     echo "\nPastas protegidas (não removidas): logs/, backups/, temp/, contents/, autenticacoes/\n";
 }
@@ -854,10 +855,16 @@ function main_update(array $argv): int {
 
             // Deploy simplificado: remover tudo exceto diretórios protegidos e mover novo conteúdo
             $protegidos = ['contents','logs','backups','temp','autenticacoes'];
+            $wipeEnabled = !empty($opts['wipe']); // nova flag: default = false (overwrite)
             if(!$dry){
-                logAtualizacao('Remover conteúdos base...','DEBUG');
-                $removidos = removerConteudoBase($BASE_PATH,$protegidos);
-                logAtualizacao('Wipe concluído (removidos não protegidos) count='.$removidos);
+                if($wipeEnabled){
+                    logAtualizacao('Remover conteúdos base (wipe habilitado)...','DEBUG');
+                    $removidos = removerConteudoBase($BASE_PATH,$protegidos);
+                    logAtualizacao('Wipe concluído (removidos não protegidos) count='.$removidos);
+                } else {
+                    logAtualizacao('Wipe pulado (modo padrão = overwrite). Use --wipe para ativar wipe completo','INFO');
+                    $removidos = 0;
+                }
                 $movidos = moverConteudoStaging($realRoot,$BASE_PATH,$protegidos);
                 logAtualizacao('Deploy concluído (itens movidos) count='.$movidos);
                 // Revalida críticos
@@ -981,6 +988,7 @@ function webStart(array $req): array {
         'log-diff'=>!empty($req['log_diff'])?1:null,
         'force-all'=>!empty($req['force_all'])?1:null,
         'backup'=>!empty($req['backup'])?1:null,
+        'wipe'=>!empty($req['wipe'])?1:null,
         'download-only'=>!empty($req['download_only'])?1:null,
         'skip-download'=>!empty($req['skip_download'])?1:null,
         'clean-temp'=>!empty($req['clean_temp'])?1:null,

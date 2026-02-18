@@ -26,7 +26,7 @@ Fornecer mecanismo automatizado para atualizar o núcleo `gestor/` com:
 
 ## Fluxo CLI (Resumo)
 1. Bootstrap (download/extract + possível reexecução se script atualizado)
-2. Deploy (wipe + mover + merge .env)
+2. Deploy: overwrite por padrão (preserva arquivos customizados). Use `--wipe` para forçar wipe completo + mover + merge .env
 3. Banco (opcional conforme flags)
 4. Limpeza + relatório final + retenção
 
@@ -86,11 +86,14 @@ started_at, finished_at, created_at, updated_at
 --only-files | --only-db | --no-db
 --dry-run               # não aplica deploy/banco
 --backup                # backup full antes do wipe
+--wipe                  # ativa wipe completo antes do deploy (por padrão overwrite - preserva arquivos customizados)
 --no-verify             # ignora checksum SHA256
 --download-only         # gera staging/plano sem aplicar
 --logs-retention-days=N # default 14 (0 desativa)
 --debug                 # logs DEBUG
 ```
+
+> Nota: comportamento padrão alterado — o deploy NÃO faz wipe por padrão; use `--wipe` para manter o comportamento antigo (wipe completo antes do deploy).
 
 ## Merge .env
 - Lê template em `autenticacoes.exemplo/dominio/.env` (ordem tentativa: dominio, localhost, dominio literal)
@@ -156,7 +159,7 @@ Content-Type: application/x-www-form-urlencoded
 ### Ações Disponíveis
 | Ação | Parâmetros | Descrição |
 |------|-----------|-----------|
-| `start` | `domain`, `tag`, `only_files`, `only_db`, `dry_run`, `local`, `debug`, `no_db`, `force_all`, `log_diff`, `backup` | Inicia sessão de atualização |
+| `start` | `domain`, `tag`, `only_files`, `only_db`, `dry_run`, `local`, `debug`, `no_db`, `force_all`, `log_diff`, `backup`, `wipe` | Inicia sessão de atualização |
 | `deploy` | `sid` | Executa deploy de arquivos |
 | `db` | `sid` | Executa atualização de banco |
 | `finalize` | `sid` | Finaliza e limpa sessão |

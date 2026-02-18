@@ -115,6 +115,11 @@ $(document).ready(function () {
             $('#atualizacoes-start-btn').addClass('disabled').prop('disabled', true);
             const adv = collectAdvanced(root);
             adv.acao = 'start'; adv.modo = modo;
+            // confirmação adicional se usuário marcou --wipe (perigoso)
+            if (adv.wipe) {
+                const ok = window.confirm('The --wipe option will remove non-protected files. Are you sure you want to continue?');
+                if (!ok) { setLoading(false); $('#atualizacoes-start-btn').removeClass('disabled').prop('disabled', false); log('Operação cancelada pelo usuário (wipe não confirmado)'); return; }
+            }
             ajax(adv).done(resp => {
                 setLoading(false);
                 if (resp.status !== 'ok') { log('Erro start: ' + (resp.erro || '')); return; }

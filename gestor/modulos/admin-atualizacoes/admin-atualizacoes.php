@@ -210,6 +210,7 @@ function admin_atualizacoes_ajax_update(){
     $resp = [];
     try {
         switch($acao){
+            // notas: o 'start' recebe flags via map abaixo (inclui agora 'wipe')
             case 'start':
                 $modo = $params['modo'] ?? 'full';
                 $mapModo = [];
@@ -226,6 +227,7 @@ function admin_atualizacoes_ajax_update(){
                     'force_all'=>'force_all',
                     'log_diff'=>'log_diff',
                     'backup'=>'backup',
+                    'wipe'=>'wipe', // nova flag: envia --wipe ao backend
                     'clean_temp'=>'clean_temp',
                 ];
                 $extras=[]; foreach($extraFlagsMap as $k=>$flag){ if(!empty($params[$k])) $extras[$flag]=1; }
