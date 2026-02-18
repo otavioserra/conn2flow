@@ -28,7 +28,7 @@ services:
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: conn2flow-cloudflared
-    restart: unless-stopped
+    restart: "no"
     profiles:
       - tunnel
     command: tunnel --config /etc/cloudflared/config.yml --no-autoupdate run
@@ -45,7 +45,7 @@ services:
       context: .
       dockerfile: Dockerfile.ftp
     container_name: conn2flow-ftp
-    restart: unless-stopped
+    restart: "no"
     ports:
       - "21:21"
       - "21100-21110:21100-21110"
@@ -91,6 +91,26 @@ services:
       - ./apache-limits.conf:/etc/apache2/conf-enabled/apache-limits.conf
     depends_on:
       - mysql
+    networks:
+      - conn2flow-network
+
+  # Cache em memória (memcached) - start manual por padrão
+  memcached:
+    image: memcached:alpine
+    container_name: conn2flow-memcached
+    restart: "no"
+    ports:
+      - "11211:11211"
+    networks:
+      - conn2flow-network
+
+  # Cache em memória (redis) - start manual por padrão
+  redis:
+    image: redis:alpine
+    container_name: conn2flow-redis
+    restart: "no"
+    ports:
+      - "6379:6379"
     networks:
       - conn2flow-network
 volumes:
