@@ -38,11 +38,11 @@ fi
 
 echo "New version is: $NEW_VERSION"
 
-## Removes all old tags matching gestor-v2.6.* pattern locally and remotely
+## Removes all old tags matching gestor-v2.7.* pattern locally and remotely
 set +e
-OLD_TAGS=$(git tag | grep "^gestor-v2.6")
+OLD_TAGS=$(git tag | grep "^gestor-v2.7")
 if [ -n "$OLD_TAGS" ]; then
-  echo "Removing all old tags matching gestor-v2.6.* pattern: $OLD_TAGS"
+  echo "Removing all old tags matching gestor-v2.7.* pattern: $OLD_TAGS"
   for tag in $OLD_TAGS; do
     if [ -n "$tag" ]; then
       git tag -d "$tag"
