@@ -423,7 +423,14 @@ function moverConteudoStaging(string $stagingRoot, string $basePath, array $prot
         // Se destino é protegido e já existe, não sobrescrever
         if(in_array($entry,$protegidos,true) && file_exists($basePath.$entry)) continue;
         $dst = $basePath.$entry;
-        // Se já existe destino, tenta remover (não protegido) antes
+        // Se ambos são diretórios, merge recursivo (preserva conteúdo customizado no destino)
+        if(is_dir($src) && is_dir($dst)) {
+            copiarRecursivo($src, $dst);
+            $movidos++;
+            logAtualizacao('moverConteudoStaging: merge dir '.$entry.' (preservando conteúdo existente)','DEBUG');
+            continue;
+        }
+        // Se destino existe e não é protegido, remover antes (arquivo ou mudança tipo dir↔arquivo)
         if(file_exists($dst) && !in_array($entry,$protegidos,true)) {
             $removeOk=true;
             if(is_dir($dst)) { removeDirectoryRecursive($dst); $removeOk=!is_dir($dst); }
