@@ -33,12 +33,14 @@ jobs:
       
     - name: Create Release
       id: create_release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ steps.tag.outputs.TAG_NAME }}
         name: "Instalador ${{ steps.tag.outputs.TAG_NAME }}"
+        make_latest: true
+        fail_on_unmatched_files: true
         body: |
           ## 🛠️ Conn2Flow Instalador Release v1.5.1 (Sistema Multilíngue Completo + Gestor v2.2.x)
           
