@@ -44,15 +44,56 @@ $_GESTOR['AUTH_PATH_SERVER']					=	$_GESTOR['AUTH_PATH'] . $_SERVER['SERVER_NAME
 require_once $_GESTOR['ROOT_PATH'] . 'vendor/autoload.php';
 
 if (class_exists(Dotenv\Dotenv::class)) {
-    try {
-        $dotenv = Dotenv\Dotenv::createImmutable($_GESTOR['AUTH_PATH_SERVER']);
-        $dotenv->load();
-    } catch (\Dotenv\Exception\InvalidPathException $e) {
+    // Paths relativos para autenticações
+    $authBase   = rtrim($_GESTOR['AUTH_PATH'], '/') . '/';
+    $serverName = $_SERVER['SERVER_NAME'] ?? 'localhost';
+
+    // candidato principal: pasta do domínio atual
+    $candidates = [ $authBase . $serverName . '/' ];
+
+    // permitir fallback apenas em DEV ou quando AUTH_ENV_FALLBACK=true
+    $allowFallback = filter_var($_ENV['AUTH_ENV_FALLBACK'] ?? ($_ENV['DEVELOPMENT_ENV'] ?? false), FILTER_VALIDATE_BOOLEAN);
+    if ($allowFallback) {
+        // adicionar a primeira pasta disponível em autenticacoes/ (sem duplicatas)
+        $dirs = glob($authBase . '*', GLOB_ONLYDIR);
+        if ($dirs) {
+            // preservar a ordem retornada pelo glob (primeira pasta como fallback)
+            foreach ($dirs as $d) {
+                $d = rtrim($d, '/') . '/';
+                if (!in_array($d, $candidates, true)) $candidates[] = $d;
+            }
+        }
+    }
+
+    $loaded = false;
+    $tried  = [];
+
+    foreach ($candidates as $path) {
+        $tried[] = $path;
+        if (is_dir($path) && file_exists($path . '.env')) {
+            try {
+                $dotenv = Dotenv\Dotenv::createImmutable($path);
+                $dotenv->load();
+
+                // atualizar para o path efetivamente usado
+                $_GESTOR['AUTH_PATH_SERVER'] = $path;
+
+                $loaded = true;
+                break;
+            } catch (\Dotenv\Exception\InvalidPathException $e) {
+                // tentar próximo candidato
+            }
+        }
+    }
+
+    if (!$loaded) {
         http_response_code(503);
+        // NÃO expor caminhos locais em detalhes — mostrar apenas domínios/basename
+        $attempted = array_map(function($p){ return basename(rtrim($p, '\\/')); }, $tried);
         echo json_encode([
             'error' => '503',
-            'info' => 'Configuration file (.env) not found for domain: ' . $_SERVER['SERVER_NAME'],
-            'details' => 'Please ensure the directory exists and contains a valid .env file: ' . $_GESTOR['AUTH_PATH_SERVER']
+            'info' => 'Configuration file (.env) not found for domain: ' . $serverName,
+            'details' => 'Tried auth directories for domains: ' . implode(', ', array_filter($attempted))
         ]);
         exit;
     }
