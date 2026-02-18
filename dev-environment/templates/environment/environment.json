@@ -30,7 +30,9 @@
         "project_ID": {
             "name": "Conn2Flow Project",
             "path": "",
+            "target": "",
             "url": "",
+            "tailwindcss/cli": "",
             "api": {
                 "access_token": "",
                 "refresh_token": "",

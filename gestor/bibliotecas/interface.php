@@ -5422,6 +5422,14 @@ function interface_iniciar($params = false){
 			case 'adicionar-incomum': interface_adicionar_incomum_iniciar($parametros); break;
 			case 'editar-incomum': interface_editar_incomum_iniciar($parametros); break;
 			case 'simples': interface_simples_iniciar($parametros); break;
+			case 'adicionar': interface_adicionar_iniciar($parametros); break;
+			case 'clonar': interface_clonar_iniciar($parametros); break;
+			case 'editar': interface_editar_iniciar($parametros); break;
+			case 'status': interface_status_iniciar($parametros); break;
+			case 'excluir': interface_excluir_iniciar($parametros); break;
+			case 'listar': interface_listar_iniciar($parametros); break;
+			case 'config': interface_config_iniciar($parametros); break;
+			case 'visualizar': interface_visualizar_iniciar($parametros); break;
 		}
 	}
 }
@@ -5474,6 +5482,16 @@ function interface_finalizar($params = false){
 			case 'adicionar-incomum': interface_adicionar_incomum_finalizar($parametros); break;
 			case 'editar-incomum': interface_editar_incomum_finalizar($parametros); break;
 			case 'simples': interface_simples_finalizar($parametros); break;
+			case 'adicionar':
+			case 'clonar':
+				interface_adicionar_finalizar($parametros);
+			break;
+			case 'editar': interface_editar_finalizar($parametros); break;
+			case 'status': interface_status_finalizar($parametros); break;
+			case 'excluir': interface_excluir_finalizar($parametros); break;
+			case 'listar': interface_listar_finalizar($parametros); break;
+			case 'config': interface_config_finalizar($parametros); break;
+			case 'visualizar': interface_visualizar_finalizar($parametros); break;
 		}
 	}
 	

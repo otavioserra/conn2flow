@@ -17,6 +17,28 @@ services:
     networks:
       - conn2flow-network
 
+  # Optional: Cloudflare Tunnel (cloudflared)
+  # Expõe o ambiente local via https://dev.conn2flow.com (para testes de webhook, etc.)
+  # A imagem cloudflared é distroless — NÃO possui shell (sh/bash), por isso usamos config.yml.
+  # O profile "tunnel" impede que o serviço inicie automaticamente com `docker compose up -d`.
+  #
+  # Iniciar:  docker compose --profile tunnel up -d
+  # Parar:    docker compose --profile tunnel stop
+  # Logs:     docker compose logs -f cloudflared
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: conn2flow-cloudflared
+    restart: unless-stopped
+    profiles:
+      - tunnel
+    command: tunnel --config /etc/cloudflared/config.yml --no-autoupdate run
+    depends_on:
+      - app
+    networks:
+      - conn2flow-network
+    volumes:
+      - ../data/cloudflared:/etc/cloudflared:ro
+
   # Servidor FTP com ProFTPD (mais rápido para testes)
   ftp:
     build:

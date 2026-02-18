@@ -538,7 +538,121 @@ function plataforma_gateways_paypal_cancel() {
 // =========================== PONTE PARA MÓDULOS ===========================
 
 /**
- * Dispara hook para módulos privados processarem eventos de gateway
+ * Resolve o diretório base de um módulo (padrão ou plugin).
+ *
+ * Para plugins o slug do plugin corresponde ao nome da pasta do plugin,
+ * portanto NÃO é necessária uma consulta ao banco para resolver o caminho.
+ *
+ * @param string $modulo_id ID do módulo
+ * @param string|null $plugin_id ID de plugin (slug = nome da pasta do plugin)
+ * @return string|null Caminho do diretório do módulo ou null
+ */
+function plataforma_gateways_resolver_modulo_dir($modulo_id, $plugin_id = null) {
+    global $_GESTOR;
+
+    if (!empty($plugin_id)) {
+        // Usar o slug do plugin diretamente como nome da pasta
+        return rtrim($_GESTOR['plugins-path'], '/') . '/' . $plugin_id . '/modulos/' . $modulo_id . '/';
+    }
+
+    return $_GESTOR['modulos-path'] . $modulo_id . '/';
+}
+
+/**
+ * Carrega o arquivo de hook de um módulo a partir do seu JSON de configuração.
+ * 
+ * Lê o arquivo {modulo_id}.json, procura a chave hooks.{hook_name} que indica
+ * o nome do arquivo PHP a ser incluído. Inclui o arquivo e retorna o nome
+ * da função esperada.
+ * 
+ * @param string $modulo_id ID do módulo
+ * @param string $plugin_id ID do plugin (ou null para módulo padrão)
+ * @param string $hook_name Nome do hook (ex: 'plataforma_gateways')
+ * @return string|null Nome da função do hook ou null se não encontrado
+ */
+function plataforma_gateways_carregar_hook($modulo_id, $plugin_id, $hook_name) {
+    $modulo_dir = plataforma_gateways_resolver_modulo_dir($modulo_id, $plugin_id);
+    
+    if (!$modulo_dir) {
+        return null;
+    }
+    
+    // Ler JSON de configuração do módulo
+    $json_path = $modulo_dir . $modulo_id . '.json';
+    
+    if (!file_exists($json_path)) {
+        plataforma_gateways_log(Array(
+            'gateway' => 'system',
+            'endpoint' => 'hook-loader',
+            'status' => 'warning',
+            'message' => 'Arquivo JSON do módulo não encontrado: ' . $modulo_id,
+            'data' => Array('path' => $json_path),
+        ));
+        return null;
+    }
+    
+    $json_content = file_get_contents($json_path);
+    $modulo_config = json_decode($json_content, true);
+    
+    if (!$modulo_config || json_last_error() !== JSON_ERROR_NONE) {
+        plataforma_gateways_log(Array(
+            'gateway' => 'system',
+            'endpoint' => 'hook-loader',
+            'status' => 'error',
+            'message' => 'JSON inválido no módulo: ' . $modulo_id,
+            'data' => Array('json_error' => json_last_error_msg()),
+        ));
+        return null;
+    }
+    
+    // Buscar configuração do hook
+    $hook_file = isset($modulo_config['hooks'][$hook_name]) ? $modulo_config['hooks'][$hook_name] : null;
+    
+    if (empty($hook_file)) {
+        return null;
+    }
+    
+    // Incluir o arquivo de hook
+    $hook_path = $modulo_dir . $hook_file;
+    
+    if (!file_exists($hook_path)) {
+        plataforma_gateways_log(Array(
+            'gateway' => 'system',
+            'endpoint' => 'hook-loader',
+            'status' => 'error',
+            'message' => 'Arquivo de hook não encontrado: ' . $hook_file,
+            'data' => Array('module' => $modulo_id, 'path' => $hook_path),
+        ));
+        return null;
+    }
+    
+    include_once($hook_path);
+    
+    // Nome da função esperada: {modulo_id_com_underscores}_plataforma_gateways
+    $funcao_id = str_replace('-', '_', $modulo_id);
+    $funcao = $funcao_id . '_plataforma_gateways';
+    
+    if (function_exists($funcao)) {
+        return $funcao;
+    }
+    
+    plataforma_gateways_log(Array(
+        'gateway' => 'system',
+        'endpoint' => 'hook-loader',
+        'status' => 'warning',
+        'message' => 'Função de hook não encontrada após include: ' . $funcao,
+        'data' => Array('module' => $modulo_id, 'file' => $hook_file),
+    ));
+    
+    return null;
+}
+
+/**
+ * Dispara hook para módulos que possuem hooks configurados no JSON.
+ * 
+ * Busca módulos com coluna hooks IS NOT NULL, lê o JSON de cada módulo
+ * para encontrar o arquivo de hook configurado em hooks.plataforma_gateways,
+ * inclui o arquivo e executa a função {modulo_id}_plataforma_gateways().
  * 
  * @param string $gateway Identificador do gateway
  * @param string $action Ação (webhook, return, cancel, etc)
@@ -550,102 +664,50 @@ function plataforma_gateways_disparar_hook($gateway, $action, $data = Array()) {
     
     $resultado = null;
     
-    // Buscar módulos que têm função de gateway registrada
+    // Buscar módulos que possuem hooks configurados
     $modulos = banco_select(Array(
-        'campos' => 'id, plugin_id, ativo',
+        'campos' => 'id, plugin',
         'tabela' => 'modulos',
-        'condicao' => "WHERE ativo = 'S' AND status != 'D'",
+        'condicao' => "WHERE hooks IS NOT NULL AND status != 'D'",
     ));
     
     if ($modulos) {
         foreach ($modulos as $modulo) {
             $modulo_id = $modulo['id'];
-            $funcao = $modulo_id . '_plataforma_gateways';
             
-            // Verificar se a função existe no módulo
-            if (function_exists($funcao)) {
-                try {
-                    $resultado_modulo = $funcao(Array(
-                        'gateway' => $gateway,
-                        'action' => $action,
-                        'data' => $data,
-                    ));
-                    
-                    // Se o módulo retornou um resultado com redirect_url, usar ele
-                    if (isset($resultado_modulo['redirect_url'])) {
-                        $resultado = $resultado_modulo;
-                    }
-                    
-                    // Se o módulo marcou como processado, sair do loop
-                    if (isset($resultado_modulo['processed']) && $resultado_modulo['processed']) {
-                        break;
-                    }
-                } catch (Exception $e) {
-                    plataforma_gateways_log(Array(
-                        'gateway' => $gateway,
-                        'endpoint' => 'hook',
-                        'status' => 'error',
-                        'message' => 'Erro ao executar hook do módulo: ' . $modulo_id,
-                        'data' => Array(
-                            'error' => $e->getMessage(),
-                        ),
-                    ));
-                }
+            // Carregar hook a partir do JSON do módulo
+            $funcao = plataforma_gateways_carregar_hook($modulo_id, $modulo['plugin'] ?? null, 'plataforma_gateways');
+            
+            if (!$funcao) {
+                continue;
             }
             
-            // Tentar incluir o módulo se a função não existe ainda
-            if (!function_exists($funcao)) {
-                $modulo_path = null;
+            try {
+                $resultado_modulo = $funcao(Array(
+                    'gateway' => $gateway,
+                    'action' => $action,
+                    'data' => $data,
+                ));
                 
-                // Verificar se é módulo de plugin
-                if (!empty($modulo['plugin_id'])) {
-                    $plugin = banco_select(Array(
-                        'campos' => 'diretorio',
-                        'tabela' => 'plugins',
-                        'condicao' => "WHERE id = '" . banco_escape_field($modulo['plugin_id']) . "'",
-                    ));
-                    
-                    if ($plugin) {
-                        $modulo_path = $_GESTOR['plugins-path'] . $plugin[0]['diretorio'] . '/modulos/' . $modulo_id . '/' . $modulo_id . '.php';
-                    }
-                } else {
-                    // Módulo padrão
-                    $modulo_path = $_GESTOR['modulos-path'] . $modulo_id . '/' . $modulo_id . '.php';
+                // Se o módulo retornou um resultado com redirect_url, usar ele
+                if (isset($resultado_modulo['redirect_url'])) {
+                    $resultado = $resultado_modulo;
                 }
                 
-                // Incluir módulo se o arquivo existir
-                if ($modulo_path && file_exists($modulo_path)) {
-                    include_once($modulo_path);
-                    
-                    // Tentar executar a função novamente após incluir
-                    if (function_exists($funcao)) {
-                        try {
-                            $resultado_modulo = $funcao(Array(
-                                'gateway' => $gateway,
-                                'action' => $action,
-                                'data' => $data,
-                            ));
-                            
-                            if (isset($resultado_modulo['redirect_url'])) {
-                                $resultado = $resultado_modulo;
-                            }
-                            
-                            if (isset($resultado_modulo['processed']) && $resultado_modulo['processed']) {
-                                break;
-                            }
-                        } catch (Exception $e) {
-                            plataforma_gateways_log(Array(
-                                'gateway' => $gateway,
-                                'endpoint' => 'hook',
-                                'status' => 'error',
-                                'message' => 'Erro ao executar hook do módulo (após include): ' . $modulo_id,
-                                'data' => Array(
-                                    'error' => $e->getMessage(),
-                                ),
-                            ));
-                        }
-                    }
+                // Se o módulo marcou como processado, sair do loop
+                if (isset($resultado_modulo['processed']) && $resultado_modulo['processed']) {
+                    break;
                 }
+            } catch (Exception $e) {
+                plataforma_gateways_log(Array(
+                    'gateway' => $gateway,
+                    'endpoint' => 'hook',
+                    'status' => 'error',
+                    'message' => 'Erro ao executar hook do módulo: ' . $modulo_id,
+                    'data' => Array(
+                        'error' => $e->getMessage(),
+                    ),
+                ));
             }
         }
     }
@@ -670,11 +732,11 @@ function plataforma_gateways_modulo_direto($modulo_id, $endpoint) {
         plataforma_gateways_404('Module not found');
     }
     
-    // Verificar se o módulo existe e está ativo
+    // Verificar se o módulo existe, está ativo e possui hooks configurados
     $modulo = banco_select(Array(
-        'campos' => 'id, plugin_id, ativo',
+        'campos' => 'id, plugin',
         'tabela' => 'modulos',
-        'condicao' => "WHERE id = '" . banco_escape_field($modulo_id) . "' AND ativo = 'S' AND status != 'D'",
+        'condicao' => "WHERE id = '" . banco_escape_field($modulo_id) . "' AND hooks IS NOT NULL AND status != 'D'",
     ));
     
     if (!$modulo) {
@@ -682,54 +744,22 @@ function plataforma_gateways_modulo_direto($modulo_id, $endpoint) {
             'gateway' => 'module',
             'endpoint' => $modulo_id . '/' . $endpoint,
             'status' => 'error',
-            'message' => 'Módulo não encontrado ou inativo',
+            'message' => 'Módulo não encontrado, inativo ou sem hooks configurados',
         ));
         plataforma_gateways_404('Module not found');
     }
     
-    // Determinar caminho do módulo
-    $modulo_path = null;
+    // Carregar hook a partir do JSON do módulo
+    $funcao = plataforma_gateways_carregar_hook($modulo_id, $modulo[0]['plugin'] ?? null, 'plataforma_gateways');
     
-    if (!empty($modulo[0]['plugin_id'])) {
-        $plugin = banco_select(Array(
-            'campos' => 'diretorio',
-            'tabela' => 'plugins',
-            'condicao' => "WHERE id = '" . banco_escape_field($modulo[0]['plugin_id']) . "'",
-        ));
-        
-        if ($plugin) {
-            $modulo_path = $_GESTOR['plugins-path'] . $plugin[0]['diretorio'] . '/modulos/' . $modulo_id . '/' . $modulo_id . '.php';
-        }
-    } else {
-        $modulo_path = $_GESTOR['modulos-path'] . $modulo_id . '/' . $modulo_id . '.php';
-    }
-    
-    // Verificar se o arquivo do módulo existe
-    if (!$modulo_path || !file_exists($modulo_path)) {
+    if (!$funcao) {
         plataforma_gateways_log(Array(
             'gateway' => 'module',
             'endpoint' => $modulo_id . '/' . $endpoint,
             'status' => 'error',
-            'message' => 'Arquivo do módulo não encontrado',
-            'data' => Array('path' => $modulo_path),
+            'message' => 'Hook plataforma_gateways não configurado no JSON do módulo',
         ));
-        plataforma_gateways_404('Module file not found');
-    }
-    
-    // Incluir módulo
-    include_once($modulo_path);
-    
-    // Verificar se a função de gateway existe
-    $funcao = $modulo_id . '_plataforma_gateways';
-    
-    if (!function_exists($funcao)) {
-        plataforma_gateways_log(Array(
-            'gateway' => 'module',
-            'endpoint' => $modulo_id . '/' . $endpoint,
-            'status' => 'error',
-            'message' => 'Função de gateway não implementada no módulo',
-        ));
-        plataforma_gateways_404('Gateway function not found in module');
+        plataforma_gateways_404('Gateway hook not configured in module');
     }
     
     // Log da requisição

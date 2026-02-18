@@ -7,7 +7,7 @@
 
 $_GESTOR										=	Array();
 
-$_GESTOR['versao']								=	'2.7.2'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'2.7.3'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 
 // ===== Definição dos marcadores de abertura e fechamento de varíaveis globais.
@@ -44,17 +44,31 @@ $_GESTOR['AUTH_PATH_SERVER']					=	$_GESTOR['AUTH_PATH'] . $_SERVER['SERVER_NAME
 require_once $_GESTOR['ROOT_PATH'] . 'vendor/autoload.php';
 
 if (class_exists(Dotenv\Dotenv::class)) {
-    // Paths relativos para autenticações
-    $authBase   = rtrim($_GESTOR['AUTH_PATH'], '/') . '/';
-    $serverName = $_SERVER['SERVER_NAME'] ?? 'localhost';
+    $loaded = false;
 
     // candidato principal: pasta do domínio atual
-    $candidates = [ $authBase . $serverName . '/' ];
+    $domainBase = $_GESTOR['AUTH_PATH_SERVER'];
 
-    // permitir fallback apenas em DEV ou quando AUTH_ENV_FALLBACK=true
-    $allowFallback = filter_var($_ENV['AUTH_ENV_FALLBACK'] ?? ($_ENV['DEVELOPMENT_ENV'] ?? false), FILTER_VALIDATE_BOOLEAN);
-    if ($allowFallback) {
-        // adicionar a primeira pasta disponível em autenticacoes/ (sem duplicatas)
+    if (is_dir($domainBase) && file_exists($domainBase . '.env')) {
+        try {
+            $dotenv = Dotenv\Dotenv::createImmutable($domainBase);
+            $dotenv->load();
+
+            $loaded = true;
+        } catch (\Dotenv\Exception\InvalidPathException $e) {
+            // tentar próximo candidato
+        }
+    }
+
+    if (!$loaded) {
+        $candidates = [];
+        $tried  = [];
+
+        // Paths relativos para autenticações
+        $authBase   = $_GESTOR['AUTH_PATH'];
+        $serverName = $_SERVER['SERVER_NAME'] ?? 'localhost';
+
+        // permitir fallback para domínios adicionais. Adicionar a primeira pasta disponível em autenticacoes/ (sem duplicatas)
         $dirs = glob($authBase . '*', GLOB_ONLYDIR);
         if ($dirs) {
             // preservar a ordem retornada pelo glob (primeira pasta como fallback)
@@ -63,25 +77,24 @@ if (class_exists(Dotenv\Dotenv::class)) {
                 if (!in_array($d, $candidates, true)) $candidates[] = $d;
             }
         }
-    }
 
-    $loaded = false;
-    $tried  = [];
+        // tentar carregar o .env de cada pasta candidata até encontrar um válido para o domínio atual
+        if(!empty($candidates))
+        foreach ($candidates as $path) {
+            $tried[] = $path;
+            if (is_dir($path) && file_exists($path . '.env')) {
+                try {
+                    $dotenv = Dotenv\Dotenv::createImmutable($path);
+                    $dotenv->load();
 
-    foreach ($candidates as $path) {
-        $tried[] = $path;
-        if (is_dir($path) && file_exists($path . '.env')) {
-            try {
-                $dotenv = Dotenv\Dotenv::createImmutable($path);
-                $dotenv->load();
+                    // atualizar para o path efetivamente usado
+                    $_GESTOR['AUTH_PATH_SERVER'] = $path;
 
-                // atualizar para o path efetivamente usado
-                $_GESTOR['AUTH_PATH_SERVER'] = $path;
-
-                $loaded = true;
-                break;
-            } catch (\Dotenv\Exception\InvalidPathException $e) {
-                // tentar próximo candidato
+                    $loaded = true;
+                    break;
+                } catch (\Dotenv\Exception\InvalidPathException $e) {
+                    // tentar próximo candidato
+                }
             }
         }
     }

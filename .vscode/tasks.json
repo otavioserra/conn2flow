@@ -169,6 +169,12 @@
             "command": "bash ./ai-workspace/en/scripts/projects/update-resource-data.sh"
         },
         {
+            "label": "🗃️ Projects - Synchronize Project -> ID",
+            "type": "shell",
+            "command": "bash ./ai-workspace/en/scripts/projects/synchronize-project.sh --project ${input:projectID} checksum",
+            "problemMatcher": []
+        },
+        {
             "label": "🗃️ Projects - Deploy Current Project",
             "type": "shell",
             "command": "bash ./ai-workspace/en/scripts/projects/deploy-project.sh",
