@@ -430,8 +430,15 @@ function moverConteudoStaging(string $stagingRoot, string $basePath, array $prot
             logAtualizacao('moverConteudoStaging: merge dir '.$entry.' (preservando conteúdo existente)','DEBUG');
             continue;
         }
-        // Se destino existe e não é protegido, remover antes (arquivo ou mudança tipo dir↔arquivo)
+        // Se destino existe e não é protegido, tratar conflitos de tipo com segurança
         if(file_exists($dst) && !in_array($entry,$protegidos,true)) {
+            // Proteção importante: se o artefato TEM um arquivo mas o destino é um DIRETÓRIO,
+            // não removemos o diretório (evita apagar módulos/customizações por conflito de empacotamento).
+            if (is_file($src) && is_dir($dst)) {
+                logAtualizacao('moverConteudoStaging: conflito tipo (src=file dst=dir) — preservando destino '.$dst,'WARNING');
+                // pulamos a substituição para preservar conteúdo existente no destino
+                continue;
+            }
             $removeOk=true;
             if(is_dir($dst)) { removeDirectoryRecursive($dst); $removeOk=!is_dir($dst); }
             else { @unlink($dst); $removeOk=!file_exists($dst); }
