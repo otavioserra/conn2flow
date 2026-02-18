@@ -359,7 +359,7 @@ function formulario_processador($params = false){
 			'status' => 'error',
 			'message' => $form_ui_ajax_messages['formIdMissing'] ?? 'Form ID missing.',
 		);
-		return;
+		return false;
 	}
 
 	// Sanitização do formId para evitar SQL Injection (mesmo que seja usado como parâmetro em funções seguras, é uma boa prática)
@@ -371,7 +371,7 @@ function formulario_processador($params = false){
 			'status' => 'error',
 			'message' => $form_ui_ajax_messages['suspectedBot'] ?? 'Suspected bot activity.',
 		);
-		return;
+		return false;
 	}
 	
 	// ===== Validar timestamp (anti-replay, max 2 dias)
@@ -382,7 +382,7 @@ function formulario_processador($params = false){
 			'status' => 'error',
 			'message' => $form_ui_ajax_messages['requestExpired'] ?? 'Request expired.',
 		);
-		return;
+		return false;
 	}
 
 	// ===== Buscar definição do formulário na tabela forms
@@ -390,6 +390,7 @@ function formulario_processador($params = false){
         'unico' => true,
         'tabela' => 'forms',
         'campos' => Array(
+            'name',
             'fields_schema',
             'status',
         ),
@@ -404,7 +405,7 @@ function formulario_processador($params = false){
 			'status' => 'error',
 			'message' => $form_ui_ajax_messages['blocked'] ?? 'Form is blocked.',
 		);
-		return;
+		return false;
 	}
 	
 	// ===== Rate limiting e CAPTCHA
@@ -429,7 +430,7 @@ function formulario_processador($params = false){
 	}
 	
 	$recaptchaValido = false;
-	if(isset($_CONFIG['usuario-recaptcha-active']) && ($acesso['status'] != 'livre' || $forceRecaptchaV3)){
+	if(isset($_CONFIG['usuario-recaptcha-active']) && $_CONFIG['usuario-recaptcha-active'] && ($acesso['status'] != 'livre' || $forceRecaptchaV3)){
 		$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
 		$token = $_POST['token'] ?? null;
 		$action = $_POST['action'] ?? null;
@@ -459,18 +460,17 @@ function formulario_processador($params = false){
 			'status' => 'error',
 			'message' => $form_ui_ajax_messages['captchaFailed'] ?? 'CAPTCHA validation failed.',
 		);
-		return;
+		return false;
 	}
 	
 	if($captchaV2Ativo){
 		// Verificar se v2 foi enviado
 		$recaptchaV2Response = $_POST['g-recaptcha-response'] ?? null;
 		if(!$recaptchaV2Response){
-			formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
 			$_GESTOR['ajax-json'] = Array(
 				'status' => 'require_v2',
 			);
-			return;
+			return false;
 		}
 		
 		// Validar v2
@@ -489,7 +489,7 @@ function formulario_processador($params = false){
 				'status' => 'error',
 				'message' => $form_ui_ajax_messages['captchaV2Failed'] ?? 'CAPTCHA v2 validation failed.',
 			);
-			return;
+			return false;
 		}
 	}
 
@@ -497,6 +497,7 @@ function formulario_processador($params = false){
     $definedFields = [];
     $fieldNameValue = $formId . '-' . time(); // Fallback
     $fieldEmailValue = ''; // Fallback
+    $formName = ''; // Fallback
     $redirectSuccess = '/sucesso/'; // Padrão
     $emailData = [];
     if($formDefinition){
@@ -506,7 +507,11 @@ function formulario_processador($params = false){
                 'status' => 'error',
                 'message' => $form_ui_ajax_messages['formDisabled'] ?? 'Form is disabled.',
             );
-            return;
+            return false;
+        }
+
+        if(isset($formDefinition['name'])){
+            $formName = $formDefinition['name'];
         }
 
         if(isset($schema['fields'])){
@@ -541,7 +546,7 @@ function formulario_processador($params = false){
                         'status' => 'error',
                         'message' => modelo_var_troca($form_ui_ajax_messages['requiredField'] ?? 'Campo obrigatório: #fieldLabel#.', '#fieldLabel#', ($field['label'] ?? $fieldName)),
                     );
-                    return;
+                    return false;
                 }
                 
                 // Validação adicional para texto/textarea (mínimo 3 caracteres)
@@ -551,7 +556,7 @@ function formulario_processador($params = false){
                         'status' => 'error',
                         'message' => modelo_var_troca($form_ui_ajax_messages['minLength'] ?? 'Campo #fieldLabel# deve ter pelo menos 3 caracteres.', '#fieldLabel#', ($field['label'] ?? $fieldName)),
                     );
-                    return;
+                    return false;
                 }
             }
         }
@@ -565,7 +570,7 @@ function formulario_processador($params = false){
                     'status' => 'error',
                     'message' => $form_ui_ajax_messages['invalidEmail'] ?? 'Invalid email.',
                 );
-                return;
+                return false;
             }
         }
     }
@@ -590,7 +595,7 @@ function formulario_processador($params = false){
             'nome' => 'forms_submissions',
             'campo' => 'id',
             'id_nome' => 'id',
-            'where' => "form_id='".$formId."' AND language='".$_GESTOR['linguagem-codigo']."'",
+            'where' => "language='".$_GESTOR['linguagem-codigo']."'",
         ),
     ));
     
@@ -647,9 +652,13 @@ function formulario_processador($params = false){
 	$assunto = !empty($emailData) && isset($emailData['subject']) ? $emailData['subject'] : gestor_variaveis(Array('id' => 'forms-subject-emails'));
 	
 	$assunto = modelo_var_troca($assunto,"#code#",$numero);
+	$assunto = modelo_var_troca($assunto,"#formName#",$formName);
 
 	$mensagem = !empty($emailData) && isset($emailData['message_component']) ? gestor_componente(Array('id' => $emailData['message_component'])) : gestor_componente(Array('id' => 'forms-prepared-email'));
 	
+	$mensagem = modelo_var_troca($mensagem,"#code#",$numero);
+	$mensagem = modelo_var_troca($mensagem,"#formName#",$formName);
+
 	// ===== Processar template de email com campos do formulário
 	
 	// Extrair a célula 'cel' do modelo
@@ -743,7 +752,7 @@ function formulario_processador($params = false){
         'status' => 'success',
         'redirect' => $redirectSuccess
     );
-	return;
+	return true;
 }
 
 /**
