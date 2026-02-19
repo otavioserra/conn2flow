@@ -7,7 +7,7 @@
 
 $_GESTOR										=	Array();
 
-$_GESTOR['versao']								=	'2.7.5'; // Versão do gestor como um todo.
+$_GESTOR['versao']								=	'2.8.0'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 
 // ===== Definição dos marcadores de abertura e fechamento de varíaveis globais.
