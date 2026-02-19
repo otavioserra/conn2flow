@@ -39,13 +39,12 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 
 ## Última Versão
 
-**v2.7.0 (16 Fevereiro 2026)**
+**v2.7.6 (19 Fevereiro 2026)**
 
 **🎯 Novas Funcionalidades:**
-- **Módulo de Formulários**: Módulo completo de gerenciamento de formulários com CRUD, suporte multilíngue (pt-br/en) e visualizador de schema JSON via CodeMirror
-- **Módulo de Submissões de Formulários**: Sistema de processamento de submissões com segurança, logs, bloqueios e notificações por email
-- **Refatoração do Sistema de Formulários Dinâmicos**: Reescrita completa do `formulario.js` com componentes externalizados, localização e tratamento de erros por framework
-- **Integração Google reCAPTCHA**: Suporte a reCAPTCHA V2 no admin-environment + carregamento dinâmico V3
+- **Integração PayPal**: Adicionadas configurações de integração e funcionalidade de teste do PayPal, logs de erro de criação de assinatura enriquecidos com informações do gateway.
+- **Melhorias em Formulários**: Adicionados limites de caracteres por tipo (text, textarea, email) com feedback no cliente (maxlength + contador) e validação no servidor. Adicionada funcionalidade de preview de email.
+- **Melhorias no Docker**: Adicionados perfis opcionais para serviços FTP, memcached e redis. Alterada a política de reinício para "no" nos serviços cloudflared e ftp.
 - **FingerprintJS v4**: Sistema robusto de fingerprinting com múltiplas camadas de fallback
 - **Componente Form UI**: Novo componente frontend com suporte a localização e tratamento aprimorado de IP
 - **Atualização do Sistema via API**: Novo endpoint `/_api/system/update` para atualizações remotas com autenticação OAuth

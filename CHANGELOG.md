@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Complete change history in `CONN2FLOW-CHANGELOG-HISTORY.md`
 - Industry-standard CHANGELOG.md following Keep a Changelog format
 
+## [2.7.6] - 2026-02-19
+
+### Added
+- **PayPal Integration**: Added PayPal integration settings and test functionality, enriched subscription-create error logs with gateway info.
+- **Forms Enhancements**: Added character limits by type (text, textarea, email) with client-side feedback (maxlength + counter) and server-side enforcement. Added email preview functionality.
+- **Docker Improvements**: Added optional profiles for FTP, memcached, and redis services. Changed restart policy to "no" for cloudflared and ftp services.
+
 ## [2.7.0] - 2026-02-16
 
 ### Added

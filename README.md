@@ -41,13 +41,12 @@ For detailed technical information and development guides, see:
 
 ## Latest Release
 
-**v2.7.0 (February 16, 2026)**
+**v2.7.6 (February 19, 2026)**
 
 **🎯 New Features:**
-- **Forms Module**: Complete form management module with CRUD, multilingual support (pt-br/en), and CodeMirror JSON schema viewer
-- **Forms Submissions Module**: Submission processing system with security, logging, blocking, and email notifications
-- **Dynamic Form System Refactoring**: Complete `formulario.js` rewrite with externalized components, localization, and framework-specific error handling
-- **Google reCAPTCHA Integration**: reCAPTCHA V2 support in admin-environment + dynamic V3 loading
+- **PayPal Integration**: Added PayPal integration settings and test functionality, enriched subscription-create error logs with gateway info.
+- **Forms Enhancements**: Added character limits by type (text, textarea, email) with client-side feedback (maxlength + counter) and server-side enforcement. Added email preview functionality.
+- **Docker Improvements**: Added optional profiles for FTP, memcached, and redis services. Changed restart policy to "no" for cloudflared and ftp services.
 - **FingerprintJS v4**: Robust fingerprinting system with multi-layer fallback
 - **Form UI Component**: New frontend component with localization support and improved IP handling
 - **System Update via API**: New `/_api/system/update` endpoint for remote system updates with OAuth authentication

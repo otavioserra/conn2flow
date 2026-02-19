@@ -2,7 +2,15 @@
 
 ## 🏷️ Current Releases
 
-### **gestor-v2.7.0** (February 16, 2026) - `HEAD`
+### **gestor-v2.7.6** (February 19, 2026) - `HEAD`
+**🎯 Theme:** PayPal Integration + Forms Enhancements + Docker Improvements**
+
+**Main Improvements:**
+- ✅ **PayPal Integration**: Added PayPal integration settings and test functionality, enriched subscription-create error logs with gateway info.
+- ✅ **Forms Enhancements**: Added character limits by type (text, textarea, email) with client-side feedback (maxlength + counter) and server-side enforcement. Added email preview functionality.
+- ✅ **Docker Improvements**: Added optional profiles for FTP, memcached, and redis services. Changed restart policy to "no" for cloudflared and ftp services.
+
+### **gestor-v2.7.0** (February 16, 2026)
 **🎯 Theme:** Forms Module + Dynamic Form System + reCAPTCHA + System Update API**
 
 **Main Improvements:**

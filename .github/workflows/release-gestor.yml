@@ -97,21 +97,24 @@ jobs:
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         make_latest: true
         body: |
-          ## 🚀 Conn2Flow Gestor Release v2.7.0 (Módulo de Formulários + Sistema Dinâmico + reCAPTCHA + API de Atualização)
+          ## 🚀 Conn2Flow Gestor Release v2.7.6 (Integração PayPal + Melhorias em Formulários + Melhorias no Docker)
 
-          Esta versão traz o **módulo completo de formulários** com CRUD, submissões, segurança via reCAPTCHA/FingerprintJS, sistema de formulários dinâmicos totalmente refatorado, e **atualização remota do sistema via API REST**, além de manter todas as funcionalidades anteriores como menu responsivo, Publisher, IA integrada, deploy OAuth e arquitetura multilíngue.
+          Esta versão traz a **integração com PayPal** com logs enriquecidos, **melhorias no sistema de formulários** com limites de caracteres e preview de email, e **melhorias no ambiente Docker** com perfis opcionais para serviços auxiliares, além de manter todas as funcionalidades anteriores como módulo de formulários, sistema dinâmico, reCAPTCHA, API de atualização, menu responsivo, Publisher, IA integrada, deploy OAuth e arquitetura multilíngue.
 
           ### 🎯 Novidades Principais desta Versão:
-          - ✅ **Módulo de Formulários Completo**: Gerenciamento de formulários com CRUD, suporte multilíngue (pt-br/en) e visualizador JSON via CodeMirror
-          - ✅ **Módulo de Submissões**: Processamento de submissões com segurança, logs, bloqueios e notificações por email
-          - ✅ **Sistema de Formulários Dinâmicos Refatorado**: Reescrita completa do `formulario.js` com componentes externalizados e localização
-          - ✅ **Google reCAPTCHA V2 + V3**: Suporte a V2 no admin-environment + carregamento dinâmico V3
-          - ✅ **FingerprintJS v4**: Fingerprinting robusto com múltiplas camadas de fallback
-          - ✅ **Componente Form UI**: Novo componente frontend com detecção de framework e localização
-          - ✅ **Atualização do Sistema via API**: Endpoint `/_api/system/update` para atualizações remotas com OAuth 2.0
-          - ✅ **Script de Atualização Automatizada**: Script bash com progresso, renovação de token e logging
-          - ✅ **Módulo de Contatos**: Páginas de contato com Fomantic UI e redirecionamentos
-          - ✅ **Componentes de Erro por Framework**: Fomantic UI, Bootstrap e outros
+          - ✅ **Integração PayPal**: Adicionadas configurações de integração e funcionalidade de teste do PayPal, logs de erro de criação de assinatura enriquecidos com informações do gateway.
+          - ✅ **Melhorias em Formulários**: Adicionados limites de caracteres por tipo (text, textarea, email) com feedback no cliente (maxlength + contador) e validação no servidor. Adicionada funcionalidade de preview de email.
+          - ✅ **Melhorias no Docker**: Adicionados perfis opcionais para serviços FTP, memcached e redis. Alterada a política de reinício para "no" nos serviços cloudflared e ftp.
+          - ✅ **Módulo de Formulários Completo**: Gerenciamento de formulários com CRUD, suporte multilíngue (pt-br/en) e visualizador JSON via CodeMirror (mantido da v2.7.0)
+          - ✅ **Módulo de Submissões**: Processamento de submissões com segurança, logs, bloqueios e notificações por email (mantido da v2.7.0)
+          - ✅ **Sistema de Formulários Dinâmicos Refatorado**: Reescrita completa do `formulario.js` com componentes externalizados e localização (mantido da v2.7.0)
+          - ✅ **Google reCAPTCHA V2 + V3**: Suporte a V2 no admin-environment + carregamento dinâmico V3 (mantido da v2.7.0)
+          - ✅ **FingerprintJS v4**: Fingerprinting robusto com múltiplas camadas de fallback (mantido da v2.7.0)
+          - ✅ **Componente Form UI**: Novo componente frontend com detecção de framework e localização (mantido da v2.7.0)
+          - ✅ **Atualização do Sistema via API**: Endpoint `/_api/system/update` para atualizações remotas com OAuth 2.0 (mantido da v2.7.0)
+          - ✅ **Script de Atualização Automatizada**: Script bash com progresso, renovação de token e logging (mantido da v2.7.0)
+          - ✅ **Módulo de Contatos**: Páginas de contato com Fomantic UI e redirecionamentos (mantido da v2.7.0)
+          - ✅ **Componentes de Erro por Framework**: Fomantic UI, Bootstrap e outros (mantido da v2.7.0)
           - ✅ **Menu Administrativo Responsivo**: Redesign completo com toggle e resize (mantido da v2.6.3)
           - ✅ **Módulo Publisher Completo**: Publicação de conteúdo com editor Quill (mantido da v2.6.0)
           - ✅ **Sistema Completo de Deploy via OAuth**: Deploy automatizado com OAuth 2.0 (mantido da v2.4.0)
@@ -120,16 +123,22 @@ jobs:
           - ✅ **Sistema de Plugins V2**: Arquitetura refatorada (mantido da v2.4.0)
 
           ### 🔧 Melhorias Técnicas:
-          - ✅ **Posicionamento de Erros**: Mensagens antes do botão de submit clicado
-          - ✅ **Componentes Externalizados**: AJAX messages e block wrappers em arquivos separados
-          - ✅ **Correção de Apóstrofos**: Renderização correta em campos de formulário
-          - ✅ **Correção CodeMirror**: Removida duplicação de inicialização no editor HTML
-          - ✅ **Correção sincronizarTabela**: Chave de parâmetro 'module' → 'modulo'
-          - ✅ **Traduções**: Página oauth-authenticate traduzida para inglês
-          - ✅ **WebP Thumbnails**: Templates de sessão atualizados para WebP
-          - ✅ **Documentação Extensa**: Agentes Copilot, arquitetura de plugins, PayPal v2.0.0
+          - ✅ **Logs do PayPal**: Enriquecidos com `gateway_client_id` e `paypal_mode` para diagnóstico mais rápido.
+          - ✅ **Validação de Formulários**: Validação no servidor usando `mb_strlen` e preservação do `#valor_full#` no banco de dados.
+          - ✅ **Componentização de Formulários**: Substituído texto inline por componente `#forms-info-definition#` com suporte a PT-BR e EN.
+          - ✅ **Posicionamento de Erros**: Mensagens antes do botão de submit clicado (mantido da v2.7.0)
+          - ✅ **Componentes Externalizados**: AJAX messages e block wrappers em arquivos separados (mantido da v2.7.0)
+          - ✅ **Correção de Apóstrofos**: Renderização correta em campos de formulário (mantido da v2.7.0)
+          - ✅ **Correção CodeMirror**: Removida duplicação de inicialização no editor HTML (mantido da v2.7.0)
+          - ✅ **Correção sincronizarTabela**: Chave de parâmetro 'module' → 'modulo' (mantido da v2.7.0)
+          - ✅ **Traduções**: Página oauth-authenticate traduzida para inglês (mantido da v2.7.0)
+          - ✅ **WebP Thumbnails**: Templates de sessão atualizados para WebP (mantido da v2.7.0)
+          - ✅ **Documentação Extensa**: Agentes Copilot, arquitetura de plugins, PayPal v2.0.0 (mantido da v2.7.0)
 
           ### 📦 Conteúdo:
+          - Integração PayPal com logs enriquecidos
+          - Sistema de formulários com limites de caracteres e preview de email
+          - Ambiente Docker com perfis opcionais para serviços auxiliares
           - Sistema gestor completo com módulo de formulários
           - Sistema de submissões com segurança reCAPTCHA + FingerprintJS
           - Sistema de formulários dinâmicos refatorado com localização
