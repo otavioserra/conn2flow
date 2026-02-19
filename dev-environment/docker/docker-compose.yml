@@ -46,6 +46,7 @@ services:
       dockerfile: Dockerfile.ftp
     container_name: conn2flow-ftp
     restart: "no"
+    profiles: [ "optional" ]
     ports:
       - "21:21"
       - "21100-21110:21100-21110"
@@ -99,6 +100,7 @@ services:
     image: memcached:alpine
     container_name: conn2flow-memcached
     restart: "no"
+    profiles: [ "optional" ]
     ports:
       - "11211:11211"
     networks:
@@ -109,6 +111,7 @@ services:
     image: redis:alpine
     container_name: conn2flow-redis
     restart: "no"
+    profiles: [ "optional" ]
     ports:
       - "6379:6379"
     networks:
