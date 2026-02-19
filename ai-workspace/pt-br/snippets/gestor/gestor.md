@@ -41,7 +41,7 @@ $componenteHTML = gestor_componente([
     'modulo' => 'autenticacao'
 ]);
 
-// [2] Obter variáveis do sistema por módulo. O idioma é detectado automaticamente!
+// [2] Obter/Alterar variáveis do sistema por módulo. O idioma é detectado automaticamente!
 // Busca variáveis armazenadas no banco de dados com cache em memória
 
 // Obter uma variável específica global, ou seja sem estar vinculado a um módulo.
@@ -75,6 +75,15 @@ $variaveisEmail = gestor_variaveis([
     'conjunto' => true,
     'padrao' => 'email-'
 ]);
+
+// Alterar o valor de uma variável do sistema. Opcionalmente 'linguagem' (se não informado, idioma atual '$_GESTOR['linguagem-codigo']').
+gestor_variaveis_alterar([
+    'modulo' => 'id-modulo',
+    'id' => 'id-variavel',
+    'tipo' => 'string',
+    'valor' => 'novo valor'
+]);
+
 // Retorna apenas variáveis cujos IDs contenham 'email-'
 
 // [3] Incluir uma biblioteca específica do sistema

@@ -17,11 +17,11 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.16",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "e55c999d060923b6e4f9cade09b9120a",
+                        "html": "68e739831d15e40725827a62ff5dc361",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
-                        "combined": "999d5b9c14beaa5a7b56e6001062f0e0"
+                        "combined": "63118f55910e5d891530ac83f7e76c3a"
                     }
                 }
             ],
@@ -106,6 +106,51 @@
                     "id": "recaptcha-v2-test-success",
                     "value": "reCAPTCHA V2 test successful! Checkbox verification passed.",
                     "type": "string"
+                },
+                {
+                    "id": "paypal-access-token",
+                    "value": "",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-token-type",
+                    "value": "",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-token-expires-at",
+                    "value": "",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-token-data",
+                    "value": "",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-test-success",
+                    "value": "PayPal connection successful! Authentication verified.",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-test-error",
+                    "value": "PayPal connection failed. Check your credentials.",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-test-missing-fields",
+                    "value": "Please fill in the Client ID and Secret to test the connection.",
+                    "type": "string"
+                },
+                {
+                    "id": "save-success",
+                    "value": "Settings saved successfully!",
+                    "type": "string"
+                },
+                {
+                    "id": "save-error",
+                    "value": "Error saving settings.",
+                    "type": "string"
                 }
             ]
         },
@@ -120,11 +165,11 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.16",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "6495668c244fe90a2aa20763a6971bc8",
+                        "html": "6663d98c0d7cd9d01a80339ad8906fc4",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
-                        "combined": "0105ab32c9149f27ec9ab506937cc141"
+                        "combined": "4cae817014997b061ad5d14502bd95a4"
                     }
                 }
             ],
@@ -208,6 +253,51 @@
                 {
                     "id": "recaptcha-v2-test-success",
                     "value": "reCAPTCHA V2 testado com sucesso! Verificação do checkbox aprovada.",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-access-token",
+                    "value": "",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-token-type",
+                    "value": "",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-token-expires-at",
+                    "value": "",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-token-data",
+                    "value": "",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-test-success",
+                    "value": "Conexão com PayPal realizada com sucesso! Autenticação verificada.",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-test-error",
+                    "value": "Falha na conexão com PayPal. Verifique suas credenciais.",
+                    "type": "string"
+                },
+                {
+                    "id": "paypal-test-missing-fields",
+                    "value": "Preencha o Client ID e o Secret para testar a conexão.",
+                    "type": "string"
+                },
+                {
+                    "id": "save-success",
+                    "value": "Configurações salvas com sucesso!",
+                    "type": "string"
+                },
+                {
+                    "id": "save-error",
+                    "value": "Erro ao salvar configurações.",
                     "type": "string"
                 }
             ]

@@ -3978,6 +3978,87 @@
         "descricao": null
     },
     {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "paypal-access-token",
+        "valor": "",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "paypal-token-type",
+        "valor": "",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "paypal-token-expires-at",
+        "valor": "",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "paypal-token-data",
+        "valor": "",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "paypal-test-success",
+        "valor": "Conexão com PayPal realizada com sucesso! Autenticação verificada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "paypal-test-error",
+        "valor": "Falha na conexão com PayPal. Verifique suas credenciais.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "paypal-test-missing-fields",
+        "valor": "Preencha o Client ID e o Secret para testar a conexão.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "save-success",
+        "valor": "Configurações salvas com sucesso!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-environment",
+        "id": "save-error",
+        "valor": "Erro ao salvar configurações.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "linguagem_codigo": "en",
         "modulo": "admin-environment",
         "id": "email-tests-head-title",
@@ -4117,6 +4198,87 @@
         "modulo": "admin-environment",
         "id": "recaptcha-v2-test-success",
         "valor": "reCAPTCHA V2 test successful! Checkbox verification passed.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "paypal-access-token",
+        "valor": "",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "paypal-token-type",
+        "valor": "",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "paypal-token-expires-at",
+        "valor": "",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "paypal-token-data",
+        "valor": "",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "paypal-test-success",
+        "valor": "PayPal connection successful! Authentication verified.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "paypal-test-error",
+        "valor": "PayPal connection failed. Check your credentials.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "paypal-test-missing-fields",
+        "valor": "Please fill in the Client ID and Secret to test the connection.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "save-success",
+        "valor": "Settings saved successfully!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-environment",
+        "id": "save-error",
+        "valor": "Error saving settings.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

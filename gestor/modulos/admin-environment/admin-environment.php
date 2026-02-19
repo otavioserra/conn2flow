@@ -13,6 +13,7 @@ function admin_environment_env_read(){
     // Usar as variáveis já carregadas pelo config.php via $_ENV
     // Isso evita conflito com a classe Dotenv que já foi usada no config.php
     $envData = [
+        'SITE_NAME' => $_ENV['SITE_NAME'] ?? 'Conn2Flow',
         'USUARIO_RECAPTCHA_ACTIVE' => $_ENV['USUARIO_RECAPTCHA_ACTIVE'] ?? 'false',
         'USUARIO_RECAPTCHA_SITE' => $_ENV['USUARIO_RECAPTCHA_SITE'] ?? '',
         'USUARIO_RECAPTCHA_SERVER' => $_ENV['USUARIO_RECAPTCHA_SERVER'] ?? '',
@@ -31,7 +32,12 @@ function admin_environment_env_read(){
         'EMAIL_REPLY_TO_NAME' => $_ENV['EMAIL_REPLY_TO_NAME'] ?? '',
         'LANGUAGE_DEFAULT' => $_ENV['LANGUAGE_DEFAULT'] ?? '',
         'LANGUAGE_WIDGET_ACTIVE' => $_ENV['LANGUAGE_WIDGET_ACTIVE'] ?? 'false',
-        'LANGUAGE_AUTO_DETECT' => $_ENV['LANGUAGE_AUTO_DETECT'] ?? 'false'
+        'LANGUAGE_AUTO_DETECT' => $_ENV['LANGUAGE_AUTO_DETECT'] ?? 'false',
+        'PAYPAL_DEFAULT' => $_ENV['PAYPAL_DEFAULT'] ?? 'padrao',
+        'PAYPAL_CLIENT_ID' => $_ENV['PAYPAL_CLIENT_ID'] ?? '',
+        'PAYPAL_SECRET' => $_ENV['PAYPAL_SECRET'] ?? '',
+        'PAYPAL_MODE' => $_ENV['PAYPAL_MODE'] ?? 'sandbox',
+        'PAYPAL_WEBHOOK_ID' => $_ENV['PAYPAL_WEBHOOK_ID'] ?? '',
     ];
     
     return $envData;
@@ -256,6 +262,7 @@ function admin_environment_raiz(){
     // ===== Preparar dados para o template
     
     $dados = [
+        'site_name' => $envData['SITE_NAME'] ?? 'Conn2Flow',
         'usuario_recaptcha_active' => $envData['USUARIO_RECAPTCHA_ACTIVE'] ?? 'false',
         'usuario_recaptcha_site' => $envData['USUARIO_RECAPTCHA_SITE'] ?? '',
         'usuario_recaptcha_server' => $envData['USUARIO_RECAPTCHA_SERVER'] ?? '',
@@ -274,7 +281,12 @@ function admin_environment_raiz(){
         'email_reply_to_name' => $envData['EMAIL_REPLY_TO_NAME'] ?? '',
         'language_default' => $envData['LANGUAGE_DEFAULT'] ?? 'pt-br',
         'language_widget_active' => $envData['LANGUAGE_WIDGET_ACTIVE'] ?? 'false',
-        'language_auto_detect' => $envData['LANGUAGE_AUTO_DETECT'] ?? 'false'
+        'language_auto_detect' => $envData['LANGUAGE_AUTO_DETECT'] ?? 'false',
+        'paypal_default' => $envData['PAYPAL_DEFAULT'] ?? 'padrao',
+        'paypal_client_id' => $envData['PAYPAL_CLIENT_ID'] ?? '',
+        'paypal_secret' => $envData['PAYPAL_SECRET'] ?? '',
+        'paypal_mode' => $envData['PAYPAL_MODE'] ?? 'sandbox',
+        'paypal_webhook_id' => $envData['PAYPAL_WEBHOOK_ID'] ?? '',
     ];
 
     // ===== Gerar opções de idioma
@@ -314,6 +326,10 @@ function admin_environment_raiz(){
     
     // ===== Passar dados para o template
     
+    // Site
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#site-name#', $dados['site_name']);
+
+    // Usuário / reCAPTCHA
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-active#', $dados['usuario_recaptcha_active']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-active-checked#', $dados['usuario_recaptcha_active'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-site#', $dados['usuario_recaptcha_site']);
@@ -322,6 +338,8 @@ function admin_environment_raiz(){
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-v2-site#', $dados['usuario_recaptcha_v2_site']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-v2-server#', $dados['usuario_recaptcha_v2_server']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#recaptcha-v2-section-class#', $dados['usuario_recaptcha_active'] === 'true' ? '' : 'hidden');
+
+    // Email
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-active#', $dados['email_active']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-active-checked#', $dados['email_active'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-host#', $dados['email_host']);
@@ -334,9 +352,20 @@ function admin_environment_raiz(){
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-from-name#', $dados['email_from_name']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-reply-to#', $dados['email_reply_to']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#email-reply-to-name#', $dados['email_reply_to_name']);
+
+    // Linguagem
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#language-widget-active-checked#', $dados['language_widget_active'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#language-auto-detect-checked#', $dados['language_auto_detect'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#language-options#', $dados['language-options']);
+
+    // PayPal
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#paypal-default-padrao-selected#', $dados['paypal_default'] === 'padrao' ? 'selected' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#paypal-default-gateway-selected#', $dados['paypal_default'] === 'gateway' ? 'selected' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#paypal-mode-sandbox-selected#', $dados['paypal_mode'] === 'sandbox' ? 'selected' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#paypal-mode-live-selected#', $dados['paypal_mode'] === 'live' ? 'selected' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#paypal-client-id#', $dados['paypal_client_id']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#paypal-secret#', $dados['paypal_secret']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#paypal-webhook-id#', $dados['paypal_webhook_id']);
 }
 
 function admin_environment_interfaces_padroes(){
@@ -381,13 +410,18 @@ function admin_environment_ajax_salvar(){
     
     $data = [];
     
-    // Coletar dados do formulário
+    // Coletar dados do formulário — Site
+    if(isset($_REQUEST['site_name'])) $data['SITE_NAME'] = $_REQUEST['site_name'];
+
+    // Coletar dados do formulário — Usuário
     if(isset($_REQUEST['usuario_recaptcha_active'])) $data['USUARIO_RECAPTCHA_ACTIVE'] = $_REQUEST['usuario_recaptcha_active'];
     if(isset($_REQUEST['usuario_recaptcha_site'])) $data['USUARIO_RECAPTCHA_SITE'] = $_REQUEST['usuario_recaptcha_site'];
     if(isset($_REQUEST['usuario_recaptcha_server'])) $data['USUARIO_RECAPTCHA_SERVER'] = $_REQUEST['usuario_recaptcha_server'];
     if(isset($_REQUEST['usuario_recaptcha_v2_active'])) $data['USUARIO_RECAPTCHA_V2_ACTIVE'] = $_REQUEST['usuario_recaptcha_v2_active'];
     if(isset($_REQUEST['usuario_recaptcha_v2_site'])) $data['USUARIO_RECAPTCHA_V2_SITE'] = $_REQUEST['usuario_recaptcha_v2_site'];
     if(isset($_REQUEST['usuario_recaptcha_v2_server'])) $data['USUARIO_RECAPTCHA_V2_SERVER'] = $_REQUEST['usuario_recaptcha_v2_server'];
+
+    // Coletar dados do formulário — Email
     if(isset($_REQUEST['email_active'])) $data['EMAIL_ACTIVE'] = $_REQUEST['email_active'];
     if(isset($_REQUEST['email_host'])) $data['EMAIL_HOST'] = $_REQUEST['email_host'];
     if(isset($_REQUEST['email_user'])) $data['EMAIL_USER'] = $_REQUEST['email_user'];
@@ -398,16 +432,27 @@ function admin_environment_ajax_salvar(){
     if(isset($_REQUEST['email_from_name'])) $data['EMAIL_FROM_NAME'] = $_REQUEST['email_from_name'];
     if(isset($_REQUEST['email_reply_to'])) $data['EMAIL_REPLY_TO'] = $_REQUEST['email_reply_to'];
     if(isset($_REQUEST['email_reply_to_name'])) $data['EMAIL_REPLY_TO_NAME'] = $_REQUEST['email_reply_to_name'];
+
+    // Coletar dados do formulário — Linguagem
     if(isset($_REQUEST['language_default'])) $data['LANGUAGE_DEFAULT'] = $_REQUEST['language_default'];
     if(isset($_REQUEST['language_widget_active'])) $data['LANGUAGE_WIDGET_ACTIVE'] = $_REQUEST['language_widget_active'];
     if(isset($_REQUEST['language_auto_detect'])) $data['LANGUAGE_AUTO_DETECT'] = $_REQUEST['language_auto_detect'];
+
+    // Coletar dados do formulário — PayPal
+    if(isset($_REQUEST['paypal_default'])) $data['PAYPAL_DEFAULT'] = $_REQUEST['paypal_default'];
+    if(isset($_REQUEST['paypal_client_id'])) $data['PAYPAL_CLIENT_ID'] = $_REQUEST['paypal_client_id'];
+    if(isset($_REQUEST['paypal_secret'])) $data['PAYPAL_SECRET'] = $_REQUEST['paypal_secret'];
+    if(isset($_REQUEST['paypal_mode'])) $data['PAYPAL_MODE'] = $_REQUEST['paypal_mode'];
+    if(isset($_REQUEST['paypal_webhook_id'])) $data['PAYPAL_WEBHOOK_ID'] = $_REQUEST['paypal_webhook_id'];
     
     // Salvar no .env
     $success = admin_environment_env_write($data);
     
     $_GESTOR['ajax-json'] = [
         'status' => $success ? 'success' : 'error',
-        'message' => $success ? 'Configurações salvas com sucesso!' : 'Erro ao salvar configurações.'
+        'message' => $success 
+            ? gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'save-success'))
+            : gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'save-error'))
     ];
 }
 
@@ -499,6 +544,52 @@ function admin_environment_ajax_testar_email(){
     }
 }
 
+function admin_environment_ajax_testar_paypal(){
+    global $_GESTOR;
+    global $_CONFIG;
+    
+    $client_id = $_REQUEST['paypal_client_id'] ?? '';
+    $secret = $_REQUEST['paypal_secret'] ?? '';
+    $mode = $_REQUEST['paypal_mode'] ?? 'sandbox';
+    
+    if (empty($client_id) || empty($secret)) {
+        $_GESTOR['ajax-json'] = [
+            'status' => 'error',
+            'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'paypal-test-missing-fields'))
+        ];
+        return;
+    }
+    
+    // Incluir biblioteca PayPal
+    gestor_incluir_biblioteca('paypal');
+    
+    // Configurar $_CONFIG temporariamente com as credenciais do formulário
+    $_CONFIG['paypal'] = Array(
+        'default' => 'padrao',
+        'mode' => $mode,
+        'webhook_id' => $_REQUEST['paypal_webhook_id'] ?? '',
+        $mode => Array(
+            'client_id' => $client_id,
+            'client_secret' => $secret,
+        ),
+    );
+    
+    // Forçar nova autenticação (ignorar cache)
+    $token = paypal_autenticar(Array('force_refresh' => true));
+    
+    if ($token && !empty($token['access_token'])) {
+        $_GESTOR['ajax-json'] = [
+            'status' => 'success',
+            'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'paypal-test-success'))
+        ];
+    } else {
+        $_GESTOR['ajax-json'] = [
+            'status' => 'error',
+            'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'paypal-test-error'))
+        ];
+    }
+}
+
 // ==== Start
 
 function admin_environment_start(){
@@ -515,6 +606,7 @@ function admin_environment_start(){
             case 'testar-recaptcha': admin_environment_ajax_testar_recaptcha(); break;
             case 'testar-recaptcha-v2': admin_environment_ajax_testar_recaptcha_v2(); break;
             case 'testar-email': admin_environment_ajax_testar_email(); break;
+            case 'testar-paypal': admin_environment_ajax_testar_paypal(); break;
         }
 
         interface_ajax_finalizar();

@@ -449,9 +449,11 @@ function formulario_processador($params = false){
 		curl_close($ch);
 		$arrResponse = json_decode($response, true);
 
-		if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5){
+		if(isset($arrResponse["success"]) && $arrResponse["success"] == '1' && isset($arrResponse["action"]) && $arrResponse["action"] == $action && isset($arrResponse["score"]) && $arrResponse["score"] >= 0.5){
 			$recaptchaValido = true;
-		} elseif($arrResponse["score"] < 0.5 && isset($_CONFIG['usuario-recaptcha-v2-active']) && $_CONFIG['usuario-recaptcha-v2-active']){
+		} elseif(isset($arrResponse["score"]) && $arrResponse["score"] < 0.5 && isset($_CONFIG['usuario-recaptcha-v2-active']) && $_CONFIG['usuario-recaptcha-v2-active']){
+			$captchaV2Ativo = true;
+		} else {
 			$captchaV2Ativo = true;
 		}
 	} else {
@@ -487,7 +489,7 @@ function formulario_processador($params = false){
 		curl_close($ch);
 		$arrResponse = json_decode($response, true);
 		
-		if(!$arrResponse["success"]){
+		if(!isset($arrResponse["success"]) || !$arrResponse["success"]){ 
 			formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
 			$_GESTOR['ajax-json'] = Array(
 				'status' => 'error',

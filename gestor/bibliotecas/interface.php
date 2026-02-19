@@ -5032,7 +5032,7 @@ function interface_listar_tabela($params = false){
 				<th>'.$coluna['nome'].'</th>';
 				
 				$tabela_cabecalho = modelo_var_in($tabela_cabecalho,"#rows#",$row);
-				if($tabela['rodape']) $tabela_rodape = modelo_var_in($tabela_rodape,"#rows#",$row);
+				if(isset($tabela['rodape'])) $tabela_rodape = modelo_var_in($tabela_rodape,"#rows#",$row);
 				
 				$columns = Array(
 					'data' => $coluna['id'],
@@ -5075,7 +5075,7 @@ function interface_listar_tabela($params = false){
 				<th>Status</th>';
 				
 				$tabela_cabecalho = modelo_var_in($tabela_cabecalho,"#rows#",$row);
-				if($tabela['rodape']) $tabela_rodape = modelo_var_in($tabela_rodape,"#rows#",$row);
+				if(isset($tabela['rodape'])) $tabela_rodape = modelo_var_in($tabela_rodape,"#rows#",$row);
 				
 				$interface['columns'][] = Array(
 					'data' => $banco['status'],
@@ -5092,7 +5092,7 @@ function interface_listar_tabela($params = false){
 				<th>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'list-column-options')).'</th>';
 			
 			$tabela_cabecalho = modelo_var_in($tabela_cabecalho,"#rows#",$row);
-			if($tabela['rodape']) $tabela_rodape = modelo_var_in($tabela_rodape,"#rows#",$row);
+			if(isset($tabela['rodape'])) $tabela_rodape = modelo_var_in($tabela_rodape,"#rows#",$row);
 			
 			$interface['columns'][] = Array(
 				'data' => $banco['id'],
@@ -5116,7 +5116,7 @@ function interface_listar_tabela($params = false){
 			}
 			
 			$tabela_cabecalho = modelo_var_troca($tabela_cabecalho,"#rows#",'');
-			if($tabela['rodape']) $tabela_rodape = modelo_var_troca($tabela_rodape,"#rows#",'');
+			if(isset($tabela['rodape'])) $tabela_rodape = modelo_var_troca($tabela_rodape,"#rows#",'');
 		}
 		
 		// ===== Dados do Banco
@@ -5194,7 +5194,7 @@ function interface_listar_tabela($params = false){
 		
 		// ===== Finalizar tabela
 		
-		$lista_tabela = modelo_var_troca($lista_tabela,"#rows#",$tabela_cabecalho.$tabela_dados.($tabela['rodape'] ? $tabela_rodape : '' ));
+		$lista_tabela = modelo_var_troca($lista_tabela,"#rows#",$tabela_cabecalho.$tabela_dados.(isset($tabela['rodape']) ? $tabela_rodape : '' ));
 		
 		// ===== Interface Javascript Vars
 		

@@ -162,6 +162,20 @@ $_CONFIG = [
     'plano-teste-id-usuario-perfil'     => $_ENV['PLANO_TESTE_ID_USUARIO_PERFIL'] ?? '2',
     'autenticacao-token-lifetime'       => (int)($_ENV['AUTENTICACAO_TOKEN_LIFETIME'] ?? 15552000),
 
+    // Configurações do Site
+    'site-name'                         => $_ENV['SITE_NAME'] ?? 'Conn2Flow',
+
+    // Configurações do PayPal
+    'paypal'  => [
+        'default'                       => $_ENV['PAYPAL_DEFAULT'] ?? 'padrao',
+        'mode'                          => $_ENV['PAYPAL_MODE'] ?? 'sandbox',
+        'webhook_id'                    => $_ENV['PAYPAL_WEBHOOK_ID'] ?? '',
+        ($_ENV['PAYPAL_MODE'] ?? 'sandbox') => [
+            'client_id'                 => $_ENV['PAYPAL_CLIENT_ID'] ?? '',
+            'client_secret'             => $_ENV['PAYPAL_SECRET'] ?? '',
+        ],
+    ],
+
     // Configurações OAuth 2.0
     'oauth2'  => [
         'token-expiration'            => (int)($_ENV['OAUTH2_TOKEN_EXPIRATION'] ?? 3600),
@@ -290,7 +304,7 @@ foreach($_GESTOR['bibliotecas'] as $_biblioteca){
 }
 
 // Adicionar o config do projeto caso exista, para adcionar configurações específicas do projeto.
-if(file_exists($_GESTOR['ROOT_PATH'].'config-project.php')){
+if(isset($_GESTOR['ROOT_PATH']) && file_exists($_GESTOR['ROOT_PATH'].'config-project.php')){
 	require_once($_GESTOR['ROOT_PATH'].'config-project.php');
 }
 

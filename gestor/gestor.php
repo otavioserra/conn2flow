@@ -1075,7 +1075,7 @@ function gestor_permissao_modulo(){
 	global $_GESTOR;
 	
 	$usuario = gestor_usuario();
-	$modulo = $_GESTOR['modulo'];
+	$modulo = $_GESTOR['modulo'] ?? '';
 	
 	if(!existe($modulo)){
 		return true;
@@ -1649,7 +1649,7 @@ function gestor_roteador(){
 		// ====== Definir variáveis.
 		$modulo = $paginas[0]['modulo'];
 		$plugin = $paginas[0]['plugin'];
-		$id = $paginas[0]['id'];
+		$id = $paginas[0]['id'] ?? '';
 
 		// ===== Montar a página de acordo com o tipo de requisição (AJAX ou normal).
 		if($_GESTOR['ajax']){

@@ -272,10 +272,15 @@ $(document).ready(function () {
 			}
 
 			function performAjaxSubmit(form, data, clickedButton = null) {
-				var formData = new FormData(form[0]);
-				formData.append('ajax', '1');
-				formData.append('ajaxOpcao', data.ajaxOpcao || 'forms-process');
-				formData.append('_formId', data.formId);
+				if (!('formData' in data) || !data.formData) {
+					data.formData = new FormData(form[0]);
+
+					data.formData.append('ajax', '1');
+					data.formData.append('ajaxOpcao', data.ajaxOpcao || 'forms-process');
+					data.formData.append('_formId', data.formId);
+				}
+
+				const formData = data.formData ?? {};
 
 				$.ajax({
 					url: data.formAction || form.attr('action') || window.location.href,
@@ -283,7 +288,7 @@ $(document).ready(function () {
 					data: formData,
 					processData: false,
 					contentType: false,
-					timeout: 10000,
+					timeout: 15000,
 					success: function (response) {
 						if (response.status === 'success') {
 							window.location.href = gestor.raiz + response.redirect;

@@ -25,8 +25,391 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-paypal'] = Array(
-    'versao' => '2.0.0',
+    'versao' => '3.0.0',
+    'modo-gateway' => false,
+    'gateway-id' => null,
+    'gateway-dados' => null,
 );
+
+/**
+ * Registra um log de evento relacionado ao PayPal.
+ *
+ * @return void 
+ */
+function paypal_log_registro($logData = []){
+    gestor_incluir_biblioteca('log');
+
+    log_disco(json_encode($logData, JSON_UNESCAPED_UNICODE | JSON_PARTIAL_OUTPUT_ON_ERROR), 'paypal');
+}
+
+// ============================================================================
+// GATEWAY DE PAGAMENTOS — CONFIGURAÇÃO VIA BANCO DE DADOS
+// ============================================================================
+
+/**
+ * Configura a biblioteca PayPal para usar um gateway de pagamentos do banco.
+ *
+ * Busca o gateway na tabela gateways_pagamentos e configura $_CONFIG['paypal']
+ * automaticamente. Também ativa o modo gateway para persistência de token no banco.
+ *
+ * @global array $_GESTOR Sistema global com configurações
+ * @global array $_CONFIG Configurações do sistema
+ *
+ * @param array|false $params Parâmetros da função
+ * @param int    $params['id']   ID específico do gateway (opcional)
+ * @param string $params['tipo'] Tipo do gateway, ex: 'paypal' (opcional, padrão: 'paypal')
+ *
+ * @return bool True se configurado com sucesso, false caso contrário
+ */
+function paypal_gateways_pagamentos_configurar($params = false){
+    global $_GESTOR;
+    global $_CONFIG;
+
+    // Extrair parâmetros
+    if($params)foreach($params as $var => $val)$$var = $val;
+
+    // Tipo padrão
+    if(!isset($tipo)){
+        $tipo = 'paypal';
+    }
+
+    // Buscar gateway
+    $gateway = null;
+
+    if(isset($id)){
+        // Busca por ID específico
+        $gateway = banco_select(Array(
+            'unico' => true,
+            'tabela' => 'gateways_pagamentos',
+            'campos' => Array('*'),
+            'extra' => "WHERE id_gateways_pagamentos = '" . banco_escape_field($id) . "' AND status = 'A'"
+        ));
+    } else {
+        // Busca gateway padrão do tipo
+        $gateway = banco_select(Array(
+            'unico' => true,
+            'tabela' => 'gateways_pagamentos',
+            'campos' => Array('*'),
+            'extra' => "WHERE tipo = '" . banco_escape_field($tipo) . "' AND padrao = 'S' AND status = 'A'"
+        ));
+    }
+
+    if(!$gateway){
+        paypal_log_registro(Array(
+            'tipo' => 'paypal-gateway-config-error',
+            'mensagem' => 'Gateway não encontrado no banco',
+            'detalhes' => Array('id' => $id ?? null, 'tipo' => $tipo)
+        ));
+        return false;
+    }
+
+    // Configurar $_CONFIG com dados do gateway
+    $paypal_mode = $gateway['ambiente'] === 'P' ? 'live' : 'sandbox';
+    $_CONFIG['paypal'] = Array(
+        'mode' => $paypal_mode,
+        'currency' => $gateway['moeda'],
+        'webhook_id' => $gateway['webhook_id'],
+        $paypal_mode => Array(
+            'client_id' => $gateway['client_id'],
+            'client_secret' => $gateway['client_secret'],
+        ),
+    );
+
+    // Ativar modo gateway na biblioteca
+    $_GESTOR['biblioteca-paypal']['modo-gateway'] = true;
+    $_GESTOR['biblioteca-paypal']['gateway-id'] = $gateway['id_gateways_pagamentos'];
+    $_GESTOR['biblioteca-paypal']['gateway-dados'] = $gateway;
+
+    // Restaurar token persistente do banco (se existir e válido)
+    if(!empty($gateway['access_token']) && !empty($gateway['token_expires_at'])){
+        $token_expires_at = (int) $gateway['token_expires_at'];
+
+        // Verificar se token ainda é válido (com margem de 5 minutos)
+        if($token_expires_at > (time() + 300)){
+            $_GESTOR['paypal-token'] = Array(
+                'access_token' => $gateway['access_token'],
+                'token_type' => $gateway['token_type'] ?? 'Bearer',
+                'expires_at' => $token_expires_at,
+            );
+
+            // Merge dados extras do token se existirem
+            if(!empty($gateway['token_data'])){
+                $token_extra = json_decode($gateway['token_data'], true);
+                if(is_array($token_extra)){
+                    $_GESTOR['paypal-token'] = array_merge($token_extra, $_GESTOR['paypal-token']);
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Persiste o token OAuth no banco de dados do gateway ativo.
+ *
+ * Chamada internamente após autenticação bem-sucedida quando em modo gateway.
+ *
+ * @global array $_GESTOR Sistema global com configurações
+ *
+ * @param array $token_data Dados do token (access_token, token_type, expires_at, etc)
+ *
+ * @return bool True se persistido, false se não está em modo gateway
+ */
+function paypal_gateway_persistir_token($token_data){
+    global $_GESTOR;
+
+    if(!$_GESTOR['biblioteca-paypal']['modo-gateway'] || !$_GESTOR['biblioteca-paypal']['gateway-id']){
+        return false;
+    }
+
+    $gateway_id = $_GESTOR['biblioteca-paypal']['gateway-id'];
+
+    $campos_update = Array();
+    $campos_update[] = "access_token = '" . banco_escape_field($token_data['access_token']) . "'";
+    $campos_update[] = "token_type = '" . banco_escape_field($token_data['token_type'] ?? 'Bearer') . "'";
+    $campos_update[] = "token_expires_at = '" . banco_escape_field($token_data['expires_at']) . "'";
+    $campos_update[] = "token_data = '" . banco_escape_field(json_encode($token_data, JSON_UNESCAPED_UNICODE)) . "'";
+    $campos_update[] = "data_modificacao = NOW()";
+
+    banco_update(
+        implode(', ', $campos_update),
+        'gateways_pagamentos',
+        "WHERE id_gateways_pagamentos = '" . banco_escape_field($gateway_id) . "'"
+    );
+
+    return true;
+}
+
+/**
+ * Registra uma transação nas estatísticas do gateway ativo.
+ *
+ * Incrementa o contador de transações, soma o valor e atualiza a data da última transação.
+ *
+ * @global array $_GESTOR Sistema global com configurações
+ *
+ * @param array|false $params Parâmetros
+ * @param float  $params['valor'] Valor da transação (opcional, padrão: 0)
+ * @param string $params['moeda'] Moeda da transação (opcional)
+ *
+ * @return bool True se registrado, false se não está em modo gateway
+ */
+function paypal_gateway_registrar_transacao($params = false){
+    global $_GESTOR;
+
+    if(!$_GESTOR['biblioteca-paypal']['modo-gateway'] || !$_GESTOR['biblioteca-paypal']['gateway-id']){
+        return false;
+    }
+
+    // Extrair parâmetros
+    if($params)foreach($params as $var => $val)$$var = $val;
+
+    $gateway_id = $_GESTOR['biblioteca-paypal']['gateway-id'];
+    $valor = isset($valor) ? (float) $valor : 0;
+
+    banco_update(
+        "total_transacoes = total_transacoes + 1, "
+        . "total_valor = total_valor + " . number_format($valor, 2, '.', '') . ", "
+        . "ultima_transacao = NOW(), "
+        . "data_modificacao = NOW()",
+        'gateways_pagamentos',
+        "WHERE id_gateways_pagamentos = '" . banco_escape_field($gateway_id) . "'"
+    );
+
+    return true;
+}
+
+/**
+ * Atualiza o status de conexão do gateway ativo.
+ *
+ * @global array $_GESTOR Sistema global com configurações
+ *
+ * @param bool   $sucesso  Se a conexão foi bem-sucedida
+ * @param string $mensagem Mensagem descritiva do resultado
+ *
+ * @return bool True se atualizado, false se não está em modo gateway
+ */
+function paypal_gateway_atualizar_conexao($sucesso, $mensagem = ''){
+    global $_GESTOR;
+
+    if(!$_GESTOR['biblioteca-paypal']['modo-gateway'] || !$_GESTOR['biblioteca-paypal']['gateway-id']){
+        return false;
+    }
+
+    $gateway_id = $_GESTOR['biblioteca-paypal']['gateway-id'];
+
+    banco_update(
+        "conexao_testada = '" . ($sucesso ? 'S' : 'N') . "', "
+        . "conexao_data = NOW(), "
+        . "conexao_mensagem = '" . banco_escape_field($mensagem) . "', "
+        . "data_modificacao = NOW()",
+        'gateways_pagamentos',
+        "WHERE id_gateways_pagamentos = '" . banco_escape_field($gateway_id) . "'"
+    );
+
+    return true;
+}
+
+/**
+ * Verifica se a biblioteca está operando em modo gateway (banco de dados).
+ *
+ * @global array $_GESTOR Sistema global com configurações
+ *
+ * @return bool True se está em modo gateway
+ */
+function paypal_is_modo_gateway(){
+    global $_GESTOR;
+    return isset($_GESTOR['biblioteca-paypal']['modo-gateway']) && $_GESTOR['biblioteca-paypal']['modo-gateway'] === true;
+}
+
+/**
+ * Obtém o ID do gateway ativo.
+ *
+ * @global array $_GESTOR Sistema global com configurações
+ *
+ * @return int|null ID do gateway ou null se não está em modo gateway
+ */
+function paypal_obter_gateway_id(){
+    global $_GESTOR;
+    return $_GESTOR['biblioteca-paypal']['gateway-id'] ?? null;
+}
+
+/**
+ * Obtém os dados completos do gateway ativo.
+ *
+ * @global array $_GESTOR Sistema global com configurações
+ *
+ * @return array|null Dados do gateway ou null se não está em modo gateway
+ */
+function paypal_obter_gateway_dados(){
+    global $_GESTOR;
+    return $_GESTOR['biblioteca-paypal']['gateway-dados'] ?? null;
+}
+
+// ============================================================================
+// MODO PADRÃO — PERSISTÊNCIA DE TOKEN VIA VARIÁVEIS DO SISTEMA
+// ============================================================================
+
+/**
+ * Persiste o token OAuth nas variáveis do sistema (modo padrão).
+ *
+ * Utiliza gestor_variaveis_alterar para salvar os dados do token
+ * no módulo admin-environment, permitindo persistência entre requisições.
+ *
+ * @param array $token_data Dados do token (access_token, token_type, expires_at, etc)
+ *
+ * @return bool True se persistido com sucesso
+ */
+function paypal_padrao_persistir_token($token_data){
+    gestor_variaveis_alterar(Array(
+        'modulo' => 'admin-environment',
+        'id' => 'paypal-access-token',
+        'tipo' => 'string',
+        'valor' => $token_data['access_token'] ?? ''
+    ));
+
+    gestor_variaveis_alterar(Array(
+        'modulo' => 'admin-environment',
+        'id' => 'paypal-token-type',
+        'tipo' => 'string',
+        'valor' => $token_data['token_type'] ?? 'Bearer'
+    ));
+
+    gestor_variaveis_alterar(Array(
+        'modulo' => 'admin-environment',
+        'id' => 'paypal-token-expires-at',
+        'tipo' => 'string',
+        'valor' => (string)($token_data['expires_at'] ?? '')
+    ));
+
+    gestor_variaveis_alterar(Array(
+        'modulo' => 'admin-environment',
+        'id' => 'paypal-token-data',
+        'tipo' => 'string',
+        'valor' => json_encode($token_data, JSON_UNESCAPED_UNICODE)
+    ));
+
+    return true;
+}
+
+/**
+ * Restaura o token OAuth persistido nas variáveis do sistema (modo padrão).
+ *
+ * Carrega os dados do token salvo via gestor_variaveis e popula
+ * o cache global $_GESTOR['paypal-token'] se o token ainda for válido.
+ *
+ * @global array $_GESTOR Sistema global com configurações
+ *
+ * @return bool True se token restaurado e válido, false caso contrário
+ */
+function paypal_padrao_restaurar_token(){
+    global $_GESTOR;
+
+    $access_token = gestor_variaveis(Array('modulo' => 'admin-environment', 'id' => 'paypal-access-token'));
+    $token_expires_at = gestor_variaveis(Array('modulo' => 'admin-environment', 'id' => 'paypal-token-expires-at'));
+
+    if(!empty($access_token) && !empty($token_expires_at)){
+        $expires_at = (int) $token_expires_at;
+
+        // Verificar se token ainda é válido (margem de 5 minutos)
+        if($expires_at > (time() + 300)){
+            $_GESTOR['paypal-token'] = Array(
+                'access_token' => $access_token,
+                'token_type' => gestor_variaveis(Array('modulo' => 'admin-environment', 'id' => 'paypal-token-type')) ?: 'Bearer',
+                'expires_at' => $expires_at,
+            );
+
+            // Merge dados extras do token se existirem
+            $token_data_str = gestor_variaveis(Array('modulo' => 'admin-environment', 'id' => 'paypal-token-data'));
+            if(!empty($token_data_str)){
+                $token_extra = json_decode($token_data_str, true);
+                if(is_array($token_extra)){
+                    $_GESTOR['paypal-token'] = array_merge($token_extra, $_GESTOR['paypal-token']);
+                }
+            }
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// ============================================================================
+// AUTO-CONFIGURAÇÃO — Ativa automaticamente o modo correto ao carregar
+// ============================================================================
+
+/**
+ * Inicializa a biblioteca PayPal automaticamente baseado em $_CONFIG['paypal']['default'].
+ *
+ * Se 'gateway': configura via banco de dados (tabela gateways_pagamentos).
+ * Se 'padrao': usa credenciais do .env via $_CONFIG e restaura token persistido.
+ *
+ * @global array $_GESTOR Sistema global com configurações
+ * @global array $_CONFIG Configurações do sistema
+ *
+ * @return void
+ */
+function paypal_auto_configurar(){
+    global $_GESTOR;
+    global $_CONFIG;
+
+    if(!isset($_CONFIG['paypal']['default'])) return;
+
+    $modo_default = $_CONFIG['paypal']['default'];
+
+    if($modo_default === 'gateway'){
+        // Modo gateway — configurar via banco de dados
+        paypal_gateways_pagamentos_configurar(Array('tipo' => 'paypal'));
+    } else {
+        // Modo padrão — restaurar token persistente das variáveis do sistema
+        paypal_padrao_restaurar_token();
+    }
+}
+
+// ============================================================================
+// FUNÇÕES DE API — Core
+// ============================================================================
 
 /**
  * Obtém a URL base da API do PayPal baseado no modo (sandbox/live).
@@ -162,8 +545,8 @@ function paypal_requisicao($params = false){
     
     // Verificar erros de cURL
     if($curl_error){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-curl-error',
                 'mensagem' => $curl_error,
                 'detalhes' => Array(
@@ -233,13 +616,19 @@ function paypal_autenticar($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-auth-error',
                 'mensagem' => 'Erro ao autenticar com PayPal',
                 'detalhes' => $response
             ));
         }
+
+        // Atualizar status de conexão no gateway se em modo gateway
+        if(paypal_is_modo_gateway()){
+            paypal_gateway_atualizar_conexao(false, 'Erro na autenticação OAuth 2.0');
+        }
+
         return false;
     }
     
@@ -251,6 +640,14 @@ function paypal_autenticar($params = false){
     
     // Salvar no cache global
     $_GESTOR['paypal-token'] = $token_data;
+
+    // Persistir token conforme o modo ativo
+    if(paypal_is_modo_gateway()){
+        paypal_gateway_persistir_token($token_data);
+        paypal_gateway_atualizar_conexao(true, 'Autenticação bem-sucedida');
+    } else {
+        paypal_padrao_persistir_token($token_data);
+    }
     
     return $token_data;
 }
@@ -382,8 +779,8 @@ function paypal_criar_pedido($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 201){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-create-order-error',
                 'mensagem' => 'Erro ao criar pedido no PayPal',
                 'detalhes' => $response
@@ -451,8 +848,8 @@ function paypal_capturar_pedido($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 201){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-capture-error',
                 'mensagem' => 'Erro ao capturar pedido no PayPal',
                 'detalhes' => Array(
@@ -473,6 +870,15 @@ function paypal_capturar_pedido($params = false){
     if(isset($capture['purchase_units'][0]['payments']['captures'][0])){
         $capture_id = $capture['purchase_units'][0]['payments']['captures'][0]['id'];
         $capture_status = $capture['purchase_units'][0]['payments']['captures'][0]['status'];
+    }
+
+    // Registrar estatística de transação no gateway
+    if(paypal_is_modo_gateway() && $capture_status === 'COMPLETED'){
+        $valor_captura = 0;
+        if(isset($capture['purchase_units'][0]['payments']['captures'][0]['amount']['value'])){
+            $valor_captura = (float) $capture['purchase_units'][0]['payments']['captures'][0]['amount']['value'];
+        }
+        paypal_gateway_registrar_transacao(Array('valor' => $valor_captura));
     }
     
     return Array(
@@ -516,8 +922,8 @@ function paypal_consultar_pedido($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-get-order-error',
                 'mensagem' => 'Erro ao consultar pedido no PayPal',
                 'detalhes' => Array(
@@ -595,8 +1001,8 @@ function paypal_reembolsar($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 201){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-refund-error',
                 'mensagem' => 'Erro ao processar reembolso no PayPal',
                 'detalhes' => Array(
@@ -649,8 +1055,8 @@ function paypal_consultar_reembolso($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-get-refund-error',
                 'mensagem' => 'Erro ao consultar reembolso no PayPal',
                 'detalhes' => Array(
@@ -692,8 +1098,8 @@ function paypal_validar_webhook($params = false){
     
     // Verificar se webhook_id está configurado
     if(!isset($_CONFIG['paypal']['webhook_id'])){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-webhook-config-error',
                 'mensagem' => 'Webhook ID não configurado'
             ));
@@ -815,8 +1221,8 @@ function paypal_processar_webhook($params = false){
     }
     
     // Log do evento
-    if(function_exists('log_registro')){
-        log_registro(Array(
+    if(function_exists('paypal_log_registro')){
+        paypal_log_registro(Array(
             'tipo' => 'paypal-webhook-received',
             'mensagem' => 'Webhook PayPal processado: ' . $event_type,
             'detalhes' => Array(
@@ -904,8 +1310,8 @@ function paypal_criar_produto($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 201){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-create-product-error',
                 'mensagem' => 'Erro ao criar produto no PayPal',
                 'detalhes' => $response
@@ -959,8 +1365,8 @@ function paypal_listar_produtos($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-list-products-error',
                 'mensagem' => 'Erro ao listar produtos no PayPal',
                 'detalhes' => $response
@@ -1003,8 +1409,8 @@ function paypal_consultar_produto($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-get-product-error',
                 'mensagem' => 'Erro ao consultar produto no PayPal',
                 'detalhes' => Array('product_id' => $product_id, 'response' => $response)
@@ -1088,8 +1494,8 @@ function paypal_atualizar_produto($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 204){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-update-product-error',
                 'mensagem' => 'Erro ao atualizar produto no PayPal',
                 'detalhes' => Array('product_id' => $product_id, 'response' => $response)
@@ -1225,8 +1631,8 @@ function paypal_criar_plano($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 201){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-create-plan-error',
                 'mensagem' => 'Erro ao criar plano no PayPal',
                 'detalhes' => $response
@@ -1284,8 +1690,8 @@ function paypal_listar_planos($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-list-plans-error',
                 'mensagem' => 'Erro ao listar planos no PayPal',
                 'detalhes' => $response
@@ -1328,8 +1734,8 @@ function paypal_consultar_plano($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-get-plan-error',
                 'mensagem' => 'Erro ao consultar plano no PayPal',
                 'detalhes' => Array('plan_id' => $plan_id, 'response' => $response)
@@ -1372,8 +1778,8 @@ function paypal_ativar_plano($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 204){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-activate-plan-error',
                 'mensagem' => 'Erro ao ativar plano no PayPal',
                 'detalhes' => Array('plan_id' => $plan_id, 'response' => $response)
@@ -1416,8 +1822,8 @@ function paypal_desativar_plano($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 204){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-deactivate-plan-error',
                 'mensagem' => 'Erro ao desativar plano no PayPal',
                 'detalhes' => Array('plan_id' => $plan_id, 'response' => $response)
@@ -1486,8 +1892,8 @@ function paypal_atualizar_precos_plano($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 204){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-update-plan-pricing-error',
                 'mensagem' => 'Erro ao atualizar preços do plano no PayPal',
                 'detalhes' => Array('plan_id' => $plan_id, 'response' => $response)
@@ -1518,6 +1924,8 @@ function paypal_atualizar_precos_plano($params = false){
  * @return array|false Array com dados da assinatura ou false em erro
  */
 function paypal_criar_assinatura($params = false){
+    global $_CONFIG;
+
     // Extrair parâmetros
     if($params)foreach($params as $var => $val)$$var = $val;
     
@@ -1594,8 +2002,8 @@ function paypal_criar_assinatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 201){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-create-subscription-error',
                 'mensagem' => 'Erro ao criar assinatura no PayPal',
                 'detalhes' => $response
@@ -1656,8 +2064,8 @@ function paypal_consultar_assinatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-get-subscription-error',
                 'mensagem' => 'Erro ao consultar assinatura no PayPal',
                 'detalhes' => Array('subscription_id' => $subscription_id, 'response' => $response)
@@ -1702,8 +2110,8 @@ function paypal_suspender_assinatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 204){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-suspend-subscription-error',
                 'mensagem' => 'Erro ao suspender assinatura no PayPal',
                 'detalhes' => Array('subscription_id' => $subscription_id, 'response' => $response)
@@ -1748,8 +2156,8 @@ function paypal_cancelar_assinatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 204){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-cancel-subscription-error',
                 'mensagem' => 'Erro ao cancelar assinatura no PayPal',
                 'detalhes' => Array('subscription_id' => $subscription_id, 'response' => $response)
@@ -1794,8 +2202,8 @@ function paypal_ativar_assinatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 204){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-activate-subscription-error',
                 'mensagem' => 'Erro ao ativar assinatura no PayPal',
                 'detalhes' => Array('subscription_id' => $subscription_id, 'response' => $response)
@@ -1856,8 +2264,8 @@ function paypal_capturar_assinatura($params = false){
     ));
     
     if(!$response || ($response['http_code'] !== 200 && $response['http_code'] !== 202)){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-capture-subscription-error',
                 'mensagem' => 'Erro ao capturar pagamento da assinatura no PayPal',
                 'detalhes' => Array('subscription_id' => $subscription_id, 'response' => $response)
@@ -1909,8 +2317,8 @@ function paypal_listar_transacoes_assinatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-list-subscription-transactions-error',
                 'mensagem' => 'Erro ao listar transações da assinatura no PayPal',
                 'detalhes' => Array('subscription_id' => $subscription_id, 'response' => $response)
@@ -2122,8 +2530,8 @@ function paypal_criar_fatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 201){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-create-invoice-error',
                 'mensagem' => 'Erro ao criar fatura no PayPal',
                 'detalhes' => $response
@@ -2177,8 +2585,8 @@ function paypal_listar_faturas($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-list-invoices-error',
                 'mensagem' => 'Erro ao listar faturas no PayPal',
                 'detalhes' => $response
@@ -2221,8 +2629,8 @@ function paypal_consultar_fatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-get-invoice-error',
                 'mensagem' => 'Erro ao consultar fatura no PayPal',
                 'detalhes' => Array('invoice_id' => $invoice_id, 'response' => $response)
@@ -2279,8 +2687,8 @@ function paypal_enviar_fatura($params = false){
     ));
     
     if(!$response || ($response['http_code'] !== 200 && $response['http_code'] !== 202)){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-send-invoice-error',
                 'mensagem' => 'Erro ao enviar fatura no PayPal',
                 'detalhes' => Array('invoice_id' => $invoice_id, 'response' => $response)
@@ -2339,8 +2747,8 @@ function paypal_cancelar_fatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 204){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-cancel-invoice-error',
                 'mensagem' => 'Erro ao cancelar fatura no PayPal',
                 'detalhes' => Array('invoice_id' => $invoice_id, 'response' => $response)
@@ -2395,8 +2803,8 @@ function paypal_lembrete_fatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 204){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-remind-invoice-error',
                 'mensagem' => 'Erro ao enviar lembrete da fatura no PayPal',
                 'detalhes' => Array('invoice_id' => $invoice_id, 'response' => $response)
@@ -2468,8 +2876,8 @@ function paypal_registrar_pagamento_fatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-record-invoice-payment-error',
                 'mensagem' => 'Erro ao registrar pagamento da fatura no PayPal',
                 'detalhes' => Array('invoice_id' => $invoice_id, 'response' => $response)
@@ -2537,8 +2945,8 @@ function paypal_registrar_reembolso_fatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-record-invoice-refund-error',
                 'mensagem' => 'Erro ao registrar reembolso da fatura no PayPal',
                 'detalhes' => Array('invoice_id' => $invoice_id, 'response' => $response)
@@ -2590,8 +2998,8 @@ function paypal_gerar_qrcode_fatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-generate-invoice-qrcode-error',
                 'mensagem' => 'Erro ao gerar QR Code da fatura no PayPal',
                 'detalhes' => Array('invoice_id' => $invoice_id, 'response' => $response)
@@ -2666,8 +3074,8 @@ function paypal_buscar_faturas($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-search-invoices-error',
                 'mensagem' => 'Erro ao buscar faturas no PayPal',
                 'detalhes' => $response
@@ -2710,8 +3118,8 @@ function paypal_deletar_fatura($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 204){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-delete-invoice-error',
                 'mensagem' => 'Erro ao deletar fatura no PayPal',
                 'detalhes' => Array('invoice_id' => $invoice_id, 'response' => $response)
@@ -2743,8 +3151,8 @@ function paypal_gerar_numero_fatura(){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-generate-invoice-number-error',
                 'mensagem' => 'Erro ao gerar número de fatura no PayPal',
                 'detalhes' => $response
@@ -2867,8 +3275,8 @@ function paypal_criar_payout($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 201){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-create-payout-error',
                 'mensagem' => 'Erro ao criar payout no PayPal',
                 'detalhes' => $response
@@ -2928,8 +3336,8 @@ function paypal_consultar_payout($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-get-payout-error',
                 'mensagem' => 'Erro ao consultar payout no PayPal',
                 'detalhes' => Array('payout_batch_id' => $payout_batch_id, 'response' => $response)
@@ -2972,8 +3380,8 @@ function paypal_consultar_item_payout($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-get-payout-item-error',
                 'mensagem' => 'Erro ao consultar item de payout no PayPal',
                 'detalhes' => Array('payout_item_id' => $payout_item_id, 'response' => $response)
@@ -3018,8 +3426,8 @@ function paypal_cancelar_item_payout($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-cancel-payout-item-error',
                 'mensagem' => 'Erro ao cancelar item de payout no PayPal',
                 'detalhes' => Array('payout_item_id' => $payout_item_id, 'response' => $response)
@@ -3155,8 +3563,8 @@ function paypal_listar_disputas($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-list-disputes-error',
                 'mensagem' => 'Erro ao listar disputas no PayPal',
                 'detalhes' => $response
@@ -3199,8 +3607,8 @@ function paypal_consultar_disputa($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-get-dispute-error',
                 'mensagem' => 'Erro ao consultar disputa no PayPal',
                 'detalhes' => Array('dispute_id' => $dispute_id, 'response' => $response)
@@ -3266,8 +3674,8 @@ function paypal_aceitar_disputa($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-accept-dispute-error',
                 'mensagem' => 'Erro ao aceitar disputa no PayPal',
                 'detalhes' => Array('dispute_id' => $dispute_id, 'response' => $response)
@@ -3346,8 +3754,8 @@ function paypal_contestar_disputa($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-provide-evidence-error',
                 'mensagem' => 'Erro ao fornecer evidências para disputa no PayPal',
                 'detalhes' => Array('dispute_id' => $dispute_id, 'response' => $response)
@@ -3397,8 +3805,8 @@ function paypal_mensagem_disputa($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-send-dispute-message-error',
                 'mensagem' => 'Erro ao enviar mensagem para disputa no PayPal',
                 'detalhes' => Array('dispute_id' => $dispute_id, 'response' => $response)
@@ -3449,8 +3857,8 @@ function paypal_escalar_disputa($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-escalate-dispute-error',
                 'mensagem' => 'Erro ao escalar disputa no PayPal',
                 'detalhes' => Array('dispute_id' => $dispute_id, 'response' => $response)
@@ -3524,8 +3932,8 @@ function paypal_listar_transacoes($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-list-transactions-error',
                 'mensagem' => 'Erro ao listar transações no PayPal',
                 'detalhes' => $response
@@ -3570,8 +3978,8 @@ function paypal_consultar_saldo($params = false){
     ));
     
     if(!$response || $response['http_code'] !== 200){
-        if(function_exists('log_registro')){
-            log_registro(Array(
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
                 'tipo' => 'paypal-get-balance-error',
                 'mensagem' => 'Erro ao consultar saldo no PayPal',
                 'detalhes' => $response
@@ -3837,7 +4245,7 @@ function paypal_formatar_data($data, $incluir_hora = true){
  */
 function paypal_info(){
     return Array(
-        'versao' => '2.0.0',
+        'versao' => '3.0.0',
         'autor' => 'Conn2Flow',
         'licenca' => 'MIT',
         'apis' => Array(
@@ -3929,7 +4337,25 @@ function paypal_info(){
             'paypal_gerar_id',
             'paypal_validar_email',
             'paypal_formatar_data',
-            'paypal_info'
+            'paypal_info',
+            // Gateway
+            'paypal_gateways_pagamentos_configurar',
+            'paypal_gateway_persistir_token',
+            'paypal_gateway_registrar_transacao',
+            'paypal_gateway_atualizar_conexao',
+            'paypal_is_modo_gateway',
+            'paypal_obter_gateway_id',
+            'paypal_obter_gateway_dados',
+            // Default Mode
+            'paypal_padrao_persistir_token',
+            'paypal_padrao_restaurar_token',
+            'paypal_auto_configurar',
         )
     );
 }
+
+// ============================================================================
+// INICIALIZAÇÃO AUTOMÁTICA
+// ============================================================================
+
+paypal_auto_configurar();

@@ -78,6 +78,7 @@ $(document).ready(function () {
         var data = {
             ajax: 'sim',
             ajaxOpcao: 'salvar',
+            site_name: $('#site_name').val(),
             usuario_recaptcha_active: $('#usuario_recaptcha_active').parent().checkbox('is checked') ? 'true' : 'false',
             usuario_recaptcha_site: $('#usuario_recaptcha_site').val(),
             usuario_recaptcha_server: $('#usuario_recaptcha_server').val(),
@@ -96,7 +97,12 @@ $(document).ready(function () {
             email_reply_to_name: $('#email_reply_to_name').val(),
             language_default: $('#language_default').val(),
             language_widget_active: $('#language_widget_active').parent().checkbox('is checked') ? 'true' : 'false',
-            language_auto_detect: $('#language_auto_detect').parent().checkbox('is checked') ? 'true' : 'false'
+            language_auto_detect: $('#language_auto_detect').parent().checkbox('is checked') ? 'true' : 'false',
+            paypal_default: $('#paypal_default').val(),
+            paypal_client_id: $('#paypal_client_id').val(),
+            paypal_secret: $('#paypal_secret').val(),
+            paypal_mode: $('#paypal_mode').val(),
+            paypal_webhook_id: $('#paypal_webhook_id').val()
         };
 
         $.ajax({
@@ -443,6 +449,74 @@ $(document).ready(function () {
                             showMessage('error', 'Erro na comunicação com o servidor.');
                             $('#gestor-listener').trigger('carregar_fechar');
                         }
+                }
+            }
+        });
+    });
+
+    // Toggle PayPal integration mode
+    $('#paypal_default').on('change', function () {
+        var mode = $(this).val();
+        if (mode === 'gateway') {
+            $('#paypal-padrao-section').addClass('hidden');
+        } else {
+            $('#paypal-padrao-section').removeClass('hidden');
+        }
+    });
+
+    // Botão Testar PayPal
+    $('#btn-testar-paypal').click(function () {
+        var clientId = $('#paypal_client_id').val();
+        var secret = $('#paypal_secret').val();
+        var mode = $('#paypal_mode').val();
+        var webhookId = $('#paypal_webhook_id').val();
+
+        $(this).addClass('loading');
+
+        var data = {
+            ajax: 'sim',
+            ajaxOpcao: 'testar-paypal',
+            paypal_client_id: clientId,
+            paypal_secret: secret,
+            paypal_mode: mode,
+            paypal_webhook_id: webhookId
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: window.location.href,
+            data: data,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#gestor-listener').trigger('carregar_abrir');
+            },
+            success: function (dados) {
+                $('#btn-testar-paypal').removeClass('loading');
+
+                switch (dados.status) {
+                    case 'success':
+                        showMessage('success', dados.message);
+                        break;
+                    case 'error':
+                        showMessage('error', dados.message);
+                        break;
+                    default:
+                        console.log('ERROR - testar-paypal - ' + dados.status);
+                        showMessage('error', 'Erro desconhecido na resposta do servidor.');
+                }
+
+                $('#gestor-listener').trigger('carregar_fechar');
+            },
+            error: function (txt) {
+                $('#btn-testar-paypal').removeClass('loading');
+
+                switch (txt.status) {
+                    case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
+                    default:
+                        console.log('ERROR AJAX - testar-paypal - Dados:');
+                        console.log(txt);
+                        showMessage('error', 'Erro na comunicação com o servidor.');
+                        $('#gestor-listener').trigger('carregar_fechar');
                 }
             }
         });

@@ -7,20 +7,41 @@
             <p>Manage environment settings through the .env file</p>
 
             <div class="ui top attached tabular menu">
-                <a class="item active" data-tab="usuario">
+                <a class="item active" data-tab="site" data-tooltip="General site settings like name and identity" data-position="bottom center">
+                    <i class="globe icon"></i> Site Settings
+                </a>
+                <a class="item" data-tab="usuario" data-tooltip="User security settings including reCAPTCHA protection" data-position="bottom center">
                     <i class="user icon"></i> User Settings
                 </a>
-                <a class="item" data-tab="email">
+                <a class="item" data-tab="email" data-tooltip="SMTP email configuration for sending system emails" data-position="bottom center">
                     <i class="mail icon"></i> Email Settings
                 </a>
-                <a class="item" data-tab="linguagem">
+                <a class="item" data-tab="linguagem" data-tooltip="Language preferences and automatic detection settings" data-position="bottom center">
                     <i class="language icon"></i> Language Settings
+                </a>
+                <a class="item" data-tab="paypal" data-tooltip="PayPal REST API credentials and integration settings" data-position="bottom center">
+                    <i class="paypal icon"></i> PayPal
                 </a>
             </div>
 
+            <!-- Tab: Site Settings -->
+            <div class="ui bottom attached tab segment active" data-tab="site">
+                <h3><i class="globe icon"></i> Site Settings</h3>
+                <p class="ui grey text">Configure the basic identity of your site. The site name is used in emails, page titles and system references.</p>
+
+                <form class="ui form" id="form-site">
+                    <div class="field">
+                        <label>Site Name</label>
+                        <input type="text" id="site_name" name="site_name"
+                            value="#site-name#" placeholder="Ex: My Website">
+                    </div>
+                </form>
+            </div>
+
             <!-- Tab: User Settings -->
-            <div class="ui bottom attached tab segment active" data-tab="usuario">
+            <div class="ui bottom attached tab segment" data-tab="usuario">
                 <h3><i class="user icon"></i> User Settings</h3>
+                <p class="ui grey text">Manage user authentication security. Enable reCAPTCHA to protect login and registration forms against bots and automated attacks.</p>
 
                 <form class="ui form" id="form-usuario">
                     <div class="field">
@@ -93,6 +114,7 @@
             <!-- Tab: Email Settings -->
             <div class="ui bottom attached tab segment" data-tab="email">
                 <h3><i class="mail icon"></i> Email Settings</h3>
+                <p class="ui grey text">Configure the SMTP server for sending system emails such as notifications, password resets and contact form responses.</p>
 
                 <form class="ui form" id="form-email">
                     <div class="field">
@@ -184,6 +206,7 @@
             <!-- Tab: Language Settings -->
             <div class="ui bottom attached tab segment" data-tab="linguagem">
                 <h3><i class="language icon"></i> Language Settings</h3>
+                <p class="ui grey text">Configure the default language, language selection widget and automatic browser language detection for visitors.</p>
 
                 <form class="ui form" id="form-linguagem">
                     <div class="field">
@@ -207,6 +230,63 @@
                         <select class="ui dropdown" id="language_default" name="language_default">
                             #language-options#
                         </select>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab: PayPal Settings -->
+            <div class="ui bottom attached tab segment" data-tab="paypal">
+                <h3><i class="paypal icon"></i> PayPal Integration</h3>
+                <p class="ui grey text">Configure your PayPal REST API credentials and integration mode. Use <strong>Standard</strong> to use credentials from this panel, or <strong>Gateway</strong> to use credentials managed by the Payment Gateways module.</p>
+
+                <form class="ui form" id="form-paypal">
+                    <div class="field">
+                        <label>Integration Mode</label>
+                        <select class="ui dropdown" id="paypal_default" name="paypal_default">
+                            <option value="padrao" #paypal-default-padrao-selected#>Standard (credentials from .env)</option>
+                            <option value="gateway" #paypal-default-gateway-selected#>Gateway (credentials from database)</option>
+                        </select>
+                    </div>
+
+                    <div class="ui divider"></div>
+
+                    <div id="paypal-padrao-section">
+                        <h4><i class="key icon"></i> API Credentials</h4>
+                        <p class="ui grey small text">Enter your PayPal REST API credentials. You can find them at <a href="https://developer.paypal.com/dashboard/applications" target="_blank">PayPal Developer Dashboard</a>.</p>
+
+                        <div class="field">
+                            <label>Environment</label>
+                            <select class="ui dropdown" id="paypal_mode" name="paypal_mode">
+                                <option value="sandbox" #paypal-mode-sandbox-selected#>Sandbox (Testing)</option>
+                                <option value="live" #paypal-mode-live-selected#>Live (Production)</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label>Client ID</label>
+                            <input type="text" id="paypal_client_id" name="paypal_client_id"
+                                value="#paypal-client-id#" placeholder="Ex: AaBbCcDdEeFf...">
+                        </div>
+
+                        <div class="field">
+                            <label>Secret</label>
+                            <input type="password" id="paypal_secret" name="paypal_secret"
+                                value="#paypal-secret#" placeholder="Ex: EeFfGgHhIiJj...">
+                        </div>
+
+                        <div class="field">
+                            <label>Webhook ID</label>
+                            <input type="text" id="paypal_webhook_id" name="paypal_webhook_id"
+                                value="#paypal-webhook-id#" placeholder="Ex: 5GP028458E...">
+                        </div>
+                    </div>
+
+                    <div class="ui divider"></div>
+
+                    <div class="field">
+                        <button type="button" class="ui blue button" id="btn-testar-paypal">
+                            <i class="paypal icon"></i> Test Connection
+                        </button>
                     </div>
                 </form>
             </div>

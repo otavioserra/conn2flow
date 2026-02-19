@@ -58,7 +58,7 @@ function oauth2_gerar_token_client_credentials($params = false){
         "WHERE id_usuarios='" . $id_usuarios . "' AND expiration > " . time()
     );
 
-    if ($tokens_ativos[0]['total'] >= $max_tokens) {
+    if (isset($tokens_ativos) && isset($tokens_ativos[0]['total']) && $tokens_ativos[0]['total'] >= $max_tokens) {
         return false; // Ou lance erro: "Limite de tokens ativos atingido"
     }
 

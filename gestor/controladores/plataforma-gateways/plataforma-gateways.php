@@ -414,20 +414,30 @@ function plataforma_gateways_paypal_webhook() {
         plataforma_gateways_401('Invalid webhook signature');
     }
     
-    // Processar evento
+    // Processar evento via biblioteca PayPal (não-fatal)
+    // A biblioteca faz processamento interno; se falhar, usamos os dados
+    // brutos do JSON para garantir que os hooks dos módulos sejam disparados.
     $evento = paypal_processar_webhook(Array(
-        'payload' => $payload,
+        'body' => $payload,
     ));
     
     if (!$evento) {
+        // A biblioteca não conseguiu processar, mas temos o JSON decodificado.
+        // Construir estrutura compatível a partir do $data bruto para os hooks.
         plataforma_gateways_log(Array(
             'gateway' => 'paypal',
             'endpoint' => 'webhook',
-            'status' => 'error',
-            'message' => 'Falha ao processar webhook',
+            'status' => 'warning',
+            'message' => 'Biblioteca PayPal não processou o evento — usando dados brutos para hooks',
             'data' => $data,
         ));
-        plataforma_gateways_500('Failed to process webhook');
+        
+        $evento = Array(
+            'event_type' => isset($data['event_type']) ? $data['event_type'] : 'unknown',
+            'resource_type' => isset($data['resource_type']) ? $data['resource_type'] : null,
+            'resource' => isset($data['resource']) ? $data['resource'] : null,
+            'event_data' => $data,
+        );
     }
     
     // Log de sucesso
@@ -437,18 +447,20 @@ function plataforma_gateways_paypal_webhook() {
         'status' => 'success',
         'message' => 'Webhook processado: ' . $evento['event_type'],
         'data' => Array(
-            'event_id' => isset($evento['id']) ? $evento['id'] : null,
+            'event_id' => isset($data['id']) ? $data['id'] : null,
             'event_type' => $evento['event_type'],
             'resource_id' => isset($evento['resource']['id']) ? $evento['resource']['id'] : null,
         ),
     ));
     
     // Dispara hook para módulos processarem o evento
-    plataforma_gateways_disparar_hook('paypal', 'webhook', $evento);
+    // Os hooks SEMPRE são disparados, independente se a biblioteca processou ou não.
+    // Isso permite que módulos personalizados tratem webhooks de forma customizada.
+    $resultado_hook = plataforma_gateways_disparar_hook('paypal', 'webhook', $evento);
     
     // Retornar sucesso para o PayPal
     plataforma_gateways_resposta_sucesso(Array(
-        'event_id' => isset($evento['id']) ? $evento['id'] : null,
+        'event_id' => isset($data['id']) ? $data['id'] : null,
         'processed' => true,
     ));
 }
@@ -677,9 +689,9 @@ function plataforma_gateways_disparar_hook($gateway, $action, $data = Array()) {
     
     // Buscar módulos que possuem hooks configurados
     $modulos = banco_select(Array(
-        'campos' => 'id, plugin',
         'tabela' => 'modulos',
-        'condicao' => "WHERE hooks IS NOT NULL AND status != 'D'",
+        'campos' => ['id', 'plugin'],
+        'extra' => "WHERE hooks IS NOT NULL AND status != 'D'",
     ));
     
     if ($modulos) {
@@ -745,9 +757,9 @@ function plataforma_gateways_modulo_direto($modulo_id, $endpoint) {
     
     // Verificar se o módulo existe, está ativo e possui hooks configurados
     $modulo = banco_select(Array(
-        'campos' => 'id, plugin',
         'tabela' => 'modulos',
-        'condicao' => "WHERE id = '" . banco_escape_field($modulo_id) . "' AND hooks IS NOT NULL AND status != 'D'",
+        'campos' => ['id', 'plugin'],
+        'extra' => "WHERE id = '" . banco_escape_field($modulo_id) . "' AND hooks IS NOT NULL AND status != 'D'",
     ));
     
     if (!$modulo) {
