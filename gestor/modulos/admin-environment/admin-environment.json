@@ -17,11 +17,11 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.17",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "68e739831d15e40725827a62ff5dc361",
+                        "html": "cd7ed29e1d03c2f029461de0e0eeabdc",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
-                        "combined": "63118f55910e5d891530ac83f7e76c3a"
+                        "combined": "7fd7d6cdc67c0259fd1022bc9006f641"
                     }
                 }
             ],
@@ -165,11 +165,11 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.17",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "6663d98c0d7cd9d01a80339ad8906fc4",
+                        "html": "2d5417d3915972ff2ad5bf9432d8e40d",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
-                        "combined": "4cae817014997b061ad5d14502bd95a4"
+                        "combined": "d9d4f1a202b29e3c1fc6031f5291ee04"
                     }
                 }
             ],

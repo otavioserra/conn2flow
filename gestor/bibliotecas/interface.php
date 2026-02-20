@@ -339,6 +339,71 @@ function interface_encapsular_valor($params = false){
 }
 
 /**
+ * Formata um número de telefone para exibição.
+ *
+ * Suporta formato brasileiro: +(CC) DD XXXXX-XXXX (celular) ou +(CC) DD XXXX-XXXX (fixo).
+ * Para outros formatos internacionais, retorna com prefixo + e agrupamento genérico.
+ *
+ * @param string $telefone Número de telefone (pode conter +, espaços, hífens, parênteses).
+ * @return string Telefone formatado ou valor original se não for possível formatar.
+ */
+function interface_formatar_telefone($telefone){
+	$digits = preg_replace('/\D/', '', $telefone);
+	
+	if(empty($digits)) return $telefone;
+	
+	// Formato brasileiro: +55 + DDD (2 dígitos) + número (8 ou 9 dígitos)
+	if(strlen($digits) >= 12 && substr($digits, 0, 2) === '55'){
+		$cc = '55';
+		$rest = substr($digits, 2);
+		$ddd = substr($rest, 0, 2);
+		$number = substr($rest, 2);
+		
+		if(strlen($number) === 9){
+			return '+(' . $cc . ') ' . $ddd . ' ' . substr($number, 0, 5) . '-' . substr($number, 5);
+		} elseif(strlen($number) === 8){
+			return '+(' . $cc . ') ' . $ddd . ' ' . substr($number, 0, 4) . '-' . substr($number, 4);
+		}
+		
+		// Fallback brasileiro com DDD
+		return '+(' . $cc . ') ' . $ddd . ' ' . $number;
+	}
+	
+	// Formato brasileiro sem código de país: DDD (2 dígitos) + número (8 ou 9 dígitos)
+	// Celular: 11 dígitos (DDD + 9xxxx-xxxx) — o 3° dígito é sempre 9
+	// Fixo: 10 dígitos (DDD + xxxx-xxxx)
+	if(strlen($digits) === 11 && substr($digits, 2, 1) === '9'){
+		$ddd = substr($digits, 0, 2);
+		$number = substr($digits, 2);
+		return '(' . $ddd . ') ' . substr($number, 0, 5) . '-' . substr($number, 5);
+	}
+	
+	if(strlen($digits) === 10){
+		$ddd = substr($digits, 0, 2);
+		$number = substr($digits, 2);
+		return '(' . $ddd . ') ' . substr($number, 0, 4) . '-' . substr($number, 4);
+	}
+	
+	// Formato internacional genérico (US +1, etc): +(CC) XXXXXXXXXX
+	if(strlen($digits) > 10){
+		// Tentar detectar código de país (1-3 dígitos)
+		if(substr($digits, 0, 1) === '1' && strlen($digits) === 11){
+			// US/Canadá: +1 (XXX) XXX-XXXX
+			$cc = '1';
+			$area = substr($digits, 1, 3);
+			$prefix = substr($digits, 4, 3);
+			$line = substr($digits, 7);
+			return '+' . $cc . ' (' . $area . ') ' . $prefix . '-' . $line;
+		}
+		
+		return '+' . $digits;
+	}
+	
+	// Número curto sem código de país
+	return $telefone;
+}
+
+/**
  * Formata um dado de acordo com o formato especificado.
  *
  * Aplica diferentes tipos de formatação aos dados, incluindo conversão de datas,
@@ -424,6 +489,12 @@ function interface_formatar_dado($params = false){
 				gestor_incluir_biblioteca('formato');
 				
 				$dado = 'R$ '.formato_dado(Array('valor' => $dado,'tipo' => 'float-para-texto'));
+			break;
+			case 'dinheiroUSD':
+				$dado = '$ ' . number_format((float)$dado, 2, '.', ',');
+			break;
+			case 'telefone':
+				$dado = interface_formatar_telefone($dado);
 			break;
 			case 'data': $dado = interface_data_from_datetime_to_text($dado); break;
 			case 'dataHora': $dado = interface_data_hora_from_datetime_to_text($dado); break;
@@ -3613,6 +3684,17 @@ function interface_adicionar_finalizar($params = false){
 	$pagina = modelo_var_troca($pagina,"#form-name#",$_GESTOR['modulo']);
 	$pagina = modelo_var_troca($pagina,"#form-action#",$_GESTOR['url-raiz'].$_GESTOR['caminho-total']);
 	$pagina = modelo_var_troca($pagina,"#form-button-title#",gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-title')));
+
+	$form_opcao = 'adicionar';
+	if(isset($formulario)){
+		// ===== Formulário Opção
+		
+		if(isset($formulario['opcao']) && $formulario['opcao'] != ''){
+			$form_opcao = $formulario['opcao'];
+		}
+	}
+
+	$pagina = modelo_var_troca($pagina,"#form-opcao#",$form_opcao);
 
 	if(isset($sem_botao_padrao) && $sem_botao_padrao === true){
 		$pagina = modelo_tag_del($pagina,'<!-- botao-padrao < -->','<!-- botao-padrao > -->','');

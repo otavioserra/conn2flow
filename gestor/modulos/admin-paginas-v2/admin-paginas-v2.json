@@ -40,11 +40,11 @@
                 {
                     "name": "Lista Página ou Sistema",
                     "id": "lista-pagina-ou-sistema",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "839f0ad72ee1fb7559f79aa1fd0b2f53",
+                        "html": "",
                         "css": "",
-                        "combined": "839f0ad72ee1fb7559f79aa1fd0b2f53"
+                        "combined": ""
                     }
                 }
             ],
@@ -59,7 +59,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas-v2/",
+                    "path": "admin-paginas-v2\/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -74,7 +74,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas-v2/editar/",
+                    "path": "admin-paginas-v2\/editar\/",
                     "type": "system",
                     "option": "editar"
                 },
@@ -88,7 +88,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas-v2/adicionar/",
+                    "path": "admin-paginas-v2\/adicionar\/",
                     "type": "system",
                     "option": "adicionar"
                 },
@@ -102,7 +102,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas-v2/clonar/",
+                    "path": "admin-paginas-v2\/clonar\/",
                     "type": "system",
                     "option": "clonar"
                 }
@@ -195,7 +195,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "Sem Permissão / Acesso Público",
+                    "value": "Sem Permissão \/ Acesso Público",
                     "type": "string"
                 },
                 {
@@ -210,7 +210,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "pelo menos uma '/' no final",
+                    "value": "pelo menos uma '\/' no final",
                     "type": "string"
                 },
                 {
@@ -278,7 +278,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas-v2/",
+                    "path": "admin-paginas-v2\/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -293,7 +293,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas-v2/editar/",
+                    "path": "admin-paginas-v2\/editar\/",
                     "type": "system",
                     "option": "editar"
                 },
@@ -307,7 +307,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas-v2/adicionar/",
+                    "path": "admin-paginas-v2\/adicionar\/",
                     "type": "system",
                     "option": "adicionar"
                 },
@@ -321,7 +321,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas-v2/clonar/",
+                    "path": "admin-paginas-v2\/clonar\/",
                     "type": "system",
                     "option": "clonar"
                 }
@@ -330,11 +330,11 @@
                 {
                     "name": "Page or System List",
                     "id": "lista-pagina-ou-sistema",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "d0dae208d0c9c46f4041e52bb5e503df",
+                        "html": "",
                         "css": "",
-                        "combined": "d0dae208d0c9c46f4041e52bb5e503df"
+                        "combined": ""
                     }
                 }
             ],
@@ -426,7 +426,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "No Permission / Public Access",
+                    "value": "No Permission \/ Public Access",
                     "type": "string"
                 },
                 {
@@ -441,7 +441,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "at least one '/' at the end",
+                    "value": "at least one '\/' at the end",
                     "type": "string"
                 },
                 {

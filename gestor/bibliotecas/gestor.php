@@ -78,6 +78,7 @@ function existe($dado = false){
  * @param string $params['modulo'] Módulo específico (opcional).
  * @param bool $params['return_css'] Se true, retorna array ['html' => ..., 'css' => ...], senão string HTML.
  * @param array $params['modulosExtra'] Módulos extras para busca de variáveis.
+ * @param string $params['linguagem'] Código do idioma (padrão: idioma atual).
  *
  * @return string|array|false HTML do componente ou array com HTML+CSS, ou false se não encontrado.
  */
@@ -98,6 +99,7 @@ function gestor_componente($params = false){
 	// modulo - String - Identificador descritivo do módulo.
 	// return_css - Bool - Se ativo retorna Array com HTML e CSS, senão retorna String com o HTML do componente.
 	// modulosExtra - Array - Se definido, incluir módulos extras para procura automática de variáveis nestes módulos.
+	// linguagem - String - Código do idioma (padrão: idioma atual).
 	
 	// ===== 
 	
@@ -123,7 +125,7 @@ function gestor_componente($params = false){
 			,
 			"componentes",
 			"WHERE id_componentes='".$id_componentes."'"
-			." AND language='".$_GESTOR['linguagem-codigo']."'"
+			." AND language='".(isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo'])."'"
 			.(isset($modulo) ? " AND modulo='".$modulo."'" : "")
 		);
 	}
@@ -151,7 +153,7 @@ function gestor_componente($params = false){
 						,
 						"componentes",
 						"WHERE ".$ids
-						." AND language='".$_GESTOR['linguagem-codigo']."'"
+						." AND language='".(isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo'])."'"
 						.(isset($modulo) ? " AND modulo='".$modulo."'" : "")
 					);
 				}
@@ -170,7 +172,7 @@ function gestor_componente($params = false){
 					,
 					"componentes",
 					"WHERE id='".$id."'"
-					." AND language='".$_GESTOR['linguagem-codigo']."'"
+					." AND language='".(isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo'])."'"
 					.(isset($modulo) ? " AND modulo='".$modulo."'" : "")
 				);
 		}
@@ -185,7 +187,7 @@ function gestor_componente($params = false){
 				$modulo = $componente['modulo'];
 
 				if($_GESTOR['development-env']){
-					$lang = $_GESTOR['linguagem-codigo'];
+					$lang = (isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo']);
 
 					if(existe($modulo)){
 						$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/components/'.$id.'/'.$id.'.html';
@@ -251,7 +253,7 @@ function gestor_componente($params = false){
 			$modulo = $componentes[0]['modulo'];
 
 			if($_GESTOR['development-env']){
-				$lang = $_GESTOR['linguagem-codigo'];
+				$lang = (isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo']);
 				
 				if(existe($modulo)){
 					$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/components/'.$id.'/'.$id.'.html';

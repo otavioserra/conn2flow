@@ -5383,6 +5383,528 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-name-label",
+        "valor": "Nome da Página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-name-placeholder",
+        "valor": "Nome da Página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-html-editor-label",
+        "valor": "Editor HTML",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-page-content-label",
+        "valor": "Conteúdo da Página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-id-label",
+        "valor": "Identificador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-id-placeholder",
+        "valor": "Identificador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-path-label",
+        "valor": "Caminho",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-path-placeholder",
+        "valor": "Caminho",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-layout-label",
+        "valor": "Layout",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-layout-placeholder",
+        "valor": "Escolha um layout",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-type-label",
+        "valor": "Tipo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-type-placeholder",
+        "valor": "Selecione um tipo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-module-label",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-module-placeholder",
+        "valor": "Selecione um módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-option-label",
+        "valor": "Opção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-option-placeholder",
+        "valor": "Opção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-root-label",
+        "valor": "Raiz do Módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-permission-label",
+        "valor": "Sem Permissão \/ Acesso Público",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-config-divider",
+        "valor": "Configurações da Página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "editor-html-switch",
+        "valor": null,
+        "tipo": "bool",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "path-necessary-chars",
+        "valor": "pelo menos uma '\/' no final",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-url-label",
+        "valor": "URL da Página Atual",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-type-page",
+        "valor": "Página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-type-system",
+        "valor": "Sistema",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "form-framework-css-label",
+        "valor": "Framework CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "lista-ambos-label",
+        "valor": "Ambos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "lista-pagina-label",
+        "valor": "Página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "lista-sistema-label",
+        "valor": "Sistema",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "id": "lista-tipo-label",
+        "valor": "Tipo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-name-label",
+        "valor": "Page Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-name-placeholder",
+        "valor": "Page Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-html-editor-label",
+        "valor": "HTML Editor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-page-content-label",
+        "valor": "Page Content",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-id-label",
+        "valor": "Identifier",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-id-placeholder",
+        "valor": "Identifier",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-path-label",
+        "valor": "Path",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-path-placeholder",
+        "valor": "Path",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-layout-label",
+        "valor": "Layout",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-layout-placeholder",
+        "valor": "Choose a layout",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-type-label",
+        "valor": "Type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-type-placeholder",
+        "valor": "Select a type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-module-label",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-module-placeholder",
+        "valor": "Select a module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-option-label",
+        "valor": "Option",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-option-placeholder",
+        "valor": "Option",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-root-label",
+        "valor": "Root of Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-permission-label",
+        "valor": "No Permission \/ Public Access",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-config-divider",
+        "valor": "Page Settings",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "editor-html-switch",
+        "valor": null,
+        "tipo": "bool",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "path-necessary-chars",
+        "valor": "at least one '\/' at the end",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-url-label",
+        "valor": "Current Page URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-type-page",
+        "valor": "Page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-type-system",
+        "valor": "System",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "form-framework-css-label",
+        "valor": "Framework CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "lista-ambos-label",
+        "valor": "Both",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "lista-pagina-label",
+        "valor": "Page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "lista-sistema-label",
+        "valor": "System",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "admin-paginas-v2",
+        "id": "lista-tipo-label",
+        "valor": "Type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "admin-plugins",
         "id": "form-name-label",
         "valor": "Nome",

@@ -147,13 +147,13 @@
         "id": "interface-formulario-inclusao",
         "language": "pt-br",
         "modulo": null,
-        "html": "<h1 class=\"ui header\">#titulo#<\/h1>\n<!-- botoes < -->\n<div class=\"ui basic right aligned segment\">\n    #botoes#\n<\/div><!-- botoes > -->\n<form id=\"#form-id#\" action=\"#form-action#\" method=\"post\" name=\"#form-name#\" class=\"ui form interfaceFormPadrao\"\n    enctype=\"multipart\/form-data\">\n    <div id=\"_gestor-interface-insert-dados\">#form-page#<\/div>\n    <input id=\"_gestor-adicionar\" name=\"_gestor-adicionar\" type=\"hidden\" value=\"1\">\n    <input id=\"opcao\" name=\"opcao\" type=\"hidden\" value=\"adicionar\">\n    <div class=\"ui error message\"><\/div>\n    <div class=\"ui center aligned basic segment\">\n        <!-- botao-padrao < -->\n        <button id=\"_gestor-interface-insert-button\" data-tooltip=\"#form-button-title#\" data-position=\"right center\"\n            data-inverted=\"\" class=\"positive ui button\">\n            #form-button-value#\n        <\/button><!-- botao-padrao > -->\n        <!-- botoes-rodape < -->\n        #botoes-rodape#\n        <!-- botoes-rodape > -->\n    <\/div>\n<\/form>",
+        "html": "<h1 class=\"ui header\">#titulo#<\/h1>\n<!-- botoes < -->\n<div class=\"ui basic right aligned segment\">\n    #botoes#\n<\/div><!-- botoes > -->\n<form id=\"#form-id#\" action=\"#form-action#\" method=\"post\" name=\"#form-name#\" class=\"ui form interfaceFormPadrao\"\n    enctype=\"multipart\/form-data\">\n    <div id=\"_gestor-interface-insert-dados\">#form-page#<\/div>\n    <input id=\"_gestor-adicionar\" name=\"_gestor-adicionar\" type=\"hidden\" value=\"1\">\n    <input id=\"opcao\" name=\"opcao\" type=\"hidden\" value=\"#form-opcao#\">\n    <div class=\"ui error message\"><\/div>\n    <div class=\"ui center aligned basic segment\">\n        <!-- botao-padrao < -->\n        <button id=\"_gestor-interface-insert-button\" data-tooltip=\"#form-button-title#\" data-position=\"right center\"\n            data-inverted=\"\" class=\"positive ui button\">\n            #form-button-value#\n        <\/button><!-- botao-padrao > -->\n        <!-- botoes-rodape < -->\n        #botoes-rodape#\n        <!-- botoes-rodape > -->\n    <\/div>\n<\/form>",
         "css": "#_gestor-interface-insert-dados{\n    margin-bottom:15px;\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
         "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"c13c08dd3bcb821fdcd55fdfe5e96fc3\",\"css\":\"1141c974d1568502c3a4f3847cdb8951\",\"combined\":\"acd91177a679f2a075e28ac917e77b19\"}"
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"8631955e04fb5eeea7213c2eecba1d23\",\"css\":\"1141c974d1568502c3a4f3847cdb8951\",\"combined\":\"46d94b7b0079634b3c161acdde17aebe\"}"
     },
     {
         "nome": "Interface Listar Sem Registros",
@@ -680,13 +680,13 @@
         "id": "interface-formulario-inclusao",
         "language": "en",
         "modulo": null,
-        "html": "<h1 class=\"ui header\">#titulo#<\/h1>\n<!-- botoes < -->\n<div class=\"ui basic right aligned segment\">\n    #botoes#\n<\/div><!-- botoes > -->\n<form id=\"#form-id#\" action=\"#form-action#\" method=\"post\" name=\"#form-name#\" class=\"ui form interfaceFormPadrao\"\n    enctype=\"multipart\/form-data\">\n    <div id=\"_gestor-interface-insert-dados\">#form-page#<\/div>\n    <input id=\"_gestor-adicionar\" name=\"_gestor-adicionar\" type=\"hidden\" value=\"1\">\n    <input id=\"opcao\" name=\"opcao\" type=\"hidden\" value=\"adicionar\">\n    <div class=\"ui error message\"><\/div>\n    <div class=\"ui center aligned basic segment\">\n        <!-- botao-padrao < -->\n        <button id=\"_gestor-interface-insert-button\" data-tooltip=\"#form-button-title#\" data-position=\"right center\"\n            data-inverted=\"\" class=\"positive ui button\">\n            #form-button-value#\n        <\/button><!-- botao-padrao > -->\n        <!-- botoes-rodape < -->\n        #botoes-rodape#\n        <!-- botoes-rodape > -->\n    <\/div>\n<\/form>",
+        "html": "<h1 class=\"ui header\">#titulo#<\/h1>\n<!-- botoes < -->\n<div class=\"ui basic right aligned segment\">\n    #botoes#\n<\/div><!-- botoes > -->\n<form id=\"#form-id#\" action=\"#form-action#\" method=\"post\" name=\"#form-name#\" class=\"ui form interfaceFormPadrao\"\n    enctype=\"multipart\/form-data\">\n    <div id=\"_gestor-interface-insert-dados\">#form-page#<\/div>\n    <input id=\"_gestor-adicionar\" name=\"_gestor-adicionar\" type=\"hidden\" value=\"1\">\n    <input id=\"opcao\" name=\"opcao\" type=\"hidden\" value=\"#form-opcao#\">\n    <div class=\"ui error message\"><\/div>\n    <div class=\"ui center aligned basic segment\">\n        <!-- botao-padrao < -->\n        <button id=\"_gestor-interface-insert-button\" data-tooltip=\"#form-button-title#\" data-position=\"right center\"\n            data-inverted=\"\" class=\"positive ui button\">\n            #form-button-value#\n        <\/button><!-- botao-padrao > -->\n        <!-- botoes-rodape < -->\n        #botoes-rodape#\n        <!-- botoes-rodape > -->\n    <\/div>\n<\/form>",
         "css": "#_gestor-interface-insert-dados{\n    margin-bottom:15px;\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
         "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"c13c08dd3bcb821fdcd55fdfe5e96fc3\",\"css\":\"1141c974d1568502c3a4f3847cdb8951\",\"combined\":\"acd91177a679f2a075e28ac917e77b19\"}"
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"8631955e04fb5eeea7213c2eecba1d23\",\"css\":\"1141c974d1568502c3a4f3847cdb8951\",\"combined\":\"46d94b7b0079634b3c161acdde17aebe\"}"
     },
     {
         "nome": "List Without Records Interface",
@@ -1272,6 +1272,32 @@
         "versao": 1,
         "file_version": "1.5",
         "checksum": "{\"html\":\"d0dae208d0c9c46f4041e52bb5e503df\",\"css\":\"\",\"combined\":\"d0dae208d0c9c46f4041e52bb5e503df\"}"
+    },
+    {
+        "nome": "Lista Página ou Sistema",
+        "id": "lista-pagina-ou-sistema",
+        "language": "pt-br",
+        "modulo": "admin-paginas-v2",
+        "html": null,
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.6",
+        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
+    },
+    {
+        "nome": "Page or System List",
+        "id": "lista-pagina-ou-sistema",
+        "language": "en",
+        "modulo": "admin-paginas-v2",
+        "html": null,
+        "css": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.6",
+        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
     },
     {
         "nome": "Plugins - Exec",

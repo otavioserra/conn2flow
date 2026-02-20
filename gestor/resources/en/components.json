@@ -112,11 +112,11 @@
     {
         "name": "Inclusion Form Interface",
         "id": "interface-formulario-inclusao",
-        "version": "1.6",
+        "version": "1.7",
         "checksum": {
-            "html": "c13c08dd3bcb821fdcd55fdfe5e96fc3",
+            "html": "8631955e04fb5eeea7213c2eecba1d23",
             "css": "1141c974d1568502c3a4f3847cdb8951",
-            "combined": "acd91177a679f2a075e28ac917e77b19"
+            "combined": "46d94b7b0079634b3c161acdde17aebe"
         }
     },
     {
