@@ -7,19 +7,28 @@
             <p>Gerencie as configurações do ambiente através do arquivo .env</p>
 
             <div class="ui top attached tabular menu">
-                <a class="item active" data-tab="site" data-tooltip="Configurações gerais do site como nome e identidade" data-position="bottom center">
+                <a class="item active" data-tab="site"
+                    data-tooltip="Configurações gerais do site como nome e identidade" data-position="bottom center">
                     <i class="globe icon"></i> Configurações do Site
                 </a>
-                <a class="item" data-tab="usuario" data-tooltip="Configurações de segurança do usuário incluindo proteção reCAPTCHA" data-position="bottom center">
+                <a class="item" data-tab="usuario"
+                    data-tooltip="Configurações de segurança do usuário incluindo proteção reCAPTCHA"
+                    data-position="bottom center">
                     <i class="user icon"></i> Configurações de Usuário
                 </a>
-                <a class="item" data-tab="email" data-tooltip="Configuração de email SMTP para envio de emails do sistema" data-position="bottom center">
+                <a class="item" data-tab="email"
+                    data-tooltip="Configuração de email SMTP para envio de emails do sistema"
+                    data-position="bottom center">
                     <i class="mail icon"></i> Configurações de Email
                 </a>
-                <a class="item" data-tab="linguagem" data-tooltip="Preferências de idioma e detecção automática para visitantes" data-position="bottom center">
+                <a class="item" data-tab="linguagem"
+                    data-tooltip="Preferências de idioma e detecção automática para visitantes"
+                    data-position="bottom center">
                     <i class="language icon"></i> Configurações de Linguagem
                 </a>
-                <a class="item" data-tab="paypal" data-tooltip="Credenciais da API REST do PayPal e configurações de integração" data-position="bottom center">
+                <a class="item" data-tab="paypal"
+                    data-tooltip="Credenciais da API REST do PayPal e configurações de integração"
+                    data-position="bottom center">
                     <i class="paypal icon"></i> PayPal
                 </a>
             </div>
@@ -27,13 +36,14 @@
             <!-- Tab: Configurações do Site -->
             <div class="ui bottom attached tab segment active" data-tab="site">
                 <h3><i class="globe icon"></i> Configurações do Site</h3>
-                <p class="ui grey text">Configure a identidade básica do seu site. O nome do site é utilizado em emails, títulos de páginas e referências do sistema.</p>
+                <p class="ui grey text">Configure a identidade básica do seu site. O nome do site é utilizado em emails,
+                    títulos de páginas e referências do sistema.</p>
 
-                <form class="ui form" id="form-site">
+                <form class="ui form" id="form-site" autocomplete="off">
                     <div class="field">
                         <label>Nome do Site</label>
-                        <input type="text" id="site_name" name="site_name"
-                            value="#site-name#" placeholder="Ex: Meu Website">
+                        <input type="text" id="site_name" name="site_name" value="#site-name#"
+                            placeholder="Ex: Meu Website">
                     </div>
                 </form>
             </div>
@@ -41,9 +51,10 @@
             <!-- Tab: Configurações de Usuário -->
             <div class="ui bottom attached tab segment" data-tab="usuario">
                 <h3><i class="user icon"></i> Configurações de Usuário</h3>
-                <p class="ui grey text">Gerencie a segurança de autenticação dos usuários. Ative o reCAPTCHA para proteger formulários de login e cadastro contra bots e ataques automatizados.</p>
+                <p class="ui grey text">Gerencie a segurança de autenticação dos usuários. Ative o reCAPTCHA para
+                    proteger formulários de login e cadastro contra bots e ataques automatizados.</p>
 
-                <form class="ui form" id="form-usuario">
+                <form class="ui form" id="form-usuario" autocomplete="off">
                     <div class="field">
                         <div class="ui toggle checkbox">
                             <input type="checkbox" id="usuario_recaptcha_active" name="usuario_recaptcha_active"
@@ -114,9 +125,10 @@
             <!-- Tab: Configurações de Email -->
             <div class="ui bottom attached tab segment" data-tab="email">
                 <h3><i class="mail icon"></i> Configurações de Email</h3>
-                <p class="ui grey text">Configure o servidor SMTP para envio de emails do sistema como notificações, redefinição de senhas e respostas de formulários de contato.</p>
+                <p class="ui grey text">Configure o servidor SMTP para envio de emails do sistema como notificações,
+                    redefinição de senhas e respostas de formulários de contato.</p>
 
-                <form class="ui form" id="form-email">
+                <form class="ui form" id="form-email" autocomplete="off">
                     <div class="field">
                         <div class="ui toggle checkbox">
                             <input type="checkbox" id="email_active" name="email_active" #email-active-checked#>
@@ -206,9 +218,10 @@
             <!-- Tab: Configurações de Linguagem -->
             <div class="ui bottom attached tab segment" data-tab="linguagem">
                 <h3><i class="language icon"></i> Configurações de Linguagem</h3>
-                <p class="ui grey text">Configure o idioma padrão, widget de seleção de idioma e detecção automática do idioma do navegador dos visitantes.</p>
+                <p class="ui grey text">Configure o idioma padrão, widget de seleção de idioma e detecção automática do
+                    idioma do navegador dos visitantes.</p>
 
-                <form class="ui form" id="form-linguagem">
+                <form class="ui form" id="form-linguagem" autocomplete="off">
                     <div class="field">
                         <div class="ui toggle checkbox">
                             <input type="checkbox" id="language_widget_active" name="language_widget_active"
@@ -237,14 +250,18 @@
             <!-- Tab: Configurações PayPal -->
             <div class="ui bottom attached tab segment" data-tab="paypal">
                 <h3><i class="paypal icon"></i> Integração PayPal</h3>
-                <p class="ui grey text">Configure suas credenciais da API REST do PayPal e o modo de integração. Use <strong>Padrão</strong> para usar credenciais deste painel, ou <strong>Gateway</strong> para usar credenciais gerenciadas pelo módulo de Gateways de Pagamento.</p>
+                <p class="ui grey text">Configure suas credenciais da API REST do PayPal e o modo de integração. Use
+                    <strong>Padrão</strong> para usar credenciais deste painel, ou <strong>Gateway</strong> para usar
+                    credenciais gerenciadas pelo módulo de Gateways de Pagamento.</p>
 
-                <form class="ui form" id="form-paypal">
+                <form class="ui form" id="form-paypal" autocomplete="off">
                     <div class="field">
                         <label>Modo de Integração</label>
                         <select class="ui dropdown" id="paypal_default" name="paypal_default">
-                            <option value="padrao" #paypal-default-padrao-selected#>Padrão (credenciais do .env)</option>
-                            <option value="gateway" #paypal-default-gateway-selected#>Gateway (credenciais do banco de dados)</option>
+                            <option value="padrao" #paypal-default-padrao-selected#>Padrão (credenciais do .env)
+                            </option>
+                            <option value="gateway" #paypal-default-gateway-selected#>Gateway (credenciais do banco de
+                                dados)</option>
                         </select>
                     </div>
 
@@ -252,7 +269,9 @@
 
                     <div id="paypal-padrao-section">
                         <h4><i class="key icon"></i> Credenciais da API</h4>
-                        <p class="ui grey small text">Insira suas credenciais da API REST do PayPal. Você pode encontrá-las no <a href="https://developer.paypal.com/dashboard/applications" target="_blank">Painel de Desenvolvedor PayPal</a>.</p>
+                        <p class="ui grey small text">Insira suas credenciais da API REST do PayPal. Você pode
+                            encontrá-las no <a href="https://developer.paypal.com/dashboard/applications"
+                                target="_blank">Painel de Desenvolvedor PayPal</a>.</p>
 
                         <div class="field">
                             <label>Ambiente</label>
@@ -264,14 +283,14 @@
 
                         <div class="field">
                             <label>Client ID</label>
-                            <input type="text" id="paypal_client_id" name="paypal_client_id"
-                                value="#paypal-client-id#" placeholder="Ex: AaBbCcDdEeFf...">
+                            <input type="text" id="paypal_client_id" name="paypal_client_id" value="#paypal-client-id#"
+                                placeholder="Ex: AaBbCcDdEeFf...">
                         </div>
 
                         <div class="field">
                             <label>Secret</label>
-                            <input type="password" id="paypal_secret" name="paypal_secret"
-                                value="#paypal-secret#" placeholder="Ex: EeFfGgHhIiJj...">
+                            <input type="password" id="paypal_secret" name="paypal_secret" value="#paypal-secret#"
+                                placeholder="Ex: EeFfGgHhIiJj...">
                         </div>
 
                         <div class="field">

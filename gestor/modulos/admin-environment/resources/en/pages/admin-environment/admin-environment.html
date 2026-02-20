@@ -29,7 +29,7 @@
                 <h3><i class="globe icon"></i> Site Settings</h3>
                 <p class="ui grey text">Configure the basic identity of your site. The site name is used in emails, page titles and system references.</p>
 
-                <form class="ui form" id="form-site">
+                <form class="ui form" id="form-site" autocomplete="off">
                     <div class="field">
                         <label>Site Name</label>
                         <input type="text" id="site_name" name="site_name"
@@ -43,7 +43,7 @@
                 <h3><i class="user icon"></i> User Settings</h3>
                 <p class="ui grey text">Manage user authentication security. Enable reCAPTCHA to protect login and registration forms against bots and automated attacks.</p>
 
-                <form class="ui form" id="form-usuario">
+                <form class="ui form" id="form-usuario" autocomplete="off">
                     <div class="field">
                         <div class="ui toggle checkbox">
                             <input type="checkbox" id="usuario_recaptcha_active" name="usuario_recaptcha_active"
@@ -116,7 +116,7 @@
                 <h3><i class="mail icon"></i> Email Settings</h3>
                 <p class="ui grey text">Configure the SMTP server for sending system emails such as notifications, password resets and contact form responses.</p>
 
-                <form class="ui form" id="form-email">
+                <form class="ui form" id="form-email" autocomplete="off">
                     <div class="field">
                         <div class="ui toggle checkbox">
                             <input type="checkbox" id="email_active" name="email_active" #email-active-checked#>
@@ -208,7 +208,7 @@
                 <h3><i class="language icon"></i> Language Settings</h3>
                 <p class="ui grey text">Configure the default language, language selection widget and automatic browser language detection for visitors.</p>
 
-                <form class="ui form" id="form-linguagem">
+                <form class="ui form" id="form-linguagem" autocomplete="off">
                     <div class="field">
                         <div class="ui toggle checkbox">
                             <input type="checkbox" id="language_widget_active" name="language_widget_active"
@@ -239,7 +239,7 @@
                 <h3><i class="paypal icon"></i> PayPal Integration</h3>
                 <p class="ui grey text">Configure your PayPal REST API credentials and integration mode. Use <strong>Standard</strong> to use credentials from this panel, or <strong>Gateway</strong> to use credentials managed by the Payment Gateways module.</p>
 
-                <form class="ui form" id="form-paypal">
+                <form class="ui form" id="form-paypal" autocomplete="off">
                     <div class="field">
                         <label>Integration Mode</label>
                         <select class="ui dropdown" id="paypal_default" name="paypal_default">
