@@ -1,0 +1,131 @@
+# ╔════════════════════════════════════════════════════════════════════╗
+# ║  Docker Compose — PHP 8.5 + MySQL 8.0                            ║
+# ║  Usa banco-v2.php (PDO) com driver MySQL                         ║
+# ║                                                                    ║
+# ║  Uso:                                                              ║
+# ║    docker compose -f docker-compose.php85-mysql.yml up -d          ║
+# ║    docker compose -f docker-compose.php85-mysql.yml down           ║
+# ╚════════════════════════════════════════════════════════════════════╝
+
+services:
+  # Aplicação conn2flow — PHP 8.5
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.php85
+    container_name: conn2flow-app-php85
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ../data/sites/localhost/public_html:/var/www/html:cached
+      - ../data/sites:/var/www/sites:cached
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - PHP_INI_SCAN_DIR=/usr/local/etc/php/conf.d
+    depends_on:
+      - mysql
+    networks:
+      - conn2flow-network
+
+  # Optional: Cloudflare Tunnel
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: conn2flow-cloudflared
+    restart: "no"
+    profiles:
+      - tunnel
+    command: tunnel --config /etc/cloudflared/config.yml --no-autoupdate run
+    depends_on:
+      - app
+    networks:
+      - conn2flow-network
+    volumes:
+      - ../data/cloudflared:/etc/cloudflared:ro
+
+  # Servidor FTP com ProFTPD
+  ftp:
+    build:
+      context: .
+      dockerfile: Dockerfile.ftp
+    container_name: conn2flow-ftp
+    restart: "no"
+    profiles: [ "optional" ]
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
+    volumes:
+      - ../data/sites:/home/ftp
+    environment:
+      - PROFTPD_LOG_LEVEL=info
+    networks:
+      - conn2flow-network
+
+  # Banco de dados MySQL 8.0
+  mysql:
+    image: mysql:8.0
+    container_name: conn2flow-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: conn2flow
+      MYSQL_USER: conn2flow_user
+      MYSQL_PASSWORD: conn2flow_pass
+      TZ: America/Sao_Paulo
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - conn2flow-network
+
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: conn2flow-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root123
+    ports:
+      - "8081:80"
+    volumes:
+      - ./phpmyadmin.ini:/usr/local/etc/php/conf.d/phpmyadmin.ini
+      - ./apache-limits.conf:/etc/apache2/conf-enabled/apache-limits.conf
+    depends_on:
+      - mysql
+    networks:
+      - conn2flow-network
+
+  # Cache em memória (memcached)
+  memcached:
+    image: memcached:alpine
+    container_name: conn2flow-memcached
+    restart: "no"
+    profiles: [ "optional" ]
+    ports:
+      - "11211:11211"
+    networks:
+      - conn2flow-network
+
+  # Cache em memória (redis)
+  redis:
+    image: redis:alpine
+    container_name: conn2flow-redis
+    restart: "no"
+    profiles: [ "optional" ]
+    ports:
+      - "6379:6379"
+    networks:
+      - conn2flow-network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  conn2flow-network:
+    driver: bridge

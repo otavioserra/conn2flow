@@ -1,0 +1,133 @@
+# ╔════════════════════════════════════════════════════════════════════╗
+# ║  Docker Compose — PHP 8.5 + PostgreSQL 17                        ║
+# ║  Usa banco-v2.php (PDO) com driver PostgreSQL                    ║
+# ║                                                                    ║
+# ║  Uso:                                                              ║
+# ║    docker compose -f docker-compose.php85-pgsql.yml up -d          ║
+# ║    docker compose -f docker-compose.php85-pgsql.yml down           ║
+# ║                                                                    ║
+# ║  Configuração .env necessária:                                     ║
+# ║    DB_CONNECTION=pgsql                                             ║
+# ║    DB_HOST=postgres                                                ║
+# ║    DB_PORT=5432                                                    ║
+# ║    DB_DATABASE=conn2flow                                           ║
+# ║    DB_USERNAME=conn2flow_user                                      ║
+# ║    DB_PASSWORD=conn2flow_pass                                      ║
+# ╚════════════════════════════════════════════════════════════════════╝
+
+services:
+  # Aplicação conn2flow — PHP 8.5
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.php85
+    container_name: conn2flow-app-php85-pgsql
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ../data/sites/localhost/public_html:/var/www/html:cached
+      - ../data/sites:/var/www/sites:cached
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - PHP_INI_SCAN_DIR=/usr/local/etc/php/conf.d
+    depends_on:
+      - postgres
+    networks:
+      - conn2flow-network
+
+  # Optional: Cloudflare Tunnel
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: conn2flow-cloudflared
+    restart: "no"
+    profiles:
+      - tunnel
+    command: tunnel --config /etc/cloudflared/config.yml --no-autoupdate run
+    depends_on:
+      - app
+    networks:
+      - conn2flow-network
+    volumes:
+      - ../data/cloudflared:/etc/cloudflared:ro
+
+  # Servidor FTP com ProFTPD
+  ftp:
+    build:
+      context: .
+      dockerfile: Dockerfile.ftp
+    container_name: conn2flow-ftp
+    restart: "no"
+    profiles: [ "optional" ]
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
+    volumes:
+      - ../data/sites:/home/ftp
+    environment:
+      - PROFTPD_LOG_LEVEL=info
+    networks:
+      - conn2flow-network
+
+  # Banco de dados PostgreSQL 17
+  postgres:
+    image: postgres:17-alpine
+    container_name: conn2flow-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: conn2flow
+      POSTGRES_USER: conn2flow_user
+      POSTGRES_PASSWORD: conn2flow_pass
+      TZ: America/Sao_Paulo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - conn2flow-network
+
+  # pgAdmin 4 — Interface web para PostgreSQL (equivalente ao phpMyAdmin)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: conn2flow-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@conn2flow.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+    networks:
+      - conn2flow-network
+
+  # Cache em memória (memcached)
+  memcached:
+    image: memcached:alpine
+    container_name: conn2flow-memcached
+    restart: "no"
+    profiles: [ "optional" ]
+    ports:
+      - "11211:11211"
+    networks:
+      - conn2flow-network
+
+  # Cache em memória (redis)
+  redis:
+    image: redis:alpine
+    container_name: conn2flow-redis
+    restart: "no"
+    profiles: [ "optional" ]
+    ports:
+      - "6379:6379"
+    networks:
+      - conn2flow-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  conn2flow-network:
+    driver: bridge

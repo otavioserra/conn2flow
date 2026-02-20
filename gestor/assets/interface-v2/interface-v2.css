@@ -1,0 +1,57 @@
+/**
+ * Interface V2 — Estilos
+ * 
+ * Estilos específicos da biblioteca interface-v2.
+ * Complementa os estilos do Fomantic-UI já carregados pelo sistema.
+ * 
+ * @version 2.0.0
+ */
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║                    HISTÓRICO - Audit Trail                   ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+.iv2-historico-item {
+	padding: 0.75em 0;
+	border-bottom: 1px solid rgba(34, 36, 38, 0.1);
+}
+
+.iv2-historico-item:last-child {
+	border-bottom: none;
+}
+
+.iv2-historico-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1em;
+	font-size: 0.85em;
+	color: rgba(0, 0, 0, 0.5);
+	margin-bottom: 0.3em;
+}
+
+.iv2-historico-meta .icon {
+	margin-right: 0.25em;
+}
+
+.iv2-historico-versao {
+	font-weight: 600;
+	color: rgba(0, 0, 0, 0.6);
+	background: rgba(0, 0, 0, 0.05);
+	padding: 0 0.5em;
+	border-radius: 3px;
+	font-size: 0.9em;
+}
+
+.iv2-historico-body {
+	font-size: 0.95em;
+	color: rgba(0, 0, 0, 0.75);
+}
+
+.iv2-historico-body strong {
+	color: rgba(0, 0, 0, 0.85);
+}
+
+.iv2-historico-body em {
+	color: rgba(0, 0, 0, 0.55);
+	font-style: italic;
+}

@@ -287,11 +287,13 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'ia' => Array('ia.php'),
     'html-editor' => Array('html-editor.php'),
     'oauth2' => Array('oauth2.php'),
+    'interface-v2' => Array('interface-v2.php'),
+    'banco-v2' => Array('banco-v2.php'),
 );
 
 // Bibliotecas principais do sistema
 
-$_GESTOR['bibliotecas']							=	Array('banco','gestor','modelo');
+$_GESTOR['bibliotecas']							=	Array('banco','banco-v2','gestor','modelo');
 
 if(isset($_GESTOR['bibliotecas']))
 foreach($_GESTOR['bibliotecas'] as $_biblioteca){

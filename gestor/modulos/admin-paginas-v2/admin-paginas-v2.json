@@ -1,0 +1,490 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface-v2",
+        "html",
+        "html-editor"
+    ],
+    "tabela": {
+        "nome": "paginas",
+        "id": "id",
+        "id_numerico": "id_paginas",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "selectDadosFrameworkCSS": [
+        {
+            "texto": "Fomantic-UI",
+            "valor": "fomantic-ui"
+        },
+        {
+            "texto": "TailwindCSS",
+            "valor": "tailwindcss"
+        }
+    ],
+    "resources": {
+        "pt-br": {
+            "selectDadosTipo": [
+                {
+                    "texto": "Sistema",
+                    "valor": "sistema"
+                },
+                {
+                    "texto": "Página",
+                    "valor": "pagina"
+                }
+            ],
+            "components": [
+                {
+                    "name": "Lista Página ou Sistema",
+                    "id": "lista-pagina-ou-sistema",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "839f0ad72ee1fb7559f79aa1fd0b2f53",
+                        "css": "",
+                        "combined": "839f0ad72ee1fb7559f79aa1fd0b2f53"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Admin Páginas V2",
+                    "id": "admin-paginas-v2",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas-v2/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Admin Páginas V2 - Editar",
+                    "id": "admin-paginas-v2-editar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas-v2/editar/",
+                    "type": "system",
+                    "option": "editar"
+                },
+                {
+                    "name": "Admin Páginas V2 - Adicionar",
+                    "id": "admin-paginas-v2-adicionar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas-v2/adicionar/",
+                    "type": "system",
+                    "option": "adicionar"
+                },
+                {
+                    "name": "Admin Páginas V2 - Clonar",
+                    "id": "admin-paginas-v2-clonar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas-v2/clonar/",
+                    "type": "system",
+                    "option": "clonar"
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Nome da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-editor-label",
+                    "value": "Editor HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-content-label",
+                    "value": "Conteúdo da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-label",
+                    "value": "Identificador",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-placeholder",
+                    "value": "Identificador",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-label",
+                    "value": "Caminho",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-placeholder",
+                    "value": "Caminho",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-label",
+                    "value": "Layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-placeholder",
+                    "value": "Escolha um layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-label",
+                    "value": "Tipo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-placeholder",
+                    "value": "Selecione um tipo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Selecione um módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-option-label",
+                    "value": "Opção",
+                    "type": "string"
+                },
+                {
+                    "id": "form-option-placeholder",
+                    "value": "Opção",
+                    "type": "string"
+                },
+                {
+                    "id": "form-root-label",
+                    "value": "Raiz do Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-permission-label",
+                    "value": "Sem Permissão / Acesso Público",
+                    "type": "string"
+                },
+                {
+                    "id": "form-config-divider",
+                    "value": "Configurações da Página",
+                    "type": "string"
+                },
+                {
+                    "id": "editor-html-switch",
+                    "value": null,
+                    "type": "bool"
+                },
+                {
+                    "id": "path-necessary-chars",
+                    "value": "pelo menos uma '/' no final",
+                    "type": "string"
+                },
+                {
+                    "id": "form-url-label",
+                    "value": "URL da Página Atual",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-page",
+                    "value": "Página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-system",
+                    "value": "Sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "form-framework-css-label",
+                    "value": "Framework CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-ambos-label",
+                    "value": "Ambos",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-pagina-label",
+                    "value": "Página",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-sistema-label",
+                    "value": "Sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-tipo-label",
+                    "value": "Tipo",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "selectDadosTipo": [
+                {
+                    "texto": "System",
+                    "valor": "sistema"
+                },
+                {
+                    "texto": "Page",
+                    "valor": "pagina"
+                }
+            ],
+            "layouts": [],
+            "pages": [
+                {
+                    "name": "Admin Pages V2",
+                    "id": "admin-paginas-v2",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas-v2/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true
+                },
+                {
+                    "name": "Admin Pages V2 - Edit",
+                    "id": "admin-paginas-v2-editar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas-v2/editar/",
+                    "type": "system",
+                    "option": "editar"
+                },
+                {
+                    "name": "Admin Pages V2 - Add",
+                    "id": "admin-paginas-v2-adicionar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas-v2/adicionar/",
+                    "type": "system",
+                    "option": "adicionar"
+                },
+                {
+                    "name": "Admin Pages V2 - Clone",
+                    "id": "admin-paginas-v2-clonar",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    },
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "admin-paginas-v2/clonar/",
+                    "type": "system",
+                    "option": "clonar"
+                }
+            ],
+            "components": [
+                {
+                    "name": "Page or System List",
+                    "id": "lista-pagina-ou-sistema",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "d0dae208d0c9c46f4041e52bb5e503df",
+                        "css": "",
+                        "combined": "d0dae208d0c9c46f4041e52bb5e503df"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Page Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-placeholder",
+                    "value": "Page Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-editor-label",
+                    "value": "HTML Editor",
+                    "type": "string"
+                },
+                {
+                    "id": "form-page-content-label",
+                    "value": "Page Content",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-label",
+                    "value": "Identifier",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-placeholder",
+                    "value": "Identifier",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-label",
+                    "value": "Path",
+                    "type": "string"
+                },
+                {
+                    "id": "form-path-placeholder",
+                    "value": "Path",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-label",
+                    "value": "Layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-layout-placeholder",
+                    "value": "Choose a layout",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-label",
+                    "value": "Type",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-placeholder",
+                    "value": "Select a type",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Select a module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-option-label",
+                    "value": "Option",
+                    "type": "string"
+                },
+                {
+                    "id": "form-option-placeholder",
+                    "value": "Option",
+                    "type": "string"
+                },
+                {
+                    "id": "form-root-label",
+                    "value": "Root of Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-permission-label",
+                    "value": "No Permission / Public Access",
+                    "type": "string"
+                },
+                {
+                    "id": "form-config-divider",
+                    "value": "Page Settings",
+                    "type": "string"
+                },
+                {
+                    "id": "editor-html-switch",
+                    "value": null,
+                    "type": "bool"
+                },
+                {
+                    "id": "path-necessary-chars",
+                    "value": "at least one '/' at the end",
+                    "type": "string"
+                },
+                {
+                    "id": "form-url-label",
+                    "value": "Current Page URL",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-page",
+                    "value": "Page",
+                    "type": "string"
+                },
+                {
+                    "id": "form-type-system",
+                    "value": "System",
+                    "type": "string"
+                },
+                {
+                    "id": "form-framework-css-label",
+                    "value": "Framework CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-ambos-label",
+                    "value": "Both",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-pagina-label",
+                    "value": "Page",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-sistema-label",
+                    "value": "System",
+                    "type": "string"
+                },
+                {
+                    "id": "lista-tipo-label",
+                    "value": "Type",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}
