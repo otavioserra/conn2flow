@@ -144,8 +144,9 @@ function modelo_var_troca_tudo($modelo,$var,$valor = null){
 		return $modelo;
 	} else {
 		// Comportamento original: substitui uma única variável
-		// Utiliza regex para substituir todas as ocorrências (case-insensitive)
-		return preg_replace('/'.preg_quote($var).'/i',$valor,$modelo);
+		// Utiliza str_ireplace para substituição literal case-insensitive
+		// (preg_replace tratava $nn no valor como backreference, corrompendo valores como $19.97)
+		return str_ireplace($var,$valor,$modelo);
 	}
 }
 

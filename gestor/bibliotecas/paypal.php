@@ -77,12 +77,12 @@ function paypal_gateways_pagamentos_configurar($params = false){
     $gateway = null;
 
     if(isset($id)){
-        // Busca por ID específico
+        // Busca por ID específico (alfanumérico)
         $gateway = banco_select(Array(
             'unico' => true,
             'tabela' => 'gateways_pagamentos',
             'campos' => Array('*'),
-            'extra' => "WHERE id_gateways_pagamentos = '" . banco_escape_field($id) . "' AND status = 'A'"
+            'extra' => "WHERE id = '" . banco_escape_field($id) . "' AND status = 'A'"
         ));
     } else {
         // Busca gateway padrão do tipo
@@ -99,7 +99,7 @@ function paypal_gateways_pagamentos_configurar($params = false){
                 'unico' => true,
                 'tabela' => 'gateways_pagamentos',
                 'campos' => Array('*'),
-                'extra' => "WHERE tipo = '" . banco_escape_field($tipo) . "' AND status = 'A' ORDER BY id_gateways_pagamentos ASC LIMIT 1"
+                'extra' => "WHERE tipo = '" . banco_escape_field($tipo) . "' AND status = 'A' ORDER BY id ASC LIMIT 1"
             ));
         }
     }
@@ -127,7 +127,7 @@ function paypal_gateways_pagamentos_configurar($params = false){
 
     // Ativar modo gateway na biblioteca
     $_GESTOR['biblioteca-paypal']['modo-gateway'] = true;
-    $_GESTOR['biblioteca-paypal']['gateway-id'] = $gateway['id_gateways_pagamentos'];
+    $_GESTOR['biblioteca-paypal']['gateway-id'] = $gateway['id'];
     $_GESTOR['biblioteca-paypal']['gateway-dados'] = $gateway;
 
     // Restaurar token persistente do banco (se existir e válido)
@@ -185,7 +185,7 @@ function paypal_gateway_persistir_token($token_data){
     banco_update(
         implode(', ', $campos_update),
         'gateways_pagamentos',
-        "WHERE id_gateways_pagamentos = '" . banco_escape_field($gateway_id) . "'"
+        "WHERE id = '" . banco_escape_field($gateway_id) . "' AND status != 'D'"
     );
 
     return true;
@@ -223,7 +223,7 @@ function paypal_gateway_registrar_transacao($params = false){
         . "ultima_transacao = NOW(), "
         . "data_modificacao = NOW()",
         'gateways_pagamentos',
-        "WHERE id_gateways_pagamentos = '" . banco_escape_field($gateway_id) . "'"
+        "WHERE id = '" . banco_escape_field($gateway_id) . "' AND status != 'D'"
     );
 
     return true;
@@ -254,7 +254,7 @@ function paypal_gateway_atualizar_conexao($sucesso, $mensagem = ''){
         . "conexao_mensagem = '" . banco_escape_field($mensagem) . "', "
         . "data_modificacao = NOW()",
         'gateways_pagamentos',
-        "WHERE id_gateways_pagamentos = '" . banco_escape_field($gateway_id) . "'"
+        "WHERE id = '" . banco_escape_field($gateway_id) . "' AND status != 'D'"
     );
 
     return true;
@@ -277,7 +277,7 @@ function paypal_is_modo_gateway(){
  *
  * @global array $_GESTOR Sistema global com configurações
  *
- * @return int|null ID do gateway ou null se não está em modo gateway
+ * @return string|null ID alfanumérico do gateway ou null se não está em modo gateway
  */
 function paypal_obter_gateway_id(){
     global $_GESTOR;
