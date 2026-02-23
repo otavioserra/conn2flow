@@ -92,6 +92,16 @@ function paypal_gateways_pagamentos_configurar($params = false){
             'campos' => Array('*'),
             'extra' => "WHERE tipo = '" . banco_escape_field($tipo) . "' AND padrao = 'S' AND status = 'A'"
         ));
+
+        // Fallback: primeiro gateway ativo do tipo (se não encontrou padrão)
+        if(!$gateway){
+            $gateway = banco_select(Array(
+                'unico' => true,
+                'tabela' => 'gateways_pagamentos',
+                'campos' => Array('*'),
+                'extra' => "WHERE tipo = '" . banco_escape_field($tipo) . "' AND status = 'A' ORDER BY id_gateways_pagamentos ASC LIMIT 1"
+            ));
+        }
     }
 
     if(!$gateway){

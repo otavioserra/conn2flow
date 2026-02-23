@@ -339,10 +339,20 @@ function plataforma_gateways_500($message = 'Internal Server Error') {
 
 /**
  * Processa webhook do PayPal
+ * 
+ * Modos de operação:
+ * - Modular (URL: /_gateways/{module_id}/paypal/webhook):
+ *   Delega validação e processamento ao hook do módulo, que configura
+ *   o gateway correto antes de validar a assinatura do webhook.
+ *   
+ * - Legacy (URL: /_gateways/paypal/webhook):
+ *   Valida com o gateway auto-configurado e dispara hooks de todos os módulos.
  */
 function plataforma_gateways_paypal_webhook() {
     global $_GESTOR;
     global $_CONFIG;
+    
+    $modulo_id = $_GESTOR['plataforma-gateways-modulo'] ?? null;
     
     // Verificar método
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -391,11 +401,53 @@ function plataforma_gateways_paypal_webhook() {
         plataforma_gateways_400('Invalid JSON');
     }
     
+    $headers = getallheaders();
+    
+    // ========================================================
+    // MODO MODULAR: /_gateways/{module_id}/paypal/webhook
+    // Delega validação ao hook do módulo — o hook configura
+    // o gateway correto (por idioma/gateway_id) e valida.
+    // ========================================================
+    if (!empty($modulo_id)) {
+        plataforma_gateways_log(Array(
+            'gateway' => 'paypal',
+            'endpoint' => 'webhook',
+            'status' => 'info',
+            'message' => 'Webhook modular recebido — módulo: ' . $modulo_id,
+            'data' => Array(
+                'event_type' => $data['event_type'] ?? 'unknown',
+                'module' => $modulo_id,
+            ),
+        ));
+        
+        // Despachar para o módulo específico com dados brutos para validação
+        $resultado_hook = plataforma_gateways_disparar_hook('paypal', 'webhook', Array(
+            'event_type'       => $data['event_type'] ?? 'unknown',
+            'resource_type'    => $data['resource_type'] ?? null,
+            'resource'         => $data['resource'] ?? null,
+            'event_data'       => $data,
+            'needs_validation' => true,
+            'raw_headers'      => $headers,
+            'raw_body'         => $payload,
+        ), $modulo_id);
+        
+        // Retornar sucesso para o PayPal
+        plataforma_gateways_resposta_sucesso(Array(
+            'event_id' => $data['id'] ?? null,
+            'processed' => true,
+            'module' => $modulo_id,
+        ));
+    }
+    
+    // ========================================================
+    // MODO LEGACY: /_gateways/paypal/webhook
+    // Valida com gateway auto-configurado e dispara para todos.
+    // ========================================================
+    
     // Incluir biblioteca PayPal
     gestor_incluir_biblioteca('paypal');
     
     // Validar assinatura do webhook
-    $headers = getallheaders();
     $valido = paypal_validar_webhook(Array(
         'headers' => $headers,
         'body' => $payload,
@@ -415,15 +467,11 @@ function plataforma_gateways_paypal_webhook() {
     }
     
     // Processar evento via biblioteca PayPal (não-fatal)
-    // A biblioteca faz processamento interno; se falhar, usamos os dados
-    // brutos do JSON para garantir que os hooks dos módulos sejam disparados.
     $evento = paypal_processar_webhook(Array(
         'body' => $payload,
     ));
     
     if (!$evento) {
-        // A biblioteca não conseguiu processar, mas temos o JSON decodificado.
-        // Construir estrutura compatível a partir do $data bruto para os hooks.
         plataforma_gateways_log(Array(
             'gateway' => 'paypal',
             'endpoint' => 'webhook',
@@ -453,9 +501,7 @@ function plataforma_gateways_paypal_webhook() {
         ),
     ));
     
-    // Dispara hook para módulos processarem o evento
-    // Os hooks SEMPRE são disparados, independente se a biblioteca processou ou não.
-    // Isso permite que módulos personalizados tratem webhooks de forma customizada.
+    // Dispara hook para módulos processarem o evento (broadcast para todos)
     $resultado_hook = plataforma_gateways_disparar_hook('paypal', 'webhook', $evento);
     
     // Retornar sucesso para o PayPal
@@ -471,6 +517,8 @@ function plataforma_gateways_paypal_webhook() {
 function plataforma_gateways_paypal_return() {
     global $_GESTOR;
     
+    $modulo_id = $_GESTOR['plataforma-gateways-modulo'] ?? null;
+    
     // Obter parâmetros de retorno
     $token = isset($_GET['token']) ? $_GET['token'] : null;
     $payer_id = isset($_GET['PayerID']) ? $_GET['PayerID'] : null;
@@ -482,12 +530,13 @@ function plataforma_gateways_paypal_return() {
         'gateway' => 'paypal',
         'endpoint' => 'return',
         'status' => 'info',
-        'message' => 'Retorno de pagamento recebido',
+        'message' => 'Retorno de pagamento recebido' . ($modulo_id ? ' (módulo: ' . $modulo_id . ')' : ''),
         'data' => Array(
             'token' => $token,
             'payer_id' => $payer_id,
             'ba_token' => $ba_token,
             'subscription_id' => $subscription_id,
+            'module' => $modulo_id,
         ),
     ));
     
@@ -498,7 +547,7 @@ function plataforma_gateways_paypal_return() {
         'ba_token' => $ba_token,
         'subscription_id' => $subscription_id,
         'query_string' => $_GET,
-    ));
+    ), $modulo_id);
     
     // Se o hook retornou uma URL de redirecionamento, usar ela
     if (isset($resultado['redirect_url'])) {
@@ -522,6 +571,8 @@ function plataforma_gateways_paypal_return() {
 function plataforma_gateways_paypal_cancel() {
     global $_GESTOR;
     
+    $modulo_id = $_GESTOR['plataforma-gateways-modulo'] ?? null;
+    
     // Obter parâmetros de cancelamento
     $token = isset($_GET['token']) ? $_GET['token'] : null;
     
@@ -530,9 +581,10 @@ function plataforma_gateways_paypal_cancel() {
         'gateway' => 'paypal',
         'endpoint' => 'cancel',
         'status' => 'info',
-        'message' => 'Pagamento cancelado pelo usuário',
+        'message' => 'Pagamento cancelado pelo usuário' . ($modulo_id ? ' (módulo: ' . $modulo_id . ')' : ''),
         'data' => Array(
             'token' => $token,
+            'module' => $modulo_id,
         ),
     ));
     
@@ -540,7 +592,7 @@ function plataforma_gateways_paypal_cancel() {
     $resultado = plataforma_gateways_disparar_hook('paypal', 'cancel', Array(
         'token' => $token,
         'query_string' => $_GET,
-    ));
+    ), $modulo_id);
     
     // Se o hook retornou uma URL de redirecionamento, usar ela
     if (isset($resultado['redirect_url'])) {
@@ -677,22 +729,35 @@ function plataforma_gateways_carregar_hook($modulo_id, $plugin_id, $hook_name) {
  * para encontrar o arquivo de hook configurado em hooks.plataforma_gateways,
  * inclui o arquivo e executa a função {modulo_id}_plataforma_gateways().
  * 
+ * Quando $modulo_id_alvo é especificado, despacha APENAS para esse módulo.
+ * Caso contrário, dispara para TODOS os módulos com hooks (broadcast).
+ * 
  * @param string $gateway Identificador do gateway
  * @param string $action Ação (webhook, return, cancel, etc)
  * @param array $data Dados do evento
+ * @param string|null $modulo_id_alvo ID do módulo específico (null = broadcast)
  * @return array|null Resultado do processamento ou null
  */
-function plataforma_gateways_disparar_hook($gateway, $action, $data = Array()) {
+function plataforma_gateways_disparar_hook($gateway, $action, $data = Array(), $modulo_id_alvo = null) {
     global $_GESTOR;
     
     $resultado = null;
     
-    // Buscar módulos que possuem hooks configurados
-    $modulos = banco_select(Array(
-        'tabela' => 'modulos',
-        'campos' => ['id', 'plugin'],
-        'extra' => "WHERE hooks IS NOT NULL AND status != 'D'",
-    ));
+    // Se módulo específico, buscar apenas ele
+    if (!empty($modulo_id_alvo)) {
+        $modulos = banco_select(Array(
+            'tabela' => 'modulos',
+            'campos' => ['id', 'plugin'],
+            'extra' => "WHERE id = '" . banco_escape_field($modulo_id_alvo) . "' AND hooks IS NOT NULL AND status != 'D'",
+        ));
+    } else {
+        // Broadcast: buscar todos os módulos com hooks
+        $modulos = banco_select(Array(
+            'tabela' => 'modulos',
+            'campos' => ['id', 'plugin'],
+            'extra' => "WHERE hooks IS NOT NULL AND status != 'D'",
+        ));
+    }
     
     if ($modulos) {
         foreach ($modulos as $modulo) {
@@ -855,12 +920,26 @@ function plataforma_gateways_start() {
     }
     
     // Obter segmentos do caminho
-    // $_GESTOR['caminho'][0] = '_gateways'
-    // $_GESTOR['caminho'][1] = gateway_id ou modulo_id
-    // $_GESTOR['caminho'][2] = endpoint
+    // Formato legacy:  /_gateways/{gateway}/{endpoint}          — ex: /_gateways/paypal/webhook
+    // Formato modular: /_gateways/{module_id}/{gateway}/{endpoint} — ex: /_gateways/pro-manager/paypal/webhook
     
     $gateway = isset($_GESTOR['caminho'][1]) ? strtolower($_GESTOR['caminho'][1]) : null;
     $endpoint = isset($_GESTOR['caminho'][2]) ? strtolower($_GESTOR['caminho'][2]) : null;
+    $modulo_id = null;
+    
+    // Gateways conhecidos pelo sistema
+    $known_gateways = Array('paypal', 'stripe', 'pagbank', 'pagseguro');
+    
+    // Se o primeiro segmento NÃO é um gateway conhecido, pode ser um module_id
+    // Nesse caso, o layout da URL é: /_gateways/{module_id}/{gateway}/{endpoint}
+    if (!empty($gateway) && !in_array($gateway, $known_gateways)) {
+        $modulo_id = $gateway;
+        $gateway   = isset($_GESTOR['caminho'][2]) ? strtolower($_GESTOR['caminho'][2]) : null;
+        $endpoint  = isset($_GESTOR['caminho'][3]) ? strtolower($_GESTOR['caminho'][3]) : null;
+    }
+    
+    // Armazenar contexto de módulo para uso pelas funções handlers
+    $_GESTOR['plataforma-gateways-modulo'] = $modulo_id;
     
     // Verificar se há gateway/módulo especificado
     if (empty($gateway)) {
@@ -868,7 +947,8 @@ function plataforma_gateways_start() {
             'service' => 'Conn2Flow Payment Gateways Platform',
             'version' => '2.0.0',
             'endpoints' => Array(
-                'paypal' => '/_gateways/paypal/{webhook|return|cancel}',
+                'paypal_legacy' => '/_gateways/paypal/{webhook|return|cancel}',
+                'paypal_module' => '/_gateways/{module_id}/paypal/{webhook|return|cancel}',
                 'modules' => '/_gateways/{module_id}/{endpoint}',
             ),
         ));
