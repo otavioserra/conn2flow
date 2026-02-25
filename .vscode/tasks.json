@@ -79,7 +79,7 @@
         {
             "label": "🛠️ Manager - Synchronize => Database - Test Environment",
             "type": "shell",
-            "command": "docker exec conn2flow-app bash -c \"php /var/www/sites/localhost/conn2flow-gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php --debug --log-diff\""
+            "command": "bash ./ai-workspace/en/scripts/dev-environment/updates-manager-database.sh"
         },
         {
             "label": "🛠️ Manager - Synchronize => Files - Test Environment",

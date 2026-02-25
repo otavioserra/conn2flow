@@ -74,7 +74,7 @@
         {
             "label": "🛠️ Gestor - Sincronizar => Banco de Dados - Ambiente de Testes",
             "type": "shell",
-            "command": "docker exec conn2flow-app bash -c \"php /var/www/sites/localhost/conn2flow-gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php --debug --log-diff\""
+            "command": "bash ./ai-workspace/pt-br/scripts/dev-environment/atualizacoes-gestor-banco-de-dados.sh"
         },
         {
             "label": "🛠️ Gestor - Sincronizar => Arquivos - Ambiente de Testes",
