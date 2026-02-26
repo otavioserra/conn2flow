@@ -1,0 +1,42 @@
+<!-- Product Card Component - Fomantic UI -->
+<div class="ui container" data-id="1" data-title="Card de Produto" style="max-width: 320px !important;">
+    <div class="ui fluid card" style="border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.08);">
+        <!-- Image -->
+        <div class="image" style="position: relative;">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop"
+                alt="Produto Exemplo" style="height: 14rem; object-fit: cover;">
+            <div class="ui green label" style="position: absolute; top: 10px; left: 10px; border-radius: 20px;">Novo
+            </div>
+            <a
+                style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                <i class="heart outline icon" style="margin: 0; color: #999;"></i>
+            </a>
+        </div>
+
+        <!-- Content -->
+        <div class="content" style="padding: 1.2em;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5em;">
+                <span
+                    style="color: #2185d0; font-size: 0.8em; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">Categoria</span>
+                <div>
+                    <i class="star icon" style="color: #fbbd08; margin: 0;"></i>
+                    <span style="font-size: 0.8em; color: #999;">4.8</span>
+                </div>
+            </div>
+            <div class="header" style="font-size: 1.1em; margin-bottom: 0.5em;">Nome do Produto</div>
+            <div class="description" style="font-size: 0.9em; color: #666; margin-bottom: 1em;">
+                Descrição breve do produto com informações relevantes sobre suas características principais.
+            </div>
+        </div>
+
+        <!-- Extra -->
+        <div class="extra content"
+            style="display: flex; align-items: center; justify-content: space-between; padding: 1em 1.2em;">
+            <div>
+                <span style="text-decoration: line-through; color: #999; font-size: 0.85em;">R$ 299,90</span>
+                <span style="font-size: 1.3em; font-weight: bold; color: #1b1c1d; margin-left: 0.5em;">R$ 199,90</span>
+            </div>
+            <button class="ui primary button" style="border-radius: 8px; margin: 0;">Comprar</button>
+        </div>
+    </div>
+</div>

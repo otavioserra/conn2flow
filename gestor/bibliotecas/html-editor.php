@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => '1.0.1',
+	'versao' => '1.1.0',
 );
 
 // ===== Funções auxiliares
@@ -82,6 +82,17 @@ function html_editor_componente($params = false){
 
 	$alvo = isset($alvo)? $alvo : 'paginas';
 
+	// ===== Definir callback de backup baseado no alvo
+
+	$backupCallbackMap = [
+		'paginas' => 'adminPaginasBackupCampo',
+		'layouts' => 'adminLayoutsBackupCampo',
+		'componentes' => 'adminComponentesBackupCampo',
+		'publisher' => 'adminPaginasBackupCampo',
+	];
+
+	$backupCallback = isset($backupCallbackMap[$alvo]) ? $backupCallbackMap[$alvo] : 'adminPaginasBackupCampo';
+
     // ===== Inclusão do CodeMirror
 
 	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.css" />');
@@ -144,11 +155,22 @@ function html_editor_componente($params = false){
 	}
 
     // ===== Editor HTML visual
-    $html_editor = modelo_var_troca($html_editor,'#html-editor-modal#',html_editor_include([
-        'js_vars' => Array(
-            'alvo' => $alvo,
-        )
-    ]));
+    $html_editor = modelo_var_troca($html_editor,'#html-editor-modal#',html_editor_include());
+
+	// ===== Incluir variável JS do alvo para o frontend
+	gestor_js_variavel_incluir('html_editor',[
+		'alvo' => $alvo,
+	]);
+
+	// ===== Modificações específicas por alvo
+
+	switch($alvo){
+		case 'layouts':
+			// Layouts não possuem html_extra_head - remover aba e conteúdo
+			$cel_nome = 'html-extra-head-menu'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+			$cel_nome = 'html-extra-head-content'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		break;
+	}
 
 	// ===== Pré-Visualização
 
@@ -224,31 +246,31 @@ function html_editor_componente($params = false){
     } else if(isset($editar)){
         $html_editor = modelo_var_troca($html_editor,'#pagina-editor-html-backup#',interface_backup_campo_select(Array(
             'campo' => 'html',
-            'callback' => 'adminPaginasBackupCampo',
+            'callback' => $backupCallback,
             'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
         )));
         
         $html_editor = modelo_var_troca_fim($html_editor,'#pagina-html-backup#',interface_backup_campo_select(Array(
             'campo' => 'html',
-            'callback' => 'adminPaginasBackupCampo',
+            'callback' => $backupCallback,
             'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
         )));
         
         $html_editor = modelo_var_troca_fim($html_editor,'#pagina-css-backup#',interface_backup_campo_select(Array(
             'campo' => 'css',
-            'callback' => 'adminPaginasBackupCampo',
+            'callback' => $backupCallback,
             'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
         )));
         
         $html_editor = modelo_var_troca_fim($html_editor,'#pagina-css-compiled-backup#',interface_backup_campo_select(Array(
             'campo' => 'css_compiled',
-            'callback' => 'adminPaginasBackupCampo',
+            'callback' => $backupCallback,
             'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
         )));
         
         $html_editor = modelo_var_troca_fim($html_editor,'#pagina-html-extra-head-backup#',interface_backup_campo_select(Array(
             'campo' => 'html_extra_head',
-            'callback' => 'adminPaginasBackupCampo',
+            'callback' => $backupCallback,
             'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
         )));
     } else {
@@ -265,7 +287,10 @@ function html_editor_componente($params = false){
     }
 
     // ===== Incluir script JS Interface do HTML Editor que conecta o mesmo com o Gestor/Modulos
-	gestor_pagina_javascript_incluir('biblioteca','html-editor-interface');
+	gestor_pagina_javascript_incluir('biblioteca',[
+		'caminho' => 'html-editor-interface',
+		'biblioteca' => 'html-editor',
+	]);
 
     // ===== Retornar componente
     return $html_editor;
@@ -288,7 +313,10 @@ function html_editor_include($params = false){
     $overlay_title = gestor_variaveis(Array('id' => 'html-editor-overlay-title'));
 
 	// Configurar ambiente JS do HTML Editor
-	$js_script = gestor_pagina_javascript_incluir('biblioteca','html-editor',true);
+	$js_script = gestor_pagina_javascript_incluir('biblioteca',[
+		'caminho' => 'html-editor',
+		'biblioteca' => 'html-editor',
+	],true);
 
     // ===== Configurar ImagePick para o Editor Visual
     $imagepickJS = Array();
@@ -326,7 +354,10 @@ function html_editor_include($params = false){
     gestor_js_variavel_incluir('html_editor',$js_vars_final);
 
     // Incluir script JS Helper do HTML Editor que conecta o mesmo com o Gestor/Modulos
-	gestor_pagina_javascript_incluir('biblioteca','html-editor-helper');
+	gestor_pagina_javascript_incluir('biblioteca',[
+		'caminho' => 'html-editor-helper',
+		'biblioteca' => 'html-editor',
+	]);
 
     // Incluir componentes do HTML Editor
 

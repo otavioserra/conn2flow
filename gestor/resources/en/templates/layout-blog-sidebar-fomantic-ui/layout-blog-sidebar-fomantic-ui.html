@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><!-- pagina#titulo --></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
+    <!-- pagina#css -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f9fafb;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .site-footer {
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="ui borderless menu" style="margin-bottom: 0; border-bottom: 1px solid #e5e7eb;">
+        <div class="ui container">
+            <a href="/" class="header item" style="font-weight: bold; font-size: 1.2em;">📝 My Blog</a>
+            <a href="#" class="item">Home</a>
+            <a href="#" class="item">Categories</a>
+            <a href="#" class="item">About</a>
+            <a href="#" class="item">Contact</a>
+        </div>
+    </div>
+
+    <!-- Main Content with Sidebar -->
+    <div class="main-content">
+        <div class="ui container" style="padding-top: 2em; padding-bottom: 2em;">
+            <div class="ui stackable grid">
+                <div class="eleven wide column">
+                    @[[pagina#corpo]]@
+                </div>
+                <div class="five wide column">
+                    <div class="ui segment">
+                        <h4 class="ui header">Search</h4>
+                        <div class="ui fluid icon input">
+                            <input type="text" placeholder="Search...">
+                            <i class="search icon"></i>
+                        </div>
+                    </div>
+                    <div class="ui segment">
+                        <h4 class="ui header">Categories</h4>
+                        <div class="ui relaxed list">
+                            <a class="item" href="#">
+                                <div class="content"
+                                    style="display: flex; justify-content: space-between; width: 100%;">
+                                    <span>Technology</span>
+                                    <div class="ui tiny label">12</div>
+                                </div>
+                            </a>
+                            <a class="item" href="#">
+                                <div class="content"
+                                    style="display: flex; justify-content: space-between; width: 100%;">
+                                    <span>Design</span>
+                                    <div class="ui tiny label">8</div>
+                                </div>
+                            </a>
+                            <a class="item" href="#">
+                                <div class="content"
+                                    style="display: flex; justify-content: space-between; width: 100%;">
+                                    <span>Marketing</span>
+                                    <div class="ui tiny label">5</div>
+                                </div>
+                            </a>
+                            <a class="item" href="#">
+                                <div class="content"
+                                    style="display: flex; justify-content: space-between; width: 100%;">
+                                    <span>Business</span>
+                                    <div class="ui tiny label">3</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ui segment">
+                        <h4 class="ui header">Recent Posts</h4>
+                        <div class="ui relaxed divided list">
+                            <a class="item" href="#">
+                                <div class="content">
+                                    <div class="header" style="font-size: 0.9em;">Getting Started with TailwindCSS</div>
+                                    <div class="description" style="font-size: 0.8em; color: #999;">Oct 28, 2025</div>
+                                </div>
+                            </a>
+                            <a class="item" href="#">
+                                <div class="content">
+                                    <div class="header" style="font-size: 0.9em;">UX Best Practices</div>
+                                    <div class="description" style="font-size: 0.8em; color: #999;">Oct 25, 2025</div>
+                                </div>
+                            </a>
+                            <a class="item" href="#">
+                                <div class="content">
+                                    <div class="header" style="font-size: 0.9em;">Design Trends in 2025</div>
+                                    <div class="description" style="font-size: 0.8em; color: #999;">Oct 20, 2025</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="ui inverted vertical footer segment site-footer" style="padding: 2em 0;">
+        <div class="ui container" style="text-align: center;">
+            <p style="color: rgba(255,255,255,0.5); font-size: 0.9em;">&copy; 2025 My Blog. All rights reserved.</p>
+        </div>
+    </div>
+
+    <!-- pagina#js -->
+</body>
+
+</html>

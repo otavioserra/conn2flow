@@ -3,19 +3,19 @@
 ##### Examples of usage:
 
 # Listar modelos padrão (pro e flash)
-# bash ai-workspace/scripts/tests/gemini-model-list.sh
+# bash ai-workspace/pt-br/scripts/tests/gemini-model-list.sh
 
 # Salvar JSON completo
-# bash ai-workspace/scripts/tests/gemini-model-list.sh --output modelos.json
+# bash ai-workspace/pt-br/scripts/tests/gemini-model-list.sh --output modelos.json
 
 # Salvar em local padrão com timestamp
-# bash ai-workspace/scripts/tests/gemini-model-list.sh --output-default
+# bash ai-workspace/pt-br/scripts/tests/gemini-model-list.sh --output-default
 
 # Filtrar por gemini-2.0 e flash
-# bash ai-workspace/scripts/tests/gemini-model-list.sh --filter "gemini-2.0,flash"
+# bash ai-workspace/pt-br/scripts/tests/gemini-model-list.sh --filter "gemini-2.0,flash"
 
 # Combinar filtro e output padrão
-# bash ai-workspace/scripts/tests/gemini-model-list.sh --filter "gemini-pro" --output-default
+# bash ai-workspace/pt-br/scripts/tests/gemini-model-list.sh --filter "gemini-pro" --output-default
 
 #########################################################
 

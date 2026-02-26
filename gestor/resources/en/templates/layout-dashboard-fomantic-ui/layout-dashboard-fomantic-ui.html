@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><!-- pagina#titulo --></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
+    <!-- pagina#css -->
+    <style>
+        body {
+            min-height: 100vh;
+            background: #f5f6fa;
+        }
+
+        .sidebar-menu {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            bottom: 0;
+            width: 250px;
+            background: #1b1c1d;
+            overflow-y: auto;
+            z-index: 40;
+            transition: transform 0.3s;
+        }
+
+        .sidebar-menu .item {
+            color: rgba(255, 255, 255, 0.7) !important;
+            border-radius: 0 !important;
+        }
+
+        .sidebar-menu .item:hover {
+            background: rgba(255, 255, 255, 0.08) !important;
+            color: white !important;
+        }
+
+        .sidebar-menu .item.active {
+            background: rgba(33, 133, 208, 0.15) !important;
+            color: #2185d0 !important;
+            border-right: 3px solid #2185d0;
+        }
+
+        .main-content-area {
+            margin-left: 250px;
+            margin-top: 50px;
+            padding: 2em;
+            min-height: calc(100vh - 50px);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-menu {
+                transform: translateX(-100%);
+            }
+
+            .sidebar-menu.visible {
+                transform: translateX(0);
+            }
+
+            .main-content-area {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="ui fixed inverted menu" style="background: #1b1c1d; height: 50px; z-index: 50;">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0 1em;">
+            <div style="display: flex; align-items: center;">
+                <a class="item" style="cursor: pointer;"
+                    onclick="document.getElementById('sidebar-menu').classList.toggle('visible')">
+                    <i class="sidebar icon"></i>
+                </a>
+                <span style="color: white; font-weight: bold; font-size: 1.1em;">⚙️ Admin Panel</span>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <a class="item" style="position: relative;">
+                    <i class="bell icon"></i>
+                    <div class="ui red empty circular label"
+                        style="position: absolute; top: 8px; right: 4px; width: 8px; height: 8px; min-width: 0; min-height: 0; padding: 0;">
+                    </div>
+                </a>
+                <a class="item">
+                    <div class="ui small circular blue label" style="margin-right: 0.5em;">A</div>
+                    <span style="color: rgba(255,255,255,0.8);">Admin</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar-menu" class="sidebar-menu">
+        <div class="ui inverted vertical fluid menu"
+            style="background: transparent; border: none; box-shadow: none; padding: 1em 0.5em;">
+            <a href="#" class="item active"><i class="home icon"></i> Dashboard</a>
+            <a href="#" class="item"><i class="users icon"></i> Users</a>
+            <a href="#" class="item"><i class="file alternate icon"></i> Content</a>
+            <a href="#" class="item"><i class="cog icon"></i> Settings</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content-area">
+        @[[pagina#corpo]]@
+    </div>
+
+    <!-- pagina#js -->
+</body>
+
+</html>

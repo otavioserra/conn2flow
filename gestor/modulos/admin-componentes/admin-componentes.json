@@ -2,7 +2,8 @@
     "versao": "1.0.0",
     "bibliotecas": [
         "interface",
-        "html"
+        "html",
+        "html-editor"
     ],
     "tabela": {
         "nome": "componentes",
@@ -25,6 +26,72 @@
     ],
     "resources": {
         "pt-br": {
+            "ai_prompts_targets": [
+                {
+                    "id": "componentes",
+                    "name": "Componentes"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "componentes",
+                    "name": "Componentes",
+                    "target": "componentes",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "ai_prompts": [
+                {
+                    "id": "componentes",
+                    "name": "Componentes",
+                    "target": "componentes",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                },
+                {
+                    "id": "componente-header",
+                    "name": "Componente Header",
+                    "target": "componentes",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                },
+                {
+                    "id": "componente-footer",
+                    "name": "Componente Footer",
+                    "target": "componentes",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                },
+                {
+                    "id": "componente-card",
+                    "name": "Componente Card",
+                    "target": "componentes",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                },
+                {
+                    "id": "componente-formulario",
+                    "name": "Componente Formulário",
+                    "target": "componentes",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
             "layouts": [],
             "pages": [
                 {
@@ -49,11 +116,11 @@
                     "path": "admin-componentes\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "b830727701a43d721aceda32271fe0d0",
+                        "html": "0c038a3765895046f3a1a539c09bbbb1",
                         "css": "bdb85de7c6afcf6a3fdca44a2b25b9ff",
-                        "combined": "e2a6084a3f6ee88ea81e8f5d12632e7c"
+                        "combined": "9e90cc14f99263e099caf8f10729133d"
                     }
                 },
                 {
@@ -63,11 +130,11 @@
                     "path": "admin-componentes\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "802c10ff7980df982e5c6fd0c308e661",
+                        "html": "991e289308d9be459ded6c74d03e05bc",
                         "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
-                        "combined": "23250f9ccef86543f68a6a8cfc57c681"
+                        "combined": "26117fc600e4452b5341762750943a5b"
                     }
                 }
             ],
@@ -192,6 +259,72 @@
             ]
         },
         "en": {
+            "ai_prompts_targets": [
+                {
+                    "id": "componentes",
+                    "name": "Components"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "componentes",
+                    "name": "Components",
+                    "target": "componentes",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "ai_prompts": [
+                {
+                    "id": "componentes",
+                    "name": "Components",
+                    "target": "componentes",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                },
+                {
+                    "id": "componente-header",
+                    "name": "Header Component",
+                    "target": "componentes",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                },
+                {
+                    "id": "componente-footer",
+                    "name": "Footer Component",
+                    "target": "componentes",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                },
+                {
+                    "id": "componente-card",
+                    "name": "Card Component",
+                    "target": "componentes",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                },
+                {
+                    "id": "componente-formulario",
+                    "name": "Form Component",
+                    "target": "componentes",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
             "layouts": [],
             "pages": [
                 {
@@ -216,11 +349,11 @@
                     "path": "admin-componentes\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "b830727701a43d721aceda32271fe0d0",
+                        "html": "0c038a3765895046f3a1a539c09bbbb1",
                         "css": "bdb85de7c6afcf6a3fdca44a2b25b9ff",
-                        "combined": "e2a6084a3f6ee88ea81e8f5d12632e7c"
+                        "combined": "9e90cc14f99263e099caf8f10729133d"
                     }
                 },
                 {
@@ -230,11 +363,11 @@
                     "path": "admin-componentes\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "802c10ff7980df982e5c6fd0c308e661",
+                        "html": "991e289308d9be459ded6c74d03e05bc",
                         "css": "0c9ea4a87a3788f62f7e4e6e63c80a5e",
-                        "combined": "23250f9ccef86543f68a6a8cfc57c681"
+                        "combined": "26117fc600e4452b5341762750943a5b"
                     }
                 }
             ],

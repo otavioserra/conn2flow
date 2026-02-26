@@ -1,5 +1,53 @@
 [
     {
+        "nome": "Componentes",
+        "id": "componentes",
+        "language": "pt-br",
+        "alvo": "componentes",
+        "prompt": "Gerar um componente HTML reutilizável. Devolver o código HTML usando markdown ```html ``` e caso precise de css extra, devolve o mesmo com markdown ```css ```\r\nEssa página irá usar o framework CSS `{{framework_css}}`.\r\nNão precisa explicar como fazer o componente uma vez que o seu retorno será aproveitado apenas o código HTML e CSS gerados.\r\nO componente é um bloco de HTML reutilizável que pode ser inserido em qualquer página ou layout. Ele pode conter apenas o conteúdo HTML visível (parte do body) ou, se necessário, também incluir recursos adicionais para o cabeçalho da página.\r\nSe o componente precisar de scripts, meta tags ou outros recursos no `<head>` da página, devolver um bloco adicional separado usando markdown ```html-extra-head ``` com o conteúdo que deve ir dentro do `<head>`.\r\nExemplo de componente simples (apenas body):\r\n```html\r\n<div class=\"componente-exemplo\">\r\n    <h2>Título do Componente<\/h2>\r\n    <p>Conteúdo do componente aqui.<\/p>\r\n<\/div>\r\n```\r\nExemplo de componente com html extra head:\r\n```html\r\n<div class=\"componente-exemplo\">\r\n    <h2>Título do Componente<\/h2>\r\n    <div id=\"mapa\"><\/div>\r\n<\/div>\r\n```\r\n```html-extra-head\r\n<script src=\"https:\/\/maps.googleapis.com\/maps\/api\/js\"><\/script>\r\n```\r\nHTML do componente gerado numa interação anterior:\r\n```html\r\n{{html}}\r\n```\r\nHTML extra head gerado numa interação anterior:\r\n```html-extra-head\r\n{{html_extra_head}}\r\n```\r\nCSS gerado numa interação anterior:\r\n```css\r\n{{css}}\r\n```\r\nA seguir um usuário sem ou com entendimento de HTML descreveu a seguinte necessidade dele:\r\n",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"md\":\"12b2ca822b4840bd72406d45af7ece01\"}",
+        "padrao": 1
+    },
+    {
+        "nome": "Components",
+        "id": "componentes",
+        "language": "en",
+        "alvo": "componentes",
+        "prompt": "Generate a reusable HTML component. Return the HTML code using markdown ```html ``` and if additional CSS is needed, return it with markdown ```css ```\r\nThis page will use the CSS framework `{{framework_css}}`.\r\nThere's no need to explain how to create the component, as its return will only use the generated HTML and CSS code.\r\nThe component is a reusable HTML block that can be inserted into any page or layout. It can contain only the visible HTML content (body part) or, if needed, also include additional resources for the page header.\r\nIf the component needs scripts, meta tags or other resources in the page's `<head>`, return an additional separate block using markdown ```html-extra-head ``` with the content that should go inside the `<head>`.\r\nExample of simple component (body only):\r\n```html\r\n<div class=\"component-example\">\r\n    <h2>Component Title<\/h2>\r\n    <p>Component content here.<\/p>\r\n<\/div>\r\n```\r\nExample of component with html extra head:\r\n```html\r\n<div class=\"component-example\">\r\n    <h2>Component Title<\/h2>\r\n    <div id=\"map\"><\/div>\r\n<\/div>\r\n```\r\n```html-extra-head\r\n<script src=\"https:\/\/maps.googleapis.com\/maps\/api\/js\"><\/script>\r\n```\r\nComponent HTML generated in a previous interaction:\r\n```html\r\n{{html}}\r\n```\r\nHTML extra head generated in a previous interaction:\r\n```html-extra-head\r\n{{html_extra_head}}\r\n```\r\nCSS generated in a previous interaction:\r\n```css\r\n{{css}}\r\n```\r\nBelow, a user with or without HTML knowledge described their need as follows:\r\n",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"md\":\"ccab020cb273cb6a3d007727c0e7a15c\"}",
+        "padrao": 1
+    },
+    {
+        "nome": "Layouts",
+        "id": "layouts",
+        "language": "pt-br",
+        "alvo": "layouts",
+        "prompt": "Gerar um layout HTML completo incluindo `<!DOCTYPE html>`, `<html>`, `<head>` e `<body>`. Devolver o código HTML usando markdown ```html ``` e caso precise de css extra, devolve o mesmo com markdown ```css ```\r\nEssa página irá usar o framework CSS `{{framework_css}}`.\r\nNão precisa explicar como fazer o layout uma vez que o seu retorno será aproveitado apenas o código HTML e CSS gerados.\r\nO layout deve incluir os seguintes comentários e variáveis especiais do sistema Conn2Flow:\r\n- `<!-- pagina#titulo -->` no `<title>` — será substituído pelo título dinâmico da página\r\n- `<!-- pagina#css -->` dentro do `<head>` — onde o CSS específico da página será injetado\r\n- `<!-- pagina#js -->` antes do `<\/body>` — onde o JavaScript específico da página será injetado\r\n- `@[[pagina#corpo]]@` dentro do `<body>` — onde o conteúdo da página será renderizado\r\nExemplo de estrutura mínima do layout:\r\n```html\r\n<!DOCTYPE html>\r\n<html lang=\"pt-br\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title><!-- pagina#titulo --><\/title>\r\n    <!-- pagina#css -->\r\n<\/head>\r\n<body>\r\n    @[[pagina#corpo]]@\r\n    <!-- pagina#js -->\r\n<\/body>\r\n<\/html>\r\n```\r\nHTML do layout gerado numa interação anterior:\r\n```html\r\n{{html}}\r\n```\r\nCSS gerado numa interação anterior:\r\n```css\r\n{{css}}\r\n```\r\nA seguir um usuário sem ou com entendimento de HTML descreveu a seguinte necessidade dele:\r\n",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"md\":\"2555f1e9bfc0ffbdcdb6a739e99c90b1\"}",
+        "padrao": 1
+    },
+    {
+        "nome": "Layouts",
+        "id": "layouts",
+        "language": "en",
+        "alvo": "layouts",
+        "prompt": "Generate a complete HTML layout including `<!DOCTYPE html>`, `<html>`, `<head>` and `<body>`. Return the HTML code using markdown ```html ``` and if additional CSS is needed, return it with markdown ```css ```\r\nThis page will use the CSS framework `{{framework_css}}`.\r\nThere's no need to explain how to create the layout, as its return will only use the generated HTML and CSS code.\r\nThe layout must include the following special Conn2Flow system comments and variables:\r\n- `<!-- pagina#titulo -->` in the `<title>` — will be replaced by the dynamic page title\r\n- `<!-- pagina#css -->` inside `<head>` — where page-specific CSS will be injected\r\n- `<!-- pagina#js -->` before `<\/body>` — where page-specific JavaScript will be injected\r\n- `@[[pagina#corpo]]@` inside `<body>` — where the page content will be rendered\r\nExample of minimum layout structure:\r\n```html\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title><!-- pagina#titulo --><\/title>\r\n    <!-- pagina#css -->\r\n<\/head>\r\n<body>\r\n    @[[pagina#corpo]]@\r\n    <!-- pagina#js -->\r\n<\/body>\r\n<\/html>\r\n```\r\nLayout HTML generated in a previous interaction:\r\n```html\r\n{{html}}\r\n```\r\nCSS generated in a previous interaction:\r\n```css\r\n{{css}}\r\n```\r\nBelow, a user with or without HTML knowledge described their need as follows:\r\n",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"md\":\"efb87d7f614fa7c7d9d26ebbfd65f6fc\"}",
+        "padrao": 1
+    },
+    {
         "nome": "Páginas",
         "id": "paginas",
         "language": "pt-br",

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><!-- pagina#titulo --></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
+    <!-- pagina#css -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f9fafb;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .site-footer {
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="ui borderless menu" style="margin-bottom: 0; border-bottom: 1px solid #e5e7eb;">
+        <div class="ui container">
+            <a href="/" class="header item" style="font-weight: bold; font-size: 1.2em;">
+                📝 Meu Blog
+            </a>
+            <a href="#" class="item">Início</a>
+            <a href="#" class="item">Categorias</a>
+            <a href="#" class="item">Sobre</a>
+            <a href="#" class="item">Contato</a>
+        </div>
+    </div>
+
+    <!-- Main Content with Sidebar -->
+    <div class="main-content">
+        <div class="ui container" style="padding-top: 2em; padding-bottom: 2em;">
+            <div class="ui stackable grid">
+                <!-- Content Area -->
+                <div class="eleven wide column">
+                    @[[pagina#corpo]]@
+                </div>
+
+                <!-- Sidebar -->
+                <div class="five wide column">
+                    <!-- Search -->
+                    <div class="ui segment">
+                        <h4 class="ui header">Buscar</h4>
+                        <div class="ui fluid icon input">
+                            <input type="text" placeholder="Pesquisar...">
+                            <i class="search icon"></i>
+                        </div>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="ui segment">
+                        <h4 class="ui header">Categorias</h4>
+                        <div class="ui relaxed list">
+                            <a class="item" href="#">
+                                <div class="content"
+                                    style="display: flex; justify-content: space-between; width: 100%;">
+                                    <span>Tecnologia</span>
+                                    <div class="ui tiny label">12</div>
+                                </div>
+                            </a>
+                            <a class="item" href="#">
+                                <div class="content"
+                                    style="display: flex; justify-content: space-between; width: 100%;">
+                                    <span>Design</span>
+                                    <div class="ui tiny label">8</div>
+                                </div>
+                            </a>
+                            <a class="item" href="#">
+                                <div class="content"
+                                    style="display: flex; justify-content: space-between; width: 100%;">
+                                    <span>Marketing</span>
+                                    <div class="ui tiny label">5</div>
+                                </div>
+                            </a>
+                            <a class="item" href="#">
+                                <div class="content"
+                                    style="display: flex; justify-content: space-between; width: 100%;">
+                                    <span>Negócios</span>
+                                    <div class="ui tiny label">3</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Recent Posts -->
+                    <div class="ui segment">
+                        <h4 class="ui header">Posts Recentes</h4>
+                        <div class="ui relaxed divided list">
+                            <a class="item" href="#">
+                                <div class="content">
+                                    <div class="header" style="font-size: 0.9em;">Como começar com TailwindCSS</div>
+                                    <div class="description" style="font-size: 0.8em; color: #999;">28 Out, 2025</div>
+                                </div>
+                            </a>
+                            <a class="item" href="#">
+                                <div class="content">
+                                    <div class="header" style="font-size: 0.9em;">As melhores práticas de UX</div>
+                                    <div class="description" style="font-size: 0.8em; color: #999;">25 Out, 2025</div>
+                                </div>
+                            </a>
+                            <a class="item" href="#">
+                                <div class="content">
+                                    <div class="header" style="font-size: 0.9em;">Tendências de design em 2025</div>
+                                    <div class="description" style="font-size: 0.8em; color: #999;">20 Out, 2025</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="ui inverted vertical footer segment site-footer" style="padding: 2em 0;">
+        <div class="ui container" style="text-align: center;">
+            <p style="color: rgba(255,255,255,0.5); font-size: 0.9em;">
+                &copy; 2025 Meu Blog. Todos os direitos reservados.
+            </p>
+        </div>
+    </div>
+
+    <!-- pagina#js -->
+</body>
+
+</html>

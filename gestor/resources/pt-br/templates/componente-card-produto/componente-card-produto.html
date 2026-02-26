@@ -1,0 +1,56 @@
+<!-- Product Card Component -->
+<div class="max-w-sm mx-auto" data-id="1" data-title="Card de Produto">
+    <div
+        class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 group transform hover:-translate-y-1">
+        <!-- Image -->
+        <div class="relative overflow-hidden h-56">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop"
+                alt="Produto Exemplo"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <!-- Badge -->
+            <span
+                class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                Novo
+            </span>
+            <!-- Wishlist -->
+            <button
+                class="absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors shadow-md">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="p-5">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-blue-600 font-semibold uppercase tracking-wider">Categoria</span>
+                <div class="flex items-center text-yellow-400">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path
+                            d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                    </svg>
+                    <span class="text-xs text-gray-500 ml-1">4.8</span>
+                </div>
+            </div>
+
+            <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-1">Nome do Produto</h3>
+            <p class="text-sm text-gray-500 mb-4 line-clamp-2">
+                Descrição breve do produto com informações relevantes sobre suas características principais.
+            </p>
+
+            <!-- Price & Action -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <span class="text-sm text-gray-400 line-through">R$ 299,90</span>
+                    <span class="text-xl font-bold text-gray-900 ml-2">R$ 199,90</span>
+                </div>
+                <button
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg">
+                    Comprar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

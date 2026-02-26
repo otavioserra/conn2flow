@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><!-- pagina#titulo --></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
+    <!-- pagina#css -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f9fafb;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .site-footer {
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="ui borderless menu"
+        style="margin-bottom: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid #e5e7eb;">
+        <div class="ui container">
+            <a href="/" class="header item" style="font-weight: bold; font-size: 1.2em;">🎨 Portfolio</a>
+            <a href="#" class="item">Work</a>
+            <a href="#" class="item">About</a>
+            <a href="#" class="item">Blog</a>
+            <div class="right menu">
+                <div class="item">
+                    <a href="#" class="ui black circular button">Contact</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        @[[pagina#corpo]]@
+    </div>
+
+    <!-- Footer -->
+    <div class="ui vertical segment site-footer" style="padding: 3em 0; border-top: 1px solid #e5e7eb;">
+        <div class="ui container">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+                <p style="color: #999; font-size: 0.9em; margin: 0;">&copy; 2025 My Portfolio. Made with ❤️</p>
+                <div>
+                    <a href="#" style="color: #999; margin-left: 1em;"><i class="github icon large"></i></a>
+                    <a href="#" style="color: #999; margin-left: 1em;"><i class="linkedin icon large"></i></a>
+                    <a href="#" style="color: #999; margin-left: 1em;"><i class="twitter icon large"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- pagina#js -->
+</body>
+
+</html>

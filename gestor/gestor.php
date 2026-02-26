@@ -700,7 +700,11 @@ function gestor_pagina_javascript_incluir($js = false,$id = false, $retornar = f
 	} else {
 		switch($js){
 			case 'biblioteca':
-				$js = '<script src="'.$_GESTOR['url-raiz'].'interface/'.$id.'.js?v='.$_GESTOR['biblioteca-'.$id]['versao'].'"></script>';
+				if (is_array($id)) {
+                    $js = '<script src="'.$_GESTOR['url-raiz'].'interface/'.(isset($id['caminho']) ? $id['caminho'] : '').'.js?v='.$_GESTOR['biblioteca-'.(isset($id['biblioteca']) ? $id['biblioteca'] : '')]['versao'].'"></script>';
+                } else {
+					$js = '<script src="'.$_GESTOR['url-raiz'].'interface/'.$id.'.js?v='.$_GESTOR['biblioteca-'.$id]['versao'].'"></script>';
+                }
 			break;
 		}
 		

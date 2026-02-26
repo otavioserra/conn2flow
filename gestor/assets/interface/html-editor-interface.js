@@ -712,7 +712,15 @@ $(document).ready(function () {
 
     // ===== Backup Campo Mudar
 
-    $('#gestor-listener').on('adminPaginasBackupCampo', function (e, p) {
+    const backupCallbackMap = {
+        'paginas': 'adminPaginasBackupCampo',
+        'layouts': 'adminLayoutsBackupCampo',
+        'componentes': 'adminComponentesBackupCampo',
+        'publisher': 'adminPaginasBackupCampo',
+    };
+    const backupCallbackName = backupCallbackMap[gestor.html_editor.alvo] || 'adminPaginasBackupCampo';
+
+    $('#gestor-listener').on(backupCallbackName, function (e, p) {
         var campo = p.campo;
         var valor = p.valor;
 
@@ -733,8 +741,10 @@ $(document).ready(function () {
                 }
                 break;
             case 'html-extra-head':
-                CodeMirrorHtmlExtraHead.getDoc().setValue(valor);
-                CodeMirrorHtmlExtraHead.refresh();
+                if (typeof CodeMirrorHtmlExtraHead !== 'undefined') {
+                    CodeMirrorHtmlExtraHead.getDoc().setValue(valor);
+                    CodeMirrorHtmlExtraHead.refresh();
+                }
                 break;
             case 'css':
                 CodeMirrorCss.getDoc().setValue(valor);
@@ -1064,6 +1074,40 @@ $(document).ready(function () {
             </script>
         `;
 
+        // ===== Modo Layout: injetar ferramentas do editor no documento HTML completo
+        const alvoEditor = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
+
+        if (alvoEditor === 'layouts') {
+            let fullHtml = htmlDoUsuario;
+
+            // Includes para injetar no <head> do layout
+            const editorHeadIncludes = `
+                <!-- html-editor-injected-start -->
+                ${tailwindConfigScript}
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">
+                <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"><\/script>
+                <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"><\/script>
+                ${codemirrorIncludes}
+                ${codemirrorInitScript}
+                ${htmlEditorVars}
+                ${htmlEditorScriptPath}
+                ${cssDoUsuario}
+                <!-- html-editor-injected-end -->
+            `;
+
+            // Injetar no <head> antes de </head>
+            if (fullHtml.match(/<\/head>/i)) {
+                fullHtml = fullHtml.replace(/<\/head>/i, editorHeadIncludes + '\n</head>');
+            }
+
+            // Injetar o modal do editor no <body> antes de </body>
+            if (fullHtml.match(/<\/body>/i)) {
+                fullHtml = fullHtml.replace(/<\/body>/i, htmlEditorModalHtml + '\n</body>');
+            }
+
+            return fullHtml;
+        }
+
         return `
 			<!DOCTYPE html>
 			<html lang="pt-br">
@@ -1091,6 +1135,7 @@ $(document).ready(function () {
 
     function editorHtmlVisual() {
         const iframe = $('#iframe-preview');
+        const alvo = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
 
         iframe.parent().find('.ui.dimmer').addClass('active');
 
@@ -1098,12 +1143,31 @@ $(document).ready(function () {
         iframe.on('load', function () {
             iframe.parent().find('.ui.dimmer').removeClass('active');
         });
-        // Pegar o HTML do usuário e filtrar o que está dentro do <body>
-        const htmlDoUsuario = filtrarHtmlBody(CodeMirrorHtml.getDoc().getValue()).trim();
-        const cssDoUsuario = filtrarHtmlBody(CodeMirrorCss.getDoc().getValue()).trim();
 
-        // Atualizar o CodeMirror com o HTML filtrado.
-        CodeMirrorHtml.getDoc().setValue(htmlDoUsuario);
+        let htmlDoUsuario;
+        const cssDoUsuario = CodeMirrorCss.getDoc().getValue().trim();
+
+        if (alvo === 'layouts') {
+            // Para layouts, manter o HTML completo (documento inteiro).
+            // Armazenar head e atributos originais para reconstrução no save.
+            const fullHtml = CodeMirrorHtml.getDoc().getValue();
+            htmlDoUsuario = fullHtml.trim();
+
+            const headMatch = fullHtml.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
+            window._layoutOriginalHead = headMatch ? headMatch[0] : '<head></head>';
+
+            const htmlMatch = fullHtml.match(/<html([^>]*)>/i);
+            window._layoutHtmlAttrs = htmlMatch ? htmlMatch[1] : '';
+
+            const doctypeMatch = fullHtml.match(/<!DOCTYPE[^>]*>/i);
+            window._layoutDoctype = doctypeMatch ? doctypeMatch[0] : '<!DOCTYPE html>';
+        } else {
+            // Para páginas/componentes, filtrar apenas o conteúdo do <body>
+            htmlDoUsuario = filtrarHtmlBody(CodeMirrorHtml.getDoc().getValue()).trim();
+
+            // Atualizar o CodeMirror com o HTML filtrado.
+            CodeMirrorHtml.getDoc().setValue(htmlDoUsuario);
+        }
 
         const idFramework = frameworkCSS();
 
@@ -1163,6 +1227,7 @@ $(document).ready(function () {
 
         const iframe = $('#iframe-preview')[0];
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        const alvoSave = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
 
         // Remover elementos de sistema adicionados pelo Fomantic UI ou Tailwind CSS ou Editor HTML
         // Garantir que todas as ocorrências sejam removidas
@@ -1176,15 +1241,31 @@ $(document).ready(function () {
             $(iframeDoc).find('.ui.dimmer.modals').remove();
         }
 
-        // Atualizar o código HTML no conteúdo do CodeMirror
-        const body = $(iframeDoc).find('body');
-        const bodyElement = body[0];
+        let updatedHtml;
 
-        let updatedHtml = bodyElement.innerHTML;
+        if (alvoSave === 'layouts') {
+            // Para layouts: reconstruir o documento completo com o head original e o body editado
+            const body = $(iframeDoc).find('body');
+            const bodyContent = body[0].innerHTML;
+            const cleanBody = cleanCodeString(bodyContent);
 
-        // Remover linhas em branco no início e fim do código.
-        // E também remover linhas que estejam completamente em branco no meio do código.
-        updatedHtml = cleanCodeString(updatedHtml);
+            // Reconstruir o documento completo com head original (preservado antes de abrir o editor)
+            const doctype = window._layoutDoctype || '<!DOCTYPE html>';
+            const htmlAttrs = window._layoutHtmlAttrs || '';
+            const originalHead = window._layoutOriginalHead || '<head></head>';
+
+            updatedHtml = `${doctype}\n<html${htmlAttrs}>\n${originalHead}\n<body>\n${cleanBody}\n</body>\n</html>`;
+            updatedHtml = cleanCodeString(updatedHtml);
+        } else {
+            // Para páginas/componentes: atualizar apenas o conteúdo do body
+            const body = $(iframeDoc).find('body');
+            const bodyElement = body[0];
+
+            updatedHtml = bodyElement.innerHTML;
+
+            // Remover linhas em branco no início e fim do código.
+            updatedHtml = cleanCodeString(updatedHtml);
+        }
 
         // Atualizar o CodeMirror com o HTML atualizado.
         CodeMirrorHtml.getDoc().setValue(updatedHtml);
@@ -1269,6 +1350,23 @@ $(document).ready(function () {
                         margin: 0 !important;
                     }
                 </style>`;
+        }
+
+        // Layout mode: o HTML do usuário já é um documento completo, apenas injetar frameworks
+        const alvoPreview = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
+        if (alvoPreview === 'layouts') {
+            let fullHtml = htmlDoUsuario;
+            let layoutIncludes = tailwindConfigScript + '\n';
+            layoutIncludes += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">\n`;
+            layoutIncludes += `<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"><\/script>\n`;
+            layoutIncludes += `<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"><\/script>\n`;
+            layoutIncludes += cssDoUsuario + '\n';
+            if (fullHtml.includes('<!-- pagina#css -->')) {
+                fullHtml = fullHtml.replace('<!-- pagina#css -->', layoutIncludes + '<!-- pagina#css -->');
+            } else if (fullHtml.match(/<\/head>/i)) {
+                fullHtml = fullHtml.replace(/<\/head>/i, layoutIncludes + '</head>');
+            }
+            return fullHtml;
         }
 
         return `

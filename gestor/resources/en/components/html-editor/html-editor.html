@@ -79,8 +79,9 @@
         <div class="ui top attached tabular menu menuPaginas">
             <a class="active item" data-tab="codigo-html" data-tooltip="@[[html-editor-form-html-tooltip]]@"
                 data-position="top left" data-inverted="">@[[html-editor-form-html-label]]@</a>
-            <a class="item" data-tab="html-extra-head" data-tooltip="@[[html-editor-form-html-extra-head-tooltip]]@"
-                data-position="top left" data-inverted="">@[[html-editor-form-html-extra-head-label]]@</a>
+            <!-- html-extra-head-menu < --><a class="item" data-tab="html-extra-head"
+                data-tooltip="@[[html-editor-form-html-extra-head-tooltip]]@" data-position="top left"
+                data-inverted="">@[[html-editor-form-html-extra-head-label]]@</a><!-- html-extra-head-menu > -->
             <a class="item" data-tab="css" data-tooltip="@[[html-editor-form-css-tooltip]]@" data-position="top left"
                 data-inverted="">@[[html-editor-form-css-label]]@</a>
             <a class="item" data-tab="css-compiled" data-tooltip="@[[html-editor-form-css-compiled-tooltip]]@"
@@ -89,9 +90,10 @@
         <div class="ui bottom attached tab segment" data-tab="codigo-html">#pagina-html-backup# <textarea
                 class="codemirror-html" name="html">#pagina-html#</textarea>
         </div>
+        <!-- html-extra-head-content < -->
         <div class="ui bottom attached tab segment" data-tab="html-extra-head">#pagina-html-extra-head-backup# <textarea
                 class="codemirror-html-extra-head" name="html_extra_head">#pagina-html-extra-head#</textarea>
-        </div>
+        </div><!-- html-extra-head-content > -->
         <div class="ui bottom attached tab segment" data-tab="css">#pagina-css-backup# <textarea class="codemirror-css"
                 name="css">#pagina-css#</textarea>
         </div>

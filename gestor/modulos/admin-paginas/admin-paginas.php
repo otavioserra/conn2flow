@@ -129,7 +129,7 @@ function admin_paginas_adicionar(){
 	// Incluir o Componente Editor HTML na página
 
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
-		'alvos' => 'paginas',
+		'alvo' => 'paginas',
 	]));
 
 	// ===== Inclusão Módulo JS
@@ -543,7 +543,7 @@ function admin_paginas_editar(){
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
 			'editar' => true,
 			'modulo' => $modulo,
-			'alvos' => 'paginas',
+			'alvo' => 'paginas',
 		]));
 
 		// ===== Popular os metaDados

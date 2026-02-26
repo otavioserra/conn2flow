@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><!-- pagina#titulo --></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
+    <!-- pagina#css -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .site-footer {
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="ui fixed inverted menu" style="background: #1b1c1d;">
+        <div class="ui container">
+            <a href="/" class="header item">
+                <b>Meu Site</b>
+            </a>
+            <a href="#" class="item">Início</a>
+            <a href="#" class="item">Sobre</a>
+            <a href="#" class="item">Serviços</a>
+            <a href="#" class="item">Contato</a>
+            <div class="right menu">
+                <div class="item">
+                    <a href="#" class="ui primary button">Começar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" style="margin-top: 50px;">
+        @[[pagina#corpo]]@
+    </div>
+
+    <!-- Footer -->
+    <div class="ui inverted vertical footer segment site-footer" style="padding: 3em 0;">
+        <div class="ui container">
+            <div class="ui stackable inverted divided equal height stackable grid">
+                <div class="eight wide column">
+                    <h4 class="ui inverted header">Meu Site</h4>
+                    <p style="color: rgba(255,255,255,0.6);">
+                        Transformando ideias em soluções digitais inovadoras. Comprometidos com a excelência e a
+                        satisfação dos nossos clientes.
+                    </p>
+                </div>
+                <div class="four wide column">
+                    <h4 class="ui inverted header">Links Rápidos</h4>
+                    <div class="ui inverted link list">
+                        <a href="#" class="item">Início</a>
+                        <a href="#" class="item">Sobre</a>
+                        <a href="#" class="item">Serviços</a>
+                        <a href="#" class="item">Contato</a>
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <h4 class="ui inverted header">Contato</h4>
+                    <div class="ui inverted link list">
+                        <span class="item">contato@meusite.com</span>
+                        <span class="item">(11) 99999-9999</span>
+                        <span class="item">São Paulo, SP</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ui inverted section divider"></div>
+            <p style="text-align: center; color: rgba(255,255,255,0.4); font-size: 0.9em;">
+                &copy; 2025 Meu Site. Todos os direitos reservados.
+            </p>
+        </div>
+    </div>
+
+    <!-- pagina#js -->
+</body>
+
+</html>

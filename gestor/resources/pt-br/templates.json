@@ -674,5 +674,265 @@
             "css": "",
             "combined": "b4c0bda27fa7cbfab1d7f9336061fa84"
         }
+    },
+    {
+        "name": "Site Institucional",
+        "id": "layout-site-institucional",
+        "target": "layouts",
+        "framework_css": "tailwindcss",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "38832e24ae761193f9868f668cae0fe5",
+            "css": "",
+            "combined": "38832e24ae761193f9868f668cae0fe5"
+        }
+    },
+    {
+        "name": "Blog com Sidebar",
+        "id": "layout-blog-sidebar",
+        "target": "layouts",
+        "framework_css": "tailwindcss",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "c781341c5183598d6b3b2352b0b01693",
+            "css": "",
+            "combined": "c781341c5183598d6b3b2352b0b01693"
+        }
+    },
+    {
+        "name": "Landing Page",
+        "id": "layout-landing-page",
+        "target": "layouts",
+        "framework_css": "tailwindcss",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "c30b86cc0b6667578823085bf2cf16d7",
+            "css": "",
+            "combined": "c30b86cc0b6667578823085bf2cf16d7"
+        }
+    },
+    {
+        "name": "Dashboard",
+        "id": "layout-dashboard",
+        "target": "layouts",
+        "framework_css": "tailwindcss",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "72d06c7a053d2bca591b29c9db8df8c4",
+            "css": "",
+            "combined": "72d06c7a053d2bca591b29c9db8df8c4"
+        }
+    },
+    {
+        "name": "Portfólio",
+        "id": "layout-portfolio",
+        "target": "layouts",
+        "framework_css": "tailwindcss",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "74a5ae09f5dd5aca275adcbec065ae71",
+            "css": "",
+            "combined": "74a5ae09f5dd5aca275adcbec065ae71"
+        }
+    },
+    {
+        "name": "Site Institucional",
+        "id": "layout-site-institucional-fomantic-ui",
+        "target": "layouts",
+        "framework_css": "fomantic-ui",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "fe2aaff73ba281493ba0a25dbdd11bf5",
+            "css": "",
+            "combined": "fe2aaff73ba281493ba0a25dbdd11bf5"
+        }
+    },
+    {
+        "name": "Blog com Sidebar",
+        "id": "layout-blog-sidebar-fomantic-ui",
+        "target": "layouts",
+        "framework_css": "fomantic-ui",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "d0e6e714acb82d4dbe17dc8060f20b3f",
+            "css": "",
+            "combined": "d0e6e714acb82d4dbe17dc8060f20b3f"
+        }
+    },
+    {
+        "name": "Landing Page",
+        "id": "layout-landing-page-fomantic-ui",
+        "target": "layouts",
+        "framework_css": "fomantic-ui",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "9653293b07cfe27796d5ae0708749207",
+            "css": "",
+            "combined": "9653293b07cfe27796d5ae0708749207"
+        }
+    },
+    {
+        "name": "Dashboard",
+        "id": "layout-dashboard-fomantic-ui",
+        "target": "layouts",
+        "framework_css": "fomantic-ui",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "5f6fdf06dbf1f5362ef086933f446041",
+            "css": "",
+            "combined": "5f6fdf06dbf1f5362ef086933f446041"
+        }
+    },
+    {
+        "name": "Portfólio",
+        "id": "layout-portfolio-fomantic-ui",
+        "target": "layouts",
+        "framework_css": "fomantic-ui",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "5be92898dfa98efe76914483e88a103b",
+            "css": "",
+            "combined": "5be92898dfa98efe76914483e88a103b"
+        }
+    },
+    {
+        "name": "Header com Navegação",
+        "id": "componente-header-navegacao",
+        "target": "componentes",
+        "framework_css": "tailwindcss",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "41c54aec32e3c32c48ddd8d0dad79b8e",
+            "css": "",
+            "combined": "41c54aec32e3c32c48ddd8d0dad79b8e"
+        }
+    },
+    {
+        "name": "Footer Completo",
+        "id": "componente-footer-completo",
+        "target": "componentes",
+        "framework_css": "tailwindcss",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "f03d3d06f52a39f26c39bf488c77426a",
+            "css": "",
+            "combined": "f03d3d06f52a39f26c39bf488c77426a"
+        }
+    },
+    {
+        "name": "Card de Produto",
+        "id": "componente-card-produto",
+        "target": "componentes",
+        "framework_css": "tailwindcss",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "7da568c9a775bf350ecf1fb0620f97f5",
+            "css": "",
+            "combined": "7da568c9a775bf350ecf1fb0620f97f5"
+        }
+    },
+    {
+        "name": "Hero Banner",
+        "id": "componente-hero-banner",
+        "target": "componentes",
+        "framework_css": "tailwindcss",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "9eacda030b56d59ac77be14fafdaf28f",
+            "css": "",
+            "combined": "9eacda030b56d59ac77be14fafdaf28f"
+        }
+    },
+    {
+        "name": "Formulário de Contato",
+        "id": "componente-formulario-contato",
+        "target": "componentes",
+        "framework_css": "tailwindcss",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "8d7357194c893e0b2a1cb0492e470838",
+            "css": "",
+            "combined": "8d7357194c893e0b2a1cb0492e470838"
+        }
+    },
+    {
+        "name": "Header com Navegação",
+        "id": "componente-header-navegacao-fomantic-ui",
+        "target": "componentes",
+        "framework_css": "fomantic-ui",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "4058909a67507a9a073a80a2f639e132",
+            "css": "",
+            "combined": "4058909a67507a9a073a80a2f639e132"
+        }
+    },
+    {
+        "name": "Footer Completo",
+        "id": "componente-footer-completo-fomantic-ui",
+        "target": "componentes",
+        "framework_css": "fomantic-ui",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "af3c608b8307302fa589f2838a93ffc3",
+            "css": "",
+            "combined": "af3c608b8307302fa589f2838a93ffc3"
+        }
+    },
+    {
+        "name": "Card de Produto",
+        "id": "componente-card-produto-fomantic-ui",
+        "target": "componentes",
+        "framework_css": "fomantic-ui",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "86f6593e4695cd878636a5a0a0b0709b",
+            "css": "",
+            "combined": "86f6593e4695cd878636a5a0a0b0709b"
+        }
+    },
+    {
+        "name": "Hero Banner",
+        "id": "componente-hero-banner-fomantic-ui",
+        "target": "componentes",
+        "framework_css": "fomantic-ui",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "057a09322077e3f8effa8d45a12e784d",
+            "css": "",
+            "combined": "057a09322077e3f8effa8d45a12e784d"
+        }
+    },
+    {
+        "name": "Formulário de Contato",
+        "id": "componente-formulario-contato-fomantic-ui",
+        "target": "componentes",
+        "framework_css": "fomantic-ui",
+        "thumbnail": "",
+        "version": "1.1",
+        "checksum": {
+            "html": "b0f329f3efb37ed3e980e6c5f05c5730",
+            "css": "",
+            "combined": "b0f329f3efb37ed3e980e6c5f05c5730"
+        }
     }
 ]

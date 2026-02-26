@@ -1,0 +1,49 @@
+<!-- Header Navigation Component - Fomantic UI -->
+<header data-id="1" data-title="Navigation Header">
+    <div class="ui secondary pointing menu"
+        style="margin-bottom: 0; padding: 0.5em 1em; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+        <a class="item" href="/" style="font-size: 1.3em; font-weight: 800; color: #2185d0;">
+            <i class="rocket icon"></i> My Brand
+        </a>
+        <div class="right menu c-header-fui-desktop" style="display: flex;">
+            <a class="item" href="#">Home</a>
+            <a class="item" href="#">About</a>
+            <a class="item" href="#">Services</a>
+            <a class="item" href="#">Contact</a>
+            <div class="item">
+                <a class="ui primary button" href="#">Get Started</a>
+            </div>
+        </div>
+        <a class="item c-header-fui-toggle" style="display: none; cursor: pointer;">
+            <i class="bars icon"></i>
+        </a>
+    </div>
+    <div class="ui vertical fluid menu c-header-fui-mobile" style="display: none; border-radius: 0; margin: 0;">
+        <a class="item" href="#">Home</a>
+        <a class="item" href="#">About</a>
+        <a class="item" href="#">Services</a>
+        <a class="item" href="#">Contact</a>
+        <div class="item">
+            <a class="ui primary fluid button" href="#">Get Started</a>
+        </div>
+    </div>
+</header>
+
+<style>
+    @media (max-width: 768px) {
+        .c-header-fui-desktop {
+            display: none !important;
+        }
+
+        .c-header-fui-toggle {
+            display: block !important;
+        }
+    }
+</style>
+
+<script>
+    document.querySelector('.c-header-fui-toggle')?.addEventListener('click', function () {
+        var mobile = document.querySelector('.c-header-fui-mobile');
+        if (mobile) mobile.style.display = mobile.style.display === 'none' ? 'block' : 'none';
+    });
+</script>

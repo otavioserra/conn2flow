@@ -1,5 +1,33 @@
 [
     {
+        "nome": "Componentes",
+        "id": "componentes",
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1
+    },
+    {
+        "nome": "Components",
+        "id": "componentes",
+        "language": "en",
+        "status": "A",
+        "versao": 1
+    },
+    {
+        "nome": "Layouts",
+        "id": "layouts",
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1
+    },
+    {
+        "nome": "Layouts",
+        "id": "layouts",
+        "language": "en",
+        "status": "A",
+        "versao": 1
+    },
+    {
         "nome": "Páginas",
         "id": "paginas",
         "language": "pt-br",

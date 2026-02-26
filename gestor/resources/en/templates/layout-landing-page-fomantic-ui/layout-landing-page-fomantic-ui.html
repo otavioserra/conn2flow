@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><!-- pagina#titulo --></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
+    <!-- pagina#css -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .site-footer {
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Minimal Header -->
+    <div class="ui inverted segment"
+        style="margin: 0; border-radius: 0; padding: 1em 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="ui container">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <a href="/" style="color: white; font-size: 1.5em; font-weight: bold; text-decoration: none;">My
+                    Brand</a>
+                <a href="#cta" class="ui white button">Get Started</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Full Width -->
+    <div class="main-content">
+        @[[pagina#corpo]]@
+    </div>
+
+    <!-- Minimal Footer -->
+    <div class="ui inverted vertical footer segment site-footer" style="padding: 1.5em 0;">
+        <div class="ui container">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+                <p style="color: rgba(255,255,255,0.5); font-size: 0.9em; margin: 0;">&copy; 2025 My Brand. All rights
+                    reserved.</p>
+                <div>
+                    <a href="#" style="color: rgba(255,255,255,0.5); margin-left: 1.5em; font-size: 0.9em;">Terms</a>
+                    <a href="#" style="color: rgba(255,255,255,0.5); margin-left: 1.5em; font-size: 0.9em;">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- pagina#js -->
+</body>
+
+</html>

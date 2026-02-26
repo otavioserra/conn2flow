@@ -83,44 +83,11 @@ function admin_componentes_adicionar(){
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
 	}
 	
-	// ===== Pré-Visualização
+	// Incluir o Componente Editor HTML na página
 
-	$modalComponente = gestor_componente(Array(
-		'id' => 'modal-componente',
-		'modulo' => $_GESTOR['modulo-id'],
-	));
-
-	$modalComponente = modelo_var_troca($modalComponente,'#title#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-title-preview')));
-	$modalComponente = modelo_var_troca($modalComponente,'#desktop#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-desktop-preview')));
-	$modalComponente = modelo_var_troca($modalComponente,'#tablet#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-tablet-preview')));
-	$modalComponente = modelo_var_troca($modalComponente,'#mobile#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-mobile-preview')));
-	$modalComponente = modelo_var_troca($modalComponente,'#button-tooltip#',gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-title')));
-	$modalComponente = modelo_var_troca($modalComponente,'#button-value#',gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-value')));
-	$modalComponente = modelo_var_troca($modalComponente,'#button-back-tooltip#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'button-back-tooltip')));
-	$modalComponente = modelo_var_troca($modalComponente,'#button-back-value#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'button-back-value')));
-
-	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#modal-preview#',$modalComponente);
-	
-	// ===== Inclusão do CodeMirror
-
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/theme/tomorrow-night-bright.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.css" />');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/selection/active-line.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/searchcursor.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/search.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/scroll/annotatescrollbar.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/jump-to-line.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/edit/matchbrackets.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/xml/xml.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/css/css.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/htmlmixed/htmlmixed.js"></script>');
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
+		'alvo' => 'componentes',
+	]));
 
 	// ===== Inclusão Módulo JS
 	
@@ -129,16 +96,6 @@ function admin_componentes_adicionar(){
 	// ===== Interface adicionar finalizar opções
 	
 	$_GESTOR['interface']['adicionar']['finalizar'] = Array(
-		'sem_botao_padrao' => true,
-		'botoes_rodape' => [
-			'previsualizar' => [
-				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-preview')),
-				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-preview')),
-				'icon' => 'plus circle',
-				'cor' => 'positive',
-				'callback' => 'previsualizar',
-			],
-		],
 		'formulario' => Array(
 			'validacao' => Array(
 				Array(
@@ -338,27 +295,6 @@ function admin_componentes_editar(){
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.(isset($id_novo) ? $id_novo : $id));
 	}
 	
-	// ===== Inclusão do CodeMirror
-
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/theme/tomorrow-night-bright.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.css" />');
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.css" />');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/codemirror.min.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/selection/active-line.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/dialog/dialog.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/searchcursor.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/search.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/scroll/annotatescrollbar.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/matchesonscrollbar.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/search/jump-to-line.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/edit/matchbrackets.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/addon/display/fullscreen.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/xml/xml.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/css/css.js"></script>');
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/mode/htmlmixed/htmlmixed.js"></script>');
-
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
@@ -379,10 +315,9 @@ function admin_componentes_editar(){
 		$framework_css = (isset($retorno_bd['framework_css']) ? $retorno_bd['framework_css'] : '');
 		$html = (isset($retorno_bd['html']) ? htmlentities($retorno_bd['html']) : '');
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
-		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : ''); // Novo campo
-		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : ''); // Novo campo
+		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
+		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
 		$bd_modulo = (isset($retorno_bd['modulo']) ? $retorno_bd['modulo'] : '');
-		$css_gestor = '';
 		
 		// ===== Variaveis globais alterar.
 		
@@ -400,61 +335,19 @@ function admin_componentes_editar(){
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-id#',$id);
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-css#',$css);
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-css-compiled#',$css_compiled); // Novo campo
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-css-gestor#',$css_gestor);
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-html#',$html);
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-html-extra-head#',$html_extra_head); // Novo campo
 
 		$variaveisTrocarDepois['pagina-css'] = $css;
-		$variaveisTrocarDepois['pagina-css-compiled'] = $css_compiled; // Novo campo
+		$variaveisTrocarDepois['pagina-css-compiled'] = $css_compiled;
 		$variaveisTrocarDepois['pagina-html'] = $html;
-		$variaveisTrocarDepois['pagina-html-extra-head'] = $html_extra_head; // Novo campo
+		$variaveisTrocarDepois['pagina-html-extra-head'] = $html_extra_head;
 
-		// ===== Pré-Visualização
+		// Incluir o Componente Editor HTML na página
 
-		$modalComponente = gestor_componente(Array(
-			'id' => 'modal-componente',
-			'modulo' => $_GESTOR['modulo-id'],
-		));
-
-		$modalComponente = modelo_var_troca($modalComponente,'#title#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-title-preview')));
-		$modalComponente = modelo_var_troca($modalComponente,'#desktop#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-desktop-preview')));
-		$modalComponente = modelo_var_troca($modalComponente,'#tablet#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-tablet-preview')));
-		$modalComponente = modelo_var_troca($modalComponente,'#mobile#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modal-mobile-preview')));
-		$modalComponente = modelo_var_troca($modalComponente,'#button-tooltip#',gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-title')));
-		$modalComponente = modelo_var_troca($modalComponente,'#button-value#',gestor_variaveis(Array('modulo' => 'interface','id' => 'form-button-value')));
-		$modalComponente = modelo_var_troca($modalComponente,'#button-back-tooltip#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'button-back-tooltip')));
-		$modalComponente = modelo_var_troca($modalComponente,'#button-back-value#',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'button-back-value')));
-
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#modal-preview#',$modalComponente);
-
-		
-		// ===== Dropdown com todos os backups
-		
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-html-backup#',interface_backup_campo_select(Array(
-			'campo' => 'html',
-			'callback' => 'adminComponentesBackupCampo',
-			'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-		)));
-		
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-css-backup#',interface_backup_campo_select(Array(
-			'campo' => 'css',
-			'callback' => 'adminComponentesBackupCampo',
-			'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-		)));
-		
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-css-compiled-backup#',interface_backup_campo_select(Array(
-			'campo' => 'css_compiled',
-			'callback' => 'adminComponentesBackupCampo',
-			'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-		))); // Novo campo
-		
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#pagina-html-extra-head-backup#',interface_backup_campo_select(Array(
-			'campo' => 'html_extra_head',
-			'callback' => 'adminComponentesBackupCampo',
-			'id_numerico' => interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])),
-		))); // Novo campo
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
+			'editar' => true,
+			'modulo' => $modulo,
+			'alvo' => 'componentes',
+		]));
 		
 		// ===== Popular os metaDados
 		
@@ -471,16 +364,6 @@ function admin_componentes_editar(){
 	// ===== Interface editar finalizar opções
 	
 	$_GESTOR['interface']['editar']['finalizar'] = Array(
-		'sem_botao_padrao' => true,
-		'botoes_rodape' => [
-			'previsualizar' => [
-				'rotulo' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-button-preview')),
-				'tooltip' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'tooltip-button-preview')),
-				'icon' => 'plus circle',
-				'cor' => 'positive',
-				'callback' => 'previsualizar',
-			],
-		],
 		'id' => $id,
 		'metaDados' => $metaDados,
 		'variaveisTrocarDepois' => $variaveisTrocarDepois,

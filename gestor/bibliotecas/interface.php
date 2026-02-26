@@ -3210,6 +3210,14 @@ function interface_ajax_backup_campo($params = false){
 				);
 			} else {
 				$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+
+				// Verifica se o campo `language` existe na tabela alvo
+				if(banco_campo_existe('language', $modulo['tabela']['nome'])){
+					// Define filtro de idioma se o campo existir
+					$filtro_idioma = " AND language='".$_GESTOR['linguagem-codigo']."'";
+				} else {
+					$filtro_idioma = "";
+				}
 				
 				$resultado = banco_select_name
 				(
@@ -3220,6 +3228,7 @@ function interface_ajax_backup_campo($params = false){
 					$modulo['tabela']['nome'],
 					"WHERE ".$modulo['tabela']['id']."='".$_GESTOR['modulo-registro-id']."'"
 					." AND ".$modulo['tabela']['status']."!='D'"
+					.$filtro_idioma
 				);
 			}
 			

@@ -590,14 +590,14 @@
         "opcao": "adicionar",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-module-label#<\/label>\n    <span>#select-module#<\/span>\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n<div class=\"ui top attached tabular menu\">\n    <a class=\"active item\" data-tab=\"codigo-html\" data-tooltip=\"#form-html-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-html-label#<\/a>\n    <a class=\"item\" data-tab=\"html-extra-head\" data-tooltip=\"@[[form-html-extra-head-tooltip]]@\"\n        data-position=\"top left\" data-inverted=\"\">@[[form-html-extra-head-label]]@<\/a>\n    <a class=\"item\" data-tab=\"css\" data-tooltip=\"#form-css-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-css-label#<\/a>\n    <a class=\"item\" data-tab=\"css-compiled\" data-tooltip=\"@[[form-css-compiled-tooltip]]@\" data-position=\"top left\"\n        data-inverted=\"\">@[[form-css-compiled-label]]@<\/a>\n<\/div>\n<div class=\"ui bottom attached active tab segment\" data-tab=\"codigo-html\">\n    <textarea class=\"codemirror-html\" name=\"html\"><\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"html-extra-head\">\n    <textarea class=\"codemirror-html-extra-head\" name=\"html_extra_head\"><\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css\">\n    <textarea class=\"codemirror-css\" name=\"css\"><\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css-compiled\">\n    <textarea class=\"codemirror-css-compiled\" name=\"css_compiled\"><\/textarea>\n<\/div>\n#modal-preview#",
+        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-module-label#<\/label>\n    <span>#select-module#<\/span>\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n#html-editor#",
         "html_extra_head": null,
         "css": ".CodeMirror{\n    border: 1px solid #ccc;\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"b830727701a43d721aceda32271fe0d0\",\"css\":\"bdb85de7c6afcf6a3fdca44a2b25b9ff\",\"combined\":\"e2a6084a3f6ee88ea81e8f5d12632e7c\"}"
+        "versao": 2,
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"0c038a3765895046f3a1a539c09bbbb1\",\"css\":\"bdb85de7c6afcf6a3fdca44a2b25b9ff\",\"combined\":\"9e90cc14f99263e099caf8f10729133d\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",
@@ -610,14 +610,14 @@
         "opcao": "editar",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\" value=\"#nome#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-module-label#<\/label>\n    <span>#select-module#<\/span>\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n<div class=\"ui top attached tabular menu\">\n    <a class=\"active item\" data-tab=\"codigo-html\" data-tooltip=\"#form-html-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-html-label#<\/a>\n    <a class=\"item\" data-tab=\"html-extra-head\" data-tooltip=\"@[[form-html-extra-head-tooltip]]@\"\n        data-position=\"top left\" data-inverted=\"\">@[[form-html-extra-head-label]]@<\/a>\n    <a class=\"item\" data-tab=\"css\" data-tooltip=\"#form-css-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-css-label#<\/a>\n    <a class=\"item\" data-tab=\"css-compiled\" data-tooltip=\"@[[form-css-compiled-tooltip]]@\" data-position=\"top left\"\n        data-inverted=\"\">@[[form-css-compiled-label]]@<\/a>\n<\/div>\n<div class=\"ui bottom attached active tab segment\" data-tab=\"codigo-html\">#pagina-html-backup# <textarea\n        class=\"codemirror-html\" name=\"html\">#pagina-html#<\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"html-extra-head\">#pagina-html-extra-head-backup# <textarea\n        class=\"codemirror-html-extra-head\" name=\"html_extra_head\">#pagina-html-extra-head#<\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css\">#pagina-css-backup# <textarea class=\"codemirror-css\"\n        name=\"css\">#pagina-css#<\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css-compiled\">#pagina-css-compiled-backup# <textarea\n        class=\"codemirror-css-compiled\" name=\"css_compiled\">#pagina-css-compiled#<\/textarea>\n<\/div>\n#modal-preview#",
+        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\" value=\"#nome#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-module-label#<\/label>\n    <span>#select-module#<\/span>\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n#html-editor#",
         "html_extra_head": null,
         "css": ".CodeMirror{\n    border: 1px solid #ccc;\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"802c10ff7980df982e5c6fd0c308e661\",\"css\":\"0c9ea4a87a3788f62f7e4e6e63c80a5e\",\"combined\":\"23250f9ccef86543f68a6a8cfc57c681\"}"
+        "versao": 2,
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"991e289308d9be459ded6c74d03e05bc\",\"css\":\"0c9ea4a87a3788f62f7e4e6e63c80a5e\",\"combined\":\"26117fc600e4452b5341762750943a5b\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",
@@ -650,14 +650,14 @@
         "opcao": "adicionar",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-module-label#<\/label>\n    <span>#select-module#<\/span>\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n<div class=\"ui top attached tabular menu\">\n    <a class=\"active item\" data-tab=\"codigo-html\" data-tooltip=\"#form-html-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-html-label#<\/a>\n    <a class=\"item\" data-tab=\"html-extra-head\" data-tooltip=\"@[[form-html-extra-head-tooltip]]@\"\n        data-position=\"top left\" data-inverted=\"\">@[[form-html-extra-head-label]]@<\/a>\n    <a class=\"item\" data-tab=\"css\" data-tooltip=\"#form-css-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-css-label#<\/a>\n    <a class=\"item\" data-tab=\"css-compiled\" data-tooltip=\"@[[form-css-compiled-tooltip]]@\" data-position=\"top left\"\n        data-inverted=\"\">@[[form-css-compiled-label]]@<\/a>\n<\/div>\n<div class=\"ui bottom attached active tab segment\" data-tab=\"codigo-html\">\n    <textarea class=\"codemirror-html\" name=\"html\"><\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"html-extra-head\">\n    <textarea class=\"codemirror-html-extra-head\" name=\"html_extra_head\"><\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css\">\n    <textarea class=\"codemirror-css\" name=\"css\"><\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css-compiled\">\n    <textarea class=\"codemirror-css-compiled\" name=\"css_compiled\"><\/textarea>\n<\/div>\n#modal-preview#",
+        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-module-label#<\/label>\n    <span>#select-module#<\/span>\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n#html-editor#",
         "html_extra_head": null,
         "css": ".CodeMirror{\n    border: 1px solid #ccc;\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"b830727701a43d721aceda32271fe0d0\",\"css\":\"bdb85de7c6afcf6a3fdca44a2b25b9ff\",\"combined\":\"e2a6084a3f6ee88ea81e8f5d12632e7c\"}"
+        "versao": 2,
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"0c038a3765895046f3a1a539c09bbbb1\",\"css\":\"bdb85de7c6afcf6a3fdca44a2b25b9ff\",\"combined\":\"9e90cc14f99263e099caf8f10729133d\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",
@@ -670,14 +670,14 @@
         "opcao": "editar",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\" value=\"#nome#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-module-label#<\/label>\n    <span>#select-module#<\/span>\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n<div class=\"ui top attached tabular menu\">\n    <a class=\"active item\" data-tab=\"codigo-html\" data-tooltip=\"#form-html-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-html-label#<\/a>\n    <a class=\"item\" data-tab=\"html-extra-head\" data-tooltip=\"@[[form-html-extra-head-tooltip]]@\"\n        data-position=\"top left\" data-inverted=\"\">@[[form-html-extra-head-label]]@<\/a>\n    <a class=\"item\" data-tab=\"css\" data-tooltip=\"#form-css-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-css-label#<\/a>\n    <a class=\"item\" data-tab=\"css-compiled\" data-tooltip=\"@[[form-css-compiled-tooltip]]@\" data-position=\"top left\"\n        data-inverted=\"\">@[[form-css-compiled-label]]@<\/a>\n<\/div>\n<div class=\"ui bottom attached active tab segment\" data-tab=\"codigo-html\">#pagina-html-backup# <textarea\n        class=\"codemirror-html\" name=\"html\">#pagina-html#<\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"html-extra-head\">#pagina-html-extra-head-backup# <textarea\n        class=\"codemirror-html-extra-head\" name=\"html_extra_head\">#pagina-html-extra-head#<\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css\">#pagina-css-backup# <textarea class=\"codemirror-css\"\n        name=\"css\">#pagina-css#<\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css-compiled\">#pagina-css-compiled-backup# <textarea\n        class=\"codemirror-css-compiled\" name=\"css_compiled\">#pagina-css-compiled#<\/textarea>\n<\/div>\n#modal-preview#",
+        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\" value=\"#nome#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-module-label#<\/label>\n    <span>#select-module#<\/span>\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n#html-editor#",
         "html_extra_head": null,
         "css": ".CodeMirror{\n    border: 1px solid #ccc;\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"802c10ff7980df982e5c6fd0c308e661\",\"css\":\"0c9ea4a87a3788f62f7e4e6e63c80a5e\",\"combined\":\"23250f9ccef86543f68a6a8cfc57c681\"}"
+        "versao": 2,
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"991e289308d9be459ded6c74d03e05bc\",\"css\":\"0c9ea4a87a3788f62f7e4e6e63c80a5e\",\"combined\":\"26117fc600e4452b5341762750943a5b\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",
@@ -870,14 +870,14 @@
         "opcao": "editar",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\" value=\"#nome#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n<div class=\"ui top attached tabular menu\">\n    <a class=\"active item\" data-tab=\"codigo-html\" data-tooltip=\"#form-html-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-html-label#<\/a>\n    <a class=\"item\" data-tab=\"css\" data-tooltip=\"#form-css-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-css-label#<\/a>\n    <a class=\"item\" data-tab=\"css-compiled\" data-tooltip=\"@[[form-css-compiled-tooltip]]@\" data-position=\"top left\"\n        data-inverted=\"\">@[[form-css-compiled-label]]@<\/a>\n<\/div>\n<div class=\"ui bottom attached active tab segment\" data-tab=\"codigo-html\">#pagina-html-backup# <textarea\n        class=\"codemirror-html\" name=\"html\">#pagina-html#<\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css\">#pagina-css-backup# <textarea class=\"codemirror-css\"\n        name=\"css\">#pagina-css#<\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css-compiled\">#pagina-css-compiled-backup# <textarea\n        class=\"codemirror-css-compiled\" name=\"css_compiled\">#pagina-css-compiled#<\/textarea>\n<\/div>\n#modal-preview#",
+        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\" value=\"#nome#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n#html-editor#",
         "html_extra_head": null,
         "css": ".CodeMirror{\n    border: 1px solid #ccc;\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"306776e643710f4994afc457cce91df6\",\"css\":\"0c9ea4a87a3788f62f7e4e6e63c80a5e\",\"combined\":\"4fa55f2a17ef5089f2500231cda6c1cb\"}"
+        "versao": 2,
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"f25303dd902fdd09c46b4fb8a4d5ec34\",\"css\":\"0c9ea4a87a3788f62f7e4e6e63c80a5e\",\"combined\":\"ed5ddf7d1241aa56c191cfba18c72080\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",
@@ -890,14 +890,14 @@
         "opcao": "adicionar",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n<div class=\"ui top attached tabular menu\">\n    <a class=\"active item\" data-tab=\"codigo-html\" data-tooltip=\"#form-html-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-html-label#<\/a>\n    <a class=\"item\" data-tab=\"css\" data-tooltip=\"#form-css-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-css-label#<\/a>\n    <a class=\"item\" data-tab=\"css-compiled\" data-tooltip=\"@[[form-css-compiled-tooltip]]@\" data-position=\"top left\"\n        data-inverted=\"\">@[[form-css-compiled-label]]@<\/a>\n<\/div>\n<div class=\"ui bottom attached active tab segment\" data-tab=\"codigo-html\">\n    <textarea class=\"codemirror-html\" name=\"html\"><\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css\">\n    <textarea class=\"codemirror-css\" name=\"css\"><\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css-compiled\">\n    <textarea class=\"codemirror-css-compiled\" name=\"css_compiled\"><\/textarea>\n<\/div>\n#modal-preview#",
+        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n#html-editor#",
         "html_extra_head": null,
         "css": ".CodeMirror{\n    border: 1px solid #ccc;\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"e787fb286da93b3144a76ae9ba4208f1\",\"css\":\"bdb85de7c6afcf6a3fdca44a2b25b9ff\",\"combined\":\"a2c7e36f93a851f1bfe93fe673ef8d96\"}"
+        "versao": 2,
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"4b689ca4265b731728a238378a6bc268\",\"css\":\"bdb85de7c6afcf6a3fdca44a2b25b9ff\",\"combined\":\"0f2089611c8216ba0e39ffc896c5a93f\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",
@@ -930,14 +930,14 @@
         "opcao": "editar",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\" value=\"#nome#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n<div class=\"ui top attached tabular menu\">\n    <a class=\"active item\" data-tab=\"codigo-html\" data-tooltip=\"#form-html-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-html-label#<\/a>\n    <a class=\"item\" data-tab=\"css\" data-tooltip=\"#form-css-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-css-label#<\/a>\n    <a class=\"item\" data-tab=\"css-compiled\" data-tooltip=\"@[[form-css-compiled-tooltip]]@\" data-position=\"top left\"\n        data-inverted=\"\">@[[form-css-compiled-label]]@<\/a>\n<\/div>\n<div class=\"ui bottom attached active tab segment\" data-tab=\"codigo-html\">#pagina-html-backup# <textarea\n        class=\"codemirror-html\" name=\"html\">#pagina-html#<\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css\">#pagina-css-backup# <textarea class=\"codemirror-css\"\n        name=\"css\">#pagina-css#<\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css-compiled\">#pagina-css-compiled-backup# <textarea\n        class=\"codemirror-css-compiled\" name=\"css_compiled\">#pagina-css-compiled#<\/textarea>\n<\/div>\n#modal-preview#",
+        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\" value=\"#nome#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n#html-editor#",
         "html_extra_head": null,
         "css": ".CodeMirror{\n    border: 1px solid #ccc;\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"306776e643710f4994afc457cce91df6\",\"css\":\"0c9ea4a87a3788f62f7e4e6e63c80a5e\",\"combined\":\"4fa55f2a17ef5089f2500231cda6c1cb\"}"
+        "versao": 2,
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"f25303dd902fdd09c46b4fb8a4d5ec34\",\"css\":\"0c9ea4a87a3788f62f7e4e6e63c80a5e\",\"combined\":\"ed5ddf7d1241aa56c191cfba18c72080\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",
@@ -950,14 +950,14 @@
         "opcao": "adicionar",
         "raiz": null,
         "sem_permissao": null,
-        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n<div class=\"ui top attached tabular menu\">\n    <a class=\"active item\" data-tab=\"codigo-html\" data-tooltip=\"#form-html-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-html-label#<\/a>\n    <a class=\"item\" data-tab=\"css\" data-tooltip=\"#form-css-tooltip#\" data-position=\"top left\"\n        data-inverted=\"\">#form-css-label#<\/a>\n    <a class=\"item\" data-tab=\"css-compiled\" data-tooltip=\"@[[form-css-compiled-tooltip]]@\" data-position=\"top left\"\n        data-inverted=\"\">@[[form-css-compiled-label]]@<\/a>\n<\/div>\n<div class=\"ui bottom attached active tab segment\" data-tab=\"codigo-html\">\n    <textarea class=\"codemirror-html\" name=\"html\"><\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css\">\n    <textarea class=\"codemirror-css\" name=\"css\"><\/textarea>\n<\/div>\n<div class=\"ui bottom attached tab segment\" data-tab=\"css-compiled\">\n    <textarea class=\"codemirror-css-compiled\" name=\"css_compiled\"><\/textarea>\n<\/div>\n#modal-preview#",
+        "html": "<div class=\"field\">\n    <label>#form-name-label#<\/label>\n    <input type=\"text\" name=\"nome\" placeholder=\"#form-name-placeholder#\">\n<\/div>\n<div class=\"field\">\n    <label>#form-framework-css-label#<\/label>\n    <span>#select-framework-css#<\/span>\n<\/div>\n#html-editor#",
         "html_extra_head": null,
         "css": ".CodeMirror{\n    border: 1px solid #ccc;\n}",
         "framework_css": "fomantic-ui",
         "status": "A",
-        "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"e787fb286da93b3144a76ae9ba4208f1\",\"css\":\"bdb85de7c6afcf6a3fdca44a2b25b9ff\",\"combined\":\"a2c7e36f93a851f1bfe93fe673ef8d96\"}"
+        "versao": 2,
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"4b689ca4265b731728a238378a6bc268\",\"css\":\"bdb85de7c6afcf6a3fdca44a2b25b9ff\",\"combined\":\"0f2089611c8216ba0e39ffc896c5a93f\"}"
     },
     {
         "layout_id": "layout-administrativo-do-gestor",

@@ -79,7 +79,8 @@
         {
             "label": "🛠️ Manager - Synchronize => Database - Test Environment",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/dev-environment/updates-manager-database.sh"
+            "command": "bash ./ai-workspace/en/scripts/dev-environment/updates-manager-database.sh",
+            "problemMatcher": []
         },
         {
             "label": "🛠️ Manager - Synchronize => Files - Test Environment",

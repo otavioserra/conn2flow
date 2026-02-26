@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><!-- pagina#titulo --></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
+    <!-- pagina#css -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .site-footer {
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="ui fixed inverted menu" style="background: #1b1c1d;">
+        <div class="ui container">
+            <a href="/" class="header item"><b>My Site</b></a>
+            <a href="#" class="item">Home</a>
+            <a href="#" class="item">About</a>
+            <a href="#" class="item">Services</a>
+            <a href="#" class="item">Contact</a>
+            <div class="right menu">
+                <div class="item">
+                    <a href="#" class="ui primary button">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" style="margin-top: 50px;">
+        @[[pagina#corpo]]@
+    </div>
+
+    <!-- Footer -->
+    <div class="ui inverted vertical footer segment site-footer" style="padding: 3em 0;">
+        <div class="ui container">
+            <div class="ui stackable inverted divided equal height stackable grid">
+                <div class="eight wide column">
+                    <h4 class="ui inverted header">My Site</h4>
+                    <p style="color: rgba(255,255,255,0.6);">
+                        Transforming ideas into innovative digital solutions. Committed to excellence and customer
+                        satisfaction.
+                    </p>
+                </div>
+                <div class="four wide column">
+                    <h4 class="ui inverted header">Quick Links</h4>
+                    <div class="ui inverted link list">
+                        <a href="#" class="item">Home</a>
+                        <a href="#" class="item">About</a>
+                        <a href="#" class="item">Services</a>
+                        <a href="#" class="item">Contact</a>
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <h4 class="ui inverted header">Contact</h4>
+                    <div class="ui inverted link list">
+                        <span class="item">contact@mysite.com</span>
+                        <span class="item">+1 (555) 123-4567</span>
+                        <span class="item">New York, NY</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ui inverted section divider"></div>
+            <p style="text-align: center; color: rgba(255,255,255,0.4); font-size: 0.9em;">
+                &copy; 2025 My Site. All rights reserved.
+            </p>
+        </div>
+    </div>
+
+    <!-- pagina#js -->
+</body>
+
+</html>
