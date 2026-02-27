@@ -456,18 +456,23 @@ function gestor_pagina_variaveis($params = false){
 	$caminho = rtrim($caminho,'/').'/';
 	
 	// ===== Busca por widgets na página.
+	// O padrão procurado é algo como
+	//   @[[widgets#MODULO_ID->FUNCAO(JSON_PARAMS)]]@
+	// ou apenas @[[widgets#meu-widget]]@ para compatibilidade.
+	// Tudo que estiver entre "widgets#" e o fechamento será passado
+	// diretamente para widgets_get() que conhece o formato.
 	
 	$pattern = "/".preg_quote($open)."widgets#(.+?)".preg_quote($close)."/i";
 	preg_match_all($pattern, $_GESTOR['pagina'], $matchesWidgets);
 	
 	if($matchesWidgets){
 		// ===== Incluir a biblioteca dos widgets e disparar a função de iniciação dos mesmos.
-		
 		gestor_incluir_biblioteca('widgets');
 		
 		// ===== Varrer todos os matchs e trocar os marcadores por seus widgets.
-		
 		foreach($matchesWidgets[1] as $match){
+			// $match contém a string completa depois de "widgets#" –
+			// pode ser "modulo->func({...})" ou um nome simples.
 			$widget = widgets_get(Array(
 				'id' => $match,
 			));
