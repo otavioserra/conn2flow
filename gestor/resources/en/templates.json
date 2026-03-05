@@ -681,11 +681,11 @@
         "target": "layouts",
         "framework_css": "tailwindcss",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "cac1920217408d0681e5ba05eea08e48",
+            "html": "90cb20b6d1cecb8a452863ae51c77672",
             "css": "",
-            "combined": "cac1920217408d0681e5ba05eea08e48"
+            "combined": "90cb20b6d1cecb8a452863ae51c77672"
         }
     },
     {
@@ -694,11 +694,11 @@
         "target": "layouts",
         "framework_css": "tailwindcss",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "bc4d8ffd6c2eacd425c22faafcfe49cd",
+            "html": "8400da8e66d1334971f8ddc785fc0bb9",
             "css": "",
-            "combined": "bc4d8ffd6c2eacd425c22faafcfe49cd"
+            "combined": "8400da8e66d1334971f8ddc785fc0bb9"
         }
     },
     {
@@ -707,11 +707,11 @@
         "target": "layouts",
         "framework_css": "tailwindcss",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "854c69a8783ade48095884ce2d67b0de",
+            "html": "0a5897ea11e3e905e986b9cbde713596",
             "css": "",
-            "combined": "854c69a8783ade48095884ce2d67b0de"
+            "combined": "0a5897ea11e3e905e986b9cbde713596"
         }
     },
     {
@@ -720,11 +720,11 @@
         "target": "layouts",
         "framework_css": "tailwindcss",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "70d4e22f2bbaf7d09be20dfe3d74aadf",
+            "html": "da80cc8773a7d79f9b997ebf3b9e7f36",
             "css": "",
-            "combined": "70d4e22f2bbaf7d09be20dfe3d74aadf"
+            "combined": "da80cc8773a7d79f9b997ebf3b9e7f36"
         }
     },
     {
@@ -733,11 +733,11 @@
         "target": "layouts",
         "framework_css": "tailwindcss",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "5cfd4383ed14f476690847727dbaf67e",
+            "html": "66fd737f7f86463d8516c824b4b0afad",
             "css": "",
-            "combined": "5cfd4383ed14f476690847727dbaf67e"
+            "combined": "66fd737f7f86463d8516c824b4b0afad"
         }
     },
     {
@@ -746,11 +746,11 @@
         "target": "layouts",
         "framework_css": "fomantic-ui",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "212fbab3d20007c2e0f30ec86c63af41",
+            "html": "ebc04b6ef677a5c2441aa48a169d430e",
             "css": "",
-            "combined": "212fbab3d20007c2e0f30ec86c63af41"
+            "combined": "ebc04b6ef677a5c2441aa48a169d430e"
         }
     },
     {
@@ -759,11 +759,11 @@
         "target": "layouts",
         "framework_css": "fomantic-ui",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "f05e6aea311a2c094978daf04ac4c52e",
+            "html": "1e8faebc33b68b3cc5336aea38fee29a",
             "css": "",
-            "combined": "f05e6aea311a2c094978daf04ac4c52e"
+            "combined": "1e8faebc33b68b3cc5336aea38fee29a"
         }
     },
     {
@@ -772,11 +772,11 @@
         "target": "layouts",
         "framework_css": "fomantic-ui",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "f3519f3ebda47c14d7cf4279f9d0cd8b",
+            "html": "44f65b594aa6482aa0da6385c0712eb4",
             "css": "",
-            "combined": "f3519f3ebda47c14d7cf4279f9d0cd8b"
+            "combined": "44f65b594aa6482aa0da6385c0712eb4"
         }
     },
     {
@@ -785,11 +785,11 @@
         "target": "layouts",
         "framework_css": "fomantic-ui",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "85cafcceb74c0f94b42bbefc1d75009b",
+            "html": "0bfee1280b53d9ff5dde35b555296465",
             "css": "",
-            "combined": "85cafcceb74c0f94b42bbefc1d75009b"
+            "combined": "0bfee1280b53d9ff5dde35b555296465"
         }
     },
     {
@@ -798,11 +798,11 @@
         "target": "layouts",
         "framework_css": "fomantic-ui",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "4a96ca6bfc5cf1cf2e327f063f60af3e",
+            "html": "c71f469a683fc543011823e944b43308",
             "css": "",
-            "combined": "4a96ca6bfc5cf1cf2e327f063f60af3e"
+            "combined": "c71f469a683fc543011823e944b43308"
         }
     },
     {
@@ -811,11 +811,11 @@
         "target": "componentes",
         "framework_css": "tailwindcss",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "a3831c2ab1dda1c541ac4e224c916702",
+            "html": "fcf34633b3871c56f743daacea98bd8a",
             "css": "",
-            "combined": "a3831c2ab1dda1c541ac4e224c916702"
+            "combined": "fcf34633b3871c56f743daacea98bd8a"
         }
     },
     {
@@ -824,11 +824,11 @@
         "target": "componentes",
         "framework_css": "tailwindcss",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "93370819ec66a098be405507fccaea25",
+            "html": "53a56364536540bcfe779d1c6dfd51df",
             "css": "",
-            "combined": "93370819ec66a098be405507fccaea25"
+            "combined": "53a56364536540bcfe779d1c6dfd51df"
         }
     },
     {
@@ -837,11 +837,11 @@
         "target": "componentes",
         "framework_css": "tailwindcss",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "b2c2cac148180d6e000ab0de43353c26",
+            "html": "1b9070d05b8e22200847fc11380827f4",
             "css": "",
-            "combined": "b2c2cac148180d6e000ab0de43353c26"
+            "combined": "1b9070d05b8e22200847fc11380827f4"
         }
     },
     {
@@ -850,11 +850,11 @@
         "target": "componentes",
         "framework_css": "tailwindcss",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "c30b9dc96ec33bbb614921cbe070ed59",
+            "html": "221cd732e88393d5835711440085d28d",
             "css": "",
-            "combined": "c30b9dc96ec33bbb614921cbe070ed59"
+            "combined": "221cd732e88393d5835711440085d28d"
         }
     },
     {
@@ -863,11 +863,11 @@
         "target": "componentes",
         "framework_css": "tailwindcss",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "59ff8cebda1bcd2cda4737e4ebb0de20",
+            "html": "013da64f3cd534ac9edd0a07b55f6907",
             "css": "",
-            "combined": "59ff8cebda1bcd2cda4737e4ebb0de20"
+            "combined": "013da64f3cd534ac9edd0a07b55f6907"
         }
     },
     {
@@ -876,11 +876,11 @@
         "target": "componentes",
         "framework_css": "fomantic-ui",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "475ffa82209a0d8fbdcf4ec6249f75a5",
+            "html": "e1e3eb9bfba431b45d60c27b0d65093e",
             "css": "",
-            "combined": "475ffa82209a0d8fbdcf4ec6249f75a5"
+            "combined": "e1e3eb9bfba431b45d60c27b0d65093e"
         }
     },
     {
@@ -889,11 +889,11 @@
         "target": "componentes",
         "framework_css": "fomantic-ui",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "decdfa1672c355b5df93b446173a219d",
+            "html": "43de4757d37a7cf2f8e46b7970ef48f0",
             "css": "",
-            "combined": "decdfa1672c355b5df93b446173a219d"
+            "combined": "43de4757d37a7cf2f8e46b7970ef48f0"
         }
     },
     {
@@ -902,11 +902,11 @@
         "target": "componentes",
         "framework_css": "fomantic-ui",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "911833da8d288356f29d8717a29c2927",
+            "html": "1bf40571f21d25b948503321b7e6b9d9",
             "css": "",
-            "combined": "911833da8d288356f29d8717a29c2927"
+            "combined": "1bf40571f21d25b948503321b7e6b9d9"
         }
     },
     {
@@ -915,11 +915,11 @@
         "target": "componentes",
         "framework_css": "fomantic-ui",
         "thumbnail": "",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "fd4825175d15bbd2cb1e870117ffc9ee",
+            "html": "08629289184462f9dc623e0219a92862",
             "css": "",
-            "combined": "fd4825175d15bbd2cb1e870117ffc9ee"
+            "combined": "08629289184462f9dc623e0219a92862"
         }
     },
     {

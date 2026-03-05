@@ -41,6 +41,7 @@
                     "id": "noticias-simples",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/pt-br\/noticias-simples.webp",
                     "version": "1.6",
                     "checksum": {
                         "html": "36bba1fb09a6219ef6ea4de55021bf87",
@@ -53,6 +54,7 @@
                     "id": "noticias-imagem-destaque",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/pt-br\/noticias-imagem-destaque.webp",
                     "version": "1.7",
                     "checksum": {
                         "html": "2a811d1b95e7aeb7385d22e2320a17af",
@@ -173,6 +175,7 @@
                     "id": "noticias-simples",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/en\/noticias-simples.webp",
                     "version": "1.8",
                     "checksum": {
                         "html": "8c301d2279cfed152757a09ccce6d276",
@@ -185,6 +188,7 @@
                     "id": "noticias-imagem-destaque",
                     "target": "publisher",
                     "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/en\/noticias-imagem-destaque.webp",
                     "version": "1.10",
                     "checksum": {
                         "html": "43c95946acd29e9a7b4f061dde19816e",
