@@ -451,19 +451,14 @@ function gestor_pagina_layout($params = false){
 	$_GESTOR['pagina'] = modelo_var_troca($layout,$open.'pagina#corpo'.$close,$_GESTOR['pagina']);
 }
 
-function gestor_pagina_variaveis(){
+function gestor_pagina_widgets(){
 	global $_GESTOR;
 
 	// ===== Variáveis globais de página
 	
 	$open = $_GESTOR['variavel-global']['open'];
 	$close = $_GESTOR['variavel-global']['close'];
-	
-	// ===== Página variáveis operações
-	
-	$caminho = (isset($_GESTOR['caminho-total']) ? $_GESTOR['caminho-total'] : '');
-	$caminho = rtrim($caminho,'/').'/';
-	
+
 	// ===== Busca por widgets na página.
 	// O padrão procurado é algo como
 	//   @[[widgets#MODULO_ID->FUNCAO(JSON_PARAMS)]]@
@@ -491,6 +486,20 @@ function gestor_pagina_variaveis(){
 			}
 		}
 	}
+}
+
+function gestor_pagina_variaveis(){
+	global $_GESTOR;
+
+	// ===== Variáveis globais de página
+	
+	$open = $_GESTOR['variavel-global']['open'];
+	$close = $_GESTOR['variavel-global']['close'];
+	
+	// ===== Página variáveis operações
+	
+	$caminho = (isset($_GESTOR['caminho-total']) ? $_GESTOR['caminho-total'] : '');
+	$caminho = rtrim($caminho,'/').'/';
 	
 	// ===== Página variáveis trocar
 	
@@ -1927,20 +1936,24 @@ function gestor_roteador(){
 				);
 			}
 			
+			// ===== Incluir widgets na página.
+
+			gestor_pagina_widgets();
+
 			// ===== Aplicar o layout à página
 
 			gestor_pagina_layout(Array(
 				'layout' => $layout,
 			));
 
+			// ===== Inclusão de variáveis globais de uma página
+			
+			gestor_pagina_variaveis();
+
 			// ===== Inclusão de bibliotecas globais de uma página
 			
 			gestor_pagina_css();
 			gestor_pagina_extra_head_e_javascript();
-
-			// ===== Inclusão de variáveis globais de uma página
-			
-			gestor_pagina_variaveis();
 
 			// ===== Ultimas operações para a página.
 
