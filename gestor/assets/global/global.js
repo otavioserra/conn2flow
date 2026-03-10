@@ -88,10 +88,10 @@ $(document).ready(function () {
 		}
 
 		// ===== Inicialização do Menu (SEM animação)
-		
+
 		// Adicionar classe para desabilitar transições durante a inicialização
 		$('body').addClass('menu-no-transition');
-		
+
 		var menuState = getMenuState();
 
 		// Aplicar largura salva ao menu
@@ -112,8 +112,8 @@ $(document).ready(function () {
 		}
 
 		// Remover classe após um pequeno delay para reabilitar transições
-		requestAnimationFrame(function() {
-			requestAnimationFrame(function() {
+		requestAnimationFrame(function () {
+			requestAnimationFrame(function () {
 				$('body').removeClass('menu-no-transition');
 			});
 		});
@@ -148,11 +148,11 @@ $(document).ready(function () {
 
 		// ===== Listener de Resize da Janela
 		var resizeTimeout;
-		$(window).on('resize', function() {
+		$(window).on('resize', function () {
 			clearTimeout(resizeTimeout);
-			resizeTimeout = setTimeout(function() {
+			resizeTimeout = setTimeout(function () {
 				var state = getMenuState();
-				
+
 				if (isMobile()) {
 					// Em mobile, fechar menu e garantir margin-left 0
 					$('body').removeClass('menu-closed');
@@ -320,7 +320,7 @@ $(document).ready(function () {
 
 		// ===== Widget de Seleção de Linguagem (Via Iframe)
 
-		if (gestor.languages.widgetActive) {
+		if (gestor.languages.widgetActive && Array.isArray(gestor.pageLanguages) && gestor.pageLanguages.length > 1) {
 			// Criar Iframe para isolar o ambiente (Fomantic UI / jQuery)
 			var iframeSrc = gestor.raiz + 'global/language-widget.html';
 			var iframeId = 'gestor-language-iframe';

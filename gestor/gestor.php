@@ -428,7 +428,7 @@ function gestor_pagina_variaveis_modulos($params = false){
 	
 }
 
-function gestor_pagina_variaveis($params = false){
+function gestor_pagina_layout($params = false){
 	global $_GESTOR;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
@@ -449,6 +449,15 @@ function gestor_pagina_variaveis($params = false){
 	// ===== Página fundir layout + página
 	
 	$_GESTOR['pagina'] = modelo_var_troca($layout,$open.'pagina#corpo'.$close,$_GESTOR['pagina']);
+}
+
+function gestor_pagina_variaveis(){
+	global $_GESTOR;
+
+	// ===== Variáveis globais de página
+	
+	$open = $_GESTOR['variavel-global']['open'];
+	$close = $_GESTOR['variavel-global']['close'];
 	
 	// ===== Página variáveis operações
 	
@@ -673,6 +682,7 @@ function gestor_pagina_extra_head_e_javascript(){
 		'raiz' => $_GESTOR['url-raiz'],
 		'raizSemLang' => $_GESTOR['url-raiz-sem-lang'],
 		'language' => $_GESTOR['linguagem-codigo'],
+		'pageLanguages' => $_GESTOR['page-languages'],
 		'languageSystem' => $_GESTOR['linguagem-padrao'],
 		'languageCookie' => $_CONFIG['cookie-language'],
 		'moduloId' => (isset($_GESTOR['modulo-id']) ? $_GESTOR['modulo-id'] : false ),
@@ -1562,6 +1572,8 @@ function gestor_roteador(){
 	
 	$_GESTOR['modulo-registro-id'] = (isset($_REQUEST['ajaxRegistroId']) ? banco_escape_field($_REQUEST['ajaxRegistroId']) : NULL);
 
+	$_GESTOR['page-languages'] = [$_GESTOR['linguagem-codigo']];
+
 	$lang = $_GESTOR['linguagem-codigo'];
 	
 	// ===== Implementação de um hotfix.
@@ -1647,6 +1659,31 @@ function gestor_roteador(){
 	// ===== Verificar se a página existe. Se sim, montar a página, executar módulo se houver e imprimir. Senão gerar erro 404 ou redirecionar para página 404.
 
 	if(isset($paginas)){
+		// ===== Verificar linguagens de uma página
+
+		$paginas_languages = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'language'
+			))
+			,
+			"paginas",
+			"WHERE caminho='".banco_escape_field($caminho)."'"
+			." AND (tipo='sistema' OR tipo='pagina')"
+			." AND status='A'"
+		);
+
+		if($paginas_languages){
+			$languages = Array();
+			foreach($paginas_languages as $paginas_language){
+				$languages[] = $paginas_language['language'];
+			}
+
+			if(count($languages) > 1){
+				$_GESTOR['page-languages'] = $languages;
+			}
+		}
+
 		// ==== Verificar se a página tem permissão, se houver e o usuário não estiver logado, deve redirecionar para a página de login e finalizar a requisição.
 		if(!existe($paginas[0]['sem_permissao'])){
 			gestor_permissao();
@@ -1889,17 +1926,24 @@ function gestor_roteador(){
 					'autoDetect' => $autoDetect
 				);
 			}
-
-			// ===== Inclusão de variáveis globais de uma página
 			
-			gestor_pagina_variaveis(Array(
+			// ===== Aplicar o layout à página
+
+			gestor_pagina_layout(Array(
 				'layout' => $layout,
 			));
-			
+
 			// ===== Inclusão de bibliotecas globais de uma página
 			
 			gestor_pagina_css();
 			gestor_pagina_extra_head_e_javascript();
+
+			// ===== Inclusão de variáveis globais de uma página
+			
+			gestor_pagina_variaveis();
+
+			// ===== Ultimas operações para a página.
+
 			gestor_pagina_ultimas_operacoes();
 			
 			// ===== Retornar a página formatada para o cliente
