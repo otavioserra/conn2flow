@@ -688,6 +688,7 @@ function gestor_pagina_extra_head_e_javascript(){
 	$caminho = rtrim($caminho,'/').'/';
 	
 	$variaveis_js = Array(
+		'versao' => $_GESTOR['versao'],
 		'raiz' => $_GESTOR['url-raiz'],
 		'raizSemLang' => $_GESTOR['url-raiz-sem-lang'],
 		'language' => $_GESTOR['linguagem-codigo'],
@@ -695,6 +696,7 @@ function gestor_pagina_extra_head_e_javascript(){
 		'languageSystem' => $_GESTOR['linguagem-padrao'],
 		'languageCookie' => $_CONFIG['cookie-language'],
 		'moduloId' => (isset($_GESTOR['modulo-id']) ? $_GESTOR['modulo-id'] : false ),
+		'moduloVersao' => (isset($_GESTOR['modulo-versao']) ? $_GESTOR['modulo-versao'] : false ),
 		'moduloOpcao' => (isset($_GESTOR['opcao']) ? $_GESTOR['opcao'] : false ),
 		'moduloCaminho' => $caminho,
 	);
