@@ -540,6 +540,181 @@ function api_oauth_refresh() {
     ], 'Tokens renovados com sucesso');
 }
 
+// =========================== Hook de Módulos para a API
+
+/**
+ * Carrega o arquivo de hook de um módulo para o contexto da API.
+ *
+ * Lê o JSON do módulo, encontra o arquivo configurado em hooks.api,
+ * inclui o arquivo e retorna o nome da função de callback esperada.
+ *
+ * Convenção de nome de função: {modulo_id_underscores}_api
+ * Ex: módulo "host-manager" → função "host_manager_api"
+ *
+ * @param string      $modulo_id ID do módulo (ex: 'host-manager').
+ * @param string|null $plugin_id ID do plugin, ou null para módulo padrão.
+ *
+ * @return string|null Nome da função do hook ou null se não encontrado.
+ */
+function api_carregar_hook($modulo_id, $plugin_id = null) {
+    global $_GESTOR;
+
+    // Resolver diretório do módulo
+    if (!empty($plugin_id)) {
+        $modulo_dir = $_GESTOR['plugins-path'] . $plugin_id . '/modules/' . $modulo_id . '/';
+    } else {
+        $modulo_dir = $_GESTOR['modulos-path'] . $modulo_id . '/';
+    }
+
+    if (!is_dir($modulo_dir)) {
+        return null;
+    }
+
+    $json_path = $modulo_dir . $modulo_id . '.json';
+
+    if (!file_exists($json_path)) {
+        return null;
+    }
+
+    $modulo_config = json_decode(file_get_contents($json_path), true);
+
+    if (!$modulo_config || json_last_error() !== JSON_ERROR_NONE) {
+        return null;
+    }
+
+    $hook_file = $modulo_config['hooks']['api'] ?? null;
+
+    if (empty($hook_file)) {
+        return null;
+    }
+
+    $hook_path = $modulo_dir . $hook_file;
+
+    if (!file_exists($hook_path)) {
+        return null;
+    }
+
+    include_once($hook_path);
+
+    // Convenção: {modulo_id_com_underscores}_api
+    $funcao_id = str_replace('-', '_', $modulo_id);
+    $funcao    = $funcao_id . '_api';
+
+    return function_exists($funcao) ? $funcao : null;
+}
+
+/**
+ * Dispara o hook 'api' para módulos registrados.
+ *
+ * Segue o mesmo padrão de plataforma_gateways_disparar_hook():
+ * - Busca módulos com hooks IS NOT NULL no banco
+ * - Quando $modulo_id_alvo é especificado, despacha apenas para ele
+ * - Caso contrário, dispara broadcast para todos os módulos com hook 'api'
+ *
+ * A função de hook do módulo recebe:
+ *   ['modulo_id' => string, 'action' => string, 'data' => array, 'method' => string]
+ *
+ * @param string      $action         Ação/sub-endpoint (ex: 'list-accounts', 'create-account').
+ * @param array       $data           Dados da requisição (body + query params).
+ * @param string|null $modulo_id_alvo ID do módulo alvo (null = broadcast).
+ *
+ * @return array|null Resultado do processamento ou null.
+ */
+function api_disparar_hook($action, $data = [], $modulo_id_alvo = null) {
+    global $_GESTOR;
+
+    $resultado = null;
+
+    if (!empty($modulo_id_alvo)) {
+        $modulos = banco_select([
+            'tabela' => 'modulos',
+            'campos' => ['id', 'plugin'],
+            'extra'  => "WHERE id = '" . banco_escape_field($modulo_id_alvo) . "' AND hooks IS NOT NULL AND status != 'D'",
+        ]);
+    } else {
+        $modulos = banco_select([
+            'tabela' => 'modulos',
+            'campos' => ['id', 'plugin'],
+            'extra'  => "WHERE hooks IS NOT NULL AND status != 'D'",
+        ]);
+    }
+
+    if (!$modulos) {
+        return null;
+    }
+
+    foreach ($modulos as $modulo) {
+        $modulo_id = $modulo['id'];
+
+        $funcao = api_carregar_hook($modulo_id, $modulo['plugin'] ?? null);
+
+        if (!$funcao) {
+            continue;
+        }
+
+        try {
+            $resultado_modulo = $funcao([
+                'modulo_id' => $modulo_id,
+                'action'    => $action,
+                'data'      => $data,
+                'method'    => $_SERVER['REQUEST_METHOD'] ?? 'GET',
+            ]);
+
+            if ($resultado_modulo !== null) {
+                $resultado = $resultado_modulo;
+            }
+
+            // Se o módulo marcou como processado, parar loop
+            if (isset($resultado_modulo['processed']) && $resultado_modulo['processed']) {
+                break;
+            }
+        } catch (Exception $e) {
+            error_log('API Hook Error [' . $modulo_id . ']: ' . $e->getMessage());
+        }
+    }
+
+    return $resultado;
+}
+
+/**
+ * Trata requisições direcionadas a módulos via /_api/{modulo-id}/{action}.
+ *
+ * @param string $modulo_id ID do módulo da URL.
+ * @param string $action    Ação/sub-endpoint da URL.
+ *
+ * @return void
+ */
+function api_handle_modulo($modulo_id, $action) {
+    // Sanitizar modulo_id
+    $modulo_id = preg_replace('/[^a-z0-9\-_]/', '', strtolower($modulo_id));
+
+    if (empty($modulo_id)) {
+        api_response_error('Módulo inválido', 400);
+    }
+
+    $data = array_merge(
+        $_GET ?? [],
+        api_get_request_body()
+    );
+
+    $resultado = api_disparar_hook($action ?? '', $data, $modulo_id);
+
+    if ($resultado === null) {
+        api_response_error('Módulo não encontrado ou sem suporte ao hook API: ' . $modulo_id, 404);
+    }
+
+    if (isset($resultado['erro']) && $resultado['erro']) {
+        $code = $resultado['code'] ?? 500;
+        api_response_error($resultado['mensagem'] ?? 'Erro no módulo', $code, $resultado['detalhes'] ?? null);
+    }
+
+    api_response_success(
+        $resultado['dados'] ?? $resultado,
+        $resultado['mensagem'] ?? 'OK',
+        $resultado['code'] ?? 200
+    );
+}
+
 // =========================== Roteamento da API
 
 function api_route_request() {
@@ -592,7 +767,10 @@ function api_route_request() {
             break;
 
         default:
-            api_response_error('Endpoint não encontrado: ' . $endpoint, 404);
+            // Tentar despachar para módulo via hook 'api'
+            // Rota: /_api/{modulo-id}[/{action}[/{sub-action}...]]
+            $action = isset($_GESTOR['caminho'][2]) ? $_GESTOR['caminho'][2] : '';
+            api_handle_modulo($endpoint, $action);
     }
 }
 
