@@ -925,11 +925,13 @@ function perfil_usuario_oauth_authenticate(){
 			$scope = isset($_REQUEST['scope']) ? $_REQUEST['scope'] : 'read';
 			$url_redirect = isset($_REQUEST['url_redirect']) ? $_REQUEST['url_redirect'] : '';
 			$user_inactive = false;
+			$user_without_permission = false;
 			
 			$usuarios = banco_select_name
 			(
 				banco_campos_virgulas(Array(
 					'id_usuarios',
+					'id_usuarios_perfis',
 					'senha',
 					'status',
 				))
@@ -942,36 +944,43 @@ function perfil_usuario_oauth_authenticate(){
 			// ===== Rotinas de validação de usuário
 			
 			if($usuarios){
-				$senha_hash = $usuarios[0]['senha'];
-				
-				if(password_verify($senha, $senha_hash)){
-					// ===== Pegar dados do usuário.
-					
-					$status = $usuarios[0]['status'];
-					$id_usuarios = $usuarios[0]['id_usuarios'];
-					
-					if($status == 'A'){
-						$user_invalid = false;
-						
-						// ===== Incluir a confirmação do acesso para poder remover qualquer limitação de acesso do tipo específico.
-						
-						autenticacao_acesso_confirmar(['tipo' => 'oauth2']);
 
-						// ===== Incluir biblioteca OAuth
-			
-						gestor_incluir_biblioteca('oauth2');
+				// ===== Verificar se o usuário tem acesso ao ambiente de administração da API, senão não validar o usuário.
+
+				if(gestor_acesso('acesso-api', 'admin-environment',$usuarios[0])){
+					$senha_hash = $usuarios[0]['senha'];
+					
+					if(password_verify($senha, $senha_hash)){
+						// ===== Pegar dados do usuário.
 						
-						// ===== Gerar tokens
+						$status = $usuarios[0]['status'];
+						$id_usuarios = $usuarios[0]['id_usuarios'];
 						
-						$tokens = oauth2_gerar_token_client_credentials(Array(
-							'id_usuarios' => $id_usuarios,
-							'grant_type' => $grant_type,
-							'scope' => $scope,
-							'url_redirect' => $url_redirect
-						));
-					} else {
-						$user_inactive = true;
+						if($status == 'A'){
+							$user_invalid = false;
+							
+							// ===== Incluir a confirmação do acesso para poder remover qualquer limitação de acesso do tipo específico.
+							
+							autenticacao_acesso_confirmar(['tipo' => 'oauth2']);
+
+							// ===== Incluir biblioteca OAuth
+				
+							gestor_incluir_biblioteca('oauth2');
+							
+							// ===== Gerar tokens
+							
+							$tokens = oauth2_gerar_token_client_credentials(Array(
+								'id_usuarios' => $id_usuarios,
+								'grant_type' => $grant_type,
+								'scope' => $scope,
+								'url_redirect' => $url_redirect
+							));
+						} else {
+							$user_inactive = true;
+						}
 					}
+				} else {
+					$user_without_permission = true;
 				}
 			}
 		} else {
@@ -1000,7 +1009,12 @@ function perfil_usuario_oauth_authenticate(){
 			
 			sleep(3);
 			
-			if($user_inactive){
+			if($user_without_permission){
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-user-without-permission'))
+				));
+			} elseif($user_inactive){
 				interface_alerta(Array(
 					'redirect' => true,
 					'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-user-inactive'))

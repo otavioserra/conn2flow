@@ -1353,13 +1353,14 @@ function gestor_usuario(){
 	}
 }
 
-function gestor_acesso($operacao = false,$modulo = false){
+function gestor_acesso($operacao = false,$modulo = false,$usuario = false){
 	global $_GESTOR;
 	
 	// ===== Parâmetros
 	
 	// operacao - String - Obrigatório - operação do módulo atual.
 	// modulo - String - Opcional - foçar um módulo diferente do atual.
+	// usuario - String - Opcional - foçar um usuário diferente do atual.
 	
 	// ===== 
 	
@@ -1367,7 +1368,9 @@ function gestor_acesso($operacao = false,$modulo = false){
 		return false;
 	}
 	
-	$usuario = gestor_usuario();
+	if(!$usuario){
+		$usuario = gestor_usuario();
+	}
 	
 	if(!$modulo){
 		$modulo = $_GESTOR['modulo'];
@@ -1397,7 +1400,7 @@ function gestor_acesso($operacao = false,$modulo = false){
 			))
 			,
 			"modulos_operacoes",
-			"WHERE operacao='".$operacao."'"
+			"WHERE (operacao='".$operacao."' OR id='".$operacao."')"
 			." AND language='".$_GESTOR['linguagem-codigo']."'"
 			." AND modulo_id='".$modulo."'"
 			." AND status='A'"

@@ -6,5 +6,9 @@
     {
         "perfil": "administradores",
         "operacao": "modificar-permissao-do-publicador-da-pagina"
+    },
+    {
+        "perfil": "administradores",
+        "operacao": "acesso-administrador-a-api"
     }
 ]

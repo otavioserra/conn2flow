@@ -9353,6 +9353,15 @@
     {
         "linguagem_codigo": "pt-br",
         "modulo": "perfil-usuario",
+        "id": "alert-user-without-permission",
+        "valor": "Usuário sem permissão no sistema para acessar esse recurso, favor entrar em contato com o suporte para permitir acesso à sua conta.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "perfil-usuario",
         "id": "alert-user-or-password-invalid",
         "valor": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
         "tipo": "string",
@@ -10237,6 +10246,15 @@
         "modulo": "perfil-usuario",
         "id": "alert-user-inactive",
         "valor": "User inactive in the system, please contact support to restore your account.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "perfil-usuario",
+        "id": "alert-user-without-permission",
+        "valor": "User without permission in the system to access this resource, please contact support to allow access to your account.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

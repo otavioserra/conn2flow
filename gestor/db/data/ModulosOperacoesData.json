@@ -34,5 +34,23 @@
         "status": "A",
         "versao": " 1",
         "language": "en"
+    },
+    {
+        "modulo_id": "admin-environment",
+        "nome": "Acesso Administrador a API",
+        "id": "acesso-administrador-a-api",
+        "operacao": "acesso-api",
+        "status": "A",
+        "versao": " 1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_id": "admin-environment",
+        "nome": "Admin API Access",
+        "id": "acesso-administrador-a-api",
+        "operacao": "acesso-api",
+        "status": "A",
+        "versao": " 1",
+        "language": "en"
     }
 ]

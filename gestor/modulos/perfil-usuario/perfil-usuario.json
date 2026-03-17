@@ -1,5 +1,5 @@
 {
-    "versao": "1.2.4",
+    "versao": "1.3.0",
     "bibliotecas": [
         "interface",
         "html",
@@ -224,6 +224,11 @@
                 {
                     "id": "alert-user-inactive",
                     "value": "Usuário inativo no sistema, favor entrar em contato com o suporte para restabelecer sua conta.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-user-without-permission",
+                    "value": "Usuário sem permissão no sistema para acessar esse recurso, favor entrar em contato com o suporte para permitir acesso à sua conta.",
                     "type": "string"
                 },
                 {
@@ -905,6 +910,11 @@
                 {
                     "id": "alert-user-inactive",
                     "value": "User inactive in the system, please contact support to restore your account.",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-user-without-permission",
+                    "value": "User without permission in the system to access this resource, please contact support to allow access to your account.",
                     "type": "string"
                 },
                 {
