@@ -115,6 +115,13 @@ if(isset($editar['dados'])){
     $editar = false;
 }
 
+// Update campo diretamente
+
+banco_update_campo('campo','valor'); // Com aspas simples, para valor de texto
+banco_update_campo('campo',123,true); // Sem aspas simples, para valor numérico ou função do MySQL
+
+banco_update_executar('tabela',"WHERE condicao");
+
 // [5] Deletar dados (conecta automaticamente no banco de dados)
 banco_delete(
     "nome_da_tabela",
