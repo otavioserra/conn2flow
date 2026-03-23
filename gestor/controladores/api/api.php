@@ -600,6 +600,15 @@ function api_carregar_hook($modulo_id, $plugin_id = null) {
     $funcao_id = str_replace('-', '_', $modulo_id);
     $funcao    = $funcao_id . '_api';
 
+    // Fallback: module IDs starting with digit generate invalid PHP function names
+    // Try with underscore prefix: 3d_catalog_api → _3d_catalog_api
+    if (!function_exists($funcao) && preg_match('/^\d/', $funcao_id)) {
+        $funcao_alt = '_' . $funcao;
+        if (function_exists($funcao_alt)) {
+            $funcao = $funcao_alt;
+        }
+    }
+
     return function_exists($funcao) ? $funcao : null;
 }
 
