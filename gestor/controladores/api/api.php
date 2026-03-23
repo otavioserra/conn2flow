@@ -701,6 +701,9 @@ function api_handle_modulo($modulo_id, $action) {
         api_response_error('Módulo inválido', 400);
     }
 
+    // Requer autenticação
+    api_authenticate(true);
+
     $data = array_merge(
         $_GET ?? [],
         api_get_request_body()
@@ -778,7 +781,7 @@ function api_route_request() {
         default:
             // Tentar despachar para módulo via hook 'api'
             // Rota: /_api/{modulo-id}[/{action}[/{sub-action}...]]
-            $action = isset($_GESTOR['caminho'][2]) ? $_GESTOR['caminho'][2] : '';
+            $action = isset($_GESTOR['caminho'][2]) ? implode('/', array_slice($_GESTOR['caminho'], 2)) : '';
             api_handle_modulo($endpoint, $action);
     }
 }
