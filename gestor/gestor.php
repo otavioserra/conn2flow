@@ -488,6 +488,36 @@ function gestor_pagina_widgets(){
 	}
 }
 
+function gestor_pagina_widgets_ajax(){
+	global $_GESTOR;
+
+	// ===== Se receber uma requisição AJAX para widgets, disparar os controladores AJAX dos widgets e retornar o resultado.
+	if(!isset($_GESTOR['ajaxWidgets'])) return;
+
+	$widgetsAjaxList = array_filter(explode('<#;>', $_GESTOR['ajaxWidgets']));
+	
+	if($widgetsAjaxList){
+		// ===== Incluir a biblioteca dos widgets e disparar a função de iniciação dos mesmos.
+		gestor_incluir_biblioteca('widgets');
+		
+		// ===== Varrer todos os matchs e trocar os marcadores por seus widgets.
+		foreach($widgetsAjaxList as $match){
+			// inclui o widget e dispara a função correspondente, porém se houver retorno é porque teve erro.
+			$widget = widgets_get(Array(
+				'id' => $match,
+			));
+			
+			if(!empty($widget)){
+				gestor_roteador_erro(Array(
+					'codigo' => 500,
+					'ajax' => $_GESTOR['ajax'],
+					'mensagem' => 'Widget AJAX error: ['.$match.'] - Return: '.$widget,
+				));
+			}
+		}
+	}
+}
+
 function gestor_pagina_variaveis(){
 	global $_GESTOR;
 
@@ -698,6 +728,7 @@ function gestor_pagina_extra_head_e_javascript(){
 		'moduloId' => (isset($_GESTOR['modulo-id']) ? $_GESTOR['modulo-id'] : false ),
 		'moduloVersao' => (isset($_GESTOR['modulo-versao']) ? $_GESTOR['modulo-versao'] : false ),
 		'moduloOpcao' => (isset($_GESTOR['opcao']) ? $_GESTOR['opcao'] : false ),
+		'widgetsToAjax' => (isset($_GESTOR['widgetsToAjax']) ? $_GESTOR['widgetsToAjax'] : null ),
 		'moduloCaminho' => $caminho,
 	);
 	
@@ -1579,6 +1610,7 @@ function gestor_roteador(){
 	
 	$_GESTOR['ajax'] = (isset($_REQUEST['ajax']) ? true : false);
 	$_GESTOR['ajaxPagina'] = (isset($_REQUEST['ajaxPagina']) ? true : false);
+	$_GESTOR['ajaxWidgets'] = (isset($_REQUEST['ajaxWidgets']) ? $_REQUEST['ajaxWidgets'] : false);
 	$_GESTOR['ajax-opcao'] = (isset($_REQUEST['ajaxOpcao']) ? banco_escape_field($_REQUEST['ajaxOpcao']) : false);
 	$_GESTOR['opcao'] = (isset($_REQUEST['opcao']) ? banco_escape_field($_REQUEST['opcao']) : false);
 	$_GESTOR['paginaIframe'] = (isset($_REQUEST['paginaIframe']) ? true : false);
@@ -1669,6 +1701,20 @@ function gestor_roteador(){
 		." AND (tipo='sistema' OR tipo='pagina')"
 		." AND status='A'"
 	);
+
+	// ===== Caso não encontre a página e a mesma exista em linguagem diferente do padrão do sistema, devolver a página com a primeira língua disponível.
+
+	if(!isset($paginas)){
+		$paginas = banco_select_name
+		(
+			banco_campos_virgulas($campos)
+			,
+			"paginas",
+			"WHERE caminho='".banco_escape_field($caminho)."'"
+			." AND (tipo='sistema' OR tipo='pagina')"
+			." AND status='A'"
+		);
+	}
 	
 	// ===== Verificar se a página existe. Se sim, montar a página, executar módulo se houver e imprimir. Senão gerar erro 404 ou redirecionar para página 404.
 
@@ -1755,6 +1801,10 @@ function gestor_roteador(){
 			if(is_file($module_path)){
 				require_once($module_path);
 			}
+
+			// ===== Incluir controladores de widgets na requisição AJAX.
+
+			gestor_pagina_widgets_ajax();
 			
 			// ===== Retornar a página formatada para o cliente. Ou erro caso haja.
 			
@@ -1766,6 +1816,7 @@ function gestor_roteador(){
 				gestor_roteador_erro(Array(
 					'codigo' => 500,
 					'ajax' => $_GESTOR['ajax'],
+					'mensagem' => 'AJAX error: No response data set.',
 				));
 			}
 		} else {

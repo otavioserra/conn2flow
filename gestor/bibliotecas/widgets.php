@@ -28,6 +28,7 @@ $_GESTOR['biblioteca-widgets']							=	Array(
  * Função principal para obter widgets. Busca o widget e devolve o controlador específico do widget para processar o HTML, além de incluir CSS e JS necessários.
  *
  * @global array $_GESTOR Configurações globais do sistema.
+ * @global bool $_GESTOR['ajax'] Indica se a chamada é via AJAX.
  * 
  * @param array|false $params Parâmetros da função.
  * @param string $params['id'] Identificador único do widget (obrigatório).
@@ -68,6 +69,24 @@ function widgets_get($params = false){
 
 			// chamar a função se estiver disponível
 			if(function_exists($func)){
+				// Incluir "_ajax" slug no nome da função caso for chamada via AJAX e disparar a função correspondente.
+				if($_GESTOR['ajax']){
+					$func .= '_ajax';
+				} else {
+					// Incluir o widget no registro de widgets AJAX para uso posterior das chamadas AJAX para esse widget.
+					if (!isset($_GESTOR['widgetsToAjax'])) {
+						$widgetsToAjax = '';
+					} else {
+						$widgetsToAjax = $_GESTOR['widgetsToAjax'];
+					}
+
+					$widgetsAjaxList = array_filter(explode('<#;>', $widgetsToAjax));
+					if (!in_array($id, $widgetsAjaxList, true)) {
+						$widgetsAjaxList[] = $id;
+						$_GESTOR['widgetsToAjax'] = implode('<#;>', $widgetsAjaxList);
+					}
+				}
+
 				$callbackResult = call_user_func($func, $paramsArray);
 			}
 		}
