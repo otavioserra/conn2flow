@@ -954,6 +954,12 @@ function plataforma_gateways_start() {
         ));
     }
     
+    // Se módulo foi identificado e o segmento seguinte NÃO é um gateway conhecido,
+    // trata como endpoint direto do módulo: /_gateways/{module_id}/{endpoint}[/{sub}]
+    if (!empty($modulo_id) && !in_array($gateway, $known_gateways)) {
+        plataforma_gateways_modulo_direto($modulo_id, $gateway);
+    }
+    
     // Roteamento por gateway
     switch ($gateway) {
         case 'paypal':
