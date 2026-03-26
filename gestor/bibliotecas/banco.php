@@ -418,7 +418,7 @@ function banco_select($params = false){
 	// Valida parâmetros obrigatórios
 	if(isset($campos) && isset($tabela)){
 		// ===== Montar os campos com separação em vírgula.
-		$camposVirgulas = ($campos == '*' ? $campos : banco_campos_virgulas($campos));
+		$camposVirgulas = ($campos == '*' ? $campos : (is_array($campos) ? banco_campos_virgulas($campos) : $campos));
 		
 		// ===== Montar SQL com ou sem condições extras
 		if(isset($extra)){
