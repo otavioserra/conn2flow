@@ -5551,6 +5551,15 @@ function interface_finalizar($params = false){
 	if(isset($_GESTOR['interface-nao-aplicar'])){
 		return;
 	}
+
+	// ===== Disparar hook de página
+
+	if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+		hook_do_action($_GESTOR['modulo-id'], $_GESTOR['opcao'] . '.parametros');
+		if(isset($_GESTOR['interface-opcao'])) {
+			hook_do_action($_GESTOR['modulo-id'], $_GESTOR['interface-opcao'] . '.parametros');
+		}
+	}
 	
 	if(isset($_GESTOR['interface'])){
 		if(isset($_GESTOR['interface'][$_GESTOR['opcao']])){
