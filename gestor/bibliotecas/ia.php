@@ -86,6 +86,12 @@ function ia_renderizar_prompt($params = false){
 
 	// ===== BUSCAR PROMPTS =====
 
+	// Build WHERE clause for prompts
+	$where_prompts = "WHERE alvo = '".banco_escape_field($alvo)."' AND status = 'A' AND language = '".$_GESTOR['linguagem-codigo']."'";
+
+	// Hook: permite filtrar o WHERE de prompts (ex: multi-usuário)
+	$where_prompts = hook_apply_filters('ia', 'prompts.load.where', $where_prompts);
+
 	// Buscar prompts da tabela prompts_ia filtrados por alvo
 	$prompts = banco_select(Array(
 		'tabela' => 'prompts_ia',
@@ -94,7 +100,7 @@ function ia_renderizar_prompt($params = false){
 			'nome',
 		),
 		'extra' =>
-			"WHERE alvo = '".banco_escape_field($alvo)."' AND status = 'A' AND language = '".$_GESTOR['linguagem-codigo']."'"
+			$where_prompts
 	));
 
 	// Gerar prompt do select

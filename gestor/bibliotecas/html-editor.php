@@ -420,6 +420,11 @@ function html_editor_ajax_templates_load(){
 	$idioma = $_GESTOR['linguagem-codigo'];
 
 	// Buscar templates no banco de dados
+	$where_templates = "WHERE status = 'A' AND framework_css = '" . banco_escape_field($framework_css) . "' AND language = '" . banco_escape_field($idioma) . "' AND target = '" . banco_escape_field($alvo) . "'";
+
+	// Hook: permite filtrar o WHERE de templates (ex: multi-usuário)
+	$where_templates = hook_apply_filters('html-editor', 'templates.load.where', $where_templates);
+
 	$retorno_bd = banco_select([
 		'tabela' => 'templates',
 		'campos' => [
@@ -435,7 +440,7 @@ function html_editor_ajax_templates_load(){
 			'framework_css',
 		],
 		'extra' => 
-			"WHERE status = 'A' AND framework_css = '" . banco_escape_field($framework_css) . "' AND language = '" . banco_escape_field($idioma) . "' AND target = '" . banco_escape_field($alvo) . "'"
+			$where_templates
 			." ORDER BY data_modificacao DESC"
 			." LIMIT " . $limite . " OFFSET " . $offset
 	]);

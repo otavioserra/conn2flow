@@ -45,7 +45,7 @@ token_recuperacao VARCHAR(255),
 token_expiracao DATETIME
 ```
 
-## 📁 File Structure
+## � File Structure
 
 ```
 gestor/modulos/perfil-usuario/

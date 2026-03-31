@@ -1554,6 +1554,18 @@ function perfil_usuario_signup(){
 			
 			$id_usuarios = banco_last_id();
 			
+			// ===== Hook: signup.banco — permite integração de módulos externos no cadastro de novos usuários.
+			
+			gestor_incluir_biblioteca('hooks');
+			
+			hook_do_action('perfil-usuario', 'signup.banco', $id_usuarios, [
+				'nome'   => $nome,
+				'email'  => banco_escape_field($_REQUEST['email']),
+				'id'     => $id,
+				'plano'  => $_REQUEST['plano'] ?? null,
+				'domain' => $_REQUEST['domain'] ?? null,
+			]);
+			
 			// ===== Criar um plano de usuário para o usuário em questão.
 
 			if(!$desativado_planos){
@@ -1703,13 +1715,18 @@ function perfil_usuario_signup(){
 			gestor_redirecionar('signup/');
 		}
 		
-		// ===== Se o usuário for válido, redirecionar para o local pretendido se houver, senão para dashboard.
+		// ===== Hook: signup.redirect — permite módulos redirecionarem o usuário após cadastro.
+		
+		$signup_redirect = 'dashboard/';
 		
 		if(existe(gestor_sessao_variavel("redirecionar-local"))){
-			gestor_redirecionar();
-		} else {
-			gestor_redirecionar('dashboard/');
+			$signup_redirect = gestor_sessao_variavel("redirecionar-local");
+			gestor_sessao_variavel_del("redirecionar-local");
 		}
+		
+		$signup_redirect = hook_apply_filters('perfil-usuario', 'signup.redirect', $signup_redirect, $id_usuarios);
+		
+		gestor_redirecionar($signup_redirect);
 	}
 	
 	// ===== Verifica se o cookie está ativo no navegador do usuário.

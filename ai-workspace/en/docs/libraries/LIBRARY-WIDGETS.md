@@ -1,65 +1,72 @@
 # Library: widgets.php
 
-> 🧩 Reusable widgets system
+> Modular dynamic widgets system
 
 ## Overview
 
-The `widgets.php` library provides a system for creating and managing widgets - reusable components with their own functionality, isolated CSS, and JavaScript. Supports form validation, reCAPTCHA integration, and access control.
+The `widgets.php` library provides a system for rendering **dynamic components (widgets) directly into page HTML**. It serves as a bridge between static content and module back-end logic, allowing specific PHP functions of a module to be called directly from special HTML markers.
 
-**Location**: `gestor/bibliotecas/widgets.php`  
-**Version**: 1.0.1  
-**Total Functions**: 4 (3 main + 1 specific controller)
+The flow is: `gestor.php` scans the page HTML looking for the `@[[widgets#...]]@` marker and passes the inner string to `widgets_get()`, which parses the format, includes the module's `.widget.php` file, and executes the requested function — returning the HTML result to replace the original marker.
+
+**Location**: `gestor/bibliotecas/widgets.php`
+**Version**: 2.0.0
+**Total Functions**: 1 main
 
 ## Dependencies
 
-- **Libraries**: gestor.php, modelo.php, formulario.php, autenticacao.php
-- **Global Variables**: `$_GESTOR`, `$_CONFIG`
-- **JavaScript**: widgets.js, jQuery-Mask-Plugin
+- **Global Variables**: `$_GESTOR`
+- **Context**: Loaded by `gestor.php` on-demand via `gestor_incluir_biblioteca('widgets')`
 
 ## Global Variables
 
-```php
-$_GESTOR['biblioteca-widgets'] = Array(
-    'versao' => '1.0.1',
-    'widgets' => Array(
-        'formulario-contato' => Array(
-            'versao' => '1.0.2',
-            'componenteID' => 'widgets-formulario-contato',
-            'jsCaminho' => 'widgets.js',
-            'modulosExtras' => 'contatos'
-        ),
-        // Add more widgets here
-    ),
-);
+Only version registration and the pending AJAX widgets list:
 
-// Cache of included CSS/JS
-$_GESTOR['widgets-css'][$widget_id] = true;
-$_GESTOR['widgets-js'][$js_path] = true;
-```
+- `$_GESTOR['biblioteca-widgets']['versao']` = `2.0.0`
+- `$_GESTOR['widgetsToAjax']` — string with identifiers separated by `<#;>` for widgets that need an AJAX callback
 
 ---
 
-## Widget Structure
+## Structure and Operation
 
-### Configuration
+### HTML Syntax
 
-Each widget is defined in `$_GESTOR['biblioteca-widgets']['widgets']`:
+The marker inserted into Conn2Flow page HTML follows the format:
 
-```php
-'widget-id' => Array(
-    'versao' => '1.0.0',              // Widget version
-    'componenteID' => 'componente-id', // HTML component ID
-    'jsCaminho' => 'script.js',        // JavaScript file
-    'modulosExtras' => 'modulo1,modulo2' // Modules for variables
-)
+```
+@[[widgets#MODULE_ID->FUNCTION(JSON_PARAMS)]]@
 ```
 
-### HTML Component
+Where:
+- `MODULE_ID`: The ID of the module that contains the widget logic.
+- `FUNCTION`: The name of the PHP function to call.
+- `JSON_PARAMS`: A valid JSON string with the parameters for the function.
 
-Stored in the `componentes` database table with:
-- Widget HTML
-- Isolated CSS
-- Replaceable variables
+**Example:**
+```html
+@[[widgets#my-module->render_list({"limit": 5, "order": "desc"})]]@
+```
+
+### Processing in gestor.php
+
+`gestor.php` uses a regex pattern to find all widget markers in the page, then calls `widgets_get()` for each one and replaces the marker with the returned HTML.
+
+```php
+// @[[widgets#MODULE_ID->FUNCTION(JSON_PARAMS)]]@  (new modular format)
+// @[[widgets#simple-name]]@                       (backward compatibility)
+$pattern = "/".preg_quote($open)."widgets#(.+?)".preg_quote($close)."/i";
+preg_match_all($pattern, $_GESTOR['pagina'], $matchesWidgets);
+
+foreach($matchesWidgets[1] as $match){
+    $widget = widgets_get(Array('id' => $match));
+    if(existe($widget)){
+        $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], $open."widgets#".$match.$close, $widget);
+    }
+}
+```
+
+### AJAX Support
+
+When a widget is processed during a normal (non-AJAX) request, the system automatically registers its identifier in `$_GESTOR['widgetsToAjax']`. On subsequent AJAX requests, `gestor.php` calls `gestor_pagina_widgets_ajax()` which reuses `widgets_get()` — but this time calling the `_ajax` suffixed function (e.g., `render_list_ajax()`).
 
 ---
 
@@ -67,7 +74,7 @@ Stored in the `componentes` database table with:
 
 ### widgets_get()
 
-Renders and returns a complete widget.
+Processes and renders a complete widget by ID.
 
 **Signature:**
 ```php
@@ -75,479 +82,147 @@ function widgets_get($params = false)
 ```
 
 **Parameters (Associative Array):**
-- `id` (string) - **Required** - Unique widget identifier
+- `id` (string) — **Required** — Widget identifier in the format `MODULE_ID->FUNCTION(JSON_PARAMS)` or a simple name for backward compatibility.
 
 **Return:**
-- (string) - Rendered widget HTML
+- (string) — Processed and complete widget HTML, or empty string if not found.
 
-**Usage Example:**
+**Internal flow:**
+
+```
+widgets_get(['id' => 'my-module->render_list({"limit": 5})'])
+  |
+  +-- 1. preg_match extracts: module="my-module", func="render_list", json='{"limit": 5}'
+  |
+  +-- 2. json_decode converts to PHP array: ['limit' => 5]
+  |
+  +-- 3. require_once: gestor/modulos/my-module/my-module.widget.php
+  |
+  +-- 4. Checks if AJAX:
+  |        +-- YES: calls render_list_ajax(['limit' => 5])
+  |        +-- NO:  registers in $_GESTOR['widgetsToAjax'], calls render_list(['limit' => 5])
+  |
+  +-- 5. Returns resulting HTML (or '' if function doesn't exist)
+```
+
+**Usage example (internal use by gestor.php):**
 ```php
-// Include contact form widget
 $widget_html = widgets_get(Array(
-    'id' => 'formulario-contato'
-));
-
-echo $widget_html;
-```
-
-**Behavior:**
-1. Fetches widget configuration
-2. Loads HTML component from database
-3. Executes specific controller (if exists)
-4. Includes CSS only once
-5. Includes JavaScript only once
-6. Registers extra modules for variables
-7. Returns processed HTML
-
-**Notes:**
-- CSS and JS are included only once per page
-- Uses cache to avoid duplication
-- Global variables are automatically replaced
-
----
-
-### widgets_search()
-
-Searches for a widget configuration.
-
-**Signature:**
-```php
-function widgets_search($params = false)
-```
-
-**Parameters (Associative Array):**
-- `id` (string) - **Required** - Widget identifier
-
-**Return:**
-- (array|null) - Widget configuration or null
-
-**Usage Example:**
-```php
-$config = widgets_search(Array(
-    'id' => 'formulario-contato'
-));
-
-if ($config) {
-    echo "Version: " . $config['versao'];
-    echo "Component: " . $config['componenteID'];
-}
-```
-
----
-
-### widgets_controller()
-
-Central controller that dispatches to specific controllers.
-
-**Signature:**
-```php
-function widgets_controller($params = false)
-```
-
-**Parameters (Associative Array):**
-- `id` (string) - **Required** - Widget ID
-- `html` (string) - **Required** - Widget HTML
-
-**Return:**
-- (string) - Processed HTML
-
-**Usage Example:**
-```php
-// Internal use by widgets_get() function
-$html = widgets_controller(Array(
-    'id' => 'formulario-contato',
-    'html' => $widget_html
+    'id' => 'my-module->render_list({"limit": 5})'
 ));
 ```
 
-**Available Controllers:**
-- `'formulario-contato'` → `widgets_formulario_contato()`
-
 ---
 
-### widgets_formulario_contato()
+## How to Create a Widget in a Module
 
-Specific controller for the contact form widget.
+### 1. Create the widget file
 
-**Signature:**
-```php
-function widgets_formulario_contato($params = false)
-```
+In the module directory (`gestor/modulos/your-module/`), create: `your-module.widget.php`
 
-**Parameters (Associative Array):**
-- `html` (string) - **Required** - Widget HTML
-
-**Return:**
-- (string) - Processed HTML with validations and controls
-
-**Features:**
-1. **Form Validation**
-   - Name required
-   - Valid email
-   - Phone not empty
-   - Message required
-
-2. **Access Control**
-   - Checks rate limiting by IP
-   - Shows message if blocked
-   - Hides form if blocked
-
-3. **reCAPTCHA**
-   - Integrates Google reCAPTCHA v3
-   - Activates only if configured
-   - Bypass for whitelisted users
-
-4. **Input Masks**
-   - Includes jQuery Mask Plugin
-   - Applies masks automatically
-
-**Usage Example:**
-```php
-// Include widget on page
-echo widgets_get(Array('id' => 'formulario-contato'));
-
-// Resulting HTML includes:
-// - Form with validation
-// - reCAPTCHA (if configured)
-// - Phone mask
-// - Block message (if applicable)
-```
-
----
-
-## Common Use Cases
-
-### 1. Create New Widget
+### 2. Define the PHP function
 
 ```php
-// 1. Register widget
-$_GESTOR['biblioteca-widgets']['widgets']['my-widget'] = Array(
-    'versao' => '1.0.0',
-    'componenteID' => 'componente-my-widget',
-    'jsCaminho' => 'my-widget.js',
-    'modulosExtras' => 'my-module'
-);
+<?php
 
-// 2. Create component in database
-banco_insert_name(Array(
-    Array('id', 'componente-my-widget'),
-    Array('html', '<div class="my-widget">[[content]]</div>'),
-    Array('css', '.my-widget { padding: 20px; }'),
-    Array('language', 'en')
-), 'componentes');
+function render_list($params = array()) {
+    $limit = isset($params['limit']) ? (int)$params['limit'] : 10;
+    $order = isset($params['order']) ? $params['order']       : 'asc';
 
-// 3. Create controller (optional)
-function widgets_my_widget($params = false) {
-    if($params)foreach($params as $var => $val)$$var = $val;
-    
-    if(isset($html)){
-        // Process HTML
-        $html = str_replace('[[content]]', 'My Content', $html);
-        return $html;
+    $items = banco_select(Array(
+        'tabela' => 'my_items',
+        'campos' => Array('id', 'titulo', 'descricao'),
+        'extra'  => "WHERE status = 'A' ORDER BY titulo " . strtoupper($order) . " LIMIT " . $limit,
+    ));
+
+    if (empty($items)) {
+        return '<p>No items found.</p>';
     }
-    
-    return '';
-}
 
-// 4. Add to controller
-function widgets_controller($params = false){
-    // ... existing code ...
-    switch($id){
-        case 'formulario-contato': 
-            $html = widgets_formulario_contato(Array('html' => $html)); 
-            break;
-        case 'my-widget':
-            $html = widgets_my_widget(Array('html' => $html));
-            break;
+    $html = '<ul class="my-module-list">';
+    foreach ($items as $item) {
+        $html .= '<li>' . htmlspecialchars($item['titulo']) . '</li>';
     }
-    // ...
-}
+    $html .= '</ul>';
 
-// 5. Use on page
-echo widgets_get(Array('id' => 'my-widget'));
-```
-
-### 2. Newsletter Widget
-
-```php
-// Register
-$_GESTOR['biblioteca-widgets']['widgets']['newsletter'] = Array(
-    'versao' => '1.0.0',
-    'componenteID' => 'widget-newsletter',
-    'jsCaminho' => 'newsletter.js'
-);
-
-// Controller
-function widgets_newsletter($params = false) {
-    global $_GESTOR;
-    
-    if($params)foreach($params as $var => $val)$$var = $val;
-    
-    if(isset($html)){
-        gestor_incluir_biblioteca('formulario');
-        
-        // Validation
-        formulario_validacao(Array(
-            'formId' => 'form-newsletter',
-            'validacao' => Array(
-                Array(
-                    'regra' => 'email',
-                    'campo' => 'email',
-                    'label' => 'Email'
-                )
-            )
-        ));
-        
-        // Process submission
-        if (isset($_POST['email'])) {
-            $email = $_POST['email'];
-            
-            // Save to database
-            banco_insert_name(Array(
-                Array('email', $email),
-                Array('data_cadastro', 'NOW()', true, false)
-            ), 'newsletter_emails');
-            
-            // Show success message
-            $html = str_replace('<!-- form < -->', '', $html);
-            $html = str_replace('<!-- form > -->', '', $html);
-        }
-        
-        return $html;
-    }
-    
-    return '';
+    return $html;
 }
 ```
 
-### 3. Search Widget
+### 3. Insert the marker in the HTML page
 
-```php
-function widgets_search($params = false) {
-    if($params)foreach($params as $var => $val)$$var = $val;
-    
-    if(isset($html)){
-        // Process search
-        if (isset($_GET['q'])) {
-            $term = banco_escape_field($_GET['q']);
-            
-            $results = banco_select(Array(
-                'campos' => Array('titulo', 'resumo', 'url'),
-                'tabela' => 'conteudos',
-                'extra' => "WHERE titulo LIKE '%$term%' OR conteudo LIKE '%$term%' LIMIT 10"
-            ));
-            
-            $cel_result = modelo_tag_val($html, '<!-- resultado < -->', '<!-- resultado > -->');
-            $html = modelo_tag_in($html, '<!-- resultado < -->', '<!-- resultado > -->', '<!-- resultados -->');
-            
-            if ($results) {
-                $html_results = '';
-                
-                foreach ($results as $result) {
-                    $item = $cel_result;
-                    $item = str_replace('[[titulo]]', $result['titulo'], $item);
-                    $item = str_replace('[[resumo]]', $result['resumo'], $item);
-                    $item = str_replace('[[url]]', $result['url'], $item);
-                    $html_results .= $item;
-                }
-                
-                $html = modelo_var_in($html, '<!-- resultados -->', $html_results);
-            } else {
-                $html = modelo_var_in($html, '<!-- resultados -->', '<p>No results found.</p>');
-            }
-        }
-        
-        return $html;
-    }
-    
-    return '';
-}
+```html
+@[[widgets#my-module->render_list({"limit": 5, "order": "desc"})]]@
 ```
 
-### 4. Widget with Authentication
+### 4. AJAX function (optional)
+
+If the widget needs to respond to AJAX requests without reloading the page, create a function with the `_ajax` suffix:
 
 ```php
-function widgets_user_area($params = false) {
-    global $_GESTOR;
-    
-    if($params)foreach($params as $var => $val)$$var = $val;
-    
-    if(isset($html)){
-        gestor_incluir_biblioteca('autenticacao');
-        
-        $user = gestor_usuario();
-        
-        if ($user) {
-            // User logged in
-            $html = modelo_tag_in($html, '<!-- nao-logado < -->', '<!-- nao-logado > -->', '');
-            $html = str_replace('[[nome-usuario]]', $user['nome'], $html);
-            $html = str_replace('[[email-usuario]]', $user['email'], $html);
-        } else {
-            // User not logged in
-            $html = modelo_tag_in($html, '<!-- logado < -->', '<!-- logado > -->', '');
-        }
-        
-        return $html;
-    }
-    
-    return '';
-}
-```
-
-### 5. Widget with Ajax
-
-```php
-function widgets_comments($params = false) {
-    if($params)foreach($params as $var => $val)$$var = $val;
-    
-    if(isset($html)){
-        $page_id = $_GET['pagina_id'] ?? null;
-        
-        if ($page_id) {
-            // Load comments
-            $comments = banco_select(Array(
-                'campos' => Array('autor', 'comentario', 'data'),
-                'tabela' => 'comentarios',
-                'extra' => "WHERE pagina_id='$page_id' AND aprovado=1 ORDER BY data DESC"
-            ));
-            
-            $cel_comment = modelo_tag_val($html, '<!-- comentario < -->', '<!-- comentario > -->');
-            $html = modelo_tag_in($html, '<!-- comentario < -->', '<!-- comentario > -->', '<!-- lista-comentarios -->');
-            
-            $html_comments = '';
-            
-            if ($comments) {
-                foreach ($comments as $comment) {
-                    $item = $cel_comment;
-                    $item = str_replace('[[autor]]', htmlspecialchars($comment['autor']), $item);
-                    $item = str_replace('[[comentario]]', htmlspecialchars($comment['comentario']), $item);
-                    $item = str_replace('[[data]]', date('d/m/Y H:i', strtotime($comment['data'])), $item);
-                    $html_comments .= $item;
-                }
-            } else {
-                $html_comments = '<p>No comments yet. Be the first!</p>';
-            }
-            
-            $html = modelo_var_in($html, '<!-- lista-comentarios -->', $html_comments);
-            $html = str_replace('[[pagina-id]]', $page_id, $html);
-        }
-        
-        return $html;
-    }
-    
-    return '';
+function render_list_ajax($params = array()) {
+    // Return empty string on success, error message string on failure
+    $data = [/* ... */];
+    echo json_encode($data);
+    exit;
 }
 ```
 
 ---
 
-## reCAPTCHA Integration
+## Backward Compatibility
 
-### Configuration
+Simple IDs (without modular notation) continue to work:
 
-```php
-// In configuracao.php or similar
-$_CONFIG['usuario-recaptcha-active'] = true;
-$_CONFIG['usuario-recaptcha-site'] = 'your-site-key';
-$_CONFIG['usuario-recaptcha-secret'] = 'your-secret-key';
+```html
+@[[widgets#simple-widget-name]]@
 ```
 
-### Validation in Controller
+In this case, if the ID doesn't match the `MODULE->FUNCTION(...)` pattern, the modular block is not activated and the function returns an empty string. This behavior can be expanded in the future to look up legacy widgets in database or resource files.
+
+---
+
+## Security
+
+Always sanitize parameters received via JSON before using them in queries or HTML output:
 
 ```php
-function validate_recaptcha($token) {
-    global $_CONFIG;
-    
-    $secret = $_CONFIG['usuario-recaptcha-secret'];
-    $url = 'https://www.google.com/recaptcha/api/siteverify';
-    
-    $data = Array(
-        'secret' => $secret,
-        'response' => $token
-    );
-    
-    $options = Array(
-        'http' => Array(
-            'method' => 'POST',
-            'header' => 'Content-Type: application/x-www-form-urlencoded',
-            'content' => http_build_query($data)
-        )
-    );
-    
-    $context = stream_context_create($options);
-    $response = file_get_contents($url, false, $context);
-    $result = json_decode($response, true);
-    
-    return $result['success'] && $result['score'] >= 0.5;
-}
+$id    = isset($params['id'])   ? (int)$params['id']                : 0;
+$name  = isset($params['name']) ? htmlspecialchars($params['name'])  : '';
+$field = isset($params['q'])    ? banco_escape_field($params['q'])   : '';
 ```
 
 ---
 
 ## Patterns and Best Practices
 
-### CSS Isolation
+### Consistent Return
 
 ```php
-// ✅ GOOD - CSS with specific prefix
-.widget-formulario-contato input {
-    /* styles */
-}
-
-// ❌ AVOID - Generic CSS
-input {
-    /* affects all inputs on page */
+// GOOD — always return string (never null or false)
+function my_widget($params = array()) {
+    if (empty($params)) return '';
+    return $html;
 }
 ```
 
-### Versioning
+### Naming Convention
 
-```php
-// ✅ Increment version when updating JavaScript
-'versao' => '1.0.1', // CSS/HTML changed
-'versao' => '1.1.0', // JS changed (cache-busting)
-```
-
-### Validation
-
-```php
-// ✅ Always validate on server
-// Do not trust only JavaScript validation
-```
-
----
-
-## Limitations and Considerations
-
-### Performance
-
-- Widgets include CSS/JS on page
-- Multiple widgets can increase page size
-- Use minification in production
-
-### Cache
-
-- CSS/JS are cached by version
-- Incrementing version forces reload
-- Browser cache can cause issues
-
-### Security
-
-- Always sanitize user input
-- Use `htmlspecialchars()` in output
-- Validate on server, not just client
+- Function names must be unique across the entire project.
+- Recommended: use module ID as prefix — e.g. `catalog_widget_list()`.
+- The AJAX version must have the same name + `_ajax` suffix — e.g. `catalog_widget_list_ajax()`.
 
 ---
 
 ## See Also
 
-- [LIBRARY-MANAGER.md](./LIBRARY-MANAGER.md) - Components
-- [LIBRARY-FORM.md](./LIBRARY-FORM.md) - Validation
-- [LIBRARY-AUTHENTICATION.md](./LIBRARY-AUTHENTICATION.md) - Access control
-- [LIBRARY-TEMPLATE.md](./LIBRARY-TEMPLATE.md) - Templates
+- [LIBRARY-MANAGER.md](./LIBRARY-MANAGER.md) — System components and variables
+- [INTERFACE-V2-ARCHITECTURE.md](../INTERFACE-V2-ARCHITECTURE.md) — Module CRUD operations
+- [LIBRARY-TEMPLATE.md](./LIBRARY-TEMPLATE.md) — Template and variable substitution
+- [LIBRARY-DATABASE.md](./LIBRARY-DATABASE.md) — Database operations
 
 ---
 
-**Last Update**: October 2025  
-**Documentation Version**: 1.0.0  
+**Last Updated**: March 2026
+**Documentation Version**: 2.0.0
 **Maintainer**: Conn2Flow Team
