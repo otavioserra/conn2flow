@@ -645,7 +645,11 @@ function pruneOldUpdateLogs(string $logsDir, int $retentionDays, bool $debug=fal
 // ----------------------------
 function hookBeforeFiles(array &$context): void {}
 function hookAfterDb(array &$context): void {}
-function hookAfterAll(array &$context): void {}
+function hookAfterAll(array &$context): void {
+    // Após deploy completo: sincronizar tabela hooks com JSONs de módulos e projeto
+    require_once dirname(__FILE__) . '/atualizacoes-hooks.php';
+    atualizacoes_hooks_sincronizar();
+}
 
 // ----------------------------
 // MAIN

@@ -117,6 +117,14 @@ function admin_paginas_adicionar(){
 			$modulo['tabela']['nome']
 		);
 		
+		// Hook: notificar que um registro do módulo foi adicionado no banco de dados
+		hook_do_action($_GESTOR['modulo-id'], 'adicionar.banco', $id, [
+			'nome' => banco_escape_field($_REQUEST['pagina-nome'] ?? ''),
+			'caminho' => banco_escape_field($_REQUEST['paginaCaminho'] ?? ''),
+			'tipo' => banco_escape_field($_REQUEST['tipo'] ?? ''),
+			'modulo' => banco_escape_field($_REQUEST['modulo'] ?? ''),
+		]);
+
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
 	}
 
@@ -449,6 +457,13 @@ function admin_paginas_editar(){
 				'alteracoes' => $alteracoes,
 			));
 			
+			// Hook: notificar que um registro do módulo foi editado no banco
+			hook_do_action($_GESTOR['modulo-id'], 'editar.banco', (isset($id_novo) ? $id_novo : $id), [
+				'nome' => banco_escape_field($_REQUEST['pagina-nome'] ?? ''),
+				'caminho' => banco_escape_field($_REQUEST['paginaCaminho'] ?? ''),
+				'alteracoes' => $alteracoes ?? [],
+			]);
+
 			// ===== Se mudou o caminho, criar página 301 do caminho
 			
 			if(isset($caminhoMudou)){
@@ -838,6 +853,14 @@ function admin_paginas_clonar(){
 			$modulo['tabela']['nome']
 		);
 		
+		// Hook: notificar que um registro do módulo foi clonado no banco de dados
+		hook_do_action($_GESTOR['modulo-id'], 'clonar.banco', $id, [
+			'nome' => banco_escape_field($_REQUEST['pagina-nome'] ?? ''),
+			'caminho' => banco_escape_field($_REQUEST['paginaCaminho'] ?? ''),
+			'tipo' => banco_escape_field($_REQUEST['tipo'] ?? ''),
+			'clonado' => true,
+		]);
+
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
 	}
 

@@ -261,6 +261,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'banco' => Array('banco.php'),
 	'gestor' => Array('gestor.php'),
 	'modelo' => Array('modelo.php'),
+	'hooks' => Array('hooks.php'),
 	'interface' => Array('interface.php'),
 	'html' => Array('html.php'),
 	'usuario' => Array('usuario.php'),
@@ -293,7 +294,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 
 // Bibliotecas principais do sistema
 
-$_GESTOR['bibliotecas']							=	Array('banco','gestor','modelo');
+$_GESTOR['bibliotecas']							=	Array('banco','gestor','modelo','hooks');
 
 if(isset($_GESTOR['bibliotecas']))
 foreach($_GESTOR['bibliotecas'] as $_biblioteca){

@@ -11,6 +11,7 @@ dev-plugins/plugins/*
 *.log
 logs/
 gestor/logs/
+gestor/project/
 
 # Arquivos temporários
 temp/

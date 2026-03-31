@@ -3469,6 +3469,10 @@ function interface_excluir_finalizar($params = false){
 		);
 	}
 	$editar = false;$editar_sql = false;
+
+	// ===== Hook: notificar que um registro do módulo foi excluído no banco de dados.
+
+	hook_do_action($_GESTOR['modulo-id'], 'excluir.banco', $id);
 	
 	// ===== Se a função callback for definida, executar a função específica.
 	
@@ -3609,6 +3613,10 @@ function interface_status_finalizar($params = false){
 			),
 		));
 	}
+	
+	// ===== Hook: notificar que um registro do módulo foi excluído no banco de dados
+
+	hook_do_action($_GESTOR['modulo-id'], 'status.banco', $id, $mudar_status);
 	
 	// ===== Se a função callback for definida, executar a função específica.
 	
@@ -5431,7 +5439,6 @@ function interface_ajax_iniciar($params = false){
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
-	
 }
 
 function interface_ajax_finalizar($params = false){
@@ -5476,6 +5483,15 @@ function interface_iniciar($params = false){
 	
 	if(isset($_GESTOR['interface-nao-aplicar'])){
 		return;
+	}
+
+	// ===== Disparar hook de POST
+	
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		hook_do_action($_GESTOR['modulo-id'], $_GESTOR['opcao'] . '.pre-banco');
+		if(isset($_GESTOR['interface-opcao'])) {
+			hook_do_action($_GESTOR['modulo-id'], $_GESTOR['interface-opcao'] . '.pre-banco');
+		}
 	}
 	
 	if(isset($_GESTOR['interface'])){
@@ -5583,6 +5599,15 @@ function interface_finalizar($params = false){
 			case 'listar': interface_listar_finalizar($parametros); break;
 			case 'config': interface_config_finalizar($parametros); break;
 			case 'visualizar': interface_visualizar_finalizar($parametros); break;
+		}
+	}
+
+	// ===== Disparar hook de página
+
+	if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+		hook_do_action($_GESTOR['modulo-id'], $_GESTOR['opcao'] . '.pagina');
+		if(isset($_GESTOR['interface-opcao'])) {
+			hook_do_action($_GESTOR['modulo-id'], $_GESTOR['interface-opcao'] . '.pagina');
 		}
 	}
 	

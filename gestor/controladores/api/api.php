@@ -260,6 +260,10 @@ function api_project_update() {
         // Executar atualização de banco de dados do projeto (inline, sem shell_exec)
         api_executar_atualizacao_banco($project_path, $project_id);
 
+        // Sincronizar hooks do projeto após atualização do banco
+        require_once $_GESTOR['controladores-path'] . 'atualizacoes/atualizacoes-hooks.php';
+        atualizacoes_hooks_sincronizar();
+
         // Limpar arquivos temporários
         api_remove_directory($extract_dir);
 
