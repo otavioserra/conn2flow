@@ -1,6 +1,6 @@
 # Biblioteca: widgets.php
 
-> í·© Sistema modular de widgets dinÃ¢micos
+> ï¿½ï¿½ï¿½ Sistema modular de widgets dinÃ¢micos
 
 ## VisÃ£o Geral
 
