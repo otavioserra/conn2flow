@@ -218,14 +218,15 @@ $(document).ready(function () {
     // ===== Prompt Events
 
     let actualPromptId = null;
+    let canEditPrompt = true; // Fix 5: Flag de permissão de edição/exclusão do prompt selecionado
 
     codeMirrorPrompt.on("change", function (instance, changeObj) {
         var newContent = instance.getValue();
 
         if (newContent.length > 0) {
             $('.ai-prompt-clear').removeClass('disabled');
-            if (actualPromptId !== null) $('.ai-prompt-edit').removeClass('disabled');
-            if (actualPromptId !== null) $('.ai-prompt-del').removeClass('disabled');
+            if (actualPromptId !== null && canEditPrompt) $('.ai-prompt-edit').removeClass('disabled');
+            if (actualPromptId !== null && canEditPrompt) $('.ai-prompt-del').removeClass('disabled');
         } else {
             $('.ai-prompt-clear').addClass('disabled');
             if (actualPromptId !== null) $('.ai-prompt-edit').addClass('disabled');
@@ -288,11 +289,14 @@ $(document).ready(function () {
             nome
         };
         ajax.successCallback = function (response) {
-            $('.ui.ai-prompt-select').find('select').append(response.option);
+            // Fix 5: Novo prompt criado pelo usuário atual — pode editar/deletar
+            var optionHtml = response.option;
+            $('.ui.ai-prompt-select').find('select').append(optionHtml);
             $('.ui.ai-prompt-select').dropdown('refresh');
             setTimeout(function () {
                 $('.ui.ai-prompt-select').dropdown('set selected', response.id, true);
                 actualPromptId = response.id;
+                canEditPrompt = true;
                 if (actualPromptId !== null) {
                     $('.ai-prompt-del').removeClass('disabled');
                     $('.ai-prompt-edit').removeClass('disabled');
@@ -391,6 +395,14 @@ $(document).ready(function () {
 
         var prompt_id = $(this).dropdown('get value');
 
+        // Fix 5: Verificar ownership do prompt selecionado
+        var selectedOption = $(this).find('select option[value="' + prompt_id + '"]');
+        var promptOwner = selectedOption.data('id-usuarios');
+        canEditPrompt = true;
+        if (ia.acessoCompletoPrompts === false && promptOwner !== undefined) {
+            canEditPrompt = (String(promptOwner) === String(ia.userId));
+        }
+
         const ajax = ajaxDefault;
 
         ajax.ajaxOpcao = 'ia-prompts';
@@ -403,9 +415,12 @@ $(document).ready(function () {
             codeMirrorPrompt.getDoc().setValue(response.prompt);
             codeMirrorPrompt.refresh();
             actualPromptId = prompt_id;
-            if (actualPromptId !== null) {
+            if (actualPromptId !== null && canEditPrompt) {
                 $('.ai-prompt-del').removeClass('disabled');
                 $('.ai-prompt-edit').removeClass('disabled');
+            } else if (actualPromptId !== null && !canEditPrompt) {
+                $('.ai-prompt-del').addClass('disabled');
+                $('.ai-prompt-edit').addClass('disabled');
             }
         };
 

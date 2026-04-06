@@ -88,6 +88,11 @@ $(document).ready(function () {
 		$(document.body).on('caminho-change', '#gestor-listener', function (e, value, p) {
 			if (!p) p = {};
 
+			// Fix 3: Prefixar user slug se disponível (multi-usuário)
+			if ('userSlugPrefix' in gestor && gestor.userSlugPrefix.length > 0) {
+				value = gestor.userSlugPrefix + '/' + value;
+			}
+
 			$('input[name="paginaCaminho"]').val(formatar_url(value));
 		});
 

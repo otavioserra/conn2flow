@@ -228,6 +228,11 @@ $(document).ready(function () {
 				value = gestor.publisherPathPrefix + '/' + value;
 			}
 
+			// Fix 3: Prefixar user slug como prefixo externo (multi-usuário)
+			if ('userSlugPrefix' in gestor && gestor.userSlugPrefix.length > 0) {
+				value = gestor.userSlugPrefix + '/' + value;
+			}
+
 			$('input[name="paginaCaminho"]').val(formatar_url(value));
 		});
 

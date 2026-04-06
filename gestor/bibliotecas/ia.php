@@ -98,6 +98,7 @@ function ia_renderizar_prompt($params = false){
 		'campos' => Array(
 			'id',
 			'nome',
+			'id_usuarios',
 		),
 		'extra' =>
 			$where_prompts
@@ -109,7 +110,9 @@ function ia_renderizar_prompt($params = false){
 		$select_prompt .= '<option value="">'.gestor_variaveis(Array('id' => 'ia-form-prompt-start-option')).'</option>';
 
 		foreach($prompts as $prompt){
-			$select_prompt .= '<option value="'.$prompt['id'].'">'.htmlspecialchars($prompt['nome']).'</option>';
+			$option_html = '<option value="'.$prompt['id'].'">'.htmlspecialchars($prompt['nome']).'</option>';
+			$option_html = hook_apply_filters('ia', 'prompt.option', $option_html, $prompt);
+			$select_prompt .= $option_html;
 		}
 	} else {
 		$without_prompt = gestor_variaveis(Array('id' => 'ia-component-without-prompt'));
@@ -213,12 +216,17 @@ function ia_renderizar_prompt($params = false){
 	$prompt_name_empty = gestor_variaveis(Array('id' => 'ia-ajax-msg-prompt-name-empty'));
 
 	// Incluir variável JS
-	gestor_js_variavel_incluir('ia',[
+	$ia_config = [
 		'alvo' => $alvo,
 		'msgs' => [
 			'prompt_name_empty' => $prompt_name_empty,
 		],
-	]);
+	];
+
+	// Hook: permite injetar dados extras na config JS (ex: userId, acessoCompletoPrompts)
+	$ia_config = hook_apply_filters('ia', 'config', $ia_config);
+
+	gestor_js_variavel_incluir('ia', $ia_config);
 
 	// Carregar componente
 	$ia_prompt = gestor_componente(Array(

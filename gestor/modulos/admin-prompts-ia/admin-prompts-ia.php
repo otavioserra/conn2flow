@@ -59,7 +59,10 @@ function admin_prompts_ia_adicionar(){
 		
 		if($_REQUEST['padrao'] == 'on'){
 			banco_update_campo('padrao', 0);
-			banco_update_executar('prompts_ia', "WHERE alvo = '" . banco_escape_field($_REQUEST['alvo']) . "'");
+			$padrao_where = "WHERE alvo = '" . banco_escape_field($_REQUEST['alvo']) . "'";
+			// Hook: permite restringir o UPDATE de padrao aos registros do usuário (Fix 4)
+			$padrao_where = hook_apply_filters('admin-prompts-ia', 'padrao.update.where', $padrao_where);
+			banco_update_executar('prompts_ia', $padrao_where);
 		}
 		
 		// ===== Campos padrões
@@ -222,7 +225,10 @@ function admin_prompts_ia_editar(){
 		
 		if($_REQUEST['padrao'] == 'on' && banco_select_campos_antes('padrao') != '1'){
 			banco_update_campo('padrao', '0');
-			banco_update_executar('prompts_ia', "WHERE alvo = '" . banco_escape_field($_REQUEST['alvo']) . "'");
+			$padrao_where = "WHERE alvo = '" . banco_escape_field($_REQUEST['alvo']) . "'";
+			// Hook: permite restringir o UPDATE de padrao aos registros do usuário (Fix 4)
+			$padrao_where = hook_apply_filters('admin-prompts-ia', 'padrao.update.where', $padrao_where);
+			banco_update_executar('prompts_ia', $padrao_where);
 		}
 		
 		// ===== Valores padrões da tabela e regras para o campo nome
