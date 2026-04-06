@@ -1589,6 +1589,8 @@ function interface_formulario_campos($params = false){
 					$imagepickJS['alertas'] = Array(
 						'naoImagem' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-alert-not-image')),
 					);
+
+					$imagepickJS = hook_apply_filters('interface', 'formulario_campos.imagepickJS', $imagepickJS);
 					
 					// ===== Se existe o arquivo, baixar dados do banco, senão definir valores padrões
 					

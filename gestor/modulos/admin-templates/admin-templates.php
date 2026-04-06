@@ -139,6 +139,7 @@ function admin_templates_adicionar(){
 
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
 		'alvo' => isset($alvo)? $alvo : 'paginas',
+		'alvos_modelos' => 'paginas,publisher',
 	]));
 
 	// ===== Inclusão Módulo JS

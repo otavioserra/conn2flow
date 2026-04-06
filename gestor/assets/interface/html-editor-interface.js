@@ -235,6 +235,7 @@ $(document).ready(function () {
             pagina: modelos_pagina,
             limite: 20,
             alvo: ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas'),
+            alvos_modelos: ('alvos_modelos' in gestor.html_editor ? gestor.html_editor.alvos_modelos : ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas')),
             framework_css
         };
 

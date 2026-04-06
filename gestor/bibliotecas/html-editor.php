@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => '1.1.0',
+	'versao' => '1.1.1',
 );
 
 // ===== Funções auxiliares
@@ -69,6 +69,7 @@ function html_editor_publisher_controls($params = false){
  * @param string $params['adicionarEditar'] caso seja adição mas queira modificar HTML e CSS.
  * @param array $params['modulo'] dados do módulo atual.
  * @param array $params['alvo'] alvo de modelos e ia.
+ * @param array $params['alvos_modelos'] alvos extras para modelos.
  * @param array $params['publisher'] variáveis do publisher.
  * @param array $params['publisherPage'] controles específicos do publisher page.
  * 
@@ -160,6 +161,7 @@ function html_editor_componente($params = false){
 	// ===== Incluir variável JS do alvo para o frontend
 	gestor_js_variavel_incluir('html_editor',[
 		'alvo' => $alvo,
+		'alvos_modelos' => isset($alvos_modelos)? $alvos_modelos : $alvo,
 	]);
 
 	// ===== Modificações específicas por alvo
@@ -414,13 +416,24 @@ function html_editor_ajax_templates_load(){
 	$limite = (int)($_REQUEST['params']['limite'] ?? 10);
 	$framework_css = ($_REQUEST['params']['framework_css'] ?? 'fomantic-ui');
 	$alvo = ($_REQUEST['params']['alvo'] ?? 'paginas');
+	$alvos_modelos = ($_REQUEST['params']['alvos_modelos'] ?? $alvo);
 	$offset = ($pagina - 1) * $limite;
 
 	// Pegar idioma atual
 	$idioma = $_GESTOR['linguagem-codigo'];
 
+	// Filtrar por modelos
+	if(strpos($alvos_modelos,',') !== false){
+		$alvos_modelos_array = explode(',',$alvos_modelos);
+		$alvos_modelos_array = array_map('trim',$alvos_modelos_array);
+		$alvos_modelos_array = array_map(function($item){ return "'" . banco_escape_field($item) . "'"; }, $alvos_modelos_array);
+		$alvos_modelos_string = implode(',',$alvos_modelos_array);
+		$where_templates = "WHERE status = 'A' AND framework_css = '" . banco_escape_field($framework_css) . "' AND language = '" . banco_escape_field($idioma) . "' AND target IN (" . $alvos_modelos_string . ")";
+	} else {
+		$where_templates = "WHERE status = 'A' AND framework_css = '" . banco_escape_field($framework_css) . "' AND language = '" . banco_escape_field($idioma) . "' AND target = '" . banco_escape_field($alvo) . "'";
+	}
+
 	// Buscar templates no banco de dados
-	$where_templates = "WHERE status = 'A' AND framework_css = '" . banco_escape_field($framework_css) . "' AND language = '" . banco_escape_field($idioma) . "' AND target = '" . banco_escape_field($alvo) . "'";
 
 	// Hook: permite filtrar o WHERE de templates (ex: multi-usuário)
 	$where_templates = hook_apply_filters('html-editor', 'templates.load.where', $where_templates);
@@ -479,7 +492,7 @@ function html_editor_ajax_templates_load(){
 		'tabela' => 'templates',
 		'campos' => ['COUNT(*) as total'],
 		'extra' => 
-			"WHERE status = 'A' AND framework_css = '" . banco_escape_field($framework_css) . "' AND language = '" . banco_escape_field($idioma) . "' AND target = '" . banco_escape_field($alvo) . "'"
+			$where_templates
 	]);
 
 	$tem_mais = false;
