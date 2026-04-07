@@ -1474,7 +1474,7 @@ function perfil_usuario_signup(){
 					'msg' => $alerta
 				));
 				
-				gestor_redirecionar('signup/');
+				gestor_redirecionar('signup/',gestor_querystring_before_submit());
 			}
 			
 			// ===== Independente do plano que o usuário escolher, sempre iniciar o mesmo com o perfil do usuário padrão.
@@ -1712,7 +1712,7 @@ function perfil_usuario_signup(){
 				'msg' => $alerta
 			));
 			
-			gestor_redirecionar('signup/');
+			gestor_redirecionar('signup/',gestor_querystring_before_submit());
 		}
 		
 		// ===== Hook: signup.redirect — permite módulos redirecionarem o usuário após cadastro.

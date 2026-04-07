@@ -86,6 +86,8 @@ $(document).ready(function () {
 	}
 
 	function formIniciar(p = {}) {
+		var $form = $('.ui.form.interfaceFormPadrao');
+
 		if (typeof gestor.interface.validarCampos !== typeof undefined && gestor.interface.validarCampos !== false) {
 			var validarCampos = gestor.interface.validarCampos;
 		}
@@ -119,25 +121,25 @@ $(document).ready(function () {
 						var erro = campoId + "_erro";
 
 						errorObjcs[erro] = validarCampos[campo].prompt;
-						$('.ui.form.interfaceFormPadrao').form('add prompt', campoId, [erro]);
+						$form.form('add prompt', campoId, [erro]);
 					} else {
-						$('.ui.form.interfaceFormPadrao').form('validate field', campoId);
+						$form.form('validate field', campoId);
 					}
 				}
 
 				carregar_fechar();
 
 				if (peloMenosUmEhInvalido) {
-					$('.ui.form.interfaceFormPadrao').form('add errors', errorObjcs);
+					$form.form('add errors', errorObjcs);
 				} else {
-					$('.ui.form.interfaceFormPadrao').form('remove errors');
+					$form.form('remove errors');
 
 					if (typeof formVars.formDontAutoSubmit !== typeof undefined && formVars.formDontAutoSubmit !== false) {
 						$.formSubmit({
 							id: 'validarCampos',
 						});
 					} else {
-						$('.ui.form.interfaceFormPadrao').unbind('submit').submit();
+						$form.unbind('submit').submit();
 					}
 				}
 			}
@@ -205,73 +207,89 @@ $(document).ready(function () {
 			}
 		}
 
-		$('.ui.form.interfaceFormPadrao')
-			.form({
-				fields: (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
-				onSuccess: function (event, fields) {
-					var retorno = true;
+		// ===== Adiciona campo hidden com a query string atual
 
-					if (typeof validarCampos !== typeof undefined && validarCampos !== false) {
-						formVars.optionsToValidate.push({
-							id: 'validarCampos',
-							valido: false,
-						});
+		var queryString = window.location.search; // inclui "?" se houver
+		var fieldName = '_c2f_query_string_before_submit';
 
-						var carregar = false;
+		if ($form.length > 0) {
+			if ($form.find('input[name="' + fieldName + '"]').length === 0) {
+				$('<input>', {
+					type: 'hidden',
+					name: fieldName,
+					value: queryString
+				}).appendTo($form);
+			} else {
+				$form.find('input[name="' + fieldName + '"]').val(queryString);
+			}
+		}
 
-						for (field in fields) {
-							if (validarCampos[field]) {
-								var validar = false;
+		$form.form({
+			fields: (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
+			onSuccess: function (event, fields) {
+				var retorno = true;
 
-								if (typeof validarCampos[field].valor !== typeof undefined) {
-									if (validarCampos[field].valor != fields[field] || !validarCampos[field].valido) {
-										validar = true;
-									}
-								} else {
+				if (typeof validarCampos !== typeof undefined && validarCampos !== false) {
+					formVars.optionsToValidate.push({
+						id: 'validarCampos',
+						valido: false,
+					});
+
+					var carregar = false;
+
+					for (field in fields) {
+						if (validarCampos[field]) {
+							var validar = false;
+
+							if (typeof validarCampos[field].valor !== typeof undefined) {
+								if (validarCampos[field].valor != fields[field] || !validarCampos[field].valido) {
 									validar = true;
 								}
+							} else {
+								validar = true;
+							}
 
-								if (validar) {
-									if (!carregar) {
-										carregar = true;
-										carregar_abrir();
-									}
+							if (validar) {
+								if (!carregar) {
+									carregar = true;
+									carregar_abrir();
+								}
 
-									validarCampos[field].verificado = false;
-									validarCampos[field].valor = fields[field];
+								validarCampos[field].verificado = false;
+								validarCampos[field].valor = fields[field];
 
-									if (typeof validarCampos[field].campo !== typeof undefined) {
-										validarCampo(validarCampos[field].language ?? false, validarCampos[field].valor, field, validarCampos[field].campo);
-									} else {
-										validarCampo(validarCampos[field].language ?? false, fields[field], field);
-									}
+								if (typeof validarCampos[field].campo !== typeof undefined) {
+									validarCampo(validarCampos[field].language ?? false, validarCampos[field].valor, field, validarCampos[field].campo);
+								} else {
+									validarCampo(validarCampos[field].language ?? false, fields[field], field);
 								}
 							}
 						}
+					}
 
+					retorno = false;
+				}
+
+				if (typeof p.formOnSuccessCalback !== typeof undefined && p.formOnSuccessCalback !== false) {
+					formVars.optionsToValidate.push({
+						id: 'formOnSuccessCalback',
+						valido: false,
+					});
+
+					formVars.formDontAutoSubmit = true;
+
+					if (p.formOnSuccessCalbackFunc()) {
+						retorno = true;
+					} else {
 						retorno = false;
 					}
 
-					if (typeof p.formOnSuccessCalback !== typeof undefined && p.formOnSuccessCalback !== false) {
-						formVars.optionsToValidate.push({
-							id: 'formOnSuccessCalback',
-							valido: false,
-						});
+					retorno = false;
+				}
 
-						formVars.formDontAutoSubmit = true;
-
-						if (p.formOnSuccessCalbackFunc()) {
-							retorno = true;
-						} else {
-							retorno = false;
-						}
-
-						retorno = false;
-					}
-
-					return retorno;
-				},
-			});
+				return retorno;
+			},
+		});
 	}
 
 	// ===== Interfaces

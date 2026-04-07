@@ -959,6 +959,27 @@ function gestor_querystring_variavel($queryString,$variavel = ''){
 }
 
 /**
+ * Recupera a query string antes do envio do formulário via campo hidden.
+ *
+ * @param string $fieldName Nome do campo hidden enviado pelo formulário.
+ * @param string $default Valor padrão se o campo não estiver definido.
+ * @return string Query string enviada no formulário, sem o "?" inicial.
+ */
+function gestor_querystring_before_submit($fieldName = '_c2f_query_string_before_submit', $default = '') {
+    if (isset($_REQUEST[$fieldName]) && $_REQUEST[$fieldName] !== '') {
+        $queryString = $_REQUEST[$fieldName];
+
+        if (substr($queryString, 0, 1) === '?') {
+            $queryString = substr($queryString, 1);
+        }
+
+        return banco_escape_field($queryString);
+    }
+
+    return $default;
+}
+
+/**
  * Obtém a query string atual da requisição.
  *
  * Retorna a query string removendo parâmetros internos do gestor
