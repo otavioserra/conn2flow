@@ -271,7 +271,7 @@ function gestor_pagina_menu($params = false){
 		$cel_aux = $cel[$cel_nome];
 		
 		$cel_aux = modelo_var_troca($cel_aux,"#nome#",(existe($modulo['titulo']) ? $modulo['titulo'] : $modulo['nome']));
-		$cel_aux = modelo_var_troca($cel_aux,"#class#",($modulo['id'] == $_GESTOR['modulo-id'] ? ' active':''));
+		$cel_aux = modelo_var_troca($cel_aux,"#class#",(isset($_GESTOR['modulo-id']) && $modulo['id'] == $_GESTOR['modulo-id'] ? ' active':''));
 		
 		if($modulo['icone2']){
 			$cel_nome_icon = 'icon-2';
@@ -1719,6 +1719,9 @@ function gestor_roteador(){
 	// ===== Verificar se a página existe. Se sim, montar a página, executar módulo se houver e imprimir. Senão gerar erro 404 ou redirecionar para página 404.
 
 	if(isset($paginas)){
+		// ===== Definir o módulo alvo da página.
+		$_GESTOR['modulo'] = $paginas[0]['modulo'];
+
 		// ===== Verificar linguagens de uma página
 
 		$paginas_languages = banco_select_name
@@ -1748,9 +1751,6 @@ function gestor_roteador(){
 		if(!existe($paginas[0]['sem_permissao'])){
 			gestor_permissao();
 		}
-
-		// ===== Definir o módulo alvo da página.
-		$_GESTOR['modulo'] = $paginas[0]['modulo'];
 
 		// ====== Definir variáveis.
 		$modulo = $paginas[0]['modulo'];

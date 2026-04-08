@@ -808,8 +808,6 @@ function admin_templates_interfaces_padroes(){
 					'where' => "language='".$_GESTOR['linguagem-codigo']."'",
 				),
 				'tabela' => Array(
-					'cabecalho' => $dados['cabecalho'],
-					'rodape' => true,
 					'colunas' => Array(
 						Array(
 							'id' => 'nome',

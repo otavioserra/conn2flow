@@ -272,15 +272,11 @@ $(document).ready(function () {
 			}
 
 			function performAjaxSubmit(form, data, clickedButton = null) {
-				if (!('formData' in data) || !data.formData) {
-					data.formData = new FormData(form[0]);
+				const formData = new FormData(form[0]);
 
-					data.formData.append('ajax', '1');
-					data.formData.append('ajaxOpcao', data.ajaxOpcao || 'forms-process');
-					data.formData.append('_formId', data.formId);
-				}
-
-				const formData = data.formData ?? {};
+				formData.append('ajax', '1');
+				formData.append('ajaxOpcao', data.ajaxOpcao || 'forms-process');
+				formData.append('_formId', data.formId);
 
 				$.ajax({
 					url: data.formAction || form.attr('action') || window.location.href,
@@ -331,7 +327,7 @@ $(document).ready(function () {
 
 			function proceedWithRecaptchaV2(form, data, clickedButton = null) {
 				// Mostrar mensagem para usuário completar v2
-				showError(data.ui.texts.requireV2Message, data, clickedButton, form);
+				showError(data.ui.texts.requireV2Message, data, clickedButton, form, true);
 
 				var recaptchaHtml = data.ui.components.recaptchaV2;
 				var recaptchaDiv = $(recaptchaHtml);
@@ -352,11 +348,17 @@ $(document).ready(function () {
 				});
 			}
 
-			function showError(message, data, clickedButton = null, form) {
+			function showError(message, data, clickedButton = null, form, isRecaptchaV2 = false) {
 				clearError(data, form);
 				var errorMessageKey = (data.framework === 'fomantic-ui') ? 'errorMessageFomantic' : 'errorMessageTailwind';
 				var errorMessage = data.ui.components[errorMessageKey].replace('#message#', message);
 				var errorDiv = $(errorMessage);
+
+				// Ajustar estilo do formulário para acomodar o reCAPTCHAv2, se necessário
+				if (isRecaptchaV2) {
+					errorDiv.css('margin-bottom', '1em');
+				}
+
 				if (clickedButton && clickedButton.length) {
 					clickedButton.before(errorDiv);
 				} else {

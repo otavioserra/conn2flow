@@ -8,14 +8,14 @@
  *
  * @package Conn2Flow
  * @subpackage Bibliotecas
- * @version 1.0.4
+ * @version 1.1.0
  */
 
 global $_GESTOR;
 
 // Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-formulario']							=	Array(
-	'versao' => '1.0.0',
+	'versao' => '1.1.0',
 );
 
 // ===== Funções auxiliares

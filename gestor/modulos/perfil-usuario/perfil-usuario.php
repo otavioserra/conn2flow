@@ -1369,11 +1369,6 @@ function perfil_usuario_signup(){
 	global $_GESTOR;
 	global $_CONFIG;
 
-	// ===== Desativar planos e hosts
-
-	$desativado_planos = true;
-	$desativado_hosts = true;
-
 	// ===== Verificar a permissão do acesso.
 	
 	gestor_incluir_biblioteca('autenticacao');
@@ -1477,7 +1472,7 @@ function perfil_usuario_signup(){
 				gestor_redirecionar('signup/',gestor_querystring_before_submit());
 			}
 			
-			// ===== Independente do plano que o usuário escolher, sempre iniciar o mesmo com o perfil do usuário padrão.
+			// ===== Iniciar o usuário com o perfil de usuário padrão.
 			
 			$usuarios_perfis = banco_select(Array(
 				'unico' => true,
@@ -1486,13 +1481,31 @@ function perfil_usuario_signup(){
 					'id_usuarios_perfis',
 				),
 				'extra' => 
-					"WHERE padrao IS NOT NULL"
+					"WHERE padrao IS NOT NULL AND language='".$_GESTOR['linguagem-codigo']."'"
 			));
 			
 			if($usuarios_perfis['id_usuarios_perfis']){
 				$id_usuarios_perfis = $usuarios_perfis['id_usuarios_perfis'];
 			} else {
 				$id_usuarios_perfis = $_CONFIG['usuario-perfil-id-padrao'];
+			}
+			
+			// ===== Se o plano foi informado, buscar o perfil de usuário correspondente ao plano.
+			
+			if(!empty($_REQUEST['plano'])){
+				$perfil_plano = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'usuarios_perfis',
+					'campos' => Array(
+						'id_usuarios_perfis',
+					),
+					'extra' => 
+						"WHERE id='".banco_escape_field($_REQUEST['plano'])."' AND language='".$_GESTOR['linguagem-codigo']."'"
+				));
+				
+				if($perfil_plano && $perfil_plano['id_usuarios_perfis']){
+					$id_usuarios_perfis = $perfil_plano['id_usuarios_perfis'];
+				}
 			}
 			
 			// ===== Gerar hash da senha
@@ -1566,59 +1579,6 @@ function perfil_usuario_signup(){
 				'domain' => $_REQUEST['domain'] ?? null,
 			]);
 			
-			// ===== Criar um plano de usuário para o usuário em questão.
-
-			if(!$desativado_planos){
-				if(isset($_REQUEST['plano'])){
-					$id_usuarios_planos = banco_escape_field($_REQUEST['plano']);
-					
-					$campos = null; $campo_sem_aspas_simples = null;
-					
-					$campo_nome = "id_usuarios"; $campo_valor = $id_usuarios; 						$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-					$campo_nome = "id_usuarios_planos"; $campo_valor = $id_usuarios_planos; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-					$campo_nome = "status"; $campo_valor = 'P';					 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples); // P - Pendente
-					$campo_nome = "data_criacao"; $campo_valor = 'NOW()';					 		$campos[] = Array($campo_nome,$campo_valor,true);
-					
-					banco_insert_name
-					(
-						$campos,
-						"usuarios_planos_usuarios"
-					);
-				}
-			}
-			
-			if(!$desativado_hosts){
-				// ===== Criar pré host e vincular o usuário ao mesmo, bem como indicar o status 'I' que necessita de instalação
-
-				$campos = null; $campo_sem_aspas_simples = null;
-				
-				$campo_nome = "id_usuarios"; $campo_valor = $id_usuarios; 							$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "status"; $campo_valor = 'I';					 						$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples); // I - Pendente de Instalação
-				$campo_nome = "data_criacao"; $campo_valor = 'NOW()';						 		$campos[] = Array($campo_nome,$campo_valor,true);
-				
-				banco_insert_name
-				(
-					$campos,
-					"hosts"
-				);
-				
-				$id_hosts = banco_last_id();
-				
-				// ===== Vincular host aos usuários admins do host do mesmo
-				
-				$campos = null; $campo_sem_aspas_simples = null;
-				
-				$campo_nome = "id_usuarios"; $campo_valor = $id_usuarios; 							$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "id_hosts"; $campo_valor = $id_hosts; 								$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "privilegios_admin"; $campo_valor = '1'; 								$campos[] = Array($campo_nome,$campo_valor,true);
-				
-				banco_insert_name
-				(
-					$campos,
-					"usuarios_gestores_hosts"
-				);
-			}
-			
 			// ===== Logar o usuário 
 			
 			usuario_gerar_token_autorizacao(Array(
@@ -1654,48 +1614,63 @@ function perfil_usuario_signup(){
 			
 			// ===== Enviar o email confirmando o cadastro junto com a URL de confirmação do email.
 			
-			$nome = $_REQUEST['nome'];
-			$email = $_REQUEST['email'];
-			$numero = date('Ymd') . $tokens_id;
+			// ===== Hook: signup.email — permite módulos filtrarem o envio do email automático de cadastro.
 			
-			$assunto = modelo_var_troca(gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'signup-mail-subject')),"#numero#",$numero);
+			$enviar_email_signup = hook_apply_filters('perfil-usuario', 'signup.email', true, $id_usuarios, [
+				'nome'   => $_REQUEST['nome'],
+				'email'  => $_REQUEST['email'],
+				'plano'  => $_REQUEST['plano'] ?? null,
+				'domain' => $_REQUEST['domain'] ?? null,
+				'tokenPubId' => $tokenPubId,
+			]);
 			
-			gestor_incluir_biblioteca('comunicacao');
+			if($enviar_email_signup){
 			
-			if(comunicacao_email(Array(
-				'destinatarios' => Array(
-					Array(
-						'email' => $email,
-						'nome' => $nome,
-					),
-				),
-				'mensagem' => Array(
-					'assunto' => $assunto,
-					'htmlLayoutID' => 'layout-email-novo-cadastro',
-					'htmlVariaveis' => Array(
+				$nome = $_REQUEST['nome'];
+				$email = $_REQUEST['email'];
+				$numero = date('Ymd') . $tokens_id;
+				
+				$assunto = modelo_var_troca(gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'signup-mail-subject')),"#numero#",$numero);
+				
+				gestor_incluir_biblioteca('comunicacao');
+				
+				if(comunicacao_email(Array(
+					'destinatarios' => Array(
 						Array(
-							'variavel' => '#nome#',
-							'valor' => $nome,
-						),
-						Array(
-							'variavel' => '#url-signin#',
-							'valor' => '<a href="https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].'signin/">https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].'signin/</a>',
-						),
-						Array(
-							'variavel' => '#url-confirmacao#',
-							'valor' => '<a href="https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].'email-confirmation/?id='.$tokenPubId.'">https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].'email-confirmation/?id='.$tokenPubId.'</a>',
-						),
-						Array(
-							'variavel' => '#assinatura#',
-							'valor' => gestor_componente(Array(
-								'id' => 'layout-emails-assinatura',
-							)),
+							'email' => $email,
+							'nome' => $nome,
 						),
 					),
-				),
-			))){
-				// Email de confirmação enviado com sucesso!
-			}
+					'mensagem' => Array(
+						'assunto' => $assunto,
+						'htmlLayoutID' => 'layout-email-novo-cadastro',
+						'htmlVariaveis' => Array(
+							Array(
+								'variavel' => '#nome#',
+								'valor' => $nome,
+							),
+							Array(
+								'variavel' => '#url-signin#',
+								'valor' => '<a href="https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].'signin/">https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].'signin/</a>',
+							),
+							Array(
+								'variavel' => '#url-confirmacao#',
+								'valor' => '<a href="https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].'email-confirmation/?id='.$tokenPubId.'">https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'].'email-confirmation/?id='.$tokenPubId.'</a>',
+							),
+							Array(
+								'variavel' => '#assinatura#',
+								'valor' => gestor_componente(Array(
+									'id' => 'layout-emails-assinatura',
+								)),
+							),
+						),
+					),
+				))){
+					// Email de confirmação enviado com sucesso!
+				}
+			
+			} // fim do if($enviar_email_signup)
+			
 		} else {
 			// ===== Se o recaptcha for inválido, alertar o usuário.
 			
@@ -1758,48 +1733,10 @@ function perfil_usuario_signup(){
 	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
 	gestor_pagina_javascript_incluir();
 	
-	// ===== Planos
+	// ===== Planos: DESCONTINUADO! Será removido daqui.
 
-	if(!$desativado_planos){
-		$cel_nome = 'plano-cel'; $cel[$cel_nome] = modelo_tag_val($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
-		
-		$resultado = banco_select_name
-		(
-			banco_campos_virgulas(Array(
-				'id_usuarios_planos',
-				'nome',
-			))
-			,
-			"usuarios_planos",
-			"WHERE status='A'"
-			." AND publico IS NOT NULL"
-			." ORDER BY ordem ASC"
-		);
-		
-		if($resultado){
-			$checked = true;
-			
-			foreach($resultado as $res){
-				$val = $res['id_usuarios_planos'];
-				$nome = $res['nome'];
-				
-				$cel_aux = $cel[$cel_nome];
-				
-				$cel_aux = modelo_var_troca($cel_aux,' #checked#=""',($checked ? ' checked="checked"':''));
-				$cel_aux = modelo_var_troca($cel_aux,"#val#",$val);
-				$cel_aux = modelo_var_troca($cel_aux,"#nome#",$nome);
-				
-				$_GESTOR['pagina'] = modelo_var_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->',$cel_aux);
-				
-				$checked = false;
-			}
-		}
-		
-		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->','');
-	} else {
-		$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- plano-cont < -->','<!-- plano-cont > -->','');
-	}
-	
+	$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- plano-cont < -->','<!-- plano-cont > -->','');
+
 	// ===== Interface finalizar opções
 	
 	interface_componentes_incluir(Array(

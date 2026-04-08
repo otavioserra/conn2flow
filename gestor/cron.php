@@ -5,7 +5,7 @@
 $_GESTOR										=	Array();
 $_CRON											=	Array();
 
-$_GESTOR['bibliotecas']							=	Array('banco','gestor');
+$_GESTOR['bibliotecas']							=	Array('banco','gestor','modelo','hooks');
 
 // ===== Configurações pré-inclusão do config.
 
@@ -118,7 +118,7 @@ set_error_handler("cron_error_handler");
 // ===== Principal.
 
 function cron_pipeline(){
-	
+	hook_do_action('cron', 'diario');
 }
 
 function cron_start(){
