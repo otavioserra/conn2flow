@@ -73,7 +73,7 @@ $(document).ready(function () {
 			$('input[name="pagina-opcao"]').val(value);
 		});
 
-		$(document.body).on('keyup', 'input[name="pagina-nome"]', function (e) {
+		$(document.body).on('keyup', 'input[name="pagina-nome"],input[name="paginaCaminho"]', function (e) {
 			if (e.which == 9) return false;
 
 			var value = $(this).val();
@@ -88,9 +88,11 @@ $(document).ready(function () {
 		$(document.body).on('caminho-change', '#gestor-listener', function (e, value, p) {
 			if (!p) p = {};
 
-			// Fix 3: Prefixar user slug se disponível (multi-usuário)
 			if ('userSlugPrefix' in gestor && gestor.userSlugPrefix.length > 0) {
-				value = gestor.userSlugPrefix + '/' + value;
+				var prefix = gestor.userSlugPrefix.replace(/\/$/, '');
+				if (!value.startsWith(prefix + '/')) {
+					value = prefix + '/' + value;
+				}
 			}
 
 			$('input[name="paginaCaminho"]').val(formatar_url(value));
@@ -106,7 +108,7 @@ $(document).ready(function () {
 			url = url.replace(/\/{2,}/g, '/'); // Remover a repetição de barras para uma única barra.
 
 			// Sempre adicionar uma barra no final, ou retornar apenas "/" se estiver vazio
-			return url.length > 0 ? url + '/' : '/';
+			return url.length > 0 ? url + (url.substr(-1) !== '/' ? '/' : '') : '/';
 		}
 
 		function formatar_caminho(modulo, opcao) {

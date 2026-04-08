@@ -209,7 +209,7 @@ $(document).ready(function () {
 			$('input[name="pagina-opcao"]').val(value);
 		});
 
-		$(document.body).on('keyup', 'input[name="pagina-nome"]', function (e) {
+		$(document.body).on('keyup', 'input[name="pagina-nome"],input[name="paginaCaminho"]', function (e) {
 			if (e.which == 9) return false;
 
 			var value = $(this).val();
@@ -224,17 +224,38 @@ $(document).ready(function () {
 		$(document.body).on('caminho-change', '#gestor-listener', function (e, value, p) {
 			if (!p) p = {};
 
-			if ('publisherPathPrefix' in gestor && gestor.publisherPathPrefix.length > 0) {
-				value = gestor.publisherPathPrefix + '/' + value;
-			}
+			var userPrefix = normalizePrefix(gestor.userSlugPrefix);
+			var publisherPrefix = normalizePrefix(gestor.publisherPathPrefix);
+			var cleanValue = stripPrefixes(value, [userPrefix, publisherPrefix]);
 
-			// Fix 3: Prefixar user slug como prefixo externo (multi-usuário)
-			if ('userSlugPrefix' in gestor && gestor.userSlugPrefix.length > 0) {
-				value = gestor.userSlugPrefix + '/' + value;
-			}
+			var parts = [];
+			if (userPrefix) parts.push(userPrefix);
+			if (publisherPrefix) parts.push(publisherPrefix);
+			if (cleanValue) parts.push(cleanValue);
 
-			$('input[name="paginaCaminho"]').val(formatar_url(value));
+			var finalPath = parts.join('/');
+			$('input[name="paginaCaminho"]').val(formatar_url(finalPath));
 		});
+
+		function normalizePrefix(prefix) {
+			if (!prefix) return '';
+			return prefix.replace(/^\/+|\/+$/g, '');
+		}
+
+		function stripPrefixes(value, prefixes) {
+			if (!value) return '';
+			var v = value.replace(/^\/+/, '');
+			prefixes.forEach(function (prefix) {
+				if (!prefix) return;
+				var prefixWithSlash = prefix + '/';
+				if (v.toLowerCase().startsWith(prefixWithSlash.toLowerCase())) {
+					v = v.slice(prefixWithSlash.length);
+				} else if (v.toLowerCase() === prefix.toLowerCase()) {
+					v = '';
+				}
+			});
+			return v.replace(/^\/+/, '');
+		}
 
 		function formatar_url(url) {
 			url = url.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Trocar todos os caracteres com acentos pelos seus similares sem acento.
@@ -246,7 +267,7 @@ $(document).ready(function () {
 			url = url.replace(/\/{2,}/g, '/'); // Remover a repetição de barras para uma única barra.
 
 			// Sempre adicionar uma barra no final, ou retornar apenas "/" se estiver vazio
-			return url.length > 0 ? url + '/' : '/';
+			return url.length > 0 ? url + (url.substr(-1) !== '/' ? '/' : '') : '/';
 		}
 
 		function formatar_caminho(modulo, opcao) {

@@ -194,7 +194,7 @@ $(document).ready(function () {
 
         // ===== Format caminho pré-fixo
 
-        $(document.body).on('keyup', 'input[name="name"]', function (e) {
+        $(document.body).on('keyup', 'input[name="name"],input[name="path_prefix"]', function (e) {
             if (e.which == 9) return false;
 
             var value = $(this).val();
@@ -222,7 +222,7 @@ $(document).ready(function () {
             url = url.replace(/\/{2,}/g, '/'); // Remover a repetição de barras para uma única barra.
 
             // Sempre adicionar uma barra no final, ou retornar apenas "/" se estiver vazio
-            return url.length > 0 ? url + '/' : '/';
+            return url.length > 0 ? url + (url.substr(-1) !== '/' ? '/' : '') : '/';
         }
 
         // ===== Format slug ID

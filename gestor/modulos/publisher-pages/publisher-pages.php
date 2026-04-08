@@ -2017,6 +2017,9 @@ function publisher_pages_listar_cabecalho(){
 		"WHERE language='".$_GESTOR['linguagem-codigo']."' AND status!='D'"
 	);
 
+	// Hook: permite filtrar a lista de publishers no cabeçalho
+	$publisher = hook_apply_filters('publisher-pages', 'listar.publisher-select', $publisher);
+
 	if($publisher){
 		$selected = ' selected="selected"';
 
