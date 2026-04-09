@@ -172,11 +172,11 @@
     {
         "name": "Image Widget",
         "id": "widget-imagem",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "53ae2df5b19777bbe6b8ab98529a80d5",
+            "html": "2a5bcc1bef0cf237c1c6c68dea8c4fc0",
             "css": "ba0557b0e23e65afcce0a8da039e4a9b",
-            "combined": "c8b5857c48f0eb1122ca4efef54ccb5f"
+            "combined": "a5fb5159f4d72e07013009b953fd8bcc"
         }
     },
     {
