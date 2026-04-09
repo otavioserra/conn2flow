@@ -65,6 +65,33 @@ $(document).ready(function () {
 						submitForm(form, data, clickedButton);
 					}
 				});
+
+				// Máscara para telefone
+				form.find('input[type="tel"]').on('input', function () {
+					this.value = formatarTelefone(this.value);
+				});
+			}
+
+			function formatarTelefone(value) {
+				value = value.replace(/\D/g, '');
+
+				if (value.length > 11) {
+					value = value.slice(0, 11);
+				}
+
+				if (value.length <= 2) {
+					return value ? '(' + value : '';
+				}
+
+				if (value.length <= 6) {
+					return '(' + value.slice(0, 2) + ') ' + value.slice(2);
+				}
+
+				if (value.length <= 10) {
+					return '(' + value.slice(0, 2) + ') ' + value.slice(2, 6) + '-' + value.slice(6);
+				}
+
+				return '(' + value.slice(0, 2) + ') ' + value.slice(2, 7) + '-' + value.slice(7);
 			}
 
 			function validateAllFields(form, fields, prompts, framework, data) {
