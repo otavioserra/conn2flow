@@ -181,6 +181,11 @@ function ia_renderizar_prompt($params = false){
 	// Pegar modelo padrão
 	$modelo_padrao = ($adminIAData && isset($adminIAData['apis']['gemini']['defaultModel']) ? $adminIAData['apis']['gemini']['defaultModel'] : 'gemini-1.5-flash');
 
+	// Hook: permite filtrar quais modelos estão disponíveis por usuário
+	if ($modelosData && isset($modelosData['models']) && is_array($modelosData['models'])) {
+		$modelosData['models'] = hook_apply_filters('ia', 'models.available', $modelosData['models']);
+	}
+
 	$select_model = '';
 	$selected_model = '';
 	if($modelosData && isset($modelosData['models']) && is_array($modelosData['models'])){

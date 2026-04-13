@@ -155,6 +155,50 @@ function admin_ia_editar(){
     } else {
         $cel_nome = 'desativar-cel';$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
     }
+
+    // ===== Modelos Disponíveis Globalmente (ia_user_models com id_usuarios=0)
+    $modelosCheckboxesHtml = '';
+    $modelosDataPath = $_GESTOR['ROOT_PATH'] . '/modulos/admin-ia/gemini/' . ($_GESTOR['linguagem-codigo'] ?? 'pt-br') . '/data.json';
+    if (file_exists($modelosDataPath)) {
+        $modelosData = json_decode(file_get_contents($modelosDataPath), true);
+        if (!empty($modelosData['models']) && is_array($modelosData['models'])) {
+            // Buscar configuração global atual (id_usuarios=0)
+            $globalModels = [];
+            try {
+                $globalModelRows = banco_select([
+                    'tabela' => 'ia_user_models',
+                    'campos' => ['model_name', 'enabled'],
+                    'extra'  => "WHERE id_usuarios = '0'",
+                ]);
+                if ($globalModelRows) {
+                    foreach ($globalModelRows as $gm) {
+                        $globalModels[$gm['model_name']] = (int)$gm['enabled'];
+                    }
+                }
+            } catch (Exception $e) {
+                // Tabela pode não existir
+            }
+
+            foreach ($modelosData['models'] as $modelo) {
+                $modelName = htmlspecialchars($modelo['name'], ENT_QUOTES, 'UTF-8');
+                $displayName = htmlspecialchars($modelo['displayName'], ENT_QUOTES, 'UTF-8');
+                $description = htmlspecialchars($modelo['description'], ENT_QUOTES, 'UTF-8');
+                // Se não há registros globais, todos habilitados por padrão
+                $isEnabled = empty($globalModels) ? true : (($globalModels[$modelo['name']] ?? 0) === 1);
+                $checked = $isEnabled ? 'checked="checked"' : '';
+
+                $modelosCheckboxesHtml .= '<div class="field"><div class="ui toggle checkbox">'
+                    . '<input type="checkbox" name="global_model[]" value="' . $modelName . '" ' . $checked . '>'
+                    . '<label><strong>' . $displayName . '</strong> <small style="color: #999;">(' . $modelName . ')</small><br>'
+                    . '<small>' . $description . '</small></label>'
+                    . '</div></div>';
+            }
+        }
+    }
+    if (empty($modelosCheckboxesHtml)) {
+        $modelosCheckboxesHtml = '<p>Nenhum modelo disponível.</p>';
+    }
+    $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '[[global_models_checkboxes]]', $modelosCheckboxesHtml);
 }
 
 // ===== Interfaces Principais
@@ -644,6 +688,57 @@ function admin_ia_ajax_desativar(){
     );
 }
 
+/**
+ * AJAX: Salvar configuração global de modelos (ia_user_models com id_usuarios=0).
+ */
+function admin_ia_ajax_salvar_modelos_globais(){
+    global $_GESTOR;
+
+    $enabledModels = $_REQUEST['enabled_models'] ?? [];
+    if (is_string($enabledModels)) {
+        $enabledModels = json_decode($enabledModels, true) ?: [];
+    }
+
+    // Carregar todos os modelos do data.json
+    $modelosDataPath = $_GESTOR['ROOT_PATH'] . '/modulos/admin-ia/gemini/' . ($_GESTOR['linguagem-codigo'] ?? 'pt-br') . '/data.json';
+    if (!file_exists($modelosDataPath)) {
+        $_GESTOR['ajax-json'] = ['status' => 'error', 'message' => 'Arquivo de modelos não encontrado.'];
+        return;
+    }
+
+    $modelosData = json_decode(file_get_contents($modelosDataPath), true);
+    if (empty($modelosData['models'])) {
+        $_GESTOR['ajax-json'] = ['status' => 'error', 'message' => 'Nenhum modelo encontrado no arquivo.'];
+        return;
+    }
+
+    try {
+        // Remover registros globais existentes
+        banco_query("DELETE FROM ia_user_models WHERE id_usuarios = '0'");
+
+        // Inserir novos registros para cada modelo
+        foreach ($modelosData['models'] as $modelo) {
+            $modelName = banco_escape_field($modelo['name']);
+            $enabled = in_array($modelo['name'], $enabledModels) ? 1 : 0;
+
+            banco_insert_name_campo('id_usuarios', '0');
+            banco_insert_name_campo('model_name', $modelName);
+            banco_insert_name_campo('enabled', $enabled, true);
+            banco_insert_name(banco_insert_name_campos(), 'ia_user_models');
+        }
+
+        $_GESTOR['ajax-json'] = [
+            'status' => 'success',
+            'message' => 'Configuração de modelos salva com sucesso!',
+        ];
+    } catch (Exception $e) {
+        $_GESTOR['ajax-json'] = [
+            'status' => 'error',
+            'message' => 'Erro ao salvar: ' . $e->getMessage(),
+        ];
+    }
+}
+
 // ==== Start
 
 function admin_ia_start(){
@@ -660,6 +755,7 @@ function admin_ia_start(){
             case 'excluir': admin_ia_ajax_excluir(); break;
             case 'ativar': admin_ia_ajax_ativar(); break;
             case 'desativar': admin_ia_ajax_desativar(); break;
+            case 'salvar_modelos_globais': admin_ia_ajax_salvar_modelos_globais(); break;
         }
 
         interface_ajax_finalizar();

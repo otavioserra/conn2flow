@@ -587,3 +587,45 @@ $(document).ready(function () {
     }
 
 });
+
+// ===== Salvar Modelos Globais =====
+function salvarModelosGlobais() {
+    var enabledModels = [];
+    $('#form-global-models input[name="global_model[]"]:checked').each(function () {
+        enabledModels.push($(this).val());
+    });
+
+    var data = {
+        ajax: 'sim',
+        ajaxOpcao: 'salvar_modelos_globais',
+        enabled_models: JSON.stringify(enabledModels)
+    };
+
+    var btn = $('#btn-save-global-models');
+
+    $.ajax({
+        type: 'POST',
+        url: gestor.raiz + gestor.moduloCaminho + '/',
+        data: data,
+        dataType: 'json',
+        beforeSend: function () {
+            btn.addClass('loading').prop('disabled', true);
+        },
+        success: function (dados) {
+            btn.removeClass('loading').prop('disabled', false);
+            if (dados.status === 'success') {
+                $.toast({ class: 'success', message: dados.message });
+            } else {
+                $.toast({ class: 'error', message: dados.message || 'Erro desconhecido' });
+            }
+        },
+        error: function (txt) {
+            btn.removeClass('loading').prop('disabled', false);
+            if (txt.status === 401 && txt.responseJSON && txt.responseJSON.redirect) {
+                window.open(gestor.raiz + txt.responseJSON.redirect, '_self');
+            } else {
+                $.toast({ class: 'error', message: 'Erro na comunicação com o servidor' });
+            }
+        }
+    });
+}

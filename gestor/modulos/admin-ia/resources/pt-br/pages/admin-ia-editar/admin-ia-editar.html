@@ -73,6 +73,20 @@
                     <div class="ui active inline loader"></div> Carregando...
                 </div>
             </div>
+
+            <!-- Modelos Disponíveis Globalmente -->
+            <div class="ui segment">
+                <h3><i class="microchip icon"></i> Modelos Disponíveis Globalmente</h3>
+                <p class="text-muted">Selecione quais modelos de IA ficam disponíveis para todos os usuários. Modelos desativados aqui não aparecerão no seletor de modelos, a menos que habilitados individualmente por usuário.</p>
+                <div class="ui form" id="form-global-models">
+                    [[global_models_checkboxes]]
+                </div>
+                <div style="margin-top: 1em;">
+                    <button type="button" class="ui blue button" id="btn-save-global-models" onclick="salvarModelosGlobais()">
+                        <i class="save icon"></i> Salvar Configuração de Modelos
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

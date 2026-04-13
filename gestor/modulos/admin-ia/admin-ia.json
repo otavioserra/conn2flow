@@ -58,11 +58,11 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "89176e3bc2a781b816e9f757727978a5",
+                        "html": "f720734db6ec32e919ae7beea2894042",
                         "css": "",
-                        "combined": "89176e3bc2a781b816e9f757727978a5"
+                        "combined": "f720734db6ec32e919ae7beea2894042"
                     }
                 }
             ],
@@ -137,11 +137,11 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "ac998c9aafedad0c90acfee58bfc80d6",
+                        "html": "44238f4cdf0da21ae1a54060de4e7b1c",
                         "css": "",
-                        "combined": "ac998c9aafedad0c90acfee58bfc80d6"
+                        "combined": "44238f4cdf0da21ae1a54060de4e7b1c"
                     }
                 }
             ],

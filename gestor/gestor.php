@@ -1715,7 +1715,13 @@ function gestor_roteador(){
 			." AND status='A'"
 		);
 	}
-	
+
+	// ===== Hook: roteador.paginas
+	if (isset($paginas)) {
+		gestor_incluir_biblioteca('hooks');
+		$paginas = hook_apply_filters('gestor', 'roteador.paginas', $paginas);
+	}
+
 	// ===== Verificar se a página existe. Se sim, montar a página, executar módulo se houver e imprimir. Senão gerar erro 404 ou redirecionar para página 404.
 
 	if(isset($paginas)){
