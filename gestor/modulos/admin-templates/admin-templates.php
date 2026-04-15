@@ -461,6 +461,7 @@ function admin_templates_editar(){
 			'modulo' => $modulo,
 			'alvo' => $target,
 			'publisher' => isset($publisher) ? $publisher[0] : null,
+			'alvos_modelos' => 'paginas,publisher',
 		]));
 
 		// ===== Popular os metaDados
@@ -723,6 +724,7 @@ function admin_templates_clonar(){
 			'editar' => true,
 			'modulo' => $modulo,
 			'alvo' => $target,
+			'alvos_modelos' => 'paginas,publisher',
 		]));
 	} else {
 		gestor_redirecionar_raiz();
