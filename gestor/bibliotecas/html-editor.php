@@ -342,6 +342,8 @@ function html_editor_include($params = false){
         'naoImagem' => gestor_variaveis(Array('modulo' => 'interface','id' => 'widget-image-alert-not-image')),
     );
 
+	$imagepickJS = hook_apply_filters('html-editor', 'html_editor_include.imagepickJS', $imagepickJS);
+
     // Definir variáveis JS padrão do HTML Editor e demais passadas por parâmetro
     $js_vars_default = Array(
         'script' => $js_script,
