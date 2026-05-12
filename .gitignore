@@ -20,6 +20,7 @@ tmp/
 # Arquivos de configuração local
 .env.local
 config.local.php
+.claude/
 
 # Dependências
 node_modules/

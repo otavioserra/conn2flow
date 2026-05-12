@@ -139,6 +139,7 @@ project/<nome-do-projeto>/
 	00-START-HERE.md
 	01-WORKFLOW.md
 	<nome-do-projeto>.specs.md
+	human-requests/
 	reviews/
 	change-requests/
 	decisions/
@@ -156,6 +157,7 @@ Deve explicar:
 - o que é este diretório
 - qual é a spec principal
 - qual é o batch atual
+- onde ficam os arquivos de intake humano não normativo
 - onde estão reviews, decisões, change requests e validation
 - qual é o fluxo recomendado de leitura e revisão
 
@@ -171,6 +173,8 @@ Deve orientar o leitor sobre:
 
 #### 01-WORKFLOW.md
 Arquivo para explicar o processo documental e o ciclo de revisão.
+
+Deve deixar explícito que `human-requests/` é intake humano não normativo.
 
 #### <nome-do-projeto>.specs.md
 É a fonte principal de verdade do escopo.
@@ -193,6 +197,20 @@ Não deve conter:
 - pedidos de revisão
 - histórico de conversa
 - justificativa estrutural de reorganização documental
+
+#### human-requests/
+Usado para intake humano não normativo.
+
+Serve para:
+
+- guardar briefs e pedidos em Markdown
+- iniciar uma rodada sem contaminar a spec principal
+- manter rascunhos humanos antes da classificação SDD
+
+Regra:
+
+- não substitui spec, review, change request, decision, batch ou validation
+- quando o fluxo receber apenas a pasta, use `CURRENT.md`, depois `README.md`, depois o `.md` mais recente
 
 #### reviews/
 Usado para rodadas incrementais de revisão.

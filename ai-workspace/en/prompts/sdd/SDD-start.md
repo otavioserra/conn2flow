@@ -139,6 +139,7 @@ project/<project-name>/
 	00-START-HERE.md
 	01-WORKFLOW.md
 	<project-name>.specs.md
+	human-requests/
 	reviews/
 	change-requests/
 	decisions/
@@ -156,6 +157,7 @@ It must explain:
 - what this directory is
 - which file is the main spec
 - which batch is current
+- where non-normative human intake files live
 - where reviews, decisions, change requests, and validation are
 - what the recommended reading and review flow is
 
@@ -171,6 +173,8 @@ It must guide the reader about:
 
 #### 01-WORKFLOW.md
 File used to explain the documentation process and review cycle.
+
+It must make explicit that `human-requests/` is non-normative human intake.
 
 #### <project-name>.specs.md
 This is the main source of truth for the scope.
@@ -193,6 +197,20 @@ It must not contain:
 - review requests
 - conversation history
 - structural justification for documentation reorganization
+
+#### human-requests/
+Used for non-normative human intake.
+
+It serves to:
+
+- store briefs and requests in Markdown
+- start a round without contaminating the main spec
+- keep human drafts before SDD classification
+
+Rule:
+
+- it does not replace the spec, review, change request, decision, batch, or validation
+- when the workflow receives only the folder path, use `CURRENT.md`, then `README.md`, then the most recent `.md` file
 
 #### reviews/
 Used for incremental review rounds.
