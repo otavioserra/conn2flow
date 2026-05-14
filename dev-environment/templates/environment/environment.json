@@ -30,6 +30,10 @@
         "project_ID": {
             "name": "Conn2Flow Project",
             "path": "",
+            "path_tests": "",
+            "local": false,
+            "gitDeploy": false,
+            "gitDeployBaseRef": "HEAD",
             "target": "",
             "url": "",
             "tailwindcss/cli": "",
