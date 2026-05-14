@@ -844,6 +844,13 @@ $(document).ready(function () {
                 </style>`;
         }
 
+        // TailwindCSS de projeto
+        const tailwindcssPath = ('tailwindcssPath' in gestor.html_editor.project ? true : false);
+
+        if (tailwindcssPath) {
+            tailwindConfigScript += `<link rel="stylesheet" type="text/css" media="all" href="${gestor.html_editor.project.tailwindcssPath}" />`;
+        }
+
         // CodeMirror CDN - mesma versão usada em html-editor.php
         const codemirrorVersion = '5.65.20';
         const codemirrorIncludes = `
@@ -1351,6 +1358,13 @@ $(document).ready(function () {
                         margin: 0 !important;
                     }
                 </style>`;
+        }
+
+        // TailwindCSS de projeto
+        const tailwindcssPath = ('tailwindcssPath' in gestor.html_editor.project ? true : false);
+
+        if (tailwindcssPath) {
+            tailwindConfigScript += `<link rel="stylesheet" type="text/css" media="all" href="${gestor.html_editor.project.tailwindcssPath}" />`;
         }
 
         // Layout mode: o HTML do usuário já é um documento completo, apenas injetar frameworks

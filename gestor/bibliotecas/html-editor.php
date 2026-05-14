@@ -320,6 +320,11 @@ function html_editor_include($params = false){
 		'biblioteca' => 'html-editor',
 	],true);
 
+    // ===== Variáveis JS do Projeto para o Editor HTML
+	$projectJS = Array();
+
+	$projectJS = hook_apply_filters('html-editor', 'html_editor_include.projectJS', $projectJS);
+
     // ===== Configurar ImagePick para o Editor Visual
     $imagepickJS = Array();
 
@@ -349,6 +354,7 @@ function html_editor_include($params = false){
         'script' => $js_script,
         'overlay_title' => $overlay_title,
         'imagepick' => $imagepickJS,
+        'project' => $projectJS,
     );
 
     // Mesclar variáveis padrão com as passadas por parâmetro
