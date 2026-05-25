@@ -117,6 +117,30 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
 - Pendências ou riscos restantes:
   - sem pendências funcionais ou operacionais abertas para o BATCH-001.
 
+## BATCH-002 - Motor de Widgets Envelopados e Módulo Publisher Highlights
+
+- [x] Motor de Widgets Envelopados (Regex de parsing de comentários no core `gestor.php`)
+- [x] Injeção de parâmetro `$paramsArray['html']` no callback de widgets (`widgets.php`)
+- [x] Criação da tabela `publisher_highlights` no banco local via Phinx migration
+- [x] Mapeamento e deploy do módulo `publisher-highlights`
+- [x] Testes administrativos do CRUD (Adicionar, Editar e Clonar)
+- [x] Integração com `html-editor.php` (edição de HTML/CSS do banco e salvamento)
+- [x] Renderização do widget com isolamento do item template via `<!-- item < -->` e substituição de placeholders
+- [x] Retrocompatibilidade confirmada com a sintaxe legada `@[[widgets#...]]@`
+
+### Evidência registrada em 2026-05-25 (Fase 1)
+
+- Comandos/Procedimentos executados:
+  - Verificação de logs e código para a Regex `/<!--\s*widgets#(.+?)\s*<\s*-->([\s\S]*?)<!--\s*widgets#\s*\\1\s*>\s*-->/i` em `gestor.php`.
+  - Execução de Phinx migrations locais para atualizar a tabela `publisher_highlights`.
+  - Edição de layouts usando os marcadores de wrapper de widget e validação de injeção dinâmica no Docker.
+- Resultado observado:
+  - O motor do core interceptou com sucesso os comentários estáticos de preview e os substituiu pela renderização dinâmica a partir do template cadastrado no banco.
+  - A interface de vinculação dinâmica de placeholders foi exibida e funcionou sem erros no CRUD de edição.
+  - As tags legadas de widgets em linha continuam renderizando perfeitamente.
+- Pendências ou riscos restantes:
+  - Nenhuma pendência aberta para a integração de Core Widgets e Highlights.
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`

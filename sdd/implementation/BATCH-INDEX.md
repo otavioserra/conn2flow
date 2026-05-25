@@ -15,6 +15,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | --- | --- | --- | --- | --- |
 | BATCH-000 | complete | Onboarding do SDD repo-wide no `conn2flow` | Kits Claude/Copilot instalados, controle `sdd/` criado, baseline registrado | Fechado em 2026-05-25 |
 | BATCH-001 | complete | Plano 1: tarefas e scripts de sincronização de projetos | VALIDATION-CHECKLIST.md#batch-001 | Implementado e validado em 2026-05-25 (composto em 3 tarefas: Core & Project, Project e Core) |
+| BATCH-002 | complete | Motor de Widgets Envelopados e Módulo `publisher-highlights` | VALIDATION-CHECKLIST.md#batch-002 | Implementado e validado no core do Conn2Flow em 2026-05-25 (suporte a comentários HTML e CRUD de curadoria) |
 | BATCH-DATA-001 | blocked | Batch-Data-001: Reestruturação e Otimização de Dados e Sincronização | VALIDATION-CHECKLIST.md#batch-data-001 | Projeto de Arquitetura concluído. AGUARDANDO AUTORIZAÇÃO PARA IMPLEMENTAÇÃO. |
 
 ## Regra operacional
