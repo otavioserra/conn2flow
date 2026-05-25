@@ -70,10 +70,10 @@ Este módulo gerencia a curadoria de blocos de destaques baseados nos registros 
 - **Índice**: Único `['id', 'language']`.
 
 ### 2. Configurações e Arquivos do Módulo
-- **[publisher-highlights.json](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/modulos/publisher-highlights/publisher-highlights.json)**: Declara dependências das bibliotecas (`interface`, `html`), tabelas do banco e caminhos dos templates e páginas CRUD.
-- **Modo IA ([publisher-highlights.md](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/modulos/publisher-highlights/resources/pt-br/ai_modes/publisher-highlights/publisher-highlights.md))**: Instruções para a IA estruturar o HTML com delimitadores de repetição e placeholders de dados.
-- **Editor HTML ([html-editor.php](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/bibliotecas/html-editor.php))**: Integrado para habilitar histórico de alterações de HTML e CSS específicos para o alvo `'publisher-highlights'`.
-- **CRUD e Interface de Vinculação**: Interface interativa em [publisher-highlights-editar.html](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/modulos/publisher-highlights/resources/pt-br/pages/publisher-highlights-editar/publisher-highlights-editar.html) para selecionar o publicador e vincular os placeholders `@[[item#...]]@` com as colunas reais do publicador.
+- **[publisher-highlights.json](../gestor/modulos/publisher-highlights/publisher-highlights.json)**: Declara dependências das bibliotecas (`interface`, `html`), tabelas do banco e caminhos dos templates e páginas CRUD.
+- **Modo IA ([publisher-highlights.md](../gestor/modulos/publisher-highlights/resources/pt-br/ai_modes/publisher-highlights/publisher-highlights.md))**: Instruções para a IA estruturar o HTML com delimitadores de repetição e placeholders de dados.
+- **Editor HTML ([html-editor.php](../gestor/bibliotecas/html-editor.php))**: Integrado para habilitar histórico de alterações de HTML e CSS específicos para o alvo `'publisher-highlights'`.
+- **CRUD e Interface de Vinculação**: Interface interativa em [publisher-highlights-editar.html](../gestor/modulos/publisher-highlights/resources/pt-br/pages/publisher-highlights-editar/publisher-highlights-editar.html) para selecionar o publicador e vincular os placeholders `@[[item#...]]@` com as colunas reais do publicador.
 
 ### 3. Mecanismo de Renderização do Widget
 1. O widget localiza o registro em `publisher_highlights` usando a slug.

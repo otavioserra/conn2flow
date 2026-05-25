@@ -14,10 +14,10 @@ Reestruturar os mecanismos de empacotamento local de recursos (Geração) e de p
 
 ### 1. Descentralização de Metadados de Tabelas (Contrato Único)
 
-A definição de regras estruturais de tabelas de banco de dados deve residir nas fontes geradoras de dados em formato JSON, mantendo arquivos PHP como o [resources.map.php](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/resources/resources.map.php) limpos de definições internas de colunas e focados apenas em mapeamento de caminhos.
+A definição de regras estruturais de tabelas de banco de dados deve residir nas fontes geradoras de dados em formato JSON, mantendo arquivos PHP como o [resources.map.php](../gestor/resources/resources.map.php) limpos de definições internas de colunas e focados apenas em mapeamento de caminhos.
 
-- **Recursos Globais**: Definidos no arquivo JSON físico dedicado [tables_config.json](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/resources/tables_config.json).
-- **Módulos**: Definidos dentro do JSON descritor de cada módulo (ex: [admin-paginas.json](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/modulos/admin-paginas/admin-paginas.json)) na chave `"tabela"`.
+- **Recursos Globais**: Definidos no arquivo JSON físico dedicado [tables_config.json](../gestor/resources/tables_config.json).
+- **Módulos**: Definidos dentro do JSON descritor de cada módulo (ex: [admin-paginas.json](../gestor/modulos/admin-paginas/admin-paginas.json)) na chave `"tabela"`.
 
 #### Estrutura do Manifesto de Metadados por Tabela:
 ```json
@@ -33,7 +33,7 @@ A definição de regras estruturais de tabelas de banco de dados deve residir na
 }
 ```
 
-O script gerador (`atualizacao-dados-recursos.php`) agrupa todos esses manifestos locais de módulos e o manifesto global e gera o arquivo consolidado [schema-metadata.json](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/db/data/schema-metadata.json). O atualizador online de deploy consumirá exclusivamente esse JSON compilado como ponto único de verdade.
+O script gerador (`atualizacao-dados-recursos.php`) agrupa todos esses manifestos locais de módulos e o manifesto global e gera o arquivo consolidado [schema-metadata.json](../gestor/db/data/schema-metadata.json). O atualizador online de deploy consumirá exclusivamente esse JSON compilado como ponto único de verdade.
 
 ---
 
@@ -65,7 +65,7 @@ Ao realizar inserções ou atualizações em lote (*Bulk Operations*), o script 
 ### 4. Padronização da Identidade de Idioma (`language`)
 
 - **Ação:** Identificar todos os locais que utilizam o termo legado `linguagem_codigo` e alterá-los para `language`.
-- **Migrações Phinx:** Modificar as migrações sob a pasta [migrations](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/db/migrations) para que a estrutura de banco de dados utilize consistentemente a coluna `language` em todas as tabelas (incluindo `variaveis`, perfis, etc.).
+- **Migrações Phinx:** Modificar as migrações sob a pasta [migrations](../gestor/db/migrations) para que a estrutura de banco de dados utilize consistentemente a coluna `language` em todas as tabelas (incluindo `variaveis`, perfis, etc.).
 - **Impacto de Código:** Remove a necessidade de adaptadores, mapeadores dinâmicos de linguagem e fallbacks redundantes no atualizador.
 
 ---
@@ -91,7 +91,7 @@ Dada a coexistência de dados de diferentes projetos em um mesmo ecossistema de 
 ### 6. Padronização de Logging (Biblioteca Oficial do Sistema)
 
 Para sanar a dispersão e desorganização dos logs de atualização:
-- Toda operação de logging gerada pelo gerador de recursos ou pelo atualizador de banco de dados deve utilizar obrigatoriamente a biblioteca de logs oficial do sistema: [log.php](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/bibliotecas/log.php).
+- Toda operação de logging gerada pelo gerador de recursos ou pelo atualizador de banco de dados deve utilizar obrigatoriamente a biblioteca de logs oficial do sistema: [log.php](../gestor/bibliotecas/log.php).
 - As chamadas de logging devem ser padronizadas pela função `log_disco()`.
 - Evita-se a criação manual de implementações locais de gravação de arquivos de log nos scripts de sincronização, garantindo que o sistema de logs nativo unifique e formate todas as mensagens.
 - **Fim do Silenciamento Cego (`@`):** Funções críticas de sistema de arquivos como `file_put_contents`, `mkdir` ou `rename` não usarão o caractere de silenciamento de erros `@` sem um tratamento explícito correspondente. Exceções e erros de permissão de escrita devem ser logados com severidade apropriada para diagnóstico imediato.
