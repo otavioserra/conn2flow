@@ -170,9 +170,66 @@
             "command": "bash ./ai-workspace/en/scripts/projects/update-resource-data.sh"
         },
         {
+            "label": "🗃️ Projects - Resources Core -> ID",
+            "type": "shell",
+            "command": "php ./gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php",
+            "problemMatcher": []
+        },
+        {
+            "label": "🗃️ Projects - Sync Core -> ID",
+            "type": "shell",
+            "command": "bash ./ai-workspace/en/scripts/projects/sync-core-to-project.sh --project ${input:projectID}",
+            "problemMatcher": []
+        },
+        {
+            "label": "🗃️ Projects - Synchronize => Resources -> ID",
+            "type": "shell",
+            "command": "bash ./ai-workspace/en/scripts/projects/update-resource-data.sh --project ${input:projectID}",
+            "problemMatcher": []
+        },
+        {
             "label": "🗃️ Projects - Synchronize => Files -> ID",
             "type": "shell",
             "command": "bash ./ai-workspace/en/scripts/projects/synchronize-project.sh --project ${input:projectID} checksum",
+            "problemMatcher": []
+        },
+        {
+            "label": "🗃️ Projects - Synchronize => Database -> ID",
+            "type": "shell",
+            "command": "bash ./ai-workspace/en/scripts/dev-environment/updates-manager-database.sh --project ${input:projectID}",
+            "problemMatcher": []
+        },
+        {
+            "label": "🗃️ Projects - Update => All - Core & Project",
+            "dependsOn": [
+                "🗃️ Projects - Resources Core -> ID",
+                "🗃️ Projects - Sync Core -> ID",
+                "🗃️ Projects - Synchronize => Database -> ID",
+                "🗃️ Projects - Synchronize => Resources -> ID",
+                "🗃️ Projects - Synchronize => Files -> ID",
+                "🗃️ Projects - Synchronize => Database -> ID"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        },
+        {
+            "label": "🗃️ Projects - Update => Project",
+            "dependsOn": [
+                "🗃️ Projects - Synchronize => Resources -> ID",
+                "🗃️ Projects - Synchronize => Files -> ID",
+                "🗃️ Projects - Synchronize => Database -> ID"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        },
+        {
+            "label": "🗃️ Projects - Update => Core",
+            "dependsOn": [
+                "🗃️ Projects - Resources Core -> ID",
+                "🗃️ Projects - Sync Core -> ID",
+                "🗃️ Projects - Synchronize => Database -> ID"
+            ],
+            "dependsOrder": "sequence",
             "problemMatcher": []
         },
         {

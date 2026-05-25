@@ -54,5 +54,19 @@
         "language": "en",
         "status": "A",
         "versao": 2
+    },
+    {
+        "nome": "Publicador Destaques",
+        "id": "publisher-highlights",
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1
+    },
+    {
+        "nome": "Publisher Highlights",
+        "id": "publisher-highlights",
+        "language": "en",
+        "status": "A",
+        "versao": 1
     }
 ]

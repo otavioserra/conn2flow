@@ -90,6 +90,7 @@ function html_editor_componente($params = false){
 		'layouts' => 'adminLayoutsBackupCampo',
 		'componentes' => 'adminComponentesBackupCampo',
 		'publisher' => 'adminPaginasBackupCampo',
+		'publisher-highlights' => 'adminPaginasBackupCampo',
 	];
 
 	$backupCallback = isset($backupCallbackMap[$alvo]) ? $backupCallbackMap[$alvo] : 'adminPaginasBackupCampo';
@@ -133,6 +134,11 @@ function html_editor_componente($params = false){
 
 	switch($alvo){
 		case 'publisher':
+		case 'publisher-highlights':
+			// Reaproveita os componentes de simulação/controles do publisher para o
+			// alvo publisher-highlights (BATCH-009). A diferença prática vive na
+			// formatação das variáveis na chamada IA (vide switch($target) abaixo)
+			// e na lógica de repetição de itens, que é resolvida pelo widget renderer.
 			$html_editor_publisher_simulation = gestor_componente(Array(
 				'id' => 'html-editor-publisher-simulation',
 			));
@@ -570,7 +576,7 @@ function html_editor_ajax_ia_requests(){
 
 					// Formatar variável no formato [[publisher#type#name]]
 					$var_name = '[[publisher#' . $var_type . '#' . $var_name . ']]';
-                    
+
                     if($var_name && $var_type){
                         $variables .= $var_name . ' | ' . $var_type . "\n";
 						$types_skeleton_found[$var_type] = true;
@@ -588,9 +594,27 @@ function html_editor_ajax_ia_requests(){
 
 			$modo = modelo_var_troca_tudo($modo,'{{variables}}',$variables);
 		break;
+		case 'publisher-highlights':
+			// BATCH-009: o modo IA do publisher-highlights espera variáveis no
+			// formato `[[item#nome_da_variavel]]` (sem o `tipo_de_dado`), pois o
+			// tipo é resolvido em runtime via mapeamento com o publisher vinculado.
+			$publisher_variables = $_REQUEST['data']['publisher_variables'] ?? '';
+
+			$variables = "[variables]\n";
+
+			if($publisher_variables && is_array($publisher_variables)){
+				foreach($publisher_variables as $variable){
+					$var_name = $variable['name'] ?? '';
+					if(!$var_name) continue;
+					$variables .= '[[item#' . $var_name . ']]' . "\n";
+				}
+			}
+
+			$modo = modelo_var_troca_tudo($modo,'{{variables}}',$variables);
+		break;
 		default:
 			$cel_nome = 'publisher'; $modelo_texto = modelo_tag_del($modelo_texto,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
-			
+
 	}
 
 	// Preparar prompt completo

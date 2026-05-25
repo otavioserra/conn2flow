@@ -32,15 +32,20 @@ $_GESTOR['biblioteca-widgets']							=	Array(
  * 
  * @param array|false $params Parâmetros da função.
  * @param string $params['id'] Identificador único do widget (obrigatório).
- * 
+ * @param string $params['html'] (opcional) HTML estático capturado entre os marcadores
+ *                               de wrapper `<!-- widgets#... < -->` e `<!-- widgets#... > -->`
+ *                               em gestor_pagina_widgets(). Repassado ao callback do widget
+ *                               através de $paramsArray['html'] para uso como template/preview
+ *                               de mockup conforme arquitetura BATCH-008.
+ *
  * @return string HTML processado e completo do widget ou string vazia se não encontrado.
  */
 function widgets_get($params = false){
 	global $_GESTOR;
-	
+
 	// Extrai parâmetros do array
 	if($params)foreach($params as $var => $val)$$var = $val;
-	
+
 	// Valida ID fornecido
 	if(isset($id)){
 		// o identificador pode ser uma string simples (nome do widget) ou
@@ -61,18 +66,48 @@ function widgets_get($params = false){
 				$paramsArray = array();
 			}
 
+			// BATCH-008: Injetar o HTML estático capturado do wrapper na chave 'html'
+			// dos parâmetros do callback. Permite ao widget acessar o mockup original da
+			// página física para preview visual ou debug. Não substitui a renderização
+			// real (que vem do banco de dados conforme D-023).
+			if(isset($html)){
+				$paramsArray['html'] = $html;
+			}
+
 			// incluir o arquivo do widget do módulo se existir
 			$widgetFile = $_GESTOR['modulos-path'] . $module . '/' . $module . '.widget.php';
 			if(file_exists($widgetFile)){
 				require_once($widgetFile);
 			}
 
-			// chamar a função se estiver disponível
-			if(function_exists($func)){
-				// Incluir "_ajax" slug no nome da função caso for chamada via AJAX e disparar a função correspondente.
-				if($_GESTOR['ajax']){
-					$func .= '_ajax';
-				} else {
+			// Resolver o nome real da função PHP a chamar.
+			// Convenção: módulo com hífen é normalizado para underscore e prefixado
+			// no nome da função para evitar colisões entre widgets diferentes que
+			// usem nomes genéricos como `render` na assinatura do wrapper. Ex:
+			//   widgets#publisher-highlights->render(...)  =>  publisher_highlights_render
+			//   widgets#dynamic-menus->render(...)        =>  dynamic_menus_render
+			// Por compatibilidade retrógrada, se o nome prefixado não existir,
+			// caímos no nome bare informado na assinatura.
+			$module_underscored = str_replace('-', '_', $module);
+			$prefixedFunc = $module_underscored . '_' . $func;
+
+			$resolvedFunc = null;
+			if($_GESTOR['ajax']){
+				if(function_exists($prefixedFunc.'_ajax')){
+					$resolvedFunc = $prefixedFunc.'_ajax';
+				} else if(function_exists($func.'_ajax')){
+					$resolvedFunc = $func.'_ajax';
+				}
+			} else {
+				if(function_exists($prefixedFunc)){
+					$resolvedFunc = $prefixedFunc;
+				} else if(function_exists($func)){
+					$resolvedFunc = $func;
+				}
+			}
+
+			if($resolvedFunc !== null){
+				if(!$_GESTOR['ajax']){
 					// Incluir o widget no registro de widgets AJAX para uso posterior das chamadas AJAX para esse widget.
 					if (!isset($_GESTOR['widgetsToAjax'])) {
 						$widgetsToAjax = '';
@@ -87,7 +122,7 @@ function widgets_get($params = false){
 					}
 				}
 
-				$callbackResult = call_user_func($func, $paramsArray);
+				$callbackResult = call_user_func($resolvedFunc, $paramsArray);
 			}
 		}
 

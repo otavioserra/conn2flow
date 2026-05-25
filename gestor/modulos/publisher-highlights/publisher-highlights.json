@@ -1,0 +1,453 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "html-editor"
+    ],
+    "id_numerico": "id_publisher_highlights",
+    "tabela": {
+        "nome": "publisher_highlights",
+        "nome_especifico": "name",
+        "id": "id",
+        "id_numerico": "id_publisher_highlights",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "ai_prompts_targets": [
+                {
+                    "id": "publisher-highlights",
+                    "name": "Publicador Destaques"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "publisher-highlights",
+                    "name": "Publicador Destaques",
+                    "target": "publisher-highlights",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Publicador Destaques - Notícias - Lista Simples",
+                    "id": "publisher-highlights-noticias-lista-simples",
+                    "target": "publisher-highlights",
+                    "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/pt-br\/noticias-lista-simples.webp",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publicador Destaques - Notícias - Grid Cards",
+                    "id": "publisher-highlights-noticias-grid-cards",
+                    "target": "publisher-highlights",
+                    "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/pt-br\/noticias-grid-cards.webp",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publicador Destaques - Artigos - Editorial",
+                    "id": "publisher-highlights-artigos-editorial",
+                    "target": "publisher-highlights",
+                    "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/pt-br\/artigos-editorial.webp",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publicador Destaques - Lives - Vídeo em Destaque",
+                    "id": "publisher-highlights-lives-video-destaque",
+                    "target": "publisher-highlights",
+                    "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/pt-br\/lives-video-destaque.webp",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publicador Destaques - Notas - Mosaico",
+                    "id": "publisher-highlights-notas-mosaico",
+                    "target": "publisher-highlights",
+                    "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/pt-br\/notas-mosaico.webp",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publicador Destaques - Principal - Carrossel",
+                    "id": "publisher-highlights-principal-carousel",
+                    "target": "publisher-highlights",
+                    "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/pt-br\/destaque-principal-carousel.webp",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Publicador Destaques - Listar",
+                    "id": "publisher-highlights",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-highlights\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publicador Destaques - Adicionar",
+                    "id": "publisher-highlights-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-highlights\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "152d3e1c2b6acefc1b805463d1af4d1b",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "38db9cdc6924e7213b28eccf03c7f79d"
+                    }
+                },
+                {
+                    "name": "Publicador Destaques - Editar",
+                    "id": "publisher-highlights-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-highlights\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "086352ea93ea4e21cfeefafccb38041e",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "fc4820a7d03d7c17416134ed3a7264c3"
+                    }
+                },
+                {
+                    "name": "Publicador Destaques - Clonar",
+                    "id": "publisher-highlights-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-highlights\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "4cd3aa7fbdfde1c822957c2592be1591",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "e9794a22d9658e9efd0246593a728515"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome do Bloco de Destaques",
+                    "type": "string"
+                },
+                {
+                    "id": "form-publisher_id-label",
+                    "value": "Publicador de Origem",
+                    "type": "string"
+                },
+                {
+                    "id": "form-publisher_id-placeholder",
+                    "value": "Selecione o publicador (notícias, artigos, lives, notas, ...)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Modelo Visual de Destaque",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Regras de Curadoria e Mapeamento de Variáveis",
+                    "type": "string"
+                },
+                {
+                    "id": "form-rule-label",
+                    "value": "Regra de Alimentação",
+                    "type": "string"
+                },
+                {
+                    "id": "form-rule-manual",
+                    "value": "Manual (curadoria por item)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-rule-latest",
+                    "value": "Automática (últimas publicações)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-count-label",
+                    "value": "Quantidade máxima de itens",
+                    "type": "string"
+                },
+                {
+                    "id": "form-selected_items-label",
+                    "value": "Itens selecionados (ordem)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-variable_mapping-label",
+                    "value": "Mapeamento de Variáveis @[[item#...]]@",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "ai_prompts_targets": [
+                {
+                    "id": "publisher-highlights",
+                    "name": "Publisher Highlights"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "publisher-highlights",
+                    "name": "Publisher Highlights",
+                    "target": "publisher-highlights",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Publisher Highlights - News - Simple List",
+                    "id": "publisher-highlights-noticias-lista-simples",
+                    "target": "publisher-highlights",
+                    "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/en\/noticias-lista-simples.webp",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publisher Highlights - News - Grid Cards",
+                    "id": "publisher-highlights-noticias-grid-cards",
+                    "target": "publisher-highlights",
+                    "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/en\/noticias-grid-cards.webp",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publisher Highlights - Articles - Editorial",
+                    "id": "publisher-highlights-artigos-editorial",
+                    "target": "publisher-highlights",
+                    "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/en\/artigos-editorial.webp",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publisher Highlights - Lives - Featured Video",
+                    "id": "publisher-highlights-lives-video-destaque",
+                    "target": "publisher-highlights",
+                    "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/en\/lives-video-destaque.webp",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publisher Highlights - Notes - Mosaic",
+                    "id": "publisher-highlights-notas-mosaico",
+                    "target": "publisher-highlights",
+                    "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/en\/notas-mosaico.webp",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publisher Highlights - Main - Carousel",
+                    "id": "publisher-highlights-destaque-principal-carousel",
+                    "target": "publisher-highlights",
+                    "framework_css": "tailwindcss",
+                    "thumbnail": "templates\/images\/en\/destaque-principal-carousel.webp",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Publisher Highlights - List",
+                    "id": "publisher-highlights",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-highlights\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publisher Highlights - Add",
+                    "id": "publisher-highlights-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-highlights\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "152d3e1c2b6acefc1b805463d1af4d1b",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "38db9cdc6924e7213b28eccf03c7f79d"
+                    }
+                },
+                {
+                    "name": "Publisher Highlights - Edit",
+                    "id": "publisher-highlights-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-highlights\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "086352ea93ea4e21cfeefafccb38041e",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "fc4820a7d03d7c17416134ed3a7264c3"
+                    }
+                },
+                {
+                    "name": "Publisher Highlights - Clone",
+                    "id": "publisher-highlights-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-highlights\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "4cd3aa7fbdfde1c822957c2592be1591",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "e9794a22d9658e9efd0246593a728515"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Highlights block name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-publisher_id-label",
+                    "value": "Source publisher",
+                    "type": "string"
+                },
+                {
+                    "id": "form-publisher_id-placeholder",
+                    "value": "Select the publisher (news, articles, lives, notes, ...)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Highlight visual template",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Curation rules and variable mapping",
+                    "type": "string"
+                },
+                {
+                    "id": "form-rule-label",
+                    "value": "Feeding rule",
+                    "type": "string"
+                },
+                {
+                    "id": "form-rule-manual",
+                    "value": "Manual (curate by item)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-rule-latest",
+                    "value": "Automatic (latest publications)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-count-label",
+                    "value": "Maximum number of items",
+                    "type": "string"
+                },
+                {
+                    "id": "form-selected_items-label",
+                    "value": "Selected items (ordered)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-variable_mapping-label",
+                    "value": "Variable mapping @[[item#...]]@",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

@@ -101,6 +101,10 @@
     },
     {
         "perfil": "administradores",
+        "modulo": "publisher-highlights"
+    },
+    {
+        "perfil": "administradores",
         "modulo": "forms"
     },
     {

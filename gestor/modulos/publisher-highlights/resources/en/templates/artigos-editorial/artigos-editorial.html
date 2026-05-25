@@ -1,0 +1,17 @@
+<section class="bg-white py-16 px-4 sm:px-6 lg:px-8 font-serif" data-id="1" data-title="artigos-editorial">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-4xl font-bold text-gray-900 mb-12 tracking-tight border-b border-gray-200 pb-4">Artigos em destaque</h2>
+        <div class="space-y-12">
+            <!-- item < -->
+            <article class="group">
+                <a href="@[[item#url]]@" class="block">
+                    <p class="text-xs uppercase tracking-widest text-red-700 font-sans font-semibold mb-2">@[[item#autor]]@</p>
+                    <h3 class="text-3xl font-extrabold text-gray-900 leading-tight mb-3 group-hover:text-red-700 transition-colors">@[[item#titulo]]@</h3>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-3">@[[item#resumo]]@</p>
+                    <time class="text-sm text-gray-500 font-sans" datetime="@[[item#data]]@">@[[item#data]]@</time>
+                </a>
+            </article>
+            <!-- item > -->
+        </div>
+    </div>
+</section>

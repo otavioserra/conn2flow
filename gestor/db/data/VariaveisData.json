@@ -11197,6 +11197,204 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "publisher-highlights",
+        "id": "form-name-label",
+        "valor": "Nome do Bloco de Destaques",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-highlights",
+        "id": "form-publisher_id-label",
+        "valor": "Publicador de Origem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-highlights",
+        "id": "form-publisher_id-placeholder",
+        "valor": "Selecione o publicador (notícias, artigos, lives, notas, ...)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-highlights",
+        "id": "form-template_id-label",
+        "valor": "Modelo Visual de Destaque",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-highlights",
+        "id": "form-fields_schema-label",
+        "valor": "Regras de Curadoria e Mapeamento de Variáveis",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-highlights",
+        "id": "form-rule-label",
+        "valor": "Regra de Alimentação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-highlights",
+        "id": "form-rule-manual",
+        "valor": "Manual (curadoria por item)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-highlights",
+        "id": "form-rule-latest",
+        "valor": "Automática (últimas publicações)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-highlights",
+        "id": "form-count-label",
+        "valor": "Quantidade máxima de itens",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-highlights",
+        "id": "form-selected_items-label",
+        "valor": "Itens selecionados (ordem)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-highlights",
+        "id": "form-variable_mapping-label",
+        "valor": "Mapeamento de Variáveis @[[item#...]]@",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-highlights",
+        "id": "form-name-label",
+        "valor": "Highlights block name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-highlights",
+        "id": "form-publisher_id-label",
+        "valor": "Source publisher",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-highlights",
+        "id": "form-publisher_id-placeholder",
+        "valor": "Select the publisher (news, articles, lives, notes, ...)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-highlights",
+        "id": "form-template_id-label",
+        "valor": "Highlight visual template",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-highlights",
+        "id": "form-fields_schema-label",
+        "valor": "Curation rules and variable mapping",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-highlights",
+        "id": "form-rule-label",
+        "valor": "Feeding rule",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-highlights",
+        "id": "form-rule-manual",
+        "valor": "Manual (curate by item)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-highlights",
+        "id": "form-rule-latest",
+        "valor": "Automatic (latest publications)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-highlights",
+        "id": "form-count-label",
+        "valor": "Maximum number of items",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-highlights",
+        "id": "form-selected_items-label",
+        "valor": "Selected items (ordered)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-highlights",
+        "id": "form-variable_mapping-label",
+        "valor": "Variable mapping @[[item#...]]@",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "publisher-pages",
         "id": "form-name-label",
         "valor": "Nome da Página",

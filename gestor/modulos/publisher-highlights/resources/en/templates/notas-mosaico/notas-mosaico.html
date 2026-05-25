@@ -1,0 +1,16 @@
+<section class="bg-white py-12 px-4 sm:px-6 lg:px-8 font-sans" data-id="1" data-title="notas-mosaico">
+    <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-8 tracking-tight">Notas rápidas</h2>
+        <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+            <!-- item < -->
+            <article class="break-inside-avoid rounded-xl border border-gray-200 bg-gray-50 p-5 hover:border-red-300 transition-colors">
+                <a href="@[[item#url]]@" class="block">
+                    <h3 class="text-base font-semibold text-gray-900 leading-snug mb-2">@[[item#titulo]]@</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-3">@[[item#resumo]]@</p>
+                    <time class="text-xs text-gray-500" datetime="@[[item#data]]@">@[[item#data]]@</time>
+                </a>
+            </article>
+            <!-- item > -->
+        </div>
+    </div>
+</section>

@@ -93,10 +93,14 @@ if [ -z "$ORIGEM" ] || [ "$ORIGEM" = "null" ]; then
   exit 1
 fi
 
-# Read destination (target) from environment.json for this project — REQUIRED
-TARGET_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".target" "$ENV_FILE" 2>/dev/null)
+# Read destination (target) from environment.json for this project.
+# Fallback to path_tests when target is not defined or is empty.
+TARGET_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".target // empty" "$ENV_FILE" 2>/dev/null)
 if [ -z "$TARGET_PATH" ] || [ "$TARGET_PATH" = "null" ]; then
-  log_error "Target path for project '$PROJECT_TARGET' not defined in environment.json (devProjects.<id>.target)"
+  TARGET_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".path_tests // empty" "$ENV_FILE" 2>/dev/null)
+fi
+if [ -z "$TARGET_PATH" ] || [ "$TARGET_PATH" = "null" ]; then
+  log_error "Target path for project '$PROJECT_TARGET' not defined in environment.json (devProjects.<id>.target or devProjects.<id>.path_tests)"
   exit 1
 fi
 

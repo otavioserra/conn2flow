@@ -1,0 +1,21 @@
+<section class="bg-white py-8 px-4 sm:px-6 lg:px-8 font-sans" data-id="1" data-title="destaque-principal-carousel">
+    <div class="max-w-7xl mx-auto">
+        <div class="ph-carousel relative overflow-hidden rounded-2xl">
+            <div class="ph-carousel-track flex snap-x snap-mandatory overflow-x-auto scroll-smooth">
+                <!-- item < -->
+                <article class="ph-carousel-slide snap-start shrink-0 w-full">
+                    <a href="@[[item#url]]@" class="relative block aspect-[21/9] overflow-hidden">
+                        <img src="@[[item#imagem]]@" alt="@[[item#titulo]]@" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute inset-x-0 bottom-0 p-6 sm:p-10 text-white">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-600 text-white uppercase tracking-wide mb-3">@[[item#categoria]]@</span>
+                            <h3 class="text-2xl sm:text-4xl font-extrabold leading-tight max-w-3xl mb-2">@[[item#titulo]]@</h3>
+                            <p class="text-sm sm:text-base text-gray-200 max-w-2xl">@[[item#resumo]]@</p>
+                        </div>
+                    </a>
+                </article>
+                <!-- item > -->
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,13 @@
+{
+    "hooks": {
+        "SessionStart": [
+            {
+                "type": "command",
+                "windows": "powershell -NoProfile -ExecutionPolicy Bypass -File ./sdd/scripts/hooks/sdd-session-start.ps1",
+                "linux": "bash ./sdd/scripts/hooks/sdd-session-start.sh",
+                "osx": "bash ./sdd/scripts/hooks/sdd-session-start.sh",
+                "timeout": 5
+            }
+        ]
+    }
+}

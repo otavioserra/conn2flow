@@ -455,24 +455,54 @@ function gestor_pagina_widgets(){
 	global $_GESTOR;
 
 	// ===== Variáveis globais de página
-	
+
 	$open = $_GESTOR['variavel-global']['open'];
 	$close = $_GESTOR['variavel-global']['close'];
 
-	// ===== Busca por widgets na página.
+	// ===== Widgets Envelopados (Wrappers) - BATCH-008
+	// Sintaxe:
+	//   <!-- widgets#MODULO_ID->FUNCAO(JSON_PARAMS) < -->
+	//     ...HTML mockup estático (template de preview visual para designers)...
+	//   <!-- widgets#MODULO_ID->FUNCAO(JSON_PARAMS) > -->
+	// O conteúdo interno é capturado e repassado ao callback do widget pela
+	// chave 'html' do array de parâmetros, junto com o 'id'.
+
+	$wrapperPattern = '/<!--\s*widgets#(.+?)\s*<\s*-->([\s\S]*?)<!--\s*widgets#\s*\1\s*>\s*-->/i';
+
+	if(preg_match_all($wrapperPattern, $_GESTOR['pagina'], $matchesWrapper, PREG_SET_ORDER)){
+		// ===== Incluir a biblioteca dos widgets e disparar a função de iniciação dos mesmos.
+		gestor_incluir_biblioteca('widgets');
+
+		foreach($matchesWrapper as $wrapperMatch){
+			$widgetId    = $wrapperMatch[1];
+			$widgetHtml  = $wrapperMatch[2];
+			$widgetBlock = $wrapperMatch[0];
+
+			$widget = widgets_get(Array(
+				'id'   => $widgetId,
+				'html' => $widgetHtml,
+			));
+
+			if(existe($widget)){
+				$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$widgetBlock,$widget);
+			}
+		}
+	}
+
+	// ===== Compatibilidade retrógrada: marcador inline @[[widgets#...]]@
 	// O padrão procurado é algo como
 	//   @[[widgets#MODULO_ID->FUNCAO(JSON_PARAMS)]]@
 	// ou apenas @[[widgets#meu-widget]]@ para compatibilidade.
 	// Tudo que estiver entre "widgets#" e o fechamento será passado
 	// diretamente para widgets_get() que conhece o formato.
-	
+
 	$pattern = "/".preg_quote($open)."widgets#(.+?)".preg_quote($close)."/i";
 	preg_match_all($pattern, $_GESTOR['pagina'], $matchesWidgets);
-	
+
 	if($matchesWidgets){
 		// ===== Incluir a biblioteca dos widgets e disparar a função de iniciação dos mesmos.
 		gestor_incluir_biblioteca('widgets');
-		
+
 		// ===== Varrer todos os matchs e trocar os marcadores por seus widgets.
 		foreach($matchesWidgets[1] as $match){
 			// $match contém a string completa depois de "widgets#" –
@@ -480,7 +510,7 @@ function gestor_pagina_widgets(){
 			$widget = widgets_get(Array(
 				'id' => $match,
 			));
-			
+
 			if(existe($widget)){
 				$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open."widgets#".$match.$close,$widget);
 			}
