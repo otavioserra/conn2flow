@@ -2,34 +2,6 @@
 
 ## DEC-001 - 2026-05-25 - accepted
 
-Adotar SDD repo-wide no `conn2flow` como camada de controle para mudanÃ§as novas, sem tentar substituir a arquitetura vigente do repositÃ³rio.
-
-## DEC-002 - 2026-05-25 - accepted
-
-Suportar os dois executores de IA no mesmo repositÃ³rio:
-
-- Claude Code via `CLAUDE.md` e `.claude/`
-- GitHub Copilot via `.github/`
-
-Os dois devem convergir para os mesmos artefatos em `sdd/`.
-
-## DEC-003 - 2026-05-25 - accepted
-
-Tratar `sdd/00-baseline-architecture.md` como referÃªncia primÃ¡ria do estado atual aprovado do legado. MudanÃ§as futuras devem declarar o delta em relaÃ§Ã£o a essa base, em vez de assumir que o legado pode ser descartado.
-
-## DEC-004 - 2026-05-25 - accepted
-
-Tratar `sdd/human-requests/` como intake humano nÃ£o normativo, com resoluÃ§Ã£o padrÃ£o por `CURRENT.md`, depois `README.md`, depois o arquivo `.md` mais recente.
-
-## DEC-005 - 2026-05-25 - accepted
-
-Definir como prÃ³ximo intake funcional esperado o `Plano 1`, focado em tarefas e scripts de sincronizaÃ§Ã£o de projetos.
-
-## DEC-006 - 2026-05-25 - accepted
-# Decision Log
-
-## DEC-001 - 2026-05-25 - accepted
-
 Adotar SDD repo-wide no `conn2flow` como camada de controle para mudanças novas, sem tentar substituir a arquitetura vigente do repositório.
 
 ## DEC-002 - 2026-05-25 - accepted

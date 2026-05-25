@@ -1,55 +1,55 @@
 ﻿# 01 Workflow
 
-Este arquivo descreve como uma demanda deve transitar entre intake humano, mudanÃ§a normativa, implementaÃ§Ã£o, review e validaÃ§Ã£o dentro do `conn2flow`.
+Este arquivo descreve como uma demanda deve transitar entre intake humano, mudança normativa, implementação, review e validação dentro do `conn2flow`.
 
-## Fluxo padrÃ£o
+## Fluxo padrão
 
 1. Entrada em `sdd/human-requests/`
-2. ClassificaÃ§Ã£o da demanda
-3. MudanÃ§a normativa ou abertura de batch
-4. ImplementaÃ§Ã£o incremental
+2. Classificação da demanda
+3. Mudança normativa ou abertura de batch
+4. Implementação incremental
 5. Review findings-first
-6. ValidaÃ§Ã£o e fechamento
+6. Validação e fechamento
 
 ## Como classificar a demanda
 
-### Caso 1: muda requisito, contrato ou critÃ©rio de aceite
+### Caso 1: muda requisito, contrato ou critério de aceite
 
 - registrar primeiro em `sdd/change-requests/`
-- atualizar sdd numerados apenas depois da mudanÃ§a ficar clara
-- registrar impacto em `sdd/decisions/DECISION-LOG.md` quando houver decisÃ£o estrutural
+- atualizar sdd numerados apenas depois da mudança ficar clara
+- registrar impacto em `sdd/decisions/DECISION-LOG.md` quando houver decisão estrutural
 
-### Caso 2: nÃ£o muda requisito, sÃ³ implementa um slice aprovado
+### Caso 2: não muda requisito, só implementa um slice aprovado
 
 - registrar ou continuar um batch em `sdd/implementation/`
 - atualizar `sdd/implementation/BATCH-INDEX.md`
-- implementar o menor slice plausÃ­vel
+- implementar o menor slice plausível
 
 ### Caso 3: precisa de review
 
 - fazer review findings-first
 - se precisar persistir o round, registrar em `sdd/reviews/`
-- nÃ£o reescrever spec numerado por feedback pequeno de review
+- não reescrever spec numerado por feedback pequeno de review
 
 ### Caso 4: precisa apenas validar
 
 - usar `sdd/validation/VALIDATION-CHECKLIST.md`
-- registrar evidÃªncia, pendÃªncias e regressÃ£o observada
+- registrar evidência, pendências e regressão observada
 
-## Regras de transiÃ§Ã£o
+## Regras de transição
 
-- `human-requests/` nunca Ã© fonte normativa
-- `change-requests/` existe para mudanÃ§as antes de tocar sdd numerados
-- `implementation/` controla batches pequenos e revisÃ¡veis
+- `human-requests/` nunca é fonte normativa
+- `change-requests/` existe para mudanças antes de tocar sdd numerados
+- `implementation/` controla batches pequenos e revisáveis
 - `reviews/` armazena feedback e findings quando esse material precisar persistir
-- `validation/` concentra checklist e evidÃªncia de aceite
-- `decisions/` registra racional e exceÃ§Ãµes estruturais
+- `validation/` concentra checklist e evidência de aceite
+- `decisions/` registra racional e exceções estruturais
 
-## Regra especial deste repositÃ³rio
+## Regra especial deste repositório
 
-Como o `conn2flow` jÃ¡ possui um legado amplo e operacional, toda mudanÃ§a deve ser comparada contra `sdd/00-baseline-architecture.md` antes de propor consolidaÃ§Ãµes, remoÃ§Ãµes amplas ou simplificaÃ§Ãµes de fluxo.
+Como o `conn2flow` já possui um legado amplo e operacional, toda mudança deve ser comparada contra `sdd/00-baseline-architecture.md` antes de propor consolidações, remoções amplas ou simplificações de fluxo.
 
 ## Estado atual do workflow
 
-- `BATCH-000`: onboarding do SDD repo-wide concluÃ­do
-- prÃ³ximo passo de negÃ³cio esperado: intake do `Plano 1` em `sdd/human-requests/`
+- `BATCH-000`: onboarding do SDD repo-wide concluído
+- próximo passo de negócio esperado: intake do `Plano 1` em `sdd/human-requests/`

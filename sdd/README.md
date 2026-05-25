@@ -1,8 +1,8 @@
 ﻿# Conn2Flow Spec-Driven Development
 
-Este diretÃ³rio adiciona uma camada repo-wide de Spec-Driven Development ao `conn2flow`.
+Este diretório adiciona uma camada repo-wide de Spec-Driven Development ao `conn2flow`.
 
-O objetivo desta camada nÃ£o Ã© reescrever o repositÃ³rio nem substituir a arquitetura atual do sistema. O objetivo Ã© controlar como novas mudanÃ§as entram no repositÃ³rio, como sÃ£o classificadas, como viram batches pequenos e como sÃ£o validadas sem descaracterizar o legado funcional.
+O objetivo desta camada não é reescrever o repositório nem substituir a arquitetura atual do sistema. O objetivo é controlar como novas mudanças entram no repositório, como são classificadas, como viram batches pequenos e como são validadas sem descaracterizar o legado funcional.
 
 ## Ordem normativa
 
@@ -16,12 +16,12 @@ O objetivo desta camada nÃ£o Ã© reescrever o repositÃ³rio nem substituir a
 
 ## Regras de ouro
 
-- O legado documentado em `sdd/00-baseline-architecture.md` Ã© considerado funcional e aprovado.
-- Nenhuma mudanÃ§a deve descartar, reescrever amplamente ou "modernizar" o legado sem mudanÃ§a normativa aprovada.
-- `sdd/human-requests/` Ã© intake humano nÃ£o normativo e serve como o log histÃ³rico da conversa entre o UsuÃ¡rio (Engenheiro Chefe) e o Arquiteto. Os executores de desenvolvimento nÃ£o modificam esta pasta.
-- sdd numerados sÃ³ devem mudar quando requisito, contrato, critÃ©rio de aceite ou decisÃ£o estrutural realmente mudar.
-- Feedback de review, batches pequenos, validaÃ§Ã£o e registro de decisÃµes devem ir para os artefatos prÃ³prios, sem inflar os sdd numerados.
-- Cada rodada deve perseguir o menor batch plausÃ­vel e a menor validaÃ§Ã£o capaz de falsificar o slice atual.
+- O legado documentado em `sdd/00-baseline-architecture.md` é considerado funcional e aprovado.
+- Nenhuma mudança deve descartar, reescrever amplamente ou "modernizar" o legado sem mudança normativa aprovada.
+- `sdd/human-requests/` é intake humano não normativo e serve como o log histórico da conversa entre o Usuário (Engenheiro Chefe) e o Arquiteto. Os executores de desenvolvimento não modificam esta pasta.
+- sdd numerados só devem mudar quando requisito, contrato, critério de aceite ou decisão estrutural realmente mudar.
+- Feedback de review, batches pequenos, validação e registro de decisões devem ir para os artefatos próprios, sem inflar os sdd numerados.
+- Cada rodada deve perseguir o menor batch plausível e a menor validação capaz de falsificar o slice atual.
 
 ## Suporte duplo de IA
 
@@ -36,7 +36,7 @@ Esta estrutura foi instalada para funcionar tanto com Claude Code quanto com Git
 - Claude Code: `/start-sdd-slice`, `/continue-sdd-batch`, `/review-current-batch`, `/raise-spec-change`
 - GitHub Copilot: prompts equivalentes em `.github/prompts/`
 
-## Ordem mÃ­nima de leitura para qualquer nova demanda
+## Ordem mínima de leitura para qualquer nova demanda
 
 1. Se a demanda vier de `sdd/human-requests/`, leia primeiro o intake humano.
 2. Leia este arquivo.
@@ -47,8 +47,8 @@ Esta estrutura foi instalada para funcionar tanto com Claude Code quanto com Git
 7. Leia `sdd/validation/VALIDATION-CHECKLIST.md`.
 8. Leia `sdd/decisions/DECISION-LOG.md`.
 
-## Estado inicial desta implantaÃ§Ã£o
+## Estado inicial desta implantação
 
-- `BATCH-000` fecha a implantaÃ§Ã£o do SDD repo-wide no `conn2flow`.
-- O prÃ³ximo intake esperado Ã© o `req-001.md`, focado em tarefas e scripts de sincronizaÃ§Ã£o de projetos.
-- Enquanto nÃ£o houver intake novo classificado, `sdd/human-requests/CURRENT.md` Ã© o apontador oficial do estado de entrada.
+- `BATCH-000` fecha a implantação do SDD repo-wide no `conn2flow`.
+- O próximo intake esperado é o `req-001.md`, focado em tarefas e scripts de sincronização de projetos.
+- Enquanto não houver intake novo classificado, `sdd/human-requests/CURRENT.md` é o apontador oficial do estado de entrada.

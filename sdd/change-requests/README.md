@@ -1,12 +1,12 @@
 ﻿# Change Requests
 
-Use este diretÃ³rio para pedidos de mudanÃ§a normativa antes de alterar sdd numerados.
+Use este diretório para pedidos de mudança normativa antes de alterar sdd numerados.
 
 Abra um change request quando a demanda mudar:
 
 - requisito
 - contrato
-- critÃ©rio de aceite
-- decisÃ£o estrutural
+- critério de aceite
+- decisão estrutural
 
-NÃ£o use este diretÃ³rio para feedback pequeno de review ou para batches de implementaÃ§Ã£o que jÃ¡ estejam cobertos pelos sdd atuais.
+Não use este diretório para feedback pequeno de review ou para batches de implementação que já estejam cobertos pelos sdd atuais.

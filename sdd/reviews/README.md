@@ -1,12 +1,12 @@
 ﻿# Reviews
 
-Use este diretÃ³rio quando um round de review findings-first precisar virar artefato persistente.
+Use este diretório quando um round de review findings-first precisar virar artefato persistente.
 
 Use reviews para:
 
 - bugs encontrados no review
-- riscos de regressÃ£o
-- drift entre implementaÃ§Ã£o e spec
-- validaÃ§Ã£o ausente
+- riscos de regressão
+- drift entre implementação e spec
+- validação ausente
 
-NÃ£o reescreva sdd numerados apenas para armazenar findings de review.
+Não reescreva sdd numerados apenas para armazenar findings de review.
