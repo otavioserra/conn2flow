@@ -55,3 +55,20 @@ Substituir deleções automáticas de registros órfãos por uma estratégia imp
 ## DEC-012 - 2026-05-25 - accepted
 
 Padronizar todo o registro de mensagens de logs dos scripts de sincronização de banco e geração de dados para utilizar exclusivamente a biblioteca oficial do sistema `log.php` e sua função nativa `log_disco()`, eliminando implementações duplicadas ou logs soltos.
+
+## DEC-013 - 2026-05-25 - accepted
+
+Adotar a arquitetura de Widgets Envelopados (Wrappers) usando comentários HTML no formato `<!-- widgets#IDENTIFICADOR < --> ... <!-- widgets#IDENTIFICADOR > -->` para interceptar marcações estáticas e utilizá-las como templates de renderização dinâmica no core do Conn2Flow.
+
+## DEC-014 - 2026-05-25 - accepted
+
+Fica decidido que a vinculação entre os blocos de destaques (`publisher_highlights`) e os tipos de publicação (`publisher`), bem como a seleção manual de publicações no JSON de curadoria (`fields_schema->selected_items`), utilizará estritamente IDs textuais/alfanuméricas (ex: `'noticias'` para o tipo de publicação, e os slugs/`id` das publicações). Não serão utilizados IDs numéricos auto-incrementados de banco de dados (`id_publisher` ou `id_publisher_pages`) nessas relações para manter a consistência de runtime do Conn2Flow.
+
+## DEC-015 - 2026-05-25 - accepted
+
+A estrutura de template HTML e CSS do módulo `publisher-highlights` será armazenada diretamente em colunas específicas (`html` e `css`) da tabela `publisher_highlights`, sendo totalmente editável via painel administrativo usando o `html-editor.php`. Em tempo de execução, o renderizador dinâmico do widget lerá o template estritamente do banco de dados — sem fallback para o mockup do arquivo físico. Se as colunas estiverem vazias ou o registro não existir, o widget retornará vazio, impedindo que mockups estáticos de preview sejam indevidamente exibidos em produção.
+
+## DEC-016 - 2026-05-25 - accepted
+
+O desenvolvimento do módulo `publisher-highlights` no core do Conn2Flow espelhará a estrutura básica do módulo `publisher` original (como organização de pacotes, deploy automático via arquivo descritor de módulo, registro de templates locais na pasta de recursos por idioma, e a tela de edição CRUD). A tela de edição CRUD removerá o campo `path_prefix` e adicionará a vinculação dinâmica de placeholders `@[[item#...]]@` com as colunas reais do publicador selecionado.
+
