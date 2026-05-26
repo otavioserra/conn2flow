@@ -1,7 +1,5 @@
 # Current Human Request
 
-- **Intake ativo**: Nenhum intake funcional ativo no momento. O lote `BATCH-001` (Sincronização de Projetos Específicos) e seus ajustes associados (`req-001.md` e `req-002.md`) foram concluídos, testados e homologados com sucesso.
+- **Intake ativo**: [req-004.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-004.md) - Correções e Melhorias no Módulo de Destaques (publisher-highlights).
 
-- **Próximos Passos**: 
-  1. O usuário realizará testes visuais locais (como o widget `publisher-highlights`).
-  2. Após homologação dos testes visuais, o usuário autorizará a transição do lote `BATCH-DATA-001` (Reestruturação e Otimização de Dados e Sincronização) do status `blocked` para `in-progress`.
+- **Status**: Cadastrado para o Engenheiro Executor.

@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.1.0",
     "bibliotecas": [
         "interface",
         "html",
@@ -139,11 +139,11 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "152d3e1c2b6acefc1b805463d1af4d1b",
-                        "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "38db9cdc6924e7213b28eccf03c7f79d"
+                        "html": "",
+                        "css": "",
+                        "combined": ""
                     }
                 },
                 {
@@ -153,11 +153,11 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "086352ea93ea4e21cfeefafccb38041e",
-                        "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "fc4820a7d03d7c17416134ed3a7264c3"
+                        "html": "",
+                        "css": "",
+                        "combined": ""
                     }
                 },
                 {
@@ -167,11 +167,11 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "4cd3aa7fbdfde1c822957c2592be1591",
-                        "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "e9794a22d9658e9efd0246593a728515"
+                        "html": "",
+                        "css": "",
+                        "combined": ""
                     }
                 }
             ],
@@ -355,11 +355,11 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "152d3e1c2b6acefc1b805463d1af4d1b",
-                        "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "38db9cdc6924e7213b28eccf03c7f79d"
+                        "html": "",
+                        "css": "",
+                        "combined": ""
                     }
                 },
                 {
@@ -369,11 +369,11 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "086352ea93ea4e21cfeefafccb38041e",
-                        "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "fc4820a7d03d7c17416134ed3a7264c3"
+                        "html": "",
+                        "css": "",
+                        "combined": ""
                     }
                 },
                 {
@@ -383,11 +383,11 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "4cd3aa7fbdfde1c822957c2592be1591",
-                        "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "e9794a22d9658e9efd0246593a728515"
+                        "html": "",
+                        "css": "",
+                        "combined": ""
                     }
                 }
             ],

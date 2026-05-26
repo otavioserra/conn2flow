@@ -26,21 +26,51 @@ function html_editor_publisher_controls($params = false){
 		'id' => 'html-editor-publisher-controls',
 	));
 
-	// ===== Publisher vinculado
-	if(isset($publisher) && is_array($publisher)){
+	$alvo_atual = isset($alvo) ? $alvo : 'publisher';
+	$tem_vinculo = isset($publisher) && is_array($publisher);
+
+	// Para publisher-highlights, o "vínculo" suficiente é a lista de variáveis do template
+	// (não exige um registro de publisher carregado).
+	if($alvo_atual === 'publisher-highlights' && !empty($target_variables)){
+		$tem_vinculo = true;
+	}
+
+	if($tem_vinculo){
 		// Variaveis globais alterar.
-		
+
 		$open = $_GESTOR['variavel-global']['open'];
 		$close = $_GESTOR['variavel-global']['close'];
 		$openText = $_GESTOR['variavel-global']['openText'];
 		$closeText = $_GESTOR['variavel-global']['closeText'];
-		
-		// Filtrar campos do schema para remover formatação de variáveis do backend @[[...]]@ para frontend [[...]]
-		$publisher_fields_schema = json_decode($publisher['fields_schema'] ?? '[]', true);
-		
-		if(isset($publisher_fields_schema['template_map'])){
-			foreach($publisher_fields_schema['template_map'] as $key => $val){
-				$publisher_fields_schema['template_map'][$key]['variable'] = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $val['variable']);
+
+		if($alvo_atual === 'publisher-highlights'){
+			// req-004 item 7: variáveis do template do destaque seguem o padrão `[[item#NOME]]`.
+			$template_map = [];
+			if(isset($target_variables) && is_array($target_variables)){
+				foreach($target_variables as $var){
+					$var_id = is_array($var) ? ($var['id'] ?? '') : (string)$var;
+					if($var_id === '') continue;
+					$template_map[] = [
+						'id' => $var_id,
+						'variable' => '[[item#'.$var_id.']]',
+						'label' => $var_id,
+						'type' => 'text',
+					];
+				}
+			}
+
+			$publisher_fields_schema = [
+				'template_map' => $template_map,
+				'fields' => [],
+			];
+		} else {
+			// Filtrar campos do schema para remover formatação de variáveis do backend @[[...]]@ para frontend [[...]]
+			$publisher_fields_schema = json_decode($publisher['fields_schema'] ?? '[]', true);
+
+			if(isset($publisher_fields_schema['template_map'])){
+				foreach($publisher_fields_schema['template_map'] as $key => $val){
+					$publisher_fields_schema['template_map'][$key]['variable'] = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $val['variable']);
+				}
 			}
 		}
 
@@ -136,15 +166,19 @@ function html_editor_componente($params = false){
 		case 'publisher':
 		case 'publisher-highlights':
 			// Reaproveita os componentes de simulação/controles do publisher para o
-			// alvo publisher-highlights (BATCH-009). A diferença prática vive na
-			// formatação das variáveis na chamada IA (vide switch($target) abaixo)
-			// e na lógica de repetição de itens, que é resolvida pelo widget renderer.
+			// alvo publisher-highlights (req-004). A diferença prática vive na
+			// formatação das variáveis (vide switch($target) abaixo) e na lógica de
+			// repetição de itens, que é resolvida pelo widget renderer.
 			$html_editor_publisher_simulation = gestor_componente(Array(
 				'id' => 'html-editor-publisher-simulation',
 			));
 
 			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#',$html_editor_publisher_simulation);
-			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-controls#',html_editor_publisher_controls(['publisher' => isset($publisher)? $publisher : null]));
+			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-controls#',html_editor_publisher_controls([
+				'publisher' => isset($publisher)? $publisher : null,
+				'alvo' => $alvo,
+				'target_variables' => isset($target_variables)? $target_variables : null,
+			]));
 		break;
 		default:
 			$cel_nome = 'publisher-html-editor-btns'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');

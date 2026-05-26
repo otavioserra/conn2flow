@@ -58,6 +58,7 @@ function publisher_highlights_render($params){
 
 	$rule             = $schema['rule']             ?? 'latest';
 	$count            = (int)($schema['count']      ?? 4);
+	$order_by         = $schema['order_by']         ?? 'date_desc';
 	$selected_items   = $schema['selected_items']   ?? [];
 	$variable_mapping = $schema['variable_mapping'] ?? [];
 
@@ -73,6 +74,7 @@ function publisher_highlights_render($params){
 			'publisher_id'   => $publisher_id,
 			'rule'           => $rule,
 			'count'          => $count,
+			'order_by'       => $order_by,
 			'selected_items' => $selected_items,
 		]);
 	}
@@ -117,7 +119,8 @@ function publisher_highlights_widget_montar_saida($html, $css){
  * Busca as publicações vinculadas ao publisher_id (slug textual) aplicando
  * a regra de curadoria.
  *
- * - rule = "latest": últimas N publicações ativas ordenadas por data_modificacao DESC.
+ * - rule = "latest": últimas N publicações ativas, ordenadas conforme `order_by`
+ *                    (`date_desc` padrão, `date_asc`, `title_asc`, `title_desc`). Ver DEC-017.
  * - rule = "manual": filtra por `paginas.id IN (selected_items)` preservando
  *                    a ordem informada em selected_items.
  *
@@ -130,6 +133,7 @@ function publisher_highlights_widget_buscar_publicacoes($params){
 	$publisher_id   = $params['publisher_id'];
 	$rule           = $params['rule'] ?? 'latest';
 	$count          = (int)($params['count'] ?? 4);
+	$order_by_key   = $params['order_by'] ?? 'date_desc';
 	$selected_items = isset($params['selected_items']) && is_array($params['selected_items']) ? $params['selected_items'] : [];
 
 	$language = $_GESTOR['linguagem-codigo'];
@@ -153,8 +157,14 @@ function publisher_highlights_widget_buscar_publicacoes($params){
 		$order_by = ""; // ordenação será aplicada manualmente abaixo
 		$limit = "";
 	} else {
-		// rule = "latest" (default)
-		$order_by = " ORDER BY p.data_modificacao DESC";
+		// rule = "latest" — `order_by` controla a ordenação (DEC-017)
+		$order_map = [
+			'title_asc'  => ' ORDER BY p.nome ASC',
+			'title_desc' => ' ORDER BY p.nome DESC',
+			'date_asc'   => ' ORDER BY p.data_modificacao ASC',
+			'date_desc'  => ' ORDER BY p.data_modificacao DESC',
+		];
+		$order_by = $order_map[$order_by_key] ?? $order_map['date_desc'];
 		$limit = " LIMIT ".$count;
 	}
 

@@ -72,3 +72,18 @@ A estrutura de template HTML e CSS do módulo `publisher-highlights` será armaz
 
 O desenvolvimento do módulo `publisher-highlights` no core do Conn2Flow espelhará a estrutura básica do módulo `publisher` original (como organização de pacotes, deploy automático via arquivo descritor de módulo, registro de templates locais na pasta de recursos por idioma, e a tela de edição CRUD). A tela de edição CRUD removerá o campo `path_prefix` e adicionará a vinculação dinâmica de placeholders `@[[item#...]]@` com as colunas reais do publicador selecionado.
 
+## DEC-017 - 2026-05-26 - accepted
+
+Estender o `fields_schema` do módulo `publisher-highlights` com a chave opcional `order_by` para configurar a ordenação da regra "Automática (últimas publicações)". Valores aceitos:
+
+- `title_asc` -> `ORDER BY p.nome ASC`
+- `title_desc` -> `ORDER BY p.nome DESC`
+- `date_asc` -> `ORDER BY p.data_modificacao ASC`
+- `date_desc` (padrão, retrocompatível) -> `ORDER BY p.data_modificacao DESC`
+
+A ordenação é ignorada quando `rule = 'manual'`, pois nesse caso a ordem é definida pelo array `selected_items`. Esta extensão é registrada em [03-wrapped-widgets-and-publisher-highlights.md](../03-wrapped-widgets-and-publisher-highlights.md).
+
+## DEC-018 - 2026-05-26 - accepted
+
+Para a regra de alimentação "Manual" do `publisher-highlights`, substituir a entrada via `<textarea>` com slugs por linha por um dropdown Fomantic UI `.ui.multiple.search.selection.dropdown` populado dinamicamente por AJAX a partir das páginas ativas do publicador selecionado. A serialização final para o `fields_schema.selected_items` continua sendo a lista ordenada de slugs textuais, mantendo a compatibilidade com [DEC-014](#dec-014---2026-05-25---accepted) e com o widget renderer.
+

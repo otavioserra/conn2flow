@@ -596,6 +596,21 @@ $(document).ready(function () {
         }
     }
 
+    // ===== API pública: atualizar conteúdo dos editores (usado por publisher-highlights.js
+    // ao carregar um template via AJAX template-load).
+    window.html_editor_set_html = function (html) {
+        if (typeof CodeMirrorHtml !== 'undefined' && CodeMirrorHtml) {
+            CodeMirrorHtml.getDoc().setValue(html || '');
+            CodeMirrorHtml.refresh();
+        }
+    };
+    window.html_editor_set_css = function (css) {
+        if (typeof CodeMirrorCss !== 'undefined' && CodeMirrorCss) {
+            CodeMirrorCss.getDoc().setValue(css || '');
+            CodeMirrorCss.refresh();
+        }
+    };
+
     // ===== Semantic UI
 
     const tabIdCode = 'tabCodeActive';
@@ -718,8 +733,23 @@ $(document).ready(function () {
         'layouts': 'adminLayoutsBackupCampo',
         'componentes': 'adminComponentesBackupCampo',
         'publisher': 'adminPaginasBackupCampo',
+        'publisher-highlights': 'adminPaginasBackupCampo',
     };
     const backupCallbackName = backupCallbackMap[gestor.html_editor.alvo] || 'adminPaginasBackupCampo';
+
+    // ===== Helpers de regex de variáveis sensíveis ao alvo
+    function alvoAtual() {
+        return ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
+    }
+    function isHighlightsAlvo() {
+        return alvoAtual() === 'publisher-highlights';
+    }
+    // Regex global para encontrar todas as variáveis (suporta publisher e publisher-highlights)
+    function regexVariaveisGlobal() {
+        return isHighlightsAlvo()
+            ? /\[\[item#([a-zA-Z0-9_\-]+)\]\]/g
+            : /\[\[publisher#([^#]+)#([^\]]+)\]\]/g;
+    }
 
     $('#gestor-listener').on(backupCallbackName, function (e, p) {
         var campo = p.campo;
@@ -1571,8 +1601,7 @@ $(document).ready(function () {
     function publisherGetAllVariables() {
         let html = CodeMirrorHtml.getDoc().getValue();
 
-        // Regex para encontrar variáveis no formato [[publisher#TIPO#ID]]
-        const regex = /\[\[publisher#([^#]+)#([^\]]+)\]\]/g;
+        const regex = regexVariaveisGlobal();
         let foundVariables = new Set();
         let match;
 
@@ -1593,8 +1622,7 @@ $(document).ready(function () {
         setTimeout(function () {
             let html = CodeMirrorHtml.getDoc().getValue();
 
-            // Regex para encontrar variáveis no formato [[publisher#TIPO#ID]]
-            const regex = /\[\[publisher#([^#]+)#([^\]]+)\]\]/g;
+            const regex = regexVariaveisGlobal();
             let foundVariables = new Set();
             let match;
 
@@ -1603,14 +1631,16 @@ $(document).ready(function () {
             }
 
             // Mapear dados para a tabela
+            const highlights = isHighlightsAlvo();
+
             let tableData = publisher_fields_schema.template_map.map(item => {
                 // Encontrar definição do campo se existir
                 let fieldDef = publisher_fields_schema.fields ? publisher_fields_schema.fields.find(f => f.id === item.id) : null;
 
-                // Extrair tipo do variable se não tiver fieldDef (caso variables do template não linkadas)
-                let type = fieldDef ? fieldDef.type : 'text';
-                if (!fieldDef) {
-                    let parts = item.variable.split('#');
+                // Para publisher-highlights, o tipo não é parte do template — usa 'text' como default
+                let type = fieldDef ? fieldDef.type : (item.type || 'text');
+                if (!fieldDef && !highlights) {
+                    let parts = (item.variable || '').split('#');
                     if (parts.length >= 2) type = parts[1];
                 }
 
@@ -1618,7 +1648,7 @@ $(document).ready(function () {
                     id: item.id,
                     variable: item.variable,
                     type: type,
-                    label: fieldDef ? fieldDef.label : item.id,
+                    label: fieldDef ? fieldDef.label : (item.label || item.id),
                     found: foundVariables.has(item.variable)
                 };
             });
@@ -1626,6 +1656,19 @@ $(document).ready(function () {
             publisherTableVariables(tableData);
         }, 100);
     }
+
+    // ===== publisher-highlights: API pública para o módulo notificar mudanças nas variáveis
+    window.publisher_highlights_update_target_variables = function (vars) {
+        if (!isHighlightsAlvo()) return;
+        if (!Array.isArray(vars)) vars = [];
+
+        publisher_fields_schema.template_map = vars.map(function (v) {
+            const id = (v && typeof v === 'object') ? v.id : String(v);
+            return { id: id, variable: '[[item#' + id + ']]', label: id, type: 'text' };
+        });
+
+        publisherVariablesSearch();
+    };
 
     function publisherTableVariables(data) {
         let table = $('.hep-variables-table');
@@ -1646,6 +1689,8 @@ $(document).ready(function () {
         let countFound = 0;
         let countTotal = data.length;
 
+        const highlights = isHighlightsAlvo();
+
         data.forEach(item => {
             let row = publisher_table_tr_skeleton.clone();
 
@@ -1655,6 +1700,11 @@ $(document).ready(function () {
             html = html.replace(/#val-type#/g, item.type);
             html = html.replace(/#val-id#/g, item.id);
             row.html(html);
+
+            if (highlights) {
+                // req-004 item 7: rótulo da variável segue `[[item#NOME]]` (sem TIPO#).
+                row.find('.copy-to-clipboard').text('[[item#' + item.id + ']]');
+            }
 
             // Controle de visibilidade dos ícones
             if (item.found) {
@@ -1733,8 +1783,8 @@ $(document).ready(function () {
             let randomItem = items.eq(Math.floor(Math.random() * items.length));
             let htmlSkeleton = randomItem.html();
 
-            // Substituir variável
-            let variable = `[[publisher#${type}#${id}]]`;
+            // Substituir variável (formato sensível ao alvo)
+            let variable = isHighlightsAlvo() ? `[[item#${id}]]` : `[[publisher#${type}#${id}]]`;
             htmlSkeleton = htmlSkeleton.replace(/#variavel#/g, variable);
 
             // Criar nova ID de seção
@@ -1814,8 +1864,10 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
 
         let html = CodeMirrorHtml.getDoc().getValue();
 
-        // Regex para variable: [[publisher#TIPO#ID]]
-        const regexStr = `\\[\\[publisher#${type}#${id}\\]\\]`;
+        // Regex para variable (formato sensível ao alvo)
+        const regexStr = isHighlightsAlvo()
+            ? `\\[\\[item#${id}\\]\\]`
+            : `\\[\\[publisher#${type}#${id}\\]\\]`;
         const regex = new RegExp(regexStr, 'g');
 
         html = html.replace(regex, ' ');
@@ -1837,8 +1889,8 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
 
         let html = CodeMirrorHtml.getDoc().getValue();
 
-        // Regex para todas as variáveis: [[publisher#TIPO#ID]]
-        const regex = /\[\[publisher#[^#]+#[^\]]+\]\]/g;
+        // Regex para todas as variáveis (sensível ao alvo)
+        const regex = regexVariaveisGlobal();
 
         html = html.replace(regex, ' ');
         html = cleanCodeString(html);

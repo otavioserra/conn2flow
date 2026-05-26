@@ -18,6 +18,31 @@ function publisher_highlights_normalize_array($array) {
 }
 
 /**
+ * Extrai a lista de variáveis `[[item#NOME]]` (sem o cerco @...@) encontradas no HTML
+ * informado. Usado para alimentar a aba de variáveis do html-editor no alvo
+ * `publisher-highlights` (req-004 item 7).
+ *
+ * @param string $html
+ * @return array Lista de [['id' => 'titulo'], ['id' => 'resumo'], ...] sem duplicatas.
+ */
+function publisher_highlights_extract_item_variables($html){
+	if(empty($html) || !is_string($html)) return [];
+
+	$pattern = '/@\[\[item#([a-zA-Z0-9_\-]+)\]\]@/';
+	preg_match_all($pattern, $html, $matches);
+
+	if(empty($matches[1])) return [];
+
+	$unique = [];
+	foreach($matches[1] as $name){
+		if($name === '') continue;
+		$unique[$name] = ['id' => $name];
+	}
+
+	return array_values($unique);
+}
+
+/**
  * Recupera os dados (slug + name + fields_schema) do publicador associado pelo slug textual.
  * Usado tanto na tela de edição (para popular o painel de vinculação) quanto no widget renderer.
  *
@@ -99,6 +124,27 @@ function publisher_highlights_adicionar(){
 		$campo_nome = "id"; $campo_valor = $id;									$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "publisher_id"; $post_nome = $campo_nome;					if(isset($_REQUEST[$post_nome]) && $_REQUEST[$post_nome])	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 
+		// ===== fields_schema (regras de curadoria + variable_mapping) — converte [[item#xxx]] -> @[[item#xxx]]@
+
+		$open = $_GESTOR['variavel-global']['open'];
+		$close = $_GESTOR['variavel-global']['close'];
+		$openText = $_GESTOR['variavel-global']['openText'];
+		$closeText = $_GESTOR['variavel-global']['closeText'];
+
+		$fields_schema_str = $_REQUEST['fields_schema'] ?? '';
+		if($fields_schema_str !== ''){
+			$fields_schema_str = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $fields_schema_str);
+			$campos[] = Array('fields_schema', banco_escape_field($fields_schema_str));
+		}
+
+		// ===== html / css (do html-editor.php)
+
+		foreach(['html','css'] as $clonable_field){
+			if(isset($_REQUEST[$clonable_field]) && $_REQUEST[$clonable_field] !== ''){
+				$campos[] = Array($clonable_field, banco_escape_field($_REQUEST[$clonable_field]));
+			}
+		}
+
 		// ===== Campos comuns
 
 		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
@@ -119,6 +165,27 @@ function publisher_highlights_adicionar(){
 	// ===== Publishers para seleção (dropdown publisher_id)
 
 	publisher_highlights_publisher_options(null);
+
+	// ===== Templates para seleção (dropdown template_id)
+
+	publisher_highlights_template_options(null);
+
+	// ===== Schema inicial vazio para o JS reidratar UI
+
+	$schema_inicial = ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => []];
+	$_GESTOR['pagina'] .= '<script>var publisher_highlights_initial_schema = '.json_encode($schema_inicial).';</script>';
+
+	// ===== HTML Editor (alvo publisher-highlights)
+
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente(Array(
+		'adicionarEditar' => true,
+		'modulo' => $modulo,
+		'alvo' => 'publisher-highlights',
+		'alvos_modelos' => 'publisher-highlights',
+	)));
+
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#','');
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-css#','');
 
 	// ===== Inclusão Módulo JS
 
@@ -165,7 +232,7 @@ function publisher_highlights_editar(){
 		'fields_schema',
 		'html',
 		'css',
-		'status'
+		'status',
 	);
 
 	$camposBancoPadrao = Array(
@@ -368,18 +435,36 @@ function publisher_highlights_editar(){
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#name#',$name);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id#',$id);
 
-		// Injetar o schema existente como variável JS para o frontend reidratar a UI
-		$fields_schema_decoded = json_decode($fields_schema, true) ?: ['rule' => 'latest', 'count' => 4, 'selected_items' => [], 'variable_mapping' => []];
+		// Defaults garantem retrocompatibilidade com registros gravados antes do req-004.
+		$fields_schema_decoded = json_decode($fields_schema, true) ?: [];
+		$fields_schema_decoded += ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => []];
+
 		$schema_json = json_encode($fields_schema_decoded);
 		$_GESTOR['pagina'] .= '<script>var publisher_highlights_initial_schema = '.$schema_json.';</script>';
 
 		// ===== Publisher dropdown
 		publisher_highlights_publisher_options($publisher_id);
 
+		// ===== Template dropdown
+		publisher_highlights_template_options(null);
+
 		// ===== HTML Editor (alvo publisher-highlights) — edição do template HTML/CSS no banco.
 		// A biblioteca html-editor é incluída automaticamente via `bibliotecas` no manifesto.
 
 		$publisher_record = publisher_highlights_publisher_by_slug($publisher_id);
+
+		// Coletar variáveis @[[item#X]]@ do HTML salvo + variable_mapping para alimentar o html-editor.
+		$item_variables = publisher_highlights_extract_item_variables($html);
+		if(!empty($fields_schema_decoded['variable_mapping'])){
+			$mapped = [];
+			foreach($item_variables as $iv){ $mapped[$iv['id']] = true; }
+			foreach($fields_schema_decoded['variable_mapping'] as $var => $_field){
+				if(!isset($mapped[$var])){
+					$item_variables[] = ['id' => $var];
+					$mapped[$var] = true;
+				}
+			}
+		}
 
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente(Array(
 			'editar' => true,
@@ -387,6 +472,7 @@ function publisher_highlights_editar(){
 			'alvo' => 'publisher-highlights',
 			'alvos_modelos' => 'publisher-highlights',
 			'publisher' => $publisher_record,
+			'target_variables' => $item_variables,
 		)));
 
 		// Conteúdos atuais para o editor
@@ -608,15 +694,44 @@ function publisher_highlights_clonar(){
 
 		$fields_schema = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $fields_schema);
 
-		$fields_schema_decoded = json_decode($fields_schema, true) ?: ['rule' => 'latest', 'count' => 4, 'selected_items' => [], 'variable_mapping' => []];
+		$fields_schema_decoded = json_decode($fields_schema, true) ?: [];
+		$fields_schema_decoded += ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => []];
 		$schema_json = json_encode($fields_schema_decoded);
 		$_GESTOR['pagina'] .= '<script>var publisher_highlights_initial_schema = '.$schema_json.';</script>';
 
 		publisher_highlights_publisher_options($publisher_id);
+		publisher_highlights_template_options(null);
 
 		// HTML/CSS de origem precisam viajar no submit (campos ocultos no formulário de clonar)
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#html-original#',htmlspecialchars($html, ENT_QUOTES));
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#css-original#',htmlspecialchars($css, ENT_QUOTES));
+
+		// HTML Editor (alvo publisher-highlights) — para que o usuário também possa ajustar
+		// o template no momento da clonagem antes de salvar.
+		$publisher_record = publisher_highlights_publisher_by_slug($publisher_id);
+		$item_variables = publisher_highlights_extract_item_variables($html);
+		if(!empty($fields_schema_decoded['variable_mapping'])){
+			$mapped = [];
+			foreach($item_variables as $iv){ $mapped[$iv['id']] = true; }
+			foreach($fields_schema_decoded['variable_mapping'] as $var => $_field){
+				if(!isset($mapped[$var])){
+					$item_variables[] = ['id' => $var];
+					$mapped[$var] = true;
+				}
+			}
+		}
+
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente(Array(
+			'adicionarEditar' => true,
+			'modulo' => $modulo,
+			'alvo' => 'publisher-highlights',
+			'alvos_modelos' => 'publisher-highlights',
+			'publisher' => $publisher_record,
+			'target_variables' => $item_variables,
+		)));
+
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#',$html);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-css#',$css);
 	} else {
 		gestor_redirecionar_raiz();
 	}
@@ -791,6 +906,41 @@ function publisher_highlights_publisher_options($selected_id = null){
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#publisher_id_options#',$publisher_id_options);
 }
 
+/**
+ * Popula `#template_id_options#` no template com os options do dropdown de templates
+ * com `target = 'publisher-highlights'`. Marca o `id_selecionado` como selected quando informado.
+ * Também substitui `#template_placeholder_option#` pelo placeholder padrão de admin-templates
+ * (req-004 item 2 e 3).
+ */
+function publisher_highlights_template_options($selected_id = null){
+	global $_GESTOR;
+
+	$templates = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'nome',
+			'id',
+		))
+		,
+		'templates',
+		"WHERE status='A'"
+		.' AND language="'.$_GESTOR['linguagem-codigo'].'"'
+		.' AND target="publisher-highlights"'
+		." ORDER BY nome ASC"
+	);
+
+	$template_id_options = '';
+	if($templates){
+		foreach($templates as $template){
+			$selected = ($selected_id && $template['id'] == $selected_id) ? ' selected' : '';
+			$template_id_options .= '<option value="'.$template['id'].'"'.$selected.'>'.$template['nome'].'</option>';
+		}
+	}
+
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#template_placeholder_option#',gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')));
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#template_id_options#',$template_id_options);
+}
+
 // ==== Ajax
 
 /**
@@ -890,6 +1040,115 @@ function publisher_highlights_ajax_publisher_load(){
 	);
 }
 
+/**
+ * AJAX: busca páginas (paginas) ativas vinculadas ao `publisher_id` selecionado,
+ * opcionalmente filtradas por um termo de busca (`q`), para o dropdown manual
+ * com pesquisa do Fomantic UI (req-004 item 6).
+ *
+ * Retorna `{ status, results: [{ value: slug, name: nome }, ...] }` no formato
+ * esperado pelo `apiSettings` do Fomantic UI Dropdown.
+ */
+function publisher_highlights_ajax_publisher_pages_search(){
+	global $_GESTOR;
+
+	$publisher_id = $_REQUEST['params']['publisher_id'] ?? '';
+	$q = trim((string)($_REQUEST['params']['q'] ?? ''));
+
+	if(empty($publisher_id)){
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'Ok',
+			'success' => true,
+			'results' => [],
+		);
+		return;
+	}
+
+	$where = "WHERE publisher_id='".banco_escape_field($publisher_id)."'"
+		." AND status='A'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'";
+
+	if($q !== ''){
+		$q_escaped = banco_escape_field($q);
+		$where .= " AND (nome LIKE '%".$q_escaped."%' OR id LIKE '%".$q_escaped."%')";
+	}
+
+	$rows = banco_select(Array(
+		'tabela' => 'paginas',
+		'campos' => Array('id', 'nome'),
+		'extra' => $where." ORDER BY nome ASC LIMIT 50",
+	));
+
+	$results = [];
+	if(is_array($rows)){
+		foreach($rows as $row){
+			$results[] = [
+				'value' => $row['id'] ?? '',
+				'name' => $row['nome'] ?? ($row['id'] ?? ''),
+			];
+		}
+	}
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'success' => true,
+		'results' => $results,
+	);
+}
+
+/**
+ * AJAX: dado um array de slugs (`params.ids`) + publisher_id, retorna os nomes
+ * correspondentes para pré-hidratar a seleção no dropdown manual ao abrir
+ * Edição/Clonagem (req-004 item 6).
+ */
+function publisher_highlights_ajax_publisher_pages_fetch(){
+	global $_GESTOR;
+
+	$publisher_id = $_REQUEST['params']['publisher_id'] ?? '';
+	$ids = $_REQUEST['params']['ids'] ?? [];
+
+	if(!is_array($ids)) $ids = [];
+
+	$ids = array_values(array_filter(array_map('strval', $ids), function($s){ return $s !== ''; }));
+
+	if(empty($publisher_id) || empty($ids)){
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'Ok',
+			'results' => [],
+		);
+		return;
+	}
+
+	$ids_escaped = array_map(function($id){
+		return "'".banco_escape_field($id)."'";
+	}, $ids);
+	$ids_in = implode(',', $ids_escaped);
+
+	$rows = banco_select(Array(
+		'tabela' => 'paginas',
+		'campos' => Array('id', 'nome'),
+		'extra' =>
+			"WHERE publisher_id='".banco_escape_field($publisher_id)."'"
+			." AND status='A'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
+			." AND id IN (".$ids_in.")",
+	));
+
+	$results = [];
+	if(is_array($rows)){
+		foreach($rows as $row){
+			$results[] = [
+				'value' => $row['id'] ?? '',
+				'name' => $row['nome'] ?? ($row['id'] ?? ''),
+			];
+		}
+	}
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'results' => $results,
+	);
+}
+
 // ==== Start
 
 function publisher_highlights_start(){
@@ -903,6 +1162,8 @@ function publisher_highlights_start(){
 		switch($_GESTOR['ajax-opcao']){
 			case 'template-load': publisher_highlights_ajax_template_load(); break;
 			case 'publisher-load': publisher_highlights_ajax_publisher_load(); break;
+			case 'publisher-pages-search': publisher_highlights_ajax_publisher_pages_search(); break;
+			case 'publisher-pages-fetch': publisher_highlights_ajax_publisher_pages_fetch(); break;
 		}
 
 		interface_ajax_finalizar();

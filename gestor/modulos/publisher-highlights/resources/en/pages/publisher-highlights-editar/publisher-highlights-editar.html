@@ -25,16 +25,26 @@
         <label>Quantidade máxima de itens</label>
         <input type="number" name="count" id="count" min="1" value="4">
     </div>
+    <div class="six wide field" id="order-by-wrapper">
+        <label>Ordenação</label>
+        <select id="order_by" class="ui dropdown" name="order_by">
+            <option value="date_desc">Por data (mais recentes primeiro)</option>
+            <option value="date_asc">Por data (mais antigas primeiro)</option>
+            <option value="title_asc">Alfabética (A-Z)</option>
+            <option value="title_desc">Alfabética (Z-A)</option>
+        </select>
+    </div>
 </div>
 
 <div class="field" id="manual-items-wrapper" style="display:none;">
     <label>Itens selecionados (ordem)</label>
     <div class="ui label">
         <i class="hand pointer icon"></i>
-        Use os slugs (id alfanuméricos) das páginas do publicador escolhido, um por linha. A ordem
-        de cima para baixo será preservada na renderização. Exemplo: <code>noticia-evento-x</code>.
+        Selecione abaixo as publicações ativas do publicador escolhido. A ordem de inclusão será preservada
+        na renderização. Para remover um item, clique no &laquo;x&raquo; ao lado dele.
     </div>
-    <textarea name="selected_items" id="selected_items" rows="6" placeholder="um-slug-por-linha"></textarea>
+    <select id="selected_items" name="selected_items" class="ui multiple search selection dropdown" multiple>
+    </select>
 </div>
 
 <h4 class="ui dividing header">Modelo Visual de Destaque</h4>
@@ -64,7 +74,7 @@
     <kbd class="ui label">Campos do Publicador</kbd>
 </h4>
 
-<div class="ui segment basic fitted template-options-wrapper">
+<div class="ui segment basic fitted template-options-wrapper" style="display:none;">
     <div class="ui medium dimmer template-loading">
         <div class="ui text loader">Carregando dados...</div>
     </div>
@@ -111,9 +121,6 @@
 </div>
 
 #html-editor#
-
-<textarea name="html" id="pagina-html" style="display:none;">#pagina-html#</textarea>
-<textarea name="css" id="pagina-css" style="display:none;">#pagina-css#</textarea>
 
 <!-- Skeletons para elementos dinâmicos -->
 <div id="template-skeletons" style="display: none;">

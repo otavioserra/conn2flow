@@ -80,6 +80,14 @@ Este módulo gerencia a curadoria de blocos de destaques baseados nos registros 
 2. Carrega o template HTML (`html`) e CSS (`css`) correspondentes armazenados no banco de dados.
 3. Se as colunas estiverem vazias ou o registro não existir, o widget não executa a renderização para evitar exibir mockups estáticos como conteúdo ao vivo em produção.
 4. Isola o trecho contido entre os delimitadores de repetição: `<!-- item < -->` e `<!-- item > -->`.
-5. Busca os dados na tabela do publicador configurado (`publisher_id`) de acordo com as regras (`rule` e `count`) do `fields_schema`.
+5. Busca os dados na tabela do publicador configurado (`publisher_id`) de acordo com as regras (`rule`, `count`, `order_by`) do `fields_schema`.
 6. Substitui placeholders básicos (`@[[item#titulo]]@`, `@[[item#resumo]]@`, `@[[item#imagem]]@`, `@[[item#url]]@`, `@[[item#data]]@`) e campos mapeados no `variable_mapping`.
 7. Junta os itens, injeta o CSS customizado e retorna o bloco renderizado.
+
+### 4. Extensões do `fields_schema`
+
+- `rule`: `latest` (padrão) ou `manual`.
+- `count`: inteiro >= 1.
+- `selected_items`: array de slugs textuais (regra `manual`).
+- `order_by`: opcional, aplicado apenas quando `rule = 'latest'`. Valores aceitos: `title_asc`, `title_desc`, `date_asc`, `date_desc` (padrão). Ver [DEC-017](decisions/DECISION-LOG.md#dec-017---2026-05-26---accepted).
+- `variable_mapping`: mapa `nome_variavel_template -> nome_campo_do_publisher`.

@@ -141,6 +141,41 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
 - Pendências ou riscos restantes:
   - Nenhuma pendência aberta para a integração de Core Widgets e Highlights.
 
+## BATCH-003 - Correções e Melhorias do Módulo Publisher Highlights
+
+- [ ] Formulário completo em adicionar/clonar/editar
+  - [ ] Adicionar inclui regra, modelo, mapeamento e editor HTML/CSS (mesma estrutura do editar)
+  - [ ] Clonar inclui regra, modelo e mapeamento, preservando o html/css do registro de origem
+  - [ ] Backend grava `fields_schema`, `html` e `css` em todas as três rotas
+- [ ] Substituição do placeholder `#template_placeholder_option#` em todas as rotas
+- [ ] Dropdown `template_id`
+  - [ ] Lista templates ativos com `target='publisher-highlights'` na linguagem corrente
+  - [ ] Marca `selected` o template ativo no registro em edição
+- [ ] Visibilidade dinâmica do `.template-options-wrapper` controlada pelo `template_id`
+- [ ] Regra "Automática" com dropdown de ordenação (`order_by`) e renderizador respeitando a opção
+- [ ] Regra "Manual" usando dropdown múltiplo Fomantic (`.ui.multiple.search.selection.dropdown`)
+  - [ ] AJAX `publisher-pages-search` retornando páginas ativas filtradas por `publisher_id`
+  - [ ] Limpeza de seleção quando `publisher_id` muda
+  - [ ] Pré-hidratação na tela de edição/clonagem com nomes resolvidos
+- [ ] Editor HTML/CSS exibindo variáveis `[[item#NOME]]` (não `[[publisher#TIPO#ID]]`) no alvo `publisher-highlights`
+
+### Evidência registrada em 2026-05-26 (Fase 1)
+
+- Implementação dos sete itens do req-004 nos arquivos:
+  - `gestor/modulos/publisher-highlights/publisher-highlights.php`
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js`
+  - `gestor/modulos/publisher-highlights/publisher-highlights.widget.php`
+  - `gestor/modulos/publisher-highlights/publisher-highlights.json`
+  - `gestor/modulos/publisher-highlights/resources/pt-br/pages/publisher-highlights-{adicionar,editar,clonar}/*.html`
+  - `gestor/modulos/publisher-highlights/resources/en/pages/publisher-highlights-{adicionar,editar,clonar}/*.html`
+  - `gestor/bibliotecas/html-editor.php`
+  - `gestor/assets/interface/html-editor-interface.js`
+- Pendência: testes manuais no ambiente local (Docker) para confirmar:
+  - dropdowns populados (publisher, template, manual selection)
+  - visibilidade dinâmica `template-options-wrapper`
+  - ordenação `order_by` aplicada no widget
+  - editor exibindo `[[item#NOME]]` corretamente
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`

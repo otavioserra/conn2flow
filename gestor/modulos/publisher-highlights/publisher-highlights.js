@@ -1,11 +1,11 @@
 /**
- * publisher-highlights.js (BATCH-009)
+ * publisher-highlights.js
  *
  * Painel de curadoria de blocos de destaques:
  *  - Carrega campos do publicador selecionado (AJAX publisher-load)
  *  - Carrega variáveis @[[item#...]]@ do modelo selecionado (AJAX template-load)
  *  - Mapeia variáveis x campos (variable_mapping)
- *  - Regra manual/latest + count + selected_items
+ *  - Regra manual (dropdown múltiplo de páginas) ou latest + order_by + count
  *  - Serializa o schema final para o input hidden `fields_schema` antes do submit
  */
 $(document).ready(function () {
@@ -16,12 +16,14 @@ $(document).ready(function () {
     var schema = (typeof publisher_highlights_initial_schema !== 'undefined' && publisher_highlights_initial_schema) ? publisher_highlights_initial_schema : {
         rule: 'latest',
         count: 4,
+        order_by: 'date_desc',
         selected_items: [],
         variable_mapping: {}
     };
 
     if (!schema.variable_mapping) schema.variable_mapping = {};
     if (!Array.isArray(schema.selected_items)) schema.selected_items = [];
+    if (!schema.order_by) schema.order_by = 'date_desc';
 
     var availableItemVars = []; // [{id:'titulo'}, ...]   extraídas do template HTML
     var availablePublisherFields = []; // [{id:'titulo', name:'Título', type:'text'}, ...]
@@ -30,9 +32,7 @@ $(document).ready(function () {
 
     $('#rule').val(schema.rule || 'latest');
     $('#count').val(schema.count || 4);
-    $('#selected_items').val((schema.selected_items || []).join('\n'));
-
-    toggleManualWrapper();
+    $('#order_by').val(schema.order_by || 'date_desc');
 
     // ===== AJAX padrão
 
@@ -68,12 +68,22 @@ $(document).ready(function () {
     if ($publisher.val()) loadPublisher($publisher.val());
     if ($template.val()) loadTemplate($template.val());
 
+    initManualItemsDropdown($publisher.val() || '');
+    toggleManualWrapper();
+    toggleOrderByWrapper();
+    toggleTemplateOptionsWrapper();
+
     // ===== Listeners
 
     $publisher.on('change', function () {
         var pid = $(this).val();
         availablePublisherFields = [];
         renderPublisherFields();
+
+        // Limpar seleção atual e reconfigurar dropdown manual para o novo publisher
+        schema.selected_items = [];
+        resetManualItemsDropdown(pid);
+
         if (pid) loadPublisher(pid);
     });
 
@@ -81,12 +91,14 @@ $(document).ready(function () {
         var tid = $(this).val();
         availableItemVars = [];
         renderItemVars();
+        toggleTemplateOptionsWrapper();
         if (tid) loadTemplate(tid);
     });
 
     $('#rule').on('change', function () {
         schema.rule = $(this).val();
         toggleManualWrapper();
+        toggleOrderByWrapper();
     });
 
     $('#count').on('change input', function () {
@@ -94,8 +106,8 @@ $(document).ready(function () {
         schema.count = isNaN(v) || v < 1 ? 1 : v;
     });
 
-    $('#selected_items').on('change input', function () {
-        schema.selected_items = $(this).val().split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+    $('#order_by').on('change', function () {
+        schema.order_by = $(this).val() || 'date_desc';
     });
 
     // Interceptar submit para serializar o schema
@@ -104,7 +116,14 @@ $(document).ready(function () {
         // Garantir consistência com o estado dos inputs
         schema.rule = $('#rule').val() || 'latest';
         schema.count = parseInt($('#count').val(), 10) || 4;
-        schema.selected_items = ($('#selected_items').val() || '').split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+        schema.order_by = $('#order_by').val() || 'date_desc';
+
+        var sel = $('#selected_items').val();
+        if (Array.isArray(sel)) {
+            schema.selected_items = sel.filter(function (s) { return s !== ''; });
+        } else if (typeof sel === 'string' && sel.length > 0) {
+            schema.selected_items = sel.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+        }
 
         $('input[name="fields_schema"]').val(JSON.stringify(schema));
     });
@@ -138,12 +157,95 @@ $(document).ready(function () {
 
                 if (typeof window.html_editor_set_html === 'function') window.html_editor_set_html(dados.html || '');
                 if (typeof window.html_editor_set_css === 'function') window.html_editor_set_css(dados.css || '');
+
+                // Publicar variáveis do template para o html-editor (alvo publisher-highlights)
+                if (typeof window.publisher_highlights_update_target_variables === 'function') {
+                    window.publisher_highlights_update_target_variables(availableItemVars);
+                }
             },
             successNotOkCallback: function (dados) {
                 msg_erro_mostrar((dados && dados.message) ? dados.message : 'Erro ao carregar modelo');
             }
         });
         $.ajax(req);
+    }
+
+    // ===== Manual items dropdown (Fomantic UI multiple search selection)
+
+    function initManualItemsDropdown(publisher_id) {
+        var $sel = $('#selected_items');
+        if ($sel.length === 0) return;
+
+        // Configurar Fomantic com apiSettings — query dinâmica filtrada pelo publisher selecionado
+        $sel.dropdown({
+            apiSettings: {
+                url: gestor.raiz + gestor.moduloCaminho + '/',
+                method: 'POST',
+                data: {
+                    opcao: gestor.moduloOpcao,
+                    ajax: 'sim',
+                    ajaxOpcao: 'publisher-pages-search'
+                },
+                beforeSend: function (settings) {
+                    settings.data.params = {
+                        publisher_id: $publisher.val() || '',
+                        q: settings.urlData ? (settings.urlData.query || '') : ''
+                    };
+                    return settings;
+                },
+                onResponse: function (response) {
+                    return response;
+                }
+            },
+            saveRemoteData: false,
+            forceSelection: false,
+            allowAdditions: false,
+            fullTextSearch: true,
+            preserveHTML: false,
+            onChange: function (value) {
+                if (typeof value === 'string') {
+                    schema.selected_items = value.length ? value.split(',') : [];
+                } else if (Array.isArray(value)) {
+                    schema.selected_items = value;
+                }
+            }
+        });
+
+        // Pré-hidratar com os slugs salvos (resolve nomes via AJAX publisher-pages-fetch)
+        if (publisher_id && schema.selected_items && schema.selected_items.length > 0) {
+            hydrateManualItemsDropdown(publisher_id, schema.selected_items);
+        }
+    }
+
+    function hydrateManualItemsDropdown(publisher_id, ids) {
+        var req = $.extend(true, {}, ajaxDefault, {
+            data: $.extend({}, ajaxDefault.data, { ajaxOpcao: 'publisher-pages-fetch', params: { publisher_id: publisher_id, ids: ids } }),
+            ajaxOpcao: 'publisher-pages-fetch',
+            successCallback: function (dados) {
+                var $sel = $('#selected_items');
+                $sel.empty();
+
+                // Recriar options preservando a ordem armazenada em schema.selected_items
+                var byValue = {};
+                (dados.results || []).forEach(function (r) { byValue[r.value] = r.name || r.value; });
+
+                ids.forEach(function (slug) {
+                    var name = byValue[slug] || slug;
+                    $sel.append('<option value="' + slug + '" selected>' + $('<div>').text(name).html() + '</option>');
+                });
+
+                $sel.dropdown('set selected', ids);
+            }
+        });
+        $.ajax(req);
+    }
+
+    function resetManualItemsDropdown(publisher_id) {
+        var $sel = $('#selected_items');
+        if ($sel.length === 0) return;
+        $sel.dropdown('clear');
+        $sel.empty();
+        // Manter a configuração; o publisher_id atual será lido em beforeSend a partir do select.
     }
 
     // ===== Rendering
@@ -193,7 +295,6 @@ $(document).ready(function () {
     }
 
     // ===== Linking workflow: click variável -> click campo
-    // (modelo simples; uma futura iteração pode evoluir para drag-and-drop)
 
     var pendingVar = null;
 
@@ -223,6 +324,17 @@ $(document).ready(function () {
     function toggleManualWrapper() {
         if (($('#rule').val() || 'latest') === 'manual') $('#manual-items-wrapper').show();
         else $('#manual-items-wrapper').hide();
+    }
+
+    function toggleOrderByWrapper() {
+        if (($('#rule').val() || 'latest') === 'latest') $('#order-by-wrapper').show();
+        else $('#order-by-wrapper').hide();
+    }
+
+    function toggleTemplateOptionsWrapper() {
+        // Item 4: bloco de mapeamento só aparece quando há um template selecionado
+        if ($template.val()) $('.template-options-wrapper').show();
+        else $('.template-options-wrapper').hide();
     }
 
     function loadDimmer(show) {
