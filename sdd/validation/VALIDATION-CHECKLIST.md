@@ -176,6 +176,30 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - ordenação `order_by` aplicada no widget
   - editor exibindo `[[item#NOME]]` corretamente
 
+## BATCH-004 - Renomeação Física de Diretórios e Arquivos de Templates
+
+- [x] Diretórios `resources/pt-br/templates/` renomeados com prefixo `publisher-highlights-`
+  - [x] `noticias-lista-simples` → `publisher-highlights-noticias-lista-simples`
+  - [x] `noticias-grid-cards` → `publisher-highlights-noticias-grid-cards`
+  - [x] `artigos-editorial` → `publisher-highlights-artigos-editorial`
+  - [x] `lives-video-destaque` → `publisher-highlights-lives-video-destaque`
+  - [x] `notas-mosaico` → `publisher-highlights-notas-mosaico`
+  - [x] `destaque-principal-carousel` → `publisher-highlights-principal-carousel`
+- [x] Diretórios `resources/en/templates/` renomeados com prefixo `publisher-highlights-`
+  - [x] `noticias-lista-simples` → `publisher-highlights-noticias-lista-simples`
+  - [x] `noticias-grid-cards` → `publisher-highlights-noticias-grid-cards`
+  - [x] `artigos-editorial` → `publisher-highlights-artigos-editorial`
+  - [x] `lives-video-destaque` → `publisher-highlights-lives-video-destaque`
+  - [x] `notas-mosaico` → `publisher-highlights-notas-mosaico`
+  - [x] `destaque-principal-carousel` → `publisher-highlights-destaque-principal-carousel`
+- [x] Arquivos `.html` internos renomeados para corresponder ao novo nome do diretório (pt-br e en)
+- [x] Checksums dos templates no JSON já estavam como strings vazias (prontos para recálculo pelo pipeline)
+
+### Evidência registrada em 2026-05-26
+
+- Renomeação executada via PowerShell; 12 arquivos HTML confirmados com nomes alinhados ao `id` do JSON
+- Próximo passo: rodar `🗃️ Projects - Update => Core` para recalcular checksums via pipeline UPSERT
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`

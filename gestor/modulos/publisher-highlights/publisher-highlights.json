@@ -43,11 +43,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/noticias-lista-simples.webp",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "8a47736020a4b6e4a892b5558b6e703e",
                         "css": "",
-                        "combined": ""
+                        "combined": "8a47736020a4b6e4a892b5558b6e703e"
                     }
                 },
                 {
@@ -56,11 +56,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/noticias-grid-cards.webp",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "1b5fe5787ed440bf324c11d1f5dd015e",
                         "css": "",
-                        "combined": ""
+                        "combined": "1b5fe5787ed440bf324c11d1f5dd015e"
                     }
                 },
                 {
@@ -69,11 +69,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/artigos-editorial.webp",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "3fa065072b5568ccc6768a132203a7c0",
                         "css": "",
-                        "combined": ""
+                        "combined": "3fa065072b5568ccc6768a132203a7c0"
                     }
                 },
                 {
@@ -82,11 +82,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/lives-video-destaque.webp",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "de0383c8888ee646a75ba6c67c33e4be",
                         "css": "",
-                        "combined": ""
+                        "combined": "de0383c8888ee646a75ba6c67c33e4be"
                     }
                 },
                 {
@@ -95,11 +95,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/notas-mosaico.webp",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "246f8de896eee9b5ff5370bfc89f165e",
                         "css": "",
-                        "combined": ""
+                        "combined": "246f8de896eee9b5ff5370bfc89f165e"
                     }
                 },
                 {
@@ -108,11 +108,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/destaque-principal-carousel.webp",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "0938229bc4dd7938f8f6fab5066fcb07",
                         "css": "",
-                        "combined": ""
+                        "combined": "0938229bc4dd7938f8f6fab5066fcb07"
                     }
                 }
             ],
@@ -139,11 +139,11 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
-                        "css": "",
-                        "combined": ""
+                        "html": "8691ec7e817d71be9c3302cecf33c2bd",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "c9bd4289563de69874e17fbb3392960f"
                     }
                 },
                 {
@@ -153,11 +153,11 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
-                        "css": "",
-                        "combined": ""
+                        "html": "c3888167b542632c9f0634f135af2731",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "06debeda9b96457054b2706c5d4a938b"
                     }
                 },
                 {
@@ -167,11 +167,11 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
-                        "css": "",
-                        "combined": ""
+                        "html": "2a9aa5659efe3c469e037d243a2301cb",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "22fc071156b013b11b7e0f96bec3e48a"
                     }
                 }
             ],
@@ -259,11 +259,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/noticias-lista-simples.webp",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "8a47736020a4b6e4a892b5558b6e703e",
                         "css": "",
-                        "combined": ""
+                        "combined": "8a47736020a4b6e4a892b5558b6e703e"
                     }
                 },
                 {
@@ -272,11 +272,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/noticias-grid-cards.webp",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "1b5fe5787ed440bf324c11d1f5dd015e",
                         "css": "",
-                        "combined": ""
+                        "combined": "1b5fe5787ed440bf324c11d1f5dd015e"
                     }
                 },
                 {
@@ -285,11 +285,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/artigos-editorial.webp",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "3fa065072b5568ccc6768a132203a7c0",
                         "css": "",
-                        "combined": ""
+                        "combined": "3fa065072b5568ccc6768a132203a7c0"
                     }
                 },
                 {
@@ -298,11 +298,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/lives-video-destaque.webp",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "de0383c8888ee646a75ba6c67c33e4be",
                         "css": "",
-                        "combined": ""
+                        "combined": "de0383c8888ee646a75ba6c67c33e4be"
                     }
                 },
                 {
@@ -311,11 +311,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/notas-mosaico.webp",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "246f8de896eee9b5ff5370bfc89f165e",
                         "css": "",
-                        "combined": ""
+                        "combined": "246f8de896eee9b5ff5370bfc89f165e"
                     }
                 },
                 {
@@ -324,11 +324,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/destaque-principal-carousel.webp",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "0938229bc4dd7938f8f6fab5066fcb07",
                         "css": "",
-                        "combined": ""
+                        "combined": "0938229bc4dd7938f8f6fab5066fcb07"
                     }
                 }
             ],
@@ -355,11 +355,11 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
-                        "css": "",
-                        "combined": ""
+                        "html": "8691ec7e817d71be9c3302cecf33c2bd",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "c9bd4289563de69874e17fbb3392960f"
                     }
                 },
                 {
@@ -369,11 +369,11 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
-                        "css": "",
-                        "combined": ""
+                        "html": "c3888167b542632c9f0634f135af2731",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "06debeda9b96457054b2706c5d4a938b"
                     }
                 },
                 {
@@ -383,11 +383,11 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
-                        "css": "",
-                        "combined": ""
+                        "html": "2a9aa5659efe3c469e037d243a2301cb",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "22fc071156b013b11b7e0f96bec3e48a"
                     }
                 }
             ],
