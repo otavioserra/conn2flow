@@ -157,6 +157,7 @@ $(document).ready(function () {
 
                 if (typeof window.html_editor_set_html === 'function') window.html_editor_set_html(dados.html || '');
                 if (typeof window.html_editor_set_css === 'function') window.html_editor_set_css(dados.css || '');
+                if (typeof window.html_editor_refresh_preview === 'function') window.html_editor_refresh_preview();
 
                 // Publicar variáveis do template para o html-editor (alvo publisher-highlights)
                 if (typeof window.publisher_highlights_update_target_variables === 'function') {
@@ -257,7 +258,7 @@ $(document).ready(function () {
         } else {
             availableItemVars.forEach(function (v) {
                 var mapped = schema.variable_mapping[v.id];
-                var $btn = $('<div class="ui basic small button item-var" data-var="' + v.id + '"></div>')
+                var $btn = $('<div class="ui basic small button item-var" data-var="' + v.id + '" style="margin-bottom:6px;margin-right:6px;"></div>')
                     .text('@[[item#' + v.id + ']]@')
                     .append(mapped ? ' <i class="exchange icon"></i> <span class="ui teal label">' + mapped + '</span>' : '');
                 $list.append($btn);
@@ -272,7 +273,7 @@ $(document).ready(function () {
             $list.append('<div class="ui basic mini label">' + getMsg('msg-nenhum-campo-publisher', 'Nenhum campo do publicador') + '</div>');
         } else {
             availablePublisherFields.forEach(function (f) {
-                var $btn = $('<div class="ui basic small button publisher-field" data-field="' + f.id + '"></div>')
+                var $btn = $('<div class="ui basic small button publisher-field" data-field="' + f.id + '" style="margin-bottom:6px;margin-right:6px;"></div>')
                     .text(f.name + ' (' + f.id + ')');
                 $list.append($btn);
             });

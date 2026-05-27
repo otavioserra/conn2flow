@@ -200,6 +200,52 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
 - Renomeação executada via PowerShell; 12 arquivos HTML confirmados com nomes alinhados ao `id` do JSON
 - Próximo passo: rodar `🗃️ Projects - Update => Core` para recalcular checksums via pipeline UPSERT
 
+## BATCH-005 - Correções Visuais, Simulação, Mapeamento e Fallback (req-006)
+
+- [x] **Item 1** — Dropdown de itens manuais vazio corrigido
+  - [x] `publisher_highlights_ajax_publisher_pages_search`: INNER JOIN com `publisher_pages`, filtro por `pp.publisher_id`
+  - [x] `publisher_highlights_ajax_publisher_pages_fetch`: mesmo fix
+- [x] **Item 2** — Iframe atualiza automaticamente ao selecionar template
+  - [x] `window.html_editor_refresh_preview` exposto no html-editor-interface.js
+  - [x] `publisher-highlights.js` chama `html_editor_refresh_preview` após `set_html`/`set_css`
+- [x] **Item 3** — Simulação de variáveis `@[[item#...]]@` no html-editor
+  - [x] Bloco `publisher-highlights` adicionado ao início de `publisherVariablesOrSimulation`
+  - [x] Replica o bloco `<!-- item < -->..<!-- item > -->` N vezes (count do schema)
+  - [x] Mapeia `@[[item#VAR]]@` → `variable_mapping` → tipo → `.hep-simulation-${tipo} .item`
+- [x] **Item 4** — Segmento Fomantic com borda/fundo branco (`basic fitted` removidos)
+  - [x] Todas as 6 páginas HTML (pt-br e en): `ui segment template-options-wrapper`
+- [x] **Item 5** — Margens nos labels descritivos e botões de mapeamento
+  - [x] `style="margin: 8px 0; display: block;"` nos `ui label` informativos (6 páginas)
+  - [x] `style="margin-bottom:6px;margin-right:6px;"` nos botões `.item-var` e `.publisher-field`
+- [x] **Item 6** — Campos do publisher filtrados por `linked_template: true`
+  - [x] `publisher_highlights_ajax_publisher_load`: lê `template_map`, monta `linked_ids`, filtra `fields`
+  - [x] Fallback: se nenhum campo tiver `linked_template`, inclui todos (retrocompatível)
+- [x] **Items 7+9** — Suporte ao bloco `no-item` no widget renderer
+  - [x] `publisher-highlights.widget.php`: detecta `<!-- no-item < -->..<!-- no-item > -->`
+  - [x] Sem publicações: usa conteúdo do `no-item` (ou retorna `''` se não existir)
+  - [x] Com publicações: remove bloco `no-item` antes de processar o loop de itens
+- [x] **Item 8** — Bloco `no-item` inserido nos 12 templates físicos
+  - [x] 6 pt-br com `<h3>Nenhuma publicação encontrada</h3>`
+  - [x] 6 en com `<h3>No publications found</h3>`
+  - [x] Checksums dos templates no JSON já estavam vazios (prontos para recálculo)
+
+### Evidência registrada em 2026-05-27
+
+- Arquivos alterados:
+  - `gestor/modulos/publisher-highlights/publisher-highlights.php`
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js`
+  - `gestor/modulos/publisher-highlights/publisher-highlights.widget.php`
+  - `gestor/assets/interface/html-editor-interface.js`
+  - `gestor/modulos/publisher-highlights/resources/{pt-br,en}/pages/publisher-highlights-{adicionar,editar,clonar}/*.html`
+  - `gestor/modulos/publisher-highlights/resources/{pt-br,en}/templates/**/*.html` (12 templates)
+- Pendência: testes manuais no ambiente local (Docker) para confirmar:
+  - dropdown de itens manuais populado com páginas do publisher
+  - iframe atualiza ao trocar template
+  - simulação preenche variáveis `@[[item#...]]@` com dados fictícios
+  - segment com fundo branco e botões com margem
+  - campos do publisher filtrados por `linked_template`
+  - bloco `no-item` exibido quando não há publicações
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`

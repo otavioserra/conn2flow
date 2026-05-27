@@ -79,13 +79,31 @@ function publisher_highlights_render($params){
 		]);
 	}
 
-	// ===== 4) Localizar o bloco do item (`<!-- item < --> ... <!-- item > -->`)
-	//        e substituí-lo pela repetição renderizada.
+	// ===== 4) Localizar blocos `item` e `no-item` e montar a saída final.
 
-	$padraoItem = '/<!--\s*item\s*<\s*-->([\s\S]*?)<!--\s*item\s*>\s*-->/i';
+	$padraoItem   = '/<!--\s*item\s*<\s*-->([\s\S]*?)<!--\s*item\s*>\s*-->/i';
+	$padraoNoItem = '/<!--\s*no-item\s*<\s*-->([\s\S]*?)<!--\s*no-item\s*>\s*-->/i';
 
-	if(!preg_match($padraoItem, $html_template, $itemMatch)){
-		// Template sem bloco de loop: nada a repetir. Retornar template + CSS.
+	$temItemLoop   = preg_match($padraoItem, $html_template, $itemMatch);
+	$temNoItemBloco = preg_match($padraoNoItem, $html_template, $noItemMatch);
+
+	if(empty($publicacoes)){
+		// Sem publicações: exibir bloco no-item (se existir), caso contrário string vazia.
+		if(!$temNoItemBloco) return '';
+
+		// Remover bloco item (se existir) e substituir no-item pelo seu conteúdo interno.
+		$output = $temItemLoop ? preg_replace($padraoItem, '', $html_template, 1) : $html_template;
+		$output = preg_replace($padraoNoItem, $noItemMatch[1], $output, 1);
+
+		return publisher_highlights_widget_montar_saida($output, $css_custom);
+	}
+
+	// Com publicações: remover bloco no-item, processar bloco item.
+
+	$html_template = $temNoItemBloco ? preg_replace($padraoNoItem, '', $html_template, 1) : $html_template;
+
+	if(!$temItemLoop){
+		// Template sem bloco de loop: nada a repetir.
 		return publisher_highlights_widget_montar_saida($html_template, $css_custom);
 	}
 

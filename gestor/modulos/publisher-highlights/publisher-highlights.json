@@ -43,11 +43,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/noticias-lista-simples.webp",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "8a47736020a4b6e4a892b5558b6e703e",
+                        "html": "c3e90db2520dc6fdff011d9deb36dab3",
                         "css": "",
-                        "combined": "8a47736020a4b6e4a892b5558b6e703e"
+                        "combined": "c3e90db2520dc6fdff011d9deb36dab3"
                     }
                 },
                 {
@@ -56,11 +56,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/noticias-grid-cards.webp",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "1b5fe5787ed440bf324c11d1f5dd015e",
+                        "html": "99429589189cad583be513ec973eb2c7",
                         "css": "",
-                        "combined": "1b5fe5787ed440bf324c11d1f5dd015e"
+                        "combined": "99429589189cad583be513ec973eb2c7"
                     }
                 },
                 {
@@ -69,11 +69,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/artigos-editorial.webp",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "3fa065072b5568ccc6768a132203a7c0",
+                        "html": "eff4a8f7e8ed7f39fc32be90bc2688b2",
                         "css": "",
-                        "combined": "3fa065072b5568ccc6768a132203a7c0"
+                        "combined": "eff4a8f7e8ed7f39fc32be90bc2688b2"
                     }
                 },
                 {
@@ -82,11 +82,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/lives-video-destaque.webp",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "de0383c8888ee646a75ba6c67c33e4be",
+                        "html": "77d7b8e9e6be1783fd6b6c412ad9aaa0",
                         "css": "",
-                        "combined": "de0383c8888ee646a75ba6c67c33e4be"
+                        "combined": "77d7b8e9e6be1783fd6b6c412ad9aaa0"
                     }
                 },
                 {
@@ -95,11 +95,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/notas-mosaico.webp",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "246f8de896eee9b5ff5370bfc89f165e",
+                        "html": "e1153f98e4846d15bc3cd86a0cd95ce7",
                         "css": "",
-                        "combined": "246f8de896eee9b5ff5370bfc89f165e"
+                        "combined": "e1153f98e4846d15bc3cd86a0cd95ce7"
                     }
                 },
                 {
@@ -108,11 +108,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/destaque-principal-carousel.webp",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "0938229bc4dd7938f8f6fab5066fcb07",
+                        "html": "d9027201bdca3ec553403504d628b9eb",
                         "css": "",
-                        "combined": "0938229bc4dd7938f8f6fab5066fcb07"
+                        "combined": "d9027201bdca3ec553403504d628b9eb"
                     }
                 }
             ],
@@ -139,11 +139,11 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "8691ec7e817d71be9c3302cecf33c2bd",
+                        "html": "d791fc4ee5b5b62691e8373f1281d106",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "c9bd4289563de69874e17fbb3392960f"
+                        "combined": "f5b56578b0b830f2e8faf8d32d4c9a31"
                     }
                 },
                 {
@@ -153,11 +153,11 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "c3888167b542632c9f0634f135af2731",
+                        "html": "2675b58f0e23be1ca52ce0aa00e343f8",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "06debeda9b96457054b2706c5d4a938b"
+                        "combined": "3e0d78fd3399fe3c2d0a70d3ca401079"
                     }
                 },
                 {
@@ -167,11 +167,11 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "2a9aa5659efe3c469e037d243a2301cb",
+                        "html": "548e7c034a93fd1773f6cb5d7e53b0ce",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "22fc071156b013b11b7e0f96bec3e48a"
+                        "combined": "ace7e52410987070b0a30632d816b503"
                     }
                 }
             ],
@@ -259,11 +259,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/noticias-lista-simples.webp",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "8a47736020a4b6e4a892b5558b6e703e",
+                        "html": "aeb68d6148f1ff35cb3ddd49d5cd2cb2",
                         "css": "",
-                        "combined": "8a47736020a4b6e4a892b5558b6e703e"
+                        "combined": "aeb68d6148f1ff35cb3ddd49d5cd2cb2"
                     }
                 },
                 {
@@ -272,11 +272,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/noticias-grid-cards.webp",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "1b5fe5787ed440bf324c11d1f5dd015e",
+                        "html": "5485dbe8ead723f728a475d69cd3c42f",
                         "css": "",
-                        "combined": "1b5fe5787ed440bf324c11d1f5dd015e"
+                        "combined": "5485dbe8ead723f728a475d69cd3c42f"
                     }
                 },
                 {
@@ -285,11 +285,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/artigos-editorial.webp",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "3fa065072b5568ccc6768a132203a7c0",
+                        "html": "2275b8a311f4f460f71c9769f5347bbf",
                         "css": "",
-                        "combined": "3fa065072b5568ccc6768a132203a7c0"
+                        "combined": "2275b8a311f4f460f71c9769f5347bbf"
                     }
                 },
                 {
@@ -298,11 +298,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/lives-video-destaque.webp",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "de0383c8888ee646a75ba6c67c33e4be",
+                        "html": "486c19a0441d17d15c21d37706106480",
                         "css": "",
-                        "combined": "de0383c8888ee646a75ba6c67c33e4be"
+                        "combined": "486c19a0441d17d15c21d37706106480"
                     }
                 },
                 {
@@ -311,11 +311,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/notas-mosaico.webp",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "246f8de896eee9b5ff5370bfc89f165e",
+                        "html": "3ae8760dd642d6b6c933303e3d69aa26",
                         "css": "",
-                        "combined": "246f8de896eee9b5ff5370bfc89f165e"
+                        "combined": "3ae8760dd642d6b6c933303e3d69aa26"
                     }
                 },
                 {
@@ -324,11 +324,11 @@
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/destaque-principal-carousel.webp",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "0938229bc4dd7938f8f6fab5066fcb07",
+                        "html": "770da5fa4400456f77d2b3ffa0466f92",
                         "css": "",
-                        "combined": "0938229bc4dd7938f8f6fab5066fcb07"
+                        "combined": "770da5fa4400456f77d2b3ffa0466f92"
                     }
                 }
             ],
@@ -355,11 +355,11 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "8691ec7e817d71be9c3302cecf33c2bd",
+                        "html": "d791fc4ee5b5b62691e8373f1281d106",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "c9bd4289563de69874e17fbb3392960f"
+                        "combined": "f5b56578b0b830f2e8faf8d32d4c9a31"
                     }
                 },
                 {
@@ -369,11 +369,11 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "c3888167b542632c9f0634f135af2731",
+                        "html": "2675b58f0e23be1ca52ce0aa00e343f8",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "06debeda9b96457054b2706c5d4a938b"
+                        "combined": "3e0d78fd3399fe3c2d0a70d3ca401079"
                     }
                 },
                 {
@@ -383,11 +383,11 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "2a9aa5659efe3c469e037d243a2301cb",
+                        "html": "548e7c034a93fd1773f6cb5d7e53b0ce",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "22fc071156b013b11b7e0f96bec3e48a"
+                        "combined": "ace7e52410987070b0a30632d816b503"
                     }
                 }
             ],

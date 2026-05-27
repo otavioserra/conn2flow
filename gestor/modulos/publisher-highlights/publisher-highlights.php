@@ -1019,11 +1019,23 @@ function publisher_highlights_ajax_publisher_load(){
 	$campos_publisher[] = ['id' => 'url', 'name' => 'URL da publicação', 'type' => 'text'];
 	$campos_publisher[] = ['id' => 'data', 'name' => 'Data', 'type' => 'text'];
 
+	// Construir conjunto de IDs com linked_template:true a partir do template_map do publisher.
+	$template_map = isset($schema['template_map']) && is_array($schema['template_map']) ? $schema['template_map'] : [];
+	$linked_ids = [];
+	foreach($template_map as $tm){
+		if(!empty($tm['linked_template'])){
+			$linked_ids[$tm['id']] = true;
+		}
+	}
+
 	if(isset($schema['fields']) && is_array($schema['fields'])){
 		foreach($schema['fields'] as $f){
+			$field_id = $f['id'] ?? '';
+			// Se existirem entradas linked_template no template_map, filtrar; caso contrário incluir todos.
+			if(!empty($linked_ids) && !isset($linked_ids[$field_id])) continue;
 			$campos_publisher[] = [
-				'id' => $f['id'] ?? '',
-				'name' => $f['label'] ?? $f['id'] ?? '',
+				'id' => $field_id,
+				'name' => $f['label'] ?? $field_id,
 				'type' => $f['type'] ?? 'text',
 				'description' => $f['description'] ?? '',
 			];
@@ -1063,27 +1075,27 @@ function publisher_highlights_ajax_publisher_pages_search(){
 		return;
 	}
 
-	$where = "WHERE publisher_id='".banco_escape_field($publisher_id)."'"
-		." AND status='A'"
-		." AND language='".$_GESTOR['linguagem-codigo']."'";
+	$where = "WHERE pp.publisher_id='".banco_escape_field($publisher_id)."'"
+		." AND p.status='A'"
+		." AND p.language='".$_GESTOR['linguagem-codigo']."'";
 
 	if($q !== ''){
 		$q_escaped = banco_escape_field($q);
-		$where .= " AND (nome LIKE '%".$q_escaped."%' OR id LIKE '%".$q_escaped."%')";
+		$where .= " AND (p.nome LIKE '%".$q_escaped."%' OR p.id LIKE '%".$q_escaped."%')";
 	}
 
 	$rows = banco_select(Array(
-		'tabela' => 'paginas',
-		'campos' => Array('id', 'nome'),
-		'extra' => $where." ORDER BY nome ASC LIMIT 50",
+		'tabela' => 'paginas AS p INNER JOIN publisher_pages AS pp ON pp.page_id = p.id AND pp.language = p.language',
+		'campos' => Array('p.id', 'p.nome'),
+		'extra' => $where." ORDER BY p.nome ASC LIMIT 50",
 	));
 
 	$results = [];
 	if(is_array($rows)){
 		foreach($rows as $row){
 			$results[] = [
-				'value' => $row['id'] ?? '',
-				'name' => $row['nome'] ?? ($row['id'] ?? ''),
+				'value' => $row['p.id'] ?? '',
+				'name' => $row['p.nome'] ?? ($row['p.id'] ?? ''),
 			];
 		}
 	}
@@ -1124,21 +1136,21 @@ function publisher_highlights_ajax_publisher_pages_fetch(){
 	$ids_in = implode(',', $ids_escaped);
 
 	$rows = banco_select(Array(
-		'tabela' => 'paginas',
-		'campos' => Array('id', 'nome'),
+		'tabela' => 'paginas AS p INNER JOIN publisher_pages AS pp ON pp.page_id = p.id AND pp.language = p.language',
+		'campos' => Array('p.id', 'p.nome'),
 		'extra' =>
-			"WHERE publisher_id='".banco_escape_field($publisher_id)."'"
-			." AND status='A'"
-			." AND language='".$_GESTOR['linguagem-codigo']."'"
-			." AND id IN (".$ids_in.")",
+			"WHERE pp.publisher_id='".banco_escape_field($publisher_id)."'"
+			." AND p.status='A'"
+			." AND p.language='".$_GESTOR['linguagem-codigo']."'"
+			." AND p.id IN (".$ids_in.")",
 	));
 
 	$results = [];
 	if(is_array($rows)){
 		foreach($rows as $row){
 			$results[] = [
-				'value' => $row['id'] ?? '',
-				'name' => $row['nome'] ?? ($row['id'] ?? ''),
+				'value' => $row['p.id'] ?? '',
+				'name' => $row['p.nome'] ?? ($row['p.id'] ?? ''),
 			];
 		}
 	}

@@ -611,6 +611,10 @@ $(document).ready(function () {
         }
     };
 
+    window.html_editor_refresh_preview = function () {
+        previewHtml();
+    };
+
     // ===== Semantic UI
 
     const tabIdCode = 'tabCodeActive';
@@ -1473,6 +1477,55 @@ $(document).ready(function () {
 
     function publisherVariablesOrSimulation(html = '') {
         const alvo = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
+
+        if (alvo === 'publisher-highlights') {
+            const simulacao = $('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active');
+
+            if (simulacao) {
+                const schemaStr = $('input[name="fields_schema"]').val() || '{}';
+                let schema = {};
+                try { schema = JSON.parse(schemaStr); } catch (e) {}
+
+                const count = Math.max(1, parseInt(schema.count || 3, 10));
+                const variableMapping = schema.variable_mapping || {};
+
+                const itemRegex = /<!--\s*item\s*<\s*-->([\s\S]*?)<!--\s*item\s*>\s*-->/i;
+                const itemMatch = html.match(itemRegex);
+
+                if (itemMatch) {
+                    const itemTemplate = itemMatch[1];
+                    let replicated = '';
+
+                    for (let i = 0; i < count; i++) {
+                        const itemHtml = itemTemplate.replace(/@\[\[item#([a-zA-Z0-9_\-]+)\]\]@/g, function (match, varName) {
+                            const fieldId = variableMapping[varName] || varName;
+
+                            // Detectar tipo pelo schema do publisher ou por nome
+                            let fieldType = 'text';
+                            if (publisher_fields_schema.fields) {
+                                const fieldDef = publisher_fields_schema.fields.find(f => f.id === fieldId);
+                                if (fieldDef && fieldDef.type) fieldType = fieldDef.type;
+                            }
+                            if (fieldType === 'text') {
+                                if (/imagem|image|thumb|foto|photo|capa/i.test(varName + fieldId)) fieldType = 'image';
+                                else if (/^url$|^link$|^href$/i.test(varName)) fieldType = 'url';
+                            }
+
+                            const simulItems = $(`.hep-simulation-${fieldType} .item`);
+                            if (simulItems.length > 0) {
+                                const idx = Math.floor(Math.random() * simulItems.length);
+                                return simulItems.eq(idx).html().trim();
+                            }
+                            return match;
+                        });
+                        replicated += itemHtml;
+                    }
+
+                    html = html.replace(itemRegex, replicated);
+                }
+            }
+            return html;
+        }
 
         if (alvo == 'publisher') {
             const simulacao = $('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active');
