@@ -51,9 +51,33 @@ function publisher_highlights_render($params){
 	// estiver vazio, retornamos vazio — o bloco precisa ser configurado no painel.
 	if(trim($html_template) === '') return '';
 
-	// ===== 2) Decodificar fields_schema (regras de curadoria + variable_mapping)
+	return publisher_highlights_widget_render_inline([
+		'html' => $html_template,
+		'css' => $css_custom,
+		'publisher_id' => $registro['publisher_id'] ?? '',
+		'fields_schema' => $registro['fields_schema'] ?? '{}',
+	]);
+}
 
-	$schema = json_decode($registro['fields_schema'] ?? '{}', true);
+/**
+ * Renderiza o widget a partir de inputs crus (sem ler da tabela publisher_highlights).
+ * Usado pelo widget normal (após DB lookup) e pelo endpoint AJAX widget-preview do
+ * painel de edição (req-007 item 4).
+ *
+ * @param array $params['html']           string template HTML com blocos item/no-item
+ * @param array $params['css']            string CSS custom (opcional)
+ * @param array $params['publisher_id']   slug do publisher
+ * @param array $params['fields_schema']  JSON string com rule/count/order_by/selected_items/variable_mapping
+ */
+function publisher_highlights_widget_render_inline($params){
+	$html_template = (string)($params['html'] ?? '');
+	$css_custom   = (string)($params['css'] ?? '');
+	$publisher_id = (string)($params['publisher_id'] ?? '');
+
+	if(trim($html_template) === '') return '';
+
+	$schema = $params['fields_schema'] ?? '{}';
+	if(is_string($schema)) $schema = json_decode($schema, true);
 	if(!is_array($schema)) $schema = [];
 
 	$rule             = $schema['rule']             ?? 'latest';
@@ -64,11 +88,7 @@ function publisher_highlights_render($params){
 
 	if($count < 1) $count = 1;
 
-	// ===== 3) Buscar as publicações do publisher associado.
-
-	$publisher_id = $registro['publisher_id'] ?? '';
-	$publicacoes  = [];
-
+	$publicacoes = [];
 	if(!empty($publisher_id)){
 		$publicacoes = publisher_highlights_widget_buscar_publicacoes([
 			'publisher_id'   => $publisher_id,
@@ -79,8 +99,6 @@ function publisher_highlights_render($params){
 		]);
 	}
 
-	// ===== 4) Localizar blocos `item` e `no-item` e montar a saída final.
-
 	$padraoItem   = '/<!--\s*item\s*<\s*-->([\s\S]*?)<!--\s*item\s*>\s*-->/i';
 	$padraoNoItem = '/<!--\s*no-item\s*<\s*-->([\s\S]*?)<!--\s*no-item\s*>\s*-->/i';
 
@@ -88,22 +106,17 @@ function publisher_highlights_render($params){
 	$temNoItemBloco = preg_match($padraoNoItem, $html_template, $noItemMatch);
 
 	if(empty($publicacoes)){
-		// Sem publicações: exibir bloco no-item (se existir), caso contrário string vazia.
 		if(!$temNoItemBloco) return '';
 
-		// Remover bloco item (se existir) e substituir no-item pelo seu conteúdo interno.
 		$output = $temItemLoop ? preg_replace($padraoItem, '', $html_template, 1) : $html_template;
 		$output = preg_replace($padraoNoItem, $noItemMatch[1], $output, 1);
 
 		return publisher_highlights_widget_montar_saida($output, $css_custom);
 	}
 
-	// Com publicações: remover bloco no-item, processar bloco item.
-
 	$html_template = $temNoItemBloco ? preg_replace($padraoNoItem, '', $html_template, 1) : $html_template;
 
 	if(!$temItemLoop){
-		// Template sem bloco de loop: nada a repetir.
 		return publisher_highlights_widget_montar_saida($html_template, $css_custom);
 	}
 

@@ -19,6 +19,8 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-003 | complete | Correções e melhorias do módulo `publisher-highlights` (req-004) | VALIDATION-CHECKLIST.md#batch-003 | Slice corretivo do BATCH-002 (form completo em adicionar/clonar, dropdown template_id, order_by, autocomplete múltiplo, variáveis item# no html-editor) |
 | BATCH-004 | complete | Renomeação física de diretórios e arquivos de templates (req-005) | VALIDATION-CHECKLIST.md#batch-004 | Alinhar nomes de diretórios/arquivos com `id` do JSON; checksums já estavam vazios |
 | BATCH-005 | complete | Correções visuais, simulação, mapeamento e fallback (req-006) | VALIDATION-CHECKLIST.md#batch-005 | 9 itens: SQL INNER JOIN, iframe auto-refresh, simulação highlights, visual segment/labels, filtro linked_template, bloco no-item |
+| BATCH-006 | complete | Diagnóstico, mapeamento melhorado e preview real (req-007) | VALIDATION-CHECKLIST.md#batch-006 | 5 itens: fallback params + debug, ocultar mapeados, diferenciar campos padrões/dinâmicos, tabs + widget-preview AJAX, componente simulação simplificado |
+| BATCH-007 | complete | Busca manual, abas externas e fallback de simulação (req-008) | VALIDATION-CHECKLIST.md#batch-007 | 4 itens corretivos sobre o BATCH-006: AJAX manual no dropdown, 2 abas externas preservando html-editor, fallbacks url/date, validação do componente highlights-simulation |
 | BATCH-DATA-001 | blocked | Batch-Data-001: Reestruturação e Otimização de Dados e Sincronização | VALIDATION-CHECKLIST.md#batch-data-001 | Projeto de Arquitetura concluído. AGUARDANDO AUTORIZAÇÃO PARA IMPLEMENTAÇÃO. |
 
 ## Regra operacional

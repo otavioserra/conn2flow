@@ -1,4 +1,4 @@
-<div class="field">
+﻿<div class="field">
     <label>Nome do Bloco de Destaques</label>
     <input type="text" name="name" value="#name#" placeholder="Ex: Destaques da Home - Notícias">
 </div>
@@ -108,7 +108,7 @@
 
 <input type="hidden" name="fields_schema">
 
-<h4 class="ui dividing header">Editor HTML / CSS do Bloco</h4>
+<h4 class="ui dividing header">Conteúdo do Destaque</h4>
 
 <div class="ui icon message visible info">
     <i class="info circle icon"></i>
@@ -120,7 +120,21 @@
     </div>
 </div>
 
-#html-editor#
+<div class="ui top attached tabular menu menuConteudoDestaque">
+    <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Pré-Visualização</a>
+    <a class="item" data-tab="hep-editor"><i class="code icon"></i> Editor HTML</a>
+</div>
+<div class="ui bottom attached active tab segment" data-tab="hep-preview">
+    <div style="position: relative;">
+        <iframe id="iframe-publisher-highlights-preview" style="width:100%;height:900px;border:1px solid #ccc;"></iframe>
+        <div class="ui dimmer hep-preview-dimmer">
+            <div class="ui loader"></div>
+        </div>
+    </div>
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-editor">
+    #html-editor#
+</div>
 
 <!-- Skeletons para elementos dinâmicos -->
 <div id="template-skeletons" style="display: none;">
@@ -130,4 +144,7 @@
     <span class="msg-nenhum-campo-template" style="display:none">Nenhuma variável do modelo</span>
     <span class="msg-nenhum-campo-publisher" style="display:none">Nenhum campo do publicador</span>
     <span class="msg-nenhum-campo-vinculado" style="display:none">Nenhuma variável vinculada</span>
+    <span class="msg-campos-padroes" style="display:none">Campos Padrões</span>
+    <span class="msg-campos-dinamicos" style="display:none">Campos Dinâmicos</span>
+    <span class="msg-todos-campos-vinculados" style="display:none">Todos os campos do publicador já estão vinculados</span>
 </div>

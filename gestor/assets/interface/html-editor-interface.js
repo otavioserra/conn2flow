@@ -615,6 +615,32 @@ $(document).ready(function () {
         previewHtml();
     };
 
+    // req-007 item 4: APIs públicas para o painel de highlights ler/escrever conteúdo no iframe.
+    window.html_editor_get_html = function () {
+        return (typeof CodeMirrorHtml !== 'undefined' && CodeMirrorHtml) ? CodeMirrorHtml.getDoc().getValue() : '';
+    };
+    window.html_editor_get_css = function () {
+        return (typeof CodeMirrorCss !== 'undefined' && CodeMirrorCss) ? CodeMirrorCss.getDoc().getValue() : '';
+    };
+    window.html_editor_set_iframe_html = function (html) {
+        var iframe = $('#iframe-visualizacao-pagina');
+        if (iframe.length === 0) return;
+        iframe.parent().find('.ui.dimmer').addClass('active');
+        iframe.on('load', function () {
+            iframe.parent().find('.ui.dimmer').removeClass('active');
+        });
+        var idFramework = frameworkCSS();
+        iframe.attr('srcdoc', previewHtmlConteudo(html || '', '', idFramework));
+    };
+
+    // req-008 item 2: manter todas as 5 sub-abas internas do html-editor intactas.
+    // O ocultamento da req-007 item 4 foi revertido — as abas externas "Pré-Visualização"
+    // e "Editor HTML" vivem no template da página de edição, fora deste componente.
+    // O seletor de estilo de simulação continua oculto para destaques (item 4 deste req).
+    if (('alvo' in gestor.html_editor) && gestor.html_editor.alvo === 'publisher-highlights') {
+        $('.publisher-design-mode-simulation').hide();
+    }
+
     // ===== Semantic UI
 
     const tabIdCode = 'tabCodeActive';
@@ -1507,13 +1533,25 @@ $(document).ready(function () {
                                 if (fieldDef && fieldDef.type) fieldType = fieldDef.type;
                             }
                             if (fieldType === 'text') {
-                                if (/imagem|image|thumb|foto|photo|capa/i.test(varName + fieldId)) fieldType = 'image';
-                                else if (/^url$|^link$|^href$/i.test(varName)) fieldType = 'url';
+                                var hint = (varName + ' ' + fieldId).toLowerCase();
+                                if (/imagem|image|thumb|foto|photo|capa/.test(hint)) fieldType = 'image';
+                                else if (/^url$|^link$|^href$/i.test(varName) || /\burl\b|\blink\b/.test(hint)) fieldType = 'url';
+                                else if (/^data$|^date$|datetime/i.test(varName) || /\bdata\b|\bdate\b/.test(hint)) fieldType = 'date';
+                                else if (/resumo|descri|subtitulo|excerpt|summary|content|texto/i.test(hint)) fieldType = 'textarea';
                             }
 
-                            const simulItems = $(`.hep-simulation-${fieldType} .item`);
+                            var simulItems = $('.hep-simulation-' + fieldType + ' .item');
+
+                            // req-008 item 3: fallbacks para tipos sem dados no esqueleto.
+                            if (simulItems.length === 0) {
+                                if (fieldType === 'url') return '#';
+                                if (fieldType === 'date') return '27/05/2026';
+                                // Demais tipos: cair no genérico text.
+                                simulItems = $('.hep-simulation-text .item');
+                            }
+
                             if (simulItems.length > 0) {
-                                const idx = Math.floor(Math.random() * simulItems.length);
+                                var idx = Math.floor(Math.random() * simulItems.length);
                                 return simulItems.eq(idx).html().trim();
                             }
                             return match;

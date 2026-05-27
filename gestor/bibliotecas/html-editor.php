@@ -165,12 +165,15 @@ function html_editor_componente($params = false){
 	switch($alvo){
 		case 'publisher':
 		case 'publisher-highlights':
-			// Reaproveita os componentes de simulação/controles do publisher para o
-			// alvo publisher-highlights (req-004). A diferença prática vive na
-			// formatação das variáveis (vide switch($target) abaixo) e na lógica de
-			// repetição de itens, que é resolvida pelo widget renderer.
+			// req-007 item 5: para publisher-highlights, carregar componente de simulação
+			// específico com massa de dados enxuta para destaques. Publisher comum continua
+			// usando o esqueleto padrão (com variantes sofisticadas para layouts complexos).
+			$simulation_component_id = ($alvo === 'publisher-highlights')
+				? 'html-editor-publisher-highlights-simulation'
+				: 'html-editor-publisher-simulation';
+
 			$html_editor_publisher_simulation = gestor_componente(Array(
-				'id' => 'html-editor-publisher-simulation',
+				'id' => $simulation_component_id,
 			));
 
 			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#',$html_editor_publisher_simulation);

@@ -246,6 +246,93 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - campos do publisher filtrados por `linked_template`
   - bloco `no-item` exibido quando não há publicações
 
+## BATCH-006 - Diagnóstico de Select, Mapeamento e Preview Real (req-007)
+
+- [x] **Item 1** — Diagnóstico do select vazio
+  - [x] JS: `beforeSend` envia `publisher_id`/`q` na raiz E em `params` (fallback duplo)
+  - [x] PHP: `publisher-pages-search` e `publisher-pages-fetch` lêem `$_REQUEST['params'][X] ?? $_REQUEST[X]`
+  - [x] PHP: chave `debug` na resposta com SQL, valores, contagem e idioma
+- [x] **Item 2** — Ocultar itens já mapeados nas colunas
+  - [x] `renderItemVars`: variáveis presentes em `variable_mapping` são filtradas
+  - [x] `renderPublisherFields`: campos já usados como valor no mapeamento são filtrados
+  - [x] Ao remover vínculo, colunas são re-renderizadas automaticamente
+- [x] **Item 3** — Separar campos padrões (grey) e dinâmicos (teal)
+  - [x] Padrões: `titulo`, `url`, `data` em botões `ui basic small button grey`
+  - [x] Dinâmicos: demais campos em botões `ui basic small button teal`
+  - [x] Subtítulos `Campos Padrões` e `Campos Dinâmicos` (i18n via skeleton)
+- [x] **Item 4** — Editor/visualizador em abas + AJAX widget-preview
+  - [x] Páginas (6×) com header renomeado `Conteúdo do Destaque`
+  - [x] `html-editor-interface.js` oculta abas `modelos`, `assistente-ia`, `publisher-variables` para alvo highlights
+  - [x] APIs públicas `html_editor_get_html/get_css/set_iframe_html/on_editor_change`
+  - [x] PHP: endpoint `widget-preview` chama `publisher_highlights_widget_render_inline`
+  - [x] JS: `scheduleWidgetPreview` com debounce 400ms + snapshot-diff para evitar chamadas redundantes
+  - [x] Refresh dispara em: troca de template, troca de publisher, troca de rule/count/order_by, mapeamento link/unlink, seleção manual, edição de HTML/CSS, clique na aba do visualizador
+- [x] **Item 5** — Componente de simulação dedicado para highlights
+  - [x] `gestor/resources/{pt-br,en}/components/html-editor-publisher-highlights-simulation/html-editor-publisher-highlights-simulation.html` criados
+  - [x] Tipos: `text`, `textarea`, `image`, `url`, `date` (sem variantes sofisticadas)
+  - [x] `html-editor.php` carrega o componente específico quando `alvo === 'publisher-highlights'`
+  - [x] `.publisher-design-mode-simulation` ocultado para alvo highlights
+  - [x] Detecção de tipo em `publisherVariablesOrSimulation` mapeia `data/date → date` e `resumo/descri → textarea`
+
+### Evidência registrada em 2026-05-27
+
+- Arquivos alterados:
+  - `gestor/modulos/publisher-highlights/publisher-highlights.php` (AJAXes com debug + endpoint widget-preview)
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js` (render colunas, scheduleWidgetPreview, hooks)
+  - `gestor/modulos/publisher-highlights/publisher-highlights.widget.php` (refatoração render_inline)
+  - `gestor/assets/interface/html-editor-interface.js` (APIs públicas, oculta abas, detecção tipo)
+  - `gestor/bibliotecas/html-editor.php` (carregamento do novo componente de simulação)
+  - `gestor/modulos/publisher-highlights/resources/{pt-br,en}/pages/**/*.html` (header + skeletons)
+- Arquivos criados:
+  - `gestor/resources/pt-br/components/html-editor-publisher-highlights-simulation/html-editor-publisher-highlights-simulation.html`
+  - `gestor/resources/en/components/html-editor-publisher-highlights-simulation/html-editor-publisher-highlights-simulation.html`
+- Pendência: rodar `🗃️ Projects - Update => Core` para registrar o novo componente em `ComponentesData.json` e calcular checksums; depois validar manualmente:
+  - dropdown manual populado (inspecionar `debug.sql` no Network)
+  - colunas de variáveis/campos ocultam itens mapeados
+  - botões padrões em cinza, dinâmicos em teal
+  - abas extras escondidas, header `Conteúdo do Destaque` visível
+  - prévia ao vivo no iframe ao mudar regras/seleção/editor
+  - simulação usa massa simplificada (sem quebras de layout)
+
+## BATCH-007 - Busca Manual, Abas Externas e Fallback de Simulação (req-008)
+
+- [x] **Item 1** — Busca manual no dropdown de Itens selecionados
+  - [x] `apiSettings` removido em `publisher-highlights.js`
+  - [x] Dropdown inicializado localmente; listener `input/keyup` debounced (250ms) no `input.search` interno
+  - [x] AJAX manual para `publisher-pages-search` com `publisher_id` e `q` na raiz e em `params`
+  - [x] `<select>` atualizado preservando opções selecionadas + `dropdown('refresh')` + `set selected`
+  - [x] Disparo inicial e em troca de publisher (`resetManualItemsDropdown` chama `manualItemsSearch('')`)
+- [x] **Item 2** — Abas externas "Pré-Visualização" / "Editor HTML" e sincronização
+  - [x] Ocultamento de sub-abas internas do html-editor revertido (5 sub-abas originais intactas)
+  - [x] 6 páginas (pt-br + en × adicionar/editar/clonar) com `.menuConteudoDestaque` envolvendo iframe externo + `#html-editor#`
+  - [x] JS: `$('.menuConteudoDestaque .item').tab()` inicializa as abas
+  - [x] Novo iframe `#iframe-publisher-highlights-preview` recebe o HTML do AJAX `widget-preview`
+  - [x] `window.updatedCodeMirrorHtml` definido em `publisher-highlights.js` → dispara `scheduleWidgetPreview(false)`
+  - [x] Listener antigo `html_editor_on_editor_change` removido (substituído pelo hook global existente)
+- [x] **Item 3** — Fallbacks na simulação de destaques
+  - [x] `url` retorna `'#'` quando `.hep-simulation-url .item` vazio
+  - [x] `date` retorna `'27/05/2026'` quando `.hep-simulation-date .item` vazio
+  - [x] Demais tipos caem em `.hep-simulation-text .item` automaticamente
+- [x] **Item 4** — Componente `html-editor-publisher-highlights-simulation` (recap req-007)
+  - [x] Arquivos pt-br e en presentes em `resources/components/`
+  - [x] `html-editor.php` carrega o componente específico para alvo highlights
+  - [x] `.publisher-design-mode-simulation` permanece oculto para alvo highlights
+
+### Evidência registrada em 2026-05-27
+
+- Arquivos alterados:
+  - `gestor/assets/interface/html-editor-interface.js` (reverteu ocultamento de abas internas; adicionou fallbacks url/date/text)
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js` (busca manual, hook `updatedCodeMirrorHtml`, refresh do iframe externo)
+  - `gestor/modulos/publisher-highlights/resources/{pt-br,en}/pages/**/*.html` (6 páginas com menu de abas externas)
+- Componentes inalterados desde BATCH-006:
+  - `gestor/resources/{pt-br,en}/components/html-editor-publisher-highlights-simulation/html-editor-publisher-highlights-simulation.html`
+- Pendência: rodar `🗃️ Projects - Update => Core` para recalcular checksums das páginas alteradas; validar manualmente:
+  - dropdown manual lista páginas ao digitar (Network mostra `publisher-pages-search`)
+  - 5 sub-abas internas do html-editor visíveis dentro da aba "Editor HTML"
+  - aba "Pré-Visualização" renderiza widget com dados reais
+  - alterações no CodeMirror disparam refresh automático debounced
+  - variáveis `url` e `data` aparecem substituídas (não literais) na simulação
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`

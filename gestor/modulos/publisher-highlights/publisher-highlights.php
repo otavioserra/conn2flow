@@ -1063,14 +1063,25 @@ function publisher_highlights_ajax_publisher_load(){
 function publisher_highlights_ajax_publisher_pages_search(){
 	global $_GESTOR;
 
-	$publisher_id = $_REQUEST['params']['publisher_id'] ?? '';
-	$q = trim((string)($_REQUEST['params']['q'] ?? ''));
+	// req-007 item 1: aceitar parâmetros tanto em params[...] quanto na raiz do POST.
+	$publisher_id = $_REQUEST['params']['publisher_id'] ?? ($_REQUEST['publisher_id'] ?? '');
+	$q = trim((string)($_REQUEST['params']['q'] ?? ($_REQUEST['q'] ?? '')));
+
+	$debug = [
+		'publisher_id' => $publisher_id,
+		'q' => $q,
+		'language' => $_GESTOR['linguagem-codigo'],
+		'sql' => null,
+		'count' => 0,
+	];
 
 	if(empty($publisher_id)){
+		$debug['note'] = 'empty publisher_id';
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'Ok',
 			'success' => true,
 			'results' => [],
+			'debug' => $debug,
 		);
 		return;
 	}
@@ -1084,10 +1095,13 @@ function publisher_highlights_ajax_publisher_pages_search(){
 		$where .= " AND (p.nome LIKE '%".$q_escaped."%' OR p.id LIKE '%".$q_escaped."%')";
 	}
 
+	$extra = $where." ORDER BY p.nome ASC LIMIT 50";
+	$debug['sql'] = "SELECT p.id, p.nome FROM paginas AS p INNER JOIN publisher_pages AS pp ON pp.page_id = p.id AND pp.language = p.language ".$extra;
+
 	$rows = banco_select(Array(
 		'tabela' => 'paginas AS p INNER JOIN publisher_pages AS pp ON pp.page_id = p.id AND pp.language = p.language',
 		'campos' => Array('p.id', 'p.nome'),
-		'extra' => $where." ORDER BY p.nome ASC LIMIT 50",
+		'extra' => $extra,
 	));
 
 	$results = [];
@@ -1100,10 +1114,13 @@ function publisher_highlights_ajax_publisher_pages_search(){
 		}
 	}
 
+	$debug['count'] = count($results);
+
 	$_GESTOR['ajax-json'] = Array(
 		'status' => 'Ok',
 		'success' => true,
 		'results' => $results,
+		'debug' => $debug,
 	);
 }
 
@@ -1115,8 +1132,9 @@ function publisher_highlights_ajax_publisher_pages_search(){
 function publisher_highlights_ajax_publisher_pages_fetch(){
 	global $_GESTOR;
 
-	$publisher_id = $_REQUEST['params']['publisher_id'] ?? '';
-	$ids = $_REQUEST['params']['ids'] ?? [];
+	// req-007 item 1: aceitar parâmetros em params[...] e na raiz.
+	$publisher_id = $_REQUEST['params']['publisher_id'] ?? ($_REQUEST['publisher_id'] ?? '');
+	$ids = $_REQUEST['params']['ids'] ?? ($_REQUEST['ids'] ?? []);
 
 	if(!is_array($ids)) $ids = [];
 
@@ -1161,6 +1179,47 @@ function publisher_highlights_ajax_publisher_pages_fetch(){
 	);
 }
 
+/**
+ * AJAX: renderiza o widget com inputs crus (html, css, publisher_id, fields_schema)
+ * para a aba "Visualizador ao Vivo" da tela de edição (req-007 item 4).
+ *
+ * Retorna `{ status, html }` onde `html` é a saída final do widget (com <style> embed).
+ */
+function publisher_highlights_ajax_widget_preview(){
+	global $_GESTOR;
+
+	$html_input  = $_REQUEST['params']['html'] ?? ($_REQUEST['html'] ?? '');
+	$css_input   = $_REQUEST['params']['css'] ?? ($_REQUEST['css'] ?? '');
+	$publisher_id = $_REQUEST['params']['publisher_id'] ?? ($_REQUEST['publisher_id'] ?? '');
+	$fields_schema_input = $_REQUEST['params']['fields_schema'] ?? ($_REQUEST['fields_schema'] ?? '{}');
+
+	// O frontend manda as variáveis no formato `[[item#X]]`. Converter de volta para `@[[item#X]]@`
+	// para que o renderizador as encontre.
+	$open = $_GESTOR['variavel-global']['open'];
+	$close = $_GESTOR['variavel-global']['close'];
+	$openText = $_GESTOR['variavel-global']['openText'];
+	$closeText = $_GESTOR['variavel-global']['closeText'];
+
+	$html_normalized = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $html_input);
+
+	// Garantir a biblioteca do widget incluída (precisamos da função render_inline).
+	if(!function_exists('publisher_highlights_widget_render_inline')){
+		require_once(__DIR__.'/publisher-highlights.widget.php');
+	}
+
+	$rendered = publisher_highlights_widget_render_inline([
+		'html' => $html_normalized,
+		'css' => $css_input,
+		'publisher_id' => $publisher_id,
+		'fields_schema' => $fields_schema_input,
+	]);
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'html' => $rendered,
+	);
+}
+
 // ==== Start
 
 function publisher_highlights_start(){
@@ -1176,6 +1235,7 @@ function publisher_highlights_start(){
 			case 'publisher-load': publisher_highlights_ajax_publisher_load(); break;
 			case 'publisher-pages-search': publisher_highlights_ajax_publisher_pages_search(); break;
 			case 'publisher-pages-fetch': publisher_highlights_ajax_publisher_pages_fetch(); break;
+			case 'widget-preview': publisher_highlights_ajax_widget_preview(); break;
 		}
 
 		interface_ajax_finalizar();
