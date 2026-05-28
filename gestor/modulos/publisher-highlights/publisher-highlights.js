@@ -500,14 +500,14 @@ $(document).ready(function () {
 
     // ===== Widget Preview (req-007 item 4)
     // Renderiza a prévia ao vivo do widget com dados reais via AJAX widget-preview.
-    // Debounce de 400ms para evitar spam durante edição contínua nos editores.
+    // Debounce de 600ms para evitar spam durante edição contínua nos editores.
 
     var widgetPreviewTimer = null;
     var widgetPreviewLastSnapshot = null;
 
     function scheduleWidgetPreview(immediate) {
         if (widgetPreviewTimer) clearTimeout(widgetPreviewTimer);
-        widgetPreviewTimer = setTimeout(refreshWidgetPreview, immediate ? 0 : 400);
+        widgetPreviewTimer = setTimeout(refreshWidgetPreview, immediate ? 0 : 600);
     }
 
     function refreshWidgetPreview() {
