@@ -69,7 +69,7 @@
     <i class="plus icon"></i> Adicionar Novo Modelo
 </a>
 
-<h4 class="ui dividing header">Mapeamento de Variáveis <kbd class="ui label">@[[item#...]]@</kbd>
+<h4 class="ui dividing header">Mapeamento de Variáveis <kbd class="ui label">[[item#...]]</kbd>
     <kbd class="ui teal icon label"><i class="exchange alternate icon"></i></kbd>
     <kbd class="ui label">Campos do Publicador</kbd>
 </h4>
@@ -89,7 +89,7 @@
             <div class="sixteen wide column">
                 <div class="ui grid template-fields-list">
                     <div class="five wide column">
-                        <h5>Variáveis do Modelo <kbd class="ui label">@[[item#...]]@</kbd></h5>
+                        <h5>Variáveis do Modelo <kbd class="ui label">[[item#...]]</kbd></h5>
                         <div id="available-fields-list"></div>
                     </div>
                     <div class="five wide column">
@@ -97,7 +97,8 @@
                         <div id="missing-fields-list"></div>
                     </div>
                     <div class="six wide column">
-                        <h5>Vinculados: Variável <kbd class="ui teal icon label"><i class="exchange alternate icon"></i></kbd> Campo</h5>
+                        <h5>Vinculados: Variável <kbd class="ui teal icon label"><i
+                                    class="exchange alternate icon"></i></kbd> Campo</h5>
                         <div id="linked-fields-list"></div>
                     </div>
                 </div>
@@ -115,8 +116,9 @@
     <div class="content">
         <p>O HTML abaixo é o template renderizado no site. Use o bloco
             <code>&lt;!-- item &lt; --&gt; ... &lt;!-- item &gt; --&gt;</code> para envolver o trecho que será repetido
-            para cada publicação. Dentro dele, use placeholders <code>@[[item#nome_da_variavel]]@</code>
-            mapeados acima.</p>
+            para cada publicação. Dentro dele, use placeholders <code>[[item#nome_da_variavel]]</code>
+            mapeados acima.
+        </p>
     </div>
 </div>
 
@@ -126,7 +128,8 @@
 </div>
 <div class="ui bottom attached active tab segment" data-tab="hep-preview">
     <div style="position: relative;">
-        <iframe id="iframe-publisher-highlights-preview" style="width:100%;height:900px;border:1px solid #ccc;"></iframe>
+        <iframe id="iframe-publisher-highlights-preview"
+            style="width:100%;height:900px;border:1px solid #ccc;"></iframe>
         <div class="ui dimmer hep-preview-dimmer">
             <div class="ui loader"></div>
         </div>
@@ -146,5 +149,6 @@
     <span class="msg-nenhum-campo-vinculado" style="display:none">Nenhuma variável vinculada</span>
     <span class="msg-campos-padroes" style="display:none">Campos Padrões</span>
     <span class="msg-campos-dinamicos" style="display:none">Campos Dinâmicos</span>
-    <span class="msg-todos-campos-vinculados" style="display:none">Todos os campos do publicador já estão vinculados</span>
+    <span class="msg-todos-campos-vinculados" style="display:none">Todos os campos do publicador já estão
+        vinculados</span>
 </div>

@@ -171,8 +171,9 @@ function publisher_highlights_adicionar(){
 	publisher_highlights_template_options(null);
 
 	// ===== Schema inicial vazio para o JS reidratar UI
+	// req-010 item 1: template_id passa a viver dentro do fields_schema (sem coluna dedicada).
 
-	$schema_inicial = ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => []];
+	$schema_inicial = ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => [], 'template_id' => ''];
 	$_GESTOR['pagina'] .= '<script>var publisher_highlights_initial_schema = '.json_encode($schema_inicial).';</script>';
 
 	// ===== HTML Editor (alvo publisher-highlights)
@@ -190,6 +191,10 @@ function publisher_highlights_adicionar(){
 	// ===== Inclusão Módulo JS
 
 	gestor_pagina_javascript_incluir();
+	gestor_pagina_javascript_incluir('biblioteca',[
+		'caminho' => 'jquery-custom-dropdown',
+		'biblioteca' => 'interface',
+	]);
 
 	// ===== Interface adicionar finalizar opções
 
@@ -436,8 +441,9 @@ function publisher_highlights_editar(){
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id#',$id);
 
 		// Defaults garantem retrocompatibilidade com registros gravados antes do req-004.
+		// req-010 item 1: template_id passa a viver dentro de fields_schema (sem coluna dedicada).
 		$fields_schema_decoded = json_decode($fields_schema, true) ?: [];
-		$fields_schema_decoded += ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => []];
+		$fields_schema_decoded += ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => [], 'template_id' => ''];
 
 		$schema_json = json_encode($fields_schema_decoded);
 		$_GESTOR['pagina'] .= '<script>var publisher_highlights_initial_schema = '.$schema_json.';</script>';
@@ -446,7 +452,7 @@ function publisher_highlights_editar(){
 		publisher_highlights_publisher_options($publisher_id);
 
 		// ===== Template dropdown
-		publisher_highlights_template_options(null);
+		publisher_highlights_template_options($fields_schema_decoded['template_id'] ?? null);
 
 		// ===== HTML Editor (alvo publisher-highlights) — edição do template HTML/CSS no banco.
 		// A biblioteca html-editor é incluída automaticamente via `bibliotecas` no manifesto.
@@ -495,6 +501,10 @@ function publisher_highlights_editar(){
 	// ===== Inclusão Módulo JS
 
 	gestor_pagina_javascript_incluir();
+	gestor_pagina_javascript_incluir('biblioteca',[
+		'caminho' => 'jquery-custom-dropdown',
+		'biblioteca' => 'interface',
+	]);
 
 	// ===== Interface editar finalizar opções
 
@@ -695,12 +705,13 @@ function publisher_highlights_clonar(){
 		$fields_schema = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $fields_schema);
 
 		$fields_schema_decoded = json_decode($fields_schema, true) ?: [];
-		$fields_schema_decoded += ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => []];
+		// req-010 item 1: template_id também é restaurado a partir do fields_schema na clonagem.
+		$fields_schema_decoded += ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => [], 'template_id' => ''];
 		$schema_json = json_encode($fields_schema_decoded);
 		$_GESTOR['pagina'] .= '<script>var publisher_highlights_initial_schema = '.$schema_json.';</script>';
 
 		publisher_highlights_publisher_options($publisher_id);
-		publisher_highlights_template_options(null);
+		publisher_highlights_template_options($fields_schema_decoded['template_id'] ?? null);
 
 		// HTML/CSS de origem precisam viajar no submit (campos ocultos no formulário de clonar)
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#html-original#',htmlspecialchars($html, ENT_QUOTES));
@@ -737,6 +748,10 @@ function publisher_highlights_clonar(){
 	}
 
 	gestor_pagina_javascript_incluir();
+	gestor_pagina_javascript_incluir('biblioteca',[
+		'caminho' => 'jquery-custom-dropdown',
+		'biblioteca' => 'interface',
+	]);
 
 	$_GESTOR['interface']['clonar']['finalizar'] = Array(
 		'formulario' => Array(

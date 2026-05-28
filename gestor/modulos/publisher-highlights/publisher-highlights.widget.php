@@ -213,17 +213,31 @@ function publisher_highlights_widget_buscar_publicacoes($params){
 
 	if(!is_array($rows)) $rows = [];
 
+	// Incluir biblioteca de formatação para eventual formatação de campos (ex: data) no futuro.
+	gestor_incluir_biblioteca('formato');
+
 	$itens = [];
 	foreach($rows as $row){
-		$campos_publisher = json_decode($row['pp.fields_values'] ?? '{}', true);
-		if(!is_array($campos_publisher)) $campos_publisher = [];
+		// req-010 item 2: `publisher_pages.fields_values` é gravado como array de objetos
+		// `[{"id": "campo", "value": "valor"}, ...]` (vide publisher-pages). Para que o
+		// array_merge consiga sobrescrever campos pelo nome (ex: subtitulo, conteudo),
+		// normalizar para dicionário associativo antes de mesclar.
+		$campos_originais = json_decode($row['pp.fields_values'] ?? '[]', true);
+		$campos_publisher = [];
+		if(is_array($campos_originais)){
+			foreach($campos_originais as $item_field){
+				if(is_array($item_field) && isset($item_field['id'])){
+					$campos_publisher[$item_field['id']] = $item_field['value'] ?? '';
+				}
+			}
+		}
 
 		// Campos padrões + custom. Os customs sobrescrevem somente se a chave coincidir.
 		$itens[$row['p.id']] = array_merge([
 			'page_id' => $row['p.id'],
 			'titulo'  => $row['p.nome'] ?? '',
 			'url'     => $row['p.caminho'] ?? '',
-			'data'    => $row['p.data_modificacao'] ?? '',
+			'data'    => $row['p.data_modificacao'] ? formato_data_hora_from_datetime_to_text($row['p.data_modificacao']) : '',
 		], $campos_publisher);
 	}
 

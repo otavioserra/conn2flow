@@ -91,3 +91,35 @@ Este módulo gerencia a curadoria de blocos de destaques baseados nos registros 
 - `selected_items`: array de slugs textuais (regra `manual`).
 - `order_by`: opcional, aplicado apenas quando `rule = 'latest'`. Valores aceitos: `title_asc`, `title_desc`, `date_asc`, `date_desc` (padrão). Ver [DEC-017](decisions/DECISION-LOG.md#dec-017---2026-05-26---accepted).
 - `variable_mapping`: mapa `nome_variavel_template -> nome_campo_do_publisher`.
+
+---
+
+## 5. Arquitetura de Seleção Manual e Ciclo de Vida do Dropdown
+
+Para garantir a estabilidade das atualizações dinâmicas, o campo visual de seleção múltipla `selected_items` no painel de curadoria do módulo `publisher-highlights` é gerenciado de forma controlada através de uma classe isolada:
+
+### A. Ciclo de Vida Controlado e Inicialização Sob Demanda
+O dropdown visual do Fomantic UI não é inicializado prematuramente na montagem do DOM. Sua ativação ocorre estritamente quando o modo de alimentação "Manual" torna-se visível na tela. Isso previne conflitos com o estado do formulário e evita a duplicação ou quebra visual gerada pelo Fomantic ao reconstruir componentes clonados ou atualizados dinamicamente.
+
+### B. Desmembramento em Duas Etapas (Busca e Hidratação)
+Para eliminar os problemas causados pela busca manual acoplada ao input.search e pela constante destruição/reconstrução do componente, o carregamento dos itens curados utiliza duas etapas independentes controladas manualmente por AJAX:
+1. **Busca Incremental (Autocompletar)**: Ao digitar no campo de pesquisa, uma requisição AJAX manual é disparada para o endpoint `publisher-pages-search`, retornando os registros correspondentes que satisfazem a consulta textual.
+2. **Hidratação de Itens Selecionados**: Ao carregar a tela de edição ou clonagem, ou ao alternar o publicador, os slugs textuais armazenados em `selected_items` são hidratados disparando uma requisição AJAX para `publisher-pages-fetch`, que traz os nomes amigáveis associados aos slugs para exibir corretamente as tags de seleção múltipla.
+
+### C. Componente Reutilizável (`jquery-custom-dropdown.js`)
+Toda a lógica e ciclo de vida do componente foram isolados no arquivo centralizado da plataforma:
+- **Caminho**: [jquery-custom-dropdown.js](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/gestor/assets/interface/jquery-custom-dropdown.js)
+- **Classe**: `PublisherHighlightsCustomDropdown`
+- **Responsabilidades**: `init`, `reset`, `search`, `hydrate`, `refresh`, sincronização automática do select oculto e tratamento de internacionalização.
+
+### D. Inclusão Centralizada no Backend
+Em conformidade com a arquitetura da plataforma, em vez de servir o script diretamente da pasta do módulo, a classe Javascript reside na pasta pública de ativos do gestor (`gestor/assets/interface/`) e é incluída via backend através do método padrão da plataforma nas telas de adicionar, editar e clonar:
+```php
+gestor_pagina_javascript_incluir('biblioteca', [
+    'caminho' => 'jquery-custom-dropdown',
+    'biblioteca' => 'interface',
+]);
+```
+
+### E. Tradução Contextual
+O componente suporta tradução em tempo de execução para os alertas exibidos ao usuário (por exemplo, exibindo "Nenhum item encontrado" quando o idioma de controle do gestor está definido como `pt-br`, caindo para o inglês padrão nos demais idiomas).

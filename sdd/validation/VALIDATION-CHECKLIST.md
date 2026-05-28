@@ -364,6 +364,44 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - vínculo/desvínculo de variáveis atualiza imediatamente a aba lateral do editor
   - todas as alterações nos selects/inputs disparam o iframe externo após ~400ms
 
+## BATCH-009 - Persistência template_id, Preview Mapeado, Simulação Completa e Limpeza Final (req-010)
+
+- [x] **Item 1** — `template_id` persistido em `fields_schema` (sem coluna nova)
+  - [x] JS: hidratação no init via `$('#template_id').dropdown('set selected', ...)`
+  - [x] JS: serialização no submit (`schema.template_id = $('#template_id').val()`)
+  - [x] PHP `adicionar`: default `'template_id' => ''` em `$schema_inicial`
+  - [x] PHP `editar`: `$fields_schema_decoded += [...'template_id' => '']` + `publisher_highlights_template_options($fields_schema_decoded['template_id'])`
+  - [x] PHP `clonar`: idem ao editar
+- [x] **Item 2** — Normalização de `fields_values` no widget
+  - [x] `publisher_highlights_widget_buscar_publicacoes` converte `[{id, value}, ...]` → `{id: value, ...}` antes do `array_merge`
+  - [x] Decodificação aceita `'[]'` como default (em vez de `'{}'`)
+- [x] **Item 3** — Fallbacks robustos na simulação JS
+  - [x] `image` → `https://picsum.photos/seed/highlights/800/450`
+  - [x] `url` → `'#'`
+  - [x] `date` → `'27/05/2026'`
+  - [x] Demais buckets vazios caem em `.hep-simulation-text`
+  - [x] Último recurso: `textarea` → resumo simulado; outros → "Título Simulado de Destaque"
+- [x] **Item 4** — Refresh do preview interno ao trocar `template_id`
+  - [x] `$template.on('change')` chama `window.html_editor_refresh_preview()` (delay 150ms)
+- [x] **Item 5** — Arrobas removidos dos textos decorativos
+  - [x] `<kbd>@[[item#...]]@</kbd>` → `<kbd>[[item#...]]</kbd>` em 6 páginas
+  - [x] `<code>@[[item#nome_da_variavel]]@</code>` → `<code>[[item#nome_da_variavel]]</code>` em editar/adicionar (pt-br + en)
+
+### Evidência registrada em 2026-05-27
+
+- Arquivos alterados:
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js` (hidratação + submit do template_id; refresh do preview)
+  - `gestor/modulos/publisher-highlights/publisher-highlights.php` (defaults com template_id; chamada de template_options com valor restaurado)
+  - `gestor/modulos/publisher-highlights/publisher-highlights.widget.php` (normalização fields_values)
+  - `gestor/assets/interface/html-editor-interface.js` (fallbacks robustos por tipo)
+  - `gestor/modulos/publisher-highlights/resources/{pt-br,en}/pages/**/*.html` (6 páginas com `[[item#...]]`)
+- Pendência: rodar `🗃️ Projects - Update => Core` para recompilar páginas; validar manualmente que:
+  - template_id selecionado é restaurado ao reabrir o registro em editar/clonar
+  - campos customizados (subtitulo, conteudo, etc.) renderizam no preview do widget
+  - simulação substitui todas as variáveis (titulo, resumo, url, imagem, data) mesmo antes do deploy do componente
+  - troca de modelo recarrega o preview interno do editor
+  - títulos das colunas de mapeamento aparecem como `[[item#...]]` sem `@@`
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`

@@ -53,8 +53,10 @@ $(document).ready(function () {
         variable_mapping: {}
     };
 
-    if (!schema.variable_mapping) schema.variable_mapping = {};
     if (!Array.isArray(schema.selected_items)) schema.selected_items = [];
+    schema.variable_mapping = (schema.variable_mapping && !Array.isArray(schema.variable_mapping) && typeof schema.variable_mapping === 'object')
+        ? schema.variable_mapping
+        : {};
     if (!schema.order_by) schema.order_by = 'date_desc';
 
     var availableItemVars = []; // [{id:'titulo'}, ...]   extraídas do template HTML
@@ -65,6 +67,13 @@ $(document).ready(function () {
     $('#rule').val(schema.rule || 'latest');
     $('#count').val(schema.count || 4);
     $('#order_by').val(schema.order_by || 'date_desc');
+
+    // req-010 item 1: restaurar template_id a partir do schema (não há coluna dedicada
+    // na tabela publisher_highlights — o valor vive dentro de fields_schema).
+    if (schema.template_id) {
+        $('#template_id').val(schema.template_id);
+        setTimeout(function () { $('#template_id').dropdown('set selected', schema.template_id); }, 50);
+    }
 
     // ===== AJAX padrão
 
@@ -92,6 +101,88 @@ $(document).ready(function () {
         successNotOkCallback: function () { }
     };
 
+    var manualItemsDropdown = null;
+    var manualItemsDropdownLoader = null;
+
+    function ensureManualItemsDropdown() {
+        function createInstance() {
+            if (manualItemsDropdown) return manualItemsDropdown;
+
+            manualItemsDropdown = new window.PublisherHighlightsCustomDropdown({
+                language: function () {
+                    return gestor.language;
+                },
+                getPublisherId: function () {
+                    return $publisher.val() || '';
+                },
+                getSelectedIds: function () {
+                    return (schema.selected_items || []).slice();
+                },
+                setSelectedIds: function (selectedIds) {
+                    schema.selected_items = selectedIds;
+                    scheduleWidgetPreview(false);
+                },
+                fetchSearchResults: function (publisherId, query, done) {
+                    $.ajax({
+                        type: 'POST',
+                        url: gestor.raiz + gestor.moduloCaminho + '/',
+                        data: {
+                            opcao: gestor.moduloOpcao,
+                            ajax: 'sim',
+                            ajaxOpcao: 'publisher-pages-search',
+                            publisher_id: publisherId,
+                            q: query,
+                            params: { publisher_id: publisherId, q: query }
+                        },
+                        dataType: 'json',
+                        success: function (dados) {
+                            if (!dados || dados.status !== 'Ok') {
+                                done([]);
+                                return;
+                            }
+
+                            done(dados.results || []);
+                        }
+                    });
+                },
+                fetchHydratedResults: function (publisherId, ids, done) {
+                    var req = $.extend(true, {}, ajaxDefault, {
+                        data: $.extend({}, ajaxDefault.data, { ajaxOpcao: 'publisher-pages-fetch', params: { publisher_id: publisherId, ids: ids } }),
+                        ajaxOpcao: 'publisher-pages-fetch',
+                        successCallback: function (dados) {
+                            done(dados.results || []);
+                        },
+                        successNotOkCallback: function () {
+                            done([]);
+                        }
+                    });
+
+                    $.ajax(req);
+                }
+            });
+
+            return manualItemsDropdown;
+        }
+
+        if (manualItemsDropdown) {
+            return $.Deferred().resolve(manualItemsDropdown).promise();
+        }
+
+        if (manualItemsDropdownLoader) {
+            return manualItemsDropdownLoader.promise();
+        }
+
+        manualItemsDropdownLoader = $.Deferred();
+
+        if (typeof window.PublisherHighlightsCustomDropdown === 'function') {
+            manualItemsDropdownLoader.resolve(createInstance());
+        } else {
+            manualItemsDropdownLoader.reject();
+        }
+
+        return manualItemsDropdownLoader.promise();
+    }
+
     // ===== Inicialização
 
     var $publisher = $('select[name="publisher_id"]');
@@ -101,8 +192,9 @@ $(document).ready(function () {
     if ($template.val()) loadTemplate($template.val());
     else setTimeout(function () { scheduleWidgetPreview(true); }, 600);
 
-    initManualItemsDropdown($publisher.val() || '');
-    toggleManualWrapper();
+    ensureManualItemsDropdown().done(function () {
+        toggleManualWrapper();
+    });
     toggleOrderByWrapper();
     toggleTemplateOptionsWrapper();
 
@@ -124,7 +216,9 @@ $(document).ready(function () {
 
         // Limpar seleção atual e reconfigurar dropdown manual para o novo publisher
         schema.selected_items = [];
-        resetManualItemsDropdown(pid);
+        ensureManualItemsDropdown().done(function (component) {
+            component.reset(pid);
+        });
 
         if (pid) loadPublisher(pid);
         scheduleWidgetPreview(false);
@@ -138,6 +232,11 @@ $(document).ready(function () {
         toggleTemplateOptionsWrapper();
         if (tid) loadTemplate(tid);
         else scheduleWidgetPreview(false);
+        // req-010 item 4: forçar refresh do preview interno do editor (substituição
+        // por simulação) — complementa o widget-preview AJAX da aba externa.
+        if (typeof window.html_editor_refresh_preview === 'function') {
+            setTimeout(function () { window.html_editor_refresh_preview(); }, 350);
+        }
     });
 
     $('#rule').on('change', function () {
@@ -160,11 +259,13 @@ $(document).ready(function () {
 
     // Interceptar submit para serializar o schema
 
-    $(document).on('submit', '#_gestor-interface-edit-dados, #_gestor-interface-insert-dados', function () {
+    $('.ui.form').on('submit', function () {
         // Garantir consistência com o estado dos inputs
         schema.rule = $('#rule').val() || 'latest';
         schema.count = parseInt($('#count').val(), 10) || 4;
         schema.order_by = $('#order_by').val() || 'date_desc';
+        // req-010 item 1: persistir template_id dentro do fields_schema (não há coluna dedicada)
+        schema.template_id = $('#template_id').val() || '';
 
         var sel = $('#selected_items').val();
         if (Array.isArray(sel)) {
@@ -174,6 +275,8 @@ $(document).ready(function () {
         }
 
         $('input[name="fields_schema"]').val(JSON.stringify(schema));
+
+        return true;
     });
 
     // ===== AJAX: carregar publisher
@@ -222,132 +325,6 @@ $(document).ready(function () {
             }
         });
         $.ajax(req);
-    }
-
-    // ===== Manual items dropdown (Fomantic UI multiple search selection)
-
-    // req-008 item 1: inicialização local do dropdown (sem apiSettings). A busca é
-    // disparada manualmente via $.ajax debounced ouvindo o input.search interno do Fomantic.
-
-    var manualSearchTimer = null;
-
-    function initManualItemsDropdown(publisher_id) {
-        var $sel = $('#selected_items');
-        if ($sel.length === 0) return;
-
-        $sel.dropdown({
-            forceSelection: false,
-            allowAdditions: false,
-            fullTextSearch: true,
-            preserveHTML: false,
-            onChange: function (value) {
-                if (typeof value === 'string') {
-                    schema.selected_items = value.length ? value.split(',') : [];
-                } else if (Array.isArray(value)) {
-                    schema.selected_items = value;
-                }
-                scheduleWidgetPreview(false);
-            }
-        });
-
-        // Conectar input.search interno (gerado pelo Fomantic) ao AJAX manual debounced.
-        var $search = $sel.parent().find('input.search');
-        $search.off('input.hepSearch keyup.hepSearch').on('input.hepSearch keyup.hepSearch', function () {
-            var q = $(this).val();
-            if (manualSearchTimer) clearTimeout(manualSearchTimer);
-            manualSearchTimer = setTimeout(function () {
-                manualItemsSearch(q);
-            }, 250);
-        });
-
-        // Disparo inicial (lista vazia ou pré-carregada) e pré-hidratação dos selecionados.
-        if (publisher_id) {
-            if (schema.selected_items && schema.selected_items.length > 0) {
-                hydrateManualItemsDropdown(publisher_id, schema.selected_items);
-            }
-            manualItemsSearch('');
-        }
-    }
-
-    function manualItemsSearch(q) {
-        var $sel = $('#selected_items');
-        if ($sel.length === 0) return;
-
-        var publisher_id = $publisher.val() || '';
-        if (!publisher_id) return;
-
-        $.ajax({
-            type: 'POST',
-            url: gestor.raiz + gestor.moduloCaminho + '/',
-            data: {
-                opcao: gestor.moduloOpcao,
-                ajax: 'sim',
-                ajaxOpcao: 'publisher-pages-search',
-                publisher_id: publisher_id,
-                q: q,
-                params: { publisher_id: publisher_id, q: q }
-            },
-            dataType: 'json',
-            success: function (dados) {
-                if (!dados || dados.status !== 'Ok') return;
-
-                var results = dados.results || [];
-                var keepIds = (schema.selected_items || []).slice();
-
-                // Manter apenas options selecionadas (preservando ordem/seleção atual);
-                // remover demais options para depois injetar os resultados retornados.
-                $sel.find('option').each(function () {
-                    var val = $(this).attr('value');
-                    if (keepIds.indexOf(val) === -1) $(this).remove();
-                });
-
-                // Mapear os IDs já presentes para evitar duplicatas
-                var present = {};
-                $sel.find('option').each(function () { present[$(this).attr('value')] = true; });
-
-                results.forEach(function (r) {
-                    if (!r || !r.value) return;
-                    if (present[r.value]) return;
-                    $sel.append('<option value="' + r.value + '">' + $('<div>').text(r.name || r.value).html() + '</option>');
-                });
-
-                $sel.dropdown('refresh');
-                if (keepIds.length > 0) $sel.dropdown('set selected', keepIds);
-            }
-        });
-    }
-
-    function hydrateManualItemsDropdown(publisher_id, ids) {
-        var req = $.extend(true, {}, ajaxDefault, {
-            data: $.extend({}, ajaxDefault.data, { ajaxOpcao: 'publisher-pages-fetch', params: { publisher_id: publisher_id, ids: ids } }),
-            ajaxOpcao: 'publisher-pages-fetch',
-            successCallback: function (dados) {
-                var $sel = $('#selected_items');
-                $sel.empty();
-
-                // Recriar options preservando a ordem armazenada em schema.selected_items
-                var byValue = {};
-                (dados.results || []).forEach(function (r) { byValue[r.value] = r.name || r.value; });
-
-                ids.forEach(function (slug) {
-                    var name = byValue[slug] || slug;
-                    $sel.append('<option value="' + slug + '" selected>' + $('<div>').text(name).html() + '</option>');
-                });
-
-                $sel.dropdown('set selected', ids);
-            }
-        });
-        $.ajax(req);
-    }
-
-    function resetManualItemsDropdown(publisher_id) {
-        var $sel = $('#selected_items');
-        if ($sel.length === 0) return;
-        $sel.dropdown('clear');
-        $sel.empty();
-        $sel.dropdown('refresh');
-        // Recarregar a lista para o novo publisher selecionado.
-        if (publisher_id) manualItemsSearch('');
     }
 
     // ===== Rendering
@@ -433,19 +410,26 @@ $(document).ready(function () {
 
     // ===== Linking workflow: click variável -> click campo
 
-    var pendingVar = null;
+    var itemVar = null;
+    var pubVar = null;
 
     $(document).on('click', '.item-var', function () {
-        pendingVar = $(this).data('var');
+        itemVar = $(this).data('var');
         $('.item-var').removeClass('blue').addClass('basic');
         $(this).removeClass('basic').addClass('blue');
     });
 
     $(document).on('click', '.publisher-field', function () {
-        if (!pendingVar) return;
-        var fieldId = $(this).data('field');
-        schema.variable_mapping[pendingVar] = fieldId;
-        pendingVar = null;
+        pubVar = $(this).data('field');
+        $('.publisher-field').removeClass('blue').addClass('basic');
+        $(this).removeClass('basic').addClass('blue');
+    });
+
+    $(document).on('click', '.publisher-field,.item-var', function () {
+        if (!itemVar || !pubVar) return;
+        schema.variable_mapping[itemVar] = pubVar;
+        itemVar = null;
+        pubVar = null;
         renderItemVars();
         syncEditorVariables();
         scheduleWidgetPreview(false);
@@ -471,8 +455,16 @@ $(document).ready(function () {
     // ===== Helpers
 
     function toggleManualWrapper() {
-        if (($('#rule').val() || 'latest') === 'manual') $('#manual-items-wrapper').show();
-        else $('#manual-items-wrapper').hide();
+        var isManual = ($('#rule').val() || 'latest') === 'manual';
+
+        $('#manual-items-wrapper').toggle(isManual);
+
+        if (!isManual) return;
+
+        ensureManualItemsDropdown().done(function (component) {
+            component.init($publisher.val() || '');
+            component.refresh();
+        });
     }
 
     function toggleOrderByWrapper() {
@@ -538,6 +530,7 @@ $(document).ready(function () {
             publisher_id: $publisher.val() || '',
             schema: schema
         });
+
         if (snapshot === widgetPreviewLastSnapshot) return;
         widgetPreviewLastSnapshot = snapshot;
 

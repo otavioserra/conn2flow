@@ -87,3 +87,12 @@ A ordenação é ignorada quando `rule = 'manual'`, pois nesse caso a ordem é d
 
 Para a regra de alimentação "Manual" do `publisher-highlights`, substituir a entrada via `<textarea>` com slugs por linha por um dropdown Fomantic UI `.ui.multiple.search.selection.dropdown` populado dinamicamente por AJAX a partir das páginas ativas do publicador selecionado. A serialização final para o `fields_schema.selected_items` continua sendo a lista ordenada de slugs textuais, mantendo a compatibilidade com [DEC-014](#dec-014---2026-05-25---accepted) e com o widget renderer.
 
+## DEC-019 - 2026-05-28 - accepted
+
+Decidiu-se componentizar a lógica do dropdown manual do Fomantic UI para busca e seleção múltipla de itens em uma classe Javascript reutilizável `PublisherHighlightsCustomDropdown` no arquivo `gestor/assets/interface/jquery-custom-dropdown.js`, removendo a lógica inline do módulo e centralizando as responsabilidades de inicialização (`init`), reconfiguração (`reset`), busca incremental (`search`), hidratação (`hydrate`), atualização visual (`refresh`) e tradução contextual das mensagens de aviso baseada no idioma ativo do gestor.
+
+## DEC-020 - 2026-05-28 - accepted
+
+A integração do dropdown manual de itens curados no módulo `publisher-highlights` controlará a inicialização do componente visual sob demanda (apenas quando o modo manual estiver visível) para evitar conflitos de ciclo de vida e concorrência com o formulário. O fluxo de busca é desmembrado em duas fases manuais (busca incremental e hidratação na edição/clonagem), com eventos de escuta direta (change e click) para manter a perfeita sincronização com o preview de widget e com o `fields_schema.selected_items` persistido no banco de dados.
+
+

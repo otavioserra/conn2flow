@@ -1551,8 +1551,12 @@ $(document).ready(function () {
 
                             var simulItems = $('.hep-simulation-' + fieldType + ' .item');
 
-                            // req-008 item 3: fallbacks para tipos sem dados no esqueleto.
+                            // req-008 item 3 + req-010 item 3: fallback robusto.
+                            // Se o bucket específico estiver vazio, devolver um valor estático
+                            // por tipo — assim a simulação funciona mesmo antes do deploy do
+                            // componente de simulação simplificado para o ambiente.
                             if (simulItems.length === 0) {
+                                if (fieldType === 'image') return 'https://picsum.photos/seed/highlights/800/450';
                                 if (fieldType === 'url') return '#';
                                 if (fieldType === 'date') return '27/05/2026';
                                 // Demais tipos: cair no genérico text.
@@ -1563,7 +1567,10 @@ $(document).ready(function () {
                                 var idx = Math.floor(Math.random() * simulItems.length);
                                 return simulItems.eq(idx).html().trim();
                             }
-                            return match;
+
+                            // req-010 item 3: último recurso por tipo para nunca deixar o literal.
+                            if (fieldType === 'textarea') return 'Resumo simulado curto e direto do bloco de destaques.';
+                            return 'Título Simulado de Destaque';
                         });
                         replicated += itemHtml;
                     }
