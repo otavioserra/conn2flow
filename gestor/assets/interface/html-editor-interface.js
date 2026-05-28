@@ -212,9 +212,12 @@ $(document).ready(function () {
     let modelos_tem_mais = false;
 
     function frameworkCSS() {
-        const framework_css = $('#framework-css').parent().find('.menu').find('.item.active.selected').data('value');
+        const $framework = $('#framework-css');
+        const framework_css = $framework.length ? $framework.parent().find('.menu').find('.item.active.selected').data('value') : null;
+        const framework_css_2 = $framework.length ? $framework.dropdown('get value') : null;
+        const framework_css_3 = 'framework_css' in gestor.html_editor ? gestor.html_editor.framework_css : null;
 
-        return framework_css ?? 'fomantic-ui';
+        return framework_css || framework_css_2 || framework_css_3 || 'fomantic-ui';
     }
 
     function modelosCarregar(forcar = false) {
@@ -720,6 +723,8 @@ $(document).ready(function () {
     }
 
     contentPageTabHandler();
+
+    window.contentPageTabHandler = contentPageTabHandler; // Expor globalmente para ser chamada após ações que modificam o conteúdo, como seleção de modelo.
 
     function contentPageTabChange(tabID = null) {
         if (tabID !== null) {
@@ -1510,7 +1515,7 @@ $(document).ready(function () {
             if (simulacao) {
                 const schemaStr = $('input[name="fields_schema"]').val() || '{}';
                 let schema = {};
-                try { schema = JSON.parse(schemaStr); } catch (e) {}
+                try { schema = JSON.parse(schemaStr); } catch (e) { }
 
                 const count = Math.max(1, parseInt(schema.count || 3, 10));
                 const variableMapping = schema.variable_mapping || {};
@@ -1523,7 +1528,11 @@ $(document).ready(function () {
                     let replicated = '';
 
                     for (let i = 0; i < count; i++) {
-                        const itemHtml = itemTemplate.replace(/@\[\[item#([a-zA-Z0-9_\-]+)\]\]@/g, function (match, varName) {
+                        // req-009 item 2: o editor exibe [[item#X]] sem arrobas (conversão
+                        // openText/closeText pela camada de variáveis globais). A regex precisa
+                        // casar o formato sem @ — caso contrário a simulação deixa as variáveis
+                        // literais no preview.
+                        const itemHtml = itemTemplate.replace(/\[\[item#([a-zA-Z0-9_\-]+)\]\]/g, function (match, varName) {
                             const fieldId = variableMapping[varName] || varName;
 
                             // Detectar tipo pelo schema do publisher ou por nome
@@ -2661,11 +2670,13 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
                 break;
         }
 
+        const framework_css = frameworkCSS();
+
         return {
             ajaxOpcao: 'html-editor-ia-requests', data: {
                 html: html,
                 css: css,
-                framework_css: $('#framework-css').dropdown('get value'),
+                framework_css: framework_css,
                 sessao_id,
                 publisher_variables,
                 sessao_opcao

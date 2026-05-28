@@ -333,6 +333,37 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - alterações no CodeMirror disparam refresh automático debounced
   - variáveis `url` e `data` aparecem substituídas (não literais) na simulação
 
+## BATCH-008 - Variáveis sem Arrobas, Regex de Simulação e Debounce Global (req-009)
+
+- [x] **Item 1a** — Remover arrobas dos rótulos dinâmicos no JS
+  - [x] `renderItemVars`: botão exibe `[[item#X]]`
+  - [x] `renderLinkedVars`: rótulo da variável exibe `[[item#X]]`
+- [x] **Item 1b** — HTMLs de `pages/` permanecem com `@[[item#...]]@` (cópia direta do banco)
+  - [x] Pulado por orientação do Engenheiro Chefe — ver memória `feedback-conn2flow-variaveis-html-paginas`
+- [x] **Item 2** — Regex de simulação dos destaques sem arrobas
+  - [x] `publisherVariablesOrSimulation` (alvo `publisher-highlights`) usa `/\[\[item#([a-zA-Z0-9_\-]+)\]\]/g`
+- [x] **Item 3** — Sincronização do mapeamento com a aba do editor
+  - [x] `syncEditorVariables()` chama `window.publisher_highlights_update_target_variables(availableItemVars)`
+  - [x] Disparada em: link (`.publisher-field` click), unlink (`[data-unlink]` click), troca de template
+- [x] **Item 4** — Debounce global em todos os controles relevantes
+  - [x] `#template_id` (com fallback para template vazio) → schedule
+  - [x] `#rule`, `#count`, `#order_by` → schedule
+  - [x] `#selected_items` (Fomantic onChange) → schedule
+  - [x] Mapeamento link/unlink → schedule
+  - [x] CodeMirror HTML → schedule via `window.updatedCodeMirrorHtml`
+  - [x] `scheduleWidgetPreview` usa debounce 400ms + snapshot-diff (mantido do BATCH-006)
+
+### Evidência registrada em 2026-05-27
+
+- Arquivos alterados:
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js` (rótulos sem arrobas, `syncEditorVariables`, template empty → schedule)
+  - `gestor/assets/interface/html-editor-interface.js` (regex de simulação sem arrobas)
+- Pendência: rodar `🗃️ Projects - Update => Core` (apenas JS, não há mudança em páginas HTML); validar manualmente:
+  - botões de variáveis aparecem como `[[item#X]]` sem `@@`
+  - simulação substitui variáveis no preview interno (não aparecem literais)
+  - vínculo/desvínculo de variáveis atualiza imediatamente a aba lateral do editor
+  - todas as alterações nos selects/inputs disparam o iframe externo após ~400ms
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`

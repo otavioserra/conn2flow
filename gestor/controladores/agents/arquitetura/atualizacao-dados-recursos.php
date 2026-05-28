@@ -132,11 +132,22 @@ function getFrameworkCss(?array $src): string {
 }
 
 /**
+ * Remove BOM UTF-8 do início do conteúdo, quando presente.
+ */
+function stripUtf8Bom(?string $content): ?string {
+    if ($content === null || $content === '') return $content;
+    if (strncmp($content, "\xEF\xBB\xBF", 3) === 0) {
+        return substr($content, 3);
+    }
+    return $content;
+}
+
+/**
  * Lê JSON retornando array associativo ou null.
  */
 function jsonRead(string $path): ?array {
     if (!file_exists($path)) return null;
-    $c = file_get_contents($path);
+    $c = stripUtf8Bom(file_get_contents($path));
     $d = json_decode($c, true);
     return is_array($d) ? $d : null;
 }
@@ -154,7 +165,7 @@ function jsonWrite(string $path, array $data): bool {
  * Retorna conteúdo do arquivo se existir.
  */
 function readFileIfExists(string $path): ?string {
-    return file_exists($path) ? file_get_contents($path) : null;
+    return file_exists($path) ? stripUtf8Bom(file_get_contents($path)) : null;
 }
 
 /**

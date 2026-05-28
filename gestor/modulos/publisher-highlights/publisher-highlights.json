@@ -42,12 +42,11 @@
                     "id": "publisher-highlights-noticias-lista-simples",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/pt-br\/noticias-lista-simples.webp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "c3e90db2520dc6fdff011d9deb36dab3",
+                        "html": "945416de52739565b4f07f7c32384b04",
                         "css": "",
-                        "combined": "c3e90db2520dc6fdff011d9deb36dab3"
+                        "combined": "945416de52739565b4f07f7c32384b04"
                     }
                 },
                 {
@@ -55,12 +54,11 @@
                     "id": "publisher-highlights-noticias-grid-cards",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/pt-br\/noticias-grid-cards.webp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "99429589189cad583be513ec973eb2c7",
+                        "html": "04487b4f8e45f282337ab0a203348f86",
                         "css": "",
-                        "combined": "99429589189cad583be513ec973eb2c7"
+                        "combined": "04487b4f8e45f282337ab0a203348f86"
                     }
                 },
                 {
@@ -68,12 +66,11 @@
                     "id": "publisher-highlights-artigos-editorial",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/pt-br\/artigos-editorial.webp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "eff4a8f7e8ed7f39fc32be90bc2688b2",
+                        "html": "34e72aa4a664fdb9f8dc52364027cc0f",
                         "css": "",
-                        "combined": "eff4a8f7e8ed7f39fc32be90bc2688b2"
+                        "combined": "34e72aa4a664fdb9f8dc52364027cc0f"
                     }
                 },
                 {
@@ -81,12 +78,11 @@
                     "id": "publisher-highlights-lives-video-destaque",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/pt-br\/lives-video-destaque.webp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "77d7b8e9e6be1783fd6b6c412ad9aaa0",
+                        "html": "062457e3b06c4d02dce4a0e2d50565f9",
                         "css": "",
-                        "combined": "77d7b8e9e6be1783fd6b6c412ad9aaa0"
+                        "combined": "062457e3b06c4d02dce4a0e2d50565f9"
                     }
                 },
                 {
@@ -94,12 +90,11 @@
                     "id": "publisher-highlights-notas-mosaico",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/pt-br\/notas-mosaico.webp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "e1153f98e4846d15bc3cd86a0cd95ce7",
+                        "html": "6a717167d06629372f147786411f9c5e",
                         "css": "",
-                        "combined": "e1153f98e4846d15bc3cd86a0cd95ce7"
+                        "combined": "6a717167d06629372f147786411f9c5e"
                     }
                 },
                 {
@@ -107,12 +102,11 @@
                     "id": "publisher-highlights-principal-carousel",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/pt-br\/destaque-principal-carousel.webp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "d9027201bdca3ec553403504d628b9eb",
+                        "html": "c372f4785ff5557be941ebd8d3b24bba",
                         "css": "",
-                        "combined": "d9027201bdca3ec553403504d628b9eb"
+                        "combined": "c372f4785ff5557be941ebd8d3b24bba"
                     }
                 }
             ],
@@ -139,11 +133,11 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.6",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "cb6501c0b82e60952231080ed2d1b6b5",
+                        "html": "12670bd6b8a494f9bb4783a7280f236a",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "eadfa82d82182d923de7b81a80b0d48d"
+                        "combined": "70fb58ea511d6356f634eabf5abcaa9f"
                     }
                 },
                 {
@@ -153,11 +147,11 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "52ceb8b87323095a81ec6cb51c0cc43b",
+                        "html": "d1ceb9cd65903515a613b45c136f654c",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "139638b10368dcabcc42d04ccf8c03da"
+                        "combined": "63da505f18e203a7bef922468cfb9a9c"
                     }
                 },
                 {
@@ -167,11 +161,11 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "9c6dad43897374c700cb163a408f35a7",
+                        "html": "ed3aaea8110154f28be51715a242895b",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "74b7b351d4212e9398e45d6e6657e626"
+                        "combined": "d46ee30e2a57f27e9a1c1d0bafd0b9da"
                     }
                 }
             ],
@@ -258,12 +252,11 @@
                     "id": "publisher-highlights-noticias-lista-simples",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/en\/noticias-lista-simples.webp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "aeb68d6148f1ff35cb3ddd49d5cd2cb2",
+                        "html": "5141866e1f250c5d1880c7ac7d677cbc",
                         "css": "",
-                        "combined": "aeb68d6148f1ff35cb3ddd49d5cd2cb2"
+                        "combined": "5141866e1f250c5d1880c7ac7d677cbc"
                     }
                 },
                 {
@@ -271,12 +264,11 @@
                     "id": "publisher-highlights-noticias-grid-cards",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/en\/noticias-grid-cards.webp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "5485dbe8ead723f728a475d69cd3c42f",
+                        "html": "aff641d4e9c37e954e7776592469c472",
                         "css": "",
-                        "combined": "5485dbe8ead723f728a475d69cd3c42f"
+                        "combined": "aff641d4e9c37e954e7776592469c472"
                     }
                 },
                 {
@@ -284,12 +276,11 @@
                     "id": "publisher-highlights-artigos-editorial",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/en\/artigos-editorial.webp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "2275b8a311f4f460f71c9769f5347bbf",
+                        "html": "a13f73187ee900cb10053f9d5189674e",
                         "css": "",
-                        "combined": "2275b8a311f4f460f71c9769f5347bbf"
+                        "combined": "a13f73187ee900cb10053f9d5189674e"
                     }
                 },
                 {
@@ -297,12 +288,11 @@
                     "id": "publisher-highlights-lives-video-destaque",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/en\/lives-video-destaque.webp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "486c19a0441d17d15c21d37706106480",
+                        "html": "de32807096a864eba5f78ad855b5f828",
                         "css": "",
-                        "combined": "486c19a0441d17d15c21d37706106480"
+                        "combined": "de32807096a864eba5f78ad855b5f828"
                     }
                 },
                 {
@@ -310,12 +300,11 @@
                     "id": "publisher-highlights-notas-mosaico",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/en\/notas-mosaico.webp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "3ae8760dd642d6b6c933303e3d69aa26",
+                        "html": "e407e26bdf5edae790b1b9ebcdae5967",
                         "css": "",
-                        "combined": "3ae8760dd642d6b6c933303e3d69aa26"
+                        "combined": "e407e26bdf5edae790b1b9ebcdae5967"
                     }
                 },
                 {
@@ -323,12 +312,11 @@
                     "id": "publisher-highlights-destaque-principal-carousel",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "thumbnail": "templates\/images\/en\/destaque-principal-carousel.webp",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "770da5fa4400456f77d2b3ffa0466f92",
+                        "html": "bac23bfa2702af5ab20b583f7ce4e091",
                         "css": "",
-                        "combined": "770da5fa4400456f77d2b3ffa0466f92"
+                        "combined": "bac23bfa2702af5ab20b583f7ce4e091"
                     }
                 }
             ],
@@ -355,11 +343,11 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "44d3c8f85078c8f521c98a0139a1037b",
+                        "html": "b86e42b10bccbee7229322ca63892de8",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "b4eed85e656875426a2351dc1aca40a5"
+                        "combined": "4eef384386ba8e1a16dfbbb03d1b0aad"
                     }
                 },
                 {
@@ -369,11 +357,11 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "e4504f8f7dc6374eed8cb7e3ec37db98",
+                        "html": "fcc3673faa372723a5624d8d056d3ff4",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "46d59abb9679534d9910501dceac6e55"
+                        "combined": "21c45e1c05c1a9193f135ca87124348d"
                     }
                 },
                 {
@@ -383,11 +371,11 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "390dfe91dd8e4d560176ab54c5610541",
+                        "html": "da1a18b38cc9971668f2580a1fc5ca79",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "868de073dfcdde0fb4671bd7ae516508"
+                        "combined": "8fcc8a41297e7f4b350cca34358b91fe"
                     }
                 }
             ],

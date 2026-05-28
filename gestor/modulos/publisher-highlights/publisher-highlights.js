@@ -11,6 +11,38 @@
 $(document).ready(function () {
     if ($('#_gestor-interface-edit-dados').length === 0 && $('#_gestor-interface-insert-dados').length === 0) return;
 
+    // ===== Semantic UI
+
+    // req-008 item 2: inicializar abas externas "Pré-Visualização" / "Editor HTML"
+    const tabPHContent = 'tabPHContentActive';
+
+    function contentHighlightsTabHandler(tabID = null) {
+        const tabActive = localStorage.getItem(gestor.moduloId + tabPHContent);
+        const tab = tabID || tabActive;
+
+        if (tab !== null) {
+            if (!tabID) $('.menuConteudoDestaque .item').tab('change tab', tab);
+
+            switch (tab) {
+                case 'hep-preview':
+                    scheduleWidgetPreview(true);
+                    break;
+                case 'hep-editor':
+                    window.contentPageTabHandler();
+                    break;
+            }
+        }
+    }
+
+    $('.menuConteudoDestaque .item').tab({
+        onLoad: function (tabPath, parameterArray, historyEvent) {
+            contentHighlightsTabHandler(tabPath);
+            localStorage.setItem(gestor.moduloId + tabPHContent, tabPath);
+        }
+    });
+
+    contentHighlightsTabHandler();
+
     // ===== Estado do schema (re-hidratado a partir do PHP)
 
     var schema = (typeof publisher_highlights_initial_schema !== 'undefined' && publisher_highlights_initial_schema) ? publisher_highlights_initial_schema : {
@@ -65,9 +97,6 @@ $(document).ready(function () {
     var $publisher = $('select[name="publisher_id"]');
     var $template = $('select[name="template_id"]');
 
-    // req-008 item 2: inicializar abas externas "Pré-Visualização" / "Editor HTML"
-    $('.menuConteudoDestaque .item').tab();
-
     if ($publisher.val()) loadPublisher($publisher.val());
     if ($template.val()) loadTemplate($template.val());
     else setTimeout(function () { scheduleWidgetPreview(true); }, 600);
@@ -105,8 +134,10 @@ $(document).ready(function () {
         var tid = $(this).val();
         availableItemVars = [];
         renderItemVars();
+        syncEditorVariables();
         toggleTemplateOptionsWrapper();
         if (tid) loadTemplate(tid);
+        else scheduleWidgetPreview(false);
     });
 
     $('#rule').on('change', function () {
@@ -171,6 +202,9 @@ $(document).ready(function () {
             successCallback: function (dados) {
                 availableItemVars = dados.campos || [];
                 renderItemVars();
+
+                // Framework CSS do template (ex: Tailwind) pode ser necessário para renderizar a prévia corretamente, então repassar para o editor aplicar no iframe interno.
+                gestor.html_editor.framework_css = dados.framework_css || null;
 
                 if (typeof window.html_editor_set_html === 'function') window.html_editor_set_html(dados.html || '');
                 if (typeof window.html_editor_set_css === 'function') window.html_editor_set_css(dados.css || '');
@@ -331,7 +365,7 @@ $(document).ready(function () {
         } else {
             visible.forEach(function (v) {
                 var $btn = $('<div class="ui basic small button item-var" data-var="' + v.id + '" style="margin-bottom:6px;margin-right:6px;"></div>')
-                    .text('@[[item#' + v.id + ']]@');
+                    .text('[[item#' + v.id + ']]');
                 $list.append($btn);
             });
         }
@@ -392,7 +426,7 @@ $(document).ready(function () {
         keys.forEach(function (varName) {
             var fieldName = schema.variable_mapping[varName];
             var $row = $('<div class="ui label" style="margin:2px 0;display:inline-block;"></div>')
-                .html('@[[item#' + varName + ']]@ <i class="exchange icon"></i> <span class="ui teal label">' + fieldName + '</span> <i class="delete icon" data-unlink="' + varName + '"></i>');
+                .html('[[item#' + varName + ']] <i class="exchange icon"></i> <span class="ui teal label">' + fieldName + '</span> <i class="delete icon" data-unlink="' + varName + '"></i>');
             $list.append($row);
         });
     }
@@ -413,6 +447,7 @@ $(document).ready(function () {
         schema.variable_mapping[pendingVar] = fieldId;
         pendingVar = null;
         renderItemVars();
+        syncEditorVariables();
         scheduleWidgetPreview(false);
     });
 
@@ -421,8 +456,17 @@ $(document).ready(function () {
         var varName = $(this).data('unlink');
         delete schema.variable_mapping[varName];
         renderItemVars();
+        syncEditorVariables();
         scheduleWidgetPreview(false);
     });
+
+    // req-009 item 3: sincronizar aba lateral de variáveis do html-editor com o estado atual
+    // do mapeamento. Sempre que houver vínculo/desvinculo, repassar a lista de variáveis ativas
+    // (do template) para o editor publicar imediatamente.
+    function syncEditorVariables() {
+        if (typeof window.publisher_highlights_update_target_variables !== 'function') return;
+        window.publisher_highlights_update_target_variables(availableItemVars);
+    }
 
     // ===== Helpers
 
@@ -523,7 +567,15 @@ $(document).ready(function () {
 
                 var doc = '<!doctype html><html><head><meta charset="utf-8">';
                 // Reaproveitar o CSS framework do iframe interno do html-editor — picsum funciona via URL absoluta
-                doc += '<script src="https://cdn.tailwindcss.com"></script>';
+                doc += `<!-- CDN do TailwindCSS -->
+                <script>
+                    // Remove Tailwind CDN warnings
+                    const originalWarn = console.warn;
+                    console.warn = function (...args) {
+                        if (args[0] && args[0].includes('cdn.tailwindcss.com')) return;
+                        originalWarn.apply(console, args);
+                    };
+                </script><script src="https://cdn.tailwindcss.com"></script>`;
                 doc += '</head><body>' + (dados.html || '') + '</body></html>';
 
                 $iframe.on('load', function () { $dimmer.removeClass('active'); });

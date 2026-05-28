@@ -955,7 +955,7 @@ function publisher_highlights_ajax_template_load(){
 	$template = banco_select(Array(
 		'unico' => true,
 		'tabela' => 'templates',
-		'campos' => Array('nome', 'html', 'css'),
+		'campos' => Array('nome', 'html', 'css', 'framework_css'),
 		'extra' => "WHERE id='".banco_escape_field($template_id)."' AND target='publisher-highlights' AND language='".$_GESTOR['linguagem-codigo']."' AND status='A'"
 	));
 
@@ -980,6 +980,14 @@ function publisher_highlights_ajax_template_load(){
 		}
 	}
 
+	// para que o renderizador as encontre.
+	$open = $_GESTOR['variavel-global']['open'];
+	$close = $_GESTOR['variavel-global']['close'];
+	$openText = $_GESTOR['variavel-global']['openText'];
+	$closeText = $_GESTOR['variavel-global']['closeText'];
+
+	$template['html'] = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $template['html']);
+
 	$_GESTOR['ajax-json'] = Array(
 		'status' => 'Ok',
 		'modelo' => Array(
@@ -988,6 +996,7 @@ function publisher_highlights_ajax_template_load(){
 		),
 		'html' => $template['html'] ?? '',
 		'css' => $template['css'] ?? '',
+		'framework_css' => $template['framework_css'] ?? '',
 		'campos' => $fields,
 	);
 }
