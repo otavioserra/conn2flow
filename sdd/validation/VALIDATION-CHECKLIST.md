@@ -440,6 +440,31 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - na tela "Adicionar", após escolher o modelo, a aba de variáveis aparece e permite mapeamento
   - simulação com 6+ cards mostra dados distintos para títulos e resumos vizinhos
 
+## BATCH-011 - Nova Aba "Código do Widget" no Editor de Destaques (req-012)
+
+- [x] **Item 1** — Aba e contêiner adicionados nas 6 páginas
+  - [x] Menu `.menuConteudoDestaque` ganhou `<a data-tab="hep-widget">` (pt-br: "Código do Widget", en: "Widget Code")
+  - [x] Cada página inclui `<div data-tab="hep-widget">` com `.ui icon message info` explicando o uso + `<textarea id="hep-widget-code">`
+- [x] **Item 2** — Inicialização e atualização do CodeMirror
+  - [x] `contentHighlightsTabHandler('hep-widget')` chama `updateWidgetCodeTab()`
+  - [x] `updateWidgetCodeTab` re-tenta com `setTimeout(100)` se `CodeMirror` ainda não disponível
+  - [x] Instância única (`widgetCodeMirror`) com `mode:'text/html'`, `readOnly:true`, `lineNumbers:true`, `lineWrapping:true`
+  - [x] Slug derivado de `gestor.moduloRegistroId` ou placeholder localizado (`[slug-do-destaque]` / `[highlight-slug]`)
+  - [x] HTML interno obtido via `window.html_editor_get_html()` (API exposta no BATCH-006)
+  - [x] Saída no formato `<!-- widgets#publisher-highlights->render({"grupo_slug":"SLUG"}) < -->\nHTML\n<!-- ... > -->`
+  - [x] `getDoc().setValue(...)` + `.refresh()` aplicados ao final
+
+### Evidência registrada em 2026-05-27
+
+- Arquivos alterados:
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js` (case `'hep-widget'` no handler + `updateWidgetCodeTab`)
+  - `gestor/modulos/publisher-highlights/resources/{pt-br,en}/pages/publisher-highlights-{adicionar,editar,clonar}/*.html` (6 páginas)
+- Pendência: rodar `🗃️ Projects - Update => Core` para recompilar páginas; validar manualmente:
+  - clicar na aba "Código do Widget" abre CodeMirror com `<!-- widgets#publisher-highlights->render({"grupo_slug":"<slug>"}) < --> ... > -->`
+  - editar HTML no editor e voltar para a aba reflete o novo conteúdo
+  - na tela "Adicionar", slug aparece como `[slug-do-destaque]` / `[highlight-slug]` antes de salvar
+  - editor é read-only (cursor visível mas teclas não modificam)
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`

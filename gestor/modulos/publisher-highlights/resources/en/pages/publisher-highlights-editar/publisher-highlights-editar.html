@@ -123,6 +123,7 @@
 <div class="ui top attached tabular menu menuConteudoDestaque">
     <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Pré-Visualização</a>
     <a class="item" data-tab="hep-editor"><i class="code icon"></i> Editor HTML</a>
+    <a class="item" data-tab="hep-widget"><i class="cubes icon"></i> Widget Code</a>
 </div>
 <div class="ui bottom attached active tab segment" data-tab="hep-preview">
     <div style="position: relative;">
@@ -134,6 +135,21 @@
 </div>
 <div class="ui bottom attached tab segment" data-tab="hep-editor">
     #html-editor#
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-widget">
+    <div class="ui icon message info">
+        <i class="cubes icon"></i>
+        <div class="content">
+            <div class="header">Wrapped widget block</div>
+            <p>Copy the snippet below and paste it into any physical site page to inject this
+                highlights block. The <code>&lt;!-- widgets#publisher-highlights-&gt;render(...) --&gt;</code>
+                comment acts as the wrapper: the gestor engine recognizes it and replaces it
+                with the HTML rendered using the real publications at request time.</p>
+        </div>
+    </div>
+    <div style="border:1px solid #ccc;">
+        <textarea id="hep-widget-code" name="hep-widget-code"></textarea>
+    </div>
 </div>
 
 <!-- Skeletons para elementos dinâmicos -->

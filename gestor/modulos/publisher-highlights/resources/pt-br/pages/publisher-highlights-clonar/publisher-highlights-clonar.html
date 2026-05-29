@@ -110,6 +110,7 @@
 <div class="ui top attached tabular menu menuConteudoDestaque">
     <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Pré-Visualização</a>
     <a class="item" data-tab="hep-editor"><i class="code icon"></i> Editor HTML</a>
+    <a class="item" data-tab="hep-widget"><i class="cubes icon"></i> Código do Widget</a>
 </div>
 <div class="ui bottom attached active tab segment" data-tab="hep-preview">
     <div style="position: relative;">
@@ -121,6 +122,21 @@
 </div>
 <div class="ui bottom attached tab segment" data-tab="hep-editor">
     #html-editor#
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-widget">
+    <div class="ui icon message info">
+        <i class="cubes icon"></i>
+        <div class="content">
+            <div class="header">Bloco envelopado do widget</div>
+            <p>Copie o trecho abaixo e cole em qualquer página física do site para injetar este
+                bloco de destaques. O comentário <code>&lt;!-- widgets#publisher-highlights-&gt;render(...) --&gt;</code>
+                serve como wrapper: o motor do gestor reconhece e substitui pelo HTML renderizado
+                com as publicações reais no momento da requisição.</p>
+        </div>
+    </div>
+    <div style="border:1px solid #ccc;">
+        <textarea id="hep-widget-code" name="hep-widget-code"></textarea>
+    </div>
 </div>
 
 <!-- Skeletons para elementos dinâmicos -->
