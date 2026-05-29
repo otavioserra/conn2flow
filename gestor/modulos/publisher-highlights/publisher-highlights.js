@@ -25,7 +25,7 @@ $(document).ready(function () {
 
             switch (tab) {
                 case 'hep-preview':
-                    scheduleWidgetPreview(true);
+                    scheduleWidgetPreview(true, true);
                     break;
                 case 'hep-editor':
                     window.contentPageTabHandler();
@@ -67,6 +67,14 @@ $(document).ready(function () {
     $('#rule').val(schema.rule || 'latest');
     $('#count').val(schema.count || 4);
     $('#order_by').val(schema.order_by || 'date_desc');
+
+    // req-011 item 2: dropdowns Fomantic UI já renderizaram suas cascas visuais antes desse
+    // ponto. `.val()` muda o <select> mas a UI segue mostrando o padrão. Disparar
+    // `dropdown('set selected', ...)` num setTimeout reforça o estado visual.
+    setTimeout(function () {
+        $('#rule').dropdown('set selected', schema.rule || 'latest');
+        $('#order_by').dropdown('set selected', schema.order_by || 'date_desc');
+    }, 50);
 
     // req-010 item 1: restaurar template_id a partir do schema (não há coluna dedicada
     // na tabela publisher_highlights — o valor vive dentro de fields_schema).
@@ -200,7 +208,7 @@ $(document).ready(function () {
 
     // req-008 item 2: ao clicar na aba externa de Pré-Visualização, garantir refresh.
     $(document).on('click', '.menuConteudoDestaque .item[data-tab="hep-preview"]', function () {
-        scheduleWidgetPreview(true);
+        scheduleWidgetPreview(true, true);
     });
 
     // req-008 item 2: hook global usado pelo html-editor-interface.js ao detectar
@@ -267,11 +275,19 @@ $(document).ready(function () {
         // req-010 item 1: persistir template_id dentro do fields_schema (não há coluna dedicada)
         schema.template_id = $('#template_id').val() || '';
 
-        var sel = $('#selected_items').val();
-        if (Array.isArray(sel)) {
-            schema.selected_items = sel.filter(function (s) { return s !== ''; });
-        } else if (typeof sel === 'string' && sel.length > 0) {
-            schema.selected_items = sel.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+        // req-011 item 1: para regra `manual`, NÃO sobrescrever `schema.selected_items` com o
+        // valor cru do <select> — sua ordem segue o DOM (estrutural), perdendo a sequência de
+        // cliques. O custom dropdown já mantém a ordem cronológica em schema.selected_items.
+        // Apenas para outras regras (ou estado vazio) limpar/normalizar a partir do <select>.
+        if (schema.rule !== 'manual') {
+            var sel = $('#selected_items').val();
+            if (Array.isArray(sel)) {
+                schema.selected_items = sel.filter(function (s) { return s !== ''; });
+            } else if (typeof sel === 'string' && sel.length > 0) {
+                schema.selected_items = sel.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+            } else {
+                schema.selected_items = [];
+            }
         }
 
         $('input[name="fields_schema"]').val(JSON.stringify(schema));
@@ -318,7 +334,8 @@ $(document).ready(function () {
                 }
 
                 // req-007 item 4: prévia ao vivo com dados reais (substitui o refresh com simulação)
-                scheduleWidgetPreview(true);
+                // Força uma nova tentativa após o editor absorver html/css carregados do template.
+                setTimeout(function () { scheduleWidgetPreview(true, true); }, 150);
             },
             successNotOkCallback: function (dados) {
                 msg_erro_mostrar((dados && dados.message) ? dados.message : 'Erro ao carregar modelo');
@@ -504,26 +521,66 @@ $(document).ready(function () {
 
     var widgetPreviewTimer = null;
     var widgetPreviewLastSnapshot = null;
+    var widgetPreviewRetryCount = 0;
 
-    function scheduleWidgetPreview(immediate) {
+    function scheduleWidgetPreview(immediate, force) {
         if (widgetPreviewTimer) clearTimeout(widgetPreviewTimer);
-        widgetPreviewTimer = setTimeout(refreshWidgetPreview, immediate ? 0 : 600);
+        widgetPreviewTimer = setTimeout(function () {
+            refreshWidgetPreview(!!force);
+        }, immediate ? 0 : 600);
     }
 
-    function refreshWidgetPreview() {
+    function queueWidgetPreviewRetry(delay) {
+        if (widgetPreviewRetryCount >= 8) return;
+
+        widgetPreviewRetryCount += 1;
+        if (widgetPreviewTimer) clearTimeout(widgetPreviewTimer);
+        widgetPreviewTimer = setTimeout(function () {
+            refreshWidgetPreview(true);
+        }, delay || 150);
+    }
+
+    function refreshWidgetPreview(force) {
         widgetPreviewTimer = null;
+
+        var hasTemplate = !!($template.val() || schema.template_id);
+        var editorReady = (typeof window.html_editor_get_html === 'function') && (typeof window.html_editor_get_css === 'function');
+        var $iframe = $('#iframe-publisher-highlights-preview');
+
+        if ($iframe.length === 0) {
+            queueWidgetPreviewRetry(150);
+            return;
+        }
+
+        if (!editorReady) {
+            if (hasTemplate) queueWidgetPreviewRetry(150);
+            return;
+        }
 
         var html = (typeof window.html_editor_get_html === 'function') ? window.html_editor_get_html() : '';
         var css = (typeof window.html_editor_get_css === 'function') ? window.html_editor_get_css() : '';
+
+        if (hasTemplate && html === '' && css === '') {
+            queueWidgetPreviewRetry(150);
+            return;
+        }
+
+        widgetPreviewRetryCount = 0;
 
         // Garantir o schema mais recente
         schema.rule = $('#rule').val() || 'latest';
         schema.count = parseInt($('#count').val(), 10) || 4;
         schema.order_by = $('#order_by').val() || 'date_desc';
 
-        var sel = $('#selected_items').val();
-        if (Array.isArray(sel)) schema.selected_items = sel.filter(function (s) { return s !== ''; });
-        else if (typeof sel === 'string' && sel.length > 0) schema.selected_items = sel.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+        // req-011 item 1: para regra `manual`, NÃO sobrescrever `schema.selected_items` com o
+        // valor cru do <select>. A ordem cronológica vive em schema.selected_items mantida pelo
+        // custom dropdown via callbacks onAdd/onRemove.
+        if (schema.rule !== 'manual') {
+            var sel = $('#selected_items').val();
+            if (Array.isArray(sel)) schema.selected_items = sel.filter(function (s) { return s !== ''; });
+            else if (typeof sel === 'string' && sel.length > 0) schema.selected_items = sel.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+            else schema.selected_items = [];
+        }
 
         var snapshot = JSON.stringify({
             html: html, css: css,
@@ -531,10 +588,8 @@ $(document).ready(function () {
             schema: schema
         });
 
-        if (snapshot === widgetPreviewLastSnapshot) return;
-        widgetPreviewLastSnapshot = snapshot;
+        if (!force && snapshot === widgetPreviewLastSnapshot) return;
 
-        var $iframe = $('#iframe-publisher-highlights-preview');
         var $dimmer = $('.hep-preview-dimmer');
         $dimmer.addClass('active');
 
@@ -557,6 +612,8 @@ $(document).ready(function () {
                 $dimmer.removeClass('active');
                 if (!dados || dados.status !== 'Ok') return;
                 if ($iframe.length === 0) return;
+
+                widgetPreviewLastSnapshot = snapshot;
 
                 var doc = '<!doctype html><html><head><meta charset="utf-8">';
                 // Reaproveitar o CSS framework do iframe interno do html-editor — picsum funciona via URL absoluta

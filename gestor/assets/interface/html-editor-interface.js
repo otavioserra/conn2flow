@@ -1527,11 +1527,18 @@ $(document).ready(function () {
                     const itemTemplate = itemMatch[1];
                     let replicated = '';
 
+                    // req-011 item 4: rastrear offsets por NOME DA VARIÁVEL (não por tipo). Assim
+                    // duas variáveis do mesmo tipo (`titulo` e `resumo`, ambas texto) recebem
+                    // dados diferentes no mesmo card. O índice final é `(i + offsets[varName]) %
+                    // simulItems.length`, garantindo cards vizinhos com valores distintos.
+                    const offsets = {};
+
+                    // req-011 item 4: remover o seletor de estilo de simulação do DOM para evitar
+                    // conflitos visuais no ambiente highlights.
+                    $('.publisher-design-mode-simulation').remove();
+
                     for (let i = 0; i < count; i++) {
-                        // req-009 item 2: o editor exibe [[item#X]] sem arrobas (conversão
-                        // openText/closeText pela camada de variáveis globais). A regex precisa
-                        // casar o formato sem @ — caso contrário a simulação deixa as variáveis
-                        // literais no preview.
+                        // req-009 item 2: regex sem arrobas (editor exibe [[item#X]] limpo).
                         const itemHtml = itemTemplate.replace(/\[\[item#([a-zA-Z0-9_\-]+)\]\]/g, function (match, varName) {
                             const fieldId = variableMapping[varName] || varName;
 
@@ -1551,24 +1558,24 @@ $(document).ready(function () {
 
                             var simulItems = $('.hep-simulation-' + fieldType + ' .item');
 
-                            // req-008 item 3 + req-010 item 3: fallback robusto.
-                            // Se o bucket específico estiver vazio, devolver um valor estático
-                            // por tipo — assim a simulação funciona mesmo antes do deploy do
-                            // componente de simulação simplificado para o ambiente.
+                            // Fallbacks robustos (req-008/010): bucket vazio → valor estático ou genérico text.
                             if (simulItems.length === 0) {
                                 if (fieldType === 'image') return 'https://picsum.photos/seed/highlights/800/450';
                                 if (fieldType === 'url') return '#';
                                 if (fieldType === 'date') return '27/05/2026';
-                                // Demais tipos: cair no genérico text.
                                 simulItems = $('.hep-simulation-text .item');
                             }
 
                             if (simulItems.length > 0) {
-                                var idx = Math.floor(Math.random() * simulItems.length);
+                                // req-011 item 4: offset estável por variável, sorteado uma vez por render.
+                                if (!(varName in offsets)) {
+                                    offsets[varName] = Math.floor(Math.random() * simulItems.length);
+                                }
+                                var idx = (i + offsets[varName]) % simulItems.length;
                                 return simulItems.eq(idx).html().trim();
                             }
 
-                            // req-010 item 3: último recurso por tipo para nunca deixar o literal.
+                            // Último recurso por tipo (req-010).
                             if (fieldType === 'textarea') return 'Resumo simulado curto e direto do bloco de destaques.';
                             return 'Título Simulado de Destaque';
                         });

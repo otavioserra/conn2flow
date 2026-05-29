@@ -402,6 +402,44 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - troca de modelo recarrega o preview interno do editor
   - títulos das colunas de mapeamento aparecem como `[[item#...]]` sem `@@`
 
+## BATCH-010 - Ordem Manual, Hidratação, Vínculo no Inserir e Simulação Diversificada (req-011)
+
+- [x] **Item 1** — Preservação da ordem cronológica na curadoria manual
+  - [x] `jquery-custom-dropdown.js`: array interno `this.selectedIds` mantido em ordem de cliques
+  - [x] `settings()` retorna callbacks `onAdd` (remove e re-empurra) e `onRemove`
+  - [x] `setValues(values, selectedIds)` sincroniza `this.selectedIds` antes do `set exactly`
+  - [x] `syncSelection` usa `this.selectedIds.slice()` (não o `<select>.val()` estrutural)
+  - [x] `publisher-highlights.js` (submit e `refreshWidgetPreview`): só sobrescreve `schema.selected_items` do `<select>` quando `rule !== 'manual'`
+- [x] **Item 2** — Hidratação visual dos selects `#rule` e `#order_by`
+  - [x] `setTimeout(50)` chama `.dropdown('set selected', ...)` em ambos após a inicialização
+- [x] **Item 3** — Inserção mostra a aba de variáveis para destaques
+  - [x] `html-editor.php`: para `$alvo_atual === 'publisher-highlights'`, força `$tem_vinculo = true` independente de `$target_variables`
+- [x] **Item 4** — Simulação dinâmica sem duplicidades
+  - [x] `.publisher-design-mode-simulation` removido do DOM ao simular destaques
+  - [x] Offsets rastreados por `varName` (uma chave por variável), não por `fieldType`
+  - [x] Índice final: `(i + offsets[varName]) % simulItems.length` — cards e variáveis vizinhas diferem
+- [x] **Item 5** — Enriquecimento da massa mock
+  - [x] `text`: 20 títulos (pt-br) / 20 títulos (en)
+  - [x] `textarea`: 12 resumos (pt-br) / 12 resumos (en)
+  - [x] `image`: 15 URLs picsum com seeds variadas
+  - [x] `url`: 12 caminhos fictícios
+  - [x] `date`: 12 datas escalonadas em 2026
+
+### Evidência registrada em 2026-05-27
+
+- Arquivos alterados:
+  - `gestor/assets/interface/jquery-custom-dropdown.js` (selectedIds + onAdd/onRemove + setValues + syncSelection)
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js` (preservação da ordem manual + hidratação rule/order_by)
+  - `gestor/bibliotecas/html-editor.php` (tem_vinculo sempre verdadeiro para highlights)
+  - `gestor/assets/interface/html-editor-interface.js` (offsets por varName + remoção do design-mode)
+- Arquivos sobrescritos:
+  - `gestor/resources/{pt-br,en}/components/html-editor-publisher-highlights-simulation/html-editor-publisher-highlights-simulation.html` (massa mock enriquecida)
+- Pendência: rodar `🗃️ Projects - Update => Core` para deployar componente mock + JS atualizado; validar manualmente:
+  - clicar Nota 2 → Nota 1 preserva essa ordem no preview e no banco
+  - selects de Regra e Ordenação refletem o valor salvo ao reabrir um registro
+  - na tela "Adicionar", após escolher o modelo, a aba de variáveis aparece e permite mapeamento
+  - simulação com 6+ cards mostra dados distintos para títulos e resumos vizinhos
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`

@@ -29,9 +29,12 @@ function html_editor_publisher_controls($params = false){
 	$alvo_atual = isset($alvo) ? $alvo : 'publisher';
 	$tem_vinculo = isset($publisher) && is_array($publisher);
 
-	// Para publisher-highlights, o "vínculo" suficiente é a lista de variáveis do template
-	// (não exige um registro de publisher carregado).
-	if($alvo_atual === 'publisher-highlights' && !empty($target_variables)){
+	// req-011 item 3: para o alvo publisher-highlights, sempre considerar com vínculo,
+	// mesmo na tela de "Adicionar" onde `$target_variables` chega vazio (não há mapeamento
+	// salvo no banco ainda). O JS preenche dinamicamente as variáveis ao selecionar o modelo
+	// via `publisher_highlights_update_target_variables`. Sem essa flag, o container HTML
+	// era removido pelo bloco `publisher-has-link` impedindo o mapeamento.
+	if($alvo_atual === 'publisher-highlights'){
 		$tem_vinculo = true;
 	}
 

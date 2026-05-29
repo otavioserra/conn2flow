@@ -15,6 +15,10 @@
         }, options || {});
 
         this.ready = false;
+        // req-011 item 1: array interno na ordem cronológica de cliques.
+        // Fomantic UI reordena os <option> conforme o DOM ao adicionar/remover,
+        // perdendo a ordem cronológica original. Mantemos aqui o estado correto.
+        this.selectedIds = [];
     }
 
     PublisherHighlightsCustomDropdown.prototype.refs = function () {
@@ -31,6 +35,7 @@
     };
 
     PublisherHighlightsCustomDropdown.prototype.settings = function () {
+        var self = this;
         return {
             forceSelection: false,
             allowAdditions: false,
@@ -38,6 +43,22 @@
             preserveHTML: false,
             message: {
                 noResults: this.noResultsMessage()
+            },
+            // req-011 item 1: callbacks de adição/remoção para manter a ordem cronológica
+            // dos cliques em `self.selectedIds`. A ordem do <select> reflete o DOM (estrutural)
+            // e não a sequência de seleção do usuário.
+            onAdd: function (addedValue) {
+                if (!addedValue) return;
+                var idx = self.selectedIds.indexOf(addedValue);
+                if (idx !== -1) self.selectedIds.splice(idx, 1);
+                self.selectedIds.push(addedValue);
+                self.options.setSelectedIds(self.selectedIds.slice());
+            },
+            onRemove: function (removedValue) {
+                if (!removedValue) return;
+                var idx = self.selectedIds.indexOf(removedValue);
+                if (idx !== -1) self.selectedIds.splice(idx, 1);
+                self.options.setSelectedIds(self.selectedIds.slice());
             }
         };
     };
@@ -69,7 +90,16 @@
     };
 
     PublisherHighlightsCustomDropdown.prototype.syncSelection = function () {
-        var selectedIds = this.readSelection();
+        // req-011 item 1: ao chamar este método (em mudanças no <select>), usamos a
+        // ordem cronológica mantida em `this.selectedIds`. O leitor cru `readSelection`
+        // só serve quando o array interno está vazio (estado inicial/migração).
+        var selectedIds;
+        if (this.selectedIds && this.selectedIds.length > 0) {
+            selectedIds = this.selectedIds.slice();
+        } else {
+            selectedIds = this.readSelection();
+            this.selectedIds = selectedIds.slice();
+        }
 
         this.options.setSelectedIds(selectedIds);
     };
@@ -120,6 +150,11 @@
         $dd.dropdown('change values', values || []);
         $dd.dropdown('refresh');
         $dd.dropdown('clear', true);
+
+        // req-011 item 1: sincronizar `this.selectedIds` antes de chamar `set exactly` —
+        // como `set exactly` dispara `onAdd` para cada item, o callback usa a ordem aqui
+        // recebida como referência e preserva a ordem cronológica original.
+        this.selectedIds = (selectedIds || []).slice();
 
         if (selectedIds && selectedIds.length > 0) {
             $dd.dropdown('set exactly', selectedIds, true);

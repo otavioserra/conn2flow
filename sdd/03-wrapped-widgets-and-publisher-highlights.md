@@ -123,3 +123,22 @@ gestor_pagina_javascript_incluir('biblioteca', [
 
 ### E. Tradução Contextual
 O componente suporta tradução em tempo de execução para os alertas exibidos ao usuário (por exemplo, exibindo "Nenhum item encontrado" quando o idioma de controle do gestor está definido como `pt-br`, caindo para o inglês padrão nos demais idiomas).
+
+---
+
+## 6. Ciclo de Vida e Inicialização do Preview do Widget
+
+Para garantir a estabilidade do preview interno no painel administrativo (onde o HTML/CSS editado no CodeMirror é simulado dinamicamente dentro de um iframe), a inicialização e o ciclo de vida do preview utilizam um fluxo baseado em validação de dependências e retries controlados:
+
+### A. Prevenção de Condições de Corrida
+A renderização do preview (através da função `refreshWidgetPreview`) depende de múltiplos elementos estarem prontos no DOM e no escopo global (o iframe de preview e as funções expostas pelo editor CodeMirror, como `html_editor_get_html` e `html_editor_get_css`). 
+Para evitar falhas intermitentes de renderização no carregamento da página, clonagem ou reabertura da tela:
+1. **Validação de Dependências**: A função de atualização valida a presença física do iframe e a existência das funções do editor antes de proceder.
+2. **Retry Controlado**: Caso o editor ou o iframe ainda não tenham sido totalmente inicializados, o sistema executa um retry controlado de até 8 tentativas (espaçadas em 150ms), impedindo loops contínuos e resolvendo o atraso natural de inicialização de recursos pesados.
+3. **Atraso Pós-Carregamento do Template**: Após o carregamento dinâmico de um template visual, a rotina agenda um disparo de renderização com atraso para garantir que o editor CodeMirror tenha absorvido o HTML/CSS correspondente.
+
+### B. Consolidação de Cache e Atualização Forçada
+O mecanismo de controle de snapshot (cache do estado do preview) evita requisições redundantes, mas opera com garantias de atualização:
+1. **Consolidação Pós-Renderização**: O estado do preview (snapshot) só é considerado "consolidado" e cacheado após uma renderização válida com sucesso.
+2. **Atualização Forçada por Aba**: Ao clicar ou alternar para a aba "Pré-Visualização" (`hep-preview`), o sistema ignora o cache pré-existente e força uma renderização imediata atualizada.
+
