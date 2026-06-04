@@ -11,6 +11,22 @@
 $(document).ready(function () {
     if ($('#_gestor-interface-edit-dados').length === 0 && $('#_gestor-interface-insert-dados').length === 0) return;
 
+    // req-015 item 1.4: injetar cursores grab/grabbing para a curadoria manual. Toda a tag é
+    // arrastável (grab); ao pressionar, vira grabbing; o "x" de remover mantém o cursor de clique.
+    (function injectDragCursorStyles() {
+        if (document.getElementById('hep-drag-cursor-styles')) return;
+        var css = '.drag-label{cursor:grab !important;}'
+            + '.drag-label .grip.vertical.icon{cursor:grab !important;}'
+            + '.drag-label:active,.drag-label:active *{cursor:grabbing !important;}'
+            + '.sortable-drag{cursor:grabbing !important;}'
+            + '.remove-tag-btn{cursor:pointer !important;}';
+        var style = document.createElement('style');
+        style.id = 'hep-drag-cursor-styles';
+        style.type = 'text/css';
+        style.appendChild(document.createTextNode(css));
+        document.head.appendChild(style);
+    })();
+
     // ===== Semantic UI
 
     // req-008 item 2: inicializar abas externas "Pré-Visualização" / "Editor HTML"
@@ -582,6 +598,17 @@ $(document).ready(function () {
         return $label;
     }
 
+    // req-015 item 1.3: o contêiner cinza de tags só deve aparecer quando houver ao menos um
+    // item selecionado. Vazio, ele fica oculto para não exibir a área pontilhada em branco.
+    function toggleSelectedLabelsVisibility() {
+        var $container = $('#selected-labels-container');
+        if (schema.selected_items && schema.selected_items.length > 0) {
+            $container.show();
+        } else {
+            $container.hide();
+        }
+    }
+
     // Renderiza todas as tags respeitando estritamente a ordem de schema.selected_items.
     function renderSelectedLabels(namesMap) {
         var $container = $('#selected-labels-container');
@@ -593,6 +620,7 @@ $(document).ready(function () {
             $container.append(buildSelectedLabel(slug, name));
         });
         ensureManualSortable();
+        toggleSelectedLabelsVisibility();
     }
 
     // Inicializa o Sortable uma única vez; relê a ordem física do DOM ao soltar uma tag.
@@ -602,7 +630,9 @@ $(document).ready(function () {
 
         manualSortable = new Sortable(el, {
             animation: 150,
-            handle: '.grip.vertical.icon',
+            // req-015 item 1.4: toda a área da tag é arrastável (sem restrição de handle); o
+            // filtro impede que o clique no "x" de remover inicie um arraste indevido.
+            filter: '.remove-tag-btn',
             onEnd: function () {
                 var newOrder = [];
                 $('#selected-labels-container .drag-label').each(function () {
@@ -726,6 +756,8 @@ $(document).ready(function () {
         schema.selected_items.push(slug);
         $('#selected-labels-container').append(buildSelectedLabel(slug, name));
         ensureManualSortable();
+        // req-015 item 1.3: ao adicionar a primeira tag, garantir que o contêiner apareça.
+        toggleSelectedLabelsVisibility();
 
         $('#manual_search_input').val('');
         hideManualSuggestions();
@@ -741,6 +773,8 @@ $(document).ready(function () {
         $label.remove();
         var idx = (schema.selected_items || []).indexOf(slug);
         if (idx !== -1) schema.selected_items.splice(idx, 1);
+        // req-015 item 1.3: ao remover a última tag, esconder novamente o contêiner.
+        toggleSelectedLabelsVisibility();
 
         scheduleWidgetPreview(false);
     });

@@ -42,7 +42,21 @@
         "versao": 1
     },
     {
-        "nome": "Publisher",
+        "nome": "Menus",
+        "id": "menus",
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1
+    },
+    {
+        "nome": "Menus",
+        "id": "menus",
+        "language": "en",
+        "status": "A",
+        "versao": 1
+    },
+    {
+        "nome": "Publicador",
         "id": "publisher",
         "language": "pt-br",
         "status": "A",
@@ -60,13 +74,13 @@
         "id": "publisher-highlights",
         "language": "pt-br",
         "status": "A",
-        "versao": 9
+        "versao": 10
     },
     {
         "nome": "Publisher Highlights",
         "id": "publisher-highlights",
         "language": "en",
         "status": "A",
-        "versao": 9
+        "versao": 10
     }
 ]

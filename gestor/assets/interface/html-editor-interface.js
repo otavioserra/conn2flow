@@ -1517,7 +1517,11 @@ $(document).ready(function () {
                 let schema = {};
                 try { schema = JSON.parse(schemaStr); } catch (e) { }
 
-                const count = Math.max(1, parseInt(schema.count || 3, 10));
+                // req-015 item 1.1: a simulação deve seguir a quantidade máxima definida pelo
+                // usuário no campo #count (refletindo instantaneamente, mesmo antes de salvar a
+                // página), em vez de depender da quantidade real de publicações no banco.
+                const countVal = $('#count').length ? $('#count').val() : null;
+                const count = Math.max(1, parseInt(countVal || schema.count || 4, 10));
                 const variableMapping = schema.variable_mapping || {};
 
                 const itemRegex = /<!--\s*item\s*<\s*-->([\s\S]*?)<!--\s*item\s*>\s*-->/i;

@@ -105,6 +105,10 @@
     },
     {
         "perfil": "administradores",
+        "modulo": "menus"
+    },
+    {
+        "perfil": "administradores",
         "modulo": "forms"
     },
     {

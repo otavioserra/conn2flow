@@ -700,6 +700,34 @@
         "language": "en"
     },
     {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Menus",
+        "id": "menus",
+        "titulo": "Menus",
+        "icone": "sitemap",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Menus",
+        "id": "menus",
+        "titulo": "Menus",
+        "icone": "sitemap",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
+    },
+    {
         "modulo_grupo_id": "administracao-comunicacao",
         "nome": "Formulários Definições",
         "id": "forms",

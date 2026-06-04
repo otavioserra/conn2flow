@@ -8731,6 +8731,78 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "menus",
+        "id": "form-name-label",
+        "valor": "Nome do Menu",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "menus",
+        "id": "form-template_id-label",
+        "valor": "Modelo Visual de Menu",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "menus",
+        "id": "form-fields_schema-label",
+        "valor": "Itens do Menu",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "menus",
+        "id": "form-selected_items-label",
+        "valor": "Itens selecionados (ordem)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "menus",
+        "id": "form-name-label",
+        "valor": "Menu name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "menus",
+        "id": "form-template_id-label",
+        "valor": "Menu visual template",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "menus",
+        "id": "form-fields_schema-label",
+        "valor": "Menu items",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "menus",
+        "id": "form-selected_items-label",
+        "valor": "Selected items (ordered)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "modulos",
         "id": "form-name-label",
         "valor": "Nome",

@@ -20,13 +20,13 @@
             "ai_prompts_targets": [
                 {
                     "id": "publisher",
-                    "name": "Publisher"
+                    "name": "Publicador"
                 }
             ],
             "ai_modes": [
                 {
                     "id": "publisher",
-                    "name": "Publisher",
+                    "name": "Publicador",
                     "target": "publisher",
                     "default": true,
                     "version": "1.0",

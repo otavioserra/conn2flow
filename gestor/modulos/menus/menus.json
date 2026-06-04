@@ -1,0 +1,371 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "html-editor"
+    ],
+    "id_numerico": "id_menus",
+    "tabela": {
+        "nome": "menus",
+        "nome_especifico": "name",
+        "id": "id",
+        "id_numerico": "id_menus",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "ai_prompts_targets": [
+                {
+                    "id": "menus",
+                    "name": "Menus"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "menus",
+                    "name": "Menus",
+                    "target": "menus",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Menu - Horizontal (Navbar)",
+                    "id": "menus-horizontal-navbar",
+                    "target": "menus",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "17ea8d996c849f31dae42d8754f8010e",
+                        "css": "",
+                        "combined": "17ea8d996c849f31dae42d8754f8010e"
+                    }
+                },
+                {
+                    "name": "Menu - Vertical (Lateral)",
+                    "id": "menus-vertical-sidebar",
+                    "target": "menus",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "df1b520e76b2811cc18c7e630784c35d",
+                        "css": "",
+                        "combined": "df1b520e76b2811cc18c7e630784c35d"
+                    }
+                },
+                {
+                    "name": "Menu - Rodapé (Colunas)",
+                    "id": "menus-footer-colunas",
+                    "target": "menus",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "652b7c3bad28a932045090e5375936d4",
+                        "css": "",
+                        "combined": "652b7c3bad28a932045090e5375936d4"
+                    }
+                },
+                {
+                    "name": "Menu - Suspenso (Dropdown)",
+                    "id": "menus-dropdown",
+                    "target": "menus",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "cc4bbd649847659291c0441b307d602c",
+                        "css": "",
+                        "combined": "cc4bbd649847659291c0441b307d602c"
+                    }
+                },
+                {
+                    "name": "Menu - Trilha (Breadcrumb)",
+                    "id": "menus-breadcrumb",
+                    "target": "menus",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "f46839ee8929298d28926a109aa939d0",
+                        "css": "",
+                        "combined": "f46839ee8929298d28926a109aa939d0"
+                    }
+                },
+                {
+                    "name": "Menu - Mobile (Hambúrguer)",
+                    "id": "menus-mobile-hamburguer",
+                    "target": "menus",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "6fa6e9ca3f94d2bfb5deab0e977f77ef",
+                        "css": "",
+                        "combined": "6fa6e9ca3f94d2bfb5deab0e977f77ef"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Menus - Listar",
+                    "id": "menus",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "menus\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Menus - Adicionar",
+                    "id": "menus-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "menus\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "6ba8e520a7ce8e507b21950d05788c9b",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "077104ca03c94cbe41f599aee4c98a9d"
+                    }
+                },
+                {
+                    "name": "Menus - Editar",
+                    "id": "menus-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "menus\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "a9eb30534b9909522cdef2af802b3a5d",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "cb62d33d7fda5810ce7e0bf6505acf11"
+                    }
+                },
+                {
+                    "name": "Menus - Clonar",
+                    "id": "menus-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "menus\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "fa1d4e929be5d44ee8ed45dce137780e",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "5312a64cb0f24a5f66162c837bc3a1bf"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome do Menu",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Modelo Visual de Menu",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Itens do Menu",
+                    "type": "string"
+                },
+                {
+                    "id": "form-selected_items-label",
+                    "value": "Itens selecionados (ordem)",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "ai_prompts_targets": [
+                {
+                    "id": "menus",
+                    "name": "Menus"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "menus",
+                    "name": "Menus",
+                    "target": "menus",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Menu - Horizontal (Navbar)",
+                    "id": "menus-horizontal-navbar",
+                    "target": "menus",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "91482437c666b5c77f2ab78e394d52e8",
+                        "css": "",
+                        "combined": "91482437c666b5c77f2ab78e394d52e8"
+                    }
+                },
+                {
+                    "name": "Menu - Vertical (Sidebar)",
+                    "id": "menus-vertical-sidebar",
+                    "target": "menus",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "fdcde4a9bf99a6d8936462e170a8af49",
+                        "css": "",
+                        "combined": "fdcde4a9bf99a6d8936462e170a8af49"
+                    }
+                },
+                {
+                    "name": "Menu - Footer (Columns)",
+                    "id": "menus-footer-colunas",
+                    "target": "menus",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "0fef010a59698f5458dbb5f122ad1b17",
+                        "css": "",
+                        "combined": "0fef010a59698f5458dbb5f122ad1b17"
+                    }
+                },
+                {
+                    "name": "Menu - Dropdown",
+                    "id": "menus-dropdown",
+                    "target": "menus",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "26dfffad35e25afb9ee3f389ef8adc2c",
+                        "css": "",
+                        "combined": "26dfffad35e25afb9ee3f389ef8adc2c"
+                    }
+                },
+                {
+                    "name": "Menu - Breadcrumb",
+                    "id": "menus-breadcrumb",
+                    "target": "menus",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "8f813d02e8b5e5bcccdd87a71b1ea54c",
+                        "css": "",
+                        "combined": "8f813d02e8b5e5bcccdd87a71b1ea54c"
+                    }
+                },
+                {
+                    "name": "Menu - Mobile (Hamburger)",
+                    "id": "menus-mobile-hamburguer",
+                    "target": "menus",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "5722a2fa6aa453454e7944a73770077f",
+                        "css": "",
+                        "combined": "5722a2fa6aa453454e7944a73770077f"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Menus - List",
+                    "id": "menus",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "menus\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Menus - Add",
+                    "id": "menus-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "menus\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "4f955923daf6133bff38d3ddad037973",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "958b59f0f7010689d6eddbc3f9a059c6"
+                    }
+                },
+                {
+                    "name": "Menus - Edit",
+                    "id": "menus-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "menus\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "ac659ac904ba40693ef6c1797aab845a",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "57f83106561c1abeea80fc2d21e9ab44"
+                    }
+                },
+                {
+                    "name": "Menus - Clone",
+                    "id": "menus-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "menus\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "7e5ebf5c5652861116ac4361ea87f682",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "45129d5e252325c67f3be6192585451f"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Menu name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Menu visual template",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Menu items",
+                    "type": "string"
+                },
+                {
+                    "id": "form-selected_items-label",
+                    "value": "Selected items (ordered)",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

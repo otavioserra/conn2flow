@@ -554,6 +554,61 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - `Esc`/clique fora fecham a lista de sugestões
   - aba "Código do Widget" exibe o CodeMirror dark read-only (800px) com o wrapper `widgets#publisher-highlights->render(...)`, sem duplicar instância ao alternar abas
 
+## BATCH-015 - Correções Residuais de Destaques e Inicialização do Módulo de Menus (req-015)
+
+### Parte 1 — Correções residuais do `publisher-highlights`
+
+- [x] **Item 1.1** — Contagem da simulação segue o campo `#count`
+  - [x] `html-editor-interface.js` (`publisherVariablesOrSimulation`, alvo `publisher-highlights`) lê `#count` do DOM
+  - [x] `count = Math.max(1, parseInt(countVal || schema.count || 4, 10))` (reflete o input antes de salvar)
+- [x] **Item 1.2** — Alinhamento do dropdown de autocomplete
+  - [x] `margin: 0 !important;` adicionado ao `#search-suggestions-dropdown` nas 6 páginas (adicionar/editar/clonar × pt-br/en)
+- [x] **Item 1.3** — Visibilidade dinâmica do `#selected-labels-container`
+  - [x] `toggleSelectedLabelsVisibility()` criada em `publisher-highlights.js`
+  - [x] Invocada ao final de `renderSelectedLabels()`, após adicionar tag e após remover tag
+- [x] **Item 1.4** — Drag handle livre + filtro + cursores grab/grabbing
+  - [x] `handle: '.grip.vertical.icon'` removido; toda a tag é arrastável
+  - [x] `filter: '.remove-tag-btn'` adicionado (clique no "x" não inicia arraste)
+  - [x] CSS grab/grabbing injetado no head via JS (`.drag-label`, `:active`, `.sortable-drag`, `.remove-tag-btn`)
+
+### Parte 2 — Inicialização do módulo `menus` (ver DEC-022)
+
+- [x] **2.1/2.2** — Clonagem física `publisher-highlights/` → `menus/` com renomeação de arquivos (`menus.php`, `menus.json`, `menus.js`, `menus.widget.php`) e diretórios/arquivos de páginas (`menus-adicionar/editar/clonar`); identificadores internos substituídos para `menus`/`id_menus`
+- [x] **2.3** — Registro em `gestor/db/data/ModulosData.json` (pt-br + en, grupo `administracao-gestor`, ícone `sitemap`)
+- [x] **2.4** — Migração Phinx `20260701110000_create_menus_table.php` (tabela `menus` **sem** `publisher_id`, demais colunas análogas a `publisher_highlights`)
+- [x] **2.5** — Limpeza preliminar
+  - [x] HTML das 6 páginas: removidos publicador de origem (`#publisher_id`), regra (`#rule`), quantidade (`#count`), ordenação (`#order_by`) e painel de mapeamento de variáveis; mantido o wrapper de autocomplete (agora buscando páginas do site)
+  - [x] `menus.widget.php`: removidas rotinas de paginação dinâmica e herança de publisher; renderizador processa injeção simples a partir de `selected_items` (slugs de `paginas`) com `[[item#label]]`/`[[item#url]]`/`[[item#slug]]`
+  - [x] `menus.php` desacoplado do publisher (sem validação/insert/update/select de `publisher_id`; AJAX `pages-search`/`pages-fetch` varrem `paginas`)
+- [x] 6 templates próprios de menu criados (`pt-br` + `en`); 6 templates de destaques removidos do clone
+
+### Evidência registrada em 2026-06-04
+
+- Validação executável (estática, sem ambiente Docker nesta rodada):
+  - `node --check gestor/modulos/publisher-highlights/publisher-highlights.js` → `PH_JS_OK`
+  - `node --check gestor/assets/interface/html-editor-interface.js` → `HEI_JS_OK`
+  - `node --check gestor/modulos/menus/menus.js` → `MENUS_JS_OK`
+  - `php -l gestor/modulos/menus/menus.php` → `No syntax errors detected`
+  - `php -l gestor/modulos/menus/menus.widget.php` → `No syntax errors detected`
+  - `php -l gestor/db/migrations/20260701110000_create_menus_table.php` → `No syntax errors detected`
+  - `JSON.parse` de `menus.json` e `ModulosData.json` → `OK`
+  - Grep por `publisher` na pasta `gestor/modulos/menus/` → apenas os `.md` de ai_modes (reescritos para menus); sem acoplamento residual em PHP/JS/JSON/HTML
+- Arquivos alterados (Parte 1):
+  - `gestor/assets/interface/html-editor-interface.js`
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js`
+  - `gestor/modulos/publisher-highlights/resources/{pt-br,en}/pages/publisher-highlights-{adicionar,editar,clonar}/*.html` (6 páginas)
+- Arquivos criados/alterados (Parte 2):
+  - `gestor/modulos/menus/**` (módulo completo: php/json/js/widget + 6 páginas + 12 templates + 2 ai_modes)
+  - `gestor/db/migrations/20260701110000_create_menus_table.php`
+  - `gestor/db/data/ModulosData.json`
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+- Pendência (com o operador): rodar `🗃️ Projects - Update => Core` para compilar recursos do `menus`, calcular checksums (atualmente vazios), aplicar a migração no runtime de testes e registrar páginas/templates/módulo no banco. Depois, validar manualmente:
+  - menu administrativo "Menus do Site" aparece no grupo Administração do Gestor
+  - adicionar/editar/clonar salvam `name` + `fields_schema` + `html`/`css` sem erro de `publisher_id`
+  - autocomplete lista páginas do site; tags adicionam/removem/reordenam e o contêiner só aparece com ≥1 item
+  - aba "Pré-Visualização" renderiza o menu com os itens reais; aba "Código do Widget" mostra o wrapper `widgets#menus->render(...)`
+  - Parte 1: simulação dos destaques respeita o `#count`; dropdown de autocomplete alinhado; grab no label inteiro
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`
