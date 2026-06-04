@@ -193,10 +193,8 @@ function publisher_highlights_adicionar(){
 	// ===== Inclusão Módulo JS
 
 	gestor_pagina_javascript_incluir();
-	gestor_pagina_javascript_incluir('biblioteca',[
-		'caminho' => 'jquery-custom-dropdown',
-		'biblioteca' => 'interface',
-	]);
+	// req-014: Sortable.js (CDN) para reordenação drag-and-drop das tags de curadoria manual.
+	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
 
 	// ===== Interface adicionar finalizar opções
 
@@ -503,10 +501,8 @@ function publisher_highlights_editar(){
 	// ===== Inclusão Módulo JS
 
 	gestor_pagina_javascript_incluir();
-	gestor_pagina_javascript_incluir('biblioteca',[
-		'caminho' => 'jquery-custom-dropdown',
-		'biblioteca' => 'interface',
-	]);
+	// req-014: Sortable.js (CDN) para reordenação drag-and-drop das tags de curadoria manual.
+	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
 
 	// ===== Interface editar finalizar opções
 
@@ -750,10 +746,8 @@ function publisher_highlights_clonar(){
 	}
 
 	gestor_pagina_javascript_incluir();
-	gestor_pagina_javascript_incluir('biblioteca',[
-		'caminho' => 'jquery-custom-dropdown',
-		'biblioteca' => 'interface',
-	]);
+	// req-014: Sortable.js (CDN) para reordenação drag-and-drop das tags de curadoria manual.
+	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
 
 	$_GESTOR['interface']['clonar']['finalizar'] = Array(
 		'formulario' => Array(
@@ -1220,22 +1214,13 @@ function publisher_highlights_ajax_widget_preview(){
 	$publisher_id = $_REQUEST['params']['publisher_id'] ?? ($_REQUEST['publisher_id'] ?? '');
 	$fields_schema_input = $_REQUEST['params']['fields_schema'] ?? ($_REQUEST['fields_schema'] ?? '{}');
 
-	// O frontend manda as variáveis no formato `[[item#X]]`. Converter de volta para `@[[item#X]]@`
-	// para que o renderizador as encontre.
-	$open = $_GESTOR['variavel-global']['open'];
-	$close = $_GESTOR['variavel-global']['close'];
-	$openText = $_GESTOR['variavel-global']['openText'];
-	$closeText = $_GESTOR['variavel-global']['closeText'];
-
-	$html_normalized = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $html_input);
-
 	// Garantir a biblioteca do widget incluída (precisamos da função render_inline).
 	if(!function_exists('publisher_highlights_widget_render_inline')){
 		require_once(__DIR__.'/publisher-highlights.widget.php');
 	}
 
 	$rendered = publisher_highlights_widget_render_inline([
-		'html' => $html_normalized,
+		'html' => $html_input,
 		'css' => $css_input,
 		'publisher_id' => $publisher_id,
 		'fields_schema' => $fields_schema_input,

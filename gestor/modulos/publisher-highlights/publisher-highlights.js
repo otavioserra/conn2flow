@@ -30,6 +30,10 @@ $(document).ready(function () {
                 case 'hep-editor':
                     window.contentPageTabHandler();
                     break;
+                // req-014 item 2.5: reabilitar o CodeMirror da aba "Código do Widget".
+                case 'hep-widget':
+                    updateWidgetCodeTab();
+                    break;
             }
         }
     }
@@ -109,87 +113,15 @@ $(document).ready(function () {
         successNotOkCallback: function () { }
     };
 
-    var manualItemsDropdown = null;
-    var manualItemsDropdownLoader = null;
-
-    function ensureManualItemsDropdown() {
-        function createInstance() {
-            if (manualItemsDropdown) return manualItemsDropdown;
-
-            manualItemsDropdown = new window.PublisherHighlightsCustomDropdown({
-                language: function () {
-                    return gestor.language;
-                },
-                getPublisherId: function () {
-                    return $publisher.val() || '';
-                },
-                getSelectedIds: function () {
-                    return (schema.selected_items || []).slice();
-                },
-                setSelectedIds: function (selectedIds) {
-                    schema.selected_items = selectedIds;
-                    scheduleWidgetPreview(false);
-                },
-                fetchSearchResults: function (publisherId, query, done) {
-                    $.ajax({
-                        type: 'POST',
-                        url: gestor.raiz + gestor.moduloCaminho + '/',
-                        data: {
-                            opcao: gestor.moduloOpcao,
-                            ajax: 'sim',
-                            ajaxOpcao: 'publisher-pages-search',
-                            publisher_id: publisherId,
-                            q: query,
-                            params: { publisher_id: publisherId, q: query }
-                        },
-                        dataType: 'json',
-                        success: function (dados) {
-                            if (!dados || dados.status !== 'Ok') {
-                                done([]);
-                                return;
-                            }
-
-                            done(dados.results || []);
-                        }
-                    });
-                },
-                fetchHydratedResults: function (publisherId, ids, done) {
-                    var req = $.extend(true, {}, ajaxDefault, {
-                        data: $.extend({}, ajaxDefault.data, { ajaxOpcao: 'publisher-pages-fetch', params: { publisher_id: publisherId, ids: ids } }),
-                        ajaxOpcao: 'publisher-pages-fetch',
-                        successCallback: function (dados) {
-                            done(dados.results || []);
-                        },
-                        successNotOkCallback: function () {
-                            done([]);
-                        }
-                    });
-
-                    $.ajax(req);
-                }
-            });
-
-            return manualItemsDropdown;
-        }
-
-        if (manualItemsDropdown) {
-            return $.Deferred().resolve(manualItemsDropdown).promise();
-        }
-
-        if (manualItemsDropdownLoader) {
-            return manualItemsDropdownLoader.promise();
-        }
-
-        manualItemsDropdownLoader = $.Deferred();
-
-        if (typeof window.PublisherHighlightsCustomDropdown === 'function') {
-            manualItemsDropdownLoader.resolve(createInstance());
-        } else {
-            manualItemsDropdownLoader.reject();
-        }
-
-        return manualItemsDropdownLoader.promise();
-    }
+    // req-014 / DEC-021: o dropdown múltiplo do Fomantic UI e o componente
+    // PublisherHighlightsCustomDropdown foram removidos. A curadoria manual agora usa um
+    // autocomplete de busca Ajax com tags reordenáveis (Sortable.js) — ver a seção
+    // "Curadoria manual" mais abaixo. Estado compartilhado declarado aqui para garantir
+    // que esteja inicializado antes do bloco de inicialização da página.
+    var widgetCodeMirror = null;     // instância do CodeMirror da aba "Código do Widget"
+    var manualSearchTimer = null;    // debounce do campo de busca
+    var manualSortable = null;       // instância do Sortable do contêiner de tags
+    var manualLabelsHydrated = false; // hidratação inicial das tags (uma vez por carga)
 
     // ===== Inicialização
 
@@ -200,9 +132,7 @@ $(document).ready(function () {
     if ($template.val()) loadTemplate($template.val());
     else setTimeout(function () { scheduleWidgetPreview(true); }, 600);
 
-    ensureManualItemsDropdown().done(function () {
-        toggleManualWrapper();
-    });
+    toggleManualWrapper();
     toggleOrderByWrapper();
     toggleTemplateOptionsWrapper();
 
@@ -222,11 +152,11 @@ $(document).ready(function () {
         availablePublisherFields = [];
         renderPublisherFields();
 
-        // Limpar seleção atual e reconfigurar dropdown manual para o novo publisher
+        // req-014: limpar a curadoria manual e as tags ao trocar de publicador.
         schema.selected_items = [];
-        ensureManualItemsDropdown().done(function (component) {
-            component.reset(pid);
-        });
+        $('#manual_search_input').val('');
+        hideManualSuggestions();
+        renderSelectedLabels({});
 
         if (pid) loadPublisher(pid);
         scheduleWidgetPreview(false);
@@ -275,22 +205,13 @@ $(document).ready(function () {
         // req-010 item 1: persistir template_id dentro do fields_schema (não há coluna dedicada)
         schema.template_id = $('#template_id').val() || '';
 
-        // req-011 item 1: para regra `manual`, NÃO sobrescrever `schema.selected_items` com o
-        // valor cru do <select> — sua ordem segue o DOM (estrutural), perdendo a sequência de
-        // cliques. O custom dropdown já mantém a ordem cronológica em schema.selected_items.
-        // Apenas para outras regras (ou estado vazio) limpar/normalizar a partir do <select>.
-        if (schema.rule !== 'manual') {
-            var sel = $('#selected_items').val();
-            if (Array.isArray(sel)) {
-                schema.selected_items = sel.filter(function (s) { return s !== ''; });
-            } else if (typeof sel === 'string' && sel.length > 0) {
-                schema.selected_items = sel.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-            } else {
-                schema.selected_items = [];
-            }
-        }
+        // req-014: a curadoria manual vive em schema.selected_items (mantida pelas tags e pelo
+        // Sortable). Para regras não-manuais, enviar selected_items vazio via cópia, sem destruir
+        // o estado em memória — alternar regras na UI não deve perder a curadoria já montada.
+        var out = $.extend(true, {}, schema);
+        if (out.rule !== 'manual') out.selected_items = [];
 
-        $('input[name="fields_schema"]').val(JSON.stringify(schema));
+        $('input[name="fields_schema"]').val(JSON.stringify(out));
 
         return true;
     });
@@ -478,10 +399,14 @@ $(document).ready(function () {
 
         if (!isManual) return;
 
-        ensureManualItemsDropdown().done(function (component) {
-            component.init($publisher.val() || '');
-            component.refresh();
-        });
+        // req-014: hidratar as tags na primeira exibição do modo manual (resolve os nomes
+        // reais dos slugs já curados). Nas exibições seguintes, só garantir o Sortable ativo.
+        if (!manualLabelsHydrated) {
+            manualLabelsHydrated = true;
+            hydrateSelectedLabels();
+        } else {
+            ensureManualSortable();
+        }
     }
 
     function toggleOrderByWrapper() {
@@ -572,20 +497,15 @@ $(document).ready(function () {
         schema.count = parseInt($('#count').val(), 10) || 4;
         schema.order_by = $('#order_by').val() || 'date_desc';
 
-        // req-011 item 1: para regra `manual`, NÃO sobrescrever `schema.selected_items` com o
-        // valor cru do <select>. A ordem cronológica vive em schema.selected_items mantida pelo
-        // custom dropdown via callbacks onAdd/onRemove.
-        if (schema.rule !== 'manual') {
-            var sel = $('#selected_items').val();
-            if (Array.isArray(sel)) schema.selected_items = sel.filter(function (s) { return s !== ''; });
-            else if (typeof sel === 'string' && sel.length > 0) schema.selected_items = sel.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-            else schema.selected_items = [];
-        }
+        // req-014: para regra não-manual, enviar selected_items vazio via cópia, preservando
+        // schema.selected_items (curadoria mantida pelas tags) intacto em memória.
+        var out = $.extend(true, {}, schema);
+        if (out.rule !== 'manual') out.selected_items = [];
 
         var snapshot = JSON.stringify({
             html: html, css: css,
             publisher_id: $publisher.val() || '',
-            schema: schema
+            schema: out
         });
 
         if (!force && snapshot === widgetPreviewLastSnapshot) return;
@@ -605,7 +525,7 @@ $(document).ready(function () {
                     html: html,
                     css: css,
                     publisher_id: $publisher.val() || '',
-                    fields_schema: JSON.stringify(schema)
+                    fields_schema: JSON.stringify(out)
                 }
             },
             success: function (dados) {
@@ -633,5 +553,248 @@ $(document).ready(function () {
             },
             error: function () { $dimmer.removeClass('active'); }
         });
+    }
+
+    // ===== Curadoria manual: autocomplete de busca Ajax + tags reordenáveis (req-014 / DEC-021)
+    // Substitui o dropdown múltiplo do Fomantic UI. A fonte da verdade é schema.selected_items
+    // (lista ordenada de slugs). Cada adição/remoção/reordenação atualiza o array e dispara o preview.
+
+    function isPtBr() {
+        return (typeof gestor !== 'undefined' && gestor.language === 'pt-br');
+    }
+
+    function manualNoResultsMsg() {
+        return isPtBr() ? 'Nenhum item encontrado' : 'No results found.';
+    }
+
+    function hideManualSuggestions() {
+        $('#search-suggestions-dropdown').hide().empty();
+    }
+
+    // Monta uma tag (Fomantic UI Label) com handle de arraste e botão de remover.
+    function buildSelectedLabel(slug, name) {
+        var $label = $('<div class="ui label teal drag-label" style="cursor: grab; display: inline-flex; align-items: center; user-select: none;"></div>')
+            .attr('data-id', slug);
+        $label.append('<i class="grip vertical icon" style="margin-right: 6px; opacity: 0.6;"></i>');
+        // Usar text node para o nome — evita injeção de HTML vindo do nome da publicação.
+        $label.append(document.createTextNode(name || slug));
+        $label.append('<i class="delete icon remove-tag-btn" style="margin-left: 8px; cursor: pointer;"></i>');
+        return $label;
+    }
+
+    // Renderiza todas as tags respeitando estritamente a ordem de schema.selected_items.
+    function renderSelectedLabels(namesMap) {
+        var $container = $('#selected-labels-container');
+        if ($container.length === 0) return;
+
+        $container.empty();
+        (schema.selected_items || []).forEach(function (slug) {
+            var name = (namesMap && namesMap[slug]) ? namesMap[slug] : slug;
+            $container.append(buildSelectedLabel(slug, name));
+        });
+        ensureManualSortable();
+    }
+
+    // Inicializa o Sortable uma única vez; relê a ordem física do DOM ao soltar uma tag.
+    function ensureManualSortable() {
+        var el = document.getElementById('selected-labels-container');
+        if (!el || typeof Sortable === 'undefined' || manualSortable) return;
+
+        manualSortable = new Sortable(el, {
+            animation: 150,
+            handle: '.grip.vertical.icon',
+            onEnd: function () {
+                var newOrder = [];
+                $('#selected-labels-container .drag-label').each(function () {
+                    var id = $(this).attr('data-id');
+                    if (id) newOrder.push(id);
+                });
+                schema.selected_items = newOrder;
+                scheduleWidgetPreview(false);
+            }
+        });
+    }
+
+    // Hidratação inicial: resolve os nomes reais dos slugs curados via publisher-pages-fetch.
+    function hydrateSelectedLabels() {
+        var publisherId = $publisher.val() || '';
+        var ids = (schema.selected_items || []).slice();
+
+        if (!publisherId || ids.length === 0) {
+            renderSelectedLabels({});
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: gestor.raiz + gestor.moduloCaminho + '/',
+            dataType: 'json',
+            data: {
+                opcao: gestor.moduloOpcao,
+                ajax: 'sim',
+                ajaxOpcao: 'publisher-pages-fetch',
+                publisher_id: publisherId,
+                params: { publisher_id: publisherId, ids: ids }
+            },
+            success: function (dados) {
+                var namesMap = {};
+                if (dados && dados.status === 'Ok') {
+                    (dados.results || []).forEach(function (r) {
+                        if (r && r.value) namesMap[r.value] = r.name || r.value;
+                    });
+                }
+                renderSelectedLabels(namesMap);
+            },
+            error: function () { renderSelectedLabels({}); }
+        });
+    }
+
+    // Desenha a lista flutuante de sugestões; itens já selecionados ficam desabilitados.
+    function renderManualSuggestions(results) {
+        var $dropdown = $('#search-suggestions-dropdown');
+        if ($dropdown.length === 0) return;
+
+        $dropdown.empty();
+
+        var selected = {};
+        (schema.selected_items || []).forEach(function (slug) { selected[slug] = true; });
+
+        var rows = (results || []).filter(function (r) { return r && r.value; });
+
+        if (rows.length === 0) {
+            $dropdown.append($('<div class="item" style="padding: 8px 12px; color: #999;"></div>').text(manualNoResultsMsg()));
+        } else {
+            rows.forEach(function (r) {
+                var $item = $('<div class="item" style="padding: 8px 12px; cursor: pointer;"></div>')
+                    .attr('data-id', r.value)
+                    .attr('data-name', r.name || r.value)
+                    .text(r.name || r.value);
+
+                if (selected[r.value]) {
+                    $item.addClass('disabled').css({ opacity: 0.5, cursor: 'not-allowed' });
+                }
+                $dropdown.append($item);
+            });
+        }
+
+        $dropdown.show();
+    }
+
+    function runManualSearch(query) {
+        var publisherId = $publisher.val() || '';
+        if (!publisherId) { hideManualSuggestions(); return; }
+
+        $.ajax({
+            type: 'POST',
+            url: gestor.raiz + gestor.moduloCaminho + '/',
+            dataType: 'json',
+            data: {
+                opcao: gestor.moduloOpcao,
+                ajax: 'sim',
+                ajaxOpcao: 'publisher-pages-search',
+                publisher_id: publisherId,
+                q: query,
+                params: { publisher_id: publisherId, q: query }
+            },
+            success: function (dados) {
+                if (!dados || dados.status !== 'Ok') { renderManualSuggestions([]); return; }
+                renderManualSuggestions(dados.results || []);
+            },
+            error: function () { renderManualSuggestions([]); }
+        });
+    }
+
+    // Campo de busca com debounce de 300ms (evita requisição a cada caractere).
+    $(document).on('input', '#manual_search_input', function () {
+        var value = ($(this).val() || '').trim();
+        if (manualSearchTimer) clearTimeout(manualSearchTimer);
+
+        if (value === '') { hideManualSuggestions(); return; }
+
+        manualSearchTimer = setTimeout(function () { runManualSearch(value); }, 300);
+    });
+
+    // Selecionar uma sugestão: adiciona o slug ao final de selected_items.
+    $(document).on('click', '#search-suggestions-dropdown .item', function () {
+        var $item = $(this);
+        if ($item.hasClass('disabled')) return;
+
+        var slug = $item.attr('data-id');
+        var name = $item.attr('data-name') || slug;
+        if (!slug || (schema.selected_items || []).indexOf(slug) !== -1) return;
+
+        schema.selected_items.push(slug);
+        $('#selected-labels-container').append(buildSelectedLabel(slug, name));
+        ensureManualSortable();
+
+        $('#manual_search_input').val('');
+        hideManualSuggestions();
+        scheduleWidgetPreview(false);
+    });
+
+    // Remover uma tag pelo ícone "x".
+    $(document).on('click', '#selected-labels-container .remove-tag-btn', function (e) {
+        e.stopPropagation();
+        var $label = $(this).closest('.drag-label');
+        var slug = $label.attr('data-id');
+
+        $label.remove();
+        var idx = (schema.selected_items || []).indexOf(slug);
+        if (idx !== -1) schema.selected_items.splice(idx, 1);
+
+        scheduleWidgetPreview(false);
+    });
+
+    // Fechar a lista de sugestões ao clicar fora do componente ou pressionar Esc.
+    $(document).on('click', function (e) {
+        if ($(e.target).closest('.search-autocomplete-wrapper').length === 0) hideManualSuggestions();
+    });
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Escape' || e.keyCode === 27) hideManualSuggestions();
+    });
+
+    // ===== Aba "Código do Widget" — CodeMirror read-only (req-014 item 2.5)
+
+    function updateWidgetCodeTab() {
+        // Lib pode ainda não estar no escopo global ao abrir a aba; reagendar.
+        if (typeof CodeMirror === 'undefined') {
+            setTimeout(updateWidgetCodeTab, 100);
+            return;
+        }
+
+        var $textarea = $('#hep-widget-code');
+        if ($textarea.length === 0) return;
+
+        // Dedup: reaproveitar a instância já anexada à textarea ao alternar entre abas.
+        if (!widgetCodeMirror) {
+            var existingWrapper = $textarea.next('.CodeMirror');
+            if (existingWrapper.length > 0) widgetCodeMirror = existingWrapper[0].CodeMirror;
+        }
+
+        if (!widgetCodeMirror) {
+            widgetCodeMirror = CodeMirror.fromTextArea($textarea.get(0), {
+                mode: 'htmlmixed',
+                htmlMode: true,
+                readOnly: true,
+                lineNumbers: true,
+                lineWrapping: true,
+                theme: 'tomorrow-night-bright',
+                indentUnit: 4
+            });
+            widgetCodeMirror.setSize('100%', 800);
+        }
+
+        // Slug do destaque: na edição vem de gestor.moduloRegistroId; na inserção, placeholder localizado.
+        var slug = (typeof gestor !== 'undefined' && gestor.moduloRegistroId)
+            ? gestor.moduloRegistroId
+            : (isPtBr() ? '[slug-do-destaque]' : '[highlight-slug]');
+
+        var innerHtml = (typeof window.html_editor_get_html === 'function') ? window.html_editor_get_html() : '';
+        var wrapper = '<!-- widgets#publisher-highlights->render({"grupo_slug": "' + slug + '"}) < -->\n'
+            + innerHtml + '\n'
+            + '<!-- widgets#publisher-highlights->render({"grupo_slug": "' + slug + '"}) > -->';
+
+        widgetCodeMirror.getDoc().setValue(wrapper);
+        widgetCodeMirror.refresh();
     }
 });

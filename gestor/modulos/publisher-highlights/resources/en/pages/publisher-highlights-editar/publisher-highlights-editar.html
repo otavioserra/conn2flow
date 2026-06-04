@@ -37,14 +37,26 @@
 </div>
 
 <div class="field" id="manual-items-wrapper" style="display:none;">
-    <label>Itens selecionados (ordem)</label>
+    <label>Selected items (order)</label>
     <div class="ui label" style="margin: 8px 0; display: block;">
         <i class="hand pointer icon"></i>
-        Selecione abaixo as publicações ativas do publicador escolhido. A ordem de inclusão será preservada
-        na renderização. Para remover um item, clique no &laquo;x&raquo; ao lado dele.
+        Search and select the active publications of the chosen publisher below. The insertion order is
+        preserved on render — drag the tags to reorder. To remove an item, click the &laquo;x&raquo; next to it.
     </div>
-    <select id="selected_items" name="selected_items" class="ui multiple search selection dropdown" multiple>
-    </select>
+    <!-- req-014: Ajax search autocomplete + reorderable tags (replaces the multiple dropdown) -->
+    <div class="ui fluid icon input search-autocomplete-wrapper" style="position: relative;">
+        <input type="text" id="manual_search_input" placeholder="Type to search publications..." autocomplete="off">
+        <i class="search icon"></i>
+
+        <!-- Floating suggestions list (Autocomplete Dropdown) -->
+        <div id="search-suggestions-dropdown" class="ui vertical menu" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000; max-height: 250px; overflow-y: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.15);">
+        </div>
+    </div>
+
+    <!-- Selected tags container (reorderable via Sortable.js) -->
+    <div id="selected-labels-container" class="ui segment sortable-labels-container" style="margin-top: 12px; min-height: 50px; padding: 10px; border: 1px dashed #ccc; border-radius: 4px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: #fafafa;">
+        <!-- Labels inserted dynamically by JS -->
+    </div>
 </div>
 
 <h4 class="ui dividing header">Modelo Visual de Destaque</h4>

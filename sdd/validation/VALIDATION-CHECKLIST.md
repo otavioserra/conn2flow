@@ -503,6 +503,57 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - Trocar de aba Editor HTML → Widget Code e voltar: não duplica CodeMirror; tema dark e altura 800px aplicados
   - Site público renderiza valores reais dos campos (titulo/url/data/customs) em vez de `[[item#X]]` literais
 
+## BATCH-014 - Refatoração de Curadoria Manual, Autocomplete Ajax e Reordenação Drag and Drop (req-014)
+
+- [x] **Item 1** — Remoção completa do componente antigo
+  - [x] Arquivo `gestor/assets/interface/jquery-custom-dropdown.js` deletado
+  - [x] Inclusões `gestor_pagina_javascript_incluir('biblioteca', [...'jquery-custom-dropdown'...])` removidas das 3 funções (`adicionar`/`editar`/`clonar`)
+  - [x] JS sem referências a `manualItemsDropdown`, `ensureManualItemsDropdown`, `PublisherHighlightsCustomDropdown` ou `#selected_items`
+- [x] **Item 2** — Dependência Sortable.js incluída
+  - [x] `gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>')` em `adicionar`/`editar`/`clonar`
+- [x] **Item 3** — Estrutura HTML do autocomplete nas 6 páginas
+  - [x] `<select id="selected_items">` substituído por `#manual_search_input` + `#search-suggestions-dropdown` + `#selected-labels-container`
+  - [x] pt-br com placeholders/avisos em português; en com placeholders/avisos em inglês
+- [x] **Item 4** — Lógica JS do autocomplete (`publisher-highlights.js`)
+  - [x] Hidratação inicial via `publisher-pages-fetch` respeitando a ordem de `schema.selected_items`
+  - [x] Busca incremental via `publisher-pages-search` com debounce de 300ms
+  - [x] Tags Fomantic UI (label teal) com handle de arraste (`grip vertical`) e botão remover (`remove-tag-btn`)
+  - [x] Itens já selecionados aparecem desabilitados nas sugestões
+  - [x] Fechamento do dropdown ao clicar fora ou pressionar `Esc`
+  - [x] Seleção/remoção/reordenação atualizam `schema.selected_items` e disparam `scheduleWidgetPreview(false)`
+- [x] **Item 5** — Integração Sortable.js
+  - [x] `new Sortable(#selected-labels-container, { handle: '.grip.vertical.icon', onEnd })` relê a ordem física do DOM
+- [x] **Item 6** — Serialização do formulário
+  - [x] Submit e widget-preview enviam `fields_schema` por cópia (`out`), com `selected_items` vazio para regra não-manual e preservando o estado em memória
+- [x] **Item 7** — CodeMirror da aba "Código do Widget" (`#hep-widget-code`)
+  - [x] Case `'hep-widget'` reintroduzido em `contentHighlightsTabHandler`
+  - [x] `updateWidgetCodeTab` com retry quando `CodeMirror` indisponível e dedup via `$textarea.next('.CodeMirror')`
+  - [x] Instância única read-only, tema `tomorrow-night-bright`, modo `htmlmixed`, `setSize('100%', 800)`
+  - [x] Envelopamento `<!-- widgets#publisher-highlights->render({"grupo_slug":"SLUG"}) < --> ... > -->` com slug de `gestor.moduloRegistroId` ou placeholder localizado
+- [x] **Item 8** — Restrição de versionamento respeitada (nenhum `git commit`/`git push`)
+
+### Evidência registrada em 2026-06-04
+
+- Validação executável (estática, sem ambiente Docker nesta rodada):
+  - `node --check gestor/modulos/publisher-highlights/publisher-highlights.js` → `JS_OK` (sem erros de sintaxe)
+  - `php -l gestor/modulos/publisher-highlights/publisher-highlights.php` → `No syntax errors detected`
+  - Grep em `gestor/` por `jquery-custom-dropdown` e `id="selected_items"` → nenhum resultado (remoção completa confirmada)
+  - Grep no JS por `manualItemsDropdown|PublisherHighlightsCustomDropdown|ensureManualItemsDropdown` → apenas o comentário de contexto remanescente; nenhuma chamada viva
+- Arquivos alterados:
+  - `gestor/modulos/publisher-highlights/publisher-highlights.php` (Sortable.js CDN no lugar do include antigo, 3 funções)
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js` (autocomplete + tags + Sortable + `updateWidgetCodeTab`)
+  - `gestor/modulos/publisher-highlights/resources/{pt-br,en}/pages/publisher-highlights-{adicionar,editar,clonar}/*.html` (6 páginas)
+- Arquivo removido:
+  - `gestor/assets/interface/jquery-custom-dropdown.js`
+- Decisão registrada: [DEC-021](../decisions/DECISION-LOG.md) (supera DEC-018/019/020)
+- Pendência: rodar `🗃️ Projects - Update => Core` para recompilar páginas/JS e validar manualmente no Docker:
+  - digitar no campo de busca lista sugestões (Network mostra `publisher-pages-search`); item já selecionado fica desabilitado
+  - clicar numa sugestão adiciona a tag ao final e atualiza o preview ao vivo
+  - arrastar tags (handle) reordena e o preview reflete a nova ordem; abrir o registro novamente preserva a ordem salva
+  - remover tag pelo "x" tira do preview o item correto
+  - `Esc`/clique fora fecham a lista de sugestões
+  - aba "Código do Widget" exibe o CodeMirror dark read-only (800px) com o wrapper `widgets#publisher-highlights->render(...)`, sem duplicar instância ao alternar abas
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`

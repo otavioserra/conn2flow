@@ -27,7 +27,9 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-011 | complete | Nova Aba de Código do Widget no Editor de Destaques (req-012) | VALIDATION-CHECKLIST.md#batch-011 | 3 itens: html das páginas adicionar/editar/clonar, inicialização do CodeMirror read-only e sincronização do slug no javascript |
 | BATCH-012 | ready-for-intake | Atualização e Alinhamento dos READMEs Globais da Raiz | Visual/Revisão | Revisão do README.md e README-PT-BR.md para documentar o motor de widgets envelopados, destaques curados, aba do widget e a doc 03-spec do SDD |
 | BATCH-013 | complete | Correção de Sincronização, CodeMirror e Renderização do Widget (req-013) | VALIDATION-CHECKLIST.md#batch-013 | Flag ignoreCallbacks no setValues/onAdd/onRemove, simplificar syncSelection e validação do scheduleWidgetPreview |
-| BATCH-014 | blocked | Brainstorm: Autenticação, 2FA, Social Login e Segurança (planejado) | - | Análise de melhorias do módulo perfil-usuario, 2FA, OAuth (Google/Meta), tokens JWT e estrutura de autenticação monolítica |
+| BATCH-014 | complete | Refatoração de Curadoria Manual, Autocomplete Ajax e Reordenação Drag and Drop (req-014) | VALIDATION-CHECKLIST.md#batch-014 | Substituição do custom dropdown por input autocomplete de busca Ajax, tags em labels do Fomantic UI com suporte a reordenação Sortable.js e correção do hep-widget-code CodeMirror |
+| BATCH-015 | ready-for-intake | Correções Residuais de Destaques e Inicialização do Módulo de Menus (req-015) | VALIDATION-CHECKLIST.md#batch-015 | Ajuste na simulação do editor count, alinhamento margem dropdown, visibilidade dinâmica do container de tags, grab cursor no label todo e clonagem inicial do módulo menus |
+| BATCH-016 | blocked | Brainstorm: Autenticação, 2FA, Social Login e Segurança (planejado) | - | Análise de melhorias do módulo perfil-usuario, 2FA, OAuth (Google/Meta), tokens JWT e estrutura de autenticação monolítica |
 | BATCH-DATA-001 | blocked | Batch-Data-001: Reestruturação e Otimização de Dados e Sincronização | VALIDATION-CHECKLIST.md#batch-data-001 | Projeto de Arquitetura concluído. AGUARDANDO AUTORIZAÇÃO PARA IMPLEMENTAÇÃO. |
 
 ## Regra operacional

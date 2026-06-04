@@ -43,8 +43,20 @@
         Selecione abaixo as publicações ativas do publicador escolhido. A ordem de inclusão será preservada
         na renderização. Para remover um item, clique no &laquo;x&raquo; ao lado dele.
     </div>
-    <select id="selected_items" name="selected_items" class="ui multiple search selection dropdown" multiple>
-    </select>
+    <!-- req-014: autocomplete de busca Ajax + tags reordenáveis (substitui o dropdown múltiplo) -->
+    <div class="ui fluid icon input search-autocomplete-wrapper" style="position: relative;">
+        <input type="text" id="manual_search_input" placeholder="Digite para buscar publicações..." autocomplete="off">
+        <i class="search icon"></i>
+
+        <!-- Lista flutuante de sugestões (Autocomplete Dropdown) -->
+        <div id="search-suggestions-dropdown" class="ui vertical menu" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000; max-height: 250px; overflow-y: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.15);">
+        </div>
+    </div>
+
+    <!-- Contêiner de tags selecionadas (reordenáveis via Sortable.js) -->
+    <div id="selected-labels-container" class="ui segment sortable-labels-container" style="margin-top: 12px; min-height: 50px; padding: 10px; border: 1px dashed #ccc; border-radius: 4px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: #fafafa;">
+        <!-- Labels inseridos dinamicamente por JS -->
+    </div>
 </div>
 
 <h4 class="ui dividing header">Modelo Visual de Destaque</h4>

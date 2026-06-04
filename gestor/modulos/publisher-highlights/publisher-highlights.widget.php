@@ -239,7 +239,7 @@ function publisher_highlights_widget_buscar_publicacoes($params){
 		$itens[$row['p.id']] = array_merge([
 			'page_id' => $row['p.id'],
 			'titulo'  => $row['p.nome'] ?? '',
-			'url'     => $row['p.caminho'] ?? '',
+			'url'     => $row['p.caminho'] ? $_GESTOR['url-raiz'].$row['p.caminho'] : '',
 			'data'    => $row['p.data_modificacao'] ? formato_data_hora_from_datetime_to_text($row['p.data_modificacao']) : '',
 		], $campos_publisher);
 	}
