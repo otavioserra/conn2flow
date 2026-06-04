@@ -30,10 +30,6 @@ $(document).ready(function () {
                 case 'hep-editor':
                     window.contentPageTabHandler();
                     break;
-                case 'hep-widget':
-                    // req-012 item 2: renderizar o código envelopado do widget na aba.
-                    updateWidgetCodeTab();
-                    break;
             }
         }
     }
@@ -637,43 +633,5 @@ $(document).ready(function () {
             },
             error: function () { $dimmer.removeClass('active'); }
         });
-    }
-
-    // ===== Widget Code Tab (req-012)
-
-    // Placeholder do slug quando o registro ainda não tem identificador (tela de inserção).
-    var widgetSlugPlaceholder = (gestor && gestor.language === 'en') ? '[highlight-slug]' : '[slug-do-destaque]';
-    var widgetCodeMirror = null;
-
-    function updateWidgetCodeTab() {
-        // Resiliência contra ordem de carregamento da lib CodeMirror.
-        if (typeof CodeMirror === 'undefined') {
-            setTimeout(updateWidgetCodeTab, 100);
-            return;
-        }
-
-        var $textarea = $('#hep-widget-code');
-        if ($textarea.length === 0) return;
-
-        // Instanciar uma única vez (read-only, line numbers, line wrapping).
-        if (!widgetCodeMirror) {
-            widgetCodeMirror = CodeMirror.fromTextArea($textarea.get(0), {
-                mode: 'text/html',
-                readOnly: true,
-                lineNumbers: true,
-                lineWrapping: true
-            });
-        }
-
-        var slug = (typeof gestor !== 'undefined' && gestor.moduloRegistroId) ? gestor.moduloRegistroId : widgetSlugPlaceholder;
-        var innerHtml = (typeof window.html_editor_get_html === 'function') ? window.html_editor_get_html() : '';
-
-        var wrappedCode =
-            '<!-- widgets#publisher-highlights->render({"grupo_slug": "' + slug + '"}) < -->\n' +
-            innerHtml + '\n' +
-            '<!-- widgets#publisher-highlights->render({"grupo_slug": "' + slug + '"}) > -->';
-
-        widgetCodeMirror.getDoc().setValue(wrappedCode);
-        widgetCodeMirror.refresh();
     }
 });

@@ -19,6 +19,10 @@
         // Fomantic UI reordena os <option> conforme o DOM ao adicionar/remover,
         // perdendo a ordem cronológica original. Mantemos aqui o estado correto.
         this.selectedIds = [];
+        // req-013 item 1: flag para suprimir callbacks durante mutações programáticas
+        // (change values / clear / set exactly em setValues). Esses comandos disparam
+        // onAdd/onRemove em cascata, corrompendo `selectedIds` e o preview.
+        this.ignoreCallbacks = false;
     }
 
     PublisherHighlightsCustomDropdown.prototype.refs = function () {
@@ -47,7 +51,11 @@
             // req-011 item 1: callbacks de adição/remoção para manter a ordem cronológica
             // dos cliques em `self.selectedIds`. A ordem do <select> reflete o DOM (estrutural)
             // e não a sequência de seleção do usuário.
+            // req-013 item 1: a flag `ignoreCallbacks` suprime as ações enquanto setValues
+            // está mutando o dropdown programaticamente — sem ela, change values/clear/set
+            // exactly disparam onAdd/onRemove em cascata e corrompem o estado.
             onAdd: function (addedValue) {
+                if (self.ignoreCallbacks) return;
                 if (!addedValue) return;
                 var idx = self.selectedIds.indexOf(addedValue);
                 if (idx !== -1) self.selectedIds.splice(idx, 1);
@@ -55,6 +63,7 @@
                 self.options.setSelectedIds(self.selectedIds.slice());
             },
             onRemove: function (removedValue) {
+                if (self.ignoreCallbacks) return;
                 if (!removedValue) return;
                 var idx = self.selectedIds.indexOf(removedValue);
                 if (idx !== -1) self.selectedIds.splice(idx, 1);
@@ -90,17 +99,13 @@
     };
 
     PublisherHighlightsCustomDropdown.prototype.syncSelection = function () {
-        // req-011 item 1: ao chamar este método (em mudanças no <select>), usamos a
-        // ordem cronológica mantida em `this.selectedIds`. O leitor cru `readSelection`
-        // só serve quando o array interno está vazio (estado inicial/migração).
-        var selectedIds;
-        if (this.selectedIds && this.selectedIds.length > 0) {
-            selectedIds = this.selectedIds.slice();
-        } else {
-            selectedIds = this.readSelection();
-            this.selectedIds = selectedIds.slice();
-        }
-
+        // req-013 item 2: confiar SEMPRE em `this.selectedIds` (mantido pelos callbacks
+        // onAdd/onRemove em ordem cronológica). O fallback antigo para `readSelection()`
+        // quando o array estava vazio reidratava itens removidos a partir do DOM cru,
+        // travando a pré-visualização ao desmarcar a última tag.
+        // A flag `ignoreCallbacks` impede propagação durante mutações programáticas.
+        if (this.ignoreCallbacks) return;
+        var selectedIds = (this.selectedIds || []).slice();
         this.options.setSelectedIds(selectedIds);
     };
 
@@ -147,17 +152,25 @@
         }
 
         this.applyMessages();
-        $dd.dropdown('change values', values || []);
-        $dd.dropdown('refresh');
-        $dd.dropdown('clear', true);
 
-        // req-011 item 1: sincronizar `this.selectedIds` antes de chamar `set exactly` —
-        // como `set exactly` dispara `onAdd` para cada item, o callback usa a ordem aqui
-        // recebida como referência e preserva a ordem cronológica original.
-        this.selectedIds = (selectedIds || []).slice();
+        // req-013 item 1: suprimir callbacks durante a sequência programática de mutações.
+        // change values / clear / set exactly disparam onAdd/onRemove em cascata; manter os
+        // callbacks ativos aqui causa loops que corrompem `selectedIds` e a pré-visualização.
+        this.ignoreCallbacks = true;
+        try {
+            $dd.dropdown('change values', values || []);
+            $dd.dropdown('refresh');
+            $dd.dropdown('clear', true);
 
-        if (selectedIds && selectedIds.length > 0) {
-            $dd.dropdown('set exactly', selectedIds, true);
+            // req-011 item 1: sincronizar `this.selectedIds` ANTES de set exactly — a ordem
+            // recebida no parâmetro é a ordem cronológica de referência que queremos preservar.
+            this.selectedIds = (selectedIds || []).slice();
+
+            if (selectedIds && selectedIds.length > 0) {
+                $dd.dropdown('set exactly', selectedIds, true);
+            }
+        } finally {
+            this.ignoreCallbacks = false;
         }
     };
 

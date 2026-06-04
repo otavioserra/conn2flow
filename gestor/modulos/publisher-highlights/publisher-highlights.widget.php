@@ -124,7 +124,10 @@ function publisher_highlights_widget_render_inline($params){
 	$itemsRendered = '';
 
 	foreach($publicacoes as $pub){
-		$itemRendered = preg_replace_callback('/@\[\[item#([a-zA-Z0-9_\-]+)\]\]@/', function($m) use ($pub, $variable_mapping){
+		// req-013 item 5: a partir do req-009/010 os placeholders ficam SEM arrobas no painel
+		// admin (`[[item#X]]`). O HTML salvo no banco também segue esse formato — a regex
+		// antiga com `@@` jamais casava e deixava as variáveis literais no renderizado final.
+		$itemRendered = preg_replace_callback('/\[\[item#([a-zA-Z0-9_\-]+)\]\]/', function($m) use ($pub, $variable_mapping){
 			$varName = $m[1];
 			$publisherField = isset($variable_mapping[$varName]) ? $variable_mapping[$varName] : $varName;
 			return isset($pub[$publisherField]) ? (string)$pub[$publisherField] : '';

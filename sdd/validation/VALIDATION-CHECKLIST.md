@@ -465,6 +465,44 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - na tela "Adicionar", slug aparece como `[slug-do-destaque]` / `[highlight-slug]` antes de salvar
   - editor é read-only (cursor visível mas teclas não modificam)
 
+## BATCH-013 - Correção de Sincronização, CodeMirror e Renderização do Widget (req-013)
+
+- [x] **Item 1** — Flag `ignoreCallbacks` previne loops em mutações programáticas
+  - [x] Construtor inicializa `this.ignoreCallbacks = false`
+  - [x] `setValues` envolve `change values` / `clear` / `set exactly` em `try/finally` setando a flag
+  - [x] `onAdd` e `onRemove` retornam imediatamente quando a flag está ativa
+- [x] **Item 2** — `syncSelection` simplificada
+  - [x] Retorna imediatamente se `ignoreCallbacks` ativa
+  - [x] Confia sempre em `this.selectedIds.slice()`; removida a reidratação por `readSelection()`
+- [x] **Item 3** — Acoplamento `setSelectedIds → scheduleWidgetPreview` validado
+  - [x] `schema.selected_items = (selectedIds || []).slice()` (cópia defensiva)
+  - [x] `scheduleWidgetPreview(false)` chamado sem condicional
+- [x] **Item 4** — CodeMirror do widget consistente e sem duplicação
+  - [x] Tema `tomorrow-night-bright`, modo `htmlmixed` com `htmlMode: true`
+  - [x] `lineNumbers`, `lineWrapping`, `styleActiveLine`, `matchBrackets`, `indentUnit: 4`, `readOnly: true`
+  - [x] `setSize('100%', 800)` aplicado após instanciação
+  - [x] Antes de instanciar, recupera referência existente em `$textarea.next('.CodeMirror')[0].CodeMirror`
+- [x] **Item 5** — Regex backend sem arrobas
+  - [x] `publisher-highlights.widget.php`: `preg_replace_callback('/\[\[item#X\]\]/', ...)`
+  - [x] `publisher-highlights.php` (`extract_item_variables`): `'/\[\[item#X\]\]/'`
+  - [x] `publisher-highlights.php` (`ajax_template_load`): `'/\[\[item#X\]\]/'`
+- [x] **Item 6** — Restrição de versionamento respeitada
+  - [x] Nenhum `git commit` ou `git push` executado
+
+### Evidência registrada em 2026-05-27
+
+- Arquivos alterados:
+  - `gestor/assets/interface/jquery-custom-dropdown.js` (ignoreCallbacks + try/finally + syncSelection simplificada)
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js` (slice defensivo em setSelectedIds + CodeMirror estilizado e dedup)
+  - `gestor/modulos/publisher-highlights/publisher-highlights.widget.php` (regex sem arrobas no loop de itens)
+  - `gestor/modulos/publisher-highlights/publisher-highlights.php` (regex sem arrobas em extract_item_variables e ajax_template_load)
+- Pendência: rodar `🗃️ Projects - Update => Core` para deploy JS+PHP atualizados; validar manualmente:
+  - Adicionar 2 itens manuais (Nota 2 → Nota 1): preview atualiza em cada clique mantendo ordem
+  - Remover tag clicando no "x": preview atualiza removendo o item correto
+  - Alternar template com itens selecionados: renderiza todos, não só o primeiro
+  - Trocar de aba Editor HTML → Widget Code e voltar: não duplica CodeMirror; tema dark e altura 800px aplicados
+  - Site público renderiza valores reais dos campos (titulo/url/data/customs) em vez de `[[item#X]]` literais
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`

@@ -28,7 +28,9 @@ function publisher_highlights_normalize_array($array) {
 function publisher_highlights_extract_item_variables($html){
 	if(empty($html) || !is_string($html)) return [];
 
-	$pattern = '/@\[\[item#([a-zA-Z0-9_\-]+)\]\]@/';
+	// req-013 item 5: placeholders salvos no banco já vêm sem arrobas (`[[item#X]]`).
+	// A regex precisa casar esse formato — senão a aba lateral de variáveis fica vazia.
+	$pattern = '/\[\[item#([a-zA-Z0-9_\-]+)\]\]/';
 	preg_match_all($pattern, $html, $matches);
 
 	if(empty($matches[1])) return [];
@@ -984,7 +986,8 @@ function publisher_highlights_ajax_template_load(){
 
 	$fields = [];
 	if($template['html']){
-		preg_match_all('/@\[\[item#([a-zA-Z0-9_\-]+)\]\]@/', $template['html'], $matches);
+		// req-013 item 5: placeholders sem arrobas — alinhar com publisher-highlights.widget.php.
+		preg_match_all('/\[\[item#([a-zA-Z0-9_\-]+)\]\]/', $template['html'], $matches);
 		if(isset($matches[1])){
 			$uniqueFields = [];
 			foreach($matches[1] as $name){
