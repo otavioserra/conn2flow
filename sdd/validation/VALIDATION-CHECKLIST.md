@@ -737,21 +737,40 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - arrastar item: a caixa de drop tem altura de item e mostra "Solte o item aqui" com setas ← →
   - preview/site com template `menus-dropdown` ou `menus-horizontal-navbar`: o submenu permanece aberto ao mover o mouse do item pai para a lista flutuante
 
-## BATCH-018 - Tipo de Item Publicador no Módulo de Menus (req-018)
+## BATCH-018 - Tipo Publicador, Correções no Menus e Módulo de Galerias (req-018)
 
-- [ ] Interface de formulário (adicionar/editar/clonar × pt-br/en):
+- [ ] Interface de formulário de Menus (adicionar/editar/clonar × pt-br/en):
   - [ ] Opção "Publicador" / "Publisher" adicionada ao dropdown `#menu_item_type`.
   - [ ] Exibição condicional de inputs: dropdown de publicadores (`add_item_publisher_id`), limite (`add_item_publisher_count`), e ordenação (`add_item_publisher_order_by`).
-- [ ] Árvore visual e persistência (menus.js):
+- [ ] Árvore visual e persistência de Menus (menus.js):
   - [ ] Salvar `publisher_id`, `count` e `order_by` no schema do nó `publicador`.
   - [ ] Renderizar nó visual contendo informação de limite/publicador na árvore.
   - [ ] Impedir ou avisar sobre aninhamento manual de sub-itens sob o item publicador.
   - [ ] Suporte a edição inline de todos os campos específicos no painel de configurações do nó.
-- [ ] Backend CRUD (menus.php):
+- [ ] Backend CRUD de Menus (menus.php):
   - [ ] Buscar publicadores ativos e substituir `#publisher_id_options#` nas 3 páginas.
-- [ ] Renderização dinâmica (menus.widget.php):
+- [ ] Renderização dinâmica de Menus (menus.widget.php):
   - [ ] Buscar publicações correspondentes ao publicador em runtime com limite e ordenação.
   - [ ] Injetar dinamicamente como sub-itens filhos de tipo `pagina` sob o nó `publicador` antes de renderizar recursivamente.
-- [ ] Simulação do HTML Editor:
+- [ ] Simulação do HTML Editor de Menus:
   - [ ] `html-editor-interface.js`: gerar e aninhar sub-itens simulados de tipo `pagina` sob os nós do tipo `publicador`.
   - [ ] Componente `html-editor-menus-simulation` atualizado em pt-br/en com exemplo de nó `publicador`.
+- [ ] Correções adicionais no Menus (req-018):
+  - [ ] Alteração de `template_id` atualiza CodeMirror mesmo quando o editor está focado.
+  - [ ] Alternador de `item_type` exibe/oculta corretamente os campos dinâmicos no JS (como rótulo/URL personalizados vs página).
+  - [ ] Variáveis `[[item#slug]]` e `[[item#css_classes]]` incluídas nos 12 templates padrões de menus.
+- [ ] Criação do Módulo de Galerias (req-018):
+  - [ ] Clonagem da estrutura de `publisher-highlights` com remoção total de colunas/lógica de `publisher_id`.
+  - [ ] Criar migração Phinx para a tabela `galleries` (id_galleries, name, fields_schema, html, css, status, language, versao, data_criacao, data_modificacao).
+  - [ ] Registrar o módulo `galleries` com ícone `images` no `gestor/db/data/ModulosData.json`.
+  - [ ] Botão "Selecionar Imagens do Servidor" abre o modal do gerenciador de arquivos (`admin-arquivos`).
+  - [ ] Listener de `postMessage` em `galleries.js` insere as imagens selecionadas sem fechar o modal.
+  - [ ] Cada imagem na curadoria exibe thumbnail, nome, input de legenda e botão de remover.
+  - [ ] Reordenação drag-and-drop funcional das imagens na curadoria usando Sortable.js (CDN).
+  - [ ] Serialização correta em `fields_schema.selected_items` contendo `id`, `caminho`, `imgSrc`, `nome` e `legenda`.
+  - [ ] CRUD backend (`galleries.php`) e widgets integrados com modal e campos descritos.
+  - [ ] Renderizador (`galleries.widget.php`) decodifica o JSON e renderiza sequencialmente os itens de imagem.
+  - [ ] Criar 4 templates padrões (`galleries-grid`, `galleries-carousel`, `galleries-masonry`, `galleries-slider`) em pt-br/en.
+  - [ ] Habilitar aba de simulação/variáveis para `galleries` no HTML Editor com componente mockado Picsum.
+- [ ] Ações pós-implementação:
+  - [ ] Executar `atualizacao-dados-recursos.php` para sincronizar e registrar os novos recursos.

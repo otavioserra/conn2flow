@@ -153,7 +153,7 @@ Ajustes e correções do módulo `menus` (req-017 / BATCH-017), sem mudança de 
 150: 
 151: ## DEC-026 - 2026-06-05 - accepted
 152: 
-153: Criação do Módulo de Galerias de Imagens (req-019 / BATCH-019). Decisões desta rodada:
+153: Criação do Módulo de Galerias de Imagens (req-018 / BATCH-018). Decisões desta rodada:
 154: 
 155: 1. **Estrutura Base**: O módulo `galleries` será clonado de `publisher-highlights` e inteiramente desacoplado de publishers (sem coluna `publisher_id`). A persistência usará a tabela `galleries` (Phinx migration) e o módulo será registrado em `ModulosData.json` com o ícone `"images"`.
 156: 2. **Seleção de Imagens em Lote**: Em vez de seleção única, o gerenciador de arquivos modal (`admin-arquivos`) enviará os dados de imagem via `postMessage`. O listener em `galleries.js` interceptará e adicionará o arquivo à lista de curadoria visual, mantendo o modal **aberto** para que o usuário selecione múltiplas imagens seguidas em lote. O modal deve ser fechado apenas manualmente pelo usuário.
