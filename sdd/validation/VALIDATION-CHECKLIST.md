@@ -797,3 +797,27 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - **Menus / publicador**: adicionar item "Publicador", escolher publicador/limite/ordenação; a árvore mostra `Publicador: <nome> (limite: N)`; não permite aninhar sob ele; preview/site geram os N sub-itens com as publicações reais; aba "Simular" mostra sub-itens mock.
   - **Menus / correções**: trocar `template_id` com a aba "Editor HTML" aberta atualiza o CodeMirror; alternar tipo mostra os campos certos; `[[item#slug]]`/`[[item#css_classes]]` saem no HTML final.
   - **Galleries**: menu "Galerias de Imagens" aparece; "Selecionar Imagens do Servidor" abre o gerenciador e permite escolher várias seguidas sem fechar; legenda editável; arrastar reordena; salvar/reabrir preserva a ordem; aba "Pré-Visualização" e o widget `widgets#galleries->render(...)` renderizam as imagens; aba "Simular" usa imagens Picsum.
+
+## BATCH-019 - Correções no Menus e Lógica do Módulo de Galerias (req-019)
+
+- [ ] Módulo de Menus (req-019):
+  - [ ] Margem superior de 1rem inserida no contêiner `#btn-add-item-wrapper` (nos 3 HTMLs pt-br/en).
+  - [ ] Campo de target `#custom-target` inserido nos formulários e controlado condicionalmente no tipo `link-custom`.
+  - [ ] Edição inline de target funcional no painel da árvore visual e persistência no schema JSON.
+  - [ ] Campo de rótulo disponível no tipo `separador` na interface e na edição inline.
+  - [ ] Suporte ao bloco `item-separator` no backend (`menus.widget.php`) e simulação em JS (`html-editor-interface.js`).
+  - [ ] Atributo `target="[[item#target]]"` e divisores visuais `item-separator` incluídos em todos os 12 templates.
+  - [ ] Spacing horizontal aumentado de `gap-6` para `gap-8` no template `menus-horizontal-navbar`.
+  - [ ] Hamburguer mobile alterado para clique via botão no HTML e manipulado por `menus.widget.js`.
+  - [ ] Links pais clicáveis e tags `<a>` presentes no template `menus-footer-colunas`.
+  - [ ] Hover do dropdown em múltiplos subníveis funcionando via fallback em JS no `menus.widget.js`.
+- [ ] Módulo de Galerias (req-019):
+  - [ ] Campos de controles (`show_arrows`, `show_dots`, `autoplay`, `autoplay_speed`, `loop`) inseridos nas 3 páginas HTML pt-br/en.
+  - [ ] Hidratação, persistência e serialização dos controles configurada em `galleries.js`.
+  - [ ] Resolução de imagem no widget público (`galleries.widget.php`) prioriza `caminho` original em vez de `imgSrc` miniatura.
+  - [ ] Atributos de dados `data-*` correspondentes às configurações de controle gerados no DOM do widget.
+  - [ ] Renderizador trata blocos condicionais de controles (`controls-arrows`, `controls-dots`, `dot-item` interno) no backend e na simulação.
+  - [ ] Marcação de setas, dots e dot-items incluída nos templates `galleries-carousel.html` e `galleries-slider.html`.
+  - [ ] JavaScript do widget (`galleries.widget.js`) gerencia a rolagem horizontal suave, navegação por setas, dot pagination e temporizador de autoplay.
+- [ ] Ações pós-implementação:
+  - [ ] Executar `atualizacao-dados-recursos.php` para sincronizar e registrar os novos templates, componentes de simulação e scripts.

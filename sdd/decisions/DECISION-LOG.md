@@ -159,3 +159,28 @@ Criação do Módulo de Galerias de Imagens (req-018 / BATCH-018). Decisões des
 2. **Seleção de Imagens em Lote**: Em vez de seleção única, o gerenciador de arquivos modal (`admin-arquivos`) enviará os dados de imagem via `postMessage`. O listener em `galleries.js` interceptará e adicionará o arquivo à lista de curadoria visual, mantendo o modal **aberto** para que o usuário selecione múltiplas imagens seguidas em lote. O modal deve ser fechado apenas manualmente pelo usuário.
 3. **Campos por Imagem**: Cada imagem na lista de curadoria exibirá seu thumbnail, nome do arquivo, um campo editável para **Legenda** (`legenda`) e um botão de exclusão. A ordenação será feita por drag-and-drop usando Sortable.js. O JSON serializado em `fields_schema` conterá os metadados (`id`, `caminho`, `imgSrc`, `nome`, `legenda`).
 4. **Widget Renderizador**: O widget `galleries.widget.php` lerá os metadados do banco e renderizará as imagens sequencialmente substituindo `[[item#img-src]]`, `[[item#caminho]]`, `[[item#nome]]` e `[[item#legenda]]`. templates de visualização (grid, carousel, masonry, slider) serão providos em `resources/templates/`. Simulação e aba de variáveis estarão integradas no editor HTML.
+
+## DEC-027 - 2026-06-05 - accepted
+
+Contrato de Target em Link-Custom e Variável `[[item#target]]` (req-019 / BATCH-019). Decisões desta rodada:
+1. **Atributo Target**: Adicionar campo de seleção `target` (`_self` ou `_blank`) no formulário e no painel de edição do tipo `link-custom` em `menus.js`.
+2. **Variável de Template**: Expor a variável `[[item#target]]` no renderizador (`menus.widget.php`) e simulação, permitindo que os templates de menu definam `target="[[item#target]]"` nas tags de link `<a>`.
+
+## DEC-028 - 2026-06-05 - accepted
+
+Introdução do Bloco `item-separator` em Templates de Menus (req-019 / BATCH-019). Decisões desta rodada:
+1. **Delimitador de Separador**: Criar suporte para o bloco de template `<!-- item-separator < --> ... <!-- item-separator > -->` no renderizador `menus.widget.php`.
+2. **Textos em Separadores**: Permitir que separadores opcionalmente possuam rótulo (`label`) configurado, renderizando-os como divisores visuais estilizados contendo texto ou apenas linhas físicas.
+
+## DEC-029 - 2026-06-05 - accepted
+
+Controles de Galeria e Resolução de Imagem (req-019 / BATCH-019). Decisões desta rodada:
+1. **Resolução de Imagem Pública**: No widget público (`galleries.widget.php`), priorizar o campo `caminho` (caminho original) para renderização da imagem, utilizando `imgSrc` apenas no painel administrativo para carregamento rápido das miniaturas.
+2. **Campos de Controle**: Adicionar no schema e no formulário de galerias opções de exibir setas (`show_arrows`), exibir pontinhos (`show_dots`), autoplay (`autoplay`), autoplay speed (`autoplay_speed`) e loop (`loop`).
+3. **Template de Controles**: Suportar os blocos `controls-arrows`, `controls-dots` e `dot-item` (este último repetido para cada imagem no widget) para emitir opcionalmente a marcação dos controles conforme a configuração selecionada.
+
+## DEC-030 - 2026-06-05 - accepted
+
+Comportamento Dinâmico em JS Público de Widgets (req-019 / BATCH-019). Decisões desta rodada:
+1. **Arquitetura de JS de Widget**: Adicionar suporte a interatividade pública de widgets incluindo scripts dinâmicos de comportamento em tempo de renderização (`menus.widget.js` e `galleries.widget.js`).
+2. **Lógica de Slider e Dropdown**: Os scripts tratarão a abertura de submenus no dropdown por eventos de hover do JS, o toggle do menu mobile hambúrguer e a movimentação suave e controle (setas/dots/autoplay) do carrossel/slider de galerias via jQuery/CSS, garantindo retrocompatibilidade caso recursos específicos do Tailwind CSS v3 falhem no site final.
