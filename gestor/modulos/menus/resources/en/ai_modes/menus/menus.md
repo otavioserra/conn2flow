@@ -26,7 +26,31 @@ PLACEHOLDER FORMATTING RULE:
 AVAILABLE MENU ITEM VARIABLES:
 - `[[item#label]]` — page label/name (link text)
 - `[[item#url]]` — page address (use in the link `href` attribute)
+- `[[item#target]]` — link target (`_self` or `_blank`); use in the link `target` attribute: `target="[[item#target]]"`
 - `[[item#slug]]` — page textual identifier (optional)
+- `[[item#css_classes]]` — extra CSS classes of the item (append to the link/element classes)
+- `[[item#children]]` — recursive render of the sub-items (submenu); use ONLY inside the `item-parent` block
+
+NESTED SUBMENUS (item with children):
+For items that have a submenu, besides the `item` (leaf) block also define the `item-parent` block. Inside it, the `[[item#children]]` placeholder receives the recursive render of the children:
+
+```
+<!-- item-parent < -->
+<li>
+    <a href="[[item#url]]" target="[[item#target]]" class="[[item#css_classes]]">[[item#label]]</a>
+    <ul>[[item#children]]</ul>
+</li>
+<!-- item-parent > -->
+```
+
+MENU DIVIDER/SEPARATOR (optional):
+To render a visual divider between items, define the `item-separator` block. It can optionally show a label via `[[item#label]]` (which may be empty — in that case render only the physical line):
+
+```
+<!-- item-separator < -->
+<li><span>[[item#label]]</span><hr></li>
+<!-- item-separator > -->
+```
 
 You may create placeholder text beyond these markers as instructed by the user, but if a more direct output is requested, keep only the placeholders. Return the HTML code using markdown ```html ``` and, if extra CSS is needed, return it using markdown ```css ```.
 

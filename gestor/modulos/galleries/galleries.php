@@ -48,10 +48,17 @@ function galleries_extract_item_variables($html){
  */
 function galleries_variaveis_template(){
 	return Array(
+		// Variáveis de cada imagem (resolvidas dentro do bloco `item`).
 		Array('id' => 'img-src'),
 		Array('id' => 'caminho'),
 		Array('id' => 'nome'),
 		Array('id' => 'legenda'),
+		// req-019 / DEC-031: variáveis GLOBAIS de controle (placeholder [[var]] sem o prefixo item#).
+		Array('id' => 'show_arrows', 'global' => true),
+		Array('id' => 'show_dots', 'global' => true),
+		Array('id' => 'autoplay', 'global' => true),
+		Array('id' => 'autoplay_speed', 'global' => true),
+		Array('id' => 'loop', 'global' => true),
 	);
 }
 

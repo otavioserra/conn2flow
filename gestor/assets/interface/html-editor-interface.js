@@ -1524,16 +1524,19 @@ $(document).ready(function () {
     // html-editor-menus-simulation) substituindo [[item#label|url|slug|css_classes]] e injetando
     // a recursão dos filhos em [[item#children]], e por fim monta o HTML base.
 
+    // req-019: inclui link-custom com target `_blank` e separadores com/sem rótulo.
     var MENUS_SIM_FALLBACK = [
-        { type: 'pagina', label: 'Início', url: '/', page_id: 'inicio', children: [] },
+        { type: 'pagina', label: 'Início', url: '/', target: '_self', page_id: 'inicio', children: [] },
         {
             type: 'cabecalho', label: 'Institucional', url: '#', children: [
-                { type: 'pagina', label: 'Sobre Nós', url: '/sobre/', page_id: 'sobre', children: [] },
-                { type: 'link-custom', label: 'Portal do Parceiro', url: 'https://parceiros.exemplo.com', children: [] }
+                { type: 'pagina', label: 'Sobre Nós', url: '/sobre/', target: '_self', page_id: 'sobre', children: [] },
+                { type: 'link-custom', label: 'Portal do Parceiro', url: 'https://parceiros.exemplo.com', target: '_blank', children: [] }
             ]
         },
-        { type: 'separador', children: [] },
+        { type: 'separador', label: 'Mais opções', children: [] },
         { type: 'publicador', label: 'Últimas Notícias', url: '#', publisher_id: 'noticias', publisher_name: 'Notícias', count: 4, order_by: 'date_desc', children: [] },
+        { type: 'separador', children: [] },
+        { type: 'link-custom', label: 'Loja Online', url: 'https://loja.exemplo.com', target: '_blank', children: [] },
         { type: 'link-action', label: 'Contato Rápido', url: '#', css_classes: 'abrir-modal js-contato', children: [] }
     ];
 
@@ -1549,9 +1552,12 @@ $(document).ready(function () {
     }
 
     function menusExtrairBlocos(htmlTemplate) {
-        var blocos = { item: null, item_parent: null, no_item: null };
+        var blocos = { item: null, item_parent: null, item_separator: null, no_item: null };
         var mP = htmlTemplate.match(/<!--\s*item-parent\s*<\s*-->([\s\S]*?)<!--\s*item-parent\s*>\s*-->/i);
         if (mP) blocos.item_parent = mP[1];
+        // req-019: bloco dedicado do separador.
+        var mS = htmlTemplate.match(/<!--\s*item-separator\s*<\s*-->([\s\S]*?)<!--\s*item-separator\s*>\s*-->/i);
+        if (mS) blocos.item_separator = mS[1];
         var mI = htmlTemplate.match(/<!--\s*item\s*<\s*-->([\s\S]*?)<!--\s*item\s*>\s*-->/i);
         if (mI) blocos.item = mI[1];
         var mN = htmlTemplate.match(/<!--\s*no-item\s*<\s*-->([\s\S]*?)<!--\s*no-item\s*>\s*-->/i);
@@ -1564,14 +1570,17 @@ $(document).ready(function () {
         var label = item.label || '';
         var url = item.url || '';
         var css = item.css_classes || '';
+        // req-019: alvo do link (`_self` por padrão; vazio em separadores).
+        var target = item.target || '';
         var slug = '';
         switch (type) {
-            case 'pagina': slug = item.page_id || ''; break;
-            case 'separador': label = ''; url = ''; break;
+            case 'pagina': slug = item.page_id || ''; if (target === '') target = '_self'; break;
+            case 'separador': url = ''; target = ''; break; // mantém o rótulo opcional
             case 'cabecalho':
-            case 'publicador': url = (url !== '') ? url : '#'; break;
+            case 'publicador': url = (url !== '') ? url : '#'; if (target === '') target = '_self'; break;
+            default: if (target === '') target = '_self';
         }
-        return { label: label, url: url, slug: slug, css_classes: css };
+        return { label: label, url: url, target: target, slug: slug, css_classes: css };
     }
 
     function menusAplicarVars(bloco, vars) {
@@ -1592,6 +1601,16 @@ $(document).ready(function () {
             var children = Array.isArray(item.children) ? item.children : [];
             var temFilhos = children.length > 0;
             var vars = menusResolverItemVars(item);
+            // req-019: separador usa o bloco dedicado item-separator (ou item "vazio" no fallback).
+            var type = item.type || 'pagina';
+            if (type === 'separador') {
+                if (blocos.item_separator !== null) {
+                    out += menusAplicarVars(blocos.item_separator, vars);
+                } else if (blocos.item !== null) {
+                    out += menusAplicarVars(blocos.item, { label: '', url: '', slug: '', css_classes: vars.css_classes, target: '' });
+                }
+                return;
+            }
             if (temFilhos && blocos.item_parent !== null) {
                 var childrenHtml = menusRenderLevel(children, blocos);
                 var bloco = menusInjetarChildren(blocos.item_parent, childrenHtml);
@@ -1607,10 +1626,12 @@ $(document).ready(function () {
     function menusMontarBase(htmlTemplate, itensRendered) {
         var padraoItem = /<!--\s*item\s*<\s*-->[\s\S]*?<!--\s*item\s*>\s*-->/i;
         var padraoItemParent = /<!--\s*item-parent\s*<\s*-->[\s\S]*?<!--\s*item-parent\s*>\s*-->/i;
+        var padraoItemSeparator = /<!--\s*item-separator\s*<\s*-->[\s\S]*?<!--\s*item-separator\s*>\s*-->/i;
         var padraoNoItem = /<!--\s*no-item\s*<\s*-->([\s\S]*?)<!--\s*no-item\s*>\s*-->/i;
         var out = htmlTemplate;
         if (itensRendered === '') {
             out = out.replace(padraoItemParent, '');
+            out = out.replace(padraoItemSeparator, '');
             out = out.replace(padraoItem, '');
             var mN = out.match(padraoNoItem);
             if (mN) out = out.replace(padraoNoItem, function () { return mN[1]; });
@@ -1622,6 +1643,8 @@ $(document).ready(function () {
         } else {
             out = out.replace(padraoItemParent, function () { return itensRendered; });
         }
+        // req-019: o bloco-modelo do separador é apenas um template — removê-lo da base.
+        out = out.replace(padraoItemSeparator, '');
         out = out.replace(padraoNoItem, '');
         return out;
     }
@@ -1724,13 +1747,84 @@ $(document).ready(function () {
         return out;
     }
 
+    // req-019: lê os controles de exibição do formulário (defaults seguros se ausentes).
+    function galleriesGetControls() {
+        function chk(id, def) {
+            var $el = $('#' + id);
+            if ($el.length === 0) return def;
+            return $el.is(':checked');
+        }
+        var speed = parseInt($('#gallery-autoplay-speed').val(), 10);
+        return {
+            show_arrows: chk('gallery-show-arrows', true),
+            show_dots: chk('gallery-show-dots', true),
+            autoplay: chk('gallery-autoplay', false),
+            autoplay_speed: (speed >= 500) ? speed : 3000,
+            loop: chk('gallery-loop', true)
+        };
+    }
+
+    // req-019: repete o bloco dot-item `count` vezes (índice + classe ativa no índice 0).
+    function galleriesRenderDots(inner, count) {
+        var padraoDotItem = /<!--\s*dot-item\s*<\s*-->([\s\S]*?)<!--\s*dot-item\s*>\s*-->/i;
+        var m = inner.match(padraoDotItem);
+        if (!m) return inner;
+        var tpl = m[1];
+        var dots = '';
+        for (var i = 0; i < count; i++) {
+            var active = (i === 0) ? 'gallery-dot-active' : '';
+            var d = tpl.split('@[[dot#index]]@').join(String(i)).split('[[dot#index]]').join(String(i));
+            d = d.split('@[[dot#active-class]]@').join(active).split('[[dot#active-class]]').join(active);
+            dots += d;
+        }
+        return inner.replace(padraoDotItem, function () { return dots; });
+    }
+
+    // req-019: processa os blocos de controle (setas/pontinhos) espelhando galleries.widget.php.
+    function galleriesProcessarControles(html, showArrows, showDots, count) {
+        var padraoArrows = /<!--\s*controls-arrows\s*<\s*-->([\s\S]*?)<!--\s*controls-arrows\s*>\s*-->/i;
+        if (showArrows) html = html.replace(padraoArrows, function (m, inner) { return inner; });
+        else html = html.replace(padraoArrows, '');
+
+        var padraoDots = /<!--\s*controls-dots\s*<\s*-->([\s\S]*?)<!--\s*controls-dots\s*>\s*-->/i;
+        if (showDots) html = html.replace(padraoDots, function (m, inner) { return galleriesRenderDots(inner, count); });
+        else html = html.replace(padraoDots, '');
+
+        return html;
+    }
+
+    // req-019 / DEC-031: resolve as variáveis globais de controle no HTML final (com/sem arrobas).
+    function galleriesResolverGlobais(html, controls) {
+        var map = {
+            show_arrows: controls.show_arrows ? 'true' : 'false',
+            show_dots: controls.show_dots ? 'true' : 'false',
+            autoplay: controls.autoplay ? 'true' : 'false',
+            autoplay_speed: String(controls.autoplay_speed),
+            loop: controls.loop ? 'true' : 'false'
+        };
+        return html.replace(/@?\[\[([a-zA-Z0-9_\-]+)\]\]@?/g, function (m, name) {
+            return Object.prototype.hasOwnProperty.call(map, name) ? map[name] : m;
+        });
+    }
+
     function galleriesSimularPreview(html) {
         var blocos = galleriesExtrairBlocos(html);
-        if (blocos.item === null) return html;
+        var controls = galleriesGetControls();
         var lista = galleriesGetSimulationList();
+
+        if (blocos.item === null) {
+            // Sem bloco item: ainda processa controles/globais para refletir os data-* e setas/dots.
+            var base0 = galleriesProcessarControles(galleriesMontarBase(html, ''), false, false, 0);
+            return galleriesResolverGlobais(base0, controls);
+        }
+
         var itensRendered = '';
         lista.forEach(function (item) { if (item && typeof item === 'object') itensRendered += galleriesAplicarVars(blocos.item, item); });
-        return galleriesMontarBase(html, itensRendered);
+
+        var out = galleriesMontarBase(html, itensRendered);
+        out = galleriesProcessarControles(out, controls.show_arrows, controls.show_dots, lista.length);
+        out = galleriesResolverGlobais(out, controls);
+        return out;
     }
 
     function publisherVariablesOrSimulation(html = '') {

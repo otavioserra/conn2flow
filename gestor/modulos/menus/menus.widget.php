@@ -162,6 +162,19 @@ function menus_render_level($itens, $templates, $paginasMap){
 		$temFilhos = !empty($children);
 		$vars = menus_widget_resolver_item_vars($item, $paginasMap);
 
+		// req-019: separador com bloco dedicado item-separator (divisor visual com rótulo opcional).
+		$type = isset($item['type']) ? (string)$item['type'] : 'pagina';
+		if($type === 'separador'){
+			if($templates['item_separator'] !== null){
+				$out .= menus_widget_aplicar_vars($templates['item_separator'], $vars);
+			} else if($templates['item'] !== null){
+				// Fallback anterior: sem bloco item-separator, renderiza um item "vazio" (sem rótulo/url).
+				$varsVazias = ['label' => '', 'url' => '', 'slug' => '', 'css_classes' => $vars['css_classes'], 'target' => ''];
+				$out .= menus_widget_aplicar_vars($templates['item'], $varsVazias);
+			}
+			continue;
+		}
+
 		if($temFilhos && $templates['item_parent'] !== null){
 			$childrenHtml = menus_render_level($children, $templates, $paginasMap);
 
@@ -205,6 +218,8 @@ function menus_widget_resolver_item_vars($item, $paginasMap){
 	$label = isset($item['label']) ? (string)$item['label'] : '';
 	$url   = isset($item['url']) ? (string)$item['url'] : '';
 	$css   = isset($item['css_classes']) ? (string)$item['css_classes'] : '';
+	// req-019: alvo do link (`_self`/`_blank`). Default `_self` para páginas/links; vazio em separadores.
+	$target = isset($item['target']) ? (string)$item['target'] : '';
 	$slug  = '';
 
 	switch($type){
@@ -214,11 +229,13 @@ function menus_widget_resolver_item_vars($item, $paginasMap){
 				$url = $paginasMap[$slug]['url'];                 // link canônico sempre atualizado
 				if($label === '') $label = $paginasMap[$slug]['label'];
 			}
+			if($target === '') $target = '_self';
 			break;
 
 		case 'separador':
-			$label = '';
+			// req-019: o separador mantém o rótulo opcional (renderizado no bloco item-separator).
 			$url = '';
+			$target = '';
 			break;
 
 		case 'cabecalho':
@@ -226,14 +243,18 @@ function menus_widget_resolver_item_vars($item, $paginasMap){
 			// O publicador agrupa as publicações injetadas (req-018): comporta-se como um
 			// cabeçalho com filhos. Mantém o rótulo do schema e cai para '#' quando sem URL.
 			$url = ($url !== '') ? $url : '#';
+			if($target === '') $target = '_self';
 			break;
 
-		// 'link-custom' e 'link-action' usam label/url/css_classes do schema diretamente.
+		default:
+			// 'link-custom' e 'link-action' usam label/url/css_classes do schema diretamente.
+			if($target === '') $target = '_self';
 	}
 
 	return [
 		'label'       => $label,
 		'url'         => $url,
+		'target'      => $target,
 		'slug'        => $slug,
 		'css_classes' => $css,
 	];
@@ -265,10 +286,14 @@ function menus_widget_injetar_children($bloco, $childrenHtml){
  * Retorna null para o bloco ausente.
  */
 function menus_widget_extrair_blocos($html_template){
-	$blocos = ['item' => null, 'item_parent' => null, 'no_item' => null];
+	$blocos = ['item' => null, 'item_parent' => null, 'item_separator' => null, 'no_item' => null];
 
 	if(preg_match('/<!--\s*item-parent\s*<\s*-->([\s\S]*?)<!--\s*item-parent\s*>\s*-->/i', $html_template, $m)){
 		$blocos['item_parent'] = $m[1];
+	}
+	// req-019: bloco dedicado do separador (divisor físico, com rótulo opcional via [[item#label]]).
+	if(preg_match('/<!--\s*item-separator\s*<\s*-->([\s\S]*?)<!--\s*item-separator\s*>\s*-->/i', $html_template, $m)){
+		$blocos['item_separator'] = $m[1];
 	}
 	if(preg_match('/<!--\s*item\s*<\s*-->([\s\S]*?)<!--\s*item\s*>\s*-->/i', $html_template, $m)){
 		$blocos['item'] = $m[1];
@@ -288,14 +313,16 @@ function menus_widget_extrair_blocos($html_template){
  * - Sem itens: os modelos `item`/`item-parent` são removidos e o conteúdo do `no-item` é exposto.
  */
 function menus_widget_montar_base($html_template, $itensRendered){
-	$padraoItem       = '/<!--\s*item\s*<\s*-->[\s\S]*?<!--\s*item\s*>\s*-->/i';
-	$padraoItemParent = '/<!--\s*item-parent\s*<\s*-->[\s\S]*?<!--\s*item-parent\s*>\s*-->/i';
-	$padraoNoItem     = '/<!--\s*no-item\s*<\s*-->([\s\S]*?)<!--\s*no-item\s*>\s*-->/i';
+	$padraoItem          = '/<!--\s*item\s*<\s*-->[\s\S]*?<!--\s*item\s*>\s*-->/i';
+	$padraoItemParent    = '/<!--\s*item-parent\s*<\s*-->[\s\S]*?<!--\s*item-parent\s*>\s*-->/i';
+	$padraoItemSeparator = '/<!--\s*item-separator\s*<\s*-->[\s\S]*?<!--\s*item-separator\s*>\s*-->/i';
+	$padraoNoItem        = '/<!--\s*no-item\s*<\s*-->([\s\S]*?)<!--\s*no-item\s*>\s*-->/i';
 
 	$out = $html_template;
 
 	if($itensRendered === ''){
 		$out = preg_replace($padraoItemParent, '', $out, 1);
+		$out = preg_replace($padraoItemSeparator, '', $out, 1);
 		$out = preg_replace($padraoItem, '', $out, 1);
 		if(preg_match($padraoNoItem, $out, $m)){
 			$out = menus_widget_preg_replace_literal($padraoNoItem, $m[1], $out, 1);
@@ -310,6 +337,8 @@ function menus_widget_montar_base($html_template, $itensRendered){
 		$out = menus_widget_preg_replace_literal($padraoItemParent, $itensRendered, $out, 1);
 	}
 
+	// req-019: o bloco-modelo do separador é apenas um template — removê-lo da base.
+	$out = preg_replace($padraoItemSeparator, '', $out, 1);
 	$out = preg_replace($padraoNoItem, '', $out, 1);
 
 	return $out;
@@ -353,6 +382,8 @@ function menus_widget_normalizar_itens($selected_items){
 			'css_classes' => isset($item['css_classes']) ? $item['css_classes'] : '',
 		];
 		if(isset($item['page_id'])) $node['page_id'] = $item['page_id'];
+		// req-019: preservar o alvo do link (`_self`/`_blank`), usado especialmente em link-custom.
+		if(isset($item['target'])) $node['target'] = $item['target'];
 
 		// req-018: preservar a parametrização do tipo `publicador` para a expansão runtime.
 		if(($node['type'] === 'publicador')){

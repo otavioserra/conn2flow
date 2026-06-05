@@ -54,6 +54,7 @@ function menus_variaveis_template(){
 	return Array(
 		Array('id' => 'label'),
 		Array('id' => 'url'),
+		Array('id' => 'target'),
 		Array('id' => 'slug'),
 		Array('id' => 'css_classes'),
 		Array('id' => 'children'),

@@ -135,6 +135,12 @@ $(document).ready(function () {
     renderItems();
     initSortable();
 
+    // req-019: hidratar os controles de exibição e ativar os checkboxes Fomantic + listeners.
+    hydrateGalleryControls();
+    $('.ui.checkbox').checkbox();
+    $(document).on('change', '#gallery-show-arrows, #gallery-show-dots, #gallery-autoplay, #gallery-loop', function () { serializeAndPreview(); });
+    $(document).on('input change', '#gallery-autoplay-speed', function () { serializeAndPreview(); });
+
     // Hook global usado pelo html-editor-interface.js ao detectar mudança no CodeMirror HTML.
     window.updatedCodeMirrorHtml = function () { scheduleWidgetPreview(false); };
 
@@ -368,7 +374,29 @@ $(document).ready(function () {
         var out = $.extend(true, {}, schema);
         out.selected_items = items.slice();
         out.template_id = $('#template_id').val() || schema.template_id || '';
+        // req-019: controles de exibição do carrossel/slider.
+        out.show_arrows = $('#gallery-show-arrows').is(':checked');
+        out.show_dots = $('#gallery-show-dots').is(':checked');
+        out.autoplay = $('#gallery-autoplay').is(':checked');
+        var speed = parseInt($('#gallery-autoplay-speed').val(), 10);
+        out.autoplay_speed = (speed >= 500) ? speed : 3000;
+        out.loop = $('#gallery-loop').is(':checked');
         return out;
+    }
+
+    // req-019: hidrata os controles de exibição a partir do schema (com defaults seguros).
+    function galleryBoolOr(v, def) {
+        if (v === undefined || v === null) return def;
+        return (v === true || v === 'true' || v === 1 || v === '1');
+    }
+
+    function hydrateGalleryControls() {
+        $('#gallery-show-arrows').prop('checked', galleryBoolOr(schema.show_arrows, true));
+        $('#gallery-show-dots').prop('checked', galleryBoolOr(schema.show_dots, true));
+        $('#gallery-autoplay').prop('checked', galleryBoolOr(schema.autoplay, false));
+        var sp = parseInt(schema.autoplay_speed, 10);
+        $('#gallery-autoplay-speed').val((sp >= 500) ? sp : 3000);
+        $('#gallery-loop').prop('checked', galleryBoolOr(schema.loop, true));
     }
 
     function scheduleWidgetPreview(immediate, force) {

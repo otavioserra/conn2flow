@@ -353,6 +353,8 @@ $(document).ready(function () {
                 type: n.type || 'pagina',
                 label: n.label || '',
                 url: n.url || '',
+                // req-019: alvo do link (`_self`/`_blank`), relevante para o tipo `link-custom`.
+                target: n.target || '',
                 page_id: n.page_id || '',
                 css_classes: n.css_classes || '',
                 // req-018: campos do tipo `publicador` (gerador dinâmico de sub-itens).
@@ -380,6 +382,8 @@ $(document).ready(function () {
                 children: []
             };
             if (it.type === 'pagina') node.page_id = it.page_id || '';
+            // req-019: o alvo é persistido para link-custom (os demais usam o padrão do widget).
+            if (it.type === 'link-custom') node.target = it.target || '_self';
             if (it.type === 'publicador') {
                 node.publisher_id = it.publisher_id || '';
                 node.publisher_name = it.publisher_name || '';
@@ -512,7 +516,9 @@ $(document).ready(function () {
         $row.append('<i class="' + typeIcon(it.type) + ' icon"></i>');
 
         if (it.type === 'separador') {
-            $row.append($('<span class="menu-tree-label sep"></span>').text('— ' + typeName(it.type) + ' —'));
+            // req-019: exibe o rótulo do separador quando houver; senão, o marcador genérico.
+            var sepText = it.label ? it.label : ('— ' + typeName(it.type) + ' —');
+            $row.append($('<span class="menu-tree-label sep"></span>').text(sepText));
         } else if (it.type === 'publicador') {
             // req-018: barra do nó publicador indica o publicador e o limite de filhos dinâmicos.
             var pubName = it.publisher_name || it.publisher_id || (isPtBr() ? '(sem publicador)' : '(no publisher)');
@@ -527,9 +533,8 @@ $(document).ready(function () {
 
         $row.append($('<span class="ui mini label menu-tree-type"></span>').text(typeName(it.type)));
 
-        if (it.type !== 'separador') {
-            $row.append('<i class="edit icon menu-tree-edit" title="' + (isPtBr() ? 'Editar' : 'Edit') + '"></i>');
-        }
+        // req-019: o separador também é editável (para definir o rótulo opcional).
+        $row.append('<i class="edit icon menu-tree-edit" title="' + (isPtBr() ? 'Editar' : 'Edit') + '"></i>');
         $row.append('<i class="trash alternate icon menu-tree-delete" title="' + (isPtBr() ? 'Remover' : 'Remove') + '"></i>');
 
         return $row;
@@ -559,6 +564,7 @@ $(document).ready(function () {
             type: data.type || 'pagina',
             label: data.label || '',
             url: data.url || '',
+            target: data.target || '',
             page_id: data.page_id || '',
             css_classes: data.css_classes || '',
             publisher_id: data.publisher_id || '',
@@ -594,8 +600,11 @@ $(document).ready(function () {
         var type = typeArg || currentItemType();
         $('#page-type-filter-wrapper').toggle(type === 'pagina');
         $('#manual-search-wrapper').toggle(type === 'pagina');
-        $('#field-custom-label').toggle(type === 'link-custom' || type === 'cabecalho' || type === 'link-action');
+        // req-019: o rótulo também fica disponível no separador (título/divisor textual opcional).
+        $('#field-custom-label').toggle(type === 'link-custom' || type === 'cabecalho' || type === 'link-action' || type === 'separador');
         $('#field-custom-url').toggle(type === 'link-custom' || type === 'link-action');
+        // req-019: alvo do link (`_self`/`_blank`) somente para o tipo link-custom.
+        $('#field-custom-target').toggle(type === 'link-custom');
         $('#field-custom-css').toggle(type === 'link-action');
         // req-018: campos do tipo `publicador` (publicador / limite / ordenação).
         $('#field-publisher-wrapper').toggle(type === 'publicador');
@@ -612,13 +621,16 @@ $(document).ready(function () {
         var css = ($('#custom-css').val() || '').trim();
 
         if (type === 'separador') {
-            addItem({ type: 'separador' });
+            // req-019: rótulo opcional (separador pode ser um título/divisor textual).
+            addItem({ type: 'separador', label: label });
         } else if (type === 'cabecalho') {
             if (!label) { msg_erro_mostrar(isPtBr() ? 'Informe o rótulo do cabeçalho.' : 'Enter the header label.'); return; }
             addItem({ type: 'cabecalho', label: label, url: '#' });
         } else if (type === 'link-custom') {
             if (!label || !url) { msg_erro_mostrar(isPtBr() ? 'Informe rótulo e URL.' : 'Enter label and URL.'); return; }
-            addItem({ type: 'link-custom', label: label, url: url });
+            // req-019: alvo do link (_self por padrão).
+            var target = $('#custom-target').val() || '_self';
+            addItem({ type: 'link-custom', label: label, url: url, target: target });
         } else if (type === 'link-action') {
             if (!label) { msg_erro_mostrar(isPtBr() ? 'Informe o rótulo.' : 'Enter the label.'); return; }
             addItem({ type: 'link-action', label: label, url: url, css_classes: css });
@@ -643,6 +655,7 @@ $(document).ready(function () {
         }
 
         $('#custom-label, #custom-url, #custom-css').val('');
+        $('#custom-target').val('_self');
         msg_erro_resetar(false);
     });
 
@@ -805,6 +818,19 @@ $(document).ready(function () {
         }).join('');
     }
 
+    // req-019: opções do alvo do link (mesma janela / nova aba).
+    function targetOptionsHtml(selected) {
+        var pt = isPtBr();
+        var opts = [
+            ['_self', pt ? 'Mesma janela' : 'Same window'],
+            ['_blank', pt ? 'Nova aba' : 'New tab']
+        ];
+        return opts.map(function (o) {
+            var sel = (o[0] === selected) ? ' selected' : '';
+            return '<option value="' + o[0] + '"' + sel + '>' + o[1] + '</option>';
+        }).join('');
+    }
+
     function openEditPanel(id) {
         $('.menu-tree-edit-panel').remove();
 
@@ -832,8 +858,17 @@ $(document).ready(function () {
             return $f;
         }
 
-        if (it.type !== 'separador') $panel.append(addField(isPtBr() ? 'Rótulo' : 'Label', 'edit-label', it.label));
+        if (it.type === 'separador') {
+            // req-019: rótulo opcional do separador (título/divisor textual).
+            $panel.append(addField(isPtBr() ? 'Rótulo (opcional)' : 'Label (optional)', 'edit-label', it.label));
+        } else {
+            $panel.append(addField(isPtBr() ? 'Rótulo' : 'Label', 'edit-label', it.label));
+        }
         if (it.type === 'link-custom' || it.type === 'link-action') $panel.append(addField('URL', 'edit-url', it.url));
+        // req-019: alvo do link (apenas link-custom).
+        if (it.type === 'link-custom') {
+            $panel.append(addSelectField(isPtBr() ? 'Abrir link em' : 'Open link in', 'edit-target', targetOptionsHtml(it.target || '_self'), it.target || '_self'));
+        }
         if (it.type === 'publicador') {
             // req-018: edição inline do nó publicador (rótulo já adicionado acima).
             $panel.append(addSelectField(isPtBr() ? 'Publicador' : 'Publisher', 'edit-publisher', publisherOptionsHtml(it.publisher_id), it.publisher_id));
@@ -857,8 +892,11 @@ $(document).ready(function () {
         if (idx < 0) { $panel.remove(); return; }
         var it = treeItems[idx];
 
-        if (it.type !== 'separador') it.label = ($panel.find('.edit-label').val() || '').trim();
+        // req-019: o rótulo é salvo para todos os tipos, inclusive o separador (rótulo opcional).
+        it.label = ($panel.find('.edit-label').val() || '').trim();
         if (it.type === 'link-custom' || it.type === 'link-action') it.url = ($panel.find('.edit-url').val() || '').trim();
+        // req-019: alvo do link (apenas link-custom).
+        if (it.type === 'link-custom') it.target = ($panel.find('.edit-target').val() || '_self').trim();
         if (it.type === 'link-action' || it.type === 'publicador') it.css_classes = ($panel.find('.edit-css').val() || '').trim();
         if (it.type === 'publicador') {
             it.publisher_id = ($panel.find('.edit-publisher').val() || '').trim();

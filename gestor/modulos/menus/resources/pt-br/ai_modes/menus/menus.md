@@ -26,7 +26,31 @@ REGRA DE FORMATAÇÃO DE PLACEHOLDERS:
 VARIÁVEIS DISPONÍVEIS PARA ITENS DE MENU:
 - `[[item#label]]` — rótulo/nome da página (texto do link)
 - `[[item#url]]` — endereço da página (use no atributo `href` do link)
+- `[[item#target]]` — alvo do link (`_self` ou `_blank`); use no atributo `target` do link: `target="[[item#target]]"`
 - `[[item#slug]]` — identificador textual da página (opcional)
+- `[[item#css_classes]]` — classes CSS extras do item (anexe às classes do link/elemento)
+- `[[item#children]]` — renderização recursiva dos sub-itens (submenu); usar SOMENTE dentro do bloco `item-parent`
+
+SUBMENUS ANINHADOS (item com filhos):
+Para itens que possuem submenu, além do bloco `item` (folha) defina também o bloco `item-parent`. Dentro dele, o placeholder `[[item#children]]` recebe a renderização recursiva dos filhos:
+
+```
+<!-- item-parent < -->
+<li>
+    <a href="[[item#url]]" target="[[item#target]]" class="[[item#css_classes]]">[[item#label]]</a>
+    <ul>[[item#children]]</ul>
+</li>
+<!-- item-parent > -->
+```
+
+DIVISOR/SEPARADOR DE MENU (opcional):
+Para renderizar um divisor visual entre itens, defina o bloco `item-separator`. Ele pode opcionalmente exibir um rótulo via `[[item#label]]` (que pode vir vazio — nesse caso renderize apenas a linha física):
+
+```
+<!-- item-separator < -->
+<li><span>[[item#label]]</span><hr></li>
+<!-- item-separator > -->
+```
 
 Você pode criar textos fictícios além desses marcadores conforme orientado pelo usuário, mas se ele pedir algo mais direto, mantenha somente os placeholders. Devolver o código HTML usando markdown ```html ``` e caso precise de CSS extra, devolva o mesmo com markdown ```css ```.
 

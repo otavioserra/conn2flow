@@ -1,13 +1,27 @@
-<section class="font-sans" data-id="1" data-title="gallery-slider">
-    <div class="relative flex overflow-x-auto snap-x snap-mandatory rounded-lg">
-        <!-- item < -->
-        <figure class="snap-center shrink-0 w-full relative">
-            <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@" class="w-full h-96 object-cover">
-            <figcaption class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent text-white px-6 py-4 text-sm">@[[item#legenda]]@</figcaption>
-        </figure>
-        <!-- item > -->
-        <!-- no-item < -->
-        <div class="w-full text-center text-gray-400 italic py-16">Nenhuma imagem na galeria</div>
-        <!-- no-item > -->
+<section class="conn2flow-gallery font-sans" data-id="1" data-title="gallery-slider" data-autoplay="@[[autoplay]]@" data-speed="@[[autoplay_speed]]@" data-loop="@[[loop]]@">
+    <style>.conn2flow-gallery .gallery-dot-active{background-color:#ffffff;opacity:1;}</style>
+    <div class="relative rounded-lg overflow-hidden">
+        <div class="gallery-slides-wrapper flex overflow-x-auto snap-x snap-mandatory scroll-smooth">
+            <!-- item < -->
+            <figure class="gallery-slide snap-center shrink-0 w-full relative">
+                <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@" class="w-full h-96 object-cover">
+                <figcaption class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent text-white px-6 py-4 text-sm">@[[item#legenda]]@</figcaption>
+            </figure>
+            <!-- item > -->
+            <!-- no-item < -->
+            <div class="w-full text-center text-gray-400 italic py-16">Nenhuma imagem na galeria</div>
+            <!-- no-item > -->
+        </div>
+        <!-- controls-arrows < -->
+        <button type="button" class="gallery-prev absolute left-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gray-800 rounded-full w-11 h-11 shadow flex items-center justify-center text-2xl" aria-label="Anterior">&#8249;</button>
+        <button type="button" class="gallery-next absolute right-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gray-800 rounded-full w-11 h-11 shadow flex items-center justify-center text-2xl" aria-label="Próximo">&#8250;</button>
+        <!-- controls-arrows > -->
+        <!-- controls-dots < -->
+        <div class="gallery-dots absolute bottom-3 left-0 right-0 flex justify-center gap-2">
+            <!-- dot-item < -->
+            <button type="button" class="gallery-dot w-2.5 h-2.5 rounded-full bg-white/60 transition-colors @[[dot#active-class]]@" data-index="@[[dot#index]]@" aria-label="Ir para o slide @[[dot#index]]@"></button>
+            <!-- dot-item > -->
+        </div>
+        <!-- controls-dots > -->
     </div>
 </section>

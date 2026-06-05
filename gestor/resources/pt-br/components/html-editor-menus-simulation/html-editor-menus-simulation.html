@@ -21,7 +21,7 @@
             "children": [
                 { "type": "pagina", "label": "Sobre Nós", "url": "/sobre/", "page_id": "sobre", "children": [] },
                 { "type": "pagina", "label": "Nossa Equipe", "url": "/equipe/", "page_id": "equipe", "children": [] },
-                { "type": "link-custom", "label": "Portal do Parceiro", "url": "https://parceiros.exemplo.com", "children": [] }
+                { "type": "link-custom", "label": "Portal do Parceiro", "url": "https://parceiros.exemplo.com", "target": "_blank", "children": [] }
             ]
         },
         {
@@ -31,7 +31,7 @@
             "children": [
                 { "type": "pagina", "label": "Consultoria", "url": "/servicos/consultoria/", "page_id": "consultoria", "children": [] },
                 { "type": "pagina", "label": "Treinamentos", "url": "/servicos/treinamentos/", "page_id": "treinamentos", "children": [] },
-                { "type": "separador", "children": [] },
+                { "type": "separador", "label": "Mais serviços", "children": [] },
                 { "type": "link-action", "label": "Agendar Reunião", "url": "#", "css_classes": "abrir-modal js-agendar", "children": [] }
             ]
         },
@@ -49,6 +49,7 @@
             "type": "link-custom",
             "label": "Blog",
             "url": "/blog/",
+            "target": "_self",
             "children": []
         },
         {

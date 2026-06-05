@@ -42,18 +42,32 @@
         "versao": 1
     },
     {
+        "nome": "Galerias",
+        "id": "galleries",
+        "language": "pt-br",
+        "status": "A",
+        "versao": 2
+    },
+    {
+        "nome": "Galleries",
+        "id": "galleries",
+        "language": "en",
+        "status": "A",
+        "versao": 2
+    },
+    {
         "nome": "Menus",
         "id": "menus",
         "language": "pt-br",
         "status": "A",
-        "versao": 3
+        "versao": 4
     },
     {
         "nome": "Menus",
         "id": "menus",
         "language": "en",
         "status": "A",
-        "versao": 3
+        "versao": 4
     },
     {
         "nome": "Publicador",

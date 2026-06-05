@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.0.1",
     "bibliotecas": [
         "interface",
         "html",
@@ -18,6 +18,24 @@
     },
     "resources": {
         "pt-br": {
+            "ai_prompts_targets": [
+                {
+                    "id": "galleries",
+                    "name": "Galerias"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "galleries",
+                    "name": "Galerias",
+                    "target": "galleries",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
             "templates": [
                 {
                     "name": "Galeria - Grade (Grid)",
@@ -36,11 +54,11 @@
                     "id": "galleries-carousel",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "d24f58fd5e4060f768257c533ed11e27",
+                        "html": "fb9b0bc296f4a59c7a70b5ec486d5b3e",
                         "css": "",
-                        "combined": "d24f58fd5e4060f768257c533ed11e27"
+                        "combined": "fb9b0bc296f4a59c7a70b5ec486d5b3e"
                     }
                 },
                 {
@@ -60,11 +78,11 @@
                     "id": "galleries-slider",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "40374efedc6b2e89b06e7684a7587684",
+                        "html": "553cca3abcf19fda0f4ea2a512065b97",
                         "css": "",
-                        "combined": "40374efedc6b2e89b06e7684a7587684"
+                        "combined": "553cca3abcf19fda0f4ea2a512065b97"
                     }
                 }
             ],
@@ -91,11 +109,11 @@
                     "path": "galleries\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "eb04426b61913ed564daa715d5f436bb",
+                        "html": "0821170411186e77d500b49b156df036",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "7658387c3131494618f53247a543b2d7"
+                        "combined": "3945cc34ff50a9005ad0492127e43fec"
                     }
                 },
                 {
@@ -105,11 +123,11 @@
                     "path": "galleries\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "16ed25b10146ebdec99fbb38ead80196",
+                        "html": "9d1cc73fb113088bafb017ba548c134e",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "0ad8cac885124722cac6f7df6e951c88"
+                        "combined": "40ae4918c2e9b2096249e0d57663e2d7"
                     }
                 },
                 {
@@ -119,11 +137,11 @@
                     "path": "galleries\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "d79d291baf189e3b412902b763542614",
+                        "html": "f86817e8e7deb9ec16da14b55443326c",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "f7bd53a27a5e2d88d0cc743e3c093c55"
+                        "combined": "883f1dfc4bb9fcd65b4dc62ddf7809d0"
                     }
                 }
             ],
@@ -146,6 +164,24 @@
             ]
         },
         "en": {
+            "ai_prompts_targets": [
+                {
+                    "id": "galleries",
+                    "name": "Galleries"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "galleries",
+                    "name": "Galleries",
+                    "target": "galleries",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
             "templates": [
                 {
                     "name": "Gallery - Grid",
@@ -164,11 +200,11 @@
                     "id": "galleries-carousel",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "ca73d5377908a8dcf0726b8fbeec47d5",
+                        "html": "21d6aa5e3d42feb1967dd3352ffad7f5",
                         "css": "",
-                        "combined": "ca73d5377908a8dcf0726b8fbeec47d5"
+                        "combined": "21d6aa5e3d42feb1967dd3352ffad7f5"
                     }
                 },
                 {
@@ -188,11 +224,11 @@
                     "id": "galleries-slider",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "69d6159afcef4fe00ca54fc70ead57bc",
+                        "html": "cfd9fc183b9195287309c5cab8859025",
                         "css": "",
-                        "combined": "69d6159afcef4fe00ca54fc70ead57bc"
+                        "combined": "cfd9fc183b9195287309c5cab8859025"
                     }
                 }
             ],
@@ -219,11 +255,11 @@
                     "path": "galleries\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "0451aad311ea58768228ac6a78c6c241",
+                        "html": "0fc325f212364d641605bc6e8ed5a5ad",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "e0d1f26dda1e4b38aa4e8512979fc897"
+                        "combined": "218bc02a7790f766b8ebcc4c18401095"
                     }
                 },
                 {
@@ -233,11 +269,11 @@
                     "path": "galleries\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "1ef2d48873a49b182404a129b5741811",
+                        "html": "2a8c176440bb19169e129614c9875f54",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "b32fe40efeab37a9a2b4b74b12b69912"
+                        "combined": "844c52b88695d8c4d20270ec7a934ecf"
                     }
                 },
                 {
@@ -247,11 +283,11 @@
                     "path": "galleries\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "cfec8ac07ee863c9c9eae62c15b9e232",
+                        "html": "a2b121dcac56f81856bea7ff00aeb6ce",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "74c72d56434549669fcd03942b50faf2"
+                        "combined": "bd11c0843258dc7fe299aacc78259d1e"
                     }
                 }
             ],

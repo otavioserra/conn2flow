@@ -3,17 +3,23 @@
         <ul class="space-y-1">
             <!-- item < -->
             <li>
-                <a href="@[[item#url]]@" data-slug="@[[item#slug]]@" class="block px-3 py-2 rounded text-gray-700 hover:bg-blue-50 hover:text-blue-700 font-medium transition-colors @[[item#css_classes]]@">@[[item#label]]@</a>
+                <a href="@[[item#url]]@" target="@[[item#target]]@" data-slug="@[[item#slug]]@" class="block px-3 py-2 rounded text-gray-700 hover:bg-blue-50 hover:text-blue-700 font-medium transition-colors @[[item#css_classes]]@">@[[item#label]]@</a>
             </li>
             <!-- item > -->
             <!-- item-parent < -->
             <li>
-                <a href="@[[item#url]]@" data-slug="@[[item#slug]]@" class="block px-3 py-2 rounded text-gray-900 font-semibold hover:bg-blue-50 hover:text-blue-700 transition-colors @[[item#css_classes]]@">@[[item#label]]@</a>
+                <a href="@[[item#url]]@" target="@[[item#target]]@" data-slug="@[[item#slug]]@" class="block px-3 py-2 rounded text-gray-900 font-semibold hover:bg-blue-50 hover:text-blue-700 transition-colors @[[item#css_classes]]@">@[[item#label]]@</a>
                 <ul class="ml-4 mt-1 space-y-1 border-l border-gray-200 pl-2">
                     @[[item#children]]@
                 </ul>
             </li>
             <!-- item-parent > -->
+            <!-- item-separator < -->
+            <li class="my-2">
+                <div class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">@[[item#label]]@</div>
+                <hr class="border-t border-gray-200 mt-1">
+            </li>
+            <!-- item-separator > -->
             <!-- no-item < -->
             <li class="px-3 py-2 text-gray-400 italic">No menu items</li>
             <!-- no-item > -->

@@ -58,11 +58,16 @@ function html_editor_publisher_controls($params = false){
 				foreach($target_variables as $var){
 					$var_id = is_array($var) ? ($var['id'] ?? '') : (string)$var;
 					if($var_id === '') continue;
+					// req-019 / DEC-031: variáveis globais (ex.: controles de galeria) usam o
+					// placeholder [[var_id]] SEM o prefixo `item#`; as demais mantêm [[item#var_id]].
+					$is_global = is_array($var) && !empty($var['global']);
+					$variable_str = $is_global ? '[['.$var_id.']]' : '[[item#'.$var_id.']]';
 					$template_map[] = [
 						'id' => $var_id,
-						'variable' => '[[item#'.$var_id.']]',
+						'variable' => $variable_str,
 						'label' => $var_id,
 						'type' => 'text',
+						'global' => $is_global,
 					];
 				}
 			}
@@ -685,6 +690,27 @@ function html_editor_ajax_ia_requests(){
 				}
 			}
 
+			$modo = modelo_var_troca_tudo($modo,'{{variables}}',$variables);
+		break;
+		case 'menus':
+			// req-019: variáveis fixas dos templates de menu (item#X), espelhando
+			// menus_variaveis_template(). O modo IA recebe a lista de placeholders válidos.
+			$variables = "[variables]\n";
+			foreach(['label','url','target','slug','css_classes','children'] as $var_name){
+				$variables .= '[[item#'.$var_name.']]'."\n";
+			}
+			$modo = modelo_var_troca_tudo($modo,'{{variables}}',$variables);
+		break;
+		case 'galleries':
+			// req-019 / DEC-031: variáveis de imagem (item#X) + variáveis globais de controle
+			// ([[X]] sem item#), espelhando galleries_variaveis_template().
+			$variables = "[variables]\n";
+			foreach(['img-src','caminho','nome','legenda'] as $var_name){
+				$variables .= '[[item#'.$var_name.']]'."\n";
+			}
+			foreach(['show_arrows','show_dots','autoplay','autoplay_speed','loop'] as $var_name){
+				$variables .= '[['.$var_name.']]'."\n";
+			}
 			$modo = modelo_var_troca_tudo($modo,'{{variables}}',$variables);
 		break;
 		default:

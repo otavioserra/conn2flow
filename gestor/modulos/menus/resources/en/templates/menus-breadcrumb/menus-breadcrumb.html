@@ -3,17 +3,23 @@
         <ol class="flex flex-wrap items-center gap-2 text-gray-500">
             <!-- item < -->
             <li class="flex items-center gap-2">
-                <a href="@[[item#url]]@" data-slug="@[[item#slug]]@" class="hover:text-blue-600 transition-colors @[[item#css_classes]]@">@[[item#label]]@</a>
+                <a href="@[[item#url]]@" target="@[[item#target]]@" data-slug="@[[item#slug]]@" class="hover:text-blue-600 transition-colors @[[item#css_classes]]@">@[[item#label]]@</a>
                 <span class="text-gray-300">/</span>
             </li>
             <!-- item > -->
             <!-- item-parent < -->
             <li class="flex items-center gap-2">
-                <a href="@[[item#url]]@" data-slug="@[[item#slug]]@" class="hover:text-blue-600 transition-colors @[[item#css_classes]]@">@[[item#label]]@</a>
+                <a href="@[[item#url]]@" target="@[[item#target]]@" data-slug="@[[item#slug]]@" class="hover:text-blue-600 transition-colors @[[item#css_classes]]@">@[[item#label]]@</a>
                 <span class="text-gray-300">/</span>
             </li>
             @[[item#children]]@
             <!-- item-parent > -->
+            <!-- item-separator < -->
+            <li class="flex items-center gap-1 text-gray-300 select-none">
+                <span aria-hidden="true">·</span>
+                <span class="text-xs text-gray-400">@[[item#label]]@</span>
+            </li>
+            <!-- item-separator > -->
             <!-- no-item < -->
             <li class="text-gray-400 italic">No menu items</li>
             <!-- no-item > -->

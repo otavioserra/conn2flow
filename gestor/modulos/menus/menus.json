@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.1",
+    "versao": "1.0.2",
     "bibliotecas": [
         "interface",
         "html",
@@ -30,7 +30,7 @@
                     "name": "Menus",
                     "target": "menus",
                     "default": true,
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "md": ""
                     }
@@ -42,11 +42,11 @@
                     "id": "menus-horizontal-navbar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.7",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "53b81fe947c011d82dccd9425974d077",
+                        "html": "748104b5405f272eb2bb794b8dca9e1e",
                         "css": "",
-                        "combined": "53b81fe947c011d82dccd9425974d077"
+                        "combined": "748104b5405f272eb2bb794b8dca9e1e"
                     }
                 },
                 {
@@ -54,11 +54,11 @@
                     "id": "menus-vertical-sidebar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "bbee43b1be509d1be39855f7947ed293",
+                        "html": "5c6ec469e49cf18dc1a067b4daf07763",
                         "css": "",
-                        "combined": "bbee43b1be509d1be39855f7947ed293"
+                        "combined": "5c6ec469e49cf18dc1a067b4daf07763"
                     }
                 },
                 {
@@ -66,11 +66,11 @@
                     "id": "menus-footer-colunas",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "8391a424fe9d0c64a7aedf0bf0c45e5a",
+                        "html": "edbc41e093c4ee665c163b8ec09d4fbe",
                         "css": "",
-                        "combined": "8391a424fe9d0c64a7aedf0bf0c45e5a"
+                        "combined": "edbc41e093c4ee665c163b8ec09d4fbe"
                     }
                 },
                 {
@@ -78,11 +78,11 @@
                     "id": "menus-dropdown",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.7",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "44e4f5f4aadb1b6a762f925e03e81338",
+                        "html": "16204e35a65a971f7a55a76c6ec1cf23",
                         "css": "",
-                        "combined": "44e4f5f4aadb1b6a762f925e03e81338"
+                        "combined": "16204e35a65a971f7a55a76c6ec1cf23"
                     }
                 },
                 {
@@ -90,11 +90,11 @@
                     "id": "menus-breadcrumb",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "c66336f7434228144969ab5ef207e394",
+                        "html": "f8482fdf9a63cd3a6ff113d57f66a3f8",
                         "css": "",
-                        "combined": "c66336f7434228144969ab5ef207e394"
+                        "combined": "f8482fdf9a63cd3a6ff113d57f66a3f8"
                     }
                 },
                 {
@@ -102,11 +102,11 @@
                     "id": "menus-mobile-hamburguer",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "c4816145a30c82ea1c187ada33dc4108",
+                        "html": "9e2d896fa4a4d2f9ff700efa395fd98f",
                         "css": "",
-                        "combined": "c4816145a30c82ea1c187ada33dc4108"
+                        "combined": "9e2d896fa4a4d2f9ff700efa395fd98f"
                     }
                 }
             ],
@@ -133,11 +133,11 @@
                     "path": "menus\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "b4f0856b27273e8bb81c7bef55afe88c",
+                        "html": "de922c2730a883cfb8c45462c3f4518a",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "3206f96b1083b53c118065cd6d35e4f1"
+                        "combined": "c9c0a87af0d6739c16068ad5c9ac6d76"
                     }
                 },
                 {
@@ -147,11 +147,11 @@
                     "path": "menus\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "45546ba478431603d9a596fb8efe22ea",
+                        "html": "a2aac653992364c352c4910ab3e6a72d",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "344e2d0554e5493d21f79e6906e8b9f6"
+                        "combined": "2718498b6487d25a0da1e84514eba4cb"
                     }
                 },
                 {
@@ -161,11 +161,11 @@
                     "path": "menus\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "1f559c441a4b2d3aa457c47a4313e1e5",
+                        "html": "c54b02bc44e6743c1a99881f655bc644",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "03c821329ee113767d7c68ef3aaf8d5d"
+                        "combined": "979e5b90330978b772f3f51d40de118d"
                     }
                 }
             ],
@@ -205,7 +205,7 @@
                     "name": "Menus",
                     "target": "menus",
                     "default": true,
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "md": ""
                     }
@@ -217,11 +217,11 @@
                     "id": "menus-horizontal-navbar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.7",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "9e64d39aab68d8d32041d6eb7fcaea29",
+                        "html": "a8343badfa4be1d2cb4e2c17a7e0d9bc",
                         "css": "",
-                        "combined": "9e64d39aab68d8d32041d6eb7fcaea29"
+                        "combined": "a8343badfa4be1d2cb4e2c17a7e0d9bc"
                     }
                 },
                 {
@@ -229,11 +229,11 @@
                     "id": "menus-vertical-sidebar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "ccf483ed60b31129a3c681cc9025cbad",
+                        "html": "b05d3f1da33c96ea0e8744bd3323332a",
                         "css": "",
-                        "combined": "ccf483ed60b31129a3c681cc9025cbad"
+                        "combined": "b05d3f1da33c96ea0e8744bd3323332a"
                     }
                 },
                 {
@@ -241,11 +241,11 @@
                     "id": "menus-footer-colunas",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "dba0ba9364b23ffcf3f595f8b0bde3bf",
+                        "html": "34e8a2bc835a7680e9217da82ecfc015",
                         "css": "",
-                        "combined": "dba0ba9364b23ffcf3f595f8b0bde3bf"
+                        "combined": "34e8a2bc835a7680e9217da82ecfc015"
                     }
                 },
                 {
@@ -253,11 +253,11 @@
                     "id": "menus-dropdown",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.7",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "2ef4ec97ea276d5cee292e66dc9306e7",
+                        "html": "ed0dfe29e3f8e6f3b34047d6e2dd7d04",
                         "css": "",
-                        "combined": "2ef4ec97ea276d5cee292e66dc9306e7"
+                        "combined": "ed0dfe29e3f8e6f3b34047d6e2dd7d04"
                     }
                 },
                 {
@@ -265,11 +265,11 @@
                     "id": "menus-breadcrumb",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "63df85b6ac9ab4823498c4d0ce3c2c91",
+                        "html": "4a5454b201c913bb0687c1f42a49653b",
                         "css": "",
-                        "combined": "63df85b6ac9ab4823498c4d0ce3c2c91"
+                        "combined": "4a5454b201c913bb0687c1f42a49653b"
                     }
                 },
                 {
@@ -277,11 +277,11 @@
                     "id": "menus-mobile-hamburguer",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "5746494a2cb0c7c4ce6a5d9c42b88a2e",
+                        "html": "a601491c73162dad30f6069e831ce870",
                         "css": "",
-                        "combined": "5746494a2cb0c7c4ce6a5d9c42b88a2e"
+                        "combined": "a601491c73162dad30f6069e831ce870"
                     }
                 }
             ],
@@ -308,11 +308,11 @@
                     "path": "menus\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "7fb90541bce97712fe5cd2fa1dca17b7",
+                        "html": "11ac489f0d5581b521fbd4b7a617dc16",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "08a1f1b537442825dcb6ea178dc3c323"
+                        "combined": "0575d503df83768a367a97ec3a6bcfdf"
                     }
                 },
                 {
@@ -322,11 +322,11 @@
                     "path": "menus\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "dba3ea5da7927211ec617708cb86621b",
+                        "html": "d3ae4afb71e6e293969cc93e8e3dc333",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "ab190f9d5cf09bd8220ca0250001ca10"
+                        "combined": "3277e1ee21d640fe8f05b8b7451840ee"
                     }
                 },
                 {
@@ -336,11 +336,11 @@
                     "path": "menus\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.5",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "5cb56c47feed705162d248845bed9271",
+                        "html": "43c1395324758b982205b43888fe443b",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "c60cfeb2ceccc410cfb8d19aff14fd3e"
+                        "combined": "1d279c00a128f5449ebd60ff68995181"
                     }
                 }
             ],

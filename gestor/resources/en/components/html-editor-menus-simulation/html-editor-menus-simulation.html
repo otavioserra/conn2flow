@@ -21,7 +21,7 @@
             "children": [
                 { "type": "pagina", "label": "About Us", "url": "/about/", "page_id": "about", "children": [] },
                 { "type": "pagina", "label": "Our Team", "url": "/team/", "page_id": "team", "children": [] },
-                { "type": "link-custom", "label": "Partner Portal", "url": "https://partners.example.com", "children": [] }
+                { "type": "link-custom", "label": "Partner Portal", "url": "https://partners.example.com", "target": "_blank", "children": [] }
             ]
         },
         {
@@ -31,7 +31,7 @@
             "children": [
                 { "type": "pagina", "label": "Consulting", "url": "/services/consulting/", "page_id": "consulting", "children": [] },
                 { "type": "pagina", "label": "Training", "url": "/services/training/", "page_id": "training", "children": [] },
-                { "type": "separador", "children": [] },
+                { "type": "separador", "label": "More services", "children": [] },
                 { "type": "link-action", "label": "Book a Meeting", "url": "#", "css_classes": "open-modal js-booking", "children": [] }
             ]
         },
@@ -49,6 +49,7 @@
             "type": "link-custom",
             "label": "Blog",
             "url": "/blog/",
+            "target": "_self",
             "children": []
         },
         {

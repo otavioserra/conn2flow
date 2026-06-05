@@ -45,6 +45,41 @@
 <!-- Lista de imagens da galeria (curadoria em lote, renderizada por JS) -->
 <div id="gallery-items"></div>
 
+<h4 class="ui dividing header">Controles de Exibição</h4>
+
+<div class="ui segment">
+    <div class="inline fields">
+        <div class="field">
+            <div class="ui checkbox">
+                <input type="checkbox" id="gallery-show-arrows" checked>
+                <label>Exibir setas</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui checkbox">
+                <input type="checkbox" id="gallery-show-dots" checked>
+                <label>Exibir pontinhos</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui checkbox">
+                <input type="checkbox" id="gallery-loop" checked>
+                <label>Loop infinito</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui checkbox">
+                <input type="checkbox" id="gallery-autoplay">
+                <label>Slide automático</label>
+            </div>
+        </div>
+    </div>
+    <div class="field" style="max-width: 260px; margin-top: 10px;">
+        <label>Tempo de transição (ms)</label>
+        <input type="number" id="gallery-autoplay-speed" min="500" step="100" value="3000">
+    </div>
+</div>
+
 <input type="hidden" name="fields_schema">
 
 <h4 class="ui dividing header">Conteúdo da Galeria</h4>

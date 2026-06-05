@@ -45,6 +45,41 @@
 <!-- Gallery images list (batch curation, rendered by JS) -->
 <div id="gallery-items"></div>
 
+<h4 class="ui dividing header">Display Controls</h4>
+
+<div class="ui segment">
+    <div class="inline fields">
+        <div class="field">
+            <div class="ui checkbox">
+                <input type="checkbox" id="gallery-show-arrows" checked>
+                <label>Show arrows</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui checkbox">
+                <input type="checkbox" id="gallery-show-dots" checked>
+                <label>Show dots</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui checkbox">
+                <input type="checkbox" id="gallery-loop" checked>
+                <label>Infinite loop</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui checkbox">
+                <input type="checkbox" id="gallery-autoplay">
+                <label>Autoplay</label>
+            </div>
+        </div>
+    </div>
+    <div class="field" style="max-width: 260px; margin-top: 10px;">
+        <label>Transition time (ms)</label>
+        <input type="number" id="gallery-autoplay-speed" min="500" step="100" value="3000">
+    </div>
+</div>
+
 <input type="hidden" name="fields_schema">
 
 <h4 class="ui dividing header">Gallery content</h4>

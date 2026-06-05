@@ -101,6 +101,13 @@
         <label>Classes CSS Personalizadas</label>
         <input type="text" id="custom-css" placeholder="Ex: abrir-modal js-contato" autocomplete="off">
     </div>
+    <div class="field" id="field-custom-target" style="display:none;">
+        <label>Abrir link em</label>
+        <select id="custom-target" class="ui dropdown">
+            <option value="_self">Mesma janela</option>
+            <option value="_blank">Nova aba</option>
+        </select>
+    </div>
 
     <!-- Campos para o tipo Publicador (req-018): gera sub-itens automáticos com as publicações -->
     <div id="field-publisher-wrapper" style="display:none;">
@@ -126,7 +133,7 @@
         </div>
     </div>
 
-    <div id="btn-add-item-wrapper" style="display:none;">
+    <div id="btn-add-item-wrapper" style="display:none; margin-top: 1rem;">
         <button type="button" class="ui blue button" id="btn-add-item">
             <i class="plus icon"></i> Adicionar item
         </button>
