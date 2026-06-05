@@ -8,6 +8,14 @@
                     <a href="@[[item#url]]@" class="hover:text-white transition-colors">@[[item#label]]@</a>
                 </li>
                 <!-- item > -->
+                <!-- item-parent < -->
+                <li>
+                    <span class="block text-white font-semibold mb-2">@[[item#label]]@</span>
+                    <ul class="space-y-2">
+                        @[[item#children]]@
+                    </ul>
+                </li>
+                <!-- item-parent > -->
                 <!-- no-item < -->
                 <li class="text-gray-500 italic">No menu items</li>
                 <!-- no-item > -->

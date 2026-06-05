@@ -1,29 +1,47 @@
 /**
  * menus.js
  *
- * Painel de montagem de menus do site (req-015):
+ * Painel de montagem de menus do site (req-015 + req-016):
  *  - Seleciona um modelo visual de menu (AJAX template-load) e carrega html/css no editor.
- *  - Curadoria de itens do menu via autocomplete de busca de páginas (AJAX pages-search),
- *    com tags reordenáveis (Sortable.js) — menus são livres de publicadores.
- *  - Serializa o schema final (selected_items + template_id) para o input hidden
- *    `fields_schema` antes do submit.
+ *  - Constrói a ÁRVORE de itens do menu com itens tipados (página / link-custom / cabecalho /
+ *    link-action / separador), editor drag-and-drop bidimensional estilo WordPress
+ *    (arrastar na vertical = ordenar; arrastar na horizontal = indentar/desindentar como
+ *    filho), edição inline de rótulo/URL/classes e exclusão recursiva.
+ *  - Serializa a árvore (selected_items hierárquico + template_id) para o input hidden
+ *    `fields_schema` antes do submit e no preview ao vivo (AJAX widget-preview).
  *
- * Nota: este é o estágio inicial do módulo (req-015). Em lotes futuros o autocomplete será
- * expandido para montar a árvore de menus multi-nível.
+ * O editor de árvore é um componente PRÓPRIO: Pointer Events em JS vanilla (sem jQuery UI /
+ * nestedSortable / Sortable.js) e visual Fomantic-UI. Internamente trabalha com uma lista
+ * plana de nós com `depth` (modelo WordPress); a conversão flat<->árvore ocorre nas
+ * fronteiras (hidratação, submit e preview). Ver DEC-023.
  */
 $(document).ready(function () {
     if ($('#_gestor-interface-edit-dados').length === 0 && $('#_gestor-interface-insert-dados').length === 0) return;
 
-    // Cursores grab/grabbing para a curadoria de itens (mesma UX das tags de destaques).
-    (function injectDragCursorStyles() {
-        if (document.getElementById('menus-drag-cursor-styles')) return;
-        var css = '.drag-label{cursor:grab !important;}'
-            + '.drag-label .grip.vertical.icon{cursor:grab !important;}'
-            + '.drag-label:active,.drag-label:active *{cursor:grabbing !important;}'
-            + '.sortable-drag{cursor:grabbing !important;}'
-            + '.remove-tag-btn{cursor:pointer !important;}';
+    var STEP = 24; // px de recuo horizontal por nível de aninhamento
+
+    // ===== Estilos do editor de árvore (injetados uma única vez)
+
+    (function injectTreeStyles() {
+        if (document.getElementById('menus-tree-styles')) return;
+        var css = ''
+            + '#menu-tree{margin-top:12px;}'
+            + '.menu-tree-row{display:flex;align-items:center;gap:8px;padding:8px 10px;margin:4px 0;'
+            + 'background:#fff;border:1px solid #e0e0e0;border-radius:4px;cursor:pointer;user-select:none;}'
+            + '.menu-tree-row.selected{border-color:#2185d0;box-shadow:0 0 0 1px #2185d0 inset;background:#f4f9ff;}'
+            + '.menu-tree-row.dragging-block{opacity:0.45;}'
+            + '.menu-tree-handle{cursor:grab;opacity:0.6;touch-action:none;}'
+            + '.tree-dragging .menu-tree-handle{cursor:grabbing;}'
+            + '.menu-tree-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}'
+            + '.menu-tree-label.sep{color:#999;font-style:italic;}'
+            + '.menu-tree-edit,.menu-tree-delete{cursor:pointer;opacity:0.6;}'
+            + '.menu-tree-edit:hover,.menu-tree-delete:hover{opacity:1;}'
+            + '.menu-tree-placeholder{height:8px;margin:4px 0;border:2px dashed #2185d0;border-radius:4px;background:#e8f3ff;}'
+            + '.menu-tree-edit-panel{margin:2px 0 8px;padding:10px;}'
+            + '.menu-tree-empty{padding:14px;color:#999;font-style:italic;text-align:center;'
+            + 'border:1px dashed #ccc;border-radius:4px;background:#fafafa;}';
         var style = document.createElement('style');
-        style.id = 'menus-drag-cursor-styles';
+        style.id = 'menus-tree-styles';
         style.type = 'text/css';
         style.appendChild(document.createTextNode(css));
         document.head.appendChild(style);
@@ -72,6 +90,12 @@ $(document).ready(function () {
 
     if (!Array.isArray(schema.selected_items)) schema.selected_items = [];
 
+    // Fonte da verdade do editor: lista plana de nós com `depth`.
+    // Nó: { id, type, label, url, page_id, css_classes, depth }
+    var treeItems = [];
+    var selectedRowId = null;     // item clicado (ponto de inserção)
+    var drag = null;              // estado do arraste em andamento
+
     // ===== Hidratar inputs com o schema atual
 
     if (schema.template_id) {
@@ -105,22 +129,25 @@ $(document).ready(function () {
         successNotOkCallback: function () { }
     };
 
-    // Estado compartilhado da curadoria de itens (autocomplete + tags reordenáveis).
     var widgetCodeMirror = null;     // instância do CodeMirror da aba "Código do Widget"
     var manualSearchTimer = null;    // debounce do campo de busca
-    var manualSortable = null;       // instância do Sortable do contêiner de tags
 
     // ===== Inicialização
 
     var $template = $('select[name="template_id"]');
+
+    // Componentes Fomantic do construtor de itens.
+    $('#item_type').dropdown({ onChange: function () { setTimeout(toggleItemTypeFields, 0); } });
+    $('.ui.radio.checkbox').checkbox();
+    toggleItemTypeFields();
 
     if ($template.val()) loadTemplate($template.val());
     else setTimeout(function () { scheduleWidgetPreview(true); }, 600);
 
     toggleTemplateOptionsWrapper();
 
-    // Hidratar as tags de itens já curados (resolve os nomes reais dos slugs).
-    hydrateSelectedLabels();
+    // Hidratar a árvore de itens a partir do schema (resolve nomes/urls de páginas).
+    initTree();
 
     // Ao clicar na aba externa de Pré-Visualização, garantir refresh.
     $(document).on('click', '.menuConteudoMenu .item[data-tab="hep-preview"]', function () {
@@ -142,17 +169,9 @@ $(document).ready(function () {
         }
     });
 
-    // Interceptar submit para serializar o schema
-
+    // Interceptar submit para serializar a árvore.
     $('.ui.form').on('submit', function () {
-        // req-010 padrão: persistir template_id dentro do fields_schema (não há coluna dedicada).
-        schema.template_id = $('#template_id').val() || '';
-
-        // selected_items é mantido em memória pelas tags e pelo Sortable.
-        var out = $.extend(true, {}, schema);
-
-        $('input[name="fields_schema"]').val(JSON.stringify(out));
-
+        $('input[name="fields_schema"]').val(JSON.stringify(currentSchemaOut()));
         return true;
     });
 
@@ -163,13 +182,11 @@ $(document).ready(function () {
             data: $.extend({}, ajaxDefault.data, { ajaxOpcao: 'template-load', params: { template_id: template_id } }),
             ajaxOpcao: 'template-load',
             successCallback: function (dados) {
-                // Framework CSS do template (ex: Tailwind) pode ser necessário para renderizar a prévia.
                 gestor.html_editor.framework_css = dados.framework_css || null;
 
                 if (typeof window.html_editor_set_html === 'function') window.html_editor_set_html(dados.html || '');
                 if (typeof window.html_editor_set_css === 'function') window.html_editor_set_css(dados.css || '');
 
-                // Prévia ao vivo com dados reais após o editor absorver html/css do template.
                 setTimeout(function () { scheduleWidgetPreview(true, true); }, 150);
             },
             successNotOkCallback: function (dados) {
@@ -179,10 +196,13 @@ $(document).ready(function () {
         $.ajax(req);
     }
 
-    // ===== Helpers
+    // ===== Helpers gerais
+
+    function isPtBr() {
+        return (typeof gestor !== 'undefined' && gestor.language === 'pt-br');
+    }
 
     function toggleTemplateOptionsWrapper() {
-        // Bloco de opções do template só aparece quando há um template selecionado.
         if ($template.val()) $('.template-options-wrapper').show();
         else $('.template-options-wrapper').hide();
     }
@@ -202,12 +222,18 @@ $(document).ready(function () {
         msg_erro_resetar(true);
     }
 
-    // ===== Widget Preview
-    // Renderiza a prévia ao vivo do menu com dados reais via AJAX widget-preview.
+    // ===== Widget Preview (prévia ao vivo do menu com dados reais via AJAX widget-preview)
 
     var widgetPreviewTimer = null;
     var widgetPreviewLastSnapshot = null;
     var widgetPreviewRetryCount = 0;
+
+    function currentSchemaOut() {
+        var out = $.extend(true, {}, schema);
+        out.selected_items = buildTree(treeItems);
+        out.template_id = $('#template_id').val() || schema.template_id || '';
+        return out;
+    }
 
     function scheduleWidgetPreview(immediate, force) {
         if (widgetPreviewTimer) clearTimeout(widgetPreviewTimer);
@@ -253,12 +279,9 @@ $(document).ready(function () {
 
         widgetPreviewRetryCount = 0;
 
-        var out = $.extend(true, {}, schema);
+        var out = currentSchemaOut();
 
-        var snapshot = JSON.stringify({
-            html: html, css: css,
-            schema: out
-        });
+        var snapshot = JSON.stringify({ html: html, css: css, schema: out });
 
         if (!force && snapshot === widgetPreviewLastSnapshot) return;
 
@@ -289,7 +312,6 @@ $(document).ready(function () {
                 var doc = '<!doctype html><html><head><meta charset="utf-8">';
                 doc += `<!-- CDN do TailwindCSS -->
                 <script>
-                    // Remove Tailwind CDN warnings
                     const originalWarn = console.warn;
                     console.warn = function (...args) {
                         if (args[0] && args[0].includes('cdn.tailwindcss.com')) return;
@@ -305,110 +327,276 @@ $(document).ready(function () {
         });
     }
 
-    // ===== Curadoria de itens: autocomplete de busca Ajax + tags reordenáveis
-    // A fonte da verdade é schema.selected_items (lista ordenada de slugs de páginas).
-    // Cada adição/remoção/reordenação atualiza o array e dispara o preview.
+    function serializeAndPreview() { scheduleWidgetPreview(false); }
 
-    function isPtBr() {
-        return (typeof gestor !== 'undefined' && gestor.language === 'pt-br');
+    // ===== Conversões flat <-> árvore
+
+    function genId() {
+        return 'item_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
     }
 
-    function manualNoResultsMsg() {
-        return isPtBr() ? 'Nenhum item encontrado' : 'No results found.';
+    // Achata uma árvore de objetos em nós planos com `depth`.
+    function flattenTree(nodes, depth, out) {
+        (nodes || []).forEach(function (n) {
+            if (!n || typeof n !== 'object') return;
+            out.push({
+                id: n.id || genId(),
+                type: n.type || 'pagina',
+                label: n.label || '',
+                url: n.url || '',
+                page_id: n.page_id || '',
+                css_classes: n.css_classes || '',
+                depth: depth
+            });
+            if (n.children && n.children.length) flattenTree(n.children, depth + 1, out);
+        });
     }
 
-    function hideManualSuggestions() {
-        $('#search-suggestions-dropdown').hide().empty();
+    // Reconstrói a árvore aninhada a partir da lista plana, usando `depth`.
+    function buildTree(flat) {
+        var root = [];
+        var stack = []; // [{ node, depth }]
+        (flat || []).forEach(function (it) {
+            var node = {
+                id: it.id,
+                type: it.type,
+                label: it.label || '',
+                url: it.url || '',
+                css_classes: it.css_classes || '',
+                children: []
+            };
+            if (it.type === 'pagina') node.page_id = it.page_id || '';
+
+            while (stack.length && stack[stack.length - 1].depth >= it.depth) stack.pop();
+            if (stack.length === 0) root.push(node);
+            else stack[stack.length - 1].node.children.push(node);
+
+            stack.push({ node: node, depth: it.depth });
+        });
+        return root;
     }
 
-    // req-015 item 1.3: o contêiner de tags só aparece quando houver ao menos um item.
-    function toggleSelectedLabelsVisibility() {
-        var $container = $('#selected-labels-container');
-        if (schema.selected_items && schema.selected_items.length > 0) {
-            $container.show();
+    // Garante recuos válidos (sem "saltos": depth[i] <= depth[i-1] + 1).
+    function normalizeDepths() {
+        for (var i = 0; i < treeItems.length; i++) {
+            if (i === 0) { treeItems[i].depth = 0; continue; }
+            var maxDepth = treeItems[i - 1].depth + 1;
+            if (treeItems[i].depth > maxDepth) treeItems[i].depth = maxDepth;
+            if (treeItems[i].depth < 0) treeItems[i].depth = 0;
+        }
+    }
+
+    function indexOfId(id) {
+        for (var i = 0; i < treeItems.length; i++) if (treeItems[i].id === id) return i;
+        return -1;
+    }
+
+    // Tamanho do bloco = o item no índice + todos os seus descendentes (depth maior).
+    function getBlockLength(index) {
+        var d = treeItems[index].depth;
+        var n = 1;
+        for (var i = index + 1; i < treeItems.length; i++) {
+            if (treeItems[i].depth > d) n++;
+            else break;
+        }
+        return n;
+    }
+
+    // ===== Hidratação inicial da árvore
+
+    function initTree() {
+        var items = Array.isArray(schema.selected_items) ? schema.selected_items : [];
+
+        if (items.length === 0) { treeItems = []; renderTree(); return; }
+
+        var isLegacy = items.every(function (x) { return typeof x === 'string'; });
+
+        if (isLegacy) {
+            // Formato BATCH-015: lista de slugs -> nós `pagina` de nível raiz.
+            treeItems = items.map(function (slug) {
+                return { id: genId(), type: 'pagina', label: '', url: '', page_id: slug, css_classes: '', depth: 0 };
+            });
         } else {
-            $container.hide();
+            var flat = [];
+            flattenTree(items, 0, flat);
+            treeItems = flat;
         }
+
+        renderTree();
+        hydratePageNodes();
     }
 
-    // Monta uma tag (Fomantic UI Label) com handle de arraste e botão de remover.
-    function buildSelectedLabel(slug, name) {
-        var $label = $('<div class="ui label teal drag-label" style="cursor: grab; display: inline-flex; align-items: center; user-select: none;"></div>')
-            .attr('data-id', slug);
-        $label.append('<i class="grip vertical icon" style="margin-right: 6px; opacity: 0.6;"></i>');
-        $label.append(document.createTextNode(name || slug));
-        $label.append('<i class="delete icon remove-tag-btn" style="margin-left: 8px; cursor: pointer;"></i>');
-        return $label;
-    }
-
-    // Renderiza todas as tags respeitando estritamente a ordem de schema.selected_items.
-    function renderSelectedLabels(namesMap) {
-        var $container = $('#selected-labels-container');
-        if ($container.length === 0) return;
-
-        $container.empty();
-        (schema.selected_items || []).forEach(function (slug) {
-            var name = (namesMap && namesMap[slug]) ? namesMap[slug] : slug;
-            $container.append(buildSelectedLabel(slug, name));
+    // Resolve nome/url reais dos nós tipo `pagina` que ainda não os tenham.
+    function hydratePageNodes() {
+        var ids = [];
+        treeItems.forEach(function (it) {
+            if (it.type === 'pagina' && it.page_id && (!it.label || !it.url)) ids.push(it.page_id);
         });
-        ensureManualSortable();
-        toggleSelectedLabelsVisibility();
-    }
-
-    // Inicializa o Sortable uma única vez; relê a ordem física do DOM ao soltar uma tag.
-    // req-015 item 1.4: toda a área da tag é arrastável; o filtro evita arraste pelo "x".
-    function ensureManualSortable() {
-        var el = document.getElementById('selected-labels-container');
-        if (!el || typeof Sortable === 'undefined' || manualSortable) return;
-
-        manualSortable = new Sortable(el, {
-            animation: 150,
-            filter: '.remove-tag-btn',
-            onEnd: function () {
-                var newOrder = [];
-                $('#selected-labels-container .drag-label').each(function () {
-                    var id = $(this).attr('data-id');
-                    if (id) newOrder.push(id);
-                });
-                schema.selected_items = newOrder;
-                scheduleWidgetPreview(false);
-            }
-        });
-    }
-
-    // Hidratação inicial: resolve os nomes reais dos slugs curados via pages-fetch.
-    function hydrateSelectedLabels() {
-        var ids = (schema.selected_items || []).slice();
-
-        if (ids.length === 0) {
-            renderSelectedLabels({});
-            return;
-        }
+        if (ids.length === 0) return;
 
         $.ajax({
             type: 'POST',
             url: gestor.raiz + gestor.moduloCaminho + '/',
             dataType: 'json',
-            data: {
-                opcao: gestor.moduloOpcao,
-                ajax: 'sim',
-                ajaxOpcao: 'pages-fetch',
-                params: { ids: ids }
-            },
+            data: { opcao: gestor.moduloOpcao, ajax: 'sim', ajaxOpcao: 'pages-fetch', params: { ids: ids } },
             success: function (dados) {
-                var namesMap = {};
-                if (dados && dados.status === 'Ok') {
-                    (dados.results || []).forEach(function (r) {
-                        if (r && r.value) namesMap[r.value] = r.name || r.value;
-                    });
-                }
-                renderSelectedLabels(namesMap);
-            },
-            error: function () { renderSelectedLabels({}); }
+                if (!dados || dados.status !== 'Ok') return;
+                var map = {};
+                (dados.results || []).forEach(function (r) { if (r && r.value) map[r.value] = r; });
+                treeItems.forEach(function (it) {
+                    if (it.type === 'pagina' && map[it.page_id]) {
+                        if (!it.label) it.label = map[it.page_id].name || it.page_id;
+                        if (!it.url) it.url = map[it.page_id].url || '';
+                    }
+                });
+                renderTree();
+            }
         });
     }
 
-    // Desenha a lista flutuante de sugestões; itens já selecionados ficam desabilitados.
+    // ===== Render da árvore
+
+    function typeIcon(type) {
+        switch (type) {
+            case 'link-custom': return 'linkify';
+            case 'cabecalho': return 'heading';
+            case 'link-action': return 'bolt';
+            case 'separador': return 'minus';
+            default: return 'file outline'; // pagina
+        }
+    }
+
+    function typeName(type) {
+        var pt = isPtBr();
+        switch (type) {
+            case 'link-custom': return pt ? 'Link' : 'Link';
+            case 'cabecalho': return pt ? 'Cabeçalho' : 'Header';
+            case 'link-action': return pt ? 'Ação' : 'Action';
+            case 'separador': return pt ? 'Separador' : 'Separator';
+            default: return pt ? 'Página' : 'Page';
+        }
+    }
+
+    function treeRowEl(id) { return $('#menu-tree .menu-tree-row[data-id="' + id + '"]'); }
+
+    function buildTreeRow(it) {
+        var $row = $('<div class="menu-tree-row"></div>')
+            .attr('data-id', it.id)
+            .css('margin-left', (it.depth * STEP) + 'px');
+
+        if (selectedRowId === it.id) $row.addClass('selected');
+
+        $row.append('<i class="bars icon menu-tree-handle" title="' + (isPtBr() ? 'Arraste para ordenar/aninhar' : 'Drag to order/nest') + '"></i>');
+        $row.append('<i class="' + typeIcon(it.type) + ' icon"></i>');
+
+        if (it.type === 'separador') {
+            $row.append($('<span class="menu-tree-label sep"></span>').text('— ' + typeName(it.type) + ' —'));
+        } else {
+            var labelText = it.label || it.page_id || (isPtBr() ? '(sem rótulo)' : '(no label)');
+            $row.append($('<span class="menu-tree-label"></span>').text(labelText));
+        }
+
+        $row.append($('<span class="ui mini label menu-tree-type"></span>').text(typeName(it.type)));
+
+        if (it.type !== 'separador') {
+            $row.append('<i class="edit icon menu-tree-edit" title="' + (isPtBr() ? 'Editar' : 'Edit') + '"></i>');
+        }
+        $row.append('<i class="trash alternate icon menu-tree-delete" title="' + (isPtBr() ? 'Remover' : 'Remove') + '"></i>');
+
+        return $row;
+    }
+
+    function renderTree() {
+        var $tree = $('#menu-tree');
+        if ($tree.length === 0) return;
+
+        $tree.empty();
+
+        if (treeItems.length === 0) {
+            $tree.append($('<div class="menu-tree-empty"></div>').text(
+                isPtBr() ? 'Nenhum item ainda. Adicione itens acima.' : 'No items yet. Add items above.'
+            ));
+            return;
+        }
+
+        treeItems.forEach(function (it) { $tree.append(buildTreeRow(it)); });
+    }
+
+    // ===== Adição de itens
+
+    function addItem(data) {
+        var node = {
+            id: genId(),
+            type: data.type || 'pagina',
+            label: data.label || '',
+            url: data.url || '',
+            page_id: data.page_id || '',
+            css_classes: data.css_classes || '',
+            depth: 0
+        };
+
+        var insertAt = treeItems.length;
+        if (selectedRowId) {
+            var si = indexOfId(selectedRowId);
+            if (si >= 0) {
+                insertAt = si + getBlockLength(si); // logo após o bloco do selecionado (como irmão)
+                node.depth = treeItems[si].depth;
+            }
+        }
+
+        treeItems.splice(insertAt, 0, node);
+        normalizeDepths();
+        renderTree();
+        serializeAndPreview();
+    }
+
+    // Seletor de tipo + campos condicionais
+    function currentItemType() { return $('#item_type').val() || 'pagina'; }
+
+    function toggleItemTypeFields() {
+        var type = currentItemType();
+        $('#page-type-filter-wrapper').toggle(type === 'pagina');
+        $('#manual-search-wrapper').toggle(type === 'pagina');
+        $('#field-custom-label').toggle(type === 'link-custom' || type === 'cabecalho' || type === 'link-action');
+        $('#field-custom-url').toggle(type === 'link-custom' || type === 'link-action');
+        $('#field-custom-css').toggle(type === 'link-action');
+        $('#btn-add-item-wrapper').toggle(type !== 'pagina');
+    }
+
+    // Botão "Adicionar" para tipos não-página (página é adicionada ao clicar na sugestão).
+    $(document).on('click', '#btn-add-item', function () {
+        var type = currentItemType();
+        if (type === 'pagina') return;
+
+        var label = ($('#custom-label').val() || '').trim();
+        var url = ($('#custom-url').val() || '').trim();
+        var css = ($('#custom-css').val() || '').trim();
+
+        if (type === 'separador') {
+            addItem({ type: 'separador' });
+        } else if (type === 'cabecalho') {
+            if (!label) { msg_erro_mostrar(isPtBr() ? 'Informe o rótulo do cabeçalho.' : 'Enter the header label.'); return; }
+            addItem({ type: 'cabecalho', label: label, url: '#' });
+        } else if (type === 'link-custom') {
+            if (!label || !url) { msg_erro_mostrar(isPtBr() ? 'Informe rótulo e URL.' : 'Enter label and URL.'); return; }
+            addItem({ type: 'link-custom', label: label, url: url });
+        } else if (type === 'link-action') {
+            if (!label) { msg_erro_mostrar(isPtBr() ? 'Informe o rótulo.' : 'Enter the label.'); return; }
+            addItem({ type: 'link-action', label: label, url: url, css_classes: css });
+        }
+
+        $('#custom-label, #custom-url, #custom-css').val('');
+        msg_erro_resetar(false);
+    });
+
+    // ===== Autocomplete de páginas (tipo `pagina`)
+
+    function currentPageType() { return $('input[name="page_search_type"]:checked').val() || 'pagina'; }
+
+    function manualNoResultsMsg() { return isPtBr() ? 'Nenhuma página encontrada' : 'No pages found.'; }
+
+    function hideManualSuggestions() { $('#search-suggestions-dropdown').hide().empty(); }
+
     function renderManualSuggestions(results) {
         var $dropdown = $('#search-suggestions-dropdown');
         if ($dropdown.length === 0) return;
@@ -416,7 +604,7 @@ $(document).ready(function () {
         $dropdown.empty();
 
         var selected = {};
-        (schema.selected_items || []).forEach(function (slug) { selected[slug] = true; });
+        treeItems.forEach(function (it) { if (it.type === 'pagina' && it.page_id) selected[it.page_id] = true; });
 
         var rows = (results || []).filter(function (r) { return r && r.value; });
 
@@ -427,6 +615,7 @@ $(document).ready(function () {
                 var $item = $('<div class="item" style="padding: 8px 12px; cursor: pointer;"></div>')
                     .attr('data-id', r.value)
                     .attr('data-name', r.name || r.value)
+                    .attr('data-url', r.url || '')
                     .text(r.name || r.value);
 
                 if (selected[r.value]) {
@@ -449,7 +638,7 @@ $(document).ready(function () {
                 ajax: 'sim',
                 ajaxOpcao: 'pages-search',
                 q: query,
-                params: { q: query }
+                params: { q: query, tipo: currentPageType() }
             },
             success: function (dados) {
                 if (!dados || dados.status !== 'Ok') { renderManualSuggestions([]); return; }
@@ -459,52 +648,40 @@ $(document).ready(function () {
         });
     }
 
-    // Campo de busca com debounce de 300ms (evita requisição a cada caractere).
+    // Campo de busca com debounce de 300ms.
     $(document).on('input', '#manual_search_input', function () {
         var value = ($(this).val() || '').trim();
         if (manualSearchTimer) clearTimeout(manualSearchTimer);
-
         if (value === '') { hideManualSuggestions(); return; }
-
         manualSearchTimer = setTimeout(function () { runManualSearch(value); }, 300);
     });
 
-    // Selecionar uma sugestão: adiciona o slug ao final de selected_items.
+    // Trocar o tipo de página recarrega a busca atual.
+    $(document).on('change', 'input[name="page_search_type"]', function () {
+        var v = ($('#manual_search_input').val() || '').trim();
+        if (v !== '') runManualSearch(v);
+    });
+
+    // Selecionar uma sugestão de página -> cria um nó `pagina` na árvore.
     $(document).on('click', '#search-suggestions-dropdown .item', function () {
         var $item = $(this);
         if ($item.hasClass('disabled')) return;
 
         var slug = $item.attr('data-id');
-        var name = $item.attr('data-name') || slug;
-        if (!slug || (schema.selected_items || []).indexOf(slug) !== -1) return;
+        if (!slug) return;
 
-        schema.selected_items.push(slug);
-        $('#selected-labels-container').append(buildSelectedLabel(slug, name));
-        ensureManualSortable();
-        // req-015 item 1.3: ao adicionar a primeira tag, garantir que o contêiner apareça.
-        toggleSelectedLabelsVisibility();
+        addItem({
+            type: 'pagina',
+            page_id: slug,
+            label: $item.attr('data-name') || slug,
+            url: $item.attr('data-url') || ''
+        });
 
         $('#manual_search_input').val('');
         hideManualSuggestions();
-        scheduleWidgetPreview(false);
     });
 
-    // Remover uma tag pelo ícone "x".
-    $(document).on('click', '#selected-labels-container .remove-tag-btn', function (e) {
-        e.stopPropagation();
-        var $label = $(this).closest('.drag-label');
-        var slug = $label.attr('data-id');
-
-        $label.remove();
-        var idx = (schema.selected_items || []).indexOf(slug);
-        if (idx !== -1) schema.selected_items.splice(idx, 1);
-        // req-015 item 1.3: ao remover a última tag, esconder novamente o contêiner.
-        toggleSelectedLabelsVisibility();
-
-        scheduleWidgetPreview(false);
-    });
-
-    // Fechar a lista de sugestões ao clicar fora do componente ou pressionar Esc.
+    // Fechar a lista de sugestões ao clicar fora ou pressionar Esc.
     $(document).on('click', function (e) {
         if ($(e.target).closest('.search-autocomplete-wrapper').length === 0) hideManualSuggestions();
     });
@@ -512,10 +689,192 @@ $(document).ready(function () {
         if (e.key === 'Escape' || e.keyCode === 27) hideManualSuggestions();
     });
 
+    // ===== Interações da árvore: selecionar, editar, remover
+
+    // Selecionar/desmarcar a linha (define o ponto de inserção do próximo item).
+    $(document).on('click', '.menu-tree-row', function (e) {
+        if ($(e.target).closest('.menu-tree-edit, .menu-tree-delete, .menu-tree-handle').length) return;
+        var id = $(this).attr('data-id');
+        selectedRowId = (selectedRowId === id) ? null : id;
+        renderTree();
+    });
+
+    // Remover o item e todos os seus descendentes.
+    $(document).on('click', '.menu-tree-delete', function (e) {
+        e.stopPropagation();
+        var id = $(this).closest('.menu-tree-row').attr('data-id');
+        var idx = indexOfId(id);
+        if (idx < 0) return;
+
+        treeItems.splice(idx, getBlockLength(idx));
+        if (selectedRowId === id) selectedRowId = null;
+
+        normalizeDepths();
+        renderTree();
+        serializeAndPreview();
+    });
+
+    // Abrir painel de edição inline.
+    $(document).on('click', '.menu-tree-edit', function (e) {
+        e.stopPropagation();
+        var id = $(this).closest('.menu-tree-row').attr('data-id');
+        openEditPanel(id);
+    });
+
+    function openEditPanel(id) {
+        $('.menu-tree-edit-panel').remove();
+
+        var idx = indexOfId(id);
+        if (idx < 0) return;
+        var it = treeItems[idx];
+
+        var $panel = $('<div class="menu-tree-edit-panel ui segment"></div>')
+            .attr('data-id', id)
+            .css('margin-left', (it.depth * STEP + 24) + 'px');
+
+        function addField(labelText, cls, value) {
+            var $f = $('<div class="field" style="margin-bottom:8px;"></div>');
+            $f.append($('<label style="font-size:12px;"></label>').text(labelText));
+            $f.append($('<input type="text">').addClass(cls).val(value || ''));
+            return $f;
+        }
+
+        if (it.type !== 'separador') $panel.append(addField(isPtBr() ? 'Rótulo' : 'Label', 'edit-label', it.label));
+        if (it.type === 'link-custom' || it.type === 'link-action') $panel.append(addField('URL', 'edit-url', it.url));
+        if (it.type === 'link-action') $panel.append(addField(isPtBr() ? 'Classes CSS' : 'CSS classes', 'edit-css', it.css_classes));
+
+        var $btns = $('<div style="margin-top:6px;"></div>');
+        $btns.append($('<button type="button" class="ui mini primary button menu-tree-save"></button>').text(isPtBr() ? 'Salvar' : 'Save'));
+        $btns.append($('<button type="button" class="ui mini button menu-tree-cancel"></button>').text(isPtBr() ? 'Cancelar' : 'Cancel'));
+        $panel.append($btns);
+
+        treeRowEl(id).after($panel);
+    }
+
+    $(document).on('click', '.menu-tree-save', function () {
+        var $panel = $(this).closest('.menu-tree-edit-panel');
+        var id = $panel.attr('data-id');
+        var idx = indexOfId(id);
+        if (idx < 0) { $panel.remove(); return; }
+        var it = treeItems[idx];
+
+        if (it.type !== 'separador') it.label = ($panel.find('.edit-label').val() || '').trim();
+        if (it.type === 'link-custom' || it.type === 'link-action') it.url = ($panel.find('.edit-url').val() || '').trim();
+        if (it.type === 'link-action') it.css_classes = ($panel.find('.edit-css').val() || '').trim();
+
+        $panel.remove();
+        renderTree();
+        serializeAndPreview();
+    });
+
+    $(document).on('click', '.menu-tree-cancel', function () {
+        $(this).closest('.menu-tree-edit-panel').remove();
+    });
+
+    // ===== Drag-and-drop bidimensional (Pointer Events, vanilla)
+
+    function blockContains(i) { return drag && i >= drag.startIndex && i < drag.startIndex + drag.blockLen; }
+
+    function prevDepthExcludingBlock(insertBefore) {
+        for (var i = insertBefore - 1; i >= 0; i--) {
+            if (blockContains(i)) continue;
+            return treeItems[i].depth;
+        }
+        return -1;
+    }
+
+    function showPlaceholder(insertBefore, depth) {
+        var $ph = $('#menu-tree-placeholder');
+        if ($ph.length === 0) $ph = $('<div id="menu-tree-placeholder" class="menu-tree-placeholder"></div>');
+        $ph.css('margin-left', (depth * STEP) + 'px');
+
+        if (insertBefore >= treeItems.length) $('#menu-tree').append($ph);
+        else treeRowEl(treeItems[insertBefore].id).before($ph);
+    }
+
+    function onPointerMove(e) {
+        if (!drag) return;
+        drag.moved = true;
+
+        var y = e.clientY;
+        var insertBefore = treeItems.length;
+        for (var i = 0; i < treeItems.length; i++) {
+            if (blockContains(i)) continue;
+            var el = treeRowEl(treeItems[i].id).get(0);
+            if (!el) continue;
+            var rect = el.getBoundingClientRect();
+            if (y < rect.top + rect.height / 2) { insertBefore = i; break; }
+        }
+        drag.targetIndex = insertBefore;
+
+        var deltaDepth = Math.round((e.clientX - drag.startX) / STEP);
+        var desired = drag.startDepth + deltaDepth;
+        var maxD = prevDepthExcludingBlock(insertBefore) + 1;
+        if (desired < 0) desired = 0;
+        if (desired > maxD) desired = maxD;
+        drag.targetDepth = desired;
+
+        showPlaceholder(insertBefore, desired);
+    }
+
+    function applyDrag() {
+        var start = drag.startIndex, len = drag.blockLen;
+        var block = treeItems.slice(start, start + len);
+        var target = drag.targetIndex;
+
+        treeItems.splice(start, len);
+        if (target > start) target -= len;
+
+        var delta = drag.targetDepth - drag.startDepth;
+        block.forEach(function (it) { it.depth = Math.max(0, it.depth + delta); });
+
+        for (var i = 0; i < block.length; i++) treeItems.splice(target + i, 0, block[i]);
+
+        normalizeDepths();
+        renderTree();
+        serializeAndPreview();
+    }
+
+    function onPointerUp() {
+        document.removeEventListener('pointermove', onPointerMove);
+        document.removeEventListener('pointerup', onPointerUp);
+        $('#menu-tree').removeClass('tree-dragging');
+        $('#menu-tree-placeholder').remove();
+        $('.menu-tree-row').removeClass('dragging-block');
+
+        if (drag && drag.moved) applyDrag();
+        drag = null;
+    }
+
+    $(document).on('pointerdown', '.menu-tree-handle', function (e) {
+        var id = $(this).closest('.menu-tree-row').attr('data-id');
+        var startIndex = indexOfId(id);
+        if (startIndex < 0) return;
+
+        e.preventDefault();
+
+        var blockLen = getBlockLength(startIndex);
+        drag = {
+            id: id,
+            startIndex: startIndex,
+            blockLen: blockLen,
+            startDepth: treeItems[startIndex].depth,
+            startX: e.clientX,
+            targetIndex: startIndex,
+            targetDepth: treeItems[startIndex].depth,
+            moved: false
+        };
+
+        for (var i = startIndex; i < startIndex + blockLen; i++) treeRowEl(treeItems[i].id).addClass('dragging-block');
+        $('#menu-tree').addClass('tree-dragging');
+
+        document.addEventListener('pointermove', onPointerMove);
+        document.addEventListener('pointerup', onPointerUp);
+    });
+
     // ===== Aba "Código do Widget" — CodeMirror read-only
 
     function updateWidgetCodeTab() {
-        // Lib pode ainda não estar no escopo global ao abrir a aba; reagendar.
         if (typeof CodeMirror === 'undefined') {
             setTimeout(updateWidgetCodeTab, 100);
             return;
@@ -524,7 +883,6 @@ $(document).ready(function () {
         var $textarea = $('#hep-widget-code');
         if ($textarea.length === 0) return;
 
-        // Dedup: reaproveitar a instância já anexada à textarea ao alternar entre abas.
         if (!widgetCodeMirror) {
             var existingWrapper = $textarea.next('.CodeMirror');
             if (existingWrapper.length > 0) widgetCodeMirror = existingWrapper[0].CodeMirror;
@@ -543,7 +901,6 @@ $(document).ready(function () {
             widgetCodeMirror.setSize('100%', 800);
         }
 
-        // Slug do menu: na edição vem de gestor.moduloRegistroId; na inserção, placeholder localizado.
         var slug = (typeof gestor !== 'undefined' && gestor.moduloRegistroId)
             ? gestor.moduloRegistroId
             : (isPtBr() ? '[slug-do-menu]' : '[menu-slug]');

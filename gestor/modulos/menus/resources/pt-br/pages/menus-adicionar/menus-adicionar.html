@@ -32,29 +32,87 @@
 
 <h4 class="ui dividing header">Itens do Menu</h4>
 
-<div class="field">
-    <label>Itens selecionados (ordem)</label>
-    <div class="ui label" style="margin: 8px 0; display: block;">
-        <i class="hand pointer icon"></i>
-        Busque e selecione as páginas ativas do site que farão parte deste menu. A ordem de inclusão
-        será preservada na renderização. Arraste as tags para reordenar. Para remover um item, clique
-        no &laquo;x&raquo; ao lado dele.
-    </div>
-    <!-- Autocomplete de busca Ajax + tags reordenáveis (base para a árvore de menus multi-nível). -->
-    <div class="ui fluid icon input search-autocomplete-wrapper" style="position: relative;">
-        <input type="text" id="manual_search_input" placeholder="Digite para buscar páginas..." autocomplete="off">
-        <i class="search icon"></i>
+<div class="ui label" style="margin: 8px 0; display: block;">
+    <i class="sitemap icon"></i>
+    Monte a estrutura do menu adicionando itens de diferentes tipos. Arraste pelo
+    <i class="bars icon"></i> para reordenar; arraste para a direita/esquerda para aninhar como
+    filho ou voltar ao nível anterior (estilo WordPress). Clique em um item para selecioná-lo:
+    o próximo item será inserido logo abaixo dele.
+</div>
 
-        <!-- Lista flutuante de sugestões (Autocomplete Dropdown) -->
-        <div id="search-suggestions-dropdown" class="ui vertical menu" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000; max-height: 250px; overflow-y: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.15); margin: 0 !important;">
+<!-- Construtor de itens do menu -->
+<div class="ui segment">
+    <div class="field">
+        <label>Tipo de Item</label>
+        <select id="item_type" class="ui dropdown">
+            <option value="pagina">Página</option>
+            <option value="link-custom">Link Customizado</option>
+            <option value="cabecalho">Cabeçalho</option>
+            <option value="link-action">Link com Classe CSS</option>
+            <option value="separador">Separador</option>
+        </select>
+    </div>
+
+    <!-- Filtro de tipo de página (somente para o tipo Página) -->
+    <div class="field" id="page-type-filter-wrapper" style="display:none; margin-bottom: 12px;">
+        <div class="inline fields">
+            <label>Tipo de Página</label>
+            <div class="field">
+                <div class="ui radio checkbox" data-tooltip="Clique para mostrar tipo Página" data-position="top left" data-inverted="">
+                    <input type="radio" name="page_search_type" value="pagina" checked="checked">
+                    <label>Página</label>
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui radio checkbox" data-tooltip="Clique para mostrar tipo Sistema" data-position="top left" data-inverted="">
+                    <input type="radio" name="page_search_type" value="sistema">
+                    <label>Sistema</label>
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui radio checkbox" data-tooltip="Clique para mostrar ambos" data-position="top left" data-inverted="">
+                    <input type="radio" name="page_search_type" value="ambos">
+                    <label>Ambos</label>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Contêiner de tags selecionadas (reordenáveis via Sortable.js) -->
-    <div id="selected-labels-container" class="ui segment sortable-labels-container" style="margin-top: 12px; min-height: 50px; padding: 10px; border: 1px dashed #ccc; border-radius: 4px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: #fafafa;">
-        <!-- Labels inseridos dinamicamente por JS -->
+    <!-- Busca de páginas (somente para o tipo Página) -->
+    <div class="field" id="manual-search-wrapper">
+        <label>Buscar página</label>
+        <div class="ui fluid icon input search-autocomplete-wrapper" style="position: relative;">
+            <input type="text" id="manual_search_input" placeholder="Digite para buscar páginas..." autocomplete="off">
+            <i class="search icon"></i>
+            <!-- Lista flutuante de sugestões (Autocomplete Dropdown) -->
+            <div id="search-suggestions-dropdown" class="ui vertical menu" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000; max-height: 250px; overflow-y: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.15); margin: 0 !important;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Campos para tipos customizados (rótulo / URL / classes CSS) -->
+    <div class="field" id="field-custom-label" style="display:none;">
+        <label>Rótulo do Menu</label>
+        <input type="text" id="custom-label" placeholder="Ex: Fale Conosco" autocomplete="off">
+    </div>
+    <div class="field" id="field-custom-url" style="display:none;">
+        <label>URL</label>
+        <input type="text" id="custom-url" placeholder="Ex: https://exemplo.com ou /contato/" autocomplete="off">
+    </div>
+    <div class="field" id="field-custom-css" style="display:none;">
+        <label>Classes CSS Personalizadas</label>
+        <input type="text" id="custom-css" placeholder="Ex: abrir-modal js-contato" autocomplete="off">
+    </div>
+
+    <div id="btn-add-item-wrapper" style="display:none;">
+        <button type="button" class="ui blue button" id="btn-add-item">
+            <i class="plus icon"></i> Adicionar item
+        </button>
     </div>
 </div>
+
+<!-- Árvore de itens do menu (drag-and-drop multinível, renderizada por JS) -->
+<div id="menu-tree"></div>
 
 <input type="hidden" name="fields_schema">
 
@@ -64,9 +122,12 @@
     <i class="info circle icon"></i>
     <div class="content">
         <p>O HTML abaixo é o template renderizado no site. Use o bloco
-            <code>&lt;!-- item &lt; --&gt; ... &lt;!-- item &gt; --&gt;</code> para envolver o trecho que será repetido
-            para cada item do menu. Dentro dele, use placeholders <code>[[item#label]]</code> e
-            <code>[[item#url]]</code> (rótulo e endereço da página).
+            <code>&lt;!-- item &lt; --&gt; ... &lt;!-- item &gt; --&gt;</code> para itens sem filhos (folhas) e o bloco
+            <code>&lt;!-- item-parent &lt; --&gt; ... &lt;!-- item-parent &gt; --&gt;</code> para itens com submenu —
+            dentro dele, o placeholder <code>[[item#children]]</code> recebe a renderização recursiva dos
+            filhos. Variáveis por item: <code>[[item#label]]</code>, <code>[[item#url]]</code>,
+            <code>[[item#slug]]</code> e <code>[[item#css_classes]]</code>. Use
+            <code>&lt;!-- no-item &lt; --&gt; ... &lt;!-- no-item &gt; --&gt;</code> para o estado sem itens.
         </p>
     </div>
 </div>

@@ -7,6 +7,13 @@
                 <span class="text-gray-300">/</span>
             </li>
             <!-- item > -->
+            <!-- item-parent < -->
+            <li class="flex items-center gap-2">
+                <a href="@[[item#url]]@" class="hover:text-blue-600 transition-colors">@[[item#label]]@</a>
+                <span class="text-gray-300">/</span>
+            </li>
+            @[[item#children]]@
+            <!-- item-parent > -->
             <!-- no-item < -->
             <li class="text-gray-400 italic">Nenhum item no menu</li>
             <!-- no-item > -->

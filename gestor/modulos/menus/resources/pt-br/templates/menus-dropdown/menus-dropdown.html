@@ -10,6 +10,16 @@
                 <a href="@[[item#url]]@" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">@[[item#label]]@</a>
             </li>
             <!-- item > -->
+            <!-- item-parent < -->
+            <li class="relative group/sub">
+                <a href="@[[item#url]]@" class="flex items-center justify-between px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">@[[item#label]]@
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+                <ul class="absolute left-full top-0 ml-1 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover/sub:block z-20">
+                    @[[item#children]]@
+                </ul>
+            </li>
+            <!-- item-parent > -->
             <!-- no-item < -->
             <li class="px-4 py-2 text-gray-400 italic">Nenhum item no menu</li>
             <!-- no-item > -->

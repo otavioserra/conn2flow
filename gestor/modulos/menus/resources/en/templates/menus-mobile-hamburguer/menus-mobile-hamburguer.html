@@ -12,6 +12,14 @@
                     <a href="@[[item#url]]@" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">@[[item#label]]@</a>
                 </li>
                 <!-- item > -->
+                <!-- item-parent < -->
+                <li class="border-b border-gray-100">
+                    <span class="block px-4 py-3 font-semibold text-gray-800">@[[item#label]]@</span>
+                    <ul class="bg-gray-50 pl-4">
+                        @[[item#children]]@
+                    </ul>
+                </li>
+                <!-- item-parent > -->
                 <!-- no-item < -->
                 <li class="px-4 py-3 text-gray-400 italic">No menu items</li>
                 <!-- no-item > -->

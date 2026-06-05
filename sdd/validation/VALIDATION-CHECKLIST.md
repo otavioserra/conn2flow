@@ -609,6 +609,68 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - aba "Pré-Visualização" renderiza o menu com os itens reais; aba "Código do Widget" mostra o wrapper `widgets#menus->render(...)`
   - Parte 1: simulação dos destaques respeita o `#count`; dropdown de autocomplete alinhado; grab no label inteiro
 
+## BATCH-016 - Hierarquia Multi-nível de Menus e Drag-and-Drop Estilo WordPress (req-016)
+
+### Contrato e decisão
+
+- [x] Contrato de `fields_schema.selected_items` migrado para árvore tipada (ver [DEC-023]); sem migração de banco (`fields_schema` já é `json`)
+- [x] Retrocompatibilidade: lista de slugs (BATCH-015) é interpretada como itens `pagina` de nível raiz
+
+### Itens tipados e filtro de página
+
+- [x] **5 tipos de item** disponíveis no construtor: `pagina`, `link-custom`, `cabecalho`, `link-action`, `separador`
+- [x] Campos condicionais por tipo (rótulo/URL/classes CSS) mostrados/ocultados conforme o tipo
+- [x] **Filtro de tipo de página** (rádios `pagina`/`sistema`/`ambos`, default `pagina`) exibido apenas para o tipo `pagina`
+- [x] AJAX `pages-search` aplica `AND p.tipo='<valor>'` para `pagina`/`sistema` e ignora o filtro em `ambos` (default `pagina`)
+- [x] `pages-search`/`pages-fetch` retornam `url` (caminho canônico) para hidratar nós de página
+
+### Editor de árvore (componente próprio)
+
+- [x] Componente de drag-and-drop bidimensional próprio: Pointer Events (JS vanilla) + visual Fomantic-UI, **sem** jQuery UI/nestedSortable/Sortable.js
+- [x] Dependência CDN do `Sortable.js` removida das 3 funções de `menus.php`
+- [x] Modelo interno flat-com-`depth`; arraste vertical reordena e arraste horizontal indenta/desindenta (clamp em `depth(anterior)+1`); placeholder mostra posição+recuo
+- [x] Mover um item move também seus descendentes (preservando recuo relativo)
+- [x] Edição inline (rótulo/URL/classes CSS conforme tipo) e exclusão recursiva (item + descendentes)
+- [x] Inserção do novo item logo abaixo do item selecionado (como irmão) ou no fim da raiz
+- [x] Serialização flat→árvore no submit e no preview; hidratação árvore→flat na carga
+
+### Renderização recursiva (widget)
+
+- [x] Três delimitadores suportados: `no-item`, `item` (folha) e `item-parent` (com `[[item#children]]`)
+- [x] `menus_render_level()` recursiva; tipo `pagina` resolve `label`/`url` do banco pelo `page_id` (links canônicos)
+- [x] Variáveis expostas: `[[item#label]]`, `[[item#url]]`, `[[item#slug]]`, `[[item#css_classes]]`, `[[item#children]]`
+- [x] Substituição tolerante às arrobas do banco (`@[[item#X]]@` → valor, sem sobra de `@valor@`)
+- [x] Fallback DFS quando o template não tem `item-parent` (nenhum item é perdido)
+- [x] 12 templates (6 pt-br + 6 en) atualizados com bloco `item-parent`
+
+### Evidência registrada em 2026-06-04
+
+- Validação executável (estática + teste de unidade do renderizador, sem ambiente Docker nesta rodada):
+  - `php -l gestor/modulos/menus/menus.php` → `No syntax errors detected`
+  - `php -l gestor/modulos/menus/menus.widget.php` → `No syntax errors detected`
+  - `node --check gestor/modulos/menus/menus.js` → `menus.js OK`
+  - `JSON.parse` de `gestor/modulos/menus/menus.json` → `menus.json OK`
+  - Teste PHP do renderizador recursivo (stubs de `banco_select`/`banco_escape_field`, arquivo temporário já removido) cobrindo 4 cenários:
+    - **árvore**: `cabecalho` com filhos usou `item-parent`; filhos `pagina` resolvidos do banco (`Economia`, link canônico) e label customizado preservado (`Esportes (custom)`); `link-custom` folha via `item`; arrobas consumidas corretamente
+    - **vazio**: usou bloco `no-item`
+    - **legado** (lista de slugs): convertido em nós `pagina` raiz e resolvido
+    - **fallback** (template sem `item-parent`): árvore achatada via DFS, sem perder itens
+- Arquivos alterados:
+  - `gestor/modulos/menus/menus.php` (filtro `tipo` em `pages-search`, `url` em `pages-search`/`pages-fetch`, remoção do Sortable.js CDN)
+  - `gestor/modulos/menus/menus.widget.php` (renderização recursiva completa: `menus_render_level`, normalização da árvore, resolução por tipo, fallback DFS)
+  - `gestor/modulos/menus/menus.js` (componente de árvore: flat-com-depth, DnD vanilla por Pointer Events, edição inline, add por tipo, autocomplete com filtro, serialização)
+  - `gestor/modulos/menus/resources/{pt-br,en}/pages/menus-{adicionar,editar,clonar}/*.html` (6 páginas: construtor de itens + filtro de página + contêiner da árvore; info de "Conteúdo do Menu" atualizada em adicionar/editar)
+  - `gestor/modulos/menus/resources/{pt-br,en}/templates/menus-*/*.html` (12 templates: bloco `item-parent`)
+  - `gestor/modulos/menus/menus.json` (version dos recursos alterados 1.1 → 1.2)
+- Decisão registrada: [DEC-023](../decisions/DECISION-LOG.md) (estende DEC-022; mantém DEC-014)
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+- Pendência (com o operador): rodar `🗃️ Projects - Update => Core` para compilar recursos do `menus`, recalcular checksums (o pipeline UPSERT recalcula) e aplicar no ambiente de testes. Depois, validar manualmente:
+  - adicionar itens de cada tipo (página com filtro pagina/sistema/ambos; link-custom; cabeçalho; link-action; separador)
+  - arrastar para ordenar e para indentar/desindentar (estilo WordPress); mover pai move os filhos
+  - editar rótulo/URL/classes inline; excluir nó com filhos remove a subárvore
+  - reabrir o registro preserva a árvore salva (hidratação)
+  - aba "Pré-Visualização" renderiza a árvore com submenus; aba "Código do Widget" mostra o wrapper `widgets#menus->render(...)`
+
 ## BATCH-DATA-001 - Reestruturação e Otimização de Dados e Sincronização
 
 - [ ] Migrações Phinx alteradas de `linguagem_codigo` para `language`
@@ -627,3 +689,17 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
 - [ ] Validação de Transações:
   - [ ] Simular um erro de banco de dados no meio da sincronização de uma tabela.
   - [ ] Confirmar se o `rollBack()` restaura o estado anterior da tabela sem alterações parciais.
+
+## BATCH-017 - Ajustes e Correções no Módulo de Menus (req-017)
+
+- [ ] Variáveis e Simulação no Editor HTML:
+  - [ ] Ativar a exibição da aba de Simulação/Variáveis no editor HTML para o alvo `menus` no backend.
+- [ ] Componente de Simulação de Menus:
+  - [ ] Criar componentes de simulação em `gestor/resources/{pt-br,en}/components/html-editor-menus-simulation/` contendo dados simulados estruturados (nós com sub-itens, URLs, etc.).
+- [ ] Correção do alternador JS (`menu_item_type`):
+  - [ ] Corrigir toggle em `menus.js` para que ao selecionar links customizados, cabeçalhos, separadores e ações, exiba apenas os inputs corretos daquele tipo e oculte a busca de páginas.
+- [ ] Melhorias no Placeholder do Drag-and-Drop:
+  - [ ] Aumentar altura da caixa tracejada azul para corresponder à altura dos itens reais.
+  - [ ] Adicionar texto "Solte o item aqui" com setas laterais (← / →).
+- [ ] Correção de Hover nos Submenus:
+  - [ ] Ajustar a geometria CSS ou JS nos templates/preview para evitar sumiço dos submenus quando o mouse se desloca da opção principal para a lista flutuante.

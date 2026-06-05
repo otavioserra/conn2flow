@@ -42,11 +42,11 @@
                     "id": "menus-horizontal-navbar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "17ea8d996c849f31dae42d8754f8010e",
+                        "html": "c5ec3fbb2ba36f70f4922aa388bdc607",
                         "css": "",
-                        "combined": "17ea8d996c849f31dae42d8754f8010e"
+                        "combined": "c5ec3fbb2ba36f70f4922aa388bdc607"
                     }
                 },
                 {
@@ -54,11 +54,11 @@
                     "id": "menus-vertical-sidebar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "df1b520e76b2811cc18c7e630784c35d",
+                        "html": "e36a01c102605c584764ea427752aa15",
                         "css": "",
-                        "combined": "df1b520e76b2811cc18c7e630784c35d"
+                        "combined": "e36a01c102605c584764ea427752aa15"
                     }
                 },
                 {
@@ -66,11 +66,11 @@
                     "id": "menus-footer-colunas",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "652b7c3bad28a932045090e5375936d4",
+                        "html": "1a2bd2b6b21020e70a23e42188c2e44f",
                         "css": "",
-                        "combined": "652b7c3bad28a932045090e5375936d4"
+                        "combined": "1a2bd2b6b21020e70a23e42188c2e44f"
                     }
                 },
                 {
@@ -78,11 +78,11 @@
                     "id": "menus-dropdown",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "cc4bbd649847659291c0441b307d602c",
+                        "html": "6ab0c9e95399b821698fd0e2bc217211",
                         "css": "",
-                        "combined": "cc4bbd649847659291c0441b307d602c"
+                        "combined": "6ab0c9e95399b821698fd0e2bc217211"
                     }
                 },
                 {
@@ -90,11 +90,11 @@
                     "id": "menus-breadcrumb",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "f46839ee8929298d28926a109aa939d0",
+                        "html": "7ccb5e89814791764a72cb12f3df686b",
                         "css": "",
-                        "combined": "f46839ee8929298d28926a109aa939d0"
+                        "combined": "7ccb5e89814791764a72cb12f3df686b"
                     }
                 },
                 {
@@ -102,11 +102,11 @@
                     "id": "menus-mobile-hamburguer",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "6fa6e9ca3f94d2bfb5deab0e977f77ef",
+                        "html": "75d05a09c96a667252beeb605d137b5d",
                         "css": "",
-                        "combined": "6fa6e9ca3f94d2bfb5deab0e977f77ef"
+                        "combined": "75d05a09c96a667252beeb605d137b5d"
                     }
                 }
             ],
@@ -133,11 +133,11 @@
                     "path": "menus\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "6ba8e520a7ce8e507b21950d05788c9b",
+                        "html": "d89d8142d03f0ea5e8d88c40d12ce373",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "077104ca03c94cbe41f599aee4c98a9d"
+                        "combined": "e27d2d45a2e94f16539640f8fd96dc14"
                     }
                 },
                 {
@@ -147,11 +147,11 @@
                     "path": "menus\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "a9eb30534b9909522cdef2af802b3a5d",
+                        "html": "2ddc2d96cb64fdd929c92295264052d1",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "cb62d33d7fda5810ce7e0bf6505acf11"
+                        "combined": "5f5cc0805c4bf65cc5742a17755558ad"
                     }
                 },
                 {
@@ -161,11 +161,11 @@
                     "path": "menus\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "fa1d4e929be5d44ee8ed45dce137780e",
+                        "html": "9431d2c17c390575729d1f01ee4dcb87",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "5312a64cb0f24a5f66162c837bc3a1bf"
+                        "combined": "8f88f70b50d46b67c6eb7b48ca098492"
                     }
                 }
             ],
@@ -217,11 +217,11 @@
                     "id": "menus-horizontal-navbar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "91482437c666b5c77f2ab78e394d52e8",
+                        "html": "4c67a055d69f4869a820032e6653f63b",
                         "css": "",
-                        "combined": "91482437c666b5c77f2ab78e394d52e8"
+                        "combined": "4c67a055d69f4869a820032e6653f63b"
                     }
                 },
                 {
@@ -229,11 +229,11 @@
                     "id": "menus-vertical-sidebar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "fdcde4a9bf99a6d8936462e170a8af49",
+                        "html": "d36407c3fcee6efdfee788bca613e7ae",
                         "css": "",
-                        "combined": "fdcde4a9bf99a6d8936462e170a8af49"
+                        "combined": "d36407c3fcee6efdfee788bca613e7ae"
                     }
                 },
                 {
@@ -241,11 +241,11 @@
                     "id": "menus-footer-colunas",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "0fef010a59698f5458dbb5f122ad1b17",
+                        "html": "5d3b1501f2bd5108aece6d3f9cabbcd4",
                         "css": "",
-                        "combined": "0fef010a59698f5458dbb5f122ad1b17"
+                        "combined": "5d3b1501f2bd5108aece6d3f9cabbcd4"
                     }
                 },
                 {
@@ -253,11 +253,11 @@
                     "id": "menus-dropdown",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "26dfffad35e25afb9ee3f389ef8adc2c",
+                        "html": "3840a15ecf482ba80970d6f3e50d4809",
                         "css": "",
-                        "combined": "26dfffad35e25afb9ee3f389ef8adc2c"
+                        "combined": "3840a15ecf482ba80970d6f3e50d4809"
                     }
                 },
                 {
@@ -265,11 +265,11 @@
                     "id": "menus-breadcrumb",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "8f813d02e8b5e5bcccdd87a71b1ea54c",
+                        "html": "d873b8473e1a6c9c2f7630c7897a119e",
                         "css": "",
-                        "combined": "8f813d02e8b5e5bcccdd87a71b1ea54c"
+                        "combined": "d873b8473e1a6c9c2f7630c7897a119e"
                     }
                 },
                 {
@@ -277,11 +277,11 @@
                     "id": "menus-mobile-hamburguer",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "5722a2fa6aa453454e7944a73770077f",
+                        "html": "d9785b3973ce167b2e13f1946a90fb4f",
                         "css": "",
-                        "combined": "5722a2fa6aa453454e7944a73770077f"
+                        "combined": "d9785b3973ce167b2e13f1946a90fb4f"
                     }
                 }
             ],
@@ -308,11 +308,11 @@
                     "path": "menus\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "4f955923daf6133bff38d3ddad037973",
+                        "html": "75c06e22b0fa8753d872679155676962",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "958b59f0f7010689d6eddbc3f9a059c6"
+                        "combined": "f938dd97f162d12d34b2b70e8e23cb3f"
                     }
                 },
                 {
@@ -322,11 +322,11 @@
                     "path": "menus\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "ac659ac904ba40693ef6c1797aab845a",
+                        "html": "abc9093d6f03ac142aa9fcb8fac82d51",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "57f83106561c1abeea80fc2d21e9ab44"
+                        "combined": "536aa5731bc5c97fc78ca2c22f1a68ec"
                     }
                 },
                 {
@@ -336,11 +336,11 @@
                     "path": "menus\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "7e5ebf5c5652861116ac4361ea87f682",
+                        "html": "03bf825130f80a333ab43b29dd59ffd0",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "45129d5e252325c67f3be6192585451f"
+                        "combined": "555f2d40037223501ff81219733f6015"
                     }
                 }
             ],

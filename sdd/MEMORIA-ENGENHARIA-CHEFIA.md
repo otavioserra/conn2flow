@@ -35,8 +35,13 @@
   - Funcionalidades, ideias e conceitos de segurança discutidos em brainstorms (como o planejamento de 2FA e Social Login) **não** devem ser colocados em arquivos de requisições de intake ativos (`human-requests`).
   - Devem ser mantidos apenas como tópicos/linhas marcados em status `blocked` (ou `planejado`) no **[BATCH-INDEX.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/BATCH-INDEX.md)**, evitando desvios ou ambiguidades em relação ao escopo das tarefas ativas.
 
+- **Divisão de Papéis (Chefia vs Execução)**:
+  - O agente no modo planejador/arquiteto atua como Engenheiro Chefe. Ele não deve realizar modificações diretas em arquivos de código-fonte da aplicação (PHP, HTML, JS, CSS).
+  - Suas responsabilidades são limitadas a criar e atualizar especificações em `sdd/human-requests/`, documentar decisões técnicas no `DECISION-LOG.md`, gerenciar o `BATCH-INDEX.md` e registrar planos. As alterações de código são papel exclusivo do Engenheiro Executor.
+
 ---
 
 ## Notas Gerais
 
 - As notas deste arquivo foram registradas pelo agente IA sob autorização expressa do Engenheiro Chefe Humano na sessão de 04/06/2026 para reter aprendizados de relacionamento de pair programming.
+- Adicionado item sobre a divisão de papéis em 05/06/2026.

@@ -110,4 +110,20 @@ Esta é uma inicialização preliminar: em lotes futuros o autocomplete será ex
 
 Supera [DEC-018](#dec-018---2026-05-26---accepted), [DEC-019](#dec-019---2026-05-28---accepted) e [DEC-020](#dec-020---2026-05-28---accepted) (req-014). O dropdown múltiplo do Fomantic UI e o componente reutilizável `PublisherHighlightsCustomDropdown` (`gestor/assets/interface/jquery-custom-dropdown.js`) são removidos por sucessivos problemas de sincronização de estado, concorrência de callbacks `onAdd`/`onRemove` e perda da ordem cronológica de cliques. A curadoria manual passa a usar um componente de autocomplete construído do zero no próprio módulo: um `<input type="text">` de busca, lista flutuante de sugestões alimentada por AJAX (`publisher-pages-search`) e tags (Fomantic UI Labels) renderizadas em um contêiner. A reordenação manual das tags usa drag-and-drop via biblioteca `Sortable.js` (CDN). Permanece inalterado o contrato de serialização: `fields_schema.selected_items` continua sendo a lista ordenada de slugs textuais ([DEC-014](#dec-014---2026-05-25---accepted)), agora derivada diretamente da ordem física das tags. Cada adição, remoção ou reordenação atualiza `selected_items` e dispara `scheduleWidgetPreview`.
 
+## DEC-023 - 2026-06-04 - accepted
+
+Hierarquia multi-nível de menus e editor drag-and-drop estilo WordPress (req-016 / BATCH-016). Decisões aprovadas pelo Engenheiro Chefe nesta rodada:
+
+1. **Contrato da árvore de itens (estende [DEC-022](#dec-022---2026-06-04---accepted))**: `fields_schema.selected_items` deixa de ser uma lista plana de slugs e passa a ser uma **árvore ordenada de objetos tipados**. Cada nó tem `id` (id de UI), `type`, `label`, `url`, `css_classes` e `children` (array recursivo); nós do tipo `pagina` adicionam `page_id` (slug da página). O contrato de IDs textuais de [DEC-014](#dec-014---2026-05-25---accepted) é preservado: o tipo `pagina` referencia o slug textual em `page_id`, sem IDs numéricos. **Retrocompatibilidade**: um `selected_items` no formato antigo (lista de strings) é interpretado como itens `pagina` de nível raiz.
+
+2. **Cinco tipos de item**: `pagina` (vincula página física, link resolvido dinamicamente pelo `page_id`), `link-custom` (rótulo + URL livres), `cabecalho` (apenas rótulo, agrupa submenu), `link-action` (rótulo + URL + classes CSS para disparar scripts/modais no frontend) e `separador` (linha divisória sem rótulo/link).
+
+3. **Filtro de tipo de página no autocomplete**: a busca de páginas (`pages-search`) passa a aceitar o parâmetro `tipo` (`pagina` | `sistema` | `ambos`, default `pagina`), filtrando `paginas.tipo`. A UI expõe rádios inline (Fomantic) que recarregam a busca ao mudar.
+
+4. **Componente de drag-and-drop próprio (vanilla + Fomantic)**: o editor de árvore é construído do zero com **Pointer Events em JS vanilla** e visual **Fomantic-UI**, sem jQuery UI / nestedSortable / Sortable.js. O modelo interno de edição é uma **lista plana com `depth`** (padrão WordPress); o arraste é bidimensional — vertical define a ordem, o deslocamento horizontal define a profundidade (filho/irmão), com *clamp* em `depth(item acima)+1`. A dependência CDN do `Sortable.js` é removida do módulo `menus`. A conversão flat↔árvore ocorre nas fronteiras (hidratação, submit e preview).
+
+5. **Renderização recursiva no widget**: além de `no-item` e `item` (folha), os templates suportam o delimitador `item-parent` (`<!-- item-parent < --> ... <!-- item-parent > -->`) com o placeholder especial `[[item#children]]`, onde a renderização recursiva dos filhos é injetada. A função `menus_render_level()` percorre a árvore; o tipo `pagina` resolve `label`/`url` do banco em tempo de render (links canônicos sempre atualizados). Templates sem `item-parent` permanecem funcionais (a árvore é achatada via DFS sobre o bloco `item`). Variáveis expostas: `[[item#label]]`, `[[item#url]]`, `[[item#slug]]`, `[[item#css_classes]]` e `[[item#children]]`.
+
+`fields_schema` permanece coluna `json` — a árvore cabe sem migração de banco.
+
 

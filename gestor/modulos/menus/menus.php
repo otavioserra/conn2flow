@@ -148,9 +148,9 @@ function menus_adicionar(){
 
 	// ===== Inclusão Módulo JS
 
+	// req-016: o editor de árvore de menus é um componente próprio (Pointer Events em JS
+	// vanilla + visual Fomantic-UI), sem dependência externa de drag-and-drop.
 	gestor_pagina_javascript_incluir();
-	// Sortable.js (CDN) para reordenação drag-and-drop das tags de itens curados.
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
 
 	// ===== Interface adicionar finalizar opções
 
@@ -419,9 +419,9 @@ function menus_editar(){
 
 	// ===== Inclusão Módulo JS
 
+	// req-016: o editor de árvore de menus é um componente próprio (Pointer Events em JS
+	// vanilla + visual Fomantic-UI), sem dependência externa de drag-and-drop.
 	gestor_pagina_javascript_incluir();
-	// Sortable.js (CDN) para reordenação drag-and-drop das tags de itens curados.
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
 
 	// ===== Interface editar finalizar opções
 
@@ -614,9 +614,9 @@ function menus_clonar(){
 		gestor_redirecionar_raiz();
 	}
 
+	// req-016: o editor de árvore de menus é um componente próprio (Pointer Events em JS
+	// vanilla + visual Fomantic-UI), sem dependência externa de drag-and-drop.
 	gestor_pagina_javascript_incluir();
-	// Sortable.js (CDN) para reordenação drag-and-drop das tags de itens curados.
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
 
 	$_GESTOR['interface']['clonar']['finalizar'] = Array(
 		'formulario' => Array(
@@ -813,15 +813,27 @@ function menus_ajax_template_load(){
  * um termo de busca (`q`), para o autocomplete de itens do menu.
  *
  * Menus são livres de publicadores: a busca varre diretamente a tabela `paginas`.
- * Retorna `{ status, results: [{ value: slug, name: nome }, ...] }`.
+ *
+ * req-016 §3.1: filtro por tipo de página. O parâmetro `tipo` aceita:
+ *  - 'pagina'  -> apenas páginas de conteúdo padrão (AND p.tipo='pagina')
+ *  - 'sistema' -> apenas páginas de rotinas do sistema (AND p.tipo='sistema')
+ *  - 'ambos'   -> qualquer tipo (sem filtro de tipo)
+ * Quando omitido, aplica 'pagina' por padrão.
+ *
+ * Retorna `{ status, results: [{ value: slug, name: nome, url: caminho }, ...] }`.
  */
 function menus_ajax_pages_search(){
 	global $_GESTOR;
 
 	$q = trim((string)($_REQUEST['params']['q'] ?? ($_REQUEST['q'] ?? '')));
+	$tipo = trim((string)($_REQUEST['params']['tipo'] ?? ($_REQUEST['tipo'] ?? 'pagina')));
 
 	$where = "WHERE p.status='A'"
 		." AND p.language='".$_GESTOR['linguagem-codigo']."'";
+
+	if($tipo === 'pagina' || $tipo === 'sistema'){
+		$where .= " AND p.tipo='".banco_escape_field($tipo)."'";
+	}
 
 	if($q !== ''){
 		$q_escaped = banco_escape_field($q);
@@ -832,7 +844,7 @@ function menus_ajax_pages_search(){
 
 	$rows = banco_select(Array(
 		'tabela' => 'paginas AS p',
-		'campos' => Array('p.id', 'p.nome'),
+		'campos' => Array('p.id', 'p.nome', 'p.caminho'),
 		'extra' => $extra,
 	));
 
@@ -842,6 +854,7 @@ function menus_ajax_pages_search(){
 			$results[] = [
 				'value' => $row['p.id'] ?? '',
 				'name' => $row['p.nome'] ?? ($row['p.id'] ?? ''),
+				'url' => isset($row['p.caminho']) && $row['p.caminho'] ? $_GESTOR['url-raiz'].$row['p.caminho'] : '',
 			];
 		}
 	}
@@ -881,7 +894,7 @@ function menus_ajax_pages_fetch(){
 
 	$rows = banco_select(Array(
 		'tabela' => 'paginas AS p',
-		'campos' => Array('p.id', 'p.nome'),
+		'campos' => Array('p.id', 'p.nome', 'p.caminho'),
 		'extra' =>
 			"WHERE p.status='A'"
 			." AND p.language='".$_GESTOR['linguagem-codigo']."'"
@@ -894,6 +907,7 @@ function menus_ajax_pages_fetch(){
 			$results[] = [
 				'value' => $row['p.id'] ?? '',
 				'name' => $row['p.nome'] ?? ($row['p.id'] ?? ''),
+				'url' => isset($row['p.caminho']) && $row['p.caminho'] ? $_GESTOR['url-raiz'].$row['p.caminho'] : '',
 			];
 		}
 	}
