@@ -36,7 +36,11 @@ $(document).ready(function () {
             + '.menu-tree-label.sep{color:#999;font-style:italic;}'
             + '.menu-tree-edit,.menu-tree-delete{cursor:pointer;opacity:0.6;}'
             + '.menu-tree-edit:hover,.menu-tree-delete:hover{opacity:1;}'
-            + '.menu-tree-placeholder{height:8px;margin:4px 0;border:2px dashed #2185d0;border-radius:4px;background:#e8f3ff;}'
+            + '.menu-tree-placeholder{display:flex;align-items:center;justify-content:center;gap:12px;min-height:38px;'
+            + 'margin:4px 0;border:2px dashed #2185d0;border-radius:4px;background:#e8f3ff;color:#2185d0;font-size:13px;'
+            + 'font-weight:bold;user-select:none;box-sizing:border-box;}'
+            + '.menu-tree-placeholder .ph-arrow{font-size:18px;line-height:1;opacity:0.85;}'
+            + '.menu-tree-placeholder .ph-text{letter-spacing:0.3px;}'
             + '.menu-tree-edit-panel{margin:2px 0 8px;padding:10px;}'
             + '.menu-tree-empty{padding:14px;color:#999;font-style:italic;text-align:center;'
             + 'border:1px dashed #ccc;border-radius:4px;background:#fafafa;}';
@@ -137,7 +141,11 @@ $(document).ready(function () {
     var $template = $('select[name="template_id"]');
 
     // Componentes Fomantic do construtor de itens.
-    $('#item_type').dropdown({ onChange: function () { setTimeout(toggleItemTypeFields, 0); } });
+    // req-017 item 1.3: o Fomantic converte o <select id="item_type"> e `$('#item_type').val()`
+    // deixa de refletir a escolha, fazendo `currentItemType()` cair sempre no fallback 'pagina'
+    // (só a busca de páginas aparecia). Lemos o valor via `dropdown('get value')` e propagamos
+    // o `value` do onChange diretamente para o toggle.
+    $('#item_type').dropdown({ onChange: function (value) { setTimeout(function () { toggleItemTypeFields(value); }, 0); } });
     $('.ui.radio.checkbox').checkbox();
     toggleItemTypeFields();
 
@@ -551,10 +559,16 @@ $(document).ready(function () {
     }
 
     // Seletor de tipo + campos condicionais
-    function currentItemType() { return $('#item_type').val() || 'pagina'; }
+    // req-017 item 1.3: ler o valor pelo módulo do dropdown Fomantic (o <select> convertido
+    // não responde mais a `.val()`); cair em `.val()` e por fim em 'pagina' como rede de segurança.
+    function currentItemType() {
+        var val = $('#item_type').dropdown('get value');
+        if (val === undefined || val === null || val === '') val = $('#item_type').val();
+        return val || 'pagina';
+    }
 
-    function toggleItemTypeFields() {
-        var type = currentItemType();
+    function toggleItemTypeFields(typeArg) {
+        var type = typeArg || currentItemType();
         $('#page-type-filter-wrapper').toggle(type === 'pagina');
         $('#manual-search-wrapper').toggle(type === 'pagina');
         $('#field-custom-label').toggle(type === 'link-custom' || type === 'cabecalho' || type === 'link-action');
@@ -785,7 +799,16 @@ $(document).ready(function () {
 
     function showPlaceholder(insertBefore, depth) {
         var $ph = $('#menu-tree-placeholder');
-        if ($ph.length === 0) $ph = $('<div id="menu-tree-placeholder" class="menu-tree-placeholder"></div>');
+        if ($ph.length === 0) {
+            // req-017 item 1.4: a caixa de drop tem a altura de um item real (não mais achatada)
+            // e exibe "Solte o item aqui" entre setas ← / → indicando que arrastar para os lados
+            // recua/avança a hierarquia.
+            $ph = $('<div id="menu-tree-placeholder" class="menu-tree-placeholder"></div>');
+            var dropText = isPtBr() ? 'Solte o item aqui' : 'Drop item here';
+            $ph.append('<span class="ph-arrow">←</span>');
+            $ph.append($('<span class="ph-text"></span>').text(dropText));
+            $ph.append('<span class="ph-arrow">→</span>');
+        }
         $ph.css('margin-left', (depth * STEP) + 'px');
 
         if (insertBefore >= treeItems.length) $('#menu-tree').append($ph);

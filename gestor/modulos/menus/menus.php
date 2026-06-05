@@ -41,6 +41,25 @@ function menus_extract_item_variables($html){
 	return array_values($unique);
 }
 
+/**
+ * Variáveis fixas expostas pelos templates de menu ao Editor HTML (req-017 item 1).
+ *
+ * Diferente do `publisher-highlights` (variáveis dinâmicas mapeadas a um publicador), os
+ * menus têm um conjunto fixo e conhecido de variáveis `[[item#X]]` resolvidas pelo widget
+ * renderer. Esta lista alimenta a aba "Variáveis"/"Simular" do html-editor.
+ *
+ * @return array Lista no formato [['id' => 'label'], ['id' => 'url'], ...].
+ */
+function menus_variaveis_template(){
+	return Array(
+		Array('id' => 'label'),
+		Array('id' => 'url'),
+		Array('id' => 'slug'),
+		Array('id' => 'css_classes'),
+		Array('id' => 'children'),
+	);
+}
+
 // ===== Funções Principais
 
 function menus_adicionar(){
@@ -141,6 +160,7 @@ function menus_adicionar(){
 		'modulo' => $modulo,
 		'alvo' => 'menus',
 		'alvos_modelos' => 'menus',
+		'target_variables' => menus_variaveis_template(),
 	)));
 
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#','');
@@ -398,6 +418,7 @@ function menus_editar(){
 			'modulo' => $modulo,
 			'alvo' => 'menus',
 			'alvos_modelos' => 'menus',
+			'target_variables' => menus_variaveis_template(),
 		)));
 
 		// Conteúdos atuais para o editor
@@ -606,6 +627,7 @@ function menus_clonar(){
 			'modulo' => $modulo,
 			'alvo' => 'menus',
 			'alvos_modelos' => 'menus',
+			'target_variables' => menus_variaveis_template(),
 		)));
 
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#',$html);

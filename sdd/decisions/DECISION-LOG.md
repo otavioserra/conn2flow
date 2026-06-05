@@ -126,4 +126,40 @@ Hierarquia multi-nível de menus e editor drag-and-drop estilo WordPress (req-01
 
 `fields_schema` permanece coluna `json` — a árvore cabe sem migração de banco.
 
+## DEC-024 - 2026-06-05 - accepted
+
+Ajustes e correções do módulo `menus` (req-017 / BATCH-017), sem mudança de contrato de dados. Decisões desta rodada:
+
+1. **Reintegração da aba "Variáveis"/"Simular" para o alvo `menus`**: o html-editor compartilhado passa a tratar `menus` como um alvo da família de variáveis `[[item#X]]` (mesma família do [DEC-022](#dec-022---2026-06-04---accepted)/[DEC-023](#dec-023---2026-06-04---accepted) e do `publisher-highlights`). No backend, `html-editor.php` ganha um `case 'menus'` (carrega o componente de simulação próprio e os controles de variáveis) e `html_editor_publisher_controls` monta o `template_map` a partir de `target_variables`. No frontend, o helper `alvoUsaItemVars()` unifica a detecção (`publisher-highlights` + `menus`) nos pontos que dependem da forma da variável, mantendo `publisher`/`paginas` inalterados. As variáveis dos menus são **fixas** (`label`, `url`, `slug`, `css_classes`, `children`), declaradas em `menus_variaveis_template()` — diferente do `publisher-highlights`, cujas variáveis são dinâmicas conforme o publicador vinculado.
+
+2. **Componente de simulação próprio com árvore mockada**: criado `html-editor-menus-simulation` (pt-br/en) contendo uma **árvore JSON** de itens mockados (página, cabeçalho com filhos, link-custom, link-action e separador, em dois níveis), análogo aos buckets do `publisher-highlights` porém hierárquico. A simulação no `html-editor-interface.js` **espelha em JS a lógica recursiva** do `menus.widget.php` (blocos `item`/`item-parent`/`no-item`, `[[item#children]]` recursivo, montagem da base). Há um fallback embutido no JS (`MENUS_SIM_FALLBACK`) para que a simulação funcione mesmo antes de o componente ser registrado no banco pelo pipeline.
+
+3. **Hover dos submenus por geometria CSS**: a quebra de `:hover` ao mover o mouse do item pai para o submenu é resolvida **eliminando os gaps** (`mt-1`/`ml-1`) nos templates `menus-dropdown` e `menus-horizontal-navbar` (pt-br/en) — o submenu cola no gatilho, que é seu ancestral `.group`, preservando a ponte de hover. Optou-se pela correção CSS (não JS) por ser mais simples e válida tanto no preview quanto no site público.
+
+4. **Leitura robusta de dropdown Fomantic e placeholder do DnD**: o alternador de tipo de item lê o valor via `dropdown('get value')` (o `<select>` convertido pelo Fomantic não responde a `.val()`, o que fazia o tipo cair sempre em `pagina`); o placeholder do drag-and-drop passa a ter a altura de um item real e exibe "Solte o item aqui" / "Drop item here" entre setas ← / →.
+
+141: Nenhuma mudança em contrato de dados, schema de banco ou no contrato de `selected_items` (mantém [DEC-023](#dec-023---2026-06-04---accepted)).
+142: 
+143: ## DEC-025 - 2026-06-05 - accepted
+144: 
+145: Tipo de Item Publicador no Módulo de Menus e Correções (req-018 / BATCH-018). Decisões desta rodada:
+146: 
+147: 1. **Tipo de Item `publicador`**: Adiciona-se o tipo de item `publicador` que funciona como nó gerador automático de sub-itens (filhos) correspondentes às publicações ativas do publicador selecionado. O nó armazena `publisher_id`, `count` (limite) e `order_by` (ordenamento). No widget (`menus.widget.php`), os filhos dinâmicos são pesquisados no banco de dados e populados na árvore em tempo de renderização. O editor de menus visual (menus.js) impede o aninhamento manual de sub-itens sob o nó do tipo `publicador` e exibe campos condicionais de seleção.
+148: 2. **Correções de UI do Menus**: 
+   - Ao alterar o `template_id`, garantir que os editores CodeMirror do HTML Editor sejam atualizados corretamente mesmo quando focados.
+   - Corrigir a alternância de exibição de campos dinâmicos no formulário de adição (ocultando busca de páginas e exibindo rótulo/URL/classes para links, cabeçalhos, etc.).
+   - Integrar os placeholders `[[item#slug]]` e `[[item#css_classes]]` em todos os 12 templates padrões do módulo menus.
+149: 3. **Simulação do Publicador no HTML Editor**: O motor de simulação (`html-editor-interface.js`) gerará de forma randômica `$count` sub-itens do tipo `pagina` sob o nó `publicador` para simular o preview de forma idêntica.
+150: 
+151: ## DEC-026 - 2026-06-05 - accepted
+152: 
+153: Criação do Módulo de Galerias de Imagens (req-019 / BATCH-019). Decisões desta rodada:
+154: 
+155: 1. **Estrutura Base**: O módulo `galleries` será clonado de `publisher-highlights` e inteiramente desacoplado de publishers (sem coluna `publisher_id`). A persistência usará a tabela `galleries` (Phinx migration) e o módulo será registrado em `ModulosData.json` com o ícone `"images"`.
+156: 2. **Seleção de Imagens em Lote**: Em vez de seleção única, o gerenciador de arquivos modal (`admin-arquivos`) enviará os dados de imagem via `postMessage`. O listener em `galleries.js` interceptará e adicionará o arquivo à lista de curadoria visual, mantendo o modal **aberto** para que o usuário selecione múltiplas imagens seguidas em lote. O modal deve ser fechado apenas manualmente pelo usuário.
+157: 3. **Campos por Imagem**: Cada imagem na lista de curadoria exibirá seu thumbnail, nome do arquivo, um campo editável para **Legenda** (`legenda`) e um botão de exclusão. A ordenação será feita por drag-and-drop usando Sortable.js. O JSON serializado em `fields_schema` conterá os metadados (`id`, `caminho`, `imgSrc`, `nome`, `legenda`).
+158: 4. **Widget Renderizador**: O widget `galleries.widget.php` lerá os metadados do banco e renderizará as imagens sequencialmente substituindo `[[item#img-src]]`, `[[item#caminho]]`, `[[item#nome]]` e `[[item#legenda]]`. templates de visualização (grid, carousel, masonry, slider) serão providos em `resources/templates/`. Simulação e aba de variáveis estarão integradas no editor HTML.
+159: 
+160: 
+
 

@@ -640,7 +640,7 @@ $(document).ready(function () {
     // O ocultamento da req-007 item 4 foi revertido — as abas externas "Pré-Visualização"
     // e "Editor HTML" vivem no template da página de edição, fora deste componente.
     // O seletor de estilo de simulação continua oculto para destaques (item 4 deste req).
-    if (('alvo' in gestor.html_editor) && gestor.html_editor.alvo === 'publisher-highlights') {
+    if (('alvo' in gestor.html_editor) && (gestor.html_editor.alvo === 'publisher-highlights' || gestor.html_editor.alvo === 'menus')) {
         $('.publisher-design-mode-simulation').hide();
     }
 
@@ -769,6 +769,7 @@ $(document).ready(function () {
         'componentes': 'adminComponentesBackupCampo',
         'publisher': 'adminPaginasBackupCampo',
         'publisher-highlights': 'adminPaginasBackupCampo',
+        'menus': 'adminPaginasBackupCampo',
     };
     const backupCallbackName = backupCallbackMap[gestor.html_editor.alvo] || 'adminPaginasBackupCampo';
 
@@ -779,9 +780,15 @@ $(document).ready(function () {
     function isHighlightsAlvo() {
         return alvoAtual() === 'publisher-highlights';
     }
-    // Regex global para encontrar todas as variáveis (suporta publisher e publisher-highlights)
+    // req-017 item 1: tanto `publisher-highlights` quanto `menus` usam a família de variáveis
+    // `[[item#X]]` (em vez de `[[publisher#TIPO#ID]]`). Este helper unifica essa detecção.
+    function alvoUsaItemVars() {
+        var a = alvoAtual();
+        return a === 'publisher-highlights' || a === 'menus';
+    }
+    // Regex global para encontrar todas as variáveis (suporta publisher, publisher-highlights e menus)
     function regexVariaveisGlobal() {
-        return isHighlightsAlvo()
+        return alvoUsaItemVars()
             ? /\[\[item#([a-zA-Z0-9_\-]+)\]\]/g
             : /\[\[publisher#([^#]+)#([^\]]+)\]\]/g;
     }
@@ -1506,8 +1513,129 @@ $(document).ready(function () {
 
     // Substituição de Variáveis do Template ou Simulação no Preview
 
+    // ===== req-017 item 1: simulação do módulo `menus`.
+    // Diferente dos publicadores (lista plana de cards), o menu é uma ÁRVORE de itens tipados.
+    // Esta rotina espelha em JS a lógica recursiva do widget renderer (menus.widget.php):
+    // extrai os blocos item/item-parent/no-item, renderiza a árvore mockada (componente
+    // html-editor-menus-simulation) substituindo [[item#label|url|slug|css_classes]] e injetando
+    // a recursão dos filhos em [[item#children]], e por fim monta o HTML base.
+
+    var MENUS_SIM_FALLBACK = [
+        { type: 'pagina', label: 'Início', url: '/', page_id: 'inicio', children: [] },
+        {
+            type: 'cabecalho', label: 'Institucional', url: '#', children: [
+                { type: 'pagina', label: 'Sobre Nós', url: '/sobre/', page_id: 'sobre', children: [] },
+                { type: 'link-custom', label: 'Portal do Parceiro', url: 'https://parceiros.exemplo.com', children: [] }
+            ]
+        },
+        { type: 'separador', children: [] },
+        { type: 'link-action', label: 'Contato Rápido', url: '#', css_classes: 'abrir-modal js-contato', children: [] }
+    ];
+
+    function menusGetSimulationTree() {
+        var $json = $('.hep-menus-simulation-tree');
+        if ($json.length) {
+            try {
+                var parsed = JSON.parse($json.last().text());
+                if (Array.isArray(parsed) && parsed.length) return parsed;
+            } catch (e) { }
+        }
+        return MENUS_SIM_FALLBACK;
+    }
+
+    function menusExtrairBlocos(htmlTemplate) {
+        var blocos = { item: null, item_parent: null, no_item: null };
+        var mP = htmlTemplate.match(/<!--\s*item-parent\s*<\s*-->([\s\S]*?)<!--\s*item-parent\s*>\s*-->/i);
+        if (mP) blocos.item_parent = mP[1];
+        var mI = htmlTemplate.match(/<!--\s*item\s*<\s*-->([\s\S]*?)<!--\s*item\s*>\s*-->/i);
+        if (mI) blocos.item = mI[1];
+        var mN = htmlTemplate.match(/<!--\s*no-item\s*<\s*-->([\s\S]*?)<!--\s*no-item\s*>\s*-->/i);
+        if (mN) blocos.no_item = mN[1];
+        return blocos;
+    }
+
+    function menusResolverItemVars(item) {
+        var type = item.type || 'pagina';
+        var label = item.label || '';
+        var url = item.url || '';
+        var css = item.css_classes || '';
+        var slug = '';
+        switch (type) {
+            case 'pagina': slug = item.page_id || ''; break;
+            case 'separador': label = ''; url = ''; break;
+            case 'cabecalho': url = (url !== '') ? url : '#'; break;
+        }
+        return { label: label, url: url, slug: slug, css_classes: css };
+    }
+
+    function menusAplicarVars(bloco, vars) {
+        return bloco.replace(/@?\[\[item#([a-zA-Z0-9_\-]+)\]\]@?/g, function (m, name) {
+            if (name === 'children') return '';
+            return (name in vars) ? String(vars[name]) : '';
+        });
+    }
+
+    function menusInjetarChildren(bloco, childrenHtml) {
+        return bloco.split('@[[item#children]]@').join(childrenHtml).split('[[item#children]]').join(childrenHtml);
+    }
+
+    function menusRenderLevel(itens, blocos) {
+        var out = '';
+        (itens || []).forEach(function (item) {
+            if (!item || typeof item !== 'object') return;
+            var children = Array.isArray(item.children) ? item.children : [];
+            var temFilhos = children.length > 0;
+            var vars = menusResolverItemVars(item);
+            if (temFilhos && blocos.item_parent !== null) {
+                var childrenHtml = menusRenderLevel(children, blocos);
+                var bloco = menusInjetarChildren(blocos.item_parent, childrenHtml);
+                out += menusAplicarVars(bloco, vars);
+                return;
+            }
+            if (blocos.item !== null) out += menusAplicarVars(blocos.item, vars);
+            if (temFilhos) out += menusRenderLevel(children, blocos);
+        });
+        return out;
+    }
+
+    function menusMontarBase(htmlTemplate, itensRendered) {
+        var padraoItem = /<!--\s*item\s*<\s*-->[\s\S]*?<!--\s*item\s*>\s*-->/i;
+        var padraoItemParent = /<!--\s*item-parent\s*<\s*-->[\s\S]*?<!--\s*item-parent\s*>\s*-->/i;
+        var padraoNoItem = /<!--\s*no-item\s*<\s*-->([\s\S]*?)<!--\s*no-item\s*>\s*-->/i;
+        var out = htmlTemplate;
+        if (itensRendered === '') {
+            out = out.replace(padraoItemParent, '');
+            out = out.replace(padraoItem, '');
+            var mN = out.match(padraoNoItem);
+            if (mN) out = out.replace(padraoNoItem, function () { return mN[1]; });
+            return out;
+        }
+        if (padraoItem.test(out)) {
+            out = out.replace(padraoItem, function () { return itensRendered; });
+            out = out.replace(padraoItemParent, '');
+        } else {
+            out = out.replace(padraoItemParent, function () { return itensRendered; });
+        }
+        out = out.replace(padraoNoItem, '');
+        return out;
+    }
+
+    function menusSimularPreview(html) {
+        var blocos = menusExtrairBlocos(html);
+        if (blocos.item === null && blocos.item_parent === null) return html;
+        var arvore = menusGetSimulationTree();
+        var itensRendered = menusRenderLevel(arvore, blocos);
+        return menusMontarBase(html, itensRendered);
+    }
+
     function publisherVariablesOrSimulation(html = '') {
         const alvo = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
+
+        if (alvo === 'menus') {
+            const simulacao = $('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active');
+            if (simulacao) html = menusSimularPreview(html);
+            return html;
+        }
 
         if (alvo === 'publisher-highlights') {
             const simulacao = $('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active');
@@ -1749,7 +1877,7 @@ $(document).ready(function () {
             }
 
             // Mapear dados para a tabela
-            const highlights = isHighlightsAlvo();
+            const highlights = alvoUsaItemVars();
 
             let tableData = publisher_fields_schema.template_map.map(item => {
                 // Encontrar definição do campo se existir
@@ -1807,7 +1935,7 @@ $(document).ready(function () {
         let countFound = 0;
         let countTotal = data.length;
 
-        const highlights = isHighlightsAlvo();
+        const highlights = alvoUsaItemVars();
 
         data.forEach(item => {
             let row = publisher_table_tr_skeleton.clone();
@@ -1902,7 +2030,7 @@ $(document).ready(function () {
             let htmlSkeleton = randomItem.html();
 
             // Substituir variável (formato sensível ao alvo)
-            let variable = isHighlightsAlvo() ? `[[item#${id}]]` : `[[publisher#${type}#${id}]]`;
+            let variable = alvoUsaItemVars() ? `[[item#${id}]]` : `[[publisher#${type}#${id}]]`;
             htmlSkeleton = htmlSkeleton.replace(/#variavel#/g, variable);
 
             // Criar nova ID de seção
@@ -1983,7 +2111,7 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         let html = CodeMirrorHtml.getDoc().getValue();
 
         // Regex para variable (formato sensível ao alvo)
-        const regexStr = isHighlightsAlvo()
+        const regexStr = alvoUsaItemVars()
             ? `\\[\\[item#${id}\\]\\]`
             : `\\[\\[publisher#${type}#${id}\\]\\]`;
         const regex = new RegExp(regexStr, 'g');

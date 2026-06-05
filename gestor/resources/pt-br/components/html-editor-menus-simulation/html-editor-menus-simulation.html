@@ -1,0 +1,53 @@
+<div class="html-editor-menus-simulation-wrapper" style="display: none;">
+    <!-- req-017 item 1.2: massa de dados de simulacao para a aba "Simular" do editor HTML do
+         modulo menus. Diferente dos publicadores (lista plana), o menu e uma ARVORE de itens
+         tipados. O JSON abaixo descreve uma estrutura mockada cobrindo todos os tipos (pagina,
+         link customizado, cabecalho com filhos, acao com classes CSS e separador) em dois
+         niveis de profundidade, alimentando o preview simulado dos blocos item / item-parent /
+         no-item e das variaveis label, url, slug, css_classes e children. -->
+    <script type="application/json" class="hep-menus-simulation-tree">
+    [
+        {
+            "type": "pagina",
+            "label": "Início",
+            "url": "/",
+            "page_id": "inicio",
+            "children": []
+        },
+        {
+            "type": "cabecalho",
+            "label": "Institucional",
+            "url": "#",
+            "children": [
+                { "type": "pagina", "label": "Sobre Nós", "url": "/sobre/", "page_id": "sobre", "children": [] },
+                { "type": "pagina", "label": "Nossa Equipe", "url": "/equipe/", "page_id": "equipe", "children": [] },
+                { "type": "link-custom", "label": "Portal do Parceiro", "url": "https://parceiros.exemplo.com", "children": [] }
+            ]
+        },
+        {
+            "type": "cabecalho",
+            "label": "Serviços",
+            "url": "#",
+            "children": [
+                { "type": "pagina", "label": "Consultoria", "url": "/servicos/consultoria/", "page_id": "consultoria", "children": [] },
+                { "type": "pagina", "label": "Treinamentos", "url": "/servicos/treinamentos/", "page_id": "treinamentos", "children": [] },
+                { "type": "separador", "children": [] },
+                { "type": "link-action", "label": "Agendar Reunião", "url": "#", "css_classes": "abrir-modal js-agendar", "children": [] }
+            ]
+        },
+        {
+            "type": "link-custom",
+            "label": "Blog",
+            "url": "/blog/",
+            "children": []
+        },
+        {
+            "type": "link-action",
+            "label": "Contato Rápido",
+            "url": "#",
+            "css_classes": "abrir-modal js-contato",
+            "children": []
+        }
+    ]
+    </script>
+</div>

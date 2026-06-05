@@ -1,0 +1,53 @@
+<div class="html-editor-menus-simulation-wrapper" style="display: none;">
+    <!-- req-017 item 1.2: simulation data mass for the "Simulate" tab of the menus module HTML
+         editor. Unlike publishers (flat list), a menu is a TREE of typed items. The JSON below
+         describes a mocked structure covering every type (page, custom link, header with
+         children, action with CSS classes and separator) across two depth levels, feeding the
+         simulated preview of the item / item-parent / no-item blocks and the label, url, slug,
+         css_classes and children variables. -->
+    <script type="application/json" class="hep-menus-simulation-tree">
+    [
+        {
+            "type": "pagina",
+            "label": "Home",
+            "url": "/",
+            "page_id": "home",
+            "children": []
+        },
+        {
+            "type": "cabecalho",
+            "label": "Company",
+            "url": "#",
+            "children": [
+                { "type": "pagina", "label": "About Us", "url": "/about/", "page_id": "about", "children": [] },
+                { "type": "pagina", "label": "Our Team", "url": "/team/", "page_id": "team", "children": [] },
+                { "type": "link-custom", "label": "Partner Portal", "url": "https://partners.example.com", "children": [] }
+            ]
+        },
+        {
+            "type": "cabecalho",
+            "label": "Services",
+            "url": "#",
+            "children": [
+                { "type": "pagina", "label": "Consulting", "url": "/services/consulting/", "page_id": "consulting", "children": [] },
+                { "type": "pagina", "label": "Training", "url": "/services/training/", "page_id": "training", "children": [] },
+                { "type": "separador", "children": [] },
+                { "type": "link-action", "label": "Book a Meeting", "url": "#", "css_classes": "open-modal js-booking", "children": [] }
+            ]
+        },
+        {
+            "type": "link-custom",
+            "label": "Blog",
+            "url": "/blog/",
+            "children": []
+        },
+        {
+            "type": "link-action",
+            "label": "Quick Contact",
+            "url": "#",
+            "css_classes": "open-modal js-contact",
+            "children": []
+        }
+    ]
+    </script>
+</div>

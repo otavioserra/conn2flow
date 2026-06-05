@@ -34,7 +34,9 @@ function html_editor_publisher_controls($params = false){
 	// salvo no banco ainda). O JS preenche dinamicamente as variáveis ao selecionar o modelo
 	// via `publisher_highlights_update_target_variables`. Sem essa flag, o container HTML
 	// era removido pelo bloco `publisher-has-link` impedindo o mapeamento.
-	if($alvo_atual === 'publisher-highlights'){
+	// req-017 item 1: o alvo `menus` segue a mesma família de variáveis [[item#X]] e também
+	// precisa exibir a aba de variáveis (com a lista fixa de variáveis do template de menu).
+	if($alvo_atual === 'publisher-highlights' || $alvo_atual === 'menus'){
 		$tem_vinculo = true;
 	}
 
@@ -46,8 +48,10 @@ function html_editor_publisher_controls($params = false){
 		$openText = $_GESTOR['variavel-global']['openText'];
 		$closeText = $_GESTOR['variavel-global']['closeText'];
 
-		if($alvo_atual === 'publisher-highlights'){
-			// req-004 item 7: variáveis do template do destaque seguem o padrão `[[item#NOME]]`.
+		if($alvo_atual === 'publisher-highlights' || $alvo_atual === 'menus'){
+			// req-004 item 7 / req-017 item 1: variáveis do template seguem o padrão `[[item#NOME]]`.
+			// Para `menus` a lista de variáveis é fixa (vinda de `menus_variaveis_template()` via
+			// `target_variables`); para `publisher-highlights` ela é dinâmica conforme o publicador.
 			$template_map = [];
 			if(isset($target_variables) && is_array($target_variables)){
 				foreach($target_variables as $var){
@@ -124,6 +128,7 @@ function html_editor_componente($params = false){
 		'componentes' => 'adminComponentesBackupCampo',
 		'publisher' => 'adminPaginasBackupCampo',
 		'publisher-highlights' => 'adminPaginasBackupCampo',
+		'menus' => 'adminPaginasBackupCampo',
 	];
 
 	$backupCallback = isset($backupCallbackMap[$alvo]) ? $backupCallbackMap[$alvo] : 'adminPaginasBackupCampo';
@@ -183,6 +188,20 @@ function html_editor_componente($params = false){
 			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-controls#',html_editor_publisher_controls([
 				'publisher' => isset($publisher)? $publisher : null,
 				'alvo' => $alvo,
+				'target_variables' => isset($target_variables)? $target_variables : null,
+			]));
+		break;
+		case 'menus':
+			// req-017 item 1: reintegrar a aba "Variáveis"/"Simular" para o módulo menus, com
+			// componente de simulação próprio (árvore mockada de itens) e variáveis fixas
+			// [[item#X]] declaradas em `menus_variaveis_template()` e recebidas em $target_variables.
+			$html_editor_publisher_simulation = gestor_componente(Array(
+				'id' => 'html-editor-menus-simulation',
+			));
+
+			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#',$html_editor_publisher_simulation);
+			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-controls#',html_editor_publisher_controls([
+				'alvo' => 'menus',
 				'target_variables' => isset($target_variables)? $target_variables : null,
 			]));
 		break;

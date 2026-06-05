@@ -692,14 +692,66 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
 
 ## BATCH-017 - Ajustes e Correções no Módulo de Menus (req-017)
 
-- [ ] Variáveis e Simulação no Editor HTML:
-  - [ ] Ativar a exibição da aba de Simulação/Variáveis no editor HTML para o alvo `menus` no backend.
-- [ ] Componente de Simulação de Menus:
-  - [ ] Criar componentes de simulação em `gestor/resources/{pt-br,en}/components/html-editor-menus-simulation/` contendo dados simulados estruturados (nós com sub-itens, URLs, etc.).
-- [ ] Correção do alternador JS (`menu_item_type`):
-  - [ ] Corrigir toggle em `menus.js` para que ao selecionar links customizados, cabeçalhos, separadores e ações, exiba apenas os inputs corretos daquele tipo e oculte a busca de páginas.
-- [ ] Melhorias no Placeholder do Drag-and-Drop:
-  - [ ] Aumentar altura da caixa tracejada azul para corresponder à altura dos itens reais.
-  - [ ] Adicionar texto "Solte o item aqui" com setas laterais (← / →).
-- [ ] Correção de Hover nos Submenus:
-  - [ ] Ajustar a geometria CSS ou JS nos templates/preview para evitar sumiço dos submenus quando o mouse se desloca da opção principal para a lista flutuante.
+- [x] **Item 1.1** — Variáveis e Simulação no Editor HTML para o alvo `menus`
+  - [x] `menus.php`: nova `menus_variaveis_template()` (variáveis fixas `label`/`url`/`slug`/`css_classes`/`children`) passada como `target_variables` nas 3 chamadas (adicionar/editar/clonar)
+  - [x] `html-editor.php`: `menus` adicionado ao `$backupCallbackMap`; `case 'menus'` no switch carrega o componente de simulação e os controles de variáveis; `html_editor_publisher_controls` trata `menus` (força vínculo + monta `template_map` de `target_variables`)
+  - [x] `html-editor-interface.js`: helper `alvoUsaItemVars()` (highlights + menus) usado em `regexVariaveisGlobal`, `publisherVariablesSearch`, `publisherTableVariables`, `addVariableSkeleton`, `remove-variable-skeleton`; design-mode-simulation oculto para menus
+- [x] **Item 1.2** — Componente de Simulação de Menus
+  - [x] `gestor/resources/{pt-br,en}/components/html-editor-menus-simulation/*.html` com árvore mockada JSON (página, cabeçalho com filhos, link-custom, link-action, separador; 2 níveis)
+  - [x] Simulação recursiva no `publisherVariablesOrSimulation` (branch `menus`) espelhando `menus.widget.php` (blocos item/item-parent/no-item + `[[item#children]]`); fallback embutido (`MENUS_SIM_FALLBACK`) caso o componente não esteja deployado
+- [x] **Item 1.3** — Correção do alternador de tipo de item (`menus.js`)
+  - [x] `currentItemType()` lê `dropdown('get value')` (com fallback `.val()` → `'pagina'`); `onChange` propaga o `value` para `toggleItemTypeFields`
+- [x] **Item 1.4** — Melhorias no Placeholder do Drag-and-Drop (`menus.js`)
+  - [x] `.menu-tree-placeholder` com `min-height:38px` (altura de item real) + flex centralizado
+  - [x] Texto "Solte o item aqui"/"Drop item here" entre setas ← / →
+- [x] **Item 1.5** — Correção de Hover nos Submenus (templates)
+  - [x] `menus-dropdown` (pt-br+en): removidos `mt-1` (dropdown principal) e `ml-1` (submenu) — colam no gatilho mantendo a ponte de `:hover`
+  - [x] `menus-horizontal-navbar` (pt-br+en): removido `mt-1` (submenu cola no `<li>.group` via `top-full`)
+- [x] **Versionamento** — `menus.json`: `version` 1.3→1.4 nos 4 templates alterados (`menus-dropdown` e `menus-horizontal-navbar`, pt-br+en); checksums **mantidos intactos** (recálculo automático pelo pipeline UPSERT — ver `MEMORIA-ENGENHARIA-EXECUCAO.md`, não calcular/alterar checksums manualmente)
+
+### Evidência registrada em 2026-06-05
+
+- Validação executável (estática + teste de unidade da simulação, sem ambiente Docker nesta rodada):
+  - `php -l gestor/bibliotecas/html-editor.php` → `No syntax errors detected`
+  - `php -l gestor/modulos/menus/menus.php` → `No syntax errors detected`
+  - `node --check gestor/assets/interface/html-editor-interface.js` → OK
+  - `node --check gestor/modulos/menus/menus.js` → OK
+  - `JSON.parse` da árvore mockada (`hep-menus-simulation-tree`) em pt-br e en → OK (5 itens raiz cada)
+  - `JSON.parse` de `menus.json` → OK (4 templates em version 1.4)
+  - Teste da simulação recursiva (réplica das funções JS) contra o template `menus-dropdown` real: sem variáveis `[[item#X]]` literais; sem sobra de `@valor@`; submenu (`Sobre Nós` em `Institucional`) renderizado via `item-parent`; bloco `no-item` removido com itens; delimitadores consumidos; itens raiz folha presentes — 7/7 asserts OK
+- Arquivos alterados:
+  - `gestor/modulos/menus/menus.php` (variáveis fixas + target_variables)
+  - `gestor/modulos/menus/menus.js` (alternador de tipo + placeholder do DnD)
+  - `gestor/modulos/menus/menus.json` (version/checksum dos templates `menus-dropdown` e `menus-horizontal-navbar`)
+  - `gestor/bibliotecas/html-editor.php` (case `menus` + controls + backupCallbackMap)
+  - `gestor/assets/interface/html-editor-interface.js` (helper `alvoUsaItemVars` + simulação recursiva de menus)
+  - `gestor/modulos/menus/resources/{pt-br,en}/templates/menus-dropdown/*.html` (hover)
+  - `gestor/modulos/menus/resources/{pt-br,en}/templates/menus-horizontal-navbar/*.html` (hover)
+- Arquivos criados:
+  - `gestor/resources/{pt-br,en}/components/html-editor-menus-simulation/html-editor-menus-simulation.html`
+- Decisão registrada: [DEC-024](../decisions/DECISION-LOG.md) (estende DEC-022/DEC-023; reutiliza a infraestrutura de variáveis `[[item#X]]` do html-editor)
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+- Pendência (com o operador): rodar `atualizacao-dados-recursos.php` / `🗃️ Projects - Update => Core` para registrar o novo componente em `ComponentesData.json`, recalcular checksums dos templates alterados e aplicar no ambiente de testes. Depois, validar manualmente:
+  - editar um menu → aba "Editor HTML" → botões "Variáveis"/"Simular": "Simular" renderiza o template com a árvore mockada (com submenus); "Variáveis" lista `[[item#label/url/slug/css_classes/children]]`
+  - construtor de itens: trocar o "Tipo de Item" para link-custom/cabeçalho/link-action/separador exibe os inputs corretos e oculta a busca de páginas
+  - arrastar item: a caixa de drop tem altura de item e mostra "Solte o item aqui" com setas ← →
+  - preview/site com template `menus-dropdown` ou `menus-horizontal-navbar`: o submenu permanece aberto ao mover o mouse do item pai para a lista flutuante
+
+## BATCH-018 - Tipo de Item Publicador no Módulo de Menus (req-018)
+
+- [ ] Interface de formulário (adicionar/editar/clonar × pt-br/en):
+  - [ ] Opção "Publicador" / "Publisher" adicionada ao dropdown `#menu_item_type`.
+  - [ ] Exibição condicional de inputs: dropdown de publicadores (`add_item_publisher_id`), limite (`add_item_publisher_count`), e ordenação (`add_item_publisher_order_by`).
+- [ ] Árvore visual e persistência (menus.js):
+  - [ ] Salvar `publisher_id`, `count` e `order_by` no schema do nó `publicador`.
+  - [ ] Renderizar nó visual contendo informação de limite/publicador na árvore.
+  - [ ] Impedir ou avisar sobre aninhamento manual de sub-itens sob o item publicador.
+  - [ ] Suporte a edição inline de todos os campos específicos no painel de configurações do nó.
+- [ ] Backend CRUD (menus.php):
+  - [ ] Buscar publicadores ativos e substituir `#publisher_id_options#` nas 3 páginas.
+- [ ] Renderização dinâmica (menus.widget.php):
+  - [ ] Buscar publicações correspondentes ao publicador em runtime com limite e ordenação.
+  - [ ] Injetar dinamicamente como sub-itens filhos de tipo `pagina` sob o nó `publicador` antes de renderizar recursivamente.
+- [ ] Simulação do HTML Editor:
+  - [ ] `html-editor-interface.js`: gerar e aninhar sub-itens simulados de tipo `pagina` sob os nós do tipo `publicador`.
+  - [ ] Componente `html-editor-menus-simulation` atualizado em pt-br/en com exemplo de nó `publicador`.

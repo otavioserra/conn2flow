@@ -42,11 +42,11 @@
                     "id": "menus-horizontal-navbar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "c5ec3fbb2ba36f70f4922aa388bdc607",
+                        "html": "aab716c91f85f638460273c5c8d0b48c",
                         "css": "",
-                        "combined": "c5ec3fbb2ba36f70f4922aa388bdc607"
+                        "combined": "aab716c91f85f638460273c5c8d0b48c"
                     }
                 },
                 {
@@ -78,11 +78,11 @@
                     "id": "menus-dropdown",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "6ab0c9e95399b821698fd0e2bc217211",
+                        "html": "a9ba92c6aa6bdbb251095d8880890887",
                         "css": "",
-                        "combined": "6ab0c9e95399b821698fd0e2bc217211"
+                        "combined": "a9ba92c6aa6bdbb251095d8880890887"
                     }
                 },
                 {
@@ -217,11 +217,11 @@
                     "id": "menus-horizontal-navbar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "4c67a055d69f4869a820032e6653f63b",
+                        "html": "71cff7c3484aaa4cc0b8f13e2bfb3aa2",
                         "css": "",
-                        "combined": "4c67a055d69f4869a820032e6653f63b"
+                        "combined": "71cff7c3484aaa4cc0b8f13e2bfb3aa2"
                     }
                 },
                 {
@@ -253,11 +253,11 @@
                     "id": "menus-dropdown",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "3840a15ecf482ba80970d6f3e50d4809",
+                        "html": "0772a66ce8a887c82690ce8a40d0b140",
                         "css": "",
-                        "combined": "3840a15ecf482ba80970d6f3e50d4809"
+                        "combined": "0772a66ce8a887c82690ce8a40d0b140"
                     }
                 },
                 {
