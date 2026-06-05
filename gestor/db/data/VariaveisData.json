@@ -7111,6 +7111,60 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "galleries",
+        "id": "form-name-label",
+        "valor": "Nome da Galeria",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "galleries",
+        "id": "form-template_id-label",
+        "valor": "Modelo Visual de Galeria",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "galleries",
+        "id": "form-fields_schema-label",
+        "valor": "Imagens da Galeria",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "galleries",
+        "id": "form-name-label",
+        "valor": "Gallery name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "galleries",
+        "id": "form-template_id-label",
+        "valor": "Gallery visual template",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "galleries",
+        "id": "form-fields_schema-label",
+        "valor": "Gallery images",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "interface",
         "id": "field-positive-value",
         "valor": "sim",

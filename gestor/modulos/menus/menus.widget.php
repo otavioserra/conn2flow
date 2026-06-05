@@ -23,6 +23,18 @@
  * [[item#css_classes]] e [[item#children]] (renderização recursiva dos filhos).
  */
 
+// ===== Funções Auxiliares
+
+function menus_get_version(){
+	global $_GESTOR;
+
+    $modulo = json_decode(file_get_contents(__DIR__ . '/menus.json'), true);
+
+	return isset($modulo['versao']) ? $modulo['versao'] : '1.0.0';
+}
+
+// ===== Funções Principais
+
 function menus_render($params){
 	global $_GESTOR;
 
@@ -58,6 +70,13 @@ function menus_render($params){
 	// retornamos vazio — o menu precisa ser configurado no painel.
 	if(trim($html_template) === '') return '';
 
+	// Adicionar JS do widget para comportamentos interativos.
+	gestor_pagina_javascript_incluir(array(
+		'tipo' => 'widget',
+		'modulo_id' => 'menus',
+		'versao' => menus_get_version(),
+	));
+
 	return menus_widget_render_inline([
 		'html' => $html_template,
 		'css' => $css_custom,
@@ -88,6 +107,10 @@ function menus_widget_render_inline($params){
 
 	// Normaliza para a árvore tipada (retrocompat: lista de slugs do BATCH-015).
 	$arvore = menus_widget_normalizar_itens($selected_items);
+
+	// req-018 / DEC-025: expande os nós `publicador`, injetando as publicações do publicador
+	// selecionado como filhos `pagina` (limitadas por `count` e ordenadas por `order_by`).
+	$arvore = menus_widget_expandir_publicadores($arvore);
 
 	// Modelos de célula extraídos do template (conteúdo interno de cada delimitador).
 	$templates = menus_widget_extrair_blocos($html_template);
@@ -199,6 +222,9 @@ function menus_widget_resolver_item_vars($item, $paginasMap){
 			break;
 
 		case 'cabecalho':
+		case 'publicador':
+			// O publicador agrupa as publicações injetadas (req-018): comporta-se como um
+			// cabeçalho com filhos. Mantém o rótulo do schema e cai para '#' quando sem URL.
 			$url = ($url !== '') ? $url : '#';
 			break;
 
@@ -328,6 +354,13 @@ function menus_widget_normalizar_itens($selected_items){
 		];
 		if(isset($item['page_id'])) $node['page_id'] = $item['page_id'];
 
+		// req-018: preservar a parametrização do tipo `publicador` para a expansão runtime.
+		if(($node['type'] === 'publicador')){
+			$node['publisher_id'] = isset($item['publisher_id']) ? $item['publisher_id'] : '';
+			$node['count']        = isset($item['count']) ? $item['count'] : 5;
+			$node['order_by']     = isset($item['order_by']) ? $item['order_by'] : 'date_desc';
+		}
+
 		$children = (isset($item['children']) && is_array($item['children'])) ? $item['children'] : [];
 		$node['children'] = menus_widget_normalizar_itens($children);
 
@@ -335,6 +368,97 @@ function menus_widget_normalizar_itens($selected_items){
 	}
 
 	return $out;
+}
+
+/**
+ * Expande (em profundidade) os nós do tipo `publicador`: para cada um, busca as publicações
+ * ativas do publicador selecionado (no idioma corrente), limitadas por `count` e ordenadas
+ * por `order_by`, e as injeta como filhos `type = 'pagina'` (req-018 / DEC-025).
+ *
+ * Os filhos já vêm com label/url canônicos resolvidos diretamente da query. A expansão é
+ * recursiva para suportar um publicador aninhado sob um cabeçalho. As publicações dinâmicas
+ * substituem quaisquer filhos manuais do nó (que a UI já impede de criar).
+ */
+function menus_widget_expandir_publicadores($itens){
+	$out = [];
+
+	foreach($itens as $item){
+		if(!is_array($item)){ $out[] = $item; continue; }
+
+		$type = isset($item['type']) ? $item['type'] : 'pagina';
+
+		if(!empty($item['children']) && is_array($item['children'])){
+			$item['children'] = menus_widget_expandir_publicadores($item['children']);
+		}
+
+		if($type === 'publicador'){
+			$item['children'] = menus_widget_buscar_publicacoes_publicador($item);
+		}
+
+		$out[] = $item;
+	}
+
+	return $out;
+}
+
+/**
+ * Busca as publicações de um nó `publicador` e as devolve como nós `pagina` prontos para
+ * renderização (label/url já resolvidos). Espelha a lógica de ordenação do
+ * `publisher-highlights` (DEC-017): `order_by` controla a ordenação; `count` o limite.
+ *
+ * @param array $item Nó publicador com `publisher_id`, `count` e `order_by`.
+ * @return array Lista de nós filhos `type = 'pagina'`.
+ */
+function menus_widget_buscar_publicacoes_publicador($item){
+	global $_GESTOR;
+
+	$publisher_id = isset($item['publisher_id']) ? (string)$item['publisher_id'] : '';
+	if($publisher_id === '') return [];
+
+	$count = (int)($item['count'] ?? 5);
+	if($count < 1) $count = 5;
+
+	$order_by_key = isset($item['order_by']) ? (string)$item['order_by'] : 'date_desc';
+	$order_map = [
+		'title_asc'  => ' ORDER BY p.nome ASC',
+		'title_desc' => ' ORDER BY p.nome DESC',
+		'date_asc'   => ' ORDER BY p.data_modificacao ASC',
+		'date_desc'  => ' ORDER BY p.data_modificacao DESC',
+	];
+	$order_by = $order_map[$order_by_key] ?? $order_map['date_desc'];
+
+	$rows = banco_select(Array(
+		'tabela' => 'paginas AS p',
+		'campos' => Array(
+			'p.id',
+			'p.nome',
+			'p.caminho',
+		),
+		'extra' =>
+			"WHERE p.publisher_id='".banco_escape_field($publisher_id)."'"
+			." AND p.status='A'"
+			." AND p.language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'"
+			.$order_by
+			." LIMIT ".$count
+	));
+
+	if(!is_array($rows)) $rows = [];
+
+	$filhos = [];
+	foreach($rows as $row){
+		$slug = $row['p.id'] ?? '';
+		if($slug === '') continue;
+		$filhos[] = [
+			'type'        => 'pagina',
+			'page_id'     => $slug,
+			'label'       => $row['p.nome'] ?? '',
+			'url'         => (isset($row['p.caminho']) && $row['p.caminho']) ? $_GESTOR['url-raiz'].$row['p.caminho'] : '',
+			'css_classes' => '',
+			'children'    => [],
+		];
+	}
+
+	return $filhos;
 }
 
 /**

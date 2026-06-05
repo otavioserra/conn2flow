@@ -2016,18 +2016,130 @@
         "checksum": "{\"html\":\"246931f3c75ddc06dfb2fa678e4eda8e\",\"css\":\"\",\"combined\":\"246931f3c75ddc06dfb2fa678e4eda8e\"}"
     },
     {
+        "nome": "Galeria - Grade (Grid)",
+        "id": "galleries-grid",
+        "target": "galleries",
+        "thumbnail": null,
+        "language": "pt-br",
+        "html": "<section class=\"font-sans p-6\" data-id=\"1\" data-title=\"gallery-grid\">\n    <div class=\"grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4\">\n        <!-- item < -->\n        <figure class=\"group relative overflow-hidden rounded-lg shadow-sm\">\n            <img src=\"@[[item#img-src]]@\" alt=\"@[[item#nome]]@\" title=\"@[[item#nome]]@\"\n                class=\"w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105\">\n            <figcaption class=\"absolute bottom-0 left-0 right-0 bg-black\/60 text-white text-sm px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity\">@[[item#legenda]]@<\/figcaption>\n        <\/figure>\n        <!-- item > -->\n        <!-- no-item < -->\n        <div class=\"col-span-full text-center text-gray-400 italic py-10\">Nenhuma imagem na galeria<\/div>\n        <!-- no-item > -->\n    <\/div>\n<\/section>\n",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"d0e1ffbf443e3869b0c7c0d0fd719775\",\"css\":\"\",\"combined\":\"d0e1ffbf443e3869b0c7c0d0fd719775\"}"
+    },
+    {
+        "nome": "Galeria - Carrossel (Carousel)",
+        "id": "galleries-carousel",
+        "target": "galleries",
+        "thumbnail": null,
+        "language": "pt-br",
+        "html": "<section class=\"font-sans p-6\" data-id=\"1\" data-title=\"gallery-carousel\">\n    <div class=\"flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4\">\n        <!-- item < -->\n        <figure class=\"snap-center shrink-0 w-80\">\n            <img src=\"@[[item#img-src]]@\" alt=\"@[[item#nome]]@\" title=\"@[[item#nome]]@\"\n                class=\"w-80 h-56 object-cover rounded-lg shadow\">\n            <figcaption class=\"mt-2 text-sm text-gray-600 text-center\">@[[item#legenda]]@<\/figcaption>\n        <\/figure>\n        <!-- item > -->\n        <!-- no-item < -->\n        <div class=\"w-full text-center text-gray-400 italic py-10\">Nenhuma imagem na galeria<\/div>\n        <!-- no-item > -->\n    <\/div>\n<\/section>\n",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"d24f58fd5e4060f768257c533ed11e27\",\"css\":\"\",\"combined\":\"d24f58fd5e4060f768257c533ed11e27\"}"
+    },
+    {
+        "nome": "Galeria - Mosaico (Masonry)",
+        "id": "galleries-masonry",
+        "target": "galleries",
+        "thumbnail": null,
+        "language": "pt-br",
+        "html": "<section class=\"font-sans p-6\" data-id=\"1\" data-title=\"gallery-masonry\">\n    <div class=\"columns-2 sm:columns-3 lg:columns-4 gap-4\">\n        <!-- item < -->\n        <figure class=\"mb-4 break-inside-avoid overflow-hidden rounded-lg shadow-sm\">\n            <img src=\"@[[item#img-src]]@\" alt=\"@[[item#nome]]@\" title=\"@[[item#nome]]@\" class=\"w-full rounded-lg\">\n            <figcaption class=\"text-sm text-gray-600 mt-1 px-1\">@[[item#legenda]]@<\/figcaption>\n        <\/figure>\n        <!-- item > -->\n        <!-- no-item < -->\n        <div class=\"text-center text-gray-400 italic py-10\">Nenhuma imagem na galeria<\/div>\n        <!-- no-item > -->\n    <\/div>\n<\/section>\n",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"39d7d383a0e5d8b60d5ba1e1d77aa38a\",\"css\":\"\",\"combined\":\"39d7d383a0e5d8b60d5ba1e1d77aa38a\"}"
+    },
+    {
+        "nome": "Galeria - Slider",
+        "id": "galleries-slider",
+        "target": "galleries",
+        "thumbnail": null,
+        "language": "pt-br",
+        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"gallery-slider\">\n    <div class=\"relative flex overflow-x-auto snap-x snap-mandatory rounded-lg\">\n        <!-- item < -->\n        <figure class=\"snap-center shrink-0 w-full relative\">\n            <img src=\"@[[item#img-src]]@\" alt=\"@[[item#nome]]@\" title=\"@[[item#nome]]@\" class=\"w-full h-96 object-cover\">\n            <figcaption class=\"absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black\/70 to-transparent text-white px-6 py-4 text-sm\">@[[item#legenda]]@<\/figcaption>\n        <\/figure>\n        <!-- item > -->\n        <!-- no-item < -->\n        <div class=\"w-full text-center text-gray-400 italic py-16\">Nenhuma imagem na galeria<\/div>\n        <!-- no-item > -->\n    <\/div>\n<\/section>\n",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"40374efedc6b2e89b06e7684a7587684\",\"css\":\"\",\"combined\":\"40374efedc6b2e89b06e7684a7587684\"}"
+    },
+    {
+        "nome": "Gallery - Grid",
+        "id": "galleries-grid",
+        "target": "galleries",
+        "thumbnail": null,
+        "language": "en",
+        "html": "<section class=\"font-sans p-6\" data-id=\"1\" data-title=\"gallery-grid\">\n    <div class=\"grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4\">\n        <!-- item < -->\n        <figure class=\"group relative overflow-hidden rounded-lg shadow-sm\">\n            <img src=\"@[[item#img-src]]@\" alt=\"@[[item#nome]]@\" title=\"@[[item#nome]]@\"\n                class=\"w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105\">\n            <figcaption class=\"absolute bottom-0 left-0 right-0 bg-black\/60 text-white text-sm px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity\">@[[item#legenda]]@<\/figcaption>\n        <\/figure>\n        <!-- item > -->\n        <!-- no-item < -->\n        <div class=\"col-span-full text-center text-gray-400 italic py-10\">No images in the gallery<\/div>\n        <!-- no-item > -->\n    <\/div>\n<\/section>\n",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"323eeba7734b0470a097afbce5fb9a63\",\"css\":\"\",\"combined\":\"323eeba7734b0470a097afbce5fb9a63\"}"
+    },
+    {
+        "nome": "Gallery - Carousel",
+        "id": "galleries-carousel",
+        "target": "galleries",
+        "thumbnail": null,
+        "language": "en",
+        "html": "<section class=\"font-sans p-6\" data-id=\"1\" data-title=\"gallery-carousel\">\n    <div class=\"flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4\">\n        <!-- item < -->\n        <figure class=\"snap-center shrink-0 w-80\">\n            <img src=\"@[[item#img-src]]@\" alt=\"@[[item#nome]]@\" title=\"@[[item#nome]]@\"\n                class=\"w-80 h-56 object-cover rounded-lg shadow\">\n            <figcaption class=\"mt-2 text-sm text-gray-600 text-center\">@[[item#legenda]]@<\/figcaption>\n        <\/figure>\n        <!-- item > -->\n        <!-- no-item < -->\n        <div class=\"w-full text-center text-gray-400 italic py-10\">No images in the gallery<\/div>\n        <!-- no-item > -->\n    <\/div>\n<\/section>\n",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"ca73d5377908a8dcf0726b8fbeec47d5\",\"css\":\"\",\"combined\":\"ca73d5377908a8dcf0726b8fbeec47d5\"}"
+    },
+    {
+        "nome": "Gallery - Masonry",
+        "id": "galleries-masonry",
+        "target": "galleries",
+        "thumbnail": null,
+        "language": "en",
+        "html": "<section class=\"font-sans p-6\" data-id=\"1\" data-title=\"gallery-masonry\">\n    <div class=\"columns-2 sm:columns-3 lg:columns-4 gap-4\">\n        <!-- item < -->\n        <figure class=\"mb-4 break-inside-avoid overflow-hidden rounded-lg shadow-sm\">\n            <img src=\"@[[item#img-src]]@\" alt=\"@[[item#nome]]@\" title=\"@[[item#nome]]@\" class=\"w-full rounded-lg\">\n            <figcaption class=\"text-sm text-gray-600 mt-1 px-1\">@[[item#legenda]]@<\/figcaption>\n        <\/figure>\n        <!-- item > -->\n        <!-- no-item < -->\n        <div class=\"text-center text-gray-400 italic py-10\">No images in the gallery<\/div>\n        <!-- no-item > -->\n    <\/div>\n<\/section>\n",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"c292bd39bed29bb253fefa390bfec35c\",\"css\":\"\",\"combined\":\"c292bd39bed29bb253fefa390bfec35c\"}"
+    },
+    {
+        "nome": "Gallery - Slider",
+        "id": "galleries-slider",
+        "target": "galleries",
+        "thumbnail": null,
+        "language": "en",
+        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"gallery-slider\">\n    <div class=\"relative flex overflow-x-auto snap-x snap-mandatory rounded-lg\">\n        <!-- item < -->\n        <figure class=\"snap-center shrink-0 w-full relative\">\n            <img src=\"@[[item#img-src]]@\" alt=\"@[[item#nome]]@\" title=\"@[[item#nome]]@\" class=\"w-full h-96 object-cover\">\n            <figcaption class=\"absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black\/70 to-transparent text-white px-6 py-4 text-sm\">@[[item#legenda]]@<\/figcaption>\n        <\/figure>\n        <!-- item > -->\n        <!-- no-item < -->\n        <div class=\"w-full text-center text-gray-400 italic py-16\">No images in the gallery<\/div>\n        <!-- no-item > -->\n    <\/div>\n<\/section>\n",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"69d6159afcef4fe00ca54fc70ead57bc\",\"css\":\"\",\"combined\":\"69d6159afcef4fe00ca54fc70ead57bc\"}"
+    },
+    {
         "nome": "Menu - Horizontal (Navbar)",
         "id": "menus-horizontal-navbar",
         "target": "menus",
         "thumbnail": null,
         "language": "pt-br",
-        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-horizontal-navbar\">\n    <nav class=\"bg-white border-b border-gray-200 shadow-sm\">\n        <div class=\"max-w-6xl mx-auto px-4\">\n            <ul class=\"flex flex-wrap items-center gap-6 h-14\">\n                <!-- item < -->\n                <li>\n                    <a href=\"@[[item#url]]@\" class=\"text-gray-700 hover:text-blue-600 font-medium transition-colors\">@[[item#label]]@<\/a>\n                <\/li>\n                <!-- item > -->\n                <!-- item-parent < -->\n                <li class=\"relative group\">\n                    <a href=\"@[[item#url]]@\" class=\"text-gray-700 hover:text-blue-600 font-medium transition-colors inline-flex items-center gap-1\">@[[item#label]]@\n                        <svg class=\"w-3 h-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"\/><\/svg>\n                    <\/a>\n                    <ul class=\"absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block z-20\">\n                        @[[item#children]]@\n                    <\/ul>\n                <\/li>\n                <!-- item-parent > -->\n                <!-- no-item < -->\n                <li class=\"text-gray-400 italic\">Nenhum item no menu<\/li>\n                <!-- no-item > -->\n            <\/ul>\n        <\/div>\n    <\/nav>\n<\/section>\n",
+        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-horizontal-navbar\">\n    <nav class=\"bg-white border-b border-gray-200 shadow-sm\">\n        <div class=\"max-w-6xl mx-auto px-4\">\n            <ul class=\"flex flex-wrap items-center gap-6 h-14\">\n                <!-- item < -->\n                <li>\n                    <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"text-gray-700 hover:text-blue-600 font-medium transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n                <\/li>\n                <!-- item > -->\n                <!-- item-parent < -->\n                <li class=\"relative group\">\n                    <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"text-gray-700 hover:text-blue-600 font-medium transition-colors inline-flex items-center gap-1 @[[item#css_classes]]@\">@[[item#label]]@\n                        <svg class=\"w-3 h-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"\/><\/svg>\n                    <\/a>\n                    <ul class=\"absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block z-20\">\n                        @[[item#children]]@\n                    <\/ul>\n                <\/li>\n                <!-- item-parent > -->\n                <!-- no-item < -->\n                <li class=\"text-gray-400 italic\">Nenhum item no menu<\/li>\n                <!-- no-item > -->\n            <\/ul>\n        <\/div>\n    <\/nav>\n<\/section>\n",
         "css": null,
         "framework_css": "tailwindcss",
         "status": "A",
         "versao": 1,
-        "file_version": "1.5",
-        "checksum": "{\"html\":\"aab716c91f85f638460273c5c8d0b48c\",\"css\":\"\",\"combined\":\"aab716c91f85f638460273c5c8d0b48c\"}"
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"53b81fe947c011d82dccd9425974d077\",\"css\":\"\",\"combined\":\"53b81fe947c011d82dccd9425974d077\"}"
     },
     {
         "nome": "Menu - Vertical (Lateral)",
@@ -2035,13 +2147,13 @@
         "target": "menus",
         "thumbnail": null,
         "language": "pt-br",
-        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-vertical-sidebar\">\n    <nav class=\"w-64 bg-gray-50 border-r border-gray-200 min-h-screen p-4\">\n        <ul class=\"space-y-1\">\n            <!-- item < -->\n            <li>\n                <a href=\"@[[item#url]]@\" class=\"block px-3 py-2 rounded text-gray-700 hover:bg-blue-50 hover:text-blue-700 font-medium transition-colors\">@[[item#label]]@<\/a>\n            <\/li>\n            <!-- item > -->\n            <!-- item-parent < -->\n            <li>\n                <a href=\"@[[item#url]]@\" class=\"block px-3 py-2 rounded text-gray-900 font-semibold hover:bg-blue-50 hover:text-blue-700 transition-colors\">@[[item#label]]@<\/a>\n                <ul class=\"ml-4 mt-1 space-y-1 border-l border-gray-200 pl-2\">\n                    @[[item#children]]@\n                <\/ul>\n            <\/li>\n            <!-- item-parent > -->\n            <!-- no-item < -->\n            <li class=\"px-3 py-2 text-gray-400 italic\">Nenhum item no menu<\/li>\n            <!-- no-item > -->\n        <\/ul>\n    <\/nav>\n<\/section>\n",
+        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-vertical-sidebar\">\n    <nav class=\"w-64 bg-gray-50 border-r border-gray-200 min-h-screen p-4\">\n        <ul class=\"space-y-1\">\n            <!-- item < -->\n            <li>\n                <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"block px-3 py-2 rounded text-gray-700 hover:bg-blue-50 hover:text-blue-700 font-medium transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n            <\/li>\n            <!-- item > -->\n            <!-- item-parent < -->\n            <li>\n                <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"block px-3 py-2 rounded text-gray-900 font-semibold hover:bg-blue-50 hover:text-blue-700 transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n                <ul class=\"ml-4 mt-1 space-y-1 border-l border-gray-200 pl-2\">\n                    @[[item#children]]@\n                <\/ul>\n            <\/li>\n            <!-- item-parent > -->\n            <!-- no-item < -->\n            <li class=\"px-3 py-2 text-gray-400 italic\">Nenhum item no menu<\/li>\n            <!-- no-item > -->\n        <\/ul>\n    <\/nav>\n<\/section>\n",
         "css": null,
         "framework_css": "tailwindcss",
         "status": "A",
         "versao": 1,
-        "file_version": "1.3",
-        "checksum": "{\"html\":\"e36a01c102605c584764ea427752aa15\",\"css\":\"\",\"combined\":\"e36a01c102605c584764ea427752aa15\"}"
+        "file_version": "1.5",
+        "checksum": "{\"html\":\"bbee43b1be509d1be39855f7947ed293\",\"css\":\"\",\"combined\":\"bbee43b1be509d1be39855f7947ed293\"}"
     },
     {
         "nome": "Menu - Rodapé (Colunas)",
@@ -2049,13 +2161,13 @@
         "target": "menus",
         "thumbnail": null,
         "language": "pt-br",
-        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-footer-colunas\">\n    <nav class=\"bg-gray-900 text-gray-300 py-10\">\n        <div class=\"max-w-6xl mx-auto px-4\">\n            <h3 class=\"text-white font-semibold mb-4 uppercase tracking-wide text-sm\">Navegação<\/h3>\n            <ul class=\"grid grid-cols-2 md:grid-cols-4 gap-3\">\n                <!-- item < -->\n                <li>\n                    <a href=\"@[[item#url]]@\" class=\"hover:text-white transition-colors\">@[[item#label]]@<\/a>\n                <\/li>\n                <!-- item > -->\n                <!-- item-parent < -->\n                <li>\n                    <span class=\"block text-white font-semibold mb-2\">@[[item#label]]@<\/span>\n                    <ul class=\"space-y-2\">\n                        @[[item#children]]@\n                    <\/ul>\n                <\/li>\n                <!-- item-parent > -->\n                <!-- no-item < -->\n                <li class=\"text-gray-500 italic\">Nenhum item no menu<\/li>\n                <!-- no-item > -->\n            <\/ul>\n        <\/div>\n    <\/nav>\n<\/section>\n",
+        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-footer-colunas\">\n    <nav class=\"bg-gray-900 text-gray-300 py-10\">\n        <div class=\"max-w-6xl mx-auto px-4\">\n            <h3 class=\"text-white font-semibold mb-4 uppercase tracking-wide text-sm\">Navegação<\/h3>\n            <ul class=\"grid grid-cols-2 md:grid-cols-4 gap-3\">\n                <!-- item < -->\n                <li>\n                    <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"hover:text-white transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n                <\/li>\n                <!-- item > -->\n                <!-- item-parent < -->\n                <li>\n                    <span data-slug=\"@[[item#slug]]@\" class=\"block text-white font-semibold mb-2 @[[item#css_classes]]@\">@[[item#label]]@<\/span>\n                    <ul class=\"space-y-2\">\n                        @[[item#children]]@\n                    <\/ul>\n                <\/li>\n                <!-- item-parent > -->\n                <!-- no-item < -->\n                <li class=\"text-gray-500 italic\">Nenhum item no menu<\/li>\n                <!-- no-item > -->\n            <\/ul>\n        <\/div>\n    <\/nav>\n<\/section>\n",
         "css": null,
         "framework_css": "tailwindcss",
         "status": "A",
         "versao": 1,
-        "file_version": "1.3",
-        "checksum": "{\"html\":\"1a2bd2b6b21020e70a23e42188c2e44f\",\"css\":\"\",\"combined\":\"1a2bd2b6b21020e70a23e42188c2e44f\"}"
+        "file_version": "1.5",
+        "checksum": "{\"html\":\"8391a424fe9d0c64a7aedf0bf0c45e5a\",\"css\":\"\",\"combined\":\"8391a424fe9d0c64a7aedf0bf0c45e5a\"}"
     },
     {
         "nome": "Menu - Suspenso (Dropdown)",
@@ -2063,13 +2175,13 @@
         "target": "menus",
         "thumbnail": null,
         "language": "pt-br",
-        "html": "<section class=\"font-sans p-6\" data-id=\"1\" data-title=\"menu-dropdown\">\n    <nav class=\"relative inline-block text-left group\">\n        <button type=\"button\" class=\"inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors\">\n            Menu\n            <svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"\/><\/svg>\n        <\/button>\n        <ul class=\"absolute left-0 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block z-10\">\n            <!-- item < -->\n            <li>\n                <a href=\"@[[item#url]]@\" class=\"block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors\">@[[item#label]]@<\/a>\n            <\/li>\n            <!-- item > -->\n            <!-- item-parent < -->\n            <li class=\"relative group\/sub\">\n                <a href=\"@[[item#url]]@\" class=\"flex items-center justify-between px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors\">@[[item#label]]@\n                    <svg class=\"w-3 h-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 5l7 7-7 7\"\/><\/svg>\n                <\/a>\n                <ul class=\"absolute left-full top-0 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover\/sub:block z-20\">\n                    @[[item#children]]@\n                <\/ul>\n            <\/li>\n            <!-- item-parent > -->\n            <!-- no-item < -->\n            <li class=\"px-4 py-2 text-gray-400 italic\">Nenhum item no menu<\/li>\n            <!-- no-item > -->\n        <\/ul>\n    <\/nav>\n<\/section>\n",
+        "html": "<section class=\"font-sans p-6\" data-id=\"1\" data-title=\"menu-dropdown\">\n    <nav class=\"relative inline-block text-left group\">\n        <button type=\"button\" class=\"inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors\">\n            Menu\n            <svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"\/><\/svg>\n        <\/button>\n        <ul class=\"absolute left-0 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block z-10\">\n            <!-- item < -->\n            <li>\n                <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n            <\/li>\n            <!-- item > -->\n            <!-- item-parent < -->\n            <li class=\"relative group\/sub\">\n                <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"flex items-center justify-between px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors @[[item#css_classes]]@\">@[[item#label]]@\n                    <svg class=\"w-3 h-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 5l7 7-7 7\"\/><\/svg>\n                <\/a>\n                <ul class=\"absolute left-full top-0 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover\/sub:block z-20\">\n                    @[[item#children]]@\n                <\/ul>\n            <\/li>\n            <!-- item-parent > -->\n            <!-- no-item < -->\n            <li class=\"px-4 py-2 text-gray-400 italic\">Nenhum item no menu<\/li>\n            <!-- no-item > -->\n        <\/ul>\n    <\/nav>\n<\/section>\n",
         "css": null,
         "framework_css": "tailwindcss",
         "status": "A",
         "versao": 1,
-        "file_version": "1.5",
-        "checksum": "{\"html\":\"a9ba92c6aa6bdbb251095d8880890887\",\"css\":\"\",\"combined\":\"a9ba92c6aa6bdbb251095d8880890887\"}"
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"44e4f5f4aadb1b6a762f925e03e81338\",\"css\":\"\",\"combined\":\"44e4f5f4aadb1b6a762f925e03e81338\"}"
     },
     {
         "nome": "Menu - Trilha (Breadcrumb)",
@@ -2077,13 +2189,13 @@
         "target": "menus",
         "thumbnail": null,
         "language": "pt-br",
-        "html": "<section class=\"font-sans p-4\" data-id=\"1\" data-title=\"menu-breadcrumb\">\n    <nav class=\"text-sm\" aria-label=\"Breadcrumb\">\n        <ol class=\"flex flex-wrap items-center gap-2 text-gray-500\">\n            <!-- item < -->\n            <li class=\"flex items-center gap-2\">\n                <a href=\"@[[item#url]]@\" class=\"hover:text-blue-600 transition-colors\">@[[item#label]]@<\/a>\n                <span class=\"text-gray-300\">\/<\/span>\n            <\/li>\n            <!-- item > -->\n            <!-- item-parent < -->\n            <li class=\"flex items-center gap-2\">\n                <a href=\"@[[item#url]]@\" class=\"hover:text-blue-600 transition-colors\">@[[item#label]]@<\/a>\n                <span class=\"text-gray-300\">\/<\/span>\n            <\/li>\n            @[[item#children]]@\n            <!-- item-parent > -->\n            <!-- no-item < -->\n            <li class=\"text-gray-400 italic\">Nenhum item no menu<\/li>\n            <!-- no-item > -->\n        <\/ol>\n    <\/nav>\n<\/section>\n",
+        "html": "<section class=\"font-sans p-4\" data-id=\"1\" data-title=\"menu-breadcrumb\">\n    <nav class=\"text-sm\" aria-label=\"Breadcrumb\">\n        <ol class=\"flex flex-wrap items-center gap-2 text-gray-500\">\n            <!-- item < -->\n            <li class=\"flex items-center gap-2\">\n                <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"hover:text-blue-600 transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n                <span class=\"text-gray-300\">\/<\/span>\n            <\/li>\n            <!-- item > -->\n            <!-- item-parent < -->\n            <li class=\"flex items-center gap-2\">\n                <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"hover:text-blue-600 transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n                <span class=\"text-gray-300\">\/<\/span>\n            <\/li>\n            @[[item#children]]@\n            <!-- item-parent > -->\n            <!-- no-item < -->\n            <li class=\"text-gray-400 italic\">Nenhum item no menu<\/li>\n            <!-- no-item > -->\n        <\/ol>\n    <\/nav>\n<\/section>\n",
         "css": null,
         "framework_css": "tailwindcss",
         "status": "A",
         "versao": 1,
-        "file_version": "1.3",
-        "checksum": "{\"html\":\"7ccb5e89814791764a72cb12f3df686b\",\"css\":\"\",\"combined\":\"7ccb5e89814791764a72cb12f3df686b\"}"
+        "file_version": "1.5",
+        "checksum": "{\"html\":\"c66336f7434228144969ab5ef207e394\",\"css\":\"\",\"combined\":\"c66336f7434228144969ab5ef207e394\"}"
     },
     {
         "nome": "Menu - Mobile (Hambúrguer)",
@@ -2091,13 +2203,13 @@
         "target": "menus",
         "thumbnail": null,
         "language": "pt-br",
-        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-mobile-hamburguer\">\n    <nav class=\"bg-white border-b border-gray-200\">\n        <div class=\"relative px-4 py-3 flex items-center justify-between\">\n            <span class=\"font-semibold text-gray-800\">Menu<\/span>\n            <input type=\"checkbox\" id=\"menu-mobile-toggle\" class=\"peer hidden\">\n            <label for=\"menu-mobile-toggle\" class=\"cursor-pointer text-gray-700\">\n                <svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"\/><\/svg>\n            <\/label>\n            <ul class=\"hidden peer-checked:flex flex-col absolute left-0 right-0 top-full bg-white border-t border-gray-200 shadow-md z-10\">\n                <!-- item < -->\n                <li class=\"border-b border-gray-100\">\n                    <a href=\"@[[item#url]]@\" class=\"block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors\">@[[item#label]]@<\/a>\n                <\/li>\n                <!-- item > -->\n                <!-- item-parent < -->\n                <li class=\"border-b border-gray-100\">\n                    <span class=\"block px-4 py-3 font-semibold text-gray-800\">@[[item#label]]@<\/span>\n                    <ul class=\"bg-gray-50 pl-4\">\n                        @[[item#children]]@\n                    <\/ul>\n                <\/li>\n                <!-- item-parent > -->\n                <!-- no-item < -->\n                <li class=\"px-4 py-3 text-gray-400 italic\">Nenhum item no menu<\/li>\n                <!-- no-item > -->\n            <\/ul>\n        <\/div>\n    <\/nav>\n<\/section>\n",
+        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-mobile-hamburguer\">\n    <nav class=\"bg-white border-b border-gray-200\">\n        <div class=\"relative px-4 py-3 flex items-center justify-between\">\n            <span class=\"font-semibold text-gray-800\">Menu<\/span>\n            <input type=\"checkbox\" id=\"menu-mobile-toggle\" class=\"peer hidden\">\n            <label for=\"menu-mobile-toggle\" class=\"cursor-pointer text-gray-700\">\n                <svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"\/><\/svg>\n            <\/label>\n            <ul class=\"hidden peer-checked:flex flex-col absolute left-0 right-0 top-full bg-white border-t border-gray-200 shadow-md z-10\">\n                <!-- item < -->\n                <li class=\"border-b border-gray-100\">\n                    <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n                <\/li>\n                <!-- item > -->\n                <!-- item-parent < -->\n                <li class=\"border-b border-gray-100\">\n                    <span data-slug=\"@[[item#slug]]@\" class=\"block px-4 py-3 font-semibold text-gray-800 @[[item#css_classes]]@\">@[[item#label]]@<\/span>\n                    <ul class=\"bg-gray-50 pl-4\">\n                        @[[item#children]]@\n                    <\/ul>\n                <\/li>\n                <!-- item-parent > -->\n                <!-- no-item < -->\n                <li class=\"px-4 py-3 text-gray-400 italic\">Nenhum item no menu<\/li>\n                <!-- no-item > -->\n            <\/ul>\n        <\/div>\n    <\/nav>\n<\/section>\n",
         "css": null,
         "framework_css": "tailwindcss",
         "status": "A",
         "versao": 1,
-        "file_version": "1.3",
-        "checksum": "{\"html\":\"75d05a09c96a667252beeb605d137b5d\",\"css\":\"\",\"combined\":\"75d05a09c96a667252beeb605d137b5d\"}"
+        "file_version": "1.5",
+        "checksum": "{\"html\":\"c4816145a30c82ea1c187ada33dc4108\",\"css\":\"\",\"combined\":\"c4816145a30c82ea1c187ada33dc4108\"}"
     },
     {
         "nome": "Menu - Horizontal (Navbar)",
@@ -2105,13 +2217,13 @@
         "target": "menus",
         "thumbnail": null,
         "language": "en",
-        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-horizontal-navbar\">\n    <nav class=\"bg-white border-b border-gray-200 shadow-sm\">\n        <div class=\"max-w-6xl mx-auto px-4\">\n            <ul class=\"flex flex-wrap items-center gap-6 h-14\">\n                <!-- item < -->\n                <li>\n                    <a href=\"@[[item#url]]@\" class=\"text-gray-700 hover:text-blue-600 font-medium transition-colors\">@[[item#label]]@<\/a>\n                <\/li>\n                <!-- item > -->\n                <!-- item-parent < -->\n                <li class=\"relative group\">\n                    <a href=\"@[[item#url]]@\" class=\"text-gray-700 hover:text-blue-600 font-medium transition-colors inline-flex items-center gap-1\">@[[item#label]]@\n                        <svg class=\"w-3 h-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"\/><\/svg>\n                    <\/a>\n                    <ul class=\"absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block z-20\">\n                        @[[item#children]]@\n                    <\/ul>\n                <\/li>\n                <!-- item-parent > -->\n                <!-- no-item < -->\n                <li class=\"text-gray-400 italic\">No menu items<\/li>\n                <!-- no-item > -->\n            <\/ul>\n        <\/div>\n    <\/nav>\n<\/section>\n",
+        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-horizontal-navbar\">\n    <nav class=\"bg-white border-b border-gray-200 shadow-sm\">\n        <div class=\"max-w-6xl mx-auto px-4\">\n            <ul class=\"flex flex-wrap items-center gap-6 h-14\">\n                <!-- item < -->\n                <li>\n                    <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"text-gray-700 hover:text-blue-600 font-medium transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n                <\/li>\n                <!-- item > -->\n                <!-- item-parent < -->\n                <li class=\"relative group\">\n                    <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"text-gray-700 hover:text-blue-600 font-medium transition-colors inline-flex items-center gap-1 @[[item#css_classes]]@\">@[[item#label]]@\n                        <svg class=\"w-3 h-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"\/><\/svg>\n                    <\/a>\n                    <ul class=\"absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block z-20\">\n                        @[[item#children]]@\n                    <\/ul>\n                <\/li>\n                <!-- item-parent > -->\n                <!-- no-item < -->\n                <li class=\"text-gray-400 italic\">No menu items<\/li>\n                <!-- no-item > -->\n            <\/ul>\n        <\/div>\n    <\/nav>\n<\/section>\n",
         "css": null,
         "framework_css": "tailwindcss",
         "status": "A",
         "versao": 1,
-        "file_version": "1.5",
-        "checksum": "{\"html\":\"71cff7c3484aaa4cc0b8f13e2bfb3aa2\",\"css\":\"\",\"combined\":\"71cff7c3484aaa4cc0b8f13e2bfb3aa2\"}"
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"9e64d39aab68d8d32041d6eb7fcaea29\",\"css\":\"\",\"combined\":\"9e64d39aab68d8d32041d6eb7fcaea29\"}"
     },
     {
         "nome": "Menu - Vertical (Sidebar)",
@@ -2119,13 +2231,13 @@
         "target": "menus",
         "thumbnail": null,
         "language": "en",
-        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-vertical-sidebar\">\n    <nav class=\"w-64 bg-gray-50 border-r border-gray-200 min-h-screen p-4\">\n        <ul class=\"space-y-1\">\n            <!-- item < -->\n            <li>\n                <a href=\"@[[item#url]]@\" class=\"block px-3 py-2 rounded text-gray-700 hover:bg-blue-50 hover:text-blue-700 font-medium transition-colors\">@[[item#label]]@<\/a>\n            <\/li>\n            <!-- item > -->\n            <!-- item-parent < -->\n            <li>\n                <a href=\"@[[item#url]]@\" class=\"block px-3 py-2 rounded text-gray-900 font-semibold hover:bg-blue-50 hover:text-blue-700 transition-colors\">@[[item#label]]@<\/a>\n                <ul class=\"ml-4 mt-1 space-y-1 border-l border-gray-200 pl-2\">\n                    @[[item#children]]@\n                <\/ul>\n            <\/li>\n            <!-- item-parent > -->\n            <!-- no-item < -->\n            <li class=\"px-3 py-2 text-gray-400 italic\">No menu items<\/li>\n            <!-- no-item > -->\n        <\/ul>\n    <\/nav>\n<\/section>\n",
+        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-vertical-sidebar\">\n    <nav class=\"w-64 bg-gray-50 border-r border-gray-200 min-h-screen p-4\">\n        <ul class=\"space-y-1\">\n            <!-- item < -->\n            <li>\n                <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"block px-3 py-2 rounded text-gray-700 hover:bg-blue-50 hover:text-blue-700 font-medium transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n            <\/li>\n            <!-- item > -->\n            <!-- item-parent < -->\n            <li>\n                <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"block px-3 py-2 rounded text-gray-900 font-semibold hover:bg-blue-50 hover:text-blue-700 transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n                <ul class=\"ml-4 mt-1 space-y-1 border-l border-gray-200 pl-2\">\n                    @[[item#children]]@\n                <\/ul>\n            <\/li>\n            <!-- item-parent > -->\n            <!-- no-item < -->\n            <li class=\"px-3 py-2 text-gray-400 italic\">No menu items<\/li>\n            <!-- no-item > -->\n        <\/ul>\n    <\/nav>\n<\/section>\n",
         "css": null,
         "framework_css": "tailwindcss",
         "status": "A",
         "versao": 1,
-        "file_version": "1.3",
-        "checksum": "{\"html\":\"d36407c3fcee6efdfee788bca613e7ae\",\"css\":\"\",\"combined\":\"d36407c3fcee6efdfee788bca613e7ae\"}"
+        "file_version": "1.5",
+        "checksum": "{\"html\":\"ccf483ed60b31129a3c681cc9025cbad\",\"css\":\"\",\"combined\":\"ccf483ed60b31129a3c681cc9025cbad\"}"
     },
     {
         "nome": "Menu - Footer (Columns)",
@@ -2133,13 +2245,13 @@
         "target": "menus",
         "thumbnail": null,
         "language": "en",
-        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-footer-colunas\">\n    <nav class=\"bg-gray-900 text-gray-300 py-10\">\n        <div class=\"max-w-6xl mx-auto px-4\">\n            <h3 class=\"text-white font-semibold mb-4 uppercase tracking-wide text-sm\">Navigation<\/h3>\n            <ul class=\"grid grid-cols-2 md:grid-cols-4 gap-3\">\n                <!-- item < -->\n                <li>\n                    <a href=\"@[[item#url]]@\" class=\"hover:text-white transition-colors\">@[[item#label]]@<\/a>\n                <\/li>\n                <!-- item > -->\n                <!-- item-parent < -->\n                <li>\n                    <span class=\"block text-white font-semibold mb-2\">@[[item#label]]@<\/span>\n                    <ul class=\"space-y-2\">\n                        @[[item#children]]@\n                    <\/ul>\n                <\/li>\n                <!-- item-parent > -->\n                <!-- no-item < -->\n                <li class=\"text-gray-500 italic\">No menu items<\/li>\n                <!-- no-item > -->\n            <\/ul>\n        <\/div>\n    <\/nav>\n<\/section>\n",
+        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-footer-colunas\">\n    <nav class=\"bg-gray-900 text-gray-300 py-10\">\n        <div class=\"max-w-6xl mx-auto px-4\">\n            <h3 class=\"text-white font-semibold mb-4 uppercase tracking-wide text-sm\">Navigation<\/h3>\n            <ul class=\"grid grid-cols-2 md:grid-cols-4 gap-3\">\n                <!-- item < -->\n                <li>\n                    <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"hover:text-white transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n                <\/li>\n                <!-- item > -->\n                <!-- item-parent < -->\n                <li>\n                    <span data-slug=\"@[[item#slug]]@\" class=\"block text-white font-semibold mb-2 @[[item#css_classes]]@\">@[[item#label]]@<\/span>\n                    <ul class=\"space-y-2\">\n                        @[[item#children]]@\n                    <\/ul>\n                <\/li>\n                <!-- item-parent > -->\n                <!-- no-item < -->\n                <li class=\"text-gray-500 italic\">No menu items<\/li>\n                <!-- no-item > -->\n            <\/ul>\n        <\/div>\n    <\/nav>\n<\/section>\n",
         "css": null,
         "framework_css": "tailwindcss",
         "status": "A",
         "versao": 1,
-        "file_version": "1.3",
-        "checksum": "{\"html\":\"5d3b1501f2bd5108aece6d3f9cabbcd4\",\"css\":\"\",\"combined\":\"5d3b1501f2bd5108aece6d3f9cabbcd4\"}"
+        "file_version": "1.5",
+        "checksum": "{\"html\":\"dba0ba9364b23ffcf3f595f8b0bde3bf\",\"css\":\"\",\"combined\":\"dba0ba9364b23ffcf3f595f8b0bde3bf\"}"
     },
     {
         "nome": "Menu - Dropdown",
@@ -2147,13 +2259,13 @@
         "target": "menus",
         "thumbnail": null,
         "language": "en",
-        "html": "<section class=\"font-sans p-6\" data-id=\"1\" data-title=\"menu-dropdown\">\n    <nav class=\"relative inline-block text-left group\">\n        <button type=\"button\" class=\"inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors\">\n            Menu\n            <svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"\/><\/svg>\n        <\/button>\n        <ul class=\"absolute left-0 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block z-10\">\n            <!-- item < -->\n            <li>\n                <a href=\"@[[item#url]]@\" class=\"block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors\">@[[item#label]]@<\/a>\n            <\/li>\n            <!-- item > -->\n            <!-- item-parent < -->\n            <li class=\"relative group\/sub\">\n                <a href=\"@[[item#url]]@\" class=\"flex items-center justify-between px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors\">@[[item#label]]@\n                    <svg class=\"w-3 h-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 5l7 7-7 7\"\/><\/svg>\n                <\/a>\n                <ul class=\"absolute left-full top-0 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover\/sub:block z-20\">\n                    @[[item#children]]@\n                <\/ul>\n            <\/li>\n            <!-- item-parent > -->\n            <!-- no-item < -->\n            <li class=\"px-4 py-2 text-gray-400 italic\">No menu items<\/li>\n            <!-- no-item > -->\n        <\/ul>\n    <\/nav>\n<\/section>\n",
+        "html": "<section class=\"font-sans p-6\" data-id=\"1\" data-title=\"menu-dropdown\">\n    <nav class=\"relative inline-block text-left group\">\n        <button type=\"button\" class=\"inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors\">\n            Menu\n            <svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"\/><\/svg>\n        <\/button>\n        <ul class=\"absolute left-0 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block z-10\">\n            <!-- item < -->\n            <li>\n                <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n            <\/li>\n            <!-- item > -->\n            <!-- item-parent < -->\n            <li class=\"relative group\/sub\">\n                <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"flex items-center justify-between px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors @[[item#css_classes]]@\">@[[item#label]]@\n                    <svg class=\"w-3 h-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 5l7 7-7 7\"\/><\/svg>\n                <\/a>\n                <ul class=\"absolute left-full top-0 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover\/sub:block z-20\">\n                    @[[item#children]]@\n                <\/ul>\n            <\/li>\n            <!-- item-parent > -->\n            <!-- no-item < -->\n            <li class=\"px-4 py-2 text-gray-400 italic\">No menu items<\/li>\n            <!-- no-item > -->\n        <\/ul>\n    <\/nav>\n<\/section>\n",
         "css": null,
         "framework_css": "tailwindcss",
         "status": "A",
         "versao": 1,
-        "file_version": "1.5",
-        "checksum": "{\"html\":\"0772a66ce8a887c82690ce8a40d0b140\",\"css\":\"\",\"combined\":\"0772a66ce8a887c82690ce8a40d0b140\"}"
+        "file_version": "1.7",
+        "checksum": "{\"html\":\"2ef4ec97ea276d5cee292e66dc9306e7\",\"css\":\"\",\"combined\":\"2ef4ec97ea276d5cee292e66dc9306e7\"}"
     },
     {
         "nome": "Menu - Breadcrumb",
@@ -2161,13 +2273,13 @@
         "target": "menus",
         "thumbnail": null,
         "language": "en",
-        "html": "<section class=\"font-sans p-4\" data-id=\"1\" data-title=\"menu-breadcrumb\">\n    <nav class=\"text-sm\" aria-label=\"Breadcrumb\">\n        <ol class=\"flex flex-wrap items-center gap-2 text-gray-500\">\n            <!-- item < -->\n            <li class=\"flex items-center gap-2\">\n                <a href=\"@[[item#url]]@\" class=\"hover:text-blue-600 transition-colors\">@[[item#label]]@<\/a>\n                <span class=\"text-gray-300\">\/<\/span>\n            <\/li>\n            <!-- item > -->\n            <!-- item-parent < -->\n            <li class=\"flex items-center gap-2\">\n                <a href=\"@[[item#url]]@\" class=\"hover:text-blue-600 transition-colors\">@[[item#label]]@<\/a>\n                <span class=\"text-gray-300\">\/<\/span>\n            <\/li>\n            @[[item#children]]@\n            <!-- item-parent > -->\n            <!-- no-item < -->\n            <li class=\"text-gray-400 italic\">No menu items<\/li>\n            <!-- no-item > -->\n        <\/ol>\n    <\/nav>\n<\/section>\n",
+        "html": "<section class=\"font-sans p-4\" data-id=\"1\" data-title=\"menu-breadcrumb\">\n    <nav class=\"text-sm\" aria-label=\"Breadcrumb\">\n        <ol class=\"flex flex-wrap items-center gap-2 text-gray-500\">\n            <!-- item < -->\n            <li class=\"flex items-center gap-2\">\n                <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"hover:text-blue-600 transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n                <span class=\"text-gray-300\">\/<\/span>\n            <\/li>\n            <!-- item > -->\n            <!-- item-parent < -->\n            <li class=\"flex items-center gap-2\">\n                <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"hover:text-blue-600 transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n                <span class=\"text-gray-300\">\/<\/span>\n            <\/li>\n            @[[item#children]]@\n            <!-- item-parent > -->\n            <!-- no-item < -->\n            <li class=\"text-gray-400 italic\">No menu items<\/li>\n            <!-- no-item > -->\n        <\/ol>\n    <\/nav>\n<\/section>\n",
         "css": null,
         "framework_css": "tailwindcss",
         "status": "A",
         "versao": 1,
-        "file_version": "1.3",
-        "checksum": "{\"html\":\"d873b8473e1a6c9c2f7630c7897a119e\",\"css\":\"\",\"combined\":\"d873b8473e1a6c9c2f7630c7897a119e\"}"
+        "file_version": "1.5",
+        "checksum": "{\"html\":\"63df85b6ac9ab4823498c4d0ce3c2c91\",\"css\":\"\",\"combined\":\"63df85b6ac9ab4823498c4d0ce3c2c91\"}"
     },
     {
         "nome": "Menu - Mobile (Hamburger)",
@@ -2175,13 +2287,13 @@
         "target": "menus",
         "thumbnail": null,
         "language": "en",
-        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-mobile-hamburguer\">\n    <nav class=\"bg-white border-b border-gray-200\">\n        <div class=\"relative px-4 py-3 flex items-center justify-between\">\n            <span class=\"font-semibold text-gray-800\">Menu<\/span>\n            <input type=\"checkbox\" id=\"menu-mobile-toggle\" class=\"peer hidden\">\n            <label for=\"menu-mobile-toggle\" class=\"cursor-pointer text-gray-700\">\n                <svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"\/><\/svg>\n            <\/label>\n            <ul class=\"hidden peer-checked:flex flex-col absolute left-0 right-0 top-full bg-white border-t border-gray-200 shadow-md z-10\">\n                <!-- item < -->\n                <li class=\"border-b border-gray-100\">\n                    <a href=\"@[[item#url]]@\" class=\"block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors\">@[[item#label]]@<\/a>\n                <\/li>\n                <!-- item > -->\n                <!-- item-parent < -->\n                <li class=\"border-b border-gray-100\">\n                    <span class=\"block px-4 py-3 font-semibold text-gray-800\">@[[item#label]]@<\/span>\n                    <ul class=\"bg-gray-50 pl-4\">\n                        @[[item#children]]@\n                    <\/ul>\n                <\/li>\n                <!-- item-parent > -->\n                <!-- no-item < -->\n                <li class=\"px-4 py-3 text-gray-400 italic\">No menu items<\/li>\n                <!-- no-item > -->\n            <\/ul>\n        <\/div>\n    <\/nav>\n<\/section>\n",
+        "html": "<section class=\"font-sans\" data-id=\"1\" data-title=\"menu-mobile-hamburguer\">\n    <nav class=\"bg-white border-b border-gray-200\">\n        <div class=\"relative px-4 py-3 flex items-center justify-between\">\n            <span class=\"font-semibold text-gray-800\">Menu<\/span>\n            <input type=\"checkbox\" id=\"menu-mobile-toggle\" class=\"peer hidden\">\n            <label for=\"menu-mobile-toggle\" class=\"cursor-pointer text-gray-700\">\n                <svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"\/><\/svg>\n            <\/label>\n            <ul class=\"hidden peer-checked:flex flex-col absolute left-0 right-0 top-full bg-white border-t border-gray-200 shadow-md z-10\">\n                <!-- item < -->\n                <li class=\"border-b border-gray-100\">\n                    <a href=\"@[[item#url]]@\" data-slug=\"@[[item#slug]]@\" class=\"block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors @[[item#css_classes]]@\">@[[item#label]]@<\/a>\n                <\/li>\n                <!-- item > -->\n                <!-- item-parent < -->\n                <li class=\"border-b border-gray-100\">\n                    <span data-slug=\"@[[item#slug]]@\" class=\"block px-4 py-3 font-semibold text-gray-800 @[[item#css_classes]]@\">@[[item#label]]@<\/span>\n                    <ul class=\"bg-gray-50 pl-4\">\n                        @[[item#children]]@\n                    <\/ul>\n                <\/li>\n                <!-- item-parent > -->\n                <!-- no-item < -->\n                <li class=\"px-4 py-3 text-gray-400 italic\">No menu items<\/li>\n                <!-- no-item > -->\n            <\/ul>\n        <\/div>\n    <\/nav>\n<\/section>\n",
         "css": null,
         "framework_css": "tailwindcss",
         "status": "A",
         "versao": 1,
-        "file_version": "1.3",
-        "checksum": "{\"html\":\"d9785b3973ce167b2e13f1946a90fb4f\",\"css\":\"\",\"combined\":\"d9785b3973ce167b2e13f1946a90fb4f\"}"
+        "file_version": "1.5",
+        "checksum": "{\"html\":\"5746494a2cb0c7c4ce6a5d9c42b88a2e\",\"css\":\"\",\"combined\":\"5746494a2cb0c7c4ce6a5d9c42b88a2e\"}"
     },
     {
         "nome": "Notícias - Simples",

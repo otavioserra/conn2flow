@@ -1,0 +1,14 @@
+<section class="font-sans p-6" data-id="1" data-title="gallery-carousel">
+    <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4">
+        <!-- item < -->
+        <figure class="snap-center shrink-0 w-80">
+            <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@"
+                class="w-80 h-56 object-cover rounded-lg shadow">
+            <figcaption class="mt-2 text-sm text-gray-600 text-center">@[[item#legenda]]@</figcaption>
+        </figure>
+        <!-- item > -->
+        <!-- no-item < -->
+        <div class="w-full text-center text-gray-400 italic py-10">No images in the gallery</div>
+        <!-- no-item > -->
+    </div>
+</section>

@@ -5,12 +5,12 @@
             <ul class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <!-- item < -->
                 <li>
-                    <a href="@[[item#url]]@" class="hover:text-white transition-colors">@[[item#label]]@</a>
+                    <a href="@[[item#url]]@" data-slug="@[[item#slug]]@" class="hover:text-white transition-colors @[[item#css_classes]]@">@[[item#label]]@</a>
                 </li>
                 <!-- item > -->
                 <!-- item-parent < -->
                 <li>
-                    <span class="block text-white font-semibold mb-2">@[[item#label]]@</span>
+                    <span data-slug="@[[item#slug]]@" class="block text-white font-semibold mb-2 @[[item#css_classes]]@">@[[item#label]]@</span>
                     <ul class="space-y-2">
                         @[[item#children]]@
                     </ul>

@@ -1,0 +1,14 @@
+<section class="font-sans p-6" data-id="1" data-title="gallery-grid">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- item < -->
+        <figure class="group relative overflow-hidden rounded-lg shadow-sm">
+            <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@"
+                class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105">
+            <figcaption class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-sm px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity">@[[item#legenda]]@</figcaption>
+        </figure>
+        <!-- item > -->
+        <!-- no-item < -->
+        <div class="col-span-full text-center text-gray-400 italic py-10">Nenhuma imagem na galeria</div>
+        <!-- no-item > -->
+    </div>
+</section>

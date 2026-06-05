@@ -1,0 +1,98 @@
+<div class="field">
+    <label>Gallery name</label>
+    <input type="text" name="name" placeholder="Ex: Home Page Gallery">
+</div>
+
+<h4 class="ui dividing header">Gallery visual template</h4>
+
+<div class="field">
+    <label>Template (Resource)</label>
+    <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
+        <option value="">#template_placeholder_option#</option>
+        #template_id_options#
+    </select>
+    <div class="ui label" style="margin: 8px 0; display: block;">
+        <i class="exchange icon"></i>
+        When you select a template, its HTML and CSS are loaded into the editor below. You can edit
+        freely from there — what counts for rendering is always the editor content (saved to the
+        database).
+    </div>
+</div>
+
+<a class="ui button blue" id="add-new-template"
+    href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=galleries"
+    data-tooltip="Click to add a new gallery template" data-position="top center" data-inverted="">
+    <i class="plus icon"></i> Add New Template
+</a>
+
+<div class="ui negative message hidden" id="error-message">
+    <div class="header">Error!</div>
+    <p id="error-message-content"></p>
+</div>
+
+<h4 class="ui dividing header">Gallery images</h4>
+
+<div class="ui label" style="margin: 8px 0; display: block;">
+    <i class="images icon"></i>
+    Click "Select Images from Server" to open the file manager. Pick several images in sequence —
+    the manager stays open. Each image appears below with an editable caption; drag by the
+    <i class="bars icon"></i> to reorder.
+</div>
+
+<div class="ui segment">
+    <button type="button" class="ui blue button" id="btn-select-images">
+        <i class="folder open icon"></i> Select Images from Server
+    </button>
+</div>
+
+<!-- Gallery images list (batch curation, rendered by JS) -->
+<div id="gallery-items"></div>
+
+<input type="hidden" name="fields_schema">
+
+<h4 class="ui dividing header">Gallery content</h4>
+
+<div class="ui icon message visible info">
+    <i class="info circle icon"></i>
+    <div class="content">
+        <p>The HTML below is the template rendered on the site. Use the
+            <code>&lt;!-- item &lt; --&gt; ... &lt;!-- item &gt; --&gt;</code> block for each image and
+            <code>&lt;!-- no-item &lt; --&gt; ... &lt;!-- no-item &gt; --&gt;</code> for the empty state.
+            Per-image variables: <code>[[item#img-src]]</code>, <code>[[item#caminho]]</code>,
+            <code>[[item#nome]]</code> and <code>[[item#legenda]]</code>.
+        </p>
+    </div>
+</div>
+
+<div class="ui top attached tabular menu menuConteudoGaleria">
+    <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Preview</a>
+    <a class="item" data-tab="hep-editor"><i class="code icon"></i> HTML Editor</a>
+    <a class="item" data-tab="hep-widget"><i class="cubes icon"></i> Widget Code</a>
+</div>
+<div class="ui bottom attached active tab segment" data-tab="hep-preview">
+    <div style="position: relative;">
+        <iframe id="iframe-galleries-preview"
+            style="width:100%;height:900px;border:1px solid #ccc;"></iframe>
+        <div class="ui dimmer hep-preview-dimmer">
+            <div class="ui loader"></div>
+        </div>
+    </div>
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-editor">
+    #html-editor#
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-widget">
+    <div class="ui icon message info">
+        <i class="cubes icon"></i>
+        <div class="content">
+            <div class="header">Wrapped widget block</div>
+            <p>Copy the snippet below and paste it into any physical site page to inject this
+                gallery. The <code>&lt;!-- widgets#galleries-&gt;render(...) --&gt;</code> comment
+                acts as a wrapper: the manager engine recognizes it and replaces it with the rendered
+                HTML containing the real images at request time.</p>
+        </div>
+    </div>
+    <div style="border:1px solid #ccc;">
+        <textarea id="hep-widget-code" name="hep-widget-code"></textarea>
+    </div>
+</div>

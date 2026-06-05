@@ -9,12 +9,12 @@
             <ul class="hidden peer-checked:flex flex-col absolute left-0 right-0 top-full bg-white border-t border-gray-200 shadow-md z-10">
                 <!-- item < -->
                 <li class="border-b border-gray-100">
-                    <a href="@[[item#url]]@" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">@[[item#label]]@</a>
+                    <a href="@[[item#url]]@" data-slug="@[[item#slug]]@" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors @[[item#css_classes]]@">@[[item#label]]@</a>
                 </li>
                 <!-- item > -->
                 <!-- item-parent < -->
                 <li class="border-b border-gray-100">
-                    <span class="block px-4 py-3 font-semibold text-gray-800">@[[item#label]]@</span>
+                    <span data-slug="@[[item#slug]]@" class="block px-4 py-3 font-semibold text-gray-800 @[[item#css_classes]]@">@[[item#label]]@</span>
                     <ul class="bg-gray-50 pl-4">
                         @[[item#children]]@
                     </ul>

@@ -1,0 +1,98 @@
+<div class="field">
+    <label>Nome da Galeria</label>
+    <input type="text" name="name" value="#name#" placeholder="Ex: Galeria da Página Inicial">
+</div>
+
+<h4 class="ui dividing header">Modelo Visual de Galeria</h4>
+
+<div class="field">
+    <label>Modelo (Recurso)</label>
+    <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
+        <option value="">#template_placeholder_option#</option>
+        #template_id_options#
+    </select>
+    <div class="ui label" style="margin: 8px 0; display: block;">
+        <i class="exchange icon"></i>
+        Ao selecionar um modelo, o HTML e o CSS dele serão carregados no editor abaixo. Você pode
+        editar livremente a partir daí — o que vale para a renderização é sempre o conteúdo do
+        editor (salvo no banco de dados).
+    </div>
+</div>
+
+<a class="ui button blue" id="add-new-template"
+    href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=galleries"
+    data-tooltip="Clique para adicionar um novo modelo de galeria" data-position="top center" data-inverted="">
+    <i class="plus icon"></i> Adicionar Novo Modelo
+</a>
+
+<div class="ui negative message hidden" id="error-message">
+    <div class="header">Erro!</div>
+    <p id="error-message-content"></p>
+</div>
+
+<h4 class="ui dividing header">Imagens da Galeria</h4>
+
+<div class="ui label" style="margin: 8px 0; display: block;">
+    <i class="images icon"></i>
+    Clique em "Selecionar Imagens do Servidor" para abrir o gerenciador de arquivos. Selecione
+    várias imagens em sequência — o gerenciador permanece aberto. Cada imagem aparece abaixo com
+    legenda editável; arraste pelo <i class="bars icon"></i> para reordenar.
+</div>
+
+<div class="ui segment">
+    <button type="button" class="ui blue button" id="btn-select-images">
+        <i class="folder open icon"></i> Selecionar Imagens do Servidor
+    </button>
+</div>
+
+<!-- Lista de imagens da galeria (curadoria em lote, renderizada por JS) -->
+<div id="gallery-items"></div>
+
+<input type="hidden" name="fields_schema">
+
+<h4 class="ui dividing header">Conteúdo da Galeria</h4>
+
+<div class="ui icon message visible info">
+    <i class="info circle icon"></i>
+    <div class="content">
+        <p>O HTML abaixo é o template renderizado no site. Use o bloco
+            <code>&lt;!-- item &lt; --&gt; ... &lt;!-- item &gt; --&gt;</code> para cada imagem e
+            <code>&lt;!-- no-item &lt; --&gt; ... &lt;!-- no-item &gt; --&gt;</code> para o estado sem imagens.
+            Variáveis por imagem: <code>[[item#img-src]]</code>, <code>[[item#caminho]]</code>,
+            <code>[[item#nome]]</code> e <code>[[item#legenda]]</code>.
+        </p>
+    </div>
+</div>
+
+<div class="ui top attached tabular menu menuConteudoGaleria">
+    <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Pré-Visualização</a>
+    <a class="item" data-tab="hep-editor"><i class="code icon"></i> Editor HTML</a>
+    <a class="item" data-tab="hep-widget"><i class="cubes icon"></i> Código do Widget</a>
+</div>
+<div class="ui bottom attached active tab segment" data-tab="hep-preview">
+    <div style="position: relative;">
+        <iframe id="iframe-galleries-preview"
+            style="width:100%;height:900px;border:1px solid #ccc;"></iframe>
+        <div class="ui dimmer hep-preview-dimmer">
+            <div class="ui loader"></div>
+        </div>
+    </div>
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-editor">
+    #html-editor#
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-widget">
+    <div class="ui icon message info">
+        <i class="cubes icon"></i>
+        <div class="content">
+            <div class="header">Bloco envelopado do widget</div>
+            <p>Copie o trecho abaixo e cole em qualquer página física do site para injetar esta
+                galeria. O comentário <code>&lt;!-- widgets#galleries-&gt;render(...) --&gt;</code>
+                serve como wrapper: o motor do gestor reconhece e substitui pelo HTML renderizado
+                com as imagens reais no momento da requisição.</p>
+        </div>
+    </div>
+    <div style="border:1px solid #ccc;">
+        <textarea id="hep-widget-code" name="hep-widget-code"></textarea>
+    </div>
+</div>

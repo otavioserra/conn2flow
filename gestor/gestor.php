@@ -777,13 +777,23 @@ function gestor_pagina_javascript_incluir($js = false,$id = false, $retornar = f
 	global $_GESTOR;
 
 	$js_script = '';
+	$js_id = '';
 	
 	if(!$js){
 		if(isset($_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'])){
 			$js_script = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'].'/'.$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
+			$js_id = $_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'].'/'.$_GESTOR['modulo-id'].'/js.js';
 		} else {
 			$js_script = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
+			$js_id = $_GESTOR['modulo-id'].'/js.js';
 		}
+	} elseif(gettype($js) == 'array') {
+		$tipo = (isset($js['tipo']) ? $js['tipo'] : '');
+		$modulo_id = (isset($js['modulo_id']) ? $js['modulo_id'] : 'undefined');
+		$versao = (isset($js['versao']) ? $js['versao'] : $_GESTOR['versao']);
+		
+		$js_script = '<script src="'.$_GESTOR['url-raiz'].$modulo_id.'/'.$tipo.'.js?v='.$versao.'"></script>';
+		$js_id = $modulo_id.'/'.$tipo.'.js';
 	} else {
 		switch($js){
 			case 'biblioteca':
@@ -796,6 +806,7 @@ function gestor_pagina_javascript_incluir($js = false,$id = false, $retornar = f
 		}
 		
 		$js_script = $js;
+		$js_id = $js;
 	}
 
 	// ===== Se for para retornar o javascript, retornar.
@@ -809,13 +820,13 @@ function gestor_pagina_javascript_incluir($js = false,$id = false, $retornar = f
 	if(!isset($_GESTOR['javascript-fim-adicionados'])){
 		$_GESTOR['javascript-fim-adicionados'] = Array();
 	} else {
-		if(in_array($js,$_GESTOR['javascript-fim-adicionados'])){
+		if(in_array($js_id,$_GESTOR['javascript-fim-adicionados'])){
 			array_pop($_GESTOR['javascript-fim']);
 			return;
 		}
 	}
 
-	$_GESTOR['javascript-fim-adicionados'][] = $js;
+	$_GESTOR['javascript-fim-adicionados'][] = $js_id;
 }
 
 function gestor_pagina_ultimas_operacoes(){

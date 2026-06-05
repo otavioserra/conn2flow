@@ -1,0 +1,277 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "html-editor"
+    ],
+    "id_numerico": "id_galleries",
+    "tabela": {
+        "nome": "galleries",
+        "nome_especifico": "name",
+        "id": "id",
+        "id_numerico": "id_galleries",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "templates": [
+                {
+                    "name": "Galeria - Grade (Grid)",
+                    "id": "galleries-grid",
+                    "target": "galleries",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "d0e1ffbf443e3869b0c7c0d0fd719775",
+                        "css": "",
+                        "combined": "d0e1ffbf443e3869b0c7c0d0fd719775"
+                    }
+                },
+                {
+                    "name": "Galeria - Carrossel (Carousel)",
+                    "id": "galleries-carousel",
+                    "target": "galleries",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "d24f58fd5e4060f768257c533ed11e27",
+                        "css": "",
+                        "combined": "d24f58fd5e4060f768257c533ed11e27"
+                    }
+                },
+                {
+                    "name": "Galeria - Mosaico (Masonry)",
+                    "id": "galleries-masonry",
+                    "target": "galleries",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "39d7d383a0e5d8b60d5ba1e1d77aa38a",
+                        "css": "",
+                        "combined": "39d7d383a0e5d8b60d5ba1e1d77aa38a"
+                    }
+                },
+                {
+                    "name": "Galeria - Slider",
+                    "id": "galleries-slider",
+                    "target": "galleries",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "40374efedc6b2e89b06e7684a7587684",
+                        "css": "",
+                        "combined": "40374efedc6b2e89b06e7684a7587684"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Galerias - Listar",
+                    "id": "galleries",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "galleries\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "0ee56ba8af0b1a739481a412e611939b",
+                        "css": "",
+                        "combined": "0ee56ba8af0b1a739481a412e611939b"
+                    }
+                },
+                {
+                    "name": "Galerias - Adicionar",
+                    "id": "galleries-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "galleries\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "eb04426b61913ed564daa715d5f436bb",
+                        "css": "adc00f93b23a36e130ce67b8f1b1dc17",
+                        "combined": "7658387c3131494618f53247a543b2d7"
+                    }
+                },
+                {
+                    "name": "Galerias - Editar",
+                    "id": "galleries-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "galleries\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "16ed25b10146ebdec99fbb38ead80196",
+                        "css": "adc00f93b23a36e130ce67b8f1b1dc17",
+                        "combined": "0ad8cac885124722cac6f7df6e951c88"
+                    }
+                },
+                {
+                    "name": "Galerias - Clonar",
+                    "id": "galleries-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "galleries\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "d79d291baf189e3b412902b763542614",
+                        "css": "adc00f93b23a36e130ce67b8f1b1dc17",
+                        "combined": "f7bd53a27a5e2d88d0cc743e3c093c55"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome da Galeria",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Modelo Visual de Galeria",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Imagens da Galeria",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "templates": [
+                {
+                    "name": "Gallery - Grid",
+                    "id": "galleries-grid",
+                    "target": "galleries",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "323eeba7734b0470a097afbce5fb9a63",
+                        "css": "",
+                        "combined": "323eeba7734b0470a097afbce5fb9a63"
+                    }
+                },
+                {
+                    "name": "Gallery - Carousel",
+                    "id": "galleries-carousel",
+                    "target": "galleries",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "ca73d5377908a8dcf0726b8fbeec47d5",
+                        "css": "",
+                        "combined": "ca73d5377908a8dcf0726b8fbeec47d5"
+                    }
+                },
+                {
+                    "name": "Gallery - Masonry",
+                    "id": "galleries-masonry",
+                    "target": "galleries",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "c292bd39bed29bb253fefa390bfec35c",
+                        "css": "",
+                        "combined": "c292bd39bed29bb253fefa390bfec35c"
+                    }
+                },
+                {
+                    "name": "Gallery - Slider",
+                    "id": "galleries-slider",
+                    "target": "galleries",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "69d6159afcef4fe00ca54fc70ead57bc",
+                        "css": "",
+                        "combined": "69d6159afcef4fe00ca54fc70ead57bc"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Galleries - List",
+                    "id": "galleries",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "galleries\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "4a83a5a4e2a220f814c50ae4dd0b0121",
+                        "css": "",
+                        "combined": "4a83a5a4e2a220f814c50ae4dd0b0121"
+                    }
+                },
+                {
+                    "name": "Galleries - Add",
+                    "id": "galleries-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "galleries\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "0451aad311ea58768228ac6a78c6c241",
+                        "css": "adc00f93b23a36e130ce67b8f1b1dc17",
+                        "combined": "e0d1f26dda1e4b38aa4e8512979fc897"
+                    }
+                },
+                {
+                    "name": "Galleries - Edit",
+                    "id": "galleries-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "galleries\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "1ef2d48873a49b182404a129b5741811",
+                        "css": "adc00f93b23a36e130ce67b8f1b1dc17",
+                        "combined": "b32fe40efeab37a9a2b4b74b12b69912"
+                    }
+                },
+                {
+                    "name": "Galleries - Clone",
+                    "id": "galleries-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "galleries\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "cfec8ac07ee863c9c9eae62c15b9e232",
+                        "css": "adc00f93b23a36e130ce67b8f1b1dc17",
+                        "combined": "74c72d56434549669fcd03942b50faf2"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Gallery name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Gallery visual template",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Gallery images",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

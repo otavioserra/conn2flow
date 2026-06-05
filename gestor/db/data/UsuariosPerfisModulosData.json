@@ -109,6 +109,10 @@
     },
     {
         "perfil": "administradores",
+        "modulo": "galleries"
+    },
+    {
+        "perfil": "administradores",
         "modulo": "forms"
     },
     {

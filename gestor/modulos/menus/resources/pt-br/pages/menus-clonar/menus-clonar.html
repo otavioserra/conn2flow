@@ -46,6 +46,7 @@
             <option value="link-custom">Link Customizado</option>
             <option value="cabecalho">Cabeçalho</option>
             <option value="link-action">Link com Classe CSS</option>
+            <option value="publicador">Publicador</option>
             <option value="separador">Separador</option>
         </select>
     </div>
@@ -99,6 +100,30 @@
     <div class="field" id="field-custom-css" style="display:none;">
         <label>Classes CSS Personalizadas</label>
         <input type="text" id="custom-css" placeholder="Ex: abrir-modal js-contato" autocomplete="off">
+    </div>
+
+    <!-- Campos para o tipo Publicador (req-018): gera sub-itens automáticos com as publicações -->
+    <div id="field-publisher-wrapper" style="display:none;">
+        <div class="field">
+            <label>Publicador</label>
+            <select id="item_publisher_id" class="ui search dropdown">
+                <option value="">Selecione um publicador</option>
+                #publisher_id_options#
+            </select>
+        </div>
+        <div class="field">
+            <label>Limite de itens</label>
+            <input type="number" id="item_publisher_count" min="1" value="5" placeholder="5" autocomplete="off">
+        </div>
+        <div class="field">
+            <label>Ordenação</label>
+            <select id="item_publisher_order_by" class="ui dropdown">
+                <option value="date_desc">Mais recentes primeiro</option>
+                <option value="date_asc">Mais antigas primeiro</option>
+                <option value="title_asc">Título (A→Z)</option>
+                <option value="title_desc">Título (Z→A)</option>
+            </select>
+        </div>
     </div>
 
     <div id="btn-add-item-wrapper" style="display:none;">

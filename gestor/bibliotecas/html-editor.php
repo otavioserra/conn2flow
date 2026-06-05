@@ -36,7 +36,8 @@ function html_editor_publisher_controls($params = false){
 	// era removido pelo bloco `publisher-has-link` impedindo o mapeamento.
 	// req-017 item 1: o alvo `menus` segue a mesma família de variáveis [[item#X]] e também
 	// precisa exibir a aba de variáveis (com a lista fixa de variáveis do template de menu).
-	if($alvo_atual === 'publisher-highlights' || $alvo_atual === 'menus'){
+	// req-018: o alvo `galleries` segue a mesma família [[item#X]] (variáveis fixas de imagem).
+	if($alvo_atual === 'publisher-highlights' || $alvo_atual === 'menus' || $alvo_atual === 'galleries'){
 		$tem_vinculo = true;
 	}
 
@@ -48,9 +49,9 @@ function html_editor_publisher_controls($params = false){
 		$openText = $_GESTOR['variavel-global']['openText'];
 		$closeText = $_GESTOR['variavel-global']['closeText'];
 
-		if($alvo_atual === 'publisher-highlights' || $alvo_atual === 'menus'){
-			// req-004 item 7 / req-017 item 1: variáveis do template seguem o padrão `[[item#NOME]]`.
-			// Para `menus` a lista de variáveis é fixa (vinda de `menus_variaveis_template()` via
+		if($alvo_atual === 'publisher-highlights' || $alvo_atual === 'menus' || $alvo_atual === 'galleries'){
+			// req-004 item 7 / req-017 item 1 / req-018: variáveis do template seguem o padrão `[[item#NOME]]`.
+			// Para `menus`/`galleries` a lista de variáveis é fixa (vinda de `*_variaveis_template()` via
 			// `target_variables`); para `publisher-highlights` ela é dinâmica conforme o publicador.
 			$template_map = [];
 			if(isset($target_variables) && is_array($target_variables)){
@@ -129,6 +130,7 @@ function html_editor_componente($params = false){
 		'publisher' => 'adminPaginasBackupCampo',
 		'publisher-highlights' => 'adminPaginasBackupCampo',
 		'menus' => 'adminPaginasBackupCampo',
+		'galleries' => 'adminPaginasBackupCampo',
 	];
 
 	$backupCallback = isset($backupCallbackMap[$alvo]) ? $backupCallbackMap[$alvo] : 'adminPaginasBackupCampo';
@@ -202,6 +204,20 @@ function html_editor_componente($params = false){
 			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#',$html_editor_publisher_simulation);
 			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-controls#',html_editor_publisher_controls([
 				'alvo' => 'menus',
+				'target_variables' => isset($target_variables)? $target_variables : null,
+			]));
+		break;
+		case 'galleries':
+			// req-018: aba "Variáveis"/"Simular" para o módulo galleries, com componente de
+			// simulação próprio (lista mockada de imagens Picsum) e variáveis fixas [[item#X]]
+			// declaradas em `galleries_variaveis_template()` e recebidas em $target_variables.
+			$html_editor_publisher_simulation = gestor_componente(Array(
+				'id' => 'html-editor-galleries-simulation',
+			));
+
+			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#',$html_editor_publisher_simulation);
+			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-controls#',html_editor_publisher_controls([
+				'alvo' => 'galleries',
 				'target_variables' => isset($target_variables)? $target_variables : null,
 			]));
 		break;

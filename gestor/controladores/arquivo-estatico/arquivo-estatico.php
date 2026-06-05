@@ -38,16 +38,29 @@ function arquivo_estatico_start(){
 		switch($ext){
 			case 'js':
 			case 'css':
-				if($alvo){
-					if($_GESTOR['caminho'][count($_GESTOR['caminho'])-1] != $ext.'.'.$ext){
-						$file = $_GESTOR['assets-path'].$_GESTOR['caminho-total'];
-					} else {
-						if(count($_GESTOR['caminho']) > 2){
-							// $file = $_GESTOR['plugins-path'].$alvo.'/local/modulos/'.$alvo2.'/'.$alvo2.'.'.$ext;
-						} else {
-							$file = $_GESTOR['modulos-path'].$alvo.'/'.$alvo.'.'.$ext;
+				$alvo2_sem_ext = str_replace('.'.$ext, '', $alvo2);
+				switch($alvo2_sem_ext){
+					case 'widget':
+						if($alvo){
+							if($_GESTOR['caminho'][count($_GESTOR['caminho'])-1] != $alvo2_sem_ext.'.'.$ext){
+								$file = $_GESTOR['assets-path'].$_GESTOR['caminho-total'];
+							} else {
+								if(count($_GESTOR['caminho']) == 2){
+									$file = $_GESTOR['modulos-path'].$alvo.'/'.$alvo.'.'.$alvo2_sem_ext.'.'.$ext;
+								}
+							}
 						}
-					}
+					break;
+					default:
+						if($alvo){
+							if($_GESTOR['caminho'][count($_GESTOR['caminho'])-1] != $ext.'.'.$ext){
+								$file = $_GESTOR['assets-path'].$_GESTOR['caminho-total'];
+							} else {
+								if(count($_GESTOR['caminho']) == 2){
+									$file = $_GESTOR['modulos-path'].$alvo.'/'.$alvo.'.'.$ext;
+								}
+							}
+						}
 				}
 			break;
 			default:

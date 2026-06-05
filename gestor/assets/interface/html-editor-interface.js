@@ -605,12 +605,16 @@ $(document).ready(function () {
         if (typeof CodeMirrorHtml !== 'undefined' && CodeMirrorHtml) {
             CodeMirrorHtml.getDoc().setValue(html || '');
             CodeMirrorHtml.refresh();
+            // req-018: ao trocar o template_id, o CodeMirror pode não fazer relayout se a aba/editor
+            // estava com foco ou oculta. Um refresh agendado garante a atualização visual correta.
+            setTimeout(function () { CodeMirrorHtml.refresh(); }, 0);
         }
     };
     window.html_editor_set_css = function (css) {
         if (typeof CodeMirrorCss !== 'undefined' && CodeMirrorCss) {
             CodeMirrorCss.getDoc().setValue(css || '');
             CodeMirrorCss.refresh();
+            setTimeout(function () { CodeMirrorCss.refresh(); }, 0);
         }
     };
 
@@ -780,11 +784,11 @@ $(document).ready(function () {
     function isHighlightsAlvo() {
         return alvoAtual() === 'publisher-highlights';
     }
-    // req-017 item 1: tanto `publisher-highlights` quanto `menus` usam a família de variáveis
-    // `[[item#X]]` (em vez de `[[publisher#TIPO#ID]]`). Este helper unifica essa detecção.
+    // req-017 item 1 / req-018: `publisher-highlights`, `menus` e `galleries` usam a família de
+    // variáveis `[[item#X]]` (em vez de `[[publisher#TIPO#ID]]`). Este helper unifica essa detecção.
     function alvoUsaItemVars() {
         var a = alvoAtual();
-        return a === 'publisher-highlights' || a === 'menus';
+        return a === 'publisher-highlights' || a === 'menus' || a === 'galleries';
     }
     // Regex global para encontrar todas as variáveis (suporta publisher, publisher-highlights e menus)
     function regexVariaveisGlobal() {
@@ -1529,6 +1533,7 @@ $(document).ready(function () {
             ]
         },
         { type: 'separador', children: [] },
+        { type: 'publicador', label: 'Últimas Notícias', url: '#', publisher_id: 'noticias', publisher_name: 'Notícias', count: 4, order_by: 'date_desc', children: [] },
         { type: 'link-action', label: 'Contato Rápido', url: '#', css_classes: 'abrir-modal js-contato', children: [] }
     ];
 
@@ -1563,7 +1568,8 @@ $(document).ready(function () {
         switch (type) {
             case 'pagina': slug = item.page_id || ''; break;
             case 'separador': label = ''; url = ''; break;
-            case 'cabecalho': url = (url !== '') ? url : '#'; break;
+            case 'cabecalho':
+            case 'publicador': url = (url !== '') ? url : '#'; break;
         }
         return { label: label, url: url, slug: slug, css_classes: css };
     }
@@ -1620,12 +1626,111 @@ $(document).ready(function () {
         return out;
     }
 
+    // req-018: gera `count` sub-itens `pagina` simulados para um nó `publicador`, espelhando a
+    // injeção dinâmica do widget renderer (menus.widget.php). Usa massa fictícia bilíngue.
+    function menusPublicadorMockPaginas(count) {
+        var pt = (typeof gestor !== 'undefined' && gestor.language === 'pt-br');
+        var base = pt
+            ? ['Notícia em Destaque', 'Cobertura Especial', 'Última Atualização', 'Entrevista Exclusiva', 'Análise Completa', 'Reportagem do Dia', 'Comunicado Oficial', 'Nos Bastidores']
+            : ['Featured News', 'Special Coverage', 'Latest Update', 'Exclusive Interview', 'Full Analysis', 'Story of the Day', 'Official Statement', 'Behind the Scenes'];
+        var n = (parseInt(count, 10) > 0) ? parseInt(count, 10) : 5;
+        var filhos = [];
+        for (var i = 0; i < n; i++) {
+            var slug = 'pub-' + (i + 1);
+            filhos.push({ type: 'pagina', label: base[i % base.length] + ' ' + (i + 1), url: '/' + slug + '/', page_id: slug, children: [] });
+        }
+        return filhos;
+    }
+
+    // req-018: substitui os filhos de cada nó `publicador` pelas páginas simuladas (recursivo).
+    function menusExpandirPublicadores(itens) {
+        return (itens || []).map(function (item) {
+            if (!item || typeof item !== 'object') return item;
+            var copy = {};
+            for (var k in item) { if (Object.prototype.hasOwnProperty.call(item, k)) copy[k] = item[k]; }
+            if ((item.type || 'pagina') === 'publicador') {
+                copy.children = menusPublicadorMockPaginas(item.count);
+            } else {
+                copy.children = menusExpandirPublicadores(Array.isArray(item.children) ? item.children : []);
+            }
+            return copy;
+        });
+    }
+
     function menusSimularPreview(html) {
         var blocos = menusExtrairBlocos(html);
         if (blocos.item === null && blocos.item_parent === null) return html;
-        var arvore = menusGetSimulationTree();
+        var arvore = menusExpandirPublicadores(menusGetSimulationTree());
         var itensRendered = menusRenderLevel(arvore, blocos);
         return menusMontarBase(html, itensRendered);
+    }
+
+    // ===== req-018: simulação do módulo `galleries`.
+    // Espelha a lógica do widget renderer (galleries.widget.php): extrai os blocos item/no-item,
+    // renderiza a lista mockada de imagens (componente html-editor-galleries-simulation)
+    // substituindo [[item#img-src|caminho|nome|legenda]] e monta o HTML base.
+
+    var GALLERIES_SIM_FALLBACK = [
+        { imgSrc: 'https://picsum.photos/seed/galeria1/600/400', caminho: 'imagens/galeria/foto-1.jpg', nome: 'foto-1.jpg', legenda: 'Abertura do evento' },
+        { imgSrc: 'https://picsum.photos/seed/galeria2/600/400', caminho: 'imagens/galeria/foto-2.jpg', nome: 'foto-2.jpg', legenda: 'Palestra principal' },
+        { imgSrc: 'https://picsum.photos/seed/galeria3/600/400', caminho: 'imagens/galeria/foto-3.jpg', nome: 'foto-3.jpg', legenda: 'Painel de debates' },
+        { imgSrc: 'https://picsum.photos/seed/galeria4/600/400', caminho: 'imagens/galeria/foto-4.jpg', nome: 'foto-4.jpg', legenda: 'Networking' },
+        { imgSrc: 'https://picsum.photos/seed/galeria5/600/400', caminho: 'imagens/galeria/foto-5.jpg', nome: 'foto-5.jpg', legenda: 'Encerramento' },
+        { imgSrc: 'https://picsum.photos/seed/galeria6/600/400', caminho: 'imagens/galeria/foto-6.jpg', nome: 'foto-6.jpg', legenda: 'Bastidores' }
+    ];
+
+    function galleriesGetSimulationList() {
+        var $json = $('.hep-galleries-simulation-list');
+        if ($json.length) {
+            try {
+                var parsed = JSON.parse($json.last().text());
+                if (Array.isArray(parsed) && parsed.length) return parsed;
+            } catch (e) { }
+        }
+        return GALLERIES_SIM_FALLBACK;
+    }
+
+    function galleriesExtrairBlocos(htmlTemplate) {
+        var blocos = { item: null, no_item: null };
+        var mI = htmlTemplate.match(/<!--\s*item\s*<\s*-->([\s\S]*?)<!--\s*item\s*>\s*-->/i);
+        if (mI) blocos.item = mI[1];
+        var mN = htmlTemplate.match(/<!--\s*no-item\s*<\s*-->([\s\S]*?)<!--\s*no-item\s*>\s*-->/i);
+        if (mN) blocos.no_item = mN[1];
+        return blocos;
+    }
+
+    function galleriesAplicarVars(bloco, item) {
+        return bloco.replace(/@?\[\[item#([a-zA-Z0-9_\-]+)\]\]@?/g, function (m, name) {
+            if (name === 'img-src') return item.imgSrc || item.caminho || '';
+            if (name === 'caminho') return item.caminho || '';
+            if (name === 'nome') return item.nome || '';
+            if (name === 'legenda') return item.legenda || '';
+            return '';
+        });
+    }
+
+    function galleriesMontarBase(htmlTemplate, itensRendered) {
+        var padraoItem = /<!--\s*item\s*<\s*-->[\s\S]*?<!--\s*item\s*>\s*-->/i;
+        var padraoNoItem = /<!--\s*no-item\s*<\s*-->([\s\S]*?)<!--\s*no-item\s*>\s*-->/i;
+        var out = htmlTemplate;
+        if (itensRendered === '') {
+            out = out.replace(padraoItem, '');
+            var mN = out.match(padraoNoItem);
+            if (mN) out = out.replace(padraoNoItem, function () { return mN[1]; });
+            return out;
+        }
+        out = out.replace(padraoItem, function () { return itensRendered; });
+        out = out.replace(padraoNoItem, '');
+        return out;
+    }
+
+    function galleriesSimularPreview(html) {
+        var blocos = galleriesExtrairBlocos(html);
+        if (blocos.item === null) return html;
+        var lista = galleriesGetSimulationList();
+        var itensRendered = '';
+        lista.forEach(function (item) { if (item && typeof item === 'object') itensRendered += galleriesAplicarVars(blocos.item, item); });
+        return galleriesMontarBase(html, itensRendered);
     }
 
     function publisherVariablesOrSimulation(html = '') {
@@ -1634,6 +1739,12 @@ $(document).ready(function () {
         if (alvo === 'menus') {
             const simulacao = $('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active');
             if (simulacao) html = menusSimularPreview(html);
+            return html;
+        }
+
+        if (alvo === 'galleries') {
+            const simulacao = $('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active');
+            if (simulacao) html = galleriesSimularPreview(html);
             return html;
         }
 

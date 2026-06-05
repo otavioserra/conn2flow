@@ -739,38 +739,61 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
 
 ## BATCH-018 - Tipo Publicador, Correções no Menus e Módulo de Galerias (req-018)
 
-- [ ] Interface de formulário de Menus (adicionar/editar/clonar × pt-br/en):
-  - [ ] Opção "Publicador" / "Publisher" adicionada ao dropdown `#menu_item_type`.
-  - [ ] Exibição condicional de inputs: dropdown de publicadores (`add_item_publisher_id`), limite (`add_item_publisher_count`), e ordenação (`add_item_publisher_order_by`).
-- [ ] Árvore visual e persistência de Menus (menus.js):
-  - [ ] Salvar `publisher_id`, `count` e `order_by` no schema do nó `publicador`.
-  - [ ] Renderizar nó visual contendo informação de limite/publicador na árvore.
-  - [ ] Impedir ou avisar sobre aninhamento manual de sub-itens sob o item publicador.
-  - [ ] Suporte a edição inline de todos os campos específicos no painel de configurações do nó.
-- [ ] Backend CRUD de Menus (menus.php):
-  - [ ] Buscar publicadores ativos e substituir `#publisher_id_options#` nas 3 páginas.
-- [ ] Renderização dinâmica de Menus (menus.widget.php):
-  - [ ] Buscar publicações correspondentes ao publicador em runtime com limite e ordenação.
-  - [ ] Injetar dinamicamente como sub-itens filhos de tipo `pagina` sob o nó `publicador` antes de renderizar recursivamente.
-- [ ] Simulação do HTML Editor de Menus:
-  - [ ] `html-editor-interface.js`: gerar e aninhar sub-itens simulados de tipo `pagina` sob os nós do tipo `publicador`.
-  - [ ] Componente `html-editor-menus-simulation` atualizado em pt-br/en com exemplo de nó `publicador`.
-- [ ] Correções adicionais no Menus (req-018):
-  - [ ] Alteração de `template_id` atualiza CodeMirror mesmo quando o editor está focado.
-  - [ ] Alternador de `item_type` exibe/oculta corretamente os campos dinâmicos no JS (como rótulo/URL personalizados vs página).
-  - [ ] Variáveis `[[item#slug]]` e `[[item#css_classes]]` incluídas nos 12 templates padrões de menus.
-- [ ] Criação do Módulo de Galerias (req-018):
-  - [ ] Clonagem da estrutura de `publisher-highlights` com remoção total de colunas/lógica de `publisher_id`.
-  - [ ] Criar migração Phinx para a tabela `galleries` (id_galleries, name, fields_schema, html, css, status, language, versao, data_criacao, data_modificacao).
-  - [ ] Registrar o módulo `galleries` com ícone `images` no `gestor/db/data/ModulosData.json`.
-  - [ ] Botão "Selecionar Imagens do Servidor" abre o modal do gerenciador de arquivos (`admin-arquivos`).
-  - [ ] Listener de `postMessage` em `galleries.js` insere as imagens selecionadas sem fechar o modal.
-  - [ ] Cada imagem na curadoria exibe thumbnail, nome, input de legenda e botão de remover.
-  - [ ] Reordenação drag-and-drop funcional das imagens na curadoria usando Sortable.js (CDN).
-  - [ ] Serialização correta em `fields_schema.selected_items` contendo `id`, `caminho`, `imgSrc`, `nome` e `legenda`.
-  - [ ] CRUD backend (`galleries.php`) e widgets integrados com modal e campos descritos.
-  - [ ] Renderizador (`galleries.widget.php`) decodifica o JSON e renderiza sequencialmente os itens de imagem.
-  - [ ] Criar 4 templates padrões (`galleries-grid`, `galleries-carousel`, `galleries-masonry`, `galleries-slider`) em pt-br/en.
-  - [ ] Habilitar aba de simulação/variáveis para `galleries` no HTML Editor com componente mockado Picsum.
-- [ ] Ações pós-implementação:
-  - [ ] Executar `atualizacao-dados-recursos.php` para sincronizar e registrar os novos recursos.
+### Parte 1 — Tipo Publicador e correções no Menus (DEC-025)
+
+- [x] Interface de formulário de Menus (adicionar/editar/clonar × pt-br/en):
+  - [x] Opção "Publicador" / "Publisher" adicionada ao dropdown `#item_type`.
+  - [x] Exibição condicional de inputs: dropdown de publicadores (`#item_publisher_id`), limite (`#item_publisher_count`), e ordenação (`#item_publisher_order_by`) sob `#field-publisher-wrapper`.
+- [x] Árvore visual e persistência de Menus (menus.js):
+  - [x] Salvar `publisher_id`, `count` e `order_by` (+`publisher_name`) no schema do nó `publicador` (flatten/buildTree).
+  - [x] Renderizar nó visual `Publicador: <nome> (limite: N)` na árvore.
+  - [x] Impedir aninhamento manual de sub-itens sob o item publicador (clamp de `maxD` no DnD; inserção como irmão).
+  - [x] Edição inline de Rótulo/Publicador/Limite/Ordenação/Classes CSS no painel do nó.
+- [x] Backend CRUD de Menus (menus.php):
+  - [x] `menus_publisher_options()` busca publicadores ativos e substitui `#publisher_id_options#`; chamada em adicionar/editar/clonar.
+- [x] Renderização dinâmica de Menus (menus.widget.php):
+  - [x] `menus_widget_buscar_publicacoes_publicador()` busca publicações por `paginas.publisher_id` com `count`/`order_by`.
+  - [x] `menus_widget_expandir_publicadores()` injeta as publicações como filhos `pagina` antes da renderização recursiva (normalização preserva os campos do publicador).
+- [x] Simulação do HTML Editor de Menus:
+  - [x] `html-editor-interface.js`: `menusExpandirPublicadores()` gera `count` sub-itens `pagina` mock sob cada nó `publicador`.
+  - [x] Componente `html-editor-menus-simulation` (pt-br/en) e fallback `MENUS_SIM_FALLBACK` com exemplo de nó `publicador`.
+- [x] Correções adicionais no Menus (req-018):
+  - [x] Alteração de `template_id` atualiza o CodeMirror mesmo focado/oculto (refresh agendado em `html_editor_set_html`/`set_css`).
+  - [x] Alternador de `item_type` exibe/oculta os campos corretos (toggle estende `#field-publisher-wrapper`).
+  - [x] Variáveis `[[item#slug]]` (como `data-slug`) e `[[item#css_classes]]` (anexada às classes) incluídas nos 12 templates.
+
+### Parte 2 — Módulo de Galerias de Imagens (DEC-026)
+- [x] Criação do Módulo de Galerias (req-018):
+  - [x] Estrutura clonada de `publisher-highlights`/`menus` desacoplada de publisher (tabela `galleries` **sem** `publisher_id`).
+  - [x] Migração Phinx `20260701120000_create_galleries_table.php` (tabela `galleries` com colunas pedidas + campos do sistema).
+  - [x] Módulo `galleries` registrado em `ModulosData.json` (pt-br/en, grupo `administracao-gestor`, ícone `images`) e em `UsuariosPerfisModulosData.json`.
+  - [x] Botão "Selecionar Imagens do Servidor" (`#btn-select-images`) abre o modal `iframePagina` apontando para `admin-arquivos/?paginaIframe=sim` (setup via `galleries_imagepick_setup`).
+  - [x] Listener de `postMessage` em `galleries.js` valida `tipo` de imagem e adiciona à lista **sem fechar** o modal (seleção em lote).
+  - [x] Cada imagem na curadoria exibe thumbnail, nome, input de legenda e botão remover.
+  - [x] Reordenação drag-and-drop com `Sortable.js` (CDN), relendo a ordem física do DOM no `onEnd`.
+  - [x] Serialização de `fields_schema.selected_items` com `id`, `caminho`, `imgSrc`, `nome` e `legenda`.
+  - [x] CRUD backend (`galleries.php`: adicionar/editar/clonar) integrado ao ImagePick e ao html-editor (alvo `galleries`).
+  - [x] Renderizador (`galleries.widget.php`) decodifica o JSON e renderiza item/no-item com `[[item#img-src]]`/`[[item#caminho]]`/`[[item#nome]]`/`[[item#legenda]]`.
+  - [x] 4 templates padrões (`galleries-grid`, `galleries-carousel`, `galleries-masonry`, `galleries-slider`) em pt-br/en.
+  - [x] Aba de simulação/variáveis para `galleries` no HTML Editor (`case 'galleries'` + `alvoUsaItemVars`) com componente mockado Picsum e fallback `GALLERIES_SIM_FALLBACK`.
+- [ ] Ações pós-implementação (com o operador):
+  - [ ] Executar `atualizacao-dados-recursos.php` / `🗃️ Projects - Update => Core` para registrar módulo/páginas/templates/componente, calcular checksums e aplicar a migração `galleries` no runtime.
+
+### Evidência registrada em 2026-06-05 (BATCH-018)
+
+- Validação executável (estática + testes de unidade, sem ambiente Docker nesta rodada):
+  - `php -l` OK em `menus.php`, `menus.widget.php`, `galleries.php`, `galleries.widget.php`, `html-editor.php` e na migração `20260701120000_create_galleries_table.php`
+  - `node --check` OK em `menus.js`, `galleries.js`, `html-editor-interface.js`
+  - `JSON.parse` OK em `menus.json`, `galleries.json`, `ModulosData.json`, `UsuariosPerfisModulosData.json` e nos componentes de simulação (menus c/ nó publicador; galleries c/ 6 imagens)
+  - Teste do widget `menus` (publicador) com stubs de banco — 9/9 asserts OK: expansão do publicador, limite `count`, ordenação, injeção como `item-parent`, sem `[[item#X]]`/arrobas residuais
+  - Teste da simulação JS de `menus` (réplica real do arquivo) — 7/7 asserts: 4 sub-itens mock sob o publicador, submenu, sem variáveis literais
+  - Teste do widget `galleries` com stubs — 11/11 asserts: img-src absoluta preservada, relativa prefixada com url-raiz, legendas/nome, 2 blocos item, CSS injetado, no-item exibido só quando vazio
+  - Teste da simulação JS de `galleries` (réplica real) — 6/6 asserts: 6 imagens Picsum, sem variáveis literais
+- Decisões registradas: [DEC-025](../decisions/DECISION-LOG.md) (tipo publicador + correções no menus) e [DEC-026](../decisions/DECISION-LOG.md) (módulo galleries)
+- Bug corrigido durante a implementação: `menus_widget_normalizar_itens` descartava `publisher_id`/`count`/`order_by`, impedindo a expansão do publicador (corrigido).
+- Harmonização com edição do Engenheiro Chefe: o `#item_type` do menus voltou a `<select>` nativo (correção do alternador, req-018 §1.2) — `currentItemType()` e o construtor do publicador passaram a ler valores via `.val()`/`option:selected`.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+- Pendência (com o operador): rodar `🗃️ Projects - Update => Core` (registra o módulo `galleries`, novos componentes `html-editor-galleries-simulation`/atualização do `html-editor-menus-simulation`, recalcula checksums e aplica a migração). Depois, validar manualmente:
+  - **Menus / publicador**: adicionar item "Publicador", escolher publicador/limite/ordenação; a árvore mostra `Publicador: <nome> (limite: N)`; não permite aninhar sob ele; preview/site geram os N sub-itens com as publicações reais; aba "Simular" mostra sub-itens mock.
+  - **Menus / correções**: trocar `template_id` com a aba "Editor HTML" aberta atualiza o CodeMirror; alternar tipo mostra os campos certos; `[[item#slug]]`/`[[item#css_classes]]` saem no HTML final.
+  - **Galleries**: menu "Galerias de Imagens" aparece; "Selecionar Imagens do Servidor" abre o gerenciador e permite escolher várias seguidas sem fechar; legenda editável; arrastar reordena; salvar/reabrir preserva a ordem; aba "Pré-Visualização" e o widget `widgets#galleries->render(...)` renderizam as imagens; aba "Simular" usa imagens Picsum.

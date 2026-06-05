@@ -139,13 +139,9 @@ $(document).ready(function () {
     // ===== Inicialização
 
     var $template = $('select[name="template_id"]');
+    var $itemType = $('select[id="item_type"]');
 
     // Componentes Fomantic do construtor de itens.
-    // req-017 item 1.3: o Fomantic converte o <select id="item_type"> e `$('#item_type').val()`
-    // deixa de refletir a escolha, fazendo `currentItemType()` cair sempre no fallback 'pagina'
-    // (só a busca de páginas aparecia). Lemos o valor via `dropdown('get value')` e propagamos
-    // o `value` do onChange diretamente para o toggle.
-    $('#item_type').dropdown({ onChange: function (value) { setTimeout(function () { toggleItemTypeFields(value); }, 0); } });
     $('.ui.radio.checkbox').checkbox();
     toggleItemTypeFields();
 
@@ -175,6 +171,11 @@ $(document).ready(function () {
         if (typeof window.html_editor_refresh_preview === 'function') {
             setTimeout(function () { window.html_editor_refresh_preview(); }, 350);
         }
+    });
+
+    $itemType.on('change', function () {
+        var value = $(this).val();
+        toggleItemTypeFields(value);
     });
 
     // Interceptar submit para serializar a árvore.
@@ -354,6 +355,11 @@ $(document).ready(function () {
                 url: n.url || '',
                 page_id: n.page_id || '',
                 css_classes: n.css_classes || '',
+                // req-018: campos do tipo `publicador` (gerador dinâmico de sub-itens).
+                publisher_id: n.publisher_id || '',
+                publisher_name: n.publisher_name || '',
+                count: n.count || '',
+                order_by: n.order_by || '',
                 depth: depth
             });
             if (n.children && n.children.length) flattenTree(n.children, depth + 1, out);
@@ -374,6 +380,12 @@ $(document).ready(function () {
                 children: []
             };
             if (it.type === 'pagina') node.page_id = it.page_id || '';
+            if (it.type === 'publicador') {
+                node.publisher_id = it.publisher_id || '';
+                node.publisher_name = it.publisher_name || '';
+                node.count = (parseInt(it.count, 10) > 0) ? parseInt(it.count, 10) : 5;
+                node.order_by = it.order_by || 'date_desc';
+            }
 
             while (stack.length && stack[stack.length - 1].depth >= it.depth) stack.pop();
             if (stack.length === 0) root.push(node);
@@ -470,6 +482,7 @@ $(document).ready(function () {
             case 'cabecalho': return 'heading';
             case 'link-action': return 'bolt';
             case 'separador': return 'minus';
+            case 'publicador': return 'rss';
             default: return 'file outline'; // pagina
         }
     }
@@ -481,6 +494,7 @@ $(document).ready(function () {
             case 'cabecalho': return pt ? 'Cabeçalho' : 'Header';
             case 'link-action': return pt ? 'Ação' : 'Action';
             case 'separador': return pt ? 'Separador' : 'Separator';
+            case 'publicador': return pt ? 'Publicador' : 'Publisher';
             default: return pt ? 'Página' : 'Page';
         }
     }
@@ -499,6 +513,13 @@ $(document).ready(function () {
 
         if (it.type === 'separador') {
             $row.append($('<span class="menu-tree-label sep"></span>').text('— ' + typeName(it.type) + ' —'));
+        } else if (it.type === 'publicador') {
+            // req-018: barra do nó publicador indica o publicador e o limite de filhos dinâmicos.
+            var pubName = it.publisher_name || it.publisher_id || (isPtBr() ? '(sem publicador)' : '(no publisher)');
+            var limite = (parseInt(it.count, 10) > 0) ? parseInt(it.count, 10) : 5;
+            var pubText = (isPtBr() ? 'Publicador: ' : 'Publisher: ') + pubName
+                + (isPtBr() ? ' (limite: ' : ' (limit: ') + limite + ')';
+            $row.append($('<span class="menu-tree-label"></span>').text(pubText));
         } else {
             var labelText = it.label || it.page_id || (isPtBr() ? '(sem rótulo)' : '(no label)');
             $row.append($('<span class="menu-tree-label"></span>').text(labelText));
@@ -540,6 +561,10 @@ $(document).ready(function () {
             url: data.url || '',
             page_id: data.page_id || '',
             css_classes: data.css_classes || '',
+            publisher_id: data.publisher_id || '',
+            publisher_name: data.publisher_name || '',
+            count: data.count || '',
+            order_by: data.order_by || '',
             depth: 0
         };
 
@@ -559,12 +584,10 @@ $(document).ready(function () {
     }
 
     // Seletor de tipo + campos condicionais
-    // req-017 item 1.3: ler o valor pelo módulo do dropdown Fomantic (o <select> convertido
-    // não responde mais a `.val()`); cair em `.val()` e por fim em 'pagina' como rede de segurança.
+    // req-018 item 2: o `#item_type` voltou a ser um <select> nativo (sem conversão Fomantic),
+    // com listener `change` direto. Lemos o valor via `.val()`, com 'pagina' como rede de segurança.
     function currentItemType() {
-        var val = $('#item_type').dropdown('get value');
-        if (val === undefined || val === null || val === '') val = $('#item_type').val();
-        return val || 'pagina';
+        return ($itemType.val() || $('#item_type').val() || 'pagina');
     }
 
     function toggleItemTypeFields(typeArg) {
@@ -574,6 +597,8 @@ $(document).ready(function () {
         $('#field-custom-label').toggle(type === 'link-custom' || type === 'cabecalho' || type === 'link-action');
         $('#field-custom-url').toggle(type === 'link-custom' || type === 'link-action');
         $('#field-custom-css').toggle(type === 'link-action');
+        // req-018: campos do tipo `publicador` (publicador / limite / ordenação).
+        $('#field-publisher-wrapper').toggle(type === 'publicador');
         $('#btn-add-item-wrapper').toggle(type !== 'pagina');
     }
 
@@ -597,6 +622,24 @@ $(document).ready(function () {
         } else if (type === 'link-action') {
             if (!label) { msg_erro_mostrar(isPtBr() ? 'Informe o rótulo.' : 'Enter the label.'); return; }
             addItem({ type: 'link-action', label: label, url: url, css_classes: css });
+        } else if (type === 'publicador') {
+            var pubId = $('#item_publisher_id').val();
+            if (!pubId) { msg_erro_mostrar(isPtBr() ? 'Selecione um publicador.' : 'Select a publisher.'); return; }
+            var pubName = ($('#item_publisher_id option:selected').text() || pubId).trim();
+            var count = parseInt($('#item_publisher_count').val(), 10);
+            if (!(count > 0)) count = 5;
+            var orderBy = $('#item_publisher_order_by').val() || 'date_desc';
+            addItem({
+                type: 'publicador',
+                label: pubName,
+                url: '#',
+                publisher_id: pubId,
+                publisher_name: pubName,
+                count: count,
+                order_by: orderBy
+            });
+            // Restaura o limite padrão; mantém o publicador/ordenação para adições em série.
+            $('#item_publisher_count').val('5');
         }
 
         $('#custom-label, #custom-url, #custom-css').val('');
@@ -735,6 +778,33 @@ $(document).ready(function () {
         openEditPanel(id);
     });
 
+    // req-018: opções do dropdown de publicadores (clonadas do construtor #item_publisher_id).
+    function publisherOptionsHtml(selected) {
+        var html = '';
+        $('#item_publisher_id option').each(function () {
+            var v = $(this).attr('value') || '';
+            var sel = (v === selected) ? ' selected' : '';
+            html += '<option value="' + v + '"' + sel + '>' + $(this).text() + '</option>';
+        });
+        return html;
+    }
+
+    // req-018: opções fixas de ordenação das publicações do publicador (mesma família do
+    // publisher-highlights / DEC-017).
+    function orderByOptionsHtml(selected) {
+        var pt = isPtBr();
+        var opts = [
+            ['date_desc', pt ? 'Mais recentes primeiro' : 'Newest first'],
+            ['date_asc', pt ? 'Mais antigas primeiro' : 'Oldest first'],
+            ['title_asc', pt ? 'Título (A→Z)' : 'Title (A→Z)'],
+            ['title_desc', pt ? 'Título (Z→A)' : 'Title (Z→A)']
+        ];
+        return opts.map(function (o) {
+            var sel = (o[0] === selected) ? ' selected' : '';
+            return '<option value="' + o[0] + '"' + sel + '>' + o[1] + '</option>';
+        }).join('');
+    }
+
     function openEditPanel(id) {
         $('.menu-tree-edit-panel').remove();
 
@@ -753,9 +823,24 @@ $(document).ready(function () {
             return $f;
         }
 
+        function addSelectField(labelText, cls, optionsHtml, value) {
+            var $f = $('<div class="field" style="margin-bottom:8px;"></div>');
+            $f.append($('<label style="font-size:12px;"></label>').text(labelText));
+            var $sel = $('<select class="ui fluid dropdown" style="display:block;"></select>').addClass(cls).html(optionsHtml);
+            $sel.val(value || '');
+            $f.append($sel);
+            return $f;
+        }
+
         if (it.type !== 'separador') $panel.append(addField(isPtBr() ? 'Rótulo' : 'Label', 'edit-label', it.label));
         if (it.type === 'link-custom' || it.type === 'link-action') $panel.append(addField('URL', 'edit-url', it.url));
-        if (it.type === 'link-action') $panel.append(addField(isPtBr() ? 'Classes CSS' : 'CSS classes', 'edit-css', it.css_classes));
+        if (it.type === 'publicador') {
+            // req-018: edição inline do nó publicador (rótulo já adicionado acima).
+            $panel.append(addSelectField(isPtBr() ? 'Publicador' : 'Publisher', 'edit-publisher', publisherOptionsHtml(it.publisher_id), it.publisher_id));
+            $panel.append(addField(isPtBr() ? 'Limite' : 'Limit', 'edit-count', (parseInt(it.count, 10) > 0 ? it.count : 5)));
+            $panel.append(addSelectField(isPtBr() ? 'Ordenação' : 'Sort', 'edit-order-by', orderByOptionsHtml(it.order_by || 'date_desc'), it.order_by || 'date_desc'));
+        }
+        if (it.type === 'link-action' || it.type === 'publicador') $panel.append(addField(isPtBr() ? 'Classes CSS' : 'CSS classes', 'edit-css', it.css_classes));
 
         var $btns = $('<div style="margin-top:6px;"></div>');
         $btns.append($('<button type="button" class="ui mini primary button menu-tree-save"></button>').text(isPtBr() ? 'Salvar' : 'Save'));
@@ -774,7 +859,14 @@ $(document).ready(function () {
 
         if (it.type !== 'separador') it.label = ($panel.find('.edit-label').val() || '').trim();
         if (it.type === 'link-custom' || it.type === 'link-action') it.url = ($panel.find('.edit-url').val() || '').trim();
-        if (it.type === 'link-action') it.css_classes = ($panel.find('.edit-css').val() || '').trim();
+        if (it.type === 'link-action' || it.type === 'publicador') it.css_classes = ($panel.find('.edit-css').val() || '').trim();
+        if (it.type === 'publicador') {
+            it.publisher_id = ($panel.find('.edit-publisher').val() || '').trim();
+            it.publisher_name = ($panel.find('.edit-publisher option:selected').text() || it.publisher_id).trim();
+            var c = parseInt($panel.find('.edit-count').val(), 10);
+            it.count = (c > 0) ? c : 5;
+            it.order_by = ($panel.find('.edit-order-by').val() || 'date_desc').trim();
+        }
 
         $panel.remove();
         renderTree();
@@ -795,6 +887,16 @@ $(document).ready(function () {
             return treeItems[i].depth;
         }
         return -1;
+    }
+
+    // req-018: o nó imediatamente acima do ponto de inserção (ignorando o bloco arrastado).
+    // Usado para impedir que itens virem filhos de um nó `publicador` (que gera os próprios filhos).
+    function prevItemExcludingBlock(insertBefore) {
+        for (var i = insertBefore - 1; i >= 0; i--) {
+            if (blockContains(i)) continue;
+            return treeItems[i];
+        }
+        return null;
     }
 
     function showPlaceholder(insertBefore, depth) {
@@ -832,7 +934,10 @@ $(document).ready(function () {
 
         var deltaDepth = Math.round((e.clientX - drag.startX) / STEP);
         var desired = drag.startDepth + deltaDepth;
-        var maxD = prevDepthExcludingBlock(insertBefore) + 1;
+        var prevItem = prevItemExcludingBlock(insertBefore);
+        var maxD = (prevItem ? prevItem.depth : -1) + 1;
+        // req-018: não permitir aninhar como filho de um nó `publicador` (filhos são dinâmicos).
+        if (prevItem && prevItem.type === 'publicador') maxD = prevItem.depth;
         if (desired < 0) desired = 0;
         if (desired > maxD) desired = maxD;
         drag.targetDepth = desired;

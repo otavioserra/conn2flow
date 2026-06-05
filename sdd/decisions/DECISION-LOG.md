@@ -138,28 +138,24 @@ Ajustes e correções do módulo `menus` (req-017 / BATCH-017), sem mudança de 
 
 4. **Leitura robusta de dropdown Fomantic e placeholder do DnD**: o alternador de tipo de item lê o valor via `dropdown('get value')` (o `<select>` convertido pelo Fomantic não responde a `.val()`, o que fazia o tipo cair sempre em `pagina`); o placeholder do drag-and-drop passa a ter a altura de um item real e exibe "Solte o item aqui" / "Drop item here" entre setas ← / →.
 
-141: Nenhuma mudança em contrato de dados, schema de banco ou no contrato de `selected_items` (mantém [DEC-023](#dec-023---2026-06-04---accepted)).
-142: 
-143: ## DEC-025 - 2026-06-05 - accepted
-144: 
-145: Tipo de Item Publicador no Módulo de Menus e Correções (req-018 / BATCH-018). Decisões desta rodada:
-146: 
-147: 1. **Tipo de Item `publicador`**: Adiciona-se o tipo de item `publicador` que funciona como nó gerador automático de sub-itens (filhos) correspondentes às publicações ativas do publicador selecionado. O nó armazena `publisher_id`, `count` (limite) e `order_by` (ordenamento). No widget (`menus.widget.php`), os filhos dinâmicos são pesquisados no banco de dados e populados na árvore em tempo de renderização. O editor de menus visual (menus.js) impede o aninhamento manual de sub-itens sob o nó do tipo `publicador` e exibe campos condicionais de seleção.
-148: 2. **Correções de UI do Menus**: 
+Nenhuma mudança em contrato de dados, schema de banco ou no contrato de `selected_items` (mantém [DEC-023](#dec-023---2026-06-04---accepted)).
+
+## DEC-025 - 2026-06-05 - accepted
+
+Tipo de Item Publicador no Módulo de Menus e Correções (req-018 / BATCH-018). Decisões desta rodada:
+
+1. **Tipo de Item `publicador`**: Adiciona-se o tipo de item `publicador` que funciona como nó gerador automático de sub-itens (filhos) correspondentes às publicações ativas do publicador selecionado. O nó armazena `publisher_id`, `count` (limite) e `order_by` (ordenamento). No widget (`menus.widget.php`), os filhos dinâmicos são pesquisados no banco de dados e populados na árvore em tempo de renderização. O editor de menus visual (menus.js) impede o aninhamento manual de sub-itens sob o nó do tipo `publicador` e exibe campos condicionais de seleção.
+2. **Correções de UI do Menus**: 
    - Ao alterar o `template_id`, garantir que os editores CodeMirror do HTML Editor sejam atualizados corretamente mesmo quando focados.
    - Corrigir a alternância de exibição de campos dinâmicos no formulário de adição (ocultando busca de páginas e exibindo rótulo/URL/classes para links, cabeçalhos, etc.).
    - Integrar os placeholders `[[item#slug]]` e `[[item#css_classes]]` em todos os 12 templates padrões do módulo menus.
-149: 3. **Simulação do Publicador no HTML Editor**: O motor de simulação (`html-editor-interface.js`) gerará de forma randômica `$count` sub-itens do tipo `pagina` sob o nó `publicador` para simular o preview de forma idêntica.
-150: 
-151: ## DEC-026 - 2026-06-05 - accepted
-152: 
-153: Criação do Módulo de Galerias de Imagens (req-018 / BATCH-018). Decisões desta rodada:
-154: 
-155: 1. **Estrutura Base**: O módulo `galleries` será clonado de `publisher-highlights` e inteiramente desacoplado de publishers (sem coluna `publisher_id`). A persistência usará a tabela `galleries` (Phinx migration) e o módulo será registrado em `ModulosData.json` com o ícone `"images"`.
-156: 2. **Seleção de Imagens em Lote**: Em vez de seleção única, o gerenciador de arquivos modal (`admin-arquivos`) enviará os dados de imagem via `postMessage`. O listener em `galleries.js` interceptará e adicionará o arquivo à lista de curadoria visual, mantendo o modal **aberto** para que o usuário selecione múltiplas imagens seguidas em lote. O modal deve ser fechado apenas manualmente pelo usuário.
-157: 3. **Campos por Imagem**: Cada imagem na lista de curadoria exibirá seu thumbnail, nome do arquivo, um campo editável para **Legenda** (`legenda`) e um botão de exclusão. A ordenação será feita por drag-and-drop usando Sortable.js. O JSON serializado em `fields_schema` conterá os metadados (`id`, `caminho`, `imgSrc`, `nome`, `legenda`).
-158: 4. **Widget Renderizador**: O widget `galleries.widget.php` lerá os metadados do banco e renderizará as imagens sequencialmente substituindo `[[item#img-src]]`, `[[item#caminho]]`, `[[item#nome]]` e `[[item#legenda]]`. templates de visualização (grid, carousel, masonry, slider) serão providos em `resources/templates/`. Simulação e aba de variáveis estarão integradas no editor HTML.
-159: 
-160: 
+3. **Simulação do Publicador no HTML Editor**: O motor de simulação (`html-editor-interface.js`) gerará de forma randômica `$count` sub-itens do tipo `pagina` sob o nó `publicador` para simular o preview de forma idêntica.
 
+## DEC-026 - 2026-06-05 - accepted
 
+Criação do Módulo de Galerias de Imagens (req-018 / BATCH-018). Decisões desta rodada:
+
+1. **Estrutura Base**: O módulo `galleries` será clonado de `publisher-highlights` e inteiramente desacoplado de publishers (sem coluna `publisher_id`). A persistência usará a tabela `galleries` (Phinx migration) e o módulo será registrado em `ModulosData.json` com o ícone `"images"`.
+2. **Seleção de Imagens em Lote**: Em vez de seleção única, o gerenciador de arquivos modal (`admin-arquivos`) enviará os dados de imagem via `postMessage`. O listener em `galleries.js` interceptará e adicionará o arquivo à lista de curadoria visual, mantendo o modal **aberto** para que o usuário selecione múltiplas imagens seguidas em lote. O modal deve ser fechado apenas manualmente pelo usuário.
+3. **Campos por Imagem**: Cada imagem na lista de curadoria exibirá seu thumbnail, nome do arquivo, um campo editável para **Legenda** (`legenda`) e um botão de exclusão. A ordenação será feita por drag-and-drop usando Sortable.js. O JSON serializado em `fields_schema` conterá os metadados (`id`, `caminho`, `imgSrc`, `nome`, `legenda`).
+4. **Widget Renderizador**: O widget `galleries.widget.php` lerá os metadados do banco e renderizará as imagens sequencialmente substituindo `[[item#img-src]]`, `[[item#caminho]]`, `[[item#nome]]` e `[[item#legenda]]`. templates de visualização (grid, carousel, masonry, slider) serão providos em `resources/templates/`. Simulação e aba de variáveis estarão integradas no editor HTML.

@@ -147,6 +147,10 @@ function menus_adicionar(){
 
 	menus_template_options(null);
 
+	// ===== Publicadores para o tipo de item `publicador` (req-018 / DEC-025)
+
+	menus_publisher_options(null);
+
 	// ===== Schema inicial vazio para o JS reidratar UI
 	// Menus são livres de publicadores: o schema guarda apenas a curadoria de itens e o template.
 
@@ -410,6 +414,9 @@ function menus_editar(){
 		// ===== Template dropdown
 		menus_template_options($fields_schema_decoded['template_id'] ?? null);
 
+		// ===== Publicadores para o tipo de item `publicador` (req-018 / DEC-025)
+		menus_publisher_options(null);
+
 		// ===== HTML Editor (alvo menus) — edição do template HTML/CSS no banco.
 		// A biblioteca html-editor é incluída automaticamente via `bibliotecas` no manifesto.
 
@@ -617,6 +624,9 @@ function menus_clonar(){
 
 		menus_template_options($fields_schema_decoded['template_id'] ?? null);
 
+		// ===== Publicadores para o tipo de item `publicador` (req-018 / DEC-025)
+		menus_publisher_options(null);
+
 		// HTML/CSS de origem precisam viajar no submit (campos ocultos no formulário de clonar)
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#html-original#',htmlspecialchars($html, ENT_QUOTES));
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#css-original#',htmlspecialchars($css, ENT_QUOTES));
@@ -769,6 +779,41 @@ function menus_template_options($selected_id = null){
 
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#template_placeholder_option#',gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')));
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#template_id_options#',$template_id_options);
+}
+
+/**
+ * Popula `#publisher_id_options#` no construtor de itens do menu com os publicadores
+ * ativos da tabela `publisher` (idioma corrente). Usado pelo tipo de item `publicador`
+ * (req-018 / DEC-025), que gera dinamicamente sub-itens com as publicações do publicador.
+ *
+ * O dropdown vive no construtor de itens (não há publicador "global" do menu); por isso o
+ * `$selected_id` normalmente é null — cada nó publicador guarda o próprio `publisher_id`.
+ */
+function menus_publisher_options($selected_id = null){
+	global $_GESTOR;
+
+	$publishers = banco_select_name
+	(
+		banco_campos_virgulas(Array(
+			'name',
+			'id',
+		))
+		,
+		'publisher',
+		"WHERE status='A'"
+		.' AND language="'.$_GESTOR['linguagem-codigo'].'"'
+		." ORDER BY name ASC"
+	);
+
+	$publisher_id_options = '';
+	if($publishers){
+		foreach($publishers as $publisher){
+			$selected = ($selected_id && $publisher['id'] == $selected_id) ? ' selected' : '';
+			$publisher_id_options .= '<option value="'.$publisher['id'].'"'.$selected.'>'.$publisher['name'].'</option>';
+		}
+	}
+
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#publisher_id_options#',$publisher_id_options);
 }
 
 // ==== Ajax

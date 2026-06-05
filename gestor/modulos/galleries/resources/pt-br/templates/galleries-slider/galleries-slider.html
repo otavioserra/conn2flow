@@ -1,0 +1,13 @@
+<section class="font-sans" data-id="1" data-title="gallery-slider">
+    <div class="relative flex overflow-x-auto snap-x snap-mandatory rounded-lg">
+        <!-- item < -->
+        <figure class="snap-center shrink-0 w-full relative">
+            <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@" class="w-full h-96 object-cover">
+            <figcaption class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent text-white px-6 py-4 text-sm">@[[item#legenda]]@</figcaption>
+        </figure>
+        <!-- item > -->
+        <!-- no-item < -->
+        <div class="w-full text-center text-gray-400 italic py-16">Nenhuma imagem na galeria</div>
+        <!-- no-item > -->
+    </div>
+</section>
