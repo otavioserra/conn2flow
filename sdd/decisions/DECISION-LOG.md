@@ -184,3 +184,12 @@ Controles de Galeria e Resolução de Imagem (req-019 / BATCH-019). Decisões de
 Comportamento Dinâmico em JS Público de Widgets (req-019 / BATCH-019). Decisões desta rodada:
 1. **Arquitetura de JS de Widget**: Adicionar suporte a interatividade pública de widgets incluindo scripts dinâmicos de comportamento em tempo de renderização (`menus.widget.js` e `galleries.widget.js`).
 2. **Lógica de Slider e Dropdown**: Os scripts tratarão a abertura de submenus no dropdown por eventos de hover do JS, o toggle do menu mobile hambúrguer e a movimentação suave e controle (setas/dots/autoplay) do carrossel/slider de galerias via jQuery/CSS, garantindo retrocompatibilidade caso recursos específicos do Tailwind CSS v3 falhem no site final.
+
+## DEC-031 - 2026-06-05 - accepted
+
+Registro de Alvo de IA, Variáveis Globais e Modos de IA para o Módulo de Galerias (req-019 / BATCH-019). Decisões desta rodada:
+1. **Registro do Alvo `galleries`**: Adicionar `ai_prompts_targets` e `ai_modes` em `galleries.json` para que a rotina `atualizacao-dados-recursos.php` compile e registre o alvo `galleries` nos arquivos `AlvosIaData.json` e `ModosIaData.json` em ambos os idiomas (`pt-br` e `en`).
+2. **Criação de Prompts/Modos de IA**: Criar os arquivos de prompt/modo em markdown para o alvo `galleries` (`galleries.md` em `pt-br` e `en`) contendo as regras de estruturação (repetição de items via `<!-- item < -->`, controle condicional de setas/pontinhos, repetição de `dot-item` e atributos `data-*` do contêiner).
+3. **Mapeamento de Variáveis Globais vs Itens**: No html-editor, unificar a aba de variáveis. A função `galleries_variaveis_template()` em `galleries.php` retornará tanto variáveis de item quanto variáveis globais de controle (como `show_arrows`, `show_dots`, `autoplay`, `autoplay_speed`, `loop`), estas últimas marcadas com `'global' => true`.
+4. **Tratamento no HTML Editor e Ajax IA**: No `html-editor.php`, se a variável possuir `'global' => true`, o mapeamento do template gerará o placeholder `[[VAR_ID]]` (sem o prefixo `item#`). No AJAX de IA (`html_editor_ajax_ia_requests`), processar `menus` e `galleries` injetando a lista de variáveis correspondentes na substituição do marcador `{{variables}}` no prompt do Modo de IA.
+
