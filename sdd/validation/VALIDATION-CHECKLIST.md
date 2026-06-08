@@ -853,3 +853,33 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - **Galerias / imagem**: confirmar que o site usa o `caminho` original (não a miniatura) na tag `<img>`.
   - **IA**: na aba do Modo de IA do alvo `galleries`, confirmar que o prompt recebe as variáveis de item e as globais; no menus, as novas variáveis (`target`, `css_classes`, `children`).
 
+## BATCH-020 - Integração do Tailwind CSS CLI no Core do Sistema e Pipeline de Release (req-020)
+
+- [x] Estrutura de Estilo do Core:
+  - [x] Arquivo `gestor/assets/tailwindcss/input.css` criado contendo `@import "tailwindcss";` e a diretiva `@config "../../../tailwind.config.js";`.
+- [x] Configurações de Ambiente Local e Templates:
+  - [x] Variável `"tailwindcss/cli"` adicionada no bloco `"devEnvironment"` em `environment.json`.
+  - [x] Variável `"tailwindcss/cli"` adicionada no bloco `"devEnvironment"` do template `templates/environment/environment.json`.
+  - [x] Auditoria comparativa do template com o arquivo ativo concluída e quaisquer variáveis estruturais ausentes normalizadas no template.
+- [x] Sincronização e Compilação Local:
+  - [x] `synchronize-manager.sh` lê a chave do environment (via `jq` e fallback regex), executa o build na pasta `gestor/` se configurado, e aborta a sincronização em caso de falha.
+  - [x] `sync-core-to-project.sh` lê a chave do environment, executa o build do Tailwind na pasta `gestor/` se configurado, e aborta em caso de falha.
+- [x] Pipeline de Release (GitHub Actions):
+  - [x] `release-gestor.yml` inclui a etapa de configuração do Node.js v20.
+  - [x] `release-gestor.yml` executa a compilação do Tailwind CSS CLI (`npx @tailwindcss/cli -i ./assets/tailwindcss/input.css -o ./assets/tailwindcss/output.css --minify`) antes de empacotar.
+  - [x] `release-gestor.yml` inclui a linha `git add gestor/assets/tailwindcss/*.css` na etapa de commit das atualizações.
+
+### Evidência registrada em 2026-06-08 (BATCH-020)
+
+- Validação executável:
+  - `bash -n` verificado em `synchronize-manager.sh` e `sync-core-to-project.sh` -> OK.
+  - Leitura de JSON via `jq` da chave `tailwindcss/cli` em ambos JSONs (`environment.json` ativo e template) -> JSON válido.
+  - Fallback regex verificado para extrair o comando correto de `devEnvironment`.
+  - Integridade estrutural do `release-gestor.yml` validada por inspeção visual.
+- Arquivos alterados/criados:
+  - Criado estilo core `gestor/assets/tailwindcss/input.css`
+  - Adicionado bloco `devEnvironment` com a nova chave em `dev-environment/data/environment.json` e no template `dev-environment/templates/environment/environment.json`.
+  - Scripts de build e sync atualizados: `synchronize-manager.sh` e `sync-core-to-project.sh`.
+  - Workflow `.github/workflows/release-gestor.yml` atualizado para configurar Node.js v20, compilar Tailwind CSS v4 CLI e comitar os arquivos gerados.
+
+

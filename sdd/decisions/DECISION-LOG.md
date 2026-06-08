@@ -193,3 +193,18 @@ Registro de Alvo de IA, Variáveis Globais e Modos de IA para o Módulo de Galer
 3. **Mapeamento de Variáveis Globais vs Itens**: No html-editor, unificar a aba de variáveis. A função `galleries_variaveis_template()` em `galleries.php` retornará tanto variáveis de item quanto variáveis globais de controle (como `show_arrows`, `show_dots`, `autoplay`, `autoplay_speed`, `loop`), estas últimas marcadas com `'global' => true`.
 4. **Tratamento no HTML Editor e Ajax IA**: No `html-editor.php`, se a variável possuir `'global' => true`, o mapeamento do template gerará o placeholder `[[VAR_ID]]` (sem o prefixo `item#`). No AJAX de IA (`html_editor_ajax_ia_requests`), processar `menus` e `galleries` injetando a lista de variáveis correspondentes na substituição do marcador `{{variables}}` no prompt do Modo de IA.
 
+## DEC-032 - 2026-06-08 - accepted
+
+Integração de Compilação Tailwind CSS CLI para o Core do Sistema e Pipeline de Release (req-020 / BATCH-020). Decisões desta rodada:
+1. **Pasta de Compilação do Core**: Definir a pasta `gestor/assets/tailwindcss/` para abrigar a estrutura do compilador Tailwind CSS v4 para o core/manager. O arquivo de entrada será `input.css` contendo a diretiva `@import "tailwindcss";` e a diretiva `@config "../../../tailwind.config.js";`, e o output compilado será gerado em `output.css` via npx.
+2. **Integração em Ambientes Locais**: Atualizar os scripts de sincronização de desenvolvimento `synchronize-manager.sh` (sincronização do manager com Docker local) e `sync-core-to-project.sh` (sincronização do core com projetos de testes) para ler a variável de configuração `devEnvironment.tailwindcss/cli` do arquivo `environment.json`. Caso configurada, os scripts deverão executar o compilador na pasta de origem do core antes de realizar a transmissão (rsync), tratando erros de compilação.
+3. **Pipeline de Release**: Modificar o workflow de release `release-gestor.yml` do GitHub Actions para configurar o Node.js v20 e rodar o compilador do Tailwind CSS CLI antes de gerar o pacote ZIP, garantindo que o `output.css` seja incluído no commit de release e no pacote compactado distribuído.
+
+## DEC-033 - 2026-06-08 - accepted
+
+Adoção de Estrutura de Testes Unitários e E2E centralizada na raiz do repositório (req-022 / BATCH-022). Decisões desta rodada:
+1. **Pasta de Testes Centralizada**: Criar a pasta `tests/` na raiz do repositório (`conn2flow/tests/`), separando as suítes de teste em `Unit/` (algoritmos PHP/JS puros e isolados), `Integration/` (fluxos que requerem banco ou Docker) e `E2E/` (fluxos de navegação e interface real). A pasta será excluída dos pacotes de release ZIP do gestor.
+2. **Frameworks e Configuração**: Adotar o PHPUnit para testes backend em PHP (com arquivo `bootstrap.php` para carregar dependências do core e `phpunit.xml`), o Vitest para testes rápidos de JS frontend, e o Playwright para testes funcionais E2E simulando as interfaces CRUD e visualizadores em navegadores headless.
+3. **Atalhos no Workspace**: Registrar tarefas de automação no arquivo `.vscode/tasks.json` para facilitar a execução rápida de cada suíte de testes por parte de operadores humanos e agentes autônomos.
+
+

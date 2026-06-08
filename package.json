@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^4.1.17",
+    "terser": "^5.46.0"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.17"
+  }
+}

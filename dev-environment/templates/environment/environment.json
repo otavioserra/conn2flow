@@ -8,7 +8,8 @@
         "dockerPath": "/var/www/sites/localhost/conn2flow-gestor/",
         "accessURL": "http://localhost/",
         "tests": "tests",
-        "testsBuild": "tests/build"
+        "testsBuild": "tests/build",
+        "tailwindcss/cli": ""
     },
     "devInstallerEnvironment": {
         "source": "",

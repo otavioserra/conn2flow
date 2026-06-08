@@ -32,10 +32,12 @@ if command -v jq >/dev/null 2>&1; then
   ORIGEM=$(jq -r '.devEnvironment.source' "$ENV_JSON")
   DESTINO=$(jq -r '.devEnvironment.target' "$ENV_JSON")
   PATH_DOCKER=$(jq -r '.devEnvironment.dockerPath' "$ENV_JSON")
+  TAILWIND_CLI=$(jq -r '.devEnvironment."tailwindcss/cli" // empty' "$ENV_JSON")
 else
   ORIGEM=$(grep '"source"' "$ENV_JSON" | sed -E 's/.*"source" *: *"([^"]*)".*/\1/')
   DESTINO=$(grep '"target"' "$ENV_JSON" | sed -E 's/.*"target" *: *"([^"]*)".*/\1/')
   PATH_DOCKER=$(grep '"dockerPath"' "$ENV_JSON" | sed -E 's/.*"dockerPath" *: *"([^"]*)".*/\1/')
+  TAILWIND_CLI=$(grep '"tailwindcss/cli"' "$ENV_JSON" | head -n1 | sed -E 's/.*"tailwindcss\/cli" *: *"([^"]*)".*/\1/')
 fi
 
 # Validate variables
@@ -78,6 +80,16 @@ esac
 echo "📤 Source: $ORIGEM"
 echo "📥 Target: $DESTINO"
 echo "🐳 Docker Path: $PATH_DOCKER"
+
+# Compile Tailwind CSS for the Core before synchronizing (if configured)
+if [ -n "$TAILWIND_CLI" ] && [ "$TAILWIND_CLI" != "null" ]; then
+  echo "🎨 Executando TailwindCSS CLI para o Core..."
+  if ! ( cd "$ORIGEM" && eval "$TAILWIND_CLI" ); then
+    echo "❌ Falha ao compilar o TailwindCSS do Core. Sincronização abortada."
+    exit 1
+  fi
+  echo "✅ TailwindCSS do Core compilado com sucesso."
+fi
 
 # Execute chosen command
 "${CMD[@]}"

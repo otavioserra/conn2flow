@@ -26,7 +26,17 @@ jobs:
       run: |
         cd gestor
         composer install --no-dev --optimize-autoloader --no-interaction
-        
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Compile Tailwind CSS
+      run: |
+        cd gestor
+        npx @tailwindcss/cli -i ./assets/tailwindcss/input.css -o ./assets/tailwindcss/output.css --minify
+
     - name: Generate Resources Updates
       run: |
         cd gestor/controladores/agents/arquitetura
@@ -41,6 +51,7 @@ jobs:
         git add gestor/db/orphans/*.json
         git add gestor/resources/*
         git add gestor/modulos/*/*.json
+        git add gestor/assets/tailwindcss/*.css
         git diff --cached --quiet || git commit -m "Auto-update resources for release ${{ github.ref_name }}"
         
     - name: Remove resource files
