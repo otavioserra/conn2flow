@@ -645,18 +645,26 @@ function gestor_pagina_variaveis(){
 function gestor_pagina_css(){
 	global $_GESTOR;
 
-	// ===== Inclusão de bibliotecas CSS Fomantic-UI
+	// ===== Inclusão de bibliotecas CSS Fomantic-UI / Tailwind CSS
+
+	$layout_framework = $_GESTOR['layout#framework_css'] ?? null;
+	$pagina_framework = $_GESTOR['pagina#framework_css'] ?? null;
 
 	$fomantic_ui_included = false;
-	if(isset($_GESTOR['layout#framework_css']))
-	if($_GESTOR['layout#framework_css'] == 'fomantic-ui' || $_GESTOR['pagina#framework_css'] == 'fomantic-ui'){
+	if ($layout_framework == 'fomantic-ui' || $pagina_framework == 'fomantic-ui' || (empty($layout_framework) && empty($pagina_framework))) {
 		$fomantic_ui_included = true;
+	}
+
+	$tailwindcss_included = false;
+	if ($layout_framework == 'tailwindcss' || $pagina_framework == 'tailwindcss') {
+		$tailwindcss_included = true;
 	}
 	
 	$css_global = '';
 
 	$css_padrao = Array();
 	if($fomantic_ui_included) $css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css" />';
+	if($tailwindcss_included) $css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'assets/tailwindcss/output.css?v='.$_GESTOR['versao'].'" />';
 
 	if(!isset($_GESTOR['css-compiled'])) $_GESTOR['css-compiled'] = Array();
 	if(!isset($_GESTOR['css'])) $_GESTOR['css'] = Array();
@@ -716,9 +724,11 @@ function gestor_pagina_extra_head_e_javascript(){
 
 	// ===== Inclusão de bibliotecas CSS Fomantic-UI
 
+	$layout_framework = $_GESTOR['layout#framework_css'] ?? null;
+	$pagina_framework = $_GESTOR['pagina#framework_css'] ?? null;
+
 	$fomantic_ui_included = false;
-	if(isset($_GESTOR['layout#framework_css']))
-	if($_GESTOR['layout#framework_css'] == 'fomantic-ui' || $_GESTOR['pagina#framework_css'] == 'fomantic-ui'){
+	if ($layout_framework == 'fomantic-ui' || $pagina_framework == 'fomantic-ui' || (empty($layout_framework) && empty($pagina_framework))) {
 		$fomantic_ui_included = true;
 	}
 	

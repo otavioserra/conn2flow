@@ -448,6 +448,9 @@ function gestor_layout($params = false){
 				$id = $layout['id'];
 				$modulo = $layout['modulo'];
 				$plugin = $layout['plugin'];
+				$framework_css = $layout['framework_css'];
+
+				$_GESTOR['layout#framework_css'] = $framework_css;
 
 				if($_GESTOR['development-env']){
 					if(existe($modulo)){
@@ -477,6 +480,7 @@ function gestor_layout($params = false){
 						'html' => $html,
 						'css' => $css,
 						'css_compiled' => $css_compiled,
+						'framework_css' => $framework_css,
 					);
 				} else {
 					if(existe($css_compiled)){
@@ -496,6 +500,7 @@ function gestor_layout($params = false){
 					
 					$return[$id] = Array(
 						'html' => $html,
+						'framework_css' => $framework_css,
 					);
 				}
 			}
@@ -541,6 +546,7 @@ function gestor_layout($params = false){
 					'html' => $html,
 					'css' => $css,
 					'css_compiled' => $css_compiled,
+					'framework_css' => $framework_css,
 				);
 			} else {
 				if(existe($css_compiled)){
