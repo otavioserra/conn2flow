@@ -664,7 +664,7 @@ function gestor_pagina_css(){
 
 	$css_padrao = Array();
 	if($fomantic_ui_included) $css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css" />';
-	if($tailwindcss_included) $css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'assets/tailwindcss/output.css?v='.$_GESTOR['versao'].'" />';
+	if($tailwindcss_included) $css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'tailwindcss/output.css?v='.$_GESTOR['versao'].'" />';
 
 	if(!isset($_GESTOR['css-compiled'])) $_GESTOR['css-compiled'] = Array();
 	if(!isset($_GESTOR['css'])) $_GESTOR['css'] = Array();
