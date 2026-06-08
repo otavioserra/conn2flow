@@ -94,7 +94,7 @@ if [ ! -d "$TARGET_PATH" ]; then
 fi
 
 # Compile Tailwind CSS for the Core before syncing (if configured)
-TAILWIND_CLI=$(jq -r '.devEnvironment."tailwindcss/cli" // empty' "$ENV_FILE" 2>/dev/null)
+TAILWIND_CLI=$(jq -r '.devEnvironment["tailwindcss/cli"] // empty' "$ENV_FILE" 2>/dev/null)
 if [ -n "$TAILWIND_CLI" ] && [ "$TAILWIND_CLI" != "null" ]; then
   log "Running Tailwind CSS CLI for the Core before synchronization..."
   if ! ( cd "$CORE_SOURCE" && eval "$TAILWIND_CLI" ); then

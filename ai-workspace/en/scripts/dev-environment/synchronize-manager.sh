@@ -32,7 +32,7 @@ if command -v jq >/dev/null 2>&1; then
   ORIGEM=$(jq -r '.devEnvironment.source' "$ENV_JSON")
   DESTINO=$(jq -r '.devEnvironment.target' "$ENV_JSON")
   PATH_DOCKER=$(jq -r '.devEnvironment.dockerPath' "$ENV_JSON")
-  TAILWIND_CLI=$(jq -r '.devEnvironment."tailwindcss/cli" // empty' "$ENV_JSON")
+  TAILWIND_CLI=$(jq -r '.devEnvironment["tailwindcss/cli"] // empty' "$ENV_JSON")
 else
   ORIGEM=$(grep '"source"' "$ENV_JSON" | sed -E 's/.*"source" *: *"([^"]*)".*/\1/')
   DESTINO=$(grep '"target"' "$ENV_JSON" | sed -E 's/.*"target" *: *"([^"]*)".*/\1/')
