@@ -72,11 +72,11 @@
                     "name": "Página Simples TailwindCSS",
                     "id": "pagina-simples-tailwindcss",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "b3fd2c25e8096e1504fc57e546490642",
+                        "html": "5d5efc9849f45c5a257ee4e6fff49d16",
                         "css": "",
-                        "combined": "b3fd2c25e8096e1504fc57e546490642"
+                        "combined": "5d5efc9849f45c5a257ee4e6fff49d16"
                     }
                 }
             ],

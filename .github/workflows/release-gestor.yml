@@ -35,7 +35,7 @@ jobs:
     - name: Compile Tailwind CSS
       run: |
         cd gestor
-        npx @tailwindcss/cli -i ./assets/tailwindcss/input.css -o ./assets/tailwindcss/output.css --minify
+        npx @tailwindcss/cli -i ./assets/tailwindcss/system-input.css -o ./assets/tailwindcss/system-output.css --minify
 
     - name: Generate Resources Updates
       run: |

@@ -551,18 +551,19 @@ $(document).ready(function () {
 
                 widgetPreviewLastSnapshot = snapshot;
 
-                var doc = '<!doctype html><html><head><meta charset="utf-8">';
-                // Reaproveitar o CSS framework do iframe interno do html-editor — picsum funciona via URL absoluta
-                doc += `<!-- CDN do TailwindCSS -->
-                <script>
-                    // Remove Tailwind CDN warnings
-                    const originalWarn = console.warn;
-                    console.warn = function (...args) {
-                        if (args[0] && args[0].includes('cdn.tailwindcss.com')) return;
-                        originalWarn.apply(console, args);
-                    };
-                </script><script src="https://cdn.tailwindcss.com"></script>`;
-                doc += '</head><body>' + (dados.html || '') + '</body></html>';
+                var doc = '';
+                if (typeof window.previewExternalHtmlConteudo === 'function') {
+                    doc = window.previewExternalHtmlConteudo({
+                        htmlDoUsuario: dados.html || '',
+                        cssDoUsuario: css,
+                        framework: (gestor.html_editor && gestor.html_editor.framework_css) ? gestor.html_editor.framework_css : 'fomantic-ui'
+                    });
+                } else {
+                    doc = '<!doctype html><html><head><meta charset="utf-8">';
+                    doc += `<!-- CDN do TailwindCSS v4 -->
+                    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>`;
+                    doc += '</head><body>' + (dados.html || '') + '</body></html>';
+                }
 
                 $iframe.on('load', function () { $dimmer.removeClass('active'); });
                 $iframe.attr('srcdoc', doc);

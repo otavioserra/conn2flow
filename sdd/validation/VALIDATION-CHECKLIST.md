@@ -919,5 +919,64 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - cada campo em lote já vem com `.field-template` e prompt preenchidos como `[[publisher#tipo#id]]`
   - trocar para um modelo vazio/none oculta novamente o botão
 
+## BATCH-022 - Pré-visualizador de HTML Externo Unificado (req-022)
+
+- [x] Módulo Destaques (`publisher-highlights.js`):
+  - [x] Função `scheduleWidgetPreview` chama `window.previewExternalHtmlConteudo` para gerar o HTML do iframe de pré-visualização.
+  - [x] Passa `dados.html`, `css` e `gestor.html_editor.framework_css` de forma correta.
+  - [x] Mantém fallback de segurança caso a função não exista no escopo.
+- [x] Módulo Menus (`menus.js`):
+  - [x] Função `scheduleWidgetPreview` chama `window.previewExternalHtmlConteudo` para gerar o HTML do iframe de pré-visualização.
+  - [x] Passa `dados.html`, `css` e `gestor.html_editor.framework_css` de forma correta.
+  - [x] Mantém fallback de segurança caso a função não exista no escopo.
+- [x] Módulo Galerias (`galleries.js`):
+  - [x] Função `scheduleWidgetPreview` chama `window.previewExternalHtmlConteudo` para gerar o HTML do iframe de pré-visualização.
+  - [x] Passa `dados.html`, `css` e `gestor.html_editor.framework_css` de forma correta.
+  - [x] Mantém fallback de segurança caso a função não exista no escopo.
+
+### Evidência registrada em 2026-06-09 (BATCH-022)
+
+- Validação executável (estática):
+  - `node --check gestor/modulos/publisher-highlights/publisher-highlights.js` -> OK
+  - `node --check gestor/modulos/menus/menus.js` -> OK
+  - `node --check gestor/modulos/galleries/galleries.js` -> OK
+- Arquivos alterados:
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js` (refatorado callback AJAX success do `widget-preview`)
+  - `gestor/modulos/menus/menus.js` (refatorado callback AJAX success do `widget-preview`)
+  - `gestor/modulos/galleries/galleries.js` (refatorado callback AJAX success do `widget-preview`)
+- Decisão registrada: [DEC-035](../decisions/DECISION-LOG.md#dec-035---2026-06-09---accepted)
+- Pendência:
+  - Validar manualmente no ambiente local (Docker):
+    - Pré-visualização do módulo Destaques carrega perfeitamente e aplica o CSS customizado e framework adequados.
+    - Pré-visualização do módulo Menus carrega recursivamente e renderiza a árvore simulada.
+    - Pré-visualização do módulo Galerias renderiza as imagens e controles.
 
 
+## BATCH-023 - Otimização de CSS Automático com Filtragem de Redundâncias (req-023)
+
+- [x] JavaScript do Editor HTML (`html-editor-interface.js`):
+  - [x] Função `updateCSSCompiled` varre os stylesheets do iframe do previewer para extrair seletores de `system-output.css` e `output.css`.
+  - [x] O conjunto `systemSelectors` (`Set`) é populado com as regras de classe simples (`selectorText`).
+  - [x] A folha de estilos do Tailwind CDN (`styleSheet.cssRules`) é percorrida e as regras são filtradas para remover duplicidades.
+  - [x] Regras `@media` têm suas sub-regras limpas e re-montadas de forma não redundante.
+  - [x] A instância CodeMirror `CodeMirrorCssCompiled` recebe o valor do CSS limpo sem travar o editor.
+  - [x] Compatibilidade de leitura estruturada via `sheet.cssRules` assegurada para Tailwind v3 (innerHTML) e v4 (insertRule).
+- [x] Limpeza de Templates de Layout:
+  - [x] CDNs redundantes de Tailwind CSS v3 e Fomantic UI removidos dos 9 templates de layout em `gestor/resources/pt-br/templates/`.
+  - [x] Placeholders `<!-- pagina#titulo -->` e `<!-- pagina#js -->` padronizados nos layouts.
+
+### Evidência registrada em 2026-06-09 (BATCH-023)
+
+- Validação executável:
+  - `node --check gestor/assets/interface/html-editor-interface.js` -> OK
+  - `git diff gestor/resources/pt-br/templates` inspecionado → 9 arquivos de templates limpos e com placeholders normalizados.
+- Arquivos alterados:
+  - `gestor/assets/interface/html-editor-interface.js` (refatorada a rotina de extração e filtragem da função `updateCSSCompiled`)
+  - 9 arquivos de layout HTML em `gestor/resources/pt-br/templates/` (limpeza de CDNs de frameworks e placeholders)
+
+- Decisão registrada: [DEC-036](../decisions/DECISION-LOG.md#dec-036---2026-06-09---accepted)
+- Pendência:
+  - Testar manualmente no navegador (painel do Gestor):
+    - Inserir tags HTML usando classes comuns (ex: `flex`, `hidden`). O painel CodeMirror "CSS Compilado" deve permanecer vazio.
+    - Inserir uma classe exclusiva nova (ex: `bg-emerald-950`). O painel CodeMirror deve ser preenchido apenas com a regra específica para esta classe.
+    - Confirmar que o salvamento no banco grava a string contendo apenas o CSS reduzido.

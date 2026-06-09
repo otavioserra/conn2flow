@@ -882,16 +882,9 @@ $(document).ready(function () {
         let tailwindConfigScript = '';
 
         if (framework === 'tailwindcss') {
-            tailwindConfigScript = `<!-- CDN do TailwindCSS -->
-                <script>
-                    // Remove Tailwind CDN warnings
-                    const originalWarn = console.warn;
-                    console.warn = function (...args) {
-                        if (args[0] && args[0].includes('cdn.tailwindcss.com')) return;
-                        originalWarn.apply(console, args);
-                    };
-                </script>
-				<script src="https://cdn.tailwindcss.com"></script>`;
+            tailwindConfigScript = `<!-- CDN do TailwindCSS v4 -->
+				<script src="https://unpkg.com/@tailwindcss/browser@4"></script>`;
+            tailwindConfigScript += `\n<link rel="stylesheet" type="text/css" media="all" href="${gestor.raiz}tailwindcss/system-output.css?v=${gestor.versao}" />`;
             iframeTitle = 'Tailwind CSS Preview';
         }
 
@@ -1373,14 +1366,89 @@ $(document).ready(function () {
         setTimeout(function () {
             const iframeDoc = iframeObject.contentDocument || iframeObject.contentWindow.document;
 
-            const allStyleTags = $(iframeDoc).find('head > style');
+            // Função recursiva para coletar seletores de qualquer folha de estilo (inclusive dentro de @layer, @media, etc.)
+            function collectSelectors(rules, selectorSet) {
+                if (!rules) return;
+                for (let j = 0; j < rules.length; j++) {
+                    const rule = rules[j];
+                    if (rule.type === CSSRule.STYLE_RULE) {
+                        selectorSet.add(rule.selectorText);
+                    } else if (rule.cssRules) {
+                        collectSelectors(rule.cssRules, selectorSet);
+                    }
+                }
+            }
 
+            // 1. Coleta seletores globais já existentes nas folhas de estilos core
+            const systemSelectors = new Set();
+            for (let i = 0; i < iframeDoc.styleSheets.length; i++) {
+                const sheet = iframeDoc.styleSheets[i];
+                try {
+                    // Mapeia tanto system-output.css quanto output.css
+                    if (sheet.href && (sheet.href.indexOf('system-output.css') !== -1 || sheet.href.indexOf('output.css') !== -1)) {
+                        collectSelectors(sheet.cssRules || sheet.rules, systemSelectors);
+                    }
+                } catch (e) {
+                    console.warn("Nao foi possivel ler a folha de estilo do sistema para filtragem:", e);
+                }
+            }
+
+            // Função recursiva para filtrar regras redundantes, preservando a estrutura de @media, @layer, etc.
+            function filterRules(rules, selectorSet) {
+                let css = "";
+                if (!rules) return css;
+                for (let i = 0; i < rules.length; i++) {
+                    const rule = rules[i];
+                    if (rule.type === CSSRule.STYLE_RULE) {
+                        if (!selectorSet.has(rule.selectorText)) {
+                            css += rule.cssText + "\n";
+                        }
+                    } 
+                    else if (rule.type === CSSRule.MEDIA_RULE) {
+                        const mediaContent = filterRules(rule.cssRules, selectorSet);
+                        if (mediaContent.trim()) {
+                            css += `@media ${rule.media.mediaText} {\n${mediaContent}}\n`;
+                        }
+                    } 
+                    else if (rule.constructor.name === "CSSLayerBlockRule" || rule.type === 17) {
+                        const layerContent = filterRules(rule.cssRules, selectorSet);
+                        if (layerContent.trim()) {
+                            const layerName = rule.name ? ` ${rule.name}` : "";
+                            css += `@layer${layerName} {\n${layerContent}}\n`;
+                        }
+                    }
+                    else if (rule.type === CSSRule.SUPPORTS_RULE) {
+                        const supportsContent = filterRules(rule.cssRules, selectorSet);
+                        if (supportsContent.trim()) {
+                            css += `@supports ${rule.conditionText} {\n${supportsContent}}\n`;
+                        }
+                    }
+                    else {
+                        // Mantém outras diretivas e regras (@theme, @keyframes etc.)
+                        css += rule.cssText + "\n";
+                    }
+                }
+                return css;
+            }
+
+            // 2. Localiza a tag de estilo gerada pelo Tailwind CDN (normalmente a última tag <style> no head)
+            const allStyleTags = $(iframeDoc).find('head > style');
             const tailwindStyleElement = allStyleTags[allStyleTags.length - 1];
 
             if (tailwindStyleElement) {
-                const generatedCss = tailwindStyleElement.innerHTML;
+                let generatedCss = "";
+                const sheet = tailwindStyleElement.sheet;
 
-                CodeMirrorCssCompiled.getDoc().setValue(generatedCss);
+                // 3. Extrai e filtra as regras estruturadas (suporta Tailwind v3 e v4)
+                if (sheet && sheet.cssRules && sheet.cssRules.length > 0) {
+                    generatedCss = filterRules(sheet.cssRules, systemSelectors);
+                } else {
+                    // Fallback se não conseguir ler o objeto sheet (Tailwind v3 innerHTML bruto)
+                    generatedCss = tailwindStyleElement.innerHTML;
+                }
+
+                // 4. Atualiza o editor CodeMirror com as classes exclusivas filtradas
+                CodeMirrorCssCompiled.getDoc().setValue(generatedCss.trim());
             }
         }, 750);
     }
@@ -1390,14 +1458,15 @@ $(document).ready(function () {
         const htmlDoUsuario = params.htmlDoUsuario || '';
         const cssDoUsuario = params.cssDoUsuario || '';
         const framework = params.framework || 'fomantic-ui';
+        const extraParams = params.extraParams || {};
 
-        return previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, framework);
+        return previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, framework, extraParams);
     }
 
     window.previewExternalHtmlConteudo = previewExternalHtmlConteudo; // Expor globalmente para ser usada na pré-visualização fora do editor HTML.
 
     // Função para gerar o conteúdo da página do pré-visualizador.
-    function previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui') {
+    function previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui', extraParams = {}) {
         // Incluir o CSS do usuário, se existir
         if (cssDoUsuario && cssDoUsuario.length > 0) {
             cssDoUsuario = `<style>${cssDoUsuario}</style>`;
@@ -1405,20 +1474,28 @@ $(document).ready(function () {
             cssDoUsuario = '';
         }
 
+        // Incluir JS customizados
+        const customScripts = extraParams.customScripts || false;
+
+        if (customScripts) {
+            let scriptsIncludes = '';
+            customScripts.forEach(script => {
+                if (script.src) {
+                    scriptsIncludes += `<script src="${script.src}"><\/script>\n`;
+                } else if (script.content) {
+                    scriptsIncludes += `<script>${script.content}<\/script>\n`;
+                }
+            });
+            cssDoUsuario += scriptsIncludes;
+        }
+
         let iframeTitle = 'Fomantic UI Preview';
         let tailwindConfigScript = '';
 
         if (framework === 'tailwindcss') {
-            tailwindConfigScript = `<!-- CDN do TailwindCSS -->
-                <script>
-                    // Remove Tailwind CDN warnings
-                    const originalWarn = console.warn;
-                    console.warn = function (...args) {
-                        if (args[0] && args[0].includes('cdn.tailwindcss.com')) return;
-                        originalWarn.apply(console, args);
-                    };
-                </script>
-				<script src="https://cdn.tailwindcss.com"></script>`;
+            tailwindConfigScript = `<!-- CDN do TailwindCSS v4 -->
+				<script src="https://unpkg.com/@tailwindcss/browser@4"></script>`;
+            tailwindConfigScript += `\n<link rel="stylesheet" type="text/css" media="all" href="${gestor.raiz}tailwindcss/system-output.css?v=${gestor.versao}" />`;
             iframeTitle = 'Tailwind CSS Preview';
         }
 

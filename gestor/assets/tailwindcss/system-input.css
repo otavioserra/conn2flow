@@ -1,2 +1,5 @@
 @import "tailwindcss";
-@config "../../../tailwind.config.js";
+
+/* Configura as pastas dos templates dos módulos e recursos globais para varredura na v4 */
+@source "../../../gestor/modulos/**/*.{html,css,js}";
+@source "../../../gestor/resources/**/*.{html,css,js}";

@@ -73,10 +73,10 @@ function arquivo_estatico_start(){
 			header('Cache-Control: private');
 			
 			switch($ext){
-				case 'js': header("Content-Type: application/javascript; charset: UTF-8"); break;
-				case 'css': header("Content-Type: text/css; charset: UTF-8"); break;
+				case 'js': header("Content-Type: application/javascript; charset=UTF-8"); break;
+				case 'css': header("Content-Type: text/css; charset=UTF-8"); break;
 				default: 
-					header("Content-Type:" . mime_content_type($file)."; charset: UTF-8");
+					header("Content-Type: " . mime_content_type($file)."; charset=UTF-8");
 			}
 			
 			readfile($file);
@@ -93,11 +93,11 @@ function arquivo_estatico_start(){
 			header('Cache-Control: private');
 			
 			switch($ext){
-				case 'js': header("Content-Type: application/javascript; charset: UTF-8"); break;
-				case 'css': header("Content-Type: text/css; charset: UTF-8"); break;
-				case 'svg': header("Content-Type: image/svg+xml; charset: UTF-8"); break;
+				case 'js': header("Content-Type: application/javascript; charset=UTF-8"); break;
+				case 'css': header("Content-Type: text/css; charset=UTF-8"); break;
+				case 'svg': header("Content-Type: image/svg+xml; charset=UTF-8"); break;
 				default: 
-					header("Content-Type:" . mime_content_type($file)."; charset: UTF-8");
+					header("Content-Type: " . mime_content_type($file)."; charset=UTF-8");
 			}
 			
 			readfile($file);

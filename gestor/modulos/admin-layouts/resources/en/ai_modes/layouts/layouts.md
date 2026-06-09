@@ -11,14 +11,14 @@ Example of minimum layout structure:
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- pagina#titulo -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><!-- pagina#titulo --></title>
     <!-- pagina#css -->
+    <!-- pagina#js -->
 </head>
 <body>
     @[[pagina#corpo]]@
-    <!-- pagina#js -->
 </body>
 </html>
 ```
