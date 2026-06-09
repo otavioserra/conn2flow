@@ -10,6 +10,26 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
 - CHANGELOG.md padrão da indústria seguindo Keep a Changelog
 
+## [2.8.0] - 2026-06-08
+
+### Added
+- **Módulo de Menus Completo**: Gerenciamento de menus com árvore hierárquica e editor visual drag-and-drop em Pointer Events vanilla (sem dependências externas). Suporta itens de Página, Link Personalizado (com target `_blank`/`_self`), Cabeçalhos, Ações de Link e Separadores estruturados (bloco `item-separator`).
+- **Módulo de Menus - Nós de Publicadores**: Tipo de item `publicador` que expande sub-itens dinâmicos a partir de publicações do publicador selecionado com limite (`count`) e ordenação customizados.
+- **Módulo de Galerias de Imagens**: Módulo de curadoria visual com seleção de arquivos em lote e ordenação Sortable.js. Suporta múltiplos layouts (Grid, Carousel, Masonry, Slider) e parâmetros de slide (setas, dot pagination, autoplay com velocidade configurável e loop).
+- **Interatividade Pública de Widgets**: Scripts públicos nativos (`menus.widget.js` e `galleries.widget.js`) para suportar menu hambúrguer mobile, hover recursivo em submenus e interatividade de sliders/carrosséis sem quebrar caso o Tailwind v3/v4 falhe em produção.
+- **Compilação do Tailwind CSS CLI**: Integração de compilação dos estilos globais do core via `npx @tailwindcss/cli` a partir da pasta `gestor/assets/tailwindcss/`. A compilação é acionada nas tarefas locais de sync e no pipeline de release.
+- **Configuração Dinâmica do Core**: Suporte à chave `tailwindcss/cli` em `environment.json` (com auditoria e normalização automática do template).
+- **Suporte a Variáveis de IA e Glossário**: Alvos e prompts de IA atualizados (`menus.md` e `galleries.md`) com suporte a variáveis globais de controle renderizadas sem prefixos.
+- **Automação de Campos no Publicador**: Botão "Adicionar todos os campos" para instanciar automaticamente todas as variáveis não vinculadas de um modelo de template com geração de labels amigáveis.
+
+### Changed
+- **Pipeline de Release**: Adicionada etapa do Node.js v20 e execução do compilador do Tailwind CSS CLI antes de gerar o pacote ZIP de distribuição. Os CSS compilados são adicionados ao commit automático de release.
+- **Diretiva de Configuração do Core**: Arquivo de entrada `input.css` do core integrado à configuração do workspace (`tailwind.config.js`) via diretiva `@config` para limitar a varredura e compilação de classes a apenas templates e recursos úteis.
+- **Auditoria de Configurações**: Verificação estrutural do arquivo de template do `environment.json` contra o arquivo ativo de desenvolvimento.
+
+### Fixed
+- **Módulo publisher-pages**: Correção de bug no qual valores de campos HTML (editores Quill) eram perdidos em salvamentos sucessivos caso o campo não sofresse novas interações do usuário.
+
 ## [2.7.6] - 2026-02-19
 
 ### Added

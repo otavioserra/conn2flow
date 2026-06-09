@@ -74,14 +74,14 @@
         "id": "publisher",
         "language": "pt-br",
         "status": "A",
-        "versao": 2
+        "versao": 3
     },
     {
         "nome": "Publisher",
         "id": "publisher",
         "language": "en",
         "status": "A",
-        "versao": 2
+        "versao": 3
     },
     {
         "nome": "Publicador Destaques",

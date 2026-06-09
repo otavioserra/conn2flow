@@ -10,6 +10,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Complete change history in `CONN2FLOW-CHANGELOG-HISTORY.md`
 - Industry-standard CHANGELOG.md following Keep a Changelog format
 
+## [2.8.0] - 2026-06-08
+
+### Added
+- **Complete Menus Module**: Menu management with hierarchical tree and visual drag-and-drop editor based on vanilla Pointer Events (no external DND dependencies). Supports Page, Custom Link (with target `_blank`/`_self`), Header, Link Action, and structured Separators (using the `item-separator` block).
+- **Menus Publisher Nodes**: New `publicador` item type that dynamically expands sub-items at runtime from publisher pages, supporting custom counts and order options.
+- **Image Galleries Module**: Visual curatorship module supporting batch file selection and Sortable.js DND reordering. Supports multiple layouts (Grid, Carousel, Masonry, Slider) and slide parameters (arrows, dot pagination, autoplay speed, and loop).
+- **Public Widgets Interactivity**: Public scripts (`menus.widget.js` and `galleries.widget.js`) supporting mobile hamburger menu, recursive submenu hover fallbacks, and slide carousel transitions to avoid styling failures in production.
+- **Tailwind CSS CLI Compilation**: Integrated compilation of core global styles via `npx @tailwindcss/cli` under `gestor/assets/tailwindcss/`. Compilation is triggered during local sync tasks and the release pipeline.
+- **Dynamic Core Configuration**: Support for the `tailwindcss/cli` configuration key in `environment.json` with automated template auditing and updating.
+- **AI Prompts & Variables Support**: Updated AI targets and prompt markdown files (`menus.md` and `galleries.md`) supporting global control variables rendered without item prefixes.
+- **Publisher Fields Automation**: Added "Add all fields" button to automatically instantiate all unlinked variables from the selected template, generating user-friendly labels.
+
+### Changed
+- **Release Pipeline**: Setup Node.js v20 and Tailwind CSS CLI compilation added to the GitHub Actions release workflow before packaging the distribution ZIP. Compiled CSS is added to the automated release commit.
+- **Core CSS Configuration**: Core stylesheet `input.css` linked to workspace config (`tailwind.config.js`) via `@config` directive to restrict class scanning to templates and system resources.
+- **Environment Template Auditing**: Verification of `environment.json` template keys against the active environment settings.
+
+### Fixed
+- **publisher-pages Module**: Resolved values loss bug in HTML fields (Quill editors) where empty hidden inputs caused omission of data on consecutive edits if left untouched.
+
 ## [2.7.6] - 2026-02-19
 
 ### Added

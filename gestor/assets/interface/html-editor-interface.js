@@ -1385,6 +1385,17 @@ $(document).ready(function () {
         }, 750);
     }
 
+    // Função para gerar o conteúdo da página de pré-visualização fora do editor HTML.
+    function previewExternalHtmlConteudo(params = {}) {
+        const htmlDoUsuario = params.htmlDoUsuario || '';
+        const cssDoUsuario = params.cssDoUsuario || '';
+        const framework = params.framework || 'fomantic-ui';
+
+        return previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, framework);
+    }
+
+    window.previewExternalHtmlConteudo = previewExternalHtmlConteudo; // Expor globalmente para ser usada na pré-visualização fora do editor HTML.
+
     // Função para gerar o conteúdo da página do pré-visualizador.
     function previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui') {
         // Incluir o CSS do usuário, se existir

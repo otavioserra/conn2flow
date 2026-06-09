@@ -41,36 +41,13 @@ For detailed technical information and development guides, see:
 
 ## Latest Release
 
-**v2.7.6 (February 19, 2026)**
+**v2.8.0 (June 8, 2026)**
 
 **🎯 New Features:**
-- **PayPal Integration**: Added PayPal integration settings and test functionality, enriched subscription-create error logs with gateway info.
-- **Forms Enhancements**: Added character limits by type (text, textarea, email) with client-side feedback (maxlength + counter) and server-side enforcement. Added email preview functionality.
-- **Docker Improvements**: Added optional profiles for FTP, memcached, and redis services. Changed restart policy to "no" for cloudflared and ftp services.
-- **FingerprintJS v4**: Robust fingerprinting system with multi-layer fallback
-- **Form UI Component**: New frontend component with localization support and improved IP handling
-- **System Update via API**: New `/_api/system/update` endpoint for remote system updates with OAuth authentication
-- **Contacts Module**: New contact pages module with success/error redirects
-
-**🔧 Technical Improvements:**
-- Framework-specific error components (Fomantic UI, Bootstrap, etc.)
-- Externalized AJAX messages and block wrappers to separate files
-- Error message positioning before submit button
-- Fix apostrophe display in form fields
-- Fix CodeMirror duplicate initialization in HTML editor
-- Fix `sincronizarTabela` module parameter key
-- OAuth-authenticate page translated to English
-- WebP thumbnails for session templates
-- PayPal library v2.0.0 documentation
-- GitHub Copilot agents documentation
-- Plugin architecture documentation (en + pt-br)
-
-**📦 What's New:**
-- Complete forms lifecycle: creation, listing, viewing, editing, cloning
-- Contact form with Fomantic UI and email notifications
-- Security layer with reCAPTCHA, fingerprinting, and submission blocking
-- Remote system update automation via API and bash script
-- Extensive documentation updates and README restructuring
+- **Complete Menus Module**: Menu management with hierarchical tree and visual drag-and-drop.
+- **Image Galleries Module**: Batch selection, Sortable.js DND reordering and public carousels.
+- **Tailwind CSS CLI Compilation**: Automatic core CSS compilation via `npx @tailwindcss/cli` locally and in CI.
+- **Publisher Fields Automation**: Batch insertion ("Add all fields") with automatic template variables mapping.
 
 For full changelog, see [CHANGELOG.md](CHANGELOG.md).
 

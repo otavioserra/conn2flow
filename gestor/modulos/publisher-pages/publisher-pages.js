@@ -82,6 +82,10 @@ $(document).ready(function () {
 				quill,
 				parent: $(obj).parents('.pfc-field-html')
 			};
+
+			// Inicializar o valor do input hidden para evitar perda de dados
+			const initialHtml = valorAtualizadoQuillEditor(quillEditors[quillEditorsCount].parent.data('id'));
+			quillEditors[quillEditorsCount].parent.find('input[type="hidden"]').val(initialHtml);
 		});
 
 		if (quillEditorsCount > 0) {

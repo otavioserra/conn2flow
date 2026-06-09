@@ -77,16 +77,19 @@ $(document).ready(function () {
                 if (subwrapper) {
                     $('#edit-template').removeClass('hidden');
                     $('#clone-template').removeClass('hidden');
+                    $('#add-all-fields-btn').removeClass('hidden');
                     $('.template-options-subwrapper').removeClass('hidden');
                 } else {
                     $('#edit-template').addClass('hidden');
                     $('#clone-template').addClass('hidden');
+                    $('#add-all-fields-btn').addClass('hidden');
                     $('.template-options-subwrapper').addClass('hidden');
                 }
             } else {
                 $('.template-options-wrapper').addClass('hidden');
                 $('#edit-template').addClass('hidden');
                 $('#clone-template').addClass('hidden');
+                $('#add-all-fields-btn').addClass('hidden');
                 $('.template-options-subwrapper').addClass('hidden');
             }
         }
@@ -312,6 +315,8 @@ $(document).ready(function () {
             if (template_field_id) {
                 rowClone.find('.field-id').val(template_field_id);
                 rowClone.find('.field-id-display').text(template_field_id).addClass('teal');
+                // Pré-preencher a busca do campo do modelo com a variável formatada
+                rowClone.find('.field-template').val('[[publisher#' + type + '#' + template_field_id + ']]');
             } else {
                 rowClone.find('.field-id-display').text(formatar_slug(name.length > 0 ? name : id));
             }
@@ -406,6 +411,9 @@ $(document).ready(function () {
                     var tm = initialTemplateMap.find(tm => tm.id === currentTemplateId);
                     if (tm) {
                         $(this).find('.prompt').val(tm.variable);
+                    } else {
+                        var fieldType = $(this).closest('.field-row').find('.field-type').dropdown('get value') || 'text';
+                        $(this).find('.prompt').val('[[publisher#' + fieldType + '#' + currentTemplateId + ']]');
                     }
                 }
             });
@@ -464,10 +472,35 @@ $(document).ready(function () {
             });
         }
 
+        // Helper: gera um rótulo amigável a partir de um id (ex: lista_signatarios -> Lista Signatarios)
+        function generateLabelFromId(id) {
+            if (!id) return '';
+            return id.replace(/_/g, ' ')
+                .replace(/\b\w/g, char => char.toUpperCase());
+        }
+
         // Add Button
         addFieldBtn.on('click', function (e) {
             e.preventDefault();
             addFieldRow();
+        });
+
+        // Add All Fields Button - instancia em lote os campos do modelo ainda não vinculados
+        $('#add-all-fields-btn').on('click', function (e) {
+            if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+
+            // Forçar recálculo para obter a lista mais recente de campos disponíveis
+            recalculateFieldSets();
+
+            var availableFields = (gestor.template.fieldSets.available || []).slice();
+            availableFields.forEach(function (f) {
+                addFieldRow({
+                    id: f.id,
+                    name: generateLabelFromId(f.id),
+                    type: f.type,
+                    template_field_id: f.id
+                });
+            });
         });
 
         // Remove Button

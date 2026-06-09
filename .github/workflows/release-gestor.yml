@@ -108,136 +108,22 @@ jobs:
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         make_latest: true
         body: |
-          ## 🚀 Conn2Flow Gestor Release v2.7.6 (Integração PayPal + Melhorias em Formulários + Melhorias no Docker)
+          ## 🚀 Conn2Flow Gestor Release v2.8.0 (Módulo de Menus Completo + Módulo de Galerias + Compilador Tailwind CSS CLI + Automação)
 
-          Esta versão traz a **integração com PayPal** com logs enriquecidos, **melhorias no sistema de formulários** com limites de caracteres e preview de email, e **melhorias no ambiente Docker** com perfis opcionais para serviços auxiliares, além de manter todas as funcionalidades anteriores como módulo de formulários, sistema dinâmico, reCAPTCHA, API de atualização, menu responsivo, Publisher, IA integrada, deploy OAuth e arquitetura multilíngue.
+          Esta versão traz o **Módulo de Menus Completo** com hierarquia arrastável estilo WordPress e suporte a publicadores, o **Módulo de Galerias de Imagens** com seleção em lote e controles de slider/carrossel dinâmicos, a **Integração do compilador do Tailwind CSS v4 via CLI** no core do sistema e no pipeline de release, o novo botão **Adicionar todos os campos** no gerenciador de schemas de publicadores, além da correção de bug de integridade de campos HTML.
 
           ### 🎯 Novidades Principais desta Versão:
-          - ✅ **Integração PayPal**: Adicionadas configurações de integração e funcionalidade de teste do PayPal, logs de erro de criação de assinatura enriquecidos com informações do gateway.
-          - ✅ **Melhorias em Formulários**: Adicionados limites de caracteres por tipo (text, textarea, email) com feedback no cliente (maxlength + contador) e validação no servidor. Adicionada funcionalidade de preview de email.
-          - ✅ **Melhorias no Docker**: Adicionados perfis opcionais para serviços FTP, memcached e redis. Alterada a política de reinício para "no" nos serviços cloudflared e ftp.
-          - ✅ **Módulo de Formulários Completo**: Gerenciamento de formulários com CRUD, suporte multilíngue (pt-br/en) e visualizador JSON via CodeMirror (mantido da v2.7.0)
-          - ✅ **Módulo de Submissões**: Processamento de submissões com segurança, logs, bloqueios e notificações por email (mantido da v2.7.0)
-          - ✅ **Sistema de Formulários Dinâmicos Refatorado**: Reescrita completa do `formulario.js` com componentes externalizados e localização (mantido da v2.7.0)
-          - ✅ **Google reCAPTCHA V2 + V3**: Suporte a V2 no admin-environment + carregamento dinâmico V3 (mantido da v2.7.0)
-          - ✅ **FingerprintJS v4**: Fingerprinting robusto com múltiplas camadas de fallback (mantido da v2.7.0)
-          - ✅ **Componente Form UI**: Novo componente frontend com detecção de framework e localização (mantido da v2.7.0)
-          - ✅ **Atualização do Sistema via API**: Endpoint `/_api/system/update` para atualizações remotas com OAuth 2.0 (mantido da v2.7.0)
-          - ✅ **Script de Atualização Automatizada**: Script bash com progresso, renovação de token e logging (mantido da v2.7.0)
-          - ✅ **Módulo de Contatos**: Páginas de contato com Fomantic UI e redirecionamentos (mantido da v2.7.0)
-          - ✅ **Componentes de Erro por Framework**: Fomantic UI, Bootstrap e outros (mantido da v2.7.0)
-          - ✅ **Menu Administrativo Responsivo**: Redesign completo com toggle e resize (mantido da v2.6.3)
-          - ✅ **Módulo Publisher Completo**: Publicação de conteúdo com editor Quill (mantido da v2.6.0)
-          - ✅ **Sistema Completo de Deploy via OAuth**: Deploy automatizado com OAuth 2.0 (mantido da v2.4.0)
-          - ✅ **Sistema de IA Integrado**: Geração de conteúdo via API Gemini (mantido da v2.4.0)
-          - ✅ **Sistema Multilíngue Completo**: Suporte pt-br/en (mantido da v2.4.0)
-          - ✅ **Sistema de Plugins V2**: Arquitetura refatorada (mantido da v2.4.0)
+          - ✅ **Módulo de Menus Completo**: Gerenciamento de menus com árvore hierárquica e editor visual drag-and-drop em Pointer Events vanilla (sem dependências externas). Suporta itens de Página, Link Personalizado (com target `_blank`/`_self`), Cabeçalhos, Ações de Link e Separadores estruturados (bloco `item-separator`).
+          - ✅ **Módulo de Menus - Nós de Publicadores**: Tipo de item `publicador` que expande sub-itens dinâmicos a partir de publicações em runtime, com suporte a limite de quantidade e ordenação.
+          - ✅ **Módulo de Galerias de Imagens**: Módulo de curadoria visual com seleção de arquivos em lote e ordenação Sortable.js. Suporta múltiplos layouts (Grid, Carousel, Masonry, Slider) e parâmetros de slide (setas, dot pagination, autoplay e loop).
+          - ✅ **Automação de Campos no Publicador**: Botão "Adicionar todos os campos" para instanciar automaticamente todas as variáveis não vinculadas de um modelo de template com geração de labels amigáveis.
+          - ✅ **Compilação do Tailwind CSS CLI**: Integração de compilação dos estilos globais do core via `npx @tailwindcss/cli` a partir da pasta `gestor/assets/tailwindcss/`. A compilação é acionada nas tarefas locais de sync e no pipeline de release.
 
-          ### 🔧 Melhorias Técnicas:
-          - ✅ **Logs do PayPal**: Enriquecidos com `gateway_client_id` e `paypal_mode` para diagnóstico mais rápido.
-          - ✅ **Validação de Formulários**: Validação no servidor usando `mb_strlen` e preservação do `#valor_full#` no banco de dados.
-          - ✅ **Componentização de Formulários**: Substituído texto inline por componente `#forms-info-definition#` com suporte a PT-BR e EN.
-          - ✅ **Posicionamento de Erros**: Mensagens antes do botão de submit clicado (mantido da v2.7.0)
-          - ✅ **Componentes Externalizados**: AJAX messages e block wrappers em arquivos separados (mantido da v2.7.0)
-          - ✅ **Correção de Apóstrofos**: Renderização correta em campos de formulário (mantido da v2.7.0)
-          - ✅ **Correção CodeMirror**: Removida duplicação de inicialização no editor HTML (mantido da v2.7.0)
-          - ✅ **Correção sincronizarTabela**: Chave de parâmetro 'module' → 'modulo' (mantido da v2.7.0)
-          - ✅ **Traduções**: Página oauth-authenticate traduzida para inglês (mantido da v2.7.0)
-          - ✅ **WebP Thumbnails**: Templates de sessão atualizados para WebP (mantido da v2.7.0)
-          - ✅ **Documentação Extensa**: Agentes Copilot, arquitetura de plugins, PayPal v2.0.0 (mantido da v2.7.0)
-
-          ### 📦 Conteúdo:
-          - Integração PayPal com logs enriquecidos
-          - Sistema de formulários com limites de caracteres e preview de email
-          - Ambiente Docker com perfis opcionais para serviços auxiliares
-          - Sistema gestor completo com módulo de formulários
-          - Sistema de submissões com segurança reCAPTCHA + FingerprintJS
-          - Sistema de formulários dinâmicos refatorado com localização
-          - API REST para atualização remota do sistema
-          - Script de atualização automatizada via API
-          - Módulo de contatos com formulários Fomantic UI
-          - Menu administrativo responsivo com suporte a tablets
-          - Dashboard otimizado para tablets com layout de 2 colunas
-          - Módulo Publisher com editor Quill integrado
-          - Funcionalidade de clonagem para páginas e templates
-          - Image picker integrado ao editor HTML visual
-          - Biblioteca `html-editor.php` com componentes reutilizáveis
-          - Scripts de deploy e atualização automatizados
-          - Biblioteca ia.php para operações de IA e OAuth
-          - Sistema de plugins V2 com templates automatizados
-          - Migrations para formulários, submissões e contatos
-          - Sistema de atualização automática consolidado
-          - Recursos organizados por idioma (pt-br base)
-          - Instalador multilíngue com seleção de idioma
-          - Dependências do Composer otimizadas
-          - Documentação técnica completa
-
-          ### 📋 Módulo de Formulários:
-          - **CRUD Completo**: Adicionar, listar, visualizar, editar e clonar formulários
-          - **Schema JSON**: Definição de campos via JSON com validação CodeMirror
-          - **Suporte Multilíngue**: Páginas e labels em pt-br e en
-          - **Fomantic UI Interface**: Interface moderna com cards e tabelas estilizadas
-          - **Submissões**: Processamento com validação, segurança e logging
-
-          ### 🔒 Segurança de Formulários:
-          - **reCAPTCHA V2**: Checkbox integration via admin-environment
-          - **reCAPTCHA V3**: Carregamento dinâmico com score-based validation
-          - **FingerprintJS v4**: Device fingerprinting com fallback robusto
-          - **Bloqueio de Submissões**: Rate limiting e detecção de spam
-          - **Logs de Segurança**: Registro detalhado de todas as submissões
-
-          ### 🔄 Atualização do Sistema via API:
-          - **Endpoint REST**: `/_api/system/update` com autenticação OAuth 2.0
-          - **Workflow Multi-Step**: start → deploy → db → finalize
-          - **Script Automatizado**: `update-system.sh` com barra de progresso
-          - **Modos de Atualização**: full, only-files, only-db
-          - **Dry-Run**: Simulação sem aplicar mudanças
-          - **Renovação Automática de Token**: Tratamento de 401 com retry
-
-          ### 📱 Menu Administrativo Responsivo:
-          - **Botão Toggle Flutuante**: Aparece quando menu está fechado
-          - **Menu Redimensionável**: Arraste o handle para ajustar largura (200-450px)
-          - **Sidebar Overlay em Mobile/Tablet**: Comportamento unificado até 1024px
-          - **Atalho de Teclado**: Ctrl/Cmd+B para toggle do menu
-          - **Persistência de Estado**: Largura e estado salvos em localStorage
-
-          ### 📰 Módulo Publisher:
-          - **CRUD Completo**: Gerenciamento de publishers (definições) e páginas
-          - **Editor Quill WYSIWYG**: Edição rica com formatação avançada
-          - **Sistema de Campos Dinâmicos**: Campos configuráveis por template
-          - **Templates Abstratos**: Templates prontos (ex: notícias) gerados por IA
-          - **Clonagem de Páginas**: Duplicação rápida de conteúdo existente
-
-          ### 🚀 Sistema de Deploy de Projetos:
-          - **API OAuth 2.0**: Autenticação obrigatória com renovação automática
-          - **Deploy One-Click**: Atualização → compressão → upload → processamento
-          - **Validação Robusta**: ZIP seguro com detecção de estrutura
-          - **Execução Inline**: Banco atualizado sem shell_exec
-
-          ### 🤖 Sistema de IA:
-          - **Integração Gemini API**: Comunicação com IA do Google
-          - **Sistema Dual de Prompts**: Modos técnicos + necessidades do usuário
-          - **Interface Avançada**: CodeMirror com inserção posicional
-          - **Modelos Atualizados**: Versões recentes do Gemini
-
-          ### 🌐 Sistema Multilíngue:
-          - **Interface Administrativa**: Seletor de idioma no admin-environment
-          - **Detecção de Browser**: Prioridade para idioma do navegador
-          - **Instalação Bilíngue**: Seleção de idioma durante setup
-
-          ### 🔧 Como usar:
-          1. Use o [Conn2Flow Installer v1.5.0+](https://github.com/otavioserra/conn2flow/releases)
-          2. Para instalação manual, use `gestor-instalador/index.php`
-          3. Selecione o idioma desejado (pt-br/en)
-          4. Configure reCAPTCHA no admin-environment
-          5. Crie formulários via módulo de formulários
-          6. Configure atualização remota via API
-
-          ### 📋 Requisitos:
-          - PHP 8.1+
-          - MySQL 5.7+ ou MariaDB 10.2+
-          - Extensões: zip, curl, mbstring, openssl, pdo_mysql
-          - Git (para desenvolvimento de plugins e deploy)
+          ### 🔧 Melhorias e Correções Técnicas:
+          - ✅ **Correção de Perda de Dados em Campos HTML**: Resolvido bug no qual valores de editores HTML (Quill) eram omitidos no submit em edições consecutivas sem modificação direta.
+          - ✅ **Integração `@config` no CSS**: Arquivo de entrada `input.css` do core integrado à configuração do workspace (`tailwind.config.js`) para limitar a varredura e compilação de classes a apenas templates e recursos úteis.
+          - ✅ **Node.js v20 no Pipeline**: Setup do Node.js v20 integrado no pipeline de release do GitHub Actions (`release-gestor.yml`) para compilar assets dinamicamente na nuvem e incluí-los na release.
+          - ✅ **Auditoria de Configurações**: Verificação estrutural do arquivo de template do `environment.json` contra o arquivo ativo de desenvolvimento.
         draft: false
         prerelease: false
         files: |

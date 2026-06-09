@@ -39,36 +39,13 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 
 ## Última Versão
 
-**v2.7.6 (19 Fevereiro 2026)**
+**v2.8.0 (8 Junho 2026)**
 
 **🎯 Novas Funcionalidades:**
-- **Integração PayPal**: Adicionadas configurações de integração e funcionalidade de teste do PayPal, logs de erro de criação de assinatura enriquecidos com informações do gateway.
-- **Melhorias em Formulários**: Adicionados limites de caracteres por tipo (text, textarea, email) com feedback no cliente (maxlength + contador) e validação no servidor. Adicionada funcionalidade de preview de email.
-- **Melhorias no Docker**: Adicionados perfis opcionais para serviços FTP, memcached e redis. Alterada a política de reinício para "no" nos serviços cloudflared e ftp.
-- **FingerprintJS v4**: Sistema robusto de fingerprinting com múltiplas camadas de fallback
-- **Componente Form UI**: Novo componente frontend com suporte a localização e tratamento aprimorado de IP
-- **Atualização do Sistema via API**: Novo endpoint `/_api/system/update` para atualizações remotas com autenticação OAuth
-- **Módulo de Contatos**: Novas páginas de contato com redirecionamentos de sucesso/erro
-
-**🔧 Melhorias Técnicas:**
-- Componentes de erro específicos por framework (Fomantic UI, Bootstrap, etc.)
-- Mensagens AJAX e block wrappers externalizados para arquivos separados
-- Posicionamento de mensagens de erro antes do botão de submit
-- Correção da exibição de apóstrofos em campos de formulário
-- Correção de duplicação do CodeMirror no editor HTML
-- Correção da chave do parâmetro 'module' na `sincronizarTabela`
-- Tradução da página oauth-authenticate para inglês
-- Thumbnails WebP para templates de sessão
-- Documentação da biblioteca PayPal v2.0.0
-- Documentação de Agentes GitHub Copilot
-- Documentação da arquitetura de plugins (en + pt-br)
-
-**📦 O Que Há de Novo:**
-- Ciclo completo de formulários: criação, listagem, visualização, edição, clonagem
-- Formulário de contato com Fomantic UI e notificações por email
-- Camada de segurança com reCAPTCHA, fingerprinting e bloqueio de submissões
-- Automação de atualização remota do sistema via API e script bash
-- Atualizações extensivas de documentação e reestruturação dos READMEs
+- **Módulo de Menus Completo**: Gerenciamento de menus com árvore hierárquica e editor visual drag-and-drop.
+- **Módulo de Galerias de Imagens**: Curadoria visual, seleção em lote, ordenação Sortable.js e carrosséis públicos.
+- **Compilação Tailwind CSS CLI**: Build automático do CSS do Core via `npx @tailwindcss/cli` integrado localmente e no CI.
+- **Automação de Campos do Publicador**: Inserção em lote ("Adicionar todos os campos") com mapeamento automático ao modelo.
 
 Para o changelog completo, consulte [CHANGELOG-PT-BR.md](CHANGELOG-PT-BR.md).
 
