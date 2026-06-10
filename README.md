@@ -41,12 +41,13 @@ For detailed technical information and development guides, see:
 
 ## Latest Release
 
-**v2.8.0 (June 8, 2026)**
+**v2.8.0 (June 10, 2026)**
 
 **🎯 New Features:**
-- **Complete Menus Module**: Menu management with hierarchical tree and visual drag-and-drop.
-- **Image Galleries Module**: Batch selection, Sortable.js DND reordering and public carousels.
-- **Tailwind CSS CLI Compilation**: Automatic core CSS compilation via `npx @tailwindcss/cli` locally and in CI.
+- **Complete Menus Module**: Menu management with hierarchical tree and visual drag-and-drop editor (WordPress-style, vanilla Pointer Events).
+- **Image Galleries Module**: Batch selection, Sortable.js DND reordering, public carousels and per-image links (AJAX page autocomplete).
+- **"Widget Code" Tab**: Read-only CodeMirror in the highlights/menus/galleries editor showing the `<!-- widgets#... -->` wrapper ready to paste into layouts.
+- **Tailwind CSS CLI v4 Compilation**: Automatic core CSS compilation via `npx @tailwindcss/cli` locally and in CI.
 - **Publisher Fields Automation**: Batch insertion ("Add all fields") with automatic template variables mapping.
 
 For full changelog, see [CHANGELOG.md](CHANGELOG.md).

@@ -39,12 +39,13 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 
 ## Última Versão
 
-**v2.8.0 (8 Junho 2026)**
+**v2.8.0 (10 Junho 2026)**
 
 **🎯 Novas Funcionalidades:**
-- **Módulo de Menus Completo**: Gerenciamento de menus com árvore hierárquica e editor visual drag-and-drop.
-- **Módulo de Galerias de Imagens**: Curadoria visual, seleção em lote, ordenação Sortable.js e carrosséis públicos.
-- **Compilação Tailwind CSS CLI**: Build automático do CSS do Core via `npx @tailwindcss/cli` integrado localmente e no CI.
+- **Módulo de Menus Completo**: Gerenciamento de menus com árvore hierárquica e editor visual drag-and-drop (estilo WordPress, em Pointer Events vanilla).
+- **Módulo de Galerias de Imagens**: Curadoria visual, seleção em lote, ordenação Sortable.js, carrosséis públicos e links individuais por imagem (autocomplete AJAX de páginas).
+- **Aba "Código do Widget"**: CodeMirror somente leitura no editor de destaques/menus/galerias exibindo o envelopamento `<!-- widgets#... -->` pronto para colar nos layouts.
+- **Compilação Tailwind CSS CLI v4**: Build automático do CSS do Core via `npx @tailwindcss/cli` integrado localmente e no CI.
 - **Automação de Campos do Publicador**: Inserção em lote ("Adicionar todos os campos") com mapeamento automático ao modelo.
 
 Para o changelog completo, consulte [CHANGELOG-PT-BR.md](CHANGELOG-PT-BR.md).

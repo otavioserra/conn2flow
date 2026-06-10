@@ -42,11 +42,11 @@
                     "id": "galleries-grid",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "d0e1ffbf443e3869b0c7c0d0fd719775",
+                        "html": "22a6aca8a5d369151d0dd9a32ce9ae1b",
                         "css": "",
-                        "combined": "d0e1ffbf443e3869b0c7c0d0fd719775"
+                        "combined": "22a6aca8a5d369151d0dd9a32ce9ae1b"
                     }
                 },
                 {
@@ -54,11 +54,11 @@
                     "id": "galleries-carousel",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "fb9b0bc296f4a59c7a70b5ec486d5b3e",
+                        "html": "1bdf1ebbe0d305f26503c950d684cbf6",
                         "css": "",
-                        "combined": "fb9b0bc296f4a59c7a70b5ec486d5b3e"
+                        "combined": "1bdf1ebbe0d305f26503c950d684cbf6"
                     }
                 },
                 {
@@ -66,11 +66,11 @@
                     "id": "galleries-masonry",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "39d7d383a0e5d8b60d5ba1e1d77aa38a",
+                        "html": "b8d181755e48bb30081e407aa22f78e1",
                         "css": "",
-                        "combined": "39d7d383a0e5d8b60d5ba1e1d77aa38a"
+                        "combined": "b8d181755e48bb30081e407aa22f78e1"
                     }
                 },
                 {
@@ -78,11 +78,11 @@
                     "id": "galleries-slider",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "553cca3abcf19fda0f4ea2a512065b97",
+                        "html": "6498e8a89b179b47d5f65b3d672ed210",
                         "css": "",
-                        "combined": "553cca3abcf19fda0f4ea2a512065b97"
+                        "combined": "6498e8a89b179b47d5f65b3d672ed210"
                     }
                 }
             ],
@@ -109,11 +109,11 @@
                     "path": "galleries\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "0821170411186e77d500b49b156df036",
+                        "html": "70321bf8a7b61ebe89b4607f8622495a",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "3945cc34ff50a9005ad0492127e43fec"
+                        "combined": "b224abb90063cc8e28e1cae100cde657"
                     }
                 },
                 {
@@ -123,11 +123,11 @@
                     "path": "galleries\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "9d1cc73fb113088bafb017ba548c134e",
+                        "html": "4f77a3685647ac6f87f72445a21b50d7",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "40ae4918c2e9b2096249e0d57663e2d7"
+                        "combined": "f6246aecb3f1b19b090bd213074226fe"
                     }
                 },
                 {
@@ -137,11 +137,11 @@
                     "path": "galleries\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "f86817e8e7deb9ec16da14b55443326c",
+                        "html": "b642bcd6186201e5f8282099563cb4bc",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "883f1dfc4bb9fcd65b4dc62ddf7809d0"
+                        "combined": "de0389f7c0c217b39197e770c054590c"
                     }
                 }
             ],
@@ -188,11 +188,11 @@
                     "id": "galleries-grid",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "323eeba7734b0470a097afbce5fb9a63",
+                        "html": "e0a0e2e608938e87a9aa47b22db8c15e",
                         "css": "",
-                        "combined": "323eeba7734b0470a097afbce5fb9a63"
+                        "combined": "e0a0e2e608938e87a9aa47b22db8c15e"
                     }
                 },
                 {
@@ -200,11 +200,11 @@
                     "id": "galleries-carousel",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "21d6aa5e3d42feb1967dd3352ffad7f5",
+                        "html": "06b03fa71e175c1af0e39f54788599cf",
                         "css": "",
-                        "combined": "21d6aa5e3d42feb1967dd3352ffad7f5"
+                        "combined": "06b03fa71e175c1af0e39f54788599cf"
                     }
                 },
                 {
@@ -212,11 +212,11 @@
                     "id": "galleries-masonry",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "c292bd39bed29bb253fefa390bfec35c",
+                        "html": "4b077ec345b85b01500f89b90ebf4f35",
                         "css": "",
-                        "combined": "c292bd39bed29bb253fefa390bfec35c"
+                        "combined": "4b077ec345b85b01500f89b90ebf4f35"
                     }
                 },
                 {
@@ -224,11 +224,11 @@
                     "id": "galleries-slider",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "cfd9fc183b9195287309c5cab8859025",
+                        "html": "346427d78fe23430a11e9b5ba992fd4e",
                         "css": "",
-                        "combined": "cfd9fc183b9195287309c5cab8859025"
+                        "combined": "346427d78fe23430a11e9b5ba992fd4e"
                     }
                 }
             ],
@@ -255,11 +255,11 @@
                     "path": "galleries\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "0fc325f212364d641605bc6e8ed5a5ad",
+                        "html": "1c3ab4e6ac2564aa5b78397c8f609f43",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "218bc02a7790f766b8ebcc4c18401095"
+                        "combined": "184cbab135a54971e8115f62f4fbf44d"
                     }
                 },
                 {
@@ -269,11 +269,11 @@
                     "path": "galleries\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "2a8c176440bb19169e129614c9875f54",
+                        "html": "ac545e19f8725dd15c3aed7ac281f8ac",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "844c52b88695d8c4d20270ec7a934ecf"
+                        "combined": "4658be36699bfe2545c86789bd7eb571"
                     }
                 },
                 {
@@ -283,11 +283,11 @@
                     "path": "galleries\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "a2b121dcac56f81856bea7ff00aeb6ce",
+                        "html": "4598e5f8a23eb90466f1e6fd6e4e8785",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "bd11c0843258dc7fe299aacc78259d1e"
+                        "combined": "2a38590faadc9c1706b68faad3e4cc2e"
                     }
                 }
             ],

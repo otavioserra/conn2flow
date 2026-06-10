@@ -10,12 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Complete change history in `CONN2FLOW-CHANGELOG-HISTORY.md`
 - Industry-standard CHANGELOG.md following Keep a Changelog format
 
-## [2.8.0] - 2026-06-08
+## [2.8.0] - 2026-06-10
 
 ### Added
 - **Complete Menus Module**: Menu management with hierarchical tree and visual drag-and-drop editor based on vanilla Pointer Events (no external DND dependencies). Supports Page, Custom Link (with target `_blank`/`_self`), Header, Link Action, and structured Separators (using the `item-separator` block).
 - **Menus Publisher Nodes**: New `publicador` item type that dynamically expands sub-items at runtime from publisher pages, supporting custom counts and order options.
 - **Image Galleries Module**: Visual curatorship module supporting batch file selection and Sortable.js DND reordering. Supports multiple layouts (Grid, Carousel, Masonry, Slider) and slide parameters (arrows, dot pagination, autoplay speed, and loop).
+- **Galleries - Per-Image Links**: Each curated image can have its own link — Page (via AJAX autocomplete search with a Page/System/Both type filter), Custom Link, Link with CSS Class, or a publisher's Latest Publication — with canonical URLs resolved in the public widget.
+- **Galleries - Height & Side Margin Controls**: New global container height and side margin controls, applied dynamically to the gallery templates.
+- **"Widget Code" Editor Tab**: Dedicated read-only CodeMirror tab showing the `<!-- widgets#... -->` wrapper ready to paste into layouts (highlights, menus, and galleries).
 - **Public Widgets Interactivity**: Public scripts (`menus.widget.js` and `galleries.widget.js`) supporting mobile hamburger menu, recursive submenu hover fallbacks, and slide carousel transitions to avoid styling failures in production.
 - **Tailwind CSS CLI Compilation**: Integrated compilation of core global styles via `npx @tailwindcss/cli` under `gestor/assets/tailwindcss/`. Compilation is triggered during local sync tasks and the release pipeline.
 - **Dynamic Core Configuration**: Support for the `tailwindcss/cli` configuration key in `environment.json` with automated template auditing and updating.
@@ -26,9 +29,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - **Release Pipeline**: Setup Node.js v20 and Tailwind CSS CLI compilation added to the GitHub Actions release workflow before packaging the distribution ZIP. Compiled CSS is added to the automated release commit.
 - **Core CSS Configuration**: Core stylesheet `input.css` linked to workspace config (`tailwind.config.js`) via `@config` directive to restrict class scanning to templates and system resources.
 - **Environment Template Auditing**: Verification of `environment.json` template keys against the active environment settings.
+- **Inline CSS Optimization**: The CSS compiled on the fly by the Tailwind CDN in the editor now filters out redundant rules already present in the system's global CSS before saving to the database, shrinking the compiled inline CSS.
+- **Unified HTML Previewer**: External HTML preview (iframe) generation unified in the `previewExternalHtmlConteudo` helper, shared by the highlights, menus, and galleries modules.
+- **Galleries Curation - Page Search**: The static page selector is replaced by an AJAX autocomplete search with a type filter (Page/System/Both), isolated per curated image.
+- **Galleries Curation Thumbnails**: Curated image thumbnails enlarged from 64×48 to 200×140 px for better visibility.
 
 ### Fixed
 - **publisher-pages Module**: Resolved values loss bug in HTML fields (Quill editors) where empty hidden inputs caused omission of data on consecutive edits if left untouched.
+- **Galleries - Linkless Images**: Images without a configured link no longer show the pointer cursor or capture clicks in the widget/preview (`pointer-events-none cursor-default` class).
+- **Horizontal Menu - Submenus**: Fixed the inner padding of recursive submenus and the alignment of the submenu arrow indicator, which now stays on the same line as the label.
 
 ## [2.7.6] - 2026-02-19
 

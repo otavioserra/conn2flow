@@ -1,11 +1,13 @@
-<section class="conn2flow-gallery font-sans p-6" data-id="1" data-title="gallery-carousel" data-autoplay="@[[autoplay]]@" data-speed="@[[autoplay_speed]]@" data-loop="@[[loop]]@">
+<section class="conn2flow-gallery font-sans p-6" data-id="1" data-title="gallery-carousel" data-autoplay="@[[autoplay]]@" data-speed="@[[autoplay_speed]]@" data-loop="@[[loop]]@" style="margin-left: @[[margin_lateral]]@px; margin-right: @[[margin_lateral]]@px;">
     <style>.conn2flow-gallery .gallery-dot-active{background-color:#2563eb;}</style>
     <div class="relative">
         <div class="gallery-slides-wrapper flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 scroll-smooth">
             <!-- item < -->
             <figure class="gallery-slide snap-center shrink-0 w-80">
-                <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@"
-                    class="w-80 h-56 object-cover rounded-lg shadow">
+                <a href="@[[item#link-url]]@" target="@[[item#link-target]]@" class="block @[[item#link-css-classes]]@">
+                    <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@"
+                        class="w-80 object-cover rounded-lg shadow" style="height: @[[height]]@px;">
+                </a>
                 <figcaption class="mt-2 text-sm text-gray-600 text-center">@[[item#legenda]]@</figcaption>
             </figure>
             <!-- item > -->

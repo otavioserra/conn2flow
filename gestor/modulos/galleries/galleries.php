@@ -53,12 +53,19 @@ function galleries_variaveis_template(){
 		Array('id' => 'caminho'),
 		Array('id' => 'nome'),
 		Array('id' => 'legenda'),
+		// req-024 / DEC-037: link individual por imagem (resolvido dentro do bloco `item`).
+		Array('id' => 'link-url'),
+		Array('id' => 'link-target'),
+		Array('id' => 'link-css-classes'),
 		// req-019 / DEC-031: variáveis GLOBAIS de controle (placeholder [[var]] sem o prefixo item#).
 		Array('id' => 'show_arrows', 'global' => true),
 		Array('id' => 'show_dots', 'global' => true),
 		Array('id' => 'autoplay', 'global' => true),
 		Array('id' => 'autoplay_speed', 'global' => true),
 		Array('id' => 'loop', 'global' => true),
+		// req-024 / DEC-037: controles globais de exibição (altura do container e margem lateral).
+		Array('id' => 'height', 'global' => true),
+		Array('id' => 'margin_lateral', 'global' => true),
 	);
 }
 
@@ -87,6 +94,56 @@ function galleries_imagepick_setup(){
 	);
 
 	$_GESTOR['pagina'] .= '<script>var galleries_imagepick = '.json_encode($imagepick).';</script>';
+}
+
+/**
+ * req-024 / DEC-037: expõe ao frontend as listas globais usadas pelos dropdowns de "Configurar
+ * Link" de cada imagem da galeria:
+ *  - `galleries_pages`      : páginas ativas do site no idioma corrente ({id: slug, name: nome}).
+ *  - `galleries_publishers` : publicadores ativos no idioma corrente ({id, name}).
+ *
+ * As páginas vêm da tabela `paginas` (slug em `id`, rótulo em `nome`); os publicadores da tabela
+ * `publisher` (mesma fonte usada por menus_publisher_options).
+ */
+function galleries_link_listas_setup(){
+	global $_GESTOR;
+
+	$publishers = Array();
+	$publishers_rows = banco_select_name
+	(
+		banco_campos_virgulas(Array('name','id'))
+		,
+		'publisher',
+		"WHERE status='A'"
+		.' AND language="'.$_GESTOR['linguagem-codigo'].'"'
+		." ORDER BY name ASC"
+	);
+	if(is_array($publishers_rows)){
+		foreach($publishers_rows as $row){
+			$publishers[] = Array('id' => $row['id'], 'name' => $row['name']);
+		}
+	}
+
+	$pages = Array();
+	$pages_rows = banco_select_name
+	(
+		banco_campos_virgulas(Array('nome','id'))
+		,
+		'paginas',
+		"WHERE status='A'"
+		.' AND language="'.$_GESTOR['linguagem-codigo'].'"'
+		." ORDER BY nome ASC"
+	);
+	if(is_array($pages_rows)){
+		foreach($pages_rows as $row){
+			$pages[] = Array('id' => $row['id'], 'name' => $row['nome']);
+		}
+	}
+
+	$_GESTOR['pagina'] .= '<script>'
+		.'var galleries_publishers = '.json_encode($publishers).';'
+		.'var galleries_pages = '.json_encode($pages).';'
+		.'</script>';
 }
 
 // ===== Funções Principais
@@ -179,6 +236,10 @@ function galleries_adicionar(){
 	// ===== ImagePick (modal do gerenciador de arquivos para seleção em lote)
 
 	galleries_imagepick_setup();
+
+	// ===== req-024: listas globais (páginas + publicadores) para os dropdowns de link das imagens
+
+	galleries_link_listas_setup();
 
 	// ===== Schema inicial vazio para o JS reidratar UI
 
@@ -444,6 +505,9 @@ function galleries_editar(){
 		// ===== ImagePick (modal do gerenciador de arquivos para seleção em lote)
 		galleries_imagepick_setup();
 
+		// ===== req-024: listas globais (páginas + publicadores) para os dropdowns de link das imagens
+		galleries_link_listas_setup();
+
 		// ===== HTML Editor (alvo galleries) — edição do template HTML/CSS no banco.
 
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente(Array(
@@ -651,6 +715,9 @@ function galleries_clonar(){
 
 		// ===== ImagePick (modal do gerenciador de arquivos para seleção em lote)
 		galleries_imagepick_setup();
+
+		// ===== req-024: listas globais (páginas + publicadores) para os dropdowns de link das imagens
+		galleries_link_listas_setup();
 
 		// HTML/CSS de origem precisam viajar no submit (campos ocultos no formulário de clonar)
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#html-original#',htmlspecialchars($html, ENT_QUOTES));
@@ -891,6 +958,116 @@ function galleries_ajax_widget_preview(){
 	);
 }
 
+/**
+ * req-025 / DEC-038: busca páginas ativas do site (no idioma corrente), opcionalmente filtradas
+ * por um termo de busca (`q`), para o autocomplete de link tipo "Página" de cada imagem curada.
+ *
+ * Clonado de `menus_ajax_pages_search`: galerias são livres de publicadores e varrem diretamente
+ * a tabela `paginas`. O parâmetro `tipo` filtra `paginas.tipo`:
+ *  - 'pagina'  -> apenas páginas de conteúdo padrão (AND p.tipo='pagina')
+ *  - 'sistema' -> apenas páginas de rotinas do sistema (AND p.tipo='sistema')
+ *  - 'ambos'   -> qualquer tipo (sem filtro de tipo)
+ * Quando omitido, aplica 'pagina' por padrão.
+ *
+ * Retorna `{ status, results: [{ value: slug, name: nome, url: caminho }, ...] }`.
+ */
+function galleries_ajax_pages_search(){
+	global $_GESTOR;
+
+	$q = trim((string)($_REQUEST['params']['q'] ?? ($_REQUEST['q'] ?? '')));
+	$tipo = trim((string)($_REQUEST['params']['tipo'] ?? ($_REQUEST['tipo'] ?? 'pagina')));
+
+	$where = "WHERE p.status='A'"
+		." AND p.language='".$_GESTOR['linguagem-codigo']."'";
+
+	if($tipo === 'pagina' || $tipo === 'sistema'){
+		$where .= " AND p.tipo='".banco_escape_field($tipo)."'";
+	}
+
+	if($q !== ''){
+		$q_escaped = banco_escape_field($q);
+		$where .= " AND (p.nome LIKE '%".$q_escaped."%' OR p.id LIKE '%".$q_escaped."%')";
+	}
+
+	$extra = $where." ORDER BY p.nome ASC LIMIT 50";
+
+	$rows = banco_select(Array(
+		'tabela' => 'paginas AS p',
+		'campos' => Array('p.id', 'p.nome', 'p.caminho'),
+		'extra' => $extra,
+	));
+
+	$results = [];
+	if(is_array($rows)){
+		foreach($rows as $row){
+			$results[] = [
+				'value' => $row['p.id'] ?? '',
+				'name' => $row['p.nome'] ?? ($row['p.id'] ?? ''),
+				'url' => isset($row['p.caminho']) && $row['p.caminho'] ? $_GESTOR['url-raiz'].$row['p.caminho'] : '',
+			];
+		}
+	}
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'success' => true,
+		'results' => $results,
+	);
+}
+
+/**
+ * req-025 / DEC-038: dado um array de slugs (`params.ids`), retorna os nomes/URLs correspondentes
+ * para hidratar o input de busca do link tipo "Página" ao abrir Edição/Clonagem quando o nome não
+ * está disponível na lista global `galleries_pages`. Clonado de `menus_ajax_pages_fetch`.
+ */
+function galleries_ajax_pages_fetch(){
+	global $_GESTOR;
+
+	$ids = $_REQUEST['params']['ids'] ?? ($_REQUEST['ids'] ?? []);
+
+	if(!is_array($ids)) $ids = [];
+
+	$ids = array_values(array_filter(array_map('strval', $ids), function($s){ return $s !== ''; }));
+
+	if(empty($ids)){
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'Ok',
+			'results' => [],
+		);
+		return;
+	}
+
+	$ids_escaped = array_map(function($id){
+		return "'".banco_escape_field($id)."'";
+	}, $ids);
+	$ids_in = implode(',', $ids_escaped);
+
+	$rows = banco_select(Array(
+		'tabela' => 'paginas AS p',
+		'campos' => Array('p.id', 'p.nome', 'p.caminho'),
+		'extra' =>
+			"WHERE p.status='A'"
+			." AND p.language='".$_GESTOR['linguagem-codigo']."'"
+			." AND p.id IN (".$ids_in.")",
+	));
+
+	$results = [];
+	if(is_array($rows)){
+		foreach($rows as $row){
+			$results[] = [
+				'value' => $row['p.id'] ?? '',
+				'name' => $row['p.nome'] ?? ($row['p.id'] ?? ''),
+				'url' => isset($row['p.caminho']) && $row['p.caminho'] ? $_GESTOR['url-raiz'].$row['p.caminho'] : '',
+			];
+		}
+	}
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'results' => $results,
+	);
+}
+
 // ==== Start
 
 function galleries_start(){
@@ -904,6 +1081,8 @@ function galleries_start(){
 		switch($_GESTOR['ajax-opcao']){
 			case 'template-load': galleries_ajax_template_load(); break;
 			case 'widget-preview': galleries_ajax_widget_preview(); break;
+			case 'pages-search': galleries_ajax_pages_search(); break;
+			case 'pages-fetch': galleries_ajax_pages_fetch(); break;
 		}
 
 		interface_ajax_finalizar();

@@ -148,10 +148,22 @@ function galleries_widget_render_inline($params){
 
 	// ===== Renderizar cada imagem no bloco `item`.
 
+	// req-024 / DEC-037: resolver os links das imagens. As páginas são resolvidas em lote
+	// (slug -> URL canônica); os publicadores são resolvidos sob demanda (publicação mais
+	// recente) com cache por publisher_id+ordenação para evitar queries repetidas.
+	$page_ids = [];
+	foreach($selected_items as $item){
+		if(is_array($item) && (($item['link_type'] ?? '') === 'pagina') && !empty($item['link_page_id'])){
+			$page_ids[(string)$item['link_page_id']] = true;
+		}
+	}
+	$paginasMap = galleries_widget_carregar_paginas(array_keys($page_ids));
+	$publicadorCache = [];
+
 	$itensRendered = '';
 	foreach($selected_items as $item){
 		if(!is_array($item)) continue;
-		$vars = galleries_widget_resolver_item_vars($item);
+		$vars = galleries_widget_resolver_item_vars($item, $paginasMap, $publicadorCache);
 		$itensRendered .= galleries_widget_aplicar_vars($templates['item'], $vars);
 	}
 
@@ -169,16 +181,22 @@ function galleries_widget_render_inline($params){
 /**
  * Resolve as variáveis renderizáveis de uma imagem.
  *
- * - `img-src` : URL pública para a tag <img src>. req-019 / DEC-029: prioriza o `caminho`
- *               (arquivo original) sobre o `imgSrc` (thumbnail do painel). Prefixa a url-raiz
- *               quando relativo.
- * - `caminho` : caminho relativo do arquivo original.
- * - `nome`    : nome original do arquivo.
- * - `legenda` : legenda personalizada.
+ * - `img-src`          : URL pública para a tag <img src>. req-019 / DEC-029: prioriza o `caminho`
+ *                        (arquivo original) sobre o `imgSrc` (thumbnail do painel). Prefixa a
+ *                        url-raiz quando relativo.
+ * - `caminho`          : caminho relativo do arquivo original.
+ * - `nome`             : nome original do arquivo.
+ * - `legenda`          : legenda personalizada.
+ * - `link-url`         : req-024 / DEC-037. URL do link da imagem (ou `javascript:void(0);`).
+ * - `link-target`      : alvo do link (`_self`/`_blank`).
+ * - `link-css-classes` : classes CSS extras aplicadas à âncora.
  *
- * @return array ['img-src' => ..., 'caminho' => ..., 'nome' => ..., 'legenda' => ...]
+ * @param array $item            Item curado (imagem + metadados de link).
+ * @param array $paginasMap      Mapa slug => ['url' => ...] das páginas resolvidas em lote.
+ * @param array $publicadorCache Cache (por referência) das publicações mais recentes resolvidas.
+ * @return array
  */
-function galleries_widget_resolver_item_vars($item){
+function galleries_widget_resolver_item_vars($item, $paginasMap = [], &$publicadorCache = []){
 	global $_GESTOR;
 
 	$caminho = isset($item['caminho']) ? (string)$item['caminho'] : '';
@@ -192,12 +210,161 @@ function galleries_widget_resolver_item_vars($item){
 		$src = $_GESTOR['url-raiz'].ltrim($src, '/');
 	}
 
+	// req-024 / DEC-037: link individual da imagem.
+	$link = galleries_widget_resolver_link($item, $paginasMap, $publicadorCache);
+
 	return [
-		'img-src' => $src,
-		'caminho' => $caminho,
-		'nome'    => $nome,
-		'legenda' => $legenda,
+		'img-src'          => $src,
+		'caminho'          => $caminho,
+		'nome'             => $nome,
+		'legenda'          => $legenda,
+		'link-url'         => $link['url'],
+		'link-target'      => $link['target'],
+		'link-css-classes' => $link['css_classes'],
 	];
+}
+
+/**
+ * req-024 / DEC-037: resolve o link de uma imagem da galeria conforme o `link_type`:
+ *
+ * - `nenhum` (e desconhecidos) : `javascript:void(0);` (imagem não clicável).
+ * - `pagina`                   : URL canônica da página (`link_page_id`) vinda do mapa em lote.
+ * - `link-custom`              : URL manual do schema (`link_url`).
+ * - `link-css-classes`         : URL manual do schema + classe CSS própria (`link_css_classes`).
+ * - `publicador`               : URL da publicação mais recente do publicador (`link_publisher_id`)
+ *                                segundo `link_order_by`.
+ *
+ * @return array ['url' => ..., 'target' => '_self'|'_blank', 'css_classes' => ...]
+ */
+function galleries_widget_resolver_link($item, $paginasMap, &$publicadorCache){
+	$type   = isset($item['link_type']) ? (string)$item['link_type'] : 'nenhum';
+	$target = isset($item['link_target']) ? (string)$item['link_target'] : '_self';
+	$css    = isset($item['link_css_classes']) ? (string)$item['link_css_classes'] : '';
+	$url    = 'javascript:void(0);';
+
+	switch($type){
+		case 'pagina':
+			$pid = isset($item['link_page_id']) ? (string)$item['link_page_id'] : '';
+			if($pid !== '' && isset($paginasMap[$pid]) && $paginasMap[$pid]['url'] !== ''){
+				$url = $paginasMap[$pid]['url'];
+			}
+			break;
+
+		case 'link-custom':
+		case 'link-css-classes':
+		case 'link-action':
+			$manual = isset($item['link_url']) ? trim((string)$item['link_url']) : '';
+			if($manual !== '') $url = $manual;
+			break;
+
+		case 'publicador':
+			$pubId   = isset($item['link_publisher_id']) ? (string)$item['link_publisher_id'] : '';
+			$orderBy = isset($item['link_order_by']) ? (string)$item['link_order_by'] : 'date_desc';
+			$resolved = galleries_widget_resolver_publicacao_recente($pubId, $orderBy, $publicadorCache);
+			if($resolved !== '') $url = $resolved;
+			break;
+	}
+
+	if($target === '') $target = '_self';
+
+	// req-025 / DEC-038: imagem sem link configurado não deve parecer clicável. Adiciona as
+	// classes utilitárias do Tailwind que desabilitam o clique e mantêm o cursor padrão na <a>.
+	if($type === 'nenhum'){
+		$css = trim($css.' pointer-events-none cursor-default');
+	}
+
+	return ['url' => $url, 'target' => $target, 'css_classes' => $css];
+}
+
+/**
+ * req-024 / DEC-037: resolve a URL da publicação mais recente de um publicador, segundo a
+ * ordenação informada. Espelha a lógica de ordenação de menus_widget_buscar_publicacoes_publicador
+ * (DEC-017/DEC-025), com `LIMIT 1`. Resultados são memoizados em `$cache` (por referência).
+ *
+ * @param string $publisher_id  Slug/id do publicador.
+ * @param string $order_by_key  date_desc | date_asc | title_asc | title_desc.
+ * @param array  $cache         Cache por referência (chave: publisher_id|order_by).
+ * @return string URL canônica resolvida (ou string vazia se nada encontrado).
+ */
+function galleries_widget_resolver_publicacao_recente($publisher_id, $order_by_key, &$cache){
+	global $_GESTOR;
+
+	$publisher_id = (string)$publisher_id;
+	if($publisher_id === '') return '';
+
+	$order_by_key = (string)$order_by_key;
+	if($order_by_key === '') $order_by_key = 'date_desc';
+
+	$cache_key = $publisher_id.'|'.$order_by_key;
+	if(array_key_exists($cache_key, $cache)) return $cache[$cache_key];
+
+	$order_map = [
+		'title_asc'  => ' ORDER BY p.nome ASC',
+		'title_desc' => ' ORDER BY p.nome DESC',
+		'date_asc'   => ' ORDER BY p.data_modificacao ASC',
+		'date_desc'  => ' ORDER BY p.data_modificacao DESC',
+	];
+	$order_by = $order_map[$order_by_key] ?? $order_map['date_desc'];
+
+	$row = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'paginas AS p',
+		'campos' => Array('p.id', 'p.caminho'),
+		'extra' =>
+			"WHERE p.publisher_id='".banco_escape_field($publisher_id)."'"
+			." AND p.status='A'"
+			." AND p.language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'"
+			.$order_by
+			." LIMIT 1"
+	));
+
+	$url = '';
+	if(is_array($row) && isset($row['p.caminho']) && $row['p.caminho'] !== ''){
+		$url = $_GESTOR['url-raiz'].$row['p.caminho'];
+	}
+
+	$cache[$cache_key] = $url;
+	return $url;
+}
+
+/**
+ * req-024 / DEC-037: carrega, em uma única query, as páginas referenciadas pelos links tipo
+ * `pagina` (slug => URL canônica), na linguagem corrente. Espelha menus_widget_carregar_paginas.
+ *
+ * @param array $slugs Lista de slugs (saída de array_keys do mapa de coleta).
+ * @return array Mapa slug => ['url' => ...].
+ */
+function galleries_widget_carregar_paginas($slugs){
+	global $_GESTOR;
+
+	if(empty($slugs)) return [];
+
+	$ids_escaped = array_map(function($slug){
+		return "'".banco_escape_field((string)$slug)."'";
+	}, $slugs);
+	$ids_in = implode(',', $ids_escaped);
+
+	$rows = banco_select(Array(
+		'tabela' => 'paginas AS p',
+		'campos' => Array('p.id', 'p.caminho'),
+		'extra' =>
+			"WHERE p.status='A'"
+			." AND p.language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'"
+			." AND p.id IN (".$ids_in.")"
+	));
+
+	if(!is_array($rows)) $rows = [];
+
+	$mapa = [];
+	foreach($rows as $row){
+		$slug = $row['p.id'] ?? '';
+		if($slug === '') continue;
+		$mapa[$slug] = [
+			'url' => (isset($row['p.caminho']) && $row['p.caminho']) ? $_GESTOR['url-raiz'].$row['p.caminho'] : '',
+		];
+	}
+
+	return $mapa;
 }
 
 /**
@@ -314,12 +481,20 @@ function galleries_widget_render_dots($inner, $count){
  * `[[dot#..]]`).
  */
 function galleries_widget_resolver_globais($html, $schema){
+	// req-024 / DEC-037: altura do container (default 300) e margem lateral (default 0).
+	$height = isset($schema['height']) ? (int)$schema['height'] : 300;
+	if($height < 1) $height = 300;
+	$margin_lateral = isset($schema['margin_lateral']) ? (int)$schema['margin_lateral'] : 0;
+	if($margin_lateral < 0) $margin_lateral = 0;
+
 	$map = [
 		'show_arrows'    => galleries_widget_bool($schema, 'show_arrows', true) ? 'true' : 'false',
 		'show_dots'      => galleries_widget_bool($schema, 'show_dots', true) ? 'true' : 'false',
 		'autoplay'       => galleries_widget_bool($schema, 'autoplay', false) ? 'true' : 'false',
 		'autoplay_speed' => (string)(int)($schema['autoplay_speed'] ?? 3000),
 		'loop'           => galleries_widget_bool($schema, 'loop', true) ? 'true' : 'false',
+		'height'         => (string)$height,
+		'margin_lateral' => (string)$margin_lateral,
 	];
 
 	return preg_replace_callback('/@?\[\[([a-zA-Z0-9_\-]+)\]\]@?/', function($m) use ($map){

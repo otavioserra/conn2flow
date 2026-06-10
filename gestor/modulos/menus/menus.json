@@ -42,11 +42,11 @@
                     "id": "menus-horizontal-navbar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.9",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "748104b5405f272eb2bb794b8dca9e1e",
+                        "html": "ff12e185f0d7c7074a11ddfafdb80f3b",
                         "css": "",
-                        "combined": "748104b5405f272eb2bb794b8dca9e1e"
+                        "combined": "ff12e185f0d7c7074a11ddfafdb80f3b"
                     }
                 },
                 {
@@ -217,11 +217,11 @@
                     "id": "menus-horizontal-navbar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.9",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "a8343badfa4be1d2cb4e2c17a7e0d9bc",
+                        "html": "730d81e400d4f0b8a3d9c3af01d11a5c",
                         "css": "",
-                        "combined": "a8343badfa4be1d2cb4e2c17a7e0d9bc"
+                        "combined": "730d81e400d4f0b8a3d9c3af01d11a5c"
                     }
                 },
                 {

@@ -980,3 +980,87 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
     - Inserir tags HTML usando classes comuns (ex: `flex`, `hidden`). O painel CodeMirror "CSS Compilado" deve permanecer vazio.
     - Inserir uma classe exclusiva nova (ex: `bg-emerald-950`). O painel CodeMirror deve ser preenchido apenas com a regra específica para esta classe.
     - Confirmar que o salvamento no banco grava a string contendo apenas o CSS reduzido.
+
+
+## BATCH-024 - Links Dinâmicos em Galerias, Controles de Exibição e Correções de Layout (req-024)
+
+- [x] Galerias: Links Individuais por Imagem (Painel e Widget):
+  - [x] Cada item na curadoria do painel tem o botão retrátil "Configurar Link" com ícone `linkify`.
+  - [x] Exibe inputs dinâmicos conforme o tipo de link selecionado: Página (com dropdown carregado via global `galleries_pages`), Link Customizado (URL input + target), Link com Classe CSS (URL input + target + CSS class), Última Publicação (dropdown de publicadores via global `galleries_publishers` + dropdown ordenação).
+  - [x] Serialização correta dos novos atributos no array `selected_items` de `fields_schema` (itens normalizados com `link_type`/`link_page_id`/`link_url`/`link_target`/`link_css_classes`/`link_publisher_id`/`link_order_by`).
+  - [x] Widget renderiza os links nas imagens substituindo `[[item#link-url]]`, `[[item#link-target]]` e `[[item#link-css-classes]]` (páginas resolvidas em lote; publicador resolvido via publicação mais recente com cache).
+  - [x] Caso `link_type` seja `'nenhum'`, retorna `'javascript:void(0);'` no link-url.
+- [x] Galerias: Controles de Exibição Globais (Altura e Margem Lateral):
+  - [x] Novos inputs de Altura (padrão 300) e Margem Lateral (padrão 0) na aba "Controles de Exibição" do painel de Galerias (6 páginas pt-br/en).
+  - [x] Serialização correta e instantânea ao digitar, disparando o preview da aba ao vivo (listener `input change` em `#gallery-height`/`#gallery-margin-lateral`).
+  - [x] Templates visuais atualizados: margem lateral (`[[margin_lateral]]`) na `<section>` raiz de **todos** (carousel, grid, slider, masonry); altura (`[[height]]`) em carousel, grid e slider. O masonry **não** recebe altura fixa para preservar o fluxo natural de colunas (alvenaria), conforme req §2.3.
+- [x] Destaques do Publicador: Mapeamento de Variáveis (`linked-fields-list`):
+  - [x] Tags renderizadas no container de vinculação de campos têm espaçamento horizontal (`margin: 2px 4px`).
+- [x] Menus: Submenus no Menu Horizontal (`menus-horizontal-navbar`):
+  - [x] Submenus de nível 2, 3 e subsequentes no menu horizontal têm o recuo/padding horizontal interno correto (`0.5rem 1rem`) e hover apropriado, sem que o texto dos links encoste nas bordas (bloco `<style>` na `<section>` raiz, pt-br/en).
+- [x] Galerias: Legenda do Layout Masonry (`galleries-masonry`):
+  - [x] Legendas das imagens no masonry não ficam coladas no canto esquerdo ou inferior (`mt-1 px-1` → `mt-2 px-3 pb-2`, pt-br/en).
+
+### Evidência de Validação (BATCH-024)
+
+- Validação estática executada em 2026-06-10:
+  - `node --check gestor/modulos/galleries/galleries.js` → OK (sem erros de sintaxe).
+  - `node --check gestor/modulos/publisher-highlights/publisher-highlights.js` → OK.
+  - `php -l gestor/modulos/galleries/galleries.php` → `No syntax errors detected`.
+  - `php -l gestor/modulos/galleries/galleries.widget.php` → `No syntax errors detected`.
+- Arquivos alterados:
+  - `gestor/modulos/galleries/galleries.js` (contrato de item com `link_*`, painel "Configurar Link" com visibilidade dinâmica, controles globais altura/margem).
+  - `gestor/modulos/galleries/galleries.php` (`galleries_link_listas_setup()` injeta `galleries_pages`/`galleries_publishers`; `galleries_variaveis_template()` registra `link-url`/`link-target`/`link-css-classes` e globais `height`/`margin_lateral`).
+  - `gestor/modulos/galleries/galleries.widget.php` (`galleries_widget_resolver_link()`, `galleries_widget_resolver_publicacao_recente()` com cache, `galleries_widget_carregar_paginas()` em lote; `height`/`margin_lateral` em `galleries_widget_resolver_globais()`).
+  - `gestor/modulos/galleries/resources/{pt-br,en}/pages/galleries-{adicionar,editar,clonar}/*.html` (6 páginas: inputs Altura/Margem Lateral).
+  - `gestor/modulos/galleries/resources/{pt-br,en}/templates/galleries-{carousel,slider,grid,masonry}/*.html` (8 templates: âncora de link, margem lateral, altura, legenda do masonry).
+  - `gestor/modulos/publisher-highlights/publisher-highlights.js` (margem horizontal das tags em `renderLinkedVars`).
+  - `gestor/modulos/menus/resources/{pt-br,en}/templates/menus-horizontal-navbar/*.html` (bloco `<style>` com padding nos submenus).
+- Observações de contrato real (divergência do pseudocódigo do intake): publicadores vêm da tabela `publisher` (coluna `name`) e páginas da tabela `paginas` (slug em `id`, rótulo em `nome`, URL em `caminho`), espelhando `menus_publisher_options`/`menus_widget_carregar_paginas`. Os tipos de link seguem DEC-037: `nenhum`, `pagina`, `link-custom`, `link-css-classes`, `publicador`.
+- Testes manuais/runtime pendentes com o operador (após `🗃️ Projects - Update => Core`):
+  - Adição de link de Página, Customizado (`_blank`) e Última Publicação em imagens da galeria; conferir HTML renderizado no preview.
+  - Ajuste de altura para 450px e margem lateral para 20px; conferir reflexo instantâneo no preview.
+  - Verificação visual dos submenus do menu horizontal e das legendas no masonry.
+- Decisão registrada: [DEC-037](../decisions/DECISION-LOG.md#dec-037---2026-06-10---accepted)
+
+
+## BATCH-025 - Autocomplete de Páginas em Galerias, Ajuste do Menu Horizontal e Preparação Final de Release (req-025)
+
+- [x] Galerias: Autocomplete AJAX de Páginas:
+  - [x] Dropdown estático simples de páginas na curadoria removido e substituído pelo autocomplete AJAX do Menus (`buildPageAutocompleteField`).
+  - [x] Filtro de tipo de página (Página, Sistema, Ambos) e input de busca implementados com identificadores e classes isolados por ID de item curado (`name="gallery_page_search_type_${it.id}"` nos rádios; `data-id="${it.id}"` + classes locais no input/sugestões/hidden) para evitar colisões entre linhas.
+  - [x] AJAX de busca (`pages-search`) e de carregamento inicial (`pages-fetch`) roteados no `galleries.php` (`galleries_ajax_pages_search`/`galleries_ajax_pages_fetch`, clonados do `menus.php`) consultando a tabela `paginas`.
+  - [x] Hidratação automática na edição varrendo o array global `galleries_pages` (`resolvePageNameLocal`); fallback via `pages-fetch` (`fetchPageName`) quando o nome não está em memória.
+- [x] Galerias: Inativação de Links no Widget:
+  - [x] Tags `<a>` sem link configurado (`link_type === 'nenhum'`) recebem a classe `pointer-events-none cursor-default` (anexada a `link-css-classes` em `galleries_widget_resolver_link`), desabilitando o clique e mantendo o cursor padrão.
+- [x] Menus: Alinhamento Horizontal do Submenu no Navbar:
+  - [x] Regra `[data-title="menu-horizontal-navbar"] ul.absolute a` alterada de `display: block !important` para `display: flex !important; align-items: center; justify-content: space-between; gap: 0.25rem !important` (pt-br + en), alinhando a setinha SVG na mesma linha do rótulo.
+- [x] Galerias: Proporção das Miniaturas no Painel:
+  - [x] Estilo `.gallery-item-thumb` alterado de `64px×48px` para `width: 200px; height: 140px;` em `injectGalleryStyles`.
+- [x] Documentação e CI/CD:
+  - [x] Data de lançamento da v2.8.0 atualizada para `2026-06-10` em `CHANGELOG.md`, `CHANGELOG-PT-BR.md`, `README.md` e `README-PT-BR.md`.
+  - [x] Otimizações do BATCH-023 (CSS inline + previewer unificado) e correções do BATCH-024/025 (links em galerias, busca de páginas, miniaturas, imagens sem link, submenus) documentadas nos changelogs e nos READMEs (incl. aba "Código do Widget" e Tailwind CSS CLI v4).
+  - [x] Workflow GitHub Actions (`release-gestor.yml`) com o `body` do release atualizado descrevendo novidades e correções.
+
+### Evidência de Validação (BATCH-025)
+
+- Validação estática executada em 2026-06-10:
+  - `node --check gestor/modulos/galleries/galleries.js` → `JS_OK` (sem erros de sintaxe).
+  - `php -l gestor/modulos/galleries/galleries.php` → `No syntax errors detected`.
+  - `php -l gestor/modulos/galleries/galleries.widget.php` → `No syntax errors detected`.
+  - YAML de `release-gestor.yml`: alteração restrita ao `body:` (block scalar literal), indentação de 10 espaços preservada; validação por parser não executada (js-yaml/PyYAML indisponíveis no ambiente).
+- Arquivos alterados:
+  - `gestor/modulos/galleries/galleries.js` (miniatura 200×140; autocomplete AJAX de páginas por imagem: `buildPageAutocompleteField`, `runGalleryPageSearch`, `renderGalleryPageSuggestions`, `resolvePageNameLocal`, `fetchPageName` + listeners isolados por `data-id`).
+  - `gestor/modulos/galleries/galleries.php` (endpoints `pages-search`/`pages-fetch` no switch AJAX + funções `galleries_ajax_pages_search`/`galleries_ajax_pages_fetch`).
+  - `gestor/modulos/galleries/galleries.widget.php` (classe `pointer-events-none cursor-default` para `link_type === 'nenhum'`).
+  - `gestor/modulos/menus/resources/{pt-br,en}/templates/menus-horizontal-navbar/*.html` (regra do submenu para flex/space-between).
+  - `CHANGELOG.md`, `CHANGELOG-PT-BR.md`, `README.md`, `README-PT-BR.md` (data v2.8.0 e descritivos).
+  - `.github/workflows/release-gestor.yml` (`body` do release).
+- Testes manuais/runtime pendentes com o operador (após `🗃️ Projects - Update => Core`):
+  - Verificar autocomplete AJAX de páginas ao escolher Tipo Página na imagem curada da galeria (Network mostra `pages-search`; filtro Página/Sistema/Ambos recarrega a busca; clique na sugestão preenche o nome amigável e salva slug/URL).
+  - Verificar se imagens sem link não exibem cursor de mão/ponteiro no widget ou preview.
+  - Verificar setas dos submenus nos níveis filhos do navbar horizontal (mesma linha do rótulo).
+  - Confirmar que as miniaturas no painel aparecem maiores (200×140px).
+- Decisão registrada: [DEC-038](../decisions/DECISION-LOG.md#dec-038---2026-06-10---accepted)
+
+

@@ -233,3 +233,22 @@ Otimização do CSS Automático com Filtragem de Redundâncias do Tailwind (req-
 3. **Extração e PURGE Dinâmicos**: Acessar as regras de estilo de `tailwindStyleElement.sheet.cssRules`. Filtrar as regras mantendo apenas os seletores que não existem no `Set` de seletores globais. Para media queries (`@media`), filtrar individualmente as suas sub-regras. 
 4. **Compatibilidade v3/v4**: A extração via `sheet.cssRules` garante suporte tanto ao Tailwind v3 (que injeta estilos no DOM) quanto ao Tailwind v4 (que insere regras dinamicamente via `insertRule`).
 
+## DEC-037 - 2026-06-10 - accepted
+
+Links Individuais, Controles de Exibição de Galerias e Correções Visuais (req-024 / BATCH-024). Decisões desta rodada:
+1. **Estrutura de Links**: Cada item de imagem em `selected_items` no módulo `galleries` suportará metadados de link: `link_type` (`nenhum`, `pagina`, `link-custom`, `link-css-classes`, `publicador`), `link_page_id`, `link_url`, `link_target`, `link_css_classes`, `link_publisher_id`, `link_order_by`. A serialização é feita na curadoria do painel e salva no `fields_schema`.
+2. **Resolução de Links no Widget**: Em `galleries.widget.php`, carregar slugs de páginas e buscar publicações de forma consolidada e eficiente, retornando `link-url`, `link-target` e `link-css-classes` por item. Imagens sem link resolvem para `javascript:void(0);`.
+3. **Parâmetros Dinâmicos de Altura/Margem**: Inclusão de `height` (default 300) e `margin_lateral` (default 0) nos controles globais de exibição de galeria. Injetá-los dinamicamente nas tags raiz/imagem dos templates.
+4. **Correções de Layout**: Ajuste fino de padding/margem nos submenus recursivos de `menus-horizontal-navbar`, legenda do `galleries-masonry` e tags horizontais coladas no `publisher-highlights.js`.
+
+## DEC-038 - 2026-06-10 - accepted
+
+Autocomplete de Páginas em Galerias, Ajuste de Menu e Preparação de Release (req-025 / BATCH-025). Decisões desta rodada:
+1. **Buscador de Páginas Isolado**: Substituir o dropdown estático de páginas nas galerias pelo buscador AJAX autocomplete multilíngue clonado do Menus. Para evitar colisões em múltiplas linhas de curadoria simultâneas, os inputs e elementos de sugestões do autocomplete serão identificados utilizando o ID do item curado (ex: `manual_search_type_${it.id}`).
+2. **Exclusão de Link Visual**: Configurar a classe `pointer-events-none cursor-default` nos links do widget se o tipo de link for `'nenhum'`, impedindo a interatividade e a indicação de ponteiro de link (hand cursor).
+3. **Alinhamento do Submenu**: Ajustar o estilo CSS do submenu navbar horizontal para `display: flex !important; justify-content: space-between; align-items: center;` para manter a setinha do submenu alinhada horizontalmente no mesmo bloco.
+4. **Miniaturas Ampliadas**: Ampliar a proporção de exibição da imagem curada no painel administrativo de `64x48px` para `200x140px` para melhor visualização.
+5. **Workflow de Release**: Atualizar a data oficial da versão `2.8.0` para `2026-06-10` nos changelogs e incluir o descritivo de otimização de CSS (BATCH-023) e novas correções de links/layouts (BATCH-024/025) no workflow `.github/workflows/release-gestor.yml`.
+
+
+

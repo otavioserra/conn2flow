@@ -1,9 +1,11 @@
-<section class="font-sans p-6" data-id="1" data-title="gallery-grid">
+<section class="font-sans p-6" data-id="1" data-title="gallery-grid" style="margin-left: @[[margin_lateral]]@px; margin-right: @[[margin_lateral]]@px;">
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         <!-- item < -->
         <figure class="group relative overflow-hidden rounded-lg shadow-sm">
-            <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@"
-                class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105">
+            <a href="@[[item#link-url]]@" target="@[[item#link-target]]@" class="block @[[item#link-css-classes]]@">
+                <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@"
+                    class="w-full object-cover transition-transform duration-300 group-hover:scale-105" style="height: @[[height]]@px;">
+            </a>
             <figcaption class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-sm px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity">@[[item#legenda]]@</figcaption>
         </figure>
         <!-- item > -->

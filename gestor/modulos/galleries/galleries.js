@@ -27,14 +27,35 @@ $(document).ready(function () {
             + '.gallery-item.sortable-drag,.gallery-item.sortable-ghost{opacity:0.6;}'
             + '.gallery-item-handle{cursor:grab;opacity:0.6;}'
             + '.gallery-item-handle:active{cursor:grabbing;}'
-            + '.gallery-item-thumb{width:64px;height:48px;object-fit:cover;border-radius:3px;background:#f4f4f4;flex:0 0 auto;}'
+            + '.gallery-item-thumb{width:200px;height:140px;object-fit:cover;border-radius:3px;background:#f4f4f4;flex:0 0 auto;}'
             + '.gallery-item-body{flex:1;min-width:0;}'
             + '.gallery-item-name{font-size:12px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:4px;}'
             + '.gallery-item-caption{width:100%;}'
             + '.gallery-item-remove{cursor:pointer;opacity:0.6;color:#db2828;}'
             + '.gallery-item-remove:hover{opacity:1;}'
             + '.gallery-empty{padding:14px;color:#999;font-style:italic;text-align:center;'
-            + 'border:1px dashed #ccc;border-radius:4px;background:#fafafa;}';
+            + 'border:1px dashed #ccc;border-radius:4px;background:#fafafa;}'
+            // req-024: painel retrátil "Configurar Link" de cada imagem.
+            + '.gallery-item-link-toggle{cursor:pointer;font-size:12px;color:#2185d0;margin-top:6px;display:inline-block;}'
+            + '.gallery-item-link-toggle:hover{text-decoration:underline;}'
+            + '.gallery-item-link-toggle i{margin-right:4px;}'
+            + '.gallery-item-link-fields{margin-top:8px;padding:10px;background:#f9fafb;border:1px solid #e0e0e0;border-radius:4px;}'
+            + '.gallery-link-field{margin-bottom:8px;}'
+            + '.gallery-link-field label{display:block;font-size:11px;color:#666;margin-bottom:3px;}'
+            + '.gallery-link-field select,.gallery-link-field input{width:100%;padding:6px 8px;border:1px solid #ccc;'
+            + 'border-radius:4px;font-size:13px;box-sizing:border-box;background:#fff;}'
+            // req-025: autocomplete AJAX de páginas (clonado do Menus), isolado por item curado.
+            + '.gallery-page-type-filter{display:flex;gap:10px;margin-bottom:6px;font-size:12px;color:#555;}'
+            + '.gallery-page-type-filter label{display:inline-flex;align-items:center;gap:3px;cursor:pointer;width:auto;}'
+            + '.gallery-page-type-filter input{width:auto;}'
+            + '.gallery-page-search-wrapper{position:relative;}'
+            + '.gallery-item-link-suggestions{position:absolute;top:100%;left:0;right:0;z-index:30;background:#fff;'
+            + 'border:1px solid #ccc;border-top:none;border-radius:0 0 4px 4px;max-height:220px;overflow-y:auto;'
+            + 'box-shadow:0 4px 10px rgba(0,0,0,0.08);}'
+            + '.gallery-item-link-suggestion{padding:7px 10px;cursor:pointer;font-size:13px;border-bottom:1px solid #f0f0f0;}'
+            + '.gallery-item-link-suggestion:hover{background:#f3f7fb;}'
+            + '.gallery-item-link-suggestion.disabled{opacity:0.5;cursor:not-allowed;background:#f7f7f7;}'
+            + '.gallery-suggestion-empty{padding:7px 10px;font-size:12px;color:#999;}';
         var style = document.createElement('style');
         style.id = 'galleries-styles';
         style.type = 'text/css';
@@ -85,8 +106,8 @@ $(document).ready(function () {
 
     if (!Array.isArray(schema.selected_items)) schema.selected_items = [];
 
-    // Fonte da verdade da curadoria: lista de imagens { id, caminho, imgSrc, nome, legenda }.
-    var items = schema.selected_items.slice();
+    // Fonte da verdade da curadoria: lista de imagens { id, caminho, imgSrc, nome, legenda, link_* }.
+    var items = schema.selected_items.slice().map(normalizeItem);
 
     var widgetCodeMirror = null;
 
@@ -140,6 +161,7 @@ $(document).ready(function () {
     $('.ui.checkbox').checkbox();
     $(document).on('change', '#gallery-show-arrows, #gallery-show-dots, #gallery-autoplay, #gallery-loop', function () { serializeAndPreview(); });
     $(document).on('input change', '#gallery-autoplay-speed', function () { serializeAndPreview(); });
+    $(document).on('input change', '#gallery-height, #gallery-margin-lateral', function () { serializeAndPreview(); });
 
     // Hook global usado pelo html-editor-interface.js ao detectar mudança no CodeMirror HTML.
     window.updatedCodeMirrorHtml = function () { scheduleWidgetPreview(false); };
@@ -152,7 +174,7 @@ $(document).ready(function () {
         if (tid) loadTemplate(tid);
         else scheduleWidgetPreview(false);
         if (typeof window.html_editor_refresh_preview === 'function') {
-            setTimeout(function () { window.html_editor_refresh_preview(); }, 350);
+            setTimeout(function () { window.html_editor_refresh_preview(); }, 600);
         }
     });
 
@@ -263,16 +285,29 @@ $(document).ready(function () {
         var exists = items.some(function (it) { return it.caminho && caminho && it.caminho === caminho; });
         if (exists) return;
 
-        items.push({
+        items.push(normalizeItem({
             id: id,
             caminho: caminho,
             imgSrc: dados.imgSrc || '',
             nome: dados.nome || '',
             legenda: ''
-        });
+        }));
 
         renderItems();
         serializeAndPreview();
+    }
+
+    // req-024: garante o contrato de link em cada item (retrocompat com galerias antigas).
+    function normalizeItem(it) {
+        it = it || {};
+        if (!it.link_type) it.link_type = 'nenhum';
+        if (it.link_page_id === undefined || it.link_page_id === null) it.link_page_id = '';
+        if (it.link_url === undefined || it.link_url === null) it.link_url = '';
+        if (!it.link_target) it.link_target = '_self';
+        if (it.link_css_classes === undefined || it.link_css_classes === null) it.link_css_classes = '';
+        if (it.link_publisher_id === undefined || it.link_publisher_id === null) it.link_publisher_id = '';
+        if (!it.link_order_by) it.link_order_by = 'date_desc';
+        return it;
     }
 
     function indexOfId(id) {
@@ -312,6 +347,7 @@ $(document).ready(function () {
             .attr('placeholder', isPtBr() ? 'Legenda (opcional)' : 'Caption (optional)')
             .val(it.legenda || '');
         $body.append($caption);
+        $body.append(buildLinkPanel(it));
         $row.append($body);
 
         $row.append('<i class="trash alternate icon gallery-item-remove" title="' + (isPtBr() ? 'Remover' : 'Remove') + '"></i>');
@@ -319,8 +355,322 @@ $(document).ready(function () {
         return $row;
     }
 
+    // ===== req-024: painel "Configurar Link" de cada imagem
+
+    function linkTypeOptions() {
+        return isPtBr()
+            ? [['nenhum', 'Nenhum'], ['pagina', 'Página'], ['link-custom', 'Link Customizado'], ['link-css-classes', 'Link com Classe CSS'], ['publicador', 'Última Publicação']]
+            : [['nenhum', 'None'], ['pagina', 'Page'], ['link-custom', 'Custom Link'], ['link-css-classes', 'Link with CSS Class'], ['publicador', 'Latest Publication']];
+    }
+
+    function orderByOptions() {
+        return isPtBr()
+            ? [['date_desc', 'Mais recente primeiro'], ['date_asc', 'Mais antiga primeiro'], ['title_asc', 'Título (A-Z)'], ['title_desc', 'Título (Z-A)']]
+            : [['date_desc', 'Newest first'], ['date_asc', 'Oldest first'], ['title_asc', 'Title (A-Z)'], ['title_desc', 'Title (Z-A)']];
+    }
+
+    function targetOptions() {
+        return isPtBr()
+            ? [['_self', 'Mesma aba (_self)'], ['_blank', 'Nova aba (_blank)']]
+            : [['_self', 'Same tab (_self)'], ['_blank', 'New tab (_blank)']];
+    }
+
+    function buildSelect(cls, pairs, selected) {
+        var $sel = $('<select></select>').addClass(cls);
+        pairs.forEach(function (p) {
+            var $opt = $('<option></option>').attr('value', p[0]).text(p[1]);
+            if (String(p[0]) === String(selected)) $opt.prop('selected', true);
+            $sel.append($opt);
+        });
+        return $sel;
+    }
+
+    function buildDataSelect(cls, list, selected, placeholderTxt) {
+        var $sel = $('<select></select>').addClass(cls);
+        $sel.append($('<option value=""></option>').text(placeholderTxt));
+        (list || []).forEach(function (o) {
+            var val = (o.id !== undefined) ? o.id : (o.value !== undefined ? o.value : '');
+            var label = (o.name !== undefined) ? o.name : val;
+            var $opt = $('<option></option>').attr('value', val).text(label);
+            if (String(val) === String(selected)) $opt.prop('selected', true);
+            $sel.append($opt);
+        });
+        return $sel;
+    }
+
+    function fieldWrap(labelTxt, $control, fieldClass) {
+        var $f = $('<div class="gallery-link-field"></div>');
+        if (fieldClass) $f.addClass(fieldClass);
+        $f.append($('<label></label>').text(labelTxt));
+        $f.append($control);
+        return $f;
+    }
+
+    function applyLinkFieldVisibility($fields, type) {
+        var show = {
+            'gallery-link-row-page': (type === 'pagina'),
+            'gallery-link-row-url': (type === 'link-custom' || type === 'link-css-classes'),
+            'gallery-link-row-css': (type === 'link-css-classes'),
+            'gallery-link-row-target': (type === 'link-custom' || type === 'link-css-classes'),
+            'gallery-link-row-publisher': (type === 'publicador'),
+            'gallery-link-row-order': (type === 'publicador')
+        };
+        Object.keys(show).forEach(function (cls) {
+            $fields.find('.' + cls).css('display', show[cls] ? 'block' : 'none');
+        });
+    }
+
+    function buildLinkPanel(it) {
+        var publishersList = (typeof galleries_publishers !== 'undefined' && galleries_publishers) ? galleries_publishers : [];
+        var selectTxt = isPtBr() ? '— selecione —' : '— select —';
+
+        var $toggle = $('<span class="gallery-item-link-toggle"></span>')
+            .html('<i class="linkify icon"></i>' + (isPtBr() ? 'Configurar Link' : 'Configure Link'));
+
+        var hasLink = it.link_type && it.link_type !== 'nenhum';
+        var $fields = $('<div class="gallery-item-link-fields"></div>').css('display', hasLink ? 'block' : 'none');
+
+        $fields.append(fieldWrap(isPtBr() ? 'Tipo de link' : 'Link type',
+            buildSelect('gallery-link-type', linkTypeOptions(), it.link_type || 'nenhum')));
+
+        // req-025 / DEC-038: o dropdown estático de páginas dá lugar ao autocomplete AJAX do Menus,
+        // isolado por item curado (filtro de tipo + busca + sugestões flutuantes).
+        $fields.append(buildPageAutocompleteField(it));
+
+        $fields.append(fieldWrap('URL',
+            $('<input type="text" class="gallery-link-url">').attr('placeholder', 'https://...').val(it.link_url || ''),
+            'gallery-link-row-url'));
+
+        $fields.append(fieldWrap(isPtBr() ? 'Classe CSS' : 'CSS class',
+            $('<input type="text" class="gallery-link-css">').attr('placeholder', isPtBr() ? 'ex: minha-classe' : 'e.g. my-class').val(it.link_css_classes || ''),
+            'gallery-link-row-css'));
+
+        $fields.append(fieldWrap(isPtBr() ? 'Abrir em' : 'Open in',
+            buildSelect('gallery-link-target', targetOptions(), it.link_target || '_self'),
+            'gallery-link-row-target'));
+
+        $fields.append(fieldWrap(isPtBr() ? 'Publicador' : 'Publisher',
+            buildDataSelect('gallery-link-publisher-id', publishersList, it.link_publisher_id, selectTxt),
+            'gallery-link-row-publisher'));
+
+        $fields.append(fieldWrap(isPtBr() ? 'Ordenar por' : 'Order by',
+            buildSelect('gallery-link-order-by', orderByOptions(), it.link_order_by || 'date_desc'),
+            'gallery-link-row-order'));
+
+        applyLinkFieldVisibility($fields, it.link_type || 'nenhum');
+
+        var $wrap = $('<div class="gallery-item-link-wrap"></div>');
+        $wrap.append($toggle);
+        $wrap.append($fields);
+        return $wrap;
+    }
+
+    // ===== req-025 / DEC-038: autocomplete AJAX de páginas (link tipo "Página"), por imagem curada
+    //
+    // Cada linha da curadoria é dinâmica e há várias abertas ao mesmo tempo. Para evitar colisões
+    // de seleção jQuery, os rádios de tipo usam `name` único (`gallery_page_search_type_${id}`) e os
+    // demais elementos (input de busca, lista de sugestões, hidden do slug) são isolados por
+    // `data-id="${id}"` + classes locais.
+
+    function resolvePageNameLocal(slug) {
+        var list = (typeof galleries_pages !== 'undefined' && galleries_pages) ? galleries_pages : [];
+        for (var i = 0; i < list.length; i++) {
+            if (String(list[i].id) === String(slug)) return list[i].name || slug;
+        }
+        return null;
+    }
+
+    function buildPageAutocompleteField(it) {
+        var pt = isPtBr();
+        var typeName = 'gallery_page_search_type_' + it.id;
+
+        var $f = $('<div class="gallery-link-field gallery-link-row-page"></div>');
+        $f.append($('<label></label>').text(pt ? 'Página' : 'Page'));
+
+        // Filtro de tipo de página (Página / Sistema / Ambos), isolado por `name` único.
+        var typeOptions = [
+            ['pagina', pt ? 'Página' : 'Page'],
+            ['sistema', pt ? 'Sistema' : 'System'],
+            ['ambos', pt ? 'Ambos' : 'Both']
+        ];
+        var $filter = $('<div class="gallery-page-type-filter"></div>');
+        typeOptions.forEach(function (opt, i) {
+            var $lbl = $('<label></label>');
+            var $radio = $('<input type="radio" class="gallery-page-type-radio">')
+                .attr('name', typeName).attr('value', opt[0]).attr('data-id', it.id);
+            if (i === 0) $radio.prop('checked', true);
+            $lbl.append($radio).append(document.createTextNode(' ' + opt[1]));
+            $filter.append($lbl);
+        });
+        $f.append($filter);
+
+        // Input de busca + lista flutuante de sugestões + hidden com o slug selecionado.
+        var $wrap = $('<div class="gallery-page-search-wrapper"></div>');
+        var $input = $('<input type="text" class="gallery-item-link-search">')
+            .attr('data-id', it.id)
+            .attr('autocomplete', 'off')
+            .attr('placeholder', pt ? 'Buscar página...' : 'Search page...');
+        var $sugg = $('<div class="gallery-item-link-suggestions"></div>')
+            .attr('data-id', it.id).css('display', 'none');
+        var $hidden = $('<input type="hidden" class="gallery-link-page-id">').val(it.link_page_id || '');
+
+        $wrap.append($input).append($sugg).append($hidden);
+        $f.append($wrap);
+
+        // Hidratação do nome amigável: varredura local em galleries_pages; senão fetch via AJAX.
+        if (it.link_page_id) {
+            var localName = resolvePageNameLocal(it.link_page_id);
+            if (localName) {
+                $input.val(localName);
+            } else {
+                $input.val(it.link_page_id);
+                fetchPageName(it.id, it.link_page_id);
+            }
+        }
+
+        return $f;
+    }
+
+    function fetchPageName(itemId, slug) {
+        $.ajax({
+            type: 'POST',
+            url: gestor.raiz + gestor.moduloCaminho + '/',
+            dataType: 'json',
+            data: { opcao: gestor.moduloOpcao, ajax: 'sim', ajaxOpcao: 'pages-fetch', params: { ids: [slug] } },
+            success: function (dados) {
+                if (!dados || dados.status !== 'Ok') return;
+                var found = null;
+                (dados.results || []).forEach(function (r) { if (r && String(r.value) === String(slug)) found = r; });
+                if (!found) return;
+                var $input = $('.gallery-item-link-search[data-id="' + itemId + '"]');
+                if ($input.length && !$input.is(':focus')) $input.val(found.name || slug);
+                var idx = indexOfId(itemId);
+                if (idx >= 0 && !items[idx].link_url && found.url) items[idx].link_url = found.url;
+            }
+        });
+    }
+
+    function galleryPageTypeFor(itemId) {
+        return $('input.gallery-page-type-radio[data-id="' + itemId + '"]:checked').val() || 'pagina';
+    }
+
+    function hideGalleryPageSuggestions(itemId) {
+        $('.gallery-item-link-suggestions[data-id="' + itemId + '"]').hide().empty();
+    }
+
+    function renderGalleryPageSuggestions(itemId, results) {
+        var $sugg = $('.gallery-item-link-suggestions[data-id="' + itemId + '"]');
+        if ($sugg.length === 0) return;
+
+        $sugg.empty();
+
+        var idx = indexOfId(itemId);
+        var currentSel = (idx >= 0) ? String(items[idx].link_page_id || '') : '';
+
+        var rows = (results || []).filter(function (r) { return r && r.value; });
+        if (rows.length === 0) {
+            $sugg.append($('<div class="gallery-suggestion-empty"></div>')
+                .text(isPtBr() ? 'Nenhuma página encontrada' : 'No pages found.'));
+        } else {
+            rows.forEach(function (r) {
+                var $i = $('<div class="gallery-item-link-suggestion"></div>')
+                    .attr('data-id', r.value)
+                    .attr('data-name', r.name || r.value)
+                    .attr('data-url', r.url || '')
+                    .text(r.name || r.value);
+                if (currentSel && String(r.value) === currentSel) $i.addClass('disabled');
+                $sugg.append($i);
+            });
+        }
+        $sugg.show();
+    }
+
+    function runGalleryPageSearch(itemId, query) {
+        $.ajax({
+            type: 'POST',
+            url: gestor.raiz + gestor.moduloCaminho + '/',
+            dataType: 'json',
+            data: {
+                opcao: gestor.moduloOpcao,
+                ajax: 'sim',
+                ajaxOpcao: 'pages-search',
+                q: query,
+                params: { q: query, tipo: galleryPageTypeFor(itemId) }
+            },
+            success: function (dados) {
+                renderGalleryPageSuggestions(itemId, (dados && dados.status === 'Ok') ? (dados.results || []) : []);
+            },
+            error: function () { renderGalleryPageSuggestions(itemId, []); }
+        });
+    }
+
+    var galleryPageSearchTimer = null;
+
+    // Campo de busca com debounce de 300ms; limpar o campo zera o vínculo de página do item.
+    $(document).on('input', '.gallery-item-link-search', function () {
+        var itemId = $(this).attr('data-id');
+        var value = ($(this).val() || '').trim();
+        if (galleryPageSearchTimer) clearTimeout(galleryPageSearchTimer);
+
+        if (value === '') {
+            var idx = indexOfId(itemId);
+            if (idx >= 0) {
+                items[idx].link_page_id = '';
+                items[idx].link_url = '';
+                $(this).closest('.gallery-page-search-wrapper').find('.gallery-link-page-id').val('');
+                serializeAndPreview();
+            }
+            hideGalleryPageSuggestions(itemId);
+            return;
+        }
+
+        galleryPageSearchTimer = setTimeout(function () { runGalleryPageSearch(itemId, value); }, 300);
+    });
+
+    // Trocar o tipo de página recarrega a busca atual daquele item.
+    $(document).on('change', '.gallery-page-type-radio', function () {
+        var itemId = $(this).attr('data-id');
+        var v = ($('.gallery-item-link-search[data-id="' + itemId + '"]').val() || '').trim();
+        if (v !== '') runGalleryPageSearch(itemId, v);
+    });
+
+    // Selecionar uma sugestão: associa slug + URL canônica e exibe o nome amigável.
+    $(document).on('click', '.gallery-item-link-suggestion', function () {
+        var $opt = $(this);
+        if ($opt.hasClass('disabled')) return;
+
+        var $sugg = $opt.closest('.gallery-item-link-suggestions');
+        var itemId = $sugg.attr('data-id');
+        var idx = indexOfId(itemId);
+        if (idx < 0) return;
+
+        var slug = $opt.attr('data-id');
+        if (!slug) return;
+
+        items[idx].link_page_id = slug;
+        items[idx].link_url = $opt.attr('data-url') || '';
+
+        var $wrap = $sugg.closest('.gallery-page-search-wrapper');
+        $wrap.find('.gallery-link-page-id').val(slug);
+        $wrap.find('.gallery-item-link-search').val($opt.attr('data-name') || slug);
+
+        hideGalleryPageSuggestions(itemId);
+        serializeAndPreview();
+    });
+
+    // Fechar as listas de sugestões ao clicar fora ou pressionar Esc.
+    $(document).on('click', function (e) {
+        if ($(e.target).closest('.gallery-page-search-wrapper').length === 0) {
+            $('.gallery-item-link-suggestions').hide();
+        }
+    });
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Escape' || e.keyCode === 27) $('.gallery-item-link-suggestions').hide();
+    });
+
     // Editar legenda (debounced).
     var captionTimer = null;
+    var linkInputTimer = null;
     $(document).on('input', '.gallery-item-caption', function () {
         var id = $(this).closest('.gallery-item').attr('data-id');
         var idx = indexOfId(id);
@@ -338,6 +688,43 @@ $(document).ready(function () {
         items.splice(idx, 1);
         renderItems();
         serializeAndPreview();
+    });
+
+    // req-024: alternar o painel "Configurar Link".
+    $(document).on('click', '.gallery-item-link-toggle', function () {
+        $(this).siblings('.gallery-item-link-fields').slideToggle(150);
+    });
+
+    // req-024: trocar o tipo de link reseta a visibilidade dos sub-campos.
+    $(document).on('change', '.gallery-link-type', function () {
+        var $item = $(this).closest('.gallery-item');
+        var idx = indexOfId($item.attr('data-id'));
+        if (idx < 0) return;
+        var type = $(this).val();
+        items[idx].link_type = type;
+        applyLinkFieldVisibility($item.find('.gallery-item-link-fields'), type);
+        serializeAndPreview();
+    });
+
+    // req-024: salvar os demais campos de link no item correspondente.
+    $(document).on('change input', '.gallery-link-page-id, .gallery-link-url, .gallery-link-css, .gallery-link-target, .gallery-link-publisher-id, .gallery-link-order-by', function () {
+        var $el = $(this);
+        var idx = indexOfId($el.closest('.gallery-item').attr('data-id'));
+        if (idx < 0) return;
+
+        if ($el.hasClass('gallery-link-page-id')) items[idx].link_page_id = $el.val();
+        else if ($el.hasClass('gallery-link-url')) items[idx].link_url = $el.val();
+        else if ($el.hasClass('gallery-link-css')) items[idx].link_css_classes = $el.val();
+        else if ($el.hasClass('gallery-link-target')) items[idx].link_target = $el.val();
+        else if ($el.hasClass('gallery-link-publisher-id')) items[idx].link_publisher_id = $el.val();
+        else if ($el.hasClass('gallery-link-order-by')) items[idx].link_order_by = $el.val();
+
+        if ($el.is('input')) {
+            if (linkInputTimer) clearTimeout(linkInputTimer);
+            linkInputTimer = setTimeout(function () { serializeAndPreview(); }, 400);
+        } else {
+            serializeAndPreview();
+        }
     });
 
     // ===== Reordenação drag-and-drop (Sortable.js)
@@ -381,6 +768,11 @@ $(document).ready(function () {
         var speed = parseInt($('#gallery-autoplay-speed').val(), 10);
         out.autoplay_speed = (speed >= 500) ? speed : 3000;
         out.loop = $('#gallery-loop').is(':checked');
+        // req-024: altura do container (default 300) e margem lateral (default 0).
+        var h = parseInt($('#gallery-height').val(), 10);
+        out.height = (h >= 1) ? h : 300;
+        var ml = parseInt($('#gallery-margin-lateral').val(), 10);
+        out.margin_lateral = (!isNaN(ml) && ml >= 0) ? ml : 0;
         return out;
     }
 
@@ -397,6 +789,11 @@ $(document).ready(function () {
         var sp = parseInt(schema.autoplay_speed, 10);
         $('#gallery-autoplay-speed').val((sp >= 500) ? sp : 3000);
         $('#gallery-loop').prop('checked', galleryBoolOr(schema.loop, true));
+        // req-024: altura e margem lateral.
+        var hh = parseInt(schema.height, 10);
+        $('#gallery-height').val((hh >= 1) ? hh : 300);
+        var mm = parseInt(schema.margin_lateral, 10);
+        $('#gallery-margin-lateral').val((!isNaN(mm) && mm >= 0) ? mm : 0);
     }
 
     function scheduleWidgetPreview(immediate, force) {

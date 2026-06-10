@@ -169,7 +169,7 @@ $(document).ready(function () {
         if (tid) loadTemplate(tid);
         else scheduleWidgetPreview(false);
         if (typeof window.html_editor_refresh_preview === 'function') {
-            setTimeout(function () { window.html_editor_refresh_preview(); }, 350);
+            setTimeout(function () { window.html_editor_refresh_preview(); }, 600);
         }
     });
 

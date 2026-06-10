@@ -10,12 +10,15 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
 - CHANGELOG.md padrão da indústria seguindo Keep a Changelog
 
-## [2.8.0] - 2026-06-08
+## [2.8.0] - 2026-06-10
 
 ### Added
 - **Módulo de Menus Completo**: Gerenciamento de menus com árvore hierárquica e editor visual drag-and-drop em Pointer Events vanilla (sem dependências externas). Suporta itens de Página, Link Personalizado (com target `_blank`/`_self`), Cabeçalhos, Ações de Link e Separadores estruturados (bloco `item-separator`).
 - **Módulo de Menus - Nós de Publicadores**: Tipo de item `publicador` que expande sub-itens dinâmicos a partir de publicações do publicador selecionado com limite (`count`) e ordenação customizados.
 - **Módulo de Galerias de Imagens**: Módulo de curadoria visual com seleção de arquivos em lote e ordenação Sortable.js. Suporta múltiplos layouts (Grid, Carousel, Masonry, Slider) e parâmetros de slide (setas, dot pagination, autoplay com velocidade configurável e loop).
+- **Galerias - Links Individuais por Imagem**: Cada imagem curada pode receber um link próprio — Página (com buscador AJAX de autocomplete e filtro de tipo Página/Sistema/Ambos), Link Customizado, Link com Classe CSS ou Última Publicação de um publicador — com resolução de URLs canônicas no widget público.
+- **Galerias - Controles de Altura e Margem Lateral**: Novos controles globais de altura do contêiner e margem lateral, aplicados dinamicamente aos templates de galeria.
+- **Aba "Código do Widget" no Editor**: Aba dedicada com CodeMirror somente leitura que exibe o envelopamento `<!-- widgets#... -->` pronto para colar nos layouts (destaques, menus e galerias).
 - **Interatividade Pública de Widgets**: Scripts públicos nativos (`menus.widget.js` e `galleries.widget.js`) para suportar menu hambúrguer mobile, hover recursivo em submenus e interatividade de sliders/carrosséis sem quebrar caso o Tailwind v3/v4 falhe em produção.
 - **Compilação do Tailwind CSS CLI**: Integração de compilação dos estilos globais do core via `npx @tailwindcss/cli` a partir da pasta `gestor/assets/tailwindcss/`. A compilação é acionada nas tarefas locais de sync e no pipeline de release.
 - **Configuração Dinâmica do Core**: Suporte à chave `tailwindcss/cli` em `environment.json` (com auditoria e normalização automática do template).
@@ -26,9 +29,15 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - **Pipeline de Release**: Adicionada etapa do Node.js v20 e execução do compilador do Tailwind CSS CLI antes de gerar o pacote ZIP de distribuição. Os CSS compilados são adicionados ao commit automático de release.
 - **Diretiva de Configuração do Core**: Arquivo de entrada `input.css` do core integrado à configuração do workspace (`tailwind.config.js`) via diretiva `@config` para limitar a varredura e compilação de classes a apenas templates e recursos úteis.
 - **Auditoria de Configurações**: Verificação estrutural do arquivo de template do `environment.json` contra o arquivo ativo de desenvolvimento.
+- **Otimização do CSS Inline**: O CSS compilado dinamicamente pelo Tailwind CDN no editor passa a filtrar regras redundantes já presentes no CSS global do sistema antes de gravar no banco, reduzindo o tamanho do CSS inline compilado.
+- **Pré-visualizador de HTML Unificado**: Geração da prévia de HTML externo (iframe) unificada na função `previewExternalHtmlConteudo`, compartilhada pelos módulos de destaques, menus e galerias.
+- **Curadoria de Galerias - Busca de Páginas**: O seletor estático de páginas dá lugar a um buscador AJAX com autocomplete e filtro de tipo (Página/Sistema/Ambos), isolado por imagem curada.
+- **Miniaturas da Curadoria de Galerias**: Miniaturas das imagens curadas ampliadas de 64×48 para 200×140 px para melhor visualização.
 
 ### Fixed
 - **Módulo publisher-pages**: Correção de bug no qual valores de campos HTML (editores Quill) eram perdidos em salvamentos sucessivos caso o campo não sofresse novas interações do usuário.
+- **Galerias - Imagens sem Link**: Imagens sem link configurado deixam de exibir o cursor de ponteiro e de capturar cliques no widget/prévia (classe `pointer-events-none cursor-default`).
+- **Menu Horizontal - Submenus**: Corrigido o padding interno dos submenus recursivos e o alinhamento da seta indicadora de submenu, que agora permanece na mesma linha do rótulo.
 
 ## [2.7.6] - 2026-02-19
 

@@ -189,7 +189,7 @@ $(document).ready(function () {
         // req-010 item 4: forçar refresh do preview interno do editor (substituição
         // por simulação) — complementa o widget-preview AJAX da aba externa.
         if (typeof window.html_editor_refresh_preview === 'function') {
-            setTimeout(function () { window.html_editor_refresh_preview(); }, 350);
+            setTimeout(function () { window.html_editor_refresh_preview(); }, 600);
         }
     });
 
@@ -356,7 +356,7 @@ $(document).ready(function () {
         }
         keys.forEach(function (varName) {
             var fieldName = schema.variable_mapping[varName];
-            var $row = $('<div class="ui label" style="margin:2px 0;display:inline-block;"></div>')
+            var $row = $('<div class="ui label" style="margin:2px 4px;display:inline-block;"></div>')
                 .html('[[item#' + varName + ']] <i class="exchange icon"></i> <span class="ui teal label">' + fieldName + '</span> <i class="delete icon" data-unlink="' + varName + '"></i>');
             $list.append($row);
         });

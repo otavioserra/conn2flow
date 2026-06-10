@@ -1,10 +1,12 @@
-<section class="conn2flow-gallery font-sans" data-id="1" data-title="gallery-slider" data-autoplay="@[[autoplay]]@" data-speed="@[[autoplay_speed]]@" data-loop="@[[loop]]@">
+<section class="conn2flow-gallery font-sans" data-id="1" data-title="gallery-slider" data-autoplay="@[[autoplay]]@" data-speed="@[[autoplay_speed]]@" data-loop="@[[loop]]@" style="margin-left: @[[margin_lateral]]@px; margin-right: @[[margin_lateral]]@px;">
     <style>.conn2flow-gallery .gallery-dot-active{background-color:#ffffff;opacity:1;}</style>
     <div class="relative rounded-lg overflow-hidden">
         <div class="gallery-slides-wrapper flex overflow-x-auto snap-x snap-mandatory scroll-smooth">
             <!-- item < -->
-            <figure class="gallery-slide snap-center shrink-0 w-full relative">
-                <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@" class="w-full h-96 object-cover">
+            <figure class="gallery-slide snap-center shrink-0 w-full relative" style="height: @[[height]]@px;">
+                <a href="@[[item#link-url]]@" target="@[[item#link-target]]@" class="block w-full h-full @[[item#link-css-classes]]@">
+                    <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@" class="w-full object-cover" style="height: @[[height]]@px;">
+                </a>
                 <figcaption class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent text-white px-6 py-4 text-sm">@[[item#legenda]]@</figcaption>
             </figure>
             <!-- item > -->
