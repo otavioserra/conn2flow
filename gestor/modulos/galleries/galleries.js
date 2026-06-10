@@ -157,6 +157,9 @@ $(document).ready(function () {
     var $template = $('select[name="template_id"]');
 
     var startTid = $template.val();
+    // Inicializa o framework CSS de forma síncrona a partir do data-framework da opção selecionada,
+    // garantindo que o previewer funcione no load mesmo quando o loadTemplate não é disparado (-modificado).
+    syncFrameworkFromTemplate();
     if (startTid) {
         if (startTid.endsWith('-modificado')) {
             // Mantém o HTML/CSS carregado do banco; não dispara o loadTemplate padrão.
@@ -187,6 +190,8 @@ $(document).ready(function () {
 
     $template.on('change', function () {
         var tid = $(this).val();
+        // Re-sincroniza o framework CSS da nova opção antes de qualquer preview.
+        syncFrameworkFromTemplate();
         toggleTemplateOptionsWrapper();
         if (tid) {
             if (tid.endsWith('-modificado')) {
@@ -260,6 +265,16 @@ $(document).ready(function () {
         addImage(dados);
         // Importante: NÃO fechar o modal — permitir seleção sequencial de várias imagens.
     });
+
+    // Lê o data-framework da opção de template selecionada e sincroniza a variável global de estilo.
+    // Necessário porque registros "-modificado" não disparam loadTemplate (que setaria o framework via AJAX),
+    // deixando gestor.html_editor.framework_css indefinido e quebrando o previewer (req-027 / DEC-040).
+    function syncFrameworkFromTemplate() {
+        var framework = $('#template_id option:selected').data('framework') || '';
+        if (typeof gestor !== 'undefined' && gestor.html_editor) {
+            gestor.html_editor.framework_css = framework;
+        }
+    }
 
     // ===== AJAX: carregar template
 

@@ -761,6 +761,7 @@ function menus_template_options($selected_id = null, $has_custom_code = false){
 		banco_campos_virgulas(Array(
 			'nome',
 			'id',
+			'framework_css',
 		))
 		,
 		'templates',
@@ -774,13 +775,15 @@ function menus_template_options($selected_id = null, $has_custom_code = false){
 	if($templates){
 		foreach($templates as $template){
 			$is_selected = ($selected_id && $template['id'] == $selected_id);
+			$framework = $template['framework_css'] ?? '';
 			// A opção original só fica selecionada quando não há código customizado no registro.
 			$selected_original = ($is_selected && !$has_custom_code) ? ' selected' : '';
-			$template_id_options .= '<option value="'.$template['id'].'"'.$selected_original.'>'.$template['nome'].'</option>';
+			$template_id_options .= '<option value="'.$template['id'].'" data-framework="'.$framework.'"'.$selected_original.'>'.$template['nome'].'</option>';
 			// Quando o registro tem HTML/CSS customizado, gera a opção "-modificado" já selecionada
 			// para preservar o código do banco sem disparar o loadTemplate padrão.
+			// A opção "-modificado" herda o mesmo data-framework do template base.
 			if($is_selected && $has_custom_code){
-				$template_id_options .= '<option value="'.$template['id'].'-modificado" selected>'.$template['nome'].' - (Modificado)</option>';
+				$template_id_options .= '<option value="'.$template['id'].'-modificado" data-framework="'.$framework.'" selected>'.$template['nome'].' - (Modificado)</option>';
 			}
 		}
 	}

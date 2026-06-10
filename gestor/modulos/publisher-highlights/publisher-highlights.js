@@ -155,9 +155,13 @@ $(document).ready(function () {
 
     if ($publisher.val()) loadPublisher($publisher.val());
     var startTid = $template.val();
+    // req-027: inicializa o framework CSS de forma síncrona a partir do data-framework da opção selecionada.
+    syncFrameworkFromTemplate();
     if (startTid) {
         if (startTid.endsWith('-modificado')) {
             // req-026: mantém o HTML/CSS carregado do banco; não dispara o loadTemplate padrão.
+            // req-027: extrai as variáveis [[item#X]] localmente do HTML do banco para popular o mapeamento.
+            extractVariablesFromHtml(initialHtml);
             setTimeout(function () { scheduleWidgetPreview(true); }, 600);
         } else {
             loadTemplate(startTid);
@@ -198,6 +202,8 @@ $(document).ready(function () {
 
     $template.on('change', function () {
         var tid = $(this).val();
+        // req-027: re-sincroniza o framework CSS da nova opção antes de qualquer preview.
+        syncFrameworkFromTemplate();
         availableItemVars = [];
         renderItemVars();
         syncEditorVariables();
@@ -207,6 +213,8 @@ $(document).ready(function () {
                 // req-026: restaura o HTML/CSS original do registro (cacheado do banco) sem AJAX.
                 if (typeof window.html_editor_set_html === 'function') window.html_editor_set_html(initialHtml);
                 if (typeof window.html_editor_set_css === 'function') window.html_editor_set_css(initialCss);
+                // req-027: re-extrai as variáveis [[item#X]] do HTML restaurado para popular o mapeamento.
+                extractVariablesFromHtml(initialHtml);
                 setTimeout(function () { scheduleWidgetPreview(true, true); }, 150);
             } else {
                 loadTemplate(tid);
@@ -285,6 +293,37 @@ $(document).ready(function () {
             }
         });
         $.ajax(req);
+    }
+
+    // Lê o data-framework da opção de template selecionada e sincroniza a variável global de estilo.
+    // Necessário porque registros "-modificado" não disparam loadTemplate (que setaria o framework via AJAX),
+    // deixando gestor.html_editor.framework_css indefinido e quebrando o previewer (req-027 / DEC-040).
+    function syncFrameworkFromTemplate() {
+        var framework = $('#template_id option:selected').data('framework') || '';
+        if (typeof gestor !== 'undefined' && gestor.html_editor) {
+            gestor.html_editor.framework_css = framework;
+        }
+    }
+
+    // Extrai as variáveis [[item#X]] diretamente do HTML (client-side) e repopula o painel de
+    // mapeamento. Usado em registros "-modificado", cujo HTML vem do banco e não passa pelo
+    // template-load AJAX que normalmente preencheria availableItemVars (req-027 / DEC-040).
+    // availableItemVars é uma lista de objetos { id }, consumida por renderItemVars/syncEditorVariables.
+    function extractVariablesFromHtml(htmlContent) {
+        var vars = [];
+        var seen = {};
+        var regex = /\[\[item#([a-zA-Z0-9_\-]+)\]\]/g;
+        var match;
+        while ((match = regex.exec(htmlContent || '')) !== null) {
+            var varName = match[1];
+            if (!seen[varName]) {
+                seen[varName] = true;
+                vars.push({ id: varName });
+            }
+        }
+        availableItemVars = vars;
+        renderItemVars();
+        syncEditorVariables();
     }
 
     // ===== AJAX: carregar template (extrai item#X do html + carrega html/css no editor)

@@ -39,9 +39,28 @@
   - O agente no modo planejador/arquiteto atua como Engenheiro Chefe. Ele não deve realizar modificações diretas em arquivos de código-fonte da aplicação (PHP, HTML, JS, CSS).
   - Suas responsabilidades são limitadas a criar e atualizar especificações em `sdd/human-requests/`, documentar decisões técnicas no `DECISION-LOG.md`, gerenciar o `BATCH-INDEX.md` e registrar planos. As alterações de código são papel exclusivo do Engenheiro Executor.
 
+- **Arquivamento Histórico do SDD (Otimização de Contexto)**:
+  - Para evitar o crescimento descontrolado dos arquivos do SDD (que resulta em alto consumo de tokens e perda de eficiência no contexto de processamento de IA), adota-se a limpeza periódica.
+  - Devem ser mantidos apenas os últimos 10 itens correntes em cada arquivo. Os itens mais antigos serão movidos para subpastas `/archive/` dentro de cada conceito (ex: `sdd/decisions/archive/decisions-001-030.md`).
+  - Os arquivos correntes principais devem manter índices tabulares descritivos de 1 linha por item arquivado apontando para o arquivo histórico correspondente.
+
+---
+
+## Restrições Técnicas
+
+- **Placeholder e Notação de Variáveis**:
+  - A formatação oficial de placeholders de itens no template do módulo de destaques é `[[item#NOME_DA_VARIAVEL]]` (sem arrobas nas pontas).
+  - As expressões regulares (regex) no backend (PHP) e frontend (JS) de renderização ou extração de variáveis devem sempre refletir esta notação para que os valores reais das publicações sejam preenchidos em runtime.
+
+- **Preservação de Templates Modificados e Framework CSS**:
+  - Quando um template possui alterações customizadas no banco de dados, gera-se a opção sufixada `[template_id]-modificado`. O JS faz cache dos códigos e bloqueia a chamada AJAX de template padrão.
+  - Para evitar a quebra do pré-visualizador (`widget-preview`), o PHP deve sempre expor o `framework_css` nos options de modelo através do atributo `data-framework` e o JS deve ler e sincronizar este atributo síncronamente no `ready` e no evento `change`.
+  - No Highlights, o JS deve extrair as variáveis `[[item#X]]` localmente via RegExp a partir do `initialHtml` para manter a aba lateral de mapeamento de campos povoada na carga do template customizado.
+
 ---
 
 ## Notas Gerais
 
 - As notas deste arquivo foram registradas pelo agente IA sob autorização expressa do Engenheiro Chefe Humano na sessão de 04/06/2026 para reter aprendizados de relacionamento de pair programming.
 - Adicionado item sobre a divisão de papéis em 05/06/2026.
+- Adicionadas regras de arquivamento do SDD e preservação de customizações de templates em 10/06/2026.
