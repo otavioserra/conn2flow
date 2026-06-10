@@ -54,11 +54,11 @@
                     "id": "galleries-carousel",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "1bdf1ebbe0d305f26503c950d684cbf6",
-                        "css": "",
-                        "combined": "1bdf1ebbe0d305f26503c950d684cbf6"
+                        "html": "4777a8ec90c8e1eab346f8ea092ab464",
+                        "css": "bb97520c4c9f21b01a7889f507be0810",
+                        "combined": "b412d354ceb2b506d394939300d4ca0f"
                     }
                 },
                 {
@@ -78,11 +78,11 @@
                     "id": "galleries-slider",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "6498e8a89b179b47d5f65b3d672ed210",
-                        "css": "",
-                        "combined": "6498e8a89b179b47d5f65b3d672ed210"
+                        "html": "66e293273f90964c04853ab6b72c27d3",
+                        "css": "1f9b0bae0cb2fbc149e45797cc5c50c0",
+                        "combined": "e9c10ffead6d5996a6b62d9b4e7413a4"
                     }
                 }
             ],
@@ -200,11 +200,11 @@
                     "id": "galleries-carousel",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "06b03fa71e175c1af0e39f54788599cf",
-                        "css": "",
-                        "combined": "06b03fa71e175c1af0e39f54788599cf"
+                        "html": "2a24469c4910c53fe80318c01b7453b5",
+                        "css": "bb97520c4c9f21b01a7889f507be0810",
+                        "combined": "ad46b5580fb16f3bcf2151ba68ec1ae1"
                     }
                 },
                 {
@@ -224,11 +224,11 @@
                     "id": "galleries-slider",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "346427d78fe23430a11e9b5ba992fd4e",
-                        "css": "",
-                        "combined": "346427d78fe23430a11e9b5ba992fd4e"
+                        "html": "01a45f443c54e5f5c04b0ed5c6a1c39f",
+                        "css": "1f9b0bae0cb2fbc149e45797cc5c50c0",
+                        "combined": "f4d98ddb7e779c0b4823d970656ab1db"
                     }
                 }
             ],

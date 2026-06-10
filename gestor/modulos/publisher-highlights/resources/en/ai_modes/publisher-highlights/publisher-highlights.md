@@ -11,6 +11,15 @@ Todo o trecho do HTML que representa UM item (ex: um card, uma linha de lista, u
 
 Em runtime, o motor irá repetir o conteúdo entre `<!-- item < -->` e `<!-- item > -->` uma vez para cada publicação a ser exibida no destaque, substituindo cada placeholder `@[[item#nome_da_variavel]]@` pelo valor real do campo correspondente da publicação. Variáveis fora desse bloco NÃO são repetidas (servem para o cabeçalho, título da seção, footer etc).
 
+OPTIONAL NO-ITEMS BLOCK:
+If the highlight has no publications to display, the template engine will optionally render an empty-state (fallback) block. If you find it necessary, or if the user requests it, wrap that snippet in the optional block:
+
+```
+<!-- no-item < -->
+...HTML shown when there are no publications/items...
+<!-- no-item > -->
+```
+
 REGRA DE FORMATAÇÃO DE PLACEHOLDERS:
 - Use sempre o formato `[[item#nome_da_variavel]]` (item é literal/estático; nome_da_variavel é dinâmico).
 - Use a versão sem `@` para o retorno gerado por você — o pipeline interno converte para `@[[item#nome_da_variavel]]@` automaticamente ao salvar.
@@ -23,6 +32,8 @@ EXEMPLOS DE VARIÁVEIS COMUNS:
 - `[[item#url]]` — URL da página final
 - `[[item#data]]` — data formatada
 - `[[item#categoria]]`, `[[item#autor]]`, `[[item#status]]` — campos opcionais conforme o publicador
+
+The user may also request and specify additional custom variables beyond the ones listed in the available variables section. In these cases, generate them following the same pattern `[[item#additional_variable_name]]`.
 
 Você pode criar textos e imagens fictícios além desses marcadores (estilo "Lorem ipsum") conforme orientado pelo usuário, mas se ele pedir algo mais direto, mantenha somente os placeholders. Devolver o código HTML usando markdown ```html ``` e caso precise de CSS extra, devolva o mesmo com markdown ```css ```.
 

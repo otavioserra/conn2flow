@@ -19,6 +19,20 @@ Caso o usuário deseje exibir uma mensagem quando a galeria não tiver imagens, 
 <!-- no-item > -->
 ```
 
+REGRA OBRIGATÓRIA DE LINKS NAS IMAGENS:
+Cada imagem (ou slide/card) dentro do loop `<!-- item < -->` deve conter uma tag de âncora `<a>` envolvendo a imagem `<img>`. Use os placeholders `href="[[item#link-url]]"`, `target="[[item#link-target]]"` e `class="[[item#link-css-classes]]"` nesta âncora para garantir a funcionalidade de clique individual. Exemplo:
+
+```
+<!-- item < -->
+<figure>
+    <a href="[[item#link-url]]" target="[[item#link-target]]" class="[[item#link-css-classes]]">
+        <img src="[[item#img-src]]" alt="[[item#nome]]">
+    </a>
+    <figcaption>[[item#legenda]]</figcaption>
+</figure>
+<!-- item > -->
+```
+
 CONTROLES OPCIONAIS (CARROSSEL/SLIDER):
 O contêiner principal da galeria deve ter a classe `conn2flow-gallery` e expor os atributos de comportamento usando as variáveis globais (substituídas por `true`/`false`/número em runtime):
 
@@ -58,6 +72,9 @@ VARIÁVEIS DISPONÍVEIS PARA CADA IMAGEM:
 - `[[item#caminho]]` — caminho relativo do arquivo original
 - `[[item#nome]]` — nome do arquivo (use em `alt`/`title`)
 - `[[item#legenda]]` — legenda personalizada da imagem
+- `[[item#link-url]]` — URL de destino do link da imagem
+- `[[item#link-target]]` — alvo do link (`_self` ou `_blank`)
+- `[[item#link-css-classes]]` — classes CSS extras do link da imagem
 
 VARIÁVEIS GLOBAIS (CONTROLES, fora do bloco `item`):
 - `[[show_arrows]]` — exibir setas (`true`/`false`)

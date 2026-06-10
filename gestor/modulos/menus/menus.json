@@ -42,11 +42,11 @@
                     "id": "menus-horizontal-navbar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "ff12e185f0d7c7074a11ddfafdb80f3b",
-                        "css": "",
-                        "combined": "ff12e185f0d7c7074a11ddfafdb80f3b"
+                        "html": "af6a9df7355b033ce7ba594c05c9beb1",
+                        "css": "9c8a7eedf3f858634d69e180597797d4",
+                        "combined": "2ed91e4ddaffb77d16da4d1f66bf623c"
                     }
                 },
                 {
@@ -217,11 +217,11 @@
                     "id": "menus-horizontal-navbar",
                     "target": "menus",
                     "framework_css": "tailwindcss",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "730d81e400d4f0b8a3d9c3af01d11a5c",
-                        "css": "",
-                        "combined": "730d81e400d4f0b8a3d9c3af01d11a5c"
+                        "html": "b48307e8b2642d65520b1bfe99de0bbd",
+                        "css": "9c8a7eedf3f858634d69e180597797d4",
+                        "combined": "c75aabb8e2ec79e334e8352dd3364ee5"
                     }
                 },
                 {

@@ -1051,16 +1051,61 @@ Se não houver validação executável no slice atual, o batch deve registrar ex
   - YAML de `release-gestor.yml`: alteração restrita ao `body:` (block scalar literal), indentação de 10 espaços preservada; validação por parser não executada (js-yaml/PyYAML indisponíveis no ambiente).
 - Arquivos alterados:
   - `gestor/modulos/galleries/galleries.js` (miniatura 200×140; autocomplete AJAX de páginas por imagem: `buildPageAutocompleteField`, `runGalleryPageSearch`, `renderGalleryPageSuggestions`, `resolvePageNameLocal`, `fetchPageName` + listeners isolados por `data-id`).
-  - `gestor/modulos/galleries/galleries.php` (endpoints `pages-search`/`pages-fetch` no switch AJAX + funções `galleries_ajax_pages_search`/`galleries_ajax_pages_fetch`).
-  - `gestor/modulos/galleries/galleries.widget.php` (classe `pointer-events-none cursor-default` para `link_type === 'nenhum'`).
-  - `gestor/modulos/menus/resources/{pt-br,en}/templates/menus-horizontal-navbar/*.html` (regra do submenu para flex/space-between).
-  - `CHANGELOG.md`, `CHANGELOG-PT-BR.md`, `README.md`, `README-PT-BR.md` (data v2.8.0 e descritivos).
-  - `.github/workflows/release-gestor.yml` (`body` do release).
-- Testes manuais/runtime pendentes com o operador (após `🗃️ Projects - Update => Core`):
-  - Verificar autocomplete AJAX de páginas ao escolher Tipo Página na imagem curada da galeria (Network mostra `pages-search`; filtro Página/Sistema/Ambos recarrega a busca; clique na sugestão preenche o nome amigável e salva slug/URL).
-  - Verificar se imagens sem link não exibem cursor de mão/ponteiro no widget ou preview.
-  - Verificar setas dos submenus nos níveis filhos do navbar horizontal (mesma linha do rótulo).
-  - Confirmar que as miniaturas no painel aparecem maiores (200×140px).
-- Decisão registrada: [DEC-038](../decisions/DECISION-LOG.md#dec-038---2026-06-10---accepted)
+  - `gestor/modulos/galleries/galleries.php` (endpoints `pages-search`/`pages-fetch` no switch AJAX + funções `galleries_ajax_pages_search`/`galleries_ajax_pages_fetch` clonados do Menus).
+- [x] **Mecanismo de Preservação de Template Modificado (PHP/JS)**:
+  - [x] **Módulo Menus**:
+    - [x] `menus.php`: `menus_template_options` recebe `$has_custom_code` e gera `<option value="[id]-modificado">` se verdadeiro.
+    - [x] `menus.js`: Cache de `initialHtml`/`initialCss`. No load, se `-modificado` existir, seleciona ele e não dispara `loadTemplate`. No event change, se for `-modificado` restaura cache. No submit e no `currentSchemaOut()`, remove o sufixo `-modificado`.
+  - [x] **Módulo Galerias**:
+    - [x] `galleries.php`: `galleries_template_options` gera a opção `-modificado`.
+    - [x] `galleries.js`: Lógica idêntica de cache, inicialização e remoção do sufixo no submit/serialização.
+  - [x] **Módulo Destaques**:
+    - [x] `publisher-highlights.php`: `publisher_highlights_template_options` gera a opção `-modificado`.
+    - [x] `publisher-highlights.js`: Lógica idêntica de cache, inicialização. No load e change da opção `-modificado`, extrai localmente as variáveis `[[item#X]]` do `initialHtml` para manter a aba de mapeamento funcional.
+
+### Evidência de Validação (BATCH-026)
+
+- [x] Validação estática de sintaxe executada:
+  - [x] `node --check gestor/modulos/menus/menus.js` → OK (sem erros de sintaxe)
+  - [x] `node --check gestor/modulos/galleries/galleries.js` → OK (sem erros de sintaxe)
+  - [x] `node --check gestor/modulos/publisher-highlights/publisher-highlights.js` → OK (sem erros de sintaxe)
+  - [x] `php -l gestor/modulos/menus/menus.php` → `No syntax errors detected`
+  - [x] `php -l gestor/modulos/galleries/galleries.php` → `No syntax errors detected`
+  - [x] `php -l gestor/modulos/publisher-highlights/publisher-highlights.php` → `No syntax errors detected`
+- [x] Testes manuais/runtime executados pelo operador:
+  - [x] Editar um registro de cada módulo alterando o HTML/CSS e salvar. Reabrir e confirmar que a opção do select indica `- (Modificado)` e o editor não foi sobrescrito pelo original.
+  - [x] Na tela de edição de cada módulo, trocar para o modelo original e confirmar que o AJAX `template-load` sobrescreve o editor. Trocar de volta para `- (Modificado)` e confirmar que o HTML/CSS modificado do registro é restaurado.
+  - [x] Clonar um registro modificado de cada módulo e confirmar que o clone abre com a opção `- (Modificado)` e o editor mantém as alterações da origem.
+  - [x] Salvar o registro editado/clone e verificar no banco de dados que a coluna `template_id` e o `fields_schema` foram persistidos de forma limpa (sem o sufixo `-modificado`).
+  - [x] Rodar uma consulta de IA no destaques e verificar que ela gera o bloco `<!-- no-item < -->` e suporta variáveis extras.
+  - [x] Rodar uma consulta de IA nas galerias e confirmar que a IA gera as tags `<a>` de âncora envolvendo as imagens com os placeholders de link (`[[item#link-url]]`, `[[item#link-target]]`, `[[item#link-css-classes]]`).
+- [x] Decisão registrada: [DEC-039](../decisions/DECISION-LOG.md#dec-039---2026-06-10---accepted)
+
+
+## BATCH-027 - Resolução de Framework CSS e Variáveis de Destaques de Modelo Modificado (req-027)
+
+- [ ] **Resolução de Framework CSS do Template (`framework_css`)**:
+  - [ ] Para evitar que o pré-visualizador (`live widget-preview`) falhe ao abrir um modelo `-modificado` devido à falta do framework CSS, o PHP deve selecionar o `framework_css` dos templates e disponibilizá-lo como um atributo de dados `data-framework` nos elementos `<option>` de templates.
+  - [ ] O JavaScript deve ler este atributo no page load (inicialização) e em eventos `change` para inicializar a variável `gestor.html_editor.framework_css` de forma síncrona nos módulos:
+    - [ ] `menus.js`
+    - [ ] `galleries.js`
+    - [ ] `publisher-highlights.js`
+- [ ] **Extração de Variáveis em Destaques (Highlights)**:
+  - [ ] No JavaScript de `publisher-highlights.js`, ao carregar/re-selecionar a variante `-modificado`, as variáveis `[[item#X]]` devem ser extraídas localmente do HTML do banco de dados (`initialHtml` ou cached HTML) usando expressão regular client-side para manter o painel de mapeamento de variáveis populado, chamando `renderItemVars()` e `syncEditorVariables()`.
+
+### Evidência de Validação (BATCH-027)
+
+- [ ] Validação estática de sintaxe executada:
+  - [ ] `node --check gestor/modulos/menus/menus.js`
+  - [ ] `node --check gestor/modulos/galleries/galleries.js`
+  - [ ] `node --check gestor/modulos/publisher-highlights/publisher-highlights.js`
+  - [ ] `php -l gestor/modulos/menus/menus.php`
+  - [ ] `php -l gestor/modulos/galleries/galleries.php`
+  - [ ] `php -l gestor/modulos/publisher-highlights/publisher-highlights.php`
+- [ ] Testes manuais/runtime pendentes com o operador:
+  - [ ] Confirmar que o pré-visualizador (`live widget-preview`) funciona perfeitamente logo no carregamento inicial da edição de um registro com modelo `-modificado` nos três módulos.
+  - [ ] Mudar o modelo para o original e de volta para `-modificado`, conferindo que o previewer renderiza com o framework CSS correto (`gestor.html_editor.framework_css`).
+  - [ ] Abrir um registro de Destaques em `-modificado` e verificar que a aba de mapeamento de variáveis de item é populada instantaneamente com as variáveis extraídas localmente via regex.
+- [ ] Decisão registrada: [DEC-040](../decisions/DECISION-LOG.md#dec-040---2026-06-10---accepted)
 
 

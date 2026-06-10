@@ -79,6 +79,11 @@ $(document).ready(function () {
         : {};
     if (!schema.order_by) schema.order_by = 'date_desc';
 
+    // Cache do HTML/CSS originais carregados do banco no page load (req-026 / DEC-039).
+    // Usado para restaurar o editor ao voltar para a opção "-modificado" do dropdown de modelos.
+    var initialHtml = $('textarea.codemirror-html').val() || '';
+    var initialCss = $('textarea.codemirror-css').val() || '';
+
     var availableItemVars = []; // [{id:'titulo'}, ...]   extraídas do template HTML
     var availablePublisherFields = []; // [{id:'titulo', name:'Título', type:'text'}, ...]
 
@@ -99,8 +104,12 @@ $(document).ready(function () {
     // req-010 item 1: restaurar template_id a partir do schema (não há coluna dedicada
     // na tabela publisher_highlights — o valor vive dentro de fields_schema).
     if (schema.template_id) {
-        $('#template_id').val(schema.template_id);
-        setTimeout(function () { $('#template_id').dropdown('set selected', schema.template_id); }, 50);
+        // req-026: se houver a variante "-modificado" no dropdown (registro com código
+        // customizado), seleciona-a para preservar o HTML/CSS do banco.
+        var modId = schema.template_id + '-modificado';
+        var targetId = $('#template_id option[value="' + modId + '"]').length ? modId : schema.template_id;
+        $('#template_id').val(targetId);
+        setTimeout(function () { $('#template_id').dropdown('set selected', targetId); }, 50);
     }
 
     // ===== AJAX padrão
@@ -145,8 +154,17 @@ $(document).ready(function () {
     var $template = $('select[name="template_id"]');
 
     if ($publisher.val()) loadPublisher($publisher.val());
-    if ($template.val()) loadTemplate($template.val());
-    else setTimeout(function () { scheduleWidgetPreview(true); }, 600);
+    var startTid = $template.val();
+    if (startTid) {
+        if (startTid.endsWith('-modificado')) {
+            // req-026: mantém o HTML/CSS carregado do banco; não dispara o loadTemplate padrão.
+            setTimeout(function () { scheduleWidgetPreview(true); }, 600);
+        } else {
+            loadTemplate(startTid);
+        }
+    } else {
+        setTimeout(function () { scheduleWidgetPreview(true); }, 600);
+    }
 
     toggleManualWrapper();
     toggleOrderByWrapper();
@@ -184,8 +202,18 @@ $(document).ready(function () {
         renderItemVars();
         syncEditorVariables();
         toggleTemplateOptionsWrapper();
-        if (tid) loadTemplate(tid);
-        else scheduleWidgetPreview(false);
+        if (tid) {
+            if (tid.endsWith('-modificado')) {
+                // req-026: restaura o HTML/CSS original do registro (cacheado do banco) sem AJAX.
+                if (typeof window.html_editor_set_html === 'function') window.html_editor_set_html(initialHtml);
+                if (typeof window.html_editor_set_css === 'function') window.html_editor_set_css(initialCss);
+                setTimeout(function () { scheduleWidgetPreview(true, true); }, 150);
+            } else {
+                loadTemplate(tid);
+            }
+        } else {
+            scheduleWidgetPreview(false);
+        }
         // req-010 item 4: forçar refresh do preview interno do editor (substituição
         // por simulação) — complementa o widget-preview AJAX da aba externa.
         if (typeof window.html_editor_refresh_preview === 'function') {
@@ -218,8 +246,18 @@ $(document).ready(function () {
         schema.rule = $('#rule').val() || 'latest';
         schema.count = parseInt($('#count').val(), 10) || 4;
         schema.order_by = $('#order_by').val() || 'date_desc';
+        // req-026: limpar o sufixo "-modificado" do input nativo do template antes de salvar.
+        var $tempInput = $('#template_id');
+        var tmplVal = $tempInput.val() || '';
+        if (tmplVal.endsWith('-modificado')) {
+            $tempInput.val(tmplVal.substring(0, tmplVal.length - 11));
+        }
         // req-010 item 1: persistir template_id dentro do fields_schema (não há coluna dedicada)
-        schema.template_id = $('#template_id').val() || '';
+        var tid = $('#template_id').val() || '';
+        if (tid.endsWith('-modificado')) {
+            tid = tid.substring(0, tid.length - 11);
+        }
+        schema.template_id = tid;
 
         // req-014: a curadoria manual vive em schema.selected_items (mantida pelas tags e pelo
         // Sortable). Para regras não-manuais, enviar selected_items vazio via cópia, sem destruir

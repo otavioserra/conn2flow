@@ -146,7 +146,7 @@ function menus_adicionar(){
 
 	// ===== Templates para seleção (dropdown template_id)
 
-	menus_template_options(null);
+	menus_template_options(null, false);
 
 	// ===== Publicadores para o tipo de item `publicador` (req-018 / DEC-025)
 
@@ -413,7 +413,7 @@ function menus_editar(){
 		$_GESTOR['pagina'] .= '<script>var menus_initial_schema = '.$schema_json.';</script>';
 
 		// ===== Template dropdown
-		menus_template_options($fields_schema_decoded['template_id'] ?? null);
+		menus_template_options($fields_schema_decoded['template_id'] ?? null, (!empty($html) || !empty($css)));
 
 		// ===== Publicadores para o tipo de item `publicador` (req-018 / DEC-025)
 		menus_publisher_options(null);
@@ -623,7 +623,7 @@ function menus_clonar(){
 		$schema_json = json_encode($fields_schema_decoded);
 		$_GESTOR['pagina'] .= '<script>var menus_initial_schema = '.$schema_json.';</script>';
 
-		menus_template_options($fields_schema_decoded['template_id'] ?? null);
+		menus_template_options($fields_schema_decoded['template_id'] ?? null, (!empty($html) || !empty($css)));
 
 		// ===== Publicadores para o tipo de item `publicador` (req-018 / DEC-025)
 		menus_publisher_options(null);
@@ -753,7 +753,7 @@ function menus_interfaces_padroes(){
  * com `target = 'menus'`. Marca o `id_selecionado` como selected quando informado.
  * Também substitui `#template_placeholder_option#` pelo placeholder padrão de admin-templates.
  */
-function menus_template_options($selected_id = null){
+function menus_template_options($selected_id = null, $has_custom_code = false){
 	global $_GESTOR;
 
 	$templates = banco_select_name
@@ -773,8 +773,15 @@ function menus_template_options($selected_id = null){
 	$template_id_options = '';
 	if($templates){
 		foreach($templates as $template){
-			$selected = ($selected_id && $template['id'] == $selected_id) ? ' selected' : '';
-			$template_id_options .= '<option value="'.$template['id'].'"'.$selected.'>'.$template['nome'].'</option>';
+			$is_selected = ($selected_id && $template['id'] == $selected_id);
+			// A opção original só fica selecionada quando não há código customizado no registro.
+			$selected_original = ($is_selected && !$has_custom_code) ? ' selected' : '';
+			$template_id_options .= '<option value="'.$template['id'].'"'.$selected_original.'>'.$template['nome'].'</option>';
+			// Quando o registro tem HTML/CSS customizado, gera a opção "-modificado" já selecionada
+			// para preservar o código do banco sem disparar o loadTemplate padrão.
+			if($is_selected && $has_custom_code){
+				$template_id_options .= '<option value="'.$template['id'].'-modificado" selected>'.$template['nome'].' - (Modificado)</option>';
+			}
 		}
 	}
 

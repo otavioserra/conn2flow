@@ -1,5 +1,6 @@
-<section class="conn2flow-gallery font-sans p-6" data-id="1" data-title="gallery-carousel" data-autoplay="@[[autoplay]]@" data-speed="@[[autoplay_speed]]@" data-loop="@[[loop]]@" style="margin-left: @[[margin_lateral]]@px; margin-right: @[[margin_lateral]]@px;">
-    <style>.conn2flow-gallery .gallery-dot-active{background-color:#2563eb;}</style>
+<section class="conn2flow-gallery font-sans p-6" data-id="1" data-title="gallery-carousel"
+    data-autoplay="@[[autoplay]]@" data-speed="@[[autoplay_speed]]@" data-loop="@[[loop]]@"
+    style="margin-left: @[[margin_lateral]]@px; margin-right: @[[margin_lateral]]@px;">
     <div class="relative">
         <div class="gallery-slides-wrapper flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 scroll-smooth">
             <!-- item < -->
@@ -16,13 +17,19 @@
             <!-- no-item > -->
         </div>
         <!-- controls-arrows < -->
-        <button type="button" class="gallery-prev absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-10 h-10 shadow flex items-center justify-center text-xl" aria-label="Previous">&#8249;</button>
-        <button type="button" class="gallery-next absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-10 h-10 shadow flex items-center justify-center text-xl" aria-label="Next">&#8250;</button>
+        <button type="button"
+            class="gallery-prev absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-10 h-10 shadow flex items-center justify-center text-xl"
+            aria-label="Previous">&#8249;</button>
+        <button type="button"
+            class="gallery-next absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full w-10 h-10 shadow flex items-center justify-center text-xl"
+            aria-label="Next">&#8250;</button>
         <!-- controls-arrows > -->
         <!-- controls-dots < -->
         <div class="gallery-dots flex justify-center gap-2 mt-3">
             <!-- dot-item < -->
-            <button type="button" class="gallery-dot w-2.5 h-2.5 rounded-full bg-gray-300 transition-colors @[[dot#active-class]]@" data-index="@[[dot#index]]@" aria-label="Go to slide @[[dot#index]]@"></button>
+            <button type="button"
+                class="gallery-dot w-2.5 h-2.5 rounded-full bg-gray-300 transition-colors @[[dot#active-class]]@"
+                data-index="@[[dot#index]]@" aria-label="Go to slide @[[dot#index]]@"></button>
             <!-- dot-item > -->
         </div>
         <!-- controls-dots > -->

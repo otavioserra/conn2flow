@@ -170,7 +170,7 @@ function publisher_highlights_adicionar(){
 
 	// ===== Templates para seleção (dropdown template_id)
 
-	publisher_highlights_template_options(null);
+	publisher_highlights_template_options(null, false);
 
 	// ===== Schema inicial vazio para o JS reidratar UI
 	// req-010 item 1: template_id passa a viver dentro do fields_schema (sem coluna dedicada).
@@ -452,7 +452,7 @@ function publisher_highlights_editar(){
 		publisher_highlights_publisher_options($publisher_id);
 
 		// ===== Template dropdown
-		publisher_highlights_template_options($fields_schema_decoded['template_id'] ?? null);
+		publisher_highlights_template_options($fields_schema_decoded['template_id'] ?? null, (!empty($html) || !empty($css)));
 
 		// ===== HTML Editor (alvo publisher-highlights) — edição do template HTML/CSS no banco.
 		// A biblioteca html-editor é incluída automaticamente via `bibliotecas` no manifesto.
@@ -709,7 +709,7 @@ function publisher_highlights_clonar(){
 		$_GESTOR['pagina'] .= '<script>var publisher_highlights_initial_schema = '.$schema_json.';</script>';
 
 		publisher_highlights_publisher_options($publisher_id);
-		publisher_highlights_template_options($fields_schema_decoded['template_id'] ?? null);
+		publisher_highlights_template_options($fields_schema_decoded['template_id'] ?? null, (!empty($html) || !empty($css)));
 
 		// HTML/CSS de origem precisam viajar no submit (campos ocultos no formulário de clonar)
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#html-original#',htmlspecialchars($html, ENT_QUOTES));
@@ -923,7 +923,7 @@ function publisher_highlights_publisher_options($selected_id = null){
  * Também substitui `#template_placeholder_option#` pelo placeholder padrão de admin-templates
  * (req-004 item 2 e 3).
  */
-function publisher_highlights_template_options($selected_id = null){
+function publisher_highlights_template_options($selected_id = null, $has_custom_code = false){
 	global $_GESTOR;
 
 	$templates = banco_select_name
@@ -943,8 +943,15 @@ function publisher_highlights_template_options($selected_id = null){
 	$template_id_options = '';
 	if($templates){
 		foreach($templates as $template){
-			$selected = ($selected_id && $template['id'] == $selected_id) ? ' selected' : '';
-			$template_id_options .= '<option value="'.$template['id'].'"'.$selected.'>'.$template['nome'].'</option>';
+			$is_selected = ($selected_id && $template['id'] == $selected_id);
+			// A opção original só fica selecionada quando não há código customizado no registro.
+			$selected_original = ($is_selected && !$has_custom_code) ? ' selected' : '';
+			$template_id_options .= '<option value="'.$template['id'].'"'.$selected_original.'>'.$template['nome'].'</option>';
+			// Quando o registro tem HTML/CSS customizado, gera a opção "-modificado" já selecionada
+			// para preservar o código do banco sem disparar o loadTemplate padrão.
+			if($is_selected && $has_custom_code){
+				$template_id_options .= '<option value="'.$template['id'].'-modificado" selected>'.$template['nome'].' - (Modificado)</option>';
+			}
 		}
 	}
 

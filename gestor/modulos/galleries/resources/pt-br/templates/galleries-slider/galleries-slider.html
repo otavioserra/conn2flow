@@ -1,13 +1,18 @@
-<section class="conn2flow-gallery font-sans" data-id="1" data-title="gallery-slider" data-autoplay="@[[autoplay]]@" data-speed="@[[autoplay_speed]]@" data-loop="@[[loop]]@" style="margin-left: @[[margin_lateral]]@px; margin-right: @[[margin_lateral]]@px;">
-    <style>.conn2flow-gallery .gallery-dot-active{background-color:#ffffff;opacity:1;}</style>
+<section class="conn2flow-gallery font-sans" data-id="1" data-title="gallery-slider" data-autoplay="@[[autoplay]]@"
+    data-speed="@[[autoplay_speed]]@" data-loop="@[[loop]]@"
+    style="margin-left: @[[margin_lateral]]@px; margin-right: @[[margin_lateral]]@px;">
     <div class="relative rounded-lg overflow-hidden">
         <div class="gallery-slides-wrapper flex overflow-x-auto snap-x snap-mandatory scroll-smooth">
             <!-- item < -->
             <figure class="gallery-slide snap-center shrink-0 w-full relative" style="height: @[[height]]@px;">
-                <a href="@[[item#link-url]]@" target="@[[item#link-target]]@" class="block w-full h-full @[[item#link-css-classes]]@">
-                    <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@" class="w-full object-cover" style="height: @[[height]]@px;">
+                <a href="@[[item#link-url]]@" target="@[[item#link-target]]@"
+                    class="block w-full h-full @[[item#link-css-classes]]@">
+                    <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@"
+                        class="w-full object-cover" style="height: @[[height]]@px;">
                 </a>
-                <figcaption class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent text-white px-6 py-4 text-sm">@[[item#legenda]]@</figcaption>
+                <figcaption
+                    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent text-white px-6 py-4 text-sm">
+                    @[[item#legenda]]@</figcaption>
             </figure>
             <!-- item > -->
             <!-- no-item < -->
@@ -15,13 +20,19 @@
             <!-- no-item > -->
         </div>
         <!-- controls-arrows < -->
-        <button type="button" class="gallery-prev absolute left-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gray-800 rounded-full w-11 h-11 shadow flex items-center justify-center text-2xl" aria-label="Anterior">&#8249;</button>
-        <button type="button" class="gallery-next absolute right-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gray-800 rounded-full w-11 h-11 shadow flex items-center justify-center text-2xl" aria-label="Próximo">&#8250;</button>
+        <button type="button"
+            class="gallery-prev absolute left-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gray-800 rounded-full w-11 h-11 shadow flex items-center justify-center text-2xl"
+            aria-label="Anterior">&#8249;</button>
+        <button type="button"
+            class="gallery-next absolute right-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gray-800 rounded-full w-11 h-11 shadow flex items-center justify-center text-2xl"
+            aria-label="Próximo">&#8250;</button>
         <!-- controls-arrows > -->
         <!-- controls-dots < -->
         <div class="gallery-dots absolute bottom-3 left-0 right-0 flex justify-center gap-2">
             <!-- dot-item < -->
-            <button type="button" class="gallery-dot w-2.5 h-2.5 rounded-full bg-white/60 transition-colors @[[dot#active-class]]@" data-index="@[[dot#index]]@" aria-label="Ir para o slide @[[dot#index]]@"></button>
+            <button type="button"
+                class="gallery-dot w-2.5 h-2.5 rounded-full bg-white/60 transition-colors @[[dot#active-class]]@"
+                data-index="@[[dot#index]]@" aria-label="Ir para o slide @[[dot#index]]@"></button>
             <!-- dot-item > -->
         </div>
         <!-- controls-dots > -->

@@ -19,6 +19,20 @@ If the user wants to show a message when the gallery has no images, wrap that sn
 <!-- no-item > -->
 ```
 
+MANDATORY IMAGE LINKS RULE:
+Each image (or slide/card) inside the `<!-- item < -->` loop must contain an anchor `<a>` tag wrapping the `<img>` element. Use the placeholders `href="[[item#link-url]]"`, `target="[[item#link-target]]"`, and `class="[[item#link-css-classes]]"` in this anchor to ensure individual click functionality. Example:
+
+```
+<!-- item < -->
+<figure>
+    <a href="[[item#link-url]]" target="[[item#link-target]]" class="[[item#link-css-classes]]">
+        <img src="[[item#img-src]]" alt="[[item#nome]]">
+    </a>
+    <figcaption>[[item#legenda]]</figcaption>
+</figure>
+<!-- item > -->
+```
+
 OPTIONAL CONTROLS (CAROUSEL/SLIDER):
 The main gallery container must have the `conn2flow-gallery` class and expose the behavior attributes using the global variables (replaced by `true`/`false`/number at runtime):
 
@@ -58,6 +72,9 @@ VARIABLES AVAILABLE FOR EACH IMAGE:
 - `[[item#caminho]]` — relative path of the original file
 - `[[item#nome]]` — file name (use in `alt`/`title`)
 - `[[item#legenda]]` — custom image caption
+- `[[item#link-url]]` — destination URL of the image link
+- `[[item#link-target]]` — link target (`_self` or `_blank`)
+- `[[item#link-css-classes]]` — extra CSS classes of the image link
 
 GLOBAL VARIABLES (CONTROLS, outside the `item` block):
 - `[[show_arrows]]` — show arrows (`true`/`false`)

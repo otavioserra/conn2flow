@@ -231,7 +231,7 @@ function galleries_adicionar(){
 
 	// ===== Templates para seleção (dropdown template_id)
 
-	galleries_template_options(null);
+	galleries_template_options(null, false);
 
 	// ===== ImagePick (modal do gerenciador de arquivos para seleção em lote)
 
@@ -500,7 +500,7 @@ function galleries_editar(){
 		$_GESTOR['pagina'] .= '<script>var galleries_initial_schema = '.$schema_json.';</script>';
 
 		// ===== Template dropdown
-		galleries_template_options($fields_schema_decoded['template_id'] ?? null);
+		galleries_template_options($fields_schema_decoded['template_id'] ?? null, (!empty($html) || !empty($css)));
 
 		// ===== ImagePick (modal do gerenciador de arquivos para seleção em lote)
 		galleries_imagepick_setup();
@@ -711,7 +711,7 @@ function galleries_clonar(){
 		$schema_json = json_encode($fields_schema_decoded);
 		$_GESTOR['pagina'] .= '<script>var galleries_initial_schema = '.$schema_json.';</script>';
 
-		galleries_template_options($fields_schema_decoded['template_id'] ?? null);
+		galleries_template_options($fields_schema_decoded['template_id'] ?? null, (!empty($html) || !empty($css)));
 
 		// ===== ImagePick (modal do gerenciador de arquivos para seleção em lote)
 		galleries_imagepick_setup();
@@ -842,7 +842,7 @@ function galleries_interfaces_padroes(){
  * Popula `#template_id_options#` no template com os options do dropdown de templates
  * com `target = 'galleries'`. Marca o `id_selecionado` como selected quando informado.
  */
-function galleries_template_options($selected_id = null){
+function galleries_template_options($selected_id = null, $has_custom_code = false){
 	global $_GESTOR;
 
 	$templates = banco_select_name
@@ -862,8 +862,15 @@ function galleries_template_options($selected_id = null){
 	$template_id_options = '';
 	if($templates){
 		foreach($templates as $template){
-			$selected = ($selected_id && $template['id'] == $selected_id) ? ' selected' : '';
-			$template_id_options .= '<option value="'.$template['id'].'"'.$selected.'>'.$template['nome'].'</option>';
+			$is_selected = ($selected_id && $template['id'] == $selected_id);
+			// A opção original só fica selecionada quando não há código customizado no registro.
+			$selected_original = ($is_selected && !$has_custom_code) ? ' selected' : '';
+			$template_id_options .= '<option value="'.$template['id'].'"'.$selected_original.'>'.$template['nome'].'</option>';
+			// Quando o registro tem HTML/CSS customizado, gera a opção "-modificado" já selecionada
+			// para preservar o código do banco sem disparar o loadTemplate padrão.
+			if($is_selected && $has_custom_code){
+				$template_id_options .= '<option value="'.$template['id'].'-modificado" selected>'.$template['nome'].' - (Modificado)</option>';
+			}
 		}
 	}
 

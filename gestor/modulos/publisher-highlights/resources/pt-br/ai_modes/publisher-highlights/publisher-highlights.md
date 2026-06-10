@@ -11,6 +11,15 @@ Todo o trecho do HTML que representa UM item (ex: um card, uma linha de lista, u
 
 Em runtime, o motor irá repetir o conteúdo entre `<!-- item < -->` e `<!-- item > -->` uma vez para cada publicação a ser exibida no destaque, substituindo cada placeholder `@[[item#nome_da_variavel]]@` pelo valor real do campo correspondente da publicação. Variáveis fora desse bloco NÃO são repetidas (servem para o cabeçalho, título da seção, footer etc).
 
+BLOCO OPCIONAL DE AUSÊNCIA DE ITENS:
+Caso o destaque não tenha publicações para exibir, o motor de templates renderizará opcionalmente um bloco de estado vazio (fallback). Se julgar necessário, ou se o usuário pedir, envolva esse trecho no bloco opcional:
+
+```
+<!-- no-item < -->
+...HTML exibido quando não houver publicações/itens...
+<!-- no-item > -->
+```
+
 REGRA DE FORMATAÇÃO DE PLACEHOLDERS:
 - Use sempre o formato `[[item#nome_da_variavel]]` (item é literal/estático; nome_da_variavel é dinâmico).
 - Use a versão sem `@` para o retorno gerado por você — o pipeline interno converte para `@[[item#nome_da_variavel]]@` automaticamente ao salvar.
@@ -23,6 +32,8 @@ EXEMPLOS DE VARIÁVEIS COMUNS:
 - `[[item#url]]` — URL da página final
 - `[[item#data]]` — data formatada
 - `[[item#categoria]]`, `[[item#autor]]`, `[[item#status]]` — campos opcionais conforme o publicador
+
+O usuário também pode solicitar e fornecer variáveis adicionais personalizadas além das listadas na seção de variáveis disponíveis. Nesses casos, gere-as seguindo o mesmo padrão `[[item#nome_da_variavel_adicional]]`.
 
 Você pode criar textos e imagens fictícios além desses marcadores (estilo "Lorem ipsum") conforme orientado pelo usuário, mas se ele pedir algo mais direto, mantenha somente os placeholders. Devolver o código HTML usando markdown ```html ``` e caso precise de CSS extra, devolva o mesmo com markdown ```css ```.
 

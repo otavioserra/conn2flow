@@ -106,6 +106,11 @@ $(document).ready(function () {
 
     if (!Array.isArray(schema.selected_items)) schema.selected_items = [];
 
+    // Cache do HTML/CSS originais carregados do banco no page load (req-026 / DEC-039).
+    // Usado para restaurar o editor ao voltar para a opção "-modificado" do dropdown de modelos.
+    var initialHtml = $('textarea.codemirror-html').val() || '';
+    var initialCss = $('textarea.codemirror-css').val() || '';
+
     // Fonte da verdade da curadoria: lista de imagens { id, caminho, imgSrc, nome, legenda, link_* }.
     var items = schema.selected_items.slice().map(normalizeItem);
 
@@ -114,8 +119,11 @@ $(document).ready(function () {
     // ===== Hidratar inputs com o schema atual
 
     if (schema.template_id) {
-        $('#template_id').val(schema.template_id);
-        setTimeout(function () { $('#template_id').dropdown('set selected', schema.template_id); }, 50);
+        // Se houver a variante "-modificado" no dropdown (registro com código customizado), seleciona-a.
+        var modId = schema.template_id + '-modificado';
+        var targetId = $('#template_id option[value="' + modId + '"]').length ? modId : schema.template_id;
+        $('#template_id').val(targetId);
+        setTimeout(function () { $('#template_id').dropdown('set selected', targetId); }, 50);
     }
 
     // ===== AJAX padrão
@@ -148,8 +156,17 @@ $(document).ready(function () {
 
     var $template = $('select[name="template_id"]');
 
-    if ($template.val()) loadTemplate($template.val());
-    else setTimeout(function () { scheduleWidgetPreview(true); }, 600);
+    var startTid = $template.val();
+    if (startTid) {
+        if (startTid.endsWith('-modificado')) {
+            // Mantém o HTML/CSS carregado do banco; não dispara o loadTemplate padrão.
+            setTimeout(function () { scheduleWidgetPreview(true); }, 600);
+        } else {
+            loadTemplate(startTid);
+        }
+    } else {
+        setTimeout(function () { scheduleWidgetPreview(true); }, 600);
+    }
 
     toggleTemplateOptionsWrapper();
 
@@ -171,8 +188,18 @@ $(document).ready(function () {
     $template.on('change', function () {
         var tid = $(this).val();
         toggleTemplateOptionsWrapper();
-        if (tid) loadTemplate(tid);
-        else scheduleWidgetPreview(false);
+        if (tid) {
+            if (tid.endsWith('-modificado')) {
+                // Restaura o HTML/CSS original do registro (cacheado do banco) sem AJAX.
+                if (typeof window.html_editor_set_html === 'function') window.html_editor_set_html(initialHtml);
+                if (typeof window.html_editor_set_css === 'function') window.html_editor_set_css(initialCss);
+                setTimeout(function () { scheduleWidgetPreview(true, true); }, 150);
+            } else {
+                loadTemplate(tid);
+            }
+        } else {
+            scheduleWidgetPreview(false);
+        }
         if (typeof window.html_editor_refresh_preview === 'function') {
             setTimeout(function () { window.html_editor_refresh_preview(); }, 600);
         }
@@ -180,6 +207,12 @@ $(document).ready(function () {
 
     // Interceptar submit para serializar a lista de imagens.
     $('.ui.form').on('submit', function () {
+        // Limpa o sufixo "-modificado" do input nativo para gravar o template_id limpo no banco.
+        var $tempInput = $('#template_id');
+        var val = $tempInput.val() || '';
+        if (val.endsWith('-modificado')) {
+            $tempInput.val(val.substring(0, val.length - 11));
+        }
         $('input[name="fields_schema"]').val(JSON.stringify(currentSchemaOut()));
         return true;
     });
@@ -760,7 +793,11 @@ $(document).ready(function () {
     function currentSchemaOut() {
         var out = $.extend(true, {}, schema);
         out.selected_items = items.slice();
-        out.template_id = $('#template_id').val() || schema.template_id || '';
+        var tid = $('#template_id').val() || schema.template_id || '';
+        if (tid.endsWith('-modificado')) {
+            tid = tid.substring(0, tid.length - 11); // remove '-modificado'
+        }
+        out.template_id = tid;
         // req-019: controles de exibição do carrossel/slider.
         out.show_arrows = $('#gallery-show-arrows').is(':checked');
         out.show_dots = $('#gallery-show-dots').is(':checked');

@@ -1,0 +1,12 @@
+/* Adiciona padding interno e organiza layout de blocos nas subpastas do navbar */
+[data-title="menu-horizontal-navbar"] ul.absolute a {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem !important;
+    padding: 0.5rem 1rem !important; /* px-4 py-2 */
+    font-size: 0.875rem !important; /* text-sm */
+}
+[data-title="menu-horizontal-navbar"] ul.absolute a:hover {
+    background-color: #f3f4f6 !important; /* hover:bg-gray-100 */
+}
