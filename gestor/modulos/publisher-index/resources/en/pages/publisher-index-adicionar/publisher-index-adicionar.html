@@ -1,0 +1,200 @@
+<div class="field">
+    <label>Nome do Bloco de Destaques</label>
+    <input type="text" name="name" placeholder="Ex: Destaques da Home - Notícias">
+</div>
+
+<div class="field">
+    <label><span>Publicador de Origem</span>
+        <div class="ui label">
+            <i class="bookmark outline icon"></i>
+            Escolha qual publicação alimentará este bloco de destaques (ex: Notícias, Artigos, Lives, Notas).
+        </div>
+    </label>
+    <select id="publisher_id" class="ui search clearable dropdown publisherDropdown" name="publisher_id">
+        <option value="">#publisher_placeholder_option#</option>
+        #publisher_id_options#
+    </select>
+</div>
+
+<h4 class="ui dividing header">Regra de Curadoria</h4>
+
+<div class="fields">
+    <div class="six wide field">
+        <label>Regra de Alimentação</label>
+        <select id="rule" class="ui dropdown" name="rule">
+            <option value="latest">Automática (últimas publicações)</option>
+            <option value="manual">Manual (curadoria por item)</option>
+        </select>
+    </div>
+    <div class="four wide field">
+        <label>Quantidade máxima de itens</label>
+        <input type="number" name="count" id="count" min="1" value="4">
+    </div>
+    <div class="six wide field" id="order-by-wrapper">
+        <label>Ordenação</label>
+        <select id="order_by" class="ui dropdown" name="order_by">
+            <option value="date_desc">Por data (mais recentes primeiro)</option>
+            <option value="date_asc">Por data (mais antigas primeiro)</option>
+            <option value="title_asc">Alfabética (A-Z)</option>
+            <option value="title_desc">Alfabética (Z-A)</option>
+        </select>
+    </div>
+</div>
+
+<h4 class="ui dividing header">Index Display Controls</h4>
+
+<div class="fields">
+    <div class="five wide field">
+        <label>Items per page</label>
+        <input type="number" id="items_per_page" min="1" value="10">
+    </div>
+    <div class="eleven wide field">
+        <label>Interactive controls on the published site</label>
+        <div class="inline fields" style="margin-top: 4px;">
+            <div class="field"><div class="ui toggle checkbox"><input type="checkbox" id="show_search_input" checked><label>Search bar</label></div></div>
+            <div class="field"><div class="ui toggle checkbox"><input type="checkbox" id="show_sorting_select" checked><label>Sorting</label></div></div>
+            <div class="field"><div class="ui toggle checkbox"><input type="checkbox" id="show_load_more_btn" checked><label>"Load more" button</label></div></div>
+        </div>
+    </div>
+</div>
+
+<div\ class="field"\ id="manual-items-wrapper" style="display:none;">
+    <label>Selected items (order)</label>
+    <div class="ui label" style="margin: 8px 0; display: block;">
+        <i class="hand pointer icon"></i>
+        Search and select the active publications of the chosen publisher below. The insertion order is
+        preserved on render — drag the tags to reorder. To remove an item, click the &laquo;x&raquo; next to it.
+    </div>
+    <!-- req-014: Ajax search autocomplete + reorderable tags (replaces the multiple dropdown) -->
+    <div class="ui fluid icon input search-autocomplete-wrapper" style="position: relative;">
+        <input type="text" id="manual_search_input" placeholder="Type to search publications..." autocomplete="off">
+        <i class="search icon"></i>
+
+        <!-- Floating suggestions list (Autocomplete Dropdown) -->
+        <div id="search-suggestions-dropdown" class="ui vertical menu" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000; max-height: 250px; overflow-y: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.15); margin: 0 !important;">
+        </div>
+    </div>
+
+    <!-- Selected tags container (reorderable via Sortable.js) -->
+    <div id="selected-labels-container" class="ui segment sortable-labels-container" style="margin-top: 12px; min-height: 50px; padding: 10px; border: 1px dashed #ccc; border-radius: 4px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: #fafafa;">
+        <!-- Labels inserted dynamically by JS -->
+    </div>
+</div>
+
+<h4 class="ui dividing header">Modelo Visual de Destaque</h4>
+
+<div class="field">
+    <label>Modelo (Recurso)</label>
+    <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
+        <option value="">#template_placeholder_option#</option>
+        #template_id_options#
+    </select>
+    <div class="ui label" style="margin: 8px 0; display: block;">
+        <i class="exchange icon"></i>
+        Ao selecionar um modelo, o HTML e o CSS dele serão carregados no editor abaixo. Você pode
+        editar livremente a partir daí — o que vale para a renderização é sempre o conteúdo do
+        editor (salvo no banco de dados).
+    </div>
+</div>
+
+<a class="ui button blue" id="add-new-template"
+    href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=publisher-index"
+    data-tooltip="Clique para adicionar um novo modelo de destaque" data-position="top center" data-inverted="">
+    <i class="plus icon"></i> Adicionar Novo Modelo
+</a>
+
+<h4 class="ui dividing header">Mapeamento de Variáveis <kbd class="ui label">[[item#...]]</kbd>
+    <kbd class="ui teal icon label"><i class="exchange alternate icon"></i></kbd>
+    <kbd class="ui label">Campos do Publicador</kbd>
+</h4>
+
+<div class="ui segment template-options-wrapper" style="display:none;">
+    <div class="ui medium dimmer template-loading">
+        <div class="ui text loader">Carregando dados...</div>
+    </div>
+
+    <div class="ui negative message hidden" id="error-message">
+        <div class="header">Erro!</div>
+        <p id="error-message-content"></p>
+    </div>
+
+    <div class="ui grid">
+        <div class="row">
+            <div class="sixteen wide column">
+                <div class="ui grid template-fields-list">
+                    <div class="five wide column">
+                        <h5>Variáveis do Modelo <kbd class="ui label">[[item#...]]</kbd></h5>
+                        <div id="available-fields-list"></div>
+                    </div>
+                    <div class="five wide column">
+                        <h5>Campos do Publicador</h5>
+                        <div id="missing-fields-list"></div>
+                    </div>
+                    <div class="six wide column">
+                        <h5>Vinculados: Variável <kbd class="ui teal icon label"><i class="exchange alternate icon"></i></kbd> Campo</h5>
+                        <div id="linked-fields-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" name="fields_schema">
+
+<h4 class="ui dividing header">Conteúdo do Destaque</h4>
+
+<div class="ui icon message visible info">
+    <i class="info circle icon"></i>
+    <div class="content">
+        <p>O HTML abaixo é o template renderizado no site. Use o bloco
+            <code>&lt;!-- item &lt; --&gt; ... &lt;!-- item &gt; --&gt;</code> para envolver o trecho que será repetido
+            para cada publicação. Dentro dele, use placeholders <code>[[item#nome_da_variavel]]</code>
+            mapeados acima.</p>
+    </div>
+</div>
+
+<div class="ui top attached tabular menu menuConteudoDestaque">
+    <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Pré-Visualização</a>
+    <a class="item" data-tab="hep-editor"><i class="code icon"></i> Editor HTML</a>
+    <a class="item" data-tab="hep-widget"><i class="cubes icon"></i> Widget Code</a>
+</div>
+<div class="ui bottom attached active tab segment" data-tab="hep-preview">
+    <div style="position: relative;">
+        <iframe id="iframe-publisher-index-preview" style="width:100%;height:900px;border:1px solid #ccc;"></iframe>
+        <div class="ui dimmer hep-preview-dimmer">
+            <div class="ui loader"></div>
+        </div>
+    </div>
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-editor">
+    #html-editor#
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-widget">
+    <div class="ui icon message info">
+        <i class="cubes icon"></i>
+        <div class="content">
+            <div class="header">Wrapped widget block</div>
+            <p>Copy the snippet below and paste it into any physical site page to inject this
+                highlights block. The <code>&lt;!-- widgets#publisher-index-&gt;render(...) --&gt;</code>
+                comment acts as the wrapper: the gestor engine recognizes it and replaces it
+                with the HTML rendered using the real publications at request time.</p>
+        </div>
+    </div>
+    <div style="border:1px solid #ccc;">
+        <textarea id="hep-widget-code" name="hep-widget-code"></textarea>
+    </div>
+</div>
+
+<!-- Skeletons para elementos dinâmicos -->
+<div id="template-skeletons" style="display: none;">
+    <span class="msg-novo-template" style="display:none">Novo Modelo</span>
+    <span class="msg-erro-carregar-template" style="display:none">Erro ao carregar modelo: </span>
+    <span class="msg-erro-desconhecido" style="display:none">Erro desconhecido</span>
+    <span class="msg-nenhum-campo-template" style="display:none">Nenhuma variável do modelo</span>
+    <span class="msg-nenhum-campo-publisher" style="display:none">Nenhum campo do publicador</span>
+    <span class="msg-nenhum-campo-vinculado" style="display:none">Nenhuma variável vinculada</span>
+    <span class="msg-campos-padroes" style="display:none">Default Fields</span>
+    <span class="msg-campos-dinamicos" style="display:none">Dynamic Fields</span>
+    <span class="msg-todos-campos-vinculados" style="display:none">All publisher fields are already linked</span>
+</div>

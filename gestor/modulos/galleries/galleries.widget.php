@@ -68,6 +68,8 @@ function galleries_render($params){
 			'fields_schema',
 			'html',
 			'css',
+			'css_compiled',
+			'html_extra_head',
 		),
 		'extra' =>
 			"WHERE id='".banco_escape_field($grupo_slug)."'"
@@ -94,6 +96,8 @@ function galleries_render($params){
 	return galleries_widget_render_inline([
 		'html' => $html_template,
 		'css' => $css_custom,
+		'css_compiled' => $registro['css_compiled'] ?? '',
+		'html_extra_head' => $registro['html_extra_head'] ?? '',
 		'fields_schema' => $registro['fields_schema'] ?? '{}',
 	]);
 }
@@ -111,6 +115,8 @@ function galleries_widget_render_inline($params){
 
 	$html_template = (string)($params['html'] ?? '');
 	$css_custom   = (string)($params['css'] ?? '');
+	$css_compiled    = (string)($params['css_compiled'] ?? '');
+	$html_extra_head = (string)($params['html_extra_head'] ?? '');
 
 	if(trim($html_template) === '') return '';
 
@@ -131,7 +137,7 @@ function galleries_widget_render_inline($params){
 		// Sem imagens: não há slides — remover os blocos de controle.
 		$output = galleries_widget_processar_controles($output, false, false, []);
 		$output = galleries_widget_resolver_globais($output, $schema);
-		return galleries_widget_montar_saida($output, $css_custom);
+		return galleries_widget_montar_saida($output, $css_custom, $css_compiled, $html_extra_head);
 	}
 
 	// req-019: controles de exibição (defaults: setas/dots/loop ativos; autoplay inativo).
@@ -143,7 +149,7 @@ function galleries_widget_render_inline($params){
 		$output = galleries_widget_montar_base($html_template, '');
 		$output = galleries_widget_processar_controles($output, $show_arrows, $show_dots, $selected_items);
 		$output = galleries_widget_resolver_globais($output, $schema);
-		return galleries_widget_montar_saida($output, $css_custom);
+		return galleries_widget_montar_saida($output, $css_custom, $css_compiled, $html_extra_head);
 	}
 
 	// ===== Renderizar cada imagem no bloco `item`.
@@ -175,7 +181,7 @@ function galleries_widget_render_inline($params){
 	// req-019 / DEC-031: resolver as variáveis globais de controle no HTML final.
 	$output = galleries_widget_resolver_globais($output, $schema);
 
-	return galleries_widget_montar_saida($output, $css_custom);
+	return galleries_widget_montar_saida($output, $css_custom, $css_compiled, $html_extra_head);
 }
 
 /**
@@ -514,9 +520,14 @@ function galleries_widget_preg_replace_literal($pattern, $replacement, $subject,
 }
 
 /**
- * Anexa o CSS customizado da galeria como tag <style> antes do HTML renderizado.
+ * Injeta os recursos da galeria (CSS, CSS compilado e HTML extra head) no pipeline global,
+ * de forma desduplicada (req-028 / DEC-041), e retorna apenas o HTML estrutural limpo.
  */
-function galleries_widget_montar_saida($html, $css){
-	if(trim((string)$css) === '') return $html;
-	return '<style>'.$css.'</style>'.$html;
+function galleries_widget_montar_saida($html, $css, $css_compiled = '', $html_extra_head = ''){
+	gestor_pagina_recursos_incluir(Array(
+		'css' => $css,
+		'css_compiled' => $css_compiled,
+		'html_extra_head' => $html_extra_head,
+	));
+	return $html;
 }

@@ -54,6 +54,8 @@ function menus_render($params){
 			'fields_schema',
 			'html',
 			'css',
+			'css_compiled',
+			'html_extra_head',
 		),
 		'extra' =>
 			"WHERE id='".banco_escape_field($grupo_slug)."'"
@@ -80,6 +82,8 @@ function menus_render($params){
 	return menus_widget_render_inline([
 		'html' => $html_template,
 		'css' => $css_custom,
+		'css_compiled' => $registro['css_compiled'] ?? '',
+		'html_extra_head' => $registro['html_extra_head'] ?? '',
 		'fields_schema' => $registro['fields_schema'] ?? '{}',
 	]);
 }
@@ -96,6 +100,8 @@ function menus_render($params){
 function menus_widget_render_inline($params){
 	$html_template = (string)($params['html'] ?? '');
 	$css_custom   = (string)($params['css'] ?? '');
+	$css_compiled    = (string)($params['css_compiled'] ?? '');
+	$html_extra_head = (string)($params['html_extra_head'] ?? '');
 
 	if(trim($html_template) === '') return '';
 
@@ -120,7 +126,7 @@ function menus_widget_render_inline($params){
 	if(empty($arvore)){
 		if($templates['no_item'] === null) return '';
 		$output = menus_widget_montar_base($html_template, '');
-		return menus_widget_montar_saida($output, $css_custom);
+		return menus_widget_montar_saida($output, $css_custom, $css_compiled, $html_extra_head);
 	}
 
 	// ===== Resolver páginas (tipo 'pagina') em lote -> label/url canônicos do banco.
@@ -135,7 +141,7 @@ function menus_widget_render_inline($params){
 
 	$output = menus_widget_montar_base($html_template, $itensRendered);
 
-	return menus_widget_montar_saida($output, $css_custom);
+	return menus_widget_montar_saida($output, $css_custom, $css_compiled, $html_extra_head);
 }
 
 /**
@@ -557,9 +563,14 @@ function menus_widget_carregar_paginas($ids){
 }
 
 /**
- * Anexa o CSS customizado do menu como tag <style> antes do HTML renderizado.
+ * Injeta os recursos do menu (CSS, CSS compilado e HTML extra head) no pipeline global,
+ * de forma desduplicada (req-028 / DEC-041), e retorna apenas o HTML estrutural limpo.
  */
-function menus_widget_montar_saida($html, $css){
-	if(trim((string)$css) === '') return $html;
-	return '<style>'.$css.'</style>'.$html;
+function menus_widget_montar_saida($html, $css, $css_compiled = '', $html_extra_head = ''){
+	gestor_pagina_recursos_incluir(Array(
+		'css' => $css,
+		'css_compiled' => $css_compiled,
+		'html_extra_head' => $html_extra_head,
+	));
+	return $html;
 }

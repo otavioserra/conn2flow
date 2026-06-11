@@ -371,16 +371,6 @@ function forms_submissions_interfaces_padroes(){
 
 // ==== Ajax
 
-function forms_submissions_ajax_forms_process(){
-	global $_GESTOR;
-	
-	// ===== Incluir biblioteca de formulário para processar o envio do formulário.
-	gestor_incluir_biblioteca('formulario');
-	
-	// ===== Processar o formulário usando a biblioteca de formulário.
-	formulario_processador();
-}
-
 /**
  * Atualiza o form_status de um registro de submissão.
  */
@@ -593,7 +583,6 @@ function forms_submissions_ajax_reply(){
 	}
 }
 
-
 // ==== Start
 
 function forms_submissions_start(){
@@ -605,7 +594,6 @@ function forms_submissions_start(){
 		interface_ajax_iniciar();
 		
 		switch($_GESTOR['ajax-opcao']){
-			case 'forms-process': forms_submissions_ajax_forms_process(); break;
 			case 'update-status': forms_submissions_ajax_update_status(); break;
 			case 'reply': forms_submissions_ajax_reply(); break;
 		}

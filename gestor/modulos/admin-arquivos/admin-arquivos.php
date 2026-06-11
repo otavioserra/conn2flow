@@ -729,168 +729,174 @@ function admin_arquivos_interfaces_padroes(){
 function admin_arquivos_ajax_upload_file(){
 	global $_GESTOR;
 	
-	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
-	
-	// ===== Preparar nome e extensão do arquivo
-	
-	$path_parts = pathinfo(basename($_FILES['files']['name'][0]));
-	$extensao = $path_parts['extension'];
-	
-	$nome = preg_replace('/\.'.$extensao.'/i', '', $_FILES['files']['name'][0]);
-	
-	$id = banco_identificador(Array(
-		'id' => $nome, // Valor cru
-		'tabela' => Array(
-			'nome' => $modulo['tabela']['nome'],
-			'campo' => $modulo['tabela']['id'],
-			'id_nome' => $modulo['tabela']['id_numerico'],
-		),
-	));
-	
-	$extensao = strtolower($extensao);
-	$nome_extensao = $id . '.' . $extensao;
-	
-	// ===== Verificar se o tamanho do arquivo é permitido
-	
-	$size = $_FILES['files']['size'][0];
-	
-	if($size > 10000000){
-		unlink($_FILES['files']['tmp_name'][0]);
-		$_GESTOR['ajax-json'] = Array(
-			'error' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'upload-error-size'))
-		);
-		return;
-	}
-	
-	// ===== Diretório, caminho físico e URL do arquivo.
-	
-	$basedir = 'files';
-	$thumbnail = 'mini';
-	
-	admin_arquivos_criar_dir_herdando_permissao($_GESTOR['contents-path'].$basedir);
-	admin_arquivos_criar_dir_herdando_permissao($_GESTOR['contents-path'].$basedir.'/'.date('Y'));
-	admin_arquivos_criar_dir_herdando_permissao($_GESTOR['contents-path'].$basedir.'/'.date('Y').'/'.date('m'));
-	admin_arquivos_criar_dir_herdando_permissao($_GESTOR['contents-path'].$basedir.'/'.date('Y').'/'.date('m').'/'.$thumbnail);
-	
-	$caminho = $basedir.'/'.date('Y').'/'.date('m').'/';
-	$caminho_mini = $basedir.'/'.date('Y').'/'.date('m').'/'.$thumbnail.'/';
-	
-	$caminho_arquivo = $_GESTOR['contents-path'].$caminho.$nome_extensao;
-	$caminho_arquivo_mini = $_GESTOR['contents-path'].$caminho_mini.$nome_extensao;
-	
-	$url_arquivo = $caminho.$nome_extensao;
-	$url_arquivo_mini = $caminho_mini.$nome_extensao;
-	
-	// ===== Mover arquivo para caminho definitivo.
-	
-	if(move_uploaded_file($_FILES['files']['tmp_name'][0], $caminho_arquivo)){
-		$tipo = $_FILES['files']['type'][0];
+	if(isset($_FILES['files'])){
+		$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 		
-		// ===== Criar referência do arquivo no banco de dados
+		// ===== Preparar nome e extensão do arquivo
 		
-		$campos = null;$campo_sem_aspas_simples = null;
+		$path_parts = pathinfo(basename($_FILES['files']['name'][0]));
+		$extensao = $path_parts['extension'];
 		
-		$campo_nome = "id_usuarios"; $campo_valor = $_GESTOR['usuario-id']; 	$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = "nome"; $campo_valor = banco_escape_field($nome);			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = "id"; $campo_valor = $id; 								$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = "tipo"; $campo_valor = $tipo; 							$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = "caminho"; $campo_valor = $url_arquivo; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$nome = preg_replace('/\.'.$extensao.'/i', '', $_FILES['files']['name'][0]);
 		
-		$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
-		$campo_nome = $modulo['tabela']['data_modificacao']; $campo_valor = 'NOW()'; 	$campos[] = Array($campo_nome,$campo_valor,true);
+		$id = banco_identificador(Array(
+			'id' => $nome, // Valor cru
+			'tabela' => Array(
+				'nome' => $modulo['tabela']['nome'],
+				'campo' => $modulo['tabela']['id'],
+				'id_nome' => $modulo['tabela']['id_numerico'],
+			),
+		));
 		
-		// ===== Verificar o tipo do arquivo e criar imagem_mini
+		$extensao = strtolower($extensao);
+		$nome_extensao = $id . '.' . $extensao;
 		
-		$imagem = false;
-		if(preg_match('/'.preg_quote('image').'\//i', $tipo) > 0){
-			require_once $_GESTOR['bibliotecas-path'].'SimpleImage/src/claviska/SimpleImage.php';
-			
-			try {
-				$image = new \claviska\SimpleImage();
-				
-				$image->fromFile($caminho_arquivo);
-				
-				if($image->getWidth() > $modulo['imagem']['mini_width']){
-					$image->resize($modulo['imagem']['mini_width']);
-				}
-				
-				$image->toFile($caminho_arquivo_mini);
-				
-				$imagem = true;
-				
-				$campo_nome = "caminho_mini"; $campo_valor = $url_arquivo_mini; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-			} catch(Exception $err) {
-				$warning_msg = $err->getMessage();
-			}
+		// ===== Verificar se o tamanho do arquivo é permitido
+		
+		$size = $_FILES['files']['size'][0];
+		
+		if($size > 10000000){
+			unlink($_FILES['files']['tmp_name'][0]);
+			$_GESTOR['ajax-json'] = Array(
+				'error' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'upload-error-size'))
+			);
+			return;
 		}
 		
-		banco_insert_name
-		(
-			$campos,
-			"arquivos"
-		);
+		// ===== Diretório, caminho físico e URL do arquivo.
 		
-		$id_arquivos = banco_last_id();
+		$basedir = 'files';
+		$thumbnail = 'mini';
 		
-		// ===== Vincular categorias caso definido
+		admin_arquivos_criar_dir_herdando_permissao($_GESTOR['contents-path'].$basedir);
+		admin_arquivos_criar_dir_herdando_permissao($_GESTOR['contents-path'].$basedir.'/'.date('Y'));
+		admin_arquivos_criar_dir_herdando_permissao($_GESTOR['contents-path'].$basedir.'/'.date('Y').'/'.date('m'));
+		admin_arquivos_criar_dir_herdando_permissao($_GESTOR['contents-path'].$basedir.'/'.date('Y').'/'.date('m').'/'.$thumbnail);
 		
-		if(isset($_REQUEST['categorias'])){
-			$categorias = explode(',',banco_escape_field($_REQUEST['categorias']));
+		$caminho = $basedir.'/'.date('Y').'/'.date('m').'/';
+		$caminho_mini = $basedir.'/'.date('Y').'/'.date('m').'/'.$thumbnail.'/';
+		
+		$caminho_arquivo = $_GESTOR['contents-path'].$caminho.$nome_extensao;
+		$caminho_arquivo_mini = $_GESTOR['contents-path'].$caminho_mini.$nome_extensao;
+		
+		$url_arquivo = $caminho.$nome_extensao;
+		$url_arquivo_mini = $caminho_mini.$nome_extensao;
+		
+		// ===== Mover arquivo para caminho definitivo.
+		
+		if(move_uploaded_file($_FILES['files']['tmp_name'][0], $caminho_arquivo)){
+			$tipo = $_FILES['files']['type'][0];
 			
-			if($categorias)
-			foreach($categorias as $categoria){
-				$campos = null;
+			// ===== Criar referência do arquivo no banco de dados
 			
-				$campo_nome = "id_arquivos"; $campo_valor = $id_arquivos; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "id_categorias"; $campo_valor = $categoria; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				
-				banco_insert_name
-				(
-					$campos,
-					"arquivos_categorias"
-				);
-			}
-		}
-		
-		// ===== Imagem Mini ou Imagem Referência e Data
-		
-		if($imagem){
-			$imgSrc = $_GESTOR['url-full'] . $url_arquivo_mini;
-		} else {
+			$campos = null;$campo_sem_aspas_simples = null;
+			
+			$campo_nome = "id_usuarios"; $campo_valor = $_GESTOR['usuario-id']; 	$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			$campo_nome = "nome"; $campo_valor = banco_escape_field($nome);			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			$campo_nome = "id"; $campo_valor = $id; 								$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			$campo_nome = "tipo"; $campo_valor = $tipo; 							$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			$campo_nome = "caminho"; $campo_valor = $url_arquivo; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			
+			$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+			$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
+			$campo_nome = $modulo['tabela']['data_modificacao']; $campo_valor = 'NOW()'; 	$campos[] = Array($campo_nome,$campo_valor,true);
+			
+			// ===== Verificar o tipo do arquivo e criar imagem_mini
+			
+			$imagem = false;
 			if(preg_match('/'.preg_quote('image').'\//i', $tipo) > 0){
-				$imgSrc = $_GESTOR['url-full'] . 'images/imagem-padrao.png';
-			} else if(preg_match('/'.preg_quote('video').'\//i', $tipo) > 0){
-				$imgSrc = $_GESTOR['url-full'] . 'images/video-padrao.png';
-			} else if(preg_match('/'.preg_quote('audio').'\//i', $tipo) > 0){
-				$imgSrc = $_GESTOR['url-full'] . 'images/audio-padrao.png';
-			} else {
-				$imgSrc = $_GESTOR['url-full'] . 'images/file-padrao.png';
+				require_once $_GESTOR['bibliotecas-path'].'SimpleImage/src/claviska/SimpleImage.php';
+				
+				try {
+					$image = new \claviska\SimpleImage();
+					
+					$image->fromFile($caminho_arquivo);
+					
+					if($image->getWidth() > $modulo['imagem']['mini_width']){
+						$image->resize($modulo['imagem']['mini_width']);
+					}
+					
+					$image->toFile($caminho_arquivo_mini);
+					
+					$imagem = true;
+					
+					$campo_nome = "caminho_mini"; $campo_valor = $url_arquivo_mini; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+				} catch(Exception $err) {
+					$warning_msg = $err->getMessage();
+				}
 			}
+			
+			banco_insert_name
+			(
+				$campos,
+				"arquivos"
+			);
+			
+			$id_arquivos = banco_last_id();
+			
+			// ===== Vincular categorias caso definido
+			
+			if(isset($_REQUEST['categorias'])){
+				$categorias = explode(',',banco_escape_field($_REQUEST['categorias']));
+				
+				if($categorias)
+				foreach($categorias as $categoria){
+					$campos = null;
+				
+					$campo_nome = "id_arquivos"; $campo_valor = $id_arquivos; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+					$campo_nome = "id_categorias"; $campo_valor = $categoria; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+					
+					banco_insert_name
+					(
+						$campos,
+						"arquivos_categorias"
+					);
+				}
+			}
+			
+			// ===== Imagem Mini ou Imagem Referência e Data
+			
+			if($imagem){
+				$imgSrc = $_GESTOR['url-full'] . $url_arquivo_mini;
+			} else {
+				if(preg_match('/'.preg_quote('image').'\//i', $tipo) > 0){
+					$imgSrc = $_GESTOR['url-full'] . 'images/imagem-padrao.png';
+				} else if(preg_match('/'.preg_quote('video').'\//i', $tipo) > 0){
+					$imgSrc = $_GESTOR['url-full'] . 'images/video-padrao.png';
+				} else if(preg_match('/'.preg_quote('audio').'\//i', $tipo) > 0){
+					$imgSrc = $_GESTOR['url-full'] . 'images/audio-padrao.png';
+				} else {
+					$imgSrc = $_GESTOR['url-full'] . 'images/file-padrao.png';
+				}
+			}
+			
+			$data = interface_formatar_dado(Array('dado' => date("Y-m-d H:i:s"), 'formato' => 'dataHora'));
+			
+			// ===== Dados de Retorno
+			
+			$_GESTOR['ajax-json'] = Array(
+				'id' => $id_arquivos,
+				'nome' => $nome,
+				'data' => $data,
+				'tipo' => $tipo,
+				'imgSrc' => $imgSrc,
+				'url' => $_GESTOR['url-full'] . $url_arquivo,
+				'caminho' => $url_arquivo,
+				'files' => $_FILES['files'],
+				'status' => 'Ok',
+			);
+			
+			if(isset($warning_msg)){ $_GESTOR['ajax-json']['warning_msg'] = $warning_msg; }
+		} else {
+			unlink($_FILES['files']['tmp_name'][0]);
+			$_GESTOR['ajax-json'] = Array(
+				'error' => 'Error - '.$_FILES['files']['error'][0]
+			);
 		}
-		
-		$data = interface_formatar_dado(Array('dado' => date("Y-m-d H:i:s"), 'formato' => 'dataHora'));
-		
-		// ===== Dados de Retorno
-		
-		$_GESTOR['ajax-json'] = Array(
-			'id' => $id_arquivos,
-			'nome' => $nome,
-			'data' => $data,
-			'tipo' => $tipo,
-			'imgSrc' => $imgSrc,
-			'url' => $_GESTOR['url-full'] . $url_arquivo,
-			'caminho' => $url_arquivo,
-			'files' => $_FILES['files'],
-			'status' => 'Ok',
-		);
-		
-		if(isset($warning_msg)){ $_GESTOR['ajax-json']['warning_msg'] = $warning_msg; }
 	} else {
-		unlink($_FILES['files']['tmp_name'][0]);
 		$_GESTOR['ajax-json'] = Array(
-			'error' => 'Error - '.$_FILES['files']['error'][0]
+			'error' => 'Error - File not found in request'
 		);
 	}
 }

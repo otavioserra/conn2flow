@@ -204,9 +204,14 @@ function galleries_adicionar(){
 			$campos[] = Array('fields_schema', banco_escape_field($fields_schema_str));
 		}
 
-		// ===== html / css (do html-editor.php)
+		// ===== html / css / css_compiled / html_extra_head (do html-editor.php)
 
-		foreach(['html','css'] as $clonable_field){
+		// req-028: css_compiled e html_extra_head podem conter variáveis do sistema [[VAR]];
+		// converte para o formato de armazenamento @[[var]]@ antes de gravar.
+		$_REQUEST['css_compiled'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['css_compiled'] ?? '');
+		$_REQUEST['html_extra_head'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['html_extra_head'] ?? '');
+
+		foreach(['html','css','css_compiled','html_extra_head'] as $clonable_field){
 			if(isset($_REQUEST[$clonable_field]) && $_REQUEST[$clonable_field] !== ''){
 				$campos[] = Array($clonable_field, banco_escape_field($_REQUEST[$clonable_field]));
 			}
@@ -258,6 +263,8 @@ function galleries_adicionar(){
 
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#','');
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-css#','');
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-css-compiled#','');
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html-extra-head#','');
 
 	// ===== Inclusão Módulo JS
 
@@ -298,6 +305,8 @@ function galleries_editar(){
 		'fields_schema',
 		'html',
 		'css',
+		'css_compiled',
+		'html_extra_head',
 		'status',
 	);
 
@@ -407,9 +416,21 @@ function galleries_editar(){
 			}
 		}
 
-		// ===== html / css (do html-editor.php) — com backup do valor anterior.
+		// ===== html / css / css_compiled / html_extra_head (do html-editor.php) — com backup do valor anterior.
 
-		foreach(['html','css'] as $campo_nome){
+		// req-028: css_compiled e html_extra_head podem conter variáveis do sistema [[VAR]];
+		// converte para o formato de armazenamento @[[var]]@ antes de comparar/gravar.
+		$open = $_GESTOR['variavel-global']['open'];
+		$close = $_GESTOR['variavel-global']['close'];
+		$openText = $_GESTOR['variavel-global']['openText'];
+		$closeText = $_GESTOR['variavel-global']['closeText'];
+		foreach(['css_compiled','html_extra_head'] as $campo_nome){
+			if(isset($_REQUEST[$campo_nome])){
+				$_REQUEST[$campo_nome] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST[$campo_nome]);
+			}
+		}
+
+		foreach(['html','css','css_compiled','html_extra_head'] as $campo_nome){
 			$request_name = $campo_nome;
 			if(isset($_REQUEST[$request_name]) && banco_select_campos_antes($campo_nome) != $_REQUEST[$request_name]){
 				$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'";
@@ -480,6 +501,8 @@ function galleries_editar(){
 		$fields_schema = (isset($retorno_bd['fields_schema']) ? $retorno_bd['fields_schema'] : '');
 		$html = (isset($retorno_bd['html']) ? $retorno_bd['html'] : '');
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
+		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
+		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
 
 		// Converter @[[...]]@ -> [[...]] no fields_schema para edição no frontend
 		$open = $_GESTOR['variavel-global']['open'];
@@ -488,6 +511,10 @@ function galleries_editar(){
 		$closeText = $_GESTOR['variavel-global']['closeText'];
 
 		$fields_schema = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $fields_schema);
+
+		// req-028: converte @[[var]]@ -> [[var]] em css_compiled e html_extra_head para edição no frontend.
+		$css_compiled = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css_compiled);
+		$html_extra_head = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $html_extra_head);
 
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#name#',$name);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id#',$id);
@@ -521,6 +548,8 @@ function galleries_editar(){
 		// Conteúdos atuais para o editor
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#',$html);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-css#',$css);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-css-compiled#',$css_compiled);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html-extra-head#',$html_extra_head);
 
 		// ===== Popular metaDados
 
@@ -607,6 +636,8 @@ function galleries_clonar(){
 		'fields_schema',
 		'html',
 		'css',
+		'css_compiled',
+		'html_extra_head',
 		'status'
 	);
 
@@ -661,9 +692,14 @@ function galleries_clonar(){
 
 		$campo_nome = "fields_schema"; $campo_valor = $fields_schema_str;		if(isset($_REQUEST['fields_schema']) && $_REQUEST['fields_schema'])	$campos[] = Array($campo_nome,banco_escape_field($campo_valor));
 
-		// html / css clonados do registro de origem (via campos ocultos no formulário)
+		// html / css / css_compiled / html_extra_head clonados do registro de origem (via campos ocultos no formulário)
 
-		foreach(['html','css'] as $clonable_field){
+		// req-028: css_compiled e html_extra_head podem conter variáveis do sistema [[VAR]];
+		// converte para o formato de armazenamento @[[var]]@ antes de gravar.
+		$_REQUEST['css_compiled'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['css_compiled'] ?? '');
+		$_REQUEST['html_extra_head'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['html_extra_head'] ?? '');
+
+		foreach(['html','css','css_compiled','html_extra_head'] as $clonable_field){
 			if(isset($_REQUEST[$clonable_field]) && $_REQUEST[$clonable_field] !== ''){
 				$campos[] = Array($clonable_field, banco_escape_field($_REQUEST[$clonable_field]));
 			}
@@ -698,6 +734,8 @@ function galleries_clonar(){
 		$fields_schema = (isset($retorno_bd['fields_schema']) ? $retorno_bd['fields_schema'] : '');
 		$html = (isset($retorno_bd['html']) ? $retorno_bd['html'] : '');
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
+		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
+		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
 
 		$open = $_GESTOR['variavel-global']['open'];
 		$close = $_GESTOR['variavel-global']['close'];
@@ -705,6 +743,10 @@ function galleries_clonar(){
 		$closeText = $_GESTOR['variavel-global']['closeText'];
 
 		$fields_schema = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $fields_schema);
+
+		// req-028: converte @[[var]]@ -> [[var]] em css_compiled e html_extra_head para edição no frontend.
+		$css_compiled = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css_compiled);
+		$html_extra_head = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $html_extra_head);
 
 		$fields_schema_decoded = json_decode($fields_schema, true) ?: [];
 		$fields_schema_decoded += ['selected_items' => [], 'template_id' => ''];
@@ -722,6 +764,8 @@ function galleries_clonar(){
 		// HTML/CSS de origem precisam viajar no submit (campos ocultos no formulário de clonar)
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#html-original#',htmlspecialchars($html, ENT_QUOTES));
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#css-original#',htmlspecialchars($css, ENT_QUOTES));
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#css-compiled-original#',htmlspecialchars($css_compiled, ENT_QUOTES));
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#html-extra-head-original#',htmlspecialchars($html_extra_head, ENT_QUOTES));
 
 		// HTML Editor (alvo galleries) — para ajustar o template no momento da clonagem antes de salvar.
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente(Array(
@@ -734,6 +778,8 @@ function galleries_clonar(){
 
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#',$html);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-css#',$css);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-css-compiled#',$css_compiled);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html-extra-head#',$html_extra_head);
 	} else {
 		gestor_redirecionar_raiz();
 	}

@@ -61,6 +61,62 @@ function existe($dado = false){
 // =========================== Funções do Gestor
 
 /**
+ * Inclui recursos de página (CSS, CSS compilado e HTML extra head) no pipeline global.
+ * Controla duplicidades via hash MD5 para evitar inclusão redundante quando múltiplos
+ * blocos do mesmo widget/componente são inseridos na mesma página (req-028 / DEC-041).
+ *
+ * @param array $params
+ * @param string $params['css']
+ * @param string $params['css_compiled']
+ * @param string $params['html_extra_head']
+ */
+function gestor_pagina_recursos_incluir($params = false){
+	global $_GESTOR;
+
+	if($params)foreach($params as $var => $val)$$var = $val;
+
+	if(!isset($_GESTOR['recursos-incluidos-hashes'])){
+		$_GESTOR['recursos-incluidos-hashes'] = Array();
+	}
+
+	// 1) HTML Extra Head
+	if(isset($html_extra_head) && existe($html_extra_head)){
+		$hash = md5($html_extra_head);
+		if(!isset($_GESTOR['recursos-incluidos-hashes'][$hash])){
+			$_GESTOR['recursos-incluidos-hashes'][$hash] = true;
+			$html_extra_head_formatted = preg_replace("/(^|\n)/m", "\n    ", $html_extra_head);
+			$_GESTOR['html-extra-head'][] = $html_extra_head_formatted."\n";
+		}
+	}
+
+	// 2) CSS Customizado
+	if(isset($css) && existe($css)){
+		$hash = md5($css);
+		if(!isset($_GESTOR['recursos-incluidos-hashes'][$hash])){
+			$_GESTOR['recursos-incluidos-hashes'][$hash] = true;
+			$css_formatted = preg_replace("/(^|\n)/m", "\n        ", $css);
+
+			$_GESTOR['css'][] = '<style>'."\n";
+			$_GESTOR['css'][] = $css_formatted."\n";
+			$_GESTOR['css'][] = '</style>'."\n";
+		}
+	}
+
+	// 3) CSS Compilado
+	if(isset($css_compiled) && existe($css_compiled)){
+		$hash = md5($css_compiled);
+		if(!isset($_GESTOR['recursos-incluidos-hashes'][$hash])){
+			$_GESTOR['recursos-incluidos-hashes'][$hash] = true;
+			$css_compiled_formatted = preg_replace("/(^|\n)/m", "\n        ", $css_compiled);
+
+			$_GESTOR['css-compiled'][] = '<style>'."\n";
+			$_GESTOR['css-compiled'][] = $css_compiled_formatted."\n";
+			$_GESTOR['css-compiled'][] = '</style>'."\n";
+		}
+	}
+}
+
+/**
  * Renderiza um componente HTML/CSS dinâmico.
  *
  * Busca e processa componentes do banco de dados com suporte a:
@@ -215,28 +271,12 @@ function gestor_componente($params = false){
 						'css_compiled' => $css_compiled,
 					);
 				} else {
-					if(existe($html_extra_head)){
-						$html_extra_head = preg_replace("/(^|\n)/m", "\n    ", $html_extra_head);
-						
-						$_GESTOR['html-extra-head'][] = $html_extra_head."\n";
-					}
+					gestor_pagina_recursos_incluir(Array(
+						'css' => $css,
+						'css_compiled' => $css_compiled,
+						'html_extra_head' => $html_extra_head,
+					));
 
-					if(existe($css)){
-						$css = preg_replace("/(^|\n)/m", "\n        ", $css);
-						
-						$_GESTOR['css'][] = '<style>'."\n";
-						$_GESTOR['css'][] = $css."\n";
-						$_GESTOR['css'][] = '</style>'."\n";
-					}
-
-					if(existe($css_compiled)){
-						$css_compiled = preg_replace("/(^|\n)/m", "\n        ", $css_compiled);
-						
-						$_GESTOR['css-compiled'][] = '<style>'."\n";
-						$_GESTOR['css-compiled'][] = $css_compiled."\n";
-						$_GESTOR['css-compiled'][] = '</style>'."\n";
-					}
-					
 					$return[$id] = Array(
 						'html' => $html,
 					);
@@ -281,28 +321,12 @@ function gestor_componente($params = false){
 					'css_compiled' => $css_compiled,
 				);
 			} else {
-				if(existe($html_extra_head)){
-					$html_extra_head = preg_replace("/(^|\n)/m", "\n    ", $html_extra_head);
-					
-					$_GESTOR['html-extra-head'][] = $html_extra_head."\n";
-				}
+				gestor_pagina_recursos_incluir(Array(
+					'css' => $css,
+					'css_compiled' => $css_compiled,
+					'html_extra_head' => $html_extra_head,
+				));
 
-				if(existe($css)){
-					$css = preg_replace("/(^|\n)/m", "\n        ", $css);
-					
-					$_GESTOR['css'][] = '<style>'."\n";
-					$_GESTOR['css'][] = $css."\n";
-					$_GESTOR['css'][] = '</style>'."\n";
-				}
-
-				if(existe($css_compiled)){
-					$css_compiled = preg_replace("/(^|\n)/m", "\n        ", $css_compiled);
-					
-					$_GESTOR['css-compiled'][] = '<style>'."\n";
-					$_GESTOR['css-compiled'][] = $css_compiled."\n";
-					$_GESTOR['css-compiled'][] = '</style>'."\n";
-				}
-				
 				return $html;
 			}
 		} else {

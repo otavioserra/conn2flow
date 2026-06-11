@@ -96,5 +96,19 @@
         "language": "en",
         "status": "A",
         "versao": 10
+    },
+    {
+        "nome": "Publicador Índice",
+        "id": "publisher-index",
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1
+    },
+    {
+        "nome": "Publisher Index",
+        "id": "publisher-index",
+        "language": "en",
+        "status": "A",
+        "versao": 1
     }
 ]

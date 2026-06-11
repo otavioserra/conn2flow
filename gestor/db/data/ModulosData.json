@@ -756,6 +756,34 @@
         "language": "en"
     },
     {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Publicador Índice",
+        "id": "publisher-index",
+        "titulo": "Publicador Índice",
+        "icone": "list alternate outline",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "pt-br"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Publisher Index",
+        "id": "publisher-index",
+        "titulo": "Publisher Index",
+        "icone": "list alternate outline",
+        "icone2": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "versao": "1",
+        "language": "en"
+    },
+    {
         "modulo_grupo_id": "administracao-comunicacao",
         "nome": "Formulários Definições",
         "id": "forms",

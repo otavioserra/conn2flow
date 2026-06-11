@@ -1,0 +1,325 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "html-editor"
+    ],
+    "id_numerico": "id_publisher_index",
+    "tabela": {
+        "nome": "publisher_index",
+        "nome_especifico": "name",
+        "id": "id",
+        "id_numerico": "id_publisher_index",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "ai_prompts_targets": [
+                {
+                    "id": "publisher-index",
+                    "name": "Publicador Índice"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "publisher-index",
+                    "name": "Publicador Índice",
+                    "target": "publisher-index",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Publicador Índice - Lista",
+                    "id": "publisher-index-lista",
+                    "target": "publisher-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "c3c604df0ec451166ce70d481af49ba9",
+                        "css": "",
+                        "combined": "c3c604df0ec451166ce70d481af49ba9"
+                    }
+                },
+                {
+                    "name": "Publicador Índice - Grade de Cards",
+                    "id": "publisher-index-grid",
+                    "target": "publisher-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "a64f8bc557b4c97d69f7477f1a85c0fd",
+                        "css": "",
+                        "combined": "a64f8bc557b4c97d69f7477f1a85c0fd"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Publicador Índice - Listar",
+                    "id": "publisher-index",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-index\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publicador Índice - Adicionar",
+                    "id": "publisher-index-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-index\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "2369a5c072df286f44879186b2c6d76a",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "8d9f9d6743cfdbdd2a443f3ce6ddd53b"
+                    }
+                },
+                {
+                    "name": "Publicador Índice - Editar",
+                    "id": "publisher-index-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-index\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "6e53815ea65d43afbb06386b0cf476c1",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "ffb731e386269ec7fd17895162180e3b"
+                    }
+                },
+                {
+                    "name": "Publicador Índice - Clonar",
+                    "id": "publisher-index-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-index\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "505e91f9449ac9cba2e2c294f4101fc3",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "5ab691043366f82e9fb0fc70840e2aa3"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome do Índice de Publicações",
+                    "type": "string"
+                },
+                {
+                    "id": "form-publisher_id-label",
+                    "value": "Publicador de Origem",
+                    "type": "string"
+                },
+                {
+                    "id": "form-publisher_id-placeholder",
+                    "value": "Selecione o publicador (notícias, artigos, lives, notas, ...)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Modelo Visual do Índice",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Regras de Listagem e Mapeamento de Variáveis",
+                    "type": "string"
+                },
+                {
+                    "id": "form-items_per_page-label",
+                    "value": "Itens por página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_search_input-label",
+                    "value": "Exibir barra de busca",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_sorting_select-label",
+                    "value": "Exibir ordenação",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_load_more_btn-label",
+                    "value": "Exibir botão \"Carregar mais\"",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "ai_prompts_targets": [
+                {
+                    "id": "publisher-index",
+                    "name": "Publisher Index"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "publisher-index",
+                    "name": "Publisher Index",
+                    "target": "publisher-index",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Publisher Index - List",
+                    "id": "publisher-index-lista",
+                    "target": "publisher-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "2e165d2b38f7700adb331e17fb344952",
+                        "css": "",
+                        "combined": "2e165d2b38f7700adb331e17fb344952"
+                    }
+                },
+                {
+                    "name": "Publisher Index - Card Grid",
+                    "id": "publisher-index-grid",
+                    "target": "publisher-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "192535e7bfa8aa5f5d3bb9cae5445e2e",
+                        "css": "",
+                        "combined": "192535e7bfa8aa5f5d3bb9cae5445e2e"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Publisher Index - List",
+                    "id": "publisher-index",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-index\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Publisher Index - Add",
+                    "id": "publisher-index-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-index\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "0c07cb2c72bb91ee6c66eb142acb98e3",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "a41ec5447c9fe54b944eafac691fa71e"
+                    }
+                },
+                {
+                    "name": "Publisher Index - Edit",
+                    "id": "publisher-index-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-index\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "311e105e913513d25cac6b1d0b6f94ec",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "5a50b3454395158004b52c2fba45d799"
+                    }
+                },
+                {
+                    "name": "Publisher Index - Clone",
+                    "id": "publisher-index-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "publisher-index\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "4e18ede87439858ada92bc46132a5a4d",
+                        "css": "e56c0a44bba60df651f14858fd9a541d",
+                        "combined": "b398e60f950b8f38ca6dd3fb03719035"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Publication index name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-publisher_id-label",
+                    "value": "Source publisher",
+                    "type": "string"
+                },
+                {
+                    "id": "form-publisher_id-placeholder",
+                    "value": "Select the publisher (news, articles, lives, notes, ...)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Index visual template",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Listing rules and variable mapping",
+                    "type": "string"
+                },
+                {
+                    "id": "form-items_per_page-label",
+                    "value": "Items per page",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_search_input-label",
+                    "value": "Show search bar",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_sorting_select-label",
+                    "value": "Show sorting",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_load_more_btn-label",
+                    "value": "Show \"Load more\" button",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

@@ -11521,6 +11521,168 @@
     },
     {
         "linguagem_codigo": "pt-br",
+        "modulo": "publisher-index",
+        "id": "form-name-label",
+        "valor": "Nome do Índice de Publicações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-index",
+        "id": "form-publisher_id-label",
+        "valor": "Publicador de Origem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-index",
+        "id": "form-publisher_id-placeholder",
+        "valor": "Selecione o publicador (notícias, artigos, lives, notas, ...)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-index",
+        "id": "form-template_id-label",
+        "valor": "Modelo Visual do Índice",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-index",
+        "id": "form-fields_schema-label",
+        "valor": "Regras de Listagem e Mapeamento de Variáveis",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-index",
+        "id": "form-items_per_page-label",
+        "valor": "Itens por página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-index",
+        "id": "form-show_search_input-label",
+        "valor": "Exibir barra de busca",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-index",
+        "id": "form-show_sorting_select-label",
+        "valor": "Exibir ordenação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
+        "modulo": "publisher-index",
+        "id": "form-show_load_more_btn-label",
+        "valor": "Exibir botão \"Carregar mais\"",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-index",
+        "id": "form-name-label",
+        "valor": "Publication index name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-index",
+        "id": "form-publisher_id-label",
+        "valor": "Source publisher",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-index",
+        "id": "form-publisher_id-placeholder",
+        "valor": "Select the publisher (news, articles, lives, notes, ...)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-index",
+        "id": "form-template_id-label",
+        "valor": "Index visual template",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-index",
+        "id": "form-fields_schema-label",
+        "valor": "Listing rules and variable mapping",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-index",
+        "id": "form-items_per_page-label",
+        "valor": "Items per page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-index",
+        "id": "form-show_search_input-label",
+        "valor": "Show search bar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-index",
+        "id": "form-show_sorting_select-label",
+        "valor": "Show sorting",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "en",
+        "modulo": "publisher-index",
+        "id": "form-show_load_more_btn-label",
+        "valor": "Show \"Load more\" button",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "linguagem_codigo": "pt-br",
         "modulo": "publisher-pages",
         "id": "form-name-label",
         "valor": "Nome da Página",

@@ -154,6 +154,7 @@ function gestor_pagina_menu($params = false){
 		,
 		"paginas",
 		"WHERE raiz IS NOT NULL"
+		." AND status='A'"
 		." AND language='".$_GESTOR['linguagem-codigo']."'"
 	);
 	
@@ -301,7 +302,7 @@ function gestor_pagina_menu($params = false){
 		}
 		
 		if(!$pagina_found){
-			$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].'dashboard/');
+			continue;
 		}
 		
 		// ===== Caso seja dashboard incluir depois primeiro, senão colocar em ordem alfabética
@@ -570,6 +571,10 @@ function gestor_pagina_variaveis(){
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#titulo'.$close,$_GESTOR['pagina#titulo']);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#contato-url'.$close,$_GESTOR['pagina#contato-url']);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'gestor#versao'.$close,$_GESTOR['versao']);
+
+	// ===== Projeto variáveis trocar
+
+	if(isset($_GESTOR['project-version'])) $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'project#version'.$close,$_GESTOR['project-version']);
 	
 	// ===== Dados do usuário
 	
@@ -669,8 +674,9 @@ function gestor_pagina_css(){
 	if(!isset($_GESTOR['css-compiled'])) $_GESTOR['css-compiled'] = Array();
 	if(!isset($_GESTOR['css'])) $_GESTOR['css'] = Array();
 	if(!isset($_GESTOR['css-fim'])) $_GESTOR['css-fim'] = Array();
+	if(!isset($_GESTOR['project-css'])) $_GESTOR['project-css'] = Array();
 
-	$csss = array_merge($css_padrao,$_GESTOR['css-compiled'],$_GESTOR['css'],$_GESTOR['css-fim']);
+	$csss = array_merge($css_padrao,$_GESTOR['project-css'],$_GESTOR['css-compiled'],$_GESTOR['css'],$_GESTOR['css-fim']);
 
 	if($csss)
 	foreach($csss as $css){
@@ -744,8 +750,9 @@ function gestor_pagina_extra_head_e_javascript(){
 	if(!isset($_GESTOR['html-extra-head'])) $_GESTOR['html-extra-head'] = Array();
 	if(!isset($_GESTOR['javascript'])) $_GESTOR['javascript'] = Array();
 	if(!isset($_GESTOR['javascript-fim'])) $_GESTOR['javascript-fim'] = Array();
+	if(!isset($_GESTOR['project-javascript'])) $_GESTOR['project-javascript'] = Array();
 	
-	$jss = array_merge($js_padrao,$_GESTOR['html-extra-head'],$_GESTOR['javascript'],$_GESTOR['javascript-fim']);
+	$jss = array_merge($js_padrao,$_GESTOR['html-extra-head'],$_GESTOR['javascript'],$_GESTOR['javascript-fim'],$_GESTOR['project-javascript']);
 	
 	if($jss)
 	foreach($jss as $js){
@@ -1616,6 +1623,12 @@ function gestor_roteador_erro($params = false){
 							'info' => 'JSON not found',
 						));
 					break;
+					case 500:
+						echo json_encode(Array(
+							'error' => '500',
+							'info' => isset($mensagem) ? $mensagem : 'JSON internal server error',
+						));
+					break;
 				}
 			}
 		} else {
@@ -1807,6 +1820,8 @@ function gestor_roteador(){
 		// ==== Verificar se a página tem permissão, se houver e o usuário não estiver logado, deve redirecionar para a página de login e finalizar a requisição.
 		if(!existe($paginas[0]['sem_permissao'])){
 			gestor_permissao();
+		} else {
+			$sem_permissao = true;
 		}
 
 		// ====== Definir variáveis.
@@ -1845,11 +1860,17 @@ function gestor_roteador(){
 			// ===== Módulo alvo quando houver no backend, executar.
 			$module_path = '';
 
+			// ===== Verificar se a página é de acesso sem permissão, caso seja, deve procurar por um arquivo de módulo com o sufixo '.ajax.public' para ser possível ter um módulo específico para conexões AJAX sem permissão, caso contrário, deve procurar pelo módulo normalmente.
+			$modulo_ajax_publico = '';
+			if(isset($sem_permissao)){
+				$modulo_ajax_publico = '.ajax.public';
+			}
+
 			if(existe($modulo)){
 				if(existe($plugin)){
-					$module_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/'.$modulo.'.php';
+					$module_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/'.$modulo.$modulo_ajax_publico.'.php';
 				} else {
-					$module_path = $_GESTOR['modulos-path'].$modulo.'/'.$modulo.'.php';
+					$module_path = $_GESTOR['modulos-path'].$modulo.'/'.$modulo.$modulo_ajax_publico.'.php';
 				}
 			} else if($_GESTOR['opcao']){
 				$module_path = $_GESTOR['modulos-path'].'global.php';
@@ -1934,6 +1955,7 @@ function gestor_roteador(){
 			$_GESTOR['pagina#framework_css'] = $framework_css;
 
 			// ===== Módulo alvo quando houver executar
+
 			$module_path = '';
 
 			if(existe($modulo)){
@@ -1981,45 +2003,18 @@ function gestor_roteador(){
 				$layout_css_compiled = '';
 			}
 			
-			// ===== Montar página html final depois das mudanças pelo módulo.
-			
-			if(existe($layout_css)){
-				$layout_css = preg_replace("/(^|\n)/m", "\n        ", $layout_css);
-				
-				$_GESTOR['css'][] = '<style>'."\n";
-				$_GESTOR['css'][] = $layout_css."\n";
-				$_GESTOR['css'][] = '</style>'."\n";
-			}
-			
-			if(existe($css)){
-				$css = preg_replace("/(^|\n)/m", "\n        ", $css);
-				
-				$_GESTOR['css'][] = '<style>'."\n";
-				$_GESTOR['css'][] = $css."\n";
-				$_GESTOR['css'][] = '</style>'."\n";
-			}
+			// ===== Incluir os recursos da página e do layout.
 
-			if(existe($html_extra_head)){
-				$html_extra_head = preg_replace("/(^|\n)/m", "\n    ", $html_extra_head);
-				
-				$_GESTOR['html-extra-head'][] = $html_extra_head."\n";
-			}
+			gestor_pagina_recursos_incluir(Array(
+				'css' => $layout_css,
+				'css_compiled' => $layout_css_compiled,
+			));
 
-			if(existe($layout_css_compiled)){
-				$layout_css_compiled = preg_replace("/(^|\n)/m", "\n        ", $layout_css_compiled);
-
-				$_GESTOR['css-compiled'][] = '<style>'."\n";
-				$_GESTOR['css-compiled'][] = $layout_css_compiled."\n";
-				$_GESTOR['css-compiled'][] = '</style>'."\n";
-			}
-
-			if(existe($css_compiled)){
-				$css_compiled = preg_replace("/(^|\n)/m", "\n        ", $css_compiled);
-				
-				$_GESTOR['css-compiled'][] = '<style>'."\n";
-				$_GESTOR['css-compiled'][] = $css_compiled."\n";
-				$_GESTOR['css-compiled'][] = '</style>'."\n";
-			}
+			gestor_pagina_recursos_incluir(Array(
+				'css' => $css,
+				'css_compiled' => $css_compiled,
+				'html_extra_head' => $html_extra_head,
+			));
 			
 			// ===== Inclusão de variáveis de linguagem para o widget e detecção automática
 
@@ -2059,14 +2054,14 @@ function gestor_roteador(){
 				'layout' => $layout,
 			));
 
-			// ===== Inclusão de variáveis globais de uma página
-			
-			gestor_pagina_variaveis();
-
 			// ===== Inclusão de bibliotecas globais de uma página
 			
 			gestor_pagina_css();
 			gestor_pagina_extra_head_e_javascript();
+
+			// ===== Inclusão de variáveis globais de uma página
+			
+			gestor_pagina_variaveis();
 
 			// ===== Ultimas operações para a página.
 

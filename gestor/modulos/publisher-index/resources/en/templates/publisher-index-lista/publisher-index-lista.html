@@ -1,0 +1,39 @@
+<section class="conn2flow-publisher-index font-sans max-w-4xl mx-auto p-4" data-grupo-slug="@[[grupo_slug]]@" data-publisher-id="@[[publisher_id]]@" data-items-per-page="@[[items_per_page]]@" data-ordenacao="@[[ordenacao]]@" data-page="1">
+    <div class="flex flex-col sm:flex-row gap-3 mb-6">
+        <!-- search-input < -->
+        <div class="flex-1">
+            <input type="search" class="publisher-index-search w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search publications...">
+        </div>
+        <!-- search-input > -->
+        <!-- sort-select < -->
+        <div>
+            <select class="publisher-index-sort w-full sm:w-auto border border-gray-300 rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="date_desc">Newest first</option>
+                <option value="date_asc">Oldest first</option>
+                <option value="title_asc">Title (A-Z)</option>
+                <option value="title_desc">Title (Z-A)</option>
+            </select>
+        </div>
+        <!-- sort-select > -->
+    </div>
+
+    <div class="publisher-index-items flex flex-col gap-4">
+        <!-- item < -->
+        <a href="@[[item#url]]@" class="block border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow bg-white">
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">@[[item#titulo]]@</h3>
+            <span class="text-sm text-gray-500">@[[item#data]]@</span>
+        </a>
+        <!-- item > -->
+        <!-- no-item < -->
+        <div class="publisher-index-empty text-center text-gray-500 py-10">No publications found.</div>
+        <!-- no-item > -->
+    </div>
+
+    <div class="text-center mt-6">
+        <!-- load-more < -->
+        <button type="button" class="publisher-index-load-more inline-flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            Load more
+        </button>
+        <!-- load-more > -->
+    </div>
+</section>

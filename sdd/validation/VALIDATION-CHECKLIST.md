@@ -391,28 +391,67 @@ Para manter o checklist de validações leve e eficiente, as validações e evid
 
 ## BATCH-027 - Resolução de Framework CSS e Variáveis de Destaques de Modelo Modificado (req-027)
 
-- [ ] **Resolução de Framework CSS do Template (`framework_css`)**:
-  - [ ] Para evitar que o pré-visualizador (`live widget-preview`) falhe ao abrir um modelo `-modificado` devido à falta do framework CSS, o PHP deve selecionar o `framework_css` dos templates e disponibilizá-lo como um atributo de dados `data-framework` nos elementos `<option>` de templates.
-  - [ ] O JavaScript deve ler este atributo no page load (inicialização) e em eventos `change` para inicializar a variável `gestor.html_editor.framework_css` de forma síncrona nos módulos:
-    - [ ] `menus.js`
-    - [ ] `galleries.js`
-    - [ ] `publisher-highlights.js`
-- [ ] **Extração de Variáveis em Destaques (Highlights)**:
-  - [ ] No JavaScript de `publisher-highlights.js`, ao carregar/re-selecionar a variante `-modificado`, as variáveis `[[item#X]]` devem ser extraídas localmente do HTML do banco de dados (`initialHtml` ou cached HTML) usando expressão regular client-side para manter o painel de mapeamento de variáveis populado, chamando `renderItemVars()` e `syncEditorVariables()`.
+- [x] **Resolução de Framework CSS do Template (`framework_css`)**:
+  - [x] Para evitar que o pré-visualizador (`live widget-preview`) falhe ao abrir um modelo `-modificado` devido à falta do framework CSS, o PHP deve selecionar o `framework_css` dos templates e disponibilizá-lo como um atributo de dados `data-framework` nos elementos `<option>` de templates.
+  - [x] O JavaScript deve ler este atributo no page load (inicialização) e em eventos `change` para inicializar a variável `gestor.html_editor.framework_css` de forma síncrona nos módulos:
+    - [x] `menus.js`
+    - [x] `galleries.js`
+    - [x] `publisher-highlights.js`
+- [x] **Extração de Variáveis em Destaques (Highlights)**:
+  - [x] No JavaScript de `publisher-highlights.js`, ao carregar/re-selecionar a variante `-modificado`, as variáveis `[[item#X]]` devem ser extraídas localmente do HTML do banco de dados (`initialHtml` ou cached HTML) usando expressão regular client-side para manter o painel de mapeamento de variáveis populado, chamando `renderItemVars()` e `syncEditorVariables()`.
 
 ### Evidência de Validação (BATCH-027)
 
-- [ ] Validação estática de sintaxe executada:
-  - [ ] `node --check gestor/modulos/menus/menus.js`
-  - [ ] `node --check gestor/modulos/galleries/galleries.js`
-  - [ ] `node --check gestor/modulos/publisher-highlights/publisher-highlights.js`
-  - [ ] `php -l gestor/modulos/menus/menus.php`
-  - [ ] `php -l gestor/modulos/galleries/galleries.php`
-  - [ ] `php -l gestor/modulos/publisher-highlights/publisher-highlights.php`
-- [ ] Testes manuais/runtime pendentes com o operador:
-  - [ ] Confirmar que o pré-visualizador (`live widget-preview`) funciona perfeitamente logo no carregamento inicial da edição de um registro com modelo `-modificado` nos três módulos.
-  - [ ] Mudar o modelo para o original e de volta para `-modificado`, conferindo que o previewer renderiza com o framework CSS correto (`gestor.html_editor.framework_css`).
-  - [ ] Abrir um registro de Destaques em `-modificado` e verificar que a aba de mapeamento de variáveis de item é populada instantaneamente com as variáveis extraídas localmente via regex.
-- [ ] Decisão registrada: [DEC-040](../decisions/DECISION-LOG.md#dec-040---2026-06-10---accepted)
+- [x] Validação estática de sintaxe executada:
+  - [x] `node --check gestor/modulos/menus/menus.js`
+  - [x] `node --check gestor/modulos/galleries/galleries.js`
+  - [x] `node --check gestor/modulos/publisher-highlights/publisher-highlights.js`
+  - [x] `php -l gestor/modulos/menus/menus.php`
+  - [x] `php -l gestor/modulos/galleries/galleries.php`
+  - [x] `php -l gestor/modulos/publisher-highlights/publisher-highlights.php`
+- [x] Testes manuais/runtime pendentes com o operador:
+  - [x] Confirmar que o pré-visualizador (`live widget-preview`) funciona perfeitamente logo no carregamento inicial da edição de um registro com modelo `-modificado` nos três módulos.
+  - [x] Mudar o modelo para o original e de volta para `-modificado`, conferindo que o previewer renderiza com o framework CSS correto (`gestor.html_editor.framework_css`).
+  - [x] Abrir um registro de Destaques em `-modificado` e verificar que a aba de mapeamento de variáveis de item é populada instantaneamente com as variáveis extraídas localmente via regex.
+- [x] Decisão registrada: [DEC-040](../decisions/DECISION-LOG.md#dec-040---2026-06-10---accepted)
+
+
+## BATCH-028 - Persistência de Estilos de Widgets e Novo Módulo Publicador Índice (req-028)
+
+- [x] **Persistência de Estilos (`css_compiled` e `html_extra_head`)**:
+  - [x] Colunas adicionadas fisicamente nas tabelas do banco via migração (3 originais alteradas + nova `20260611110000` idempotente com guards `hasTable`/`hasColumn`).
+  - [x] Leitura, gravação, backup e reidratação de placeholders implementados nos arquivos PHP dos 3 módulos (`menus.php`, `galleries.php`, `publisher-highlights.php`) — `adicionar`/`editar` (com backup)/`clonar`, incl. sanitização `[[VAR]]`→`@[[var]]@` e conversão inversa para o editor (`#pagina-css-compiled#`/`#pagina-html-extra-head#`).
+  - [x] Envio e reidratação de valores originais na clonagem via placeholders `#css-compiled-original#`/`#html-extra-head-original#` (espelhando `#html-original#`/`#css-original#`); o trânsito efetivo no submit ocorre pelos textareas `name="css_compiled"`/`name="html_extra_head"` do html-editor.
+- [x] **Injeção Centralizada e Desduplicação (`gestor.php`)**:
+  - [x] Função helper `gestor_pagina_recursos_incluir` criada na biblioteca comum `gestor/bibliotecas/gestor.php` e funcional.
+  - [x] Validação por hash MD5 (`$_GESTOR['recursos-incluidos-hashes']`) impede duplicidades de CSS/CSS compilado/HTML head repetidos na mesma página — validado por teste isolado (8/8).
+  - [x] Função `gestor_componente()` refatorada (2 blocos de injeção: caminho `return_array` e caminho único) para usar a nova helper.
+  - [x] Renderizadores (`menus.widget.php`, `galleries.widget.php`, `publisher-highlights.widget.php`) refatorados: `xxx_widget_montar_saida()` agora delega à helper e retorna HTML puro; `render`/`render_inline` selecionam e propagam `css_compiled`/`html_extra_head`.
+- [x] **Módulo Publicador Índice (`publisher-index`)**:
+  - [x] Tabela `publisher_index` criada via migração `20260611120000` (espelho de `publisher_highlights` + `css_compiled`/`html_extra_head`).
+  - [x] Manifest `publisher-index.json` (templates `publisher-index-lista`/`publisher-index-grid`) e resources pt-br/en criados; módulo registrado em `ModulosData.json` e `UsuariosPerfisModulosData.json` (nome "Publicador Índice"/"Publisher Index", grupo `administracao-gestor`, ícone `list alternate outline`).
+  - [x] CRUD (`publisher-index.php` + `publisher-index.js`) serializando os campos adicionais do `fields_schema` (`items_per_page`, `show_search_input`, `show_sorting_select`, `show_load_more_btn`) — inputs nas 6 páginas (pt-br/en).
+  - [x] Widget renderer (`publisher-index.widget.php`): page load da 1ª página + injeção via helper + `publisher_index_render_ajax` (consulta paginada, busca `LIKE`, ordenação, `tem_mais`, retorna `''` para não disparar erro 500) — validado por teste (23/23).
+  - [x] Script público (`publisher-index.widget.js`): busca com debounce 300ms, ordenação e "Carregar mais" (append via AJAX `ajax=sim`+`ajaxWidgets`).
+
+### Evidência de Validação (BATCH-028)
+
+- [x] Validação estática de sintaxe executada em 2026-06-11 (todos OK):
+  - [x] `php -l` OK em `gestor/bibliotecas/gestor.php`, `menus.php`, `menus.widget.php`, `galleries.php`, `galleries.widget.php`, `publisher-highlights.php`, `publisher-highlights.widget.php`, `publisher-index.php`, `publisher-index.widget.php` e nas 2 migrações novas.
+  - [x] `node --check` OK em `publisher-index.js` e `publisher-index.widget.js`.
+  - [x] `json_decode` OK em `publisher-index.json`, `ModulosData.json`, `UsuariosPerfisModulosData.json`.
+- [x] Testes de unidade executados (stubs de banco, sem Docker):
+  - [x] Widget `publisher-index` — **23/23 asserts**: page load (10 de 25 itens, `tem_mais`, data-attributes resolvidos, no-item removido, recursos via helper, sem variáveis residuais), bloco condicional `search-input` removido quando `show_search=false`, AJAX páginas 2/3 (10 + 5 itens, `tem_mais` correto, só os itens sem contêiner), busca paginada (`LIKE`) e busca sem resultados retornando `no-item`.
+  - [x] Helper `gestor_pagina_recursos_incluir` — **8/8 asserts**: injeção de css/css-compiled/html-extra-head, dedup por MD5 (mesmo conteúdo não duplica), conteúdo distinto adiciona, valores vazios ignorados.
+- [ ] Testes manuais/runtime pendentes com o operador (após `🗃️ Projects - Update => Core` que registra o módulo `publisher-index`, páginas, templates, alvo/modo de IA, aplica as migrações e recalcula checksums):
+  - [ ] Salvar CSS customizado, CSS compilado e HTML extra head nos 3 módulos e verificar que aparecem no `<head>` da página publicada sem duplicatas (ver código-fonte).
+  - [ ] Clonar registros e verificar que o clone mantém todos os estilos e o extra head intactos.
+  - [ ] Publicar uma página contendo o widget `publisher-index` e validar:
+    - [ ] Listagem de itens inicial na tela.
+    - [ ] Filtragem em tempo real digitando na busca (confirmação do debounce e injeção do AJAX).
+    - [ ] Ordenação alfabética e por data (asc/desc).
+    - [ ] Clique em "Carregar Mais" injetando novos itens abaixo e sumindo com o botão quando não há mais dados.
+- [x] Decisão registrada: [DEC-041](../decisions/DECISION-LOG.md#dec-041---2026-06-11---accepted)
+
 
 

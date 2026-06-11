@@ -57,6 +57,15 @@
   - Para evitar a quebra do pré-visualizador (`widget-preview`), o PHP deve sempre expor o `framework_css` nos options de modelo através do atributo `data-framework` e o JS deve ler e sincronizar este atributo síncronamente no `ready` e no evento `change`.
   - No Highlights, o JS deve extrair as variáveis `[[item#X]]` localmente via RegExp a partir do `initialHtml` para manter a aba lateral de mapeamento de campos povoada na carga do template customizado.
 
+- **Injeção de Recursos de Widgets e Desduplicação**:
+  - Para evitar a inserção de tags `<style>` e links de cabeçalhos misturados ao corpo do conteúdo da página, os widgets devem delegar a inclusão de CSS, CSS compilado e HTML extra head para a helper `gestor_pagina_recursos_incluir()` na biblioteca comum `gestor.php`.
+  - A helper realiza a desduplicação dos recursos em tempo de execução calculando hashes MD5 e controlando-os via `$_GESTOR['recursos-incluidos-hashes']`.
+  - Os widgets públicos devem retornar exclusivamente o HTML estrutural puro do bloco.
+
+- **Arquitetura AJAX Pública de Widgets**:
+  - Requisições dinâmicas de widgets no site publicado (como a busca e paginação do `publisher-index`) são processadas acionando o roteador de widgets por meio dos parâmetros HTTP `ajax = true` e `ajaxWidgets`.
+  - O backend do widget deve expor a função `<prefixedFunc>_ajax` (ex: `publisher_index_render_ajax`) para capturar parâmetros do request, consultar dados do banco de dados (como busca textual e paginação por offset) e retornar a resposta JSON correspondente em `$_GESTOR['ajax-json']`.
+
 ---
 
 ## Notas Gerais
@@ -64,3 +73,4 @@
 - As notas deste arquivo foram registradas pelo agente IA sob autorização expressa do Engenheiro Chefe Humano na sessão de 04/06/2026 para reter aprendizados de relacionamento de pair programming.
 - Adicionado item sobre a divisão de papéis em 05/06/2026.
 - Adicionadas regras de arquivamento do SDD e preservação de customizações de templates em 10/06/2026.
+- Adicionadas diretrizes de injeção desduplicada de recursos de widgets e AJAX público de publicações em 11/06/2026.

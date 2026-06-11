@@ -121,5 +121,11 @@ Resolução de Framework CSS e Variáveis de Destaques de Modelo Modificado (req
 2. **Sincronização de Runtime no JS**: No `ready` e no listener `change` do dropdown `#template_id` dos arquivos `menus.js`, `galleries.js` e `publisher-highlights.js`, ler o `data-framework` da opção ativa e atualizar a variável global `gestor.html_editor.framework_css`.
 3. **Extração Client-side no Highlights**: Implementar a rotina `extractVariablesFromHtml` no `publisher-highlights.js` que processa o HTML com regex `/\[\[item#([a-zA-Z0-9_\-]+)\]\]/g` no ready e na re-seleção da opção `-modificado`, populando `availableItemVars` e disparando `renderItemVars()` / `syncEditorVariables()` síncronamente no cliente.
 
+## DEC-041 - 2026-06-11 - accepted
 
-
+Centralização de Injeção de Recursos de Widgets e Arquitetura do Publicador Índice (req-028 / BATCH-028). Decisões desta rodada:
+1. **Helper de Injeção Centralizada**: Criar a função `gestor_pagina_recursos_incluir()` na biblioteca comum `gestor/bibliotecas/gestor.php`. A função lida com `css`, `css_compiled` e `html_extra_head`, aplicando formatação e incluindo nos respectivos arrays globais (`$_GESTOR`).
+2. **Prevenção de Duplicidades via MD5**: A helper calculará o hash MD5 dos conteúdos incluídos para evitar a injeção repetida das mesmas regras de estilo ou tags de cabeçalho na página se múltiplos blocos do mesmo widget forem inseridos.
+3. **Páginas sem CSS/Head inline**: Refatorar `gestor_componente()` e os widgets públicos (`menus.widget.php`, `galleries.widget.php`, `publisher-highlights.widget.php`) para chamar a helper em vez de concatenar o CSS/Head inline no HTML do widget.
+4. **Módulo `publisher-index`**: Criar o novo módulo "Publicador Índice" baseado no publicador de destaques, implementando a tabela de banco correspondente e controles adicionais no `fields_schema` JSON para `items_per_page`, `show_search_input`, `show_sorting_select`, `show_load_more_btn`.
+5. **Roteamento AJAX e Comportamento Interativo**: No widget renderer, tratar requisições AJAX públicas direcionando para `publisher_index_render_ajax`, que consulta, filtra (busca textual via LIKE) e ordena as publicações de acordo com o estado do frontend. Criar o script público `publisher-index.widget.js` para escutar inputs, atualizar o estado e anexar dinamicamente novos itens (carregamento sob demanda) sem recarga completa de página.

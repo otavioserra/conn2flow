@@ -113,6 +113,10 @@
     },
     {
         "perfil": "administradores",
+        "modulo": "publisher-index"
+    },
+    {
+        "perfil": "administradores",
         "modulo": "forms"
     },
     {

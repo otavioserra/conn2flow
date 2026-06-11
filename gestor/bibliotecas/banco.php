@@ -1330,6 +1330,8 @@ function banco_identificador_unico($params = false){
 				.(isset($tabela['sem_status']) ? '' : " AND ".(isset($tabela['status']) ? $tabela['status'] : "status" )."!='D'")
 				.(isset($tabela['where']) ? " AND (".$tabela['where'].")" : '')
 		));
+
+		$procurou_tabela = true;
 	}
 	
 	// Se ID já existe, tenta próximo número recursivamente
@@ -1341,6 +1343,30 @@ function banco_identificador_unico($params = false){
 			'sem_traco' => (isset($sem_traco) ? $sem_traco : null ),
 		));
 	} else {
+		// Verificar se tem mesmo ID em registro deletado (status 'D') e deletar o mesmo para não gerar conflito ou problema com INDEX UNIQUE.
+		if(isset($procurou_tabela) && $procurou_tabela){
+			$resultado_deletado = banco_select(Array(
+				'tabela' => $tabela['nome'],
+				'campos' => Array(
+					$tabela['id_nome'],
+				),
+				'extra' => 
+					"WHERE ".$tabela['campo']."='".($num > 0 ? $id.'-'.$num : $id)."'"
+					.(isset($tabela['id_valor']) ? " AND ".$tabela['id_nome']."!='".$tabela['id_valor']."'":"")
+					." AND ".(isset($tabela['status']) ? $tabela['status'] : "status" )."='D'"
+					.(isset($tabela['where']) ? " AND (".$tabela['where'].")" : '')
+			));
+
+			if($resultado_deletado){
+				// Deletar hardcode para evitar conflito ou problema com INDEX UNIQUE.
+				banco_delete($tabela['nome'], "WHERE ".$tabela['campo']."='".($num > 0 ? $id.'-'.$num : $id)."'"
+					.(isset($tabela['id_valor']) ? " AND ".$tabela['id_nome']."!='".$tabela['id_valor']."'":"")
+					." AND ".(isset($tabela['status']) ? $tabela['status'] : "status" )."='D'"
+					.(isset($tabela['where']) ? " AND (".$tabela['where'].")" : '')
+				);
+			}
+		}
+
 		// Retorna ID único, com ou sem hífens
 		return ( isset($sem_traco) ? str_replace("-","",($num > 0 ? $id.'-'.$num : $id)) : ($num > 0 ? $id.'-'.$num : $id) );
 	}

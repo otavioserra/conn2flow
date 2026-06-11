@@ -35,6 +35,8 @@ function publisher_highlights_render($params){
 			'fields_schema',
 			'html',
 			'css',
+			'css_compiled',
+			'html_extra_head',
 		),
 		'extra' =>
 			"WHERE id='".banco_escape_field($grupo_slug)."'"
@@ -54,6 +56,8 @@ function publisher_highlights_render($params){
 	return publisher_highlights_widget_render_inline([
 		'html' => $html_template,
 		'css' => $css_custom,
+		'css_compiled' => $registro['css_compiled'] ?? '',
+		'html_extra_head' => $registro['html_extra_head'] ?? '',
 		'publisher_id' => $registro['publisher_id'] ?? '',
 		'fields_schema' => $registro['fields_schema'] ?? '{}',
 	]);
@@ -72,6 +76,8 @@ function publisher_highlights_render($params){
 function publisher_highlights_widget_render_inline($params){
 	$html_template = (string)($params['html'] ?? '');
 	$css_custom   = (string)($params['css'] ?? '');
+	$css_compiled    = (string)($params['css_compiled'] ?? '');
+	$html_extra_head = (string)($params['html_extra_head'] ?? '');
 	$publisher_id = (string)($params['publisher_id'] ?? '');
 
 	if(trim($html_template) === '') return '';
@@ -111,13 +117,13 @@ function publisher_highlights_widget_render_inline($params){
 		$output = $temItemLoop ? preg_replace($padraoItem, '', $html_template, 1) : $html_template;
 		$output = preg_replace($padraoNoItem, $noItemMatch[1], $output, 1);
 
-		return publisher_highlights_widget_montar_saida($output, $css_custom);
+		return publisher_highlights_widget_montar_saida($output, $css_custom, $css_compiled, $html_extra_head);
 	}
 
 	$html_template = $temNoItemBloco ? preg_replace($padraoNoItem, '', $html_template, 1) : $html_template;
 
 	if(!$temItemLoop){
-		return publisher_highlights_widget_montar_saida($html_template, $css_custom);
+		return publisher_highlights_widget_montar_saida($html_template, $css_custom, $css_compiled, $html_extra_head);
 	}
 
 	$itemTemplate = $itemMatch[1];
@@ -142,11 +148,16 @@ function publisher_highlights_widget_render_inline($params){
 }
 
 /**
- * Anexa o CSS customizado do bloco como tag <style> antes do HTML renderizado.
+ * Injeta os recursos do bloco (CSS, CSS compilado e HTML extra head) no pipeline global,
+ * de forma desduplicada (req-028 / DEC-041), e retorna apenas o HTML estrutural limpo.
  */
-function publisher_highlights_widget_montar_saida($html, $css){
-	if(trim((string)$css) === '') return $html;
-	return '<style>'.$css.'</style>'.$html;
+function publisher_highlights_widget_montar_saida($html, $css, $css_compiled = '', $html_extra_head = ''){
+	gestor_pagina_recursos_incluir(Array(
+		'css' => $css,
+		'css_compiled' => $css_compiled,
+		'html_extra_head' => $html_extra_head,
+	));
+	return $html;
 }
 
 /**

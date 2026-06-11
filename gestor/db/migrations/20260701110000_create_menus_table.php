@@ -21,6 +21,9 @@ final class CreateMenusTable extends AbstractMigration
             ->addColumn('html', 'text', ['limit' => Phinx\Db\Adapter\MysqlAdapter::TEXT_MEDIUM, 'null' => true])
             // CSS customizado para estilização do widget de menu.
             ->addColumn('css', 'text', ['null' => true])
+            // CSS compilado (ex.: utilitários Tailwind) e HTML extra para o <head> (req-028 / DEC-041).
+            ->addColumn('css_compiled', 'text', ['limit' => Phinx\Db\Adapter\MysqlAdapter::TEXT_MEDIUM, 'null' => true])
+            ->addColumn('html_extra_head', 'text', ['limit' => Phinx\Db\Adapter\MysqlAdapter::TEXT_MEDIUM, 'null' => true])
             ->addColumn('plugin', 'string', ['limit' => 255, 'null' => true])
             ->addColumn('language', 'string', ['limit' => 10, 'null' => false, 'default' => 'pt-br'])
             ->addColumn('status', 'char', ['limit' => 1, 'null' => true, 'default' => 'A'])
