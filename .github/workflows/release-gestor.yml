@@ -34,9 +34,8 @@ jobs:
 
     - name: Compile Tailwind CSS
       run: |
-        cd gestor
         npm install tailwindcss @tailwindcss/cli
-        ./node_modules/.bin/tailwindcss -i ./assets/tailwindcss/system-input.css -o ./assets/tailwindcss/system-output.css --minify
+        ./node_modules/.bin/tailwindcss -i ./gestor/assets/tailwindcss/system-input.css -o ./gestor/assets/tailwindcss/system-output.css --minify
 
     - name: Generate Resources Updates
       run: |
@@ -64,7 +63,7 @@ jobs:
         find gestor/modulos -type d -name "resources" -exec rm -rf {} + || true
         
         # Remove temporary npm files from Tailwind compilation
-        rm -rf gestor/node_modules/ gestor/package.json gestor/package-lock.json || true
+        rm -rf gestor/node_modules/ gestor/package.json gestor/package-lock.json node_modules/ package.json package-lock.json || true
         
         echo "All resource files removed from release"
         
