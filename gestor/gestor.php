@@ -674,8 +674,20 @@ function gestor_pagina_css(){
 	if(!isset($_GESTOR['css-compiled'])) $_GESTOR['css-compiled'] = Array();
 	if(!isset($_GESTOR['css'])) $_GESTOR['css'] = Array();
 	if(!isset($_GESTOR['css-fim'])) $_GESTOR['css-fim'] = Array();
+
+	// CSS do projeto regras de negócio, se existir.
+
 	if(!isset($_GESTOR['project-css'])) $_GESTOR['project-css'] = Array();
 
+	if(isset($_GESTOR['layout#id']) && isset($_GESTOR['project-css-layouts-remove']) && in_array($_GESTOR['layout#id'], $_GESTOR['project-css-layouts-remove'])){
+		// Não incluir CSS do projeto, pois o layout atual está na lista de layouts para não incluir o CSS do projeto.
+		$_GESTOR['project-css'] = Array();
+	} else if(isset($_GESTOR['layout#id']) && isset($_GESTOR['project-css-layouts-include']) && in_array($_GESTOR['layout#id'], $_GESTOR['project-css-layouts-include'])){
+		// Incluir somente os CSS's do projeto relacionados a este layout, pois o layout atual está na lista de layouts para incluir somente os CSS's do projeto relacionados a este layout.
+		$_GESTOR['project-css'] = $_GESTOR['project-css-layouts-include'][$_GESTOR['layout#id']];
+	}
+
+	// Incluir os CSS's seguindo a ordem: CSS padrão, CSS do projeto, CSS compilado, CSS normal e CSS fim.
 	$csss = array_merge($css_padrao,$_GESTOR['project-css'],$_GESTOR['css-compiled'],$_GESTOR['css'],$_GESTOR['css-fim']);
 
 	if($csss)
@@ -750,8 +762,20 @@ function gestor_pagina_extra_head_e_javascript(){
 	if(!isset($_GESTOR['html-extra-head'])) $_GESTOR['html-extra-head'] = Array();
 	if(!isset($_GESTOR['javascript'])) $_GESTOR['javascript'] = Array();
 	if(!isset($_GESTOR['javascript-fim'])) $_GESTOR['javascript-fim'] = Array();
+
+	// Javascript do projeto regras de negócio, se existir.
+
 	if(!isset($_GESTOR['project-javascript'])) $_GESTOR['project-javascript'] = Array();
 	
+	if(isset($_GESTOR['layout#id']) && isset($_GESTOR['project-javascript-layouts-remove']) && in_array($_GESTOR['layout#id'], $_GESTOR['project-javascript-layouts-remove'])){
+		// Não incluir javascript do projeto, pois o layout atual está na lista de layouts para não incluir o javascript do projeto.
+		$_GESTOR['project-javascript'] = Array();
+	} else if(isset($_GESTOR['layout#id']) && isset($_GESTOR['project-javascript-layouts-include']) && in_array($_GESTOR['layout#id'], $_GESTOR['project-javascript-layouts-include'])){
+		// Incluir somente os javascript's do projeto relacionados a este layout, pois o layout atual está na lista de layouts para incluir somente os javascript's do projeto relacionados a este layout.
+		$_GESTOR['project-javascript'] = $_GESTOR['project-javascript-layouts-include'][$_GESTOR['layout#id']];
+	}
+	
+	// Incluir os javascript's seguindo a ordem: javascript padrão, javascript extra head, javascript normal, javascript fim e javascript do projeto.
 	$jss = array_merge($js_padrao,$_GESTOR['html-extra-head'],$_GESTOR['javascript'],$_GESTOR['javascript-fim'],$_GESTOR['project-javascript']);
 	
 	if($jss)
@@ -1997,6 +2021,8 @@ function gestor_roteador(){
 				$layout = $layouts['html'];
 				$layout_css = $layouts['css'];
 				$layout_css_compiled = $layouts['css_compiled'];
+
+				$_GESTOR['layout#id'] = $paginas[0]['layout_id'];
 			} else {
 				$layout = '';
 				$layout_css = '';
