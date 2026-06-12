@@ -57,8 +57,9 @@ Conn2Flow apresenta um **instalador web automatizado moderno** que simplifica o 
 ### Pré-requisitos
 
 - **Servidor Web**: Apache ou Nginx com suporte a PHP
-- **PHP**: Versão 8.0 ou superior com extensões necessárias (curl, zip, pdo_mysql, openssl)
+- **PHP**: Versão 8.0 ou superior com extensões necessárias (curl, zip, pdo_mysql, openssl, mbstring, pdo_sqlite)
 - **MySQL**: Versão 5.7 ou superior (ou equivalente MariaDB)
+- **Node.js & NPM**: Node.js (v20+) e NPM (v10+) necessários para execução de testes locais, vitest, playwright e compilação do Tailwind CSS CLI v4
 - **Permissões de Escrita**: Servidor web deve ter acesso de escrita ao diretório de instalação
 
 ### Passos de Instalação
@@ -183,8 +184,9 @@ Este repositório fornece um **ambiente de desenvolvimento completo** para o CMS
 * **gestor-instalador/**: Instalador web automatizado com suporte multilíngue (Português/Inglês)
 * **ai-workspace/**: Ambiente de desenvolvimento completo com fluxos de trabalho assistidos por IA, documentação e ferramentas de automação
 * **dev-plugins/**: Framework completo de desenvolvimento de plugins com templates, scripts e ambiente de testes
+* **tests/**: Suíte de testes automatizados na raiz incluindo testes unitários (PHPUnit/Vitest), integração e de navegador de ponta a ponta (Playwright)
 * **dev-environment/**: Ambiente de desenvolvimento baseado em Docker com PHP 8.3 + Apache + MySQL 8.0
-* **.github/**: Workflows do GitHub Actions para releases automatizados e CI/CD
+* **.github/**: Workflows do GitHub Actions para releases automatizados, CI/CD e executores de teste
 
 ### Branches Legadas
 * **gestor-v1.16**: Última versão estável antes da v2.0.0
@@ -197,13 +199,20 @@ A estrutura de pastas legada b2make-* foi modernizada e agora está disponível 
 ## Recursos do Sistema
 
 ### Recursos Core do CMS
-- **Gerenciamento de Conteúdo**: Criação e edição completa de conteúdo com preview TailwindCSS
-- **Multi-Framework CSS**: Escolha entre TailwindCSS e FomanticUI por recurso
-- **Módulos Admin Avançados**: Interface moderna com capacidades de preview em tempo real
-- **Sistema de Plugins V2**: Arquitetura revolucionária de plugins com detecção dinâmica e templates automatizados
-- **Gerenciamento de Usuários**: Controle de acesso baseado em papéis e autenticação de usuários
-- **Suporte Multi-site**: Gerencie múltiplos domínios de uma única instalação
-- **Segurança**: Criptografia OpenSSL, autenticação segura e controles de acesso
+- **Gerenciamento de Conteúdo**: Criação e edição completa de conteúdo com preview TailwindCSS.
+- **Assistente de IA Integrado (Gemini)**: Geração assistida de código e conteúdo no Editor HTML com modos técnicos e flexíveis.
+- **Gerador Visual de Formulários & Submissões**: Módulo `forms` e `forms-submissions` com segurança robusta anti-spam (Google reCAPTCHA v2/v3, FingerprintJS v4, limites de caracteres e bloqueio de IPs).
+- **Módulo de Menus Dinâmico**: Organização hierárquica por drag-and-drop visual em Pointer Events vanilla (Páginas, Links Customizados, Cabeçalhos e sub-nós de Publicações).
+- **Módulo de Galerias de Imagens**: Curador de arquivos com seleção em lote, drag-and-drop via Sortable.js e múltiplos layouts públicos (Grid, Carousel, Masonry e Slider).
+- **Módulo Publicador de Índice**: Indexação de publicações com paginação AJAX ("Carregar Mais"), busca textual e ordenação dinâmica.
+- **Integração PayPal**: Gateway para gerenciamento de assinaturas e pagamentos recorrentes.
+- **Multi-Framework CSS**: Escolha entre TailwindCSS e FomanticUI por recurso.
+- **Módulos Admin Avançados**: Interface moderna com capacidades de preview em tempo real.
+- **Sistema de Plugins V2**: Arquitetura revolucionária de plugins com detecção dinâmica e templates automatizados.
+- **Gerenciamento de Usuários**: Controle de acesso baseado em papéis e autenticação de usuários.
+- **Suporte Multi-site**: Gerencie múltiplos domínios de uma única instalação.
+- **Segurança**: Criptografia OpenSSL, autenticação segura, controle de sessão via JWT e controles de acesso.
+- **Painel Administrativo Responsivo e Ajustável**: Menu lateral com redimensionamento de largura (200px a 450px) por arraste, salvamento automático no localStorage e atalho `Ctrl/Cmd+B`.
 
 ### Recursos do Ambiente de Desenvolvimento
 - **Stack Completo de Desenvolvimento**: Ambiente Docker com PHP 8.3 + Apache + MySQL 8.0
@@ -211,7 +220,7 @@ A estrutura de pastas legada b2make-* foi modernizada e agora está disponível 
 - **Framework de Desenvolvimento de Plugins**: Ambiente dev-plugins completo com templates automatizados e scripts
 - **Fluxos de Trabalho Automatizados**: GitHub Actions para releases, testes e deployment
 - **Documentação Técnica**: 15+ guias detalhados cobrindo todos os aspectos do sistema
-- **Testes e Validação**: Scripts automatizados para verificação de migração e seeder
+- **Testes e Validação**: Framework de testes automatizados (PHPUnit, Vitest, Playwright) e scripts de verificação de migração/seeder
 - **Integração VS Code**: Tarefas pré-configuradas para Docker, operações Git e fluxos de trabalho de desenvolvimento
 - **Scripts Prontos para Uso**: Scripts funcionais de automação para commits, releases e sincronização
 
@@ -350,8 +359,64 @@ Falhas de permissão resultarão em avisos de não remoção de pastas antigas e
 - **PHP 8.0+**: Recursos e performance modernos do PHP
 - **Composer**: Gerenciamento de dependências e autoloading
 - **Phinx**: Migrações de banco de dados e gerenciamento de schema
-- **GitHub Actions**: Builds e releases automatizados
+- **GitHub Actions**: Builds, releases e executores de testes automatizados
 - **Design Modular**: Separação limpa de responsabilidades
+
+### Suíte de Testes Automatizados
+
+Conn2Flow possui uma suíte de testes abrangente que cobre testes unitários de backend, testes unitários de componentes JS do frontend, integrações de banco de dados e fluxos de usuário de ponta a ponta.
+
+#### 1. Configurar o ambiente local
+Antes de rodar os testes, instale as dependências na pasta raiz do repositório:
+```bash
+composer install
+npm install
+npx playwright install --with-deps
+```
+
+Certifique-se de que no seu `C:\tools\php84\php.ini` (ou equivalente `php.ini` local), as seguintes extensões estão habilitadas:
+```ini
+extension=mbstring
+extension=pdo_mysql
+extension=pdo_sqlite
+```
+
+#### 2. Executar os Testes
+Você pode acionar os testes usando os seguintes comandos:
+*   **Testes de Backend (PHPUnit)**:
+    ```bash
+    composer test
+    ```
+    Executa testes de unidade para bibliotecas core (ex: geração de chaves RSA do OpenSSL, deduplicação de recursos MD5) e testes de integração para migrações do Phinx.
+*   **Testes de Frontend (Vitest)**:
+    ```bash
+    npm run test
+    ```
+    Executa testes de unidade para componentes JS (ex: `publisher-highlights.js` e `publisher-index.widget.js`) com simulação de DOM.
+*   **Testes End-to-End (Playwright)**:
+    ```bash
+    npm run test:e2e
+    ```
+    Inicia testes funcionais no navegador para fluxos críticos como login de administrador, alterações de perfil e renderização de componentes AJAX.
+
+### Tarefas Pré-configuradas do VS Code
+
+Para agilizar o desenvolvimento, o repositório inclui várias tarefas pré-configuradas em `.vscode/tasks.json`. Você pode acessá-las no VS Code usando a extensão **Task Explorer** ou pressionando `Ctrl+P` / `Cmd+P` e digitando `task [Nome da Tarefa]`.
+
+| Categoria | Nome da Tarefa | Comando / Script | Descrição |
+| --- | --- | --- | --- |
+| **Docker** | `📦 Docker - Container Status` | `docker ps` | Lista os contêineres Docker ativos. |
+| **Docker** | `📦 Docker - Apache Logs > Real Time` | `docker logs ... --follow` | Exibe os logs do Apache em tempo real. |
+| **Docker** | `📦 Docker - PHP Logs > Real Time` | `tail -f /var/log/...` | Exibe os logs de erro do PHP dentro do contêiner. |
+| **Core CMS** | `🛠️ Manager - Synchronize => Resources - Local` | `atualizacao-dados-recursos.php` | Regenera o contrato de recursos do banco (`schema-metadata.json`). |
+| **Core CMS** | `🛠️ Manager - Synchronize => Database - Test Environment` | `updates-manager-database.sh` | Sincroniza o banco local com as migrações/seeders. |
+| **Core CMS** | `🛠️ Manager - Synchronize => Files - Test Environment` | `synchronize-manager.sh` | Sincroniza arquivos PHP/JS/CSS com o volume do Docker. |
+| **Core CMS** | `🛠️ Manager - Update => All - Test Environment` | Sequência das 3 tarefas acima | Sincronização completa de recursos, arquivos e banco para o Docker. |
+| **Core CMS** | `🛠️ Manager - GIT Release` | `release.sh` | Automatiza o incremento de versão (major/minor/patch) e envia o CSS compilado. |
+| **Core CMS** | `🛠️ Manager - Create Module` | `create-new-module.sh` | Cria a estrutura inicial para um novo módulo administrativo do Gestor. |
+| **Plugins** | `🧩 Public/Private Plugins - Synchronize Active Plugin` | `synchronizes.sh` | Sincroniza os arquivos do plugin ativo com o ambiente Docker. |
+| **Plugins** | `🧩 Public/Private Plugins - Plugin Resources` | `update-data-resources-plugin.php` | Regenera o catálogo de recursos específico para o plugin ativo. |
+| **Projetos** | `🗃️ Projects - Update => All - Core & Project` | Sequência de sincronização | Realiza o deploy e atualizações de core diretamente para um projeto-alvo. |
 
 ### Estrutura de Diretórios
 ```
@@ -390,6 +455,13 @@ dev-plugins/           # Framework de desenvolvimento de plugins
 │   └── public/       # Plugins de repositório público (sem token necessário)
 └── tests/            # Ambiente de testes de plugins
 
+tests/                 # Suíte de Testes Automatizados na Raiz [NEW]
+├── Unit/             # Testes unitários (PHPUnit para PHP, Vitest para JS)
+├── Integration/      # Testes de integração (migrações de banco, rotas de widget AJAX)
+└── E2E/              # Testes funcionais no navegador (Playwright)
+
+sdd/                   # Spec-Driven Development (SDD/STD): especificações, decisões estruturais e histórico de requisições [NEW]
+
 .vscode/              # Configuração de desenvolvimento VS Code
 └── tasks.json        # Tarefas pré-configuradas para automação de desenvolvimento
 
@@ -399,7 +471,13 @@ dev-environment/       # Stack de desenvolvimento Docker
 └── tests/            # Testes de integração
 
 .github/               # Workflows GitHub Actions
-└── workflows/        # Automação CI/CD
+└── workflows/        # Automação CI/CD e executores de testes
+
+phpunit.xml           # Arquivo de configuração do PHPUnit [NEW]
+vitest.config.js      # Arquivo de configuração do Vitest [NEW]
+playwright.config.js  # Arquivo de configuração do Playwright [NEW]
+package.json          # Dependências Node.js e mapeamento de scripts [NEW]
+composer.json         # Definição de dependências PHP para o PHPUnit [NEW]
 ```
 
 ## Documentação e Desenvolvimento
@@ -429,25 +507,33 @@ O diretório `ai-workspace/` contém todas as ferramentas de desenvolvimento e d
 - Prompts detalhados para desenvolvimento assistido por IA
 - Base completa de conhecimento do sistema para contribuidores
 
-## Metodologia de Desenvolvimento com IA
+## Metodologia de Desenvolvimento com IA & Spec-Driven Development
 
-### 🤖 Desenvolvimento Colaborativo com Agentes IA
+### 🤖 Desenvolvimento Colaborativo com Agentes IA & SDD
 
-Conn2Flow pioneirou uma **metodologia abrangente de desenvolvimento assistido por IA** ao longo de 12 meses de colaboração ativa com agentes IA (GitHub Copilot, Claude, ChatGPT, Gemini). O diretório `ai-workspace/` representa uma estrutura madura para desenvolvimento colaborativo humano-IA.
+Conn2Flow pioneirou uma **metodologia abrangente de desenvolvimento assistido por IA** ao longo de 12 meses de colaboração ativa com agentes IA. O repositório utiliza uma estrutura de **Spec-Driven Development (SDD/STD)** gerenciada dentro do diretório `sdd/`. O SDD garante que todas as alterações sigam especificações estruturadas (intakes), lotes transacionados (batches), logs de decisão e checklists de validação automatizada antes de serem mescladas.
+
+#### **Arquitetura de Agentes de IA Colaborativos**
+O ecossistema de desenvolvimento opera por meio de uma parceria humano-IA estruturada em papéis, utilizando a plataforma de contexto **Ray**:
+*   **Engenheiro Chefe (Chief Engineer)**: **Antigravity** (baseado no Gemini Flash 3.5 / Gemini Pro rodando sob o contexto Ray), atuando como arquiteto de software central no VS Code, desenhando os planos de implementação, revisando códigos e garantindo o alinhamento da arquitetura global.
+*   **Engenheiro Executor (Executing Engineer)**: **Claude Code** (baseado no Claude Opus 4.8 rodando sob o contexto Ray), encarregado de implementar as alterações de código em fatias (slices) focadas, corrigir bugs e rodar as suítes de testes locais.
+*   **Parceiros de Apoio (Supporting Partners)**: **ChatGPT / Codex** (baseados no GPT 5.5 rodando sob o contexto Ray) e outros agentes especializados auxiliando na validação de testes, revisão de código e auditoria.
+*   **Parceiro Humano (Human Partner)**: Revisa as especificações, executa validações em ambiente de testes de runtime, define requisitos complexos e fornece a aprovação final.
 
 #### **O Que Torna Isso Especial**
-- **📚 15 Documentos Técnicos**: Conhecimento abrangente do sistema preservado entre sessões
-- **🤖 50+ Conversas de Agentes**: Sessões críticas de desenvolvimento documentadas e preservadas  
-- **🔧 20+ Scripts Automatizados**: Ferramentas criadas por agentes IA para validação, testes e deployment
-- **📝 Templates Comprovados**: Prompts padronizados que produzem consistentemente qualidade
-- **⚡ Ganho de Eficiência de 90%**: Redução dramática no tempo de configuração de contexto para sessões novas de IA
+- **📋 Spec-Driven Development (SDD/STD)**: Especificações normativas na pasta `sdd/` controlam a divisão de escopo em pequenos lotes (batches) controlados.
+- **📚 15 Documentos Técnicos**: Conhecimento abrangente do sistema preservado entre sessões em `ai-workspace/`.
+- **🤖 50+ Conversas de Agentes**: Sessões críticas de desenvolvimento documentadas e preservadas.
+- **🔧 20+ Scripts Automatizados**: Ferramentas criadas por agentes IA para validação, testes e deployment.
+- **⚡ Ganho de Eficiência de 90%**: Redução dramática no tempo de configuração de contexto para sessões novas de IA.
 
 #### **Inovações Chave**
-- **Persistência de Conhecimento**: Conhecimento técnico sobrevive entre sessões de IA
-- **Desenvolvimento Orientado por Templates**: Interações consistentes e de alta qualidade com IA
-- **Fluxos de Trabalho Automatizados**: Scripts criados por IA que automatizam tarefas repetitivas
-- **Contexto Histórico**: Soluções preservadas impedem re-resolver os mesmos problemas
-- **Metodologia Escalável**: Framework que melhora com cada interação
+- **Colaboração Estruturada Multi-Agente**: Handoff dinâmico e cooperação entre múltiplos modelos de IA (Gemini, Claude, GPT).
+- **Persistência de Conhecimento**: O conhecimento técnico sobrevive entre sessões de IA.
+- **Desenvolvimento Orientado por Templates**: Interações consistentes e de alta qualidade com a IA.
+- **Fluxos de Trabalho Automatizados**: Scripts criados por IA que automatizam tarefas repetitivas.
+- **Contexto Histórico**: Soluções preservadas impedem re-resolver os mesmos problemas.
+- **Metodologia Escalável**: Framework que melhora com cada interação.
 
 #### **Para Pesquisadores de IA & Desenvolvedores**
 A metodologia `ai-workspace/` demonstra:
@@ -495,10 +581,12 @@ Conn2Flow é lançado sob uma licença open-source para garantir liberdade de us
 ## Roadmap
 
 ### ✅ Concluído Recentemente
-- **Sistema de Plugins V2**: Arquitetura revolucionária de plugins com detecção dinâmica e templates automatizados
-- **Ambiente Completo de Desenvolvimento**: Ferramentas completas de desenvolvimento com assistência IA
-- **Fluxos de Trabalho Automatizados**: GitHub Actions para releases, testes e deployment
-- **Documentação Técnica**: 15+ guias abrangentes e base de conhecimento
+- **Suíte de Testes Automatizados**: Suíte de testes unitários (PHPUnit, Vitest) e testes funcionais E2E no navegador (Playwright) integrados na esteira de CI/CD.
+- **Módulos de Conteúdo Dinâmicos**: Componentes de alta interatividade, incluindo Menus (DND estilo WordPress), Galerias (curadoria e ordenação via Sortable + links) e Publicador Índice (busca e paginação AJAX).
+- **Sistema de Plugins V2**: Arquitetura revolucionária de plugins com detecção dinâmica e templates automatizados.
+- **Ambiente Completo de Desenvolvimento**: Ferramentas completas de desenvolvimento com assistência IA.
+- **Fluxos de Trabalho Automatizados**: GitHub Actions para releases, testes e deployment.
+- **Documentação Técnica**: 15+ guias abrangentes e base de conhecimento.
 
 ### Próximos Recursos
 - **Marketplace de Plugins Aprimorado**: Sistema de descoberta e instalação de plugins

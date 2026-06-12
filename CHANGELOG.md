@@ -5,10 +5,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.8.4] - 2026-06-12
+
 ### Added
-- Detailed technical documentation in `ai-workspace/en/docs/`
-- Complete change history in `CONN2FLOW-CHANGELOG-HISTORY.md`
-- Industry-standard CHANGELOG.md following Keep a Changelog format
+- **Automated Test Suite (BATCH-031)**: Root-level testing setup integrating PHPUnit (PHP unit/integration), Vitest (JS unit), and Playwright (E2E functional browser testing). Includes automatic execution runner workflows on GitHub Actions CI/CD.
+- **Publisher Index Module (BATCH-028)**: New `publisher-index` module for indexation of publications. Features AJAX-based "Load More" pagination, live textual search, and customizable runtime sorting.
+- **Widget Styles Persistence (BATCH-028)**: Saved compiled CSS (`css_compiled`) and extra HTML head script resources (`html_extra_head`) directly into modules' database tables (`menus`, `galleries`, and `publisher_highlights`).
+- **Resource Injections Deduplication (BATCH-028)**: Global resource loader helper `gestor_pagina_recursos_incluir()` with MD5-hash checks to avoid duplicate style and script tags in final layouts.
+- **Global Synchronization Config (BATCH-029)**: Created `tables_config.json` to configure sync metadata (keys, delete statements, user modifications exceptions) for database tables without an owner module.
+- **Dynamic Database Batching (BATCH-029)**: Implemented threshold-based batching for core migrations and database updates that automatically checks MySQL's `max_allowed_packet` size and breaks queries into smaller transacted chunks (with a 16MB fallback).
+
+### Changed
+- **Internationalization Unification (BATCH-029)**: Standardized language codes by migrating the legacy `linguagem_codigo` column to `language` across all tables, admin CRUD operations, and widget templates.
+- **Unified Synchronization Logs (BATCH-029)**: Refactored `log_unificado()` to pipe output simultaneously to disk, CLI stdout, and the parent processes' array log reference.
+- **Database Operations Security (BATCH-029)**: Removed command line process spawning (`exec`/`shell_exec`) for system updates. Database operations and Phinx migrations now run entirely inline via include/require.
 
 ## [2.8.0] - 2026-06-10
 

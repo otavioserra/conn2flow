@@ -5,10 +5,20 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [2.8.4] - 2026-06-12
+
 ### Added
-- Documentação técnica detalhada em `ai-workspace/pt-br/docs/`
-- Histórico completo de mudanças em `CONN2FLOW-CHANGELOG-HISTORY.md`
-- CHANGELOG.md padrão da indústria seguindo Keep a Changelog
+- **Suíte de Testes Automatizados (BATCH-031)**: Estrutura de testes na raiz integrando PHPUnit (unidade/integração PHP), Vitest (unidade JS) e Playwright (testes funcionais E2E no navegador). Inclui workflows para execução automática no pipeline de CI/CD do GitHub Actions.
+- **Módulo Publicador Índice (BATCH-028)**: Novo módulo `publisher-index` para indexação de publicações. Oferece paginação AJAX tipo "Carregar Mais", busca textual em tempo real e ordenação customizável em tempo de execução.
+- **Persistência de Estilos de Widgets (BATCH-028)**: Gravação de CSS compilado (`css_compiled`) e recursos extras de cabeçalho HTML (`html_extra_head`) diretamente nas tabelas de banco dos módulos (`menus`, `galleries` e `publisher_highlights`).
+- **Deduplicação de Recursos Injetados (BATCH-028)**: Helper global `gestor_pagina_recursos_incluir()` com verificação de hashes MD5 para evitar a duplicação de tags de estilo e scripts nos layouts finais.
+- **Configuração de Sincronização Global (BATCH-029)**: Criação do arquivo `tables_config.json` para centralizar metadados de sincronização (chaves, regras de deleção, exceções de modificação do usuário) de tabelas sem um módulo dono específico.
+- **Loteador Dinâmico de Banco de Dados (BATCH-029)**: Execução de migrações e atualizações de banco de dados estruturada em lotes (batching) transacionados que consultam o tamanho `max_allowed_packet` do MySQL e limitam o pacote a 70% deste tamanho (com fallback fixo de 16MB).
+
+### Changed
+- **Unificação de Internacionalização (BATCH-029)**: Padronização das referências de idiomas migrando a coluna legada `linguagem_codigo` para `language` em todas as tabelas, CRUDs administrativos e templates de widgets.
+- **Logs de Sincronização Unificados (BATCH-029)**: Refatoração do `log_unificado()` para direcionar simultaneamente o log para disco, stdout (CLI) e por referência ao array global do processo pai.
+- **Segurança nas Operações de Banco (BATCH-029)**: Eliminação de subprocessos externos (`exec`/`shell_exec`) durante as atualizações do sistema. Os scripts de banco e migrações Phinx agora rodam inteiramente de forma inline via require/include.
 
 ## [2.8.0] - 2026-06-10
 

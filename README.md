@@ -59,8 +59,9 @@ Conn2Flow features a modern **automated web installer** that simplifies the inst
 ### Prerequisites
 
 - **Web Server**: Apache or Nginx with PHP support
-- **PHP**: Version 8.0 or higher with required extensions (curl, zip, pdo_mysql, openssl)
+- **PHP**: Version 8.0 or higher with required extensions (curl, zip, pdo_mysql, openssl, mbstring, pdo_sqlite)
 - **MySQL**: Version 5.7 or higher (or MariaDB equivalent)
+- **Node.js & NPM**: Node.js (v20+) and NPM (v10+) required for local testing compilation, vitest, playwright and Tailwind CSS CLI v4 compilation
 - **Write Permissions**: Web server must have write access to installation directory
 
 ### Installation Steps
@@ -183,8 +184,9 @@ This repository provides a **complete development environment** for Conn2Flow CM
 * **gestor-instalador/**: Web-based automated installer with multilingual support (Portuguese/English)
 * **ai-workspace/**: Complete development environment with AI-assisted workflows, documentation, and automation tools
 * **dev-plugins/**: Full plugin development framework with templates, scripts, and testing environment
+* **tests/**: Root-level automated test suite including unit (PHPUnit/Vitest), integration, and browser end-to-end tests (Playwright)
 * **dev-environment/**: Docker-based development environment with PHP 8.3 + Apache + MySQL 8.0
-* **.github/**: GitHub Actions workflows for automated releases and CI/CD
+* **.github/**: GitHub Actions workflows for automated releases, CI/CD, and test runners
 
 ### Legacy Branches
 * **gestor-v1.16**: Latest stable release before v2.0.0
@@ -197,13 +199,20 @@ The legacy b2make-* folder structure has been modernized and is now available in
 ## System Features
 
 ### Core CMS Features
-- **Content Management**: Full-featured content creation and editing with TailwindCSS preview
-- **Multi-Framework CSS**: Choose between TailwindCSS and FomanticUI per resource
-- **Advanced Admin Modules**: Modern interface with real-time preview capabilities
-- **Plugin System V2**: Revolutionary plugin architecture with dynamic detection and automated templates
-- **User Management**: Role-based access control and user authentication
-- **Multi-site Support**: Manage multiple domains from single installation
-- **Security**: OpenSSL encryption, secure authentication, and access controls
+- **Content Management**: Full-featured content creation and editing with TailwindCSS preview.
+- **Gemini AI Assistant**: Geração assistida de código e conteúdo no Editor HTML com modos técnicos e flexíveis.
+- **Visual Forms & Submissions**: Visual form builder with anti-spam security (reCAPTCHA v2/v3, FingerprintJS v4, character limits, and IP blocking).
+- **Dynamic Menus**: WordPress-style drag-and-drop hierarchical menu tree editor based on vanilla Pointer Events.
+- **Image Galleries**: Batch file selection, Sortable.js drag-and-drop reordering, and public carousel/slider/grid/masonry layouts with individual image links.
+- **Publisher Highlights & Index**: Content curatorship modules with real simulation mode, AJAX load-more pagination, live search, and sorting.
+- **PayPal Integration**: Recurring subscriptions and payment gateway settings.
+- **Multi-Framework CSS**: Choose between TailwindCSS and FomanticUI per resource.
+- **Advanced Admin Modules**: Modern interface with real-time preview capabilities.
+- **Plugin System V2**: Revolutionary plugin architecture with dynamic detection and automated templates.
+- **User Management**: Role-based access control and user authentication.
+- **Multi-site Support**: Manage multiple domains from single installation.
+- **Security**: OpenSSL encryption, secure authentication, session JWT control, and access controls.
+- **Responsive Admin Panel**: Resizable sidebar width (200px to 450px) with Ctrl+B shortcut and localStorage state persistence.
 
 ### Development Environment Features
 - **Complete Development Stack**: Docker environment with PHP 8.3 + Apache + MySQL 8.0
@@ -211,7 +220,7 @@ The legacy b2make-* folder structure has been modernized and is now available in
 - **Plugin Development Framework**: Full dev-plugins environment with automated templates and scripts
 - **Automated Workflows**: GitHub Actions for releases, testing, and deployment
 - **Technical Documentation**: 15+ detailed guides covering all system aspects
-- **Testing & Validation**: Automated scripts for migration and seeder verification
+- **Testing & Validation**: Automated testing framework (PHPUnit, Vitest, Playwright) and migration/seeder verification scripts
 - **VS Code Integration**: Pre-configured tasks for Docker, Git operations, and development workflows
 - **Ready-to-Use Scripts**: Functional automation scripts for commits, releases, and synchronization
 
@@ -350,8 +359,64 @@ Permission failures will result in warnings about not removing old folders and f
 - **PHP 8.0+**: Modern PHP features and performance
 - **Composer**: Dependency management and autoloading
 - **Phinx**: Database migrations and schema management
-- **GitHub Actions**: Automated builds and releases
+- **GitHub Actions**: Automated builds, releases, and test runners
 - **Modular Design**: Clean separation of concerns
+
+### Automated Test Suite
+
+Conn2Flow has a comprehensive test suite covering backend unit tests, frontend JS component unit tests, database integrations, and end-to-end user flows.
+
+#### 1. Setup local environment
+Before running the tests, install the dependencies at the root level of the repository:
+```bash
+composer install
+npm install
+npx playwright install --with-deps
+```
+
+Ensure that in your `C:\tools\php84\php.ini` (or local `php.ini` equivalent), the following extensions are enabled:
+```ini
+extension=mbstring
+extension=pdo_mysql
+extension=pdo_sqlite
+```
+
+#### 2. Running Tests
+You can trigger the tests using the following commands:
+*   **PHPUnit Backend Tests**:
+    ```bash
+    composer test
+    ```
+    This runs unit tests for core libraries (e.g. OpenSSL RSA keys generation, MD5 resource deduplication) and integration tests for Phinx database migrations.
+*   **Vitest Frontend Tests**:
+    ```bash
+    npm run test
+    ```
+    This runs unit tests for JS components (e.g. `publisher-highlights.js` and `publisher-index.widget.js`) with DOM simulation.
+*   **Playwright E2E Tests**:
+    ```bash
+    npm run test:e2e
+    ```
+    This launches E2E functional browser tests for critical user flows like administrator login, profile changes, and AJAX components rendering.
+
+### VS Code Pre-configured Tasks
+
+To streamline development, the repository includes several pre-configured tasks in `.vscode/tasks.json`. You can access them in VS Code via the **Task Explorer** extension or by pressing `Ctrl+P` / `Cmd+P` and typing `task [Task Name]`.
+
+| Category | Task Name | Command / Script | Description |
+| --- | --- | --- | --- |
+| **Docker** | `📦 Docker - Container Status` | `docker ps` | Lists active Docker containers. |
+| **Docker** | `📦 Docker - Apache Logs > Real Time` | `docker logs ... --follow` | Streams Apache container logs in real time. |
+| **Docker** | `📦 Docker - PHP Logs > Real Time` | `tail -f /var/log/...` | Streams PHP error logs inside the container. |
+| **Core CMS** | `🛠️ Manager - Synchronize => Resources - Local` | `atualizacao-dados-recursos.php` | Regenerates database resource contract (`schema-metadata.json`). |
+| **Core CMS** | `🛠️ Manager - Synchronize => Database - Test Environment` | `updates-manager-database.sh` | Synchronizes local database schema with migrations/seeders. |
+| **Core CMS** | `🛠️ Manager - Synchronize => Files - Test Environment` | `synchronize-manager.sh` | Syncs physical PHP/JS/CSS files to the local Docker volume. |
+| **Core CMS** | `🛠️ Manager - Update => All - Test Environment` | Sequence of 3 tasks above | Full sync of resources, files, and database to Docker. |
+| **Core CMS** | `🛠️ Manager - GIT Release` | `release.sh` | Automates release bump (major/minor/patch) and commits compiled CSS. |
+| **Core CMS** | `🛠️ Manager - Create Module` | `create-new-module.sh` | Automates boilerplate creation for a new Gestor admin module. |
+| **Plugins** | `🧩 Public/Private Plugins - Synchronize Active Plugin` | `synchronizes.sh` | Syncs active plugin files to the development environment. |
+| **Plugins** | `🧩 Public/Private Plugins - Plugin Resources` | `update-data-resources-plugin.php` | Regenerates resource catalog specifically for the plugin. |
+| **Projects** | `🗃️ Projects - Update => All - Core & Project` | Sequence of project syncs | Deploys core features and updates directly to a specific target project. |
 
 ### Directory Structure
 ```
@@ -390,6 +455,13 @@ dev-plugins/           # Plugin development framework
 │   └── public/       # Public repository plugins (no token needed)
 └── tests/            # Plugin testing environment
 
+tests/                 # Root-level Automated Test Suite [NEW]
+├── Unit/             # Unit tests (PHP/PHPUnit, JS/Vitest)
+├── Integration/      # Integration tests (DB migrations, AJAX widget routing)
+└── E2E/              # End-to-End browser tests (Playwright)
+
+sdd/                   # Spec-Driven Development (SDD/STD) normative files, decision logs, and human requests [NEW]
+
 .vscode/              # VS Code development configuration
 └── tasks.json        # Pre-configured tasks for development automation
 
@@ -399,7 +471,13 @@ dev-environment/       # Docker development stack
 └── tests/            # Integration tests
 
 .github/               # GitHub Actions workflows
-└── workflows/        # CI/CD automation
+└── workflows/        # CI/CD automation and test runners
+
+phpunit.xml           # PHPUnit configuration file [NEW]
+vitest.config.js      # Vitest configuration file [NEW]
+playwright.config.js  # Playwright configuration file [NEW]
+package.json          # Node.js dependencies and script mappings [NEW]
+composer.json         # PHPUnit dependency definition [NEW]
 ```
 
 ## Documentation & Development
@@ -429,25 +507,33 @@ The `ai-workspace/` directory contains all development tools and documentation:
 - Detailed prompts for AI-assisted development
 - Complete system knowledge base for contributors
 
-## AI-Powered Development Methodology
+## AI-Powered & Spec-Driven Development Methodology
 
-### 🤖 Collaborative Development with AI Agents
+### 🤖 Collaborative Development with AI Agents & SDD
 
-Conn2Flow pioneered a comprehensive **AI-assisted development methodology** over 12 months of active collaboration with AI agents (GitHub Copilot, Claude, ChatGPT, Gemini). The `ai-workspace/` directory represents a mature framework for human-AI collaborative software development.
+Conn2Flow pioneered a comprehensive **AI-assisted development methodology** over 12 months of active collaboration with AI agents. The repository utilizes a **Spec-Driven Development (SDD/STD)** framework managed inside the `sdd/` directory. SDD ensures that all changes follow structured specifications (intakes), transacted batches, decision logs, and automated validation checklists before merging.
+
+#### **Collaborative AI Agent Architecture**
+The development ecosystem operates through a collaborative human-AI team structure utilizing the **Ray** context platform:
+*   **Chief Engineer (Engenheiro Chefe)**: **Antigravity** (powered by Gemini Flash 3.5 / Gemini Pro running on the Ray context), acting as the central software architect within VS Code, orchestrating the implementation plans, reviewing code, and ensuring overall architectural alignment.
+*   **Executing Engineer (Engenheiro Executor)**: **Claude Code** (powered by Claude Opus 4.8 running on the Ray context), executing code changes in narrow slices, resolving bugs, and running the local test suites.
+*   **Supporting Partners**: **ChatGPT / Codex** (powered by GPT 5.5 running on the Ray context) and other specialized agents assisting with test coverage, validations, and automated code reviews.
+*   **Human Partner**: Reviews the specifications, executes runtime checks in the test environments, resolves edge-case requirements, and provides final approvals.
 
 #### **What Makes This Special**
-- **📚 15 Technical Documents**: Comprehensive system knowledge preserved across sessions
-- **🤖 50+ Agent Conversations**: Critical development sessions documented and preserved  
-- **🔧 20+ Automated Scripts**: Tools created by AI agents for validation, testing, and deployment
-- **📝 Proven Templates**: Standardized prompts that consistently produce quality results
-- **⚡ 90% Efficiency Gain**: Dramatic reduction in context-setting time for new AI sessions
+- **📋 Spec-Driven Development (SDD/STD)**: Normative specifications in `sdd/` control how changes are split into manageable batches.
+- **📚 15 Technical Documents**: Comprehensive system knowledge preserved across sessions in `ai-workspace/`.
+- **🤖 50+ Agent Conversations**: Critical development sessions documented and preserved.
+- **🔧 20+ Automated Scripts**: Tools created by AI agents for validation, testing, and deployment.
+- **⚡ 90% Efficiency Gain**: Dramatic reduction in context-setting time for new AI sessions.
 
 #### **Key Innovations**
-- **Knowledge Persistence**: Technical knowledge survives between AI sessions
-- **Template-Driven Development**: Consistent, high-quality AI interactions
-- **Automated Workflows**: AI-created scripts that automate repetitive tasks
-- **Historical Context**: Preserved solutions prevent re-solving the same problems
-- **Scalable Methodology**: Framework that improves with each interaction
+- **Structured AI Collaboration**: Dynamic handoff and cooperation between different AI models (Gemini, Claude, GPT).
+- **Knowledge Persistence**: Technical knowledge survives between AI sessions.
+- **Template-Driven Development**: Consistent, high-quality AI interactions.
+- **Automated Workflows**: AI-created scripts that automate repetitive tasks.
+- **Historical Context**: Preserved solutions prevent re-solving the same problems.
+- **Scalable Methodology**: Framework that improves with each interaction.
 
 #### **For AI Researchers & Developers**
 The `ai-workspace/` methodology demonstrates:
@@ -495,10 +581,12 @@ Conn2Flow is released under an open-source license to ensure freedom of use, mod
 ## Roadmap
 
 ### ✅ Recently Completed
-- **Plugin System V2**: Revolutionary plugin architecture with dynamic detection and automated templates
-- **Complete Development Environment**: Full-stack development tools with AI assistance
-- **Automated Workflows**: GitHub Actions for releases, testing, and deployment
-- **Technical Documentation**: 15+ comprehensive guides and knowledge base
+- **Automated Testing Suite**: Root-level unit (PHPUnit, Vitest) and E2E browser tests (Playwright) integrated in CI/CD pipeline.
+- **Dynamic Content Modules**: Rich components including Menus (WordPress-style drag-and-drop), Galleries (Sortable curation + links), and Publisher Index (AJAX live search/pagination).
+- **Plugin System V2**: Revolutionary plugin architecture with dynamic detection and automated templates.
+- **Complete Development Environment**: Full-stack development tools with AI assistance.
+- **Automated Workflows**: GitHub Actions for releases, testing, and deployment.
+- **Technical Documentation**: 15+ comprehensive guides and knowledge base.
 
 ### Upcoming Features
 - **Enhanced Plugin Marketplace**: Plugin discovery and installation system
