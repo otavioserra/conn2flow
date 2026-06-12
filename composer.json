@@ -1,0 +1,11 @@
+{
+    "name": "conn2flow/tests",
+    "description": "Conn2Flow repository-level test tooling.",
+    "license": "proprietary",
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit -c phpunit.xml"
+    }
+}

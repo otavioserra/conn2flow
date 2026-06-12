@@ -13,7 +13,7 @@ final class AlterRecursosAddPluginId extends AbstractMigration
             'layouts' => [ ['colunas'=>['id','language']] ],
             'paginas' => [ ['colunas'=>['id','language']] ],
             'componentes' => [ ['colunas'=>['id','language']] ],
-            'variaveis' => [ ['colunas'=>['id','linguagem_codigo']] ],
+            'variaveis' => [ ['colunas'=>['id','language']] ],
         ];
 
         foreach ($alvos as $tabela => $idxLista) {

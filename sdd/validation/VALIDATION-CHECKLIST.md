@@ -454,4 +454,90 @@ Para manter o checklist de validações leve e eficiente, as validações e evid
 - [x] Decisão registrada: [DEC-041](../decisions/DECISION-LOG.md#dec-041---2026-06-11---accepted)
 
 
+## BATCH-029 - Reestruturação e Otimização de Dados e Sincronização
+
+- [x] **Mapeamento e Migração de Colunas** (DEC-042: escopo redirecionado para `variaveis`, única tabela pendente):
+  - [x] Mapear migrações usando `linguagem_codigo` (`create_variaveis_table` + índice em `alter_recursos_add_plugin_id`; as 7 do req já em `language`).
+  - [x] Migração de criação ajustada + índice composto `language` + nova migração corretiva idempotente (`20260705100000_rename...`).
+  - [x] Atualizar referências no código (`configuracao.php`, `gestor.php`, `plugins-installer.php`, gerador, atualizador, plugin-banco) e regenerar `VariaveisData.json`.
+- [x] **Bloco de Metadados e Tabelas Globais**:
+  - [x] Adicionar bloco `"tabela"."config"` com regras de sincronização em 13 JSONs de módulo.
+  - [x] Criar `gestor/resources/tables_config.json` (4 tabelas globais sem dono).
+  - [x] Suportar a chave `"deletar"` nos blocos locais e no global.
+- [x] **Refatoração do Gerador (`atualizacao-dados-recursos.php`)**:
+  - [x] Motor genérico (Registry Pattern) consolidando `config` local + global.
+  - [x] Agregar e consolidar regras `config` e deleção em `schema-metadata.json` (17 tabelas).
+  - [x] Suportar ganchos `data-hooks.php` (globais e por módulo).
+  - [x] Logs via `log_disco_local()`/`log_disco()` + `@` cego substituído por `ensureDir()`.
+- [x] **Refatoração do Atualizador (`atualizacoes-banco-de-dados.php`)**:
+  - [x] Leitura dinâmica de `schema-metadata.json` (`schemaMetadata()`), removendo `$preserveMap`/`$tabelasChaveNatural`/`$tabelasInsertOnly`.
+  - [x] `max_allowed_packet` dinâmico + loteador threshold 70% (fallback 16MB) via `inserirEmLote`.
+  - [x] Motor genérico de chave natural (`naturalKeyGenerica`) + WHERE genérico null-safe.
+  - [x] Deleção imperativa (`executarDelecoes`) + transações PDO + logs unificados.
+- [x] **Unificação e Visibilidade de Logs**:
+  - [x] `log_unificado()` no script principal e no de plugins (incorporado de outro agente — DEC-042).
+  - [x] Redirecionamento para `$GLOBALS['EXTERNAL_LOGGER']` quando definido.
+  - [x] Impressão no stdout sob `PHP_SAPI === 'cli'`.
+  - [x] Chave `db_logs` (+ `full_log`) na resposta de deploy da API (`api.php`).
+  - [x] Captura e prefixo `[BANCO]` nos logs de `atualizacoes-sistema.php` (inline, sem `exec()`).
+
+### Evidência de Validação (BATCH-029) — 2026-06-12
+
+- [x] Validação estática executada:
+  - [x] `php -l` OK em 11 arquivos (gerador, atualizador, plugin-banco, `api.php`, `atualizacoes-sistema.php`, `configuracao.php`, `gestor.php`, `plugins-installer.php`, 3 migrações).
+  - [x] `json_decode` OK em 34 JSONs (13 módulos com `config` + `tables_config.json` + `schema-metadata.json` + `VariaveisData.json` + demais módulos).
+  - [x] 0 referências a `linguagem_codigo` como coluna SQL fora da migração de rename.
+- [x] Testes de unidade: `naturalKeyGenerica` 8/8 (paridade com o switch antigo); `inserirEmLote` em PDO SQLite (batch 50 c/ chunking, dedup fallback, simulate); `schemaMetadata` 17 tabelas; geração do contrato espelhando o hardcode.
+- [x] **Teste end-to-end contra MySQL 8.0 real** (banco dedicado `conn2flow_test`, dropado ao fim; `conn2flow` real intacto): 6/6 OK — `modulos` INSERT em lote (3), UPDATE divergente (1) + NO-CHANGE (2), `variaveis` PRESERVE de `user_modified`, `usuarios` INSERT_ONLY (não atualiza), transação ROLLBACK desfaz insert, e deleção imperativa (`executarDelecoes`) removendo registro do bloco `deletar` do contrato.
+- [ ] **Pendente com o operador**: `Update => Core` (regenerar contrato/checksums no pipeline) + deploy real (aplicar migrações incl. `rename` da `variaveis` no banco de dev/produção) e validar `db_logs` no endpoint de deploy via API (com/sem `full_log`) e o loteador em volume real.
+
+
+## BATCH-030 - Autenticação, 2FA, Social Login e Segurança
+
+- [ ] **Autenticação de Dois Fatores (2FA)**:
+  - [ ] Colunas `two_factor_secret` e `two_factor_enabled` adicionadas na tabela `usuarios`.
+  - [ ] Classe de suporte a TOTP gerando e validando segredos com sucesso.
+  - [ ] Tela de Perfil de Usuário com fluxos de ativação (QR Code) e desativação seguros.
+  - [ ] Fluxo de login administrativo interceptando usuários com 2FA habilitado.
+- [ ] **Login Social (OAuth 2.0)**:
+  - [ ] Tabela `usuarios_provedores` criada.
+  - [ ] Biblioteca `oauth.php` implementada para Google e Meta.
+  - [ ] Associação e login de contas sociais funcionando no painel e na tela de login.
+- [ ] **Sessões baseadas em JWT**:
+  - [ ] Biblioteca `jwt.php` gerando e validando tokens JWT.
+  - [ ] Autenticação stateless funcionando para endpoints `/api/`.
+- [ ] **Endurecimento de Endpoints**:
+  - [ ] Tokens CSRF obrigatórios e validados em posts administrativos.
+  - [ ] Detecção de sequestro de sessão ativa com validação de User-Agent/IP.
+
+### Evidência de Validação (BATCH-030)
+
+- [ ] Validação estática de sintaxe executada (`php -l` e `node --check`).
+- [ ] Testes de validação funcional do login social, 2FA e tokens JWT.
+
+
+## BATCH-031 - Estruturação de Framework de Testes Unitários e E2E
+
+- [x] **Configuração e Estrutura Física**:
+  - [x] Pasta `tests/` estruturada com subdiretórios Unit, Integration e E2E.
+  - [x] Arquivo `phpunit.xml` e bootstrap PHP configurados.
+  - [x] Arquivo `vitest.config.js` e mock do DOM configurados.
+- [x] **Testes de Backend (PHPUnit)**:
+  - [x] PHPUnit integrado ao Composer.
+  - [x] Testes unitários do core/helpers e integração de banco de dados/rotas implementados.
+- [x] **Testes de Frontend (Vitest)**:
+  - [x] Vitest rodando e testando funções javascript dos módulos.
+- [x] **Testes Funcionais E2E (Playwright)**:
+  - [x] Playwright configurado e executando fluxos completos de login, destaques e index.
+- [x] **Integração de CI/CD**:
+  - [x] Script de execução local e workflow do GitHub Actions configurados.
+
+### Evidência de Validação (BATCH-031)
+
+- [x] Suítes de testes unitários e de integração executadas com sucesso localmente.
+- [ ] Execução bem-sucedida do pipeline de testes na nuvem.
+
+
+
+
 

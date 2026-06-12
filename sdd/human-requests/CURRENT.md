@@ -1,5 +1,6 @@
 # Current Human Request
 
-- **Intake ativo**: nenhum (último: [req-028.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-028.md) — BATCH-028)
+- **Intake ativo**: nenhum (aguardando próximo intake humano)
 
-- **Status**: concluído (validação estática OK; deploy/validação runtime pendentes com o operador)
+- **Status**: BATCH-029 e BATCH-031 concluídos e validados estaticamente (deploy/runtime pendentes com o operador); BATCH-030 (2FA/Social/JWT) permanece `blocked`. Sem intake ativo no momento.
+

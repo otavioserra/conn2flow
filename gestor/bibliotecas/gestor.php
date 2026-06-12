@@ -735,7 +735,7 @@ function gestor_variaveis($params = false){
 			))
 			,
 			"variaveis",
-			"WHERE linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
+			"WHERE language='".$_GESTOR['linguagem-codigo']."'"
 			.($modulo == '_global_' ? " AND modulo IS NULL" : " AND modulo='".$modulo."'")
 		);
 		
@@ -814,7 +814,7 @@ function gestor_variaveis_globais($params = false){
 			))
 			,
 			"variaveis",
-			"WHERE linguagem_codigo='".$_GESTOR['linguagem-codigo']."'"
+			"WHERE language='".$_GESTOR['linguagem-codigo']."'"
 			." AND id='".$id."'"
 		);
 		
@@ -869,7 +869,7 @@ function gestor_variaveis_alterar($params = false){
 					"variaveis",
 					"WHERE modulo='".$modulo."'"
 					." AND id='".$id."'"
-					." AND linguagem_codigo='".(isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo'])."'"
+					." AND language='".(isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo'])."'"
 				);
 			break;
 			default:
@@ -879,7 +879,7 @@ function gestor_variaveis_alterar($params = false){
 					"variaveis",
 					"WHERE modulo='".$modulo."'"
 					." AND id='".$id."'"
-					." AND linguagem_codigo='".(isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo'])."'"
+					." AND language='".(isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo'])."'"
 				);
 		}
 	}

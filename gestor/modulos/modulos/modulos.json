@@ -11,7 +11,14 @@
         "status": "status",
         "versao": "versao",
         "data_criacao": "data_criacao",
-        "data_modificacao": "data_modificacao"
+        "data_modificacao": "data_modificacao",
+        "config": {
+            "strategy": "natural_key",
+            "natural_key_columns": ["language", "id"],
+            "preserve_on_user_modified": [],
+            "insert_only": false
+        },
+        "deletar": []
     },
     "resources": {
         "pt-br": {

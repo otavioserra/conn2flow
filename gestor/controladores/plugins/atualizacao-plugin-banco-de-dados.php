@@ -78,19 +78,18 @@ function tr(string $key, array $vars = []): string { return __t($key, $vars); }
 /** Logger unificado - usa logger externo se disponível, senão log_disco */
 function log_unificado(string $msg, ?string $logFilename = null): void {
     global $LOG_FILE_DB, $GLOBALS;
-    
-    // Se há logger externo (passado pelo plugins-installer), usar ele
+
     if (isset($GLOBALS['EXTERNAL_LOGGER']) && is_array($GLOBALS['EXTERNAL_LOGGER'])) {
-        // Prefixo para identificar logs internos da atualização de banco de dados
-        $GLOBALS['EXTERNAL_LOGGER'][] = '[db-internal] ' . $msg;
-        return;
+        $GLOBALS['EXTERNAL_LOGGER'][] = $msg;
     }
-    
-    // Fallback: usar log_disco normal
+
     $filename = $logFilename ?? $LOG_FILE_DB;
     log_disco($msg, $filename);
-}
 
+    if (PHP_SAPI === 'cli') {
+        echo $msg . PHP_EOL;
+    }
+}
 /** Conexão PDO reutilizável */
 function db(): PDO {
     global $BASE_PATH_DB, $_BANCO, $CLI_OPTS, $_ENV, $GLOBALS;
@@ -670,8 +669,8 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                         if ($pkDeclarada && isset($exist[$pkDeclarada])) { $whereSql="WHERE `$pkDeclarada`=:__pk"; $params['__pk']=$exist[$pkDeclarada]; }
                         else {
                             switch ($tabela) {
-                                case 'paginas': case 'layouts': case 'componentes': $whereSql="WHERE id = :__id AND modulo = :__mod AND (`language` IS NULL OR `linguagem_codigo` IS NULL)"; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??''; break;
-                                case 'variaveis': $whereSql="WHERE id = :__id AND modulo = :__mod AND (grupo <=> :__grp) AND (`language` IS NULL OR `linguagem_codigo` IS NULL)"; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??''; $params['__grp']=$exist['grupo']??null; break;
+                                case 'paginas': case 'layouts': case 'componentes': $whereSql="WHERE id = :__id AND modulo = :__mod AND (`language` IS NULL OR `language` = '')"; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??''; break;
+                                case 'variaveis': $whereSql="WHERE id = :__id AND modulo = :__mod AND (grupo <=> :__grp) AND (`language` IS NULL OR `language` = '')"; $params['__id']=$exist['id']; $params['__mod']=$exist['modulo']??''; $params['__grp']=$exist['grupo']??null; break;
                             }
                         }
                         $sets=implode(',',array_map(fn($c)=>"`$c`=:$c",array_keys($diff)));

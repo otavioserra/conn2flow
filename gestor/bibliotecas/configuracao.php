@@ -78,7 +78,7 @@ function configuracao_administracao_salvar($params = false){
 			))
 			,
 			"variaveis",
-			"WHERE linguagem_codigo='".$linguagemCodigo."'"
+			"WHERE language='".$linguagemCodigo."'"
 			." AND modulo='".$modulo."'"
 			." ORDER BY id ASC"
 		);
@@ -149,7 +149,7 @@ function configuracao_administracao_salvar($params = false){
 				}
 			// Se é uma nova variável (não existia no banco antes)
 			} else if(existe($id)){
-				banco_insert_name_campo('linguagem_codigo',$linguagemCodigo);
+				banco_insert_name_campo('language',$linguagemCodigo);
 				banco_insert_name_campo('modulo',$modulo);
 				banco_insert_name_campo('id',$id);
 				banco_insert_name_campo('tipo',$tipo);
@@ -281,7 +281,7 @@ function configuracao_administracao($params = false){
 				'descricao',
 			),
 			'extra' => 
-				"WHERE linguagem_codigo='".$linguagemCodigo."'"
+				"WHERE language='".$linguagemCodigo."'"
 				." AND modulo='".$modulo."'"
 				." ORDER BY id ASC"
 		));
@@ -565,7 +565,7 @@ function configuracao_hosts_salvar($params = false){
 			))
 			,
 			"variaveis",
-			"WHERE linguagem_codigo='".$linguagemCodigo."'"
+			"WHERE language='".$linguagemCodigo."'"
 			." AND modulo='".$modulo."'"
 			. $gruposSQL
 			." ORDER BY id ASC"
@@ -590,7 +590,7 @@ function configuracao_hosts_salvar($params = false){
 				'valor',
 			),
 			'extra' => 
-				"WHERE linguagem_codigo='".$linguagemCodigo."'"
+				"WHERE language='".$linguagemCodigo."'"
 				." AND modulo='".$modulo."'"
 				. $gruposSQL
 				." AND id_hosts='".$_GESTOR['host-id']."'"
@@ -636,7 +636,7 @@ function configuracao_hosts_salvar($params = false){
 						
 						banco_update_executar(
 							'hosts_variaveis',
-							"WHERE linguagem_codigo='".$linguagemCodigo."'"
+							"WHERE language='".$linguagemCodigo."'"
 							." AND modulo='".$modulo."'"
 							." AND id_hosts_variaveis='".$refHost."'"
 							." AND id_hosts='".$_GESTOR['host-id']."'"
@@ -651,7 +651,7 @@ function configuracao_hosts_salvar($params = false){
 						$banco_antes[$ref]['valor'] != $valor
 					){
 						banco_insert_name_campo('id_hosts',$_GESTOR['host-id']);
-						banco_insert_name_campo('linguagem_codigo',$linguagemCodigo);
+						banco_insert_name_campo('language',$linguagemCodigo);
 						banco_insert_name_campo('modulo',$modulo);
 						banco_insert_name_campo('id',$id);
 						banco_insert_name_campo('tipo',$tipo);
@@ -852,7 +852,7 @@ function configuracao_hosts_variaveis($params = false){
 				'descricao',
 			),
 			'extra' => 
-				"WHERE linguagem_codigo='".$linguagemCodigo."'"
+				"WHERE language='".$linguagemCodigo."'"
 				." AND modulo='".$modulo."'"
 				. $gruposSQL
 				." ORDER BY id ASC"
@@ -866,7 +866,7 @@ function configuracao_hosts_variaveis($params = false){
 				'valor',
 			),
 			'extra' => 
-				"WHERE linguagem_codigo='".$linguagemCodigo."'"
+				"WHERE language='".$linguagemCodigo."'"
 				." AND modulo='".$modulo."'"
 				. $gruposSQL
 				." AND id_hosts='".$id_hosts."'"

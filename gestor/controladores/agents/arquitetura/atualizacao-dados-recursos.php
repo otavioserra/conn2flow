@@ -49,7 +49,12 @@ $SYSTEM_PATH = realpath(__DIR__ . '/../../../../') . DIRECTORY_SEPARATOR; // rai
 require_once $SYSTEM_PATH . 'gestor/bibliotecas/lang.php';
 // Biblioteca de logs (pode ser adaptada futuramente). Se não existir função, definimos fallback simples.
 // Carregar biblioteca de log original
-@require_once $SYSTEM_PATH . 'gestor/bibliotecas/log.php';
+$LOG_LIB_PATH = $SYSTEM_PATH . 'gestor/bibliotecas/log.php';
+if (is_file($LOG_LIB_PATH)) {
+    require_once $LOG_LIB_PATH;
+} else {
+    fwrite(STDERR, "AVISO: biblioteca de log nao encontrada em {$LOG_LIB_PATH}\n");
+}
 // Usaremos diretamente log_disco_local() da biblioteca
 
 // Parsing de argumentos CLI
@@ -88,8 +93,8 @@ $LOG_FILE        = 'atualizacao-dados-recursos';
 const DEFAULT_FRAMEWORK_CSS = 'fomantic-ui';
 
 // Garantir existência dos diretórios
-if (!is_dir($LOG_DIR)) @mkdir($LOG_DIR, 0775, true);
-if (!is_dir($DB_DATA_DIR)) @mkdir($DB_DATA_DIR, 0775, true);
+ensureDir($LOG_DIR, $LOG_FILE);
+ensureDir($DB_DATA_DIR, $LOG_FILE);
 
 // Ajustar defaults para biblioteca de log tradicional se necessária
 global $_GESTOR;
@@ -110,6 +115,17 @@ function log_disco_local(string $msg, string $file) {
     if ($LOG_DISCO) {
         log_disco($msg, $file);
     }
+}
+
+/**
+ * Garante a existência de um diretório, validando o resultado e registrando falhas.
+ * Substitui o uso de @mkdir com silenciamento cego.
+ */
+function ensureDir(string $dir, string $logFile): bool {
+    if (is_dir($dir)) return true;
+    if (mkdir($dir, 0775, true) || is_dir($dir)) return true;
+    log_disco_local('MKDIR_FALHA ' . $dir, $logFile);
+    return false;
 }
 
 // Log do modo de execução
@@ -156,8 +172,9 @@ function jsonRead(string $path): ?array {
  * Escreve JSON formatado.
  */
 function jsonWrite(string $path, array $data): bool {
+    global $LOG_FILE;
     $dir = dirname($path);
-    if (!is_dir($dir)) @mkdir($dir, 0775, true);
+    ensureDir($dir, $LOG_FILE);
     return file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) !== false;
 }
 
@@ -413,8 +430,8 @@ function carregarDadosExistentes(): array {
                     $k = $r['language'].'|'.($r['modulo'] ?? '').'|'.$r['id'];
                     break;
                 case 'variaveis':
-                    if (!isset($r['linguagem_codigo'],$r['id'])) continue 2;
-                    $k = $r['linguagem_codigo'].'|'.($r['modulo'] ?? '').'|'.$r['id'].'|'.($r['grupo'] ?? '');
+                    if (!isset($r['language'],$r['id'])) continue 2;
+                    $k = $r['language'].'|'.($r['modulo'] ?? '').'|'.$r['id'].'|'.($r['grupo'] ?? '');
                     break;
                 default: continue 2;
             }
@@ -612,20 +629,20 @@ function coletarRecursos(array $existentes, array $map): array {
             $file = $RESOURCES_DIR.$lang.DIRECTORY_SEPARATOR.$dataFiles['variables'];
             $lista = jsonRead($file) ?? [];
             foreach ($lista as $v) {
-                $id = $v['id'] ?? null; if(!$id){$orphans['variaveis'][]=$v+['_motivo'=>'sem id','linguagem_codigo'=>$lang];continue;}
+                $id = $v['id'] ?? null; if(!$id){$orphans['variaveis'][]=$v+['_motivo'=>'sem id','language'=>$lang];continue;}
                 $mod = $v['module'] ?? ($v['modulo'] ?? '');
                 $grp = $v['group'] ?? ($v['grupo'] ?? null);
                 $base = $lang.'|'.$mod.'|'.$id;
                 if(!isset($idxVariaveis[$base])) $idxVariaveis[$base]=[];
                 $groups = $idxVariaveis[$base];
                 if($grp===null || $grp==='') { // sem group permitido somente se nenhum group já existe
-                    if(!empty($groups) || in_array('', $groups,true)) { $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade sem group','linguagem_codigo'=>$lang]; continue; }
+                    if(!empty($groups) || in_array('', $groups,true)) { $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade sem group','language'=>$lang]; continue; }
                 } else { // com group
-                    if(in_array($grp,$groups,true)) { $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade group repetido','linguagem_codigo'=>$lang]; continue; }
+                    if(in_array($grp,$groups,true)) { $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade group repetido','language'=>$lang]; continue; }
                 }
                 $idxVariaveis[$base][] = ($grp ?? '');
                 $variaveis[] = [
-                    'linguagem_codigo' => $lang,
+                    'language' => $lang,
                     'modulo' => $mod!=='' ? $mod : null,
                     'id' => $id,
                     'valor' => $v['value'] ?? ($v['valor'] ?? null),
@@ -702,10 +719,10 @@ function coletarRecursos(array $existentes, array $map): array {
                             $grp = $item['group'] ?? null; $base = $lang.'|'.$modId.'|'.$id;
                             if(!isset($idxVariaveis[$base])) $idxVariaveis[$base]=[];
                             $groups = $idxVariaveis[$base];
-                            if($grp===null || $grp==='') { if(!empty($groups) || in_array('', $groups,true)){ $orphans['variaveis'][]=$item+['_motivo'=>'duplicidade sem group','linguagem_codigo'=>$lang,'modulo'=>$modId]; continue; } }
-                            else { if(in_array($grp,$groups,true)){ $orphans['variaveis'][]=$item+['_motivo'=>'duplicidade group repetido','linguagem_codigo'=>$lang,'modulo'=>$modId]; continue; } }
+                            if($grp===null || $grp==='') { if(!empty($groups) || in_array('', $groups,true)){ $orphans['variaveis'][]=$item+['_motivo'=>'duplicidade sem group','language'=>$lang,'modulo'=>$modId]; continue; } }
+                            else { if(in_array($grp,$groups,true)){ $orphans['variaveis'][]=$item+['_motivo'=>'duplicidade group repetido','language'=>$lang,'modulo'=>$modId]; continue; } }
                             $idxVariaveis[$base][] = ($grp ?? '');
-                            $variaveis[] = [ 'linguagem_codigo'=>$lang,'modulo'=>$modId,'id'=>$id,'valor'=>$item['value'] ?? null,'tipo'=>$item['type'] ?? null,'grupo'=>$grp,'descricao'=>$item['description'] ?? null ];
+                            $variaveis[] = [ 'language'=>$lang,'modulo'=>$modId,'id'=>$id,'valor'=>$item['value'] ?? null,'tipo'=>$item['type'] ?? null,'grupo'=>$grp,'descricao'=>$item['description'] ?? null ];
                         } elseif ($tipo==='forms') {
                             $kId = $lang.'|'.$modId.'|'.$id; if(isset($idxForms[$kId])) { $orphans['forms'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
                             $idxForms[$kId]=true;
@@ -755,7 +772,7 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
     jsonWrite($DB_DATA_DIR.'FormsData.json', $recursos['formsData']);
     jsonWrite($DB_DATA_DIR.'ModosIaData.json', $recursos['modesData']);
     $orphDir = $GESTOR_DIR.'db'.DIRECTORY_SEPARATOR.'orphans'.DIRECTORY_SEPARATOR;
-    if(!is_dir($orphDir)) @mkdir($orphDir,0775,true);
+    ensureDir($orphDir, $LOG_FILE);
     foreach (['Layouts','Paginas','Componentes','Templates','Variaveis','PromptsIa','AlvosIa','ModosIa','Forms'] as $T) {
         $k = strtolower($T);
         jsonWrite($orphDir.$T.'Data.json', $recursos['orphans'][$k] ?? []);
@@ -810,6 +827,148 @@ function reporteFinal(array $recursos, array $erros): void {
     log_disco_local($msg,$LOG_FILE); echo $msg;
 }
 
+// ========================= 5.1) CONTRATO DE SINCRONIZAÇÃO (REGISTRY) =========================
+
+/**
+ * Converte nome de tabela snake_case para o nome do arquivo *Data.json.
+ * Ex.: paginas => PaginasData.json ; usuarios_perfis_modulos => UsuariosPerfisModulosData.json
+ */
+function dataFileNameFromTable(string $tabela): string {
+    $pascal = preg_replace_callback('/(^|_)([a-z])/', function ($m) { return strtoupper($m[2]); }, strtolower($tabela));
+    return $pascal . 'Data.json';
+}
+
+/**
+ * Normaliza um bloco "tabela" (de módulo ou do global) para a forma canônica do contrato.
+ * Apenas blocos com sub-chave "config" entram no contrato (tabelas sincronizadas via *Data.json).
+ * Retorna null quando o bloco não define regras de sincronização.
+ */
+function normalizarConfigTabela(array $meta): ?array {
+    $nome = $meta['nome'] ?? null;
+    $config = $meta['config'] ?? null;
+    if (!is_string($nome) || $nome === '' || !is_array($config)) return null;
+    $strategy = ($config['strategy'] ?? 'pk') === 'natural_key' ? 'natural_key' : 'pk';
+    return [
+        'nome' => $nome,
+        'id' => $meta['id'] ?? 'id',
+        'id_numerico' => $meta['id_numerico'] ?? null,
+        'data_file' => dataFileNameFromTable($nome),
+        'strategy' => $strategy,
+        'natural_key_columns' => array_values(array_filter((array)($config['natural_key_columns'] ?? []), 'is_string')),
+        'preserve_on_user_modified' => array_values(array_filter((array)($config['preserve_on_user_modified'] ?? []), 'is_string')),
+        'insert_only' => !empty($config['insert_only']),
+        'deletar' => array_values((array)($meta['deletar'] ?? [])),
+    ];
+}
+
+/**
+ * Motor de varredura genérico (Registry Pattern): consolida as regras de sincronização
+ * de tabelas a partir do arquivo global tables_config.json e dos blocos "tabela.config"
+ * de cada módulo, produzindo o contrato único db/data/schema-metadata.json consumido pelo
+ * atualizador (atualizacoes-banco-de-dados.php). Blocos locais de módulo sobrescrevem o global.
+ */
+function gerarSchemaMetadata(): void {
+    global $RESOURCES_DIR, $MODULES_DIR, $DB_DATA_DIR, $LOG_FILE;
+    $tables = [];
+    $deletar = [];
+
+    $registrar = function (array $meta, string $source) use (&$tables, &$deletar) {
+        $norm = normalizarConfigTabela($meta);
+        if ($norm === null) return;
+        $nome = $norm['nome'];
+        $del = $norm['deletar'];
+        unset($norm['deletar']);
+        $norm['source'] = $source;
+        $tables[$nome] = $norm; // registro posterior (módulo) sobrescreve anterior (global)
+        if ($del) {
+            $deletar[$nome] = array_merge($deletar[$nome] ?? [], $del);
+        }
+    };
+
+    // 1) Tabelas globais (sem módulo dono): gestor/resources/tables_config.json
+    $globalFile = $RESOURCES_DIR . 'tables_config.json';
+    if (is_file($globalFile)) {
+        $g = jsonRead($globalFile);
+        if (is_array($g) && isset($g['tabelas']) && is_array($g['tabelas'])) {
+            foreach ($g['tabelas'] as $meta) {
+                if (is_array($meta)) $registrar($meta, 'global:tables_config.json');
+            }
+        } else {
+            log_disco_local('SCHEMA_META_WARN tables_config.json invalido ou sem chave "tabelas"', $LOG_FILE);
+        }
+    } else {
+        log_disco_local('SCHEMA_META_INFO tables_config.json ausente em ' . $globalFile, $LOG_FILE);
+    }
+
+    // 2) Blocos locais "tabela.config" de cada módulo
+    if (is_dir($MODULES_DIR)) {
+        foreach (glob($MODULES_DIR . '*', GLOB_ONLYDIR) ?: [] as $modPath) {
+            $modId = basename($modPath);
+            $jsonFile = $modPath . DIRECTORY_SEPARATOR . $modId . '.json';
+            $data = jsonRead($jsonFile);
+            if (!is_array($data)) continue;
+            $tabela = $data['tabela'] ?? null;
+            if (is_array($tabela) && !empty($tabela['config'])) {
+                $registrar($tabela, 'module:' . $modId);
+            }
+        }
+    }
+
+    ksort($tables);
+    $contrato = [
+        'generated_at' => date('c'),
+        'tables' => $tables,
+        'deletar' => $deletar,
+    ];
+    $dest = $DB_DATA_DIR . 'schema-metadata.json';
+    if (jsonWrite($dest, $contrato)) {
+        log_disco_local('SCHEMA_METADATA_SAVED ' . $dest . ' tabelas=' . count($tables) . ' deletar=' . count($deletar), $LOG_FILE);
+    } else {
+        log_disco_local('SCHEMA_METADATA_ERRO ao gravar ' . $dest, $LOG_FILE);
+    }
+}
+
+// ========================= 5.2) DATA HOOKS (PÓS-GERAÇÃO) =========================
+
+/**
+ * Carrega e executa, em sequência determinística, scripts data-hooks.php globais e locais
+ * para tratamento de dados customizados após a geração dos Data.json e do contrato.
+ * Hooks globais: resources/data-hooks.php e db/data-hooks.php.
+ * Hooks locais: <modulo>/data-hooks.php.
+ * Cada hook pode retornar um callable, que é invocado com o contexto de geração.
+ */
+function executarDataHooks(array $contexto): void {
+    global $RESOURCES_DIR, $MODULES_DIR, $DB_DATA_DIR, $LOG_FILE;
+    $globais = [];
+    $locais = [];
+
+    foreach ([$RESOURCES_DIR . 'data-hooks.php', rtrim($DB_DATA_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data-hooks.php'] as $g) {
+        if (is_file($g)) $globais[] = $g;
+    }
+    if (is_dir($MODULES_DIR)) {
+        foreach (glob($MODULES_DIR . '*', GLOB_ONLYDIR) ?: [] as $modPath) {
+            $h = $modPath . DIRECTORY_SEPARATOR . 'data-hooks.php';
+            if (is_file($h)) $locais[] = $h;
+        }
+    }
+    sort($globais);
+    sort($locais);
+    $hooks = array_merge($globais, $locais);
+    if (!$hooks) {
+        log_disco_local('DATA_HOOKS_NENHUM', $LOG_FILE);
+        return;
+    }
+    foreach ($hooks as $hook) {
+        try {
+            $fn = include $hook;
+            if (is_callable($fn)) { $fn($contexto); }
+            log_disco_local('DATA_HOOK_OK ' . $hook, $LOG_FILE);
+        } catch (\Throwable $e) {
+            log_disco_local('DATA_HOOK_ERRO ' . $hook . ' :: ' . $e->getMessage(), $LOG_FILE);
+        }
+    }
+}
+
 // ========================= 6) MAIN =========================
 
 function main(): void {
@@ -825,6 +984,9 @@ function main(): void {
         $exist = carregarDadosExistentes();
         $recursos = coletarRecursos($exist,$map);
         atualizarDados($exist,$recursos);
+        // Contrato de sincronização consolidado (Registry Pattern) e hooks pós-geração.
+        gerarSchemaMetadata();
+        executarDataHooks(['db_data_dir' => $GLOBALS['DB_DATA_DIR'], 'recursos' => $recursos]);
         $erros = validarDuplicidades($recursos);
         reporteFinal($recursos,$erros);
         log_disco_local('Fim processo V2 OK', $LOG_FILE);
@@ -834,7 +996,9 @@ function main(): void {
     }
 }
 
-// Executa
-main();
+// Executa (guard permite incluir este arquivo em testes sem disparar a geração completa)
+if (!defined('SDD_NO_AUTORUN')) {
+    main();
+}
 
 ?>

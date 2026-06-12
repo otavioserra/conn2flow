@@ -19,6 +19,9 @@
   - **REGRA CRÍTICA**: Nunca realizar commits (`git commit`) ou envios (`git push`) de forma autônoma ou automática sob nenhuma circunstância.
   - Sempre aguardar a autorização/solicitação explícita do Engenheiro Chefe Humano antes de executar comandos que alterem o histórico remoto do Git.
 
+- **Geração de Mensagens de Commit, Tags e Notas de Release**:
+  - **REGRA CRÍTICA**: Ao propor textos para commits ou notas de tags que serão repassados pelo usuário como argumentos para scripts no terminal, **sempre use aspas simples** para destacar termos internamente (ex: `'Adicionar todos os campos'`). Isso evita conflitos com as aspas duplas delimitadoras do comando e previne a quebra do parsing no Bash/PowerShell, impedindo commits truncados ou com nomes genéricos (como "todos").
+
 ---
 
 ## Restrições Técnicas
@@ -68,9 +71,26 @@
 
 ---
 
+## Diretrizes de Testes Automatizados (PHPUnit, Vitest, Playwright)
+
+- **Estratégia de Implementação Incremental (Não testar tudo)**:
+  - Não tentar escrever testes para toda a base de código legada de uma só vez (custo muito elevado de desenvolvimento).
+  - Adotar uma estratégia incremental: novas funcionalidades, CRUDs de novos módulos, novos endpoints de API e novos widgets públicos devem obrigatoriamente nascer com cobertura de testes unitários ou de integração.
+- **Blindagem de Bugs (Regression Testing)**:
+  - Ao identificar e reportar um bug no sistema, deve-se primeiro criar um teste automatizado que reproduza o bug (gerando falha). Após a implementação da correção, o teste deve passar. Isso evita regressão de bugs clássicos.
+- **Foco em Caminhos Críticos no E2E (Playwright)**:
+  - Limitar testes de navegador ponta a ponta (E2E) para as operações vitais do sistema (Login de Administrador, Fluxo de Edição de Perfil, Criação de Destaque e sua correta renderização pública). Evitar escrever fluxos E2E complexos para pequenos CRUDs secundários.
+- **Integração Automática no CI/CD**:
+  - Todo pull request ou push direcionado para `main` deve executar a suíte completa de testes automatizados via GitHub Actions (`.github/workflows/run-tests.yml`).
+
+---
+
 ## Notas Gerais
 
 - As notas deste arquivo foram registradas pelo agente IA sob autorização expressa do Engenheiro Chefe Humano na sessão de 04/06/2026 para reter aprendizados de relacionamento de pair programming.
 - Adicionado item sobre a divisão de papéis em 05/06/2026.
 - Adicionadas regras de arquivamento do SDD e preservação de customizações de templates em 10/06/2026.
 - Adicionadas diretrizes de injeção desduplicada de recursos de widgets e AJAX público de publicações em 11/06/2026.
+- Adicionada regra sobre escape de aspas em strings propostas para terminal em 12/06/2026.
+- Adicionadas as diretrizes estratégicas de testes (cobertura incremental, blindagem de bugs e caminhos críticos) em 12/06/2026.
+

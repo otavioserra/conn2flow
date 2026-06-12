@@ -13,7 +13,14 @@
         "status": "status",
         "versao": "version",
         "data_criacao": "created_at",
-        "data_modificacao": "updated_at"
+        "data_modificacao": "updated_at",
+        "config": {
+            "strategy": "natural_key",
+            "natural_key_columns": ["language", "module", "id"],
+            "preserve_on_user_modified": ["name", "fields_schema"],
+            "insert_only": false
+        },
+        "deletar": []
     },
     "resources": {
         "pt-br": {

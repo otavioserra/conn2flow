@@ -1009,126 +1009,61 @@ function plugin_db_fetch_one(string $sql){
  * @return bool True se a delegação foi bem-sucedida, false em caso de erro
  */
 function plugin_delegate_database_operations(string $pluginSlug, array $dataFiles, array &$log): bool {
-    $log[] = '[info] Delegando operações de banco de dados para sistema robusto';
+    $log[] = '[info] Delegando operacoes de banco de dados para sistema robusto inline';
 
-    // Caminho para o script de atualização de banco de dados
     $scriptPath = plugin_base_root() . 'controladores/plugins/atualizacao-plugin-banco-de-dados.php';
-
     if (!file_exists($scriptPath)) {
-        $log[] = '[erro] Script de atualização de banco de dados não encontrado: ' . $scriptPath;
+        $log[] = '[erro] Script de atualizacao de banco de dados nao encontrado: ' . $scriptPath;
         return false;
     }
 
-        // Preparar argumentos para o script
-    $args = [
-        '--plugin=' . escapeshellarg($pluginSlug),
-        '--debug',
-        '--log-diff'
+    $cli = [
+        'plugin' => $pluginSlug,
+        'debug' => true,
+        'log-diff' => true,
     ];
 
-    // Se há arquivos específicos, filtrar apenas eles
     if (!empty($dataFiles)) {
         $tableNames = array_map('tabelaFromDataFile', $dataFiles);
-        $args[] = '--tables=' . escapeshellarg(implode(',', $tableNames));
+        $cli['tables'] = implode(',', $tableNames);
     }
 
-    if (plugin_is_cli_context()) {
-        // Em contexto CLI, usar exec() como antes
-        $cmd = 'php ' . escapeshellarg($scriptPath) . ' ' . implode(' ', $args);
-        $log[] = '[info] Executando comando: ' . $cmd;
+    global $CLI_OPTS, $GLOBALS;
+    $previousCliOpts = $GLOBALS['CLI_OPTS'] ?? null;
+    $previousExternalLogger = $GLOBALS['EXTERNAL_LOGGER'] ?? null;
+    $previousCliOptsVar = $CLI_OPTS ?? null;
 
-        // Executar o comando
-        $output = [];
-        $returnCode = 0;
-        exec($cmd, $output, $returnCode);
+    $GLOBALS['CLI_OPTS'] = $cli;
+    $CLI_OPTS = $cli;
+    $GLOBALS['EXTERNAL_LOGGER'] = &$log;
 
-        // Processar saída
-        foreach ($output as $line) {
-            $log[] = '[db-system] ' . $line;
+    try {
+        ob_start();
+        $result = require $scriptPath;
+        $output = trim((string)ob_get_clean());
+        if ($output !== '') {
+            foreach (preg_split('/\r?\n/', $output) as $line) {
+                if ($line !== '') $log[] = '[db-system] ' . $line;
+            }
         }
 
-        if ($returnCode === 0) {
-            $log[] = '[ok] Operações de banco de dados delegadas com sucesso';
-            return true;
-        } else {
-            $log[] = '[erro] Falha ao delegar operações de banco de dados (código: ' . $returnCode . ')';
+        if (is_int($result) && $result !== 0) {
+            $log[] = '[erro] Falha ao delegar operacoes de banco de dados (codigo: ' . $result . ')';
             return false;
         }
-    } else {
-        // Em contexto web, usar include/require para evitar exec()
-        $log[] = '[info] Contexto web - incluindo script diretamente: ' . $scriptPath;
 
-        // Preparar variáveis globais que o script pode precisar
-        global $argv, $GLOBALS;
-        $originalArgv = $argv ?? [];
-        $originalCliOpts = $GLOBALS['CLI_OPTS'] ?? null;
-        
-        // Simular argumentos da linha de comando
-        $argv = array_merge(['php'], $args);
-        
-        // Parsear argumentos e definir $GLOBALS['CLI_OPTS'] para o script incluído
-        $parsedArgs = [];
-        foreach ($args as $arg) {
-            if (preg_match('/^--([^=]+)=(.+)$/', $arg, $matches)) {
-                $value = $matches[2];
-                // Remover aspas simples ou duplas se estiverem presentes no início e fim
-                if ((substr($value, 0, 1) === "'" && substr($value, -1) === "'") ||
-                    (substr($value, 0, 1) === '"' && substr($value, -1) === '"')) {
-                    $value = substr($value, 1, -1);
-                }
-                $parsedArgs[$matches[1]] = $value;
-            } elseif (substr($arg, 0, 2) === '--') {
-                $parsedArgs[substr($arg, 2)] = true;
-            }
-        }
-        $GLOBALS['CLI_OPTS'] = $parsedArgs;
-        // Também definir como variável global para compatibilidade
-        global $CLI_OPTS;
-        $CLI_OPTS = $parsedArgs;
-
-        // Passar referência ao logger para unificar logs
-        $GLOBALS['EXTERNAL_LOGGER'] = &$log;
-
-        try {
-            // Incluir o script diretamente (ele já chama main() no final)
-            ob_start();
-            $result = require $scriptPath;
-            $output = ob_get_clean();
-
-            // Adicionar saída aos logs se houver
-            if (!empty(trim($output))) {
-                $log[] = '[db-system] ' . trim($output);
-            }
-
-            // Verificar se o script retornou um código de saída
-            if (is_int($result) && $result === 0) {
-                $log[] = '[ok] Operações de banco de dados delegadas com sucesso';
-                return true;
-            } else {
-                $log[] = '[erro] Falha ao delegar operações de banco de dados (código: ' . ($result ?? 'desconhecido') . ')';
-                return false;
-            }
-        } catch (\Throwable $e) {
-            $log[] = '[erro] Exceção ao incluir script de banco de dados: ' . $e->getMessage();
-            return false;
-        } finally {
-            // Restaurar valores originais
-            $argv = $originalArgv;
-            if ($originalCliOpts !== null) {
-                $GLOBALS['CLI_OPTS'] = $originalCliOpts;
-                global $CLI_OPTS;
-                $CLI_OPTS = $originalCliOpts;
-            } else {
-                unset($GLOBALS['CLI_OPTS']);
-                global $CLI_OPTS;
-                unset($CLI_OPTS);
-            }
-            // Limpar logger externo
-            unset($GLOBALS['EXTERNAL_LOGGER']);
-        }
+        $log[] = '[ok] Operacoes de banco de dados delegadas com sucesso';
+        return true;
+    } catch (Throwable $e) {
+        if (ob_get_level() > 0) ob_end_clean();
+        $log[] = '[erro] Excecao ao delegar operacoes de banco de dados: ' . $e->getMessage();
+        return false;
+    } finally {
+        if ($previousCliOpts === null) unset($GLOBALS['CLI_OPTS']); else $GLOBALS['CLI_OPTS'] = $previousCliOpts;
+        if ($previousExternalLogger === null) unset($GLOBALS['EXTERNAL_LOGGER']); else $GLOBALS['EXTERNAL_LOGGER'] = $previousExternalLogger;
+        if ($previousCliOptsVar === null) unset($CLI_OPTS); else $CLI_OPTS = $previousCliOptsVar;
     }
 }
-
 /**
  * Função genérica de upsert que delega para o sistema robusto de banco de dados.
  * 
@@ -1364,9 +1299,9 @@ function plugin_upsert_variable(string $plugin,string $lang,string $id,array $sr
     $grupo = banco_escape_field($grupoRaw);
     $moduloRaw = $src['module']??($src['modulo']??''); if(is_string($moduloRaw)) $moduloRaw=strtolower(trim($moduloRaw));
     $modulo = banco_escape_field($moduloRaw);
-    $exists = plugin_db_fetch_one("SELECT id_variaveis,modulo,grupo FROM variaveis WHERE plugin='".banco_escape_field($plugin)."' AND id='".banco_escape_field($id)."' AND linguagem_codigo='".banco_escape_field($lang)."' AND modulo='".$modulo."' AND (grupo".($grupo!==''?"='".$grupo."'":" IS NULL").") LIMIT 1");
+    $exists = plugin_db_fetch_one("SELECT id_variaveis,modulo,grupo FROM variaveis WHERE plugin='".banco_escape_field($plugin)."' AND id='".banco_escape_field($id)."' AND language='".banco_escape_field($lang)."' AND modulo='".$modulo."' AND (grupo".($grupo!==''?"='".$grupo."'":" IS NULL").") LIMIT 1");
     if(!$exists){
-        $fallback = plugin_db_fetch_one("SELECT id_variaveis,modulo,grupo FROM variaveis WHERE plugin='".banco_escape_field($plugin)."' AND id='".banco_escape_field($id)."' AND linguagem_codigo='".banco_escape_field($lang)."' LIMIT 1");
+        $fallback = plugin_db_fetch_one("SELECT id_variaveis,modulo,grupo FROM variaveis WHERE plugin='".banco_escape_field($plugin)."' AND id='".banco_escape_field($id)."' AND language='".banco_escape_field($lang)."' LIMIT 1");
         if($fallback){
             if($modulo!=='' && ($fallback['modulo']??'')!==$modulo) banco_update_campo('modulo',$modulo);
             if($grupo!=='' && ($fallback['grupo']??'')!==$grupo) banco_update_campo('grupo',$grupo);
@@ -1384,7 +1319,7 @@ function plugin_upsert_variable(string $plugin,string $lang,string $id,array $sr
     } else {
         banco_insert_name_campo('plugin',$plugin);
         banco_insert_name_campo('id',$id);
-        banco_insert_name_campo('linguagem_codigo',$lang);
+        banco_insert_name_campo('language',$lang);
         if($modulo!=='') banco_insert_name_campo('modulo',$modulo);
         banco_insert_name_campo('valor',$valor);
         if($tipo!=='') banco_insert_name_campo('tipo',$tipo);
@@ -1522,38 +1457,14 @@ function plugin_log_block(array $logLines, string $slug): void {
  */
 function plugin_cleanup_after_install(string $finalPath, array &$log): void {
     $dbDir = $finalPath . '/db';
-    
-    // Remover pasta DB se existir
+
     if(is_dir($dbDir)) {
         plugin_remove_dir($dbDir);
         $log[] = '[ok] pasta db/ removida do plugin instalado';
     }
-    
-    // Corrigir permissões apenas em contexto CLI
-    if(plugin_is_cli_context()) {
-        $parentDir = dirname($finalPath);
-        if(is_dir($parentDir)) {
-            $stat = stat($parentDir);
-            if($stat) {
-                $owner = posix_getpwuid($stat['uid'])['name'] ?? 'www-data';
-                $group = posix_getgrgid($stat['gid'])['name'] ?? 'www-data';
-                
-                // Executar chown recursivo
-                $cmd = "chown -R $owner:$group " . escapeshellarg($finalPath);
-                exec($cmd, $output, $returnCode);
-                
-                if($returnCode === 0) {
-                    $log[] = "[ok] permissões corrigidas para $owner:$group";
-                } else {
-                    $log[] = "[aviso] falha ao corrigir permissões (código $returnCode)";
-                }
-            }
-        }
-    } else {
-        $log[] = '[info] contexto web - pulando correção de permissões (gerenciado automaticamente pelo servidor)';
-    }
-}
 
+    $log[] = '[info] correcao de permissoes por subprocesso desativada; permissoes ficam sob responsabilidade do processo atual/servidor';
+}
 /**
  * Corrige permissões de arquivo temporário via chown.
  * 
@@ -1567,23 +1478,8 @@ function plugin_cleanup_after_install(string $finalPath, array &$log): void {
  */
 function plugin_fix_temp_file_permissions(string $filePath, array &$log): void {
     if(!file_exists($filePath)) return;
-    
-    // Corrigir permissões apenas em contexto CLI
-    if(plugin_is_cli_context()) {
-        // Executar chown para www-data:www-data
-        $cmd = "chown www-data:www-data " . escapeshellarg($filePath);
-        exec($cmd, $output, $returnCode);
-        
-        if($returnCode === 0) {
-            $log[] = "[ok] permissões corrigidas para www-data:www-data: $filePath";
-        } else {
-            $log[] = "[aviso] falha ao corrigir permissões (código $returnCode): $filePath";
-        }
-    } else {
-        $log[] = "[info] contexto web - pulando correção de permissões para arquivo temporário (gerenciado automaticamente pelo servidor): $filePath";
-    }
+    $log[] = "[info] correcao de permissoes por subprocesso desativada para arquivo temporario: $filePath";
 }
-
 /**
  * Função principal do instalador de plugins - orquestra todo o processo.
  * 

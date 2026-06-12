@@ -1,0 +1,90 @@
+name: Run Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root123
+          MYSQL_DATABASE: conn2flow_test
+          MYSQL_USER: conn2flow_user
+          MYSQL_PASSWORD: conn2flow_pass
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot123"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, json, libxml, mbstring, mysqli, pdo_mysql, openssl, tokenizer, xml, xmlwriter
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install PHP test dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Install gestor runtime dependencies
+        run: composer install --working-dir=gestor --no-dev --no-interaction --prefer-dist
+
+      - name: Prepare test environment
+        run: |
+          mkdir -p gestor/autenticacoes/localhost
+          cat > gestor/autenticacoes/localhost/.env <<'EOF'
+          DB_CONNECTION=mysqli
+          DB_HOST=127.0.0.1
+          DB_DATABASE=conn2flow_test
+          DB_USERNAME=conn2flow_user
+          DB_PASSWORD=conn2flow_pass
+          LANGUAGE_DEFAULT=pt-br
+          LANGUAGES=pt-br,en
+          SESSION_AUTHNAME=_C2F_TEST_SID
+          COOKIE_AUTHNAME=_C2F_TEST_CID
+          COOKIE_VERIFY=_C2F_TEST_VID
+          LANGUAGE_COOKIE=_C2F_TEST_LANG
+          OPENSSL_PASSWORD=conn2flow-tests
+          USUARIO_HASH_PASSWORD=conn2flow-tests
+          EOF
+
+      - name: Run Phinx migrations
+        run: php gestor/vendor/bin/phinx migrate -c gestor/phinx.php -e gestor
+
+      - name: Run PHPUnit
+        run: composer test
+        env:
+          CONN2FLOW_TEST_BOOTSTRAP_CONFIG: '1'
+          CONN2FLOW_RUN_DB_TESTS: '1'
+
+      - name: Run Vitest
+        run: npm run test
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright
+        run: npm run test:e2e

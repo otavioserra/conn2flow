@@ -195,7 +195,12 @@ function autenticacao_openssl_gerar_chaves($params = false){
 						// Remove erros da fila
 					}
 					
-					$res = openssl_pkey_new($config);
+					$options = $config;
+					if ($opensslConf = getenv('OPENSSL_CONF')) {
+						$options['config'] = $opensslConf;
+					}
+					
+					$res = openssl_pkey_new($options);
 					
 					if ($res !== false) {
 						$configUsada = $index + 1;
@@ -236,11 +241,14 @@ function autenticacao_openssl_gerar_chaves($params = false){
 					error_log("OpenSSL: Chave gerada com sucesso usando configuração {$configUsada}");
 				}
 				
-				// Exporta a chave privada
+				$exportOptions = [];
+				if ($opensslConf = getenv('OPENSSL_CONF')) {
+					$exportOptions['config'] = $opensslConf;
+				}
 				if(isset($senha)){
-					$exportResult = openssl_pkey_export($res, $chavePrivada, $senha);
+					$exportResult = openssl_pkey_export($res, $chavePrivada, $senha, $exportOptions);
 				} else {
-					$exportResult = openssl_pkey_export($res, $chavePrivada);
+					$exportResult = openssl_pkey_export($res, $chavePrivada, null, $exportOptions);
 				}
 				
 				// Verifica se a exportação foi bem-sucedida

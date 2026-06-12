@@ -12,7 +12,14 @@
         "status": "status",
         "versao": "versao",
         "data_criacao": "data_criacao",
-        "data_modificacao": "data_modificacao"
+        "data_modificacao": "data_modificacao",
+        "config": {
+            "strategy": "natural_key",
+            "natural_key_columns": ["language", "modulo", "id"],
+            "preserve_on_user_modified": ["nome", "framework_css", "html", "css"],
+            "insert_only": false
+        },
+        "deletar": []
     },
     "selectDadosFrameworkCSS": [
         {

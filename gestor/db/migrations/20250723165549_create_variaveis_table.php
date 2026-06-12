@@ -12,7 +12,7 @@ final class CreateVariaveisTable extends AbstractMigration
     public function change(): void
     {
         $table = $this->table('variaveis', ['id' => 'id_variaveis']);
-        $table->addColumn('linguagem_codigo', 'string', ['limit' => 10, 'null' => true, 'default' => null])
+        $table->addColumn('language', 'string', ['limit' => 10, 'null' => true, 'default' => null])
               ->addColumn('modulo', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('id', 'string', ['limit' => 255, 'null' => true, 'default' => null])
               ->addColumn('valor', 'text', ['limit' => \Phinx\Db\Adapter\MysqlAdapter::TEXT_MEDIUM, 'null' => true])

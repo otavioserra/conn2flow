@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd"
+    bootstrap="tests/bootstrap.php"
+    colors="true"
+    cacheDirectory=".phpunit.cache"
+    executionOrder="depends,defects"
+    failOnRisky="true"
+    failOnWarning="true"
+>
+    <testsuites>
+        <testsuite name="Conn2Flow backend">
+            <directory suffix="Test.php">tests/Unit/PHP</directory>
+            <directory suffix="Test.php">tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="APP_ENV" value="testing" force="true"/>
+        <env name="CONN2FLOW_TESTING" value="1" force="true"/>
+        <env name="CONN2FLOW_DB_CONNECTION" value="sqlite" force="false"/>
+        <env name="CONN2FLOW_DB_DATABASE" value=":memory:" force="false"/>
+        <ini name="memory_limit" value="512M"/>
+    </php>
+    <source>
+        <include>
+            <directory>gestor/bibliotecas</directory>
+            <directory>gestor/modulos/publisher-index</directory>
+            <directory>gestor/modulos/publisher-highlights</directory>
+        </include>
+    </source>
+</phpunit>

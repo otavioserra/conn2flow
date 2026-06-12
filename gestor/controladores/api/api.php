@@ -257,8 +257,11 @@ function api_project_update() {
         // Copiar arquivos do projeto (sobrescrever existentes na raiz)
         api_copy_directory($project_content_dir, $project_path);
 
+        // Parâmetro opcional full_log: quando ativo, retorna o log completo de debug do banco.
+        $full_log = isset($_POST['full_log']) && filter_var($_POST['full_log'], FILTER_VALIDATE_BOOLEAN);
+
         // Executar atualização de banco de dados do projeto (inline, sem shell_exec)
-        api_executar_atualizacao_banco($project_path, $project_id);
+        $db_logs = api_executar_atualizacao_banco($project_path, $project_id, $full_log);
 
         // Sincronizar hooks do projeto após atualização do banco
         require_once $_GESTOR['controladores-path'] . 'atualizacoes/atualizacoes-hooks.php';
@@ -271,7 +274,9 @@ function api_project_update() {
         $response_data = [
             'file_size' => $uploaded_file['size'],
             'updated_at' => date('c'),
-            'status' => 'updated'
+            'status' => 'updated',
+            'db_logs' => $db_logs,
+            'full_log' => $full_log,
         ];
 
         api_response_success($response_data, 'Projeto atualizado com sucesso');
@@ -423,7 +428,7 @@ function api_call_system_update(array $params): array {
 
 // =========================== Funções Auxiliares para Manipulação de Arquivos
 
-function api_executar_atualizacao_banco($project_path, $project_id = null) {
+function api_executar_atualizacao_banco($project_path, $project_id = null, $full_log = false) {
     global $_GESTOR, $_BANCO;
 
     // Caminho para o script de atualização de banco
@@ -442,10 +447,10 @@ function api_executar_atualizacao_banco($project_path, $project_id = null) {
             'user' => $_BANCO['usuario'],
             'pass' => $_BANCO['senha'] ?? '',
         ],
-        'debug' => false,
+        'debug' => (bool)$full_log,
         'force-all' => false,
         'tables' => null,
-        'log-diff' => false,
+        'log-diff' => (bool)$full_log,
         'dry-run' => false,
         'project' => $project_id ?? null,
     ];
@@ -453,12 +458,45 @@ function api_executar_atualizacao_banco($project_path, $project_id = null) {
     // Definir opções globais para o script
     $GLOBALS['CLI_OPTS'] = $cli;
 
-    // Executar o script inline (sem processo externo)
+    // Capturar os logs do banco por referência durante a execução inline (sem processo externo).
+    $dbLogs = [];
+    $loggerAnterior = $GLOBALS['EXTERNAL_LOGGER'] ?? null;
+    $GLOBALS['EXTERNAL_LOGGER'] = &$dbLogs;
+    $erro = null;
     try {
         require $script;
     } catch (Throwable $e) {
-        throw new Exception('Falha na atualização de banco de dados: ' . $e->getMessage());
+        $erro = $e;
     }
+    // Restaura o logger externo anterior (preserva o array capturado em $dbLogs).
+    unset($GLOBALS['EXTERNAL_LOGGER']);
+    if ($loggerAnterior !== null) $GLOBALS['EXTERNAL_LOGGER'] = $loggerAnterior;
+
+    if ($erro !== null) {
+        throw new Exception('Falha na atualização de banco de dados: ' . $erro->getMessage());
+    }
+
+    return api_filtrar_db_logs($dbLogs, (bool)$full_log);
+}
+
+/**
+ * Filtra os logs do banco para a resposta da API.
+ * full_log=true  => log completo de debug.
+ * full_log=false => versão resumida (relatório final + linhas de warning/erro/rollback).
+ */
+function api_filtrar_db_logs(array $dbLogs, bool $full_log): array {
+    if ($full_log) return array_values($dbLogs);
+    $resumo = [];
+    foreach ($dbLogs as $line) {
+        $s = (string)$line;
+        $u = strtoupper($s);
+        if (strpos($u, 'WARN') !== false || strpos($u, 'ERRO') !== false || strpos($u, 'ERROR') !== false
+            || strpos($u, 'ROLLBACK') !== false || strpos($u, 'TOTAL') !== false
+            || strpos($s, '📦') !== false || strpos($s, '📝') !== false || strpos($s, 'Σ') !== false) {
+            $resumo[] = $line;
+        }
+    }
+    return array_values($resumo);
 }
 
 function api_copy_directory($source, $destination) {

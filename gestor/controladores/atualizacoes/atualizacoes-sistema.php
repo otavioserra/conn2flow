@@ -505,52 +505,40 @@ function executarAtualizacaoBanco(array $opts): void {
         $script = $BASE_PATH . 'controladores' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR . 'atualizacoes-banco-de-dados.php';
         if (!file_exists($script)) throw new DatabaseUpdateException('Script de banco ausente: ' . $script);
 
-        // Monta argumentos CLI
-        $args = [];
-        foreach (['env-dir', 'debug', 'force-all', 'tables', 'log-diff', 'dry-run'] as $k) {
-            if (!array_key_exists($k,$opts)) continue;
-            $v = $opts[$k];
-            // Tratar valores 1 / '1' como flags booleanas
-            if (is_bool($v) || $v === 1 || $v === '1') {
-                if ($v) $args[] = "--$k"; // só adiciona se true/1
-                continue;
-            }
-            // Caso contrário, valor com argumento
-            if (!is_string($v)) $v = (string)$v; // garante string para escapeshellarg
-            $args[] = "--$k=" . escapeshellarg($v);
-        }
+        // Execução estritamente inline (via require), sem subprocessos externos (exec/passthru).
+        // Migrações Phinx e sincronização rodam no mesmo processo PHP. Os logs do banco são
+        // capturados por referência em $GLOBALS['EXTERNAL_LOGGER'] e encaminhados ao log do
+        // sistema com o prefixo [BANCO].
+        $cli = [
+            'env-dir'    => $opts['env-dir'] ?? ($opts['domain'] ?? 'localhost'),
+            'installing' => true,
+            'db' => [
+                'host' => $_BANCO['host'],
+                'name' => $_BANCO['nome'],
+                'user' => $_BANCO['usuario'],
+                'pass' => $_BANCO['senha'] ?? '',
+            ],
+        ];
+        foreach (['debug','force-all','tables','log-diff','dry-run'] as $k) { if (isset($opts[$k])) $cli[$k] = $opts[$k]; }
+        $GLOBALS['CLI_OPTS'] = $cli;
 
-        if (PHP_SAPI === 'cli') {
-            // Executa como processo externo
-            $cmd = "php " . escapeshellarg($script) . " " . implode(' ', $args);
-            logAtualizacao('Banco: executando processo externo: ' . $cmd);
-            $output = [];
-            $ret = 0;
-            exec($cmd, $output, $ret);
-            foreach ($output as $line) logAtualizacao('[BANCO] ' . $line, 'INFO');
-            if ($ret !== 0) throw new DatabaseUpdateException('Falha atualização banco externo (exit=' . $ret . ')');
-            logAtualizacao('Banco: concluído processo externo');
-        } else {
-            // Execução inline (web ou outros)
-            $cli = [
-                'env-dir'    => $opts['domain'] ?? 'localhost',
-                'installing' => true,
-                'db' => [
-                    'host' => $_BANCO['host'],
-                    'name' => $_BANCO['nome'],
-                    'user' => $_BANCO['usuario'],
-                    'pass' => $_BANCO['senha'] ?? '',
-                ]
-            ];
-            foreach(['debug','force-all','tables','log-diff','dry-run'] as $k){ if(isset($opts[$k])) $cli[$k]=$opts[$k]; }
-            $GLOBALS['CLI_OPTS'] = $cli;
-            logAtualizacao('Banco: incluindo script inline (sem processo externo)');
-            try {
-                require $script;
-                logAtualizacao('Banco: concluído inline');
-            } catch (Throwable $e){
-                throw new DatabaseUpdateException('Falha atualização banco inline: '.$e->getMessage());
-            }
+        $dbLogs = [];
+        $loggerAnterior = $GLOBALS['EXTERNAL_LOGGER'] ?? null;
+        $GLOBALS['EXTERNAL_LOGGER'] = &$dbLogs;
+        logAtualizacao('Banco: incluindo script inline (sem processo externo)');
+        $erroInline = null;
+        try {
+            require $script;
+            logAtualizacao('Banco: concluído inline');
+        } catch (Throwable $e) {
+            $erroInline = $e;
+        }
+        // Restaura o logger externo anterior e encaminha o capturado prefixado com [BANCO].
+        unset($GLOBALS['EXTERNAL_LOGGER']);
+        if ($loggerAnterior !== null) $GLOBALS['EXTERNAL_LOGGER'] = $loggerAnterior;
+        foreach ($dbLogs as $line) logAtualizacao('[BANCO] ' . $line, 'INFO');
+        if ($erroInline !== null) {
+            throw new DatabaseUpdateException('Falha atualização banco inline: ' . $erroInline->getMessage());
         }
 }
 
