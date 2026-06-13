@@ -17,11 +17,11 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.18",
+                    "version": "1.20",
                     "checksum": {
-                        "html": "cd7ed29e1d03c2f029461de0e0eeabdc",
+                        "html": "371f5a8ec2f6138c2bbc62e3443b41cb",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
-                        "combined": "7fd7d6cdc67c0259fd1022bc9006f641"
+                        "combined": "ae3626790a3a48a61c84593e6e6136f6"
                     }
                 }
             ],
@@ -151,6 +151,16 @@
                     "id": "save-error",
                     "value": "Error saving settings.",
                     "type": "string"
+                },
+                {
+                    "id": "jwt-rotate-success",
+                    "value": "JWT keys rotated successfully! A new active key has been generated.",
+                    "type": "string"
+                },
+                {
+                    "id": "jwt-rotate-error",
+                    "value": "Error rotating JWT keys.",
+                    "type": "string"
                 }
             ]
         },
@@ -165,11 +175,11 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.18",
+                    "version": "1.20",
                     "checksum": {
-                        "html": "2d5417d3915972ff2ad5bf9432d8e40d",
+                        "html": "507ea73ba665cdabd926200974979ccc",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
-                        "combined": "d9d4f1a202b29e3c1fc6031f5291ee04"
+                        "combined": "2f020427b6479873b40df5b84b7c0df3"
                     }
                 }
             ],
@@ -298,6 +308,16 @@
                 {
                     "id": "save-error",
                     "value": "Erro ao salvar configurações.",
+                    "type": "string"
+                },
+                {
+                    "id": "jwt-rotate-success",
+                    "value": "Chaves JWT rotacionadas com sucesso! Uma nova chave ativa foi gerada.",
+                    "type": "string"
+                },
+                {
+                    "id": "jwt-rotate-error",
+                    "value": "Erro ao rotacionar as chaves JWT.",
                     "type": "string"
                 }
             ]

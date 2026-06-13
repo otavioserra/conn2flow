@@ -173,5 +173,69 @@ $(document).ready(function(){
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
 			});
 	}
-	
+
+	// ===== QR Code e alternância de método 2FA (Segurança do perfil e tela de login 2FA) — req-030
+	var $qr2fa = $('#seg-2fa-qr');
+	if($qr2fa.length > 0 && typeof QRCode !== 'undefined'){
+		new QRCode($qr2fa.get(0), { text: $qr2fa.attr('data-otpauth'), width: 180, height: 180 });
+	}
+
+	$('#seg-2fa-metodo').on('change', function(){
+		if($(this).val() === 'email'){
+			$('#seg-2fa-app-bloco').hide();
+			$('#seg-2fa-email-bloco').show();
+		} else {
+			$('#seg-2fa-app-bloco').show();
+			$('#seg-2fa-email-bloco').hide();
+		}
+	}).trigger('change');
+
+	// ===== Rota de Segurança (2FA + contas sociais) — req-030
+	if($('#seg-seguranca').length > 0){
+		var segMsg = function(type, msg){
+			var $m = $('#seg-msg');
+			$m.removeClass('positive negative').addClass(type === 'success' ? 'positive' : 'negative').html(msg || '').show();
+		};
+
+		var segAjax = function(data, onOk){
+			$.ajax({
+				type: 'POST',
+				url: window.location.href,
+				data: data,
+				dataType: 'json',
+				beforeSend: function(){ $('#gestor-listener').trigger('carregar_abrir'); },
+				success: function(dados){
+					$('#gestor-listener').trigger('carregar_fechar');
+					if(dados.status === 'success'){ onOk(dados); }
+					else { segMsg('error', dados.message); }
+				},
+				error: function(txt){
+					$('#gestor-listener').trigger('carregar_fechar');
+					if(txt.status === 401){ window.open(gestor.raiz + 'signin/', '_self'); return; }
+					segMsg('error', 'Error.');
+				}
+			});
+		};
+
+		$('#btn-2fa-email-enviar').on('click', function(){
+			segAjax({ ajax: 'sim', ajaxOpcao: 'seguranca-2fa-email-enviar' }, function(d){ segMsg('success', d.message); });
+		});
+
+		$('#btn-2fa-ativar').on('click', function(){
+			segAjax({ ajax: 'sim', ajaxOpcao: 'seguranca-2fa-ativar', metodo: ($('#seg-2fa-metodo').val() || 'app'), codigo: $('#seg-2fa-codigo').val() }, function(){ window.location.reload(); });
+		});
+
+		$('#btn-2fa-desativar').on('click', function(){
+			segAjax({ ajax: 'sim', ajaxOpcao: 'seguranca-2fa-desativar', senha: $('#seg-2fa-senha').val(), codigo: $('#seg-2fa-codigo').val() }, function(){ window.location.reload(); });
+		});
+
+		$('.btn-social-vincular').on('click', function(){
+			segAjax({ ajax: 'sim', ajaxOpcao: 'seguranca-social-vincular', provider: $(this).attr('data-provider') }, function(d){ if(d.redirect){ window.open(d.redirect, '_self'); } });
+		});
+
+		$('.btn-social-desvincular').on('click', function(){
+			segAjax({ ajax: 'sim', ajaxOpcao: 'seguranca-social-desvincular', provider: $(this).attr('data-provider') }, function(){ window.location.reload(); });
+		});
+	}
+
 });

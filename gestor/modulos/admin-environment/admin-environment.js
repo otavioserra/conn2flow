@@ -57,6 +57,14 @@ $(document).ready(function () {
             if ($(this).attr('id') === 'usuario_recaptcha_active') {
                 $('#recaptcha-v2-section').removeClass('hidden');
             }
+
+            // Mostrar credenciais OAuth quando o método social é ativado
+            if ($(this).attr('id') === 'auth_method_google_active') {
+                $('#auth-google-section').removeClass('hidden');
+            }
+            if ($(this).attr('id') === 'auth_method_meta_active') {
+                $('#auth-meta-section').removeClass('hidden');
+            }
         },
         onUnchecked: function () {
             $(this).val('false');
@@ -69,6 +77,14 @@ $(document).ready(function () {
             if ($(this).attr('id') === 'usuario_recaptcha_active') {
                 $('#recaptcha-v2-section').addClass('hidden');
                 $('#usuario_recaptcha_v2_active').parent().checkbox('uncheck');
+            }
+
+            // Ocultar credenciais OAuth quando o método social é desativado
+            if ($(this).attr('id') === 'auth_method_google_active') {
+                $('#auth-google-section').addClass('hidden');
+            }
+            if ($(this).attr('id') === 'auth_method_meta_active') {
+                $('#auth-meta-section').addClass('hidden');
             }
         }
     });
@@ -102,7 +118,19 @@ $(document).ready(function () {
             paypal_client_id: $('#paypal_client_id').val(),
             paypal_secret: $('#paypal_secret').val(),
             paypal_mode: $('#paypal_mode').val(),
-            paypal_webhook_id: $('#paypal_webhook_id').val()
+            paypal_webhook_id: $('#paypal_webhook_id').val(),
+            auth_method_password_active: $('#auth_method_password_active').parent().checkbox('is checked') ? 'true' : 'false',
+            auth_method_google_active: $('#auth_method_google_active').parent().checkbox('is checked') ? 'true' : 'false',
+            oauth_google_client_id: $('#oauth_google_client_id').val(),
+            oauth_google_client_secret: $('#oauth_google_client_secret').val(),
+            auth_method_meta_active: $('#auth_method_meta_active').parent().checkbox('is checked') ? 'true' : 'false',
+            oauth_meta_app_id: $('#oauth_meta_app_id').val(),
+            oauth_meta_app_secret: $('#oauth_meta_app_secret').val(),
+            auth_2fa_required: $('#auth_2fa_required').parent().checkbox('is checked') ? 'true' : 'false',
+            auth_2fa_method_app: $('#auth_2fa_method_app').parent().checkbox('is checked') ? 'true' : 'false',
+            auth_2fa_method_email: $('#auth_2fa_method_email').parent().checkbox('is checked') ? 'true' : 'false',
+            auth_jwt_rotation_days: $('#auth_jwt_rotation_days').val(),
+            auth_jwt_grace_hours: $('#auth_jwt_grace_hours').val()
         };
 
         $.ajax({
@@ -514,6 +542,54 @@ $(document).ready(function () {
                     case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
                     default:
                         console.log('ERROR AJAX - testar-paypal - Dados:');
+                        console.log(txt);
+                        showMessage('error', 'Erro na comunicação com o servidor.');
+                        $('#gestor-listener').trigger('carregar_fechar');
+                }
+            }
+        });
+    });
+
+    // Botão Rotacionar Chaves JWT
+    $('#btn-rotacionar-jwt').click(function () {
+        var $btn = $(this);
+        $btn.addClass('loading');
+
+        $.ajax({
+            type: 'POST',
+            url: window.location.href,
+            data: {
+                ajax: 'sim',
+                ajaxOpcao: 'rotacionar-jwt'
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                $('#gestor-listener').trigger('carregar_abrir');
+            },
+            success: function (dados) {
+                $btn.removeClass('loading');
+
+                switch (dados.status) {
+                    case 'success':
+                        showMessage('success', dados.message);
+                        break;
+                    case 'error':
+                        showMessage('error', dados.message);
+                        break;
+                    default:
+                        console.log('ERROR - rotacionar-jwt - ' + dados.status);
+                        showMessage('error', 'Erro desconhecido na resposta do servidor.');
+                }
+
+                $('#gestor-listener').trigger('carregar_fechar');
+            },
+            error: function (txt) {
+                $btn.removeClass('loading');
+
+                switch (txt.status) {
+                    case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
+                    default:
+                        console.log('ERROR AJAX - rotacionar-jwt - Dados:');
                         console.log(txt);
                         showMessage('error', 'Erro na comunicação com o servidor.');
                         $('#gestor-listener').trigger('carregar_fechar');

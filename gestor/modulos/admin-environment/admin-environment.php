@@ -38,8 +38,21 @@ function admin_environment_env_read(){
         'PAYPAL_SECRET' => $_ENV['PAYPAL_SECRET'] ?? '',
         'PAYPAL_MODE' => $_ENV['PAYPAL_MODE'] ?? 'sandbox',
         'PAYPAL_WEBHOOK_ID' => $_ENV['PAYPAL_WEBHOOK_ID'] ?? '',
+        // ===== Autenticação, Login Social, 2FA e JWT (req-030 / BATCH-030)
+        'AUTH_METHOD_PASSWORD_ACTIVE' => $_ENV['AUTH_METHOD_PASSWORD_ACTIVE'] ?? 'true',
+        'AUTH_METHOD_GOOGLE_ACTIVE' => $_ENV['AUTH_METHOD_GOOGLE_ACTIVE'] ?? 'false',
+        'OAUTH_GOOGLE_CLIENT_ID' => $_ENV['OAUTH_GOOGLE_CLIENT_ID'] ?? '',
+        'OAUTH_GOOGLE_CLIENT_SECRET' => $_ENV['OAUTH_GOOGLE_CLIENT_SECRET'] ?? '',
+        'AUTH_METHOD_META_ACTIVE' => $_ENV['AUTH_METHOD_META_ACTIVE'] ?? 'false',
+        'OAUTH_META_APP_ID' => $_ENV['OAUTH_META_APP_ID'] ?? '',
+        'OAUTH_META_APP_SECRET' => $_ENV['OAUTH_META_APP_SECRET'] ?? '',
+        'AUTH_2FA_REQUIRED' => $_ENV['AUTH_2FA_REQUIRED'] ?? 'false',
+        'AUTH_2FA_METHOD_APP' => $_ENV['AUTH_2FA_METHOD_APP'] ?? 'true',
+        'AUTH_2FA_METHOD_EMAIL' => $_ENV['AUTH_2FA_METHOD_EMAIL'] ?? 'true',
+        'AUTH_JWT_ROTATION_DAYS' => $_ENV['AUTH_JWT_ROTATION_DAYS'] ?? '30',
+        'AUTH_JWT_GRACE_HOURS' => $_ENV['AUTH_JWT_GRACE_HOURS'] ?? '24',
     ];
-    
+
     return $envData;
 }
 
@@ -287,7 +300,25 @@ function admin_environment_raiz(){
         'paypal_secret' => $envData['PAYPAL_SECRET'] ?? '',
         'paypal_mode' => $envData['PAYPAL_MODE'] ?? 'sandbox',
         'paypal_webhook_id' => $envData['PAYPAL_WEBHOOK_ID'] ?? '',
+        'auth_method_password_active' => $envData['AUTH_METHOD_PASSWORD_ACTIVE'] ?? 'true',
+        'auth_method_google_active' => $envData['AUTH_METHOD_GOOGLE_ACTIVE'] ?? 'false',
+        'oauth_google_client_id' => $envData['OAUTH_GOOGLE_CLIENT_ID'] ?? '',
+        'oauth_google_client_secret' => $envData['OAUTH_GOOGLE_CLIENT_SECRET'] ?? '',
+        'auth_method_meta_active' => $envData['AUTH_METHOD_META_ACTIVE'] ?? 'false',
+        'oauth_meta_app_id' => $envData['OAUTH_META_APP_ID'] ?? '',
+        'oauth_meta_app_secret' => $envData['OAUTH_META_APP_SECRET'] ?? '',
+        'auth_2fa_required' => $envData['AUTH_2FA_REQUIRED'] ?? 'false',
+        'auth_2fa_method_app' => $envData['AUTH_2FA_METHOD_APP'] ?? 'true',
+        'auth_2fa_method_email' => $envData['AUTH_2FA_METHOD_EMAIL'] ?? 'true',
+        'auth_jwt_rotation_days' => $envData['AUTH_JWT_ROTATION_DAYS'] ?? '30',
+        'auth_jwt_grace_hours' => $envData['AUTH_JWT_GRACE_HOURS'] ?? '24',
     ];
+
+    // ===== URIs de callback OAuth calculadas (somente leitura)
+
+    gestor_incluir_biblioteca('oauth');
+    $dados['oauth_google_redirect_uri'] = function_exists('oauth_redirect_uri') ? oauth_redirect_uri('google') : '';
+    $dados['oauth_meta_redirect_uri'] = function_exists('oauth_redirect_uri') ? oauth_redirect_uri('meta') : '';
 
     // ===== Gerar opções de idioma
 
@@ -366,6 +397,24 @@ function admin_environment_raiz(){
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#paypal-client-id#', $dados['paypal_client_id']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#paypal-secret#', $dados['paypal_secret']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#paypal-webhook-id#', $dados['paypal_webhook_id']);
+
+    // Autenticação / Login Social / 2FA / JWT (req-030)
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-method-password-active-checked#', $dados['auth_method_password_active'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-method-google-active-checked#', $dados['auth_method_google_active'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-google-section-class#', $dados['auth_method_google_active'] === 'true' ? '' : 'hidden');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#oauth-google-client-id#', $dados['oauth_google_client_id']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#oauth-google-client-secret#', $dados['oauth_google_client_secret']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#oauth-google-redirect-uri#', $dados['oauth_google_redirect_uri']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-method-meta-active-checked#', $dados['auth_method_meta_active'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-meta-section-class#', $dados['auth_method_meta_active'] === 'true' ? '' : 'hidden');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#oauth-meta-app-id#', $dados['oauth_meta_app_id']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#oauth-meta-app-secret#', $dados['oauth_meta_app_secret']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#oauth-meta-redirect-uri#', $dados['oauth_meta_redirect_uri']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-2fa-required-checked#', $dados['auth_2fa_required'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-2fa-method-app-checked#', $dados['auth_2fa_method_app'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-2fa-method-email-checked#', $dados['auth_2fa_method_email'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-jwt-rotation-days#', $dados['auth_jwt_rotation_days']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-jwt-grace-hours#', $dados['auth_jwt_grace_hours']);
 }
 
 function admin_environment_interfaces_padroes(){
@@ -444,7 +493,21 @@ function admin_environment_ajax_salvar(){
     if(isset($_REQUEST['paypal_secret'])) $data['PAYPAL_SECRET'] = $_REQUEST['paypal_secret'];
     if(isset($_REQUEST['paypal_mode'])) $data['PAYPAL_MODE'] = $_REQUEST['paypal_mode'];
     if(isset($_REQUEST['paypal_webhook_id'])) $data['PAYPAL_WEBHOOK_ID'] = $_REQUEST['paypal_webhook_id'];
-    
+
+    // Coletar dados do formulário — Autenticação / Login Social / 2FA / JWT (req-030)
+    if(isset($_REQUEST['auth_method_password_active'])) $data['AUTH_METHOD_PASSWORD_ACTIVE'] = $_REQUEST['auth_method_password_active'];
+    if(isset($_REQUEST['auth_method_google_active'])) $data['AUTH_METHOD_GOOGLE_ACTIVE'] = $_REQUEST['auth_method_google_active'];
+    if(isset($_REQUEST['oauth_google_client_id'])) $data['OAUTH_GOOGLE_CLIENT_ID'] = $_REQUEST['oauth_google_client_id'];
+    if(isset($_REQUEST['oauth_google_client_secret'])) $data['OAUTH_GOOGLE_CLIENT_SECRET'] = $_REQUEST['oauth_google_client_secret'];
+    if(isset($_REQUEST['auth_method_meta_active'])) $data['AUTH_METHOD_META_ACTIVE'] = $_REQUEST['auth_method_meta_active'];
+    if(isset($_REQUEST['oauth_meta_app_id'])) $data['OAUTH_META_APP_ID'] = $_REQUEST['oauth_meta_app_id'];
+    if(isset($_REQUEST['oauth_meta_app_secret'])) $data['OAUTH_META_APP_SECRET'] = $_REQUEST['oauth_meta_app_secret'];
+    if(isset($_REQUEST['auth_2fa_required'])) $data['AUTH_2FA_REQUIRED'] = $_REQUEST['auth_2fa_required'];
+    if(isset($_REQUEST['auth_2fa_method_app'])) $data['AUTH_2FA_METHOD_APP'] = $_REQUEST['auth_2fa_method_app'];
+    if(isset($_REQUEST['auth_2fa_method_email'])) $data['AUTH_2FA_METHOD_EMAIL'] = $_REQUEST['auth_2fa_method_email'];
+    if(isset($_REQUEST['auth_jwt_rotation_days'])) $data['AUTH_JWT_ROTATION_DAYS'] = $_REQUEST['auth_jwt_rotation_days'];
+    if(isset($_REQUEST['auth_jwt_grace_hours'])) $data['AUTH_JWT_GRACE_HOURS'] = $_REQUEST['auth_jwt_grace_hours'];
+
     // Salvar no .env
     $success = admin_environment_env_write($data);
     
@@ -590,6 +653,27 @@ function admin_environment_ajax_testar_paypal(){
     }
 }
 
+function admin_environment_ajax_rotacionar_jwt(){
+    global $_GESTOR;
+
+    gestor_incluir_biblioteca('jwt');
+
+    try {
+        $nova = jwt_rotate_keys();
+
+        $_GESTOR['ajax-json'] = [
+            'status' => 'success',
+            'key_id' => $nova['key_id'] ?? '',
+            'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'jwt-rotate-success')),
+        ];
+    } catch (Exception $e){
+        $_GESTOR['ajax-json'] = [
+            'status' => 'error',
+            'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'jwt-rotate-error')),
+        ];
+    }
+}
+
 // ==== Start
 
 function admin_environment_start(){
@@ -607,6 +691,7 @@ function admin_environment_start(){
             case 'testar-recaptcha-v2': admin_environment_ajax_testar_recaptcha_v2(); break;
             case 'testar-email': admin_environment_ajax_testar_email(); break;
             case 'testar-paypal': admin_environment_ajax_testar_paypal(); break;
+            case 'rotacionar-jwt': admin_environment_ajax_rotacionar_jwt(); break;
         }
 
         interface_ajax_finalizar();

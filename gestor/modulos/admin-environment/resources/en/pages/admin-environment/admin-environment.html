@@ -44,6 +44,122 @@
                 <p class="ui grey text">Manage user authentication security. Enable reCAPTCHA to protect login and registration forms against bots and automated attacks.</p>
 
                 <form class="ui form" id="form-usuario" autocomplete="off">
+
+                    <!-- ===== Login Methods (req-030) ===== -->
+                    <h4 class="ui dividing header"><i class="sign-in icon"></i> Login Methods</h4>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_method_password_active" name="auth_method_password_active"
+                                #auth-method-password-active-checked#>
+                            <label>Allow Username/Password login</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_method_google_active" name="auth_method_google_active"
+                                #auth-method-google-active-checked#>
+                            <label>Enable Google login</label>
+                        </div>
+                    </div>
+
+                    <div id="auth-google-section" class="#auth-google-section-class#">
+                        <div class="field">
+                            <label>Google Client ID</label>
+                            <input type="text" id="oauth_google_client_id" name="oauth_google_client_id"
+                                value="#oauth-google-client-id#" placeholder="Ex: 1234567890-abc.apps.googleusercontent.com">
+                        </div>
+                        <div class="field">
+                            <label>Google Client Secret</label>
+                            <input type="password" id="oauth_google_client_secret" name="oauth_google_client_secret"
+                                value="#oauth-google-client-secret#" placeholder="Enter the Client Secret">
+                        </div>
+                        <div class="field">
+                            <label>Redirect URI (Google)</label>
+                            <input type="text" id="oauth_google_redirect_uri" value="#oauth-google-redirect-uri#" readonly>
+                            <small class="ui grey text">Register this exact URI in the Google Cloud Console.</small>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_method_meta_active" name="auth_method_meta_active"
+                                #auth-method-meta-active-checked#>
+                            <label>Enable Facebook/Meta login</label>
+                        </div>
+                    </div>
+
+                    <div id="auth-meta-section" class="#auth-meta-section-class#">
+                        <div class="field">
+                            <label>Meta App ID</label>
+                            <input type="text" id="oauth_meta_app_id" name="oauth_meta_app_id"
+                                value="#oauth-meta-app-id#" placeholder="Enter the App ID">
+                        </div>
+                        <div class="field">
+                            <label>Meta App Secret</label>
+                            <input type="password" id="oauth_meta_app_secret" name="oauth_meta_app_secret"
+                                value="#oauth-meta-app-secret#" placeholder="Enter the App Secret">
+                        </div>
+                        <div class="field">
+                            <label>Redirect URI (Meta)</label>
+                            <input type="text" id="oauth_meta_redirect_uri" value="#oauth-meta-redirect-uri#" readonly>
+                            <small class="ui grey text">Register this exact URI in the Meta Apps dashboard.</small>
+                        </div>
+                    </div>
+
+                    <!-- ===== Two-Factor Authentication (2FA) ===== -->
+                    <h4 class="ui dividing header"><i class="lock icon"></i> Two-Factor Authentication (2FA)</h4>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_2fa_required" name="auth_2fa_required"
+                                #auth-2fa-required-checked#>
+                            <label>Require 2FA for all panel users</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_2fa_method_app" name="auth_2fa_method_app"
+                                #auth-2fa-method-app-checked#>
+                            <label>Allow Authenticator App (TOTP)</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_2fa_method_email" name="auth_2fa_method_email"
+                                #auth-2fa-method-email-checked#>
+                            <label>Allow Email code</label>
+                        </div>
+                    </div>
+
+                    <!-- ===== JWT Keys ===== -->
+                    <h4 class="ui dividing header"><i class="key icon"></i> JWT Keys</h4>
+
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Active key expiration (days)</label>
+                            <input type="number" id="auth_jwt_rotation_days" name="auth_jwt_rotation_days"
+                                value="#auth-jwt-rotation-days#" placeholder="30">
+                        </div>
+                        <div class="field">
+                            <label>Grace period (hours)</label>
+                            <input type="number" id="auth_jwt_grace_hours" name="auth_jwt_grace_hours"
+                                value="#auth-jwt-grace-hours#" placeholder="24">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <button type="button" class="ui orange button" id="btn-rotacionar-jwt">
+                            <i class="sync icon"></i> Rotate JWT Keys
+                        </button>
+                    </div>
+
+                    <!-- ===== reCAPTCHA Protection ===== -->
+                    <h4 class="ui dividing header"><i class="shield icon"></i> reCAPTCHA Protection</h4>
+
                     <div class="field">
                         <div class="ui toggle checkbox">
                             <input type="checkbox" id="usuario_recaptcha_active" name="usuario_recaptcha_active"

@@ -39,17 +39,62 @@
                 {
                     "name": "Acessar Sistema",
                     "id": "acessar-sistema",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "1a28df4eb15690a1a94815ac85e7d7b2",
+                        "html": "2b92d284ae88e67b6e5bdc6bf8533c1c",
                         "css": "",
-                        "combined": "1a28df4eb15690a1a94815ac85e7d7b2"
+                        "combined": "2b92d284ae88e67b6e5bdc6bf8533c1c"
                     },
                     "layout": "layout-pagina-sem-permissao",
                     "path": "signin\/",
                     "type": "system",
                     "option": "signin",
                     "without_permission": true
+                },
+                {
+                    "name": "Verificação em Duas Etapas",
+                    "id": "signin-2fa",
+                    "version": "1.1",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "signin-2fa\/",
+                    "type": "system",
+                    "option": "signin-2fa",
+                    "without_permission": true,
+                    "checksum": {
+                        "html": "12feaf2f143750ec7fd63d8efb4ff4f5",
+                        "css": "",
+                        "combined": "12feaf2f143750ec7fd63d8efb4ff4f5"
+                    }
+                },
+                {
+                    "name": "Login Social",
+                    "id": "social-login",
+                    "version": "1.1",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "social-login\/",
+                    "type": "system",
+                    "option": "social-login",
+                    "without_permission": true,
+                    "checksum": {
+                        "html": "bdb919e315faf280ff4868bf54d3bbb9",
+                        "css": "",
+                        "combined": "bdb919e315faf280ff4868bf54d3bbb9"
+                    }
+                },
+                {
+                    "name": "Callback OAuth",
+                    "id": "oauth-callback",
+                    "version": "1.1",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "oauth-callback\/",
+                    "type": "system",
+                    "option": "oauth-callback",
+                    "without_permission": true,
+                    "checksum": {
+                        "html": "c17e27cb0026546ff00b3aa1342cd896",
+                        "css": "",
+                        "combined": "c17e27cb0026546ff00b3aa1342cd896"
+                    }
                 },
                 {
                     "name": "Sair Sistema",
@@ -68,11 +113,11 @@
                 {
                     "name": "Perfil Usuário",
                     "id": "perfil-usuario",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "409c497b763a304093568e3c7f7e417a",
+                        "html": "d48b08c1849bcaeb4ed9939ab2563fe1",
                         "css": "",
-                        "combined": "409c497b763a304093568e3c7f7e417a"
+                        "combined": "d48b08c1849bcaeb4ed9939ab2563fe1"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "perfil-usuario\/",
@@ -201,6 +246,186 @@
                 }
             ],
             "variables": [
+                {
+                    "id": "button-security",
+                    "value": "Segurança",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-title",
+                    "value": "Autenticação de Dois Fatores (2FA)",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-active",
+                    "value": "O 2FA está ativo. Método:",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-inactive-help",
+                    "value": "Configure um segundo fator de autenticação para aumentar a segurança da sua conta.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-none-method",
+                    "value": "Nenhum método de 2FA está habilitado pelo administrador.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-method-label",
+                    "value": "Método de verificação",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-app-option",
+                    "value": "Aplicativo Autenticador (TOTP)",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-email-option",
+                    "value": "Código por E-mail",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-scan-help",
+                    "value": "Escaneie o QR Code com o seu aplicativo autenticador (Google Authenticator, Authy etc.) ou digite a chave manualmente.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-code-label",
+                    "value": "Código de verificação (6 dígitos)",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-activate",
+                    "value": "Ativar 2FA",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-send-email",
+                    "value": "Enviar código por e-mail",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-disable",
+                    "value": "Desativar 2FA",
+                    "type": "string"
+                },
+                {
+                    "id": "security-password-label",
+                    "value": "Senha atual",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-email-sent",
+                    "value": "Código enviado para o seu e-mail.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-email-error",
+                    "value": "Não foi possível enviar o código por e-mail.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-code-invalid",
+                    "value": "Código inválido ou expirado.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-enabled-ok",
+                    "value": "2FA ativado com sucesso!",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-disable-invalid",
+                    "value": "Senha ou código incorretos.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-disabled-ok",
+                    "value": "2FA desativado com sucesso.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-title",
+                    "value": "Contas Sociais",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-linked",
+                    "value": "Vinculada",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-link",
+                    "value": "Vincular",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-unlink",
+                    "value": "Desvincular",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-none-active",
+                    "value": "Nenhum provedor social está habilitado pelo administrador.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-not-configured",
+                    "value": "Provedor social não configurado.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-unlinked-ok",
+                    "value": "Conta desvinculada com sucesso.",
+                    "type": "string"
+                },
+                {
+                    "id": "login-social-or",
+                    "value": "ou",
+                    "type": "string"
+                },
+                {
+                    "id": "login-with-google",
+                    "value": "Entrar com Google",
+                    "type": "string"
+                },
+                {
+                    "id": "login-with-meta",
+                    "value": "Entrar com Facebook",
+                    "type": "string"
+                },
+                {
+                    "id": "login-2fa-titulo",
+                    "value": "Verificação em Duas Etapas",
+                    "type": "string"
+                },
+                {
+                    "id": "login-2fa-button",
+                    "value": "Verificar",
+                    "type": "string"
+                },
+                {
+                    "id": "login-2fa-cancel",
+                    "value": "Cancelar e voltar ao login",
+                    "type": "string"
+                },
+                {
+                    "id": "login-2fa-setup-help",
+                    "value": "Sua conta exige a configuração do 2FA. Configure abaixo para continuar o acesso.",
+                    "type": "string"
+                },
+                {
+                    "id": "login-2fa-verify-app-help",
+                    "value": "Digite o código gerado pelo seu aplicativo autenticador.",
+                    "type": "string"
+                },
+                {
+                    "id": "login-2fa-verify-email-help",
+                    "value": "Enviamos um código para o seu e-mail. Digite-o abaixo.",
+                    "type": "string"
+                },
                 {
                     "id": "alert-authorization-provisory-not-defined",
                     "value": "Não é permitido alterar nenhum dado do usuário sem autorização provisória.",
@@ -724,17 +949,62 @@
                 {
                     "name": "Access System",
                     "id": "acessar-sistema",
-                    "version": "1.2",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "f1e634dbf084f1e608837aba15c35c66",
+                        "html": "527e97cdf97b2ca31dc6f2b51ca043ac",
                         "css": "",
-                        "combined": "f1e634dbf084f1e608837aba15c35c66"
+                        "combined": "527e97cdf97b2ca31dc6f2b51ca043ac"
                     },
                     "layout": "layout-pagina-sem-permissao",
                     "path": "signin\/",
                     "type": "system",
                     "option": "signin",
                     "without_permission": true
+                },
+                {
+                    "name": "Two-Step Verification",
+                    "id": "signin-2fa",
+                    "version": "1.1",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "signin-2fa\/",
+                    "type": "system",
+                    "option": "signin-2fa",
+                    "without_permission": true,
+                    "checksum": {
+                        "html": "12feaf2f143750ec7fd63d8efb4ff4f5",
+                        "css": "",
+                        "combined": "12feaf2f143750ec7fd63d8efb4ff4f5"
+                    }
+                },
+                {
+                    "name": "Social Login",
+                    "id": "social-login",
+                    "version": "1.1",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "social-login\/",
+                    "type": "system",
+                    "option": "social-login",
+                    "without_permission": true,
+                    "checksum": {
+                        "html": "43e01e0dbca1df8229cacf6c57989cd4",
+                        "css": "",
+                        "combined": "43e01e0dbca1df8229cacf6c57989cd4"
+                    }
+                },
+                {
+                    "name": "OAuth Callback",
+                    "id": "oauth-callback",
+                    "version": "1.1",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "oauth-callback\/",
+                    "type": "system",
+                    "option": "oauth-callback",
+                    "without_permission": true,
+                    "checksum": {
+                        "html": "74324a183cf7f9785d692f1c7d8b8e54",
+                        "css": "",
+                        "combined": "74324a183cf7f9785d692f1c7d8b8e54"
+                    }
                 },
                 {
                     "name": "Logout System",
@@ -753,11 +1023,11 @@
                 {
                     "name": "User Profile",
                     "id": "perfil-usuario",
-                    "version": "1.1",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "409c497b763a304093568e3c7f7e417a",
+                        "html": "d48b08c1849bcaeb4ed9939ab2563fe1",
                         "css": "",
-                        "combined": "409c497b763a304093568e3c7f7e417a"
+                        "combined": "d48b08c1849bcaeb4ed9939ab2563fe1"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "perfil-usuario\/",
@@ -887,6 +1157,186 @@
             ],
             "components": [],
             "variables": [
+                {
+                    "id": "button-security",
+                    "value": "Security",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-title",
+                    "value": "Two-Factor Authentication (2FA)",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-active",
+                    "value": "2FA is active. Method:",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-inactive-help",
+                    "value": "Set up a second authentication factor to increase your account security.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-none-method",
+                    "value": "No 2FA method is enabled by the administrator.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-method-label",
+                    "value": "Verification method",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-app-option",
+                    "value": "Authenticator App (TOTP)",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-email-option",
+                    "value": "Email code",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-scan-help",
+                    "value": "Scan the QR Code with your authenticator app (Google Authenticator, Authy, etc.) or enter the key manually.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-code-label",
+                    "value": "Verification code (6 digits)",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-activate",
+                    "value": "Enable 2FA",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-send-email",
+                    "value": "Send code by email",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-disable",
+                    "value": "Disable 2FA",
+                    "type": "string"
+                },
+                {
+                    "id": "security-password-label",
+                    "value": "Current password",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-email-sent",
+                    "value": "Code sent to your email.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-email-error",
+                    "value": "Could not send the code by email.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-code-invalid",
+                    "value": "Invalid or expired code.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-enabled-ok",
+                    "value": "2FA enabled successfully!",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-disable-invalid",
+                    "value": "Incorrect password or code.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-disabled-ok",
+                    "value": "2FA disabled successfully.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-title",
+                    "value": "Social Accounts",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-linked",
+                    "value": "Linked",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-link",
+                    "value": "Link",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-unlink",
+                    "value": "Unlink",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-none-active",
+                    "value": "No social provider is enabled by the administrator.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-not-configured",
+                    "value": "Social provider not configured.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-social-unlinked-ok",
+                    "value": "Account unlinked successfully.",
+                    "type": "string"
+                },
+                {
+                    "id": "login-social-or",
+                    "value": "or",
+                    "type": "string"
+                },
+                {
+                    "id": "login-with-google",
+                    "value": "Sign in with Google",
+                    "type": "string"
+                },
+                {
+                    "id": "login-with-meta",
+                    "value": "Sign in with Facebook",
+                    "type": "string"
+                },
+                {
+                    "id": "login-2fa-titulo",
+                    "value": "Two-Step Verification",
+                    "type": "string"
+                },
+                {
+                    "id": "login-2fa-button",
+                    "value": "Verify",
+                    "type": "string"
+                },
+                {
+                    "id": "login-2fa-cancel",
+                    "value": "Cancel and back to login",
+                    "type": "string"
+                },
+                {
+                    "id": "login-2fa-setup-help",
+                    "value": "Your account requires 2FA setup. Configure it below to continue.",
+                    "type": "string"
+                },
+                {
+                    "id": "login-2fa-verify-app-help",
+                    "value": "Enter the code generated by your authenticator app.",
+                    "type": "string"
+                },
+                {
+                    "id": "login-2fa-verify-email-help",
+                    "value": "We sent a code to your email. Enter it below.",
+                    "type": "string"
+                },
                 {
                     "id": "alert-authorization-provisory-not-defined",
                     "value": "It is not allowed to change any user data without provisional authorization.",

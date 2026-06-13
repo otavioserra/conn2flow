@@ -4059,6 +4059,24 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "jwt-rotate-success",
+        "valor": "Chaves JWT rotacionadas com sucesso! Uma nova chave ativa foi gerada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "jwt-rotate-error",
+        "valor": "Erro ao rotacionar as chaves JWT.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "admin-environment",
         "id": "email-tests-head-title",
@@ -4279,6 +4297,24 @@
         "modulo": "admin-environment",
         "id": "save-error",
         "valor": "Error saving settings.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "jwt-rotate-success",
+        "valor": "JWT keys rotated successfully! A new active key has been generated.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "jwt-rotate-error",
+        "valor": "Error rotating JWT keys.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -9434,6 +9470,330 @@
     {
         "language": "pt-br",
         "modulo": "perfil-usuario",
+        "id": "button-security",
+        "valor": "Segurança",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-title",
+        "valor": "Autenticação de Dois Fatores (2FA)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-active",
+        "valor": "O 2FA está ativo. Método:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-inactive-help",
+        "valor": "Configure um segundo fator de autenticação para aumentar a segurança da sua conta.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-none-method",
+        "valor": "Nenhum método de 2FA está habilitado pelo administrador.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-method-label",
+        "valor": "Método de verificação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-app-option",
+        "valor": "Aplicativo Autenticador (TOTP)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-email-option",
+        "valor": "Código por E-mail",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-scan-help",
+        "valor": "Escaneie o QR Code com o seu aplicativo autenticador (Google Authenticator, Authy etc.) ou digite a chave manualmente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-code-label",
+        "valor": "Código de verificação (6 dígitos)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-activate",
+        "valor": "Ativar 2FA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-send-email",
+        "valor": "Enviar código por e-mail",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-disable",
+        "valor": "Desativar 2FA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-password-label",
+        "valor": "Senha atual",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-email-sent",
+        "valor": "Código enviado para o seu e-mail.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-email-error",
+        "valor": "Não foi possível enviar o código por e-mail.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-code-invalid",
+        "valor": "Código inválido ou expirado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-enabled-ok",
+        "valor": "2FA ativado com sucesso!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-disable-invalid",
+        "valor": "Senha ou código incorretos.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-disabled-ok",
+        "valor": "2FA desativado com sucesso.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-social-title",
+        "valor": "Contas Sociais",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-social-linked",
+        "valor": "Vinculada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-social-link",
+        "valor": "Vincular",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-social-unlink",
+        "valor": "Desvincular",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-social-none-active",
+        "valor": "Nenhum provedor social está habilitado pelo administrador.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-social-not-configured",
+        "valor": "Provedor social não configurado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-social-unlinked-ok",
+        "valor": "Conta desvinculada com sucesso.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "login-social-or",
+        "valor": "ou",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "login-with-google",
+        "valor": "Entrar com Google",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "login-with-meta",
+        "valor": "Entrar com Facebook",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "login-2fa-titulo",
+        "valor": "Verificação em Duas Etapas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "login-2fa-button",
+        "valor": "Verificar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "login-2fa-cancel",
+        "valor": "Cancelar e voltar ao login",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "login-2fa-setup-help",
+        "valor": "Sua conta exige a configuração do 2FA. Configure abaixo para continuar o acesso.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "login-2fa-verify-app-help",
+        "valor": "Digite o código gerado pelo seu aplicativo autenticador.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "login-2fa-verify-email-help",
+        "valor": "Enviamos um código para o seu e-mail. Digite-o abaixo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
         "id": "alert-authorization-provisory-not-defined",
         "valor": "Não é permitido alterar nenhum dado do usuário sem autorização provisória.",
         "tipo": "string",
@@ -10327,6 +10687,330 @@
         "modulo": "perfil-usuario",
         "id": "password-redefined-mail-subject",
         "valor": "Senha da Conta Conn2Flow redefinida com sucesso nº #numero#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "button-security",
+        "valor": "Security",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-title",
+        "valor": "Two-Factor Authentication (2FA)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-active",
+        "valor": "2FA is active. Method:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-inactive-help",
+        "valor": "Set up a second authentication factor to increase your account security.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-none-method",
+        "valor": "No 2FA method is enabled by the administrator.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-method-label",
+        "valor": "Verification method",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-app-option",
+        "valor": "Authenticator App (TOTP)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-email-option",
+        "valor": "Email code",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-scan-help",
+        "valor": "Scan the QR Code with your authenticator app (Google Authenticator, Authy, etc.) or enter the key manually.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-code-label",
+        "valor": "Verification code (6 digits)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-activate",
+        "valor": "Enable 2FA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-send-email",
+        "valor": "Send code by email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-disable",
+        "valor": "Disable 2FA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-password-label",
+        "valor": "Current password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-email-sent",
+        "valor": "Code sent to your email.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-email-error",
+        "valor": "Could not send the code by email.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-code-invalid",
+        "valor": "Invalid or expired code.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-enabled-ok",
+        "valor": "2FA enabled successfully!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-disable-invalid",
+        "valor": "Incorrect password or code.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-disabled-ok",
+        "valor": "2FA disabled successfully.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-social-title",
+        "valor": "Social Accounts",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-social-linked",
+        "valor": "Linked",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-social-link",
+        "valor": "Link",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-social-unlink",
+        "valor": "Unlink",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-social-none-active",
+        "valor": "No social provider is enabled by the administrator.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-social-not-configured",
+        "valor": "Social provider not configured.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-social-unlinked-ok",
+        "valor": "Account unlinked successfully.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-social-or",
+        "valor": "or",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-with-google",
+        "valor": "Sign in with Google",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-with-meta",
+        "valor": "Sign in with Facebook",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-2fa-titulo",
+        "valor": "Two-Step Verification",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-2fa-button",
+        "valor": "Verify",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-2fa-cancel",
+        "valor": "Cancel and back to login",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-2fa-setup-help",
+        "valor": "Your account requires 2FA setup. Configure it below to continue.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-2fa-verify-app-help",
+        "valor": "Enter the code generated by your authenticator app.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-2fa-verify-email-help",
+        "valor": "We sent a code to your email. Enter it below.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

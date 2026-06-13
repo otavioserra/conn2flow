@@ -492,28 +492,67 @@ Para manter o checklist de validações leve e eficiente, as validações e evid
 - [ ] **Pendente com o operador**: `Update => Core` (regenerar contrato/checksums no pipeline) + deploy real (aplicar migrações incl. `rename` da `variaveis` no banco de dev/produção) e validar `db_logs` no endpoint de deploy via API (com/sem `full_log`) e o loteador em volume real.
 
 
-## BATCH-030 - Autenticação, 2FA, Social Login e Segurança
+## BATCH-030 - Autenticação Multi-Método, 2FA (App/E-mail), Social Login e Rotação JWT
 
-- [ ] **Autenticação de Dois Fatores (2FA)**:
-  - [ ] Colunas `two_factor_secret` e `two_factor_enabled` adicionadas na tabela `usuarios`.
-  - [ ] Classe de suporte a TOTP gerando e validando segredos com sucesso.
-  - [ ] Tela de Perfil de Usuário com fluxos de ativação (QR Code) e desativação seguros.
-  - [ ] Fluxo de login administrativo interceptando usuários com 2FA habilitado.
-- [ ] **Login Social (OAuth 2.0)**:
+- [ ] **Configurações Globais (admin-environment)**:
+  - [ ] Toggles globais para métodos de login (Senha, Google, Meta) ativando/desativando formulários e botões na tela de login.
+  - [ ] Toggle global de 2FA obrigatório (`AUTH_2FA_REQUIRED`) forçando a configuração inicial pós-login para quem não a tem.
+  - [ ] Checkboxes de métodos permitidos de 2FA (App TOTP e Código por E-mail).
+  - [ ] Gravação e leitura síncrona das credenciais OAuth e JWT no arquivo `.env`.
+- [ ] **Autenticação de Dois Fatores (2FA) - Aplicativo & E-mail**:
+  - [ ] Colunas `two_factor_secret`, `two_factor_enabled`, `two_factor_type`, `two_factor_email_code` e `two_factor_email_expire` adicionadas na tabela `usuarios`.
+  - [ ] Classe de suporte a TOTP gerando e validando chaves com o Google Authenticator.
+  - [ ] Fluxo de envio de código dinâmico por e-mail de 6 dígitos com expiração de 5 minutos.
+  - [ ] Seção de Segurança em `perfil-usuario` (`?configurar-seguranca=sim`) habilitando/desabilitando 2FA e exibindo QR Code/validação de e-mail conforme as regras ativas.
+  - [ ] Fluxo de login administrativo interceptando usuários e exigindo validação de 2FA (gerando código por e-mail se este for o tipo do usuário).
+- [ ] **Login Social (OAuth 2.0 Google / Meta)**:
   - [ ] Tabela `usuarios_provedores` criada.
-  - [ ] Biblioteca `oauth.php` implementada para Google e Meta.
-  - [ ] Associação e login de contas sociais funcionando no painel e na tela de login.
-- [ ] **Sessões baseadas em JWT**:
-  - [ ] Biblioteca `jwt.php` gerando e validando tokens JWT.
-  - [ ] Autenticação stateless funcionando para endpoints `/api/`.
+  - [ ] Biblioteca `oauth.php` implementada e redirecionando/autenticando perfis sociais Google e Meta.
+  - [ ] Vínculo e desvinculo de contas funcionando na rota de Segurança do Perfil.
+- [ ] **Sessões e Rotação de Chaves JWT**:
+  - [ ] Biblioteca `jwt.php` gerenciando histórico de chaves em formato JSON na tabela `variaveis`.
+  - [ ] Lógica de rotação de chaves funcionando (chave ativa vira expirada, gera-se nova ativa, chaves obsoletas expurgadas).
+  - [ ] Decodificação de tokens com chaves em carência (grace period de 24h) aceita como válida e disparando renovação automática de token no cabeçalho de resposta.
 - [ ] **Endurecimento de Endpoints**:
-  - [ ] Tokens CSRF obrigatórios e validados em posts administrativos.
-  - [ ] Detecção de sequestro de sessão ativa com validação de User-Agent/IP.
+  - [ ] Tokens CSRF validados em posts de alteração de estado administrativos.
+  - [ ] Detecção de sequestro de sessão (Session Hijacking) comparando User-Agent e bloco de IP (3 octetos), deslogando usuário em caso de discrepância.
 
 ### Evidência de Validação (BATCH-030)
 
-- [ ] Validação estática de sintaxe executada (`php -l` e `node --check`).
-- [ ] Testes de validação funcional do login social, 2FA e tokens JWT.
+#### Slices 1–2 (fundação: banco + bibliotecas puras) — 2026-06-13
+
+- [x] **Slice 1 — Migrações Phinx** (`php -l` OK):
+  - `20260706100000_add_two_factor_to_usuarios_table.php` (idempotente, guards `hasColumn`, up/down).
+  - `20260706100010_create_usuarios_provedores_table.php` (guard `hasTable`, índice único `(provider_name, provider_uid)`, índice em `usuario_id`).
+  - Timestamps `20260706*` escolhidos > maior existente (`20260705100000`) para garantir ordem de execução.
+- [x] **Slice 2 — Bibliotecas puras** (`php -l` OK em `2fa.php`/`jwt.php`/`oauth.php`):
+  - Testes PHPUnit permanentes criados: `tests/Unit/PHP/TwoFactorTest.php` e `tests/Unit/PHP/JwtTest.php` → **20/20 testes, 42 asserts OK** (`php vendor/bin/phpunit`).
+  - Teste standalone com stubs de banco em memória → **28/28 OK**: HOTP (10 vetores RFC 4226 Apêndice D), TOTP (RFC 6238: T=59→287082, T=1111111109→081804), validação com drift ±1, geração de segredo Base32, URI otpauth; ciclo JWT completo (Active → rotação → Grace → fora-da-carência lança exceção → assinatura corrompida lança exceção).
+- Observações de contrato (divergências justificadas do intake, padrão de batches anteriores):
+  - `usuarios_provedores` sem FK física (convenção do legado: nenhuma migração usa `addForeignKey`; relacionamento por `usuario_id` integer + índice). ON DELETE CASCADE será tratado em código no fluxo de exclusão de usuário.
+  - JWT: período de carência medido por `expired_at` (quando a chave foi rotacionada), com fallback `created_at`. O req §3.2 sugeria `created_at`, o que invalidaria o grace em produção (chave ativa vive `AUTH_JWT_ROTATION_DAYS` antes de expirar).
+  - Função de e-mail real é `comunicacao_email()` (o req cita `gestor_email_enviar()` como placeholder).
+  - `banco.php` implementa apenas `mysqli` (não PDO/SQLite); por isso o ciclo JWT end-to-end com banco fica para integração com MySQL real (operador) — a lógica já está coberta pelo standalone com stubs.
+
+#### Slices 3–6 (integração: admin-environment, perfil-usuario, login, endurecimento) — 2026-06-13
+
+- [x] **Slice 3 — admin-environment**: toggles de login (Senha/Google/Meta), credenciais OAuth condicionais, URIs de callback (readonly), 2FA obrigatório + métodos (App/E-mail), rotação JWT (dias/carência) + botão "Rotacionar Chaves JWT" (AJAX `rotacionar-jwt`); gravação no `.env`. Validação: `php -l` (admin-environment.php, config.php) + `node --check` (admin-environment.js) + JSON OK.
+- [x] **Slice 4 — perfil-usuario / Segurança**: rota `?configurar-seguranca=sim` com seção 2FA (App TOTP + QR client-side via qrcodejs, E-mail) e contas sociais (vincular/desvincular); AJAX `seguranca-2fa-ativar`/`-desativar`/`-email-enviar`/`-social-vincular`/`-social-desvincular`; desativação exige senha (`password_verify`) + código. Validação: `php -l` + `node --check` + JSON OK.
+- [x] **Slice 5 — login admin**: render dinâmico do form (senha condicional + botões sociais), interceptador 2FA no `signin` (fail-safe: só age com 2FA ativo/obrigatório), tela `signin-2fa` unificada (verify/setup), login social (`social-login` → `oauth-callback`) com vínculo/login por e-mail. Novas páginas `signin-2fa`/`social-login`/`oauth-callback` (pt-br/en) + i18n. Validação: `php -l` + `node --check` + JSON OK.
+- [x] **Slice 6 — endurecimento**: `bibliotecas/seguranca.php` (Session Hijacking UA+bloco IP, CSRF helpers); validação no `gestor_permissao_token()` (fail-safe) + registro nos pontos de login. Teste PHPUnit `SegurancaTest` (bloco IP/UA). Validação: `php -l` (seguranca.php, gestor.php) + PHPUnit.
+- Suíte PHPUnit completa: **32 testes / 84 asserts OK** (1 skip gated, 1 deprecation pré-existente do PHPUnit).
+
+#### Observações de contrato adicionais (Slices 3–6)
+
+- **Callback OAuth via rota do módulo**: `oauth_redirect_uri()` aponta para `{url}/oauth-callback/?provider={provider}` (rota do módulo perfil-usuario), não `/_api/auth/callback/{provider}` como no req §2 — evita alterar o roteador de API genérico; o admin-environment exibe a URI calculada.
+- **Estado de fluxo 2FA/OAuth no store de sessão do sistema** (`gestor_sessao_variavel` → `sessoes_variaveis`): `pending_2fa_*`, `oauth_state`/`provider`/`action`/`link_user`. Iniciado automaticamente por `gestor_sessao_iniciar` (não usa `$_SESSION` nativo).
+- **CSRF**: infra pronta; aplicação estrita global pendente (rollout incremental) para não quebrar AJAX legados.
+
+#### Pendências com o operador (runtime)
+
+- [ ] Aplicar migrações (`Update => Core` / `phinx migrate`): colunas 2FA em `usuarios` + tabela `usuarios_provedores`.
+- [ ] Registrar recursos novos no banco (pipeline): páginas `signin-2fa`/`social-login`/`oauth-callback`, variáveis i18n de segurança/login social, recalcular checksums.
+- [ ] Validação funcional: login tradicional (com senha desativada também), login social Google/Meta (exige credenciais OAuth reais), 2FA App (Google Authenticator) e E-mail, rotação de chaves JWT (token assinado pela chave antiga em carência), e session hijacking (mudança de UA/bloco de IP derruba a sessão).
 
 
 ## BATCH-031 - Estruturação de Framework de Testes Unitários e E2E

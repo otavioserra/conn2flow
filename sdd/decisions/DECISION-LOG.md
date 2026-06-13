@@ -2,7 +2,7 @@
 
 ### Índice de Decisões Arquivadas
 
-Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram movidas para o arquivo histórico **[decisions-001-030.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-001-030.md)**.
+Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram movidas para **[decisions-001-030.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-001-030.md)** e `DEC-031` a `DEC-033` para **[decisions-031-040.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-031-040.md)**.
 
 | ID | Data | Status | Título Resumido |
 | --- | --- | --- | --- |
@@ -36,37 +36,12 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-028 | 2026-06-05 | accepted | Bloco item-separator em templates de Menus |
 | DEC-029 | 2026-06-05 | accepted | Controles de exibição e resolução de imagem em Galerias |
 | DEC-030 | 2026-06-05 | accepted | Comportamento dinâmico em JS público dos widgets |
+| DEC-031 | 2026-06-05 | accepted | Alvo/Variáveis Globais/Modos de IA do módulo Galerias → [archive](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-031-040.md) |
+| DEC-032 | 2026-06-08 | accepted | Compilação Tailwind CSS CLI no core e pipeline de release → [archive](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-031-040.md) |
+| DEC-033 | 2026-06-08 | accepted | Estrutura de testes Unit/Integration/E2E na raiz → [archive](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-031-040.md) |
+| DEC-034 | 2026-06-08 | accepted | Correção HTML (Quill), automação de campos e v2.8.0 → [archive](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/decisions/archive/decisions-031-040.md) |
 
 ---
-
-## DEC-031 - 2026-06-05 - accepted
-
-Registro de Alvo de IA, Variáveis Globais e Modos de IA para o Módulo de Galerias (req-019 / BATCH-019). Decisões desta rodada:
-1. **Registro do Alvo `galleries`**: Adicionar `ai_prompts_targets` e `ai_modes` em `galleries.json` para que a rotina `atualizacao-dados-recursos.php` compile e registre o alvo `galleries` nos arquivos `AlvosIaData.json` e `ModosIaData.json` em ambos os idiomas (`pt-br` e `en`).
-2. **Criação de Prompts/Modos de IA**: Criar os arquivos de prompt/modo em markdown para o alvo `galleries` (`galleries.md` em `pt-br` e `en`) contendo as regras de estruturação (repetição de items via `<!-- item < -->`, controle condicional de setas/pontinhos, repetição de `dot-item` e atributos `data-*` do contêiner).
-3. **Mapeamento de Variáveis Globais vs Itens**: No html-editor, unificar a aba de variáveis. A função `galleries_variaveis_template()` em `galleries.php` retornará tanto variáveis de item quanto variáveis globais de controle (como `show_arrows`, `show_dots`, `autoplay`, `autoplay_speed`, `loop`), estas últimas marcadas com `'global' => true`.
-4. **Tratamento no HTML Editor e Ajax IA**: No `html-editor.php`, se a variável possuir `'global' => true`, o mapeamento do template gerará o placeholder `[[VAR_ID]]` (sem o prefixo `item#`). No AJAX de IA (`html_editor_ajax_ia_requests`), processar `menus` e `galleries` injetando a lista de variáveis correspondentes na substituição do marcador `{{variables}}` no prompt do Modo de IA.
-
-## DEC-032 - 2026-06-08 - accepted
-
-Integração de Compilação Tailwind CSS CLI para o Core do Sistema e Pipeline de Release (req-020 / BATCH-020). Decisões desta rodada:
-1. **Pasta de Compilação do Core**: Definir a pasta `gestor/assets/tailwindcss/` para abrigar a estrutura do compilador Tailwind CSS v4 para o core/manager. O arquivo de entrada será `input.css` contendo a diretiva `@import "tailwindcss";` e a diretiva `@config "../../../tailwind.config.js";`, e o output compilado será gerado em `output.css` via npx.
-2. **Integração em Ambientes Locais**: Atualizar os scripts de sincronização de desenvolvimento `synchronize-manager.sh` (sincronização do manager com Docker local) e `sync-core-to-project.sh` (sincronização do core com projetos de testes) para ler a variável de configuração `devEnvironment.tailwindcss/cli` do arquivo `environment.json`. Caso configurada, os scripts deverão executar o compilador na pasta de origem do core antes de realizar a transmissão (rsync), tratando erros de compilação.
-3. **Pipeline de Release**: Modificar o workflow de release `release-gestor.yml` do GitHub Actions para configurar o Node.js v20 e rodar o compilador do Tailwind CSS CLI antes de gerar o pacote ZIP, garantindo que o `output.css` seja incluído no commit de release e no pacote compactado distribuído.
-
-## DEC-033 - 2026-06-08 - accepted
-
-Adoção de Estrutura de Testes Unitários e E2E centralizada na raiz do repositório (req-022 / BATCH-022). Decisões desta rodada:
-1. **Pasta de Testes Centralizada**: Criar a pasta `tests/` na raiz do repositório (`conn2flow/tests/`), separando as suítes de teste em `Unit/` (algoritmos PHP/JS puros e isolados), `Integration/` (fluxos que requerem banco ou Docker) e `E2E/` (fluxos de navegação e interface real). A pasta será excluída dos pacotes de release ZIP do gestor.
-2. **Frameworks e Configuração**: Adotar o PHPUnit para testes backend em PHP (com arquivo `bootstrap.php` para carregar dependências do core e `phpunit.xml`), o Vitest para testes rápidos de JS frontend, e o Playwright para testes funcionais E2E simulando as interfaces CRUD e visualizadores em navegadores headless.
-3. **Atalhos no Workspace**: Registrar tarefas de automação no arquivo `.vscode/tasks.json` para facilitar a execução rápida de cada suíte de testes por parte de operadores humanos e agentes autônomos.
-
-## DEC-034 - 2026-06-08 - accepted
-
-Correção HTML, Automação de Campos e Lançamento v2.8.0 (req-021 / BATCH-021). Decisões desta rodada:
-1. **Inicialização do Quill em publisher-pages**: No carregamento do formulário de edição do publicador páginas, inicializar o input hidden do campo HTML com o valor corrente do Quill editor para garantir o envio correto dos dados mesmo se o usuário salvar sem editar o texto.
-2. **Botão de Automação de Campos em publisher**: Incluir o botão "Adicionar todos os campos" que insere em lote as variáveis do template que não foram associadas ainda. O nome amigável do campo é derivado via remoção de underlines e capitalização de cada termo.
-3. **Preenchimento Automático de Prompts**: Ao adicionar um campo associado ao template, pré-preencher o seletor correspondente. Se o campo adicionado for dinâmico e não possuir mapeamento de prompt legado, gerar o marcador `[[publisher#tipo#id]]` como fallback padrão no input prompt.
 
 ## DEC-035 - 2026-06-09 - accepted
 
@@ -138,3 +113,21 @@ Reestruturação e Otimização de Dados, Sincronização e Visibilidade de Logs
 3. **Contrato consolidado (`schema-metadata.json`) via Registry Pattern**: O gerador `atualizacao-dados-recursos.php` ganha um motor de varredura genérico que consolida os blocos locais + o global em `gestor/db/data/schema-metadata.json` (17 tabelas), preservando a geração específica dos `*Data.json` existente (decisão de baixo risco: adicionar o motor sem reescrever a coleta de recursos). Inclui carregamento/execução sequencial de `data-hooks.php` (globais e por módulo) pós-geração e substituição dos `@` cegos por `ensureDir()` com log.
 4. **Atualizador dinâmico**: `atualizacoes-banco-de-dados.php` lê o contrato (`schemaMetadata()`), remove os arrays hardcoded, usa chave natural genérica (`naturalKeyGenerica`, lowercase + alias `language`/`linguagem_codigo`) e WHERE genérico null-safe (`<=>`), loteador threshold-based (`maxAllowedPacket()` a 70%, fallback 16MB) com `inserirEmLote` (multi-row agrupado por assinatura de colunas + fallback individual para duplicatas), deleção imperativa (`executarDelecoes`) e transações PDO (`beginTransaction`/`commit`/`rollBack`) envolvendo sincronização + deleção.
 5. **Unificação e visibilidade de logs / remoção de CLI exec**: `log_unificado()` (em `atualizacoes-banco-de-dados.php` e `atualizacao-plugin-banco-de-dados.php`) escreve em disco, no `EXTERNAL_LOGGER` por referência e no stdout CLI (parte implementada por outro agente que tocou o 029 sem querer e foi incorporada, sem reverter). `api.php` (`api_executar_atualizacao_banco`) captura os logs e retorna `db_logs` (resumido ou completo conforme `full_log`); `atualizacoes-sistema.php` (`executarAtualizacaoBanco`) passa a rodar **estritamente inline** (remoção do `exec()` de banco), capturando e prefixando os logs com `[BANCO]`. O `passthru()` remanescente em `atualizacoes-sistema.php` é o auto-bootstrap do próprio script de deploy (não roda atualização de banco) e foi preservado.
+
+## DEC-043 - 2026-06-13 - accepted
+
+Fundação de Autenticação, 2FA e JWT (req-030 / BATCH-030, Slices 1–2). Decisões de design da fundação (banco + bibliotecas puras):
+1. **`usuarios_provedores` sem chave estrangeira física**: O req-030 §1 pedia FK `usuario_id → usuarios.id_usuario ON DELETE CASCADE`, mas (a) a PK real é `id_usuarios` e (b) nenhuma migração do legado usa `addForeignKey` (relacionamentos são por coluna integer + índice, ex.: `usuarios.id_hosts`). Decisão: criar `usuario_id` integer + índice, índice único composto `(provider_name, provider_uid)`, e tratar o cascateamento ON DELETE em código no fluxo de exclusão de usuário. Migração com guard `hasTable()`; a de 2FA em `usuarios` com guards `hasColumn()`/up/down idempotentes. Timestamps `20260706*` (> maior existente `20260705100000`) para garantir ordem.
+2. **JWT HS256 com `kid` e chaves versionadas no banco**: A biblioteca `jwt.php` assina em HMAC-SHA256 (chaves simétricas, auto-suficiente, sem dependência de RSA/par de chaves) e inclui `kid` no header para selecionar a chave na validação. O conjunto de chaves fica em `variaveis` (`modulo='sistema'`, `id='jwt_keys'`, coluna `valor` em JSON) — a tabela `variaveis` não tem coluna `chave`, ao contrário do que o req §3.2 sugeria.
+3. **Grace period medido por `expired_at`**: Divergência justificada do req §3.2 (que sugeria `created_at`). O período de carência é contado a partir de quando a chave foi rotacionada para `expired` (campo `expired_at`, fallback `created_at`). Medir por `created_at` invalidaria o grace em produção, pois a chave ativa vive `AUTH_JWT_ROTATION_DAYS` (30) dias antes de expirar, e `created_at + 24h` já teria passado.
+4. **2FA TOTP próprio (RFC 6238/4226) sem libs externas**: `2fa.php` implementa Base32, HOTP e TOTP (drift ±1 ciclo) em funções byte-wise puras (sem `mb_*`), validado contra os vetores oficiais dos RFCs. O envio por e-mail usa a função real `comunicacao_email()` (o req cita `gestor_email_enviar()` como placeholder).
+5. **Cobertura de testes da fundação**: Funções puras com testes PHPUnit permanentes (`tests/Unit/PHP/TwoFactorTest.php`, `JwtTest.php`); o ciclo JWT dependente de banco foi validado por teste standalone com stubs em memória (registrado na evidência), pois `banco.php` implementa apenas `mysqli` (não PDO/SQLite), deixando a integração end-to-end para o operador (MySQL real).
+
+## DEC-044 - 2026-06-13 - accepted
+
+Integração de Autenticação, 2FA, Login Social e Endurecimento (req-030 / BATCH-030, Slices 3–6). Decisões de integração:
+1. **admin-environment como painel global de auth**: As chaves `AUTH_METHOD_*`, `OAUTH_*`, `AUTH_2FA_*` e `AUTH_JWT_*` são lidas/gravadas no `.env` pela infraestrutura existente (`admin_environment_env_read/write`); credenciais OAuth aparecem condicionalmente e as URIs de callback são exibidas em readonly. O botão "Rotacionar Chaves JWT" usa a AJAX `rotacionar-jwt` → `jwt_rotate_keys()`.
+2. **Rota de Segurança embutida no CRUD de perfil**: A seção 2FA + contas sociais é renderizada no bloco `<!-- seguranca-campos -->` da página de perfil quando `?configurar-seguranca=sim` (helper `modelo_tag_in`), com HTML gerado em PHP e i18n via variáveis do módulo. O QR Code é renderizado **client-side** (qrcodejs CDN) a partir da URI `otpauth://`, mantendo o secret fora de serviços de terceiros. O secret TOTP é persistido com `two_factor_enabled=0` até a confirmação do primeiro código (evita estado de sessão frágil). Desativar 2FA exige senha (`password_verify`) + código atual.
+3. **Interceptador 2FA fail-safe no login**: Inserido no `perfil_usuario_signin` após a validação de credenciais; só intercepta quando o usuário tem 2FA habilitado **ou** `AUTH_2FA_REQUIRED` é true — caso contrário o login segue idêntico (não trava instalações sem 2FA). Tela `signin-2fa` unificada serve verificação e configuração obrigatória. A finalização do login foi extraída para `perfil_usuario_finalizar_login()` (reuso entre login direto, 2FA e social). Todo o estado de fluxo (2FA pendente e OAuth `state`/`provider`/`action`) usa o store de sessão do sistema (`gestor_sessao_variavel`, persistido em `sessoes_variaveis` e iniciado automaticamente por `gestor_sessao_iniciar`), não `$_SESSION` nativo — por orientação do Engenheiro Chefe.
+4. **Callback OAuth via rota do módulo**: Divergência justificada do req §2 — `oauth_redirect_uri()` aponta para `{url}/oauth-callback/?provider=X` (rota do módulo perfil-usuario) em vez de `/_api/auth/callback/X`, evitando alterar o roteador de API genérico. Novas páginas/opções `social-login`, `oauth-callback` e `signin-2fa` registradas no manifest. Login social casa por vínculo (`usuarios_provedores`) ou, na ausência, por e-mail de usuário ativo (cria o vínculo); aplica o mesmo interceptador 2FA.
+5. **Endurecimento via `bibliotecas/seguranca.php`**: Session Hijacking valida User-Agent + bloco de IP (3 octetos) dentro de `gestor_permissao_token()` de forma **fail-safe** (não bloqueia sessões sem marcadores registrados; registra no login efetivo, não na renovação de token — para não anular a checagem). CSRF: helpers `gestor_csrf_token()`/`gestor_csrf_validar()` prontos; o rollout estrito em 100% dos controllers é **incremental** (validação runtime), pois a aplicação global cega quebraria os AJAX legados que ainda não enviam o token. Logs de eventos de segurança via `log.php` ficam para um slice corretivo.

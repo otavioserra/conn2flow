@@ -677,6 +677,10 @@ function perfil_usuario_editar(){
 				$cel_nome = $mc.'-campos'; $_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','');
 			}
 		}
+
+		// ===== Rota de Segurança (req-030): 2FA e contas sociais
+
+		perfil_usuario_editar_seguranca();
 		
 		// ===== Popular os metaDados
 		
@@ -800,13 +804,147 @@ function perfil_usuario_editar(){
 	}
 }
 
+// ===== Rota de Segurança (req-030) =====
+
+/**
+ * Atalho para variáveis de idioma do módulo perfil-usuario.
+ */
+function perfil_usuario_seguranca_var($id){
+	global $_GESTOR;
+	return gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => $id));
+}
+
+/**
+ * Renderiza a seção de Segurança (2FA + contas sociais) no bloco `seguranca-campos`
+ * da página de perfil quando acessada via `?configurar-seguranca=sim`.
+ */
+function perfil_usuario_editar_seguranca(){
+	global $_GESTOR;
+
+	$bloco = 'seguranca-campos';
+
+	// Só renderiza a seção quando explicitamente solicitada.
+	if(!isset($_REQUEST['configurar-seguranca']) || $_REQUEST['configurar-seguranca'] !== 'sim'){
+		$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->', '');
+		return;
+	}
+
+	gestor_incluir_biblioteca('2fa');
+
+	$usuario = gestor_usuario();
+	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
+	$email = isset($usuario['email']) ? $usuario['email'] : '';
+
+	$dados2fa = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios',
+		'campos' => Array('two_factor_enabled', 'two_factor_type', 'two_factor_secret'),
+		'extra' => "WHERE id_usuarios='".$id_usuarios."'",
+	));
+
+	$ativo = $dados2fa && !empty($dados2fa['two_factor_enabled']);
+	$tipo = ($dados2fa && isset($dados2fa['two_factor_type'])) ? $dados2fa['two_factor_type'] : '';
+
+	$metodoApp = (($_ENV['AUTH_2FA_METHOD_APP'] ?? 'true') === 'true');
+	$metodoEmail = (($_ENV['AUTH_2FA_METHOD_EMAIL'] ?? 'true') === 'true');
+	$googleAtivo = (($_ENV['AUTH_METHOD_GOOGLE_ACTIVE'] ?? 'false') === 'true');
+	$metaAtivo = (($_ENV['AUTH_METHOD_META_ACTIVE'] ?? 'false') === 'true');
+
+	$html = '<div id="seg-seguranca">';
+	$html .= '<div id="seg-msg" class="ui message" style="display:none;"></div>';
+
+	// ===== Seção 2FA
+	$html .= '<div class="ui dividing header"><i class="lock icon"></i> '.perfil_usuario_seguranca_var('security-2fa-title').'</div>';
+
+	if($ativo){
+		$html .= '<div class="ui positive message">'.perfil_usuario_seguranca_var('security-2fa-active').' <b>'.htmlspecialchars(strtoupper($tipo)).'</b></div>';
+		$html .= '<div class="field"><label>'.perfil_usuario_seguranca_var('security-password-label').'</label><input type="password" id="seg-2fa-senha" autocomplete="current-password"></div>';
+		$html .= '<div class="field"><label>'.perfil_usuario_seguranca_var('security-2fa-code-label').'</label><input type="text" id="seg-2fa-codigo" maxlength="6" inputmode="numeric"></div>';
+		$html .= '<button type="button" class="ui red button" id="btn-2fa-desativar"><i class="unlock icon"></i> '.perfil_usuario_seguranca_var('security-2fa-disable').'</button>';
+	} else if(!$metodoApp && !$metodoEmail){
+		$html .= '<div class="ui warning message">'.perfil_usuario_seguranca_var('security-2fa-none-method').'</div>';
+	} else {
+		// Persistir um secret (enabled=0) para o método app, reutilizado entre recargas.
+		$secret = ($dados2fa && !empty($dados2fa['two_factor_secret'])) ? $dados2fa['two_factor_secret'] : '';
+		if($metodoApp && $secret === ''){
+			$secret = two_factor_generate_secret();
+			banco_update_campo('two_factor_secret', $secret);
+			banco_update_executar('usuarios', "WHERE id_usuarios='".$id_usuarios."'");
+		}
+
+		$html .= '<p class="ui grey text">'.perfil_usuario_seguranca_var('security-2fa-inactive-help').'</p>';
+
+		$opcoes = '';
+		if($metodoApp) $opcoes .= '<option value="app">'.perfil_usuario_seguranca_var('security-2fa-app-option').'</option>';
+		if($metodoEmail) $opcoes .= '<option value="email">'.perfil_usuario_seguranca_var('security-2fa-email-option').'</option>';
+		$html .= '<div class="field"><label>'.perfil_usuario_seguranca_var('security-2fa-method-label').'</label><select id="seg-2fa-metodo">'.$opcoes.'</select></div>';
+
+		if($metodoApp){
+			$otpauth = two_factor_get_qr_code($email, $secret);
+			$html .= '<div id="seg-2fa-app-bloco">';
+			$html .= '<p class="ui grey text">'.perfil_usuario_seguranca_var('security-2fa-scan-help').'</p>';
+			$html .= '<div id="seg-2fa-qr" data-otpauth="'.htmlspecialchars($otpauth, ENT_QUOTES).'" style="margin:1rem 0;"></div>';
+			$html .= '<div class="ui small message"><b>'.htmlspecialchars($secret).'</b></div>';
+			$html .= '</div>';
+		}
+
+		if($metodoEmail){
+			$html .= '<div id="seg-2fa-email-bloco"><button type="button" class="ui blue button" id="btn-2fa-email-enviar"><i class="mail icon"></i> '.perfil_usuario_seguranca_var('security-2fa-send-email').'</button></div>';
+		}
+
+		$html .= '<div class="field" style="margin-top:1rem;"><label>'.perfil_usuario_seguranca_var('security-2fa-code-label').'</label><input type="text" id="seg-2fa-codigo" maxlength="6" inputmode="numeric"></div>';
+		$html .= '<button type="button" class="ui green button" id="btn-2fa-ativar"><i class="check icon"></i> '.perfil_usuario_seguranca_var('security-2fa-activate').'</button>';
+	}
+
+	// ===== Seção Contas Sociais
+	$html .= '<div class="ui dividing header" style="margin-top:2rem;"><i class="users icon"></i> '.perfil_usuario_seguranca_var('security-social-title').'</div>';
+
+	if(!$googleAtivo && !$metaAtivo){
+		$html .= '<div class="ui grey text">'.perfil_usuario_seguranca_var('security-social-none-active').'</div>';
+	} else {
+		$vinculos = banco_select(Array(
+			'tabela' => 'usuarios_provedores',
+			'campos' => Array('provider_name', 'provider_uid'),
+			'extra' => "WHERE usuario_id='".$id_usuarios."'",
+		));
+		$mapa = Array();
+		if(is_array($vinculos)){
+			foreach($vinculos as $v){ if(isset($v['provider_name'])) $mapa[$v['provider_name']] = isset($v['provider_uid']) ? $v['provider_uid'] : ''; }
+		}
+
+		$provedores = Array();
+		if($googleAtivo) $provedores['google'] = 'Google';
+		if($metaAtivo) $provedores['meta'] = 'Meta';
+
+		$html .= '<div class="ui list">';
+		foreach($provedores as $pid => $pnome){
+			$html .= '<div class="item" style="padding:.5rem 0;"><b>'.$pnome.'</b>: ';
+			if(isset($mapa[$pid])){
+				$html .= '<span class="ui green text">'.perfil_usuario_seguranca_var('security-social-linked').' ('.htmlspecialchars($mapa[$pid]).')</span> ';
+				$html .= '<button type="button" class="ui red mini button btn-social-desvincular" data-provider="'.$pid.'">'.perfil_usuario_seguranca_var('security-social-unlink').'</button>';
+			} else {
+				$html .= '<button type="button" class="ui mini button btn-social-vincular" data-provider="'.$pid.'">'.perfil_usuario_seguranca_var('security-social-link').' '.$pnome.'</button>';
+			}
+			$html .= '</div>';
+		}
+		$html .= '</div>';
+	}
+
+	$html .= '</div>';
+
+	$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->', $html);
+
+	// QR Code renderizado no cliente (o secret não é enviado a terceiros).
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>');
+}
+
 function perfil_usuario_interfaces_padroes(){
 	global $_GESTOR;
-	
+
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
-	
+
 	$usuario = gestor_usuario();
-	
+
 	switch($_GESTOR['opcao']){
 		case 'editar':
 			$_GESTOR['interface'][$_GESTOR['opcao']]['iniciar'] = Array(
@@ -1247,11 +1385,17 @@ function perfil_usuario_signin(){
 						$user_invalid = false;
 						
 						// ===== Incluir a confirmação do acesso para poder remover qualquer limitação de acesso do tipo específico.
-						
+
 						autenticacao_acesso_confirmar(['tipo' => 'login']);
-						
+
+						// ===== Interceptador 2FA (req-030): se o 2FA se aplicar, interrompe o login até a verificação do segundo fator.
+
+						if(perfil_usuario_2fa_interceptar($id_usuarios, isset($_REQUEST['permanecer-logado']))){
+							return;
+						}
+
 						// ===== Caso o usuário escolher a opção para manter logado, gera token de autenticação com tempo de expiração, senão será expirado assim que o usuário fechar navegador
-						
+
 						if(isset($_REQUEST['permanecer-logado'])){
 							usuario_gerar_token_autorizacao(Array(
 								'id_usuarios' => $id_usuarios,
@@ -1262,7 +1406,12 @@ function perfil_usuario_signin(){
 								'sessao' => true,
 							));
 						}
-						
+
+						// ===== Registrar marcadores de Session Hijacking (req-030)
+
+						gestor_incluir_biblioteca('seguranca');
+						seguranca_sessao_registrar();
+
 					} else {
 						$user_inactive = true;
 					}
@@ -1347,22 +1496,379 @@ function perfil_usuario_signin(){
 	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
 	gestor_pagina_javascript_incluir();
 	
+	// ===== Renderização dinâmica dos métodos de login (req-030)
+
+	$senhaAtiva = (($_ENV['AUTH_METHOD_PASSWORD_ACTIVE'] ?? 'true') === 'true');
+	$googleAtivo = (($_ENV['AUTH_METHOD_GOOGLE_ACTIVE'] ?? 'false') === 'true');
+	$metaAtivo = (($_ENV['AUTH_METHOD_META_ACTIVE'] ?? 'false') === 'true');
+
+	if(!$senhaAtiva){
+		$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- login-senha < -->', '<!-- login-senha > -->', '');
+	}
+
+	$social = '';
+	if($googleAtivo || $metaAtivo){
+		$social .= '<div class="ui horizontal divider">'.gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'login-social-or')).'</div>';
+		if($googleAtivo){
+			$social .= '<a class="fluid ui red button" href="'.$_GESTOR['url-raiz'].'social-login/?provider=google"><i class="google icon"></i> '.gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'login-with-google')).'</a><div class="ui hidden divider">&nbsp;</div>';
+		}
+		if($metaAtivo){
+			$social .= '<a class="fluid ui blue button" href="'.$_GESTOR['url-raiz'].'social-login/?provider=meta"><i class="facebook icon"></i> '.gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'login-with-meta')).'</a>';
+		}
+	}
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#login-social#', $social);
+
 	// ===== Interface finalizar opções
-	
-	$formulario['validacao'] = Array(
-		Array(
+
+	$formulario['validacao'] = Array();
+	if($senhaAtiva){
+		$formulario['validacao'][] = Array(
 			'regra' => 'texto-obrigatorio',
 			'campo' => 'usuario',
 			'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-label')),
-		),
-		Array(
+		);
+		$formulario['validacao'][] = Array(
 			'regra' => 'texto-obrigatorio',
 			'campo' => 'senha',
 			'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-password-label')),
-		),
-	);
-	
+		);
+	}
+
 	interface_formulario_validacao($formulario);
+}
+
+// ===== Helpers de Login com 2FA e Social (req-030) =====
+
+/**
+ * Limpa o estado de 2FA pendente da sessão.
+ */
+function perfil_usuario_2fa_limpar_sessao(){
+	gestor_sessao_variavel_del('pending_2fa_user');
+	gestor_sessao_variavel_del('pending_2fa_keep');
+	gestor_sessao_variavel_del('pending_2fa_mode');
+	gestor_sessao_variavel_del('pending_2fa_type');
+}
+
+/**
+ * Conclui o login gerando o token de autorização e redirecionando ao destino.
+ */
+function perfil_usuario_finalizar_login($id_usuarios, $permanecerLogado){
+	$id_usuarios = (int)$id_usuarios;
+
+	if($permanecerLogado){
+		usuario_gerar_token_autorizacao(Array('id_usuarios' => $id_usuarios));
+	} else {
+		usuario_gerar_token_autorizacao(Array('id_usuarios' => $id_usuarios, 'sessao' => true));
+	}
+
+	// ===== Registrar marcadores de Session Hijacking (req-030)
+
+	gestor_incluir_biblioteca('seguranca');
+	seguranca_sessao_registrar();
+
+	if(existe(gestor_sessao_variavel('redirecionar-local'))){
+		gestor_redirecionar();
+	} else {
+		gestor_redirecionar('dashboard/');
+	}
+}
+
+/**
+ * Interceptador 2FA pós-credenciais. Retorna true (e redireciona) quando o 2FA
+ * se aplica ao usuário (já habilitado, ou obrigatório globalmente). Caso contrário
+ * retorna false e o login segue normalmente.
+ */
+function perfil_usuario_2fa_interceptar($id_usuarios, $permanecerLogado){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('2fa');
+
+	$id_usuarios = (int)$id_usuarios;
+	$requerGlobal = (($_ENV['AUTH_2FA_REQUIRED'] ?? 'false') === 'true');
+
+	$dados = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios',
+		'campos' => Array('two_factor_enabled', 'two_factor_type', 'email'),
+		'extra' => "WHERE id_usuarios='".$id_usuarios."'",
+	));
+
+	$habilitado = $dados && !empty($dados['two_factor_enabled']);
+	$tipo = ($dados && isset($dados['two_factor_type'])) ? $dados['two_factor_type'] : '';
+
+	// 2FA não se aplica: login normal.
+	if(!$habilitado && !$requerGlobal){
+		return false;
+	}
+
+	gestor_sessao_variavel('pending_2fa_user', $id_usuarios);
+	gestor_sessao_variavel('pending_2fa_keep', $permanecerLogado ? 1 : 0);
+
+	if($habilitado){
+		gestor_sessao_variavel('pending_2fa_mode', 'verify');
+		gestor_sessao_variavel('pending_2fa_type', $tipo);
+
+		// Método e-mail: dispara o código imediatamente.
+		if($tipo === 'email' && $dados && !empty($dados['email'])){
+			two_factor_email_send_code($id_usuarios, $dados['email']);
+		}
+	} else {
+		gestor_sessao_variavel('pending_2fa_mode', 'setup');
+	}
+
+	gestor_redirecionar('signin-2fa/');
+	return true;
+}
+
+/**
+ * Inicia o fluxo de login social redirecionando ao provedor.
+ */
+function perfil_usuario_social_login(){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('oauth');
+
+	$provider = isset($_REQUEST['provider']) ? strtolower($_REQUEST['provider']) : '';
+	$url = oauth_redirect_url($provider);
+
+	if($url){
+		gestor_sessao_variavel('oauth_action', 'login');
+		header('Location: '.$url);
+		exit;
+	}
+
+	gestor_redirecionar('signin/');
+}
+
+/**
+ * Callback OAuth (login ou vínculo de conta social).
+ */
+function perfil_usuario_oauth_callback(){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('oauth');
+
+	$code = isset($_REQUEST['code']) ? $_REQUEST['code'] : '';
+	$state = isset($_REQUEST['state']) ? $_REQUEST['state'] : '';
+	$provider = gestor_sessao_variavel('oauth_provider');
+	if(!existe($provider)) $provider = isset($_REQUEST['provider']) ? strtolower($_REQUEST['provider']) : '';
+	$action = gestor_sessao_variavel('oauth_action');
+	if(!existe($action)) $action = 'login';
+
+	// Proteção CSRF via state.
+	if($code === '' || !oauth_validate_state($state)){
+		interface_alerta(Array('redirect' => true, 'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'alert-user-or-password-invalid'))));
+		gestor_redirecionar('signin/');
+		return;
+	}
+
+	$perfil = oauth_authenticate_code($provider, $code);
+
+	if(!$perfil || empty($perfil['uid'])){
+		interface_alerta(Array('redirect' => true, 'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'alert-user-or-password-invalid'))));
+		gestor_redirecionar('signin/');
+		return;
+	}
+
+	$provider = $perfil['provider'];
+	$uid = $perfil['uid'];
+	$email = isset($perfil['email']) ? $perfil['email'] : '';
+
+	// ===== Vínculo de conta (a partir da rota de Segurança)
+	if($action === 'link'){
+		$id_usuarios = (int)gestor_sessao_variavel('oauth_link_user');
+		gestor_sessao_variavel_del('oauth_action');
+		gestor_sessao_variavel_del('oauth_link_user');
+
+		if($id_usuarios){
+			$jaExiste = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios_provedores',
+				'campos' => Array('id_usuarios_provedores'),
+				'extra' => "WHERE provider_name='".banco_escape_field($provider)."' AND provider_uid='".banco_escape_field($uid)."'",
+			));
+
+			if(!$jaExiste){
+				banco_insert_name_campo('usuario_id', $id_usuarios);
+				banco_insert_name_campo('provider_name', $provider);
+				banco_insert_name_campo('provider_uid', $uid);
+				banco_insert_name_campo('created_at', date('Y-m-d H:i:s'));
+				banco_insert_name(banco_insert_name_campos(), 'usuarios_provedores');
+			}
+		}
+
+		gestor_redirecionar('perfil-usuario/?configurar-seguranca=sim');
+		return;
+	}
+
+	// ===== Login social
+	gestor_sessao_variavel_del('oauth_action');
+
+	$id_usuarios = 0;
+	$vinculo = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios_provedores',
+		'campos' => Array('usuario_id'),
+		'extra' => "WHERE provider_name='".banco_escape_field($provider)."' AND provider_uid='".banco_escape_field($uid)."'",
+	));
+
+	if($vinculo && !empty($vinculo['usuario_id'])){
+		$id_usuarios = (int)$vinculo['usuario_id'];
+	} else if($email !== ''){
+		// Sem vínculo: tenta casar pelo e-mail de um usuário existente e ativo.
+		$usuarios = banco_select_name(
+			banco_campos_virgulas(Array('id_usuarios', 'status')),
+			"usuarios",
+			"WHERE email='".banco_escape_field($email)."' AND status!='D'"
+		);
+
+		if($usuarios && isset($usuarios[0]['status']) && $usuarios[0]['status'] === 'A'){
+			$id_usuarios = (int)$usuarios[0]['id_usuarios'];
+			banco_insert_name_campo('usuario_id', $id_usuarios);
+			banco_insert_name_campo('provider_name', $provider);
+			banco_insert_name_campo('provider_uid', $uid);
+			banco_insert_name_campo('created_at', date('Y-m-d H:i:s'));
+			banco_insert_name(banco_insert_name_campos(), 'usuarios_provedores');
+		}
+	}
+
+	if(!$id_usuarios){
+		interface_alerta(Array('redirect' => true, 'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'alert-user-or-password-invalid'))));
+		gestor_redirecionar('signin/');
+		return;
+	}
+
+	// Interceptador 2FA também no login social.
+	if(perfil_usuario_2fa_interceptar($id_usuarios, true)){
+		return;
+	}
+
+	perfil_usuario_finalizar_login($id_usuarios, true);
+}
+
+/**
+ * Tela intermediária de 2FA (verificação ou configuração obrigatória) pós-credenciais.
+ */
+function perfil_usuario_signin_2fa(){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('2fa');
+
+	$id_usuarios = (int)gestor_sessao_variavel('pending_2fa_user');
+	if(!$id_usuarios){
+		gestor_redirecionar('signin/');
+		return;
+	}
+
+	$mode = gestor_sessao_variavel('pending_2fa_mode');
+	if(!existe($mode)) $mode = 'verify';
+	$permanecer = !empty(gestor_sessao_variavel('pending_2fa_keep'));
+
+	$metodoApp = (($_ENV['AUTH_2FA_METHOD_APP'] ?? 'true') === 'true');
+	$metodoEmail = (($_ENV['AUTH_2FA_METHOD_EMAIL'] ?? 'true') === 'true');
+
+	// ===== POST: validar e concluir
+	if(isset($_REQUEST['_gestor-2fa'])){
+		$codigo = isset($_REQUEST['codigo']) ? $_REQUEST['codigo'] : '';
+		$valido = false;
+
+		if($mode === 'setup'){
+			$metodo = isset($_REQUEST['metodo']) ? strtolower($_REQUEST['metodo']) : 'app';
+
+			if($metodo === 'email'){
+				$valido = two_factor_email_validate($id_usuarios, $codigo);
+			} else {
+				$metodo = 'app';
+				$d = banco_select(Array('unico' => true, 'tabela' => 'usuarios', 'campos' => Array('two_factor_secret'), 'extra' => "WHERE id_usuarios='".$id_usuarios."'"));
+				$secret = ($d && isset($d['two_factor_secret'])) ? $d['two_factor_secret'] : '';
+				$valido = ($secret !== '') && two_factor_validate_code($secret, $codigo);
+			}
+
+			if($valido){
+				banco_update_campo('two_factor_enabled', '1');
+				banco_update_campo('two_factor_type', $metodo);
+				banco_update_executar('usuarios', "WHERE id_usuarios='".$id_usuarios."'");
+			}
+		} else {
+			$tipo = gestor_sessao_variavel('pending_2fa_type');
+
+			if($tipo === 'email'){
+				$valido = two_factor_email_validate($id_usuarios, $codigo);
+			} else {
+				$d = banco_select(Array('unico' => true, 'tabela' => 'usuarios', 'campos' => Array('two_factor_secret'), 'extra' => "WHERE id_usuarios='".$id_usuarios."'"));
+				$secret = ($d && isset($d['two_factor_secret'])) ? $d['two_factor_secret'] : '';
+				$valido = ($secret !== '') && two_factor_validate_code($secret, $codigo);
+			}
+		}
+
+		if($valido){
+			perfil_usuario_2fa_limpar_sessao();
+			perfil_usuario_finalizar_login($id_usuarios, $permanecer);
+			return;
+		}
+
+		interface_alerta(Array('redirect' => true, 'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'security-2fa-code-invalid'))));
+		gestor_redirecionar('signin-2fa/');
+		return;
+	}
+
+	// ===== GET: montar o conteúdo da tela
+	$html = '';
+
+	// Disparo/reenvio de código por e-mail (sem usuário logado, via link GET).
+	if(isset($_REQUEST['enviar-email'])){
+		$d = banco_select(Array('unico' => true, 'tabela' => 'usuarios', 'campos' => Array('email'), 'extra' => "WHERE id_usuarios='".$id_usuarios."'"));
+		if($d && !empty($d['email'])){ two_factor_email_send_code($id_usuarios, $d['email']); }
+		$html .= '<div class="ui positive message">'.perfil_usuario_seguranca_var('security-2fa-email-sent').'</div>';
+	}
+
+	$linkEnviarEmail = '<a class="ui blue button" href="'.$_GESTOR['url-raiz'].'signin-2fa/?enviar-email=sim"><i class="mail icon"></i> '.perfil_usuario_seguranca_var('security-2fa-send-email').'</a>';
+
+	if($mode === 'setup'){
+		$html .= '<p class="ui grey text">'.perfil_usuario_seguranca_var('login-2fa-setup-help').'</p>';
+
+		$opcoes = '';
+		if($metodoApp) $opcoes .= '<option value="app">'.perfil_usuario_seguranca_var('security-2fa-app-option').'</option>';
+		if($metodoEmail) $opcoes .= '<option value="email">'.perfil_usuario_seguranca_var('security-2fa-email-option').'</option>';
+		$html .= '<div class="field"><label>'.perfil_usuario_seguranca_var('security-2fa-method-label').'</label><select id="seg-2fa-metodo" name="metodo">'.$opcoes.'</select></div>';
+
+		if($metodoApp){
+			$dados = banco_select(Array('unico' => true, 'tabela' => 'usuarios', 'campos' => Array('two_factor_secret', 'email'), 'extra' => "WHERE id_usuarios='".$id_usuarios."'"));
+			$secret = ($dados && !empty($dados['two_factor_secret'])) ? $dados['two_factor_secret'] : '';
+			if($secret === ''){
+				$secret = two_factor_generate_secret();
+				banco_update_campo('two_factor_secret', $secret);
+				banco_update_executar('usuarios', "WHERE id_usuarios='".$id_usuarios."'");
+			}
+			$emailUsuario = ($dados && isset($dados['email'])) ? $dados['email'] : '';
+			$otpauth = two_factor_get_qr_code($emailUsuario, $secret);
+
+			$html .= '<div id="seg-2fa-app-bloco">';
+			$html .= '<p class="ui grey text">'.perfil_usuario_seguranca_var('security-2fa-scan-help').'</p>';
+			$html .= '<div id="seg-2fa-qr" data-otpauth="'.htmlspecialchars($otpauth, ENT_QUOTES).'" style="margin:1rem auto;"></div>';
+			$html .= '<div class="ui small message"><b>'.htmlspecialchars($secret).'</b></div>';
+			$html .= '</div>';
+		}
+
+		if($metodoEmail){
+			$html .= '<div id="seg-2fa-email-bloco">'.$linkEnviarEmail.'</div>';
+		}
+	} else {
+		$tipo = gestor_sessao_variavel('pending_2fa_type');
+		$chave = ($tipo === 'email') ? 'login-2fa-verify-email-help' : 'login-2fa-verify-app-help';
+		$html .= '<p class="ui grey text">'.perfil_usuario_seguranca_var($chave).'</p>';
+		if($tipo === 'email'){
+			$html .= '<div style="margin-bottom:1rem;">'.$linkEnviarEmail.'</div>';
+		}
+	}
+
+	$html .= '<div class="field"><label>'.perfil_usuario_seguranca_var('security-2fa-code-label').'</label><input type="text" name="codigo" id="seg-2fa-codigo" maxlength="6" inputmode="numeric" autocomplete="one-time-code"></div>';
+
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#conteudo-2fa#', $html);
+
+	// QR Code renderizado no cliente.
+	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>');
+	gestor_pagina_javascript_incluir();
 }
 
 function perfil_usuario_signup(){
@@ -1370,9 +1876,9 @@ function perfil_usuario_signup(){
 	global $_CONFIG;
 
 	// ===== Verificar a permissão do acesso.
-	
+
 	gestor_incluir_biblioteca('autenticacao');
-	
+
 	$acesso = autenticacao_acesso_verificar(['tipo' => 'signup']);
 	
 	if(isset($_REQUEST['_gestor-signup']) && $acesso['permitido']){
@@ -2564,10 +3070,168 @@ function perfil_usuario_confirmacao_email(){
 
 function perfil_usuario_ajax_opcao(){
 	global $_GESTOR;
-	
+
 	$_GESTOR['ajax-json'] = Array(
 		'status' => 'Ok',
 	);
+}
+
+// ===== AJAX da Rota de Segurança (req-030)
+
+function perfil_usuario_ajax_seguranca_2fa_email_enviar(){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('2fa');
+
+	$usuario = gestor_usuario();
+	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
+	$email = isset($usuario['email']) ? $usuario['email'] : '';
+
+	if(!$id_usuarios || $email === ''){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('security-2fa-email-error'));
+		return;
+	}
+
+	$ok = two_factor_email_send_code($id_usuarios, $email);
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => $ok ? 'success' : 'error',
+		'message' => perfil_usuario_seguranca_var($ok ? 'security-2fa-email-sent' : 'security-2fa-email-error'),
+	);
+}
+
+function perfil_usuario_ajax_seguranca_2fa_ativar(){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('2fa');
+
+	$usuario = gestor_usuario();
+	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
+	$metodo = isset($_REQUEST['metodo']) ? strtolower($_REQUEST['metodo']) : 'app';
+	$codigo = isset($_REQUEST['codigo']) ? $_REQUEST['codigo'] : '';
+
+	if(!$id_usuarios){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('security-2fa-code-invalid'));
+		return;
+	}
+
+	$valido = false;
+	if($metodo === 'email'){
+		$valido = two_factor_email_validate($id_usuarios, $codigo);
+	} else {
+		$metodo = 'app';
+		$dados = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios',
+			'campos' => Array('two_factor_secret'),
+			'extra' => "WHERE id_usuarios='".$id_usuarios."'",
+		));
+		$secret = ($dados && isset($dados['two_factor_secret'])) ? $dados['two_factor_secret'] : '';
+		$valido = ($secret !== '') && two_factor_validate_code($secret, $codigo);
+	}
+
+	if(!$valido){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('security-2fa-code-invalid'));
+		return;
+	}
+
+	banco_update_campo('two_factor_enabled', '1');
+	banco_update_campo('two_factor_type', $metodo);
+	banco_update_executar('usuarios', "WHERE id_usuarios='".$id_usuarios."'");
+
+	$_GESTOR['ajax-json'] = Array('status' => 'success', 'message' => perfil_usuario_seguranca_var('security-2fa-enabled-ok'));
+}
+
+function perfil_usuario_ajax_seguranca_2fa_desativar(){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('2fa');
+
+	$usuario = gestor_usuario();
+	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
+	$senha = isset($_REQUEST['senha']) ? $_REQUEST['senha'] : '';
+	$codigo = isset($_REQUEST['codigo']) ? $_REQUEST['codigo'] : '';
+
+	if(!$id_usuarios){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('security-2fa-disable-invalid'));
+		return;
+	}
+
+	$dados = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios',
+		'campos' => Array('senha', 'two_factor_type', 'two_factor_secret'),
+		'extra' => "WHERE id_usuarios='".$id_usuarios."'",
+	));
+
+	if(!$dados){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('security-2fa-disable-invalid'));
+		return;
+	}
+
+	$senhaOk = isset($dados['senha']) && $dados['senha'] !== '' && password_verify($senha, $dados['senha']);
+
+	$tipo = isset($dados['two_factor_type']) ? $dados['two_factor_type'] : '';
+	if($tipo === 'email'){
+		$codigoOk = two_factor_email_validate($id_usuarios, $codigo);
+	} else {
+		$secret = isset($dados['two_factor_secret']) ? $dados['two_factor_secret'] : '';
+		$codigoOk = ($secret !== '') && two_factor_validate_code($secret, $codigo);
+	}
+
+	if(!$senhaOk || !$codigoOk){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('security-2fa-disable-invalid'));
+		return;
+	}
+
+	banco_update_campo('two_factor_enabled', '0');
+	banco_update_campo('two_factor_secret', '');
+	banco_update_campo('two_factor_type', '');
+	banco_update_executar('usuarios', "WHERE id_usuarios='".$id_usuarios."'");
+
+	$_GESTOR['ajax-json'] = Array('status' => 'success', 'message' => perfil_usuario_seguranca_var('security-2fa-disabled-ok'));
+}
+
+function perfil_usuario_ajax_seguranca_social_vincular(){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('oauth');
+
+	$provider = isset($_REQUEST['provider']) ? strtolower($_REQUEST['provider']) : '';
+	if($provider !== 'google' && $provider !== 'meta'){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('security-social-not-configured'));
+		return;
+	}
+
+	$url = oauth_redirect_url($provider);
+	if(!$url){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('security-social-not-configured'));
+		return;
+	}
+
+	// Marcar na sessão que este fluxo OAuth é de VÍNCULO (não login) do usuário atual.
+	$usuario = gestor_usuario();
+	gestor_sessao_variavel('oauth_action', 'link');
+	gestor_sessao_variavel('oauth_link_user', isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0);
+
+	$_GESTOR['ajax-json'] = Array('status' => 'success', 'redirect' => $url);
+}
+
+function perfil_usuario_ajax_seguranca_social_desvincular(){
+	global $_GESTOR;
+
+	$usuario = gestor_usuario();
+	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
+	$provider = isset($_REQUEST['provider']) ? strtolower($_REQUEST['provider']) : '';
+
+	if(!$id_usuarios || ($provider !== 'google' && $provider !== 'meta')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error');
+		return;
+	}
+
+	banco_delete('usuarios_provedores', "WHERE usuario_id='".$id_usuarios."' AND provider_name='".banco_escape_field($provider)."'");
+
+	$_GESTOR['ajax-json'] = Array('status' => 'success', 'message' => perfil_usuario_seguranca_var('security-social-unlinked-ok'));
 }
 
 // ==== Start
@@ -2582,6 +3246,11 @@ function perfil_usuario_start(){
 		
 		switch($_GESTOR['ajax-opcao']){
 			//case 'opcao': perfil_usuario_ajax_opcao(); break;
+			case 'seguranca-2fa-email-enviar': perfil_usuario_ajax_seguranca_2fa_email_enviar(); break;
+			case 'seguranca-2fa-ativar': perfil_usuario_ajax_seguranca_2fa_ativar(); break;
+			case 'seguranca-2fa-desativar': perfil_usuario_ajax_seguranca_2fa_desativar(); break;
+			case 'seguranca-social-vincular': perfil_usuario_ajax_seguranca_social_vincular(); break;
+			case 'seguranca-social-desvincular': perfil_usuario_ajax_seguranca_social_desvincular(); break;
 		}
 		
 		interface_ajax_finalizar();
@@ -2593,6 +3262,9 @@ function perfil_usuario_start(){
 		switch($_GESTOR['opcao']){
 			case 'oauth-authenticate': perfil_usuario_oauth_authenticate(); break;
 			case 'signin': perfil_usuario_signin(); break;
+			case 'signin-2fa': perfil_usuario_signin_2fa(); break;
+			case 'social-login': perfil_usuario_social_login(); break;
+			case 'oauth-callback': perfil_usuario_oauth_callback(); break;
 			case 'signup': perfil_usuario_signup(); break;
 			case 'editar': perfil_usuario_editar(); break;
 			case 'forgot-password': perfil_usuario_forgot_password(); break;

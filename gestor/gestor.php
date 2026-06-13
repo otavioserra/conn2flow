@@ -1178,8 +1178,18 @@ function gestor_permissao_token(){
 						
 						$_GESTOR['usuario-id'] = $id_usuarios;
 						$_GESTOR['usuario-token-id'] = $tokenPubId;
-						
-						return true;
+
+						// ===== Proteção contra Session Hijacking (req-030)
+						// Valida User-Agent e bloco de IP; em discrepância suspeita, invalida
+						// o token e cai no fluxo de falha (limpa cookie e retorna false).
+
+						gestor_incluir_biblioteca('seguranca');
+
+						if(seguranca_sessao_validar()){
+							return true;
+						}
+
+						seguranca_sessao_invalidar($tokenPubId);
 					}
 				}
 			}

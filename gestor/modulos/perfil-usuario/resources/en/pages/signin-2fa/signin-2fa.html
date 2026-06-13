@@ -1,0 +1,20 @@
+<div class="ui stackable two column centered grid">
+    <div class="column">
+        <div class="ui segment">
+            <form id="_gestor-form-2fa" action="@[[pagina#url-raiz]]@signin-2fa/" method="post" name="_gestor-form-2fa"
+                class="ui form">
+                <div class="ui center aligned header large">@[[login-2fa-titulo]]@</div>
+                <div class="ui hidden divider">&nbsp;</div>
+                #conteudo-2fa#
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui error message">&nbsp;</div>
+                <div class="field">
+                    <button class="fluid ui button blue" name="_gestor-2fa" value="1">@[[login-2fa-button]]@</button>
+                </div>
+                <div class="ui basic segment center aligned">
+                    <a href="@[[pagina#url-raiz]]@signout/">@[[login-2fa-cancel]]@</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
