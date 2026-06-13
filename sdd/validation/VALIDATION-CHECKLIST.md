@@ -577,6 +577,21 @@ Para manter o checklist de validações leve e eficiente, as validações e evid
 - [ ] Execução bem-sucedida do pipeline de testes na nuvem.
 
 
+---
+## BATCH-032 - Login sem Senha por E-mail e Auxílio de Configuração OAuth (req-032)
 
+- [ ] **Configurações Globais no admin-environment**:
+  - [ ] Checkbox `auth_method_email_active` habilitado e gravado no `.env` como `AUTH_METHOD_EMAIL_ACTIVE`.
+  - [ ] Instruções passo a passo ("How-To") e links para console do Google API e portal do Meta Developer integrados na interface.
+- [ ] **Interface do Perfil e Login (acessar-sistema)**:
+  - [ ] Abas/Toggles de alternância dinâmica entre "Entrar com Senha" e "Entrar com Código por E-mail" visíveis quando ambos estão ativos.
+  - [ ] Ocultação completa do campo de senha quando apenas o login por e-mail está ativo.
+  - [ ] Links do Google e Meta abrindo em novas abas do navegador.
+- [ ] **Autenticação sem Senha**:
+  - [ ] Inserção de e-mail ativo gerando código de 6 dígitos temporário e enviando por e-mail via `two_factor_email_send_code`.
+  - [ ] Redirecionamento correto para `signin-2fa` com as variáveis de sessão `pending_2fa_user`, `pending_2fa_mode = 'verify'`, e `pending_2fa_type = 'email'` salvas no banco.
+  - [ ] Verificação e conclusão bem-sucedida da autenticação ao digitar o código recebido.
 
-
+### Evidência de Validação (BATCH-032)
+- [ ] Testes manuais do login sem senha concluídos.
+- [ ] Linting estático (`php -l` e `node --check`) limpo nos arquivos alterados.

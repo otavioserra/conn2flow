@@ -1,8 +1,9 @@
 # Current Human Request
 
-- **Intake ativo**: [req-030.md](req-030.md) (Autenticação Multi-Método, 2FA App/E-mail, Login Social, Rotação JWT e Segurança)
+- **Intake ativo**: [req-032.md](req-032.md) (Login sem Senha por E-mail e Auxílio de Configuração OAuth)
 
-- **Status**: BATCH-030 com os 6 slices implementados e validados estaticamente (`in-progress` aguardando deploy/runtime). Slices 1–2 (banco + libs `2fa`/`jwt`/`oauth`, PHPUnit + RFC), 3 (admin-environment: login/2FA/OAuth/JWT no `.env` + rotação), 4 (perfil-usuario: rota de Segurança 2FA/social), 5 (login: render dinâmico + interceptador 2FA fail-safe + login social Google/Meta), 6 (endurecimento: Session Hijacking ativo + infra CSRF). Suíte PHPUnit 32/84 OK. Decisões em DEC-043/DEC-044.
+- **Status**: BATCH-032 iniciado e planejado em 3 slices (`in-progress`). BATCH-030 concluído, commitado e sob testes manuais pelo operador.
 
-- **Pendências**: deploy com o operador (aplicar migrações + registrar páginas/variáveis novas via `Update => Core` + validação runtime); rollout estrito de CSRF (incremental); logs de eventos de segurança via `log.php`; integração JWT nos endpoints `_api/`.
+- **Pendências**: Implementar toggle de login sem senha e links explicativos OAuth (Slice 1), toggles/abas de interface no login (Slice 2), e processamento de login backend (Slice 3).
+
 
