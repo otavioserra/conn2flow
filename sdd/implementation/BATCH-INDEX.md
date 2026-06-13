@@ -29,7 +29,8 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-030 | complete | Autenticação Multi-Método, 2FA (App/E-mail), Social Login e Rotação JWT (req-030) | VALIDATION-CHECKLIST.md#batch-030 | 6 slices implementados, validados e commitados. |
 | BATCH-031 | complete | Estruturação de Framework de Testes Unitários e E2E | VALIDATION-CHECKLIST.md#batch-031 | Criação da pasta tests/ na raiz do repositório, configuração do PHPUnit (PHP), Vitest (JS) e Playwright (E2E) para automatizar a validação de novos recursos. Fechado em 2026-06-12. |
 | BATCH-032 | complete | Login sem Senha por E-mail e Auxílio de Configuração OAuth (req-032) | VALIDATION-CHECKLIST.md#batch-032 | Adição de login por código OTP via e-mail sem senha e melhoria da UI do admin-environment com guias OAuth. |
-| BATCH-033 | in-progress | Segurança no Acesso e Geração de Chaves de API (req-033) | VALIDATION-CHECKLIST.md#batch-033 | Nova aba API no admin-environment, controle de perfis autorizados, toggles login/2FA e interceptador 2FA na rota de API. |
+| BATCH-033 | complete | Segurança no Acesso e Geração de Chaves de API (req-033) | VALIDATION-CHECKLIST.md#batch-033 | Nova aba API no admin-environment, controle de perfis autorizados, toggles login/2FA e interceptador 2FA na rota de API. |
+
 
 
 

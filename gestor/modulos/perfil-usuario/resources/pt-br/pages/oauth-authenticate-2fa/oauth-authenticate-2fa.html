@@ -1,0 +1,20 @@
+<div class="ui stackable two column centered grid">
+    <div class="column">
+        <div class="ui segment">
+            <form id="_gestor-form-oauth-2fa" action="@[[pagina#url-raiz]]@oauth-authenticate-2fa/" method="post" name="_gestor-form-oauth-2fa"
+                class="ui form">
+                <div class="ui center aligned header large">Verificação de API</div>
+                <div class="ui hidden divider">&nbsp;</div>
+                #conteudo-2fa#
+                <div class="ui hidden divider">&nbsp;</div>
+                <div class="ui error message">&nbsp;</div>
+                <div class="field">
+                    <button class="fluid ui button blue" name="_gestor-oauth-2fa" value="1">Verificar e Liberar Tokens</button>
+                </div>
+                <div class="ui basic segment center aligned">
+                    <a href="@[[pagina#url-raiz]]@oauth-authenticate/">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -39,14 +39,19 @@
                     <p>Provide your credentials to obtain API access tokens.</p>
                 </div>
                 <div class="ui hidden divider">&nbsp;</div>
+                #login-method-switch#
+                <input type="hidden" name="login_method" id="login_method" value="#login-method-default#">
+                <div class="ui hidden divider">&nbsp;</div>
                 <div class="field">
                     <label>Username</label>
                     <input type="text" name="usuario" placeholder="Enter your username" required>
                 </div>
-                <div class="field">
+                <!-- login-senha < -->
+                <div class="field password-login-field">
                     <label>Password</label>
                     <input type="password" name="senha" placeholder="Enter your password" required>
                 </div>
+                <!-- login-senha > -->
                 <div class="field">
                     <label>Scope (optional)</label>
                     <input type="text" name="scope" placeholder="read,write" value="read">
@@ -59,7 +64,7 @@
                 <div class="ui hidden divider">&nbsp;</div>
                 <div class="ui error message">&nbsp;</div>
                 <div class="field">
-                    <button class="fluid ui button blue">Authenticate and Obtain Tokens</button>
+                    <button class="fluid ui button blue login-submit-button" data-password-label="Authenticate and Obtain Tokens" data-email-label="Send Access Code">Authenticate and Obtain Tokens</button>
                 </div>
                 <input id="_gestor-autenticate" name="_gestor-autenticate" type="hidden" value="1">
                 <!-- formulario > -->

@@ -61,11 +61,12 @@ $(document).ready(function(){
 		
 	}
 	
-	if($('#_gestor-form-logar').length > 0){
+	var $authForm = $('#_gestor-form-logar').length > 0 ? $('#_gestor-form-logar') : $('#_gestor-form-autenticar');
+	if($authForm.length > 0){
 		$('.checkbox')
 			.checkbox();
 		
-		var formSelector2 = '#_gestor-form-logar';
+		var formSelector2 = '#' + $authForm.attr('id');
 		var submitBtnClicked = false;
 		var setLoginMethod = function(method){
 			var $form = $(formSelector2);

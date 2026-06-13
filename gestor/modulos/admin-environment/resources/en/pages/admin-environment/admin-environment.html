@@ -22,6 +22,9 @@
                 <a class="item" data-tab="paypal" data-tooltip="PayPal REST API credentials and integration settings" data-position="bottom center">
                     <i class="paypal icon"></i> PayPal
                 </a>
+                <a class="item" data-tab="api" data-tooltip="Security for API key generation" data-position="bottom center">
+                    <i class="key icon"></i> API
+                </a>
             </div>
 
             <!-- Tab: Site Settings -->
@@ -418,6 +421,61 @@
                         <button type="button" class="ui blue button" id="btn-testar-paypal">
                             <i class="paypal icon"></i> Test Connection
                         </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab: API -->
+            <div class="ui bottom attached tab segment" data-tab="api">
+                <h3><i class="key icon"></i> API</h3>
+                <p class="ui grey text">Configure who can generate API keys, which authentication methods are accepted, and when two-factor verification is required.</p>
+
+                <form class="ui form" id="form-api" autocomplete="off">
+                    <h4 class="ui dividing header"><i class="users icon"></i> Authorized Profiles</h4>
+                    <div class="grouped fields">
+                        #auth-api-profiles#
+                    </div>
+
+                    <h4 class="ui dividing header"><i class="sign-in icon"></i> Authentication Methods</h4>
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_api_method_password_active" name="auth_api_method_password_active"
+                                #auth-api-method-password-active-checked#>
+                            <label>Allow password authentication</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_api_method_email_active" name="auth_api_method_email_active"
+                                #auth-api-method-email-active-checked#>
+                            <label>Allow email code authentication</label>
+                        </div>
+                    </div>
+
+                    <h4 class="ui dividing header"><i class="lock icon"></i> 2FA for API Keys</h4>
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_api_2fa_required" name="auth_api_2fa_required"
+                                #auth-api-2fa-required-checked#>
+                            <label>Require 2FA before issuing API tokens</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_api_2fa_method_app" name="auth_api_2fa_method_app"
+                                #auth-api-2fa-method-app-checked#>
+                            <label>Allow Authenticator App (TOTP)</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_api_2fa_method_email" name="auth_api_2fa_method_email"
+                                #auth-api-2fa-method-email-checked#>
+                            <label>Allow Email code</label>
+                        </div>
                     </div>
                 </form>
             </div>

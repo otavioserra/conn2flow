@@ -52,6 +52,12 @@ function admin_environment_env_read(){
         'AUTH_2FA_METHOD_EMAIL' => $_ENV['AUTH_2FA_METHOD_EMAIL'] ?? 'true',
         'AUTH_JWT_ROTATION_DAYS' => $_ENV['AUTH_JWT_ROTATION_DAYS'] ?? '30',
         'AUTH_JWT_GRACE_HOURS' => $_ENV['AUTH_JWT_GRACE_HOURS'] ?? '24',
+        'AUTH_API_ALLOWED_PROFILES' => $_ENV['AUTH_API_ALLOWED_PROFILES'] ?? '1',
+        'AUTH_API_METHOD_PASSWORD_ACTIVE' => $_ENV['AUTH_API_METHOD_PASSWORD_ACTIVE'] ?? 'true',
+        'AUTH_API_METHOD_EMAIL_ACTIVE' => $_ENV['AUTH_API_METHOD_EMAIL_ACTIVE'] ?? 'false',
+        'AUTH_API_2FA_REQUIRED' => $_ENV['AUTH_API_2FA_REQUIRED'] ?? 'false',
+        'AUTH_API_2FA_METHOD_APP' => $_ENV['AUTH_API_2FA_METHOD_APP'] ?? 'true',
+        'AUTH_API_2FA_METHOD_EMAIL' => $_ENV['AUTH_API_2FA_METHOD_EMAIL'] ?? 'true',
     ];
 
     return $envData;
@@ -314,6 +320,12 @@ function admin_environment_raiz(){
         'auth_2fa_method_email' => $envData['AUTH_2FA_METHOD_EMAIL'] ?? 'true',
         'auth_jwt_rotation_days' => $envData['AUTH_JWT_ROTATION_DAYS'] ?? '30',
         'auth_jwt_grace_hours' => $envData['AUTH_JWT_GRACE_HOURS'] ?? '24',
+        'auth_api_allowed_profiles' => $envData['AUTH_API_ALLOWED_PROFILES'] ?? '1',
+        'auth_api_method_password_active' => $envData['AUTH_API_METHOD_PASSWORD_ACTIVE'] ?? 'true',
+        'auth_api_method_email_active' => $envData['AUTH_API_METHOD_EMAIL_ACTIVE'] ?? 'false',
+        'auth_api_2fa_required' => $envData['AUTH_API_2FA_REQUIRED'] ?? 'false',
+        'auth_api_2fa_method_app' => $envData['AUTH_API_2FA_METHOD_APP'] ?? 'true',
+        'auth_api_2fa_method_email' => $envData['AUTH_API_2FA_METHOD_EMAIL'] ?? 'true',
     ];
 
     // ===== URIs de callback OAuth calculadas (somente leitura)
@@ -321,6 +333,31 @@ function admin_environment_raiz(){
     gestor_incluir_biblioteca('oauth');
     $dados['oauth_google_redirect_uri'] = function_exists('oauth_redirect_uri') ? oauth_redirect_uri('google') : '';
     $dados['oauth_meta_redirect_uri'] = function_exists('oauth_redirect_uri') ? oauth_redirect_uri('meta') : '';
+
+    // ===== Perfis autorizados para emissÃ£o de chaves de API
+
+    $perfisPermitidos = array_filter(array_map('trim', explode(',', (string)$dados['auth_api_allowed_profiles'])));
+    $perfis = banco_select(Array(
+        'tabela' => 'usuarios_perfis',
+        'campos' => Array('id_usuarios_perfis', 'id', 'nome'),
+        'extra' => "WHERE status!='D' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' ORDER BY nome ASC",
+    ));
+
+    $apiProfilesHtml = '';
+    if($perfis){
+        foreach($perfis as $perfil){
+            $perfilId = (string)$perfil['id_usuarios_perfis'];
+            $perfilNome = isset($perfil['nome']) && $perfil['nome'] !== '' ? $perfil['nome'] : $perfil['id'];
+            $checked = in_array($perfilId, $perfisPermitidos, true) ? ' checked' : '';
+            $apiProfilesHtml .= '<div class="field"><div class="ui checkbox">'
+                . '<input type="checkbox" class="auth-api-profile" name="auth_api_allowed_profiles[]" value="'.htmlspecialchars($perfilId, ENT_QUOTES).'"'.$checked.'>'
+                . '<label>'.htmlspecialchars($perfilNome).' <small class="ui grey text">#'.htmlspecialchars($perfilId).'</small></label>'
+                . '</div></div>';
+        }
+    } else {
+        $apiProfilesHtml = '<div class="ui warning message">Nenhum perfil ativo encontrado.</div>';
+    }
+    $dados['auth-api-profiles'] = $apiProfilesHtml;
 
     // ===== Gerar opções de idioma
 
@@ -418,6 +455,14 @@ function admin_environment_raiz(){
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-2fa-method-email-checked#', $dados['auth_2fa_method_email'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-jwt-rotation-days#', $dados['auth_jwt_rotation_days']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-jwt-grace-hours#', $dados['auth_jwt_grace_hours']);
+
+    // API
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-api-profiles#', $dados['auth-api-profiles']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-api-method-password-active-checked#', $dados['auth_api_method_password_active'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-api-method-email-active-checked#', $dados['auth_api_method_email_active'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-api-2fa-required-checked#', $dados['auth_api_2fa_required'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-api-2fa-method-app-checked#', $dados['auth_api_2fa_method_app'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-api-2fa-method-email-checked#', $dados['auth_api_2fa_method_email'] === 'true' ? 'checked' : '');
 }
 
 function admin_environment_interfaces_padroes(){
@@ -511,6 +556,14 @@ function admin_environment_ajax_salvar(){
     if(isset($_REQUEST['auth_2fa_method_email'])) $data['AUTH_2FA_METHOD_EMAIL'] = $_REQUEST['auth_2fa_method_email'];
     if(isset($_REQUEST['auth_jwt_rotation_days'])) $data['AUTH_JWT_ROTATION_DAYS'] = $_REQUEST['auth_jwt_rotation_days'];
     if(isset($_REQUEST['auth_jwt_grace_hours'])) $data['AUTH_JWT_GRACE_HOURS'] = $_REQUEST['auth_jwt_grace_hours'];
+
+    // Coletar dados do formulÃ¡rio â€” API (req-033)
+    if(isset($_REQUEST['auth_api_allowed_profiles'])) $data['AUTH_API_ALLOWED_PROFILES'] = preg_replace('/[^0-9,]/', '', (string)$_REQUEST['auth_api_allowed_profiles']);
+    if(isset($_REQUEST['auth_api_method_password_active'])) $data['AUTH_API_METHOD_PASSWORD_ACTIVE'] = $_REQUEST['auth_api_method_password_active'];
+    if(isset($_REQUEST['auth_api_method_email_active'])) $data['AUTH_API_METHOD_EMAIL_ACTIVE'] = $_REQUEST['auth_api_method_email_active'];
+    if(isset($_REQUEST['auth_api_2fa_required'])) $data['AUTH_API_2FA_REQUIRED'] = $_REQUEST['auth_api_2fa_required'];
+    if(isset($_REQUEST['auth_api_2fa_method_app'])) $data['AUTH_API_2FA_METHOD_APP'] = $_REQUEST['auth_api_2fa_method_app'];
+    if(isset($_REQUEST['auth_api_2fa_method_email'])) $data['AUTH_API_2FA_METHOD_EMAIL'] = $_REQUEST['auth_api_2fa_method_email'];
 
     // Salvar no .env
     $success = admin_environment_env_write($data);

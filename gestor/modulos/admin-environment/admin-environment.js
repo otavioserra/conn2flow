@@ -143,7 +143,13 @@ $(document).ready(function () {
             auth_2fa_method_app: $('#auth_2fa_method_app').parent().checkbox('is checked') ? 'true' : 'false',
             auth_2fa_method_email: $('#auth_2fa_method_email').parent().checkbox('is checked') ? 'true' : 'false',
             auth_jwt_rotation_days: $('#auth_jwt_rotation_days').val(),
-            auth_jwt_grace_hours: $('#auth_jwt_grace_hours').val()
+            auth_jwt_grace_hours: $('#auth_jwt_grace_hours').val(),
+            auth_api_allowed_profiles: $('.auth-api-profile:checked').map(function () { return $(this).val(); }).get().join(','),
+            auth_api_method_password_active: $('#auth_api_method_password_active').parent().checkbox('is checked') ? 'true' : 'false',
+            auth_api_method_email_active: $('#auth_api_method_email_active').parent().checkbox('is checked') ? 'true' : 'false',
+            auth_api_2fa_required: $('#auth_api_2fa_required').parent().checkbox('is checked') ? 'true' : 'false',
+            auth_api_2fa_method_app: $('#auth_api_2fa_method_app').parent().checkbox('is checked') ? 'true' : 'false',
+            auth_api_2fa_method_email: $('#auth_api_2fa_method_email').parent().checkbox('is checked') ? 'true' : 'false'
         };
 
         $.ajax({

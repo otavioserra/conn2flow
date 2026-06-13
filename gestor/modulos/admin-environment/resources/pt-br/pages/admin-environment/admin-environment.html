@@ -31,6 +31,11 @@
                     data-position="bottom center">
                     <i class="paypal icon"></i> PayPal
                 </a>
+                <a class="item" data-tab="api"
+                    data-tooltip="Segurança para geração de chaves de API"
+                    data-position="bottom center">
+                    <i class="key icon"></i> API
+                </a>
             </div>
 
             <!-- Tab: Configurações do Site -->
@@ -437,6 +442,61 @@
                         <button type="button" class="ui blue button" id="btn-testar-paypal">
                             <i class="paypal icon"></i> Testar Conexão
                         </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab: API -->
+            <div class="ui bottom attached tab segment" data-tab="api">
+                <h3><i class="key icon"></i> API</h3>
+                <p class="ui grey text">Configure quem pode gerar chaves de API, quais métodos de autenticação são aceitos e quando exigir verificação em duas etapas.</p>
+
+                <form class="ui form" id="form-api" autocomplete="off">
+                    <h4 class="ui dividing header"><i class="users icon"></i> Perfis Autorizados</h4>
+                    <div class="grouped fields">
+                        #auth-api-profiles#
+                    </div>
+
+                    <h4 class="ui dividing header"><i class="sign-in icon"></i> Métodos de Autenticação</h4>
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_api_method_password_active" name="auth_api_method_password_active"
+                                #auth-api-method-password-active-checked#>
+                            <label>Permitir autenticação por senha</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_api_method_email_active" name="auth_api_method_email_active"
+                                #auth-api-method-email-active-checked#>
+                            <label>Permitir autenticação por código de e-mail</label>
+                        </div>
+                    </div>
+
+                    <h4 class="ui dividing header"><i class="lock icon"></i> 2FA para Chaves de API</h4>
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_api_2fa_required" name="auth_api_2fa_required"
+                                #auth-api-2fa-required-checked#>
+                            <label>Exigir 2FA para emissão de tokens de API</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_api_2fa_method_app" name="auth_api_2fa_method_app"
+                                #auth-api-2fa-method-app-checked#>
+                            <label>Permitir Aplicativo Autenticador (TOTP)</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_api_2fa_method_email" name="auth_api_2fa_method_email"
+                                #auth-api-2fa-method-email-checked#>
+                            <label>Permitir código por E-mail</label>
+                        </div>
                     </div>
                 </form>
             </div>

@@ -29,11 +29,26 @@
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "fb070df5c8dd3969190105fa554f14ee",
+                        "html": "05791f279e17a7bf145c1d64c1c8b6d4",
                         "css": "",
-                        "combined": "fb070df5c8dd3969190105fa554f14ee"
+                        "combined": "05791f279e17a7bf145c1d64c1c8b6d4"
+                    }
+                },
+                {
+                    "name": "OAuth 2.0 Verificação 2FA",
+                    "id": "oauth-authenticate-2fa",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "oauth-authenticate-2fa\/",
+                    "type": "system",
+                    "option": "oauth-authenticate-2fa",
+                    "without_permission": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "2cf2446432a8032e4702438d8498fc6d",
+                        "css": "",
+                        "combined": "2cf2446432a8032e4702438d8498fc6d"
                     }
                 },
                 {
@@ -939,11 +954,26 @@
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "ae9147c0b99544c60ca0d89449639d18",
+                        "html": "6fcca9eced34b5ea4fec607aa2f16383",
                         "css": "",
-                        "combined": "ae9147c0b99544c60ca0d89449639d18"
+                        "combined": "6fcca9eced34b5ea4fec607aa2f16383"
+                    }
+                },
+                {
+                    "name": "OAuth 2.0 2FA Verification",
+                    "id": "oauth-authenticate-2fa",
+                    "layout": "layout-pagina-sem-permissao",
+                    "path": "oauth-authenticate-2fa\/",
+                    "type": "system",
+                    "option": "oauth-authenticate-2fa",
+                    "without_permission": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "2527193977c752cb263ff6b4bd4a0853",
+                        "css": "",
+                        "combined": "2527193977c752cb263ff6b4bd4a0853"
                     }
                 },
                 {

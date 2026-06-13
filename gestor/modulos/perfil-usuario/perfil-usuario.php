@@ -125,7 +125,7 @@ function perfil_usuario_area_restrita(){
 			'modal-alerta',
 		)
 	));
-	
+
 	// ===== Validação do formulário
 	
 	$formulario['validacao'] = Array(
@@ -986,6 +986,118 @@ function perfil_usuario_signout(){
 
 // ==== Acessos públicos
 
+function perfil_usuario_api_perfis_permitidos(){
+	$lista = isset($_ENV['AUTH_API_ALLOWED_PROFILES']) ? $_ENV['AUTH_API_ALLOWED_PROFILES'] : '1';
+	$perfis = Array();
+	foreach(explode(',', (string)$lista) as $perfil){
+		$perfil = trim($perfil);
+		if($perfil !== ''){
+			$perfis[] = $perfil;
+		}
+	}
+	return $perfis;
+}
+
+function perfil_usuario_api_perfil_permitido($id_usuarios_perfis){
+	$perfis = perfil_usuario_api_perfis_permitidos();
+	return in_array((string)$id_usuarios_perfis, $perfis, true);
+}
+
+function perfil_usuario_oauth_entregar_tokens($tokens, $url_redirect = ''){
+	if($url_redirect){
+		$query_params = http_build_query($tokens);
+		$redirect_url = $url_redirect . (strpos($url_redirect, '?') !== false ? '&' : '?') . $query_params;
+		header('Location: ' . $redirect_url);
+		exit;
+	}
+
+	header('Content-Type: application/json');
+	echo json_encode($tokens);
+	exit;
+}
+
+function perfil_usuario_oauth_limpar_sessao(){
+	gestor_sessao_variavel_del('pending_oauth_tokens');
+	gestor_sessao_variavel_del('pending_oauth_user');
+	gestor_sessao_variavel_del('pending_oauth_mode');
+	gestor_sessao_variavel_del('pending_oauth_type');
+	gestor_sessao_variavel_del('pending_oauth_url_redirect');
+	gestor_sessao_variavel_del('pending_oauth_grant_type');
+	gestor_sessao_variavel_del('pending_oauth_scope');
+}
+
+function perfil_usuario_oauth_gerar_tokens($id_usuarios, $grant_type, $scope, $url_redirect){
+	gestor_incluir_biblioteca('oauth2');
+
+	return oauth2_gerar_token_client_credentials(Array(
+		'id_usuarios' => (int)$id_usuarios,
+		'grant_type' => $grant_type,
+		'scope' => $scope,
+		'url_redirect' => $url_redirect
+	));
+}
+
+function perfil_usuario_oauth_2fa_interceptar($id_usuarios, $tokens, $url_redirect = ''){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('2fa');
+
+	$id_usuarios = (int)$id_usuarios;
+	$requerGlobal = (($_ENV['AUTH_API_2FA_REQUIRED'] ?? 'false') === 'true');
+	$metodoApp = (($_ENV['AUTH_API_2FA_METHOD_APP'] ?? 'true') === 'true');
+	$metodoEmail = (($_ENV['AUTH_API_2FA_METHOD_EMAIL'] ?? 'true') === 'true');
+
+	$dados = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios',
+		'campos' => Array('two_factor_enabled', 'two_factor_type', 'email'),
+		'extra' => "WHERE id_usuarios='".$id_usuarios."'",
+	));
+
+	$habilitado = $dados && !empty($dados['two_factor_enabled']);
+	$tipo = ($habilitado && isset($dados['two_factor_type'])) ? $dados['two_factor_type'] : '';
+
+	if(!$habilitado && !$requerGlobal){
+		return false;
+	}
+
+	if($tipo === 'app' && !$metodoApp){
+		$tipo = '';
+	}
+	if($tipo === 'email' && !$metodoEmail){
+		$tipo = '';
+	}
+	if($tipo === ''){
+		if($metodoEmail && $dados && !empty($dados['email'])){
+			$tipo = 'email';
+		} elseif($metodoApp){
+			$tipo = 'app';
+		}
+	}
+
+	if($tipo === ''){
+		interface_alerta(Array(
+			'redirect' => true,
+			'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-user-without-permission'))
+		));
+		gestor_redirecionar('oauth-authenticate/');
+		return true;
+	}
+
+	gestor_sessao_variavel('pending_oauth_tokens', $tokens);
+	gestor_sessao_variavel('pending_oauth_user', $id_usuarios);
+	gestor_sessao_variavel('pending_oauth_mode', 'verify');
+	gestor_sessao_variavel('pending_oauth_type', $tipo);
+	gestor_sessao_variavel('pending_oauth_url_redirect', $url_redirect);
+
+	if($tipo === 'email' && $dados && !empty($dados['email'])){
+		two_factor_email_send_code($id_usuarios, $dados['email']);
+	}
+
+	gestor_redirecionar('oauth-authenticate-2fa/');
+	return true;
+}
+
 function perfil_usuario_oauth_authenticate(){
 	global $_GESTOR;
 	global $_CONFIG;
@@ -995,26 +1107,34 @@ function perfil_usuario_oauth_authenticate(){
 	gestor_incluir_biblioteca('autenticacao');
 	
 	$acesso = autenticacao_acesso_verificar(['tipo' => 'oauth2']);
+	$apiSenhaAtiva = (($_ENV['AUTH_API_METHOD_PASSWORD_ACTIVE'] ?? 'true') === 'true');
+	$apiEmailAtivo = (($_ENV['AUTH_API_METHOD_EMAIL_ACTIVE'] ?? 'false') === 'true');
 	
 	// ===== Tratar a função autenticate.
 
 	if(isset($_REQUEST['_gestor-autenticate']) && $acesso['permitido']){
+		$loginMetodo = isset($_REQUEST['login_method']) ? strtolower($_REQUEST['login_method']) : 'password';
+		$loginMetodo = ($loginMetodo === 'email' && $apiEmailAtivo) ? 'email' : 'password';
+
 		// ===== Validação de campos obrigatórios
 		
-		interface_validacao_campos_obrigatorios(Array(
-			'campos' => Array(
-				Array(
-					'regra' => 'texto-obrigatorio',
-					'campo' => 'usuario',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-label')),
-				),
-				Array(
-					'regra' => 'texto-obrigatorio',
-					'campo' => 'senha',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-password-label')),
-				),
-			)
-		));
+		$camposObrigatorios = Array(
+			Array(
+				'regra' => 'texto-obrigatorio',
+				'campo' => 'usuario',
+				'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-label')),
+			),
+		);
+
+		if($loginMetodo === 'password'){
+			$camposObrigatorios[] = Array(
+				'regra' => 'texto-obrigatorio',
+				'campo' => 'senha',
+				'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-password-label')),
+			);
+		}
+
+		interface_validacao_campos_obrigatorios(Array('campos' => $camposObrigatorios));
 		
 		// ===== Google reCAPTCHA v3
 		
@@ -1058,68 +1178,99 @@ function perfil_usuario_oauth_authenticate(){
 			// ===== Verificar se os dados enviados batem com algum usuário dentro do sistema
 			
 			$usuario = banco_escape_field($_REQUEST['usuario']);
-			$senha = banco_escape_field($_REQUEST['senha']);
 			$grant_type = isset($_REQUEST['grant_type']) ? $_REQUEST['grant_type'] : '';
 			$scope = isset($_REQUEST['scope']) ? $_REQUEST['scope'] : 'read';
 			$url_redirect = isset($_REQUEST['url_redirect']) ? $_REQUEST['url_redirect'] : '';
 			$user_inactive = false;
 			$user_without_permission = false;
-			
-			$usuarios = banco_select_name
-			(
-				banco_campos_virgulas(Array(
-					'id_usuarios',
-					'id_usuarios_perfis',
-					'senha',
-					'status',
-				))
-				,
-				"usuarios",
-				"WHERE usuario='".$usuario."'"
-				." AND status!='D'"
-			);
-			
-			// ===== Rotinas de validação de usuário
-			
-			if($usuarios){
+			$metodo_indisponivel = false;
 
-				// ===== Verificar se o usuário tem acesso ao ambiente de administração da API, senão não validar o usuário.
+			if($loginMetodo === 'email' && $apiEmailAtivo){
+				$usuarios = banco_select_name
+				(
+					banco_campos_virgulas(Array(
+						'id_usuarios',
+						'id_usuarios_perfis',
+						'email',
+						'status',
+					))
+					,
+					"usuarios",
+					"WHERE (usuario='".$usuario."' OR email='".$usuario."')"
+					." AND status!='D'"
+				);
 
-				if(gestor_acesso('acesso-api', 'admin-environment',$usuarios[0])){
-					$senha_hash = $usuarios[0]['senha'];
-					
-					if(password_verify($senha, $senha_hash)){
-						// ===== Pegar dados do usuário.
-						
-						$status = $usuarios[0]['status'];
-						$id_usuarios = $usuarios[0]['id_usuarios'];
-						
-						if($status == 'A'){
-							$user_invalid = false;
-							
-							// ===== Incluir a confirmação do acesso para poder remover qualquer limitação de acesso do tipo específico.
-							
-							autenticacao_acesso_confirmar(['tipo' => 'oauth2']);
+				if($usuarios){
+					if(!gestor_acesso('acesso-api', 'admin-environment',$usuarios[0]) || !perfil_usuario_api_perfil_permitido($usuarios[0]['id_usuarios_perfis'])){
+						$user_without_permission = true;
+					} elseif($usuarios[0]['status'] !== 'A'){
+						$user_inactive = true;
+					} elseif(!empty($usuarios[0]['email'])){
+						$id_usuarios = (int)$usuarios[0]['id_usuarios'];
+						$user_invalid = false;
 
-							// ===== Incluir biblioteca OAuth
-				
-							gestor_incluir_biblioteca('oauth2');
-							
-							// ===== Gerar tokens
-							
-							$tokens = oauth2_gerar_token_client_credentials(Array(
-								'id_usuarios' => $id_usuarios,
-								'grant_type' => $grant_type,
-								'scope' => $scope,
-								'url_redirect' => $url_redirect
-							));
-						} else {
-							$user_inactive = true;
+						autenticacao_acesso_confirmar(['tipo' => 'oauth2']);
+
+						gestor_incluir_biblioteca('2fa');
+						two_factor_email_send_code($id_usuarios, $usuarios[0]['email']);
+
+						perfil_usuario_oauth_limpar_sessao();
+						gestor_sessao_variavel('pending_oauth_user', $id_usuarios);
+						gestor_sessao_variavel('pending_oauth_mode', 'email-login');
+						gestor_sessao_variavel('pending_oauth_type', 'email');
+						gestor_sessao_variavel('pending_oauth_grant_type', $grant_type);
+						gestor_sessao_variavel('pending_oauth_scope', $scope);
+						gestor_sessao_variavel('pending_oauth_url_redirect', $url_redirect);
+
+						gestor_redirecionar('oauth-authenticate-2fa/');
+						return;
+					}
+				}
+			} elseif($loginMetodo === 'password' && $apiSenhaAtiva){
+				$senha = banco_escape_field($_REQUEST['senha']);
+
+				$usuarios = banco_select_name
+				(
+					banco_campos_virgulas(Array(
+						'id_usuarios',
+						'id_usuarios_perfis',
+						'senha',
+						'status',
+					))
+					,
+					"usuarios",
+					"WHERE usuario='".$usuario."'"
+					." AND status!='D'"
+				);
+
+				if($usuarios){
+					if(!gestor_acesso('acesso-api', 'admin-environment',$usuarios[0]) || !perfil_usuario_api_perfil_permitido($usuarios[0]['id_usuarios_perfis'])){
+						$user_without_permission = true;
+					} else {
+						$senha_hash = $usuarios[0]['senha'];
+
+						if(password_verify($senha, $senha_hash)){
+							$status = $usuarios[0]['status'];
+							$id_usuarios = $usuarios[0]['id_usuarios'];
+
+							if($status == 'A'){
+								$user_invalid = false;
+
+								autenticacao_acesso_confirmar(['tipo' => 'oauth2']);
+
+								$tokens = perfil_usuario_oauth_gerar_tokens($id_usuarios, $grant_type, $scope, $url_redirect);
+
+								if($tokens && perfil_usuario_oauth_2fa_interceptar($id_usuarios, $tokens, $url_redirect)){
+									return;
+								}
+							} else {
+								$user_inactive = true;
+							}
 						}
 					}
-				} else {
-					$user_without_permission = true;
 				}
+			} else {
+				$metodo_indisponivel = true;
 			}
 		} else {
 			// ===== Se o recaptcha for inválido, alertar o usuário.
@@ -1147,7 +1298,12 @@ function perfil_usuario_oauth_authenticate(){
 			
 			sleep(3);
 			
-			if($user_without_permission){
+			if(isset($metodo_indisponivel) && $metodo_indisponivel){
+				interface_alerta(Array(
+					'redirect' => true,
+					'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-user-without-permission'))
+				));
+			} elseif($user_without_permission){
 				interface_alerta(Array(
 					'redirect' => true,
 					'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'alert-user-without-permission'))
@@ -1170,20 +1326,7 @@ function perfil_usuario_oauth_authenticate(){
 		// ===== Se o usuário for válido e gerou o token corretamente, redirecionar para o local pretendido se houver, senão retornar JSON.
 
 		if(isset($tokens) && $tokens){
-			// ===== Se há url_redirect, redirecionar com tokens como parâmetros
-			
-			if($url_redirect){
-				$query_params = http_build_query($tokens);
-				$redirect_url = $url_redirect . (strpos($url_redirect, '?') !== false ? '&' : '?') . $query_params;
-				header('Location: ' . $redirect_url);
-				exit;
-			} else {
-				// ===== Retornar JSON
-				
-				header('Content-Type: application/json');
-				echo json_encode($tokens);
-				exit;
-			}
+			perfil_usuario_oauth_entregar_tokens($tokens, $url_redirect);
 		} else {
 			// ===== Erro de autenticação
 			
@@ -1251,6 +1394,34 @@ function perfil_usuario_oauth_authenticate(){
 			'modal-alerta',
 		)
 	));
+
+	// ===== Renderização dinâmica dos métodos de autenticação da API
+
+	if(!$apiSenhaAtiva && !$apiEmailAtivo){
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#login-method-switch#', '');
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#login-method-default#', 'password');
+		$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- login-senha < -->', '<!-- login-senha > -->', '');
+	} else {
+		$loginMethodDefault = $apiSenhaAtiva ? 'password' : 'email';
+		$loginMethodSwitch = '';
+
+		if($apiSenhaAtiva && $apiEmailAtivo){
+			$labelSenha = ($_GESTOR['linguagem-codigo'] === 'en') ? 'Use Password' : 'Usar Senha';
+			$labelEmail = ($_GESTOR['linguagem-codigo'] === 'en') ? 'Use Email Code' : 'Usar Código por E-mail';
+			$loginMethodSwitch = ''
+				. '<div class="ui two item menu login-method-menu">'
+				. '<a class="item active login-method-toggle" data-method="password"><i class="lock icon"></i> '.$labelSenha.'</a>'
+				. '<a class="item login-method-toggle" data-method="email"><i class="mail icon"></i> '.$labelEmail.'</a>'
+				. '</div>';
+		}
+
+		if(!$apiSenhaAtiva){
+			$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- login-senha < -->', '<!-- login-senha > -->', '');
+		}
+
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#login-method-switch#', $loginMethodSwitch);
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#login-method-default#', $loginMethodDefault);
+	}
 	
 	// ===== Validação do formulário
 	
@@ -1260,14 +1431,114 @@ function perfil_usuario_oauth_authenticate(){
 			'campo' => 'usuario',
 			'label' => 'Usuário',
 		),
-		Array(
+	);
+
+	if($apiSenhaAtiva && !$apiEmailAtivo){
+		$formulario['validacao'][] = Array(
 			'regra' => 'texto-obrigatorio',
 			'campo' => 'senha',
 			'label' => 'Senha',
-		),
-	);
+		);
+	}
 	
 	interface_formulario_validacao($formulario);
+}
+
+function perfil_usuario_oauth_authenticate_2fa(){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('2fa');
+
+	$id_usuarios = (int)gestor_sessao_variavel('pending_oauth_user');
+	if(!$id_usuarios){
+		gestor_redirecionar('oauth-authenticate/');
+		return;
+	}
+
+	$mode = gestor_sessao_variavel('pending_oauth_mode');
+	if(!existe($mode)) $mode = 'verify';
+
+	$tipo = gestor_sessao_variavel('pending_oauth_type');
+	if(!existe($tipo)) $tipo = 'email';
+
+	$url_redirect = gestor_sessao_variavel('pending_oauth_url_redirect');
+
+	if(isset($_REQUEST['_gestor-oauth-2fa'])){
+		$codigo = isset($_REQUEST['codigo']) ? $_REQUEST['codigo'] : '';
+		$valido = false;
+
+		if($tipo === 'email'){
+			$valido = two_factor_email_validate($id_usuarios, $codigo);
+		} else {
+			$d = banco_select(Array(
+				'unico' => true,
+				'tabela' => 'usuarios',
+				'campos' => Array('two_factor_secret'),
+				'extra' => "WHERE id_usuarios='".$id_usuarios."'",
+			));
+			$secret = ($d && isset($d['two_factor_secret'])) ? $d['two_factor_secret'] : '';
+			$valido = ($secret !== '') && two_factor_validate_code($secret, $codigo);
+		}
+
+		if($valido){
+			if($mode === 'email-login'){
+				$grant_type = gestor_sessao_variavel('pending_oauth_grant_type');
+				$scope = gestor_sessao_variavel('pending_oauth_scope');
+				if(!existe($scope)) $scope = 'read';
+
+				$tokens = perfil_usuario_oauth_gerar_tokens($id_usuarios, $grant_type, $scope, $url_redirect);
+
+				perfil_usuario_oauth_limpar_sessao();
+
+				if($tokens && perfil_usuario_oauth_2fa_interceptar($id_usuarios, $tokens, $url_redirect)){
+					return;
+				}
+
+				if($tokens){
+					perfil_usuario_oauth_entregar_tokens($tokens, $url_redirect);
+					return;
+				}
+			} else {
+				$tokens = gestor_sessao_variavel('pending_oauth_tokens');
+				perfil_usuario_oauth_limpar_sessao();
+
+				if($tokens){
+					perfil_usuario_oauth_entregar_tokens($tokens, $url_redirect);
+					return;
+				}
+			}
+		}
+
+		interface_alerta(Array('redirect' => true, 'msg' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'security-2fa-code-invalid'))));
+		gestor_redirecionar('oauth-authenticate-2fa/');
+		return;
+	}
+
+	$html = '';
+
+	if(isset($_REQUEST['enviar-email']) && $tipo === 'email'){
+		$d = banco_select(Array('unico' => true, 'tabela' => 'usuarios', 'campos' => Array('email'), 'extra' => "WHERE id_usuarios='".$id_usuarios."'"));
+		if($d && !empty($d['email'])){ two_factor_email_send_code($id_usuarios, $d['email']); }
+		$html .= '<div class="ui positive message">'.perfil_usuario_seguranca_var('security-2fa-email-sent').'</div>';
+	}
+
+	if($mode === 'email-login'){
+		$html .= '<p class="ui grey text">'.(($_GESTOR['linguagem-codigo'] === 'en') ? 'Enter the email access code to continue generating API tokens.' : 'Digite o código enviado por e-mail para continuar a geração dos tokens de API.').'</p>';
+	} else {
+		$chave = ($tipo === 'email') ? 'login-2fa-verify-email-help' : 'login-2fa-verify-app-help';
+		$html .= '<p class="ui grey text">'.perfil_usuario_seguranca_var($chave).'</p>';
+	}
+
+	if($tipo === 'email'){
+		$labelReenviar = perfil_usuario_seguranca_var('security-2fa-send-email');
+		$html .= '<div style="margin-bottom:1rem;"><a class="ui blue button" href="'.$_GESTOR['url-raiz'].'oauth-authenticate-2fa/?enviar-email=sim"><i class="mail icon"></i> '.$labelReenviar.'</a></div>';
+	}
+
+	$html .= '<div class="field"><label>'.perfil_usuario_seguranca_var('security-2fa-code-label').'</label><input type="text" name="codigo" id="seg-2fa-codigo" maxlength="6" inputmode="numeric" autocomplete="one-time-code"></div>';
+
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#conteudo-2fa#', $html);
+
+	gestor_pagina_javascript_incluir();
 }
 
 function perfil_usuario_signin(){
@@ -3334,6 +3605,7 @@ function perfil_usuario_start(){
 		
 		switch($_GESTOR['opcao']){
 			case 'oauth-authenticate': perfil_usuario_oauth_authenticate(); break;
+			case 'oauth-authenticate-2fa': perfil_usuario_oauth_authenticate_2fa(); break;
 			case 'signin': perfil_usuario_signin(); break;
 			case 'signin-2fa': perfil_usuario_signin_2fa(); break;
 			case 'social-login': perfil_usuario_social_login(); break;
