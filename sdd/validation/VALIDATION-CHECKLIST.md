@@ -618,3 +618,30 @@ Para manter o checklist de validações leve e eficiente, as validações e evid
 - [ ] Testes manuais do controle de perfil e 2FA na emissão de token de API concluídos.
 - [ ] Linting estático (`php -l` e `node --check`) limpo nos arquivos alterados.
 
+
+---
+## BATCH-034 - Aprimoramento do Editor HTML Visual (req-034)
+
+- [ ] **Expansão de Tags Editáveis**:
+  - [ ] Verificar se tags de contêineres e blocos complexos (ex: `div`, `section`, `table`, `ul`) são detectadas sob hover.
+  - [ ] Validar que ao tentar editar um contêiner, o editor abre no formato `'code'` (outerHTML) no CodeMirror.
+- [ ] **Isolamento de Hover e Seleção Persistente**:
+  - [ ] Validar que passar o mouse destaca os elementos (hover overlay dinâmico).
+  - [ ] Validar que clicar em um elemento fixa um contorno de seleção persistente e exibe a barra de ferramentas flutuante.
+  - [ ] Confirmar que tirar o mouse do elemento selecionado mantém o destaque de seleção e a barra de ferramentas exibidos.
+  - [ ] Confirmar que passar o mouse sobre outros elementos continua a mostrar o hover overlay de forma isolada.
+- [ ] **Barra de Ferramentas Flutuante**:
+  - [ ] Duplicar: Validar que clicar em duplicar cria um elemento irmão idêntico logo abaixo no DOM e transfere a seleção para ele.
+  - [ ] Excluir: Validar que clicar no lixo abre o `confirm()` do navegador. Rejeitar mantém o elemento; aceitar remove-o do DOM.
+  - [ ] Editar: Validar que abre o modal de edição correspondente ao tipo de tag.
+- [ ] **Drag and Drop (DnD)**:
+  - [ ] Validar que segurar o botão de arrastar e mover o mouse exibe a linha horizontal tracejada `.conn2flow-dnd-placeholder`.
+  - [ ] Confirmar que soltar o botão move o elemento fisicamente para a nova posição no DOM e atualiza o CodeMirror pai.
+- [ ] **Inclusão de Novos Elementos e Widgets**:
+  - [ ] Validar que clicar no botão "+" no cabeçalho do visual-modal abre o popup dropdown categorizado.
+  - [ ] Confirmar que selecionar uma opção HTML ou Widget (obtendo slugs do backend via AJAX) entra no modo de inclusão e exibe placeholder de drop.
+  - [ ] Confirmar que clicar insere o elemento/widget no DOM do iframe.
+
+### Evidência de Validação (BATCH-034)
+- [ ] Testes de interação do editor visual (hover, seleção, DnD, duplicação, exclusão e inclusão) validados.
+- [ ] Linting estático (`php -l` e `node --check`) limpo nos arquivos alterados.

@@ -147,4 +147,17 @@ Segurança no Acesso e Geração de Chaves de API (req-033 / BATCH-033). Decisõ
 3. **Interceptador 2FA na API e Holding de Tokens**: Em `perfil_usuario_oauth_authenticate()`, se o usuário logado pertencer a um perfil permitido e se autenticar com sucesso, e se `AUTH_API_2FA_REQUIRED` estiver ativo (ou se o usuário possuir 2FA ativo em sua conta), o backend gera as chaves de resposta OAuth e as armazena temporariamente na sessão (`pending_oauth_tokens`), redirecionando-o para a nova rota `oauth-authenticate-2fa/`.
 4. **Finalização via nova rota `oauth-authenticate-2fa/`**: Essa nova página recebe o código de 6 dígitos. Após validação, recupera `pending_oauth_tokens`, remove as variáveis temporárias da sessão, e conclui emitindo os tokens originais da API (imprimindo JSON ou redirecionando via OAuth).
 
+## DEC-047 - 2026-06-13 - accepted
+
+Aprimoramento do Editor HTML Visual (req-034 / BATCH-034). Decisões de design:
+1. **Lógica de Identificação Permissiva**: Modificar o `HtmlEditor` para que qualquer tag no DOM seja editável (exceto se declarada na lista `ignoredTags` do editor). O tipo de edição resolve para `'image'` para tags `<img>`, `'text'` para tags que contêm texto puro editável diretamente (conforme `isDirectlyTextEditable`), e `'code'` (outerHTML) como fallback para todas as demais tags estruturais (ex: `div`, `section`, `table`, etc.).
+2. **Dual-Overlay com Barra Flutuante**: Substituir o comportamento de clique de edição imediata por um fluxo de seleção persistente. O editor visual passa a gerenciar um overlay de hover transitório (`#html-editor-hover-overlay`) e um overlay de seleção persistente (`#html-editor-selection-overlay`). Este último sustenta acoplada logo acima a barra de ferramentas flutuante (`#html-editor-floating-toolbar`).
+3. **Barra de Ferramentas de Seleção**: A barra flutuante possui botões para:
+   - Duplicar: clona o elemento via `cloneNode(true)` e insere-o como irmão adjacente inferior do elemento ativo.
+   - Deletar: remove o elemento do DOM após confirmação do usuário usando o `confirm()` nativo do JavaScript.
+   - Editar: abre o Fomantic UI modal no pai para edição de propriedades ou código.
+   - Arrastar/Mover: aciona o modo de arraste de elementos (DnD).
+4. **Lightweight Drag and Drop (DnD)**: O arraste do elemento selecionado exibe uma linha tracejada horizontal de placeholder (`.conn2flow-dnd-placeholder`). O reposicionamento do placeholder é calculado comparando as coordenadas do cursor com os elementos sob o mouse. O drop altera a ordem física do nó no DOM e re-sincroniza o CodeMirror no editor principal.
+5. **Inclusão de Novos Elementos e Widgets (Carregar e Soltar)**: Adicionar um botão de inclusão "+" no cabeçalho do visual-modal. O clique abre um popup categorizado (Elementos HTML x Widgets do Sistema). A lista de Widgets e seus slugs é carregada dinamicamente via AJAX no endpoint `html-editor-widgets-list` em `html-editor.php`. Selecionar um elemento ou widget com slug entra em modo de inserção, exibindo o placeholder de drop no iframe e inserindo o novo elemento/bloco de widget (incluindo imagens via ImagePicker) na posição clicada.
+
 
