@@ -24,6 +24,7 @@ O lote foi quebrado em slices pequenos com alvo de validação explícito:
 - [ ] Mapear a leitura/escrita no `.env` para a variável `AUTH_METHOD_EMAIL_ACTIVE` no backend PHP.
 - [ ] Adicionar links e mensagens explicativas de auxílio ("How-To") para a criação de credenciais OAuth nos campos do Google e Meta no HTML e JSON (pt-br e en).
 - [ ] Garantir que os links do Google (`https://console.cloud.google.com/`) e Meta (`https://developers.facebook.com/`) abram em abas novas (`target="_blank"`).
+- [x] Adicionar as variáveis criadas no BATCH-030 e BATCH-032 com seus valores default no arquivo de template `gestor/autenticacoes.exemplo/dominio/.env`.
 
 ### 2. Interface da Tela de Login (`perfil-usuario` / acessar-sistema)
 - [ ] Injetar verificação de `AUTH_METHOD_EMAIL_ACTIVE` na renderização de `acessar-sistema.html`.
