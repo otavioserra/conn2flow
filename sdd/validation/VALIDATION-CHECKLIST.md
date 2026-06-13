@@ -663,3 +663,21 @@ Para manter o checklist de validações leve e eficiente, as validações e evid
 - [ ] Testes de Undo/Redo, Breadcrumb, Tailwind Styler, Resize Handles e Widget Wrappers validados — **pendente com o operador**.
 - Arquivos: novo `gestor/assets/interface/html-editor-visual-controls.js`; reescrito `html-editor.js`; `html-editor.php` (rota AJAX `html-editor-widgets-list` + inclusões); `html-editor-interface.js` (handler `.screenPagina` removido + `getCleanHtml()` no save); `html-editor-visual-modal.html` (pt-br/en); `variables.json` (pt-br/en). Decisões: [DEC-047](../decisions/DECISION-LOG.md) (design) e [DEC-048](../decisions/DECISION-LOG.md) (execução).
 - Pendência de deploy: `🗃️ Projects - Update => Core` (sincroniza assets/componentes, compila `VariaveisData.json` a partir do `variables.json`, recalcula checksums).
+
+---
+## BATCH-035 - Refinamentos e Ajustes no Editor HTML Visual (req-035)
+
+- [ ] **Toolbar à Direita**:
+  - [ ] Verificar se `#html-editor-floating-toolbar` é exibido alinhado à direita da caixa de seleção do elemento selecionado (em vez do lado esquerdo).
+  - [ ] Confirmar que o comportamento de exibição acima ou abaixo do elemento é preservado e funciona em elementos com pouco espaço ou próximos à borda da tela.
+- [ ] **Labels "Ancestrais:" e "Filhos:"**:
+  - [ ] Validar a presença das labels de texto cinza "Ancestrais:" e "Filhos:" nos breadcrumbs correspondentes.
+- [ ] **Seletor de Filhos (Children Breadcrumb)**:
+  - [ ] Validar que, se o elemento selecionado tiver filhos editáveis directos, a lista de filhos é renderizada com o separador `/`.
+  - [ ] Confirmar que o fundo da caixa de filhos é ligeiramente mais claro do que o de ancestrais para diferenciar os contêineres.
+  - [ ] Passar o mouse sobre um filho na lista e confirmar que o hover overlay correspondente é acionado.
+  - [ ] Clicar em um filho da lista e confirmar que ele é selecionado e os controles são transferidos para ele.
+  - [ ] Confirmar que se o elemento selecionado não possui filhos válidos, a barra de filhos fica oculta.
+- [ ] **Empilhamento Dinâmico**:
+  - [ ] Confirmar o empilhamento vertical correto (Ancestrais -> Filhos -> Classes Tailwind) sem sobreposições.
+

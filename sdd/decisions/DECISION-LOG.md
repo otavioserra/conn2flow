@@ -172,3 +172,15 @@ Decisões de **execução** do BATCH-034 (complementam o design da DEC-047, sem 
 4. **Modal de edição vive no iframe**: Diferente da redação da DEC-047 (item 3.3, "modal no pai"), o modal de edição (`#html-editor-modal`, modos text/image/code) é o que o helper já clona para dentro do `srcdoc` — a ação "Editar" reusa `openEditModal` no iframe. Os overlays/toolbar/breadcrumb/styler são ocultados enquanto esse modal está aberto (evita conflito de z-index).
 5. **Edição de widget por `prompt()`**: Como a modal CRUD completa de cada widget está fora do escopo do editor visual, o botão "Editar" de um `.conn2flow-widget-wrapper` usa `prompt()` nativo para trocar o `grupo_slug` (coerente com o `confirm()` nativo do delete), atualizando `data-widget-slug`/`data-widget-signature` e o rótulo.
 6. **i18n parcial**: Apenas os 3 tooltips do visual-modal (`html-editor-add-element-tooltip`/`-undo-tooltip`/`-redo-tooltip`) foram adicionados em `resources/{pt-br,en}/variables.json`. Os rótulos do painel de inclusão e os títulos da toolbar interna do iframe são strings pt-br embutidas no JS (paridade en pode ser endereçada em slice corretivo). O `VariaveisData.json` **não** foi editado — é compilado a partir do `variables.json` pelo pipeline.
+
+## DEC-049 - 2026-06-13 - accepted
+
+Refinamentos no Editor HTML Visual (req-035 / BATCH-035). Decisões de design/layout:
+1. **Toolbar à direita**: Ancorar o `#html-editor-floating-toolbar` no lado direito do contêiner selecionado (calculando a coordenada `left` com base na borda direita do elemento ativo menos a largura do próprio toolbar) para evitar sobreposição lateral com o breadcrumb e com o editor de classes Tailwind CSS que ficam do lado esquerdo.
+2. **Seletor de Filhos (Children Breadcrumb)**: Criar o contêiner `#html-editor-selection-children` posicionado verticalmente abaixo do contêiner de ancestrais e acima do editor de classes Tailwind.
+3. **Labels de Identificação**: Inserir os labels "Ancestrais:" e "Filhos:" nas barras de navegação do DOM correspondentes.
+4. **Visual e Interação**:
+   - Usar um fundo mais claro para o contêiner de filhos em relação ao de ancestrais, criando diferenciação visual.
+   - Utilizar a barra `/` como separador na lista de filhos.
+   - Implementar listeners de hover e clique para destacar/selecionar os filhos diretos editáveis.
+
